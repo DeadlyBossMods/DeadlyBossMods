@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175731)
 mod:SetEncounterID(2436)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210718000000)--2021-07-18
+mod:SetHotfixNoticeRev(20210815000000)--2021-08-15
 mod:SetMinSyncRevision(20210718000000)
 mod.respawnTime = 29
 
@@ -14,7 +14,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090 355352 350734",
 	"SPELL_AURA_APPLIED 352385 352394 350734 350496 350732",--350534
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 352385 352394 350496",--350534
 	"SPELL_PERIODIC_DAMAGE 350455",
 	"SPELL_PERIODIC_MISSED 350455",
@@ -80,7 +79,7 @@ local allTimers = {
 			--Threat Neutralization
 			[356090] = {8.5, 12.2, 21.8},
 			--Disintegration
-			[352833] = {15.6},
+			[352833] = {15.4},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
@@ -94,43 +93,29 @@ local allTimers = {
 			--Threat Neutralization
 			[356090] = {10.7, 12.2},
 			--Disintegration
-			[352833] = {15.6},
+			[352833] = {15.4},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
 			[356090] = {0, 12.1, 12.1, 26.7, 12.1},
 			--Disintegration
-			[352833] = {5.9, 40.1},
+			[352833] = {5.8, 40.1},
 		},
 	},
-	["normal"] = {
+	["normal"] = {--LFR is same
 		[0] = {--Initial
 			--Threat Neutralization
-			[356090] = {10.7, 11, 23.2},
+			[356090] = {10.4, 11, 23.2},
 			--Disintegration
-			[352833] = {15.6},
+			[352833] = {15.4},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
 			[356090] = {4.5, 12.1, 23, 15.7, 12.1},
 			--Disintegration
-			[352833] = {18.2, 32.5},
+			[352833] = {18, 32.5},
 		},
 	},
---	["lfr"] = {
---		[0] = {--Initial
---			--Threat Neutralization
---			[350496] = {},
---			--Disintegration
---			[352833] = {},
---		},
---		[1] = {--Post Link
---			--Threat Neutralization
---			[350496] = {},
---			--Disintegration
---			[352833] = {},
---		},
---	},
 }
 
 local updateInfoFrame
@@ -427,7 +412,7 @@ function mod:OnCombatStart(delay)
 		difficultyName = "mythic"
 		timerThreatNeutralizationCD:Start(8, 1)
 	else
-		timerThreatNeutralizationCD:Start(10.7, 1)
+		timerThreatNeutralizationCD:Start(10.4, 1)
 		if self:IsHeroic() then
 			difficultyName = "heroic"
 		else
@@ -549,9 +534,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDisintegrationCD:Stop()
 		timerFormSentryCD:Stop()
 		timerEliminationPatternCD:Stop()
-		timerDisintegrationCD:Start(5.8)
-		timerFormSentryCD:Start(self:IsEasy() and 11.5 or 18)
-		timerEliminationPatternCD:Start(28.3, self.vb.patternCount+1)
+		timerDisintegrationCD:Start(self:IsEasy() and 18 or 5.8)
+		timerFormSentryCD:Start(self:IsEasy() and 10.7 or 18)
+		timerEliminationPatternCD:Start(28.2, self.vb.patternCount+1)
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = true
 		if args:IsPlayer() then

@@ -7,15 +7,14 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210727000000)--2021-07-27
-mod:SetMinSyncRevision(20210708000000)
+mod:SetHotfixNoticeRev(20210815000000)
+mod:SetMinSyncRevision(20210815000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198 358999",
---	"SPELL_CAST_SUCCESS 352293",
 	"SPELL_SUMMON 352096 352094 352092 346469",
 	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
 	"SPELL_AURA_APPLIED_DOSE 352051",
@@ -23,10 +22,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, is blizzard really 20 sec? Such disruption to other timers
 --TODO, track https://ptr.wowhead.com/spell=354289/necrotic-miasma on infoframe?
 --TODO, figure out how to add https://ptr.wowhead.com/spell=354638/deep-freeze
 --TODO, echo timer can probably be immproved by checking mana when it is cast
@@ -53,6 +50,8 @@ local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
 local warnDemolish									= mod:NewCastAnnounce(349799, 2)
 ----Remnant of Kel'Thuzad
 local warnFreezingBlast								= mod:NewCountAnnounce(352379, 3)
+--Stage Three
+local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
 
 --Stage One: Chains and Ice
 local specWarnSoulExhaustion						= mod:NewSpecialWarningYou(348978, nil, nil, nil, 1, 2)
@@ -85,7 +84,7 @@ local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, 
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
 local timerSoulFractureCD							= mod:NewCDTimer(32.8, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Healer", nil, 5)
-local timerGlacialWrathCD							= mod:NewCDTimer(43.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 --Stage Two: The Phylactery Opens
@@ -111,24 +110,10 @@ mod.vb.echoIcon = 1
 mod.vb.wrathIcon = 1
 mod.vb.spikeIcon = 1
 mod.vb.addIcon = 8
+mod.vb.frostBlastCount = 0
 mod.vb.freezingBlastCount = 0
+mod.vb.oblivionEchoCast = 0
 local playerPhased = false
-
---[[
-function mod:FrostBlast(targetname, uId, bossuid, scanningTime)
-	if not targetname then return end
-	if self:AntiSpam(5, targetname) then
-		if targetname == UnitName("player") then
-			specWarnFrostBlast:Show(DBM_CORE_L.ALLIES)
-			specWarnFrostBlast:Play("gathershare")
-			yellFrostBlast:Yell()
-			yellFrostBlastFades:Countdown(3-scanningTime+6)--Cast time minus scan, plus 6 second debuff
-		else
-			warnFrostBlast:Show(targetname)
-		end
-	end
-end
---]]
 
 function mod:OnCombatStart(delay)
 	self.vb.echoIcon = 1
@@ -136,14 +121,24 @@ function mod:OnCombatStart(delay)
 	self.vb.spikeIcon = 1
 	self.vb.addIcon = 8
 	self:SetStage(1)
+	self.vb.frostBlastCount = 0
 	self.vb.freezingBlastCount = 0
+	self.vb.oblivionEchoCast = 0
 	playerPhased = false
-	timerSoulFractureCD:Start(10.6-delay)--10.6-13.7
-	timerOblivionsEchoCD:Start(14.7-delay)--14-18.3
-	timerGlacialWrathCD:Start(24.1-delay)
-	timerFrostBlastCD:Start(45-delay)--45.3-49
-	timerDarkEvocationCD:Start(49-delay)--49-53
-	timerHowlingBlizzardCD:Start(89-delay)--89-94.
+	if self:IsLFR() then--Special snowflake
+		timerSoulFractureCD:Start(5.6-delay)
+		timerOblivionsEchoCD:Start(9.3-delay)
+		timerGlacialWrathCD:Start(19-delay)
+		timerFrostBlastCD:Start(42.1-delay)
+		timerHowlingBlizzardCD:Start(85.8-delay)
+	else
+		timerSoulFractureCD:Start(10.6-delay)--10.6-13.7
+		timerOblivionsEchoCD:Start(14.3-delay)--14-18.3
+		timerGlacialWrathCD:Start(24-delay)
+		timerFrostBlastCD:Start(45-delay)--45.3-49
+		timerDarkEvocationCD:Start(49-delay)--49-53
+		timerHowlingBlizzardCD:Start(89-delay)--89-94.
+	end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
@@ -181,16 +176,19 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spikeIcon = 1
 		timerGlacialWrathCD:Start()
 	elseif spellId == 347291 or spellId == 352997 then--347291 confirmed heroic,
+		self.vb.oblivionEchoCast = self.vb.oblivionEchoCast + 1
 		self.vb.echoIcon = 1
-		timerOblivionsEchoCD:Start()
+		timerOblivionsEchoCD:Start(self.vb.oblivionEchoCast == 1 and 61.1 or 37)--Still possibly not best way to code it
 	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 then--348756 P1 358999 P2, 353000 unknown
-		timerFrostBlastCD:Start(self.vb.phase == 3 and 13.4 or 40.1)
---		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 10, true, nil, nil, nil, true)
+		self.vb.frostBlastCount = self.vb.frostBlastCount + 1
+		timerFrostBlastCD:Start(self.vb.phase == 3 and (self:IsLFR() and 28.4 or 13.4) or self.vb.frostBlastCount % 2 == 0 and 69.1 or 40.1)
 	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
 		self:SetStage(2)
 		self.vb.addIcon = 8
+		self.vb.frostBlastCount = 0
 		self.vb.freezingBlastCount = 0
+		self.vb.oblivionEchoCast = 0
 		timerHowlingBlizzardCD:Stop()
 		timerDarkEvocationCD:Stop()
 		timerSoulFractureCD:Stop()
@@ -239,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 		timerFoulWindsCD:Stop()
 		timerGlacialWindsCD:Stop()
 	elseif spellId == 352348 then--Onsalught of the Damned
-
+		warnOnslaughtoftheDamned:Show()
 		timerOnslaughtoftheDamnedCD:Start()
 	elseif spellId == 354198 then
 		if not playerPhased then
@@ -250,15 +248,6 @@ function mod:SPELL_CAST_START(args)
 		timerHowlingBlizzard:Start()--20+3
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
---	if spellId == 352293 then--Vengeful Destruction ended (assumed phase trigger to return to active KT engagement)
-
---	end
-end
---]]
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
@@ -354,12 +343,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.phase == 2 then
 			self:SetStage(1)
 			warnNecroticSurge:Show(args.amount or 1)
-			timerSoulFractureCD:Start(10.2)
-			timerOblivionsEchoCD:Start(14.1)--14.1-15.1.
-			timerGlacialWrathCD:Start(24.9)--24.9-25.1. Is 24.9 the new low?
-			timerFrostBlastCD:Start(47.1)--47-48.5
-			timerDarkEvocationCD:Start(50.6)--50-52.3
-			timerHowlingBlizzardCD:Start(91.9)
+			if self:IsLFR() then--Only difficulty the timers differ (no dark evo)
+				timerSoulFractureCD:Start(5.2)
+				timerOblivionsEchoCD:Start(10.1)
+				timerGlacialWrathCD:Start(19.1)
+				timerFrostBlastCD:Start(41.6)
+				timerHowlingBlizzardCD:Start(86.5)
+			else
+				timerSoulFractureCD:Start(10.2)
+				timerOblivionsEchoCD:Start(14.1)--14.1-15.1.
+				timerGlacialWrathCD:Start(24.9)--24.9-25.1. Is 24.9 the new low?
+				timerFrostBlastCD:Start(47.1)--47-48.5
+				timerDarkEvocationCD:Start(50.6)--50-52.3
+				timerHowlingBlizzardCD:Start(91.9)
+			end
 		end
 	elseif spellId == 355389 then
 		if args:IsPlayer() then
@@ -424,7 +421,9 @@ function mod:UNIT_DIED(args)
 		timerOblivionsEchoCD:Stop()
 		timerFrostBlastCD:Stop()
 		timerFrostBlastCD:Start(8.5)
-		timerOnslaughtoftheDamnedCD:Start(45.1)
+		if not self:IsLFR() then--LFR get continued march of forsaken adds instead
+			timerOnslaughtoftheDamnedCD:Start(45.1)
+		end
 	end
 end
 
@@ -436,10 +435,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 342074 then
-
-	end
-end
 --]]

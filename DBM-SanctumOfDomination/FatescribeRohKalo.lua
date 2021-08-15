@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210718000000)--2021-07-18
+mod:SetHotfixNoticeRev(20210815000000)--2021-08-15
 mod:SetMinSyncRevision(20210706000000)
 mod.respawnTime = 29
 
@@ -85,8 +85,8 @@ local timerCallofEternityCD						= mod:NewCDCountTimer(37.9, 350554, 167180, nil
 local timerDespairCD							= mod:NewCDCountTimer(17, 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
 local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
-local timerRunicAffinityCD						= mod:NewCDCountTimer(39.0, 354964, nil, nil, nil, 3)--Used in state 3 only, in stage 1 it happens at same time as rings
-local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39.0, 353195, nil, nil, nil, 6)
+local timerRunicAffinityCD						= mod:NewCDCountTimer(39, 354964, nil, nil, nil, 3, nil, nil, true)--Used in state 3 only, in stage 1 it happens at same time as rings
+local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39, 353195, nil, nil, nil, 6, nil, nil, true)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -111,7 +111,6 @@ mod.vb.addIcon = 8
 local grimDebuffs = 0--Local variable for timer canceling only
 local castsPerGUID = {}
 local difficultyName = "normal"
---Currently non mythic difficulties not using table yet since data not yet built (heroic logs kinda bad because dps too high to get actual sequences)
 local allTimers = {
 	["mythic"] = {
 		[1] = {
@@ -139,30 +138,6 @@ local allTimers = {
 			[353195] = {54, 89.4},--or 56?
 		}
 	},
-	["heroic"] = {--Same as normal
-		[1] = {--Timers after Realign Fate
-			--Twist Fate
-			[354265] = {10, 49.2, 75.2, 35.2, 10.9},--Last one is 10.9-38.9 for some reason
-			--Call of Eternity
-			[350554] = {29.4, 38.8, 35.1, 44.9, 41.3},
-			--Invoke Destiny
-			[351680] = {40.4, 40.8, 38.7, 40},
-			--Fated Conjunction
-			[350421] = {18.5, 60.4, 26.7, 23.4, 48.5},
-		},
-		[3] = {
-			--Twist Fate
-			[354265] = {51.4, 48.6, 38.8},
-			--Call of Eternity
-			[350554] = {13.9, 38.6, 38.6, 57.1},--second one is either 38.8 or 73.1?
-			--Invoke Destiny
-			[351680] = {25.6, 44.7, 90},
-			--Fated Conjunction
-			[350421] = {11.1, 50.4, 51.1, 40.1, 26.7},
-			--Extemporaneous Fate
-			[353195] = {36.7, 46.2, 43.7},--Huge variations, 36-50
-		}
-	},
 	["normal"] = {--Same as heroic
 		[1] = {--Timers after Realign Fate
 			--Twist Fate
@@ -172,19 +147,19 @@ local allTimers = {
 			--Invoke Destiny
 			[351680] = {40.4, 40.8, 38.7, 40},
 			--Fated Conjunction
-			[350421] = {18.5, 60.4, 26.7, 23.4, 48.5},
+			[350421] = {18.5, 59.7, 26.7, 23.4, 48.5},
 		},
 		[3] = {
 			--Twist Fate
 			[354265] = {51.4, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.9, 38.6, 73.1, 57.1},--second one is either 38.8 or 73.1? I lost the log it was 38, so leaving 73 for now
+			[350554] = {13.8, 38.6, 73.1, 57.1},--second one is either 38.8 or 73.1? I lost the log it was 38, so leaving 73 for now
 			--Invoke Destiny
 			[351680] = {25.6, 44.7, 90},
 			--Fated Conjunction
 			[350421] = {11.1, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 46.2, 43.7},--Huge variations, 36-50
+			[353195] = {36.7, 45.3, 43.7},--Huge variations, 36-50
 		}
 	},
 }
@@ -215,13 +190,9 @@ function mod:OnCombatStart(delay)
 		timerFatedConjunctionCD:Start(30-delay, 1)
 		timerGrimPortentCD:Start(43-delay, 1)
 	else
-		if self:IsHeroic() then
-			difficultyName = "heroic"
-		else
-			difficultyName = "normal"
-		end
+		difficultyName = "normal"
 		--Normal and Heroic timers are same here
-		timerTwistFateCD:Start(6.3-delay, 1)
+		timerTwistFateCD:Start(4.6-delay, 1)
 		timerFatedConjunctionCD:Start(13.1-delay, 1)--13.1-14.4
 		timerCallofEternityCD:Start(24-delay, 1)
 		timerInvokeDestinyCD:Start(35-delay, 1)
@@ -233,7 +204,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
+--	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()
@@ -241,9 +212,6 @@ function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
 --	end
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
@@ -253,8 +221,6 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		difficultyName = "mythic"
-	elseif self:IsHeroic() then
-		difficultyName = "heroic"
 	else
 		difficultyName = "normal"
 	end
@@ -416,7 +382,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnExtemporaneousFate:Show(self.vb.extemporaneousCount)
 		specWarnExtemporaneousFate:Play("specialsoon")--"157060" if they just happen to be yellow
 		timerDarkestDestiny:Start(30)
-		local timer = allTimers[difficultyName][3][spellId][self.vb.extemporaneousCount+1]
+		local timer = allTimers[difficultyName][3][spellId][self.vb.extemporaneousCount+1] or 39--(technically timer is always 39 unless spell queued behind other spells. this seems to be lowest cast order priority)
 		if timer then
 			timerExtemporaneousFateCD:Start(timer, self.vb.extemporaneousCount+1)
 		end
@@ -429,7 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 3) and self.vb.phase == 3 then
 			self.vb.affinityCount = self.vb.affinityCount + 1
 			--The same timer a Extemporaneous fate, just earlier, offset self handled
-			local timer = allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1] or 39
 			if timer then
 				timerRunicAffinityCD:Start(timer, self.vb.affinityCount+1)
 			end
@@ -451,7 +417,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		)
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
