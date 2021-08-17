@@ -4,14 +4,14 @@ local spokenAlertsPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpokenAlerts
 
 local spokenGeneralArea = spokenAlertsPanel:CreateArea(L.Area_VoiceSelection)
 
-local CountSoundDropDown = spokenGeneralArea:CreateDropdown(L.CountdownVoice, DBM.Counts, "DBM", "CountdownVoice", function(value)
+local CountSoundDropDown = spokenGeneralArea:CreateDropdown(L.CountdownVoice, DBM:GetCountSounds(), "DBM", "CountdownVoice", function(value)
 	DBM.Options.CountdownVoice = value
 	DBM:PlayCountSound(1, DBM.Options.CountdownVoice)
 	DBM:BuildVoiceCountdownCache()
 end, 180)
 CountSoundDropDown:SetPoint("TOPLEFT", spokenGeneralArea.frame, "TOPLEFT", 0, -20)
 
-local CountSoundDropDown2 = spokenGeneralArea:CreateDropdown(L.CountdownVoice2, DBM.Counts, "DBM", "CountdownVoice2", function(value)
+local CountSoundDropDown2 = spokenGeneralArea:CreateDropdown(L.CountdownVoice2, DBM:GetCountSounds(), "DBM", "CountdownVoice2", function(value)
 	DBM.Options.CountdownVoice2 = value
 	DBM:PlayCountSound(1, DBM.Options.CountdownVoice2)
 	DBM:BuildVoiceCountdownCache()
@@ -19,7 +19,7 @@ end, 180)
 CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 45, 0)
 CountSoundDropDown2.myheight = 0
 
-local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM.Counts, "DBM", "CountdownVoice3", function(value)
+local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM:GetCountSounds(), "DBM", "CountdownVoice3", function(value)
 	DBM.Options.CountdownVoice3 = value
 	DBM:PlayCountSound(1, DBM.Options.CountdownVoice3)
 	DBM:BuildVoiceCountdownCache()
