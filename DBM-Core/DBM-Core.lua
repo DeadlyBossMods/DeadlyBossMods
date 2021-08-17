@@ -333,64 +333,6 @@ DBM.DefaultOptions = {
 
 DBM.Mods = {}
 DBM.ModLists = {}
-DBM.Counts = {
-	{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 10},
-	{	text	= "Koltrane",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\", max = 10},
-	{	text	= "Smooth",value 	= "Smooth", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\", max = 10},
-	{	text	= "Smooth (Reverb)",value 	= "SmoothR", path = "Interface\\AddOns\\DBM-Core\\Sounds\\SmoothReverb\\", max = 10},
-	{	text	= "Pewsey",value 	= "Pewsey", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Pewsey\\", max = 10},
-	{	text	= "Bear (Child)",value = "Bear", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Bear\\", max = 10},
-	{	text	= "Moshne",	value 	= "Mosh", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\", max = 5},
-	{	text	= "Anshlun (ptBR)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
-	{	text	= "Neryssa (ptBR)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
-}
---Sounds use SoundKit Ids (not file data ids)
-DBM.Victory = {
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Blakbyrd: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg", length=4},
-	{text = "SMG: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg", length=4},
-}
-DBM.Defeat = {
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Alizabal: Incompetent Raiders",value = 25780, length=4},--"Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg"
-	{text = "Bwonsamdi: Over Your Head",value = 109293, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_35_m.ogg"
-	{text = "Bwonsamdi: Pour Little Thing",value = 109295, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_37_m.ogg"
-	{text = "Bwonsamdi: Impressive Death",value = 109296, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_38_m.ogg"
-	{text = "Bwonsamdi: All That Armor",value = 109308, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_50_m.ogg"
-	{text = "Kologarn: You Fail",value = 15588, length=4},--"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"
-	{text = "Hodir: Tragic",value = 15553, length=4},--"Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"
-	{text = "Scrollsage Nola: Cycle",value = 109069, length=4},--"sound/creature/scrollsage_nola/vo_801_scrollsage_nola_34_f.ogg"
-	{text = "Thorim: Failures",value = 15742, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
-	{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
-	{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
-}
-DBM.DungeonMusic = {--Filtered list of media assigned to dungeon/raid background music catagory
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Anduin Part 1 B",value = 1417242, length=140},--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
-	{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
-	{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
-}
-DBM.BattleMusic = {--Filtered list of media assigned to boss/encounter background music catagory
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
-	{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
-	{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
-}
---Music uses file data IDs
-DBM.Music = {--Contains all music media, period
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Anduin Part 1 B",value = 1417242, length=140},--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
-	{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
-	{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
-	{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
-	{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
-	{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
-}
 
 ------------------------
 -- Global Identifiers --
@@ -1315,8 +1257,8 @@ do
 		end
 		--Check if any of countdown sounds are using missing voice pack
 		local found1, found2, found3 = false, false, false
-		for i = 1, #self.Counts do
-			local voice = self.Counts[i].value
+		for _, count in pairs(DBM:GetCountSounds()) do
+			local voice = count.value
 			if voice == self.Options.CountdownVoice then
 				found1 = true
 			end
@@ -1527,7 +1469,7 @@ do
 							self.VoiceVersions[voiceValue] = voiceVersion
 							self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 							if GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
-								tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\", max = 10})
+								DBM:AddCountSound(GetAddOnMetadata(i, "X-DBM-Voice-Name"), "VP:"..voiceValue, "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\")
 							end
 						end)
 					end
@@ -4173,7 +4115,7 @@ do
 			end
 			local path = "MISSING"
 			if self.Options.EventSoundDungeonBGM == "Random" then
-				local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.DungeonMusic
+				local usedTable = self.Options.EventSoundMusicCombined and DBM:GetMusic() or DBM:GetDungeonMusic()
 				if #usedTable >= 3 then
 					local random = fastrandom(3, #usedTable)
 					path = usedTable[random].value
@@ -6175,9 +6117,9 @@ do
 					end
 					if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
 						if self.Options.EventSoundWipe == "Random" then
-							if #self.Defeat >= 3 then
-								local random = fastrandom(3, #self.Defeat)
-								self:PlaySoundFile(self.Defeat[random].value)
+							local defeatSounds = DBM:GetDefeatSounds()
+							if #defeatSounds >= 3 then
+								self:PlaySoundFile(defeatSounds[fastrandom(3, #defeatSounds)].value)
 							end
 						else
 							self:PlaySoundFile(self.Options.EventSoundWipe, nil, true)
@@ -6302,9 +6244,9 @@ do
 				end
 				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" then
 					if self.Options.EventSoundVictory2 == "Random" then
-						if #self.Victory >= 3 then
-							local random = fastrandom(3, #self.Victory)
-							self:PlaySoundFile(self.Victory[random].value)
+						local victorySounds = DBM:GetVictorySounds()
+						if #victorySounds >= 3 then
+							self:PlaySoundFile(victorySounds[fastrandom(3, #victorySounds)].value)
 						end
 					else
 						self:PlaySoundFile(self.Options.EventSoundVictory2, nil, true)
@@ -10508,27 +10450,16 @@ do
 		if forcePath then
 			path = forcePath
 		else
-			for i = 1, #self.Counts do
-				if self.Counts[i].value == voice then
-					path = self.Counts[i].path
-					maxCount = self.Counts[i].max
+			for _, count in DBM:GetCountSounds() do
+				if count.value == voice then
+					path = count.path
+					maxCount = count.max
 					break
 				end
 			end
 		end
 		if not path or (number > maxCount) then return end
 		self:PlaySoundFile(path..number..".ogg")
-	end
-
-	function DBM:RegisterCountSound(t, v, p, m)
-		--Prevent duplicate insert
-		for i = 1, #self.Counts do
-			if self.Counts[i].value == v then return end
-		end
-		--Insert into counts table.
-		if t and v and p and m then
-			tinsert(self.Counts, { text = t, value = v, path = p, max = m })
-		end
 	end
 
 	function DBM:CheckVoicePackVersion(value)
@@ -10595,19 +10526,18 @@ do
 		countvoice1 = self.Options.CountdownVoice
 		countvoice2 = self.Options.CountdownVoice2
 		countvoice3 = self.Options.CountdownVoice3
-		for i = 1, #self.Counts do
-			local curVoice = self.Counts[i]
-			if curVoice.value == countvoice1 then
-				countpath1 = curVoice.path
-				countvoice1max = curVoice.max
+		for _, count in pairs(DBM:GetCountSounds()) do
+			if count.value == countvoice1 then
+				countpath1 = count.path
+				countvoice1max = count.max
 			end
-			if curVoice.value == countvoice2 then
-				countpath2 = curVoice.path
-				countvoice2max = curVoice.max
+			if count.value == countvoice2 then
+				countpath2 = count.path
+				countvoice2max = count.max
 			end
-			if curVoice.value == countvoice3 then
-				countpath3 = curVoice.path
-				countvoice3max = curVoice.max
+			if count.value == countvoice3 then
+				countpath3 = count.path
+				countvoice3max = count.max
 			end
 		end
 	end

@@ -14,7 +14,7 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 local eventSoundsPanel			= DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_EventSounds, "option")
 local eventSoundsGeneralArea	= eventSoundsPanel:CreateArea(L.Area_SoundSelection)
 
-local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventSoundVictory2", function(value)
+local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM:GetVictorySounds(), "DBM", "EventSoundVictory2", function(value)
 	DBM.Options.EventSoundVictory2 = value
 	if value ~= "Random" then
 		DBM:PlaySoundFile(value)
@@ -23,7 +23,7 @@ end, 180)
 VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", 0, -20)
 VictorySoundDropdown.myheight = 40
 
-local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM.Defeat, "DBM", "EventSoundWipe", function(value)
+local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM:GetDefeatSounds(), "DBM", "EventSoundWipe", function(value)
 	DBM.Options.EventSoundWipe = value
 	if value ~= "Random" then
 		DBM:PlaySoundFile(value)
@@ -33,7 +33,7 @@ VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", 45, 0)
 VictorySoundDropdown2.myheight = 0
 
 local useCombined = DBM.Options.EventSoundMusicCombined
-local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM.Music or DBM.DungeonMusic, "DBM", "EventSoundDungeonBGM", function(value)
+local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM:GetMusic() or DBM:GetDungeonMusic(), "DBM", "EventSoundDungeonBGM", function(value)
 	DBM.Options.EventSoundDungeonBGM = value
 	if value == "Random" or value == "None" then
 		if DBM.Options.tempMusicSetting then
@@ -60,7 +60,7 @@ end, 180)
 DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
 DungeonMusicDropDown.myheight = 40
 
-local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundMusic", function(value)
+local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM:GetMusic() or DBM:GetBattleMusic(), "DBM", "EventSoundMusic", function(value)
 	DBM.Options.EventSoundMusic = value
 	if value == "Random" or value == "None" then
 		if DBM.Options.tempMusicSetting then

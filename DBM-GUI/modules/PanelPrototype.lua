@@ -180,10 +180,10 @@ do
 
 	local function MixinCountTable(baseTable)
 		local result = baseTable
-		for i = 1, #DBM.Counts do
+		for _, count in pairs(DBM:GetCountSounds()) do
 			tinsert(result, {
-				text	= DBM.Counts[i].text,
-				value	= DBM.Counts[i].path
+				text	= count.text,
+				value	= count.path
 			})
 		end
 		return result
