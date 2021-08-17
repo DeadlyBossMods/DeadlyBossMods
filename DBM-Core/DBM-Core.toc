@@ -46,6 +46,7 @@ localization.tw.lua
 localization.kr.lua
 localization.es.lua
 localization.br.lua
+
 DBM-Core.lua
 DBM-Arrow.lua
 DBM-Flash.lua
@@ -53,3 +54,6 @@ DBM-RangeCheck.lua
 DBM-InfoFrame.lua
 DBM-HudMap.lua
 DBM-Nameplate.lua
+
+# Modules
+modules\Sounds.lua
