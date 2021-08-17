@@ -14,8 +14,8 @@ do
 		{	text	= "Anshlun (ptBR)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
 		{	text	= "Neryssa (ptBR)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
 	}
-	local hasCached = true
-	local cachedTable = {unpack(counts)}
+	local hasCached = false
+	local cachedTable
 	DBM.Counts = counts -- @Deprecated: Use new utility functions
 
 	function DBM:GetCountSounds()
@@ -43,8 +43,8 @@ do
 		{text = "Blakbyrd: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg", length=4},
 		{text = "SMG: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg", length=4},
 	}
-	local hasCached = true
-	local cachedTable = {unpack(victory)}
+	local hasCached = false
+	local cachedTable
 	DBM.Victory = victory -- @Deprecated: Use new utility functions
 
 	function DBM:GetVictorySounds()
@@ -80,8 +80,8 @@ do
 		{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
 		{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 	}
-	local hasCached = true
-	local cachedTable = {unpack(defeat)}
+	local hasCached = false
+	local cachedTable
 	DBM.Defeat = defeat -- @Deprecated: Use new utility functions
 
 	function DBM:GetDefeatSounds()
@@ -110,8 +110,8 @@ do
 		{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 		{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 	}
-	local hasCached = true
-	local cachedTable = {unpack(dungeonMusic)}
+	local hasCached = false
+	local cachedTable
 	DBM.DungeonMusic = dungeonMusic -- @Deprecated: Use new utility functions
 
 	function DBM:GetDungeonMusic()
@@ -140,8 +140,8 @@ do
 		{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
 		{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
 	}
-	local hasCached = true
-	local cachedTable = {unpack(battleMusic)}
+	local hasCached = false
+	local cachedTable
 	DBM.BattleMusic = battleMusic -- @Deprecated: Use new utility functions
 
 	function DBM:GetBattleMusic()
@@ -173,9 +173,8 @@ do
 		{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 		{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 	}
-	local hasCached = true
-	local cachedTable = {unpack(music)}
-
+	local hasCached = false
+	local cachedTable
 	DBM.Music = music -- @Deprecated: Use new utility functions
 
 	function DBM:GetMusic()
