@@ -14,10 +14,15 @@ do
 		{	text	= "Anshlun (ptBR)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
 		{	text	= "Neryssa (ptBR)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.Counts = counts -- @Deprecated: Use new utility functions
 
 	function DBM:GetCountSounds()
-		return {unpack(counts)}
+		if not hasCached then
+			cachedTable = {unpack(counts)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddCountSound(text, value, path, max)
@@ -27,6 +32,7 @@ do
 			path	= path,
 			max		= max or 10
 		})
+		hasCached = false
 	end
 end
 
@@ -37,10 +43,15 @@ do
 		{text = "Blakbyrd: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg", length=4},
 		{text = "SMG: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg", length=4},
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.Victory = victory -- @Deprecated: Use new utility functions
 
 	function DBM:GetVictorySounds()
-		return {unpack(victory)}
+		if not hasCached then
+			cachedTable = {unpack(victory)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddVictorySound(text, value, length)
@@ -49,6 +60,7 @@ do
 			value	= value,
 			length	= length
 		})
+		hasCached = false
 	end
 end
 
@@ -68,10 +80,15 @@ do
 		{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
 		{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.Defeat = defeat -- @Deprecated: Use new utility functions
 
 	function DBM:GetDefeatSounds()
-		return {unpack(defeat)}
+		if not hasCached then
+			cachedTable = {unpack(defeat)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddDefeatSound(text, value, length)
@@ -80,6 +97,7 @@ do
 			value	= value,
 			length	= length
 		})
+		hasCached = false
 	end
 end
 
@@ -92,10 +110,15 @@ do
 		{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 		{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.DungeonMusic = dungeonMusic -- @Deprecated: Use new utility functions
 
 	function DBM:GetDungeonMusic()
-		return {unpack(dungeonMusic)}
+		if not hasCached then
+			cachedTable = {unpack(dungeonMusic)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddDungeonMusic(text, value, length)
@@ -104,6 +127,7 @@ do
 			value	= value,
 			length	= length
 		})
+		hasCached = false
 	end
 end
 
@@ -116,10 +140,15 @@ do
 		{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
 		{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.BattleMusic = battleMusic -- @Deprecated: Use new utility functions
 
 	function DBM:GetBattleMusic()
-		return {unpack(battleMusic)}
+		if not hasCached then
+			cachedTable = {unpack(battleMusic)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddBattleMusic(text, value, length)
@@ -128,6 +157,7 @@ do
 			value	= value,
 			length	= length
 		})
+		hasCached = false
 	end
 end
 
@@ -143,10 +173,15 @@ do
 		{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 		{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 	}
+	local hasCached = false
+	local cachedTable
 	DBM.Music = music -- @Deprecated: Use new utility functions
 
 	function DBM:GetMusic()
-		return {unpack(music)}
+		if not hasCached then
+			cachedTable = {unpack(music)}
+		end
+		return cachedTable
 	end
 
 	function DBM:AddMusic(text, value, length)
@@ -155,5 +190,6 @@ do
 			value	= value,
 			length	= length
 		})
+		hasCached = false
 	end
 end
