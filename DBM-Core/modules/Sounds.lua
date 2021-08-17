@@ -1,5 +1,7 @@
 local tinsert, unpack = table.insert, unpack
 
+local L = DBM_CORE_L
+
 do
 	local counts = {
 		{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 10},
@@ -42,7 +44,7 @@ do
 	end
 
 	function DBM:AddVictorySound(text, value, length)
-		tinsert(counts, {
+		tinsert(victory, {
 			text	= text,
 			value	= value,
 			length	= length
@@ -73,7 +75,7 @@ do
 	end
 
 	function DBM:AddDefeatSound(text, value, length)
-		tinsert(counts, {
+		tinsert(defeat, {
 			text	= text,
 			value	= value,
 			length	= length
@@ -97,7 +99,7 @@ do
 	end
 
 	function DBM:AddDungeonMusic(text, value, length)
-		tinsert(counts, {
+		tinsert(dungeonMusic, {
 			text	= text,
 			value	= value,
 			length	= length
@@ -121,7 +123,7 @@ do
 	end
 
 	function DBM:AddBattleMusic(text, value, length)
-		tinsert(counts, {
+		tinsert(battleMusic, {
 			text	= text,
 			value	= value,
 			length	= length
@@ -148,7 +150,7 @@ do
 	end
 
 	function DBM:AddMusic(text, value, length)
-		tinsert(counts, {
+		tinsert(music, {
 			text	= text,
 			value	= value,
 			length	= length

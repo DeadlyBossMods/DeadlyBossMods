@@ -180,7 +180,7 @@ do
 
 	local function MixinCountTable(baseTable)
 		local result = baseTable
-		for _, count in pairs(DBM:GetCountSounds() do
+		for _, count in pairs(DBM:GetCountSounds()) do
 			tinsert(result, {
 				text	= count.text,
 				value	= count.path

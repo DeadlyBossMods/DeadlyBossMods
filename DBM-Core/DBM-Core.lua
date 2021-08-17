@@ -1257,7 +1257,7 @@ do
 		end
 		--Check if any of countdown sounds are using missing voice pack
 		local found1, found2, found3 = false, false, false
-		for _, count in pairs(DBM:GetCountSounds() do
+		for _, count in pairs(DBM:GetCountSounds()) do
 			local voice = count.value
 			if voice == self.Options.CountdownVoice then
 				found1 = true
@@ -10526,7 +10526,7 @@ do
 		countvoice1 = self.Options.CountdownVoice
 		countvoice2 = self.Options.CountdownVoice2
 		countvoice3 = self.Options.CountdownVoice3
-		for _, count in pairs(DBM:GetCountSounds() do
+		for _, count in pairs(DBM:GetCountSounds()) do
 			if count.value == countvoice1 then
 				countpath1 = count.path
 				countvoice1max = count.max
