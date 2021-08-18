@@ -15,6 +15,9 @@ end
 
 L.HOW_TO_USE_MOD					= "Welcome to " .. L.DBM .. ". Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. " .. L.DBM .. " will setup defaults for your spec, but you may want to fine tune these."
 L.SILENT_REMINDER					= "Reminder: " .. L.DBM .. " is still in silent mode."
+L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: This update is basically a re-release of 9.1.9 to clear a false malware detection on the hash of the previous file release. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"
+
+L.COPY_URL_DIALOG_NEWS				= "To read latest news, visit link below"
 
 L.LOAD_MOD_ERROR					= "Error while loading boss mods for %s: %s"
 L.LOAD_MOD_SUCCESS					= "Loaded '%s' mods. For more options such as custom alert sounds and personalized warning notes, type /dbm."
