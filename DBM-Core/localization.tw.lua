@@ -5,6 +5,9 @@ local L = DBM_CORE_L
 
 L.HOW_TO_USE_MOD				= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
 L.SILENT_REMINDER				= "提醒："..L.DBM.."正處於無聲模式。"
+L.NEWS_UPDATE					= "|h|c11ff1111更新說明|r|h: 此更新基本上是重新發佈的9.1.9，以清除上一個文件發佈時的錯誤惡意軟件檢測驗證。讀取更多訊息在|Hgarrmission:DBM:news|h|cff3588ff[此處]|r|h"
+
+L.COPY_URL_DIALOG_NEWS			= "要閱讀最新說明，請拜訪以下連結"
 
 L.LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
 L.LOAD_MOD_SUCCESS				= "成功載入%s模組。更多選項例如自訂警告音效或是個人提醒註記請輸入/dbm或/dbm help。"
