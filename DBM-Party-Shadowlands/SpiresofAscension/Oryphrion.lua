@@ -49,7 +49,7 @@ function mod:BlastTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnPurifyingBlast:Show()
-		specWarnPurifyingBlast:Play("runout")
+		specWarnPurifyingBlast:Play("scatter")
 		yellPurifyingBlast:Yell()
 	else
 		warnPurifyingBlast:Show(targetname)
