@@ -110,7 +110,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnPoolOfRadiance:Show()
 		specWarnPoolOfRadiance:Play("mobout")
 	elseif spellId == 325418 then
-		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "CrushingLeap", 0.1, 4)
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "VolatileAcid", 0.1, 4)
 	end
 end
 

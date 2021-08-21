@@ -36,6 +36,7 @@ local specWarnSharedAgony					= mod:NewSpecialWarningMoveAway(327401, nil, nil, 
 local yellSharedAgony						= mod:NewYell(327401)
 local specWarnDarkShroud					= mod:NewSpecialWarningDispel(335141, "MagicDispeller", nil, nil, 1, 2)
 local specWarnReapingWinds					= mod:NewSpecialWarningRun(324372, nil, nil, nil, 4, 2)
+local yellThrowCleaver						= mod:NewYell(323496)
 --Notable Surgeon Stitchflesh Trash
 local specWarnGoresplatter					= mod:NewSpecialWarningInterrupt(338353, false, nil, nil, 1, 2)--Off by default since enemy has two casts and this is lower priority one
 local specWarnGoresplatterDispel			= mod:NewSpecialWarningDispel(338353, "RemoveDisease", nil, nil, 1, 2)
@@ -43,6 +44,14 @@ local specWarnGoresplatterDispel			= mod:NewSpecialWarningDispel(338353, "Remove
 local specWarnSpineCrush					= mod:NewSpecialWarningDodge(327240, nil, nil, nil, 2, 2)--Not sure where these spawn, not in guide, but I still feel warning worth having
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
+
+function mod:ThrowCleaver(targetname, uId)
+	if not targetname then return end
+--	warnRicochetingThrow:Show(targetname)
+	if targetname == UnitName("player") then
+		yellThrowCleaver:Yell()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -66,6 +75,7 @@ function mod:SPELL_CAST_START(args)
 		warnSharedAgony:Show()
 	elseif spellId == 323496 and self:AntiSpam(3, 6) then
 		warnThrowCleaver:Show()
+		self:ScheduleMethod(0.25, "BossTargetScanner", args.sourceGUID, "ThrowCleaver", 0.25, 12)
 	end
 end
 
