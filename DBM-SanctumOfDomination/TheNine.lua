@@ -420,7 +420,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDaschlasMightyAnvil:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDaschlasMightyAnvil:Show()
-			specWarnDaschlasMightyAnvil:Play("watchstep")
+			specWarnDaschlasMightyAnvil:Play("scatter")
 			yellDaschlasMightyAnvil:Yell()
 			yellDaschlasMightyAnvilFades:Countdown(spellId)
 		end
