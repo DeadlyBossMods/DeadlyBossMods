@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175559)
 mod:SetEncounterID(2422)
-mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
 mod:SetHotfixNoticeRev(20210815000000)
@@ -15,6 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198 358999",
+	"SPELL_CAST_SUCCESS 181113",
 	"SPELL_SUMMON 352096 352094 352092 346469",
 	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
 	"SPELL_AURA_APPLIED_DOSE 352051",
@@ -31,7 +32,7 @@ mod:RegisterEventsInCombat(
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
 (ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 358999) and type = "begincast"
- or ability.id = 352530 or ability.id = 352051
+ or ability.id = 352530 or ability.id = 352051 or ability.id = 181113
  or (ability.id = 352096 or ability.id = 352094 or ability.id = 352092) and type = "summon"
  or target.id = 176929 and type = "death"
  or (ability.id = 349799 or ability.id = 348428) and type = "begincast"
@@ -102,7 +103,8 @@ mod:AddInfoFrameOption(354206, true)
 mod:AddSetIconOption("SetIconOnGlacialWrath", 353808, false, false, {1, 2, 3, 4})--Sets icons on players (can be used with spike marking)
 mod:AddSetIconOption("SetIconOnGlacialSpike", "ej23449", true, true, {1, 2, 3, 4})--Sets icons on spikes spawned by players (can be used with player market)
 mod:AddSetIconOption("SetIconOnEcho", 347291, false, false, {1, 2, 3, 4})--Off by default since it conflicts with wrath icons
-mod:AddSetIconOption("SetIconOnReaper", "ej23423", true, true, {6, 7, 8})
+mod:AddSetIconOption("SetIconOnReaper", "ej23423", true, true, {6, 7, 8})--Shares icons with Shards, but rarely at same time
+mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})--5 shards mythic (shares icons with reaper but rarely at same time)
 mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 mod:AddNamePlateOption("NPAuraOnFixate", 355389)
 
@@ -110,6 +112,7 @@ mod.vb.echoIcon = 1
 mod.vb.wrathIcon = 1
 mod.vb.spikeIcon = 1
 mod.vb.addIcon = 8
+mod.vb.shardIcon = 8
 mod.vb.frostBlastCount = 0
 mod.vb.freezingBlastCount = 0
 mod.vb.oblivionEchoCast = 0
@@ -120,6 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wrathIcon = 1
 	self.vb.spikeIcon = 1
 	self.vb.addIcon = 8
+	self.vb.shardIcon = 8
 	self:SetStage(1)
 	self.vb.frostBlastCount = 0
 	self.vb.freezingBlastCount = 0
@@ -164,6 +168,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 348071 then
+		self.vb.shardIcon = 8
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSoulFracture:Show()
 			specWarnSoulFracture:Play("carefly")
@@ -186,6 +191,7 @@ function mod:SPELL_CAST_START(args)
 		--Stop KT timers
 		self:SetStage(2)
 		self.vb.addIcon = 8
+		self.vb.shardIcon = 8
 		self.vb.frostBlastCount = 0
 		self.vb.freezingBlastCount = 0
 		self.vb.oblivionEchoCast = 0
@@ -249,11 +255,21 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 181113 then--Encounter Spawn
+		if self.Options.SetIconOnShards then
+			self:ScanForMobs(args.destGUID, 2, self.vb.shardIcon, 1, 0.2, 12, "SetIconOnShards", nil, nil, nil, true)
+		end
+		self.vb.spikeIcon = self.vb.shardIcon - 1
+	end
+end
+
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	--https://ptr.wowhead.com/npc=176703/frostbound-devoted / https://ptr.wowhead.com/npc=176974/soul-reaver / https://ptr.wowhead.com/npc=176973/unstoppable-abomination
 	if spellId == 352096 or spellId == 352094 or spellId == 352092 then
-		if spellId == 252096 and self:AntiSpam(3, 3) then
+		if spellId == 352096 and self:AntiSpam(3, 3) then
 			warnFrostboundDevoted:Show()
 		elseif spellId == 352094 then
 			if self:AntiSpam(3, 4) then
