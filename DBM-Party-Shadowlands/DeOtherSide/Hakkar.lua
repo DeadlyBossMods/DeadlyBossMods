@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 322746 then
 		if args:IsPlayer() then
 			specWarnCorruptedBlood:Show()
-			specWarnCorruptedBlood:Play("runout")
+			specWarnCorruptedBlood:Play("scatter")
 			yellCorruptedBlood:Yell()
 			--if self.Options.RangeFrame then
 			--	DBM.RangeCheck:Show(8, debuffFilter)--Show everyone

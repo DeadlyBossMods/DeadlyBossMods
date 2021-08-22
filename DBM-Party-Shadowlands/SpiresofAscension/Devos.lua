@@ -98,7 +98,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 322818 then
 		if args:IsPlayer() then
 			specWarnLostConfidence:Show()
-			specWarnLostConfidence:Play("runout")
+			specWarnLostConfidence:Play("scatter")
 			yellLostConfidence:Yell()
 		else
 			warnLostConfidence:CombinedShow(0.5, args.destName)

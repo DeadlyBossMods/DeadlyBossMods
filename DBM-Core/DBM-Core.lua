@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.1.10 alpha", -- the string that is shown as version
+	DisplayVersion = "9.1.11 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2021, 8, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -306,7 +306,7 @@ DBM.DefaultOptions = {
 	LatencyThreshold = 250,
 	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
-	ForumsMessageShown = false,
+	NewsMessageShown2 = 0,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
@@ -1320,6 +1320,8 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions(self)
+			DBT:LoadOptions("DBM")
+			self.AddOns = {}
 			if WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) then
 				self:Disable(true)
 				self:Schedule(15, infniteLoopNotice, self, L.RETAIL_ONLY)
@@ -1365,7 +1367,6 @@ do
 			if GetAddOnEnableState(playerName, "DBM-LootReminder") >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
-			DBT:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
 			-- LibDBIcon setup
 			if type(DBM_MinimapIcon) ~= "table" then
@@ -1379,7 +1380,6 @@ do
 			if soundChannels < 64 then
 				SetCVar("Sound_NumChannels", 64)
 			end
-			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
 			self.VoiceVersions = {}
 			for i = 1, GetNumAddOns() do
@@ -2750,8 +2750,8 @@ do
 			showPopupConfirmIgnore(ignore, cancel)
 		elseif arg1 == "update" then
 			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
---		elseif arg1 == "forumsnews" then
---			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG_NEWS, "https://discord.gg/DF5mffk")
+		elseif arg1 == "news" then
+			DBM:ShowUpdateReminder(nil, nil, L.COPY_URL_DIALOG_NEWS, "https://www.patreon.com/posts/dbm-9-1-9-false-55047651")
 --		elseif arg1 == "forums" then
 --			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
 		elseif arg1 == "noteshare" then
@@ -6902,6 +6902,7 @@ do
 		if self.Options.ShowReminders then
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
+			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 1 then self.Options.NewsMessageShown2 = 1 self:AddMsg(L.NEWS_UPDATE) end end)
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
@@ -8451,7 +8452,7 @@ do
 			["RangedDps"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
-			["RemoveMagic"] = true,--Singe Magic (Imp)
+--			["RemoveMagic"] = true,--Singe Magic (Imp)
 			["CasterDps"] = true,
 		},
 		[1454] = {	--Initial Warlock (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
