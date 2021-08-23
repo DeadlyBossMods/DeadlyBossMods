@@ -80,7 +80,7 @@ local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably c
 --Stage Two: The First of the Mawsworn
 local specWarnPierceSoul						= mod:NewSpecialWarningStack(350475, nil, 4, nil, nil, 1, 6)
 local specWarnPierceSoulTaunt					= mod:NewSpecialWarningTaunt(350475, nil, nil, nil, 1, 2)
-local specWarnLinkEssence						= mod:NewSpecialWarningYou(350482, nil, nil, nil, 1, 2, 3)
+local specWarnLinkEssence						= mod:NewSpecialWarningDefensive(350482, nil, nil, nil, 1, 2, 3)
 local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, nil, 2, 2, 3)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
@@ -414,13 +414,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnLinkEssence:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnLinkEssence:Show()
-			specWarnLinkEssence:Play("targetyou")
+			specWarnLinkEssence:Play("defensive")
 		end
 	elseif spellId == 350184 then
 		warnDaschlasMightyAnvil:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDaschlasMightyAnvil:Show()
-			specWarnDaschlasMightyAnvil:Play("watchstep")
+			specWarnDaschlasMightyAnvil:Play("scatter")
 			yellDaschlasMightyAnvil:Yell()
 			yellDaschlasMightyAnvilFades:Countdown(spellId)
 		end
