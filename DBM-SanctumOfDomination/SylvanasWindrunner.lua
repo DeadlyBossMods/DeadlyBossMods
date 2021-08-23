@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210721000000)--2021-07-21
-mod:SetMinSyncRevision(20210720000000)
+mod:SetHotfixNoticeRev(20210823000000)--2021-08-23
+mod:SetMinSyncRevision(20210823000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181 352843 352842",
+	"SPELL_CAST_START 349419 347726 352663 353418 353417 348094 355540 352271 351075 351353 356023 354011 353969 354068 353952 353935 354147 357102 351589 351562 358181 352843 352842",
 	"SPELL_CAST_SUCCESS 351178 357729 358588",
 	"SPELL_CREATE 348148 348093 351837 351838 351840 351841",
 	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357886 357720 353935 348064 356986 358711 358705 351562 358434",
@@ -433,28 +433,28 @@ function mod:SPELL_CAST_START(args)
 --	elseif spellId == 347726 or spellId == 347741 or spellId == 354142 then--Emote currently used for speed
 --		self.vb.veilofDarknessCount = self.vb.veilofDarknessCount + 1
 --		timerVeilofDarknessCD:Start()
-	elseif spellId == 347609 then
-		if self:AntiSpam(15, 1) then
-			self.vb.arrowIcon = 1
-			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1
-			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
-				if timer then
-					timerWailingArrowCD:Start(timer, self.vb.wailingArrowCount+1)
-				end
-			end
-		end
-	elseif spellId == 358704 then
-		if self:AntiSpam(15, 1) then
-			self.vb.arrowIcon = 1
-			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1--Replaces this arrow in stage 1, so might as well use same variable
-			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
-				if timer then
-					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
-				end
-			end
-		end
+--	elseif spellId == 347609 then
+--		if self:AntiSpam(15, 1) then
+--			self.vb.arrowIcon = 1
+--			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1
+--			if self.vb.phase == 1 or self.vb.phase == 3 then
+--				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
+--				if timer then
+--					timerWailingArrowCD:Start(timer, self.vb.wailingArrowCount+1)
+--				end
+--			end
+--		end
+--	elseif spellId == 358704 then
+--		if self:AntiSpam(15, 1) then
+--			self.vb.arrowIcon = 1
+--			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1--Replaces this arrow in stage 1, so might as well use same variable
+--			if self.vb.phase == 1 or self.vb.phase == 3 then
+--				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
+--				if timer then
+--					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
+--				end
+--			end
+--		end
 	elseif spellId == 352663 then
 		self.vb.heartseekerCount = self.vb.heartseekerCount + 1
 		warnRangersHeartseeker:Show(self.vb.heartseekerCount)
@@ -752,6 +752,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 349458 then
 		warnDominationChains:CombinedShow(0.3, args.destName)
 	elseif spellId == 348064 then
+		if self:AntiSpam(15, 1) then
+			self.vb.arrowIcon = 1
+			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1
+			if self.vb.phase == 1 or self.vb.phase == 3 then
+				local timer = allTimers[difficultyName][self.vb.phase][347609][self.vb.wailingArrowCount+1]
+				if timer then
+					timerWailingArrowCD:Start(timer, self.vb.wailingArrowCount+1)
+				end
+			end
+		end
 		local icon = self.vb.arrowIcon
 		if self.Options.SetIconOnWailingArrow then
 			self:SetIcon(args.destName, icon)
@@ -772,6 +782,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWailingArrow:Start(9, args.destName, self.vb.arrowIcon)
 		self.vb.arrowIcon = self.vb.arrowIcon + 1
 	elseif spellId == 358705 then
+		if self:AntiSpam(15, 1) then
+			self.vb.arrowIcon = 1
+			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1--Replaces this arrow in stage 1, so might as well use same variable
+			if self.vb.phase == 1 or self.vb.phase == 3 then
+				local timer = allTimers[difficultyName][self.vb.phase][358704][self.vb.wailingArrowCount+1]
+				if timer then
+					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
+				end
+			end
+		end
 		local icon = self.vb.arrowIcon
 		if self.Options.SetIconOnWailingArrow then
 			self:SetIcon(args.destName, icon)
