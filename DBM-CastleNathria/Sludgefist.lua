@@ -99,18 +99,15 @@ function mod:OnCombatStart(delay)
 	playerPartner = nil
 	table.wipe(ChainLinkTargets)
 	--Roar cast instantly on pull, no timer needed
-	if self:IsLFR() then
-		timerFallingRubbleCD:Start(12.1-delay, 1)--Unknown, not in combat log
-		timerDestructiveStompCD:Start(18.5-delay, 1)
-		timerHatefulGazeCD:Start(51.3-delay, 1)
-	else
-		timerChainLinkCD:Start(4.7-delay, 1)
-		timerFallingRubbleCD:Start(12.5-delay, 1)
-		timerDestructiveStompCD:Start(18.2-delay, 1)
-		timerHatefulGazeCD:Start(50.1-delay, 1)
-		if self:IsHard() then
+	--These 3 are same across board
+	timerFallingRubbleCD:Start(12.1-delay, 1)--Unknown, not in combat log
+	timerDestructiveStompCD:Start(18.1-delay, 1)
+	timerHatefulGazeCD:Start(50.1-delay, 1)
+	if not self:IsLFR() then
+		timerChainLinkCD:Start(4.7-delay, 1)--Used on normal+
+		if self:IsHard() then--Heroic+
 			timerChainSlamCD:Start(28.3-delay, 1)
-			if self:IsMythic() then
+			if self:IsMythic() then--Mythic+
 				self.vb.shiftCount = 0
 				timerSiesmicShiftCD:Start(18.1, 1)
 			end
@@ -157,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 331209 then
 		self.vb.gazeCount = self.vb.gazeCount + 1
-		timerHatefulGazeCD:Start(self:IsLFR() and 70.3 or 67.3, self.vb.gazeCount+1)
+		timerHatefulGazeCD:Start(self:IsLFR() and 69.1 or 67.3, self.vb.gazeCount+1)
 		if self.Options.SetIconGaze then
 			self:SetIcon(args.destName, 1)
 		end

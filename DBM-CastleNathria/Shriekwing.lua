@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBlindSwipeCD:Stop()
 		timerWaveofBloodCD:Stop()
 		timerEchoingScreechCD:Stop()
-		timerEarsplittingShriekCD:Start(13.4)
+		timerEarsplittingShriekCD:Start(10.9)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
