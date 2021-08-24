@@ -243,8 +243,6 @@ local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, 
 DisableBarFade:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", 0, -85)
 DisableBarFade.myheight = 75 -- Extra padding because right buttons are offset from sliders
 
---[[
-Temporarily disabled while skinning system is being worked on.
 local skins = {}
 for id, skin in pairs(DBT:GetSkins()) do
 	table.insert(skins, {
@@ -259,7 +257,6 @@ if #skins > 1 then
 	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", -20, -10)
 	BarSkin.myheight = 45
 end
-]]--
 
 local Sorts = {
 	{
