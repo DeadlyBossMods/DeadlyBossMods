@@ -6,6 +6,9 @@ local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, 
 local DBM, DBM_GUI = DBM, DBM_GUI
 
 local function parseDescription(name)
+	if not name then
+		return
+	end
 	local spellName = name
 	if name:find("%$spell:ej") then -- It is journal link :-)
 		name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
