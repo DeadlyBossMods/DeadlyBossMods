@@ -63,7 +63,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.mindLinkIcon = 1
 	self.vb.firstPray = false
-	timerAcidExpulsionCD:Start(8-delay)
+	timerAcidExpulsionCD:Start(7.1-delay)
 	timerMindLinkCD:Start(18.1-delay)
 	timerAcceleratedIncubationCD:Start(45.2-delay)
 	if self:IsMythic() then

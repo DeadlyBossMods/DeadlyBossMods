@@ -92,7 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 321006 then
 		warnSoulShackle:Show(args.destName)
 		--Droman
-		timerBewilderingPollenCD:Start(8.8)
+		timerBewilderingPollenCD:Start(7.3)
 		timerTearsoftheForestCD:Start(13.5)
 	elseif spellId == 323059 then
 		warnDromansWrath:Show(args.destName)
