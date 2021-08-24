@@ -286,7 +286,7 @@ do
 			button.myheight = 0
 			button.SetPointOld(...)
 		end
-		local name, noteSpellName = parseDescription(name)
+		local desc, noteSpellName = parseDescription(name)
 		local frame, frame2, textPad
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
@@ -327,7 +327,7 @@ do
 			frame2.myheight = 0
 		end
 		local buttonText
-		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
+		if desc then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
@@ -378,12 +378,12 @@ do
 				end
 			end)
 			buttonText:SetHeight(25)
-			name = "<html><body><p>" .. name .. "</p></body></html>"
+			desc = "<html><body><p>" .. desc .. "</p></body></html>"
 		else
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
-		buttonText.text = name or CL.UNKNOWN
+		buttonText.text = desc or CL.UNKNOWN
 		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
 		buttonText:SetWidth(self.frame:GetWidth() - buttonText.widthPad)
 		if textLeft then
