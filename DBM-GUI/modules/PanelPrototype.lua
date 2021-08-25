@@ -5,6 +5,38 @@ local setmetatable, select, type, tonumber, strsplit, mmax, tinsert, tremove = s
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
+local function parseDescription(name)
+	if not name then
+		return
+	end
+	local spellName = name
+	if name:find("%$spell:ej") then -- It is journal link :-)
+		name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
+	end
+	if name:find("%$spell:") then
+		name = name:gsub("%$spell:(%d+)", function(id)
+			local spellId = tonumber(id)
+			spellName = DBM:GetSpellInfo(spellId)
+			if not spellName then
+				spellName = CL.UNKNOWN
+				DBM:Debug("Spell ID does not exist: " .. spellId)
+			end
+			return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
+		end)
+	end
+	if name:find("%$journal:") then
+		name = name:gsub("%$journal:(%d+)", function(id)
+			spellName = DBM:EJ_GetSectionInfo(tonumber(id))
+			if not spellName then
+				DBM:Debug("Journal ID does not exist: " .. id)
+			end
+			local link = select(9, DBM:EJ_GetSectionInfo(tonumber(id))) or CL.UNKNOWN
+			return link:gsub("|h%[(.*)%]|h", "|h%1|h")
+		end)
+	end
+	return name, spellName
+end
+
 local PanelPrototype = {}
 setmetatable(PanelPrototype, {
 	__index = DBM_GUI
@@ -35,7 +67,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock.mytype = "textblock"
 	textblock.myheight = myheight
 	textblock:SetFontObject(style or GameFontNormal)
-	textblock:SetText(text)
+	textblock:SetText(parseDescription(text))
 	textblock:SetJustifyH(justify or "CENTER")
 	textblock.autowidth = not width
 	textblock:SetWidth(width or self.frame:GetWidth())
@@ -50,7 +82,7 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font)
 	local button = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 	button.mytype = "button"
 	button:SetSize(width or 100, height or 20)
-	button:SetText(title)
+	button:SetText(parseDescription(title))
 	if onclick then
 		button:SetScript("OnClick", onclick)
 	end
@@ -102,7 +134,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)
 	local sliderText = _G[slider:GetName() .. "Text"]
-	sliderText:SetText(text)
+	sliderText:SetText(parseDescription(text))
 	slider:SetScript("OnValueChanged", function(_, value)
 		sliderText:SetFormattedText(text, value)
 	end)
@@ -160,7 +192,7 @@ function PanelPrototype:CreateLine(text)
 	linetext:SetJustifyH("LEFT")
 	linetext:SetHeight(18)
 	linetext:SetTextColor(0.67, 0.83, 0.48)
-	linetext:SetText(text or "")
+	linetext:SetText(text and parseDescription(text) or "")
 	local linebg = line:CreateTexture("$parentBG")
 	linebg:SetTexture(137056) -- "Interface\\Tooltips\\UI-Tooltip-Background"
 	linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
@@ -257,37 +289,7 @@ do
 			button.myheight = 0
 			button.SetPointOld(...)
 		end
-		local noteSpellName = name
-		if name:find("%$spell:ej") then -- It is journal link :-)
-			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
-		end
-		if name:find("%$spell:") then
-			if not isTimer and modvar then
-				noteSpellName = DBM:GetSpellInfo(string.match(name, "spell:(%d+)"))
-			end
-			name = name:gsub("%$spell:(%d+)", function(id)
-				local spellId = tonumber(id)
-				local spellName = DBM:GetSpellInfo(spellId)
-				if not spellName then
-					spellName = CL.UNKNOWN
-					DBM:Debug("Spell ID does not exist: " .. spellId)
-				end
-				return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
-			end)
-		end
-		if name:find("%$journal:") then
-			if not isTimer and modvar then
-				noteSpellName = DBM:EJ_GetSectionInfo(string.match(name, "journal:(%d+)"))
-			end
-			name = name:gsub("%$journal:(%d+)", function(id)
-				local check = DBM:EJ_GetSectionInfo(tonumber(id))
-				if not check then
-					DBM:Debug("Journal ID does not exist: " .. id)
-				end
-				local link = select(9, DBM:EJ_GetSectionInfo(tonumber(id))) or CL.UNKNOWN
-				return link:gsub("|h%[(.*)%]|h", "|h%1|h")
-			end)
-		end
+		local desc, noteSpellName = parseDescription(name)
 		local frame, frame2, textPad
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
@@ -328,7 +330,7 @@ do
 			frame2.myheight = 0
 		end
 		local buttonText
-		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
+		if desc then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
@@ -379,12 +381,12 @@ do
 				end
 			end)
 			buttonText:SetHeight(25)
-			name = "<html><body><p>" .. name .. "</p></body></html>"
+			desc = "<html><body><p>" .. desc .. "</p></body></html>"
 		else
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
-		buttonText.text = name or CL.UNKNOWN
+		buttonText.text = desc or CL.UNKNOWN
 		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
 		buttonText:SetWidth(self.frame:GetWidth() - buttonText.widthPad)
 		if textLeft then
@@ -432,7 +434,7 @@ function PanelPrototype:CreateArea(name)
 	area.mytype = "area"
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
-	_G[area:GetName() .. "Title"]:SetText(name)
+	_G[area:GetName() .. "Title"]:SetText(parseDescription(name))
 	if select("#", self.frame:GetChildren()) == 1 then
 		area:SetPoint("TOPLEFT", self.frame, 5, -20)
 	else

@@ -68,7 +68,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.barrierActive = false
-	timerCorruptedBloodCD:Start(8.5-delay)--SUCCESS
+	timerCorruptedBloodCD:Start(8.1-delay)--SUCCESS
 	timerPiercingBarbCD:Start(10.1-delay)
 	timerBloodBarrierCD:Start(26.5-delay)--SUCCESS
 --	timerBloodBarrageCD:Start(22.5-delay)--It's cast instantly on barrier application, redundant timer

@@ -38,7 +38,7 @@ local yellLocalizedExplosiveFades	= mod:NewShortFadesYell(321948)
 local yellArcaneLightning			= mod:NewYell(323687)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDisplacementTrapCD		= mod:NewCDTimer(17, 319619, nil, nil, nil, 3)--17-19.4
+local timerDisplacementTrapCD		= mod:NewCDTimer(16.1, 319619, nil, nil, nil, 3)--16.1-19.4
 local timerDisplacedBlastwaveCD		= mod:NewCDTimer(17, 320326, nil, nil, nil, 3)--17-19.4
 local timerExplosiveContrivanceCD	= mod:NewCDTimer(35.1, 320230, 201291, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--"Explosion" shortname
 local timerLocalizedExplosiveCD		= mod:NewCDTimer(35.1, 321948, 188104, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--"Localized Explosion" shortname
