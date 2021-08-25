@@ -213,7 +213,7 @@ local allTimers = {
 			--Windrunner
 			[347504] = {8.9, 62.0, 63.6, 61.1},
 			--Ranger's Heartseeker
-			[352663] = {22.2, 19.3, 19.3, 20.8, 21.3, 18.8, 21.1, 19.4},
+			[352663] = {22.2, 19.3, 19.3, 19.7, 21.3, 18.8, 21.1, 19.4},
 			--Domination Chains
 			[349419] = {29, 64.4, 63.9},
 			--Wailing Arrow
@@ -227,7 +227,7 @@ local allTimers = {
 			--Banshee's Heartseeker
 			[353969] = {38.9, 24.4, 54.9, 3, 14.2, 24.4, 35.5, 11.8, 34.8, 12.5, 36.8, 12.1, 23.3, 45.5, 3},
 			--Shadow Dagger
-			[353935] = {55.2, 89.1, 94.4, 84.8},
+			[353935] = {54, 89.1, 94.4, 84.8},
 			--Banshee Scream
 			[353952] = {105.7, 62.1, 63.3, 63.4, 59.9},
 			--Wailing Arrow
@@ -720,7 +720,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBaneArrowsCD:Start(36.1, 1)
 			timerBansheesHeartseekerCD:Start(38.9, 1)
 			timerVeilofDarknessCD:Start(44, 1)
-			timerShadowDaggerCD:Start(55.2, 1)--Non mythic
+			timerShadowDaggerCD:Start(54, 1)--Non mythic
 			timerWailingArrowCD:Start(86.1, 1)
 			timerRazeCD:Start(95.2, 1)
 			timerBansheesScreamCD:Start(105.7, 1)
