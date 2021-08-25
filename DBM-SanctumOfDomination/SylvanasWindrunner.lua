@@ -771,7 +771,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWailingArrow:Show()
 			specWarnWailingArrow:Play("runout")
 			yellWailingArrow:Yell(icon, icon)
-			yellWailingArrow:Countdown(spellId, nil, icon)
+			yellWailingArrowFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
