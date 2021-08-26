@@ -199,7 +199,6 @@ function mod:SPELL_CAST_START(args)
 --	elseif spellId == 350096 or spellId == 350691 then--Mythic/Heroic likely and normal/LFR likely
 --		timerBurstofAgonyCD:Start()
 	elseif spellId == 351066 or spellId == 351067 or spellId == 351073 then--Shatter (Helm of Suffering, Malicious Gauntlets, Rattlecage of Agony)
-		self:SetStage(0)
 		self.vb.shatterCount = self.vb.shatterCount + 1
 		warnShatter:Show(self.vb.shatterCount)
 	elseif spellId == 350469 then
