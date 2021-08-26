@@ -93,7 +93,7 @@ local yellEyeOnTarget							= mod:NewYell(328479, nil, false)
 --Shade of Kael'thas
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
 local timerFieryStrikeCD						= mod:NewCDTimer(8.5, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerEmberBlastCD							= mod:NewCDTimer(20.6, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
+local timerEmberBlastCD							= mod:NewCDTimer(20.4, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
 local timerBlazingSurgeCD						= mod:NewCDTimer(19.4, 329509, nil, nil, nil, 3)
 local timerCloakofFlamesCD						= mod:NewNextCountTimer(30, 337859, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 --local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
@@ -208,7 +208,7 @@ local addTimers = {
 			--Vile Occultist
 			[165763] = {58, 150},
 			--Soul Infuser
-			[165762] = {128, 70},
+			[165762] = {108, 70},
 			--Pestering Fiend
 			[168700] = {28, 60, 40, 40},
 			--Rockbound Vanquisher
@@ -258,7 +258,7 @@ local addTimers = {
 			--Vile Occultist
 			[165763] = {40, 140},
 			--Soul Infuser
-			[165762] = {110, 80},--80 iffy, could be 70 or 75
+			[165762] = {103, 80},--80 iffy, could be 70 or 75
 			--Pestering Fiend
 			[168700] = {20, 60, 40, 40},
 			--Rockbound Vanquisher
@@ -776,8 +776,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerPesteringFiendCD:Start(20, 1)
 			timerVileOccultistCD:Start(40, 1)
 			self:Schedule(60, expectedVile, self)
-			timerSoulInfuserCD:Start(110, 1)
-			self:Schedule(120, expectedInfuser, self)
+			timerSoulInfuserCD:Start(103, 1)
+			self:Schedule(113, expectedInfuser, self)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
 		self.vb.cloakActive = false
@@ -850,8 +850,8 @@ function mod:UNIT_DIED(args)
 				timerPesteringFiendCD:Start(28, 1)
 				timerVileOccultistCD:Start(48, 1)
 				self:Schedule(68, expectedVile, self)
-				timerSoulInfuserCD:Start(128, 1)
-				self:Schedule(138, expectedInfuser, self)
+				timerSoulInfuserCD:Start(108, 1)
+				self:Schedule(118, expectedInfuser, self)
 			end
 		end
 	elseif cid == 165764 then--Rockbound Vanquisher
