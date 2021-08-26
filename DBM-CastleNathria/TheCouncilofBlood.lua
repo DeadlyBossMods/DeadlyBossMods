@@ -154,11 +154,11 @@ local allTimers = {
 		[330965] = {0, 0, 60},
 
 		--Drain Essence
-		[346654] = {27.3, 19.8, 48.3},
+		[346654] = {27.3, 19.8, 46.6},
 		--Prideful Eruption (P2+)
-		[346657] = {0, 43.3, 48.3},
+		[346657] = {0, 43.3, 46.6},
 		--Soul Spikes (P3+)
-		[346762] = {0, 0, 48.3},
+		[346762] = {0, 0, 46.6},
 
 		--Evasive Lunge
 		[327497] = {25, 19.6, 13.3},--Phase 2 lunge can get in a bugged state and spam every 10 seconds in rare cases

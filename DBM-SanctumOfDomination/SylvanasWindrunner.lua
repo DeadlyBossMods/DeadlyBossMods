@@ -211,15 +211,15 @@ local allTimers = {
 	["lfr"] = {
 		[1] = {
 			--Windrunner
-			[347504] = {8.9, 62.3},
+			[347504] = {8.9, 62.0, 63.6, 61.1},
 			--Ranger's Heartseeker
-			[352663] = {22.2, 23.5, 19.3, 20.8, 21.3},
+			[352663] = {22.2, 19.3, 19.3, 19.7, 21.3, 18.8, 21.1, 19.4},
 			--Domination Chains
-			[349419] = {29, 64.4},
+			[349419] = {29, 64.4, 63.9},
 			--Wailing Arrow
-			[347609] = {41.3, 47.6},
+			[347609] = {41.3, 47.6, 37.3, 39.8},
 			--Veil of Darkness
-			[347726] = {56.6, 59.3},
+			[347726] = {56.6, 59.3, 59.3},
 		},
 		[3] = {
 			--Bane Arrows
@@ -227,7 +227,7 @@ local allTimers = {
 			--Banshee's Heartseeker
 			[353969] = {38.9, 24.4, 54.9, 3, 14.2, 24.4, 35.5, 11.8, 34.8, 12.5, 36.8, 12.1, 23.3, 45.5, 3},
 			--Shadow Dagger
-			[353935] = {55.2, 89.1, 94.4, 84.8},
+			[353935] = {54, 89.1, 94.4, 84.8},
 			--Banshee Scream
 			[353952] = {105.7, 62.1, 63.3, 63.4, 59.9},
 			--Wailing Arrow
@@ -720,7 +720,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBaneArrowsCD:Start(36.1, 1)
 			timerBansheesHeartseekerCD:Start(38.9, 1)
 			timerVeilofDarknessCD:Start(44, 1)
-			timerShadowDaggerCD:Start(55.2, 1)--Non mythic
+			timerShadowDaggerCD:Start(54, 1)--Non mythic
 			timerWailingArrowCD:Start(86.1, 1)
 			timerRazeCD:Start(95.2, 1)
 			timerBansheesScreamCD:Start(105.7, 1)
@@ -771,7 +771,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWailingArrow:Show()
 			specWarnWailingArrow:Play("runout")
 			yellWailingArrow:Yell(icon, icon)
-			yellWailingArrow:Countdown(spellId, nil, icon)
+			yellWailingArrowFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
