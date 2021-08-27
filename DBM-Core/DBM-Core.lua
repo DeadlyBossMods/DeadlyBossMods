@@ -306,7 +306,7 @@ DBM.DefaultOptions = {
 	LatencyThreshold = 250,
 	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
-	NewsMessageShown2 = 0,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
+	NewsMessageShown2 = 1,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
@@ -5682,8 +5682,11 @@ function checkWipe(self, confirm)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
-				self:Debug("You wiped. Reason : "..reason)
-				self:EndCombat(inCombat[i], true)
+				local mod = inCombat[i]
+				if not mod.noStatistics then
+					self:Debug("You wiped. Reason : "..reason)
+				end
+				self:EndCombat(mod, true)
 			end
 		else
 			local maxDelayTime = (savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
@@ -6902,7 +6905,7 @@ do
 		if self.Options.ShowReminders then
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
---			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 1 then self.Options.NewsMessageShown2 = 1 self:AddMsg(L.NEWS_UPDATE) end end)
+--			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 2 then self.Options.NewsMessageShown2 = 2 self:AddMsg(L.NEWS_UPDATE) end end)
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
