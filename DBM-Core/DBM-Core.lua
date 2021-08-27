@@ -6902,7 +6902,7 @@ do
 		if self.Options.ShowReminders then
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
-			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 1 then self.Options.NewsMessageShown2 = 1 self:AddMsg(L.NEWS_UPDATE) end end)
+--			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 1 then self.Options.NewsMessageShown2 = 1 self:AddMsg(L.NEWS_UPDATE) end end)
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
