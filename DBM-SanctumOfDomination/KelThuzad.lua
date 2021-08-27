@@ -258,10 +258,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 181113 then--Encounter Spawn
-		if self.Options.SetIconOnShards then
-			self:ScanForMobs(args.sourceGUID, 2, self.vb.shardIcon, 1, 0.2, 12, "SetIconOnShards", nil, nil, nil, true)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 176605 then--Soul Shard
+			if self.Options.SetIconOnShards then
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.shardIcon, 1, 0.2, 12, "SetIconOnShards", nil, nil, nil, true)
+			end
+			self.vb.spikeIcon = self.vb.shardIcon - 1
 		end
-		self.vb.spikeIcon = self.vb.shardIcon - 1
 	end
 end
 
