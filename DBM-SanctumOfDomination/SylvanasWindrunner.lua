@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210825000000)--2021-08-25
-mod:SetMinSyncRevision(20210825000000)
+mod:SetHotfixNoticeRev(20210826000000)--2021-08-26
+mod:SetMinSyncRevision(20210826000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -1184,7 +1184,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if self.vb.phase == 1 or self.vb.phase == 3 then
 			local timer = allTimers[difficultyName][self.vb.phase][347726][self.vb.veilofDarknessCount+1]
 			if timer then--Handles P1 and P3, P2 is scheduled via bridges
-				timerVeilofDarknessCD:Start(timer, self.vb.wailingArrowCount+1)
+				timerVeilofDarknessCD:Start(timer, self.vb.veilofDarknessCount+1)
 			end
 		end
 	end
