@@ -452,11 +452,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Combat log doesn't fire for each dose, removed removes ALL stacks
 		for i = 1, 8 do
 			if fragmentTargets[i] and fragmentTargets[i] == args.destName then--Found assignment matching this units name
-				fragmentTargets[i] = false--remove first assignment we find
-				if self.Options.SetIconOnFragments then
-					self:SetIcon(args.destName, 0)
-				end
+				fragmentTargets[i] = false--remove assignment
 			end
+		end
+		if self.Options.SetIconOnFragments then
+			self:SetIcon(args.destName, 0)
 		end
 		if DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:Update()
