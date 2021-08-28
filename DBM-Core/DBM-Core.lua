@@ -10454,7 +10454,7 @@ do
 		if forcePath then
 			path = forcePath
 		else
-			for _, count in DBM:GetCountSounds() do
+			for _, count in pairs(DBM:GetCountSounds()) do
 				if count.value == voice then
 					path = count.path
 					maxCount = count.max
