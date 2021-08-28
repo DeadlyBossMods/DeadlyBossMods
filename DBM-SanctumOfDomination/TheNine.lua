@@ -399,7 +399,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnFragmentsofDestiny:Show(self:IconNumToTexture(icon))
 				specWarnFragmentsofDestiny:Play("targetyou")
-				yellFragmentsofDestiny:Yell(icon, icon)
+				if icon < 9 then
+					yellFragmentsofDestiny:Yell(icon, icon)
+				end
 			end
 			warnFragmentsofDestiny:CombinedShow(0.3, args.destName)
 		else
