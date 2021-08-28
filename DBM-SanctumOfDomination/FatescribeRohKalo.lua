@@ -49,8 +49,8 @@ local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 
 --Stage One: Scrying Fate
 local specWarnGrimPortent						= mod:NewSpecialWarningYouPos(354365, nil, nil, nil, 1, 2, 4)--Mythic
-local yellGrimPortent							= mod:NewShortPosYell(354365)--Mythic
-local yellGrimPortentFades						= mod:NewIconFadesYell(354365)--Mythic
+local yellGrimPortent							= mod:NewYell(354365)--Mythic
+local yellGrimPortentFades						= mod:NewShortFadesYell(354365)--Mythic
 local specWarnInvokeDestiny						= mod:NewSpecialWarningMoveAway(351680, nil, nil, nil, 1, 2)
 local yellInvokeDestiny							= mod:NewYell(351680)
 local yellInvokeDestinyFades					= mod:NewShortFadesYell(351680)

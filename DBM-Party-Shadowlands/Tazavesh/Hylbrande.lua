@@ -8,8 +8,8 @@ mod:SetEncounterID(2426)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 346116 347094 346959 346766 358131 353312",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 347094 346957 346766 358131 353312",
+	"SPELL_CAST_SUCCESS 346116",
 	"SPELL_AURA_APPLIED 358131",
 	"SPELL_AURA_REMOVED 347958"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -56,17 +56,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 346116 then
-		if self:IsTanking("player", "boss1") then
-			specWarnShearingSwings:Show()
-			specWarnShearingSwings:Play("defensive")
-		end
-		timerShearingSwingsCD:Start()
-	elseif spellId == 347094 then
+	if spellId == 347094 then
 		specWarnTitanicCrash:Show()
 		specWarnTitanicCrash:Play("shockwave")
 		timerTitanicCrashCD:Start()
-	elseif spellId == 346959 then
+	elseif spellId == 346957 then
 		warnPurgedbyFire:Show()
 		timerPurgedbyFireCD:Start()
 	elseif spellId == 346766 then
@@ -86,14 +80,16 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 320359 then
-
+	if spellId == 346116 then
+		if self:IsTanking("player", "boss1") then
+			specWarnShearingSwings:Show()
+			specWarnShearingSwings:Play("defensive")
+		end
+		timerShearingSwingsCD:Start()
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
