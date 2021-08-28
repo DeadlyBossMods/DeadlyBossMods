@@ -112,7 +112,7 @@ mod:AddNamePlateOption("NPAuraOnBrightAegis", 350158)
 
 local castsPerGUID = {}
 local fragmentTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
-local expectedDebuffs = 3
+--local expectedDebuffs = 3
 
 mod.vb.valksDead = 11--1 not dead, 2 dead. 10s Kyra and 1s Signe
 --mod.vb.addIcon = 8
@@ -139,7 +139,7 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		for i = 1, expectedDebuffs do
+		for i = 1, 8 do
 			if fragmentTargets[i] then
 				local name = fragmentTargets[i]
 				addLine(L.Fragment..i, name)
@@ -152,7 +152,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	fragmentTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
-	expectedDebuffs = self:IsMythic() and 4 or 3
+--	expectedDebuffs = self:IsMythic() and 4 or 3
 	self:SetStage(1)
 	self.vb.valksDead = 11
 --	self.vb.addIcon = 8
@@ -381,14 +381,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 350542 then
 		local amount = args.amount or 1
 		local icon = 0
-		for i = 1, expectedDebuffs do
+		local uId = DBM:GetRaidUnitId(args.destName)
+		for i = 1, 8 do
 			if not fragmentTargets[i] then--Not yet assigned!
 				icon = i
 				fragmentTargets[i] = args.destName--Assign player name for infoframe even if they already have icon
-				if self.Options.SetIconOnFragments then--Now do icon stuff, if enabled
-					local uId = DBM:GetRaidUnitId(args.destName)
-					local currentIcon = GetRaidTargetIndex(uId) or 9--We want to set "no icon" as max index for below logic
-					if currentIcon > i then--Automatically set lowest icon index on target, meaning star favored over circle, circle favored over triangle, etc.
+				local currentIcon = GetRaidTargetIndex(uId) or 9--We want to set "no icon" as max index for below logic
+				if currentIcon > i then--Automatically set lowest icon index on target, meaning star favored over circle, circle favored over triangle, etc.
+					if self.Options.SetIconOnFragments then--Now do icon stuff, if enabled
 						self:SetIcon(args.destName, i)
 					end
 				end
@@ -449,27 +449,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellArthurasCrushingGazeFades:Cancel()
 		end
 	elseif spellId == 350542 then
---		local oneRemoved = false
 		--Combat log doesn't fire for each dose, removed removes ALL stacks
-		for i = 1, expectedDebuffs do
+		for i = 1, 8 do
 			if fragmentTargets[i] and fragmentTargets[i] == args.destName then--Found assignment matching this units name
---				if not oneRemoved then
-					fragmentTargets[i] = false--remove first assignment we find
---					oneRemoved = true
---					local uId = DBM:GetRaidUnitId(args.destName)
---					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
---					if not stillDebuffed then--Terminate loop and remove icon if enabled
-						if self.Options.SetIconOnFragments then
-							self:SetIcon(args.destName, 0)
-						end
---						break--Break loop, nothing further to do
---					end
---				else
---					if self.Options.SetIconOnFragments then
---						self:SetIcon(args.destName, i)
---						break--Break loop, Icon updated to next
---					end
---				end
+				fragmentTargets[i] = false--remove first assignment we find
+				if self.Options.SetIconOnFragments then
+					self:SetIcon(args.destName, 0)
+				end
 			end
 		end
 		if DBM.InfoFrame:IsShown() then
