@@ -126,7 +126,7 @@ local allTimers = {
 		--Call Mawsworn
 		[350615] = {28, 165, 180.9, 150},
 		--Hellscream
-		[350411] = {80, 164.5, 178.8},
+		[350411] = {80, 164, 178.8},
 	},
 }
 
@@ -154,12 +154,12 @@ function mod:OnCombatStart(delay)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerSpawnMawswornCD:Start(28-delay, 1)
-		timerBrandofTormentCD:Start(31.4-delay, 1)
+		timerBrandofTormentCD:Start(30.4-delay, 1)
 		timerShacklesCD:Start(80-delay, 1)--Only one that's really consistent the whole fight
 	else
 		difficultyName = "normal"
 		timerSpawnMawswornCD:Start(28-delay, 1)
-		timerBrandofTormentCD:Start(31.4-delay, 1)
+		timerBrandofTormentCD:Start(30.4-delay, 1)
 		timerShacklesCD:Start(80-delay, 1)--Only one that's really consistent the whole fight
 	end
 	timerTormentedEruptionsCD:Start(130-delay, 1)--Same across all
@@ -276,7 +276,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 350648 then
 		self.vb.brandIcon = 1
 		self.vb.brandCount = self.vb.brandCount + 1
-		timerBrandofTormentCD:Start(15.7, self.vb.brandCount+1)
+		timerBrandofTormentCD:Start(15.1, self.vb.brandCount+1)
 	end
 end
 

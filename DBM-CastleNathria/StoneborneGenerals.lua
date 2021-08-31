@@ -166,14 +166,14 @@ local function updateAllTimers(self, ICD, exclusion)
 		local elapsed, total = timerCrystalizeCD:GetTime(self.vb.crystalCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerCrystalizeCD extended by: "..extend, 2)
-		timerCrystalizeCD:Stop()
+--		timerCrystalizeCD:Stop()
 		timerCrystalizeCD:Update(elapsed, total+extend, self.vb.crystalCount+1)
 	end
 	if not self.vb.kaalDead and timerWickedBladeCD:GetRemaining(self.vb.bladeCount+1) < ICD then
 		local elapsed, total = timerWickedBladeCD:GetTime(self.vb.bladeCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerWickedBladeCD extended by: "..extend, 2)
-		timerWickedBladeCD:Stop()
+--		timerWickedBladeCD:Stop()
 		timerWickedBladeCD:Update(elapsed, total+extend, self.vb.bladeCount+1)
 	end
 	local phase = self.vb.phase
@@ -182,14 +182,14 @@ local function updateAllTimers(self, ICD, exclusion)
 			local elapsed, total = timerHeartRendCD:GetTime(self.vb.heartCount+1)
 			local extend = (ICD/2) - (total-elapsed)
 			DBM:Debug("timerHeartRendCD extended by: "..extend, 2)
-			timerHeartRendCD:Stop()
+--			timerHeartRendCD:Stop()
 			timerHeartRendCD:Update(elapsed, total+extend, self.vb.heartCount+1)
 		end
 		if exclusion ~= 2 and timerSerratedSwipeCD:GetRemaining(self.vb.swipeCount+1) < ICD then
 			local elapsed, total = timerSerratedSwipeCD:GetTime(self.vb.swipeCount+1)
 			local extend = ICD - (total-elapsed) - 1.5--Whatever ICD is, this ability specifically is that ICD minus 1
 			DBM:Debug("timerSerratedSwipeCD extended by: "..extend, 2)
-			timerSerratedSwipeCD:Stop()
+--			timerSerratedSwipeCD:Stop()
 			timerSerratedSwipeCD:Update(elapsed, total+extend, self.vb.swipeCount+1)
 		end
 	end
@@ -199,7 +199,7 @@ local function updateAllTimers(self, ICD, exclusion)
 				local elapsed, total = timerReverberatingLeapCD:GetTime(self.vb.eruptionCount+1)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerReverberatingLeapCD extended by: "..extend, 2)
-				timerReverberatingLeapCD:Stop()
+--				timerReverberatingLeapCD:Stop()
 				timerReverberatingLeapCD:Update(elapsed, total+extend, self.vb.eruptionCount+1)
 			end
 		else
@@ -207,7 +207,7 @@ local function updateAllTimers(self, ICD, exclusion)
 				local elapsed, total = timerReverberatingEruptionCD:GetTime(self.vb.eruptionCount+1)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerReverberatingEruptionCD extended by: "..extend, 2)
-				timerReverberatingEruptionCD:Stop()
+--				timerReverberatingEruptionCD:Stop()
 				timerReverberatingEruptionCD:Update(elapsed, total+extend, self.vb.eruptionCount+1)
 			end
 		end
@@ -215,14 +215,14 @@ local function updateAllTimers(self, ICD, exclusion)
 			local elapsed, total = timerSeismicUpheavalCD:GetTime(self.vb.upHeavalCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerSeismicUpheavalCD extended by: "..extend, 2)
-			timerSeismicUpheavalCD:Stop()
+--			timerSeismicUpheavalCD:Stop()
 			timerSeismicUpheavalCD:Update(elapsed, total+extend, self.vb.upHeavalCount+1)
 		end
 		if exclusion ~= 3 and timerStoneFistCD:GetRemaining(self.vb.fistCount+1) < ICD then
 			local elapsed, total = timerStoneFistCD:GetTime(self.vb.fistCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerStoneFistCD extended by: "..extend, 2)
-			timerStoneFistCD:Stop()
+--			timerStoneFistCD:Stop()
 			timerStoneFistCD:Update(elapsed, total+extend, self.vb.fistCount+1)
 		end
 	end

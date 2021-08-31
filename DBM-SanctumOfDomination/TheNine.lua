@@ -382,7 +382,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		local icon = 0
 		local uId = DBM:GetRaidUnitId(args.destName)
-		for i = 1, 8 do
+		for i = 1, 8 do--Only up to 8 icons
 			if not fragmentTargets[i] then--Not yet assigned!
 				icon = i
 				fragmentTargets[i] = args.destName--Assign player name for infoframe even if they already have icon
