@@ -627,13 +627,6 @@ do
 		end
 	end
 end
-do
-
-
-	function mod:OnSync(msg)
-		self:Schedule(3, UpdateIcons, self, msg)
-	end
-end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 350455 and destGUID == UnitGUID("player") and not playerSafe and self:AntiSpam(2, 3) then
