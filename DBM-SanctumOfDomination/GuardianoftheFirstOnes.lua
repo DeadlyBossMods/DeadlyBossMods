@@ -60,6 +60,7 @@ local timerThreatNeutralizationCD				= mod:NewCDCountTimer(11.4, 350496, 167180,
 mod:AddRangeFrameOption(10, 350496)
 mod:AddInfoFrameOption(352394, true)
 mod:AddSetIconOption("SetIconOnThreat", 350496, true, false, {1, 2, 3})
+mod:AddDropdownOption("IconBehavior", {"TypeOne", "TypeTwo"}, "TypeOne", "misc")--TypeTwo is BW default
 
 mod.vb.timerMode = 0
 mod.vb.coreActive = false
@@ -68,6 +69,7 @@ mod.vb.protocolCount = 0
 mod.vb.patternCount = 0
 mod.vb.threatCount = 0
 mod.vb.comboCount = 0
+mod.vb.iconSetting = 1
 local radiantEnergy = DBM:GetSpellInfo(352394)
 local playerSafe = false
 local playersSafe = {}
@@ -184,7 +186,8 @@ local function showthreat(self)
 		end
 	end
 	--Now deal with every possible scenario
-	if meleeCount == 3 or meleeCount == 0 then--All melee or all ranged, results same either way
+	--All melee or all ranged, Or user wants icons to match bigwigs. results same, use CLEU/table insert order
+	if self.vb.iconSetting == 2 or meleeCount == 3 or meleeCount == 0 then
 		if setIcon then
 			self:SetIcon(nameOne, 1)
 		end
@@ -405,6 +408,7 @@ function mod:OnCombatStart(delay)
 	self.vb.threatCount = 0
 	self.vb.patternCount = 0--which pattern SET it is
 	self.vb.comboCount = 0--Which cast within the pattern set
+	self.vb.iconSetting = self.Options.IconBehavior == "TypeOne" and 1 or 2
 	timerFormSentryCD:Start(3.6-delay, 1)--Same in all
 	timerDisintegrationCD:Start(15.4-delay, 1)--Same in all
 	timerEliminationPatternCD:Start(25.3-delay, 1)--Same in all
@@ -434,6 +438,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(radiantEnergy)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+	end
+	if UnitIsGroupLeader("player") then
+		self:SendSync("IconMethod", self.vb.iconSetting)
 	end
 end
 
@@ -600,15 +607,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, targetName)
 	end
 end
 
-function mod:OnSync(msg, target)
-	if not self:IsInCombat() then return end
-	if msg == "Dissection" then
-		local targetName = DBM:GetUnitFullName(target) or target
-		if targetName then
-			warnDisintegration:Show(targetName)--Everyone needs to dodge it so everyone gets special warning. this is just informative message
-			if targetName == UnitName("player") then
-				yellDisintegration:Yell()
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateIcons(self, setting)
+		self.vb.iconSetting = setting
+	end
+	function mod:OnSync(msg, target)
+		if not self:IsInCombat() then return end
+		if msg == "Dissection" then
+			local targetName = DBM:GetUnitFullName(target) or target
+			if targetName then
+				warnDisintegration:Show(targetName)--Everyone needs to dodge it so everyone gets special warning. this is just informative message
+				if targetName == UnitName("player") then
+					yellDisintegration:Yell()
+				end
 			end
+		elseif msg == "IconMethod" then
+			self:Schedule(3, UpdateIcons, self, target)
 		end
 	end
 end

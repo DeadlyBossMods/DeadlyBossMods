@@ -2045,7 +2045,7 @@ do
 		if timer > 0 and timer < 3 then
 			return DBM:AddMsg(L.TIME_TOO_SHORT)
 		end
-		local targetName = (UnitExists("target") and UnitIsEnemy("player", "target")) and UnitName("target") or nil--Filter non enemies in case player isn't targetting bos but another player/pet
+		local targetName = (UnitExists("target") and not UnitIsFriend("player", "target")) and UnitName("target") or nil--Filter non enemies in case player isn't targetting bos but another player/pet
 		if targetName then
 			sendSync("PT", timer.."\t"..LastInstanceMapID.."\t"..targetName)
 		else
@@ -12214,11 +12214,11 @@ do
 	"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
 	"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40",
 	"mouseover", "target"}
-	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID, skipMarked, allAllowed)
+	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] or allAllowed then
 			--Declare variables.
-			DBM:Debug("canSetIcons or allAllowed true", 2)
+			DBM:Debug("canSetIcons or allAllowed true for "..(optionName or "nil"), 2)
 			local timeNow = GetTime()
 			if not creatureID then--This function must not be used to boss, so remove self.creatureId. Accepts cid, guid and cid table
 				error("DBM:ScanForMobs calld without creatureID")
@@ -12227,7 +12227,8 @@ do
 			iconSetMethod = iconSetMethod or 0--Set IconSetMethod -- 0: Descending / 1:Ascending / 2: Force Set / 9:Force Stop
 			scanningTime = scanningTime or 8
 			maxIcon = maxIcon or 8 --We only have 8 icons.
-			isFriendly = isFriendly or false
+			allowFriendly = allowFriendly or false
+			skipMarked = skipMarked or false
 			secondCreatureID = secondCreatureID or 0
 			scanInterval = scanInterval or 0.2
 			--With different scanID, this function can support multi scanning same time. Required for Nazgrim.
@@ -12249,15 +12250,15 @@ do
 			for _, unitid2 in ipairs(mobUids) do
 				local guid2 = UnitGUID(unitid2)
 				local cid2 = self:GetCIDFromGUID(guid2)
-				local isEnemy = UnitIsEnemy("player", unitid2) or true--If api returns nil, assume it's an enemy
+				local isFriend = UnitIsFriend("player", unitid2)
 				local isFiltered = false
-				if (not isFriendly and not isEnemy) or (skipMarked and not GetRaidTargetIndex(unitid2)) then
+				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid2)) then
 					isFiltered = true
-					DBM:Debug("A unit skipped because it's a filtered mob", 3)
+					DBM:Debug(unitid2.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
 				end
 				if not isFiltered then
 					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
-						DBM:Debug("Match found, SHOULD be setting icon", 2)
+						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 2)
 						if type(creatureID[cid2]) == "number" then
 							SetRaidTarget(unitid2, creatureID[cid2])
 						else
@@ -12278,7 +12279,7 @@ do
 							return
 						end
 					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID) or (cid2 == secondCreatureID)) and not addsGUIDs[guid2] then
-						DBM:Debug("Match found, SHOULD be setting icon", 2)
+						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 2)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid2, mobIcon)
 						else
@@ -12305,15 +12306,15 @@ do
 				local unitid = uId.."target"
 				local guid = UnitGUID(unitid)
 				local cid = self:GetCIDFromGUID(guid)
-				local isEnemy = UnitIsEnemy("player", unitid) or true--If api returns nil, assume it's an enemy
+				local isFriend = UnitIsFriend("player", unitid)
 				local isFiltered = false
-				if (not isFriendly and not isEnemy) or (skipMarked and not GetRaidTargetIndex(unitid)) then
+				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid)) then
 					isFiltered = true
-					DBM:Debug("ScanForMobs aborting because filtered mob", 2)
+					DBM:Debug(unitid.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
 				end
 				if not isFiltered then
 					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
-						DBM:Debug("Match found, SHOULD be setting icon", 2)
+						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 2)
 						if type(creatureID[cid]) == "number" then
 							SetRaidTarget(unitid, creatureID[cid])
 						else
@@ -12334,7 +12335,7 @@ do
 							return
 						end
 					elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not addsGUIDs[guid] then
-						DBM:Debug("Match found, SHOULD be setting icon", 2)
+						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 2)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
 						else
@@ -12358,7 +12359,7 @@ do
 				end
 			end
 			if timeNow < scanExpires[scanID] then--scan for limited times.
-				self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID)
+				self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
 			else
 				DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"), 2)
 				--clear variables
