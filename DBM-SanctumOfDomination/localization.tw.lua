@@ -52,6 +52,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2446)
 
+L:SetOptionLocalization({
+	IconBehavior	= "為團隊設定標記行為 (如果您為團隊領隊將覆蓋團隊設定)",
+	TypeOne			= "DBM預設 (近戰 > 遠程)",
+	TypeTwo			= "BW預設 (依據戰鬥紀錄順序)"
+})
+
 L:SetMiscLocalization({
 	Dissection	= "分解。",
 	Dismantle	= "瓦解。"
