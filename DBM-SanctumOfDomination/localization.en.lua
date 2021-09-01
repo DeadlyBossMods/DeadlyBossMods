@@ -51,6 +51,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2446)
 
+L:SetOptionLocalization({
+	IconBehavior	= "Set marking behavior for raid (If raid leader, overrides raid)",
+	TypeOne			= "DBM Default (Melee > Ranged)",
+	TypeTwo			= "BW Default (Combatlog order)"
+})
+
 L:SetMiscLocalization({
 	Dissection	= "Dissection!",
 	Dismantle	= "Dismantle"
