@@ -52,6 +52,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2446)
 
+L:SetOptionLocalization({
+	IconBehavior	= "공격대 징표 방식 설정 (공대장이면 설정이 공격대 전체에 적용)",
+	TypeOne			= "DBM 기본값 (근접 > 원거리)",
+	TypeTwo			= "BW 기본값 (전투기록상 순서)"
+})
+
 L:SetMiscLocalization({
 	Dissection	= "해부를 시작합니다!",
 	Dismantle	= "분해 실시!"
