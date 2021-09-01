@@ -12254,7 +12254,7 @@ do
 				local isFiltered = false
 				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid2)) then
 					isFiltered = true
-					DBM:Debug(unitid2.." was skipped because it's a filtered mob. Enemy Flag: "..(isEnemy and "true" or "false"), 2)
+					DBM:Debug(unitid2.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
 				end
 				if not isFiltered then
 					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
@@ -12310,7 +12310,7 @@ do
 				local isFiltered = false
 				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid)) then
 					isFiltered = true
-					DBM:Debug(unitid.." was skipped because it's a filtered mob. Enemy Flag: "..(isEnemy and "true" or "false"), 2)
+					DBM:Debug(unitid.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
 				end
 				if not isFiltered then
 					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
