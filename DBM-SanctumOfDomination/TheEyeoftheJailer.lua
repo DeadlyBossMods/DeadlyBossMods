@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175725)
 mod:SetEncounterID(2433)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
+mod:SetHotfixNoticeRev(20210902000000)
 mod:SetMinSyncRevision(20210713000000)
 --mod.respawnTime = 29
 
@@ -89,8 +89,8 @@ local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349030, nil, nil, 
 local timerDesolationBeamCD					= mod:NewCDCountTimer(17, 350847, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--17-18.3
 local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 ----Deathseeker Eye
-local timerSlothfulCorruptionCD				= mod:NewCDTimer(23.8, 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSpreadingMiseryCD				= mod:NewCDTimer(12.1, 350816, nil, nil, nil, 3)
+local timerSlothfulCorruptionCD				= mod:NewCDTimer("d23.8", 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSpreadingMiseryCD				= mod:NewCDTimer("d12.1", 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
 local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, nil, nil, 3)--Shortname "Beam"
 
