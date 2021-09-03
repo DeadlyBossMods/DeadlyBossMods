@@ -7,7 +7,7 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210815000000)
+mod:SetHotfixNoticeRev(20210902000000)
 mod:SetMinSyncRevision(20210815000000)
 mod.respawnTime = 29
 
@@ -186,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 		timerOblivionsEchoCD:Start(self.vb.oblivionEchoCast == 1 and 61.1 or 37)--Still possibly not best way to code it
 	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 then--348756 P1 358999 P2, 353000 unknown
 		self.vb.frostBlastCount = self.vb.frostBlastCount + 1
-		timerFrostBlastCD:Start(self.vb.phase == 3 and (self:IsLFR() and 28.4 or 13.4) or self.vb.frostBlastCount % 2 == 0 and 69.1 or 40.1)
+		timerFrostBlastCD:Start(self.vb.phase == 3 and 12.9 or self.vb.frostBlastCount % 2 == 0 and 69.1 or 40.1)
 	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
 		self:SetStage(2)
@@ -272,17 +272,18 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	--https://ptr.wowhead.com/npc=176703/frostbound-devoted / https://ptr.wowhead.com/npc=176974/soul-reaver / https://ptr.wowhead.com/npc=176973/unstoppable-abomination
 	if spellId == 352096 or spellId == 352094 or spellId == 352092 then
-		if spellId == 352096 and self:AntiSpam(3, 3) then
+		if spellId == 352096 and self:AntiSpam(5, 3) then
 			warnFrostboundDevoted:Show()
 		elseif spellId == 352094 then
-			if self:AntiSpam(3, 4) then
+			if self:AntiSpam(5, 4) then
 				warnSoulReaver:Show()
+				self.vb.addIcon = 8
 			end
 			if self.Options.SetIconOnReaper then
 				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
-		elseif spellId == 352092 and self:AntiSpam(3, 5) then
+		elseif spellId == 352092 and self:AntiSpam(5, 5) then
 			warnAbom:Show()
 		end
 	elseif spellId == 346469 then--Glacial Spikes
@@ -439,7 +440,7 @@ function mod:UNIT_DIED(args)
 		timerGlacialWrathCD:Stop()
 		timerOblivionsEchoCD:Stop()
 		timerFrostBlastCD:Stop()
-		timerFrostBlastCD:Start(8.5)
+		timerFrostBlastCD:Start(7.4)
 		if not self:IsLFR() then--LFR get continued march of forsaken adds instead
 			timerOnslaughtoftheDamnedCD:Start(45.1)
 		end

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210815000000)--2021-08-15
+mod:SetHotfixNoticeRev(20210902000000)
 mod:SetMinSyncRevision(20210706000000)
 mod.respawnTime = 29
 
@@ -23,12 +23,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--Extended todo, stuff that probably won't get done do to diminished time investment these days. Hard to stay motivated with so much support decline
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
---TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
---TODO, further mythic timer data for phase 1 and all data for phase 3
+--TODO, further timer data for longer pulls?
 --TODO, add cast bars for the double beam casts that don't actually have double casts events
 --TODO, verify add auto marking off IEEU
---TODO, finish timerRunicAffinityCD. Need longer P3 pulls. Limits kill was too efficient and all wipes before it didn't get to second rings/affinity
+--TODO, improve P3 timers for invoke/bombs to account for when it will be delayed by runes? (likely will never actually get done, time investment these days is as diminished as support)
 --[[
 (ability.id = 350421 or ability.id = 351680 or ability.id = 350554 or ability.id = 354367 or ability.id = 354265 or ability.id = 357144) and type = "begincast"
  or (ability.id = 353195 or ability.id = 357739) and (type = "applybuff" or type = "removebuff")
@@ -82,7 +82,7 @@ local timerFatedConjunctionCD					= mod:NewCDCountTimer(59.7, 350355, 207544, ni
 local timerFatedConjunction						= mod:NewCastTimer(6.7, 350355, 207544, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerCallofEternityCD						= mod:NewCDCountTimer(37.9, 350554, 167180, nil, nil, 3)--"Bombs"
 --Stage Two: Defying Destiny
-local timerDespairCD							= mod:NewCDCountTimer(17, 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
+local timerDespairCD							= mod:NewCDCountTimer("d17", 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
 local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
 local timerRunicAffinityCD						= mod:NewCDCountTimer(39, 354964, nil, nil, nil, 3, nil, nil, true)--Used in state 3 only, in stage 1 it happens at same time as rings
@@ -143,21 +143,23 @@ local allTimers = {
 			--Twist Fate
 			[354265] = {10, 49.2, 75.2, 35.2, 10.9},--Last one is 10.9-38.9 for some reason
 			--Call of Eternity
-			[350554] = {29.4, 38.8, 35.1, 44.9, 41.3},
+			[350554] = {29.4, 38.8, 34.1, 44.9, 41.3},
 			--Invoke Destiny
-			[351680] = {40.4, 40.8, 38.7, 40},
+			[351680] = {40.4, 39.3, 38.7, 40},
 			--Fated Conjunction
 			[350421] = {18.5, 59.7, 26.7, 23.4, 48.5},
 		},
 		[3] = {
 			--Twist Fate
-			[354265] = {51.4, 48.6, 38.8},
+			[354265] = {50.5, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.8, 38.6, 73.1, 57.1},--second one is either 38.8 or 73.1? I lost the log it was 38, so leaving 73 for now
+			[350554] = {11.5, 38.6, 38.8, 57.1},--second and third one can be flipped based on phasing timing, so for sequence sake lowest seen is used for both :\
+					  --11.53, 75.89, 40.14
+					  --11.5, 38.6, 73.1, 57.1
 			--Invoke Destiny
-			[351680] = {25.6, 44.7, 90},
+			[351680] = {25.6, 43.7, 90},
 			--Fated Conjunction
-			[350421] = {11.1, 50.4, 51.1, 40.1, 26.7},
+			[350421] = {9.4, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
 			[353195] = {36.7, 45.3, 43.7},--Huge variations, 36-50
 		}
@@ -480,14 +482,14 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerTwistFateCD:Start(40, 1)
 				timerExtemporaneousFateCD:Start(54, 1)--Rings activating
 			else
-				timerFatedConjunctionCD:Start(11.1, 1)--11.4-12.1
-				timerCallofEternityCD:Start(13.9, 1)--13.9-14.5
+				timerFatedConjunctionCD:Start(9.4, 1)--9.4-12.1
+				timerCallofEternityCD:Start(11.5, 1)--11.5-14.5
 				timerInvokeDestinyCD:Start(25.6, 1)
 				if self:IsHeroic() then
 					timerRunicAffinityCD:Start(30, 1)
 				end
 				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 36.7, 1)
-				timerTwistFateCD:Start(51.4, 1)
+				timerTwistFateCD:Start(50.5, 1)
 			end
 		end
 	end
