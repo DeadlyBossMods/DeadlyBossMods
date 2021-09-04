@@ -120,8 +120,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAcidExpulsionCD:Stop()
 --		timerMarkthePreyCD:Stop()
 		timerAcceleratedIncubationCD:Stop()
-		specWarnConsumption:Show()
-		specWarnConsumption:Play("watchstep")
+		if and self:AntiSpam(3, 1) then
+			specWarnConsumption:Show()
+			specWarnConsumption:Play("watchstep")
+		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
