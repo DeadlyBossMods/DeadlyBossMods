@@ -85,13 +85,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 324923 and self:AntiSpam(3, 2) then
 		specWarnBrambleBurst:Show()
 		specWarnBrambleBurst:Play("watchfeet")
-	elseif spellId == 324914 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	elseif spellId == 324914 and self:CheckInterruptFilter(args.sourceGUID, false, true) and self:AntiSpam(2, 5) then
 		specWarnNourishtheForest:Show(args.sourceName)
 		specWarnNourishtheForest:Play("kickcast")
-	elseif spellId == 324776 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	elseif spellId == 324776 and self:CheckInterruptFilter(args.sourceGUID, false, true) and self:AntiSpam(2, 5) then
 		specWarnBramblethornCoat:Show(args.sourceName)
 		specWarnBramblethornCoat:Play("kickcast")
-	elseif spellId == 326046 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	elseif spellId == 326046 and self:CheckInterruptFilter(args.sourceGUID, false, true) and self:AntiSpam(2, 5) then
 		specWarnStimulateResistance:Show(args.sourceName)
 		specWarnStimulateResistance:Play("kickcast")
 	elseif spellId == 340305 then
