@@ -27,6 +27,7 @@ ability.id = 322550 and type = "begincast"
  or (ability.id = 337235 or ability.id = 337249 or ability.id = 337255) and type = "begincast"
 --]]
 local warnMarkthePrey				= mod:NewTargetNoFilterAnnounce(322563, 3)
+local warnInvestor					= mod:NewAnnounce("warnInvestor", 4, 337235)
 
 local specWarnConsumption			= mod:NewSpecialWarningDodge(322450, nil, nil, nil, 2, 2)
 local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, 2, 1, 2)
@@ -53,9 +54,8 @@ mod.vb.firstPray = false
 
 function mod:InfesterTarget(targetname, uId)
 	if not targetname then return end
+	warnInvestor:Show(targetname)
 	if targetname == UnitName("player") then
-		specWarnParasiticInfester:Show()
-		specWarnParasiticInfester:Play("targetyou")
 		yellParasiticInfester:Yell()
 	end
 end

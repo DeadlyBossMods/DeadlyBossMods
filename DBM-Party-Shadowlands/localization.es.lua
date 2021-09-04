@@ -84,7 +84,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfester	= "Infestador parasitario en ti"
+--	specWarnParasiticInfesterKick	= "Parasitic Infester - Interrupt!"--Translate me!
 })
 
 L:SetTimerLocalization{
@@ -92,7 +92,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnParasiticInfester	= "Mostrar aviso especial cuando te afecte Infestador parasitario",
 	timerParasiticInfesterCD	= "Mostrar temporizador para Infestador parasitario",
 	yellParasiticInfester		= "Gritar cuando te afecte Infestador parasitario"
 })
