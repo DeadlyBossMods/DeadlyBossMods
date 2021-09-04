@@ -120,7 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAcidExpulsionCD:Stop()
 --		timerMarkthePreyCD:Stop()
 		timerAcceleratedIncubationCD:Stop()
-		if and self:AntiSpam(3, 1) then
+		if self:AntiSpam(3, 1) then
 			specWarnConsumption:Show()
 			specWarnConsumption:Play("watchstep")
 		end
