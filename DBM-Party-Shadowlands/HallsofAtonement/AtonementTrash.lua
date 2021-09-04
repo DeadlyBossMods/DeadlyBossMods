@@ -7,9 +7,9 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 326409 326450 325523 325700 325701 326607",
-	"SPELL_AURA_APPLIED 326450",
-	"SPELL_AURA_REMOVED 326409"
+	"SPELL_CAST_START 326409 326450 325523 325700 325701 326607 326441",
+	"SPELL_AURA_APPLIED 326450"
+--	"SPELL_AURA_REMOVED 326409"
 )
 
 --All warnings/recommendations drycoded from https://www.wowhead.com/guides/halls-of-atonement-shadowlands-dungeon-strategy-guide
@@ -18,7 +18,7 @@ local warnThrash						= mod:NewSpellAnnounce(326409, 3)
 local warnLoyalBeasts					= mod:NewCastAnnounce(326450, 4)--Announce the cast, in case someone can stun it
 
 --General
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
+--local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Notable Halkias Trash
 local specWarnSinQuake					= mod:NewSpecialWarningDodge(326441, nil, nil, nil, 2, 2)
 local specWarnLoyalBeasts				= mod:NewSpecialWarningTarget(326450, "RemoveEnrage|Tank", nil, nil, 1, 2)--Target because it's hybrid warning
@@ -40,6 +40,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 325523 and self:AntiSpam(3, 2) then
 		specWarnDeadlyThrust:Show()
 		specWarnDeadlyThrust:Play("shockwave")
+	elseif spellId == 326441 and self:AntiSpam(3, 2) then
+		specWarnSinQuake:Show()
+		specWarnSinQuake:Play("watchstep")
 	elseif spellId == 325700 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnCollectSins:Show(args.sourceName)
 		specWarnCollectSins:Play("kickcast")
@@ -61,6 +64,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+--[[
+--This is faster but in reality it's actually too fast. it results in almost 4-5 seconds before damage goes out.
 --"<185.37 23:03:18> [CLEU] SPELL_AURA_REMOVED#Creature-0-2085-2287-9145-164557-000126FD07#Shard of Halkias#Creature-0-2085-2287-9145-164557-000126FD07#Shard of Halkias#326409#Thrash#BUFF#nil", -- [1273]
 --"<186.29 23:03:19> [CLEU] SPELL_CAST_START#Creature-0-2085-2287-9145-164557-000126FD07#Shard of Halkias##nil#326441#Sin Quake#nil#nil", -- [1286]
 function mod:SPELL_AURA_REMOVED(args)
@@ -71,3 +76,4 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnSinQuake:Play("watchstep")
 	end
 end
+--]]
