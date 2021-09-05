@@ -10041,8 +10041,7 @@ do
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options.SpecialWarningVibrate5 then
 						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration()
-							C_TimerAfter(DBM.Options.SpecialWarningFlashDura5, function() C_GamePad.StopVibration() end)--Flash and vibration use same duration slider
+							C_GamePad.SetVibration("High", 1)
 						end
 					end
 				else
