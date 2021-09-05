@@ -191,7 +191,7 @@ SpecialWarnSoundDropDown.myheight = 0
 
 local flashCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash1")
 flashCheck1:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown, "BOTTOMLEFT", 220, 20)
-local vibrateCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Vibrate, true, nil, "SpecialWarningVibrate1")
+local vibrateCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate1")
 vibrateCheck1:SetPoint("TOPLEFT", flashCheck1, "TOPLEFT", 0, -20)
 
 local flashdurSlider = specWarnOne:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
@@ -259,7 +259,7 @@ SpecialWarnSoundDropDown2.myheight = 0
 
 local flashCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash2")
 flashCheck2:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown2, "BOTTOMLEFT", 220, 20)
-local vibrateCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Vibrate, true, nil, "SpecialWarningVibrate2")
+local vibrateCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate2")
 vibrateCheck2:SetPoint("TOPLEFT", flashCheck2, "TOPLEFT", 0, -20)
 
 local flashdurSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
@@ -331,7 +331,7 @@ SpecialWarnSoundDropDown3.myheight = 0
 
 local flashCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash3")
 flashCheck3:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown3, "BOTTOMLEFT", 220, 20)
-local vibrateCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Vibrate, true, nil, "SpecialWarningVibrate3")
+local vibrateCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate3")
 vibrateCheck3:SetPoint("TOPLEFT", flashCheck3, "TOPLEFT", 0, -20)
 
 local flashdurSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
@@ -402,7 +402,7 @@ SpecialWarnSoundDropDown4.myheight = 0
 
 local flashCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash4")
 flashCheck4:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown4, "BOTTOMLEFT", 220, 20)
-local vibrateCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Vibrate, true, nil, "SpecialWarningVibrate4")
+local vibrateCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate4")
 vibrateCheck4:SetPoint("TOPLEFT", flashCheck4, "TOPLEFT", 0, -20)
 
 local flashdurSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
@@ -471,7 +471,7 @@ SpecialWarnSoundDropDown5.myheight = 0
 
 local flashCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash5")
 flashCheck5:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown5, "BOTTOMLEFT", 220, 20)
-local vibrateCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Vibrate, true, nil, "SpecialWarningVibrate5")
+local vibrateCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate5")
 vibrateCheck5:SetPoint("TOPLEFT", flashCheck5, "TOPLEFT", 0, -20)
 
 local flashdurSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
