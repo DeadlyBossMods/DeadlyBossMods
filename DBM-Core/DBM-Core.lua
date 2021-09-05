@@ -285,7 +285,7 @@ DBM.DefaultOptions = {
 	DontShowTargetAnnouncements = true,
 	DontShowSpecialWarningText = false,
 	DontShowSpecialWarningFlash = false,
-	DontDoSpecialWarninVibrate = false,
+	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayTrivialSpecialWarningSound = true,
 	DontShowBossTimers = false,
@@ -10039,7 +10039,7 @@ do
 						local repeatCount = DBM.Options.SpecialWarningFlashCount5 or 1
 						DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol5[1],DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3], DBM.Options.SpecialWarningFlashDura5, DBM.Options.SpecialWarningFlashAlph5, repeatCount-1)
 					end
-					if not DBM.Options.DontDoSpecialWarninVibrate and DBM.Options.SpecialWarningVibrate5 then
+					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options.SpecialWarningVibrate5 then
 						if C_GamePad and C_GamePad.SetVibration then
 							C_GamePad.SetVibration()
 							C_TimerAfter(DBM.Options.SpecialWarningFlashDura5, function() C_GamePad.StopVibration() end)--Flash and vibration use same duration slider
@@ -10052,7 +10052,7 @@ do
 						local flashcolor = DBM.Options["SpecialWarningFlashCol"..number]
 						DBM.Flash:Show(flashcolor[1], flashcolor[2], flashcolor[3], DBM.Options["SpecialWarningFlashDura"..number], DBM.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
 					end
-					if not DBM.Options.DontDoSpecialWarninVibrate and DBM.Options["SpecialWarningVibrate"..number] then
+					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options["SpecialWarningVibrate"..number] then
 						if C_GamePad and C_GamePad.SetVibration then
 							C_GamePad.SetVibration()
 							C_TimerAfter(DBM.Options["SpecialWarningFlashDura"..number], function() C_GamePad.StopVibration() end)--Flash and vibration use same duration slider
