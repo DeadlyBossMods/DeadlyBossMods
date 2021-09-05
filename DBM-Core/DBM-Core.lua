@@ -10053,8 +10053,7 @@ do
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options["SpecialWarningVibrate"..number] then
 						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration()
-							C_TimerAfter(DBM.Options["SpecialWarningFlashDura"..number], function() C_GamePad.StopVibration() end)--Flash and vibration use same duration slider
+							C_GamePad.SetVibration("High", 1)
 						end
 					end
 				end
@@ -10523,11 +10522,18 @@ do
 		if number and not noSound then
 			self:PlaySpecialWarningSound(number, force)
 		end
-		if number and DBM.Options["SpecialWarningFlash"..number] then
-			if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then return end--No flash if trivial
-			local flashColor = self.Options["SpecialWarningFlashCol"..number]
-			local repeatCount = self.Options["SpecialWarningFlashCount"..number] or 1
-			self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
+		if number then
+			if self.Options["SpecialWarningFlash"..number] then
+				if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then return end--No flash if trivial
+				local flashColor = self.Options["SpecialWarningFlashCol"..number]
+				local repeatCount = self.Options["SpecialWarningFlashCount"..number] or 1
+				self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
+			end
+			if not self.Options.DontDoSpecialWarningVibrate and self.Options["SpecialWarningVibrate"..number] then
+				if C_GamePad and C_GamePad.SetVibration then
+					C_GamePad.SetVibration("High", 1)
+				end
+			end
 		end
 	end
 end
