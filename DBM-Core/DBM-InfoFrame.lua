@@ -419,42 +419,50 @@ local function updateEnemyPower()
 				end
 			end
 		else
-			if specificUnit then
-				local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
+			for i = 1, 5 do
+				local uId = "boss" .. i
+				local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
 				if maxPower and maxPower > 0 then
 					local percent = currentPower / maxPower * 100
 					if percent >= threshold then
-						lines[UnitName(specificUnit)] = mfloor(percent) .. "%"
-					end
-				end
-			else
-				for i = 1, 5 do
-					local uId = "boss" .. i
-					local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-					if maxPower and maxPower > 0 then
-						local percent = currentPower / maxPower * 100
-						if percent >= threshold then
-							lines[UnitName(uId)] = mfloor(percent) .. "%"
-						end
+						lines[UnitName(uId)] = mfloor(percent) .. "%"
 					end
 				end
 			end
 		end
 	else -- Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
-		for i = 1, 5 do
-			local uId = "boss" .. i
+		if specificUnit then
 			-- Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
 			if maxPower and maxPower > 0 then
-				if currentPower / maxPower * 100 >= threshold then
-					lines[UnitName(uId)] = currentPower
+				local percent = currentPower / maxPower * 100
+				if percent >= threshold then
+					lines[UnitName(specificUnit)] = mfloor(percent) .. "%"
 				end
 			end
 			-- Alternate Power
-			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
+			local currentAltPower, maxAltPower = UnitPower(specificUnit, 10), UnitPowerMax(specificUnit, 10)
 			if maxAltPower and maxAltPower > 0 then
 				if currentAltPower / maxAltPower * 100 >= threshold then
-					lines[UnitName(uId)] = L.INFOFRAME_ALT .. currentAltPower
+					lines[UnitName(specificUnit)] = L.INFOFRAME_ALT .. currentAltPower
+				end
+			end
+		else
+			for i = 1, 5 do
+				local uId = "boss" .. i
+				-- Primary Power
+				local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+				if maxPower and maxPower > 0 then
+					if currentPower / maxPower * 100 >= threshold then
+						lines[UnitName(uId)] = currentPower
+					end
+				end
+				-- Alternate Power
+				local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
+				if maxAltPower and maxAltPower > 0 then
+					if currentAltPower / maxAltPower * 100 >= threshold then
+						lines[UnitName(uId)] = L.INFOFRAME_ALT .. currentAltPower
+					end
 				end
 			end
 		end
