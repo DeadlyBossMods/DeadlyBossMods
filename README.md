@@ -1,3 +1,4 @@
+WHOA!
 [![Build Status](https://github.com/DeadlyBossMods/DeadlyBossMods/workflows/CI/badge.svg)](https://github.com/DeadlyBossMods/DeadlyBossMods/actions?workflow=CI)
 [![DeadlyBossMods on Discord](https://img.shields.io/badge/discord-DeadlyBossMods-738bd7.svg?style=flat)](https://discord.gg/DeadlyBossMods) 
 
