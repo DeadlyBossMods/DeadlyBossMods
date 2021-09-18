@@ -27,10 +27,7 @@ enable-nolib-creation: no
 
 move-folders:
   DBM-Shadowlands/DBM-Brawlers: DBM-Brawlers
-  DBM-Shadowlands/DBM-DefaultSkin: DBM-DefaultSkin
   DBM-Shadowlands/DBM-DMF: DBM-DMF
-  DBM-Shadowlands/DBM-GUI: DBM-GUI
-  DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Shadowlands/DBM-WorldEvents: DBM-WorldEvents
   DBM-Shadowlands/DBM-Party-Shadowlands: DBM-Party-Shadowlands
   DBM-Shadowlands/DBM-Shadowlands: DBM-Shadowlands
