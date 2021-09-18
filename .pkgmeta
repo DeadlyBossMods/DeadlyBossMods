@@ -3,7 +3,6 @@ package-as: DBM-Shadowlands
 externals:
   DBM-Shadowlands: https://github.com/DeadlyBossMods/DBM-Unified
   DBM-Shadowlands/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
-  DBM-Shadowlands/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
   DBM-Shadowlands/Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
   DBM-Shadowlands/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
   DBM-Shadowlands/Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
