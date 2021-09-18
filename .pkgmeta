@@ -1,7 +1,6 @@
 package-as: DBM-Core
 
 externals:
-  DBM-Core/DBM-Core: https://github.com/DeadlyBossMods/DBM-Unified/tree/master/DBM-Core
   DBM-Core/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
   DBM-Core/Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
   DBM-Core/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
