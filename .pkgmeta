@@ -38,4 +38,6 @@ move-folders:
   DBM-Shadowlands/DBM-CastleNathria: DBM-CastleNathria
   DBM-Shadowlands/DBM-SanctumOfDomination: DBM-SanctumOfDomination
   DBM-Shadowlands/DBM-Core: DBM-Core
+  DBM-Shadowlands/DBM-GUI: DBM-GUI
+  DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Shadowlands/Libs: DBM-Core/Libs
