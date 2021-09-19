@@ -10,15 +10,29 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      SHA:
+        description: 'Commit SHA from DBM Unified'
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      SHA: ${{ github.event.inputs.SHA }}
+
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 100
+
+      - name: Sets the env version
+        run: echo "VERSION=$(git describe --tags --always --abbrev=7 2>/dev/null | sed 's/-g[a-z0-9]\{7\}//')" >> $GITHUB_ENV
+
+      - name: Sets the env SHA
+        if: env.SHA == null
+        run: echo "SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
 
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
@@ -28,6 +42,8 @@ jobs:
       - name: Create Package
         uses: BigWigsMods/packager@master
         if: ${{ github.event_name != 'pull_request' }}
+        with:
+          args: -n "DBM-${{ env.VERSION }}-${{ env.SHA }}{classic}"
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
