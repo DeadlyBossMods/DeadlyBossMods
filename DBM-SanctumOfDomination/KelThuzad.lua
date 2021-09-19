@@ -263,7 +263,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if self.Options.SetIconOnShards then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.shardIcon, 1, 0.2, 12, "SetIconOnShards", nil, nil, nil, true)
 			end
-			self.vb.spikeIcon = self.vb.shardIcon - 1
+			self.vb.shardIcon = self.vb.shardIcon - 1
 		end
 	end
 end
@@ -275,7 +275,7 @@ function mod:SPELL_SUMMON(args)
 		if spellId == 352096 and self:AntiSpam(5, 3) then
 			warnFrostboundDevoted:Show()
 		elseif spellId == 352094 then
-			if self:AntiSpam(5, 4) then
+			if self:AntiSpam(10, 4) then
 				warnSoulReaver:Show()
 				self.vb.addIcon = 8
 			end
