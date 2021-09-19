@@ -7,8 +7,8 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210902000000)
-mod:SetMinSyncRevision(20210815000000)
+mod:SetHotfixNoticeRev(20210919000000)
+mod:SetMinSyncRevision(20210919000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -22,7 +22,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 348787",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 )
 
 --TODO, track https://ptr.wowhead.com/spell=354289/necrotic-miasma on infoframe?
@@ -117,6 +118,7 @@ mod.vb.frostBlastCount = 0
 mod.vb.freezingBlastCount = 0
 mod.vb.oblivionEchoCast = 0
 local playerPhased = false
+local activeBossGUIDS = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.echoIcon = 1
@@ -154,6 +156,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(activeBossGUIDS)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -275,14 +278,10 @@ function mod:SPELL_SUMMON(args)
 		if spellId == 352096 and self:AntiSpam(5, 3) then
 			warnFrostboundDevoted:Show()
 		elseif spellId == 352094 then
-			if self:AntiSpam(10, 4) then
+			if self:AntiSpam(5, 4) then
 				warnSoulReaver:Show()
-				self.vb.addIcon = 8
+--				self.vb.addIcon = 8
 			end
-			if self.Options.SetIconOnReaper then
-				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
-			end
-			self.vb.addIcon = self.vb.addIcon - 1
 		elseif spellId == 352092 and self:AntiSpam(5, 5) then
 			warnAbom:Show()
 		end
@@ -443,6 +442,23 @@ function mod:UNIT_DIED(args)
 		timerFrostBlastCD:Start(7.4)
 		if not self:IsLFR() then--LFR get continued march of forsaken adds instead
 			timerOnslaughtoftheDamnedCD:Start(45.1)
+		end
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
+			activeBossGUIDS[unitGUID] = true
+			local cid = self:GetUnitCreatureId(unitID)
+			if cid == 176974 then--Soul Reaver
+				if self.Options.SetIconOnReaper then
+					self:ScanForMobs(unitGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
+				end
+				self.vb.addIcon = self.vb.addIcon - 1
+			end
 		end
 	end
 end
