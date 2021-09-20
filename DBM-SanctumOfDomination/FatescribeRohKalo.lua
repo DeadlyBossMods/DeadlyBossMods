@@ -362,7 +362,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.NPAuraOnBurdenofDestiny then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
-		else
+		elseif self:IsHard() then--Normal and LFR just blow it up, it doesn't do any damage
 			specWarnBurdenofDestiny:Show()
 			specWarnBurdenofDestiny:Play("killmob")
 		end
