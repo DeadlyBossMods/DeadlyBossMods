@@ -33,6 +33,8 @@ local specWarnDemoralizingShout				= mod:NewSpecialWarningInterrupt(330562, "Has
 --Notable Kul'tharok Trash
 local specWarnBindSoul						= mod:NewSpecialWarningInterrupt(330810, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDeathWinds					= mod:NewSpecialWarningDodge(333294, nil, nil, nil, 2, 2)--Maybe change to airhorn?
+--Other trash that apparently wasn't notable enough for guide
+local specWarnBoneSpikes					= mod:NewSpecialWarningDodge(331237, nil, nil, nil, 2, 2)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -68,6 +70,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 333294 and self:AntiSpam(3, 2) then
 		specWarnDeathWinds:Show()
 		specWarnDeathWinds:Play("watchstep")
+	elseif spellId == 331237 and self:AntiSpam(3, 2) then
+		specWarnBoneSpikes:Show()
+		specWarnBoneSpikes:Play("watchstep")
 	elseif spellId == 333861 then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "RicochetingTarget", 0.1, 4)
 	end
