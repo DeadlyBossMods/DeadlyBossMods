@@ -45,7 +45,7 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 --Droman Oulfarran
 local timerBewilderingPollenCD			= mod:NewCDTimer(15.8, 323137, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--15.8-20.6, unsure if spellqueue causes the variation or just inconsistent energy rates
 local timerTearsoftheForestCD			= mod:NewCDTimer(15.8, 323177, nil, nil, nil, 3)--15.8-20.6, unsure if spellqueue causes the variation or just inconsistent energy rates
-local timerDromansWrath					= mod:NewBuffActiveTimer(12, 323059, nil, nil, nil, 6)
+local timerDromansWrath					= mod:NewBuffActiveTimer(15, 323059, nil, nil, nil, 6)
 
 function mod:OnCombatStart(delay)
 	--Not 100% sure boss timers start here or Soul Shackle, Droman's timers def start at soul Shackle
@@ -96,7 +96,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTearsoftheForestCD:Start(13.5)
 	elseif spellId == 323059 then
 		warnDromansWrath:Show(args.destName)
-		timerDromansWrath:Start(12)
+		timerDromansWrath:Start(15)
 		--Boss
 		--timerEmbraceDarknessCD:Stop()
 		--timerRepulsiveVisageCD:Stop()
