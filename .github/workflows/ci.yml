@@ -40,7 +40,7 @@ jobs:
           args: "--no-color -q"
 
       - name: Create Package
-        uses: BigWigsMods/packager@master
+        uses: QartemisT/packager@master
         if: ${{ github.event_name != 'pull_request' }}
         with:
           args: -n "DBM-${{ env.VERSION }}-${{ env.SHA }}{classic}"
