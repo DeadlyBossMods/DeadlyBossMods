@@ -87,7 +87,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-		warnInvestor					= "寄生平静在 %s",	
+		warnInvestor					= "寄生平静在 %s",
 		specWarnParasiticInfesterKick	= "寄生平静 - 快打断"
 })
 
