@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20200920
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20210924
 --夏一可，暴雪娱乐
 
 if GetLocale() ~= "zhCN" then return end
@@ -87,7 +87,8 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfesterKick	= "寄生平静 - 快打断"
+		warnInvestor					= "寄生平静在 %s",
+		specWarnParasiticInfesterKick	= "寄生平静 - 快打断"
 })
 
 L:SetTimerLocalization{
@@ -95,9 +96,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	warnInvestor					= "通告寄生平静的目标",
 	specWarnParasiticInfesterKick	= "需要打断寄生平静时显示特殊警告",
-	timerParasiticInfesterCD	= "显示寄生计时器",
-	yellParasiticInfester		= "当受到平静感染时大喊"
+	timerParasiticInfesterCD	= "显示寄生寄生计时器",
+	yellParasiticInfester		= "当受到寄生平静感染时大喊"
 })
 
 L:SetMiscLocalization({
@@ -285,4 +287,56 @@ L = DBM:GetModLocalization("SanguineDepthsTrash")
 
 L:SetGeneralLocalization({
 	name =	"赤红深渊小怪"
+})
+
+-----------------------
+-- <<<Tazavesh, the Veiled Market (1194J/2441M)>>> --
+-----------------------
+-----------------------
+-- Zo'phex the Sentinel --
+-----------------------
+--L= DBM:GetModLocalization(2437)
+
+-----------------------
+-- The Menagerie --
+-----------------------
+--L= DBM:GetModLocalization(2454)
+
+-----------------------
+-- Mailroom Mayhem --
+-----------------------
+--L= DBM:GetModLocalization(2436)
+
+-----------------------
+-- Au'myza's Oasis --
+-----------------------
+--L= DBM:GetModLocalization(2452)
+
+-----------------------
+-- So'azmi --
+-----------------------
+--L= DBM:GetModLocalization(2451)
+
+-----------------------
+-- Hylbrande --
+-----------------------
+--L= DBM:GetModLocalization(2448)
+
+-----------------------
+-- Timecap'n Hooktail --
+-----------------------
+--L= DBM:GetModLocalization(2449)
+
+-----------------------
+-- So'leah --
+-----------------------
+--L= DBM:GetModLocalization(2455)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("TazaveshTrash")
+
+L:SetGeneralLocalization({
+	name =	"塔扎维什小怪"
 })
