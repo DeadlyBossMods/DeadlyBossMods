@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175725)
 mod:SetEncounterID(2433)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210902000000)
-mod:SetMinSyncRevision(20210713000000)
+mod:SetHotfixNoticeRev(20210926000000)
+mod:SetMinSyncRevision(20210926000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350803 350828 348074 349030 349031 350847 350816 351413 355914 348974 350453",
 	"SPELL_CAST_SUCCESS 350022 351835",
-	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805 358609 358610 351827",
+	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805 358609 358610 351827 351413",
 	"SPELL_AURA_APPLIED_DOSE 348969",
 	"SPELL_AURA_REMOVED 351825 348805 355240 355245 358610 351827",
 --	"SPELL_PERIODIC_DAMAGE 352559",
@@ -202,7 +202,7 @@ function mod:SPELL_CAST_START(args)
 		timerDesolationBeamCD:Start(nil, self.vb.beamCount+1)
 	elseif spellId == 350816 then--TODO, remove antispam if they don't cast it at same time
 		timerSpreadingMiseryCD:Start(nil, args.sourceGUID)
-	elseif spellId == 351413 then
+	elseif spellId == 351413 and self:AntiSpam(8, 1) then
 		self.vb.glareCount = self.vb.glareCount + 1
 		specWarnAnnihilatingGlare:Show()
 		specWarnAnnihilatingGlare:Play("laserrun")
@@ -316,6 +316,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSpreadingMiseryFades:Countdown(spellId)
 		end
 		warnSpreadingMisery:CombinedShow(0.3, args.destName)
+	elseif spellId == 351413 and self:AntiSpam(8, 1) then
+		self.vb.glareCount = self.vb.glareCount + 1
+		specWarnAnnihilatingGlare:Show()
+		specWarnAnnihilatingGlare:Play("laserrun")
+		timerAnnihilatingGlareCD:Start(47.3, self.vb.glareCount+1)
 	elseif spellId == 348805 then--Stygian Darkshield (Entering Adds phase)
 		timerAnnihilatingGlareCD:Stop()
 		self:SetStage(2)
