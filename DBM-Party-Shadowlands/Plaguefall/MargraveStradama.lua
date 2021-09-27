@@ -46,11 +46,10 @@ function mod:OnCombatStart(delay)
 	self.vb.sinkPhase = false
 	self.vb.sinkPhaseCount = 0
 	timerMalignantGrowthCD:Start(5.6-delay)
-	timerInfectiousRainCD:Start(19.1-delay)
+	timerInfectiousRainCD:Start(15.3-delay)
 --	if self:IsMythic() then
 --		timerPlagueCrashCD:Start(14.4)
 --	end
-	DBM:AddMsg("Infectious rain timer will be wrong until updated post hotfixes")
 end
 
 function mod:OnCombatEnd()
@@ -139,9 +138,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		self.vb.sinkPhase = false
 		if self.vb.sinkPhaseCount == 1 then
 			timerMalignantGrowthCD:Start(5.6)
-			timerInfectiousRainCD:Start(19.1)
-		else--2
-			timerInfectiousRainCD:Start(6)
 		end
+		timerInfectiousRainCD:Start(15.3)
 	end
 end
