@@ -7,19 +7,19 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210919000000)
-mod:SetMinSyncRevision(20210919000000)
+mod:SetHotfixNoticeRev(20211006000000)
+mod:SetMinSyncRevision(20211006000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198 358999",
+	"SPELL_CAST_START 348071 348428 346459 362566 352999 347291 362568 352997 348756 362569 353000 352293 349799 355127 352379 355055 352355 352348 354198 358999 362494 362565",
 	"SPELL_CAST_SUCCESS 181113",
 	"SPELL_SUMMON 352096 352094 352092 346469",
 	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
 	"SPELL_AURA_APPLIED_DOSE 352051",
-	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 348787",
+	"SPELL_AURA_REMOVED 354198 362494 348978 347292 355948 353808 348760 355389 348787",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, nameplate aura that shows X or ✔️ over nameplate when it's ok to kill
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
-(ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 358999) and type = "begincast"
+(ability.id = 348071 or ability.id = 362565 or ability.id = 346459 or ability.id = 362566 or ability.id = 352999 or ability.id = 347291 or ability.id = 362568 or ability.id = 352997 or ability.id = 348756 or ability.id = 362569 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 362494 or ability.id = 358999 or ability.id = 355127) and type = "begincast"
  or ability.id = 352530 or ability.id = 352051 or ability.id = 181113
  or (ability.id = 352096 or ability.id = 352094 or ability.id = 352092) and type = "summon"
  or target.id = 176929 and type = "death"
@@ -84,7 +84,7 @@ local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, ni
 local timerHowlingBlizzardCD						= mod:NewCDTimer(114.3, 354198, nil, nil, nil, 2)--Boss Mana timer
 local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, nil, 5)
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
-local timerSoulFractureCD							= mod:NewCDTimer(32.8, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSoulFractureCD							= mod:NewCDTimer(32.7, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Healer", nil, 5)
 local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 		timerFrostBlastCD:Start(42.1-delay)
 		timerHowlingBlizzardCD:Start(85.8-delay)
 	else
-		timerSoulFractureCD:Start(10.6-delay)--10.6-13.7
+		timerSoulFractureCD:Start(10-delay)--10-13.7
 		timerOblivionsEchoCD:Start(14.3-delay)--14-18.3
 		timerGlacialWrathCD:Start(24-delay)
 		timerFrostBlastCD:Start(45-delay)--45.3-49
@@ -170,26 +170,26 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 348071 then
+	if spellId == 348071 or spellId = 362565 then
 		self.vb.shardIcon = 8
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSoulFracture:Show()
 			specWarnSoulFracture:Play("carefly")
 		end
-		timerSoulFractureCD:Start()
+		timerSoulFractureCD:Start()--32.7
 	elseif spellId == 348428 and self:AntiSpam(3, 1) then
 		warnPiercingWail:Show()
-	elseif spellId == 352999 or spellId == 346459 then--346459 confirmed heroic/heroic, 352999 unknown
+	elseif spellId == 352999 or spellId == 346459 or spellId = 362566 then--346459 confirmed heroic/heroic, 352999 unknown
 		self.vb.wrathIcon = 1
 		self.vb.spikeIcon = 1
-		timerGlacialWrathCD:Start()
-	elseif spellId == 347291 or spellId == 352997 then--347291 confirmed heroic,
+		timerGlacialWrathCD:Start()--109.9
+	elseif spellId == 347291 or spellId == 352997 or spellId == 362568 then--347291 confirmed heroic,
 		self.vb.oblivionEchoCast = self.vb.oblivionEchoCast + 1
 		self.vb.echoIcon = 1
 		timerOblivionsEchoCD:Start(self.vb.oblivionEchoCast == 1 and 61.1 or 37)--Still possibly not best way to code it
-	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 then--348756 P1 358999 P2, 353000 unknown
+	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 or spellId == 362569 then--348756 P1 358999 P2, 353000 unknown, 362569 New Mythic P1
 		self.vb.frostBlastCount = self.vb.frostBlastCount + 1
-		timerFrostBlastCD:Start(self.vb.phase == 3 and 12.9 or self.vb.frostBlastCount % 2 == 0 and 69.1 or 40.1)
+		timerFrostBlastCD:Start(self.vb.phase == 3 and 12.9 or self.vb.frostBlastCount % 2 == 0 and 69.1 or 40)
 	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
 		self:SetStage(2)
@@ -206,11 +206,11 @@ function mod:SPELL_CAST_START(args)
 		timerFrostBlastCD:Stop()
 		--Start KTs destruction cast timer
 		timerVengefulDestruction:Start()
-		--Start Remnant timers (may not start here but when he's actually engaged/attacked after entering zone
-		timerFreezingBlastCD:Start(6.8, 1)
-		if self:IsMythic() then
-			timerFoulWindsCD:Start(6.1)
-		end
+		--Remnant timers start when engaged, not when this cast starts
+--		timerFreezingBlastCD:Start(6.8, 1)
+--		if self:IsMythic() then
+--			timerFoulWindsCD:Start(6.1)
+--		end
 	elseif spellId == 349799 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			warnDemolish:Show()
@@ -248,7 +248,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 352348 then--Onsalught of the Damned
 		warnOnslaughtoftheDamned:Show()
 		timerOnslaughtoftheDamnedCD:Start()
-	elseif spellId == 354198 then
+	elseif spellId == 354198 or spellId = 362494 then
 		if not playerPhased then
 			specWarnHowlingBlizzard:Show()
 			specWarnHowlingBlizzard:Play("watchstep")
@@ -369,11 +369,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerFrostBlastCD:Start(41.6)
 				timerHowlingBlizzardCD:Start(86.5)
 			else
-				timerSoulFractureCD:Start(10.2)
-				timerOblivionsEchoCD:Start(14.1)--14.1-15.1.
-				timerGlacialWrathCD:Start(24.9)--24.9-25.1. Is 24.9 the new low?
-				timerFrostBlastCD:Start(47.1)--47-48.5
-				timerDarkEvocationCD:Start(50.6)--50-52.3
+				timerSoulFractureCD:Start(10)
+				timerOblivionsEchoCD:Start(14.1)--14.1-15.1
+				timerGlacialWrathCD:Start(24.6)--24.6-25.1
+				timerFrostBlastCD:Start(46.5)--46.5-48.5
+				timerDarkEvocationCD:Start(49.5)--49.5-52.3
 				timerHowlingBlizzardCD:Start(91.9)
 			end
 		end
@@ -393,7 +393,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 354198 then
+	if spellId == 354198 or spellId == 362494 then
 		timerHowlingBlizzard:Stop()
 	elseif spellId == 347292 then
 		if self.Options.SetIconOnEcho then
@@ -441,7 +441,7 @@ function mod:UNIT_DIED(args)
 		timerFrostBlastCD:Stop()
 		timerFrostBlastCD:Start(7.4)
 		if not self:IsLFR() then--LFR get continued march of forsaken adds instead
-			timerOnslaughtoftheDamnedCD:Start(45.1)
+			timerOnslaughtoftheDamnedCD:Start(self:IsMythic() and 15.3 or 45.1)
 		end
 	end
 end
