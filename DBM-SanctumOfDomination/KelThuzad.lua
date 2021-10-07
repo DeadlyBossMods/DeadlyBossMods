@@ -170,7 +170,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 348071 or spellId = 362565 then
+	if spellId == 348071 or spellId == 362565 then
 		self.vb.shardIcon = 8
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSoulFracture:Show()
@@ -179,7 +179,7 @@ function mod:SPELL_CAST_START(args)
 		timerSoulFractureCD:Start()--32.7
 	elseif spellId == 348428 and self:AntiSpam(3, 1) then
 		warnPiercingWail:Show()
-	elseif spellId == 352999 or spellId == 346459 or spellId = 362566 then--346459 confirmed heroic/heroic, 352999 unknown
+	elseif spellId == 352999 or spellId == 346459 or spellId == 362566 then--346459 confirmed heroic/heroic, 352999 unknown
 		self.vb.wrathIcon = 1
 		self.vb.spikeIcon = 1
 		timerGlacialWrathCD:Start()--109.9
@@ -248,7 +248,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 352348 then--Onsalught of the Damned
 		warnOnslaughtoftheDamned:Show()
 		timerOnslaughtoftheDamnedCD:Start()
-	elseif spellId == 354198 or spellId = 362494 then
+	elseif spellId == 354198 or spellId == 362494 then
 		if not playerPhased then
 			specWarnHowlingBlizzard:Show()
 			specWarnHowlingBlizzard:Play("watchstep")
