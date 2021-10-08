@@ -117,7 +117,6 @@ mod.vb.frostBlastCount = 0
 mod.vb.freezingBlastCount = 0
 mod.vb.oblivionEchoCast = 0
 local playerPhased = false
-local activeBossGUIDS = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.echoIcon = 1
@@ -155,7 +154,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(activeBossGUIDS)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -450,23 +448,6 @@ function mod:UNIT_DIED(args)
 end
 
 --[[
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		local unitGUID = UnitGUID(unitID)
-		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
-			activeBossGUIDS[unitGUID] = true
-			local cid = self:GetUnitCreatureId(unitID)
-			if cid == 176974 then--Soul Reaver
-				if self.Options.SetIconOnReaper then
-					self:ScanForMobs(unitGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
-				end
-				self.vb.addIcon = self.vb.addIcon - 1
-			end
-		end
-	end
-end
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
