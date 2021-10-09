@@ -9,9 +9,9 @@ mod:SetUsedIcons(1, 2, 3, 4)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 336499 321834 321873 321828 321669",
+	"SPELL_CAST_START 336499 321471 321834 321873 321828 321669",
 	"SPELL_AURA_APPLIED 321891 321828",
-	"SPELL_AURA_REMOVED 321891 336499"
+	"SPELL_AURA_REMOVED 321891 336499 321471"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -40,7 +40,7 @@ local timerFreezeTagCD				= mod:NewCDTimer(21.9, 321873, nil, nil, nil, 3)
 local timerPattyCakeCD				= mod:NewCDTimer(20.6, 321828, nil, nil, nil, 3)--20-26
 
 mod:AddNamePlateOption("NPAuraOnFixate", 321891)
-mod:AddSetIconOption("SetIconOnAdds", "ej21691", true, true, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnAdds2", "ej21691", false, true, {1, 2, 3, 4})
 
 local seenAdds = {}
 mod.vb.addIcon = 1
@@ -65,7 +65,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 336499 then
+	if spellId == 336499 or spellId == 321471 then
 		self.vb.addIcon = 1
 		warnGuessingGame:Show()
 	elseif spellId == 321834 and self:AntiSpam(8, 1) then
@@ -85,7 +85,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 321669 then
 		if not seenAdds[args.sourceGUID] then
 			seenAdds[args.sourceGUID] = true
-			if self.Options.SetIconOnAdds then--Only use up to 5 icons
+			if self.Options.SetIconOnAdds2 then--Only use up to 5 icons
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon + 1
@@ -127,7 +127,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
 		end
-	elseif spellId == 336499 then
+	elseif spellId == 336499 or spellId == 321471 then
 		warnGuessingGameOver:Show()
 	end
 end
