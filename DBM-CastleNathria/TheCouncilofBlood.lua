@@ -648,7 +648,7 @@ function mod:SPELL_CAST_START(args)
 			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
 		if self.Options.SetIconOnDutiful then
-			self:ScanForMobs(175992, 2, 8, 1, 0.2, 25, "SetIconOnDutiful")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
+			self:ScanForMobs(175992, 2, 8, 1, nil, 25, "SetIconOnDutiful")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
 		end
 	elseif spellId == 346800 then
 		specWarnWaltzofBlood:Show()
@@ -987,7 +987,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:337110") then
 		if self.Options.SetIconOnImage  then
-			self:ScanForMobs(172803, 2, 6, 1, 0.2, 10, "SetIconOnImage")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
+			self:ScanForMobs(172803, 2, 6, 1, nil, 10, "SetIconOnImage")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
 		end
 		local timer = allTimers[difficultyName][337110][self.vb.phase]
 		if timer then

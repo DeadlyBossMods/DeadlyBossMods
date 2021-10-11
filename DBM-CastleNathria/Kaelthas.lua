@@ -624,7 +624,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			for i = 1, #birdoTracker do
 				if i == 9 then return end--More birds than we have icons
 				if birdoTracker[i] == args.destGUID then
-					self:ScanForMobs(args.destGUID, 2, i+1, 1, 0.2, 10, "SetIconOnBirdo")
+					self:ScanForMobs(args.destGUID, 2, i+1, 1, nil, 10, "SetIconOnBirdo")
 					break
 				end
 			end

@@ -261,7 +261,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 176605 then--Soul Shard
 			if self.Options.SetIconOnShards then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.shardIcon, 1, 0.2, 12, "SetIconOnShards", nil, nil, nil, true)
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.shardIcon, 1, nil, 12, "SetIconOnShards", nil, nil, true)
 			end
 			self.vb.shardIcon = self.vb.shardIcon - 1
 		end
@@ -280,7 +280,7 @@ function mod:SPELL_SUMMON(args)
 				self.vb.addIcon = 8
 			end
 			if self.Options.SetIconOnReaper then
-				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
+				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnReaper", nil, nil, true)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		elseif spellId == 352092 and self:AntiSpam(8, 5) then
@@ -288,7 +288,7 @@ function mod:SPELL_SUMMON(args)
 		end
 	elseif spellId == 346469 then--Glacial Spikes
 		if self.Options.SetIconOnGlacialSpike then
-			self:ScanForMobs(args.destGUID, 2, self.vb.spikeIcon, 1, 0.2, 12, "SetIconOnGlacialSpike", nil, nil, nil, true)
+			self:ScanForMobs(args.destGUID, 2, self.vb.spikeIcon, 1, nil, 12, "SetIconOnGlacialSpike", nil, nil, true)
 		end
 		self.vb.spikeIcon = self.vb.spikeIcon + 1
 	end

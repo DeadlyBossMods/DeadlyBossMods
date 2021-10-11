@@ -420,7 +420,7 @@ function mod:SPELL_SUMMON(args)
 			updateAllTimers(self, 3.5)
 		end
 		if self.Options.SetIconOnOrbs then
-			self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, 0.2, 12, "SetIconOnOrbs")
+			self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, nil, 12, "SetIconOnOrbs")
 		end
 		self.vb.iconCount = self.vb.iconCount - 1
 	end

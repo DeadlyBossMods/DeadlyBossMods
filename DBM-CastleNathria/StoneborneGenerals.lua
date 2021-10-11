@@ -486,7 +486,7 @@ function mod:SPELL_SUMMON(args)
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
 		if self.Options.SetIconOnShadowForces then
 			local icon = spellId == 342257 and (markingSet == "SetOne" and 8 or 6) or spellId == 342258 and 7 or (markingSet == "SetOne" and 6 or 8)
-			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12, "SetIconOnShadowForces")
+			self:ScanForMobs(args.destGUID, 2, icon, 1, nil, 12, "SetIconOnShadowForces")
 		end
 		timerWickedSlaughterCD:Start(6.1, args.destGUID)
 	end

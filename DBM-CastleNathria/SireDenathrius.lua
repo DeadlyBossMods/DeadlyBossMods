@@ -382,7 +382,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 --			if self.Options.SetIconOnBalefulShadows and self.vb.addIcon > 3 then--Only use up to 5 icons
---				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnBalefulShadows")
+--				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnBalefulShadows")
 --			end
 --			self.vb.addIcon = self.vb.addIcon - 1
 		end
@@ -661,7 +661,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
 		end
 		if self.Options.SetIconOnBalefulShadows then--Only use up to 5 icons
-			self:ScanForMobs(175205, 0, 8, 2, 0.2, 25, "SetIconOnBalefulShadows")
+			self:ScanForMobs(175205, 0, 8, 2, nil, 25, "SetIconOnBalefulShadows")
 		end
 	end
 end

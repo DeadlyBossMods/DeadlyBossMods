@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadesofBargast:Play("targetchange")
 		timerShadesofBargastCD:Start()
 		if self.Options.SetIconOnShades then
-			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15, "SetIconOnShades")--Start at 4 ascending up
+			self:ScanForMobs(171557, 1, 4, 2, nil, 15, "SetIconOnShades")--Start at 4 ascending up
 		end
 		timerSpreadshotCD:Stop()--At very least halts timer, not sure what restart time is since sinseeker restart will automatically alter it anyways
 	elseif spellId == 334852 then
