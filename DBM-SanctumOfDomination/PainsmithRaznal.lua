@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
-mod:SetHotfixNoticeRev(20210803000000)--2021-08-03
+mod:SetHotfixNoticeRev(20211012000000)--2021-10-12
 mod:SetMinSyncRevision(20210715000000)
 mod.respawnTime = 29
 
@@ -157,13 +157,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 348508 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerReverberatingHammerCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
+		timerReverberatingHammerCD:Start(self:IsMythic() and 20.1 or 24.2, self.vb.weaponCount+1)
 	elseif spellId == 355568 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerCruciformAxeCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
+		timerCruciformAxeCD:Start(self:IsMythic() and 20.1 or 19.3, self.vb.weaponCount+1)
 	elseif spellId == 355778 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerDualbladeScytheCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
+		timerDualbladeScytheCD:Start(self:IsMythic() and 20.1 or 24.2, self.vb.weaponCount+1)
 	elseif spellId == 348456 then
 		DBM:Debug("Traps added to combat log")
 	elseif spellId == 355504 then
