@@ -177,7 +177,7 @@ function mod:OnCombatStart(delay)
 		timerFragmentsofDestinyCD:Start(4.5-delay, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(OVERVIEW)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
+			DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, true, true)
 		end
 	end
 	berserkTimer:Start(300-delay)--Phase 1
@@ -399,7 +399,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnFragmentsofDestiny:Show(self:IconNumToTexture(icon))
 				specWarnFragmentsofDestiny:Play("targetyou")
-				if icon < 9 then
+				if icon > 0 and icon < 9 then
 					yellFragmentsofDestiny:Yell(icon, icon)
 				end
 			end
