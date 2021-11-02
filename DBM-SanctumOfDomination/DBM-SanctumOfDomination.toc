@@ -1,5 +1,5 @@
-## Interface: 90100
-## X-Min-Interface: 90100
+## Interface: 90105
+## X-Min-Interface: 90105
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sanctum of Domination|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0지배의 성소|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0统御圣所|r
