@@ -18,11 +18,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition2	= "Показывать вашу текущию позицию в очереди",
-	specWarnYourNext	= "Спец-предупреждение, когда подходит ваша очередь сражаться",
-	specWarnYourTurn	= "Спец-предупреждение о начале вашего боя",
+	warnQueuePosition2	= "Показывать Вашу текущию позицию в очереди",
+	specWarnYourNext	= "Спецпредупреждение, когда подходит Ваша очередь сражаться",
+	specWarnYourTurn	= "Спецпредупреждение о начале Вашего боя",
 	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев<br/>(Персональные 'спец-предупреждения' зрителям не отображаются)",
-	SpeakOutQueue		= "Объявлять голосом вашу текущую позицию в очереди"
+	SpeakOutQueue		= "Объявлять голосом Вашу текущую позицию в очереди"
 })
 
 L:SetMiscLocalization({
@@ -40,7 +40,7 @@ L:SetMiscLocalization({
 	Rank9			= "9-го ранга",
 	Rank10			= "10-го ранга",
 	Proboskus		= "Ух ты!... Мне тебя жаль, но, похоже, тебе придется сразиться с Носатиком.",--Альянс
-	Proboskus2		= "Ha ha ha! What bad luck you have! It's Proboskus! Ahhh ha ha ha! I've got twenty five gold that says you die in the fire!"--Орда
+	Proboskus2		= "Ха-ха-ха! Какая у вас плохая удача! Это Носатик! Аххх ха-ха-ха! У меня есть двадцать пять золотых, в которых написано, что ты умрешь в огне!"--Орда
 })
 
 ------------
@@ -160,7 +160,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886",
-	specWarnRPS			= "Спец-предупреждение что использовать для $spell:141206"
+	specWarnRPS			= "Спецпредупреждение, что использовать для $spell:141206"
 })
 
 L:SetMiscLocalization({
