@@ -47,7 +47,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	Emerged			= "Предупреждение, когда Ахун появляется",
-	specWarnAttack	= "Спец-предупреждение, когда Ахун становится уязвим",
+	specWarnAttack	= "Спецпредупреждение, когда Ахун становится уязвим",
 	SubmergeTimer	= "Отсчет времени до исчезновения",
 	EmergeTimer		= "Отсчет времени до появления"
 })
@@ -62,13 +62,13 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
-	specWarnBrew		= "Избавьтесь от варева прежде, чем она бросит вам другое!",
+	specWarnBrew		= "Избавьтесь от варева, прежде чем она бросит вам другое!",
 	specWarnBrewStun	= "СОВЕТ: Вы получили удар, не забудьте выпить варево в следующий раз!"
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "Спец-предупреждение для $spell:47376",
-	specWarnBrewStun	= "Спец-предупреждение для $spell:47340"
+	specWarnBrew		= "Спецпредупреждение для $spell:47376",
+	specWarnBrewStun	= "Спецпредупреждение для $spell:47340"
 })
 
 L:SetMiscLocalization({
@@ -89,7 +89,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase				= "Предупреждение о смене фаз",
 	warnHorsemanSoldiers	= "Предупреждать о призыве Пульсирующих тыкв",
-	warnHorsemanHead		= "Спец-предупрежение о появлении головы всадника"
+	warnHorsemanHead		= "Спецпредупрежение о появлении головы всадника"
 })
 
 L:SetMiscLocalization({
@@ -126,7 +126,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	warnTotalAdds	= "Объявлять общее число появившихся аддов между каждой большой волной",
-	specWarnWave	= "Спец-предупреждение когда начинается большая волна",
+	specWarnWave	= "Спецпредупреждение, когда начинается большая волна",
 	timerWave		= "Отсчет времени до следующей большой волны"
 })
 
