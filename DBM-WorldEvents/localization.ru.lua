@@ -89,7 +89,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase				= "Предупреждение о смене фаз",
 	warnHorsemanSoldiers	= "Предупреждать о призыве Пульсирующих тыкв",
-	warnHorsemanHead		= "Спецпредупрежение о появлении головы всадника"
+	warnHorsemanHead		= "СпецпредупрежДение о появлении головы всадника"
 })
 
 L:SetMiscLocalization({
