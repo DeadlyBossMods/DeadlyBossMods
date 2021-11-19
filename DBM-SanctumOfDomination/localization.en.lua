@@ -83,5 +83,5 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("SanctumofDomTrash")
 
 L:SetGeneralLocalization({
-	name =	"Sanctum of Domination Trash"
+	name =	"SoD Trash"
 })

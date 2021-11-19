@@ -33,6 +33,7 @@ move-folders:
   DBM-Shadowlands/DBM-Shadowlands: DBM-Shadowlands
   DBM-Shadowlands/DBM-CastleNathria: DBM-CastleNathria
   DBM-Shadowlands/DBM-SanctumOfDomination: DBM-SanctumOfDomination
+  DBM-Shadowlands/DBM-Sepulcher: DBM-Sepulcher
   DBM-Shadowlands/DBM-Core: DBM-Core
   DBM-Shadowlands/DBM-GUI: DBM-GUI
   DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers

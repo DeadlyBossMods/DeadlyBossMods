@@ -1,0 +1,30 @@
+## Interface: 90105
+## X-Min-Interface: 90200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sepulcher of the First Ones|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMSepulcher_AllSavedVars
+## SavedVariablesPerCharacter: DBMSepulcher_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-Name: Sepulcher of the First Ones
+## X-DBM-Mod-Sort: 306
+## X-DBM-Mod-MapID: 2481
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 8
+localization.en.lua
+SolitaryGuardian.lua
+Dausegne.lua
+ArtificerXymox.lua
+PrototypePantheon.lua
+Lihuvim.lua
+Skolex.lua
+Halondrus.lua
+AnduinWrynn.lua
+LordsofDread.lua
+Rygelon.lua
+TheJailer.lua
+SepulcherTrash.lua

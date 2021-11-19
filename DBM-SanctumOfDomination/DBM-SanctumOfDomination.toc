@@ -13,10 +13,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-Mod-Name: Sanctum of Domination
-## X-DBM-Mod-Name-koKR: 지배의 성소
-## X-DBM-Mod-Name-zhCN: 统御圣所
-## X-DBM-Mod-Name-zhTW: 統御聖所
 ## X-DBM-Mod-Sort: 307
 ## X-DBM-Mod-MapID: 2450
 ## X-DBM-Mod-MinCoreRevision: 17286
