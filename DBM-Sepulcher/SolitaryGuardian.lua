@@ -12,54 +12,119 @@ mod:SetEncounterID(2512)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 360412 365257 361001 360176 360162",
+	"SPELL_CAST_SUCCESS 360412 364425 360357 360362 364881",
+	"SPELL_SUMMON 360848 360623",
+	"SPELL_AURA_APPLIED 363447 363467 364619 363649 360458 364447 359610 360415 364881 364962",
+	"SPELL_AURA_APPLIED_DOSE 364447",
+	"SPELL_AURA_REMOVED 363447 364881",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, properly detecting phasing and adds activating/deactivating
+--TODO, improvements for https://ptr.wowhead.com/spell=360403/force-field?
+--TODO, https://ptr.wowhead.com/spell=364425/surge target scanable? it's instant cast...Does it need throttle?
+--TODO improve adds warnings/timers epsecially tank add which needs two timers probably
+--TODO, adjust tank swap stacks for dissonance, if it's even swapped (and not just add soft enrage)
+--TODO, verify/optimize blast target scan
+--TODO, https://ptr.wowhead.com/spell=360654/point-defense-drone useful?
+--TODO, proper energy Conversion cast and alert prio
+--General
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+--Automa
+local warnFormSentryAutoma						= mod:NewCountAnnounce(365257, 2)
+local warnSmallCore								= mod:NewTargetNoFilterAnnounce(363467, 2)
+local warnMediumCore							= mod:NewTargetNoFilterAnnounce(364619, 2)
+local warnLargeCore								= mod:NewTargetNoFilterAnnounce(363649, 2)
+local warnUnstableCore							= mod:NewTargetNoFilterAnnounce(360458, 3)
+local warnSurge									= mod:NewSpellAnnounce(364425, 3)
+local warnWaveofDesintegration					= mod:NewCountAnnounce(361001, 4, nil, "Melee")
+local warnDissonance							= mod:NewStackAnnounce(364447, 2, nil, "Tank|Healer")
+local warnBlast									= mod:NewTargetNoFilterAnnounce(360176, 3)
+--Stage One: Automated Defense Systems Online!
+local warnEnergyConversion						= mod:NewCountAnnounce(360362, 2)
+local warnDeresolution							= mod:NewTargetAnnounce(359610, 3)
+local warnExposedCore							= mod:NewCastAnnounce(360412, 4)
+--Stage Two: Roll Out, then Transform
+local warnMatterDisoilution						= mod:NewTargetNoFilterAnnounce(364881, 4)
 
---local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
-
---local specWarnInvokeDestiny					= mod:NewSpecialWarningMoveAway(351680, nil, nil, nil, 1, 2)
---local yellInvokeDestiny						= mod:NewYell(351680)
---local yellInvokeDestinyFades					= mod:NewShortFadesYell(351680)
+--Automa
+local specWarnPreFabricatedSentry				= mod:NewSpecialWarningSwitch(360848, "Tank", nil, nil, 1, 2)
+local specWarnDissonance						= mod:NewSpecialWarningStack(350202, nil, 3, nil, nil, 1, 6)
+local specWarnDissonanceTaunt					= mod:NewSpecialWarningTaunt(350202, nil, nil, nil, 1, 2)
+local specWarnBlast								= mod:NewSpecialWarningMoveAway(350202, nil, nil, nil, 1, 2)
+local yellBlast									= mod:NewYell(360176)
+--Stage One: Automated Defense Systems Online!
+local specWarnDeresolution						= mod:NewSpecialWarningMoveAway(359610, nil, nil, nil, 1, 2)--Change once clear how it works
+local yellDeresolution							= mod:NewYell(359610)
+local specWarnExposedCore						= mod:NewSpecialWarningMoveTo(360412, nil, nil, nil, 3, 2)
+--Stage Two: Roll Out, then Transform
+local specWarnSplitResolution					= mod:NewSpecialWarningDefensive(360162, nil, nil, nil, 1, 2)
+local specWarnDefenseless						= mod:NewSpecialWarningTaunt(360415, nil, nil, nil, 1, 2)
+local specWarnMatterDisolution					= mod:NewSpecialWarningYou(360415, nil, nil, nil, 1, 2)--Initial
+local specWarnMatterDisolutionOut				= mod:NewSpecialWarningMoveAway(360415, nil, nil, nil, 1, 2)--Delayed
+local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
 --local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
---Stage One: Scrying Fate
---local timerGrimPortentCD						= mod:NewAITimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+--Automa
+local timerFormSentryAutomaCD					= mod:NewAITimer(28.8, 365257, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Likely parent cast for all 3 add types?
+--Stage One: Automated Defense Systems Online!
+local timerEnergyConversionCD					= mod:NewAITimer(28.8, 360362, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerDeresolutionCD						= mod:NewAITimer(28.8, 359610, nil, nil, nil, 3)
+local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+--Stage Two: Roll Out, then Transform
+local timerSplitResolutionCD					= mod:NewAITimer(10, 360412, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerMatterDisolutionCD					= mod:NewAITimer(10, 360415, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Two tank mechanics?
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
---mod:AddInfoFrameOption(328897, true)
+mod:AddInfoFrameOption(360403, true)
 --mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
+mod:AddNamePlateOption("NPAuraOnPoweredDown", 363447, true)
+
+mod.vb.automaCount = 0
+mod.vb.conversionCount = 0
+local castsPerGUID = {}
+
+local shieldName = DBM:GetSpellInfo(360403)
+
+function mod:BlastTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnBlast:Show()
+		specWarnBlast:Play("runout")
+		yellBlast:Yell()
+	else
+		warnBlast:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
+	self:SetStage(1)
+	self.vb.automaCount = 0
+	self.vb.conversionCount = 0
+	timerFormSentryAutomaCD:Start(1-delay)
+	timerEnergyConversionCD:Start(1-delay)
+	timerDeresolutionCD:Start(1-delay)
+	if self.Options.NPAuraOnPoweredDown then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
+	table.wipe(castsPerGUID)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnPoweredDown then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
 --[[
@@ -68,60 +133,165 @@ function mod:OnTimerRecovery()
 end
 --]]
 
+local function delayedCoreCheck()
+	if not DBM:UnitAura("player", 360403) then--Use unit buff or unit debuff when known
+		specWarnExposedCore:Show(shieldName)
+		specWarnExposedCore:Play("findshelter")
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 351680 then
-
+	if spellId == 360412 then
+		warnExposedCore:Show()
+		timerExposedCore:Start()
+		self:Schedule(6, delayedCoreCheck)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(shieldName)
+			DBM.InfoFrame:Show(10, "playerbuff", shieldName)
+		end
+	elseif spellId == 365257 or spellId == 366026 then
+		self.vb.automaCount = self.vb.automaCount + 1
+		warnFormSentryAutoma:Show(self.vb.automaCount)
+		timerFormSentryAutomaCD:Start()
+	elseif spellId == 361001 then
+		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		warnWaveofDesintegration:Show(castsPerGUID[args.sourceGUID])
+	elseif spellId == 360176 then
+		self:BossTargetScanner(args.sourceGUID, "BlastTarget", 0.1, 12)
+	elseif spellId == 360162 then
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnSplitResolution:Show()
+			specWarnSplitResolution:Play("defensive")
+		end
+		timerSplitResolutionCD:Start()
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 353931 then
-
+	if spellId == 360412 then
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
+	elseif spellId == 364425 then
+		warnSurge:Show()
+	elseif spellId == 360357 or spellId == 360362 then
+		self.vb.conversionCount = self.vb.conversionCount + 1
+		warnEnergyConversion:Show(self.vb.conversionCount)
+		timerEnergyConversionCD:Start()
+	elseif spellId == 364881 then
+		timerMatterDisolutionCD:Start()
 	end
 end
---]]
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if (spellId == 360848 or spellId == 360623) and self:AntiSpam(5, 1) then--Not likley more than one at a time, but safetynet for drycode
+		specWarnPreFabricatedSentry:Show()
+		specWarnPreFabricatedSentry:Play("changetarget")--or bigmob
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 354365 then
---[[local amount = args.amount or 1
+	if spellId == 363447 then
+		if self.Options.NPAuraOnPoweredDown then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+		end
+	elseif args:IsSpellID(363467, 364619, 363649, 360458) then--Cores
+		if spellId == 363467 then
+			warnSmallCore:Show(args.destName)--use aggregation?
+		elseif spellId == 364619 then
+			warnMediumCore:Show(args.destName)--use aggregation?
+		elseif spellId == 363649 then
+			warnLargeCore:Show(args.destName)--use aggregation?
+		elseif spellId == 360458 then
+			warnUnstableCore:Show(args.destName)--use aggregation?
+		end
+	elseif spellId == 364447 then
+	local amount = args.amount or 1
 		if amount >= 3 then
 			if args:IsPlayer() then
-				specWarnUnendingStrike:Show(amount)
-				specWarnUnendingStrike:Play("stackhigh")
+				specWarnDissonance:Show(amount)
+				specWarnDissonance:Play("stackhigh")
 			else
 				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 				local remaining
 				if expireTime then
 					remaining = expireTime-GetTime()
 				end
-				if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then
-					specWarnUnendingStrikeTaunt:Show(args.destName)
-					specWarnUnendingStrikeTaunt:Play("tauntboss")
+				if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then--TODO, adjust remaining when Cd known
+					specWarnDissonanceTaunt:Show(args.destName)
+					specWarnDissonanceTaunt:Play("tauntboss")
 				else
-					warnUnendingStrike:Show(args.destName, amount)
+					warnDissonance:Show(args.destName, amount)
 				end
 			end
 		else
-			warnUnendingStrike:Show(args.destName, amount)
-		end--]]
+			warnDissonance:Show(args.destName, amount)
+		end
+	elseif spellId == 359610 then
+		timerDeresolutionCD:Start()--Move timer to cast event later
+		if args:IsPlayer() then
+			specWarnDeresolution:Show()
+			specWarnDeresolution:Play("laserrun")
+			yellDeresolution:Yell()
+		else
+			warnDeresolution:Show(args.destName)
+		end
+	elseif spellId == 360415 and not args:IsPlayer() then
+		specWarnDefenseless:Show(args.destName)
+		specWarnDefenseless:Play("tauntboss")
+	elseif spellId == 364881 then
+		if args:IsPlayer() then
+			specWarnMatterDisolution:Show()
+			specWarnMatterDisolution:Play("targetyou")
+			specWarnMatterDisolutionOut:Schedule(6.5)
+			specWarnMatterDisolutionOut:ScheduleVoice(6.5, "runout")
+			yellMatterDisolutionFades:Countdown(spellId, 5)
+		else
+			warnMatterDisoilution:Show(args.destName)
+		end
+	elseif spellId == 364962 and self.vb.phase < 3 then
+		self:SetStage(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+		--DO stage 2 timers stop? Like is this all boss does?
+		timerEnergyConversionCD:Stop()
+		timerSplitResolutionCD:Stop()
+		timerMatterDisolutionCD:Stop()
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 354365 then
-
+	if spellId == 363447 then
+		if self.Options.NPAuraOnPoweredDown then
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+		end
+	elseif spellId == 364881 then
+		if args:IsPlayer() then
+			specWarnMatterDisolutionOut:Cancel()
+			specWarnMatterDisolutionOut:CancelVoice()
+			yellMatterDisolutionFades:Cancel()
+		end
 	end
 end
 
 --[[
+--https://ptr.wowhead.com/npc=184540--Unknown
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 180323 then
+	if cid == 181850 then--Pre-Fabricated Sentry
+
+	elseif cid == 181859 then--Reclamated Materium
+
+	elseif cid == 181856 then--Point Defense Drone
 
 	end
 end
@@ -135,10 +305,18 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
+	if spellId == 361936 then--ROLL OUT!
+		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
+		timerFormSentryAutomaCD:Stop()
+		timerEnergyConversionCD:Stop()
+		timerDeresolutionCD:Stop()
+		timerEnergyConversionCD:Start(2)
+		timerSplitResolutionCD:Start(2)
+		timerMatterDisolutionCD:Start(2)
 	end
 end
---]]
