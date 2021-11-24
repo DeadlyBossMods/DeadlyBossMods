@@ -26,7 +26,12 @@ local L
 ---------------------------
 --  Prototype Pantheon --
 ---------------------------
---L= DBM:GetModLocalization(2460)
+L= DBM:GetModLocalization(2460)
+
+L:SetMiscLocalization({
+	Deathtouch		= "Deathtouch",
+	Dispel			= "Dispel"
+})
 
 ---------------------------
 --  Lihuvim, Principal Architect --

@@ -111,7 +111,7 @@ mod:AddSetIconOption("SetIconOnFormlessMass", 350342, true, true, {7, 8, 6})
 mod:AddNamePlateOption("NPAuraOnBrightAegis", 350158)
 
 local castsPerGUID = {}
-local fragmentTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
+local fragmentTargets = {}
 --local expectedDebuffs = 3
 
 mod.vb.valksDead = 11--1 not dead, 2 dead. 10s Kyra and 1s Signe
@@ -151,7 +151,7 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
-	fragmentTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
+	table.wipe(fragmentTargets)
 --	expectedDebuffs = self:IsMythic() and 4 or 3
 	self:SetStage(1)
 	self.vb.valksDead = 11
@@ -170,7 +170,7 @@ function mod:OnCombatStart(delay)
 	timerWingsofRageCD:Start(39.1-delay, 1)
 	--Signe
 	timerSongofDissolutionCD:Start(15.4-delay, 1)--15-19
-	timerReverberatingRefrainCD:Start(60.6-delay, 1)--60+
+	timerReverberatingRefrainCD:Start(60.3-delay, 1)--60+
 	--Skyja
 	timerCalloftheValkyrCD:Start(10.4-delay, 1)--10.4-15
 	if self:IsMythic() then
@@ -252,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnReverberatingRefrain:Show(args.sourceName)
 		specWarnReverberatingRefrain:Play("findshelter")
 --		if self.vb.valksDead == 11 or self.vb.valksDead == 21 then
-			timerReverberatingRefrainCD:Start(spellId == 350385 and 74.2 or 71.8, self.vb.refrainCount+1)
+			timerReverberatingRefrainCD:Start(spellId == 350385 and 72.8 or 71.8, self.vb.refrainCount+1)
 --		end
 	elseif spellId == 350467 then
 		self.vb.valkCount = self.vb.valkCount + 1
@@ -454,7 +454,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Combat log doesn't fire for each dose, removed removes ALL stacks
 		for i = 1, 8 do
 			if fragmentTargets[i] and fragmentTargets[i] == args.destName then--Found assignment matching this units name
-				fragmentTargets[i] = false--remove assignment
+				fragmentTargets[i] = nil--remove assignment
 			end
 		end
 		if self.Options.SetIconOnFragments then
