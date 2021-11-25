@@ -56,7 +56,7 @@ local specWarnRiftmaw							= mod:NewSpecialWarningTaunt(359976, nil, nil, nil, 
 local timerDustflailCD							= mod:NewAITimer(28.8, 359829, nil, nil, nil, 2)
 local timerRetchCD								= mod:NewAITimer(28.8, 360448, nil, nil, nil, 3)
 local timerDevouringBloodCD						= mod:NewAITimer(28.8, 364522, nil, nil, nil, 3)
-local timerDustBlastCD							= mod:NewAITimer(28.8, 359904, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--used for tank combo and blast, it's all together
+local timerDustBlastCD							= mod:NewAITimer(28.8, 359904, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--used for tank combo and blast, it's all together
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

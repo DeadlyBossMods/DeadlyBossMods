@@ -43,12 +43,12 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
 --local timerSummonCreationCD			= mod:NewCDTimer(13, 320358, nil, nil, nil, 1)
 local timerEmbalmingIchorCD			= mod:NewCDTimer(15.8, 327664, nil, nil, nil, 3)--Might be 18 now
-local timerSeverFleshCD				= mod:NewCDTimer(9.7, 334488, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSeverFleshCD				= mod:NewCDTimer(9.7, 334488, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerEscape					= mod:NewCastTimer(30, 320359, nil, nil, nil, 6)
 --Add
 local timerMutilateCD				= mod:NewCDTimer(11, 320376, nil, nil, nil, 3)
 local timerMeatHookCD				= mod:NewCDTimer(18, 322681, nil, nil, nil, 3)
---local timerStichNeedleCD			= mod:NewCDTimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)--Basically spammed
+--local timerStichNeedleCD			= mod:NewCDTimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Basically spammed
 
 mod.vb.bossDown = false
 
@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStichNeedle:CombinedShow(0.3, args.destName)
 	elseif spellId == 322681 then
 		if args:IsPlayer() then
-			specWarnMeatHook:Show(DBM_CORE_L.BOSS)
+			specWarnMeatHook:Show(DBM_COMMON_L.BOSS)
 			specWarnMeatHook:Play("targetyou")
 			yellMeatHook:Yell()
 			yellMeatHookFades:Countdown(spellId)

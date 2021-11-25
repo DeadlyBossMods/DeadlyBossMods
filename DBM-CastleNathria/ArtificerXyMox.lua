@@ -54,19 +54,19 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 
 mod:AddTimerLine(BOSS)
 local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3)
-local timerGlyphofDestructionCD						= mod:NewCDCountTimer(27.9, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
-local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_CORE_L.TANK_ICON)
+local timerGlyphofDestructionCD						= mod:NewCDCountTimer(27.9, 325361, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--27.9-58.6 for now
+local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_COMMON_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
 local timerRiftBlastCD								= mod:NewCDTimer(36, 335013, nil, nil, nil, 3)--36.3 except when it's reset by phase changes
-local timerHyperlightSparkCD						= mod:NewCDTimer(15.8, 325399, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--15.8 except when it's heavily spell queued
+local timerHyperlightSparkCD						= mod:NewCDTimer(15.8, 325399, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--15.8 except when it's heavily spell queued
 --Sire Denathrius' Private Collection
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22119))
 local timerFleetingSpiritsCD						= mod:NewCDTimer(40.8, 340758, 263222, nil, nil, 3)--40.8-46
 local timerSeedsofExtinctionCD						= mod:NewCDTimer(43.7, 329770, 205446, nil, nil, 5)--43-49. Shortname "Planting Seeds"
-local timerExtinction								= mod:NewCastTimer(16, 329107, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
-local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname "Annihilation"
-local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
-local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)
+local timerExtinction								= mod:NewCastTimer(16, 329107, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Annihilation"
+local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.DEADLY_ICON)
 
 --local berserkTimer								= mod:NewBerserkTimer(600)
 

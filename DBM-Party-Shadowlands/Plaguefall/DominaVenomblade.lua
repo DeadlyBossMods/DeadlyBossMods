@@ -39,7 +39,7 @@ local specWarnCytotoxicSlashTank	= mod:NewSpecialWarningDefensive(325552, nil, n
 local timerBroodAssassinsCD			= mod:NewCDTimer(35.2, 332313, nil, nil, nil, 1)
 local timerAmbushCD					= mod:NewCDTimer(19.4, 325245, nil, nil, nil, 3)--19.4-23
 local timerSolitaryPrey				= mod:NewBuffFadesTimer(6, 336258, nil, nil, nil, 5)
-local timerCytotoxicSlashCD			= mod:NewCDTimer(20.6, 325552, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--20-23
+local timerCytotoxicSlashCD			= mod:NewCDTimer(20.6, 325552, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--20-23
 
 mod:AddRangeFrameOption(5, 325245)
 

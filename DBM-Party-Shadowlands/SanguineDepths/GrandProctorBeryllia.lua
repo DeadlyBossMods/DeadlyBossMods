@@ -28,9 +28,9 @@ local specWarnIronSpikes			= mod:NewSpecialWarningDefensive(325254, "Tank|Healer
 local specWarnEndlessTorment		= mod:NewSpecialWarningMoveAway(326039, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerIronSpikesCD				= mod:NewCDTimer(31.6, 325254, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Change to next if the custom rule for 2nd cast works out good
-local timerRiteofSupremacyCD		= mod:NewNextCountTimer(34.5, 325360, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
-local timerRiteofSupremacy			= mod:NewCastTimer(10, 325360, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
+local timerIronSpikesCD				= mod:NewCDTimer(31.6, 325254, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Change to next if the custom rule for 2nd cast works out good
+local timerRiteofSupremacyCD		= mod:NewNextCountTimer(34.5, 325360, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerRiteofSupremacy			= mod:NewCastTimer(10, 325360, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerEndlessTormentCD			= mod:NewNextTimer(38.8, 326039, nil, nil, nil, 2)
 
 mod:AddRangeFrameOption(6, 325885)

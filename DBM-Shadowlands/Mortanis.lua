@@ -30,9 +30,9 @@ local specWarnScreamingSkull				= mod:NewSpecialWarningMoveTo(338851, nil, nil, 
 local specWarnUnrulyremains					= mod:NewSpecialWarningDodge(338849, nil, nil, nil, 2, 2)
 
 local timerSpineCrawlCD						= mod:NewCDTimer(21.6, 338848, nil, nil, nil, 3)
-local timerFrenzyCD							= mod:NewCDTimer(33.2, 338847, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
-local timerScreamingSkullCD					= mod:NewCDTimer(31.6, 338851, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
-local timerBoneCleaveCD						= mod:NewCDTimer(12.3, 338846, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerFrenzyCD							= mod:NewCDTimer(33.2, 338847, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
+local timerScreamingSkullCD					= mod:NewCDTimer(31.6, 338851, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerBoneCleaveCD						= mod:NewCDTimer(12.3, 338846, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerUnrulyRemainsCD					= mod:NewCDTimer(15.6, 338849, nil, nil, nil, 3)--15.6-20
 
 mod:AddSetIconOption("SetIconOnSkull", 338851, true, false, {1})
@@ -132,7 +132,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 338851 then
 		if args:IsPlayer() then
-			specWarnScreamingSkull:Show(DBM_CORE_L.ALLIES)
+			specWarnScreamingSkull:Show(DBM_COMMON_L.ALLIES)
 			specWarnScreamingSkull:Play("gathershare")
 		else
 			warnScreamingSkull:Show(args.destName)

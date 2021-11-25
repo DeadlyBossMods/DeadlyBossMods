@@ -55,13 +55,13 @@ local specWarnFuryoftheAges							= mod:NewSpecialWarningDispel(347490, "RemoveE
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerOverpowerCD								= mod:NewCDCountTimer(27.9, 346985, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerOverpowerCD								= mod:NewCDCountTimer(27.9, 346985, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerChainsofEternityCD						= mod:NewCDCountTimer(27.9, 347269, nil, nil, nil, 3, nil, nil, nil, 1, 3)
-local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerHungeringMistCD							= mod:NewNextCountTimer(95.1, 347679, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
-local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
-local timerGraspofDeathCD							= mod:NewCDCountTimer(26.7, 347668, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerFuryoftheAgesCD							= mod:NewCDCountTimer(36.4, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
+local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerHungeringMistCD							= mod:NewNextCountTimer(95.1, 347679, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerGraspofDeathCD							= mod:NewCDCountTimer(26.7, 347668, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerFuryoftheAgesCD							= mod:NewCDCountTimer(36.4, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
 
 local berserkTimer									= mod:NewBerserkTimer(600)
 

@@ -92,34 +92,34 @@ local yellEyeOnTarget							= mod:NewYell(328479, nil, false)
 
 --Shade of Kael'thas
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
-local timerFieryStrikeCD						= mod:NewCDTimer(8.5, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerFieryStrikeCD						= mod:NewCDTimer(8.5, 326455, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerEmberBlastCD							= mod:NewCDTimer(20.4, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
 local timerBlazingSurgeCD						= mod:NewCDTimer(19.4, 329509, nil, nil, nil, 3)
-local timerCloakofFlamesCD						= mod:NewNextCountTimer(30, 337859, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
---local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
+local timerCloakofFlamesCD						= mod:NewNextCountTimer(30, 337859, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+--local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_COMMON_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
 --High Torturor Darithos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22089))
 local timerGreaterCastigationCD					= mod:NewNextTimer(15.8, 328885, nil, nil, nil, 3)
 --Adds
 ----Rockbound Vanquisher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21954))
-local timerVanquisherCD							= mod:NewCDCountTimer(80, "ej21954", nil, nil, nil, 1, 325440, DBM_CORE_L.DAMAGE_ICON)
-local timerVanquishingStrikeCD					= mod:NewCDTimer(6.1, 325440, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerVanquisherCD							= mod:NewCDCountTimer(80, "ej21954", nil, nil, nil, 1, 325440, DBM_COMMON_L.DAMAGE_ICON)
+local timerVanquishingStrikeCD					= mod:NewCDTimer(6.1, 325440, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerConcussiveSmashCD					= mod:NewCDCountTimer(19.5, 325506, nil, nil, nil, 5)--Next in between casts, but initial cast can be delayed by a lot
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
-local timerBleakwingAssassinCD					= mod:NewCDCountTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_CORE_L.DAMAGE_ICON)
---local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 341473, nil, false, nil, 3, nil, DBM_CORE_L.BLEED_ICON)--Too many to track via normal bars, this needs nameplate bars/icon
+local timerBleakwingAssassinCD					= mod:NewCDCountTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_COMMON_L.DAMAGE_ICON)
+--local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 341473, nil, false, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
-local timerVileOccultistCD						= mod:NewCDCountTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)
+local timerVileOccultistCD						= mod:NewCDCountTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_COMMON_L.DAMAGE_ICON)
 --local timerVulgarBrandCD						= mod:NewCDTimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
 ----Soul Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21953))
-local timerSoulInfuserCD						= mod:NewCDCountTimer(10, "ej21953", nil, nil, nil, 1, 325665, DBM_CORE_L.DAMAGE_ICON)
+local timerSoulInfuserCD						= mod:NewCDCountTimer(10, "ej21953", nil, nil, nil, 1, 325665, DBM_COMMON_L.DAMAGE_ICON)
 ----Pestering Fiend
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22082))
-local timerPesteringFiendCD						= mod:NewCDCountTimer(70, "ej22082", nil, nil, nil, 1, 328254, DBM_CORE_L.DAMAGE_ICON)
+local timerPesteringFiendCD						= mod:NewCDCountTimer(70, "ej22082", nil, nil, nil, 1, 328254, DBM_COMMON_L.DAMAGE_ICON)
 ----Reborn Phoenix
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22090))
 local timerPhoenixRespawn						= mod:NewCastTimer(20, 328731, nil, nil, nil, 1)
@@ -701,7 +701,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 325873 then
 		if args:IsPlayer() then
-			specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
+			specWarnEmberBlast:Show(DBM_COMMON_L.ALLIES)
 			specWarnEmberBlast:Play("gathershare")
 			yellEmberBlast:Yell()
 			yellEmberBlastFades:Countdown(self:IsLFR() and 5 or 3)

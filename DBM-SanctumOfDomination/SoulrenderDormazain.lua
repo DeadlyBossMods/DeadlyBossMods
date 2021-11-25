@@ -64,10 +64,10 @@ local timerTormentCD						= mod:NewCDCountTimer(35, 352158, nil, nil, nil, 3, ni
 local timerTormentedEruptionsCD				= mod:NewCDCountTimer(160.7, 349985, nil, nil, nil, 3, nil, nil, true)--Tied to bosses energy cycle
 local timerSpawnMawswornCD					= mod:NewCDCountTimer(57.5, 350615, nil, nil, nil, 1, nil, nil, true)--Ability is reset by eruption?
 local timerBrandofTormentCD					= mod:NewCDCountTimer(16, 350648, nil, nil, nil, 3)--Secondary ability cast in 3s after each spawn mawsworn
-local timerRuinbladeCD						= mod:NewCDCountTimer(32.9, 350422, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Ability is reset by eruption
+local timerRuinbladeCD						= mod:NewCDCountTimer(32.9, 350422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Ability is reset by eruption
 local timerShacklesCD						= mod:NewCDCountTimer(161, 350415, 298215, nil, nil, 6)--Tied to bosses energy cycle
 --Hellscream
-local timerHellscream						= mod:NewCastTimer(35, 350411, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerHellscream						= mod:NewCastTimer(35, 350411, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -165,7 +165,7 @@ function mod:OnCombatStart(delay)
 	timerTormentedEruptionsCD:Start(130-delay, 1)--Same across all
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_COMMON_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then

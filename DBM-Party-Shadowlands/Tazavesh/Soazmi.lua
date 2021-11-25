@@ -34,10 +34,10 @@ local specWarnTripleTechnique		= mod:NewSpecialWarningInterruptCount(347152, "Ha
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
-local timerShurlCD					= mod:NewAITimer(11, 347481, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerShurlCD					= mod:NewAITimer(11, 347481, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerDeployRelocatorsCD		= mod:NewAITimer(15.8, 347392, nil, nil, nil, 3)
-local timerDoubleTechniqueCD		= mod:NewAITimer(18.5, 357189, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerTripleTechniqueCD		= mod:NewAITimer(18.5, 347152, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerDoubleTechniqueCD		= mod:NewAITimer(18.5, 357189, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerTripleTechniqueCD		= mod:NewAITimer(18.5, 347152, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerQuickbladeCD				= mod:NewAITimer(15.8, 347623, nil, nil, nil, 3)
 
 mod.vb.relocatorCount = 0

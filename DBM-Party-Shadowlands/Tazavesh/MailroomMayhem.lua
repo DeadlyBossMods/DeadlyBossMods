@@ -32,7 +32,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(346329, nil, nil, nil, 1, 8)
 
 local timerUnstableGoodsCD			= mod:NewAITimer(11, 346947, nil, nil, nil, 5)
 local timerHazardousLiquidsCD		= mod:NewAITimer(11, 346947, nil, nil, nil, 3)
-local timerFanMailCD				= mod:NewAITimer(15.8, 346293, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerFanMailCD				= mod:NewAITimer(15.8, 346293, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerMoneyOrderCD				= mod:NewAITimer(11, 346962, nil, nil, nil, 3)
 
 mod.vb.goodPhase = 0
@@ -81,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 346962 then
 		if args:IsPlayer() then
-			specWarnMoneyOrder:Show(DBM_CORE_L.ALLIES)
+			specWarnMoneyOrder:Show(DBM_COMMON_L.ALLIES)
 			yellMoneyOrder:Yell()
 			yellMoneyOrderFades:Countdown(spellId)
 		else

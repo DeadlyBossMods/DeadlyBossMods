@@ -31,10 +31,10 @@ local specWarnRefractedSinlight		= mod:NewSpecialWarningDodge(322711, nil, nil, 
 local specWarnSinlightVisions		= mod:NewSpecialWarningDispel(322977, "RemoveMagic", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(323001, nil, nil, nil, 1, 8)
 
-local timerCrumblingSlamCD			= mod:NewCDTimer(12.1, 322936, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.1 except after refracted sinlight
+local timerCrumblingSlamCD			= mod:NewCDTimer(12.1, 322936, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--12.1 except after refracted sinlight
 local timerHeaveDebrisCD			= mod:NewCDTimer(12.1, 322943, nil, nil, nil, 3)--12.1 except after refracted sinlight
-local timerRefractedSinlightCD		= mod:NewCDTimer(47.3, 322711, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--45--51
---local timerSinlightVisionsCD		= mod:NewCDTimer(23, 322977, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)--23-27
+local timerRefractedSinlightCD		= mod:NewCDTimer(47.3, 322711, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--45--51
+--local timerSinlightVisionsCD		= mod:NewCDTimer(23, 322977, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--23-27
 
 --"Sinlight Visions-339237-npc:165408 = pull:5.0, 5.0, 20.0, 5.0, 15.0, 20.0
 

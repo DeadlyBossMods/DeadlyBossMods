@@ -78,18 +78,18 @@ local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 182
 
 --mod:AddTimerLine(BOSS)
 --Stage One: His Gaze Upon You
-local timerDeathlinkCD						= mod:NewCDCountTimer(10.9, 350828, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)
-local timerHopelessLethargyCD				= mod:NewCDCountTimer(47.3, 350604, 31589, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Shortname "Slow"
+local timerDeathlinkCD						= mod:NewCDCountTimer(10.9, 350828, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.DEADLY_ICON..DBM_COMMON_L.TANK_ICON)
+local timerHopelessLethargyCD				= mod:NewCDCountTimer(47.3, 350604, 31589, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Slow"
 local timerFractureSoulCD					= mod:NewCDCountTimer(11, 350022, nil, nil, nil, 3)
 --local timerStygianAbductorCD				= mod:NewCDCountTimer(20.6, 346767, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Not actual spellID, but compatible one
 ----Add
-local timerAssailingLanceCD					= mod:NewCDTimer(8.5, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)--Add
+local timerAssailingLanceCD					= mod:NewCDTimer(8.5, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.DEADLY_ICON..DBM_COMMON_L.TANK_ICON)--Add
 --Stage Two: Double Vision
-local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349030, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
-local timerDesolationBeamCD					= mod:NewCDCountTimer(17, 350847, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--17-18.3
-local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349030, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerDesolationBeamCD					= mod:NewCDCountTimer(17, 350847, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--17-18.3
+local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Deathseeker Eye
-local timerSlothfulCorruptionCD				= mod:NewCDTimer("d23.8", 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSlothfulCorruptionCD				= mod:NewCDTimer("d23.8", 350713, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerSpreadingMiseryCD				= mod:NewCDTimer("d12.1", 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
 local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, nil, nil, 3)--Shortname "Beam"

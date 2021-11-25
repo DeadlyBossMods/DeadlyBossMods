@@ -39,7 +39,7 @@ local yellPurifyingBlast			= mod:NewYell(334053)
 
 local timerEmpyrealOrdnanceCD		= mod:NewCDTimer(26.7, 324427, nil, nil, nil, 3)
 local timerPurifyingBlastCD			= mod:NewCDTimer(13.4, 334053, nil, nil, nil, 3)--Wild variations do to spell queuing problems
-local timerChargedStompCD			= mod:NewCDTimer(13.4, 324608, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)--Wild variations do to spell queuing problems
+local timerChargedStompCD			= mod:NewCDTimer(13.4, 324608, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Wild variations do to spell queuing problems
 
 mod:AddRangeFrameOption(8, 334053)
 mod:AddInfoFrameOption(327416, true)
@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(8)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_COMMON_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 	if self.Options.NPAuraOnAnimaField then

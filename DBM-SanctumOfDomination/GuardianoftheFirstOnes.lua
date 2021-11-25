@@ -50,7 +50,7 @@ local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496, 37859)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, 350732, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Time between casts not known, but link reset kinda works
+local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, 350732, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Time between casts not known, but link reset kinda works
 local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, 182908, nil, nil, 3)--Continues whether linked or not
 local timerFormSentryCD							= mod:NewCDTimer(72.6, 352660, nil, nil, nil, 1)--Time between casts not known, but link reset kinda works
 local timerThreatNeutralizationCD				= mod:NewCDCountTimer(11.4, 350496, 167180, nil, nil, 3, nil, nil, true)--Continues whether linked or not
@@ -122,7 +122,7 @@ local allTimers = {
 
 local updateInfoFrame
 do
-	local DBM, DBM_CORE_L = DBM, DBM_CORE_L
+	local DBM, DBM_COMMON_L = DBM, DBM_COMMON_L
 	local UnitPower, UnitPowerMax, UnitName = UnitPower, UnitPowerMax, UnitName
 	local twipe = table.wipe
 	local lines, sortedLines = {}, {}
@@ -143,7 +143,7 @@ do
 		end
 		--Player safety status
 		if mod.vb.coreActive then
-			addLine(radiantEnergy, DBM_CORE_L.NOTSAFE)
+			addLine(radiantEnergy, DBM_COMMON_L.NOTSAFE)
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if not playersSafe[unitName] then

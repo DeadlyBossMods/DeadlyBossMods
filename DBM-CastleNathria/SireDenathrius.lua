@@ -96,11 +96,11 @@ local specWarnSinisterReflection				= mod:NewSpecialWarningCount(333979, nil, ni
 
 --Stage One: Sinners Be Cleansed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22016))
-local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
-local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 3)
+local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewCDCountTimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
-local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--Heroic/mythic
-local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
+local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)--Heroic/mythic
+local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
 --Intermission: March of the Penitent
 local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 --Stage Two: The Crimson Chorus
@@ -110,15 +110,15 @@ local timerCrimsonCabalistsCD					= mod:NewNextCountTimer(44.3, "ej22131", nil, 
 ----Remornia
 local timerImpaleCD								= mod:NewNextCountTimer(44.3, 329951, nil, nil, nil, 3)
 ----Sire Denathrius
-local timerWrackingPainCD						= mod:NewCDCountTimer(16.6, 329181, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
+local timerWrackingPainCD						= mod:NewCDCountTimer(16.6, 329181, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
 local timerHandofDestructionCD					= mod:NewCDCountTimer(44.3, 333932, nil, nil, nil, 2)
-local timerCommandMassacreCD					= mod:NewCDCountTimer(49.8, 330042, 330137, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--Mythic 41-45, Heroic 47.4-51
+local timerCommandMassacreCD					= mod:NewCDCountTimer(49.8, 330042, 330137, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Mythic 41-45, Heroic 47.4-51
 --Stage Three: Indignation
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22195))
-local timerShatteringPainCD						= mod:NewCDCountTimer(23, 332619, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerShatteringPainCD						= mod:NewCDCountTimer(23, 332619, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFatalFitnesseCD						= mod:NewCDCountTimer(22, 332794, nil, nil, nil, 3)
-local timerSinisterReflectionCD					= mod:NewCDCountTimer(60, 333979, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--Used on mythic, Massacre and Ravage combined
-local timerSinisterReflection					= mod:NewCastTimer(3, 333979, nil, nil, nil, 5, nil, DBM_CORE_L.IMPORTANT_ICON)
+local timerSinisterReflectionCD					= mod:NewCDCountTimer(60, 333979, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Used on mythic, Massacre and Ravage combined
+local timerSinisterReflection					= mod:NewCastTimer(3, 333979, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -715,7 +715,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerNextPhase:Start(219.4)
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM_CORE_L.ADDS)
+			DBM.InfoFrame:SetHeader(DBM_COMMON_L.ADDS)
 			DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetColumns(1)
 		end

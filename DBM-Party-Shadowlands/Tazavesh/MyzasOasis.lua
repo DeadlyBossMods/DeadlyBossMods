@@ -51,13 +51,13 @@ local specWarnInfectiousSolo		= mod:NewSpecialWarningRun(357436, nil, nil, nil, 
 
 --Stage One: Unruly Patrons
 --Oasis Security
---local timerSecuritySlamCD			= mod:NewCDTimer(15.8, 350916, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Reused for boss too
---local timerMenacingShoutCD			= mod:NewCDTimer(15.8, 350922, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+--local timerSecuritySlamCD			= mod:NewCDTimer(15.8, 350916, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Reused for boss too
+--local timerMenacingShoutCD			= mod:NewCDTimer(15.8, 350922, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 --Stage Two: Closing Time
-local timerSupressionSparkCD			= mod:NewAITimer(15.8, 355438, nil, nil, nil, 2, nil, DBM_CORE_L.TANK_ICON)
+local timerSupressionSparkCD			= mod:NewAITimer(15.8, 355438, nil, nil, nil, 2, nil, DBM_COMMON_L.TANK_ICON)
 local timerCrowdControlCD				= mod:NewAITimer(15.8, 350919, nil, nil, nil, 3)
 --Hard Mode Timers
-local timerDischordantSongCD			= mod:NewAITimer(15.8, 357404, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerDischordantSongCD			= mod:NewAITimer(15.8, 357404, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerDrumrollCD					= mod:NewAITimer(15.8, 357513, nil, nil, nil, 2)
 local timerInfectiousSoloCD				= mod:NewAITimer(15.8, 357436, nil, nil, nil, 2)
 local timerRipChordCD					= mod:NewAITimer(15.8, 357542, nil, nil, nil, 3)

@@ -40,9 +40,9 @@ local yellArcaneLightning			= mod:NewYell(323687)
 
 local timerDisplacementTrapCD		= mod:NewCDTimer(16.1, 319619, nil, nil, nil, 3)--16.1-19.4
 local timerDisplacedBlastwaveCD		= mod:NewCDTimer(17, 320326, nil, nil, nil, 3)--17-19.4
-local timerExplosiveContrivanceCD	= mod:NewCDTimer(35.1, 320230, 201291, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--"Explosion" shortname
-local timerLocalizedExplosiveCD		= mod:NewCDTimer(35.1, 321948, 188104, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--"Localized Explosion" shortname
-local timerArcaneLightningCD		= mod:NewCDTimer(9, 323687, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Only cast once, then just bounces every 9 seconds
+local timerExplosiveContrivanceCD	= mod:NewCDTimer(35.1, 320230, 201291, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Explosion" shortname
+local timerLocalizedExplosiveCD		= mod:NewCDTimer(35.1, 321948, 188104, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Localized Explosion" shortname
+local timerArcaneLightningCD		= mod:NewCDTimer(9, 323687, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Only cast once, then just bounces every 9 seconds
 
 local trapName = DBM:GetSpellInfo(319619)
 

@@ -35,12 +35,12 @@ local specWarnLysoniasCall					= mod:NewSpecialWarningYou(339278, nil, nil, nil,
 local specWarnChargedAnimaBlast				= mod:NewSpecialWarningMoveAway(327262, nil, nil, nil, 3, 2)
 local specWarnChargedAnimaBlastNear			= mod:NewSpecialWarningClose(327262, nil, nil, nil, 3, 2)
 
-local timerVentAnimaCD						= mod:NewAITimer(11.6, 327256, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerVentAnimaCD						= mod:NewAITimer(11.6, 327256, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerUnleashedAnimaCD					= mod:NewAITimer(82.0, 327274, nil, nil, nil, 3)
 local timerRechargeAnima					= mod:NewBuffActiveTimer(30, 327274, nil, nil, nil, 6)
-local timerMarkofPenitenceCD				= mod:NewAITimer(82.0, 327255, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerMarkofPenitenceCD				= mod:NewAITimer(82.0, 327255, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerLysoniasCallCD					= mod:NewAITimer(82.0, 339278, nil, nil, nil, 3)
-local timerChargedAnimaBlastCD				= mod:NewAITimer(82.0, 327262, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
+local timerChargedAnimaBlastCD				= mod:NewAITimer(82.0, 327262, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 5)
 
 mod:AddRangeFrameOption(10, 327262)--TODO, update range if it's too big or too small
 mod:AddSetIconOption("SetIconOnAnimaBlast", 327262, true, false, {8})

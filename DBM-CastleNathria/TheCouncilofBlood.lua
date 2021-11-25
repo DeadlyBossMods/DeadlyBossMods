@@ -91,8 +91,8 @@ local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default d
 
 --Castellan Niklaus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))--2 baseline abilities
-local timerDualistsRiposteCD					= mod:NewCDTimer(18.7, 346690, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDutifulAttendantCD					= mod:NewCDTimer(44.9, 346698, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)--Used after death on Mythic
+local timerDualistsRiposteCD					= mod:NewCDTimer(18.7, 346690, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDutifulAttendantCD					= mod:NewCDTimer(44.9, 346698, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--Used after death on Mythic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))--One is dead
 local timerDredgerServantsCD					= mod:NewCDTimer(44.3, 330978, nil, nil, nil, 1)--Iffy on verification
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))--Two are dead
@@ -100,15 +100,15 @@ local timerCastellansCadreCD					= mod:NewCDTimer(26.7, 330965, nil, nil, nil, 1
 --local timerSintouchedBladeCD						= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))--2 baseline abilities
-local timerDrainEssenceCD						= mod:NewCDTimer(22.5, 346654, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
-local timerDreadboltVolleyCD					= mod:NewCDTimer(45, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)--Only for after image
+local timerDrainEssenceCD						= mod:NewCDTimer(22.5, 346654, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerDreadboltVolleyCD					= mod:NewCDTimer(45, 337110, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Only for after image
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))--One is dead
 local timerPridefulEruptionCD					= mod:NewCDTimer(25, 346657, 138658, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22945))--Two are dead
 local timerSoulSpikesCD							= mod:NewCDTimer(19.4, 346762, nil, nil, nil, 3)
 --Lord Stavros
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22149))--2 baseline abilities
-local timerEvasiveLungeCD						= mod:NewCDTimer(18.7, 327497, 219588, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerEvasiveLungeCD						= mod:NewCDTimer(18.7, 327497, 219588, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDarkRecitalCD						= mod:NewCDTimer(45, 331634, nil, nil, nil, 3)--Continues on Mythic after death instead of gaining new ability
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22203))--One is dead
 local timerWaltzofBloodCD						= mod:NewCDTimer(21.8, 327616, nil, nil, nil, 3)
@@ -549,7 +549,7 @@ function mod:SPELL_CAST_START(args)
 			local timer = allTimers[difficultyName][331635][self.vb.phase]
 			if timer then
 				timerDarkRecitalCD:Start(timer)
-				timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
+				timerDarkRecitalCD:UpdateInline(DBM_COMMON_L.MYTHIC_ICON)
 			end
 		end
 	elseif spellId == 330965 then
@@ -645,7 +645,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		else
 			timerDutifulAttendantCD:Start(self.vb.phase == 2 and 44.9 or 36.2)--Mythic only, and yes two diff timers in last test
-			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
+			timerDutifulAttendantCD:UpdateInline(DBM_COMMON_L.MYTHIC_ICON)
 		end
 		if self.Options.SetIconOnDutiful then
 			self:ScanForMobs(175992, 2, 8, 1, nil, 25, "SetIconOnDutiful")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName

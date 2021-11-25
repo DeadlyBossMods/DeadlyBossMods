@@ -45,9 +45,9 @@ local specWarnPestilenceSurge		= mod:NewSpecialWarningSwitch(332617, "Dps", nil,
 local specWarnCorrosiveGunk			= mod:NewSpecialWarningDispel(319070, "RemoveDisease", nil, nil, 1, 2)
 
 local timerSlimeLungeCD				= mod:NewCDTimer(37.4, 329217, nil, nil, nil, 3)
-local timerSlimeInjectionCD			= mod:NewCDTimer(17, 329110, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--usually massively delayed by slime lunge
---local timerPestilenceSurgeCD		= mod:NewCDTimer(38.1, 332617, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Too unreliable, 30-80, sometimes not even cast at all
---local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--no CD, health based trigger
+local timerSlimeInjectionCD			= mod:NewCDTimer(17, 329110, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--usually massively delayed by slime lunge
+--local timerPestilenceSurgeCD		= mod:NewCDTimer(38.1, 332617, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--Too unreliable, 30-80, sometimes not even cast at all
+--local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--no CD, health based trigger
 
 mod:AddRangeFrameOption(5, 321935)
 
