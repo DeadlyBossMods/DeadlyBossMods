@@ -45,9 +45,9 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
 --Kin-Tara
 local KinTara = DBM:EJ_GetSectionInfo(21637)
 mod:AddTimerLine(KinTara)
-local timerOverheadSlashCD			= mod:NewCDTimer(6.3, 320966, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.3-11
+local timerOverheadSlashCD			= mod:NewCDTimer(6.3, 320966, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--6.3-11
 local timerFlightCD					= mod:NewCDTimer(145, 313606, nil, nil, nil, 6)
-local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Azules
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21639))
 local timerInsidiousVenomCD			= mod:NewCDTimer(11.4, 317661, nil, nil, nil, 2)

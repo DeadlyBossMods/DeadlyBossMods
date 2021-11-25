@@ -34,13 +34,13 @@ local specWarnDeathBolt				= mod:NewSpecialWarningInterrupt(324589, "HasInterrup
 local specWarnGraspingRift			= mod:NewSpecialWarningRun(323685, nil, nil, nil, 4, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerReapingScytheCD			= mod:NewCDTimer(17, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerReapingScytheCD			= mod:NewCDTimer(17, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDarkDevastationCD		= mod:NewCDTimer(21.9, 323608, nil, nil, nil, 3)--21.9-26.8
 local timerManifesstDeathCD			= mod:NewCDTimer(46.1, 324449, nil, nil, nil, 3)--46.1-52.2
 local timerGraspingriftCD			= mod:NewCDTimer(30.4, 323685, nil, nil, nil, 3)
 
-local timerEchoofBattleCD			= mod:NewCDTimer(23.5, 339550, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--23.5-30.3
-local timerGhostlyChargeCD			= mod:NewCDTimer(24.2, 339706, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--24.2-31.6
+local timerEchoofBattleCD			= mod:NewCDTimer(23.5, 339550, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--23.5-30.3
+local timerGhostlyChargeCD			= mod:NewCDTimer(24.2, 339706, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--24.2-31.6
 
 mod.vb.phase = 1
 

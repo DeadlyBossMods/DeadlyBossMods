@@ -30,7 +30,9 @@ L= DBM:GetModLocalization(2460)
 
 L:SetMiscLocalization({
 	Deathtouch		= "Deathtouch",
-	Dispel			= "Dispel"
+	Dispel			= "Dispel",
+	Sin				= "Sin",
+	Stacks			= "Stacks",
 })
 
 ---------------------------

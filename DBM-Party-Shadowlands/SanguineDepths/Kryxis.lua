@@ -34,8 +34,8 @@ local yellJuggernautRushFades		= mod:NewShortFadesYell(319713)
 local specWarnJuggernautRushSoak	= mod:NewSpecialWarningMoveTo(319713, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--18.2 unless delayed by other abilities
-local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--18.2 unless delayed by other abilities
+local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerSeveringSmashCD			= mod:NewCDTimer(38.9, 319685, nil, nil, nil, 6)
 local timerJuggernautRushCD			= mod:NewCDTimer(18.2, 319713, nil, nil, nil, 3)
 

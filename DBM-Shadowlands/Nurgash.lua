@@ -25,10 +25,10 @@ local specWarnEarthenBlast					= mod:NewSpecialWarningDodge(338864, nil, nil, ni
 local specWarnHailofStones					= mod:NewSpecialWarningMoveTo(338867, nil, nil, nil, 3, 2)
 --local specWarnSummonSwarmguard			= mod:NewSpecialWarningSwitch(314307, "-Healer", nil, nil, 1, 2)
 
-local timerStoneFistCD						= mod:NewAITimer(82.0, 338858, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerStoneStompCD						= mod:NewAITimer(82.0, 338863, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerStoneFistCD						= mod:NewAITimer(82.0, 338858, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerStoneStompCD						= mod:NewAITimer(82.0, 338863, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEarthenBlastCD					= mod:NewAITimer(82.0, 338864, nil, nil, nil, 3)
-local timerHailofStonesCD					= mod:NewAITimer(82.0, 338867, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
+local timerHailofStonesCD					= mod:NewAITimer(82.0, 338867, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 5)
 local timerDeepSlumberCD					= mod:NewAITimer(82.0, 338868, nil, nil, nil, 6)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -54,7 +54,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEarthenBlast:Play("watchstep")
 		timerEarthenBlastCD:Start()
 	elseif spellId == 338867 then
-		specWarnHailofStones:Show(DBM_CORE_L.BOSS)
+		specWarnHailofStones:Show(DBM_COMMON_L.BOSS)
 		specWarnHailofStones:Play("movecenter")
 		timerHailofStonesCD:Start()
 	elseif spellId == 338868 then

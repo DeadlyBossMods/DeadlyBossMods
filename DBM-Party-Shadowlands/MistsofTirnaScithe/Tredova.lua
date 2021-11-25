@@ -44,7 +44,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 local timerAcceleratedIncubationCD	= mod:NewCDTimer(34, 322550, nil, nil, nil, 1, nil, nil, true)--34-43?
 local timerMindLinkCD				= mod:NewCDTimer(15.4, 322614, nil, nil, nil, 3, nil, nil, true)--15-19, still not cast if everyone already affected by it.
 local timerAcidExpulsionCD			= mod:NewCDTimer(19.4, 322654, nil, nil, nil, 3, nil, nil, true)--19-26
-local timerParasiticInfesterCD		= mod:NewTimer(23, "timerParasiticInfesterCD", 337235, nil, nil, 4, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.INTERRUPT_ICON, true)--23-26.3
+local timerParasiticInfesterCD		= mod:NewTimer(23, "timerParasiticInfesterCD", 337235, nil, nil, 4, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.INTERRUPT_ICON, true)--23-26.3
 
 mod:AddInfoFrameOption(322527, true)
 mod:AddSetIconOption("SetIconOnMindLink", 296944, true, false, {1, 2, 3, 4, 5})

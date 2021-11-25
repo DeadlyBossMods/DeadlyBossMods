@@ -55,14 +55,14 @@ local specWarnSiesmicShift						= mod:NewSpecialWarningMoveAway(340817, nil, nil
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --All timers outside of stun and gaze will use keep arg so timers remain visible if they come off CD during gaze stun
-local timerHatefulGazeCD						= mod:NewCDCountTimer(68.9, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
-local timerStunnedImpact						= mod:NewBuffActiveTimer(12, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerHatefulGazeCD						= mod:NewCDCountTimer(68.9, 331209, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON, nil, 1, 4)
+local timerStunnedImpact						= mod:NewBuffActiveTimer(12, 331314, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerChainLinkCD							= mod:NewCDCountTimer(68.9, 335300, nil, nil, nil, 3, nil, nil, true)
-local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON, true)
+local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON, true)
 local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, 247733, nil, nil, 3, nil, nil, true)
 local timerFallingRubbleCD						= mod:NewCDCountTimer(68.9, 332572, nil, nil, nil, 3, nil, nil, true)
 local timerColossalRoarCD						= mod:NewCDCountTimer(31.9, 332687, 226056, nil, nil, 2, nil, nil, true)
-local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON, true)--Mythic
+local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON, true)--Mythic
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -159,7 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 1)
 		end
 		if args:IsPlayer() then
-			specWarnHatefulGaze:Show(DBM_CORE_L.PILLAR)
+			specWarnHatefulGaze:Show(DBM_COMMON_L.PILLAR)
 			specWarnHatefulGaze:Play("targetyou")
 			yellHatefulGaze:Yell()
 			yellHatefulGazeFades:Countdown(spellId)

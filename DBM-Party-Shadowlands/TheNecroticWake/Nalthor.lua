@@ -36,8 +36,8 @@ local specWarnDarkExile				= mod:NewSpecialWarningYou(321894, nil, nil, nil, 1, 
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerCometStormCD				= mod:NewCDTimer(24.2, 320772, nil, nil, nil, 3)
-local timerIceboundAegisCD			= mod:NewCDTimer(24.2, 321754, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerFrozenBindsCD			= mod:NewCDTimer(24.2, 323730, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerIceboundAegisCD			= mod:NewCDTimer(24.2, 321754, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerFrozenBindsCD			= mod:NewCDTimer(24.2, 323730, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerDarkExileCD				= mod:NewCDTimer(35.2, 321894, nil, nil, nil, 3)--35.2-40+
 local timerDarkExile				= mod:NewTargetTimer(50, 321894, nil, nil, nil, 5)
 

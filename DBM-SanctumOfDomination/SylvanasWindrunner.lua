@@ -130,9 +130,9 @@ local timerDominationChainsCD						= mod:NewCDCountTimer(50.7, 349419, 298213, n
 local timerVeilofDarknessCD							= mod:NewCDCountTimer(48.8, 347726, 209426, nil, nil, 3)--Shortname Darkness
 local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, 208407, nil, 2, 3)--Shortname Arrow
 local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, 208407, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
-local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358704, 208407, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, 208407, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358704, 208407, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, 208407, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Intermission: A Monument to our Suffering
 local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
@@ -141,28 +141,28 @@ local timerChannelIce								= mod:NewCastTimer(5, 352843, nil, nil, nil, 6)
 local timerCallEarth								= mod:NewCastTimer(5, 352842, nil, nil, nil, 6)
 --local timerChannelIceCD							= mod:NewCDCountTimer(48.8, 348148, nil, nil, nil, 6)
 local timerCallEarthCD								= mod:NewCDCountTimer(48.8, 348093, nil, nil, nil, 6)
-local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerHauntingWaveCD							= mod:NewCDCountTimer("d23", 352271, nil, nil, nil, 2)--String timer starting with "d" means "allowDouble"
 local timerBansheeWailCD							= mod:NewCDCountTimer(48.8, 348094, nil, nil, nil, 2)
-local timerWindsofIcecrown							= mod:NewBuffActiveTimer(35, 356986, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerWindsofIcecrown							= mod:NewBuffActiveTimer(35, 356986, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerPortal									= mod:NewCastTimer(10, 357102, nil, nil, nil, 6)
 --Unstoppable Force ~9sec cd
 ----Forces of the Maw
 local timerDecrepitOrbsCD							= mod:NewCDTimer(16, 351353, nil, nil, nil, 1)
-local timerFilthCD									= mod:NewCDTimer(13.1, 351589, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
-local timerExpulsionCD								= mod:NewCDTimer(15.8, 351562, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerFilthCD									= mod:NewCDTimer(13.1, 351589, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.TANK_ICON)
+local timerExpulsionCD								= mod:NewCDTimer(15.8, 351562, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 --Stage Three: The Freedom of Choice
-local timerBansheesHeartseekerCD					= mod:NewCDCountTimer(33.9, 353969, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerBansheesHeartseekerCD					= mod:NewCDCountTimer(33.9, 353969, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerShadowDaggerCD							= mod:NewCDCountTimer(23, 353935, nil, nil, nil, 3)--Only used in phase 3, in phase 1 it's tied to windrunner
 local timerBaneArrowsCD								= mod:NewCDCountTimer(23, 354011, nil, nil, nil, 3)
 local timerBansheesFuryCD							= mod:NewCDCountTimer(23, 354068, nil, nil, nil, 2)--Short name NOT used since "Fury" also exists on fight
 local timerBansheesScreamCD							= mod:NewCDCountTimer(23, 353952, 31295, nil, nil, 3)
-local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, 2, 2, nil, DBM_CORE_L.DEADLY_ICON)
---local timerBansheesBladesCD							= mod:NewCDCountTimer(33.9, 358181, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
-local timerDeathKnivesCD							= mod:NewCDCountTimer(33.9, 358434, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerDeathKnives								= mod:NewBuffFadesTimer(9, 358434, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, 2, 5, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, 2, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+--local timerBansheesBladesCD							= mod:NewCDCountTimer(33.9, 358181, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.TANK_ICON)
+local timerDeathKnivesCD							= mod:NewCDCountTimer(33.9, 358434, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerDeathKnives								= mod:NewBuffFadesTimer(9, 358434, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, 2, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(347807, true)
@@ -382,7 +382,7 @@ function mod:OnCombatStart(delay)
 		timerRangersHeartseekerCD:Start(22.2, 1)
 		timerDominationChainsCD:Start(29-delay, 1)
 		timerWailingArrowCD:Start(41.3-delay, 1)
-		timerVeilofDarknessCD:Start(56.6-delay, 1)--Probably shorter to emote
+		timerVeilofDarknessCD:Start(55.3-delay, 1)
 	end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then

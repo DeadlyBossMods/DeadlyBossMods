@@ -30,12 +30,12 @@ local specWarnTouchofSlime			= mod:NewSpecialWarningSoak(322236, "Tank", nil, ni
 local specWarnPlagueCrash			= mod:NewSpecialWarningDodge(322473, nil, nil, nil, 2, 2)--Announces beginning of sequence in special warning
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerMalignantGrowthCD		= mod:NewCDTimer(20.6, 322304, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON .. DBM_CORE_L.DAMAGE_ICON)
+local timerMalignantGrowthCD		= mod:NewCDTimer(20.6, 322304, nil, nil, nil, 1, nil, DBM_COMMON_L.TANK_ICON .. DBM_COMMON_L.DAMAGE_ICON)
 local timerInfectiousRainCD			= mod:NewCDTimer(26.7, 322232, nil, nil, nil, 3)
 --local timerPlagueCrashCD			= mod:NewCDTimer(17, 322475, nil, nil, nil, 3)
 local timerSinkPhase				= mod:NewPhaseTimer(27)
 --Tentacle Add
-local timerTouchofSlimeCD			= mod:NewCDTimer(6, 322236, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerTouchofSlimeCD			= mod:NewCDTimer(6, 322236, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod.vb.crashCount = 0
 mod.vb.sinkPhase = false

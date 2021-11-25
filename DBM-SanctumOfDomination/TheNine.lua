@@ -87,20 +87,20 @@ local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, n
 --mod:AddTimerLine(BOSS)
 --Stage One: The Unending Voice
 ----Kyra, The Unending
-local timerUnendingStrikeCD						= mod:NewCDTimer(6.7, 350202, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.7-14.7
-local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerUnendingStrikeCD						= mod:NewCDTimer(6.7, 350202, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--6.7-14.7
+local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerWingsofRageCD						= mod:NewCDCountTimer(72.9, 350365, nil, nil, nil, 2)
 ----Signe, The Voice
-local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
+local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
 local timerReverberatingRefrainCD				= mod:NewCDCountTimer(73.1, 350385, nil, nil, nil, 2)
 ----Skyja, The First
 local timerCalloftheValkyrCD					= mod:NewCDCountTimer(52.3, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350541, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 --Stage Two: The First of the Mawsworn
-local timerPierceSoulCD							= mod:NewCDTimer(9.7, 350475, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerPierceSoulCD							= mod:NewCDTimer(9.7, 350475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerResentmentCD							= mod:NewCDCountTimer(21.8, 355294, nil, nil, nil, 2)
-local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350482, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
-local timerWordofRecallCD						= mod:NewCDCountTimer(72.9, 350687, nil, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
+local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350482, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerWordofRecallCD						= mod:NewCDCountTimer(72.9, 350687, nil, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
 
 local berserkTimer								= mod:NewBerserkTimer(600)
 
@@ -371,7 +371,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 350039 then
 		if args:IsPlayer() then
-			specWarnArthurasCrushingGaze:Show(DBM_CORE_L.ALLIES)
+			specWarnArthurasCrushingGaze:Show(DBM_COMMON_L.ALLIES)
 			specWarnArthurasCrushingGaze:Play("gathershare")
 			yellArthurasCrushingGaze:Yell()
 			yellArthurasCrushingGazeFades:Countdown(spellId)

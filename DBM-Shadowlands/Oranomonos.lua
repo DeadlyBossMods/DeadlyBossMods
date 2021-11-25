@@ -31,10 +31,10 @@ local specWarnDirgeoftheFallenSanctum		= mod:NewSpecialWarningSpell(338856, nil,
 local specWarnSeedsofSorrow					= mod:NewSpecialWarningRun(338855, nil, nil, nil, 4, 2)
 
 --local timerWitheredWindsCD					= mod:NewCDTimer(24.7, 339040, nil, nil, nil, 3)
-local timerImplantCD						= mod:NewCDTimer(12.3, 338852, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerRegrowthCD						= mod:NewCDTimer(82.0, 339040, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerRapidGrowthCD					= mod:NewCDTimer(15.9, 338853, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSeedsofSorrowCD					= mod:NewCDTimer(59.9, 338855, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerImplantCD						= mod:NewCDTimer(12.3, 338852, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerRegrowthCD						= mod:NewCDTimer(82.0, 339040, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerRapidGrowthCD					= mod:NewCDTimer(15.9, 338853, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerSeedsofSorrowCD					= mod:NewCDTimer(59.9, 338855, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then

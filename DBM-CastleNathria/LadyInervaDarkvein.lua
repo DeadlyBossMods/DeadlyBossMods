@@ -67,11 +67,11 @@ local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 34
 local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
 local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers2")
 --local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
-local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
+local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3, nil, nil, true)--10-36
 local timerSinsandSufferingCD					= mod:NewCDCountTimer(44.3, 325064, 202046, nil, nil, 3, nil, nil, true)--ShortName "Beams"
 local timerConcentratedAnimaCD					= mod:NewCDCountTimer(35.4, 342321, nil, nil, 2, 1, nil, nil, true, 1)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
-local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
+local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

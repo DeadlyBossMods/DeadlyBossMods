@@ -66,16 +66,16 @@ local yellPetrifyingHowlFades					= mod:NewFadesYell(334852, 135241)--Shortname 
 --Huntsman Altimor
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
 local timerSinseekerCD							= mod:NewCDCountTimer(49, 335114, nil, nil, nil, 3)
-local timerSpreadshotCD							= mod:NewCDTimer(11.8, 334404, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerSpreadshotCD							= mod:NewCDTimer(11.8, 334404, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 --Hunting Gargon
 ----Margore
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22312))
-local timerJaggedClawsCD						= mod:NewCDTimer(10.9, 334971, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--22.1, 23.4, 11.0
+local timerJaggedClawsCD						= mod:NewCDTimer(10.9, 334971, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--22.1, 23.4, 11.0
 local timerViciousLungeCD						= mod:NewCDTimer(25.5, 334945, 262783, nil, nil, 3)--Shortname Lunge
 ----Bargast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22311))
-local timerRipSoulCD							= mod:NewCDTimer(30, 334797, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.HEALER_ICON)
-local timerShadesofBargastCD					= mod:NewCDTimer(60.1, 334757, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--60-63 at least
+local timerRipSoulCD							= mod:NewCDTimer(30, 334797, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)
+local timerShadesofBargastCD					= mod:NewCDTimer(60.1, 334757, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--60-63 at least
 ----Hecutis
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22310))
 local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, 135241, nil, nil, 3)--20-26 Shortname "Howl"

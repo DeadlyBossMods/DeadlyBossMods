@@ -72,14 +72,14 @@ local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
 
 --mod:AddTimerLine(BOSS)
 --Automa
-local timerFormSentryAutomaCD					= mod:NewAITimer(28.8, 365257, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Likely parent cast for all 3 add types?
+local timerFormSentryAutomaCD					= mod:NewAITimer(28.8, 365257, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--Likely parent cast for all 3 add types?
 --Stage One: Automated Defense Systems Online!
-local timerEnergyConversionCD					= mod:NewAITimer(28.8, 360362, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerEnergyConversionCD					= mod:NewAITimer(28.8, 360362, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerDeresolutionCD						= mod:NewAITimer(28.8, 359610, nil, nil, nil, 3)
-local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Two: Roll Out, then Transform
-local timerSplitResolutionCD					= mod:NewAITimer(10, 360412, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerMatterDisolutionCD					= mod:NewAITimer(10, 360415, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Two tank mechanics?
+local timerSplitResolutionCD					= mod:NewAITimer(10, 360412, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerMatterDisolutionCD					= mod:NewAITimer(10, 360415, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Two tank mechanics?
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 363447 then
 		if self.Options.NPAuraOnPoweredDown then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif args:IsSpellID(363467, 364619, 363649, 360458) then--Cores
 		if spellId == 363467 then
@@ -272,7 +272,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 363447 then
 		if self.Options.NPAuraOnPoweredDown then
-			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 364881 then
 		if args:IsPlayer() then

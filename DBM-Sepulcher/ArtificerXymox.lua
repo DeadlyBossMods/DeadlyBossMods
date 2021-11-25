@@ -60,17 +60,17 @@ local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, 
 --mod:AddTimerLine(BOSS)
 local timerForerunnerRingsCD					= mod:NewAITimer(28.8, 363520, nil, nil, nil, 3)
 --Xy Decipherers
-local timerXyDecipherersCD						= mod:NewAITimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerXyDecipherersCD						= mod:NewAITimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Cartel Overseer
---local timerSystemShockCD						= mod:NewAITimer(28.8, 365682, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+--local timerSystemShockCD						= mod:NewAITimer(28.8, 365682, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Boss
 local timerFracturingRiftBlastsCD				= mod:NewAITimer(28.8, 362841, 355331, nil, nil, 3)
 local timerInterdimensionalWormholeCD			= mod:NewAITimer(28.8, 362615, 67833, nil, nil, 3)
-local timerGlyphofRelocationCD					= mod:NewAITimer(28.8, 362801, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerHyperlightSparknovaCD				= mod:NewAITimer(28.8, 362849, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerGlyphofRelocationCD					= mod:NewAITimer(28.8, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerHyperlightSparknovaCD				= mod:NewAITimer(28.8, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStasisTrapCD							= mod:NewAITimer(28.8, 362885, nil, nil, nil, 3)
 --Hyperlight Adds
---local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+--local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")

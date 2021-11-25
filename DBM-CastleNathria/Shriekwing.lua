@@ -62,13 +62,13 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
-local timerExsanguinatingBiteCD					= mod:NewCDTimer(17.8, 328857, 17253, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
+local timerExsanguinatingBiteCD					= mod:NewCDTimer(17.8, 328857, 17253, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
 local timerEcholocationCD						= mod:NewCDTimer(23, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
 local timerEarsplittingShriekCD					= mod:NewCDTimer(47.1, 330711, 251719, nil, nil, 2)--Shortname "Shriek"
 local timerEarsplittingShriek					= mod:NewCastTimer(4, 345936, 251719, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
-local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--24-30
-local timerBlindSwipeCD							= mod:NewCDTimer(44.4, 343005, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, 252538, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
+local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--24-30
+local timerBlindSwipeCD							= mod:NewCDTimer(44.4, 343005, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, 252538, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
@@ -125,7 +125,7 @@ function mod:SPELL_CAST_START(args)
 		timerExsanguinatingBiteCD:Start()
 	elseif spellId == 330711 or spellId == 345936  then--Phase 1/Phase 2
 		if self.Options.SpecWarn330711moveto then
-			specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
+			specWarnEarsplittingShriek:Show(DBM_COMMON_L.BREAK_LOS)
 			specWarnEarsplittingShriek:Play("findshelter")
 		else
 			warnEarsplittingShriek:Show()

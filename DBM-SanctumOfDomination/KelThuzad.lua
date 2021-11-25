@@ -83,15 +83,15 @@ local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, ni
 local timerHowlingBlizzardCD						= mod:NewCDTimer(114.3, 354198, nil, nil, nil, 2)--Boss Mana timer
 local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, nil, 5)
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
-local timerSoulFractureCD							= mod:NewCDTimer(32.7, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSoulFractureCD							= mod:NewCDTimer(32.7, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Healer", nil, 5)
-local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
-local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Phylactery Opens
 local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
 ----Remnant of Kel'Thuzad
-local timerFoulWindsCD								= mod:NewCDTimer(12.1, 355127, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerFoulWindsCD								= mod:NewCDTimer(12.1, 355127, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, nil, 3)
 local timerGlacialWindsCD							= mod:NewNextTimer(13.3, 352379, nil, nil, nil, 3)
 --Stage Three
@@ -145,7 +145,7 @@ function mod:OnCombatStart(delay)
 	end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_COMMON_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
@@ -352,7 +352,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 348760 then--and self:AntiSpam(5, args.destName)
 		if args:IsPlayer() then
-			specWarnFrostBlast:Show(DBM_CORE_L.ALLIES)
+			specWarnFrostBlast:Show(DBM_COMMON_L.ALLIES)
 			specWarnFrostBlast:Play("gathershare")
 			yellFrostBlast:Yell()
 			yellFrostBlastFades:Countdown(spellId)

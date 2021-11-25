@@ -46,10 +46,10 @@ local timerGrandconsumptionCD		= mod:NewAITimer(11, 349797, nil, nil, nil, 3)
 local timerAchilliteCD				= mod:NewNextTimer(11, "ej23231", nil, nil, nil, 1, "132349")
 local timerVentingProtocolCD		= mod:NewAITimer(11, 349987, nil, nil, nil, 3)
 local timerFlagellationProtocolCD	= mod:NewAITimer(11, 349934, nil, nil, nil, 3)
-local timerPurificationProtocolCD	= mod:NewAITimer(15.8, 320200, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerPurificationProtocolCD	= mod:NewAITimer(15.8, 320200, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Venza Goldfuse
 local timerVenzaCD					= mod:NewNextTimer(11, "ej23241", nil, nil, nil, 1, "132349")
-local timerWhirlingAnnihilationCD	= mod:NewAITimer(15.8, 350086, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerWhirlingAnnihilationCD	= mod:NewAITimer(15.8, 350086, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerChainsofDamnationCD		= mod:NewAITimer(11, 350101, nil, nil, nil, 1)
 
 mod:AddSetIconOption("SetIconOnFeast", 349627, true, false, {1})

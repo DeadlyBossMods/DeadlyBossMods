@@ -35,9 +35,9 @@ local specWarnBeckonSlime			= mod:NewSpecialWarningSwitch(327608, "-Healer", nil
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerPlaguestompCD			= mod:NewNextTimer(15.8, 324527, nil, nil, nil, 3)--38.8, 19.4
-local timerBeckonSlimeCD			= mod:NewCDTimer(49.8, 327608, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--50-55
-local timerBeckonSlime				= mod:NewCastTimer(7, 327608, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerSlimeWaveCD				= mod:NewNextTimer(10.5, 324667, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerBeckonSlimeCD			= mod:NewCDTimer(49.8, 327608, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--50-55
+local timerBeckonSlime				= mod:NewCastTimer(7, 327608, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerSlimeWaveCD				= mod:NewNextTimer(10.5, 324667, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerSpecialCD				= mod:NewNextSpecialTimer(40)
 
 mod.vb.specialCast = 0

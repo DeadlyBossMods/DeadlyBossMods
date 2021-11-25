@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
---local timerGrimPortentCD						= mod:NewAITimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+--local timerGrimPortentCD						= mod:NewAITimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

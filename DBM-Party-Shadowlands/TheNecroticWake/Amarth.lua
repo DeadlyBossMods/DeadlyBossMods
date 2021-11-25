@@ -35,10 +35,10 @@ local specWarnUnholyFrenzyTank		= mod:NewSpecialWarningDefensive(320012, "Tank",
 local specWarnFrostboltVolley		= mod:NewSpecialWarningInterrupt(322493, "HasInterrupt", nil, nil, 1, 2)--Mythic and above, normal/heroic uses regular frostbolts
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerLandoftheDeadCD			= mod:NewCDTimer(41.2, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--41.2-48.4
+local timerLandoftheDeadCD			= mod:NewCDTimer(41.2, 321226, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--41.2-48.4
 local timerFinalHarvestCD			= mod:NewCDTimer(41.2, 321247, nil, nil, nil, 2)--41.2-48.4
 local timerNecroticBreathCD			= mod:NewCDTimer(41.2, 333493, nil, nil, nil, 3)--41.2-48.4
-local timerUnholyFrenzyCD			= mod:NewCDTimer(41.2, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)--41.2-48.4
+local timerUnholyFrenzyCD			= mod:NewCDTimer(41.2, 320012, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON..DBM_COMMON_L.TANK_ICON)--41.2-48.4
 
 mod:AddSetIconOption("SetIconOnAdds", 321226, true, true, {1, 2, 3, 4, 5, 6, 7, 8})
 

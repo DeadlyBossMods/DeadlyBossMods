@@ -41,8 +41,8 @@ local specWarnRunThroughNear		= mod:NewSpecialWarningClose(323943, nil, nil, nil
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(322817, nil, nil, nil, 1, 8)
 
 --Stage 1
-local timerAbyssalDetonationCD		= mod:NewCDTimer(20.6, 334625, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
-local timerLostConfidenceCD			= mod:NewCDTimer(31.6, 322818, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
+local timerAbyssalDetonationCD		= mod:NewCDTimer(20.6, 334625, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerLostConfidenceCD			= mod:NewCDTimer(31.6, 322818, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON..DBM_COMMON_L.HEALER_ICON)
 local timerRunThroughCD				= mod:NewCDTimer(14.3, 323943, nil, nil, nil, 3)--14.3-20.6
 --Stage 2
 local timerSlipstreamCD				= mod:NewNextTimer(18.2, 322893, nil, nil, nil, 2)

@@ -95,22 +95,22 @@ local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil,
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
 local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333387, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
-local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, true)--42.4 unless ICDed
-local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
-local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
+local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
+local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingEruptionCD				= mod:NewCDCountTimer(30, 344496, 138658, nil, 3, 3, nil, nil, true)--Short text "Eruption" (Normal+)
 local timerReverberatingLeapCD					= mod:NewCDCountTimer(30, 334009, 337445, nil, 3, 3, nil, nil, true)--Short text "Leap" (LFR)
 local timerSeismicUpheavalCD					= mod:NewCDCountTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)
 local timerCrystalizeCD							= mod:NewCDCountTimer(55, 339690, nil, nil, 3, 5, nil, nil, true)--55 on mythic, 50 on non mythic
-local timerStoneFistCD							= mod:NewCDCountTimer(18, 342425, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
+local timerStoneFistCD							= mod:NewCDCountTimer(18, 342425, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
 --Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 --Adds
-mod:AddTimerLine(DBM_CORE_L.ADDS)
+mod:AddTimerLine(DBM_COMMON_L.ADDS)
 local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
-local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 local berserkTimer								= mod:NewBerserkTimer(600)
 

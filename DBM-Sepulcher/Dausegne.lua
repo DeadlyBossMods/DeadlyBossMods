@@ -57,7 +57,7 @@ local specWarnTotalDominion						= mod:NewSpecialWarningSpell(365418, nil, nil, 
 --mod:AddTimerLine(BOSS)
 --The Fallen Oracle
 local timerStaggeringBarrageCD					= mod:NewAITimer(28.8, 361018, nil, nil, nil, 3)
-local timerDominationCoreCD						= mod:NewAITimer(28.8, 359483, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerDominationCoreCD						= mod:NewAITimer(28.8, 359483, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 --local timerEncroachingDominionCD				= mod:NewAITimer(28.8, 361214, nil, nil, nil, 3)
 local timerObliterationArcCD					= mod:NewAITimer(28.8, 361513, nil, nil, nil, 3)
 local timerDisintegrationHaloCD					= mod:NewAITimer(28.8, 365373, nil, nil, nil, 3)

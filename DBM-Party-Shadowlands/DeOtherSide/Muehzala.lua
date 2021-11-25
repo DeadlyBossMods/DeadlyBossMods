@@ -45,9 +45,9 @@ local specWarnDeathgate				= mod:NewSpecialWarningMoveTo(324698, nil, nil, nil, 
 
 --Stage 1: The Master of Death
 local timerMasterofDeathCD			= mod:NewCDTimer(32.8, 325258, nil, nil, nil, 3)
-local timerCosmicArtificeCD			= mod:NewCDCountTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSoulcrusherCD			= mod:NewCDCountTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerShatterRealityCD			= mod:NewCDTimer(25.3, 326171, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerCosmicArtificeCD			= mod:NewCDCountTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerSoulcrusherCD			= mod:NewCDCountTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerShatterRealityCD			= mod:NewCDTimer(25.3, 326171, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage 2: Shattered Reality
 local timerCoalescing				= mod:NewCastTimer(25, 334970, nil, nil, nil, 6)
 

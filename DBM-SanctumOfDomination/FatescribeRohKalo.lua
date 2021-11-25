@@ -73,17 +73,17 @@ local specWarnExtemporaneousFate				= mod:NewSpecialWarningCount(353195, nil, ni
 
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
-local timerGrimPortentCD						= mod:NewCDCountTimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--28-46?
-local timerGrimPortent							= mod:NewBuffFadesTimer(9, 354365, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
-local timerInvokeDestinyCD						= mod:NewCDCountTimer(37.8, 351680, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--37.8-41
-local timerInvokeDestiny						= mod:NewAddsCustomTimer(8, 351680, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerTwistFateCD							= mod:NewCDCountTimer(48.7, 353931, nil, nil, 2, 5, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
-local timerFatedConjunctionCD					= mod:NewCDCountTimer(59.7, 350355, 207544, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)--"Beams"
-local timerFatedConjunction						= mod:NewCastTimer(6.7, 350355, 207544, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerGrimPortentCD						= mod:NewCDCountTimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--28-46?
+local timerGrimPortent							= mod:NewBuffFadesTimer(9, 354365, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerInvokeDestinyCD						= mod:NewCDCountTimer(37.8, 351680, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--37.8-41
+local timerInvokeDestiny						= mod:NewAddsCustomTimer(8, 351680, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerTwistFateCD							= mod:NewCDCountTimer(48.7, 353931, nil, nil, 2, 5, nil, DBM_COMMON_L.MAGIC_ICON..DBM_COMMON_L.HEALER_ICON)
+local timerFatedConjunctionCD					= mod:NewCDCountTimer(59.7, 350355, 207544, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 3)--"Beams"
+local timerFatedConjunction						= mod:NewCastTimer(6.7, 350355, 207544, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerCallofEternityCD						= mod:NewCDCountTimer(37.9, 350554, 167180, nil, nil, 3)--"Bombs"
 --Stage Two: Defying Destiny
 local timerDespairCD							= mod:NewCDCountTimer("d17", 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
-local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
 local timerRunicAffinityCD						= mod:NewCDCountTimer(39, 354964, nil, nil, nil, 3, nil, nil, true)--Used in state 3 only, in stage 1 it happens at same time as rings
 local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39, 353195, nil, nil, nil, 6, nil, nil, true)
@@ -161,7 +161,7 @@ local allTimers = {
 			--Fated Conjunction
 			[350421] = {9.4, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 45.3, 43.7},--Huge variations, 36-50
+			[353195] = {36.7, 43.1, 43.7},--Huge variations, 36-50
 		}
 	},
 }
@@ -290,7 +290,7 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		else
-			timerDespairCD:UpdateInline(DBM_CORE_L.INTERRUPT_ICON, count, args.sourceGUID)--It's only interruptable in non mythic, add icon there
+			timerDespairCD:UpdateInline(DBM_COMMON_L.INTERRUPT_ICON, count, args.sourceGUID)--It's only interruptable in non mythic, add icon there
 			if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 				specWarnDespair:Show(args.sourceName, count)
 				if count == 1 then

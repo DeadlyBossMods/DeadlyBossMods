@@ -50,15 +50,15 @@ local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "Magic
 local yellOpportunityStrikes			= mod:NewYell(333540)
 
 --Dessia the Decapitator
-local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--21.8-32.7
-local timerSlamCD						= mod:NewCDTimer(7.3, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--7.3-10.9
+local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--21.8-32.7
+local timerSlamCD						= mod:NewCDTimer(7.3, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--7.3-10.9
 --Paceran the Virulent
 local timerNoxiousSporeCD				= mod:NewCDTimer(15.8, 320180, nil, nil, nil, 3)
 --Sathel the Accursed
 local timerSearingDeathCD				= mod:NewCDTimer(11.7, 333231, nil, nil, nil, 3)--11.7-24
-local timerSpectralTransferenceCD		= mod:NewCDTimer(13.4, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--13.4-57
+local timerSpectralTransferenceCD		= mod:NewCDTimer(13.4, 320272, nil, nil, nil, 5, nil, DBM_COMMON_L.MAGIC_ICON)--13.4-57
 --Xira the Underhanded
-local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--And re-added in 9.1?
+local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--And re-added in 9.1?
 
 function mod:OnCombatStart(delay)
 	--Dessia
