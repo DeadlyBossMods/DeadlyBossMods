@@ -103,11 +103,9 @@ mod.vb.HandCount = 0
 
 local updateInfoFrame
 do
-	local floor, tsort = math.floor, table.sort
-	local lines = {}
-	local sortedLines = {}
-	local tempLines = {}
-	local tempLinesSorted = {}
+	local tsort, twipe = table.sort, table.wipe
+	local lines, sortedLines = {}, {}
+	local tempLines, tempLinesSorted = {}, {}
 	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
@@ -115,8 +113,8 @@ do
 		sortedLines[#sortedLines + 1] = key
 	end
 	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(sortedLines)
+		twipe(lines)
+		twipe(sortedLines)
 		--First, Runecarvers Deathtouch mechanics
 		local firstdebuff = false
 		for i = 1, 4 do

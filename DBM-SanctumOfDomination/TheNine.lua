@@ -128,21 +128,19 @@ mod.vb.linkEssence = 0
 
 local updateInfoFrame
 do
-	local floor = math.floor
-	local lines = {}
-	local sortedLines = {}
+	local twipe = table.wipe
+	local lines, sortedLines = {}, {}
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
 		sortedLines[#sortedLines + 1] = key
 	end
 	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(sortedLines)
+		twipe(lines)
+		twipe(sortedLines)
 		for i = 1, 8 do
 			if fragmentTargets[i] then
-				local name = fragmentTargets[i]
-				addLine(L.Fragment..i, name)
+				addLine(L.Fragment..i, fragmentTargets[i])
 			end
 		end
 		return lines, sortedLines
