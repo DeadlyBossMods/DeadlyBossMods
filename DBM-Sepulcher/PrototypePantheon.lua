@@ -103,7 +103,7 @@ mod.vb.HandCount = 0
 
 local updateInfoFrame
 do
-	local floor = math.floor
+	local floor, tsort = math.floor, table.sort
 	local lines = {}
 	local sortedLines = {}
 	local tempLines = {}
