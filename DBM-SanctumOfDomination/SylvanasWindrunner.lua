@@ -779,8 +779,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnWailingArrowTaunt:Play("tauntboss")
 			end
 		end
-		warnWailingArrow:Show(self.vb.arrowIcon, args.destName)
-		timerWailingArrow:Start(9, args.destName, self.vb.arrowIcon)
+		warnWailingArrow:Show(icon, args.destName)
+		timerWailingArrow:Start(9, args.destName, icon)
 		self.vb.arrowIcon = self.vb.arrowIcon + 1
 	elseif spellId == 358705 then
 		if self:AntiSpam(15, 4) then
@@ -802,8 +802,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBlackArrowTaunt:Play("tauntboss")
 			end
 		end
-		warnBlackArrow:Show(self.vb.arrowIcon, args.destName)
-		timerBlackArrow:Start(9, args.destName, self.vb.arrowIcon)
+		warnBlackArrow:Show(icon, args.destName)
+		timerBlackArrow:Start(9, args.destName, icon)
 		self.vb.arrowIcon = self.vb.arrowIcon + 1
 	elseif spellId == 347607 then
 		local amount = args.amount or 1
