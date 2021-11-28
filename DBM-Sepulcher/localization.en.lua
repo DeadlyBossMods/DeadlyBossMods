@@ -58,7 +58,7 @@ L= DBM:GetModLocalization(2469)
 L:SetOptionLocalization({
 	PairingBehavior		= "Set mod behavior for Blasphemy. Raid Leaders preference is used if using DBM",
 	Auto				= "'on you' alert with auto assigned partner. Chat bubbles show unique symbols for matchups",
-	Generic				= "'on you' alert with no assignments. Chat bubbles snow generic symbols for two debuffs",--Default
+	Generic				= "'on you' alert with no assignments. Chat bubbles show generic symbols for two debuffs",--Default
 	None				= "'on you' alert with no assignments. No Chat bubbles"
 })
 
