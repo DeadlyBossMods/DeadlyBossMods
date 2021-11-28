@@ -27,7 +27,14 @@ local L
 ---------------------------
 --  Prototype Pantheon --
 ---------------------------
---L= DBM:GetModLocalization(2460)
+L= DBM:GetModLocalization(2460)
+
+L:SetMiscLocalization({
+	Deathtouch		= "죽음의손길",
+	Dispel			= "해제",
+	Sin				= "죄악",
+	Stacks			= "중첩",
+})
 
 ---------------------------
 --  Lihuvim, Principal Architect --
@@ -47,7 +54,14 @@ local L
 ---------------------------
 --  Anduin Wrynn --
 ---------------------------
---L= DBM:GetModLocalization(2469)
+L= DBM:GetModLocalization(2469)
+
+L:SetOptionLocalization({
+	PairingBehavior		= "신성 모독의 모드 작동 방식을 설정합니다. DBM 사용시 공대장의 설정이 적용됩니다",
+	Auto				= "'당신이 걸림' 경고시 자동으로 짝이 지정됩니다. 같은 짝끼리 고유 상징이 말풍선으로 표시됩니다",
+	Generic				= "'당신이 걸림' 경고시 짝을 지정하지 않습니다. 2종류 디버프에 각각 별도의 상징이 말풍선으로 표시됩니다",--Default
+	None				= "'당신이 걸림' 경고시 짝을 지정하지 않습니다. 말풍선도 나오지 않습니다"
+})
 
 ---------------------------
 --  Lords of Dread --
