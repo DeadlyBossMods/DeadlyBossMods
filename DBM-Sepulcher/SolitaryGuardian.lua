@@ -213,7 +213,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnUnstableCore:Show(args.destName)--use aggregation?
 		end
 	elseif spellId == 364447 then
-	local amount = args.amount or 1
+		local amount = args.amount or 1
 		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnDissonance:Show(amount)
