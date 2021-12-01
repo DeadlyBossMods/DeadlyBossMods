@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20211122
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20211201
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -29,7 +29,14 @@ local L
 ---------------------------
 --  Prototype Pantheon -- 万神殿原型
 ---------------------------
---L= DBM:GetModLocalization(2460)
+L= DBM:GetModLocalization(2460)
+
+L:SetMiscLocalization({h
+	Deathtouch		= "死亡之触",
+	Dispel			= "驱散",
+	Sin				= "罪孽",
+	Stacks			= "层"
+})
 
 ---------------------------
 --  Lihuvim, Principal Architect -- 首席建筑师利胡威姆
@@ -49,7 +56,14 @@ local L
 ---------------------------
 --  Anduin Wrynn -- 安度因·乌瑞恩
 ---------------------------
---L= DBM:GetModLocalization(2469)
+L= DBM:GetModLocalization(2469)
+
+L:SetOptionLocalization({
+	PairingBehavior		= "设置渎神（光明与黑暗）的模组行为。队长设置覆盖全队。",
+	Auto				= "点你提示，自动分配相反标记玩家，聊天说话符号提示该配对",
+	Generic				= "点你提示，不分配相反标记玩家，聊天说话只符号提示光明或者黑暗的buff",--Default
+	None				= "点你提示，不分配，没有聊天说话"
+})
 
 ---------------------------
 --  Lords of Dread -- 恐惧魔王
