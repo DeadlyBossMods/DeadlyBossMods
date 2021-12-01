@@ -31,7 +31,7 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2460)
 
-L:SetMiscLocalization({h
+L:SetMiscLocalization({
 	Deathtouch		= "死亡之触",
 	Dispel			= "驱散",
 	Sin				= "罪孽",
