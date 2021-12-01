@@ -24,7 +24,7 @@
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
-SolitaryGuardian.lua
+VigilantGuardian.lua
 Dausegne.lua
 ArtificerXymox.lua
 PrototypePantheon.lua

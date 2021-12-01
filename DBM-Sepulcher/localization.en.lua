@@ -1,7 +1,7 @@
 local L
 
 ---------------------------
---  Solitary Guardian --
+--  Vigilant Guardian --
 ---------------------------
 --L= DBM:GetModLocalization(2458)
 
