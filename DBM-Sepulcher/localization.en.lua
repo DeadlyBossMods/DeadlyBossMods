@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 	Deathtouch		= "Deathtouch",
 	Dispel			= "Dispel",
 	Sin				= "Sin",
-	Stacks			= "Stacks",
+	Stacks			= "Stacks"
 })
 
 ---------------------------
