@@ -65,7 +65,7 @@ local function checkBuff(self)
 				end
 			end
 		end
-	else--Solo Raid?, maybe in classic TBC or classic WRATH. Future proofing the mod
+	else
 		local guid = UnitGUID("target")
 		if guid then
 			local cid = self:GetCIDFromGUID(guid)

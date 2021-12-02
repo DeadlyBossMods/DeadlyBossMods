@@ -28,3 +28,8 @@ L= DBM:GetModLocalization(2456)
 L:SetMiscLocalization({
 	Pull	= "Your souls are mine to claim!"
 })
+
+-----------------------
+-- Antros --
+-----------------------
+--L= DBM:GetModLocalization(2468)
