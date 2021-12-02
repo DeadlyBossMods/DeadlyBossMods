@@ -36,3 +36,4 @@ Mortanis.lua
 Oranomonos.lua
 Nurgash.lua
 Morgeth.lua
+Antros.lua
