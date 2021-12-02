@@ -411,7 +411,7 @@ function mod:UNIT_DIED(args)
 		timerCloudofCarrionCD:Stop()
 		timerManifestShadowsCD:Stop()
 		timerLeechingClawsCD:Stop()
-	elseif cid == 181334--Kin'tessa
+	elseif cid == 181334 then--Kin'tessa
 		timerInfiltrationofDreadCD:Stop()
 		timerFearfulTrepidationCD:Stop()
 		timerSlumberCloudCD:Stop()
