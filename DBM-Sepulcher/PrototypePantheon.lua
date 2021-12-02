@@ -2,8 +2,9 @@ local mod	= DBM:NewMod(2460, "DBM-Sepulcher", nil, 1195)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(175730)
+mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
+mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20210902000000)
 --mod:SetMinSyncRevision(20210706000000)
@@ -21,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED_DOSE 361608 361689",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
 )
 
@@ -360,6 +361,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWitheringSeedCD:Start(2)
 		--Venthyr
 		timerSinfulProjectionCD:Start(2)
+		timerWrackingPainCD:Start(2)
 		timerHandofDestructionCD:Start(2)
 	elseif spellId == 361608 then
 		SinStacks[args.destName] = nil
@@ -383,14 +385,27 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 182045 then--Necrotic Ritual Skeletons
+	if cid == 181548 then--Prototype of Absolution
+		timerSinfulProjectionCD:Stop()
+		timerWrackingPainCD:Stop()
+		timerHandofDestructionCD:Stop()
+	elseif cid == 181551 then--prototype-of-duty (Kyrian)
+		timerHumblingStrikesCD:Stop()
+		timerAscensionsCallCD:Stop()
+		timerPinningVolleyCD:Stop()
+	elseif cid == 181546 then--prototype-of-renewal
+		timerWildStampedeCD:Stop()
+		timerWitheringSeedCD:Stop()
+	elseif cid == 181549 then--prototype-of-war (Necro)
+		timerGloomBoltCD:Stop()
+		timerNecroticRitualCD:Stop()
+		timerRunecarversDeathtouchCD:Stop()
+--	elseif cid == 182045 then--Necrotic Ritual Skeletons
 
 	end
 end
--]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
