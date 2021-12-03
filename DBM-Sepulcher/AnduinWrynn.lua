@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2469, "DBM-Sepulcher", nil, 1195)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(175730)
+mod:SetCreatureID(181954)
 mod:SetEncounterID(2546)
 mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20210902000000)
@@ -379,7 +379,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.wickedIcon = 1
 			timerWickedStarCD:Start()
 		end
-		local icon = self.vb.arrowIcon
+		local icon = self.vb.wickedIcon
 		if self.Options.SetIconOnWickedStar then
 			self:SetIcon(args.destName, icon)
 		end

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2459, "DBM-Sepulcher", nil, 1195)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(175730)
+mod:SetCreatureID(181224)--or 183042
 mod:SetEncounterID(2540)
 mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20210902000000)

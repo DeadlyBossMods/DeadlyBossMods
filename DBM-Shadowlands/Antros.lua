@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2468, "DBM-Shadowlands", nil, 1192)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(178958)
+mod:SetCreatureID(182466)
 mod:SetEncounterID(2550)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
@@ -31,7 +31,6 @@ local warnBanishmentMark				= mod:NewTargetNoFilterAnnounce(361632, 2)
 local warnDarkDeterrence				= mod:NewStackAnnounce(361390, 2, nil, "Tank|Healer")
 
 local specWarnFuriousSlam				= mod:NewSpecialWarningDodge(361209, nil, nil, nil, 2, 2)
-local yellFuriousSlam					= mod:NewYell(361209)
 local specWarnDestructionCores			= mod:NewSpecialWarningDodge(361341, nil, nil, nil, 2, 2)
 local specWarnBanishmentMark			= mod:NewSpecialWarningMoveAway(361632, nil, nil, nil, 1, 2)
 local yellBanishmentMark				= mod:NewYell(361632)
@@ -48,18 +47,6 @@ mod:AddInfoFrameOption(361201, true)
 mod:AddRangeFrameOption(5, 361632)
 
 local CalamityStacks = {}
-
-function mod:SlamTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
---		specWarnFuriousSlam:Show()
---		specWarnFuriousSlam:Play("runout")
-		yellFuriousSlam:Yell()
---	else
---		warnFuriousSlam:Show(targetname)
-	end
-end
---]]
 
 function mod:OnCombatStart(delay, yellTriggered)
 	table.wipe(CalamityStacks)
@@ -89,7 +76,6 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 338858 then
 		specWarnFuriousSlam:Show()
 		specWarnFuriousSlam:Play("shockwave")
-		self:BossTargetScanner(args.sourceGUID, "SlamTarget", 0.1, 12)
 		timerFuriousSlamCD:Start()
 	elseif spellId == 361387 then
 		timerDeterrentStrikeCD:Start()

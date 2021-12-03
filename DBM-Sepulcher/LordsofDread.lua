@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2457, "DBM-Sepulcher", nil, 1195)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(175730)
+mod:SetCreatureID(181398, 181334)--Could be others
 mod:SetEncounterID(2543)
 mod:SetUsedIcons(1, 2, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20210902000000)
@@ -134,6 +134,8 @@ function mod:OnCombatStart(delay)
 	--Kin'tessa
 	timerInfiltrationofDreadCD:Start(1-delay)
 	timerFearfulTrepidationCD:Start(1-delay)
+	timerSlumberCloudCD:Start(1-delay)
+	timerAnguishingStrikeCD:Start(1-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 1)--TODO, figure out power type
@@ -404,6 +406,16 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 183138 then--Manifest Shadows/Inchoate Shadow
 		castsPerGUID[args.destGUID] = nil
+	elseif cid == 181398 then--Mal'Ganis
+		timerUntoDarknessCD:Stop()
+		timerCloudofCarrionCD:Stop()
+		timerManifestShadowsCD:Stop()
+		timerLeechingClawsCD:Stop()
+	elseif cid == 181334 then--Kin'tessa
+		timerInfiltrationofDreadCD:Stop()
+		timerFearfulTrepidationCD:Stop()
+		timerSlumberCloudCD:Stop()
+		timerAnguishingStrikeCD:Stop()
 --	elseif cid == 181925 then--Slumber Cloud
 
 	end
