@@ -379,7 +379,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.wickedIcon = 1
 			timerWickedStarCD:Start()
 		end
-		local icon = self.vb.arrowIcon
+		local icon = self.vb.wickedIcon
 		if self.Options.SetIconOnWickedStar then
 			self:SetIcon(args.destName, icon)
 		end
