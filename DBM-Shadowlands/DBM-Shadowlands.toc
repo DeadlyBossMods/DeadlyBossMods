@@ -1,5 +1,5 @@
 ## Interface: 90105
-## Version: @project-version@
+## Version: 9.1.21-47-gd2fa413
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Bosses (Shadowlands)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Jefes de Mundo (Shadowlands)|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Jefes de Mundo (Shadowlands)|r
@@ -31,6 +31,7 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
+localization.kr.lua
 Valinor.lua
 Mortanis.lua
 Oranomonos.lua

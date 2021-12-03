@@ -2,7 +2,7 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------------------
---  Solitary Guardian --
+--  Vigilant Guardian --
 ---------------------------
 --L= DBM:GetModLocalization(2458)
 
@@ -33,7 +33,7 @@ L:SetMiscLocalization({
 	Deathtouch		= "죽음의손길",
 	Dispel			= "해제",
 	Sin				= "죄악",
-	Stacks			= "중첩",
+	Stacks			= "중첩"
 })
 
 ---------------------------
