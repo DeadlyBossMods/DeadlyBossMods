@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(8)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_COMMON_L.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 	if self.Options.NPAuraOnAnimaField then

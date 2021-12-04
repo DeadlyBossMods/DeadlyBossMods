@@ -199,7 +199,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 350202 then
-		timerUnendingStrikeCD:Start(self:IsEasy() and 12.1 or 6.9)--TODO, mythic might be faster and LFR even slower
+		timerUnendingStrikeCD:Start(self:IsEasy() and 11.7 or 6.9)--TODO, mythic might be faster and LFR even slower
 	elseif spellId == 350342 then
 --		self.vb.addIcon = 8
 		self.vb.massCount = self.vb.massCount + 1

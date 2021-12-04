@@ -165,7 +165,7 @@ function mod:OnCombatStart(delay)
 	timerTormentedEruptionsCD:Start(130-delay, 1)--Same across all
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_COMMON_L.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
