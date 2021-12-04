@@ -133,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 363893 then
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnMartyrdom:Show(amount)
+			specWarnMartyrdom:Show()
 			specWarnMartyrdom:Play("defensive")
 		end
 		timerMartyrdomCD:Start()
