@@ -86,7 +86,7 @@ local timerFractureSoulCD					= mod:NewCDCountTimer(11, 350022, nil, nil, nil, 3
 local timerAssailingLanceCD					= mod:NewCDTimer(8.5, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.DEADLY_ICON..DBM_COMMON_L.TANK_ICON)--Add
 --Stage Two: Double Vision
 local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349030, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerDesolationBeamCD					= mod:NewCDCountTimer(17, 350847, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--17-18.3
+local timerDesolationBeamCD					= mod:NewCDCountTimer(16.2, 350847, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--17-18.3
 local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Deathseeker Eye
 local timerSlothfulCorruptionCD				= mod:NewCDTimer("d23.8", 350713, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)

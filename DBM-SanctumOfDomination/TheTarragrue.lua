@@ -55,10 +55,10 @@ local specWarnFuryoftheAges							= mod:NewSpecialWarningDispel(347490, "RemoveE
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerOverpowerCD								= mod:NewCDCountTimer(27.9, 346985, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerChainsofEternityCD						= mod:NewCDCountTimer(27.9, 347269, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerOverpowerCD								= mod:NewCDCountTimer(27.1, 346985, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerChainsofEternityCD						= mod:NewCDCountTimer(27.1, 347269, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerHungeringMistCD							= mod:NewNextCountTimer(95.1, 347679, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerHungeringMistCD							= mod:NewNextCountTimer(92.4, 347679, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerGraspofDeathCD							= mod:NewCDCountTimer(26.7, 347668, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerFuryoftheAgesCD							= mod:NewCDCountTimer(36.4, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
@@ -93,7 +93,7 @@ function mod:OnCombatStart(delay)
 		timerHungeringMistCD:Start(24.2-delay, 1)
 	--	berserkTimer:Start(420-delay)
 	else--Heroic verified on live, might be same as mythic PTR
-		timerPedatorsHowlCD:Start(5.6-delay, 1)
+		timerPedatorsHowlCD:Start(3.1-delay, 1)
 		timerGraspofDeathCD:Start(8.1-delay, 1)
 		timerOverpowerCD:Start(10.5-delay, 1)
 		timerChainsofEternityCD:Start(13-delay, 1)
@@ -155,13 +155,13 @@ function mod:SPELL_CAST_START(args)
 		--Start timers for after
 		timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
 		timerOverpowerCD:Start(24.3, self.vb.overpowerCount+1)
-		timerGraspofDeathCD:Start(26.7, self.vb.graspCount+1)
+		timerGraspofDeathCD:Start(24.3, self.vb.graspCount+1)
 		if self:IsHard() then
 			timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
 		end
-		timerChainsofEternityCD:Start(31.5, self.vb.chainsCount+1)
-		timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
-		timerHungeringMistCD:Start(95, self.vb.mistCount+1)
+		timerChainsofEternityCD:Start(27.9, self.vb.chainsCount+1)
+		timerFuryoftheAgesCD:Start(29.2, self.vb.furyCount+1)
+		timerHungeringMistCD:Start(92.4, self.vb.mistCount+1)
 	end
 end
 
