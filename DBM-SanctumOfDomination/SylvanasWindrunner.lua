@@ -211,11 +211,11 @@ local allTimers = {
 	["lfr"] = {
 		[1] = {
 			--Windrunner
-			[347504] = {8.9, 62.0, 63.6, 61.1},
+			[347504] = {8.9, 62.0, 62, 61.1},
 			--Ranger's Heartseeker
-			[352663] = {22.2, 19.3, 19.3, 19.7, 21.3, 18.8, 21.1, 19.4},
+			[352663] = {22.2, 19.3, 18.7, 19.7, 20.8, 18.8, 18.7, 19.4},
 			--Domination Chains
-			[349419] = {29, 64.4, 63.9},
+			[349419] = {29, 63.9, 63.9},
 			--Wailing Arrow
 			[347609] = {41.3, 47.6, 37.3, 39.8},
 			--Veil of Darkness
@@ -223,19 +223,19 @@ local allTimers = {
 		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {36.1, 88.2, 87.9, 89.9, 87.9},
+			[354011] = {36.1, 87.8, 87.9, 89.9, 87.9},
 			--Banshee's Heartseeker
-			[353969] = {38.9, 24.4, 54.9, 3, 14.2, 24.4, 35.5, 11.8, 34.8, 12.5, 36.8, 12.1, 23.3, 45.5, 3},
+			[353969] = {38.9, 24.4, 54.5, 3, 13.3, 24.4, 35.1, 11.8, 34.3, 12.5, 36.1, 12.1, 23.3, 45.5, 3},
 			--Shadow Dagger
-			[353935] = {54, 89.1, 94.4, 84.8},
+			[353935] = {54, 89.1, 93.2, 84.8},
 			--Banshee Scream
-			[353952] = {105.7, 62.1, 63.3, 63.4, 59.9},
+			[353952] = {105.7, 62.1, 62, 63.1, 59.9},
 			--Wailing Arrow
-			[347609] = {86.1, 64.8, 64.9, 66.6, 65},
+			[347609] = {86.1, 64.8, 64.9, 64.4, 65},
 			--Veil of Darkness
-			[347726] = {44, 68.7, 66.6, 67.2, 67.4, 67.4},
+			[347726] = {44, 68.7, 66.2, 67.2, 67.4, 67.4},
 			--Raze
-			[354147] = {95.2, 89.7, 87, 90.1},
+			[354147] = {95.2, 89.4, 86.5, 90.1},
 		},
 	},
 	["normal"] = {
@@ -378,10 +378,10 @@ function mod:OnCombatStart(delay)
 		timerVeilofDarknessCD:Start(50-delay, 1)--Probably shorter to emote
 	else
 		difficultyName = "lfr"
-		timerWindrunnerCD:Start(8.9-delay, 1)
-		timerRangersHeartseekerCD:Start(22.2, 1)
-		timerDominationChainsCD:Start(29-delay, 1)
-		timerWailingArrowCD:Start(41.3-delay, 1)
+		timerWindrunnerCD:Start(8-delay, 1)
+		timerRangersHeartseekerCD:Start(21.8, 1)
+		timerDominationChainsCD:Start(28.5-delay, 1)
+		timerWailingArrowCD:Start(40.8-delay, 1)
 		timerVeilofDarknessCD:Start(55.3-delay, 1)
 	end
 --	berserkTimer:Start(-delay)
