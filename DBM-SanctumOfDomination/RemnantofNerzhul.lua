@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 			yellSuffering:Yell()
 			yellSufferingFades:Countdown(3)
 		end
-		timerSufferingCD:Start(self:IsMythic() and 17.3 or self.vb.phase == 4 and 19.5 or 23.1)--17s are SUPER rare. Requires perfect alignment.
+		timerSufferingCD:Start(self:IsMythic() and 17.3 or 19.3)--17s are SUPER rare. Requires perfect alignment.
 		updateAllTimers(self, 12.2)
 	elseif spellId == 355123 then
 		specWarnGraspofMalice:Show()
@@ -416,7 +416,7 @@ function mod:SPELL_SUMMON(args)
 			self.vb.iconCount = 7
 			self.vb.orbCount = self.vb.orbCount + 1
 			warnOrbofTorment:Show(self.vb.orbCount)
-			timerOrbofTormentCD:Start(35, self.vb.orbCount+1)
+			timerOrbofTormentCD:Start(29.4, self.vb.orbCount+1)
 			updateAllTimers(self, 3.5)
 		end
 		if self.Options.SetIconOnOrbs then
