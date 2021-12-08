@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("SanctumofDomTrash", "DBM-SanctumOfDomination", 1)
+local mod	= DBM:NewMod("SepulcherTrash", "DBM-Sepulcher", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
