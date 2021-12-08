@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, fix unrelenting domination in p1 and P3 probably)
 --TODO, https://ptr.wowhead.com/spell=363748/death-sentence ?
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
+local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), DBM:EJ_GetSectionInfo(23923), DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
 --Stage One: Origin of Domination
 mod:AddOptionLine(P1Info, "announce")
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
@@ -102,7 +103,6 @@ local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil
 local yellDefile								= mod:NewYell(365169)
 local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
-local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), DBM:EJ_GetSectionInfo(23923), DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
 --Stage One: Origin of Domination
 mod:AddTimerLine(P1Info)
 local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, nil, 2)
