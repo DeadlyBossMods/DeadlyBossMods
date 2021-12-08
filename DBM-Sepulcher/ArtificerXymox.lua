@@ -12,15 +12,15 @@ mod:SetUsedIcons(1, 2, 3, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 363520 363485 365682 362841 362801 362849",
-	"SPELL_CAST_SUCCESS 362885",
+	"SPELL_CAST_START 363520 363485 365682 362841 362801 362849 364040",
+	"SPELL_CAST_SUCCESS 362885 364040 366752",
 	"SPELL_SUMMON 364021 364052 364049 364047",
 	"SPELL_AURA_APPLIED 365577 365681 365701 363034 363139 364030 362615 362614 362803",
 	"SPELL_AURA_APPLIED_DOSE 365681",
-	"SPELL_AURA_REMOVED 365577 365701 363034 363139 362615 362614 362803"
+	"SPELL_AURA_REMOVED 365577 365701 363034 363139 362615 362614 362803",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -34,7 +34,10 @@ local warnForerunnerRings						= mod:NewSpellAnnounce(363520, 3)--Probalby be up
 --Xy Decipherers
 ----Cartel Overseer
 local warnSystemShock							= mod:NewStackAnnounce(365681, 2, nil, "Tank|Healer")
+local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
 --Boss
+local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
+local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
 local warnInterdimensionalWormhole				= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
 
 --Xy Decipherers
@@ -80,6 +83,7 @@ mod:AddSetIconOption("SetIconOnWormhole", 362615, true, false, {1, 2})
 mod:AddSetIconOption("SetIconGlyphofRelocation", 362803, false, false, {3})
 mod:AddNamePlateOption("NPAuraOnDecipherRelic", 365577, true)
 mod:AddNamePlateOption("NPAuraOnOverseersOrders", 365701, true)
+mod:AddNamePlateOption("NPAuraOnAscension", 364040, true)
 
 local castsPerGUID = {}
 mod.vb.tearIcon = 1
@@ -99,7 +103,7 @@ function mod:OnCombatStart(delay)
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
 --	end
-	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder then
+	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder or self.Options.NPAuraOnAscension then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -109,7 +113,7 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder then
+	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder or self.Options.NPAuraOnAscension then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -146,6 +150,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnHyperlightSpark:Show(self.vb.sparkCount)
 		specWarnHyperlightSpark:Play("aesoon")
 		timerHyperlightSparknovaCD:Start()
+	elseif spellId == 364040 then
+		if self:AntiSpam(2, 2) then
+			warnHyperlightAscension:Show()
+		end
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 10)
+		end
 	end
 end
 
@@ -174,10 +185,14 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 362885 and self:AntiSpam(10, 3) then
+	if (spellId == 362885 or spellId == 366752) and self:AntiSpam(10, 3) then
 		specWarnStasisTrap:Show()
 		specWarnStasisTrap:Play("watchstep")
 		timerStasisTrapCD:Start()
+	elseif spellId == 364040 then
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+		end
 	end
 end
 
@@ -211,6 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSystemShock:Show(args.destName, amount)
 		end
 	elseif spellId == 363034 or spellId == 363139 then--Decipher Relic 1 min (boss casts)
+		warnDecipherRelic:Show()
 		--Stop timers here?
 		timerForerunnerRingsCD:Stop()
 		timerXyDecipherersCD:Stop()
@@ -243,7 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 362615 or spellId == 362614 then
-		if self:AntiSpam(10, 2) then--Move to casts event if there is one
+		if self:AntiSpam(10, 4) then--Move to casts event if there is one
 			self.vb.tearIcon = 1
 			timerInterdimensionalWormholeCD:Start()
 		end
@@ -287,6 +303,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 363034 or spellId == 363139 then--Decipher Relic 1 min (boss casts)
 		self:SetStage(0)
+		warnDecipherRelicOver:Show()
 		--Might not be how this works at all, complete guess
 		if self.vb.phase == 2 then
 			timerForerunnerRingsCD:Start(2)
@@ -330,24 +347,36 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
+--TODO, clean this up, i suspect the mob names are not all the same
+--Testing will show us what Id is what mob
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 184119 then
-
-	elseif cid == 184149 then
-
-	elseif cid == 184147 then
-
-	elseif cid == 184146 then
-
+	if cid == 184119 then--Hyperlight Reinforcer
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif cid == 184149 then--Hyperlight Reinforcer
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif cid == 184147 then--Hyperlight Reinforcer
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif cid == 184146 then--Hyperlight Reinforcer
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif cid == 184127 then--Hyperlight Reinforcer
+		if self.Options.NPAuraOnAscension then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
 	end
 end
--]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
+	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 5) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
