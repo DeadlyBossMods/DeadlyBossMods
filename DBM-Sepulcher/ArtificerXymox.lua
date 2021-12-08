@@ -353,23 +353,23 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 184119 then--Hyperlight Reinforcer
 		if self.Options.NPAuraOnAscension then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
 	elseif cid == 184149 then--Hyperlight Reinforcer
 		if self.Options.NPAuraOnAscension then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
 	elseif cid == 184147 then--Hyperlight Reinforcer
 		if self.Options.NPAuraOnAscension then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
 	elseif cid == 184146 then--Hyperlight Reinforcer
 		if self.Options.NPAuraOnAscension then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
 	elseif cid == 184127 then--Hyperlight Reinforcer
 		if self.Options.NPAuraOnAscension then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
 	end
 end
