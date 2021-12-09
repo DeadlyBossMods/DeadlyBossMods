@@ -8,6 +8,7 @@ mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20210902000000)
 --mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
+mod.NoSortAnnounce = true
 
 mod:RegisterCombat("combat")
 
@@ -35,16 +36,22 @@ mod:RegisterEventsInCombat(
 --TODO, track https://ptr.wowhead.com/spell=363028/unraveling-frenzy ? seems pretty passive
 --TODO, verify grim reflection auto marking, and number of spawns
 --TODO, dire hopelessness need repeat yell? it's not about partners finding each other this time, just a player walking into the light
+local P1Info, P15Info, P2Info, P25Info, P3Info = DBM:EJ_GetSectionInfo(24462), DBM:EJ_GetSectionInfo(24494), DBM:EJ_GetSectionInfo(24478), DBM:EJ_GetSectionInfo(24172), DBM:EJ_GetSectionInfo(24417)
 --Stage One: Kingsmourne Hungers
+mod:AddOptionLine(P1Info, "announce")
 local warnDespair								= mod:NewSpellAnnounce(365235, 4)
 local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3)
 local warnWickedStar							= mod:NewTargetCountAnnounce(348064, 3, nil, nil, nil, nil, nil, nil, true)
 --Intermission: Remnant of a Fallen King
+mod:AddOptionLine(P15Info, "announce")
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
 --Stage Three: A Moment of Clarity
+mod:AddOptionLine(P3Info, "announce")
 local warnBeaconofHope							= mod:NewCastAnnounce(365872, 1)
 
 --Stage One: Kingsmourne Hungers
+mod:AddOptionLine(P1Info, "specialannounce")
+mod:AddOptionLine(P1Info, "yell")
 local specWarnKingsmourneHungers				= mod:NewSpecialWarningCount(362405, nil, nil, nil, 1, 2)
 local specWarnMalignantward						= mod:NewSpecialWarningDispel(364031, "RemoveMagic", nil, nil, 1, 2)
 local specWarnBlasphemy							= mod:NewSpecialWarningMoveAway(361989, nil, nil, nil, 3, 2)
@@ -58,24 +65,29 @@ local specWarnHopebreaker						= mod:NewSpecialWarningCount(361815, nil, nil, ni
 local specWarnDarkZeal							= mod:NewSpecialWarningCount(364248, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 364248), nil, 1, 2)
 local specWarnDarkZealOther						= mod:NewSpecialWarningTaunt(364248, nil, nil, nil, 1, 2)
 --Intermission: Remnant of a Fallen King
+mod:AddOptionLine(P15Info, "specialannounce")
 local specWarnSoulReaper						= mod:NewSpecialWarningDefensive(362771, nil, nil, nil, 1, 2)
 local specWarnSoulReaperTaunt					= mod:NewSpecialWarningTaunt(362771, nil, nil, nil, 1, 2)
 ----Monstrous Soul
 local specWarnNecroticDetonation				= mod:NewSpecialWarningDefensive(363024, nil, nil, nil, 2, 2)--Aoe defensive, big damage followed by heal immunity
 --Stage Two: Grim Reflections
+mod:AddOptionLine(P2Info, "specialannounce")
 local specWarnGrimReflections					= mod:NewSpecialWarningSwitch(365120, "-Healer", nil, nil, 1, 2)
 local specWarnPsychicTerror						= mod:NewSpecialWarningInterruptCount(365008, "HasInterrupt", nil, nil, 1, 2)
 --Intermission: March of the Damned
+mod:AddOptionLine(P25Info, "specialannounce")
 local specWarnMarchofDamned						= mod:NewSpecialWarningDodge(364020, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage Three: A Moment of Clarity
+mod:AddOptionLine(P3Info, "specialannounce")
+mod:AddOptionLine(P3Info, "yell")
 local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)
 local specWarnDireHopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
 local yellDireHoppelessness						= mod:NewYell(365966)--Repeat yell?
 local specWarnEmpoweredHopebreaker				= mod:NewSpecialWarningCount(365805, nil, nil, nil, 2, 2)
 
---mod:AddTimerLine(BOSS)
 --Stage One: Kingsmourne Hungers
+mod:AddTimerLine(P1Info)
 local timerKingsmourneHungersCD					= mod:NewAITimer(28.8, 362405, nil, nil, nil, 3)
 local timerLostSoul								= mod:NewBuffFadesTimer(35, 362055, nil, nil, nil, 5)
 --local timerDespairCD							= mod:NewAITimer(35, 362055, nil, nil, nil, 2)
@@ -85,11 +97,14 @@ local timerWickedStarCD							= mod:NewAITimer(28.8, 365030, nil, nil, nil, 3)
 local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, nil, nil, 5)
 local timerHopebreakerCD						= mod:NewAITimer(28.8, 361815, nil, nil, nil, 2)
 --Intermission: Remnant of a Fallen King
+mod:AddTimerLine(P15Info)
 local timerSoulReaperCD							= mod:NewAITimer(28.8, 362771, nil, "Healer|Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerArmyofDeadCD							= mod:NewAITimer(28.8, 362862, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 --Stage Two: Grim Reflections
+mod:AddTimerLine(P2Info)
 local timerGrimReflectionsCD					= mod:NewAITimer(28.8, 365120, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 --Intermission: March of the Damned
+mod:AddTimerLine(P25Info)
 local timerMarchofDamnedCD						= mod:NewAITimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Three: A Moment of Clarity
 ---In case I decide to split any of timers after all for hopebreaker and dire blasphemy
@@ -98,7 +113,9 @@ local timerMarchofDamnedCD						= mod:NewAITimer(28.8, 364020, nil, nil, nil, 3,
 
 mod:AddRangeFrameOption(8, 363020)
 mod:AddInfoFrameOption(365966, true)
+mod:AddIconLine(P1Info)
 mod:AddSetIconOption("SetIconOnWickedStar", 365021, true, false, {1, 2, 3})
+mod:AddIconLine(P2Info)
 mod:AddSetIconOption("SetIconOnGrimReflection", 365120, true, true, {6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
