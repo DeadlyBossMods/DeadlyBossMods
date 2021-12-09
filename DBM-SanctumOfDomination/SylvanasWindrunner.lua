@@ -181,13 +181,13 @@ local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, 2, 5
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(347807, true)
 --Stage 1
-mod:AddTimerLine(P1Info)
+mod:AddIconLine(P1Info)
 mod:AddSetIconOption("SetIconOnWailingArrow", 347609, true, false, {1, 2, 3})--Applies to both reg and mythic version
 --Stage 2
-mod:AddTimerLine(P2Info)
+mod:AddIconLine(P2Info)
 mod:AddSetIconOption("SetIconOnExpulsion", 351562, true, true, {1, 2, 3})
 --Stage 3
-mod:AddTimerLine(P3Info)
+mod:AddIconLine(P3Info)
 mod:AddSetIconOption("SetIconOnDeathKnives2", 358434, false, false, {1, 2, 3})--Conflicts with arrow, which will be more logical choice. might delete this
 --Stage 1
 mod:AddNamePlateOption("NPAuraOnRage", 358711)--Dark Sentinel
