@@ -207,23 +207,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 365681 then
-		local amount = args.amount or 1
-		if amount >= 2 then
-			if not args:IsPlayer() then
-				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-				local remaining
-				if expireTime then
-					remaining = expireTime-GetTime()
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if not args:IsPlayer() then
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if (not remaining or remaining and remaining < 3) and not UnitIsDeadOrGhost("player") then
+						specWarnSystemShockTaunt:Show(args.destName)
+						specWarnSystemShockTaunt:Play("tauntboss")
+					else
+						warnSystemShock:Show(args.destName, amount)
+					end
 				end
-				if (not remaining or remaining and remaining < 3) and not UnitIsDeadOrGhost("player") then
-					specWarnSystemShockTaunt:Show(args.destName)
-					specWarnSystemShockTaunt:Play("tauntboss")
-				else
-					warnSystemShock:Show(args.destName, amount)
-				end
+			else
+				warnSystemShock:Show(args.destName, amount)
 			end
-		else
-			warnSystemShock:Show(args.destName, amount)
 		end
 	elseif spellId == 363034 or spellId == 363139 then--Decipher Relic 1 min (boss casts)
 		warnDecipherRelic:Show()
