@@ -227,7 +227,7 @@ function mod:SPELL_CAST_START(args)
 			timerSpreadingMiseryCD:Stop()
 			timerDeathlinkCD:Start(8.2, 1)
 			timerFractureSoulCD:Start(10.5, 1)--10-13
-			timerDesolationBeamCD:Start(self:IsMythic() and 13.8 or 15.4, 1)--Can be massive delayed for some reason
+			timerDesolationBeamCD:Start(13, 1)--Can be massive delayed for some reason
 			timerAnnihilatingGlareCD:Start(25, self.vb.glareCount+1)
 --			timerStygianAbductorCD:Start(27.7, 1)--VERIFY with trancsriptor
 			if self:IsMythic() then
