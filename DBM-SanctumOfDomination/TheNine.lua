@@ -290,11 +290,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:SetStage(2)
 		--self.vb.fragmentCount = 0
 		timerCalloftheValkyrCD:Stop()
-		timerPierceSoulCD:Start(11.7)--11.7-13.3
-		timerResentmentCD:Start(28.7, 1)--28.7-33.6
+		timerPierceSoulCD:Start(9.3)--9.3-13.3
+		timerResentmentCD:Start(27.5, 1)--27.5-33.6
 		timerCalloftheValkyrCD:Start(self:IsEasy() and 30 or 42.6, 1)--42.6-44
 		timerFragmentsofDestinyCD:Stop()
-		timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
+		timerFragmentsofDestinyCD:Start(14.1, self.vb.fragmentCount+1)--14.1-17.4. Heroic and normal confirmed, mythic and LFR?
 		if self:IsHard() then--Heroic and Mythic
 			timerLinkEssenceCD:Start(24.7, 1)
 			timerWordofRecallCD:Start(72.5, 1)

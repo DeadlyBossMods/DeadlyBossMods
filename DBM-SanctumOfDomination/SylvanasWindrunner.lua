@@ -734,7 +734,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerRazeCD:Start(86, 1)
 			timerBansheesScreamCD:Start(96.6, 1)
 		else--LFR
-			timerBaneArrowsCD:Start(36.1, 1)
+			timerBaneArrowsCD:Start(34.9, 1)
 			timerBansheesHeartseekerCD:Start(38.9, 1)
 			timerVeilofDarknessCD:Start(44, 1)
 			timerShadowDaggerCD:Start(54, 1)--Non mythic
