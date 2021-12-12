@@ -164,7 +164,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.energyIcon = self.vb.energyIcon + 1
 	elseif spellId == 364092 and self:AntiSpam(3, args.destName) then
-		warnDegeneerate:CombinedShow(1, args.destName)
+		warnDegenerate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnDegenerate:Show()
 			specWarnDegenerate:Play("defensive")
