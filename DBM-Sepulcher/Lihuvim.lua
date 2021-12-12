@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, add https://ptr.wowhead.com/spell=365257/form-sentry-automa ??
 --Uncatigorized abilities or abilities listed in two categories (ie journal data being fucked up)
 local warnUnstableMote							= mod:NewTargetNoFilterAnnounce(362622, 2)
-local warnDegeneerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)
+local warnDegenerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)
 local warnSynthesize							= mod:NewCastAnnounce(363130, 4)
 --Automa, Prime
 local warnCosmicShift							= mod:NewCastAnnounce(363088, 2)
