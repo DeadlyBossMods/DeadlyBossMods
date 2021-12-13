@@ -76,7 +76,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  The Jailer --
 ---------------------------
---L= DBM:GetModLocalization(2464)
+L= DBM:GetModLocalization(2464)
+
+L:SetMiscLocalization({
+	Pylon		= "파일런"
+})
 
 -------------
 --  Trash  --
