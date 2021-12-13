@@ -5,75 +5,81 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20211209000000)
-mod:SetMinSyncRevision(20211209000000)
+mod:SetHotfixNoticeRev(20211212000000)
+mod:SetMinSyncRevision(20211212000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362601 363130 364652 363088 365257",
-	"SPELL_CAST_SUCCESS 363681 363795 363676",
-	"SPELL_AURA_APPLIED 363681 362622 366012 363537 363795 363676 364092 364312",
+	"SPELL_CAST_SUCCESS 363795 363676",
+	"SPELL_AURA_APPLIED 362622 366012 363537 363795 363676 364092 364312 363130 361200",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 363537 363795 363676 364312"--362622 366012 (mote Ids maybe?)
+	"SPELL_AURA_REMOVED 363537 363795 363676 364312 363130 361200",--362622 366012 (mote Ids maybe?)
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"RAID_BOSS_WHISPER"
 --	"UNIT_DIED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, figure all kinds of shit out, what boss uses and when, when to start timers stop timers etc.
---TODO, very mote Ids
---TODO, what timers used by adds that need to be GUID based and stop on deaths
---TODO, add https://ptr.wowhead.com/spell=365257/form-sentry-automa ??
---Uncatigorized abilities or abilities listed in two categories (ie journal data being fucked up)
-local warnUnstableMote							= mod:NewTargetNoFilterAnnounce(362622, 2)
-local warnDegeneerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)
-local warnSynthesize							= mod:NewCastAnnounce(363130, 4)
---Automa, Prime
-local warnCosmicShift							= mod:NewCastAnnounce(363088, 2)
---Automa, Attendant
+--TODO, wait for blizzard to add mote debuffs into combat log, redundant RBW will cover it for now
+--TODO, Any add timers? they almost seemed inconsiquential (at least timer wise)
+--[[
+(ability.id = 362601 or ability.id = 363130 or ability.id = 364652 or ability.id = 363088) and type = "begincast"
+ or (ability.id = 363795 or ability.id = 363676) and type = "cast"
+ or ability.id = 361200 and type = "removebuff"
+ or ability.id = 365257 and type = "begincast"
+--]]
+--Boss
+local warnUnstableMote							= mod:NewTargetAnnounce(362622, 2)
+local warnSynthesize							= mod:NewSpellAnnounce(363130, 3)
+--Adds
+local warnDegenerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)--Kinda spammy, but healer might want to opt into it
 local warnFormSentry							= mod:NewSpellAnnounce(365257, 2)
 
---Uncatigorized abilities (ie journal data being fucked up messes up parsing it correctly)
-local specWarnDeconstructingBlast				= mod:NewSpecialWarningTaunt(363681, nil, nil, nil, 1, 2)
+--Boss
+local specWarnCosmicShift						= mod:NewSpecialWarningSpell(363088, nil, nil, nil, 2, 2)
 local specWarnUnstableMote						= mod:NewSpecialWarningYou(362622, nil, nil, nil, 1, 2)
 local specWarnProtoformCascade					= mod:NewSpecialWarningDodge(364652, nil, nil, nil, 1, 2)
---Automa, Prime
 local specWarnDeconstructingEnergy				= mod:NewSpecialWarningYou(363795, nil, nil, nil, 1, 2)
+local specWarnDeconstructingEnergyTaunt			= mod:NewSpecialWarningTaunt(363795, nil, nil, nil, 1, 2)
 local yellDeconstructingEnergy					= mod:NewYell(363795)
 local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795)
---Automa, Attendant
+--Adds
 ----Degeneration Automa
 local specWarnDegenerate						= mod:NewSpecialWarningYou(364092, nil, nil, nil, 1, 2)
 --local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
+--Boss
 --mod:AddTimerLine(BOSS)
---Uncatigorized abilities (ie journal data being fucked up messes up parsing it correctly)
-local timerDeconstructingBlastCD				= mod:NewAITimer(28.8, 363681, nil, nil, nil, 3)
-local timerUnstableMoteCD						= mod:NewAITimer(28.8, 362601, nil, nil, nil, 3)
+local timerUnstableMoteCD						= mod:NewCDTimer(20.6, 362601, nil, nil, nil, 3)
+local timerUnstableMote							= mod:NewBuffFadesTimer(5.9, 362601, nil, nil, nil, 5)--1.9+4
 local timerProtoformRadiance					= mod:NewBuffActiveTimer(28.8, 363537, nil, nil, nil, 2)
-local timerProtoformCascadeCD					= mod:NewAITimer(28.8, 364652, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
---Automa, Prime
-local timerCosmicShiftCD						= mod:NewAITimer(28.8, 363088, nil, nil, nil, 3)
-local timerDeconstructingEnergyCD				= mod:NewAITimer(28.8, 363795, nil, nil, nil, 3)
+local timerProtoformCascadeCD					= mod:NewCDTimer(20.6, 364652, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerCosmicShiftCD						= mod:NewCDTimer(20.3, 363088, nil, nil, nil, 3)
+local timerDeconstructingEnergyCD				= mod:NewCDTimer(26.8, 363795, nil, nil, nil, 3)
+local timerSynthesize							= mod:NewBuffActiveTimer(20, 363130, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerRecharge								= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6)
+--Adds
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(328897, true)
-mod:AddSetIconOption("SetIconOnDeconstructingEnergy", 363795, true, false, {1, 2})--Scrap icon option if it's not ever 2 or more
+mod:AddSetIconOption("SetIconOnDeconstructingEnergy", 363795, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnEphemeralBarrier", 364312, true)
 
 mod.vb.energyIcon = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.energyIcon = 1
-	timerDeconstructingBlastCD:Start(1-delay)
-	timerUnstableMoteCD:Start(1-delay)
-	timerProtoformCascadeCD:Start(1-delay)
+	timerProtoformCascadeCD:Start(5.9-delay)
+	timerUnstableMoteCD:Start(12-delay)
+	timerDeconstructingEnergyCD:Start(20.5-delay)
+	timerCosmicShiftCD:Start(25.4-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -81,7 +87,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnEphemeralBarrier then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Journal was broken and unclear. Sorry in advance for this mods drycode")
 end
 
 function mod:OnCombatEnd()
@@ -103,12 +108,14 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 362601 then
 		timerUnstableMoteCD:Start()
+		timerUnstableMote:Start()
 	elseif spellId == 363130 then
 		warnSynthesize:Show()
-		--Probably stop some boss timers here
---		timerDeconstructingBlastCD:Stop()
---		timerUnstableMoteCD:Stop()
---		timerProtoformCascadeCD:Stop()
+		--stop some boss timers here
+		timerUnstableMoteCD:Stop()
+		timerProtoformCascadeCD:Stop()
+		timerDeconstructingEnergyCD:Stop()
+		timerCosmicShiftCD:Stop()
 	elseif spellId == 364652 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnProtoformCascade:Show()
@@ -116,7 +123,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerProtoformCascadeCD:Start()
 	elseif spellId == 363088 then
-		warnCosmicShift:Show()
+		specWarnCosmicShift:Show()
+		specWarnCosmicShift:Play("carefly")
 		timerCosmicShiftCD:Start()
 	elseif spellId == 365257 and self:AntiSpam(5, 1) then
 		warnFormSentry:Show()
@@ -125,9 +133,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 363681 then
-		timerDeconstructingBlastCD:Start()
-	elseif spellId == 363795 or spellId == 363676 then
+	if spellId == 363795 or spellId == 363676 then
 		self.vb.energyIcon = 1
 		timerDeconstructingEnergyCD:Start()
 	end
@@ -135,23 +141,15 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 363681 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
-			specWarnDeconstructingBlast:Show(args.destName)
-			specWarnDeconstructingBlast:Play("tauntboss")
-		end
-	elseif spellId == 362622 or spellId == 366012 then
-		if args:IsPlayer() then
+	if (spellId == 362622 or spellId == 366012) and self:AntiSpam(4, args.destName.."1") then
+		if args:IsPlayer() and self:AntiSpam(3, 2) then
 			specWarnUnstableMote:Show()
 			specWarnUnstableMote:Play("targetyou")
 		end
-		if not self:IsMythic() then--Mythic targets everyone but tanks, no need to spam that
-			warnUnstableMote:CombinedShow(0.3, args.destName)
-		end
+		warnUnstableMote:CombinedShow(0.3, args.destName)
 	elseif spellId == 363537 then
 		timerProtoformRadiance:Start()
-	elseif spellId == 363795 or spellId == 363676 then
+	elseif spellId == 363795 or spellId == 363676 then--363676 goes on tank, 363795 goes on dps
 		local icon = self.vb.energyIcon
 		if self.Options.SetIconOnDeconstructingEnergy then
 			self:SetIcon(args.destName, icon)
@@ -161,10 +159,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDeconstructingEnergy:Play("runout")
 			yellDeconstructingEnergy:Yell(icon, icon)
 			yellDeconstructingEnergyFades:Countdown(spellId, nil, icon)
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				specWarnDeconstructingEnergyTaunt:Show(args.destName)
+				specWarnDeconstructingEnergyTaunt:Play("tauntboss")
+			end
 		end
 		self.vb.energyIcon = self.vb.energyIcon + 1
 	elseif spellId == 364092 and self:AntiSpam(3, args.destName) then
-		warnDegeneerate:CombinedShow(1, args.destName)
+		warnDegenerate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnDegenerate:Show()
 			specWarnDegenerate:Play("defensive")
@@ -173,6 +177,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnEphemeralBarrier then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	elseif spellId == 363130 then
+		timerSynthesize:Start()
+	elseif spellId == 361200 then
+		timerRecharge:Start()
+		timerDeconstructingEnergyCD:Start(20.5)--Started here because it's used .5 seconds after recharge ends
+		timerUnstableMoteCD:Start(20.5)
 	end
 end
 
@@ -194,6 +204,31 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 364312 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnEphemeralBarrier then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 363130 then
+		timerSynthesize:Stop()
+	elseif spellId == 361200 then
+		timerRecharge:Stop()
+		--Restart boss timers
+--		timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
+--		timerUnstableMoteCD:Start(2)--Same reason as above
+		timerCosmicShiftCD:Start(6.7)
+		timerProtoformCascadeCD:Start(15.2)
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("362622") and self:AntiSpam(3, 2) then
+		specWarnUnstableMote:Show()
+		specWarnUnstableMote:Play("targetyou")
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("362622") and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName.."1") then
+			warnUnstableMote:CombinedShow(0.5, targetName)
 		end
 	end
 end
