@@ -6,7 +6,7 @@ mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
 mod:SetHotfixNoticeRev(20211012000000)--2021-10-12
-mod:SetMinSyncRevision(20210715000000)
+mod:SetMinSyncRevision(20211213000000)--2021-12-13
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -309,7 +309,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 355525 then--Forge Weapon ending, boss returning
 		self:Unschedule(repeatEmbers)--For good measure, maybe down the line when people soloing, intermission will break/shorten
 		timerForgeWeapon:Stop()
-		self:SetStage(0)
+		if self.vb.phase == 1.5 then
+			self:SetStage(2)
+		else
+			self:SetStage(3)
+		end
 		self.vb.weaponCount = 0
 		self.vb.ballsCount = 0
 		self.vb.trapCount = 0
@@ -380,6 +384,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon which happens ~2-4 sec later)
 		self.vb.emberCount = 0
 		self.vb.addsRemaining = 0
+		if self.vb.phase == 1 then
+			self:SetStage(1.5)
+		else
+			self:SetStage(2.5)
+		end
 		timerReverberatingHammerCD:Stop()
 		timerCruciformAxeCD:Stop()
 		timerDualbladeScytheCD:Stop()
