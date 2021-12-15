@@ -12,10 +12,10 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 363340 364229 363408 360115 361676 365283 360977 359235 362056",
+	"SPELL_CAST_START 363340 364229 363408 360115 361676 365283 360977 359235 362056 367079",
 	"SPELL_CAST_SUCCESS 365294",
-	"SPELL_AURA_APPLIED 363414 366016 366015 365297",
-	"SPELL_AURA_APPLIED_DOSE 366016",
+	"SPELL_AURA_APPLIED 363414 366015 365297 361309",--366016
+--	"SPELL_AURA_APPLIED_DOSE 366016",
 	"SPELL_AURA_REMOVED 363414 366015 365297",
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
 --	"SPELL_PERIODIC_MISSED 361002 360114",
@@ -30,10 +30,14 @@ mod:RegisterEventsInCombat(
 --TODO, improve messaging on lightshatter Beam and improve debuff with nameplate aura etc once known what debuff is for (which mob/pillars)
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
 --TODO, detonation cast more than once?
+--TODO, some mechanics were removed/replaced. verify new spells
+--TODO, are tanks supposed to trigger lightburst on purpose, or actively try to avoid triggering it with smart tank swaps?
+--TODO, Ephemeral Droplet and Rain deleted too or moved to mythic and not reflected in journal yet?
+--TODO, w y did crushing prism have icon yells and icons again?
 --Stage One: The Reclaimer
 local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
 local warnMaterializeObelisks					= mod:NewSpellAnnounce(363340, 2)
-local warnEphemeralEngine						= mod:NewStackAnnounce(366016, 4, nil, "Tank|Healer")
+--local warnEphemeralEngine						= mod:NewStackAnnounce(366016, 4, nil, "Tank|Healer")--No longer in journal, probably scrapped
 local warnEphemeralDroplet						= mod:NewTargetNoFilterAnnounce(366015, 4)
 local warnCrushingPrism							= mod:NewTargetNoFilterAnnounce(365297, 3)
 --Stage Two: The Shimmering Cliffs
@@ -41,15 +45,17 @@ local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 
 --Stage One: The Reclaimer
 local specWarnDematerialize						= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
-local specWarnReclaim							= mod:NewSpecialWarningCount(360115, false, nil, nil, 1, 2)
+--local specWarnReclaim							= mod:NewSpecialWarningCount(360115, false, nil, nil, 1, 2)--Replaced by Subterranean Scan?
+local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningDodge(361676, nil, nil, nil, 2, 2)
 local specWarnEphemeralRain						= mod:NewSpecialWarningDodge(366011, nil, nil, nil, 2, 2)
-local specWarnEphemeralDroplet					= mod:NewSpecialWarningYouPos(366015, nil, nil, nil, 1, 2)
+local specWarnEphemeralDroplet					= mod:NewSpecialWarningYouPos(366015, nil, nil, nil, 1, 2)--Likely moved to mythic, it's no longer in non mythic
 local yellEphemeralDroplet						= mod:NewShortPosYell(366015)
 local yellEphemeralDropletFades					= mod:NewIconFadesYell(366015)
-local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
+local specWarnLightshatterBeam					= mod:NewSpecialWarningDefensive(360977, nil, nil, nil, 1, 2)
+local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(361309, nil, nil, nil, 1, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
-local yellCrushingPrism							= mod:NewShortPosYell(365297)
+--local yellCrushingPrism							= mod:NewShortPosYell(365297)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
 local specWarnDetonation						= mod:NewSpecialWarningDodge(362056, nil, nil, nil, 2, 2)
@@ -59,9 +65,10 @@ local specWarnDetonation						= mod:NewSpecialWarningDodge(362056, nil, nil, nil
 local timerReclamationForm						= mod:NewCastTimer(6, 359235, nil, nil, nil, 6)
 local timerMaterializeObelisksCD				= mod:NewAITimer(28.8, 363340, nil, nil, nil, 1)
 local timerFractalShell							= mod:NewCastTimer(30, 364229, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerReclaimCD							= mod:NewAITimer(28.8, 360115, nil, nil, nil, 5)
+--local timerReclaimCD							= mod:NewAITimer(28.8, 360115, nil, nil, nil, 5)
+local timerSubterraneanScanCD					= mod:NewAITimer(28.8, 367079, nil, nil, nil, 5)
 local timerEarthbreakerMissilesCD				= mod:NewAITimer(28.8, 361676, nil, nil, nil, 3)
-local timerEphemeralRainCD						= mod:NewAITimer(28.8, 366011, nil, nil, nil, 3)
+local timerEphemeralRainCD						= mod:NewAITimer(28.8, 366011, nil, nil, nil, 3)--Mythic now?
 local timerLightshatterBeamCD					= mod:NewAITimer(30, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCrushingPrismCD						= mod:NewAITimer(28.8, 365294, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Shimmering Cliffs
@@ -77,18 +84,21 @@ mod:AddSetIconOption("SetIconOnCrushingPrism", 365297, true, false, {5, 6, 7, 8}
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 local trackedAbsorbGUIDS = {}
-mod.vb.reclaimCount = 0
+--mod.vb.reclaimCount = 0
+mod.vb.scanCount = 0
 mod.vb.dropletIcon = 1
 mod.vb.prismIcon = 5
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)--Maybe set in form instead, if form cast on pull
-	self.vb.reclaimCount = 0
+--	self.vb.reclaimCount = 0
+	self.vb.scanCount = 0
 	self.vb.dropletIcon = 1
 	self.vb.prismIcon = 5
 	if self:AntiSpam(10, 3) then--temp, to prevent on pull double phase 1
 		timerMaterializeObelisksCD:Start(1-delay)
-		timerReclaimCD:Start(1-delay)
+--		timerReclaimCD:Start(1-delay)
+		timerSubterraneanScanCD:Start(1-delay)
 		timerEarthbreakerMissilesCD:Start(1-delay)
 		timerEphemeralRainCD:Start(1-delay)
 		timerLightshatterBeamCD:Start(1-delay)
@@ -125,7 +135,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 363408 and self:AntiSpam(10, 1) then
 		specWarnDematerialize:Show()
 		specWarnDematerialize:Play("stilldanger")
-	elseif spellId == 360115 then
+	elseif spellId == 367079 then
+		self.vb.scanCount = self.vb.scanCount + 1
+		specWarnSubterraneanScan:Show(self.vb.scanCount)--Text alert doesn't sasy what to do, just count
+		if DBM:UnitDebuff("player", 365976) then
+			--Avoid them
+			specWarnSubterraneanScan:Play("watchorb")
+		else
+			--Soak 1
+			specWarnSubterraneanScan:Play("helpsoak")
+		end
+		timerSubterraneanScanCD:Start()
+--[[elseif spellId == 360115 then
 		self.vb.reclaimCount = self.vb.reclaimCount + 1
 		specWarnReclaim:Show(self.vb.reclaimCount)--Text alert doesn't sasy what to do, just count
 		if DBM:UnitDebuff("player", 365976) then
@@ -135,15 +156,15 @@ function mod:SPELL_CAST_START(args)
 			--Soak 1
 			specWarnReclaim:Play("helpsoak")
 		end
-		timerReclaimCD:Start()
+		timerReclaimCD:Start()--]]
 	elseif spellId == 361676 or spellId == 365283 then
 		specWarnEarthbreakerMissiles:Show()
 		specWarnEarthbreakerMissiles:Play("watchstep")
 		timerEarthbreakerMissilesCD:Start()
 	elseif spellId == 360977 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss1 check if boss is always boss1, right now unsure
-			specWarnLightshatterBeam:Show(DBM_COMMON_L.UNKNOWN)--unknown for now
-			specWarnLightshatterBeam:Play("behindmob")--Make more specific when more known
+			specWarnLightshatterBeam:Show()
+			specWarnLightshatterBeam:Play("defensive")
 		end
 		timerLightshatterBeamCD:Start()
 	elseif spellId == 359235 and self:AntiSpam(10, 3) then--Temp antispam in case he does this on pull too
@@ -155,7 +176,8 @@ function mod:SPELL_CAST_START(args)
 		timerDetonationCD:Stop()
 		--Start Stationary ones
 		timerMaterializeObelisksCD:Start(2)
-		timerReclaimCD:Start(2)
+--		timerReclaimCD:Start(2)
+		timerSubterraneanScanCD:Start(2)
 		timerEarthbreakerMissilesCD:Start(2)
 		timerEphemeralRainCD:Start(2)
 		timerLightshatterBeamCD:Start(2)
@@ -167,7 +189,8 @@ function mod:SPELL_CAST_START(args)
 		timerRelocationForm:Start()
 		--Stop stationary timers
 		timerMaterializeObelisksCD:Stop()
-		timerReclaimCD:Stop()
+--		timerReclaimCD:Stop()
+		timerSubterraneanScanCD:Stop()
 		timerEarthbreakerMissilesCD:Stop()
 		timerEphemeralRainCD:Stop()
 		timerLightshatterBeamCD:Stop()
@@ -201,8 +224,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(5, "multienemyabsorb", nil, args.amount, trackedAbsorbGUIDS)
 		end
-	elseif spellId == 366016 then
-		warnEphemeralEngine:Show(args.destName, args.amount or 1)
+--	elseif spellId == 366016 then
+--		warnEphemeralEngine:Show(args.destName, args.amount or 1)
 	elseif spellId == 366015 then
 		if self:AntiSpam(10, 2) then--Temp location, to ensure it is resetting
 			self.vb.dropletIcon = 1
@@ -227,12 +250,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCrushingPrism:Show()
 			specWarnCrushingPrism:Play("targetyou")
-			yellCrushingPrism:Yell(icon, icon)
+--			yellCrushingPrism:Yell(icon, icon)
 		end
 		warnCrushingPrism:CombinedShow(0.5, args.destName)
 		self.vb.prismIcon = self.vb.prismIcon + 1
+	elseif spellId == 361309 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
+		specWarnLightshatterBeamTaunt:Show(args.destName)
+		specWarnLightshatterBeamTaunt:Play("tauntboss")
 	end
 end
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

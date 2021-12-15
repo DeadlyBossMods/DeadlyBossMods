@@ -13,9 +13,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 365257 361001 360176 360162",
-	"SPELL_CAST_SUCCESS 360412 364425 360357 360362 364881",
+	"SPELL_CAST_SUCCESS 360412 366693 364881",--364425
 	"SPELL_SUMMON 360848 360623",
-	"SPELL_AURA_APPLIED 363447 363467 364619 363649 360458 364447 359610 360415 364881 364962",
+	"SPELL_AURA_APPLIED 363447 360458 364447 359610 360415 364881 364962",
 	"SPELL_AURA_APPLIED_DOSE 364447",
 	"SPELL_AURA_REMOVED 363447 364881",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -36,16 +36,13 @@ mod:RegisterEventsInCombat(
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Automa
 local warnFormSentryAutoma						= mod:NewCountAnnounce(365257, 2)
-local warnSmallCore								= mod:NewTargetNoFilterAnnounce(363467, 2)
-local warnMediumCore							= mod:NewTargetNoFilterAnnounce(364619, 2)
-local warnLargeCore								= mod:NewTargetNoFilterAnnounce(363649, 2)
 local warnUnstableCore							= mod:NewTargetNoFilterAnnounce(360458, 3)
-local warnSurge									= mod:NewSpellAnnounce(364425, 3)
+--local warnSurge									= mod:NewSpellAnnounce(364425, 3)--No Longer in Journal
 local warnWaveofDesintegration					= mod:NewCountAnnounce(361001, 4, nil, "Melee")
 local warnDissonance							= mod:NewStackAnnounce(364447, 2, nil, "Tank|Healer")
 local warnBlast									= mod:NewTargetNoFilterAnnounce(360176, 3)
 --Stage One: Automated Defense Systems Online!
-local warnEnergyConversion						= mod:NewCountAnnounce(360362, 2)
+local warnRefractedBlast						= mod:NewCountAnnounce(366693, 2)
 local warnDeresolution							= mod:NewTargetAnnounce(359610, 3)
 local warnExposedCore							= mod:NewCastAnnounce(360412, 4)
 --Stage Two: Roll Out, then Transform
@@ -74,7 +71,7 @@ local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
 --Automa
 local timerFormSentryAutomaCD					= mod:NewAITimer(28.8, 365257, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--Likely parent cast for all 3 add types?
 --Stage One: Automated Defense Systems Online!
-local timerEnergyConversionCD					= mod:NewAITimer(28.8, 360362, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerRefractedBlastCD						= mod:NewAITimer(28.8, 366693, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerDeresolutionCD						= mod:NewAITimer(28.8, 359610, nil, nil, nil, 3)
 local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Two: Roll Out, then Transform
@@ -89,7 +86,7 @@ mod:AddInfoFrameOption(360403, true)
 mod:AddNamePlateOption("NPAuraOnPoweredDown", 363447, true)
 
 mod.vb.automaCount = 0
-mod.vb.conversionCount = 0
+mod.vb.refractedCount = 0
 local castsPerGUID = {}
 
 local shieldName = DBM:GetSpellInfo(360403)
@@ -108,9 +105,9 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.automaCount = 0
-	self.vb.conversionCount = 0
+	self.vb.refractedCount = 0
 	timerFormSentryAutomaCD:Start(1-delay)
-	timerEnergyConversionCD:Start(1-delay)
+	timerRefractedBlastCD:Start(1-delay)
 	timerDeresolutionCD:Start(1-delay)
 	if self.Options.NPAuraOnPoweredDown then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -177,12 +174,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 364425 then
-		warnSurge:Show()
-	elseif spellId == 360357 or spellId == 360362 then
-		self.vb.conversionCount = self.vb.conversionCount + 1
-		warnEnergyConversion:Show(self.vb.conversionCount)
-		timerEnergyConversionCD:Start()
+--	elseif spellId == 364425 then
+--		warnSurge:Show()
+	elseif spellId == 366693 then
+		self.vb.refractedCount = self.vb.refractedCount + 1
+		warnRefractedBlast:Show(self.vb.refractedCount)
+		timerRefractedBlastCD:Start()
 	elseif spellId == 364881 then
 		timerMatterDisolutionCD:Start()
 	end
@@ -202,16 +199,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnPoweredDown then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif args:IsSpellID(363467, 364619, 363649, 360458) then--Cores
-		if spellId == 363467 then
-			warnSmallCore:Show(args.destName)--use aggregation?
-		elseif spellId == 364619 then
-			warnMediumCore:Show(args.destName)--use aggregation?
-		elseif spellId == 363649 then
-			warnLargeCore:Show(args.destName)--use aggregation?
-		elseif spellId == 360458 then
-			warnUnstableCore:Show(args.destName)--use aggregation?
-		end
+	elseif spellId == 360458 then
+		warnUnstableCore:Show(args.destName)--use aggregation?
 	elseif spellId == 364447 then
 		local amount = args.amount or 1
 		if amount >= 3 then
@@ -261,7 +250,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--DO stage 2 timers stop? Like is this all boss does?
-		timerEnergyConversionCD:Stop()
+		timerRefractedBlastCD:Stop()
 		timerSplitResolutionCD:Stop()
 		timerMatterDisolutionCD:Stop()
 	end
@@ -287,7 +276,7 @@ end
 --https://ptr.wowhead.com/npc=184540--Unknown
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 181850 then--Pre-Fabricated Sentry
+	if cid == 182311 or cid == 181850 then--Pre-Fabricated Sentry
 
 	elseif cid == 181859 then--Reclamated Materium
 
@@ -313,9 +302,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerFormSentryAutomaCD:Stop()
-		timerEnergyConversionCD:Stop()
+		timerRefractedBlastCD:Stop()
 		timerDeresolutionCD:Stop()
-		timerEnergyConversionCD:Start(2)
+		timerRefractedBlastCD:Start(2)
 		timerSplitResolutionCD:Start(2)
 		timerMatterDisolutionCD:Start(2)
 	end

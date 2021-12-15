@@ -13,7 +13,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 364240 360295 360636 365272 361066 360845 364241 361304 361568 364865 365126",
+	"SPELL_CAST_START 364240 360295 360636 365272 361066 360845 364241 361304 361568 364865 365126 366062",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 361566",
 	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 365422 362132 361608 361689",
@@ -26,7 +26,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
 )
 
---TODO, mythic might use https://ptr.wowhead.com/spell=366062/complete-reconstruction
 --TODO, gloom bolt spammed or infrequent enough that timer and announce feel decent?
 --TODO, auto mark Necrotic Ritualists, https://ptr.wowhead.com/spell=360333/necrotic-ritual maybe?
 --TODO, is https://ptr.wowhead.com/spell=361277/pinning-volley used for volley instead. Is kyrians name Kalisthene?
@@ -36,6 +35,8 @@ mod:RegisterEventsInCombat(
 --TODO, maybe add https://ptr.wowhead.com/spell=362270/anima-shelter tracking to infoframe? seems like might already be crowded though just monitoring sin stacks and deathtouch
 --TODO, tanks wap for Wracking Pain? Feels like tank should just eat it vs putting 2 bosses on one tank for only 25%
 --TODO, verfy hand, but blizzard likely copy/pasted mechanic so the script that matches effects of sires hand is 361791
+--General
+local warnCompleteRecon							= mod:NewCastAnnounce(366062, 4)
 --Stage One: War and Duty
 ----Prototype of War
 local warnRunecarversDeathtouch					= mod:NewTargetNoFilterAnnounce(360687, 3)
@@ -68,6 +69,8 @@ local specWarnWrackingPain						= mod:NewSpecialWarningSpell(365126, nil, nil, n
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(361789, nil, nil, nil, 4, 2)
 
 --mod:AddTimerLine(BOSS)
+
+local timerCompleteRecon						= mod:NewCastTimer(20, 366062, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 --Stage One: War and Duty
 ----Prototype of War
 local timerGloomBoltCD							= mod:NewAITimer(28.8, 364240, nil, nil, nil, 3)
@@ -251,6 +254,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnWrackingPain:Play("shockwave")
 		end
 		timerWrackingPainCD:Start()
+	elseif spellId == 366062 then
+		warnCompleteRecon:Show()
+		timerCompleteRecon:Start()
 	end
 end
 
