@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362405 361989 365295 361815 362771 363024 365120 365872 365958 365805",
-	"SPELL_CAST_SUCCESS 365235 365636",
+	"SPELL_CAST_SUCCESS 365235 365636 366849",
 	"SPELL_SUMMON 365039",
-	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 365216 362862 365966",
+	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 365216 362862 365966 366849",
 	"SPELL_AURA_APPLIED_DOSE 364248",
 	"SPELL_AURA_REMOVED 362055 361992 361993 365021 362505 365216 365966",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -42,6 +42,7 @@ mod:AddOptionLine(P1Info, "announce")
 local warnDespair								= mod:NewSpellAnnounce(365235, 4)
 local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3)
 local warnWickedStar							= mod:NewTargetCountAnnounce(348064, 3, nil, nil, nil, nil, nil, nil, true)
+local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil, "Healer")
 --Intermission: Remnant of a Fallen King
 mod:AddOptionLine(P15Info, "announce")
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
@@ -96,6 +97,7 @@ local timerBefouledBarrierCD					= mod:NewAITimer(28.8, 365295, nil, nil, nil, 5
 local timerWickedStarCD							= mod:NewAITimer(28.8, 365030, nil, nil, nil, 3)
 local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, nil, nil, 5)
 local timerHopebreakerCD						= mod:NewAITimer(28.8, 361815, nil, nil, nil, 2)
+local timerDominationWordPainCD					= mod:NewAITimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 --Intermission: Remnant of a Fallen King
 mod:AddTimerLine(P15Info)
 local timerSoulReaperCD							= mod:NewAITimer(28.8, 362771, nil, "Healer|Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -172,6 +174,7 @@ function mod:OnCombatStart(delay)
 	timerBefouledBarrierCD:Start(1-delay)
 	timerWickedStarCD:Start(1-delay)
 	timerHopebreakerCD:Start(1-delay)
+	timerDominationWordPainCD:Start(1-delay)
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.PairingBehavior == "Auto" then
 			self:SendSync("Auto")
@@ -300,6 +303,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnDespair:Show()
 		end
 --		timerDespairCD:Start()
+	elseif spellId == 366849 then
+		timerDominationWordPainCD:Start()
 	end
 end
 
@@ -429,6 +434,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 3) then--Both probably valid for same thing
+		timerKingsmourneHungersCD:Stop()
+		timerBlasphemyCD:Stop()
+		timerBefouledBarrierCD:Stop()
+		timerWickedStarCD:Stop()
+		timerHopebreakerCD:Stop()
+		timerDominationWordPainCD:Stop()
 		if self.vb.phase == 1 then
 			self:SetStage(1.5)
 			timerSoulReaperCD:Start(2)
@@ -445,17 +456,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
-		timerKingsmourneHungersCD:Stop()
-		timerBlasphemyCD:Stop()
-		timerBefouledBarrierCD:Stop()
-		timerWickedStarCD:Stop()
-		timerHopebreakerCD:Stop()
 	elseif spellId == 362774 and not args:IsPlayer() then
 		specWarnSoulReaperTaunt:Show(args.destName)
 		specWarnSoulReaperTaunt:Play("tauntboss")
 	elseif spellId == 362862 then
 		warnArmyofDead:Show()
 		timerArmyofDeadCD:Start()--I doubt it's cast more than once
+	elseif spellId == 366849 then
+		warnDominationWordPain:CombinedShow(0.3, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -486,6 +494,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBefouledBarrierCD:Start(2)
 			timerWickedStarCD:Start(2)
 			timerHopebreakerCD:Start(2)
+			timerDominationWordPainCD:Start(2)
 			timerGrimReflectionsCD:Start(2)--Only new ability in stage 2
 		else--end of 2.5
 			self:SetStage(3)
