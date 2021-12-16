@@ -271,7 +271,7 @@ end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 346469 then--Withering Seeds
+	if spellId == 361566 then--Withering Seeds
 		if self.Options.SetIconOnSeed then
 			self:ScanForMobs(args.destGUID, 2, self.vb.seedIcon, 1, nil, 12, "SetIconOnSeed", true)
 		end
