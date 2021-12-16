@@ -47,7 +47,7 @@ local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 local specWarnDematerialize						= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
 --local specWarnReclaim							= mod:NewSpecialWarningCount(360115, false, nil, nil, 1, 2)--Replaced by Subterranean Scan?
 local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)
-local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningDodge(361676, nil, nil, nil, 2, 2)
+local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
 local specWarnEphemeralRain						= mod:NewSpecialWarningDodge(366011, nil, nil, nil, 2, 2)
 local specWarnEphemeralDroplet					= mod:NewSpecialWarningYouPos(366015, nil, nil, nil, 1, 2)--Likely moved to mythic, it's no longer in non mythic
 local yellEphemeralDroplet						= mod:NewShortPosYell(366015)
@@ -159,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 		timerReclaimCD:Start()--]]
 	elseif spellId == 361676 or spellId == 365283 then
 		specWarnEarthbreakerMissiles:Show()
-		specWarnEarthbreakerMissiles:Play("watchstep")
+		specWarnEarthbreakerMissiles:Play("scatter")
 		timerEarthbreakerMissilesCD:Start()
 	elseif spellId == 360977 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss1 check if boss is always boss1, right now unsure
@@ -266,7 +266,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 363414 then
 		trackedAbsorbGUIDS[args.destGUID] = nil
 		if self.Options.InfoFrame then
-			if #trackedAbsorbGUIDS[args.destGUID] == 0 then
+			if #trackedAbsorbGUIDS == 0 then
 				DBM.InfoFrame:Hide()
 			else
 				--Reinitilize infoframe even if it's visible because we removed a  tracked GUID from table
