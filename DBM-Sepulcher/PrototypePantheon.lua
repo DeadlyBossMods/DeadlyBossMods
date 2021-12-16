@@ -13,12 +13,12 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 364240 360295 360636 365272 361066 360845 364241 361304 361568 364865 365126 366062",
+	"SPELL_CAST_START 364240 360295 360636 365272 361066 360845 364241 361304 361568 364865 365126 366062 361300",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 361566",
-	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 365422 362132 361608 361689",
+	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 362132 361608 361689",
 	"SPELL_AURA_APPLIED_DOSE 361608",
-	"SPELL_AURA_REMOVED 360687 361067 361278 365422 361608",
+	"SPELL_AURA_REMOVED 360687 361067 361278 361608",
 	"SPELL_AURA_REMOVED_DOSE 361608 361689",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -100,7 +100,6 @@ mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
 local deathtouchTargets = {}
 local wardTargets = {}
 local SinStacks = {}
-local expectedStacks = 6
 mod.vb.callCount = 0
 mod.vb.seedIcon = 5
 mod.vb.HandCount = 0
@@ -180,15 +179,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, true, true)
 	end
-	if self:IsMythic() then
-		expectedStacks = 6
-	else
-		if self:IsHeroic() then
-			expectedStacks = 5
-		else
-			expectedStacks = 4
-		end
-	end
 	if self.Options.NPAuraOnWrackingPain then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -257,6 +247,34 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 366062 then
 		warnCompleteRecon:Show()
 		timerCompleteRecon:Start()
+	elseif spellId == 361300 and self:AntiSpam(4, 1) then
+		self:SetStage(0)
+		--Timers stoped in clearalldebuffs cast, here we only start them
+		if self.vb.phase == 2 then
+			--Prototype of Absolution (Venthyr)
+			timerSinfulProjectionCD:Start(2)
+			timerWrackingPainCD:Start(2)
+			timerHandofDestructionCD:Start(2)
+			--prototype-of-renewal (Night Fae)
+			timerWildStampedeCD:Start(2)
+			timerWitheringSeedCD:Start(2)
+		else--Stage 3
+			--Prototype of Absolution (Venthyr)
+			timerSinfulProjectionCD:Start(3)
+			timerWrackingPainCD:Start(3)
+			timerHandofDestructionCD:Start(3)
+			--prototype-of-duty (Kyrian)
+			timerHumblingStrikesCD:Start(3)
+			timerAscensionsCallCD:Start(3)
+			timerPinningVolleyCD:Start(3)
+			--prototype-of-renewal (Night Fae)
+			timerWildStampedeCD:Start(3)
+			timerWitheringSeedCD:Start(3)
+			--prototype-of-war (Necro)
+			timerGloomBoltCD:Start(3)
+			timerNecroticRitualCD:Start(3)
+			timerRunecarversDeathtouchCD:Start(3)
+		end
 	end
 end
 
@@ -329,7 +347,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnAnimastorm:Show(DBM_COMMON_L.SHELTER)
 		specWarnAnimastorm:Play("findshelter")
 	elseif spellId == 361608 then
-		local amount = args.amount or expectedStacks
+		local amount = args.amount or 1
 		SinStacks[args.destName] = amount
 		if DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:Update()
@@ -360,15 +378,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		wardTargets[args.destName] = nil
 	elseif spellId == 361278 and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 365422 and self.vb.phase < 2 then--Ephemeral Exhaust
-		self:SetStage(2)
-		--Night Fae
-		timerWildStampedeCD:Start(2)
-		timerWitheringSeedCD:Start(2)
-		--Venthyr
-		timerSinfulProjectionCD:Start(2)
-		timerWrackingPainCD:Start(2)
-		timerHandofDestructionCD:Start(2)
 	elseif spellId == 361608 then
 		SinStacks[args.destName] = nil
 		if self.Options.InfoFrame then
@@ -393,7 +402,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 181548 then--Prototype of Absolution
+	if cid == 181548 then--Prototype of Absolution (Venthyr)
 		timerSinfulProjectionCD:Stop()
 		timerWrackingPainCD:Stop()
 		timerHandofDestructionCD:Stop()
@@ -401,7 +410,7 @@ function mod:UNIT_DIED(args)
 		timerHumblingStrikesCD:Stop()
 		timerAscensionsCallCD:Stop()
 		timerPinningVolleyCD:Stop()
-	elseif cid == 181546 then--prototype-of-renewal
+	elseif cid == 181546 then--prototype-of-renewal (Night Fae)
 		timerWildStampedeCD:Stop()
 		timerWitheringSeedCD:Stop()
 	elseif cid == 181549 then--prototype-of-war (Necro)
@@ -427,15 +436,24 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --https://ptr.wowhead.com/npc=182822 (WitheringSeed)
 --https://ptr.wowhead.com/npc=182664 (Wild Stampede)
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 365422 then--ephemeral-exhaust
-		--Necro
-		timerGloomBoltCD:Stop()
-		timerNecroticRitualCD:Stop()
-		timerRunecarversDeathtouchCD:Stop()
-		--Kyrian
-		timerHumblingStrikesCD:Stop()
-		timerAscensionsCallCD:Stop()
-		timerPinningVolleyCD:Stop()
+	if spellId == 34098 then--ClearAllDebuffs (Boss Leaving)
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 181548 then--Prototype of Absolution (Venthyr)
+			timerSinfulProjectionCD:Stop()
+			timerWrackingPainCD:Stop()
+			timerHandofDestructionCD:Stop()
+		elseif cid == 181551 then--prototype-of-duty (Kyrian)
+			timerHumblingStrikesCD:Stop()
+			timerAscensionsCallCD:Stop()
+			timerPinningVolleyCD:Stop()
+		elseif cid == 181546 then--prototype-of-renewal (Night Fae)
+			timerWildStampedeCD:Stop()
+			timerWitheringSeedCD:Stop()
+		elseif cid == 181549 then--prototype-of-war (Necro)
+			timerGloomBoltCD:Stop()
+			timerNecroticRitualCD:Stop()
+			timerRunecarversDeathtouchCD:Stop()
+		end
 	elseif spellId == 361791 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		self.vb.HandCount = self.vb.HandCount + 1
 		specWarnHandofDestruction:Show()

@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184915)
 mod:SetEncounterID(2529)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(20210902000000)
 --mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
@@ -39,7 +39,7 @@ local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
 local warnMaterializeObelisks					= mod:NewSpellAnnounce(363340, 2)
 --local warnEphemeralEngine						= mod:NewStackAnnounce(366016, 4, nil, "Tank|Healer")--No longer in journal, probably scrapped
 local warnEphemeralDroplet						= mod:NewTargetNoFilterAnnounce(366015, 4)
-local warnCrushingPrism							= mod:NewTargetNoFilterAnnounce(365297, 3)
+local warnCrushingPrism							= mod:NewSpellAnnounce(365297, 3, nil, "RemoveMagic")
 --Stage Two: The Shimmering Cliffs
 local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 
@@ -55,7 +55,6 @@ local yellEphemeralDropletFades					= mod:NewIconFadesYell(366015)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningDefensive(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(361309, nil, nil, nil, 1, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
---local yellCrushingPrism							= mod:NewShortPosYell(365297)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
 local specWarnDetonation						= mod:NewSpecialWarningDodge(362056, nil, nil, nil, 2, 2)
@@ -80,21 +79,18 @@ local timerDetonationCD							= mod:NewAITimer(6, 362056, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(363414, true)
 mod:AddSetIconOption("SetIconOnEphemeralDroplet", 366015, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnCrushingPrism", 365297, true, false, {5, 6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 local trackedAbsorbGUIDS = {}
 --mod.vb.reclaimCount = 0
 mod.vb.scanCount = 0
 mod.vb.dropletIcon = 1
-mod.vb.prismIcon = 5
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)--Maybe set in form instead, if form cast on pull
 --	self.vb.reclaimCount = 0
 	self.vb.scanCount = 0
 	self.vb.dropletIcon = 1
-	self.vb.prismIcon = 5
 	if self:AntiSpam(10, 3) then--temp, to prevent on pull double phase 1
 		timerMaterializeObelisksCD:Start(1-delay)
 --		timerReclaimCD:Start(1-delay)
@@ -192,7 +188,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 365294 then
-		self.vb.prismIcon = 5
+		warnCrushingPrism:Show()
 		timerCrushingPrismCD:Start()
 	elseif spellId == 359235 and self:AntiSpam(10, 3) then--Temp antispam in case he does this on pull too
 		self:SetStage(1)
@@ -243,17 +239,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEphemeralDroplet:CombinedShow(0.5, args.destName)
 		self.vb.dropletIcon = self.vb.dropletIcon + 1
 	elseif spellId == 365297 then
-		local icon = self.vb.prismIcon
-		if self.Options.SetIconOnCrushingPrism then
-			self:SetIcon(args.destName, icon)
-		end
 		if args:IsPlayer() then
 			specWarnCrushingPrism:Show()
 			specWarnCrushingPrism:Play("targetyou")
---			yellCrushingPrism:Yell(icon, icon)
 		end
-		warnCrushingPrism:CombinedShow(0.5, args.destName)
-		self.vb.prismIcon = self.vb.prismIcon + 1
 	elseif spellId == 361309 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
 		specWarnLightshatterBeamTaunt:Show(args.destName)
 		specWarnLightshatterBeamTaunt:Play("tauntboss")
