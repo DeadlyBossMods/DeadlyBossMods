@@ -12,8 +12,8 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 363340 364229 363408 360115 361676 365283 360977 359235 362056 367079",
-	"SPELL_CAST_SUCCESS 365294",
+	"SPELL_CAST_START 363340 364229 363408 360115 361676 365283 360977 362056 367079 359236",
+	"SPELL_CAST_SUCCESS 365294 359235",
 	"SPELL_AURA_APPLIED 363414 366015 365297 361309",--366016
 --	"SPELL_AURA_APPLIED_DOSE 366016",
 	"SPELL_AURA_REMOVED 363414 366015 365297",
@@ -167,23 +167,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnLightshatterBeam:Play("defensive")
 		end
 		timerLightshatterBeamCD:Start()
-	elseif spellId == 359235 and self:AntiSpam(10, 3) then--Temp antispam in case he does this on pull too
-		self:SetStage(1)
-		warnReclamationForm:Show()
-		timerReclamationForm:Start()
-		--Stop mobile timers
-		timerEarthbreakerMissilesCD:Stop()
-		timerDetonationCD:Stop()
-		--Start Stationary ones
-		timerMaterializeObelisksCD:Start(2)
---		timerReclaimCD:Start(2)
-		timerSubterraneanScanCD:Start(2)
-		timerEarthbreakerMissilesCD:Start(2)
-		timerEphemeralRainCD:Start(2)
-		timerLightshatterBeamCD:Start(2)
-		timerCrushingPrismCD:Start(2)
-		--Start mobile ones
-	elseif spellId == warnRelocationForm then
+	elseif spellId == 359236 then
 		self:SetStage(2)
 		warnRelocationForm:Show()
 		timerRelocationForm:Start()
@@ -210,6 +194,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 365294 then
 		self.vb.prismIcon = 5
 		timerCrushingPrismCD:Start()
+	elseif spellId == 359235 and self:AntiSpam(10, 3) then--Temp antispam in case he does this on pull too
+		self:SetStage(1)
+		warnReclamationForm:Show()
+		timerReclamationForm:Start()
+		--Stop mobile timers
+		timerEarthbreakerMissilesCD:Stop()
+		timerDetonationCD:Stop()
+		--Start Stationary ones
+		timerMaterializeObelisksCD:Start(2)
+--		timerReclaimCD:Start(2)
+		timerSubterraneanScanCD:Start(2)
+		timerEarthbreakerMissilesCD:Start(2)
+		timerEphemeralRainCD:Start(2)
+		timerLightshatterBeamCD:Start(2)
+		timerCrushingPrismCD:Start(2)
+		--Start mobile ones
 	end
 end
 
