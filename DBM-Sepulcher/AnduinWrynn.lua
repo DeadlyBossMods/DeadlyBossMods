@@ -353,7 +353,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
 		totalDebuffs = totalDebuffs + 1
 		local icon
-		local count = 0
+		local count
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
 		if spellId == 361992 then--Overconfidence
 			overconfidentTargets[#overconfidentTargets + 1] = args.destName
