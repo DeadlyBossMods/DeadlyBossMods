@@ -533,6 +533,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.hopebreakerCount = 0
 		if self.vb.phase == 1.5 then
 			self:SetStage(2)
+			timerArmyofDeadCD:Stop()
+			timerSoulReaperCD:Stop()
 			timerKingsmourneHungersCD:Start(2)
 			timerBlasphemyCD:Start(2)
 			timerBefouledBarrierCD:Start(2)
@@ -542,6 +544,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGrimReflectionsCD:Start(2)--Only new ability in stage 2
 		else--end of 2.5
 			self:SetStage(3)
+			timerArmyofDeadCD:Stop()
+			timerSoulReaperCD:Stop()
+			timerMarchofDamnedCD:Stop()
 			timerKingsmourneHungersCD:Start(3)
 			timerBlasphemyCD:Start(3)--Dire Blasphemy just reuses Blasphemy timer
 			timerBefouledBarrierCD:Start(3)
