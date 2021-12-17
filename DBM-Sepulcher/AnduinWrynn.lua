@@ -523,6 +523,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellWickedStarFades:Cancel()
 		end
+		if self.Options.SetIconOnWickedStar then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 3) then--Both probably valid for same thing
 		self.vb.hungersCount = 0
 		self.vb.blastphemyCount = 0
