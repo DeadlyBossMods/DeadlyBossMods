@@ -84,7 +84,8 @@ mod:AddOptionLine(P3Info, "specialannounce")
 mod:AddOptionLine(P3Info, "yell")
 local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)
 local specWarnDireHopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
-local yellDireHoppelessness						= mod:NewYell(365966)--Repeat yell?
+local yellDireHoppelessness						= mod:NewYell(365966)
+local yellDireHoppelessnessRepeat				= mod:NewIconRepeatYell(365966, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnEmpoweredHopebreaker				= mod:NewSpecialWarningCount(365805, nil, nil, nil, 2, 2)
 
 --Stage One: Kingsmourne Hungers
@@ -159,6 +160,11 @@ end
 local function BlasphemyYellRepeater(self, text)
 	yellBlasphemy:Yell(text)
 	self:Schedule(2, BlasphemyYellRepeater, self, text)
+end
+
+local function DireYellRepeater(self, text)
+	yellDireHoppelessnessRepeat:Yell(text)
+	self:Schedule(2, DireYellRepeater, self, text)
 end
 
 function mod:OnCombatStart(delay)
@@ -350,10 +356,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
 		if spellId == 361992 then--Overconfidence
 			overconfidentTargets[#overconfidentTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 7
+			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 6
 		else--Hopelessness
 			hopelessnessTargets[#hopelessnessTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 6
+			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 7
 		end
 		--Determine if player is in either debuff table by matching current table with other table.
 		--If no other table can be found yet, it'll actually not do anything until it has a pair
@@ -408,6 +414,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDireHopelessness:Show()
 			specWarnDireHopelessness:Play("targetyou")
 			yellDireHoppelessness:Yell()
+			self:Unschedule(DireYellRepeater)
+			self:Schedule(2, DireYellRepeater, self, 7)
 		end
 	elseif spellId == 365021 then
 		if self:AntiSpam(15, 1) then
@@ -503,6 +511,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Full stop, all debuffs gone
 		if totalDebuffs == 0 then
 			self:Unschedule(BlasphemyYellRepeater)
+		end
+	elseif spellId == 365966 then
+		if args:IsPlayer() then
+			self:Unschedule(DireYellRepeater)
+		end
+	elseif spellId == 365021 then
+		if args:IsPlayer() then
+			yellWickedStarFades:Cancel()
 		end
 	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 3) then--Both probably valid for same thing
 		self.vb.hungersCount = 0
