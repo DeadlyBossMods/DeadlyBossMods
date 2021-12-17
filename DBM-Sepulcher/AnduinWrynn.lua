@@ -134,6 +134,7 @@ local playersSouled = {}
 local playerName = UnitName("player")
 local overconfidentTargets = {}
 local hopelessnessTargets = {}
+local totalDebuffs = 0
 local hopelessnessName, overconfidenceName = DBM:GetSpellInfo(361993), DBM:GetSpellInfo(361992)
 local castsPerGUID = {}
 
@@ -230,6 +231,12 @@ function mod:SPELL_CAST_START(args)
 		timerBlasphemyCD:Start()
 		table.wipe(overconfidentTargets)
 		table.wipe(hopelessnessTargets)
+		totalDebuffs = 0
+		--Schedule the no debuff yell here
+		--It'll be unscheduled if you get one of them and replaced with a new one
+		if self.vb.PairingBehavior ~= "None" then
+			self:Schedule(3, BlasphemyYellRepeater, self, 0)
+		end
 	elseif spellId == 365958 then
 		specWarnDireBlasphemy:Show()
 		specWarnDireBlasphemy:Play("scatter")
@@ -338,14 +345,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
+		totalDebuffs = totalDebuffs + 1
 		local icon
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
 		if spellId == 361992 then--Overconfidence
 			overconfidentTargets[#overconfidentTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 2
+			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 7
 		else--Hopelessness
 			hopelessnessTargets[#hopelessnessTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 1
+			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 6
 		end
 		--Determine if player is in either debuff table by matching current table with other table.
 		--If no other table can be found yet, it'll actually not do anything until it has a pair
@@ -387,9 +395,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			self:Unschedule(BlasphemyYellRepeater)
 			if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
-			self:Schedule(2, BlasphemyYellRepeater, self, icon, 0)
+			self:Schedule(2, BlasphemyYellRepeater, self, icon)
 			yellBlasphemy:Yell(icon)
 		end
+		--No debuff, assign the no debuff yell repeater (this code will be used instead of starting it in cast start, when we know affected # targets
+		--if self.vb.PairingBehavior ~= "None" and totalDebuffs == DBM:GetGroupSize() and not DBM:UnitDebuff("player", 361992, 361993) then
+		--	self:Schedule(2, BlasphemyYellRepeater, self, 0)
+		--	yellBlasphemy:Yell(0)
+		--end
 	elseif spellId == 365966 then
 		if args:IsPlayer() then
 			specWarnDireHopelessness:Show()
@@ -479,7 +492,16 @@ function mod:SPELL_AURA_REMOVED(args)
 			updateTimerFades(self)
 		end
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
+		totalDebuffs = totalDebuffs - 1
 		if args:IsPlayer() then
+			self:Unschedule(BlasphemyYellRepeater)
+			if self.vb.PairingBehavior ~= "None" and totalDebuffs > 0 then--Schedule the no debuff yell repeater
+				self:Schedule(2, BlasphemyYellRepeater, self, 0)
+				yellBlasphemy:Yell(0)
+			end
+		end
+		--Full stop, all debuffs gone
+		if totalDebuffs == 0 then
 			self:Unschedule(BlasphemyYellRepeater)
 		end
 	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 3) then--Both probably valid for same thing
