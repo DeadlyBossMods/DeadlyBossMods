@@ -357,11 +357,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
 		if spellId == 361992 then--Overconfidence
 			overconfidentTargets[#overconfidentTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 6
+			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 1--Star
 			count = #overconfidentTargets
 		else--Hopelessness
 			hopelessnessTargets[#hopelessnessTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 7
+			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 3--Diamond
 			count = #hopelessnessTargets
 		end
 		--Determine if player is in either debuff table by matching current table with other table.
@@ -418,7 +418,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDireHopelessness:Play("targetyou")
 			yellDireHoppelessness:Yell()
 			self:Unschedule(DireYellRepeater)
-			self:Schedule(1.5, DireYellRepeater, self, 7)--Lasts longer, so slightly slower repeater to avoid throttling
+			self:Schedule(1.5, DireYellRepeater, self, 3)--Lasts longer, so slightly slower repeater to avoid throttling
 		end
 	elseif spellId == 365021 then
 		if self:AntiSpam(15, 1) then
