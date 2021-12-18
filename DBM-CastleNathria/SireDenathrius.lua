@@ -518,7 +518,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or expectedStacks
 		SinStacks[args.destName] = amount
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(SinStacks)
+			DBM.InfoFrame:UpdateTable(SinStacks, 0.2)
 		end
 	elseif spellId == 338510 then
 		if self.Options.NPAuraOnShield then
@@ -672,7 +672,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 326699 then
 		SinStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(SinStacks)
+			DBM.InfoFrame:UpdateTable(SinStacks, 0.2)
 		end
 	elseif spellId == 338510 then
 		if self.Options.NPAuraOnShield then
@@ -745,7 +745,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 326699 then
 		SinStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(SinStacks)
+			DBM.InfoFrame:UpdateTable(SinStacks, 0.2)
 		end
 	end
 end

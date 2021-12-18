@@ -99,7 +99,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		CalamityStacks[args.destName] = amount
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(CalamityStacks)
+			DBM.InfoFrame:UpdateTable(CalamityStacks, 0.4)
 		end
 	elseif spellId == 361632 then
 		warnBanishmentMark:CombinedShow(0.5, args.destName)
@@ -142,7 +142,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 361201 then
 		CalamityStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(CalamityStacks)
+			DBM.InfoFrame:UpdateTable(CalamityStacks, 0.4)
 		end
 	elseif spellId == 361632 then
 		if args:IsPlayer() then
@@ -158,7 +158,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 361201 then
 		CalamityStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(CalamityStacks)
+			DBM.InfoFrame:UpdateTable(CalamityStacks, 0.4)
 		end
 	end
 end

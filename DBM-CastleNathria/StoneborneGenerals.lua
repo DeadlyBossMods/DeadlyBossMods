@@ -505,7 +505,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		LacerationStacks[args.destName] = amount
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(LacerationStacks)
+			DBM.InfoFrame:UpdateTable(LacerationStacks, 0.2)
 		end
 	elseif spellId == 334765 then
 		if self.Options.SetIconOnHeartRend then
@@ -587,7 +587,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(LacerationStacks)
+			DBM.InfoFrame:UpdateTable(LacerationStacks, 0.2)
 		end
 	elseif spellId == 334765 then
 		if self.Options.SetIconOnHeartRend then
@@ -612,7 +612,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 333913 then
 		LacerationStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(LacerationStacks)
+			DBM.InfoFrame:UpdateTable(LacerationStacks, 0.2)
 		end
 	end
 end
