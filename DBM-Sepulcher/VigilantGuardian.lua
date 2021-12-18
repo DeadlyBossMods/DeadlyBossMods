@@ -40,7 +40,7 @@ local warnUnstableCore							= mod:NewTargetNoFilterAnnounce(360458, 3)
 --local warnSurge									= mod:NewSpellAnnounce(364425, 3)--No Longer in Journal
 local warnWaveofDesintegration					= mod:NewCountAnnounce(361001, 4, nil, "Melee")
 local warnDissonance							= mod:NewStackAnnounce(364447, 2, nil, "Tank|Healer")
-local warnBlast									= mod:NewTargetNoFilterAnnounce(360176, 3)
+local warnBlast									= mod:NewTargetAnnounce(360176, 3)
 --Stage One: Automated Defense Systems Online!
 local warnRefractedBlast						= mod:NewCountAnnounce(366693, 2)
 local warnDeresolution							= mod:NewTargetAnnounce(359610, 3)
@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 360458 then
-		warnUnstableCore:Show(args.destName)--use aggregation?
+		warnUnstableCore:CombinedShow(1, args.destName)
 	elseif spellId == 364447 then
 		local amount = args.amount or 1
 		if amount >= 3 then
@@ -236,14 +236,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDefenseless:Show(args.destName)
 		specWarnDefenseless:Play("tauntboss")
 	elseif spellId == 364881 then
+		warnMatterDisoilution:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnMatterDisolution:Show()
 			specWarnMatterDisolution:Play("targetyou")
 			specWarnMatterDisolutionOut:Schedule(6.5)
 			specWarnMatterDisolutionOut:ScheduleVoice(6.5, "runout")
 			yellMatterDisolutionFades:Countdown(spellId, 5)
-		else
-			warnMatterDisoilution:Show(args.destName)
 		end
 	elseif spellId == 364962 and self.vb.phase < 3 then
 		self:SetStage(3)

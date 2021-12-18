@@ -350,7 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		SinStacks[args.destName] = amount
 		if DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:Update()
+			DBM.InfoFrame:Update(0.4)--400ms batching to batch initial application and safe a lot of cpu
 		end
 	elseif spellId == 361689 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnWrackingPain then
