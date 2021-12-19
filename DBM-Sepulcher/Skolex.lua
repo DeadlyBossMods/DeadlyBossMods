@@ -150,7 +150,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		EphemeraDustStacks[args.destName] = amount
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(EphemeraDustStacks)
+			DBM.InfoFrame:UpdateTable(EphemeraDustStacks, 0.2)
 		end
 	elseif spellId == 364522 and args:IsDestTypePlayer() and self:CheckDispelFilter() then
 		specWarnDevouringBlood:CombinedShow(0.5, args.destName)
@@ -198,7 +198,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 359778 then
 		EphemeraDustStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(EphemeraDustStacks)
+			DBM.InfoFrame:UpdateTable(EphemeraDustStacks, 0.2)
 		end
 	end
 end
@@ -208,7 +208,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 359778 then
 		EphemeraDustStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(EphemeraDustStacks)
+			DBM.InfoFrame:UpdateTable(EphemeraDustStacks, 0.2)
 		end
 	end
 end
