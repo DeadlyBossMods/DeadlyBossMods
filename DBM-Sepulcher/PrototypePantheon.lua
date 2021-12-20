@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360295 360636 365272 361066 360845 364241 361304 361568 365126 366062 361300",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 361566 360333",
-	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 362132 361608 361689 364839",
+	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 361608 361689 364839 366234",
 	"SPELL_AURA_APPLIED_DOSE 361608",
 	"SPELL_AURA_REMOVED 360687 361067 361278 361608",
 	"SPELL_AURA_REMOVED_DOSE 361608 361689",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062) and type = "begincast"
  or ability.id = 361789 and type = "cast" or ability.id = 360838
- or ability.id = 361278 and type = "applybuff"
+ or (ability.id = 361278 or ability.id = 366234) and (type = "applybuff" or type = "applydebuff")
  or (ability.id = 360845 or ability.id = 361044) and type = "begincast"
 --]]
 local ProtoWar, ProtoDuty, ProtoRenewl, ProtoAbsolution = DBM:EJ_GetSectionInfo(24125), DBM:EJ_GetSectionInfo(24130), DBM:EJ_GetSectionInfo(24135), DBM:EJ_GetSectionInfo(24139)
@@ -100,6 +100,7 @@ local timerPinningVolleyCD						= mod:NewCDTimer(64.1, 361278, nil, nil, nil, 3)
 mod:AddTimerLine(ProtoRenewl)
 local timerWildStampedeCD						= mod:NewCDTimer(28.8, 361304, nil, nil, nil, 3)
 local timerWitheringSeedCD						= mod:NewCDTimer(96.2, 361568, nil, "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerAnimastormCD							= mod:NewCDTimer(28.8, 366234, nil, nil, nil, 2)
 ----Prototype of Absolution
 mod:AddTimerLine(ProtoAbsolution)
 local timerWrackingPainCD						= mod:NewCDTimer(44, 365126, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -279,6 +280,7 @@ function mod:SPELL_CAST_START(args)
 			timerHandofDestructionCD:Start(79.8, 1)
 			--prototype-of-renewal (Night Fae)
 			timerWitheringSeedCD:Start(18.5)
+			timerAnimastormCD:Start(39.5)
 			timerWildStampedeCD:Start(73)
 		else--Stage 3
 			--Prototype of Absolution (Venthyr)
@@ -291,6 +293,7 @@ function mod:SPELL_CAST_START(args)
 			--prototype-of-renewal (Night Fae)
 			timerWitheringSeedCD:Start(17.8)
 			timerWildStampedeCD:Start(27.3)--Or 25.5 to emote
+			timerAnimastormCD:Start(53.3)
 			--prototype-of-war (Necro)
 			timerRunecarversDeathtouchCD:Start(129.5)
 			timerNecroticRitualCD:Start(135.3)
@@ -368,9 +371,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellPinned:Yell()
 		end
 		warnPinned:CombinedShow(0.5, args.destName)
-	elseif spellId == 362132 then
-		specWarnAnimastorm:Show(DBM_COMMON_L.SHELTER)
-		specWarnAnimastorm:Play("findshelter")
 	elseif spellId == 361608 then
 		local amount = args.amount or 1
 		SinStacks[args.destName] = amount
@@ -384,6 +384,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 364839 and args:IsPlayer() then
 		specWarnSinfulProjection:Show()
 		specWarnSinfulProjection:Play("scatter")
+	elseif spellId == 366234 then
+		specWarnAnimastorm:Show(DBM_COMMON_L.SHELTER)
+		specWarnAnimastorm:Play("findshelter")
+		timerAnimastormCD:Start(self.vb.phase == 2 and 67.4 or 165.4)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
