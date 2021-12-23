@@ -16,7 +16,7 @@
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-Mod-Category: OTHER
 ## X-DBM-StatTypes: normal
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests,Events
