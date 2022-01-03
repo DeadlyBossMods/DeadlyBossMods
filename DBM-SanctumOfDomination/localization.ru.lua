@@ -1,4 +1,4 @@
-if GetLocale() ~= "zhCN" then return end
+if GetLocale() ~= "ruRU" then return end
 local L
 
 ---------------------------
