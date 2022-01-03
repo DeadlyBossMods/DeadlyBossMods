@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
+	"UNIT_AURA_UNFILTERED",--Huge waste of cpu
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -336,14 +337,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 362055 then
-		playersSouled[args.destName] = true
-		if #playersSouled == 1 then
-			timerLostSoul:Start()
-		end
-		if args:IsPlayer() then
-			updateTimerFades(self)
-		end
+	if spellId == 362055 then--Not currently in combat log
+--		playersSouled[args.destName] = true
+--		if #playersSouled == 1 then
+--			timerLostSoul:Start()
+--		end
+--		if args:IsPlayer() then
+--			updateTimerFades(self)
+--		end
 --		if self.vb.phase == 1 then--Despair add
 --			timerDespairCD:Start(1)
 --		end
@@ -495,13 +496,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 362055 then
-		playersSouled[args.destName] = nil
-		if #playersSouled == 0 then
-			timerLostSoul:Stop()
-		end
-		if args:IsPlayer() then
-			updateTimerFades(self)
-		end
+--		playersSouled[args.destName] = nil
+--		if #playersSouled == 0 then
+--			timerLostSoul:Stop()
+--		end
+--		if args:IsPlayer() then
+--			updateTimerFades(self)
+--		end
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
 		totalDebuffs = totalDebuffs - 1
 		if args:IsPlayer() then
@@ -580,6 +581,26 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+--If this debuff was in combat log wouldn't have to waste cpu doing it this way.
+function mod:UNIT_AURA_UNFILTERED(uId)
+	local unitInSword = DBM:UnitDebuff(uId, 362055)
+	local name = DBM:GetUnitFullName(uId)
+	if not unitInSword and playersSouled[name] then--Not In Sword
+		playersSouled[name] = false
+		if name == playerName then
+			updateTimerFades(self)
+		end
+	elseif unitInSword and not playersSouled[name] then--In Sword
+		playersSouled[name] = true
+		if #playersSouled == 1 then
+			timerLostSoul:Start()
+		end
+		if name == playerName then
+			updateTimerFades(self)
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 363116 or spellId == 363133 or spellId == 363233) and self:AntiSpam(10, 4) then
