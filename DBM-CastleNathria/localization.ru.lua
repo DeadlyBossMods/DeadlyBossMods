@@ -17,8 +17,8 @@ local L
 L= DBM:GetModLocalization(2428)
 
 L:SetOptionLocalization({
-	SortDesc 				= "Sort $spell:334755 Infoframe by highest debuff stack (instead of lowest).",
-	ShowTimeNotStacks		= "Show time remaining on $spell:334755 Infoframe instead of stack count."
+	SortDesc 				= "Сортировать $spell:334755 Инфофрейм по наибольшему стаку дебаффов (вместо наименьшего).",
+	ShowTimeNotStacks		= "Показать оставшееся время $spell:334755 Инфофрейм вместо количества стака."
 })
 
 ---------------------------
@@ -37,14 +37,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2420)
 
 L:SetTimerLocalization{
-	timerDesiresContainer		= "Desires full",
-	timerBottledContainer		= "Bottled full",
-	timerSinsContainer			= "Sins full",
-	timerConcentrateContainer	= "Concentrate full"
+	timerDesiresContainer		= "Желания полны",
+	timerBottledContainer		= "Бутылка полная",
+	timerSinsContainer			= "Грехи полны",
+	timerConcentrateContainer	= "Концентрат полный"
 }
 
 L:SetOptionLocalization({
-	timerContainers2			= "Show timer that will show container fill progress and time remaining until full"
+	timerContainers2			= "Показать таймер, который будет показывать прогресс заполнения контейнера и время, оставшееся до заполнения"
 })
 
 ---------------------------
@@ -63,7 +63,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2425)
 
 L:SetOptionLocalization({
-	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities"
+	ExperimentalTimerCorrection	= "Автоматически настраивать таймеры, когда способности попадают в очередь заклинаний из-за других способностей"
 })
 
 ---------------------------
@@ -77,5 +77,5 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("CastleNathriaTrash")
 
 L:SetGeneralLocalization({
-	name =	"Castle Nathria Trash"
+	name =	"Трэш мобы Замок Нафрия"
 })
