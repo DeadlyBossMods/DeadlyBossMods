@@ -586,12 +586,12 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_AURA_UNFILTERED(uId)
 	local unitInSword = DBM:UnitDebuff(uId, 362055)
 	local name = DBM:GetUnitFullName(uId)
-	if playersSouled[name] and not unitInSword then--Not In Sword
+	if not unitInSword and playersSouled[name] then--Not In Sword
 		playersSouled[name] = false
 		if name == playerName then
 			updateTimerFades(self)
 		end
-	elseif not tContains(playersSouled, name) and unitInSword then--In Sword
+	elseif unitInSword and not playersSouled[name] then--In Sword
 		playersSouled[name] = true
 		if #playersSouled == 1 then
 			timerLostSoul:Start()
