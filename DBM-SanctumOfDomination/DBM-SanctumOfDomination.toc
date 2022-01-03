@@ -21,6 +21,7 @@ localization.en.lua
 localization.kr.lua
 localization.cn.lua
 localization.tw.lua
+localization.ru.lua
 TheTarragrue.lua
 TheEyeoftheJailer.lua
 TheNine.lua
