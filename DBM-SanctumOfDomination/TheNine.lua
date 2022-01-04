@@ -305,8 +305,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if self:IsMythic() then
 			--TODO, actually see what happens if they aren't dead by the time these timers expire
-			timerWingsofRageCD:Start(56.7)
-			timerReverberatingRefrainCD:Start(95.7)
+			timerWingsofRageCD:Start(56.7, self.vb.wingCount+1)
+			timerReverberatingRefrainCD:Start(95.7, self.vb.refrainCount+1)
 		end
 		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
 		berserkTimer:Start(602)--Phase 2
