@@ -548,9 +548,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			updateTimerFades(self)
 		end
-		if self.vb.phase == 1 then--Despair add
-			timerDespairCD:Start(1)
-		end
+--		if self.vb.phase == 1 then--Despair add
+--			timerDespairCD:Start(1)
+--		end
 	elseif spellId == 364031 and playersSouled[playerName] and self:CheckDispelFilter() then
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
