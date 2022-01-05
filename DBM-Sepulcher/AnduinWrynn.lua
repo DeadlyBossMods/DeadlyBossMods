@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_AURA_UNFILTERED",--Huge waste of cpu
+--	"UNIT_AURA_UNFILTERED",--Huge waste of cpu
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -527,7 +527,7 @@ end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 365039 then
+	if spellId == 365039 then--Hiddem from CLEU, but if it's ever enabled, marking will become about 1-2 sec faster automatically
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
 		end
@@ -541,16 +541,16 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 362055 then--Not currently in combat log
---		playersSouled[args.destName] = true
---		if #playersSouled == 1 then
---			timerLostSoul:Start()
---		end
---		if args:IsPlayer() then
---			updateTimerFades(self)
---		end
---		if self.vb.phase == 1 then--Despair add
---			timerDespairCD:Start(1)
---		end
+		playersSouled[args.destName] = true
+		if #playersSouled == 1 then
+			timerLostSoul:Start()
+		end
+		if args:IsPlayer() then
+			updateTimerFades(self)
+		end
+		if self.vb.phase == 1 then--Despair add
+			timerDespairCD:Start(1)
+		end
 	elseif spellId == 364031 and playersSouled[playerName] and self:CheckDispelFilter() then
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
@@ -699,13 +699,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 362055 then
---		playersSouled[args.destName] = nil
---		if #playersSouled == 0 then
---			timerLostSoul:Stop()
---		end
---		if args:IsPlayer() then
---			updateTimerFades(self)
---		end
+		playersSouled[args.destName] = nil
+		if #playersSouled == 0 then
+			timerLostSoul:Stop()
+		end
+		if args:IsPlayer() then
+			updateTimerFades(self)
+		end
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
 		totalDebuffs = totalDebuffs - 1
 		if args:IsPlayer() then
@@ -786,6 +786,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+--[[
 --If this debuff was in combat log wouldn't have to waste cpu doing it this way.
 function mod:UNIT_AURA_UNFILTERED(uId)
 	local unitInSword = DBM:UnitDebuff(uId, 362055)
@@ -805,6 +806,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 		end
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 363116 or spellId == 363133 or spellId == 363233) and self:AntiSpam(10, 4) then
