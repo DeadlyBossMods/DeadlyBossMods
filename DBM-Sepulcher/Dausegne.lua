@@ -233,7 +233,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-		timerDominationCoreCD:Start(7.6, timerDominationCoreCD+1)
+		timerDominationCoreCD:Start(7.6, self.vb.coreCount+1)
 		timerObliterationArcCD:Start(16.1, self.vb.arcCount+1)
 		timerStaggeringBarrageCD:Start(30, self.vb.barrageCount+1)
 		timerSiphonReservoirCD:Start(108, self.vb.ReservoirCount+1)--108-110, closer here than teleport to teleport.
