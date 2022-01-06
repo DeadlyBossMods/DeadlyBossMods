@@ -42,13 +42,14 @@ local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
 local warnInterdimensionalWormhole				= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
 local warnStasisTrap							= mod:NewTargetNoFilterAnnounce(362882, 2)--Failing to dodge it
 
---Xy Decipherers
-local specWarnXyDecipherers						= mod:NewSpecialWarningSwitch(363485, "-Healer", nil, nil, 1, 2, 4)
+--Adds
+----Cartel Plunderers
+local specWarnCartelPlunderers					= mod:NewSpecialWarningSwitch(363485, "-Healer", nil, nil, 1, 2, 4)
 ----Cartel Overseer
 local specWarnSystemShock						= mod:NewSpecialWarningDefensive(365682, nil, nil, nil, 1, 2)
 local specWarnSystemShockTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil, nil, 1, 2)
 --Boss
-local specWarnForerunnerRings					= mod:NewSpecialWarningDodge(363520, nil, nil, nil, 2, 2)
+local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
 local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, 355331, nil, nil, 2, 2, 4)--Mythic only
 local specWarnInterdimensionalWormhole			= mod:NewSpecialWarningYouPos(362615, 67833, nil, nil, 1, 2)
 local yellInterdimensionalWormhole				= mod:NewPosYell(362615, 67833)
@@ -65,15 +66,16 @@ local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, 
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerForerunnerRingsCD					= mod:NewCDTimer(30, 363520, nil, nil, nil, 3)
---Xy Decipherers
-local timerXyDecipherersCD						= mod:NewAITimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerGenesisRingsCD						= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
+----Cartel Plunderers
+local timerCartelPlunderersCD					= mod:NewAITimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Cartel Overseer
 local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
 --Boss
-local timerFracturingRiftBlastsCD				= mod:NewAITimer(28.8, 362841, 355331, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerRiftBlastsCD							= mod:NewAITimer(28.8, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerInterdimensionalWormholeCD			= mod:NewNextTimer(30, 362615, 67833, nil, nil, 3)
-local timerGlyphofRelocationCD					= mod:NewNextTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGlyphofRelocationCD					= mod:NewNextCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerHyperlightSparknovaCD				= mod:NewNextCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStasisTrapCD							= mod:NewNextTimer(30, 362885, nil, nil, nil, 3)
 --Hyperlight Adds
@@ -92,18 +94,22 @@ mod:AddNamePlateOption("NPAuraOnAscension", 364040, true)
 local castsPerGUID = {}
 mod.vb.tearIcon = 1
 mod.vb.sparkCount = 0
+mod.vb.ringCount = 0
+mod.vb.glyphCount = 0
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.sparkCount = 0
+	self.vb.ringCount = 0
+	self.vb.glyphCount = 0
 	timerInterdimensionalWormholeCD:Start(8-delay)
 	timerHyperlightSparknovaCD:Start(14-delay, 1)
 	timerStasisTrapCD:Start(21-delay)
-	timerForerunnerRingsCD:Start(26-delay)
-	timerGlyphofRelocationCD:Start(40-delay)
+	timerGenesisRingsCD:Start(26-delay, 1)
+	timerGlyphofRelocationCD:Start(40-delay, 1)
 	if self:IsMythic() then
-		timerXyDecipherersCD:Start(1-delay)
-		timerFracturingRiftBlastsCD:Start(1-delay)
+		timerCartelPlunderersCD:Start(1-delay)
+		timerRiftBlastsCD:Start(1-delay)
 	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -133,9 +139,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 363485 then
-		specWarnXyDecipherers:Show()
-		specWarnXyDecipherers:Play("killadd")
-		timerXyDecipherersCD:Start()
+		specWarnCartelPlunderers:Show()
+		specWarnCartelPlunderers:Play("killadd")
+		timerCartelPlunderersCD:Start()
 	elseif spellId == 365682 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then
 			specWarnSystemShock:Show()
@@ -145,14 +151,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 362841 then
 		specWarnFracturingRiftBlasts:Show()
 		specWarnFracturingRiftBlasts:Play("farfromline")
-		timerFracturingRiftBlastsCD:Start()
+		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
-		timerGlyphofRelocationCD:Start()
+		self.vb.glyphCount = self.vb.glyphCount + 1
+		timerGlyphofRelocationCD:Start(nil, self.vb.glyphCount+1)
 	elseif spellId == 362849 then
 		self.vb.sparkCount = self.vb.sparkCount + 1
 		specWarnHyperlightSpark:Show(self.vb.sparkCount)
 		specWarnHyperlightSpark:Play("aesoon")
-		timerHyperlightSparknovaCD:Start()
+		timerHyperlightSparknovaCD:Start(nil, self.vb.sparkCount+1)
 	elseif spellId == 364040 then
 		if self:AntiSpam(2, 2) then
 			warnHyperlightAscension:Show()
@@ -179,9 +186,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 363258 then--Slightly faster than SPELL_CAST_START/APPLIED
 		warnDecipherRelic:Show()
 		--Stop timers
-		timerForerunnerRingsCD:Stop()
-		timerXyDecipherersCD:Stop()
-		timerFracturingRiftBlastsCD:Stop()
+		timerGenesisRingsCD:Stop()
+		timerCartelPlunderersCD:Stop()
+		timerRiftBlastsCD:Stop()
 		timerInterdimensionalWormholeCD:Stop()
 		timerGlyphofRelocationCD:Stop()
 		timerHyperlightSparknovaCD:Stop()
@@ -195,9 +202,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:ScanForMobs(183707, 0, 6, 3, nil, 12, "SetIconOnHyperlightAdds")
 		end
 	elseif spellId == 364465 then
-		specWarnForerunnerRings:Show()
-		specWarnForerunnerRings:Play("watchwave")
-		timerForerunnerRingsCD:Start()
+		self.vb.ringCount = self.vb.ringCount + 1
+		specWarnGenesisRings:Show(self.vb.ringCount)
+		specWarnGenesisRings:Play("watchwave")
+		timerGenesisRingsCD:Start(nil, self.vb.ringCount+1)
 	elseif spellId == 364030 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
 			castsPerGUID[args.sourceGUID] = 0
@@ -278,6 +286,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGlyphofRelocationTaunt:Show(args.destName)
 			specWarnGlyphofRelocationTaunt:Play("tauntboss")
 		end
+		timerGlyphExplostion:Start(args.destName)
 	elseif spellId == 362882 then
 		warnStasisTrap:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
@@ -298,16 +307,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 363034 or spellId == 363139 then--Decipher Relic 1 min (boss casts)
 		self:SetStage(0)
+		self.vb.sparkCount = 0
+		self.vb.ringCount = 0
+		self.vb.glyphCount = 0
 		warnDecipherRelicOver:Show()
 		--Restart Timers (exactly same as pull)
 		timerInterdimensionalWormholeCD:Start(8)
-		timerHyperlightSparknovaCD:Start(14)
+		timerHyperlightSparknovaCD:Start(14, 1)
 		timerStasisTrapCD:Start(21)
-		timerForerunnerRingsCD:Start(26)
-		timerGlyphofRelocationCD:Start(40)
+		timerGenesisRingsCD:Start(26, 1)
+		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
-			timerXyDecipherersCD:Start(2)
-			timerFracturingRiftBlastsCD:Start(2)
+			timerCartelPlunderersCD:Start(2)
+			timerRiftBlastsCD:Start(2)
 		end
 	elseif spellId == 362615 or spellId == 362614 then
 		if self.Options.SetIconOnWormhole then
@@ -323,12 +335,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellGlyphofRelocationFades:Cancel()
 		end
+		timerGlyphExplostion:Stop(args.destName)
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 184140 or cid == 184143 then--Hyperlight Acolyte, Hyperlight Archon
+	if cid == 184140 or cid == 184143 then--Xy Acolyte, Xy Archon
 		timerSystemShockCD:Stop(args.destGUID)
 		if self.Options.NPAuraOnAscension then
 			DBM.Nameplate:Hide(true, args.destGUID, 364040)

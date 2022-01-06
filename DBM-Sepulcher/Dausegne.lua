@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181224)
 mod:SetEncounterID(2540)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20211203000000)
+mod:SetHotfixNoticeRev(20220106000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -177,7 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			if amount % 3 == 0 then
-				if (amount >= 9) and not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", 362008) then
+				if (amount >= 9) and not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
 					specWarnInfusedStrikesTaunt:Show(args.destName)
 					specWarnInfusedStrikesTaunt:Play("tauntboss")
 				else

@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 359778 359976 359981",
 	"SPELL_AURA_REMOVED 359778",
 	"SPELL_AURA_REMOVED_DOSE 359778",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_PERIODIC_DAMAGE 366070",
+	"SPELL_PERIODIC_MISSED 366070",
 --	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, maybe go all out with some ra-den level shit and calculate who's tank
 --then calculate 3 furhtest targets from tank (which assumes they're also 3 furthest from boss
 --which then enables showing them on infoframe, marking them, and even auto rangecheck opening if player is one of the 3, for Dust Blast mechanic
+--TODO, is tank weapon and dust blast still a combined mechanic? it no longer mentioned this way and leaves one to wonder. For now timer name was changed to be sure it's tied to tank mechanic and if sep, adding a new dust blast timer later will be trivial
 --[[
 (ability.id = 359770 or ability.id = 359829 or ability.id = 359979 or ability.id = 359975 or ability.id = 364778 or ability.id = 360451) and type = "begincast"
  or ability.id = 364893 and type = "cast"
@@ -38,18 +39,19 @@ local warnRend									= mod:NewStackAnnounce(359979, 2, nil, "Tank|Healer")
 local warnRift									= mod:NewStackAnnounce(359976, 2, nil, "Tank|Healer")
 local warnDestroy								= mod:NewCastAnnounce(364778, 4)
 
-local specWarnUnendingHunger					= mod:NewSpecialWarningCount(359770, nil, nil, nil, 2, 2)
+local specWarnRaveningBurrow					= mod:NewSpecialWarningCount(359770, nil, nil, nil, 2, 2)
 local specWarnDustFlail							= mod:NewSpecialWarningCount(359829, "Healer", nil, nil, 2, 2)
 local specWarnRetch								= mod:NewSpecialWarningDodge(360448, nil, nil, nil, 2, 2)
 local specWarnDevouringBlood					= mod:NewSpecialWarningDispel(364522, false, nil, nil, 1, 2)--Opt in
 local specWarnRiftmaw							= mod:NewSpecialWarningTaunt(359976, nil, nil, nil, 1, 2)
 local specWarnRend								= mod:NewSpecialWarningTaunt(359979, nil, nil, nil, 1, 2)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
 local timerDustflailCD							= mod:NewCDTimer(17, 359829, nil, nil, nil, 2)
 local timerRetchCD								= mod:NewCDTimer(24.2, 360448, nil, nil, nil, 3)
-local timerDustBlastCD							= mod:NewCDTimer(24.2, 359904, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--used for tank combo and blast, it's all together
+--local timerDustBlastCD						= mod:NewCDTimer(24.2, 359905, nil, nil, nil, 2)
+local timerRiftmawCD							= mod:NewCDTimer(24.2, 359976, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--used for tank combo and blast, it's all together
 
 local berserkTimer								= mod:NewBerserkTimer(360)--Final Consumption
 
@@ -68,7 +70,7 @@ function mod:OnCombatStart(delay)
 	self.vb.dustCount = 0
 	self.vb.comboCount = 0
 	timerDustflailCD:Start(2-delay)
-	timerDustBlastCD:Start(10.5-delay)
+	timerRiftmawCD:Start(10.5-delay)
 	timerRetchCD:Start(25.1-delay)
 	berserkTimer:Start(360-delay)
 	if self.Options.InfoFrame then
@@ -99,8 +101,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 359770 then
 		self.vb.hungerCount = self.vb.hungerCount + 1
-		specWarnUnendingHunger:Show(self.vb.hungerCount)
-		specWarnUnendingHunger:Play("specialsoon")
+		specWarnRaveningBurrow:Show(self.vb.hungerCount)
+		specWarnRaveningBurrow:Play("specialsoon")
 		--Reset other spell counts
 		self.vb.dustCount = 0
 		--Boss energy doesn't reset, Timers continue but just get queued up and then unqueud after
@@ -117,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(359979, 359975) then--Rend, Riftmaw
 --		if self:AntiSpam(20, 1) then
 --			self.vb.comboCount = 0
---			timerDustBlastCD:Start()
+--			timerRiftmawCD:Start()
 --		end
 		self.vb.comboCount = self.vb.comboCount + 1
 	elseif spellId == 364778 then
@@ -125,7 +127,7 @@ function mod:SPELL_CAST_START(args)
 		--This really shouldn't be a thing and I hope they fix it by next test
 --		timerDustflailCD:Pause()
 --		timerRetchCD:Pause()
---		timerDustBlastCD:Pause()
+--		timerRiftmawCD:Pause()
 	elseif spellId == 360451 then
 		specWarnRetch:Show()
 		specWarnRetch:Play("shockwave")
@@ -139,7 +141,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 364893 then
 		timerDustflailCD:Resume()
 		timerRetchCD:Resume()
-		timerDustBlastCD:Resume()
+		timerRiftmawCD:Resume()
 	end
 end
 --]]
@@ -222,19 +224,17 @@ function mod:UNIT_DIED(args)
 end
 -]]
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
+	if spellId == 366070 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 360079 then--[DNT] Tank Combo
 		self.vb.comboCount = 0
-		timerDustBlastCD:Start()
+		timerRiftmawCD:Start()
 	end
 end
