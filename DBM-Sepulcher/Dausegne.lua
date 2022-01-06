@@ -18,7 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 361966 361018 361651",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_WHISPER"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -253,6 +254,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 	end
 end
+mod.RAID_BOSS_WHISPER = mod.CHAT_MSG_RAID_BOSS_EMOTE--Dunno what this is about. You ok Blizz?
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
