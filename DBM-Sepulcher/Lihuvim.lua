@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20211212000000)
+mod:SetHotfixNoticeRev(20220106000000)
 mod:SetMinSyncRevision(20211212000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362601 363130 364652 363088 365257",
+	"SPELL_CAST_START 362601 363130 364652 363088 365257 366001",
 	"SPELL_CAST_SUCCESS 363795 363676",
 	"SPELL_AURA_APPLIED 362622 366012 363537 363795 363676 364092 364312 363130 361200",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, wait for blizzard to add mote debuffs into combat log, redundant RBW will cover it for now
 --TODO, Any add timers? they almost seemed inconsiquential (at least timer wise)
+--TODO, announce when cast begins for Reorginate, or when it ends and who it's on?
 --[[
 (ability.id = 362601 or ability.id = 363130 or ability.id = 364652 or ability.id = 363088) and type = "begincast"
  or (ability.id = 363795 or ability.id = 363676) and type = "cast"
@@ -61,6 +62,7 @@ local timerProtoformRadiance					= mod:NewBuffActiveTimer(28.8, 363537, nil, nil
 local timerProtoformCascadeCD					= mod:NewCDTimer(20.6, 364652, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCosmicShiftCD						= mod:NewCDTimer(20.3, 363088, nil, nil, nil, 3)
 local timerDeconstructingEnergyCD				= mod:NewCDTimer(26.8, 363795, nil, nil, nil, 3)
+local timerSynthesizeCD							= mod:NewCDTimer(20, 363130, nil, nil, nil, 6)
 local timerSynthesize							= mod:NewBuffActiveTimer(20, 363130, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRecharge								= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6)
 --Adds
@@ -80,6 +82,7 @@ function mod:OnCombatStart(delay)
 	timerUnstableMoteCD:Start(12-delay)
 	timerDeconstructingEnergyCD:Start(20.5-delay)
 	timerCosmicShiftCD:Start(25.4-delay)
+	timerSynthesizeCD:Start(100-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -214,6 +217,7 @@ function mod:SPELL_AURA_REMOVED(args)
 --		timerUnstableMoteCD:Start(2)--Same reason as above
 		timerCosmicShiftCD:Start(6.7)
 		timerProtoformCascadeCD:Start(15.2)
+		timerSynthesizeCD:Start(65)
 	end
 end
 

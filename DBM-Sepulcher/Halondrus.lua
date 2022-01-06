@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One: The Reclaimer
 local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
-local warnMaterializeObelisks					= mod:NewSpellAnnounce(363340, 2)
+local warnMaterializePylons						= mod:NewSpellAnnounce(363340, 2)
 local warnSubterraneanScan						= mod:NewCountAnnounce(367079, 2)
 --local warnEphemeralEngine						= mod:NewStackAnnounce(366016, 4, nil, "Tank|Healer")--No longer in journal, probably scrapped
 local warnEphemeralDroplet						= mod:NewTargetNoFilterAnnounce(366015, 4)
@@ -44,7 +44,7 @@ local warnCrushingPrism							= mod:NewCountAnnounce(365297, 3, nil, "RemoveMagi
 local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 
 --Stage One: The Reclaimer
-local specWarnDematerialize						= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
+local specWarnMeltdown							= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
 local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--Opt in, for someone that might be a soaker
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
 local specWarnEphemeralRain						= mod:NewSpecialWarningDodge(366011, nil, nil, nil, 2, 2)
@@ -60,7 +60,7 @@ local specWarnDetonation						= mod:NewSpecialWarningSwitch(362056, "Dps", nil, 
 
 --mod:AddTimerLine(BOSS)
 --Stage One: The Reclaimer
-local timerMaterializeObelisksCD				= mod:NewCDTimer(28.8, 363340, nil, nil, nil, 1)
+local timerMaterializePylonsCD					= mod:NewCDTimer(28.8, 363340, nil, nil, nil, 1)
 local timerFractalShell							= mod:NewCastTimer(30, 364229, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerSubterraneanScanCD					= mod:NewCDTimer(35, 367079, nil, nil, nil, 5)
 local timerEarthbreakerMissilesCD				= mod:NewCDTimer(33.2, 361676, nil, nil, nil, 3)
@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 	self.vb.scanCount = 0
 	self.vb.dropletIcon = 1
 	self.vb.crushingCast = 0
-	timerMaterializeObelisksCD:Start(3.7-delay)
+	timerMaterializePylonsCD:Start(3.7-delay)
 	timerLightshatterBeamCD:Start(11-delay)
 	timerSubterraneanScanCD:Start(16.1-delay)--16.3-18.2
 	timerEarthbreakerMissilesCD:Start(35.2-delay)--35.2-37
@@ -169,8 +169,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 363340 then
-		warnMaterializeObelisks:Show()
-		timerMaterializeObelisksCD:Start()
+		warnMaterializePylons:Show()
+		timerMaterializePylonsCD:Start()
 	elseif spellId == 364229 then
 		timerFractalShell:Start(30, args.sourceGUID)
 		if self.Options.SetIconOnFractal then
@@ -178,10 +178,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 363408 then
 		if self:AntiSpam(10, 1) then
-			specWarnDematerialize:Show()
-			specWarnDematerialize:Play("stilldanger")
+			specWarnMeltdown:Show()
+			specWarnMeltdown:Play("stilldanger")
 		end
-		timerFractalShell:Stop(args.sourceGUID)--Auto canceled if Dematerialize starts
+		timerFractalShell:Stop(args.sourceGUID)--Auto canceled if Meltdown starts
 	elseif spellId == 367079 then
 		self.vb.scanCount = self.vb.scanCount + 1
 		if self.Options.SpecWarn367079count then
@@ -217,7 +217,7 @@ function mod:SPELL_CAST_START(args)
 		warnRelocationForm:Show()
 		timerRelocationForm:Start()
 		--Stop stationary timers
-		timerMaterializeObelisksCD:Stop()
+		timerMaterializePylonsCD:Stop()
 		timerSubterraneanScanCD:Stop()
 		timerEarthbreakerMissilesCD:Stop()
 		timerEphemeralRainCD:Stop()
@@ -264,7 +264,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDetonationCD:Stop()
 		timerCrushingPrismCD:Stop()
 		--Start Stationary ones
-		timerMaterializeObelisksCD:Start(4.9)--4.9-5.3
+		timerMaterializePylonsCD:Start(4.9)--4.9-5.3
 		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
 			timerLightshatterBeamCD:Start(12.5)
 			timerSubterraneanScanCD:Start(16.4)
