@@ -39,6 +39,7 @@ local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
 --Boss
 local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
 local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
+local warnRiftBlasts							= mod:NewSpellAnnounce(362841, 2)
 local warnInterdimensionalWormhole				= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
 local warnStasisTrap							= mod:NewTargetNoFilterAnnounce(362882, 2)--Failing to dodge it
 
@@ -50,8 +51,8 @@ local specWarnSystemShock						= mod:NewSpecialWarningDefensive(365682, nil, nil
 local specWarnSystemShockTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil, nil, 1, 2)
 --Boss
 local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
-local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, 355331, nil, nil, 2, 2, 4)--Mythic only
-local specWarnInterdimensionalWormhole			= mod:NewSpecialWarningYouPos(362615, 67833, nil, nil, 1, 2)
+local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, false, nil, nil, 2, 2, 4)--Mythic only, kinda spammy so off by default
+local specWarnInterdimensionalWormhole			= mod:NewSpecialWarningYouPos(362615, nil, 67833, nil, 1, 2)
 local yellInterdimensionalWormhole				= mod:NewPosYell(362615, 67833)
 local yellInterdimensionalWormholeFades			= mod:NewIconFadesYell(362615, 67833)
 local specWarnGlyphofRelocation					= mod:NewSpecialWarningMoveAway(362803, nil, nil, nil, 1, 2)
@@ -149,8 +150,12 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSystemShockCD:Start(11.5, args.sourceGUID)
 	elseif spellId == 362841 and self:AntiSpam(3, 1) then
-		specWarnFracturingRiftBlasts:Show()
-		specWarnFracturingRiftBlasts:Play("farfromline")
+		if self.Options.SpecWarn362841dodge then
+			specWarnFracturingRiftBlasts:Show()
+			specWarnFracturingRiftBlasts:Play("farfromline")
+		else
+			warnRiftBlasts:Show()
+		end
 		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
 		self.vb.glyphCount = self.vb.glyphCount + 1
