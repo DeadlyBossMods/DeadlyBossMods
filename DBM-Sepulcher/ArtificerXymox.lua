@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSystemShock:Play("defensive")
 		end
 		timerSystemShockCD:Start(11.5, args.sourceGUID)
-	elseif spellId == 362841 then
+	elseif spellId == 362841 and self:AntiSpam(3, 1) then
 		specWarnFracturingRiftBlasts:Show()
 		specWarnFracturingRiftBlasts:Play("farfromline")
 		timerRiftBlastsCD:Start()
