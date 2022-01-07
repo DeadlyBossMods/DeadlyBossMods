@@ -25,11 +25,11 @@ localization.en.lua
 localization.kr.lua
 localization.cn.lua
 VigilantGuardian.lua
-Dausegne.lua
+Skolex.lua
 ArtificerXymox.lua
+Dausegne.lua
 PrototypePantheon.lua
 Lihuvim.lua
-Skolex.lua
 Halondrus.lua
 AnduinWrynn.lua
 LordsofDread.lua

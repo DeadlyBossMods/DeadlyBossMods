@@ -43,7 +43,15 @@ L:SetMiscLocalization({
 ---------------------------
 --  Skolex, the Insatiable Ravener --
 ---------------------------
---L= DBM:GetModLocalization(2465)
+L= DBM:GetModLocalization(2465)
+
+L:SetTimerLocalization{
+	timerComboCD		= "~Tank Combo"
+}
+
+L:SetOptionLocalization({
+	timerComboCD		= "Show timer for tank combo cooldown"
+})
 
 ---------------------------
 --  Halondrus the Reclaimer --

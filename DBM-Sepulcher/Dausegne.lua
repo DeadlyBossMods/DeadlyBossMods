@@ -18,7 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 361966 361018 361651",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_WHISPER"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -233,7 +234,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-		timerDominationCoreCD:Start(7.6, timerDominationCoreCD+1)
+		timerDominationCoreCD:Start(7.6, self.vb.coreCount+1)
 		timerObliterationArcCD:Start(16.1, self.vb.arcCount+1)
 		timerStaggeringBarrageCD:Start(30, self.vb.barrageCount+1)
 		timerSiphonReservoirCD:Start(108, self.vb.ReservoirCount+1)--108-110, closer here than teleport to teleport.
@@ -253,6 +254,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 	end
 end
+mod.RAID_BOSS_WHISPER = mod.CHAT_MSG_RAID_BOSS_EMOTE--Dunno what this is about. You ok Blizz?
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
