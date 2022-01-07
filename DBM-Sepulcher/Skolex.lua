@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181395)
 mod:SetEncounterID(2542)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20211203000000)
+mod:SetHotfixNoticeRev(20220106000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -24,12 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, probably use https://ptr.wowhead.com/spell=359777/unending-hunger to resume timers at REMOVED, if it's in combat log
---TODO, do timers estart when raid triggers a hunger, or do they pause?
---TODO, maybe go all out with some ra-den level shit and calculate who's tank
---then calculate 3 furhtest targets from tank (which assumes they're also 3 furthest from boss
---which then enables showing them on infoframe, marking them, and even auto rangecheck opening if player is one of the 3, for Dust Blast mechanic
---TODO, is tank weapon and dust blast still a combined mechanic? it no longer mentioned this way and leaves one to wonder. For now timer name was changed to be sure it's tied to tank mechanic and if sep, adding a new dust blast timer later will be trivial
 --[[
 (ability.id = 359770 or ability.id = 359829 or ability.id = 359979 or ability.id = 359975 or ability.id = 364778 or ability.id = 360451) and type = "begincast"
  or ability.id = 364893 and type = "cast"
@@ -48,10 +42,9 @@ local specWarnRend								= mod:NewSpecialWarningTaunt(359979, nil, nil, nil, 1,
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerDustflailCD							= mod:NewCDTimer(17, 359829, nil, nil, nil, 2)
-local timerRetchCD								= mod:NewCDTimer(24.2, 360448, nil, nil, nil, 3)
---local timerDustBlastCD						= mod:NewCDTimer(24.2, 359905, nil, nil, nil, 2)
-local timerRiftmawCD							= mod:NewCDTimer(24.2, 359976, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--used for tank combo and blast, it's all together
+local timerDustflailCD							= mod:NewCDTimer(16.6, 359829, nil, nil, nil, 2)
+local timerRetchCD								= mod:NewCDTimer(33.2, 360448, nil, nil, nil, 3)--33-35
+local timerComboCD								= mod:NewTimer(33.2, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
 
 local berserkTimer								= mod:NewBerserkTimer(360)--Final Consumption
 
@@ -70,8 +63,8 @@ function mod:OnCombatStart(delay)
 	self.vb.dustCount = 0
 	self.vb.comboCount = 0
 	timerDustflailCD:Start(2-delay)
-	timerRiftmawCD:Start(10.5-delay)
-	timerRetchCD:Start(25.1-delay)
+	timerComboCD:Start(7.6-delay)
+	timerRetchCD:Start(24.6-delay)
 	berserkTimer:Start(360-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(359778))
@@ -119,7 +112,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(359979, 359975) then--Rend, Riftmaw
 --		if self:AntiSpam(20, 1) then
 --			self.vb.comboCount = 0
---			timerRiftmawCD:Start()
+--			timerComboCD:Start()
 --		end
 		self.vb.comboCount = self.vb.comboCount + 1
 	elseif spellId == 364778 then
@@ -127,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 		--This really shouldn't be a thing and I hope they fix it by next test
 --		timerDustflailCD:Pause()
 --		timerRetchCD:Pause()
---		timerRiftmawCD:Pause()
+--		timerComboCD:Pause()
 	elseif spellId == 360451 then
 		specWarnRetch:Show()
 		specWarnRetch:Play("shockwave")
@@ -141,7 +134,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 364893 then
 		timerDustflailCD:Resume()
 		timerRetchCD:Resume()
-		timerRiftmawCD:Resume()
+		timerComboCD:Resume()
 	end
 end
 --]]
@@ -235,6 +228,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 360079 then--[DNT] Tank Combo
 		self.vb.comboCount = 0
-		timerRiftmawCD:Start()
+		timerComboCD:Start()
 	end
 end
