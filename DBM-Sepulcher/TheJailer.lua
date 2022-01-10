@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 --TODO, shattering blast random target or tank?
 --TODO, verify decimator target scan, or find emote for it's targeting
 --TODO, fix unrelenting domination in p1 and P3 probably)
---TODO, https://ptr.wowhead.com/spell=363748/death-sentence ?
+--TODO, https://ptr.wowhead.com/spell=363748/death-sentence / https://ptr.wowhead.com/spell=363772/death-sentence ?
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
 local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), DBM:EJ_GetSectionInfo(23923), DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
 --Stage One: Origin of Domination
