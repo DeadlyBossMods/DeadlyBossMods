@@ -53,6 +53,7 @@ local specWarnTotalDominion						= mod:NewSpecialWarningSpell(365418, nil, nil, 
 
 --mod:AddTimerLine(BOSS)
 --The Fallen Oracle
+local timerUnleashedInfusion					= mod:NewTargetTimer(20, 361967, nil, nil, nil, 2)
 local timerStaggeringBarrageCD					= mod:NewCDCountTimer(35, 361018, nil, nil, nil, 3)
 local timerDominationCoreCD						= mod:NewCDCountTimer(33.5, 359483, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerObliterationArcCD					= mod:NewCDCountTimer(35, 361513, nil, nil, nil, 3)
@@ -186,6 +187,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		timerUnleashedInfusion:Stop(args.destName)
+		timerUnleashedInfusion:Start(20, args.destName)
 	elseif spellId == 361018 then
 		local icon = self.vb.DebuffIcon
 		if self.Options.SetIconOnStaggeringBarrage then
@@ -223,6 +226,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellInfusedStrikes:Cancel()
 		end
+		timerUnleashedInfusion:Stop(args.destName)
 	elseif spellId == 361018 then
 		if self.Options.SetIconOnStaggeringBarrage then
 			self:SetIcon(args.destName, 0)
