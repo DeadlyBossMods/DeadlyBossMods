@@ -40,7 +40,7 @@ local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
 local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
 local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
 local warnRiftBlasts							= mod:NewSpellAnnounce(362841, 2)
-local warnInterdimensionalWormhole				= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
+local warnDimensionalTear						= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
 local warnStasisTrap							= mod:NewTargetNoFilterAnnounce(362882, 2)--Failing to dodge it
 
 --Adds
@@ -52,9 +52,9 @@ local specWarnSystemShockTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil
 --Boss
 local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
 local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, false, nil, nil, 2, 2, 4)--Mythic only, kinda spammy so off by default
-local specWarnInterdimensionalWormhole			= mod:NewSpecialWarningYouPos(362615, nil, 67833, nil, 1, 2)
-local yellInterdimensionalWormhole				= mod:NewPosYell(362615, 67833)
-local yellInterdimensionalWormholeFades			= mod:NewIconFadesYell(362615, 67833)
+local specWarnDimensionalTear					= mod:NewSpecialWarningYouPos(362615, nil, 67833, nil, 1, 2)
+local yellDimensionalTear						= mod:NewPosYell(362615, 327770)
+local yellDimensionalTearFades					= mod:NewIconFadesYell(362615, 327770)
 local specWarnGlyphofRelocation					= mod:NewSpecialWarningMoveAway(362803, nil, nil, nil, 1, 2)
 local yellGlyphofRelocation						= mod:NewYell(362803)
 local yellGlyphofRelocationFades				= mod:NewShortFadesYell(362803)
@@ -74,7 +74,7 @@ local timerCartelPlunderersCD					= mod:NewAITimer(28.8, 363485, nil, nil, nil, 
 local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
 --Boss
 local timerRiftBlastsCD							= mod:NewAITimer(28.8, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerInterdimensionalWormholeCD			= mod:NewNextTimer(30, 362615, 67833, nil, nil, 3)
+local timerDimensionalTearCD			= mod:NewNextTimer(30, 362615, 327770, nil, nil, 3)
 local timerGlyphofRelocationCD					= mod:NewNextCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerHyperlightSparknovaCD				= mod:NewNextCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
@@ -103,7 +103,7 @@ function mod:OnCombatStart(delay)
 	self.vb.sparkCount = 0
 	self.vb.ringCount = 0
 	self.vb.glyphCount = 0
-	timerInterdimensionalWormholeCD:Start(8-delay)
+	timerDimensionalTearCD:Start(8-delay)
 	timerHyperlightSparknovaCD:Start(14-delay, 1)
 	timerStasisTrapCD:Start(21-delay)
 	timerGenesisRingsCD:Start(26-delay, 1)
@@ -187,14 +187,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 362721 then
 		self.vb.tearIcon = 1
---		timerInterdimensionalWormholeCD:Start()--Not used second time per phase?
+--		timerDimensionalTearCD:Start()--Not used second time per phase?
 	elseif spellId == 363258 then--Slightly faster than SPELL_CAST_START/APPLIED
 		warnDecipherRelic:Show()
 		--Stop timers
 		timerGenesisRingsCD:Stop()
 		timerCartelPlunderersCD:Stop()
 		timerRiftBlastsCD:Stop()
-		timerInterdimensionalWormholeCD:Stop()
+		timerDimensionalTearCD:Stop()
 		timerGlyphofRelocationCD:Stop()
 		timerHyperlightSparknovaCD:Stop()
 		timerStasisTrapCD:Stop()
@@ -271,12 +271,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnInterdimensionalWormhole:Show(self:IconNumToTexture(icon))
-			specWarnInterdimensionalWormhole:Play("mm"..icon)
-			yellInterdimensionalWormhole:Yell(icon, icon, icon)
-			yellInterdimensionalWormholeFades:Countdown(spellId, 7, icon)
+			specWarnDimensionalTear:Show(self:IconNumToTexture(icon))
+			specWarnDimensionalTear:Play("mm"..icon)
+			yellDimensionalTear:Yell(icon, icon, icon)
+			yellDimensionalTearFades:Countdown(spellId, 7, icon)
 		end
-		warnInterdimensionalWormhole:CombinedShow(1, args.destName)
+		warnDimensionalTear:CombinedShow(1, args.destName)
 		self.vb.tearIcon = self.vb.tearIcon + 1
 	elseif spellId == 362803 then
 		if self.Options.SetIconGlyphofRelocation then
@@ -317,7 +317,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.glyphCount = 0
 		warnDecipherRelicOver:Show()
 		--Restart Timers (exactly same as pull)
-		timerInterdimensionalWormholeCD:Start(8)
+		timerDimensionalTearCD:Start(8)
 		timerHyperlightSparknovaCD:Start(14, 1)
 		timerStasisTrapCD:Start(21)
 		timerGenesisRingsCD:Start(26, 1)
@@ -331,7 +331,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
-			yellInterdimensionalWormholeFades:Cancel()
+			yellDimensionalTearFades:Cancel()
 		end
 	elseif spellId == 362803 then
 		if self.Options.SetIconGlyphofRelocation then
