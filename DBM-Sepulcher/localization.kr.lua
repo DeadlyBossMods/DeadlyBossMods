@@ -44,7 +44,15 @@ L:SetMiscLocalization({
 ---------------------------
 --  Skolex, the Insatiable Ravener --
 ---------------------------
---L= DBM:GetModLocalization(2465)
+L= DBM:GetModLocalization(2465)
+
+L:SetTimerLocalization{
+	timerComboCD		= "~탱커 콤보"
+}
+
+L:SetOptionLocalization({
+	timerComboCD		= "탱커 콤보 쿨타임 타이머 바 표시"
+})
 
 ---------------------------
 --  Halondrus the Reclaimer --
