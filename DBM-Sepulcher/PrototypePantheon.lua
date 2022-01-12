@@ -402,7 +402,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 366159 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnImprintedSafeguards then
-			DBM.Nameplate:Show(true, args.destGUID, spellId
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 364839 and args:IsPlayer() then
 		specWarnSinfulProjection:Show()
@@ -457,7 +457,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 366159 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnImprintedSafeguards then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 361745 then
 		if self.Options.SetIconOnNightHunter then
