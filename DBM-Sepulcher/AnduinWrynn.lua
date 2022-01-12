@@ -80,7 +80,7 @@ local specWarnMarchofDamned						= mod:NewSpecialWarningDodge(364020, nil, nil, 
 mod:AddOptionLine(P3Info, "specialannounce")
 mod:AddOptionLine(P3Info, "yell")
 local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)
-local specWarnHopelessness						= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
+local specWarnS3Hopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
 local yellHopelessness							= mod:NewYell(365966)
 local yellHopelessnessRepeat					= mod:NewIconRepeatYell(365966, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnEmpoweredHopebreaker				= mod:NewSpecialWarningCount(365805, nil, nil, nil, 2, 2)
@@ -623,8 +623,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		--end
 	elseif spellId == 365966 then
 		if args:IsPlayer() then
-			specWarnHopelessness:Show()
-			specWarnHopelessness:Play("targetyou")
+			specWarnS3Hopelessness:Show()
+			specWarnS3Hopelessness:Play("targetyou")
 			yellHopelessness:Yell()
 			self:Unschedule(DireYellRepeater)
 			self:Schedule(1.5, DireYellRepeater, self, 3)--Lasts longer, so slightly slower repeater to avoid throttling
