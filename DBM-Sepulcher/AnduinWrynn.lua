@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181954)
 mod:SetEncounterID(2546)
 mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220104000000)
-mod:SetMinSyncRevision(20220104000000)
+mod:SetHotfixNoticeRev(20220111000000)
+mod:SetMinSyncRevision(20220111000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
 
@@ -14,11 +14,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362405 361989 365295 361815 362771 363024 365120 365872 365958 365805",
-	"SPELL_CAST_SUCCESS 365235 365636 365030",
+	"SPELL_CAST_SUCCESS 365235 365636 365030 367631",
 	"SPELL_SUMMON 365039",
-	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 365216 362862 365966 366849 363028",
+	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 365216 362862 365966 366849 363028 367632",
 	"SPELL_AURA_APPLIED_DOSE 364248",
-	"SPELL_AURA_REMOVED 362055 361992 361993 365021 362505 365216 365966",
+	"SPELL_AURA_REMOVED 362055 361992 361993 365021 362505 365216 365966 367632",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -80,9 +80,9 @@ local specWarnMarchofDamned						= mod:NewSpecialWarningDodge(364020, nil, nil, 
 mod:AddOptionLine(P3Info, "specialannounce")
 mod:AddOptionLine(P3Info, "yell")
 local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)
-local specWarnDireHopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
-local yellDireHoppelessness						= mod:NewYell(365966)
-local yellDireHoppelessnessRepeat				= mod:NewIconRepeatYell(365966, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
+local specWarnS3Hopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
+local yellHopelessness							= mod:NewYell(365966)
+local yellHopelessnessRepeat					= mod:NewIconRepeatYell(365966, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnEmpoweredHopebreaker				= mod:NewSpecialWarningCount(365805, nil, nil, nil, 2, 2)
 
 --Stage One: Kingsmourne Hungers
@@ -107,7 +107,7 @@ local timerGrimReflectionsCD					= mod:NewCDCountTimer(28.8, 365120, nil, nil, n
 mod:AddTimerLine(P25Info)
 local timerMarchofDamnedCD						= mod:NewAITimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Three: A Moment of Clarity
----In case I decide to split any of timers after all for hopebreaker and dire blasphemy
+local timerHopelessnessCD						= mod:NewAITimer(28.8, 365966, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -289,7 +289,7 @@ local allTimers = {
 			[365958] = {},
 			--Empowered Hopebreaker
 			[365805] = {},
-			--Wicked Star
+			--Dire Wicked Star
 			[365030] = {},
 		},
 	},
@@ -319,7 +319,7 @@ local function BlasphemyYellRepeater(self, text)
 end
 
 local function DireYellRepeater(self, text)
-	yellDireHoppelessnessRepeat:Yell(text)
+	yellHopelessnessRepeat:Yell(text)
 	self:Schedule(1.5, DireYellRepeater, self, text)
 end
 
@@ -429,10 +429,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blastphemyCount = self.vb.blastphemyCount + 1
 		specWarnDireBlasphemy:Show()
 		specWarnDireBlasphemy:Play("scatter")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.blastphemyCount+1]
-		if timer then
-			timerBlasphemyCD:Start(timer, self.vb.blastphemyCount+1)
-		end
+		--local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.blastphemyCount+1]
+		--if timer then
+		--	timerHopelessnessCD:Start(timer, self.vb.blastphemyCount+1)
+		--end
+		timerHopelessnessCD:Start()--Temp
 	elseif spellId == 365295 then
 		self.vb.befouledCount = self.vb.befouledCount + 1
 		warnBefouledBarrier:Show(self.vb.befouledCount)
@@ -515,10 +516,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnDespair:Show()
 		end
 --		timerDespairCD:Start()
-	elseif spellId == 365030 then
+	elseif spellId == 365030 or spellId == 367631 then
 		self.vb.wickedCount = self.vb.wickedCount + 1
 		self.vb.wickedIcon = 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wickedCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase][365030][self.vb.wickedCount+1]
 		if timer then
 			timerWickedStarCD:Start(timer, self.vb.wickedCount+1)
 		end
@@ -544,6 +545,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		playersSouled[args.destName] = true
 		if #playersSouled == 1 then
 			timerLostSoul:Start()
+			if self.Options.InfoFrame and self:IsMythic() then
+				DBM.InfoFrame:SetHeader(args.spellName)
+				DBM.InfoFrame:Show(20, "playerbaddebuff", 362055, nil, true)
+			end
 		end
 		if args:IsPlayer() then
 			updateTimerFades(self)
@@ -618,13 +623,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		--end
 	elseif spellId == 365966 then
 		if args:IsPlayer() then
-			specWarnDireHopelessness:Show()
-			specWarnDireHopelessness:Play("targetyou")
-			yellDireHoppelessness:Yell()
+			specWarnS3Hopelessness:Show()
+			specWarnS3Hopelessness:Play("targetyou")
+			yellHopelessness:Yell()
 			self:Unschedule(DireYellRepeater)
 			self:Schedule(1.5, DireYellRepeater, self, 3)--Lasts longer, so slightly slower repeater to avoid throttling
 		end
-	elseif spellId == 365021 then
+	elseif spellId == 365021 or spellId == 367632 then
 		local icon = self.vb.wickedIcon
 		if self.Options.SetIconOnWickedStar then
 			self:SetIcon(args.destName, icon)
@@ -702,6 +707,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		playersSouled[args.destName] = nil
 		if #playersSouled == 0 then
 			timerLostSoul:Stop()
+			if self.Options.InfoFrame and self:IsMythic() then
+				DBM.InfoFrame:Hide()
+			end
 		end
 		if args:IsPlayer() then
 			updateTimerFades(self)
@@ -723,7 +731,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			self:Unschedule(DireYellRepeater)
 		end
-	elseif spellId == 365021 then
+	elseif spellId == 365021 or spellId == 367632 then
 		if args:IsPlayer() then
 			yellWickedStarFades:Cancel()
 		end
@@ -753,7 +761,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerSoulReaperCD:Stop()
 			timerMarchofDamnedCD:Stop()
 --			timerKingsmourneHungersCD:Start(3, 1)
---			timerBlasphemyCD:Start(3, 1)--Dire Blasphemy just reuses Blasphemy timer
+			timerHopelessnessCD:Start(3)--, 1 Dire Blasphemy replaced by hopelessness
 --			timerBefouledBarrierCD:Start(3, 1)
 --			timerWickedStarCD:Start(3, 1)
 --			timerHopebreakerCD:Start(3, 1)
