@@ -74,7 +74,7 @@ local timerCartelPlunderersCD					= mod:NewAITimer(28.8, 363485, nil, nil, nil, 
 local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
 --Boss
 local timerRiftBlastsCD							= mod:NewAITimer(28.8, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerDimensionalTearCD			= mod:NewNextTimer(30, 362615, 327770, nil, nil, 3)
+local timerDimensionalTearCD					= mod:NewNextTimer(30, 362615, 327770, nil, nil, 3)
 local timerGlyphofRelocationCD					= mod:NewNextCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerHyperlightSparknovaCD				= mod:NewNextCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
