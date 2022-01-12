@@ -6,8 +6,8 @@ mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20211220000000)
-mod:SetMinSyncRevision(20211220000000)
+mod:SetHotfixNoticeRev(20220111000000)
+mod:SetMinSyncRevision(20220111000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
 
@@ -15,12 +15,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360295 360636 365272 361066 360845 364241 361304 361568 365126 366062 361300",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 361745",
 	"SPELL_SUMMON 361566 360333",
-	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 361608 361689 364839 366234",
+	"SPELL_AURA_APPLIED 360687 365269 361067 361278 362352 361608 361689 364839 366234 361745 366159",
 	"SPELL_AURA_APPLIED_DOSE 361608",
-	"SPELL_AURA_REMOVED 360687 361067 361278 361608",
-	"SPELL_AURA_REMOVED_DOSE 361608 361689",
+	"SPELL_AURA_REMOVED 360687 361067 361278 361608 361745",
+	"SPELL_AURA_REMOVED_DOSE 361608 361689 366159",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, tanks wap for Wracking Pain? Feels like tank should just eat it vs putting 2 bosses on one tank for only 25%
 --[[
 (ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062) and type = "begincast"
- or ability.id = 361789 and type = "cast" or ability.id = 360838
+ or (ability.id = 361745 or ability.id = 361789) and type = "cast" or ability.id = 360838
  or (ability.id = 361278 or ability.id = 366234) and (type = "applybuff" or type = "applydebuff")
  or (ability.id = 360845 or ability.id = 361044) and type = "begincast"
 --]]
@@ -81,6 +81,9 @@ mod:AddOptionLine(ProtoAbsolution, "specialannounce")
 local specWarnSinfulProjection					= mod:NewSpecialWarningMoveAway(364839, nil, nil, nil, 2, 2)--Sound 2 because everyone gets it
 local specWarnWrackingPain						= mod:NewSpecialWarningSpell(365126, nil, nil, nil, 1, 2)--Change to moveto?
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(361789, nil, nil, nil, 4, 2)
+local specWarnNightHunter						= mod:NewSpecialWarningYou(361745, nil, nil, nil, 1, 2, 4)--Nont moveto, because it's kind of RLs perogative to prioritize seeds or ritualists if both up, don't want to make that call
+local yellNightHunter							= mod:NewShortPosYell(361745)
+local yellNightHunterFades						= mod:NewIconFadesYell(361745)
 
 --mod:AddTimerLine(BOSS)
 
@@ -105,23 +108,28 @@ local timerAnimastormCD							= mod:NewCDTimer(28.8, 366234, nil, nil, nil, 2)
 mod:AddTimerLine(ProtoAbsolution)
 local timerWrackingPainCD						= mod:NewCDTimer(44, 365126, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerHandofDestructionCD					= mod:NewCDCountTimer(56.2, 361789, nil, nil, nil, 2)--Also timer for sinful projections, the two mechanics are intertwined
+local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(360687, true)
+mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
 mod:AddIconLine(ProtoWar)
 mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {1, 2, 3, 4})--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
 mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {5, 6, 7, 8})
 mod:AddIconLine(ProtoRenewl)
 mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4})
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
+mod:AddIconLine(ProtoAbsolution)
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4})--Conflicts with seeds, off by default
 
 local deathtouchTargets = {}
 local wardTargets = {}
 local SinStacks = {}
 mod.vb.callCount = 0
 mod.vb.seedIcon = 1
+mod.vb.hunterIcon = 1
 mod.vb.ritualistIcon = 8
 mod.vb.HandCount = 0
 mod.vb.stampedeCast = 0
@@ -187,20 +195,24 @@ function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
 	self.vb.callCount = 0
 	self.vb.seedIcon = 1
+	self.vb.hunterIcon = 1
 	self.vb.HandCount = 0
 	self:SetStage(1)
 	--Necro
 	timerNecroticRitualCD:Start(11.5-delay)
 	timerRunecarversDeathtouchCD:Start(47.2-delay)
 	--Kyrian
-	timerHumblingStrikesCD:Start(11.5-delay)
+	timerHumblingStrikesCD:Start(10-delay)
 	timerAscensionsCallCD:Start(42.9-delay)--Time til USCS anyways
 	timerPinningVolleyCD:Start(63-delay)
+	if self:IsMythic() then
+		timerNightHunterCD:Start(1-delay)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(26, "function", updateInfoFrame, false, true, true)--26 to show up to 4 debuffs and 20 sin stacks plus 2 headers
 	end
-	if self.Options.NPAuraOnWrackingPain then
+	if self.Options.NPAuraOnWrackingPain or self.Options.NPAuraOnImprintedSafeguards then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -239,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerHumblingStrikesCD:Start(self.vb.phase == 1 and 35.7 or 50)
 	elseif spellId == 361066 then
-		DBM:AddMsg("Ascensions call addedd back to combat log, notify DBM authors")
+		DBM:AddMsg("Ascensions call added back to combat log, notify DBM authors")
 	elseif spellId == 360845 then
 		warnBastionsWard:Show()
 	elseif spellId == 364241 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -282,6 +294,10 @@ function mod:SPELL_CAST_START(args)
 			timerWitheringSeedCD:Start(18.5)
 			timerAnimastormCD:Start(39.5)
 			timerWildStampedeCD:Start(73)
+			if self:IsMythic() then
+				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
+				timerNightHunterCD:Start(2)
+			end
 		else--Stage 3
 			--Prototype of Absolution (Venthyr)
 			timerWrackingPainCD:Start(41.1)
@@ -297,18 +313,21 @@ function mod:SPELL_CAST_START(args)
 			--prototype-of-war (Necro)
 			timerRunecarversDeathtouchCD:Start(129.5)
 			timerNecroticRitualCD:Start(135.3)
+			if self:IsMythic() then
+				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
+				timerNightHunterCD:Start(3)
+			end
 		end
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 353931 then
-
+	if spellId == 361745 then
+		self.vb.hunterIcon = 1
+		timerNightHunterCD:Start()
 	end
 end
---]]
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
@@ -381,6 +400,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnWrackingPain then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 35)
 		end
+	elseif spellId == 366159 and args:IsDestTypeHostile() then
+		if self.Options.NPAuraOnImprintedSafeguards then
+			DBM.Nameplate:Show(true, args.destGUID, spellId
+		end
 	elseif spellId == 364839 and args:IsPlayer() then
 		specWarnSinfulProjection:Show()
 		specWarnSinfulProjection:Play("scatter")
@@ -388,6 +411,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnAnimastorm:Show(DBM_COMMON_L.SHELTER)
 		specWarnAnimastorm:Play("findshelter")
 		timerAnimastormCD:Start(self.vb.phase == 2 and 67.4 or 165.4)
+	elseif spellId == 361745 then
+		local icon = self.vb.hunterIcon
+		if self.Options.SetIconOnNightHunter then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnNightHunter:Show()
+			specWarnNightHunter:Play("targetyou")
+			yellNightHunter:Yell(icon, icon)
+			yellNightHunterFades:Countdown(spellId, nil, icon)
+		end
+		warnWickedStar:Show(icon, args.destName)
+		self.vb.hunterIcon = self.vb.hunterIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -418,6 +454,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 361689 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnWrackingPain then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 366159 and args:IsDestTypeHostile() then
+		if self.Options.NPAuraOnImprintedSafeguards then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId
+		end
+	elseif spellId == 361745 then
+		if self.Options.SetIconOnNightHunter then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellNightHunterFades:Cancel()
 		end
 	end
 end
@@ -472,6 +519,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if cid == 181548 then--Prototype of Absolution (Venthyr)
 			timerWrackingPainCD:Stop()
 			timerHandofDestructionCD:Stop()
+			timerNightHunterCD:Stop()
 		elseif cid == 181551 then--prototype-of-duty (Kyrian)
 			timerHumblingStrikesCD:Stop()
 			timerAscensionsCallCD:Stop()
