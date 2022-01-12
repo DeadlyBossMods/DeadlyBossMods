@@ -52,6 +52,7 @@ local warnBastionsWard							= mod:NewCastAnnounce(360845, 1)
 local warnPinned								= mod:NewTargetNoFilterAnnounce(362352, 4)
 --Stage Two: Sin and Seed
 ----Prototype of Absolution
+local warnNightHunter							= mod:NewTargetNoFilterAnnounce(361745, 3)
 
 --Stage One: War and Duty
 ----Prototype of War
@@ -422,7 +423,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellNightHunter:Yell(icon, icon)
 			yellNightHunterFades:Countdown(spellId, nil, icon)
 		end
-		warnWickedStar:Show(icon, args.destName)
+		warnNightHunter:CombinedShow(0.3, args.destName)
 		self.vb.hunterIcon = self.vb.hunterIcon + 1
 	end
 end
