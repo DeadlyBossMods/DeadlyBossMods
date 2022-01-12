@@ -49,7 +49,7 @@ local timerComboCD								= mod:NewTimer(33.2, "timerComboCD", 359976, nil, nil,
 local berserkTimer								= mod:NewBerserkTimer(360)--Final Consumption
 
 --mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(359778, true)
+mod:AddInfoFrameOption(359778, true, nil, 5)
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.hungerCount = 0
@@ -68,7 +68,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(360-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(359778))
-		DBM.InfoFrame:Show(20, "table", EphemeraDustStacks, 1)
+		DBM.InfoFrame:Show(20, "table", EphemeraDustStacks, 5)
 	end
 --	if self.Options.NPAuraOnBurdenofDestiny then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
