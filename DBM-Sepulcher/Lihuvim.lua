@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 362601 or ability.id = 363130 or ability.id = 364652 or ability.id = 363088) and type = "begincast"
  or (ability.id = 363795 or ability.id = 363676) and type = "cast"
- or ability.id = 361200 and type = "removebuff"
+ or ability.id = 361200 or ability.id = 363130
  or ability.id = 365257 and type = "begincast"
 --]]
 --Boss
@@ -78,11 +78,11 @@ mod.vb.energyIcon = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.energyIcon = 1
-	timerProtoformCascadeCD:Start(5.9-delay)
+	timerProtoformCascadeCD:Start(5.1-delay)--5-6
 	timerUnstableMoteCD:Start(12-delay)
 	timerDeconstructingEnergyCD:Start(20.5-delay)
-	timerCosmicShiftCD:Start(25.4-delay)
-	timerSynthesizeCD:Start(100-delay)
+	timerCosmicShiftCD:Start(self:IsMythic() and 27.8 or 25.4-delay)--TODO, is mythic slightly slower or just need more sample data to see a 25?
+	timerSynthesizeCD:Start(self:IsMythic() and 31 or 100-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -110,7 +110,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 362601 then
-		timerUnstableMoteCD:Start()
+		timerUnstableMoteCD:Start(self:IsMythic() and 32.7 or 20.3)
 		timerUnstableMote:Start()
 	elseif spellId == 363130 then
 		warnSynthesize:Show()
@@ -124,11 +124,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnProtoformCascade:Show()
 			specWarnProtoformCascade:Play("defensive")
 		end
-		timerProtoformCascadeCD:Start()
+		timerProtoformCascadeCD:Start(self:IsMythic() and 10.9 or 20.3)
 	elseif spellId == 363088 then
 		specWarnCosmicShift:Show()
 		specWarnCosmicShift:Play("carefly")
-		timerCosmicShiftCD:Start()
+		timerCosmicShiftCD:Start(self:IsMythic() and 32.7 or 20.3)
 	elseif spellId == 365257 and self:AntiSpam(5, 1) then
 		warnFormSentry:Show()
 	end
@@ -138,7 +138,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 363795 or spellId == 363676 then
 		self.vb.energyIcon = 1
-		timerDeconstructingEnergyCD:Start()
+		timerDeconstructingEnergyCD:Start(self:IsMythic() and 42.5 or 26.8)
 	end
 end
 
@@ -181,11 +181,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 363130 then
-		timerSynthesize:Start()
+		timerSynthesize:Start(self:IsMythic() and 15 or 20)
 	elseif spellId == 361200 then
-		timerRecharge:Start()
-		timerDeconstructingEnergyCD:Start(20.5)--Started here because it's used .5 seconds after recharge ends
-		timerUnstableMoteCD:Start(20.5)
+		if self:IsMythic() then
+			timerRecharge:Start(30)
+--			timerDeconstructingEnergyCD:Start(30.5)--NOT started here on mythic
+--			timerUnstableMoteCD:Start(30.5)
+		else
+			timerRecharge:Start(20)
+			timerDeconstructingEnergyCD:Start(20.5)--Started here because it's used .5 seconds after recharge ends
+			timerUnstableMoteCD:Start(20.5)
+		end
 	end
 end
 
@@ -213,11 +219,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 361200 then
 		timerRecharge:Stop()
 		--Restart boss timers
---		timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
---		timerUnstableMoteCD:Start(2)--Same reason as above
-		timerCosmicShiftCD:Start(6.7)
-		timerProtoformCascadeCD:Start(15.2)
-		timerSynthesizeCD:Start(65)
+		if self:IsMythic() then
+			timerProtoformCascadeCD:Start(6.1)
+			timerUnstableMoteCD:Start(12.5)
+			timerDeconstructingEnergyCD:Start(22.2)
+			timerCosmicShiftCD:Start(28.3)
+			timerSynthesizeCD:Start(101.2)
+		else
+--			timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
+--			timerUnstableMoteCD:Start(2)--Same reason as above
+			timerCosmicShiftCD:Start(6.7)
+			timerProtoformCascadeCD:Start(15.2)
+			timerSynthesizeCD:Start(65)
+		end
 	end
 end
 
