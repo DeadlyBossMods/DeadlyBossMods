@@ -47,11 +47,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2465)
 
 L:SetTimerLocalization{
-	timerComboCD		= "~탱커 콤보"
+	timerComboCD		= "~탱커 연속 공격"
 }
 
 L:SetOptionLocalization({
-	timerComboCD		= "탱커 콤보 쿨타임 타이머 바 표시"
+	timerComboCD		= "탱커 연속 공격 쿨타임 타이머 바 표시"
 })
 
 ---------------------------
