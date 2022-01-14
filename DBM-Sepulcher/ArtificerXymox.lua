@@ -19,12 +19,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 365577 365701 363034 363139 362615 362614 362803",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, what to really do with https://ptr.wowhead.com/spell=365745/rotary-body-armor
 --TODO, how does Gunship/hyperlight barrage work? Probably https://ptr.wowhead.com/spell=364376/hyperlight-barrage 3 sec periodic trigger
+--TODO, possibly sequence out timers for certain things, like P2 Glpyh might actually be 40, 42, 37
 --[[
 (ability.id = 363485 or ability.id = 362841 or ability.id = 362801 or ability.id = 362849) and type = "begincast"
  or (ability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
@@ -69,16 +70,16 @@ local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, 
 --mod:AddTimerLine(BOSS)
 local timerGenesisRingsCD						= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
 ----Cartel Plunderers
-local timerCartelPlunderersCD					= mod:NewAITimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerCartelPlunderersCD					= mod:NewCDTimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Cartel Overseer
 local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
 --Boss
-local timerRiftBlastsCD							= mod:NewAITimer(28.8, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerDimensionalTearCD					= mod:NewNextTimer(30, 362615, 327770, nil, nil, 3)
-local timerGlyphofRelocationCD					= mod:NewNextCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
+local timerDimensionalTearCD					= mod:NewNextTimer(8, 362615, 327770, nil, nil, 3)
+local timerGlyphofRelocationCD					= mod:NewCDCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerHyperlightSparknovaCD				= mod:NewNextCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerStasisTrapCD							= mod:NewNextTimer(30, 362885, nil, nil, nil, 3)
+local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(28, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
+local timerStasisTrapCD							= mod:NewCDTimer(28, 362885, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 --Hyperlight Adds
 --local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -107,10 +108,12 @@ function mod:OnCombatStart(delay)
 	timerHyperlightSparknovaCD:Start(14-delay, 1)
 	timerStasisTrapCD:Start(21-delay)
 	timerGenesisRingsCD:Start(26-delay, 1)
-	timerGlyphofRelocationCD:Start(40-delay, 1)
 	if self:IsMythic() then
-		timerCartelPlunderersCD:Start(1-delay)
-		timerRiftBlastsCD:Start(1-delay)
+		timerCartelPlunderersCD:Start(13.4-delay)
+		timerRiftBlastsCD:Start(13.6-delay)
+		timerGlyphofRelocationCD:Start(44.4-delay, 1)
+	else
+		timerGlyphofRelocationCD:Start(40-delay, 1)--TODO, recheck
 	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -140,9 +143,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 363485 then
-		specWarnCartelPlunderers:Show()
-		specWarnCartelPlunderers:Play("killadd")
-		timerCartelPlunderersCD:Start()
+		DBM:AddMsg("The Cartel Elite added to combat log, notify DBM authors")
 	elseif spellId == 365682 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then
 			specWarnSystemShock:Show()
@@ -156,7 +157,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnRiftBlasts:Show()
 		end
-		timerRiftBlastsCD:Start()
+--		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
 		self.vb.glyphCount = self.vb.glyphCount + 1
 		timerGlyphofRelocationCD:Start(nil, self.vb.glyphCount+1)
@@ -210,7 +211,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ringCount = self.vb.ringCount + 1
 		specWarnGenesisRings:Show(self.vb.ringCount)
 		specWarnGenesisRings:Play("watchwave")
-		timerGenesisRingsCD:Start(nil, self.vb.ringCount+1)
+		--More data needed, no phase 3 data for mythic, and did heroic change to also not be 30 anymore?
+		local timer = self:IsMythic() and (self.vb.phase == 1 and 33 or self.vb.phase == 2 and 40) or 30
+		timerGenesisRingsCD:Start(timer, self.vb.ringCount+1)
 	elseif spellId == 364030 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
 			castsPerGUID[args.sourceGUID] = 0
@@ -323,8 +326,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGenesisRingsCD:Start(26, 1)
 		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
-			timerCartelPlunderersCD:Start(2)
-			timerRiftBlastsCD:Start(2)
+			timerCartelPlunderersCD:Start(12)
+			timerRiftBlastsCD:Start(12.2)
 		end
 	elseif spellId == 362615 or spellId == 362614 then
 		if self.Options.SetIconOnWormhole then
@@ -364,11 +367,14 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 --"<19.51 22:08:21> [UNIT_SPELLCAST_SUCCEEDED] Artificer Xy'mox(Bookaine) -Hyperlight Reinforcements- boss1:Cast-3-4170-2481-12807-364046-006FB27045:364046
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 364046 then
-
+	if spellId == 365428 then
+		specWarnCartelPlunderers:Show()
+		specWarnCartelPlunderers:Play("killadd")
+		--timerCartelPlunderersCD:Start()
 	end
 end
---]]
+

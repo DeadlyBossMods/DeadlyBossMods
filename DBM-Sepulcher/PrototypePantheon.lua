@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 mod:SetHotfixNoticeRev(20220111000000)
 mod:SetMinSyncRevision(20220111000000)
 --mod.respawnTime = 29
@@ -117,7 +117,7 @@ mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(360687, true)
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
 mod:AddIconLine(ProtoWar)
-mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {1, 2, 3, 4})--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
+mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {9, 10, 11, 12}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
 mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {5, 6, 7, 8})
 mod:AddIconLine(ProtoRenewl)
 mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4})
