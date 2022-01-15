@@ -5,9 +5,9 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-mod:SetHotfixNoticeRev(20220111000000)
-mod:SetMinSyncRevision(20220111000000)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+mod:SetHotfixNoticeRev(20220114000000)
+mod:SetMinSyncRevision(20220114000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
 
@@ -17,10 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360295 360636 365272 361066 360845 364241 361304 361568 365126 366062 361300",
 	"SPELL_CAST_SUCCESS 361745 361278",
 	"SPELL_SUMMON 361566 360333",
-	"SPELL_AURA_APPLIED 360687 365269 361067 362352 361608 361689 364839 366234 361745 366159",
-	"SPELL_AURA_APPLIED_DOSE 361608",
-	"SPELL_AURA_REMOVED 360687 361067 361278 361608 361745",
-	"SPELL_AURA_REMOVED_DOSE 361608 361689 366159",
+	"SPELL_AURA_APPLIED 360687 365269 361067 362352 361689 364839 366234 361745 366159",
+	"SPELL_AURA_REMOVED 360687 361067 361278 361745",
+	"SPELL_AURA_REMOVED_DOSE 361689 366159",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -29,12 +28,12 @@ mod:RegisterEventsInCombat(
 
 --TODO, warn on pinning volley emote instead (pre warning instead of warning when channel starts)
 --TODO, warn on Wild Stampede emote instead?
---TODO, Find Phase 3 cd of necrotic ritual (between casts)
+--TODO, Find Phase 3 cd of necrotic ritual (between casts) and P2 time between wracking pain casts on mythic and tons of others
 --TODO, maybe add https://ptr.wowhead.com/spell=362270/anima-shelter tracking to infoframe? seems like might already be crowded though just monitoring sin stacks and deathtouch
 --TODO, tanks wap for Wracking Pain? Feels like tank should just eat it vs putting 2 bosses on one tank for only 25%
 --[[
-(ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062) and type = "begincast"
- or (ability.id = 361278 or ability.id = 361745 or ability.id = 361789) and type = "cast" or ability.id = 360838
+(ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062  or ability.id = 361789) and type = "begincast"
+ or (ability.id = 361278 or ability.id = 361745) and type = "cast" or ability.id = 360838
  or (ability.id = 366234) and (type = "applybuff" or type = "applydebuff")
  or (ability.id = 360845 or ability.id = 361044) and type = "begincast"
 --]]
@@ -117,17 +116,25 @@ mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(360687, true)
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
 mod:AddIconLine(ProtoWar)
-mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {9, 10, 11, 12}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
-mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {13, 14, 15, 16}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
+mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
 mod:AddIconLine(ProtoRenewl)
 mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4})
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
 mod:AddIconLine(ProtoAbsolution)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4})--Conflicts with seeds, off by default
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {9, 10, 11, 12}, true)
+if DBM.Options.ExtendIcons then
+	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo", "SetThree"}, "SetOne", "misc")
+else
+	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo"}, "SetOne", "misc")
+	if mod.Options.RitualistIconSetting == "SetThree" then
+		mod.Options.RitualistIconSetting = "SetOne"
+		DBM:AddMsg(L.ExtendReset)
+	end
+end
 
 local deathtouchTargets = {}
 local wardTargets = {}
-local SinStacks = {}
 mod.vb.ritualCount = 0
 mod.vb.deathtouchCount = 0
 mod.vb.humblingCount = 0
@@ -141,6 +148,7 @@ mod.vb.handCount = 0
 mod.vb.nightCount = 0
 mod.vb.seedIcon = 1
 mod.vb.hunterIcon = 1
+mod.vb.ritualistIconMethod = 1
 mod.vb.ritualistIcon = 8
 
 local difficultyName = "None"
@@ -157,8 +165,6 @@ local allTimers = {
 			[361066] = {46.2, 61.5},
 			--Pinning Volley
 			[361278] = {67.9, 69.2},
-			--Night Hunter (Mythic Only)
-			[361745] = {},
 		},
 		[2] = {
 			--Wild Stampede
@@ -171,8 +177,6 @@ local allTimers = {
 			[365126] = {36.0, 58.4, 60.0},
 			--Hand of Destruction
 			[361791] = {107.7, 75.0},
-			--Night Hunter (Mythic Only)
-			[361745] = {},
 		},
 		[3] = {
 			--Necrotic Ritual
@@ -195,41 +199,156 @@ local allTimers = {
 			[365126] = {33.9, 40.0, 40.0, 40.0, 40.0, 42.7},
 			--Hand of Destruction
 			[361791] = {84.5, 100.0},
-			--Night Hunter (Mythic Only)
-			[361745] = {},
 		},
 	},
 	["normal"] = {
 		[1] = {
-
+			--Necrotic Ritual
+			[360295] = {},
+			--Runecarver's Deathtouch
+			[360636] = {},
+			--Humbling Strikes
+			[365272] = {},
+			--Ascension's Call
+			[361066] = {},
+			--Pinning Volley
+			[361278] = {},
 		},
 		[2] = {
-
+			--Wild Stampede
+			[361304] = {},
+			--Withering Seeds
+			[361568] = {},
+			--Animastorm
+			[366234] = {},
+			--Wracking Pain
+			[365126] = {},
+			--Hand of Destruction
+			[361791] = {},
 		},
 		[3] = {
-
+			--Necrotic Ritual
+			[360295] = {},
+			--Runecarver's Deathtouch
+			[360636] = {},
+			--Humbling Strikes
+			[365272] = {},
+			--Ascension's Call
+			[361066] = {},
+			--Pinning Volley
+			[361278] = {},
+			--Wild Stampede
+			[361304] = {},
+			--Withering Seeds
+			[361568] = {},
+			--Animastorm
+			[366234] = {},
+			--Wracking Pain
+			[365126] = {},
+			--Hand of Destruction
+			[361791] = {},
 		},
 	},
 	["heroic"] = {
 		[1] = {
-
+			--Necrotic Ritual
+			[360295] = {},
+			--Runecarver's Deathtouch
+			[360636] = {},
+			--Humbling Strikes
+			[365272] = {},
+			--Ascension's Call
+			[361066] = {},
+			--Pinning Volley
+			[361278] = {},
 		},
 		[2] = {
-
+			--Wild Stampede
+			[361304] = {},
+			--Withering Seeds
+			[361568] = {},
+			--Animastorm
+			[366234] = {},
+			--Wracking Pain
+			[365126] = {},
+			--Hand of Destruction
+			[361791] = {},
 		},
 		[3] = {
-
+			--Necrotic Ritual
+			[360295] = {},
+			--Runecarver's Deathtouch
+			[360636] = {},
+			--Humbling Strikes
+			[365272] = {},
+			--Ascension's Call
+			[361066] = {},
+			--Pinning Volley
+			[361278] = {},
+			--Wild Stampede
+			[361304] = {},
+			--Withering Seeds
+			[361568] = {},
+			--Animastorm
+			[366234] = {},
+			--Wracking Pain
+			[365126] = {},
+			--Hand of Destruction
+			[361791] = {},
 		},
 	},
 	["mythic"] = {
 		[1] = {
-
+			--Necrotic Ritual
+			[360295] = {12.5},
+			--Runecarver's Deathtouch
+			[360636] = {41.8},
+			--Humbling Strikes
+			[365272] = {10.6, 31.2},
+			--Ascension's Call
+			[361066] = {38.2},
+			--Pinning Volley
+			[361278] = {56.4},
+			--Night Hunter (Mythic Only)
+			[361745] = {11.9},
 		},
 		[2] = {
-
+			--Wild Stampede
+			[361304] = {31.3, 35.5, 30, 33.3},
+			--Withering Seeds
+			[361568] = {26.4, 127.8},
+			--Animastorm
+			[366234] = {52.7, 89.1},
+			--Wracking Pain
+			[365126] = {},
+			--Hand of Destruction
+			[361791] = {108.6, 74.9},
+			--Night Hunter (Mythic Only)
+			[361745] = {27.7, 128.3},
 		},
 		[3] = {
-
+			--Necrotic Ritual
+			[360295] = {17.9},
+			--Runecarver's Deathtouch
+			[360636] = {130.8},
+			--Humbling Strikes
+			[365272] = {41.1, 29.9, 29.9, 29.9},
+			--Ascension's Call
+			[361066] = {121.1},
+			--Pinning Volley
+			[361278] = {56.7, 84},
+			--Wild Stampede
+			[361304] = {28.7, 31.5},
+			--Withering Seeds
+			[361568] = {93.3},
+			--Animastorm
+			[366234] = {52.9},
+			--Wracking Pain
+			[365126] = {41.1, 29.9, 29.9, 29.9},
+			--Hand of Destruction
+			[361791] = {107.8},
+			--Night Hunter (Mythic Only)
+			[361745] = {21.6, 75},
 		},
 	},
 }
@@ -264,27 +383,6 @@ do
 				end
 			end
 		end
-		--Second, Sin stacks
-		local hasSin = false
-		for uId in DBM:GetGroupMembers() do
-			local unitName = DBM:GetUnitFullName(uId)
-			local count = SinStacks[unitName]
-			if count then
-				if not hasSin then
-					hasSin = true
-					addLine(L.Sin, L.Stacks)--Set header for this section
-				end
-				tempLines[unitName] = count
-				tempLinesSorted[#tempLinesSorted + 1] = unitName
-			end
-		end
-		--Sort Sin debuffs by highest then inject into regular table
-		if hasSin then
-			tsort(tempLinesSorted, sortFuncDesc)
-			for _, name in ipairs(tempLinesSorted) do
-				addLine(name, tempLines[name])
-			end
-		end
 		return lines, sortedLines
 	end
 end
@@ -292,7 +390,6 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(deathtouchTargets)
 	table.wipe(wardTargets)
-	table.wipe(SinStacks)
 	self.vb.ritualCount = 0
 	self.vb.deathtouchCount = 0
 	self.vb.humblingCount = 0
@@ -306,28 +403,42 @@ function mod:OnCombatStart(delay)
 	self.vb.nightCount = 0
 	self.vb.seedIcon = 1
 	self.vb.hunterIcon = 1
-	self.vb.ritualistIcon = 8
+	self.vb.ritualistIconMethod = 1
 	self:SetStage(1)
 	--Necro
-	timerNecroticRitualCD:Start(11.5-delay)
-	timerRunecarversDeathtouchCD:Start(50-delay)--47.2
+	timerNecroticRitualCD:Start(11.5-delay, 1)
 	--Kyrian
-	timerHumblingStrikesCD:Start(10-delay)
-	timerAscensionsCallCD:Start(42.9-delay)--Time til USCS anyways
-	timerPinningVolleyCD:Start(63-delay)
+	timerHumblingStrikesCD:Start(10-delay, 1)
 	if self:IsMythic() then
---		difficultyName = "mythic"
-		timerNightHunterCD:Start(1-delay)
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"--Temp setting all diff to heroic until confirmed timers differ
---	elseif self:IsNormal() then
---		difficultyName = "normal"
---	else
---		difficultyName = "lfr"
-	end
-	difficultyName = "lfr"--TEMP, will be removed if all the same, or moved if all different
-	if self:IsMythic() then
-		timerNightHunterCD:Start(1-delay)
+		difficultyName = "mythic"
+		--Necro
+		timerRunecarversDeathtouchCD:Start(41.9-delay, 1)
+		--Kyrian
+		timerAscensionsCallCD:Start(25.8-delay, 1)--Time til USCS anyways
+		timerPinningVolleyCD:Start(56.4-delay, 1)
+		--Venthyr
+		timerNightHunterCD:Start(11.9-delay, 1)
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+		--Necro
+		--timerRunecarversDeathtouchCD:Start(50-delay, 1)--47.2
+		--Kyrian
+		--timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
+		--timerPinningVolleyCD:Start(63-delay, 1)
+	elseif self:IsNormal() then
+		difficultyName = "normal"
+		--Necro
+		--timerRunecarversDeathtouchCD:Start(50-delay, 1)
+		--Kyrian
+		--timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
+		--timerPinningVolleyCD:Start(63-delay, 1)
+	else
+		difficultyName = "lfr"
+		--Necro
+		timerRunecarversDeathtouchCD:Start(50-delay, 1)--47.2
+		--Kyrian
+		timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
+		timerPinningVolleyCD:Start(63-delay, 1)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -335,6 +446,25 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.NPAuraOnWrackingPain or self.Options.NPAuraOnImprintedSafeguards then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	if not self:IsLFR() then
+		if self.Options.RitualistIconSetting == "SetOne" then
+			self.vb.ritualistIconMethod = 1--Icons 5-8
+			if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
+		elseif self.Options.RitualistIconSetting == "SetTwo" then
+			self.vb.ritualistIconMethod = 2--Icons 1-4
+			if UnitIsGroupLeader("player") then self:SendSync("SetTwo") end
+		elseif self.Options.RitualistIconSetting == "SetThree" then
+			if DBM.Options.ExtendIcons then
+				self.Options.ritualistIconMethod = 3--Icons 9-12
+				if UnitIsGroupLeader("player") then self:SendSync("SetThree") end
+			else
+				self.vb.ritualistIconMethod = 1--Icons 5-8
+				self.Options.RitualistIconSetting = "SetOne"
+				DBM:AddMsg(L.ExtendReset)
+				if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
+			end
+		end
 	end
 end
 
@@ -351,23 +481,22 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"--Temp setting all diff to heroic until confirmed timers differ
---	elseif self:IsNormal() then
---		difficultyName = "normal"
---	else
---		difficultyName = "lfr"
---	end
-	difficultyName = "lfr"--TEMP, will be removed if all the same, or moved if all different
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	elseif self:IsNormal() then
+		difficultyName = "normal"
+	else
+		difficultyName = "lfr"
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 360295 then
 		self.vb.ritualCount = self.vb.ritualCount + 1
-		self.vb.ritualistIcon = 8
+		self.vb.ritualistIcon = self.vb.ritualistIconMethod == 3 and 12 or self.vb.ritualistIconMethod == 2 and 4 or 8
 		specWarnNecroticRitual:Show(self.vb.ritualCount)
 		specWarnNecroticRitual:Play("killmob")
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.ritualCount+1]
@@ -442,35 +571,106 @@ function mod:SPELL_CAST_START(args)
 		self.vb.nightCount = 0
 		--Timers stoped in clearalldebuffs cast, here we only start them because that way we can use WCLs to maintain/update them
 		if self.vb.phase == 2 then
-			--Prototype of Absolution (Venthyr)
-			timerWrackingPainCD:Start(36)
-			timerHandofDestructionCD:Start(107.7, 1)
-			--prototype-of-renewal (Night Fae)
-			timerWildStampedeCD:Start(14.6)
-			timerWitheringSeedCD:Start(26)
-			timerAnimastormCD:Start(52.6)
 			if self:IsMythic() then
+				--Prototype of Absolution (Venthyr)
+				--timerWrackingPainCD:Start(36, 1)--Unknown, never saw it
+				timerHandofDestructionCD:Start(107.7, 1)
+				--prototype-of-renewal (Night Fae)
+				timerWildStampedeCD:Start(31.3, 1)
+				timerWitheringSeedCD:Start(26.4, 1)
+				timerAnimastormCD:Start(52.7, 1)
+
 				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
-				timerNightHunterCD:Start(2)
+				timerNightHunterCD:Start(27.7)
+			elseif self:IsHeroic() then
+				--Prototype of Absolution (Venthyr)
+				--timerWrackingPainCD:Start(36, 1)
+				--timerHandofDestructionCD:Start(107.7, 1)
+				--prototype-of-renewal (Night Fae)
+				--timerWildStampedeCD:Start(14.6, 1)
+				--timerWitheringSeedCD:Start(26, 1)
+				--timerAnimastormCD:Start(52.6, 1)
+			elseif self:IsNormal() then
+				--Prototype of Absolution (Venthyr)
+				--timerWrackingPainCD:Start(36, 1)
+				--timerHandofDestructionCD:Start(107.7, 1)
+				--prototype-of-renewal (Night Fae)
+				--timerWildStampedeCD:Start(14.6, 1)
+				--timerWitheringSeedCD:Start(26, 1)
+				--timerAnimastormCD:Start(52.6, 1)
+			else--LFR
+				--Prototype of Absolution (Venthyr)
+				timerWrackingPainCD:Start(36, 1)
+				timerHandofDestructionCD:Start(107.7, 1)
+				--prototype-of-renewal (Night Fae)
+				timerWildStampedeCD:Start(14.6, 1)
+				timerWitheringSeedCD:Start(26, 1)
+				timerAnimastormCD:Start(52.6, 1)
 			end
 		else--Stage 3
-			--Prototype of Absolution (Venthyr)
-			timerWrackingPainCD:Start(33.9)
-			timerHandofDestructionCD:Start(84.5, 1)
-			--prototype-of-duty (Kyrian)
-			timerHumblingStrikesCD:Start(33.9)
-			timerPinningVolleyCD:Start(56.7)
-			timerAscensionsCallCD:Start(97.8)
-			--prototype-of-renewal (Night Fae)
-			timerWitheringSeedCD:Start(15.2)
-			timerAnimastormCD:Start(24.5)
-			timerWildStampedeCD:Start(35.8)
-			--prototype-of-war (Necro)
-			timerNecroticRitualCD:Start(52.6)
-			timerRunecarversDeathtouchCD:Start(106.3)
 			if self:IsMythic() then
+				--Prototype of Absolution (Venthyr)
+				timerWrackingPainCD:Start(41.1, 1)
+				timerHandofDestructionCD:Start(107.7, 1)
+				--prototype-of-duty (Kyrian)
+				timerHumblingStrikesCD:Start(41.1, 1)
+				timerPinningVolleyCD:Start(56.7, 1)
+				timerAscensionsCallCD:Start(121.1, 1)
+				--prototype-of-renewal (Night Fae)
+				timerWildStampedeCD:Start(28.7, 1)
+				timerAnimastormCD:Start(52.9, 1)
+				timerWitheringSeedCD:Start(93.3, 1)
+				--prototype-of-war (Necro)
+				timerNecroticRitualCD:Start(17.9, 1)
+				timerRunecarversDeathtouchCD:Start(130.8, 1)
+
 				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
-				timerNightHunterCD:Start(3)
+				timerNightHunterCD:Start(21.6, 1)
+			elseif self:IsHeroic() then
+				--Prototype of Absolution (Venthyr)
+				--timerWrackingPainCD:Start(33.9, 1)
+				--timerHandofDestructionCD:Start(84.5, 1)
+				--prototype-of-duty (Kyrian)
+				--timerHumblingStrikesCD:Start(33.9, 1)
+				--timerPinningVolleyCD:Start(56.7, 1)
+				--timerAscensionsCallCD:Start(97.8, 1)
+				--prototype-of-renewal (Night Fae)
+				--timerWitheringSeedCD:Start(15.2, 1)
+				--timerAnimastormCD:Start(24.5, 1)
+				--timerWildStampedeCD:Start(35.8, 1)
+				--prototype-of-war (Necro)
+				--timerNecroticRitualCD:Start(52.6, 1)
+				--timerRunecarversDeathtouchCD:Start(106.3, 1)
+			elseif self:IsNormal() then
+				--Prototype of Absolution (Venthyr)
+				--timerWrackingPainCD:Start(33.9, 1)
+				--timerHandofDestructionCD:Start(84.5, 1)
+				--prototype-of-duty (Kyrian)
+				--timerHumblingStrikesCD:Start(33.9, 1)
+				--timerPinningVolleyCD:Start(56.7, 1)
+				--timerAscensionsCallCD:Start(97.8, 1)
+				--prototype-of-renewal (Night Fae)
+				--timerWitheringSeedCD:Start(15.2, 1)
+				--timerAnimastormCD:Start(24.5, 1)
+				--timerWildStampedeCD:Start(35.8, 1)
+				--prototype-of-war (Necro)
+				--timerNecroticRitualCD:Start(52.6, 1)
+				--timerRunecarversDeathtouchCD:Start(106.3, 1)
+			else--LFR
+				--Prototype of Absolution (Venthyr)
+				timerWrackingPainCD:Start(33.9, 1)
+				timerHandofDestructionCD:Start(84.5, 1)
+				--prototype-of-duty (Kyrian)
+				timerHumblingStrikesCD:Start(33.9, 1)
+				timerPinningVolleyCD:Start(56.7, 1)
+				timerAscensionsCallCD:Start(97.8, 1)
+				--prototype-of-renewal (Night Fae)
+				timerWitheringSeedCD:Start(15.2, 1)
+				timerAnimastormCD:Start(24.5, 1)
+				timerWildStampedeCD:Start(35.8, 1)
+				--prototype-of-war (Necro)
+				timerNecroticRitualCD:Start(52.6, 1)
+				timerRunecarversDeathtouchCD:Start(106.3, 1)
 			end
 		end
 	end
@@ -478,14 +678,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 361745 then
+	if spellId == 361745 and self:AntiSpam(5, 2) then
 		self.vb.nightCount = self.vb.nightCount + 1
 		self.vb.hunterIcon = 1
-		timerNightHunterCD:Start()--TEMP WHILE IT'S AI TIMER
---		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
---		if timer then
---			timerNightHunterCD:Start(timer, self.vb.nightCount+1)
---		end
+		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
+		if timer then
+			timerNightHunterCD:Start(timer, self.vb.nightCount+1)
+		end
 	elseif spellId == 361278 then
 		self.vb.volleyCount = self.vb.volleyCount + 1
 		specWarnPinningVolley:Show(self.vb.volleyCount)
@@ -511,7 +710,7 @@ function mod:SPELL_SUMMON(args)
 		if self.Options.SetIconOnRitualist then
 			self:ScanForMobs(args.destGUID, 2, self.vb.ritualistIcon, 1, nil, 12, "SetIconOnRitualist", true)
 		end
-		self.vb.ritualistIcon = self.vb.ritualistIcon - 1--Descending from 8
+		self.vb.ritualistIcon = self.vb.ritualistIcon - 1--Descending from 12, 8, or 4
 	end
 end
 
@@ -554,12 +753,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellPinned:Yell()
 		end
 		warnPinned:CombinedShow(0.5, args.destName)
-	elseif spellId == 361608 then
-		local amount = args.amount or 1
-		SinStacks[args.destName] = amount
-		if DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:Update(0.4)--400ms batching to batch initial application and safe a lot of cpu
-		end
 	elseif spellId == 361689 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnWrackingPain then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 35)
@@ -614,11 +807,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		wardTargets[args.destName] = nil
 	elseif spellId == 361278 and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 361608 then
-		SinStacks[args.destName] = nil
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update()
-		end
 	elseif spellId == 361689 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnWrackingPain then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
@@ -633,16 +821,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellNightHunterFades:Cancel()
-		end
-	end
-end
-
-function mod:SPELL_AURA_REMOVED_DOSE(args)
-	local spellId = args.spellId
-	if spellId == 361608 then
-		SinStacks[args.destName] = args.amount or 1
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update()
 		end
 	end
 end
@@ -707,7 +885,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if timer then
 			timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
 		end
-	elseif spellId == 361791 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction (2 sec faster than SUCCESS 361789)
+	elseif spellId == 361791 and self:AntiSpam(10, 3) then--Script Activating to cast Hand of Destruction (2 sec faster than SUCCESS 361789)
 		self.vb.handCount = self.vb.handCount + 1
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
@@ -715,5 +893,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if timer then
 			timerHandofDestructionCD:Start(timer, self.vb.handCount+1)
 		end
+	end
+end
+
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateRitualistIcons(self, msg)
+		if msg == "SetOne" then
+			self.vb.ritualistIconMethod = 1
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetTwo" then
+			self.vb.ritualistIconMethod = 2
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetThree" then
+			self.vb.ritualistIconMethod = 3
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		end
+	end
+	function mod:OnSync(msg)
+		if self:IsLFR() or not self:IsInCombat() then return end--Just in case some shit lord sends syncs in LFR or something, we don't want to trigger DBMConfigMsg
+		self:Schedule(3, UpdateRitualistIcons, self, msg)
 	end
 end

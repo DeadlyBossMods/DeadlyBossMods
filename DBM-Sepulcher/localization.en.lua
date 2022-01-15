@@ -28,11 +28,18 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2460)
 
+L:SetOptionLocalization({
+	RitualistIconSetting	= "Set Ritualist icon setting behavior (If raid leader, overrides raid)",
+	SetOne					= "Differ from seeds/Night Hunter (no conflicts) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t",--5-8 (Default)
+	SetTwo					= "Match seeds/Night Hunter (but conflicts if seeds and ritualists at same time) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t",-- 1-4
+	SetThree				= "Match seeds/Night Hunter (no conflicts, but requires raid members having extended icons properly installed to see them) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:32:48|t"--9-12
+})
+
 L:SetMiscLocalization({
 	Deathtouch		= "Deathtouch",
 	Dispel			= "Dispel",
-	Sin				= "Sin",
-	Stacks			= "Stacks"
+	DBMConfigMsg	= "Rituals icon configuration configuration set to %s to match raid leaders configuration.",
+	ExtendReset		= "Your Ritualist icon dropdown setting has been reset due to fact you were using extended icons before, but aren't any longer"
 })
 
 ---------------------------
