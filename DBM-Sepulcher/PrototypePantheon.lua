@@ -122,7 +122,7 @@ mod:AddIconLine(ProtoRenewl)
 mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4})
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
 mod:AddIconLine(ProtoAbsolution)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {9, 10, 11, 12}, true)
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4})
 if DBM.Options.ExtendIcons then
 	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo", "SetThree"}, "SetOne", "misc")
 else
