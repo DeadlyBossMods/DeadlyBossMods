@@ -18,7 +18,7 @@ local warningFrostBreath		= mod:NewSpellAnnounce(243789, 3)
 local specWarnArcaneVacuum		= mod:NewSpecialWarningSpell(243784, nil, nil, nil, 2, 5)
 local specWarnReflection		= mod:NewSpecialWarningSpell(243835, "SpellCaster", nil, nil, 1, 2)--Change to CasterDps after next core release
 
-local timerReflectionCD			= mod:NewCDTimer(15.7, 243835, nil, "SpellCaster", nil, 5, nil, DBM_COMMON_L.DAMAGER_ICON)--15.7-30
+local timerReflectionCD			= mod:NewCDTimer(15.7, 243835, nil, "SpellCaster", nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--15.7-30
 local timerFrostBreathCD		= mod:NewCDTimer(5, 243789, nil, nil, nil, 3)--8.5-20.1
 --local timerArcaneVacuumCD		= mod:NewCDTimer(19.8, 243784, nil, nil, nil, 2)
 
