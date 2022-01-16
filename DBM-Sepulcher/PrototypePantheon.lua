@@ -117,12 +117,12 @@ mod:AddInfoFrameOption(360687, true)
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
 mod:AddIconLine(ProtoWar)
 mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {13, 14, 15, 16}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
-mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
+mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})--Conflict arg not passed because by default it won't, user has to introduce conflict via dropdown (and that has a warning)
 mod:AddIconLine(ProtoRenewl)
-mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4}, nil, true)
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
 mod:AddIconLine(ProtoAbsolution)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, nil, true)
 if DBM.Options.ExtendIcons then
 	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo", "SetThree"}, "SetOne", "misc")
 else
