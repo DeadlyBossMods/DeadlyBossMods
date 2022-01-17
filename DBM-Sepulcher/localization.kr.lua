@@ -29,11 +29,18 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2460)
 
+L:SetOptionLocalization({
+	RitualistIconSetting	= "의식술사 징표 설정 방식 (공대장일 경우 공격대 전체 적용)",
+	SetOne					= "씨앗/밤의 사냥꾼 각자 다르게 (충돌 없음) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t",--5-8 (Default)
+	SetTwo					= "씨앗/밤의 사냥꾼 동일하게 (씨앗과 의식술사가 같이 나올시 충돌) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t",-- 1-4
+	SetThree				= "씨앗/밤의 사냥꾼 동일하게 (충돌은 없으나 모든 징표를 보려면 확장 공격대 징표 텍스쳐를 설치해야 함) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:32:48|t"--9-12
+})
+
 L:SetMiscLocalization({
 	Deathtouch		= "죽음의손길",
 	Dispel			= "해제",
-	Sin				= "죄악",
-	Stacks			= "중첩"
+	DBMConfigMsg		= "의식 징표 설정이 공대장 설정에 맞게 %s로 설정됐습니다.",
+	ExtendReset		= "의식술사 징표 드롭다운 설정이 이전에 확장 공격대 징표를 사용했었으나 더이상 사용하지 않아서 초기화됐습니다,"
 })
 
 ---------------------------
