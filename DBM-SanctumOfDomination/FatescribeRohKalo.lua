@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.conjunctionCount = self.vb.conjunctionCount + 1
 		specWarnFatedConjunction:Show()
 		specWarnFatedConjunction:Play("watchstep")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.conjunctionCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase][350421][self.vb.conjunctionCount+1]
 		if timer then
 			timerFatedConjunctionCD:Start(timer, self.vb.conjunctionCount+1)
 		end
