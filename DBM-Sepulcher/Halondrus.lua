@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
-mod:SetUsedIcons(1, 2, 3, 4, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 mod:SetHotfixNoticeRev(20211216000000)
 mod:SetMinSyncRevision(20211216000000)
 --mod.respawnTime = 29
@@ -84,12 +84,14 @@ local timerDetonationCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5,
 mod:AddSetIconOption("SetIconOnEphemeralDroplet", 366015, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFractal", 364229, true, true, {8})
 mod:AddSetIconOption("SetIconOnDetonation", 362056, true, true, {8})
+mod:AddSetIconOption("SetIconOnCrushing", 365294, false, false, {9, 10, 11, 12, 13, 14, 15, 16}, true)
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.scanCount = 0
 mod.vb.dropletIcon = 1
 mod.vb.detonateCast = 0
 mod.vb.crushingCast = 0
+mod.vb.crushIcon = 9
 local detonateTimers = {
 	[2] = {27, 22.6},
 	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},
@@ -131,11 +133,11 @@ local function updateAllTimers(self, ICD)
 		timerLightshatterBeamCD:Update(elapsed, total+extend)
 	end
 	if timerCrushingPrismCD:GetRemaining() < ICD then
-		local elapsed, total = timerCrushingPrismCD:GetTime()
+		local elapsed, total = timerCrushingPrismCD:GetTime(self.vb.crushingCast+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerCrushingPrismCD extended by: "..extend, 2)
 		timerCrushingPrismCD:Stop()
-		timerCrushingPrismCD:Update(elapsed, total+extend)
+		timerCrushingPrismCD:Update(elapsed, total+extend, self.vb.crushingCast+1)
 	end
 end
 
@@ -153,7 +155,7 @@ function mod:OnCombatStart(delay)
 	timerLightshatterBeamCD:Start(11-delay)
 	timerSubterraneanScanCD:Start(16.1-delay)--16.3-18.2
 	timerEarthbreakerMissilesCD:Start(35.2-delay)--35.2-37
-	timerCrushingPrismCD:Start(45.4-delay)
+	timerCrushingPrismCD:Start(45.4-delay, 1)
 	if self:IsMythic() then
 		timerEphemeralRainCD:Start(1-delay)--??
 		timerOmegaGlyphsCD:Start(1-delay)
@@ -243,12 +245,12 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.stageTotality == 2 then--First movement
 			timerEarthbreakerMissilesCD:Start(13.6)--Was 41.4 in first half of testing, and 13.6 in second. Keep an eye on this
 			timerDetonationCD:Start(27, 1)
-			timerCrushingPrismCD:Start(34.4)
+			timerCrushingPrismCD:Start(34.4, 1)
 			if self:IsMythic() then
 				timerOmegaGlyphsCD:Start(2)
 			end
 		else--Second movement (self.vb.stageTotality == 4)
-			timerCrushingPrismCD:Start(12.6)
+			timerCrushingPrismCD:Start(12.6, 1)
 			timerDetonationCD:Start(20.4, 1)
 			timerEarthbreakerMissilesCD:Start(32.6)
 			if self:IsMythic() then
@@ -328,6 +330,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.dropletIcon = self.vb.dropletIcon + 1
 	elseif spellId == 365297 then
 		if self:AntiSpam(5, 3) then
+			self.vb.crushIcon = 9
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
 			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
@@ -341,6 +344,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrushingPrism:Show()
 			specWarnCrushingPrism:Play("targetyou")
 		end
+		if self.Options.SetIconOnCrushing then
+			self:SetIcon(args.destName, self.vb.crushIcon)
+		end
+		self.vb.crushIcon = self.vb.crushIcon + 1
 	elseif spellId == 361309 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
 		specWarnLightshatterBeamTaunt:Show(args.destName)
 		specWarnLightshatterBeamTaunt:Play("tauntboss")
@@ -349,17 +356,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	--Omega Glyphs
 	elseif spellId == 368347 and args:IsPlayer() then--Looks like a yellow circle, so it uses orange circle icon
 		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle13.blp:12:12|t")
-		specWarnOmegaGlyphs:Play("mm1")
+		specWarnOmegaGlyphs:Play("mm2")
 		self:Schedule(1, OmegaYellRepeater, self, 2)
 		yellOmegaGlyphs:Yell(2)
 	elseif spellId == 368348 and args:IsPlayer() then--Looks like a yellow diamond, so it uses purple diamond icon
 		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle02.blp:12:12|t")
-		specWarnOmegaGlyphs:Play("mm2")
+		specWarnOmegaGlyphs:Play("mm3")
 		self:Schedule(1, OmegaYellRepeater, self, 3)
 		yellOmegaGlyphs:Yell(3)
 	elseif spellId == 368349 and args:IsPlayer() then--Looks like a yellow square, so it uses blue square icon
 		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle14.blp:12:12|t")
-		specWarnOmegaGlyphs:Play("mm3")
+		specWarnOmegaGlyphs:Play("mm6")
 		self:Schedule(1, OmegaYellRepeater, self, 6)
 		yellOmegaGlyphs:Yell(6)
 	end
