@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 363340 364229 363408 361676 365283 360977 367079 359236 362056 364979",
-	"SPELL_CAST_SUCCESS 365294 359235",
-	"SPELL_AURA_APPLIED 366015 365297 361309",--366016
+	"SPELL_CAST_SUCCESS 365294 359235 368346",
+	"SPELL_AURA_APPLIED 366015 365297 361309 368347 368348 368349",--366016
 --	"SPELL_AURA_APPLIED_DOSE 366016",
-	"SPELL_AURA_REMOVED 366015",
+	"SPELL_AURA_REMOVED 366015 368347 368348 368349",
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
 --	"SPELL_PERIODIC_MISSED 361002 360114",
 	"UNIT_DIED",
@@ -26,7 +26,8 @@ mod:RegisterEventsInCombat(
 --TODO, number of droplets for accurate icon marking, possibly improve it with auto pairing
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
 --TODO, are tanks supposed to trigger lightburst on purpose, or actively try to avoid triggering it with smart tank swaps? Need Mythic Timings
---TODO, Ephemeral Droplet and Rain deleted or moved to mythic and not reflected in journal yet?
+--TODO, Ephemeral Droplet and Rain deleted? Still haven't reappeared on journal, even on mythic, if not there on mythic testing, nuke them
+--TODO, verify starts and stops of Omega timer.
 --[[
 (ability.id = 363340 or ability.id = 363408 or ability.id = 367079 or ability.id = 361676 or ability.id = 365283 or ability.id = 360977 or ability.id = 359236 or ability.id = 364979) and type = "begincast"
  or (ability.id = 365294 or ability.id = 359235) and type = "cast"
@@ -43,6 +44,9 @@ local warnCrushingPrism							= mod:NewCountAnnounce(365297, 3, nil, "RemoveMagi
 --Stage Two: The Shimmering Cliffs
 local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 
+--Mythic
+local specWarnOmegaGlyphs						= mod:NewSpecialWarningMoveTo(368346, nil, nil, nil, 3, 6, 4)
+local yellOmegaGlyphs							= mod:NewIconRepeatYell(368346)
 --Stage One: The Reclaimer
 local specWarnMeltdown							= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
 local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--Opt in, for someone that might be a soaker
@@ -54,11 +58,13 @@ local yellEphemeralDropletFades					= mod:NewIconFadesYell(366015)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(361309, nil, nil, nil, 1, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
+--local specWarnGTFO							= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
 local specWarnDetonation						= mod:NewSpecialWarningSwitch(362056, "Dps", nil, nil, 1, 2)
 
 --mod:AddTimerLine(BOSS)
+--Mythic
+local timerOmegaGlyphsCD						= mod:NewAITimer(28.8, 368346, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Stage One: The Reclaimer
 local timerMaterializePylonsCD					= mod:NewCDTimer(28.8, 363340, nil, nil, nil, 1)
 local timerFractalShell							= mod:NewCastTimer(30, 364229, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
@@ -133,6 +139,11 @@ local function updateAllTimers(self, ICD)
 	end
 end
 
+local function OmegaYellRepeater(self, icon)
+	yellOmegaGlyphs:Yell(icon)
+	self:Schedule(1, OmegaYellRepeater, self, icon)
+end
+
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.scanCount = 0
@@ -145,6 +156,7 @@ function mod:OnCombatStart(delay)
 	timerCrushingPrismCD:Start(45.4-delay)
 	if self:IsMythic() then
 		timerEphemeralRainCD:Start(1-delay)--??
+		timerOmegaGlyphsCD:Start(1-delay)
 	end
 --	if self.Options.NPAuraOnBurdenofDestiny then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -221,6 +233,7 @@ function mod:SPELL_CAST_START(args)
 		timerSubterraneanScanCD:Stop()
 		timerEarthbreakerMissilesCD:Stop()
 		timerEphemeralRainCD:Stop()
+		timerOmegaGlyphsCD:Stop()
 		timerLightshatterBeamCD:Stop()
 		timerCrushingPrismCD:Stop()
 		--Start mobile ones
@@ -231,10 +244,16 @@ function mod:SPELL_CAST_START(args)
 			timerEarthbreakerMissilesCD:Start(13.6)--Was 41.4 in first half of testing, and 13.6 in second. Keep an eye on this
 			timerDetonationCD:Start(27, 1)
 			timerCrushingPrismCD:Start(34.4)
+			if self:IsMythic() then
+				timerOmegaGlyphsCD:Start(2)
+			end
 		else--Second movement (self.vb.stageTotality == 4)
 			timerCrushingPrismCD:Start(12.6)
 			timerDetonationCD:Start(20.4, 1)
 			timerEarthbreakerMissilesCD:Start(32.6)
+			if self:IsMythic() then
+				timerOmegaGlyphsCD:Start(4)
+			end
 		end
 	elseif spellId == 362056 then
 		--USE for alert too if the detonate script gets hidden
@@ -263,6 +282,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerEarthbreakerMissilesCD:Stop()
 		timerDetonationCD:Stop()
 		timerCrushingPrismCD:Stop()
+		timerOmegaGlyphsCD:Stop()
 		--Start Stationary ones
 		timerMaterializePylonsCD:Start(4.9)--4.9-5.3
 		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
@@ -272,6 +292,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerCrushingPrismCD:Start(46.8, 1)
 			if self:IsMythic() then
 				timerEphemeralRainCD:Start(2)
+				timerOmegaGlyphsCD:Start(3)
 			end
 		else--Third stationary, after 2nd movement (stageTotality == 5)
 			timerLightshatterBeamCD:Start(16)
@@ -279,9 +300,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEarthbreakerMissilesCD:Start(28.2)
 			timerCrushingPrismCD:Start(36.7, 1)
 			if self:IsMythic() then
-				timerEphemeralRainCD:Start(2)
+				timerEphemeralRainCD:Start(5)
 			end
 		end
+	elseif spellId == 368346 then
+		timerOmegaGlyphsCD:Start()
 	end
 end
 
@@ -323,6 +346,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnLightshatterBeamTaunt:Play("tauntboss")
 --	elseif spellId == 366016 then
 --		warnEphemeralEngine:Show(args.destName, args.amount or 1)
+	--Omega Glyphs
+	elseif spellId == 368347 and args:IsPlayer() then
+		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle13.blp:12:12|t")
+		specWarnOmegaGlyphs:Play("mm1")
+		self:Schedule(1, OmegaYellRepeater, self, 1)
+		yellOmegaGlyphs:Yell(1)
+	elseif spellId == 368348 and args:IsPlayer() then
+		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle02.blp:12:12|t")
+		specWarnOmegaGlyphs:Play("mm2")
+		self:Schedule(1, OmegaYellRepeater, self, 2)
+		yellOmegaGlyphs:Yell(2)
+	elseif spellId == 368349 and args:IsPlayer() then
+		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle14.blp:12:12|t")
+		specWarnOmegaGlyphs:Play("mm3")
+		self:Schedule(1, OmegaYellRepeater, self, 3)
+		yellOmegaGlyphs:Yell(3)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -336,6 +375,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnEphemeralDroplet then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif (spellId == 368347 or spellId == 368348 or spellId == 368349) and args:IsPlayer() then
+		self:Unschedule(OmegaYellRepeater)
 	end
 end
 
