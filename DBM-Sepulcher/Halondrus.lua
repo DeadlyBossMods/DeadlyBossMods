@@ -347,21 +347,21 @@ function mod:SPELL_AURA_APPLIED(args)
 --	elseif spellId == 366016 then
 --		warnEphemeralEngine:Show(args.destName, args.amount or 1)
 	--Omega Glyphs
-	elseif spellId == 368347 and args:IsPlayer() then
+	elseif spellId == 368347 and args:IsPlayer() then--Looks like a yellow circle, so it uses orange circle icon
 		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle13.blp:12:12|t")
 		specWarnOmegaGlyphs:Play("mm1")
-		self:Schedule(1, OmegaYellRepeater, self, 1)
-		yellOmegaGlyphs:Yell(1)
-	elseif spellId == 368348 and args:IsPlayer() then
-		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle02.blp:12:12|t")
-		specWarnOmegaGlyphs:Play("mm2")
 		self:Schedule(1, OmegaYellRepeater, self, 2)
 		yellOmegaGlyphs:Yell(2)
-	elseif spellId == 368349 and args:IsPlayer() then
-		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle14.blp:12:12|t")
-		specWarnOmegaGlyphs:Play("mm3")
+	elseif spellId == 368348 and args:IsPlayer() then--Looks like a yellow diamond, so it uses purple diamond icon
+		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle02.blp:12:12|t")
+		specWarnOmegaGlyphs:Play("mm2")
 		self:Schedule(1, OmegaYellRepeater, self, 3)
 		yellOmegaGlyphs:Yell(3)
+	elseif spellId == 368349 and args:IsPlayer() then--Looks like a yellow square, so it uses blue square icon
+		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle14.blp:12:12|t")
+		specWarnOmegaGlyphs:Play("mm3")
+		self:Schedule(1, OmegaYellRepeater, self, 6)
+		yellOmegaGlyphs:Yell(6)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
