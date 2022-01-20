@@ -78,7 +78,7 @@ local timerManifestShadowsCD					= mod:NewAITimer(28.8, 361913, nil, nil, nil, 1
 local timerLeechingClawsCD						= mod:NewAITimer(28.8, 359960, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 4)
 --Kin'tessa
 local timerInfiltrationofDreadCD				= mod:NewAITimer(28.8, 360717, nil, nil, nil, 6)
-local timerParanoia								= mod:NewBuffFadesTimer(30, 360418, nil, nil, nil, 5)
+local timerParanoia								= mod:NewBuffFadesTimer(25, 360418, nil, nil, nil, 5)
 local timerFearfulTrepidationCD					= mod:NewAITimer(28.8, 360145, nil, nil, nil, 3)--DBM_COMMON_L.MAGIC_ICON
 local timerSlumberCloudCD						= mod:NewAITimer(28.8, 360229, nil, nil, nil, 3)
 local timerAnguishingStrikeCD					= mod:NewAITimer(28.8, 360284, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)

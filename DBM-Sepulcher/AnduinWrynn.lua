@@ -673,6 +673,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetStage(1.5)
 			timerArmyofDeadCD:Start(11.1)
 			timerSoulReaperCD:Start(18.2)
+			if self:IsMythic() then
+				timerMarchofDamnedCD:Start(2)
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
