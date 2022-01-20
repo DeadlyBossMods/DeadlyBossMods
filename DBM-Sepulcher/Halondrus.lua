@@ -132,7 +132,7 @@ local function updateAllTimers(self, ICD)
 		timerLightshatterBeamCD:Stop()
 		timerLightshatterBeamCD:Update(elapsed, total+extend)
 	end
-	if timerCrushingPrismCD:GetRemaining() < ICD then
+	if timerCrushingPrismCD:GetRemaining(self.vb.crushingCast+1) < ICD then
 		local elapsed, total = timerCrushingPrismCD:GetTime(self.vb.crushingCast+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerCrushingPrismCD extended by: "..extend, 2)
