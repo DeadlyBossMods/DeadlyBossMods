@@ -442,7 +442,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDominationChains:Show(self.vb.dominationChainsCount)
 		specWarnDominationChains:Play("watchstep")
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.dominationChainsCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.dominationChainsCount+1]
 			if timer then
 				timerDominationChainsCD:Start(timer, self.vb.dominationChainsCount+1)
 			end
@@ -455,7 +455,7 @@ function mod:SPELL_CAST_START(args)
 --			self.vb.arrowIcon = 1
 			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1
 			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
+				local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
 				if timer then
 					timerWailingArrowCD:Start(timer, self.vb.wailingArrowCount+1)
 				end
@@ -466,7 +466,7 @@ function mod:SPELL_CAST_START(args)
 --			self.vb.arrowIcon = 1
 			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1--Replaces this arrow in stage 1, so might as well use same variable
 			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
+				local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
 				if timer then
 					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
 				end
@@ -476,7 +476,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.heartseekerCount = self.vb.heartseekerCount + 1
 		warnRangersHeartseeker:Show(self.vb.heartseekerCount)
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.heartseekerCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.heartseekerCount+1]
 			if timer then
 				timerRangersHeartseekerCD:Start(timer, self.vb.heartseekerCount+1)
 			end
@@ -556,7 +556,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 354011 then
 		self.vb.baneArrowCount = self.vb.baneArrowCount + 1
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.baneArrowCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.baneArrowCount+1]
 			if timer then
 				timerBaneArrowsCD:Start(timer, self.vb.baneArrowCount+1)
 			end
@@ -565,7 +565,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.heartseekerCount = self.vb.heartseekerCount + 1
 		warnBansheesHeartseeker:Show(self.vb.heartseekerCount)
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.heartseekerCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.heartseekerCount+1]
 			if timer then
 				timerBansheesHeartseekerCD:Start(timer, self.vb.heartseekerCount+1)
 			end
@@ -573,7 +573,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 354068 then
 		self.vb.bansheesFuryCount = self.vb.bansheesFuryCount + 1
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.bansheesFuryCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.bansheesFuryCount+1]
 			if timer then
 				timerBansheesFuryCD:Start(timer, self.vb.bansheesFuryCount+1)
 			end
@@ -592,7 +592,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 353952 then
 		self.vb.bansheeScreamCount = self.vb.bansheeScreamCount + 1
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.bansheeScreamCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.bansheeScreamCount+1]
 			if timer then
 				timerBansheesScreamCD:Start(timer, self.vb.bansheeScreamCount+1)
 			end
@@ -601,7 +601,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 3 then
 			self.vb.shadowDaggerCount = self.vb.shadowDaggerCount + 1
 			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.shadowDaggerCount+1]
+				local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.shadowDaggerCount+1]
 				if timer then
 					timerShadowDaggerCD:Start(timer, self.vb.shadowDaggerCount+1)
 				end
@@ -618,7 +618,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRaze:Show(self.vb.razeCount)
 		specWarnRaze:Play("justrun")
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.razeCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.razeCount+1]
 			if timer then
 				timerRazeCD:Start(timer, self.vb.razeCount+1)
 			end
@@ -643,7 +643,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bladesCount = self.vb.bladesCount + 1
 		warnBansheesBlades:Show(self.vb.bladesCount)
 --		if self.vb.phase == 1 or self.vb.phase == 3 then
---			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.bladesCount+1]
+--			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.bladesCount+1]
 --			if timer then
 --				timerBansheesBladesCD:Start(timer, self.vb.bladesCount+1)
 --			end
@@ -757,7 +757,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnWindrunner:Show(self.vb.windrunnerCount)
 		specWarnWindrunner:Play("specialsoon")
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.windrunnerCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.windrunnerCount+1]
 			if timer then
 				timerWindrunnerCD:Start(timer, self.vb.windrunnerCount+1)
 			end
@@ -975,7 +975,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.debuffIcon = 1
 			self.vb.knivesCount = self.vb.knivesCount + 1
 			if self.vb.phase == 1 or self.vb.phase == 3 then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.knivesCount+1]
+				local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.knivesCount+1]
 				if timer then
 					timerDeathKnivesCD:Start(timer, self.vb.knivesCount+1)
 				end
@@ -1199,7 +1199,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnVeilofDarkness:Show(self.vb.veilofDarknessCount)
 		specWarnVeilofDarkness:Play("watchstep")
 		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][347726][self.vb.veilofDarknessCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][347726][self.vb.veilofDarknessCount+1]
 			if timer then--Handles P1 and P3, P2 is scheduled via bridges
 				timerVeilofDarknessCD:Start(timer, self.vb.veilofDarknessCount+1)
 			end

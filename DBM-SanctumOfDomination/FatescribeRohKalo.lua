@@ -232,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 351680 then
 		self.vb.destinyCount = self.vb.destinyCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.destinyCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.destinyCount+1]
 		if timer then
 			timerInvokeDestinyCD:Start(timer, self.vb.destinyCount+1)
 		end
@@ -240,7 +240,7 @@ function mod:SPELL_CAST_START(args)
 --		self:Unschedule(fixEternity)
 		self.vb.EternityIcon = 1
 		self.vb.eternityCount = self.vb.eternityCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1]
 		if timer then
 			timerCallofEternityCD:Start(timer, self.vb.eternityCount+1)
 			--if (self.vb.eternityCount+1) == 2 and self.vb.phase == 3 then
@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.conjunctionCount = self.vb.conjunctionCount + 1
 		specWarnFatedConjunction:Show()
 		specWarnFatedConjunction:Play("watchstep")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.conjunctionCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][350421][self.vb.conjunctionCount+1]
 		if timer then
 			timerFatedConjunctionCD:Start(timer, self.vb.conjunctionCount+1)
 		end
@@ -260,14 +260,14 @@ function mod:SPELL_CAST_START(args)
 		grimDebuffs = 0
 		self.vb.DebuffIcon = 1
 		self.vb.portentCount = self.vb.portentCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.portentCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.portentCount+1]
 		if timer then
 			timerGrimPortentCD:Start(timer, self.vb.portentCount+1)
 		end
 	elseif spellId == 354265 then--Twist Fate
 		self.vb.twistCount = self.vb.twistCount + 1
 		warnTwistFate:Show(self.vb.twistCount)
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.twistCount+1]
+		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.twistCount+1]
 		if timer then
 			timerTwistFateCD:Start(timer, self.vb.twistCount+1)
 		end
@@ -397,7 +397,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 3) and self.vb.phase == 3 then
 			self.vb.affinityCount = self.vb.affinityCount + 1
 			--The same timer a Extemporaneous fate, just earlier, offset self handled
-			local timer = allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1] or 39
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1] or 39
 			if timer then
 				timerRunicAffinityCD:Start(timer, self.vb.affinityCount+1)
 			end
