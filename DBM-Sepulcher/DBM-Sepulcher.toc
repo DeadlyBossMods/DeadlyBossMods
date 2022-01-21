@@ -21,9 +21,12 @@
 ## X-DBM-Mod-MapID: 2481
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
+
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
+localization.tw.lua
+
 VigilantGuardian.lua
 Skolex.lua
 ArtificerXymox.lua
