@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181954)
 mod:SetEncounterID(2546)
-mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220111000000)
 mod:SetMinSyncRevision(20220111000000)
 --mod.respawnTime = 29
@@ -33,6 +33,11 @@ mod:RegisterEventsInCombat(
 --TODO, add 10 second timer loop for https://ptr.wowhead.com/spell=362543/remorseless-winter with right events, not even gonna drycode it now in case it's wrong
 --TODO, verify grim reflection auto marking, and number of spawns (still needs doing)
 --TODO, dire hopelessness need repeat yell? it's not about partners finding each other this time, just a player walking into the light
+--[[
+(ability.id = 362405 or ability.id = 361989 or ability.id = 365295 or ability.id = 361815 or ability.id = 362771 or ability.id = 363024 or ability.id = 365120 or ability.id = 365872 or ability.id = 365958 or ability.id = 365805) and type = "begincast"
+ or (ability.id = 365235 or ability.id = 365636 or ability.id = 365030 or ability.id = 367631) and type = "cast"
+ or (ability.id = 362505 or ability.id = 365216) and (type = "applybuff" or type = "removebuff")
+--]]
 local P1Info, P15Info, P2Info, P25Info, P3Info = DBM:EJ_GetSectionInfo(24462), DBM:EJ_GetSectionInfo(24494), DBM:EJ_GetSectionInfo(24478), DBM:EJ_GetSectionInfo(24172), DBM:EJ_GetSectionInfo(24417)
 --Stage One: Kingsmourne Hungers
 mod:AddOptionLine(P1Info, "announce")
@@ -93,7 +98,7 @@ local timerLostSoul								= mod:NewBuffFadesTimer(35, 362055, nil, nil, nil, 5)
 local timerBlasphemyCD							= mod:NewCDCountTimer(28.8, 361989, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerBefouledBarrierCD					= mod:NewCDCountTimer(28.8, 365295, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerWickedStarCD							= mod:NewCDCountTimer(28.8, 365030, nil, nil, nil, 3)
-local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, nil, nil, 5)
+local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, false, nil, 5)
 local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil, 2)
 local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 --Intermission: Remnant of a Fallen King
@@ -113,8 +118,8 @@ local timerHopelessnessCD						= mod:NewAITimer(28.8, 365966, nil, nil, nil, 3, 
 
 mod:AddRangeFrameOption(8, 363020)
 mod:AddInfoFrameOption(365966, true)
-mod:AddIconLine(P1Info)
-mod:AddSetIconOption("SetIconOnWickedStar", 365021, true, false, {1, 2, 3, 4, 5, 6})
+--mod:AddIconLine(P1Info)
+--mod:AddSetIconOption("SetIconOnWickedStar", 365021, false, false, {1, 2, 3, 4, 5, 6})
 mod:AddIconLine(P15Info)
 mod:AddSetIconOption("SetIconOnMonstrousSoul", 363028, true, true, {8})
 mod:AddIconLine(P2Info)
@@ -129,7 +134,7 @@ mod.vb.befouledCount = 0
 mod.vb.hopebreakerCount = 0
 mod.vb.wickedCount = 0
 mod.vb.domCount = 0
-mod.vb.wickedIcon = 1
+mod.vb.wickedSet = 1
 mod.vb.addIcon = 8
 mod.vb.PairingBehavior = "Generic"
 local playersSouled = {}
@@ -518,7 +523,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerDespairCD:Start()
 	elseif spellId == 365030 or spellId == 367631 then
 		self.vb.wickedCount = self.vb.wickedCount + 1
-		self.vb.wickedIcon = 1
+		self.vb.wickedSet = 1
 		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][365030][self.vb.wickedCount+1]
 		if timer then
 			timerWickedStarCD:Start(timer, self.vb.wickedCount+1)
@@ -630,10 +635,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(1.5, DireYellRepeater, self, 3)--Lasts longer, so slightly slower repeater to avoid throttling
 		end
 	elseif spellId == 365021 or spellId == 367632 then
-		local icon = self.vb.wickedIcon
-		if self.Options.SetIconOnWickedStar then
-			self:SetIcon(args.destName, icon)
-		end
+		local icon = self.vb.wickedSet
 		if args:IsPlayer() then
 			specWarnWickedStar:Show()
 			specWarnWickedStar:Play("runout")
@@ -646,11 +648,13 @@ function mod:SPELL_AURA_APPLIED(args)
 --				specWarnWickedStarTaunt:Play("tauntboss")
 --			end
 		end
-		warnWickedStar:Show(icon, args.destName)
+		warnWickedStar:CombinedShow(0.3, icon, args.destName)
 		if not playersSouled[playerName] then
 			timerWickedStar:Start(4, args.destName, icon)
 		end
-		self.vb.wickedIcon = self.vb.wickedIcon + 1
+		if self:AntiSpam(0.3, 7) then
+			self.vb.wickedSet = self.vb.wickedSet + 1
+		end
 	elseif spellId == 364248 then
 		local amount = args.amount or 1
 		if amount >= 12 and self:AntiSpam(4, 2) then
@@ -738,10 +742,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellWickedStarFades:Cancel()
 		end
-		if self.Options.SetIconOnWickedStar then
-			self:SetIcon(args.destName, 0)
-		end
-	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 3) then--Both probably valid for same thing
+	elseif (spellId == 362505 or spellId == 365216) and self:AntiSpam(10, 4) then--Both probably valid for same thing
 		self.vb.hungersCount = 0
 		self.vb.blastphemyCount = 0
 		self.vb.befouledCount = 0
@@ -820,7 +821,7 @@ end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 363116 or spellId == 363133 or spellId == 363233) and self:AntiSpam(10, 4) then
+	if (spellId == 363116 or spellId == 363133 or spellId == 363233) and self:AntiSpam(10, 6) then
 		specWarnMarchofDamned:Show()
 		specWarnMarchofDamned:Play("watchstep")--Farfromline if it's one of those things
 	elseif spellId == 366849 then
