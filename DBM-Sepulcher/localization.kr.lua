@@ -39,7 +39,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Deathtouch		= "죽음의손길",
 	Dispel			= "해제",
-	DBMConfigMsg		= "의식 징표 설정이 공대장 설정에 맞게 %s로 설정됐습니다.",
 	ExtendReset		= "의식술사 징표 드롭다운 설정이 이전에 확장 공격대 징표를 사용했었으나 더이상 사용하지 않아서 초기화됐습니다,"
 })
 

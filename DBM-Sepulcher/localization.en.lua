@@ -38,7 +38,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Deathtouch		= "Deathtouch",
 	Dispel			= "Dispel",
-	DBMConfigMsg	= "Rituals icon configuration configuration set to %s to match raid leaders configuration.",
 	ExtendReset		= "Your Ritualist icon dropdown setting has been reset due to fact you were using extended icons before, but aren't any longer"
 })
 
