@@ -832,14 +832,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 
-
-function mod:OnSync(msg)
-	if self:IsLFR() then return end
-	if msg == "Auto" then
-		self.vb.PairingBehavior = "Auto"
-	elseif msg == "Generic" then
-		self.vb.PairingBehavior = "Generic"
-	elseif msg == "None" then
-		self.vb.PairingBehavior = "None"
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateRLPreference(self, msg)
+		if msg == "Auto" then
+			self.vb.PairingBehavior = "Auto"
+		elseif msg == "Generic" then
+			self.vb.PairingBehavior = "Generic"
+		elseif msg == "None" then
+			self.vb.PairingBehavior = "None"
+		end
+	end
+	function mod:OnSync(msg)
+		if self:IsLFR() then return end
+		if msg == "Auto" or msg == "Generic" or msg == "None" then
+			self:Schedule(3, UpdateRLPreference, self, msg)
+		end
 	end
 end

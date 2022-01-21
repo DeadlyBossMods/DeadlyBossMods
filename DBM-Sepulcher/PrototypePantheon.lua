@@ -355,10 +355,8 @@ local allTimers = {
 
 local updateInfoFrame
 do
-	local tsort, twipe = table.sort, table.wipe
+	local twipe = table.wipe
 	local lines, sortedLines = {}, {}
-	local tempLines, tempLinesSorted = {}, {}
-	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -898,20 +896,17 @@ end
 
 do
 	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
-	local function UpdateRitualistIcons(self, msg)
+	local function UpdateRLPreference(self, msg)
 		if msg == "SetOne" then
 			self.vb.ritualistIconMethod = 1
-			DBM:AddMsg(L.DBMConfigMsg:format(msg))
 		elseif msg == "SetTwo" then
 			self.vb.ritualistIconMethod = 2
-			DBM:AddMsg(L.DBMConfigMsg:format(msg))
 		elseif msg == "SetThree" then
 			self.vb.ritualistIconMethod = 3
-			DBM:AddMsg(L.DBMConfigMsg:format(msg))
 		end
 	end
 	function mod:OnSync(msg)
-		if self:IsLFR() or not self:IsInCombat() then return end--Just in case some shit lord sends syncs in LFR or something, we don't want to trigger DBMConfigMsg
-		self:Schedule(3, UpdateRitualistIcons, self, msg)
+		if self:IsLFR() then return end--Just in case some shit lord sends syncs in LFR or something, we don't want to trigger DBMConfigMsg
+		self:Schedule(3, UpdateRLPreference, self, msg)
 	end
 end
