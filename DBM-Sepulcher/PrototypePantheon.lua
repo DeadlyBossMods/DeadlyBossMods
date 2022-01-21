@@ -355,10 +355,8 @@ local allTimers = {
 
 local updateInfoFrame
 do
-	local tsort, twipe = table.sort, table.wipe
+	local twipe = table.wipe
 	local lines, sortedLines = {}, {}
-	local tempLines, tempLinesSorted = {}, {}
-	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
