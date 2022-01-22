@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 362405 or ability.id = 361989 or ability.id = 365295 or ability.id = 361815 or ability.id = 362771 or ability.id = 363024 or ability.id = 365120 or ability.id = 365872 or ability.id = 365958 or ability.id = 365805) and type = "begincast"
  or (ability.id = 365235 or ability.id = 365636 or ability.id = 365030 or ability.id = 367631) and type = "cast"
  or (ability.id = 362505 or ability.id = 365216) and (type = "applybuff" or type = "removebuff")
+ or ability.id = 366849 and type = "applydebuff"
 --]]
 local P1Info, P15Info, P2Info, P25Info, P3Info = DBM:EJ_GetSectionInfo(24462), DBM:EJ_GetSectionInfo(24494), DBM:EJ_GetSectionInfo(24478), DBM:EJ_GetSectionInfo(24172), DBM:EJ_GetSectionInfo(24417)
 --Stage One: Kingsmourne Hungers
@@ -225,7 +226,7 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Befouled Barrier
-			[365295] = {17.0, 53.0, 40.0, 65.0, 65.0},
+			[365295] = {17.0, 52.9, 40.0, 65.0, 65.0},
 			--Blasphemy
 			[361989] = {30.0, 50.0, 55.0, 65.0},
 			--Hopebreaker
@@ -261,19 +262,19 @@ local allTimers = {
 		},
 	},
 	["mythic"] = {
-		[1] = {
+		[1] = {--All timers same as heroic, except wicked star, recheck heroic or at least normal to see if wicked changed throughout all
 			--Befouled Barrier
-			[365295] = {},
+			[365295] = {17.0, 52.9, 40.0, 65.0, 65.0},
 			--Blasphemy
-			[361989] = {},
+			[361989] = {30, 50.0, 54.9},
 			--Hopebreaker
-			[361815] = {},
+			[361815] = {5.0, 32.0, 28.0, 30.0, 30.0, 29.9, 35.1, 30.0},
 			--Kingsmourne Hungers
-			[362405] = {},
+			[362405] = {45, 60.0},
 			--Wicked Star
-			[365030] = {},
+			[365030] = {55, 30.0, 35.0},
 			--Domination Word: Pain
-			[366849] = {},
+			[366849] = {7.0, 13.0, 13.0, 12.0, 13.0, 14.0, 11.8, 12.9, 15.1, 10.9, 14.7, 11.2, 13.0, 15.0, 10.9, 14.8, 11.3, 13.5},
 		},
 		[2] = {
 			--Befouled Barrier
@@ -320,7 +321,7 @@ end
 
 local function BlasphemyYellRepeater(self, text)
 	yellBlasphemy:Yell(text)
-	self:Schedule(1, BlasphemyYellRepeater, self, text)
+	self:Schedule(1.5, BlasphemyYellRepeater, self, text)
 end
 
 local function DireYellRepeater(self, text)
@@ -427,7 +428,7 @@ function mod:SPELL_CAST_START(args)
 		totalDebuffs = 0
 		--Schedule the no debuff yell here
 		--It'll be unscheduled if you get one of them and replaced with a new one
-		if self.vb.PairingBehavior ~= "None" then
+		if self:IsMythic() and self.vb.PairingBehavior ~= "None" then
 			self:Schedule(3, BlasphemyYellRepeater, self, 0)
 		end
 	elseif spellId == 365958 then
@@ -618,14 +619,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			self:Unschedule(BlasphemyYellRepeater)
 			if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
-			self:Schedule(1, BlasphemyYellRepeater, self, icon)--Shorter repeater since 6 seconds won't trigger throttle.
+			self:Schedule(1.5, BlasphemyYellRepeater, self, icon)--Shorter repeater since 6 seconds won't trigger throttle.
 			yellBlasphemy:Yell(icon)
 		end
 		--No debuff, assign the no debuff yell repeater (this code will be used instead of starting it in cast start, when we know affected # targets
-		--if self.vb.PairingBehavior ~= "None" and totalDebuffs == DBM:GetGroupSize() and not DBM:UnitDebuff("player", 361992, 361993) then
-		--	self:Schedule(1, BlasphemyYellRepeater, self, 0)
-		--	yellBlasphemy:Yell(0)
-		--end
+		if self:IsMythic() and self.vb.PairingBehavior ~= "None" and totalDebuffs == DBM:GetGroupSize() and not DBM:UnitDebuff("player", 361992, 361993) then
+			self:Schedule(1.5, BlasphemyYellRepeater, self, 0)
+			yellBlasphemy:Yell(0)
+		end
 	elseif spellId == 365966 then
 		if args:IsPlayer() then
 			specWarnS3Hopelessness:Show()
@@ -725,8 +726,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		totalDebuffs = totalDebuffs - 1
 		if args:IsPlayer() then
 			self:Unschedule(BlasphemyYellRepeater)
-			if self.vb.PairingBehavior ~= "None" and totalDebuffs > 0 then--Schedule the no debuff yell repeater
-				self:Schedule(1, BlasphemyYellRepeater, self, 0)
+			if self:IsMythic() and self.vb.PairingBehavior ~= "None" and totalDebuffs > 0 then--Schedule the no debuff yell repeater
+				self:Schedule(1.5, BlasphemyYellRepeater, self, 0)
 				yellBlasphemy:Yell(0)
 			end
 		end

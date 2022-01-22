@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
-mod:SetUsedIcons(1, 2, 3, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-mod:SetHotfixNoticeRev(20211216000000)
-mod:SetMinSyncRevision(20211216000000)
+mod:SetUsedIcons(8, 9, 10, 11, 12, 13, 14, 15, 16)
+mod:SetHotfixNoticeRev(20220122000000)
+mod:SetMinSyncRevision(20220122000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -14,32 +14,31 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 363340 364229 363408 361676 365283 360977 367079 359236 362056 364979",
 	"SPELL_CAST_SUCCESS 365294 359235 368346",
-	"SPELL_AURA_APPLIED 366015 365297 361309 368347 368348 368349",--366016
+	"SPELL_AURA_APPLIED 365297 361309 368347 368348 368349",--366016
 --	"SPELL_AURA_APPLIED_DOSE 366016",
-	"SPELL_AURA_REMOVED 366015 368347 368348 368349",
+	"SPELL_AURA_REMOVED 368347 368348 368349",
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
 --	"SPELL_PERIODIC_MISSED 361002 360114",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, number of droplets for accurate icon marking, possibly improve it with auto pairing
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
 --TODO, are tanks supposed to trigger lightburst on purpose, or actively try to avoid triggering it with smart tank swaps? Need Mythic Timings
---TODO, Ephemeral Droplet and Rain deleted? Still haven't reappeared on journal, even on mythic, if not there on mythic testing, nuke them
 --TODO, verify starts and stops of Omega timer.
+--TODO, eternity engine CD needs review, or maybe it's not CD based but just respawns them if none are up?
 --[[
 (ability.id = 363340 or ability.id = 363408 or ability.id = 367079 or ability.id = 361676 or ability.id = 365283 or ability.id = 360977 or ability.id = 359236 or ability.id = 364979) and type = "begincast"
  or (ability.id = 365294 or ability.id = 359235) and type = "cast"
  or ability.id = 365297 and type = "applydebuff"
  or (ability.id = 364229 or ability.id = 362056) and type = "begincast"
+ or ability.id = 368347 and type = "applydebuff"
 --]]
 --Stage One: The Reclaimer
 local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
-local warnMaterializePylons						= mod:NewSpellAnnounce(363340, 2)
+local warnEternityEngine						= mod:NewSpellAnnounce(363340, 2)
 local warnSubterraneanScan						= mod:NewCountAnnounce(367079, 2)
 --local warnEphemeralEngine						= mod:NewStackAnnounce(366016, 4, nil, "Tank|Healer")--No longer in journal, probably scrapped
-local warnEphemeralDroplet						= mod:NewTargetNoFilterAnnounce(366015, 4)
 local warnCrushingPrism							= mod:NewCountAnnounce(365297, 3, nil, "RemoveMagic")
 --Stage Two: The Shimmering Cliffs
 local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
@@ -51,10 +50,6 @@ local yellOmegaGlyphs							= mod:NewIconRepeatYell(368346)
 local specWarnMeltdown							= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
 local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--Opt in, for someone that might be a soaker
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
-local specWarnEphemeralRain						= mod:NewSpecialWarningDodge(366011, nil, nil, nil, 2, 2)
-local specWarnEphemeralDroplet					= mod:NewSpecialWarningYouPos(366015, nil, nil, nil, 1, 2, 4)--Likely moved to mythic, it's no longer in non mythic
-local yellEphemeralDroplet						= mod:NewShortPosYell(366015)
-local yellEphemeralDropletFades					= mod:NewIconFadesYell(366015)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(361309, nil, nil, nil, 1, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
@@ -64,13 +59,12 @@ local specWarnDetonation						= mod:NewSpecialWarningSwitch(362056, "Dps", nil, 
 
 --mod:AddTimerLine(BOSS)
 --Mythic
-local timerOmegaGlyphsCD						= mod:NewAITimer(28.8, 368346, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerOmegaGlyphsCD						= mod:NewCDTimer(36.5, 368346, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Stage One: The Reclaimer
-local timerMaterializePylonsCD					= mod:NewCDTimer(28.8, 363340, nil, nil, nil, 1)
+local timerEternityEngineCD						= mod:NewCDTimer(28.8, 363340, nil, nil, nil, 1)
 local timerFractalShell							= mod:NewCastTimer(30, 364229, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerSubterraneanScanCD					= mod:NewCDTimer(35, 367079, nil, nil, nil, 5)
 local timerEarthbreakerMissilesCD				= mod:NewCDTimer(33.2, 361676, nil, nil, nil, 3)
-local timerEphemeralRainCD						= mod:NewAITimer(28.8, 366011, nil, nil, nil, 3)--Mythic now?
 local timerLightshatterBeamCD					= mod:NewCDTimer(14, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCrushingPrismCD						= mod:NewCDCountTimer(43, 365294, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Shimmering Cliffs
@@ -81,14 +75,12 @@ local timerDetonationCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5,
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(363414, true)
-mod:AddSetIconOption("SetIconOnEphemeralDroplet", 366015, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFractal", 364229, true, true, {8})
 mod:AddSetIconOption("SetIconOnDetonation", 362056, true, true, {8})
 mod:AddSetIconOption("SetIconOnCrushing", 365294, false, false, {9, 10, 11, 12, 13, 14, 15, 16}, true)
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.scanCount = 0
-mod.vb.dropletIcon = 1
 mod.vb.detonateCast = 0
 mod.vb.crushingCast = 0
 mod.vb.crushIcon = 9
@@ -125,7 +117,7 @@ local function updateAllTimers(self, ICD)
 		timerSubterraneanScanCD:Stop()
 		timerSubterraneanScanCD:Update(elapsed, total+extend)
 	end
-	if timerLightshatterBeamCD:GetRemaining() < ICD then
+	if not self:IsMythic() and timerLightshatterBeamCD:GetRemaining() < ICD then
 		local elapsed, total = timerLightshatterBeamCD:GetTime()
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerLightshatterBeamCD extended by: "..extend, 2)
@@ -139,6 +131,13 @@ local function updateAllTimers(self, ICD)
 		timerCrushingPrismCD:Stop()
 		timerCrushingPrismCD:Update(elapsed, total+extend, self.vb.crushingCast+1)
 	end
+	if self:IsMythic() and timerOmegaGlyphsCD:GetRemaining() < ICD then
+		local elapsed, total = timerOmegaGlyphsCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerOmegaGlyphsCD extended by: "..extend, 2)
+		timerOmegaGlyphsCD:Stop()
+		timerOmegaGlyphsCD:Update(elapsed, total+extend)
+	end
 end
 
 local function OmegaYellRepeater(self, icon)
@@ -149,16 +148,14 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.scanCount = 0
-	self.vb.dropletIcon = 1
 	self.vb.crushingCast = 0
-	timerMaterializePylonsCD:Start(3.7-delay)
-	timerLightshatterBeamCD:Start(11-delay)
-	timerSubterraneanScanCD:Start(16.1-delay)--16.3-18.2
-	timerEarthbreakerMissilesCD:Start(35.2-delay)--35.2-37
-	timerCrushingPrismCD:Start(45.4-delay, 1)
+	timerEternityEngineCD:Start(3.6-delay)
+	timerLightshatterBeamCD:Start(10.1-delay)
+	timerSubterraneanScanCD:Start(16.1-delay)--16.3-20.5
+	timerEarthbreakerMissilesCD:Start(33.3-delay)--35.2-37 old herioc
+	timerCrushingPrismCD:Start(40.6-delay, 1)--45.4 old heroic, maybe still heroic?
 	if self:IsMythic() then
-		timerEphemeralRainCD:Start(1-delay)--??
-		timerOmegaGlyphsCD:Start(1-delay)
+		timerOmegaGlyphsCD:Start(19.2-delay)
 	end
 --	if self.Options.NPAuraOnBurdenofDestiny then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -183,8 +180,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 363340 then
-		warnMaterializePylons:Show()
-		timerMaterializePylonsCD:Start()
+		warnEternityEngine:Show()
+--		timerEternityEngineCD:Start()
 	elseif spellId == 364229 then
 		timerFractalShell:Start(30, args.sourceGUID)
 		if self.Options.SetIconOnFractal then
@@ -210,19 +207,18 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnSubterraneanScan:Show(self.vb.scanCount)
 		end
-		timerSubterraneanScanCD:Start()
+		timerSubterraneanScanCD:Start(self:IsMythic() and 39.1 or 35)--TODO, verify if heroic or others have changed too
 		updateAllTimers(self, 3.5)
 	elseif spellId == 361676 or spellId == 365283 then--361676 Confirmed on heroic, 365283 where?
 		specWarnEarthbreakerMissiles:Show()
 		specWarnEarthbreakerMissiles:Play("scatter")
-		timerEarthbreakerMissilesCD:Start()
+		timerEarthbreakerMissilesCD:Start(self:IsMythic() and 38.4 or 33.2)--TODO, verify heroic again (and normal)
 		updateAllTimers(self, 4.8)
 	elseif spellId == 360977 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss1 check if boss is always boss1, right now unsure
 			specWarnLightshatterBeam:Show(L.Pylon)
 			specWarnLightshatterBeam:Play("defensive")
 		end
-		timerLightshatterBeamCD:Start()
 		updateAllTimers(self, 3.5)
 	elseif spellId == 359236 then
 		self:SetStage(2)--Stage, as determined by dungeon journal
@@ -231,10 +227,9 @@ function mod:SPELL_CAST_START(args)
 		warnRelocationForm:Show()
 		timerRelocationForm:Start()
 		--Stop stationary timers
-		timerMaterializePylonsCD:Stop()
+		timerEternityEngineCD:Stop()
 		timerSubterraneanScanCD:Stop()
 		timerEarthbreakerMissilesCD:Stop()
-		timerEphemeralRainCD:Stop()
 		timerOmegaGlyphsCD:Stop()
 		timerLightshatterBeamCD:Stop()
 		timerCrushingPrismCD:Stop()
@@ -286,15 +281,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrushingPrismCD:Stop()
 		timerOmegaGlyphsCD:Stop()
 		--Start Stationary ones
-		timerMaterializePylonsCD:Start(4.9)--4.9-5.3
+		timerEternityEngineCD:Start(4.9)--4.9-5.3
 		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
 			timerLightshatterBeamCD:Start(12.5)
 			timerSubterraneanScanCD:Start(16.4)
 			timerEarthbreakerMissilesCD:Start(35.8)
 			timerCrushingPrismCD:Start(46.8, 1)
 			if self:IsMythic() then
-				timerEphemeralRainCD:Start(2)
-				timerOmegaGlyphsCD:Start(3)
+				--timerOmegaGlyphsCD:Start(3)
 			end
 		else--Third stationary, after 2nd movement (stageTotality == 5)
 			timerLightshatterBeamCD:Start(16)
@@ -302,39 +296,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEarthbreakerMissilesCD:Start(28.2)
 			timerCrushingPrismCD:Start(36.7, 1)
 			if self:IsMythic() then
-				timerEphemeralRainCD:Start(5)
+				--timerOmegaGlyphsCD:Start(5)
 			end
 		end
-	elseif spellId == 368346 then
-		timerOmegaGlyphsCD:Start()
+--	elseif spellId == 368346 then
+--		timerOmegaGlyphsCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 366015 then
-		if self:AntiSpam(10, 2) then--Temp location, to ensure it is resetting
-			self.vb.dropletIcon = 1
-		end
-		local icon = self.vb.dropletIcon
-		if self.Options.SetIconOnEphemeralDroplet then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnEphemeralDroplet:Show(self:IconNumToTexture(icon))
-			specWarnEphemeralDroplet:Play("mm"..icon)
-			yellEphemeralDroplet:Yell(icon, icon)
-			yellEphemeralDropletFades:Countdown(spellId, nil, icon)
-		end
-		warnEphemeralDroplet:CombinedShow(0.5, args.destName)
-		self.vb.dropletIcon = self.vb.dropletIcon + 1
-	elseif spellId == 365297 then
+	if spellId == 365297 then
 		if self:AntiSpam(5, 3) then
 			self.vb.crushIcon = 9
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
 			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
-			local timer = self.vb.phase == 1 and 42.9 or crushingTimers[self.vb.stageTotality][self.vb.crushingCast+1]
+			local timer = self.vb.phase == 1 and (self:IsMythic() and 36.1 or 42.9) or crushingTimers[self.vb.stageTotality][self.vb.crushingCast+1]
 			if timer then
 				timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
 				updateAllTimers(self, 1.2)
@@ -355,17 +333,17 @@ function mod:SPELL_AURA_APPLIED(args)
 --		warnEphemeralEngine:Show(args.destName, args.amount or 1)
 	--Omega Glyphs
 	elseif spellId == 368347 and args:IsPlayer() then--Looks like a yellow circle, so it uses orange circle icon
-		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle13.blp:12:12|t")
+		specWarnOmegaGlyphs:Show(self:IconNumToString(2))
 		specWarnOmegaGlyphs:Play("mm2")
 		self:Schedule(1, OmegaYellRepeater, self, 2)
 		yellOmegaGlyphs:Yell(2)
 	elseif spellId == 368348 and args:IsPlayer() then--Looks like a yellow diamond, so it uses purple diamond icon
-		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle02.blp:12:12|t")
+		specWarnOmegaGlyphs:Show(self:IconNumToString(3))
 		specWarnOmegaGlyphs:Play("mm3")
 		self:Schedule(1, OmegaYellRepeater, self, 3)
 		yellOmegaGlyphs:Yell(3)
 	elseif spellId == 368349 and args:IsPlayer() then--Looks like a yellow square, so it uses blue square icon
-		specWarnOmegaGlyphs:Show("|TInterface\\Icons\\inv_prg_icon_puzzle14.blp:12:12|t")
+		specWarnOmegaGlyphs:Show(self:IconNumToString(6))
 		specWarnOmegaGlyphs:Play("mm6")
 		self:Schedule(1, OmegaYellRepeater, self, 6)
 		yellOmegaGlyphs:Yell(6)
@@ -375,14 +353,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 366015 then
-		if args:IsPlayer() then
-			yellEphemeralDropletFades:Cancel()
-		end
-		if self.Options.SetIconOnEphemeralDroplet then
-			self:SetIcon(args.destName, 0)
-		end
-	elseif (spellId == 368347 or spellId == 368348 or spellId == 368349) and args:IsPlayer() then
+	if (spellId == 368347 or spellId == 368348 or spellId == 368349) and args:IsPlayer() then
 		self:Unschedule(OmegaYellRepeater)
 	end
 end
@@ -405,10 +376,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 366009 then
-		self.vb.dropletIcon = 1
-		specWarnEphemeralRain:Show()
-		specWarnEphemeralRain:Play("watchstep")
-		timerEphemeralRainCD:Start()
+	if spellId == 368346 then--Omega Glyphs
+		timerOmegaGlyphsCD:Start()
+	elseif spellId == 360990 then--More reliable script for light timer
+		timerLightshatterBeamCD:Start()
 	end
 end
+
