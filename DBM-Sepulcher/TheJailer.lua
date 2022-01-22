@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)--Or 181411
 mod:SetEncounterID(2537)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--, 7, 8
 mod:SetHotfixNoticeRev(20211207000000)
 mod:SetMinSyncRevision(20211207000000)
 --mod.respawnTime = 29
@@ -13,15 +13,15 @@ mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects b
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362028 366022 363893 365436 360279 363179 360373 359856 366284 364942 360562 364488 365033 365147 365212 365169",
+	"SPELL_CAST_START 362028 366022 363893 365436 360279 360373 359856 366284 364942 360562 364488 365033 365147 365212 365169",--363179
 	"SPELL_CAST_SUCCESS 362631 362192",
-	"SPELL_SUMMON 363175",
-	"SPELL_AURA_APPLIED 362631 363886 362401 360281 360180 366285 365150 365153 362075 365219 365222",--362024
+--	"SPELL_SUMMON 363175",
+	"SPELL_AURA_APPLIED 362631 363886 362401 360281 366285 365150 365153 362075 365219 365222",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 362401 360281 360180 366285 365150 365153 365222",
+	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222",--360180
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
 	"SPELL_PERIODIC_MISSED 360425 365174",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"UNIT_SPELLCAST_START boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -40,7 +40,8 @@ mod:RegisterEventsInCombat(
 --TODO, fix unrelenting domination in p1 and P3 probably)
 --TODO, https://ptr.wowhead.com/spell=363748/death-sentence / https://ptr.wowhead.com/spell=363772/death-sentence ?
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
-local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), DBM:EJ_GetSectionInfo(23923), DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
+--TODO, stage 1.5 (intermission) seems to have been scrapped, at least from journal, confirm on live and if so finish deleting those events
+local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), nil, DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
 --Stage One: Origin of Domination
 mod:AddOptionLine(P1Info, "announce")
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
@@ -48,8 +49,8 @@ local warnChainsofOppression					= mod:NewTargetNoFilterAnnounce(362631, 3)
 local warnImprisonment							= mod:NewTargetCountAnnounce(363886, 4, nil, nil, nil, nil, nil, nil, true)
 local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, 3, nil, nil, nil, nil, nil, nil, true)
 --Intermission: Machine of Origination
-mod:AddOptionLine(P15Info, "announce")
-local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
+--mod:AddOptionLine(P15Info, "announce")
+--local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
 --Stage Two: Unholy Attunement
 mod:AddOptionLine(P2Info, "announce")
 local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
@@ -111,8 +112,8 @@ local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, ni
 local timerTormentCD							= mod:NewAITimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360279, nil, nil, nil, 3)
 --Intermission: Machine of Origination
-mod:AddTimerLine(P15Info)
-local timerOblivion								= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
+--mod:AddTimerLine(P15Info)
+--local timerOblivion							= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(P2Info)
 local timerUnholyAttunementCD					= mod:NewAITimer(28.8, 360373, nil, nil, nil, 3)
@@ -134,8 +135,8 @@ mod:AddIconLine(P1Info)
 mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
 --P1.5
-mod:AddIconLine(P15Info)
-mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
+--mod:AddIconLine(P15Info)
+--mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
 --P2
 mod:AddIconLine(P2Info)
 mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
@@ -148,14 +149,14 @@ mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 --General
-local castsPerGUID = {}
+--local castsPerGUID = {}
 mod.vb.debuffCount = 0
 mod.vb.debuffIcon = 1--Used in all 3 rune types
 --P1
 mod.vb.comboCount = 0
 --P1.5
-mod.vb.addsLeft = 0
-mod.vb.addIcon = 8
+--mod.vb.addsLeft = 0
+--mod.vb.addIcon = 8
 --P2
 mod.vb.unholyAttuneCast = 0
 mod.vb.decimatorCount = 0
@@ -167,7 +168,7 @@ mod.vb.chainsIcon = 4
 function mod:OnCombatStart(delay)
 	self.vb.comboCount = 0
 	self.vb.debuffCount = 0
-	self.vb.addsLeft = 0
+--	self.vb.addsLeft = 0
 	self.vb.unholyAttuneCast = 0
 	self.vb.decimatorCount = 0
 	self.vb.desolationCast = 0
@@ -189,7 +190,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(castsPerGUID)
+--	table.wipe(castsPerGUID)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -236,18 +237,33 @@ function mod:SPELL_CAST_START(args)
 		self.vb.debuffCount = self.vb.debuffCount + 1
 		self.vb.debuffIcon = 1
 		timerRuneofDominationCD:Start()
-	elseif spellId == 363179 then--Cries of the Damned
-		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
-			--But if that failed, do it again here and scan for mobs again here too
-			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnCallofOblivion then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnCallofOblivion")
-			end
-			self.vb.addIcon = self.vb.addIcon - 1
-		end
-		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+--	elseif spellId == 363179 then--Cries of the Damned
+--		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
+--			--But if that failed, do it again here and scan for mobs again here too
+--			castsPerGUID[args.sourceGUID] = 0
+--			if self.Options.SetIconOnCallofOblivion then
+--				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnCallofOblivion")
+--			end
+--			self.vb.addIcon = self.vb.addIcon - 1
+--		end
+--		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		--Some announce stuff to add here?
 	elseif spellId == 360373 then
+		if self.vb.phase == 1 then--TEMP. need new stage 2 event
+			self:SetStage(2)
+			self.vb.debuffCount = 0
+--			timerOblivion:Stop()
+			timerUnrelentingDominationCD:Stop()
+			timerChainsofOppressionCD:Stop()
+			timerMartyrdomCD:Stop()
+			timerTormentCD:Stop()
+			timerRuneofDamnationCD:Stop()
+--			timerUnholyAttunementCD:Start(2)
+			timerShatteringBlastCD:Start(2)
+			timerRuneofCompulsionCD:Start(2)
+			timerDecimatorCD:Start(2)
+			timerTormentCD:Start(2)
+		end
 		self.vb.unholyAttuneCast = self.vb.unholyAttuneCast + 1
 		warnUnholyAttunement:Show(self.vb.unholyAttuneCast)
 		timerUnholyAttunementCD:Start()
@@ -279,6 +295,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--[[
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 363175 then
@@ -292,6 +309,7 @@ function mod:SPELL_SUMMON(args)
 		self.vb.addIcon = self.vb.addIcon - 1
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -380,16 +398,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnChainsofAnguishLink:CombinedShow(0.5, args.destName)
 		self.vb.chainsIcon = self.vb.chainsIcon + 1
-	elseif spellId == 360180 then--Oblivion
-		self:SetStage(1.5)
-		self.vb.addsLeft = 0
-		self.vb.addIcon = 8
-		timerUnrelentingDominationCD:Stop()
-		timerChainsofOppressionCD:Stop()
-		timerMartyrdomCD:Stop()
-		timerTormentCD:Stop()
-		timerRuneofDamnationCD:Stop()
-		timerOblivion:Start()
+--	elseif spellId == 360180 then--Oblivion
+--		self:SetStage(1.5)
+--		self.vb.addsLeft = 0
+--		self.vb.addIcon = 8
+--		timerUnrelentingDominationCD:Stop()
+--		timerChainsofOppressionCD:Stop()
+--		timerMartyrdomCD:Stop()
+--		timerTormentCD:Stop()
+--		timerRuneofDamnationCD:Stop()
+--		timerOblivion:Start()
 	elseif spellId == 365153 then--Imposing Will
 		self.vb.willCount = self.vb.willCount + 1
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -449,15 +467,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellRuneofDominationFades:Cancel()
 		end
-	elseif spellId == 360180 then--Oblivion
-		self:SetStage(2)
-		self.vb.debuffCount = 0
-		timerOblivion:Stop()
-		timerUnholyAttunementCD:Start(2)
-		timerShatteringBlastCD:Start(2)
-		timerRuneofCompulsionCD:Start(2)
-		timerDecimatorCD:Start(2)
-		timerTormentCD:Start(2)
+--	elseif spellId == 360180 then--Oblivion
+
 	elseif spellId == 365153 then--Imposing Will
 		self.vb.willCount = self.vb.willCount - 1
 		if self.Options.InfoFrame and self.vb.willCount == 0 then
@@ -466,6 +477,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 183787 then--harbinger-of-oblivion
@@ -477,6 +489,7 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
+--]]
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 360425 or spellId == 365174) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
