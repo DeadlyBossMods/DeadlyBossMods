@@ -118,7 +118,7 @@ local timerHopelessnessCD						= mod:NewAITimer(28.8, 365966, nil, nil, nil, 3, 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 363020)
-mod:AddInfoFrameOption(365966, true)
+mod:AddInfoFrameOption(365966, false)
 --mod:AddIconLine(P1Info)
 --mod:AddSetIconOption("SetIconOnWickedStar", 365021, false, false, {1, 2, 3, 4, 5, 6})
 mod:AddIconLine(P15Info)

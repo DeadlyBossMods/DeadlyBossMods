@@ -113,7 +113,7 @@ local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, n
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(360687, true)
+mod:AddInfoFrameOption(360687, "Healer")
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
 mod:AddIconLine(ProtoWar)
 mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {13, 14, 15, 16}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
