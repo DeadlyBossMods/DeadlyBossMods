@@ -5,15 +5,15 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(183501)
 mod:SetEncounterID(2553)
 mod:SetUsedIcons(1, 2, 3, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20211211000000)
-mod:SetMinSyncRevision(20211211000000)
+mod:SetHotfixNoticeRev(20220123000000)
+mod:SetMinSyncRevision(20220123000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 363485 365682 362841 362801 362849 364040",
-	"SPELL_CAST_SUCCESS 362885 364040 366752 362721 363258 364465 364030",
+	"SPELL_CAST_SUCCESS 362885 364040 366752 362721 363258 364465 364030 367711",
 	"SPELL_AURA_APPLIED 365577 365681 365701 362615 362614 362803 362882",
 	"SPELL_AURA_APPLIED_DOSE 365681",
 	"SPELL_AURA_REMOVED 365577 365701 363034 363139 362615 362614 362803",
@@ -28,10 +28,10 @@ mod:RegisterEventsInCombat(
 --TODO, possibly sequence out timers for certain things, like P2 Glpyh might actually be 40, 42, 37
 --[[
 (ability.id = 363485 or ability.id = 362841 or ability.id = 362801 or ability.id = 362849) and type = "begincast"
- or (ability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
+ or (ability.id = 367711 or aability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
  or (ability.id = 363034 or ability.id = 363139) and type = "removebuff"
  or (ability.id = 365682 or ability.id = 364040) and type = "begincast"
- or ability.id = 364030 and type = "cast"
+ or bility.id = 364030 and type = "cast"
 --]]
 --Xy Decipherers
 ----Cartel Overseer
@@ -111,7 +111,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerCartelPlunderersCD:Start(13.4-delay)
 		timerRiftBlastsCD:Start(13.6-delay)
-		timerGlyphofRelocationCD:Start(44.4-delay, 1)
+		timerGlyphofRelocationCD:Start(44.4-delay, 1)--Only different on pull, it's 40 on phase changes like other modes
 	else
 		timerGlyphofRelocationCD:Start(40-delay, 1)--TODO, recheck
 	end
@@ -189,7 +189,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 362721 then
 		self.vb.tearIcon = 1
 --		timerDimensionalTearCD:Start()--Not used second time per phase?
-	elseif spellId == 363258 then--Slightly faster than SPELL_CAST_START/APPLIED
+	elseif spellId == 363258 then--Decipher Relic, Slightly faster than SPELL_CAST_START/APPLIED
 		warnDecipherRelic:Show()
 		--Stop timers
 		timerGenesisRingsCD:Stop()
@@ -236,6 +236,30 @@ function mod:SPELL_CAST_SUCCESS(args)
 			else
 				specWarnDebilitatingRay:Play("kickcast")
 			end
+		end
+	elseif spellId == 367711 then--Decipher Relic (Stage 4 version)
+		self:SetStage(4)
+		self.vb.sparkCount = 0
+		self.vb.ringCount = 0
+		self.vb.glyphCount = 0
+		warnDecipherRelic:Show()
+		--Stop timers
+		timerGenesisRingsCD:Stop()
+		timerCartelPlunderersCD:Stop()
+		timerRiftBlastsCD:Stop()
+		timerDimensionalTearCD:Stop()
+		timerGlyphofRelocationCD:Stop()
+		timerHyperlightSparknovaCD:Stop()
+		timerStasisTrapCD:Stop()
+		--Restart Timers (exactly same as pull)
+		timerDimensionalTearCD:Start(8)
+		timerHyperlightSparknovaCD:Start(14, 1)
+		timerStasisTrapCD:Start(21)
+		timerGenesisRingsCD:Start(26, 1)
+		timerGlyphofRelocationCD:Start(40, 1)
+		if self:IsMythic() then
+			timerCartelPlunderersCD:Start(12)
+			timerRiftBlastsCD:Start(12.2)
 		end
 	end
 end
