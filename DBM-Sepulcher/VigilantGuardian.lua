@@ -106,10 +106,14 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.refractedCount = 0
-	timerVolatileMateriumCD:Start(18.6-delay)
-	timerSentryCD:Start(18.6)
-	timerRefractedBlastCD:Start(14.9-delay, 1)
-	timerDeresolutionCD:Start(26.3-delay)
+	if self:IsMythic() then
+
+	else
+		timerVolatileMateriumCD:Start(18.6-delay)
+		timerSentryCD:Start(18.6)
+		timerRefractedBlastCD:Start(14.9-delay, 1)
+		timerDeresolutionCD:Start(26.3-delay)
+	end
 	if self.Options.NPAuraOnPoweredDown then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
