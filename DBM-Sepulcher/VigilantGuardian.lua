@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 361001 360176 360162 364447",
-	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404",--364425
+	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881",--364425
 	"SPELL_SUMMON 360848 360623",
 	"SPELL_AURA_APPLIED 363447 360458 364447 359610 360415 364881 364962",
 	"SPELL_AURA_APPLIED_DOSE 364447 360415",
@@ -29,6 +29,11 @@ mod:RegisterEventsInCombat(
 --TODO, adjust tank swap stacks for dissonance, if it's even swapped (and not just add soft enrage)
 --TODO, https://ptr.wowhead.com/spell=360654/point-defense-drone useful?
 --TODO, proper energy Conversion cast and alert prio
+--[[
+(ability.id = 360412 or ability.id = 360162) and type = "begincast"
+ or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881) and type = "cast"
+ or ability.id = 360879
+--]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Automa
@@ -182,7 +187,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 360412 then
+	if spellId == 360412 then--Exposed Core
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -200,6 +205,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWaveofDisintegrationCD:Start(castsPerGUID[args.sourceGUID][2] == 1 and 13.3 or 11.2, args.sourceGUID)--CD adjusted from SUCCESS --> Start, timers are 14.3 and 12.2
 	elseif spellId == 360404 then
 		warnForceField:Show()
+	elseif spellId == 365315 then--Volatile Materium
+		timerVolatileMateriumCD:Start()
+	elseif spellId == 360658 then--Pre-Fabricated Sentry
+		timerSentryCD:Start()
+		--scan for sentry being added to boss frames, so we can grab it's guid
+		self:RegisterShortTermEvents(
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+		)
+	elseif spellId == 364881 then--Matter Disolution
+		timerMatterDisolutionCD:Start()
 	end
 end
 
@@ -358,16 +373,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.refractedCount = self.vb.refractedCount + 1
 		warnRefractedBlast:Show(self.vb.refractedCount)
 		timerRefractedBlastCD:Start(nil, self.vb.refractedCount+1)
-	elseif spellId == 365315 then--Volatile Materium
-		timerVolatileMateriumCD:Start()
-	elseif spellId == 360658 then--Pre-Fabricated Sentry
-		timerSentryCD:Start()
-		--scan for sentry being added to boss frames, so we can grab it's guid
-		self:RegisterShortTermEvents(
-			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
-		)
-	elseif spellId == 364881 then--Matter Disolution
-		timerMatterDisolutionCD:Start()
 --	elseif spellId == 361936 then--ROLL OUT!
 
 	end
