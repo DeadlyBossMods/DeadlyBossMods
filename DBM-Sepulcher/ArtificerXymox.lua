@@ -28,10 +28,10 @@ mod:RegisterEventsInCombat(
 --TODO, possibly sequence out timers for certain things, like P2 Glpyh might actually be 40, 42, 37
 --[[
 (ability.id = 363485 or ability.id = 362841 or ability.id = 362801 or ability.id = 362849) and type = "begincast"
- or (ability.id = 367711 or aability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
+ or (ability.id = 367711 or ability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
  or (ability.id = 363034 or ability.id = 363139) and type = "removebuff"
  or (ability.id = 365682 or ability.id = 364040) and type = "begincast"
- or bility.id = 364030 and type = "cast"
+ or ability.id = 364030 and type = "cast"
 --]]
 --Xy Decipherers
 ----Cartel Overseer
