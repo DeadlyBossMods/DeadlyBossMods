@@ -76,10 +76,10 @@ local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5
 --Boss
 local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
 local timerDimensionalTearCD					= mod:NewNextTimer(8, 362615, 327770, nil, nil, 3)
-local timerGlyphofRelocationCD					= mod:NewCDCountTimer(30, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(28, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
-local timerStasisTrapCD							= mod:NewCDTimer(28, 362885, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
+local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
+local timerStasisTrapCD							= mod:NewCDTimer(30, 362885, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 --Hyperlight Adds
 --local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
