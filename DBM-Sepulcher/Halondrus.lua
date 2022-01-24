@@ -66,7 +66,7 @@ local timerFractalShell							= mod:NewCastTimer(30, 364229, nil, nil, nil, 5, n
 local timerSubterraneanScanCD					= mod:NewCDTimer(35, 367079, nil, nil, nil, 5)
 local timerEarthbreakerMissilesCD				= mod:NewCDTimer(33.2, 361676, nil, nil, nil, 3)
 local timerLightshatterBeamCD					= mod:NewCDTimer(14, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCrushingPrismCD						= mod:NewCDCountTimer(43, 365294, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerCrushingPrismCD						= mod:NewCDCountTimer(42.5, 365294, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Shimmering Cliffs
 local timerRelocationForm						= mod:NewCastTimer(6, 359236, nil, nil, nil, 6)
 local timerDetonationCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
@@ -86,13 +86,15 @@ mod.vb.crushingCast = 0
 mod.vb.crushIcon = 9
 local detonateTimers = {
 	[2] = {27, 22.6},
-	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},
+--	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},--Heroic
+	[4] = {20.4, 19.9, 8.6, 12.3},--Normal
 }
 local crushingTimers = {
 --	[1] = {45.4, 45.4, 43.5},
-	[2] = {34.9},
+	[2] = {34.4},
 --	[3] = {46.9, 45.6, 42.3, 44.3},
-	[4] = {12.7, 33, 24.2},
+--	[4] = {12.7, 33, 24.2},--Heroic
+	[4] = {45.3, 24.6}--Normal (did heroic change?)
 --	[5] = {36.7, 43.4, 46.6, 53.3, 42.9, 45.7},
 }
 
