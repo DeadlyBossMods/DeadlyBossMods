@@ -51,6 +51,8 @@ local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil,
 --Intermission: Remnant of a Fallen King
 mod:AddOptionLine(P15Info, "announce")
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
+mod:AddOptionLine(P25Info, "announce")
+local warnMarchoftheDamned						= mod:NewSpellAnnounce(364020, 3)
 --Stage Three: A Moment of Clarity
 mod:AddOptionLine(P3Info, "announce")
 local warnBeaconofHope							= mod:NewCastAnnounce(365872, 1)
@@ -81,8 +83,8 @@ mod:AddOptionLine(P2Info, "specialannounce")
 local specWarnGrimReflections					= mod:NewSpecialWarningSwitch(365120, "-Healer", nil, nil, 1, 2)
 local specWarnPsychicTerror						= mod:NewSpecialWarningInterruptCount(365008, "HasInterrupt", nil, nil, 1, 2)
 --Intermission: March of the Damned
-mod:AddOptionLine(P25Info, "specialannounce")
-local specWarnMarchofDamned						= mod:NewSpecialWarningDodge(364020, nil, nil, nil, 2, 2)
+--mod:AddOptionLine(P25Info, "specialannounce")
+--local specWarnMarchofDamned						= mod:NewSpecialWarningDodge(364020, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage Three: A Moment of Clarity
 mod:AddOptionLine(P3Info, "specialannounce")
@@ -113,9 +115,9 @@ mod:AddTimerLine(P2Info)
 local timerGrimReflectionsCD					= mod:NewCDCountTimer(28.8, 365120, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 --Intermission: March of the Damned
 mod:AddTimerLine(P25Info)
-local timerMarchofDamnedCD						= mod:NewAITimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerMarchofDamnedCD						= mod:NewCDTimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Three: A Moment of Clarity
-local timerHopelessnessCD						= mod:NewAITimer(28.8, 365966, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerHopelessnessCD						= mod:NewCDTimer(28.8, 365966, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -456,8 +458,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerWickedStarCD:Start(timer, self.vb.wickedCount+1)
 		end
 	elseif spellId == 363133 then
-		specWarnMarchofDamned:Show()
-		specWarnMarchofDamned:Play("watchstep")--Farfromline if it's one of those things
+		warnMarchoftheDamned:Show()
+--		specWarnMarchofDamned:Show()
+--		specWarnMarchofDamned:Play("watchstep")--Farfromline if it's one of those things
 		timerMarchofDamnedCD:Start(7.5)
 	end
 end
