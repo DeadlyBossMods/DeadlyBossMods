@@ -169,7 +169,7 @@ local timerExpulsionCD								= mod:NewCDTimer(15.8, 351562, nil, nil, nil, 3, n
 mod:AddTimerLine(P3Info)
 local timerBansheesHeartseekerCD					= mod:NewCDCountTimer(33.9, 353969, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerShadowDaggerCD							= mod:NewCDCountTimer(23, 353935, nil, nil, nil, 3)--Only used in phase 3, in phase 1 it's tied to windrunner
-local timerBaneArrowsCD								= mod:NewCDCountTimer(23, 354011, nil, nil, nil, 3)
+local timerBaneArrowsCD								= mod:NewCDCountTimer(23, 354011, 208407, nil, nil, 3)
 local timerBansheesFuryCD							= mod:NewCDCountTimer(23, 354068, nil, nil, nil, 2)--Short name NOT used since "Fury" also exists on fight
 local timerBansheesScreamCD							= mod:NewCDCountTimer(23, 353952, 31295, nil, nil, 3)
 local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, 2, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -234,13 +234,13 @@ local allTimers = {
 			--Domination Chains
 			[349419] = {29, 63.9, 63.9},
 			--Wailing Arrow
-			[347609] = {41.3, 47.6, 37.3, 39.8},
+			[347609] = {41.3, 46.6, 37.3, 39.8},
 			--Veil of Darkness
 			[347726] = {56.6, 59.3, 59.3},
 		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {36.1, 87.8, 87.9, 89.9, 87.9},
+			[354011] = {36.1, 87.8, 87.9, 88.8, 87.9},
 			--Banshee's Heartseeker
 			[353969] = {38.9, 24.4, 54.5, 3, 13.3, 24.4, 35.1, 11.8, 34.3, 12.5, 36.1, 12.1, 23.3, 45.5, 3},
 			--Shadow Dagger
