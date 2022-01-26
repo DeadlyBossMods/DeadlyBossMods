@@ -348,7 +348,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.wrathIcon = self.vb.wrathIcon + 1
 		if self.vb.wrathIcon > 8 then
 			self.vb.wrathIcon = 1
-			DBM:AddMsg("Cast event for Glacial Wrath is wrong, doing backup icon reset")
 		end
 	elseif spellId == 348760 then--and self:AntiSpam(5, args.destName)
 		if args:IsPlayer() then
