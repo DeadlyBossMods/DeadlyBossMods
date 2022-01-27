@@ -382,7 +382,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 353195 then--Extemporaneous Fate
 		self.vb.extemporaneousCount = self.vb.extemporaneousCount + 1
 		specWarnExtemporaneousFate:Show(self.vb.extemporaneousCount)
-		specWarnExtemporaneousFate:Play("specialsoon")--"157060" if they just happen to be yellow
+		specWarnExtemporaneousFate:Play("specialsoon")
 		timerDarkestDestiny:Start(30)
 		local timer = allTimers[difficultyName][3][spellId][self.vb.extemporaneousCount+1] or 39--(technically timer is always 39 unless spell queued behind other spells. this seems to be lowest cast order priority)
 		if timer then
