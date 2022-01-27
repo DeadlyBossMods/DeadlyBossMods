@@ -40,24 +40,23 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: His Gaze Upon You
---local warnExsanguinated					= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnPiercingLens						= mod:NewCastAnnounce(350803, 2, nil, nil, false)--Boss effectively spams this every 1-4 seconds
 local warnDraggingChains					= mod:NewTargetNoFilterAnnounce(358609, 2)
 local warnAssailingLance					= mod:NewCastAnnounce(348074, 4)
 local warnHopelessLethargy					= mod:NewTargetNoFilterAnnounce(350604, 2, nil, nil, 31589)--Mythic
 --Stage Two: Double Vision
-local warnTitanicDeathGaze					= mod:NewCountAnnounce(349030, 2)
-local warnDesolationBeam					= mod:NewTargetNoFilterAnnounce(350847, 2)
+local warnTitanicDeathGaze					= mod:NewCountAnnounce(349028, 2)
+local warnDesolationBeam					= mod:NewTargetNoFilterAnnounce(358610, 2)
 local warnShatteredSoul						= mod:NewTargetAnnounce(350034, 2)
 local warnSlothfulCorruption				= mod:NewTargetNoFilterAnnounce(350713, 2, nil, "RemoveMagic")
-local warnSpreadingMisery					= mod:NewTargetAnnounce(350816, 2)
+local warnSpreadingMisery					= mod:NewTargetAnnounce(351827, 2)
 --Stage Three: Immediate Extermination
 local warnImmediateExtermination			= mod:NewCountAnnounce(348969, 2)
 
 --Stage One: His Gaze Upon You
 --local specWarnExsanguinated				= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
 local specWarnDeathlink						= mod:NewSpecialWarningDefensive(350828, nil, nil, nil, 3, 2)
-local specWarnDeathlinkTaunt				= mod:NewSpecialWarningTaunt(351143, nil, nil, nil, 1, 2)
+local specWarnDeathlinkTaunt				= mod:NewSpecialWarningTaunt(350828, nil, nil, nil, 1, 2)
 local specWarnDraggingChains				= mod:NewSpecialWarningYou(358609, nil, nil, nil, 1, 2)
 local yellDraggingChains					= mod:NewYell(358609)
 local specWarnHopelessLethargy				= mod:NewSpecialWarningMoveAway(350604, nil, 31589, nil, 1, 2, 4)--Mythic
@@ -67,7 +66,7 @@ local yellHopelessLethargy					= mod:NewYell(350604, 31589)
 local specWarnDesolationBeam				= mod:NewSpecialWarningMoveAway(358610, nil, nil, nil, 1, 2)
 local yellDesolationBeam					= mod:NewYell(358610)
 local yellDesolationBeamFades				= mod:NewShortFadesYell(358610)
-local specWarnShatteredSoul					= mod:NewSpecialWarningYou(354004, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
+local specWarnShatteredSoul					= mod:NewSpecialWarningYou(350034, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
 local specWarnSlothfulCorruption			= mod:NewSpecialWarningYou(350713, nil, nil, nil, 1, 2)
 local specWarnSpreadingMisery				= mod:NewSpecialWarningMoveAway(351827, nil, nil, nil, 1, 2)
 local yellSpreadingMisery					= mod:NewYell(351827)
@@ -85,12 +84,12 @@ local timerFractureSoulCD					= mod:NewCDCountTimer(11, 350022, nil, nil, nil, 3
 ----Add
 local timerAssailingLanceCD					= mod:NewCDTimer(8.5, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.DEADLY_ICON..DBM_COMMON_L.TANK_ICON)--Add
 --Stage Two: Double Vision
-local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349030, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerDesolationBeamCD					= mod:NewCDCountTimer(16.2, 350847, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--17-18.3
+local timerTitanticDeathGazeCD				= mod:NewCDCountTimer(32.8, 349028, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerDesolationBeamCD					= mod:NewCDCountTimer(16.2, 358610, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--17-18.3
 local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Deathseeker Eye
 local timerSlothfulCorruptionCD				= mod:NewCDTimer("d23.8", 350713, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerSpreadingMiseryCD				= mod:NewCDTimer("d12.1", 350816, nil, nil, nil, 3)
+local timerSpreadingMiseryCD				= mod:NewCDTimer("d12.1", 351827, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
 local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, nil, nil, 3)--Shortname "Beam"
 
@@ -273,7 +272,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 350713 then
-		warnSlothfulCorruption:CombinedShow(0.3, args.destName)
+		warnSlothfulCorruption:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnSlothfulCorruption:Show()
 			specWarnSlothfulCorruption:Play("targetyou")

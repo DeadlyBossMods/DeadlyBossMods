@@ -63,11 +63,11 @@ local specWarnSongofDissolution					= mod:NewSpecialWarningInterrupt(350286, "Ha
 local specWarnReverberatingRefrain				= mod:NewSpecialWarningMoveTo(350385, nil, nil, nil, 3, 2)
 ----Skyja, The First
 ------Call of the Val'kyr
-local specWarnAgathasEternalblade				= mod:NewSpecialWarningDodge(350031, nil, nil, nil, 2, 2)
+local specWarnAgathasEternalblade				= mod:NewSpecialWarningDodge(350012, nil, nil, nil, 2, 2)
 local specWarnDaschlasMightyAnvil				= mod:NewSpecialWarningMoveAway(350184, nil, nil, nil, 1, 2)
 local yellDaschlasMightyAnvil					= mod:NewShortYell(350184)
 local yellDaschlasMightyAnvilFades				= mod:NewShortFadesYell(350184)
-local specWarnAradnesFallingStrike				= mod:NewSpecialWarningSoak(350098, nil, nil, nil, 1, 2)
+local specWarnAradnesFallingStrike				= mod:NewSpecialWarningSoak(350078, nil, nil, nil, 1, 2)
 local specWarnBrynjasMournfulDirge				= mod:NewSpecialWarningMoveAway(350109, nil, nil, nil, 1, 2)
 local yellBrynjasMournfulDirge					= mod:NewShortYell(350109)
 local yellBrynjasMournfulDirgeFades				= mod:NewShortFadesYell(350109)
@@ -80,7 +80,7 @@ local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably c
 --Stage Two: The First of the Mawsworn
 local specWarnPierceSoul						= mod:NewSpecialWarningStack(350475, nil, 4, nil, nil, 1, 6)
 local specWarnPierceSoulTaunt					= mod:NewSpecialWarningTaunt(350475, nil, nil, nil, 1, 2)
-local specWarnLinkEssence						= mod:NewSpecialWarningDefensive(350482, nil, nil, nil, 1, 2, 3)
+local specWarnLinkEssence						= mod:NewSpecialWarningDefensive(350483, nil, nil, nil, 1, 2, 3)
 local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, nil, 2, 2, 3)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 

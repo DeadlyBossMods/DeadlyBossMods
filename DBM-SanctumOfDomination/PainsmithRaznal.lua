@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 357735",
-	"SPELL_CAST_SUCCESS 348508 355568 355778 348456 355504 355534",
+	"SPELL_CAST_SUCCESS 348508 355568 355778 355504",
 	"SPELL_SUMMON 355536",
 	"SPELL_AURA_APPLIED 348508 355568 355778 348456 355505 355525 352052",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -164,16 +164,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 355778 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
 		timerDualbladeScytheCD:Start(self:IsMythic() and 20.1 or 24.2, self.vb.weaponCount+1)
-	elseif spellId == 348456 then
-		DBM:Debug("Traps added to combat log")
 	elseif spellId == 355504 then
 		self.vb.ChainsIcon = 1
 		self.vb.chainCount = self.vb.chainCount + 1
 		--They apply custom rule to only heroic in phase 2 and 3
 		local timer = (not self:IsMythic() and self.vb.phase > 1 and 48.5) or 40.1
 		timerShadowsteelChainsCD:Start(timer, self.vb.chainCount+1)
-	elseif spellId == 355534 then--Shadowsteel Ember
-		DBM:Debug("Embers added to combat log")
 	end
 end
 
