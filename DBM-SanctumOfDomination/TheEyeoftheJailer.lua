@@ -365,7 +365,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.deathlinkCount = 0
 			self.vb.abductorCount = 0
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
-			warnPhase:Play("pone")
+--			warnPhase:Play("pone")
 			--Eye of the Jailer
 			timerTitanticDeathGazeCD:Stop()
 			timerDesolationBeamCD:Stop()
