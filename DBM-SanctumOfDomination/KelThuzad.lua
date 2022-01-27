@@ -107,9 +107,9 @@ mod:AddSetIconOption("SetIconOnReaper", "ej23423", true, true, {6, 7, 8})--Share
 mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})--5 shards mythic (shares icons with reaper but rarely at same time)
 mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 mod:AddNamePlateOption("NPAuraOnFixate", 355389)
---mod:GroupSpells(353808, "ej23449")--Spikes combined with wrath, spikes are after effect of wrath expiring
---mod:GroupSpells(355389, 355389)--Corpse detonation and associate fixate debuff
---mod:GroupSpells(348071, "ej23224")--Soul Fracture, as well as shards spawned by it
+mod:GroupSpells(353808, "ej23449")--Spikes combined with wrath, spikes are after effect of wrath expiring
+mod:GroupSpells(355389, 355389)--Corpse detonation and associate fixate debuff
+mod:GroupSpells(348071, "ej23224")--Soul Fracture, as well as shards spawned by it
 
 mod.vb.echoIcon = 1
 mod.vb.wrathIcon = 1

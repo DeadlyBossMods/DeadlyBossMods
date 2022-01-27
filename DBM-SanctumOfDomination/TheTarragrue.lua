@@ -68,8 +68,8 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 347283)
 mod:AddSetIconOption("SetIconOnChains", 347269, true, false, {1})
---mod:GroupSpells(352368, 352382, 352389, 352398, "warnRemnant")--Parent torment cast, 3 torment types activating, bool for the 3 remannt type ticks
---mod:GroupSpells(346985, 346986)--Tank cast, tank debuff
+mod:GroupSpells(352368, 352382, 352389, 352398, "warnRemnant")--Parent torment cast, 3 torment types activating, bool for the 3 remannt type ticks
+mod:GroupSpells(346985, 346986)--Tank cast, tank debuff
 
 mod.vb.graspCount = 0
 mod.vb.mistCount = 0
