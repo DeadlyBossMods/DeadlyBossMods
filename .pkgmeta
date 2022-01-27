@@ -23,7 +23,7 @@ ignore:
   - DBM-Shadowlands/Libs/LibDeflate/changelog.md
   - DBM-Shadowlands/Libs/LibStub/tests
   - DBM-Shadowlands/Libs/LibDataBroker-1.1/README.textile
-  - DBM-Shadowlands/DBM-VPVEM/README.md
+  - DBM-VPVEM/README.md
 
 enable-nolib-creation: no
 
