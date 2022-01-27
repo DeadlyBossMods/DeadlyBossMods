@@ -40,4 +40,4 @@ move-folders:
   DBM-Shadowlands/DBM-GUI: DBM-GUI
   DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Shadowlands/Libs: DBM-Core/Libs
-  DBM-Shadowlands/DBM-VPVEM: DBM-VPVEM
+  DBM-Shadowlands/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
