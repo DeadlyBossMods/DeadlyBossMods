@@ -34,7 +34,6 @@ Older content is split into multiple addons to reduce mod update size. These are
 * [Countpack HoTS](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-heroes-of-the-storm-hots)
 
 ## Voice Packs
-* [Voicepack VEM (English TTS Female)](https://curseforge.com/wow/addons/dbm-voicepack-vem)
 * [Voicepack Yike (Chinese TTS Female)](https://curseforge.com/wow/addons/dbm-voicepack-yike)
 * [Voicepack German (German Male)](http://curseforge.com/wow/addons/dbm-voicepack-german)
 * [Voicepack Mununyu (Korean Recorded Female)](https://www.curseforge.com/wow/addons/dbm-voicepack-mununyu)
@@ -63,7 +62,7 @@ Right click on DBM itself in addon client list and set to preferred release type
 * Special effects like the screen flash effect, huge warning messages and sounds will draw your attention to critical events with as much customizing of those flashes and sounds as possible to make them effective to your needs.
 * Support for SharedMedia, so you can use any texture for your bars and choose sounds from external sources more easily.
 * Best possible support for PTR/Beta encounter testing. DBM is only mod to provide cutting edge auto learning timers right in middle of your testing so you know what's coming and when, before anyone has ever even seen the fight before.
-* Support for [voice packs](https://curseforge.com/wow/addons/dbm-voicepack-vem) in many different supported languages. Every mod puts careful thought into what the best voice for an alert is that clearly and concisely advices action based on warning. No generic spell name TTS here. DBM voice packs will say something meaningful and not just make more noise for you to ignore.
+* Support for [voice packs](https://curseforge.com/wow/addons/dbm-voicepack-demo) in many different supported languages. Every mod puts careful thought into what the best voice for an alert is that clearly and concisely advices action based on warning. No generic spell name TTS here. DBM voice packs will say something meaningful and not just make more noise for you to ignore.
 * Any feature that makes sense to do so has good callbacks that WAs authors can use for best possible [WeakAuras](https://www.wowace.com/projects/weakauras-2) integration.
 
 ## Slash Commands

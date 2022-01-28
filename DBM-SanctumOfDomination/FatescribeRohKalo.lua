@@ -518,7 +518,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				--timerDespairCD:Start(0, 1, unitGUID)
 				if not GetRaidTargetIndex(unitID) then--Not already marked
 					if self.Options.SetIconOnMonstrosity then
-						SetRaidTarget(unitID, self.vb.addIcon)
+						self:SetIcon(unitID, self.vb.addIcon)
 					end
 					self.vb.addIcon = self.vb.addIcon - 1
 				end
