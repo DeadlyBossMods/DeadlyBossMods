@@ -12,6 +12,7 @@ externals:
   DBM-Shadowlands/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
   DBM-Shadowlands/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
   DBM-Shadowlands/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
+  DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
   - DBM-Shadowlands/Libs/LibDeflate/docs
@@ -22,6 +23,7 @@ ignore:
   - DBM-Shadowlands/Libs/LibDeflate/changelog.md
   - DBM-Shadowlands/Libs/LibStub/tests
   - DBM-Shadowlands/Libs/LibDataBroker-1.1/README.textile
+  - DBM-VPVEM/README.md
 
 enable-nolib-creation: no
 
@@ -38,3 +40,4 @@ move-folders:
   DBM-Shadowlands/DBM-GUI: DBM-GUI
   DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Shadowlands/Libs: DBM-Core/Libs
+  DBM-Shadowlands/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM

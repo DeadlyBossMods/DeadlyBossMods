@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 346985 347283 347668 347679 350280 347490",
-	"SPELL_CAST_SUCCESS 352368 352382 352389 352398",
+	"SPELL_CAST_SUCCESS 352368 352382 352389 352398 354080",
 	"SPELL_AURA_APPLIED 346986 347269 347283 347490 347369 347274 352384 352387 352392",
 	"SPELL_AURA_APPLIED_DOSE 352384 352387 352392"
 --	"SPELL_AURA_REMOVED2"
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, change chains to a "moveTo" warning?
 --[[
 (ability.id = 346985 or ability.id = 347283 or ability.id = 347668 or ability.id = 350280 or ability.id = 347490 or ability.id = 347679) and type = "begincast"
- or (ability.id = 352368 or ability.id = 352382 or ability.id = 352389 or ability.id = 352398) and type = "cast"
+ or (ability.id = 352368 or ability.id = 352382 or ability.id = 352389 or ability.id = 352398 or ability.id = 354080) and type = "cast"
 --]]
 local warnChainsofEternity							= mod:NewTargetNoFilterAnnounce(347269, 2)
 local warnAnnihilatingSmash							= mod:NewTargetAnnounce(347274, 4)
@@ -36,7 +36,7 @@ local warnUpperReachesMight							= mod:NewSpellAnnounce(352382, 2)--When it's h
 local warnMortregarsEchoes							= mod:NewSpellAnnounce(352389, 2)--When it's happening
 local warnSoulforgeHeat								= mod:NewSpellAnnounce(352398, 2)--When it's happening
 local warnTheJailersGaze							= mod:NewTargetNoFilterAnnounce(347369, 4)
-mod:AddBoolOption("warnRemnant", false, "announce")--3 options are combined into 1
+mod:AddBoolOption("warnRemnant", false, "announce")--3 options are combined into 1, so they don't need bundling
 local warnRemantPhysical							= mod:NewCountAnnounce(352384, 2, nil, nil, false)--Physical
 local warnRemantShadow								= mod:NewCountAnnounce(352387, 2, nil, nil, false)--Shadow
 local warnRemnantFire								= mod:NewCountAnnounce(352392, 2, nil, nil, false)--Fire
@@ -59,6 +59,7 @@ local timerOverpowerCD								= mod:NewCDCountTimer(27.1, 346985, nil, "Tank|Hea
 local timerChainsofEternityCD						= mod:NewCDCountTimer(27.1, 347269, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerHungeringMistCD							= mod:NewNextCountTimer(92.4, 347679, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerHungeringMist							= mod:NewCastCountTimer(4.8, 347679, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerGraspofDeathCD							= mod:NewCDCountTimer(26.7, 347668, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerFuryoftheAgesCD							= mod:NewCDCountTimer(36.4, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
@@ -67,9 +68,12 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 347283)
 mod:AddSetIconOption("SetIconOnChains", 347269, true, false, {1})
+mod:GroupSpells(352368, 352382, 352389, 352398, "warnRemnant")--Parent torment cast, 3 torment types activating, bool for the 3 remannt type ticks
+mod:GroupSpells(346985, 346986)--Tank cast, tank debuff
 
 mod.vb.graspCount = 0
 mod.vb.mistCount = 0
+mod.vb.mistsubCount = 0
 mod.vb.remnantcount = 0
 mod.vb.howlcount = 0
 mod.vb.chainsCount = 0
@@ -80,6 +84,7 @@ function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.graspCount = 0
 	self.vb.mistCount = 0
+	self.vb.mistsubCount = 0
 	self.vb.remnantcount = 0
 	self.vb.howlcount = 0
 	self.vb.chainsCount = 0
@@ -150,6 +155,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 347679 and self:AntiSpam(3, 1) then
 		self.vb.mistCount = self.vb.mistCount + 1
+		self.vb.mistsubCount = 0
 		specWarnHungeringMist:Show()
 		specWarnHungeringMist:Play("watchstep")
 		--Start timers for after
@@ -181,6 +187,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif spellId == 352398 then
 			warnSoulforgeHeat:Show(self.vb.remnantcount)
 		end
+	elseif spellId == 354080 then
+		self.vb.mistsubCount = self.vb.mistsubCount + 1
+		timerHungeringMist:Start(4.9, self.vb.mistsubCount)
 	end
 end
 

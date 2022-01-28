@@ -61,6 +61,7 @@ mod:AddRangeFrameOption(10, 350496)
 mod:AddInfoFrameOption(352394, true)
 mod:AddSetIconOption("SetIconOnThreat", 350496, true, false, {1, 2, 3})
 mod:AddDropdownOption("IconBehavior", {"TypeOne", "TypeTwo"}, "TypeOne", "misc")--TypeTwo is BW default
+mod:GroupSpells(350732, 350735)
 
 mod.vb.timerMode = 0
 mod.vb.coreActive = false

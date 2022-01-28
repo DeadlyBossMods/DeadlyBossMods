@@ -397,7 +397,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 365428 then
 		specWarnCartelPlunderers:Show()
-		specWarnCartelPlunderers:Play("killadd")
+		specWarnCartelPlunderers:Play("killmob")
 		--timerCartelPlunderersCD:Start()
 	end
 end
