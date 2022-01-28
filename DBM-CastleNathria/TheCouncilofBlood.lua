@@ -1005,7 +1005,7 @@ function mod:NAME_PLATE_UNIT_ADDED(unit)
 		local cid = self:GetCIDFromGUID(guid)
 		if cid == 176026 then
 			if not GetRaidTargetIndex(unit) then
-				SetRaidTarget(unit, 8)
+				self:SetIcon(unit, 8)
 			end
 			self:UnregisterShortTermEvents()
 		end

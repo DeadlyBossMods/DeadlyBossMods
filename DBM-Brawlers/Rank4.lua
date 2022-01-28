@@ -79,7 +79,7 @@ end
 
 function mod:PLAYER_TARGET_CHANGED()
 	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID and GetRaidTargetIndex("target") ~= 8 then
-		SetRaidTarget("target", 8)
+		self:SetIcon("target", 8)
 	end
 end
 --]]
