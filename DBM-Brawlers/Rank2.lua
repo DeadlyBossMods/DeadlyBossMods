@@ -78,7 +78,7 @@ end
 --]]
 
 function mod:PLAYER_TARGET_CHANGED()
-	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID and GetRaidTargetIndex("target") ~= 8 then
+	if self.Options.SetIconOnBlat and UnitGUID("target") == blatGUID and GetRaidTargetIndex("target") ~= 8 then
 		self:SetIcon("target", 8)
 	end
 end
