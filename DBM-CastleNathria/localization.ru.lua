@@ -63,7 +63,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2425)
 
 L:SetOptionLocalization({
-	ExperimentalTimerCorrection	= "Автоматически настраивать таймеры, когда способности попадают в очередь заклинаний из-за других способностей"
+	ExperimentalTimerCorrection	= "Автоматически настраивать таймеры, когда способности попадают в очередь заклинаний из-за других способностей",
+	BladeMarking				= "Set marking behavior for raid (If raid leader, overrides raid)",
+	SetOne						= "DBM по умолчанию",
+	SetTwo						= "BigWigs по умолчанию"
+})
+
+L:SetMiscLocalization({
+	DBMConfigMsg		= "Marking icons configuration set to %s to match raid leaders configuration."
 })
 
 ---------------------------
