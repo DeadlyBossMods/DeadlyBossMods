@@ -168,15 +168,15 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization{
 	WarnEmerge				= "Ануб'арак появляется",
 	WarnEmergeSoon			= "Появится в течение 10 секунд",
-	WarnSubmerge			= "Ануб'арак погружается",
-	WarnSubmergeSoon		= "Погрузится в течение 10 секунд",
+	WarnSubmerge			= "Ануб'арак закапывается",
+	WarnSubmergeSoon		= "Закопается в течение 10 секунд",
 	WarningTeleportNow		= "Телепортирован",
 	WarningTeleportSoon		= "Телепортация в течение 10 секунд"
 }
 
 L:SetTimerLocalization{
-	TimerEmerge				= "Появиться",
-	TimerSubmerge			= "Погружение",
+	TimerEmerge				= "Появление",
+	TimerSubmerge			= "Закапывание",
 	TimerTeleport			= "Телепортация"
 }
 
@@ -188,10 +188,10 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnEmerge				= "Показать предупреждение о появлении",
 	WarnEmergeSoon			= "Показать предварительное предупреждение о появлении",
-	WarnSubmerge			= "Показать предупреждение о погружении",
-	WarnSubmergeSoon		= "Показать предварительное предупреждение о погружении",
+	WarnSubmerge			= "Показать предупреждение о закапывании",
+	WarnSubmergeSoon		= "Показать предварительное предупреждение о закапывании",
 	TimerEmerge				= "Показать таймер для появления",
-	TimerSubmerge			= "Показать таймер для погружения",
+	TimerSubmerge			= "Показать таймер для закапывания",
 	WarningTeleportNow		= "Показать предупреждение для телепортации",
 	WarningTeleportSoon		= "Показать предварительное предупреждение для телепортации",
 	TimerTeleport			= "Показать таймер для телепортации"
