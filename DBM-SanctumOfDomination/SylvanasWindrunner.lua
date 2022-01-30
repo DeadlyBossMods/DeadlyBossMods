@@ -42,8 +42,20 @@ mod:RegisterEventsInCombat(
 local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(23057), DBM:EJ_GetSectionInfo(22891), DBM:EJ_GetSectionInfo(23067), DBM:EJ_GetSectionInfo(22890)
 --General
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+
+--local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+
+--local berserkTimer								= mod:NewBerserkTimer(600)
+
+--mod:AddRangeFrameOption("8")
+mod:AddInfoFrameOption(347807, true)--Also used for 353929
+
 --Stage One: A Cycle of Hatred
 mod:AddOptionLine(P1Info, "announce")
+mod:AddOptionLine(P1Info, "specialannounce")
+mod:AddOptionLine(P1Info, "yell")
+mod:AddTimerLine(P1Info)
+mod:AddIconLine(P1Info)
 local warnWindrunnerOver							= mod:NewEndAnnounce(347504, 2)
 local warnShadowDagger								= mod:NewTargetNoFilterAnnounce(353935, 2, nil, "Healer")
 local warnDominationChains							= mod:NewTargetAnnounce(349419, 2, nil, nil, 298213)--Could be spammy, unknown behavior
@@ -51,35 +63,7 @@ local warnWailingArrow								= mod:NewTargetCountAnnounce(348064, 4, nil, nil, 
 local warnRangersHeartseeker						= mod:NewCountAnnounce(352663, 2, nil, "Tank")
 local warnBansheesMark								= mod:NewStackAnnounce(347607, 2, nil, "Tank|Healer")
 local warnBlackArrow								= mod:NewTargetCountAnnounce(358705, 4, nil, nil, 208407, nil, nil, nil, true)
---Intermission: A Monument to our Suffering
-mod:AddOptionLine(P15Info, "announce")
-local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by default depending on feedback
---Stage Two: The Banshee Queen
-mod:AddOptionLine(P2Info, "announce")
-local warnIceBridge									= mod:NewCountAnnounce(348148, 2)
-local warnEarthBridge								= mod:NewCountAnnounce(348093, 2)
-local warnWindsofIcecrown							= mod:NewTargetCountAnnounce(356986, 1, nil, nil, nil, nil, nil, nil, true)
-local warnPortal									= mod:NewCastAnnounce(357102, 1)
-----Forces of the Maw
-local warnUnstoppableForce							= mod:NewCountAnnounce(351075, 2)--Mawsworn Vanguard
-local warnLashingStrike								= mod:NewTargetNoFilterAnnounce(351178, 3)--Mawforged Souljudge
-local warnCrushingDread								= mod:NewTargetAnnounce(351117, 2)--Mawforged Souljudge
-local warnSummonDecrepitOrbs						= mod:NewCountAnnounce(351353, 2)--Mawforged Summoner
-local warnCurseofLthargy							= mod:NewTargetAnnounce(351451, 2)--Mawforged Summoner
-local warnExpulsion									= mod:NewTargetNoFilterAnnounce(351562, 4)
---Stage Three: The Freedom of Choice
-mod:AddOptionLine(P3Info, "announce")
-local warnBansheesHeartseeker						= mod:NewCountAnnounce(353969, 2, nil, "Tank")
-local warnBansheesBane								= mod:NewTargetNoFilterAnnounce(353929, 4)
-local warnBansheesScream							= mod:NewTargetNoFilterAnnounce(357720, 3)
-local warnBansheesBlades							= mod:NewCountAnnounce(358181, 4, nil, "Tank")
-local warnDeathKnives								= mod:NewTargetNoFilterAnnounce(358434, 3)
-local warnMerciless									= mod:NewCountAnnounce(358588, 2)
 
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
---Stage One: A Cycle of Hatred
-mod:AddOptionLine(P1Info, "specialannounce")
-mod:AddOptionLine(P1Info, "yell")
 local specWarnWindrunner							= mod:NewSpecialWarningCount(347504, nil, nil, nil, 2, 2)
 local specWarnShadowDagger							= mod:NewSpecialWarningYou(353935, false, nil, nil, 1, 2)
 local specWarnDominationChains						= mod:NewSpecialWarningCount(349419, nil, 298213, nil, 2, 2)
@@ -93,12 +77,48 @@ local yellBlackArrow								= mod:NewShortPosYell(358705, 208407)
 local yellBlackArrowFades							= mod:NewIconFadesYell(358705, 208407)
 local specWarnBlackArrowTaunt						= mod:NewSpecialWarningTaunt(358705, nil, 208407, nil, 1, 2)
 local specWarnRage									= mod:NewSpecialWarningRun(358711, nil, nil, nil, 4, 2)
+
+local timerWindrunnerCD								= mod:NewCDCountTimer(50.3, 347504, nil, nil, nil, 6, nil, nil, nil, 1, 3)
+local timerDominationChainsCD						= mod:NewCDCountTimer(50.7, 349419, 298213, nil, nil, 3)--Shortname Chains
+local timerVeilofDarknessCD							= mod:NewCDCountTimer(48.8, 347704, 209426, nil, nil, 3)--Shortname Darkness
+local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, 208407, nil, 2, 3)--Shortname Arrow
+local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, 208407, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
+local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358705, 208407, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerBlackArrow								= mod:NewTargetCountTimer(9, 358705, 208407, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddSetIconOption("SetIconOnWailingArrow", 348064, true, false, {1, 2, 3})--Applies to both reg and mythic version
+mod:AddNamePlateOption("NPAuraOnRage", 358711)--Dark Sentinel
+
 --Intermission: A Monument to our Suffering
+mod:AddOptionLine(P15Info, "announce")
 mod:AddOptionLine(P15Info, "specialannounce")
+mod:AddTimerLine(P15Info)
+local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by default depending on feedback
+
 local specWarnBansheeWail							= mod:NewSpecialWarningMoveAwayCount(348094, nil, nil, nil, 2, 2)
+
+local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
+local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
+
 --Stage Two: The Banshee Queen
+mod:AddOptionLine(P2Info, "announce")
 mod:AddOptionLine(P2Info, "specialannounce")
 mod:AddOptionLine(P2Info, "yell")
+mod:AddTimerLine(P2Info)
+mod:AddIconLine(P2Info)
+local warnIceBridge									= mod:NewCountAnnounce(348148, 2)
+local warnEarthBridge								= mod:NewCountAnnounce(348093, 2)
+local warnWindsofIcecrown							= mod:NewTargetCountAnnounce(356986, 1, nil, nil, nil, nil, nil, nil, true)
+local warnPortal									= mod:NewCastAnnounce(357102, 1)
+----Forces of the Maw
+local warnUnstoppableForce							= mod:NewCountAnnounce(351075, 2)--Mawsworn Vanguard
+local warnLashingStrike								= mod:NewTargetNoFilterAnnounce(351178, 3)--Mawforged Souljudge
+local warnCrushingDread								= mod:NewTargetAnnounce(351117, 2)--Mawforged Souljudge
+local warnSummonDecrepitOrbs						= mod:NewCountAnnounce(351353, 2)--Mawforged Summoner
+local warnCurseofLthargy							= mod:NewTargetAnnounce(351451, 2)--Mawforged Summoner
+local warnExpulsion									= mod:NewTargetNoFilterAnnounce(351562, 4)
+
 local specWarnHauntingWave							= mod:NewSpecialWarningDodgeCount(352271, nil, nil, nil, 2, 2)
 local specWarnRuin									= mod:NewSpecialWarningInterruptCount(355540, nil, nil, nil, 3, 2)
 ----Forces of the Maw
@@ -117,37 +137,7 @@ local specWarnExpulsion								= mod:NewSpecialWarningYouPos(351562, nil, nil, n
 local yellExpulsion									= mod:NewShortPosYell(351562)
 local yellExpulsionFades							= mod:NewIconFadesYell(351562)
 local specWarnExpulsionTarget						= mod:NewSpecialWarningTarget(351562, false, nil, nil, 1, 2, 4)
---Stage Three: The Freedom of Choice
-mod:AddOptionLine(P3Info, "specialannounce")
-mod:AddOptionLine(P3Info, "yell")
-local specWarnBansheesBane							= mod:NewSpecialWarningStack(353929, nil, 1, nil, nil, 1, 6)
-local specWarnBansheesBaneDispel					= mod:NewSpecialWarningDispel(353929, "RemoveMagic", nil, nil, 3, 2)--Dispel alert during Fury
-local specWarnBansheeScream							= mod:NewSpecialWarningYou(357720, nil, 31295, nil, 1, 2)
-local yellBansheeScream								= mod:NewYell(357720, 31295)
-local specWarnRaze									= mod:NewSpecialWarningRun(354147, nil, nil, nil, 4, 2)
-local specWarnDeathKnives							= mod:NewSpecialWarningMoveAway(358434, nil, nil, nil, 1, 2, 4)--Mythic
-local yellDeathKnives								= mod:NewShortPosYell(358434)
-local yellDeathKnivesFades							= mod:NewIconFadesYell(358434)
-local specWarnMerciless								= mod:NewSpecialWarningSoakCount(358588, false, nil, nil, 2, 2, 4)--Mythic (opt in to upgrade to special waring)
 
---General
---local berserkTimer								= mod:NewBerserkTimer(600)
---Stage One: A Cycle of Hatred
-mod:AddTimerLine(P1Info)
-local timerWindrunnerCD								= mod:NewCDCountTimer(50.3, 347504, nil, nil, nil, 6, nil, nil, nil, 1, 3)
-local timerDominationChainsCD						= mod:NewCDCountTimer(50.7, 349419, 298213, nil, nil, 3)--Shortname Chains
-local timerVeilofDarknessCD							= mod:NewCDCountTimer(48.8, 347704, 209426, nil, nil, 3)--Shortname Darkness
-local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, 208407, nil, 2, 3)--Shortname Arrow
-local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, 208407, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
-local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358705, 208407, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerBlackArrow								= mod:NewTargetCountTimer(9, 358705, 208407, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
---Intermission: A Monument to our Suffering
-mod:AddTimerLine(P15Info)
-local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
-local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
---Stage Two: The Banshee Queen
-mod:AddTimerLine(P2Info)
 local timerChannelIce								= mod:NewCastTimer(5, 352843, nil, nil, nil, 6)
 local timerCallEarth								= mod:NewCastTimer(5, 352842, nil, nil, nil, 6)
 --local timerChannelIceCD							= mod:NewCDCountTimer(48.8, 348148, nil, nil, nil, 6)
@@ -162,8 +152,33 @@ local timerPortal									= mod:NewCastTimer(10, 357102, nil, nil, nil, 6)
 local timerDecrepitOrbsCD							= mod:NewCDTimer(16, 351353, nil, nil, nil, 1)
 local timerFilthCD									= mod:NewCDTimer(13.1, 351589, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.TANK_ICON)
 local timerExpulsionCD								= mod:NewCDTimer(15.8, 351562, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddSetIconOption("SetIconOnExpulsion", 351562, true, true, {1, 2, 3})
+mod:AddNamePlateOption("NPAuraOnEnflame", 351109)--Mawsworn Hopebreaker
+
 --Stage Three: The Freedom of Choice
+mod:AddOptionLine(P3Info, "announce")
+mod:AddOptionLine(P3Info, "specialannounce")
+mod:AddOptionLine(P3Info, "yell")
 mod:AddTimerLine(P3Info)
+mod:AddIconLine(P3Info)
+local warnBansheesHeartseeker						= mod:NewCountAnnounce(353969, 2, nil, "Tank")
+local warnBansheesBane								= mod:NewTargetNoFilterAnnounce(353929, 4)
+local warnBansheesScream							= mod:NewTargetNoFilterAnnounce(357720, 3)
+local warnBansheesBlades							= mod:NewCountAnnounce(358181, 4, nil, "Tank")
+local warnDeathKnives								= mod:NewTargetNoFilterAnnounce(358434, 3)
+local warnMerciless									= mod:NewCountAnnounce(358588, 2)
+
+local specWarnBansheesBane							= mod:NewSpecialWarningStack(353929, nil, 1, nil, nil, 1, 6)
+local specWarnBansheesBaneDispel					= mod:NewSpecialWarningDispel(353929, "RemoveMagic", nil, nil, 3, 2)--Dispel alert during Fury
+local specWarnBansheeScream							= mod:NewSpecialWarningYou(357720, nil, 31295, nil, 1, 2)
+local yellBansheeScream								= mod:NewYell(357720, 31295)
+local specWarnRaze									= mod:NewSpecialWarningRun(354147, nil, nil, nil, 4, 2)
+local specWarnDeathKnives							= mod:NewSpecialWarningMoveAway(358434, nil, nil, nil, 1, 2, 4)--Mythic
+local yellDeathKnives								= mod:NewShortPosYell(358434)
+local yellDeathKnivesFades							= mod:NewIconFadesYell(358434)
+local specWarnMerciless								= mod:NewSpecialWarningSoakCount(358588, false, nil, nil, 2, 2, 4)--Mythic (opt in to upgrade to special waring)
+
 local timerBansheesHeartseekerCD					= mod:NewCDCountTimer(33.9, 353969, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerShadowDaggerCD							= mod:NewCDCountTimer(23, 353935, nil, nil, nil, 3)--Only used in phase 3, in phase 1 it's tied to windrunner
 local timerBaneArrowsCD								= mod:NewCDCountTimer(23, 354011, 208407, nil, nil, 3)
@@ -175,21 +190,7 @@ local timerDeathKnivesCD							= mod:NewCDCountTimer(33.9, 358434, nil, nil, nil
 local timerDeathKnives								= mod:NewBuffFadesTimer(9, 358434, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, 2, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 
---mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(347807, true)--Also used for 353929
---Stage 1
-mod:AddIconLine(P1Info)
-mod:AddSetIconOption("SetIconOnWailingArrow", 348064, true, false, {1, 2, 3})--Applies to both reg and mythic version
---Stage 2
-mod:AddIconLine(P2Info)
-mod:AddSetIconOption("SetIconOnExpulsion", 351562, true, true, {1, 2, 3})
---Stage 3
-mod:AddIconLine(P3Info)
 mod:AddSetIconOption("SetIconOnDeathKnives2", 358434, false, false, {1, 2, 3})--Conflicts with arrow, which will be more logical choice. might delete this
---Stage 1
-mod:AddNamePlateOption("NPAuraOnRage", 358711)--Dark Sentinel
---Stage 2
-mod:AddNamePlateOption("NPAuraOnEnflame", 351109)--Mawsworn Hopebreaker
 
 --P1+ variable
 mod.vb.arrowIcon = 1

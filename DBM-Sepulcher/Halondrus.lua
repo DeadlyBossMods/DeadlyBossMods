@@ -54,6 +54,7 @@ local yellOmegaGlyphs							= mod:NewIconRepeatYell(368346)
 local specWarnReclaim							= mod:NewSpecialWarningCount(360115, nil, nil, nil, 1, 2)
 local specWarnSeismicCharge						= mod:NewSpecialWarningMoveAway(368669, nil, nil, nil, 1, 2)
 local yellSeismicCharge							= mod:NewShortYell(368669)
+local yellSeismicChargeFades					= mod:NewShortFadesYell(368669)
 --local specWarnMeltdown							= mod:NewSpecialWarningSpell(363408, nil, nil, nil, 3, 2)
 local specWarnSubterraneanScan					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--Opt in, for someone that might be a soaker
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
@@ -387,6 +388,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSeismicCharge:Show()
 			specWarnSeismicCharge:Play("runout")
 			yellSeismicCharge:Yell()
+			yellSeismicChargeFades:Countdown(spellId)
 		end
 		if self.Options.SetIconOnSeismicCharge then
 			self:SetIcon(args.destName, self.vb.seismicIcon)
@@ -400,6 +402,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if (spellId == 368347 or spellId == 368348 or spellId == 368349) and args:IsPlayer() then
 		self:Unschedule(OmegaYellRepeater)
+	elseif spellId == 368669 then
+		if args:IsPlayer() then
+			yellSeismicChargeFades:Cancel()
+		end
+		if self.Options.SetIconOnSeismicCharge then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
