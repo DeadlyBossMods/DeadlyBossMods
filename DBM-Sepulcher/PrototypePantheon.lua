@@ -40,89 +40,33 @@ mod:RegisterEventsInCombat(
 local ProtoWar, ProtoDuty, ProtoRenewl, ProtoAbsolution = DBM:EJ_GetSectionInfo(24125), DBM:EJ_GetSectionInfo(24130), DBM:EJ_GetSectionInfo(24135), DBM:EJ_GetSectionInfo(24139)
 --General
 local warnCompleteRecon							= mod:NewCastAnnounce(366062, 4)
---Stage One: War and Duty
-----Prototype of War
-mod:AddOptionLine(ProtoWar, "announce")
-local warnRunecarversDeathtouch					= mod:NewTargetNoFilterAnnounce(360687, 3)
-----Prototype of Duty
-mod:AddOptionLine(ProtoDuty, "announce")
-local warnAscensionsCall						= mod:NewCountAnnounce(361066, 2)
-local warnBastionsWard							= mod:NewCastAnnounce(360845, 1)
-local warnPinned								= mod:NewTargetNoFilterAnnounce(362352, 4)
---Stage Two: Sin and Seed
-----Prototype of Absolution
-local warnNightHunter							= mod:NewTargetNoFilterAnnounce(361745, 3)
 
---Stage One: War and Duty
-----Prototype of War
-mod:AddOptionLine(ProtoWar, "specialannounce")
-mod:AddOptionLine(ProtoWar, "yell")
-local specWarnNecroticRitual					= mod:NewSpecialWarningSwitchCount(360295, "-Healer", nil, nil, 1, 2)
-local specWarnDeathtouch						= mod:NewSpecialWarningMoveAway(360687, nil, nil, nil, 1, 2)
-local yellDeathtouch							= mod:NewShortPosYell(360687)
-----Prototype of Duty
-mod:AddOptionLine(ProtoDuty, "specialannounce")
-mod:AddOptionLine(ProtoDuty, "yell")
-local specWarnHumblingStrikes					= mod:NewSpecialWarningDefensive(365272, nil, nil, nil, 1, 2)
-local specWarnHumblingStrikesTaunt				= mod:NewSpecialWarningTaunt(365269, nil, nil, nil, 1, 2)
-local specWarnPinningVolley						= mod:NewSpecialWarningDodgeCount(361278, nil, nil, nil, 2, 2)--Is it dodgeable?
-local yellPinned								= mod:NewShortYell(362352)
---Stage Two: Sin and Seed
-----Prototype of Renewal
-mod:AddOptionLine(ProtoRenewl, "specialannounce")
---mod:AddOptionLine(ProtoRenewl, "yell")
-local specWarnAnimabolt							= mod:NewSpecialWarningInterrupt(362383, false, nil, nil, 1, 2)--Kinda spammed, opt in, not opt out
-local specWarnWildStampede						= mod:NewSpecialWarningDodgeCount(361304, nil, nil, nil, 2, 2)
-local specWarnAnimastorm						= mod:NewSpecialWarningMoveTo(362132, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
-----Prototype of Absolution
-mod:AddOptionLine(ProtoAbsolution, "specialannounce")
---mod:AddOptionLine(ProtoRenewl, "yell")
-local specWarnSinfulProjection					= mod:NewSpecialWarningMoveAway(364839, nil, nil, nil, 2, 2)--Sound 2 because everyone gets it
-local specWarnWrackingPain						= mod:NewSpecialWarningCount(365126, nil, nil, nil, 1, 2)--Change to moveto?
-local specWarnHandofDestruction					= mod:NewSpecialWarningRun(361789, nil, nil, nil, 4, 2)
-local specWarnNightHunter						= mod:NewSpecialWarningYou(361745, nil, nil, nil, 1, 2, 4)--Nont moveto, because it's kind of RLs perogative to prioritize seeds or ritualists if both up, don't want to make that call
-local yellNightHunter							= mod:NewShortPosYell(361745)
-local yellNightHunterFades						= mod:NewIconFadesYell(361745)
-
---mod:AddTimerLine(BOSS)
 
 local timerCompleteRecon						= mod:NewCastTimer(20, 366062, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
---Stage One: War and Duty
-----Prototype of War
-mod:AddTimerLine(ProtoWar)
-local timerNecroticRitualCD						= mod:NewCDCountTimer(71.4, 360295, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerRunecarversDeathtouchCD				= mod:NewCDCountTimer(57.1, 360687, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-----Prototype of Duty
-mod:AddTimerLine(ProtoDuty)
-local timerHumblingStrikesCD					= mod:NewCDCountTimer(35.7, 365272, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerAscensionsCallCD						= mod:NewCDCountTimer(57.1, 365272, nil, nil, nil, 1)
-local timerPinningVolleyCD						= mod:NewCDCountTimer(64.1, 361278, nil, nil, nil, 3)
---Stage Two: Sin and Seed
-----Prototype of Renewal
-mod:AddTimerLine(ProtoRenewl)
-local timerWildStampedeCD						= mod:NewCDCountTimer(28.8, 361304, nil, nil, nil, 3)
-local timerWitheringSeedCD						= mod:NewCDCountTimer(96.2, 361568, nil, "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
-local timerAnimastormCD							= mod:NewCDCountTimer(28.8, 366234, nil, nil, nil, 2)
-----Prototype of Absolution
-mod:AddTimerLine(ProtoAbsolution)
-local timerWrackingPainCD						= mod:NewCDCountTimer(44, 365126, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerHandofDestructionCD					= mod:NewCDCountTimer(56.2, 361789, nil, nil, nil, 2)--Also timer for sinful projections, the two mechanics are intertwined
-local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(360687, "Healer")
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
+
+----Prototype of War
+mod:AddOptionLine(ProtoWar, "announce")
+mod:AddOptionLine(ProtoWar, "specialannounce")
+mod:AddOptionLine(ProtoWar, "yell")
+mod:AddTimerLine(ProtoWar)
 mod:AddIconLine(ProtoWar)
+local warnRunecarversDeathtouch					= mod:NewTargetNoFilterAnnounce(360687, 3)
+
+local specWarnNecroticRitual					= mod:NewSpecialWarningSwitchCount(360295, "-Healer", nil, nil, 1, 2)
+local specWarnDeathtouch						= mod:NewSpecialWarningMoveAway(360687, nil, nil, nil, 1, 2)
+local yellDeathtouch							= mod:NewShortPosYell(360687)
+
+local timerNecroticRitualCD						= mod:NewCDCountTimer(71.4, 360295, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerRunecarversDeathtouchCD				= mod:NewCDCountTimer(57.1, 360687, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+
+mod:AddInfoFrameOption(360687, "Healer")
 mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {13, 14, 15, 16}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
 mod:AddSetIconOption("SetIconOnRitualist", 360333, true, true, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})--Conflict arg not passed because by default it won't, user has to introduce conflict via dropdown (and that has a warning)
-mod:AddIconLine(ProtoRenewl)
-mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4}, nil, true)
-mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
-mod:AddIconLine(ProtoAbsolution)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, nil, true)
 if DBM.Options.ExtendIcons then
 	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo", "SetThree"}, "SetOne", "misc")
 else
@@ -132,6 +76,61 @@ else
 		DBM:AddMsg(L.ExtendReset)
 	end
 end
+
+----Prototype of Duty
+mod:AddOptionLine(ProtoDuty, "announce")
+mod:AddOptionLine(ProtoDuty, "specialannounce")
+mod:AddOptionLine(ProtoDuty, "yell")
+mod:AddTimerLine(ProtoDuty)
+local warnAscensionsCall						= mod:NewCountAnnounce(361066, 2)
+local warnBastionsWard							= mod:NewCastAnnounce(360845, 1)
+local warnPinned								= mod:NewTargetNoFilterAnnounce(362352, 4)
+
+local specWarnHumblingStrikes					= mod:NewSpecialWarningDefensive(365272, nil, nil, nil, 1, 2)
+local specWarnHumblingStrikesTaunt				= mod:NewSpecialWarningTaunt(365269, nil, nil, nil, 1, 2)
+local specWarnPinningVolley						= mod:NewSpecialWarningDodgeCount(361278, nil, nil, nil, 2, 2)--Is it dodgeable?
+local yellPinned								= mod:NewShortYell(362352)
+
+local timerHumblingStrikesCD					= mod:NewCDCountTimer(35.7, 365272, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerAscensionsCallCD						= mod:NewCDCountTimer(57.1, 365272, nil, nil, nil, 1)
+local timerPinningVolleyCD						= mod:NewCDCountTimer(64.1, 361278, nil, nil, nil, 3)
+
+----Prototype of Renewal
+mod:AddOptionLine(ProtoRenewl, "specialannounce")
+--mod:AddOptionLine(ProtoRenewl, "yell")
+mod:AddTimerLine(ProtoRenewl)
+mod:AddIconLine(ProtoRenewl)
+local specWarnAnimabolt							= mod:NewSpecialWarningInterrupt(362383, false, nil, nil, 1, 2)--Kinda spammed, opt in, not opt out
+local specWarnWildStampede						= mod:NewSpecialWarningDodgeCount(361304, nil, nil, nil, 2, 2)
+local specWarnAnimastorm						= mod:NewSpecialWarningMoveTo(362132, nil, nil, nil, 2, 2)
+
+local timerWildStampedeCD						= mod:NewCDCountTimer(28.8, 361304, nil, nil, nil, 3)
+local timerWitheringSeedCD						= mod:NewCDCountTimer(96.2, 361568, nil, "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerAnimastormCD							= mod:NewCDCountTimer(28.8, 366234, nil, nil, nil, 2)
+
+mod:AddSetIconOption("SetIconOnSeed", 361566, true, true, {1, 2, 3, 4}, nil, true)
+mod:AddNamePlateOption("NPAuraOnWrackingPain", 361689, true)
+
+----Prototype of Absolution
+mod:AddOptionLine(ProtoAbsolution, "announce")
+mod:AddOptionLine(ProtoAbsolution, "specialannounce")
+mod:AddOptionLine(ProtoAbsolution, "yell")
+mod:AddTimerLine(ProtoAbsolution)
+mod:AddIconLine(ProtoAbsolution)
+local warnNightHunter							= mod:NewTargetNoFilterAnnounce(361745, 3)
+
+local specWarnSinfulProjection					= mod:NewSpecialWarningMoveAway(364839, nil, nil, nil, 2, 2)--Sound 2 because everyone gets it
+local specWarnWrackingPain						= mod:NewSpecialWarningCount(365126, nil, nil, nil, 1, 2)--Change to moveto?
+local specWarnHandofDestruction					= mod:NewSpecialWarningRun(361789, nil, nil, nil, 4, 2)
+local specWarnNightHunter						= mod:NewSpecialWarningYou(361745, nil, nil, nil, 1, 2, 4)--Nont moveto, because it's kind of RLs perogative to prioritize seeds or ritualists if both up, don't want to make that call
+local yellNightHunter							= mod:NewShortPosYell(361745)
+local yellNightHunterFades						= mod:NewIconFadesYell(361745)
+
+local timerWrackingPainCD						= mod:NewCDCountTimer(44, 365126, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerHandofDestructionCD					= mod:NewCDCountTimer(56.2, 361789, nil, nil, nil, 2)--Also timer for sinful projections, the two mechanics are intertwined
+local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, nil, true)
 
 local deathtouchTargets = {}
 local wardTargets = {}

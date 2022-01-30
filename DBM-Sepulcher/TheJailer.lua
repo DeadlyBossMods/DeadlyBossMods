@@ -42,30 +42,23 @@ mod:RegisterEventsInCombat(
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
 --TODO, stage 1.5 (intermission) seems to have been scrapped, at least from journal, confirm on live and if so finish deleting those events
 local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), nil, DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
+--General
+--local berserkTimer							= mod:NewBerserkTimer(600)
+
+mod:AddRangeFrameOption("6")
+--mod:AddInfoFrameOption(328897, true)
+
 --Stage One: Origin of Domination
 mod:AddOptionLine(P1Info, "announce")
+mod:AddOptionLine(P1Info, "specialannounce")
+mod:AddOptionLine(P1Info, "yell")
+mod:AddTimerLine(P1Info)
+mod:AddIconLine(P1Info)
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
 local warnChainsofOppression					= mod:NewTargetNoFilterAnnounce(362631, 3)
 local warnImprisonment							= mod:NewTargetCountAnnounce(363886, 4, nil, nil, nil, nil, nil, nil, true)
 local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, 3, nil, nil, nil, nil, nil, nil, true)
---Intermission: Machine of Origination
---mod:AddOptionLine(P15Info, "announce")
---local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
---Stage Two: Unholy Attunement
-mod:AddOptionLine(P2Info, "announce")
-local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
-local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
-local warnDecimator								= mod:NewTargetCountAnnounce(364942, 3, nil, nil, nil, nil, nil, nil, true)
---Stage Three: The Unmaking
-mod:AddOptionLine(P3Info, "announce")
-local warnRuneofDomination						= mod:NewTargetCountAnnounce(365150, 3, nil, nil, nil, nil, nil, nil, true)
-local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
-local warnChainsofAnguishLink					= mod:NewTargetNoFilterAnnounce(365222, 3)
-local warnDefile								= mod:NewTargetNoFilterAnnounce(365169, 4)
 
---Stage One: Origin of Domination
-mod:AddOptionLine(P1Info, "specialannounce")
-mod:AddOptionLine(P1Info, "yell")
 local specWarnUnrelentingDomination				= mod:NewSpecialWarningMoveTo(362028, nil, nil, nil, 1, 2)
 local specWarnChainsofOppression				= mod:NewSpecialWarningYou(362631, nil, nil, nil, 1, 2)
 local specWarnMartyrdom							= mod:NewSpecialWarningDefensive(363893, nil, nil, nil, 1, 2)
@@ -76,9 +69,36 @@ local specWarnTorment							= mod:NewSpecialWarningMoveAway(365436, nil, nil, ni
 local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, nil, nil, nil, 1, 2)
 local yellRuneofDamnation						= mod:NewShortPosYell(360281)
 local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
+
+local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, nil, 2)
+local timerChainsofOppressionCD					= mod:NewAITimer(28.8, 362631, nil, nil, nil, 3)
+local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerTormentCD							= mod:NewAITimer(28.8, 365436, nil, nil, nil, 2)
+local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360279, nil, nil, nil, 3)
+
+mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
+mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
+
+--Intermission: Machine of Origination
+--mod:AddOptionLine(P15Info, "announce")
+--mod:AddTimerLine(P15Info)
+--mod:AddIconLine(P15Info)
+--local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
+
+--local timerOblivion							= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
+
+--mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
+
 --Stage Two: Unholy Attunement
+mod:AddOptionLine(P2Info, "announce")
 mod:AddOptionLine(P2Info, "specialannounce")
 mod:AddOptionLine(P2Info, "yell")
+mod:AddTimerLine(P2Info)
+mod:AddIconLine(P2Info)
+local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
+local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
+local warnDecimator								= mod:NewTargetCountAnnounce(364942, 3, nil, nil, nil, nil, nil, nil, true)
+
 --local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(360425, nil, nil, nil, 1, 8)
 local specWarnShatteringBlast					= mod:NewSpecialWarningMoveTo(359856, nil, nil, nil, 1, 2)
@@ -89,9 +109,26 @@ local specWarnDecimator							= mod:NewSpecialWarningMoveAway(364942, nil, nil, 
 local yellDecimator								= mod:NewYell(364942)
 local yellDecimatorFades						= mod:NewShortFadesYell(364942)
 local specWarnTormentingEcho					= mod:NewSpecialWarningDodge(365371, nil, nil, nil, 2, 2)
+
+local timerUnholyAttunementCD					= mod:NewAITimer(28.8, 360373, nil, nil, nil, 3)
+local timerShatteringBlastCD					= mod:NewAITimer(28.8, 359856, nil, nil, nil, 5)
+local timerRuneofCompulsionCD					= mod:NewAITimer(28.8, 366284, nil, nil, nil, 3)
+local timerDecimatorCD							= mod:NewAITimer(28.8, 364942, nil, nil, nil, 3)
+
+mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensure no conflict in P3 either
+
 --Stage Three: The Unmaking
+mod:AddOptionLine(P3Info, "announce")
 mod:AddOptionLine(P3Info, "specialannounce")
 mod:AddOptionLine(P3Info, "yell")
+mod:AddTimerLine(P3Info)
+mod:AddIconLine(P3Info)
+local warnRuneofDomination						= mod:NewTargetCountAnnounce(365150, 3, nil, nil, nil, nil, nil, nil, true)
+local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
+local warnChainsofAnguishLink					= mod:NewTargetNoFilterAnnounce(365222, 3)
+local warnDefile								= mod:NewTargetNoFilterAnnounce(365169, 4)
+
 local specWarnDesolation						= mod:NewSpecialWarningCount(365033, nil, nil, nil, 2, 2)
 local specWarnRuneofDomination					= mod:NewSpecialWarningYou(365150, nil, nil, nil, 1, 2)
 local yellRuneofDomination						= mod:NewShortPosYell(365150)
@@ -104,45 +141,11 @@ local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil
 local yellDefile								= mod:NewYell(365169)
 local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
---Stage One: Origin of Domination
-mod:AddTimerLine(P1Info)
-local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, nil, 2)
-local timerChainsofOppressionCD					= mod:NewAITimer(28.8, 362631, nil, nil, nil, 3)
-local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerTormentCD							= mod:NewAITimer(28.8, 365436, nil, nil, nil, 2)
-local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360279, nil, nil, nil, 3)
---Intermission: Machine of Origination
---mod:AddTimerLine(P15Info)
---local timerOblivion							= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
---Stage Two: Unholy Attunement
-mod:AddTimerLine(P2Info)
-local timerUnholyAttunementCD					= mod:NewAITimer(28.8, 360373, nil, nil, nil, 3)
-local timerShatteringBlastCD					= mod:NewAITimer(28.8, 359856, nil, nil, nil, 5)
-local timerRuneofCompulsionCD					= mod:NewAITimer(28.8, 366284, nil, nil, nil, 3)
-local timerDecimatorCD							= mod:NewAITimer(28.8, 364942, nil, nil, nil, 3)
---Stage Three: The Unmaking
-mod:AddTimerLine(P3Info)
---local berserkTimer							= mod:NewBerserkTimer(600)
 local timerDesolationCD							= mod:NewAITimer(28.8, 365033, nil, nil, nil, 3)
 local timerRuneofDominationCD					= mod:NewAITimer(28.8, 365147, nil, nil, nil, 3)
 local timerChainsofAnguishCD					= mod:NewAITimer(28.8, 365212, nil, nil, nil, 5)
 local timerRuneofDefileCD						= mod:NewAITimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
-mod:AddRangeFrameOption("6")
---mod:AddInfoFrameOption(328897, true)
---P1
-mod:AddIconLine(P1Info)
-mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
-mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
---P1.5
---mod:AddIconLine(P15Info)
---mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
---P2
-mod:AddIconLine(P2Info)
-mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensure no conflict in P3 either
---P3
-mod:AddIconLine(P3Info)
 mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnChainsofAnguish", 365222, true, false, {4, 5, 6})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})

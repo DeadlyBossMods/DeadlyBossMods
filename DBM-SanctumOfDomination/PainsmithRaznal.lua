@@ -33,14 +33,12 @@ ability.id = 357735 and type = "begincast"
  or (ability.id = 348456) and type = "applydebuff"
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
+mod:AddTimerLine(BOSS)
 local warnAxe									= mod:NewTargetCountAnnounce(355568, 1, nil, nil, 184055, nil, nil, nil, true)
 local warnHammer								= mod:NewTargetCountAnnounce(348508, 1, nil, nil, 175798, nil, nil, nil, true)
 local warnScythe								= mod:NewTargetCountAnnounce(355778, 1, nil, nil, 327953, nil, nil, nil, true)
 local warnShadowsteelChains						= mod:NewTargetNoFilterAnnounce(355505, 2, nil, nil, 246367)
 local warnFlameclaspTrap						= mod:NewTargetNoFilterAnnounce(348456, 2, nil, nil, 8312)
---Intermission
-local warnEmbers								= mod:NewCountAnnounce(355534, 2, nil, nil, 264364)
-local warnAddsRemaining							= mod:NewAddsLeftAnnounce(357755, 1)
 
 local specWarnCruciformAxe						= mod:NewSpecialWarningMoveAway(355568, nil, 184055, nil, 1, 2)
 local yellCruciformAxe							= mod:NewShortYell(355568, 184055)
@@ -64,7 +62,6 @@ local yellShadowsteelChainsFades				= mod:NewIconFadesYell(355505, 246367)
 --local specWarnExsanguinatingBite				= mod:NewSpecialWarningDefensive(328857, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-mod:AddTimerLine(BOSS)
 local timerCruciformAxeCD						= mod:NewCDCountTimer(19.4, 355568, 184055, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--"Axe"
 local timerCruciformAxe							= mod:NewTargetTimer(6, 355568, 184055, nil, 2, 5)--"Axe"
 local timerReverberatingHammerCD				= mod:NewCDCountTimer(19.4, 348508, 175798, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--"Hammer"
@@ -74,8 +71,12 @@ local timerDualbladeScythe						= mod:NewTargetTimer(19.4, 355778, 327953, nil, 
 local timerSpikedBallsCD						= mod:NewCDCountTimer(40, 352052, nil, nil, 2, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerFlameclaspTrapCD						= mod:NewCDCountTimer(47.9, 348456, 8312, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)--"Trap"
 local timerShadowsteelChainsCD					= mod:NewCDCountTimer(40.1, 355504, 246367, nil, nil, 3)--"Chains"
---Intermission
+
 mod:AddTimerLine(DBM_COMMON_L.INTERMISSION)
+--Intermission
+local warnEmbers								= mod:NewCountAnnounce(355534, 2, nil, nil, 264364)
+local warnAddsRemaining							= mod:NewAddsLeftAnnounce(357755, 1)
+
 local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 local timerEmbersCD								= mod:NewNextCountTimer(5, 355534, 264364, nil, nil, 3)--"Embers"
 local timerAddsCD								= mod:NewAddsTimer(120, 357755, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
