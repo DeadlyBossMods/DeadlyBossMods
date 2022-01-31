@@ -873,9 +873,9 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:OnSync(msg, guid)
+function mod:OnSync(msg, guid, sender)
 	if not self:IsInCombat() then return end
-	if msg == "Spawn" and guid then
+	if msg == "Spawn" and sender then
 		local cid = self:GetCIDFromGUID(guid)
 		if self:AntiSpam(8, cid) then
 			if cid == 165764 then--Rockbound Vanquisher

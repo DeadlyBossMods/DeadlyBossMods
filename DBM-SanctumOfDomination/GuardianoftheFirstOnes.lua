@@ -613,9 +613,9 @@ do
 	local function UpdateIcons(self, setting)
 		self.vb.iconSetting = setting
 	end
-	function mod:OnSync(msg, target)
+	function mod:OnSync(msg, target, sender)
 		if not self:IsInCombat() then return end
-		if msg == "Dissection" then
+		if msg == "Dissection" and sender then
 			local targetName = DBM:GetUnitFullName(target) or target
 			if targetName then
 				warnDisintegration:Show(targetName)--Everyone needs to dodge it so everyone gets special warning. this is just informative message

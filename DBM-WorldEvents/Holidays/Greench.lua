@@ -69,7 +69,7 @@ end
 
 --Use syncing since these unit events require "target" or "focus" to detect.
 --At least someone in group should be targeting this stuff and sync it to those that aren't (like a healer)
-function mod:OnSync(event, arg)
+function mod:OnSync(event)
 	if event == "SnowMan" then
 		warnSnowman:Show()
 		timerTreeCD:Start()--Not a bug, it's intended to start opposite timer off each trigger.
