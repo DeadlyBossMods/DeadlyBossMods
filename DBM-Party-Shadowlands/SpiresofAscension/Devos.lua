@@ -116,9 +116,9 @@ do
 		end
 	end
 
-	function mod:OnSync(msg, targetname)
+	function mod:OnSync(msg, targetname, sender)
 		if not self:IsInCombat() then return end
-		if msg == "Spear" and targetname then
+		if msg == "Spear" and sender then
 			targetname = Ambiguate(targetname, "none")
 			if targetname == playerName then
 				specWarnRunThrough:Show()
