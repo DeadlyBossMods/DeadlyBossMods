@@ -57,6 +57,15 @@ L:SetGeneralLocalization({
 	name = "Танковые баталии"
 })
 
+---------------------------
+--  Fire Ring Challenge  --
+---------------------------
+L = DBM:GetModLocalization("Rings")
+
+L:SetGeneralLocalization({
+	name = "Вызов огнекрыла"
+})
+
 -----------------------
 --  Darkmoon Rabbit  --
 -----------------------
@@ -78,4 +87,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnCallPack		= "Призыв стаи - Отбегите на > 40 метров от Лунной волчицы!",
 	specWarnMoonfangCurse	= "Проклятие Лунной волчицы - Отбегите на > 10 метров от Лунной волчицы!"
+})
+
+L:SetOptionLocalization({
+	specWarnCallPack		= DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.run:format(144602),
+	specWarnMoonfangCurse	= DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.run:format(144590)
 })
