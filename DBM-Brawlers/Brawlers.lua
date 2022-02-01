@@ -33,7 +33,6 @@ local currentZoneID = select(8, GetInstanceInfo())
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
-local QueuedBuff = DBM:GetSpellInfo(132639)
 
 local function setDialog(self, set)
 	if not self.Options.NormalizeVolume then return end
@@ -245,6 +244,7 @@ function mod:OnSync(msg)
 end
 
 do
+	local QueuedBuff = DBM:GetSpellInfo(132639)
 	function mod:UNIT_AURA()
 		local currentQueueRank = select(16, DBM:UnitBuff("player", QueuedBuff))
 		if currentQueueRank and currentQueueRank ~= lastRank then
