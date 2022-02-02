@@ -136,8 +136,8 @@ local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default d
 local timerDancingFeverCD						= mod:NewCDCountTimer(60, 347350, nil, nil, nil, 3)
 
 mod:AddInfoFrameOption(347350, true)
-mod:GroupSpells(346698, 346694)--Dutiful Attendant and it's shield
-mod:GroupSpells(330965, 330967, 346790)--Castellans Cadre and their abilities
+mod:GroupSpells(346698, 346694)--Dutiful Attendant and it's shield (tied together because they are one in same. Ie it's not an ability the add users from time to time, the add is the ability
+mod:GroupSpells(346790, 330967)--Fixate and Sintouched (the stone adds cast sintouched on the target they are fixating)
 
 mod.vb.feversActive = 0
 mod.vb.volleyCast = 0

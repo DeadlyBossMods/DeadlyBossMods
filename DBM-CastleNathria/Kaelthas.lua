@@ -73,7 +73,7 @@ mod:AddInfoFrameOption(326078, true)--343026
 mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
 --Adds
 ----Rockbound Vanquisher
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(21954))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21954))
 local warnVanquisher							= mod:NewCountAnnounce("ej21954", 2, 325440)
 local warnVanquished							= mod:NewStackAnnounce(325442, 2, nil, "Tank")
 local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
@@ -111,10 +111,10 @@ local warnInfusersOrb							= mod:NewCountAnnounce(326075, 1, nil, "Healer")
 
 local timerSoulInfuserCD						= mod:NewCDCountTimer(10, "ej21953", nil, nil, nil, 1, 325665, DBM_COMMON_L.DAMAGE_ICON)
 ----Pestering Fiend
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(22082))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22082))
 local timerPesteringFiendCD						= mod:NewCDCountTimer(70, "ej22082", nil, nil, nil, 1, 328254, DBM_COMMON_L.DAMAGE_ICON)
 ----Reborn Phoenix
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(22090))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22090))
 local warnRebornPhoenix							= mod:NewSpellAnnounce("ej22090", 2, 328659)
 local warnEyeOnTarget							= mod:NewTargetAnnounce(328479, 2)
 
@@ -126,11 +126,12 @@ local timerPhoenixRespawn						= mod:NewCastTimer(20, 328731, nil, nil, nil, 1)
 mod:AddSetIconOption("SetIconOnBirdo", 328731, true, true, {2, 3, 4, 5})
 mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
 
-mod:GroupSpells("ej21954", 325442, 325506, 325440)--Rockbound Vanquisher spells
-mod:GroupSpells("ej21993", 333145, 341473)--Bleakwing Assassin spells
-mod:GroupSpells("ej21952", 329565, 333002)--Vile Occultist spells
-mod:GroupSpells("ej21953", 325665, 326075)--Soul Infuser spells
-mod:GroupSpells("ej22090", 328479, 328731)--Phoenix spells
+--Mostly for testing, these are not meant to be used as they aren't actual groupings
+--mod:GroupSpells("ej21954", 325442, 325506, 325440)--Rockbound Vanquisher spells
+--mod:GroupSpells("ej21993", 333145, 341473)--Bleakwing Assassin spells
+--mod:GroupSpells("ej21952", 329565, 333002)--Vile Occultist spells
+--mod:GroupSpells("ej21953", 325665, 326075)--Soul Infuser spells
+--mod:GroupSpells("ej22090", 328479, 328731)--Phoenix spells
 
 mod.vb.addMode = 0--No adds spawning, 1-Adds Spawning from Darithos Tables, 2-Adds spawning from Shade table
 mod.vb.addCount = 0

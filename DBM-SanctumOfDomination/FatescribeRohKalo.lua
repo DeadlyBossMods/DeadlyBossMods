@@ -96,6 +96,8 @@ mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4
 mod:AddSetIconOption("SetIconOnGrimPortent", 354365, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddSetIconOption("SetIconOnMonstrosity", "ej23764", true, true, {7, 8})
 mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
+mod:GroupSpells(351680, 353432)--Burden and invoke bundled (invoke is add fixate at end of burden)
+mod:GroupSpells(351969, 353122)--Realign fate and darkest destiny which is channel for how long you have for fate
 
 mod.vb.EternityIcon = 1
 mod.vb.DebuffIcon = 1

@@ -77,6 +77,8 @@ mod:AddSetIconOption("SetIconOnBrandofTorment", 350647, true, false, {1, 2, 3, 4
 mod:AddSetIconOption("SetIconOnMawsworn", 350615, true, true, {5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnDefiance", 350650)
 mod:AddNamePlateOption("NPAuraOnTormented", 350649)
+mod:GroupSpells(350415, 350411)--Shackles and hellscream, same mechanic, hellscream is aoe during shackles
+mod:GroupSpells(350647, 350649)--Brand of torment and tormented debuff from it
 
 local castsPerGUID = {}
 mod.vb.shacklesCount = 0

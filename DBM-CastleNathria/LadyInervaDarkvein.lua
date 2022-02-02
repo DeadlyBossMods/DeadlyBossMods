@@ -37,13 +37,20 @@ mod:RegisterEventsInCombat(
  or (ability.id = 331550 or ability.id = 334017 or ability.id = 339521) and type = "begincast"
 --]]
 --TODO, same approach and margock, make it so warnings show which rank it is
+--General
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
+
+--local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
+local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers2")
+local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers2")
+local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
+local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers2")
+mod:AddBoolOption("timerContainers2", false, "timer", nil, 6)
+--Container of Desire
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22571))
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnChangeofHeart							= mod:NewTargetNoFilterAnnounce(340452, 3)
-local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
-local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
-local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(342321, 3)
-local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
 local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(341621, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, nil, nil, 3, 1, 2)
@@ -52,32 +59,38 @@ local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, false, 
 local yellHiddenDesire							= mod:NewYell(335396, nil, false)--Remove?
 local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
-local specWarnBottledAnima						= mod:NewSpecialWarningSoak(325769, false, nil, nil, 1, 2)--Optional special warning to configure sound etc if you are soaking these
-local specWarnSharedSuffering					= mod:NewSpecialWarningYouCount(324983, nil, 202046, nil, 1, 2)--Short Name "Beams"
-local yellSharedSuffering						= mod:NewShortYell(324983, 202046)--Short Name "Beams"
-local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(342321, nil, nil, nil, 1, 2)--Rank 1-2
-local yellConcentrateAnimaFades					= mod:NewShortFadesYell(342321)--^^
-local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
---Anima Constructs
-local specWarnCondemn							= mod:NewSpecialWarningInterruptCount(331550, false, nil, 2, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
-local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers2")
-local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers2")
-local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
-local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers2")
---local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
-local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3, nil, nil, true)--10-36
-local timerSinsandSufferingCD					= mod:NewCDCountTimer(44.3, 325064, 202046, nil, nil, 3, nil, nil, true)--ShortName "Beams"
-local timerConcentratedAnimaCD					= mod:NewCDCountTimer(35.4, 342321, nil, nil, 2, 1, nil, nil, true, 1)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
 local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+--Container of Bottled Anima
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22592))
+local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 
-mod:AddBoolOption("timerContainers2", false, "timer", nil, 6)
+local specWarnBottledAnima						= mod:NewSpecialWarningSoak(325769, false, nil, nil, 1, 2)--Optional special warning to configure sound etc if you are soaking these
+
+local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3, nil, nil, true)--10-36
+--Container of Sin
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22599))
+local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
+local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(342321, 3)
+local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
+
+local specWarnSharedSuffering					= mod:NewSpecialWarningYouCount(324983, nil, 202046, nil, 1, 2)--Short Name "Beams"
+local yellSharedSuffering						= mod:NewShortYell(324983, 202046)--Short Name "Beams"
+
+local timerSinsandSufferingCD					= mod:NewCDCountTimer(44.3, 325064, 202046, nil, nil, 3, nil, nil, true)--ShortName "Beams"
+
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
+--Container of Concentrated Anima
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22567))
+local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(342321, nil, nil, nil, 1, 2)--Rank 1-2
+local yellConcentrateAnimaFades					= mod:NewShortFadesYell(342321)--^^
+local specWarnCondemn							= mod:NewSpecialWarningInterruptCount(331550, false, nil, 2, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
+
+local timerConcentratedAnimaCD					= mod:NewCDCountTimer(35.4, 342321, nil, nil, 2, 1, nil, nil, true, 1)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
+
 mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
-mod:GroupSpells(341621, 325382, 335396, 340452)--Group all tank stuff related to desires together
 
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
