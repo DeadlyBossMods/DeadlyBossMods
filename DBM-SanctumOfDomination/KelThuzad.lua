@@ -79,7 +79,7 @@ mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})-
 mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 --Stage Two: The Phylactery Opens
 mod:AddOptionLine(DBM:EJ_GetSectionInfo(22885), "announce")
-local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352090)
+local warnMarchoftheForsaken						= mod:NewSpellAnnounce(352090)
 local warnDemolish									= mod:NewCastAnnounce(349805, 2)
 
 local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
@@ -100,7 +100,7 @@ local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, 
 local timerGlacialWindsCD							= mod:NewNextTimer(13.3, 352379, nil, nil, nil, 3)
 --Stage Three
 mod:AddOptionLine(DBM:EJ_GetSectionInfo(23201), "announce")
-local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
+--local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
 
 local timerOnslaughtoftheDamnedCD					= mod:NewNextTimer(40.2, 352348, nil, nil, nil, 1)
 --local berserkTimer								= mod:NewBerserkTimer(600)
@@ -276,7 +276,7 @@ function mod:SPELL_SUMMON(args)
 	--https://ptr.wowhead.com/npc=176703/frostbound-devoted / https://ptr.wowhead.com/npc=176974/soul-reaver / https://ptr.wowhead.com/npc=176973/unstoppable-abomination
 	if spellId == 352096 or spellId == 352094 or spellId == 352092 then
 		if self:AntiSpam(8, 3) then
-			warnOnslaughtoftheDamned:Show()
+			warnMarchoftheForsaken:Show()
 		end
 		if spellId == 352094 then
 			if self:AntiSpam(8, 4) then
