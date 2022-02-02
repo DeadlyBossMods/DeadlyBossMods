@@ -61,9 +61,6 @@ local timerJaggedClawsCD						= mod:NewCDTimer(10.9, 334971, nil, "Tank", nil, 5
 local timerViciousLungeCD						= mod:NewCDTimer(25.5, 334945, 262783, nil, nil, 3)--Shortname Lunge
 ----Bargast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22311))
-local warnCrushingStone							= mod:NewStackAnnounce(334860, 2, nil, "Tank|Healer")
-local warnPetrifyingHowl						= mod:NewTargetAnnounce(334852, 3, nil, nil, 135241)--Shortname "Howl"
-
 local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
 local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
 local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, false, nil, 2, 1, 2)
@@ -74,6 +71,9 @@ local timerShadesofBargastCD					= mod:NewCDTimer(60.1, 334757, nil, nil, nil, 1
 mod:AddSetIconOption("SetIconOnShades", 334757, true, true, {4, 5})
 ----Hecutis
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22310))
+local warnCrushingStone							= mod:NewStackAnnounce(334860, 2, nil, "Tank|Healer")
+local warnPetrifyingHowl						= mod:NewTargetAnnounce(334852, 3, nil, nil, 135241)--Shortname "Howl"
+
 local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
 local yellPetrifyingHowl						= mod:NewYell(334852, 135241)--Shortname "Howl"
 local yellPetrifyingHowlFades					= mod:NewFadesYell(334852, 135241)--Shortname "Howl"
