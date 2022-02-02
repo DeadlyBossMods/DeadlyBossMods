@@ -27,7 +27,7 @@ local L
 L= DBM:GetModLocalization(2456)
 
 L:SetMiscLocalization({
-	Pull	= "Ваши души принадлежат мне, чтобы претендовать на них!"
+	Pull	= "Я заберу ваши души!"
 })
 
 -----------------------

@@ -28,15 +28,10 @@ mod:RegisterEventsInCombat(
 (ability.id = 328437 or ability.id = 335013 or ability.id = 325399 or ability.id = 327887 or ability.id = 340758 or ability.id = 329770 or ability.id = 329834 or ability.id = 328880 or ability.id = 328789 or ability.id = 342310 or ability.id = 340807 or ability.id = 340788 or ability.id = 342854) and type = "begincast"
  or (ability.id = 326271 or ability.id = 325361 or ability.id = 181089) and type = "cast"
 --]]
+mod:AddTimerLine(BOSS)
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDimensionalTear							= mod:NewTargetNoFilterAnnounce(328437, 3, nil, nil, 327770)
 local warnHyperlightSpark							= mod:NewCountAnnounce(325399, 2, nil, false, 2)
---Sire Denathrius' Private Collection
-local warnSpirits									= mod:NewSpellAnnounce(340758, 3, nil, nil, 263222)
-local warnFixate									= mod:NewTargetAnnounce(327902, 3)
-local warnPossession								= mod:NewTargetNoFilterAnnounce(327414, 4)
-local warnSeedsofExtinction							= mod:NewSpellAnnounce(329834, 3, nil, nil, 205446)--Shortname "Planting Seeds"
-local warnUnleashPower								= mod:NewCountAnnounce(342854, 4)
 
 local specWarnDimensionalTear						= mod:NewSpecialWarningYouPos(328437, 327770, nil, nil, 1, 2)
 local yellDimensionalTear							= mod:NewPosYell(328437, 327770)
@@ -47,20 +42,27 @@ local yellGlyphofDestructionFades					= mod:NewShortFadesYell(325361)
 local specWarnGlyphofDestructionTaunt				= mod:NewSpecialWarningTaunt(325361, nil, nil, nil, 1, 2)
 local specWarnStasisTrap							= mod:NewSpecialWarningDodge(326271, nil, nil, nil, 2, 2)
 local specWarnRiftBlast								= mod:NewSpecialWarningDodge(335013, nil, nil, nil, 2, 2)
---Sire Denathrius' Private Collection
-local specWarnFixate								= mod:NewSpecialWarningRun(327902, nil, nil, nil, 4, 2)
-local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307421, nil, 4, 2)
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-mod:AddTimerLine(BOSS)
 local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3)
 local timerGlyphofDestructionCD						= mod:NewCDCountTimer(27.9, 325361, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--27.9-58.6 for now
 local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_COMMON_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
 local timerRiftBlastCD								= mod:NewCDTimer(36, 335013, nil, nil, nil, 3)--36.3 except when it's reset by phase changes
 local timerHyperlightSparkCD						= mod:NewCDTimer(15.8, 325399, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--15.8 except when it's heavily spell queued
+--local berserkTimer								= mod:NewBerserkTimer(600)
+
+mod:AddSetIconOption("SetIconOnTear", 328437, true, false, {1, 2})
 --Sire Denathrius' Private Collection
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22119))
+local warnSpirits									= mod:NewSpellAnnounce(340758, 3, nil, nil, 263222)
+local warnFixate									= mod:NewTargetAnnounce(327902, 3)
+local warnPossession								= mod:NewTargetNoFilterAnnounce(327414, 4)
+local warnSeedsofExtinction							= mod:NewSpellAnnounce(329834, 3, nil, nil, 205446)--Shortname "Planting Seeds"
+local warnUnleashPower								= mod:NewCountAnnounce(342854, 4)
+
+local specWarnFixate								= mod:NewSpecialWarningRun(327902, nil, nil, nil, 4, 2)
+local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307421, nil, 4, 2)
+
 local timerFleetingSpiritsCD						= mod:NewCDTimer(40.8, 340758, 263222, nil, nil, 3)--40.8-46
 local timerSeedsofExtinctionCD						= mod:NewCDTimer(43.7, 329770, 205446, nil, nil, 5)--43-49. Shortname "Planting Seeds"
 local timerExtinction								= mod:NewCastTimer(16, 329107, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -68,9 +70,7 @@ local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil,
 local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.DEADLY_ICON)
 
---local berserkTimer								= mod:NewBerserkTimer(600)
-
-mod:AddSetIconOption("SetIconOnTear", 328437, true, false, {1, 2})
+mod:GroupSpells(340758, 327902)--Spirits and their fixdate
 
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1

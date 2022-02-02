@@ -44,24 +44,16 @@ mod:RegisterEventsInCombat(
 local warnHardenedStoneForm						= mod:NewTargetNoFilterAnnounce(329636, 2)
 local warnHardenedStoneFormOver					= mod:NewEndAnnounce(329636, 1)
 local warnSoldiersOath							= mod:NewTargetNoFilterAnnounce(336212, 4)
+
+local berserkTimer								= mod:NewBerserkTimer(600)
+
+mod:AddBoolOption("ExperimentalTimerCorrection", true)
 --General Kaal
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
 local warnWickedBlade							= mod:NewTargetCountAnnounce(333376, 4, nil, nil, nil, nil, nil, nil, true)
 local warnHeartRend								= mod:NewTargetCountAnnounce(334765, 4, nil, "Healer", 2, nil, nil, nil, true)
 local warnCallShadowForces						= mod:NewCountAnnounce(342256, 2)
---General Grashaal
-local warnReverberatingEruption					= mod:NewTargetCountAnnounce(344496, 3, nil, nil, nil, nil, nil, nil, true)--Normal+
-local warnReverberatingLeap						= mod:NewTargetCountAnnounce(334009, 3, nil, nil, nil, nil, nil, nil, true)--LFR
-local warnCrystalize							= mod:NewTargetCountAnnounce(339690, 2, nil, nil, nil, nil, nil, nil, true)
-local warnPulverizingMeteor						= mod:NewTargetCountAnnounce(342544, 4, nil, nil, nil, nil, nil, nil, true)
---Adds
-local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22777", 2, 343273)
-local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
-local warnRavenousFeast							= mod:NewTargetCountAnnounce(343273, 3, nil, nil, nil, nil, nil, nil, true)
-local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
-local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "Tank")--So tanks know where adds went
-local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
---General Kaal
 local specWarnWickedBladeCast					= mod:NewSpecialWarningCount(333376, false, nil, nil, 2, 2)
 local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
 local yellWickedBlade							= mod:NewPosYell(333376)
@@ -69,9 +61,24 @@ local yellWickedBladeFades						= mod:NewIconFadesYell(333376)
 local specWarnHeartRendCast						= mod:NewSpecialWarningCount(334765, false, nil, nil, 1, 2)
 local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
---local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
+
+local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333387, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
+local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
+local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
+local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddInfoFrameOption(333913, true)
+mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
+mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
+mod:AddSetIconOption("SetIconOnWickedBlade2", 333387, false, false, {1, 2})--Off by default since it conflicts with heart rend
+mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
 --General Grashaal
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
+local warnReverberatingEruption					= mod:NewTargetCountAnnounce(344496, 3, nil, nil, nil, nil, nil, nil, true)--Normal+
+local warnReverberatingLeap						= mod:NewTargetCountAnnounce(334009, 3, nil, nil, nil, nil, nil, nil, true)--LFR
+local warnCrystalize							= mod:NewTargetCountAnnounce(339690, 2, nil, nil, nil, nil, nil, nil, true)
+local warnPulverizingMeteor						= mod:NewTargetCountAnnounce(342544, 4, nil, nil, nil, nil, nil, nil, true)
+
 local specWarnReverberatingEruption				= mod:NewSpecialWarningYou(344496, nil, 138658, nil, 1, 2, 2)
 local yellReverberatingEruption					= mod:NewYell(344496, 138658)--Short text "Eruption"
 local yellReverberatingEruptionFades			= mod:NewFadesYell(344496, 138658)--Short text "Eruption"
@@ -88,41 +95,33 @@ local specWarnMeteor							= mod:NewSpecialWarningYou(342544, nil, nil, nil, 1, 
 local yellMeteor								= mod:NewYell(342544, nil, nil, nil, "YELL")
 local specWarnStoneFist							= mod:NewSpecialWarningDefensive(342425, nil, nil, nil, 1, 2)
 local specWarnStoneFistTaunt					= mod:NewSpecialWarningTaunt(342425, nil, nil, nil, 1, 2)
---Adds/Intermissions
-local specWarnVolatileStoneShell				= mod:NewSpecialWarningSwitch(340037, "Dps", nil, nil, 1, 2)
-local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil, nil, 2, 2)
 
---General Kaal
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
-local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333387, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
-local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
-local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
-local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
---General Grashaal
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingEruptionCD				= mod:NewCDCountTimer(30, 344496, 138658, nil, 3, 3, nil, nil, true)--Short text "Eruption" (Normal+)
 local timerReverberatingLeapCD					= mod:NewCDCountTimer(30, 334009, 337445, nil, 3, 3, nil, nil, true)--Short text "Leap" (LFR)
 local timerSeismicUpheavalCD					= mod:NewCDCountTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)
 local timerCrystalizeCD							= mod:NewCDCountTimer(55, 339690, nil, nil, 3, 5, nil, nil, true)--55 on mythic, 50 on non mythic
 local timerStoneFistCD							= mod:NewCDCountTimer(18, 342425, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
---Phasing
+
+mod:AddSetIconOption("SetIconOnEruption2", 344496, false, false, {4})--Off by default since it conflicts with heart rend
+mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
+--Adds/Intermissions
+local specWarnVolatileStoneShell				= mod:NewSpecialWarningSwitch(340037, "Dps", nil, nil, 1, 2)
+local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil, nil, 2, 2)
+
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 --Adds
 mod:AddTimerLine(DBM_COMMON_L.ADDS)
+local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22777", 2, 343273)
+local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
+local warnRavenousFeast							= mod:NewTargetCountAnnounce(343273, 3, nil, nil, nil, nil, nil, nil, true)
+local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
+local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "Tank")--So tanks know where adds went
+local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
+
 local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
 local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
-local berserkTimer								= mod:NewBerserkTimer(600)
-
-mod:AddInfoFrameOption(333913, true)
-mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
-mod:AddSetIconOption("SetIconOnWickedBlade2", 333387, false, false, {1, 2})--Off by default since it conflicts with heart rend
-mod:AddSetIconOption("SetIconOnEruption2", 344496, false, false, {4})--Off by default since it conflicts with heart rend
-mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
-mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
-mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
-mod:AddBoolOption("ExperimentalTimerCorrection", true)
-mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
+mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)--Adds
 
 local markingSet = "SetOne"
 local playerName = UnitName("player")

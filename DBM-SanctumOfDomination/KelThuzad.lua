@@ -38,23 +38,14 @@ mod:RegisterEventsInCombat(
  or (ability.id = 349799 or ability.id = 348428) and type = "begincast"
 --]]
 --Stage One: Chains and Ice
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(22884), "announce")
 local warnNecroticSurge								= mod:NewCountAnnounce(352051, 3)
 local warnSoulExhaustion							= mod:NewTargetNoFilterAnnounce(348978, 2, nil, "Tank|Healer")
 local warnGlacialWrath								= mod:NewTargetNoFilterAnnounce(353808, 3)
 local warnPiercingWail								= mod:NewCastAnnounce(348428, 2)
 local warnOblivionsEcho								= mod:NewTargetNoFilterAnnounce(347292, 2)
 local warnFrostBlast								= mod:NewTargetNoFilterAnnounce(348756, 4)
---Stage Two: The Phylactery Opens
-local warnFrostboundDevoted							= mod:NewSpellAnnounce("ej23781", 2, 352096, false)
-local warnSoulReaver								= mod:NewSpellAnnounce("ej23423", 2, 352094)
-local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
-local warnDemolish									= mod:NewCastAnnounce(349799, 2)
-----Remnant of Kel'Thuzad
-local warnFreezingBlast								= mod:NewCountAnnounce(352379, 3)
---Stage Three
-local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
 
---Stage One: Chains and Ice
 local specWarnSoulExhaustion						= mod:NewSpecialWarningYou(348978, nil, nil, nil, 1, 2)
 local specWarnSoulExhaustionSwap					= mod:NewSpecialWarningTaunt(348978, nil, nil, nil, 1, 2)
 local specWarnHowlingBlizzard						= mod:NewSpecialWarningDodge(354198, nil, nil, nil, 2, 2)
@@ -70,16 +61,7 @@ local specWarnOblivionsEchoNear						= mod:NewSpecialWarningMove(347292, nil, ni
 local specWarnFrostBlast							= mod:NewSpecialWarningMoveTo(348756, nil, nil, nil, 1, 2)
 local yellFrostBlast								= mod:NewYell(348756, nil, nil, nil, "YELL")
 local yellFrostBlastFades							= mod:NewShortFadesYell(348756, nil, nil, nil, "YELL")
---Stage Two: The Phylactery Opens
-----Remnant of Kel'Thuzad
-local specWarnFoulWinds								= mod:NewSpecialWarningSpell(355127, nil, nil, nil, 2, 2, 4)
-local specWarnFreezingBlast							= mod:NewSpecialWarningDodge(352379, nil, nil, nil, 2, 2)
-local specWarnGlacialWinds							= mod:NewSpecialWarningDodge(355055, nil, nil, nil, 2, 2)
-local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
---Stage One: Chains and Ice
 local timerHowlingBlizzardCD						= mod:NewCDTimer(114.3, 354198, nil, nil, nil, 2)--Boss Mana timer
 local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, nil, 5)
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
@@ -88,25 +70,43 @@ local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Heale
 local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+
+mod:AddInfoFrameOption(354198, true)--Howling Blizzard
+mod:AddSetIconOption("SetIconOnGlacialWrath", 353808, false, false, {1, 2, 3, 4})--Sets icons on players (can be used with spike marking)
+mod:AddSetIconOption("SetIconOnGlacialSpike", "ej23449", true, true, {1, 2, 3, 4})--Sets icons on spikes spawned by players (can be used with player market)
+mod:AddSetIconOption("SetIconOnEcho", 347292, false, false, {1, 2, 3, 4})--Off by default since it conflicts with wrath icons
+mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})--5 shards mythic (shares icons with reaper but rarely at same time)
+mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 --Stage Two: The Phylactery Opens
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(22885), "announce")
+local warnFrostboundDevoted							= mod:NewSpellAnnounce("ej23781", 2, 352096, false)
+local warnSoulReaver								= mod:NewSpellAnnounce("ej23423", 2, 352094)
+local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
+local warnDemolish									= mod:NewCastAnnounce(349799, 2)
+
 local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
+
+mod:AddSetIconOption("SetIconOnReaper", "ej23423", true, true, {6, 7, 8})--Shares icons with Shards, but rarely at same time
+mod:AddNamePlateOption("NPAuraOnFixate", 355389)
 ----Remnant of Kel'Thuzad
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23431), "announce")
+local warnFreezingBlast								= mod:NewCountAnnounce(352379, 3)
+
+local specWarnFoulWinds								= mod:NewSpecialWarningSpell(355127, nil, nil, nil, 2, 2, 4)
+local specWarnFreezingBlast							= mod:NewSpecialWarningDodge(352379, nil, nil, nil, 2, 2)
+local specWarnGlacialWinds							= mod:NewSpecialWarningDodge(355055, nil, nil, nil, 2, 2)
+local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
+
 local timerFoulWindsCD								= mod:NewCDTimer(12.1, 355127, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, nil, 3)
 local timerGlacialWindsCD							= mod:NewNextTimer(13.3, 352379, nil, nil, nil, 3)
 --Stage Three
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23201), "announce")
+local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
+
 local timerOnslaughtoftheDamnedCD					= mod:NewNextTimer(40.2, 352348, nil, nil, nil, 1)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(354206, true)
-mod:AddSetIconOption("SetIconOnGlacialWrath", 353808, false, false, {1, 2, 3, 4})--Sets icons on players (can be used with spike marking)
-mod:AddSetIconOption("SetIconOnGlacialSpike", "ej23449", true, true, {1, 2, 3, 4})--Sets icons on spikes spawned by players (can be used with player market)
-mod:AddSetIconOption("SetIconOnEcho", 347292, false, false, {1, 2, 3, 4})--Off by default since it conflicts with wrath icons
-mod:AddSetIconOption("SetIconOnReaper", "ej23423", true, true, {6, 7, 8})--Shares icons with Shards, but rarely at same time
-mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})--5 shards mythic (shares icons with reaper but rarely at same time)
-mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
-mod:AddNamePlateOption("NPAuraOnFixate", 355389)
 mod:GroupSpells(353808, "ej23449")--Spikes combined with wrath, spikes are after effect of wrath expiring
 mod:GroupSpells(355389, 355389)--Corpse detonation and associate fixate debuff
 mod:GroupSpells(348071, "ej23224")--Soul Fracture, as well as shards spawned by it
