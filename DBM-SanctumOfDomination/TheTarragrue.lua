@@ -36,7 +36,7 @@ local warnUpperReachesMight							= mod:NewSpellAnnounce(352382, 2)--When it's h
 local warnMortregarsEchoes							= mod:NewSpellAnnounce(352389, 2)--When it's happening
 local warnSoulforgeHeat								= mod:NewSpellAnnounce(352398, 2)--When it's happening
 local warnTheJailersGaze							= mod:NewTargetNoFilterAnnounce(347369, 4)
-mod:AddBoolOption("warnRemnant", false, "announce")--3 options are combined into 1, so they don't need bundling
+mod:AddBoolOption("warnRemnant", false, "announce", nil, nil, nil, 352368)--3 options are combined into 1, so they don't need bundling
 local warnRemantPhysical							= mod:NewCountAnnounce(352384, 2, nil, nil, false)--Physical
 local warnRemantShadow								= mod:NewCountAnnounce(352387, 2, nil, nil, false)--Shadow
 local warnRemnantFire								= mod:NewCountAnnounce(352392, 2, nil, nil, false)--Fire
@@ -68,7 +68,7 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 347283)
 mod:AddSetIconOption("SetIconOnChains", 347269, true, false, {1})
-mod:GroupSpells(352368, 352382, 352389, 352398, "warnRemnant")--Parent torment cast, 3 torment types activating, bool for the 3 remannt type ticks
+mod:GroupSpells(352368, 352382, 352389, 352398)--Parent torment cast, 3 torment types activating, bool for the 3 remannt type ticks
 mod:GroupSpells(346985, 346986)--Tank cast, tank debuff
 
 mod.vb.graspCount = 0

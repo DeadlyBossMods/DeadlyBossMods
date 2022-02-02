@@ -99,8 +99,7 @@ local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, ni
 --mod:AddInfoFrameOption(328897, true)
 --mod:AddSetIconOption("SetIconOnEcholocation", 342077, true, false, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnSharedSuffering", 351825)
-mod:AddBoolOption("ContinueRepeating", false)
-mod:GroupSpells(355232, "ContinueRepeating")
+mod:AddBoolOption("ContinueRepeating", false, nil, nil, nil, nil, 355232)
 
 mod.vb.gazeCount = 0
 mod.vb.beamCount = 0
