@@ -70,7 +70,8 @@ local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil,
 local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.DEADLY_ICON)
 
-mod:GroupSpells(340758, 327902)--Spirits and their fixdate
+mod:GroupSpells(340758, 327902)--Spirits and their fixate
+mod:GroupSpells(329770, 329107)--Seeds of extinction and their cast
 
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1

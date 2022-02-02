@@ -107,7 +107,7 @@ local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, n
 
 local timerPierceSoulCD							= mod:NewCDTimer(9.7, 350475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerResentmentCD							= mod:NewCDCountTimer(21.8, 355294, nil, nil, nil, 2)
-local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350482, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350483, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerWordofRecallCD						= mod:NewCDCountTimer(72.9, 350687, nil, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
 local berserkTimer								= mod:NewBerserkTimer(600)
 

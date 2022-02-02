@@ -67,8 +67,8 @@ local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, 
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
 local timerSoulFractureCD							= mod:NewCDTimer(32.7, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Healer", nil, 5)
-local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 346459, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
+local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 353808, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347292, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 
 mod:AddInfoFrameOption(354198, true)--Howling Blizzard
@@ -79,10 +79,8 @@ mod:AddSetIconOption("SetIconOnShards", "ej23224", true, true, {4, 5, 6, 7, 8})-
 mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 --Stage Two: The Phylactery Opens
 mod:AddOptionLine(DBM:EJ_GetSectionInfo(22885), "announce")
-local warnFrostboundDevoted							= mod:NewSpellAnnounce("ej23781", 2, 352096, false)
-local warnSoulReaver								= mod:NewSpellAnnounce("ej23423", 2, 352094)
-local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
-local warnDemolish									= mod:NewCastAnnounce(349799, 2)
+local warnMarchoftheForsaken						= mod:NewSpellAnnounce(352090)
+local warnDemolish									= mod:NewCastAnnounce(349805, 2)
 
 local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
 
@@ -110,6 +108,8 @@ local timerOnslaughtoftheDamnedCD					= mod:NewNextTimer(40.2, 352348, nil, nil,
 mod:GroupSpells(353808, "ej23449")--Spikes combined with wrath, spikes are after effect of wrath expiring
 mod:GroupSpells(355389, 355389)--Corpse detonation and associate fixate debuff
 mod:GroupSpells(348071, "ej23224")--Soul Fracture, as well as shards spawned by it
+mod:GroupSpells(352090, "ej23423")--Combined Onslaught with reaver marking
+mod:GroupSpells(347292, 355389)--Echo and the related fixate debuff
 
 mod.vb.echoIcon = 1
 mod.vb.wrathIcon = 1
@@ -275,19 +275,17 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	--https://ptr.wowhead.com/npc=176703/frostbound-devoted / https://ptr.wowhead.com/npc=176974/soul-reaver / https://ptr.wowhead.com/npc=176973/unstoppable-abomination
 	if spellId == 352096 or spellId == 352094 or spellId == 352092 then
-		if spellId == 352096 and self:AntiSpam(8, 3) then
-			warnFrostboundDevoted:Show()
-		elseif spellId == 352094 then
+		if self:AntiSpam(8, 3) then
+			warnMarchoftheForsaken:Show()
+		end
+		if spellId == 352094 then
 			if self:AntiSpam(8, 4) then
-				warnSoulReaver:Show()
 				self.vb.addIcon = 8
 			end
 			if self.Options.SetIconOnReaper then
 				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnReaper", nil, nil, true)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
-		elseif spellId == 352092 and self:AntiSpam(8, 5) then
-			warnAbom:Show()
 		end
 	elseif spellId == 346469 then--Glacial Spikes
 		if self.Options.SetIconOnGlacialSpike then

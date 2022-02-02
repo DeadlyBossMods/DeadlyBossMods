@@ -75,7 +75,7 @@ local timerShadowsteelChainsCD					= mod:NewCDCountTimer(40.1, 355504, 246367, n
 mod:AddTimerLine(DBM_COMMON_L.INTERMISSION)
 --Intermission
 local warnEmbers								= mod:NewCountAnnounce(355534, 2, nil, nil, 264364)
-local warnAddsRemaining							= mod:NewAddsLeftAnnounce(357755, 1)
+local warnAddsRemaining							= mod:NewAddsLeftAnnounce(355534, 1)
 
 local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 local timerEmbersCD								= mod:NewNextCountTimer(5, 355534, 264364, nil, nil, 3)--"Embers"
