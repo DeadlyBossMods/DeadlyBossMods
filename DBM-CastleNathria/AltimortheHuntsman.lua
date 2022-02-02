@@ -30,61 +30,55 @@ mod:RegisterEventsInCombat(
  or (target.id = 165067 or target.id = 169457 or target.id = 169458) and type = "death"
 --]]
 --Huntsman Altimor
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnSinseeker								= mod:NewTargetNoFilterAnnounce(335114, 4)
 local warnSpreadshot							= mod:NewSpellAnnounce(334404, 3)
---Hunting Gargon
-----Margore
-local warnJaggedClaws							= mod:NewStackAnnounce(334971, 2, nil, "Tank|Healer")
-local warnViciousLunge							= mod:NewTargetNoFilterAnnounce(334945, 3, nil, nil, 262783)
-----Bargast
-local warnCrushingStone							= mod:NewStackAnnounce(334860, 2, nil, "Tank|Healer")
-local warnPetrifyingHowl						= mod:NewTargetAnnounce(334852, 3, nil, nil, 135241)--Shortname "Howl"
-----Hecutis
 
---Huntsman Altimor
 local specWarnSinseeker							= mod:NewSpecialWarningYouPos(335114, nil, nil, nil, 3, 2)
 local yellSinseeker								= mod:NewShortPosYell(335114)
 local yellSinseekerFades						= mod:NewIconFadesYell(335114)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
+
+local timerSinseekerCD							= mod:NewCDCountTimer(49, 335114, nil, nil, nil, 3)
+local timerSpreadshotCD							= mod:NewCDTimer(11.8, 334404, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+--local berserkTimer							= mod:NewBerserkTimer(600)
+
+mod:AddRangeFrameOption("5/6/10")
+mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})--335111 335112 335113
 --Hunting Gargon
 ----Margore
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22312))
+local warnJaggedClaws							= mod:NewStackAnnounce(334971, 2, nil, "Tank|Healer")
+local warnViciousLunge							= mod:NewTargetNoFilterAnnounce(334945, 3, nil, nil, 262783)
+
 local specWarnJaggedClaws						= mod:NewSpecialWarningStack(334971, nil, 2, nil, nil, 1, 6)
 local specWarnJaggedClawsTaunt					= mod:NewSpecialWarningTaunt(334971, nil, nil, nil, 1, 2)
 local specWarnViciousLunge						= mod:NewSpecialWarningYou(334945, nil, 262783, nil, 3, 2)
 local yellViciousLunge							= mod:NewYell(334945, 262783, nil, nil, "YELL")
 local yellViciousLungeFades						= mod:NewFadesYell(334945, 262783, nil, nil, "YELL")
-----Bargast
-local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
-local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
-local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, false, nil, 2, 1, 2)
-----Hecutis
-local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
-local yellPetrifyingHowl						= mod:NewYell(334852, 135241)--Shortname "Howl"
-local yellPetrifyingHowlFades					= mod:NewFadesYell(334852, 135241)--Shortname "Howl"
 
---Huntsman Altimor
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
-local timerSinseekerCD							= mod:NewCDCountTimer(49, 335114, nil, nil, nil, 3)
-local timerSpreadshotCD							= mod:NewCDTimer(11.8, 334404, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
---Hunting Gargon
-----Margore
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22312))
 local timerJaggedClawsCD						= mod:NewCDTimer(10.9, 334971, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--22.1, 23.4, 11.0
 local timerViciousLungeCD						= mod:NewCDTimer(25.5, 334945, 262783, nil, nil, 3)--Shortname Lunge
 ----Bargast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22311))
+local warnCrushingStone							= mod:NewStackAnnounce(334860, 2, nil, "Tank|Healer")
+local warnPetrifyingHowl						= mod:NewTargetAnnounce(334852, 3, nil, nil, 135241)--Shortname "Howl"
+
+local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
+local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
+local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, false, nil, 2, 1, 2)
+
 local timerRipSoulCD							= mod:NewCDTimer(30, 334797, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)
 local timerShadesofBargastCD					= mod:NewCDTimer(60.1, 334757, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--60-63 at least
+
+mod:AddSetIconOption("SetIconOnShades", 334757, true, true, {4, 5})
 ----Hecutis
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22310))
+local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
+local yellPetrifyingHowl						= mod:NewYell(334852, 135241)--Shortname "Howl"
+local yellPetrifyingHowlFades					= mod:NewFadesYell(334852, 135241)--Shortname "Howl"
+
 local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, 135241, nil, nil, 3)--20-26 Shortname "Howl"
-
---local berserkTimer							= mod:NewBerserkTimer(600)
-
-mod:AddRangeFrameOption("5/6/10")
-mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})--335111 335112 335113
-mod:AddSetIconOption("SetIconOnShades", 334757, true, true, {4, 5})
 
 mod.vb.sinSeekerCount = 0
 mod.vb.activeSeekers = 0

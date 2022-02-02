@@ -33,36 +33,53 @@ mod:RegisterEventsInCombat(
  or (target.id = 177095 or target.id = 177094) and type = "death"
 --]]
 --Stage One: The Unending Voice
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(22877), "announce")
 ----Kyra, The Unending
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23202), "announce")
 local warnUnendingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
-----Signe, The Voice
---local warnBloodLantern						= mod:NewTargetNoFilterAnnounce(341684, 2)
-----Skyja, The First
-local warnCalloftheValkyr						= mod:NewCountAnnounce(350467, 3)
-local warnAnnhyldesBrightAegis					= mod:NewTargetNoFilterAnnounce(350158, 2, nil, "Tank")
-local warnDaschlasMightyAnvil					= mod:NewTargetAnnounce(350184, 2)
-local warnBrynjasMournfulDirge					= mod:NewTargetAnnounce(350109, 2, nil, false)--On half the raid
-local warnArthurasCrushingGaze					= mod:NewTargetNoFilterAnnounce(350039, 3)
-local warnFragmentsofDestiny					= mod:NewTargetNoFilterAnnounce(350542, 3)
-local warnFragmentsofDestinyStack				= mod:NewCountAnnounce(350542, 2)
---Stage Two: The First of the Mawsworn
-local warnPierceSoul							= mod:NewStackAnnounce(350475, 2, nil, "Tank|Healer")
-local warnResentment							= mod:NewCountAnnounce(355294, 3)
-local warnLinkEssence							= mod:NewTargetNoFilterAnnounce(350483, 3)
 
---Stage One: The Unending Voice
-----Kyra, The Unending
 local specWarnUnendingStrike					= mod:NewSpecialWarningStack(350202, nil, 3, nil, nil, 1, 6)
 local specWarnUnendingStrikeTaunt				= mod:NewSpecialWarningTaunt(350202, nil, nil, nil, 1, 2)
 local specWarnFormlessMass						= mod:NewSpecialWarningSwitchCount(350342, "Dps", nil, nil, 1, 2)
 local specWarnSiphonVitality					= mod:NewSpecialWarningInterruptCount(350339, "HasInterrupt", nil, nil, 1, 2)
 local specWarnWingsofRage						= mod:NewSpecialWarningRun(350365, nil, nil, nil, 4, 2)
+
+local timerUnendingStrikeCD						= mod:NewCDTimer(6.7, 350202, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--6.7-14.7
+local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerWingsofRageCD						= mod:NewCDCountTimer(72.9, 350365, nil, nil, nil, 2)
+
+mod:AddSetIconOption("SetIconOnFormlessMass", 350342, true, true, {7, 8, 6})
 ----Signe, The Voice
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23203), "announce")
+--local warnBloodLantern						= mod:NewTargetNoFilterAnnounce(341684, 2)
+
 local specWarnSoulfulBlast						= mod:NewSpecialWarningInterrupt(350283, false, nil, nil, 1, 2)--Opt in, only some should be doing this one, plus it's spammy as hell
 local specWarnSongofDissolution					= mod:NewSpecialWarningInterrupt(350286, "HasInterrupt", nil, nil, 1, 2)
 local specWarnReverberatingRefrain				= mod:NewSpecialWarningMoveTo(350385, nil, nil, nil, 3, 2)
+
+local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
+local timerReverberatingRefrainCD				= mod:NewCDCountTimer(73.1, 350385, nil, nil, nil, 2)
 ----Skyja, The First
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23205), "announce")
+local warnCalloftheValkyr						= mod:NewCountAnnounce(350467, 3)
+local warnFragmentsofDestiny					= mod:NewTargetNoFilterAnnounce(350542, 3)
+local warnFragmentsofDestinyStack				= mod:NewCountAnnounce(350542, 2)
+
+local specWarnFragmentsofDestiny				= mod:NewSpecialWarningMoveAway(350542, nil, nil, nil, 1, 2)
+local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably change to icon/numbered yell system based on icon/combatlog order
+
+local timerCalloftheValkyrCD					= mod:NewCDCountTimer(52.3, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350541, nil, nil, nil, 3, nil, nil, nil, 2, 3)
+
+mod:AddInfoFrameOption(350542, true)
+mod:AddSetIconOption("SetIconOnFragments", 350542, true, false, {1, 2, 3, 4})--Mythic says max 4, so probably the cap
 ------Call of the Val'kyr
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(23206), "announce")
+local warnAnnhyldesBrightAegis					= mod:NewTargetNoFilterAnnounce(350158, 2, nil, "Tank")
+local warnDaschlasMightyAnvil					= mod:NewTargetAnnounce(350184, 2)
+local warnBrynjasMournfulDirge					= mod:NewTargetAnnounce(350109, 2, nil, false)--On half the raid
+local warnArthurasCrushingGaze					= mod:NewTargetNoFilterAnnounce(350039, 3)
+
 local specWarnAgathasEternalblade				= mod:NewSpecialWarningDodge(350012, nil, nil, nil, 2, 2)
 local specWarnDaschlasMightyAnvil				= mod:NewSpecialWarningMoveAway(350184, nil, nil, nil, 1, 2)
 local yellDaschlasMightyAnvil					= mod:NewShortYell(350184)
@@ -74,41 +91,25 @@ local yellBrynjasMournfulDirgeFades				= mod:NewShortFadesYell(350109)
 local specWarnArthurasCrushingGaze				= mod:NewSpecialWarningMoveTo(350039, nil, nil, nil, 3, 2)
 local yellArthurasCrushingGaze					= mod:NewYell(350039, nil, nil, nil, "YELL")
 local yellArthurasCrushingGazeFades				= mod:NewShortFadesYell(350039, nil, nil, nil, "YELL")
-------End Valks
-local specWarnFragmentsofDestiny				= mod:NewSpecialWarningMoveAway(350542, nil, nil, nil, 1, 2)
-local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably change to icon/numbered yell system based on icon/combatlog order
+
+mod:AddNamePlateOption("NPAuraOnBrightAegis", 350158)
 --Stage Two: The First of the Mawsworn
+mod:AddOptionLine(DBM:EJ_GetSectionInfo(22879), "announce")
+local warnPierceSoul							= mod:NewStackAnnounce(350475, 2, nil, "Tank|Healer")
+local warnResentment							= mod:NewCountAnnounce(355294, 3)
+local warnLinkEssence							= mod:NewTargetNoFilterAnnounce(350483, 3)
+
 local specWarnPierceSoul						= mod:NewSpecialWarningStack(350475, nil, 4, nil, nil, 1, 6)
 local specWarnPierceSoulTaunt					= mod:NewSpecialWarningTaunt(350475, nil, nil, nil, 1, 2)
 local specWarnLinkEssence						= mod:NewSpecialWarningDefensive(350483, nil, nil, nil, 1, 2, 3)
 local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, nil, 2, 2, 3)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
---Stage One: The Unending Voice
-----Kyra, The Unending
-local timerUnendingStrikeCD						= mod:NewCDTimer(6.7, 350202, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--6.7-14.7
-local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerWingsofRageCD						= mod:NewCDCountTimer(72.9, 350365, nil, nil, nil, 2)
-----Signe, The Voice
-local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
-local timerReverberatingRefrainCD				= mod:NewCDCountTimer(73.1, 350385, nil, nil, nil, 2)
-----Skyja, The First
-local timerCalloftheValkyrCD					= mod:NewCDCountTimer(52.3, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
-local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350541, nil, nil, nil, 3, nil, nil, nil, 2, 3)
---Stage Two: The First of the Mawsworn
 local timerPierceSoulCD							= mod:NewCDTimer(9.7, 350475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerResentmentCD							= mod:NewCDCountTimer(21.8, 355294, nil, nil, nil, 2)
 local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350482, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerWordofRecallCD						= mod:NewCDCountTimer(72.9, 350687, nil, nil, nil, 2, nil, DBM_COMMON_L.HEROIC_ICON)
-
 local berserkTimer								= mod:NewBerserkTimer(600)
-
---mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(350542, true)
-mod:AddSetIconOption("SetIconOnFragments", 350542, true, false, {1, 2, 3, 4})--Mythic says max 4, so probably the cap
-mod:AddSetIconOption("SetIconOnFormlessMass", 350342, true, true, {7, 8, 6})
-mod:AddNamePlateOption("NPAuraOnBrightAegis", 350158)
 
 local castsPerGUID = {}
 local fragmentTargets = {}

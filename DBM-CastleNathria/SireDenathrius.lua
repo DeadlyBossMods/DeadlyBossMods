@@ -38,24 +38,14 @@ mod:RegisterEventsInCombat(
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+
+mod:AddInfoFrameOption(nil, true)
 --Stage One: Sinners Be Cleansed
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22016))
 local warnBloodPrice							= mod:NewCountAnnounce(326851, 4)
 local warnFeedingTime							= mod:NewTargetAnnounce(327039, 2)--On this difficulty you don't need to help soak it so don't really NEED to know who it's on
 local warnNightHunter							= mod:NewTargetNoFilterAnnounce(327796, 4)--General announce, if target special warning not enabled
---Stage Two: The Crimson Chorus
-----Crimson Cabalist and horsemen
-local warnCrimsonCabalists						= mod:NewSpellAnnounce("ej22131", 2, 329711)
-local warnCrescendo								= mod:NewSpellAnnounce(336162, 3)
-local warnBalefulShadows						= mod:NewSpellAnnounce(344313, 3)
-----Remornia
-local warnCarnage								= mod:NewStackAnnounce(329906, 2, nil, "Tank|Healer")
-local warnImpale								= mod:NewTargetAnnounce(329951, 2)
-----Sire Denathrius
---Stage Three: Indignation
-local warnScorn									= mod:NewStackAnnounce(332585, 2, nil, "Tank|Healer")
-local warnFatalFinesse							= mod:NewTargetNoFilterAnnounce(332794, 2)
 
---Stage One: Sinners Be Cleansed
 local specWarnCleansingPain						= mod:NewSpecialWarningCount(326707, nil, nil, nil, 2, 2)
 local specWarnFeedingTime						= mod:NewSpecialWarningMoveAway(327039, nil, nil, nil, 1, 2)--Normal/LFR
 local yellFeedingTime							= mod:NewYell(327039)--Normal/LFR
@@ -67,25 +57,61 @@ local specWarnNightHunterTarget					= mod:NewSpecialWarningTarget(327796, false,
 local specWarnCommandRavage						= mod:NewSpecialWarningCount(327227, nil, 327122, nil, 2, 2)
 --local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(327992, nil, nil, nil, 1, 8)
+
+local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 3)
+local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerFeedingTimeCD						= mod:NewCDCountTimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
+local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)--Heroic/mythic
+local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
+
+mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
 --Intermission: March of the Penitent
 local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, nil, nil, 2, 2)
+
+local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 --Stage Two: The Crimson Chorus
-----Crimson Cabalist and horsemen
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22059))
+----Crimson Cabalist
+local warnCrimsonCabalists						= mod:NewSpellAnnounce("ej22131", 2, 329711)
+local warnCrescendo								= mod:NewSpellAnnounce(336162, 3)
+
 local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
+
+local timerCrimsonCabalistsCD					= mod:NewNextCountTimer(44.3, "ej22131", nil, nil, nil, 1, 329711)
 ----Horseman
+local warnBalefulShadows						= mod:NewSpellAnnounce(344313, 3)
+
 local specWarnVengefulWail						= mod:NewSpecialWarningInterruptCount(344776, "HasInterrupt", nil, nil, 1, 2, 4)
+
+mod:AddSetIconOption("SetIconOnBalefulShadows", 344313, false, true, {7, 8})
 ----Remornia
+local warnCarnage								= mod:NewStackAnnounce(329906, 2, nil, "Tank|Healer")
+local warnImpale								= mod:NewTargetAnnounce(329951, 2)
+
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 6, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
 local specWarnImpale							= mod:NewSpecialWarningMoveAway(329951, nil, nil, nil, 1, 2)
 local yellImpale								= mod:NewShortPosYell(329951)
 local yellImpaleFades							= mod:NewIconFadesYell(329951)
+
+local timerImpaleCD								= mod:NewNextCountTimer(44.3, 329951, nil, nil, nil, 3)
+
+mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3, 4})
 ----Sire Denathrius
 local specWarnWrackingPain						= mod:NewSpecialWarningDefensive(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
 local specWarnWrackingPainTaunt					= mod:NewSpecialWarningTaunt(329181, nil, nil, nil, 1, 2)
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(333932, nil, nil, nil, 4, 2)
 local specWarnCommandMassacre					= mod:NewSpecialWarningDodgeCount(330042, nil, 330137, nil, 2, 2)
+
+local timerWrackingPainCD						= mod:NewCDCountTimer(16.6, 329181, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
+local timerHandofDestructionCD					= mod:NewCDCountTimer(44.3, 333932, nil, nil, nil, 2)
+local timerCommandMassacreCD					= mod:NewCDCountTimer(49.8, 330042, 330137, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Mythic 41-45, Heroic 47.4-51
+
 --Stage Three: Indignation
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22195))
+local warnScorn									= mod:NewStackAnnounce(332585, 2, nil, "Tank|Healer")
+local warnFatalFinesse							= mod:NewTargetNoFilterAnnounce(332794, 2)
+
 local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 6, nil, nil, 1, 6)
 local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
 local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 5)
@@ -94,27 +120,6 @@ local yellFatalfFinesse							= mod:NewShortPosYell(332794)
 local yellFatalfFinesseFades					= mod:NewIconFadesYell(332794)
 local specWarnSinisterReflection				= mod:NewSpecialWarningCount(333979, nil, nil, nil, 2, 2, 4)--Both Massacre and Ravage at same time
 
---Stage One: Sinners Be Cleansed
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22016))
-local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 3)
-local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerFeedingTimeCD						= mod:NewCDCountTimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
-local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)--Heroic/mythic
-local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
---Intermission: March of the Penitent
-local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
---Stage Two: The Crimson Chorus
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22059))
-----Crimson Cabalist and horsemen
-local timerCrimsonCabalistsCD					= mod:NewNextCountTimer(44.3, "ej22131", nil, nil, nil, 1, 329711)
-----Remornia
-local timerImpaleCD								= mod:NewNextCountTimer(44.3, 329951, nil, nil, nil, 3)
-----Sire Denathrius
-local timerWrackingPainCD						= mod:NewCDCountTimer(16.6, 329181, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
-local timerHandofDestructionCD					= mod:NewCDCountTimer(44.3, 333932, nil, nil, nil, 2)
-local timerCommandMassacreCD					= mod:NewCDCountTimer(49.8, 330042, 330137, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Mythic 41-45, Heroic 47.4-51
---Stage Three: Indignation
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22195))
 local timerShatteringPainCD						= mod:NewCDCountTimer(23, 332619, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFatalFitnesseCD						= mod:NewCDCountTimer(22, 332794, nil, nil, nil, 3)
 local timerSinisterReflectionCD					= mod:NewCDCountTimer(60, 333979, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Used on mythic, Massacre and Ravage combined
@@ -122,11 +127,7 @@ local timerSinisterReflection					= mod:NewCastTimer(3, 333979, nil, nil, nil, 5
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:AddInfoFrameOption(326699, true)
-mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnBalefulShadows", 344313, false, true, {7, 8})
 
 mod.vb.priceCount = 0
 mod.vb.painCount = 0

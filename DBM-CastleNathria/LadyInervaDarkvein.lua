@@ -61,7 +61,6 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 
 --Anima Constructs
 local specWarnCondemn							= mod:NewSpecialWarningInterruptCount(331550, false, nil, 2, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
---mod:AddTimerLine(BOSS)
 local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers2")
 local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers2")
 local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
@@ -78,6 +77,7 @@ local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, 
 mod:AddBoolOption("timerContainers2", false, "timer", nil, 6)
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
+mod:GroupSpells(341621, 325382, 335396, 340452)--Group all tank stuff related to desires together
 
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8

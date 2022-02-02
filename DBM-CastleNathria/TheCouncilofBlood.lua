@@ -48,86 +48,96 @@ mod:RegisterEventsInCombat(
 --https://www.warcraftlogs.com/reports/ahyp8WPMnFcA96Vg#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
 --https://www.warcraftlogs.com/reports/cNrfpg1XZt89Aa4R#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
 --https://www.warcraftlogs.com/reports/zHM8mJ4hxX6TaVdG#fight=9&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
+--General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
+
+local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, 2, 2, 2)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(346945, nil, nil, nil, 1, 8)
+
+local berserkTimer								= mod:NewBerserkTimer(600)
 --Castellan Niklaus
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))--2 baseline abilities
 local warnDualistsRiposte						= mod:NewStackAnnounce(346690, 2, nil, "Tank|Healer")
 local warnDutifulAttendant						= mod:NewSpellAnnounce(346698, 2)
-local warnDredgerServants						= mod:NewSpellAnnounce(330978, 2)--One boss dead
-----Adds
-local warnCastellansCadre						= mod:NewSpellAnnounce(330965, 2)--Two bosses dead
-local warnFixate								= mod:NewTargetAnnounce(330967, 3)--Two bosses dead
-local warnSintouchedBlade						= mod:NewSpellAnnounce(346790, 4)
---Baroness Frieda
-local warnDreadboltVolley						= mod:NewCountAnnounce(337110, 2)
-local warnDrainEssence							= mod:NewCountAnnounce(346654, 3, nil, "Healer")
---Lord Stavros
-local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
-local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
---Intermission
-local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
-local warnDancingFever							= mod:NewTargetNoFilterAnnounce(347350, 4)
 
---General
-local specWarnGTFO								= mod:NewSpecialWarningGTFO(346945, nil, nil, nil, 1, 8)
---Castellan Niklaus
 local specWarnDualistsRiposte					= mod:NewSpecialWarningStack(346690, nil, 2, nil, nil, 1, 2)
 local specWarnDualistsRiposteTaunt				= mod:NewSpecialWarningTaunt(346690, nil, nil, nil, 1, 2)
 local specWarnDutifulAttendant					= mod:NewSpecialWarningSwitch(346698, "Dps", nil, nil, 1, 2)
-local specWarnFixate							= mod:NewSpecialWarningRun(330967, nil, nil, nil, 4, 2)--Two bosses dead
-----Mythic
---local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
---Baroness Frieda
-local specWarnDreadboltVolley					= mod:NewSpecialWarningInterruptCount(337110, false, nil, nil, 1, 2)
-local specWarnPridefulEruption					= mod:NewSpecialWarningMoveAway(346657, nil, 138658, nil, 2, 2)--One boss dead
---Lord Stavros
-local specWarnEvasiveLunge						= mod:NewSpecialWarningDodge(327497, nil, 219588, nil, 2, 2)
-local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
-local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
-local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
-local specWarnDancingFools						= mod:NewSpecialWarningSwitch(330964, "Dps", nil, nil, 1, 2)
---Intermission
-local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, 2, 2, 2)
-local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
 
---Castellan Niklaus
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))--2 baseline abilities
 local timerDualistsRiposteCD					= mod:NewCDTimer(18.7, 346690, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDutifulAttendantCD					= mod:NewCDTimer(44.9, 346698, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--Used after death on Mythic
+
+mod:AddNamePlateOption("NPAuraOnShield", 346694)
+mod:AddSetIconOption("SetIconOnDutiful", 346698, true, true, {8})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))--One is dead
+local warnDredgerServants						= mod:NewSpellAnnounce(330978, 2)--One boss dead
+
 local timerDredgerServantsCD					= mod:NewCDTimer(44.3, 330978, nil, nil, nil, 1)--Iffy on verification
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))--Two are dead
+local warnCastellansCadre						= mod:NewSpellAnnounce(330965, 2)--Two bosses dead
+local warnFixate								= mod:NewTargetAnnounce(330967, 3)--Two bosses dead (Veteran Stoneguard)
+local warnSintouchedBlade						= mod:NewSpellAnnounce(346790, 4)--Veteran Stoneguard
+
+local specWarnFixate							= mod:NewSpecialWarningRun(330967, nil, nil, nil, 4, 2)--Two bosses dead
+
 local timerCastellansCadreCD					= mod:NewCDTimer(26.7, 330965, nil, nil, nil, 1)
 --local timerSintouchedBladeCD						= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
+
+mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))--2 baseline abilities
+local warnDreadboltVolley						= mod:NewCountAnnounce(337110, 2)
+local warnDrainEssence							= mod:NewCountAnnounce(346654, 3, nil, "Healer")
+
+local specWarnDreadboltVolley					= mod:NewSpecialWarningInterruptCount(337110, false, nil, nil, 1, 2)
+
 local timerDrainEssenceCD						= mod:NewCDTimer(22.5, 346654, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerDreadboltVolleyCD					= mod:NewCDTimer(45, 337110, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Only for after image
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))--One is dead
+local specWarnPridefulEruption					= mod:NewSpecialWarningMoveAway(346657, nil, 138658, nil, 2, 2)--One boss dead
+
 local timerPridefulEruptionCD					= mod:NewCDTimer(25, 346657, 138658, nil, nil, 3)
+
+mod:AddRangeFrameOption(8, 346657)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22945))--Two are dead
 local timerSoulSpikesCD							= mod:NewCDTimer(19.4, 346762, nil, nil, nil, 3)
+
+mod:AddSetIconOption("SetIconOnImage", "ej22433", true, true, {6})
 --Lord Stavros
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22149))--2 baseline abilities
+local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
+
+local specWarnEvasiveLunge						= mod:NewSpecialWarningDodge(327497, nil, 219588, nil, 2, 2)
+local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
+local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
+
 local timerEvasiveLungeCD						= mod:NewCDTimer(18.7, 327497, 219588, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDarkRecitalCD						= mod:NewCDTimer(45, 331634, nil, nil, nil, 3)--Continues on Mythic after death instead of gaining new ability
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22203))--One is dead
+local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
+
 local timerWaltzofBloodCD						= mod:NewCDTimer(21.8, 327616, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22206))--Two are dead
+local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
+
+local specWarnDancingFools						= mod:NewSpecialWarningSwitch(330964, "Dps", nil, nil, 1, 2)
+
 local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
+
+mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, true, {8})--Attempts to set icon only on killable one, not yet tested
+mod:AddNamePlateOption("NPAuraOnUproar", 346303)
 --Mythic
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
+local warnDancingFever							= mod:NewTargetNoFilterAnnounce(347350, 4)
+
+local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
+
 local timerDancingFeverCD						= mod:NewCDCountTimer(60, 347350, nil, nil, nil, 3)
 
-local berserkTimer								= mod:NewBerserkTimer(600)
-
-mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
-mod:AddSetIconOption("SetIconOnDutiful", 346698, true, true, {8})
-mod:AddSetIconOption("SetIconOnImage", "ej22433", true, true, {6})
-mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, true, {8})--Attempts to set icon only on killable one, not yet tested
-mod:AddNamePlateOption("NPAuraOnFixate", 330967)
-mod:AddNamePlateOption("NPAuraOnShield", 346694)
-mod:AddNamePlateOption("NPAuraOnUproar", 346303)
+mod:GroupSpells(346698, 346694)--Dutiful Attendant and it's shield
+mod:GroupSpells(330965, 330967, 346790)--Castellans Cadre and their abilities
 
 mod.vb.feversActive = 0
 mod.vb.volleyCast = 0
