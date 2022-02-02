@@ -100,7 +100,7 @@ local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, 
 local timerGlacialWindsCD							= mod:NewNextTimer(13.3, 352379, nil, nil, nil, 3)
 --Stage Three
 mod:AddOptionLine(DBM:EJ_GetSectionInfo(23201), "announce")
---local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
+local warnOnslaughtoftheDamned						= mod:NewSpellAnnounce(352348, 2)
 
 local timerOnslaughtoftheDamnedCD					= mod:NewNextTimer(40.2, 352348, nil, nil, nil, 1)
 --local berserkTimer								= mod:NewBerserkTimer(600)
