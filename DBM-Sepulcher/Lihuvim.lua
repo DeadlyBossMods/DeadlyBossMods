@@ -147,7 +147,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 365257 and self:AntiSpam(5, 1) then
 		warnFormSentry:Show()
 	elseif spellId == 368027 then
-		if if self.Options.SpecWarn368027defensive and self:IsTanking("player", "boss1", nil, true) then
+		if self.Options.SpecWarn368027defensive and self:IsTanking("player", "boss1", nil, true) then
 			specWarnResonance:Show()
 			specWarnResonance:Play("defensive")
 		else
