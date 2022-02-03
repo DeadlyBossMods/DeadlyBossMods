@@ -58,7 +58,7 @@ local yellDeconstructingEnergy					= mod:NewYell(363795)
 local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795)
 --Adds
 ----Degeneration Automa
-l--ocal specWarnDegenerate						= mod:NewSpecialWarningYou(364092, nil, nil, nil, 1, 2)
+--local specWarnDegenerate						= mod:NewSpecialWarningYou(364092, nil, nil, nil, 1, 2)
 --local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
