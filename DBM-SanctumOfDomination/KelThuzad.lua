@@ -71,7 +71,6 @@ local timerGlacialWrathCD							= mod:NewCDTimer(109.9, 353808, nil, nil, nil, 3
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347292, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 
-mod:AddInfoFrameOption(354198, true)--Howling Blizzard
 mod:AddSetIconOption("SetIconOnGlacialWrath", 353808, false, false, {1, 2, 3, 4})--Sets icons on players (can be used with spike marking)
 mod:AddSetIconOption("SetIconOnGlacialSpike", "ej23449", true, true, {1, 2, 3, 4})--Sets icons on spikes spawned by players (can be used with player market)
 mod:AddSetIconOption("SetIconOnEcho", 347292, false, false, {1, 2, 3, 4})--Off by default since it conflicts with wrath icons
@@ -147,19 +146,12 @@ function mod:OnCombatStart(delay)
 		timerHowlingBlizzardCD:Start(89-delay)--89-94.
 	end
 --	berserkTimer:Start(-delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
-		DBM.InfoFrame:Show(3, "enemypower", 2)
-	end
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
