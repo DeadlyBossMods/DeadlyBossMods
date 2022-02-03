@@ -90,8 +90,6 @@ local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39, 353195, nil, nil, 
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("8")
---mod:AddInfoFrameOption(328897, true)
 mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnGrimPortent", 354365, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddSetIconOption("SetIconOnMonstrosity", "ej23764", true, true, {7, 8})
@@ -201,10 +199,6 @@ function mod:OnCombatStart(delay)
 		timerCallofEternityCD:Start(24-delay, 1)
 		timerInvokeDestinyCD:Start(35-delay, 1)
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -214,9 +208,6 @@ end
 function mod:OnCombatEnd()
 	table.wipe(castsPerGUID)
 	self:UnregisterShortTermEvents()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end

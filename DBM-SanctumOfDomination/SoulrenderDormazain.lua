@@ -72,7 +72,7 @@ local timerHellscream						= mod:NewCastTimer(35, 350411, nil, nil, nil, 2, nil,
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(352158, true)
+mod:AddInfoFrameOption(352158, false)
 mod:AddSetIconOption("SetIconOnBrandofTorment", 350647, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnMawsworn", 350615, true, true, {5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnDefiance", 350650)
