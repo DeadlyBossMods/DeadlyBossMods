@@ -59,7 +59,7 @@ local berserkTimer								= mod:NewBerserkTimer(600)
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})
-mod:AddInfoFrameOption(334755, true)
+mod:AddInfoFrameOption(nil, true)
 mod:AddBoolOption("SortDesc", false)
 mod:AddBoolOption("ShowTimeNotStacks", false)
 
