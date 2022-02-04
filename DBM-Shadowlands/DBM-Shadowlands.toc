@@ -15,6 +15,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: normal
+## X-DBM-NewOptions: 1
 ## X-DBM-Mod-Name: World Bosses (SL)
 ## X-DBM-Mod-Name-esES: Jefes de Mundo (SL)
 ## X-DBM-Mod-Name-esMX: Jefes de Mundo (SL)
