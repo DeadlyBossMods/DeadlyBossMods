@@ -37,7 +37,6 @@ local specWarnMindLink				= mod:NewSpecialWarningMoveAway(322648, nil, nil, nil,
 local yellMindLink					= mod:NewYell(322648)
 local specWarnMarkthePrey			= mod:NewSpecialWarningYou(322563, nil, nil, nil, 1, 2)
 local specWarnAcidExpulsion			= mod:NewSpecialWarningDodge(322654, nil, nil, nil, 2, 2)
-local specWarnParasiticInfester		= mod:NewSpecialWarning("specWarnParasiticInfester", nil, nil, nil, 1, 2, 4, 337235)
 local specWarnParasiticInfesterKick	= mod:NewSpecialWarning("specWarnParasiticInfesterKick", nil, nil, nil, 1, 2, 4, 337235)
 local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParasiticInfester")
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
