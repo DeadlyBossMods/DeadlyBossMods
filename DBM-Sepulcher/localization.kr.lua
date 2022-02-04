@@ -63,7 +63,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Halondrus the Reclaimer --
 ---------------------------
---L= DBM:GetModLocalization(2463)
+L= DBM:GetModLocalization(2463)
+
+L:SetMiscLocalization({
+	Mote		= "티끌"
+})
 
 ---------------------------
 --  Anduin Wrynn --
