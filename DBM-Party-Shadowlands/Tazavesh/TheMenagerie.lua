@@ -21,39 +21,42 @@ mod:RegisterEventsInCombat(
 
 --TODO, target scan grasp to warn target during cast?
 --TODO, find way of detecting hard mode and start engage timers for incoming bosses
+--General
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 --Alcruux
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23159))
 local warnGluttony					= mod:NewTargetNoFilterAnnounce(349627, 2)
 
---Alcruux
 local specWarnGluttony				= mod:NewSpecialWarningYou(349627, nil, nil, nil, 1, 2)
 local yellGluttony					= mod:NewYell(349627)
 local yellGluttonyFades				= mod:NewShortFadesYell(349627)
 local specWarnGripofHunger			= mod:NewSpecialWarningRun(349663, nil, nil, nil, 4, 2)
 local specWarnGrandConsumption		= mod:NewSpecialWarningDodge(349663, nil, nil, nil, 2, 2)
---Achillite
-local specWarnVentingProtocol		= mod:NewSpecialWarningDodge(349987, nil, nil, nil, 2, 2)
-local specWarnPurificationProtocol	= mod:NewSpecialWarningDispel(349954, "RemoveMagic", nil, nil, 1, 2)
---Venza Goldfuse
-local specWarnWhirlingAnnihilation	= mod:NewSpecialWarningRun(350086, nil, nil, nil, 4, 2)
-local specWarnChainsofDamnation		= mod:NewSpecialWarningSwitch(350101, "-Healer", nil, nil, 1, 2)
-local yellChainsofDamnation			= mod:NewYell(350101, nil, nil, nil, "YELL")
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
---Alcruux
 local timerGripofHungerCD			= mod:NewAITimer(11, 349663, nil, nil, nil, 2)
 local timerGrandconsumptionCD		= mod:NewAITimer(11, 349797, nil, nil, nil, 3)
+
+mod:AddSetIconOption("SetIconOnGluttony", 349627, true, false, {1})
 --Achillite
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23231))
+local specWarnVentingProtocol		= mod:NewSpecialWarningDodge(349987, nil, nil, nil, 2, 2)
+local specWarnPurificationProtocol	= mod:NewSpecialWarningDispel(349954, "RemoveMagic", nil, nil, 1, 2)
+
 local timerAchilliteCD				= mod:NewNextTimer(11, "ej23231", nil, nil, nil, 1, "132349")
 local timerVentingProtocolCD		= mod:NewAITimer(11, 349987, nil, nil, nil, 3)
 local timerFlagellationProtocolCD	= mod:NewAITimer(11, 349934, nil, nil, nil, 3)
 local timerPurificationProtocolCD	= mod:NewAITimer(15.8, 320200, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+
+mod:AddInfoFrameOption(349934, true)
 --Venza Goldfuse
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23241))
+local specWarnWhirlingAnnihilation	= mod:NewSpecialWarningRun(350086, nil, nil, nil, 4, 2)
+local specWarnChainsofDamnation		= mod:NewSpecialWarningSwitch(350101, "-Healer", nil, nil, 1, 2)
+local yellChainsofDamnation			= mod:NewYell(350101, nil, nil, nil, "YELL")
+
 local timerVenzaCD					= mod:NewNextTimer(11, "ej23241", nil, nil, nil, 1, "132349")
 local timerWhirlingAnnihilationCD	= mod:NewAITimer(15.8, 350086, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerChainsofDamnationCD		= mod:NewAITimer(11, 350101, nil, nil, nil, 1)
-
-mod:AddSetIconOption("SetIconOnFeast", 349627, true, false, {1})
-mod:AddInfoFrameOption(349933, true)
 
 local activeBossGUIDS = {}
 
@@ -113,7 +116,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnGluttony:Show(args.destName)
 		end
-		if self.Options.SetIconOnFeast then
+		if self.Options.SetIconOnGluttony then
 			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 349933 then
@@ -141,7 +144,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellGluttonyFades:Cancel()
 		end
-		if self.Options.SetIconOnFeast then
+		if self.Options.SetIconOnGluttony then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 349933 then

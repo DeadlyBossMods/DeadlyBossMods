@@ -41,6 +41,7 @@ local timerPattyCakeCD				= mod:NewCDTimer(20.6, 321828, nil, nil, nil, 3)--20-2
 
 mod:AddNamePlateOption("NPAuraOnFixate", 321891)
 mod:AddSetIconOption("SetIconOnAdds2", "ej21691", false, true, {1, 2, 3, 4})
+mod:GroupSpells(321873, 321891)--Freeze Tag and associated fixate
 
 local seenAdds = {}
 mod.vb.addIcon = 1

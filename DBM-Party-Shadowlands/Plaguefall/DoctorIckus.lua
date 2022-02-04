@@ -49,7 +49,7 @@ local timerSlimeInjectionCD			= mod:NewCDTimer(17, 329110, nil, nil, nil, 5, nil
 --local timerPestilenceSurgeCD		= mod:NewCDTimer(38.1, 332617, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--Too unreliable, 30-80, sometimes not even cast at all
 --local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--no CD, health based trigger
 
-mod:AddRangeFrameOption(5, 321935)
+mod:AddRangeFrameOption(5, 322410)
 
 mod.vb.lungeCount = 0
 

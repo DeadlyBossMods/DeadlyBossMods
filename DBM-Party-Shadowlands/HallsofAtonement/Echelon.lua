@@ -38,7 +38,7 @@ local yellStoneShatteringLeapFades	= mod:NewShortFadesYell(319592, 47482)
 
 local timerStoneCallCD				= mod:NewCDTimer(37.6, 319733, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--37.6-49.19 (42-51 now? Or maybe health based)
 local timerStoneShatteringLeapCD	= mod:NewCDTimer(29.1, 319592, 47482, nil, nil, 3)--shortText "Leap"
-local timerCurseofStoneCD			= mod:NewCDTimer(29.1, 327411, nil, nil, nil, 3, nil, DBM_COMMON_L.CURSE_ICON)
+local timerCurseofStoneCD			= mod:NewCDTimer(29.1, 319603, nil, nil, nil, 3, nil, DBM_COMMON_L.CURSE_ICON)
 local timerBloodTorrentCD			= mod:NewCDTimer(16.9, 319702, nil, nil, nil, 2)--16.9 unless delayed by one of other casts
 
 mod:AddNamePlateOption("NPAuraOnStoneForm", 319724)
