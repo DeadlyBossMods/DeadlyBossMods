@@ -26,8 +26,9 @@ ability.id = 322550 and type = "begincast"
  or (ability.id = 322527 or ability.id = 322450) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
  or (ability.id = 337235 or ability.id = 337249 or ability.id = 337255) and type = "begincast"
 --]]
+--TODO, find way to group all the parasitic stuff which was generalized on purpose to clean up the mod
 local warnMarkthePrey				= mod:NewTargetNoFilterAnnounce(322563, 3)
-local warnInvestor					= mod:NewAnnounce("warnInvestor", 4, 337235)
+local warnInfestor					= mod:NewAnnounce("warnInfestor", 4, 337235)
 
 local specWarnConsumption			= mod:NewSpecialWarningDodge(322450, nil, nil, nil, 2, 2)
 local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, 2, 1, 2)
@@ -42,19 +43,19 @@ local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParas
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 
 local timerAcceleratedIncubationCD	= mod:NewCDTimer(34, 322550, nil, nil, nil, 1, nil, nil, true)--34-43?
-local timerMindLinkCD				= mod:NewCDTimer(15.4, 322614, nil, nil, nil, 3, nil, nil, true)--15-19, still not cast if everyone already affected by it.
+local timerMindLinkCD				= mod:NewCDTimer(15.4, 322648, nil, nil, nil, 3, nil, nil, true)--15-19, still not cast if everyone already affected by it.
 local timerAcidExpulsionCD			= mod:NewCDTimer(19.4, 322654, nil, nil, nil, 3, nil, nil, true)--19-26
 local timerParasiticInfesterCD		= mod:NewTimer(23, "timerParasiticInfesterCD", 337235, nil, nil, 4, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.INTERRUPT_ICON, true)--23-26.3
 
 mod:AddInfoFrameOption(322527, true)
-mod:AddSetIconOption("SetIconOnMindLink", 296944, true, false, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnMindLink", 322648, true, false, {1, 2, 3, 4, 5})
 
 mod.vb.mindLinkIcon = 1
 mod.vb.firstPray = false
 
 function mod:InfesterTarget(targetname, uId)
 	if not targetname then return end
-	warnInvestor:Show(targetname)
+	warnInfestor:Show(targetname)
 	if targetname == UnitName("player") then
 		yellParasiticInfester:Yell()
 	end

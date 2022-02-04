@@ -31,25 +31,23 @@ mod:RegisterEventsInCombat(
  or (ability.id = 324368 or ability.id = 317661) and type = "begincast"
 --]]
 --Kin-Tara
+local KinTara = DBM:EJ_GetSectionInfo(21637)
+mod:AddTimerLine(KinTara)
 local warnChargedSpear				= mod:NewTargetNoFilterAnnounce(321009, 4)
 
---Kin-Tara
 local specWarnOverheadSlash			= mod:NewSpecialWarningDefensive(320966, "Tank", nil, nil, 1, 2)
 local specWarnDarkLance				= mod:NewSpecialWarningInterrupt(327481, "HasInterrupt", nil, nil, 1, 2)
 local specWarnChargedSpear			= mod:NewSpecialWarningMoveAway(321009, nil, nil, nil, 1, 2)
 local yellChargedSpear				= mod:NewYell(321009)
 local specWarnChargedSpearNear		= mod:NewSpecialWarningClose(321009, nil, nil, nil, 1, 2)
---Azules
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
 
---Kin-Tara
-local KinTara = DBM:EJ_GetSectionInfo(21637)
-mod:AddTimerLine(KinTara)
 local timerOverheadSlashCD			= mod:NewCDTimer(6.3, 320966, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--6.3-11
 local timerFlightCD					= mod:NewCDTimer(145, 313606, nil, nil, nil, 6)
 local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Azules
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21639))
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
+
 local timerInsidiousVenomCD			= mod:NewCDTimer(11.4, 317661, nil, nil, nil, 2)
 local timerMawTouchedVenomCD		= mod:NewCDTimer(15.8, 317655, nil, nil, nil, 3)
 

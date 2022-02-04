@@ -21,31 +21,29 @@ mod:RegisterEventsInCombat(
 --TODO, figure out right P1 hyperlight id
 --TODO, verify the kind of mechanics that nova and fragmentation are
 --Stage One: Final Preparations
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23344))
 local warnCollapsingStar			= mod:NewCountAnnounce(353635, 3)
---Stage Two: Power Overwhelming
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
---Stage One: Final Preparations
 local specWarnHyperlightSpark		= mod:NewSpecialWarningCount(350796, nil, nil, nil, 2, 2)
 local specWarnSummonAssassins		= mod:NewSpecialWarningSwitch(351124, "Dps", nil, nil, 1, 2)
 local specWarnShurikenBlitz			= mod:NewSpecialWarningInterruptCount(351119, "HasInterrupt", nil, nil, 1, 2)
---local yellEmbalmingIchor			= mod:NewYell(327664)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
+
+local timerHyperlightSparkCD		= mod:NewAITimer(11, 350796, nil, nil, nil, 3)
+local timerCollapsingStarCD			= mod:NewAITimer(11, 353635, nil, nil, nil, 5)
+local timerSummonAssassinsCD		= mod:NewAITimer(15.8, 351124, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+
+mod:AddInfoFrameOption(357190, true)
 --Stage Two: Power Overwhelming
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23340))
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
+
 local specWarnHyperlightJolt		= mod:NewSpecialWarningCount(350875, nil, nil, nil, 2, 2)
 local specWarnEnergyFragmentation	= mod:NewSpecialWarningDodge(351096, nil, nil, nil, 2, 2)
 local specWarnHyperlightNova		= mod:NewSpecialWarningDodge(351646, nil, nil, nil, 2, 2)
 
---Stage One: Final Preparations
-local timerHyperlightSparkCD		= mod:NewAITimer(11, 350796, nil, nil, nil, 3)
-local timerCollapsingStarCD			= mod:NewAITimer(11, 353635, nil, nil, nil, 5)
-local timerSummonAssassinsCD		= mod:NewAITimer(15.8, 351124, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
---Stage Two: Power Overwhelming
 local timerHyperlightJoltCD			= mod:NewAITimer(11, 350875, nil, nil, nil, 3)
 local timerEnergyFragmentationCD	= mod:NewAITimer(11, 351096, nil, nil, nil, 3)
 local timerHyperlightNovaCD			= mod:NewAITimer(11, 351646, nil, nil, nil, 3)
-
-mod:AddInfoFrameOption(357190, true)
 
 mod.vb.hyperlightCount = 0
 mod.vb.starCount = 0

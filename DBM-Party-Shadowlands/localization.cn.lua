@@ -87,7 +87,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-		warnInvestor					= "寄生平静在 %s",
+		warnInfestor					= "寄生平静在 %s",
 		specWarnParasiticInfesterKick	= "寄生平静 - 快打断"
 })
 
@@ -96,7 +96,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	warnInvestor					= "通告寄生平静的目标",
+	warnInfestor					= "通告寄生平静的目标",
 	specWarnParasiticInfesterKick	= "需要打断寄生平静时显示特殊警告",
 	timerParasiticInfesterCD	= "显示寄生寄生计时器",
 	yellParasiticInfester		= "当受到寄生平静感染时大喊"

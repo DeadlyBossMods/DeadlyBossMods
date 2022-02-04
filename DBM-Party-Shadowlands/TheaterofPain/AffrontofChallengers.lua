@@ -24,40 +24,41 @@ ability.id = 320063 and type = "begincast"
  or (target.id = 164451 or target.id = 164463 or target.id = 164461) and type = "death"
 --]]
 --Dessia the Decapitator
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21582))
 local warnSlam							= mod:NewSpellAnnounce(320063, 3, nil, "Tank")
 local warnMortalStrike					= mod:NewTargetNoFilterAnnounce(320069, 3, nil, "Tank|Healer")
 local warnEnrage						= mod:NewTargetNoFilterAnnounce(324085, 3)
 local warnFixate						= mod:NewTargetNoFilterAnnounce(326892, 2)
---Paceran the Virulent
-local warnGeneticAlteration				= mod:NewSpellAnnounce(320248, 2)--Goes on everyone
---Sathel the Accursed
-local warnSearingDeath					= mod:NewTargetAnnounce(333231, 3)
-local warnOnewithDeath					= mod:NewTargetNoFilterAnnounce(320293, 3)
---Xira the Underhanded
-local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)--And re-added in 9.1?
 
---Dessia the Decapitator
 local specWarnSlam						= mod:NewSpecialWarningDefensive(320063, false, nil, 2, 1, 2)--Cast very often, let this be an opt in
 local specWarnEnrage					= mod:NewSpecialWarningDispel(324085, "RemoveEnrage", nil, nil, 1, 2)
 local specWarnFixate					= mod:NewSpecialWarningYou(326892, nil, nil, nil, 1, 2)
---Paceran the Virulent
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
---Sathel the Accursed
-local specWarnSearingDeath				= mod:NewSpecialWarningMoveAway(333231, nil, nil, nil, 1, 2)
-local yellSearingDeath					= mod:NewYell(333231)
-local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "MagicDispeller", nil, nil, 1, 2)
---Xira
-local yellOpportunityStrikes			= mod:NewYell(333540)
 
---Dessia the Decapitator
 local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--21.8-32.7
 local timerSlamCD						= mod:NewCDTimer(7.3, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--7.3-10.9
 --Paceran the Virulent
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21581))
+local warnGeneticAlteration				= mod:NewSpellAnnounce(320248, 2)--Goes on everyone
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
+
 local timerNoxiousSporeCD				= mod:NewCDTimer(15.8, 320180, nil, nil, nil, 3)
 --Sathel the Accursed
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21591))
+local warnSearingDeath					= mod:NewTargetAnnounce(333231, 3)
+local warnOnewithDeath					= mod:NewTargetNoFilterAnnounce(320293, 3)
+
+local specWarnSearingDeath				= mod:NewSpecialWarningMoveAway(333231, nil, nil, nil, 1, 2)
+local yellSearingDeath					= mod:NewYell(333231)
+local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "MagicDispeller", nil, nil, 1, 2)
+
 local timerSearingDeathCD				= mod:NewCDTimer(11.7, 333231, nil, nil, nil, 3)--11.7-24
 local timerSpectralTransferenceCD		= mod:NewCDTimer(13.4, 320272, nil, nil, nil, 5, nil, DBM_COMMON_L.MAGIC_ICON)--13.4-57
 --Xira the Underhanded
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23841))
+local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)--And re-added in 9.1?
+
+local yellOpportunityStrikes			= mod:NewYell(333540)
+
 local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--And re-added in 9.1?
 
 function mod:OnCombatStart(delay)

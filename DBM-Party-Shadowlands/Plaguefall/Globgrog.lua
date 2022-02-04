@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnPlaguestomp				= mod:NewCastAnnounce(324527, 2)
 local warnSlimeWave					= mod:NewCastAnnounce(324667, 2)
-local warnBeckonSlime				= mod:NewCastAnnounce(324459, 2, 9)
+local warnBeckonSlime				= mod:NewCastAnnounce(327608, 2, 9)
 
 --local specWarnPlaguestomp			= mod:NewSpecialWarningDodge(324527, nil, nil, nil, 2, 2)
 local specWarnDebilitatingPlague	= mod:NewSpecialWarningDispel(324652, "RemoveDisease", nil, nil, 1, 2)

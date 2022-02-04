@@ -33,7 +33,7 @@ local timerTelekineticTossCD		= mod:NewCDTimer(11.5, 323143, nil, nil, nil, 3)--
 local timerUnleashedSufferingCD		= mod:NewCDTimer(5, 323236, nil, nil, nil, 3)--Unknown actual timer, need longer pull
 local timerStigmaofPrideCD			= mod:NewCDTimer(27.8, 323437, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 --Other phasae
-local timerRitualofWoeCD			= mod:NewNextTimer(8.2, 328791, nil, nil, nil, 2)
+local timerRitualofWoeCD			= mod:NewNextTimer(8.2, 323393, nil, nil, nil, 2)
 
 function mod:OnCombatStart(delay)
 	timerTelekineticTossCD:Start(6-delay)

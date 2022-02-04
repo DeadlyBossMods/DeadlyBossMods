@@ -84,7 +84,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	warnInvestor			= "%s에게 기생 감염충",
+	warnInfestor			= "%s에게 기생 감염충",
 	specWarnParasiticInfesterKick	= "기생 감염충 - 차단!"
 })
 
@@ -93,7 +93,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	warnInvestor			= "기생 감염충 대상 알림",
+	warnInfestor			= "기생 감염충 대상 알림",
 	specWarnParasiticInfesterKick	= "기생 감염충을 차단해야 할 때 특수 경고 보기",
 	timerParasiticInfesterCD	= "기생 감염충 타이머 바 보기",
 	yellParasiticInfester		= "기생 감염충 대상일 때 말풍선으로 알리기"

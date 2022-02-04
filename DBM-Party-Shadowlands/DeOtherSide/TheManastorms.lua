@@ -30,38 +30,39 @@ mod:RegisterEventsInCombat(
  or ability.id = 324047 and type = "cast"
  or ability.id = 342905
 --]]
---Stage One: Millhouse's Magics
-local warnSummonPowerCrystal		= mod:NewSpellAnnounce(320787, 3)
-local warnThrowBuzzSaw				= mod:NewSpellAnnounce(320168, 3, nil, false)
-local warnBleeding					= mod:NewStackAnnounce(320147, 2, nil, "Tank|Healer")
---Stage Two: Millificent's Gadgets
---local warnMechanicalBombSquirrel	= mod:NewSpellAnnounce(320825, 3)--Spammed
-
---Stage One: Millhouse's Magics
---local specWarnVulnerabilityStack	= mod:NewSpecialWarningStack(320786, nil, 12, nil, nil, 1, 6)
-local specWarnDoom					= mod:NewSpecialWarningSpell(320141, nil, 226243, nil, 2, 2, 4)--Mythic only
-local specWarnFrostbolt				= mod:NewSpecialWarningInterruptCount(320008, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBleeding				= mod:NewSpecialWarningStack(320147, nil, 12, nil, nil, 1, 6)
-local specWarnLaser					= mod:NewSpecialWarningMoveTo(323877, nil, 182908, nil, 2, 8, 4)--Mythic only
-local yellLaser						= mod:NewYell(323877)
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
---Stage Two: Millificent's Gadgets
-local specWarnAerialRocketChicken	= mod:NewSpecialWarningDefensive(321061, nil, 45255, nil, 2, 2, 4)--Mythic only
-local specWarnShadowfury			= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 2, 8, 4)--Mythic only
-
 --General
+--local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
+
 local timerPhaseCD						= mod:NewPhaseTimer(30)
 --Stage One: Millhouse's Magics
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22026))
+local warnSummonPowerCrystal			= mod:NewSpellAnnounce(320787, 3)
+local warnThrowBuzzSaw					= mod:NewSpellAnnounce(320168, 3, nil, false)
+local warnBleeding						= mod:NewStackAnnounce(320147, 2, nil, "Tank|Healer")
+
+local specWarnDoom						= mod:NewSpecialWarningSpell(320141, nil, 226243, nil, 2, 2, 4)--Mythic only
+local specWarnFrostbolt					= mod:NewSpecialWarningInterruptCount(320008, "HasInterrupt", nil, nil, 1, 2)
+local specWarnBleeding					= mod:NewSpecialWarningStack(320147, nil, 12, nil, nil, 1, 6)
+local specWarnLaser						= mod:NewSpecialWarningMoveTo(323877, nil, 182908, nil, 2, 8, 4)--Mythic only
+local yellLaser							= mod:NewYell(323877)
+
 local timerSummonPowerCrystalCD			= mod:NewCDTimer(7.4, 320787, nil, nil, nil, 5)--Usually 8 (sometimes a cast is skipped if it perfectly lines up with a laser, do to this variation
 local timerDoomCD						= mod:NewNextTimer(15.8, 320141, 226243, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname Doom!!!
 local timerLaserCD						= mod:NewNextCountTimer(15, 323877, 182908, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname Laser
+
+mod:AddInfoFrameOption(320786, true)
 --Stage Two: Millificent's Gadgets
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21798))
+--local warnMechanicalBombSquirrel		= mod:NewSpellAnnounce(320825, 3)--Spammed
+
+local specWarnAerialRocketChicken		= mod:NewSpecialWarningDefensive(321061, nil, 45255, nil, 2, 2, 4)--Mythic only
+local specWarnShadowfury				= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 2, 8, 4)--Mythic only
+
 --local timerMechanicalBombSquirrelCD	= mod:NewCDTimer(13, 320825, nil, nil, nil, 3)
 local timerExperimentalSquirrelBombCD	= mod:NewCDTimer(7.9, 320823, nil, nil, nil, 5)
 local timerAerialRocketChickenCD		= mod:NewNextTimer(13, 321061, 45255, nil, nil, 3)--Shortname Rocket Chicken
 local timerShadowfuryCD					= mod:NewNextCountTimer(13, 320132, nil, nil, nil, 3)
 
-mod:AddInfoFrameOption(320786, true)
 mod:AddRangeFrameOption(8, 320132)
 
 local millHouse, millificent = DBM:EJ_GetSectionInfo(22027), DBM:EJ_GetSectionInfo(22031)
