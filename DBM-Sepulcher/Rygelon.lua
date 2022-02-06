@@ -180,7 +180,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkEclipse:CombinedShow(0.5, args.destName)
 		self.vb.debuffIcon = self.vb.debuffIcon + 1
 	elseif spellId == 362273 then
-		warnQuasarRadiation:Show(args.destName, amount)
+		warnQuasarRadiation:Show(args.destName, args.amount or 1)
 		timerQuasarRadiation:Stop()
 		timerQuasarRadiation:Start()
 	elseif spellId == 362206 then
