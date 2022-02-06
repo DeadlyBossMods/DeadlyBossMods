@@ -42,17 +42,13 @@ mod:RegisterEventsInCombat(
  or ability.id = 366849 and type = "applydebuff"
  or ability.id = 362862 and type = "applybuff"
 --]]
-local P1Info, P15Info, P2Info, P25Info, P3Info = DBM:EJ_GetSectionInfo(24462), DBM:EJ_GetSectionInfo(24494), DBM:EJ_GetSectionInfo(24478), DBM:EJ_GetSectionInfo(24172), DBM:EJ_GetSectionInfo(24417)
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --Stage One: Kingsmourne Hungers
-mod:AddOptionLine(P1Info, "announce")
-mod:AddOptionLine(P1Info, "specialannounce")
-mod:AddOptionLine(P1Info, "yell")
-mod:AddTimerLine(P1Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24462))
 --mod:AddIconLine(P1Info)
 --local warnDespair								= mod:NewTargetNoFilterAnnounce(365235, 2)
 local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3)
@@ -84,10 +80,7 @@ local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil
 --mod:AddSetIconOption("SetIconOnWickedStar", 365021, false, false, {1, 2, 3, 4, 5, 6})
 
 --Intermission: Remnant of a Fallen King
-mod:AddOptionLine(P15Info, "announce")
-mod:AddOptionLine(P15Info, "specialannounce")
-mod:AddTimerLine(P15Info)
-mod:AddIconLine(P15Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24494))
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
 
 local specWarnSoulReaper						= mod:NewSpecialWarningDefensive(362771, nil, nil, nil, 1, 2)
@@ -102,9 +95,7 @@ mod:AddRangeFrameOption(8, 363020)
 mod:AddSetIconOption("SetIconOnMonstrousSoul", 363028, true, true, {8})
 
 --Stage Two: Grim Reflections
-mod:AddOptionLine(P2Info, "specialannounce")
-mod:AddTimerLine(P2Info)
-mod:AddIconLine(P2Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24478))
 local specWarnGrimReflections					= mod:NewSpecialWarningSwitch(365120, "-Healer", nil, nil, 1, 2)
 local specWarnPsychicTerror						= mod:NewSpecialWarningInterruptCount(365008, "HasInterrupt", nil, nil, 1, 2)
 
@@ -113,8 +104,7 @@ local timerGrimReflectionsCD					= mod:NewCDCountTimer(28.8, 365120, nil, nil, n
 mod:AddSetIconOption("SetIconOnGrimReflection", 365120, true, true, {4, 5, 6, 7, 8})
 
 --Intermission: March of the Damned
-mod:AddOptionLine(P25Info, "announce")
-mod:AddTimerLine(P25Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24172))
 --mod:AddOptionLine(P25Info, "specialannounce")
 local warnMarchoftheDamned						= mod:NewSpellAnnounce(364020, 3)
 
@@ -123,10 +113,7 @@ local warnMarchoftheDamned						= mod:NewSpellAnnounce(364020, 3)
 local timerMarchofDamnedCD						= mod:NewCDTimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --Stage Three: A Moment of Clarity
-mod:AddOptionLine(P3Info, "announce")
-mod:AddOptionLine(P3Info, "specialannounce")
-mod:AddOptionLine(P3Info, "yell")
-mod:AddTimerLine(P3Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24417))
 local warnBeaconofHope							= mod:NewCastAnnounce(365872, 1)
 
 local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)

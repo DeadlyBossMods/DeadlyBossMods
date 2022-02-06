@@ -35,19 +35,18 @@ mod:RegisterEventsInCombat(
 --TODO, properly detect aura of shadow up. not sure if the buff is on boss or players, boss is assumed ATM
 --TODO, target scan Slumber Cloud? two are spawned at once though so even if it works it's only one of them
 --TODO, tank defensive warnings may feel like too much by default and be better as opt ins, will guage feedback from testing (if there is testing)
+--General
+--local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+
+--local berserkTimer							= mod:NewBerserkTimer(600)
+
+mod:AddRangeFrameOption("5/8/10")
 --Mal'Ganis
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23927))
 local warnCloudofCarrion						= mod:NewTargetNoFilterAnnounce(360012, 3)
 local warnManifestShadows						= mod:NewCountAnnounce(361913, 3)
 local warnFullyFormed							= mod:NewSpellAnnounce(361945, 3)
---Kin'tessa
-local warnShatterMind							= mod:NewSpellAnnounce(360420, 4)--Kind of a generic alert to say "this pull is a wash"
-local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3)
-local warnAuraofShadows							= mod:NewSpellAnnounce(363191, 4)
-local warnAuraofShadowsOver						= mod:NewEndAnnounce(363191, 1)
-local warnSlumberCloud							= mod:NewCountAnnounce(360229, 2)
-local warnAnguishingStrike						= mod:NewStackAnnounce(360287, 2, nil, "Tank|Healer")
 
---Mal'Ganis
 local specWarnUntoDarkness						= mod:NewSpecialWarningCount(360319, nil, nil, nil, 2, 2)
 local specWarnCloudofCarrion					= mod:NewSpecialWarningMoveAway(360319, nil, nil, nil, 2, 2)--Pre spread warning?
 local specWarnCloudofCarrionDebuff				= mod:NewSpecialWarningYou(360012, nil, nil, nil, 1, 2)
@@ -57,8 +56,26 @@ local specWarnLeechingClaws						= mod:NewSpecialWarningDefensive(359960, nil, n
 local specWarnOpenedVeins						= mod:NewSpecialWarningTaunt(359963, nil, nil, nil, 1, 2)
 ----Shadow adds
 local specWarnRavenousHunger					= mod:NewSpecialWarningInterruptCount(361923, "HasInterrupt", nil, nil, 1, 2)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+
+local timerUntoDarknessCD						= mod:NewAITimer(28.8, 360319, nil, nil, nil, 6)
+local timerSwarmofDecay							= mod:NewBuffActiveTimer(20, 360300, 56158, nil, nil, 6)--Short text swarm, timer is used for both swarms
+local timerCloudofCarrionCD						= mod:NewAITimer(28.8, 360006, nil, nil, nil, 3)
+local timerManifestShadowsCD					= mod:NewAITimer(28.8, 361913, nil, nil, nil, 1)
+local timerLeechingClawsCD						= mod:NewAITimer(28.8, 359960, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 4)
+
+mod:AddInfoFrameOption(360319, false)
+mod:AddSetIconOption("SetIconOnManifestShadows", 361913, true, true, {6, 7, 8})--On by default since they'll be used by most interrupt helpers
+mod:AddNamePlateOption("NPAuraOnIncompleteForm", 362020, false)--Off by default so it doesn't cover up interrupt weak aura counters, which i suspect many will use
+mod:AddNamePlateOption("NPAuraOnFullyFormed", 361945, true)--Might also cover up interrupt weak auras, but this signifies target is now very dangerous but killable on mythic difficulty
 --Kin'tessa
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23929))
+local warnShatterMind							= mod:NewSpellAnnounce(360420, 4)--Kind of a generic alert to say "this pull is a wash"
+local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3)
+local warnAuraofShadows							= mod:NewSpellAnnounce(363191, 4)
+local warnAuraofShadowsOver						= mod:NewEndAnnounce(363191, 1)
+local warnSlumberCloud							= mod:NewCountAnnounce(360229, 2)
+local warnAnguishingStrike						= mod:NewStackAnnounce(360287, 2, nil, "Tank|Healer")
+
 local specWarnInfiltrationofDread				= mod:NewSpecialWarningCount(360717, nil, nil, nil, 2, 2)
 local specWarnFearfulTrepidation				= mod:NewSpecialWarningYou(360146, nil, nil, nil, 2, 2)
 local yellFearfulTrepidation					= mod:NewShortPosYell(360146)
@@ -69,28 +86,13 @@ local specWarnAnguishingStrike					= mod:NewSpecialWarningDefensive(360284, nil,
 local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(350202, nil, 3, nil, nil, 1, 6)
 local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(350202, nil, nil, nil, 1, 2)
 
---mod:AddTimerLine(BOSS)
---Mal'Ganis
-local timerUntoDarknessCD						= mod:NewAITimer(28.8, 360319, nil, nil, nil, 6)
-local timerSwarmofDecay							= mod:NewBuffActiveTimer(20, 360300, 56158, nil, nil, 6)--Short text swarm, timer is used for both swarms
-local timerCloudofCarrionCD						= mod:NewAITimer(28.8, 360006, nil, nil, nil, 3)
-local timerManifestShadowsCD					= mod:NewAITimer(28.8, 361913, nil, nil, nil, 1)
-local timerLeechingClawsCD						= mod:NewAITimer(28.8, 359960, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 4)
---Kin'tessa
 local timerInfiltrationofDreadCD				= mod:NewAITimer(28.8, 360717, nil, nil, nil, 6)
 local timerParanoia								= mod:NewBuffFadesTimer(25, 360418, nil, nil, nil, 5)
 local timerFearfulTrepidationCD					= mod:NewAITimer(28.8, 360145, nil, nil, nil, 3)--DBM_COMMON_L.MAGIC_ICON
 local timerSlumberCloudCD						= mod:NewAITimer(28.8, 360229, nil, nil, nil, 3)
 local timerAnguishingStrikeCD					= mod:NewAITimer(28.8, 360284, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
-
-mod:AddRangeFrameOption("5/8/10")
-mod:AddInfoFrameOption(360319, false)
 mod:AddSetIconOption("SetIconOnFearfulTrepidation", 360146, true, false, {1, 2})--On by default because max targets shows 2 debuffs can be out, and don't want both carrions running to same person. with icons the carrions can make split decisions to pick an icon each are going to
-mod:AddSetIconOption("SetIconOnManifestShadows", 361913, true, true, {6, 7, 8})--On by default since they'll be used by most interrupt helpers
-mod:AddNamePlateOption("NPAuraOnIncompleteForm", 362020, false)--Off by default so it doesn't cover up interrupt weak aura counters, which i suspect many will use
-mod:AddNamePlateOption("NPAuraOnFullyFormed", 361945, true)--Might also cover up interrupt weak auras, but this signifies target is now very dangerous but killable on mythic difficulty
 
 mod.vb.darknessCount = 0
 mod.vb.shadowsCount = 0

@@ -41,7 +41,6 @@ mod:RegisterEventsInCombat(
 --TODO, https://ptr.wowhead.com/spell=363748/death-sentence / https://ptr.wowhead.com/spell=363772/death-sentence ?
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
 --TODO, stage 1.5 (intermission) seems to have been scrapped, at least from journal, confirm on live and if so finish deleting those events
-local P1Info, P15Info, P2Info, P3Info = DBM:EJ_GetSectionInfo(24087), nil, DBM:EJ_GetSectionInfo(23925), DBM:EJ_GetSectionInfo(24252)
 --General
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -49,11 +48,7 @@ mod:AddRangeFrameOption("6")
 --mod:AddInfoFrameOption(328897, true)
 
 --Stage One: Origin of Domination
-mod:AddOptionLine(P1Info, "announce")
-mod:AddOptionLine(P1Info, "specialannounce")
-mod:AddOptionLine(P1Info, "yell")
-mod:AddTimerLine(P1Info)
-mod:AddIconLine(P1Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24087))
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
 local warnChainsofOppression					= mod:NewTargetNoFilterAnnounce(362631, 3)
 local warnImprisonment							= mod:NewTargetCountAnnounce(363886, 4, nil, nil, nil, nil, nil, nil, true)
@@ -80,9 +75,7 @@ mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
 
 --Intermission: Machine of Origination
---mod:AddOptionLine(P15Info, "announce")
 --mod:AddTimerLine(P15Info)
---mod:AddIconLine(P15Info)
 --local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
 
 --local timerOblivion							= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
@@ -90,11 +83,7 @@ mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
 --mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
 
 --Stage Two: Unholy Attunement
-mod:AddOptionLine(P2Info, "announce")
-mod:AddOptionLine(P2Info, "specialannounce")
-mod:AddOptionLine(P2Info, "yell")
-mod:AddTimerLine(P2Info)
-mod:AddIconLine(P2Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
 local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
 local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDecimator								= mod:NewTargetCountAnnounce(364942, 3, nil, nil, nil, nil, nil, nil, true)
@@ -119,11 +108,7 @@ mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensure no conflict in P3 either
 
 --Stage Three: The Unmaking
-mod:AddOptionLine(P3Info, "announce")
-mod:AddOptionLine(P3Info, "specialannounce")
-mod:AddOptionLine(P3Info, "yell")
-mod:AddTimerLine(P3Info)
-mod:AddIconLine(P3Info)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
 local warnRuneofDomination						= mod:NewTargetCountAnnounce(365150, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
 local warnChainsofAnguishLink					= mod:NewTargetNoFilterAnnounce(365222, 3)
