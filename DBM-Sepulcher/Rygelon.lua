@@ -320,7 +320,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 362798 and destGUID == UnitGUID("player") and not self:AntiSpam(2, 4) then
+	if spellId == 362798 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
