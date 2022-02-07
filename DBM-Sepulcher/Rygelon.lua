@@ -81,6 +81,8 @@ local warnGravitationalCollapse					= mod:NewCastAnnounce(364386, 4)
 local specWarnShatterSphere						= mod:NewSpecialWarningSpell(364114, nil, nil, nil, 2, 2)
 local specWarnGravitationalCollapse				= mod:NewSpecialWarningSoak(364386, "Tank", nil, nil, 3, 2)
 
+local timerShatterSphereCD						= mod:NewAITimer(28.8, 364114, nil, nil, nil, 6)
+
 local cosmicStacks = {}
 local playerInSingularity = false
 mod.vb.debuffIcon = 1
@@ -276,6 +278,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassiveBangCD:Stop()
 		timerManifestCosmosCD:Stop()
 		timerStellarShroudCD:Stop()
+
+		timerCorruptedStrikesCD:Start(2)
+		timerShatterSphereCD:Start(2)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -314,15 +319,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 363773 then--Boss Leaving Singularity
 		DBM:Debug("Boss Left Singularity")
-		timerDarkEclipseCD:Start(2)
-		timerCelestialCollapseCD:Start(2)
-		timerCorruptedStrikesCD:Start(2)
-		timerCelestialTerminatorCD:Start(2)
-		timerMassiveBangCD:Start(2)
+		timerCorruptedStrikesCD:Stop()
+		timerShatterSphereCD:Stop()
+		timerDarkEclipseCD:Start(3)
+		timerCelestialCollapseCD:Start(3)
+		timerCorruptedStrikesCD:Start(3)
+		timerCelestialTerminatorCD:Start(3)
+		timerMassiveBangCD:Start(3)
 		if self:IsHard() then
-			timerManifestCosmosCD:Start(2)
+			timerManifestCosmosCD:Start(3)
 			if self:IsMythic() then
-				timerStellarShroudCD:Start(2)
+				timerStellarShroudCD:Start(3)
 			end
 		end
 	end
