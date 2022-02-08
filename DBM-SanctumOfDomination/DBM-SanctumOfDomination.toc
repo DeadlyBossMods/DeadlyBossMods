@@ -13,7 +13,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-NewOptions: 1
 ## X-DBM-Mod-Sort: 307
 ## X-DBM-Mod-MapID: 2450
 ## X-DBM-Mod-MinCoreRevision: 17286
