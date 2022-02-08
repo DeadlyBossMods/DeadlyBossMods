@@ -15,13 +15,13 @@ mod:RegisterEventsInCombat(
 )
 
 local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, "Melee")
-local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
+local warnBarrel			= mod:NewTargetAnnounce(47442, 4)
 
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew", nil, nil, nil, 1, 7)
 local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
 local yellBarrel			= mod:NewYell(47442, L.YellBarrel, "Tank")
 
-local timerBarrel			= mod:NewTargetTimer(8, 51413, nil, nil, nil, 3)
+local timerBarrel			= mod:NewTargetTimer(8, 47442, nil, nil, nil, 3)
 local timerBrew				= mod:NewTargetTimer(10, 47376, nil, false, nil, 3)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340, nil, false, nil, 3)
 local timerDisarm			= mod:NewCastTimer(4, 47310, nil, "Melee", 2, 2)

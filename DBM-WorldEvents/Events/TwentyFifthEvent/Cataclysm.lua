@@ -64,6 +64,7 @@ local timerLivingMeteorCD		= mod:NewNextTimer(45, 99268, nil, nil, nil, 1, nil, 
 
 mod:AddInfoFrameOption(99849, true)
 mod:AddRangeFrameOption(6, 98495)
+mod:GroupSpells(99268, 99849)--Living Meteor with Fixate
 
 local meteorWarned = false
 local meteorTarget = DBM:GetSpellInfo(99849)
