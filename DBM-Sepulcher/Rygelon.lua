@@ -29,8 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, how to actuall warn unstable matter if it has fixed timed spawns etc or if unstable matter field should have 20 second "active" timer
 --TODO, maybe personal https://ptr.wowhead.com/spell=362384/eternal-radiation stack warning?
 --TODO, how to warn https://ptr.wowhead.com/spell=368080/dark-quasar? does it apply multiple stacks on boss then just warn as they deplete?
---TODO, no fucking idea, even after 2 days of studying journal, now the singularity works. the spell data literally says opposite of journal about bosse presence
---TODO, reset/start timers on https://ptr.wowhead.com/spell=363773/the-singularity being applied or removed on boss?
+--TODO, reset/start timers on https://ptr.wowhead.com/spell=363773/the-singularity being applied or removed on boss accurate?
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(362798, nil, nil, nil, 1, 8)
 
@@ -81,6 +80,8 @@ local warnGravitationalCollapse					= mod:NewCastAnnounce(364386, 4)
 
 local specWarnShatterSphere						= mod:NewSpecialWarningSpell(364114, nil, nil, nil, 2, 2)
 local specWarnGravitationalCollapse				= mod:NewSpecialWarningSoak(364386, "Tank", nil, nil, 3, 2)
+
+local timerShatterSphereCD						= mod:NewAITimer(28.8, 364114, nil, nil, nil, 6)
 
 local cosmicStacks = {}
 local playerInSingularity = false
@@ -270,6 +271,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 363773 then--Boss Entering Singularity
 		DBM:Debug("Boss Entered Singularity")
+		timerDarkEclipseCD:Stop()
+		timerCelestialCollapseCD:Stop()
+		timerCorruptedStrikesCD:Stop()
+		timerCelestialTerminatorCD:Stop()
+		timerMassiveBangCD:Stop()
+		timerManifestCosmosCD:Stop()
+		timerStellarShroudCD:Stop()
+
+		timerCorruptedStrikesCD:Start(2)
+		timerShatterSphereCD:Start(2)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -308,6 +319,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 363773 then--Boss Leaving Singularity
 		DBM:Debug("Boss Left Singularity")
+		timerCorruptedStrikesCD:Stop()
+		timerShatterSphereCD:Stop()
+		timerDarkEclipseCD:Start(3)
+		timerCelestialCollapseCD:Start(3)
+		timerCorruptedStrikesCD:Start(3)
+		timerCelestialTerminatorCD:Start(3)
+		timerMassiveBangCD:Start(3)
+		if self:IsHard() then
+			timerManifestCosmosCD:Start(3)
+			if self:IsMythic() then
+				timerStellarShroudCD:Start(3)
+			end
+		end
 	end
 end
 

@@ -14,7 +14,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-NewOptions: 1
 ## X-DBM-Mod-Name: Sepulcher of the First Ones
 ## X-DBM-Mod-Name-koKR: 태초의 존재의 매장터
 ## X-DBM-Mod-Name-zhCN: 初诞者圣墓

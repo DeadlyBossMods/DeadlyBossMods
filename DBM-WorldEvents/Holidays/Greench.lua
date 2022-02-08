@@ -23,7 +23,7 @@ local warnSnowman				= mod:NewSpellAnnounce(101910, 2)
 local warnSnowCrash				= mod:NewCastAnnounce(101907, 3)
 local warnTree					= mod:NewSpellAnnounce(101938, 2)--Needs a custom icon, i'll find one soon.
 
-local specWarnShrinkHeart		= mod:NewSpecialWarningMove(101860, nil, nil, nil, 1, 2)
+local specWarnShrinkHeart		= mod:NewSpecialWarningMove(101873, nil, nil, nil, 1, 2)
 
 local timerShrinkHeartCD		= mod:NewCDTimer(32.5, 101873, nil, nil, nil, 2)
 local timerSnowmanCD			= mod:NewCDTimer(10, 101910, nil, nil, nil, 3)--He alternates these
