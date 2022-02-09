@@ -10,8 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 347094 346957 346766 358131 353312",
 	"SPELL_CAST_SUCCESS 346116",
-	"SPELL_AURA_APPLIED 358131",
-	"SPELL_AURA_REMOVED 347958"
+	"SPELL_AURA_APPLIED 358131 346427",
+	"SPELL_AURA_REMOVED 347958 353312"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -26,6 +26,7 @@ local warnPurgedbyFire				= mod:NewSpellAnnounce(346959, 2)--Swap to target warn
 local warnKeepersprotection			= mod:NewEndAnnounce(347958, 1)
 local warnLightningNova				= mod:NewTargetNoFilterAnnounce(358131, 3)
 local warnPurifyingBurst			= mod:NewCountAnnounce(353312, 2)
+local warnTitanicInsight			= mod:NewTargetNoFilterAnnounce(353312, 2)
 
 local specWarnShearingSwings		= mod:NewSpecialWarningDefensive(346116, nil, nil, nil, 1, 2)
 local specWarnTitanicCrash			= mod:NewSpecialWarningDodge(347094, nil, nil, nil, 2, 2)
@@ -39,6 +40,7 @@ local timerTitanicCrashCD			= mod:NewAITimer(11, 347094, nil, nil, nil, 3)
 local timerPurgedbyFireCD			= mod:NewAITimer(11, 346959, nil, nil, nil, 3)
 local timerSanitizingCycleCD		= mod:NewAITimer(11, 346766, nil, nil, nil, 6)
 local timerPurifyingBurstCD			= mod:NewAITimer(11, 353312, nil, nil, nil, 2)
+local timerTitanicInsight			= mod:NewTargetTimer(15, 353312, nil, nil, nil, 5)
 
 mod.vb.cycleCount = 0
 mod.vb.burstCount = 0
@@ -95,6 +97,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 358131 then
 		warnLightningNova:Show(args.destname)
+	elseif spellId == 346427 then
+		warnTitanicInsight:Show(args.destName)
+		timerTitanicInsight:Start(args.destName)
 	end
 end
 
@@ -102,6 +107,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 347958 then
 		warnKeepersprotection:Show()
+	elseif spellId == 346427 then
+		timerTitanicInsight:Stop(args.destName)
 	end
 end
 
