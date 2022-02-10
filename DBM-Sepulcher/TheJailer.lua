@@ -107,7 +107,7 @@ local timerDecimatorCD							= mod:NewAITimer(28.8, 364942, nil, nil, nil, 3)
 mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensure no conflict in P3 either
 
---Stage Three: The Unmaking
+--Stage Three: Eternity's End
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
 local warnRuneofDomination						= mod:NewTargetCountAnnounce(365150, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)

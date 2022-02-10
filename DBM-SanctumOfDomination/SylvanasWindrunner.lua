@@ -54,8 +54,8 @@ mod:AddInfoFrameOption(nil, true)--Aused for 353929 and 347807
 --mod:AddOptionLine(P1Info, "announce")
 --mod:AddOptionLine(P1Info, "specialannounce")
 --mod:AddOptionLine(P1Info, "yell")
---mod:AddTimerLine(P1Info)
-mod:AddIconLine(P1Info)
+mod:AddTimerLine(P1Info)
+--mod:AddIconLine(P1Info)
 local warnWindrunnerOver							= mod:NewEndAnnounce(347504, 2)
 local warnShadowDagger								= mod:NewTargetNoFilterAnnounce(353935, 2, nil, "Healer")
 local warnDominationChains							= mod:NewTargetAnnounce(349419, 2, nil, nil, 298213)--Could be spammy, unknown behavior
@@ -91,9 +91,9 @@ mod:AddSetIconOption("SetIconOnWailingArrow", 348064, true, false, {1, 2, 3})--A
 mod:AddNamePlateOption("NPAuraOnRage", 358711)--Dark Sentinel
 
 --Intermission: A Monument to our Suffering
-mod:AddOptionLine(P15Info, "announce")
+--mod:AddOptionLine(P15Info, "announce")
 --mod:AddOptionLine(P15Info, "specialannounce")
---mod:AddTimerLine(P15Info)
+mod:AddTimerLine(P15Info)
 local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by default depending on feedback
 
 local specWarnBansheeWail							= mod:NewSpecialWarningMoveAwayCount(348094, nil, nil, nil, 2, 2)
@@ -105,8 +105,8 @@ local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
 --mod:AddOptionLine(P2Info, "announce")
 --mod:AddOptionLine(P2Info, "specialannounce")
 --mod:AddOptionLine(P2Info, "yell")
---mod:AddTimerLine(P2Info)
-mod:AddIconLine(P2Info)
+mod:AddTimerLine(P2Info)
+--mod:AddIconLine(P2Info)
 local warnIceBridge									= mod:NewCountAnnounce(348148, 2)
 local warnEarthBridge								= mod:NewCountAnnounce(348093, 2)
 local warnWindsofIcecrown							= mod:NewTargetCountAnnounce(356986, 1, nil, nil, nil, nil, nil, nil, true)
@@ -160,8 +160,8 @@ mod:AddNamePlateOption("NPAuraOnEnflame", 351109)--Mawsworn Hopebreaker
 --mod:AddOptionLine(P3Info, "announce")
 --mod:AddOptionLine(P3Info, "specialannounce")
 --mod:AddOptionLine(P3Info, "yell")
---mod:AddTimerLine(P3Info)
-mod:AddIconLine(P3Info)
+mod:AddTimerLine(P3Info)
+--mod:AddIconLine(P3Info)
 local warnBansheesHeartseeker						= mod:NewCountAnnounce(353969, 2, nil, "Tank")
 local warnBansheesBane								= mod:NewTargetNoFilterAnnounce(353929, 4)
 local warnBansheesScream							= mod:NewTargetNoFilterAnnounce(357720, 3)
