@@ -3,7 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sepulcher of the First Ones|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0태초의 존재의 매장터|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0初诞者圣墓|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0首創者墓穴|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0首創者聖塚|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Гробница Предвечных|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name: Sepulcher of the First Ones
 ## X-DBM-Mod-Name-koKR: 태초의 존재의 매장터
 ## X-DBM-Mod-Name-zhCN: 初诞者圣墓
-## X-DBM-Mod-Name-zhTW: 首創者墓穴
+## X-DBM-Mod-Name-zhTW: 首創者聖塚
 ## X-DBM-Mod-Sort: 306
 ## X-DBM-Mod-MapID: 2481
 ## X-DBM-Mod-MinCoreRevision: 17286
