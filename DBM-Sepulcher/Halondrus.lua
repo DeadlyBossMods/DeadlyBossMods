@@ -181,7 +181,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnFractal then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("This fight was significatly redesigned after it was tested and i no longer even same fight it was. Unfortunately blizzard never retested this fight so this mod will be very ineffecial until post launch update")
+	DBM:AddMsg("This fight was significatly redesigned after it was tested and is no longer the same fight it was. Unfortunately, Blizzard never retested this fight, so this mod will be very outdated until post launch update.")
 end
 
 function mod:OnCombatEnd()
