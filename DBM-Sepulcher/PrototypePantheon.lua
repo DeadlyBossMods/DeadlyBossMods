@@ -189,49 +189,49 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			--Necrotic Ritual
-			[360295] = {},
+			[360295] = {11.4, 71.4, 73.3},
 			--Runecarver's Deathtouch
-			[360636] = {},
+			[360636] = {47.1, 57.1, 73.3},
 			--Humbling Strikes
-			[365272] = {},
+			[365272] = {11.4, 35.7, 35.7, 35.6, 35.7},
 			--Ascension's Call
-			[361066] = {},
+			[361066] = {42.8},
 			--Pinning Volley
-			[361278] = {},
+			[361278] = {62.7, 64.4},
 		},
 		[2] = {
 			--Wild Stampede
-			[361304] = {},
+			[361304] = {70.5, 55.2},
 			--Withering Seeds
-			[361568] = {},
+			[361568] = {33},
 			--Animastorm
-			[366234] = {},
+			[366234] = {},--Wasn't cast?
 			--Wracking Pain
-			[365126] = {},
+			[365126] = {41.7, 49.9, 49.9},
 			--Hand of Destruction
-			[361791] = {},
+			[361791] = {104.1},
 		},
 		[3] = {
 			--Necrotic Ritual
-			[360295] = {},
+			[360295] = {},--Wasn't cast?
 			--Runecarver's Deathtouch
-			[360636] = {},
+			[360636] = {},--Wasn't cast?
 			--Humbling Strikes
-			[365272] = {},
+			[365272] = {41.1, 50},
 			--Ascension's Call
-			[361066] = {},
+			[361066] = {},--Not in combat log and no P3 transcriptor
 			--Pinning Volley
-			[361278] = {},
+			[361278] = {56.7},
 			--Wild Stampede
-			[361304] = {},
+			[361304] = {26.5},
 			--Withering Seeds
-			[361568] = {},
+			[361568] = {17.8, 75.8},
 			--Animastorm
-			[366234] = {},
+			[366234] = {},--Wasn't cast?
 			--Wracking Pain
-			[365126] = {},
+			[365126] = {41.2, 50},
 			--Hand of Destruction
-			[361791] = {},
+			[361791] = {105},
 		},
 	},
 	["heroic"] = {
@@ -389,9 +389,9 @@ function mod:OnCombatStart(delay)
 	self.vb.ritualistIconMethod = 1
 	self:SetStage(1)
 	--Necro
-	timerNecroticRitualCD:Start(11.5-delay, 1)
+	timerNecroticRitualCD:Start(11.4-delay, 1)--11.4-14 on various difficulties (may move this)
 	--Kyrian
-	timerHumblingStrikesCD:Start(10-delay, 1)
+	timerHumblingStrikesCD:Start(10-delay, 1)--10-11.4 on various difficulties (may move this)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		--Necro
@@ -408,13 +408,14 @@ function mod:OnCombatStart(delay)
 		--Kyrian
 		--timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
 		--timerPinningVolleyCD:Start(63-delay, 1)
+		DBM:AddMsg("Timers on this difficulty were signficantly changed AFTER fight was tested and unfortunately it wasn't re-tested, so no timers are available until post launch updates")
 	elseif self:IsNormal() then
 		difficultyName = "normal"
 		--Necro
-		--timerRunecarversDeathtouchCD:Start(50-delay, 1)
+		timerRunecarversDeathtouchCD:Start(47.1-delay, 1)--Sooner than LFR
 		--Kyrian
-		--timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
-		--timerPinningVolleyCD:Start(63-delay, 1)
+		timerAscensionsCallCD:Start(42.8-delay, 1)--Time til USCS anyways/Same as LFR?
+		timerPinningVolleyCD:Start(62.7-delay, 1)--Same as LFR?
 	else
 		difficultyName = "lfr"
 		--Necro
@@ -575,12 +576,12 @@ function mod:SPELL_CAST_START(args)
 				--timerAnimastormCD:Start(52.6, 1)
 			elseif self:IsNormal() then
 				--Prototype of Absolution (Venthyr)
-				--timerWrackingPainCD:Start(36, 1)
-				--timerHandofDestructionCD:Start(107.7, 1)
+				timerWrackingPainCD:Start(41.7, 1)
+				timerHandofDestructionCD:Start(104.1, 1)--May need adjusting by 1 sec to match USCS
 				--prototype-of-renewal (Night Fae)
-				--timerWildStampedeCD:Start(14.6, 1)
-				--timerWitheringSeedCD:Start(26, 1)
+				timerWitheringSeedCD:Start(33, 1)
 				--timerAnimastormCD:Start(52.6, 1)
+				timerWildStampedeCD:Start(70.5, 1)
 			else--LFR
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(36, 1)
@@ -626,19 +627,19 @@ function mod:SPELL_CAST_START(args)
 				--timerRunecarversDeathtouchCD:Start(106.3, 1)
 			elseif self:IsNormal() then
 				--Prototype of Absolution (Venthyr)
-				--timerWrackingPainCD:Start(33.9, 1)
-				--timerHandofDestructionCD:Start(84.5, 1)
+				timerWrackingPainCD:Start(41.2, 1)
+				timerHandofDestructionCD:Start(105, 1)
 				--prototype-of-duty (Kyrian)
-				--timerHumblingStrikesCD:Start(33.9, 1)
-				--timerPinningVolleyCD:Start(56.7, 1)
-				--timerAscensionsCallCD:Start(97.8, 1)
+				timerHumblingStrikesCD:Start(41.1, 1)
+				timerPinningVolleyCD:Start(56.7, 1)
+				--timerAscensionsCallCD:Start(97.8, 1)--Not in combat log and no P3 transcriptor
 				--prototype-of-renewal (Night Fae)
-				--timerWitheringSeedCD:Start(15.2, 1)
-				--timerAnimastormCD:Start(24.5, 1)
-				--timerWildStampedeCD:Start(35.8, 1)
+				timerWitheringSeedCD:Start(17.8, 1)
+				--timerAnimastormCD:Start(24.5, 1)--Wasn't cast?
+				timerWildStampedeCD:Start(26.5, 1)
 				--prototype-of-war (Necro)
-				--timerNecroticRitualCD:Start(52.6, 1)
-				--timerRunecarversDeathtouchCD:Start(106.3, 1)
+				--timerNecroticRitualCD:Start(52.6, 1)--Wasn't cast?
+				--timerRunecarversDeathtouchCD:Start(106.3, 1)--Wasn't cast?
 			else--LFR
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(33.9, 1)
