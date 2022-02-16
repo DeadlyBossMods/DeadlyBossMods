@@ -69,7 +69,7 @@ local specWarnFragmentsofDestiny				= mod:NewSpecialWarningMoveAway(350542, nil,
 local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably change to icon/numbered yell system based on icon/combatlog order
 
 local timerCalloftheValkyrCD					= mod:NewCDCountTimer(52.3, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
-local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350541, nil, nil, nil, 3, nil, nil, nil, 2, 3)
+local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350542, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 
 mod:AddInfoFrameOption(350542, true)
 mod:AddSetIconOption("SetIconOnFragments", 350542, true, false, {1, 2, 3, 4})--Mythic says max 4, so probably the cap
