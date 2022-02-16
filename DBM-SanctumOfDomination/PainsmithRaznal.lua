@@ -70,7 +70,7 @@ local timerDualbladeScytheCD					= mod:NewCDCountTimer(19.4, 355778, 327953, nil
 local timerDualbladeScythe						= mod:NewTargetTimer(19.4, 355778, 327953, nil, 2, 5)--"Scythe"
 local timerSpikedBallsCD						= mod:NewCDCountTimer(40, 352052, nil, nil, 2, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerFlameclaspTrapCD						= mod:NewCDCountTimer(47.9, 348456, 8312, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)--"Trap"
-local timerShadowsteelChainsCD					= mod:NewCDCountTimer(40.1, 355504, 246367, nil, nil, 3)--"Chains"
+local timerShadowsteelChainsCD					= mod:NewCDCountTimer(40.1, 355505, 246367, nil, nil, 3)--"Chains"
 
 mod:AddTimerLine(DBM_COMMON_L.INTERMISSION)
 --Intermission
