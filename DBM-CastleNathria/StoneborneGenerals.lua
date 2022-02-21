@@ -62,7 +62,7 @@ local specWarnHeartRendCast						= mod:NewSpecialWarningCount(334765, false, nil
 local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
 
-local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333387, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
+local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333376, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
 local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
 local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
 local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -70,7 +70,7 @@ local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, ni
 mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
-mod:AddSetIconOption("SetIconOnWickedBlade2", 333387, false, false, {1, 2})--Off by default since it conflicts with heart rend
+mod:AddSetIconOption("SetIconOnWickedBlade2", 333376, false, false, {1, 2})--Off by default since it conflicts with heart rend
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
 --General Grashaal
