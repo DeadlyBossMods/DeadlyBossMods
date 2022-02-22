@@ -57,7 +57,7 @@ local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, ni
 local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodgeCount(369210, nil, nil, nil, 2, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
-local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(361309, nil, nil, nil, 1, 2)
+local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
 local specWarnShatter							= mod:NewSpecialWarningSwitch(362056, "Dps", nil, nil, 1, 2)
@@ -70,7 +70,7 @@ local timerReclaimCD							= mod:NewAITimer(28.8, 360115, nil, nil, nil, 5)
 local timerSeismicTremorsCD						= mod:NewCDTimer(35, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
 local timerEarthbreakerMissilesCD				= mod:NewAITimer(33.2, 361676, nil, nil, nil, 3)
 local timerPlanetcrackerBeamCD					= mod:NewAITimer(33.2, 369210, nil, nil, nil, 3)
-local timerCrushingPrismCD						= mod:NewCDCountTimer(42.5, 365294, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerCrushingPrismCD						= mod:NewCDCountTimer(42.5, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerLightshatterBeamCD					= mod:NewCDTimer(14, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: The Shimmering Cliffs
 local timerRelocationForm						= mod:NewCastTimer(6, 359236, nil, nil, nil, 6)
@@ -83,7 +83,7 @@ mod:AddInfoFrameOption(360115, true)
 --mod:AddSetIconOption("SetIconOnSeismicTremors", 368669, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFractal", 368671, true, true, {8})
 mod:AddSetIconOption("SetIconOnShatter", 362056, true, true, {8})
-mod:AddSetIconOption("SetIconOnCrushing", 365294, false, false, {9, 10, 11, 12, 13, 14, 15, 16}, true)
+mod:AddSetIconOption("SetIconOnCrushing", 365297, false, false, {9, 10, 11, 12, 13, 14, 15, 16}, true)
 mod:AddNamePlateOption("NPAuraOnFractal", 368671, true)
 mod:GroupSpells(368957, 368969)--Combine the cast (Charges with the debuff Charge)
 

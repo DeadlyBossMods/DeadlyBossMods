@@ -33,65 +33,66 @@ mod:RegisterEventsInCombat(
  or (ability.id = 365682 or ability.id = 364040) and type = "begincast"
  or ability.id = 364030 and type = "cast"
 --]]
---Xy Decipherers
-----Cartel Overseer
-local warnSystemShock							= mod:NewStackAnnounce(365681, 2, nil, "Tank|Healer")
-local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
---Boss
-local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
-local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
-local warnRiftBlasts							= mod:NewSpellAnnounce(362841, 2)
+--Genesis Relic
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24215))
+local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
+
+local timerGenesisRingsCD						= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
+--Stage One: Cartel Xy
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24588))
 local warnDimensionalTear						= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
 local warnStasisTrap							= mod:NewTargetNoFilterAnnounce(362882, 2)--Failing to dodge it
 
---Adds
-----Cartel Plunderers
-local specWarnCartelPlunderers					= mod:NewSpecialWarningSwitch(363485, "-Healer", nil, nil, 1, 2, 4)
-----Cartel Overseer
-local specWarnSystemShock						= mod:NewSpecialWarningDefensive(365682, nil, nil, nil, 1, 2)
-local specWarnSystemShockTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil, nil, 1, 2)
---Boss
-local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
-local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, false, nil, nil, 2, 2, 4)--Mythic only, kinda spammy so off by default
 local specWarnDimensionalTear					= mod:NewSpecialWarningYouPos(362615, nil, 67833, nil, 1, 2)
 local yellDimensionalTear						= mod:NewPosYell(362615, 67833)
 local yellDimensionalTearFades					= mod:NewIconFadesYell(362615, 67833)
+local specWarnCartelElite						= mod:NewSpecialWarningSwitch(363485, "-Healer", nil, nil, 1, 2, 4)
 local specWarnGlyphofRelocation					= mod:NewSpecialWarningMoveAway(362803, nil, nil, nil, 1, 2)
 local yellGlyphofRelocation						= mod:NewYell(362803)
 local yellGlyphofRelocationFades				= mod:NewShortFadesYell(362803)
 local specWarnGlyphofRelocationTaunt			= mod:NewSpecialWarningTaunt(362803, nil, nil, nil, 1, 2)
-local specWarnHyperlightSpark					= mod:NewSpecialWarningCount(362849, nil, nil, nil, 2, 2)
 local specWarnStasisTrap						= mod:NewSpecialWarningDodge(362885, nil, nil, nil, 2, 2)
 local yellStasisTrap							= mod:NewYell(362882)--Failing to dodge it
---Hyperlight Adds
-local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, "HasInterrupt", nil, nil, 1, 2)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+local specWarnHyperlightSpark					= mod:NewSpecialWarningCount(362849, nil, nil, nil, 2, 2)
 
---mod:AddTimerLine(BOSS)
-local timerGenesisRingsCD						= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
-----Cartel Plunderers
-local timerCartelPlunderersCD					= mod:NewCDTimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
-----Cartel Overseer
-local timerSystemShockCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
---Boss
-local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
 local timerDimensionalTearCD					= mod:NewNextTimer(8, 362615, 327770, nil, nil, 3)
+local timerCartelEliteCD						= mod:NewCDTimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
 local timerStasisTrapCD							= mod:NewCDTimer(30, 362885, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
---Hyperlight Adds
---local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("8")
---mod:AddInfoFrameOption(328897, true)
-mod:AddSetIconOption("SetIconOnHyperlightAdds", 364021, true, true, {4, 5, 6, 7, 8})
 mod:AddSetIconOption("SetIconOnWormhole", 362615, true, false, {1, 2})
 mod:AddSetIconOption("SetIconGlyphofRelocation", 362803, false, false, {3})
+--mod:AddRangeFrameOption("8")
+--mod:AddInfoFrameOption(328897, true)
+--Stage Two: Secrets of the Relic
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(24589))
+local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
+local warnDecipherRelicOver						= mod:NewEndAnnounce(363139, 2)
+
+--Xy Reinforcements
+local warnRiftBlasts							= mod:NewSpellAnnounce(362841, 2)
+local warnMassiveBlast							= mod:NewStackAnnounce(365681, 2, nil, "Tank|Healer")
+local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
+
+local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, false, nil, nil, 2, 2, 4)--Mythic only, kinda spammy so off by default
+local specWarnMassiveBlast						= mod:NewSpecialWarningDefensive(365682, nil, nil, nil, 1, 2)
+local specWarnMassiveBlastTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil, nil, 1, 2)
+local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, "HasInterrupt", nil, nil, 1, 2)
+
+local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
+local timerMassiveBlastCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
+--local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+
+mod:AddSetIconOption("SetIconOnHyperlightAdds", 364021, true, true, {4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnDecipherRelic", 365577, true)
 mod:AddNamePlateOption("NPAuraOnOverseersOrders", 365701, true)
 mod:AddNamePlateOption("NPAuraOnAscension", 364040, true)
+
+mod:GroupSpells(362801, 362803)--Group relocation with explosion
+mod:GroupSpells(362885, 362885)--Group statis trap cast with stasis trap debuff
 
 local castsPerGUID = {}
 mod.vb.tearIcon = 1
@@ -109,7 +110,7 @@ function mod:OnCombatStart(delay)
 	timerStasisTrapCD:Start(21-delay)
 	timerGenesisRingsCD:Start(26-delay, 1)
 	if self:IsMythic() then
-		timerCartelPlunderersCD:Start(13.4-delay)
+		timerCartelEliteCD:Start(13.4-delay)
 		timerRiftBlastsCD:Start(13.6-delay)
 		timerGlyphofRelocationCD:Start(44.4-delay, 1)--Only different on pull, it's 40 on phase changes like other modes
 	else
@@ -146,10 +147,10 @@ function mod:SPELL_CAST_START(args)
 		DBM:AddMsg("The Cartel Elite added to combat log, notify DBM authors")
 	elseif spellId == 365682 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then
-			specWarnSystemShock:Show()
-			specWarnSystemShock:Play("defensive")
+			specWarnMassiveBlast:Show()
+			specWarnMassiveBlast:Play("defensive")
 		end
-		timerSystemShockCD:Start(11.5, args.sourceGUID)
+		timerMassiveBlastCD:Start(11.5, args.sourceGUID)
 	elseif spellId == 362841 and self:AntiSpam(3, 1) then
 		if self.Options.SpecWarn362841dodge then
 			specWarnFracturingRiftBlasts:Show()
@@ -193,7 +194,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDecipherRelic:Show()
 		--Stop timers
 		timerGenesisRingsCD:Stop()
-		timerCartelPlunderersCD:Stop()
+		timerCartelEliteCD:Stop()
 		timerRiftBlastsCD:Stop()
 		timerDimensionalTearCD:Stop()
 		timerGlyphofRelocationCD:Stop()
@@ -245,7 +246,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDecipherRelic:Show()
 		--Stop timers
 		timerGenesisRingsCD:Stop()
-		timerCartelPlunderersCD:Stop()
+		timerCartelEliteCD:Stop()
 		timerRiftBlastsCD:Stop()
 		timerDimensionalTearCD:Stop()
 		timerGlyphofRelocationCD:Stop()
@@ -258,7 +259,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGenesisRingsCD:Start(26, 1)
 		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
-			timerCartelPlunderersCD:Start(12)
+			timerCartelEliteCD:Start(12)
 			timerRiftBlastsCD:Start(12.2)
 		end
 	end
@@ -282,14 +283,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				if not args:IsPlayer() then
 					--Because multiple adds up on diff CDs, can't do fancy debuff remaining checks, it just needs to be gone
 					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
-						specWarnSystemShockTaunt:Show(args.destName)
-						specWarnSystemShockTaunt:Play("tauntboss")
+						specWarnMassiveBlastTaunt:Show(args.destName)
+						specWarnMassiveBlastTaunt:Play("tauntboss")
 					else
-						warnSystemShock:Show(args.destName, amount)
+						warnMassiveBlast:Show(args.destName, amount)
 					end
 				end
 			else
-				warnSystemShock:Show(args.destName, amount)
+				warnMassiveBlast:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 362615 or spellId == 362614 then
@@ -350,7 +351,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGenesisRingsCD:Start(26, 1)
 		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
-			timerCartelPlunderersCD:Start(12)
+			timerCartelEliteCD:Start(12)
 			timerRiftBlastsCD:Start(12.2)
 		end
 	elseif spellId == 362615 or spellId == 362614 then
@@ -374,7 +375,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 184140 or cid == 184143 then--Xy Acolyte, Xy Archon
-		timerSystemShockCD:Stop(args.destGUID)
+		timerMassiveBlastCD:Stop(args.destGUID)
 		if self.Options.NPAuraOnAscension then
 			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
@@ -396,9 +397,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<19.51 22:08:21> [UNIT_SPELLCAST_SUCCEEDED] Artificer Xy'mox(Bookaine) -Hyperlight Reinforcements- boss1:Cast-3-4170-2481-12807-364046-006FB27045:364046
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 365428 then
-		specWarnCartelPlunderers:Show()
-		specWarnCartelPlunderers:Play("killmob")
-		--timerCartelPlunderersCD:Start()
+		specWarnCartelElite:Show()
+		specWarnCartelElite:Play("killmob")
+		--timerCartelEliteCD:Start()
 	end
 end
 
