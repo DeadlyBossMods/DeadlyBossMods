@@ -64,8 +64,8 @@ local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795)
 
 --Boss
 --mod:AddTimerLine(BOSS)
-local timerUnstableMoteCD						= mod:NewCDTimer(20.6, 362601, nil, nil, nil, 3)
-local timerUnstableMote							= mod:NewBuffFadesTimer(5.9, 362601, nil, nil, nil, 5)--1.9+4
+local timerUnstableMoteCD						= mod:NewCDTimer(20.6, 362622, nil, nil, nil, 3)
+local timerUnstableMote							= mod:NewBuffFadesTimer(5.9, 362622, nil, nil, nil, 5)--1.9+4
 local timerProtoformRadiance					= mod:NewBuffActiveTimer(28.8, 363537, nil, nil, nil, 2)
 local timerProtoformCascadeCD					= mod:NewCDTimer(10.9, 364652, nil, nil, nil, 3)
 local timerResonanceCD							= mod:NewCDTimer(41.2, 368027, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)

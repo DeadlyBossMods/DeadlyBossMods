@@ -51,7 +51,7 @@ local specWarnGlyphofRelocation					= mod:NewSpecialWarningMoveAway(362803, nil,
 local yellGlyphofRelocation						= mod:NewYell(362803)
 local yellGlyphofRelocationFades				= mod:NewShortFadesYell(362803)
 local specWarnGlyphofRelocationTaunt			= mod:NewSpecialWarningTaunt(362803, nil, nil, nil, 1, 2)
-local specWarnStasisTrap						= mod:NewSpecialWarningDodge(362885, nil, nil, nil, 2, 2)
+local specWarnStasisTrap						= mod:NewSpecialWarningDodge(362882, nil, nil, nil, 2, 2)
 local yellStasisTrap							= mod:NewYell(362882)--Failing to dodge it
 local specWarnHyperlightSpark					= mod:NewSpecialWarningCount(362849, nil, nil, nil, 2, 2)
 
@@ -59,7 +59,7 @@ local timerDimensionalTearCD					= mod:NewNextTimer(8, 362615, 327770, nil, nil,
 local timerCartelEliteCD						= mod:NewCDTimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerStasisTrapCD							= mod:NewCDTimer(30, 362885, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
+local timerStasisTrapCD							= mod:NewCDTimer(30, 362882, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -78,16 +78,16 @@ local warnMassiveBlast							= mod:NewStackAnnounce(365681, 2, nil, "Tank|Healer
 local warnHyperlightAscension					= mod:NewCastAnnounce(364040, 3)
 
 local specWarnFracturingRiftBlasts				= mod:NewSpecialWarningDodge(362841, false, nil, nil, 2, 2, 4)--Mythic only, kinda spammy so off by default
-local specWarnMassiveBlast						= mod:NewSpecialWarningDefensive(365682, nil, nil, nil, 1, 2)
+local specWarnMassiveBlast						= mod:NewSpecialWarningDefensive(365681, nil, nil, nil, 1, 2)
 local specWarnMassiveBlastTaunt					= mod:NewSpecialWarningTaunt(365681, nil, nil, nil, 1, 2)
 local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, "HasInterrupt", nil, nil, 1, 2)
 
 local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
-local timerMassiveBlastCD						= mod:NewCDTimer(11.5, 365682, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
+local timerMassiveBlastCD						= mod:NewCDTimer(11.5, 365681, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
 --local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 
 mod:AddSetIconOption("SetIconOnHyperlightAdds", 364021, true, true, {4, 5, 6, 7, 8})
-mod:AddNamePlateOption("NPAuraOnDecipherRelic", 365577, true)
+mod:AddNamePlateOption("NPAuraOnDecipherRelic", 363139, true)
 mod:AddNamePlateOption("NPAuraOnOverseersOrders", 365701, true)
 mod:AddNamePlateOption("NPAuraOnAscension", 364040, true)
 

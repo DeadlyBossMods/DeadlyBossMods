@@ -65,11 +65,11 @@ local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, nil, nil, n
 local yellRuneofDamnation						= mod:NewShortPosYell(360281)
 local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
 
-local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 360281, nil, nil, nil, 2)
+local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, nil, 2)
 local timerChainsofOppressionCD					= mod:NewAITimer(28.8, 362631, nil, nil, nil, 3)
 local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTormentCD							= mod:NewAITimer(28.8, 365436, nil, nil, nil, 2)
-local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360279, nil, nil, nil, 3)
+local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360281, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
