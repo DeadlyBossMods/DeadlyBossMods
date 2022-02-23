@@ -69,7 +69,7 @@ local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, n
 local timerChainsofOppressionCD					= mod:NewAITimer(28.8, 362631, nil, nil, nil, 3)
 local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTormentCD							= mod:NewAITimer(28.8, 365436, nil, nil, nil, 2)
-local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360279, nil, nil, nil, 3)
+local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360281, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
@@ -101,7 +101,7 @@ local specWarnTormentingEcho					= mod:NewSpecialWarningDodge(365371, nil, nil, 
 
 local timerUnholyAttunementCD					= mod:NewAITimer(28.8, 360373, nil, nil, nil, 3)
 local timerShatteringBlastCD					= mod:NewAITimer(28.8, 359856, nil, nil, nil, 5)
-local timerRuneofCompulsionCD					= mod:NewAITimer(28.8, 366284, nil, nil, nil, 3)
+local timerRuneofCompulsionCD					= mod:NewAITimer(28.8, 366285, nil, nil, nil, 3)
 local timerDecimatorCD							= mod:NewAITimer(28.8, 364942, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
@@ -120,19 +120,19 @@ local yellRuneofDomination						= mod:NewShortPosYell(365150)
 local yellRuneofDominationFades					= mod:NewIconFadesYell(365150)
 local specWarnChainsofAnguish					= mod:NewSpecialWarningDefensive(365219, nil, nil, nil, 1, 2)
 local specWarnChainsofAnguishTaunt				= mod:NewSpecialWarningTaunt(365219, nil, nil, nil, 1, 2)
-local specWarnChainsofAnguishLink				= mod:NewSpecialWarningYou(365222, nil, nil, nil, 1, 2)
-local yellChainsofAnguishLink					= mod:NewShortPosYell(365222)
+local specWarnChainsofAnguishLink				= mod:NewSpecialWarningYou(365219, nil, nil, nil, 1, 2)
+local yellChainsofAnguishLink					= mod:NewShortPosYell(365219)
 local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil, 3, 2)
 local yellDefile								= mod:NewYell(365169)
 local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
 local timerDesolationCD							= mod:NewAITimer(28.8, 365033, nil, nil, nil, 3)
-local timerRuneofDominationCD					= mod:NewAITimer(28.8, 365147, nil, nil, nil, 3)
-local timerChainsofAnguishCD					= mod:NewAITimer(28.8, 365212, nil, nil, nil, 5)
+local timerRuneofDominationCD					= mod:NewAITimer(28.8, 365150, nil, nil, nil, 3)
+local timerChainsofAnguishCD					= mod:NewAITimer(28.8, 365219, nil, nil, nil, 5)
 local timerRuneofDefileCD						= mod:NewAITimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnChainsofAnguish", 365222, true, false, {4, 5, 6})
+mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {4, 5, 6})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 

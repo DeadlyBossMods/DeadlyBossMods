@@ -78,7 +78,7 @@ local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil,
 local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
 --mod:AddSetIconOption("SetIconOnWickedStar", 365021, false, false, {1, 2, 3, 4, 5, 6})
-
+mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
 --Intermission: Remnant of a Fallen King
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24494))
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
@@ -116,7 +116,7 @@ local timerMarchofDamnedCD						= mod:NewCDTimer(28.8, 364020, nil, nil, nil, 3,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24417))
 local warnBeaconofHope							= mod:NewCastAnnounce(365872, 1)
 
-local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365958, nil, nil, nil, 3, 2)
+local specWarnDireBlasphemy						= mod:NewSpecialWarningMoveAway(365966, nil, nil, nil, 3, 2)
 local specWarnS3Hopelessness					= mod:NewSpecialWarningYou(365966, nil, nil, nil, 1, 2)
 local yellHopelessness							= mod:NewYell(365966)
 local yellHopelessnessRepeat					= mod:NewIconRepeatYell(365966, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)

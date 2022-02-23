@@ -48,7 +48,7 @@ local warnManifestShadows						= mod:NewCountAnnounce(361913, 3)
 local warnFullyFormed							= mod:NewSpellAnnounce(361945, 3)
 
 local specWarnUntoDarkness						= mod:NewSpecialWarningCount(360319, nil, nil, nil, 2, 2)
-local specWarnCloudofCarrion					= mod:NewSpecialWarningMoveAway(360319, nil, nil, nil, 2, 2)--Pre spread warning?
+local specWarnCloudofCarrion					= mod:NewSpecialWarningMoveAway(360012, nil, nil, nil, 2, 2)--Pre spread warning?
 local specWarnCloudofCarrionDebuff				= mod:NewSpecialWarningYou(360012, nil, nil, nil, 1, 2)
 local specWarnCloudofCarrionDebuffMove			= mod:NewSpecialWarningMoveTo(360012, false, nil, nil, 1, 2)--Off by default because person has to actually have basic understanding of mechanic first, then agree to this helpful warning to help with it
 local yellCloudofCarrion						= mod:NewYell(360012)
@@ -59,7 +59,7 @@ local specWarnRavenousHunger					= mod:NewSpecialWarningInterruptCount(361923, "
 
 local timerUntoDarknessCD						= mod:NewAITimer(28.8, 360319, nil, nil, nil, 6)
 local timerSwarmofDecay							= mod:NewBuffActiveTimer(20, 360300, 56158, nil, nil, 6)--Short text swarm, timer is used for both swarms
-local timerCloudofCarrionCD						= mod:NewAITimer(28.8, 360006, nil, nil, nil, 3)
+local timerCloudofCarrionCD						= mod:NewAITimer(28.8, 360012, nil, nil, nil, 3)
 local timerManifestShadowsCD					= mod:NewAITimer(28.8, 361913, nil, nil, nil, 1)
 local timerLeechingClawsCD						= mod:NewAITimer(28.8, 359960, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON, nil, 2, 4)
 
@@ -74,7 +74,7 @@ local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3)
 local warnAuraofShadows							= mod:NewSpellAnnounce(363191, 4)
 local warnAuraofShadowsOver						= mod:NewEndAnnounce(363191, 1)
 local warnSlumberCloud							= mod:NewCountAnnounce(360229, 2)
-local warnAnguishingStrike						= mod:NewStackAnnounce(360287, 2, nil, "Tank|Healer")
+local warnAnguishingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
 
 local specWarnInfiltrationofDread				= mod:NewSpecialWarningCount(360717, nil, nil, nil, 2, 2)
 local specWarnFearfulTrepidation				= mod:NewSpecialWarningYou(360146, nil, nil, nil, 2, 2)
