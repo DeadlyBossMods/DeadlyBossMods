@@ -13,10 +13,10 @@ mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects b
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362028 366022 363893 365436 360279 360373 359856 366284 364942 360562 364488 365033 365147 365212 365169",--363179
-	"SPELL_CAST_SUCCESS 362631 362192",
+	"SPELL_CAST_START 362028 366022 363893 365436 360279 360373 359856 366284 364942 360562 364488 365033 365147 365212 365169 366374 366678",--363179
+	"SPELL_CAST_SUCCESS 362631 367051",
 --	"SPELL_SUMMON 363175",
-	"SPELL_AURA_APPLIED 362631 363886 362401 360281 366285 365150 365153 362075 365219 365222",--362024 360180
+	"SPELL_AURA_APPLIED 362631 363886 362401 360281 366285 365150 365153 362075 365219 365222 362192",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222",--360180
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
@@ -39,8 +39,8 @@ mod:RegisterEventsInCombat(
 --TODO, verify decimator target scan, or find emote for it's targeting
 --TODO, fix unrelenting domination in p1 and P3 probably)
 --TODO, https://ptr.wowhead.com/spell=363748/death-sentence / https://ptr.wowhead.com/spell=363772/death-sentence ?
---TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Apocalypse Bolt interruptable or is it like painsmith?
---TODO, stage 1.5 (intermission) seems to have been scrapped, at least from journal, confirm on live and if so finish deleting those events
+--TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Cry of Loathing interruptable or is it like painsmith?
+--TODO, do something with https://www.wowhead.com/spell=365810/falling-debris ?
 --General
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -49,22 +49,25 @@ mod:AddRangeFrameOption("6")
 
 --Stage One: Origin of Domination
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24087))
+local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
 local warnChainsofOppression					= mod:NewTargetNoFilterAnnounce(362631, 3)
 local warnImprisonment							= mod:NewTargetCountAnnounce(363886, 4, nil, nil, nil, nil, nil, nil, true)
 local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, 3, nil, nil, nil, nil, nil, nil, true)
 
+local specWarnWorldCrusher						= mod:NewSpecialWarningCount(366374, nil, nil, nil, 2, 2, 4)
 local specWarnUnrelentingDomination				= mod:NewSpecialWarningMoveTo(362028, nil, nil, nil, 1, 2)
 local specWarnChainsofOppression				= mod:NewSpecialWarningYou(362631, nil, nil, nil, 1, 2)
 local specWarnMartyrdom							= mod:NewSpecialWarningDefensive(363893, nil, nil, nil, 1, 2)
 local yellImprisonment							= mod:NewYell(363886, nil, nil, nil, "YELL")--rooted target = stack target for misery very likely
 local yellImprisonmentFades						= mod:NewShortFadesYell(363886, nil, nil, nil, "YELL")
-local specWarnMisery							= mod:NewSpecialWarningTaunt(363886, nil, nil, nil, 1, 2)
+local specWarnMisery							= mod:NewSpecialWarningTaunt(362192, nil, nil, nil, 1, 2, 4)
 local specWarnTorment							= mod:NewSpecialWarningMoveAway(365436, nil, nil, nil, 1, 2)
 local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, nil, nil, nil, 1, 2)
 local yellRuneofDamnation						= mod:NewShortPosYell(360281)
 local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
 
+local timerWorldCrusherCD						= mod:NewAITimer(28.8, 366374, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnrelentingDominationCD				= mod:NewAITimer(28.8, 362028, nil, nil, nil, 2)
 local timerChainsofOppressionCD					= mod:NewAITimer(28.8, 362631, nil, nil, nil, 3)
 local timerMartyrdomCD							= mod:NewAITimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -74,21 +77,13 @@ local timerRuneofDamnationCD					= mod:NewAITimer(28.8, 360281, nil, nil, nil, 3
 mod:AddSetIconOption("SetIconOnImprisonment", 363886, true, false, {4})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
 
---Intermission: Machine of Origination
---mod:AddTimerLine(P15Info)
---local warnAddsRemaining							= mod:NewAddsLeftAnnounce("ej24334", 1, 363175)
-
---local timerOblivion							= mod:NewBuffActiveTimer(45, 360180, nil, nil, nil, 6)
-
---mod:AddSetIconOption("SetIconOnCallofOblivion", 363175, true, true, {3, 4, 5, 6, 7, 8})
-
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
 local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
 local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDecimator								= mod:NewTargetCountAnnounce(364942, 3, nil, nil, nil, nil, nil, nil, true)
 
---local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
+local specWarnWorldCracker						= mod:NewSpecialWarningCount(366678, nil, nil, nil, 2, 2, 4)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(360425, nil, nil, nil, 1, 8)
 local specWarnShatteringBlast					= mod:NewSpecialWarningMoveTo(359856, nil, nil, nil, 1, 2)
 local specWarnRuneofCompulsion					= mod:NewSpecialWarningYou(366285, nil, nil, nil, 1, 2)
@@ -99,6 +94,7 @@ local yellDecimator								= mod:NewYell(364942)
 local yellDecimatorFades						= mod:NewShortFadesYell(364942)
 local specWarnTormentingEcho					= mod:NewSpecialWarningDodge(365371, nil, nil, nil, 2, 2)
 
+local timerWorldCrackerCD						= mod:NewAITimer(28.8, 366678, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnholyAttunementCD					= mod:NewAITimer(28.8, 360373, nil, nil, nil, 3)
 local timerShatteringBlastCD					= mod:NewAITimer(28.8, 359856, nil, nil, nil, 5)
 local timerRuneofCompulsionCD					= mod:NewAITimer(28.8, 366285, nil, nil, nil, 3)
@@ -110,10 +106,10 @@ mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensur
 --Stage Three: Eternity's End
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
 local warnRuneofDomination						= mod:NewTargetCountAnnounce(365150, 3, nil, nil, nil, nil, nil, nil, true)
-local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
-local warnChainsofAnguishLink					= mod:NewTargetNoFilterAnnounce(365222, 3)
+local warnChainsofAnguishLink					= mod:NewTargetNoFilterAnnounce(365219, 3)
 local warnDefile								= mod:NewTargetNoFilterAnnounce(365169, 4)
 
+local specWarnWorldShatterer					= mod:NewSpecialWarningCount(367051, nil, nil, nil, 2, 2, 4)
 local specWarnDesolation						= mod:NewSpecialWarningCount(365033, nil, nil, nil, 2, 2)
 local specWarnRuneofDomination					= mod:NewSpecialWarningYou(365150, nil, nil, nil, 1, 2)
 local yellRuneofDomination						= mod:NewShortPosYell(365150)
@@ -126,10 +122,11 @@ local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil
 local yellDefile								= mod:NewYell(365169)
 local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
+local timerWorldShattererCD						= mod:NewAITimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerDesolationCD							= mod:NewAITimer(28.8, 365033, nil, nil, nil, 3)
 local timerRuneofDominationCD					= mod:NewAITimer(28.8, 365150, nil, nil, nil, 3)
 local timerChainsofAnguishCD					= mod:NewAITimer(28.8, 365219, nil, nil, nil, 5)
-local timerRuneofDefileCD						= mod:NewAITimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerDefileCD								= mod:NewAITimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {4, 5, 6})
@@ -137,14 +134,11 @@ mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 --General
---local castsPerGUID = {}
+mod.vb.worldCount = 0
 mod.vb.debuffCount = 0
 mod.vb.debuffIcon = 1--Used in all 3 rune types
 --P1
 mod.vb.comboCount = 0
---P1.5
---mod.vb.addsLeft = 0
---mod.vb.addIcon = 8
 --P2
 mod.vb.unholyAttuneCast = 0
 mod.vb.decimatorCount = 0
@@ -154,9 +148,9 @@ mod.vb.willCount = 0
 mod.vb.chainsIcon = 4
 
 function mod:OnCombatStart(delay)
+	mod.vb.worldCount = 0
 	self.vb.comboCount = 0
 	self.vb.debuffCount = 0
---	self.vb.addsLeft = 0
 	self.vb.unholyAttuneCast = 0
 	self.vb.decimatorCount = 0
 	self.vb.desolationCast = 0
@@ -168,6 +162,9 @@ function mod:OnCombatStart(delay)
 	timerMartyrdomCD:Start(1-delay)
 	timerTormentCD:Start(1-delay)
 	timerRuneofDamnationCD:Start(1-delay)
+	if self:IsMythic() then
+		timerWorldCrusherCD:Start(1-delay)
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -225,22 +222,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.debuffCount = self.vb.debuffCount + 1
 		self.vb.debuffIcon = 1
 		timerRuneofDominationCD:Start()
---	elseif spellId == 363179 then--Cries of the Damned
---		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
---			--But if that failed, do it again here and scan for mobs again here too
---			castsPerGUID[args.sourceGUID] = 0
---			if self.Options.SetIconOnCallofOblivion then
---				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnCallofOblivion")
---			end
---			self.vb.addIcon = self.vb.addIcon - 1
---		end
---		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		--Some announce stuff to add here?
 	elseif spellId == 360373 then
 		if self.vb.phase == 1 then--TEMP. need new stage 2 event
 			self:SetStage(2)
 			self.vb.debuffCount = 0
---			timerOblivion:Stop()
+			timerWorldCrusherCD:Stop()
 			timerUnrelentingDominationCD:Stop()
 			timerChainsofOppressionCD:Stop()
 			timerMartyrdomCD:Stop()
@@ -251,6 +237,9 @@ function mod:SPELL_CAST_START(args)
 			timerRuneofCompulsionCD:Start(2)
 			timerDecimatorCD:Start(2)
 			timerTormentCD:Start(2)
+			if self:IsMythic() then
+				timerWorldCrackerCD:Start(2)
+			end
 		end
 		self.vb.unholyAttuneCast = self.vb.unholyAttuneCast + 1
 		warnUnholyAttunement:Show(self.vb.unholyAttuneCast)
@@ -266,13 +255,23 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 365033 then
 		self.vb.desolationCast = self.vb.desolationCast + 1
 		specWarnDesolation:Show(self.vb.desolationCast)
-		specWarnDesolation:Play("specialsoon")
+		specWarnDesolation:Play("helpsoak")
 		timerDesolationCD:Start()
 	elseif spellId == 365212 then
 		self.vb.chainsIcon = 4
 		timerChainsofAnguishCD:Start()
 	elseif spellId == 365169 then
-		timerRuneofDefileCD:Start()
+		timerDefileCD:Start()
+	elseif spellId == 366374 then
+		self.vb.worldCount = self.vb.worldCount + 1
+		specWarnWorldCrusher:Show(self.vb.worldCount)
+		specWarnWorldCrusher:Play("specialsoon")
+		timerWorldCrusherCD:Start()
+	elseif spellId == 366678 then
+		self.vb.worldCount = self.vb.worldCount + 1
+		specWarnWorldCracker:Show(self.vb.worldCount)
+		specWarnWorldCracker:Play("specialsoon")
+		timerWorldCrackerCD:Start()
 	end
 end
 
@@ -280,24 +279,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 362631 then
 		timerChainsofOppressionCD:Start()
+	elseif spellId == 367051 then
+		self.vb.worldCount = self.vb.worldCount + 1
+		specWarnWorldShatterer:Show(self.vb.worldCount)
+		specWarnWorldShatterer:Play("specialsoon")
+		timerWorldShattererCD:Start()
 	end
 end
-
---[[
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 363175 then
-		self.vb.addsLeft = self.vb.addsLeft + 1
-		if not castsPerGUID[args.destGUID] then
-			castsPerGUID[args.destGUID] = 0
-		end
-		if self.Options.SetIconOnCallofOblivion then
-			self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnCallofOblivion")
-		end
-		self.vb.addIcon = self.vb.addIcon - 1
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -386,16 +374,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnChainsofAnguishLink:CombinedShow(0.5, args.destName)
 		self.vb.chainsIcon = self.vb.chainsIcon + 1
---	elseif spellId == 360180 then--Oblivion
---		self:SetStage(1.5)
---		self.vb.addsLeft = 0
---		self.vb.addIcon = 8
---		timerUnrelentingDominationCD:Stop()
---		timerChainsofOppressionCD:Stop()
---		timerMartyrdomCD:Stop()
---		timerTormentCD:Stop()
---		timerRuneofDamnationCD:Stop()
---		timerOblivion:Start()
 	elseif spellId == 365153 then--Imposing Will
 		self.vb.willCount = self.vb.willCount + 1
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -455,8 +433,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellRuneofDominationFades:Cancel()
 		end
---	elseif spellId == 360180 then--Oblivion
-
 	elseif spellId == 365153 then--Imposing Will
 		self.vb.willCount = self.vb.willCount - 1
 		if self.Options.InfoFrame and self.vb.willCount == 0 then
@@ -468,13 +444,8 @@ end
 --[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 183787 then--harbinger-of-oblivion
-		self.vb.addsLeft = self.vb.addsLeft - 1
-		castsPerGUID[args.destGUID] = nil
-		--Throttle add deaths to every 3 seconds except for last one
-		if self.vb.addsLeft == 0 or self:AntiSpam(3, 1) then
-			warnAddsRemaining:Show(self.vb.addsLeft)
-		end
+	if cid == 183787 then
+
 	end
 end
 --]]
@@ -533,6 +504,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 360507 then--Trigger Azeroth Visibility (may not be reliable for mythic, replace with diff P3 trigger if possible)
 		self:SetStage(3)
+		timerWorldCrackerCD:Stop()
 		timerUnholyAttunementCD:Stop()
 		timerShatteringBlastCD:Stop()
 		timerRuneofCompulsionCD:Stop()
@@ -542,6 +514,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerChainsofAnguishCD:Start(3)
 		timerTormentCD:Start(3)
 		timerDecimatorCD:Start(3)
-		timerRuneofDefileCD:Start(3)
+		timerDefileCD:Start(3)
+		if self:IsMythic() then
+			timerWorldShattererCD:Start(3)
+		end
 	end
 end
