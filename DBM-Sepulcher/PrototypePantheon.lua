@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220114000000)
 mod:SetMinSyncRevision(20220114000000)
 --mod.respawnTime = 29
@@ -60,18 +60,10 @@ local timerNecroticRitualCD						= mod:NewCDCountTimer(71.4, 360295, nil, nil, n
 local timerRunecarversDeathtouchCD				= mod:NewCDCountTimer(57.1, 360687, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 
 mod:AddInfoFrameOption(360687, "Healer")
-mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {13, 14, 15, 16}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
-mod:AddSetIconOption("SetIconOnRitualist", 360295, true, true, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})--Conflict arg not passed because by default it won't, user has to introduce conflict via dropdown (and that has a warning)
+mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {1, 2, 3, 4}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
+mod:AddSetIconOption("SetIconOnRitualist", 360295, true, true, {1, 2, 3, 4, 5, 6, 7, 8})--Conflict arg not passed because by default it won't, user has to introduce conflict via dropdown (and that has a warning)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
-if DBM.Options.ExtendIcons then
-	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo", "SetThree"}, "SetOne", "misc")
-else
-	mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo"}, "SetOne", "misc")
-	if mod.Options.RitualistIconSetting == "SetThree" then
-		mod.Options.RitualistIconSetting = "SetOne"
-		DBM:AddMsg(L.ExtendReset)
-	end
-end
+mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo"}, "SetOne", "misc")
 
 ----Prototype of Duty
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24130))
@@ -116,7 +108,7 @@ local timerHandofDestructionCD					= mod:NewCDCountTimer(56.2, 361789, nil, nil,
 local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 365126, true)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, nil, true)
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, true)
 
 local deathtouchTargets = {}
 local wardTargets = {}
@@ -438,16 +430,6 @@ function mod:OnCombatStart(delay)
 		elseif self.Options.RitualistIconSetting == "SetTwo" then
 			self.vb.ritualistIconMethod = 2--Icons 1-4
 			if UnitIsGroupLeader("player") then self:SendSync("SetTwo") end
-		elseif self.Options.RitualistIconSetting == "SetThree" then
-			if DBM.Options.ExtendIcons then
-				self.Options.ritualistIconMethod = 3--Icons 9-12
-				if UnitIsGroupLeader("player") then self:SendSync("SetThree") end
-			else
-				self.vb.ritualistIconMethod = 1--Icons 5-8
-				self.Options.RitualistIconSetting = "SetOne"
-				DBM:AddMsg(L.ExtendReset)
-				if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
-			end
 		end
 	end
 end
@@ -480,7 +462,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 360295 then
 		self.vb.ritualCount = self.vb.ritualCount + 1
-		self.vb.ritualistIcon = self.vb.ritualistIconMethod == 3 and 12 or self.vb.ritualistIconMethod == 2 and 4 or 8
+		self.vb.ritualistIcon = self.vb.ritualistIconMethod == 2 and 4 or 8
 		specWarnNecroticRitual:Show(self.vb.ritualCount)
 		specWarnNecroticRitual:Play("killmob")
 		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.ritualCount+1]
@@ -887,8 +869,6 @@ do
 			self.vb.ritualistIconMethod = 1
 		elseif msg == "SetTwo" then
 			self.vb.ritualistIconMethod = 2
-		elseif msg == "SetThree" then
-			self.vb.ritualistIconMethod = 3
 		end
 	end
 	function mod:OnSync(msg)

@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
-mod:SetUsedIcons(8, 9, 10, 11, 12, 13, 14, 15, 16)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220209000000)
 mod:SetMinSyncRevision(20220209000000)
 --mod.respawnTime = 29
@@ -83,7 +83,7 @@ mod:AddInfoFrameOption(360115, true)
 --mod:AddSetIconOption("SetIconOnSeismicTremors", 368669, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFractal", 368671, true, true, {8})
 mod:AddSetIconOption("SetIconOnShatter", 362056, true, true, {8})
-mod:AddSetIconOption("SetIconOnCrushing", 365297, false, false, {9, 10, 11, 12, 13, 14, 15, 16}, true)
+mod:AddSetIconOption("SetIconOnCrushing", 365297, false, false, {1, 2, 3, 4, 5, 6, 7}, true)
 mod:AddNamePlateOption("NPAuraOnFractal", 368671, true)
 mod:GroupSpells(368957, 368969)--Combine the cast (Charges with the debuff Charge)
 
@@ -94,7 +94,7 @@ mod.vb.planetCrackerCount = 0
 mod.vb.seismicIcon = 1
 mod.vb.detonateCast = 0
 mod.vb.crushingCast = 0
-mod.vb.crushIcon = 9
+mod.vb.crushIcon = 1
 local detonateTimers = {
 	[2] = {27, 22.6},
 --	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},--Heroic
@@ -349,7 +349,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 365297 then
 		if self:AntiSpam(5, 2) then
-			self.vb.crushIcon = 9
+			self.vb.crushIcon = 1
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
 			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
@@ -363,7 +363,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrushingPrism:Show()
 			specWarnCrushingPrism:Play("targetyou")
 		end
-		if self.Options.SetIconOnCrushing then
+		if self.Options.SetIconOnCrushing and self.vb.crushIcon < 8 then
 			self:SetIcon(args.destName, self.vb.crushIcon)
 		end
 		self.vb.crushIcon = self.vb.crushIcon + 1
