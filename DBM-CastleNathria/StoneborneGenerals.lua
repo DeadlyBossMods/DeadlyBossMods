@@ -71,8 +71,7 @@ mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddSetIconOption("SetIconOnWickedBlade2", 333376, false, false, {1, 2})--Off by default since it conflicts with heart rend
-mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
-mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
+mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc", nil, 333376)--SetTwo is BW default
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local warnReverberatingEruption					= mod:NewTargetCountAnnounce(344496, 3, nil, nil, nil, nil, nil, nil, true)--Normal+

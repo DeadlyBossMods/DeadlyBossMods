@@ -62,8 +62,7 @@ local timerRunecarversDeathtouchCD				= mod:NewCDCountTimer(57.1, 360687, nil, n
 mod:AddInfoFrameOption(360687, "Healer")
 mod:AddSetIconOption("SetIconOnDeathtouch", 360687, false, false, {1, 2, 3, 4}, true)--Technically only 2 debuffs go out, but we allow for even a bad group to have two sets of them out. Off by default do to conflict with seeds
 mod:AddSetIconOption("SetIconOnRitualist", 360295, true, true, {1, 2, 3, 4, 5, 6, 7, 8})--Conflict arg not passed because by default it won't, user has to introduce conflict via dropdown (and that has a warning)
-mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
-mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo"}, "SetOne", "misc")
+mod:AddDropdownOption("RitualistIconSetting", {"SetOne", "SetTwo"}, "SetOne", "misc", nil, 360295)
 
 ----Prototype of Duty
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24130))
