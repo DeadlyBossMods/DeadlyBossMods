@@ -77,7 +77,7 @@ local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, false, nil
 local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil, 2)
 local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
-mod:AddDropdownOption("PairingBehavior", {"Auto", "Generic", "None"}, "Generic", "misc", nil, 361989)--Controls the yellBlasphemy/specWarnOverconfidence/specWarnHopelessness
+--mod:AddSetIconOption("SetIconOnWickedStar", 365021, false, false, {1, 2, 3, 4, 5, 6})
 mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
 --Intermission: Remnant of a Fallen King
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24494))
@@ -127,6 +127,8 @@ local timerHopelessnessCD						= mod:NewCDTimer(28.8, 365966, nil, nil, nil, 3, 
 mod:AddInfoFrameOption(365966, false)
 
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
+mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
+mod:AddDropdownOption("PairingBehavior", {"Auto", "Generic", "None"}, "Generic", "misc")--Controls the yellBlasphemy/specWarnOverconfidence/specWarnHopelessness
 
 mod.vb.hungersCount = 0
 mod.vb.blastphemyCount = 0
