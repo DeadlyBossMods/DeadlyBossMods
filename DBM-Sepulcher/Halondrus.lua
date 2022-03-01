@@ -67,14 +67,14 @@ local specWarnShatter							= mod:NewSpecialWarningSwitch(362056, "Dps", nil, ni
 local timerVolatileChargesCD					= mod:NewAITimer(36.5, 368957, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Stage One: The Reclaimer
 local timerReclaimCD							= mod:NewAITimer(28.8, 360115, nil, nil, nil, 5)
-local timerSeismicTremorsCD						= mod:NewCDTimer(35, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
+local timerSeismicTremorsCD						= mod:NewAITimer(35, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
 local timerEarthbreakerMissilesCD				= mod:NewAITimer(33.2, 361676, nil, nil, nil, 3)
 local timerPlanetcrackerBeamCD					= mod:NewAITimer(33.2, 369210, nil, nil, nil, 3)
-local timerCrushingPrismCD						= mod:NewCDCountTimer(42.5, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerCrushingPrismCD						= mod:NewAITimer(42.5, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerLightshatterBeamCD					= mod:NewCDTimer(14, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: The Shimmering Cliffs
 local timerRelocationForm						= mod:NewCastTimer(6, 359236, nil, nil, nil, 6)
-local timerShatterCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerShatterCD							= mod:NewAITimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -95,7 +95,7 @@ mod.vb.seismicIcon = 1
 mod.vb.detonateCast = 0
 mod.vb.crushingCast = 0
 mod.vb.crushIcon = 1
-local detonateTimers = {
+local shatterTimers = {
 	[2] = {27, 22.6},
 --	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},--Heroic
 	[4] = {20.4, 19.9, 8.6, 12.3},--Normal
@@ -170,10 +170,10 @@ function mod:OnCombatStart(delay)
 	self.vb.planetCrackerCount = 0
 	self.vb.seismicIcon = 1
 	timerLightshatterBeamCD:Start(10.1-delay)
-	timerSeismicTremorsCD:Start(16.1-delay)--16.3-20.5
-	timerEarthbreakerMissilesCD:Start(1-delay)--33.3?
+	timerSeismicTremorsCD:Start(1-delay)
+	timerEarthbreakerMissilesCD:Start(1-delay)
 	timerPlanetcrackerBeamCD:Start(1-delay)
-	timerCrushingPrismCD:Start(40.6-delay, 1)--45.4 old heroic, maybe still heroic?
+	timerCrushingPrismCD:Start(1-delay)
 	timerReclaimCD:Start(1)
 	if self:IsMythic() then
 		timerVolatileChargesCD:Start(1-delay)
@@ -241,17 +241,16 @@ function mod:SPELL_CAST_START(args)
 		--We want to distinguish between first phase 2 and second phase 2 (per dungeon journals termonology)
 		--So this is first mod in wows history that is actually using a stageTotality check.
 		if self.vb.stageTotality == 2 then--First movement
---			timerEarthbreakerMissilesCD:Start(13.6)--Was 41.4 in first half of testing, and 13.6 in second. Keep an eye on this
-			timerShatterCD:Start(27, 1)
---			timerCrushingPrismCD:Start(34.4, 1)
---			timerEarthbreakerMissilesCD:Start(2)
+			timerShatterCD:Start(2, 1)
+			timerCrushingPrismCD:Start(2, 1)--34.4
+			timerEarthbreakerMissilesCD:Start(2)--13.6 old
 			if self:IsMythic() then
 				timerVolatileChargesCD:Start(2)
 			end
 		else--Second movement (self.vb.stageTotality == 4)
---			timerCrushingPrismCD:Start(12.6, 1)
-			timerShatterCD:Start(20.4, 1)
---			timerEarthbreakerMissilesCD:Start(4)--32.6
+			timerCrushingPrismCD:Start(4, 1)--12.6
+			timerShatterCD:Start(4, 1)
+			timerEarthbreakerMissilesCD:Start(4)--32.6
 			if self:IsMythic() then
 				timerVolatileChargesCD:Start(4)
 			end
@@ -270,7 +269,7 @@ function mod:SPELL_CAST_START(args)
 		--Stop mobile timers
 --		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
 		timerShatterCD:Stop()
---		timerCrushingPrismCD:Stop()
+--		timerCrushingPrismCD:Stop()--Remove if not needed
 		timerVolatileChargesCD:Stop()
 		--Stop/restart stage 1 timers? or just stop them and do nothing?
 	elseif spellId == 362056 then
@@ -281,7 +280,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 364979 then--Casts slightly faster than 362056
 		specWarnShatter:Show()
 		specWarnShatter:Play("targetchange")
-		local timer = detonateTimers[self.vb.stageTotality][self.vb.detonateCast+1]
+		local timer = shatterTimers[self.vb.stageTotality][self.vb.detonateCast+1]
 		if timer then
 			timerShatterCD:Start(timer, self.vb.detonateCast+1)
 		end
@@ -325,7 +324,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerLightshatterBeamCD:Start(12.5)
 			timerEarthbreakerMissilesCD:Start(3)--35.8
 			timerPlanetcrackerBeamCD:Start(3)
-			timerCrushingPrismCD:Start(46.8, 1)
+			timerCrushingPrismCD:Start(3)
 			timerReclaimCD:Start(3)
 			timerSeismicTremorsCD:Start(3)
 			if self:IsMythic() then
@@ -335,7 +334,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerLightshatterBeamCD:Start(16)
 			timerEarthbreakerMissilesCD:Start(5)--28.2
 			timerPlanetcrackerBeamCD:Start(5)
-			timerCrushingPrismCD:Start(36.7, 1)
+			timerCrushingPrismCD:Start(5, 1)
 			timerReclaimCD:Start(5)
 			timerSeismicTremorsCD:Start(5)
 			if self:IsMythic() then
