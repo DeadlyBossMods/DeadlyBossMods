@@ -145,13 +145,13 @@ local function updateAllTimers(self, ICD)
 		timerCrushingPrismCD:Stop()
 		timerCrushingPrismCD:Update(elapsed, total+extend, self.vb.crushingCast+1)
 	end
-	if timerPlanetcrackerBeamCD:GetRemaining(self.vb.planetCrackerCount+1) < ICD then
-		local elapsed, total = timerPlanetcrackerBeamCD:GetTime(self.vb.planetCrackerCount+1)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerPlanetcrackerBeamCD extended by: "..extend, 2)
-		timerPlanetcrackerBeamCD:Stop()
-		timerPlanetcrackerBeamCD:Update(elapsed, total+extend, self.vb.planetCrackerCount+1)
-	end
+--	if timerPlanetcrackerBeamCD:GetRemaining(self.vb.planetCrackerCount+1) < ICD then
+--		local elapsed, total = timerPlanetcrackerBeamCD:GetTime(self.vb.planetCrackerCount+1)
+--		local extend = ICD - (total-elapsed)
+--		DBM:Debug("timerPlanetcrackerBeamCD extended by: "..extend, 2)
+--		timerPlanetcrackerBeamCD:Stop()
+--		timerPlanetcrackerBeamCD:Update(elapsed, total+extend, self.vb.planetCrackerCount+1)
+--	end
 --	if self:IsMythic() and timerVolatileChargesCD:GetRemaining() < ICD then
 --		local elapsed, total = timerVolatileChargesCD:GetTime()
 --		local extend = ICD - (total-elapsed)
@@ -235,7 +235,7 @@ function mod:SPELL_CAST_START(args)
 		timerCrushingPrismCD:Stop()
 		timerReclaimCD:Stop()
 		timerSeismicTremorsCD:Stop()
-		timerPlanetcrackerBeamCD:Stop()
+--		timerPlanetcrackerBeamCD:Stop()
 		--Start mobile ones
 		--Halondrus is a phase 1, 2, 1, 2 boss.
 		--We want to distinguish between first phase 2 and second phase 2 (per dungeon journals termonology)
@@ -256,22 +256,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 368529 then
-		self:SetStage(3)--Stage, as determined by dungeon journal
 		warnEternityOverdrive:Show()
-		--Stop stationary timers
-		timerEarthbreakerMissilesCD:Stop()
-		timerVolatileChargesCD:Stop()
-		timerLightshatterBeamCD:Stop()
-		timerCrushingPrismCD:Stop()
-		timerReclaimCD:Stop()
-		timerSeismicTremorsCD:Stop()
-		timerPlanetcrackerBeamCD:Stop()
-		--Stop mobile timers
---		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
-		timerShatterCD:Stop()
---		timerCrushingPrismCD:Stop()--Remove if not needed
-		timerVolatileChargesCD:Stop()
-		--Stop/restart stage 1 timers? or just stop them and do nothing?
 	elseif spellId == 362056 then
 		--USE for alert too if the detonate script gets hidden
 		if self.Options.SetIconOnShatter then
@@ -295,10 +280,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnVolatileCharges:Play("bombsoon")
 		timerVolatileChargesCD:Start()
 	elseif spellId == 369210 then
-
 		specWarnPlanetcrackerBeam:Show()
 		specWarnPlanetcrackerBeam:Play("watchstep")--or farfromline if it's a line
-		timerPlanetcrackerBeamCD:Start()
+--		timerPlanetcrackerBeamCD:Start()
 	end
 end
 
