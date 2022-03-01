@@ -83,7 +83,7 @@ mod:AddInfoFrameOption(360115, true)
 --mod:AddSetIconOption("SetIconOnSeismicTremors", 368669, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFractal", 368671, true, true, {8})
 mod:AddSetIconOption("SetIconOnShatter", 362056, true, true, {8})
-mod:AddSetIconOption("SetIconOnCrushing", 365297, false, false, {1, 2, 3, 4, 5, 6, 7}, true)
+mod:AddSetIconOption("SetIconOnCrushing", 365297, false, false, {1, 2, 3, 4, 5, 6, 7})
 mod:AddNamePlateOption("NPAuraOnFractal", 368671, true)
 mod:GroupSpells(368957, 368969)--Combine the cast (Charges with the debuff Charge)
 
