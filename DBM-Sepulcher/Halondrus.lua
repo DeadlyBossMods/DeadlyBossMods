@@ -5,11 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220301000000)
-mod:SetMinSyncRevision(20220301000000)
+mod:SetHotfixNoticeRev(20220302000000)
+mod:SetMinSyncRevision(20220302000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
+mod.disableHealthCombat = true--Boss stays active and even heals up after combat, we don't want these events to trigger new combat
+--mod:DisableIEEUCombatDetection()--Not sure if required yet
+--mod:DisableFriendlyDetection()--Not sure if required yet
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 361676 360977 367079 359236 362056 364979 360115 368957 368529 359235",
