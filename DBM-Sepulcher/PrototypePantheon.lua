@@ -183,25 +183,25 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			--Necrotic Ritual
-			[360295] = {11.4, 71.4, 73.3},
+			[360295] = {10.6, 71.4, 73.3},
 			--Runecarver's Deathtouch
-			[360636] = {47.1, 57.1, 73.3},
+			[360636] = {47.1, 55.6, 73.3},
 			--Humbling Strikes
-			[365272] = {11.4, 35.7, 35.7, 35.6, 35.7},
+			[365272] = {10.6, 35.7, 35.7, 35.6, 35.7},
 			--Ascension's Call
-			[361066] = {42.8},
+			[361066] = {42.8, 57.1},
 			--Pinning Volley
 			[361278] = {62.7, 64.4},
 		},
 		[2] = {
 			--Wild Stampede
-			[361304] = {70.5, 55.2},
+			[361304] = {69, 55.2},
 			--Withering Seeds
-			[361568] = {33},
+			[361568] = {32.9},
 			--Animastorm
 			[366234] = {},--Wasn't cast?
 			--Wracking Pain
-			[365126] = {41.7, 49.9, 49.9},
+			[365126] = {41.4, 49.7, 49.7},
 			--Hand of Destruction
 			[361791] = {104.1},
 		},
@@ -213,19 +213,19 @@ local allTimers = {
 			--Humbling Strikes
 			[365272] = {41.1, 50},
 			--Ascension's Call
-			[361066] = {},--Not in combat log and no P3 transcriptor
+			[361066] = {},--Wasn't cast?
 			--Pinning Volley
 			[361278] = {56.7},
 			--Wild Stampede
-			[361304] = {26.5},
+			[361304] = {26.5, 74.9, 74.3},
 			--Withering Seeds
-			[361568] = {17.8, 75.8},
+			[361568] = {17.8, 74.1, 76.5},
 			--Animastorm
-			[366234] = {},--Wasn't cast?
+			[366234] = {52.4},
 			--Wracking Pain
-			[365126] = {41.2, 50},
+			[365126] = {41.2, 49.8, 49.8},
 			--Hand of Destruction
-			[361791] = {105},
+			[361791] = {105, 74.6},
 		},
 	},
 	["heroic"] = {
@@ -235,7 +235,7 @@ local allTimers = {
 			--Runecarver's Deathtouch
 			[360636] = {47.7, 57.0},
 			--Humbling Strikes
-			[365272] = {10.0, 36.9, 35.5, 35.5},
+			[365272] = {10.0, 35.7, 35.5, 35.5},
 			--Ascension's Call
 			[361066] = {42.6, 56.8},
 			--Pinning Volley
@@ -559,12 +559,12 @@ function mod:SPELL_CAST_START(args)
 				timerAnimastormCD:Start(38.5, 1)
 			elseif self:IsNormal() then
 				--Prototype of Absolution (Venthyr)
-				timerWrackingPainCD:Start(41.7, 1)
+				timerWrackingPainCD:Start(41.4, 1)
 				timerHandofDestructionCD:Start(104.1, 1)--May need adjusting by 1 sec to match USCS
 				--prototype-of-renewal (Night Fae)
-				timerWitheringSeedCD:Start(33, 1)
+				timerWitheringSeedCD:Start(32.9, 1)
 				--timerAnimastormCD:Start(52.6, 1)
-				timerWildStampedeCD:Start(70.5, 1)
+				timerWildStampedeCD:Start(69, 1)
 			else--LFR
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(36, 1)
@@ -618,8 +618,8 @@ function mod:SPELL_CAST_START(args)
 				--timerAscensionsCallCD:Start(97.8, 1)--Not in combat log and no P3 transcriptor
 				--prototype-of-renewal (Night Fae)
 				timerWitheringSeedCD:Start(17.8, 1)
-				--timerAnimastormCD:Start(24.5, 1)--Wasn't cast?
 				timerWildStampedeCD:Start(26.5, 1)
+				timerAnimastormCD:Start(52.4, 1)
 				--prototype-of-war (Necro)
 				--timerNecroticRitualCD:Start(52.6, 1)--Wasn't cast?
 				--timerRunecarversDeathtouchCD:Start(106.3, 1)--Wasn't cast?
