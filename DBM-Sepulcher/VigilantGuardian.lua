@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180773)
 mod:SetEncounterID(2512)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220125000000)
+mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20220125000000)
 --mod.respawnTime = 29
 
@@ -13,15 +13,14 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 361001 360176 360162 364447",
-	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881",--364425
+	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881 360906",--364425
 	"SPELL_SUMMON 360848 360623",
 	"SPELL_AURA_APPLIED 360458 364447 359610 360415 364881 364962",
 	"SPELL_AURA_APPLIED_DOSE 364447 360415",
 	"SPELL_AURA_REMOVED 364881 360879",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_DIED"
 )
 
 --TODO, improvements for https://ptr.wowhead.com/spell=360403/force-field?
@@ -31,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, proper energy Conversion cast and alert prio
 --[[
 (ability.id = 360412 or ability.id = 360162) and type = "begincast"
- or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881) and type = "cast"
+ or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881 or ability.id = 360906) and type = "cast"
  or ability.id = 360879
 --]]
 --General
@@ -85,7 +84,7 @@ local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 local timerSplitResolutionCD					= mod:NewCDTimer(30.2, 360412, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--30.2-34 (also acts as Pneumatic Impact timer)
-local timerMatterDisolutionCD					= mod:NewCDTimer(30.4, 364881, nil, nil, nil, 3)
+local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption("8")
 --mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
@@ -122,16 +121,11 @@ function mod:OnCombatStart(delay)
 		--Boss Timers
 		timerSplitResolutionCD:Start(46.2)
 --		timerMatterDisolutionCD:Start()--Not used?
-	elseif self:IsHeroic() then
-		timerVolatileMateriumCD:Start(18.6-delay)
-		timerSentryCD:Start(18.6)
-		timerRefractedBlastCD:Start(14.9-delay, 1)
-		timerDeresolutionCD:Start(26.3-delay)
-	else--Normal, LFR will probably be different too
-		timerVolatileMateriumCD:Start(5-delay)
-		timerSentryCD:Start(39-delay)
-		timerRefractedBlastCD:Start(16.1-delay, 1)
-		timerDeresolutionCD:Start(38.1-delay)
+	else--Heroic, Normal. LFR will probably be different too
+		timerVolatileMateriumCD:Start(5-delay)--5-6
+		timerRefractedBlastCD:Start(15.5-delay, 1)
+		timerDeresolutionCD:Start(37.8-delay)
+		timerSentryCD:Start(50.8-delay)
 	end
 end
 
@@ -211,15 +205,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 360404 then
 		warnForceField:Show()
 	elseif spellId == 365315 then--Volatile Materium
-		timerVolatileMateriumCD:Start(self:IsMythic() and 40 or 30)
+		timerVolatileMateriumCD:Start(self:IsMythic() and 40 or 60)
 	elseif spellId == 360658 then--Pre-Fabricated Sentry
-		timerSentryCD:Start(self:IsMythic() and 100 or 71.2)
+--		timerSentryCD:Start(self:IsMythic() and 100 or 81.2)--Not timer based? or maybe spawns early if last one dies fast?
 		--scan for sentry being added to boss frames, so we can grab it's guid
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 		)
 	elseif spellId == 364881 then--Matter Disolution
 		timerMatterDisolutionCD:Start()
+	elseif spellId == 360906 then--Refracted Blast
+		self.vb.refractedCount = self.vb.refractedCount + 1
+		warnRefractedBlast:Show(self.vb.refractedCount)
+		timerRefractedBlastCD:Start(self:IsMythic() and 20 or 15.7, self.vb.refractedCount+1)
 	end
 end
 
@@ -314,9 +312,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRefractedBlastCD:Stop()
 		timerDeresolutionCD:Stop()
 		timerRefractedBlastCD:Start(20.6, self.vb.refractedCount+1)
-		--Blizzard swapped these two in normal testing, recheck heroic
-		timerSplitResolutionCD:Start(self:IsHeroic() and 25.8 or 45.9)
-		timerMatterDisolutionCD:Start(self:IsHeroic() and 46.5 or 25.5)
+		timerMatterDisolutionCD:Start(25.1)
+		timerSplitResolutionCD:Start(45.9)
 	end
 end
 
@@ -361,17 +358,5 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				self:UnregisterShortTermEvents()
 			end
 		end
-	end
-end
-
---"<215.22 23:31:43> [CLEU] SPELL_AURA_REMOVED##nil#Creature-0-4170-2481-3623-180773-00003D0E8C#Vigilant Guardian#360879#Ancient Defenses#DEBUFF#nil", -- [15642]
---"<229.41 23:31:57> [UNIT_SPELLCAST_SUCCEEDED] Vigilant Guardian(Cuteymw) -ROLL OUT!- boss1:Cast-3-4170-2481-3623-361936-00033D0FD0:361936", -- [16622]
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 360906 then--Refracted Blast
-		self.vb.refractedCount = self.vb.refractedCount + 1
-		warnRefractedBlast:Show(self.vb.refractedCount)
-		timerRefractedBlastCD:Start(self:IsMythic() and 20 or 15.7, self.vb.refractedCount+1)
---	elseif spellId == 361936 then--ROLL OUT!
-
 	end
 end

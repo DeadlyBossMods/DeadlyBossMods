@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181395)
 mod:SetEncounterID(2542)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220106000000)
+mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -13,20 +13,19 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 359770 359829 364778 359979 359975 360451",
---	"SPELL_CAST_SUCCESS 364893",
+	"SPELL_CAST_SUCCESS 360092",--364893
 	"SPELL_AURA_APPLIED 359778 364522 359976 359981",
 	"SPELL_AURA_APPLIED_DOSE 359778 359976 359981",
 	"SPELL_AURA_REMOVED 359778",
 	"SPELL_AURA_REMOVED_DOSE 359778",
 	"SPELL_PERIODIC_DAMAGE 366070",
 	"SPELL_PERIODIC_MISSED 366070",
---	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
-(ability.id = 359770 or ability.id = 359829 or ability.id = 359979 or ability.id = 359975 or ability.id = 364778 or ability.id = 360451) and type = "begincast"
- or ability.id = 364893 and type = "cast"
+(ability.id = 359770 or ability.id = 359829 or ability.id = 359979 or ability.id = 359975 or ability.id = 364778) and type = "begincast"
+ or (ability.id = 360092 or ability.id = 364893) and type = "cast"
 --]]
 local warnDustFlail								= mod:NewCountAnnounce(359829, 2)
 local warnRend									= mod:NewStackAnnounce(359979, 2, nil, "Tank|Healer")
@@ -42,15 +41,14 @@ local specWarnRend								= mod:NewSpecialWarningTaunt(359979, nil, nil, nil, 1,
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerDustflailCD							= mod:NewCDTimer(16.6, 359829, nil, nil, nil, 2)
-local timerRetchCD								= mod:NewCDTimer(33.2, 360448, nil, nil, nil, 3)--33-35
-local timerComboCD								= mod:NewTimer(33.2, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
+local timerDustflailCD							= mod:NewCDTimer(16.4, 359829, nil, nil, nil, 2)--16.4-17.5
+local timerRetchCD								= mod:NewCDTimer(32.9, 360448, nil, nil, nil, 3)--32.9-35
+local timerComboCD								= mod:NewTimer(32.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
 
 local berserkTimer								= mod:NewBerserkTimer(360)--Final Consumption
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(359778, true, nil, 5)
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.hungerCount = 0
 mod.vb.dustCount = 0
@@ -63,32 +61,25 @@ function mod:OnCombatStart(delay)
 	self.vb.dustCount = 0
 	self.vb.comboCount = 0
 	timerDustflailCD:Start(2-delay)
-	timerComboCD:Start(7.6-delay)
-	timerRetchCD:Start(24.6-delay)
+	if self:IsHard() then
+		timerComboCD:Start(7.6-delay)
+		timerRetchCD:Start(24.2-delay)
+	else
+		timerComboCD:Start(8.2-delay)
+		timerRetchCD:Start(26.4-delay)
+	end
 	berserkTimer:Start(360-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(359778))
 		DBM.InfoFrame:Show(20, "table", EphemeraDustStacks, 5)
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
-
---[[
-function mod:OnTimerRecovery()
-
-end
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -108,7 +99,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnDustFlail:Show(self.vb.dustCount)
 		end
-		timerDustflailCD:Start()
+		timerDustflailCD:Start(self:IsHard() and 16.4 or 19.4)
 	elseif args:IsSpellID(359979, 359975) then--Rend, Riftmaw
 --		if self:AntiSpam(20, 1) then
 --			self.vb.comboCount = 0
@@ -117,27 +108,18 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 	elseif spellId == 364778 then
 		warnDestroy:Show()
-		--This really shouldn't be a thing and I hope they fix it by next test
---		timerDustflailCD:Pause()
---		timerRetchCD:Pause()
---		timerComboCD:Pause()
 	elseif spellId == 360451 then
 		specWarnRetch:Show()
 		specWarnRetch:Play("shockwave")
-		timerRetchCD:Start()
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 364893 then
-		timerDustflailCD:Resume()
-		timerRetchCD:Resume()
-		timerComboCD:Resume()
+	if spellId == 360092 then
+		timerRetchCD:Start(self:IsHard() and 34 or 37.6)
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -208,15 +190,6 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 180323 then
-
-	end
-end
--]]
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 366070 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
@@ -228,6 +201,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 360079 then--[DNT] Tank Combo
 		self.vb.comboCount = 0
-		timerComboCD:Start()
+		timerComboCD:Start(self:IsHard() and 34 or 37.6)
 	end
 end
