@@ -492,11 +492,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
 		if spellId == 361992 then--Overconfidence
 			overconfidentTargets[#overconfidentTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #overconfidentTargets or 1--Star
 			count = #overconfidentTargets
 		else--Hopelessness
 			hopelessnessTargets[#hopelessnessTargets + 1] = args.destName
-			icon = (self.vb.PairingBehavior == "Auto") and #hopelessnessTargets or 3--Diamond
 			count = #hopelessnessTargets
 		end
 		--Determine if player is in either debuff table by matching current table with other table.
@@ -505,16 +503,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if hopelessnessTargets[count] and overconfidentTargets[count] == playerName then
 			if self.vb.PairingBehavior == "Auto" then
 				specWarnOverconfidence:Show(hopelessnessTargets[count])--Paired players name
+				icon = count
 			else
 				specWarnOverconfidence:Show(hopelessnessName)--Just the name of debuff they need to pair with
+				icon = 1--Star
 			end
 			specWarnOverconfidence:Play("gather")
 			playerIsInPair = true
 		elseif overconfidentTargets[count] and hopelessnessTargets[count] == playerName then
 			if self.vb.PairingBehavior == "Auto" then
 				specWarnHopelessness:Show(overconfidentTargets[count])--Paired players name
+				icon = count
 			else
 				specWarnHopelessness:Show(overconfidenceName)--Just the name of debuff they need to pair with
+				icon = 3--Diamond
 			end
 			specWarnHopelessness:Play("gather")
 			playerIsInPair = true
