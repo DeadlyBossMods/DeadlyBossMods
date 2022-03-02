@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220202000000)
-mod:SetMinSyncRevision(20220202000000)
+mod:SetHotfixNoticeRev(20220301000000)
+mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 365257 and type = "begincast"
 --]]
 --Boss
-local warnSynthesize							= mod:NewSpellAnnounce(363130, 3)
+local warnSynthesize							= mod:NewCountAnnounce(363130, 3)
 local warnResonance								= mod:NewSpellAnnounce(368027, 3, nil, "Tank")
 local warnKineticResonance						= mod:NewStackAnnounce(368024, 2, nil, "Tank|Healer")
 --Adds
@@ -64,19 +64,18 @@ local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795)
 
 --Boss
 --mod:AddTimerLine(BOSS)
-local timerUnstableMoteCD						= mod:NewCDTimer(20.6, 362622, nil, nil, nil, 3)
+local timerUnstableMoteCD						= mod:NewCDCountTimer(20.6, 362622, nil, nil, nil, 3)
 local timerUnstableMote							= mod:NewBuffFadesTimer(5.9, 362622, nil, nil, nil, 5)--1.9+4
 local timerProtoformRadiance					= mod:NewBuffActiveTimer(28.8, 363537, nil, nil, nil, 2)
-local timerProtoformCascadeCD					= mod:NewCDTimer(10.9, 364652, nil, nil, nil, 3)
-local timerResonanceCD							= mod:NewCDTimer(41.2, 368027, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCosmicShiftCD						= mod:NewCDTimer(20.3, 363088, nil, nil, nil, 3)
-local timerDeconstructingEnergyCD				= mod:NewCDTimer(37.2, 363795, nil, nil, nil, 3)
-local timerSynthesizeCD							= mod:NewCDTimer(101, 363130, nil, nil, nil, 6)
+local timerProtoformCascadeCD					= mod:NewCDCountTimer(10.9, 364652, nil, nil, nil, 3)
+local timerResonanceCD							= mod:NewCDCountTimer(41.2, 368027, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerCosmicShiftCD						= mod:NewCDCountTimer(20.3, 363088, nil, nil, nil, 3)
+local timerDeconstructingEnergyCD				= mod:NewCDCountTimer(37.2, 363795, nil, nil, nil, 3)
+local timerSynthesizeCD							= mod:NewCDCountTimer(101, 363130, nil, nil, nil, 6)
 local timerSynthesize							= mod:NewBuffActiveTimer(20, 363130, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRecharge								= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6)
+local berserkTimer								= mod:NewBerserkTimer(480)
 --Adds
-
---local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(328897, true)
@@ -86,17 +85,114 @@ mod:GroupSpells(368027, 368025, 368024)--Group responance debuffs together
 mod:GroupSpells(363088, 368738, 368740)--Group mythic debuffs together with cosmic shift (https://ptr.wowhead.com/spell=362659/alignment-shift)
 
 mod.vb.energyIcon = 1
+mod.vb.moteCount = 0
+mod.vb.synthesizeCount = 0
+mod.vb.cascadeCount = 0
+mod.vb.cosmicCount = 0
+mod.vb.deconstructCount = 0
+mod.vb.resonanceCount = 0
+mod.vb.timerMode = 1
+local difficultyName = "None"
+local allTimers = {
+	["easy"] = {--Normal and LFR combined (for now)
+		[1] = {--Engage
+			--Unstable Mote
+			[362601] = {12.1, 31.5, 31.5},
+			--Protoform Cascade
+			[363130] = {5.7, 31.5, 31.5, 23},
+			--Cosmic Shift
+			[363088] = {29, 23, 31.5},
+			--Deconstructing Energy
+			[363676] = {20.5, 40, 38.8},
+		},
+		[2] = {--After Realignment
+			--Unstable Mote
+			[362601] = {12.4, 31.5, 31.5},
+			--Protoform Cascade
+			[363130] = {6.4, 31.5, 31.5, 23},
+			--Cosmic Shift
+			[363088] = {29.4, 23.1, 31.5},
+			--Deconstructing Energy
+			[363676] = {20.9, 40, 38.8},
+		},
+	},
+	["heroic"] = {
+		[1] = {--Engage
+			--Unstable Mote
+			[362601] = {12.1, 37.7, 43.7},
+			--Protoform Cascade
+			[363130] = {5.7, 31.6, 43.8},--Sometimes this bugs and is 5.8, 70
+			--Resonance
+			[368027] = {38.7, 43.7},
+			--Cosmic Shift
+			[363088] = {29, 43.8},--or 29 and 29, when this happens it triggers the 5.8 and 70 on cascade
+			--Deconstructing Energy
+			[363676] = {20.5, 46.2},
+		},
+		[2] = {--After Realignment
+			--Unstable Mote
+			[362601] = {12.9, 43.8, 43.8},
+			--Protoform Cascade
+			[363130] = {6.8, 31.6, 43.8},
+			--Resonance
+			[368027] = {44.5, 43.8},
+			--Cosmic Shift
+			[363088] = {29.9, 43.8},
+			--Deconstructing Energy
+			[363676] = {21.4, 43.8},
+		},
+	},
+	["mythic"] = {--Mythic should be same as heroic minus first engage timers being shorter. But we'll see if that's changed
+		[1] = {--Engage
+			--Unstable Mote
+			[362601] = {12.1},
+			--Protoform Cascade
+			[363130] = {5.7},--Sometimes this bugs and is 5.8, 70
+			--Resonance
+			[368027] = {},
+			--Cosmic Shift
+			[363088] = {29},--or 29 and 29, when this happens it triggers the 5.8 and 70 on cascade
+			--Deconstructing Energy
+			[363676] = {20.5},
+		},
+		[2] = {--After Realignment
+			--Unstable Mote
+			[362601] = {12.9, 43.8, 43.8},
+			--Protoform Cascade
+			[363130] = {6.8, 31.6, 43.8},
+			--Resonance
+			[368027] = {44.5, 43.8},
+			--Cosmic Shift
+			[363088] = {29.9, 43.8},
+			--Deconstructing Energy
+			[363676] = {21.4, 43.8},
+		},
+	},
+}
 
 function mod:OnCombatStart(delay)
 	self.vb.energyIcon = 1
-	timerProtoformCascadeCD:Start(5.1-delay)--5-6
-	timerUnstableMoteCD:Start(12-delay)
-	timerDeconstructingEnergyCD:Start(20.5-delay)
-	timerCosmicShiftCD:Start(27.8-delay)
-	timerSynthesizeCD:Start(self:IsMythic() and 31 or 100-delay)
-	if not self:IsMythic() then
-		timerResonanceCD:Start(41.2-delay)--Maybe shorter timer on non mythic, else not cast until next cycle
+	self.vb.moteCount = 0
+	self.vb.synthesizeCount = 0
+	self.vb.cascadeCount = 0
+	self.vb.cosmicCount = 0
+	self.vb.deconstructCount = 0
+	self.vb.resonanceCount = 0
+	self.vb.timerMode = 1
+	timerProtoformCascadeCD:Start(5.1-delay, 1)--5-6
+	timerUnstableMoteCD:Start(12-delay, 1)
+	timerDeconstructingEnergyCD:Start(20.5-delay, 1)
+	timerCosmicShiftCD:Start(29-delay, 1)
+	timerSynthesizeCD:Start(self:IsMythic() and 31 or 100-delay, 1)
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+		timerResonanceCD:Start(43-delay, 1)--Maybe shorter timer on non mythic, else not cast until next cycle
+	else
+		difficultyName = "easy"
 	end
+	berserkTimer:Start(480-delay)--On heroic at least
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -115,19 +211,31 @@ function mod:OnCombatEnd()
 	end
 end
 
---[[
 function mod:OnTimerRecovery()
-
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "easy"
+	end
 end
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 362601 then
-		timerUnstableMoteCD:Start(self:IsMythic() and 32.7 or 29.1)
+		self.vb.moteCount = self.vb.moteCount + 1
+		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.moteCount+1]
+		if timer then
+			timerUnstableMoteCD:Start(timer, self.vb.moteCount+1)
+		end
 		timerUnstableMote:Start()
 	elseif spellId == 363130 then
-		warnSynthesize:Show()
+		if self.vb.timerMode == 1 then
+			self.vb.timerMode = 2
+		end
+		self.vb.synthesizeCount = self.vb.synthesizeCount + 1
+		warnSynthesize:Show(self.vb.synthesizeCount)
 		--stop some boss timers here
 		timerUnstableMoteCD:Stop()
 		timerProtoformCascadeCD:Stop()
@@ -135,25 +243,37 @@ function mod:SPELL_CAST_START(args)
 		timerCosmicShiftCD:Stop()
 		timerResonanceCD:Stop()
 	elseif spellId == 364652 then
+		self.vb.cascadeCount = self.vb.cascadeCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnProtoformCascade:Show()
 			specWarnProtoformCascade:Play("defensive")
 		end
-		timerProtoformCascadeCD:Start(10.9)
+		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.cascadeCount+1]
+		if timer then
+			timerProtoformCascadeCD:Start(timer, self.vb.cascadeCount+1)
+		end
 	elseif spellId == 363088 then
+		self.vb.cosmicCount = self.vb.cosmicCount + 1
 		specWarnCosmicShift:Show()
 		specWarnCosmicShift:Play("carefly")
-		timerCosmicShiftCD:Start(self:IsMythic() and 32.7 or 29.1)
+		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.cosmicCount+1]
+		if timer then
+			timerCosmicShiftCD:Start(timer, self.vb.cosmicCount+1)
+		end
 	elseif spellId == 365257 and self:AntiSpam(5, 1) then
 		warnFormSentry:Show()
 	elseif spellId == 368027 then
+		self.vb.resonanceCount = self.vb.resonanceCount + 1
 		if self.Options.SpecWarn368027defensive and self:IsTanking("player", "boss1", nil, true) then
 			specWarnResonance:Show()
 			specWarnResonance:Play("defensive")
 		else
 			warnResonance:Show()
 		end
-		timerResonanceCD:Start()
+		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.resonanceCount+1]
+		if timer then
+			timerResonanceCD:Start(timer, self.vb.resonanceCount+1)
+		end
 	end
 end
 
@@ -161,7 +281,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 363795 or spellId == 363676 then
 		self.vb.energyIcon = 1
-		timerDeconstructingEnergyCD:Start(self:IsMythic() and 42.5 or 37.2)
+		self.vb.deconstructCount = self.vb.deconstructCount + 1
+		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.deconstructCount+1]
+		if timer then
+			timerDeconstructingEnergyCD:Start(timer, self.vb.deconstructCount+1)
+		end
 	end
 end
 
@@ -215,15 +339,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnKineticResonance:Show(args.destName, args.amount or 1)
 		end
 	elseif spellId == 361200 then
---		if self:IsMythic() then
-			timerRecharge:Start(30)
---			timerDeconstructingEnergyCD:Start(30.5)--NOT started here on mythic
---			timerUnstableMoteCD:Start(30.5)
---		else
---			timerRecharge:Start(20)
---			timerDeconstructingEnergyCD:Start(20.5)--Started here because it's used .5 seconds after recharge ends
---			timerUnstableMoteCD:Start(20.5)
---		end
+		timerRecharge:Start(30)
 	elseif spellId == 368738 and args:IsPlayer() then
 		specWarnHarmonicAlignment:Show()
 		specWarnHarmonicAlignment:Play("harmonic")
@@ -238,10 +354,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 363537 then
 		timerProtoformRadiance:Stop()
-		--Probably resume/start timers
---		timerDeconstructingBlastCD:Start(2)
---		timerUnstableMoteCD:Start(2)
---		timerProtoformCascadeCD:Start(2)
 	elseif spellId == 363795 or spellId == 363676 then
 		if self.Options.SetIconOnDeconstructingEnergy then
 			self:SetIcon(args.destName, 0)
@@ -256,15 +368,22 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 363130 then
 		timerSynthesize:Stop()
 	elseif spellId == 361200 then--Recharge
+		self.vb.moteCount = 0
+		self.vb.cascadeCount = 0
+		self.vb.cosmicCount = 0
+		self.vb.deconstructCount = 0
+		self.vb.resonanceCount = 0
 		timerRecharge:Stop()
 		--Restart boss timers
 --		if self:IsMythic() then
-			timerProtoformCascadeCD:Start(6.1)
-			timerUnstableMoteCD:Start(12.5)
-			timerDeconstructingEnergyCD:Start(22.2)
-			timerCosmicShiftCD:Start(28.3)
-			timerResonanceCD:Start(41.7)
-			timerSynthesizeCD:Start(101.2)
+			timerProtoformCascadeCD:Start(6.1, 1)
+			timerUnstableMoteCD:Start(12.5, 1)
+			timerDeconstructingEnergyCD:Start(22.2, 1)
+			timerCosmicShiftCD:Start(28.3, 1)
+			if self:IsHard() then
+				timerResonanceCD:Start(41.7, 1)
+			end
+			timerSynthesizeCD:Start(101.2, self.vb.synthesizeCount+1)
 --		else
 --			timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
 --			timerUnstableMoteCD:Start(2)--Same reason as above
