@@ -609,7 +609,6 @@ function mod:SPELL_CAST_START(args)
 				timerNecroticRitualCD:Start(134, 1)
 				timerRunecarversDeathtouchCD:Start(129, 1)
 			elseif self:IsNormal() then
-		[3] = {
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(41.2, 1)
 				timerHandofDestructionCD:Start(105, 1)
