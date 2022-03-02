@@ -205,9 +205,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 360404 then
 		warnForceField:Show()
 	elseif spellId == 365315 then--Volatile Materium
+		timerVolatileMateriumCD:Stop()--Max timer, but come early if defeated fast, per March 1st hotfixes
 		timerVolatileMateriumCD:Start(self:IsMythic() and 40 or 60)
 	elseif spellId == 360658 then--Pre-Fabricated Sentry
---		timerSentryCD:Start(self:IsMythic() and 100 or 81.2)--Not timer based? or maybe spawns early if last one dies fast?
+		timerSentryCD:Stop()
+		timerSentryCD:Start(self:IsMythic() and 100 or 81.2)--Timer based but also comes early if last one is defeated
 		--scan for sentry being added to boss frames, so we can grab it's guid
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
