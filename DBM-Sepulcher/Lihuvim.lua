@@ -99,7 +99,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.1, 31.5, 31.5},
 			--Protoform Cascade
-			[363130] = {5.7, 31.5, 31.5, 23},
+			[364652] = {5.7, 31.5, 31.5, 23},
 			--Cosmic Shift
 			[363088] = {29, 23, 31.5},
 			--Deconstructing Energy
@@ -109,7 +109,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.4, 31.5, 31.5},
 			--Protoform Cascade
-			[363130] = {6.4, 31.5, 31.5, 23},
+			[364652] = {6.4, 31.5, 31.5, 23},
 			--Cosmic Shift
 			[363088] = {29.4, 23.1, 31.5},
 			--Deconstructing Energy
@@ -121,7 +121,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.1, 37.7, 43.7},
 			--Protoform Cascade
-			[363130] = {5.7, 31.6, 43.8},--Sometimes this bugs and is 5.8, 70
+			[364652] = {5.7, 31.6, 43.8},--Sometimes this bugs and is 5.8, 70
 			--Resonance
 			[368027] = {38.7, 43.7},
 			--Cosmic Shift
@@ -133,7 +133,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.4, 43.8, 43.8},
 			--Protoform Cascade
-			[363130] = {6.4, 31.6, 43.8},
+			[364652] = {6.4, 31.6, 43.8},
 			--Resonance
 			[368027] = {44.5, 43.8},
 			--Cosmic Shift
@@ -147,7 +147,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.1},
 			--Protoform Cascade
-			[363130] = {5.7},--Sometimes this bugs and is 5.8, 70
+			[364652] = {5.7},--Sometimes this bugs and is 5.8, 70
 			--Resonance
 			[368027] = {},
 			--Cosmic Shift
@@ -159,7 +159,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.9, 43.8, 43.8},
 			--Protoform Cascade
-			[363130] = {6.8, 31.6, 43.8},
+			[364652] = {6.8, 31.6, 43.8},
 			--Resonance
 			[368027] = {44.5, 43.8},
 			--Cosmic Shift
