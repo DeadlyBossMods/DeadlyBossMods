@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181224)
 mod:SetEncounterID(2540)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20220106000000)
+mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -13,13 +13,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 359483 363607 361513 361630 365418 360960",
+	"SPELL_CAST_SUCCESS 362805",
 	"SPELL_AURA_APPLIED 361966 361018 361651",
 	"SPELL_AURA_APPLIED_DOSE 361966",
-	"SPELL_AURA_REMOVED 361966 361018 361651",
+	"SPELL_AURA_REMOVED 361966 361018 361651"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"RAID_BOSS_WHISPER"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -28,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, rework the ring code to have timers for each ring, and smarter handling of soft enrage and other stuff. Waiting for CLEU event from next build first
 --[[
 (ability.id = 359483 or ability.id = 361513 or ability.id = 361630 or ability.id = 365418 or ability.id = 360960) and type = "begincast"
+ or ability.id = 362805 and type = "cast"
  or ability.id = 361651 and (type = "applybuff" or type = "removebuff")
 --]]
 --The Fallen Oracle
@@ -67,7 +67,6 @@ local timerSiphonReservoirCD					= mod:NewCDCountTimer(28.8, 361643, nil, nil, n
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(361651, true)
 mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})--Only one was happening on heroic, is 3 mythic only?
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.DebuffIcon = 1
 mod.vb.barrageCount = 0
@@ -86,14 +85,19 @@ function mod:OnCombatStart(delay)
 	self.vb.coreCount = 0
 	self.vb.haloCount = 0
 	self.vb.softEnrage = false
-	timerDisintegrationHaloCD:Start(5.2-delay, 1)
-	timerDominationCoreCD:Start(6.5-delay, 1)
-	timerObliterationArcCD:Start(15-delay, 1)
-	timerStaggeringBarrageCD:Start(29-delay, 1)
-	timerSiphonReservoirCD:Start(72.8-delay, 1)
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
+	if self:IsHard() then
+		timerDisintegrationHaloCD:Start(4.9-delay, 1)
+		timerDominationCoreCD:Start(6.4-delay, 1)
+		timerObliterationArcCD:Start(14.9-delay, 1)
+		timerStaggeringBarrageCD:Start(29-delay, 1)
+		timerSiphonReservoirCD:Start(72.1-delay, 1)
+	else
+		timerDisintegrationHaloCD:Start(5.5-delay, 1)
+		timerDominationCoreCD:Start(7.2-delay, 1)
+		timerObliterationArcCD:Start(16.7-delay, 1)
+		timerStaggeringBarrageCD:Start(32.2-delay, 1)
+		timerSiphonReservoirCD:Start(80.2-delay, 1)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -101,23 +105,14 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
-
---[[
-function mod:OnTimerRecovery()
-
-end
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 359483 then
 		self.vb.coreCount = self.vb.coreCount + 1
 		warnDominationCore:Show(self.vb.coreCount)
-		timerDominationCoreCD:Start(nil, self.vb.coreCount+1)
+		timerDominationCoreCD:Start(self:IsHard() and 33.5 or 37.2, self.vb.coreCount+1)
 	elseif spellId == 363607 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -144,7 +139,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.arcCount = self.vb.arcCount + 1
 		specWarnObliterationArc:Show(self.vb.arcCount)
 		specWarnObliterationArc:Play("shockwave")
-		timerObliterationArcCD:Start(nil, self.vb.arcCount+1)
+		timerObliterationArcCD:Start(self:IsHard() and 35 or 38.8, self.vb.arcCount+1)
 	elseif spellId == 361630 then--Teleport
 		self.vb.ReservoirCount = self.vb.ReservoirCount + 1
 		warnSiphonReservoir:Show(self.vb.ReservoirCount)
@@ -159,7 +154,20 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 360960 then
 		self.vb.DebuffIcon = 1
 		self.vb.barrageCount = self.vb.barrageCount + 1
-		timerStaggeringBarrageCD:Start(nil, self.vb.barrageCount+1)
+		timerStaggeringBarrageCD:Start(self:IsHard() and 35 or 38.8, self.vb.barrageCount+1)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 362805 then
+		self.vb.haloCount = self.vb.haloCount + 1
+		specWarnDisintegrationHalo:Show(self.vb.haloCount)
+		specWarnDisintegrationHalo:Play("watchwave")
+		if not self.vb.softEnrage then
+			timerDisintegrationHaloCD:Start(self:IsHard() and 70 or 77.7, self.vb.haloCount+1)
+		end
+		--TODO, schedule ring stuff here if I still can't get blizzard convinced on adding events for them
 	end
 end
 
@@ -239,27 +247,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-		timerDominationCoreCD:Start(7.6, self.vb.coreCount+1)
-		timerObliterationArcCD:Start(16.1, self.vb.arcCount+1)
-		timerStaggeringBarrageCD:Start(30, self.vb.barrageCount+1)
-		timerSiphonReservoirCD:Start(108, self.vb.ReservoirCount+1)--108-110, closer here than teleport to teleport.
-		if not self.vb.softEnrage then
-			timerDisintegrationHaloCD:Start(6.3, self.vb.haloCount+1)
+		if self:IsHard() then
+			if not self.vb.softEnrage then
+				timerDisintegrationHaloCD:Start(6.7, self.vb.haloCount+1)
+			end
+			timerDominationCoreCD:Start(8.2, self.vb.coreCount+1)
+			timerObliterationArcCD:Start(16.7, self.vb.arcCount+1)
+			timerStaggeringBarrageCD:Start(30.7, self.vb.barrageCount+1)
+			timerSiphonReservoirCD:Start(109.6, self.vb.ReservoirCount+1)--108-110, closer here than teleport to teleport.
+		else
+			if not self.vb.softEnrage then
+				timerDisintegrationHaloCD:Start(6.9, self.vb.haloCount+1)
+			end
+			timerDominationCoreCD:Start(8.6, self.vb.coreCount+1)
+			timerObliterationArcCD:Start(18.1, self.vb.arcCount+1)
+			timerStaggeringBarrageCD:Start(33.6, self.vb.barrageCount+1)
+			timerSiphonReservoirCD:Start(120.4, self.vb.ReservoirCount+1)--Closer here than teleport to teleport.
 		end
 	end
 end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("spell:365373") then
-		self.vb.haloCount = self.vb.haloCount + 1
-		specWarnDisintegrationHalo:Show(self.vb.haloCount)
-		specWarnDisintegrationHalo:Play("watchwave")
-		if not self.vb.softEnrage then
-			timerDisintegrationHaloCD:Start(70, self.vb.haloCount+1)
-		end
-	end
-end
-mod.RAID_BOSS_WHISPER = mod.CHAT_MSG_RAID_BOSS_EMOTE--Dunno what this is about. You ok Blizz?
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
