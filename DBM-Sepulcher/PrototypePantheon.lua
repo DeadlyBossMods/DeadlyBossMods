@@ -6,7 +6,7 @@ mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220114000000)
+mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20220114000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
@@ -31,6 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, Find Phase 3 cd of necrotic ritual (between casts) and P2 time between wracking pain casts on mythic and tons of others
 --TODO, maybe add https://ptr.wowhead.com/spell=362270/anima-shelter tracking to infoframe? seems like might already be crowded though just monitoring sin stacks and deathtouch
 --TODO, tanks wap for Wracking Pain? Feels like tank should just eat it vs putting 2 bosses on one tank for only 25%
+--TODO, recheck normal mode timers on live
+--TODO, recheck mythic timers on live
 --[[
 (ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062  or ability.id = 361789) and type = "begincast"
  or (ability.id = 361278 or ability.id = 361745) and type = "cast" or ability.id = 360838
@@ -229,49 +231,49 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Necrotic Ritual
-			[360295] = {},
+			[360295] = {10.0, 71.5},
 			--Runecarver's Deathtouch
-			[360636] = {},
+			[360636] = {47.7, 57.0},
 			--Humbling Strikes
-			[365272] = {},
+			[365272] = {10.0, 36.9, 35.5, 35.5},
 			--Ascension's Call
-			[361066] = {},
+			[361066] = {42.6, 56.8},
 			--Pinning Volley
-			[361278] = {},
+			[361278] = {63.4},
 		},
 		[2] = {
 			--Wild Stampede
-			[361304] = {},
+			[361304] = {10.7, 37.3, 25.0, 25.0},
 			--Withering Seeds
-			[361568] = {},
+			[361568] = {18.7, 97.6},
 			--Animastorm
-			[366234] = {},
+			[366234] = {38.5, 67.5},
 			--Wracking Pain
-			[365126] = {},
+			[365126] = {69.7, 45.0},
 			--Hand of Destruction
-			[361791] = {},
+			[361791] = {79.7},
 		},
 		[3] = {
 			--Necrotic Ritual
-			[360295] = {},
+			[360295] = {134.0},
 			--Runecarver's Deathtouch
-			[360636] = {},
+			[360636] = {129.0},
 			--Humbling Strikes
-			[365272] = {},
+			[365272] = {41.0, 49.8, 49.8},
 			--Ascension's Call
-			[361066] = {},
+			[361066] = {120.7},
 			--Pinning Volley
-			[361278] = {},
+			[361278] = {56.9, 82.7},
 			--Wild Stampede
-			[361304] = {},
+			[361304] = {26.4, 74.7},
 			--Withering Seeds
-			[361568] = {},
+			[361568] = {18.3, 74.2},
 			--Animastorm
-			[366234] = {},
+			[366234] = {51.0},
 			--Wracking Pain
-			[365126] = {},
+			[365126] = {41.0, 49.8, 49.8},
 			--Hand of Destruction
-			[361791] = {},
+			[361791] = {104.1},
 		},
 	},
 	["mythic"] = {
@@ -381,7 +383,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ritualistIconMethod = 1
 	self:SetStage(1)
 	--Necro
-	timerNecroticRitualCD:Start(11.4-delay, 1)--11.4-14 on various difficulties (may move this)
+	timerNecroticRitualCD:Start(10-delay, 1)--10-14 on various difficulties (may move this)
 	--Kyrian
 	timerHumblingStrikesCD:Start(10-delay, 1)--10-11.4 on various difficulties (may move this)
 	if self:IsMythic() then
@@ -396,11 +398,10 @@ function mod:OnCombatStart(delay)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		--Necro
-		--timerRunecarversDeathtouchCD:Start(50-delay, 1)--47.2
+		timerRunecarversDeathtouchCD:Start(47.7-delay, 1)--47.2
 		--Kyrian
-		--timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
-		--timerPinningVolleyCD:Start(63-delay, 1)
-		DBM:AddMsg("Timers on this difficulty were signficantly changed AFTER fight was tested and unfortunately it wasn't re-tested, so no timers are available until post launch updates")
+		timerAscensionsCallCD:Start(42.6-delay, 1)--Time til USCS anyways
+		timerPinningVolleyCD:Start(63.4-delay, 1)
 	elseif self:IsNormal() then
 		difficultyName = "normal"
 		--Necro
@@ -550,12 +551,12 @@ function mod:SPELL_CAST_START(args)
 				timerNightHunterCD:Start(27.7)
 			elseif self:IsHeroic() then
 				--Prototype of Absolution (Venthyr)
-				--timerWrackingPainCD:Start(36, 1)
-				--timerHandofDestructionCD:Start(107.7, 1)
+				timerWrackingPainCD:Start(69.7, 1)
+				timerHandofDestructionCD:Start(79.7, 1)
 				--prototype-of-renewal (Night Fae)
-				--timerWildStampedeCD:Start(14.6, 1)
-				--timerWitheringSeedCD:Start(26, 1)
-				--timerAnimastormCD:Start(52.6, 1)
+				timerWildStampedeCD:Start(10.7, 1)
+				timerWitheringSeedCD:Start(18.7, 1)
+				timerAnimastormCD:Start(38.5, 1)
 			elseif self:IsNormal() then
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(41.7, 1)
@@ -594,19 +595,19 @@ function mod:SPELL_CAST_START(args)
 				timerNightHunterCD:Start(21.6, 1)
 			elseif self:IsHeroic() then
 				--Prototype of Absolution (Venthyr)
-				--timerWrackingPainCD:Start(33.9, 1)
-				--timerHandofDestructionCD:Start(84.5, 1)
+				timerWrackingPainCD:Start(41, 1)
+				timerHandofDestructionCD:Start(104.1, 1)
 				--prototype-of-duty (Kyrian)
-				--timerHumblingStrikesCD:Start(33.9, 1)
-				--timerPinningVolleyCD:Start(56.7, 1)
-				--timerAscensionsCallCD:Start(97.8, 1)
+				timerHumblingStrikesCD:Start(41, 1)
+				timerPinningVolleyCD:Start(56.9, 1)
+				timerAscensionsCallCD:Start(120.7, 1)
 				--prototype-of-renewal (Night Fae)
-				--timerWitheringSeedCD:Start(15.2, 1)
-				--timerAnimastormCD:Start(24.5, 1)
-				--timerWildStampedeCD:Start(35.8, 1)
+				timerWitheringSeedCD:Start(18.3, 1)
+				timerWildStampedeCD:Start(26.4, 1)
+				timerAnimastormCD:Start(51, 1)
 				--prototype-of-war (Necro)
-				--timerNecroticRitualCD:Start(52.6, 1)
-				--timerRunecarversDeathtouchCD:Start(106.3, 1)
+				timerNecroticRitualCD:Start(134, 1)
+				timerRunecarversDeathtouchCD:Start(129, 1)
 			elseif self:IsNormal() then
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(41.2, 1)
