@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(183501)
 mod:SetEncounterID(2553)
 mod:SetUsedIcons(1, 2, 3, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220123000000)
+mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20220123000000)
 --mod.respawnTime = 29
 
@@ -33,11 +33,11 @@ mod:RegisterEventsInCombat(
  or (ability.id = 365682 or ability.id = 364040) and type = "begincast"
  or ability.id = 364030 and type = "cast"
 --]]
---Genesis Relic
+--Forerunner Relic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24215))
-local specWarnGenesisRings						= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
+local specWarnForerunnerRings					= mod:NewSpecialWarningDodgeCount(363520, nil, nil, nil, 2, 2)
 
-local timerGenesisRingsCD						= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
+local timerForerunnerRingsCD					= mod:NewNextCountTimer(30, 363520, nil, nil, nil, 3)
 --Stage One: Cartel Xy
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24588))
 local warnDimensionalTear						= mod:NewTargetNoFilterAnnounce(362615, 3, nil, nil, 67833)
@@ -108,7 +108,7 @@ function mod:OnCombatStart(delay)
 	timerDimensionalTearCD:Start(8-delay)
 	timerHyperlightSparknovaCD:Start(14-delay, 1)
 	timerStasisTrapCD:Start(21-delay)
-	timerGenesisRingsCD:Start(26-delay, 1)
+	timerForerunnerRingsCD:Start(26-delay, 1)
 	if self:IsMythic() then
 		timerCartelEliteCD:Start(13.4-delay)
 		timerRiftBlastsCD:Start(13.6-delay)
@@ -161,12 +161,12 @@ function mod:SPELL_CAST_START(args)
 --		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
 		self.vb.glyphCount = self.vb.glyphCount + 1
-		timerGlyphofRelocationCD:Start(nil, self.vb.glyphCount+1)
+		timerGlyphofRelocationCD:Start(self.vb.phase == 4 and 66.6 or 60, self.vb.glyphCount+1)
 	elseif spellId == 362849 then
 		self.vb.sparkCount = self.vb.sparkCount + 1
 		specWarnHyperlightSpark:Show(self.vb.sparkCount)
 		specWarnHyperlightSpark:Play("aesoon")
-		timerHyperlightSparknovaCD:Start(nil, self.vb.sparkCount+1)
+		timerHyperlightSparknovaCD:Start(self.vb.phase == 4 and 33.3 or 30, self.vb.sparkCount+1)
 	elseif spellId == 364040 then
 		if self:AntiSpam(2, 2) then
 			warnHyperlightAscension:Show()
@@ -182,7 +182,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if (spellId == 362885 or spellId == 366752) and self:AntiSpam(10, 3) then--362885 verified on heroic
 		specWarnStasisTrap:Show()
 		specWarnStasisTrap:Play("watchstep")
-		timerStasisTrapCD:Start()
+		timerStasisTrapCD:Start(self.vb.phase == 4 and 33.3 or 30)
 	elseif spellId == 364040 then
 		if self.Options.NPAuraOnAscension then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
@@ -193,7 +193,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 363258 then--Decipher Relic, Slightly faster than SPELL_CAST_START/APPLIED
 		warnDecipherRelic:Show()
 		--Stop timers
-		timerGenesisRingsCD:Stop()
+		timerForerunnerRingsCD:Stop()
 		timerCartelEliteCD:Stop()
 		timerRiftBlastsCD:Stop()
 		timerDimensionalTearCD:Stop()
@@ -210,11 +210,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 364465 then
 		self.vb.ringCount = self.vb.ringCount + 1
-		specWarnGenesisRings:Show(self.vb.ringCount)
-		specWarnGenesisRings:Play("watchwave")
-		--More data needed, no phase 3 data for mythic, and did heroic change to also not be 30 anymore?
-		local timer = self:IsMythic() and (self.vb.phase == 1 and 33 or self.vb.phase == 2 and 40) or 30
-		timerGenesisRingsCD:Start(timer, self.vb.ringCount+1)
+		specWarnForerunnerRings:Show(self.vb.ringCount)
+		specWarnForerunnerRings:Play("watchwave")
+		--More data needed, mythic stuff may all be wrong now.
+		local timer = self:IsMythic() and (self.vb.phase == 1 and 33 or self.vb.phase == 2 and 40) or self.vb.phase == 4 and 33.3 or 30
+		timerForerunnerRingsCD:Start(timer, self.vb.ringCount+1)
 	elseif spellId == 364030 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
 			castsPerGUID[args.sourceGUID] = 0
@@ -245,20 +245,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.glyphCount = 0
 		warnDecipherRelic:Show()
 		--Stop timers
-		timerGenesisRingsCD:Stop()
+		timerForerunnerRingsCD:Stop()
 		timerCartelEliteCD:Stop()
 		timerRiftBlastsCD:Stop()
 		timerDimensionalTearCD:Stop()
 		timerGlyphofRelocationCD:Stop()
 		timerHyperlightSparknovaCD:Stop()
 		timerStasisTrapCD:Stop()
-		--Restart Timers (exactly same as pull)
-		timerDimensionalTearCD:Start(8)
+		--Restart Timers from pull but now slightly altered post march 1st hotfixes
 		timerHyperlightSparknovaCD:Start(14, 1)
-		timerStasisTrapCD:Start(21)
-		timerGenesisRingsCD:Start(26, 1)
+		timerDimensionalTearCD:Start(22)
+		timerStasisTrapCD:Start(23)
+		timerForerunnerRingsCD:Start(28, 1)
 		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
+			--TODO: Could be changed since other stuff was, review!
 			timerCartelEliteCD:Start(12)
 			timerRiftBlastsCD:Start(12.2)
 		end
@@ -348,7 +349,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDimensionalTearCD:Start(8)
 		timerHyperlightSparknovaCD:Start(14, 1)
 		timerStasisTrapCD:Start(21)
-		timerGenesisRingsCD:Start(26, 1)
+		timerForerunnerRingsCD:Start(26, 1)
 		timerGlyphofRelocationCD:Start(40, 1)
 		if self:IsMythic() then
 			timerCartelEliteCD:Start(12)
