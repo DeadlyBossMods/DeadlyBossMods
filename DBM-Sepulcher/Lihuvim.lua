@@ -131,15 +131,15 @@ local allTimers = {
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.9, 43.8, 43.8},
+			[362601] = {12.4, 43.8, 43.8},
 			--Protoform Cascade
-			[363130] = {6.8, 31.6, 43.8},
+			[363130] = {6.4, 31.6, 43.8},
 			--Resonance
 			[368027] = {44.5, 43.8},
 			--Cosmic Shift
-			[363088] = {29.9, 43.8},
+			[363088] = {29.4, 43.8},
 			--Deconstructing Energy
-			[363676] = {21.4, 43.8},
+			[363676] = {20.9, 43.8},
 		},
 	},
 	["mythic"] = {--Mythic should be same as heroic minus first engage timers being shorter. But we'll see if that's changed
@@ -376,14 +376,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRecharge:Stop()
 		--Restart boss timers
 --		if self:IsMythic() then
-			timerProtoformCascadeCD:Start(6.1, 1)
-			timerUnstableMoteCD:Start(12.5, 1)
-			timerDeconstructingEnergyCD:Start(22.2, 1)
-			timerCosmicShiftCD:Start(28.3, 1)
+			timerProtoformCascadeCD:Start(6.4, 1)
+			timerUnstableMoteCD:Start(12.4, 1)
+			timerDeconstructingEnergyCD:Start(20.9, 1)
+			timerCosmicShiftCD:Start(29.4, 1)
 			if self:IsHard() then
-				timerResonanceCD:Start(41.7, 1)
+				timerResonanceCD:Start(44.5, 1)
 			end
-			timerSynthesizeCD:Start(101.2, self.vb.synthesizeCount+1)
+			timerSynthesizeCD:Start(101.1, self.vb.synthesizeCount+1)
 --		else
 --			timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
 --			timerUnstableMoteCD:Start(2)--Same reason as above
