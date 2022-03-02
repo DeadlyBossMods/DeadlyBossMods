@@ -90,7 +90,6 @@ mod:GroupSpells(368957, 368969)--Combine the cast (Charges with the debuff Charg
 mod.vb.chargeCount = 0
 mod.vb.tremorCount = 0
 mod.vb.reclaimCount = 0
-mod.vb.planetCrackerCount = 0
 mod.vb.seismicIcon = 1
 mod.vb.detonateCast = 0
 mod.vb.crushingCast = 0
@@ -145,12 +144,12 @@ local function updateAllTimers(self, ICD)
 		timerCrushingPrismCD:Stop()
 		timerCrushingPrismCD:Update(elapsed, total+extend, self.vb.crushingCast+1)
 	end
---	if timerPlanetcrackerBeamCD:GetRemaining(self.vb.planetCrackerCount+1) < ICD then
---		local elapsed, total = timerPlanetcrackerBeamCD:GetTime(self.vb.planetCrackerCount+1)
+--	if timerPlanetcrackerBeamCD:GetRemaining() < ICD then
+--		local elapsed, total = timerPlanetcrackerBeamCD:GetTime()
 --		local extend = ICD - (total-elapsed)
 --		DBM:Debug("timerPlanetcrackerBeamCD extended by: "..extend, 2)
 --		timerPlanetcrackerBeamCD:Stop()
---		timerPlanetcrackerBeamCD:Update(elapsed, total+extend, self.vb.planetCrackerCount+1)
+--		timerPlanetcrackerBeamCD:Update(elapsed, total+extend)
 --	end
 --	if self:IsMythic() and timerVolatileChargesCD:GetRemaining() < ICD then
 --		local elapsed, total = timerVolatileChargesCD:GetTime()
@@ -167,7 +166,6 @@ function mod:OnCombatStart(delay)
 	self.vb.chargeCount = 0
 	self.vb.tremorCount = 0
 	self.vb.reclaimCount = 0
-	self.vb.planetCrackerCount = 0
 	self.vb.seismicIcon = 1
 	timerLightshatterBeamCD:Start(10.1-delay)
 	timerSeismicTremorsCD:Start(1-delay)
@@ -296,7 +294,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.chargeCount = 0
 		self.vb.tremorCount = 0
 		self.vb.reclaimCount = 0
-		self.vb.planetCrackerCount = 0
 		warnReclamationForm:Show()
 		--Stop mobile timers
 		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
