@@ -5,18 +5,21 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220209000000)
-mod:SetMinSyncRevision(20220209000000)
+mod:SetHotfixNoticeRev(20220302000000)
+mod:SetMinSyncRevision(20220302000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
+mod.disableHealthCombat = true--Boss stays active and even heals up after combat, we don't want these events to trigger new combat
+--mod:DisableIEEUCombatDetection()--Not sure if required yet
+--mod:DisableFriendlyDetection()--Not sure if required yet
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 361676 365283 360977 367079 359236 362056 364979 360115 368957 369210 368529",
-	"SPELL_CAST_SUCCESS 365294 359235",--361602
+	"SPELL_CAST_START 361676 360977 367079 359236 362056 364979 360115 368957 368529 359235",
+	"SPELL_CAST_SUCCESS 365294",--361602
 	"SPELL_AURA_APPLIED 365297 361309 368671 368969",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 368671 368969",
+	"SPELL_AURA_REMOVED 368671 368969 360115",
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
 --	"SPELL_PERIODIC_MISSED 361002 360114",
 --	"UNIT_DIED",
@@ -24,16 +27,15 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
---TODO, reclaim addition probably changes all the frigging timers, this mod may need redoing, and doubt blizz will even retest this
 --TODO, infoframe for reclaim absorb shield %?
---TODO, target scan planet cracker? GTFO stuff it leaves behind?
 --TODO, is Shatter (formerly detonation) still a dps switch warning?
 --[[
-(ability.id = 363340 or ability.id = 363408 or ability.id = 367079 or ability.id = 361676 or ability.id = 365283 or ability.id = 360977 or ability.id = 359236 or ability.id = 364979 or ability.id = 360115) and type = "begincast"
- or (ability.id = 365294 or ability.id = 359235 or ability.id = 361602) and type = "cast"
+(ability.id = 363340 or ability.id = 363408 or ability.id = 367079 or ability.id = 361676 or ability.id = 360977 or ability.id = 359236 or ability.id = 364979 or ability.id = 360115 or ability.id = 359235) and type = "begincast"
+ or (ability.id = 365294 or ability.id = 359235 or ability.id = 361602 or ability.id = 359236) and type = "cast"
  or ability.id = 365297 and type = "applydebuff"
  or (ability.id = 364229 or ability.id = 362056) and type = "begincast"
  or ability.id = 368347 and type = "applydebuff"
+ or ability.id = 360115 and type = "removebuff"
 --]]
 --Stage One: The Reclaimer
 local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
@@ -54,7 +56,7 @@ local yellVolatileChargeFades					= mod:NewShortFadesYell(368969)
 local specWarnReclaim							= mod:NewSpecialWarningCount(360115, nil, nil, nil, 1, 2)
 local specWarnSeismicTremors					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--I don't even understand mechanic anymore it's been changed so much, no idea if it should be on or off by default
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
-local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodgeCount(369210, nil, nil, nil, 2, 2)
+local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodge(369210, nil, nil, nil, 2, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
@@ -66,15 +68,14 @@ local specWarnShatter							= mod:NewSpecialWarningSwitch(362056, "Dps", nil, ni
 --Mythic
 local timerVolatileChargesCD					= mod:NewAITimer(36.5, 368957, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Stage One: The Reclaimer
-local timerReclaimCD							= mod:NewAITimer(28.8, 360115, nil, nil, nil, 5)
-local timerSeismicTremorsCD						= mod:NewAITimer(35, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
-local timerEarthbreakerMissilesCD				= mod:NewAITimer(33.2, 361676, nil, nil, nil, 3)
-local timerPlanetcrackerBeamCD					= mod:NewAITimer(33.2, 369210, nil, nil, nil, 3)
-local timerCrushingPrismCD						= mod:NewAITimer(42.5, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerLightshatterBeamCD					= mod:NewCDTimer(14, 360977, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerReclaimCD							= mod:NewCDCountTimer(60, 360115, nil, nil, nil, 5)
+local timerSeismicTremorsCD						= mod:NewCDCountTimer(26.7, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
+local timerEarthbreakerMissilesCD				= mod:NewCDCountTimer(26.1, 361676, nil, nil, nil, 3)
+local timerPlanetcrackerBeamCD					= mod:NewCDTimer(33.2, 369210, nil, nil, nil, 3)
+local timerCrushingPrismCD						= mod:NewCDCountTimer(26.9, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Shimmering Cliffs
 local timerRelocationForm						= mod:NewCastTimer(6, 359236, nil, nil, nil, 6)
-local timerShatterCD							= mod:NewAITimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerShatterCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -89,97 +90,52 @@ mod:GroupSpells(368957, 368969)--Combine the cast (Charges with the debuff Charg
 
 mod.vb.chargeCount = 0
 mod.vb.tremorCount = 0
+mod.vb.missilesCount = 0
 mod.vb.reclaimCount = 0
 mod.vb.seismicIcon = 1
-mod.vb.detonateCast = 0
+mod.vb.shatterCount = 0
 mod.vb.crushingCast = 0
 mod.vb.crushIcon = 1
-local shatterTimers = {
-	[2] = {27, 22.6},
---	[4] = {20.4, 19.9, 6.9, 1, 10.7, 8.7},--Heroic
-	[4] = {20.4, 19.9, 8.6, 12.3},--Normal
+local movementTimers = {
+	--Shatter
+	[364979] = {
+		[2] = {30.1, 22},
+		[4] = {24.1, 24, 18},
+	},
+	--Earthbreaker Missiles
+	[361676] = {
+		[2] = {16.2, 26.1},
+		[4] = {12.1, 18.1, 26.1},
+	},
+	--Crushing Prism
+	[365297] = {
+		[2] = {37.3},
+		[4] = {47.3},
+	},
 }
-local crushingTimers = {
---	[1] = {45.4, 45.4, 43.5},
-	[2] = {34.4},
---	[3] = {46.9, 45.6, 42.3, 44.3},
---	[4] = {12.7, 33, 24.2},--Heroic
-	[4] = {45.3, 24.6}--Normal (did heroic change?)
---	[5] = {36.7, 43.4, 46.6, 53.3, 42.9, 45.7},
-}
-
---OBSOLETE INFO, needs review
---Tremors triggers 3.5 second ICD
---Lightshatter triggers 3.5 second ICD
---missiles trigger 4.8-8 second ICD (not sure why it's variable yet)
---Crushing triggers 1.2 second ICD (technically longer but the bosses cast of it is hidden so can't update timers until debuffs go out)
-local function updateAllTimers(self, ICD)
-	if self.vb.phase == 2 then return end--This doesn't touch timers when boss is moving
-	DBM:Debug("updateAllTimers running", 2)
-	if timerEarthbreakerMissilesCD:GetRemaining() < ICD then
-		local elapsed, total = timerEarthbreakerMissilesCD:GetTime()
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerEarthbreakerMissilesCD extended by: "..extend, 2)
-		timerEarthbreakerMissilesCD:Stop()
-		timerEarthbreakerMissilesCD:Update(elapsed, total+extend)
-	end
-	if timerSeismicTremorsCD:GetRemaining(self.vb.tremorCount+1) < ICD then
-		local elapsed, total = timerSeismicTremorsCD:GetTime(self.vb.tremorCount+1)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerSeismicTremorsCD extended by: "..extend, 2)
-		timerSeismicTremorsCD:Stop()
-		timerSeismicTremorsCD:Update(elapsed, total+extend, self.vb.tremorCount+1)
-	end
-	if timerLightshatterBeamCD:GetRemaining() < ICD then
-		local elapsed, total = timerLightshatterBeamCD:GetTime()
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerLightshatterBeamCD extended by: "..extend, 2)
-		timerLightshatterBeamCD:Stop()
-		timerLightshatterBeamCD:Update(elapsed, total+extend)
-	end
-	if timerCrushingPrismCD:GetRemaining(self.vb.crushingCast+1) < ICD then
-		local elapsed, total = timerCrushingPrismCD:GetTime(self.vb.crushingCast+1)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerCrushingPrismCD extended by: "..extend, 2)
-		timerCrushingPrismCD:Stop()
-		timerCrushingPrismCD:Update(elapsed, total+extend, self.vb.crushingCast+1)
-	end
---	if timerPlanetcrackerBeamCD:GetRemaining() < ICD then
---		local elapsed, total = timerPlanetcrackerBeamCD:GetTime()
---		local extend = ICD - (total-elapsed)
---		DBM:Debug("timerPlanetcrackerBeamCD extended by: "..extend, 2)
---		timerPlanetcrackerBeamCD:Stop()
---		timerPlanetcrackerBeamCD:Update(elapsed, total+extend)
---	end
---	if self:IsMythic() and timerVolatileChargesCD:GetRemaining() < ICD then
---		local elapsed, total = timerVolatileChargesCD:GetTime()
---		local extend = ICD - (total-elapsed)
---		DBM:Debug("timerVolatileChargesCD extended by: "..extend, 2)
---		timerVolatileChargesCD:Stop()
---		timerVolatileChargesCD:Update(elapsed, total+extend)
---	end
-end
+local p3MissileTimers = {17, 24.5, 37.2, 12.6, 25}
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.crushingCast = 0
 	self.vb.chargeCount = 0
 	self.vb.tremorCount = 0
+	self.vb.missilesCount = 0
 	self.vb.reclaimCount = 0
 	self.vb.seismicIcon = 1
-	timerLightshatterBeamCD:Start(10.1-delay)
-	timerSeismicTremorsCD:Start(1-delay)
-	timerEarthbreakerMissilesCD:Start(1-delay)
-	timerPlanetcrackerBeamCD:Start(1-delay)
-	timerCrushingPrismCD:Start(1-delay)
-	timerReclaimCD:Start(1)
+	timerSeismicTremorsCD:Start(8-delay, 1)
+	if self:IsHard() then
+		timerPlanetcrackerBeamCD:Start(11.6-delay)
+	end
+	timerCrushingPrismCD:Start(21-delay, 1)
+	timerEarthbreakerMissilesCD:Start(43-delay, 1)
+	timerReclaimCD:Start(60, 1)
 	if self:IsMythic() then
 		timerVolatileChargesCD:Start(1-delay)
 	end
 	if self.Options.NPAuraOnFractal then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("This fight was significatly redesigned after it was tested and is no longer the same fight it was. Unfortunately, Blizzard never retested this fight, so this mod will be very outdated until post launch update.")
 end
 
 function mod:OnCombatEnd()
@@ -207,50 +163,85 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnSeismicTremors:Show(self.vb.tremorCount)
 		end
-		timerSeismicTremorsCD:Start(self:IsMythic() and 39.1 or 35)--TODO, verify if heroic or others have changed too
---		updateAllTimers(self, 3.5)
-	elseif spellId == 361676 or spellId == 365283 then--361676 Confirmed on heroic, 365283 where?
-		specWarnEarthbreakerMissiles:Show()
+		timerSeismicTremorsCD:Start(nil, self.vb.tremorCount+1)
+	elseif spellId == 361676 then
+		self.vb.missilesCount = self.vb.missilesCount + 1
+		specWarnEarthbreakerMissiles:Show(self.vb.missilesCount)
 		specWarnEarthbreakerMissiles:Play("scatter")
-		timerEarthbreakerMissilesCD:Start(self:IsMythic() and 38.4 or 33.2)--TODO, verify everything again since they moved it from stage 1 to stage 2
---		updateAllTimers(self, 4.8)
+		local timer = self.vb.stageTotality == 5 and p3MissileTimers[self.vb.missilesCount+1] or self.vb.phase == 1 and 26.1 or movementTimers[361676][self.vb.stageTotality][self.vb.missilesCount+1]
+		if timer then
+			timerEarthbreakerMissilesCD:Start(timer, self.vb.missilesCount+1)
+		end
 	elseif spellId == 360977 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss1 check if boss is always boss1, right now unsure
 			specWarnLightshatterBeam:Show(L.Mote)
 			specWarnLightshatterBeam:Play("defensive")
 		end
---		updateAllTimers(self, 3.5)
 	elseif spellId == 359236 then
 		self:SetStage(2)--Stage, as determined by dungeon journal
-		self.vb.detonateCast = 0
+		self.vb.shatterCount = 0
 		self.vb.crushingCast = 0
+		self.vb.missilesCount = 0
 		warnRelocationForm:Show()
 		timerRelocationForm:Start()
 		--Stop stationary timers
 		timerEarthbreakerMissilesCD:Stop()
 		timerVolatileChargesCD:Stop()
-		timerLightshatterBeamCD:Stop()
 		timerCrushingPrismCD:Stop()
 		timerReclaimCD:Stop()
 		timerSeismicTremorsCD:Stop()
---		timerPlanetcrackerBeamCD:Stop()
+		timerPlanetcrackerBeamCD:Stop()--Future proofing, you know, when phase is shorter than 12 seconds
 		--Start mobile ones
 		--Halondrus is a phase 1, 2, 1, 2 boss.
 		--We want to distinguish between first phase 2 and second phase 2 (per dungeon journals termonology)
 		--So this is first mod in wows history that is actually using a stageTotality check.
 		if self.vb.stageTotality == 2 then--First movement
-			timerShatterCD:Start(2, 1)
-			timerCrushingPrismCD:Start(2, 1)--34.4
-			timerEarthbreakerMissilesCD:Start(2)--13.6 old
+			timerEarthbreakerMissilesCD:Start(16.2, 1)
+			timerShatterCD:Start(30.1, 1)
+			timerCrushingPrismCD:Start(37.3, 1)
 			if self:IsMythic() then
 				timerVolatileChargesCD:Start(2)
 			end
 		else--Second movement (self.vb.stageTotality == 4)
-			timerCrushingPrismCD:Start(4, 1)--12.6
-			timerShatterCD:Start(4, 1)
-			timerEarthbreakerMissilesCD:Start(4)--32.6
+			timerEarthbreakerMissilesCD:Start(12.1, 1)
+			timerShatterCD:Start(30.1, 1)
+			timerCrushingPrismCD:Start(47.3, 1)
 			if self:IsMythic() then
 				timerVolatileChargesCD:Start(4)
+			end
+		end
+	elseif spellId == 359235 then
+		self:SetStage(1)--Stage, as determined by dungeon journal
+		self.vb.crushingCast = 0
+		self.vb.chargeCount = 0
+		self.vb.tremorCount = 0
+		self.vb.reclaimCount = 0
+		self.vb.missilesCount = 0
+		warnReclamationForm:Show()
+		--Stop mobile timers
+		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
+		timerShatterCD:Stop()
+		timerCrushingPrismCD:Stop()
+		timerVolatileChargesCD:Stop()
+		--Start Stationary ones
+		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
+			timerSeismicTremorsCD:Start(10.1, 1)
+			timerEarthbreakerMissilesCD:Start(17.8, 1)
+			timerCrushingPrismCD:Start(23.1, 1)
+			if self:IsHard() then
+				timerPlanetcrackerBeamCD:Start(33.2)
+			end
+			timerReclaimCD:Start(68)
+			if self:IsMythic() then
+				timerVolatileChargesCD:Start(3)
+			end
+		else--Third stationary, after 2nd movement (stageTotality == 5)
+			if self:IsHard() then
+				timerPlanetcrackerBeamCD:Start(14.2)
+			end
+			timerEarthbreakerMissilesCD:Start(17.1, 1)
+			if self:IsMythic() then
+				timerVolatileChargesCD:Start(5)
 			end
 		end
 	elseif spellId == 368529 then
@@ -263,24 +254,24 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 364979 then--Casts slightly faster than 362056
 		specWarnShatter:Show()
 		specWarnShatter:Play("targetchange")
-		local timer = shatterTimers[self.vb.stageTotality][self.vb.detonateCast+1]
+		local timer = movementTimers[spellId][self.vb.stageTotality][self.vb.shatterCount+1]
 		if timer then
-			timerShatterCD:Start(timer, self.vb.detonateCast+1)
+			timerShatterCD:Start(timer, self.vb.shatterCount+1)
 		end
 	elseif spellId == 360115 then
 		self.vb.reclaimCount = self.vb.reclaimCount + 1
 		specWarnReclaim:Show(self.vb.reclaimCount)
 		specWarnReclaim:Play("attackshield")
-		timerReclaimCD:Start()
+		--Stop other stage timers
+		timerSeismicTremorsCD:Stop()
+		timerEarthbreakerMissilesCD:Stop()
+		timerCrushingPrismCD:Stop()
+		timerVolatileChargesCD:Stop()
 	elseif spellId == 368957 then
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		specWarnVolatileCharges:Show(self.vb.chargeCount)
 		specWarnVolatileCharges:Play("bombsoon")
 		timerVolatileChargesCD:Start()
-	elseif spellId == 369210 then
-		specWarnPlanetcrackerBeam:Show()
-		specWarnPlanetcrackerBeam:Play("watchstep")--or farfromline if it's a line
---		timerPlanetcrackerBeamCD:Start()
 	end
 end
 
@@ -288,40 +279,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 365294 then
 		DBM:Debug("Crushing Prism unhidden from combat log. Notify DBM Authors")
-	elseif spellId == 359235 then
-		self:SetStage(1)--Stage, as determined by dungeon journal
-		self.vb.crushingCast = 0
-		self.vb.chargeCount = 0
-		self.vb.tremorCount = 0
-		self.vb.reclaimCount = 0
-		warnReclamationForm:Show()
-		--Stop mobile timers
-		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
-		timerShatterCD:Stop()
-		timerCrushingPrismCD:Stop()
-		timerVolatileChargesCD:Stop()
-		--Start Stationary ones
-		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
-			timerLightshatterBeamCD:Start(12.5)
-			timerEarthbreakerMissilesCD:Start(3)--35.8
-			timerPlanetcrackerBeamCD:Start(3)
-			timerCrushingPrismCD:Start(3)
-			timerReclaimCD:Start(3)
-			timerSeismicTremorsCD:Start(3)
-			if self:IsMythic() then
-				timerVolatileChargesCD:Start(3)
-			end
-		else--Third stationary, after 2nd movement (stageTotality == 5)
-			timerLightshatterBeamCD:Start(16)
-			timerEarthbreakerMissilesCD:Start(5)--28.2
-			timerPlanetcrackerBeamCD:Start(5)
-			timerCrushingPrismCD:Start(5, 1)
-			timerReclaimCD:Start(5)
-			timerSeismicTremorsCD:Start(5)
-			if self:IsMythic() then
-				timerVolatileChargesCD:Start(5)
-			end
-		end
 	end
 end
 
@@ -333,10 +290,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
 			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
-			local timer = self.vb.phase == 1 and (self:IsMythic() and 36.1 or 42.9) or crushingTimers[self.vb.stageTotality][self.vb.crushingCast+1]
+			local timer = self.vb.phase == 1 and 26 or movementTimers[spellId][self.vb.stageTotality][self.vb.crushingCast+1]
 			if timer then
 				timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
---				updateAllTimers(self, 1.2)
 			end
 		end
 		if args:IsPlayer() then
@@ -378,6 +334,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellVolatileChargeFades:Cancel()
 		end
+	elseif spellId == 360115 then
+		self.vb.crushingCast = 0
+		self.vb.chargeCount = 0
+		self.vb.tremorCount = 0
+		self.vb.missilesCount = 0
+		--Seems same in reclaim form 1 and 2. and NA for 3
+		timerSeismicTremorsCD:Start(4.8, 1)
+		timerEarthbreakerMissilesCD:Start(11, 1)
+		timerCrushingPrismCD:Start(17, 1)
+		timerReclaimCD:Start(62.8, self.vb.reclaimCount+1)--Guessed based on pattern
+		if self:IsMythic() then
+			timerVolatileChargesCD:Start(3)
+		end
 	end
 end
 
@@ -399,9 +368,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 360990 then--More reliable script for light timer
-		timerLightshatterBeamCD:Start()
-		--updateAllTimers(self, 3.5)
+	if spellId == 369207 then--Planetcracker Beam
+		specWarnPlanetcrackerBeam:Show()
+		specWarnPlanetcrackerBeam:Play("watchstep")--or farfromline if it's a line
 	end
 end
 

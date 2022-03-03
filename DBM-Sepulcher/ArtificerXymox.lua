@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(183501)
 mod:SetEncounterID(2553)
 mod:SetUsedIcons(1, 2, 3, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220301000000)
+mod:SetHotfixNoticeRev(20220302000000)
 mod:SetMinSyncRevision(20220123000000)
 --mod.respawnTime = 29
 
@@ -253,11 +253,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHyperlightSparknovaCD:Stop()
 		timerStasisTrapCD:Stop()
 		--Restart Timers from pull but now slightly altered post march 1st hotfixes
-		timerHyperlightSparknovaCD:Start(14, 1)
+		timerHyperlightSparknovaCD:Start(15.5, 1)
 		timerDimensionalTearCD:Start(22)
 		timerStasisTrapCD:Start(23)
 		timerForerunnerRingsCD:Start(28, 1)
-		timerGlyphofRelocationCD:Start(40, 1)
+		timerGlyphofRelocationCD:Start(44, 1)
 		if self:IsMythic() then
 			--TODO: Could be changed since other stuff was, review!
 			timerCartelEliteCD:Start(12)
