@@ -31,7 +31,6 @@ local warnDarkDeterrence				= mod:NewStackAnnounce(361390, 2, nil, "Tank|Healer"
 local specWarnFuriousSlam				= mod:NewSpecialWarningDodge(361209, nil, nil, nil, 2, 2)
 local specWarnDestructionCores			= mod:NewSpecialWarningDodge(361341, nil, nil, nil, 2, 2)
 local specWarnBanishmentMark			= mod:NewSpecialWarningMoveAway(361632, nil, nil, nil, 1, 2)
-local yellBanishmentMark				= mod:NewYell(361632)
 local specWarnDarkDeterrence			= mod:NewSpecialWarningStack(361390, nil, 3, nil, nil, 1, 6)
 local specWarnDarkDeterrenceTaunt		= mod:NewSpecialWarningTaunt(361390, nil, nil, nil, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(361335, nil, nil, nil, 1, 8)
@@ -105,7 +104,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBanishmentMark:Show()
 			specWarnBanishmentMark:Play("range5")
-			yellBanishmentMark:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
