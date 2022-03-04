@@ -56,7 +56,7 @@ local yellVolatileChargeFades					= mod:NewShortFadesYell(368969)
 local specWarnReclaim							= mod:NewSpecialWarningCount(360115, nil, nil, nil, 1, 2)
 local specWarnSeismicTremors					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--I don't even understand mechanic anymore it's been changed so much, no idea if it should be on or off by default
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
-local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodge(369210, nil, nil, nil, 2, 2)
+--local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodge(369210, nil, nil, nil, 2, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
@@ -365,7 +365,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 369207 then--Planetcracker Beam
@@ -373,4 +372,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnPlanetcrackerBeam:Play("watchstep")--or farfromline if it's a line
 	end
 end
+--]]
 
