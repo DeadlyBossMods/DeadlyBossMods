@@ -107,127 +107,127 @@ local allTimers = {
 	["easy"] = {--Normal, and LFR
 		[1] = {--Unchanged
 			--Rings
-			[364465] = 30
+			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60--Don't even know if it's still 60 anymore, they buffed it.
+			[362801] = 60,--Don't even know if it's still 60 anymore, they buffed it.
 			--Stasis Trap
-			[362885] = 30
+			[362885] = 30,
 			--Hyperlight Sparknova
-			[362849] = 30
+			[362849] = 30,
 		},
 		[2] = {--Gets a little slower
 			--Rings
-			[364465] = 37.4
+			[364465] = 37.4,
 			--Glyph of Relocation
-			[362801] = 37.4
+			[362801] = 37.4,
 			--Stasis Trap
-			[362885] = 37.4
+			[362885] = 37.4,
 			--Hyperlight Sparknova
-			[362849] = 37.4
+			[362849] = 37.4,
 		},
 		[3] = {--Gets even slower
 			--Rings
-			[364465] = 37.4
+			[364465] = 37.4,
 			--Glyph of Relocation
-			[362801] = 37.4
+			[362801] = 37.4,
 			--Stasis Trap
-			[362885] = 37.4
+			[362885] = 37.4,
 			--Hyperlight Sparknova
-			[362849] = 37.4
+			[362849] = 37.4,
 		},
 		[4] = {
 			--Rings
-			[364465] = 42.8
+			[364465] = 42.8,
 			--Glyph of Relocation
-			[362801] = 42.8
+			[362801] = 42.8,
 			--Stasis Trap
-			[362885] = 42.8
+			[362885] = 42.8,
 			--Hyperlight Sparknova
-			[362849] = 42.8
+			[362849] = 42.8,
 		},
 	},
 	["heroic"] = {
 		[1] = {--Unchanged
 			--Rings
-			[364465] = 30
+			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60--Don't even know if it's still 60 anymore, they buffed it.
+			[362801] = 60,--Don't even know if it's still 60 anymore, they buffed it.
 			--Stasis Trap
-			[362885] = 30
+			[362885] = 30,
 			--Hyperlight Sparknova
-			[362849] = 30
+			[362849] = 30,
 		},
 		[2] = {--Gets a little slower
 			--Rings
-			[364465] = 33.3
+			[364465] = 33.3,
 			--Glyph of Relocation
-			[362801] = 33.3
+			[362801] = 33.3,
 			--Stasis Trap
-			[362885] = 33.3
+			[362885] = 33.3,
 			--Hyperlight Sparknova
-			[362849] = 33.3
+			[362849] = 33.3,
 		},
 		[3] = {--Gets even slower
 			--Rings
-			[364465] = 33.3
+			[364465] = 33.3,
 			--Glyph of Relocation
-			[362801] = 33.3
+			[362801] = 33.3,
 			--Stasis Trap
-			[362885] = 33.3
+			[362885] = 33.3,
 			--Hyperlight Sparknova
-			[362849] = 33.3
+			[362849] = 33.3,
 		},
 		[4] = {
 			--Rings
-			[364465] = 40
+			[364465] = 40,
 			--Glyph of Relocation
-			[362801] = 40--assumed not confirmed
+			[362801] = 40,--assumed not confirmed
 			--Stasis Trap
-			[362885] = 40
+			[362885] = 40,
 			--Hyperlight Sparknova
-			[362849] = 38.6--Shorter than others?
+			[362849] = 38.6,--Shorter than others?
 		},
 	},
 	["mythic"] = {
 		[1] = {--Original
 			--Rings
-			[364465] = 30
+			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60
+			[362801] = 60,
 			--Stasis Trap
-			[362885] = 30
+			[362885] = 30,
 			--Hyperlight Sparknova
-			[362849] = 30
+			[362849] = 30,
 		},
 		[2] = {--Assumed unchanged, hotfixes said non mythic
 			--Rings
-			[364465] = 30
+			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 30
+			[362801] = 30,
 			--Stasis Trap
-			[362885] = 30
+			[362885] = 30,
 			--Hyperlight Sparknova
-			[362849] = 30
+			[362849] = 30,
 		},
 		[3] = {--Assumed unchanged, hotfixes said non mythic
 			--Rings
-			[364465] = 30
+			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 30
+			[362801] = 30,
 			--Stasis Trap
-			[362885] = 30
+			[362885] = 30,
 			--Hyperlight Sparknova
-			[362849] = 30
+			[362849] = 30,
 		},
 		[4] = {--Assumed has original change to 33 that was applied to all difficulties
 			--Rings
-			[364465] = 33
+			[364465] = 33,
 			--Glyph of Relocation
-			[362801] = 33
+			[362801] = 33,
 			--Stasis Trap
-			[362885] = 33
+			[362885] = 33,
 			--Hyperlight Sparknova
-			[362849] = 33
+			[362849] = 33,
 		},
 	},
 }
