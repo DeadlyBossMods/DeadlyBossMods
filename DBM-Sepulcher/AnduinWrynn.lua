@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181954)
 mod:SetEncounterID(2546)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220301000000)
+mod:SetHotfixNoticeRev(20220303000000)
 mod:SetMinSyncRevision(20220123000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
@@ -49,7 +49,7 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24462))
 --local warnDespair								= mod:NewTargetNoFilterAnnounce(365235, 2)
 local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3)
-local warnWickedStar							= mod:NewTargetCountAnnounce(365021, 3, nil, nil, nil, nil, nil, nil, true)
+local warnWickedStar							= mod:NewTargetCountAnnounce(365030, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil, "Healer")
 
 local specWarnKingsmourneHungers				= mod:NewSpecialWarningCount(362405, nil, nil, nil, 1, 2)
@@ -77,6 +77,7 @@ local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil
 
 mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", false, true, {1, 2, 3})--Up to 4 of them, but we hold 4 for grim reflections
 mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
+mod:GroupSpells(365030, 365021)--Group both wicked star IDs
 --Intermission: Remnant of a Fallen King
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24494))
 local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
