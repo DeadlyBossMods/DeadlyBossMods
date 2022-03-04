@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180906)
 mod:SetEncounterID(2529)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220302000000)
+mod:SetHotfixNoticeRev(20220303000000)
 mod:SetMinSyncRevision(20220302000000)
 --mod.respawnTime = 29
 
@@ -19,11 +19,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 365294",--361602
 	"SPELL_AURA_APPLIED 365297 361309 368671 368969",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 368671 368969 360115",
+	"SPELL_AURA_REMOVED 368671 368969 360115"
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
 --	"SPELL_PERIODIC_MISSED 361002 360114",
 --	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
@@ -56,7 +56,6 @@ local yellVolatileChargeFades					= mod:NewShortFadesYell(368969)
 local specWarnReclaim							= mod:NewSpecialWarningCount(360115, nil, nil, nil, 1, 2)
 local specWarnSeismicTremors					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--I don't even understand mechanic anymore it's been changed so much, no idea if it should be on or off by default
 local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
---local specWarnPlanetcrackerBeam					= mod:NewSpecialWarningDodge(369210, nil, nil, nil, 2, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
@@ -373,4 +372,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 --]]
-
