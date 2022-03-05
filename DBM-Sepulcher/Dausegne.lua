@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 359483 363607 361513 361630 365418 360960",
-	"SPELL_CAST_SUCCESS 362805",
+	"SPELL_CAST_SUCCESS 362805 361750",
 	"SPELL_AURA_APPLIED 361966 361018 361651",
 	"SPELL_AURA_APPLIED_DOSE 361966",
 	"SPELL_AURA_REMOVED 361966 361018 361651"
@@ -24,16 +24,17 @@ mod:RegisterEventsInCombat(
 
 --TODO, exact stack count optimal of tanks swaps of 361966, for now most warnings are silent or way overtuned
 --TODO, use https://ptr.wowhead.com/spell=359481/domination-core for auto marking domination ores maybe, if more than 1 to mark on mythic
---TODO, rework the ring code to have timers for each ring, and smarter handling of soft enrage and other stuff. Waiting for CLEU event from next build first
 --[[
 (ability.id = 359483 or ability.id = 361513 or ability.id = 361630 or ability.id = 365418 or ability.id = 360960) and type = "begincast"
  or ability.id = 362805 and type = "cast"
+ or ability.id = 361750
  or ability.id = 361651 and (type = "applybuff" or type = "removebuff")
 --]]
 --The Fallen Oracle
 local warnInfusedStrikes						= mod:NewStackAnnounce(361966, 2, nil, "Tank|Healer")
 local warnStaggeringBarrage						= mod:NewTargetNoFilterAnnounce(361018, 3)
 local warnDominationCore						= mod:NewCountAnnounce(359483, 3)
+local warnDisintegrationHalo					= mod:NewCountAnnounce(365373, 4)
 --Inevitable Dominion
 local warnSiphonReservoir						= mod:NewCountAnnounce(361643, 2)
 
@@ -59,6 +60,7 @@ local timerStaggeringBarrageCD					= mod:NewCDCountTimer(35, 361018, nil, nil, n
 local timerDominationCoreCD						= mod:NewCDCountTimer(33.5, 359483, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerObliterationArcCD					= mod:NewCDCountTimer(35, 361513, nil, nil, nil, 3)
 local timerDisintegrationHaloCD					= mod:NewCDCountTimer(70, 365373, nil, nil, nil, 3)
+local timerDisintegrationHalo					= mod:NewCastCountTimer(5, 365373, nil, nil, nil, 5)
 --Inevitable Dominion
 local timerSiphonReservoirCD					= mod:NewCDCountTimer(28.8, 361643, nil, nil, nil, 6)
 
@@ -73,7 +75,8 @@ mod.vb.barrageCount = 0
 mod.vb.ReservoirCount = 0
 mod.vb.arcCount = 0
 mod.vb.coreCount = 0
-mod.vb.haloCount = 0
+mod.vb.haloCount = 0--Activation count
+mod.vb.ringCount = 0--Ring total count
 mod.vb.softEnrage = false
 local castsPerGUID = {}
 
@@ -162,12 +165,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 362805 then
 		self.vb.haloCount = self.vb.haloCount + 1
+		self.vb.ringCount = 0
 		specWarnDisintegrationHalo:Show(self.vb.haloCount)
 		specWarnDisintegrationHalo:Play("watchwave")
 		if not self.vb.softEnrage then
 			timerDisintegrationHaloCD:Start(self:IsHard() and 70 or 77.7, self.vb.haloCount+1)
 		end
-		--TODO, schedule ring stuff here if I still can't get blizzard convinced on adding events for them
+		timerDisintegrationHalo:Start(8, 1)
+	elseif spellId == 361750 then
+		self.vb.ringCount = self.vb.ringCount + 1
+		warnDisintegrationHalo:Show(self.vb.ringCount)
+		--Each teleport instance is one additional ring
+		if self.vb.ringCount <= self.vb.ReservoirCount then
+			timerDisintegrationHalo:Start(5, self.vb.ringCount+1)
+		end
 	end
 end
 

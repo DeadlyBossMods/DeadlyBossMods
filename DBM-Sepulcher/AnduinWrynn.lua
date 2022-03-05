@@ -164,7 +164,7 @@ local allTimers = {
 			--Befouled Barrier
 			[365295] = {80.6, 47},
 			--Grim Reflections (Replaces Blasphemy in Stage 2)
-			[361989] = {8.5, 87},
+			[365120] = {8.5, 87},
 			--Hopebreaker
 			[361815] = {13.6, 24.9, 32.9, 29, 28.9},
 			--Kingsmourne Hungers
@@ -202,7 +202,7 @@ local allTimers = {
 			--Befouled Barrier
 			[365295] = {80.6, 47},
 			--Grim Reflections (Replaces Blasphemy in Stage 2)
-			[361989] = {8.5, 87},
+			[365120] = {8.5, 87},
 			--Hopebreaker
 			[361815] = {13.6, 24.9, 32.9, 29, 28.9},
 			--Kingsmourne Hungers

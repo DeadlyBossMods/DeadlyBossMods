@@ -9,9 +9,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 347094 346957 346766 358131 353312",
-	"SPELL_CAST_SUCCESS 346116",
+	"SPELL_CAST_SUCCESS 346116 181113",
 	"SPELL_AURA_APPLIED 358131 346427",
-	"SPELL_AURA_REMOVED 347958 353312"
+	"SPELL_AURA_REMOVED 347958 353312 346766"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 local warnPurgedbyFire				= mod:NewSpellAnnounce(346959, 2)--Swap to target warning alter and add special warnings/yell
 local warnKeepersprotection			= mod:NewEndAnnounce(347958, 1)
 local warnLightningNova				= mod:NewTargetNoFilterAnnounce(358131, 3)
+local warnVaultPurifier				= mod:NewSpellAnnounce("ej23004", 2, "136116")
 local warnPurifyingBurst			= mod:NewCountAnnounce(353312, 2)
 local warnTitanicInsight			= mod:NewTargetNoFilterAnnounce(353312, 2)
 
@@ -39,6 +40,7 @@ local timerShearingSwingsCD			= mod:NewAITimer(15.8, 346116, nil, nil, nil, 5, n
 local timerTitanicCrashCD			= mod:NewAITimer(11, 347094, nil, nil, nil, 3)
 local timerPurgedbyFireCD			= mod:NewAITimer(11, 346959, nil, nil, nil, 3)
 local timerSanitizingCycleCD		= mod:NewAITimer(11, 346766, nil, nil, nil, 6)
+local timerVaultPurifierCD			= mod:NewAITimer(11, "ej23004", nil, nil, nil, 1, "136116", DBM_COMMON_L.DAMAGE_ICON)
 local timerPurifyingBurstCD			= mod:NewAITimer(11, 353312, nil, nil, nil, 2)
 local timerTitanicInsight			= mod:NewTargetTimer(15, 353312, nil, nil, nil, 5)
 
@@ -52,6 +54,7 @@ function mod:OnCombatStart(delay)
 	timerTitanicCrashCD:Start(1-delay)
 	timerPurgedbyFireCD:Start(1-delay)
 	timerSanitizingCycleCD:Start(1-delay)
+	timerVaultPurifierCD:Start(1-delay)
 	--TODO, hard mode check shit for purifying Burst
 	timerPurifyingBurstCD:Start(1-delay)
 end
@@ -65,11 +68,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 346957 then
 		warnPurgedbyFire:Show()
 		timerPurgedbyFireCD:Start()
-	elseif spellId == 346766 then
+	elseif spellId == 346766 and self:AntiSpam(3, 1) then
 		self.vb.cycleCount = self.vb.cycleCount + 1
 		specWarnSanitizingCycle:Show(self.vb.cycleCount)
 		specWarnSanitizingCycle:Play("specialsoon")
 		timerSanitizingCycleCD:Start()
+
+		timerShearingSwingsCD:Stop()
+		timerTitanicCrashCD:Stop()
+		timerPurgedbyFireCD:Stop()
+		timerSanitizingCycleCD:Stop()
+		timerVaultPurifierCD:Stop()
+		timerPurifyingBurstCD:Stop()
 	elseif spellId == 358131 then
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnLigtningNova:Show(args.sourceName)
@@ -90,6 +100,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnShearingSwings:Play("defensive")
 		end
 		timerShearingSwingsCD:Start()
+	elseif spellId == 181113 and self:AntiSpam(3, 2) then
+		warnVaultPurifier:Show()
+		timerVaultPurifierCD:Start()
 	end
 end
 
@@ -109,12 +122,23 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnKeepersprotection:Show()
 	elseif spellId == 346427 then
 		timerTitanicInsight:Stop(args.destName)
+	elseif spellId == 346766 and self:AntiSpam(3, 3) then
+		self.vb.cycleCount = self.vb.cycleCount + 1
+--		timerSanitizingCycleCD:Start()
+
+		timerShearingSwingsCD:Start(2)
+		timerTitanicCrashCD:Start(2)
+		timerPurgedbyFireCD:Start(2)
+		timerSanitizingCycleCD:Start(2)
+		timerVaultPurifierCD:Start(2)
+		--TODO, hard mode check shit for purifying Burst
+		timerPurifyingBurstCD:Start(2)
 	end
 end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 320366 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 320366 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

@@ -109,7 +109,7 @@ local allTimers = {
 			--Rings
 			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60,--Don't even know if it's still 60 anymore, they buffed it.
+			[362801] = 60,--It's supposed to be 30 too, but when other abilities are also 30, it causes this spell to skip casts
 			--Stasis Trap
 			[362885] = 30,
 			--Hyperlight Sparknova
@@ -151,7 +151,7 @@ local allTimers = {
 			--Rings
 			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60,--Don't even know if it's still 60 anymore, they buffed it.
+			[362801] = 60,--It's supposed to be 30 too, but when other abilities are also 30, it causes this spell to skip casts
 			--Stasis Trap
 			[362885] = 30,
 			--Hyperlight Sparknova
