@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 346957 then
 		warnPurgedbyFire:Show()
 		timerPurgedbyFireCD:Start()
-	elseif spellId == 346766 and self:AntiSpam(3, 3) then
+	elseif spellId == 346766 and self:AntiSpam(3, 1) then
 		self.vb.cycleCount = self.vb.cycleCount + 1
 		specWarnSanitizingCycle:Show(self.vb.cycleCount)
 		specWarnSanitizingCycle:Play("specialsoon")
@@ -100,7 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnShearingSwings:Play("defensive")
 		end
 		timerShearingSwingsCD:Start()
-	elseif spellId == 181113 and self:AntiSpam(3, 1) then
+	elseif spellId == 181113 and self:AntiSpam(3, 2) then
 		warnVaultPurifier:Show()
 		timerVaultPurifierCD:Start()
 	end
@@ -138,7 +138,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 320366 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 320366 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
