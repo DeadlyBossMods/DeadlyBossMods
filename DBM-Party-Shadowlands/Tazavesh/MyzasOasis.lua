@@ -9,13 +9,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350916 350922 355438 350919 359028 357404 357513 357436 357542",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 181089",
 	"SPELL_AURA_APPLIED 353706 353835",
 	"SPELL_AURA_REMOVED 353706",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -133,13 +132,16 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 320359 then
+	if spellId == 181089 then
+		self:SetStage(2)
+		timerSupressionSparkCD:Start(2)
+		timerCrowdControlCD:Start(2)
+		--timerSecuritySlamCD:Start(2, args.sourceGUID)--Boss version
+		--timerMenacingShoutCD:Start(2, args.sourceGUID)--Boss version
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -187,24 +189,6 @@ function mod:UNIT_DIED(args)
 		timerInfectiousSoloCD:Stop()
 	elseif cid == 180484 then--Vilt
 		timerRipChordCD:Stop()
-	end
-end
-
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		local unitGUID = UnitGUID(unitID)
-		if UnitExists(unitID) and UnitCanAttack("player", unitID) then
-			activeBossGUIDS[unitGUID] = true
-			local cid = self:GetUnitCreatureId(unitID)
-			if cid == 176564 and self.vb.phase == 1 then
-				self:SetStage(2)
-				timerSupressionSparkCD:Start(2)
-				timerCrowdControlCD:Start(2)
-				--timerSecuritySlamCD:Start(2, unitGUID)--Boss version
-				--timerMenacingShoutCD:Start(2, unitGUID)--Boss version
-			end
-		end
 	end
 end
 

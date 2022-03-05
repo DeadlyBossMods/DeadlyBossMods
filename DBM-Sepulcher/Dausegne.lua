@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, exact stack count optimal of tanks swaps of 361966, for now most warnings are silent or way overtuned
 --TODO, use https://ptr.wowhead.com/spell=359481/domination-core for auto marking domination ores maybe, if more than 1 to mark on mythic
---TODO, rework the ring code to have timers for each ring, and smarter handling of soft enrage and other stuff. Waiting for CLEU event from next build first
 --[[
 (ability.id = 359483 or ability.id = 361513 or ability.id = 361630 or ability.id = 365418 or ability.id = 360960) and type = "begincast"
  or ability.id = 362805 and type = "cast"

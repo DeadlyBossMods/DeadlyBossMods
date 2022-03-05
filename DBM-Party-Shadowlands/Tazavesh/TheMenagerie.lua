@@ -10,12 +10,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 349663 349797 349987 349934 349954 350086 350101",
+	"SPELL_CAST_SUCCESS 181089",
 	"SPELL_AURA_APPLIED 349627 349933 349954 350101",
 	"SPELL_AURA_REMOVED 349627 349933",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+	"UNIT_DIED"
+--	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -105,6 +106,21 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 181089 then
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 176555 then--Achillite
+			timerVentingProtocolCD:Start(1)
+			timerFlagellationProtocolCD:Start(1)
+			timerPurificationProtocolCD:Start(1)
+		elseif cid == 176705 then--Venza Gldfuse
+			timerWhirlingAnnihilationCD:Start(1)
+			timerChainsofDamnationCD:Start(1)
+		end
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 349627 then
@@ -178,6 +194,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
 		local unitID = "boss"..i
@@ -197,7 +214,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 257453  then
 
