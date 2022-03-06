@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(166473)
 mod:SetEncounterID(2395)
+mod:SetHotfixNoticeRev(20220306000000)
 
 mod:RegisterCombat("combat")
 
@@ -43,10 +44,10 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(323569, nil, nil, nil, 1, 8)
 local specWarnZealous				= mod:NewSpecialWarningRun(328987, nil, nil, nil, 4, 2)
 
 --Hakkar the Soulflayer
-local timerBloodBarrierCD			= mod:NewCDTimer(29.1, 322773, nil, nil, nil, 6)
+local timerBloodBarrierCD			= mod:NewCDTimer(27.9, 322773, nil, nil, nil, 6)
 --local timerBloodBarrageCD			= mod:NewCDTimer(13, 323064, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerCorruptedBloodCD			= mod:NewCDTimer(17.1, 322746, nil, nil, nil, 3)--17.1-26 (probably delayed by long blood barriers
-local timerPiercingBarbCD			= mod:NewCDTimer(8.9, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--8.9-22.7 (blood barrier delays
+local timerCorruptedBloodCD			= mod:NewCDTimer(17.1, 322746, nil, nil, nil, 3)
+local timerPiercingBarbCD			= mod:NewCDTimer(8.5, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--8.9-22.7 (blood barrier delays
 --Son of Hakkar:
 --local timerDevotedSacrificeCD		= mod:NewCDTimer(46, 332329, nil, nil, nil, 1)
 
@@ -117,10 +118,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 322773 then
 		self.vb.barrierActive = true
-		timerPiercingBarbCD:Stop()
-		timerCorruptedBloodCD:Stop()
+		timerPiercingBarbCD:Pause()
+		timerCorruptedBloodCD:Pause()
 		warnBloodBarrier:Show(args.destName)
-		timerBloodBarrierCD:Start()--Doesn't matter how long it's up for/when it goes down, cd starts immediately on use
 	elseif spellId == 322746 then
 		if args:IsPlayer() then
 			specWarnCorruptedBlood:Show()
@@ -150,9 +150,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 322773 then
 		self.vb.barrierActive = false
 		warnBloodBarrierEnded:Show()
-		--Both used within 2-3 seconds of barrier going down in most logs. it's possible the timers pause from previous phase though and resume on barrier fall
---		timerPiercingBarbCD:Start(2.4)
---		timerCorruptedBloodCD:Start(11.8)
+		timerPiercingBarbCD:Resume()
+		timerPiercingBarbCD:AddTime(2)--Resumes plus adds 2 seconds
+		timerCorruptedBloodCD:Resume()
+		timerCorruptedBloodCD:AddTime(2)--Resumes plus adds 2 seconds
+		timerBloodBarrierCD:Start()
 	elseif spellId == 328987 then
 		if args:IsPlayer() then
 			if self.Options.NPAuraOnFixate then
