@@ -170,7 +170,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[--[[
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 320366 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)

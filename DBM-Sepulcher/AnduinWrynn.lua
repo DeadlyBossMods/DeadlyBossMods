@@ -75,7 +75,7 @@ local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, false, nil
 local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil, 2)
 local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
-mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", false, true, {1, 2, 3})--Up to 4 of them, but we hold 4 for grim reflections
+mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", true, true, {1, 2, 3})--Up to 4 of them, but we hold 4 for grim reflections
 mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
 mod:GroupSpells(365030, 365021)--Group both wicked star IDs
 --Intermission: Remnant of a Fallen King
@@ -336,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 			timerKingsmourneHungersCD:Start(timer, self.vb.hungersCount+1)
 		end
 		if self.Options.SetIconOnAnduinsHope then
-			self:ScanForMobs(184493, 1, 1, 3, nil, 12, "SetIconOnAnduinsHope")
+			self:ScanForMobs(184493, 1, 1, 3, nil, 12, "SetIconOnAnduinsHope", true)
 		end
 	elseif spellId == 361989 then
 		self.vb.blastphemyCount = self.vb.blastphemyCount + 1
