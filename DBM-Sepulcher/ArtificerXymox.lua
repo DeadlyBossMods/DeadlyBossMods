@@ -352,9 +352,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGlyphofRelocationCD:Stop()
 		timerHyperlightSparknovaCD:Stop()
 		timerStasisTrapCD:Stop()
-		--Only scan for acolytes and mark them with skull and cross, then stop scanning
+		--Only scan for acolytes and overseers and mark them with skull and cross, then stop scanning
 		if self.Options.SetIconOnHyperlightAdds then
-			self:ScanForMobs(184140, 0, 8, 2, {184140, 184143}, 12, "SetIconOnHyperlightAdds")
+			self:ScanForMobs(184140, 0, 8, 2, {184140, 184143, 184792}, 12, "SetIconOnHyperlightAdds")
 		end
 		--Secondary scan that's marking Debilitators with 6 5 and 4
 		if self.Options.SetIconOnHyperlightAdds then
