@@ -171,7 +171,7 @@ local allTimers = {
 		},
 		[2] = {
 			--Torment (lasts entire fight)
-			[365436] = {42, 49.9, 55, 45}
+			[365436] = {42, 49.9, 55, 45},
 			--Decimator (lasts rest of fight)
 			[360562] = {27.9, 57.5, 47.5, 42.9},
 			--Unholy Attunement
@@ -183,7 +183,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Torment (lasts entire fight)
-			[365436] = {26, 86.9}
+			[365436] = {26, 86.9},
 			--Decimator (lasts rest of fight)
 			[360562] = {34.9, 52, 41.9, 41.9},
 			--Desolation
