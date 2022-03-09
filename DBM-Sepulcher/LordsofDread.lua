@@ -399,7 +399,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if (spellId = 360300 or spellId = 360304) and self:AntiSpam(3, 3) then--Both Swarm casts tied to Darkness
+	if (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 3) then--Both Swarm casts tied to Darkness
 		warnUntoDarknessOver:Show()
 		timerSwarmofDecay:Stop()
 		--Mal
