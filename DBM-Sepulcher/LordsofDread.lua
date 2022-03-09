@@ -40,7 +40,6 @@ mod:RegisterEventsInCombat(
  or (ability.id = 360319 or ability.id = 360420) and type = "cast"
  or ability.id = 363191
  or (ability.id = 360300 or ability.id = 360304 or ability.id = 360516) and type = "removebuff"
- or ability.id = 360418 and target.name = "tank"
 --]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -149,7 +148,7 @@ function mod:OnCombatStart(delay)
 	timerLeechingClawsCD:Start(15.7-delay)
 	timerUntoDarknessCD:Start(50-delay, 1)
 	--Kin'tessa
-	timerAnguishingStrikeCD:Start(8.4-delay)
+	timerAnguishingStrikeCD:Start(8.3-delay)
 	timerSlumberCloudCD:Start(12.1-delay, 1)
 	timerFearfulTrepidationCD:Start(25.4-delay, 1)
 	timerInfiltrationofDreadCD:Start(123-delay, 1)
@@ -412,9 +411,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSlumberCloudCD:Start(7.3, self.vb.slumberCount+1)
 		timerAnguishingStrikeCD:Start(9.7)
 	elseif spellId == 360516 and self:AntiSpam(3, 4) then--Infiltration
-		--Phasing stuff will be moved here/out of paranoia after confirming hotfix is live
-	elseif spellId == 360418 and args:IsPlayer() then
-		timerParanoia:Stop()
 		--Should be reliable since even if player died, they keep debuff until stage ends
 		--Mal
 		timerLeechingClawsCD:Start(5.3)
@@ -426,6 +422,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAnguishingStrikeCD:Start(7.7)
 		timerFearfulTrepidationCD:Start(12.6, self.vb.fearfulCount+1)
 		timerInfiltrationofDreadCD:Start(nil, self.vb.infiltrationCount+1)--123
+	elseif spellId == 360418 and args:IsPlayer() then
+		timerParanoia:Stop()
 	elseif spellId == 360012 then
 		if args:IsPlayer() then
 			updateRangeFrame(self)

@@ -176,7 +176,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnLightshatterBeam:Show(L.Mote)
 			specWarnLightshatterBeam:Play("defensive")
 		end
-	elseif spellId == 359236 then
+	elseif spellId == 359236 then--Relocation Form
 		self:SetStage(2)--Stage, as determined by dungeon journal
 		self.vb.shatterCount = 0
 		self.vb.crushingCast = 0
@@ -195,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 		--We want to distinguish between first phase 2 and second phase 2 (per dungeon journals termonology)
 		--So this is first mod in wows history that is actually using a stageTotality check.
 		if self.vb.stageTotality == 2 then--First movement
-			timerEarthbreakerMissilesCD:Start(16.2, 1)
+			timerEarthbreakerMissilesCD:Start(16.1, 1)
 			timerShatterCD:Start(30.1, 1)
 			timerCrushingPrismCD:Start(37.3, 1)
 			if self:IsMythic() then

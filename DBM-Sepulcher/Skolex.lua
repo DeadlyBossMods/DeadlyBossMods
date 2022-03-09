@@ -44,6 +44,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 
 local timerDustflailCD							= mod:NewCDTimer(16.4, 359829, nil, nil, nil, 2)--16.4-17.5
 local timerRetchCD								= mod:NewCDTimer(32.9, 360448, nil, nil, nil, 3)--32.9-35
 local timerComboCD								= mod:NewTimer(32.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
+local timerBurrowCD								= mod:NewCDTimer(75, 359770, nil, nil, nil, 3)--LFR Only
 
 local berserkTimer								= mod:NewBerserkTimer(360)--Final Consumption
 
@@ -67,6 +68,9 @@ function mod:OnCombatStart(delay)
 	else
 		timerComboCD:Start(8.2-delay)
 		timerRetchCD:Start(26.4-delay)
+		if self:IsLFR() then
+			timerBurrowCD:Start(63.9-delay)
+		end
 	end
 	berserkTimer:Start(360-delay)
 	if self.Options.InfoFrame then
@@ -91,6 +95,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.dustCount = 0
 		--Boss energy doesn't reset, Timers continue but just get queued up and then unqueud after
 		--TODO, maybe time to any timers if < 5 seconds remaining on them, but first want to see if they make changes to bosses enery, it has some bugs
+		if self:IsLFR() then--Time based in LFR and only LFR
+			timerBurrowCD:Start(75)
+		end
 	elseif spellId == 359829 then
 		self.vb.dustCount = self.vb.dustCount + 1
 		if self.Options.SpecWarn359829count then
@@ -117,7 +124,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 360092 then
-		timerRetchCD:Start(self:IsHard() and 34 or 37.6)
+		timerRetchCD:Start(self:IsHard() and 34 or self:IsNormal() and 37.6 or 64.4)--64-90, and maybe it can go lower or higher in LFR
 	end
 end
 

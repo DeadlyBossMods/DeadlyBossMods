@@ -114,18 +114,18 @@ function mod:OnCombatStart(delay)
 	self.vb.refractedCount = 0
 	--Every fucking difficulty has different timers, because why make it easy
 	if self:IsMythic() then
-		timerVolatileMateriumCD:Start(21.9-delay)
-		timerRefractedBlastCD:Start(29.5-delay, 1)
-		timerDeresolutionCD:Start(54.7-delay)
-		timerSentryCD:Start(74.6-delay)
+		timerVolatileMateriumCD:Start(13.3-delay)
+		timerRefractedBlastCD:Start(21-delay, 1)
+		timerDeresolutionCD:Start(46.6-delay)
+		timerSentryCD:Start(66-delay)
 		--Boss Timers
 		timerSplitResolutionCD:Start(46.2)
 --		timerMatterDisolutionCD:Start()--Not used?
 	else--Heroic, Normal. LFR will probably be different too
 		timerVolatileMateriumCD:Start(5-delay)--5-6
 		timerRefractedBlastCD:Start(15.5-delay, 1)
-		timerDeresolutionCD:Start(37.8-delay)
-		timerSentryCD:Start(50.8-delay)
+		timerDeresolutionCD:Start(36.9-delay)
+		timerSentryCD:Start(35-delay)
 	end
 end
 
