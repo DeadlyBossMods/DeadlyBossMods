@@ -297,7 +297,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerInSingularity = true
 		end
-	elseif spellid == 362271 then
+	elseif spellId == 362271 then
 		if self.Options.SetIconOnQuasar then
 			self:ScanForMobs(args.sourceGUID, 2, self.vb.quasarIcon, 1, nil, 12, "SetIconOnQuasar")
 		end
