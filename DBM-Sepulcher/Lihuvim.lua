@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220301000000)
+mod:SetHotfixNoticeRev(20220308000000)
 mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
@@ -97,49 +97,49 @@ local allTimers = {
 	["easy"] = {--Normal and LFR combined (for now)
 		[1] = {--Engage
 			--Unstable Mote
-			[362601] = {12.1, 31.5, 31.5},
+			[362601] = {12, 31.5},
 			--Protoform Cascade
-			[364652] = {5.7, 31.5, 31.5, 23},
+			[364652] = {5.7, 13.9},
 			--Cosmic Shift
-			[363088] = {29, 23, 31.5},
+			[363088] = {29},
 			--Deconstructing Energy
-			[363676] = {20.5, 40, 38.8},
+			[363676] = {20.5},
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
 			[362601] = {12.4, 31.5, 31.5},
 			--Protoform Cascade
-			[364652] = {6.4, 31.5, 31.5, 23},
+			[364652] = {6.4, 31.5, 31.5},
 			--Cosmic Shift
-			[363088] = {29.4, 23.1, 31.5},
+			[363088] = {29.4, 23, 31.5},
 			--Deconstructing Energy
-			[363676] = {20.9, 40, 38.8},
+			[363676] = {20.9, 40.1},
 		},
 	},
 	["heroic"] = {
 		[1] = {--Engage
 			--Unstable Mote
-			[362601] = {12.1, 37.7, 43.7},
+			[362601] = {12.1},
 			--Protoform Cascade
-			[364652] = {5.7, 31.6, 43.8},--Sometimes this bugs and is 5.8, 70
+			[364652] = {5.7},
 			--Resonance
-			[368027] = {38.7, 43.7},
+			[368027] = {38.7},
 			--Cosmic Shift
-			[363088] = {29, 43.8},--or 29 and 29, when this happens it triggers the 5.8 and 70 on cascade
+			[363088] = {29},
 			--Deconstructing Energy
-			[363676] = {20.5, 46.2},
+			[363676] = {20.5},
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.4, 43.8, 43.8},
+			[362601] = {12.4, 45},
 			--Protoform Cascade
-			[364652] = {6.4, 31.6, 43.8},
+			[364652] = {6.4, 31.6, 45},
 			--Resonance
-			[368027] = {44.5, 43.8},
+			[368027] = {44.5, 44.6},
 			--Cosmic Shift
-			[363088] = {29.4, 43.8},
+			[363088] = {29.4, 45},
 			--Deconstructing Energy
-			[363676] = {20.9, 43.8},
+			[363676] = {20.9, 45},
 		},
 	},
 	["mythic"] = {--Mythic should be same as heroic minus first engage timers being shorter. But we'll see if that's changed
@@ -181,9 +181,9 @@ function mod:OnCombatStart(delay)
 	self.vb.timerMode = 1
 	timerProtoformCascadeCD:Start(5.1-delay, 1)--5-6
 	timerUnstableMoteCD:Start(12-delay, 1)
-	timerDeconstructingEnergyCD:Start(20.5-delay, 1)
-	timerCosmicShiftCD:Start(29-delay, 1)
-	timerSynthesizeCD:Start(self:IsMythic() and 31 or 100-delay, 1)
+	timerDeconstructingEnergyCD:Start(20.5-delay, 1)--20.5-26 on normal, 20-21 heroic
+	timerCosmicShiftCD:Start(29-delay, 1)--29-35 on normal, more consistently 29 on heroic+
+	timerSynthesizeCD:Start(self:IsMythic() and 31 or 45.4-delay, 1)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
@@ -383,7 +383,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self:IsHard() then
 				timerResonanceCD:Start(44.5, 1)
 			end
-			timerSynthesizeCD:Start(101.1, self.vb.synthesizeCount+1)
+			timerSynthesizeCD:Start(91.5, self.vb.synthesizeCount+1)
 --		else
 --			timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
 --			timerUnstableMoteCD:Start(2)--Same reason as above
