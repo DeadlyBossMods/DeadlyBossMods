@@ -239,7 +239,7 @@ function mod:SPELL_CAST_START(args)
 		timerAnguishingStrikeCD:Stop()
 		timerSlumberCloudCD:Stop()
 		timerFearfulTrepidationCD:Stop()
-	elseif (spellId = 360300 or spellId = 360304) and self:AntiSpam(3, 1) then
+	elseif (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 1) then
 		self.vb.darknessCount = self.vb.darknessCount + 1
 		specWarnUntoDarkness:Show(self.vb.darknessCount)
 		specWarnUntoDarkness:Play("specialsoon")
