@@ -61,7 +61,7 @@ local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, n
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStasisTrapCD							= mod:NewCDTimer(30, 362882, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
---local berserkTimer							= mod:NewBerserkTimer(600)
+--local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnWormhole", 362615, true, false, {1, 2})
 mod:AddSetIconOption("SetIconGlyphofRelocation", 362803, false, false, {3})
@@ -235,7 +235,7 @@ local allTimers = {
 			--Rings
 			[364465] = 30,
 			--Glyph of Relocation
-			[362801] = 60,
+			[362801] = 30,
 			--Stasis Trap
 			[362885] = 30,
 			--Hyperlight Sparknova
@@ -287,21 +287,17 @@ function mod:OnCombatStart(delay)
 		timerHyperlightSparknovaCD:Start(14-delay, 1)
 		timerStasisTrapCD:Start(21-delay)
 		timerForerunnerRingsCD:Start(26-delay, 1)
+		timerGlyphofRelocationCD:Start(39.9-delay, 1)
 	end
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerCartelEliteCD:Start(13.4-delay)
 		timerRiftBlastsCD:Start(13.6-delay)
-		timerGlyphofRelocationCD:Start(44.4-delay, 1)--Only different on pull, it's 40 on phase changes like other modes
 	else
 		if self:IsHeroic() then
 			difficultyName = "heroic"
-			--This is same inn normal and heroic but different in mythic and lfr
-			timerGlyphofRelocationCD:Start(39.9-delay, 1)
 		elseif self:IsNormal() then
 			difficultyName = "normal"
-			--This is same inn normal and heroic but different in mythic and lfr
-			timerGlyphofRelocationCD:Start(39.9-delay, 1)
 		else
 			difficultyName = "lfr"
 			timerDimensionalTearCD:Start(11-delay)
