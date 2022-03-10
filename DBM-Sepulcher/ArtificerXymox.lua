@@ -61,7 +61,7 @@ local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, n
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStasisTrapCD							= mod:NewCDTimer(30, 362882, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
---local berserkTimer								= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnWormhole", 362615, true, false, {1, 2})
 mod:AddSetIconOption("SetIconGlyphofRelocation", 362803, false, false, {3})
@@ -293,6 +293,7 @@ function mod:OnCombatStart(delay)
 		difficultyName = "mythic"
 		timerCartelEliteCD:Start(13.4-delay)
 		timerRiftBlastsCD:Start(13.6-delay)
+		berserkTimer:Start(450-delay)
 	else
 		if self:IsHeroic() then
 			difficultyName = "heroic"
@@ -460,7 +461,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHyperlightSparknovaCD:Stop()
 		timerStasisTrapCD:Stop()
 		if self:IsMythic() then
-			--Assuming they are still using march 1st version of hotfixes until seeing otherwise
 			timerHyperlightSparknovaCD:Start(15.5, 1)
 			timerDimensionalTearCD:Start(22)
 			timerStasisTrapCD:Start(23)
