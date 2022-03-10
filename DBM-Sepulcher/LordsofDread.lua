@@ -44,7 +44,7 @@ mod:RegisterEventsInCombat(
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("5/8/10")
 --Mal'Ganis
@@ -100,6 +100,7 @@ local timerSlumberCloudCD						= mod:NewCDCountTimer(1, 360229, nil, nil, nil, 3
 local timerAnguishingStrikeCD					= mod:NewCDTimer(9.1, 360284, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnFearfulTrepidation", 360146, true, false, {1, 2})--On by default because max targets shows 2 debuffs can be out, and don't want both carrions running to same person. with icons the carrions can make split decisions to pick an icon each are going to
+mod:GroupSpells(360717, 360418)--Group paranoia with parent mechanic Infiltration of dread
 
 --Mal'Ganis
 mod.vb.darknessCount = 0
@@ -152,6 +153,9 @@ function mod:OnCombatStart(delay)
 	timerSlumberCloudCD:Start(12.1-delay, 1)
 	timerFearfulTrepidationCD:Start(25.4-delay, 1)
 	timerInfiltrationofDreadCD:Start(123-delay, 1)
+	if self:IsNormal() then--I'm sure it's longer in LFRr and shorter on heroic/mythic, this is only one blizzard willingly published
+		berserkTimer:Start(780)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 1)--TODO, figure out power type
