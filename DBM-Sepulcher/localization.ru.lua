@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2465)
 
 L:SetTimerLocalization{
-	timerComboCD		= "~Tank Combo"
+	timerComboCD		= "~Tank Combo (%d)"
 }
 
 L:SetOptionLocalization({
