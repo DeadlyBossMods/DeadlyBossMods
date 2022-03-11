@@ -6,7 +6,7 @@ mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220301000000)
+mod:SetHotfixNoticeRev(20220311000000)
 mod:SetMinSyncRevision(20220114000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, Find Phase 3 cd of necrotic ritual (between casts) and P2 time between wracking pain casts on mythic and tons of others
 --TODO, maybe add https://ptr.wowhead.com/spell=362270/anima-shelter tracking to infoframe? seems like might already be crowded though just monitoring sin stacks and deathtouch
 --TODO, tanks wap for Wracking Pain? Feels like tank should just eat it vs putting 2 bosses on one tank for only 25%
---TODO, recheck normal mode timers on live
+--TODO, recheck normal mode timers on live for P3 necro dude
 --TODO, recheck mythic timers on live
 --[[
 (ability.id = 360295 or ability.id = 360636 or ability.id = 365272 or ability.id = 361066 or ability.id = 361304 or ability.id = 361568 or ability.id = 365126 or ability.id = 361300 or ability.id = 366062  or ability.id = 361789) and type = "begincast"
@@ -279,55 +279,55 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Necrotic Ritual
-			[360295] = {12.5},
+			[360295] = {12.5, 59.9},
 			--Runecarver's Deathtouch
-			[360636] = {41.8},
+			[360636] = {41.8, 49.9},
 			--Humbling Strikes
-			[365272] = {10.6, 31.2},
+			[365272] = {10.6, 31.2, 31.2, 31.2},
 			--Ascension's Call
-			[361066] = {38.2},
+			[361066] = {38},--?? Need transcriptor
 			--Pinning Volley
-			[361278] = {56.4},
+			[361278] = {56.4, 55.8},
 			--Night Hunter (Mythic Only)
-			[361745] = {11.9},
+			[361745] = {11.9, 61.2},
 		},
 		[2] = {
 			--Wild Stampede
-			[361304] = {31.3, 35.5, 30, 33.3},
+			[361304] = {54.8, 28.4, 28.4},
 			--Withering Seeds
-			[361568] = {26.4, 127.8},
+			[361568] = {21.5, 109.3, 46.7},
 			--Animastorm
-			[366234] = {52.7, 89.1},
+			[366234] = {44.2, 76.6},
 			--Wracking Pain
-			[365126] = {},
+			[365126] = {55.6, 51.1, 52.5},
 			--Hand of Destruction
-			[361791] = {108.6, 74.9},
+			[361791] = {91.1, 63.8},
 			--Night Hunter (Mythic Only)
-			[361745] = {27.7, 128.3},
+			[361745] = {23, 109.3, 46.2},
 		},
 		[3] = {
 			--Necrotic Ritual
-			[360295] = {17.9},
+			[360295] = {17.8},
 			--Runecarver's Deathtouch
-			[360636] = {130.8},
+			[360636] = {129},
 			--Humbling Strikes
-			[365272] = {41.1, 29.9, 29.9, 29.9},
+			[365272] = {41, 29.8, 29.8, 29.8, 29.8, 29.8},
 			--Ascension's Call
-			[361066] = {121.1},
+			[361066] = {121.1},--IFFY, need transcriptor
 			--Pinning Volley
-			[361278] = {56.7, 84},
+			[361278] = {55.9, 82.5},
 			--Wild Stampede
-			[361304] = {28.7, 31.5},
+			[361304] = {26.4, 33.2, 33.7},--Sometimes 2nd one is skipped
 			--Withering Seeds
-			[361568] = {93.3},
+			[361568] = {17.8, 77.8, 71.5},
 			--Animastorm
-			[366234] = {52.9},
+			[366234] = {50.9},
 			--Wracking Pain
-			[365126] = {41.1, 29.9, 29.9, 29.9},
+			[365126] = {41, 29.8, 29.8, 29.8, 29.8, 29.8},
 			--Hand of Destruction
-			[361791] = {107.8},
+			[361791] = {110, 68.4},
 			--Night Hunter (Mythic Only)
-			[361745] = {21.6, 75},
+			[361745] = {21.1, 75.7, 73.7},
 		},
 	},
 }
@@ -389,12 +389,12 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		--Necro
-		timerRunecarversDeathtouchCD:Start(41.9-delay, 1)
+		timerRunecarversDeathtouchCD:Start(41.5-delay, 1)
 		--Kyrian
-		timerAscensionsCallCD:Start(25.8-delay, 1)--Time til USCS anyways
-		timerPinningVolleyCD:Start(56.4-delay, 1)
+		timerAscensionsCallCD:Start(38-delay, 1)--Time til USCS anyways
+		timerPinningVolleyCD:Start(55.7-delay, 1)
 		--Venthyr
-		timerNightHunterCD:Start(11.9-delay, 1)
+		timerNightHunterCD:Start(11.5-delay, 1)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		--Necro
@@ -540,15 +540,15 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 2 then
 			if self:IsMythic() then
 				--Prototype of Absolution (Venthyr)
-				--timerWrackingPainCD:Start(36, 1)--Unknown, never saw it
-				timerHandofDestructionCD:Start(107.7, 1)
+				timerWrackingPainCD:Start(55.6, 1)
+				timerHandofDestructionCD:Start(91.1, 1)
 				--prototype-of-renewal (Night Fae)
-				timerWildStampedeCD:Start(31.3, 1)
-				timerWitheringSeedCD:Start(26.4, 1)
-				timerAnimastormCD:Start(52.7, 1)
+				timerWitheringSeedCD:Start(21.5, 1)
+				timerAnimastormCD:Start(44.2, 1)
+				timerWildStampedeCD:Start(54.8, 1)
 
 				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
-				timerNightHunterCD:Start(27.7)
+				timerNightHunterCD:Start(23)
 			elseif self:IsHeroic() then
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(69.7, 1)
@@ -577,22 +577,22 @@ function mod:SPELL_CAST_START(args)
 		else--Stage 3
 			if self:IsMythic() then
 				--Prototype of Absolution (Venthyr)
-				timerWrackingPainCD:Start(41.1, 1)
-				timerHandofDestructionCD:Start(107.7, 1)
+				timerWrackingPainCD:Start(41, 1)
+				timerHandofDestructionCD:Start(110, 1)
 				--prototype-of-duty (Kyrian)
-				timerHumblingStrikesCD:Start(41.1, 1)
-				timerPinningVolleyCD:Start(56.7, 1)
+				timerHumblingStrikesCD:Start(41, 1)
+				timerPinningVolleyCD:Start(55.9, 1)
 				timerAscensionsCallCD:Start(121.1, 1)
 				--prototype-of-renewal (Night Fae)
-				timerWildStampedeCD:Start(28.7, 1)
-				timerAnimastormCD:Start(52.9, 1)
-				timerWitheringSeedCD:Start(93.3, 1)
+				timerWitheringSeedCD:Start(17.8, 1)
+				timerWildStampedeCD:Start(26.4, 1)
+				timerAnimastormCD:Start(50.9, 1)
 				--prototype-of-war (Necro)
-				timerNecroticRitualCD:Start(17.9, 1)
-				timerRunecarversDeathtouchCD:Start(130.8, 1)
+				timerNecroticRitualCD:Start(17.8, 1)
+				timerRunecarversDeathtouchCD:Start(129, 1)
 
 				timerNightHunterCD:Stop()--In case it's not properly cleared by clearalldebuffs
-				timerNightHunterCD:Start(21.6, 1)
+				timerNightHunterCD:Start(21.1, 1)
 			elseif self:IsHeroic() then
 				--Prototype of Absolution (Venthyr)
 				timerWrackingPainCD:Start(41, 1)

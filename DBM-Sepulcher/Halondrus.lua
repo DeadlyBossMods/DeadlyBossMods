@@ -252,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 364979 then--Casts slightly faster than 362056
 		specWarnShatter:Show()
-		specWarnShatter:Play("targetchange")
+		specWarnShatter:Play("watchstep")
 		local timer = movementTimers[spellId][self.vb.stageTotality][self.vb.shatterCount+1]
 		if timer then
 			timerShatterCD:Start(timer, self.vb.shatterCount+1)
