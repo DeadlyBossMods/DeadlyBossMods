@@ -61,7 +61,7 @@ local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, ni
 local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
-local specWarnShatter							= mod:NewSpecialWarningSwitch(362056, "Dps", nil, nil, 1, 2)
+local specWarnShatter							= mod:NewSpecialWarningDodge(362056, nil, nil, nil, 2, 2)
 
 --mod:AddTimerLine(BOSS)
 --Mythic
