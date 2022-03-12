@@ -55,10 +55,10 @@ local yellVolatileChargeFades					= mod:NewShortFadesYell(368969)
 --Stage One: The Reclaimer
 local specWarnReclaim							= mod:NewSpecialWarningCount(360115, nil, nil, nil, 1, 2)
 local specWarnSeismicTremors					= mod:NewSpecialWarningCount(367079, false, nil, nil, 1, 2)--I don't even understand mechanic anymore it's been changed so much, no idea if it should be on or off by default
-local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, nil, nil, 2, 2)
+local specWarnEarthbreakerMissiles				= mod:NewSpecialWarningMoveAway(361676, nil, 183426, nil, 2, 2)
 local specWarnCrushingPrism						= mod:NewSpecialWarningYou(365297, nil, nil, nil, 1, 2)
-local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, nil, nil, 1, 2)
-local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, nil, nil, 1, 2)
+local specWarnLightshatterBeam					= mod:NewSpecialWarningMoveTo(360977, nil, 202046, nil, 1, 2)
+local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil, 202046, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(361002, nil, nil, nil, 1, 8)
 --Stage Two: The Shimmering Cliffs
 local specWarnShatter							= mod:NewSpecialWarningDodge(362056, nil, nil, nil, 2, 2)
@@ -69,7 +69,7 @@ local timerVolatileChargesCD					= mod:NewAITimer(36.5, 368957, nil, nil, nil, 3
 --Stage One: The Reclaimer
 local timerReclaimCD							= mod:NewCDCountTimer(60, 360115, nil, nil, nil, 5)
 local timerSeismicTremorsCD						= mod:NewCDCountTimer(26.7, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
-local timerEarthbreakerMissilesCD				= mod:NewCDCountTimer(26.1, 361676, nil, nil, nil, 3)
+local timerEarthbreakerMissilesCD				= mod:NewCDCountTimer(26.1, 361676, 183426, nil, nil, 3)--shorttext "Missiles"
 local timerPlanetcrackerBeamCD					= mod:NewCDTimer(33.2, 369210, nil, nil, nil, 3)
 local timerCrushingPrismCD						= mod:NewCDCountTimer(26.9, 365297, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 --Stage Two: The Shimmering Cliffs

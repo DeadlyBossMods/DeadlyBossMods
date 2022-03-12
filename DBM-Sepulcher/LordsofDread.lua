@@ -77,27 +77,27 @@ mod:AddNamePlateOption("NPAuraOnFullyFormed", 361945, true)--Might also cover up
 --Kin'tessa
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23929))
 local warnShatterMind							= mod:NewSpellAnnounce(360420, 4)--Kind of a generic alert to say "this pull is a wash"
-local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3)
+local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3, nil, nil, 39176)
 local warnAuraofShadows							= mod:NewSpellAnnounce(363191, 4)
 local warnAuraofShadowsOver						= mod:NewEndAnnounce(363191, 1)
 local warnSlumberCloud							= mod:NewCountAnnounce(360229, 2)
-local warnAnguishingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
+local warnAnguishingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer", 31907)--shorttext "Strike"
 
 local specWarnInfiltrationofDread				= mod:NewSpecialWarningCount(360717, nil, nil, nil, 2, 2)
-local specWarnFearfulTrepidation				= mod:NewSpecialWarningYou(360146, nil, nil, nil, 2, 2)
-local yellFearfulTrepidation					= mod:NewShortPosYell(360146)
-local yellFearfulTrepidationFades				= mod:NewIconFadesYell(360146)
-local specWarnBurstingDread						= mod:NewSpecialWarningDispel(360148, "RemoveMagic", nil, nil, 1, 2)
+local specWarnFearfulTrepidation				= mod:NewSpecialWarningYou(360146, nil, 39176, nil, 2, 2)
+local yellFearfulTrepidation					= mod:NewShortPosYell(360146, 39176)--Shorttext "Fear"
+local yellFearfulTrepidationFades				= mod:NewIconFadesYell(360146, 39176)
+local specWarnBurstingDread						= mod:NewSpecialWarningDispel(360148, "RemoveMagic", 39176, nil, 1, 2)--shorttext "Fear"
 local specWarnUnsettlingDreams					= mod:NewSpecialWarningDispel(360241, "RemoveMagic", nil, nil, 1, 2)
-local specWarnAnguishingStrike					= mod:NewSpecialWarningDefensive(360284, nil, nil, nil, 1, 2)
-local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(350202, nil, 3, nil, nil, 1, 6)
-local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(350202, nil, nil, nil, 1, 2)
+local specWarnAnguishingStrike					= mod:NewSpecialWarningDefensive(360284, nil, 31907, nil, 1, 2)
+local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(350202, nil, 3, 31907, nil, 1, 6)
+local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(350202, nil, 31907, nil, 1, 2)
 
 local timerInfiltrationofDreadCD				= mod:NewCDCountTimer(123, 360717, nil, nil, nil, 6)--120+3sec cast time
 local timerParanoia								= mod:NewBuffFadesTimer(25, 360418, nil, nil, nil, 5)
-local timerFearfulTrepidationCD					= mod:NewCDCountTimer(29.1, 360145, nil, nil, nil, 3)--DBM_COMMON_L.MAGIC_ICON
+local timerFearfulTrepidationCD					= mod:NewCDCountTimer(29.1, 360145, 39176, nil, nil, 3)--DBM_COMMON_L.MAGIC_ICON
 local timerSlumberCloudCD						= mod:NewCDCountTimer(1, 360229, nil, nil, nil, 3)--No in between time
-local timerAnguishingStrikeCD					= mod:NewCDTimer(9.1, 360284, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerAnguishingStrikeCD					= mod:NewCDTimer(9.1, 360284, 31907, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnFearfulTrepidation", 360146, true, false, {1, 2})--On by default because max targets shows 2 debuffs can be out, and don't want both carrions running to same person. with icons the carrions can make split decisions to pick an icon each are going to
 mod:GroupSpells(360717, 360418)--Group paranoia with parent mechanic Infiltration of dread

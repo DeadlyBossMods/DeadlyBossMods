@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 local warnInfusedStrikes						= mod:NewStackAnnounce(361966, 2, nil, "Tank|Healer")
 local warnStaggeringBarrage						= mod:NewTargetNoFilterAnnounce(361018, 3)
 local warnDominationCore						= mod:NewCountAnnounce(359483, 3)
-local warnDisintegrationHalo					= mod:NewCountAnnounce(365373, 4)
+local warnDisintegrationHalo					= mod:NewCountAnnounce(365373, 4, nil, nil, 161172)
 --Inevitable Dominion
 local warnSiphonReservoir						= mod:NewCountAnnounce(361643, 2)
 
@@ -48,7 +48,7 @@ local yellStaggeringBarrageFades				= mod:NewIconFadesYell(361018)
 local specWarnStaggeringBarrageTarget			= mod:NewSpecialWarningTarget(361018, false, nil, nil, 1, 2, 3)--Optional Soak special warning that auto checks no soak debuff
 local specWarnDominationBolt					= mod:NewSpecialWarningInterruptCount(363607, "HasInterrupt", nil, nil, 1, 2)
 local specWarnObliterationArc					= mod:NewSpecialWarningDodgeCount(361513, nil, nil, nil, 2, 2)
-local specWarnDisintegrationHalo				= mod:NewSpecialWarningCount(365373, nil, nil, nil, 2, 2)
+local specWarnDisintegrationHalo				= mod:NewSpecialWarningCount(365373, nil, 161172, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Inevitable Dominion
 local specWarnTotalDominion						= mod:NewSpecialWarningSpell(365418, nil, nil, nil, 3, 2)--Basically soft enrage/wipe mechanic
@@ -59,8 +59,8 @@ local timerUnleashedInfusion					= mod:NewTargetTimer(20, 361967, nil, nil, nil,
 local timerStaggeringBarrageCD					= mod:NewCDCountTimer(35, 361018, nil, nil, nil, 3)
 local timerDominationCoreCD						= mod:NewCDCountTimer(33.5, 359483, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerObliterationArcCD					= mod:NewCDCountTimer(35, 361513, nil, nil, nil, 3)
-local timerDisintegrationHaloCD					= mod:NewCDCountTimer(70, 365373, nil, nil, nil, 3)
-local timerDisintegrationHalo					= mod:NewCastCountTimer(5, 365373, nil, nil, nil, 5)
+local timerDisintegrationHaloCD					= mod:NewCDCountTimer(70, 365373, 161172, nil, nil, 3)
+local timerDisintegrationHalo					= mod:NewCastCountTimer(5, 365373, 161172, nil, nil, 5)
 --Inevitable Dominion
 local timerSiphonReservoirCD					= mod:NewCDCountTimer(28.8, 361643, nil, nil, nil, 6)
 

@@ -73,12 +73,12 @@ local warnAscensionsCall						= mod:NewCountAnnounce(361066, 2)
 local warnBastionsWard							= mod:NewCastAnnounce(360845, 1)
 local warnPinned								= mod:NewTargetNoFilterAnnounce(362352, 4)
 
-local specWarnHumblingStrikes					= mod:NewSpecialWarningDefensive(365272, nil, nil, nil, 1, 2)
-local specWarnHumblingStrikesTaunt				= mod:NewSpecialWarningTaunt(365272, nil, nil, nil, 1, 2)
+local specWarnHumblingStrikes					= mod:NewSpecialWarningDefensive(365272, nil, 31907, nil, 1, 2)
+local specWarnHumblingStrikesTaunt				= mod:NewSpecialWarningTaunt(365272, nil, 31907, nil, 1, 2)
 local specWarnPinningVolley						= mod:NewSpecialWarningDodgeCount(361278, nil, nil, nil, 2, 2)--Is it dodgeable?
 local yellPinned								= mod:NewShortYell(362352)
 
-local timerHumblingStrikesCD					= mod:NewCDCountTimer(35.7, 365272, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerHumblingStrikesCD					= mod:NewCDCountTimer(35.7, 365272, 31907, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--shortname "strike"
 local timerAscensionsCallCD						= mod:NewCDCountTimer(57.1, 365272, nil, nil, nil, 1)
 local timerPinningVolleyCD						= mod:NewCDCountTimer(64.1, 361278, nil, nil, nil, 3)
 
