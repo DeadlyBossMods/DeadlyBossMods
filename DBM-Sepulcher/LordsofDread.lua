@@ -303,7 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCloudofCarrion:Yell()
 			updateRangeFrame(self)
 		else
-			warnCloudofCarrion:Show(args.destName)
+			warnCloudofCarrion:CombinedShow(0.3, args.destName)--More than one on mythic
 		end
 	elseif spellId == 361934 or spellId == 362020 then
 		if self.Options.NPAuraOnIncompleteForm then
