@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220308000000)
+mod:SetHotfixNoticeRev(20220311000000)
 mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
@@ -20,8 +20,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"RAID_BOSS_WHISPER"
---	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"UNIT_DIED"
 )
 
 --TODO, wait for blizzard to add mote debuffs into combat log, redundant RBW will cover it for now
@@ -77,8 +76,6 @@ local timerRecharge								= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6
 local berserkTimer								= mod:NewBerserkTimer(480)
 --Adds
 
---mod:AddRangeFrameOption("8")
---mod:AddInfoFrameOption(328897, true)
 mod:AddSetIconOption("SetIconOnDeconstructingEnergy", 363795, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnEphemeralBarrier", 364312, true)
 mod:GroupSpells(368027, 368025, 368024)--Group responance debuffs together
@@ -147,25 +144,25 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.1},
 			--Protoform Cascade
-			[364652] = {5.7},--Sometimes this bugs and is 5.8, 70
+			[364652] = {5.7},
 			--Resonance
-			[368027] = {},
+			[368027] = {},--Doesn't seem cast before first intermission
 			--Cosmic Shift
-			[363088] = {29},--or 29 and 29, when this happens it triggers the 5.8 and 70 on cascade
+			[363088] = {},--Doesn't seem cast before first intermission
 			--Deconstructing Energy
 			[363676] = {20.5},
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.9, 43.8, 43.8},
+			[362601] = {12.5, 43.7},
 			--Protoform Cascade
-			[364652] = {6.8, 31.6, 43.8},
+			[364652] = {6.4, 31.5, 43.7},
 			--Resonance
-			[368027] = {44.5, 43.8},
+			[368027] = {44, 43.6},
 			--Cosmic Shift
-			[363088] = {29.9, 43.8},
+			[363088] = {29.4, 43.7},
 			--Deconstructing Energy
-			[363676] = {21.4, 43.8},
+			[363676] = {21, 43.6},
 		},
 	},
 }
@@ -181,31 +178,29 @@ function mod:OnCombatStart(delay)
 	self.vb.timerMode = 1
 	timerProtoformCascadeCD:Start(5.1-delay, 1)--5-6
 	timerUnstableMoteCD:Start(12-delay, 1)
-	timerDeconstructingEnergyCD:Start(20.5-delay, 1)--20.5-26 on normal, 20-21 heroic
-	timerCosmicShiftCD:Start(29-delay, 1)--29-35 on normal, more consistently 29 on heroic+
-	timerSynthesizeCD:Start(self:IsMythic() and 31 or 45.4-delay, 1)
+	timerDeconstructingEnergyCD:Start(20.5-delay, 1)--20.5-26 on normal, 20-21 heroic/mythic
 	if self:IsMythic() then
 		difficultyName = "mythic"
+		--Earlier synth, no cosmic shift or resonance
+		timerSynthesizeCD:Start(30-delay, 1)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
-		timerResonanceCD:Start(43-delay, 1)--Maybe shorter timer on non mythic, else not cast until next cycle
+		timerCosmicShiftCD:Start(29-delay, 1)
+		timerResonanceCD:Start(43-delay, 1)
+		timerSynthesizeCD:Start(45.4-delay, 1)
 	else
 		difficultyName = "easy"
+		--Same as heroic, minus resonance mechanic not there at all
+		timerCosmicShiftCD:Start(29-delay, 1)
+		timerSynthesizeCD:Start(45.4-delay, 1)
 	end
 	berserkTimer:Start(480-delay)--On heroic at least
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
 	if self.Options.NPAuraOnEphemeralBarrier then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.NPAuraOnEphemeralBarrier then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -375,22 +370,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.resonanceCount = 0
 		timerRecharge:Stop()
 		--Restart boss timers
---		if self:IsMythic() then
-			timerProtoformCascadeCD:Start(6.4, 1)
-			timerUnstableMoteCD:Start(12.4, 1)
-			timerDeconstructingEnergyCD:Start(20.9, 1)
-			timerCosmicShiftCD:Start(29.4, 1)
-			if self:IsHard() then
-				timerResonanceCD:Start(44.5, 1)
-			end
-			timerSynthesizeCD:Start(91.5, self.vb.synthesizeCount+1)
---		else
---			timerDeconstructingEnergyCD:Start(1)--Started elsewhere since it's used instantly here
---			timerUnstableMoteCD:Start(2)--Same reason as above
---			timerCosmicShiftCD:Start(6.7)
---			timerProtoformCascadeCD:Start(15.2)
---			timerSynthesizeCD:Start(65)
---		end
+		timerProtoformCascadeCD:Start(6.4, 1)
+		timerUnstableMoteCD:Start(12.4, 1)
+		timerDeconstructingEnergyCD:Start(20.9, 1)
+		timerCosmicShiftCD:Start(29.4, 1)
+		if self:IsHard() then
+			timerResonanceCD:Start(44, 1)
+		end
+		timerSynthesizeCD:Start(91.4, self.vb.synthesizeCount+1)
 	end
 end
 
@@ -424,10 +411,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
-	end
-end
 --]]
