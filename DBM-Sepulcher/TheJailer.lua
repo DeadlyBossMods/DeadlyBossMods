@@ -238,6 +238,7 @@ local allTimers = {
 			--Defile
 			[365169] = {},
 		},
+	},
 	["mythic"] = {--Most definitely different, heroic timers placeholdered for now
 		[1] = {
 			--World Crusher

@@ -285,7 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
 			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
-			local checkedId == self:IsMythic() and 3652970 or 365297
+			local checkedId = self:IsMythic() and 3652970 or 365297
 			local timer = self.vb.phase == 1 and 26 or movementTimers[checkedId][self.vb.stageTotality][self.vb.crushingCast+1]
 			if timer then
 				timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
