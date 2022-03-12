@@ -216,7 +216,7 @@ local allTimers = {
 			--Torment (lasts entire fight)
 			[365436] = {22, 16, 35.4, 61.5},--Double check 65
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 41.0},
+			[360562] = {26, 41.0, 80.0},
 			--Unholy Attunement
 			[360373] = {19, 45.0, 45.0, 46.5},
 			--Shattering Blast
