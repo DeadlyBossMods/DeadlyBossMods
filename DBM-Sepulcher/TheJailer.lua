@@ -5,16 +5,16 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--, 7, 8
-mod:SetHotfixNoticeRev(20220308000000)
-mod:SetMinSyncRevision(20220308000000)
+mod:SetHotfixNoticeRev(20220312000000)
+mod:SetMinSyncRevision(20220312000000)
 --mod.respawnTime = 29
 mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 363332 367851",--363179
-	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147",
+	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 367851",--363179
+	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147 363332",
 --	"SPELL_SUMMON 363175",
 	"SPELL_AURA_APPLIED 362631 362401 360281 366285 365150 365153 362075 365219 365222 362192",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -43,7 +43,8 @@ mod:RegisterEventsInCombat(
 --TODO, maybe short name chains in all phases to "chains"? might remove ability to tell them apart though. maybe use Anguish, Oppression instead
 --[[
 (ability.id = 362028 or ability.id = 363893 or ability.id = 360373 or ability.id = 359856 or ability.id = 364942 or ability.id = 360562 or ability.id = 364488 or ability.id = 365033 or ability.id = 365212 or ability.id = 365169 or ability.id = 366374 or ability.id = 366678 or ability.id = 367290 or ability.id = 367851) and type = "begincast"
- or (ability.id = 359809 or ability.id = 367051 or ability.id = 181089 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332) and type = "cast"
+ or (ability.id = 359809 or ability.id = 367051 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332) and type = "cast"
+ or ability.id = 181089
 --]]
 --General
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -127,6 +128,7 @@ local yellDefile								= mod:NewYell(365169)
 local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
 local timerWorldShattererCD						= mod:NewAITimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerUnbreakableGraspCD					= mod:NewCDTimer(28.8, 363332, nil, nil, nil, 6)
 local timerDesolationCD							= mod:NewCDCountTimer(28.8, 365033, nil, nil, nil, 3)
 local timerRuneofDominationCD					= mod:NewCDCountTimer(28.8, 365150, nil, nil, nil, 3)
 local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, nil, 5)
@@ -197,50 +199,89 @@ local allTimers = {
 			[365169] = {55, 40.9, 43, 42.9},
 		},
 	},
-	["mythic"] = {--Most definitely different, normal timers placeholdered for now
+	["heroic"] = {
+		[1] = {
+			--Torment (lasts entire fight)
+			[365436] = {11.0, 52.0, 45.0, 47.0},
+			--Martyrdom
+			[363893] = {31.0, 40.0, 52.0, 39.0},
+			--Relenting Domination
+			[362028] = {55, 56.9, 56},
+			--Chains of Oppression
+			[359809] = {40.0, 48.0, 49.0},
+			--Rune of Damnation
+			[360279] = {22.0, 25.0, 29.0, 21.0, 30.5, 19.5},
+		},
+		[2] = {
+			--Torment (lasts entire fight)
+			[365436] = {22, 16, 35.4, 61.5},--Double check 65
+			--Decimator (lasts rest of fight)
+			[360562] = {26, 41.0},
+			--Unholy Attunement
+			[360373] = {19, 45.0, 45.0, 46.5},
+			--Shattering Blast
+			[359856] = {33, 16.0, 30.0, 15.0, 29.0, 17.0},
+			--Rune of Compulsion
+			[366284] = {40.9, 46.0, 45.0},
+		},
+		[3] = {
+			--Torment (lasts entire fight)
+			[365436] = {},
+			--Decimator (lasts rest of fight)
+			[360562] = {},
+			--Desolation
+			[365033] = {},
+			--Rune of Domination
+			[365147] = {},
+			--Chains of Anguish
+			[365212] = {},
+			--Defile
+			[365169] = {},
+		},
+	["mythic"] = {--Most definitely different, heroic timers placeholdered for now
 		[1] = {
 			--World Crusher
 			[366374] = {},
 			--Torment (lasts entire fight)
-			[365436] = {21.9, 51, 69},
+			[365436] = {},
 			--Martyrdom
-			[363893] = {40, 40, 40, 40},
+			[363893] = {},
 			--Relenting Domination
-			[362028] = {48, 60},
+			[362028] = {},
 			--Chains of Oppression
-			[359809] = {90},
+			[359809] = {},
 			--Rune of Damnation
-			[360279] = {11, 19, 34, 32.9, 28, 25.9},
+			[360279] = {},
 		},
 		[2] = {
 			--World Cracker
 			[366678] = {},
 			--Torment (lasts entire fight)
-			[365436] = {42, 49.9, 55, 45},
+			[365436] = {},
 			--Decimator (lasts rest of fight)
-			[360562] = {27.9, 57.5, 47.5, 42.9},
+			[360562] = {},
 			--Unholy Attunement
-			[360373] = {18.9, 45, 45, 45},
+			[360373] = {},
 			--Shattering Blast
-			[359856] = {34.5, 13.4, 30, 15, 30.9, 15.5, 28.4, 15.9},
+			[359856] = {},
 			--Rune of Compulsion
-			[366284] = {61.9, 60, 60},
+			[366284] = {},
 		},
 		[3] = {
 			--World Shatterer
 			[367051] = {},
 			--Torment (lasts entire fight)
-			[365436] = {26, 86.9},
+			[365436] = {},
 			--Decimator (lasts rest of fight)
-			[360562] = {34.9, 52, 41.9, 41.9},
+			[360562] = {},
 			--Desolation
-			[365033] = {41.9, 60, 60},
+			[365033] = {},
 			--Rune of Domination
-			[365147] = {63, 83.9},
+			[365147] = {},
 			--Chains of Anguish
-			[365212] = {51.9, 41.9, 41.9, 41.9},
+			[365212] = {},
 			--Defile
-			[365169] = {55, 40.9, 43, 42.9},
+			[365169] = {},
 		},
 	},
 }
@@ -264,16 +305,23 @@ function mod:OnCombatStart(delay)
 	self.vb.willTotal = 0
 	self.vb.chainsIcon = 4
 	self:SetStage(1)
-	timerRuneofDamnationCD:Start(11-delay, 1)
-	timerTormentCD:Start(21.9-delay, 1)
-	timerMartyrdomCD:Start(40-delay, 1)
-	timerRelentingDominationCD:Start(48-delay, 1)
-	timerChainsofOppressionCD:Start(90-delay, 1)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerWorldCrusherCD:Start(1-delay)
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+		timerTormentCD:Start(11-delay, 1)
+		timerRuneofDamnationCD:Start(21-delay, 1)
+		timerMartyrdomCD:Start(31-delay, 1)
+		timerChainsofOppressionCD:Start(40-delay, 1)
+		timerRelentingDominationCD:Start(55-delay, 1)
 	else
 		difficultyName = "other"
+		timerRuneofDamnationCD:Start(11-delay, 1)
+		timerTormentCD:Start(21.9-delay, 1)
+		timerMartyrdomCD:Start(40-delay, 1)
+		timerRelentingDominationCD:Start(48-delay, 1)
+		timerChainsofOppressionCD:Start(90-delay, 1)
 	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -300,6 +348,8 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
 	else
 		difficultyName = "other"
 	end
@@ -386,18 +436,42 @@ function mod:SPELL_CAST_START(args)
 		timerMartyrdomCD:Stop()
 		timerTormentCD:Stop()
 		timerRuneofDamnationCD:Stop()
-		timerUnholyAttunementCD:Start(18.9, 1)
-		timerDecimatorCD:Start(27.9, 1)
-		timerShatteringBlastCD:Start(34.5, 1)
-		timerTormentCD:Start(42, 1)
-		timerRuneofCompulsionCD:Start(61.9, 1)
 		if self:IsMythic() then
 			timerWorldCrackerCD:Start(2)
+			--Placeholder heroic timers
+			timerUnholyAttunementCD:Start(18.9, 1)
+			timerTormentCD:Start(22, 1)
+			timerDecimatorCD:Start(26, 1)
+			timerShatteringBlastCD:Start(33, 1)
+			timerRuneofCompulsionCD:Start(40, 1)
+		elseif self:IsHeroic() then
+			timerUnholyAttunementCD:Start(18.9, 1)
+			timerTormentCD:Start(22, 1)
+			timerDecimatorCD:Start(26, 1)
+			timerShatteringBlastCD:Start(33, 1)
+			timerRuneofCompulsionCD:Start(40, 1)
+		else
+			timerUnholyAttunementCD:Start(18.9, 1)
+			timerDecimatorCD:Start(27.9, 1)
+			timerShatteringBlastCD:Start(34.5, 1)
+			timerTormentCD:Start(42, 1)
+			timerRuneofCompulsionCD:Start(61.9, 1)
 		end
 	elseif spellId == 367290 then--Transitional Unholy Attunement (possibly even earlier P3 trigger)
 		self.vb.unholyCount = self.vb.unholyCount + 1
 		warnUnholyAttunement:Show(self.vb.unholyCount)
-	elseif spellId == 363332 then--Unbreaking Grasp
+		timerWorldCrackerCD:Stop()
+		timerUnholyAttunementCD:Stop()
+		timerShatteringBlastCD:Stop()
+		timerRuneofCompulsionCD:Stop()
+		timerDecimatorCD:Stop()
+		timerUnbreakableGraspCD:Start(10.5)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 363332 then--Unbreaking Grasp
 		self:SetStage(3)
 		--General
 		self.vb.worldCount = 0--Used in all 3 stages on mythic
@@ -409,26 +483,19 @@ function mod:SPELL_CAST_START(args)
 		--3
 		self.vb.desolationCount = 0
 		self.vb.defileCount = 0
-		timerWorldCrackerCD:Stop()
-		timerUnholyAttunementCD:Stop()
-		timerShatteringBlastCD:Stop()
-		timerRuneofCompulsionCD:Stop()
-		timerDecimatorCD:Stop()
-		timerTormentCD:Start(26, 1)
-		timerDecimatorCD:Start(34.9, 1)
-		timerDesolationCD:Start(41.9, 1)
-		timerChainsofAnguishCD:Start(51.9, 1)
-		timerDefileCD:Start(55, 1)
-		timerRuneofDominationCD:Start(63, 1)
 		if self:IsMythic() then
 			timerWorldShattererCD:Start(3)
+		elseif self:IsHeroic() then
+			--No data yet
+		else
+			timerTormentCD:Start(26, 1)
+			timerDecimatorCD:Start(34.9, 1)
+			timerDesolationCD:Start(41.9, 1)
+			timerChainsofAnguishCD:Start(51.9, 1)
+			timerDefileCD:Start(55, 1)
+			timerRuneofDominationCD:Start(63, 1)
 		end
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 359809 then
+	elseif spellId == 359809 then
 		self.vb.chainsCount = self.vb.chainsCount + 1
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1]
 		if timer then
