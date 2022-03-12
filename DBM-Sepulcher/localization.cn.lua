@@ -55,7 +55,7 @@ L:SetMiscLocalization({
 --L= DBM:GetModLocalization(2465)
 
 L:SetTimerLocalization{
-	timerComboCD		= "~坦克组合技"
+	timerComboCD		= "~坦克组合技 (%d)"
 }
 
 L:SetOptionLocalization({

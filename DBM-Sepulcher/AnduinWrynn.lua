@@ -48,9 +48,9 @@ mod:RegisterEventsInCombat(
 --Stage One: Kingsmourne Hungers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24462))
 --local warnDespair								= mod:NewTargetNoFilterAnnounce(365235, 2)
-local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3)
+local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3, nil, nil, 300531)
 local warnWickedStar							= mod:NewTargetCountAnnounce(365030, 3, nil, nil, nil, nil, nil, nil, true)
-local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil, "Healer")
+local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil, "Healer", 249194)
 
 local specWarnKingsmourneHungers				= mod:NewSpecialWarningCount(362405, nil, nil, nil, 1, 2)
 local specWarnMalignantward						= mod:NewSpecialWarningDispel(364031, "RemoveMagic", nil, nil, 1, 2)
@@ -69,11 +69,11 @@ local timerPhaseCD								= mod:NewPhaseTimer(30)
 local timerKingsmourneHungersCD					= mod:NewCDCountTimer(28.8, 362405, nil, nil, nil, 3)
 local timerLostSoul								= mod:NewBuffFadesTimer(35, 362055, nil, nil, nil, 5)
 local timerBlasphemyCD							= mod:NewCDCountTimer(28.8, 361989, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerBefouledBarrierCD					= mod:NewCDCountTimer(28.8, 365295, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerBefouledBarrierCD					= mod:NewCDCountTimer(28.8, 365295, 300531, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerWickedStarCD							= mod:NewCDCountTimer(28.8, 365030, nil, nil, nil, 3)
 local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, false, nil, 5)
 local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil, 2)
-local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, 249194, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
 mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", true, true, {1, 2, 3})--Up to 4 of them, but we hold 4 for grim reflections
 mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
@@ -85,7 +85,7 @@ local warnArmyofDead							= mod:NewSpellAnnounce(362862, 3)
 local specWarnSoulReaper						= mod:NewSpecialWarningDefensive(362771, nil, nil, nil, 1, 2)
 local specWarnSoulReaperTaunt					= mod:NewSpecialWarningTaunt(362771, nil, nil, nil, 1, 2)
 
-local timerSoulReaperCD							= mod:NewCDTimer(12, 362771, nil, "Healer|Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSoulReaperCD							= mod:NewCDCountTimer(12, 362771, nil, "Healer|Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerArmyofDeadCD							= mod:NewCDTimer(37.0, 362862, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 ----Monstrous Soul
 local specWarnNecroticDetonation				= mod:NewSpecialWarningDefensive(363024, nil, nil, nil, 2, 2)--Aoe defensive, big damage followed by heal immunity
@@ -391,11 +391,12 @@ function mod:SPELL_CAST_START(args)
 			timerHopebreakerCD:Start(timer, self.vb.hopebreakerCount+1)
 		end
 	elseif spellId == 362771 then
+		self.vb.befouledCount = self.vb.befouledCount + 1--Reused since befoulment not happening here
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
 			specWarnSoulReaper:Show()
 			specWarnSoulReaper:Play("defensive")
 		end
-		timerSoulReaperCD:Start(12)
+		timerSoulReaperCD:Start(12, self.vb.befouledCount+1)
 	elseif spellId == 363024 then
 		specWarnNecroticDetonation:Show()
 		specWarnNecroticDetonation:Play("defensive")
@@ -599,10 +600,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWickedStarCD:Stop()
 		timerHopebreakerCD:Stop()
 		timerDominationWordPainCD:Stop()
+		self.vb.befouledCount = 0--Reused for soulreaper to save on sync variables
 		if self.vb.phase == 1 then
 			self:SetStage(1.5)
 			timerArmyofDeadCD:Start(7.5)
-			timerSoulReaperCD:Start(14.5)
+			timerSoulReaperCD:Start(14.5, 1)
 			timerPhaseCD:Start(156)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -611,7 +613,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetStage(2.5)
 			timerArmyofDeadCD:Start(12.7)
 			timerMarchofDamnedCD:Start(12.7)--Only used in second intermission
-			timerSoulReaperCD:Start(19.7)
+			timerSoulReaperCD:Start(19.7, 1)
 			timerPhaseCD:Start(80)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)

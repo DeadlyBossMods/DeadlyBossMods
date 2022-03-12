@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 --L= DBM:GetModLocalization(2465)
 
 L:SetTimerLocalization{
-	timerComboCD		= "~坦克連擊"
+	timerComboCD		= "~坦克連擊 (%d)"
 }
 
 L:SetOptionLocalization({

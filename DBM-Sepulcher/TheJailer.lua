@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, https://ptr.wowhead.com/spell=363748/death-sentence / https://ptr.wowhead.com/spell=363772/death-sentence ?
 --TODO, auto mark https://ptr.wowhead.com/spell=365419/incarnation-of-torment ? Is Cry of Loathing interruptable or is it like painsmith?
 --TODO, do something with https://www.wowhead.com/spell=365810/falling-debris ?
+--TODO, maybe short name chains in all phases to "chains"? might remove ability to tell them apart though. maybe use Anguish, Oppression instead
 --[[
 (ability.id = 362028 or ability.id = 363893 or ability.id = 360373 or ability.id = 359856 or ability.id = 364942 or ability.id = 360562 or ability.id = 364488 or ability.id = 365033 or ability.id = 365212 or ability.id = 365169 or ability.id = 366374 or ability.id = 366678 or ability.id = 367290 or ability.id = 367851) and type = "begincast"
  or (ability.id = 359809 or ability.id = 367051 or ability.id = 181089 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332) and type = "cast"
@@ -73,7 +74,7 @@ local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
 local timerWorldCrusherCD						= mod:NewAITimer(28.8, 366374, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRelentingDominationCD				= mod:NewCDCountTimer(28.8, 362028, nil, nil, nil, 2)
 local timerChainsofOppressionCD					= mod:NewCDCountTimer(28.8, 362631, nil, nil, nil, 3)
-local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TANKCOMBOC, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
 
