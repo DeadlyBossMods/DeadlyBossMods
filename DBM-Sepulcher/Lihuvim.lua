@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220311000000)
+mod:SetHotfixNoticeRev(20220312000000)
 mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 363795 or ability.id = 363676) and type = "cast"
  or ability.id = 361200 or ability.id = 363130
  or ability.id = 365257 and type = "begincast"
+ or ability.id = 368738 and type = "applydebuff"
 --]]
 --Boss
 local warnSynthesize							= mod:NewCountAnnounce(363130, 3)
@@ -46,7 +47,7 @@ local warnFormSentry							= mod:NewSpellAnnounce(365257, 2)
 local specWarnHarmonicAlignment					= mod:NewSpecialWarningYou(368738, nil, nil, nil, 1, 12, 4)
 local specWarnMelodicAlignment					= mod:NewSpecialWarningYou(368740, nil, nil, nil, 1, 12, 4)
 
-local specWarnCosmicShift						= mod:NewSpecialWarningSpell(363088, nil, nil, nil, 2, 2)--30056 for knockback
+local specWarnCosmicShift						= mod:NewSpecialWarningCount(363088, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.spell:format(363088), nil, 2, 12)
 local specWarnUnstableMote						= mod:NewSpecialWarningYou(362622, nil, nil, nil, 1, 2)
 local specWarnProtoformCascade					= mod:NewSpecialWarningDodge(364652, nil, 260885, nil, 1, 2)
 local specWarnResonance							= mod:NewSpecialWarningDefensive(368027, false, nil, nil, 1, 2)
@@ -63,23 +64,26 @@ local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795, 37859)--S
 
 --Boss
 --mod:AddTimerLine(BOSS)
+----Mythic
+local timerAlignmentShiftCD						= mod:NewCDTimer(20.6, 362659, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+----Other
 local timerUnstableMoteCD						= mod:NewCDCountTimer(20.6, 362622, nil, nil, nil, 3)
 local timerUnstableMote							= mod:NewBuffFadesTimer(5.9, 362622, nil, nil, nil, 5)--1.9+4
 local timerProtoformRadiance					= mod:NewBuffActiveTimer(28.8, 363537, nil, nil, nil, 2)
 local timerProtoformCascadeCD					= mod:NewCDCountTimer(10.9, 364652, 260885, nil, nil, 3)
 local timerResonanceCD							= mod:NewCDCountTimer(41.2, 368027, DBM_COMMON_L.TANKCOMBOC, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCosmicShiftCD						= mod:NewCDCountTimer(20.3, 363088, nil, nil, nil, 3)--30056 for knockback
+local timerCosmicShiftCD						= mod:NewCDCountTimer(20.3, 363088, nil, nil, nil, 3)
 local timerDeconstructingEnergyCD				= mod:NewCDCountTimer(37.2, 363795, 119342, nil, nil, 3)--Shorttext "Bombs"
 local timerSynthesizeCD							= mod:NewCDCountTimer(101, 363130, nil, nil, nil, 6)
 local timerSynthesize							= mod:NewBuffActiveTimer(20, 363130, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerRecharge								= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6)
+local timerRealignment							= mod:NewBuffActiveTimer(20, 361200, nil, nil, nil, 6)
 local berserkTimer								= mod:NewBerserkTimer(480)
 --Adds
 
 mod:AddSetIconOption("SetIconOnDeconstructingEnergy", 363795, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnEphemeralBarrier", 364312, true)
 mod:GroupSpells(368027, 368025, 368024)--Group responance debuffs together
-mod:GroupSpells(363088, 368738, 368740)--Group mythic debuffs together with cosmic shift (https://ptr.wowhead.com/spell=362659/alignment-shift)
+mod:GroupSpells(362659, 368738, 368740)--Group mythic debuffs together with Allignment Shift (https://ptr.wowhead.com/spell=362659/alignment-shift)
 
 mod.vb.energyIcon = 1
 mod.vb.moteCount = 0
@@ -89,6 +93,8 @@ mod.vb.cosmicCount = 0
 mod.vb.deconstructCount = 0
 mod.vb.resonanceCount = 0
 mod.vb.timerMode = 1
+local grip, push = DBM:GetSpellInfo(56689), DBM:GetSpellInfo(359132)
+local playerGrip = false
 local difficultyName = "None"
 local allTimers = {
 	["easy"] = {--Normal and LFR combined (for now)
@@ -166,6 +172,7 @@ local allTimers = {
 		},
 	},
 }
+--local alignmentTimers = {0, 36.1, 42.5, 34.9, 43.6, 62.2, 34.8, 43.7, 62.1, 34.9, 43.6, 62.2}
 
 function mod:OnCombatStart(delay)
 	self.vb.energyIcon = 1
@@ -176,6 +183,7 @@ function mod:OnCombatStart(delay)
 	self.vb.deconstructCount = 0
 	self.vb.resonanceCount = 0
 	self.vb.timerMode = 1
+	playerGrip = false
 	timerProtoformCascadeCD:Start(5.1-delay, 1)--5-6
 	timerUnstableMoteCD:Start(12-delay, 1)
 	timerDeconstructingEnergyCD:Start(20.5-delay, 1)--20.5-26 on normal, 20-21 heroic/mythic
@@ -194,7 +202,7 @@ function mod:OnCombatStart(delay)
 		timerCosmicShiftCD:Start(29-delay, 1)
 		timerSynthesizeCD:Start(45.4-delay, 1)
 	end
-	berserkTimer:Start(480-delay)--On heroic at least
+	berserkTimer:Start(self:IsMythic() and 600 or 480-delay)
 	if self.Options.NPAuraOnEphemeralBarrier then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -228,6 +236,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 363130 then
 		if self.vb.timerMode == 1 then
 			self.vb.timerMode = 2
+			if self:IsMythic() then--Only happens here first time
+				timerAlignmentShiftCD:Start(5.4)
+			end
 		end
 		self.vb.synthesizeCount = self.vb.synthesizeCount + 1
 		warnSynthesize:Show(self.vb.synthesizeCount)
@@ -249,11 +260,19 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 363088 then
 		self.vb.cosmicCount = self.vb.cosmicCount + 1
-		specWarnCosmicShift:Show()
-		specWarnCosmicShift:Play("carefly")
+		if playerGrip then
+			specWarnCosmicShift:Show(grip)
+			specWarnCosmicShift:Play("pullin")
+		else
+			specWarnCosmicShift:Show(push)
+			specWarnCosmicShift:Play("carefly")
+		end
 		local timer = allTimers[difficultyName][self.vb.timerMode][spellId][self.vb.cosmicCount+1]
 		if timer then
 			timerCosmicShiftCD:Start(timer, self.vb.cosmicCount+1)
+		end
+		if self:IsMythic() then
+			timerAlignmentShiftCD:Start(7)
 		end
 	elseif spellId == 365257 and self:AntiSpam(5, 1) then
 		warnFormSentry:Show()
@@ -333,14 +352,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			warnKineticResonance:Show(args.destName, args.amount or 1)
 		end
-	elseif spellId == 361200 then
-		timerRecharge:Start(30)
+	elseif spellId == 361200 then--Realignment
+		timerRealignment:Start(30)
+		if self:IsMythic() then--Only happens here first time
+			timerAlignmentShiftCD:Start(31.5)
+		end
 	elseif spellId == 368738 and args:IsPlayer() then
 		specWarnHarmonicAlignment:Show()
 		specWarnHarmonicAlignment:Play("harmonic")
+		playerGrip = false
 	elseif spellId == 368740 and args:IsPlayer() then
 		specWarnMelodicAlignment:Show()
 		specWarnMelodicAlignment:Play("melodic")
+		playerGrip = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -362,13 +386,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 363130 then
 		timerSynthesize:Stop()
-	elseif spellId == 361200 then--Recharge
+	elseif spellId == 361200 then--Realignment
 		self.vb.moteCount = 0
 		self.vb.cascadeCount = 0
 		self.vb.cosmicCount = 0
 		self.vb.deconstructCount = 0
 		self.vb.resonanceCount = 0
-		timerRecharge:Stop()
+		timerRealignment:Stop()
 		--Restart boss timers
 		timerProtoformCascadeCD:Start(6.4, 1)
 		timerUnstableMoteCD:Start(12.4, 1)
