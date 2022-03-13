@@ -156,9 +156,9 @@ mod.vb.defileCount = 0
 mod.vb.willTotal = 0
 mod.vb.chainsIcon = 4
 
-local difficultyName = "None"
+local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or "easy"
 local allTimers = {
-	["other"] = {--Heroic, Normal, and LFR (probably not all together)
+	["easy"] = {--Normal, and LFR (probably not all together)
 		[1] = {
 			--Torment (lasts entire fight)
 			[365436] = {21.9, 51, 69},
@@ -316,7 +316,7 @@ function mod:OnCombatStart(delay)
 		timerChainsofOppressionCD:Start(40-delay, 1)
 		timerRelentingDominationCD:Start(55-delay, 1)
 	else
-		difficultyName = "other"
+		difficultyName = "easy"
 		timerRuneofDamnationCD:Start(11-delay, 1)
 		timerTormentCD:Start(21.9-delay, 1)
 		timerMartyrdomCD:Start(40-delay, 1)
@@ -351,7 +351,7 @@ function mod:OnTimerRecovery()
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
-		difficultyName = "other"
+		difficultyName = "easy"
 	end
 end
 

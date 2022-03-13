@@ -99,7 +99,7 @@ mod.vb.tearIcon = 1
 mod.vb.sparkCount = 0
 mod.vb.ringCount = 0
 mod.vb.glyphCount = 0
-local difficultyName = "None"
+local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or mod:IsNormal() and "normmal" or "lfr"
 --This table may seem excessive, especially in phasess where they are all same (why not just go if phase 2 = then timer == 37)
 --The reason being they aren't ALWAYS the same, case and point glyph in stage 1, rings in stage 4 heroic
 --Want to be able to update timers faster on fly if fight continues to get hotfixes, this gives most rapidly changable knobs

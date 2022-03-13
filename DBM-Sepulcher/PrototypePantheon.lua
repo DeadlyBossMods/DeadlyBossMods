@@ -130,7 +130,7 @@ mod.vb.hunterIcon = 1
 mod.vb.ritualistIconMethod = 1
 mod.vb.ritualistIcon = 8
 
-local difficultyName = "None"
+local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or mod:IsNormal() and "normmal" or "lfr"
 local allTimers = {
 	["lfr"] = {--LFR data as of 1-7-22
 		[1] = {
