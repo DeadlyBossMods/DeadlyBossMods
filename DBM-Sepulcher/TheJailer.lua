@@ -361,18 +361,22 @@ function mod:SPELL_CAST_START(args)
 		self.vb.relentingCount = self.vb.relentingCount + 1
 		specWarnRelentingDomination:Show(DBM_COMMON_L.BREAK_LOS)
 		specWarnRelentingDomination:Play("findshelter")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.relentingCount+1] or 60
-		if timer then
-			timerRelentingDominationCD:Start(timer, self.vb.relentingCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.relentingCount+1] or 60
+			if timer then
+				timerRelentingDominationCD:Start(timer, self.vb.relentingCount+1)
+			end
 		end
 	elseif spellId == 366022 then
 		warnTyranny:Show()
 	elseif spellId == 360373 then
 		self.vb.unholyCount = self.vb.unholyCount + 1
 		warnUnholyAttunement:Show(self.vb.unholyCount)
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.unholyCount+1] or 45
-		if timer then
-			timerUnholyAttunementCD:Start(timer, self.vb.unholyCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.unholyCount+1] or 45
+			if timer then
+				timerUnholyAttunementCD:Start(timer, self.vb.unholyCount+1)
+			end
 		end
 	elseif spellId == 359856 then
 		self.vb.shatteringCount = self.vb.shatteringCount + 1
@@ -380,9 +384,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnShatteringBlast:Show(L.Pylon)
 			specWarnShatteringBlast:Play("findshelter")--Kind of a crappy voice for it but don't have a valid one that sounds better
 		end
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.shatteringCount+1]
-		if timer then
-			timerShatteringBlastCD:Start(timer, self.vb.shatteringCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.shatteringCount+1]
+			if timer then
+				timerShatteringBlastCD:Start(timer, self.vb.shatteringCount+1)
+			end
 		end
 --	elseif args:IsSpellID(364942, 360562, 364488) then--All deciminator casts with a cast time
 		--Use if UNIT event target scanning fails
@@ -390,22 +396,28 @@ function mod:SPELL_CAST_START(args)
 		self.vb.desolationCount = self.vb.desolationCount + 1
 		specWarnDesolation:Show(self.vb.desolationCount)
 		specWarnDesolation:Play("helpsoak")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.desolationCount+1] or 60
-		if timer then
-			timerDesolationCD:Start(timer, self.vb.desolationCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.desolationCount+1] or 60
+			if timer then
+				timerDesolationCD:Start(timer, self.vb.desolationCount+1)
+			end
 		end
 	elseif spellId == 365212 then
 		self.vb.chainsCount = self.vb.chainsCount + 1
 		self.vb.chainsIcon = 4
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1] or 41.9
-		if timer then
-			timerChainsofAnguishCD:Start(timer, self.vb.chainsCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1] or 41.9
+			if timer then
+				timerChainsofAnguishCD:Start(timer, self.vb.chainsCount+1)
+			end
 		end
 	elseif spellId == 365169 then
 		self.vb.defileCount = self.vb.defileCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1] or 40.9--40.9 iffy minimum, need more sequenced data
-		if timer then
-			timerDefileCD:Start(timer, self.vb.defileCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1] or 40.9--40.9 iffy minimum, need more sequenced data
+			if timer then
+				timerDefileCD:Start(timer, self.vb.defileCount+1)
+			end
 		end
 	elseif spellId == 366374 then
 		self.vb.worldCount = self.vb.worldCount + 1
@@ -509,9 +521,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 359809 then
 		self.vb.chainsCount = self.vb.chainsCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1]
-		if timer then
-			timerChainsofOppressionCD:Start(timer, self.vb.chainsCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1]
+			if timer then
+				timerChainsofOppressionCD:Start(timer, self.vb.chainsCount+1)
+			end
 		end
 	elseif spellId == 367051 then
 		self.vb.worldCount = self.vb.worldCount + 1
@@ -520,9 +534,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWorldShattererCD:Start()
 	elseif spellId == 363893 then
 		self.vb.tankCount = self.vb.tankCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1] or 40
-		if timer then
-			timerMartyrdomCD:Start(timer, self.vb.tankCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1] or 40
+			if timer then
+				timerMartyrdomCD:Start(timer, self.vb.tankCount+1)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnMartyrdom:Show()
@@ -540,9 +556,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 365436 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		if self:AntiSpam(5, 1) then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
-			if timer then
-				timerTormentCD:Start(timer, self.vb.tormentCount+1)
+			if self.vb.phase then
+				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
+				if timer then
+					timerTormentCD:Start(timer, self.vb.tormentCount+1)
+				end
 			end
 		end
 	elseif spellId == 360279 then
@@ -550,27 +568,33 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1]
-		if timer then
-			timerRuneofDamnationCD:Start(timer, self.vb.runeCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1]
+			if timer then
+				timerRuneofDamnationCD:Start(timer, self.vb.runeCount+1)
+			end
 		end
 	elseif spellId == 366284 then
 		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1] or 60
-		if timer then
-			timerRuneofCompulsionCD:Start(timer, self.vb.runeCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1] or 60
+			if timer then
+				timerRuneofCompulsionCD:Start(timer, self.vb.runeCount+1)
+			end
 		end
 	elseif spellId == 365147 then
 		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1]
-		if timer then
-			timerRuneofDominationCD:Start(timer, self.vb.runeCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1]
+			if timer then
+				timerRuneofDominationCD:Start(timer, self.vb.runeCount+1)
+			end
 		end
 	end
 end
@@ -591,9 +615,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 362401 then
 		if self:AntiSpam(5, 1) then--In P3, torment cast stopos being in combat log
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
-			if timer then
-				timerTormentCD:Start(timer, self.vb.tormentCount+1)
+			if self.vb.phase then
+				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
+				if timer then
+					timerTormentCD:Start(timer, self.vb.tormentCount+1)
+				end
 			end
 		end
 		if args:IsPlayer() then
@@ -790,9 +816,11 @@ do
 	function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 		if spellId == 360562 then--spellId == 364942 or spellId == 364488
 			self.vb.tankCount = self.vb.tankCount + 1--This event may be before CLEU event so just make sure count updated before target scan
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
-			if timer then
-				timerDecimatorCD:Start(timer, self.vb.tankCount+1)
+			if self.vb.phase then
+				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
+				if timer then
+					timerDecimatorCD:Start(timer, self.vb.tankCount+1)
+				end
 			end
 			self:BossUnitTargetScanner(uId, "DecimatorTarget", 3)
 		elseif spellId == 365169 then

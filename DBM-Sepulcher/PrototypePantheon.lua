@@ -466,15 +466,19 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ritualistIcon = self.vb.ritualistIconMethod == 2 and 4 or 8
 		specWarnNecroticRitual:Show(self.vb.ritualCount)
 		specWarnNecroticRitual:Play("killmob")
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.ritualCount+1]
-		if timer then
-			timerNecroticRitualCD:Start(timer, self.vb.ritualCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.ritualCount+1]
+			if timer then
+				timerNecroticRitualCD:Start(timer, self.vb.ritualCount+1)
+			end
 		end
 	elseif spellId == 360636 then
 		self.vb.deathtouchCount = self.vb.deathtouchCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.deathtouchCount+1]
-		if timer then
-			timerRunecarversDeathtouchCD:Start(timer, self.vb.deathtouchCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.deathtouchCount+1]
+			if timer then
+				timerRunecarversDeathtouchCD:Start(timer, self.vb.deathtouchCount+1)
+			end
 		end
 	elseif spellId == 365272 then
 		self.vb.humblingCount = self.vb.humblingCount + 1
@@ -482,9 +486,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnHumblingStrikes:Show()
 			specWarnHumblingStrikes:Play("defensive")
 		end
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.humblingCount+1]
-		if timer then
-			timerHumblingStrikesCD:Start(timer, self.vb.humblingCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.humblingCount+1]
+			if timer then
+				timerHumblingStrikesCD:Start(timer, self.vb.humblingCount+1)
+			end
 		end
 	elseif spellId == 361066 then
 		DBM:AddMsg("Ascensions call added back to combat log, notify DBM authors")
@@ -499,16 +505,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stampedeCount = self.vb.stampedeCount + 1
 		specWarnWildStampede:Show(self.vb.stampedeCount)
 		specWarnWildStampede:Play("watchstep")
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.stampedeCount+1]
-		if timer then
-			timerWildStampedeCD:Start(timer, self.vb.stampedeCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.stampedeCount+1]
+			if timer then
+				timerWildStampedeCD:Start(timer, self.vb.stampedeCount+1)
+			end
 		end
 	elseif spellId == 361568 then
 		self.vb.seedCount = self.vb.seedCount + 1
 		self.vb.seedIcon = 1
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.seedCount+1]
-		if timer then
-			timerWitheringSeedCD:Start(timer, self.vb.seedCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.seedCount+1]
+			if timer then
+				timerWitheringSeedCD:Start(timer, self.vb.seedCount+1)
+			end
 		end
 	elseif spellId == 365126 then
 		self.vb.painCount = self.vb.painCount + 1
@@ -516,9 +526,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnWrackingPain:Show(self.vb.painCount)
 			specWarnWrackingPain:Play("shockwave")
 		end
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.painCount+1]
-		if timer then
-			timerWrackingPainCD:Start(timer, self.vb.painCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.painCount+1]
+			if timer then
+				timerWrackingPainCD:Start(timer, self.vb.painCount+1)
+			end
 		end
 	elseif spellId == 366062 then
 		warnCompleteRecon:Show()
@@ -648,17 +660,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 361745 and self:AntiSpam(5, 2) then
 		self.vb.nightCount = self.vb.nightCount + 1
 		self.vb.hunterIcon = 1
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
-		if timer then
-			timerNightHunterCD:Start(timer, self.vb.nightCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
+			if timer then
+				timerNightHunterCD:Start(timer, self.vb.nightCount+1)
+			end
 		end
 	elseif spellId == 361278 then
 		self.vb.volleyCount = self.vb.volleyCount + 1
 		specWarnPinningVolley:Show(self.vb.volleyCount)
 		specWarnPinningVolley:Play("watchstep")
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.volleyCount+1]
-		if timer then
-			timerPinningVolleyCD:Start(timer, self.vb.volleyCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.volleyCount+1]
+			if timer then
+				timerPinningVolleyCD:Start(timer, self.vb.volleyCount+1)
+			end
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
@@ -735,9 +751,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.animaCount = self.vb.animaCount + 1
 		specWarnAnimastorm:Show(DBM_COMMON_L.SHELTER)
 		specWarnAnimastorm:Play("findshelter")
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.animaCount+1]
-		if timer then
-			timerAnimastormCD:Start(timer, self.vb.animaCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.animaCount+1]
+			if timer then
+				timerAnimastormCD:Start(timer, self.vb.animaCount+1)
+			end
 		end
 	elseif spellId == 361745 then
 		local icon = self.vb.hunterIcon
@@ -848,17 +866,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 361066 then--Ascension's Call
 		self.vb.callCount = self.vb.callCount + 1
 		warnAscensionsCall:Show(self.vb.callCount)
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
-		if timer then
-			timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
+			if timer then
+				timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
+			end
 		end
 	elseif spellId == 361791 and self:AntiSpam(10, 3) then--Script Activating to cast Hand of Destruction (2 sec faster than SUCCESS 361789)
 		self.vb.handCount = self.vb.handCount + 1
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
-		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.handCount+1]
-		if timer then
-			timerHandofDestructionCD:Start(timer, self.vb.handCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.handCount+1]
+			if timer then
+				timerHandofDestructionCD:Start(timer, self.vb.handCount+1)
+			end
 		end
 	end
 end

@@ -174,9 +174,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.missilesCount = self.vb.missilesCount + 1
 		specWarnEarthbreakerMissiles:Show(self.vb.missilesCount)
 		specWarnEarthbreakerMissiles:Play("scatter")
-		local timer = self.vb.stageTotality == 5 and p3MissileTimers[self.vb.missilesCount+1] or self.vb.phase == 1 and 26.1 or movementTimers[361676][self.vb.stageTotality][self.vb.missilesCount+1]
-		if timer then
-			timerEarthbreakerMissilesCD:Start(timer, self.vb.missilesCount+1)
+		if self.vb.stageTotality then
+			local timer = self.vb.stageTotality == 5 and p3MissileTimers[self.vb.missilesCount+1] or self.vb.phase == 1 and 26.1 or movementTimers[361676][self.vb.stageTotality][self.vb.missilesCount+1]
+			if timer then
+				timerEarthbreakerMissilesCD:Start(timer, self.vb.missilesCount+1)
+			end
 		end
 	elseif spellId == 360977 then
 		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss1 check if boss is always boss1, right now unsure
@@ -249,9 +251,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 364979 then--Casts slightly faster than 362056
 		specWarnShatter:Show()
 		specWarnShatter:Play("watchstep")
-		local timer = movementTimers[spellId][self.vb.stageTotality][self.vb.shatterCount+1]
-		if timer then
-			timerShatterCD:Start(timer, self.vb.shatterCount+1)
+		if self.vb.stageTotality then
+			local timer = movementTimers[spellId][self.vb.stageTotality][self.vb.shatterCount+1]
+			if timer then
+				timerShatterCD:Start(timer, self.vb.shatterCount+1)
+			end
 		end
 	elseif spellId == 360115 then
 		self.vb.reclaimCount = self.vb.reclaimCount + 1
@@ -284,11 +288,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.crushIcon = 1
 			self.vb.crushingCast = self.vb.crushingCast + 1
 			warnCrushingPrism:Show(self.vb.crushingCast)
-			--use tabled timers during movements, regular CD during stanary subject to ICD live updates
-			local checkedId = self:IsMythic() and 3652970 or 365297
-			local timer = self.vb.phase == 1 and 26 or movementTimers[checkedId][self.vb.stageTotality][self.vb.crushingCast+1]
-			if timer then
-				timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
+			if self.vb.stageTotality then
+				--use tabled timers during movements, regular CD during stanary subject to ICD live updates
+				local checkedId = self:IsMythic() and 3652970 or 365297
+				local timer = self.vb.phase == 1 and 26 or movementTimers[checkedId][self.vb.stageTotality][self.vb.crushingCast+1]
+				if timer then
+					timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
+				end
 			end
 		end
 		if args:IsPlayer() then
