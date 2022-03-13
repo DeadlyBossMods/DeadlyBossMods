@@ -5,10 +5,10 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--, 7, 8
-mod:SetHotfixNoticeRev(20220312000000)
-mod:SetMinSyncRevision(20220312000000)
+mod:SetHotfixNoticeRev(20220313000000)
+mod:SetMinSyncRevision(20220313000000)
 --mod.respawnTime = 29
-mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
+--mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
 
 mod:RegisterCombat("combat")
 
@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, is tyranny warning appropriate? maybe track debuff for mythic?
 --TODO, chains may have a pre target spellId, look for it
 --TODO, honestly what do for tank combo? most of it is instant casts, misery timing to root is pure guess right now
---TODO, verify phase changes
 --TODO, verify add marking
 --TODO, https://ptr.wowhead.com/spell=360099/calibrations-of-oblivion have a pre warning/cast? If so, add timer/warn
 --TODO, what type of warning for Unholy Attunement
@@ -202,41 +201,41 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Torment (lasts entire fight)
-			[365436] = {11.0, 52.0, 45.0, 47.0},
+			[365436] = {11, 52, 45, 47},
 			--Martyrdom
-			[363893] = {31.0, 40.0, 52.0, 39.0},
+			[363893] = {31, 40, 52, 39},
 			--Relenting Domination
 			[362028] = {55, 56.9, 56},
 			--Chains of Oppression
-			[359809] = {40.0, 48.0, 49.0},
+			[359809] = {40, 48, 49},
 			--Rune of Damnation
-			[360279] = {22.0, 25.0, 29.0, 21.0, 30.5, 19.5},
+			[360279] = {22, 25, 29, 21, 30.5, 19.5},
 		},
 		[2] = {
 			--Torment (lasts entire fight)
 			[365436] = {22, 16, 35.4, 61.5},--Double check 65
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 41.0, 80.0},
+			[360562] = {26, 41, 80},
 			--Unholy Attunement
-			[360373] = {19, 45.0, 45.0, 46.5},
+			[360373] = {19, 45, 45, 46.5},
 			--Shattering Blast
-			[359856] = {33, 16.0, 30.0, 15.0, 29.0, 17.0},
+			[359856] = {33, 16, 30, 15, 29, 17},
 			--Rune of Compulsion
-			[366284] = {40.9, 46.0, 45.0},
+			[366284] = {40.9, 46, 45},
 		},
 		[3] = {
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {51, 74.9},
 			--Decimator (lasts rest of fight)
-			[360562] = {},
+			[360562] = {26, 37.9, 47, 32.9, 40},
 			--Desolation
-			[365033] = {},
+			[365033] = {42, 59.9, 64},
 			--Rune of Domination
-			[365147] = {},
+			[365147] = {71, 78.9},
 			--Chains of Anguish
-			[365212] = {},
+			[365212] = {37, 55, 43, 42.9},
 			--Defile
-			[365169] = {},
+			[365169] = {33, 44.9, 44.9, 52},
 		},
 	},
 	["mythic"] = {--Most definitely different, heroic timers placeholdered for now
@@ -244,45 +243,45 @@ local allTimers = {
 			--World Crusher
 			[366374] = {},
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {11, 52, 45, 47},
 			--Martyrdom
-			[363893] = {},
+			[363893] = {31, 40, 52, 39},
 			--Relenting Domination
-			[362028] = {},
+			[362028] = {55, 56.9, 56},
 			--Chains of Oppression
-			[359809] = {},
+			[359809] = {40, 48, 49},
 			--Rune of Damnation
-			[360279] = {},
+			[360279] = {22, 25, 29, 21, 30.5, 19.5},
 		},
 		[2] = {
 			--World Cracker
 			[366678] = {},
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {22, 16, 35.4, 61.5},--Double check 65
 			--Decimator (lasts rest of fight)
-			[360562] = {},
+			[360562] = {26, 41, 80},
 			--Unholy Attunement
-			[360373] = {},
+			[360373] = {19, 45, 45, 46.5},
 			--Shattering Blast
-			[359856] = {},
+			[359856] = {33, 16, 30, 15, 29, 17},
 			--Rune of Compulsion
-			[366284] = {},
+			[366284] = {40.9, 46, 45},
 		},
 		[3] = {
 			--World Shatterer
 			[367051] = {},
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {51, 74.9},
 			--Decimator (lasts rest of fight)
-			[360562] = {},
+			[360562] = {26, 37.9, 47, 32.9, 40},
 			--Desolation
-			[365033] = {},
+			[365033] = {42, 59.9, 64},
 			--Rune of Domination
-			[365147] = {},
+			[365147] = {71, 78.9},
 			--Chains of Anguish
-			[365212] = {},
+			[365212] = {37, 55, 43, 42.9},
 			--Defile
-			[365169] = {},
+			[365169] = {33, 44.9, 44.9, 52},
 		},
 	},
 }
@@ -486,8 +485,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.defileCount = 0
 		if self:IsMythic() then
 			timerWorldShattererCD:Start(3)
+			--Heroic timers are placeholder right now
+			timerDecimatorCD:Start(26, 1)
+			timerDefileCD:Start(33, 1)
+			timerChainsofAnguishCD:Start(37, 1)
+			timerDesolationCD:Start(41.9, 1)
+			timerTormentCD:Start(51, 1)
+			timerRuneofDominationCD:Start(71, 1)
 		elseif self:IsHeroic() then
-			--No data yet
+			timerDecimatorCD:Start(26, 1)
+			timerDefileCD:Start(33, 1)
+			timerChainsofAnguishCD:Start(37, 1)
+			timerDesolationCD:Start(41.9, 1)
+			timerTormentCD:Start(51, 1)
+			timerRuneofDominationCD:Start(71, 1)
 		else
 			timerTormentCD:Start(26, 1)
 			timerDecimatorCD:Start(34.9, 1)
@@ -528,12 +539,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 365436 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
-		if timer then
-			timerTormentCD:Start(timer, self.vb.tormentCount+1)
+		if self:AntiSpam(5, 1) then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
+			if timer then
+				timerTormentCD:Start(timer, self.vb.tormentCount+1)
+			end
 		end
 	elseif spellId == 360279 then
-		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -542,7 +555,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerRuneofDamnationCD:Start(timer, self.vb.runeCount+1)
 		end
 	elseif spellId == 366284 then
-		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -551,7 +564,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerRuneofCompulsionCD:Start(timer, self.vb.runeCount+1)
 		end
 	elseif spellId == 365147 then
-		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -576,18 +589,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMisery:Show(args.destName)
 			specWarnMisery:Play("tauntboss")
 		end
-	elseif spellId == 362401 and args:IsPlayer() then
-		specWarnTorment:Show()
-		specWarnTorment:Play("scatter")
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(6)
+	elseif spellId == 362401 then
+		if self:AntiSpam(5, 1) then--In P3, torment cast stopos being in combat log
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
+			if timer then
+				timerTormentCD:Start(timer, self.vb.tormentCount+1)
+			end
 		end
-		if self.vb.phase >= 2 then
-			specWarnTormentingEcho:Schedule(6)
-			specWarnTormentingEcho:ScheduleVoice(6, "watchstep")
+		if args:IsPlayer() then
+			specWarnTorment:Show()
+			specWarnTorment:Play("scatter")
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(6)
+			end
+			if self.vb.phase >= 2 then
+				specWarnTormentingEcho:Schedule(6)
+				specWarnTormentingEcho:ScheduleVoice(6, "watchstep")
+			end
 		end
 	elseif spellId == 360281 then
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, 2) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -604,7 +625,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRuneofDamnation:CombinedShow(0.5, self.vb.runeCount, args.destName)
 		self.vb.runeIcon = self.vb.runeIcon + 1
 	elseif spellId == 366285 then
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, 2) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -621,7 +642,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRuneofCompulsion:CombinedShow(0.5, self.vb.runeCount, args.destName)
 		self.vb.runeIcon = self.vb.runeIcon + 1
 	elseif spellId == 365150 then
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, 2) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -726,7 +747,7 @@ end
 --]]
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 360425 or spellId == 365174) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if (spellId == 360425 or spellId == 365174) and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
