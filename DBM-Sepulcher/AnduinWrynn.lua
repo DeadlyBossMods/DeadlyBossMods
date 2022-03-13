@@ -143,7 +143,6 @@ local hopelessnessTargets = {}
 local totalDebuffs = 0
 local hopelessnessName, overconfidenceName = DBM:GetSpellInfo(361993), DBM:GetSpellInfo(361992)
 local castsPerGUID = {}
-local difficultyName = "None"
 local difficultyName = mod:IsMythic() and "mythic" or "other"
 local allTimers = {
 	["other"] = {--Heroic, Normal, and LFR
