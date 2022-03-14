@@ -81,7 +81,7 @@ local warnFearfulTrepidation					= mod:NewTargetNoFilterAnnounce(360146, 3, nil,
 local warnAuraofShadows							= mod:NewSpellAnnounce(363191, 4)
 local warnAuraofShadowsOver						= mod:NewEndAnnounce(363191, 1)
 local warnSlumberCloud							= mod:NewCountAnnounce(360229, 2)
-local warnAnguishingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer", 31907)--shorttext "Strike"
+local warnAnguishingStrike						= mod:NewStackAnnounce(360284, 2, nil, "Tank|Healer", 31907)--shorttext "Strike"
 
 local specWarnInfiltrationofDread				= mod:NewSpecialWarningCount(360717, nil, nil, nil, 2, 2)
 local specWarnFearfulTrepidation				= mod:NewSpecialWarningYou(360146, nil, 39176, nil, 2, 2)
@@ -90,8 +90,8 @@ local yellFearfulTrepidationFades				= mod:NewIconFadesYell(360146, 39176)
 local specWarnBurstingDread						= mod:NewSpecialWarningDispel(360148, "RemoveMagic", 39176, nil, 1, 2)--shorttext "Fear"
 local specWarnUnsettlingDreams					= mod:NewSpecialWarningDispel(360241, "RemoveMagic", nil, nil, 1, 2)
 local specWarnAnguishingStrike					= mod:NewSpecialWarningDefensive(360284, nil, 31907, nil, 1, 2)
-local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(350202, nil, 3, 31907, nil, 1, 6)
-local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(350202, nil, 31907, nil, 1, 2)
+local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(360284, nil, 3, 31907, nil, 1, 6)
+local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(360284, nil, 31907, nil, 1, 2)
 
 local timerInfiltrationofDreadCD				= mod:NewCDCountTimer(123, 360717, nil, nil, nil, 6)--120+3sec cast time
 local timerParanoia								= mod:NewBuffFadesTimer(25, 360418, nil, nil, nil, 5)
