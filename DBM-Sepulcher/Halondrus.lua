@@ -40,7 +40,7 @@ mod:RegisterEventsInCombat(
 --Stage One: The Reclaimer
 local warnReclamationForm						= mod:NewCastAnnounce(359235, 2)
 local warnSeismicTremors						= mod:NewCountAnnounce(367079, 2)
-local warnCrushingPrism							= mod:NewCountAnnounce(365297, 3, nil, "RemoveMagic")
+local warnCrushingPrism							= mod:NewTargetCountAnnounce(365297, 3, nil, "RemoveMagic", nil, nil, nil, nil, true)
 --Stage Two: The Shimmering Cliffs
 local warnRelocationForm						= mod:NewCastAnnounce(359236, 2)
 
@@ -287,7 +287,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 2) then
 			self.vb.crushIcon = 1
 			self.vb.crushingCast = self.vb.crushingCast + 1
-			warnCrushingPrism:Show(self.vb.crushingCast)
 			if self.vb.stageTotality then
 				--use tabled timers during movements, regular CD during stanary subject to ICD live updates
 				local checkedId = self:IsMythic() and 3652970 or 365297
@@ -304,6 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnCrushing2 and self.vb.crushIcon < 8 then
 			self:SetIcon(args.destName, self.vb.crushIcon)
 		end
+		warnCrushingPrism:CombinedShow(0.5, self.vb.crushingCast, args.destName)
 		self.vb.crushIcon = self.vb.crushIcon + 1
 	elseif spellId == 361309 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
 		specWarnLightshatterBeamTaunt:Show(args.destName)
@@ -342,7 +342,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSeismicTremorsCD:Start(4, 1)
 		timerEarthbreakerMissilesCD:Start(11, 1)
 		timerCrushingPrismCD:Start(17, 1)
---		timerReclaimCD:Start(62.8, self.vb.reclaimCount+1)--Guessed based on pattern
+		timerReclaimCD:Start(62, self.vb.reclaimCount+1)--My guess confirmed
 	end
 end
 
