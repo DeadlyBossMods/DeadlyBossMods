@@ -99,7 +99,7 @@ mod.vb.tearIcon = 1
 mod.vb.sparkCount = 0
 mod.vb.ringCount = 0
 mod.vb.glyphCount = 0
-local difficultyName = "None"
+local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or mod:IsNormal() and "normmal" or "lfr"
 --This table may seem excessive, especially in phasess where they are all same (why not just go if phase 2 = then timer == 37)
 --The reason being they aren't ALWAYS the same, case and point glyph in stage 1, rings in stage 4 heroic
 --Want to be able to update timers faster on fly if fight continues to get hotfixes, this gives most rapidly changable knobs
@@ -360,17 +360,21 @@ function mod:SPELL_CAST_START(args)
 --		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
 		self.vb.glyphCount = self.vb.glyphCount + 1
-		local timer = allTimers[difficultyName][self.vb.phase][spellId]
-		if timer then
-			timerGlyphofRelocationCD:Start(timer, self.vb.glyphCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId]
+			if timer then
+				timerGlyphofRelocationCD:Start(timer, self.vb.glyphCount+1)
+			end
 		end
 	elseif spellId == 362849 then
 		self.vb.sparkCount = self.vb.sparkCount + 1
 		specWarnHyperlightSpark:Show(self.vb.sparkCount)
 		specWarnHyperlightSpark:Play("aesoon")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId]
-		if timer then
-			timerHyperlightSparknovaCD:Start(timer, self.vb.sparkCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId]
+			if timer then
+				timerHyperlightSparknovaCD:Start(timer, self.vb.sparkCount+1)
+			end
 		end
 	elseif spellId == 364040 then
 		if self:AntiSpam(2, 2) then
@@ -387,9 +391,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if (spellId == 362885 or spellId == 366752) and self:AntiSpam(10, 3) then--362885 verified on heroic
 		specWarnStasisTrap:Show()
 		specWarnStasisTrap:Play("watchstep")
-		local timer = allTimers[difficultyName][self.vb.phase][362885]
-		if timer then
-			timerStasisTrapCD:Start(timer)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][362885]
+			if timer then
+				timerStasisTrapCD:Start(timer)
+			end
 		end
 	elseif spellId == 364040 then
 		if self.Options.NPAuraOnAscension then
@@ -419,9 +425,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ringCount = self.vb.ringCount + 1
 		specWarnForerunnerRings:Show(self.vb.ringCount)
 		specWarnForerunnerRings:Play("watchwave")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId]
-		if timer then
-			timerForerunnerRingsCD:Start(timer, self.vb.ringCount+1)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId]
+			if timer then
+				timerForerunnerRingsCD:Start(timer, self.vb.ringCount+1)
+			end
 		end
 	elseif spellId == 364030 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe

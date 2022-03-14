@@ -8,7 +8,7 @@ mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20210826000000)--2021-08-26
 mod:SetMinSyncRevision(20210826000000)
 mod.respawnTime = 29
-mod.NoSortAnnounce = true
+--mod.NoSortAnnounce = true
 
 mod:RegisterCombat("combat")
 
