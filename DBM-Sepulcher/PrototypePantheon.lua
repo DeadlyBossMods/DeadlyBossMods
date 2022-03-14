@@ -79,7 +79,7 @@ local specWarnPinningVolley						= mod:NewSpecialWarningDodgeCount(361278, nil, 
 local yellPinned								= mod:NewShortYell(362352)
 
 local timerHumblingStrikesCD					= mod:NewCDCountTimer(35.7, 365272, 31907, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--shortname "strike"
-local timerAscensionsCallCD						= mod:NewCDCountTimer(57.1, 365272, nil, nil, nil, 1)
+local timerAscensionsCallCD						= mod:NewCDCountTimer(57.1, 361066, nil, nil, nil, 1)
 local timerPinningVolleyCD						= mod:NewCDCountTimer(64.1, 361278, nil, nil, nil, 3)
 
 mod:GroupSpells(361278, 362352)--Pinning Volley and Pinned
