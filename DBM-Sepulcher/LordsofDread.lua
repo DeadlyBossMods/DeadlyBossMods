@@ -105,6 +105,7 @@ mod:GroupSpells(360717, 360418)--Group paranoia with parent mechanic Infiltratio
 --Mal'Ganis
 mod.vb.darknessCount = 0
 mod.vb.carrionCount = 0
+mod.vb.carrionDebuffs = 0
 mod.vb.shadowsCount = 0
 mod.vb.shadowsIcon = 8
 --Kin'tessa
@@ -137,6 +138,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shadowsCount = 0
 	self.vb.shadowsIcon = 8
 	self.vb.carrionCount = 0
+	self.vb.carrionDebuffs = 0
 
 	self.vb.trepidationIcon = 1
 	self.vb.infiltrationCount = 0
@@ -229,7 +231,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnLeechingClaws:Play("defensive")
 		end
 		timerLeechingClawsCD:Start()
-	elseif spellId == 360717 then
+	elseif spellId == 360717 and self:AntiSpam(3, 1) then
 		self.vb.infiltrationCount = self.vb.infiltrationCount + 1
 		specWarnInfiltrationofDread:Show(self.vb.infiltrationCount)
 		specWarnInfiltrationofDread:Play("specialsoon")
@@ -297,13 +299,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 360300 then
 		timerSwarmofDecay:Start()
 	elseif spellId == 360012 then
+		self.vb.carrionDebuffs = self.vb.carrionDebuffs + 1
 		if args:IsPlayer() then
 			specWarnCloudofCarrionDebuff:Show()
 			specWarnCloudofCarrionDebuff:Play("range5")
 			yellCloudofCarrion:Yell()
 			updateRangeFrame(self)
 		else
-			warnCloudofCarrion:CombinedShow(0.3, args.destName)--More than one on mythic
+			local aggregation = self.vb.carrionDebuffs < 3 and 0.3 or self.vb.carrionDebuffs < 6 and 1 or self.vb.carrionDebuffs < 12 and 2
+			warnCloudofCarrion:CombinedShow(aggregation, args.destName)
 		end
 	elseif spellId == 361934 or spellId == 362020 then
 		if self.Options.NPAuraOnIncompleteForm then
@@ -339,11 +343,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFearfulTrepidationFades:Countdown(spellId, nil, icon)
 			updateRangeFrame(self)
 		elseif self.Options.SpecWarn360012moveto and DBM:UnitDebuff("player", 360012) then--If have Carrion debuff, spec warn to runt o tepidate debuff to clear it
-			specWarnCloudofCarrionDebuffMove:CombinedShow(0.3, args.destName)
-			specWarnCloudofCarrionDebuffMove:ScheduleVoice(0.3, "gathershare")
-		else
-			warnFearfulTrepidation:Show(icon, args.destName)
+			specWarnCloudofCarrionDebuffMove:CombinedShow(0.5, args.destName)
+			specWarnCloudofCarrionDebuffMove:ScheduleVoice(0.5, "gathershare")
 		end
+		warnFearfulTrepidation:CombinedShow(0.5, args.destName)
 		self.vb.trepidationIcon = self.vb.trepidationIcon + 1
 	elseif spellId == 360148 then
 		if args:IsPlayer() then
@@ -429,6 +432,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Stop()
 	elseif spellId == 360012 then
+		self.vb.carrionDebuffs = self.vb.carrionDebuffs + 1
 		if args:IsPlayer() then
 			updateRangeFrame(self)
 		end
