@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--, 7, 8
-mod:SetHotfixNoticeRev(20220313000000)
-mod:SetMinSyncRevision(20220313000000)
+mod:SetHotfixNoticeRev(20220314000000)
+mod:SetMinSyncRevision(20220314000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 367851",--363179
-	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147 363332",
+	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147 363332 370071",
 --	"SPELL_SUMMON 363175",
-	"SPELL_AURA_APPLIED 362631 362401 360281 366285 365150 365153 362075 365219 365222 362192",--362024 360180
+	"SPELL_AURA_APPLIED 362401 360281 366285 365150 365153 362075 365219 365222 362192",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222",--360180
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
@@ -42,7 +42,7 @@ mod:RegisterEventsInCombat(
 --TODO, maybe short name chains in all phases to "chains"? might remove ability to tell them apart though. maybe use Anguish, Oppression instead
 --[[
 (ability.id = 362028 or ability.id = 363893 or ability.id = 360373 or ability.id = 359856 or ability.id = 364942 or ability.id = 360562 or ability.id = 364488 or ability.id = 365033 or ability.id = 365212 or ability.id = 365169 or ability.id = 366374 or ability.id = 366678 or ability.id = 367290 or ability.id = 367851) and type = "begincast"
- or (ability.id = 359809 or ability.id = 367051 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332) and type = "cast"
+ or (ability.id = 359809 or ability.id = 367051 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332 or ability.id = 370071) and type = "cast"
  or ability.id = 181089
 --]]
 --General
@@ -55,13 +55,12 @@ mod:AddRangeFrameOption("6")
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24087))
 local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
-local warnChainsofOppression					= mod:NewTargetNoFilterAnnounce(362631, 3)
 local warnMartyrdom								= mod:NewTargetCountAnnounce(363893, 4, nil, nil, nil, nil, nil, nil, true)
 local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnWorldCrusher						= mod:NewSpecialWarningCount(366374, nil, nil, nil, 2, 2, 4)
 local specWarnRelentingDomination				= mod:NewSpecialWarningMoveTo(362028, nil, nil, nil, 1, 2)
-local specWarnChainsofOppression				= mod:NewSpecialWarningYou(362631, nil, nil, nil, 1, 2)
+local specWarnChainsofOppression				= mod:NewSpecialWarningRun(362631, nil, nil, nil, 4, 2)
 local specWarnMartyrdom							= mod:NewSpecialWarningDefensive(363893, nil, nil, nil, 1, 2)
 local yellMartyrdom								= mod:NewYell(363893, nil, nil, nil, "YELL")--rooted target = stack target for misery very likely
 local yellMartyrdomFades						= mod:NewShortFadesYell(363893, nil, nil, nil, "YELL")
@@ -527,6 +526,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerChainsofOppressionCD:Start(timer, self.vb.chainsCount+1)
 			end
 		end
+		specWarnChainsofOppression:Show()
+		specWarnChainsofOppression:Play("justrun")
 	elseif spellId == 367051 then
 		self.vb.worldCount = self.vb.worldCount + 1
 		specWarnWorldShatterer:Show(self.vb.worldCount)
@@ -553,18 +554,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconOnMartyrdom then
 			self:SetIcon(args.destName, 4)
 		end
-	elseif spellId == 365436 then
+	elseif spellId == 365436 or spellId == 370071 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
-		if self:AntiSpam(5, 1) then
-			if self.vb.phase then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
-				if timer then
-					timerTormentCD:Start(timer, self.vb.tormentCount+1)
-				end
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][365436][self.vb.tormentCount+1]
+			if timer then
+				timerTormentCD:Start(timer, self.vb.tormentCount+1)
 			end
 		end
 	elseif spellId == 360279 then
-		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -575,7 +574,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 366284 then
-		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -586,7 +585,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 365147 then
-		if self:AntiSpam(5, 2) then--Success doesn't always fire first, so this check done in debuff and success handler
+		if self:AntiSpam(5, 1) then--Success doesn't always fire first, so this check done in debuff and success handler
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -601,27 +600,13 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 362631 then
-		warnChainsofOppression:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnChainsofOppression:Show()
-			specWarnChainsofOppression:Play("targetyou")
-		end
-	elseif spellId == 362192 then
+	if spellId == 362192 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
 			specWarnMisery:Show(args.destName)
 			specWarnMisery:Play("tauntboss")
 		end
 	elseif spellId == 362401 then
-		if self:AntiSpam(5, 1) then--In P3, torment cast stopos being in combat log
-			if self.vb.phase then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tormentCount+1]
-				if timer then
-					timerTormentCD:Start(timer, self.vb.tormentCount+1)
-				end
-			end
-		end
 		if args:IsPlayer() then
 			specWarnTorment:Show()
 			specWarnTorment:Play("scatter")
@@ -634,7 +619,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 360281 then
-		if self:AntiSpam(5, 2) then
+		if self:AntiSpam(5, 1) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -651,7 +636,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRuneofDamnation:CombinedShow(0.5, self.vb.runeCount, args.destName)
 		self.vb.runeIcon = self.vb.runeIcon + 1
 	elseif spellId == 366285 then
-		if self:AntiSpam(5, 2) then
+		if self:AntiSpam(5, 1) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -668,7 +653,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRuneofCompulsion:CombinedShow(0.5, self.vb.runeCount, args.destName)
 		self.vb.runeIcon = self.vb.runeIcon + 1
 	elseif spellId == 365150 then
-		if self:AntiSpam(5, 2) then
+		if self:AntiSpam(5, 1) then
 			self.vb.runeCount = self.vb.runeCount + 1
 			self.vb.runeIcon = 1
 		end
@@ -773,7 +758,7 @@ end
 --]]
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 360425 or spellId == 365174) and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if (spellId == 360425 or spellId == 365174) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

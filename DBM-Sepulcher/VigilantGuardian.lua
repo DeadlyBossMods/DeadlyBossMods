@@ -47,14 +47,12 @@ local warnDissonance							= mod:NewStackAnnounce(364447, 2, nil, "Tank|Healer")
 local warnBlast									= mod:NewSpellAnnounce(360176, 3, nil, false)--Spammy
 
 local specWarnPreFabricatedSentry				= mod:NewSpecialWarningSwitch(360658, "Tank", nil, nil, 1, 2)
-local specWarnDissonance						= mod:NewSpecialWarningStack(350202, nil, 3, nil, nil, 1, 6)
-local specWarnDissonanceTaunt					= mod:NewSpecialWarningTaunt(350202, nil, nil, nil, 1, 2)
---local specWarnBlast								= mod:NewSpecialWarningMoveAway(350202, nil, nil, nil, 1, 2)
---local yellBlast									= mod:NewYell(360176)
+local specWarnDissonance						= mod:NewSpecialWarningStack(364447, nil, 3, nil, nil, 1, 6)
+local specWarnDissonanceTaunt					= mod:NewSpecialWarningTaunt(364447, nil, nil, nil, 1, 2)
 
 local timerSentryCD								= mod:NewNextTimer(71.2, 360658, nil, nil, nil, 1, nil, DBM_COMMON_L.TANK_ICON)--Every odd Volatile
 local timerWaveofDisintegrationCD				= mod:NewCDTimer(12.2, 361001, nil, nil, nil, 3)--Time between first and second cast usually 14-15 then 12.2 repeating
-local timerDissonanceCD							= mod:NewCDTimer(12.2, 350202, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Second is 16-18 then rest are 12.2-14
+local timerDissonanceCD							= mod:NewCDTimer(12.2, 364447, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Second is 16-18 then rest are 12.2-14
 --Stage One: Systems Online!
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23875))
 local warnRefractedBlast						= mod:NewCountAnnounce(366693, 2)
