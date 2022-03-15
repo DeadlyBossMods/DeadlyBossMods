@@ -306,8 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCloudofCarrion:Yell()
 			updateRangeFrame(self)
 		else
-			local aggregation = self.vb.carrionDebuffs < 3 and 0.3 or self.vb.carrionDebuffs < 6 and 1 or self.vb.carrionDebuffs < 12 and 2
-			warnCloudofCarrion:CombinedShow(aggregation, args.destName)
+			warnCloudofCarrion:CombinedShow(0.5, args.destName)
 		end
 	elseif spellId == 361934 or spellId == 362020 then
 		if self.Options.NPAuraOnIncompleteForm then
@@ -342,6 +341,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFearfulTrepidation:Yell(icon, icon)
 			yellFearfulTrepidationFades:Countdown(spellId, nil, icon)
 			updateRangeFrame(self)
+			specWarnCloudofCarrionDebuffMove:Cancel()
+			specWarnCloudofCarrionDebuffMove:CancelVoice()
 		elseif self.Options.SpecWarn360012moveto and DBM:UnitDebuff("player", 360012) then--If have Carrion debuff, spec warn to runt o tepidate debuff to clear it
 			specWarnCloudofCarrionDebuffMove:CombinedShow(0.5, args.destName)
 			specWarnCloudofCarrionDebuffMove:ScheduleVoice(0.5, "gathershare")
