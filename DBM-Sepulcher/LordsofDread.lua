@@ -116,6 +116,7 @@ mod.vb.slumberCount = 0
 mod.vb.auraofShadowsOn = false
 local castsPerGUID = {}
 local playerDebuffed = false
+local carrionTime = 0
 
 --Things get a bit complicated with debuff priority
 local function updateRangeFrame(self)
@@ -189,6 +190,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 360006 then
+		carrionTime = GetTime()
 		self.vb.carrionCount = self.vb.carrionCount + 1
 		specWarnCloudofCarrion:Show()
 		specWarnCloudofCarrion:Play("scatter")
@@ -306,7 +308,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCloudofCarrion:Yell()
 			updateRangeFrame(self)
 		else
-			warnCloudofCarrion:CombinedShow(0.5, args.destName)
+			if GetTime() - carrionTime < 3 then
+				warnCloudofCarrion:CombinedShow(0.5, args.destName)
+			end
 		end
 	elseif spellId == 361934 or spellId == 362020 then
 		if self.Options.NPAuraOnIncompleteForm then
