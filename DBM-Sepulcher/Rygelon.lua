@@ -190,7 +190,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 362390 then
 		self.vb.cosmosCount = self.vb.cosmosCount + 1
-		self.vb.coreCount = self.vb.coreCount + self:IsMythic() and 3 or 1
+		self.vb.coreCount = self.vb.coreCount + (self:IsMythic() and 3 or 1)
 		warnManifestCosmos:Show(self.vb.cosmosCount)
 		if self.vb.cosmosCount == 1 then
 			timerManifestCosmosCD:Start(nil, self.vb.cosmosCount+1)--24.2
