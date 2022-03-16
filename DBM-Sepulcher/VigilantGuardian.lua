@@ -67,6 +67,7 @@ local timerVolatileMateriumCD					= mod:NewNextTimer(30.6, 365315, nil, nil, nil
 local timerRefractedBlastCD						= mod:NewCDCountTimer(15, 366693, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--15 but can be delayed by shit
 local timerDeresolutionCD						= mod:NewCDTimer(35.3, 359610, nil, nil, nil, 3)
 local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerExposedCoreCD						= mod:NewCDTimer(35.3, 360412, nil, nil, nil, 2)
 
 mod:AddInfoFrameOption(360403, true)
 --Stage Two: Roll Out, then Transform
@@ -121,7 +122,7 @@ function mod:OnCombatStart(delay)
 --		timerMatterDisolutionCD:Start()--Not used?
 	else--Heroic, Normal. LFR will probably be different too
 		timerVolatileMateriumCD:Start(5-delay)--5-6
-		timerRefractedBlastCD:Start(15.5-delay, 1)
+		timerRefractedBlastCD:Start(15.3-delay, 1)
 		timerDeresolutionCD:Start(36.9-delay)
 		timerSentryCD:Start(35-delay)
 	end
@@ -153,11 +154,16 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 360412 then
 		warnExposedCore:Show()
 		timerExposedCore:Start()
+--		timerExposedCoreCD:Start(self:IsMythic() and 105 or 109)--Approx, since it is dps based after all
 		self:Schedule(6, delayedCoreCheck)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shieldName)
 			DBM.InfoFrame:Show(10, "playerbuff", shieldName)
 		end
+		timerRefractedBlastCD:Stop()
+		timerDeresolutionCD:Stop()
+		timerRefractedBlastCD:Start(self:IsMythic() and 20 or 22.4, self.vb.refractedCount+1)
+		timerDeresolutionCD:Start(self:IsMythic() and 24.7 or 36)
 	elseif spellId == 361001 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
 			castsPerGUID[args.sourceGUID] = {}

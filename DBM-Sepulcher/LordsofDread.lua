@@ -308,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCloudofCarrion:Yell()
 			updateRangeFrame(self)
 		else
-			if GetTime() - carrionTime < 3 then
+			if (GetTime() - carrionTime) < 4 then
 				warnCloudofCarrion:CombinedShow(0.5, args.destName)
 			end
 		end
