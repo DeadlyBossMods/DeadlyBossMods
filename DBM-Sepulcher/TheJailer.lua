@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--, 7, 8
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--, 7, 8
 mod:SetHotfixNoticeRev(20220314000000)
 mod:SetMinSyncRevision(20220314000000)
 --mod.respawnTime = 29
@@ -77,8 +77,8 @@ local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TA
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnMartyrdom", 363893, true, false, {4})
-mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {5})
+mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4})
 
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
@@ -103,8 +103,8 @@ local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, n
 local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, nil, nil, nil, 3)
 local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnDecimator", 364942, true, false, {7})--7 to ensure no conflict in P3 either
+mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnDecimator2", 364942, false, false, {7}, true)--7 to ensure no conflict in P3 either
 
 --Stage Three: Eternity's End
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
@@ -132,8 +132,8 @@ local timerRuneofDominationCD					= mod:NewCDCountTimer(28.8, 365150, nil, nil, 
 local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, nil, 5)
 local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
-mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {4, 5, 6})
+mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {5, 6, 7}, true)
+mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
@@ -153,7 +153,7 @@ mod.vb.shatteringCount = 0
 mod.vb.desolationCount = 0
 mod.vb.defileCount = 0
 mod.vb.willTotal = 0
-mod.vb.chainsIcon = 4
+mod.vb.chainsIcon = 1
 
 local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or "easy"
 local allTimers = {
@@ -551,8 +551,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnMartyrdom:Show(self.vb.tankCount, args.destName)
 		end
-		if self.Options.SetIconOnMartyrdom then
-			self:SetIcon(args.destName, 4)
+		if self.Options.SetIconOnMartyrdom2 then
+			self:SetIcon(args.destName, 5)
 		end
 	elseif spellId == 365436 or spellId == 370071 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
@@ -655,7 +655,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 365150 then
 		if self:AntiSpam(5, 1) then
 			self.vb.runeCount = self.vb.runeCount + 1
-			self.vb.runeIcon = 1
+			self.vb.runeIcon = 5
 		end
 		local icon = self.vb.runeIcon
 		if self.Options.SetIconOnDomination then
@@ -712,7 +712,7 @@ function mod:SPELL_AURA_REMOVED(args)
 --		if args:IsPlayer() then
 --			yellMartyrdomFades:Cancel()--Don't cancel yet, freedom might dispel it, but misery is still coming?
 --		end
-		if self.Options.SetIconOnMartyrdom then
+		if self.Options.SetIconOnMartyrdom2 then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 362401 and args:IsPlayer() then
@@ -768,7 +768,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 do
 	function mod:DecimatorTarget(targetname, uId)
 		if not targetname then return end
-		if self.Options.SetIconOnDecimator then
+		if self.Options.SetIconOnDecimator2 then
 			self:SetIcon(targetname, 7, 4)--So icon clears 1 second after
 		end
 		if targetname == UnitName("player") then
@@ -783,7 +783,7 @@ do
 
 	function mod:DefileTarget(targetname, uId)
 		if not targetname then return end
-		if self.Options.SetIconOnDecimator then
+		if self.Options.SetIconOnDecimator2 then
 			self:SetIcon(targetname, 8, 3)--So icon clears 1 second after
 		end
 		if targetname == UnitName("player") then
