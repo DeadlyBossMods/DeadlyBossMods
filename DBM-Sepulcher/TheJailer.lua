@@ -132,7 +132,7 @@ local timerRuneofDominationCD					= mod:NewCDCountTimer(28.8, 365150, nil, nil, 
 local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, nil, 5)
 local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
-mod:AddSetIconOption("SetIconOnDomination", 365150, true, false, {5, 6, 7}, true)
+mod:AddSetIconOption("SetIconOnDomination2", 365150, false, false, {5, 6, 7}, true)
 mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
@@ -658,7 +658,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.runeIcon = 5
 		end
 		local icon = self.vb.runeIcon
-		if self.Options.SetIconOnDomination then
+		if self.Options.SetIconOnDomination2 then
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
@@ -734,7 +734,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellRuneofCompulsionFades:Cancel()
 		end
 	elseif spellId == 365150 then
-		if self.Options.SetIconOnDomination then
+		if self.Options.SetIconOnDomination2 then
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
