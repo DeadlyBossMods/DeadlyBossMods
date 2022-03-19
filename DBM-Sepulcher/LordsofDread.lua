@@ -156,9 +156,7 @@ function mod:OnCombatStart(delay)
 	timerSlumberCloudCD:Start(12.1-delay, 1)
 	timerFearfulTrepidationCD:Start(25.4-delay, 1)
 	timerInfiltrationofDreadCD:Start(123-delay, 1)
-	if self:IsNormal() then--I'm sure it's longer in LFRr and shorter on heroic/mythic, this is only one blizzard willingly published
-		berserkTimer:Start(780)
-	end
+	berserkTimer:Start(self:IsMythic() and 540 or self:IsHeroic() and 600 or 780)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 1)--TODO, figure out power type

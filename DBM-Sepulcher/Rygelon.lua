@@ -126,7 +126,7 @@ function mod:OnCombatStart(delay)
 	timerDarkEclipseCD:Start(6.2, 1)
 	timerCelestialCollapseCD:Start(8.4, 1)
 --	timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
-	timerMassiveBangCD:Start(60, 1)
+	timerMassiveBangCD:Start(self:IsMythic() and 65 or 60, 1)
 	if self:IsHard() then
 		timerManifestCosmosCD:Start(15.7, 1)
 		if self:IsMythic() then
