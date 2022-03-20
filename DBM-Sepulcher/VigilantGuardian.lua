@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if expireTime then
 					remaining = expireTime-GetTime()
 				end
-				if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then--TODO, adjust remaining when Cd known
+				if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") then
 					specWarnDissonanceTaunt:Show(args.destName)
 					specWarnDissonanceTaunt:Play("tauntboss")
 				else

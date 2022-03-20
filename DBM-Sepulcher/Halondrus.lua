@@ -306,7 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnCrushingPrism:CombinedShow(0.5, self.vb.crushingCast, args.destName)
 		self.vb.crushIcon = self.vb.crushIcon + 1
-	elseif spellId == 361309 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
+	elseif spellId == 361309 and not args:IsPlayer() then--and not DBM:UnitDebuff("player", spellId)
 		specWarnLightshatterBeamTaunt:Show(args.destName)
 		specWarnLightshatterBeamTaunt:Play("tauntboss")
 	elseif spellId == 368671 then
