@@ -46,7 +46,7 @@ local timerRetchCD								= mod:NewCDCountTimer(32.9, 360448, nil, nil, nil, 3)-
 local timerComboCD								= mod:NewTimer(32.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
 local timerBurrowCD								= mod:NewCDCountTimer(75, 359770, nil, nil, nil, 3)--LFR Only
 
-local berserkTimer								= mod:NewBerserkTimer(400)--Final Consumption
+local berserkTimer								= mod:NewBerserkTimer(420)--Final Consumption
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(359778, true, nil, 5)
@@ -76,7 +76,7 @@ function mod:OnCombatStart(delay)
 			timerBurrowCD:Start(63.9-delay, 1)
 		end
 	end
-	berserkTimer:Start(360-delay)
+	berserkTimer:Start(420-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(359778))
 		DBM.InfoFrame:Show(20, "table", EphemeraDustStacks, 5)
