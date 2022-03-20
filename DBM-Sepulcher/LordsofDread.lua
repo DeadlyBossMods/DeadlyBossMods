@@ -306,9 +306,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 359963 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--If not on a tank, it's just some numpty in wrong place
-			if not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
-				specWarnOpenedVeins:Show(args.destName)
-				specWarnOpenedVeins:Play("tauntboss")
+			if not args:IsPlayer() then
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 5) and not UnitIsDeadOrGhost("player") then
+					specWarnOpenedVeins:Show(args.destName)
+					specWarnOpenedVeins:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 360418 and args:IsPlayer() then

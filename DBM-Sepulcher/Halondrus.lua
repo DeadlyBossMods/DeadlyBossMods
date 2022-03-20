@@ -307,8 +307,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrushingPrism:CombinedShow(0.5, self.vb.crushingCast, args.destName)
 		self.vb.crushIcon = self.vb.crushIcon + 1
 	elseif spellId == 361309 and not args:IsPlayer() then--and not DBM:UnitDebuff("player", spellId)
-		specWarnLightshatterBeamTaunt:Show(args.destName)
-		specWarnLightshatterBeamTaunt:Play("tauntboss")
+		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+		local remaining
+		if expireTime then
+			remaining = expireTime-GetTime()
+		end
+		if (not remaining or remaining and remaining < 3) and not UnitIsDeadOrGhost("player") then
+			specWarnLightshatterBeamTaunt:Show(args.destName)
+			specWarnLightshatterBeamTaunt:Play("tauntboss")
+		end
 	elseif spellId == 368671 then
 		if self.Options.NPAuraOnFractal then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
