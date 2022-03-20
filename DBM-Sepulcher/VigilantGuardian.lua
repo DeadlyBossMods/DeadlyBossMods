@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 361001 360176 360162 364447",
 	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881 360906",--364425
 	"SPELL_SUMMON 360848 360623",
-	"SPELL_AURA_APPLIED 360458 364447 359610 360415 364881 364962",
-	"SPELL_AURA_APPLIED_DOSE 364447 360415",
+	"SPELL_AURA_APPLIED 360458 364447 359610 360415 360414 364881 364962",
+	"SPELL_AURA_APPLIED_DOSE 364447 360415 360414",
 	"SPELL_AURA_REMOVED 364881 360879",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -89,6 +89,7 @@ local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 
 --mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
 
 mod:GroupSpells(360412, 360403)--Exposed Core and the shield you seek need to deal with mechanic
+--mod:GroupSpells(360412, 360415)
 
 mod.vb.refractedCount = 0
 local castsPerGUID = {}
@@ -269,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDeresolution:Show(args.destName)
 		end
-	elseif spellId == 360415 then
+	elseif spellId == 360415 or spellId == 360414 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			if args:IsPlayer() then
