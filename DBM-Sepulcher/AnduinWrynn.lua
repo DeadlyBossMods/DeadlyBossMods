@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362405 361989 365295 361815 362771 363024 365120 365872 365958 365805",
 	"SPELL_CAST_SUCCESS 365030 367631 363133",
 	"SPELL_SUMMON 365039",
-	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 362862 365966 366849 363028 367632",
+	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 362862 365966 366849 363028 367632 362774",
 	"SPELL_AURA_APPLIED_DOSE 364248",
 	"SPELL_AURA_REMOVED 362055 361992 361993 365021 362505 365966 367632",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -351,7 +351,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 362771 then
 		self.vb.befouledCount = self.vb.befouledCount + 1--Reused since befoulment not happening here
-		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
+		if self:IsTanking("player", nil, nil, nil, args.sourseGUID, nil, true) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
 			specWarnSoulReaper:Show()
 			specWarnSoulReaper:Play("defensive")
 		end
