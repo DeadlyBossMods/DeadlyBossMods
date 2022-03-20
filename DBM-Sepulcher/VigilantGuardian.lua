@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, proper energy Conversion cast and alert prio
 --[[
 (ability.id = 360412 or ability.id = 360162) and type = "begincast"
- or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881 or ability.id = 360906) and type = "cast"
+ or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881 or ability.id = 360906 or ability.id = 364843) and type = "cast"
  or ability.id = 360879
 --]]
 --General

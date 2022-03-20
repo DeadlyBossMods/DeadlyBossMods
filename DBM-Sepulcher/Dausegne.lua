@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --]]
 --The Fallen Oracle
 local warnInfusedStrikes						= mod:NewStackAnnounce(361966, 2, nil, "Tank|Healer")
-local warnStaggeringBarrage						= mod:NewTargetNoFilterAnnounce(361018, 3)
+local warnStaggeringBarrage						= mod:NewTargetCountAnnounce(361018, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDominationCore						= mod:NewCountAnnounce(359483, 3)
 local warnDisintegrationHalo					= mod:NewCountAnnounce(365373, 4, nil, nil, 161172)
 --Inevitable Dominion
@@ -42,10 +42,10 @@ local warnSiphonReservoir						= mod:NewCountAnnounce(361643, 2)
 local specWarnInfusedStrikes					= mod:NewSpecialWarningStack(361966, nil, 8, nil, nil, 1, 6)
 local specWarnInfusedStrikesTaunt				= mod:NewSpecialWarningTaunt(361966, nil, nil, nil, 1, 2)
 local yellInfusedStrikes						= mod:NewShortFadesYell(361966)
-local specWarnStaggeringBarrage					= mod:NewSpecialWarningYouPos(361018, nil, nil, nil, 1, 2)
+local specWarnStaggeringBarrage					= mod:NewSpecialWarningYouPosCount(361018, nil, nil, nil, 1, 2)
 local yellStaggeringBarrage						= mod:NewShortPosYell(361018)
 local yellStaggeringBarrageFades				= mod:NewIconFadesYell(361018)
-local specWarnStaggeringBarrageTarget			= mod:NewSpecialWarningTarget(361018, false, nil, nil, 1, 2, 3)--Optional Soak special warning that auto checks no soak debuff
+local specWarnStaggeringBarrageTarget			= mod:NewSpecialWarningTargetCount(361018, false, nil, nil, 1, 2, 3)--Optional Soak special warning that auto checks no soak debuff
 local specWarnDominationBolt					= mod:NewSpecialWarningInterruptCount(363607, "HasInterrupt", nil, nil, 1, 2)
 local specWarnObliterationArc					= mod:NewSpecialWarningDodgeCount(361513, nil, nil, nil, 2, 2)
 local specWarnDisintegrationHalo				= mod:NewSpecialWarningCount(365373, nil, 161172, nil, 2, 2)
@@ -219,16 +219,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaggeringBarrageTarget:Cancel()
 			specWarnStaggeringBarrageTarget:CancelVoice()
 			--Now show your warnings
-			specWarnStaggeringBarrage:Show(self:IconNumToTexture(icon))
+			specWarnStaggeringBarrage:Show(self.vb.barrageCount, self:IconNumToTexture(icon))
 			specWarnStaggeringBarrage:Play("mm"..icon)
 			yellStaggeringBarrage:Yell(icon, icon)
 			yellStaggeringBarrageFades:Countdown(spellId, nil, icon)
 		elseif self.Options.SpecWarn361018target and not DBM:UnitDebuff("player", 364289) then
 			--Don't show special warning if you're one of victims
-			specWarnStaggeringBarrageTarget:CombinedShow(0.5, args.destName)
+			specWarnStaggeringBarrageTarget:CombinedShow(0.5, self.vb.barrageCount, args.destName)
 			specWarnStaggeringBarrageTarget:ScheduleVoice(0.5, "helpsoak")
 		else
-			warnStaggeringBarrage:CombinedShow(0.5, args.destName)
+			warnStaggeringBarrage:CombinedShow(0.5, self.vb.barrageCount, args.destName)
 		end
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 361651 then
