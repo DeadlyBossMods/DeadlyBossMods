@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 361001 360176 360162 364447",
 	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881 360906",--364425
 	"SPELL_SUMMON 360848 360623",
-	"SPELL_AURA_APPLIED 360458 364447 359610 360415 364881 364962",
-	"SPELL_AURA_APPLIED_DOSE 364447 360415",
+	"SPELL_AURA_APPLIED 360458 364447 359610 360415 360414 364881 364962",
+	"SPELL_AURA_APPLIED_DOSE 364447 360415 360414",
 	"SPELL_AURA_REMOVED 364881 360879",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, proper energy Conversion cast and alert prio
 --[[
 (ability.id = 360412 or ability.id = 360162) and type = "begincast"
- or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881 or ability.id = 360906) and type = "cast"
+ or (ability.id = 359610 or ability.id = 365315 or ability.id = 360658 or ability.id = 364881 or ability.id = 360906 or ability.id = 364843) and type = "cast"
  or ability.id = 360879
 --]]
 --General
@@ -75,7 +75,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(23877))
 local warnMatterDisoilution						= mod:NewTargetNoFilterAnnounce(364881, 4)
 
 local specWarnSplitResolution					= mod:NewSpecialWarningDefensive(360162, nil, nil, nil, 1, 2)
-local specWarnDefenseless						= mod:NewSpecialWarningTaunt(360415, nil, nil, nil, 1, 2)
+local specWarnPneumaticImpact					= mod:NewSpecialWarningTaunt(360414, nil, nil, nil, 1, 2)
 local specWarnMatterDisolution					= mod:NewSpecialWarningYou(364881, nil, nil, nil, 1, 2)--Initial
 local specWarnMatterDisolutionOut				= mod:NewSpecialWarningMoveAway(364881, nil, nil, nil, 1, 2)--Delayed
 local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
@@ -89,6 +89,7 @@ local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 
 --mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
 
 mod:GroupSpells(360412, 360403)--Exposed Core and the shield you seek need to deal with mechanic
+--mod:GroupSpells(360412, 360414)
 
 mod.vb.refractedCount = 0
 local castsPerGUID = {}
@@ -251,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if expireTime then
 					remaining = expireTime-GetTime()
 				end
-				if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then--TODO, adjust remaining when Cd known
+				if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") then
 					specWarnDissonanceTaunt:Show(args.destName)
 					specWarnDissonanceTaunt:Play("tauntboss")
 				else
@@ -269,15 +270,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDeresolution:Show(args.destName)
 		end
-	elseif spellId == 360415 then
+	elseif spellId == 360415 or spellId == 360414 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			if args:IsPlayer() then
-				specWarnDefenseless:Cancel()
-				specWarnDefenseless:CancelVoice()
+				specWarnPneumaticImpact:Cancel()
+				specWarnPneumaticImpact:CancelVoice()
 			else
-				specWarnDefenseless:CombinedShow(0.5, args.destName)
-				specWarnDefenseless:ScheduleVoice(0.5, "tauntboss")
+				specWarnPneumaticImpact:CombinedShow(0.5, args.destName)
+				specWarnPneumaticImpact:ScheduleVoice(0.5, "tauntboss")
 			end
 		end
 	elseif spellId == 364881 then

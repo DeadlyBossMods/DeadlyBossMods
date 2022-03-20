@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181398, 181334)--Could be others
 mod:SetEncounterID(2543)
 mod:SetUsedIcons(1, 2, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220308000000)
+mod:SetHotfixNoticeRev(20220320000000)
 mod:SetMinSyncRevision(20220308000000)
 --mod.respawnTime = 29
 
@@ -14,7 +14,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360006 361913 361923 359960 360717 360145 360229 360284 360300 360304",
 	"SPELL_CAST_SUCCESS 360420",
-	"SPELL_SUMMON 361915",
 	"SPELL_AURA_APPLIED 360300 360012 361934 362020 361945 359963 360418 360146 360148 363191 360241 360287",
 	"SPELL_AURA_APPLIED_DOSE 360287",
 	"SPELL_AURA_REMOVED 360300 360304 360012 361934 362020 361945 360418 360146 360148 363191 360241 360516",
@@ -198,15 +197,7 @@ function mod:SPELL_CAST_START(args)
 		warnManifestShadows:Show(self.vb.shadowsCount)
 --		timerManifestShadowsCD:Start(nil, self.vb.shadowsCount+1)--Never recast more than once between stages/rotations
 		self.vb.shadowsIcon = 8
-	elseif spellId == 361923 then
-		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
-			--But if that failed, do it again here and scan for mobs again here too
-			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnManifestShadows then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.shadowsIcon, 1, nil, 12, "SetIconOnManifestShadows")
-			end
-			self.vb.shadowsIcon = self.vb.shadowsIcon - 1
-		end
+	elseif spellId == 361923 and castsPerGUID[args.sourceGUID] then
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
@@ -281,19 +272,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 361915 then
-		if not castsPerGUID[args.destGUID] then
-			castsPerGUID[args.destGUID] = 0
-		end
-		if self.Options.SetIconOnManifestShadows then
-			self:ScanForMobs(args.destGUID, 2, self.vb.shadowsIcon, 1, nil, 12, "SetIconOnManifestShadows")
-		end
-		self.vb.shadowsIcon = self.vb.shadowsIcon - 1
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 360300 then
@@ -311,6 +289,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 361934 or spellId == 362020 then
+		if self.Options.SetIconOnManifestShadows then
+			self:ScanForMobs(args.destGUID, 2, self.vb.shadowsIcon, 1, nil, 12, "SetIconOnManifestShadows")
+		end
+		self.vb.shadowsIcon = self.vb.shadowsIcon - 1
 		if self.Options.NPAuraOnIncompleteForm then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
@@ -324,9 +306,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 359963 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--If not on a tank, it's just some numpty in wrong place
-			if not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
-				specWarnOpenedVeins:Show(args.destName)
-				specWarnOpenedVeins:Play("tauntboss")
+			if not args:IsPlayer() then
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 5) and not UnitIsDeadOrGhost("player") then
+					specWarnOpenedVeins:Show(args.destName)
+					specWarnOpenedVeins:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 360418 and args:IsPlayer() then
@@ -442,6 +431,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 361934 or spellId == 362020 then
 		if self.Options.NPAuraOnIncompleteForm then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+		end
+		if not castsPerGUID[args.destGUID] then
+			castsPerGUID[args.destGUID] = 0
 		end
 	elseif spellId == 361945 then
 		if self.Options.NPAuraOnFullyFormed then
