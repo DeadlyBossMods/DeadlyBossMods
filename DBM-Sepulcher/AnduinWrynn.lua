@@ -551,7 +551,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnDarkZeal:Show(amount)
 				specWarnDarkZeal:Play("changemt")
-			else
+			elseif not playersSouled[playerName] then
 				specWarnDarkZealOther:Show(args.destName)
 				specWarnDarkZealOther:Play("tauntboss")
 			end
