@@ -351,7 +351,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 362771 then
 		self.vb.befouledCount = self.vb.befouledCount + 1--Reused since befoulment not happening here
-		if self:IsTanking("player", nil, nil, nil, args.sourseGUID, nil, true) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID, nil, true) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
 			specWarnSoulReaper:Show()
 			specWarnSoulReaper:Play("defensive")
 		end
