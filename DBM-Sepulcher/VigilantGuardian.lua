@@ -75,7 +75,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(23877))
 local warnMatterDisoilution						= mod:NewTargetNoFilterAnnounce(364881, 4)
 
 local specWarnSplitResolution					= mod:NewSpecialWarningDefensive(360162, nil, nil, nil, 1, 2)
-local specWarnDefenseless						= mod:NewSpecialWarningTaunt(360415, nil, nil, nil, 1, 2)
+local specWarnPneumaticImpact					= mod:NewSpecialWarningTaunt(360414, nil, nil, nil, 1, 2)
 local specWarnMatterDisolution					= mod:NewSpecialWarningYou(364881, nil, nil, nil, 1, 2)--Initial
 local specWarnMatterDisolutionOut				= mod:NewSpecialWarningMoveAway(364881, nil, nil, nil, 1, 2)--Delayed
 local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
@@ -89,7 +89,7 @@ local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 
 --mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
 
 mod:GroupSpells(360412, 360403)--Exposed Core and the shield you seek need to deal with mechanic
---mod:GroupSpells(360412, 360415)
+--mod:GroupSpells(360412, 360414)
 
 mod.vb.refractedCount = 0
 local castsPerGUID = {}
@@ -274,11 +274,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			if args:IsPlayer() then
-				specWarnDefenseless:Cancel()
-				specWarnDefenseless:CancelVoice()
+				specWarnPneumaticImpact:Cancel()
+				specWarnPneumaticImpact:CancelVoice()
 			else
-				specWarnDefenseless:CombinedShow(0.5, args.destName)
-				specWarnDefenseless:ScheduleVoice(0.5, "tauntboss")
+				specWarnPneumaticImpact:CombinedShow(0.5, args.destName)
+				specWarnPneumaticImpact:ScheduleVoice(0.5, "tauntboss")
 			end
 		end
 	elseif spellId == 364881 then
