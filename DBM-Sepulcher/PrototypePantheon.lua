@@ -482,7 +482,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 365272 then
 		self.vb.humblingCount = self.vb.humblingCount + 1
-		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--GUID scan since this can probbably be any of boss 1-4
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--GUID scan since this can probbably be any of boss 1-4
 			specWarnHumblingStrikes:Show()
 			specWarnHumblingStrikes:Play("defensive")
 		end
@@ -522,7 +522,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 365126 then
 		self.vb.painCount = self.vb.painCount + 1
-		if self:IsTanking("player", nil, nil, nil, args.sourseGUID) then--GUID scan since this can probbably be any of boss 1-4
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--GUID scan since this can probbably be any of boss 1-4
 			specWarnWrackingPain:Show(self.vb.painCount)
 			specWarnWrackingPain:Play("shockwave")
 		end
