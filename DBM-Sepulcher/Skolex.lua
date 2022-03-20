@@ -76,7 +76,7 @@ function mod:OnCombatStart(delay)
 			timerBurrowCD:Start(63.9-delay, 1)
 		end
 	end
-	berserkTimer:Start(420-delay)
+	berserkTimer:Start((self:IsEasy() and 420 or 360)-delay) -- 7 minutes on LFR/Normal, 6 minutes on Heroic/Mythic
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(359778))
 		DBM.InfoFrame:Show(20, "table", EphemeraDustStacks, 5)
