@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 362184 and type = "begincast"
 --]]
 --General
+local berserkTimer								= mod:NewBerserkTimer(600)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(362798, nil, nil, nil, 1, 8)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -130,6 +131,7 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerManifestCosmosCD:Start(self:IsMythic() and 20 or 15.7, 1)
 		if self:IsMythic() then
+			berserkTimer:Start(390)
 			timerStellarShroudCD:Start(1)
 			if self.Options.InfoFrame then
 				--On mythic it's slightly more elaborate and involves coordinating a bunch of people around the new mechanic
