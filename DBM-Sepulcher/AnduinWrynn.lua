@@ -75,7 +75,7 @@ local timerWickedStar							= mod:NewTargetCountTimer(4, 365021, nil, false, nil
 local timerHopebreakerCD						= mod:NewCDCountTimer(28.8, 361815, nil, nil, nil, 2)
 local timerDominationWordPainCD					= mod:NewCDCountTimer(28.8, 366849, 249194, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 
-mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", true, true, {1, 2, 3})--Up to 4 of them, but we hold 4 for grim reflections
+mod:AddSetIconOption("SetIconOnAnduinsHope", "ej24468", true, true, {1, 2, 3, 4})
 mod:GroupSpells(361989, 361992, 361993)--Group two debuffs with parent spell Blasphemy
 mod:GroupSpells(365030, 365021)--Group both wicked star IDs
 --Intermission: Remnant of a Fallen King
@@ -100,7 +100,7 @@ local specWarnPsychicTerror						= mod:NewSpecialWarningInterruptCount(365008, "
 
 local timerGrimReflectionsCD					= mod:NewCDCountTimer(28.8, 365120, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 
-mod:AddSetIconOption("SetIconOnGrimReflection", 365120, true, true, {4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnGrimReflection", 365120, true, true, {5, 6, 7, 8})
 
 --Intermission: March of the Damned
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24172))
@@ -277,7 +277,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.SetIconOnAnduinsHope then
-			self:ScanForMobs(184493, 1, 1, 3, nil, 12, "SetIconOnAnduinsHope", true)
+			self:ScanForMobs(184493, 1, 1, 4, nil, 12, "SetIconOnAnduinsHope", true)
 		end
 	elseif spellId == 361989 then
 		self.vb.blastphemyCount = self.vb.blastphemyCount + 1
@@ -355,7 +355,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
 			--But if that failed, do it again here and scan for mobs again here too
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnGrimReflection then
+			if self.Options.SetIconOnGrimReflection and self.vb.addIcon > 4 then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnGrimReflection")
 			end
 			self.vb.addIcon = self.vb.addIcon - 1

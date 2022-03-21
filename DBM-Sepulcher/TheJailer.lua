@@ -77,8 +77,8 @@ local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TA
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {5})
-mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {6})
+mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
 
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
@@ -103,7 +103,7 @@ local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, n
 local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, nil, nil, nil, 3)
 local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnDecimator2", 364942, false, false, {7}, true)--7 to ensure no conflict in P3 either
 
 --Stage Three: Eternity's End
@@ -133,7 +133,7 @@ local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, n
 local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddSetIconOption("SetIconOnDomination2", 365150, false, false, {5, 6, 7}, true)
-mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
@@ -552,7 +552,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnMartyrdom:Show(self.vb.tankCount, args.destName)
 		end
 		if self.Options.SetIconOnMartyrdom2 then
-			self:SetIcon(args.destName, 5)
+			self:SetIcon(args.destName, 6)
 		end
 	elseif spellId == 365436 or spellId == 370071 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
