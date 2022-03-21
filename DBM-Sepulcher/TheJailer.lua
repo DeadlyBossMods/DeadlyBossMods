@@ -237,50 +237,50 @@ local allTimers = {
 			[365169] = {33, 44.9, 44.9, 52},
 		},
 	},
-	["mythic"] = {--Most definitely different, heroic timers placeholdered for now
+	["mythic"] = {--Confiremd different, so empty until data collected
 		[1] = {
 			--World Crusher
 			[366374] = {},
 			--Torment (lasts entire fight)
-			[365436] = {11, 52, 45, 47},
+			[365436] = {},
 			--Martyrdom
-			[363893] = {31, 40, 52, 39},
+			[363893] = {},
 			--Relenting Domination
-			[362028] = {55, 56.9, 56},
+			[362028] = {},
 			--Chains of Oppression
-			[359809] = {40, 48, 49},
+			[359809] = {},
 			--Rune of Damnation
-			[360279] = {22, 25, 29, 21, 30.5, 19.5},
+			[360279] = {},
 		},
 		[2] = {
 			--World Cracker
 			[366678] = {},
 			--Torment (lasts entire fight)
-			[365436] = {22, 16, 35.4, 61.5},--Double check 65
+			[365436] = {},--Double check 65
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 41, 80},
+			[360562] = {},
 			--Unholy Attunement
-			[360373] = {19, 45, 45, 46.5},
+			[360373] = {},
 			--Shattering Blast
-			[359856] = {33, 16, 30, 15, 29, 17},
+			[359856] = {},
 			--Rune of Compulsion
-			[366284] = {40.9, 46, 45},
+			[366284] = {},
 		},
 		[3] = {
 			--World Shatterer
 			[367051] = {},
 			--Torment (lasts entire fight)
-			[365436] = {51, 74.9},
+			[365436] = {},
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 37.9, 47, 32.9, 40},
+			[360562] = {},
 			--Desolation
-			[365033] = {42, 59.9, 64},
+			[365033] = {},
 			--Rune of Domination
-			[365147] = {71, 78.9},
+			[365147] = {},
 			--Chains of Anguish
-			[365212] = {37, 55, 43, 42.9},
+			[365212] = {},
 			--Defile
-			[365169] = {33, 44.9, 44.9, 52},
+			[365169] = {},
 		},
 	},
 }

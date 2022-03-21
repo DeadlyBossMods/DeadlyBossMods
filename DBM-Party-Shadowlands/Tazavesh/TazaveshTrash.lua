@@ -50,15 +50,15 @@ local specWarnChargedPulse					= mod:NewSpecialWarningRun(355584, nil, nil, nil,
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 356548 then
+	if spellId == 356548 and self:IsValidWarning(args.sourceGUID) then
 		warnRadiantPulse:Show()
-	elseif spellId == 352390 and self:AntiSpam(3, 2) then
+	elseif spellId == 352390 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnRiftBlasts:Show()
 		specWarnRiftBlasts:Play("watchstep")
-	elseif spellId == 355900 and self:AntiSpam(3, 2) then
+	elseif spellId == 355900 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnDisruptionGrenade:Show()
 		specWarnDisruptionGrenade:Play("watchstep")
-	elseif spellId == 357197 and self:AntiSpam(3, 2) then
+	elseif spellId == 357197 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnLightshardRetreat:Show()
 		specWarnLightshardRetreat:Play("watchstep")
 	elseif spellId == 354297 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -88,16 +88,16 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 355225 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWaterbolt:Show(args.sourceName)
 		specWarnWaterbolt:Play("kickcast")
-	elseif spellId == 356001 then
+	elseif spellId == 356001 and self:IsValidWarning(args.sourceGUID) then
 		warnBeamSplicer:Show()
-	elseif spellId == 357229 then
+	elseif spellId == 357229 and self:IsValidWarning(args.sourceGUID) then
 		warnChronolightEnhancer:Show()
-	elseif spellId == 355234 and self:AntiSpam(3, 6) then--Misc flagged because it can be interrupted or dodged and guide didn't emphasize either was super important
+	elseif spellId == 355234 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 6) then--Misc flagged because it can be interrupted or dodged and guide didn't emphasize either was super important
 		warnVolatilePufferfish:Show()
-	elseif spellId == 355132 and self:AntiSpam(3, 5) then
+	elseif spellId == 355132 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 5) then
 		specWarnInvigoratingFishStickCast:Show()
 		specWarnInvigoratingFishStickCast:Play("crowdcontrol")
-	elseif spellId == 355584 and self:AntiSpam(3, 1) then
+	elseif spellId == 355584 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnChargedPulse:Show()
 		specWarnChargedPulse:Play("justrun")
 	end
@@ -106,7 +106,7 @@ end
 function mod:SPELL_SUMMON(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 355132 then
+	if spellId == 355132 and self:IsValidWarning(args.sourceGUID) then
 		specWarnInvigoratingFishStick:Show()
 		specWarnInvigoratingFishStick:Play("attacktotem")
 	end
@@ -115,15 +115,15 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 355888 then
+	if spellId == 355888 and self:IsValidWarning(args.sourceGUID) then
 		warnHardLightBaton:Show(args.destName)
 	elseif spellId == 355915 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 		specWarnGlyphofRestraint:Show(args.destName)
 		specWarnGlyphofRestraint:Play("helpdispel")
-	elseif spellId == 355980 and not args:IsDestTypePlayer() and self:AntiSpam(3, 5) then
+	elseif spellId == 355980 and self:IsValidWarning(args.sourceGUID) and not args:IsDestTypePlayer() and self:AntiSpam(3, 5) then
 		specWarnRefractionShield:Show(args.destName)
-		specWarnRefractionShield:Show("helpdispel")
-	elseif spellId == 357229 and self:AntiSpam(3, 1) then
+		specWarnRefractionShield:Play("helpdispel")
+	elseif spellId == 357229 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnChronolightEnhancer:Show()
 		specWarnChronolightEnhancer:Play("justrun")
 	elseif spellId == 357029 then
