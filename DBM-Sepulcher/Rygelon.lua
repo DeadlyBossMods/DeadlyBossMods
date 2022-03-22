@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 362806 or ability.id = 362275 or ability.id = 362390 or ability.id = 366379 or ability.id = 363533 or ability.id = 364114 or ability.id = 364386) and type = "begincast"
  or (ability.id = 363108 or ability.id = 363110) and type = "cast"
  or ability.id = 363773
- or ability.id = 362806 and type = "applydebuff"
+ or (ability.id = 361548 or ability.id = 362806) and type = "applydebuff"
  or ability.id = 362184 and type = "begincast"
 --]]
 --General
@@ -69,7 +69,7 @@ local specWarnMassiveBangEscape					= mod:NewSpecialWarningMoveTo(363533, nil, n
 local timerDarkEclipseCD						= mod:NewCDCountTimer(11, 361548, nil, nil, nil, 3)
 local timerCelestialCollapseCD					= mod:NewCDCountTimer(20.6, 362275, nil, nil, nil, 5)
 local timerQuasarRadiation						= mod:NewBuffActiveTimer(21, 361548, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerManifestCosmosCD						= mod:NewCDCountTimer(24.2, 362390, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerManifestCosmosCD						= mod:NewCDCountTimer(23.1, 362390, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerStellarShroudCD						= mod:NewAITimer(28.8, 366379, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON .. DBM_COMMON_L.MYTHIC_ICON)
 local timerCorruptedStrikesCD					= mod:NewCDTimer(6, 362184, nil, "Tank", nil, 5, 2, DBM_COMMON_L.TANK_ICON)
 local timerCelestialTerminatorCD				= mod:NewCDCountTimer(28.8, 363108, nil, nil, nil, 3)
@@ -195,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.coreCount = self.vb.coreCount + (self:IsMythic() and 3 or 1)
 		warnManifestCosmos:Show(self.vb.cosmosCount)
 		if self.vb.cosmosCount == 1 then
-			timerManifestCosmosCD:Start(nil, self.vb.cosmosCount+1)--24.2
+			timerManifestCosmosCD:Start(nil, self.vb.cosmosCount+1)--23.1
 		end
 	elseif spellId == 366379 then
 		self.vb.shroudCount = self.vb.shroudCount + 1
@@ -256,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDarkEclipse:Yell(icon, icon)
 			yellDarkEclipseFades:Countdown(spellId, nil, icon)
 		end
-		warnDarkEclipse:CombinedShow(0.5, args.destName)
+		warnDarkEclipse:CombinedShow(0.75, args.destName)
 		self.vb.eclipseIcon = self.vb.eclipseIcon + 1
 	elseif spellId == 362273 and args:IsPlayer() then
 		warnQuasarRadiation:Show(args.destName, args.amount or 1)
