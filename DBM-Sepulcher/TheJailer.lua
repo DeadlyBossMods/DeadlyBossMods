@@ -77,8 +77,8 @@ local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TA
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {5})
-mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {6})
+mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
 
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
@@ -103,7 +103,7 @@ local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, n
 local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, nil, nil, nil, 3)
 local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnDecimator2", 364942, false, false, {7}, true)--7 to ensure no conflict in P3 either
 
 --Stage Three: Eternity's End
@@ -133,7 +133,7 @@ local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, n
 local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddSetIconOption("SetIconOnDomination2", 365150, false, false, {5, 6, 7}, true)
-mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
@@ -237,50 +237,50 @@ local allTimers = {
 			[365169] = {33, 44.9, 44.9, 52},
 		},
 	},
-	["mythic"] = {--Most definitely different, heroic timers placeholdered for now
+	["mythic"] = {--Confiremd different, so empty until data collected
 		[1] = {
 			--World Crusher
 			[366374] = {},
 			--Torment (lasts entire fight)
-			[365436] = {11, 52, 45, 47},
+			[365436] = {},
 			--Martyrdom
-			[363893] = {31, 40, 52, 39},
+			[363893] = {},
 			--Relenting Domination
-			[362028] = {55, 56.9, 56},
+			[362028] = {},
 			--Chains of Oppression
-			[359809] = {40, 48, 49},
+			[359809] = {},
 			--Rune of Damnation
-			[360279] = {22, 25, 29, 21, 30.5, 19.5},
+			[360279] = {},
 		},
 		[2] = {
 			--World Cracker
 			[366678] = {},
 			--Torment (lasts entire fight)
-			[365436] = {22, 16, 35.4, 61.5},--Double check 65
+			[365436] = {},--Double check 65
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 41, 80},
+			[360562] = {},
 			--Unholy Attunement
-			[360373] = {19, 45, 45, 46.5},
+			[360373] = {},
 			--Shattering Blast
-			[359856] = {33, 16, 30, 15, 29, 17},
+			[359856] = {},
 			--Rune of Compulsion
-			[366284] = {40.9, 46, 45},
+			[366284] = {},
 		},
 		[3] = {
 			--World Shatterer
 			[367051] = {},
 			--Torment (lasts entire fight)
-			[365436] = {51, 74.9},
+			[365436] = {},
 			--Decimator (lasts rest of fight)
-			[360562] = {26, 37.9, 47, 32.9, 40},
+			[360562] = {},
 			--Desolation
-			[365033] = {42, 59.9, 64},
+			[365033] = {},
 			--Rune of Domination
-			[365147] = {71, 78.9},
+			[365147] = {},
 			--Chains of Anguish
-			[365212] = {37, 55, 43, 42.9},
+			[365212] = {},
 			--Defile
-			[365169] = {33, 44.9, 44.9, 52},
+			[365169] = {},
 		},
 	},
 }
@@ -552,7 +552,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnMartyrdom:Show(self.vb.tankCount, args.destName)
 		end
 		if self.Options.SetIconOnMartyrdom2 then
-			self:SetIcon(args.destName, 5)
+			self:SetIcon(args.destName, 6)
 		end
 	elseif spellId == 365436 or spellId == 370071 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
