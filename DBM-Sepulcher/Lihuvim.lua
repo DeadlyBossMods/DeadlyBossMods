@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220312000000)
+mod:SetHotfixNoticeRev(20220322000000)
 mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
@@ -97,12 +97,12 @@ local grip, push = DBM:GetSpellInfo(56689), DBM:GetSpellInfo(359132)
 local playerGrip = false
 local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or "easy"
 local allTimers = {
-	["easy"] = {--Normal and LFR combined (for now)
+	["easy"] = {--Normal and LFR combined
 		[1] = {--Engage
 			--Unstable Mote
-			[362601] = {12, 31.5},
+			[362601] = {12, 31.5},--2nd doesn't always happen, depends on if synth is 45 or 46
 			--Protoform Cascade
-			[364652] = {5.7, 13.9},
+			[364652] = {5.7, 31.5},
 			--Cosmic Shift
 			[363088] = {29},
 			--Deconstructing Energy
