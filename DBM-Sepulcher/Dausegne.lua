@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181224)
 mod:SetEncounterID(2540)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20220301000000)
+mod:SetHotfixNoticeRev(20220322000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -88,18 +88,24 @@ function mod:OnCombatStart(delay)
 	self.vb.coreCount = 0
 	self.vb.haloCount = 0
 	self.vb.softEnrage = false
-	if self:IsHard() then
+	if self:IsHard() then--Mythic and heroic have same timers
 		timerDisintegrationHaloCD:Start(4.9-delay, 1)
 		timerDominationCoreCD:Start(6.4-delay, 1)
 		timerObliterationArcCD:Start(14.9-delay, 1)
 		timerStaggeringBarrageCD:Start(29-delay, 1)
 		timerSiphonReservoirCD:Start(72.1-delay, 1)
-	else
+	elseif self:IsNormal() then
 		timerDisintegrationHaloCD:Start(5.5-delay, 1)
 		timerDominationCoreCD:Start(7.2-delay, 1)
 		timerObliterationArcCD:Start(16.7-delay, 1)
 		timerStaggeringBarrageCD:Start(32.2-delay, 1)
 		timerSiphonReservoirCD:Start(80.2-delay, 1)
+	else--LFR is even sloweer
+		timerDisintegrationHaloCD:Start(6.2-delay, 1)
+		timerDominationCoreCD:Start(8.1-delay, 1)
+		timerObliterationArcCD:Start(18.7-delay, 1)
+		timerStaggeringBarrageCD:Start(36.2-delay, 1)
+		timerSiphonReservoirCD:Start(88.8-delay, 1)
 	end
 end
 
@@ -115,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 359483 then
 		self.vb.coreCount = self.vb.coreCount + 1
 		warnDominationCore:Show(self.vb.coreCount)
-		timerDominationCoreCD:Start(self:IsHard() and 33.5 or 37.2, self.vb.coreCount+1)
+		timerDominationCoreCD:Start(self:IsHard() and 33.5 or self:IsNormal() and 37.2 or 41.8, self.vb.coreCount+1)
 	elseif spellId == 363607 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -142,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.arcCount = self.vb.arcCount + 1
 		specWarnObliterationArc:Show(self.vb.arcCount)
 		specWarnObliterationArc:Play("shockwave")
-		timerObliterationArcCD:Start(self:IsHard() and 35 or 38.8, self.vb.arcCount+1)
+		timerObliterationArcCD:Start(self:IsHard() and 35 or self:IsNormal() and 38.8 or 43.7, self.vb.arcCount+1)
 	elseif spellId == 361630 then--Teleport
 		self.vb.ReservoirCount = self.vb.ReservoirCount + 1
 		warnSiphonReservoir:Show(self.vb.ReservoirCount)
@@ -157,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 360960 then
 		self.vb.DebuffIcon = 1
 		self.vb.barrageCount = self.vb.barrageCount + 1
-		timerStaggeringBarrageCD:Start(self:IsHard() and 35 or 38.8, self.vb.barrageCount+1)
+		timerStaggeringBarrageCD:Start(self:IsHard() and 35 or self:IsNormal() and 38.8 or 43.7, self.vb.barrageCount+1)
 	end
 end
 
@@ -169,7 +175,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDisintegrationHalo:Show(self.vb.haloCount)
 		specWarnDisintegrationHalo:Play("watchwave")
 		if not self.vb.softEnrage then
-			timerDisintegrationHaloCD:Start(self:IsHard() and 70 or 77.7, self.vb.haloCount+1)
+			timerDisintegrationHaloCD:Start(self:IsHard() and 70 or self:IsNormal() and 77.7 or 87.4, self.vb.haloCount+1)
 		end
 		timerDisintegrationHalo:Start(8, 1)
 	elseif spellId == 361750 then
@@ -266,7 +272,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerObliterationArcCD:Start(16.7, self.vb.arcCount+1)
 			timerStaggeringBarrageCD:Start(30.7, self.vb.barrageCount+1)
 			timerSiphonReservoirCD:Start(109.6, self.vb.ReservoirCount+1)--108-110, closer here than teleport to teleport.
-		else
+		elseif self:IsNormal() then
 			if not self.vb.softEnrage then
 				timerDisintegrationHaloCD:Start(6.9, self.vb.haloCount+1)
 			end
@@ -274,6 +280,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerObliterationArcCD:Start(18.1, self.vb.arcCount+1)
 			timerStaggeringBarrageCD:Start(33.6, self.vb.barrageCount+1)
 			timerSiphonReservoirCD:Start(120.4, self.vb.ReservoirCount+1)--Closer here than teleport to teleport.
+		else
+			if not self.vb.softEnrage then
+				timerDisintegrationHaloCD:Start(8.1, self.vb.haloCount+1)
+			end
+			timerDominationCoreCD:Start(9.9, self.vb.coreCount+1)
+			timerObliterationArcCD:Start(20.6, self.vb.arcCount+1)
+			timerStaggeringBarrageCD:Start(38.1, self.vb.barrageCount+1)
+			timerSiphonReservoirCD:Start(134.3, self.vb.ReservoirCount+1)--Closer here than teleport to teleport.
 		end
 	end
 end
