@@ -119,6 +119,28 @@ function mod:SPELL_CAST_START(args)
 --			timerComboCD:Start()
 --		end
 		self.vb.comboCast = self.vb.comboCast + 1
+		if self.vb.comboCast > 1 then
+			local targetName = self:GetBossTarget(181395)
+			if targetName then
+				if self:IsTanking("player", "boss1", nil, true) then
+					--Do nothing
+				else
+					if spellId == 359975 then--Rift
+						--If you aren't dead and not debuffed and not first cast in combo, taunt boss.
+						if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", 359976) then
+							specWarnRiftmaw:Show(targetName)
+							specWarnRiftmaw:Play("tauntboss")
+						end
+					else
+						--If you aren't dead and not debuffed and not first cast in combo, taunt boss.
+						if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", 359981) then
+							specWarnRend:Show(targetName)
+							specWarnRend:Play("tauntboss")
+						end
+					end
+				end
+			end
+		end
 	elseif spellId == 364778 then
 		warnDestroy:Show()
 	elseif spellId == 360451 then
@@ -146,40 +168,18 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 364522 and args:IsDestTypePlayer() and self:CheckDispelFilter() then
 		specWarnDevouringBlood:CombinedShow(0.5, args.destName)
 		specWarnDevouringBlood:ScheduleVoice(0.5, "helpdispel")
-	--Begin copy paste from Grong
 	elseif spellId == 359976 then--Riftmaw
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if not args:IsPlayer() then
-				--always swap after a rift if combo is only at 1 or 2, because rift CAN be 3rd cast of a combo.
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and self.vb.comboCast < 3 then
-					specWarnRiftmaw:Show(args.destName)
-					specWarnRiftmaw:Play("tauntboss")
-				else
-					warnRift:Show(args.destName, amount)
-				end
-			else
-				warnRift:Show(args.destName, amount)
-			end
+			warnRift:Show(args.destName, amount)
 		end
 	elseif spellId == 359981 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if not args:IsPlayer() then
-				--Taunt at 2 stacks of rend, if combo count less than 3 (basically any combo starting with rend rend x) to make sure tank doesn't get a 3rd rend
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and amount >= 2 then--Can't taunt less you've dropped yours off, period.
-					specWarnRend:Show(args.destName)
-					specWarnRend:Play("tauntboss")
-				else--only 1 stack, or no risk of it being a rend rend rend combo
-					warnRend:Show(args.destName, amount)
-				end
-			else
-				warnRend:Show(args.destName, amount)
-			end
+			warnRend:Show(args.destName, amount)
 		end
-	--End copy paste from Grong
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

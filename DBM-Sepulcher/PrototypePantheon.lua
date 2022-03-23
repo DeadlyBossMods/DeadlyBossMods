@@ -6,7 +6,7 @@ mod:SetCreatureID(181548, 181551, 181546, 181549)
 mod:SetEncounterID(2544)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220311000000)
+mod:SetHotfixNoticeRev(20220322000000)
 mod:SetMinSyncRevision(20220114000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true
@@ -135,49 +135,49 @@ local allTimers = {
 	["lfr"] = {--LFR data as of 1-7-22
 		[1] = {
 			--Necrotic Ritual
-			[360295] = {11.8, 76.9},
+			[360295] = {10, 78.9},--2 confirmed
 			--Runecarver's Deathtouch
-			[360636] = {50.8, 61.5},
+			[360636] = {},--Unknown, whenever first cast is, it's much later than it was in PTR, so all timers scrubbed
 			--Humbling Strikes
-			[365272] = {12.3, 38.5, 38.4, 38.5},
+			[365272] = {10, 38.2, 38.2, 38.2},--2 confirmed, 2 old
 			--Ascension's Call
-			[361066] = {46.2, 61.5},
+			[361066] = {},--0 confirmed, 2 old ones (46.2, 61.5) removed. not in combat log to confirm easily
 			--Pinning Volley
-			[361278] = {67.9, 69.2},
+			[361278] = {66.5, 69.2},--1 confirmed, 1 old
 		},
-		[2] = {
+		[2] = {--Note, not all are verified, old ones that look like they didn't change, were left from PTR testing
 			--Wild Stampede
-			[361304] = {14.7, 50.0, 33.3, 33.3},
+			[361304] = {14.6, 49.7, 33.3, 33.3},--3 confirmed, 4th old
 			--Withering Seeds
-			[361568] = {26.0, 128.3, 68.4},
+			[361568] = {25.8, 128.3, 68.4},--1 confirmed, others old
 			--Animastorm
-			[366234] = {52.6, 90.0},
+			[366234] = {52.4, 90},--1 confirmed, others old
 			--Wracking Pain
-			[365126] = {36.0, 58.4, 60.0},
+			[365126] = {35.8, 58, 60},--2 confirmed, 1 old
 			--Hand of Destruction
-			[361791] = {107.7, 75.0},
+			[361791] = {107.7, 75},--1 confirmed, 1 old
 		},
 		[3] = {
 			--Necrotic Ritual
-			[360295] = {52.6},
+			[360295] = {67.2},--1 confirmed
 			--Runecarver's Deathtouch
-			[360636] = {106.3},
+			[360636] = {},--Just not known anymore, it wasn't cast at all in LFR even within a 3 min P3 pull. maybe just yeeted?
 			--Humbling Strikes
-			[365272] = {33.9, 40.0},
+			[365272] = {43.5, 53.2},--2 confirmed
 			--Ascension's Call
-			[361066] = {97.8, 100.0},
+			[361066] = {},--97.8, 100.0 Can't in good concious keep these old ones active until confirmed or replaced
 			--Pinning Volley
-			[361278] = {56.7, 105.7},
+			[361278] = {71.2, 132.1},--1 confirmed, 1 mathed out
 			--Wild Stampede
-			[361304] = {35.8, 46.7, 47.0, 47.8},
+			[361304] = {45.5, 62.8, 62.8, 62.8},--2 confirmed, 2 are extension based on the pattern
 			--Withering Seeds
-			[361568] = {15.2, 73.3, 74.0, 57.4},
+			[361568] = {19.4, 98.9, 98.9, 76.3},--2 confirmed, 2 mathed out
 			--Animastorm
-			[366234] = {24.5, 94.0, 92.7},
+			[366234] = {31.1, 124.1, 120.5},--2 confirmed, 1 mathed out
 			--Wracking Pain
-			[365126] = {33.9, 40.0, 40.0, 40.0, 40.0, 42.7},
+			[365126] = {43.5, 53.2, 53.2, 53.2},--3 confirmed, 4th added because it's probably repeating
 			--Hand of Destruction
-			[361791] = {84.5, 100.0},
+			[361791] = {110, 130},--1 confirmed, 1 mathed out
 		},
 	},
 	["normal"] = {
@@ -412,10 +412,10 @@ function mod:OnCombatStart(delay)
 	else
 		difficultyName = "lfr"
 		--Necro
-		timerRunecarversDeathtouchCD:Start(50-delay, 1)--47.2
+--		timerRunecarversDeathtouchCD:Start(50-delay, 1)--No longer known, due to much higher CD now
 		--Kyrian
-		timerAscensionsCallCD:Start(42.9-delay, 1)--Time til USCS anyways
-		timerPinningVolleyCD:Start(63-delay, 1)
+--		timerAscensionsCallCD:Start(42.9-delay, 1)--No longer known, because can't verify it on WCL
+		timerPinningVolleyCD:Start(62.7-delay, 1)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -579,12 +579,12 @@ function mod:SPELL_CAST_START(args)
 				timerWildStampedeCD:Start(69, 1)
 			else--LFR
 				--Prototype of Absolution (Venthyr)
-				timerWrackingPainCD:Start(36, 1)
+				timerWrackingPainCD:Start(35.8, 1)
 				timerHandofDestructionCD:Start(107.7, 1)
 				--prototype-of-renewal (Night Fae)
 				timerWildStampedeCD:Start(14.6, 1)
-				timerWitheringSeedCD:Start(26, 1)
-				timerAnimastormCD:Start(52.6, 1)
+				timerWitheringSeedCD:Start(25.8, 1)
+				timerAnimastormCD:Start(52.4, 1)
 			end
 		else--Stage 3
 			if self:IsMythic() then
@@ -637,19 +637,19 @@ function mod:SPELL_CAST_START(args)
 				--timerRunecarversDeathtouchCD:Start(106.3, 1)--Wasn't cast?
 			else--LFR
 				--Prototype of Absolution (Venthyr)
-				timerWrackingPainCD:Start(33.9, 1)
-				timerHandofDestructionCD:Start(84.5, 1)
+				timerWrackingPainCD:Start(43.5, 1)
+				timerHandofDestructionCD:Start(110, 1)
 				--prototype-of-duty (Kyrian)
-				timerHumblingStrikesCD:Start(33.9, 1)
-				timerPinningVolleyCD:Start(56.7, 1)
-				timerAscensionsCallCD:Start(97.8, 1)
+				timerHumblingStrikesCD:Start(43.5, 1)
+				timerPinningVolleyCD:Start(71.2, 1)
+--				timerAscensionsCallCD:Start(97.8, 1)--Unknown
 				--prototype-of-renewal (Night Fae)
-				timerWitheringSeedCD:Start(15.2, 1)
-				timerAnimastormCD:Start(24.5, 1)
-				timerWildStampedeCD:Start(35.8, 1)
+				timerWitheringSeedCD:Start(19.4, 1)
+				timerAnimastormCD:Start(31.1, 1)
+				timerWildStampedeCD:Start(45.5, 1)
 				--prototype-of-war (Necro)
-				timerNecroticRitualCD:Start(52.6, 1)
-				timerRunecarversDeathtouchCD:Start(106.3, 1)
+				timerNecroticRitualCD:Start(67.2, 1)
+--				timerRunecarversDeathtouchCD:Start(135, 1)--Maybe doesn't exist, or is cast SUPER late now
 			end
 		end
 	end
