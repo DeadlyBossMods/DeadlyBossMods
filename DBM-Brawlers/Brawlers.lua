@@ -199,7 +199,7 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
-		if not (currentZoneID == 369 or currentZoneID == 1043) then return end
+		if currentZoneID ~= 369 and currentZoneID ~= 1043 then return end
 		if not eventsRegistered then
 			eventsRegistered = true
 			self:RegisterShortTermEvents(
@@ -215,7 +215,7 @@ function mod:OnSync(msg)
 			v()
 		end
 	elseif msg == "MatchEnd" then
-		if not (currentZoneID == 369 or currentZoneID == 1043) then return end
+		if currentZoneID ~= 369 and currentZoneID ~= 1043 then return end
 		currentFighter = nil
 		self:Stop()
 		--Boss from any rank can be fought by any rank now, so we just need to always cancel them all
