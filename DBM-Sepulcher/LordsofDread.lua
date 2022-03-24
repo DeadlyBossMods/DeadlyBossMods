@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2457, "DBM-Sepulcher", nil, 1195)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(181398, 181334)--Could be others
+mod:SetCreatureID(181398, 181399)
 mod:SetEncounterID(2543)
 mod:SetUsedIcons(1, 2, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220320000000)
@@ -14,31 +14,24 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360006 361913 361923 359960 360717 360145 360229 360284 360300 360304",
 	"SPELL_CAST_SUCCESS 360420",
-	"SPELL_AURA_APPLIED 360300 360012 361934 362020 361945 359963 360418 360146 360148 363191 360241 360287",
+	"SPELL_AURA_APPLIED 360300 360304 360012 361934 362020 361945 359963 360418 360146 360148 363191 360241 360287 364985",
 	"SPELL_AURA_APPLIED_DOSE 360287",
-	"SPELL_AURA_REMOVED 360300 360304 360012 361934 362020 361945 360418 360146 360148 363191 360241 360516",
+	"SPELL_AURA_REMOVED 360300 360304 360012 361934 362020 361945 360418 360146 360148 363191 360241 360516 364985",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, if bosses have synced energy and hit 100 at same time, combine their special timers into a...special timer.
 --TODO, pre spread warning for cloud of carrion?
---TODO, how many total Clouds of carrion go out? how much antispam filtering is needed?
---TODO, how to handle debuff icons, infoframe, etc. Kinda need to see cast frequency, effectiveness in clearning them etc and how much margin for failure should be considered
---TODO, as such, icons, infoframe etc for bursting and cluods of carrion are on hold for now
 --TODO, manifest shadows need a special warning?
 --TODO, possibly adjust timing of opened veins warning to better align with swaps of other boss, when more precise timings are known
---TODO, detect https://ptr.wowhead.com/spell=360428/moment-of-clarity ?
 --TODO, properly detect aura of shadow up. not sure if the buff is on boss or players, boss is assumed ATM
---TODO, target scan Slumber Cloud? two are spawned at once though so even if it works it's only one of them
 --TODO, tank defensive warnings may feel like too much by default and be better as opt ins, will guage feedback from testing (if there is testing)
 --[[
 (ability.id = 360006 or ability.id = 361913 or ability.id = 359960 or ability.id = 360717 or ability.id = 360145 or ability.id = 360229 or ability.id = 360284 or ability.id = 360300 or ability.id = 360304) and type = "begincast"
  or (ability.id = 360319 or ability.id = 360420) and type = "cast"
- or ability.id = 363191
- or (ability.id = 360300 or ability.id = 360304 or ability.id = 360516) and type = "removebuff"
+ or ability.id = 363191 or ability.id = 360516
+ or (ability.id = 360300 or ability.id = 360304) and type = "removebuff"
 --]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -58,12 +51,13 @@ local specWarnCloudofCarrion					= mod:NewSpecialWarningMoveAway(360012, nil, ni
 local specWarnCloudofCarrionDebuff				= mod:NewSpecialWarningYou(360012, nil, nil, nil, 1, 2)
 local specWarnCloudofCarrionDebuffMove			= mod:NewSpecialWarningMoveTo(360012, false, nil, nil, 1, 2)--Off by default because person has to actually have basic understanding of mechanic first, then agree to this helpful warning to help with it
 local yellCloudofCarrion						= mod:NewYell(360012)
+local yellBitingWounds							= mod:NewIconRepeatYell(364985, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnLeechingClaws						= mod:NewSpecialWarningDefensive(359960, nil, nil, nil, 1, 2)
 local specWarnOpenedVeins						= mod:NewSpecialWarningTaunt(359963, nil, nil, nil, 1, 2)
 ----Shadow adds
 local specWarnRavenousHunger					= mod:NewSpecialWarningInterruptCount(361923, "HasInterrupt", nil, nil, 1, 2)
 
-local timerUntoDarknessCD						= mod:NewCDCountTimer(103, 360319, nil, nil, nil, 6)--100+3sec cast time, paused by infiltration of dread
+local timerUntoDarknessCD						= mod:NewCDCountTimer(102.4, 360319, nil, nil, nil, 6)--100+3sec cast time with standard variation, paused by infiltration of dread
 local timerSwarmofDecay							= mod:NewBuffActiveTimer(20, 360300, 56158, nil, nil, 6)--Short text swarm, timer is used for both swarms
 local timerCloudofCarrionCD						= mod:NewCDCountTimer(21.8, 360012, nil, nil, nil, 3)
 local timerManifestShadowsCD					= mod:NewCDCountTimer(1, 361913, nil, nil, nil, 1)--No in between time
@@ -73,6 +67,7 @@ mod:AddInfoFrameOption(360319, false)
 mod:AddSetIconOption("SetIconOnManifestShadows", 361913, true, true, {6, 7, 8})--On by default since they'll be used by most interrupt helpers
 mod:AddNamePlateOption("NPAuraOnIncompleteForm", 362020, false)--Off by default so it doesn't cover up interrupt weak aura counters, which i suspect many will use
 mod:AddNamePlateOption("NPAuraOnFullyFormed", 361945, true)--Might also cover up interrupt weak auras, but this signifies target is now very dangerous but killable on mythic difficulty
+mod:GroupSpells(360012, 364985)--Group biting wounds with cloud of carrion
 --Kin'tessa
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23929))
 local warnShatterMind							= mod:NewSpellAnnounce(360420, 4)--Kind of a generic alert to say "this pull is a wash"
@@ -92,11 +87,11 @@ local specWarnAnguishingStrike					= mod:NewSpecialWarningDefensive(360284, nil,
 local specWarnAnguishingStrikeStack				= mod:NewSpecialWarningStack(360284, nil, 3, 31907, nil, 1, 6)
 local specWarnAnguishingStrikeTaunt				= mod:NewSpecialWarningTaunt(360284, nil, 31907, nil, 1, 2)
 
-local timerInfiltrationofDreadCD				= mod:NewCDCountTimer(123, 360717, nil, nil, nil, 6)--120+3sec cast time
+local timerInfiltrationofDreadCD				= mod:NewCDCountTimer(122.5, 360717, nil, nil, nil, 6)--120+3sec cast time with standard variation
 local timerParanoia								= mod:NewBuffFadesTimer(25, 360418, nil, nil, nil, 5)
 local timerFearfulTrepidationCD					= mod:NewCDCountTimer(29.1, 360145, 39176, nil, nil, 3)--DBM_COMMON_L.MAGIC_ICON
-local timerSlumberCloudCD						= mod:NewCDCountTimer(1, 360229, nil, nil, nil, 3)--No in between time
-local timerAnguishingStrikeCD					= mod:NewCDTimer(9.1, 360284, 31907, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSlumberCloudCD						= mod:NewCDCountTimer(32.8, 360229, nil, nil, nil, 3)
+local timerAnguishingStrikeCD					= mod:NewCDTimer(9.7, 360284, 31907, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnFearfulTrepidation", 360146, true, false, {1, 2})--On by default because max targets shows 2 debuffs can be out, and don't want both carrions running to same person. with icons the carrions can make split decisions to pick an icon each are going to
 mod:GroupSpells(360717, 360418)--Group paranoia with parent mechanic Infiltration of dread
@@ -133,6 +128,11 @@ local function updateRangeFrame(self)
 	end
 end
 
+local function BugsRepeater(self, text)
+	yellBitingWounds:Yell(text)
+	self:Schedule(1.5, BugsRepeater, self, text)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.darknessCount = 0
 	self.vb.shadowsCount = 0
@@ -146,14 +146,14 @@ function mod:OnCombatStart(delay)
 	self.vb.slumberCount = 0
 	playerDebuffed = false
 	--Mal'Ganis
-	timerCloudofCarrionCD:Start(6-delay, 1)
-	timerManifestShadowsCD:Start(12.1-delay, 1)
+	timerCloudofCarrionCD:Start(6-delay, 1)--6-7 (leaning toward 7 on mythic)
+	timerManifestShadowsCD:Start(12.1-delay, 1)--12-13 (leaning toward 13 on mythic)
 	timerLeechingClawsCD:Start(15.7-delay)
 	timerUntoDarknessCD:Start(50-delay, 1)
 	--Kin'tessa
-	timerAnguishingStrikeCD:Start(8.3-delay)
-	timerSlumberCloudCD:Start(12.1-delay, 1)
-	timerFearfulTrepidationCD:Start(25.4-delay, 1)
+	timerAnguishingStrikeCD:Start(8.2-delay)
+	timerSlumberCloudCD:Start(12.1-delay, 1)--12-13
+	timerFearfulTrepidationCD:Start(25.2-delay, 1)
 	timerInfiltrationofDreadCD:Start(123-delay, 1)
 	berserkTimer:Start(self:IsMythic() and 540 or self:IsHeroic() and 600 or 780)
 	if self.Options.InfoFrame then
@@ -178,12 +178,6 @@ function mod:OnCombatEnd()
 	end
 end
 
---[[
-function mod:OnTimerRecovery()
-
-end
---]]
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 360006 then
@@ -191,7 +185,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.carrionCount = self.vb.carrionCount + 1
 		specWarnCloudofCarrion:Show()
 		specWarnCloudofCarrion:Play("scatter")
-		timerCloudofCarrionCD:Start(nil, self.vb.carrionCount+1)--21
+		timerCloudofCarrionCD:Start(nil, self.vb.carrionCount+1)--21.8
 	elseif spellId == 361913 then
 		self.vb.shadowsCount = self.vb.shadowsCount + 1
 		warnManifestShadows:Show(self.vb.shadowsCount)
@@ -221,12 +215,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnLeechingClaws:Show()
 			specWarnLeechingClaws:Play("defensive")
 		end
-		timerLeechingClawsCD:Start()
+		timerLeechingClawsCD:Start()--16.9
 	elseif spellId == 360717 and self:AntiSpam(3, 1) then
 		self.vb.infiltrationCount = self.vb.infiltrationCount + 1
 		specWarnInfiltrationofDread:Show(self.vb.infiltrationCount)
 		specWarnInfiltrationofDread:Play("specialsoon")
-		--Stop some timers (probably not accurate, but lazy solution)
+		--Stop some timers (May still be missing some that actually pause/resume instead, but seems accurate enough)
 		--Mal'Ganis
 		timerCloudofCarrionCD:Stop()
 		timerManifestShadowsCD:Stop()
@@ -234,34 +228,32 @@ function mod:SPELL_CAST_START(args)
 		--Kin'tessa
 		timerAnguishingStrikeCD:Stop()
 		timerSlumberCloudCD:Stop()
-		timerFearfulTrepidationCD:Stop()
-	elseif (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 1) then
+	elseif (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 2) then
 		self.vb.darknessCount = self.vb.darknessCount + 1
 		specWarnUntoDarkness:Show(self.vb.darknessCount)
 		specWarnUntoDarkness:Play("specialsoon")
-		--Stop some timers (probably not accurate, but lazy solution)
+		--Stop some timers (May still be missing some that actually pause/resume instead, but seems accurate enough)
 		--Mal'Ganis
 		timerCloudofCarrionCD:Stop()
 		timerManifestShadowsCD:Stop()
 		timerLeechingClawsCD:Stop()
 		--Kin'tessa
 		timerAnguishingStrikeCD:Stop()
-		timerSlumberCloudCD:Stop()
 		timerFearfulTrepidationCD:Stop()
 	elseif spellId == 360145 then
 		self.vb.fearfulCount = self.vb.fearfulCount + 1
 		self.vb.trepidationIcon = 1
-		timerFearfulTrepidationCD:Start(nil, self.vb.fearfulCount+1)
+		timerFearfulTrepidationCD:Start(nil, self.vb.fearfulCount+1)--29.1
 	elseif spellId == 360229 then
-		self.vb.slumberCount = self.vb.slumberCount + 1
+		self.vb.slumberCount = self.vb.slumberCount + 1--Doesn't reset, used by timers and announce
 		warnSlumberCloud:Show(self.vb.slumberCount)
---		timerSlumberCloudCD:Start(nil, self.vb.slumberCount+1)--No in between casts
+		timerSlumberCloudCD:Start(32.8, self.vb.slumberCount+1)
 	elseif spellId == 360284 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
 			specWarnAnguishingStrike:Show()
 			specWarnAnguishingStrike:Play("defensive")
 		end
-		timerAnguishingStrikeCD:Start()
+		timerAnguishingStrikeCD:Start()--9.7
 	end
 end
 
@@ -274,9 +266,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 360300 then
-		timerSwarmofDecay:Start()
-	elseif spellId == 360012 then
+	if spellId == 360012 then
 		self.vb.carrionDebuffs = self.vb.carrionDebuffs + 1
 		if args:IsPlayer() then
 			specWarnCloudofCarrionDebuff:Show()
@@ -297,7 +287,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 361945 then
-		if self:AntiSpam(3, 2) then--If multiple adds they'll fully form at same time
+		if self:AntiSpam(3, 3) then--If multiple adds they'll fully form at same time
 			warnFullyFormed:Show()
 		end
 		if self.Options.NPAuraOnFullyFormed then
@@ -318,9 +308,28 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+	elseif (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 4) then--Darkness
+		timerSwarmofDecay:Start()
+		--This timer pauses, but also has a min time of 5 seconds so first we need to check and extend that if applicable
+		if timerSlumberCloudCD:GetRemaining(self.vb.slumberCount+1) < 4.6 then
+			local elapsed, total = timerSlumberCloudCD:GetTime(self.vb.slumberCount+1)
+			local extend = 4.6 - (total-elapsed)
+			timerSlumberCloudCD:Update(elapsed, total+extend, self.vb.slumberCount+1)
+			DBM:Debug("timerSlumberCloudCD extended by: "..extend, 2)
+		end
+		timerSlumberCloudCD:Pause(self.vb.slumberCount+1)
+	elseif spellId == 360516 and self:AntiSpam(3, 5) then--Infiltration
+		timerUntoDarknessCD:Pause(self.vb.darknessCount+1)--Pauses since bosses stop gaining energy
+		--This timer pauses, but also has a min time of 5 seconds so first we need to check and extend that if applicable
+		if timerFearfulTrepidationCD:GetRemaining(self.vb.fearfulCount+1) < 4.6 then
+			local elapsed, total = timerFearfulTrepidationCD:GetTime(self.vb.fearfulCount+1)
+			local extend = 4.6 - (total-elapsed)
+			timerFearfulTrepidationCD:Update(elapsed, total+extend, self.vb.fearfulCount+1)
+			DBM:Debug("timerFearfulTrepidationCD extended by: "..extend, 2)
+		end
+		timerFearfulTrepidationCD:Pause(self.vb.fearfulCount+1)
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Start()
-		timerUntoDarknessCD:Pause(self.vb.darknessCount+1)--Pauses since bosses stop gaining energy
 	elseif spellId == 360146 then
 		local icon = self.vb.trepidationIcon
 		if self.Options.SetIconOnFearfulTrepidation then
@@ -391,36 +400,44 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnAnguishingStrike:Show(args.destName, amount)
 			end
 		end
+	elseif spellId == 364985 then
+		if args:IsPlayer() then
+			self:Unschedule(BugsRepeater)
+			self:Schedule(1.5, BugsRepeater, self, 7)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 3) then--Both Swarm casts tied to Darkness
+	if (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 6) then--Both Swarm casts tied to Darkness
 		warnUntoDarknessOver:Show()
 		timerSwarmofDecay:Stop()
+		--May still be missing some that actually pause/resume instead, but seems accurate enough
 		--Mal
-		timerLeechingClawsCD:Start(5.3)
+		timerLeechingClawsCD:Start(5)
 		timerCloudofCarrionCD:Start(7.3, self.vb.carrionCount+1)
-		timerManifestShadowsCD:Start(10.4, self.vb.shadowsCount+1)
-		timerUntoDarknessCD:Start(nil, self.vb.darknessCount+1)--103
+		timerManifestShadowsCD:Start(10.1, self.vb.shadowsCount+1)
+		timerUntoDarknessCD:Start(nil, self.vb.darknessCount+1)--102.4
 		--Kintessa
-		timerFearfulTrepidationCD:Start(5.3, self.vb.fearfulCount+1)
-		timerSlumberCloudCD:Start(7.3, self.vb.slumberCount+1)
-		timerAnguishingStrikeCD:Start(9.7)
-	elseif spellId == 360516 and self:AntiSpam(3, 4) then--Infiltration
-		--Should be reliable since even if player died, they keep debuff until stage ends
+		timerFearfulTrepidationCD:Start(5, self.vb.fearfulCount+1)
+		timerAnguishingStrikeCD:Start(7.4)--7.4-9.7
+		--This timer resumes
+		timerSlumberCloudCD:Resume(self.vb.slumberCount+1)
+	elseif spellId == 360516 and self:AntiSpam(3, 7) then--Infiltration
+		--May still be missing some that actually pause/resume instead, but seems accurate enough
 		--Mal
-		timerLeechingClawsCD:Start(5.3)
-		timerCloudofCarrionCD:Start(6, self.vb.carrionCount+1)
+		timerLeechingClawsCD:Start(4.6)--4.6-5.3
+		timerCloudofCarrionCD:Start(6, self.vb.carrionCount+1)--6-7.1
 		timerManifestShadowsCD:Start(10.6, self.vb.shadowsCount+1)
 		timerUntoDarknessCD:Resume(self.vb.darknessCount+1)
 		--Kintessa
-		timerSlumberCloudCD:Start(5.3, self.vb.slumberCount+1)
-		timerAnguishingStrikeCD:Start(7.7)
-		timerFearfulTrepidationCD:Start(12.6, self.vb.fearfulCount+1)
-		timerInfiltrationofDreadCD:Start(nil, self.vb.infiltrationCount+1)--123
+		timerSlumberCloudCD:Start(4.6, self.vb.slumberCount+1)--4.6-5.3
+		timerAnguishingStrikeCD:Start(7.1)
+		timerInfiltrationofDreadCD:Start(nil, self.vb.infiltrationCount+1)--122.5
+		--These timers resume
+		timerFearfulTrepidationCD:Resume(self.vb.fearfulCount+1)
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Stop()
 	elseif spellId == 360012 then
@@ -459,6 +476,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.auraofShadowsOn = false
 		updateRangeFrame(self)
 		warnAuraofShadowsOver:Show()
+	elseif spellId == 364985 then
+		if args:IsPlayer() then
+			self:Unschedule(BugsRepeater)
+		end
 	end
 end
 
@@ -471,28 +492,20 @@ function mod:UNIT_DIED(args)
 		timerCloudofCarrionCD:Stop()
 		timerManifestShadowsCD:Stop()
 		timerLeechingClawsCD:Stop()
-	elseif cid == 181334 then--Kin'tessa
+	elseif cid == 181399 then--Kin'tessa
 		timerInfiltrationofDreadCD:Stop()
 		timerFearfulTrepidationCD:Stop()
 		timerSlumberCloudCD:Stop()
 		timerAnguishingStrikeCD:Stop()
---	elseif cid == 181925 then--Slumber Cloud
-
 	end
 end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 5) then
+	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 8) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
-	end
-end
 --]]

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(182777)
 mod:SetEncounterID(2549)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220308000000)
+mod:SetHotfixNoticeRev(20220323000000)
 mod:SetMinSyncRevision(20220308000000)
 --mod.respawnTime = 29
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362806 362275 362390 366379 362184 363533 366606 364114 364386",
 	"SPELL_CAST_SUCCESS 363108 363110",
-	"SPELL_AURA_APPLIED 361548 362273 362206 362088 362081 362207 363773 362271",
-	"SPELL_AURA_APPLIED_DOSE 362273 362088 362081",
-	"SPELL_AURA_REMOVED 361548 362273 362206 362088 362081 362207 363773",
+	"SPELL_AURA_APPLIED 361548 362273 362206 362088 362081 362207 363773 362271 368082 368080",
+	"SPELL_AURA_APPLIED_DOSE 362273 362088 362081 368080",
+	"SPELL_AURA_REMOVED 361548 362273 362206 362088 362081 362207 363773 368082 368080",
 	"SPELL_PERIODIC_DAMAGE 362798",
 	"SPELL_PERIODIC_MISSED 362798",
 	"UNIT_DIED"
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, reset/start timers on https://ptr.wowhead.com/spell=363773/the-singularity being applied or removed on boss accurate?
 --[[
 (ability.id = 362806 or ability.id = 362275 or ability.id = 362390 or ability.id = 366379 or ability.id = 363533 or ability.id = 364114 or ability.id = 364386) and type = "begincast"
- or (ability.id = 363108 or ability.id = 363110) and type = "cast"
+ or (ability.id = 363108 or ability.id = 363110 or ability.id = 362806) and type = "cast"
  or ability.id = 363773
  or (ability.id = 361548 or ability.id = 362806) and type = "applydebuff"
  or ability.id = 362184 and type = "begincast"
@@ -53,6 +53,8 @@ local warnCosmicCore							= mod:NewAddsLeftAnnounce(362770, 2)
 local warnCosmicIrregularity					= mod:NewCountAnnounce(362088, 2)
 local warnCelestialTerminator					= mod:NewSpellAnnounce(363108, 3)
 local warnRadiantPlasma							= mod:NewSpellAnnounce(366606, 4)--No one is tanking him fail check
+local warnDarkDarkQuasarBoss					= mod:NewStackAnnounce(368080, 2)
+local warnDarkDarkQuasarBossFaded				= mod:NewEndAnnounce(368080, 1)
 
 local specWarnDarkEclipse						= mod:NewSpecialWarningYou(361548, nil, nil, nil, 1, 2)
 local yellDarkEclipse							= mod:NewShortPosYell(361548)
@@ -65,14 +67,16 @@ local specWarnStellarShroud						= mod:NewSpecialWarningCount(366379, nil, nil, 
 local specWarnCorruptedStrikes					= mod:NewSpecialWarningDefensive(362184, nil, nil, nil, 1, 2)
 local specWarnMassiveBang						= mod:NewSpecialWarningCount(363533, nil, nil, nil, 2, 2)--First warn, begin cast
 local specWarnMassiveBangEscape					= mod:NewSpecialWarningMoveTo(363533, nil, nil, nil, 3, 2)--Second warn if not in singularity by 4 sec
+local specWarnDarkQuasarPersonal				= mod:NewSpecialWarningMoveAway(368082, nil, nil, nil, 1, 2)
+local yellarkQuasarPersonal						= mod:NewShortFadesYell(368082)
 
 local timerDarkEclipseCD						= mod:NewCDCountTimer(11, 361548, nil, nil, nil, 3)
 local timerCelestialCollapseCD					= mod:NewCDCountTimer(20.6, 362275, nil, nil, nil, 5)
 local timerQuasarRadiation						= mod:NewBuffActiveTimer(21, 361548, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerManifestCosmosCD						= mod:NewCDCountTimer(23.1, 362390, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
-local timerStellarShroudCD						= mod:NewAITimer(28.8, 366379, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON .. DBM_COMMON_L.MYTHIC_ICON)
+local timerStellarShroudCD						= mod:NewCDCountTimer(28.8, 366379, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON .. DBM_COMMON_L.MYTHIC_ICON)
 local timerCorruptedStrikesCD					= mod:NewCDTimer(6, 362184, nil, "Tank", nil, 5, 2, DBM_COMMON_L.TANK_ICON)
-local timerCelestialTerminatorCD				= mod:NewCDCountTimer(28.8, 363108, nil, nil, nil, 3)
+--local timerCelestialTerminatorCD				= mod:NewCDCountTimer(28.8, 363108, nil, nil, nil, 3)
 local timerMassiveBangCD						= mod:NewCDCountTimer(28.8, 363533, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerMassiveBang							= mod:NewCastTimer(10, 363533, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 
@@ -123,33 +127,35 @@ function mod:OnCombatStart(delay)
 	self.vb.coreCount = 0
 	self.vb.shroudCount = 0
 	self.vb.bangCount = 0
-	timerCorruptedStrikesCD:Start(3)
-	timerDarkEclipseCD:Start(6.2, 1)
-	timerCelestialCollapseCD:Start(8.4, 1)
---	timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
-	timerMassiveBangCD:Start(self:IsMythic() and 65 or 60, 1)
-	if self:IsHard() then
-		timerManifestCosmosCD:Start(self:IsMythic() and 20 or 15.7, 1)
-		if self:IsMythic() then
-			berserkTimer:Start(390)
-			timerStellarShroudCD:Start(1)
-			if self.Options.InfoFrame then
-				--On mythic it's slightly more elaborate and involves coordinating a bunch of people around the new mechanic
-				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362088))
-				DBM.InfoFrame:Show(20, "table", cosmicStacks, 1)
-			end
-		else
+	if self:IsMythic() then
+		timerDarkEclipseCD:Start(6.8, 1)
+		timerStellarShroudCD:Start(8.1, 1)
+		timerCelestialCollapseCD:Start(9.3, 1)
+		timerCorruptedStrikesCD:Start(10.6)
+		timerManifestCosmosCD:Start(20, 1)
+--		timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
+		timerMassiveBangCD:Start(65, 1)
+		berserkTimer:Start(390)
+		if self.Options.InfoFrame then
+			--On mythic it's slightly more elaborate and involves coordinating a bunch of people around the new mechanic
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362088))
+			DBM.InfoFrame:Show(20, "table", cosmicStacks, 1)
+		end
+	else
+		timerCorruptedStrikesCD:Start(3)
+		timerDarkEclipseCD:Start(6.2, 1)
+		timerCelestialCollapseCD:Start(8.4, 1)
+--		timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
+		timerMassiveBangCD:Start(self:IsMythic() and 65 or 60, 1)
+		if self:IsHeroic() then
+			timerManifestCosmosCD:Start(15.7, 1)
 			if self.Options.InfoFrame then
 				--On heroic it's fairly straight forward swaps tracking only some people
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362081))
 				DBM.InfoFrame:Show(5, "table", cosmicStacks, 1)
 			end
 		end
-
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 end
 
 function mod:OnCombatEnd()
@@ -159,9 +165,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:OnTimerRecovery()
@@ -188,25 +191,28 @@ function mod:SPELL_CAST_START(args)
 			warnCelestialCollapse:Show(self.vb.collapseCount)
 		end
 		if self.vb.collapseCount == 1 then--Only cast twice per cycle
-			timerCelestialCollapseCD:Start(nil, self.vb.collapseCount+1)--20.6
+			timerCelestialCollapseCD:Start(self:IsMythic() and 23.1 or 20.6, self.vb.collapseCount+1)--20.6
 		end
 	elseif spellId == 362390 then
 		self.vb.cosmosCount = self.vb.cosmosCount + 1
 		self.vb.coreCount = self.vb.coreCount + (self:IsMythic() and 3 or 1)
 		warnManifestCosmos:Show(self.vb.cosmosCount)
-		if self.vb.cosmosCount == 1 then
-			timerManifestCosmosCD:Start(nil, self.vb.cosmosCount+1)--23.1
+		if (self:IsMythic() and self.vb.cosmosCount < 3) or self.vb.cosmosCount == 1 then
+			timerManifestCosmosCD:Start(self:IsMythic() and 11.6 or 23.1, self.vb.cosmosCount+1)
 		end
 	elseif spellId == 366379 then
 		self.vb.shroudCount = self.vb.shroudCount + 1
 		specWarnStellarShroud:Show(self.vb.shroudCount)
 		specWarnStellarShroud:Play("aesoon")
-		timerStellarShroudCD:Start()
+		if self.vb.shroudCount < 4 then
+			timerStellarShroudCD:Start(self.vb.shroudCount == 2 and 14.9 or 16.2, self.vb.shroudCount+1)
+		end
 	elseif spellId == 362184 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnCorruptedStrikes:Show()
 			specWarnCorruptedStrikes:Play("defensive")
 		end
+		timerCorruptedStrikesCD:Start()
 	elseif spellId == 363533 then
 		self.vb.bangCount = self.vb.bangCount + 1
 		specWarnMassiveBang:Show(self.vb.bangCount)
@@ -232,7 +238,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 363108 or spellId == 363110) and self:AntiSpam(3, 2) then
 		warnCelestialTerminator:Show()
-		timerCelestialTerminatorCD:Start()
+--		timerCelestialTerminatorCD:Start()
 	end
 end
 
@@ -304,11 +310,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScanForMobs(args.sourceGUID, 2, self.vb.quasarIcon, 1, nil, 12, "SetIconOnQuasar")
 		end
 		self.vb.quasarIcon = self.vb.quasarIcon - 1
+	elseif spellId == 368082 and args:IsPlayer() then
+		specWarnDarkQuasarPersonal:Show()
+		specWarnDarkQuasarPersonal:Play("runout")
+		yellarkQuasarPersonal:Countdown(spellId, 2)
+	elseif spellId == 368080 then
+		warnDarkDarkQuasarBoss:Cancel()
+		warnDarkDarkQuasarBoss:Shedule(0.3, args.destName, args.amount or 1)
 	elseif spellId == 363773 then--Boss Entering Singularity
 		timerDarkEclipseCD:Stop()
 		timerCelestialCollapseCD:Stop()
 		timerCorruptedStrikesCD:Stop()
-		timerCelestialTerminatorCD:Stop()
+--		timerCelestialTerminatorCD:Stop()
 		timerMassiveBangCD:Stop()
 		timerManifestCosmosCD:Stop()
 		timerStellarShroudCD:Stop()
@@ -351,6 +364,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerInSingularity = false
 		end
+	elseif spellId == 368082 and args:IsPlayer() then
+		yellarkQuasarPersonal:Cancel()
+	elseif spellId == 368080 then
+		warnDarkDarkQuasarBossFaded:Show()
 	elseif spellId == 363773 then--Boss Leaving Singularity
 		self.vb.eclipseCount = 0
 		self.vb.collapseCount = 0
@@ -359,15 +376,22 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.bangCount = 0
 		timerCorruptedStrikesCD:Stop()
 		timerShatterSphereCD:Stop()
-		timerCorruptedStrikesCD:Start(3)
-		timerDarkEclipseCD:Start(6, 1)
-		timerCelestialCollapseCD:Start(8.3, 1)
---		timerCelestialTerminatorCD:Start(3, 1)
-		timerMassiveBangCD:Start(self:IsMythic() and 65 or 60.6, self.vb.bangCount+1)
-		if self:IsHard() then
-			timerManifestCosmosCD:Start(self:IsMythic() and 20 or 15.6, 1)
-			if self:IsMythic() then
-				timerStellarShroudCD:Start(3)
+		if self:IsMythic() then
+			timerDarkEclipseCD:Start(6.9, 1)--SUCCESS
+			timerStellarShroudCD:Start(8.4, 1)
+			timerCelestialCollapseCD:Start(9.6, 1)
+			timerCorruptedStrikesCD:Start(10.8)
+--			timerCelestialTerminatorCD:Start(3, 1)
+			timerManifestCosmosCD:Start(19.9, 1)
+			timerMassiveBangCD:Start(65, self.vb.bangCount+1)
+		else
+			timerCorruptedStrikesCD:Start(3)
+			timerDarkEclipseCD:Start(6, 1)--SUCCESS
+			timerCelestialCollapseCD:Start(8.3, 1)
+--			timerCelestialTerminatorCD:Start(3, 1)
+			timerMassiveBangCD:Start(60.6, self.vb.bangCount+1)
+			if self:IsHeroic() then
+				timerManifestCosmosCD:Start(15.6, 1)
 			end
 		end
 	end
