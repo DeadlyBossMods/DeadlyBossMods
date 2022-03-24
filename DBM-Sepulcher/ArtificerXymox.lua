@@ -297,8 +297,10 @@ function mod:OnCombatStart(delay)
 	else
 		if self:IsHeroic() then
 			difficultyName = "heroic"
+			berserkTimer:Start(480-delay)
 		elseif self:IsNormal() then
 			difficultyName = "normal"
+			berserkTimer:Start(540-delay)
 		else
 			difficultyName = "lfr"
 			timerDimensionalTearCD:Start(11-delay)
