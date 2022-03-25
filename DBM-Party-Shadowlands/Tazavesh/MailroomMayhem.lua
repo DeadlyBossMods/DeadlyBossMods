@@ -31,7 +31,7 @@ local yellMoneyOrderFades			= mod:NewShortFadesYell(346962, nil, nil, nil, "YELL
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(346329, nil, nil, nil, 1, 8)
 
 local timerUnstableGoodsCD			= mod:NewAITimer(11, 346947, nil, nil, nil, 5)
-local timerHazardousLiquidsCD		= mod:NewAITimer(11, 346947, nil, nil, nil, 3)
+local timerHazardousLiquidsCD		= mod:NewAITimer(11, 346286, nil, nil, nil, 3)
 local timerFanMailCD				= mod:NewAITimer(15.8, 346293, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerMoneyOrderCD				= mod:NewAITimer(11, 346962, nil, nil, nil, 3)
 
