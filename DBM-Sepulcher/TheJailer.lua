@@ -67,6 +67,7 @@ local yellMartyrdomFades						= mod:NewShortFadesYell(363893, nil, nil, nil, "YE
 local specWarnMisery							= mod:NewSpecialWarningTaunt(362192, nil, nil, nil, 1, 2, 4)
 local specWarnTorment							= mod:NewSpecialWarningMoveAway(365436, nil, nil, nil, 1, 2)
 local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, nil, nil, nil, 1, 2)
+local specWarnRuneofDamnationPit				= mod:NewSpecialWarningMoveTo(360281, nil, nil, nil, 1, 7)
 local yellRuneofDamnation						= mod:NewShortPosYell(360281)
 local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
 
@@ -75,7 +76,7 @@ local timerRelentingDominationCD				= mod:NewCDCountTimer(28.8, 362028, nil, nil
 local timerChainsofOppressionCD					= mod:NewCDCountTimer(28.8, 362631, nil, nil, nil, 3)
 local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TANKCOMBOC, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
-local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
+local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, DBM_COMMON_L.BOMBS.." (%s)", nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {6})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
@@ -89,16 +90,16 @@ local specWarnWorldCracker						= mod:NewSpecialWarningCount(366678, nil, nil, n
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(360425, nil, nil, nil, 1, 8)
 local specWarnShatteringBlast					= mod:NewSpecialWarningMoveTo(359856, nil, nil, nil, 1, 2)
 local specWarnRuneofCompulsion					= mod:NewSpecialWarningYou(366285, nil, nil, nil, 1, 2)
-local yellRuneofCompulsion						= mod:NewShortPosYell(366285)
+local yellRuneofCompulsion						= mod:NewShortPosYell(366285, DBM_COMMON_L.MINDCONTROL)
 local yellRuneofCompulsionFades					= mod:NewIconFadesYell(366285)
-local specWarnDecimator							= mod:NewSpecialWarningCount(364942, nil, nil, nil, 2, 2)
+local specWarnDecimator							= mod:NewSpecialWarningCount(364942, nil, 72994, nil, 2, 2)
 local specWarnTormentingEcho					= mod:NewSpecialWarningDodge(365371, nil, nil, nil, 2, 2)
 
 local timerWorldCrackerCD						= mod:NewAITimer(28.8, 366678, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnholyAttunementCD					= mod:NewCDCountTimer(28.8, 360373, nil, nil, nil, 3)
 local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, nil, 5)
-local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, nil, nil, nil, 3)
-local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, nil, nil, nil, 2)
+local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, DBM_COMMON_L.MINDCONTROL.." (%s)", nil, nil, 3)
+local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, 72994, nil, nil, 2)
 
 mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4, 5})
 
@@ -634,8 +635,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnRuneofDamnation:Show()
-			specWarnRuneofDamnation:Play("runout")
+			specWarnRuneofDamnation:Show()--self:IconNumToTexture(icon)
+			specWarnRuneofDamnation:Play("targetyou")--"mm"..icon
+			specWarnRuneofDamnationPit:Schedule(5, DBM_COMMON_L.PIT)
+			specWarnRuneofDamnationPit:ScheduleVoice(5, "jumpinpit")
 			yellRuneofDamnation:Yell(icon, icon)
 			yellRuneofDamnationFades:Countdown(spellId, nil, icon)
 		end
@@ -731,6 +734,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellRuneofDamnationFades:Cancel()
+			specWarnRuneofDamnationPit:Cancel()
+			specWarnRuneofDamnationPit:CancelVoice()
 		end
 	elseif spellId == 366285 then
 		if self.Options.SetIconOnCopulsion then
