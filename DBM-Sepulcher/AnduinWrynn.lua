@@ -332,7 +332,7 @@ function mod:SPELL_CAST_START(args)
 		timerHopebreakerCD:Start(self:IsMythic() and 65.5 or 58.4, self.vb.hopebreakerCount+1)
 	elseif spellId == 362771 then
 		self.vb.befouledCount = self.vb.befouledCount + 1--Reused since befoulment not happening here
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID, nil, true) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Change to boss2 if confirmed remnant is always boss2, to save cpu
 			specWarnSoulReaper:Show()
 			specWarnSoulReaper:Play("defensive")
 		end

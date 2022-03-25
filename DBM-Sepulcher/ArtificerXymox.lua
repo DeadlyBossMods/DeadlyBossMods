@@ -347,7 +347,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 363485 then
 		DBM:AddMsg("The Cartel Elite added to combat log, notify DBM authors")
 	elseif spellId == 365682 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnMassiveBlast:Show()
 			specWarnMassiveBlast:Play("defensive")
 		end
