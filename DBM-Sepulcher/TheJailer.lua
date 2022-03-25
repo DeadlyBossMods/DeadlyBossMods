@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
 	"SPELL_PERIODIC_MISSED 360425 365174",
 --	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1",
+--	"UNIT_SPELLCAST_START boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -117,9 +117,9 @@ local specWarnChainsofAnguish					= mod:NewSpecialWarningDefensive(365219, nil, 
 local specWarnChainsofAnguishTaunt				= mod:NewSpecialWarningTaunt(365219, nil, nil, nil, 1, 2)
 local specWarnChainsofAnguishLink				= mod:NewSpecialWarningYou(365219, nil, nil, nil, 1, 2)
 local yellChainsofAnguishLink					= mod:NewShortPosYell(365219)
-local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil, 3, 2)
-local yellDefile								= mod:NewYell(365169)
-local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
+local specWarnDefile							= mod:NewSpecialWarningCount(365169, nil, nil, nil, 3, 2)
+--local yellDefile								= mod:NewYell(365169)
+--local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
 local timerWorldShattererCD						= mod:NewAITimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnbreakableGraspCD					= mod:NewCDTimer(28.8, 363332, nil, nil, nil, 6)
@@ -416,6 +416,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 365169 then
 		self.vb.defileCount = self.vb.defileCount + 1
+		specWarnDefile:Show(self.vb.defileCount)
+		specWarnDefile:Play("stilldanger")
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1] or 40.9--40.9 iffy minimum, need more sequenced data
 			if timer then
@@ -770,28 +772,28 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 do
-	function mod:DefileTarget(targetname, uId)
-		if not targetname then return end
-		if self.Options.SetIconOnDecimator2 then
-			self:SetIcon(targetname, 8, 3)--So icon clears 1 second after
-		end
-		if targetname == UnitName("player") then
-			specWarnDefile:Show()
-			specWarnDefile:Play("runout")
-			yellDefile:Yell()
-		elseif self:CheckNearby(10, targetname) then
-			specWarnDefileNear:Show(targetname)
-			specWarnDefileNear:Play("runaway")
-		else
-			warnDefile:Show(targetname)
-		end
-	end
+	--function mod:DefileTarget(targetname, uId)
+	--	if not targetname then return end
+	--	if self.Options.SetIconOnDecimator2 then
+	--		self:SetIcon(targetname, 8, 3)--So icon clears 1 second after
+	--	end
+	--	if targetname == UnitName("player") then
+	--		specWarnDefile:Show()
+	--		specWarnDefile:Play("runout")
+	--		yellDefile:Yell()
+	--	elseif self:CheckNearby(10, targetname) then
+	--		specWarnDefileNear:Show(targetname)
+	--		specWarnDefileNear:Play("runaway")
+	--	else
+	--		warnDefile:Show(targetname)
+	--	end
+	--end
 
-	function mod:UNIT_SPELLCAST_START(uId, _, spellId)
-		if spellId == 365169 then
-			self:BossUnitTargetScanner(uId, "DefileTarget", 3)
-		end
-	end
+	--function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	--	if spellId == 365169 then
+	--	--	self:BossUnitTargetScanner(uId, "DefileTarget", 3)
+	--	end
+	--end
 end
 
 --[[
