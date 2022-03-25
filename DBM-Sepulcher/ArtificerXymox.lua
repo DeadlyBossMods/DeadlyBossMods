@@ -51,15 +51,15 @@ local specWarnGlyphofRelocation					= mod:NewSpecialWarningMoveAway(362803, nil,
 local yellGlyphofRelocation						= mod:NewYell(362803)
 local yellGlyphofRelocationFades				= mod:NewShortFadesYell(362803)
 local specWarnGlyphofRelocationTaunt			= mod:NewSpecialWarningTaunt(362803, nil, nil, nil, 1, 2)
-local specWarnStasisTrap						= mod:NewSpecialWarningDodge(362882, nil, nil, nil, 2, 2)
+local specWarnStasisTrap						= mod:NewSpecialWarningDodgeCount(362882, nil, nil, nil, 2, 2)
 local yellStasisTrap							= mod:NewYell(362882)--Failing to dodge it
 local specWarnHyperlightSpark					= mod:NewSpecialWarningCount(362849, nil, 206794, nil, 2, 2)--Short Text "Nova"
 
-local timerDimensionalTearCD					= mod:NewNextTimer(8, 362615, 67833, nil, nil, 3)
+local timerDimensionalTearCD					= mod:NewNextCountTimer(8, 362615, 67833, nil, nil, 3)
 local timerCartelEliteCD						= mod:NewCDTimer(28.8, 363485, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGlyphofRelocationCD					= mod:NewCDCountTimer(60, 362801, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGlyphExplostion						= mod:NewTargetTimer(5, 362803, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerStasisTrapCD							= mod:NewCDTimer(30, 362882, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
+local timerStasisTrapCD							= mod:NewCDCountTimer(30, 362882, nil, nil, nil, 3)--28-32. it attemts to average 30 but has ~2 in either direction for some reason
 local timerHyperlightSparknovaCD				= mod:NewCDCountTimer(30, 362849, 206794, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--28-34
 local berserkTimer								= mod:NewBerserkTimer(600)
 
@@ -99,6 +99,7 @@ mod.vb.tearIcon = 1
 mod.vb.sparkCount = 0
 mod.vb.ringCount = 0
 mod.vb.glyphCount = 0
+mod.vb.trapCount = 0
 local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or mod:IsNormal() and "normmal" or "lfr"
 --This table may seem excessive, especially in phasess where they are all same (why not just go if phase 2 = then timer == 37)
 --The reason being they aren't ALWAYS the same, case and point glyph in stage 1, rings in stage 4 heroic
@@ -279,13 +280,14 @@ function mod:OnCombatStart(delay)
 	self.vb.sparkCount = 0
 	self.vb.ringCount = 0
 	self.vb.glyphCount = 0
+	self.vb.trapCount = 0
 	--For the time being, initial pull timers stil same on all difficulties
 	--This will probably be changed soon enough :D
 	if not self:IsLFR() then
 		--These are same in 3 modes
-		timerDimensionalTearCD:Start(7.9-delay)
+		timerDimensionalTearCD:Start(7.9-delay, 1)
 		timerHyperlightSparknovaCD:Start(14-delay, 1)
-		timerStasisTrapCD:Start(21-delay)
+		timerStasisTrapCD:Start(21-delay, 1)
 		timerForerunnerRingsCD:Start(26-delay, 1)
 		timerGlyphofRelocationCD:Start(39.9-delay, 1)
 	end
@@ -303,9 +305,9 @@ function mod:OnCombatStart(delay)
 			berserkTimer:Start(540-delay)
 		else
 			difficultyName = "lfr"
-			timerDimensionalTearCD:Start(11-delay)
+			timerDimensionalTearCD:Start(11-delay, 1)
 			timerHyperlightSparknovaCD:Start(20-delay, 1)
-			timerStasisTrapCD:Start(30-delay)
+			timerStasisTrapCD:Start(30-delay, 1)
 			timerForerunnerRingsCD:Start(37.1-delay, 1)
 			timerGlyphofRelocationCD:Start(57.1-delay, 1)
 		end
@@ -391,12 +393,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 362885 or spellId == 366752) and self:AntiSpam(10, 3) then--362885 verified on heroic
-		specWarnStasisTrap:Show()
+		self.vb.trapCount = self.vb.trapCount + 1
+		specWarnStasisTrap:Show(self.vb.trapCount)
 		specWarnStasisTrap:Play("watchstep")
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase][362885]
 			if timer then
-				timerStasisTrapCD:Start(timer)
+				timerStasisTrapCD:Start(timer, self.vb.trapCount+1)
 			end
 		end
 	elseif spellId == 364040 then
@@ -461,6 +464,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.sparkCount = 0
 		self.vb.ringCount = 0
 		self.vb.glyphCount = 0
+		self.vb.trapCount = 0
 		warnDecipherRelic:Show()
 		--Stop timers
 		timerForerunnerRingsCD:Stop()
@@ -472,8 +476,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerStasisTrapCD:Stop()
 		if self:IsMythic() then
 			timerHyperlightSparknovaCD:Start(15.5, 1)
-			timerDimensionalTearCD:Start(22)
-			timerStasisTrapCD:Start(23)
+			timerDimensionalTearCD:Start(22, 4)
+			timerStasisTrapCD:Start(23, 1)
 			timerForerunnerRingsCD:Start(28, 1)
 			timerGlyphofRelocationCD:Start(44, 1)
 			--TODO: Could be changed since other stuff was, review!
@@ -482,15 +486,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif self:IsHeroic() then
 			--Timers on non mythic even more altered on P4 start with march 3rd hotfixes
 			timerHyperlightSparknovaCD:Start(18.6, 1)
-			timerStasisTrapCD:Start(28)
-			timerDimensionalTearCD:Start(33.3)
+			timerStasisTrapCD:Start(28, 1)
+			timerDimensionalTearCD:Start(33.3, 4)
 			timerForerunnerRingsCD:Start(36, 1)
 			timerGlyphofRelocationCD:Start(53.3, 1)
 		else--Normal, LFR are same here
 			--Timers on non mythic even more altered on P4 start with march 3rd hotfixes
 			timerHyperlightSparknovaCD:Start(20, 1)
-			timerStasisTrapCD:Start(30)
-			timerDimensionalTearCD:Start(35.7)
+			timerStasisTrapCD:Start(30, 1)
+			timerDimensionalTearCD:Start(35.7, 4)
 			timerForerunnerRingsCD:Start(38.5, 1)
 			timerGlyphofRelocationCD:Start(57.1, 1)
 		end
@@ -575,12 +579,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.sparkCount = 0
 		self.vb.ringCount = 0
 		self.vb.glyphCount = 0
+		self.vb.trapCount = 0
 		warnDecipherRelicOver:Show()
 		if self:IsMythic() then
 			--Restart Timers (exactly same as pull)
-			timerDimensionalTearCD:Start(8)
+			timerDimensionalTearCD:Start(8, self.vb.phase)
 			timerHyperlightSparknovaCD:Start(14, 1)
-			timerStasisTrapCD:Start(21)
+			timerStasisTrapCD:Start(21, 1)
 			timerForerunnerRingsCD:Start(26, 1)
 			timerGlyphofRelocationCD:Start(40, 1)
 			--Mythic Only
@@ -588,23 +593,23 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerRiftBlastsCD:Start(12.2)
 		elseif self:IsHeroic() then
 			--Initial timers are slowed now as of march 3rd hotfixe
-			timerDimensionalTearCD:Start(8.8)
+			timerDimensionalTearCD:Start(8.8, self.vb.phase)
 			timerHyperlightSparknovaCD:Start(15.5, 1)
-			timerStasisTrapCD:Start(23.3)
+			timerStasisTrapCD:Start(23.3, 1)
 			timerForerunnerRingsCD:Start(28.8, 1)
 			timerGlyphofRelocationCD:Start(44.4, 1)
 		elseif self:IsNormal() then
 			--Initial timers are even more slowed as of march 3rd hotfixe
-			timerDimensionalTearCD:Start(10)
+			timerDimensionalTearCD:Start(10, self.vb.phase)
 			timerHyperlightSparknovaCD:Start(17.5, 1)
-			timerStasisTrapCD:Start(26.2)
+			timerStasisTrapCD:Start(26.2, 1)
 			timerForerunnerRingsCD:Start(32.5, 1)
 			timerGlyphofRelocationCD:Start(50, 1)
 		else--LFR
 			--Initial timers are even more slowed as of march 3rd hotfixe
-			timerDimensionalTearCD:Start(11.4)
+			timerDimensionalTearCD:Start(11.4, self.vb.phase)
 			timerHyperlightSparknovaCD:Start(20, 1)
-			timerStasisTrapCD:Start(30)
+			timerStasisTrapCD:Start(30, 1)
 			timerForerunnerRingsCD:Start(37.1, 1)
 			timerGlyphofRelocationCD:Start(57.1, 1)
 		end
