@@ -128,27 +128,27 @@ function mod:OnCombatStart(delay)
 	self.vb.shroudCount = 0
 	self.vb.bangCount = 0
 	if self:IsMythic() then
-		timerDarkEclipseCD:Start(6.8, 1)
-		timerStellarShroudCD:Start(8.1, 1)
-		timerCelestialCollapseCD:Start(9.3, 1)
-		timerCorruptedStrikesCD:Start(10.6)
-		timerManifestCosmosCD:Start(20, 1)
+		timerDarkEclipseCD:Start(6.8-delay, 1)
+		timerStellarShroudCD:Start(8.1-delay, 1)
+		timerCelestialCollapseCD:Start(9.3-delay, 1)
+		timerCorruptedStrikesCD:Start(10.6-delay)
+		timerManifestCosmosCD:Start(20-delay, 1)
 --		timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
-		timerMassiveBangCD:Start(65, 1)
-		berserkTimer:Start(390)
+		timerMassiveBangCD:Start(65-delay, 1)
+		berserkTimer:Start(390-delay)
 		if self.Options.InfoFrame then
 			--On mythic it's slightly more elaborate and involves coordinating a bunch of people around the new mechanic
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362088))
 			DBM.InfoFrame:Show(20, "table", cosmicStacks, 1)
 		end
 	else
-		timerCorruptedStrikesCD:Start(3)
-		timerDarkEclipseCD:Start(6.2, 1)
-		timerCelestialCollapseCD:Start(8.4, 1)
+		timerCorruptedStrikesCD:Start(3-delay)
+		timerDarkEclipseCD:Start(6.2-delay, 1)
+		timerCelestialCollapseCD:Start(8.4-delay, 1)
 --		timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
-		timerMassiveBangCD:Start(self:IsMythic() and 65 or 60, 1)
+		timerMassiveBangCD:Start(60-delay, 1)
 		if self:IsHeroic() then
-			timerManifestCosmosCD:Start(15.7, 1)
+			timerManifestCosmosCD:Start(15.7-delay, 1)
 			if self.Options.InfoFrame then
 				--On heroic it's fairly straight forward swaps tracking only some people
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362081))
@@ -236,7 +236,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if (spellId == 363108 or spellId == 363110) and self:AntiSpam(3, 2) then
+	if args:IsSpellID(363108, 363110) and self:AntiSpam(3, 2) then
 		warnCelestialTerminator:Show()
 --		timerCelestialTerminatorCD:Start()
 	end
@@ -368,7 +368,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		yellarkQuasarPersonal:Cancel()
 	elseif spellId == 368080 then
 		warnDarkDarkQuasarBossFaded:Show()
-	elseif spellId == 363773 then--Boss Leaving Singularity
+	elseif spellId == 363773 then --Boss Leaving Singularity
 		self.vb.eclipseCount = 0
 		self.vb.collapseCount = 0
 		self.vb.cosmosCount = 0

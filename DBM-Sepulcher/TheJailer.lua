@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--, 7, 8
-mod:SetHotfixNoticeRev(20220314000000)
-mod:SetMinSyncRevision(20220314000000)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetHotfixNoticeRev(20220324000000)
+mod:SetMinSyncRevision(20220324000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
 
@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
 	"SPELL_PERIODIC_MISSED 360425 365174",
 --	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1",
+--	"UNIT_SPELLCAST_START boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -55,19 +55,20 @@ mod:AddRangeFrameOption("6")
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24087))
 local warnDomination							= mod:NewTargetNoFilterAnnounce(362075, 4)
 local warnTyranny								= mod:NewCastAnnounce(366022, 3)
-local warnMartyrdom								= mod:NewTargetCountAnnounce(363893, 4, nil, nil, nil, nil, nil, nil, true)
-local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, 3, nil, nil, nil, nil, nil, nil, true)
+local warnMartyrdom								= mod:NewTargetCountAnnounce(363893, DBM_COMMON_L.TANKCOMBO, 4, nil, nil, nil, nil, nil, nil, true)
+local warnRuneofDamnation						= mod:NewTargetCountAnnounce(360281, DBM_COMMON_L.BOMB, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnWorldCrusher						= mod:NewSpecialWarningCount(366374, nil, nil, nil, 2, 2, 4)
 local specWarnRelentingDomination				= mod:NewSpecialWarningMoveTo(362028, nil, nil, nil, 1, 2)
 local specWarnChainsofOppression				= mod:NewSpecialWarningRun(362631, nil, nil, nil, 4, 2)
-local specWarnMartyrdom							= mod:NewSpecialWarningDefensive(363893, nil, nil, nil, 1, 2)
+local specWarnMartyrdom							= mod:NewSpecialWarningDefensive(363893, DBM_COMMON_L.TANKCOMBOC, nil, nil, nil, 1, 2)
 local yellMartyrdom								= mod:NewYell(363893, nil, nil, nil, "YELL")--rooted target = stack target for misery very likely
 local yellMartyrdomFades						= mod:NewShortFadesYell(363893, nil, nil, nil, "YELL")
 local specWarnMisery							= mod:NewSpecialWarningTaunt(362192, nil, nil, nil, 1, 2, 4)
 local specWarnTorment							= mod:NewSpecialWarningMoveAway(365436, nil, nil, nil, 1, 2)
-local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, nil, nil, nil, 1, 2)
-local yellRuneofDamnation						= mod:NewShortPosYell(360281)
+local specWarnRuneofDamnation					= mod:NewSpecialWarningYou(360281, DBM_COMMON_L.BOMB, nil, nil, nil, 1, 2)
+local specWarnRuneofDamnationPit				= mod:NewSpecialWarningMoveTo(360281, DBM_COMMON_L.BOMB, nil, nil, nil, 1, 7)
+local yellRuneofDamnation						= mod:NewShortPosYell(360281, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT["shortposition"]:format(DBM_COMMON_L.BOMB))
 local yellRuneofDamnationFades					= mod:NewIconFadesYell(360281)
 
 local timerWorldCrusherCD						= mod:NewAITimer(28.8, 366374, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -75,7 +76,7 @@ local timerRelentingDominationCD				= mod:NewCDCountTimer(28.8, 362028, nil, nil
 local timerChainsofOppressionCD					= mod:NewCDCountTimer(28.8, 362631, nil, nil, nil, 3)
 local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TANKCOMBOC, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
-local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, nil, nil, nil, 3)
+local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, DBM_COMMON_L.BOMBS.." (%s)", nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {6})
 mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
@@ -84,27 +85,23 @@ mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
 local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
 local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
-local warnDecimator								= mod:NewTargetCountAnnounce(364942, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnWorldCracker						= mod:NewSpecialWarningCount(366678, nil, nil, nil, 2, 2, 4)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(360425, nil, nil, nil, 1, 8)
 local specWarnShatteringBlast					= mod:NewSpecialWarningMoveTo(359856, nil, nil, nil, 1, 2)
-local specWarnRuneofCompulsion					= mod:NewSpecialWarningYou(366285, nil, nil, nil, 1, 2)
-local yellRuneofCompulsion						= mod:NewShortPosYell(366285)
+local specWarnRuneofCompulsion					= mod:NewSpecialWarningYou(366285, DBM_COMMON_L.MINDCONTROL, nil, nil, nil, 1, 2)
+local yellRuneofCompulsion						= mod:NewShortPosYell(366285, DBM_COMMON_L.MINDCONTROL)
 local yellRuneofCompulsionFades					= mod:NewIconFadesYell(366285)
-local specWarnDecimator							= mod:NewSpecialWarningMoveAway(364942, nil, nil, nil, 1, 2)
-local yellDecimator								= mod:NewYell(364942)
-local yellDecimatorFades						= mod:NewShortFadesYell(364942)
+local specWarnDecimator							= mod:NewSpecialWarningCount(364942, nil, 72994, nil, 2, 2)
 local specWarnTormentingEcho					= mod:NewSpecialWarningDodge(365371, nil, nil, nil, 2, 2)
 
 local timerWorldCrackerCD						= mod:NewAITimer(28.8, 366678, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnholyAttunementCD					= mod:NewCDCountTimer(28.8, 360373, nil, nil, nil, 3)
 local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, nil, 5)
-local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, nil, nil, nil, 3)
-local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, nil, nil, nil, 3)
+local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, DBM_COMMON_L.MINDCONTROL.." (%s)", nil, nil, 3)
+local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, 72994, nil, nil, 2)
 
 mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4, 5})
-mod:AddSetIconOption("SetIconOnDecimator2", 364942, false, false, {7}, true)--7 to ensure no conflict in P3 either
 
 --Stage Three: Eternity's End
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
@@ -121,9 +118,9 @@ local specWarnChainsofAnguish					= mod:NewSpecialWarningDefensive(365219, nil, 
 local specWarnChainsofAnguishTaunt				= mod:NewSpecialWarningTaunt(365219, nil, nil, nil, 1, 2)
 local specWarnChainsofAnguishLink				= mod:NewSpecialWarningYou(365219, nil, nil, nil, 1, 2)
 local yellChainsofAnguishLink					= mod:NewShortPosYell(365219)
-local specWarnDefile							= mod:NewSpecialWarningMoveAway(365169, nil, nil, nil, 3, 2)
-local yellDefile								= mod:NewYell(365169)
-local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
+local specWarnDefile							= mod:NewSpecialWarningCount(365169, nil, nil, nil, 3, 2)
+--local yellDefile								= mod:NewYell(365169)
+--local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
 local timerWorldShattererCD						= mod:NewAITimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnbreakableGraspCD					= mod:NewCDTimer(28.8, 363332, nil, nil, nil, 6)
@@ -140,7 +137,7 @@ mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --General
 mod.vb.worldCount = 0--Used in all 3 stages on mythic
 mod.vb.tormentCount = 0--Used in all 3 stages
-mod.vb.tankCount = 0--Martyrdom, Decimator
+mod.vb.tankCount = 0--Martyrdom, Shattering Blast
 mod.vb.runeCount = 0--Used in all 3 stages
 mod.vb.runeIcon = 1--Used in all 3 rune types
 --P1
@@ -148,7 +145,7 @@ mod.vb.relentingCount = 0
 mod.vb.chainsCount = 0--Also reused in P3
 --P2
 mod.vb.unholyCount = 0
-mod.vb.shatteringCount = 0
+mod.vb.decimatorCount = 0
 --P3
 mod.vb.desolationCount = 0
 mod.vb.defileCount = 0
@@ -289,7 +286,7 @@ function mod:OnCombatStart(delay)
 	--General
 	self.vb.worldCount = 0--Used in all 3 stages on mythic
 	self.vb.tormentCount = 0--Used in all 3 stages
-	self.vb.tankCount = 0--Martyrdom, Decimator
+	self.vb.tankCount = 0--Martyrdom, Shattering Blast
 	self.vb.runeCount = 0--Used in all 3 stages
 	self.vb.runeIcon = 1--Used in all 3 rune types
 	--1
@@ -297,7 +294,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chainsCount = 0--Also reused in P3
 	--2
 	self.vb.unholyCount = 0
-	self.vb.shatteringCount = 0
+	self.vb.decimatorCount = 0
 	--3
 	self.vb.desolationCount = 0
 	self.vb.defileCount = 0
@@ -378,19 +375,27 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 359856 then
-		self.vb.shatteringCount = self.vb.shatteringCount + 1
+		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnShatteringBlast:Show(L.Pylon)
 			specWarnShatteringBlast:Play("findshelter")--Kind of a crappy voice for it but don't have a valid one that sounds better
 		end
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.shatteringCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
 			if timer then
-				timerShatteringBlastCD:Start(timer, self.vb.shatteringCount+1)
+				timerShatteringBlastCD:Start(timer, self.vb.tankCount+1)
 			end
 		end
---	elseif args:IsSpellID(364942, 360562, 364488) then--All deciminator casts with a cast time
-		--Use if UNIT event target scanning fails
+	elseif args:IsSpellID(364942, 360562, 364488) then--All deciminator casts with a cast time
+		self.vb.decimatorCount = self.vb.decimatorCount + 1--This event may be before CLEU event so just make sure count updated before target scan
+		specWarnDecimator:Show(self.vb.decimatorCount)
+		specWarnDecimator:Play("carefly")
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][360562][self.vb.decimatorCount+1]
+			if timer then
+				timerDecimatorCD:Start(timer, self.vb.decimatorCount+1)
+			end
+		end
 	elseif spellId == 365033 then
 		self.vb.desolationCount = self.vb.desolationCount + 1
 		specWarnDesolation:Show(self.vb.desolationCount)
@@ -412,6 +417,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 365169 then
 		self.vb.defileCount = self.vb.defileCount + 1
+		specWarnDefile:Show(self.vb.defileCount)
+		specWarnDefile:Play("stilldanger")
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1] or 40.9--40.9 iffy minimum, need more sequenced data
 			if timer then
@@ -435,11 +442,11 @@ function mod:SPELL_CAST_START(args)
 		--General
 		self.vb.worldCount = 0--Used in all 3 stages on mythic
 		self.vb.tormentCount = 0--Used in all 3 stages
-		self.vb.tankCount = 0--Martyrdom, Decimator
+		self.vb.tankCount = 0--Martyrdom, Shattering Blast
 		self.vb.runeCount = 0--Used in all 3 stages
 		--2
 		self.vb.unholyCount = 0
-		self.vb.shatteringCount = 0
+		self.vb.decimatorCount = 0
 		self.vb.runeCount = 0
 		timerWorldCrusherCD:Stop()
 		timerRelentingDominationCD:Stop()
@@ -628,8 +635,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnRuneofDamnation:Show()
-			specWarnRuneofDamnation:Play("runout")
+			specWarnRuneofDamnation:Show()--self:IconNumToTexture(icon)
+			specWarnRuneofDamnation:Play("targetyou")--"mm"..icon
+			specWarnRuneofDamnationPit:Schedule(5, DBM_COMMON_L.PIT)
+			specWarnRuneofDamnationPit:ScheduleVoice(5, "jumpinpit")
 			yellRuneofDamnation:Yell(icon, icon)
 			yellRuneofDamnationFades:Countdown(spellId, nil, icon)
 		end
@@ -725,6 +734,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellRuneofDamnationFades:Cancel()
+			specWarnRuneofDamnationPit:Cancel()
+			specWarnRuneofDamnationPit:CancelVoice()
 		end
 	elseif spellId == 366285 then
 		if self.Options.SetIconOnCopulsion then
@@ -765,54 +776,30 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-do
-	function mod:DecimatorTarget(targetname, uId)
-		if not targetname then return end
-		if self.Options.SetIconOnDecimator2 then
-			self:SetIcon(targetname, 7, 4)--So icon clears 1 second after
-		end
-		if targetname == UnitName("player") then
-			specWarnDecimator:Show()
-			specWarnDecimator:Play("runout")
-			yellDecimator:Yell()
-			yellDecimatorFades:Countdown(2.97)--This scan method doesn't support scanningTime, but should be about right
-		else
-			warnDecimator:Show(self.vb.tankCount, targetname)
-		end
-	end
+--do
+	--function mod:DefileTarget(targetname, uId)
+	--	if not targetname then return end
+	--	if self.Options.SetIconOnDecimator2 then
+	--		self:SetIcon(targetname, 8, 3)--So icon clears 1 second after
+	--	end
+	--	if targetname == UnitName("player") then
+	--		specWarnDefile:Show()
+	--		specWarnDefile:Play("runout")
+	--		yellDefile:Yell()
+	--	elseif self:CheckNearby(10, targetname) then
+	--		specWarnDefileNear:Show(targetname)
+	--		specWarnDefileNear:Play("runaway")
+	--	else
+	--		warnDefile:Show(targetname)
+	--	end
+	--end
 
-	function mod:DefileTarget(targetname, uId)
-		if not targetname then return end
-		if self.Options.SetIconOnDecimator2 then
-			self:SetIcon(targetname, 8, 3)--So icon clears 1 second after
-		end
-		if targetname == UnitName("player") then
-			specWarnDefile:Show()
-			specWarnDefile:Play("runout")
-			yellDefile:Yell()
-		elseif self:CheckNearby(10, targetname) then
-			specWarnDefileNear:Show(targetname)
-			specWarnDefileNear:Play("runaway")
-		else
-			warnDefile:Show(targetname)
-		end
-	end
-
-	function mod:UNIT_SPELLCAST_START(uId, _, spellId)
-		if spellId == 360562 then--spellId == 364942 or spellId == 364488
-			self.vb.tankCount = self.vb.tankCount + 1--This event may be before CLEU event so just make sure count updated before target scan
-			if self.vb.phase then
-				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
-				if timer then
-					timerDecimatorCD:Start(timer, self.vb.tankCount+1)
-				end
-			end
-			self:BossUnitTargetScanner(uId, "DecimatorTarget", 3)
-		elseif spellId == 365169 then
-			self:BossUnitTargetScanner(uId, "DefileTarget", 3)
-		end
-	end
-end
+	--function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	--	if spellId == 365169 then
+	--	--	self:BossUnitTargetScanner(uId, "DefileTarget", 3)
+	--	end
+	--end
+--end
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)

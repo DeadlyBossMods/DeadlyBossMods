@@ -82,7 +82,7 @@ local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
 --local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerSplitResolutionCD					= mod:NewCDTimer(30.2, 360412, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--30.2-34 (also acts as Pneumatic Impact timer)
+local timerSplitResolutionCD					= mod:NewCDTimer(30.2, 360162, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--30.2-34 (also acts as Pneumatic Impact timer)
 local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption("8")
