@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220324000000)
-mod:SetMinSyncRevision(20220324000000)
+mod:SetHotfixNoticeRev(20220326000000)
+mod:SetMinSyncRevision(20220326000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
 
@@ -81,7 +81,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
 local warnUnholyAttunement						= mod:NewCountAnnounce(360373, 3)
 local warnRuneofCompulsion						= mod:NewTargetCountAnnounce(366285, 3, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnWorldCracker						= mod:NewSpecialWarningCount(366678, nil, nil, nil, 2, 2, 4)
+local specWarnWorldCracker						= mod:NewSpecialWarningSpell(366678, nil, nil, nil, 2, 2, 4)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(360425, nil, nil, nil, 1, 8)
 local specWarnShatteringBlast					= mod:NewSpecialWarningMoveTo(359856, nil, nil, nil, 1, 2)
 local specWarnRuneofCompulsion					= mod:NewSpecialWarningYou(366285, nil, nil, nil, 1, 2)
@@ -129,6 +129,7 @@ mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 --Stage Four: Hidden Mythic Stage
+mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local warnLifeShieldOver				= mod:NewEndAnnounce(368383, 1)
 
 local specWarnMeteorCleave				= mod:NewSpecialWarningCount(360378, nil, nil, nil, 2, 2, 4)
@@ -311,10 +312,12 @@ local allTimers = {
 			[367051] = {},
 			--Torment (lasts entire fight)
 			[365436] = {},
-			--Decimator (lasts rest of fight)
+			--Decimator (lasts rest of fight) (Confirmed)
 			[360562] = {},
 			--Desolation
 			[365033] = {},
+			--Rune of Damnation (Confirmed)
+			[360279] = {},
 			--Rune of Domination
 			[365147] = {},
 			--Chains of Anguish
@@ -484,7 +487,7 @@ function mod:SPELL_CAST_START(args)
 		--end
 	elseif spellId == 366678 then
 		self.vb.worldCount = self.vb.worldCount + 1
-		specWarnWorldCracker:Show(self.vb.worldCount)
+		specWarnWorldCracker:Show()--self.vb.worldCount
 		specWarnWorldCracker:Play("specialsoon")
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.worldCount+1]
 		if timer then
@@ -563,10 +566,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--General
 		self.vb.worldCount = 0--Used in all 3 stages on mythic
 		self.vb.tormentCount = 0--Used in all 3 stages
-		self.vb.tankCount = 0--Martyrdom, Decimator
+		self.vb.tankCount = 0--Martyrdom, Shattering Blast
 		self.vb.runeCount = 0--Used in all 3 stages
 		--1
 		self.vb.chainsCount = 0--Also reused in P3
+		--2+
+		self.vb.decimatorCount = 0
 		--3
 		self.vb.desolationCount = 0
 		self.vb.defileCount = 0
@@ -787,6 +792,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Todo, maybe move this to cast success or start event if it's sooner
 		self:SetStage(4)
 		self.vb.tankCount = 0
+		self.vb.runeCount = 0
+		self.vb.decimatorCount = 0
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(4))
 		warnPhase:Play("pfour")
 		timerTormentCD:Stop()
@@ -799,6 +806,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMeteorCleaveCD:Start(4)
 		timerDeathSentenceCD:Start(4)
 		timerForcedSacrificeCD:Start(4)
+		--timerDecimatorCD:Start(4, 1)
+		--timerRuneofDamnationCD:Start(4, 1)
 	elseif spellId == 360378 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
