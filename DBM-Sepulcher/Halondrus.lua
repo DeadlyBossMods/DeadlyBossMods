@@ -182,7 +182,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 360977 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--Change to boss1 check if boss is always boss1, right now unsure
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Change to boss1 check if boss is always boss1, right now unsure
 			specWarnLightshatterBeam:Show(L.Mote)
 			specWarnLightshatterBeam:Play("defensive")
 		end

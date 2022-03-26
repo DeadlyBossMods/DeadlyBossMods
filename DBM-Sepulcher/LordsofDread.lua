@@ -211,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 359960 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
 			specWarnLeechingClaws:Show()
 			specWarnLeechingClaws:Play("defensive")
 		end
@@ -249,7 +249,7 @@ function mod:SPELL_CAST_START(args)
 		warnSlumberCloud:Show(self.vb.slumberCount)
 		timerSlumberCloudCD:Start(32.8, self.vb.slumberCount+1)
 	elseif spellId == 360284 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
 			specWarnAnguishingStrike:Show()
 			specWarnAnguishingStrike:Play("defensive")
 		end
