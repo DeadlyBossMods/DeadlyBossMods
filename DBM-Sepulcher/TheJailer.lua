@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 367851 360378",--363179, 363772
 	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147 363332 370071",
 --	"SPELL_SUMMON 363175",
-	"SPELL_AURA_APPLIED 362401 360281 366285 365150 365153 362075 365219 365222 362192 368383 360174 368593 368592 363748 368591",--362024 360180
+	"SPELL_AURA_APPLIED 362401 360281 366285 365150 365153 362075 365219 365222 362192 368383 360174 368593 363748 368591",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222 368383 360174 368593 368592 363748 368591",--360180
+	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222 368383 360174 368593 363748 368591",--360180
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
 	"SPELL_PERIODIC_MISSED 360425 365174",
 --	"UNIT_DIED",
@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 362028 or ability.id = 363893 or ability.id = 360373 or ability.id = 359856 or ability.id = 364942 or ability.id = 360562 or ability.id = 364488 or ability.id = 365033 or ability.id = 365212 or ability.id = 365169 or ability.id = 366374 or ability.id = 366678 or ability.id = 367290 or ability.id = 367851 or ability.id = 360378 or ability.id = 363772 or ability.id = 360143) and type = "begincast"
  or (ability.id = 359809 or ability.id = 367051 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332 or ability.id = 370071) and type = "cast"
  or ability.id = 181089 or ability.id = 368383
-or ability.id = 366401
+ or ability.id = 366132 and type = "applydebuff"
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -73,8 +73,8 @@ local timerMartyrdomCD							= mod:NewCDCountTimer(28.8, 363893, DBM_COMMON_L.TA
 local timerTormentCD							= mod:NewCDCountTimer(28.8, 365436, nil, nil, nil, 2)
 local timerRuneofDamnationCD					= mod:NewCDCountTimer(28.8, 360281, DBM_COMMON_L.BOMBS.." (%s)", nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {6})
-mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnMartyrdom2", 363893, false, false, {7})
+mod:AddSetIconOption("SetIconOnDamnation", 360281, true, false, {1, 2, 3, 4, 5, 6})
 
 --Stage Two: Unholy Attunement
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23925))
@@ -96,7 +96,7 @@ local timerShatteringBlastCD					= mod:NewCDCountTimer(28.8, 359856, nil, nil, n
 local timerRuneofCompulsionCD					= mod:NewCDCountTimer(28.8, 366285, DBM_COMMON_L.MINDCONTROL.." (%s)", nil, nil, 3)
 local timerDecimatorCD							= mod:NewCDCountTimer(28.8, 364942, 72994, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnCopulsion", 366285, true, false, {1, 2, 3, 4})
 
 --Stage Three: Eternity's End
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24252))
@@ -112,21 +112,21 @@ local yellRuneofDominationFades					= mod:NewIconFadesYell(365150)
 local specWarnChainsofAnguish					= mod:NewSpecialWarningDefensive(365219, nil, nil, nil, 1, 2)
 local specWarnChainsofAnguishTaunt				= mod:NewSpecialWarningTaunt(365219, nil, nil, nil, 1, 2)
 local specWarnChainsofAnguishLink				= mod:NewSpecialWarningYou(365219, nil, nil, nil, 1, 2)
-local yellChainsofAnguishLink					= mod:NewShortPosYell(365219)
+local yellChainsofAnguishLink					= mod:NewShortYell(365219)
 local specWarnDefile							= mod:NewSpecialWarningCount(365169, nil, nil, nil, 3, 2)
 --local yellDefile								= mod:NewYell(365169)
 --local specWarnDefileNear						= mod:NewSpecialWarningClose(365169, nil, nil, nil, 1, 2)
 
-local timerWorldShattererCD						= mod:NewCDCountTimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerWorldShattererCD						= mod:NewCDTimer(28.8, 367051, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerUnbreakableGraspCD					= mod:NewCDTimer(28.8, 363332, nil, nil, nil, 6)
 local timerDesolationCD							= mod:NewCDCountTimer(28.8, 365033, nil, nil, nil, 3)
 local timerRuneofDominationCD					= mod:NewCDCountTimer(28.8, 365150, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
 local timerChainsofAnguishCD					= mod:NewCDCountTimer(28.8, 365219, nil, nil, nil, 5)
 local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
-mod:AddSetIconOption("SetIconOnDomination2", 365150, false, false, {5, 6, 7}, true)
-mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4, 5})
-mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
+mod:AddSetIconOption("SetIconOnDomination2", 365150, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {5, 6, 7, 8})
+--mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
 --Stage Four: Hidden Mythic Stage
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local warnLifeShieldOver				= mod:NewEndAnnounce(368383, 1)
@@ -172,7 +172,7 @@ mod.vb.decimatorCount = 0
 mod.vb.desolationCount = 0
 mod.vb.defileCount = 0
 mod.vb.willTotal = 0
-mod.vb.chainsIcon = 1
+mod.vb.chainsIcon = 8
 
 local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or "easy"
 local allTimers = {
@@ -258,8 +258,6 @@ local allTimers = {
 	},
 	["mythic"] = {--Confiremd different, so empty until data collected
 		[1] = {
-			--World Crusher
---			[366374] = {0},--Cast only once, on engage
 			--Torment (lasts entire fight)
 			[365436] = {7.9, 42, 40, 31.9, 44},
 			--Martyrdom
@@ -286,8 +284,6 @@ local allTimers = {
 			[366284] = {27, 50, 49.9},
 		},
 		[3] = {--Using Unbreaking Grasp, which fires about same time as encounter event
-			--World Shatterer
-			[367051] = {21.8},
 			--Torment (lasts entire fight)
 			[365436] = {58, 110},
 			--Decimator (lasts rest of fight)
@@ -297,7 +293,7 @@ local allTimers = {
 			--Rune of Domination
 			[365147] = {86, 56.9},
 			--Chains of Anguish
-			[365212] = {36, 47, 88},
+			[365212] = {36, 47, 47.5, 40.5},--88 if he skips 3rd cast
 			--Defile
 			[365169] = {55, 24, 39, 40},
 		},
@@ -313,6 +309,11 @@ local allTimers = {
 		},
 	},
 }
+
+local function chainsSkipCheck(self)
+	self.vb.chainsCount = self.vb.chainsCount + 1
+	timerChainsofAnguishCD:Start(35, self.vb.chainsCount+1)
+end
 
 function mod:OnCombatStart(delay)
 	--General
@@ -331,7 +332,7 @@ function mod:OnCombatStart(delay)
 	self.vb.desolationCount = 0
 	self.vb.defileCount = 0
 	self.vb.willTotal = 0
-	self.vb.chainsIcon = 4
+	self.vb.chainsIcon = 8
 	self:SetStage(1)
 	if self:IsMythic() then
 		difficultyName = "mythic"
@@ -430,12 +431,20 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 365212 then
+		self.vb.chainsIcon = 8
 		self.vb.chainsCount = self.vb.chainsCount + 1
-		self.vb.chainsIcon = 4
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1]
 			if timer then
 				timerChainsofAnguishCD:Start(timer, self.vb.chainsCount+1)
+				if self:IsMythic() then
+					--Boss sometimes skips 3rd cast, this corrects timer if that happens
+					if self.vb.chainsCount == 2 then
+						self:Schedule(53, chainsSkipCheck, self)
+					elseif self.vb.chainsCount == 3 then
+						self:Unschedule(chainsSkipCheck)
+					end
+				end
 			end
 		end
 	elseif spellId == 365169 then
@@ -587,10 +596,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.worldCount = self.vb.worldCount + 1
 		specWarnWorldShatterer:Show(self.vb.worldCount)
 		specWarnWorldShatterer:Play("specialsoon")
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.worldCount+1]
-		if timer then
-			timerWorldShattererCD:Start(timer, self.vb.worldCount+1)
-		end
+		--local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.worldCount+1]
+		--if timer then
+		--	timerWorldShattererCD:Start(timer, self.vb.worldCount+1)
+		--end
 	elseif spellId == 363893 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self.vb.phase then
@@ -610,7 +619,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnMartyrdom:Show(self.vb.tankCount, args.destName)
 		end
 		if self.Options.SetIconOnMartyrdom2 then
-			self:SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, 7)
 		end
 	elseif spellId == 365436 or spellId == 370071 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
@@ -715,7 +724,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 365150 then
 		if self:AntiSpam(5, 1) then
 			self.vb.runeCount = self.vb.runeCount + 1
-			self.vb.runeIcon = 5
+			self.vb.runeIcon = 1
 		end
 		local icon = self.vb.runeIcon
 		if self.Options.SetIconOnDomination2 then
@@ -737,10 +746,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnChainsofAnguishLink:Show()
 			specWarnChainsofAnguishLink:Play("targetyou")
-			yellChainsofAnguishLink:Yell(icon, icon-3)--minus 3 so debuff count is still 1 2 and 3 when using icons 4 5 and 6
+			yellChainsofAnguishLink:Yell()--minus 3 so debuff count is still 1 2 and 3 when using icons 4 5 and 6
 		end
 		warnChainsofAnguishLink:CombinedShow(0.5, args.destName)
-		self.vb.chainsIcon = self.vb.chainsIcon + 1
+		self.vb.chainsIcon = self.vb.chainsIcon - 1
 	elseif spellId == 365153 then--Imposing Will
 		self.vb.willTotal = self.vb.willTotal + 1
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -789,11 +798,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMeteorCleaveTaunt:Show(args.destName)
 			specWarnMeteorCleaveTaunt:Play("tauntboss")
 		end
-	elseif args:IsSpellID(360174, 368593, 368592, 363748, 368591) then--360174, 368593 (6 second versions), 368592 16 second version, 363748, 368591 (30 sec versions)
+	elseif args:IsSpellID(363748, 368591) then--363748, 368591 (30 sec versions)
 		if args:IsPlayer() then
 			specWarnDeathSentence:Show()
 			specWarnDeathSentence:Play("targetyou")
 			yellDeathSentence:Yell()
+		end
+	elseif args:IsSpellID(360174, 368593) then--360174, 368593 (6 second versions)
+		if args:IsPlayer() then
 			yellDeathSentenceFades:Countdown(spellId, 5)
 		end
 	end
@@ -842,7 +854,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 368383 then--Diverted Life Shield
 		warnLifeShieldOver:Show()
-	elseif args:IsSpellID(360174, 368593, 368592, 363748, 368591) then--360174, 368593 (6 second versions), 368592 16 second version, 363748, 368591 (30 sec versions)
+	elseif args:IsSpellID(360174, 368593) then--360174, 368593 (6 second versions), 368592 16 second version, 363748, 368591 (30 sec versions)
 		if args:IsPlayer() then
 			yellDeathSentenceFades:Cancel()
 		end
