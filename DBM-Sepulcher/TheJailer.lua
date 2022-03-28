@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220326000000)
+mod:SetHotfixNoticeRev(20220327000000)
 mod:SetMinSyncRevision(20220326000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
@@ -13,12 +13,12 @@ mod:SetMinSyncRevision(20220326000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 367851 360378 363772 360143",--363179
+	"SPELL_CAST_START 362028 366022 360373 359856 364942 360562 364488 365033 365212 365169 366374 366678 367851 360378",--363179, 363772
 	"SPELL_CAST_SUCCESS 359809 367051 363893 365436 360279 366284 365147 363332 370071",
 --	"SPELL_SUMMON 363175",
-	"SPELL_AURA_APPLIED 362401 360281 366285 365150 365153 362075 365219 365222 362192 368383 360174 368593 368592 363748 368591 360143",--362024 360180
+	"SPELL_AURA_APPLIED 362401 360281 366285 365150 365153 362075 365219 365222 362192 368383 360174 368593 368592 363748 368591",--362024 360180
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222 368383 360174 368593 368592 363748 368591 360143",--360180
+	"SPELL_AURA_REMOVED 362401 360281 366285 365150 365153 365222 368383 360174 368593 368592 363748 368591",--360180
 	"SPELL_PERIODIC_DAMAGE 360425 365174",
 	"SPELL_PERIODIC_MISSED 360425 365174",
 --	"UNIT_DIED",
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 362028 or ability.id = 363893 or ability.id = 360373 or ability.id = 359856 or ability.id = 364942 or ability.id = 360562 or ability.id = 364488 or ability.id = 365033 or ability.id = 365212 or ability.id = 365169 or ability.id = 366374 or ability.id = 366678 or ability.id = 367290 or ability.id = 367851 or ability.id = 360378 or ability.id = 363772 or ability.id = 360143) and type = "begincast"
  or (ability.id = 359809 or ability.id = 367051 or ability.id = 363893 or ability.id = 365436 or ability.id = 360279 or ability.id = 366284 or ability.id = 365147 or ability.id = 363332 or ability.id = 370071) and type = "cast"
  or ability.id = 181089 or ability.id = 368383
+or ability.id = 366401
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -44,7 +45,6 @@ local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil,
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("6")
---mod:AddInfoFrameOption(328897, true)
 
 --Stage One: Origin of Domination
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24087))
@@ -127,7 +127,6 @@ local timerDefileCD								= mod:NewCDCountTimer(28.8, 365169, nil, nil, nil, 3,
 mod:AddSetIconOption("SetIconOnDomination2", 365150, false, false, {5, 6, 7}, true)
 mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnDefile", 365169, true, false, {8})
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 --Stage Four: Hidden Mythic Stage
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local warnLifeShieldOver				= mod:NewEndAnnounce(368383, 1)
@@ -137,15 +136,10 @@ local specWarnMeteorCleaveTaunt			= mod:NewSpecialWarningTaunt(360378, nil, nil,
 local specWarnDeathSentence				= mod:NewSpecialWarningYou(363772, nil, nil, nil, 1, 2, 4)
 local yellDeathSentence					= mod:NewShortYell(363772, nil, false)
 local yellDeathSentenceFades			= mod:NewShortFadesYell(363772)
-local specWarnForcedSacrifice			= mod:NewSpecialWarningMoveAway(360143, nil, nil, nil, 1, 2, 4)
-local yellForcedSacrifice				= mod:NewShortYell(360143)
-local yellForcedSacrificeFades			= mod:NewShortFadesYell(360143)
 
-local timerMeteorCleaveCD				= mod:NewAITimer(28.8, 360378, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerDeathSentenceCD				= mod:NewAITimer(28.8, 363772, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerForcedSacrificeCD			= mod:NewAITimer(28.8, 360143, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerMeteorCleaveCD				= mod:NewCDCountTimer(28.8, 360378, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerDeathSentenceCD				= mod:NewCDTimer(28.8, 363772, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
---mod:AddSetIconOption("SetIconOnForcedSacrifice", 360143, true, false, {1, 2, 3})--Wait til confirmation, if mechanc is used finish icon code
 --Common text replacements for some warnings that help clarify mechanics as well as more closely align with other mods
 if DBM.Options.WarningShortText then
 	--Stage1
@@ -267,63 +261,55 @@ local allTimers = {
 			--World Crusher
 --			[366374] = {0},--Cast only once, on engage
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {7.9, 42, 40, 31.9, 44},
 			--Martyrdom
-			[363893] = {},
+			[363893] = {29.9, 47, 30.9, 43},
 			--Relentless Domination
-			[362028] = {},
+			[362028] = {43.9, 54, 70},
 			--Chains of Oppression
-			[359809] = {},
+			[359809] = {15.9, 111},
 			--Rune of Damnation
-			[360279] = {},
+			[360279] = {34.9, 22.9, 25.9, 29, 26.9, 17.9},
 		},
 		[2] = {--Timers started at final relentless domination. about 13 seconds sooner than Encounter Event
 			--World Cracker
-			[366678] = {},
+			[366678] = {23, 45, 45},
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {33, 38, 34.9, 25},
 			--Decimator (lasts rest of fight)
-			[360562] = {},
+			[360562] = {57, 42.5, 42.5},
 			--Unholy Attunement
-			[360373] = {},
+			[360373] = {19, 44.9, 45, 46.4},
 			--Shattering Blast
-			[359856] = {},
+			[359856] = {35, 14, 30, 14.9, 26, 22},
 			--Rune of Compulsion
-			[366284] = {},
+			[366284] = {27, 50, 49.9},
 		},
 		[3] = {--Using Unbreaking Grasp, which fires about same time as encounter event
 			--World Shatterer
 			[367051] = {21.8},
 			--Torment (lasts entire fight)
-			[365436] = {},
+			[365436] = {58, 110},
 			--Decimator (lasts rest of fight)
-			[360562] = {},
+			[360562] = {28, 43.9, 39, 35.9},
 			--Desolation
-			[365033] = {},
+			[365033] = {39, 81.9},
 			--Rune of Domination
-			[365147] = {},
+			[365147] = {86, 56.9},
 			--Chains of Anguish
-			[365212] = {},
+			[365212] = {36, 47, 88},
 			--Defile
-			[365169] = {},
+			[365169] = {55, 24, 39, 40},
 		},
-		[4] = {--Not sure if he continues using P3 abilitie or not, empty tables to avoid lua errors for now
-			--World Shatterer
-			[367051] = {},
+		[4] = {
 			--Torment (lasts entire fight)
-			[365436] = {},
-			--Decimator (lasts rest of fight) (Confirmed)
-			[360562] = {},
-			--Desolation
-			[365033] = {},
-			--Rune of Damnation (Confirmed)
-			[360279] = {},
-			--Rune of Domination
-			[365147] = {},
-			--Chains of Anguish
-			[365212] = {},
-			--Defile
-			[365169] = {},
+			[365436] = {50, 24, 38},
+			--Decimator (lasts rest of fight)
+			[360562] = {25, 31, 48},
+			--Rune of Damnation (P1 rune)
+			[360279] = {14, 28, 43},
+			--Meteor Cleave
+			[360378] = {20, 60},
 		},
 	},
 }
@@ -370,26 +356,12 @@ function mod:OnCombatStart(delay)
 		timerRelentingDominationCD:Start(48-delay, 1)
 		timerChainsofOppressionCD:Start(90-delay, 1)
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 end
 
 function mod:OnCombatEnd()
---	table.wipe(castsPerGUID)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:OnTimerRecovery()
@@ -409,7 +381,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRelentingDomination:Show(DBM_COMMON_L.BREAK_LOS)
 		specWarnRelentingDomination:Play("findshelter")
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.relentingCount+1] or 60
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.relentingCount+1]
 			if timer then
 				timerRelentingDominationCD:Start(timer, self.vb.relentingCount+1)
 			end
@@ -420,7 +392,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.unholyCount = self.vb.unholyCount + 1
 		warnUnholyAttunement:Show(self.vb.unholyCount)
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.unholyCount+1] or 45
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.unholyCount+1]
 			if timer then
 				timerUnholyAttunementCD:Start(timer, self.vb.unholyCount+1)
 			end
@@ -452,7 +424,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDesolation:Show(self.vb.desolationCount)
 		specWarnDesolation:Play("helpsoak")
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.desolationCount+1] or 60
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.desolationCount+1]
 			if timer then
 				timerDesolationCD:Start(timer, self.vb.desolationCount+1)
 			end
@@ -461,7 +433,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.chainsCount = self.vb.chainsCount + 1
 		self.vb.chainsIcon = 4
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1] or 41.9
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.chainsCount+1]
 			if timer then
 				timerChainsofAnguishCD:Start(timer, self.vb.chainsCount+1)
 			end
@@ -471,7 +443,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDefile:Show(self.vb.defileCount)
 		specWarnDefile:Play("stilldanger")
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1] or 40.9--40.9 iffy minimum, need more sequenced data
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.defileCount+1]--40.9 iffy minimum, need more sequenced data
 			if timer then
 				timerDefileCD:Start(timer, self.vb.defileCount+1)
 			end
@@ -549,11 +521,14 @@ function mod:SPELL_CAST_START(args)
 		self.vb.tankCount = self.vb.tankCount + 1
 		specWarnMeteorCleave:Show(self.vb.tankCount)
 		specWarnMeteorCleave:Play("cleave")
-		timerMeteorCleaveCD:Start()
-	elseif spellId == 363772 then
-		timerDeathSentenceCD:Start()
-	elseif spellId == 360143 then
-		timerForcedSacrificeCD:Start()
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
+			if timer then
+				timerMeteorCleaveCD:Start(timer, self.vb.tankCount+1)
+			end
+		end
+--	elseif spellId == 363772 then
+		--Maybe pre warn the cast?
 	end
 end
 
@@ -577,12 +552,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.defileCount = 0
 		if self:IsMythic() then
 			timerWorldShattererCD:Start(21.8, 1)
-			--timerDecimatorCD:Start(26, 1)
-			--timerDefileCD:Start(33, 1)
-			--timerChainsofAnguishCD:Start(37, 1)
-			--timerDesolationCD:Start(41.9, 1)
-			--timerTormentCD:Start(51, 1)
-			--timerRuneofDominationCD:Start(71, 1)
+			timerDecimatorCD:Start(28, 1)
+			timerChainsofAnguishCD:Start(36, 1)
+			timerDesolationCD:Start(39, 1)
+			timerDefileCD:Start(55, 1)
+			timerTormentCD:Start(58, 1)
+			timerRuneofDominationCD:Start(86, 1)
 		elseif self:IsHeroic() then
 			timerDecimatorCD:Start(26, 1)
 			timerDefileCD:Start(33, 1)
@@ -619,7 +594,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 363893 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1] or 40
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.tankCount+1]
 			if timer then
 				timerMartyrdomCD:Start(timer, self.vb.tankCount+1)
 			end
@@ -662,7 +637,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.runeIcon = 1
 		end
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1] or 60
+			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.runeCount+1]
 			if timer then
 				timerRuneofCompulsionCD:Start(timer, self.vb.runeCount+1)
 			end
@@ -803,11 +778,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDefileCD:Stop()
 		timerRuneofDominationCD:Stop()
 
-		timerMeteorCleaveCD:Start(4)
-		timerDeathSentenceCD:Start(4)
-		timerForcedSacrificeCD:Start(4)
-		--timerDecimatorCD:Start(4, 1)
-		--timerRuneofDamnationCD:Start(4, 1)
+		timerDeathSentenceCD:Start(12)--SUCCESS/APPLIED
+		timerRuneofDamnationCD:Start(14, 1)
+		timerMeteorCleaveCD:Start(20, 1)
+		timerDecimatorCD:Start(25, 1)
+		timerTormentCD:Start(50, 1)
 	elseif spellId == 360378 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
@@ -820,13 +795,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDeathSentence:Play("targetyou")
 			yellDeathSentence:Yell()
 			yellDeathSentenceFades:Countdown(spellId, 5)
-		end
-	elseif spellId == 360143 then
-		if args:IsPlayer() then
-			specWarnForcedSacrifice:Show()
-			specWarnForcedSacrifice:Play("runout")
-			yellForcedSacrifice:Yell()
-			yellForcedSacrificeFades:Countdown(spellId)
 		end
 	end
 end
@@ -877,10 +845,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(360174, 368593, 368592, 363748, 368591) then--360174, 368593 (6 second versions), 368592 16 second version, 363748, 368591 (30 sec versions)
 		if args:IsPlayer() then
 			yellDeathSentenceFades:Cancel()
-		end
-	elseif spellId == 360143 then
-		if args:IsPlayer() then
-			yellForcedSacrificeFades:Cancel()
 		end
 	end
 end
