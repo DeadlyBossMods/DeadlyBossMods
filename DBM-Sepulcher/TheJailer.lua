@@ -310,7 +310,7 @@ local allTimers = {
 	},
 }
 
-local chainsSkipCheck(self)
+local function chainsSkipCheck(self)
 	self.vb.chainsCount = self.vb.chainsCount + 1
 	timerChainsofAnguishCD:Start(35, self.vb.chainsCount+1)
 end
