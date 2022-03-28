@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 362601 363130 364652 363088 365257 366001 368027",
 	"SPELL_CAST_SUCCESS 363795 363676",
 	"SPELL_AURA_APPLIED 362622 366012 363537 363795 363676 364312 363130 361200 368025 368024 368738",--364092
-	"SPELL_AURA_APPLIED_DOSE 368024",
+	"SPELL_AURA_APPLIED_DOSE 368024 368025",
 	"SPELL_AURA_REMOVED 363537 363795 363676 364312 363130 361200",--362622 366012 (mote Ids maybe?)
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 local warnSynthesize							= mod:NewCountAnnounce(363130, 3)
 local warnResonance								= mod:NewSpellAnnounce(368027, 3, nil, "Tank")
 local warnKineticResonance						= mod:NewStackAnnounce(368024, 2, nil, "Tank|Healer")
+local warnSunderingResonance					= mod:NewStackAnnounce(368025, 2, nil, "Tank|Healer")
 --Adds
 --local warnDegenerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)--Kinda spammy, but healer might want to opt into it
 local warnFormSentry							= mod:NewSpellAnnounce(365257, 2)
@@ -51,7 +52,8 @@ local specWarnCosmicShift						= mod:NewSpecialWarningCount(363088, nil, DBM_COR
 local specWarnUnstableMote						= mod:NewSpecialWarningYou(362622, nil, nil, nil, 1, 2)
 local specWarnProtoformCascade					= mod:NewSpecialWarningDodge(364652, nil, 260885, nil, 1, 2)
 local specWarnResonance							= mod:NewSpecialWarningDefensive(368027, false, nil, nil, 1, 2)
-local specWarnResonanceTaunt					= mod:NewSpecialWarningTaunt(368025, nil, nil, nil, 1, 2)
+local specWarnKinResonanceTaunt					= mod:NewSpecialWarningTaunt(368024, false, nil, 2, 1, 2)
+local specWarnSunResonanceTaunt					= mod:NewSpecialWarningTaunt(368025, nil, nil, nil, 1, 2)
 local specWarnDeconstructingEnergy				= mod:NewSpecialWarningYou(363795, nil, 37859, nil, 1, 2)--Shorttext "Bomb"
 local specWarnDeconstructingEnergyTaunt			= mod:NewSpecialWarningTaunt(363795, nil, 37859, nil, 1, 2)--Shorttext "Bomb"
 local yellDeconstructingEnergy					= mod:NewYell(363795, 37859)--Shorttext "Bomb"
@@ -342,15 +344,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 363130 then
 		timerSynthesize:Start(self:IsMythic() and 15 or 20)
-	elseif spellId == 368025 then
-		if not args:IsPlayer() then
-			specWarnResonanceTaunt:Show()
-			specWarnResonanceTaunt:Play("tauntboss")
-		end
-	elseif spellId == 368024 then
+	elseif spellId == 368024 then--Kinetic Resonance
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			warnKineticResonance:Show(args.destName, args.amount or 1)
+		end
+		if not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
+			specWarnKinResonanceTaunt:Show()
+			specWarnKinResonanceTaunt:Play("tauntboss")
+		end
+	elseif spellId == 368025 then--Sundering Resonance
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			warnSunderingResonance:Show(args.destName, args.amount or 1)
+		end
+		if not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
+			specWarnSunResonanceTaunt:Show()
+			specWarnSunResonanceTaunt:Play("tauntboss")
 		end
 	elseif spellId == 361200 then--Realignment
 		timerRealignment:Start(30)
