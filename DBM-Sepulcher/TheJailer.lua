@@ -336,6 +336,7 @@ local mythicSpecialTimers = {
 }
 
 local function mythicTimerLoop(self)
+	if not self.vb.phase then return end--This loop cannot cleanly recover on mid fight disconnect, prevent nil error
 	self.vb.echoCount = self.vb.echoCount + 1
 	local timer = mythicSpecialTimers[self.vb.phase][self.vb.echoCount]
 	if timer then
