@@ -340,8 +340,10 @@ local function mythicTimerLoop(self)
 	local timer = mythicSpecialTimers[self.vb.phase][self.vb.echoCount]
 	if timer then
 		if self.vb.phase < 4 then
+			warnHealAzeroth:Show(self.vb.echoCount-1)
 			timerHealAzeroth:Start(timer, self.vb.echoCount)
 		else
+			warnDispel:Show(self.vb.echoCount-1)
 			timerDispels:Start(timer, self.vb.echoCount)
 		end
 		self:Schedule(timer, mythicTimerLoop, self)
