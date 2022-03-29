@@ -40,13 +40,11 @@ mod:RegisterEventsInCombat(
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
-local warnHealAzeroth							= mod:NewAnnounce("warnHealAzeroth", 3, 366401)
-local warnDispel								= mod:NewAnnounce("warnDispel", 3, 182887)
+local warnHealAzeroth							= mod:NewAnnounce("warnHealAzeroth", 3, 366401, nil, nil, nil, 366401)
 
 local timerPhaseCD								= mod:NewPhaseTimer(30)
 local timerPits									= mod:NewTimer(28.8, "timerPits", 353643, nil, nil, 3)--Stages 1-3
-local timerHealAzeroth							= mod:NewTimer(28.8, "timerHealAzeroth", 366401, nil, nil, 5)--Stages 1-3
-local timerDispels								= mod:NewTimer(28.8, "timerDispels", 182887, nil, nil, 5, DBM_COMMON_L.MAGIC_ICON)--Stages 4
+local timerHealAzeroth							= mod:NewTimer(28.8, "timerHealAzeroth", 366401, nil, nil, 5, nil, nil, nil, nil, nil, nil, nil, 366401)--Stages 1-3
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -138,6 +136,7 @@ mod:AddSetIconOption("SetIconOnChainsofAnguish", 365219, true, false, {5, 6, 7, 
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local warnLifeShieldOver				= mod:NewEndAnnounce(368383, 1)
 local warnDeathSentence					= mod:NewTargetNoFilterAnnounce(363772, 4)--Initial death sentence
+local warnDispel						= mod:NewAnnounce("warnDispel", 3, 182887, nil, nil, nil, 363772)
 
 local specWarnMeteorCleave				= mod:NewSpecialWarningCount(360378, nil, nil, nil, 2, 2, 4)
 local specWarnMeteorCleaveTaunt			= mod:NewSpecialWarningTaunt(360378, nil, nil, nil, 1, 2, 4)
@@ -147,9 +146,7 @@ local yellDeathSentenceFades			= mod:NewShortFadesYell(363772)
 
 local timerMeteorCleaveCD				= mod:NewCDCountTimer(28.8, 360378, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerDeathSentenceCD				= mod:NewCDTimer(28.8, 363772, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-
-mod:GroupSpells(366401, "warnHealAzeroth", "timerHealAzeroth")--Blood of Azeroth
-mod:GroupSpells(363772, "warnDispel", "timerDispels")--Death Sentence
+local timerDispels						= mod:NewTimer(28.8, "timerDispels", 182887, nil, nil, 5, DBM_COMMON_L.MAGIC_ICON, nil, nil, nil, nil, nil, nil, 363772)--Stages 4
 
 --Common text replacements for some warnings that help clarify mechanics as well as more closely align with other mods
 if DBM.Options.WarningShortText then
