@@ -247,7 +247,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 360229 then
 		self.vb.slumberCount = self.vb.slumberCount + 1--Doesn't reset, used by timers and announce
 		warnSlumberCloud:Show(self.vb.slumberCount)
-		timerSlumberCloudCD:Start(32.8, self.vb.slumberCount+1)
+		timerSlumberCloudCD:Start(self:IsMythic() and 32.8 or 45, self.vb.slumberCount+1)
 	elseif spellId == 360284 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Change to boss1/2 if confirmed it's consistent
 			specWarnAnguishingStrike:Show()
