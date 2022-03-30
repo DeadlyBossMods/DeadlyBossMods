@@ -96,8 +96,23 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2464)
 
+L:SetTimerLocalization{
+	timerPits			= "구덩이 열림",
+	timerHealAzeroth	= "아제로스 치유 (%s)",
+	timerDispels		= "해제 (%s)"
+}
+
+L:SetOptionLocalization({
+	timerPits			= "구덩이가 열리며 뛰어들 수 있는 구멍이 노출되는 때의 타이머 바를 봅니다.",
+	warnHealAzeroth		= "신화 난이도에서 아제로스를 치유(전투 방식을 통해서)해야 할 때 경고를 봅니다. Echo 공략 기반",
+	warnDispel			= "신화 난이도에서 사형 선고 해제를 해야할 때 경고를 봅니다. Echo 공략 기반",
+	timerHealAzeroth	= "신화 난이도에서 아제로스를 치유(전투 방식을 통해서)해야 할 때의 타이머 바를 봅니다. Echo 공략 기반",
+	timerDispels		= "신화 난이도에서 사형 선고 해제를 해야할 때의 타이머 바를 봅니다. Echo 공략 기반"
+})
+
 L:SetMiscLocalization({
-	Pylon		= "파일런"
+	Pylon		= "수정탑",
+	AzerothSoak			= "아제로스 바닥 맞기"--Short Text for Desolation
 })
 
 -------------
