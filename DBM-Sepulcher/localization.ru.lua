@@ -57,7 +57,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	timerComboCD		= "Show timer for tank combo cooldown"
+	timerComboCD		= "Show timer (with count) for tank combo cooldown"
 })
 
 ---------------------------
@@ -96,8 +96,28 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2464)
 
+L:SetWarningLocalization({
+	warnHealAzeroth		= "Исцеление Азерот (%s)",
+	warnDispel			= "Рассеивание (%s)"
+})
+
+L:SetTimerLocalization{
+	timerPits			= "Лунки открываются",
+	timerHealAzeroth	= "Исцеление Азерот (%s)",
+	timerDispels		= "Рассеивания (%s)"
+}
+
+L:SetOptionLocalization({
+	timerPits			= "Показать таймер, когда открываются лунки в полу, в которые можно упасть",
+	warnHealAzeroth		= "Показать предупреждение о том, когда Вам нужно исцелить Азерот (через механику боя) на мифической сложности, основываясь на стратегии гильдии Эхо",
+	warnDispel			= "Показать предупреждение о том, когда нужно рассеять 'Смертный приговор' на мифической сложности, основываясь на стратегии гильдии Эхо",
+	timerHealAzeroth	= "Показать таймер, когда Вам нужно исцелить Азерот (через механику боя) на мифической сложности, основываясь на стратегии гильдии Эхо",
+	timerDispels		= "Показать таймер, когда нужно рассеять 'Смертный приговор' на мифической сложности, основываясь на стратегии гильдии Эхо"
+})
+
 L:SetMiscLocalization({
-	Pylon		= "Pylon"
+	Pylon				= "Pylon",
+	AzerothSoak			= "Azeroth Soak"--Short Text for Desolation
 })
 
 -------------

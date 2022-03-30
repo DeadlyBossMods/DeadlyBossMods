@@ -285,7 +285,7 @@ local allTimers = {
 			--Humbling Strikes
 			[365272] = {10.6, 31.2, 31.2, 31.2},
 			--Ascension's Call
-			[361066] = {38},--?? Need transcriptor
+			[361066] = {37.6, 50},
 			--Pinning Volley
 			[361278] = {56.4, 55.8},
 			--Night Hunter (Mythic Only)
@@ -313,7 +313,7 @@ local allTimers = {
 			--Humbling Strikes
 			[365272] = {41, 29.8, 29.8, 29.8, 29.8, 29.8},
 			--Ascension's Call
-			[361066] = {121.1},--IFFY, need transcriptor
+			[361066] = {20.6},
 			--Pinning Volley
 			[361278] = {55.9, 82.5},
 			--Wild Stampede
@@ -391,7 +391,7 @@ function mod:OnCombatStart(delay)
 		--Necro
 		timerRunecarversDeathtouchCD:Start(41.5-delay, 1)
 		--Kyrian
-		timerAscensionsCallCD:Start(38-delay, 1)--Time til USCS anyways
+		timerAscensionsCallCD:Start(37.6-delay, 1)
 		timerPinningVolleyCD:Start(55.7-delay, 1)
 		--Venthyr
 		timerNightHunterCD:Start(11.5-delay, 1)
@@ -493,7 +493,14 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 361066 then
-		DBM:AddMsg("Ascensions call added back to combat log, notify DBM authors")
+		self.vb.callCount = self.vb.callCount + 1
+		warnAscensionsCall:Show(self.vb.callCount)
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
+			if timer then
+				timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
+			end
+		end
 	elseif spellId == 360845 then
 		warnBastionsWard:Show()
 	elseif spellId == 364241 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -592,9 +599,9 @@ function mod:SPELL_CAST_START(args)
 				timerWrackingPainCD:Start(41, 1)
 				timerHandofDestructionCD:Start(110, 1)
 				--prototype-of-duty (Kyrian)
+				timerAscensionsCallCD:Start(20.6, 1)
 				timerHumblingStrikesCD:Start(41, 1)
 				timerPinningVolleyCD:Start(55.9, 1)
-				timerAscensionsCallCD:Start(121.1, 1)
 				--prototype-of-renewal (Night Fae)
 				timerWitheringSeedCD:Start(17.8, 1)
 				timerWildStampedeCD:Start(26.4, 1)
@@ -863,15 +870,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerNecroticRitualCD:Stop()
 			timerRunecarversDeathtouchCD:Stop()
 		end
-	elseif spellId == 361066 then--Ascension's Call
-		self.vb.callCount = self.vb.callCount + 1
-		warnAscensionsCall:Show(self.vb.callCount)
-		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
-			if timer then
-				timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
-			end
-		end
+	--elseif spellId == 361066 then--Ascension's Call
+	--	self.vb.callCount = self.vb.callCount + 1
+	--	warnAscensionsCall:Show(self.vb.callCount)
+	--	if self.vb.phase then
+	--		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
+	--		if timer then
+	--			timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
+	--		end
+	--	end
 	elseif spellId == 361791 and self:AntiSpam(10, 3) then--Script Activating to cast Hand of Destruction (2 sec faster than SUCCESS 361789)
 		self.vb.handCount = self.vb.handCount + 1
 		specWarnHandofDestruction:Show()

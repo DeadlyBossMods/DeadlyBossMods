@@ -96,8 +96,28 @@ L:SetOptionLocalization({
 ---------------------------
 --L= DBM:GetModLocalization(2464)
 
+L:SetWarningLocalization({
+	warnHealAzeroth		= "治療艾澤拉斯 (%s)",
+	warnDispel			= "驅散 (%s)"
+})
+
+L:SetTimerLocalization{
+	timerPits			= "坑洞開啟",
+	timerHealAzeroth	= "治療艾澤拉斯 (%s)",
+	timerDispels		= "驅散 (%s)"
+}
+
+L:SetOptionLocalization({
+	timerPits			= "顯示計時器，以便在樓層坑洞打開並暴露時，您可以跳入。",
+	warnHealAzeroth		= "顯示警告，在傳奇難度何時你需要治療艾澤拉斯(透由戰鬥機制)，基於Echo的策略",
+	warnDispel			= "顯示警告，在傳奇難度何時你需要驅散死亡宣判，基於Echo的策略(暫譯)",
+	timerHealAzeroth	= "顯示計時器，在傳奇難度何時你需要治療艾澤拉斯(透由戰鬥機制)，基於Echo的策略",
+	timerDispels		= "顯示計時器，在傳奇難度何時你需要驅散死亡宣判，基於Echo的策略(暫譯)"
+})
+
 L:SetMiscLocalization({
-	Pylon		= "水晶塔"
+	Pylon			= "水晶塔",
+	AzerothSoak		= "艾澤拉斯分傷"--Short Text for Desolation
 })
 
 -------------

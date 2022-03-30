@@ -95,6 +95,11 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2464)
 
+L:SetWarningLocalization({
+	warnHealAzeroth		= "Heal Azeroth (%s)",
+	warnDispel			= "Dispel (%s)"
+})
+
 L:SetTimerLocalization{
 	timerPits			= "Pits Open",
 	timerHealAzeroth	= "Heal Azeroth (%s)",
@@ -103,6 +108,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	timerPits			= "Show timer for when the floor pits open up and expose holes you can fall into.",
+	warnHealAzeroth		= "Show warning for when you need to heal azeroth (via fight mechanics) on mythic difficulty, based on Echo's strategy",
+	warnDispel			= "Show warning for when you need to dispel Death Sentence on mythic difficulty, based on Echo's strategy",
 	timerHealAzeroth	= "Show timer for when you need to heal azeroth (via fight mechanics) on mythic difficulty, based on Echo's strategy",
 	timerDispels		= "Show timer for when you need to dispel Death Sentence on mythic difficulty, based on Echo's strategy"
 })
