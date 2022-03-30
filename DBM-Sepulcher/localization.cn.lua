@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20210117
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20220330
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -98,8 +98,28 @@ L:SetOptionLocalization({
 ---------------------------
 --L= DBM:GetModLocalization(2464)
 
+L:SetWarningLocalization({
+	warnHealAzeroth		= "治疗艾泽拉斯 (%s)",
+	warnDispel			= "驱散 (%s)"
+})
+
+L:SetTimerLocalization{
+	timerPits			= "坑洞开启",
+	timerHealAzeroth	= "治疗艾泽拉斯 (%s)",
+	timerDispels		= "驱散 (%s)"
+}
+
+L:SetOptionLocalization({
+	timerPits			= "计时器：楼层坑洞暴露时，你可以跳入。",
+	warnHealAzeroth		= "警告：在史诗难度下，提示你何时治疗艾泽拉斯（基于Echo的策略）。",
+	warnDispel			= "警告：在实施难度下，提示你何时驱散死亡宣判（基于Echo的策略）。",
+	timerHealAzeroth	= "计时器：在史诗难度下，提示你何时治疗艾泽拉斯（基于Echo的策略）。",
+	timerDispels		= "计时器：在实施难度下，提示你何时驱散死亡宣判（基于Echo的策略）。"
+})
+
 L:SetMiscLocalization({
-	Pylon		= "晶塔"
+	Pylon				= "晶塔",
+	AzerothSoak			= "艾泽拉斯分摊伤害"
 })
 
 -------------
