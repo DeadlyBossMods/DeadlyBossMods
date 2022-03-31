@@ -259,7 +259,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 360420 then
+	if spellId == 360420 and self:AntiSpam(3, 1) then
 		warnShatterMind:Show()
 	end
 end
