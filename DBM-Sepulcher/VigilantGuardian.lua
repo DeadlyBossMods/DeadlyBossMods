@@ -57,7 +57,6 @@ local timerDissonanceCD							= mod:NewCDTimer(12.2, 364447, nil, "Tank", nil, 5
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(23875))
 local warnRefractedBlast						= mod:NewCountAnnounce(366693, 2)
 local warnDeresolution							= mod:NewTargetAnnounce(359610, 3)
-local warnExposedCore							= mod:NewCastAnnounce(360412, 4)
 
 local specWarnDeresolution						= mod:NewSpecialWarningMoveAway(359610, nil, nil, nil, 1, 2)--Change once clear how it works
 local yellDeresolution							= mod:NewYell(359610)
@@ -66,7 +65,7 @@ local specWarnExposedCore						= mod:NewSpecialWarningMoveTo(360412, nil, nil, n
 local timerVolatileMateriumCD					= mod:NewNextTimer(30.6, 365315, nil, nil, nil, 1)
 local timerRefractedBlastCD						= mod:NewCDCountTimer(15, 366693, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--15 but can be delayed by shit
 local timerDeresolutionCD						= mod:NewCDTimer(35.3, 359610, nil, nil, nil, 3)
-local timerExposedCore							= mod:NewCastTimer(10, 360412, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerExposedCore							= mod:NewCastTimer(5, 360412, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerExposedCoreCD						= mod:NewCDTimer(35.3, 360412, nil, nil, nil, 2)
 
 mod:AddInfoFrameOption(360403, true)
@@ -143,20 +142,15 @@ function mod:OnTimerRecovery()
 end
 --]]
 
-local function delayedCoreCheck()
-	if not DBM:UnitAura("player", 360403) then--Use unit buff or unit debuff when known
-		specWarnExposedCore:Show(shieldName)
-		specWarnExposedCore:Play("findshelter")
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 360412 then
-		warnExposedCore:Show()
 		timerExposedCore:Start()
 --		timerExposedCoreCD:Start(self:IsMythic() and 105 or 109)--Approx, since it is dps based after all
-		self:Schedule(6, delayedCoreCheck)
+		if not DBM:UnitAura("player", 360403) then--Use unit buff or unit debuff when known
+			specWarnExposedCore:Show(shieldName)
+			specWarnExposedCore:Play("findshelter")
+		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shieldName)
 			DBM.InfoFrame:Show(10, "playerbuff", shieldName)

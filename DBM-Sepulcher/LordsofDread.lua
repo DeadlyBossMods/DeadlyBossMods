@@ -51,7 +51,7 @@ local specWarnCloudofCarrion					= mod:NewSpecialWarningMoveAway(360012, nil, ni
 local specWarnCloudofCarrionDebuff				= mod:NewSpecialWarningYou(360012, nil, nil, nil, 1, 2)
 local specWarnCloudofCarrionDebuffMove			= mod:NewSpecialWarningMoveTo(360012, false, nil, nil, 1, 2)--Off by default because person has to actually have basic understanding of mechanic first, then agree to this helpful warning to help with it
 local yellCloudofCarrion						= mod:NewYell(360012)
-local yellBitingWounds							= mod:NewIconRepeatYell(364985, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
+local yellBitingWounds							= mod:NewIconRepeatYell(364985)
 local specWarnLeechingClaws						= mod:NewSpecialWarningDefensive(359960, nil, nil, nil, 1, 2)
 local specWarnOpenedVeins						= mod:NewSpecialWarningTaunt(359963, nil, nil, nil, 1, 2)
 ----Shadow adds
@@ -259,7 +259,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 360420 then
+	if spellId == 360420 and self:AntiSpam(3, 1) then
 		warnShatterMind:Show()
 	end
 end
