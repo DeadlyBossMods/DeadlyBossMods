@@ -329,7 +329,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerFearfulTrepidationCD:Pause(self.vb.fearfulCount+1)
 	elseif spellId == 360418 and args:IsPlayer() then
-		timerParanoia:Start()
+		timerParanoia:Start(self:IsEasy() and 40 or 25)
 	elseif spellId == 360146 then
 		local icon = self.vb.trepidationIcon
 		if self.Options.SetIconOnFearfulTrepidation then
