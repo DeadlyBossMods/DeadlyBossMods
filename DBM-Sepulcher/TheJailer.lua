@@ -423,7 +423,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRelentingDomination:Show(DBM_COMMON_L.BREAK_LOS)
 		specWarnRelentingDomination:Play("findshelter")
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.relentingCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase][362028][self.vb.relentingCount+1]
 			if timer then
 				timerRelentingDominationCD:Start(timer, self.vb.relentingCount+1)
 			end
