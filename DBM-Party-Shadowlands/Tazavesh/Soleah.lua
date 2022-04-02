@@ -113,7 +113,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEnergyFragmentation:Show()
 		specWarnEnergyFragmentation:Play("watchwave")--wave or orb?
 		timerEnergyFragmentationCD:Start()
-	elseif spellId == 351646 then
+	elseif spellId == 351646 and self:AntiSpam(3, 1) then
 		specWarnHyperlightNova:Show()
 		specWarnHyperlightNova:Play("watchstep")
 		timerHyperlightNovaCD:Start()
