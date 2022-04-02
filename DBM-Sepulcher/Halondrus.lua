@@ -93,29 +93,29 @@ mod.vb.shatterCount = 0
 mod.vb.crushingCast = 0
 mod.vb.crushIcon = 1
 local movementTimers = {
-	--Shatter
-	[364979] = {
-		[2] = {30.1, 22},
-		[4] = {24, 24, 17.9},
+	[2] = {
+		--Shatter
+		[364979] = {30.1, 22},
+		--Earthbreaker Missiles
+		[361676] = {16.1, 26.1},
+		--Crushing Prism
+		[365297] = {37.3},
+		--Mythic Crushing Prism
+		[3652970] = {11.1, 26, 14},
 	},
-	--Earthbreaker Missiles
-	[361676] = {
-		[2] = {16.1, 26.1},
-		[4] = {12, 18, 26},
-	},
-	--Crushing Prism
-	[365297] = {
-		[2] = {37.3},
-		[4] = {47.3},
-	},
-	--Mythic Crushing Prism
-	[3652970] = {
-		[2] = {11.1, 26, 14},
-		[4] = {18.7, 18, 17.9},
+	[4] = {
+		--Shatter
+		[364979] = {24, 24, 17.9},
+		--Earthbreaker Missiles
+		[361676] = {12, 18, 26},
+		--Crushing Prism
+		[365297] = {47.3},
+		--Mythic Crushing Prism
+		[3652970] = {8.7, 18, 17.9},
 	},
 }
-local p3MissileTimers = {17, 24.5, 37.2, 12.6, 25}
-local p3MissileMythicTimers = {17, 24.5, 37.2}--First 3 same, 4th and 5th not
+local p5MissileTimers = {17, 24.5, 37.2, 12.6, 25}
+local p5MissileMythicTimers = {17, 24.5, 37.2}--First 3 same, 4th and 5th not
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -176,7 +176,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEarthbreakerMissiles:Show(self.vb.missilesCount)
 		specWarnEarthbreakerMissiles:Play("scatter")
 		if self.vb.stageTotality then
-			local timer = self.vb.stageTotality == 5 and (self:IsMythic() and p3MissileMythicTimers[self.vb.missilesCount+1] or p3MissileTimers[self.vb.missilesCount+1]) or self.vb.phase == 1 and 26.1 or movementTimers[361676][self.vb.stageTotality][self.vb.missilesCount+1]
+			local timer = self.vb.stageTotality == 5 and (self:IsMythic() and p5MissileMythicTimers[self.vb.missilesCount+1] or p5MissileTimers[self.vb.missilesCount+1]) or self.vb.phase == 1 and 26.1 or self:GetFromTimersTable(movementTimers, false, self.vb.stageTotality, 361676, self.vb.missilesCount+1)
 			if timer then
 				timerEarthbreakerMissilesCD:Start(timer, self.vb.missilesCount+1)
 			end
@@ -253,7 +253,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShatter:Show()
 		specWarnShatter:Play("watchstep")
 		if self.vb.stageTotality then
-			local timer = movementTimers[spellId][self.vb.stageTotality][self.vb.shatterCount+1]
+			local timer = self:GetFromTimersTable(movementTimers, false, self.vb.stageTotality, spellId, self.vb.shatterCount+1)
 			if timer then
 				timerShatterCD:Start(timer, self.vb.shatterCount+1)
 			end
@@ -291,7 +291,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.vb.stageTotality then
 				--use tabled timers during movements, regular CD during stanary subject to ICD live updates
 				local checkedId = self:IsMythic() and 3652970 or 365297
-				local timer = self.vb.phase == 1 and 26 or movementTimers[checkedId][self.vb.stageTotality][self.vb.crushingCast+1]
+				local timer = self.vb.phase == 1 and 26 or self:GetFromTimersTable(movementTimers, false, self.vb.stageTotality, checkedId, self.vb.crushingCast+1)
 				if timer then
 					timerCrushingPrismCD:Start(timer, self.vb.crushingCast+1)
 				end
