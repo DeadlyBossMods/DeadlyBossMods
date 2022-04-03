@@ -270,11 +270,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hungersCount = self.vb.hungersCount + 1
 		specWarnKingsmourneHungers:Show(self.vb.hungersCount)
 		specWarnKingsmourneHungers:Play("shockwave")
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.hungersCount+1]
-			if timer then
-				timerKingsmourneHungersCD:Start(timer, self.vb.hungersCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.hungersCount+1)
+		if timer then
+			timerKingsmourneHungersCD:Start(timer, self.vb.hungersCount+1)
 		end
 		if self.Options.SetIconOnAnduinsHope then
 			self:ScanForMobs(184493, 1, 1, 4, nil, 12, "SetIconOnAnduinsHope", true)
@@ -285,12 +283,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnBlasphemy:Show()
 			specWarnBlasphemy:Play("scatter")
 		end
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.blastphemyCount+1]
-			if timer then
-				timerBlasphemyCD:Start(timer, self.vb.blastphemyCount+1)
-			end
-		end
 		table.wipe(overconfidentTargets)
 		table.wipe(hopelessnessTargets)
 		totalDebuffs = 0
@@ -298,6 +290,10 @@ function mod:SPELL_CAST_START(args)
 		--It'll be unscheduled if you get one of them and replaced with a new one
 		if self:IsMythic() and self.vb.PairingBehavior ~= "None" then
 			self:Schedule(3, BlasphemyYellRepeater, self, 0)
+		end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.blastphemyCount+1)
+		if timer then
+			timerBlasphemyCD:Start(timer, self.vb.blastphemyCount+1)
 		end
 	elseif spellId == 365958 then
 		self.vb.blastphemyCount = self.vb.blastphemyCount + 1
@@ -307,11 +303,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 365295 then
 		self.vb.befouledCount = self.vb.befouledCount + 1
 		warnBefouledBarrier:Show(self.vb.befouledCount)
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.befouledCount+1]
-			if timer then
-				timerBefouledBarrierCD:Start(timer, self.vb.befouledCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.befouledCount+1)
+		if timer then
+			timerBefouledBarrierCD:Start(timer, self.vb.befouledCount+1)
 		end
 	elseif spellId == 361815 then
 		self.vb.hopebreakerCount = self.vb.hopebreakerCount + 1
@@ -319,11 +313,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnHopebreaker:Show(self.vb.hopebreakerCount)
 			specWarnHopebreaker:Play("aesoon")
 		end
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.hopebreakerCount+1]
-			if timer then
-				timerHopebreakerCD:Start(timer, self.vb.hopebreakerCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.hopebreakerCount+1)
+		if timer then
+			timerHopebreakerCD:Start(timer, self.vb.hopebreakerCount+1)
 		end
 	elseif spellId == 365805 then
 		self.vb.hopebreakerCount = self.vb.hopebreakerCount + 1
@@ -345,11 +337,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blastphemyCount = self.vb.blastphemyCount + 1--This ability replaces blasphomy in stage 2, so might as well use it's variable
 		specWarnGrimReflections:Show()
 		specWarnGrimReflections:Play("killmob")
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.blastphemyCount+1]
-			if timer then
-				timerGrimReflectionsCD:Start(timer, self.vb.blastphemyCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.blastphemyCount+1)
+		if timer then
+			timerGrimReflectionsCD:Start(timer, self.vb.blastphemyCount+1)
 		end
 	elseif spellId == 365008 then
 		if not castsPerGUID[args.sourceGUID] then--This should have been set in summon event
@@ -390,7 +380,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.wickedSet = 1
 		if self.vb.phase then
 			if self.vb.phase < 3 then
-				local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][365030][self.vb.wickedCount+1]
+				local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 365030, self.vb.wickedCount+1)
 				if timer then
 					timerWickedStarCD:Start(timer, self.vb.wickedCount+1)
 				end
@@ -678,11 +668,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 366849 then
 		self.vb.domCount = self.vb.domCount + 1
-		if self.vb.phase then
-			local timer = allTimers[self.vb.phase] and allTimers[self.vb.phase][spellId][self.vb.domCount+1]
-			if timer then
-				timerDominationWordPainCD:Start(timer, self.vb.domCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.domCount+1)
+		if timer then
+			timerDominationWordPainCD:Start(timer, self.vb.domCount+1)
 		end
 	end
 end

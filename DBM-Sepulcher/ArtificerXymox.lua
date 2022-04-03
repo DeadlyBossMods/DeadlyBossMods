@@ -364,21 +364,17 @@ function mod:SPELL_CAST_START(args)
 --		timerRiftBlastsCD:Start()
 	elseif spellId == 362801 then
 		self.vb.glyphCount = self.vb.glyphCount + 1
-		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId]
-			if timer then
-				timerGlyphofRelocationCD:Start(timer, self.vb.glyphCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId)
+		if timer then
+			timerGlyphofRelocationCD:Start(timer, self.vb.glyphCount+1)
 		end
 	elseif spellId == 362849 then
 		self.vb.sparkCount = self.vb.sparkCount + 1
 		specWarnHyperlightSpark:Show(self.vb.sparkCount)
 		specWarnHyperlightSpark:Play("aesoon")
-		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId]
-			if timer then
-				timerHyperlightSparknovaCD:Start(timer, self.vb.sparkCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId)
+		if timer then
+			timerHyperlightSparknovaCD:Start(timer, self.vb.sparkCount+1)
 		end
 	elseif spellId == 364040 then
 		if self:AntiSpam(2, 2) then
@@ -396,11 +392,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.trapCount = self.vb.trapCount + 1
 		specWarnStasisTrap:Show(self.vb.trapCount)
 		specWarnStasisTrap:Play("watchstep")
-		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][362885]
-			if timer then
-				timerStasisTrapCD:Start(timer, self.vb.trapCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 362885)
+		if timer then
+			timerStasisTrapCD:Start(timer, self.vb.trapCount+1)
 		end
 	elseif spellId == 364040 then
 		if self.Options.NPAuraOnAscension then
@@ -430,11 +424,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ringCount = self.vb.ringCount + 1
 		specWarnForerunnerRings:Show(self.vb.ringCount)
 		specWarnForerunnerRings:Play("watchwave")
-		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId]
-			if timer then
-				timerForerunnerRingsCD:Start(timer, self.vb.ringCount+1)
-			end
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId)
+		if timer then
+			timerForerunnerRingsCD:Start(timer, self.vb.ringCount+1)
 		end
 	elseif spellId == 364030 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
