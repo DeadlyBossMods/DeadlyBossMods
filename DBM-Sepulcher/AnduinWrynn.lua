@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181954)
 mod:SetEncounterID(2546)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220320000000)
-mod:SetMinSyncRevision(20220123000000)
+mod:SetHotfixNoticeRev(20220405000000)
+mod:SetMinSyncRevision(20220405000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true
 
@@ -220,7 +220,7 @@ function mod:OnCombatStart(delay)
 	timerBlasphemyCD:Start(30-delay, 1)
 	timerKingsmourneHungersCD:Start(45-delay, 1)
 	timerWickedStarCD:Start(55-delay, 1)
-	if self:IsMythic() then
+	if self:IsMythic() or self:IsLFR() then
 		timerPhaseCD:Start(164-delay)
 	else
 		timerPhaseCD:Start(155-delay)
@@ -370,6 +370,24 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 365872 then
 		warnBeaconofHope:Show()
+		--Check for skipped intermission, which happens when overgearing
+		if self.vb.phase < 3 then
+			self.vb.blastphemyCount = 0
+			self.vb.hopebreakerCount = 0
+			self.vb.wickedCount = 0
+			self.vb.domCount = 0
+			self:SetStage(3)
+			timerArmyofDeadCD:Stop()
+			timerSoulReaperCD:Stop()
+			timerMarchofDamnedCD:Stop()
+			timerHopebreakerCD:Start(9.8, 1)
+			timerHopelessnessCD:Start(19.8)
+			timerWickedStarCD:Start(39.8, 1)
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(365966))
+				DBM.InfoFrame:Show(20, "playerdebuffremaining", 365966)
+			end
+		end
 	end
 end
 
@@ -545,7 +563,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerMarchofDamnedCD:Start(7.5)--Only mythic has this in first intermission
 				timerPhaseCD:Start(81.9)--Mythic also has 2nd intermission length for first one
 			else
-				timerPhaseCD:Start(156)
+				timerPhaseCD:Start(self:IsLFR() and 73 or 156)
 			end
 			timerArmyofDeadCD:Start(7.5)
 			timerSoulReaperCD:Start(14.5, 1)
@@ -557,7 +575,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerArmyofDeadCD:Start(12.7)
 			timerMarchofDamnedCD:Start(12.7)--Only used in second intermission (on non mythic)
 			timerSoulReaperCD:Start(19.7, 1)
-			timerPhaseCD:Start(self:IsMythic() and 86.7 or 80)
+			timerPhaseCD:Start(self:IsMythic() and 86.7 or self:IsLFR() and 56.7 or 80)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
