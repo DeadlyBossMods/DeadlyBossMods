@@ -375,7 +375,6 @@ function mod:SPELL_CAST_START(args)
 			self.vb.blastphemyCount = 0
 			self.vb.hopebreakerCount = 0
 			self.vb.wickedCount = 0
-			self.vb.domCount = 0
 			self:SetStage(3)
 			timerArmyofDeadCD:Stop()
 			timerSoulReaperCD:Stop()

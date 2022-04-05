@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(182777)
 mod:SetEncounterID(2549)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220323000000)
+mod:SetHotfixNoticeRev(20220405000000)
 mod:SetMinSyncRevision(20220308000000)
 --mod.respawnTime = 29
 
@@ -141,14 +141,14 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362088))
 			DBM.InfoFrame:Show(20, "table", cosmicStacks, 1)
 		end
-	else
-		timerCorruptedStrikesCD:Start(3-delay)
-		timerDarkEclipseCD:Start(6.2-delay, 1)
-		timerCelestialCollapseCD:Start(8.4-delay, 1)
+	else--Rest are all same, and seem to have been tweaked in recent weeks too
+		timerCorruptedStrikesCD:Start(4.5-delay)
+		timerDarkEclipseCD:Start(7.3-delay, 1)
+		timerCelestialCollapseCD:Start(9.5-delay, 1)
 --		timerCelestialTerminatorCD:Start(1, 1)--not in combat log, do later
-		timerMassiveBangCD:Start(60-delay, 1)
+		timerMassiveBangCD:Start(61.7-delay, 1)
 		if self:IsHeroic() then
-			timerManifestCosmosCD:Start(15.7-delay, 1)
+			timerManifestCosmosCD:Start(16.7-delay, 1)
 			if self.Options.InfoFrame then
 				--On heroic it's fairly straight forward swaps tracking only some people
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(362081))
@@ -385,13 +385,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerManifestCosmosCD:Start(19.9, 1)
 			timerMassiveBangCD:Start(65, self.vb.bangCount+1)
 		else
-			timerCorruptedStrikesCD:Start(3)
-			timerDarkEclipseCD:Start(6, 1)--SUCCESS
-			timerCelestialCollapseCD:Start(8.3, 1)
+			timerCorruptedStrikesCD:Start(4.5)
+			timerDarkEclipseCD:Start(7.1, 1)--SUCCESS
+			timerCelestialCollapseCD:Start(9.5, 1)
 --			timerCelestialTerminatorCD:Start(3, 1)
-			timerMassiveBangCD:Start(60.6, self.vb.bangCount+1)
+			timerMassiveBangCD:Start(61.5, self.vb.bangCount+1)
 			if self:IsHeroic() then
-				timerManifestCosmosCD:Start(15.6, 1)
+				timerManifestCosmosCD:Start(16.8, 1)
 			end
 		end
 	end
