@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348350 346204",
-	"SPELL_CAST_SUCCESS 345770",
+--	"SPELL_CAST_SUCCESS 346006",
 	"SPELL_AURA_APPLIED 353414 348128 345770",
 	"SPELL_AURA_REMOVED 345770"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -22,6 +22,11 @@ mod:RegisterEventsInCombat(
 --TODO, fix event for interrogation targetting, it's likely wrong, maybe https://ptr.wowhead.com/spell=345990/containment-cell instead?
 --Improve/add timers for armed/disarmed phases because it'll probably alternate a buffactive timer instead of CD
 --TODO, what do with https://ptr.wowhead.com/spell=347964/rotary-body-armor ?
+--[[
+(ability.id = 348350 or ability.id = 346204) and type = "begincast"
+ or ability.id = 346006 and type = "cast"
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
+--]]
 local warnArmedSecurity				= mod:NewSpellAnnounce(346204, 2)
 local warnFullyArmed				= mod:NewSpellAnnounce(348128, 3, nil, "Tank|Healer")
 local warnInpoundContraband			= mod:NewTargetNoFilterAnnounce(345770, 2)--Not filtered, because if it's on a tank or healer its kinda important
@@ -33,15 +38,16 @@ local specWarnInterrogationOther	= mod:NewSpecialWarningSwitch(353414, "Dps", ni
 local specWarnInpoundContraband		= mod:NewSpecialWarningYou(345770, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
-local timerInterrogationCD			= mod:NewCDTimer(42.5, 353414, nil, nil, nil, 3)--42.5-52
-local timerArmedSecurityCD			= mod:NewCDTimer(37.7, 346204, nil, nil, nil, 6)--37.7--57
-local timerImpoundContrabandCD		= mod:NewCDTimer(31.6, 345770, nil, nil, nil, 3)
+--Timers have spell queuing and ordering issues. min times lazily used because it's a 5 man and not worth effort to detect/auto update when spell queuing occurs
+local timerInterrogationCD			= mod:NewCDTimer(31.6, 353414, nil, nil, nil, 3)--31.6-52
+local timerArmedSecurityCD			= mod:NewCDTimer(34.4, 346204, nil, nil, nil, 6)--34.4-57
+local timerImpoundContrabandCD		= mod:NewCDTimer(26.7, 345770, nil, nil, nil, 3)
 --local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Basically spammed
 
 function mod:OnCombatStart(delay)
 	timerArmedSecurityCD:Start(7.2-delay)
 	timerImpoundContrabandCD:Start(18.1-delay)
-	timerInterrogationCD:Start(32.7-delay)
+	timerInterrogationCD:Start(31.6-delay)
 	local trashMod = DBM:GetModByName("TazaveshTrash")
 	if trashMod then
 		trashMod.isTrashModBossFightAllowed = true
@@ -68,12 +74,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 345770 then
-		timerImpoundContrabandCD:Start()
+	if spellId == 346006 then
+--		timerImpoundContrabandCD:Start()--Not reliable beyond first cast
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
