@@ -5,16 +5,18 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176556, 176555, 176705)
 mod:SetEncounterID(2441)
 mod:SetUsedIcons(1)
+mod:SetHotfixNoticeRev(20220405000000)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 349663 349797 349987 349934 349954 350086 350101",
 	"SPELL_CAST_SUCCESS 181089",
-	"SPELL_AURA_APPLIED 349627 349933 349954 350101 350037",
+	"SPELL_AURA_APPLIED 349627 349933 349954 350037",
 	"SPELL_AURA_REMOVED 349627 349933",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"RAID_BOSS_WHISPER",
 	"UNIT_DIED"
 )
 
@@ -109,6 +111,8 @@ function mod:SPELL_CAST_START(args)
 		timerWhirlingAnnihilationCD:Start()
 	elseif spellId == 350101 then
 		self.vb.chainsCast = self.vb.chainsCast + 1
+		specWarnChainsofDamnation:Show()
+		specWarnChainsofDamnation:Play("targetchange")
 		timerChainsofDamnationCD:Start(self.vb.chainsCast == 1 and 21.8 or 30.3, self.vb.chainsCast+1)
 	end
 end
@@ -152,13 +156,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 349954 then
 		specWarnPurificationProtocol:CombinedShow(0.3, args.destName)
 		specWarnPurificationProtocol:ScheduleVoice(0.3, "helpdispel")
-	elseif spellId == 350101 then
-		if args:IsPlayer() then
-			yellChainsofDamnation:Yell()
-		else
-			specWarnChainsofDamnation:Show(args.destName)
-			specWarnChainsofDamnation:Play("killmob")
-		end
 	elseif spellId == 350037 then--Achillite "dying" (doesn't fire UNIT_DIED)
 		timerVentingProtocolCD:Stop()
 		timerFlagellationProtocolCD:Stop()
@@ -191,6 +188,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("350101") then
+		yellChainsofDamnation:Yell()
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
