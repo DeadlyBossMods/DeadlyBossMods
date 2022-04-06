@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175806)
 mod:SetEncounterID(2437)
+mod:SetHotfixNoticeRev(20220405000000)
 
 mod:RegisterCombat("combat")
 
@@ -17,7 +18,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 347392 or ability.id = 347249 or ability.id = 347414 or ability.id = 347623 or ability.id = 347610 or ability.id = 357188 or ability.id = 347150) and type = "begincast"
  or ability.id = 357189 or ability.id = 347152
- or (source.name = "So'azmi" and source.firstSeen = timestamp) or (target.name = "So'azmi" and target.firstSeen = timestamp)
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 local warnDivide					= mod:NewCountAnnounce(347249, 3)
 local warnQuickblade				= mod:NewSpellAnnounce(347623, 3)
@@ -56,11 +57,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 347610 then
 		specWarnShurl:Show(relocator)
 		specWarnShurl:Play("justrun")
-		if self.vb.divideCount ~= 1 then
-		--Boss seems to stop this ability betweenn divide 1 and 2
-		--But uses it freely before divide 1 and after divide 2
-			timerShurlCD:Start()
-		end
+		timerShurlCD:Start()
 	elseif spellId == 357188 then
 		if self.vb.techRemaining == 2 then
 			specWarnDoubleTechnique:Show(args.sourceName, 1)

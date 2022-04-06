@@ -8,7 +8,7 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = false--in this zone, some of the hard modes are just making you do the boss with trash
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584",
+	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584 357226",
 	"SPELL_SUMMON 355132",
 	"SPELL_AURA_APPLIED 355888 355915 355980 357229 357029 355581",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -44,6 +44,7 @@ local specWarnWaterbolt						= mod:NewSpecialWarningInterrupt(355225, false, nil
 local specWarnInvigoratingFishStickCast		= mod:NewSpecialWarningSpell(355132, nil, nil, nil, 1, 3)--Off by default, optional for those with stuns/disorientations that can interrupt
 local specWarnInvigoratingFishStick			= mod:NewSpecialWarningSwitch(355132, "-Healer", nil, nil, 1, 2)--Various Murlocs
 local specWarnChargedPulse					= mod:NewSpecialWarningRun(355584, nil, nil, nil, 4, 2)--Stormforged Guardian
+local specWarnDriftingStar					= mod:NewSpecialWarningDodge(357226, nil, nil, nil, 2, 2)--Adorned Starseer
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -61,6 +62,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 357197 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnLightshardRetreat:Show()
 		specWarnLightshardRetreat:Play("watchstep")
+	elseif spellId == 357226 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
+		specWarnDriftingStar:Show()
+		specWarnDriftingStar:Play("shockwave")
 	elseif spellId == 354297 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHyperlightBolt:Show(args.sourceName)
 		specWarnHyperlightBolt:Play("kickcast")
