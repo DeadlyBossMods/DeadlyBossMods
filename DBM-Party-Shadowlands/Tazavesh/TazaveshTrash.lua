@@ -116,7 +116,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 357238 and self:IsValidWarning(args.sourceGUID) then
+	if spellId == 357238 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 5) then
 		specWarnWanderingPulsar:Show()
 		specWarnWanderingPulsar:Play("targetchange")
 	end
