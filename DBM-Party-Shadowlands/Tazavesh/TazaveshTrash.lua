@@ -8,7 +8,8 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = false--in this zone, some of the hard modes are just making you do the boss with trash
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584 357226",
+	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584 357226 357260",
+	"SPELL_CAST_SUCCESS 357238",
 	"SPELL_SUMMON 355132",
 	"SPELL_AURA_APPLIED 355888 355915 355980 357229 357029 355581",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -45,6 +46,8 @@ local specWarnInvigoratingFishStickCast		= mod:NewSpecialWarningSpell(355132, ni
 local specWarnInvigoratingFishStick			= mod:NewSpecialWarningSwitch(355132, "-Healer", nil, nil, 1, 2)--Various Murlocs
 local specWarnChargedPulse					= mod:NewSpecialWarningRun(355584, nil, nil, nil, 4, 2)--Stormforged Guardian
 local specWarnDriftingStar					= mod:NewSpecialWarningDodge(357226, nil, nil, nil, 2, 2)--Adorned Starseer
+local specWarnWanderingPulsar				= mod:NewSpecialWarningSwitch(357238, "-Healer", nil, nil, 1, 2)--Adorned Starseer
+local specWarnUnstableRift					= mod:NewSpecialWarningInterrupt(357260, "HasInterrupt", nil, nil, 1, 2)--Focused Ritualist
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -64,7 +67,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLightshardRetreat:Play("watchstep")
 	elseif spellId == 357226 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnDriftingStar:Show()
-		specWarnDriftingStar:Play("shockwave")
+		specWarnDriftingStar:Play("watchorb")
 	elseif spellId == 354297 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHyperlightBolt:Show(args.sourceName)
 		specWarnHyperlightBolt:Play("kickcast")
@@ -92,6 +95,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 355225 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWaterbolt:Show(args.sourceName)
 		specWarnWaterbolt:Play("kickcast")
+	elseif spellId == 357260 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnUnstableRift:Show(args.sourceName)
+		specWarnUnstableRift:Play("kickcast")
 	elseif spellId == 356001 and self:IsValidWarning(args.sourceGUID) then
 		warnBeamSplicer:Show()
 	elseif spellId == 357229 and self:IsValidWarning(args.sourceGUID) then
@@ -104,6 +110,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 355584 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnChargedPulse:Show()
 		specWarnChargedPulse:Play("justrun")
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 357238 and self:IsValidWarning(args.sourceGUID) then
+		specWarnWanderingPulsar:Show()
+		specWarnWanderingPulsar:Play("targetchange")
 	end
 end
 
