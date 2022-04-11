@@ -27,7 +27,7 @@ local warnLightningNova				= mod:NewTargetNoFilterAnnounce(358131, 3)
 local warnVaultPurifierSoon			= mod:NewSoonAnnounce("ej23004", 2, "136116", false)
 local warnVaultPurifier				= mod:NewSpellAnnounce("ej23004", 2, "136116")
 local warnPurifyingBurst			= mod:NewCountAnnounce(353312, 2)
-local warnTitanicInsight			= mod:NewTargetNoFilterAnnounce(353312, 2)
+local warnTitanicInsight			= mod:NewTargetNoFilterAnnounce(346427, 2)
 
 local specWarnShearingSwings		= mod:NewSpecialWarningDefensive(346116, nil, nil, nil, 1, 2)
 local specWarnTitanicCrash			= mod:NewSpecialWarningDodge(347094, nil, nil, nil, 2, 2)
@@ -41,7 +41,7 @@ local timerPurgedbyFireCD			= mod:NewCDTimer(17, 346959, nil, nil, nil, 3)
 local timerSanitizingCycleCD		= mod:NewCDTimer(11, 346766, nil, nil, nil, 6)
 local timerVaultPurifierCD			= mod:NewCDTimer(29.1, "ej23004", nil, nil, nil, 1, "136116", DBM_COMMON_L.DAMAGE_ICON)
 local timerPurifyingBurstCD			= mod:NewCDTimer(23.1, 353312, nil, nil, nil, 2)
-local timerTitanicInsight			= mod:NewTargetTimer(15, 353312, nil, nil, nil, 5)
+local timerTitanicInsight			= mod:NewTargetTimer(15, 346427, nil, nil, nil, 5)
 
 mod:AddSetIconOption("SetIconOnAdds", "ej23004", true, true, {1, 2})
 
