@@ -21,6 +21,12 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, Are swings dogeable by tank?
+--[[
+(ability.id = 347094 or ability.id = 346957 or ability.id = 346766 or ability.id = 358131 or ability.id = 353312) and type = "begincast"
+ or (ability.id = 346116 or ability.id = 181113) and type = "cast"
+ or ability.id = 346766
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
+--]]
 local warnPurgedbyFire				= mod:NewSpellAnnounce(346959, 2)
 local warnKeepersprotection			= mod:NewEndAnnounce(347958, 1)
 local warnLightningNova				= mod:NewTargetNoFilterAnnounce(358131, 3)

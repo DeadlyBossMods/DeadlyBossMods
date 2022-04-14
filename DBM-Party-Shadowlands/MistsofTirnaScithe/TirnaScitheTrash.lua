@@ -8,8 +8,8 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 321968 324909 324923 324914 324776 340305 340304 340300 340160 340189 326046 325418",
-	"SPELL_CAST_SUCCESS 325418",
-	"SPELL_AURA_APPLIED 322557 322938 324914 324776 325224 340288 326046 340544",
+	"SPELL_CAST_SUCCESS 325418 340544 322938",
+	"SPELL_AURA_APPLIED 322557 324914 324776 325224 340288 326046",
 	"SPELL_AURA_APPLIED_DOSE 340288"
 )
 
@@ -125,6 +125,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnVolatileAcid:Show(args.destName)
 		end
+	elseif spellId == 340544 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnStimulateRegeneration:Show(args.sourceName)
+		specWarnStimulateRegeneration:Play("kickcast")
+	elseif spellId == 322938 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnHarvestEssence:Show(args.sourceName)
+		specWarnHarvestEssence:Play("kickcast")
 	end
 end
 
@@ -137,12 +143,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 325224 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 		specWarnAnimaInjection:Show(args.destName)
 		specWarnAnimaInjection:Play("helpdispel")
-	elseif spellId == 322938 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnHarvestEssence:Show(args.sourceName)
-		specWarnHarvestEssence:Play("kickcast")
-	elseif spellId == 340544 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnStimulateRegeneration:Show(args.sourceName)
-		specWarnStimulateRegeneration:Play("kickcast")
 	elseif spellId == 322486 then
 		if args:IsPlayer() then
 			specWarnOvergrowth:Show()
