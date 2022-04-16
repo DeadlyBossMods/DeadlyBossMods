@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164451, 164463, 164461)--Dessia, Paceran, Sathel
 mod:SetEncounterID(2391)
+mod:SetHotfixNoticeRev(20220416000000)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
@@ -22,6 +23,7 @@ ability.id = 320063 and type = "begincast"
  or (ability.id = 320069 or ability.id = 320272 or ability.id = 333222 or ability.id = 320248 or ability.id = 333231 or ability.id = 333540) and type = "cast"
  or (ability.id = 324085 or ability.id = 320293) and (type = "applybuff" or type = "applydebuff")
  or (target.id = 164451 or target.id = 164463 or target.id = 164461) and type = "death"
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 --Dessia the Decapitator
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21582))
@@ -59,7 +61,7 @@ local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)--And r
 
 local yellOpportunityStrikes			= mod:NewYell(333540)
 
-local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--And re-added in 9.1?
+local timerOpportunityStrikesCD			= mod:NewCDTimer(30, 333540, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--And re-added in 9.1?
 
 function mod:OnCombatStart(delay)
 	--Dessia
@@ -71,7 +73,7 @@ function mod:OnCombatStart(delay)
 	timerSearingDeathCD:Start(10.2-delay)--SUCCESS 10-15
 	timerSpectralTransferenceCD:Start(10.5-delay)--SUCCESS 10-13
 	if self:IsMythic() then
-		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS 61-80?
+		timerOpportunityStrikesCD:Start(40-delay)
 	end
 end
 
