@@ -30,9 +30,9 @@ local L
 L= DBM:GetModLocalization(2460)
 
 L:SetOptionLocalization({
-	RitualistIconSetting	= "Set Ritualist icon setting behavior. Raid Leaders preference is used if they're using DBM",
-	SetOne					= "Differ from seeds/Night Hunter (no conflicts) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t",--5-8 (Default)
-	SetTwo					= "Match seeds/Night Hunter (but conflicts if seeds and ritualists at same time) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t"-- 1-4
+	RitualistIconSetting	= "Установить поведение настройки меток Ритуалистов. Используется предпочтение рейд-лидеров, если они используют DBM.",
+	SetOne					= "Отличие от семян / Ночного охотника (без конфликтов) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t",--5-8 (по умолчанию)
+	SetTwo					= "Совпадение семян / Ночного охотника (конфликтует, если семена и ритуалисты в одно и то же время) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t"-- 1-4
 --	SetThree				= "Match seeds/Night Hunter (no conflicts, but requires raid members having extended icons properly installed to see them) |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:32:48|t |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:32:48|t"--9-12
 })
 
@@ -66,7 +66,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2463)
 
 L:SetMiscLocalization({
-	Mote		= "Mote"
+	Mote		= "Частица"
 })
 
 ---------------------------
@@ -76,9 +76,9 @@ L= DBM:GetModLocalization(2469)
 
 L:SetOptionLocalization({
 	PairingBehavior		= "Установить поведение мода для 'Кощунства'. Используется предпочтение рейд-лидеров, если они используют DBM.",
-	Auto				= "Оповещение 'на тебе' с автоматически назначенным партнером. Облачка чата показывают уникальные символы для совпадений.",
-	Generic				= "Оповещение 'на тебе' без назначенного партнера. Облачка чата показывают общие символы для двух дебаффов.",--По умолчанию
-	None				= "Оповещение 'на тебе' без назначенного партнера. Без облачков чата."
+	Auto				= "Оповещать 'на тебе' с автоматически назначенным партнером. Облачка чата показывают уникальные символы для совпадений.",
+	Generic				= "Оповещать 'на тебе' без назначенного партнера. Облачка чата показывают общие символы для двух дебаффов.",--По умолчанию
+	None				= "Оповещать 'на тебе' без назначенного партнера. Без облачков чата."
 })
 
 ---------------------------
