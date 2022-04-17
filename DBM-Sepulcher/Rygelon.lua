@@ -53,8 +53,8 @@ local warnCosmicCore							= mod:NewAddsLeftAnnounce(362770, 2)
 local warnCosmicIrregularity					= mod:NewCountAnnounce(362088, 2)
 local warnCelestialTerminator					= mod:NewSpellAnnounce(363108, 3)
 local warnRadiantPlasma							= mod:NewSpellAnnounce(366606, 4)--No one is tanking him fail check
-local warnDarkDarkQuasarBoss					= mod:NewStackAnnounce(368080, 2)
-local warnDarkDarkQuasarBossFaded				= mod:NewEndAnnounce(368080, 1)
+local warnDarkQuasarBoss						= mod:NewStackAnnounce(368080, 2)
+local warnDarkQuasarBossFaded					= mod:NewEndAnnounce(368080, 1)
 
 local specWarnDarkEclipse						= mod:NewSpecialWarningYou(361548, nil, nil, nil, 1, 2)
 local yellDarkEclipse							= mod:NewShortPosYell(361548)
@@ -315,8 +315,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDarkQuasarPersonal:Play("runout")
 		yellarkQuasarPersonal:Countdown(spellId, 2)
 	elseif spellId == 368080 then
-		warnDarkDarkQuasarBoss:Cancel()
-		warnDarkDarkQuasarBoss:Shedule(0.3, args.destName, args.amount or 1)
+		warnDarkQuasarBoss:Cancel()
+		warnDarkQuasarBoss:Schedule(0.3, args.destName, args.amount or 1)
 	elseif spellId == 363773 then--Boss Entering Singularity
 		timerDarkEclipseCD:Stop()
 		timerCelestialCollapseCD:Stop()
@@ -367,7 +367,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 368082 and args:IsPlayer() then
 		yellarkQuasarPersonal:Cancel()
 	elseif spellId == 368080 then
-		warnDarkDarkQuasarBossFaded:Show()
+		warnDarkQuasarBossFaded:Show()
 	elseif spellId == 363773 then --Boss Leaving Singularity
 		self.vb.eclipseCount = 0
 		self.vb.collapseCount = 0
