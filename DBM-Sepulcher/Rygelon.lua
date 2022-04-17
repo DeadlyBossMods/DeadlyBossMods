@@ -316,7 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		yellarkQuasarPersonal:Countdown(spellId, 2)
 	elseif spellId == 368080 then
 		warnDarkQuasarBoss:Cancel()
-		warnDarkQuasarBoss:Shedule(0.3, args.destName, args.amount or 1)
+		warnDarkQuasarBoss:Schedule(0.3, args.destName, args.amount or 1)
 	elseif spellId == 363773 then--Boss Entering Singularity
 		timerDarkEclipseCD:Stop()
 		timerCelestialCollapseCD:Stop()
