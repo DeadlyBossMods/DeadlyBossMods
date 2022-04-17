@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 320991 321038 324103 326827",
+	"SPELL_CAST_START 320991 321038 324103 326827 328170",
 	"SPELL_CAST_SUCCESS 324086",
 	"SPELL_AURA_APPLIED 334673 321038 324089 324086",
 	"SPELL_AURA_REMOVED 326827"
@@ -34,6 +34,7 @@ local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(324103, nil, nil, ni
 local yellShiningRadiance					= mod:NewYell(324086, nil, nil, nil, "YELL")
 --Unknown, user request
 local specWarnDreadBindings					= mod:NewSpecialWarningRun(326827, nil, nil, nil, 4, 2)
+local specWarnCraggyFracture				= mod:NewSpecialWarningDodge(328170, nil, nil, nil, 2, 2)
 
 --local timerShiningRadiance					= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
@@ -56,6 +57,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 326827 then
 		specWarnDreadBindings:Show()
 		specWarnDreadBindings:Play("justrun")
+	elseif spellId == 328170 and self:AntiSpam(3, 2) then
+		specWarnCraggyFracture:Show()
+		specWarnCraggyFracture:Play("watchstep")
 	end
 end
 
