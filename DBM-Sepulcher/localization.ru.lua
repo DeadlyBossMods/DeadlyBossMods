@@ -53,11 +53,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2465)
 
 L:SetTimerLocalization{
-	timerComboCD		= "~Tank Combo (%d)"
+	timerComboCD		= "~Танковое комбо (%d)"
 }
 
 L:SetOptionLocalization({
-	timerComboCD		= "Show timer (with count) for tank combo cooldown"
+	timerComboCD		= "Показать таймер (с отсчетом) перезарядки танкового комбо"
 })
 
 ---------------------------
@@ -75,10 +75,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2469)
 
 L:SetOptionLocalization({
-	PairingBehavior		= "Set mod behavior for Blasphemy. Raid Leaders preference is used if they're using DBM",
-	Auto				= "'on you' alert with auto assigned partner. Chat bubbles show unique symbols for matchups",
-	Generic				= "'on you' alert with no assignments. Chat bubbles show generic symbols for two debuffs",--Default
-	None				= "'on you' alert with no assignments. No Chat bubbles"
+	PairingBehavior		= "Установить поведение мода для 'Кощунства'. Используется предпочтение рейд-лидеров, если они используют DBM.",
+	Auto				= "Оповещение 'на тебе' с автоматически назначенным партнером. Облачка чата показывают уникальные символы для совпадений.",
+	Generic				= "Оповещение 'на тебе' без назначенного партнера. Облачка чата показывают общие символы для двух дебаффов.",--По умолчанию
+	None				= "Оповещение 'на тебе' без назначенного партнера. Без облачков чата."
 })
 
 ---------------------------
