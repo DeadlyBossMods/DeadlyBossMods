@@ -547,7 +547,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
 		if self.vb.phase then
-			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.handCount+1]
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][361791][self.vb.handCount+1]
 			if timer then
 				timerHandofDestructionCD:Start(timer-2, self.vb.handCount+1)
 			end
