@@ -14,7 +14,7 @@ mod:SetMinSyncRevision(20220114000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 360295 360636 365272 361066 360845 364241 361304 361568 365126 366062 361300",
+	"SPELL_CAST_START 360295 360636 365272 361066 360845 364241 361304 361568 365126 366062 361300 361789",
 	"SPELL_CAST_SUCCESS 361745 361278",
 	"SPELL_SUMMON 361566 360333",
 	"SPELL_AURA_APPLIED 360687 365269 361067 362352 361689 364839 366234 361745 366159",
@@ -542,6 +542,16 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 366062 then
 		warnCompleteRecon:Show()
 		timerCompleteRecon:Start()
+	elseif spellId == 361789 and self:AntiSpam(10, 3) then--Backup in case USCS event is removed/broken
+		self.vb.handCount = self.vb.handCount + 1
+		specWarnHandofDestruction:Show()
+		specWarnHandofDestruction:Play("justrun")
+		if self.vb.phase then
+			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][361791][self.vb.handCount+1]
+			if timer then
+				timerHandofDestructionCD:Start(timer-2, self.vb.handCount+1)
+			end
+		end
 	elseif spellId == 361300 and self:AntiSpam(4, 1) then--Reconstruction
 		self:SetStage(0)
 		self.vb.ritualCount = 0
