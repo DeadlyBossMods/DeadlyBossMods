@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220329000000)
+mod:SetHotfixNoticeRev(20220423000000)
 mod:SetMinSyncRevision(20220329000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
@@ -187,18 +187,58 @@ mod.vb.chainsIcon = 8
 
 local difficultyName = mod:IsMythic() and "mythic" or mod:IsHeroic() and "heroic" or "easy"
 local allTimers = {
-	["easy"] = {--Normal, and LFR (probably not all together)
+	["lfr"] = {
 		[1] = {
 			--Torment (lasts entire fight)
 			[365436] = {21.9, 51, 69},
 			--Martyrdom
-			[363893] = {40, 40, 40, 40},
+			[363893] = {39.9, 40, 40, 40},
 			--Relentless Domination
-			[362028] = {48, 60, 60},
+			[362028] = {47.9, 60, 60},
 			--Chains of Oppression
-			[359809] = {90},
+			[359809] = {89.9},
 			--Rune of Damnation
-			[360279] = {11, 19, 34, 32.9, 28, 25.9},
+			[360279] = {10.9, 19, 34, 32.9, 28, 25.9},
+		},
+		[2] = {
+			--Torment (lasts entire fight)
+			[365436] = {25, 59, 17.9, 39, 38.9},
+			--Decimator (lasts rest of fight)
+			[360562] = {11, 64.9, 39, 50},
+			--Unholy Attunement
+			[360373] = {184.6},--Only used once in LFR
+			--Shattering Blast
+			[359856] = {18, 21.9, 22, 27.9, 18, 19.9, 22, 21.9},
+			--Rune of Compulsion
+			[366284] = {47, 48, 61.9},
+		},
+		[3] = {
+			--Torment (lasts entire fight)
+			[365436] = {27, 49.9, 32, 9.9, 46, 41, 32, 9.9, 45.9, 42, 31.9, 9.9, 46, 41.9, 32, 9.9, 45.9},--45.9, 41, 31.9, 9.9 except first two casts in first set
+			--Decimator (lasts rest of fight)
+			[360562] = {36, 51.9, 42, 42, 45, 41.9, 42, 46, 41.9, 42, 46, 42},--42, 45, 42 repeating except for two casts in first set
+			--Desolation
+			[365033] = {},--Not used in LFR
+			--Rune of Domination
+			[365147] = {63.9, 84, 45, 84, 46, 83.9, 46, 84},--45, 84 repeating except first cast in first set
+			--Chains of Anguish
+			[365212] = {52.9, 42, 41.9, 41.9, 45, 42, 41.9, 46, 42, 41.9, 46, 42},--45, 42, 42 repeating except for first cast in first set
+			--Defile
+			[365169] = {48, 35.9, 30.9, 43, 55, 31, 36.9, 62.1, 30.9, 37, 61.9, 31, 37},--36.9, 62.1, 30.9 repeating after first two sets (6 casts)
+		},
+	},
+	["normal"] = {
+		[1] = {
+			--Torment (lasts entire fight)
+			[365436] = {21.9, 51, 69},
+			--Martyrdom
+			[363893] = {39.9, 40, 40, 40},
+			--Relentless Domination
+			[362028] = {47.9, 60, 60},
+			--Chains of Oppression
+			[359809] = {89.9},
+			--Rune of Damnation
+			[360279] = {10.9, 19, 34, 32.9, 28, 25.9},
 		},
 		[2] = {
 			--Torment (lasts entire fight)
@@ -393,11 +433,17 @@ function mod:OnCombatStart(delay)
 		timerRelentingDominationCD:Start(55-delay, 1)
 	else
 		difficultyName = "easy"
-		timerRuneofDamnationCD:Start(11-delay, 1)
+		if self:IsNormal() then
+			difficultyName = "normal"
+		else--LFR
+			difficultyName = "lfr"
+		end
+		--LFR and Normal phase 1 timers the same
+		timerRuneofDamnationCD:Start(10.9-delay, 1)
 		timerTormentCD:Start(21.9-delay, 1)
-		timerMartyrdomCD:Start(40-delay, 1)
-		timerRelentingDominationCD:Start(48-delay, 1)
-		timerChainsofOppressionCD:Start(90-delay, 1)
+		timerMartyrdomCD:Start(39.9-delay, 1)
+		timerRelentingDominationCD:Start(47.9-delay, 1)
+		timerChainsofOppressionCD:Start(89.9-delay, 1)
 	end
 end
 
@@ -412,8 +458,10 @@ function mod:OnTimerRecovery()
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
+	elseif self:IsNormal() then
+		difficultyName = "normal"
 	else
-		difficultyName = "easy"
+		difficultyName = "lfr"
 	end
 end
 
@@ -754,8 +802,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.unholyCount = 0
 			self.vb.runeCount = 0
 			timerPits:Start(4)
-			timerUnholyAttunementCD:Start(6.9, 1)--Same in all
 			if self:IsMythic() then
+				timerUnholyAttunementCD:Start(6.9, 1)--Same in all but LFR
 				timerWorldCrackerCD:Start(11, 1)
 				timerRuneofCompulsionCD:Start(15, 1)
 				timerTormentCD:Start(21, 1)
@@ -765,17 +813,26 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Unschedule(mythicTimerLoop)
 				mythicTimerLoop(self)
 			elseif self:IsHeroic() then
+				timerUnholyAttunementCD:Start(6.9, 1)--Same in all but LFR
 				timerTormentCD:Start(10, 1)
 				timerDecimatorCD:Start(14, 1)
 				timerShatteringBlastCD:Start(21, 1)
 				timerRuneofCompulsionCD:Start(28, 1)
 				timerPhaseCD:Start(193.5)
-			else
+			elseif self:IsNormal() then
+				timerUnholyAttunementCD:Start(6.9, 1)--Same in all but LFR
 				timerDecimatorCD:Start(15.9, 1)
 				timerShatteringBlastCD:Start(22.5, 1)
 				timerTormentCD:Start(30, 1)
 				timerRuneofCompulsionCD:Start(49.9, 1)
 				timerPhaseCD:Start(152)
+			else--LFR
+				timerDecimatorCD:Start(11, 1)
+				timerShatteringBlastCD:Start(18, 1)
+				timerTormentCD:Start(25, 1)
+				timerRuneofCompulsionCD:Start(47, 1)
+				timerUnholyAttunementCD:Start(184.6, 1)--Only used once, at end of Stage 2
+				timerPhaseCD:Start(194.2)
 			end
 		else--Phase 3 (second time it's cast)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
@@ -802,13 +859,19 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerDesolationCD:Start(42.9, 1)
 				timerTormentCD:Start(52, 1)
 				timerRuneofDominationCD:Start(72, 1)
-			else
+			elseif self:IsNormal() then
 				timerTormentCD:Start(27, 1)
 				timerDecimatorCD:Start(35.9, 1)
 				timerDesolationCD:Start(42.9, 1)
 				timerChainsofAnguishCD:Start(52.9, 1)
 				timerDefileCD:Start(56, 1)
-				timerRuneofDominationCD:Start(64, 1)
+				timerRuneofDominationCD:Start(63.9, 1)
+			else--LFR
+				timerTormentCD:Start(27, 1)
+				timerDecimatorCD:Start(35.9, 1)
+				timerDefileCD:Start(48, 1)--Defile comes earlier in LFR
+				timerChainsofAnguishCD:Start(52.9, 1)
+				timerRuneofDominationCD:Start(63.9, 1)
 			end
 		end
 	end
