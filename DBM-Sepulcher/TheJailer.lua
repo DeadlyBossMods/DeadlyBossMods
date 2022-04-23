@@ -414,7 +414,7 @@ function mod:OnCombatStart(delay)
 	self.vb.willTotal = 0
 	self.vb.chainsIcon = 8
 	self:SetStage(1)
-	timerPhaseCD:Start(180-delay)
+	timerPhaseCD:Start(179.9-delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 --		timerWorldCrusherCD:Start(1-delay)--Used on pull
