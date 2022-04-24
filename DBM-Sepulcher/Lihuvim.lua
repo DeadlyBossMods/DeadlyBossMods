@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184901)
 mod:SetEncounterID(2539)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20220322000000)
+mod:SetHotfixNoticeRev(20220423000000)
 mod:SetMinSyncRevision(20220301000000)
 --mod.respawnTime = 29
 
@@ -108,17 +108,17 @@ local allTimers = {
 			--Cosmic Shift
 			[363088] = {29},
 			--Deconstructing Energy
-			[363676] = {20.5},
+			[363676] = {20.4},
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.4, 31.5, 31.5},
+			[362601] = {12.4, 32.7, 30.4},
 			--Protoform Cascade
-			[364652] = {6.4, 31.5, 31.5},
+			[364652] = {6.4, 32.7, 30.4, 14.5},
 			--Cosmic Shift
-			[363088] = {29.4, 23, 31.5},
+			[363088] = {30.7, 23},
 			--Deconstructing Energy
-			[363676] = {20.9, 40.1},
+			[363676] = {20.9, 38.8},
 		},
 	},
 	["heroic"] = {
@@ -126,7 +126,7 @@ local allTimers = {
 			--Unstable Mote
 			[362601] = {12.1},
 			--Protoform Cascade
-			[364652] = {5.7},
+			[364652] = {5},
 			--Resonance
 			[368027] = {38.7},
 			--Cosmic Shift
@@ -136,15 +136,15 @@ local allTimers = {
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.4, 45},
+			[362601] = {12.4, 38.8},
 			--Protoform Cascade
-			[364652] = {6.4, 31.6, 45},
+			[364652] = {5.7, 71.6},
 			--Resonance
-			[368027] = {44.5, 44.6},
+			[368027] = {38.8, 44.9},
 			--Cosmic Shift
-			[363088] = {29.4, 45},
+			[363088] = {30.7, 38.8},
 			--Deconstructing Energy
-			[363676] = {20.9, 45},
+			[363676] = {20.9, 38.4},
 		},
 	},
 	["mythic"] = {--Mythic should be same as heroic minus first engage timers being shorter. But we'll see if that's changed
@@ -162,15 +162,15 @@ local allTimers = {
 		},
 		[2] = {--After Realignment
 			--Unstable Mote
-			[362601] = {12.5, 43.7},
+			[362601] = {12.4, 38.8},
 			--Protoform Cascade
-			[364652] = {6.4, 31.5, 43.7},
+			[364652] = {5.7, 71.6},
 			--Resonance
-			[368027] = {44, 43.6},
+			[368027] = {38.8, 44.9},
 			--Cosmic Shift
-			[363088] = {29.4, 43.7},
+			[363088] = {30.7, 38.8},
 			--Deconstructing Energy
-			[363676] = {21, 43.6},
+			[363676] = {20.9, 38.4},
 		},
 	},
 }
@@ -186,7 +186,7 @@ function mod:OnCombatStart(delay)
 	self.vb.resonanceCount = 0
 	self.vb.timerMode = 1
 	playerGrip = false
-	timerProtoformCascadeCD:Start(5.1-delay, 1)--5-6
+	timerProtoformCascadeCD:Start(5-delay, 1)--5-6
 	timerUnstableMoteCD:Start(12-delay, 1)
 	timerDeconstructingEnergyCD:Start(20.5-delay, 1)--20.5-26 on normal, 20-21 heroic/mythic
 	if self:IsMythic() then
@@ -238,9 +238,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 363130 then
 		if self.vb.timerMode == 1 then
 			self.vb.timerMode = 2
-			if self:IsMythic() then--Only happens here first time
-				timerAlignmentShiftCD:Start(5.4)
-			end
 		end
 		self.vb.synthesizeCount = self.vb.synthesizeCount + 1
 		warnSynthesize:Show(self.vb.synthesizeCount)
@@ -364,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 361200 then--Realignment
 		timerRealignment:Start(30)
-		if self:IsMythic() then--Only happens here first time
+		if self:IsMythic() then
 			timerAlignmentShiftCD:Start(31.5)
 		end
 	elseif spellId == 368738 and args:IsPlayer() then
@@ -403,13 +400,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.deconstructCount = 0
 		self.vb.resonanceCount = 0
 		timerRealignment:Stop()
-		--Restart boss timers
-		timerProtoformCascadeCD:Start(6.4, 1)
+		timerProtoformCascadeCD:Start(5.7, 1)
 		timerUnstableMoteCD:Start(12.4, 1)
 		timerDeconstructingEnergyCD:Start(20.9, 1)
-		timerCosmicShiftCD:Start(29.4, 1)
+		timerCosmicShiftCD:Start(30.7, 1)
 		if self:IsHard() then
-			timerResonanceCD:Start(44, 1)
+			timerResonanceCD:Start(38.8, 1)
 		end
 		timerSynthesizeCD:Start(91.4, self.vb.synthesizeCount+1)
 	end

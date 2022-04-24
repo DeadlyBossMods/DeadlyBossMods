@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180990)
 mod:SetEncounterID(2537)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20220423000000)
+mod:SetHotfixNoticeRev(20220423160000)
 mod:SetMinSyncRevision(20220329000000)
 --mod.respawnTime = 29
 --mod.NoSortAnnounce = true--Disables DBM automatically sorting announce objects by diff announce types
@@ -282,15 +282,15 @@ local allTimers = {
 		},
 		[2] = {
 			--Torment (lasts entire fight)
-			[365436] = {10, 16, 35.4, 61.5},
+			[365436] = {10, 16, 35.4, 61.5, 28.9, 30},
 			--Decimator (lasts rest of fight)
-			[360562] = {14, 41, 80},
+			[360562] = {14, 41, 34.9, 44.9, 41},
 			--Unholy Attunement
-			[360373] = {6.9, 45, 45, 46.5},
+			[360373] = {6.9, 44.9, 44.9, 45, 42},
 			--Shattering Blast
-			[359856] = {21, 16, 30, 15, 29, 17},
+			[359856] = {20.9, 15.9, 30, 15, 29, 16.9, 28.9, 14},
 			--Rune of Compulsion
-			[366284] = {28.9, 46, 45},
+			[366284] = {28.9, 46, 45, 46.9},
 		},
 		[3] = {
 			--Torment (lasts entire fight)
@@ -414,7 +414,7 @@ function mod:OnCombatStart(delay)
 	self.vb.willTotal = 0
 	self.vb.chainsIcon = 8
 	self:SetStage(1)
-	timerPhaseCD:Start(180-delay)
+	timerPhaseCD:Start(179.9-delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 --		timerWorldCrusherCD:Start(1-delay)--Used on pull
@@ -432,7 +432,6 @@ function mod:OnCombatStart(delay)
 		timerChainsofOppressionCD:Start(40-delay, 1)
 		timerRelentingDominationCD:Start(55-delay, 1)
 	else
-		difficultyName = "easy"
 		if self:IsNormal() then
 			difficultyName = "normal"
 		else--LFR
@@ -816,7 +815,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerUnholyAttunementCD:Start(6.9, 1)--Same in all but LFR
 				timerTormentCD:Start(10, 1)
 				timerDecimatorCD:Start(14, 1)
-				timerShatteringBlastCD:Start(21, 1)
+				timerShatteringBlastCD:Start(20.9, 1)
 				timerRuneofCompulsionCD:Start(28, 1)
 				timerPhaseCD:Start(193.5)
 			elseif self:IsNormal() then
@@ -825,14 +824,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerShatteringBlastCD:Start(22.5, 1)
 				timerTormentCD:Start(30, 1)
 				timerRuneofCompulsionCD:Start(49.9, 1)
-				timerPhaseCD:Start(152)
+				timerPhaseCD:Start(152)--Only difficulty that stage 2 is shorter
 			else--LFR
 				timerDecimatorCD:Start(11, 1)
 				timerShatteringBlastCD:Start(18, 1)
 				timerTormentCD:Start(25, 1)
 				timerRuneofCompulsionCD:Start(47, 1)
 				timerUnholyAttunementCD:Start(184.6, 1)--Only used once, at end of Stage 2
-				timerPhaseCD:Start(194.2)
+				timerPhaseCD:Start(193.5)
 			end
 		else--Phase 3 (second time it's cast)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))

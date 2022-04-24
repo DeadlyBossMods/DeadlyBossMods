@@ -43,7 +43,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 
 --mod:AddTimerLine(BOSS)
 local timerDustflailCD							= mod:NewCDCountTimer(16.4, 359829, nil, nil, nil, 2)--16.4-17.5
 local timerRetchCD								= mod:NewCDCountTimer(32.9, 360448, nil, nil, nil, 3)--32.9-35
-local timerComboCD								= mod:NewTimer(32.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
+local timerComboCD								= mod:NewTimer(33.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
 local timerBurrowCD								= mod:NewCDCountTimer(75, 359770, nil, nil, nil, 3)--LFR Only
 
 local berserkTimer								= mod:NewBerserkTimer(420)--Final Consumption
@@ -51,7 +51,7 @@ local berserkTimer								= mod:NewBerserkTimer(420)--Final Consumption
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(359778, true, nil, 5)
 
-mod.vb.hungerCount = 0
+mod.vb.burrowCount = 0
 mod.vb.retchCount = 0
 mod.vb.dustCount = 0
 mod.vb.comboCount = 0
@@ -60,14 +60,14 @@ local EphemeraDustStacks = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(EphemeraDustStacks)
-	self.vb.hungerCount = 0
+	self.vb.burrowCount = 0
 	self.vb.retchCount = 0
 	self.vb.dustCount = 0
 	self.vb.comboCount = 0
 	self.vb.comboCast = 0
 	timerDustflailCD:Start(2-delay, 1)
 	if self:IsHard() then
-		timerComboCD:Start(7.6-delay, 1)
+		timerComboCD:Start(7.2-delay, 1)
 		timerRetchCD:Start(24.2-delay, 1)
 	else
 		timerComboCD:Start(8.2-delay, 1)
@@ -94,16 +94,17 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 359770 then
-		self.vb.hungerCount = self.vb.hungerCount + 1
-		specWarnRaveningBurrow:Show(self.vb.hungerCount)
+		self.vb.burrowCount = self.vb.burrowCount + 1
+		specWarnRaveningBurrow:Show(self.vb.burrowCount)
 		specWarnRaveningBurrow:Play("specialsoon")
 		--Reset other spell counts
 		self.vb.dustCount = 0
 		--Boss energy doesn't reset, Timers continue but just get queued up and then unqueud after
 		--TODO, maybe time to any timers if < 5 seconds remaining on them, but first want to see if they make changes to bosses enery, it has some bugs
 		if self:IsLFR() then--Time based in LFR and only LFR
-			timerBurrowCD:Start(75, self.vb.hungerCount+1)
+			timerBurrowCD:Start(75, self.vb.burrowCount+1)
 		end
+		timerComboCD:AddTime(8.5)--Only one that seems to pause/add time, the other abilities queue up
 	elseif spellId == 359829 then
 		self.vb.dustCount = self.vb.dustCount + 1
 		if self.Options.SpecWarn359829count then
@@ -216,6 +217,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 360079 then--[DNT] Tank Combo
 		self.vb.comboCount = self.vb.comboCount + 1
 		self.vb.comboCast = 0
-		timerComboCD:Start(self:IsHard() and 34 or 37.6, self.vb.comboCount+1)
+		timerComboCD:Start(self:IsHard() and 33.9 or 37.6, self.vb.comboCount+1)
 	end
 end
