@@ -8,10 +8,10 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = false--in this zone, some of the hard modes are just making you do the boss with trash
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584 357226 357260",
+	"SPELL_CAST_START 356548 352390 354297 356537 355888 355900 355930 355934 356001 357197 347775 355057 355225 355234 355132 355584 357226 357260 356407 356404",
 	"SPELL_CAST_SUCCESS 357238",
 	"SPELL_SUMMON 355132",
-	"SPELL_AURA_APPLIED 355888 355915 355980 357229 357029 355581",
+	"SPELL_AURA_APPLIED 355888 355915 355980 357229 357029 355581 356407",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 357029"
 )
@@ -48,6 +48,9 @@ local specWarnChargedPulse					= mod:NewSpecialWarningRun(355584, nil, nil, nil,
 local specWarnDriftingStar					= mod:NewSpecialWarningDodge(357226, nil, nil, nil, 2, 2)--Adorned Starseer
 local specWarnWanderingPulsar				= mod:NewSpecialWarningSwitch(357238, "-Healer", nil, nil, 1, 2)--Adorned Starseer
 local specWarnUnstableRift					= mod:NewSpecialWarningInterrupt(357260, "HasInterrupt", nil, nil, 1, 2)--Focused Ritualist
+local specWarnAncientDread					= mod:NewSpecialWarningInterrupt(356407, "HasInterrupt", nil, nil, 1, 2)--Ancient Core Hound
+local specWarnAncientDreadDispel			= mod:NewSpecialWarningDispel(356407, "RemoveCurse", nil, nil, 1, 2)--Ancient Core Hound
+local specWarnLavaBreath					= mod:NewSpecialWarningInterrupt(356404, "HasInterrupt", nil, nil, 1, 2)--Ancient Core Hound
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -98,6 +101,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 357260 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnUnstableRift:Show(args.sourceName)
 		specWarnUnstableRift:Play("kickcast")
+	elseif spellId == 356407 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnAncientDread:Show(args.sourceName)
+		specWarnAncientDread:Play("kickcast")
+	elseif spellId == 356404 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnLavaBreath:Show(args.sourceName)
+		specWarnLavaBreath:Play("kickcast")
 	elseif spellId == 356001 and self:IsValidWarning(args.sourceGUID) then
 		warnBeamSplicer:Show()
 	elseif spellId == 357229 and self:IsValidWarning(args.sourceGUID) then
@@ -142,6 +151,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 355980 and self:IsValidWarning(args.sourceGUID) and not args:IsDestTypePlayer() and self:AntiSpam(3, 5) then
 		specWarnRefractionShield:Show(args.destName)
 		specWarnRefractionShield:Play("helpdispel")
+	elseif spellId == 356407 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
+		specWarnAncientDreadDispel:Show(args.destName)
+		specWarnAncientDreadDispel:Play("helpdispel")
 	elseif spellId == 357229 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnChronolightEnhancer:Show()
 		specWarnChronolightEnhancer:Play("justrun")
