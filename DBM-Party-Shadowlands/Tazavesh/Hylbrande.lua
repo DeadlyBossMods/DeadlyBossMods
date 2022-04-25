@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -27,7 +28,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 346766
  or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
-local warnPurgedbyFire				= mod:NewSpellAnnounce(346959, 2)
+local warnPurgedbyFire				= mod:NewTargetNoFilterAnnounce(346959, 2)
 local warnKeepersprotection			= mod:NewEndAnnounce(347958, 1)
 local warnLightningNova				= mod:NewTargetNoFilterAnnounce(358131, 3)
 local warnVaultPurifierSoon			= mod:NewSoonAnnounce("ej23004", 2, "136116", false)
@@ -35,6 +36,8 @@ local warnVaultPurifier				= mod:NewSpellAnnounce("ej23004", 2, "136116")
 local warnPurifyingBurst			= mod:NewCountAnnounce(353312, 2)
 local warnTitanicInsight			= mod:NewTargetNoFilterAnnounce(346427, 2)
 
+local specWarnPurgedByFire			= mod:NewSpecialWarningYou(346959, nil, nil, nil, 1, 2)
+local yellPurgedByFire				= mod:NewYell(346959)
 local specWarnShearingSwings		= mod:NewSpecialWarningDefensive(346116, nil, nil, nil, 1, 2)
 local specWarnTitanicCrash			= mod:NewSpecialWarningDodge(347094, nil, nil, nil, 2, 2)
 local specWarnSanitizingCycle		= mod:NewSpecialWarningCount(346766, nil, nil, nil, 2, 2)
@@ -76,7 +79,7 @@ function mod:SPELL_CAST_START(args)
 			timerTitanicCrashCD:Start()
 		end
 	elseif spellId == 346957 then
-		warnPurgedbyFire:Show()
+--		warnPurgedbyFire:Show()
 		if timerSanitizingCycleCD:GetRemaining() >= 17 then
 			timerPurgedbyFireCD:Start()
 		end
@@ -153,6 +156,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTitanicCrashCD:Start(22.9)
 		timerVaultPurifierCD:Start(23.4)
 		timerSanitizingCycleCD:Start(68.1)
+	end
+end
+
+--"<20.66 04:58:21> [CLEU] SPELL_CAST_START#Creature-0-4255-2441-7585-175667-000065FF9A#Защитная турель титанов##nil#346957#Очищение огнем#nil#nil", -- [239]
+--"<20.66 04:58:21> [UNIT_SPELLCAST_SUCCEEDED] Хильбранд(Хаосхантер) -Очищение огнем- [[boss1:Cast-3-4255-2441-7585-346964-0007E6003E:346964]]", -- [240]
+--"<20.85 04:58:21> [CHAT_MSG_RAID_BOSS_WHISPER] %s получает новую цель.#Защитная турель титанов###Хаосхантер##0#0##0#46#nil#0#false#false#false#false", -- [241]
+--"<20.85 04:58:21> [RAID_BOSS_WHISPER] %s получает новую цель.#Защитная турель титанов#3#true", -- [242]
+function mod:RAID_BOSS_WHISPER()
+	if msg:find("362622") then
+		specWarnPurgedByFire:Show()
+		specWarnPurgedByFire:Play("targetyou")
+		yellPurgedByFire:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(_, targetName)
+	if targetName then
+		targetName = Ambiguate(targetName, "none")
+		warnPurgedbyFire:Show(targetName)
 	end
 end
 
