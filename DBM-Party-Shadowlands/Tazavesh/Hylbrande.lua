@@ -164,11 +164,9 @@ end
 --"<20.85 04:58:21> [CHAT_MSG_RAID_BOSS_WHISPER] %s получает новую цель.#Защитная турель титанов###Хаосхантер##0#0##0#46#nil#0#false#false#false#false", -- [241]
 --"<20.85 04:58:21> [RAID_BOSS_WHISPER] %s получает новую цель.#Защитная турель титанов#3#true", -- [242]
 function mod:RAID_BOSS_WHISPER()
-	if msg:find("362622") then
-		specWarnPurgedByFire:Show()
-		specWarnPurgedByFire:Play("targetyou")
-		yellPurgedByFire:Yell()
-	end
+	specWarnPurgedByFire:Show()
+	specWarnPurgedByFire:Play("targetyou")
+	yellPurgedByFire:Yell()
 end
 
 function mod:OnTranscriptorSync(_, targetName)
