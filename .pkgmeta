@@ -12,6 +12,7 @@ externals:
   DBM-Shadowlands/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
   DBM-Shadowlands/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
   DBM-Shadowlands/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
+  DBM-Shadowlands/Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
