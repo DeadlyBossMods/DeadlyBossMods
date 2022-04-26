@@ -96,6 +96,11 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2464)
 
+L:SetWarningLocalization({
+	warnHealAzeroth		= "아제로스 치유 (%s)",
+	warnDispel			= "해제 (%s)"
+})
+
 L:SetTimerLocalization{
 	timerPits			= "구덩이 열림",
 	timerHealAzeroth	= "아제로스 치유 (%s)",
