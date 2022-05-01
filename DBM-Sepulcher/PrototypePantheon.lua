@@ -249,9 +249,9 @@ local allTimers = {
 			--Animastorm
 			[366234] = {38.5, 67.5},
 			--Wracking Pain
-			[365126] = {69.7, 45.0},
+			[365126] = {69.7, 45.0, 42.5},
 			--Hand of Destruction
-			[361791] = {79.7},
+			[361791] = {79.7, 56.2},
 		},
 		[3] = {
 			--Necrotic Ritual
