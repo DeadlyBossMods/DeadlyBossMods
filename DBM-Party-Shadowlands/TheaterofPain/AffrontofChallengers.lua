@@ -81,6 +81,13 @@ function mod:OnCombatStart(delay)
 	end
 end
 
+function mod:OnCombatEnd()
+	local trashMod = DBM:GetModByName("TheaterofPainTrash")
+	if trashMod then
+		trashMod.isTrashModBossFightAllowed = false
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 320063 and self:AntiSpam(4, 1) then--Boss can stutter cast this (self interrupt and start cast over)
