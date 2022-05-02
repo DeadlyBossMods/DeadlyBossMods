@@ -75,6 +75,10 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerOpportunityStrikesCD:Start(40-delay)
 	end
+	local trashMod = DBM:GetModByName("TheaterofPainTrash")
+	if trashMod then
+		trashMod.isTrashModBossFightAllowed = true
+	end
 end
 
 function mod:SPELL_CAST_START(args)
