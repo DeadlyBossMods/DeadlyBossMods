@@ -66,7 +66,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2463)
 
 L:SetMiscLocalization({
-	Mote		= "Частица"
+	Mote		= "Частице"
 })
 
 ---------------------------
@@ -116,8 +116,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pylon				= "Pylon",
-	AzerothSoak			= "Azeroth Soak"--Short Text for Desolation
+	Pylon				= "Пилону",
+	AzerothSoak			= "Поглощение Азерот"
 })
 
 -------------
