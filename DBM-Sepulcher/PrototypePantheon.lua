@@ -110,7 +110,7 @@ local timerHandofDestructionCD					= mod:NewCDCountTimer(56.2, 361789, nil, nil,
 local timerNightHunterCD						= mod:NewAITimer(57.1, 361745, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnWrackingPain", 365126, true)
-mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, false, {1, 2, 3, 4}, true)
+mod:AddSetIconOption("SetIconOnNightHunter", 361745, false, 2, {1, 2, 3, 4}, true)
 
 local deathtouchTargets = {}
 local wardTargets = {}
@@ -126,7 +126,7 @@ mod.vb.painCount = 0
 mod.vb.handCount = 0
 mod.vb.nightCount = 0
 mod.vb.seedIcon = 1
-mod.vb.hunterIcon = 1
+--mod.vb.hunterIcon = 1
 mod.vb.ritualistIconMethod = 1
 mod.vb.ritualistIcon = 8
 
@@ -379,7 +379,7 @@ function mod:OnCombatStart(delay)
 	self.vb.handCount = 0
 	self.vb.nightCount = 0
 	self.vb.seedIcon = 1
-	self.vb.hunterIcon = 1
+--	self.vb.hunterIcon = 1
 	self.vb.ritualistIconMethod = 1
 	self:SetStage(1)
 	--Necro
@@ -432,6 +432,13 @@ function mod:OnCombatStart(delay)
 			self.vb.ritualistIconMethod = 2--Icons 1-4
 			if UnitIsGroupLeader("player") then self:SendSync("SetTwo") end
 		end
+	end
+end
+
+function mod:NightHunterReturn(uId, icon)
+	if UnitIsUnit("player", uId) then
+		yellNightHunter:Yell(icon, icon)
+		yellNightHunterFades:Countdown(361745, 7, icon)
 	end
 end
 
@@ -676,7 +683,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 361745 and self:AntiSpam(5, 2) then
 		self.vb.nightCount = self.vb.nightCount + 1
-		self.vb.hunterIcon = 1
+--		self.vb.hunterIcon = 1
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
 			if timer then
@@ -775,18 +782,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 361745 then
-		local icon = self.vb.hunterIcon
+--		local icon = self.vb.hunterIcon
 		if self.Options.SetIconOnNightHunter then
-			self:SetIcon(args.destName, icon)
+			self:SetSortedIcon("meleeroster", 0.5, args.destName, 1, 4, false, "NightHunterReturn")
 		end
 		if args:IsPlayer() then
 			specWarnNightHunter:Show()
 			specWarnNightHunter:Play("targetyou")
-			yellNightHunter:Yell(icon, icon)
-			yellNightHunterFades:Countdown(spellId, 7, icon)
+			--Icon stuff delayed slightly in the icon sort callback
 		end
 		warnNightHunter:CombinedShow(0.3, args.destName)
-		self.vb.hunterIcon = self.vb.hunterIcon + 1
+--		self.vb.hunterIcon = self.vb.hunterIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
