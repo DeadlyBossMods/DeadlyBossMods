@@ -101,7 +101,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase				= "Предупреждение о смене фаз",
-	warnHorsemanSoldiers	= "Предупреждать о призыве Пульсирующих тыкв",
+	warnHorsemanSoldiers	= "Предупреждение о призыве Пульсирующих тыкв",
 	warnHorsemanHead		= "Спецпредупреждение о появлении головы всадника"
 })
 
@@ -145,6 +145,15 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	MassiveWave		= "Приближается большая волна зомби!"
+})
+
+--------------------------
+--  Demonic Invasions  --
+--------------------------
+L = DBM:GetModLocalization("DemonInvasions")
+
+L:SetGeneralLocalization({
+	name = "Вторжения Демонов"
 })
 
 --------------------------
