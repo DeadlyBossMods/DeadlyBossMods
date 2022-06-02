@@ -1,4 +1,4 @@
-## Interface: 90200
+## Interface: 90205
 ## X-Min-Interface: 90200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sepulcher of the First Ones|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0태초의 존재의 매장터|r
