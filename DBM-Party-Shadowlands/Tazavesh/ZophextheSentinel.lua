@@ -9,10 +9,10 @@ mod:SetHotfixNoticeRev(20220405000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 348350 346204",
---	"SPELL_CAST_SUCCESS 346006",
+	"SPELL_CAST_START 346204",
+	"SPELL_CAST_SUCCESS 346006",
 	"SPELL_AURA_APPLIED 347949 348128 345770 345990",
-	"SPELL_AURA_REMOVED 345770"
+	"SPELL_AURA_REMOVED 345770 345990"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 )
@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 348350 or ability.id = 346204) and type = "begincast"
  or ability.id = 346006 and type = "cast"
+ or ability.id = 345990 and (type = "applydebuff" or type = "removedebuff")
  or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 local warnArmedSecurity				= mod:NewSpellAnnounce(346204, 2)
@@ -38,9 +39,9 @@ local specWarnInpoundContraband		= mod:NewSpecialWarningYou(345770, nil, nil, ni
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
 --Timers have spell queuing and ordering issues. min times lazily used because it's a 5 man and not worth effort to detect/auto update when spell queuing occurs
-local timerInterrogationCD			= mod:NewCDTimer(31.6, 347949, nil, nil, nil, 3)--31.6-52
-local timerArmedSecurityCD			= mod:NewCDTimer(34.4, 346204, nil, nil, nil, 6)--34.4-57
-local timerImpoundContrabandCD		= mod:NewCDTimer(26.7, 345770, nil, nil, nil, 3)
+local timerInterrogationCD			= mod:NewCDTimer(30.8, 347949, nil, nil, nil, 3)--30.8-32
+local timerArmedSecurityCD			= mod:NewCDTimer(34.4, 346204, nil, nil, nil, 6)--Only initial, More work is needed to correct timer aroound containment pausing the ability
+local timerImpoundContrabandCD		= mod:NewCDTimer(26.7, 345770, nil, nil, nil, 3)--Can't be cast if containment is still active
 --local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Basically spammed
 
 function mod:OnCombatStart(delay)
@@ -65,11 +66,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 348350 then
-		timerInterrogationCD:Start()
-	elseif spellId == 346204 then
+	if spellId == 346204 then
 		warnArmedSecurity:Show()
-		timerArmedSecurityCD:Start()
+--		timerArmedSecurityCD:Start()
 	end
 end
 
@@ -117,6 +116,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnInpoundContrabandEnded:Show()
 		end
+	elseif spellId == 345990 then--Containment Cell
+		timerInterrogationCD:Start()
 	end
 end
 
