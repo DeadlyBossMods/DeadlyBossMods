@@ -41,7 +41,7 @@ local specWarnInpoundContraband		= mod:NewSpecialWarningYou(345770, nil, nil, ni
 --Timers have spell queuing and ordering issues. min times lazily used because it's a 5 man and not worth effort to detect/auto update when spell queuing occurs
 local timerInterrogationCD			= mod:NewCDTimer(30.8, 347949, nil, nil, nil, 3)--30.8-32
 local timerArmedSecurityCD			= mod:NewCDTimer(34.4, 346204, nil, nil, nil, 6)--Only initial, More work is needed to correct timer aroound containment pausing the ability
---local timerImpoundContrabandCD		= mod:NewCDTimer(26.7, 345770, nil, nil, nil, 3)--Can't be cast if containment is still active
+local timerImpoundContrabandCD		= mod:NewCDTimer(26.7, 345770, nil, nil, nil, 3)--Can't be cast if containment is still active
 --local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Basically spammed
 
 function mod:OnCombatStart(delay)
