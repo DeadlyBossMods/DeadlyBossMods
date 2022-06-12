@@ -26,8 +26,8 @@ mod:RegisterEventsInCombat(
  or (ability.id = 328206 or ability.id = 326389) and type = "cast"
  --]]
 local warnStoneShatteringLeap		= mod:NewTargetNoFilterAnnounce(319592, 3)
+local warnStonesCall				= mod:NewSpellAnnounce(319733, 2)
 
-local specWarnStoneCall				= mod:NewSpecialWarningSpell(319733, nil, nil, nil, 2, 2)
 local specWarnCurseofStoneDispel	= mod:NewSpecialWarningDispel(319603, "RemoveCurse", nil, nil, 1, 2)
 local specWarnCurseofStone			= mod:NewSpecialWarningYou(319603, nil, nil, nil, 1, 2)
 local specWarnBloodTorrent			= mod:NewSpecialWarningSpell(319702, nil, nil, nil, 2, 2)
@@ -74,8 +74,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 319733 then
-		specWarnStoneCall:Show()
-		specWarnStoneCall:Play("killmob")
+		warnStonesCall:Show()
 		timerStoneCallCD:Start()
 	elseif spellId == 319941 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "LeapTarget", 0.1, 8, true, nil, nil, nil, true)
