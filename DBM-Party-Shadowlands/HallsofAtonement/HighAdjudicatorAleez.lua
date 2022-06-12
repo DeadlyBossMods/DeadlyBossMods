@@ -8,10 +8,10 @@ mod:SetEncounterID(2403)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START 323552 323538 329340",
+	"SPELL_SUMMON 323597",
 	"SPELL_AURA_APPLIED 323650",
-	"SPELL_AURA_REMOVED 323650",
-	"SPELL_CAST_START 323552 323538",
-	"SPELL_SUMMON 323597"
+	"SPELL_AURA_REMOVED 323650"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -21,8 +21,9 @@ mod:RegisterEventsInCombat(
 --TODO, DBM need to do anything for Vessel of Atonement? Maybe have fixate warning be MoveTo?
 --TODO, transcriptor log to get actual cast of spectral maybe? only event i see in combat log is add popping out of players
 --[[
-(ability.id = 323552) and type = "begincast"
+(ability.id = 323552 or ability.id = 329340) and type = "begincast"
  or ability.id = 323597
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
  or ability.id = 323538 and type = "begincast"
 --]]
 local warnFixate					= mod:NewTargetNoFilterAnnounce(323650, 4)
@@ -31,10 +32,12 @@ local specWarnFixate				= mod:NewSpecialWarningYou(323650, nil, nil, nil, 3, 2)
 local yellFixate					= mod:NewYell(323650)
 local specWarnBoltofPower			= mod:NewSpecialWarningInterrupt(323538, false, nil, nil, 1, 2)
 local specWarnVolleyofPower			= mod:NewSpecialWarningInterrupt(323552, "HasInterrupt", nil, nil, 1, 2)
+local specWarnAnimaFountain			= mod:NewSpecialWarningDodge(329340, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerVolleyofPowerCD				= mod:NewCDTimer(12.2, 323552, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12-20
-local timerSpectralProcessionCD			= mod:NewCDTimer(20.6, 323597, nil, nil, nil, 1)
+local timerVolleyofPowerCD			= mod:NewCDTimer(10.9, 323552, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12-20
+local timerSpectralProcessionCD		= mod:NewCDTimer(20.6, 323597, nil, nil, nil, 1)
+local timerAnimaFountainCD			= mod:NewCDTimer(24.2, 329340, nil, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnFixate", 323650, true)
 mod:GroupSpells(323597, 323650)--Group spectral with associated fixate debuff
@@ -44,6 +47,7 @@ mod:GroupSpells(323597, 323650)--Group spectral with associated fixate debuff
 function mod:OnCombatStart(delay)
 	timerVolleyofPowerCD:Start(12-delay)
 	timerSpectralProcessionCD:Start(15.5-delay)
+	timerAnimaFountainCD:Start(22.8-delay)
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -68,6 +72,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnVolleyofPower:Show(args.sourceName)
 			specWarnVolleyofPower:Play("kickcast")
 		end
+	elseif spellId == 329340 then
+		specWarnAnimaFountain:Show()
+		specWarnAnimaFountain:Play("watchstep")
+		timerAnimaFountainCD:Start()
 	end
 end
 
