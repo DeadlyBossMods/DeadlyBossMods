@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 331237 and self:AntiSpam(3, 2) then
 		specWarnBoneSpikes:Show()
 		specWarnBoneSpikes:Play("watchstep")
-	elseif spellId == 333861 then
+	elseif spellId == 333861 and self:IsValidWarning(args.sourceGUID) then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "RicochetingTarget", 0.1, 4)
 	end
 end
