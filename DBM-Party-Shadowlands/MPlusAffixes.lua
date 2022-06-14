@@ -44,7 +44,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnQuake:Show()
 			specWarnQuake:Play("range5")
 		end
-	elseif spellId == 226512 and args:IsPlayer() then
+	elseif spellId == 226512 and args:IsPlayer() and self:AntiSpam(3, 7) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
