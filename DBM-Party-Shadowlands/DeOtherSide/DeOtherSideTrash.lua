@@ -108,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSporificShimmerdust:Show()
 		specWarnSporificShimmerdust:Play("keepjump")
 	elseif spellId == 333250 and args:IsPlayer() and self:AntiSpam(3, 7) then
-		specWarnGTFO:Show(spellName)
+		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
