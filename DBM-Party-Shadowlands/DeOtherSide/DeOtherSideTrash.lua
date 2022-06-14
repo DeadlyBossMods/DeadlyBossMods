@@ -8,7 +8,8 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 334051 342869 333787 332671 332666 332706 332612 331927 332156 332084 340026",
-	"SPELL_AURA_APPLIED 333227 332666 334493",
+	"SPELL_CAST_SUCCESS 328740",
+	"SPELL_AURA_APPLIED 333227 332666 334493 333250",
 	"SPELL_AURA_REMOVED 333227"
 )
 
@@ -36,8 +37,11 @@ local specWarnSelfCleaningCycle			= mod:NewSpecialWarningInterrupt(332084, "HasI
 --Notable Dealer Xy'exa Trash
 local specWarnSporificShimmerdust		= mod:NewSpecialWarningJump(334493, nil, nil, nil, 1, 6)
 local specWarnWailingGrief				= mod:NewSpecialWarningSpell(340026, nil, nil, nil, 2, 2)
+--Unknown
+local specWarnDarkLotus					= mod:NewSpecialWarningDodge(328740, nil, nil, nil, 2, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(333250, nil, nil, nil, 1, 8)
 
---Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 generalized
+--Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 generalized, 7 GTFO
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -77,6 +81,16 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 328740 and self:AntiSpam(3, 2) then
+		--Using success because it can be interrupted, so we don't want to warn to dodge it unless it's NOT interupted
+		specWarnDarkLotus:Show()
+		specWarnDarkLotus:Play("watchstep")
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
@@ -93,5 +107,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 334493 and args:IsPlayer() then
 		specWarnSporificShimmerdust:Show()
 		specWarnSporificShimmerdust:Play("keepjump")
+	elseif spellId = 333250 and args:IsPlayer() and and self:AntiSpam(3, 7) then
+		specWarnGTFO:Show(spellName)
+		specWarnGTFO:Play("watchfeet")
 	end
 end

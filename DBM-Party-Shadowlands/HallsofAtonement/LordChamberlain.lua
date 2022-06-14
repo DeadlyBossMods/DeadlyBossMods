@@ -8,7 +8,7 @@ mod:SetEncounterID(2381)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 323393 323236 328791",
+	"SPELL_CAST_START 323393 323236 328791 327885",
 	"SPELL_CAST_SUCCESS 323437 329113",
 	"SPELL_AURA_APPLIED 323437 323143"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -17,15 +17,17 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 323393 or ability.id = 328791 or ability.id = 323236) and type = "begincast"
+(ability.id = 323393 or ability.id = 328791 or ability.id = 323236 or ability.id = 327885) and type = "begincast"
  or (ability.id = 329113 or ability.id = 323437) and type = "cast"
  or ability.id = 323143 and type = "applybuff"
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 local warnTelekineticToss			= mod:NewSpellAnnounce(323143, 2)
 local warnStigmaofPride				= mod:NewTargetNoFilterAnnounce(323437, 4)
 
 local specWarnUnleashedSuffering	= mod:NewSpecialWarningDodge(323236, nil, nil, nil, 2, 2)
 local specWarnTelekineticOnslaught	= mod:NewSpecialWarningDodge(329113, nil, nil, nil, 2, 2)
+local specWarnEruptingTorment		= mod:NewSpecialWarningRun(327885, "Melee", nil, nil, 4, 2)
 local specWarnRitualofWoe			= mod:NewSpecialWarningSoak(323393, nil, nil, nil, 1, 7)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
@@ -59,6 +61,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnUnleashedSuffering:Show()
 		specWarnUnleashedSuffering:Play("shockwave")
 		--timerUnleashedSufferingCD:Start()--TODO, need longer pulls that don't reset timer with Ritual of Woe
+	elseif spellId == 327885 then
+		specWarnEruptingTorment:Show()
+		specWarnEruptingTorment:Play("justrun")
 	end
 end
 
