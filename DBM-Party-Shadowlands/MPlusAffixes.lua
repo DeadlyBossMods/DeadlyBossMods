@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("MPlusAffixes", "DBM-Party-Shadowlands")--, 1
+local mod	= DBM:NewMod("MPlusAffixes", "DBM-Party-Shadowlands", 10)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
