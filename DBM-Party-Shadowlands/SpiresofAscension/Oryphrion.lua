@@ -9,7 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 324608 334053 324427",
-	"SPELL_AURA_APPLIED 321936 324392 338729 338731 327416 327416 324046",
+	"SPELL_AURA_APPLIED 324392 338729 338731 327416 327416 324046",
 	"SPELL_AURA_REMOVED 327416 324392 324046"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -101,15 +101,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 321936 then
-		if args:IsPlayer() then
-			specWarnEmpyrealOrdnance:Show()
-			specWarnEmpyrealOrdnance:Play("runout")
-			yellEmpyrealOrdnance:Yell()
-		else
-			warnEmpyrealOrdnance:Show(args.destName)
-		end
-	elseif spellId == 324392 and args:IsDestTypeHostile() then
+	if spellId == 324392 and args:IsDestTypeHostile() then
 		if self:AntiSpam(3, 1) then
 			specWarnAnimaField:Show()
 			specWarnAnimaField:Play("moveboss")
@@ -124,6 +116,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEmpyrealOrdnanceCD:Stop()
 		timerPurifyingBlastCD:Stop()
 		timerChargedStompCD:Stop()
+--	elseif spellId == 321936 then
+--		if args:IsPlayer() then
+--			specWarnEmpyrealOrdnance:Show()
+--			specWarnEmpyrealOrdnance:Play("runout")
+--			yellEmpyrealOrdnance:Yell()
+--		else
+--			warnEmpyrealOrdnance:Show(args.destName)
+--		end
 	end
 end
 

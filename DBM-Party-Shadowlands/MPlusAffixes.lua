@@ -8,7 +8,7 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 366288 240446,
+	"SPELL_CAST_START 366288 240446",
 	"SPELL_AURA_APPLIED 240447 226512",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
