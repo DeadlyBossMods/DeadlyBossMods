@@ -2,6 +2,15 @@ if GetLocale() ~= "ruRU" then return end
 local L
 
 -----------------------
+-- <<<Global (M+ Affixes) >>> --
+-----------------------
+L = DBM:GetModLocalization("MPlusAffixes")
+
+L:SetGeneralLocalization({
+	name =	"Аффиксы М+"
+})
+
+-----------------------
 -- <<<The Necrotic Wake (1182J/2286M) >>> --
 -----------------------
 -----------------------
