@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: normal,heroic,mythic,challenge
-## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441
+## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441, 2559
 ## X-DBM-Mod-Name: Dungeons (Shadowlands)
 ## X-DBM-Mod-Name-esES: Mazmorras (Shadowlands)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Shadowlands)
@@ -32,6 +32,7 @@ localization.tw.lua
 localization.cn.lua
 localization.es.lua
 localization.ru.lua
+MPlusAffixes.lua
 TheNecroticWake\Blightbone.lua
 TheNecroticWake\Amarth.lua
 TheNecroticWake\SurgeonStitchflesh.lua

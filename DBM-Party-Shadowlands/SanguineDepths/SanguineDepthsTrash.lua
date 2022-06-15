@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 320991 321038 324103 326827 328170",
+	"SPELL_CAST_START 320991 321038 324103 326827 328170 326836",
 	"SPELL_CAST_SUCCESS 324086",
 	"SPELL_AURA_APPLIED 334673 321038 324089 324086",
 	"SPELL_AURA_REMOVED 326827"
@@ -27,7 +27,9 @@ local warnDreadBindings						= mod:NewFadesAnnounce(326827, 1)
 local specWarnSanctifiedMists				= mod:NewSpecialWarningMove(334673, "Tank", nil, nil, 1, 10)
 local specWarnEchoingThrust					= mod:NewSpecialWarningDodge(320991, "Tank", nil, nil, 1, 2)
 --Notable Grand Proctor Berylli
-local specWarnWrackSoul						= mod:NewSpecialWarningInterrupt(321038, "HasInterrupt", nil, nil, 1, 2)
+local specWarnCurseofSuppression			= mod:NewSpecialWarningInterrupt(326836, "HasInterrupt", nil, nil, 1, 2)
+local specWarnCurseofSuppressionDispel		= mod:NewSpecialWarningDispel(326836, "RemoveCurse", nil, nil, 1, 2)
+local specWarnWrackSoul						= mod:NewSpecialWarningInterrupt(321038, false, nil, 2, 1, 2)
 local specWarnWrackSoulDispel				= mod:NewSpecialWarningDispel(321038, "RemoveMagic", nil, nil, 1, 2)
 --Notable General Kaal Trash
 local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(324103, nil, nil, nil, 3, 2)--Boss version, trash version is 322903
@@ -48,6 +50,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 320991 and self:AntiSpam(3, 2) then
 		specWarnEchoingThrust:Show()
 		specWarnEchoingThrust:Play("shockwave")
+	elseif spellId == 326836 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnCurseofSuppression:Show(args.sourceName)
+		specWarnCurseofSuppression:Play("kickcast")
 	elseif spellId == 321038 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWrackSoul:Show(args.sourceName)
 		specWarnWrackSoul:Play("kickcast")
@@ -81,6 +86,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 334673 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnSanctifiedMists:Show()
 		specWarnSanctifiedMists:Play("mobout")
+	elseif spellId == 326836 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
+		specWarnCurseofSuppressionDispel:Show(args.destName)
+		specWarnCurseofSuppressionDispel:Play("helpdispel")
 	elseif spellId == 321038 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 		specWarnWrackSoulDispel:Show(args.destName)
 		specWarnWrackSoulDispel:Play("helpdispel")

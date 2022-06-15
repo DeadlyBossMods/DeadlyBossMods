@@ -8,9 +8,9 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 324293 327240 327399 334748 320462 338353 323496 333477 333479 338606",
-	"SPELL_AURA_APPLIED 327401 323347 335141 324372 338353 338357 338606",
+	"SPELL_AURA_APPLIED 327401 323347 335141 324372 338353 338357 338606 327396",
 	"SPELL_AURA_APPLIED_DOSE 338357",
-	"SPELL_AURA_REMOVED 338606"
+	"SPELL_AURA_REMOVED 338606 327396"
 )
 
 --TODO targetscan shared agony during cast and get at least one of targets early? for fade/invis and feign death?
@@ -26,6 +26,7 @@ local warnThrowCleaver						= mod:NewCastAnnounce(323496, 2)
 --Unknown
 local warnSpewDisease						= mod:NewTargetNoFilterAnnounce(333479, 2)
 local warnMorbidFixation					= mod:NewTargetNoFilterAnnounce(338606, 2)
+local warnGrimFate							= mod:NewTargetAnnounce(327396, 2)
 
 --General
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -50,6 +51,9 @@ local specWarnSpewDisease					= mod:NewSpecialWarningYou(333479, nil, nil, nil, 
 local yellSpewDisease						= mod:NewYell(333479)
 local specWarnMorbidFixation				= mod:NewSpecialWarningRun(338606, nil, nil, nil, 4, 2)
 local timerMorbidFixation					= mod:NewTargetTimer(8, 338606, nil, nil, nil, 2)
+local specWarnGrimFate						= mod:NewSpecialWarningMoveAway(327396, nil, nil, nil, 1, 2)
+local yellGrimFate							= mod:NewYell(327396)
+local yellGrimFateFades						= mod:NewShortFadesYell(327396)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -156,6 +160,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMorbidFixation:Show()
 			specWarnMorbidFixation:Play("justrun")
 		end
+	elseif spellId == 327396 then
+		warnGrimFate:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnGrimFate:Show()
+			specWarnGrimFate:Play("runout")
+			yellGrimFate:Yell()
+			yellGrimFateFades:Countdown(spellId)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -165,5 +177,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 338606 then
 		timerMorbidFixation:Stop(args.destName)
+	elseif spellId == 327396 then
+		if args:IsPlayer() then
+			yellGrimFateFades:Cancel()
+		end
 	end
 end

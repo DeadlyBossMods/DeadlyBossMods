@@ -10,7 +10,7 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 320966 327481 317623",
+	"SPELL_CAST_START 320966 327481 317623 324368",
 	"SPELL_CAST_SUCCESS 323636",
 	"SPELL_AURA_APPLIED 323828",
 	"SPELL_PERIODIC_DAMAGE 317626",
@@ -46,6 +46,7 @@ local timerFlightCD					= mod:NewCDTimer(145, 313606, nil, nil, nil, 6)
 local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Azules
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21639))
+local specBarrage					= mod:NewSpecialWarningDodge(324368, nil, nil, nil, 2, 6)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
 
 local timerInsidiousVenomCD			= mod:NewCDTimer(11.4, 317661, nil, nil, nil, 2)
@@ -89,6 +90,9 @@ function mod:SPELL_CAST_START(args)
 		end
 --	elseif spellId == 317623 then
 --		timerMawTouchedVenomCD:Start()
+	elseif spellId == 324368 and self:AntiSpam(6, 1) then
+		specBarrage:Show()
+		specBarrage:Play("watchorb")
 	end
 end
 

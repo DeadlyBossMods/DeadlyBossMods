@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 317936 317963 327413 328295 328137 328331",
+	"SPELL_CAST_START 317936 317963 327413 328295 328137 328331 317985",
 	"SPELL_AURA_APPLIED 317936 317963 317661 328331"
 )
 
@@ -31,6 +31,8 @@ local specWarnForcedConfession				= mod:NewSpecialWarningInterrupt(328331, "HasI
 local specWarnForcedConfessionDispel		= mod:NewSpecialWarningDispel(328331, "RemoveMagic", nil, nil, 1, 2)
 local specWarnForcedConfessionYou			= mod:NewSpecialWarningMoveAway(328331, nil, nil, nil, 1, 2)
 local yellForcedConfession					= mod:NewYell(328331)
+--Unknown Location
+local specCrashingStrike					= mod:NewSpecialWarningDodge(317985, nil, nil, nil, 2, 2)--Forsworn Squad-Leader
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role
 
@@ -55,6 +57,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 328331 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnForcedConfession:Show(args.sourceName)
 		specWarnForcedConfession:Play("kickcast")
+	elseif spellId == 328331 and self:AntiSpam(3, 2) then
+		specCrashingStrike:Show()
+		specCrashingStrike:Play("watchstep")
 	end
 end
 

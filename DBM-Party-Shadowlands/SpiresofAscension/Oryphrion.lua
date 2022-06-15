@@ -8,9 +8,8 @@ mod:SetEncounterID(2358)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 324608 334053",
-	"SPELL_CAST_SUCCESS 324444",
-	"SPELL_AURA_APPLIED 321936 324392 338729 338731 327416 327416 324046",
+	"SPELL_CAST_START 324608 334053 324427",
+	"SPELL_AURA_APPLIED 324392 338729 338731 327416 327416 324046",
 	"SPELL_AURA_REMOVED 327416 324392 324046"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -26,12 +25,13 @@ mod:RegisterEventsInCombat(
  or (ability.id = 321355 or ability.id = 327416 or ability.id = 324046) and (type = "applybuff" or type = "removebuff" or type = "removedebuff" or type = "applydebuff")
 --]]
 local warnRechargeAnima				= mod:NewSpellAnnounce(327416, 2)
-local warnEmpyrealOrdnance			= mod:NewTargetAnnounce(321936, 3)
+--local warnEmpyrealOrdnance			= mod:NewTargetAnnounce(321936, 3)
 local warnChargedStomp				= mod:NewTargetNoFilterAnnounce(338731, 2, nil, "RemoveMagic")
 local warnPurifyingBlast			= mod:NewTargetNoFilterAnnounce(334053, 3)
 
-local specWarnEmpyrealOrdnance		= mod:NewSpecialWarningMoveAway(321936, nil, nil, nil, 1, 2)
-local yellEmpyrealOrdnance			= mod:NewYell(321936)
+--local specWarnEmpyrealOrdnance		= mod:NewSpecialWarningMoveAway(321936, nil, nil, nil, 1, 2)--Not in combat log, aura hidden
+--local yellEmpyrealOrdnance			= mod:NewYell(321936)--Not in combat log, aura hidden
+local specWarnEmpyrealOrdnance		= mod:NewSpecialWarningDodge(324427, nil, nil, nil, 2, 2)
 local specWarnAnimaField			= mod:NewSpecialWarningMove(324392, "Tank", nil, nil, 1, 2)
 local specWarnPurifyingBlast		= mod:NewSpecialWarningMoveAway(334053, nil, nil, nil, 1, 2)
 local yellPurifyingBlast			= mod:NewYell(334053)
@@ -92,27 +92,16 @@ function mod:SPELL_CAST_START(args)
 		timerPurifyingBlastCD:Start()
 		--Intentionally not using UNIT_TARGET scanner, boss doesn't fire a UNIT_TARGET event during this
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "BlastTarget", 0.1, 10)
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 324444 then
+	elseif spellId == 324427 then
+		specWarnEmpyrealOrdnance:Show()
+		specWarnEmpyrealOrdnance:Play("watchstep")
 		timerEmpyrealOrdnanceCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 321936 then
-		if args:IsPlayer() then
-			specWarnEmpyrealOrdnance:Show()
-			specWarnEmpyrealOrdnance:Play("runout")
-			yellEmpyrealOrdnance:Yell()
-		else
-			warnEmpyrealOrdnance:Show(args.destName)
-		end
-	elseif spellId == 324392 and args:IsDestTypeHostile() then
+	if spellId == 324392 and args:IsDestTypeHostile() then
 		if self:AntiSpam(3, 1) then
 			specWarnAnimaField:Show()
 			specWarnAnimaField:Play("moveboss")
@@ -127,6 +116,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEmpyrealOrdnanceCD:Stop()
 		timerPurifyingBlastCD:Stop()
 		timerChargedStompCD:Stop()
+--	elseif spellId == 321936 then
+--		if args:IsPlayer() then
+--			specWarnEmpyrealOrdnance:Show()
+--			specWarnEmpyrealOrdnance:Play("runout")
+--			yellEmpyrealOrdnance:Yell()
+--		else
+--			warnEmpyrealOrdnance:Show(args.destName)
+--		end
 	end
 end
 
