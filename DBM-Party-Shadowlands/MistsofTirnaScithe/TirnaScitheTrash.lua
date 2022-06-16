@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 321968 324909 324923 324914 324776 340305 340304 340300 340160 340189 326046 325418",
+	"SPELL_CAST_START 321968 324909 324923 324914 324776 340305 340304 340300 340160 340189 326046 325418 331718",
 	"SPELL_CAST_SUCCESS 325418 340544 322938",
 	"SPELL_AURA_APPLIED 322557 324914 324776 325224 340288 326046",
 	"SPELL_AURA_APPLIED_DOSE 340288"
@@ -47,6 +47,8 @@ local specWarnStimulateResistanceDispel	= mod:NewSpecialWarningDispel(326046, "M
 local specWarnStimulateRegeneration		= mod:NewSpecialWarningInterrupt(340544, "HasInterrupt", nil, nil, 1, 2)
 local specWarnVolatileAcid				= mod:NewSpecialWarningMoveAway(325418, nil, nil, nil, 1, 2)
 local yellVolatileAcid					= mod:NewYell(325418)
+--Unknown
+local specWarnSpearFlurry				= mod:NewSpecialWarningDodge(331718, nil, nil, nil, 2, 2)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role
 
@@ -111,6 +113,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnPoolOfRadiance:Play("mobout")
 	elseif spellId == 325418 then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "VolatileAcid", 0.1, 4)
+	elseif spellId == 331718 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
+		specWarnSpearFlurry:Show()
+		specWarnSpearFlurry:Play("shockwave")
 	end
 end
 
