@@ -306,7 +306,12 @@ L:SetGeneralLocalization({
 -----------------------
 -- The Menagerie --
 -----------------------
---L= DBM:GetModLocalization(2454)
+L= DBM:GetModLocalization(2454)
+
+L:SetMiscLocalization({
+	AchilliteRPTrigger	= "Are rampaging beasts ruining your day? We have the solution!",
+	VenzaRPTrigger		= "Now's my chance! That axe is mine!"
+})
 
 -----------------------
 -- Mailroom Mayhem --
@@ -321,7 +326,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- So'azmi --
 -----------------------
---L= DBM:GetModLocalization(2451)
+L= DBM:GetModLocalization(2451)
+
+L:SetMiscLocalization({
+	RPTrigger	= "Excuse our intrusion, So'leah. I hope we caught you at an inconvenient time."
+})
 
 -----------------------
 -- Hylbrande --
