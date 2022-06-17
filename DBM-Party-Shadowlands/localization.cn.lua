@@ -1,8 +1,17 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20210924
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20220617
 --夏一可，暴雪娱乐
 
 if GetLocale() ~= "zhCN" then return end
 local L
+
+-----------------------
+-- <<<Global (M+ Affixes) >>> --
+-----------------------
+L = DBM:GetModLocalization("MPlusAffixes")
+
+L:SetGeneralLocalization({
+	name =	"大秘境词缀"
+})
 
 -----------------------
 -- <<<The Necrotic Wake (1182J/2286M) >>> --
@@ -302,6 +311,11 @@ L:SetGeneralLocalization({
 -----------------------
 --L= DBM:GetModLocalization(2454)
 
+L:SetMiscLocalization({
+	AchilliteRPTrigger	= "狂暴的野兽给您添乱了？解决方法很简单！",
+	VenzaRPTrigger		= "机会来了！斧子归我了！"
+})
+
 -----------------------
 -- Mailroom Mayhem --
 -----------------------
@@ -316,6 +330,10 @@ L:SetGeneralLocalization({
 -- So'azmi --
 -----------------------
 --L= DBM:GetModLocalization(2451)
+
+L:SetMiscLocalization({
+	RPTrigger	= "不好意思打扰了，索·利亚。希望我们没耽误你什么大事。"
+})
 
 -----------------------
 -- Hylbrande --
