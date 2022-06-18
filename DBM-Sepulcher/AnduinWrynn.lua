@@ -140,7 +140,6 @@ local playersSouled = {}
 local playerName = UnitName("player")
 local overconfidentTargets = {}
 local hopelessnessTargets = {}
-local totalDebuffs = 0
 local hopelessnessName, overconfidenceName = DBM:GetSpellInfo(361993), DBM:GetSpellInfo(361992)
 local castsPerGUID = {}
 local allTimers = {
@@ -285,12 +284,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		table.wipe(overconfidentTargets)
 		table.wipe(hopelessnessTargets)
-		totalDebuffs = 0
-		--Schedule the no debuff yell here
-		--It'll be unscheduled if you get one of them and replaced with a new one
-		if self:IsMythic() and self.vb.PairingBehavior ~= "None" then
-			self:Schedule(3, BlasphemyYellRepeater, self, 0)
-		end
 		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.blastphemyCount+1)
 		if timer then
 			timerBlasphemyCD:Start(timer, self.vb.blastphemyCount+1)
@@ -445,7 +438,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
-		totalDebuffs = totalDebuffs + 1
 		local icon
 		local count
 		--Determin this debuff and assign icon based on dropdown setting and which debuff it is and construct tables
@@ -502,11 +494,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 			self:Schedule(1.5, BlasphemyYellRepeater, self, icon)--Shorter repeater since 6 seconds won't trigger throttle.
 			yellBlasphemy:Yell(icon)
-		end
-		--No debuff, assign the no debuff yell repeater (this code will be used instead of starting it in cast start, when we know affected # targets
-		if self:IsMythic() and self.vb.PairingBehavior ~= "None" and totalDebuffs == DBM:GetGroupSize() and not DBM:UnitDebuff("player", 361992, 361993) then
-			self:Schedule(1.5, BlasphemyYellRepeater, self, 0)
-			yellBlasphemy:Yell(0)
 		end
 	elseif spellId == 365966 then
 		if args:IsPlayer() then
@@ -607,16 +594,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			updateTimerFades(self)
 		end
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness
-		totalDebuffs = totalDebuffs - 1
 		if args:IsPlayer() then
-			self:Unschedule(BlasphemyYellRepeater)
-			if self:IsMythic() and self.vb.PairingBehavior ~= "None" and totalDebuffs > 0 then--Schedule the no debuff yell repeater
-				self:Schedule(1.5, BlasphemyYellRepeater, self, 0)
-				yellBlasphemy:Yell(0)
-			end
-		end
-		--Full stop, all debuffs gone
-		if totalDebuffs == 0 then
 			self:Unschedule(BlasphemyYellRepeater)
 		end
 	elseif spellId == 365966 then
