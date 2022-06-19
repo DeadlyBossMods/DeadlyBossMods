@@ -79,10 +79,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 331237 and self:AntiSpam(3, 2) then
 		specWarnBoneSpikes:Show()
 		specWarnBoneSpikes:Play("watchstep")
-	elseif spellId == 317605 and self:AntiSpam(3, 1) then
+	elseif spellId == 317605 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnWhirlwind:Show()
 		specWarnWhirlwind:Play("justrun")
-	elseif spellId == 342135 and self:AntiSpam(3, 1) then
+	elseif spellId == 342135 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnInterruptingRoar:Show()
 		specWarnInterruptingRoar:Play("stopcast")
 	elseif spellId == 333861 and self:IsValidWarning(args.sourceGUID) then
