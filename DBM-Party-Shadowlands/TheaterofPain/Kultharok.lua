@@ -70,12 +70,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 319521 then
+		warnDrawSoul:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDrawSoul:Show()
 			specWarnDrawSoul:Play("justrun")
 			--yellDrawSoul:Yell()
-		else
-			warnDrawSoul:Show(args.destName)
 		end
 	elseif spellId == 319416 then
 		if args:IsPlayer() then
