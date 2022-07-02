@@ -39,7 +39,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("NecroticWakeTrash")
 
 L:SetGeneralLocalization({
-	name =	"죽음의 각성 일반몹"
+	name =	"죽음의 상흔 일반몹"
 })
 
 -----------------------
@@ -118,7 +118,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("TirnaScitheTrash")
 
 L:SetGeneralLocalization({
-	name =	"티르나 사이드 일반몹"--Or MOTS Trash?
+	name =	"티르너 사이드의 안개 일반몹"
 })
 
 -----------------------
