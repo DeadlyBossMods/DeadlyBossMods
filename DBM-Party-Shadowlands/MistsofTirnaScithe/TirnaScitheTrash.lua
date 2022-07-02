@@ -67,7 +67,7 @@ function mod:VolatileAcid(targetname, uId)
 	if self:AntiSpam(3, targetname) then
 		if targetname == UnitName("player") then
 			specWarnVolatileAcid:Show()
-			specWarnVolatileAcid:Play("runout")
+			specWarnVolatileAcid:Play("range5")
 			yellVolatileAcid:Yell()
 		else
 			warnVolatileAcid:Show(targetname)
@@ -125,7 +125,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 325418 and self:AntiSpam(3, args.destName) then--Backup, in case no one in party was targetting mob casting Volatile Acid (ie target scanning would fail)
 		if args:IsPlayer() then
 			specWarnVolatileAcid:Show()
-			specWarnVolatileAcid:Play("runout")
+			specWarnVolatileAcid:Play("range5")
 			yellVolatileAcid:Yell()
 		else
 			warnVolatileAcid:Show(args.destName)
