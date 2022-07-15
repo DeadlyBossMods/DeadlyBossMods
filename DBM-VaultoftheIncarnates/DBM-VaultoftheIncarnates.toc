@@ -1,0 +1,29 @@
+## Interface: 90205
+## X-Min-Interface: 90205
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Vault of the Incarnates|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMVaultoftheIncarnates_AllSavedVars
+## SavedVariablesPerCharacter: DBMVaultoftheIncarnates_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: DRAGONFLIGHT
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-Name: Vault of the Incarnates
+## X-DBM-Mod-Sort: 206
+## X-DBM-Mod-MapID: 2522
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 9
+
+localization.en.lua
+
+Eranog.lua
+Terros.lua
+ThePrimalistCouncil.lua
+Sennarth.lua
+Dathea.lua
+KurogGrimtotem.lua
+BroodkeeperDiurna.lua
+RaszageththeStormEater.lua
+VaultoftheIncarnatesTrash.lua

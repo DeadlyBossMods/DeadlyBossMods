@@ -4,7 +4,7 @@ local L
 -----------------------
 -- <<<Global (M+ Affixes) >>> --
 -----------------------
-L = DBM:GetModLocalization("MPlusAffixes")
+L = DBM:GetModLocalization("MPlusAffixesSL")
 
 L:SetGeneralLocalization({
 	name =	"M+ 詞綴"

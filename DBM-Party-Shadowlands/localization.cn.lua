@@ -7,7 +7,7 @@ local L
 -----------------------
 -- <<<Global (M+ Affixes) >>> --
 -----------------------
-L = DBM:GetModLocalization("MPlusAffixes")
+L = DBM:GetModLocalization("MPlusAffixesSL")
 
 L:SetGeneralLocalization({
 	name =	"大秘境词缀"
