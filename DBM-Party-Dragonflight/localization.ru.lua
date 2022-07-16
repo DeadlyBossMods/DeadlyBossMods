@@ -39,7 +39,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("BrackenhideHollowTrash")
 
 L:SetGeneralLocalization({
-	name =	"Brackenhide Hollow Trash"
+	name =	"Трэш мобы Пещера Бурошкуров"
 })
 
 -----------------------
@@ -109,7 +109,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TheNokhudOffensiveTrash")
 
 L:SetGeneralLocalization({
-	name =	"Nokhud Offensive Trash"
+	name =	"Трэш мобы Наступление клана Нокхуд"
 })
 
 -----------------------
@@ -141,7 +141,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("NeltharusTrash")
 
 L:SetGeneralLocalization({
-	name =	"Neltharus Trash"
+	name =	"Трэш мобы Нелтарий"
 })
 
 -----------------------
@@ -173,7 +173,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TazalgethAcademyTrash")
 
 L:SetGeneralLocalization({
-	name =	"Taz'algeth Academy Trash"
+	name =	"Трэш мобы Академия Таз'алгет"
 })
 
 -----------------------
@@ -232,7 +232,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("RubyLifePoolsTrash")
 
 L:SetGeneralLocalization({
-	name =	"Ruby Life Pools Trash"
+	name =	"Трэш мобы Рубиновые омуты Жизни"
 })
 
 -----------------------
@@ -264,5 +264,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HallsofInfusionTrash")
 
 L:SetGeneralLocalization({
-	name =	"Halls of Infusion Trash"
+	name =	"Трэш мобы Чертоги Насыщения"
 })
