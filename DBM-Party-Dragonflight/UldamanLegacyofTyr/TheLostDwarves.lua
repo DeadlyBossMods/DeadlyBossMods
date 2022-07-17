@@ -103,10 +103,6 @@ function mod:ShieldTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
-
-end
-
-function mod:OnCombatEnd()
 	--Baelog
 	timerHeavyArrowCD:Start(1-delay)
 	timerWildCleaveCD:Start(1-delay)
@@ -118,6 +114,9 @@ function mod:OnCombatEnd()
 	timerDefensiveBulwarkCD:Start(1-delay)
 	--Raid
 	timerLongboatRaidCD:Start(1-delay)
+end
+
+function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
