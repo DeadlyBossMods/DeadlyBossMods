@@ -2,6 +2,7 @@
 ## X-Min-Interface: 90205
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Vault of the Incarnates|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0고대의 감옥|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Хранилище Воплощений|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -13,6 +14,7 @@
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-Name: Vault of the Incarnates
 ## X-DBM-Mod-Name-koKR: 고대의 감옥
+## X-DBM-Mod-Name-ruRU: Хранилище Воплощений
 ## X-DBM-Mod-Sort: 206
 ## X-DBM-Mod-MapID: 2522
 ## X-DBM-Mod-MinCoreRevision: 17286
@@ -20,6 +22,7 @@
 
 localization.en.lua
 localization.kr.lua
+localization.ru.lua
 
 Eranog.lua
 Terros.lua
