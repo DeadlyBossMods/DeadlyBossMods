@@ -2,6 +2,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeons (Dragonflight)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras (Dragonflight)|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras (Dragonflight)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전 (용군단)|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyDragonflight_AllSavedVars
@@ -12,11 +13,13 @@
 ## X-DBM-StatTypes: normal,heroic,mythic,challenge
 ## X-DBM-Mod-SubCategoriesID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527
 ## X-DBM-Mod-Name: Dungeons (Dragonflight)
+## X-DBM-Mod-Name-koKR: 던전 (용군단)
 ## X-DBM-Mod-Sort: 215
 ## X-DBM-Mod-MapID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 9
 localization.en.lua
+localization.kr.lua
 
 MPlusAffixes.lua
 
