@@ -28,7 +28,7 @@ local warnInexorable							= mod:NewSpellAnnounce(372600, 2)
 local warnResonatingOrb							= mod:NewTargetNoFilterAnnounce(382071, 3)
 local warnEarthenShards							= mod:NewTargetNoFilterAnnounce(372718, 3, nil, "Healer")
 
--local specWarnTitanicEmpowerment				= mod:NewSpecialWarningSpell(372719, nil, nil, nil, 3, 2)
+local specWarnTitanicEmpowerment				= mod:NewSpecialWarningSpell(372719, nil, nil, nil, 3, 2)
 local specWarnResonatingOrb						= mod:NewSpecialWarningYouPos(382071, nil, nil, nil, 1, 2)
 local yellResonatingOrb							= mod:NewShortPosYell(382071)
 local yellResonatingOrbFades					= mod:NewIconFadesYell(382071)
