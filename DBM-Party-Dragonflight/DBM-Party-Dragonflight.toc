@@ -17,6 +17,7 @@
 ## X-DBM-Mod-Name: Dungeons (Dragonflight)
 ## X-DBM-Mod-Name-koKR: 던전 (용군단)
 ## X-DBM-Mod-Name-ruRU: Подземелья (Драконы)
+## X-DBM-Mod-Name-zhCN: 5人小队（巨龙时代）
 ## X-DBM-Mod-Sort: 215
 ## X-DBM-Mod-MapID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527
 ## X-DBM-Mod-MinCoreRevision: 17286
