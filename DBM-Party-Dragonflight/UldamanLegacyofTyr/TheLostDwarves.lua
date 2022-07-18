@@ -2,9 +2,10 @@ local mod	= DBM:NewMod(2475, "DBM-Party-Dragonflight", 2, 1197)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(184580, 184581, 184582)
 mod:SetEncounterID(2555)
 --mod:SetUsedIcons(1, 2, 3)
+mod:SetBossHPInfoToHighest()
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -36,7 +37,7 @@ local specWarnHeavyArrow						= mod:NewSpecialWarningYou(369573, nil, nil, nil, 
 local yellHeavyArrow							= mod:NewYell(369573)
 
 local timerHeavyArrowCD							= mod:NewAITimer(35, 369573, nil, nil, nil, 3)
-local timerWildCleaveCD							= mod:NewAITimer(35, 369563, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerWildCleaveCD							= mod:NewAITimer(35, 369563, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Council fights can be messy, on for everyone for now
 
 --Eric "The Swift"
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24781))
@@ -188,8 +189,18 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
+	if spellId == 353193 then--Probably will use some feign death or clear all debuffs trigger
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 184581 then--Baelog
+			timerHeavyArrowCD:Stop()
+			timerWildCleaveCD:Stop()
+		elseif cid == 184580 then--Olaf
+			timerRicochetingShieldCD:Stop()
+			timerDefensiveBulwarkCD:Stop()
+		elseif cid == 184582 then--Eric "The Swift"
+			timerSkullcrackerCD:Stop()
+			timerDaggerThrowCD:Stop()
+		end
 	end
 end
 --]]

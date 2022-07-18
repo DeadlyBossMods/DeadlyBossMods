@@ -2,9 +2,10 @@ local mod	= DBM:NewMod(2471, "DBM-Party-Dragonflight", 1, 1196)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(186122, 186124, 186125)
 mod:SetEncounterID(2570)
 --mod:SetUsedIcons(1, 2, 3)
+mod:SetBossHPInfoToHighest()
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -14,12 +15,12 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 381694 378029 381470 377950",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 381461 377827 381835 377844 381387 381379 378229 381466"
+	"SPELL_AURA_APPLIED 381461 377827 381835 377844 381387 381379 378229 381466",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED 361966 361018 361651"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -27,7 +28,6 @@ mod:RegisterEventsInCombat(
 --TODO, two version of decayed senses, which used? Both?
 --TODO, move marked for butchery timer start
 --TODO, add https://www.wowhead.com/beta/spell=378155/earth-bolt ?
---TODO, add npc ids, they don't exist yet
 --Rira Hackclaw
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24732))
 local warnSavageCharge							= mod:NewTargetNoFilterAnnounce(381461, 4)--Not special waring for now, since it is 14 sec cast time
@@ -154,14 +154,14 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 999999 then--Rira Hackclaw
+	if cid == 186122 then--Rira Hackclaw
 		timerSavageChargeCD:Stop()
 		timerBladestormCD:Stop()
-	elseif cid == 999999 then--Gashtooth
+	elseif cid == 186124 then--Gashtooth
 		timerDecayedSensesCD:Stop()
 		timerGashFrenzyCD:Stop()
 		timerMarkedforButcheryCD:Stop()
-	elseif cid == 999999 then--Tricktotem
+	elseif cid == 186125 then--Tricktotem
 		timerHexrickTotemCD:Stop()
 		timerGreaterHealingRapidsCD:Stop()
 	end

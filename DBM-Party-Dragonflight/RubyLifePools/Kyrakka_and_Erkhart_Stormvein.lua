@@ -2,9 +2,10 @@ local mod	= DBM:NewMod(2503, "DBM-Party-Dragonflight", 7, 1202)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(193435, 190485)
 mod:SetEncounterID(2609)
 --mod:SetUsedIcons(1, 2, 3)
+mod:SetBossHPInfoToHighest()
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -19,6 +20,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+--	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -79,6 +81,15 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 361966 then
+
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 193435 then--Kyrakka
+
+	elseif cid == 190485 then--Erkhart
 
 	end
 end

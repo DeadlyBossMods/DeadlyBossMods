@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2473, "DBM-Party-Dragonflight", 1, 1196)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(186120)
 mod:SetEncounterID(2568)
 mod:SetUsedIcons(8, 7, 6, 5)
 --mod:SetHotfixNoticeRev(20220322000000)
@@ -26,7 +26,6 @@ mod:RegisterEventsInCombat(
 --TODO, proper event for grasping Vines
 --TODO, proper phasing and timer updates
 --TODO, better stack alert handling, maybe dispel special warning for RemoveDisease?
---TODO, CID
 local warnGraspingVines							= mod:NewGraspingVinesAnnounce(376933, 3)
 local warnConsume								= mod:NewTargetNoFilterAnnounce(377222, 4)
 local warnDecaySpray							= mod:NewSpellAnnounce(376933, 2)

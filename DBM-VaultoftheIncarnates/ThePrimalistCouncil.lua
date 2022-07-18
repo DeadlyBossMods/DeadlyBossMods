@@ -2,9 +2,10 @@ local mod	= DBM:NewMod(2486, "DBM-VaultoftheIncarnates", nil, 1200)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(187771, 189816, 187772, 187767)
 mod:SetEncounterID(2590)
 --mod:SetUsedIcons(1, 2, 3)
+mod:SetBossHPInfoToHighest()
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -82,6 +83,21 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	end
 end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 187771 then--Kadros Frostgrip (Frost)
+
+	elseif cid == 189816 then--Dathea Shockgrip (Lightning)
+
+	elseif cid == 187772 then--Opalfang (Earth)
+
+	elseif cid == 187767 then--Embar Firepath (Fire)
+
+	end
+end
+
+
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)

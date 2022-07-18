@@ -2,9 +2,9 @@ local mod	= DBM:NewMod(2484, "DBM-Party-Dragonflight", 2, 1197)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)
+mod:SetCreatureID(184124)
 mod:SetEncounterID(2557)
---mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -12,37 +12,47 @@ mod:SetEncounterID(2557)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 372719 372600 372623 372701",
+	"SPELL_CAST_SUCCESS 372718",
+	"SPELL_AURA_APPLIED 382071",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED 382071"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, proper detection of enery resets (Inexorable) to make sure timer update code for titanic empowerment is correct
+--TODO, proper timer updates for when boss is stunned or reset
+local warnInexorable							= mod:NewSpellAnnounce(372600, 2)
+local warnResonatingOrb							= mod:NewTargetNoFilterAnnounce(382071, 3)
+local warnEarthenShards							= mod:NewTargetNoFilterAnnounce(372718, 3, nil, "Healer")
 
---local warnStaggeringBarrage						= mod:NewSpellAnnounce(361018, 3)
-
---local specWarnInfusedStrikes					= mod:NewSpecialWarningStack(361966, nil, 8, nil, nil, 1, 6)
---local specWarnInfusedStrikesTaunt				= mod:NewSpecialWarningTaunt(361966, nil, nil, nil, 1, 2)
---local yellInfusedStrikes						= mod:NewYell(361966)
---local specWarnDominationBolt					= mod:NewSpecialWarningInterrupt(363607, "HasInterrupt", nil, nil, 1, 2)
+-local specWarnTitanicEmpowerment				= mod:NewSpecialWarningSpell(372719, nil, nil, nil, 3, 2)
+local specWarnResonatingOrb						= mod:NewSpecialWarningYouPos(382071, nil, nil, nil, 1, 2)
+local yellResonatingOrb							= mod:NewShortPosYell(382071)
+local yellResonatingOrbFades					= mod:NewIconFadesYell(382071)
+local specWarnCrushingStomp						= mod:NewSpecialWarningSpell(372701, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
---local timerStaggeringBarrageCD					= mod:NewAITimer(35, 361018, nil, nil, nil, 3)
---local timerDecaySprayCD							= mod:NewAITimer(35, 376811, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerTitanicEmpowermentCD					= mod:NewAITimer(35, 372719, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerResonatingOrbCD						= mod:NewAITimer(35, 382071, nil, nil, nil, 3)
+local timerCrushingStompCD						= mod:NewAITimer(35, 372701, nil, nil, nil, 2)
+local timerEarthenShardsCD						= mod:NewAITimer(35, 372718, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
---mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnOrb", 382071, true, false, {1, 2, 3})
+
+mod.vb.orbIcon = 1
 
 function mod:OnCombatStart(delay)
-
+	timerTitanicEmpowermentCD:Start(1-delay)
+	timerResonatingOrbCD:Start(1-delay)
+	timerCrushingStompCD:Start(1-delay)
+	timerEarthenShardsCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -56,30 +66,59 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 359483 then
-
+	if spellId == 372719 then
+		specWarnTitanicEmpowerment:Show()
+		specWarnTitanicEmpowerment:Play("specialsoon")
+	elseif spellId == 372600 then
+		warnInexorable:Show()
+		timerTitanicEmpowermentCD:Stop()
+		timerTitanicEmpowermentCD:Start(2)
+	elseif spellId == 372623 then
+		self.vb.orbIcon = 1
+	elseif spellId == 372701 then
+		specWarnCrushingStomp:Show()
+		specWarnCrushingStomp:Play("carefly")
+		timerCrushingStompCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 362805 then
-
+	if spellId == 372718 then
+		timerEarthenShardsCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 361966 then
-
+	if spellId == 382071 then
+		local icon = self.vb.orbIcon
+		if self.Options.SetIconOnOrb then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnResonatingOrb:Show(self:IconNumToTexture(icon))
+			specWarnResonatingOrb:Play("mm"..icon)
+			yellResonatingOrb:Yell(icon, icon)
+			yellResonatingOrbFades:Countdown(spellId, nil, icon)
+		end
+		warnResonatingOrb:CombinedShow(0.5, args.destName)
+		self.vb.orbIcon = self.vb.orbIcon + 1
+	elseif spellId == 372718 then
+		warnEarthenShards:CombinedShow(0.3, args.destName)--TODO: Don't combo if it's never more than 1
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 361966 then
-
+	if spellId == 382071 then
+		if self.Options.SetIconOnOrb then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellResonatingOrbFades:Cancel()
+		end
 	end
 end
 
