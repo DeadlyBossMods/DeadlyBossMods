@@ -10,7 +10,7 @@ local L
 L = DBM:GetModLocalization("MPlusAffixesDF")
 
 L:SetGeneralLocalization({
-	name =	"大秘境词缀: 巨龙之魂"
+	name =	"大秘境词缀: 巨龙时代"
 })
 
 -----------------------
