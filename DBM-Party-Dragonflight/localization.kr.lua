@@ -39,7 +39,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("BrackenhideHollowTrash")
 
 L:SetGeneralLocalization({
-	name =	"Brackenhide Hollow Trash"
+	name =	"담쟁이가죽 골짜기 일반몹"
 })
 
 -----------------------
@@ -109,7 +109,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TheNokhudOffensiveTrash")
 
 L:SetGeneralLocalization({
-	name =	"Nokhud Offensive Trash"
+	name =	"노쿠드 공격대 일반몹"
 })
 
 -----------------------
@@ -173,7 +173,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TazalgethAcademyTrash")
 
 L:SetGeneralLocalization({
-	name =	"Taz'algeth Academy Trash"
+	name =	"타즈알게스 대학 일반몹"
 })
 
 -----------------------
@@ -205,7 +205,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TheAzurevaultTrash")
 
 L:SetGeneralLocalization({
-	name =	"Azure Vault Trash"
+	name =	"하늘빛 보관소 일반몹"
 })
 
 -----------------------
@@ -232,7 +232,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("RubyLifePoolsTrash")
 
 L:SetGeneralLocalization({
-	name =	"루비 생명의 연못 일반몹"
+	name =	"루비 생명의 웅덩이 일반몹"
 })
 
 -----------------------
@@ -264,5 +264,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HallsofInfusionTrash")
 
 L:SetGeneralLocalization({
-	name =	"Halls of Infusion Trash"
+	name =	"주입의 전당 일반몹"
 })

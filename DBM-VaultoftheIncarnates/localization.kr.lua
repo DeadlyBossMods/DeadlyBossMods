@@ -59,5 +59,5 @@ local L
 L = DBM:GetModLocalization("VaultoftheIncarnatesTrash")
 
 L:SetGeneralLocalization({
-	name =	"고대의 감옥 일반몹"
+	name =	"현신의 금고 일반몹"
 })
