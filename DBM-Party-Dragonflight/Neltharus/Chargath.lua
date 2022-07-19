@@ -84,7 +84,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 373733 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "DragonStrikeTarget", 0.1, 8, true)
-		timerDragonStrikeCD:Start(1-delay)
+		timerDragonStrikeCD:Start()
 	elseif spellId == 373742 then
 		specWarnMagmaWave:Show()
 		specWarnMagmaWave:Play("watchwave")
