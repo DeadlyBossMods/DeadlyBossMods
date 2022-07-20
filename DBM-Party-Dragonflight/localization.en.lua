@@ -196,7 +196,7 @@ L:SetGeneralLocalization({
 -----------------------
 -- Azureblade --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2505)
 
 ---------
 --Trash--
@@ -240,7 +240,7 @@ L:SetGeneralLocalization({
 -----------------------
 -- Watcher Irideus --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2504)
 
 -----------------------
 -- Gulping Goliath --
