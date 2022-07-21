@@ -120,7 +120,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2490)
 
 -----------------------
--- The Scorching Forge --
+-- Forgemaster Gorek --
 -----------------------
 --L= DBM:GetModLocalization(2489)
 
