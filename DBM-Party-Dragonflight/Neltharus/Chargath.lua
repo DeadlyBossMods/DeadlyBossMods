@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 373733 373742 373424 375056",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 374655",
+	"SPELL_AURA_REFRESH 374655",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 374655",
 	"SPELL_PERIODIC_DAMAGE 374854",
@@ -23,23 +24,28 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify dragon strike target scan and spear target scan
---TODO, can fetter go on boss? Does it interrupt his lock phase (ie https://www.wowhead.com/beta/spell=374638/fetter)
+--TODO, Need a LOT more data to properly update timers around Fetter, right now sample size is literally 2 pulls
+--TODO, same for uninterrupted Blade Lock
+--[[
+(ability.id = 373733 or ability.id = 373742 or ability.id = 373424 or ability.id = 375056) and type = "begincast"
+ or ability.id = 374655 or ability.id = 375055 and (type = "applybuff" or type = "removebuff")
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
+--]]
 local warnDragonStrike							= mod:NewTargetNoFilterAnnounce(373733, 3)
 local warnGroundingSpear						= mod:NewTargetNoFilterAnnounce(373424, 3)
-local warnFetter								= mod:NewTargetNoFilterAnnounce(374655, 2)--Player or boss
+local warnFetter								= mod:NewTargetNoFilterAnnounce(374655, 1)--Boss Only
 
 --local specWarnInfusedStrikes					= mod:NewSpecialWarningStack(361966, nil, 8, nil, nil, 1, 6)
 local specWarnMagmaWave							= mod:NewSpecialWarningDodge(373742, nil, nil, nil, 2, 2)
 --local yellInfusedStrikes						= mod:NewYell(361966)
 local specWarnGroundingSpear					= mod:NewSpecialWarningYou(373424, nil, nil, nil, 1, 2)
 local yellGroundingSpear						= mod:NewYell(373424)
---local specWarnDominationBolt					= mod:NewSpecialWarningInterrupt(363607, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBladeLock							= mod:NewSpecialWarningSpell(375056, nil, nil, nil, 2, 2)
+local specWarnBladeLock							= mod:NewSpecialWarningInterrupt(375056, nil, nil, nil, 1, 13)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374854, nil, nil, nil, 1, 8)
 
-local timerDragonStrikeCD						= mod:NewAITimer(35, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
-local timerMagmaWaveCD							= mod:NewAITimer(35, 373742, nil, nil, nil, 3)
-local timerGroundingSpearCD						= mod:NewAITimer(35, 373424, nil, nil, nil, 3)
+local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12-21?
+local timerMagmaWaveCD							= mod:NewCDTimer(35, 373742, nil, nil, nil, 3)
+local timerGroundingSpearCD						= mod:NewCDTimer(8.9, 373424, nil, nil, nil, 3)
 local timerFetter								= mod:NewTargetTimer(8, 374655, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerBladeLockCD							= mod:NewAITimer(35, 375056, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DEADLY_ICON)
 
@@ -66,19 +72,19 @@ function mod:SpearTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
-	timerDragonStrikeCD:Start(1-delay)
-	timerMagmaWaveCD:Start(1-delay)
-	timerGroundingSpearCD:Start(1-delay)
+	timerDragonStrikeCD:Start(3.5-delay)
+--	timerMagmaWaveCD:Start(15-delay)--Was 15 but then changed in newer logs
+	timerGroundingSpearCD:Start(10.8-delay)
 end
 
-function mod:OnCombatEnd()
+--function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-end
+--end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -94,7 +100,7 @@ function mod:SPELL_CAST_START(args)
 		timerGroundingSpearCD:Start()
 	elseif spellId == 375056 then
 		specWarnBladeLock:Show()
-		specWarnBladeLock:Play("specialsoon")
+		specWarnBladeLock:Play("chainboss")
 		timerBladeLockCD:Start()
 	end
 end
@@ -112,19 +118,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 374655 then
 		warnFetter:Show(args.destName)
-		if not args:DestTypePlayer() then
-			timerFetter:Start(args.destName)
-		end
+		timerFetter:Stop(args.destName)
+		timerFetter:Start(args.destName)
+		timerGroundingSpearCD:Stop()
+		timerMagmaWaveCD:Stop()
+		timerBladeLockCD:Pause()
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESHED = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 374655 then
-		if args:IsDestTypeHostile() then
-			timerFetter:Stop(args.destName)
-		end
+		timerFetter:Stop(args.destName)
+		timerMagmaWaveCD:Start(3.5)
+		timerGroundingSpearCD:Start(7.2)
+		timerBladeLockCD:Resume()
 	end
 end
 

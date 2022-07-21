@@ -5,19 +5,19 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
 mod.isTrashMod = true
 
---mod:RegisterEvents(
+mod:RegisterEvents(
 --	"SPELL_CAST_START",
---	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED 384161"
 --	"SPELL_AURA_APPLIED_DOSE 339528",
 --	"SPELL_AURA_REMOVED 339525"
---)
+)
 
 --TODO, icon mark shared suffering? Maybe when they fix ENCOUNTER_START, for now I don't want to risk trash mod messing with a boss mods icon marking
 --Lady's Trash, minus bottled anima, which will need a unit event to detect it looks like
 --local warnConcentrateAnima					= mod:NewTargetNoFilterAnnounce(339525, 3)
 
---local specWarnConcentrateAnima				= mod:NewSpecialWarningMoveAway(310780, nil, nil, nil, 1, 2)
---local yellConcentrateAnima					= mod:NewYell(339525)
+local specWarnMoteofCombustion				= mod:NewSpecialWarningMoveAway(384161, nil, nil, nil, 1, 2)
+local yellMoteofCombustion					= mod:NewYell(384161)
 --local yellConcentrateAnimaFades				= mod:NewShortFadesYell(339525)
 --local specWarnSharedSuffering				= mod:NewSpecialWarningYou(339607, nil, nil, nil, 1, 2)
 --local specWarnDirgefromBelow				= mod:NewSpecialWarningInterrupt(310839, "HasInterrupt", nil, nil, 1, 2)
@@ -35,17 +35,22 @@ function mod:SPELL_CAST_START(args)
 		specWarnDirgefromBelow:Play("kickcast")
 	end
 end
-
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 339525 then
-
+		if args:IsPlayer() then
+			specWarnMoteofCombustion:Show()
+			specWarnMoteofCombustion:Play("runout")
+			yellMoteofCombustion:Yell()
+		end
 	end
 end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 339525 and args:IsPlayer() then
