@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify dragon strike target scan and spear target scan
 --TODO, Need a LOT more data to properly update timers around Fetter, right now sample size is literally 2 pulls
 --TODO, same for uninterrupted Blade Lock
+--TODO, boss has two diff sets of timers. One hwere he does magma at 15 seconds but dragon is 21 second cd, and one where he skips first magma but dragon is now 12sec cd
 --[[
 (ability.id = 373733 or ability.id = 373742 or ability.id = 373424 or ability.id = 375056) and type = "begincast"
  or ability.id = 374655 or ability.id = 375055 and (type = "applybuff" or type = "removebuff")
@@ -43,7 +44,7 @@ local yellGroundingSpear						= mod:NewYell(373424)
 local specWarnBladeLock							= mod:NewSpecialWarningInterrupt(375056, nil, nil, nil, 1, 13)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374854, nil, nil, nil, 1, 8)
 
-local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12-21?
+local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12 or 21, not sure why some pulls it's one and othes it's other. Same as whether or not boss does first magma at 15 or skips it
 local timerMagmaWaveCD							= mod:NewCDTimer(35, 373742, nil, nil, nil, 3)
 local timerGroundingSpearCD						= mod:NewCDTimer(8.9, 373424, nil, nil, nil, 3)
 local timerFetter								= mod:NewTargetTimer(8, 374655, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
@@ -54,6 +55,8 @@ local timerBladeLockCD							= mod:NewAITimer(35, 375056, nil, nil, nil, 5, nil,
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})
+
+mod.vb.magmawaveCount = 0
 
 function mod:DragonStrikeTarget(targetname)
 	if not targetname then return end
@@ -72,9 +75,11 @@ function mod:SpearTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.magmawaveCount = 0
 	timerDragonStrikeCD:Start(3.5-delay)
---	timerMagmaWaveCD:Start(15-delay)--Was 15 but then changed in newer logs
 	timerGroundingSpearCD:Start(10.8-delay)
+	timerMagmaWaveCD:Start(15-delay)--But sometimes boss skips first one
+	timerBladeLockCD:Start(43.6-delay)--or 59.6, Still guessed because trying to get a decent log of this boss is impossible
 end
 
 --function mod:OnCombatEnd()
@@ -92,6 +97,7 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "DragonStrikeTarget", 0.1, 8, true)
 		timerDragonStrikeCD:Start()
 	elseif spellId == 373742 then
+		self.vb.magmawaveCount = self.vb.magmawaveCount + 1
 		specWarnMagmaWave:Show()
 		specWarnMagmaWave:Play("watchwave")
 		timerMagmaWaveCD:Start()
@@ -122,6 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFetter:Start(args.destName)
 		timerGroundingSpearCD:Stop()
 		timerMagmaWaveCD:Stop()
+		timerDragonStrikeCD:Stop()
 		timerBladeLockCD:Pause()
 	end
 end
@@ -131,7 +138,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 374655 then
 		timerFetter:Stop(args.destName)
-		timerMagmaWaveCD:Start(3.5)
+		timerDragonStrikeCD:Start(3.5)
+		timerMagmaWaveCD:Start(self.vb.magmawaveCount == 0 and 3.5 or 12.9)--Seems to depend whether or not boss got to cast it before first fetter
 		timerGroundingSpearCD:Start(7.2)
 		timerBladeLockCD:Resume()
 	end
