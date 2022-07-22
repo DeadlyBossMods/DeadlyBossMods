@@ -65,10 +65,10 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.mutationCount = 0
-	timerVolatileMutationCD:Start(25.8-delay)
-	timerMagmaLobCD:Start(8-delay)
 	timerLavaSrayCD:Start(7.2-delay)
+	timerMagmaLobCD:Start(8-delay)
 	timerBlazingChargeCD:Start(19.7-delay)
+	timerVolatileMutationCD:Start(25.8-delay)
 end
 
 --function mod:OnCombatEnd()

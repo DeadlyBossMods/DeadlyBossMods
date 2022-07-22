@@ -138,9 +138,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:Hide()
 		end
 		--Do timers stop and restart after shield, or pause and resume?
---		timerDragonsKilnCD:Start()
 		timerMoltenGoldCD:Start(10)
---		timerBurningEmberCD:Start()
+		timerBurningEmberCD:Start(14.3)
+		timerDragonsKilnCD:Start(18.6)
 --		timerMagmaShieldCD:Start()
 	end
 end
