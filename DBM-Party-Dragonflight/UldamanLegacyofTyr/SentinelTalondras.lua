@@ -16,15 +16,22 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 372718",
 	"SPELL_AURA_APPLIED 382071",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 382071"
+	"SPELL_AURA_REMOVED 382071 372600"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, proper detection of enery resets (Inexorable) to make sure timer update code for titanic empowerment is correct
---TODO, proper timer updates for when boss is stunned or reset
+--TODO, proper detection of enery resets (Inexorable) to add timer update code for titanic empowerment
+--TODO, proper timer updates for when boss is stunned or reset if it's deem worth the time (it probably won't be)
+--[[
+(ability.id = 372719 or ability.id = 372600 or ability.id = 372623 or ability.id = 372701) and type = "begincast"
+ or ability.id = 372718 and type = "cast"
+ or ability.id = 372600 or ability.id = 372652
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
+--]]
 local warnInexorable							= mod:NewSpellAnnounce(372600, 2)
+local warnInexorableOver						= mod:NewFadesAnnounce(372600, 1)
 local warnResonatingOrb							= mod:NewTargetNoFilterAnnounce(382071, 3)
 local warnEarthenShards							= mod:NewTargetNoFilterAnnounce(372718, 3, nil, "Healer")
 
@@ -35,10 +42,10 @@ local yellResonatingOrbFades					= mod:NewIconFadesYell(382071)
 local specWarnCrushingStomp						= mod:NewSpecialWarningSpell(372701, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerTitanicEmpowermentCD					= mod:NewAITimer(35, 372719, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerResonatingOrbCD						= mod:NewAITimer(35, 382071, nil, nil, nil, 3)
-local timerCrushingStompCD						= mod:NewAITimer(35, 372701, nil, nil, nil, 2)
-local timerEarthenShardsCD						= mod:NewAITimer(35, 372718, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
+--local timerTitanicEmpowermentCD					= mod:NewAITimer(35, 372719, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerResonatingOrbCD						= mod:NewCDTimer(28.7, 382071, nil, nil, nil, 3, nil, nil, true)
+local timerCrushingStompCD						= mod:NewCDTimer(12.1, 372701, nil, nil, nil, 2, nil, nil, true)
+local timerEarthenShardsCD						= mod:NewCDTimer(9.3, 372718, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON, true)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -49,10 +56,10 @@ mod:AddSetIconOption("SetIconOnOrb", 382071, true, false, {1, 2, 3})
 mod.vb.orbIcon = 1
 
 function mod:OnCombatStart(delay)
-	timerTitanicEmpowermentCD:Start(1-delay)
-	timerResonatingOrbCD:Start(1-delay)
-	timerCrushingStompCD:Start(1-delay)
-	timerEarthenShardsCD:Start(1-delay)
+--	timerTitanicEmpowermentCD:Start(1-delay)
+--	timerResonatingOrbCD:Start(1-delay)--Instantly on pull
+	timerEarthenShardsCD:Start(4.5-delay)
+	timerCrushingStompCD:Start(8.1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -71,10 +78,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnTitanicEmpowerment:Play("specialsoon")
 	elseif spellId == 372600 then
 		warnInexorable:Show()
-		timerTitanicEmpowermentCD:Stop()
-		timerTitanicEmpowermentCD:Start(2)
+--		timerTitanicEmpowermentCD:Stop()
+--		timerTitanicEmpowermentCD:Start(2)
 	elseif spellId == 372623 then
 		self.vb.orbIcon = 1
+		timerResonatingOrbCD:Start()
 	elseif spellId == 372701 then
 		specWarnCrushingStomp:Show()
 		specWarnCrushingStomp:Play("carefly")
@@ -119,6 +127,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellResonatingOrbFades:Cancel()
 		end
+	elseif spellId == 372600 then
+		warnInexorableOver:Show()
 	end
 end
 
