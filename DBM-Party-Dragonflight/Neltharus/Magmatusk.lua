@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
  or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 --TODO, verify target scan for lava spray, or maybe use RAID_BOSS_WHISPER?
---TODO, longer pull with actually more than one mutation
 local warnVolatileMutation						= mod:NewCountAnnounce(374365, 3)
 local warnLavaSpray								= mod:NewTargetNoFilterAnnounce(375251, 3)
 
@@ -39,7 +38,7 @@ local specWarnBlazingCharge						= mod:NewSpecialWarningDodge(375436, nil, nil, 
 local yellBlazingCharge							= mod:NewYell(375436)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(375204, nil, nil, nil, 1, 8)
 
-local timerVolatileMutationCD					= mod:NewCDTimer(35, 374365, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerVolatileMutationCD					= mod:NewCDTimer(31.5, 374365, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerMagmaLobCD							= mod:NewCDTimer(8, 375068, nil, nil, nil, 3)--8 unless delayed by other casts
 local timerLavaSrayCD							= mod:NewCDTimer(23.4, 375251, nil, nil, nil, 3)
 local timerBlazingChargeCD						= mod:NewCDTimer(23, 375436, nil, nil, nil, 3)
@@ -85,7 +84,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 374365 then
 		self.vb.mutationCount = self.vb.mutationCount + 1
 		warnVolatileMutation:Show(self.vb.mutationCount)
---		timerVolatileMutationCD:Start()--Unknown, most kills too short
+		timerVolatileMutationCD:Start()
 	elseif spellId == 375068 then
 		specWarnMagmaLob:Show()
 		specWarnMagmaLob:Play("watchstep")

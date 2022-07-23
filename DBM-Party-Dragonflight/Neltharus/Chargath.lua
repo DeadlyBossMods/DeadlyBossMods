@@ -44,8 +44,8 @@ local yellGroundingSpear						= mod:NewYell(373424)
 local specWarnBladeLock							= mod:NewSpecialWarningInterrupt(375056, nil, nil, nil, 1, 13)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374854, nil, nil, nil, 1, 8)
 
-local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12 or 21, not sure why some pulls it's one and othes it's other. Same as whether or not boss does first magma at 15 or skips it
-local timerMagmaWaveCD							= mod:NewCDTimer(35, 373742, nil, nil, nil, 3)
+local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12 but lowest spell queue priority, it's often delayed by several more seconds
+local timerMagmaWaveCD							= mod:NewCDTimer(32.7, 373742, nil, nil, nil, 3)--Actual CD still not known, since you'd never fully see it unhindered by blade lock or reset by fetter
 local timerGroundingSpearCD						= mod:NewCDTimer(8.9, 373424, nil, nil, nil, 3)
 local timerFetter								= mod:NewTargetTimer(8, 374655, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerBladeLockCD							= mod:NewAITimer(35, 375056, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DEADLY_ICON)
@@ -74,12 +74,22 @@ function mod:SpearTarget(targetname)
 	end
 end
 
+--Notes:
+--Boss has spell queung problems on top of varying timers, which can cause abilities to come in different orders and timings
+--First magmawave is usually 15 sec into boss, but also soemtimes 26 and sometimes not cast at all before first blade lock
+--And first blade lock can be anywhere between 30 seconds in and 44 seconds in despite fact it's based on bosses supposed to be consistent energy rate
+--Yet he can't cast blade lock if he's casting something else so even his ultimate gets queued
+--Then you have fetter, which can stun boss at at any time, which resets CDs on most abilities but not all of them
+--For example if magmawave was cast recently before fetter stun then CD is set to about 12 seconds after stun ends, but if it was not cast recently before fetter the it's set to 3.5 after
+--Dragon strike has a Cd of 12 but is almost always 20+ due to spell queue if boss cast Magma wave 15 seconds into fight
+--But if boss didn't cast magma wave 15 seconds into fight then ability orders change and causes dragon strike to actually see it's cast every 12 seconds instead of every 20+
+--TL/DR, timers on this boss, despite best efforts, are extremely hit or miss without excessive manual on the fly corrections (and that's pretty unreasonable to do for a lot of bosses)
 function mod:OnCombatStart(delay)
 	self.vb.magmawaveCount = 0
-	timerDragonStrikeCD:Start(3.5-delay)
-	timerGroundingSpearCD:Start(10.8-delay)
-	timerMagmaWaveCD:Start(15-delay)--But sometimes boss skips first one
-	timerBladeLockCD:Start(43.6-delay)--or 59.6, Still guessed because trying to get a decent log of this boss is impossible
+	timerDragonStrikeCD:Start(3.3-delay)
+	timerGroundingSpearCD:Start(10.5-delay)
+	timerMagmaWaveCD:Start(15-delay)--usually 15 but in rare cases boss flips ability order and this gets queued as far out as 32 which can cause it not to be ast at all before bladelock/fetter (which resets cd on magma)
+	timerBladeLockCD:Start(29.2-delay)--29.2-44 variance even without fetter stuns done before first lock cast
 end
 
 --function mod:OnCombatEnd()
@@ -129,7 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGroundingSpearCD:Stop()
 		timerMagmaWaveCD:Stop()
 		timerDragonStrikeCD:Stop()
-		timerBladeLockCD:Pause()
+		timerBladeLockCD:Stop()
 	end
 end
 mod.SPELL_AURA_REFRESHED = mod.SPELL_AURA_APPLIED
@@ -139,9 +149,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 374655 then
 		timerFetter:Stop(args.destName)
 		timerDragonStrikeCD:Start(3.5)
-		timerMagmaWaveCD:Start(self.vb.magmawaveCount == 0 and 3.5 or 12.9)--Seems to depend whether or not boss got to cast it before first fetter
+		timerMagmaWaveCD:Start(self.vb.magmawaveCount == 0 and 3.5 or 12.8)--Seems to depend whether or not boss got to cast it at least one before first fetter
 		timerGroundingSpearCD:Start(7.2)
-		timerBladeLockCD:Resume()
+--		timerBladeLockCD:Start()
 	end
 end
 
