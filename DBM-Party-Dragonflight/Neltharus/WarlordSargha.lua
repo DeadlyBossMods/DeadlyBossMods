@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 
 --Molten Gold/hardened gold are just so inconsiquential that I suspect blizzard will change or scrap it
 --TODO, verify Kiln target scan
---TODO, longer pull to actually finish timers.
 --[[
 ability.id = 376780 and (type = "begincast" or type = "applybuff" or type = "removebuff")
  or (ability.id = 377017 or ability.id = 377204 or ability.id = 377473) and type = "begincast"
@@ -42,7 +41,7 @@ local specWarnBurningEmber						= mod:NewSpecialWarningDodge(377477, nil, nil, n
 local specWarnBurningPursuit					= mod:NewSpecialWarningYou(377522, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(377542, nil, nil, nil, 1, 8)
 
-local timerMagmaShieldCD						= mod:NewCDTimer(35, 376780, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerMagmaShieldCD						= mod:NewCDTimer(33.4, 376780, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerMoltenGoldCD							= mod:NewCDTimer(35, 377018, nil, nil, nil, 3)
 local timerDragonsKilnCD						= mod:NewCDTimer(21, 377204, nil, nil, nil, 3)
 local timerBurningEmberCD						= mod:NewCDTimer(35, 377477, nil, nil, nil, 1)
@@ -137,11 +136,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-		--Do timers stop and restart after shield, or pause and resume?
 		timerMoltenGoldCD:Start(10)
-		timerBurningEmberCD:Start(14.3)
-		timerDragonsKilnCD:Start(18.6)
---		timerMagmaShieldCD:Start()
+		timerBurningEmberCD:Start(14.3) -- ~1
+		timerDragonsKilnCD:Start(18.6) -- ~1
+		timerMagmaShieldCD:Start(30.9)
 	end
 end
 

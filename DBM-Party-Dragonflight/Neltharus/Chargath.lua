@@ -45,10 +45,10 @@ local specWarnBladeLock							= mod:NewSpecialWarningInterrupt(375056, nil, nil,
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374854, nil, nil, nil, 1, 8)
 
 local timerDragonStrikeCD						= mod:NewCDTimer(12.1, 373733, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)--12 but lowest spell queue priority, it's often delayed by several more seconds
-local timerMagmaWaveCD							= mod:NewCDTimer(32.7, 373742, nil, nil, nil, 3)--Actual CD still not known, since you'd never fully see it unhindered by blade lock or reset by fetter
+local timerMagmaWaveCD							= mod:NewCDTimer(17.8, 373742, nil, nil, nil, 3)--Actual CD still not known, since you'd never fully see it unhindered by blade lock or reset by fetter
 local timerGroundingSpearCD						= mod:NewCDTimer(8.9, 373424, nil, nil, nil, 3)
 local timerFetter								= mod:NewTargetTimer(8, 374655, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerBladeLockCD							= mod:NewAITimer(35, 375056, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DEADLY_ICON)
+local timerBladeLockCD							= mod:NewCDTimer(35, 375056, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DEADLY_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -118,6 +118,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnBladeLock:Show()
 		specWarnBladeLock:Play("chainboss")
 		timerBladeLockCD:Start()
+		--Blade lock does NOT reset existing CD timers
+		--they'll queue up and cast one after another when blade lock ends
 	end
 end
 
@@ -148,6 +150,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 374655 then
 		timerFetter:Stop(args.destName)
+		--Fetter on other hand does seem to hard reset things, to an extent
 		timerDragonStrikeCD:Start(3.5)
 		timerMagmaWaveCD:Start(self.vb.magmawaveCount == 0 and 3.5 or 12.8)--Seems to depend whether or not boss got to cast it at least one before first fetter
 		timerGroundingSpearCD:Start(7.2)

@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, proper event for grasping Vines
 --TODO, proper phasing and timer updates
 --TODO, better stack alert handling, maybe dispel special warning for RemoveDisease?
-local warnGraspingVines							= mod:NewGraspingVinesAnnounce(376933, 3)
+local warnGraspingVines							= mod:NewSpellAnnounce(376933, 3)
 local warnConsume								= mod:NewTargetNoFilterAnnounce(377222, 4)
 local warnDecaySpray							= mod:NewSpellAnnounce(376933, 2)
 local warnInfectiousSpit						= mod:NewStackAnnounce(377864, 2, nil, "Healer|RemoveDisease")

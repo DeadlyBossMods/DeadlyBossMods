@@ -5,6 +5,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전 (용군단)|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Подземелья (Драконы)|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-巨龙时代|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-巨龍崛起|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyDragonflight_AllSavedVars
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-Name-koKR: 던전 (용군단)
 ## X-DBM-Mod-Name-ruRU: Подземелья (Драконы)
 ## X-DBM-Mod-Name-zhCN: 5人小队（巨龙时代）
+## X-DBM-Mod-Name-zhTW: 隊伍首領 (巨龍崛起)
 ## X-DBM-Mod-Sort: 215
 ## X-DBM-Mod-MapID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527
 ## X-DBM-Mod-MinCoreRevision: 17286
