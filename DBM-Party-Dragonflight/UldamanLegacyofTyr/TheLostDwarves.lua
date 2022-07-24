@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED"
 	"SPELL_PERIODIC_DAMAGE 377825",
 	"SPELL_PERIODIC_MISSED 377825"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, dwarves who are "defeated" don't die, they go on boat at 10%, so we need to detect them leaving to stop timers properly
@@ -148,16 +147,17 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "ShieldTarget", 0.1, 8, true)
 --		timerRicochetingShieldCD:Start()
 	elseif spellId == 375924 and self:AntiSpam(5, 1) then
-		--Do timers stop this way? this is impossible to fix without transcriptor to see what's going on
-		--Baelog
-		timerHeavyArrowCD:Stop()
-		timerWildCleaveCD:Stop()
---		--Eric
-		timerSkullcrackerCD:Stop()
---		--Olaf
-		timerRicochetingShieldCD:Stop()
-		timerDefensiveBulwarkCD:Stop()
 --		timerLongboatRaidCD:Start()
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 184581 then--Baelog
+			timerHeavyArrowCD:Stop()
+			timerWildCleaveCD:Stop()
+		elseif cid == 184580 then--Olaf
+			timerRicochetingShieldCD:Stop()
+			timerDefensiveBulwarkCD:Stop()
+		elseif cid == 184582 then--Eric "The Swift"
+			timerSkullcrackerCD:Stop()
+		end
 	end
 end
 
@@ -192,20 +192,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then--Probably will use some feign death or clear all debuffs trigger
-		local cid = self:GetUnitCreatureId(uId)
-		if cid == 184581 then--Baelog
-			timerHeavyArrowCD:Stop()
-			timerWildCleaveCD:Stop()
-		elseif cid == 184580 then--Olaf
-			timerRicochetingShieldCD:Stop()
-			timerDefensiveBulwarkCD:Stop()
-		elseif cid == 184582 then--Eric "The Swift"
-			timerSkullcrackerCD:Stop()
-		end
-	end
-end
---]]
