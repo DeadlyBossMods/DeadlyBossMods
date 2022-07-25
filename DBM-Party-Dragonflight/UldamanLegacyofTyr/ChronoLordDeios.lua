@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.buffetCount = self.vb.buffetCount + 1
 		specWarnWingBuffet:Show(self.vb.buffetCount)
 		specWarnWingBuffet:Play("carefly")
-		if self.vb.buffetCount == 1 and self.vb.rewindCount >= 1 and
+		if self.vb.buffetCount == 1 and self.vb.rewindCount >= 1 then
 			timerWingBuffetCD:Start(nil, 2)
 		end
 	elseif spellId == 375727 then
