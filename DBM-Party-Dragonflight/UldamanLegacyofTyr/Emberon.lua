@@ -13,13 +13,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 368990 369110 369198 369061",
-	"SPELL_CAST_SUCCESS 369033",
+	"SPELL_CAST_SUCCESS 369033 369049",
 	"SPELL_AURA_APPLIED 369110 369198",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 369110 369198",
+	"SPELL_AURA_REMOVED 369110 369198 368990"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
+--	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -27,19 +27,28 @@ mod:RegisterEventsInCombat(
 --TODO, auto mark adds?
 --TODO, target scan to warn warn for https://www.wowhead.com/beta/spell=369049/seeking-flame targets? doesn't seem like you can do much about it (no interrupts, no splash, just repheal)
 --TODO, verify timer resets on boss switching in and out of Puring Flames stage
+--[[
+(ability.id = 368990 or ability.id = 369110 or ability.id = 369198 or ability.id = 369061) and type = "begincast"
+ or ability.id = 369033 and type = "cast"
+ or ability.id = 368990 and type = "removebuff"
+ or (target.id = 186107 or target.id = 186173) and type = "death"
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
+--]]
 local warnActivateKeepers						= mod:NewSpellAnnounce(369033, 3)
 local warnUnstableEmbers						= mod:NewTargetNoFilterAnnounce(369110, 3)
+local warnSeekingFlame							= mod:NewYouAnnounce(369049, 3, nil, false)--In case you want to know, but not totally practical to enable by default
 
-local specWarnPurgingFlames						= mod:NewSpecialWarningDodge(368990, nil, nil, nil, 2, 2)
+local specWarnPurgingFlames						= mod:NewSpecialWarningDodgeCount(368990, nil, nil, nil, 2, 2)
 local specWarnUnstableEmbers					= mod:NewSpecialWarningMoveAway(369110, nil, nil, nil, 1, 2)
 local yellUnstableEmbers						= mod:NewYell(369110)
 local yellUnstableEmbersFades					= mod:NewShortFadesYell(369110)
 local specWarnSearingClap						= mod:NewSpecialWarningDefensive(369061, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerPurgingFlamesCD						= mod:NewAITimer(35, 368990, nil, nil, nil, 6)--Maybe swap for activate keepers instead
-local timerUnstableEmbersCD						= mod:NewAITimer(35, 369110, nil, nil, nil, 3)
-local timerSearingClapCD						= mod:NewAITimer(35, 369061, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerActivateKeepersCD					= mod:NewCDTimer(35, 369033, nil, nil, nil, 1)
+local timerPurgingFlamesCD						= mod:NewCDCountTimer(35, 368990, nil, nil, nil, 6)--Maybe swap for activate keepers instead
+local timerUnstableEmbersCD						= mod:NewCDCountTimer(12, 369110, nil, nil, nil, 3)
+local timerSearingClapCD						= mod:NewCDTimer(35, 369061, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -48,12 +57,17 @@ local timerSearingClapCD						= mod:NewAITimer(35, 369061, nil, "Tank|Healer", n
 --mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})
 
 mod.vb.addsRemaining = 0
+mod.vb.embersCount = 0
+mod.vb.purgingCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.addsRemaining = 0
-	timerPurgingFlamesCD:Start(1-delay)
-	timerUnstableEmbersCD:Start(1-delay)
-	timerSearingClapCD:Start(1-delay)
+	self.vb.embersCount = 0
+	self.vb.purgingCount = 0
+	timerActivateKeepersCD:Start(3.5-delay)
+	timerSearingClapCD:Start(4.7-delay)
+	timerUnstableEmbersCD:Start(13.1-delay, 1)
+	timerPurgingFlamesCD:Start(20.4-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -68,18 +82,25 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 368990 then
+		self.vb.purgingCount = self.vb.purgingCount + 1
+		specWarnPurgingFlames:Show(self.vb.purgingCount)
+		specWarnPurgingFlames:Play("farfromline")
+
+		--Stop, just in case, but the timers shouldn't be running at this point since they are already conditioned not to start extra times
+		timerActivateKeepersCD:Stop()
 		timerUnstableEmbersCD:Stop()
 		timerSearingClapCD:Stop()
-		specWarnPurgingFlames:Show()
-		specWarnPurgingFlames:Play("farfromline")
-	elseif spellId == 369110 or spellId == 369198 then
-		timerUnstableEmbersCD:Start()
+	elseif spellId == 369110 or spellId == 369198 then--110 confirmed, 198 unknown
+		self.vb.embersCount = self.vb.embersCount + 1
+		if self.vb.embersCount == 1 and self.vb.purgingCount >= 1 then
+			timerUnstableEmbersCD:Start(12, 2)
+		end
 	elseif spellId == 369061 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSearingClap:Show()
 			specWarnSearingClap:Play("defensive")
 		end
-		timerSearingClapCD:Start()
+--		timerSearingClapCD:Start()
 	end
 end
 
@@ -88,12 +109,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 369033 then
 		warnActivateKeepers:Show()
 		self.vb.addsRemaining = self.vb.addsRemaining + (self:IsMythic() and 6 or self:IsHeroic() and 4 or 3)
+	elseif spellId == 369049 and args:IsPlayer() and self:AntiSpam(3, 1) then
+		warnSeekingFlame:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 369110 or spellId == 369198 then
+	if spellId == 369110 or spellId == 369198 then--110 confirmed, 198 unknown
 		warnUnstableEmbers:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnUnstableEmbers:Show()
@@ -111,24 +134,28 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellUnstableEmbersFades:Cancel()
 		end
+	elseif spellId == 368990 then--Purging Flames over
+		self.vb.embersCount = 0
+		timerUnstableEmbersCD:Start(1.9, 1)
+		timerActivateKeepersCD:Start(5.5)
+		timerSearingClapCD:Start(6.7)
+		timerPurgingFlamesCD:Start(26.1, self.vb.purgingCount+1)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 186107 or cid == 186173 then--Vault Keeper
 		self.vb.addsRemaining = self.vb.addsRemaining - 1
 		if self.vb.addsRemaining == 0 then
-			timerPurgingFlamesCD:Start(2)
-			timerUnstableEmbersCD:Start(2)
-			timerSearingClapCD:Start(2)
+
 		end
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 340324 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
