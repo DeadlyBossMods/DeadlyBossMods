@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(9999, "DBM-Party-Dragonflight", 8, 1204)
+local mod	= DBM:NewMod(2507, "DBM-Party-Dragonflight", 8, 1204)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")

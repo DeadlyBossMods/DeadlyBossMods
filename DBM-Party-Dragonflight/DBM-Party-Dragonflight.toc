@@ -65,9 +65,9 @@ TazalgethAcademy\Crawth.lua
 # TazalgethAcademy\Headmaster.lua
 TazalgethAcademy\TazalgethAcademyTrash.lua
 
-# TheAzurevault\Umbrelskul.lua
+TheAzurevault\Umbrelskul.lua
 TheAzurevault\Azureblade.lua
-# TheAzurevault\TalashGreywing.lua
+TheAzurevault\TalashGreywing.lua
 TheAzurevault\Leymor.lua
 TheAzurevault\TheAzurevaultTrash.lua
 
@@ -77,7 +77,7 @@ RubyLifePools\Kyrakka_and_Erkhart_Stormvein.lua
 RubyLifePools\RubyLifePoolsTrash.lua
 
 HallsofInfusion\WatcherIrideus.lua
-# HallsofInfusion\GulpingGoliath.lua
+HallsofInfusion\GulpingGoliath.lua
 # HallsofInfusion\KhajintheUnyielding.lua
 # HallsofInfusion\PrimalTsunami.lua
 HallsofInfusion\HallsofInfusionTrash.lua
