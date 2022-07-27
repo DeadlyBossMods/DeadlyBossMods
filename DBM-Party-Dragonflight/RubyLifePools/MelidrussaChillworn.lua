@@ -24,10 +24,10 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, https://www.wowhead.com/beta/spell=372808/frost-missile just seems like something she just casts over and over at tank, leaving out for now
---TODO, target scan Blistering Froststorm if boss looks at victim, Same for Ice Blast
+--TODO, target scan Chillstorm if boss looks at victim, Same for Ice Blast
 --TODO, update timers around Frost Overload?
 local warnFrozenSolid							= mod:NewTargetNoFilterAnnounce(373022, 4, nil, "Healer")
-local warnBlisteringFroststorm					= mod:NewSpellAnnounce(372851, 3)
+local warnChillstorm							= mod:NewSpellAnnounce(372851, 3)
 local warnIceBulwark							= mod:NewSpellAnnounce(372988, 4)
 
 local specWarnPrimalChill						= mod:NewSpecialWarningStack(372682, nil, 8, nil, nil, 1, 6)
@@ -37,7 +37,7 @@ local specWarnFrostOverload						= mod:NewSpecialWarningInterrupt(373680, "HasIn
 local specWarnAwakenWhelps						= mod:NewSpecialWarningSwitch(373046, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(372851, nil, nil, nil, 1, 8)
 
-local timerBlisteringFroststormCD				= mod:NewAITimer(35, 372851, nil, nil, nil, 3)
+local timerChillstormCD							= mod:NewAITimer(35, 372851, nil, nil, nil, 3)
 local timerIceBlastCD							= mod:NewAITimer(35, 373528, nil, nil, nil, 3)
 local timerFrostOverloadCD						= mod:NewAITimer(35, 373680, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerAwakenWhelpsCD						= mod:NewAITimer(35, 373046, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DAMAGE_ICON)
@@ -52,7 +52,7 @@ local chillStacks = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(chillStacks)
-	timerBlisteringFroststormCD:Start(1-delay)
+	timerChillstormCD:Start(1-delay)
 	timerIceBlastCD:Start(1-delay)
 	timerFrostOverloadCD:Start(1-delay)
 	timerAwakenWhelpsCD:Start(1-delay)
@@ -74,8 +74,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 372851 then
-		warnBlisteringFroststorm:Show()
-		timerBlisteringFroststormCD:Start()
+		warnChillstorm:Show()
+		timerChillstormCD:Start()
 	elseif spellId == 373528 then
 		specWarnIceBlast:Show()
 		specWarnIceBlast:Play("shockwave")
