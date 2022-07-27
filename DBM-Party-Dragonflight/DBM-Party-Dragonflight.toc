@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-StatTypes: normal,heroic,mythic,challenge
-## X-DBM-Mod-SubCategoriesID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527
+## X-DBM-Mod-SubCategoriesID: 2520, 2451, 2516, 2519, 2526, 2515, 2521, 2527, 2574
 ## X-DBM-Mod-Name: Dungeons (Dragonflight)
 ## X-DBM-Mod-Name-koKR: 던전 (용군단)
 ## X-DBM-Mod-Name-ruRU: Подземелья (Драконы)
@@ -65,9 +65,9 @@ TazalgethAcademy\Crawth.lua
 # TazalgethAcademy\Headmaster.lua
 TazalgethAcademy\TazalgethAcademyTrash.lua
 
-# TheAzurevault\Umbrelskul.lua
+TheAzurevault\Umbrelskul.lua
 TheAzurevault\Azureblade.lua
-# TheAzurevault\TalashGreywing.lua
+TheAzurevault\TalashGreywing.lua
 TheAzurevault\Leymor.lua
 TheAzurevault\TheAzurevaultTrash.lua
 
@@ -77,7 +77,7 @@ RubyLifePools\Kyrakka_and_Erkhart_Stormvein.lua
 RubyLifePools\RubyLifePoolsTrash.lua
 
 HallsofInfusion\WatcherIrideus.lua
-# HallsofInfusion\GulpingGoliath.lua
+HallsofInfusion\GulpingGoliath.lua
 # HallsofInfusion\KhajintheUnyielding.lua
 # HallsofInfusion\PrimalTsunami.lua
 HallsofInfusion\HallsofInfusionTrash.lua

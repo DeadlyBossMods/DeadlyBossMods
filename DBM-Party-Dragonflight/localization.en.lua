@@ -162,7 +162,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(9999)
 
 -----------------------
--- Headmaster --
+-- Headmaster Doragosa --
 -----------------------
 --L= DBM:GetModLocalization(9999)
 
@@ -186,12 +186,12 @@ L:SetGeneralLocalization({
 -----------------------
 -- Talash Greywing --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2483)
 
 -----------------------
 -- Umbrelskul --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2508)
 
 -----------------------
 -- Azureblade --
@@ -245,7 +245,7 @@ L:SetGeneralLocalization({
 -----------------------
 -- Gulping Goliath --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2507)
 
 -----------------------
 -- Khajin the Unyielding --
