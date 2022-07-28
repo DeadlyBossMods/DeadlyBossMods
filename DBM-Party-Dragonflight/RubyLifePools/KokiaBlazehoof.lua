@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 372107 372863 373017 373087",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 372858",
 	"SPELL_AURA_APPLIED 372858",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
@@ -24,6 +24,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, track https://www.wowhead.com/beta/spell=372860/searing-wounds stacks? there isn't a tank swap so it feels like something that naturally falls off somehow
 --TODO, verify Molten Boulder target scan
+--[[
+(ability.id = 372107 or ability.id = 372863) and type = "begincast"
+ or ability.id = 372858 and type = "cast"
+ or (ability.id = 373017 or ability.id = 373087) and type = "begincast"
+--]]
 local warnBurnout								= mod:NewCastAnnounce(373087, 4)
 
 local specWarnSearingBlows						= mod:NewSpecialWarningDefensive(372858, nil, nil, nil, 1, 2)
@@ -34,9 +39,9 @@ local specWarnRoaringBlaze						= mod:NewSpecialWarningInterrupt(373017, "HasInt
 local specWarnBurnout							= mod:NewSpecialWarningRun(373087, "Melee", nil, nil, 4, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(372820, nil, nil, nil, 1, 8)
 
-local timerSearingBlowsCD						= mod:NewAITimer(35, 372858, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)
-local timerMoltenBoulderCD						= mod:NewAITimer(35, 372107, nil, nil, nil, 3)
-local timerRitualofBlazebindingCD				= mod:NewAITimer(35, 372863, nil, nil, nil, 1)
+local timerSearingBlowsCD						= mod:NewCDTimer(32.7, 372858, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)
+local timerMoltenBoulderCD						= mod:NewCDTimer(16.9, 372107, nil, nil, nil, 3)
+local timerRitualofBlazebindingCD				= mod:NewCDTimer(33.9, 372863, nil, nil, nil, 1)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -52,18 +57,19 @@ function mod:BoulderTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
-	timerMoltenBoulderCD:Start(1-delay)
-	timerRitualofBlazebindingCD:Start(1-delay)
+	timerRitualofBlazebindingCD:Start(6.9-delay)
+	timerMoltenBoulderCD:Start(14.2-delay)
+	timerSearingBlowsCD:Start(21.4-delay)
 end
 
-function mod:OnCombatEnd()
+--function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-end
+--end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -89,14 +95,12 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 362805 then
-
+	if spellId == 372858 then
+		timerSearingBlowsCD:Start()
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -105,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingBlows:Show()
 			specWarnSearingBlows:Play("defensive")
 		end
-		timerSearingBlowsCD:Start()
+
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
