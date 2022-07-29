@@ -1,30 +1,32 @@
-local mod	= DBM:NewMod("MPlusAffixesSL", "DBM-Party-Shadowlands", 10)
+local mod	= DBM:NewMod("MPlusAffixesSL", "DBM-Affixes")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
+mod:SetZone(2296, 2450, 2481)--Shadowlands Raids
 
 mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 366288 240446",
-	"SPELL_AURA_APPLIED 240447 226512",
+--	"SPELL_CAST_START",
+--	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
-	"SPELL_DAMAGE 209862",
-	"SPELL_MISSED 209862"
+--	"SPELL_DAMAGE",
+--	"SPELL_MISSED"
 )
 
-local warnExplosion							= mod:NewCastAnnounce(240446, 4)
+--local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 
-local specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
-local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
+l--ocal specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
+--local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 --local yellSharedAgony						= mod:NewYell(327401)
-local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
+--local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo
 
+--[[
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
@@ -50,6 +52,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--]]
 
 --[[
 function mod:SPELL_AURA_REMOVED(args)
@@ -59,7 +62,6 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	end
 end
---]]
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 209862 and destGUID == UnitGUID("player") and self:AntiSpam(3, 7) then
@@ -68,3 +70,4 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+--]]

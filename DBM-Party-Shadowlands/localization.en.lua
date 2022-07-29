@@ -1,15 +1,6 @@
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesSL")
-
-L:SetGeneralLocalization({
-	name =	"M+ Affixes"
-})
-
------------------------
 -- <<<The Necrotic Wake (1182J/2286M) >>> --
 -----------------------
 -----------------------

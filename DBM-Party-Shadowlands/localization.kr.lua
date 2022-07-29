@@ -2,15 +2,6 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesSL")
-
-L:SetGeneralLocalization({
-	name =	"신화+ 어픽스"
-})
-
------------------------
 -- <<<The Necrotic Wake (1182J/2286M) >>> --
 -----------------------
 -----------------------

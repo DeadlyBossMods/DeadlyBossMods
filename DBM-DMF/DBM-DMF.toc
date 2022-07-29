@@ -12,7 +12,7 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMDMF_AllSavedVars
-## SavedVariablesPerCharacter: DBMWorldDMF_SavedStats
+## SavedVariablesPerCharacter: DBMDMF_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: OTHER

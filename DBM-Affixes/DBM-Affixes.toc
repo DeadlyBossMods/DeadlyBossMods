@@ -1,0 +1,15 @@
+## Interface: 90205
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeon and Raid Affixes|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMAffixes_AllSavedVars
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-Mod-No-Statistics: 1
+## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441, 2097, 1651, 1208, 1195, 2296, 2450, 2481
+## X-DBM-Mod-Sort: 305
+## X-DBM-Mod-MinCoreRevision: 12473
+localization.en.lua
+
