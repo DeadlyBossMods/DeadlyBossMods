@@ -13,3 +13,5 @@
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
 
+MPlusAffixes.lua
+FatedAffixes.lua
