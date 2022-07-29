@@ -29,6 +29,7 @@ ignore:
 enable-nolib-creation: no
 
 move-folders:
+  DBM-Shadowlands/DBM-Affixes: DBM-Affixes
   DBM-Shadowlands/DBM-Brawlers: DBM-Brawlers
   DBM-Shadowlands/DBM-DMF: DBM-DMF
   DBM-Shadowlands/DBM-WorldEvents: DBM-WorldEvents
