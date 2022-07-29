@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 372682 373022 372988 373680",
 	"SPELL_AURA_APPLIED_DOSE 372682",
-	"SPELL_AURA_REMOVED 372682 372988",
+	"SPELL_AURA_REMOVED 372682 372988 373680",
 	"SPELL_AURA_REMOVED_DOSE 372682",
 	"SPELL_PERIODIC_DAMAGE 372963",
 	"SPELL_PERIODIC_MISSED 372963"
@@ -42,9 +42,9 @@ local specWarnFrostOverload						= mod:NewSpecialWarningInterrupt(373680, "HasIn
 local specWarnAwakenWhelps						= mod:NewSpecialWarningSwitch(373046, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(372851, nil, nil, nil, 1, 8)
 
-local timerChillstormCD							= mod:NewAITimer(35, 372851, nil, nil, nil, 3)
+local timerChillstormCD							= mod:NewCDTimer(42.4, 372851, nil, nil, nil, 3)
 local timerIceBlastCD							= mod:NewAITimer(35, 373528, nil, nil, nil, 3)
-local timerFrostOverloadCD						= mod:NewAITimer(24.2, 373680, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerFrostOverloadCD						= mod:NewCDTimer(24.2, 373680, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 --local timerAwakenWhelpsCD						= mod:NewAITimer(35, 373046, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.DAMAGE_ICON)--Appears health based, keep an eye on it
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -66,7 +66,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(chillStacks)
 	timerChillstormCD:Start(4-delay)
 	timerIceBlastCD:Start(1-delay)--Not cast?
-	timerFrostOverloadCD:Start(37.9-delay)
+	timerFrostOverloadCD:Start(36.2-delay)
 --	timerAwakenWhelpsCD:Start(47.6-delay)--Health based?
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(372682))
@@ -129,7 +129,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFrostOverload:Show(args.destName)
 			specWarnFrostOverload:Play("kickcast")
 		end
-		timerFrostOverloadCD:Start()--Does timer start here or at time of interrupt?
+		--timerFrostOverloadCD:Start()--Does timer start here or at time of interrupt?
 		--Stop other timers on Overload channel beginning?
 	elseif spellId == 372988 then
 		warnIceBulwark:Show()
@@ -147,9 +147,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 372988 then--Ice Bulwark Removed, now can interrupt on mythic and mythic+
 		specWarnFrostOverload:Show(args.destName)
 		specWarnFrostOverload:Play("kickcast")
-		--timerFrostOverloadCD:Start()--Does timer start here or at time of cast?
---	elseif spellId == 373680 then
-		--timerFrostOverloadCD:Start()--Does timer start here or at time of cast?
+	elseif spellId == 373680 then
+		timerFrostOverloadCD:Start()--Does timer start here or at time of cast?
 	end
 end
 
