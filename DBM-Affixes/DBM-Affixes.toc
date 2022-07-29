@@ -1,6 +1,8 @@
 ## Interface: 90205
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeon and Raid Affixes|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전과 공격대 어픽스|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Аффиксы подземелий и рейдов|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0地下城以及團隊詞綴|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -12,8 +14,11 @@
 ## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441, 2097, 1651, 1208, 1195, 2296, 2450, 2481
 ## X-DBM-Mod-Sort: 305
 ## X-DBM-Mod-MinCoreRevision: 12473
+
 localization.en.lua
 localization.kr.lua
+localization.ru.lua
+localization.tw.lua
 
 MPlusAffixes.lua
 FatedAffixes.lua

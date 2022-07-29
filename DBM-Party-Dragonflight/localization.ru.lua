@@ -178,17 +178,17 @@ L:SetGeneralLocalization({
 -----------------------
 -- Talash Greywing --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2483)
 
 -----------------------
 -- Umbrelskul --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2508)
 
 -----------------------
 -- Azureblade --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2505)
 
 ---------
 --Trash--
@@ -232,12 +232,12 @@ L:SetGeneralLocalization({
 -----------------------
 -- Watcher Irideus --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2504)
 
 -----------------------
 -- Gulping Goliath --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2507)
 
 -----------------------
 -- Khajin the Unyielding --
