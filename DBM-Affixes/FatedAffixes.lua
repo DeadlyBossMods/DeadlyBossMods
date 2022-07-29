@@ -19,7 +19,7 @@ mod:RegisterEvents(
 
 --local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 
-l--ocal specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
+--local specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
 --local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 --local yellSharedAgony						= mod:NewYell(327401)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
