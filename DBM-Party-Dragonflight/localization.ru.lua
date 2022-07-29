@@ -2,15 +2,6 @@ if GetLocale() ~= "ruRU" then return end
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesDF")
-
-L:SetGeneralLocalization({
-	name =	"M+ Аффиксы: Драконы"
-})
-
------------------------
 -- <<<Brackenhide Hollow >>> --
 -----------------------
 -----------------------

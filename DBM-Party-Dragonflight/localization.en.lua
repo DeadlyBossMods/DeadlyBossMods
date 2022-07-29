@@ -1,15 +1,6 @@
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesDF")
-
-L:SetGeneralLocalization({
-	name =	"M+ Affixes: DF"
-})
-
------------------------
 -- <<<Brackenhide Hollow >>> --
 -----------------------
 -----------------------

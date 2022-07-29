@@ -1,14 +1,16 @@
-local mod	= DBM:NewMod("MPlusAffixesDF", "DBM-Party-Dragonflight", 9)
+local mod	= DBM:NewMod("MPlusAffixes", "DBM-Affixes")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
+mod:SetZone(2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441)--All of the S3 SL M+ Dungeons (To be removed before patch)
+--mod:SetZone(2441, 2097, 1651, 1208, 1195)--All of the S4 SL M+ Dungeons
 
 mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 240446",
+	"SPELL_CAST_START 366288 240446",
 	"SPELL_AURA_APPLIED 240447 226512",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
@@ -18,6 +20,7 @@ mod:RegisterEvents(
 
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 
+local specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
@@ -27,7 +30,10 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 240446 and self:AntiSpam(3, 6) then
+	if spellId == 366288 and self:AntiSpam(3, 2) then
+		specWarnForceSlam:Show()
+		specWarnForceSlam:Play("shockwave")
+	elseif spellId == 240446 and self:AntiSpam(3, 6) then
 		warnExplosion:Show()
 	end
 end

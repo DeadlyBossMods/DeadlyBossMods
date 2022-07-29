@@ -2,15 +2,6 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesDF")
-
-L:SetGeneralLocalization({
-	name =	"신화+ 어픽스: 용군단"
-})
-
------------------------
 -- <<<Brackenhide Hollow >>> --
 -----------------------
 -----------------------

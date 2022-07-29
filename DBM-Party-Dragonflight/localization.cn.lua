@@ -5,15 +5,6 @@ if GetLocale() ~= "zhCN" then return end
 local L
 
 -----------------------
--- <<<Global (M+ Affixes) >>> --
------------------------
-L = DBM:GetModLocalization("MPlusAffixesDF")
-
-L:SetGeneralLocalization({
-	name =	"大秘境词缀: 巨龙时代"
-})
-
------------------------
 -- <<<Brackenhide Hollow >>> --
 -----------------------
 -----------------------
