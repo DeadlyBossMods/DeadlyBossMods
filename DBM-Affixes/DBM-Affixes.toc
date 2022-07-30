@@ -3,6 +3,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전과 공격대 어픽스|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Аффиксы подземелий и рейдов|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0地下城以及團隊詞綴|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0副本词缀|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -19,6 +20,7 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 
 MPlusAffixes.lua
 FatedAffixes.lua
