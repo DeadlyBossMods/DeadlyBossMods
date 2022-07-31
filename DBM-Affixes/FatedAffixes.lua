@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("MPlusAffixesSL", "DBM-Affixes")
+local mod	= DBM:NewMod("FatedAffixes", "DBM-Affixes")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")

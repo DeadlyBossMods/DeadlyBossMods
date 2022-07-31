@@ -12,6 +12,7 @@
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-Mod-No-Statistics: 1
+## X-DBM-Mod-Name: Affixes
 ## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441, 2097, 1651, 1208, 1195, 2296, 2450, 2481
 ## X-DBM-Mod-Sort: 305
 ## X-DBM-Mod-MinCoreRevision: 12473
