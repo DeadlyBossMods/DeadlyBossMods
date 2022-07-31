@@ -15,12 +15,12 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 381605 381602 381525 381517 381512 385558 381516",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 381515"
+	"SPELL_AURA_APPLIED 381515",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -31,6 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, make sure Zeyphr and Interupting Zeyphr have same timer
 --[[
 (ability.id = 381605 or ability.id = 381602 or ability.id = 381525 or ability.id = 381517 or ability.id = 381512 or ability.id = 385558 or ability.id = 381516) and type = "begincast"
+ or type = "death" and (target.id = 193435 or target.id = 190485)
 --]]
 --Kyrakka
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25365))
@@ -38,7 +39,7 @@ local warnFlamespit								= mod:NewTargetNoFilterAnnounce(381605, 3)
 
 local yellFlamespit								= mod:NewYell(381605)
 local specWarnRoaringFirebreath					= mod:NewSpecialWarningDodge(381525, nil, nil, nil, 2, 2)
-local yellRoaringFirebreath						= mod:NewYell(381525)
+--local yellRoaringFirebreath						= mod:NewYell(381525)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 local timerFlamespitCD							= mod:NewCDTimer(15.7, 381605, nil, nil, nil, 3)
@@ -60,6 +61,7 @@ local timerZephyrCD								= mod:NewCDTimer(18, 385558, nil, nil, nil, 2)
 mod:AddInfoFrameOption(381862, true)
 --mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})
 
+--Seems to work
 function mod:SpitTarget(targetname)
 	if not targetname then return end
 	warnFlamespit:Show(targetname)
@@ -68,12 +70,15 @@ function mod:SpitTarget(targetname)
 	end
 end
 
+--Seems not to work
+--[[
 function mod:BreathTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		yellRoaringFirebreath:Yell()
 	end
 end
+--]]
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -105,7 +110,7 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "SpitTarget", 0.1, 8, true)
 		timerFlamespitCD:Start()
 	elseif spellId == 381525 then
-		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "BreathTarget", 0.1, 8, true)
+--		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "BreathTarget", 0.1, 8, true)
 		specWarnRoaringFirebreath:Show()
 		specWarnRoaringFirebreath:Play("breathsoon")
 		timerRoaringFirebreathCD:Start(self.vb.phase == 1 and 27 or 18)
@@ -155,16 +160,21 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 193435 then--Kyrakka
-
+		timerFlamespitCD:Stop()
+		timerRoaringFirebreathCD:Stop()
 	elseif cid == 190485 then--Erkhart
-
+--		timerWindsofChangeCD:Stop()
+		timerStormslamCD:Stop()
+		timerZephyrCD:Stop()
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 340324 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
