@@ -21,7 +21,7 @@ mod:RegisterEvents(
 --TODO, verify all spell Ids and functions of those spellIds
 --TODO, if spell summon doesn't work for Emitter, https://www.wowhead.com/spell=373233/reconfiguration-emitter will probably work for detecting spawn
 local warnChaoticDestruction					= mod:NewCastAnnounce(372638, 3)
-local warnCreationSpark							= mod:NewTargetNoFilterAnnounce(372638, 3)
+local warnCreationSpark							= mod:NewTargetNoFilterAnnounce(369505, 3)
 local warnProtoformBarrier						= mod:NewTargetNoFilterAnnounce(371447, 3)
 local warnReconfigurationEmitter				= mod:NewSpellAnnounce(371254, 3)
 local warnReplicatingEssence					= mod:NewTargetNoFilterAnnounce(372286, 3)
