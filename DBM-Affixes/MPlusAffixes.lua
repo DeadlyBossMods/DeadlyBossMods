@@ -3,8 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
-mod:SetZone(2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441)--All of the S3 SL M+ Dungeons (To be removed before patch)
---mod:SetZone(2441, 2097, 1651, 1208, 1195)--All of the S4 SL M+ Dungeons
+mod:SetZone(2441, 2097, 1651, 1208, 1195)--All of the S4 SL M+ Dungeons
 
 mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
