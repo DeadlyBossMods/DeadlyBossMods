@@ -33,8 +33,6 @@ move-folders:
   DBM-Shadowlands/DBM-Brawlers: DBM-Brawlers
   DBM-Shadowlands/DBM-DMF: DBM-DMF
   DBM-Shadowlands/DBM-WorldEvents: DBM-WorldEvents
-  DBM-Shadowlands/DBM-Party-Shadowlands: DBM-Party-Shadowlands
-  DBM-Shadowlands/DBM-Party-Dragonflight: DBM-Party-Dragonflight
   DBM-Shadowlands/DBM-Shadowlands: DBM-Shadowlands
   DBM-Shadowlands/DBM-DragonIsles: DBM-DragonIsles
   DBM-Shadowlands/DBM-CastleNathria: DBM-CastleNathria

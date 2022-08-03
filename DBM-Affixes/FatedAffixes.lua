@@ -48,6 +48,8 @@ local timerProtoformBarrierCD					= mod:NewCDTimer(50, 371447, nil, nil, nil, 5)
 local timerReconfigurationEmitterCD				= mod:NewCDTimer(55, 371254, nil, nil, nil, 1)--55-75
 local timerReplicatingEssenceCD					= mod:NewAITimer(44.9, 372286, nil, nil, nil, 3)--Not Active week 1
 
+--Timer accuracy can be made way more accurate by hard coding each boss
+--but between about 30 bosses with 5 different abilities and my time working on DBM significantly reduced, DF has to be put first
 local emitterTimer, shieldTimer = 47, 50
 local allTimers = {
 	[371254] = {--Emitter
