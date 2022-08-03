@@ -23,7 +23,7 @@ mod:RegisterEvents(
 
 --[[
 (ability.id = 372419 or ability.id = 372642 or ability.id = 372418 or ability.id = 372647 or ability.id = 372424) and type = "applybuff"
- or ability.id = 372638 or ability.id = 371254
+ or ability.id = 372638 and type = "begincast" or ability.id = 371254
  or (ability.id = 369505 or ability.id = 371447 or ability.id = 372286) and (type = "applybuff" or type = "applydebuff")
  or ability.id = 371597 or ability.id = 372634
 --]]
@@ -42,11 +42,23 @@ local yellReplicatingEssence					= mod:NewYell(372286)
 local yellReplicatingEssenceFades				= mod:NewShortFadesYell(372286)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)
 
-local timerChaoticEssenceCD						= mod:NewCDTimer(58.8, 372634, nil, nil, nil, 1)
-local timerCreationSparkCD						= mod:NewCDTimer(44.9, 369505, nil, nil, nil, 3)
-local timerProtoformBarrierCD					= mod:NewCDTimer(59.9, 371447, nil, nil, nil, 5)
---local timerReconfigurationEmitterCD				= mod:NewCDTimer(75, 371254, nil, nil, nil, 1)
+local timerChaoticEssenceCD						= mod:NewCDTimer(58.8, 372634, nil, nil, nil, 1)--Consistent
+local timerCreationSparkCD						= mod:NewCDTimer(44.9, 369505, nil, nil, nil, 3)--Consistent
+local timerProtoformBarrierCD					= mod:NewCDTimer(50, 371447, nil, nil, nil, 5)--50-65
+local timerReconfigurationEmitterCD				= mod:NewCDTimer(55, 371254, nil, nil, nil, 1)--55-75
 local timerReplicatingEssenceCD					= mod:NewAITimer(44.9, 372286, nil, nil, nil, 3)--Not Active week 1
+
+local emitterTimer, shieldTimer = 55, 50
+local allTimers = {
+	[371254] = {--Emitter
+		[2407] = 55,--Sire can be 55-75
+		[2418] = 75,--Huntsman always 75
+	},
+	[371447] = {--Barrier
+		[2383] = 60,--Hungering always 60
+		[2402] = 50,--Kael is 50-65
+	},
+}
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -70,7 +82,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 371254 and self:AntiSpam(3, 2) then
 		warnReconfigurationEmitter:Show()
---		timerReconfigurationEmitterCD:Start()
+		timerReconfigurationEmitterCD:Start(emitterTimer)
 	end
 end
 
@@ -88,6 +100,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 371447 and args:IsDestTypeHostile() then
 		warnProtoformBarrier:Show(args.destName)
+		timerProtoformBarrierCD:Start(shieldTimer)
 --	elseif (spellId == 371597) and self:AntiSpam(3, 6) then
 --		warnProtoformBarrier:Show(DBM_COMMON_L.ENEMIES)
 	elseif spellId == 372286 then
@@ -133,7 +146,8 @@ do
 				--All timers are minus 1
 				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
 					activeBosses[eID][372419] = true
---					timerReconfigurationEmitterCD:Start(3.9)
+					emitterTimer = allTimers[371254][eID] or 55
+--					timerReconfigurationEmitterCD:Start(3.9)--Not same on all fights
 				end
 				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
 					activeBosses[eID][372642] = true
@@ -141,6 +155,7 @@ do
 				end
 				if DBM:UnitBuff(unitID, 372418) then--Fated Power: Protoform Barrier
 					activeBosses[eID][372418] = true
+					shieldTimer = allTimers[371447][eID] or 50
 					timerProtoformBarrierCD:Start(14)
 				end
 				if DBM:UnitBuff(unitID, 372647) then--Fated Power: Creation Spark
@@ -160,6 +175,7 @@ do
 		--Yet we avoid using INSTANCE_ENCOUNTER_ENGAGE_UNIT directly since that increases timer start variation versus ENCOUNTER_START by a few milliseconds
 		self:Unschedule(CheckBosses, eID)
 		self:Schedule(1, CheckBosses, eID)
+		emitterTimer, shieldTimer = 55, 50
 	end
 
 	function mod:ENCOUNTER_END(eID)
