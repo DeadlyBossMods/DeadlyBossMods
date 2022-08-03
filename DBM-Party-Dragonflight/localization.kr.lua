@@ -146,17 +146,17 @@ L:SetGeneralLocalization({
 -----------------------
 -- Vexamus --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2509)
 
 -----------------------
 -- Accidental Amalgamation --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2512)
 
 -----------------------
 -- Headmaster Doragosa --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2513)
 
 ---------
 --Trash--
@@ -242,12 +242,12 @@ L:SetGeneralLocalization({
 -----------------------
 -- Khajin the Unyielding --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2510)
 
 -----------------------
 -- Primal Tsunami --
 -----------------------
---L= DBM:GetModLocalization(9999)
+--L= DBM:GetModLocalization(2511)
 
 ---------
 --Trash--
