@@ -58,9 +58,9 @@ Neltharus\WarlordSargha.lua
 Neltharus\NeltharusTrash.lua
 
 TazalgethAcademy\Crawth.lua
-# TazalgethAcademy\Vexamus.lua
-# TazalgethAcademy\AccidentalAmalgamation.lua
-# TazalgethAcademy\Headmaster.lua
+TazalgethAcademy\Vexamus.lua
+TazalgethAcademy\AccidentalAmalgamation.lua
+TazalgethAcademy\Headmaster.lua
 TazalgethAcademy\TazalgethAcademyTrash.lua
 
 TheAzurevault\Umbrelskul.lua
@@ -76,6 +76,6 @@ RubyLifePools\RubyLifePoolsTrash.lua
 
 HallsofInfusion\WatcherIrideus.lua
 HallsofInfusion\GulpingGoliath.lua
-# HallsofInfusion\KhajintheUnyielding.lua
-# HallsofInfusion\PrimalTsunami.lua
+HallsofInfusion\KhajintheUnyielding.lua
+HallsofInfusion\PrimalTsunami.lua
 HallsofInfusion\HallsofInfusionTrash.lua
