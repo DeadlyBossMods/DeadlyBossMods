@@ -45,7 +45,7 @@ local yellReplicatingEssenceFades				= mod:NewShortFadesYell(372286)
 local timerChaoticEssenceCD						= mod:NewCDTimer(58.8, 372634, nil, nil, nil, 1)
 local timerCreationSparkCD						= mod:NewCDTimer(44.9, 369505, nil, nil, nil, 3)
 local timerProtoformBarrierCD					= mod:NewCDTimer(59.9, 371447, nil, nil, nil, 5)
-local timerReconfigurationEmitterCD				= mod:NewCDTimer(75, 371254, nil, nil, nil, 1)
+--local timerReconfigurationEmitterCD				= mod:NewCDTimer(75, 371254, nil, nil, nil, 1)
 local timerReplicatingEssenceCD					= mod:NewAITimer(44.9, 372286, nil, nil, nil, 3)--Not Active week 1
 
 function mod:SPELL_CAST_START(args)
@@ -70,7 +70,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 371254 and self:AntiSpam(3, 2) then
 		warnReconfigurationEmitter:Show()
-		timerReconfigurationEmitterCD:Start()
+--		timerReconfigurationEmitterCD:Start()
 	end
 end
 
@@ -86,7 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCreationSpark:Show()
 			specWarnCreationSpark:Play("targetyou")
 		end
-	elseif spellId == 371447 then
+	elseif spellId == 371447 and args:IsDestTypeHostile() then
 		warnProtoformBarrier:Show(args.destName)
 --	elseif (spellId == 371597) and self:AntiSpam(3, 6) then
 --		warnProtoformBarrier:Show(DBM_COMMON_L.ENEMIES)
@@ -133,7 +133,7 @@ do
 				--All timers are minus 1
 				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
 					activeBosses[eID][372419] = true
-					timerReconfigurationEmitterCD:Start(3.9)
+--					timerReconfigurationEmitterCD:Start(3.9)
 				end
 				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
 					activeBosses[eID][372642] = true
@@ -168,7 +168,7 @@ do
 		if activeBosses[eID] then
 			if activeBosses[eID][372419] then--Fated Power: Reconfiguration Emitter
 				activeBosses[eID][372419] = true
-				timerReconfigurationEmitterCD:Stop()
+--				timerReconfigurationEmitterCD:Stop()
 			end
 			if activeBosses[eID][372642] then--Fated Power: Chaotic Essence
 				activeBosses[eID][372642] = true
