@@ -48,11 +48,12 @@ local timerProtoformBarrierCD					= mod:NewCDTimer(50, 371447, nil, nil, nil, 5)
 local timerReconfigurationEmitterCD				= mod:NewCDTimer(55, 371254, nil, nil, nil, 1)--55-75
 local timerReplicatingEssenceCD					= mod:NewAITimer(44.9, 372286, nil, nil, nil, 3)--Not Active week 1
 
-local emitterTimer, shieldTimer = 55, 50
+local emitterTimer, shieldTimer = 47, 50
 local allTimers = {
 	[371254] = {--Emitter
 		[2407] = 55,--Sire can be 55-75
 		[2418] = 75,--Huntsman always 75
+		[2412] = 47,--Council is 47-80
 	},
 	[371447] = {--Barrier
 		[2383] = 60,--Hungering always 60
@@ -146,7 +147,7 @@ do
 				--All timers are minus 1
 				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
 					activeBosses[eID][372419] = true
-					emitterTimer = allTimers[371254][eID] or 55
+					emitterTimer = allTimers[371254][eID] or 47
 --					timerReconfigurationEmitterCD:Start(3.9)--Not same on all fights
 				end
 				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
