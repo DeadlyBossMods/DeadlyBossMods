@@ -147,7 +147,7 @@ local castsPerGUID = {}
 local difficultyName = "normal"
 local playerGUID = UnitGUID("player")
 local selfInMirror = false
-local Timers = {
+local allTimers = {
 	["normal"] = {--Normal and LFR use same timers
 		[1] = {
 			--Feeding Time (Normal, LFR)
@@ -340,7 +340,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
-		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.painCount+1]
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.painCount+1)
 		--Use scripted timer but if running out of script fall back to the 32/24 alternation
 		timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
 	elseif spellId == 326851 then
@@ -375,7 +375,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.HandCount = self.vb.HandCount + 1
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
-		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.HandCount+1) or 41.2--Or part may not be accurate
 		if timer then
 			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 		end
@@ -413,14 +413,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 327796 and self:AntiSpam(5, 1) then
 		self.vb.DebuffIcon = 1
 		self.vb.DebuffCount = self.vb.DebuffCount + 1
-		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.DebuffCount+1)
 		if timer then
 			timerNightHunterCD:Start(timer, self.vb.DebuffCount+1)
 		end
 	elseif spellId == 329943 then
 		self.vb.DebuffIcon = 1
 		self.vb.ImpaleCount = self.vb.ImpaleCount + 1
-		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.ImpaleCount+1]
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.ImpaleCount+1)
 		if timer then
 			timerImpaleCD:Start(timer, self.vb.ImpaleCount+1)
 		end
@@ -433,8 +433,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCommandMassacre:Show(self.vb.MassacreCount)
 		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
 		timerCommandMassacreCD:Start(self:IsMythic() and 41.4 or 47.4, self.vb.MassacreCount+1)--Mythic 41-45
-	elseif spellId == 326005 then
+	elseif spellId == 326005 then--Indignation
 		self:SetStage(3)
+		P3Transition = true
 		self.vb.priceCount = 0
 		self.vb.painCount = 0--reused for shattering pain
 		self.vb.RavageCount = 0
@@ -489,7 +490,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnShatteringPain:Show(self.vb.painCount)
 		if self:IsMythic() then
-			local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.painCount+1] or 21.9--TODO< hardcore more timer data
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.painCount+1) or 21.9--TODO< hardcore more timer data
 			if timer then
 				timerShatteringPainCD:Start(timer, self.vb.painCount+1)
 			end
@@ -536,7 +537,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:AntiSpam(5, 1) then--Cast event isn't in combat log, hava to use debuffs
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
-			local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.DebuffCount+1)
 			if timer then
 				timerFeedingTimeCD:Start(timer, self.vb.DebuffCount+1)
 			end
@@ -625,7 +626,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(4, 4) then
 			self.vb.DebuffIcon = 1
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
-			local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.DebuffCount+1)
 			if timer then
 				timerFatalFitnesseCD:Start(timer, self.vb.DebuffCount+1)
 			end
@@ -657,7 +658,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 181089 then--Encounter Event
 		self.vb.addCount = self.vb.addCount + 1
 		warnCrimsonCabalists:Show(self.vb.addCount)
-		local timer = Timers[difficultyName][self.vb.phase][181089][self.vb.addCount+1]
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.addCount+1)
 		if timer then
 			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
 		end
@@ -784,7 +785,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		if not P3Transition then--We can't let a cast that slips through during Indignation screw up counts/timers
 			self.vb.HandCount = self.vb.HandCount + 1
-			local timer = Timers[difficultyName][self.vb.phase][333932][self.vb.HandCount+1]
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 333932, self.vb.HandCount+1)
 			if timer then
 				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 			end
