@@ -9,7 +9,7 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 366288 240446",
+	"SPELL_CAST_START 366288 240446 373618",
 	"SPELL_AURA_APPLIED 240447 226512",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED"
@@ -18,6 +18,7 @@ mod:RegisterEvents(
 )
 
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
+local warnHypnosis							= mod:NewCastAnnounce(373618, 3)
 
 local specWarnForceSlam						= mod:NewSpecialWarningDodge(366288, nil, nil, nil, 1, 2)--Urh Dismantler
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
@@ -34,6 +35,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnForceSlam:Play("shockwave")
 	elseif spellId == 240446 and self:AntiSpam(3, 6) then
 		warnExplosion:Show()
+	elseif spellId == 373618 and self:AntiSpam(3, 5) then
+		warnHypnosis:Show()
 	end
 end
 
