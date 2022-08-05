@@ -208,6 +208,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBloodLantern:Show(args.destName)
 	elseif spellId == 328921 then
 		self:SetStage(2)
+		if self:IsFated() then
+			self:AffixEvent(0)--Stop Affix Bars
+		end
 		specWarnBloodshroud:Show()
 		specWarnBloodshroud:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
@@ -229,6 +232,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 328921 then--Bloodshroud removed
 		self.vb.waveCount = 0
 		self:SetStage(1)
+		if self:IsFated() then
+			self:AffixEvent(1)--Restart Affix Bars
+		end
 		timerEarsplittingShriekCD:Stop()
 		timerEchoingSonar:Stop()
 		timerEarsplittingShriek:Stop()

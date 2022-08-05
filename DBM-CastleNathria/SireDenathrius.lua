@@ -354,6 +354,9 @@ function mod:SPELL_CAST_START(args)
 		timerCommandRavageCD:Start(self:IsEasy() and 59.5 or 57.3, self.vb.RavageCount+1)
 	elseif spellId == 328117 then--March of the Penitent (first intermission)
 		self:SetStage(1.5)
+		if self:IsFated() then
+			self:AffixEvent(2)--Restart Affix Bars
+		end
 		specWarnMarchofthePenitent:Show()
 		timerCleansingPainCD:Stop()
 		timerBloodPriceCD:Stop()
@@ -435,6 +438,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCommandMassacreCD:Start(self:IsMythic() and 41.4 or 47.4, self.vb.MassacreCount+1)--Mythic 41-45
 	elseif spellId == 326005 then--Indignation
 		self:SetStage(3)
+		if self:IsFated() then
+			self:AffixEvent(2)--Restart Affix Bars
+		end
 		P3Transition = true
 		self.vb.priceCount = 0
 		self.vb.painCount = 0--reused for shattering pain
