@@ -731,6 +731,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 323402 then--Reflection of Guilt (Shade Leaving)
 		self:SetStage(1)
+		if self:IsFated() then
+			self:AffixEvent(2, nil, 18.8)--Triggers a no cast window on affix (at least barrier)
+		end
 		self.vb.shadeActive = false
 		self.vb.addMode = 2
 		self.vb.assassinCount = 0

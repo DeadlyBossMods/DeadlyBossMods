@@ -48,27 +48,271 @@ local timerProtoformBarrierCD					= mod:NewCDTimer(50, 371447, nil, nil, nil, 5)
 local timerReconfigurationEmitterCD				= mod:NewCDTimer(55, 371254, nil, nil, nil, 1)--55-75
 local timerReplicatingEssenceCD					= mod:NewAITimer(44.9, 372286, nil, nil, nil, 3)--Not Active week 1
 
---Timer accuracy can be made way more accurate by hard coding each boss
---but between about 30 bosses with 5 different abilities and my time working on DBM significantly reduced, DF has to be put first
-local emitterTimer, shieldTimer = 47, 50
-local allTimers = {
+local activeBosses = {}
+local activeAffixes = {}
+local borrowedTime = {}
+local specialTimers = {
 	[371254] = {--Emitter
-		[2407] = 55,--Sire can be 55-75
-		[2418] = 75,--Huntsman always 75
-		[2412] = 47,--Council is 47-80
+		[0] = {--Repeating Timer
+			--Castle Nathria
+			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
+			[2418] = {75},--Huntsman Altimor
+			[2412] = {75},--Council of Blood (always 75, but restarts after dances)
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
+			--Castle Nathria
+			[2407] = {23.9, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
+			[2418] = {3.9},--Huntsman Altimor
+			[2412] = {3.9, 3.2},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+	},
+	[372642] = {-- Chaotic Essence
+		[0] = {--Repeating Timer
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {58.8},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {58.8},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {10.2},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {10.2},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+
 	},
 	[371447] = {--Barrier
-		[2383] = 60,--Hungering always 60
-		[2402] = 50,--Kael is 50-65
+		[0] = {--Repeating Timer
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {60},--Kael (always 60 but reflection of guilt fading causes an ICD that delays current cast, but not one after it)
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {60},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {13.9},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {13.9},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+
+	},
+	[372647] = {-- Creation Spark
+		[0] = {--Repeating Timer
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {44.9},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {44.9},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {44.9},--Stoneborne Generals
+		},
+		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {18.9, 20},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {18.9},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {18.9},--Stoneborne Generals
+		},
+
+	},
+	[372424] = {-- Replicating Essence
+		[0] = {--Repeating Timer
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
+			--Castle Nathria
+			[2407] = {},--Sire Denathrius
+			[2418] = {},--Huntsman Altimor
+			[2412] = {},--Council of Blood
+			[2402] = {},--Kael
+			[2398] = {},--Shriekwing
+			[2405] = {},--Artificer XyMox
+			[2383] = {},--Hungering Destroyer
+			[2406] = {},--Lady Inerva Darkvein
+			[2399] = {},--Sludgefist
+			[2417] = {},--Stoneborne Generals
+		},
+
 	},
 }
+
+do
+	--Callback handler too update timers without registering duplicate CLEU events in affixes mod.
+	local function dbmEventCallback(event, ...)
+    	if event == "DBM_AffixEvent" then
+    		--eventType 0 = Stop, eventType 1 = Start, eventType 2 = extend due to spell queue/delay
+			local _, _, eventType, encounterID, stage, timeAdjust, spellDebit = ...
+			if activeBosses[encounterID] then
+				stage = stage or 1
+				activeBosses[encounterID] = stage
+				if activeAffixes[372419] then--Fated Power: Reconfiguration Emitter
+					if eventType == 0 then
+						timerReconfigurationEmitterCD:Stop()
+					elseif eventType == 1 and specialTimers[372419][1][encounterID][stage] then
+						timerReconfigurationEmitterCD:Restart(specialTimers[372419][1][encounterID][stage])
+					elseif timeAdjust and eventType == 2 then
+						if timerReconfigurationEmitterCD:GetRemaining() < timeAdjust then
+							local elapsed, total = timerReconfigurationEmitterCD:GetTime()
+							local extend = timeAdjust - (total-elapsed)
+							DBM:Debug("timerReconfigurationEmitterCD extended by: "..extend, 2)
+							timerReconfigurationEmitterCD:Update(elapsed, total+extend)
+							if spellDebit then--The extended timer is debited from next cast
+								borrowedTime[372419] = extend
+							end
+						end
+					end
+				end
+				if activeAffixes[372642] then--Fated Power: Chaotic Essence
+					if eventType == 0 then
+						timerChaoticEssenceCD:Stop()
+					elseif eventType == 1 and specialTimers[372642][1][encounterID][stage] then
+						timerChaoticEssenceCD:Restart(specialTimers[372642][1][encounterID][stage])
+					elseif timeAdjust and eventType == 2 then
+						if timerChaoticEssenceCD:GetRemaining() < timeAdjust then
+							local elapsed, total = timerChaoticEssenceCD:GetTime()
+							local extend = timeAdjust - (total-elapsed)
+							DBM:Debug("timerChaoticEssenceCD extended by: "..extend, 2)
+							timerChaoticEssenceCD:Update(elapsed, total+extend)
+							if spellDebit then--The extended timer is debited from next cast
+								borrowedTime[372642] = extend
+							end
+						end
+					end
+				end
+				if activeAffixes[372418] then--Fated Power: Protoform Barrier
+					if eventType == 0 then
+						timerProtoformBarrierCD:Stop()
+					elseif eventType == 1 and specialTimers[372418][1][encounterID][stage] then
+						timerProtoformBarrierCD:Restart(specialTimers[372418][1][encounterID][stage])
+					elseif timeAdjust and eventType == 2 then
+						if timerProtoformBarrierCD:GetRemaining() < timeAdjust then
+							local elapsed, total = timerProtoformBarrierCD:GetTime()
+							local extend = timeAdjust - (total-elapsed)
+							DBM:Debug("timerProtoformBarrierCD extended by: "..extend, 2)
+							timerProtoformBarrierCD:Update(elapsed, total+extend)
+							if spellDebit then--The extended timer is debited from next cast
+								borrowedTime[372418] = extend
+							end
+						end
+					end
+				end
+				if activeAffixes[372647] then--Fated Power: Creation Spark
+					if eventType == 0 then
+						timerCreationSparkCD:Stop()
+					elseif eventType == 1 and specialTimers[372647][1][encounterID][stage] then
+						timerCreationSparkCD:Restart(specialTimers[372647][1][encounterID][stage])
+					elseif timeAdjust and eventType == 2 then
+						if timerCreationSparkCD:GetRemaining() < timeAdjust then
+							local elapsed, total = timerCreationSparkCD:GetTime()
+							local extend = timeAdjust - (total-elapsed)
+							DBM:Debug("timerCreationSparkCD extended by: "..extend, 2)
+							timerCreationSparkCD:Update(elapsed, total+extend)
+							if spellDebit then--The extended timer is debited from next cast
+								borrowedTime[372647] = extend
+							end
+						end
+					end
+				end
+				if activeAffixes[372424] then--Fated Power: Replicating Essence
+					if eventType == 0 then
+						timerReplicatingEssenceCD:Stop()
+					elseif eventType == 1 and specialTimers[372424][1][encounterID][stage] then
+					--	timerReplicatingEssenceCD:Restart(specialTimers[372424][1][encounterID][stage])
+						timerReplicatingEssenceCD:Start(stage)--AI timer tech for now
+					elseif timeAdjust and eventType == 2 then
+						if timerReplicatingEssenceCD:GetRemaining() < timeAdjust then
+							local elapsed, total = timerReplicatingEssenceCD:GetTime()
+							local extend = timeAdjust - (total-elapsed)
+							DBM:Debug("timerReplicatingEssenceCD extended by: "..extend, 2)
+							timerReplicatingEssenceCD:Update(elapsed, total+extend)
+							if spellDebit then--The extended timer is debited from next cast
+								borrowedTime[372424] = extend
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	DBM:RegisterCallback("DBM_AffixEvent", dbmEventCallback)
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 372638 and self:AntiSpam(3, 1) then
 		warnChaoticDestruction:Show()
-		timerChaoticEssenceCD:Start()
+		local encounterID = activeAffixes[372642]
+		local phase = activeBosses[encounterID] or 1
+		local timer = encounterID and specialTimers[372642][0][encounterID][phase] or 58.8
+		if borrowedTime[372642] then
+			timerChaoticEssenceCD:Start(timer-borrowedTime[372642])
+			borrowedTime[372642] = nil
+		else
+			timerChaoticEssenceCD:Start(timer)
+		end
 	end
 end
 
@@ -85,7 +329,17 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 371254 and self:AntiSpam(3, 2) then
 		warnReconfigurationEmitter:Show()
-		timerReconfigurationEmitterCD:Start(emitterTimer)
+		local encounterID = activeAffixes[371254]
+		local phase = activeBosses[encounterID] or 1
+		local timer = encounterID and specialTimers[371254][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
+		if timer then
+			if borrowedTime[371254] then
+				timerReconfigurationEmitterCD:Start(timer-borrowedTime[371254])
+				borrowedTime[371254] = nil
+			else
+				timerReconfigurationEmitterCD:Start(timer)
+			end
+		end
 	end
 end
 
@@ -95,7 +349,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 369505 then
 		warnCreationSpark:CombinedShow(0.3, args.destName)
 		if self:AntiSpam(3, 3) then
-			timerCreationSparkCD:Start()
+			local encounterID = activeAffixes[372647]
+			local phase = activeBosses[encounterID] or 1
+			local timer = encounterID and specialTimers[372647][0][encounterID][phase] or 44.9
+			if borrowedTime[372647] then
+				timerCreationSparkCD:Start(timer-borrowedTime[372647])
+				borrowedTime[372647] = nil
+			else
+				timerCreationSparkCD:Start(timer)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnCreationSpark:Show()
@@ -103,13 +365,32 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 371447 and args:IsDestTypeHostile() then
 		warnProtoformBarrier:Show(args.destName)
-		timerProtoformBarrierCD:Start(shieldTimer)
+		local encounterID = activeAffixes[372418]
+		local phase = activeBosses[encounterID] or 1
+		local timer = encounterID and specialTimers[371254][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
+		if timer then
+			if borrowedTime[372418] then
+				timerProtoformBarrierCD:Start(timer-borrowedTime[372418])
+				borrowedTime[372418] = nil
+			else
+				timerProtoformBarrierCD:Start(timer)
+			end
+		end
 --	elseif (spellId == 371597) and self:AntiSpam(3, 6) then
 --		warnProtoformBarrier:Show(DBM_COMMON_L.ENEMIES)
 	elseif spellId == 372286 then
 		warnReplicatingEssence:CombinedShow(0.3, args.destName)--Multiple?
 		if self:AntiSpam(3, 4) then
-			timerReplicatingEssenceCD:Start()
+			timerReplicatingEssenceCD:Start()--Temp handling for now using AI
+			--local encounterID = activeAffixes[372424]
+			--local phase = activeBosses[encounterID] or 1
+			--local timer = encounterID and specialTimers[372424][0][encounterID][phase] or 44.9
+			--if borrowedTime[372424] then
+			--	timerReplicatingEssenceCD:Start(timer-borrowedTime[372424])
+			--	borrowedTime[372424] = nil
+			--else
+			--	timerReplicatingEssenceCD:Start(timer)
+			--end
 		end
 		if args:IsPlayer() then
 			specWarnReplicatingEssence:Show()
@@ -135,74 +416,81 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 do
-	local activeBosses = {}
 	local function CheckBosses(eID)
 		local vulnerable = false
 		for i = 1, 5 do
 			local unitID = "boss"..i
 			local unitGUID = UnitGUID(unitID)
 			if UnitExists(unitID) and not activeBosses[eID] then
-				activeBosses[eID] = {}
+				activeBosses[eID] = 1
 				--Currently it's only possible for bosses to have one of them
 				--However, we don't elseif rule it because it future proofs support for a case boss might later support 2+
-				--Also coded ugly to support mythic group pulling two bosses at once on LFR/Normal
+				--Code will break if more than one boss pulled at same time with same affix though
 				--All timers are minus 1
 				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
-					activeBosses[eID][372419] = true
-					emitterTimer = allTimers[371254][eID] or 47
---					timerReconfigurationEmitterCD:Start(3.9)--Not same on all fights
+					activeAffixes[372419] = eID
+					borrowedTime[372419] = nil
+					timerReconfigurationEmitterCD:Start(specialTimers[372419][eID][1] or 3.9)
 				end
 				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
-					activeBosses[eID][372642] = true
-					timerChaoticEssenceCD:Start(10.1)
+					activeAffixes[372642] = eID
+					borrowedTime[372642] = nil
+					timerChaoticEssenceCD:Start(specialTimers[372642][eID][1] or 10.1)
 				end
 				if DBM:UnitBuff(unitID, 372418) then--Fated Power: Protoform Barrier
-					activeBosses[eID][372418] = true
-					shieldTimer = allTimers[371447][eID] or 50
-					timerProtoformBarrierCD:Start(14)
+					activeAffixes[372418] = eID
+					borrowedTime[372418] = nil
+					timerProtoformBarrierCD:Start(specialTimers[372418][eID][1] or 14)
 				end
 				if DBM:UnitBuff(unitID, 372647) then--Fated Power: Creation Spark
-					activeBosses[eID][372647] = true
-					timerCreationSparkCD:Start(18.9)
+					activeAffixes[372647] = eID
+					borrowedTime[372647] = nil
+					timerCreationSparkCD:Start(specialTimers[372647][eID][1] or 18.9)
 				end
 				if DBM:UnitBuff(unitID, 372424) then--Fated Power: Replicating Essence
-					activeBosses[eID][372424] = true
-					timerReplicatingEssenceCD:Start(1)
+					activeAffixes[372424] = eID
+					borrowedTime[372424] = nil
+					timerReplicatingEssenceCD:Start(1)--specialTimers[372424][eID][1] or
 				end
 			end
 		end
 	end
 
 	function mod:ENCOUNTER_START(eID)
+		if not self:IsFated() then return end
 		--Delay check to make sure INSTANCE_ENCOUNTER_ENGAGE_UNIT has fired and boss unit Ids are valid
 		--Yet we avoid using INSTANCE_ENCOUNTER_ENGAGE_UNIT directly since that increases timer start variation versus ENCOUNTER_START by a few milliseconds
 		self:Unschedule(CheckBosses, eID)
 		self:Schedule(1, CheckBosses, eID)
-		emitterTimer, shieldTimer = 55, 50
 	end
 
 	function mod:ENCOUNTER_END(eID)
 		--Carefully only terminate fated timers if fated was active for fight and specific affix was active for fight
 		--This way we can try to avoid canceling timers for other fights that might be engaged at same time
 		if activeBosses[eID] then
-			if activeBosses[eID][372419] then--Fated Power: Reconfiguration Emitter
-				activeBosses[eID][372419] = true
---				timerReconfigurationEmitterCD:Stop()
+			if activeAffixes[372419] then--Fated Power: Reconfiguration Emitter
+				activeAffixes[372419] = nil
+				borrowedTime[372419] = nil
+				timerReconfigurationEmitterCD:Stop()
 			end
-			if activeBosses[eID][372642] then--Fated Power: Chaotic Essence
-				activeBosses[eID][372642] = true
+			if activeAffixes[372642] then--Fated Power: Chaotic Essence
+				activeAffixes[372642] = nil
+				borrowedTime[372642] = nil
 				timerChaoticEssenceCD:Stop()
 			end
-			if activeBosses[eID][372418] then--Fated Power: Protoform Barrier
-				activeBosses[eID][372418] = true
+			if activeAffixes[372418] then--Fated Power: Protoform Barrier
+				activeAffixes[372418] = nil
+				borrowedTime[372418] = nil
 				timerProtoformBarrierCD:Stop()
 			end
-			if activeBosses[eID][372647] then--Fated Power: Creation Spark
-				activeBosses[eID][372647] = true
+			if activeAffixes[372647] then--Fated Power: Creation Spark
+				activeAffixes[372647] = nil
+				borrowedTime[372647] = nil
 				timerCreationSparkCD:Stop()
 			end
-			if activeBosses[eID][372424] then--Fated Power: Replicating Essence
-				activeBosses[eID][372424] = false
+			if activeAffixes[372424] then--Fated Power: Replicating Essence
+				activeAffixes[372424] = nil
+				borrowedTime[372424] = nil
 				timerReplicatingEssenceCD:Stop()
 			end
 			activeBosses[eID] = nil

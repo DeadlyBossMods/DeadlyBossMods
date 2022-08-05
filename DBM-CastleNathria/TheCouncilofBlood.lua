@@ -766,7 +766,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 2) then
 		warnDanceOver:Show()
 		if self:IsFated() then
-			self:AffixEvent(1)--Restart Affix Bars
+			self:AffixEvent(1, 2)--Restart Affix Bars
 		end
 		--Hack to remove the over timing of dance phases
 --		local danceDuration = GetTime() - danceDurationFix--Remove after testing of pause/resume
