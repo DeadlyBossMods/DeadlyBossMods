@@ -281,16 +281,16 @@ do
 					elseif eventType == 1 and specialTimers[372424][1][encounterID][stage] then
 					--	timerReplicatingEssenceCD:Restart(specialTimers[372424][1][encounterID][stage])
 						timerReplicatingEssenceCD:Start(stage)--AI timer tech for now
-					elseif timeAdjust and eventType == 2 then
-						if timerReplicatingEssenceCD:GetRemaining() < timeAdjust then
-							local elapsed, total = timerReplicatingEssenceCD:GetTime()
-							local extend = timeAdjust - (total-elapsed)
-							DBM:Debug("timerReplicatingEssenceCD extended by: "..extend, 2)
-							timerReplicatingEssenceCD:Update(elapsed, total+extend)
-							if spellDebit then--The extended timer is debited from next cast
-								borrowedTime[372424] = extend
-							end
-						end
+					--elseif timeAdjust and eventType == 2 then
+					--	if timerReplicatingEssenceCD:GetRemaining() < timeAdjust then
+					--		local elapsed, total = timerReplicatingEssenceCD:GetTime()
+					--		local extend = timeAdjust - (total-elapsed)
+					--		DBM:Debug("timerReplicatingEssenceCD extended by: "..extend, 2)
+					--		timerReplicatingEssenceCD:Update(elapsed, total+extend)
+					--		if spellDebit then--The extended timer is debited from next cast
+					--			borrowedTime[372424] = extend
+					--		end
+					--	end
 					end
 				end
 			end
