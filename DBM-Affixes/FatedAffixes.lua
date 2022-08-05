@@ -430,27 +430,27 @@ do
 				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
 					activeAffixes[372419] = eID
 					borrowedTime[372419] = nil
-					timerReconfigurationEmitterCD:Start(specialTimers[372419][eID][1] or 3.9)
+					timerReconfigurationEmitterCD:Start(specialTimers[372419][1][eID][1] or 3.9)
 				end
 				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
 					activeAffixes[372642] = eID
 					borrowedTime[372642] = nil
-					timerChaoticEssenceCD:Start(specialTimers[372642][eID][1] or 10.1)
+					timerChaoticEssenceCD:Start(specialTimers[372642][1][eID][1] or 10.1)
 				end
 				if DBM:UnitBuff(unitID, 372418) then--Fated Power: Protoform Barrier
 					activeAffixes[372418] = eID
 					borrowedTime[372418] = nil
-					timerProtoformBarrierCD:Start(specialTimers[372418][eID][1] or 14)
+					timerProtoformBarrierCD:Start(specialTimers[372418][1][eID][1] or 14)
 				end
 				if DBM:UnitBuff(unitID, 372647) then--Fated Power: Creation Spark
 					activeAffixes[372647] = eID
 					borrowedTime[372647] = nil
-					timerCreationSparkCD:Start(specialTimers[372647][eID][1] or 18.9)
+					timerCreationSparkCD:Start(specialTimers[372647][1][eID][1] or 18.9)
 				end
 				if DBM:UnitBuff(unitID, 372424) then--Fated Power: Replicating Essence
 					activeAffixes[372424] = eID
 					borrowedTime[372424] = nil
-					timerReplicatingEssenceCD:Start(1)--specialTimers[372424][eID][1] or
+					timerReplicatingEssenceCD:Start(1)--specialTimers[372424][1][eID][1] or
 				end
 			end
 		end
