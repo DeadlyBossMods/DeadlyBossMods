@@ -201,8 +201,8 @@ local specialTimers = {
 do
 	--Callback handler too update timers without registering duplicate CLEU events in affixes mod.
 	local function dbmEventCallback(event, ...)
-    	if event == "DBM_AffixEvent" then
-    		--eventType 0 = Stop, eventType 1 = Start, eventType 2 = extend due to spell queue/delay
+		if event == "DBM_AffixEvent" then
+			--eventType 0 = Stop, eventType 1 = Start, eventType 2 = extend due to spell queue/delay
 			local _, _, eventType, encounterID, stage, timeAdjust, spellDebit = ...
 			if activeBosses[encounterID] then
 				stage = stage or 1
