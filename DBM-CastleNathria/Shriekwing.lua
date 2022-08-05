@@ -231,10 +231,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 328921 then--Bloodshroud removed
 		self.vb.waveCount = 0
-		self:SetStage(1)
 		if self:IsFated() then
-			self:AffixEvent(1)--Restart Affix Bars
+			--Purposely uses stage 2 table entry
+			self:AffixEvent(1, 2)--Restart Affix Bars
 		end
+		self:SetStage(1)
 		timerEarsplittingShriekCD:Stop()
 		timerEchoingSonar:Stop()
 		timerEarsplittingShriek:Stop()
