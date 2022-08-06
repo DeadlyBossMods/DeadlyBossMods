@@ -165,7 +165,7 @@ local allTimers = {
 		},
 		[3] = {--Totally different from heroic
 			--Hand of Destruction P3
-			[333932] = {72.6, 76.4, 94.7},
+			[333932] = {72.6, 76.4, 92.5},
 			--Fatal Finesse P3
 			[332794] = {17.4, 24, 24.9, 29, 22, 34, 22, 26, 32},
 			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
