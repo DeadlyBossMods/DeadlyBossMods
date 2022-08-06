@@ -52,7 +52,7 @@ local activeBosses = {}
 local activeAffixes = {}
 local borrowedTime = {}
 local specialTimers = {
-	[371254] = {--Emitter
+	[372419] = {--Emitter
 		[0] = {--Repeating Timer
 			--Castle Nathria
 			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
@@ -109,7 +109,7 @@ local specialTimers = {
 		},
 
 	},
-	[371447] = {--Barrier
+	[372418] = {--Barrier
 		[0] = {--Repeating Timer
 			--Castle Nathria
 			[2407] = {},--Sire Denathrius
@@ -329,13 +329,13 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 371254 and self:AntiSpam(3, 2) then
 		warnReconfigurationEmitter:Show()
-		local encounterID = activeAffixes[371254]
+		local encounterID = activeAffixes[372419]
 		local phase = activeBosses[encounterID] or 1
-		local timer = encounterID and specialTimers[371254][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
+		local timer = encounterID and specialTimers[372419][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
 		if timer then
-			if borrowedTime[371254] then
-				timerReconfigurationEmitterCD:Start(timer-borrowedTime[371254])
-				borrowedTime[371254] = nil
+			if borrowedTime[372419] then
+				timerReconfigurationEmitterCD:Start(timer-borrowedTime[372419])
+				borrowedTime[372419] = nil
 			else
 				timerReconfigurationEmitterCD:Start(timer)
 			end
@@ -367,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnProtoformBarrier:Show(args.destName)
 		local encounterID = activeAffixes[372418]
 		local phase = activeBosses[encounterID] or 1
-		local timer = encounterID and specialTimers[371254][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
+		local timer = encounterID and specialTimers[372418][0][encounterID][phase]--No or rule for now since no fights are agreeable on good base
 		if timer then
 			if borrowedTime[372418] then
 				timerProtoformBarrierCD:Start(timer-borrowedTime[372418])
