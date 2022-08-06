@@ -63,7 +63,7 @@ local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
 
 local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333376, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
-local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
+local timerHeartRendCD							= mod:NewCDCountTimer(42.1, 334765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON, true)--42.4 unless ICDed
 local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON, true)
 local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 
@@ -119,7 +119,7 @@ local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
 local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "Tank")--So tanks know where adds went
 local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
-local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
+--local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
 local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)--Adds
@@ -404,7 +404,7 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerReverberatingEruptionCD:Start(29.4, 1)--29.4-38.2 (it's basically either 29 or 38 based on if wicked blade happens first
 			end
-			timerSeismicUpheavalCD:Start(50.2, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
+			timerSeismicUpheavalCD:Start(49.7, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
 			--Kael also resumes summoning adds on mythic once intermission 1 is over, but it's pretty instant
 --			if self:IsMythic() then
 --				timerCallShadowForcesCD:Start(0, 1)--0-5
@@ -450,7 +450,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 334929 then--Boss stutter casts this often
 		self.vb.swipeCount = self.vb.swipeCount + 1
 		timerSerratedSwipeCD:Start(20.4, self.vb.swipeCount+1)--21.9 - 1.5
-	elseif spellId == 339690 then
+	elseif spellId == 339690 and self:AntiSpam(3, 1) then
 		self.vb.crystalCount = self.vb.crystalCount + 1
 		timerCrystalizeCD:Start(self:IsMythic() and 55 or 50, self.vb.crystalCount+1)
 		updateAllTimers(self, 8, 1)
@@ -461,11 +461,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		warnRavenousFeast:Show(count, args.destName)
-		timerRavenousFeastCD:Start(self:IsMythic() and 24.6 or 18.2, count+1, args.sourceGUID)
+--		timerRavenousFeastCD:Start(self:IsMythic() and 24.6 or 18.2, count+1, args.sourceGUID)
 	elseif spellId == 342253 then
 		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
 		timerWickedSlaughterCD:Start(8.5, args.sourceGUID)
-	elseif spellId == 342985 and self:AntiSpam(3, 3) then
+	elseif spellId == 342985 and self:AntiSpam(3, 2) then
 		warnStonegaleEffigy:Show()
 	elseif spellId == 342425 then
 		self.vb.fistCount = self.vb.fistCount + 1
@@ -479,9 +479,9 @@ function mod:SPELL_SUMMON(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 172858 then--stone-legion-goliath
 			warnStoneLegionGoliath:Show()
-			if self:IsHard() then
-				timerRavenousFeastCD:Start(27.6, 1, args.destGUID)
-			end
+--			if self:IsHard() then
+--				timerRavenousFeastCD:Start(23, 1, args.destGUID)--No longer reliable, used to be 27, now it's 6-23
+--			end
 		end
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
 		if self.Options.SetIconOnShadowForces then
@@ -548,7 +548,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 342655 then
 		warnVolatileAnimaInfusion:Show(args.destName)
 	elseif spellId == 340037 then
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, 3) then
 			specWarnVolatileStoneShell:Show()
 			specWarnVolatileStoneShell:Play("targetchange")
 		end
@@ -574,7 +574,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerHeartRendCD:Stop()
 			timerSerratedSwipeCD:Stop()
 			--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
-			timerWickedBladeCD:Start(25.5, self.vb.bladeCount+1)--TODO, Needs more data and fixing, 25.7-32 spell queue seems off
+			timerWickedBladeCD:Start(25.1, self.vb.bladeCount+1)--TODO, Needs more data and fixing, 25.7-32 spell queue seems off
 		else
 			timerWickedBladeCD:Start(19.6, self.vb.bladeCount+1)
 		end
@@ -662,7 +662,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
-		timerRavenousFeastCD:Stop((castsPerGUID[args.sourceGUID] or 0)+1, args.destGUID)
+--		timerRavenousFeastCD:Stop((castsPerGUID[args.sourceGUID] or 0)+1, args.destGUID)
 	elseif cid == 173280 then--stone-legion-skirmisher
 		timerWickedSlaughterCD:Stop(args.destGUID)
 	elseif cid == 168112 and not self.vb.kaalDead then--Kaal
@@ -684,7 +684,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

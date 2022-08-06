@@ -61,7 +61,7 @@ local timerChainLinkCD							= mod:NewCDCountTimer(68.9, 335300, nil, nil, nil, 
 local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335470, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON, true)
 local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, 247733, nil, nil, 3, nil, nil, true)
 local timerFallingRubbleCD						= mod:NewCDCountTimer(68.9, 332572, nil, nil, nil, 3, nil, nil, true)
-local timerColossalRoarCD						= mod:NewCDCountTimer(31.9, 332687, 226056, nil, nil, 2, nil, nil, true)
+local timerColossalRoarCD						= mod:NewCDCountTimer(27.9, 332687, 226056, nil, nil, 2, nil, nil, true)
 local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON, true)--Mythic
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -146,7 +146,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnColossalRoar:Show()
 		specWarnColossalRoar:Play("aesoon")
-		timerColossalRoarCD:Start(self:IsLFR() and 33.2 or 31.9, self.vb.roarCount+1)
+		timerColossalRoarCD:Start(self:IsLFR() and 33.2 or 27.9, self.vb.roarCount+1)--27-31 in fated?
 	end
 end
 
