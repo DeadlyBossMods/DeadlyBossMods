@@ -32,7 +32,7 @@ local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil,
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 local specWarnCarrionSwarm					= mod:NewSpecialWarningDodge(373429, nil, nil, nil, 2, 2)--S4
-local specWarnShadowEruption				= mod:NewSpecialWarningDodge(373729, nil, nil, nil, 2, 2)--S4
+local specWarnShadowEruption				= mod:NewSpecialWarningDodge(373513, nil, nil, nil, 2, 2)--S4
 local specWarnBloodSiphon					= mod:NewSpecialWarningInterrupt(373729, nil, nil, nil, 1, 2)--S4
 
 local timerCarrionSwarmCD					= mod:NewCDTimer(23, 373429, nil, nil, nil, 3)--S4, 23-27
