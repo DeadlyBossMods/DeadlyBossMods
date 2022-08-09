@@ -182,6 +182,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
 		self:SetStage(2)
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 		self.vb.addIcon = 8
 		self.vb.shardIcon = 8
 		self.vb.frostBlastCount = 0
@@ -349,6 +352,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFrostBlast:Show(args.destName)
 		end
 	elseif spellId == 352051 then--Necrotic Surge
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 		if self.vb.phase == 2 then
 			self:SetStage(1)
 			warnNecroticSurge:Show(args.amount or 1)

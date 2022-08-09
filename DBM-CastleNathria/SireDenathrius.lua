@@ -383,7 +383,7 @@ function mod:SPELL_CAST_START(args)
 			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 		end
 		if self:IsFated() then
-			self:AffixEvent(2, nil, 5)--Delay any affix until Hand has finished casting.
+			self:AffixEvent(2, self.vb.phase, 5)--Delay any affix until Hand has finished casting.
 		end
 	elseif spellId == 344776 then
 		if not castsPerGUID[args.sourceGUID] then
@@ -442,7 +442,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 326005 then--Indignation
 		self:SetStage(3)
 		if self:IsFated() then
-			self:AffixEvent(2)--Restart Affix Bars
+			self:AffixEvent(2, 3)--Restart Affix Bars
 		end
 		P3Transition = true
 		self.vb.priceCount = 0
@@ -703,7 +703,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 328117 and self:IsInCombat() then--March of the Penitent
 		self:SetStage(2)
 		if self:IsFated() then
-			self:AffixEvent(1)--Start Affix Bars
+			self:AffixEvent(1, 2)--Start Affix Bars
 		end
 		self.vb.painCount = 0
 		self.vb.DebuffCount = 0
@@ -802,7 +802,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 			end
 			if self:IsFated() then
-				self:AffixEvent(2, nil, 5)--Delay any affix until Hand has finished casting.
+				self:AffixEvent(2, self.vb.phase, 5)--Delay any affix until Hand has finished casting.
 			end
 		end
 		specWarnHandofDestruction:Show()
