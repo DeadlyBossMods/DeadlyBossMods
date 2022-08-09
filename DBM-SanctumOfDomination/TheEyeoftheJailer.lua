@@ -204,6 +204,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 348974 then--Immediate Extermination (10sec cast)
 		if self.vb.phase < 3 then
 			self:SetStage(3)
+			if self:IsFated() then
+				self:AffixEvent(1, 3)
+			end
 			self.vb.lethargyCount = 0
 			self.vb.shatterCount = 0
 			self.vb.deathlinkCount = 0
@@ -318,6 +321,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 348805 then--Stygian Darkshield (Entering Adds phase)
 		timerAnnihilatingGlareCD:Stop()
 		self:SetStage(2)
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 		self.vb.gazeCount = 0--Still used during intermisison
 		self.vb.shatterCount = 0--Still used during intermisison
 		self.vb.beamCount = 0
@@ -355,6 +361,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 348805 then--Stygian Darkshield (Exiting Adds phase)
 		if self.vb.phase == 2 then
 			self:SetStage(1)
+			if self:IsFated() then
+				self:AffixEvent(1, 2)
+			end
 			self.vb.lethargyCount = 0
 			self.vb.shatterCount = 0
 			self.vb.deathlinkCount = 0
