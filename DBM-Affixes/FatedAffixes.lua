@@ -55,7 +55,6 @@ local specialTimers = {
 	[372419] = {--Emitter
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
 			[2418] = {75},--Huntsman Altimor
 			[2412] = {75},--Council of Blood (always 75, but restarts after dances)
 			[2402] = {},--Kael
@@ -65,10 +64,33 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2407] = {23.9, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
 			[2418] = {3.9},--Huntsman Altimor
 			[2412] = {3.9, 3.2},--Council of Blood
 			[2402] = {},--Kael
@@ -78,12 +100,35 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {23.9, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 	},
 	[372642] = {-- Chaotic Essence
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -93,10 +138,33 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {58.8},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -106,13 +174,36 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {10.2},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 
 	},
 	[372418] = {--Barrier
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {60},--Kael (always 60 but reflection of guilt fading causes an ICD that delays current cast, but not one after it)
@@ -122,10 +213,33 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {13.9},--Kael
@@ -135,13 +249,36 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 
 	},
 	[372647] = {-- Creation Spark
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -151,10 +288,33 @@ local specialTimers = {
 			[2406] = {44.9},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {44.9},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -164,13 +324,36 @@ local specialTimers = {
 			[2406] = {18.9},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {18.9},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 
 	},
 	[372424] = {-- Replicating Essence
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -180,10 +363,33 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new phases (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2407] = {},--Sire Denathrius
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
@@ -193,6 +399,30 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
+			[2407] = {},--Sire Denathrius
+			--Sanctum of Domination
+			[2423] = {},--The Tarragrue
+			[2433] = {},--The Eye of the Jailer
+			[2429] = {},--The Nine
+			[2432] = {},--Remnant of Ner'zhul
+			[2434] = {},--Soulrender Dormazain
+			[2430] = {},--Painsmith Raznal
+			[2436] = {},--Guardian of the First Ones
+			[2431] = {},--Fatescribe Roh-Kalo
+			[2422] = {},--Kel'Thuzad
+			[2435] = {},--Sylvanas Windrunner
+			--Sepulcher of the First Ones
+			[2512] = {},--Vigilant Guardian
+			[2542] = {},--Skolex, the Insatiable Ravener
+			[2553] = {},--Artificer Xy'mox
+			[2540] = {},--Dausegne, the Fallen Oracle
+			[2544] = {},--Prototype Pantheon
+			[2539] = {},--Lihuvim, Principal Architect
+			[2529] = {},--Halondrus the Reclaimer
+			[2546] = {},--Anduin Wrynn
+			[2543] = {},--Lords of Dread
+			[2549] = {},--Rygelon
+			[2537] = {},--The Jailer
 		},
 
 	},
