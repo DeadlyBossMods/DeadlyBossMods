@@ -162,7 +162,7 @@ local allTimers = {
 			--Fated Conjunction
 			[350421] = {9.4, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 43.1, 43.7},--Huge variations, 36-50
+			[353195] = {36.7, 42.1, 43.7},--Huge variations, 36-50
 		}
 	},
 }
@@ -398,6 +398,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 357739 then
 		self:SetStage(2)
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 		self.vb.addIcon = 8
 		self.vb.realignCount = self.vb.realignCount + 1
 		specWarnRealignFate:Show(self.vb.realignCount)
@@ -454,6 +457,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.portentCount = 0
 		if self.vb.realignCount == 1 then--first cast
 			self:SetStage(1)
+			if self:IsFated() then
+				self:AffixEvent(1, 2)
+			end
 			if self:IsMythic() then
 				timerTwistFateCD:Start(11, 1)
 				timerCallofEternityCD:Start(23, 1)
@@ -468,6 +474,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		else--Second cast
 			self:SetStage(3)
+			if self:IsFated() then
+				self:AffixEvent(1, 3)
+			end
 			if self:IsMythic() then
 				timerCallofEternityCD:Start(13, 1)
 				timerFatedConjunctionCD:Start(18, 1)

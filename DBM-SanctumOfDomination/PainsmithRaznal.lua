@@ -267,6 +267,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then--Based on vods, may be off slightly
 			timerAddsCD:Start(47)
 		end
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -308,8 +311,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerForgeWeapon:Stop()
 		if self.vb.phase == 1.5 then
 			self:SetStage(2)
+			if self:IsFated() then
+				self:AffixEvent(1, 2)
+			end
 		else
 			self:SetStage(3)
+			if self:IsFated() then
+				self:AffixEvent(1, 3)
+			end
 		end
 		self.vb.weaponCount = 0
 		self.vb.ballsCount = 0

@@ -679,10 +679,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 		end
 		timerMercilessCD:Start(self.vb.merciCount < 7 and 21 or 41, self.vb.merciCount+1)
-	elseif spellId == 357729 and self.vb.phase ~= 3 then
+	elseif spellId == 357729 and self.vb.phase ~= 3 then--Blasphemy
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		self:SetStage(3)
+		if self:IsFated() then
+			self:AffixEvent(1, 3)
+		end
 		table.wipe(debuffStacks)
 		self.vb.baneArrowCount = 0
 		self.vb.shadowDaggerCount = 0
@@ -828,6 +831,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 		self:SetStage(1.5)--Intermission to phase 2
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 		self.vb.dominationChainsCount = 0
 		self.vb.riveCount = 0
 		timerWindrunnerCD:Stop()
@@ -844,6 +850,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		self:SetStage(2)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 		self.vb.veilofDarknessCount = 0
 		self.vb.bridgeCount = 0
 		self.vb.icecrownCast = 0
