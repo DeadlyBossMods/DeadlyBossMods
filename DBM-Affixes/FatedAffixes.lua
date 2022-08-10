@@ -26,6 +26,8 @@ mod:RegisterEvents(
  or ability.id = 372638 and type = "begincast" or ability.id = 371254
  or (ability.id = 369505 or ability.id = 371447 or ability.id = 372286) and (type = "applybuff" or type = "applydebuff")
  or ability.id = 371597 or ability.id = 372634
+
+
 --]]
 local warnChaoticDestruction					= mod:NewCastAnnounce(372638, 3)--Add activating
 local warnChaoticEssence						= mod:NewSpellAnnounce(372634, 2)--Clicked add
@@ -185,7 +187,7 @@ local specialTimers = {
 			[2436] = {},--Guardian of the First Ones
 			[2431] = {},--Fatescribe Roh-Kalo
 			[2422] = {},--Kel'Thuzad
-			[2435] = {10, 2.6, },--Sylvanas Windrunner
+			[2435] = {10, 0, 26},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
 			[2512] = {},--Vigilant Guardian
 			[2542] = {},--Skolex, the Insatiable Ravener
