@@ -162,7 +162,7 @@ local allTimers = {
 			--Fated Conjunction
 			[350421] = {9.4, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 43.1, 43.7},--Huge variations, 36-50
+			[353195] = {36.7, 42.1, 43.7},--Huge variations, 36-50
 		}
 	},
 }
