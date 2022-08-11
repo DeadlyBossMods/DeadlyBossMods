@@ -494,6 +494,9 @@ function mod:SPELL_CAST_START(args)
 			timerDisintegrationCD:Stop()
 			timerEliminationPatternCD:Stop()
 			timerFormSentryCD:Stop()
+			if self:IsFated() then
+				self:AffixEvent(0)
+			end
 		end
 	elseif spellId == 350732 then
 		self.vb.comboCount = self.vb.comboCount + 1
@@ -511,6 +514,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 352660 then
 		warnFormSentry:Show()
+		if self:IsFated() then
+			--Best place to do this instead of the currently hacky phase change. It's always consistent time after form sentry
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 356090 then
 		self.vb.threatCount = self.vb.threatCount + 1
 		isMelee = {[1] = false,[2] = false,[3] = false,}
