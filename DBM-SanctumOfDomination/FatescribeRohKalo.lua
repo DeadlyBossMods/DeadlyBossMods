@@ -162,7 +162,7 @@ local allTimers = {
 			--Fated Conjunction
 			[350421] = {9.4, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 42.1, 43.7},--Huge variations, 36-50
+			[353195] = {34.4, 42.1, 43.7},--Huge variations, 36-50
 		}
 	},
 }
@@ -491,7 +491,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				if self:IsHeroic() then
 					timerRunicAffinityCD:Start(30, 1)
 				end
-				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 36.7, 1)
+				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 34.4, 1)
 				timerTwistFateCD:Start(50.5, 1)
 			end
 		end
