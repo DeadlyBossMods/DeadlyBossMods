@@ -99,8 +99,8 @@ function mod:SPELL_CAST_START(args)
 		timerBlazingBrandCD:Start()
 	elseif spellId == 370615 then
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnFreezingBreath:Show()
-			specWarnFreezingBreath:Play("defensive")
+			specWarnMoltenSwing:Show()
+			specWarnMoltenSwing:Play("defensive")
 		end
 	end
 end
