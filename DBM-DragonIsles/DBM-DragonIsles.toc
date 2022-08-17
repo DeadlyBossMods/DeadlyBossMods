@@ -22,7 +22,7 @@
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 210
 ## X-DBM-Mod-MapID: 2574
-## X-DBM-Mod-LoadCID: 999999
+## X-DBM-Mod-LoadCID: 193534, 193535
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 9
 ## X-Curse-Project-ID: 3358
@@ -32,4 +32,5 @@
 localization.en.lua
 localization.ru.lua
 localization.kr.lua
+Strunraan.lua
 Basrikron.lua

@@ -1,9 +1,9 @@
-local mod	= DBM:NewMod(2506, "DBM-DragonIsles", nil, 1205)
+local mod	= DBM:NewMod(2515, "DBM-DragonIsles", nil, 1205)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(193535)
-mod:SetEncounterID(2640)
+mod:SetCreatureID(193534)
+mod:SetEncounterID(2651)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
 --mod:SetMinSyncRevision(11969)
