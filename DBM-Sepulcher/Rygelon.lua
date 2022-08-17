@@ -219,11 +219,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnMassiveBang:Play("specialsoon")
 		timerMassiveBang:Start()
 		self:Schedule(5.5, bangDelay, self)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 366606 and self:AntiSpam(3, 1) then
 		warnRadiantPlasma:Show()
 	elseif spellId == 364114 then
 		specWarnShatterSphere:Show()
 		specWarnShatterSphere:Play("phasechange")--No idea what voice to use
+		if self:IsFated() then
+			self:AffixEvent(0)--Technically not needed, since at this time affix isn't cast more than once, but another affix might be
+		end
 	elseif spellId == 364386 then
 		if self.Options.SpecWarn364386soak and playerInSingularity then
 			specWarnGravitationalCollapse:Show()

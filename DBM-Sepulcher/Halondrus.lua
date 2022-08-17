@@ -213,7 +213,10 @@ function mod:SPELL_CAST_START(args)
 			timerShatterCD:Start(30.1, 1)
 			timerCrushingPrismCD:Start(47.3, 1)
 		end
-	elseif spellId == 359235 then
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
+	elseif spellId == 359235 then--Reclamation Form
 		self:SetStage(1)--Stage, as determined by dungeon journal
 		self.vb.crushingCast = 0
 		self.vb.chargeCount = 0
@@ -246,6 +249,9 @@ function mod:SPELL_CAST_START(args)
 --			if self:IsMythic() then
 --				timerVolatileChargesCD:Start(5)
 --			end
+		end
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
 		end
 	elseif spellId == 368529 then
 		warnEternityOverdrive:Show()

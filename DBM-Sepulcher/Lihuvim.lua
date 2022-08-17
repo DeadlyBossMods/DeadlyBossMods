@@ -251,6 +251,9 @@ function mod:SPELL_CAST_START(args)
 		timerDeconstructingEnergyCD:Stop()
 		timerCosmicShiftCD:Stop()
 		timerResonanceCD:Stop()
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 	elseif spellId == 364652 then
 		self.vb.cascadeCount = self.vb.cascadeCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -412,6 +415,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerResonanceCD:Start(38.8, 1)
 		end
 		timerSynthesizeCD:Start(91.4, self.vb.synthesizeCount+1)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 	end
 end
 

@@ -478,6 +478,9 @@ function mod:SPELL_CAST_START(args)
 			warnTyranny:Schedule(8)
 			timerTyrany:Start(8)--hit is at 11, so we do hit minus 3 for the cast (which is hidden)
 		end
+		if self:IsFated() then
+			self:AffixEvent(0)--Stop Affix Bars
+		end
 --	elseif spellId == 366022 then
 --		warnTyranny:Show()
 	elseif spellId == 360373 then
@@ -548,11 +551,14 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerWorldCrackerCD:Start(timer, self.vb.worldCount+1)
 		end
-	elseif spellId == 367290 then--Transitional Unholy Attunement (possibly even earlier P3 trigger)
+	elseif spellId == 367290 then--Transitional/Final Unholy Attunement (possibly even earlier P3 trigger)
 		self.vb.unholyCount = self.vb.unholyCount + 1
 		warnUnholyAttunement:Show(self.vb.unholyCount)
 		timerPits:Start(3.5)
 		timerUnbreakableGraspCD:Start(10.5)
+		if self:IsFated() then
+			self:AffixEvent(0)--Stop Affix Bars
+		end
 	elseif spellId == 360378 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		specWarnMeteorCleave:Show(self.vb.tankCount)
@@ -735,6 +741,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 368383 then--Diverted Life Shield
 		--Todo, maybe move this to cast success or start event if it's sooner
 		self:SetStage(4)
+		if self:IsFated() then
+			self:AffixEvent(1, 4)
+		end
 		self.vb.tankCount = 0
 		self.vb.runeCount = 0
 		self.vb.decimatorCount = 0
@@ -833,6 +842,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerUnholyAttunementCD:Start(184.6, 1)--Only used once, at end of Stage 2
 				timerPhaseCD:Start(193.5)
 			end
+			if self:IsFated() then
+				self:AffixEvent(1, 2)
+			end
 		else--Phase 3 (second time it's cast)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
@@ -871,6 +883,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerDefileCD:Start(48, 1)--Defile comes earlier in LFR
 				timerChainsofAnguishCD:Start(52.9, 1)
 				timerRuneofDominationCD:Start(63.9, 1)
+			end
+			if self:IsFated() then
+				self:AffixEvent(1, 3)
 			end
 		end
 	end
