@@ -1,4 +1,4 @@
-## Interface: 90205
+## Interface: 90207
 ## X-Min-Interface: 90100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sanctum of Domination|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Святилище Господства|r

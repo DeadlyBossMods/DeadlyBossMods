@@ -228,6 +228,9 @@ function mod:SPELL_CAST_START(args)
 		--Kin'tessa
 		timerAnguishingStrikeCD:Stop()
 		timerSlumberCloudCD:Stop()
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 	elseif (spellId == 360300 or spellId == 360304) and self:AntiSpam(3, 2) then
 		self.vb.darknessCount = self.vb.darknessCount + 1
 		specWarnUntoDarkness:Show(self.vb.darknessCount)
@@ -318,6 +321,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM:Debug("timerSlumberCloudCD extended by: "..extend, 2)
 		end
 		timerSlumberCloudCD:Pause(self.vb.slumberCount+1)
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 	elseif spellId == 360516 and self:AntiSpam(3, 5) then--Infiltration
 		timerUntoDarknessCD:Pause(self.vb.darknessCount+1)--Pauses since bosses stop gaining energy
 		--This timer pauses, but also has a min time of 5 seconds so first we need to check and extend that if applicable
@@ -328,6 +334,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM:Debug("timerFearfulTrepidationCD extended by: "..extend, 2)
 		end
 		timerFearfulTrepidationCD:Pause(self.vb.fearfulCount+1)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Start(self:IsEasy() and 40 or 25)
 	elseif spellId == 360146 then
@@ -425,6 +434,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAnguishingStrikeCD:Start(7.4)--7.4-9.7
 		--This timer resumes
 		timerSlumberCloudCD:Resume(self.vb.slumberCount+1)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 360516 and self:AntiSpam(3, 7) then--Infiltration
 		--May still be missing some that actually pause/resume instead, but seems accurate enough
 		--Mal

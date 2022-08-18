@@ -379,6 +379,7 @@ function mod:SPELL_CAST_START(args)
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(365966))
 				DBM.InfoFrame:Show(20, "playerdebuffremaining", 365966)
 			end
+			--If an intermission was skipped, affix timer does NOT reset, it continues from previous reset (intermission)
 		end
 	end
 end
@@ -564,6 +565,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
+		if self:IsFated() then
+			self:AffixEvent(0)
+		end
 	elseif spellId == 362774 and not args:IsPlayer() then
 		specWarnSoulReaperTaunt:Show(args.destName)
 		specWarnSoulReaperTaunt:Play("tauntboss")
@@ -635,6 +639,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(365966))
 				DBM.InfoFrame:Show(20, "playerdebuffremaining", 365966)
 			end
+		end
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
 		end
 	end
 end
