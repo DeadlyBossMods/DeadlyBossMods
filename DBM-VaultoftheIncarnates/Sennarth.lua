@@ -76,7 +76,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(24885))
 local warnApexofIce									= mod:NewCastAnnounce(372539, 3)
 local warnSuffocatinWebs							= mod:NewTargetNoFilterAnnounce(373027, 3)
 
-local specWarnSuffocatingWebs						= mod:NewSpecialWarningPos(373027, nil, nil, nil, 1, 2)
+local specWarnSuffocatingWebs						= mod:NewSpecialWarningYouPos(373027, nil, nil, nil, 1, 2)
 local yellSuffocatingWebs							= mod:NewPosYell(373027)
 local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
