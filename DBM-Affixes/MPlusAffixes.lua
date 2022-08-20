@@ -50,7 +50,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCarrionSwarm:Show()
 			specWarnCarrionSwarm:Play("shockwave")
 		end
-		timerCarrionSwarmCD:Start()
+		timerCarrionSwarmCD:Start(nil, args.sourceGUID)
 	elseif spellId == 373513 then
 		if self:AntiSpam(3, 2) then
 			specWarnShadowEruption:Show()
@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 		warnExplosion:Show()
 	elseif spellId == 373370 then
 		warnNightmareCloud:Show()
-		timerNightmareCloudCD:Start()
+		timerNightmareCloudCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -116,7 +116,7 @@ function mod:UNIT_DIED(args)
 		timerHypnosisBatCD:Stop()
 		timerShadowEruptionCD:Stop()
 	elseif cid == 189878 then--Nathrezim Infiltrator
-		timerCarrionSwarmCD:Stop()
-		timerNightmareCloudCD:Stop()
+		timerCarrionSwarmCD:Stop(args.destGUID)
+		timerNightmareCloudCD:Stop(args.destGUID)
 	end
 end
