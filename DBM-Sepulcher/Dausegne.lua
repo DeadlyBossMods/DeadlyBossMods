@@ -17,9 +17,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 361966 361018 361651",
 	"SPELL_AURA_APPLIED_DOSE 361966",
 	"SPELL_AURA_REMOVED 361966 361018 361651"
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, exact stack count optimal of tanks swaps of 361966, for now most warnings are silent or way overtuned
@@ -53,7 +50,6 @@ local specWarnDisintegrationHalo				= mod:NewSpecialWarningCount(365373, nil, 16
 --Inevitable Dominion
 local specWarnTotalDominion						= mod:NewSpecialWarningSpell(365418, nil, nil, nil, 3, 2)--Basically soft enrage/wipe mechanic
 
---mod:AddTimerLine(BOSS)
 --The Fallen Oracle
 local timerUnleashedInfusion					= mod:NewTargetTimer(20, 361967, nil, nil, nil, 2)
 local timerStaggeringBarrageCD					= mod:NewCDCountTimer(35, 361018, nil, nil, nil, 3)
@@ -64,9 +60,6 @@ local timerDisintegrationHalo					= mod:NewCastCountTimer(5, 365373, 161172, nil
 --Inevitable Dominion
 local timerSiphonReservoirCD					= mod:NewCDCountTimer(28.8, 361643, nil, nil, nil, 6)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
-
---mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(361651, true)
 mod:AddSetIconOption("SetIconOnStaggeringBarrage", 361018, true, false, {1, 2, 3})--Only one was happening on heroic, is 3 mythic only?
 
@@ -291,19 +284,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
-	end
-end
---]]

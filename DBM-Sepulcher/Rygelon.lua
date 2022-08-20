@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20220308000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 362806 362275 362390 366379 362184 363533 366606 364114 364386",
+	"SPELL_CAST_START 362275 362390 366379 362184 363533 366606 364114 364386",
 	"SPELL_CAST_SUCCESS 363108 363110",
 	"SPELL_AURA_APPLIED 361548 362273 362206 362088 362081 362207 363773 362271 368082 368080",
 	"SPELL_AURA_APPLIED_DOSE 362273 362088 362081 368080",
@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 362798",
 	"SPELL_PERIODIC_MISSED 362798",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, number of dark eclipse targets. if only 1, kill the icon stuff
@@ -41,7 +40,6 @@ mod:RegisterEventsInCombat(
 local berserkTimer								= mod:NewBerserkTimer(600)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(362798, nil, nil, nil, 1, 8)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
 --Rygelon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24245))
 local warnDarkEclipse							= mod:NewTargetNoFilterAnnounce(361548, 3)
@@ -84,7 +82,6 @@ mod:AddRangeFrameOption(5, 362206)
 mod:AddInfoFrameOption(362081, false)--Tracks just ejection on heroic but on mythic it tracks Irregularity
 mod:AddSetIconOption("SetIconOnDarkEclipse", 361548, true, false, {1, 2, 3}, true)
 mod:AddSetIconOption("SetIconOnQuasar", 362275, false, true, {3, 4, 5, 6, 7, 8}, true)
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 --The Singularity
 local singularityName = DBM:GetSpellInfo(362207)
 mod:AddTimerLine(singularityName)
@@ -175,13 +172,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 362806 then
---		self.vb.eclipseCount = self.vb.eclipseCount + 1
---		self.vb.eclipseIcon = 1
---		if self.vb.eclipseCount < 5 then
---			timerDarkEclipseCD:Start(nil, self.vb.eclipseCount+1)
---		end
-	elseif spellId == 362275 then
+	if spellId == 362275 then
 		self.vb.collapseCount = self.vb.collapseCount + 1
 		self.vb.quasarIcon = 8
 		if self.Options.SpecWarn362275count then
@@ -418,11 +409,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
-	end
-end
---]]

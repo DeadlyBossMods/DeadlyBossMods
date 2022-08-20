@@ -18,12 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 361676 360977 367079 359236 364979 360115 368957 368529 359235",
 	"SPELL_CAST_SUCCESS 365294",--361602
 	"SPELL_AURA_APPLIED 365297 361309 368671 368969",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 368671 368969 360115"
 --	"SPELL_PERIODIC_DAMAGE 361002 360114",
---	"SPELL_PERIODIC_MISSED 361002 360114",
---	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"SPELL_PERIODIC_MISSED 361002 360114"
 )
 
 --TODO, enable GTFO once it's confirmed debuff doesn't actually linger when you leave pool, misleading tooltip
@@ -63,9 +60,6 @@ local specWarnLightshatterBeamTaunt				= mod:NewSpecialWarningTaunt(360977, nil,
 --Stage Two: The Shimmering Cliffs
 local specWarnShatter							= mod:NewSpecialWarningDodge(362056, nil, nil, nil, 2, 2)
 
---mod:AddTimerLine(BOSS)
---Mythic
---local timerVolatileChargesCD					= mod:NewAITimer(36.5, 368957, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Stage One: The Reclaimer
 local timerReclaimCD							= mod:NewCDCountTimer(60, 360115, nil, nil, nil, 5)
 local timerSeismicTremorsCD						= mod:NewCDCountTimer(26.7, 367079, nil, nil, nil, 5)--Make me count timer when leaving AI
@@ -76,9 +70,6 @@ local timerCrushingPrismCD						= mod:NewCDCountTimer(26.9, 365297, nil, nil, ni
 local timerRelocationForm						= mod:NewCastTimer(6, 359236, nil, nil, nil, 6)
 local timerShatterCD							= mod:NewCDCountTimer(6, 362056, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
-
---mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(360115, true)
 mod:AddSetIconOption("SetIconOnCrushing2", 365297, true, false, {1, 2, 3, 4, 5, 6, 7})
 mod:AddNamePlateOption("NPAuraOnFractal", 368671, true)
@@ -126,7 +117,6 @@ function mod:OnCombatStart(delay)
 	self.vb.reclaimCount = 0
 	self.vb.seismicIcon = 1
 	if self:IsMythic() then--Same as post reclaimm
---		timerVolatileChargesCD:Start(1-delay)
 		timerSeismicTremorsCD:Start(4-delay, 1)
 		--timerPlanetcrackerBeamCD:Start(11.6-delay)--Needs checking
 		timerCrushingPrismCD:Start(17-delay, 1)
@@ -146,19 +136,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.NPAuraOnFractal then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
-
---[[
-function mod:OnTimerRecovery()
-
-end
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -195,7 +176,6 @@ function mod:SPELL_CAST_START(args)
 		timerRelocationForm:Start()
 		--Stop stationary timers
 		timerEarthbreakerMissilesCD:Stop()
---		timerVolatileChargesCD:Stop()
 		timerCrushingPrismCD:Stop()
 		timerReclaimCD:Stop()
 		timerSeismicTremorsCD:Stop()
@@ -228,7 +208,6 @@ function mod:SPELL_CAST_START(args)
 		timerEarthbreakerMissilesCD:Stop()--Remove if not needed
 		timerShatterCD:Stop()
 		timerCrushingPrismCD:Stop()
---		timerVolatileChargesCD:Stop()
 		--Start Stationary ones
 		if self.vb.stageTotality == 3 then--Second stationary (after first movement)
 			timerSeismicTremorsCD:Start(10.1, 1)
@@ -238,17 +217,11 @@ function mod:SPELL_CAST_START(args)
 				timerPlanetcrackerBeamCD:Start(33.2)
 			end
 			timerReclaimCD:Start(68)
---			if self:IsMythic() then
---				timerVolatileChargesCD:Start(3)
---			end
 		else--Third stationary, after 2nd movement (stageTotality == 5)
 			if self:IsHard() then
 				timerPlanetcrackerBeamCD:Start(14.2)
 			end
 			timerEarthbreakerMissilesCD:Start(17.1, 1)
---			if self:IsMythic() then
---				timerVolatileChargesCD:Start(5)
---			end
 		end
 		if self:IsFated() then
 			self:AffixEvent(1, 2)
@@ -272,12 +245,10 @@ function mod:SPELL_CAST_START(args)
 		timerSeismicTremorsCD:Stop()
 		timerEarthbreakerMissilesCD:Stop()
 		timerCrushingPrismCD:Stop()
---		timerVolatileChargesCD:Stop()
 	elseif spellId == 368957 then
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		specWarnVolatileCharges:Show(self.vb.chargeCount)
 		specWarnVolatileCharges:Play("bombsoon")
---		timerVolatileChargesCD:Start()
 	end
 end
 
@@ -335,7 +306,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -361,13 +331,6 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 --[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 183870 then--Pylons
-
-	end
-end
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 361002 or spellId == 360114) and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
@@ -375,11 +338,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 369207 then--Planetcracker Beam
-		specWarnPlanetcrackerBeam:Show()
-		specWarnPlanetcrackerBeam:Play("watchstep")--or farfromline if it's a line
-	end
-end
 --]]

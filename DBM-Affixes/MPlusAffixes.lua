@@ -10,7 +10,7 @@ mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 373513 240446 373513 373429 373370",
-	"SPELL_AURA_APPLIED 240447 226512 373552 373509",
+	"SPELL_AURA_APPLIED 240447 226512 373552 373509 350209",
 	"SPELL_AURA_APPLIED_DOSE 373509",
 	"SPELL_AURA_REMOVED 373724",
 	"SPELL_DAMAGE 209862",
@@ -29,6 +29,7 @@ local warnBloodBarrier						= mod:NewTargetNoFilterAnnounce(373724, 4)--S4
 local warnShadowClaws						= mod:NewStackAnnounce(373509, 2, nil, "Tank|Healer")--S4
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
+local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 local specWarnCarrionSwarm					= mod:NewSpecialWarningDodge(373429, nil, nil, nil, 2, 2)--S4
@@ -40,7 +41,7 @@ local timerNightmareCloudCD					= mod:NewCDTimer(32.5, 373370, nil, nil, nil, 3)
 local timerHypnosisBatCD					= mod:NewCDTimer(23, 373552, nil, nil, nil, 3)--S4, 23-27
 local timerShadowEruptionCD					= mod:NewCDTimer(24, 373729, nil, nil, nil, 2)
 
---Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo
+--Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -89,6 +90,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnShadowClaws:Show(args.destName, amount)
 			end
 		end
+	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, 8) then
+		specWarnSpitefulFixate:Show()
+		specWarnSpitefulFixate:Play("targetyou")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

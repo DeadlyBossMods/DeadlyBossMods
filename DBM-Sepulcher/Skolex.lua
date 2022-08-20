@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(181395)
 mod:SetEncounterID(2542)
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -40,7 +39,6 @@ local specWarnRiftmaw							= mod:NewSpecialWarningTaunt(359976, nil, nil, nil, 
 local specWarnRend								= mod:NewSpecialWarningTaunt(359979, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
 local timerDustflailCD							= mod:NewCDCountTimer(16.4, 359829, nil, nil, nil, 2)--16.4-17.5
 local timerRetchCD								= mod:NewCDCountTimer(32.9, 360448, nil, nil, nil, 3)--32.9-35
 local timerComboCD								= mod:NewTimer(33.9, "timerComboCD", 359976, nil, nil, 5, DBM_COMMON_L.TANK_ICON)
@@ -48,7 +46,6 @@ local timerBurrowCD								= mod:NewCDCountTimer(75, 359770, nil, nil, nil, 3)--
 
 local berserkTimer								= mod:NewBerserkTimer(420)--Final Consumption
 
---mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(359778, true, nil, 5)
 
 mod.vb.burrowCount = 0
@@ -115,7 +112,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerDustflailCD:Start(self:IsHard() and 16.4 or 19.4, self.vb.dustCount+1)
 	elseif args:IsSpellID(359979, 359975) then--Rend, Riftmaw
---		if self:AntiSpam(20, 1) then
+--		if self:AntiSpam(20, 1) then--In case unit event stops working
 --			self.vb.comboCast = 0
 --			timerComboCD:Start()
 --		end

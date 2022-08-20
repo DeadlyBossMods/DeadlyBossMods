@@ -17,15 +17,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 365577 365681 365701 362615 362614 362803 362882",
 	"SPELL_AURA_APPLIED_DOSE 365681",
 	"SPELL_AURA_REMOVED 365577 365701 363034 363139 362615 362614 362803",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, what to really do with https://ptr.wowhead.com/spell=365745/rotary-body-armor
 --TODO, how does Gunship/hyperlight barrage work? Probably https://ptr.wowhead.com/spell=364376/hyperlight-barrage 3 sec periodic trigger
---TODO, possibly sequence out timers for certain things, like P2 Glpyh might actually be 40, 42, 37
 --[[
 (ability.id = 363485 or ability.id = 362841 or ability.id = 362801 or ability.id = 362849) and type = "begincast"
  or (ability.id = 367711 or ability.id = 362885 or ability.id = 366752 or ability.id = 364040 or ability.id = 362721 or ability.id = 363258 or ability.id = 364465) and type = "cast"
@@ -65,8 +61,6 @@ local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnWormhole", 362615, true, false, {1, 2})
 mod:AddSetIconOption("SetIconGlyphofRelocation", 362803, false, false, {3})
---mod:AddRangeFrameOption("8")
---mod:AddInfoFrameOption(328897, true)
 --Stage Two: Secrets of the Relic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24589))
 local warnDecipherRelic							= mod:NewSpellAnnounce(363139, 2)
@@ -84,7 +78,6 @@ local specWarnDebilitatingRay					= mod:NewSpecialWarningInterruptCount(364030, 
 
 local timerRiftBlastsCD							= mod:NewCDTimer(6, 362841, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Initial ones only on phasing, after that they can get kinda desynced plus very frequent
 local timerMassiveBlastCD						= mod:NewCDTimer(11.5, 365681, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11.5-12.2
---local timerDebilitatingRayCD					= mod:NewAITimer(28.8, 364030, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 
 mod:AddSetIconOption("SetIconOnHyperlightAdds", 364021, true, true, {4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnDecipherRelic", 363139, true)
@@ -313,10 +306,6 @@ function mod:OnCombatStart(delay)
 		end
 
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
 	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder or self.Options.NPAuraOnAscension then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -324,9 +313,6 @@ end
 
 function mod:OnCombatEnd()
 	table.wipe(castsPerGUID)
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.NPAuraOnDecipherRelic or self.Options.NPAuraOnOverseersOrder or self.Options.NPAuraOnAscension then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -434,7 +420,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
---		timerDebilitatingRayCD:Start(17, count, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnDebilitatingRay:Show(args.sourceName, count)
 			if count == 1 then
@@ -630,27 +615,14 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnAscension then
 			DBM.Nameplate:Hide(true, args.destGUID, 364040)
 		end
---	elseif cid == 183707 then--Cartel Xy Debilitator
-
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 --"<19.51 22:08:21> [UNIT_SPELLCAST_SUCCEEDED] Artificer Xy'mox(Bookaine) -Hyperlight Reinforcements- boss1:Cast-3-4170-2481-12807-364046-006FB27045:364046
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 365428 then
 		specWarnCartelElite:Show()
 		specWarnCartelElite:Play("killmob")
-		--timerCartelEliteCD:Start()
 	end
 end
 

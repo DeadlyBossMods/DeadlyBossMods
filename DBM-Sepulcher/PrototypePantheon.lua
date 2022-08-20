@@ -20,8 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 360687 365269 361067 362352 361689 364839 366234 361745 366159",
 	"SPELL_AURA_REMOVED 360687 361067 361278 361745",
 	"SPELL_AURA_REMOVED_DOSE 361689 366159",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
 )
@@ -42,10 +40,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnCompleteRecon							= mod:NewCastAnnounce(366062, 4)
 
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
-
 local timerCompleteRecon						= mod:NewCastTimer(20, 366062, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
---local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("8")
 mod:AddNamePlateOption("NPAuraOnImprintedSafeguards", 366159, true)--Hostile only, can't anchor to friendly nameplates in raid (seeds)
@@ -126,7 +121,6 @@ mod.vb.painCount = 0
 mod.vb.handCount = 0
 mod.vb.nightCount = 0
 mod.vb.seedIcon = 1
---mod.vb.hunterIcon = 1
 mod.vb.ritualistIconMethod = 1
 mod.vb.ritualistIcon = 8
 
@@ -379,7 +373,6 @@ function mod:OnCombatStart(delay)
 	self.vb.handCount = 0
 	self.vb.nightCount = 0
 	self.vb.seedIcon = 1
---	self.vb.hunterIcon = 1
 	self.vb.ritualistIconMethod = 1
 	self:SetStage(1)
 	--Necro
@@ -683,7 +676,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 361745 and self:AntiSpam(5, 2) then
 		self.vb.nightCount = self.vb.nightCount + 1
---		self.vb.hunterIcon = 1
 		if self.vb.phase then
 			local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.nightCount+1]
 			if timer then
@@ -782,7 +774,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 361745 then
---		local icon = self.vb.hunterIcon
 		if self.Options.SetIconOnNightHunter then
 			self:SetSortedIcon("meleeroster", 0.5, args.destName, 1, 4, false, "NightHunterReturn")
 		end
@@ -792,7 +783,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Icon stuff delayed slightly in the icon sort callback
 		end
 		warnNightHunter:CombinedShow(0.3, args.destName)
---		self.vb.hunterIcon = self.vb.hunterIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -849,20 +839,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 181549 then--prototype-of-war (Necro)
 		timerNecroticRitualCD:Stop()
 		timerRunecarversDeathtouchCD:Stop()
---	elseif cid == 182045 then--Necrotic Ritual Skeletons
-
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 --https://ptr.wowhead.com/spell=365422/ephemeral-exhaust
 --https://ptr.wowhead.com/npc=182822 (WitheringSeed)
@@ -886,15 +864,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerNecroticRitualCD:Stop()
 			timerRunecarversDeathtouchCD:Stop()
 		end
-	--elseif spellId == 361066 then--Ascension's Call
-	--	self.vb.callCount = self.vb.callCount + 1
-	--	warnAscensionsCall:Show(self.vb.callCount)
-	--	if self.vb.phase then
-	--		local timer = allTimers[difficultyName][self.vb.phase] and allTimers[difficultyName][self.vb.phase][spellId][self.vb.callCount+1]
-	--		if timer then
-	--			timerAscensionsCallCD:Start(timer, self.vb.callCount+1)
-	--		end
-	--	end
 	elseif spellId == 361791 and self:AntiSpam(10, 3) then--Script Activating to cast Hand of Destruction (2 sec faster than SUCCESS 361789)
 		self.vb.handCount = self.vb.handCount + 1
 		specWarnHandofDestruction:Show()
