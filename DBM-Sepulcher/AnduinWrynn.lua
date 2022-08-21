@@ -8,7 +8,6 @@ mod:SetUsedIcons(4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220405000000)
 mod:SetMinSyncRevision(20220405000000)
 --mod.respawnTime = 29
---mod.NoSortAnnounce = true
 
 mod:RegisterCombat("combat")
 
@@ -19,14 +18,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 362055 364031 361992 361993 365021 362505 362862 365966 366849 363028 367632 362774",
 	"SPELL_AURA_APPLIED_DOSE 364248",
 	"SPELL_AURA_REMOVED 362055 361992 361993 365021 362505 365966 367632",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, verify mythic timers
---TODO, despair is probably released on anduin's despair death, because it makes more sense as such
 --TODO, actually test all blasphemy stuff. Specifically using drop down and auto assignments.
 --TODO, track https://ptr.wowhead.com/spell=365293/befouled-barrier somehow?
 --TODO, adjust dark zeal count?
@@ -40,14 +35,8 @@ mod:RegisterEventsInCombat(
  or (ability.id = 362505 or ability.id = 365216) and (type = "applybuff" or type = "removebuff")
  or ability.id = 362862 and type = "applybuff"
 --]]
---General
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
-
---local berserkTimer							= mod:NewBerserkTimer(600)
-
 --Stage One: Kingsmourne Hungers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24462))
---local warnDespair								= mod:NewTargetNoFilterAnnounce(365235, 2)
 local warnBefouledBarrier						= mod:NewSpellAnnounce(365295, 3, nil, nil, 300531)
 local warnWickedStar							= mod:NewTargetCountAnnounce(365030, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDominationWordPain					= mod:NewTargetNoFilterAnnounce(366849, 3, nil, "Healer", 249194)
@@ -104,7 +93,6 @@ mod:AddSetIconOption("SetIconOnGrimReflection", 365120, true, true, {5, 6, 7, 8}
 
 --Intermission: March of the Damned
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24172))
---mod:AddOptionLine(P25Info, "specialannounce")
 local warnMarchoftheDamned						= mod:NewSpellAnnounce(364020, 3)
 
 local timerMarchofDamnedCD						= mod:NewCDTimer(28.8, 364020, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -123,7 +111,6 @@ local timerHopelessnessCD						= mod:NewCDTimer(28.8, 365966, nil, nil, nil, 3, 
 
 mod:AddInfoFrameOption(365966, false)
 
---mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("PairingBehavior", {"Auto", "Generic", "None"}, "Generic", "misc")--Controls the yellBlasphemy/specWarnOverconfidence/specWarnHopelessness
 
@@ -175,14 +162,12 @@ local allTimers = {
 
 local function updateTimerFades(self)
 	if playersSouled[playerName] then
---		timerDespairCD:SetFade(false)
 		timerBlasphemyCD:SetFade(true)
 		timerBefouledBarrierCD:SetFade(true)
 		timerWickedStarCD:SetFade(true)
 		timerHopebreakerCD:SetFade(true)
 		timerGrimReflectionsCD:SetFade(true)
 	else
---		timerDespairCD:SetFade(true)
 		timerBlasphemyCD:SetFade(false)
 		timerBefouledBarrierCD:SetFade(false)
 		timerWickedStarCD:SetFade(false)
@@ -233,9 +218,6 @@ function mod:OnCombatStart(delay)
 			self:SendSync("None")
 		end
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 end
 
 function mod:OnCombatEnd()
@@ -248,9 +230,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnBurdenofDestiny then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:OnTimerRecovery()
@@ -432,9 +411,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			updateTimerFades(self)
 		end
---		if self.vb.phase == 1 then--Despair add
---			timerDespairCD:Start(1)
---		end
 	elseif spellId == 364031 and playersSouled[playerName] and self:CheckDispelFilter() then
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
@@ -650,20 +626,8 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 183033 then--Grim Reflection
 		castsPerGUID[args.destGUID] = nil
---	elseif cid == 184830 then--Beacon of Hope
-
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 366849 then

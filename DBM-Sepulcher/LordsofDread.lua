@@ -17,8 +17,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 360300 360304 360012 361934 362020 361945 359963 360418 360146 360148 363191 360241 360287 364985",
 	"SPELL_AURA_APPLIED_DOSE 360287",
 	"SPELL_AURA_REMOVED 360300 360304 360012 361934 362020 361945 360418 360146 360148 363191 360241 360516 364985",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
 )
 
@@ -388,23 +386,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--If not on a tank, it's just some numpty in wrong place
 			local amount = args.amount or 1
-			if amount >= 3 then
-				if args:IsPlayer() then
-					specWarnAnguishingStrikeStack:Show(amount)
-					specWarnAnguishingStrikeStack:Play("stackhigh")
-				else
---					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
---					local remaining
---					if expireTime then
---						remaining = expireTime-GetTime()
---					end
---					if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then--TODO, adjust remaining when Cd known
---						specWarnAnguishingStrikeTaunt:Show(args.destName)
---						specWarnAnguishingStrikeTaunt:Play("tauntboss")
---					else
-						warnAnguishingStrike:Show(args.destName, amount)
---					end
-				end
+			if args:IsPlayer() and amount >= 3 then
+				specWarnAnguishingStrikeStack:Show(amount)
+				specWarnAnguishingStrikeStack:Play("stackhigh")
 			else
 				warnAnguishingStrike:Show(args.destName, amount)
 			end
@@ -511,13 +495,3 @@ function mod:UNIT_DIED(args)
 		timerAnguishingStrikeCD:Stop()
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 8) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]

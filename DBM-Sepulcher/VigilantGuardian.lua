@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(180773)
 mod:SetEncounterID(2512)
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20220301000000)
 mod:SetMinSyncRevision(20220125000000)
 --mod.respawnTime = 29
@@ -13,13 +12,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 360412 361001 360176 360162 364447",
-	"SPELL_CAST_SUCCESS 360412 366693 359610 361001 360404 365315 360658 364881 360906",--364425
+	"SPELL_CAST_SUCCESS 360412 359610 361001 360404 365315 360658 364881 360906",--364425
 	"SPELL_SUMMON 360848 360623",
 	"SPELL_AURA_APPLIED 360458 364447 359610 360415 360414 364881 364962",
 	"SPELL_AURA_APPLIED_DOSE 364447 360415 360414",
 	"SPELL_AURA_REMOVED 364881 360879",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
 )
 
@@ -36,7 +33,6 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
 --Automa
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24374))
 local warnUnstableCore							= mod:NewTargetNoFilterAnnounce(360458, 3)
@@ -78,35 +74,16 @@ local specWarnPneumaticImpact					= mod:NewSpecialWarningTaunt(360414, nil, nil,
 local specWarnMatterDisolution					= mod:NewSpecialWarningYou(364881, nil, nil, nil, 1, 2)--Initial
 local specWarnMatterDisolutionOut				= mod:NewSpecialWarningMoveAway(364881, nil, nil, nil, 1, 2)--Delayed
 local yellMatterDisolutionFades					= mod:NewShortFadesYell(364881)
---local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 local timerSplitResolutionCD					= mod:NewCDTimer(30.2, 360162, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--30.2-34 (also acts as Pneumatic Impact timer)
 local timerMatterDisolutionCD					= mod:NewCDTimer(20.6, 364881, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption("8")
---mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
-
 mod:GroupSpells(360412, 360403)--Exposed Core and the shield you seek need to deal with mechanic
---mod:GroupSpells(360412, 360414)
 
 mod.vb.refractedCount = 0
 local castsPerGUID = {}
 
 local shieldName = DBM:GetSpellInfo(360403)
-
---[[
-function mod:BlastTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnBlast:Show()
-		specWarnBlast:Play("runout")
-		yellBlast:Yell()
-	else
-		warnBlast:CombinedShow(1, targetname)
-	end
-end
---]]
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -135,12 +112,6 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 end
-
---[[
-function mod:OnTimerRecovery()
-
-end
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -175,7 +146,6 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID][1] = castsPerGUID[args.sourceGUID][1] + 1
 		timerDissonanceCD:Start(castsPerGUID[args.sourceGUID][1] == 1 and 16 or 12.2, args.sourceGUID)
 	elseif spellId == 360176 and self:AntiSpam(3, 1) then
---		self:BossTargetScanner(args.sourceGUID, "BlastTarget", 0.1, 12)
 		warnBlast:Show()
 	elseif spellId == 360162 then
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -192,9 +162,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
---	elseif spellId == 364425 then
---		warnSurge:Show()
---	elseif spellId == 366693 then
 	elseif spellId == 359610 then
 		timerDeresolutionCD:Start()
 	elseif spellId == 361001 then
@@ -325,22 +292,8 @@ function mod:UNIT_DIED(args)
 		timerDissonanceCD:Stop(args.destGUID)
 		timerWaveofDisintegrationCD:Stop(args.destGUID)
 		castsPerGUID[args.destGUID] = nil
---	elseif cid == 181859 then--Reclamated Materium
-
---	elseif cid == 181856 then--Point Defense Drone
-
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 3) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 --NOTE: This may actually be buggy for now since sentries can inherit the bosses guid (and thus not be unique
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()

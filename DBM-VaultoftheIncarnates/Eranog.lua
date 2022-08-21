@@ -67,7 +67,7 @@ function mod:OnCombatStart(delay)
 	timerPrimalFlowCD:Start(1-delay)
 	timerPrimalForcesCD:Start(1-delay)
 	timerBlazingBrandCD:Start(1-delay)
-	if self.Options.NPAuraOnBurdenofDestiny or self.Options.NPAuraOnFixate or self.Options.NPAuraOnRampage then
+	if self.Options.NPAuraOnMoltenBarrier or self.Options.NPAuraOnFixate or self.Options.NPAuraOnRampage then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -79,7 +79,7 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-	if self.Options.NPAuraOnBurdenofDestiny or self.Options.NPAuraOnFixate or self.Options.NPAuraOnRampage then
+	if self.Options.NPAuraOnMoltenBarrier or self.Options.NPAuraOnFixate or self.Options.NPAuraOnRampage then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end

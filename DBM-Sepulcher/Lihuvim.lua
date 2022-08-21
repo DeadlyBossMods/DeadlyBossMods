@@ -21,10 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 362622 366012 363537 363795 363676 364312 363130 361200 368025 368024 368738 368740",--364092
 	"SPELL_AURA_APPLIED_DOSE 368024 368025",
 	"SPELL_AURA_REMOVED 363537 363795 363676 364312 363130 361200",--362622 366012 (mote Ids maybe?)
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"RAID_BOSS_WHISPER"
---	"UNIT_DIED"
 )
 
 --TODO, wait for blizzard to add mote debuffs into combat log, redundant RBW will cover it for now
@@ -44,7 +41,6 @@ local warnResonance								= mod:NewSpellAnnounce(368027, 3, nil, "Tank")
 local warnKineticResonance						= mod:NewStackAnnounce(368024, 2, nil, "Tank|Healer")
 local warnSunderingResonance					= mod:NewStackAnnounce(368025, 2, nil, "Tank|Healer")
 --Adds
---local warnDegenerate							= mod:NewTargetNoFilterAnnounce(364092, 4, nil, false)--Kinda spammy, but healer might want to opt into it
 local warnFormSentry							= mod:NewSpellAnnounce(365257, 2)
 
 --Boss
@@ -62,14 +58,8 @@ local specWarnDeconstructingEnergy				= mod:NewSpecialWarningYou(363795, nil, 37
 local specWarnDeconstructingEnergyTaunt			= mod:NewSpecialWarningTaunt(363795, nil, 37859, nil, 1, 2)--Shorttext "Bomb"
 local yellDeconstructingEnergy					= mod:NewYell(363795, 37859)--Shorttext "Bomb"
 local yellDeconstructingEnergyFades				= mod:NewShortFadesYell(363795, 37859)--Shorttext "Bomb"
---Adds
-----Degeneration Automa
---local specWarnDegenerate						= mod:NewSpecialWarningYou(364092, nil, nil, nil, 1, 2)
---local specWarnDespair							= mod:NewSpecialWarningInterrupt(357144, "HasInterrupt", nil, nil, 1, 2)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --Boss
---mod:AddTimerLine(BOSS)
 ----Mythic
 local timerAlignmentShiftCD						= mod:NewCDTimer(20.6, 362659, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Other
@@ -336,12 +326,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		self.vb.energyIcon = self.vb.energyIcon + 1
---	elseif spellId == 364092 and self:AntiSpam(3, args.destName) then
---		warnDegenerate:CombinedShow(1, args.destName)
---		if args:IsPlayer() then
---			specWarnDegenerate:Show()
---			specWarnDegenerate:Play("defensive")
---		end
 	elseif spellId == 364312 and args:IsDestTypeHostile() then
 		if self.Options.NPAuraOnEphemeralBarrier then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -427,28 +411,3 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnUnstableMote:Play("targetyou")
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 184735 or cid == 182053 or cid == 182197 then--degeneration-automa
-
-	elseif cid == 184737 or cid == 182074 then--acquisitions-automa
-
-	elseif cid == 182071 or cid == 184738 or cid == 182285 then--guardian-automa
-
-	elseif cid == 184126 or cid == 184135 then--defense-matrix-automa
-
-	end
-end
--]]
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
