@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --local specWarnDominationBolt					= mod:NewSpecialWarningInterrupt(363607, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---DBM:EJ_GetSectionInfo(24883)
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(24883))
 --local timerStaggeringBarrageCD					= mod:NewAITimer(35, 361018, nil, nil, nil, 3)
 --local timerDecaySprayCD							= mod:NewAITimer(35, 376811, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
