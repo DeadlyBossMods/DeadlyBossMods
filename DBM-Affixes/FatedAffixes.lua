@@ -25,6 +25,10 @@ mod:RegisterEvents(
 (ability.id = 372419 or ability.id = 372642 or ability.id = 372418 or ability.id = 372647 or ability.id = 372424) and type = "applybuff"
  or ability.id = 372638 and type = "begincast" or ability.id = 371254
  or (ability.id = 369505 or ability.id = 371447 or ability.id = 372286) and (type = "applybuff" or type = "applydebuff")
+ or (ability.id = 328921 or ability.id = 330959 or ability.id = 323402 or ability.id = 348805 or ability.id = 328117 or ability.id = 355525 or ability.id = 357739 or ability.id = 362505 or ability.id = 361200 or ability.id = 360300 or ability.id = 360304) and (type = "removebuff")
+ or (ability.id = 347376 or ability.id = 330959 or ability.id = 357729 or ability.id = 326005) and type = "cast"
+ or (ability.id = 348805 or ability.id = 350857 or ability.id = 348146 or ability.id = 355525 or ability.id = 352051 or ability.id = 357739 or ability.id = 362505 or ability.id = 360300 or ability.id = 360304 or ability.id = 368383 or ability.id = 181089 or ability.id = 323402) and type = "applybuff"
+ or (ability.id = 348974 or ability.id = 328117 or ability.id = 333932 or ability.id = 352293 or ability.id = 359235 or ability.id = 359236 or ability.id = 363130 or ability.id = 360717 or ability.id = 363533 or ability.id = 364114 or ability.id = 367851 or ability.id = 367290 or ability.id = 352660 or ability.id = 352538) and type = "begincast"
  or ability.id = 371597 or ability.id = 372634
 --]]
 local warnChaoticDestruction					= mod:NewCastAnnounce(372638, 3)--Add activating
@@ -57,10 +61,10 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {75},--Huntsman Altimor
 			[2412] = {75, 75},--Council of Blood (always 75, but restarts after dances)
-			[2402] = {},--Kael
+			[2402] = {75},--Kael
 			[2398] = {},--Shriekwing
 			[2405] = {},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2383] = {75},--Hungering Destroyer
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
@@ -93,10 +97,10 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {3.8},--Huntsman Altimor
 			[2412] = {3.8, 3.2},--Council of Blood
-			[2402] = {},--Kael
+			[2402] = {3.8},--Kael
 			[2398] = {},--Shriekwing
 			[2405] = {},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2383] = {3.8},--Hungering Destroyer
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {},--Stoneborne Generals
@@ -132,12 +136,12 @@ local specialTimers = {
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
-			[2398] = {},--Shriekwing
+			[2398] = {58.8, 58.8},--Shriekwing
 			[2405] = {58.8},--Artificer XyMox
 			[2383] = {},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {58.8},--Lady Inerva Darkvein
 			[2399] = {58.8},--Sludgefist
-			[2417] = {},--Stoneborne Generals
+			[2417] = {58.8},--Stoneborne Generals
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
@@ -168,12 +172,12 @@ local specialTimers = {
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
 			[2402] = {},--Kael
-			[2398] = {},--Shriekwing
+			[2398] = {10, 12.4},--Shriekwing
 			[2405] = {10},--Artificer XyMox
 			[2383] = {},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {10},--Lady Inerva Darkvein
 			[2399] = {10},--Sludgefist
-			[2417] = {},--Stoneborne Generals
+			[2417] = {10},--Stoneborne Generals
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
@@ -208,10 +212,10 @@ local specialTimers = {
 			[2412] = {},--Council of Blood
 			[2402] = {60},--Kael (always 60 but reflection of guilt fading causes an ICD that delays current cast, but not one after it)
 			[2398] = {},--Shriekwing
-			[2405] = {},--Artificer XyMox
+			[2405] = {60},--Artificer XyMox
 			[2383] = {60},--Hungering Destroyer
 			[2406] = {},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {70},--Sludgefist
 			[2417] = {},--Stoneborne Generals
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
@@ -244,10 +248,10 @@ local specialTimers = {
 			[2412] = {},--Council of Blood
 			[2402] = {13.8},--Kael
 			[2398] = {},--Shriekwing
-			[2405] = {},--Artificer XyMox
+			[2405] = {13.8},--Artificer XyMox
 			[2383] = {13.8},--Hungering Destroyer
 			[2406] = {},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {34},--Sludgefist
 			[2417] = {},--Stoneborne Generals
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
@@ -279,8 +283,8 @@ local specialTimers = {
 	[372647] = {-- Creation Spark
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2418] = {44.9},--Huntsman Altimor
+			[2412] = {44.9, 44.9},--Council of Blood
 			[2402] = {},--Kael
 			[2398] = {44.9, 44.9},--Shriekwing
 			[2405] = {},--Artificer XyMox
@@ -288,7 +292,7 @@ local specialTimers = {
 			[2406] = {44.9},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {44.9},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {57.9, 84.9, 70},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
@@ -315,8 +319,8 @@ local specialTimers = {
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2418] = {18.9},--Huntsman Altimor
+			[2412] = {18.9, 18.2},--Council of Blood
 			[2402] = {},--Kael
 			[2398] = {18.9, 20},--Shriekwing
 			[2405] = {},--Artificer XyMox
@@ -324,7 +328,7 @@ local specialTimers = {
 			[2406] = {18.9},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
 			[2417] = {18.9},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {2, 24.5, 39.5},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
