@@ -29,9 +29,9 @@ local specWarnFrenzy						= mod:NewSpecialWarningDispel(338847, "RemoveEnrage", 
 local specWarnScreamingSkull				= mod:NewSpecialWarningMoveTo(338851, nil, nil, 2, 1, 2)
 local specWarnUnrulyremains					= mod:NewSpecialWarningDodge(338849, nil, nil, nil, 2, 2)
 
-local timerSpineCrawlCD						= mod:NewCDTimer(21.6, 338848, nil, nil, nil, 3)
+local timerSpineCrawlCD						= mod:NewCDTimer(20.3, 338848, nil, nil, nil, 3)
 local timerFrenzyCD							= mod:NewCDTimer(33.2, 338847, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
-local timerScreamingSkullCD					= mod:NewCDTimer(31.6, 338851, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerScreamingSkullCD					= mod:NewCDTimer(26.7, 338851, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerBoneCleaveCD						= mod:NewCDTimer(12.3, 338846, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerUnrulyRemainsCD					= mod:NewCDTimer(15.6, 338849, nil, nil, nil, 3)--15.6-20
 
