@@ -473,7 +473,7 @@ function mod:SPELL_CAST_START(args)
 			warnTyranny:Schedule(8)
 			timerTyrany:Start(8)--hit is at 11, so we do hit minus 3 for the cast (which is hidden)
 		end
-		if self:IsFated() then
+		if spellId == 367851 and self:IsFated() then
 			self:AffixEvent(0)--Stop Affix Bars
 		end
 	elseif spellId == 360373 then

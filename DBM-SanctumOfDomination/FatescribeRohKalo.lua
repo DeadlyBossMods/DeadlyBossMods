@@ -396,7 +396,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerRunicAffinityCD:Start(timer, self.vb.affinityCount+1)
 			end
 		end
-	elseif spellId == 357739 then
+	elseif spellId == 357739 then--Realign Fate
 		self:SetStage(2)
 		if self:IsFated() then
 			self:AffixEvent(0)
