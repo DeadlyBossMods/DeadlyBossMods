@@ -710,7 +710,7 @@ do
 			if not found then
 				--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
 				if delay < 10 then
-					self:Schedule(1, CheckBosses, eID, delay+1)
+					mod:Schedule(1, CheckBosses, eID, delay+1)
 				else
 					DBM:AddMsg("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
 				end
