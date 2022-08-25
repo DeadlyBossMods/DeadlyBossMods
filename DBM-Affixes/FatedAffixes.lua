@@ -665,7 +665,7 @@ do
 					found = true
 					activeAffixes[372419] = eID
 					borrowedTime[372419] = nil
-					local timer = (specialTimers[372419][1][eID][1] or 3.9)-delay
+					local timer = (specialTimers[372419][1][eID][1] or 4.9)-delay
 					if timer > 0 then
 						timerReconfigurationEmitterCD:Start(timer)
 					end
@@ -674,7 +674,7 @@ do
 					found = true
 					activeAffixes[372642] = eID
 					borrowedTime[372642] = nil
-					local timer = (specialTimers[372642][1][eID][1] or 10.1)-delay
+					local timer = (specialTimers[372642][1][eID][1] or 11)-delay
 					if timer > 0 then
 						timerChaoticEssenceCD:Start(timer)
 					end
@@ -683,7 +683,7 @@ do
 					found = true
 					activeAffixes[372418] = eID
 					borrowedTime[372418] = nil
-					local timer = (specialTimers[372418][1][eID][1] or 14)-delay
+					local timer = (specialTimers[372418][1][eID][1] or 15)-delay
 					if timer > 0 then
 						timerProtoformBarrierCD:Start(timer)
 					end
@@ -692,7 +692,7 @@ do
 					found = true
 					activeAffixes[372647] = eID
 					borrowedTime[372647] = nil
-					local timer = (specialTimers[372647][1][eID][1] or 18.9)-delay
+					local timer = (specialTimers[372647][1][eID][1] or 19.9)-delay
 					if timer > 0 then
 						timerCreationSparkCD:Start(timer)
 					end
@@ -707,13 +707,13 @@ do
 					--end
 				end
 			end
-			if not found then
-				--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
-				if delay < 10 then
-					mod:Schedule(1, CheckBosses, eID, delay+1)
-				else
-					DBM:AddMsg("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
-				end
+		end
+		if not found then
+			--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
+			if delay < 10 then
+				mod:Schedule(1, CheckBosses, eID, delay+1)
+			else
+				DBM:AddMsg("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
 			end
 		end
 	end
