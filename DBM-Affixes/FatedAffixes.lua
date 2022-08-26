@@ -655,49 +655,48 @@ do
 		for i = 1, 8 do
 			local unitID = "boss"..i
 			local unitGUID = UnitGUID(unitID)
-			if UnitExists(unitID) and not activeBosses[eID] then
-				activeBosses[eID] = 1
+			if UnitExists(unitID) then
 				--Currently it's only possible for bosses to have one of them
 				--However, we don't elseif rule it because it future proofs support for a case boss might later support 2+
 				--Code will break if more than one boss pulled at same time with same affix though
 				--All timers are minus 1
-				if DBM:UnitBuff(unitID, 372419) then--Fated Power: Reconfiguration Emitter
+				if DBM:UnitBuff(unitID, 372419) and not activeAffixes[372419] then--Fated Power: Reconfiguration Emitter
 					found = true
 					activeAffixes[372419] = eID
 					borrowedTime[372419] = nil
-					local timer = (specialTimers[372419][1][eID][1] or 3.9)-delay
+					local timer = (specialTimers[372419][1][eID][1] or 4.9)-delay
 					if timer > 0 then
 						timerReconfigurationEmitterCD:Start(timer)
 					end
 				end
-				if DBM:UnitBuff(unitID, 372642) then--Fated Power: Chaotic Essence
+				if DBM:UnitBuff(unitID, 372642) and not activeAffixes[372642] then--Fated Power: Chaotic Essence
 					found = true
 					activeAffixes[372642] = eID
 					borrowedTime[372642] = nil
-					local timer = (specialTimers[372642][1][eID][1] or 10.1)-delay
+					local timer = (specialTimers[372642][1][eID][1] or 11)-delay
 					if timer > 0 then
 						timerChaoticEssenceCD:Start(timer)
 					end
 				end
-				if DBM:UnitBuff(unitID, 372418) then--Fated Power: Protoform Barrier
+				if DBM:UnitBuff(unitID, 372418) and not activeAffixes[372418] then--Fated Power: Protoform Barrier
 					found = true
 					activeAffixes[372418] = eID
 					borrowedTime[372418] = nil
-					local timer = (specialTimers[372418][1][eID][1] or 14)-delay
+					local timer = (specialTimers[372418][1][eID][1] or 15)-delay
 					if timer > 0 then
 						timerProtoformBarrierCD:Start(timer)
 					end
 				end
-				if DBM:UnitBuff(unitID, 372647) then--Fated Power: Creation Spark
+				if DBM:UnitBuff(unitID, 372647) and not activeAffixes[372647] then--Fated Power: Creation Spark
 					found = true
 					activeAffixes[372647] = eID
 					borrowedTime[372647] = nil
-					local timer = (specialTimers[372647][1][eID][1] or 18.9)-delay
+					local timer = (specialTimers[372647][1][eID][1] or 19.9)-delay
 					if timer > 0 then
 						timerCreationSparkCD:Start(timer)
 					end
 				end
-				if DBM:UnitBuff(unitID, 372424) then--Fated Power: Replicating Essence
+				if DBM:UnitBuff(unitID, 372424) and not activeAffixes[372424] then--Fated Power: Replicating Essence
 					found = true
 					activeAffixes[372424] = eID
 					borrowedTime[372424] = nil
@@ -706,12 +705,17 @@ do
 						timerReplicatingEssenceCD:Start(1)
 					--end
 				end
+				if found then
+					activeBosses[eID] = 1
+				end
 			end
-			if not found then
-				--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
-				if delay < 10 then
-					mod:Schedule(1, CheckBosses, eID, delay+1)
-				else
+		end
+		if not found then
+			--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
+			if delay < 10 then
+				mod:Schedule(2, CheckBosses, eID, delay+2)
+			else
+				if not activeBosses[eID] then
 					DBM:AddMsg("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
 				end
 			end
