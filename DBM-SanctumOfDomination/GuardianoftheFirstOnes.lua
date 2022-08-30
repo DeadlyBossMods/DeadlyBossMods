@@ -513,10 +513,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 352660 then
 		warnFormSentry:Show()
-		if self:IsFated() then
-			--Best place to do this instead of the currently hacky phase change. It's always consistent time after form sentry
-			self:AffixEvent(1, 2)
-		end
 	elseif spellId == 356090 then
 		self.vb.threatCount = self.vb.threatCount + 1
 		isMelee = {[1] = false,[2] = false,[3] = false,}
@@ -552,6 +548,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDisintegrationCD:Start(self:IsEasy() and 18 or 5.8)
 		timerFormSentryCD:Start(self:IsEasy() and 10.7 or 18)
 		timerEliminationPatternCD:Start(28.2, self.vb.patternCount+1)
+		if self:IsFated() then
+			--Not as good as form sentry in accuracy of timer, but better for start accuracy to avoid starting on pull form sentry
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = true
 		if args:IsPlayer() then
