@@ -25,9 +25,9 @@ mod:RegisterEvents(
 (ability.id = 372419 or ability.id = 372642 or ability.id = 372418 or ability.id = 372647 or ability.id = 372424) and type = "applybuff"
  or ability.id = 372638 and type = "begincast" or ability.id = 371254
  or (ability.id = 369505 or ability.id = 371447 or ability.id = 372286) and (type = "applybuff" or type = "applydebuff")
- or (ability.id = 328921 or ability.id = 330959 or ability.id = 323402 or ability.id = 348805 or ability.id = 328117 or ability.id = 355525 or ability.id = 357739 or ability.id = 362505 or ability.id = 361200 or ability.id = 360300 or ability.id = 360304) and (type = "removebuff")
+ or (ability.id = 328921 or ability.id = 330959 or ability.id = 323402 or ability.id = 348805 or ability.id = 328117 or ability.id = 355525 or ability.id = 357739 or ability.id = 362505 or ability.id = 361200 or ability.id = 360300 or ability.id = 360304 or ability.id = 352385) and (type = "removebuff")
  or (ability.id = 347376 or ability.id = 330959 or ability.id = 357729 or ability.id = 326005) and type = "cast"
- or (ability.id = 348805 or ability.id = 350857 or ability.id = 348146 or ability.id = 355525 or ability.id = 352051 or ability.id = 357739 or ability.id = 362505 or ability.id = 360300 or ability.id = 360304 or ability.id = 368383 or ability.id = 181089 or ability.id = 323402) and type = "applybuff"
+ or (ability.id = 348805 or ability.id = 350857 or ability.id = 348146 or ability.id = 355525 or ability.id = 352051 or ability.id = 357739 or ability.id = 362505 or ability.id = 360300 or ability.id = 360304 or ability.id = 368383 or ability.id = 181089 or ability.id = 323402 or ability.id = 352385) and type = "applybuff"
  or (ability.id = 348974 or ability.id = 328117 or ability.id = 333932 or ability.id = 352293 or ability.id = 359235 or ability.id = 359236 or ability.id = 363130 or ability.id = 360717 or ability.id = 363533 or ability.id = 364114 or ability.id = 367851 or ability.id = 367290 or ability.id = 352660 or ability.id = 352538) and type = "begincast"
  or ability.id = 371597 or ability.id = 372634
 --]]
@@ -70,15 +70,15 @@ local specialTimers = {
 			[2417] = {},--Stoneborne Generals
 			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
 			--Sanctum of Domination
-			[2423] = {},--The Tarragrue
+			[2423] = {75},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
 			[2429] = {},--The Nine
 			[2432] = {75},--Remnant of Ner'zhul
-			[2434] = {},--Soulrender Dormazain
+			[2434] = {75},--Soulrender Dormazain
 			[2430] = {},--Painsmith Raznal
 			[2436] = {},--Guardian of the First Ones
 			[2431] = {80, 80, 80},--Fatescribe Roh-Kalo
-			[2422] = {},--Kel'Thuzad
+			[2422] = {75, 75},--Kel'Thuzad
 			[2435] = {},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
 			[2512] = {},--Vigilant Guardian
@@ -106,15 +106,15 @@ local specialTimers = {
 			[2417] = {},--Stoneborne Generals
 			[2407] = {24.9, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
 			--Sanctum of Domination
-			[2423] = {},--The Tarragrue
+			[2423] = {4.8},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
 			[2429] = {},--The Nine
 			[2432] = {4.8},--Remnant of Ner'zhul
-			[2434] = {},--Soulrender Dormazain
+			[2434] = {4.8},--Soulrender Dormazain
 			[2430] = {},--Painsmith Raznal
 			[2436] = {},--Guardian of the First Ones
 			[2431] = {4.8, 10, 10},--Fatescribe Roh-Kalo
-			[2422] = {},--Kel'Thuzad
+			[2422] = {4.8, 5},--Kel'Thuzad
 			[2435] = {},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
 			[2512] = {},--Vigilant Guardian
@@ -146,11 +146,11 @@ local specialTimers = {
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {54.7, 54.7, 54.7},--The Eye of the Jailer
-			[2429] = {},--The Nine
+			[2429] = {58.8},--The Nine
 			[2432] = {},--Remnant of Ner'zhul
 			[2434] = {},--Soulrender Dormazain
 			[2430] = {58.8, 58.8, 58.8},--Painsmith Raznal
-			[2436] = {},--Guardian of the First Ones
+			[2436] = {0, 0},--Guardian of the First Ones
 			[2431] = {},--Fatescribe Roh-Kalo
 			[2422] = {},--Kel'Thuzad
 			[2435] = {58.8, 0, 58.8},--Sylvanas Windrunner (stage 2 timers are chaotic and not quite figured out yet, so disabled)
@@ -182,11 +182,11 @@ local specialTimers = {
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {11, 3.3, 35.1},--The Eye of the Jailer
-			[2429] = {},--The Nine
+			[2429] = {11},--The Nine
 			[2432] = {},--Remnant of Ner'zhul
 			[2434] = {},--Soulrender Dormazain
 			[2430] = {11, 17.3, 17.3},--Painsmith Raznal
-			[2436] = {},--Guardian of the First Ones
+			[2436] = {41.1, 38.6},--Guardian of the First Ones
 			[2431] = {},--Fatescribe Roh-Kalo
 			[2422] = {},--Kel'Thuzad
 			[2435] = {11, 0, 26},--Sylvanas Windrunner (stage 2 timers are chaotic and not quite figured out yet, so disabled)
@@ -220,15 +220,15 @@ local specialTimers = {
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {60},--The Tarragrue
-			[2433] = {},--The Eye of the Jailer
+			[2433] = {60, 60, 60},--The Eye of the Jailer
 			[2429] = {},--The Nine
 			[2432] = {},--Remnant of Ner'zhul
 			[2434] = {60},--Soulrender Dormazain
-			[2430] = {},--Painsmith Raznal
+			[2430] = {60, 60, 60},--Painsmith Raznal
 			[2436] = {},--Guardian of the First Ones
 			[2431] = {},--Fatescribe Roh-Kalo
 			[2422] = {60, 60},--Kel'Thuzad
-			[2435] = {},--Sylvanas Windrunner
+			[2435] = {60, 0, 60},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
 			[2512] = {},--Vigilant Guardian
 			[2542] = {},--Skolex, the Insatiable Ravener
@@ -256,15 +256,15 @@ local specialTimers = {
 			[2407] = {},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {14.8},--The Tarragrue
-			[2433] = {},--The Eye of the Jailer
+			[2433] = {14.8, 30.4, 4.3},--The Eye of the Jailer
 			[2429] = {},--The Nine
 			[2432] = {},--Remnant of Ner'zhul
 			[2434] = {14.8},--Soulrender Dormazain
-			[2430] = {},--Painsmith Raznal
+			[2430] = {14.8, 21, 20.3},--Painsmith Raznal
 			[2436] = {},--Guardian of the First Ones
 			[2431] = {},--Fatescribe Roh-Kalo
 			[2422] = {14.8, 15},--Kel'Thuzad
-			[2435] = {},--Sylvanas Windrunner
+			[2435] = {14.8, 0, 30},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
 			[2512] = {},--Vigilant Guardian
 			[2542] = {},--Skolex, the Insatiable Ravener
@@ -297,11 +297,11 @@ local specialTimers = {
 			[2423] = {},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
 			[2429] = {44.9},--The Nine
-			[2432] = {},--Remnant of Ner'zhul
+			[2432] = {44.9},--Remnant of Ner'zhul
 			[2434] = {},--Soulrender Dormazain
 			[2430] = {},--Painsmith Raznal
-			[2436] = {0},--Guardian of the First Ones (unknown, since the stage resetting it are far more likely than seeing it twice)
-			[2431] = {},--Fatescribe Roh-Kalo
+			[2436] = {0, 0},--Guardian of the First Ones (unknown, since the stage resetting it are far more likely than seeing it twice)
+			[2431] = {80, 80, 80},--Fatescribe Roh-Kalo (first one known, guessed to match same as other 2)
 			[2422] = {},--Kel'Thuzad
 			[2435] = {},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
@@ -333,11 +333,11 @@ local specialTimers = {
 			[2423] = {},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
 			[2429] = {19.9},--The Nine
-			[2432] = {},--Remnant of Ner'zhul
+			[2432] = {19.9},--Remnant of Ner'zhul
 			[2434] = {},--Soulrender Dormazain
 			[2430] = {},--Painsmith Raznal
-			[2436] = {30, 9},--Guardian of the First Ones
-			[2431] = {},--Fatescribe Roh-Kalo
+			[2436] = {30, 27},--Guardian of the First Ones
+			[2431] = {19.9, 25.5, 24.7},--Fatescribe Roh-Kalo
 			[2422] = {},--Kel'Thuzad
 			[2435] = {},--Sylvanas Windrunner
 			--Sepulcher of the First Ones
