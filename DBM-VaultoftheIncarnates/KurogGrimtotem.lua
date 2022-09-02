@@ -256,7 +256,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFrigidOrbs:Show()
 		specWarnFrigidOrbs:Play("watchorb")
 		timerFrigidOrbsCD:Start()
-	elseif spellId = 391055 then
+	elseif spellId == 391055 then
 		timerEnvelopingEarthCD:Start()
 	elseif spellId == 390796 then
 		specWarnEruptingBedrock:Show()
