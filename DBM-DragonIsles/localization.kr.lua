@@ -11,6 +11,24 @@ local L
 --})
 
 -----------------------
+-- Liskanoth --
+-----------------------
+--L= DBM:GetModLocalization(2518)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})
+
+-----------------------
+-- Bazual, The Dreaded Flame --
+-----------------------
+--L= DBM:GetModLocalization(2517)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})
+
+-----------------------
 -- Basrikron, The Shale Wing --
 -----------------------
 --L= DBM:GetModLocalization(2506)
