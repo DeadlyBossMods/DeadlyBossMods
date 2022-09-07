@@ -332,9 +332,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM:Debug("timerFearfulTrepidationCD extended by: "..extend, 2)
 		end
 		timerFearfulTrepidationCD:Pause(self.vb.fearfulCount+1)
-		if self:IsFated() then
-			self:AffixEvent(1, 2)
-		end
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Start(self:IsEasy() and 40 or 25)
 	elseif spellId == 360146 then
@@ -434,6 +431,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerInfiltrationofDreadCD:Start(nil, self.vb.infiltrationCount+1)--122.5
 		--These timers resume
 		timerFearfulTrepidationCD:Resume(self.vb.fearfulCount+1)
+		if self:IsFated() then
+			self:AffixEvent(1, 2)
+		end
 	elseif spellId == 360418 and args:IsPlayer() then
 		timerParanoia:Stop()
 	elseif spellId == 360012 then

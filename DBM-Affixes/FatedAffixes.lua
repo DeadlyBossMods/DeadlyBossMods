@@ -25,10 +25,10 @@ mod:RegisterEvents(
 (ability.id = 372419 or ability.id = 372642 or ability.id = 372418 or ability.id = 372647 or ability.id = 372424) and type = "applybuff"
  or ability.id = 372638 and type = "begincast" or ability.id = 371254
  or (ability.id = 369505 or ability.id = 371447 or ability.id = 372286) and (type = "applybuff" or type = "applydebuff")
- or (ability.id = 328921 or ability.id = 330959 or ability.id = 323402 or ability.id = 348805 or ability.id = 328117 or ability.id = 355525 or ability.id = 357739 or ability.id = 362505 or ability.id = 361200 or ability.id = 360300 or ability.id = 360304 or ability.id = 352385) and (type = "removebuff")
+ or (ability.id = 328921 or ability.id = 330959 or ability.id = 323402 or ability.id = 348805 or ability.id = 328117 or ability.id = 355525 or ability.id = 357739 or ability.id = 362505 or ability.id = 361200 or ability.id = 360300 or ability.id = 360304 or ability.id = 352385 or ability.id = 360516) and (type = "removebuff")
  or (ability.id = 347376 or ability.id = 330959 or ability.id = 357729 or ability.id = 326005) and type = "cast"
  or (ability.id = 348805 or ability.id = 350857 or ability.id = 348146 or ability.id = 355525 or ability.id = 352051 or ability.id = 357739 or ability.id = 362505 or ability.id = 360300 or ability.id = 360304 or ability.id = 368383 or ability.id = 181089 or ability.id = 323402 or ability.id = 352385) and type = "applybuff"
- or (ability.id = 348974 or ability.id = 328117 or ability.id = 333932 or ability.id = 352293 or ability.id = 359235 or ability.id = 359236 or ability.id = 363130 or ability.id = 360717 or ability.id = 363533 or ability.id = 364114 or ability.id = 367851 or ability.id = 367290 or ability.id = 352660 or ability.id = 352538) and type = "begincast"
+ or (ability.id = 348974 or ability.id = 328117 or ability.id = 333932 or ability.id = 352293 or ability.id = 359235 or ability.id = 359236 or ability.id = 363130 or ability.id = 360717 or ability.id = 363533 or ability.id = 364114 or ability.id = 367851 or ability.id = 367290 or ability.id = 352660 or ability.id = 352538 or ability.id = 365872) and type = "begincast"
  or ability.id = 371597 or ability.id = 372634
 --]]
 local warnChaoticDestruction					= mod:NewCastAnnounce(372638, 3)--Add activating
@@ -88,8 +88,8 @@ local specialTimers = {
 			[2544] = {75},--Prototype Pantheon
 			[2539] = {},--Lihuvim, Principal Architect
 			[2529] = {},--Halondrus the Reclaimer
-			[2546] = {75, 75},--Anduin Wrynn
-			[2543] = {},--Lords of Dread
+			[2546] = {75, 75, 75},--Anduin Wrynn
+			[2543] = {0, 0},--Lords of Dread (only cast once per phase cycle so no in between casts timers)
 			[2549] = {},--Rygelon
 			[2537] = {},--The Jailer
 		},
@@ -124,8 +124,8 @@ local specialTimers = {
 			[2544] = {4.8},--Prototype Pantheon
 			[2539] = {},--Lihuvim, Principal Architect
 			[2529] = {},--Halondrus the Reclaimer
-			[2546] = {4.8, 8.6},--Anduin Wrynn
-			[2543] = {},--Lords of Dread
+			[2546] = {4.8, 8.6, 11.5},--Anduin Wrynn
+			[2543] = {10, 9.1},--Lords of Dread
 			[2549] = {},--Rygelon
 			[2537] = {},--The Jailer
 		},
@@ -165,7 +165,7 @@ local specialTimers = {
 			[2546] = {},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
 			[2549] = {0, 0},--Rygelon (has no CD, it's just synced to singularity stage beginnings and not recast any other time)
-			[2537] = {},--The Jailer
+			[2537] = {0, 0, 0, 0},--The Jailer
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
@@ -201,7 +201,7 @@ local specialTimers = {
 			[2546] = {},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
 			[2549] = {0, 15.7},--Rygelon (doesn't use affix on engage at all. Instead, affix is disabled and only enabled in singularity stages)
-			[2537] = {},--The Jailer
+			[2537] = {2.2, 3.5, 15, 2},--The Jailer
 		},
 
 	},
@@ -239,7 +239,7 @@ local specialTimers = {
 			[2529] = {60, 60},--Halondrus the Reclaimer
 			[2546] = {},--Anduin Wrynn
 			[2543] = {0, 0},--Lords of Dread (no in between casts, since it's reset by both bosses specials)
-			[2549] = {},--Rygelon
+			[2549] = {0, 0},--Rygelon
 			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
@@ -275,7 +275,7 @@ local specialTimers = {
 			[2529] = {14.8, 21, 21},--Halondrus the Reclaimer
 			[2546] = {},--Anduin Wrynn
 			[2543] = {20, 19},--Lords of Dread
-			[2549] = {},--Rygelon
+			[2549] = {0, 14.7},--Rygelon (only used after big bang)
 			[2537] = {},--The Jailer
 		},
 
@@ -312,7 +312,7 @@ local specialTimers = {
 			[2544] = {44.9},--Prototype Pantheon
 			[2539] = {44.9, 44.9},--Lihuvim, Principal Architect
 			[2529] = {},--Halondrus the Reclaimer
-			[2546] = {},--Anduin Wrynn
+			[2546] = {44.9, 44.9, 44.9},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
 			[2549] = {},--Rygelon
 			[2537] = {44.9, 44.9, 44.9, 44.9},--The Jailer (stage 4 not yet known)
@@ -348,10 +348,10 @@ local specialTimers = {
 			[2544] = {19.9},--Prototype Pantheon
 			[2539] = {19.9, 39.8},--Lihuvim, Principal Architect
 			[2529] = {},--Halondrus the Reclaimer
-			[2546] = {},--Anduin Wrynn
+			[2546] = {19.9, 23.6, 26.6},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
 			[2549] = {},--Rygelon
-			[2537] = {19.9, 20.9, 33.9, 0},--The Jailer (stage 4 not yet known)
+			[2537] = {19.9, 20.9, 33.9, 0},--The Jailer (stage 4 cast immediately)
 		},
 
 	},
