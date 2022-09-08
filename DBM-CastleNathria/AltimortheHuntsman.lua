@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Huntsman Altimor
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
-local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnSinseeker								= mod:NewTargetNoFilterAnnounce(335114, 4)
 local warnSpreadshot							= mod:NewSpellAnnounce(334404, 3)
 
