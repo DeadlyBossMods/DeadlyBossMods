@@ -242,7 +242,7 @@ function mod:SPELL_CAST_START(args)
 		timerCosmicShiftCD:Stop()
 		timerResonanceCD:Stop()
 		if self:IsFated() then
-			self:AffixEvent(0)
+			self:AffixEvent(1, 2)--Restarts
 		end
 	elseif spellId == 364652 then
 		self.vb.cascadeCount = self.vb.cascadeCount + 1
@@ -399,9 +399,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerResonanceCD:Start(38.8, 1)
 		end
 		timerSynthesizeCD:Start(91.4, self.vb.synthesizeCount+1)
-		if self:IsFated() then
-			self:AffixEvent(1, 2)
-		end
 	end
 end
 

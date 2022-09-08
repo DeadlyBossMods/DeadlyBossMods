@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 373329 376326 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920",
+	"SPELL_CAST_START 390548 373678 382563 373487 373329 376326 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268",
 	"SPELL_CAST_SUCCESS 374861",
 	"SPELL_SUMMON 374935 374931 374939 374943",
 	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 374023 372458 372514 372517 374945 374380 374427 374573 391056 390921",
@@ -37,6 +37,11 @@ mod:RegisterEventsInCombat(
 --TODO, revisit thunder strike automation. May want to combine warnings to generalized warning instead of saying soak/avoid
 --TODO, can https://www.wowhead.com/beta/spell=376063/flame-bolt be interrupted?
 --TODO, target scan https://www.wowhead.com/beta/spell=374622/storm-front ?
+--TODO, announce https://www.wowhead.com/beta/spell=391555/raging-inferno spawns on mythic? They spawn from Searing
+--TODO, smart change checker for https://www.wowhead.com/beta/spell=391272/icy-tempest on mythic
+--TODO, detect Granite Doppelboulder spawns on mythic Earth Alter
+--TODO, is Sundering smash (391268) dodgable by tank? is it even aimed at tank?
+--TODO, Blazing Fiend uses searing carnage on mythic?
 --General
 local warnPhase1								= mod:NewPhaseAnnounce(1, 2)
 
@@ -104,10 +109,12 @@ local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
 local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(390796, "Melee", nil, nil, 2, 2)
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
+local specWarnSunderingSmash					= mod:NewSpecialWarningSpell(391268, nil, nil, nil, 1, 2)--Granite Doppelboulder
 
 local timerEnvelopingEarthCD					= mod:NewAITimer(35, 391055, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEruptingBedrockCD					= mod:NewAITimer(35, 390796, nil, nil, nil, 2)
 local timerSeismicRuptureCD						= mod:NewAITimer(35, 374691, nil, nil, nil, 3)
+local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Granite Doppelboulder
 --Storm Altar An altar of primal storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
 local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
@@ -207,7 +214,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.chillCast = self.vb.chillCast + 1
 		warnBitingChill:Show(self.vb.chillCast)
 		timerBitingChillCD:Start()
-	elseif spellId == 382563 then
+	elseif spellId == 382563 or spellId == 392125 then--Non Mythic, Mythic
 		specWarnMagmaBurst:Show()
 		specWarnMagmaBurst:Play("watchwave")
 		timerMagmaBurstCD:Start()
@@ -218,7 +225,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMoltenRupture:Show()
 		specWarnMoltenRupture:Play("watchwave")
 		timerMoltenRuptureCD:Start()
-	elseif spellId == 374022 then
+	elseif spellId == 374022 or spellId == 392192 or spellId == 392152 then--Normal/Heroic, LFR, Mythic (assumed)
 		self.vb.searingIcon = 4
 		timerSearingCarnageCD:Start()
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
@@ -262,6 +269,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnEruptingBedrock:Show()
 		specWarnEruptingBedrock:Play("justrun")
 		timerEruptingBedrockCD:Start()
+	elseif spellId == 391268 then
+		timerSunderingSmashCD:Start(nil, args.sourceGUID)
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+			specWarnSunderingSmash:Show()
+			specWarnSunderingSmash:Play("carefly")
+		end
 	end
 end
 
@@ -548,6 +561,8 @@ function mod:UNIT_DIED(args)
 		timerStormFrontCD:Stop(args.destGUID)
 --	elseif cid == 190586 then--seismic-pillar
 
+--	elseif cid == Granite Doppelboulder then--Granite Doppelboulder
+		--timerSunderingSmashCD:Stop(args.destGUID)
 	end
 end
 
