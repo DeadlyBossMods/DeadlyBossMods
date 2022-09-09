@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 366132 and type = "applydebuff"
 --]]
 --General
-local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnHealAzeroth							= mod:NewAnnounce("warnHealAzeroth", 3, 366401, nil, nil, nil, 366401)
 
 local timerPhaseCD								= mod:NewPhaseTimer(30)

@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 326271 or ability.id = 325361 or ability.id = 181089) and type = "cast"
 --]]
 mod:AddTimerLine(BOSS)
-local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDimensionalTear							= mod:NewTargetNoFilterAnnounce(328437, 3, nil, nil, 327770)
 local warnHyperlightSpark							= mod:NewCountAnnounce(325399, 2, nil, false, 2)
 

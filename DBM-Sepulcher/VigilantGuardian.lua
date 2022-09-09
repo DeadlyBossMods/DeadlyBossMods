@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 360879
 --]]
 --General
-local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
 --Automa
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24374))
