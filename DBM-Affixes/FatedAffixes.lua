@@ -61,14 +61,14 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {75},--Huntsman Altimor
 			[2412] = {75, 75},--Council of Blood (always 75, but restarts after dances)
-			[2402] = {75},--Kael
+			[2402] = {75, 75},--Kael
 			[2398] = {},--Shriekwing
-			[2405] = {},--Artificer XyMox
+			[2405] = {75},--Artificer XyMox
 			[2383] = {75},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {75},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
-			[2417] = {},--Stoneborne Generals
-			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-84 for Stage 2 if hand of destruction cast pushes it back
+			[2417] = {75},--Stoneborne Generals
+			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-89 for Stage 2 if hand of destruction cast pushes it back
 			--Sanctum of Domination
 			[2423] = {75},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
@@ -99,12 +99,12 @@ local specialTimers = {
 			[2412] = {4.8, 3.2},--Council of Blood
 			[2402] = {4.8},--Kael
 			[2398] = {},--Shriekwing
-			[2405] = {},--Artificer XyMox
+			[2405] = {4.8},--Artificer XyMox
 			[2383] = {4.8},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {4.8},--Lady Inerva Darkvein
 			[2399] = {},--Sludgefist
-			[2417] = {},--Stoneborne Generals
-			[2407] = {24.9, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
+			[2417] = {4.8},--Stoneborne Generals
+			[2407] = {24, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
 			--Sanctum of Domination
 			[2423] = {4.8},--The Tarragrue
 			[2433] = {},--The Eye of the Jailer
@@ -135,10 +135,10 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
-			[2402] = {},--Kael
+			[2402] = {58.8, 58.8},--Kael
 			[2398] = {58.8, 58.8},--Shriekwing
 			[2405] = {58.8},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2383] = {58.8},--Hungering Destroyer
 			[2406] = {58.8},--Lady Inerva Darkvein
 			[2399] = {58.8},--Sludgefist
 			[2417] = {58.8},--Stoneborne Generals
@@ -171,10 +171,10 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {},--Huntsman Altimor
 			[2412] = {},--Council of Blood
-			[2402] = {},--Kael
+			[2402] = {11},--Kael
 			[2398] = {11, 12.4},--Shriekwing
 			[2405] = {11},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2383] = {11},--Hungering Destroyer
 			[2406] = {11},--Lady Inerva Darkvein
 			[2399] = {11},--Sludgefist
 			[2417] = {11},--Stoneborne Generals
@@ -209,7 +209,7 @@ local specialTimers = {
 		[0] = {--Repeating Timer
 			--Castle Nathria
 			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2412] = {60, 60, 60},--Council of Blood
 			[2402] = {60},--Kael (always 60 but reflection of guilt fading causes an ICD that delays current cast, but not one after it)
 			[2398] = {},--Shriekwing
 			[2405] = {60},--Artificer XyMox
@@ -217,7 +217,7 @@ local specialTimers = {
 			[2406] = {},--Lady Inerva Darkvein
 			[2399] = {70},--Sludgefist
 			[2417] = {},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {56.9, 79.9, 70},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {60},--The Tarragrue
 			[2433] = {60, 60, 60},--The Eye of the Jailer
@@ -245,15 +245,15 @@ local specialTimers = {
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
 			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2412] = {14.8, 13.7},--Council of Blood
 			[2402] = {14.8},--Kael
 			[2398] = {},--Shriekwing
 			[2405] = {14.8},--Artificer XyMox
 			[2383] = {14.8},--Hungering Destroyer
 			[2406] = {},--Lady Inerva Darkvein
-			[2399] = {35},--Sludgefist
+			[2399] = {34.9},--Sludgefist
 			[2417] = {},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {1, 14.4, 44.5},--Sire Denathrius (used near instantly on pull)
 			--Sanctum of Domination
 			[2423] = {14.8},--The Tarragrue
 			[2433] = {14.8, 30.4, 4.3},--The Eye of the Jailer
@@ -285,12 +285,12 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {44.9},--Huntsman Altimor
 			[2412] = {44.9, 44.9},--Council of Blood
-			[2402] = {},--Kael
+			[2402] = {44.9, 44.9},--Kael
 			[2398] = {44.9, 44.9},--Shriekwing
-			[2405] = {},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2405] = {44.9},--Artificer XyMox
+			[2383] = {44.9},--Hungering Destroyer
 			[2406] = {44.9},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {68.3},--Sludgefist (one of few bosses that has a diff timer)
 			[2417] = {44.9},--Stoneborne Generals
 			[2407] = {57.9, 84.9, 70},--Sire Denathrius
 			--Sanctum of Domination
@@ -321,12 +321,12 @@ local specialTimers = {
 			--Castle Nathria
 			[2418] = {19.9},--Huntsman Altimor
 			[2412] = {19.9, 18.2},--Council of Blood
-			[2402] = {},--Kael
+			[2402] = {19.9},--Kael
 			[2398] = {19.9, 20},--Shriekwing
-			[2405] = {},--Artificer XyMox
-			[2383] = {},--Hungering Destroyer
+			[2405] = {19.9},--Artificer XyMox
+			[2383] = {19.9},--Hungering Destroyer
 			[2406] = {19.9},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {39.9},--Sludgefist
 			[2417] = {19.9},--Stoneborne Generals
 			[2407] = {3, 24.5, 39.5},--Sire Denathrius
 			--Sanctum of Domination

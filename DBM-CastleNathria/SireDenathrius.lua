@@ -382,9 +382,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 		end
-		if self:IsFated() then
-			self:AffixEvent(2, self.vb.phase, 5)--Delay any affix until Hand has finished casting.
-		end
+--		if self:IsFated() then--Disabled until further review with multiple affixes, also seems to only affect barrier so far
+--			self:AffixEvent(2, self.vb.phase, 10)--Delay any affix by 5-10 seconds (was 5, now is 10?)
+--		end
 	elseif spellId == 344776 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
