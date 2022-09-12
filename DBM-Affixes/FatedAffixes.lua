@@ -733,8 +733,8 @@ do
 	function mod:ENCOUNTER_END(eID)
 		--Carefully only terminate fated timers if fated was active for fight and specific affix was active for fight
 		--This way we can try to avoid canceling timers for other fights that might be engaged at same time
+		self:Unschedule(CheckBosses, eID)
 		if activeBosses[eID] then
-			self:Unschedule(CheckBosses, eID)
 			if activeAffixes[372419] then--Fated Power: Reconfiguration Emitter
 				activeAffixes[372419] = nil
 				borrowedTime[372419] = nil
