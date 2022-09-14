@@ -86,11 +86,11 @@ local specialTimers = {
 			[2553] = {75},--Artificer Xy'mox
 			[2540] = {75},--Dausegne, the Fallen Oracle
 			[2544] = {75},--Prototype Pantheon
-			[2539] = {},--Lihuvim, Principal Architect
-			[2529] = {},--Halondrus the Reclaimer
+			[2539] = {75, 75},--Lihuvim, Principal Architect
+			[2529] = {75, 75},--Halondrus the Reclaimer (unknown, 75s are placeholders)
 			[2546] = {75, 75, 75},--Anduin Wrynn
 			[2543] = {0, 0},--Lords of Dread (only cast once per phase cycle so no in between casts timers)
-			[2549] = {},--Rygelon
+			[2549] = {0, 0},--Rygelon
 			[2537] = {},--The Jailer
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
@@ -122,11 +122,11 @@ local specialTimers = {
 			[2553] = {4.8},--Artificer Xy'mox
 			[2540] = {4.8},--Dausegne, the Fallen Oracle
 			[2544] = {4.8},--Prototype Pantheon
-			[2539] = {},--Lihuvim, Principal Architect
-			[2529] = {},--Halondrus the Reclaimer
+			[2539] = {4.8, 24.4},--Lihuvim, Principal Architect
+			[2529] = {4.8, 11},--Halondrus the Reclaimer
 			[2546] = {4.8, 8.6, 11.5},--Anduin Wrynn
 			[2543] = {10, 9.1},--Lords of Dread
-			[2549] = {},--Rygelon
+			[2549] = {0, 17.2},--Rygelon
 			[2537] = {},--The Jailer
 		},
 	},
@@ -157,13 +157,13 @@ local specialTimers = {
 			--Sepulcher of the First Ones
 			[2512] = {58.8},--Vigilant Guardian
 			[2542] = {},--Skolex, the Insatiable Ravener
-			[2553] = {},--Artificer Xy'mox
+			[2553] = {58.8},--Artificer Xy'mox
 			[2540] = {},--Dausegne, the Fallen Oracle
-			[2544] = {},--Prototype Pantheon
+			[2544] = {58.8},--Prototype Pantheon
 			[2539] = {58.8, 58.8},--Lihuvim, Principal Architect (not cast twice in any stage, used once per phasing cycle)
 			[2529] = {80, 80},--Halondrus the Reclaimer
 			[2546] = {},--Anduin Wrynn
-			[2543] = {},--Lords of Dread
+			[2543] = {0, 0},--Lords of Dread
 			[2549] = {0, 0},--Rygelon (has no CD, it's just synced to singularity stage beginnings and not recast any other time)
 			[2537] = {0, 0, 0, 0},--The Jailer
 		},
@@ -193,14 +193,14 @@ local specialTimers = {
 			--Sepulcher of the First Ones
 			[2512] = {11},--Vigilant Guardian
 			[2542] = {},--Skolex, the Insatiable Ravener
-			[2553] = {},--Artificer Xy'mox
+			[2553] = {11},--Artificer Xy'mox
 			[2540] = {},--Dausegne, the Fallen Oracle
-			[2544] = {},--Prototype Pantheon
+			[2544] = {11},--Prototype Pantheon
 			[2539] = {11, 30},--Lihuvim, Principal Architect
 			[2529] = {11, 17.4},--Halondrus the Reclaimer
 			[2546] = {},--Anduin Wrynn
-			[2543] = {},--Lords of Dread
-			[2549] = {0, 15.7},--Rygelon (doesn't use affix on engage at all. Instead, affix is disabled and only enabled in singularity stages)
+			[2543] = {16.2, 15.2},--Lords of Dread
+			[2549] = {0, 20.9},--Rygelon (used to be 15.7, but i think it was tweaked for multiple affixes support)
 			[2537] = {2.2, 3.5, 15, 2},--The Jailer
 		},
 
@@ -234,10 +234,10 @@ local specialTimers = {
 			[2542] = {},--Skolex, the Insatiable Ravener
 			[2553] = {60},--Artificer Xy'mox
 			[2540] = {60},--Dausegne, the Fallen Oracle
-			[2544] = {},--Prototype Pantheon
+			[2544] = {60},--Prototype Pantheon
 			[2539] = {},--Lihuvim, Principal Architect
 			[2529] = {60, 60},--Halondrus the Reclaimer
-			[2546] = {},--Anduin Wrynn
+			[2546] = {60, 60, 60},--Anduin Wrynn
 			[2543] = {0, 0},--Lords of Dread (no in between casts, since it's reset by both bosses specials)
 			[2549] = {0, 0},--Rygelon
 			[2537] = {},--The Jailer
@@ -270,10 +270,10 @@ local specialTimers = {
 			[2542] = {},--Skolex, the Insatiable Ravener
 			[2553] = {14.8},--Artificer Xy'mox
 			[2540] = {14.8},--Dausegne, the Fallen Oracle
-			[2544] = {},--Prototype Pantheon
+			[2544] = {14.8},--Prototype Pantheon
 			[2539] = {},--Lihuvim, Principal Architect
 			[2529] = {14.8, 21, 21},--Halondrus the Reclaimer
-			[2546] = {},--Anduin Wrynn
+			[2546] = {14.8, 18.6, 22.1},--Anduin Wrynn
 			[2543] = {20, 19},--Lords of Dread
 			[2549] = {0, 14.7},--Rygelon (only used after big bang)
 			[2537] = {},--The Jailer
@@ -307,14 +307,14 @@ local specialTimers = {
 			--Sepulcher of the First Ones
 			[2512] = {44.9},--Vigilant Guardian
 			[2542] = {44.9},--Skolex, the Insatiable Ravener
-			[2553] = {},--Artificer Xy'mox
+			[2553] = {44.9},--Artificer Xy'mox
 			[2540] = {},--Dausegne, the Fallen Oracle
 			[2544] = {44.9},--Prototype Pantheon
 			[2539] = {44.9, 44.9},--Lihuvim, Principal Architect
-			[2529] = {},--Halondrus the Reclaimer
+			[2529] = {44.9, 44.9},--Halondrus the Reclaimer
 			[2546] = {44.9, 44.9, 44.9},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
-			[2549] = {},--Rygelon
+			[2549] = {0, 0},--Rygelon
 			[2537] = {44.9, 44.9, 44.9, 44.9},--The Jailer (stage 4 not yet known)
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
@@ -343,14 +343,14 @@ local specialTimers = {
 			--Sepulcher of the First Ones
 			[2512] = {19.9},--Vigilant Guardian
 			[2542] = {19.9},--Skolex, the Insatiable Ravener
-			[2553] = {},--Artificer Xy'mox
+			[2553] = {19.9},--Artificer Xy'mox
 			[2540] = {},--Dausegne, the Fallen Oracle
 			[2544] = {19.9},--Prototype Pantheon
 			[2539] = {19.9, 39.8},--Lihuvim, Principal Architect
-			[2529] = {},--Halondrus the Reclaimer
+			[2529] = {19.9, 26},--Halondrus the Reclaimer
 			[2546] = {19.9, 23.6, 26.6},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
-			[2549] = {},--Rygelon
+			[2549] = {0, 5.1},--Rygelon
 			[2537] = {19.9, 20.9, 33.9, 0},--The Jailer (stage 4 cast immediately)
 		},
 
