@@ -66,7 +66,7 @@ local specialTimers = {
 			[2405] = {75},--Artificer XyMox
 			[2383] = {75},--Hungering Destroyer
 			[2406] = {75},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {67.9},--Sludgefist
 			[2417] = {75},--Stoneborne Generals
 			[2407] = {60, 79, 70},--Sire Denathrius (can spell queue higher like 79-89 for Stage 2 if hand of destruction cast pushes it back
 			--Sanctum of Domination
@@ -91,7 +91,7 @@ local specialTimers = {
 			[2546] = {75, 75, 75},--Anduin Wrynn
 			[2543] = {0, 0},--Lords of Dread (only cast once per phase cycle so no in between casts timers)
 			[2549] = {0, 0},--Rygelon
-			[2537] = {},--The Jailer
+			[2537] = {0, 0, 0, 0},--The Jailer (used on pull basically)
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
@@ -102,7 +102,7 @@ local specialTimers = {
 			[2405] = {4.8},--Artificer XyMox
 			[2383] = {4.8},--Hungering Destroyer
 			[2406] = {4.8},--Lady Inerva Darkvein
-			[2399] = {},--Sludgefist
+			[2399] = {24.9},--Sludgefist
 			[2417] = {4.8},--Stoneborne Generals
 			[2407] = {24, 10.5, 29.5},--Sire Denathrius (sometimes sire will skip first cast in stage 2)
 			--Sanctum of Domination
@@ -127,22 +127,22 @@ local specialTimers = {
 			[2546] = {4.8, 8.6, 11.5},--Anduin Wrynn
 			[2543] = {10, 9.1},--Lords of Dread
 			[2549] = {0, 17.2},--Rygelon
-			[2537] = {},--The Jailer
+			[2537] = {1, 1, 14, 0},--The Jailer (basically used immeddiately on 3 of the 4 stages)
 		},
 	},
 	[372642] = {-- Chaotic Essence
 		[0] = {--Repeating Timer
 			--Castle Nathria
-			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2418] = {58.8},--Huntsman Altimor
+			[2412] = {58.8, 58.8},--Council of Blood
 			[2402] = {58.8, 58.8},--Kael
 			[2398] = {58.8, 58.8},--Shriekwing
 			[2405] = {58.8},--Artificer XyMox
 			[2383] = {58.8},--Hungering Destroyer
 			[2406] = {58.8},--Lady Inerva Darkvein
-			[2399] = {58.8},--Sludgefist
+			[2399] = {67.9},--Sludgefist
 			[2417] = {58.8},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {58.8, 79.3, 58.8},--Sire Denathrius (P2 is 80-85)
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {54.7, 54.7, 54.7},--The Eye of the Jailer
@@ -169,16 +169,16 @@ local specialTimers = {
 		},
 		[1] = {--Initial pull/new stages (pull count reduced by 1 due to delayed start)
 			--Castle Nathria
-			[2418] = {},--Huntsman Altimor
-			[2412] = {},--Council of Blood
+			[2418] = {11},--Huntsman Altimor
+			[2412] = {11, 9.3},--Council of Blood
 			[2402] = {11},--Kael
 			[2398] = {11, 12.4},--Shriekwing
 			[2405] = {11},--Artificer XyMox
 			[2383] = {11},--Hungering Destroyer
 			[2406] = {11},--Lady Inerva Darkvein
-			[2399] = {11},--Sludgefist
+			[2399] = {32.5},--Sludgefist
 			[2417] = {11},--Stoneborne Generals
-			[2407] = {},--Sire Denathrius
+			[2407] = {37, 21, 35.9},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {},--The Tarragrue
 			[2433] = {11, 3.3, 35.1},--The Eye of the Jailer
@@ -211,12 +211,12 @@ local specialTimers = {
 			[2418] = {},--Huntsman Altimor
 			[2412] = {60, 60, 60},--Council of Blood
 			[2402] = {60},--Kael (always 60 but reflection of guilt fading causes an ICD that delays current cast, but not one after it)
-			[2398] = {},--Shriekwing
+			[2398] = {60, 60},--Shriekwing
 			[2405] = {60},--Artificer XyMox
 			[2383] = {60},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {60},--Lady Inerva Darkvein
 			[2399] = {70},--Sludgefist
-			[2417] = {},--Stoneborne Generals
+			[2417] = {60},--Stoneborne Generals
 			[2407] = {56.9, 79.9, 70},--Sire Denathrius
 			--Sanctum of Domination
 			[2423] = {60},--The Tarragrue
@@ -247,12 +247,12 @@ local specialTimers = {
 			[2418] = {},--Huntsman Altimor
 			[2412] = {14.8, 13.7},--Council of Blood
 			[2402] = {14.8},--Kael
-			[2398] = {},--Shriekwing
+			[2398] = {14.8, 15},--Shriekwing
 			[2405] = {14.8},--Artificer XyMox
 			[2383] = {14.8},--Hungering Destroyer
-			[2406] = {},--Lady Inerva Darkvein
+			[2406] = {14.8},--Lady Inerva Darkvein
 			[2399] = {34.9},--Sludgefist
-			[2417] = {},--Stoneborne Generals
+			[2417] = {14.8},--Stoneborne Generals
 			[2407] = {1, 14.4, 44.5},--Sire Denathrius (used near instantly on pull)
 			--Sanctum of Domination
 			[2423] = {14.8},--The Tarragrue
@@ -351,7 +351,7 @@ local specialTimers = {
 			[2546] = {19.9, 23.6, 26.6},--Anduin Wrynn
 			[2543] = {},--Lords of Dread
 			[2549] = {0, 5.1},--Rygelon
-			[2537] = {19.9, 20.9, 33.9, 0},--The Jailer (stage 4 cast immediately)
+			[2537] = {3.5, 3.4, 16.5, 3},--The Jailer (stage 4 used to be cast immediately, but now 3 seconds, or maybe that was due to 2nd affix, unsure)
 		},
 
 	},
