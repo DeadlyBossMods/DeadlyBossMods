@@ -411,7 +411,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			updateTimerFades(self)
 		end
-	elseif spellId == 364031 and playersSouled[playerName] and self:CheckDispelFilter() then
+	elseif spellId == 364031 and playersSouled[playerName] and self:CheckDispelFilter("magic") then
 		specWarnMalignantward:Show(args.destName)
 		specWarnMalignantward:Play("helpdispel")
 	elseif spellId == 361992 or spellId == 361993 then--361992 Overconfidence, 361993 Hopelessness

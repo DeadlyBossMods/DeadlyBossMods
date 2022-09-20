@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 359770 359829 364778 359979 359975 360451",
 	"SPELL_CAST_SUCCESS 360092",--364893
-	"SPELL_AURA_APPLIED 359778 364522 359976 359981",
+	"SPELL_AURA_APPLIED 359778 359976 359981",
 	"SPELL_AURA_APPLIED_DOSE 359778 359976 359981",
 	"SPELL_AURA_REMOVED 359778",
 	"SPELL_AURA_REMOVED_DOSE 359778",
@@ -34,7 +34,6 @@ local warnDestroy								= mod:NewCastAnnounce(364778, 4)
 local specWarnRaveningBurrow					= mod:NewSpecialWarningCount(359770, nil, nil, nil, 2, 2)
 local specWarnDustFlail							= mod:NewSpecialWarningCount(359829, "Healer", nil, nil, 2, 2)
 local specWarnRetch								= mod:NewSpecialWarningDodgeCount(360448, nil, nil, nil, 2, 2)
-local specWarnDevouringBlood					= mod:NewSpecialWarningDispel(364522, false, nil, nil, 1, 2)--Opt in
 local specWarnRiftmaw							= mod:NewSpecialWarningTaunt(359976, nil, nil, nil, 1, 2)
 local specWarnRend								= mod:NewSpecialWarningTaunt(359979, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(366070, nil, nil, nil, 1, 8)
@@ -163,9 +162,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(EphemeraDustStacks, 0.2)
 		end
-	elseif spellId == 364522 and args:IsDestTypePlayer() and self:CheckDispelFilter() then
-		specWarnDevouringBlood:CombinedShow(0.5, args.destName)
-		specWarnDevouringBlood:ScheduleVoice(0.5, "helpdispel")
 	elseif spellId == 359976 then--Riftmaw
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then

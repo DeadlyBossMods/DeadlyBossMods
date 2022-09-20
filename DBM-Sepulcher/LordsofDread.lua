@@ -360,7 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurstingDread:CancelVoice()
 		end
 		--Smart code that only warns player to dispel it, if they thesmelves aren't a victim of it and dispel is off CD
-		if self:CheckDispelFilter() and not playerDebuffed then
+		if self:CheckDispelFilter("magic") and not playerDebuffed then
 			specWarnBurstingDread:CombinedShow(0.3, args.destName)
 			specWarnBurstingDread:ScheduleVoice(0.3, "helpdispel")
 		end
@@ -371,7 +371,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnsettlingDreams:CancelVoice()
 		end
 		--Smart code that only warns player to dispel it, if they thesmelves aren't a victim of it and dispel is off CD
-		if self:CheckDispelFilter() and not playerDebuffed then
+		if self:CheckDispelFilter("magic") and not playerDebuffed then
 			specWarnUnsettlingDreams:CombinedShow(0.3, args.destName)
 			specWarnUnsettlingDreams:ScheduleVoice(0.3, "helpdispel")
 		end
