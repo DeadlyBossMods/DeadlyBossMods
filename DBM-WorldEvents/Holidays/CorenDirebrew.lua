@@ -22,7 +22,6 @@ local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
 local yellBarrel			= mod:NewYell(47442, L.YellBarrel, "Tank")
 
 local timerBarrel			= mod:NewTargetTimer(8, 47442, nil, nil, nil, 3)
-local timerBrew				= mod:NewTargetTimer(10, 47376, nil, false, nil, 3)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340, nil, false, nil, 3)
 local timerDisarm			= mod:NewCastTimer(4, 47310, nil, "Melee", 2, 2)
 
@@ -36,7 +35,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 47376 then											-- Brew
-		timerBrew:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnBrew:Show()
 			specWarnBrew:Play("useitem")
