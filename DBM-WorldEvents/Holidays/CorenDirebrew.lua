@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 47310",
 	"SPELL_AURA_APPLIED 47376 47340 47442 51413",
-	"SPELL_AURA_REMOVED 47376 47340 47442 51413"
+	"SPELL_AURA_REMOVED 47340 47442 51413"
 )
 
 local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, "Melee")
@@ -54,9 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 47376 then											-- Brew
-		timerBrew:Cancel(args.destName)
-	elseif args.spellId == 47340 then										-- Brew Stun
+	if args.spellId == 47340 then										-- Brew Stun
 		timerBrewStun:Cancel(args.destName)
 	elseif args:IsSpellID(47442, 51413) then								-- Barreled!
 		timerBarrel:Cancel(args.destName)
