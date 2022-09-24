@@ -386,6 +386,7 @@ function mod:SPELL_SUMMON(args)
 		timerSunderingSmashCD:Start(1, args.destGUID)
 	elseif spellId == 393459 then--Stormwrought Despoiler
 		timerDarkCloudsCD:Start(1, args.destGUID)
+		timerSunderingPealCD:Start(1, args.destGUID)
 	end
 end
 
