@@ -45,7 +45,12 @@ local L
 ---------------------------
 --  Broodkeeper Diurna --
 ---------------------------
---L= DBM:GetModLocalization(2493)
+L= DBM:GetModLocalization(2493)
+
+L:SetMiscLocalization({
+	staff	= "Staff",
+	eStaff	= "Empowered Staff"
+})
 
 ---------------------------
 --  Raszageth the Storm-Eater --
