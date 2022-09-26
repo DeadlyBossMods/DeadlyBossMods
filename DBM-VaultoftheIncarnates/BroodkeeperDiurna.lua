@@ -83,7 +83,7 @@ local specWarnPrimalistReinforcements			= mod:NewSpecialWarningCount(385618, "-H
 local specWarnIceBarrage						= mod:NewSpecialWarningInterruptCount(375716, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, nil, nil, nil, 1, 2, 3)
 local specWarnTremors							= mod:NewSpecialWarningDodge(376257, nil, nil, nil, 2, 2)
-local specWarnIceBarrage						= mod:NewSpecialWarningDispel(375487, "MagicDispeller", nil, nil, 1, 2)
+local specWarnCauterizingFlashflames			= mod:NewSpecialWarningDispel(375487, "MagicDispeller", nil, nil, 1, 2)
 local specWarnRendingBite						= mod:NewSpecialWarningDefensive(375475, nil, nil, nil, 1, 2, 3)
 local specWarnStaticJolt						= mod:NewSpecialWarningInterruptCount(375653, "HasInterrupt", nil, nil, 1, 2)
 local specWarnIonizingCharge					= mod:NewSpecialWarningMoveAway(375630, nil, nil, nil, 1, 2)
@@ -359,8 +359,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRendingBite:Show(args.destName, amount)
 		--end
 	elseif spellId == 375487 then
-		specWarnIceBarrage:CombinedShow(1, args.destName)
-		specWarnIceBarrage:ScheduleVoice(1, "helpldispel")
+		specWarnCauterizingFlashflames:CombinedShow(1, args.destName)
+		specWarnCauterizingFlashflames:ScheduleVoice(1, "helpldispel")
 	elseif spellId == 375879 then
 		warnBroodkeepersFury:Show(args.destName, args.amount or 1)
 		if self.vb.phase == 1 then
