@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 370307 390715 394917",
+	"SPELL_CAST_START 370307 390715 394917 370615",
 	"SPELL_AURA_APPLIED 372074 370597 371562 390715 394906",
 	"SPELL_AURA_APPLIED_DOSE 394906",
 	"SPELL_AURA_REMOVED 372074 370597 371562 390715",
@@ -37,10 +37,12 @@ local warnBurningWound							= mod:NewStackAnnounce(394906, 2, nil, "Tank|Healer
 local specWarnFlamerift							= mod:NewSpecialWarningMoveAway(390715, nil, nil, nil, 1, 2)
 local yellFlamerift								= mod:NewShortPosYell(390715)
 local yellFlameriftFades						= mod:NewIconFadesYell(390715)
+local specWarnMoltenCleave						= mod:NewSpecialWarningDodge(370615, nil, nil, nil, 2, 2)
 local specWarnBurningWound						= mod:NewSpecialWarningStack(394906, nil, 6, nil, nil, 1, 6)
 local specWarnBurningWoundTaunt					= mod:NewSpecialWarningTaunt(394906, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
+local timerMoltenCleaveCD						= mod:NewAITimer(35, 370615, nil, nil, nil, 3)
 local timerFlameriftCD							= mod:NewAITimer(35, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerLeapingFlamesCD						= mod:NewAITimer(35, 394917, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 
@@ -75,6 +77,7 @@ function mod:OnCombatStart(delay)
 	timerCollapsingArmyCD:Start(1-delay)
 	timerFlameriftCD:Start(1-delay)
 	timerLeapingFlamesCD:Start(1-delay)
+	timerMoltenCleaveCD:Start(1-delay)
 	if self.Options.NPAuraOnMoltenBarrier or self.Options.NPAuraOnKillOrder or self.Options.NPAuraOnRampage then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -106,6 +109,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.leapingCount = self.vb.leapingCount + 1
 		warnLeapingFlames:Show(self.vb.leapingCount)
 		timerLeapingFlamesCD:Start()
+	elseif spellId == 370615 then
+		specWarnMoltenCleave:Show()
+		specWarnMoltenCleave:Play("shockwave")
+		timerMoltenCleaveCD:Start()
 	end
 end
 
