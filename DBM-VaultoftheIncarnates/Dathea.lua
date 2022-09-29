@@ -12,7 +12,7 @@ mod:SetUsedIcons(8, 7, 6, 5, 4)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812",
+	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812 384273",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 384757 384757",
 	"SPELL_AURA_APPLIED 391686 375580",
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, more vague bad tooltip writing. How do you actually handle Empowered Conductive Mark?
 --TODO, refine range checker to not be needed at all times if a determinate pre warning can be detected or scheduled for new conductive marks going out, and all being gone
 --TODO, add unstable gusts?
---TODO, https://www.wowhead.com/beta/spell=384273/storm-bolt even worth warning for?
 --TODO, how to handle Incubating Seeds, 50 yards is a big radius. can players avoid it by moving away or is it a "kill it very hard and very fast" thing https://www.wowhead.com/beta/spell=389049/incubating-seed
 --Dathea, Ascended
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25340))
@@ -55,14 +54,15 @@ local timerZephyrSlamCD							= mod:NewAITimer(35, 375580, nil, "Tank|Healer", n
 
 mod:AddRangeFrameOption(5, 391686)
 --mod:AddInfoFrameOption(361651, true)
---Zephyr Guardian
+--Volatile Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25903))
 local specWarnDivertedEssence					= mod:NewSpecialWarningInterruptCount(387943, "HasInterrupt", nil, nil, 1, 2)
 local specWarnAerialSlash						= mod:NewSpecialWarningDefensive(385812, nil, nil, nil, 1, 2)
+local specWarnStormBolt							= mod:NewSpecialWarningInterruptCount(384273, false, nil, nil, 1, 2)
 
 local timerAerialSlashCD						= mod:NewAITimer(35, 385812, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnZephyrs", "ej25903", true, true, {8, 7, 6, 5, 4})
+mod:AddSetIconOption("SetIconOnVolatileInfuser", "ej25903", true, true, {8, 7, 6, 5, 4})
 
 local castsPerGUID = {}
 mod.vb.addIcon = 8
@@ -119,8 +119,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 387943 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnZephyrs and self.vb.addIcon > 3 then--Only use up to 5 icons
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnZephyrs")
+			if self.Options.SetIconOnVolatileInfuser and self.vb.addIcon > 3 then--Only use up to 5 icons
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnVolatileInfuser")
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		end
@@ -148,6 +148,28 @@ function mod:SPELL_CAST_START(args)
 			specWarnAerialSlash:Show()
 			specWarnAerialSlash:Play("defensive")
 		end
+	elseif spellId == 384273 then
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+			specWarnStormBolt:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnStormBolt:Play("kick1r")
+			elseif count == 2 then
+				specWarnStormBolt:Play("kick2r")
+			elseif count == 3 then
+				specWarnStormBolt:Play("kick3r")
+			elseif count == 4 then
+				specWarnStormBolt:Play("kick4r")
+			elseif count == 5 then
+				specWarnStormBolt:Play("kick5r")
+			else
+				specWarnStormBolt:Play("kickcast")
+			end
+		end
 	end
 end
 
@@ -165,8 +187,8 @@ function mod:SPELL_SUMMON(args)
 	if spellId == 387857 then--Zephyr Guardian
 		--if not castsPerGUID[args.destGUID] then
 		--	castsPerGUID[args.destGUID] = 0
-		--	if self.Options.SetIconOnZephyrs and self.vb.addIcon > 3 then--Only use up to 5 icons
-		--		self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnZephyrs")
+		--	if self.Options.SetIconOnVolatileInfuser and self.vb.addIcon > 3 then--Only use up to 5 icons
+		--		self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnVolatileInfuser")
 		--	end
 		--	self.vb.addIcon = self.vb.addIcon - 1
 		--end
@@ -212,7 +234,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 192934 then--Zephyr Guardian
+	if cid == 192934 then--Volatile Infuser
 		timerAerialSlashCD:Stop(args.destGUID)
 --	elseif cid == 194647 then--Thunder Caller
 
