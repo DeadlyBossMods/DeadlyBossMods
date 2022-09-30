@@ -7,7 +7,7 @@ mod:SetEncounterID(2607)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
---mod.respawnTime = 29
+mod.respawnTime = 33
 
 mod:RegisterCombat("combat")
 
@@ -38,6 +38,11 @@ mod:RegisterEventsInCombat(
 --TODO, is Cauterizing Flashflames deadly or need an emphasized warning? 20% of targets health can mean anyting, it depends how much health Dragonspawn have
 --TODO, evalualte any needed antispams for multiple adds casting same spells
 --TODO, accurate phase 2 detection. Maybe https://www.wowhead.com/beta/spell=392194/empower-greatstaff ?
+--[[
+(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 376257 or ability.id = 375485 or ability.id = 375575 or ability.id = 375457 or ability.id = 375630) and type = "begincast"
+ or ability.id = 375879
+ or (ability.id = 375716 or ability.id = 375653) and type = "begincast"
+--]]
 --Stage One: The Primalist Clutch
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25119))
 ----Broodkeeper Diurna
@@ -194,6 +199,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnRendingBite:Play("defensive")
 		end
 		timerRendingBiteCD:Start(nil, args.sourceGUID)
+	elseif spellId == 376257 then
+		specWarnTremors:Show()
+		specWarnTremors:Play("shockwave")
+		timerTremorsCD:Start(nil, args.sourceGUID)
+	elseif spellId == 375485 then
+		warnCauterizingFlashflames:Show()
+		timerCauterizingFlashflamesCD:Start(nil, args.sourceGUID)
+	elseif spellId == 375575 then
+		warnFlameSentry:Show()
+		timerFlameSentryCD:Start(nil, args.sourceGUID)
+	elseif spellId == 375457 then
+		warnChillingTantrum:Show()
+		timerChillingTantrumCD:Start(nil, args.sourceGUID)
+	elseif spellId == 375630 then
+		timerIonizingChargeCD:Start(nil, args.sourceGUID)
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -246,21 +266,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnStaticJolt:Play("kickcast")
 			end
 		end
-	elseif spellId == 376257 then
-		specWarnTremors:Show()
-		specWarnTremors:Play("shockwave")
-		timerTremorsCD:Start(nil, args.sourceGUID)
-	elseif spellId == 375485 then
-		warnCauterizingFlashflames:Show()
-		timerCauterizingFlashflamesCD:Start(nil, args.sourceGUID)
-	elseif spellId == 375575 then
-		warnFlameSentry:Show()
-		timerFlameSentryCD:Start(nil, args.sourceGUID)
-	elseif spellId == 375457 then
-		warnChillingTantrum:Show()
-		timerChillingTantrumCD:Start(nil, args.sourceGUID)
-	elseif spellId == 375630 then
-		timerIonizingChargeCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -279,12 +284,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.staffCount = self.vb.staffCount + 1
 		specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 		specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
-		timerGreatstaffoftheBroodkeeperCD:start()
+		timerGreatstaffoftheBroodkeeperCD:Start()
 	elseif spellId == 380176 then
 		self.vb.staffCount = self.vb.staffCount + 1
 		specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 		specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-		timerEGreatstaffoftheBroodkeeperCD:start()
+		timerEGreatstaffoftheBroodkeeperCD:Start()
 	elseif spellId == 375889 then
 		warnGreatstaffsWrath:CombinedShow(1, args.destName)--Aggregated for now in case strat is to just pop multiple eggs and CD like fuck for Clutchwatcher's Rage
 		if args:IsPlayer() then
