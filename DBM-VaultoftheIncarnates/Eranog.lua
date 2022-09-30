@@ -233,7 +233,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 370307 then--Army ending
 		--These timers however seems more accurate started from army end than army start
 		timerLeapingFlamesCD:Start(6.1, self.vb.leapingCount+1)--6-7 variatio here, started at army start the variation is bigger
-		timerCollapsingArmyCD:Start(94-delay, 1)--94-97 here, started at army the variation is bigger
+		timerCollapsingArmyCD:Start(94, self.vb.armyCount+1)--94-97 here, started at army the variation is bigger
 	end
 end
 

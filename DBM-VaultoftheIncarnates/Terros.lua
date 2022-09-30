@@ -29,6 +29,10 @@ mod:RegisterEventsInCombat(
 --TODO, is Frenzied Devstation replacing Resonating Annihilation, or does it get cast in addition to it once the 4x casts happen?
 --TODO, keep an eye on https://www.wowhead.com/beta/spell=391570/reactive-dust . not sure what to do with it yet, since this tooltip says something diff than journal
 --TODO, adjust time remaining on Concussive Slam debuff check
+--TODO, don't start timers if intermission soon, for now they are started and stopped since I don't have all the data yet from other difficulties yet and even these subject to change
+--[[
+(ability.id = 380487 or ability.id = 377166 or ability.id = 377505 or ability.id = 383073 or ability.id = 376279) and type = "begincast"
+--]]
 local warnRockBlastCast							= mod:NewCastAnnounce(380487, 3)
 local warnRockBlast								= mod:NewTargetNoFilterAnnounce(380487, 3)
 local warnConcussiveSlam						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Healer")
