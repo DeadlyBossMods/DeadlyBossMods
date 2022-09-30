@@ -184,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRockBlast:Show(self:IconNumToTexture(icon))
 			specWarnRockBlast:Play("mm"..icon)
 			yellRockBlast:Yell(icon, icon)
-			yellRockBlastFades:Countdown(spellId, nil, icon)
+			yellRockBlastFades:Countdown(5, nil, icon)
 		end
 		warnRockBlast:CombinedShow(0.5, args.destName)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
@@ -254,7 +254,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 				specWarnRockBlast:Show(self:IconNumToTexture(icon))
 				specWarnRockBlast:Play("mm"..icon)
 				yellRockBlast:Yell(icon, icon)
-				yellRockBlastFades:Countdown(spellId, nil, icon)
+				yellRockBlastFades:Countdown(5, nil, icon)
 			end
 			warnRockBlast:CombinedShow(0.5, targetName)
 			self.vb.DebuffIcon = self.vb.DebuffIcon + 1
