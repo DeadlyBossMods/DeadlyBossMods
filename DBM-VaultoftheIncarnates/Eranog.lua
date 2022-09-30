@@ -13,6 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 370307 390715 394917 370615",
+	"SPELL_CAST_SUCCESS 394917",
 	"SPELL_AURA_APPLIED 372074 370597 371562 390715 394906",
 	"SPELL_AURA_APPLIED_DOSE 394906",
 	"SPELL_AURA_REMOVED 372074 370597 371562 390715",
@@ -25,9 +26,14 @@ mod:RegisterEventsInCombat(
 --TODO, adjust tank debuff check code for tank debuff to match CD and correct stack swap count based on the math
 --TODO, track rising heat? it seems tied to tank mechanic, yet is also listed separately?
 --TODO, Molten Barrier mechanic might also be deleted
---TODO, make flamerift icon yells/etc support 10 debuffs on mythic. time to bust out smileys again
---TODO, does leaping flames always hit x targets or is it a bounce like chain lighting?
+--TODO, Try to find a way to fix leap timer more. Need to figure out why sometimes it's double cast after army and other times it's not (discounting restarted casts)
 --likely will NOT do: Add tracking of https://www.wowhead.com/beta/spell=386312/explosive-barrier . I suspect people will prefer WAs
+--[[
+(ability.id = 370307 or ability.id = 390715 or ability.id = 394917 or ability.id = 370615) and type = "begincast"
+ or ability.id = 394917 and type = "cast"
+ or ability.id = 370307 and type = "removebuff"
+ or ability.id = 390715 and type = "applydebuff"
+--]]
 --Stage One: Army of Talon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26001))
 local warnFlamerift								= mod:NewTargetNoFilterAnnounce(390715, 2)
@@ -36,21 +42,21 @@ local warnBurningWound							= mod:NewStackAnnounce(394906, 2, nil, "Tank|Healer
 
 local specWarnFlamerift							= mod:NewSpecialWarningMoveAway(390715, nil, nil, nil, 1, 2)
 local yellFlamerift								= mod:NewShortPosYell(390715)
-local yellFlameriftFades						= mod:NewIconFadesYell(390715)
-local specWarnMoltenCleave						= mod:NewSpecialWarningDodge(370615, nil, nil, nil, 2, 2)
+local yellFlameriftFades						= mod:NewShortFadesYell(390715)
+local specWarnMoltenCleave						= mod:NewSpecialWarningDodgeCount(370615, nil, nil, nil, 2, 2)
 local specWarnBurningWound						= mod:NewSpecialWarningStack(394906, nil, 6, nil, nil, 1, 6)
 local specWarnBurningWoundTaunt					= mod:NewSpecialWarningTaunt(394906, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
-local timerMoltenCleaveCD						= mod:NewAITimer(35, 370615, nil, nil, nil, 3)
-local timerFlameriftCD							= mod:NewAITimer(35, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerLeapingFlamesCD						= mod:NewAITimer(35, 394917, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerMoltenCleaveCD						= mod:NewCDCountTimer(30.2, 370615, nil, nil, nil, 3)
+local timerFlameriftCD							= mod:NewCDCountTimer(30.2, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerLeapingFlamesCD						= mod:NewCDCountTimer(30.2, 394917, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)
 mod:AddRangeFrameOption(5, 390715)
-mod:AddSetIconOption("SetIconOnFlamerift", 390715, true, false, {1, 2, 3, 4, 5})
+--mod:AddSetIconOption("SetIconOnFlamerift", 390715, true, false, {1, 2, 3, 4, 5})
 ---Frenzied Tarasek
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26005))
 local warnKillOrder								= mod:NewTargetAnnounce(370597, 3)
@@ -63,21 +69,26 @@ mod:AddNamePlateOption("NPAuraOnRampage", 371562, true)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26004))
 local specWarnCollapsingArmy					= mod:NewSpecialWarningCount(370307, nil, nil, nil, 3, 2)
 
-local timerCollapsingArmyCD						= mod:NewAITimer(35, 370307, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerCollapsingArmyCD						= mod:NewCDCountTimer(94, 370307, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddNamePlateOption("NPAuraOnMoltenBarrier", 372074, true)--Check if also removed
 
 mod.vb.armyCount = 0
-mod.vb.riftIcon = 1
+mod.vb.cleaveCount = 0
 mod.vb.leapingCount = 0
+mod.vb.riftCount = 0
+--mod.vb.riftIcon = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.armyCount = 0
+	self.vb.cleaveCount = 0
 	self.vb.leapingCount = 0
-	timerCollapsingArmyCD:Start(1-delay)
-	timerFlameriftCD:Start(1-delay)
-	timerLeapingFlamesCD:Start(1-delay)
-	timerMoltenCleaveCD:Start(1-delay)
+	self.vb.riftCount = 0
+--	self.vb.riftIcon = 1
+	timerLeapingFlamesCD:Start(4.5-delay, 1)
+	timerMoltenCleaveCD:Start(9.8-delay, 1)
+	timerFlameriftCD:Start(13.8-delay, 1)
+	timerCollapsingArmyCD:Start(91.7-delay, 1)
 	if self.Options.NPAuraOnMoltenBarrier or self.Options.NPAuraOnKillOrder or self.Options.NPAuraOnRampage then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -101,18 +112,32 @@ function mod:SPELL_CAST_START(args)
 		self.vb.armyCount = self.vb.armyCount + 1
 		specWarnCollapsingArmy:Show(self.vb.armyCount)
 		specWarnCollapsingArmy:Play("specialsoon")
-		timerCollapsingArmyCD:Start()
+		timerCollapsingArmyCD:Start(nil, self.vb.armyCount+1)
+		timerFlameriftCD:Stop()
+		timerLeapingFlamesCD:Stop()
+		timerMoltenCleaveCD:Stop()
+		--These seem to start better from here, they are far less accurate started from army end
+		timerMoltenCleaveCD:Start(40.6, self.vb.cleaveCount+1)--40-42 here, started after army, the variation is much bigger there
+		timerFlameriftCD:Start(44.5, self.vb.riftCount+1)
 	elseif spellId == 390715 then
-		self.vb.riftIcon = 1
-		timerFlameriftCD:Start()
+--		self.vb.riftIcon = 1
+		self.vb.riftCount = self.vb.riftCount + 1
+		timerFlameriftCD:Start(nil, self.vb.riftCount+1)
 	elseif spellId == 394917 then
-		self.vb.leapingCount = self.vb.leapingCount + 1
-		warnLeapingFlames:Show(self.vb.leapingCount)
-		timerLeapingFlamesCD:Start()
+		warnLeapingFlames:Show(self.vb.leapingCount+1)
 	elseif spellId == 370615 then
-		specWarnMoltenCleave:Show()
+		self.vb.cleaveCount = self.vb.cleaveCount + 1
+		specWarnMoltenCleave:Show(self.vb.cleaveCount)
 		specWarnMoltenCleave:Play("shockwave")
-		timerMoltenCleaveCD:Start()
+		timerMoltenCleaveCD:Start(nil, self.vb.cleaveCount+1)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 394917 then--success used to start timer and update count due to stutter step recasts
+		self.vb.leapingCount = self.vb.leapingCount + 1
+		timerLeapingFlamesCD:Start(nil, self.vb.leapingCount+1)
 	end
 end
 
@@ -136,21 +161,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 390715 then
-		local icon = self.vb.riftIcon
-		if self.Options.SetIconOnFlamerift and icon < 9 then
-			self:SetIcon(args.destName, icon)
-		end
+--		local icon = self.vb.riftIcon
+--		if self.Options.SetIconOnFlamerift and icon < 9 then
+--			self:SetIcon(args.destName, icon)
+--		end
 		if args:IsPlayer() then
 			specWarnFlamerift:Show()
 			specWarnFlamerift:Play("range5")
-			yellFlamerift:Yell(icon, icon)
-			yellFlameriftFades:Countdown(spellId, nil, icon)
+			yellFlamerift:Yell()
+			yellFlameriftFades:Countdown(spellId)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
 		end
 		warnFlamerift:CombinedShow(0.5, args.destName)
-		self.vb.riftIcon = self.vb.riftIcon + 1
+--		self.vb.riftIcon = self.vb.riftIcon + 1
 	elseif spellId == 394906 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
@@ -196,15 +221,19 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 390715 then
-		if self.Options.SetIconOnFlamerift then
-			self:SetIcon(args.destName, 0)
-		end
+--		if self.Options.SetIconOnFlamerift then
+--			self:SetIcon(args.destName, 0)
+--		end
 		if args:IsPlayer() then
 			yellFlameriftFades:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
 		end
+	elseif spellId == 370307 then--Army ending
+		--These timers however seems more accurate started from army end than army start
+		timerLeapingFlamesCD:Start(6.1, self.vb.leapingCount+1)--6-7 variatio here, started at army start the variation is bigger
+		timerCollapsingArmyCD:Start(94-delay, 1)--94-97 here, started at army the variation is bigger
 	end
 end
 
