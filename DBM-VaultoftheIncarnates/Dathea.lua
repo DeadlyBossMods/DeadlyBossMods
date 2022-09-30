@@ -53,7 +53,7 @@ local timerZephyrSlamCD							= mod:NewAITimer(35, 375580, nil, "Tank|Healer", n
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 391686)
---mod:AddInfoFrameOption(361651, true)
+mod:AddInfoFrameOption(391686, true)
 --Volatile Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25903))
 local specWarnDivertedEssence					= mod:NewSpecialWarningInterruptCount(387943, "HasInterrupt", nil, nil, 1, 2)
@@ -80,15 +80,19 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(391686))
+		DBM.InfoFrame:Show(self:IsMythic() and 20 or 10, "playerdebuffstacks", 391686)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
