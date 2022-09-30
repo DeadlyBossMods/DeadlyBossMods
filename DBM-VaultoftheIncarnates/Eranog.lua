@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, track rising heat? it seems tied to tank mechanic, yet is also listed separately?
 --TODO, Molten Barrier mechanic might also be deleted
 --TODO, Try to find a way to fix leap timer more. Need to figure out why sometimes it's double cast after army and other times it's not (discounting restarted casts)
+--TODO, don't start timers if intermission soon, for now they are started and stopped since I don't have all the data yet from other difficulties yet and even these subject to change
 --likely will NOT do: Add tracking of https://www.wowhead.com/beta/spell=386312/explosive-barrier . I suspect people will prefer WAs
 --[[
 (ability.id = 370307 or ability.id = 390715 or ability.id = 394917 or ability.id = 370615) and type = "begincast"
