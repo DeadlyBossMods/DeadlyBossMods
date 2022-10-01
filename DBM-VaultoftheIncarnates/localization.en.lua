@@ -49,9 +49,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerDamageCD = "Show timers for targeted debuff attacks: Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash",
-	timerAvoidCD = "Show timers for avoidable attacks: Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst",
-	timerUltimateCD = "Show timers for 100 energy ultimate attacks: Searing Carnage, Absolute Zero, Seismic Rupture, Thunder Strike"
+	timerDamageCD = "Show timers for targeted debuff attacks: $spell:382563, $spell:373678, $spell:391055, $spell:373487",
+	timerAvoidCD = "Show timers for avoidable attacks: $spell:373329, $spell:391019, $spell:390796, $spell:390920",
+	timerUltimateCD = "Show timers for 100 energy ultimate attacks: $spell:374022, $spell:372456, $spell:374691, $spell:374215"
 })
 
 ---------------------------
