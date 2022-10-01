@@ -41,12 +41,29 @@ local L
 ---------------------------
 --  Kurog Grimtotem --
 ---------------------------
---L= DBM:GetModLocalization(2491)
+L= DBM:GetModLocalization(2491)
+
+L:SetTimerLocalization({
+	timerDamageCD = "Дебаффы (%s)",
+	timerAvoidCD = "Избежание (%s)",
+	timerUltimateCD = "Ультимейт (%s)"
+})
+
+L:SetOptionLocalization({
+	timerDamageCD = "Показывать таймеры для атак с дебаффом на цели: $spell:382563, $spell:373678, $spell:391055, $spell:373487",
+	timerAvoidCD = "Показывать таймеры для атак, которые можно избежать: $spell:373329, $spell:391019, $spell:390796, $spell:390920",
+	timerUltimateCD = "Показывать таймеры для ультимативных атак на 100 энергии: $spell:374022, $spell:372456, $spell:374691, $spell:374215"
+})
 
 ---------------------------
 --  Broodkeeper Diurna --
 ---------------------------
---L= DBM:GetModLocalization(2493)
+L= DBM:GetModLocalization(2493)
+
+L:SetMiscLocalization({
+	staff	= "Великий посох",
+	eStaff	= "Усиленный Великий посох"
+})
 
 ---------------------------
 --  Raszageth the Storm-Eater --
