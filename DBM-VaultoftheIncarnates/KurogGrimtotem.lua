@@ -15,9 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 373329 376326 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429",
 	"SPELL_CAST_SUCCESS 374861",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 374023 372458 372514 372517 374779 374380 374427 374573 391056 390921 391419 391265",
+	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 372458 372514 372517 374779 374380 374427 374573 391056 390921 391419 391265",
 	"SPELL_AURA_APPLIED_DOSE 374881 374916 374917 374918 372158",
-	"SPELL_AURA_REMOVED 371971 374881 374916 374917 374918 373487 373494 374023 372458 372514 374779 374380 374427 374573 390921 391419 391265",
+	"SPELL_AURA_REMOVED 371971 374881 374916 374917 374918 373487 373494 372458 372514 374779 374380 374427 374573 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
 	"UNIT_DIED"
@@ -75,9 +75,7 @@ local warnSearingCarnage						= mod:NewTargetNoFilterAnnounce(374022, 3)
 
 local specWarnMagmaBurst						= mod:NewSpecialWarningDodge(382563, nil, nil, nil, 2, 2)
 local specWarnMoltenRupture						= mod:NewSpecialWarningDodge(373329, nil, nil, nil, 2, 2)
-local specWarnSearingCarnage					= mod:NewSpecialWarningYouPos(374022, nil, nil, nil, 1, 2)
-local yellSearingCarnage						= mod:NewShortPosYell(374022)
-local yellSearingCarnageFades					= mod:NewIconFadesYell(374022)
+local specWarnSearingCarnage					= mod:NewSpecialWarningDodge(374022, nil, nil, nil, 2, 2)
 
 local timerMagmaBurstCD							= mod:NewAITimer(35, 382563, nil, nil, nil, 3)
 local timerMoltenRuptureCD						= mod:NewAITimer(35, 373329, nil, nil, nil, 3, DBM_COMMON_L.HEROIC_ICON)
@@ -177,8 +175,6 @@ local warnPhase2								= mod:NewPhaseAnnounce(2, 2)
 mod:AddNamePlateOption("NPAuraOnElementalBond", 374380, true)
 ----Tectonic Crusher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
-local warnGroundShatter							= mod:NewTargetAnnounce(374427, 3)
-
 local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
 local yellGroundShatter							= mod:NewShortYell(374427)
 local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
@@ -212,7 +208,6 @@ mod:AddRangeFrameOption(10, 374620)
 
 mod.vb.chillCast = 0
 mod.vb.litCrashIcon = 1
-mod.vb.searingIcon = 4--Change to 1 if it can't happen at same time as Biting Chill
 mod.vb.zeroIcon = 4--Change to 1 if it cannot happen at saame time as Biting chill
 
 function mod:OnCombatStart(delay)
@@ -262,7 +257,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnMoltenRupture:Play("watchwave")
 		timerMoltenRuptureCD:Start()
 	elseif spellId == 374022 or spellId == 392192 or spellId == 392152 then--Normal/Heroic, LFR, Mythic (assumed)
-		self.vb.searingIcon = 4
+		specWarnSearingCarnage:Show()
+		specWarnSearingCarnage:Play("watchstep")
 		timerSearingCarnageCD:Start()
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
 		self.vb.zeroIcon = 4
@@ -478,19 +474,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 		self.vb.litCrashIcon = self.vb.litCrashIcon + 1
-	elseif spellId == 374023 then
-		local icon = self.vb.searingIcon
-		if self.Options.SetIconOnSearing then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnSearingCarnage:Show(self:IconNumToTexture(icon))
-			specWarnSearingCarnage:Play("mm"..icon)
-			yellSearingCarnage:Yell(icon, icon - 3)
-			yellSearingCarnageFades:Countdown(spellId, nil, icon)
-		end
-		warnSearingCarnage:CombinedShow(0.5, args.destName)
-		self.vb.searingIcon = self.vb.searingIcon + 1
 	elseif spellId == 372458 then
 		local icon = self.vb.zeroIcon
 		if self.Options.SetIconOnAbsoluteZero then
@@ -544,7 +527,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGroundShatter:Yell()
 			yellGroundShatterFades:Countdown(spellId)
 		end
-		warnGroundShatter:CombinedShow(0.5, args.destName)
 	elseif spellId == 374573 then
 		warnReingnite:Show(args.destName)
 		timerReingnit:Start(args.destName, args.destGUID)
@@ -622,13 +604,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 373494 then--Icon removed off secondary debuff
 		if self.Options.SetIconOnLightningCrash then
 			self:SetIcon(args.destName, 0)
-		end
-	elseif spellId == 374023 then
-		if self.Options.SetIconOnSearing then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellSearingCarnageFades:Cancel()
 		end
 	elseif spellId == 372458 then
 		if self.Options.SetIconOnAbsoluteZero then
