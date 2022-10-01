@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190496)
 mod:SetEncounterID(2639)
-mod:SetUsedIcons(1, 2, 3, 4, 5)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -38,7 +38,8 @@ local yellRockBlast								= mod:NewShortPosYell(380487)
 local yellRockBlastFades						= mod:NewIconFadesYell(380487)
 local specWarnBrutalReverberation				= mod:NewSpecialWarningDodge(386400, nil, nil, nil, 2, 2)
 local specWarnAwakenedEarth						= mod:NewSpecialWarningYou(381253, nil, nil, nil, 1, 2)
-local yellAwakenedEarthFades					= mod:NewShortFadesYell(381253)
+local yellAwakenedEarth							= mod:NewShortPosYell(381253)
+local yellAwakenedEarthFades					= mod:NewIconFadesYell(381253)
 local specWarnResonatingAnnihilation			= mod:NewSpecialWarningCount(377166, nil, nil, nil, 2, 2)
 local specWarnShatteringImpact					= mod:NewSpecialWarningDodge(383073, nil, nil, nil, 2, 2)
 local specWarnConcussiveSlam					= mod:NewSpecialWarningDefensive(376279, nil, nil, nil, 1, 2)
@@ -56,9 +57,11 @@ local timerFrenziedDevastationCD				= mod:NewNextTimer(387.9, 377505, nil, nil, 
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)--Likely will be used for dust
-mod:AddSetIconOption("SetIconOnRockBlast", 380487, true, false, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnRockBlast", 380487, false, false, {1, 2, 3, 4, 5}, true)
+mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, false, false, {1, 2, 3, 4, 5, 6, 7, 8}, true)
 
-mod.vb.DebuffIcon = 1
+mod.vb.rockIcon = 1
+mod.vb.awakenedIcon = 1
 mod.vb.annihilationCount = 0
 mod.vb.rockCount = 0
 mod.vb.slamCount = 0
@@ -128,7 +131,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 380487 then
-		self.vb.DebuffIcon = 1
+		self.vb.rockIcon = 1
+		self.vb.awakenedIcon = 1
 		self.vb.rockCount = self.vb.rockCount + 1
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.rockCount+1)
 		if timer then
@@ -176,25 +180,31 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 386352 and self:AntiSpam(4, args.destName.."1") then
-		local icon = self.vb.DebuffIcon
+		local icon = self.vb.rockIcon
 		if self.Options.SetIconOnRockBlast then
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnRockBlast:Show(self:IconNumToTexture(icon))
-			specWarnRockBlast:Play("mm"..icon)
+			specWarnRockBlast:Show()
+			specWarnRockBlast:Play("targetyou")--"mm"..icon
 			yellRockBlast:Yell(icon, icon)
 			yellRockBlastFades:Countdown(5, nil, icon)
 		end
 		warnRockBlast:CombinedShow(0.5, args.destName)
-		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+		self.vb.rockIcon = self.vb.rockIcon + 1
 	elseif spellId == 381253 and self:AntiSpam(4, args.destName.."2") then
-		warnAwakenedEarth:CombinedShow(0.5, args.destName)
+		local icon = self.vb.awakenedIcon
+		if self.Options.SetIconOnAwakenedEarth then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnAwakenedEarth:Show()
 			specWarnAwakenedEarth:Play("targetyou")
-			yellAwakenedEarthFades:Countdown(spellId)
+			yellAwakenedEarth:Yell(icon, icon)
+			yellAwakenedEarthFades:Countdown(5, nil, icon)
 		end
+		warnAwakenedEarth:CombinedShow(0.5, args.destName)
+		self.vb.awakenedIcon = self.vb.awakenedIcon + 1
 	elseif spellId == 376276 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
@@ -230,6 +240,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellAwakenedEarthFades:Cancel()
 		end
+		if self.Options.SetIconOnAwakenedEarth then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -246,7 +259,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("380485") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."1") then
-			local icon = self.vb.DebuffIcon
+			local icon = self.vb.rockIcon
 			if self.Options.SetIconOnRockBlast then
 				self:SetIcon(targetName, icon)
 			end
@@ -257,17 +270,23 @@ function mod:OnTranscriptorSync(msg, targetName)
 				yellRockBlastFades:Countdown(5, nil, icon)
 			end
 			warnRockBlast:CombinedShow(0.5, targetName)
-			self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+			self.vb.rockIcon = self.vb.rockIcon + 1
 		end
 	elseif msg:find("381253") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then
+			local icon = self.vb.awakenedIcon
+			if self.Options.SetIconOnAwakenedEarth then
+				self:SetIcon(targetName, icon)
+			end
 			if targetName == UnitName("player") then
 				specWarnAwakenedEarth:Show()
 				specWarnAwakenedEarth:Play("targetyou")
-				yellAwakenedEarthFades:Countdown(5)
+				yellAwakenedEarth:Yell(icon, icon)
+				yellAwakenedEarthFades:Countdown(5, nil, icon)
 			end
 			warnAwakenedEarth:CombinedShow(0.5, targetName)
+			self.vb.awakenedIcon = self.vb.awakenedIcon + 1
 		end
 	end
 end
