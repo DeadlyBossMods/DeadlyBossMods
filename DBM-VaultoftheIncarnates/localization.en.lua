@@ -40,7 +40,19 @@ local L
 ---------------------------
 --  Kurog Grimtotem --
 ---------------------------
---L= DBM:GetModLocalization(2491)
+L= DBM:GetModLocalization(2491)
+
+L:SetTimerLocalization({
+	timerDamageCD = "Debuffs (%s)",
+	timerAvoidCD = "Avoid (%s)",
+	timerUltimateCD = "Ultimate (%s)"
+})
+
+L:SetOptionLocalization({
+	timerDamageCD = "Show timers for targeted debuff attacks: Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash",
+	timerAvoidCD = "Show timers for avoidable attacks: Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst",
+	timerUltimateCD = "Show timers for 100 energy ultimate attacks: Searing Carnage, Absolute Zero, Seismic Rupture, Thunder Strike"
+})
 
 ---------------------------
 --  Broodkeeper Diurna --
