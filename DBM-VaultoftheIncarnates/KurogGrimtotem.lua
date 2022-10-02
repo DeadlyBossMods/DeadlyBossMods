@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184986)
 mod:SetEncounterID(2605)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20220322000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
@@ -12,81 +12,71 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 373329 376326 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429",
-	"SPELL_CAST_SUCCESS 374861",
+	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429",
+	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 372458 372514 372517 374779 374380 374427 374573 391056 390921 391419 391265",
-	"SPELL_AURA_APPLIED_DOSE 374881 374916 374917 374918 372158",
-	"SPELL_AURA_REMOVED 371971 374881 374916 374917 374918 373487 373494 372458 372514 374779 374380 374427 374573 390921 391419 391265",
+	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265",
+	"SPELL_AURA_APPLIED_DOSE 374881 374916 374917 374918 372158 374321",
+	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, verify/fix staging
---TODO, does he summon all 4 elementals at 66 and 33, or an elemental based on current altar?
---TODO, does alter swapping reset base ability sunder strike?
 --TODO, number of lighting crash icons verified on all difficulties (spell data says 3-default)
 --TODO, also add a stack too high warning on https://www.wowhead.com/beta/spell=373535/lightning-crash when strategies and tuning are established
 --TODO, See how things play out with WA/BW on handling some of this bosses mechanics, right now drycode is steering clear of computational/solving for things and sticking to just showing them
---TODO, is https://www.wowhead.com/beta/npc=190807/seismic-rupture tangible or invisible script bunny?
+--TODO, is https://www.wowhead.com/beta/npc=190807/seismic-rupture tangible or invisible script bunny
 --TODO, is https://www.wowhead.com/beta/npc=190586/seismic-pillar tangible/in need of killing or no?
 --TODO, GTFO https://www.wowhead.com/beta/spell=374705/seismic-rupture ?
---TODO, https://www.wowhead.com/beta/npc=190537/thunder-strike is probably another script bunny
 --TODO, revisit thunder strike automation. May want to combine warnings to generalized warning instead of saying soak/avoid
---TODO, can https://www.wowhead.com/beta/spell=376063/flame-bolt be interrupted?
 --TODO, target scan https://www.wowhead.com/beta/spell=374622/storm-front ?
 --TODO, announce https://www.wowhead.com/beta/spell=391555/raging-inferno spawns on mythic? They spawn from Searing
 --TODO, smart change checker for https://www.wowhead.com/beta/spell=391272/icy-tempest on mythic
---TODO, detect Granite Doppelboulder spawns on mythic Earth Alter
 --TODO, is Sundering smash (391268) dodgable by tank? is it even aimed at tank?
---TODO, Blazing Fiend uses searing carnage on mythic?
---TODO, the abilities that are used by boss and add, review if they are cast independantly and need independant Cds or if they're just cast at same time
+--TODO, the abilities that are used by boss and add during stage 1/3, review if they are cast independantly and need independant Cds or if they're just cast at same time
 --TODO, verify Dark Clouds mechanic on mythic
---TODO, use GUID timers on mythic phase 2 adds if their death event fires after stage change event (ie to prevent canceling bosses start timers)
 --TODO, add https://www.wowhead.com/beta/spell=374321/breaking-gravel if requires an actual tank swap to clear
 --General
-local warnPhase1								= mod:NewPhaseAnnounce(1, 2)
-
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374554, nil, nil, nil, 1, 8)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --Stage One: Elemental Mastery
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25036))
-local warnElementalShift						= mod:NewSpellAnnounce(374861, 3)
+--local warnElementalShift						= mod:NewSpellAnnounce(374861, 3)--Cast not logged, so removed for now
 local warnSplinteredBones						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Healer")
 
 local specWarnSunderStrike						= mod:NewSpecialWarningDefensive(390548, nil, nil, nil, 1, 2)
 local specWarnSplinteredBones					= mod:NewSpecialWarningTaunt(372158, nil, nil, nil, 1, 2)
 
-local timerSunderStrikeCD						= mod:NewAITimer(35, 390548, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSunderStrikeCD						= mod:NewCDTimer(30.3, 390548, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--General timers for handling of bosses ability rotation
+local timerDamageCD								= mod:NewTimer(30, "timerDamageCD", 391096, nil, nil, 3)--Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash
+local timerAvoidCD								= mod:NewTimer(60, "timerAvoidCD", 391100, nil, nil, 3)--Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst
+local timerUltimateCD							= mod:NewTimer(60, "timerUltimateCD", 374680, nil, nil, 3)--Searing Carnage, Absolute Zero, Seismic Rupture, Thunder Strike
+local timerAddsCD								= mod:NewAddsTimer(60, 393314, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--60-66, blizz might have been playing with energy gains, or it's just that bad due to queuing
 
 --mod:AddInfoFrameOption(361651, true)
-mod:AddSetIconOption("SetIconOnLightningCrash", 373487, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnLightningCrash", 373487, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnSurge", 371971, true)
 
 mod:GroupSpells(390548, 372158)--Tank cast with tank debuff
 --Fire Altar An altar of primal fire
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25040))
-local warnBlisteringDominance					= mod:NewStackAnnounce(374881, 2)
-local warnSearingCarnage						= mod:NewTargetNoFilterAnnounce(374022, 3)
+--local warnBlisteringDominance					= mod:NewStackAnnounce(374881, 2)
+--local warnSearingCarnage						= mod:NewTargetNoFilterAnnounce(374022, 3)
 
 local specWarnMagmaBurst						= mod:NewSpecialWarningDodge(382563, nil, nil, nil, 2, 2)
 local specWarnMoltenRupture						= mod:NewSpecialWarningDodge(373329, nil, nil, nil, 2, 2)
-local specWarnSearingCarnage					= mod:NewSpecialWarningDodge(374022, nil, nil, nil, 2, 2)
+local specWarnSearingCarnage					= mod:NewSpecialWarningDodge(374022, nil, nil, nil, 2, 2)--Just warn everyone since it targets most of raid, even if it's not on YOU, you need to avoid it
 
-local timerMagmaBurstCD							= mod:NewAITimer(35, 382563, nil, nil, nil, 3)
-local timerMoltenRuptureCD						= mod:NewAITimer(35, 373329, nil, nil, nil, 3, DBM_COMMON_L.HEROIC_ICON)
-local timerSearingCarnageCD						= mod:NewAITimer(35, 374022, nil, nil, nil, 3)
-
-mod:AddSetIconOption("SetIconOnSearing", 374022, true, false, {4, 5, 6})
 ----Mythic Only (Flamewrought Eradicator)
 local specWarnFlamewroughtEradicator			= mod:NewSpecialWarningSwitch(393314, "-Healer", nil, nil, 1, 2)
 local specWarnSunderingFlame					= mod:NewSpecialWarningDodge(393309, nil, nil, nil, 2, 2)
 
-local timerFlamewroughtEradicatorCD				= mod:NewAITimer(35, 393314, nil, nil, nil, 1, DBM_COMMON_L.MYTHIC_ICON)
+local timerFlamewroughtEradicatorCD				= mod:NewAITimer(35, 393314, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
 local timerSunderingFlameCD						= mod:NewAITimer(35, 393309, nil, nil, nil, 3)
 --Frost Altar An altar of primal frost.
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25061))
@@ -101,12 +91,9 @@ local specWarnAbsoluteZero						= mod:NewSpecialWarningYouPos(372456, nil, nil, 
 local yellAbsoluteZero							= mod:NewShortPosYell(372456)
 local yellAbsoluteZeroFades						= mod:NewIconFadesYell(372456)
 
-local timerFrigidTorrentCD						= mod:NewAITimer(35, 391019, nil, nil, nil, 3)--Cast by boss AND Dominator
-local timerBitingChillCD						= mod:NewAITimer(35, 373678, nil, nil, nil, 2)
-local timerAbsoluteZeroCD						= mod:NewAITimer(35, 372456, nil, nil, nil, 3)
 local timerFrostBite							= mod:NewBuffFadesTimer(30, 372514, nil, false, nil, 5)
 
-mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, false, {4, 5})
+mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, false, {1, 2})
 
 mod:GroupSpells(372456, 372514, 372517)--Group all Below Zero mechanics together
 ----Mythic Only (Icebound Dominator)
@@ -114,8 +101,9 @@ local specWarnIceboundDominator					= mod:NewSpecialWarningSwitch(393295, "-Heal
 local specWarnFreezing							= mod:NewSpecialWarningMoveTo(391419, nil, nil, nil, 1, 2)--Effect of Icy Tempest (391425)
 local specWarnSunderingFrost					= mod:NewSpecialWarningDodge(393296, nil, nil, nil, 2, 2)
 
-local timerIceboundDominatorCD					= mod:NewAITimer(35, 393295, nil, nil, nil, 1, DBM_COMMON_L.MYTHIC_ICON)
+local timerIceboundDominatorCD					= mod:NewAITimer(35, 393295, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
 local timerSunderingFrostCD						= mod:NewAITimer(35, 393296, nil, nil, nil, 3)
+local timerFrigidTorrentCD						= mod:NewAITimer(60, 391019, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Earth Altar An altar of primal earth.
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
 local warnShatteringDominance					= mod:NewStackAnnounce(374917, 2)
@@ -125,15 +113,13 @@ local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, n
 local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(390796, "Melee", nil, nil, 2, 2)--Cast by boss AND Doppelboulder
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
-local timerEnvelopingEarthCD					= mod:NewAITimer(35, 391055, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
-local timerEruptingBedrockCD					= mod:NewAITimer(35, 390796, nil, nil, nil, 2)--Cast by boss AND Doppelboulder
-local timerSeismicRuptureCD						= mod:NewAITimer(35, 374691, nil, nil, nil, 3)
-----Mythic Only (Granite Doppelboulder)
-local specWarnGraniteDoppelboulder				= mod:NewSpecialWarningSwitch(392098, "-Healer", nil, nil, 1, 2)
+----Mythic Only (Ironwrought Smasher)
+local specWarnIronwroughtSmasher				= mod:NewSpecialWarningSwitch(392098, "-Healer", nil, nil, 1, 2)
 local specWarnSunderingSmash					= mod:NewSpecialWarningSpell(391268, nil, nil, nil, 1, 2)
 
-local timerGraniteDoppelboulderCD				= mod:NewAITimer(35, 392098, nil, nil, nil, 1, DBM_COMMON_L.MYTHIC_ICON)
-local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Granite Doppelboulder
+local timerIronwroughtSmasherCD					= mod:NewAITimer(35, 392098, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
+local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Ironwrought Smasher
+local timerEruptingBedrockCD					= mod:NewCDTimer(60, 390796, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Storm Altar An altar of primal storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
 local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
@@ -150,10 +136,6 @@ local yellShockingBurstFades					= mod:NewShortFadesYell(390920)
 local specWarnThunderStrike						= mod:NewSpecialWarningSoak(374215, nil, nil, nil, 2, 2)--No Debuff
 local specWarnThunderStrikeBad					= mod:NewSpecialWarningDodge(374215, nil, nil, nil, 2, 2)--Debuff
 
-local timerLightningCrashCD						= mod:NewAITimer(35, 373487, nil, nil, nil, 3)
-local timerShockingBurstCD						= mod:NewAITimer(35, 390920, nil, nil, nil, 3)
-local timerThunderStrikeCD						= mod:NewAITimer(35, 374215, nil, nil, nil, 5)
-
 --mod:GroupSpells(373487, 373535)--Group Lighting crash source debuff with dest (nearest player) debuff
 ----Mythic Only (Stormwrought Despoiler)
 local warnOrbLightning							= mod:NewTargetAnnounce(391267, 3)
@@ -164,24 +146,25 @@ local yellOrbLightning							= mod:NewShortYell(391267)
 local yellOrbLightningFades						= mod:NewShortFadesYell(391267)
 local specWarnSunderingPeal						= mod:NewSpecialWarningDodge(393429, nil, nil, nil, 2, 2)
 
-local timerStormwroughtDespoilerCD				= mod:NewAITimer(35, 393459, nil, nil, nil, 1, DBM_COMMON_L.MYTHIC_ICON)
-local timerOrbLightningCD							= mod:NewAITimer(35, 391267, nil, nil, nil, 3)
+local timerStormwroughtDespoilerCD				= mod:NewAITimer(35, 393459, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
+local timerOrbLightningCD						= mod:NewAITimer(35, 391267, nil, nil, nil, 3)
 local timerSunderingPealCD						= mod:NewAITimer(35, 393429, nil, nil, nil, 3)
 
 --Stage Two: Summoning Incarnates
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25071))
-local warnPhase2								= mod:NewPhaseAnnounce(2, 2)
-
 mod:AddNamePlateOption("NPAuraOnElementalBond", 374380, true)
 ----Tectonic Crusher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
+local warnBreakingGravel						= mod:NewStackAnnounce(374321, 2, nil, "Tank|Healer")
+
 local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
 local yellGroundShatter							= mod:NewShortYell(374427)
 local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
 local specWarnViolentUpheavel					= mod:NewSpecialWarningDodge(374430, nil, nil, nil, 2, 2)
 
-local timerGroundShatterCD						= mod:NewAITimer(35, 374427, nil, nil, nil, 3)
-local timerViolentUpheavelCD					= mod:NewAITimer(35, 374430, nil, nil, nil, 3)
+local timerGroundShatterCD						= mod:NewCDTimer(33.4, 374427, nil, nil, nil, 3)
+local timerViolentUpheavelCD					= mod:NewCDTimer(33.4, 374430, nil, nil, nil, 3)
+local timerSeismicRuptureCD						= mod:NewAITimer(60, 374691, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 ----Frozen Destroyer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25076))
@@ -189,32 +172,39 @@ local specWarnFrostBinds						= mod:NewSpecialWarningInterrupt(374623, "HasInter
 
 local specWarnFreezingTempest					= mod:NewSpecialWarningMoveTo(374624, nil, nil, nil, 3, 2)
 
-local timerFreezingTempestCD					= mod:NewAITimer(35, 374624, nil, nil, nil, 2)
+local timerFreezingTempestCD					= mod:NewCDTimer(37.7, 374624, nil, nil, nil, 2)
+local timerAbsoluteZeroCD						= mod:NewAITimer(60, 372456, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 ----Blazing Fiend
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25079))
-local warnReingnite								= mod:NewTargetNoFilterAnnounce(374573, 3)
+local timerSearingCarnageCD						= mod:NewAITimer(60, 374022, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
-local timerReingnit								= mod:NewTargetTimer(20, 374573, nil, false, nil, 5)--Depends how many there are, if just 1, enable by default
-
-mod:AddNamePlateOption("NPAuraOnReignite", 374573, true)
 ----Thundering Destroyer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25083))
-local warnStormFront							= mod:NewSpellAnnounce(374622, 3)
+local warnStormBreak							= mod:NewSpellAnnounce(374622, 3)
 
-local timerStormFrontCD							= mod:NewAITimer(35, 374622, nil, nil, nil, 2)
+local timerStormBreakCD							= mod:NewCDTimer(20.8, 374622, nil, nil, nil, 2)
+local timerThunderStrikeCD						= mod:NewAITimer(60, 374215, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 mod:AddRangeFrameOption(10, 374620)
 
 mod.vb.chillCast = 0
 mod.vb.litCrashIcon = 1
-mod.vb.zeroIcon = 4--Change to 1 if it cannot happen at saame time as Biting chill
+mod.vb.zeroIcon = 1
+mod.vb.curAltar = false
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.chillCast = 0
-	timerSunderStrikeCD:Start(1-delay)
-	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond or self.Options.NPAuraOnReignite then
+	self.vb.curAltar = false
+	timerSunderStrikeCD:Start(10.7-delay)
+	timerDamageCD:Start(20.4-delay, " ")
+	timerAvoidCD:Start(30.2-delay, " ")
+	timerUltimateCD:Start(63.1-delay, " ")
+	--if self:IsMythic() then
+	--	timerAddsCD:Start(1-delay)
+	--end
+	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -226,7 +216,7 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond or self.Options.NPAuraOnReignite then
+	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -242,31 +232,29 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 373678 then
 		self.vb.chillCast = self.vb.chillCast + 1
 		warnBitingChill:Show(self.vb.chillCast)
-		timerBitingChillCD:Start()
 	elseif spellId == 382563 or spellId == 392125 then--Non Mythic, Mythic
 		specWarnMagmaBurst:Show()
 		specWarnMagmaBurst:Play("watchwave")
-		if args:GetSrcCreatureID() == 184986 then--Boss
-			timerMagmaBurstCD:Start()--nil, args.sourceGUID
-		end
 	elseif spellId == 373487 then
 		self.vb.litCrashIcon = 1
-		timerLightningCrashCD:Start()
-	elseif spellId == 373329 or spellId == 376326 then
-		specWarnMoltenRupture:Show()
-		specWarnMoltenRupture:Play("watchwave")
-		timerMoltenRuptureCD:Start()
 	elseif spellId == 374022 or spellId == 392192 or spellId == 392152 then--Normal/Heroic, LFR, Mythic (assumed)
 		specWarnSearingCarnage:Show()
 		specWarnSearingCarnage:Play("watchstep")
-		timerSearingCarnageCD:Start()
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerSearingCarnageCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
-		self.vb.zeroIcon = 4
+		self.vb.zeroIcon = 1
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerAbsoluteZeroCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 374691 then
 		specWarnSeismicRupture:Show()
 		specWarnSeismicRupture:Play("watchstep")
-		timerSeismicRuptureCD:Start()
-	elseif spellId == 376669 or spellId == 374215 then--Hard, easy (assumed)
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerSeismicRuptureCD:Start(nil, args.sourceGUID)
+		end
+	elseif spellId == 376669 or spellId == 374215 then--Mythic, Non (assumed)
 		if DBM:UnitDebuff("player", 373494) then--Vulnerable to nature damage
 			specWarnThunderStrikeBad:Show()
 			specWarnThunderStrikeBad:Play("watchstep")
@@ -274,7 +262,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnThunderStrike:Show()
 			specWarnThunderStrike:Play("helpsoak")
 		end
-		timerThunderStrikeCD:Start()
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerThunderStrikeCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 374427 then
 		timerGroundShatterCD:Start(nil, args.sourceGUID)
 	elseif spellId == 374430 then
@@ -289,22 +279,23 @@ function mod:SPELL_CAST_START(args)
 		specWarnFreezingTempest:Play("runin")
 		timerFreezingTempestCD:Start(nil, args.sourceGUID)
 	elseif spellId == 374622 then
-		warnStormFront:Show()
-		timerStormFrontCD:Start(nil, args.sourceGUID)
+		warnStormBreak:Show()
+		timerStormBreakCD:Start(nil, args.sourceGUID)
 	elseif spellId == 391019 then
 		specWarnFrigidTorrent:Show()
 		specWarnFrigidTorrent:Play("watchorb")
-		if args:GetSrcCreatureID() == 184986 then--Boss
-			timerFrigidTorrentCD:Start()
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerFrigidTorrentCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 391055 then
-		timerEnvelopingEarthCD:Start()
+
 	elseif spellId == 390796 then
 		specWarnEruptingBedrock:Show()
 		specWarnEruptingBedrock:Play("justrun")
-		if args:GetSrcCreatureID() == 184986 then--Boss
-			timerEruptingBedrockCD:Start()
+		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
+			timerEruptingBedrockCD:Start(nil, args.sourceGUID)
 		end
+	--Mythic Stuff
 	elseif spellId == 391268 then
 		timerSunderingSmashCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
@@ -328,9 +319,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnSunderingFrost:Play("shockwave")
 		timerSunderingFrostCD:Start(nil, args.sourceGUID)
 	elseif spellId == 392098 then
-		specWarnGraniteDoppelboulder:Show()
-		specWarnGraniteDoppelboulder:Play("bigmob")
-		timerGraniteDoppelboulderCD:Start()
+		specWarnIronwroughtSmasher:Show()
+		specWarnIronwroughtSmasher:Play("bigmob")
+		timerIronwroughtSmasherCD:Start()
 	elseif spellId == 393459 then
 		specWarnStormwroughtDespoiler:Show()
 		specWarnStormwroughtDespoiler:Play("bigmob")
@@ -346,14 +337,16 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 374861 and self:AntiSpam(5, 1) then--5 sec throttle so it doesn't spam as much when triggering an intentional wipe
-		warnElementalShift:Show()
+	if spellId == 373415 then
+		DBM:AddMsg("373415 is combat logging now, notify DBM author")
+		--specWarnMoltenRupture:Show()
+		--specWarnMoltenRupture:Play("farfromline")
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if args:IsSpellID(374935, 374931, 374939, 374943) then
+	if args:IsSpellID(374935, 374931, 374939, 374943) then--Not logged
 		if spellId == 374935 then--Frozen Incarnation
 			timerFreezingTempestCD:Start(1, args.destGUID)
 			--if self:IsMythic() then
@@ -370,7 +363,7 @@ function mod:SPELL_SUMMON(args)
 			--	timerSeismicRuptureCD:Start()
 			--end
 		elseif spellId == 374943 then--Thundering Incarnation
-			timerStormFrontCD:Start(1, args.destGUID)
+			timerStormBreakCD:Start(1, args.destGUID)
 			--if self:IsMythic() then
 			--	timerThunderStrikeCD:Start()
 			--end
@@ -379,7 +372,7 @@ function mod:SPELL_SUMMON(args)
 		timerSunderingFlameCD:Start(1, args.destGUID)
 	elseif spellId == 393295 then--Icewrought Dominator
 		timerSunderingFrostCD:Start(1, args.destGUID)
-	elseif spellId == 392098 then--Granite Doppelboulder
+	elseif spellId == 392098 then--Ironwrought Smasher
 		timerSunderingSmashCD:Start(1, args.destGUID)
 	elseif spellId == 393459 then--Stormwrought Despoiler
 		timerOrbLightningCD:Start(1, args.destGUID)
@@ -393,61 +386,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnSurge then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 374881 then--BlisteringDominance
+	elseif spellId == 374321 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
-			warnBlisteringDominance:Show(args.destName, amount)
+			warnBreakingGravel:Show(args.destName, amount)
 		end
-		--Likely not real phase change event, move me to right place later
-		--timerMagmaBurstCD:Start(2)
-		--if self:IsHard() then
-			--timerMoltenRuptureCD:Start(2)
-			--if self:IsMythic() then
-			--	timerFlamewroughtEradicatorCD:Start(2)
-			--end
-		--end
-		--timerSearingCarnageCD:Start(2)
-	elseif spellId == 374916 then--ChillingDominance
-		local amount = args.amount or 1
-		if amount % 3 == 0 then
-			warnChillingDominance:Show(args.destName, amount)
-		end
-		--Not correct, temp placement
-		--timerAbsoluteZeroCD:Start(2)
-		--If self:IsHard() then
-			--timerFrigidTorrentCD:Start(2)
-			--if self:IsMythic() then
-				--timerIceboundDominatorCD:Start(2)
-			--end
-		--end
-		--timerBitingChillCD:Start(2)
-	elseif spellId == 374917 then--ShatteringDominance
-		local amount = args.amount or 1
-		if amount % 3 == 0 then
-			warnShatteringDominance:Show(args.destName, amount)
-		end
-		--Not correct, temp placement
-		--if self:IsHard() then
-			--timerEnvelopingEarthCD:Start(2)
-			--if self:IsMythic() then
-				--timerGraniteDoppelboulderCD:Start(2)
-			--end
-		--end
-		--timerEruptingBedrockCD:Start(2)
-		--timerSeismicRuptureCD:Start(2)
-	elseif spellId == 374918 then--Thundering
-		local amount = args.amount or 1
-		if amount % 3 == 0 then
-			warnThunderingDominance:Show(args.destName, amount)
-		end
-		--Not correct, temp placement
-		--if self:IsHard() then
-			--timerLightningCrashCD:Start(2)
-			--if self:IsMythic() then
-				--timerStormwroughtDespoilerCD:Start(2)
-			--end
-		--end
-		--timerThunderStrikeCD:Start(2)
+--	elseif spellId == 374881 then--Blistering Dominance
+--		local amount = args.amount or 1
+--		if amount % 3 == 0 then
+--			warnBlisteringDominance:Show(args.destName, amount)
+--		end
+--	elseif spellId == 374916 then--ChillingDominance
+--		local amount = args.amount or 1
+--		if amount % 3 == 0 then
+--			warnChillingDominance:Show(args.destName, amount)
+--		end
+--	elseif spellId == 374917 then--ShatteringDominance
+--		local amount = args.amount or 1
+--		if amount % 3 == 0 then
+--			warnShatteringDominance:Show(args.destName, amount)
+--		end
+--	elseif spellId == 374918 then--Thundering
+--		local amount = args.amount or 1
+--		if amount % 3 == 0 then
+--			warnThunderingDominance:Show(args.destName, amount)
+--		end
 	elseif spellId == 372158 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
@@ -463,7 +426,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 373487 then
 		local icon = self.vb.litCrashIcon
-		if self.Options.SetIconOnLightningCrash then
+		if self.Options.SetIconOnLightningCrash and icon < 9 then--On 30 man it's 9 icons :\
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
@@ -482,7 +445,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnAbsoluteZero:Show(self:IconNumToTexture(icon))
 			specWarnAbsoluteZero:Play("mm"..icon)
-			yellAbsoluteZero:Yell(icon, icon - 3)
+			yellAbsoluteZero:Yell(icon, icon)
 			yellAbsoluteZeroFades:Countdown(spellId, nil, icon)
 		else
 			warnAbsoluteZero:CombinedShow(0.5, args.destName)
@@ -494,28 +457,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrozenSolid:CombinedShow(1, args.destName)
 	elseif spellId == 374779 then--Primal Barrier
 		self:SetStage(2)
-		warnPhase2:Show()
 		--Base
 		timerSunderStrikeCD:Stop()
-		--Fire
-		timerMagmaBurstCD:Stop()
-		timerMoltenRuptureCD:Stop()
-		timerSearingCarnageCD:Stop()
-		timerFlamewroughtEradicatorCD:Stop()
-		--Ice
-		timerAbsoluteZeroCD:Stop()
-		timerFrigidTorrentCD:Stop()
-		timerBitingChillCD:Stop()
-		timerIceboundDominatorCD:Stop()
-		--Earth
-		timerEnvelopingEarthCD:Stop()
-		timerEruptingBedrockCD:Stop()
-		timerSeismicRuptureCD:Stop()
-		timerGraniteDoppelboulderCD:Stop()
-		--Lightning
-		timerLightningCrashCD:Stop()
-		timerThunderStrikeCD:Stop()
-		timerStormwroughtDespoilerCD:Stop()
+
+		timerDamageCD:Stop()
+		timerAvoidCD:Stop()
+		timerUltimateCD:Stop()
+		timerAddsCD:Stop()
 	elseif spellId == 374380 then
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -526,12 +474,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGroundShatter:Play("runout")
 			yellGroundShatter:Yell()
 			yellGroundShatterFades:Countdown(spellId)
-		end
-	elseif spellId == 374573 then
-		warnReingnite:Show(args.destName)
-		timerReingnit:Start(args.destName, args.destGUID)
-		if self.Options.NPAuraOnReignite then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
 		end
 	elseif spellId == 391056 then
 		warnEnvelopingEarth:CombinedShow(0.3, args.destName)
@@ -571,29 +513,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnSurge then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 374881 then--Blistering Dominance
-		--Not correct, debuff desn't fall off, just temp placement until real phasing
-		timerMagmaBurstCD:Stop()
-		timerMoltenRuptureCD:Stop()
-		timerSearingCarnageCD:Stop()
-		timerFlamewroughtEradicatorCD:Stop()
-	elseif spellId == 374916 then--Chilling Dominance
-		--Not correct, debuff desn't fall off, just temp placement until real phasing
-		timerAbsoluteZeroCD:Stop()
-		timerFrigidTorrentCD:Stop()
-		timerBitingChillCD:Stop()
-		timerIceboundDominatorCD:Stop()
-	elseif spellId == 374917 then--Shattering Dominance
-		--Not correct, debuff desn't fall off, just temp placement until real phasing
-		timerEnvelopingEarthCD:Stop()
-		timerEruptingBedrockCD:Stop()
-		timerSeismicRuptureCD:Stop()
-		timerGraniteDoppelboulderCD:Stop()
-	elseif spellId == 374918 then--Thundering Dominance
-		--Not correct, debuff desn't fall off, just temp placement until real phasing
-		timerLightningCrashCD:Stop()
-		timerThunderStrikeCD:Stop()
-		timerStormwroughtDespoilerCD:Stop()
 	elseif spellId == 373487 then
 --		if self.Options.SetIconOnLightningCrash then
 --			self:SetIcon(args.destName, 0)
@@ -616,45 +535,42 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnFrostBite:Show()
 		timerFrostBite:Stop()
 	elseif spellId == 374779 then--Primal Barrier
-		self:SetStage(1)
-		warnPhase1:Show()
-		--Base
-		timerSunderStrikeCD:Start(3)
-		--TODO, detect which alter he's returning to and start appropriate shit below
-
-		--Fire
-		--timerMagmaBurstCD:Start()
-		--timerSearingCarnageCD:Start()
-		--Ice
-		--timerAbsoluteZeroCD:Start()
-		--timerBitingChillCD:Start()
-		--Earth
-		--timerEruptingBedrockCD:Start()
-		--timerSeismicRuptureCD:Start()
-		--Lightning
-		--timerThunderStrikeCD:Start()
-		--if self:IsHard() then
-			--Fire
-			--timerMoltenRuptureCD:Start()
+		if self.vb.stageTotality == 2 then
+			self:SetStage(1)
+			--Base
+			timerSunderStrikeCD:Start(11)
+			timerDamageCD:Start(20, " ")
+			timerAvoidCD:Start(30, " ")
+			--Boss retains power from previous stage
+			--Hopefully this is temp
+			--Alternatively could just pause timer going into intermission and resume it here with 5 seconds added?
+			local currentPower = UnitPower("boss1")
+			if currentPower then
+				local percent = currentPower / 100
+				local elapsed = percent * 60
+				timerUltimateCD:Update(elapsed, 65, " ")--Power updates resume after 5 seconds, so 5 sec added to total
+			end
 			--if self:IsMythic() then
-				--timerFlamewroughtEradicatorCD:Start()
+			--	timerAddsCD:Start()
 			--end
-			--Ice
-			--timerFrigidTorrentCD:Start()
+		else--4, which means stage 3, totality 5
+			self:SetStage(3)
+			timerSunderStrikeCD:Start(10)
+			timerDamageCD:Start(15, " ")
+			timerAvoidCD:Start(22, " ")
+			--Boss retains power from previous stage
+			--Hopefully this is temp
+			--Alternatively could just pause timer going into intermission and resume it here with 5 seconds added?
+			local currentPower = UnitPower("boss1")
+			if currentPower then
+				local percent = currentPower / 100
+				local elapsed = percent * 60
+				timerUltimateCD:Update(elapsed, 65, " ")--Power updates resume after 5 seconds, so 5 sec added to total
+			end
 			--if self:IsMythic() then
-				--timerIceboundDominatorCD:Start()
+			--	timerAddsCD:Start()
 			--end
-			--Earth
-			--timerEnvelopingEarthCD:Start()
-			--if self:IsMythic() then
-				--timerGraniteDoppelboulderCD:Start()
-			--end
-			--Lightning
-			--timerLightningCrashCD:Start()
-			--if self:IsMythic() then
-				--timerStormwroughtDespoilerCD:Start()
-			--end
-		--end
+		end
 	elseif spellId == 374380 then
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
@@ -662,11 +578,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 374427 then
 		if args:IsPlayer() then
 			yellGroundShatterFades:Cancel()
-		end
-	elseif spellId == 374573 then
-		timerReingnit:Stop(args.destName, args.destGUID)
-		if self.Options.NPAuraOnReignite then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 390921 then
 		if args:IsPlayer() then
@@ -684,23 +595,26 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 190688 then--Blazing Incarnation/Blazing Fiend
-		timerSearingCarnageCD:Stop()
-	elseif cid == 190686 then--Frozen Incarnation/Frozen Destroyer
+	--Intermission Adds
+	if cid == 190688 then--Blazing Fiend
+		timerSearingCarnageCD:Stop(args.destGUID)
+	elseif cid == 190686 then--Frozen Destroyer
 		timerFreezingTempestCD:Stop(args.destGUID)
-		timerAbsoluteZeroCD:Stop()
-	elseif cid == 190588 then--Tectonic Incarnation/Tectonic Crusher
+		timerAbsoluteZeroCD:Stop(args.destGUID)
+	elseif cid == 190588 then--Tectonic Crusher
 		timerGroundShatterCD:Stop(args.destGUID)
 		timerViolentUpheavelCD:Stop(args.destGUID)
 		timerSeismicRuptureCD:Stop()
-	elseif cid == 190690 then--Thundering Incarnation/Thundering tempest
-		timerStormFrontCD:Stop(args.destGUID)
-		timerThunderStrikeCD:Stop()
+	elseif cid == 190690 then--Thundering Tempest
+		timerStormBreakCD:Stop(args.destGUID)
+		timerThunderStrikeCD:Stop(args.destGUID)
+	--Mythic Adds
 	elseif cid == 198311 then--Flamewrought Eradicator
 		timerSunderingFlameCD:Stop(args.destGUID)
 	elseif cid == 198308 then--Icewrought Dominator
 		timerSunderingFrostCD:Stop(args.destGUID)
-	elseif cid == 197595 then--Granite Doppelboulder
+		timerFrigidTorrentCD:Stop(args.destGUID)
+	elseif cid == 197595 then--Ironwrought Smasher
 		timerSunderingSmashCD:Stop(args.destGUID)
 	elseif cid == 198326 then--Stormwrought Despoiler
 		timerOrbLightningCD:Stop(args.destGUID)
@@ -710,7 +624,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 374554 or spellId == 391555) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
@@ -719,10 +632,34 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
+do
+	local spellMapping = {
+		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
+		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
+		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
+		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(390796))},
+		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
+		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
+	}
 
+	--Problematic Notes:
+	--Molten Rupture and Frigid Torrent flagged heroic+ only. So on normal and LFR Avoid Selection only has a 2/4 spells.
+	--Lightning Crash and Enveloping Earth flagged heroic+ only. So on normal and LFR "Damage Selection" only has a 2/4 spells.
+	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+		if spellId == 373415 then
+			specWarnMoltenRupture:Show()
+			specWarnMoltenRupture:Play("farfromline")
+		elseif spellId == 391096 then--Damage Selection (Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth)
+			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
+			timerDamageCD:Start(spellName)
+		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
+			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
+			timerAvoidCD:Start(spellName)
+		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
+			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
+			timerUltimateCD:Start(spellName)
+		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
+			timerAddsCD:Start()
+		end
 	end
 end
---]]
