@@ -585,7 +585,7 @@ do
 				mod:Schedule(2, CheckBosses, eID, delay+2)
 			else
 				if not activeBosses[eID] then
-					DBM:AddMsg("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
+					DBM:Debug("Failed to detect Fated affix after 10 seconds of scanning, notify DBM authors with this ID: "..eID)
 				end
 			end
 		end
@@ -596,7 +596,7 @@ do
 		--Delay check to make sure INSTANCE_ENCOUNTER_ENGAGE_UNIT has fired and boss unit Ids are valid
 		--Yet we avoid using INSTANCE_ENCOUNTER_ENGAGE_UNIT directly since that increases timer start variation versus ENCOUNTER_START by a few milliseconds
 		self:Unschedule(CheckBosses, eID)
-		self:Schedule(1, CheckBosses, eID, 1)
+		self:Schedule(2, CheckBosses, eID, 1)
 	end
 
 	function mod:ENCOUNTER_END(eID)
