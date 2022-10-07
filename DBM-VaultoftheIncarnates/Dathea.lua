@@ -37,8 +37,8 @@ local warnRagingBurst							= mod:NewCountAnnounce(388302, 3)
 local warnZephyrSlam							= mod:NewStackAnnounce(375580, 2, nil, "Tank|Healer")
 
 local specWarnCoalescingStorm					= mod:NewSpecialWarningCount(387849, nil, nil, nil, 2, 2)
-local specWarnEmpoweedConductiveMark			= mod:NewSpecialWarningMoveAway(391686, nil, 371624, nil, 1, 2)
-local yellEmpoweredConductiveMark				= mod:NewYell(391686, 371624)--Non empowered version from council used for short text
+local specWarnConductiveMark					= mod:NewSpecialWarningMoveAway(391686, nil, nil, nil, 1, 2)
+local yellConductiveMark						= mod:NewYell(391686)
 local specWarnCyclone							= mod:NewSpecialWarningCount(376943, nil, nil, nil, 2, 12)
 local specWarnCrosswinds						= mod:NewSpecialWarningDodgeCount(388410, nil, nil, nil, 2, 2)
 local specWarnZephyrSlam						= mod:NewSpecialWarningDefensive(375580, nil, nil, nil, 1, 2)
@@ -47,7 +47,7 @@ local specWarnZephyrSlamTaunt					= mod:NewSpecialWarningTaunt(375580, nil, nil,
 
 local timerColaescingStormCD					= mod:NewCDCountTimer(80, 387849, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, nil, nil, nil, 3)
-local timerEmpoweredConductiveMarkCD			= mod:NewCDCountTimer(28.2, 391686, 371624, nil, nil, 3)--28-30
+local timerConductiveMarkCD						= mod:NewCDCountTimer(28.2, 391686, nil, nil, nil, 3)--28-30
 local timerCycloneCD							= mod:NewCDCountTimer(79.1, 376943, nil, nil, nil, 2)
 local timerCrosswindsCD							= mod:NewCDCountTimer(35.2, 388410, nil, nil, nil, 3)
 local timerZephyrSlamCD							= mod:NewCDCountTimer(16.9, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -88,7 +88,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cycloneCount = 0
 	self.vb.crosswindCount = 0
 	self.vb.slamCount = 0
-	timerEmpoweredConductiveMarkCD:Start(4.6-delay, 1)
+	timerConductiveMarkCD:Start(4.6-delay, 1)
 	timerRagingBurstCD:Start(7-delay, 1)
 	timerZephyrSlamCD:Start(15.8-delay, 1)
 	timerCrosswindsCD:Start(25.6-delay, 1)
@@ -121,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCoalescingStorm:Play("mobsoon")
 		timerColaescingStormCD:Start(nil, self.vb.stormCount+1)
 		--Timers reset by storm
-		timerEmpoweredConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
+		timerConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
 		timerZephyrSlamCD:Restart(20, self.vb.slamCount+1)
 		timerCrosswindsCD:Restart(31.2, self.vb.crosswindCount+1)
 	elseif spellId == 388302 then
@@ -242,9 +242,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 391686 then
 		if args:IsPlayer() then
-			specWarnEmpoweedConductiveMark:Show()
-			specWarnEmpoweedConductiveMark:Play("range5")
-			yellEmpoweredConductiveMark:Yell()
+			specWarnConductiveMark:Show()
+			specWarnConductiveMark:Play("range5")
+			yellConductiveMark:Yell()
 		end
 	elseif spellId == 375580 and not args:IsPlayer() then
 		local amount = args.amount or 1
@@ -296,7 +296,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.markCount = self.vb.markCount + 1
 		--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
 		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 28 then
-			timerEmpoweredConductiveMarkCD:Start(nil, self.vb.markCount+1)
+			timerConductiveMarkCD:Start(nil, self.vb.markCount+1)
 		end
 	end
 end

@@ -50,7 +50,7 @@ local yellChillingBlastFades					= mod:NewShortFadesYell(371976)
 local specWarnEnvelopingWebs					= mod:NewSpecialWarningYouPos(372082, nil, nil, nil, 1, 2)
 local yellEnvelopingWebs						= mod:NewPosYell(372082)
 local yellEnvelopingWebsFades					= mod:NewIconFadesYell(372082)
-local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 8, nil, nil, 1, 6)
+local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, nil, nil, 1, 6)
 local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
 local specWarnWebBlast							= mod:NewSpecialWarningTaunt(385083, nil, nil, nil, 1, 2)
 
@@ -212,13 +212,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnSuffocatinWebs:CombinedShow(0.5, args.destName)
 		self.vb.webIcon = self.vb.webIcon + 1
-	elseif spellId == 372082 then
+	elseif spellId == 372030 then
 		local amount = args.amount or 1
 		stickyStacks[args.destName] = amount
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(stickyStacks, 0.2)
 		end
-		if args:IsPlayer() and amount >= 8 then
+		if args:IsPlayer() and amount >= 3 then
 			specWarnStickyWebbing:Show(amount)
 			specWarnStickyWebbing:Play("stackhigh")
 		end
@@ -251,7 +251,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellSuffocatingWebsFades:Cancel()
 		end
-	elseif spellId == 372082 then
+	elseif spellId == 372030 then
 		stickyStacks[args.destName] = nil
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(stickyStacks, 0.2)
@@ -267,7 +267,7 @@ end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
-	if spellId == 372082 then
+	if spellId == 372030 then
 		stickyStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(stickyStacks, 0.2)

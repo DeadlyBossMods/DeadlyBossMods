@@ -582,6 +582,7 @@ do
 		if not found then
 			--Failed to find any affix on any boss ID, in a raid that's fated, try again after delay
 			if delay < 10 then
+				mod:Unschedule(CheckBosses, eID)
 				mod:Schedule(2, CheckBosses, eID, delay+2)
 			else
 				if not activeBosses[eID] then

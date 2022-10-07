@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 380487 377166 377505 383073 376279",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 386352 381253 376276",
+	"SPELL_AURA_APPLIED 386352 381253 376276 391306",
 	"SPELL_AURA_APPLIED_DOSE 376276",
-	"SPELL_AURA_REMOVED 386352 381253",
+	"SPELL_AURA_REMOVED 386352 381253 391306",
 	"SPELL_PERIODIC_DAMAGE 382458",
 	"SPELL_PERIODIC_MISSED 382458"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 local warnRockBlast								= mod:NewTargetNoFilterAnnounce(380487, 3)
 local warnAwakenedEarth							= mod:NewTargetNoFilterAnnounce(381253, 3)
 local warnConcussiveSlam						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Healer")
+local warnReactiveDust							= mod:NewTargetAnnounce(380487, 3)
 
 local specWarnRockBlast							= mod:NewSpecialWarningYouPos(380487, nil, nil, nil, 1, 2)
 local yellRockBlast								= mod:NewShortPosYell(380487)
@@ -45,6 +46,8 @@ local specWarnShatteringImpact					= mod:NewSpecialWarningDodge(383073, nil, nil
 local specWarnConcussiveSlam					= mod:NewSpecialWarningDefensive(376279, nil, nil, nil, 1, 2)
 local specWarnConcussiveSlamTaunt				= mod:NewSpecialWarningTaunt(376279, nil, nil, nil, 1, 2)
 local specWarnFrenziedDevastation				= mod:NewSpecialWarningSpell(377505, nil, nil, nil, 3, 2)
+local specWarnReactiveDust						= mod:NewSpecialWarningYou(391306, nil, nil, nil, 1, 2)
+local yellReactiveDust							= mod:NewShortPosYell(391306)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(382458, nil, nil, nil, 1, 8)
 
 local timerRockBlastCD							= mod:NewNextCountTimer(35, 380487, nil, nil, nil, 3)
@@ -62,6 +65,7 @@ mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, false, false, {1, 2, 3, 4
 
 mod.vb.rockIcon = 1
 mod.vb.awakenedIcon = 1
+mod.vb.dustIcon = 8--descending to match BW
 mod.vb.annihilationCount = 0
 mod.vb.rockCount = 0
 mod.vb.slamCount = 0
@@ -139,6 +143,7 @@ function mod:SPELL_CAST_START(args)
 			timerRockBlastCD:Start(timer, self.vb.rockCount+1)
 		end
 	elseif spellId == 377166 then
+		self.vb.dustIcon = 8
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		specWarnResonatingAnnihilation:Show(self.vb.annihilationCount)
 		specWarnResonatingAnnihilation:Play("specialsoon")
@@ -219,6 +224,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnConcussiveSlam:Show(args.destName, amount)
 		end
+	elseif spellId == 391306 then
+		local icon = self.vb.dustIcon
+--		if self.Options.SetIconOnAwakenedEarth then
+--			self:SetIcon(args.destName, icon)
+--		end
+		if args:IsPlayer() then
+			specWarnReactiveDust:Show()
+			specWarnReactiveDust:Play("targetyou")
+			if self.vb.dustIcon > 0 then
+				yellReactiveDust:Yell(icon, icon)
+			end
+		end
+		warnReactiveDust:CombinedShow(0.5, args.destName)
+		self.vb.dustIcon = self.vb.dustIcon - 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
