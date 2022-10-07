@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 373059 372315 375332 372394 372322 372056 372027",
-	"SPELL_CAST_SUCCESS 374021",
+	"SPELL_CAST_SUCCESS 372275",
 	"SPELL_AURA_APPLIED 391599 371836 371591 386440 371624 374021 386375 372056 374039 372027 386289",
 	"SPELL_AURA_APPLIED_DOSE 391599 371836 372027 372056",
 	"SPELL_AURA_REMOVED 391599 371836 371624 374039",
@@ -49,7 +49,7 @@ local warnConductiveMark						= mod:NewTargetAnnounce(371624, 4, nil, false)--Ev
 local warnChainLightning						= mod:NewTargetAnnounce(374021, 2)
 local warnStormingConvocation					= mod:NewSpellAnnounce(386375, 4)
 
-local specWarnConductiveMark					= mod:NewSpecialWarningStack(371624, nil, nil, nil, 1, 2)
+local specWarnConductiveMark					= mod:NewSpecialWarningYou(371624, nil, nil, nil, 1, 2)
 local yellConductiveMark						= mod:NewShortYell(371624)
 local specWarnLightningBolt						= mod:NewSpecialWarningInterrupt(372394, "HasInterrupt", nil, nil, 1, 2)
 local specWarnChainLightning					= mod:NewSpecialWarningMoveAway(374021, nil, nil, nil, 1, 2)
@@ -164,7 +164,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 374021 then
+	if spellId == 372275 and self:AntiSpam(5, 2) then
 		timerChainLightningCD:Start()
 	end
 end
@@ -223,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEarthenPillarCD:Stop()
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
-		if self:AntiSpam(4, 2) then
+		if self:AntiSpam(4, 3) then
 			self.vb.axeIcon = 1
 			timerMeteorAxeCD:Start()
 		end
