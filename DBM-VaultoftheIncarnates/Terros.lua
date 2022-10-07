@@ -77,7 +77,7 @@ local allTimers = {
 		--Concussive Slam
 		[376279] = {},
 		--Rock Blast
-		[326707] = {},
+		[380487] = {},
 		--Shattering Impact
 		[383073] = {},
 	},
@@ -85,7 +85,7 @@ local allTimers = {
 		--Concussive Slam
 		[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
 		--Rock Blast
-		[326707] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+		[380487] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 		--Shattering Impact
 		[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 	},
@@ -93,7 +93,7 @@ local allTimers = {
 		--Concussive Slam
 		[376279] = {},
 		--Rock Blast
-		[326707] = {},
+		[380487] = {},
 		--Shattering Impact
 		[383073] = {},
 	},
@@ -147,7 +147,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		specWarnResonatingAnnihilation:Show(self.vb.annihilationCount)
 		specWarnResonatingAnnihilation:Play("specialsoon")
-		timerResonatingAnnihilationCD:Start()--Doesn't need table, it's static
+		timerResonatingAnnihilationCD:Start(nil, self.vb.annihilationCount+1)--Doesn't need table, it's static
 	elseif spellId == 377505 and not self.vb.frenziedStarted then
 		self.vb.frenziedStarted = true
 		specWarnFrenziedDevastation:Show()

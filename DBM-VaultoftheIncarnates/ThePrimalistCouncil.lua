@@ -13,11 +13,10 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 373059 372315 375332 372394 372322 372056 372027",
-	"SPELL_CAST_SUCCESS 372275",
+	"SPELL_CAST_START 373059 372315 372394 372322 372056 372027 372279 374038",
 	"SPELL_AURA_APPLIED 391599 371836 371591 386440 371624 374021 386375 372056 374039 372027 386289",
 	"SPELL_AURA_APPLIED_DOSE 391599 371836 372027 372056",
-	"SPELL_AURA_REMOVED 391599 371836 371624 374039",
+	"SPELL_AURA_REMOVED 391599 371836 374039",
 	"SPELL_AURA_REMOVED_DOSE 391599 371836",
 	"SPELL_PERIODIC_DAMAGE 371514",
 	"SPELL_PERIODIC_MISSED 371514",
@@ -137,8 +136,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 372315 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFrostSpike:Show(args.sourceName)
 		specWarnFrostSpike:Play("kickcast")
-	elseif spellId == 375332 and self:AntiSpam(5, 1) then
-		timerConductiveMarkCD:Start()
 	elseif spellId == 372394 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnLightningBolt:Show(args.sourceName)
 		specWarnLightningBolt:Play("kickcast")
@@ -159,13 +156,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnSlashingBlaze:Show()
 			specWarnSlashingBlaze:Play("defensive")
 		end
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 372275 and self:AntiSpam(5, 2) then
+	elseif spellId == 372279 then
 		timerChainLightningCD:Start()
+	elseif spellId == 374038 then
+		self.vb.axeIcon = 1
+		timerMeteorAxeCD:Start()
 	end
 end
 
@@ -223,10 +218,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEarthenPillarCD:Stop()
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
-		if self:AntiSpam(4, 3) then
-			self.vb.axeIcon = 1
-			timerMeteorAxeCD:Start()
-		end
 		local icon = self.vb.axeIcon
 		if self.Options.SetIconOnMeteorAxe then
 			self:SetIcon(args.destName, icon)
@@ -321,7 +312,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 371634 or spellId == 371631 or spellId == 375331) and self:AntiSpam(5, 1) then
+	if spellId == 375331 then
 		timerConductiveMarkCD:Start()
 	end
 end
