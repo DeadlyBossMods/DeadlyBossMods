@@ -16,14 +16,10 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 386352 381253 376276 391306",
 	"SPELL_AURA_APPLIED_DOSE 376276",
-	"SPELL_AURA_REMOVED 386352 381253 391306",
-	"SPELL_PERIODIC_DAMAGE 382458",
-	"SPELL_PERIODIC_MISSED 382458"
+	"SPELL_AURA_REMOVED 386352 381253 391306"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Note: https://www.wowhead.com/beta/spell=380557/rock-blast indicates target counts, up to 5 on mythic
---TODO, verify Brutal Reverberation placement. maybe an actual event or something to use
 --TODO, auto mark awakened Earth (after spawn)?
 --TODO, keep an eye on https://www.wowhead.com/beta/spell=391570/reactive-dust . not sure what to do with it yet, since this tooltip says something diff than journal
 --[[
@@ -35,23 +31,22 @@ local warnConcussiveSlam						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Heale
 local warnReactiveDust							= mod:NewTargetAnnounce(380487, 3)
 
 local specWarnRockBlast							= mod:NewSpecialWarningYouPos(380487, nil, nil, nil, 1, 2)
-local yellRockBlast								= mod:NewShortPosYell(380487)
-local yellRockBlastFades						= mod:NewIconFadesYell(380487)
+local yellRockBlast								= mod:NewShortYell(380487, nil, nil, nil, "YELL")
+local yellRockBlastFades						= mod:NewShortFadesYell(380487, nil, nil, nil, "YELL")
 local specWarnBrutalReverberation				= mod:NewSpecialWarningDodge(386400, nil, nil, nil, 2, 2)
 local specWarnAwakenedEarth						= mod:NewSpecialWarningYou(381253, nil, nil, nil, 1, 2)
 local yellAwakenedEarth							= mod:NewShortPosYell(381253)
 local yellAwakenedEarthFades					= mod:NewIconFadesYell(381253)
-local specWarnResonatingAnnihilation			= mod:NewSpecialWarningCount(377166, nil, nil, nil, 2, 2)
+local specWarnResonatingAnnihilation			= mod:NewSpecialWarningCount(377166, nil, 307421, nil, 2, 2)
 local specWarnShatteringImpact					= mod:NewSpecialWarningDodge(383073, nil, nil, nil, 2, 2)
 local specWarnConcussiveSlam					= mod:NewSpecialWarningDefensive(376279, nil, nil, nil, 1, 2)
 local specWarnConcussiveSlamTaunt				= mod:NewSpecialWarningTaunt(376279, nil, nil, nil, 1, 2)
 local specWarnFrenziedDevastation				= mod:NewSpecialWarningSpell(377505, nil, nil, nil, 3, 2)
 local specWarnReactiveDust						= mod:NewSpecialWarningYou(391306, nil, nil, nil, 1, 2)
-local yellReactiveDust							= mod:NewShortPosYell(391306)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(382458, nil, nil, nil, 1, 8)
 
 local timerRockBlastCD							= mod:NewNextCountTimer(35, 380487, nil, nil, nil, 3)
-local timerResonatingAnnihilationCD				= mod:NewNextCountTimer(96.4, 377166, nil, nil, nil, 3)
+local timerResonatingAnnihilationCD				= mod:NewNextCountTimer(96.4, 377166, 307421, nil, nil, 3)
 local timerShatteringImpactCD					= mod:NewNextCountTimer(35, 383073, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerConcussiveSlamCD						= mod:NewNextCountTimer(35, 376279, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFrenziedDevastationCD				= mod:NewNextTimer(387.9, 377505, nil, nil, nil, 2)--Berserk timer basically
@@ -60,24 +55,22 @@ local timerFrenziedDevastationCD				= mod:NewNextTimer(387.9, 377505, nil, nil, 
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)--Likely will be used for dust
-mod:AddSetIconOption("SetIconOnRockBlast", 380487, false, false, {1, 2, 3, 4, 5}, true)
-mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, false, false, {1, 2, 3, 4, 5, 6, 7, 8}, true)
+mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, true, false, {1, 2, 3, 4, 5, 6, 7, 8})
 
-mod.vb.rockIcon = 1
+--mod.vb.rockIcon = 1
 mod.vb.awakenedIcon = 1
-mod.vb.dustIcon = 8--descending to match BW
 mod.vb.annihilationCount = 0
 mod.vb.rockCount = 0
 mod.vb.slamCount = 0
 mod.vb.impactCount = 0
 mod.vb.frenziedStarted = false
-local difficultyName = "heroic"
+local difficultyName = "heroic"--Unused right now, mythic and heroic same, will leave code in place until i know if normal/lfr also same or slower
 local allTimers = {
 	["normal"] = {
 		--Concussive Slam
 		[376279] = {},
 		--Rock Blast
-		[326707] = {},
+		[380487] = {},
 		--Shattering Impact
 		[383073] = {},
 	},
@@ -85,7 +78,7 @@ local allTimers = {
 		--Concussive Slam
 		[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
 		--Rock Blast
-		[326707] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+		[380487] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 		--Shattering Impact
 		[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 	},
@@ -93,7 +86,7 @@ local allTimers = {
 		--Concussive Slam
 		[376279] = {},
 		--Rock Blast
-		[326707] = {},
+		[380487] = {},
 		--Shattering Impact
 		[383073] = {},
 	},
@@ -111,16 +104,23 @@ function mod:OnCombatStart(delay)
 	timerShatteringImpactCD:Start(27-delay, 1)
 	timerResonatingAnnihilationCD:Start(90-delay, 1)
 	timerFrenziedDevastationCD:Start(387.9-delay)
+	if not self:IsTrivial() then
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_DAMAGE 382458",
+			"SPELL_PERIODIC_MISSED 382458"
+		)
+	end
 end
 
---function mod:OnCombatEnd()
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
---end
+end
 
 function mod:OnTimerRecovery()
 --	if self:IsMythic() then
@@ -135,7 +135,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 380487 then
-		self.vb.rockIcon = 1
+--		self.vb.rockIcon = 1
 		self.vb.awakenedIcon = 1
 		self.vb.rockCount = self.vb.rockCount + 1
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.rockCount+1)
@@ -143,11 +143,13 @@ function mod:SPELL_CAST_START(args)
 			timerRockBlastCD:Start(timer, self.vb.rockCount+1)
 		end
 	elseif spellId == 377166 then
-		self.vb.dustIcon = 8
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		specWarnResonatingAnnihilation:Show(self.vb.annihilationCount)
 		specWarnResonatingAnnihilation:Play("specialsoon")
-		timerResonatingAnnihilationCD:Start()--Doesn't need table, it's static
+		timerResonatingAnnihilationCD:Start(nil, self.vb.annihilationCount+1)--Doesn't need table, it's static
+		if self.vb.annihilationCount == 4 then
+			self:UnregisterShortTermEvents()
+		end
 	elseif spellId == 377505 and not self.vb.frenziedStarted then
 		self.vb.frenziedStarted = true
 		specWarnFrenziedDevastation:Show()
@@ -184,20 +186,15 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 386352 and self:AntiSpam(4, args.destName.."1") then
-		local icon = self.vb.rockIcon
-		if self.Options.SetIconOnRockBlast then
-			self:SetIcon(args.destName, icon)
-		end
+	if spellId == 386352 then
 		if args:IsPlayer() then
 			specWarnRockBlast:Show()
 			specWarnRockBlast:Play("targetyou")--"mm"..icon
-			yellRockBlast:Yell(icon, icon)
-			yellRockBlastFades:Countdown(5, nil, icon)
+			yellRockBlast:Yell()
+			yellRockBlastFades:Countdown(5)
 		end
 		warnRockBlast:CombinedShow(0.5, args.destName)
-		self.vb.rockIcon = self.vb.rockIcon + 1
-	elseif spellId == 381253 and self:AntiSpam(4, args.destName.."2") then
+	elseif spellId == 381253 then
 		local icon = self.vb.awakenedIcon
 		if self.Options.SetIconOnAwakenedEarth then
 			self:SetIcon(args.destName, icon)
@@ -225,19 +222,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnConcussiveSlam:Show(args.destName, amount)
 		end
 	elseif spellId == 391306 then
-		local icon = self.vb.dustIcon
---		if self.Options.SetIconOnAwakenedEarth then
---			self:SetIcon(args.destName, icon)
---		end
 		if args:IsPlayer() then
 			specWarnReactiveDust:Show()
 			specWarnReactiveDust:Play("targetyou")
-			if self.vb.dustIcon > 0 then
-				yellReactiveDust:Yell(icon, icon)
-			end
 		end
 		warnReactiveDust:CombinedShow(0.5, args.destName)
-		self.vb.dustIcon = self.vb.dustIcon - 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -248,9 +237,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:AntiSpam(3, 1) then
 			specWarnBrutalReverberation:Show()
 			specWarnBrutalReverberation:Play("watchstep")
-		end
-		if self.Options.SetIconOnRockBlast then
-			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
 			yellRockBlastFades:Cancel()
@@ -272,43 +258,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---Not currently in combat log so we run same code we would as backup from transcriptor comms
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("380485") and targetName then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName.."1") then
-			local icon = self.vb.rockIcon
-			if self.Options.SetIconOnRockBlast then
-				self:SetIcon(targetName, icon)
-			end
-			if targetName == UnitName("player") then
-				specWarnRockBlast:Show(self:IconNumToTexture(icon))
-				specWarnRockBlast:Play("mm"..icon)
-				yellRockBlast:Yell(icon, icon)
-				yellRockBlastFades:Countdown(5, nil, icon)
-			end
-			warnRockBlast:CombinedShow(0.5, targetName)
-			self.vb.rockIcon = self.vb.rockIcon + 1
-		end
-	elseif msg:find("381253") and targetName then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName.."2") then
-			local icon = self.vb.awakenedIcon
-			if self.Options.SetIconOnAwakenedEarth then
-				self:SetIcon(targetName, icon)
-			end
-			if targetName == UnitName("player") then
-				specWarnAwakenedEarth:Show()
-				specWarnAwakenedEarth:Play("targetyou")
-				yellAwakenedEarth:Yell(icon, icon)
-				yellAwakenedEarthFades:Countdown(5, nil, icon)
-			end
-			warnAwakenedEarth:CombinedShow(0.5, targetName)
-			self.vb.awakenedIcon = self.vb.awakenedIcon + 1
-		end
-	end
-end
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
