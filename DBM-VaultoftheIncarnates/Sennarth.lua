@@ -12,37 +12,31 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 371976 372082 373405 372045 372129 374112 373027 371983 372539",
-	"SPELL_CAST_SUCCESS 372765 372051",
+	"SPELL_CAST_START 371976 372082 373405 374112 373027 371983 372539",
+	"SPELL_CAST_SUCCESS 372238 181113 372648",
 	"SPELL_SUMMON 372242 372843",
 	"SPELL_AURA_APPLIED 371976 372082 372030 372044 385083 373048",
 	"SPELL_AURA_APPLIED_DOSE 372030 385083",
-	"SPELL_AURA_REMOVED 371976 372082 372030 372539 373048",
+	"SPELL_AURA_REMOVED 371976 372082 372030 373048",
 	"SPELL_AURA_REMOVED_DOSE 372030",
 --	"SPELL_PERIODIC_DAMAGE 372055",
 --	"SPELL_PERIODIC_MISSED 372055",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO, right breath of ice trigger and target scan for it if applicable
 --TODO, GTFO for icy Ground?
---TODO, verify Call Spiderlings trigger that's best to use and add auto marking if spell summon works and it's not too many
---TODO, kill or aggregate eruption warning if it's just an aoe fest
---TODO, proper/cleaner stage 1 to 1.5 and back to 1 code, as well as proper stage 2 start trigger
---TODO, maybe phase 2 on https://www.wowhead.com/beta/spell=372648/pervasive-cold instead
+--TODO, timers need more work, but it'll be helpful when phase change events added to combat log or at very least transcriptor for easier table reading.
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 --Stage One: Ice Climbers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24883))
-local warnBreathofIce							= mod:NewSpellAnnounce(372051, 2)
 local warnChillingBlast							= mod:NewTargetAnnounce(371976, 2)
 local warnEnvelopingWebs						= mod:NewTargetNoFilterAnnounce(372082, 3)
 local warnWrappedInWebs							= mod:NewTargetNoFilterAnnounce(372044, 4)
-local warnCallSpiderlings						= mod:NewSpellAnnounce(372238, 2)
-local warnCausticEruption						= mod:NewCountAnnounce(372045, 3)
+local warnCallSpiderlings						= mod:NewCountAnnounce(372238, 2)
 
 local specWarnChillingBlast						= mod:NewSpecialWarningMoveAway(371976, nil, nil, nil, 1, 2)
 local yellChillingBlast							= mod:NewYell(371976)
@@ -54,12 +48,11 @@ local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, ni
 local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
 local specWarnWebBlast							= mod:NewSpecialWarningTaunt(385083, nil, nil, nil, 1, 2)
 
-local timerBreathofIceCD						= mod:NewAITimer(35, 372051, nil, nil, nil, 3)
-local timerChillingBlastCD						= mod:NewAITimer(35, 371976, nil, nil, nil, 3)
-local timerEnveloopingWebsCD					= mod:NewAITimer(35, 372082, nil, nil, nil, 3)
-local timerGossamerBurstCD						= mod:NewAITimer(35, 373405, nil, nil, nil, 2)
-local timerCallSpiderlingsCD					= mod:NewAITimer(35, 372238, nil, nil, nil, 1)
-local timerWebBlastCD							= mod:NewAITimer(35, 372129, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerChillingBlastCD						= mod:NewCDCountTimer(18.5, 371976, nil, nil, nil, 3)--18.5-54.5
+local timerEnvelopingWebsCD						= mod:NewCDCountTimer(24, 372082, nil, nil, nil, 3)--24-46.9
+local timerGossamerBurstCD						= mod:NewCDCountTimer(36.9, 373405, nil, nil, nil, 2)--36.9-67.6
+local timerCallSpiderlingsCD					= mod:NewCDCountTimer(25.1, 372238, nil, nil, nil, 1)--17.6-37
+local timerPhaseCD								= mod:NewPhaseTimer(30)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(372030, false)--Useful raid leader tool, but not needed by everyone
@@ -70,7 +63,7 @@ local warnFrostbreathArachnid						= mod:NewSpellAnnounce(372843, 2)
 
 local specWarnFreezingBreath						= mod:NewSpecialWarningDefensive(374112, nil, nil, nil, 1, 2)
 
-local timerFreezingBreathCD							= mod:NewAITimer(35, 374112, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerFreezingBreathCD							= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: Cold Peak
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24885))
 local warnApexofIce									= mod:NewCastAnnounce(372539, 3)
@@ -81,25 +74,31 @@ local yellSuffocatingWebs							= mod:NewPosYell(373027)
 local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
 
-local timerSuffocatingWebsCD						= mod:NewAITimer(35, 373027, nil, nil, nil, 3)
-local timerRepellingBurstCD							= mod:NewAITimer(35, 371983, nil, nil, nil, 2)
+local timerSuffocatingWebsCD						= mod:NewCDCountTimer(48.8, 373027, nil, nil, nil, 3)--48.8-50
+local timerRepellingBurstCD							= mod:NewCDCountTimer(34.2, 371983, nil, nil, nil, 2)
 
 mod:AddSetIconOption("SetIconOnSufWeb", 373027, true, false, {1, 2, 3})
 
 local stickyStacks = {}
 mod.vb.webIcon = 1
-mod.vb.eruptionCount = 0
+mod.vb.blastCount = 0
+mod.vb.webCount = 0
+mod.vb.burstCount = 0--Both bursts
+mod.vb.spiderlingsCount = 0
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(stickyStacks)
 	self.vb.webIcon = 1
-	self.vb.eruptionCount = 0
-	timerBreathofIceCD:Start(1-delay)
-	timerChillingBlastCD:Start(1-delay)
-	timerEnveloopingWebsCD:Start(1-delay)
-	timerGossamerBurstCD:Start(1-delay)
-	timerCallSpiderlingsCD:Start(1-delay)
+	self.vb.blastCount = 0
+	self.vb.webCount = 0
+	self.vb.burstCount = 0
+	self.vb.spiderlingsCount = 0
+	timerChillingBlastCD:Start(15.2-delay, 1)
+	timerEnvelopingWebsCD:Start(17.9-delay, 1)
+	timerGossamerBurstCD:Start(33.9-delay, 1)
+--	timerCallSpiderlingsCD:Start(1-delay, 1)--1-3sec into pull
+	timerPhaseCD:Start(43.1-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(372030))
 		DBM.InfoFrame:Show(20, "table", stickyStacks, 1)
@@ -118,61 +117,76 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 371976 then
-		timerChillingBlastCD:Start()
+		self.vb.blastCount = self.vb.blastCount + 1
+		--Seems to be cast 3 casts per movement, minus first, first started at movement, 2nd after first with longer cd then 3rd cast shorter cd after 2nd
+		--Repeats on next movement
+		--More consistent in stage 2
+		timerChillingBlastCD:Start(self.vb.phase == 2 and 32 or self.vb.blastCount == 1 and 35 or 22, self.vb.blastCount+1)
 	elseif spellId == 372082 then
 		self.vb.webIcon = 1
-		timerEnveloopingWebsCD:Start()
+		self.vb.webCount = self.vb.webCount + 1
+		timerEnvelopingWebsCD:Start(nil, self.vb.webCount+1)
 	elseif spellId == 373405 then
-		specWarnGossamerBurst:Show()
+		self.vb.burstCount = self.vb.burstCount + 1
+		specWarnGossamerBurst:Show(self.vb.burstCount)
 		specWarnGossamerBurst:Play("pullin")
-		timerGossamerBurstCD:Start()
-	elseif spellId == 372045 then
-		self.vb.eruptionCount = self.vb.eruptionCount + 1
-		warnCausticEruption:Show(self.vb.eruptionCount)
-	elseif spellId == 372129 then
-		timerWebBlastCD:Start()
+		timerGossamerBurstCD:Start(nil, self.vb.burstCount+1)
 	elseif spellId == 374112 then
-		if self:IsTanking("player", nil, nil, nil, args.destGUID) then-- use self:IsTanking("player", "boss2", nil, true) if this gets boss unit id
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnFreezingBreath:Show()
 			specWarnFreezingBreath:Play("defensive")
 		end
-		timerFreezingBreathCD:Start()
+		timerFreezingBreathCD:Start(nil, args.sourceGUID)
 	elseif spellId == 372539 then
 		warnApexofIce:Show()
 	elseif spellId == 373027 then
 		self.vb.webIcon = 1
+		self.vb.webCount = self.vb.webCount + 1
+		timerSuffocatingWebsCD:Start(nil, self.vb.webCount+1)
 	elseif spellId == 371983 then
-		specWarnRepellingBurst:Show()
+		self.vb.burstCount = self.vb.burstCount + 1
+		specWarnRepellingBurst:Show(self.vb.burstCount)
 		specWarnRepellingBurst:Play("carefly")
-		timerRepellingBurstCD:Start()
+		timerRepellingBurstCD:Start(nil, self.vb.burstCount+1)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 372765 or spellId == 372051 then
-		warnBreathofIce:Show()
-		timerBreathofIceCD:Start()
-	end
-end
-
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 372242 and self:AntiSpam(5, 1) then--Caustic Spiderling
-		self.vb.eruptionCount = 0
-		warnCallSpiderlings:Show()
-		timerCallSpiderlingsCD:Start()
-	elseif spellId == 372843 then--Frostbreath Arachnid
-		warnFrostbreathArachnid:Show()
-		timerFreezingBreathCD:Start(1)
-		if self.vb.phase == 1 then
-			self:SetStage(1.5)
-			timerBreathofIceCD:Stop()
-			timerChillingBlastCD:Stop()
-			timerEnveloopingWebsCD:Stop()
-			timerGossamerBurstCD:Stop()
-			timerCallSpiderlingsCD:Stop()
+	if spellId == 372238 then
+		self.vb.spiderlingsCount = self.vb.spiderlingsCount + 1
+		warnCallSpiderlings:Show(self.vb.spiderlingsCount)
+		if self.vb.phase == 2 then
+			timerCallSpiderlingsCD:Start(30, self.vb.spiderlingsCount+1)
+		else
+			local remainingPhase = timerPhaseCD:GetRemaining()
+			if remainingPhase < 25 then
+				if self.vb.stageTotality ~= 1 then--Don't start timer if it's first movement timer
+					timerCallSpiderlingsCD:Start(remainingPhase, self.vb.spiderlingsCount+1)
+				end
+			else
+				timerCallSpiderlingsCD:Start(25, self.vb.spiderlingsCount+1)
+			end
 		end
+	elseif spellId == 181113 then--Encounter Spawn
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 189234 then--Frostbreath Arachnid
+			warnFrostbreathArachnid:Show()
+			timerFreezingBreathCD:Start(6, args.destGUID)
+		end
+	elseif spellId == 372648 then--Pervasive Cold
+		self:SetStage(2)
+		self.vb.burstCount = 0
+		self.vb.webCount = 0
+		timerChillingBlastCD:Stop()
+		timerEnvelopingWebsCD:Stop()
+		timerGossamerBurstCD:Stop()
+		timerCallSpiderlingsCD:Stop()
+
+		timerCallSpiderlingsCD:Start(3.5, self.vb.spiderlingsCount+1)
+		timerChillingBlastCD:Start(7.3, self.vb.blastCount+1)
+		timerSuffocatingWebsCD:Start(13.4, 1)
+		timerRepellingBurstCD:Start(24.6, 1)
 	end
 end
 
@@ -256,12 +270,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(stickyStacks, 0.2)
 		end
-	elseif spellId == 372539 then--Apex of Ice
-		self:SetStage(2)
-		timerChillingBlastCD:Start(2)
-		timerSuffocatingWebsCD:Start(2)
-		timerRepellingBurstCD:Start(2)
-		timerCallSpiderlingsCD:Start(2)
 	end
 end
 
@@ -289,14 +297,41 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 189234 then--Frostbreath Arachnid
 		self:SetStage(1)--Likely totally wrong
-		timerFreezingBreathCD:Stop()
+		timerFreezingBreathCD:Stop(args.destGUID)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 372238 and self:AntiSpam(5, 1) then
-		self.vb.eruptionCount = 0
-		warnCallSpiderlings:Show()
-		timerCallSpiderlingsCD:Start()
+--"<2.19 23:28:07> [ENCOUNTER_START] 2592#Sennarth, The Cold Breath#15#20", -- [26]
+--"<45.37 23:28:50> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\INV_MineSpider2_Crystal.blp:20|t %s begins to ascend!
+--"<146.08 23:30:31> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\INV_MineSpider2_Crystal.blp:20|t %s begins to ascend!
+--"<245.88 23:32:10> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\INV_MineSpider2_Crystal.blp:20|t %s begins to ascend!
+--"<300.23 23:33:05> [CLEU] SPELL_CAST_START#Creature-0-2085-2522-14007-187967-000040998B#Sennarth<12.0%-3.0%>##nil#372539#Apex of Ice#nil#nil", -- [23406]
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("INV_MineSpider2_Crystal.blp") then
+		self.vb.blastCount = 0
+		timerGossamerBurstCD:Stop()
+		timerChillingBlastCD:Stop()
+		if self.vb.stageTotality == 1 then--First movement
+			self:SetStage(1.25)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
+			--Stop stage 1 timers and basically restart them
+			--Only first movement has delay on spiderlings, other movements summon them immediately
+			timerCallSpiderlingsCD:Stop()
+			timerCallSpiderlingsCD:Start(10)
+			timerChillingBlastCD:Start(13, 1)
+			timerGossamerBurstCD:Start(30, self.vb.burstCount+1)
+			timerPhaseCD:Start(99.8)--Til next movement
+		elseif self.vb.stageTotality == 2 then--Second movement
+			self:SetStage(1.5)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
+			--Stop stage 1 timers and basically restart them
+			timerChillingBlastCD:Start(16, 1)
+			timerGossamerBurstCD:Start(33, self.vb.burstCount+1)
+			timerPhaseCD:Start(99.8)--Til next movement
+		else--Last movement
+			self:SetStage(1.75)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
+			--Stop them for last time, and not restart them, stage 2 soon
+			timerChillingBlastCD:Start(16, 1)
+			timerGossamerBurstCD:Start(33, self.vb.burstCount+1)
+			timerPhaseCD:Start(54.3)--Til Apex cast
+		end
 	end
 end
