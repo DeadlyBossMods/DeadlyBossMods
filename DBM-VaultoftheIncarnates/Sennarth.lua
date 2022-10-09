@@ -27,6 +27,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, GTFO for icy Ground?
 --TODO, timers need more work, but it'll be helpful when phase change events added to combat log or at very least transcriptor for easier table reading.
+--[[
+(ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 372539 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
+ or (ability.id = 372238 or ability.id = 372648) and type = "cast"
+ or ability.id = 181113 and target.id = 189234
+--]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
@@ -174,7 +179,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnFrostbreathArachnid:Show()
 			timerFreezingBreathCD:Start(6, args.destGUID)
 		end
-	elseif spellId == 372648 then--Pervasive Cold
+	elseif spellId == 372648 and self.vb.phase == 1 then--Pervasive Cold
 		self:SetStage(2)
 		self.vb.burstCount = 0
 		self.vb.webCount = 0
