@@ -13,12 +13,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 371976 372082 373405 374112 373027 371983 372539",
-	"SPELL_CAST_SUCCESS 372238 181113 372648",
+	"SPELL_CAST_SUCCESS 372238 181113",
 	"SPELL_SUMMON 372242 372843",
 	"SPELL_AURA_APPLIED 371976 372082 372030 372044 385083 373048",
 	"SPELL_AURA_APPLIED_DOSE 372030 385083",
 	"SPELL_AURA_REMOVED 371976 372082 372030 373048",
 	"SPELL_AURA_REMOVED_DOSE 372030",
+--	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 372055",
 --	"SPELL_PERIODIC_MISSED 372055",
 	"UNIT_DIED",
@@ -30,7 +31,8 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 372539 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
  or (ability.id = 372238 or ability.id = 372648) and type = "cast"
- or ability.id = 181113 and target.id = 189234
+ or ability.id = 181113 and source.id = 189234
+ or ability.id = 372539 and type = "interrupt"
 --]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -144,6 +146,19 @@ function mod:SPELL_CAST_START(args)
 		timerFreezingBreathCD:Start(nil, args.sourceGUID)
 	elseif spellId == 372539 then
 		warnApexofIce:Show()
+
+		self:SetStage(2)
+		self.vb.burstCount = 0
+		self.vb.webCount = 0
+		timerChillingBlastCD:Stop()
+		timerEnvelopingWebsCD:Stop()
+		timerGossamerBurstCD:Stop()
+		timerCallSpiderlingsCD:Stop()
+		--Stage 2 timers start here, but if she's not interrupted within 12 seconds, they start to queue up and become messy
+		timerCallSpiderlingsCD:Start(12.3, self.vb.spiderlingsCount+1)
+		timerChillingBlastCD:Start(14.8, self.vb.blastCount+1)
+		timerSuffocatingWebsCD:Start(22.2, 1)
+		timerRepellingBurstCD:Start(32.2, 1)
 	elseif spellId == 373027 then
 		self.vb.webIcon = 1
 		self.vb.webCount = self.vb.webCount + 1
@@ -174,24 +189,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 181113 then--Encounter Spawn
-		local cid = self:GetCIDFromGUID(args.destGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 189234 then--Frostbreath Arachnid
 			warnFrostbreathArachnid:Show()
-			timerFreezingBreathCD:Start(6, args.destGUID)
+			timerFreezingBreathCD:Start(6, args.sourceGUID)
 		end
-	elseif spellId == 372648 and self.vb.phase == 1 then--Pervasive Cold
-		self:SetStage(2)
-		self.vb.burstCount = 0
-		self.vb.webCount = 0
-		timerChillingBlastCD:Stop()
-		timerEnvelopingWebsCD:Stop()
-		timerGossamerBurstCD:Stop()
-		timerCallSpiderlingsCD:Stop()
-
-		timerCallSpiderlingsCD:Start(3.5, self.vb.spiderlingsCount+1)
-		timerChillingBlastCD:Start(7.3, self.vb.blastCount+1)
-		timerSuffocatingWebsCD:Start(13.4, 1)
-		timerRepellingBurstCD:Start(24.6, 1)
 	end
 end
 
@@ -296,6 +298,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 372539 then
+		--announce interrupt
+	end
+end
 --]]
 
 function mod:UNIT_DIED(args)
