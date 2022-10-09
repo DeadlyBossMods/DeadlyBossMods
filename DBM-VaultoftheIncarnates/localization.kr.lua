@@ -41,12 +41,29 @@ local L
 ---------------------------
 --  Kurog Grimtotem --
 ---------------------------
---L= DBM:GetModLocalization(2491)
+L= DBM:GetModLocalization(2491)
+
+L:SetTimerLocalization({
+	timerDamageCD = "디버프 (%s)",
+	timerAvoidCD = "피하기 (%s)",
+	timerUltimateCD = "궁극기 (%s)"
+})
+
+L:SetOptionLocalization({
+	timerDamageCD = "대상에게 걸리는 디버프 공격 타이머 바 보기: $spell:382563, $spell:373678, $spell:391055, $spell:373487",
+	timerAvoidCD = "회피 가능한 공격 타이머 바 보기: $spell:373329, $spell:391019, $spell:390796, $spell:390920",
+	timerUltimateCD = "기력 100 궁극기 타이머 바 보기: $spell:374022, $spell:372456, $spell:374691, $spell:374215"
+})
 
 ---------------------------
 --  Broodkeeper Diurna --
 ---------------------------
---L= DBM:GetModLocalization(2493)
+L= DBM:GetModLocalization(2493)
+
+L:SetMiscLocalization({
+	staff	= "지팡이",
+	eStaff	= "강화된 지팡이"
+})
 
 ---------------------------
 --  Raszageth the Storm-Eater --
