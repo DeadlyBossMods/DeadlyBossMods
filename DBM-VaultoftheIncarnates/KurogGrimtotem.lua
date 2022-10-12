@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 374881 374916 374917 374918 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265",
-	"SPELL_AURA_APPLIED_DOSE 374881 374916 374917 374918 372158 374321",
+	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265",
+	"SPELL_AURA_APPLIED_DOSE 372158 374321",
 	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
@@ -80,7 +80,7 @@ local timerFlamewroughtEradicatorCD				= mod:NewAITimer(35, 393314, nil, nil, ni
 local timerSunderingFlameCD						= mod:NewAITimer(35, 393309, nil, nil, nil, 3)
 --Frost Altar An altar of primal frost.
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25061))
-local warnChillingDominance						= mod:NewStackAnnounce(374916, 2)
+--local warnChillingDominance						= mod:NewStackAnnounce(374916, 2)
 local warnBitingChill							= mod:NewCountAnnounce(373678, 2)
 local warnAbsoluteZero							= mod:NewTargetNoFilterAnnounce(372456, 3)
 local warnFrostBite								= mod:NewFadesAnnounce(372514, 1)
@@ -106,7 +106,7 @@ local timerSunderingFrostCD						= mod:NewAITimer(35, 393296, nil, nil, nil, 3)
 local timerFrigidTorrentCD						= mod:NewAITimer(60, 391019, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Earth Altar An altar of primal earth.
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
-local warnShatteringDominance					= mod:NewStackAnnounce(374917, 2)
+--local warnShatteringDominance					= mod:NewStackAnnounce(374917, 2)
 local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "Healer")
 
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
@@ -122,7 +122,7 @@ local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)-
 local timerEruptingBedrockCD					= mod:NewCDTimer(60, 390796, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Storm Altar An altar of primal storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
-local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
+--local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
 local warnLightningCrash						= mod:NewTargetNoFilterAnnounce(373487, 4)
 local warnShockingBurst							= mod:NewTargetNoFilterAnnounce(390920, 3)
 

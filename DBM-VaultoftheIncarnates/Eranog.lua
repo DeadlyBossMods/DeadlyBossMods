@@ -61,6 +61,7 @@ local timerMoltenSpikesCD						= mod:NewAITimer(30.2, 396022, nil, nil, nil, 3)
 --mod:AddInfoFrameOption(361651, true)
 mod:AddRangeFrameOption(5, 390715)
 --mod:AddSetIconOption("SetIconOnFlamerift", 390715, true, false, {1, 2, 3, 4, 5})
+mod:GroupSpells(390715, 396094)
 ---Frenzied Tarasek
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26005))
 local warnKillOrder								= mod:NewTargetAnnounce(370597, 3)
