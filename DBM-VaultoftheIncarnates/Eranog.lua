@@ -42,7 +42,7 @@ local warnFlamerift								= mod:NewTargetNoFilterAnnounce(390715, 2)
 local warnBurningWound							= mod:NewStackAnnounce(394906, 2, nil, "Tank|Healer")
 
 local specWarnFlamerift							= mod:NewSpecialWarningMoveAway(390715, nil, nil, nil, 1, 2)
-local yellFlamerift								= mod:NewShortPosYell(390715)
+local yellFlamerift								= mod:NewShortYell(390715)
 local yellFlameriftFades						= mod:NewShortFadesYell(390715)
 local specWarnGreaterFlamerift					= mod:NewSpecialWarningTaunt(396094, nil, nil, nil, 1, 2)
 local specWarnMoltenCleave						= mod:NewSpecialWarningDodgeCount(370615, nil, nil, nil, 2, 2)
