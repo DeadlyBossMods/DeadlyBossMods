@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20220322000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20221012000000)
+mod:SetMinSyncRevision(20221012000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -49,7 +49,7 @@ local specWarnChillingBlast						= mod:NewSpecialWarningMoveAway(371976, nil, ni
 local yellChillingBlast							= mod:NewYell(371976)
 local yellChillingBlastFades					= mod:NewShortFadesYell(371976)
 local specWarnEnvelopingWebs					= mod:NewSpecialWarningYouPos(372082, nil, nil, nil, 1, 2)
-local yellEnvelopingWebs						= mod:NewPosYell(372082)
+local yellEnvelopingWebs						= mod:NewShortPosYell(372082)
 local yellEnvelopingWebsFades					= mod:NewIconFadesYell(372082)
 local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, nil, nil, 1, 6)
 local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
@@ -77,7 +77,7 @@ local warnApexofIce									= mod:NewCastAnnounce(372539, 3)
 local warnSuffocatinWebs							= mod:NewTargetNoFilterAnnounce(373027, 3)
 
 local specWarnSuffocatingWebs						= mod:NewSpecialWarningYouPos(373027, nil, nil, nil, 1, 2)
-local yellSuffocatingWebs							= mod:NewPosYell(373027)
+local yellSuffocatingWebs							= mod:NewShortPosYell(373027)
 local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
 
