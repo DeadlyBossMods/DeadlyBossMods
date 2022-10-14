@@ -38,7 +38,7 @@ local warnZephyrSlam							= mod:NewStackAnnounce(375580, 2, nil, "Tank|Healer")
 
 local specWarnCoalescingStorm					= mod:NewSpecialWarningCount(387849, nil, nil, nil, 2, 2)
 local specWarnConductiveMark					= mod:NewSpecialWarningMoveAway(391686, nil, nil, nil, 1, 2)
-local yellConductiveMark						= mod:NewYell(391686)
+local yellConductiveMark						= mod:NewYell(391686, 28836)--Short text "Mark"
 local specWarnCyclone							= mod:NewSpecialWarningCount(376943, nil, nil, nil, 2, 12)
 local specWarnCrosswinds						= mod:NewSpecialWarningDodgeCount(388410, nil, nil, nil, 2, 2)
 local specWarnZephyrSlam						= mod:NewSpecialWarningDefensive(375580, nil, nil, nil, 1, 2)
