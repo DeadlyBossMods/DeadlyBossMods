@@ -129,10 +129,10 @@ function mod:SPELL_CAST_START(args)
 		warnRagingBurst:Show(self.vb.burstCount)
 		timerRagingBurstCD:Start(nil, self.vb.burstCount+1)
 	elseif spellId == 376943 then
-		mod.vb.cycloneCount = mod.vb.cycloneCount + 1
-		specWarnCyclone:Show(mod.vb.cycloneCount)
+		self.vb.cycloneCount = self.vb.cycloneCount + 1
+		specWarnCyclone:Show(self.vb.cycloneCount)
 		specWarnCyclone:Play("pullin")
-		timerCycloneCD:Start()
+		timerCycloneCD:Start(nil, self.vb.cycloneCount+1)
 		timerZephyrSlamCD:Restart(15.7, self.vb.slamCount+1)
 	elseif spellId == 388410 then
 		self.vb.crosswindCount = self.vb.crosswindCount + 1
