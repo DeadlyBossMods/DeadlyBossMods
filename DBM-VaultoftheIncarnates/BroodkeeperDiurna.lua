@@ -145,7 +145,7 @@ function mod:OnCombatStart(delay)
 	timerRapidIncubationCD:Start(14.5-delay, 1)
 	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
 	timerPrimalistReinforcementsCD:Start(22.6-delay, 1)
-	timerIcyShroudCD:Start(26.7-delay)
+	timerIcyShroudCD:Start(26.7-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
