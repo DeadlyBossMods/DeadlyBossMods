@@ -78,7 +78,7 @@ local warnRendingBite							= mod:NewStackAnnounce(375475, 2, nil, "Tank|Healer"
 local warnChillingTantrum						= mod:NewCastAnnounce(375457, 3)
 local warnIonizingCharge						= mod:NewTargetAnnounce(375630, 3)
 
-local specWarnPrimalistReinforcements			= mod:NewSpecialWarningCount(385618, "-Healer", nil, nil, 1, 2)
+local specWarnPrimalistReinforcements			= mod:NewSpecialWarningAddsCount(257554, "-Healer", nil, nil, 1, 2)
 local specWarnIceBarrage						= mod:NewSpecialWarningInterruptCount(375716, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, nil, nil, nil, 1, 2, 3)
 local specWarnTremors							= mod:NewSpecialWarningDodge(376257, nil, nil, nil, 2, 2)
@@ -88,7 +88,7 @@ local specWarnStaticJolt						= mod:NewSpecialWarningInterruptCount(375653, "Has
 local specWarnIonizingCharge					= mod:NewSpecialWarningMoveAway(375630, nil, nil, nil, 1, 2)
 local yellIonizingCharge						= mod:NewYell(375630)
 
-local timerPrimalistReinforcementsCD			= mod:NewNextCountTimer(60, 385618, nil, nil, nil, 1)--Temp spellid, it's not localized
+local timerPrimalistReinforcementsCD			= mod:NewAddsCustomTimer(60, 257554, nil, nil, nil, 1)
 local timerBurrowingStrikeCD					= mod:NewCDTimer(8.2, 376272, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
 local timerTremorsCD							= mod:NewCDTimer(11, 376257, nil, nil, nil, 3)
 local timerCauterizingFlashflamesCD				= mod:NewCDTimer(11.7, 375485, nil, "MagicDispeller", nil, 5)
@@ -196,28 +196,42 @@ function mod:SPELL_CAST_START(args)
 			specWarnBurrowingStrike:Show()
 			specWarnBurrowingStrike:Play("defensive")
 		end
-		timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375475 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnRendingBite:Show()
 			specWarnRendingBite:Play("defensive")
 		end
-		timerRendingBiteCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerRendingBiteCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 376257 then
-		specWarnTremors:Show()
-		specWarnTremors:Play("shockwave")
-		timerTremorsCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			specWarnTremors:Show()
+			specWarnTremors:Play("shockwave")
+			timerTremorsCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375485 then
-		warnCauterizingFlashflames:Show()
-		timerCauterizingFlashflamesCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnCauterizingFlashflames:Show()
+			timerCauterizingFlashflamesCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375575 then
-		warnFlameSentry:Show()
-		timerFlameSentryCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnFlameSentry:Show()
+			timerFlameSentryCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375457 then
-		warnChillingTantrum:Show()
-		timerChillingTantrumCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnChillingTantrum:Show()
+			timerChillingTantrumCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375630 then
-		timerIonizingChargeCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerIonizingChargeCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
