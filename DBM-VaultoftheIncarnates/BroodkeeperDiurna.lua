@@ -34,10 +34,11 @@ mod:RegisterEventsInCombat(
 --TODO, evalualte any needed antispams for multiple adds casting same spells
 --TODO, never saw Rapid Incubation Damage done increase/damage taken reduced buff
 --[[
-(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 376257 or ability.id = 375485 or ability.id = 375575 or ability.id = 375457 or ability.id = 375630) and type = "begincast"
+(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485) and type = "begincast"
  or ability.id = 380175 and type = "cast"
  or ability.id = 375879
- or (ability.id = 375716 or ability.id = 375653) and type = "begincast"
+ or (ability.id = 375716 or ability.id = 375653 or ability.id = 375457 or ability.id = 375630 or ability.id = 376257 or ability.id = 375575) and type = "begincast"
+ or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
 --Stage One: The Primalist Clutch
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25119))
@@ -60,11 +61,11 @@ local specWarnMortalStoneclaws					= mod:NewSpecialWarningDefensive(375870, nil,
 local specWarnMortalWounds						= mod:NewSpecialWarningTaunt(378782, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(18.2, 375842, L.staff, nil, nil, 5)
-local timerRapidIncubationCD					= mod:NewCDCountTimer(18.4, 376073, nil, nil, nil, 1)
-local timerWildfireCD							= mod:NewCDCountTimer(20.9, 375871, nil, nil, nil, 3)--20-25
-local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)
-local timerMortalStoneclawsCD					= mod:NewCDTimer(20.7, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--20-28 P1, 8.6-15 P2
+local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.staff, nil, nil, 5)--Shared CD ability
+local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability
+local timerWildfireCD							= mod:NewCDCountTimer(20.9, 375871, nil, nil, nil, 3)--Shared CD ability
+local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
+local timerMortalStoneclawsCD					= mod:NewCDTimer(20.7, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:GroupSpells(375842, 375889)--Greatstaff spawn ith greatstaff wrath debuff
@@ -78,7 +79,7 @@ local warnRendingBite							= mod:NewStackAnnounce(375475, 2, nil, "Tank|Healer"
 local warnChillingTantrum						= mod:NewCastAnnounce(375457, 3)
 local warnIonizingCharge						= mod:NewTargetAnnounce(375630, 3)
 
-local specWarnPrimalistReinforcements			= mod:NewSpecialWarningCount(385618, "-Healer", nil, nil, 1, 2)
+local specWarnPrimalistReinforcements			= mod:NewSpecialWarningAddsCount(257554, "-Healer", nil, nil, 1, 2)
 local specWarnIceBarrage						= mod:NewSpecialWarningInterruptCount(375716, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, nil, nil, nil, 1, 2, 3)
 local specWarnTremors							= mod:NewSpecialWarningDodge(376257, nil, nil, nil, 2, 2)
@@ -88,14 +89,14 @@ local specWarnStaticJolt						= mod:NewSpecialWarningInterruptCount(375653, "Has
 local specWarnIonizingCharge					= mod:NewSpecialWarningMoveAway(375630, nil, nil, nil, 1, 2)
 local yellIonizingCharge						= mod:NewYell(375630)
 
-local timerPrimalistReinforcementsCD			= mod:NewNextCountTimer(60, 385618, nil, nil, nil, 1)--Temp spellid, it's not localized
-local timerBurrowingStrikeCD					= mod:NewCDTimer(8.2, 376272, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
+local timerPrimalistReinforcementsCD			= mod:NewAddsCustomTimer(60, 257554, nil, nil, nil, 1)
+local timerBurrowingStrikeCD					= mod:NewCDTimer(8.1, 376272, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
 local timerTremorsCD							= mod:NewCDTimer(11, 376257, nil, nil, nil, 3)
 local timerCauterizingFlashflamesCD				= mod:NewCDTimer(11.7, 375485, nil, "MagicDispeller", nil, 5)
 local timerFlameSentryCD						= mod:NewCDTimer(12.2, 375575, nil, nil, nil, 3)
 local timerRendingBiteCD						= mod:NewCDTimer(11, 375475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
 local timerChillingTantrumCD					= mod:NewCDTimer(11.1, 375457, nil, nil, nil, 3)
-local timerIonizingChargeCD						= mod:NewCDTimer(11.5, 375630, nil, nil, nil, 3)
+local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
@@ -115,9 +116,9 @@ local specWarnEGreatstaffsWrath					= mod:NewSpecialWarningYou(380483, nil, nil,
 local yellEGreatstaffsWrath						= mod:NewYell(380483)
 local specWarnFrozenShroud						= mod:NewSpecialWarningCount(388918, nil, nil, nil, 2, 2)
 
-local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)
-local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(18.4, 380176, L.staff, nil, nil, 5)
-local timerFrozenShroudCD						= mod:NewCDCountTimer(36.4, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)
+local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
+local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(24.4, 380176, L.staff, nil, nil, 5)--Shared CD ability
+local timerFrozenShroudCD						= mod:NewCDCountTimer(36.4, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 
 local castsPerGUID = {}
 mod.vb.staffCount = 0
@@ -128,6 +129,7 @@ mod.vb.incubationCount = 0
 mod.vb.mageIcon = 8
 mod.vb.StormbringerIcon = 6
 mod.vb.eggsGone = false
+mod.vb.sharedCD = 26
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -142,12 +144,19 @@ function mod:OnCombatStart(delay)
 	self.vb.eggsGone = false
 	timerMortalStoneclawsCD:Start(3.4-delay)
 	timerWildfireCD:Start(8.4-delay, 1)
-	timerRapidIncubationCD:Start(14.5-delay, 1)
+	timerRapidIncubationCD:Start(14.3-delay, 1)
 	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
 	timerPrimalistReinforcementsCD:Start(22.6-delay, 1)
-	timerIcyShroudCD:Start(26.7-delay)
+	timerIcyShroudCD:Start(26.5-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	if self:IsMythic() then
+		self.vb.sharedCD = 24
+	elseif self:IsHeroic() then
+		self.vb.sharedCD = 25
+	else--Split LFR if even slower
+		self.vb.sharedCD = 26
 	end
 end
 
@@ -169,13 +178,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.incubationCount = self.vb.incubationCount + 1
 		warnRapidIncubation:Show(self.vb.incubationCount)
 		if not self.vb.eggsGone then
-			timerRapidIncubationCD:Start(nil, self.vb.incubationCount+1)
+			timerRapidIncubationCD:Start(self.vb.sharedCD, self.vb.incubationCount+1)
 		end
 	elseif spellId == 375871 and self:AntiSpam(10, 1) then
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("watchstep")
-		timerWildfireCD:Start(self.vb.phase == 1 and 20.9 or 24.5, self.vb.wildFireCount+1)
+		timerWildfireCD:Start(self.vb.sharedCD, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
@@ -196,28 +205,42 @@ function mod:SPELL_CAST_START(args)
 			specWarnBurrowingStrike:Show()
 			specWarnBurrowingStrike:Play("defensive")
 		end
-		timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375475 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnRendingBite:Show()
 			specWarnRendingBite:Play("defensive")
 		end
-		timerRendingBiteCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerRendingBiteCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 376257 then
-		specWarnTremors:Show()
-		specWarnTremors:Play("shockwave")
-		timerTremorsCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			specWarnTremors:Show()
+			specWarnTremors:Play("shockwave")
+			timerTremorsCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375485 then
-		warnCauterizingFlashflames:Show()
-		timerCauterizingFlashflamesCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnCauterizingFlashflames:Show()
+			timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
+		end
 	elseif spellId == 375575 then
-		warnFlameSentry:Show()
-		timerFlameSentryCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnFlameSentry:Show()
+			timerFlameSentryCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375457 then
-		warnChillingTantrum:Show()
-		timerChillingTantrumCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			warnChillingTantrum:Show()
+			timerChillingTantrumCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375630 then
-		timerIonizingChargeCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(1, spellId) then
+			timerIonizingChargeCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -280,15 +303,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase == 1 then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerGreatstaffoftheBroodkeeperCD:Start(nil, self.vb.staffCount+1)
+			timerGreatstaffoftheBroodkeeperCD:Start(self.vb.sharedCD, self.vb.staffCount+1)
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerEGreatstaffoftheBroodkeeperCD:Start(nil, self.vb.staffCount+1)
+			timerEGreatstaffoftheBroodkeeperCD:Start(self.vb.sharedCD, self.vb.staffCount+1)
 		end
 	elseif spellId == 375870 then
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and 20.7 or 8.6)-1.5
+		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
 		timerMortalStoneclawsCD:Start(timer)
 	end
 end
@@ -375,19 +398,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBroodkeepersFuryCD:Start(30, amount+1)
 		if self.vb.phase == 1 then
 			self:SetStage(2)
-			self.vb.staffCount = 0
-			self.vb.icyCount = 0--Reused for frozen shroud
 			self.vb.wildFireCount = 0
 			--Just stop outright
 --			timerRapidIncubationCD:Stop()
-			timerIcyShroudCD:Stop()
 			timerPrimalistReinforcementsCD:Stop()
 			--Restarts
---			timerMortalStoneclawsCD:Restart(5.5)--Does NOT restart, it seems existing P1 cd finishes. New shorter Cd takes affect from first p2 cast onward
-			timerGreatstaffoftheBroodkeeperCD:Restart(17.6, 1)--Reused for empowered great staff, spellname too long as it is
-			timerWildfireCD:Restart(19.8, 1)
-			--New Timer
-			timerFrozenShroudCD:Start(26.4, 1)
+			timerWildfireCD:Restart(9.7, 1)
+			--Timers that do not reset.
+			--Mortal Stone Claws, since we don't swap timers, no action needed
+			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
+			if remainingStaff then
+				timerGreatstaffoftheBroodkeeperCD:Stop()
+				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore
+			end
+			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
+			if remainingIcy then
+				timerIcyShroudCD:Stop()
+				timerFrozenShroudCD:Start(remainingIcy, 1)
+			end
+			self.vb.staffCount = 0
+			self.vb.icyCount = 0--Reused for frozen shroud
 		end
 	end
 end

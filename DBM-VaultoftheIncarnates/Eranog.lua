@@ -97,7 +97,9 @@ function mod:OnCombatStart(delay)
 	timerIncineratingRoarCD:Start(2.1-delay, 1)
 	timerMoltenCleaveCD:Start(7.6-delay, 1)
 	timerFlameriftCD:Start(11.6-delay, 1)
-	timerMoltenSpikesCD:Start(14.2-delay, 1)
+	if self:IsHard() then
+		timerMoltenSpikesCD:Start(14.2-delay, 1)
+	end
 	timerCollapsingArmyCD:Start(91.7-delay, 1)
 	if self.Options.NPAuraOnKillOrder or self.Options.NPAuraOnRampage then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -271,10 +273,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cleaveCount = 0
 		self.vb.riftCount = 0
 		self.vb.spikesCount = 0
-		timerIncineratingRoarCD:Start(3.2, 1)
-		timerMoltenCleaveCD:Start(11.7, 1)
-		timerFlameriftCD:Start(15.7, 1)
-		timerMoltenSpikesCD:Start(19, 1)
+		timerIncineratingRoarCD:Start(3.1, 1)
+		timerMoltenCleaveCD:Start(11.6, 1)
+		timerFlameriftCD:Start(15.6, 1)
+		if self:IsHard() then
+			timerMoltenSpikesCD:Start(19, 1)
+		end
 		timerCollapsingArmyCD:Start(94, self.vb.armyCount+1)
 	end
 end

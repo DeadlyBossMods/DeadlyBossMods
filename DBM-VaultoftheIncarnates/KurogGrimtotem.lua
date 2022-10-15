@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 391055 390796 390920 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429",
+	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
 	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265",
@@ -38,6 +38,16 @@ mod:RegisterEventsInCombat(
 --TODO, the abilities that are used by boss and add during stage 1/3, review if they are cast independantly and need independant Cds or if they're just cast at same time
 --TODO, verify Dark Clouds mechanic on mythic
 --TODO, add https://www.wowhead.com/beta/spell=374321/breaking-gravel if requires an actual tank swap to clear
+--[[
+(ability.id = 390548 or ability.id = 373678 or ability.id = 382563 or ability.id = 392125 or ability.id = 373487
+ or ability.id = 374022 or ability.id = 392192 or ability.id = 392152 or ability.id = 372456 or ability.id = 375450 or ability.id = 395893
+ or ability.id = 374691 or ability.id = 376669 or ability.id = 374215 or ability.id = 374427 or ability.id = 374430 or ability.id = 390920
+ or ability.id = 374623 or ability.id = 374624 or ability.id = 374622 or ability.id = 391019 or ability.id = 391055
+ or ability.id = 390796 or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
+ or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 391267 or ability.id = 393429) and type = "begincast"
+ or ability.id = 373415 and type = "cast"
+ or ability.id = 374779
+--]]
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374554, nil, nil, nil, 1, 8)
 
@@ -287,9 +297,9 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerFrigidTorrentCD:Start(nil, args.sourceGUID)
 		end
-	elseif spellId == 391055 then
+--	elseif spellId == 391055 then
 
-	elseif spellId == 390796 then
+	elseif spellId == 390796 or spellId == 395893 then--Hard, Easy
 		specWarnEruptingBedrock:Show()
 		specWarnEruptingBedrock:Play("justrun")
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
@@ -543,12 +553,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerAvoidCD:Start(30, " ")
 			--Boss retains power from previous stage
 			--Hopefully this is temp
-			--Alternatively could just pause timer going into intermission and resume it here with 5 seconds added?
+			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
 			local currentPower = UnitPower("boss1")
 			if currentPower then
 				local percent = currentPower / 100
 				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 65, " ")--Power updates resume after 5 seconds, so 5 sec added to total
+				timerUltimateCD:Update(elapsed, 64, " ")--Power updates resume after 4 seconds, so 4 sec added to total
 			end
 			--if self:IsMythic() then
 			--	timerAddsCD:Start()
@@ -557,15 +567,15 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetStage(3)
 			timerSunderStrikeCD:Start(10)
 			timerDamageCD:Start(15, " ")
-			timerAvoidCD:Start(22, " ")
+			timerAvoidCD:Start(22, " ")--28.4 now?
 			--Boss retains power from previous stage
 			--Hopefully this is temp
-			--Alternatively could just pause timer going into intermission and resume it here with 5 seconds added?
+			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
 			local currentPower = UnitPower("boss1")
 			if currentPower then
 				local percent = currentPower / 100
 				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 65, " ")--Power updates resume after 5 seconds, so 5 sec added to total
+				timerUltimateCD:Update(elapsed, 64, " ")--Power updates resume after 4 seconds, so 4 sec added to total
 			end
 			--if self:IsMythic() then
 			--	timerAddsCD:Start()
@@ -633,6 +643,14 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 do
+	local spellEasyMapping = {
+		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
+		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
+		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
+		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
+	}
 	local spellMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
@@ -650,14 +668,14 @@ do
 			specWarnMoltenRupture:Show()
 			specWarnMoltenRupture:Play("farfromline")
 		elseif spellId == 391096 then--Damage Selection (Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth)
-			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
-			timerDamageCD:Start(spellName)
+			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
+			timerDamageCD:Start(nil, spellName)
 		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
-			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
-			timerAvoidCD:Start(spellName)
+			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
+			timerAvoidCD:Start(nil, spellName)
 		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
-			local spellName = self.vb.curAltar and spellMapping[spellId][self.vb.curAltar] or " "
-			timerUltimateCD:Start(spellName)
+			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
+			timerUltimateCD:Start(self.vb.phase == 3 and 37.6 or 60, spellName)
 		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
 			timerAddsCD:Start()
 		end
