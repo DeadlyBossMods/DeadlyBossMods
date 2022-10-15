@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(189813)
 mod:SetEncounterID(2635)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
---mod:SetHotfixNoticeRev(20220322000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20221014000000)
+mod:SetMinSyncRevision(20221014000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -45,12 +45,12 @@ local specWarnZephyrSlam						= mod:NewSpecialWarningDefensive(375580, nil, nil,
 local specWarnZephyrSlamTaunt					= mod:NewSpecialWarningTaunt(375580, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerColaescingStormCD					= mod:NewCDCountTimer(80, 387849, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerColaescingStormCD					= mod:NewCDCountTimer(79.1, 387849, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, nil, nil, nil, 3)
 local timerConductiveMarkCD						= mod:NewCDCountTimer(28.2, 391686, nil, nil, nil, 3)--28-30
 local timerCycloneCD							= mod:NewCDCountTimer(79.1, 376943, nil, nil, nil, 2)
-local timerCrosswindsCD							= mod:NewCDCountTimer(35.2, 388410, nil, nil, nil, 3)
-local timerZephyrSlamCD							= mod:NewCDCountTimer(16.9, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3)
+local timerZephyrSlamCD							= mod:NewCDCountTimer(14, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 391686)
@@ -92,8 +92,8 @@ function mod:OnCombatStart(delay)
 	timerRagingBurstCD:Start(7-delay, 1)
 	timerZephyrSlamCD:Start(15.8-delay, 1)
 	timerCrosswindsCD:Start(25.6-delay, 1)
-	timerCycloneCD:Start(36.6-delay, 1)
-	timerColaescingStormCD:Start(76-delay, 1)
+	timerCycloneCD:Start(35.9-delay, 1)
+	timerColaescingStormCD:Start(75.9-delay, 1)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -119,21 +119,30 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnCoalescingStorm:Show(self.vb.stormCount)
 		specWarnCoalescingStorm:Play("mobsoon")
-		timerColaescingStormCD:Start(nil, self.vb.stormCount+1)
 		--Timers reset by storm
-		timerConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
-		timerZephyrSlamCD:Restart(20, self.vb.slamCount+1)
-		timerCrosswindsCD:Restart(31.2, self.vb.crosswindCount+1)
+		if self:IsMythic() then
+			timerConductiveMarkCD:Restart(19.5, self.vb.markCount+1)
+			timerZephyrSlamCD:Restart(30, self.vb.slamCount+1)--30-33
+			timerCrosswindsCD:Restart(40.8, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
+			timerColaescingStormCD:Start(90, self.vb.stormCount+1)
+		else
+			timerConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
+			timerZephyrSlamCD:Restart(20, self.vb.slamCount+1)
+			timerCrosswindsCD:Restart(30.8, self.vb.crosswindCount+1)--30-33
+			timerColaescingStormCD:Start(79.1, self.vb.stormCount+1)
+		end
 	elseif spellId == 388302 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		warnRagingBurst:Show(self.vb.burstCount)
-		timerRagingBurstCD:Start(nil, self.vb.burstCount+1)
+		timerRagingBurstCD:Start(self:IsMythic() and 90 or 79.1, self.vb.burstCount+1)
 	elseif spellId == 376943 then
 		self.vb.cycloneCount = self.vb.cycloneCount + 1
 		specWarnCyclone:Show(self.vb.cycloneCount)
 		specWarnCyclone:Play("pullin")
-		timerCycloneCD:Start(nil, self.vb.cycloneCount+1)
-		timerZephyrSlamCD:Restart(15.7, self.vb.slamCount+1)
+		timerCycloneCD:Start(self:IsMythic() and 90 or 79.1, self.vb.cycloneCount+1)
+		if timerZephyrSlamCD:GetRemaining(self.vb.slamCount+1) < 13.2 then
+			timerZephyrSlamCD:Restart(13.2, self.vb.slamCount+1)--13.2-15
+		end
 	elseif spellId == 388410 then
 		self.vb.crosswindCount = self.vb.crosswindCount + 1
 		specWarnCrosswinds:Show(self.vb.crosswindCount)
@@ -141,6 +150,9 @@ function mod:SPELL_CAST_START(args)
 		--If storm comes before cross winds would come off CD, storm will reset the CD anyways so don't start here
 		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 35 then
 			timerCrosswindsCD:Start(nil, self.vb.crosswindCount+1)
+		end
+		if timerZephyrSlamCD:GetRemaining(self.vb.slamCount+1) < 6 then
+			timerZephyrSlamCD:Restart(6, self.vb.slamCount+1)--6-8
 		end
 	elseif spellId == 375580 then
 		self.vb.slamCount = self.vb.slamCount + 1
@@ -295,8 +307,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 1) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
 		--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
-		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 28 then
-			timerConductiveMarkCD:Start(nil, self.vb.markCount+1)
+		local cooldown = self:IsMythic() and 25.2 or 28
+		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > cooldown then
+			timerConductiveMarkCD:Start(cooldown, self.vb.markCount+1)
 		end
 	end
 end
