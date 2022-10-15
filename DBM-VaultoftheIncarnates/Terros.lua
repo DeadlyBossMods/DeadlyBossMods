@@ -13,11 +13,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 380487 377166 377505 383073 376279",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 386352 381253 376276 391306",
 	"SPELL_AURA_APPLIED_DOSE 376276",
 	"SPELL_AURA_REMOVED 386352 381253 391306"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, auto mark awakened Earth (after spawn)?
@@ -64,36 +62,16 @@ mod.vb.rockCount = 0
 mod.vb.slamCount = 0
 mod.vb.impactCount = 0
 mod.vb.frenziedStarted = false
-local difficultyName = "heroic"--Unused right now, mythic and heroic same, will leave code in place until i know if normal/lfr also same or slower
 local allTimers = {
-	["normal"] = {
-		--Concussive Slam
-		[376279] = {},
-		--Rock Blast
-		[380487] = {},
-		--Shattering Impact
-		[383073] = {},
-	},
-	["heroic"] = {
-		--Concussive Slam
-		[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
-		--Rock Blast
-		[380487] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
-		--Shattering Impact
-		[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
-	},
-	["mythic"] = {
-		--Concussive Slam
-		[376279] = {},
-		--Rock Blast
-		[380487] = {},
-		--Shattering Impact
-		[383073] = {},
-	},
+	--Concussive Slam
+	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
+	--Rock Blast
+	[380487] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+	--Shattering Impact
+	[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 }
 
 function mod:OnCombatStart(delay)
-	difficultyName = "heroic"--Temp setting to only difficult untl know for sure if other difficulties have faster or slower timers
 	self.vb.annihilationCount = 0
 	self.vb.rockCount = 0
 	self.vb.slamCount = 0
@@ -122,23 +100,13 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:OnTimerRecovery()
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
-		difficultyName = "heroic"
---	else
---		difficultyName = "normal"
---	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 380487 then
 --		self.vb.rockIcon = 1
 		self.vb.awakenedIcon = 1
 		self.vb.rockCount = self.vb.rockCount + 1
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.rockCount+1)
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.rockCount+1)
 		if timer then
 			timerRockBlastCD:Start(timer, self.vb.rockCount+1)
 		end
@@ -158,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.impactCount = self.vb.impactCount + 1
 		specWarnShatteringImpact:Show()
 		specWarnShatteringImpact:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.impactCount+1)
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.impactCount+1)
 		if timer then
 			timerShatteringImpactCD:Start(timer, self.vb.impactCount+1)
 		end
@@ -168,21 +136,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnConcussiveSlam:Show()
 			specWarnConcussiveSlam:Play("defensive")
 		end
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.slamCount+1)
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.slamCount+1)
 		if timer then
 			timerConcussiveSlamCD:Start(timer, self.vb.slamCount+1)
 		end
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 362805 then
-
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -214,7 +173,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expireTime then
 			remaining = expireTime-GetTime()
 		end
-		local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 20) - 2.5
+		local timer = (self:GetFromTimersTable(allTimers, false, false, 376279, self.vb.slamCount+1) or 20) - 2.5
 		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnConcussiveSlamTaunt:Show(args.destName)
 			specWarnConcussiveSlamTaunt:Play("tauntboss")
@@ -258,11 +217,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
-
-	end
-end
---]]
