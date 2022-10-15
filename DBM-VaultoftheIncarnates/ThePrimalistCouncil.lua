@@ -6,7 +6,7 @@ mod:SetCreatureID(187771, 187768, 187772, 187767)
 mod:SetEncounterID(2590)
 mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20221008000000)
+mod:SetHotfixNoticeRev(20221014000000)
 mod:SetMinSyncRevision(20221008000000)
 --mod.respawnTime = 29
 
@@ -26,6 +26,11 @@ mod:RegisterEventsInCombat(
 --TODO, conductive mark has numerous spellids and the one that's a cast looks like a hidden script. 10 to 1, it's not in combat log. (https://www.wowhead.com/beta/spell=375331/conductive-mark)
 --TODO, mark some of conductive marks? On mythic it goes on 10 targets, not enough marks for all that, plus meteor axe needs 2 marks as prio
 --TODO, earthen pillar targetting unclear, it probably uses RAID_BOSS_WHISPER if i had to guess, because there is no debuff
+--[[
+(ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038) and type = "begincast"
+ or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
+ or ability.id = 371624 and type = "applydebuff"
+--]]
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
@@ -41,7 +46,7 @@ local specWarnFrostSpike						= mod:NewSpecialWarningInterrupt(372315, "HasInter
 
 local timerPrimalBlizzardCD						= mod:NewCDTimer(123, 373059, nil, nil, nil, 2)--123-140, for some reason boss likes to sit at full energy for for a while (but not always!)
 
-mod:AddInfoFrameOption(373059, true)
+mod:AddInfoFrameOption(373059, false)
 --Dathea Stormlash
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24958))
 local warnConductiveMark						= mod:NewTargetAnnounce(371624, 4, nil, false)--Even with global target filter on by default, off by default due to spam potential
@@ -49,7 +54,7 @@ local warnConductiveMark						= mod:NewTargetAnnounce(371624, 4, nil, false)--Ev
 local warnStormingConvocation					= mod:NewSpellAnnounce(386375, 4)
 
 local specWarnConductiveMark					= mod:NewSpecialWarningYou(371624, nil, nil, nil, 1, 2)
-local yellConductiveMark						= mod:NewShortYell(371624)
+local yellConductiveMark						= mod:NewYell(371624, 28836)
 local specWarnLightningBolt						= mod:NewSpecialWarningInterrupt(372394, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnChainLightning					= mod:NewSpecialWarningMoveAway(374021, nil, nil, nil, 1, 2)
 --local yellChainLightning						= mod:NewShortYell(374021)
@@ -95,21 +100,34 @@ mod.vb.crushCast = 0
 mod.vb.meteorCast = 0
 mod.vb.blazeCast = 0
 mod.vb.axeIcon = 1
-local difficultyName = "heroic"--Unused right now, mythic and heroic same, will leave code in place until i know if normal/lfr also same or slower
+local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
-	["heroic"] = {
+--	["mythic"] = {--Needs work, some of these can be lower
+
+--	},
+--	["heroic"] = {--Assumed utterly obsolete
+--		--Conductive Mark
+--		[375331] = {15.8, 52.2, 51.7, 49.2, 43.9, 49.6, 47.3, 27.6, 51.3, 53.4, 46.9, 50.8, 50.3, 29.2, 52.8, 51.1, 47.5, 50.3, 50.2, 29.6, 52.5, 53.3},
+--		--Meteor Axes
+--		[374038] = {26.0, 53.8, 49.7, 71.5, 68.6, 90.7, 50.5, 71.6, 69.1, 90.2, 51.5, 71.6, 69.1, 89.8, 51.1, 71.2},
+--		--Pillars
+--		[372322] = {5.5, 28.1, 47.2, 68.6, 42.0, 63.7, 64.1, 41.5, 69.7, 42.5, 64.3, 63.8, 41.3, 71.0, 40.8, 64.5, 64.8, 40.8, 69.9, 42.8},
+--		--Primal Blizzard (excluded for now)
+--		--[373059] = {},
+--	},
+	["normal"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {15.8, 52.2, 51.7, 49.2, 43.9, 49.6, 47.3, 27.6, 51.3, 53.4, 46.9, 50.8, 50.3, 29.2, 52.8, 51.1, 47.5, 50.3, 50.2, 29.6, 52.5, 53.3},
+		[375331] = {15.3, 42.8, 23.2, 25.5, 20.7, 24.3, 24.3, 15.9, 23.1, 26.8},
 		--Meteor Axes
-		[374038] = {26.0, 53.8, 49.7, 71.5, 68.6, 90.7, 50.5, 71.6, 69.1, 90.2, 51.5, 71.6, 69.1, 89.8, 51.1, 71.2},
+		[374038] = {25, 38.4, 25.0, 35.1, 34.1, 43.7, 24.4, 35.2},
 		--Pillars
-		[372322] = {5.9, 28.1, 47.2, 68.6, 42.0, 63.7, 64.1, 41.5, 69.7, 42.5, 64.3, 63.8, 41.3, 71.0, 40.8, 64.5, 64.8, 40.8, 69.9, 42.8},
-		--Blizzard excluded because it's variation is not a consistent one
+		[372322] = {5.0, 28.0, 32.5, 32.8, 20.2, 31.6, 31.6, 23.1, 32.8, 20.8},
+		--Primal Blizzard (excluded for now)
+		--[373059] = {40.0, 69.3, 67.6, 71.8, 69.4, 70.4},
 	},
 }
 
 function mod:OnCombatStart(delay)
-	difficultyName = "heroic"--Temp setting to only difficult untl know for sure if other difficulties have faster or slower timers
 	table.wipe(blizzardStacks)
 	playerBlizzardHigh = false
 	self.vb.blizzardCast = 0
@@ -121,14 +139,21 @@ function mod:OnCombatStart(delay)
 	--Kadros Icewrath
 	timerPrimalBlizzardCD:Start(39-delay, 1)
 	--Dathea Stormlsh
-	timerChainLightningCD:Start(12.1-delay)
-	timerConductiveMarkCD:Start(15.8-delay, 1)
+	timerChainLightningCD:Start(9.2-delay)
+	timerConductiveMarkCD:Start(15.3-delay, 1)
 	--Opalfang
-	timerEarthenPillarCD:Start(5.9-delay, 1)
-	timerCrushCD:Start(18.3-delay, 1)
+	timerEarthenPillarCD:Start(3.6-delay, 1)
+	timerCrushCD:Start(17.7-delay, 1)
 	--Embar Firepath
-	timerSlashingBlazeCD:Start(12.3-delay, 1)
-	timerMeteorAxeCD:Start(26-delay, 1)
+	timerSlashingBlazeCD:Start(9.2-delay, 1)
+	timerMeteorAxeCD:Start(25-delay, 1)
+--	if self:IsMythic() then
+--		difficultyName = "mythic"
+--	elseif self:IsHeroic() then
+--		difficultyName = "heroic"
+--	else
+		difficultyName = "normal"
+--	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -151,9 +176,9 @@ function mod:OnTimerRecovery()
 --	if self:IsMythic() then
 --		difficultyName = "mythic"
 --	elseif self:IsHeroic() then
-		difficultyName = "heroic"
+--		difficultyName = "heroic"
 --	else
---		difficultyName = "normal"
+		difficultyName = "normal"
 --	end
 end
 
@@ -167,7 +192,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnPrimalBlizzard:Play("aesoon")--Just aoe damage, spread mechanic disabled
 		end
-		timerPrimalBlizzardCD:Start(nil, self.vb.blizzardCast+1)
+		timerPrimalBlizzardCD:Start(self:IsMythic() and 67.6 or 123, self.vb.blizzardCast+1)
 	elseif spellId == 372315 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFrostSpike:Show(args.sourceName)
 		specWarnFrostSpike:Play("kickcast")
@@ -206,7 +231,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 391599 or spellId == 371836 then--Non Mythic, Mythic
+	if spellId == 391599 or spellId == 371836 then--Mythic, Non Mythic
 		local amount = args.amount or 1
 		blizzardStacks[args.destName] = amount
 		if args:IsPlayer() and amount >= 8 then
@@ -293,7 +318,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 391599 or spellId == 371836 then
+	if spellId == 391599 or spellId == 371836 then--Mythic, Non Mythic
 		blizzardStacks[args.destName] = nil
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(blizzardStacks)
