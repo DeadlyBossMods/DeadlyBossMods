@@ -90,10 +90,10 @@ function mod:OnCombatStart(delay)
 	self.vb.slamCount = 0
 	timerConductiveMarkCD:Start(4.6-delay, 1)
 	timerRagingBurstCD:Start(7-delay, 1)
-	timerZephyrSlamCD:Start(15.8-delay, 1)
-	timerCrosswindsCD:Start(25.6-delay, 1)
-	timerCycloneCD:Start(35.9-delay, 1)
-	timerColaescingStormCD:Start(75.9-delay, 1)
+	timerZephyrSlamCD:Start(15.7-delay, 1)
+	timerCrosswindsCD:Start(25.5-delay, 1)
+	timerCycloneCD:Start(35.2-delay, 1)
+	timerColaescingStormCD:Start(75.3-delay, 1)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -128,7 +128,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
 			timerZephyrSlamCD:Restart(20, self.vb.slamCount+1)
-			timerCrosswindsCD:Restart(30.8, self.vb.crosswindCount+1)--30-33
+			timerCrosswindsCD:Restart(30.4, self.vb.crosswindCount+1)--30-33
 			timerColaescingStormCD:Start(79.1, self.vb.stormCount+1)
 		end
 	elseif spellId == 388302 then
@@ -307,9 +307,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 1) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
 		--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
-		local cooldown = self:IsMythic() and 25.2 or 28
-		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > cooldown then
-			timerConductiveMarkCD:Start(cooldown, self.vb.markCount+1)
+		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 25.2 then--Heroic was 28 but considering both mythic and normal are 25, assuming heroic is too
+			timerConductiveMarkCD:Start(25.2, self.vb.markCount+1)
 		end
 	end
 end
