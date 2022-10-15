@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 372238 or ability.id = 372648) and type = "cast"
  or ability.id = 181113 and source.id = 189234
  or ability.id = 372539 and type = "interrupt"
+ or ability.id = 181089
 --]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
