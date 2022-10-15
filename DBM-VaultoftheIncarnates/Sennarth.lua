@@ -85,7 +85,7 @@ local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
 
 local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373027, nil, nil, nil, 3)--38-45
-local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37
+local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37 (unknown on normal
 
 mod:AddSetIconOption("SetIconOnSufWeb", 373027, true, false, {1, 2, 3})
 
@@ -118,6 +118,42 @@ local allTimers = {
 			[372238] = {12.8, 30.4, 30.5, 32.8, 35.2},--Unused for now
 		},
 	},
+	["heroic"] = {
+		[1] = {
+			--Chilling Blast
+			[371976] = {},
+			--Enveloping Webs
+			[372082] = {},
+			--Gossamer Burst
+			[373405] = {},
+			--Call Spiderlings
+			[372238] = {},
+		},
+		[2] = {
+			--Chilling Blast
+			[371976] = {},--Unused for now
+			--Call Spiderlings
+			[372238] = {},--Unused for now
+		},
+	},
+	["normal"] = {
+		[1] = {
+			--Chilling Blast
+			[371976] = {16.1, 36.5, 37.7, 30.4, 36.5, 36.5, 26.6, 40.1},
+			--Enveloping Webs
+			[372082] = {18.5, 28, 29.1, 26.7, 20.6, 26.7, 30.3, 42.5, 27.9. 32.8},
+			--Gossamer Burst
+			[373405] = {33.2, 36.5, 68.1, 36.4, 64.8, 38.4},
+			--Call Spiderlings
+			[372238] = {2.7, 20.6, 20.7, 21.9, 20.6, 31.6, 26.7, 21.8, 20.7, 27.9, 20.6, 20.7, 20.6},
+		},
+		[2] = {
+			--Chilling Blast
+			[371976] = {16.6, 32.8},--Unused for now
+			--Call Spiderlings
+			[372238] = {14.2, 25.5, 25.5},--Unused for now
+		},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -135,13 +171,13 @@ function mod:OnCombatStart(delay)
 --	timerCallSpiderlingsCD:Start(1-delay, 1)--1-3sec into pull
 	timerPhaseCD:Start(43-delay)
 	timerFrostbreathArachnidCD:Start(103.9, 2)--First one engages with boss
---	if self:IsMythic() then
-		difficultyName = "mythic"--Only one used for now, heroic is probably changed since it was tested
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"
---	else
---		difficultyName = "normal"
---	end
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "normal"
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(372030))
 		DBM.InfoFrame:Show(20, "table", stickyStacks, 1)
@@ -158,13 +194,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
---	if self:IsMythic() then
+	if self:IsMythic() then
 		difficultyName = "mythic"
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"
---	else
---		difficultyName = "normal"
---	end
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "normal"
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -176,7 +212,7 @@ function mod:SPELL_CAST_START(args)
 		--More consistent in stage 2
 		--timerChillingBlastCD:Start(self.vb.phase == 2 and 32 or self.vb.blastCount == 1 and 36 or 22, self.vb.blastCount+1)
 		if self.vb.phase == 2 then
-			timerChillingBlastCD:Start(self.vb.blastCount == 1 and 17 or 32, self.vb.blastCount+1)
+			timerChillingBlastCD:Start(self:IsMythic() and self.vb.blastCount == 1 and 17 or 32, self.vb.blastCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blastCount+1)
 			if timer then
@@ -224,7 +260,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spiderlingsCount = self.vb.spiderlingsCount + 1
 		warnCallSpiderlings:Show(self.vb.spiderlingsCount)
 		if self.vb.phase == 2 then
-			timerCallSpiderlingsCD:Start(30, self.vb.spiderlingsCount+1)
+			timerCallSpiderlingsCD:Start(self:IsMythic() and 30 or 25, self.vb.spiderlingsCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.spiderlingsCount+1)
 			if timer then
@@ -369,8 +405,8 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("INV_MineSpider2_Crystal.blp") then
 --		self.vb.blastCount = 0
-		timerGossamerBurstCD:Stop()
-		timerChillingBlastCD:Stop()
+--		timerGossamerBurstCD:Stop()
+--		timerChillingBlastCD:Stop()
 		if self.vb.stageTotality == 1 then--First movement
 			self:SetStage(1.25)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
 			--Stop stage 1 timers and basically restart them
@@ -409,6 +445,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerCallSpiderlingsCD:Stop()
 		timerFrostbreathArachnidCD:Stop()
 		--Stage 2 timers start here, but if she's not interrupted within 12 seconds, they start to queue up and become messy
+		--These may be wrong on several difficulties due to no viewable CLEU event on WCL yet to verify them
 		timerCallSpiderlingsCD:Start(12.8, 1)
 		timerChillingBlastCD:Start(15.3, 1)
 		timerSuffocatingWebsCD:Start(22.7, 1)
