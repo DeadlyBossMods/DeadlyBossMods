@@ -10,6 +10,7 @@ mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 373513 240446 373513 373429 373370",
+	"SPELL_CAST_SUCCESS 373370",
 	"SPELL_AURA_APPLIED 240447 226512 373552 373509 350209",
 	"SPELL_AURA_APPLIED_DOSE 373509",
 	"SPELL_AURA_REMOVED 373724",
@@ -38,7 +39,6 @@ local specWarnBloodSiphon					= mod:NewSpecialWarningInterrupt(373729, nil, nil,
 
 local timerCarrionSwarmCD					= mod:NewCDTimer(23, 373429, nil, nil, nil, 3)--S4, 23-27
 local timerNightmareCloudCD					= mod:NewCDTimer(32.5, 373370, nil, nil, nil, 3)--S4, 32-36
-local timerHypnosisBatCD					= mod:NewCDTimer(23, 373552, nil, nil, nil, 3)--S4, 23-27
 local timerShadowEruptionCD					= mod:NewCDTimer(24, 373729, nil, nil, nil, 2)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
@@ -62,7 +62,14 @@ function mod:SPELL_CAST_START(args)
 		warnExplosion:Show()
 	elseif spellId == 373370 then
 		warnNightmareCloud:Show()
-		timerNightmareCloudCD:Start(nil, args.sourceGUID)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 373370 then
+		timerNightmareCloudCD:Start(30.5, args.sourceGUID)
 	end
 end
 
@@ -79,7 +86,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 373552 then
 		warnHypnosisBat:Show(args.destName)
-		timerHypnosisBatCD:Start()
 	elseif spellId == 373724 then
 		warnBloodBarrier:Show(args.destName)
 	elseif spellId == 373509 then
@@ -117,7 +123,6 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 190128 then--Zul'gamux
-		timerHypnosisBatCD:Stop()
 		timerShadowEruptionCD:Stop()
 	elseif cid == 189878 then--Nathrezim Infiltrator
 		timerCarrionSwarmCD:Stop(args.destGUID)
