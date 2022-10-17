@@ -44,7 +44,7 @@ local specWarnPrimalBlizzard					= mod:NewSpecialWarningCount(373059, nil, nil, 
 local specWarnPrimalBlizzardStack				= mod:NewSpecialWarningStack(373059, nil, 8, nil, nil, 1, 6)
 local specWarnFrostSpike						= mod:NewSpecialWarningInterrupt(372315, "HasInterrupt", nil, nil, 1, 2)
 
-local timerPrimalBlizzardCD						= mod:NewCDTimer(123, 373059, nil, nil, nil, 2)--123-140, for some reason boss likes to sit at full energy for for a while (but not always!)
+local timerPrimalBlizzardCD						= mod:NewCDCountTimer(123, 373059, nil, nil, nil, 2)--123-140, for some reason boss likes to sit at full energy for for a while (but not always!)
 
 mod:AddInfoFrameOption(373059, false)
 --Dathea Stormlash
@@ -119,7 +119,7 @@ function mod:AxeReturn(uId, icon)
 		specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
 		specWarnMeteorAxe:Play("mm"..icon)
 		yellMeteorAxe:Yell(icon, icon)
-		yellMeteorAxeFades:Countdown(spellId, nil, icon)
+		yellMeteorAxeFades:Countdown(374039, nil, icon)
 	end
 end
 
