@@ -99,7 +99,6 @@ mod.vb.pillarCast = 0
 mod.vb.crushCast = 0
 mod.vb.meteorCast = 0
 mod.vb.blazeCast = 0
-mod.vb.axeIcon = 1
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
 	["normal"] = {--Needs work, some of these can be lower
@@ -114,12 +113,18 @@ local allTimers = {
 	},
 }
 
-function mod:AxeReturn(uId, icon)
-	if UnitIsUnit("player", uId) then
+local function checkMyAxe(self)
+	local icon = GetRaidTargetIndex("player")
+	if icon then
 		specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
 		specWarnMeteorAxe:Play("mm"..icon)
 		yellMeteorAxe:Yell(icon, icon)
 		yellMeteorAxeFades:Countdown(374039, nil, icon)
+	else--No icon setter?
+		specWarnMeteorAxe:Show("")
+		specWarnMeteorAxe:Play("targetyou")
+		yellMeteorAxe:Yell(0, 0)
+		yellMeteorAxeFades:Countdown(374039, nil, 0)
 	end
 end
 
@@ -218,7 +223,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 372279 then
 		timerChainLightningCD:Start()
 	elseif spellId == 374038 then
-		self.vb.axeIcon = 1
 		self.vb.meteorCast = self.vb.meteorCast + 1
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
 		timerMeteorAxeCD:Start(timer, self.vb.meteorCast+1)
@@ -280,9 +284,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
 		if self.Options.SetIconOnMeteorAxe then
-			self:SetSortedIcon("tankroster", 0.4, args.destName, 1, 2, false, "AxeReturn")
+			self:SetSortedIcon("tankroster", 0.4, args.destName, 1, 2, false)
 		end
-		warnMeteorAxe:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			self:Schedule(0.5, checkMyAxe, self)
+		end
+		warnMeteorAxe:CombinedShow(0.6, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
