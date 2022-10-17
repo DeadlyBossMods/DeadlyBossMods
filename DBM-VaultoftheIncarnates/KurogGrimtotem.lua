@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396109 396113 396106 396085",
+	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
 	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
@@ -686,12 +686,12 @@ do
 		timerAvoidCD:Stop()
 		timerUltimateCD:Stop()
 		--Gather new spellNames and Icons
-		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391096][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391096][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391100][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391100][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[374680][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[374680][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 		--Update timers with new spellNames
 		timerDamageCD:Update(dElapsed, dTotal, self.vb.damageSpell)
 		timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
