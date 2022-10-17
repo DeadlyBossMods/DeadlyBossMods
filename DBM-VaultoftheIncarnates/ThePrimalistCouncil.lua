@@ -44,7 +44,7 @@ local specWarnPrimalBlizzard					= mod:NewSpecialWarningCount(373059, nil, nil, 
 local specWarnPrimalBlizzardStack				= mod:NewSpecialWarningStack(373059, nil, 8, nil, nil, 1, 6)
 local specWarnFrostSpike						= mod:NewSpecialWarningInterrupt(372315, "HasInterrupt", nil, nil, 1, 2)
 
-local timerPrimalBlizzardCD						= mod:NewCDTimer(123, 373059, nil, nil, nil, 2)--123-140, for some reason boss likes to sit at full energy for for a while (but not always!)
+local timerPrimalBlizzardCD						= mod:NewCDCountTimer(123, 373059, nil, nil, nil, 2)--123-140, for some reason boss likes to sit at full energy for for a while (but not always!)
 
 mod:AddInfoFrameOption(373059, false)
 --Dathea Stormlash
@@ -89,7 +89,7 @@ local specWarnSlashingBlazeTaunt				= mod:NewSpecialWarningTaunt(372027, nil, ni
 local timerMeteorAxeCD							= mod:NewCDCountTimer(49.7, 374043, nil, nil, nil, 3)
 local timerSlashingBlazeCD						= mod:NewCDCountTimer(27.7, 372027, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 8, {1, 2})
 
 local blizzardStacks = {}
 local playerBlizzardHigh = false
@@ -102,30 +102,26 @@ mod.vb.blazeCast = 0
 mod.vb.axeIcon = 1
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
---	["mythic"] = {--Needs work, some of these can be lower
-
---	},
---	["heroic"] = {--Assumed utterly obsolete
---		--Conductive Mark
---		[375331] = {15.8, 52.2, 51.7, 49.2, 43.9, 49.6, 47.3, 27.6, 51.3, 53.4, 46.9, 50.8, 50.3, 29.2, 52.8, 51.1, 47.5, 50.3, 50.2, 29.6, 52.5, 53.3},
---		--Meteor Axes
---		[374038] = {26.0, 53.8, 49.7, 71.5, 68.6, 90.7, 50.5, 71.6, 69.1, 90.2, 51.5, 71.6, 69.1, 89.8, 51.1, 71.2},
---		--Pillars
---		[372322] = {5.5, 28.1, 47.2, 68.6, 42.0, 63.7, 64.1, 41.5, 69.7, 42.5, 64.3, 63.8, 41.3, 71.0, 40.8, 64.5, 64.8, 40.8, 69.9, 42.8},
---		--Primal Blizzard (excluded for now)
---		--[373059] = {},
---	},
 	["normal"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {15.3, 42.8, 23.2, 25.5, 20.7, 24.3, 24.3, 15.9, 23.1, 26.8},
+		[375331] = {15.3, 42.8, 23.2, 25.5, 20.7, 23.1, 24.3, 13.4, 23.1, 24.3, 22.0, 24.2, 24.3, 17.0, 24.3, 26.7},
 		--Meteor Axes
-		[374038] = {25, 38.4, 25.0, 35.1, 34.1, 43.7, 24.4, 35.2},
+		[374038] = {25.0, 38.4, 25.0, 35.1, 34.1, 43.7, 24.4, 35.2, 34.0, 43.7, 25.4, 36.4},
 		--Pillars
-		[372322] = {5.0, 28.0, 32.5, 32.8, 20.2, 31.6, 31.6, 23.1, 32.8, 20.8},
+		[372322] = {5.0, 28.0, 32.5, 32.8, 20.2, 31.6, 31.6, 23.1, 32.8, 20.8, 31.6, 32.9, 22.0, 32.8},
 		--Primal Blizzard (excluded for now)
 		--[373059] = {40.0, 69.3, 67.6, 71.8, 69.4, 70.4},
 	},
 }
+
+function mod:AxeReturn(uId, icon)
+	if UnitIsUnit("player", uId) then
+		specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
+		specWarnMeteorAxe:Play("mm"..icon)
+		yellMeteorAxe:Yell(icon, icon)
+		yellMeteorAxeFades:Countdown(374039, nil, icon)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	table.wipe(blizzardStacks)
@@ -186,7 +182,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 373059 then
 		self.vb.blizzardCast = self.vb.blizzardCast + 1
-		specWarnPrimalBlizzard:Show()
+		specWarnPrimalBlizzard:Show(self.vb.blizzardCast)
 		if self:IsHard() then
 			specWarnPrimalBlizzard:Play("scatter")--Range 3
 		else
@@ -201,7 +197,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLightningBolt:Play("kickcast")
 	elseif spellId == 372322 then
 		self.vb.pillarCast = self.vb.pillarCast + 1
-		specWarnEarthenPillar:Show()
+		specWarnEarthenPillar:Show(self.vb.pillarCast)
 		specWarnEarthenPillar:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.pillarCast+1) or 40.8
 		timerEarthenPillarCD:Start(timer, self.vb.pillarCast+1)
@@ -283,18 +279,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEarthenPillarCD:Stop()
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
-		local icon = self.vb.axeIcon
 		if self.Options.SetIconOnMeteorAxe then
-			self:SetIcon(args.destName, icon)
+			self:SetSortedIcon("tankroster", 0.4, args.destName, 1, 2, false, "AxeReturn")
 		end
-		if args:IsPlayer() then
-			specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
-			specWarnMeteorAxe:Play("mm"..icon)
-			yellMeteorAxe:Yell(icon, icon)
-			yellMeteorAxeFades:Countdown(spellId, nil, icon)
-		end
-		warnMeteorAxe:CombinedShow(0.3, args.destName)
-		self.vb.axeIcon = self.vb.axeIcon + 1
+		warnMeteorAxe:CombinedShow(0.5, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
