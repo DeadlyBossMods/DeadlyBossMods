@@ -686,12 +686,12 @@ do
 		timerAvoidCD:Stop()
 		timerUltimateCD:Stop()
 		--Gather new spellNames and Icons
-		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391096][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391096][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391100][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391100][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[374680][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
-		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[374680][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391096][self.vb.curAltar] or spellMapping[391096][self.vb.curAltar]) or "?"
+		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391096][self.vb.curAltar] or iconMapping[391096][self.vb.curAltar]) or 136116
+		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391100][self.vb.curAltar] or spellMapping[391100][self.vb.curAltar]) or "?"
+		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391100][self.vb.curAltar] or iconMapping[391100][self.vb.curAltar]) or 136116
+		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[374680][self.vb.curAltar] or spellMapping[374680][self.vb.curAltar]) or "?"
+		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[374680][self.vb.curAltar] or iconMapping[374680][self.vb.curAltar]) or 136116
 		--Update timers with new spellNames
 		timerDamageCD:Update(dElapsed, dTotal, self.vb.damageSpell)
 		timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
