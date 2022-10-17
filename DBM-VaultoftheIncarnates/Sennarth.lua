@@ -322,7 +322,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(stickyStacks, 0.2)
 		end
-		if args:IsPlayer() and amount >= 3 then
+		if args:IsPlayer() and (amount % 3 == 0) and amount >= 3 then
 			specWarnStickyWebbing:Show(amount)
 			specWarnStickyWebbing:Play("stackhigh")
 		end
