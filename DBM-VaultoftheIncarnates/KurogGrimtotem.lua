@@ -712,17 +712,17 @@ do
 		elseif spellId == 391096 then--Damage Selection (Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth)
 			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-			timerDamageCD:Start(self.vb.phase == 3 and 32.9 or 30, spellName)
+			timerDamageCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.damageSpell)
 			timerDamageCD:UpdateIcon(spellIcon)
 		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
 			self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-			timerAvoidCD:Start(self.vb.phase == 3 and 32.9 or 30, spellName)
+			timerAvoidCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.avoidSpell)
 			timerAvoidCD:UpdateIcon(spellIcon)
 		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
 			self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
-			timerUltimateCD:Start(self.vb.phase == 3 and 32.9 or 60, spellName)
+			timerUltimateCD:Start(self.vb.phase == 3 and 32.9 or 60, self.vb.ultimateSpell)
 			timerUltimateCD:UpdateIcon(spellIcon)
 		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
 			timerAddsCD:Start()
