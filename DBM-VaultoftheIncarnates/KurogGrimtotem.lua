@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265",
+	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396109 396113 396106 396085",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
 	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
@@ -202,15 +202,22 @@ mod.vb.chillCast = 0
 mod.vb.litCrashIcon = 1
 mod.vb.zeroIcon = 1
 mod.vb.curAltar = false
+mod.vb.damageSpell = "?"
+mod.vb.avoidSpell = "?"
+mod.vb.ultimateSpell = "?"
+local updateAltar
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.chillCast = 0
 	self.vb.curAltar = false
+	self.vb.damageSpell = "?"
+	self.vb.avoidSpell = "?"
+	self.vb.ultimateSpell = "?"
 	timerSunderStrikeCD:Start(10.7-delay)
-	timerDamageCD:Start(20.4-delay, " ")
-	timerAvoidCD:Start(30.2-delay, " ")
-	timerUltimateCD:Start(63.1-delay, " ")
+	timerDamageCD:Start(20.4-delay, "?")
+	timerAvoidCD:Start(30.2-delay, "?")
+	timerUltimateCD:Start(63.1-delay, "?")
 	--if self:IsMythic() then
 	--	timerAddsCD:Start(1-delay)
 	--end
@@ -401,26 +408,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount % 3 == 0 then
 			warnBreakingGravel:Show(args.destName, amount)
 		end
---	elseif spellId == 374881 then--Blistering Dominance
---		local amount = args.amount or 1
---		if amount % 3 == 0 then
---			warnBlisteringDominance:Show(args.destName, amount)
---		end
---	elseif spellId == 374916 then--ChillingDominance
---		local amount = args.amount or 1
---		if amount % 3 == 0 then
---			warnChillingDominance:Show(args.destName, amount)
---		end
---	elseif spellId == 374917 then--ShatteringDominance
---		local amount = args.amount or 1
---		if amount % 3 == 0 then
---			warnShatteringDominance:Show(args.destName, amount)
---		end
---	elseif spellId == 374918 then--Thundering
---		local amount = args.amount or 1
---		if amount % 3 == 0 then
---			warnThunderingDominance:Show(args.destName, amount)
---		end
+	elseif spellId == 396109 and (not self.vb.curAltar or self.vb.curAltar ~= 1) then--Freezing Dominance
+		self.vb.curAltar = 1
+		updateAltar(self)
+	elseif spellId == 396113 and (not self.vb.curAltar or self.vb.curAltar ~= 2) then--Thundering Dominance
+		self.vb.curAltar = 2
+		updateAltar(self)
+	elseif spellId == 396106 and (not self.vb.curAltar or self.vb.curAltar ~= 3) then--Flaming Dominance
+		self.vb.curAltar = 3
+		updateAltar(self)
+	elseif spellId == 396085 and (not self.vb.curAltar or self.vb.curAltar ~= 4) then--Earthen Dominance
+		self.vb.curAltar = 4
+		updateAltar(self)
 	elseif spellId == 372158 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
@@ -545,12 +544,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnFrostBite:Show()
 		timerFrostBite:Stop()
 	elseif spellId == 374779 then--Primal Barrier
+		self.vb.curAltar = false--Reset on intermission end because we don't want initial timers to show an altar spell when there isn't one yet
 		if self.vb.stageTotality == 2 then
 			self:SetStage(1)
 			--Base
 			timerSunderStrikeCD:Start(11)
-			timerDamageCD:Start(20, " ")
-			timerAvoidCD:Start(30, " ")
+			timerDamageCD:Start(20, "?")
+			timerAvoidCD:Start(30, "?")
 			--Boss retains power from previous stage
 			--Hopefully this is temp
 			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
@@ -558,7 +558,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			if currentPower then
 				local percent = currentPower / 100
 				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 64, " ")--Power updates resume after 4 seconds, so 4 sec added to total
+				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
 			end
 			--if self:IsMythic() then
 			--	timerAddsCD:Start()
@@ -575,7 +575,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			if currentPower then
 				local percent = currentPower / 100
 				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 64, " ")--Power updates resume after 4 seconds, so 4 sec added to total
+				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
 			end
 			--if self:IsMythic() then
 			--	timerAddsCD:Start()
@@ -651,6 +651,14 @@ do
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
+	local iconEasyMapping = {
+		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
+		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
+		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
+		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
+	}
 	local spellMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
@@ -659,6 +667,40 @@ do
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
+	local iconMapping = {
+		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
+		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(391055))},
+		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
+		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(390796))},
+		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
+		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
+	}
+
+	function updateAltar(self)
+		--Collect current timers usiing cached spellname reference so it's actually possible to find timer with API (before we change it)
+		local dElapsed, dTotal = timerDamageCD:GetTime(self.vb.damageSpell)
+		local aElapsed, aTotal = timerAvoidCD:GetTime(self.vb.avoidSpell)
+		local uElapsed, uTotal = timerUltimateCD:GetTime(self.vb.ultimateSpell)
+		--Terminate old timers
+		timerDamageCD:Stop()
+		timerAvoidCD:Stop()
+		timerUltimateCD:Stop()
+		--Gather new spellNames and Icons
+		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+		--Update timers with new spellNames
+		timerDamageCD:Update(dElapsed, dTotal, self.vb.damageSpell)
+		timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
+		timerUltimateCD:Update(uElapsed, uTotal, self.vb.ultimateSpell)
+		--Update timers with new icons
+		timerDamageCD:UpdateIcon(dSpellIcon)
+		timerAvoidCD:UpdateIcon(aSpellIcon)
+		timerUltimateCD:UpdateIcon(uSpellIcon)
+	end
 
 	--Problematic Notes:
 	--Molten Rupture and Frigid Torrent flagged heroic+ only. So on normal and LFR Avoid Selection only has a 2/4 spells.
@@ -668,14 +710,20 @@ do
 			specWarnMoltenRupture:Show()
 			specWarnMoltenRupture:Play("farfromline")
 		elseif spellId == 391096 then--Damage Selection (Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth)
-			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
-			timerDamageCD:Start(nil, spellName)
+			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+			timerDamageCD:Start(self.vb.phase == 3 and 32.9 or 30, spellName)
+			timerDamageCD:UpdateIcon(spellIcon)
 		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
-			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
-			timerAvoidCD:Start(nil, spellName)
+			self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+			timerAvoidCD:Start(self.vb.phase == 3 and 32.9 or 30, spellName)
+			timerAvoidCD:UpdateIcon(spellIcon)
 		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
-			local spellName = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or " "
-			timerUltimateCD:Start(self.vb.phase == 3 and 37.6 or 60, spellName)
+			self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
+			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
+			timerUltimateCD:Start(self.vb.phase == 3 and 32.9 or 60, spellName)
+			timerUltimateCD:UpdateIcon(spellIcon)
 		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
 			timerAddsCD:Start()
 		end
