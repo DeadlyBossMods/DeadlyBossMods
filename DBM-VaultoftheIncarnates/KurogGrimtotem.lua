@@ -168,7 +168,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
 local warnBreakingGravel						= mod:NewStackAnnounce(374321, 2, nil, "Tank|Healer")
 
 local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
-local yellGroundShatter							= mod:NewShortYell(374427)
+local yellGroundShatter							= mod:NewShortYell(374427, nil, false)
 local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
 local specWarnViolentUpheavel					= mod:NewSpecialWarningDodge(374430, nil, nil, nil, 2, 2)
 
@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		warnBitingChill:Show(self.vb.chillCast)
 	elseif spellId == 382563 or spellId == 392125 then--Non Mythic, Mythic
 		specWarnMagmaBurst:Show()
-		specWarnMagmaBurst:Play("watchwave")
+		specWarnMagmaBurst:Play("watchstep")
 	elseif spellId == 373487 then
 		self.vb.litCrashIcon = 1
 	elseif spellId == 374022 or spellId == 392192 or spellId == 392152 then--Normal/Heroic, LFR, Mythic (assumed)
