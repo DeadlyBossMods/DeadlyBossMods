@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085",
+	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085 396243",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
 	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
@@ -512,6 +512,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOrbLightningFades:Countdown(spellId)
 		end
 		warnOrbLightning:CombinedShow(0.5, args.destName)
+	elseif spellId == 396243 then
+		self:SetStage(3)
+		timerSunderStrikeCD:Stop()
+		timerDamageCD:Stop()
+		timerAvoidCD:Stop()
+		timerUltimateCD:Stop()
+		timerAddsCD:Stop()
+
+		timerSunderStrikeCD:Start(10)
+		timerDamageCD:Start(15, "?")
+		timerAvoidCD:Start(22, "?")--28.4 now?
+		--timerUltimateCD:Start(30, "?")
+		--if self:IsMythic() then
+		--	timerAddsCD:Start()
+		--end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -545,42 +560,43 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFrostBite:Stop()
 	elseif spellId == 374779 then--Primal Barrier
 		self.vb.curAltar = false--Reset on intermission end because we don't want initial timers to show an altar spell when there isn't one yet
-		if self.vb.stageTotality == 2 then
+--		if self.vb.stageTotality == 2 then
 			self:SetStage(1)
 			--Base
 			timerSunderStrikeCD:Start(11)
 			timerDamageCD:Start(20, "?")
 			timerAvoidCD:Start(30, "?")
+			--timerUltimateCD:Start(60, "?")
 			--Boss retains power from previous stage
 			--Hopefully this is temp
 			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
-			local currentPower = UnitPower("boss1")
-			if currentPower then
-				local percent = currentPower / 100
-				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
-			end
+--			local currentPower = UnitPower("boss1")
+--			if currentPower then
+--				local percent = currentPower / 100
+--				local elapsed = percent * 60
+--				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
+--			end
 			--if self:IsMythic() then
 			--	timerAddsCD:Start()
 			--end
-		else--4, which means stage 3, totality 5
-			self:SetStage(3)
-			timerSunderStrikeCD:Start(10)
-			timerDamageCD:Start(15, " ")
-			timerAvoidCD:Start(22, " ")--28.4 now?
-			--Boss retains power from previous stage
-			--Hopefully this is temp
-			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
-			local currentPower = UnitPower("boss1")
-			if currentPower then
-				local percent = currentPower / 100
-				local elapsed = percent * 60
-				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
-			end
-			--if self:IsMythic() then
-			--	timerAddsCD:Start()
-			--end
-		end
+--		else--4, which means stage 3, totality 5
+--			self:SetStage(3)
+--			timerSunderStrikeCD:Start(10)
+--			timerDamageCD:Start(15, " ")
+--			timerAvoidCD:Start(22, " ")--28.4 now?
+--			--Boss retains power from previous stage
+--			--Hopefully this is temp
+--			--Alternatively could just pause timer going into intermission and resume it here with 4 seconds added?
+--			local currentPower = UnitPower("boss1")
+--			if currentPower then
+--				local percent = currentPower / 100
+--				local elapsed = percent * 60
+--				timerUltimateCD:Update(elapsed, 64, "?")--Power updates resume after 4 seconds, so 4 sec added to total
+--			end
+--			--if self:IsMythic() then
+--			--	timerAddsCD:Start()
+--			--end
+--		end
 	elseif spellId == 374380 then
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)

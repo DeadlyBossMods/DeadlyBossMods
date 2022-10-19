@@ -12,10 +12,10 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 380487 377166 377505 383073 376279",
-	"SPELL_AURA_APPLIED 386352 381253 376276 391306",
+	"SPELL_CAST_START 380487 377166 377505 383073 376279 396351",
+	"SPELL_AURA_APPLIED 386352 381253 376276 391592",
 	"SPELL_AURA_APPLIED_DOSE 376276",
-	"SPELL_AURA_REMOVED 386352 381253 391306"
+	"SPELL_AURA_REMOVED 386352 381253 391592"
 )
 
 --TODO, auto mark awakened Earth (after spawn)?
@@ -26,9 +26,8 @@ mod:RegisterEventsInCombat(
 local warnRockBlast								= mod:NewTargetNoFilterAnnounce(380487, 3)
 local warnAwakenedEarth							= mod:NewTargetNoFilterAnnounce(381253, 3)
 local warnConcussiveSlam						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Healer")
-local warnReactiveDust							= mod:NewTargetAnnounce(380487, 3)
 
-local specWarnRockBlast							= mod:NewSpecialWarningYouPos(380487, nil, nil, nil, 1, 2)
+local specWarnRockBlast							= mod:NewSpecialWarningYou(380487, nil, nil, nil, 1, 2)
 local yellRockBlast								= mod:NewShortYell(380487, nil, nil, nil, "YELL")
 local yellRockBlastFades						= mod:NewShortFadesYell(380487, nil, nil, nil, "YELL")
 local specWarnBrutalReverberation				= mod:NewSpecialWarningDodge(386400, nil, nil, nil, 2, 2)
@@ -40,9 +39,10 @@ local specWarnShatteringImpact					= mod:NewSpecialWarningDodge(383073, nil, nil
 local specWarnConcussiveSlam					= mod:NewSpecialWarningDefensive(376279, nil, nil, nil, 1, 2)
 local specWarnConcussiveSlamTaunt				= mod:NewSpecialWarningTaunt(376279, nil, nil, nil, 1, 2)
 local specWarnFrenziedDevastation				= mod:NewSpecialWarningSpell(377505, nil, nil, nil, 3, 2)
-local specWarnReactiveDust						= mod:NewSpecialWarningYou(391306, nil, nil, nil, 1, 2)
+local specWarnInfusedFallout					= mod:NewSpecialWarningYou(391592, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(382458, nil, nil, nil, 1, 8)
 
+local timerInfusedFalloutCD						= mod:NewAITimer(35, 396351, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRockBlastCD							= mod:NewNextCountTimer(35, 380487, nil, nil, nil, 3)
 local timerResonatingAnnihilationCD				= mod:NewNextCountTimer(96.4, 377166, 307421, nil, nil, 3)
 local timerShatteringImpactCD					= mod:NewNextCountTimer(35, 383073, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -63,6 +63,8 @@ mod.vb.slamCount = 0
 mod.vb.impactCount = 0
 mod.vb.frenziedStarted = false
 local allTimers = {
+	--Infused Fallout (Mythic)
+	[396351] = {},
 	--Concussive Slam
 	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
 	--Rock Blast
@@ -82,6 +84,9 @@ function mod:OnCombatStart(delay)
 	timerShatteringImpactCD:Start(27-delay, 1)
 	timerResonatingAnnihilationCD:Start(90-delay, 1)
 	timerFrenziedDevastationCD:Start(387.9-delay)
+	if self:IsMythic() then
+		timerInfusedFalloutCD:Start(1-delay)
+	end
 	if not self:IsTrivial() then
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 382458",
@@ -140,6 +145,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerConcussiveSlamCD:Start(timer, self.vb.slamCount+1)
 		end
+	elseif spellId == 396351 then
+
+		timerInfusedFalloutCD:Start()
 	end
 end
 
@@ -180,12 +188,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnConcussiveSlam:Show(args.destName, amount)
 		end
-	elseif spellId == 391306 then
+	elseif spellId == 391592 then
 		if args:IsPlayer() then
-			specWarnReactiveDust:Show()
-			specWarnReactiveDust:Play("targetyou")
+			specWarnInfusedFallout:Show()
+			specWarnInfusedFallout:Play("targetyou")
 		end
-		warnReactiveDust:CombinedShow(0.5, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

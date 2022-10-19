@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 371976 372082 373405 374112 373027 371983 372539",
-	"SPELL_CAST_SUCCESS 372238 181113",
+	"SPELL_CAST_SUCCESS 372238 181113 396792",
 	"SPELL_SUMMON 372242 372843",
 	"SPELL_AURA_APPLIED 371976 372082 372030 372044 385083 373048",
 	"SPELL_AURA_APPLIED_DOSE 372030 385083",
@@ -56,10 +56,12 @@ local yellEnvelopingWebsFades					= mod:NewIconFadesYell(372082)
 local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, nil, nil, 1, 6)
 local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
 local specWarnWebBlast							= mod:NewSpecialWarningTaunt(385083, nil, nil, nil, 1, 2)
+local specWarnGustingRime						= mod:NewSpecialWarningDodgeCount(396792, nil, nil, nil, 2, 2, 4)
 
 local timerChillingBlastCD						= mod:NewCDCountTimer(18.5, 371976, nil, nil, nil, 3)--18.5-54.5
 local timerEnvelopingWebsCD						= mod:NewCDCountTimer(24, 372082, nil, nil, nil, 3)--24-46.9
 local timerGossamerBurstCD						= mod:NewCDCountTimer(36.9, 373405, nil, nil, nil, 2)--36.9-67.6
+local timerGustingrimeCD						= mod:NewAITimer(38.8, 396792, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerCallSpiderlingsCD					= mod:NewCDCountTimer(25.1, 372238, nil, nil, nil, 1)--17.6-37
 local timerFrostbreathArachnidCD				= mod:NewCDCountTimer(98.9, "ej24899", nil, nil, nil, 1)
 local timerPhaseCD								= mod:NewPhaseTimer(30)
@@ -94,6 +96,7 @@ mod.vb.webIcon = 1
 mod.vb.blastCount = 0
 mod.vb.webCount = 0
 mod.vb.burstCount = 0--Both bursts
+mod.vb.rimeCast = 0
 mod.vb.spiderlingsCount = 0
 mod.vb.bigAddCount = 0
 --P1 being one giant sequenced table is more of a temporary stopgap until CLEU is fixed up and boss movements (start and stop) more visible.
@@ -110,6 +113,8 @@ local allTimers = {
 			[373405] = {32.8, 37.7, 65.7, 36.5, 60.8, 37.6},
 			--Call Spiderlings
 			[372238] = {2.4, 30.4, 30.4, 30.4, 14.6, 30.4, 34.0, 31.6, 30.4, 30.3},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
+			--Gusting Rime
+			[396792] = {},
 		},
 		[2] = {
 			--Chilling Blast
@@ -163,6 +168,7 @@ function mod:OnCombatStart(delay)
 	self.vb.blastCount = 0
 	self.vb.webCount = 0
 	self.vb.burstCount = 0
+	self.vb.rimeCast = 0
 	self.vb.spiderlingsCount = 0
 	self.vb.bigAddCount = 1--Starts at 1 because 1 is up with boss on pull
 	timerChillingBlastCD:Start(15.2-delay, 1)
@@ -277,6 +283,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerFrostbreathArachnidCD:Start(nil, self.vb.bigAddCount+1)--98.9
 			end
 		end
+	elseif spellId == 396792 then
+		self.vb.rimeCast = self.vb.rimeCast + 1
+		specWarnGustingRime:Show(self.vb.rimeCast)
+		specWarnGustingRime:Play("watchstep")
+		timerGustingrimeCD:Start()
+		--if self.vb.phase == 2 then
+		--	timerGustingrimeCD:Start(25, self.vb.rimeCast+1)
+		--else
+		--	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.rimeCast+1)
+		--	if timer then
+		--		timerGustingrimeCD:Start(timer, self.vb.rimeCast+1)
+		--	end
+		--end
 	end
 end
 
@@ -450,5 +469,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerChillingBlastCD:Start(15.3, 1)
 		timerSuffocatingWebsCD:Start(22.7, 1)
 		timerRepellingBurstCD:Start(32.7, 1)
+		if self:IsMythic() then
+			self.vb.rimeCast = 0
+			timerGustingrimeCD:Start()
+		end
 	end
 end
