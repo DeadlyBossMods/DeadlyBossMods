@@ -81,8 +81,8 @@ local warnSlashingBlaze							= mod:NewStackAnnounce(372027, 2, nil, "Tank|Heale
 local warnBurningConvocation					= mod:NewSpellAnnounce(386289, 4)
 
 local specWarnMeteorAxe							= mod:NewSpecialWarningYouPos(374043, nil, nil, nil, 1, 2)
-local yellMeteorAxe								= mod:NewShortPosYell(374043)
-local yellMeteorAxeFades						= mod:NewIconFadesYell(374043)
+local yellMeteorAxe								= mod:NewShortPosYell(374043, nil, nil, nil, "YELL")
+local yellMeteorAxeFades						= mod:NewIconFadesYell(374043, nil, nil, nil, "YELL")
 local specWarnSlashingBlaze						= mod:NewSpecialWarningDefensive(372027, nil, nil, nil, 2, 2)
 local specWarnSlashingBlazeTaunt				= mod:NewSpecialWarningTaunt(372027, nil, nil, nil, 1, 2)
 
@@ -98,6 +98,7 @@ mod.vb.markCast = 0
 mod.vb.pillarCast = 0
 mod.vb.crushCast = 0
 mod.vb.meteorCast = 0
+mod.vb.meteorTotal = 0
 mod.vb.blazeCast = 0
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
@@ -224,6 +225,7 @@ function mod:SPELL_CAST_START(args)
 		timerChainLightningCD:Start()
 	elseif spellId == 374038 then
 		self.vb.meteorCast = self.vb.meteorCast + 1
+		self.vb.meteorTotal = 0
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
 		timerMeteorAxeCD:Start(timer, self.vb.meteorCast+1)
 	end
@@ -283,13 +285,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEarthenPillarCD:Stop()
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
+		self.vb.meteorTotal = self.vb.meteorTotal + 1
 		if self.Options.SetIconOnMeteorAxe then
-			self:SetSortedIcon("tankroster", 0.4, args.destName, 1, 2, false)
+			self:SetSortedIcon("tankroster", self.vb.meteorTotal == 2 and 0.1 or 0.4, args.destName, 1, 2, false)
 		end
 		if args:IsPlayer() then
-			self:Schedule(0.5, checkMyAxe, self)
+			self:Schedule(self.vb.meteorTotal == 2 and 0.2 or 0.5, checkMyAxe, self)
 		end
-		warnMeteorAxe:CombinedShow(0.6, args.destName)
+		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 0.6, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)

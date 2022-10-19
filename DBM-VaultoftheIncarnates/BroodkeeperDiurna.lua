@@ -12,11 +12,11 @@ mod.respawnTime = 33
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918",
+	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918 396269 396779",
 	"SPELL_CAST_SUCCESS 380175 375870",
-	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330",
+	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
-	"SPELL_AURA_REMOVED 375809 376073 375809 376330",
+	"SPELL_AURA_REMOVED 375809 376073 375809 376330 396264",
 	"SPELL_AURA_REMOVED_DOSE 375809",
 	"SPELL_PERIODIC_DAMAGE 390747",
 	"SPELL_PERIODIC_MISSED 390747",
@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, what is range of tremors? does the mob turn while casting it? These answers affect warning defaults/filters, for now it's everyone
 --TODO, evalualte any needed antispams for multiple adds casting same spells
 --TODO, never saw Rapid Incubation Damage done increase/damage taken reduced buff
+--TODO, mythic stuff, like does mythic stone slam timer reset or replace existing p1? does fissure timer reset in p2?
 --[[
 (ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485) and type = "begincast"
  or ability.id = 380175 and type = "cast"
@@ -57,6 +58,7 @@ local specWarnGreatstaffsWrath					= mod:NewSpecialWarningYou(375889, nil, nil, 
 local yellGreatstaffsWrath						= mod:NewYell(375889)
 local specWarnWildfire							= mod:NewSpecialWarningDodge(375871, nil, nil, nil, 2, 2)
 local specWarnIcyShroud							= mod:NewSpecialWarningCount(388716, nil, nil, nil, 2, 2)
+local specWarnStormFissure						= mod:NewSpecialWarningDodge(396779, nil, nil, nil, 2, 2, 4)
 local specWarnMortalStoneclaws					= mod:NewSpecialWarningDefensive(375870, nil, nil, nil, 1, 2)
 local specWarnMortalWounds						= mod:NewSpecialWarningTaunt(378782, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -65,7 +67,8 @@ local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.
 local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability
 local timerWildfireCD							= mod:NewCDCountTimer(20.9, 375871, nil, nil, nil, 3)--Shared CD ability
 local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
-local timerMortalStoneclawsCD					= mod:NewCDTimer(20.7, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
+local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.7, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
+local timerStormFissureCD						= mod:NewCDTimer(60, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHICC_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:GroupSpells(375842, 375889)--Greatstaff spawn ith greatstaff wrath debuff
@@ -115,15 +118,22 @@ local specWarnEGreatstaffoftheBroodkeeper		= mod:NewSpecialWarningCount(380176, 
 local specWarnEGreatstaffsWrath					= mod:NewSpecialWarningYou(380483, nil, nil, nil, 1, 2)
 local yellEGreatstaffsWrath						= mod:NewYell(380483)
 local specWarnFrozenShroud						= mod:NewSpecialWarningCount(388918, nil, nil, nil, 2, 2)
+local specWarnMortalStoneSlam					= mod:NewSpecialWarningDefensive(396269, nil, nil, nil, 1, 2, 4)
+local specWarnDetonatingStoneslam				= mod:NewSpecialWarningYou(396264, false, nil, nil, 1, 2, 4)--Bit redundant, so off by default
+local yellDetonatingStoneslam					= mod:NewShortYell(396264, nil, nil, nil, "YELL")
+local yellDetonatingStoneslamFades				= mod:NewShortFadesYell(396264, nil, nil, nil, "YELL")
+local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, nil, nil, nil, 1, 2, 4)
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
 local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(24.4, 380176, L.staff, nil, nil, 5)--Shared CD ability
 local timerFrozenShroudCD						= mod:NewCDCountTimer(36.4, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
+local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
 local castsPerGUID = {}
 mod.vb.staffCount = 0
 mod.vb.icyCount = 0
 mod.vb.addsCount = 0
+mod.vb.tankCombocount = 0
 mod.vb.wildFireCount = 0
 mod.vb.incubationCount = 0
 mod.vb.mageIcon = 8
@@ -134,6 +144,7 @@ mod.vb.sharedCD = 26
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	self:SetStage(1)
+	self.vb.tankCombocount = 0
 	self.vb.staffCount = 0
 	self.vb.icyCount = 0
 	self.vb.addsCount = 0
@@ -142,7 +153,7 @@ function mod:OnCombatStart(delay)
 	self.vb.mageIcon = 8
 	self.vb.StormbringerIcon = 6
 	self.vb.eggsGone = false
-	timerMortalStoneclawsCD:Start(3.4-delay)
+	timerMortalStoneclawsCD:Start(3.4-delay, 1)
 	timerWildfireCD:Start(8.4-delay, 1)
 	timerRapidIncubationCD:Start(14.3-delay, 1)
 	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
@@ -153,6 +164,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		self.vb.sharedCD = 24
+		timerStormFissureCD:Start(1-delay)
 	elseif self:IsHeroic() then
 		self.vb.sharedCD = 25
 	else--Split LFR if even slower
@@ -199,6 +211,11 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneclaws:Show()
 			specWarnMortalStoneclaws:Play("defensive")
+		end
+	elseif spellId == 396269 then
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnMortalStoneSlam:Show()
+			specWarnMortalStoneSlam:Play("defensive")
 		end
 	elseif spellId == 376272 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
@@ -293,6 +310,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnStaticJolt:Play("kickcast")
 			end
 		end
+	elseif spellId == 396779 then
+		specWarnStormFissure:Show()
+		specWarnStormFissure:Play("watchstep")
+		timerStormFissureCD:Start()
 	end
 end
 
@@ -310,9 +331,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEGreatstaffoftheBroodkeeperCD:Start(self.vb.sharedCD, self.vb.staffCount+1)
 		end
 	elseif spellId == 375870 then
+		self.vb.tankCombocount = self.vb.tankCombocount + 1
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
 		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
-		timerMortalStoneclawsCD:Start(timer)
+		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 	end
 end
 
@@ -338,6 +360,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnIonizingCharge:Show()
 			specWarnIonizingCharge:Play("range5")
 			yellIonizingCharge:Yell()
+		end
+	elseif spellId == 396264 then
+		if args:IsPlayer() then
+			specWarnDetonatingStoneslam:Show()
+			specWarnDetonatingStoneslam:Play("gathershare")
+			yellDetonatingStoneslam:Yell()
+			yellDetonatingStoneslamFades:Countdown(spellId)
+		else
+			specWarnDetonatingStoneslamTaunt:Show(args.destName)
+			specWarnDetonatingStoneslamTaunt:Play("tauntboss")
 		end
 	elseif spellId == 375829 then
 		warnClutchwatchersRage:Cancel()
@@ -406,6 +438,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerWildfireCD:Restart(9.7, 1)
 			--Timers that do not reset.
 			--Mortal Stone Claws, since we don't swap timers, no action needed
+			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
+			if self:IsMythic() then
+				--local remainingClaws = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
+				--if remainingClaws then
+					timerMortalStoneclawsCD:Stop()
+				--	timerMortalStoneSlamCD:Start(remainingClaws, 1)--Does NOT restart anymore
+				--end
+				self.vb.tankCombocount = 0
+			end
 			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
 			if remainingStaff then
 				timerGreatstaffoftheBroodkeeperCD:Stop()
@@ -439,6 +480,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self.Options.NPFixate then
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
+		end
+	elseif spellId == 396264 then
+		if args:IsPlayer() then
+			yellDetonatingStoneslamFades:Cancel()
 		end
 	end
 end
