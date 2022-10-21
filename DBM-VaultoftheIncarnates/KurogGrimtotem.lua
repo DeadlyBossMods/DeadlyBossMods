@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
+	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
 	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085 396241",
@@ -42,7 +42,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 374022 or ability.id = 392192 or ability.id = 392152 or ability.id = 372456 or ability.id = 375450 or ability.id = 395893
  or ability.id = 374691 or ability.id = 376669 or ability.id = 374215 or ability.id = 374427 or ability.id = 374430 or ability.id = 390920
  or ability.id = 374623 or ability.id = 374624 or ability.id = 374622 or ability.id = 391019 or ability.id = 391055
- or ability.id = 390796 or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
+ or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
  or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 391267 or ability.id = 393429) and type = "begincast"
  or ability.id = 373415 and type = "cast" or ability.id = 396241 and type = "applybuff"
  or ability.id = 374779
@@ -119,7 +119,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
 local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "Healer")
 
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
-local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(390796, "Melee", nil, nil, 2, 2)--Cast by boss AND Doppelboulder
+local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(395893, "Melee", nil, nil, 2, 2)--Cast by boss AND Doppelboulder
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
 ----Mythic Only (Ironwrought Smasher)
@@ -128,7 +128,7 @@ local specWarnSunderingSmash					= mod:NewSpecialWarningSpell(391268, nil, nil, 
 
 local timerIronwroughtSmasherCD					= mod:NewAITimer(35, 392098, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
 local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Ironwrought Smasher
-local timerEruptingBedrockCD					= mod:NewCDTimer(60, 390796, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerEruptingBedrockCD					= mod:NewCDTimer(60, 395893, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddSetIconOption("SetIconOnEnvelopingEarth", 391055, false, false, {1, 2, 3})
 --Storm Altar An altar of primal storm
@@ -308,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 		end
 --	elseif spellId == 391055 then
 
-	elseif spellId == 390796 or spellId == 395893 then--Hard, Easy
+	elseif spellId == 395893 then--Hard, Easy
 		specWarnEruptingBedrock:Show()
 		specWarnEruptingBedrock:Play("justrun")
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
@@ -676,17 +676,17 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 do
 	local spellEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
 	local iconEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
 	}
@@ -694,7 +694,7 @@ do
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(390796))},
+		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
@@ -702,7 +702,7 @@ do
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(390796))},
+		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
 	}
