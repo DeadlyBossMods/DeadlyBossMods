@@ -728,9 +728,9 @@ do
 		timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
 		timerUltimateCD:Update(uElapsed, uTotal, self.vb.ultimateSpell)
 		--Update timers with new icons
-		timerDamageCD:UpdateIcon(dSpellIcon)
-		timerAvoidCD:UpdateIcon(aSpellIcon)
-		timerUltimateCD:UpdateIcon(uSpellIcon)
+		timerDamageCD:UpdateIcon(dSpellIcon, self.vb.damageSpell)
+		timerAvoidCD:UpdateIcon(aSpellIcon, self.vb.avoidSpell))
+		timerUltimateCD:UpdateIcon(uSpellIcon, self.vb.ultimateSpell)
 	end
 
 	--Problematic Notes:
@@ -744,17 +744,17 @@ do
 			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerDamageCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.damageSpell)
-			timerDamageCD:UpdateIcon(spellIcon)
+			timerDamageCD:UpdateIcon(spellIcon, self.vb.damageSpell)
 		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
 			self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerAvoidCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.avoidSpell)
-			timerAvoidCD:UpdateIcon(spellIcon)
+			timerAvoidCD:UpdateIcon(spellIcon, self.vb.avoidSpell)
 		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
 			self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerUltimateCD:Start(self.vb.phase == 3 and 32.9 or 60, self.vb.ultimateSpell)
-			timerUltimateCD:UpdateIcon(spellIcon)
+			timerUltimateCD:UpdateIcon(spellIcon, self.vb.ultimateSpell)
 		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
 			timerAddsCD:Start()
 		end
