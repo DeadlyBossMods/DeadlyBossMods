@@ -73,7 +73,7 @@ local specWarnPyroBlast							= mod:NewSpecialWarningInterruptCount(396040, "Has
 
 local timerLeapingFlamesCD						= mod:NewCDTimer(30.2, 394917, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)
 
-mod:AddSetIconOption("SetIconOnCaptain", 396039, true, true, {8})
+mod:AddSetIconOption("SetIconOnCaptain", 396039, true, 5, {8})
 --Stage Two: Army of Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26004))
 local specWarnCollapsingArmy					= mod:NewSpecialWarningCount(370307, nil, nil, nil, 3, 2)

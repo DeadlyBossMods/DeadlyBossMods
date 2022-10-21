@@ -17,14 +17,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
 	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085 396241",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
-	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
+	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265 391056",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, number of lighting crash icons verified on all difficulties (spell data says 3-default)
 --TODO, also add a stack too high warning on https://www.wowhead.com/beta/spell=373535/lightning-crash when strategies and tuning are established
 --TODO, See how things play out with WA/BW on handling some of this bosses mechanics, right now drycode is steering clear of computational/solving for things and sticking to just showing them
 --TODO, is https://www.wowhead.com/beta/npc=190807/seismic-rupture tangible or invisible script bunny
@@ -45,7 +44,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 374623 or ability.id = 374624 or ability.id = 374622 or ability.id = 391019 or ability.id = 391055
  or ability.id = 390796 or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
  or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 391267 or ability.id = 393429) and type = "begincast"
- or ability.id = 373415 and type = "cast"
+ or ability.id = 373415 and type = "cast" or ability.id = 396241 and type = "applybuff"
  or ability.id = 374779
 --]]
 --General
@@ -130,6 +129,8 @@ local specWarnSunderingSmash					= mod:NewSpecialWarningSpell(391268, nil, nil, 
 local timerIronwroughtSmasherCD					= mod:NewAITimer(35, 392098, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
 local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Ironwrought Smasher
 local timerEruptingBedrockCD					= mod:NewCDTimer(60, 390796, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddSetIconOption("SetIconOnEnvelopingEarth", 391055, false, false, {1, 2, 3})
 --Storm Altar An altar of primal storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
 --local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
@@ -146,6 +147,7 @@ local yellShockingBurstFades					= mod:NewShortFadesYell(390920)
 local specWarnThunderStrike						= mod:NewSpecialWarningSoak(374215, nil, nil, nil, 2, 2)--No Debuff
 local specWarnThunderStrikeBad					= mod:NewSpecialWarningDodge(374215, nil, nil, nil, 2, 2)--Debuff
 
+mod:AddSetIconOption("SetIconOnShockingBurst", 390920, false, false, {4, 5})
 --mod:GroupSpells(373487, 373535)--Group Lighting crash source debuff with dest (nearest player) debuff
 ----Mythic Only (Stormwrought Despoiler)
 local warnOrbLightning							= mod:NewTargetAnnounce(391267, 3)
@@ -485,12 +487,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGroundShatterFades:Countdown(spellId)
 		end
 	elseif spellId == 391056 then
-		warnEnvelopingEarth:CombinedShow(0.3, args.destName)
+		if self.Options.SetIconOnEnvelopingEarth then
+			self:SetUnsortedIcon(0.3, args.destName, 1, 3, false)
+		end
 		if args:IsPlayer() then
 			specWarnEnvelopingEarth:Show()
 			specWarnEnvelopingEarth:Play("checkhp")
 		end
+		warnEnvelopingEarth:CombinedShow(0.3, args.destName)
 	elseif spellId == 390921 then
+		if self.Options.SetIconOnShockingBurst then
+			self:SetUnsortedIcon(0.3, args.destName, 4, 2, false)
+		end
 		if args:IsPlayer() then
 			specWarnShockingBurst:Show()
 			specWarnShockingBurst:Play("runout")
@@ -606,6 +614,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellGroundShatterFades:Cancel()
 		end
 	elseif spellId == 390921 then
+		if self.Options.SetIconOnShockingBurst then
+			self:SetIcon(args.destName, 0)
+		end
 		if args:IsPlayer() then
 			yellShockingBurstFades:Cancel()
 		end
@@ -615,6 +626,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 391265 then
 		if args:IsPlayer() then
 			yellOrbLightningFades:Cancel()
+		end
+	elseif spellId == 391056 then
+		if self.Options.SetIconOnEnvelopingEarth then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
