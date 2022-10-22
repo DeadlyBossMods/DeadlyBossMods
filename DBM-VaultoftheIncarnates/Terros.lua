@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, auto mark awakened Earth (after spawn)?
 --TODO, keep an eye on https://www.wowhead.com/beta/spell=391570/reactive-dust . not sure what to do with it yet, since this tooltip says something diff than journal
 --[[
-(ability.id = 380487 or ability.id = 377166 or ability.id = 377505 or ability.id = 383073 or ability.id = 376279) and type = "begincast"
+(ability.id = 380487 or ability.id = 377166 or ability.id = 377505 or ability.id = 383073 or ability.id = 376279 or ability.id = 396351) and type = "begincast"
 --]]
 local warnRockBlast								= mod:NewTargetNoFilterAnnounce(380487, 3)
 local warnAwakenedEarth							= mod:NewTargetNoFilterAnnounce(381253, 3)
@@ -42,7 +42,7 @@ local specWarnFrenziedDevastation				= mod:NewSpecialWarningSpell(377505, nil, n
 local specWarnInfusedFallout					= mod:NewSpecialWarningYou(391592, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(382458, nil, nil, nil, 1, 8)
 
-local timerInfusedFalloutCD						= mod:NewAITimer(35, 396351, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerInfusedFalloutCD						= mod:NewNextCountTimer(35, 396351, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRockBlastCD							= mod:NewNextCountTimer(35, 380487, nil, nil, nil, 3)
 local timerResonatingAnnihilationCD				= mod:NewNextCountTimer(96.4, 377166, 307421, nil, nil, 3)
 local timerShatteringImpactCD					= mod:NewNextCountTimer(35, 383073, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -61,10 +61,11 @@ mod.vb.annihilationCount = 0
 mod.vb.rockCount = 0
 mod.vb.slamCount = 0
 mod.vb.impactCount = 0
+mod.vb.infusedCount = 0
 mod.vb.frenziedStarted = false
 local allTimers = {
 	--Infused Fallout (Mythic)
-	[396351] = {},
+	[396351] = {29.2, 42.3, 24.4, 29.2, 40.1, 25.5, 28.3, 41.5, 26.8, 26.8, 43.0},
 	--Concussive Slam
 	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
 	--Rock Blast
@@ -85,7 +86,8 @@ function mod:OnCombatStart(delay)
 	timerResonatingAnnihilationCD:Start(90-delay, 1)
 	timerFrenziedDevastationCD:Start(387.9-delay)
 	if self:IsMythic() then
-		timerInfusedFalloutCD:Start(1-delay)
+		self.vb.infusedCount = 0
+		timerInfusedFalloutCD:Start(29.2-delay, 1)
 	end
 	if not self:IsTrivial() then
 		self:RegisterShortTermEvents(
@@ -146,8 +148,11 @@ function mod:SPELL_CAST_START(args)
 			timerConcussiveSlamCD:Start(timer, self.vb.slamCount+1)
 		end
 	elseif spellId == 396351 then
-
-		timerInfusedFalloutCD:Start()
+		self.vb.infusedCount = self.vb.infusedCount + 1
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.infusedCount+1)
+		if timer then
+			timerInfusedFalloutCD:Start(timer, self.vb.infusedCount+1)
+		end
 	end
 end
 
