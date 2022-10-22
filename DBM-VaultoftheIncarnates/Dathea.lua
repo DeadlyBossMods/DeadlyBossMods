@@ -65,7 +65,7 @@ local specWarnAerialSlash						= mod:NewSpecialWarningDefensive(385812, nil, nil
 
 local timerAerialSlashCD						= mod:NewCDTimer(12, 385812, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnVolatileInfuser", "ej25903", true, true, {8, 7, 6, 5, 4})
+mod:AddSetIconOption("SetIconOnVolatileInfuser", "ej25903", true, 5, {8, 7, 6, 5, 4})
 --Thunder Caller
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25958))
 local specWarnStormBolt							= mod:NewSpecialWarningInterruptCount(384273, false, nil, nil, 1, 2)

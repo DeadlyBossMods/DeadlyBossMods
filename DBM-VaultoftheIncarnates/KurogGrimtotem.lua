@@ -12,19 +12,18 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 390796 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
+	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 392125 392192 392152 391268 393314 393295 393296 392098 393459 391267 393429 395893",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943 393295 392098 393459",
-	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085 396243",
+	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390921 391419 391265 396109 396113 396106 396085 396241",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
-	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265",
+	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390921 391419 391265 391056",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, number of lighting crash icons verified on all difficulties (spell data says 3-default)
 --TODO, also add a stack too high warning on https://www.wowhead.com/beta/spell=373535/lightning-crash when strategies and tuning are established
 --TODO, See how things play out with WA/BW on handling some of this bosses mechanics, right now drycode is steering clear of computational/solving for things and sticking to just showing them
 --TODO, is https://www.wowhead.com/beta/npc=190807/seismic-rupture tangible or invisible script bunny
@@ -43,9 +42,9 @@ mod:RegisterEventsInCombat(
  or ability.id = 374022 or ability.id = 392192 or ability.id = 392152 or ability.id = 372456 or ability.id = 375450 or ability.id = 395893
  or ability.id = 374691 or ability.id = 376669 or ability.id = 374215 or ability.id = 374427 or ability.id = 374430 or ability.id = 390920
  or ability.id = 374623 or ability.id = 374624 or ability.id = 374622 or ability.id = 391019 or ability.id = 391055
- or ability.id = 390796 or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
+ or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295
  or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 391267 or ability.id = 393429) and type = "begincast"
- or ability.id = 373415 and type = "cast"
+ or ability.id = 373415 and type = "cast" or ability.id = 396241 and type = "applybuff"
  or ability.id = 374779
 --]]
 --General
@@ -120,7 +119,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
 local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "Healer")
 
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
-local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(390796, "Melee", nil, nil, 2, 2)--Cast by boss AND Doppelboulder
+local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(395893, "Melee", nil, nil, 2, 2)--Cast by boss AND Doppelboulder
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
 ----Mythic Only (Ironwrought Smasher)
@@ -129,7 +128,9 @@ local specWarnSunderingSmash					= mod:NewSpecialWarningSpell(391268, nil, nil, 
 
 local timerIronwroughtSmasherCD					= mod:NewAITimer(35, 392098, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Granyth Ability Selection
 local timerSunderingSmashCD						= mod:NewAITimer(35, 391268, nil, nil, nil, 3)--Ironwrought Smasher
-local timerEruptingBedrockCD					= mod:NewCDTimer(60, 390796, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerEruptingBedrockCD					= mod:NewCDTimer(60, 395893, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddSetIconOption("SetIconOnEnvelopingEarth", 391055, false, false, {1, 2, 3})
 --Storm Altar An altar of primal storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
 --local warnThunderingDominance					= mod:NewStackAnnounce(374918, 2)
@@ -146,6 +147,7 @@ local yellShockingBurstFades					= mod:NewShortFadesYell(390920)
 local specWarnThunderStrike						= mod:NewSpecialWarningSoak(374215, nil, nil, nil, 2, 2)--No Debuff
 local specWarnThunderStrikeBad					= mod:NewSpecialWarningDodge(374215, nil, nil, nil, 2, 2)--Debuff
 
+mod:AddSetIconOption("SetIconOnShockingBurst", 390920, false, false, {4, 5})
 --mod:GroupSpells(373487, 373535)--Group Lighting crash source debuff with dest (nearest player) debuff
 ----Mythic Only (Stormwrought Despoiler)
 local warnOrbLightning							= mod:NewTargetAnnounce(391267, 3)
@@ -306,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 		end
 --	elseif spellId == 391055 then
 
-	elseif spellId == 390796 or spellId == 395893 then--Hard, Easy
+	elseif spellId == 395893 then--Hard, Easy
 		specWarnEruptingBedrock:Show()
 		specWarnEruptingBedrock:Play("justrun")
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
@@ -485,12 +487,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGroundShatterFades:Countdown(spellId)
 		end
 	elseif spellId == 391056 then
-		warnEnvelopingEarth:CombinedShow(0.3, args.destName)
+		if self.Options.SetIconOnEnvelopingEarth then
+			self:SetUnsortedIcon(0.3, args.destName, 1, 3, false)
+		end
 		if args:IsPlayer() then
 			specWarnEnvelopingEarth:Show()
 			specWarnEnvelopingEarth:Play("checkhp")
 		end
+		warnEnvelopingEarth:CombinedShow(0.3, args.destName)
 	elseif spellId == 390921 then
+		if self.Options.SetIconOnShockingBurst then
+			self:SetUnsortedIcon(0.3, args.destName, 4, 2, false)
+		end
 		if args:IsPlayer() then
 			specWarnShockingBurst:Show()
 			specWarnShockingBurst:Play("runout")
@@ -512,7 +520,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOrbLightningFades:Countdown(spellId)
 		end
 		warnOrbLightning:CombinedShow(0.5, args.destName)
-	elseif spellId == 396243 then
+	elseif spellId == 396241 and self.vb.phase < 2 then
 		self:SetStage(3)
 		timerSunderStrikeCD:Stop()
 		timerDamageCD:Stop()
@@ -606,6 +614,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellGroundShatterFades:Cancel()
 		end
 	elseif spellId == 390921 then
+		if self.Options.SetIconOnShockingBurst then
+			self:SetIcon(args.destName, 0)
+		end
 		if args:IsPlayer() then
 			yellShockingBurstFades:Cancel()
 		end
@@ -615,6 +626,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 391265 then
 		if args:IsPlayer() then
 			yellOrbLightningFades:Cancel()
+		end
+	elseif spellId == 391056 then
+		if self.Options.SetIconOnEnvelopingEarth then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
@@ -661,17 +676,17 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 do
 	local spellEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(390796))},
+		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
 	local iconEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(390796))},
+		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
 	}
@@ -679,7 +694,7 @@ do
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(390796))},
+		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
 	}
@@ -687,7 +702,7 @@ do
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
 		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(390796))},
+		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
 		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
 	}
@@ -701,21 +716,27 @@ do
 		timerDamageCD:Stop()
 		timerAvoidCD:Stop()
 		timerUltimateCD:Stop()
-		--Gather new spellNames and Icons
-		self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391096][self.vb.curAltar] or spellMapping[391096][self.vb.curAltar]) or "?"
-		local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391096][self.vb.curAltar] or iconMapping[391096][self.vb.curAltar]) or 136116
-		self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391100][self.vb.curAltar] or spellMapping[391100][self.vb.curAltar]) or "?"
-		local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391100][self.vb.curAltar] or iconMapping[391100][self.vb.curAltar]) or 136116
-		self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[374680][self.vb.curAltar] or spellMapping[374680][self.vb.curAltar]) or "?"
-		local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[374680][self.vb.curAltar] or iconMapping[374680][self.vb.curAltar]) or 136116
-		--Update timers with new spellNames
-		timerDamageCD:Update(dElapsed, dTotal, self.vb.damageSpell)
-		timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
-		timerUltimateCD:Update(uElapsed, uTotal, self.vb.ultimateSpell)
-		--Update timers with new icons
-		timerDamageCD:UpdateIcon(dSpellIcon)
-		timerAvoidCD:UpdateIcon(aSpellIcon)
-		timerUltimateCD:UpdateIcon(uSpellIcon)
+		--Gather new spellNames and Icons and update bars
+		if dTotal and dTotal > 0 then
+			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391096][self.vb.curAltar] or spellMapping[391096][self.vb.curAltar]) or "?"
+			local dSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391096][self.vb.curAltar] or iconMapping[391096][self.vb.curAltar]) or 136116
+			timerDamageCD:Update(dElapsed, dTotal, self.vb.damageSpell)
+			timerDamageCD:UpdateIcon(dSpellIcon, self.vb.damageSpell)
+		end
+
+		if aTotal and aTotal > 0 then
+			self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[391100][self.vb.curAltar] or spellMapping[391100][self.vb.curAltar]) or "?"
+			local aSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[391100][self.vb.curAltar] or iconMapping[391100][self.vb.curAltar]) or 136116
+			timerAvoidCD:Update(aElapsed, aTotal, self.vb.avoidSpell)
+			timerAvoidCD:UpdateIcon(aSpellIcon, self.vb.avoidSpell)
+		end
+
+		if uTotal and uTotal > 0 then
+			self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[374680][self.vb.curAltar] or spellMapping[374680][self.vb.curAltar]) or "?"
+			local uSpellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[374680][self.vb.curAltar] or iconMapping[374680][self.vb.curAltar]) or 136116
+			timerUltimateCD:Update(uElapsed, uTotal, self.vb.ultimateSpell)
+			timerUltimateCD:UpdateIcon(uSpellIcon, self.vb.ultimateSpell)
+		end
 	end
 
 	--Problematic Notes:
@@ -729,17 +750,17 @@ do
 			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerDamageCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.damageSpell)
-			timerDamageCD:UpdateIcon(spellIcon)
+			timerDamageCD:UpdateIcon(spellIcon, self.vb.damageSpell)
 		elseif spellId == 391100 then--Avoid Selection (Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock)
 			self.vb.avoidSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerAvoidCD:Start(self.vb.phase == 3 and 32.9 or 30, self.vb.avoidSpell)
-			timerAvoidCD:UpdateIcon(spellIcon)
+			timerAvoidCD:UpdateIcon(spellIcon, self.vb.avoidSpell)
 		elseif spellId == 374680 then--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture)
 			self.vb.ultimateSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			timerUltimateCD:Start(self.vb.phase == 3 and 32.9 or 60, self.vb.ultimateSpell)
-			timerUltimateCD:UpdateIcon(spellIcon)
+			timerUltimateCD:UpdateIcon(spellIcon, self.vb.ultimateSpell)
 		elseif spellId == 386432 then--Granyth Ability Selection (Mythic add selection)
 			timerAddsCD:Start()
 		end
