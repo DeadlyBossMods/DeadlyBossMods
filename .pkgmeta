@@ -1,46 +1,46 @@
-package-as: DBM-Shadowlands
+package-as: DBM-DragonIsles
 
 externals:
-  DBM-Shadowlands: https://github.com/DeadlyBossMods/DBM-Unified
-  DBM-Shadowlands/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
-  DBM-Shadowlands/Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
-  DBM-Shadowlands/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
-  DBM-Shadowlands/Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
-  DBM-Shadowlands/Libs/LibLatency: https://repos.wowace.com/wow/liblatency/trunk/LibLatency
-  DBM-Shadowlands/Libs/LibSharedMedia-3.0: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
-  DBM-Shadowlands/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
-  DBM-Shadowlands/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
-  DBM-Shadowlands/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
-  DBM-Shadowlands/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
-  DBM-Shadowlands/Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
+  DBM-DragonIsles: https://github.com/DeadlyBossMods/DBM-Unified
+  DBM-DragonIsles/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  DBM-DragonIsles/Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
+  DBM-DragonIsles/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+  DBM-DragonIsles/Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
+  DBM-DragonIsles/Libs/LibLatency: https://repos.wowace.com/wow/liblatency/trunk/LibLatency
+  DBM-DragonIsles/Libs/LibSharedMedia-3.0: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
+  DBM-DragonIsles/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  DBM-DragonIsles/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
+  DBM-DragonIsles/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
+  DBM-DragonIsles/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
+  DBM-DragonIsles/Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
-  - DBM-Shadowlands/Libs/LibDeflate/docs
-  - DBM-Shadowlands/Libs/LibDeflate/examples
-  - DBM-Shadowlands/Libs/LibDeflate/LibDeflate.toc
-  - DBM-Shadowlands/Libs/LibDeflate/README.md
-  - DBM-Shadowlands/Libs/LibDeflate/CONTRIBUTING.md
-  - DBM-Shadowlands/Libs/LibDeflate/changelog.md
-  - DBM-Shadowlands/Libs/LibStub/tests
-  - DBM-Shadowlands/Libs/LibDataBroker-1.1/README.textile
+  - DBM-DragonIsles/Libs/LibDeflate/docs
+  - DBM-DragonIsles/Libs/LibDeflate/examples
+  - DBM-DragonIsles/Libs/LibDeflate/LibDeflate.toc
+  - DBM-DragonIsles/Libs/LibDeflate/README.md
+  - DBM-DragonIsles/Libs/LibDeflate/CONTRIBUTING.md
+  - DBM-DragonIsles/Libs/LibDeflate/changelog.md
+  - DBM-DragonIsles/Libs/LibStub/tests
+  - DBM-DragonIsles/Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
 
 enable-nolib-creation: no
 
 move-folders:
-  DBM-Shadowlands/DBM-Affixes: DBM-Affixes
-  DBM-Shadowlands/DBM-Brawlers: DBM-Brawlers
-  DBM-Shadowlands/DBM-DMF: DBM-DMF
-  DBM-Shadowlands/DBM-WorldEvents: DBM-WorldEvents
-  DBM-Shadowlands/DBM-Shadowlands: DBM-Shadowlands
-  DBM-Shadowlands/DBM-DragonIsles: DBM-DragonIsles
-  DBM-Shadowlands/DBM-CastleNathria: DBM-CastleNathria
-  DBM-Shadowlands/DBM-SanctumOfDomination: DBM-SanctumOfDomination
-  DBM-Shadowlands/DBM-Sepulcher: DBM-Sepulcher
-  DBM-Shadowlands/DBM-VaultoftheIncarnates: DBM-VaultoftheIncarnates
-  DBM-Shadowlands/DBM-Core: DBM-Core
-  DBM-Shadowlands/DBM-GUI: DBM-GUI
-  DBM-Shadowlands/DBM-StatusBarTimers: DBM-StatusBarTimers
-  DBM-Shadowlands/Libs: DBM-Core/Libs
-  DBM-Shadowlands/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
+  DBM-DragonIsles/DBM-Affixes: DBM-Affixes
+  DBM-DragonIsles/DBM-Brawlers: DBM-Brawlers
+  DBM-DragonIsles/DBM-DMF: DBM-DMF
+  DBM-DragonIsles/DBM-WorldEvents: DBM-WorldEvents
+  DBM-DragonIsles/DBM-Shadowlands: DBM-Shadowlands
+  DBM-DragonIsles/DBM-DragonIsles: DBM-DragonIsles
+  DBM-DragonIsles/DBM-CastleNathria: DBM-CastleNathria
+  DBM-DragonIsles/DBM-SanctumOfDomination: DBM-SanctumOfDomination
+  DBM-DragonIsles/DBM-Sepulcher: DBM-Sepulcher
+  DBM-DragonIsles/DBM-VaultoftheIncarnates: DBM-VaultoftheIncarnates
+  DBM-DragonIsles/DBM-Core: DBM-Core
+  DBM-DragonIsles/DBM-GUI: DBM-GUI
+  DBM-DragonIsles/DBM-StatusBarTimers: DBM-StatusBarTimers
+  DBM-DragonIsles/Libs: DBM-Core/Libs
+  DBM-DragonIsles/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
