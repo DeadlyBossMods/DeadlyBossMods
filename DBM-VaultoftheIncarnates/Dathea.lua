@@ -47,7 +47,7 @@ local specWarnZephyrSlamTaunt					= mod:NewSpecialWarningTaunt(375580, nil, nil,
 
 local timerColaescingStormCD					= mod:NewCDCountTimer(79.1, 387849, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, nil, nil, nil, 3)
-local timerConductiveMarkCD						= mod:NewCDCountTimer(28.2, 391686, nil, nil, nil, 3)--28-30
+local timerConductiveMarkCD						= mod:NewCDCountTimer(25, 391686, nil, nil, nil, 3)
 local timerCycloneCD							= mod:NewCDCountTimer(79.1, 376943, nil, nil, nil, 2)
 local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3)
 local timerZephyrSlamCD							= mod:NewCDCountTimer(14, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -88,8 +88,8 @@ function mod:OnCombatStart(delay)
 	self.vb.cycloneCount = 0
 	self.vb.crosswindCount = 0
 	self.vb.slamCount = 0
-	timerConductiveMarkCD:Start(4.6-delay, 1)
-	timerRagingBurstCD:Start(7-delay, 1)
+	timerConductiveMarkCD:Start(14.4-delay, 1)
+	timerRagingBurstCD:Start(14.5-delay, 1)
 	timerZephyrSlamCD:Start(15.7-delay, 1)
 	timerCrosswindsCD:Start(25.5-delay, 1)
 	timerCycloneCD:Start(35.2-delay, 1)
@@ -306,9 +306,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 1) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
-		--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
-		if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 25.2 then--Heroic was 28 but considering both mythic and normal are 25, assuming heroic is too
-			timerConductiveMarkCD:Start(25.2, self.vb.markCount+1)
+		if self.vb.stormCount == 0 and self.vb.markCount == 1 then
+			timerConductiveMarkCD:Start(37.9, 2)
+		else
+			--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
+			if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 25.2 then
+				timerConductiveMarkCD:Start(25.2, self.vb.markCount+1)
+			end
 		end
 	end
 end
