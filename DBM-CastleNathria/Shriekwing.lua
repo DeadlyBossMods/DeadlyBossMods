@@ -188,7 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDeadlyDescent:Play("targetyou")
 			yellDeadlyDescent:Yell()
 		else
-			warnDeadlyDescent:CombinedShow(0.3, args.destName)
+			warnDeadlyDescent:CombinedShow(1, args.destName)
 		end
 	elseif spellId == 342077 then
 		local icon = self.vb.EchoIcon
