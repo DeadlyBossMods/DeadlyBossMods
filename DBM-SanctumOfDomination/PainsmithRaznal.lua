@@ -190,7 +190,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnShadowsteelChains:Show(self:IconNumToTexture(icon))
-			specWarnShadowsteelChains:Play("mm"..icon)
+			local audio = self:IsMythic() and "mm"..icon or "runout"
+			specWarnShadowsteelChains:Play(audio)
 			yellShadowsteelChains:Yell(icon, icon)
 			yellShadowsteelChainsFades:Countdown(spellId, nil, icon)
 		end
