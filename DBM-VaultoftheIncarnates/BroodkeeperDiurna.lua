@@ -270,16 +270,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
 			specWarnIceBarrage:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnIceBarrage:Play("kick1r")
-			elseif count == 2 then
-				specWarnIceBarrage:Play("kick2r")
-			elseif count == 3 then
-				specWarnIceBarrage:Play("kick3r")
-			elseif count == 4 then
-				specWarnIceBarrage:Play("kick4r")
-			elseif count == 5 then
-				specWarnIceBarrage:Play("kick5r")
+			if count < 6 then
+				specWarnIceBarrage:Play("kick"..count.."r")
 			else
 				specWarnIceBarrage:Play("kickcast")
 			end
@@ -296,16 +288,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
 			specWarnStaticJolt:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnStaticJolt:Play("kick1r")
-			elseif count == 2 then
-				specWarnStaticJolt:Play("kick2r")
-			elseif count == 3 then
-				specWarnStaticJolt:Play("kick3r")
-			elseif count == 4 then
-				specWarnStaticJolt:Play("kick4r")
-			elseif count == 5 then
-				specWarnStaticJolt:Play("kick5r")
+			if count < 6 then
+				specWarnStaticJolt:Play("kick"..count.."r")
 			else
 				specWarnStaticJolt:Play("kickcast")
 			end

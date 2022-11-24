@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 344776",
 	"SPELL_CAST_SUCCESS 327796 329943 339196 330042 326005 332849 333980 332619 329181 333979",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329181 344313 338738 181089",
+	"SPELL_AURA_APPLIED 326699 327039 327796 327992 329906 332585 329951 332794 329181 344313 338738 181089",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
-	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 329951 332794 338738",
+	"SPELL_AURA_REMOVED 326699 327039 327796 328117 329951 332794 338738",
 	"SPELL_AURA_REMOVED_DOSE 326699",
 	"SPELL_PERIODIC_DAMAGE 327992",
 	"SPELL_PERIODIC_MISSED 327992",
@@ -397,16 +397,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnVengefulWail:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnVengefulWail:Play("kick1r")
-			elseif count == 2 then
-				specWarnVengefulWail:Play("kick2r")
-			elseif count == 3 then
-				specWarnVengefulWail:Play("kick3r")
-			elseif count == 4 then
-				specWarnVengefulWail:Play("kick4r")
-			elseif count == 5 then
-				specWarnVengefulWail:Play("kick5r")
+			if count < 6 then
+				specWarnVengefulWail:Play("kick"..count.."r")
 			else
 				specWarnVengefulWail:Play("kickcast")
 			end
@@ -530,10 +522,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		SinStacks[args.destName] = amount
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(SinStacks, 0.2)
-		end
-	elseif spellId == 338510 then
-		if self.Options.NPAuraOnShield then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 14)
 		end
 	elseif spellId == 327039 then
 		if args:IsPlayer() then
@@ -684,10 +672,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		SinStacks[args.destName] = nil
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(SinStacks, 0.2)
-		end
-	elseif spellId == 338510 then
-		if self.Options.NPAuraOnShield then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 327039 then
 		if args:IsPlayer() then

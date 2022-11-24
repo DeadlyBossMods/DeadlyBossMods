@@ -326,16 +326,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnPsychicTerror:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnPsychicTerror:Play("kick1r")
-			elseif count == 2 then
-				specWarnPsychicTerror:Play("kick2r")
-			elseif count == 3 then
-				specWarnPsychicTerror:Play("kick3r")
-			elseif count == 4 then
-				specWarnPsychicTerror:Play("kick4r")
-			elseif count == 5 then
-				specWarnPsychicTerror:Play("kick5r")
+			if count < 6 then
+				specWarnPsychicTerror:Play("kick"..count.."r")
 			else
 				specWarnPsychicTerror:Play("kickcast")
 			end

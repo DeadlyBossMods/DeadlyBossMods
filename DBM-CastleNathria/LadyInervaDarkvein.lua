@@ -255,16 +255,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnCondemn:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnCondemn:Play("kick1r")
-			elseif count == 2 then
-				specWarnCondemn:Play("kick2r")
-			elseif count == 3 then
-				specWarnCondemn:Play("kick3r")
-			elseif count == 4 then
-				specWarnCondemn:Play("kick4r")
-			elseif count == 5 then
-				specWarnCondemn:Play("kick5r")
+			if count < 6 then
+				specWarnCondemn:Play("kick"..count.."r")
 			else--Shouldn't happen, but fallback rules never hurt
 				specWarnCondemn:Play("kickcast")
 			end

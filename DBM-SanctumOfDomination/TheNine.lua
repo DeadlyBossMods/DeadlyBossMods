@@ -222,16 +222,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnSiphonVitality:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnSiphonVitality:Play("kick1r")
-			elseif count == 2 then
-				specWarnSiphonVitality:Play("kick2r")
-			elseif count == 3 then
-				specWarnSiphonVitality:Play("kick3r")
-			elseif count == 4 then
-				specWarnSiphonVitality:Play("kick4r")
-			elseif count == 5 then
-				specWarnSiphonVitality:Play("kick5r")
+			if count < 6 then
+				specWarnSiphonVitality:Play("kick"..count.."r")
 			else
 				specWarnSiphonVitality:Play("kickcast")
 			end
