@@ -67,7 +67,12 @@ L:SetMiscLocalization({
 ---------------------------
 --  Raszageth the Storm-Eater --
 ---------------------------
---L= DBM:GetModLocalization(2499)
+L= DBM:GetModLocalization(2499)
+
+L:SetMiscLocalization({
+	negative = "negative",
+	positive = "positive"
+})
 
 -------------
 --  Trash  --
