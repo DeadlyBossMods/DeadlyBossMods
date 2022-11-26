@@ -123,16 +123,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnDominationBolt:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnDominationBolt:Play("kick1r")
-			elseif count == 2 then
-				specWarnDominationBolt:Play("kick2r")
-			elseif count == 3 then
-				specWarnDominationBolt:Play("kick3r")
-			elseif count == 4 then
-				specWarnDominationBolt:Play("kick4r")
-			elseif count == 5 then
-				specWarnDominationBolt:Play("kick5r")
+			if count < 6 then
+				specWarnDominationBolt:Play("kick"..count.."r")
 			else
 				specWarnDominationBolt:Play("kickcast")
 			end

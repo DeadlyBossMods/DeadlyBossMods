@@ -287,16 +287,8 @@ function mod:SPELL_CAST_START(args)
 			timerDespairCD:UpdateInline(DBM_COMMON_L.INTERRUPT_ICON, count, args.sourceGUID)--It's only interruptable in non mythic, add icon there
 			if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 				specWarnDespair:Show(args.sourceName, count)
-				if count == 1 then
-					specWarnDespair:Play("kick1r")
-				elseif count == 2 then
-					specWarnDespair:Play("kick2r")
-				elseif count == 3 then
-					specWarnDespair:Play("kick3r")
-				elseif count == 4 then
-					specWarnDespair:Play("kick4r")
-				elseif count == 5 then
-					specWarnDespair:Play("kick5r")
+				if count < 6 then
+					specWarnDespair:Play("kick"..count.."r")
 				else
 					specWarnDespair:Play("kickcast")
 				end

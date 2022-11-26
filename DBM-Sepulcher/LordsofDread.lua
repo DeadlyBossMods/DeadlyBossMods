@@ -194,16 +194,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnRavenousHunger:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnRavenousHunger:Play("kick1r")
-			elseif count == 2 then
-				specWarnRavenousHunger:Play("kick2r")
-			elseif count == 3 then
-				specWarnRavenousHunger:Play("kick3r")
-			elseif count == 4 then
-				specWarnRavenousHunger:Play("kick4r")
-			elseif count == 5 then
-				specWarnRavenousHunger:Play("kick5r")
+			if count < 6 then
+				specWarnRavenousHunger:Play("kick"..count.."r")
 			else
 				specWarnRavenousHunger:Play("kickcast")
 			end

@@ -173,16 +173,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
 			specWarnDivertedEssence:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnDivertedEssence:Play("kick1r")
-			elseif count == 2 then
-				specWarnDivertedEssence:Play("kick2r")
-			elseif count == 3 then
-				specWarnDivertedEssence:Play("kick3r")
-			elseif count == 4 then
-				specWarnDivertedEssence:Play("kick4r")
-			elseif count == 5 then
-				specWarnDivertedEssence:Play("kick5r")
+			if count < 6 then
+				specWarnDivertedEssence:Play("kick"..count.."r")
 			else
 				specWarnDivertedEssence:Play("kickcast")
 			end
@@ -201,16 +193,8 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
 			specWarnStormBolt:Show(args.sourceName, count)
-			if count == 1 then
-				specWarnStormBolt:Play("kick1r")
-			elseif count == 2 then
-				specWarnStormBolt:Play("kick2r")
-			elseif count == 3 then
-				specWarnStormBolt:Play("kick3r")
-			elseif count == 4 then
-				specWarnStormBolt:Play("kick4r")
-			elseif count == 5 then
-				specWarnStormBolt:Play("kick5r")
+			if count < 6 then
+				specWarnStormBolt:Play("kick"..count.."r")
 			else
 				specWarnStormBolt:Play("kickcast")
 			end
