@@ -1,5 +1,5 @@
 --Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20221128
---Blizzard Entertainment 
+--Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
 local L
