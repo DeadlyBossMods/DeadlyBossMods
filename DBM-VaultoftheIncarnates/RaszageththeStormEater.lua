@@ -67,7 +67,7 @@ local timerLightningStrikesCD					= mod:NewAITimer(35, 376126, nil, nil, nil, 3)
 local timerElectricScalesCD						= mod:NewAITimer(35, 381249, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 
 mod:AddSetIconOption("SetIconOnStaticCharge", 381615, true, 0, {1, 2, 3})
-mod:AddSetIconOption("SetIconVolatileSpark", 388635, true, 5, {8, 7, 6, 5, 4})
+mod:AddSetIconOption("SetIconVolatileSpark", 388635, false, 5, {8, 7, 6, 5, 4})
 --Intermission: The Primalist Strike
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25683))
 --Raszageth

@@ -13,6 +13,7 @@ externals:
   DBM-DragonIsles/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
   DBM-DragonIsles/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
   DBM-DragonIsles/Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
+  DBM-DragonIsles/Libs/LibDropDownMenu: https://github.com/HizurosWoWAddOns/LibDropDownMenu
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
