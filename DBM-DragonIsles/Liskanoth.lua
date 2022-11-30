@@ -12,24 +12,28 @@ mod:RegisterCombat("combat")
 --mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 389159 391026 388925",
+	"SPELL_CAST_SUCCESS 389954",
+	"SPELL_AURA_APPLIED 389960",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 )
 
---TODO, target scan furious slam? if it works swap the warnings around
---TODO, adjust tank swap stacks
---local warnFuriousSlam					= mod:NewTargetNoFilterAnnounce(361209, 2)
---local warnDarkDeterrence				= mod:NewStackAnnounce(361390, 2, nil, "Tank|Healer")
+--TODO, Probably Fix glacial storm and deep freeze events
+--TODO, tweak sounds/warning types?
+local warnBindingIce					= mod:NewTargetNoFilterAnnounce(389954, 2)
+local warnChillingBreath				= mod:NewSpellAnnounce(388925, 3, nil, "Tank|Healer", nil, nil, nil, 2)
 
---local specWarnFuriousSlam				= mod:NewSpecialWarningDodge(361209, nil, nil, nil, 2, 2)
+local specWarnGlacialStorm				= mod:NewSpecialWarningDodge(389289, nil, nil, nil, 2, 2)
+local specWarnDeepFreeze				= mod:NewSpecialWarningDodge(389762, nil, nil, nil, 2, 2)
+local specWarnBindingIce				= mod:NewSpecialWarningYou(389954, nil, nil, nil, 1, 2)
 
---local timerFuriousSlamCD				= mod:NewAITimer(74.7, 361209, nil, nil, nil, 3)
---local timerDeterrentStrikeCD			= mod:NewAITimer(9.7, 361387, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGlacialStormCD				= mod:NewAITimer(74.7, 389289, nil, nil, nil, 3)
+local timerDeepFreezeCD					= mod:NewAITimer(74.7, 389762, nil, nil, nil, 3)
+local timerBindingIceCD					= mod:NewAITimer(74.7, 389954, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerChillingBreathCD				= mod:NewAITimer(9.7, 388925, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 361632)
 
@@ -48,29 +52,45 @@ end
 --	end
 --end
 
---[[
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 338858 then
-
+	if spellId == 389159 then
+		specWarnGlacialStorm:Show()
+		specWarnGlacialStorm:Play("watchstep")
+		timerGlacialStormCD:Start()
+	elseif spellId == 391026 then
+		specWarnDeepFreeze:Show()
+		specWarnDeepFreeze:Play("watchstep")
+		timerDeepFreezeCD:Start()
+	elseif spellId == 388925 then
+		warnChillingBreath:Show()
+		warnChillingBreath:Play("breathsoon")
+		timerChillingBreathCD:Start()
 	end
 end
 
+
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 361341 then
-
+	if spellId == 389954 then
+		timerBindingIceCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 361632 then
-
+	if spellId == 389960 then
+		warnBindingIce:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnBindingIce:Show()
+			specWarnBindingIce:Play("targetyou")
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 361632 then
