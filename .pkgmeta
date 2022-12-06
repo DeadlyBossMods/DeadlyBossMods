@@ -34,11 +34,7 @@ move-folders:
   DBM-DragonIsles/DBM-Brawlers: DBM-Brawlers
   DBM-DragonIsles/DBM-DMF: DBM-DMF
   DBM-DragonIsles/DBM-WorldEvents: DBM-WorldEvents
-  DBM-DragonIsles/DBM-Shadowlands: DBM-Shadowlands
   DBM-DragonIsles/DBM-DragonIsles: DBM-DragonIsles
-  DBM-DragonIsles/DBM-CastleNathria: DBM-CastleNathria
-  DBM-DragonIsles/DBM-SanctumOfDomination: DBM-SanctumOfDomination
-  DBM-DragonIsles/DBM-Sepulcher: DBM-Sepulcher
   DBM-DragonIsles/DBM-VaultoftheIncarnates: DBM-VaultoftheIncarnates
   DBM-DragonIsles/DBM-Core: DBM-Core
   DBM-DragonIsles/DBM-GUI: DBM-GUI
