@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 377612 388643 388635 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410",
-	"SPELL_CAST_SUCCESS 381615 376126 396037",
-	"SPELL_AURA_APPLIED 381615 388631 395906 381249 388431 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 396734 395929 391285",
+	"SPELL_CAST_SUCCESS 381615 376126 396037 399713",
+	"SPELL_AURA_APPLIED 381615 388631 395906 381249 388431 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 396734 395929 391285 399713",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 381615 388431 396037 385541 397382 397387 388691 377467 396734",
+	"SPELL_AURA_REMOVED 381615 388431 396037 385541 397382 397387 388691 377467 396734 399713",
 	"SPELL_PERIODIC_DAMAGE 395929",
 	"SPELL_PERIODIC_MISSED 395929",
 	"UNIT_DIED"
@@ -135,13 +135,20 @@ local timerStormBreakCD						= mod:NewAITimer(35, 389870, nil, nil, nil, 3)
 local timerBallLightningCD					= mod:NewAITimer(35, 385068, nil, nil, nil, 3)
 --Stage Three: Storm Incarnate
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25477))
+local warnMagneticCharge					= mod:NewTargetNoFilterAnnounce(399713, 3)
+
 local specWarnStormEater					= mod:NewSpecialWarningCount(395885, nil, nil, nil, 2, 2, 4)
 local specWarnThunderousBlast				= mod:NewSpecialWarningDefensive(386410, nil, nil, nil, 1, 2)
 local specWarnMeltedArmor					= mod:NewSpecialWarningTaunt(391285, nil, nil, nil, 1, 2)
+local specWarnMagneticCharge				= mod:NewSpecialWarningYouPos(399713, nil, nil, nil, 1, 2)
+local yellMagneticCharge					= mod:NewShortPosYell(399713)
+local yellMagneticChargeFades				= mod:NewIconFadesYell(399713)
 
 local timerStormEaterCD						= mod:NewAITimer(35, 395885, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerMagneticChargeCD					= mod:NewAITimer(35, 399713, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerThunderousBlastCD				= mod:NewAITimer(35, 386410, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
+mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4, 5, 6})
 mod:GroupSpells(386410, 391285)--Thunderous Blast and associated melted armor debuff
 
 --P1
@@ -157,7 +164,10 @@ mod.vb.scalesCount = 0
 --P2
 mod.vb.shroudIcon = 1
 mod.vb.wingCount = 0
+--P3
+mod.vb.magneticIcon = 4
 local castsPerGUID = {}
+
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -313,6 +323,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.chargeIcon = 1
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		timerFulminatingChargeCD:Start()
+	elseif spellId == 399713 then
+		self.vb.magneticIcon = 4
+		timerMagneticChargeCD:Start()
 	end
 end
 
@@ -413,6 +426,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnFulminatingCharge:CombinedShow(0.5, args.destName)
 		self.vb.chargeIcon = self.vb.chargeIcon + 1
+	elseif spellId == 399713 then
+		local icon = self.vb.magneticIcon
+		if self.Options.SetIconOnMagneticCharge then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnMagneticCharge:Show(self:IconNumToTexture(icon))
+			specWarnMagneticCharge:Play("mm"..icon)
+			yellMagneticCharge:Yell(icon, icon)
+			yellMagneticChargeFades:Countdown(spellId, nil, icon)
+		end
+		warnMagneticCharge:CombinedShow(0.5, args.destName)
+		self.vb.magneticIcon = self.vb.magneticIcon + 1
 	elseif spellId == 391285 and not args:IsPlayer() then
 		specWarnMeltedArmor:Show(args.destName)
 		specWarnMeltedArmor:Play("tauntboss")
@@ -500,6 +526,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerThunderousBlastCD:Start(3)
 		timerLightningStrikesCD:Start(3)
 		timerElectricScalesCD:Start(3)
+		if self:IsHard() then
+			timerMagneticChargeCD:Start(3)
+		end
 	elseif spellId == 396037 then
 		if args:IsPlayer() then
 			yellSurgingBlastFades:Cancel()
@@ -534,6 +563,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellFulminatingChargeFades:Cancel()
+		end
+	elseif spellId == 399713 then
+		if self.Options.SetIconOnMagneticCharge then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellMagneticChargeFades:Cancel()
 		end
 	end
 end
