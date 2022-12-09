@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 --mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
+	"SPELL_CAST_START 389431 389725 389514 391247 390635"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -21,21 +21,37 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED"
 )
 
---TODO, target scan furious slam? if it works swap the warnings around
---TODO, adjust tank swap stacks
---local warnFuriousSlam					= mod:NewTargetNoFilterAnnounce(361209, 2)
+--TODO, magma eruption targets? could not find a debuff ID, it might use emote/whisper
+--TODO, does he return to P1 after a while of infusion?
+--TODO, likely fix rain event
+--Phase One
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(25874))
+local warnMagmaEruption					= mod:NewSpellAnnounce(389725, 2)
 --local warnDarkDeterrence				= mod:NewStackAnnounce(361390, 2, nil, "Tank|Healer")
 
---local specWarnFuriousSlam				= mod:NewSpecialWarningDodge(361209, nil, nil, nil, 2, 2)
+local specWarnDeterringFlame			= mod:NewSpecialWarningSpell(389431, nil, nil, nil, 2, 2)
+local specWarnLavaBreath				= mod:NewSpecialWarningDodge(389514, nil, nil, nil, 2, 2)
 
---local timerFuriousSlamCD				= mod:NewAITimer(74.7, 361209, nil, nil, nil, 3)
+local timerDeterringFlameCD				= mod:NewAITimer(74.7, 389431, nil, nil, nil, 2)
+local timerMagmaEruptionCD				= mod:NewAITimer(74.7, 389725, nil, nil, nil, 3)
+local timerLavaBreathCD					= mod:NewAITimer(74.7, 389514, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --local timerDeterrentStrikeCD			= mod:NewAITimer(9.7, 361387, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--Phase Two
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(25878))
+local warnFlameInfusion					= mod:NewCastAnnounce(391247, 2)
+
+local specWarnRainofDestruction			= mod:NewSpecialWarningSpell(390635, nil, nil, nil, 2, 2)
+
+local timerRainofDestructionCD			= mod:NewAITimer(74.7, 390635, nil, nil, nil, 2)
 
 --mod:AddRangeFrameOption(5, 361632)
 
 function mod:OnCombatStart(delay, yellTriggered)
+	self:SetStage(1)
 --	if yellTriggered then
-
+		--timerDeterringFlameCD:Start(1)
+		--timerMagmaEruptionCD:Start(1)
+		--timerLavaBreathCD:Start(1)
 --	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
@@ -48,14 +64,38 @@ end
 --	end
 --end
 
---[[
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 338858 then
-
+	if spellId == 389431 then
+		specWarnDeterringFlame:Show()
+		specWarnDeterringFlame:Play("carefly")
+		timerDeterringFlameCD:Start()
+	elseif spellId == 389725 then
+		warnMagmaEruption:Show()
+		timerMagmaEruptionCD:Start()
+	elseif spellId == 389514 then
+		specWarnLavaBreath:Show()
+		specWarnLavaBreath:Play("breathsoon")
+		timerLavaBreathCD:Start()
+	elseif spellId == 391247 then
+		self:SetStage(2)
+		warnFlameInfusion:Show()
+		timerDeterringFlameCD:Stop()
+		timerMagmaEruptionCD:Stop()
+		timerLavaBreathCD:Stop()
+		--P2 timer start
+		timerMagmaEruptionCD:Start(2)
+		timerLavaBreathCD:Start(2)
+		timerRainofDestructionCD:Start(2)
+	elseif spellId == 390635 then
+		specWarnRainofDestruction:Show()
+		specWarnRainofDestruction:Play("specialsoon")
+		timerRainofDestructionCD:Start()
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 361341 then
