@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184972)
 mod:SetEncounterID(2587)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20221013000000)
+mod:SetHotfixNoticeRev(20221213000000)
 mod:SetMinSyncRevision(20221013000000)
 --mod.respawnTime = 29
 
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, initial big add timers on mythic if it matters enough, but it's first boss so meh
 --[[
 (ability.id = 370307 or ability.id = 390715 or ability.id = 394917 or ability.id = 370615 or ability.id = 396023) and type = "begincast"
- or ability.id = 394917 and type = "cast"
+ or (ability.id = 396022 or ability.id = 394917) and type = "cast"
  or ability.id = 370307 and type = "removebuff"
  or ability.id = 390715 and type = "applydebuff"
 --]]
@@ -48,10 +48,10 @@ local specWarnIncineratingRoar					= mod:NewSpecialWarningCount(396023, nil, nil
 local specWarnMoltenSpikes						= mod:NewSpecialWarningDodgeCount(396022, nil, nil, nil, 2, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
-local timerMoltenCleaveCD						= mod:NewCDCountTimer(30.2, 370615, nil, nil, nil, 3)
-local timerFlameriftCD							= mod:NewCDCountTimer(30.2, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerIncineratingRoarCD					= mod:NewCDCountTimer(26.9, 396023, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerMoltenSpikesCD						= mod:NewCDCountTimer(48.4, 396022, nil, nil, nil, 3)
+local timerMoltenCleaveCD						= mod:NewCDCountTimer(29.9, 370615, nil, nil, nil, 3)
+local timerFlameriftCD							= mod:NewCDCountTimer(28.9, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerIncineratingRoarCD					= mod:NewCDCountTimer(23.9, 396023, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerMoltenSpikesCD						= mod:NewCDCountTimer(21.4, 396022, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)
@@ -94,11 +94,11 @@ function mod:OnCombatStart(delay)
 	self.vb.riftCount = 0
 	self.vb.roarCount = 0
 	self.vb.spikesCount = 0
-	timerIncineratingRoarCD:Start(2.1-delay, 1)
-	timerMoltenCleaveCD:Start(7.6-delay, 1)
-	timerFlameriftCD:Start(11.6-delay, 1)
+	timerIncineratingRoarCD:Start(10-delay, 1)
+	timerFlameriftCD:Start(13.9-delay, 1)
+	timerMoltenCleaveCD:Start(37.9-delay, 1)
 	if self:IsHard() then
-		timerMoltenSpikesCD:Start(14.2-delay, 1)
+		timerMoltenSpikesCD:Start(21.8-delay, 1)
 	end
 	timerCollapsingArmyCD:Start(91.7-delay, 1)
 	if self.Options.NPAuraOnKillOrder or self.Options.NPAuraOnRampage then
@@ -130,23 +130,25 @@ function mod:SPELL_CAST_START(args)
 		timerMoltenSpikesCD:Stop()
 	elseif spellId == 390715 then
 		self.vb.riftCount = self.vb.riftCount + 1
---		if self.vb.riftCount < 3 then--Cast 2 to 3x per rotation
+		if self.vb.riftCount < 3 then--Cast 3x per rotation
 			timerFlameriftCD:Start(nil, self.vb.riftCount+1)
---		end
+		end
 	elseif spellId == 394917 then
 		warnLeapingFlames:Show()
 	elseif spellId == 370615 then
 		self.vb.cleaveCount = self.vb.cleaveCount + 1
 		specWarnMoltenCleave:Show(self.vb.cleaveCount)
 		specWarnMoltenCleave:Play("shockwave")
-		timerMoltenCleaveCD:Start(nil, self.vb.cleaveCount+1)
+		if self.vb.cleaveCount == 1 then--Only 2x per rotation
+			timerMoltenCleaveCD:Start(nil, 2)
+		end
 	elseif spellId == 396023 then
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnIncineratingRoar:Show(self.vb.roarCount)
 		specWarnIncineratingRoar:Play("aesoon")
---		if self.vb.roarCount < 4 then
+		if self.vb.roarCount < 4 then--4 per rotation
 			timerIncineratingRoarCD:Start(nil, self.vb.roarCount+1)
---		end
+		end
 	elseif spellId == 396040 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -175,8 +177,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spikesCount = self.vb.spikesCount + 1
 		specWarnMoltenSpikes:Show()
 		specWarnMoltenSpikes:Play(self.vb.spikesCount)
-		if self.vb.spikesCount == 1 then
-			timerMoltenSpikesCD:Start(nil, 2)
+		if self.vb.spikesCount < 3 then
+			timerMoltenSpikesCD:Start(nil, self.vb.spikesCount+1)
 		end
 	end
 end
@@ -265,13 +267,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cleaveCount = 0
 		self.vb.riftCount = 0
 		self.vb.spikesCount = 0
-		timerIncineratingRoarCD:Start(3.1, 1)
-		timerMoltenCleaveCD:Start(11.6, 1)
-		timerFlameriftCD:Start(15.6, 1)
+		timerIncineratingRoarCD:Start(10, 1)
+		timerFlameriftCD:Start(13.9, 1)
+		timerMoltenCleaveCD:Start(38, 1)
 		if self:IsHard() then
-			timerMoltenSpikesCD:Start(19, 1)
+			timerMoltenSpikesCD:Start(22, 1)
 		end
-		timerCollapsingArmyCD:Start(94, self.vb.armyCount+1)
+		timerCollapsingArmyCD:Start(93, self.vb.armyCount+1)
 	end
 end
 
