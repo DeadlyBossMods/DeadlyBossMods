@@ -33,6 +33,13 @@ mod:RegisterEventsInCombat(
 --TODO, determine number adds and spawn behavior for auto marking Stormseeker Acolyte for interrupt assignments?
 --TODO, use specWarnScatteredCharge once coding is verified it's being avoided for now to avoid SW spam
 --TODO, add https://www.wowhead.com/beta/spell=391281/crackling-energy to intermission 2 or is it just persistent damage?
+--[[
+(ability.id = 377612 or ability.id = 388643 or ability.id = 388635 or ability.id = 385553 or ability.id = 377658 or ability.id = 377594
+ or ability.id = 385065 or ability.id = 397382 or ability.id = 397468 or ability.id = 387261 or ability.id = 385574 or ability.id = 389870
+ or ability.id = 385068 or ability.id = 395885 or ability.id = 386410) and type = "begincast"
+ or (ability.id = 381615 or ability.id = 376126 or ability.id = 396037 or ability.id = 378829 or ability.id = 399713) and type = "cast"
+ or ability.id = 388431 or ability.id = 396734
+--]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
