@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 --mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 386259 385652 385137",
-	"SPELL_CAST_SUCCESS 385506 385270"
+	"SPELL_CAST_START 386259 385652 385137 386059",
+	"SPELL_CAST_SUCCESS 386680"
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
@@ -35,7 +35,7 @@ local specWarnEarthBolt					= mod:NewSpecialWarningInterrupt(385652, "HasInterru
 local timerSunderingCrashCD				= mod:NewAITimer(74.7, 386259, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerAwakenCragCD					= mod:NewAITimer(9.7, 385506, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerFracturingTremorCD			= mod:NewAITimer(74.7, 385270, nil, nil, nil, 3)
-local timerShaleBreathCD				= mod:NewAITimer(9.7, 385137, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerShaleBreathCD				= mod:NewAITimer(25.8, 385137, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 361632)
 
@@ -71,16 +71,16 @@ function mod:SPELL_CAST_START(args)
 		warnShaleBeath:Show()
 		warnShaleBeath:Play("breathsoon")
 		timerShaleBreathCD:Start()
+	elseif spellId == 386059 and self:AntiSpam(5, 1) then
+		warnAwakenCrag:Show()
+		timerAwakenCragCD:Start()
 	end
 end
 
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 385506 and self:AntiSpam(5, 1) then
-		warnAwakenCrag:Show()
-		timerAwakenCragCD:Start()
-	elseif spellId == 385270 and self:AntiSpam(5, 2) then
+	if spellId == 386680 and self:AntiSpam(5, 2) then
 		warnFracturingTremor:Show()
 		timerFracturingTremorCD:Start()
 	end
