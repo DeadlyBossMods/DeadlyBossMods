@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(189813)
 mod:SetEncounterID(2635)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20221014000000)
+mod:SetHotfixNoticeRev(20221214000000)
 mod:SetMinSyncRevision(20221014000000)
 --mod.respawnTime = 29
 
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, how to handle Incubating Seeds, 50 yards is a big radius. can players avoid it by moving away or is it a "kill it very hard and very fast" thing https://www.wowhead.com/beta/spell=389049/incubating-seed
 --[[
 (ability.id = 387849 or ability.id = 388302 or ability.id = 376943 or ability.id = 388410 or ability.id = 375580) and type = "begincast"
- or ability.id = 391686 and type = "applydebuff" and source.id = 189813
+ or ability.id = 391600 and type = "cast" and source.id = 189813
 --]]
 --Dathea, Ascended
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25340))
@@ -50,7 +50,7 @@ local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, nil, nil, nil,
 local timerConductiveMarkCD						= mod:NewCDCountTimer(25, 391686, nil, nil, nil, 3)
 local timerCycloneCD							= mod:NewCDCountTimer(79.1, 376943, nil, nil, nil, 2)
 local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3)
-local timerZephyrSlamCD							= mod:NewCDCountTimer(14, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerZephyrSlamCD							= mod:NewCDCountTimer(16.9, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 391686)
@@ -88,12 +88,19 @@ function mod:OnCombatStart(delay)
 	self.vb.cycloneCount = 0
 	self.vb.crosswindCount = 0
 	self.vb.slamCount = 0
-	timerConductiveMarkCD:Start(14.4-delay, 1)
-	timerRagingBurstCD:Start(14.5-delay, 1)
-	timerZephyrSlamCD:Start(15.7-delay, 1)
-	timerCrosswindsCD:Start(25.5-delay, 1)
-	timerCycloneCD:Start(35.2-delay, 1)
-	timerColaescingStormCD:Start(75.3-delay, 1)
+	timerConductiveMarkCD:Start(4.6-delay, 1)
+	timerRagingBurstCD:Start(7-delay, 1)
+	if self:IsHard() then
+		timerZephyrSlamCD:Start(15.7-delay, 1)
+		timerCrosswindsCD:Start(25.5-delay, 1)
+		timerCycloneCD:Start(35.2-delay, 1)
+		timerColaescingStormCD:Start(70-delay, 1)
+	else
+		timerZephyrSlamCD:Start(9.5-delay, 1)
+		timerCrosswindsCD:Start(28.9-delay, 1)
+		timerCycloneCD:Start(45.2-delay, 1)
+		timerColaescingStormCD:Start(80-delay, 1)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -125,21 +132,26 @@ function mod:SPELL_CAST_START(args)
 			timerZephyrSlamCD:Restart(30, self.vb.slamCount+1)--30-33
 			timerCrosswindsCD:Restart(40.8, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
 			timerColaescingStormCD:Start(90, self.vb.stormCount+1)
+		elseif self:IsHeroic() then
+			timerZephyrSlamCD:Restart(20.7, self.vb.slamCount+1)
+			timerCrosswindsCD:Restart(30.4, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
+			timerConductiveMarkCD:Restart(35, self.vb.markCount+1)
+			timerColaescingStormCD:Start(75.5, self.vb.stormCount+1)
 		else
-			timerConductiveMarkCD:Restart(9.5, self.vb.markCount+1)
-			timerZephyrSlamCD:Restart(20, self.vb.slamCount+1)
-			timerCrosswindsCD:Restart(30.4, self.vb.crosswindCount+1)--30-33
-			timerColaescingStormCD:Start(79.1, self.vb.stormCount+1)
+			timerConductiveMarkCD:Restart(9.7, self.vb.markCount+1)
+			timerZephyrSlamCD:Restart(15.7, self.vb.slamCount+1)
+			timerCrosswindsCD:Restart(35.2, self.vb.crosswindCount+1)
+			timerColaescingStormCD:Start(86.2, self.vb.stormCount+1)
 		end
 	elseif spellId == 388302 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		warnRagingBurst:Show(self.vb.burstCount)
-		timerRagingBurstCD:Start(self:IsMythic() and 90 or 79.1, self.vb.burstCount+1)
+		timerRagingBurstCD:Start(self:IsMythic() and 90 or self:IsHeroic() and 75 or 86.2, self.vb.burstCount+1)
 	elseif spellId == 376943 then
 		self.vb.cycloneCount = self.vb.cycloneCount + 1
 		specWarnCyclone:Show(self.vb.cycloneCount)
 		specWarnCyclone:Play("pullin")
-		timerCycloneCD:Start(self:IsMythic() and 90 or 79.1, self.vb.cycloneCount+1)
+		timerCycloneCD:Start(self:IsMythic() and 90 or self:IsHeroic() and 75 or 86.2, self.vb.cycloneCount+1)
 		if timerZephyrSlamCD:GetRemaining(self.vb.slamCount+1) < 13.2 then
 			timerZephyrSlamCD:Restart(13.2, self.vb.slamCount+1)--13.2-15
 		end
@@ -160,7 +172,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnZephyrSlam:Show()
 			specWarnZephyrSlam:Play("carefly")
 		end
-		timerZephyrSlamCD:Start(nil, self.vb.slamCount+1)
+		timerZephyrSlamCD:Start(self:IsHard() and , self.vb.slamCount+1)
 	elseif spellId == 387943 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -290,13 +302,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 1) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
-		if self.vb.stormCount == 0 and self.vb.markCount == 1 then
-			timerConductiveMarkCD:Start(37.9, 2)
-		else
-			--If storm comes before mark would come off CD, storm will reset the CD anyways so don't start here
-			if timerColaescingStormCD:GetRemaining(self.vb.stormCount+1) > 25.2 then
-				timerConductiveMarkCD:Start(25.2, self.vb.markCount+1)
-			end
-		end
+		timerConductiveMarkCD:Start(self:IsHard() and 25 or 31.5, self.vb.markCount+1)
 	end
 end

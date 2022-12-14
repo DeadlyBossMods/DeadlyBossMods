@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(181224)--way too many CIDs to guess right now
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221124000000)
+mod:SetHotfixNoticeRev(20221214000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -171,6 +171,86 @@ local castsPerGUID = {}
 
 local difficultyName = "normal"
 local allTimers = {
+	["mythic"] = {--Just duplicate of normal for now
+		[1] = {
+			--Static Charge
+			[381615] = {15, 35, 40, 30},
+			--Volatile Current
+			[388643] = {85, 47},
+			--Lightning Breath
+			[377594] = {23, 39, 53},
+			--Hurricane Wing
+			[377612] = {35, 35, 35},
+			--Electrified Jaws
+			[377658] = {5, 25, 25, 27, 21, 27},
+		},
+		[2] = {
+			--Volatile Current
+			[388643] = {60, 49.9},
+			--Electrified Jaws
+			[377658] = {30, 24.9, 22.9, 30, 25, 25, 37},
+			--Stormsurge
+			[387261] = {0, 80, 80, 80},--First cast immediately
+			--Fulminating Charge
+			[378829] = {44, 85.9},
+			--Tempest Wing
+			[385574] = {35, 35, 49.9, 24.9, 55},
+		},
+		[3] = {
+			--Storm Eater (Mythic Only)
+			[395885] = {},
+			--Lightning Breath
+			[377594] = {28.7, 41, 41.9},
+			--Tempest Wing
+			[385574] = {60.7, 58.9, 26.9},
+			--Fulminating Charge
+			[378829] = {35.7, 60},
+			--Thunderous blast
+			[386410] = {16.7, 30, 30, 30, 30},
+			--Magnetic Charge (Heroic/Mythic Only)
+			[399713] = {},
+		},
+	},
+	["heroic"] = {--Just duplicate of normal for now
+		[1] = {
+			--Static Charge
+			[381615] = {15, 35, 40, 30},
+			--Volatile Current
+			[388643] = {85, 47},
+			--Lightning Breath
+			[377594] = {23, 39, 53},
+			--Hurricane Wing
+			[377612] = {35, 35, 35},
+			--Electrified Jaws
+			[377658] = {5, 25, 25, 27, 21, 27},
+		},
+		[2] = {
+			--Volatile Current
+			[388643] = {60, 49.9},
+			--Electrified Jaws
+			[377658] = {30, 24.9, 22.9, 30, 25, 25, 37},
+			--Stormsurge
+			[387261] = {0, 80, 80, 80},--First cast immediately
+			--Fulminating Charge
+			[378829] = {44, 85.9},
+			--Tempest Wing
+			[385574] = {35, 35, 49.9, 24.9, 55},
+		},
+		[3] = {
+			--Storm Eater (Mythic Only)
+			[395885] = {},
+			--Lightning Breath
+			[377594] = {28.7, 41, 41.9},
+			--Tempest Wing
+			[385574] = {60.7, 58.9, 26.9},
+			--Fulminating Charge
+			[378829] = {35.7, 60},
+			--Thunderous blast
+			[386410] = {16.7, 30, 30, 30, 30},
+			--Magnetic Charge (Heroic/Mythic Only)
+			[399713] = {},
+		},
+	},
 	["normal"] = {
 		[1] = {
 			--Static Charge
