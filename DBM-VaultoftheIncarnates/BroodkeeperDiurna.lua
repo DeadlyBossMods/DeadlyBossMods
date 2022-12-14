@@ -447,7 +447,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.StormbringerIcon = 6
 		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
 		specWarnPrimalistReinforcements:Play("killmob")
-		local timer = self:IsHard() and heroicAddsTimers[elf.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[elf.vb.addsCount+1]
+		local timer = self:IsHard() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
 		if timer then
 			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
 		end
