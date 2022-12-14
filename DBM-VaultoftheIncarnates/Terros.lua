@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190496)
 mod:SetEncounterID(2639)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
---mod:SetHotfixNoticeRev(20220322000000)
+mod:SetHotfixNoticeRev(20221213000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -67,9 +67,10 @@ local allTimers = {
 	--Infused Fallout (Mythic)
 	[396351] = {29.2, 42.3, 24.4, 29.2, 40.1, 25.5, 28.3, 41.5, 26.8, 26.8, 43.0},
 	--Concussive Slam
-	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},
+--	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},--Old beta timers
+	[376279] = {16.0, 18.0, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.4, 17.9, 23.9, 17.9},--New Retail
 	--Rock Blast
-	[380487] = {6.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+	[380487] = {6.0, 41.9, 54.5, 41.9, 54.5, 41.9, 54.5, 42.0},
 	--Shattering Impact
 	[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
 }
@@ -81,7 +82,7 @@ function mod:OnCombatStart(delay)
 	self.vb.impactCount = 0
 	self.vb.frenziedStarted = false
 	timerRockBlastCD:Start(6-delay, 1)
-	timerConcussiveSlamCD:Start(14-delay, 1)
+	timerConcussiveSlamCD:Start(16-delay, 1)
 	timerShatteringImpactCD:Start(27-delay, 1)
 	timerResonatingAnnihilationCD:Start(90-delay, 1)
 	timerFrenziedDevastationCD:Start(387.9-delay)

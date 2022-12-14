@@ -86,7 +86,7 @@ local timerLightningDevastationCD				= mod:NewAITimer(35, 385065, nil, nil, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25638))
 local warnSurgingBlast							= mod:NewTargetAnnounce(396037, 3)
 local warnShatteringShroud						= mod:NewTargetNoFilterAnnounce(397382, 4)
-local warnShatteringShroudFaded					= mod:NewFadedAnnounce(397382, 1)
+local warnShatteringShroudFaded					= mod:NewFadesAnnounce(397382, 1)
 local warnBlazingroar							= mod:NewCastAnnounce(397468, 4)
 
 local specWarnSurgingBlast						= mod:NewSpecialWarningMoveAway(396037, nil, 37859, nil, 1, 2)

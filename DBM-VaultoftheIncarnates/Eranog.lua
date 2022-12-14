@@ -175,7 +175,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLeapingFlamesCD:Start(nil, args.sourceGUID)
 	elseif spellId == 396022 then
 		self.vb.spikesCount = self.vb.spikesCount + 1
-		specWarnMoltenSpikes:Show()
+		specWarnMoltenSpikes:Show(self.vb.spikesCount)
 		specWarnMoltenSpikes:Play(self.vb.spikesCount)
 		if self.vb.spikesCount < 3 then
 			timerMoltenSpikesCD:Start(nil, self.vb.spikesCount+1)
