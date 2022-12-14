@@ -172,7 +172,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnZephyrSlam:Show()
 			specWarnZephyrSlam:Play("carefly")
 		end
-		timerZephyrSlamCD:Start(self:IsHard() and , self.vb.slamCount+1)
+		timerZephyrSlamCD:Start(nil, self.vb.slamCount+1)
 	elseif spellId == 387943 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
