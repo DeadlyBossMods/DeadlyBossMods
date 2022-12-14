@@ -123,13 +123,17 @@ local function checkMyAxe(self)
 	if icon then
 		specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
 		specWarnMeteorAxe:Play("mm"..icon)
+		yellMeteorAxe		= mod:NewShortPosYell(374043, nil, nil, nil, "YELL")
+		yellMeteorAxeFades	= mod:NewIconFadesYell(374043, nil, nil, nil, "YELL")
 		yellMeteorAxe:Yell(icon, icon)
 		yellMeteorAxeFades:Countdown(374039, nil, icon)
 	else--No icon setter?
 		specWarnMeteorAxe:Show("")
 		specWarnMeteorAxe:Play("targetyou")
-		yellMeteorAxe:Yell(0, 0)
-		yellMeteorAxeFades:Countdown(374039, nil, 0)
+		yellMeteorAxe	= mod:NewShortYell(374043, nil, nil, nil, "YELL")
+		yellMeteorAxeFades	= mod:NewShortFadesYell(374043, nil, nil, nil, "YELL")
+		yellMeteorAxe:Yell()
+		yellMeteorAxeFades:Countdown(374039)
 	end
 end
 

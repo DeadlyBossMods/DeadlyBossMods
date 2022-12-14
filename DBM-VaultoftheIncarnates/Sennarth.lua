@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20221013000000)
+mod:SetHotfixNoticeRev(20221213000000)
 mod:SetMinSyncRevision(20221013000000)
 --mod.respawnTime = 29
 
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 371976 372082 373405 374112 373027 371983 372539",
-	"SPELL_CAST_SUCCESS 372238 181113 396792",
+	"SPELL_CAST_SUCCESS 372238 181113 181089 396792",
 	"SPELL_SUMMON 372242 372843",
 	"SPELL_AURA_APPLIED 371976 372082 372030 372044 385083 373048",
 	"SPELL_AURA_APPLIED_DOSE 372030 385083",
@@ -28,13 +28,14 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, GTFO for icy Ground?
+--TODO, I cannot be bothered to do these timers. After 3 hours on boss logs (yet again), decided not to bother with more accurate approach. Half assed will have to be good enough
 --TODO, timers need more work, but it'll be helpful when phase change events added to combat log or at very least transcriptor for easier table reading.
 --[[
 (ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 372539 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
  or (ability.id = 372238 or ability.id = 372648) and type = "cast"
  or ability.id = 181113 and source.id = 189234
  or ability.id = 372539 and type = "interrupt"
- or ability.id = 181089
+ or ability.id = 181089 and type = "cast"
 --]]
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -106,40 +107,114 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Chilling Blast
-			[371976] = {15.5, 36.6, 36.5, 29.2, 36.2, 36.5, 21.9, 36.5, 36.3},
+			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
 			--Enveloping Webs
-			[372082] = {18.1, 26.7, 30.5, 45.0, 26.8, 30.4, 38.9, 26.4, 30.4},
+			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},
 			--Gossamer Burst
-			[373405] = {32.8, 37.7, 65.7, 36.5, 60.8, 37.6},
+			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
 			--Call Spiderlings
-			[372238] = {2.4, 30.4, 30.4, 30.4, 14.6, 30.4, 34.0, 31.6, 30.4, 30.3},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
+			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
 			--Gusting Rime
 			[396792] = {},
 		},
-		[2] = {
-			--Chilling Blast
-			[371976] = {15.7, 17.0, 32.8, 32.8, 34.1, 34, 34.0, 35.2, 34.0},--Unused for now
-			--Call Spiderlings
-			[372238] = {12.8, 30.4, 30.5, 32.8, 35.2},--Unused for now
-		},
+		--[2] = {
+		--	--Chilling Blast
+		--	[371976] = {15.7, 17.0, 32.8, 32.8, 34.1, 34, 34.0, 35.2, 34.0},--Unused for now
+		--	--Call Spiderlings
+		--	[372238] = {12.8, 30.4, 30.5, 32.8, 35.2},--Unused for now
+		--},
 	},
 	["heroic"] = {
 		[1] = {
 			--Chilling Blast
-			[371976] = {},
+			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
 			--Enveloping Webs
-			[372082] = {},
+			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},
 			--Gossamer Burst
-			[373405] = {},
+			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
 			--Call Spiderlings
-			[372238] = {},
+			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
+			--Gusting Rime
+			[396792] = {},
 		},
-		[2] = {
+		--[2] = {
+		--	--Chilling Blast
+		--	[371976] = {15.7, 17.0, 32.8, 32.8, 34.1, 34, 34.0, 35.2, 34.0},--Unused for now
+		--	--Call Spiderlings
+		--	[372238] = {12.8, 30.4, 30.5, 32.8, 35.2},--Unused for now
+		--},
+	},
+	--[[["heroic"] = {--Not used cause frankly doing it this way for more accuracy sucks BALLS. I'd rather have inaccurate timers
+		[1] = {--Pull (first Encounter Event is ignored that fires 4-5 sec in)
 			--Chilling Blast
-			[371976] = {},--Unused for now
+			[371976] = {15.7},
+			--Enveloping Webs
+			[372082] = {18.2},
+			--Gossamer Burst
+			[373405] = {33.2},
 			--Call Spiderlings
-			[372238] = {},--Unused for now
+			[372238] = {0, 25.5},
 		},
+		[2] = {--First Move
+			--Chilling Blast
+			[371976] = {10.9, 36.4},
+			--Enveloping Webs
+			[372082] = {2.4, 31.6},
+			--Gossamer Burst
+			[373405] = {27.9},
+			--Call Spiderlings
+			[372238] = {8.4, 25.5, 25.5},
+		},
+		[3] = {--First Move Ending
+			--Chilling Blast
+			[371976] = {17},
+			--Enveloping Webs
+			[372082] = {19.4},
+			--Gossamer Burst
+			[373405] = {34.1},
+			--Call Spiderlings
+			[372238] = {12.1},
+		},
+		[4] = {--Second move
+			--Chilling Blast
+			[371976] = {15.7, 36.4},
+			--Enveloping Webs
+			[372082] = {7.2, 31.5},
+			--Gossamer Burst
+			[373405] = {32.7},
+			--Call Spiderlings
+			[372238] = {3.6, 26.6, 26.7},
+		},
+		[5] = {--second move ending
+			--Chilling Blast
+			[371976] = {17},
+			--Enveloping Webs
+			[372082] = {19.5},
+			--Gossamer Burst
+			[373405] = {34.1},
+			--Call Spiderlings
+			[372238] = {12.1},
+		},
+		[6] = {--third move (reaching top and beginning p2)
+			--Chilling Blast
+			[371976] = {14.6, 37.7},
+			--Enveloping Webs
+			[372082] = {7.3, 30.4},
+			--Gossamer Burst
+			[373405] = {31.6},
+			--Call Spiderlings
+			[372238] = {2.4, 25.6},
+		},
+--		[7] = {--third move ending (reaching top and beginning p2)
+--			--Chilling Blast
+--			[371976] = {13.3, 32.9},
+--			--Suffocating Webs
+--			[372082] = {7.3, 30.4},
+--			--Repelling Burst
+--			[373405] = {30.4},
+--			--Call Spiderlings
+--			[372238] = {9.7, 30.5},
+--		},--]]
 	},
 	["normal"] = {
 		[1] = {
@@ -171,10 +246,10 @@ function mod:OnCombatStart(delay)
 	self.vb.rimeCast = 0
 	self.vb.spiderlingsCount = 0
 	self.vb.bigAddCount = 1--Starts at 1 because 1 is up with boss on pull
+--	timerCallSpiderlingsCD:Start(1-delay, 1)--cast on engage
 	timerChillingBlastCD:Start(15.2-delay, 1)
 	timerEnvelopingWebsCD:Start(17.9-delay, 1)
 	timerGossamerBurstCD:Start(33.9-delay, 1)
---	timerCallSpiderlingsCD:Start(1-delay, 1)--1-3sec into pull
 	timerPhaseCD:Start(43-delay)
 	timerFrostbreathArachnidCD:Start(103.9, 2)--First one engages with boss
 	if self:IsMythic() then
