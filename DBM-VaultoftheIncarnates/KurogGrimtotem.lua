@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184986)
 mod:SetEncounterID(2605)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
---mod:SetHotfixNoticeRev(20220322000000)
+mod:SetHotfixNoticeRev(20221214000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -222,23 +222,14 @@ function mod:OnCombatStart(delay)
 	self.vb.damageSpell = "?"
 	self.vb.avoidSpell = "?"
 	self.vb.ultimateSpell = "?"
-	timerSunderStrikeCD:Start(10.7-delay)
+	timerSunderStrikeCD:Start(8.2-delay)
 	timerPhaseCD:Start(125-delay)--125-127
-	if self:IsMythic() then
-		self.vb.damageTimer = 19.5--Alternating in P1
-		self.vb.avoidTimer = 45
-		self.vb.ultTimer = 45
-		timerDamageCD:Start(14.2-delay, "?")
-		timerAvoidCD:Start(22-delay, "?")
-		timerUltimateCD:Start(45-delay, "?")
-	else
-		self.vb.damageTimer = 30--Static in P1
-		self.vb.avoidTimer = 60
-		self.vb.ultTimer = 60
-		timerDamageCD:Start(20.4-delay, "?")
-		timerAvoidCD:Start(30.2-delay, "?")
-		timerUltimateCD:Start(63.1-delay, "?")
-	end
+	self.vb.damageTimer = 19.5--Alternating in P1
+	self.vb.avoidTimer = 45
+	self.vb.ultTimer = 45
+	timerDamageCD:Start(14.2-delay, "?")
+	timerAvoidCD:Start(22-delay, "?")
+	timerUltimateCD:Start(45-delay, "?")
 	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -399,22 +390,22 @@ function mod:SPELL_SUMMON(args)
 		DBM:AddMsg(spellId.. " is combat logging now, notify DBM author")
 		if spellId == 374935 then--Frozen Incarnation
 			--timerFreezingTempestCD:Start(1, args.destGUID)
-			--if self:IsMythic() then
+			--if self:IsHard() then
 			--	timerAbsoluteZeroCD:Start()
 			--end
 		elseif spellId == 374931 then--Blazing Incarnation
-			--if self:IsMythic() then
+			--if self:IsHard() then
 			--	timerSearingCarnageCD:Start()
 			--end
 		elseif spellId == 374939 then--Tectonic Incarnation
 			--timerGroundShatterCD:Start(1, args.destGUID)
 			--timerViolentUpheavelCD:Start(1, args.destGUID)
-			--if self:IsMythic() then
+			--if self:IsHard() then
 			--	timerSeismicRuptureCD:Start()
 			--end
 		elseif spellId == 374943 then--Thundering Incarnation
 			--timerStormBreakCD:Start(1, args.destGUID)
-			--if self:IsMythic() then
+			--if self:IsHard() then
 			--	timerThunderStrikeCD:Start()
 			--end
 		end
@@ -578,39 +569,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 374779 then--Primal Barrier
 		self.vb.curAltar = false--Reset on intermission end because we don't want initial timers to show an altar spell when there isn't one yet
 		self.vb.damageCount = 0
-		--if self.vb.stageTotality == 2 then
-			self:SetStage(1)
-			--Base
-			timerSunderStrikeCD:Start(11)
-			timerPhaseCD:Start(127)
-			if self:IsMythic() then
-				timerDamageCD:Start(14.7, "?")
-				timerAvoidCD:Start(68.4, "?")--Seems to skip a cast in all logs, probably should be 22
-				timerUltimateCD:Start(45, "?")
-			else
-				timerDamageCD:Start(20, "?")
-				timerAvoidCD:Start(30, "?")
-				timerUltimateCD:Start(60, "?")
-			end
-		--else--4, which means stage 3, totality 5
-		--	self:SetStage(3)
-		--	timerSunderStrikeCD:Start(10)
-		--	if self:IsMythic() then
-		--		self.vb.damageTimer = 25
-		--		self.vb.avoidTimer = 25
-		--		self.vb.ultTimer = 25
-		--		timerDamageCD:Start(12.5, "?")--14.7
-		--		timerAvoidCD:Start(44.7, "?")--68.4
-		--		timerUltimateCD:Start(25, "?")--45.3
-		--	else
-		--		self.vb.damageTimer = 32.5
-		--		self.vb.avoidTimer = 32.5
-		--		self.vb.ultTimer = 32.5
-		--		timerDamageCD:Start(15, "?")
-		--		timerAvoidCD:Start(22, "?")
-		--		timerUltimateCD:Start(45, "?")
-		--	end
-		--end
+		self:SetStage(1)
+		timerSunderStrikeCD:Start(7.2)
+		timerPhaseCD:Start(127)
+		timerDamageCD:Start(14.5, "?")
+		timerAvoidCD:Start(68.4, "?")
+		timerUltimateCD:Start(45, "?")--if it's seismic rupture it's 53 else 45
 	elseif spellId == 374380 then
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
@@ -756,14 +720,10 @@ do
 			self.vb.damageSpell = self.vb.curAltar and (self:IsEasy() and spellEasyMapping[spellId][self.vb.curAltar] or spellMapping[spellId][self.vb.curAltar]) or "?"
 			local spellIcon = self.vb.curAltar and (self:IsEasy() and iconEasyMapping[spellId][self.vb.curAltar] or iconMapping[spellId][self.vb.curAltar]) or 136116
 			local timer
-			if self:IsMythic() and self.vb.phase == 1 then
-				if self.vb.damageCount % 2 == 0 then
-					timer = 19.5
-				else
-					timer = 25.5
-				end
+			if self.vb.damageCount % 2 == 0 then
+				timer = 19.5
 			else
-				timer = self.vb.damageTimer
+				timer = 25.5
 			end
 			timerDamageCD:Start(timer, self.vb.damageSpell)
 			timerDamageCD:UpdateIcon(spellIcon, self.vb.damageSpell)

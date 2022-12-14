@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20221214000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410",
+	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434",
 	"SPELL_CAST_SUCCESS 381615 396037 399713 181089",
 	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -74,8 +74,11 @@ mod:AddSetIconOption("SetIconOnStaticCharge", 381615, true, 0, {1, 2, 3})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25683))
 --Raszageth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25402))
+
+local specWarnStormNova							= mod:NewSpecialWarningSpell(382434, nil, nil, nil, 2, 2)
 local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, nil, nil, 3, 2)
 
+local timerStormNova							= mod:NewCastTimer(5, 382434, nil, nil, nil, 5)
 local timerLightningDevastationCD				= mod:NewCDTimer(13.3, 385065, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Primalist Forces
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25638))
@@ -403,7 +406,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 385574 then
 		self.vb.wingCount = self.vb.wingCount + 1
 		specWarnTempestWing:Show(self.vb.wingCount)
-		specWarnTempestWing:Play("watchwave")
+		specWarnTempestWing:Play("pushbackincoming")
+		specWarnTempestWing:ScheduleVoice(1.5, "movecenter")
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.wingCount+1)
 		if timer then
 			timerTempestWingCD:Start(timer, self.vb.wingCount+1)
@@ -435,6 +439,10 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerThunderousBlastCD:Start(timer, self.vb.tankCount+1)
 		end
+	elseif spellId == 382434 then
+		specWarnStormNova:Show()
+		specWarnStormNova:Play("carefly")
+		timerStormNova:Start()
 	end
 end
 
