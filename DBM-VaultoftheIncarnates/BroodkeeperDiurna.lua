@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
---mod:SetHotfixNoticeRev(20220322000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20221214000000)
+mod:SetMinSyncRevision(20221214000000)
 mod.respawnTime = 33
 
 mod:RegisterCombat("combat")
@@ -14,14 +14,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918 396269 396779",
 	"SPELL_CAST_SUCCESS 380175 375870",
-	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264",
+	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264 181113",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
 	"SPELL_AURA_REMOVED 375809 376073 375809 376330 396264",
 	"SPELL_AURA_REMOVED_DOSE 375809",
 	"SPELL_PERIODIC_DAMAGE 390747",
 	"SPELL_PERIODIC_MISSED 390747",
-	"UNIT_DIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"UNIT_DIED"
 )
 
 --TODO, visit tank swaps when more data is known such strategies to the interaction with Fury extending debuffs, for now, basic debuff checks used (and may be enough)
@@ -39,7 +38,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 380175 and type = "cast"
  or ability.id = 375879
  or (ability.id = 375716 or ability.id = 375653 or ability.id = 375457 or ability.id = 375630 or ability.id = 376257 or ability.id = 375575) and type = "begincast"
- or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
+ or ability.id = 181113
 --]]
 --Stage One: The Primalist Clutch
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25119))
@@ -65,10 +64,10 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 
 
 local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.staff, nil, nil, 5)--Shared CD ability
 local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability
-local timerWildfireCD							= mod:NewCDCountTimer(20.9, 375871, nil, nil, nil, 3)--Shared CD ability
+local timerWildfireCD							= mod:NewCDCountTimer(21.4, 375871, nil, nil, nil, 3)--21.4-28
 local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
-local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.7, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
-local timerStormFissureCD						= mod:NewCDTimer(60, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHICC_ICON)
+local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.6, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
+local timerStormFissureCD						= mod:NewCDTimer(60, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:GroupSpells(375842, 375889)--Greatstaff spawn ith greatstaff wrath debuff
@@ -126,7 +125,7 @@ local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, ni
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
 local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(24.4, 380176, L.staff, nil, nil, 5)--Shared CD ability
-local timerFrozenShroudCD						= mod:NewCDCountTimer(36.4, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
+local timerFrozenShroudCD						= mod:NewCDCountTimer(42, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
 local castsPerGUID = {}
@@ -140,6 +139,8 @@ mod.vb.mageIcon = 8
 mod.vb.StormbringerIcon = 6
 mod.vb.eggsGone = false
 mod.vb.sharedCD = 26
+local heroicAddsTimers = {}
+local normalAddsTimers = {35.6, 24.8, 36.8, 24.9, 43.4, 24.9, 36.5, 24.9, 43.3, 24.8}
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -157,7 +158,7 @@ function mod:OnCombatStart(delay)
 	timerWildfireCD:Start(8.4-delay, 1)
 	timerRapidIncubationCD:Start(14.3-delay, 1)
 	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
-	timerPrimalistReinforcementsCD:Start(22.6-delay, 1)
+	timerPrimalistReinforcementsCD:Start(35.6-delay, 1)
 	timerIcyShroudCD:Start(26.5-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -165,10 +166,8 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self.vb.sharedCD = 24
 		timerStormFissureCD:Start(1-delay)
-	elseif self:IsHeroic() then
+	else--Heroic and Normal confirmed 25 now?
 		self.vb.sharedCD = 25
-	else--Split LFR if even slower
-		self.vb.sharedCD = 26
 	end
 end
 
@@ -196,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("watchstep")
-		timerWildfireCD:Start(self.vb.sharedCD, self.vb.wildFireCount+1)
+		timerWildfireCD:Start(nil, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
@@ -308,11 +307,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase == 1 then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerGreatstaffoftheBroodkeeperCD:Start(self.vb.sharedCD, self.vb.staffCount+1)
+			timerGreatstaffoftheBroodkeeperCD:Start(24.3, self.vb.staffCount+1)--24-29
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerEGreatstaffoftheBroodkeeperCD:Start(self.vb.sharedCD, self.vb.staffCount+1)
+			timerEGreatstaffoftheBroodkeeperCD:Start(20.6, self.vb.staffCount+1)--20-27
 		end
 	elseif spellId == 375870 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
@@ -418,8 +417,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Just stop outright
 --			timerRapidIncubationCD:Stop()
 			timerPrimalistReinforcementsCD:Stop()
-			--Restarts
-			timerWildfireCD:Restart(9.7, 1)
 			--Timers that do not reset.
 			--Mortal Stone Claws, since we don't swap timers, no action needed
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
@@ -443,6 +440,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			self.vb.staffCount = 0
 			self.vb.icyCount = 0--Reused for frozen shroud
+		end
+	elseif spellId == 181113 and self:AntiSpam(10, 2) then
+		self.vb.addsCount = self.vb.addsCount + 1
+		self.vb.mageIcon = 8
+		self.vb.StormbringerIcon = 6
+		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
+		specWarnPrimalistReinforcements:Play("killmob")
+		local timer = self:IsHard() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
+		if timer then
+			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
 		end
 	end
 end
@@ -496,14 +503,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("ABILITY_WARRIOR_DRAGONROAR.BLP") then
-		self.vb.addsCount = self.vb.addsCount + 1
-		self.vb.mageIcon = 8
-		self.vb.StormbringerIcon = 6
-		specWarnPrimalistReinforcements:Show()
-		specWarnPrimalistReinforcements:Play("killmob")
-		timerPrimalistReinforcementsCD:Start(nil, self.vb.addsCount+1)
-	end
-end
