@@ -6,14 +6,14 @@ mod:SetCreatureID(187771, 187768, 187772, 187767)
 mod:SetEncounterID(2590)
 mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20221014000000)
-mod:SetMinSyncRevision(20221008000000)
+mod:SetHotfixNoticeRev(20221214000000)
+mod:SetMinSyncRevision(20221214000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 373059 372315 372394 372322 372056 372027 372279 374038 375331",
+	"SPELL_CAST_START 373059 372315 372394 372322 372056 372027 372279 374038 375331 397134",
 	"SPELL_AURA_APPLIED 391599 371836 371591 386440 371624 386375 372056 374039 372027 386289 386370",
 	"SPELL_AURA_APPLIED_DOSE 391599 371836 372027 372056",
 	"SPELL_AURA_REMOVED 391599 371836 374039",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, mark some of conductive marks? On mythic it goes on 10 targets, not enough marks for all that, plus meteor axe needs 2 marks as prio
 --TODO, earthen pillar targetting unclear, it probably uses RAID_BOSS_WHISPER if i had to guess, because there is no debuff
 --[[
-(ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038 or ability.id = 375331) and type = "begincast"
+(ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038 or ability.id = 375331 or ability.id = 397134) and type = "begincast"
  or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
  or ability.id = 371624 and type = "applydebuff"
 --]]
@@ -102,19 +102,25 @@ mod.vb.meteorTotal = 0
 mod.vb.blazeCast = 0
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
-	["normal"] = {--Needs work, some of these can be lower
+	["heroic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
---		[375331] = {15.3, 42.8, 23.2, 25.5, 20.7, 23.1, 24.3, 13.4, 23.1, 24.3, 22.0, 24.2, 24.3, 17.0, 24.3, 26.7},--Old
-		[375331] = {10.5, 42.2, 25.8, 24.4, 24.5, 25.6, 24.4, 25.6, 26.9, 25.6, 28.0},--New
+		[375331] = {15.7, 55.9, 35.3, 36.5, 34.1, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},--New
 		--Meteor Axes (excluded for now)
---		[374038] = {25.0, 38.4, 25.0, 35.1, 34.1, 43.7, 24.4, 35.2, 34.0, 43.7, 25.4, 36.4},--Old
 --		[374038] = {22.3, 40.4, 40.3, 40.2, 40.3, 39.1, 40.2, 40.2, 39.0},--New
 		--Pillars
---		[372322] = {5.0, 28.0, 32.5, 32.8, 20.2, 31.6, 31.6, 23.1, 32.8, 20.8, 31.6, 32.9, 22.0, 32.8},--Old
-		[372322] = {5.1, 24.8, 29.2, 26.9, 24.3, 28.1, 25.6, 26.7, 28.1, 25.6, 25.6, 28.0, 29.2},--New
+		[372322] = {7.2, 35.3, 37.7, 35.2, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},--New
 		--Primal Blizzard (excluded for now)
-		--[373059] = {40.0, 69.3, 67.6, 71.8, 69.4, 70.4},--Old
-		--[373059] = {36.0, 87.9, 79.4, 80.5},--New
+		[373059] = {49.8, 118, 105.8, 108},
+	},
+	["normal"] = {--Needs work, some of these can be lower
+		--Conductive Mark
+		[375331] = {16.7, 73.6, 43.7, 44.9, 43.7, 44.9, 47.4, 41.2, 44.9, 45, 42.5},--New
+		--Meteor Axes (excluded for now)
+--		[374038] = {36.7, 69.4, 65.6, 66.9, 66.8, 66.8, 66.8, 66.8},--New
+		--Pillars
+		[372322] = {9.5, 42.9, 47.6, 43.7, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
+		--Primal Blizzard (excluded for now)
+		[373059] = {60, 149.6, 133, 133},
 	},
 }
 
@@ -146,24 +152,33 @@ function mod:OnCombatStart(delay)
 	self.vb.crushCast = 0
 	self.vb.meteorCast = 0
 	self.vb.blazeCast = 0
-	--Kadros Icewrath
-	timerPrimalBlizzardCD:Start(36-delay, 1)
-	--Dathea Stormlsh
-	timerChainLightningCD:Start(9.2-delay)
-	timerConductiveMarkCD:Start(10.5-delay, 1)
-	--Opalfang
-	timerEarthenPillarCD:Start(5-delay, 1)
-	timerCrushCD:Start(17.7-delay, 1)
-	--Embar Firepath
-	timerSlashingBlazeCD:Start(9.2-delay, 1)
-	timerMeteorAxeCD:Start(22.3-delay, 1)
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"
---	else
+	if self:IsHard() then
+		difficultyName = "heroic"
+		--Kadros Icewrath
+		timerPrimalBlizzardCD:Start(48-delay, 1)
+		--Dathea Stormlsh
+		timerChainLightningCD:Start(12.1-delay)
+		timerConductiveMarkCD:Start(15.7-delay, 1)
+		--Opalfang
+		timerEarthenPillarCD:Start(6.9-delay, 1)
+		timerCrushCD:Start(18.1-delay, 1)
+		--Embar Firepath
+		timerSlashingBlazeCD:Start(10.2-delay, 1)
+		timerMeteorAxeCD:Start(30.1-delay, 1)
+	else--Timers are slowed down
 		difficultyName = "normal"
---	end
+		--Kadros Icewrath
+		timerPrimalBlizzardCD:Start(60-delay, 1)
+		--Dathea Stormlsh
+		timerChainLightningCD:Start(10.7-delay)
+		timerConductiveMarkCD:Start(16.7-delay, 1)
+		--Opalfang
+		timerEarthenPillarCD:Start(9.5-delay, 1)
+		timerCrushCD:Start(18.4-delay, 1)
+		--Embar Firepath
+		timerSlashingBlazeCD:Start(9.2-delay, 1)
+		timerMeteorAxeCD:Start(22.3-delay, 1)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -183,13 +198,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
---		difficultyName = "heroic"
---	else
+	if self:IsHard() then
+		difficultyName = "heroic"
+	else
 		difficultyName = "normal"
---	end
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -202,18 +215,19 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnPrimalBlizzard:Play("aesoon")--Just aoe damage, spread mechanic disabled
 		end
-		timerPrimalBlizzardCD:Start(nil, self.vb.blizzardCast+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.blizzardCast+1) or self:IsHard() and 105.8 or self:IsEasy() and 133
+		timerPrimalBlizzardCD:Start(timer, self.vb.blizzardCast+1)
 	elseif spellId == 372315 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFrostSpike:Show(args.sourceName)
 		specWarnFrostSpike:Play("kickcast")
 	elseif spellId == 372394 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnLightningBolt:Show(args.sourceName)
 		specWarnLightningBolt:Play("kickcast")
-	elseif spellId == 372322 then
+	elseif spellId == 372322 or spellId == 397134 then
 		self.vb.pillarCast = self.vb.pillarCast + 1
 		specWarnEarthenPillar:Show(self.vb.pillarCast)
 		specWarnEarthenPillar:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.pillarCast+1) or 40.8
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, 372322, self.vb.pillarCast+1) or self:IsHard() and 34 or self:IsEasy() and 42.5
 		timerEarthenPillarCD:Start(timer, self.vb.pillarCast+1)
 	elseif spellId == 372056 then
 		self.vb.crushCast = self.vb.crushCast + 1
