@@ -214,8 +214,8 @@ local allTimers = {
 --			[373405] = {30.4},
 --			--Call Spiderlings
 --			[372238] = {9.7, 30.5},
---		},--]]
-	},
+--		},
+	},--]]
 	["normal"] = {
 		[1] = {
 			--Chilling Blast
