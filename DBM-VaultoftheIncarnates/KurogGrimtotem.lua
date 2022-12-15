@@ -446,7 +446,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSplinteredBones:Show(args.destName)
 			specWarnSplinteredBones:Play("tauntboss")
 		else
-			warnSplinteredBones:Show(args.destName, amount)
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				warnSplinteredBones:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 373487 then
 		local icon = self.vb.litCrashIcon
