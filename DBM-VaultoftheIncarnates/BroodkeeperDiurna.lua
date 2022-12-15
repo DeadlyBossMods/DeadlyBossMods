@@ -3,10 +3,10 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
-mod:SetEncounterID(2607)
+mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
-mod:SetHotfixNoticeRev(20221214000000)
-mod:SetMinSyncRevision(20221214000000)
+mod:SetHotfixNoticeRev(20221215000000)
+mod:SetMinSyncRevision(20221215000000)
 mod.respawnTime = 33
 
 mod:RegisterCombat("combat")
@@ -139,7 +139,7 @@ mod.vb.mageIcon = 8
 mod.vb.StormbringerIcon = 6
 mod.vb.eggsGone = false
 mod.vb.sharedCD = 26
-local heroicAddsTimers = {}
+local heroicAddsTimers = {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
 local normalAddsTimers = {35.6, 24.8, 36.8, 24.9, 43.4, 24.9, 36.5, 24.9, 43.3, 24.8}
 
 function mod:OnCombatStart(delay)
