@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184972)
 mod:SetEncounterID(2587)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20221213000000)
-mod:SetMinSyncRevision(20221013000000)
+mod:SetHotfixNoticeRev(20221215000000)
+mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 394917 396022",
 	"SPELL_AURA_APPLIED 370597 371562 390715 394906 396094",
 	"SPELL_AURA_APPLIED_DOSE 394906",
-	"SPELL_AURA_REMOVED 370597 371562 390715 396094",
+	"SPELL_AURA_REMOVED 370597 371562 390715 396094 370307",
 	"SPELL_PERIODIC_DAMAGE 370648",
 	"SPELL_PERIODIC_MISSED 370648",
 	"UNIT_DIED"
