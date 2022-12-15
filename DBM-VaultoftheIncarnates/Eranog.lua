@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 	self.vb.riftCount = 0
 	self.vb.roarCount = 0
 	self.vb.spikesCount = 0
-	timerIncineratingRoarCD:Start(10-delay, 1)
+	timerIncineratingRoarCD:Start(9.8-delay, 1)
 	timerFlameriftCD:Start(13.9-delay, 1)
 	timerMoltenCleaveCD:Start(37.9-delay, 1)
 	if self:IsHard() then
