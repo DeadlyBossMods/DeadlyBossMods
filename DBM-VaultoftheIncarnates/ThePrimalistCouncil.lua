@@ -6,7 +6,7 @@ mod:SetCreatureID(187771, 187768, 187772, 187767)
 mod:SetEncounterID(2590)
 mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20221214000000)
+mod:SetHotfixNoticeRev(20221215000000)
 mod:SetMinSyncRevision(20221214000000)
 --mod.respawnTime = 29
 
@@ -22,9 +22,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 371514"
 )
 
---TODO, conductive mark has numerous spellids and the one that's a cast looks like a hidden script. 10 to 1, it's not in combat log. (https://www.wowhead.com/beta/spell=375331/conductive-mark)
---TODO, mark some of conductive marks? On mythic it goes on 10 targets, not enough marks for all that, plus meteor axe needs 2 marks as prio
---TODO, earthen pillar targetting unclear, it probably uses RAID_BOSS_WHISPER if i had to guess, because there is no debuff
 --[[
 (ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038 or ability.id = 375331 or ability.id = 397134) and type = "begincast"
  or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
@@ -102,21 +99,25 @@ mod.vb.meteorTotal = 0
 mod.vb.blazeCast = 0
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
+	["mythic"] = {--Needs work, some of these can be lower
+		--Conductive Mark
+		[375331] = {13, 44, 26, 27, 26, 29, 25, 26, 27, 27},
+		--Pillars
+		[372322] = {5, 27, 29, 26, 25, 28, 27, 26, 27, 27, 26, 28},
+		--Primal Blizzard (excluded for now)
+		[373059] = {37, 89, 80, 81},
+	},
 	["heroic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {15.7, 55.9, 35.3, 36.5, 34.1, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},--New
-		--Meteor Axes (excluded for now)
---		[374038] = {22.3, 40.4, 40.3, 40.2, 40.3, 39.1, 40.2, 40.2, 39.0},--New
+		[375331] = {15.7, 55.9, 35.3, 36.5, 34.1, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},
 		--Pillars
-		[372322] = {7.2, 35.3, 37.7, 35.2, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},--New
+		[372322] = {7.2, 35.3, 37.7, 35.2, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},
 		--Primal Blizzard (excluded for now)
 		[373059] = {49.8, 118, 105.8, 108},
 	},
 	["normal"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {16.7, 73.6, 43.7, 44.9, 43.7, 44.9, 47.4, 41.2, 44.9, 45, 42.5},--New
-		--Meteor Axes (excluded for now)
---		[374038] = {36.7, 69.4, 65.6, 66.9, 66.8, 66.8, 66.8, 66.8},--New
+		[375331] = {16.7, 73.6, 43.7, 44.9, 43.7, 44.9, 47.4, 41.2, 44.9, 45, 42.5},
 		--Pillars
 		[372322] = {9.5, 42.9, 47.6, 43.7, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
 		--Primal Blizzard (excluded for now)
@@ -153,18 +154,32 @@ function mod:OnCombatStart(delay)
 	self.vb.meteorCast = 0
 	self.vb.blazeCast = 0
 	if self:IsHard() then
-		difficultyName = "heroic"
-		--Kadros Icewrath
-		timerPrimalBlizzardCD:Start(48-delay, 1)
-		--Dathea Stormlsh
-		timerChainLightningCD:Start(12.1-delay)
-		timerConductiveMarkCD:Start(15.7-delay, 1)
-		--Opalfang
-		timerEarthenPillarCD:Start(6.9-delay, 1)
-		timerCrushCD:Start(18.1-delay, 1)
+		--Same on heroic and mythic
 		--Embar Firepath
 		timerSlashingBlazeCD:Start(10.2-delay, 1)
-		timerMeteorAxeCD:Start(30.1-delay, 1)
+		timerMeteorAxeCD:Start(23-delay, 1)
+		if self:IsMythic() then
+			difficultyName = "mythic"
+			--Kadros Icewrath
+			timerPrimalBlizzardCD:Start(37-delay, 1)
+			--Dathea Stormlsh
+			timerChainLightningCD:Start(12.1-delay)
+			timerConductiveMarkCD:Start(13-delay, 1)
+			--Opalfang
+			timerEarthenPillarCD:Start(5-delay, 1)
+			timerCrushCD:Start(28.1-delay, 1)--TODO verify, seems iffy, but maybe delayed by other casts being altered
+		else--Heroic
+			difficultyName = "heroic"
+			--Kadros Icewrath
+			timerPrimalBlizzardCD:Start(48-delay, 1)
+			--Dathea Stormlsh
+			timerChainLightningCD:Start(12.1-delay)
+			timerConductiveMarkCD:Start(15.7-delay, 1)
+			--Opalfang
+			timerEarthenPillarCD:Start(6.9-delay, 1)
+			timerCrushCD:Start(18.1-delay, 1)
+
+		end
 	else--Timers are slowed down
 		difficultyName = "normal"
 		--Kadros Icewrath
@@ -198,7 +213,9 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	if self:IsHard() then
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
 		difficultyName = "normal"
@@ -215,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnPrimalBlizzard:Play("aesoon")--Just aoe damage, spread mechanic disabled
 		end
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.blizzardCast+1) or self:IsHard() and 105.8 or self:IsEasy() and 133
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.blizzardCast+1) or self:IsMythic() and 80 or self:IsHeroic() and 105.8 or self:IsEasy() and 133
 		timerPrimalBlizzardCD:Start(timer, self.vb.blizzardCast+1)
 	elseif spellId == 372315 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFrostSpike:Show(args.sourceName)
@@ -227,7 +244,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.pillarCast = self.vb.pillarCast + 1
 		specWarnEarthenPillar:Show(self.vb.pillarCast)
 		specWarnEarthenPillar:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, 372322, self.vb.pillarCast+1) or self:IsHard() and 34 or self:IsEasy() and 42.5
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, 372322, self.vb.pillarCast+1) or self:IsMythic() and 25 or self:IsHeroic() and 34 or self:IsEasy() and 42.5
 		timerEarthenPillarCD:Start(timer, self.vb.pillarCast+1)
 	elseif spellId == 372056 then
 		self.vb.crushCast = self.vb.crushCast + 1
@@ -254,7 +271,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.markCast = self.vb.markCast + 1
 		specWarnConductiveMarkSpread:Show()
 		specWarnConductiveMarkSpread:Play("range5")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.markCast+1) or 24.4
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.markCast+1) or self:IsMythic() and 25 or self:IsHeroic() and 32.8 or self:IsEasy() and 41.2
 		if timer then
 			timerConductiveMarkCD:Start(timer, self.vb.markCast+1)
 		end
