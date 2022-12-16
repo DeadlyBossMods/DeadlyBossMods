@@ -22,9 +22,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 371514"
 )
 
---TODO, conductive mark has numerous spellids and the one that's a cast looks like a hidden script. 10 to 1, it's not in combat log. (https://www.wowhead.com/beta/spell=375331/conductive-mark)
---TODO, mark some of conductive marks? On mythic it goes on 10 targets, not enough marks for all that, plus meteor axe needs 2 marks as prio
---TODO, earthen pillar targetting unclear, it probably uses RAID_BOSS_WHISPER if i had to guess, because there is no debuff
 --[[
 (ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038 or ability.id = 375331 or ability.id = 397134) and type = "begincast"
  or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
@@ -105,8 +102,6 @@ local allTimers = {
 	["mythic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
 		[375331] = {13, 44, 26, 27, 26, 29, 25, 26, 27, 27},
-		--Meteor Axes (excluded for now)
---		[374038] = {22.3, 40},--40 repeating, table not ued
 		--Pillars
 		[372322] = {5, 27, 29, 26, 25, 28, 27, 26, 27, 27, 26, 28},
 		--Primal Blizzard (excluded for now)
@@ -115,8 +110,6 @@ local allTimers = {
 	["heroic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
 		[375331] = {15.7, 55.9, 35.3, 36.5, 34.1, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},
-		--Meteor Axes (excluded for now)
---		[374038] = {22.3, 40.4, 40.3, 40.2, 40.3, 39.1, 40.2, 40.2, 39.0},
 		--Pillars
 		[372322] = {7.2, 35.3, 37.7, 35.2, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},
 		--Primal Blizzard (excluded for now)
@@ -125,8 +118,6 @@ local allTimers = {
 	["normal"] = {--Needs work, some of these can be lower
 		--Conductive Mark
 		[375331] = {16.7, 73.6, 43.7, 44.9, 43.7, 44.9, 47.4, 41.2, 44.9, 45, 42.5},
-		--Meteor Axes (excluded for now)
---		[374038] = {36.7, 69.4, 65.6, 66.9, 66.8, 66.8, 66.8, 66.8},
 		--Pillars
 		[372322] = {9.5, 42.9, 47.6, 43.7, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
 		--Primal Blizzard (excluded for now)
@@ -280,7 +271,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.markCast = self.vb.markCast + 1
 		specWarnConductiveMarkSpread:Show()
 		specWarnConductiveMarkSpread:Play("range5")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.markCast+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.markCast+1) or self:IsMythic() and 25 or self:IsHeroic() and 32.8 or self:IsEasy() and 41.2
 		if timer then
 			timerConductiveMarkCD:Start(timer, self.vb.markCast+1)
 		end
