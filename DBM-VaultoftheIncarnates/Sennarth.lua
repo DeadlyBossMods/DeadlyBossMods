@@ -87,7 +87,7 @@ local yellSuffocatingWebs							= mod:NewShortPosYell(373027)
 local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
 
-local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373027, nil, nil, nil, 3)--38-45
+local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373027, nil, nil, nil, 3)--38-46
 local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37 (unknown on normal
 
 mod:AddSetIconOption("SetIconOnSufWeb", 373027, true, false, {1, 2, 3})
@@ -104,7 +104,7 @@ mod.vb.bigAddCount = 0
 --Likley still use sequencing but borken down by each movement versuses all P1 together
 local difficultyName = "mythic"
 local allTimers = {
-	["mythic"] = {
+	["mythic"] = {--Very close to heroic so won't alter til transcriptor to make it lower work load
 		[1] = {
 			--Chilling Blast
 			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
@@ -293,7 +293,7 @@ function mod:SPELL_CAST_START(args)
 		--More consistent in stage 2
 		--timerChillingBlastCD:Start(self.vb.phase == 2 and 32 or self.vb.blastCount == 1 and 36 or 22, self.vb.blastCount+1)
 		if self.vb.phase == 2 then
-			timerChillingBlastCD:Start(self:IsMythic() and self.vb.blastCount == 1 and 17 or 32, self.vb.blastCount+1)
+			timerChillingBlastCD:Start(self:IsMythic() and 34 or 32, self.vb.blastCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blastCount+1)
 			if timer then
@@ -341,6 +341,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spiderlingsCount = self.vb.spiderlingsCount + 1
 		warnCallSpiderlings:Show(self.vb.spiderlingsCount)
 		if self.vb.phase == 2 then
+			--Mythic sequenced, 44, 30, 35?
 			timerCallSpiderlingsCD:Start(self:IsMythic() and 30 or 25, self.vb.spiderlingsCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.spiderlingsCount+1)
@@ -540,10 +541,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerFrostbreathArachnidCD:Stop()
 		--Stage 2 timers start here, but if she's not interrupted within 12 seconds, they start to queue up and become messy
 		--These may be wrong on several difficulties due to no viewable CLEU event on WCL yet to verify them
-		timerCallSpiderlingsCD:Start(12.8, 1)
-		timerChillingBlastCD:Start(15.3, 1)
-		timerSuffocatingWebsCD:Start(22.7, 1)
-		timerRepellingBurstCD:Start(32.7, 1)
+		if self:IsMythic() then
+			--Iffy as fuck, will need transcriptor to really address this cleaner, or even WCLs cause there are multiple factors at play here
+			timerSuffocatingWebsCD:Start(27, 1)
+			timerRepellingBurstCD:Start(31, 1)
+			timerCallSpiderlingsCD:Start(44, 1)
+			timerChillingBlastCD:Start(46, 1)
+		else
+			timerCallSpiderlingsCD:Start(12.8, 1)
+			timerChillingBlastCD:Start(15.3, 1)
+			timerSuffocatingWebsCD:Start(22.7, 1)
+			timerRepellingBurstCD:Start(32.7, 1)
+		end
 		if self:IsMythic() then
 			self.vb.rimeCast = 0
 			timerGustingrimeCD:Start()

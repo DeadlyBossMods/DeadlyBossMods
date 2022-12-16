@@ -5,15 +5,15 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(181224)--way too many CIDs to guess right now
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221214000000)
+mod:SetHotfixNoticeRev(20221215000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434",
-	"SPELL_CAST_SUCCESS 381615 396037 399713 181089",
+	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434 390463",
+	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249",
 	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713",
@@ -34,8 +34,8 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 377612 or ability.id = 388643 or ability.id = 377658 or ability.id = 377594
  or ability.id = 385065 or ability.id = 397382 or ability.id = 397468 or ability.id = 387261 or ability.id = 385574 or ability.id = 389870
- or ability.id = 385068 or ability.id = 395885 or ability.id = 386410) and type = "begincast"
- or (ability.id = 381615 or ability.id = 396037 or ability.id = 378829 or ability.id = 399713) and type = "cast"
+ or ability.id = 385068 or ability.id = 395885 or ability.id = 386410 or ability.id = 382434 or ability.id = 390463) and type = "begincast"
+ or (ability.id = 381615 or ability.id = 396037 or ability.id = 378829 or ability.id = 399713 or ability.id = 382434 or ability.id = 390463 or ability.id = 381249) and type = "cast"
  or ability.id = 388431 or ability.id = 396734
  or ability.id = 181089 and type = "cast"
  or (ability.id = 391281 or ability.id = 391402) and type = "applybuff"
@@ -185,7 +185,7 @@ local allTimers = {
 			--Hurricane Wing
 			[377612] = {35, 35, 35},
 			--Electrified Jaws
-			[377658] = {5, 25, 25, 27, 21, 27},
+			[377658] = {5, 24.8, 24.9, 30, 17.8, 27.6},
 		},
 		[2] = {
 			--Volatile Current
@@ -217,41 +217,41 @@ local allTimers = {
 	["heroic"] = {--Just duplicate of normal for now
 		[1] = {
 			--Static Charge
-			[381615] = {15, 35, 40, 30},
+			[381615] = {15.0, 35.0, 36.9, 34.1, 33.9},
 			--Volatile Current
-			[388643] = {85, 47},
+			[388643] = {80.0, 55.0}, -- Volatile Current
 			--Lightning Breath
-			[377594] = {23, 39, 53},
+			[377594] = {23.4, 39.0, 53.1, 51.0}, -- Lightning Breath
 			--Hurricane Wing
-			[377612] = {35, 35, 35},
+			[377612] = {35, 35, 35, 35, 35}, -- Hurricane Wing
 			--Electrified Jaws
-			[377658] = {5, 25, 25, 27, 21, 27},
+			[377658] = {6.5, 24.9, 25.0, 30.0, 18.0, 27.0, 30.0}, -- Electrified Jaws
 		},
 		[2] = {
 			--Volatile Current
-			[388643] = {60, 49.9},
+			[388643] = {57, 57},--Different from normal
 			--Electrified Jaws
-			[377658] = {30, 24.9, 22.9, 30, 25, 25, 37},
+			[377658] = {29.9, 24.4, 22.9, 30.7, 24.2, 25.8},--Same as normal
 			--Stormsurge
-			[387261] = {0, 80, 80, 80},--First cast immediately
+			[387261] = {0, 80, 80, 80},--Same as normal, First cast immediately
 			--Fulminating Charge
-			[378829] = {44, 85.9},
+			[378829] = {45, 82.5},--Same as normal
 			--Tempest Wing
-			[385574] = {35, 35, 49.9, 24.9, 55},
+			[385574] = {35, 30, 55, 19.5},--Different from normal
 		},
-		[3] = {
+		[3] = {--IFFY, vod that changed angles and PoV many times was used for these
 			--Storm Eater (Mythic Only)
 			[395885] = {},
 			--Lightning Breath
-			[377594] = {28.7, 41, 41.9},
+			[377594] = {43},
 			--Tempest Wing
-			[385574] = {60.7, 58.9, 26.9},
+			[385574] = {76, 65},
 			--Fulminating Charge
-			[378829] = {35.7, 60},
+			[378829] = {53, 60},
 			--Thunderous blast
-			[386410] = {16.7, 30, 30, 30, 30},
+			[386410] = {32, 31, 30, 29},
 			--Magnetic Charge (Heroic/Mythic Only)
-			[399713] = {},
+			[399713] = {38, 63, 33},
 		},
 	},
 	["normal"] = {
@@ -439,7 +439,7 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerThunderousBlastCD:Start(timer, self.vb.tankCount+1)
 		end
-	elseif spellId == 382434 then
+	elseif spellId == 382434 or spellId == 390463 then
 		specWarnStormNova:Show()
 		specWarnStormNova:Play("carefly")
 		timerStormNova:Start()
@@ -472,6 +472,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		if timer then
 --			timerMagneticChargeCD:Start(timer, self.vb.magneticCount+1)
 --		end
+	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger
+		timerStormsurgeCD:Start(8.5, 1)--Started here so it actually has timer
 	elseif spellId == 181089 then--Encounter event
 		self:SetStage(0.5)
 		if self.vb.phase == 1.5 then
@@ -496,11 +498,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.chargeCount = 0
 
 			timerLightningDevastationCD:Stop()
---			timerStormsurgeCD:Start(0, 1)--Cast immediately
-			timerElectrifiedJawsCD:Start(30, 1)
+
+			timerElectrifiedJawsCD:Start(29.9, 1)
 			timerTempestWingCD:Start(35, 1)
 			timerFulminatingChargeCD:Start(44, 1)
-			timerVolatileCurrentCD:Start(60, 1)
+			timerVolatileCurrentCD:Start(self:IsHard() and 57 or 60, 1)--Only difference on heroic, we'll see on mythic
 		elseif self.vb.phase == 2.5 then
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 			warnPhase:Play("phasechange")
@@ -527,13 +529,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.magneticCount = 0
 
 			timerLightningDevastationCD:Stop()
-			timerStormEaterCD:Start(3)
-			timerThunderousBlastCD:Start(16.7, 1)
-			timerLightningBreathCD:Start(28.7, 1)
-			timerFulminatingChargeCD:Start(35.7, 1)
-			timerTempestWingCD:Start(60, 1)
 			if self:IsHard() then
-				timerMagneticChargeCD:Start(3)
+				if self:IsMythic() then
+					timerStormEaterCD:Start(3)
+				end
+				timerThunderousBlastCD:Start(32, 1)
+				timerLightningBreathCD:Start(43, 1)
+				timerFulminatingChargeCD:Start(53, 1)
+				timerTempestWingCD:Start(76, 1)
+				if self:IsHard() then
+					timerMagneticChargeCD:Start(38)
+				end
+			else
+				timerStormEaterCD:Start(3)
+				timerThunderousBlastCD:Start(16.7, 1)
+				timerLightningBreathCD:Start(28.7, 1)
+				timerFulminatingChargeCD:Start(35.7, 1)
+				timerTempestWingCD:Start(60, 1)
 			end
 		end
 	end
