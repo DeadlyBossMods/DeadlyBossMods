@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(189813)
 mod:SetEncounterID(2635)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20221214000000)
+mod:SetHotfixNoticeRev(20221215000000)
 mod:SetMinSyncRevision(20221014000000)
 --mod.respawnTime = 29
 
@@ -33,23 +33,23 @@ mod:RegisterEventsInCombat(
 --]]
 --Dathea, Ascended
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25340))
-local warnRagingBurst							= mod:NewCountAnnounce(388302, 3)
+local warnRagingBurst							= mod:NewCountAnnounce(388302, 3, nil, nil, 86189)
 local warnZephyrSlam							= mod:NewStackAnnounce(375580, 2, nil, "Tank|Healer")
 
 local specWarnCoalescingStorm					= mod:NewSpecialWarningCount(387849, nil, nil, nil, 2, 2)
 local specWarnConductiveMark					= mod:NewSpecialWarningMoveAway(391686, nil, nil, nil, 1, 2)
 local yellConductiveMark						= mod:NewYell(391686, 28836)--Short text "Mark"
 local specWarnCyclone							= mod:NewSpecialWarningCount(376943, nil, nil, nil, 2, 12)
-local specWarnCrosswinds						= mod:NewSpecialWarningDodgeCount(388410, nil, nil, nil, 2, 2)
+local specWarnCrosswinds						= mod:NewSpecialWarningDodgeCount(388410, nil, nil, nil, 2, 2)--232722 "Slicing Tornado" better?
 local specWarnZephyrSlam						= mod:NewSpecialWarningDefensive(375580, nil, nil, nil, 1, 2)
 local specWarnZephyrSlamTaunt					= mod:NewSpecialWarningTaunt(375580, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 local timerColaescingStormCD					= mod:NewCDCountTimer(79.1, 387849, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, nil, nil, nil, 3)
+local timerRagingBurstCD						= mod:NewCDCountTimer(79.1, 388302, 86189, nil, nil, 3)--Tornados
 local timerConductiveMarkCD						= mod:NewCDCountTimer(25, 391686, nil, nil, nil, 3)
 local timerCycloneCD							= mod:NewCDCountTimer(79.1, 376943, nil, nil, nil, 2)
-local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3)
+local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3)--232722 "Slicing Tornado" better?
 local timerZephyrSlamCD							= mod:NewCDCountTimer(16.9, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 		timerZephyrSlamCD:Start(15.7-delay, 1)
 		timerCrosswindsCD:Start(25.5-delay, 1)
 		timerCycloneCD:Start(35.2-delay, 1)
-		timerColaescingStormCD:Start(70-delay, 1)
+		timerColaescingStormCD:Start(70-delay, 1)--70-73 (check ito it being 73 consistently on mythic)
 	else
 		timerZephyrSlamCD:Start(9.5-delay, 1)
 		timerCrosswindsCD:Start(28.9-delay, 1)
@@ -130,8 +130,8 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			timerConductiveMarkCD:Restart(19.5, self.vb.markCount+1)
 			timerZephyrSlamCD:Restart(30, self.vb.slamCount+1)--30-33
-			timerCrosswindsCD:Restart(40.8, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
-			timerColaescingStormCD:Start(90, self.vb.stormCount+1)
+			timerCrosswindsCD:Restart(40, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
+			timerColaescingStormCD:Start(87, self.vb.stormCount+1)
 		elseif self:IsHeroic() then
 			timerZephyrSlamCD:Restart(20.7, self.vb.slamCount+1)
 			timerCrosswindsCD:Restart(30.4, self.vb.crosswindCount+1)--40-45, but always a minimum of 40 from heer
@@ -146,12 +146,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 388302 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		warnRagingBurst:Show(self.vb.burstCount)
-		timerRagingBurstCD:Start(self:IsMythic() and 90 or self:IsHeroic() and 75 or 86.2, self.vb.burstCount+1)
+		timerRagingBurstCD:Start(self:IsMythic() and 89 or self:IsHeroic() and 75 or 86.2, self.vb.burstCount+1)
 	elseif spellId == 376943 then
 		self.vb.cycloneCount = self.vb.cycloneCount + 1
 		specWarnCyclone:Show(self.vb.cycloneCount)
 		specWarnCyclone:Play("pullin")
-		timerCycloneCD:Start(self:IsMythic() and 90 or self:IsHeroic() and 75 or 86.2, self.vb.cycloneCount+1)
+		timerCycloneCD:Start(self:IsMythic() and 89 or self:IsHeroic() and 75 or 86.2, self.vb.cycloneCount+1)
 		if timerZephyrSlamCD:GetRemaining(self.vb.slamCount+1) < 13.2 then
 			timerZephyrSlamCD:Restart(13.2, self.vb.slamCount+1)--13.2-15
 		end
