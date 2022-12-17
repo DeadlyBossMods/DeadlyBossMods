@@ -217,27 +217,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFlamerift:CombinedShow(0.5, args.destName)
 	elseif spellId == 394906 then
 		local amount = args.amount or 1
-		if (amount % 3 == 0) then
-			if amount >= 6 then
-				if args:IsPlayer() then
-					specWarnBurningWound:Show(amount)
-					specWarnBurningWound:Play("stackhigh")
-				else
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-					local remaining
-					if expireTime then
-						remaining = expireTime-GetTime()
-					end
-					if (not remaining or remaining and remaining < 10.9) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-						specWarnBurningWoundTaunt:Show(args.destName)
-						specWarnBurningWoundTaunt:Play("tauntboss")
-					else
-						warnBurningWound:Show(args.destName, amount)
-					end
-				end
+		if amount >= 6 then
+			if args:IsPlayer() then
+				specWarnBurningWound:Show(amount)
+				specWarnBurningWound:Play("stackhigh")
 			else
-				warnBurningWound:Show(args.destName, amount)
+				if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+					specWarnBurningWoundTaunt:Show(args.destName)
+					specWarnBurningWoundTaunt:Play("tauntboss")
+				else
+					warnBurningWound:Show(args.destName, amount)
+				end
 			end
+		else
+			warnBurningWound:Show(args.destName, amount)
 		end
 	end
 end

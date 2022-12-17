@@ -10,13 +10,13 @@
 ## SavedVariables: DBMAffixes_AllSavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-Mod-No-Statistics: 1
 ## X-DBM-Mod-Name: Affixes
 ## X-DBM-Mod-Name-koKR: 어픽스
 ## X-DBM-Mod-Name-ruRU: Аффиксы
-## X-DBM-Mod-MapID: 2441, 2097, 1651, 1208, 1195, 2296, 2450, 2481
-## X-DBM-Mod-Sort: 305
+## X-DBM-Mod-MapID: 2516, 2526, 2515, 2521, 1477, 1571, 1176, 960
+## X-DBM-Mod-Sort: 205
 ## X-DBM-Mod-MinCoreRevision: 12473
 
 localization.en.lua
