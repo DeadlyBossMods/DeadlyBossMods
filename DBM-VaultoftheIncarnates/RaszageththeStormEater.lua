@@ -685,13 +685,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
-			yellStormCharged:Yell(6)--Blue Square
+			yellStormCharged:Yell(6, "")--Blue Square
 		end
 	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
-			yellStormCharged:Yell(7)--Red X
+			yellStormCharged:Yell(7, "")--Red X
 		end
 	elseif spellId == 394582 and args:IsPlayer() then
 		warnFocusedCharge:Show()
