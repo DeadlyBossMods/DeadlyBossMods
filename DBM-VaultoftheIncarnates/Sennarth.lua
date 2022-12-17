@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20221213000000)
+mod:SetHotfixNoticeRev(20221217000000)
 mod:SetMinSyncRevision(20221013000000)
 --mod.respawnTime = 29
 
@@ -19,22 +19,21 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 372030 385083",
 	"SPELL_AURA_REMOVED 371976 372082 372030 373048",
 	"SPELL_AURA_REMOVED_DOSE 372030",
---	"SPELL_INTERRUPT",
+	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 372055",
 --	"SPELL_PERIODIC_MISSED 372055",
 	"UNIT_DIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --TODO, GTFO for icy Ground?
 --TODO, I cannot be bothered to do these timers. After 3 hours on boss logs (yet again), decided not to bother with more accurate approach. Half assed will have to be good enough
 --TODO, timers need more work, but it'll be helpful when phase change events added to combat log or at very least transcriptor for easier table reading.
 --[[
-(ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 372539 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
+(ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
  or (ability.id = 372238 or ability.id = 372648) and type = "cast"
  or ability.id = 181113 and source.id = 189234
- or ability.id = 372539 and type = "interrupt"
+ or ability.id = 372539 or type = "interrupt"
  or ability.id = 181089 and type = "cast"
 --]]
 --General
@@ -114,8 +113,6 @@ local allTimers = {
 			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
 			--Call Spiderlings
 			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
-			--Gusting Rime
-			[396792] = {},
 		},
 		--[2] = {
 		--	--Chilling Blast
@@ -134,8 +131,6 @@ local allTimers = {
 			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
 			--Call Spiderlings
 			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
-			--Gusting Rime
-			[396792] = {},
 		},
 		--[2] = {
 		--	--Chilling Blast
@@ -323,6 +318,16 @@ function mod:SPELL_CAST_START(args)
 		timerFreezingBreathCD:Start(nil, args.sourceGUID)
 	elseif spellId == 372539 then
 		warnApexofIce:Show()
+		self:SetStage(2)
+		self.vb.blastCount = 0
+		self.vb.burstCount = 0
+		self.vb.webCount = 0
+		self.vb.spiderlingsCount = 0
+		timerChillingBlastCD:Stop()
+		timerEnvelopingWebsCD:Stop()
+		timerGossamerBurstCD:Stop()
+		timerCallSpiderlingsCD:Stop()
+		timerFrostbreathArachnidCD:Stop()
 	elseif spellId == 373027 then
 		self.vb.webIcon = 1
 		self.vb.webCount = self.vb.webCount + 1
@@ -476,13 +481,19 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 372539 then
-		--announce interrupt
+		--These timers can still variate due to bugs I won't document here or code around (even though I know how to)
+		--needless to say I hope they get fixed
+		timerCallSpiderlingsCD:Start(9.7, 1)
+		timerChillingBlastCD:Start(12.1, 1)
+		timerSuffocatingWebsCD:Start(19.8, 1)
+		timerRepellingBurstCD:Start(29.6, 1)
 	end
 end
---]]
+
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -523,39 +534,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 --			timerChillingBlastCD:Start(16, 1)
 --			timerGossamerBurstCD:Start(33, self.vb.burstCount+1)
 --			timerPhaseCD:Start(53.8)--Til Stage 2
-		end
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 372497 then--Eight Legs of Fury
-		self:SetStage(2)
-		self.vb.blastCount = 0
-		self.vb.burstCount = 0
-		self.vb.webCount = 0
-		self.vb.spiderlingsCount = 0
-		timerChillingBlastCD:Stop()
-		timerEnvelopingWebsCD:Stop()
-		timerGossamerBurstCD:Stop()
-		timerCallSpiderlingsCD:Stop()
-		timerFrostbreathArachnidCD:Stop()
-		--Stage 2 timers start here, but if she's not interrupted within 12 seconds, they start to queue up and become messy
-		--These may be wrong on several difficulties due to no viewable CLEU event on WCL yet to verify them
-		if self:IsMythic() then
-			--Iffy as fuck, will need transcriptor to really address this cleaner, or even WCLs cause there are multiple factors at play here
-			timerSuffocatingWebsCD:Start(27, 1)
-			timerRepellingBurstCD:Start(31, 1)
-			timerCallSpiderlingsCD:Start(44, 1)
-			timerChillingBlastCD:Start(46, 1)
-		else
-			timerCallSpiderlingsCD:Start(12.8, 1)
-			timerChillingBlastCD:Start(15.3, 1)
-			timerSuffocatingWebsCD:Start(22.7, 1)
-			timerRepellingBurstCD:Start(32.7, 1)
-		end
-		if self:IsMythic() then
-			self.vb.rimeCast = 0
-			timerGustingrimeCD:Start()
 		end
 	end
 end

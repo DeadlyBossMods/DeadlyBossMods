@@ -5,27 +5,26 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(181224)--way too many CIDs to guess right now
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221215000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20221217000000)
+mod:SetMinSyncRevision(20221217000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434 390463",
-	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249",
+	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249 378829 382434",
 	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713",
 	"SPELL_PERIODIC_DAMAGE 395929",
 	"SPELL_PERIODIC_MISSED 395929",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, volatile current target scan (or maybe emote/whisper/debuff?)
 --TODO, warn for Volatike (388631)?
---TODO, fix lightning strikes
 --TODO, detect intermission add spawns/add timer for spawns?
 --TODO, initial CD timers for spawning in adds, if timers are used for the mythic only stuff
 --TODO, track and alert high stacks of https://www.wowhead.com/beta/spell=385560/windforce-strikes on Oathsworn?
@@ -45,6 +44,7 @@ local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil,
 
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(388115, nil, nil, nil, 1, 8)
 
+local timerPhaseCD								= mod:NewPhaseTimer(30)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
@@ -78,6 +78,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25402))
 local specWarnStormNova							= mod:NewSpecialWarningSpell(382434, nil, nil, nil, 2, 2)
 local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, nil, nil, 3, 2)
 
+local timerStormNovaCD							= mod:NewCDTimer(5, 382434, nil, nil, nil, 2)
 local timerStormNova							= mod:NewCastTimer(5, 382434, nil, nil, nil, 5)
 local timerLightningDevastationCD				= mod:NewCDTimer(13.3, 385065, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Primalist Forces
@@ -136,6 +137,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25816))
 local specWarnStormBreak					= mod:NewSpecialWarningDodge(389870, nil, nil, nil, 2, 2)
 local specWarnBallLightning					= mod:NewSpecialWarningDodge(385068, nil, nil, nil, 2, 2)
 
+local timerLightningStrikeCD				= mod:NewCDTimer(31.6, 376126, nil, nil, nil, 3)
 local timerStormBreakCD						= mod:NewCDTimer(23.1, 389870, nil, nil, nil, 3)
 local timerBallLightningCD					= mod:NewCDTimer(23.1, 385068, nil, nil, nil, 3)
 --Stage Three: Storm Incarnate
@@ -167,6 +169,8 @@ mod.vb.strikeCount = 0
 --P2
 mod.vb.shroudIcon = 1
 mod.vb.wingCount = 0
+--P2.5
+mod.vb.stormSurgeCount = 0
 --P3
 mod.vb.magneticCount = 0
 mod.vb.magneticIcon = 4
@@ -305,6 +309,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tankCount = 0
 	self.vb.breathCount = 0
 	self.vb.strikeCount = 0
+	self.vb.stormSurgeCount = 0
 	timerElectrifiedJawsCD:Start(5-delay, 1)
 	timerStaticChargeCD:Start(15-delay, 1)
 	timerLightningBreathCD:Start(23-delay, 1)
@@ -392,12 +397,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 397468 then
 		warnBlazingroar:Show()
 	elseif spellId == 387261 then
-		self.vb.energyCount = self.vb.energyCount + 1
+		self.vb.stormSurgeCount = self.vb.stormSurgeCount + 1
 		specWarnStormsurge:Show(self.vb.energyCount)
 		specWarnStormsurge:Play("scatter")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.energyCount+1) or 80
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.stormSurgeCount+1) or 80
 		if timer then
-			timerStormsurgeCD:Start(timer, self.vb.energyCount+1)
+			timerStormsurgeCD:Start(timer, self.vb.stormSurgeCount+1)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -412,14 +417,14 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerTempestWingCD:Start(timer, self.vb.wingCount+1)
 		end
-	elseif spellId == 389870 then
+	elseif spellId == 389870 and self:AntiSpam(5, 1) then
 		specWarnStormBreak:Show()
 		specWarnStormBreak:Play("watchstep")
-		timerStormBreakCD:Start(nil, args.sourceGUID)
-	elseif spellId == 385068 then
+		timerStormBreakCD:Start()
+	elseif spellId == 385068 and self:AntiSpam(5, 2) then
 		specWarnBallLightning:Show()
 		specWarnBallLightning:Play("watchorb")
-		timerBallLightningCD:Start(nil, args.sourceGUID)
+		timerBallLightningCD:Start()
 	elseif spellId == 395885 then
 		self.vb.energyCount = self.vb.energyCount + 1
 		specWarnStormEater:Show(self.vb.energyCount)
@@ -448,7 +453,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 381615 and self:AntiSpam(5, 1) then
+	if spellId == 381615 and self:AntiSpam(5, 3) then
 		self.vb.chargeIcon = 1
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.chargeCount+1)
@@ -472,10 +477,79 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		if timer then
 --			timerMagneticChargeCD:Start(timer, self.vb.magneticCount+1)
 --		end
-	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger
-		timerStormsurgeCD:Start(8.5, 1)--Started here so it actually has timer
-	elseif spellId == 181089 then--Encounter event
-		self:SetStage(0.5)
+	elseif spellId == 382434 then--First intermission Starts (Storm Nova)
+		self:SetStage(1.5)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
+		warnPhase:Play("phasechange")
+		self.vb.breathCount = 0--Reused for Lightning Devastation
+--
+		timerLightningDevastationCD:Start(13.5, 1)
+		timerPhaseCD:Start(self:IsHard() and 93.6 or 100)
+	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger (Electric Scales)
+		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
+		self.vb.energyCount = 0
+		self.vb.currentCount = 0
+		self.vb.tankCount = 0
+		self.vb.strikeCount = 0
+		self.vb.wingCount = 0
+		self.vb.chargeCount = 0
+
+		timerLightningDevastationCD:Stop()
+		timerPhaseCD:Stop()
+
+		timerStormsurgeCD:Start(8.5, 1)
+		timerElectrifiedJawsCD:Start(38.5, 1)
+		timerTempestWingCD:Start(43.5, 1)
+		timerFulminatingChargeCD:Start(53.5, 1)
+		timerVolatileCurrentCD:Start(self:IsHard() and 65.5 or 68.5, 1)--Only difference on heroic, we'll see on mythic
+		timerPhaseCD:Start(self:IsHard() and 193 or 211)
+	elseif spellId == 390463 then--Second Intermission Ends Storm Nova
+		self:SetStage(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+
+		self.vb.energyCount = 0--Used for Mythic Storm-Eater
+		self.vb.chargeCount = 0--Fulminating
+		self.vb.tankCount = 0--Thunderous Blast
+		self.vb.breathCount = 0--Lightning Breath
+		self.vb.strikeCount = 0--Lightning Strike
+		self.vb.wingCount = 0
+		self.vb.magneticCount = 0
+
+		if self:IsHard() then
+			if self:IsMythic() then
+				timerStormEaterCD:Start(3)
+			end
+			timerThunderousBlastCD:Start(21.8, 1)
+			timerLightningBreathCD:Start(31.3, 1)
+			timerFulminatingChargeCD:Start(40.9, 1)
+			timerTempestWingCD:Start(65.9, 1)
+			timerMagneticChargeCD:Start(25.9)
+		else
+			timerThunderousBlastCD:Start(22.5, 1)
+			timerLightningBreathCD:Start(34.5, 1)
+			timerFulminatingChargeCD:Start(41.5, 1)
+			timerTempestWingCD:Start(66.4, 1)
+		end
+	elseif spellId == 181089 and self.vb.phase == 2 and self.vb.stormSurgeCount > 0 then--Encounter event
+		--This is now only used for 2.5 since other stages have earlier events to use
+		--But we need to be very specific WHEN to use this event since it fires 7x on fight
+		self:SetStage(2.5)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
+		warnPhase:Play("phasechange")
+		self.vb.breathCount = 0--Reused for Lightning Devastation
+		timerStormsurgeCD:Stop()
+		timerTempestWingCD:Stop()
+		timerFulminatingChargeCD:Stop()
+		timerVolatileCurrentCD:Stop()
+		timerElectrifiedJawsCD:Stop()
+
+		timerLightningStrikeCD:Start(6.2)
+		timerLightningDevastationCD:Start(25, 1)
+		--Old method using this event for all stae change
+		--[[self:SetStage(0.5)
 		if self.vb.phase == 1.5 then
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 			warnPhase:Play("phasechange")
@@ -485,7 +559,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerVolatileCurrentCD:Stop()
 			timerElectrifiedJawsCD:Stop()
 			timerLightningBreathCD:Stop()
-
+--
 			timerLightningDevastationCD:Start(7.3, 1)
 		elseif self.vb.phase == 2 then
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
@@ -496,9 +570,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.strikeCount = 0
 			self.vb.wingCount = 0
 			self.vb.chargeCount = 0
-
+--
 			timerLightningDevastationCD:Stop()
-
+--
 			timerElectrifiedJawsCD:Start(29.9, 1)
 			timerTempestWingCD:Start(35, 1)
 			timerFulminatingChargeCD:Start(44, 1)
@@ -519,7 +593,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else--P3
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
-
+--
 			self.vb.energyCount = 0--Used for Mythic Storm-Eater
 			self.vb.chargeCount = 0--Fulminating
 			self.vb.tankCount = 0--Thunderous Blast
@@ -527,7 +601,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.strikeCount = 0--Lightning Strike
 			self.vb.wingCount = 0
 			self.vb.magneticCount = 0
-
+--
 			timerLightningDevastationCD:Stop()
 			if self:IsHard() then
 				if self:IsMythic() then
@@ -547,7 +621,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerFulminatingChargeCD:Start(35.7, 1)
 				timerTempestWingCD:Start(60, 1)
 			end
-		end
+		end--]]
 	end
 end
 
@@ -660,11 +734,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 391285 and not args:IsPlayer() then
 		specWarnMeltedArmor:Show(args.destName)
 		specWarnMeltedArmor:Play("tauntboss")
-	elseif spellId == 391281 and self:AntiSpam(5, 2) then--Colossal Stormfiend being engaged
-		timerBallLightningCD:Start(8.4, args.destGUID)
-		timerStormBreakCD:Start(21.8, args.destGUID)
+	elseif spellId == 391281 and self:AntiSpam(5, 5) then--Colossal Stormfiends being engaged
+		timerBallLightningCD:Start(8.4)
+		timerStormBreakCD:Start(21.8)
 	elseif spellId == 391402 then
 		warnLightningStrike:Show()
+		timerLightningStrikeCD:Start()--31.6
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -746,15 +821,25 @@ function mod:UNIT_DIED(args)
 	elseif cid == 199549 then--Flamesworn Herald
 		timerFlameShieldCD:Stop(args.destGUID)
 	elseif cid == 197145 then--Colossal Stormfiend
-		timerStormBreakCD:Stop(args.destGUID)
-		timerBallLightningCD:Stop(args.destGUID)
+
 	end
 end
 
---[[
+--Purely for earlier timer canceling, new timers not started on USCS if it can be helped, otherwise timers can't be updated easily from WCLs
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 353193 then
+	if spellId == 396734 and self.vb.phase == 1 then--Storm Shroud
+		timerHurricaneWingCD:Stop()
+		timerStaticChargeCD:Stop()
+		timerVolatileCurrentCD:Stop()
+		timerElectrifiedJawsCD:Stop()
+		timerLightningBreathCD:Stop()
 
+		timerStormNovaCD:Start(13.4)
+	elseif spellId == 398466 then--[DNT] Clear Raszageth Auras on Players (Intermission 2 end)
+		timerStormBreakCD:Stop()
+		timerBallLightningCD:Stop()
+		timerLightningStrikeCD:Stop()
+		timerLightningDevastationCD:Stop()
+		timerStormNovaCD:Start(4.8)
 	end
 end
---]]

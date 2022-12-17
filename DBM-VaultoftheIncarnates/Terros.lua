@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190496)
 mod:SetEncounterID(2639)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221213000000)
+mod:SetHotfixNoticeRev(20221217000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -63,16 +63,27 @@ mod.vb.slamCount = 0
 mod.vb.impactCount = 0
 mod.vb.infusedCount = 0
 mod.vb.frenziedStarted = false
+local difficultyName = "other"
 local allTimers = {
-	--Infused Fallout (Mythic)
-	[396351] = {29.2, 42.3, 24.4, 29.2, 40.1, 25.5, 28.3, 41.5, 26.8, 26.8, 43.0},
-	--Concussive Slam
---	[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},--Old beta timers
-	[376279] = {16.0, 18.0, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.4, 17.9, 23.9, 17.9},--New Retail
-	--Rock Blast
-	[380487] = {6.0, 41.9, 54.5, 41.9, 54.5, 41.9, 54.5, 42.0},
-	--Shattering Impact
-	[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+	["mythic"] = {
+		--Infused Fallout (Mythic)
+		[396351] = {28.1, 42, 25.4, 30.7, 40.9, 24.6, 29.1, 43.3, 23.4, 29.1},--Missing some data
+		--Concussive Slam
+		[376279] = {12, 22, 20.9, 22, 31.5, 21.9, 21, 21.9, 31.5, 21.9, 21, 21.9, 31.5, 21.9},--Missing some data
+		--Rock Blast
+		[380487] = {3, 43, 53.5, 42.9, 53.4, 43, 53.4, 42.9},--Final cast guessed based on pattern
+		--Shattering Impact
+		[383073] = {23, 42.9, 53.4, 42.9, 53.5, 42.9, 53.5, 42.9},--Final cast guessed based on pattern
+	},
+	["other"] = {
+		--Concussive Slam
+--		[376279] = {14.0, 19.9, 22.0, 19.9, 34.5, 20.0, 22.0, 20.0, 34.4, 20.0, 22.0, 20.0, 34.5, 19.9, 22.0, 20.0},--Old beta timers
+		[376279] = {16.0, 18.0, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.5, 17.9, 23.9, 17.9, 36.4, 17.9, 23.9, 17.9},--New Retail
+		--Rock Blast
+		[380487] = {6.0, 41.9, 54.5, 41.9, 54.5, 41.9, 54.5, 42.0},
+		--Shattering Impact
+		[383073] = {27.0, 42.0, 54.5, 42.0, 54.5, 42.0, 54.5, 42.0},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -81,14 +92,22 @@ function mod:OnCombatStart(delay)
 	self.vb.slamCount = 0
 	self.vb.impactCount = 0
 	self.vb.frenziedStarted = false
-	timerRockBlastCD:Start(6-delay, 1)
-	timerConcussiveSlamCD:Start(16-delay, 1)
-	timerShatteringImpactCD:Start(27-delay, 1)
-	timerResonatingAnnihilationCD:Start(90-delay, 1)
-	timerFrenziedDevastationCD:Start(387.9-delay)
 	if self:IsMythic() then
+		difficultyName = "mythic"
 		self.vb.infusedCount = 0
-		timerInfusedFalloutCD:Start(29.2-delay, 1)
+		timerRockBlastCD:Start(3-delay, 1)
+		timerInfusedFalloutCD:Start(28.1-delay, 1)
+		timerConcussiveSlamCD:Start(12-delay, 1)
+		timerShatteringImpactCD:Start(23-delay, 1)
+		timerResonatingAnnihilationCD:Start(88-delay, 1)
+		timerFrenziedDevastationCD:Start(385.9-delay)
+	else
+		difficultyName = "other"
+		timerRockBlastCD:Start(6-delay, 1)
+		timerConcussiveSlamCD:Start(16-delay, 1)
+		timerShatteringImpactCD:Start(27-delay, 1)
+		timerResonatingAnnihilationCD:Start(90-delay, 1)
+		timerFrenziedDevastationCD:Start(387.9-delay)
 	end
 	if not self:IsTrivial() then
 		self:RegisterShortTermEvents(
@@ -108,13 +127,21 @@ function mod:OnCombatEnd()
 --	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	else
+		difficultyName = "other"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 380487 then
 --		self.vb.rockIcon = 1
 		self.vb.awakenedIcon = 1
 		self.vb.rockCount = self.vb.rockCount + 1
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.rockCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.rockCount+1)
 		if timer then
 			timerRockBlastCD:Start(timer, self.vb.rockCount+1)
 		end
@@ -134,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.impactCount = self.vb.impactCount + 1
 		specWarnShatteringImpact:Show()
 		specWarnShatteringImpact:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.impactCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.impactCount+1)
 		if timer then
 			timerShatteringImpactCD:Start(timer, self.vb.impactCount+1)
 		end
@@ -144,13 +171,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnConcussiveSlam:Show()
 			specWarnConcussiveSlam:Play("defensive")
 		end
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.slamCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.slamCount+1)
 		if timer then
 			timerConcussiveSlamCD:Start(timer, self.vb.slamCount+1)
 		end
 	elseif spellId == 396351 then
 		self.vb.infusedCount = self.vb.infusedCount + 1
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.infusedCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infusedCount+1)
 		if timer then
 			timerInfusedFalloutCD:Start(timer, self.vb.infusedCount+1)
 		end
@@ -187,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expireTime then
 			remaining = expireTime-GetTime()
 		end
-		local timer = (self:GetFromTimersTable(allTimers, false, false, 376279, self.vb.slamCount+1) or 18) - 5
+		local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 18) - 5
 		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnConcussiveSlamTaunt:Show(args.destName)
 			specWarnConcussiveSlamTaunt:Play("tauntboss")

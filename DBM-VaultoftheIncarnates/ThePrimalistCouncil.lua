@@ -101,7 +101,7 @@ local difficultyName = "normal"--Unused right now, mythic and normal are same wi
 local allTimers = {
 	["mythic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {13, 44, 26, 27, 26, 29, 25, 26, 27, 27},
+		[375331] = {13, 42.5, 26, 24.7, 26, 26.8, 25, 26, 27, 27},
 		--Pillars
 		[372322] = {5, 27, 29, 26, 25, 28, 27, 26, 27, 27, 26, 28},
 		--Primal Blizzard (excluded for now)
