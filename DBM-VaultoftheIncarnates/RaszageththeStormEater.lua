@@ -243,7 +243,7 @@ local allTimers = {
 			--Storm Eater (Mythic Only)
 			[395885] = {},
 			--Lightning Breath
-			[377594] = {43},
+			[377594] = {43, 33, 54},
 			--Tempest Wing
 			[385574] = {76, 65},
 			--Fulminating Charge
