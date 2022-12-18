@@ -163,11 +163,15 @@ mod:AddNamePlateOption("NPAuraOnElementalBond", 374380, true)
 ----Tectonic Crusher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
 local warnBreakingGravel						= mod:NewStackAnnounce(374321, 2, nil, "Tank|Healer")
+<<<<<<< Updated upstream
 local warnGroundShatter							= mod:NewCastAnnounce(374427, 3)
+=======
+local warnGroundShatter							= mod:NewTargetNoFilterAnnounce(374427, 3)
+>>>>>>> Stashed changes
 
---local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
---local yellGroundShatter							= mod:NewShortYell(374427)
---local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
+local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
+local yellGroundShatter							= mod:NewShortYell(374427)
+local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
 local specWarnViolentUpheavel					= mod:NewSpecialWarningDodge(374430, nil, nil, nil, 2, 2)
 
 local timerGroundShatterCD						= mod:NewCDTimer(33.2, 374427, nil, nil, nil, 3)
@@ -213,6 +217,7 @@ mod.vb.damageCount = 0
 mod.vb.damageTimer = 30
 mod.vb.avoidTimer = 60
 mod.vb.ultTimer = 60
+local groundShatterTargets = {}
 local updateAltar
 
 function mod:OnCombatStart(delay)
@@ -246,6 +251,10 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnSurge or self.Options.NPAuraOnElementalBond then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+end
+
+local function endAuraScan(self)
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -293,8 +302,13 @@ function mod:SPELL_CAST_START(args)
 			timerThunderStrikeCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 397338 then
-		warnGroundShatter:Show()
+		table.wipe(groundShatterTargets)
+--		warnGroundShatter:Show()
 		timerGroundShatterCD:Start(nil, args.sourceGUID)
+		self:RegisterShortTermEvents(
+			"UNIT_AURA_UNFILTERED"
+		)
+		self:Schedule(7, endAuraScan, self)
 	elseif spellId == 374430 then
 		specWarnViolentUpheavel:Show()
 		specWarnViolentUpheavel:Play("watchstep")
@@ -644,6 +658,26 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:UNIT_AURA_UNFILTERED(uId)
+	local hasDebuff = DBM:UnitDebuff(uId, 374427)
+	local name = DBM:GetUnitFullName(uId)
+	if not hasDebuff and groundShatterTargets[name] then
+		groundShatterTargets[name] = nil
+		if UnitIsUnit(uId, "player") then
+			yellGroundShatterFades:Cancel()
+		end
+	elseif hasDebuff and not groundShatterTargets[name] then
+		groundShatterTargets[name] = true
+		warnGroundShatter:CombinedShow(0.5, name)--Multiple targets in mythic
+		if UnitIsUnit(uId, "player") then
+			specWarnGroundShatter:Show()
+			specWarnGroundShatter:Play("runout")
+			yellGroundShatter:Yell()
+			yellGroundShatterFades:Countdown(spellId)
+		end
+	end
+end
 
 do
 	local spellEasyMapping = {
