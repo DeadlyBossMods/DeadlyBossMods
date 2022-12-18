@@ -13,7 +13,7 @@ mod:RegisterEvents(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 240447 226512 350209 396369 396364",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 396369 396364",
 	"SPELL_DAMAGE 209862",
 	"SPELL_MISSED 209862"
 --	"UNIT_DIED"
@@ -24,6 +24,7 @@ mod:RegisterEvents(
 (ability.id = 240446) and type = "begincast"
 --]]
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
+local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
@@ -33,6 +34,8 @@ local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, 
 local yellThundering						= mod:NewShortPosYell(396363, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
+local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, nil, 5)
+local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, nil, 5)
 --local timerShadowEruptionCD					= mod:NewCDTimer(24, 373729, nil, nil, nil, 2)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
@@ -76,26 +79,34 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
 			yellThundering:Yell(6, "")--Blue Square
+			timerPositiveCharge:Start()
 		end
 	elseif spellId == 396364 then
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
 			yellThundering:Yell(7, "")--Red X
+			timerNegativeCharge:Start()
 		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 373724  then
-
+	if spellId == 396369 then
+		if args:IsPlayer() then
+			warnThunderingFades:Show()
+			timerPositiveCharge:Stop()
+		end
+	elseif spellId == 396364 then
+		if args:IsPlayer() then
+			warnThunderingFades:Show()
+			timerNegativeCharge:Stop()
+		end
 	end
 end
---]]
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 209862 and destGUID == UnitGUID("player") and self:AntiSpam(3, 7) then
