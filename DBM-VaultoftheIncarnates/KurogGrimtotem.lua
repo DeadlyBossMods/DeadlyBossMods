@@ -163,11 +163,7 @@ mod:AddNamePlateOption("NPAuraOnElementalBond", 374380, true)
 ----Tectonic Crusher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
 local warnBreakingGravel						= mod:NewStackAnnounce(374321, 2, nil, "Tank|Healer")
-<<<<<<< Updated upstream
-local warnGroundShatter							= mod:NewCastAnnounce(374427, 3)
-=======
 local warnGroundShatter							= mod:NewTargetNoFilterAnnounce(374427, 3)
->>>>>>> Stashed changes
 
 local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
 local yellGroundShatter							= mod:NewShortYell(374427)
