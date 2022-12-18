@@ -111,8 +111,8 @@ local warnScatteredCharge					= mod:NewYouAnnounce(394583, 4)
 local warnFulminatingCharge					= mod:NewTargetNoFilterAnnounce(378829, 3)
 
 local specWarnStormsurge					= mod:NewSpecialWarningMoveAwayCount(387261, nil, nil, nil, 2, 2)--Maybe shorttext 28089?
-local specWarnPositiveCharge				= mod:NewSpecialWarningYouPos(391990, nil, nil, nil, 1, 13)--Split warning so user can custom sounds
-local specWarnNegativeCharge				= mod:NewSpecialWarningYouPos(391991, nil, nil, nil, 1, 13)--between positive and negative
+local specWarnPositiveCharge				= mod:NewSpecialWarningYou(391990, nil, nil, nil, 1, 13)--Split warning so user can custom sounds
+local specWarnNegativeCharge				= mod:NewSpecialWarningYou(391991, nil, nil, nil, 1, 13)--between positive and negative
 local yellStormCharged						= mod:NewShortPosYell(391989, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
 local specWarnInversion						= mod:NewSpecialWarningMoveAway(394584, nil, nil, nil, 3, 13, 4)
 local yellInversion							= mod:NewShortYell(394584)
@@ -685,13 +685,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
-			yellStormCharged:Yell(6)--Blue Square
+			yellStormCharged:Yell(6, "")--Blue Square
 		end
 	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
-			yellStormCharged:Yell(7)--Red X
+			yellStormCharged:Yell(7, "")--Red X
 		end
 	elseif spellId == 394582 and args:IsPlayer() then
 		warnFocusedCharge:Show()
