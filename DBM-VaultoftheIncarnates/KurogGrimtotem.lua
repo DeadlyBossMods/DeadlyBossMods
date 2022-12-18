@@ -670,7 +670,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 			specWarnGroundShatter:Show()
 			specWarnGroundShatter:Play("runout")
 			yellGroundShatter:Yell()
-			yellGroundShatterFades:Countdown(spellId)
+			yellGroundShatterFades:Countdown(5)
 		end
 	end
 end
