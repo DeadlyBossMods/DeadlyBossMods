@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20221218000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 374427 374430 374623 374624 374622 391019 392125 392192 392152 391268 393314 393295 393296 392098 393459 394719 393429 395893 394416",
+	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 397338 374430 374623 374624 374622 391019 392125 392192 392152 391268 393314 393295 393296 392098 393459 394719 393429 395893 394416",
 	"SPELL_CAST_SUCCESS 373415",
 	"SPELL_SUMMON 374935 374931 374939 374943",
 	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390920 391419 396109 396113 396106 396085 396241 391696",
@@ -163,10 +163,11 @@ mod:AddNamePlateOption("NPAuraOnElementalBond", 374380, true)
 ----Tectonic Crusher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25073))
 local warnBreakingGravel						= mod:NewStackAnnounce(374321, 2, nil, "Tank|Healer")
+local warnGroundShatter							= mod:NewCaastAnnounce(374427, 3)
 
-local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
-local yellGroundShatter							= mod:NewShortYell(374427)
-local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
+--local specWarnGroundShatter						= mod:NewSpecialWarningMoveAway(374427, nil, nil, nil, 1, 2)
+--local yellGroundShatter							= mod:NewShortYell(374427)
+--local yellGroundShatterFades					= mod:NewShortFadesYell(374427)
 local specWarnViolentUpheavel					= mod:NewSpecialWarningDodge(374430, nil, nil, nil, 2, 2)
 
 local timerGroundShatterCD						= mod:NewCDTimer(33.2, 374427, nil, nil, nil, 3)
@@ -291,7 +292,8 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerThunderStrikeCD:Start(nil, args.sourceGUID)
 		end
-	elseif spellId == 374427 then
+	elseif spellId == 397338 then
+		warnGroundShatter:Show()
 		timerGroundShatterCD:Start(nil, args.sourceGUID)
 	elseif spellId == 374430 then
 		specWarnViolentUpheavel:Show()
@@ -474,9 +476,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAbsoluteZero:Play("mm"..icon)
 			yellAbsoluteZero:Yell(icon, icon)
 			yellAbsoluteZeroFades:Countdown(spellId, nil, icon)
-		else
-			warnAbsoluteZero:CombinedShow(0.5, args.destName)
 		end
+		warnAbsoluteZero:CombinedShow(0.5, args.destName)
 		self.vb.zeroIcon = self.vb.zeroIcon + 1
 	elseif spellId == 372514 and args:IsPlayer() then
 		timerFrostBite:Start()
@@ -494,13 +495,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 374427 then
-		if args:IsPlayer() then
-			specWarnGroundShatter:Show()
-			specWarnGroundShatter:Play("runout")
-			yellGroundShatter:Yell()
-			yellGroundShatterFades:Countdown(spellId)
-		end
+--	elseif spellId == 374427 then
+--		if args:IsPlayer() then
+--			specWarnGroundShatter:Show()
+--			specWarnGroundShatter:Play("runout")
+--			yellGroundShatter:Yell()
+--			yellGroundShatterFades:Countdown(spellId)
+--		end
 	elseif spellId == 391056 then
 		if self.Options.SetIconOnEnvelopingEarth then
 			self:SetUnsortedIcon(0.3, args.destName, 1, 3, false)
@@ -582,10 +583,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 374427 then
-		if args:IsPlayer() then
-			yellGroundShatterFades:Cancel()
-		end
+--	elseif spellId == 374427 then
+--		if args:IsPlayer() then
+--			yellGroundShatterFades:Cancel()
+--		end
 	elseif spellId == 390920 then
 		if self.Options.SetIconOnShockingBurst then
 			self:SetIcon(args.destName, 0)
