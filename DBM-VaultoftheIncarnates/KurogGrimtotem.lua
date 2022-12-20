@@ -300,12 +300,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 397338 then
 		table.wipe(groundShatterTargets)
---		warnGroundShatter:Show()
 		timerGroundShatterCD:Start(nil, args.sourceGUID)
-		self:RegisterShortTermEvents(
-			"UNIT_AURA_UNFILTERED"
-		)
-		self:Schedule(7, endAuraScan, self)
 	elseif spellId == 374430 then
 		specWarnViolentUpheavel:Show()
 		specWarnViolentUpheavel:Play("watchstep")
@@ -510,13 +505,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
---	elseif spellId == 374427 then
---		if args:IsPlayer() then
---			specWarnGroundShatter:Show()
---			specWarnGroundShatter:Play("runout")
---			yellGroundShatter:Yell()
---			yellGroundShatterFades:Countdown(spellId)
---		end
+	elseif spellId == 374427 then
+		warnGroundShatter:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnGroundShatter:Show()
+			specWarnGroundShatter:Play("runout")
+			yellGroundShatter:Yell()
+			yellGroundShatterFades:Countdown(spellId)
+		end
 	elseif spellId == 391056 then
 		if self.Options.SetIconOnEnvelopingEarth then
 			self:SetUnsortedIcon(0.3, args.destName, 1, 8, false)
@@ -599,10 +595,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnElementalBond then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
---	elseif spellId == 374427 then
---		if args:IsPlayer() then
---			yellGroundShatterFades:Cancel()
---		end
+	elseif spellId == 374427 then
+		if args:IsPlayer() then
+			yellGroundShatterFades:Cancel()
+		end
 	elseif spellId == 390920 then
 		if self.Options.SetIconOnShockingBurst then
 			self:SetIcon(args.destName, 0)
@@ -692,26 +688,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerSearingCarnageCD:Start(20.5)
 				end
 			end
-		end
-	end
-end
-
-function mod:UNIT_AURA_UNFILTERED(uId)
-	local hasDebuff = DBM:UnitDebuff(uId, 374427)
-	local name = DBM:GetUnitFullName(uId)
-	if not hasDebuff and groundShatterTargets[name] then
-		groundShatterTargets[name] = nil
-		if UnitIsUnit(uId, "player") then
-			yellGroundShatterFades:Cancel()
-		end
-	elseif hasDebuff and not groundShatterTargets[name] then
-		groundShatterTargets[name] = true
-		warnGroundShatter:CombinedShow(0.5, name)--Multiple targets in mythic
-		if UnitIsUnit(uId, "player") then
-			specWarnGroundShatter:Show()
-			specWarnGroundShatter:Play("runout")
-			yellGroundShatter:Yell()
-			yellGroundShatterFades:Countdown(5)
 		end
 	end
 end
