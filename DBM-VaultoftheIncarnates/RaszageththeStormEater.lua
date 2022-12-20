@@ -305,7 +305,7 @@ local function breathCorrect(self)
 	DBM:Debug("Boss skipped a breath, scheduling next one")
 	self:Unschedule(breathCorrect)
 	self.vb.breathCount = self.vb.breathCount + 1
-	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.breathCount+1)
+	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 377594, self.vb.breathCount+1)
 	if timer then
 		timerLightningBreathCD:Start(timer-4, self.vb.breathCount+1)
 		self:Schedule(timer, breathCorrect, self)
@@ -407,7 +407,7 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.breathCount+1)
 		if timer then
 			timerLightningBreathCD:Start(timer, self.vb.breathCount+1)
-			self:Schedule(timer2+4, breathCorrect, self)
+			self:Schedule(timer+4, breathCorrect, self)
 		end
 	elseif spellId == 385065 then
 		self.vb.breathCount = self.vb.breathCount + 1
