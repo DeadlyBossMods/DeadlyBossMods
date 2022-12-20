@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
+mod:SetUsedIcons(8, 7, 6, 5, 4)
 mod:SetHotfixNoticeRev(20221215000000)
 mod:SetMinSyncRevision(20221215000000)
 mod.respawnTime = 33
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918 396269 396779",
-	"SPELL_CAST_SUCCESS 380175 375870",
+	"SPELL_CAST_SUCCESS 380175 375870 396269",
 	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264 181113",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
 	"SPELL_AURA_REMOVED 375809 376073 375809 376330 396264",
@@ -103,8 +103,8 @@ local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPFixate", 376330, true)
-mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {8, 7, 6})
-mod:AddSetIconOption("SetIconOnStormbringers", "ej25139", true, true, {5, 4, 3})
+mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {6, 5, 4})
+mod:AddSetIconOption("SetIconOnStormbringers", "ej25139", true, true, {8, 7})
 
 mod:GroupSpells(375485, 375487)--Cauterizing Flashflames cast and dispel IDs
 mod:GroupSpells(385618, "ej25144", "ej25139")--Icon Marking with general adds announce
@@ -135,8 +135,8 @@ mod.vb.addsCount = 0
 mod.vb.tankCombocount = 0
 mod.vb.wildFireCount = 0
 mod.vb.incubationCount = 0
-mod.vb.mageIcon = 8
-mod.vb.StormbringerIcon = 6
+mod.vb.mageIcon = 6
+mod.vb.StormbringerIcon = 8
 mod.vb.eggsGone = false
 mod.vb.sharedCD = 26
 local heroicAddsTimers = {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
@@ -151,8 +151,8 @@ function mod:OnCombatStart(delay)
 	self.vb.addsCount = 0
 	self.vb.wildFireCount = 0
 	self.vb.incubationCount = 0
-	self.vb.mageIcon = 8
-	self.vb.StormbringerIcon = 6
+	self.vb.mageIcon = 6
+	self.vb.StormbringerIcon = 8
 	self.vb.eggsGone = false
 	timerMortalStoneclawsCD:Start(3.4-delay, 1)
 	timerWildfireCD:Start(8.4-delay, 1)
@@ -278,7 +278,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375653 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnStormbringers and self.vb.StormbringerIcon > 4 then--Only use up to 3 icons
+			if self.Options.SetIconOnStormbringers and self.vb.StormbringerIcon > 6 then--Only use up to 3 icons
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.StormbringerIcon, 1, nil, 12, "SetIconOnStormbringers")
 			end
 			self.vb.StormbringerIcon = self.vb.StormbringerIcon - 1
@@ -318,6 +318,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
 		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
+	elseif spellId == 396269 then
+		self.vb.tankCombocount = self.vb.tankCombocount + 1
+		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
+--		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
+--		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 	end
 end
 
@@ -443,8 +448,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181113 and self:AntiSpam(10, 2) then
 		self.vb.addsCount = self.vb.addsCount + 1
-		self.vb.mageIcon = 8
-		self.vb.StormbringerIcon = 6
+		self.vb.mageIcon = 6
+		self.vb.StormbringerIcon = 8
 		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
 		specWarnPrimalistReinforcements:Play("killmob")
 		local timer = self:IsHard() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
