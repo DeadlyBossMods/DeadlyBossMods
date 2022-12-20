@@ -31,7 +31,7 @@ local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
-local yellThundering						= mod:NewShortPosYell(396363, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
+local yellThundering						= mod:NewIconRepeatYell(396363)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, nil, 5)
@@ -39,8 +39,12 @@ local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, n
 --local timerShadowEruptionCD					= mod:NewCDTimer(24, 373729, nil, nil, nil, 2)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
-
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
+
+local function yellRepeater(self, text)
+	yellThundering:Yell(text)
+	self:Schedule(1.5, yellRepeater, self, text)
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -78,15 +82,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
-			yellThundering:Yell(6, "")--Blue Square
 			timerPositiveCharge:Start()
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 6)
 		end
 	elseif spellId == 396364 then
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
-			yellThundering:Yell(7, "")--Red X
 			timerNegativeCharge:Start()
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 7)
 		end
 	end
 end
@@ -99,11 +105,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnThunderingFades:Show()
 			timerPositiveCharge:Stop()
+			self:Unschedule(yellRepeater)
 		end
 	elseif spellId == 396364 then
 		if args:IsPlayer() then
 			warnThunderingFades:Show()
 			timerNegativeCharge:Stop()
+			self:Unschedule(yellRepeater)
 		end
 	end
 end
