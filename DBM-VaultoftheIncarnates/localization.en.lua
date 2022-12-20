@@ -79,8 +79,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2499)
 
 L:SetMiscLocalization({
-	negative = "negative",
-	positive = "positive"
+	negative 	= "negative",
+	positive 	= "positive"
+	BreathEmote	= "Raszageth takes a deep breath..."
 })
 
 -------------
