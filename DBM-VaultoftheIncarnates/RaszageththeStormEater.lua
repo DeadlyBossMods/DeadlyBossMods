@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249 378829 382434",
 	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713",
+	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713 391990 394574 394576 391991 394579 394575",
 	"SPELL_PERIODIC_DAMAGE 395929",
 	"SPELL_PERIODIC_MISSED 395929",
 	"UNIT_DIED",
@@ -60,7 +60,7 @@ local yellStaticChargeFades						= mod:NewIconFadesYell(381615, 37859)
 local specWarnVolatileCurrent					= mod:NewSpecialWarningMoveAwayCount(388643, nil, nil, nil, 2, 2)
 local specWarnElectrifiedJaws					= mod:NewSpecialWarningDefensive(377658, nil, nil, nil, 1, 2)
 local specWarnElectrifiedJawsOther				= mod:NewSpecialWarningTaunt(377658, nil, nil, nil, 1, 2)
-local specWarnLightingBreath					= mod:NewSpecialWarningDodgeCount(388643, nil, nil, nil, 2, 2)
+local specWarnLightingBreath					= mod:NewSpecialWarningDodgeCount(377594, nil, nil, nil, 2, 2)
 
 local timerHurricaneWingCD						= mod:NewCDCountTimer(35, 377612, nil, nil, nil, 2)
 local timerStaticChargeCD						= mod:NewCDCountTimer(35, 381615, nil, nil, nil, 3)
@@ -114,7 +114,7 @@ local warnFulminatingCharge					= mod:NewTargetNoFilterAnnounce(378829, 3)
 local specWarnStormsurge					= mod:NewSpecialWarningMoveAwayCount(387261, nil, nil, nil, 2, 2)--Maybe shorttext 28089?
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(391990, nil, nil, nil, 1, 13)--Split warning so user can custom sounds
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(391991, nil, nil, nil, 1, 13)--between positive and negative
-local yellStormCharged						= mod:NewShortPosYell(391989, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
+local yellStormCharged						= mod:NewIconRepeatYell(391989)
 local specWarnInversion						= mod:NewSpecialWarningMoveAway(394584, nil, nil, nil, 3, 13, 4)
 local yellInversion							= mod:NewShortYell(394584)
 local yellInversionFades					= mod:NewShortFadesYell(394584)
@@ -147,7 +147,7 @@ local warnMagneticCharge					= mod:NewTargetNoFilterAnnounce(399713, 3)
 
 local specWarnStormEater					= mod:NewSpecialWarningCount(395885, nil, nil, nil, 2, 2, 4)
 local specWarnThunderousBlast				= mod:NewSpecialWarningDefensive(386410, nil, nil, nil, 1, 2)
-local specWarnMeltedArmor					= mod:NewSpecialWarningTaunt(391285, nil, nil, nil, 1, 2)
+local specWarnThunderstruckArmor			= mod:NewSpecialWarningTaunt(391285, nil, nil, nil, 1, 2)
 local specWarnMagneticCharge				= mod:NewSpecialWarningYouPos(399713, nil, nil, nil, 1, 2)
 local yellMagneticCharge					= mod:NewShortPosYell(399713)
 local yellMagneticChargeFades				= mod:NewIconFadesYell(399713)
@@ -318,6 +318,14 @@ local function warnDeepBreath(self, myPlatform)
 		specWarnLightningDevastation:Play("breathsoon")
 	else--No emote, on other platform
 		warnLightningDevastation:Show()
+	end
+end
+
+local function yellRepeater(self, text, repeatTotal)
+	repeatTotal = repeatTotal + 1
+	if repeatTotal < 3 then
+		yellStormCharged:Yell(text)
+		self:Schedule(1.5, yellRepeater, self, text, repeatTotal)
 	end
 end
 
@@ -664,8 +672,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStaticCharge:CombinedShow(0.5, args.destName)
 		self.vb.chargeIcon = self.vb.chargeIcon + 1
 	elseif spellId == 395906 and not args:IsPlayer() then
-		specWarnElectrifiedJawsOther:Show(args.destName)
-		specWarnElectrifiedJawsOther:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then--Filter idiots in front of boss that aren't tank.
+			specWarnElectrifiedJawsOther:Show(args.destName)
+			specWarnElectrifiedJawsOther:Play("tauntboss")
+		end
 	elseif (spellId == 388115 or spellId == 395929) and args:IsPlayer() and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
@@ -709,12 +720,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
 			yellStormCharged:Yell(6, "")--Blue Square
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 6, 0)
 		end
 	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
 			yellStormCharged:Yell(7, "")--Red X
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 7, 0)
 		end
 	elseif spellId == 394582 and args:IsPlayer() then
 		warnFocusedCharge:Show()
@@ -755,8 +770,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMagneticCharge:CombinedShow(0.5, args.destName)
 		self.vb.magneticIcon = self.vb.magneticIcon + 1
 	elseif spellId == 391285 and not args:IsPlayer() then
-		specWarnMeltedArmor:Show(args.destName)
-		specWarnMeltedArmor:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then--Filter idiots in front of boss that aren't tank.
+			specWarnThunderstruckArmor:Show(args.destName)
+			specWarnThunderstruckArmor:Play("tauntboss")
+		end
 	elseif spellId == 391281 and self:AntiSpam(5, 5) then--Colossal Stormfiends being engaged
 		timerBallLightningCD:Start(8.4)
 		timerStormBreakCD:Start(21.8)
@@ -817,6 +835,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellMagneticChargeFades:Cancel()
+		end
+	elseif args:IsSpellID(391990, 394574, 394576) then--All variants of positive
+		if args:IsPlayer() then
+			self:Unschedule(yellRepeater)
+		end
+	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
+		if args:IsPlayer() then
+			self:Unschedule(yellRepeater)
 		end
 	end
 end
