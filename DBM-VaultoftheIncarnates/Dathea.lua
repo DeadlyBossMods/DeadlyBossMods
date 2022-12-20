@@ -193,7 +193,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 385812 then
 		timerAerialSlashCD:Start(nil, args.sourceGUID)
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) and self:AntiSpam(3, 1) then
 			specWarnAerialSlash:Show()
 			specWarnAerialSlash:Play("defensive")
 		end
@@ -261,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expireTime then
 			remaining = expireTime-GetTime()
 		end
-		if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+		if amount >= 2 and (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnZephyrSlamTaunt:Show(args.destName)
 			specWarnZephyrSlamTaunt:Play("tauntboss")
 		else
@@ -300,7 +300,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 1) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
+	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 2) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
 		timerConductiveMarkCD:Start(self:IsHard() and 25 or 31.5, self.vb.markCount+1)
 	end
