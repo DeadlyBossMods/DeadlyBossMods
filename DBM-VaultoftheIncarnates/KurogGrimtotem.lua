@@ -249,10 +249,6 @@ function mod:OnCombatEnd()
 	end
 end
 
-local function endAuraScan(self)
-	self:UnregisterShortTermEvents()
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 390548 then

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(181224)--way too many CIDs to guess right now
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221217000000)
+mod:SetHotfixNoticeRev(20221220000000)
 mod:SetMinSyncRevision(20221217000000)
 --mod.respawnTime = 29
 
@@ -20,16 +20,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 395929",
 	"SPELL_PERIODIC_MISSED 395929",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, volatile current target scan (or maybe emote/whisper/debuff?)
---TODO, warn for Volatike (388631)?
---TODO, detect intermission add spawns/add timer for spawns?
 --TODO, initial CD timers for spawning in adds, if timers are used for the mythic only stuff
 --TODO, track and alert high stacks of https://www.wowhead.com/beta/spell=385560/windforce-strikes on Oathsworn?
 --TODO, determine number adds and spawn behavior for auto marking Stormseeker Acolyte for interrupt assignments?
 --TODO, use specWarnScatteredCharge once coding is verified it's being avoided for now to avoid SW spam
+--TODO, a note that using the emote is able to detect whether dragon is breathing YOUR Platform, but it also requires localizing so many language won't get most important warning of intermission
 --[[
 (ability.id = 377612 or ability.id = 388643 or ability.id = 377658 or ability.id = 377594
  or ability.id = 385065 or ability.id = 397382 or ability.id = 397468 or ability.id = 387261 or ability.id = 385574 or ability.id = 389870
@@ -37,7 +36,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 381615 or ability.id = 396037 or ability.id = 378829 or ability.id = 399713 or ability.id = 382434 or ability.id = 390463 or ability.id = 381249) and type = "cast"
  or ability.id = 388431 or ability.id = 396734
  or ability.id = 181089 and type = "cast"
- or (ability.id = 391281 or ability.id = 391402) and type = "applybuff"
+ or (ability.id = 391281 or ability.id = 391402 or ability.id = 389214) and type = "applybuff"
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -65,6 +64,7 @@ local specWarnLightingBreath					= mod:NewSpecialWarningDodgeCount(388643, nil, 
 
 local timerHurricaneWingCD						= mod:NewCDCountTimer(35, 377612, nil, nil, nil, 2)
 local timerStaticChargeCD						= mod:NewCDCountTimer(35, 381615, nil, nil, nil, 3)
+local timerStaticCharge							= mod:NewCastTimer(35, 381615, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerVolatileCurrentCD					= mod:NewCDCountTimer(47, 388643, nil, nil, nil, 3)--More data needed
 local timerElectrifiedJawsCD					= mod:NewCDCountTimer(25, 377658, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerLightningBreathCD					= mod:NewCDCountTimer(35, 377594, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -74,9 +74,10 @@ mod:AddSetIconOption("SetIconOnStaticCharge", 381615, true, 0, {1, 2, 3})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25683))
 --Raszageth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25402))
+local warnLightningDevastation					= mod:NewCastAnnounce(385065, 3)--NOT on our platform
 
 local specWarnStormNova							= mod:NewSpecialWarningSpell(382434, nil, nil, nil, 2, 2)
-local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, nil, nil, 3, 2)
+local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, nil, nil, 3, 2)--On our platform!
 
 local timerStormNovaCD							= mod:NewCDTimer(5, 382434, nil, nil, nil, 2)
 local timerStormNova							= mod:NewCastTimer(5, 382434, nil, nil, nil, 5)
@@ -152,7 +153,7 @@ local yellMagneticCharge					= mod:NewShortPosYell(399713)
 local yellMagneticChargeFades				= mod:NewIconFadesYell(399713)
 
 local timerStormEaterCD						= mod:NewAITimer(35, 395885, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerMagneticChargeCD					= mod:NewAITimer(35, 399713, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerMagneticChargeCD					= mod:NewCDCountTimer(35, 399713, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerThunderousBlastCD				= mod:NewCDCountTimer(35, 386410, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4, 5, 6})
@@ -179,19 +180,19 @@ local castsPerGUID = {}
 local difficultyName = "normal"
 local allTimers = {
 	["mythic"] = {--Just duplicate of normal for now
-		[1] = {
+		[1] = {--Timers from vod so not 100% accurate
 			--Static Charge
-			[381615] = {15, 35, 40, 30},
+			[381615] = {15, 35, 37, 33, 35, 37, 33},
 			--Volatile Current
-			[388643] = {85, 47},
+			[388643] = {28, 53, 46, 59, 46},
 			--Lightning Breath
-			[377594] = {23, 39, 53},
+			[377594] = {20, 25, 19, 26, 24, 20, 16, 18, 27, 24, 20},
 			--Hurricane Wing
-			[377612] = {35, 35, 35},
+			[377612] = {35, 35, 35, 35, 35, 35},
 			--Electrified Jaws
-			[377658] = {5, 24.8, 24.9, 30, 17.8, 27.6},
+			[377658] = {5, 27, 23, 30, 17, 30, 28, 30, 19, 28},
 		},
-		[2] = {
+		[2] = {--Heroic timers, not mythic
 			--Volatile Current
 			[388643] = {60, 49.9},
 			--Electrified Jaws
@@ -203,7 +204,7 @@ local allTimers = {
 			--Tempest Wing
 			[385574] = {35, 35, 49.9, 24.9, 55},
 		},
-		[3] = {
+		[3] = {--Heroic timers, not mythic
 			--Storm Eater (Mythic Only)
 			[395885] = {},
 			--Lightning Breath
@@ -300,6 +301,26 @@ local allTimers = {
 	},
 }
 
+local function breathCorrect(self)
+	DBM:Debug("Boss skipped a breath, scheduling next one")
+	self:Unschedule(breathCorrect)
+	self.vb.breathCount = self.vb.breathCount + 1
+	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.breathCount+1)
+	if timer then
+		timerLightningBreathCD:Start(timer-4, self.vb.breathCount+1)
+		self:Schedule(timer, breathCorrect, self)
+	end
+end
+
+local function warnDeepBreath(self, myPlatform)
+	if myPlatform then
+		specWarnLightningDevastation:Show(self.vb.breathCount)
+		specWarnLightningDevastation:Play("breathsoon")
+	else--No emote, on other platform
+		warnLightningDevastation:Show()
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	self:SetStage(1)
@@ -364,7 +385,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.currentCount = self.vb.currentCount + 1
 		specWarnVolatileCurrent:Show(self.vb.currentCount)
 		specWarnVolatileCurrent:Play("scatter")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.currentCount+1) or 35
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.currentCount+1)
 		if timer then
 			timerVolatileCurrentCD:Start(timer, self.vb.currentCount+1)
 		end
@@ -379,18 +400,19 @@ function mod:SPELL_CAST_START(args)
 			timerElectrifiedJawsCD:Start(timer, self.vb.tankCount+1)
 		end
 	elseif spellId == 377594 then
+		self:Unschedule(breathCorrect)
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnLightingBreath:Show(self.vb.breathCount)
 		specWarnLightingBreath:Play("breathsoon")
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.breathCount+1)
 		if timer then
 			timerLightningBreathCD:Start(timer, self.vb.breathCount+1)
+			self:Schedule(timer2+4, breathCorrect, self)
 		end
 	elseif spellId == 385065 then
 		self.vb.breathCount = self.vb.breathCount + 1
-		specWarnLightningDevastation:Show(self.vb.breathCount)
-		specWarnLightningDevastation:Play("breathsoon")
 		timerLightningDevastationCD:Start(self.vb.phase == 1.5 and 13.3 or 32.7)
+		self:Schedule(0.5, warnDeepBreath, self, false)
 	elseif spellId == 397382 then
 		self.vb.shroudIcon = 1
 		timerShatteringShroudCD:Start(nil, args.sourceGUID)
@@ -460,6 +482,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerStaticChargeCD:Start(timer, self.vb.chargeCount+1)
 		end
+		timerStaticCharge:Start(8)
 	elseif spellId == 396037 then
 		timerSurgingBlastCD:Start(nil, args.sourceGUID)
 	elseif spellId == 378829 then
@@ -472,11 +495,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 399713 then
 		self.vb.magneticIcon = 4
 		self.vb.magneticCount = self.vb.magneticCount + 1
-		timerMagneticChargeCD:Start()
---		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.magneticCount+1)
---		if timer then
---			timerMagneticChargeCD:Start(timer, self.vb.magneticCount+1)
---		end
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.magneticCount+1)
+		if timer then
+			timerMagneticChargeCD:Start(timer, self.vb.magneticCount+1)
+		end
 	elseif spellId == 382434 then--First intermission Starts (Storm Nova)
 		self:SetStage(1.5)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
@@ -559,6 +581,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerVolatileCurrentCD:Stop()
 			timerElectrifiedJawsCD:Stop()
 			timerLightningBreathCD:Stop()
+			self:Unschedule(breathCorrect)
 --
 			timerLightningDevastationCD:Start(7.3, 1)
 		elseif self.vb.phase == 2 then
@@ -825,6 +848,15 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--"<330.41 11:01:55> [CHAT_MSG_RAID_BOSS_EMOTE] Raszageth takes a deep breath...#Raszageth###Raszageth##0#0##0#1502#nil#0#false#false#false#false", -- [17507]
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+--	if not msg:find("ICON") and npc = target then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
+	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
+		self:Unschedule(warnDeepBreath)
+		warnDeepBreath(self, true)
+	end
+end
+
 --Purely for earlier timer canceling, new timers not started on USCS if it can be helped, otherwise timers can't be updated easily from WCLs
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 396734 and self.vb.phase == 1 then--Storm Shroud
@@ -833,6 +865,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerVolatileCurrentCD:Stop()
 		timerElectrifiedJawsCD:Stop()
 		timerLightningBreathCD:Stop()
+		self:Unschedule(breathCorrect)
 
 		timerStormNovaCD:Start(13.4)
 	elseif spellId == 398466 then--[DNT] Clear Raszageth Auras on Players (Intermission 2 end)
