@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20221014000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812 384273 387627 391382",
+	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812 384273 387627 391382 395501",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 384757 384757",
 	"SPELL_AURA_APPLIED 391686 375580",
@@ -211,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnStormBolt:Play("kickcast")
 			end
 		end
-	elseif spellId == 387627 or spellId == 391382 then
+	elseif spellId == 387627 or spellId == 391382 or spellId == 395501 then
 		if self:CheckBossDistance(args.sourceGUID, true, 13289, 28) then
 			specWarnBlowback:Show()
 			specWarnBlowback:Play("carefly")
