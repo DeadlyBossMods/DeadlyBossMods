@@ -46,7 +46,7 @@ L= DBM:GetModLocalization(2491)
 L:SetTimerLocalization({
 	timerDamageCD = "攻擊 (%s)",
 	timerAvoidCD = "屏障 (%s)",
-	timerUltimateCD = "洪荒之終 (%s)"
+	timerUltimateCD = "洪荒之終 (%s)",
 	timerAddEnrageCD = "激怒 (%s)"
 })
 
