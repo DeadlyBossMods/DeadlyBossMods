@@ -3,7 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Vault of the Incarnates|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0현신의 금고|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Хранилище Воплощений|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0洪荒化身密庫|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0洪荒化身牢獄|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0化身巨龙牢窟|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name: Vault of the Incarnates
 ## X-DBM-Mod-Name-koKR: 현신의 금고
 ## X-DBM-Mod-Name-ruRU: Хранилище Воплощений
-## X-DBM-Mod-Name-zhTW: 洪荒化身密庫
+## X-DBM-Mod-Name-zhTW: 洪荒化身牢獄
 ## X-DBM-Mod-Name-zhCN: 化身巨龙牢窟
 ## X-DBM-Mod-Sort: 206
 ## X-DBM-Mod-MapID: 2522
@@ -28,6 +28,7 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.cn.lua
+localization.tw.lua
 
 Eranog.lua
 Terros.lua
