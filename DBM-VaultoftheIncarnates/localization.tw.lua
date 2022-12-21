@@ -53,7 +53,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerDamageCD = "顯示針對目標攻擊：$spell:382563, $spell:373678, $spell:391055, $spell:373487 的計時器",
 	timerAvoidCD = "顯示屏障階段：$spell:373329, $spell:391019, $spell:395893, $spell:390920 的計時器",
-	timerUltimateCD = "顯示洪荒之終：$spell:374022, $spell:372456, $spell:374691, $spell:374215 的計時器"
+	timerUltimateCD = "顯示洪荒之終：$spell:374022, $spell:372456, $spell:374691, $spell:374215 的計時器",
 	timerAddEnrageCD = "顯示在傳奇難度上增加的激怒計時器"
 })
 
