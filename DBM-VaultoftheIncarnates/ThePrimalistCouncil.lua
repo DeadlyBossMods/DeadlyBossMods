@@ -266,7 +266,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.meteorCast = self.vb.meteorCast + 1
 		self.vb.meteorTotal = 0
 --		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
-		timerMeteorAxeCD:Start(self:IsLFR() and 66 or 39.1, self.vb.meteorCast+1)
+		timerMeteorAxeCD:Start(self:IsEasy() and 66 or 39.1, self.vb.meteorCast+1)
 	elseif spellId == 375331 then
 		self.vb.markCast = self.vb.markCast + 1
 		specWarnConductiveMarkSpread:Show()
