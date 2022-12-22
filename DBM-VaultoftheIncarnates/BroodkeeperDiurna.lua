@@ -313,7 +313,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
 			if self:IsMythic() then
-				local timer = empoweredStaffMythic[self.vb.staffCount+1] or 17.5
+				local timer = p2StaffMythic[self.vb.staffCount+1] or 17.5
 				timerEGreatstaffoftheBroodkeeperCD:Start(timer, self.vb.staffCount+1)
 			else
 				timerEGreatstaffoftheBroodkeeperCD:Start(20.6, self.vb.staffCount+1)--20-27
