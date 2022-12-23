@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434 390463",
-	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249 378829 382434",
-	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713 391990 394574 394576 391991 394579 394575",
+	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249 378829 382434 390463",
+	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281 389214 389878",
+	"SPELL_AURA_APPLIED_DOSE 389878",
+	"SPELL_AURA_REMOVED 381615 396037 385541 397382 397387 388691 377467 399713 391990 394574 394576 391991 394579 394575 394584",
 	"SPELL_PERIODIC_DAMAGE 395929",
 	"SPELL_PERIODIC_MISSED 395929",
 	"UNIT_DIED",
@@ -35,8 +35,10 @@ mod:RegisterEventsInCombat(
  or ability.id = 385068 or ability.id = 395885 or ability.id = 386410 or ability.id = 382434 or ability.id = 390463) and type = "begincast"
  or (ability.id = 381615 or ability.id = 396037 or ability.id = 378829 or ability.id = 399713 or ability.id = 382434 or ability.id = 390463 or ability.id = 381249) and type = "cast"
  or ability.id = 388431 or ability.id = 396734
- or ability.id = 181089 and type = "cast"
- or (ability.id = 391281 or ability.id = 391402 or ability.id = 389214) and type = "applybuff"
+ or ability.id = 181089 and type = "cast" or ability.id = 388691 and type = "removebuff"
+ or (ability.id = 391281 or ability.id = 391402 or ability.id = 389214 or ability.id = 397387) and type = "applybuff"
+ or (ability.id = 394584 or ability.id = 397382) and type = "applydebuff"
+ or ability.id = 382530 and (type = "applybuff" or type = "removebuff")
 --]]
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -52,7 +54,6 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25244))
 local warnStaticCharge							= mod:NewTargetNoFilterAnnounce(381615, 3)
 local warnLightningStrike						= mod:NewSpellAnnounce(376126, 3)
 
---local specWarnInfusedStrikes					= mod:NewSpecialWarningStack(361966, nil, 8, nil, nil, 1, 6)
 local specWarnHurricaneWing						= mod:NewSpecialWarningCount(377612, nil, nil, nil, 2, 2)
 local specWarnStaticCharge						= mod:NewSpecialWarningYouPos(381615, nil, 37859, nil, 1, 2)
 local yellStaticCharge							= mod:NewShortPosYell(381615, 37859)
@@ -74,20 +75,22 @@ mod:AddSetIconOption("SetIconOnStaticCharge", 381615, true, 0, {1, 2, 3})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25683))
 --Raszageth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25402))
-local warnLightningDevastation					= mod:NewCastAnnounce(385065, 3)--NOT on our platform
+local warnLightningDevastation					= mod:NewCountAnnounce(385065, 3)--NOT on our platform
 
 local specWarnStormNova							= mod:NewSpecialWarningSpell(382434, nil, nil, nil, 2, 2)
 local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, nil, nil, 3, 2)--On our platform!
 
 local timerStormNovaCD							= mod:NewCDTimer(5, 382434, nil, nil, nil, 2)
 local timerStormNova							= mod:NewCastTimer(5, 382434, nil, nil, nil, 5)
-local timerLightningDevastationCD				= mod:NewCDTimer(13.3, 385065, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerLightningDevastationCD				= mod:NewCDCountTimer(13.3, 385065, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+
+mod:AddBoolOption("SetBreathToBait", false)
 --Primalist Forces
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25638))
 local warnSurgingBlast							= mod:NewTargetAnnounce(396037, 3)
 local warnShatteringShroud						= mod:NewTargetNoFilterAnnounce(397382, 4)
 local warnShatteringShroudFaded					= mod:NewFadesAnnounce(397382, 1)
-local warnBlazingroar							= mod:NewCastAnnounce(397468, 4)
+--local warnBlazingroar							= mod:NewCastAnnounce(397468, 4)--Redundant, it casts at same time as flame shield
 
 local specWarnSurgingBlast						= mod:NewSpecialWarningMoveAway(396037, nil, 37859, nil, 1, 2)
 local yellSurgingBlast							= mod:NewShortYell(396037, 37859)
@@ -96,11 +99,11 @@ local specWarnStormBolt							= mod:NewSpecialWarningInterruptCount(385553, "Has
 local specWarnShatteringShroud					= mod:NewSpecialWarningYou(397382, nil, nil, nil, 1, 2, 4)
 local specWarnFlameShield						= mod:NewSpecialWarningSwitch(397387, nil, nil, nil, 1, 2, 4)
 
-local timerSurgingBlastCD						= mod:NewAITimer(35, 396037, 37859, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
-local timerShatteringShroudCD					= mod:NewAITimer(35, 397382, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerFlameShieldCD						= mod:NewAITimer(35, 397387, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerSurgingBlastCD						= mod:NewCDTimer(12.4, 396037, 37859, false, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerShatteringShroudCD					= mod:NewCDSourceTimer(35, 397382, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerFlameShieldCD						= mod:NewCDSourceTimer(35, 397387, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 
-mod:AddSetIconOption("SetIconOnShatteringShroud", 397382, true, 0, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnShatteringShroud2", 397382, false, 0, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 mod:AddNamePlateOption("NPAuraOnFlameShield", 397387)
 --Stage Two: Surging Power
@@ -116,8 +119,7 @@ local specWarnPositiveCharge				= mod:NewSpecialWarningYou(391990, nil, nil, nil
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(391991, nil, nil, nil, 1, 13)--between positive and negative
 local yellStormCharged						= mod:NewIconRepeatYell(391989)
 local specWarnInversion						= mod:NewSpecialWarningMoveAway(394584, nil, nil, nil, 3, 13, 4)
-local yellInversion							= mod:NewShortYell(394584)
-local yellInversionFades					= mod:NewShortFadesYell(394584)
+local yellInversion							= mod:NewIconRepeatYell(394584)
 --local specWarnScatteredCharge				= mod:NewSpecialWarningMoveAway(394583, nil, nil, nil, 1, 2)
 local specWarnTempestWing					= mod:NewSpecialWarningCount(385574, nil, nil, nil, 2, 2)--Dodge?
 local specWarnFulminatingCharge				= mod:NewSpecialWarningYouPos(378829, nil, nil, nil, 1, 2)
@@ -127,6 +129,7 @@ local yellFulminatingChargeFades			= mod:NewIconFadesYell(378829)
 local timerStormsurgeCD						= mod:NewCDCountTimer(35, 387261, nil, nil, nil, 2)--Maybe shorttext 28089?
 local timerTempestWingCD					= mod:NewCDCountTimer(35, 385574, nil, nil, nil, 3)
 local timerFulminatingChargeCD				= mod:NewCDCountTimer(35, 378829, nil, nil, nil, 3)
+local timerInversionCD						= mod:NewCDCountTimer(6, 394584, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON))
 
 mod:AddSetIconOption("SetIconOnFulminatingCharge", 378829, true, 0, {1, 2, 3})
 mod:AddInfoFrameOption(387261, true)
@@ -135,17 +138,19 @@ mod:GroupSpells(391989, 391990, 391991, 394584)--Group positive and negative spe
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25812))
 --Colossal Stormfiend
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25816))
+local warnFuse								= mod:NewStackAnnounce(389878, 2, nil, "Tank|Healer")
+
 local specWarnStormBreak					= mod:NewSpecialWarningDodge(389870, nil, nil, nil, 2, 2)
 local specWarnBallLightning					= mod:NewSpecialWarningDodge(385068, nil, nil, nil, 2, 2)
 
 local timerLightningStrikeCD				= mod:NewCDTimer(31.6, 376126, nil, nil, nil, 3)
-local timerStormBreakCD						= mod:NewCDTimer(23.1, 389870, nil, nil, nil, 3)
-local timerBallLightningCD					= mod:NewCDTimer(23.1, 385068, nil, nil, nil, 3)
+local timerStormBreakCD						= mod:NewCDCountTimer(23.1, 389870, nil, nil, nil, 3)
+local timerBallLightningCD					= mod:NewCDCountTimer(23.1, 385068, nil, nil, nil, 3)
 --Stage Three: Storm Incarnate
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25477))
 local warnMagneticCharge					= mod:NewTargetNoFilterAnnounce(399713, 3)
 
-local specWarnStormEater					= mod:NewSpecialWarningCount(395885, nil, nil, nil, 2, 2, 4)
+local specWarnStormEater					= mod:NewSpecialWarningSpell(395885, nil, nil, nil, 2, 2, 4)
 local specWarnThunderousBlast				= mod:NewSpecialWarningDefensive(386410, nil, nil, nil, 1, 2)
 local specWarnThunderstruckArmor			= mod:NewSpecialWarningTaunt(391285, nil, nil, nil, 1, 2)
 local specWarnMagneticCharge				= mod:NewSpecialWarningYouPos(399713, nil, nil, nil, 1, 2)
@@ -167,20 +172,23 @@ mod.vb.currentCount = 0
 mod.vb.tankCount = 0--Electrified Jaws/Thunderous Blast
 mod.vb.breathCount = 0--Reused in P1.5 intermission
 mod.vb.strikeCount = 0
+mod.vb.frostAddCount = 0
+mod.vb.fireAddCount = 0
 --P2
 mod.vb.shroudIcon = 1
 mod.vb.wingCount = 0
 --P2.5
 mod.vb.stormSurgeCount = 0
+mod.vb.ballCount = 0
 --P3
 mod.vb.magneticCount = 0
 mod.vb.magneticIcon = 4
 local castsPerGUID = {}
-
+local playerPolarity = nil
 local difficultyName = "normal"
 local allTimers = {
-	["mythic"] = {--Just duplicate of normal for now
-		[1] = {--Timers from vod so not 100% accurate
+	["mythic"] = {
+		[1] = {
 			--Static Charge
 			[381615] = {15, 35, 37, 33, 35, 37, 33},
 			--Volatile Current
@@ -192,34 +200,32 @@ local allTimers = {
 			--Electrified Jaws
 			[377658] = {5, 27, 23, 30, 17, 30, 28, 30, 19, 28},
 		},
-		[2] = {--Heroic timers, not mythic
+		[2] = {
 			--Volatile Current
-			[388643] = {60, 49.9},
+			[388643] = {67.5, 60, 40},
 			--Electrified Jaws
-			[377658] = {30, 24.9, 22.9, 30, 25, 25, 37},
+			[377658] = {44.5, 26.9, 21, 29.9, 25, 25},
 			--Stormsurge
-			[387261] = {0, 80, 80, 80},--First cast immediately
+			[387261] = {14.5, 80, 80, 80},
 			--Fulminating Charge
-			[378829] = {44, 85.9},
+			[378829] = {57.5, 87},
 			--Tempest Wing
-			[385574] = {35, 35, 49.9, 24.9, 55},
+			[385574] = {49.5, 29.9, 54, 20},
 		},
-		[3] = {--Heroic timers, not mythic
-			--Storm Eater (Mythic Only)
-			[395885] = {},
+		[3] = {
 			--Lightning Breath
-			[377594] = {28.7, 41, 41.9},
+			[377594] = {38.1, 41.4, 44, 29.9, 43},
 			--Tempest Wing
-			[385574] = {60.7, 58.9, 26.9},
+			[385574] = {70.6, 70, 19.9},
 			--Fulminating Charge
-			[378829] = {35.7, 60},
+			[378829] = {43.2, 61.4, 66.9},
 			--Thunderous blast
-			[386410] = {16.7, 30, 30, 30, 30},
+			[386410] = {28.6, 29, 32, 58.9, 30},
 			--Magnetic Charge (Heroic/Mythic Only)
-			[399713] = {},
+			[399713] = {32.7, 29.9, 32.9, 33},
 		},
 	},
-	["heroic"] = {--Just duplicate of normal for now
+	["heroic"] = {
 		[1] = {
 			--Static Charge
 			[381615] = {15.0, 35.0, 36.9, 34.1, 33.9},
@@ -234,19 +240,17 @@ local allTimers = {
 		},
 		[2] = {
 			--Volatile Current
-			[388643] = {57, 57},--Different from normal
+			[388643] = {61.5, 57},--Different from normal
 			--Electrified Jaws
-			[377658] = {29.9, 24.4, 22.9, 30.7, 24.2, 25.8},--Same as normal
+			[377658] = {38.5, 24.4, 22.9, 30.7, 24.2, 25.8},--Same as normal
 			--Stormsurge
-			[387261] = {0, 80, 80, 80},--Same as normal, First cast immediately
+			[387261] = {8.5, 80, 80, 80},
 			--Fulminating Charge
-			[378829] = {45, 82.5},--Same as normal
+			[378829] = {53.5, 82.5},--Same as normal
 			--Tempest Wing
-			[385574] = {35, 30, 55, 19.5},--Different from normal
+			[385574] = {43.5, 30, 55, 19.5},--Different from normal
 		},
 		[3] = {--IFFY, vod that changed angles and PoV many times was used for these
-			--Storm Eater (Mythic Only)
-			[395885] = {},
 			--Lightning Breath
 			[377594] = {43, 33, 54},
 			--Tempest Wing
@@ -274,19 +278,17 @@ local allTimers = {
 		},
 		[2] = {
 			--Volatile Current
-			[388643] = {60, 49.9},
+			[388643] = {68.5, 49.9},
 			--Electrified Jaws
-			[377658] = {30, 24.9, 22.9, 30, 25, 25, 37},
+			[377658] = {38.5, 24.9, 22.9, 30, 25, 25, 37},
 			--Stormsurge
-			[387261] = {0, 80, 80, 80},--First cast immediately
+			[387261] = {8.5, 80, 80, 80},
 			--Fulminating Charge
-			[378829] = {44, 85.9},
+			[378829] = {53.5, 85.9},
 			--Tempest Wing
-			[385574] = {35, 35, 49.9, 24.9, 55},
+			[385574] = {43.5, 35, 49.9, 24.9, 55},
 		},
 		[3] = {
-			--Storm Eater (Mythic Only)
-			[395885] = {},
 			--Lightning Breath
 			[377594] = {28.7, 41, 41.9},
 			--Tempest Wing
@@ -295,8 +297,6 @@ local allTimers = {
 			[378829] = {35.7, 60},
 			--Thunderous blast
 			[386410] = {16.7, 30, 30, 30, 30},
-			--Magnetic Charge (Heroic/Mythic Only)
-			[399713] = {},
 		},
 	},
 }
@@ -316,16 +316,21 @@ local function warnDeepBreath(self, myPlatform)
 	if myPlatform then
 		specWarnLightningDevastation:Show(self.vb.breathCount)
 		specWarnLightningDevastation:Play("breathsoon")
+		timerLightningDevastationCD:SetSTFade(true, self.vb.breathCount+1)--If it's on this platform this time, next one isn't so we fade timer for next one
 	else--No emote, on other platform
-		warnLightningDevastation:Show()
+		warnLightningDevastation:Show(self.vb.breathCount)
 	end
 end
 
-local function yellRepeater(self, text, repeatTotal)
+local function yellRepeater(self, text, repeatTotal, inversion)
 	repeatTotal = repeatTotal + 1
 	if repeatTotal < 3 then
-		yellStormCharged:Yell(text)
-		self:Schedule(1.5, yellRepeater, self, text, repeatTotal)
+		if inversion then
+			yellInversion:Yell(text)
+		else
+			yellStormCharged:Yell(text)
+		end
+		self:Schedule(1.5, yellRepeater, self, text, repeatTotal, inversion)
 	end
 end
 
@@ -376,6 +381,11 @@ function mod:OnTimerRecovery()
 	else
 		difficultyName = "normal"
 	end
+	if DBM:UnitDebuff("player", 391990, 394574, 394576) then--Positive
+		playerPolarity = 1
+	elseif DBM:UnitDebuff("player", 391991, 394579, 394575) then--Negative
+		playerPolarity = 2
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -419,13 +429,24 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 385065 then
 		self.vb.breathCount = self.vb.breathCount + 1
-		timerLightningDevastationCD:Start(self.vb.phase == 1.5 and 13.3 or 32.7)
+		local timer = self.vb.phase == 1.5 and (self:IsMythic() and 9.7 or self:IsHeroic() and 12.1 or 13.3) or (self:IsMythc() and 29 or self:IsHeroic() and 31.5 or 32.7)
+		if self.Options.SetBreathToBait then
+			timer = timer - 1.5--Sets timer for baiting breath instead of breath activation
+		end
+		timerLightningDevastationCD:Start(timer, self.vb.breathCount+1)
+		self:Unschedule(warnDeepBreath)
 		self:Schedule(0.5, warnDeepBreath, self, false)
 	elseif spellId == 397382 then
 		self.vb.shroudIcon = 1
-		timerShatteringShroudCD:Start(nil, args.sourceGUID)
+		--Time between casts not known yet, fix when groups suck really bad
+		--timerShatteringShroudCD:Start(nil, castsPerGUID[args.sourceGUID])
+		----If not on our side, fade the timer
+		--if not self:CheckBossDistance(args.sourceGUID, true, 35278, 80) then
+		--	timerShatteringShroudCD:SetSTFade(true, castsPerGUID[args.sourceGUID])
+		--else
 	elseif spellId == 397468 then
-		warnBlazingroar:Show()
+--		warnBlazingroar:Show()
+		--TODO, add cast bar though
 	elseif spellId == 387261 then
 		self.vb.stormSurgeCount = self.vb.stormSurgeCount + 1
 		specWarnStormsurge:Show(self.vb.energyCount)
@@ -437,6 +458,9 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
+		end
+		if self:IsMythic() then
+			timerInversionCD:Start(8)
 		end
 	elseif spellId == 385574 then
 		self.vb.wingCount = self.vb.wingCount + 1
@@ -452,18 +476,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnStormBreak:Play("watchstep")
 		timerStormBreakCD:Start()
 	elseif spellId == 385068 and self:AntiSpam(5, 2) then
-		specWarnBallLightning:Show()
+		self.vb.ballCount = self.vb.ballCount + 1
+		specWarnBallLightning:Show(self.vb.ballCount)
 		specWarnBallLightning:Play("watchorb")
-		timerBallLightningCD:Start()
+		--8.4, 26.7, 23, 23. sometimes 3rd one also delayed more but first one consistently is
+		if self.vb.ballCount == 1 then
+			timerBallLightningCD:Start(26.7, self.vb.ballCount+1)
+		else
+			timerBallLightningCD:Start(23, self.vb.ballCount+1)
+		end
 	elseif spellId == 395885 then
-		self.vb.energyCount = self.vb.energyCount + 1
-		specWarnStormEater:Show(self.vb.energyCount)
-		specWarnStormEater:Play("specialsoon")--Clarify voice when number of soakers and need to soak better understood
-		timerStormEaterCD:Start()--Temp
---		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.energyCount+1)
---		if timer then
---			timerStormEaterCD:Start(timer, self.vb.energyCount+1)
---		end
+		specWarnStormEater:Show()
+		specWarnStormEater:Play("helpsoak")--Clarify voice when number of soakers and need to soak better understood
 	elseif spellId == 386410 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -507,14 +531,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerMagneticChargeCD:Start(timer, self.vb.magneticCount+1)
 		end
-	elseif spellId == 382434 then--First intermission Starts (Storm Nova)
+	elseif spellId == 382434 then--First intermission Starts (Storm Nova finished)
 		self:SetStage(1.5)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 		self.vb.breathCount = 0--Reused for Lightning Devastation
---
-		timerLightningDevastationCD:Start(13.5, 1)
-		timerPhaseCD:Start(self:IsHard() and 93.6 or 100)
+
+		if self.Options.SetBreathToBait then
+			timerLightningDevastationCD:Start(self:IsMythic() and 11.3 or self:IsHeroic() and 11.7, 1)
+		else
+			timerLightningDevastationCD:Start(self:IsMythic() and 12.8 or self:IsHeroic() and 13.2, 1)
+		end
+		timerPhaseCD:Start(self:IsHard() and 93.3 or 100)
 	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger (Electric Scales)
 		self:SetStage(2)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
@@ -529,12 +557,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLightningDevastationCD:Stop()
 		timerPhaseCD:Stop()
 
-		timerStormsurgeCD:Start(8.5, 1)
-		timerElectrifiedJawsCD:Start(38.5, 1)
-		timerTempestWingCD:Start(43.5, 1)
-		timerFulminatingChargeCD:Start(53.5, 1)
-		timerVolatileCurrentCD:Start(self:IsHard() and 65.5 or 68.5, 1)--Only difference on heroic, we'll see on mythic
-		timerPhaseCD:Start(self:IsHard() and 193 or 211)
+		if self:IsMythic() then--Post Dec 22nd hotfix, Mythic stage 2 now starts 6 seconds slower than other difficulties to allow more time to wrap up intermission
+			timerStormsurgeCD:Start(14.5, 1)
+			timerElectrifiedJawsCD:Start(44.5, 1)
+			timerTempestWingCD:Start(49.5, 1)
+			timerFulminatingChargeCD:Start(57.5, 1)
+			timerVolatileCurrentCD:Start(67.5, 1)
+--			timerPhaseCD:Start(190)--Basically ends on 3rd stormsurge being removed
+		else
+			timerStormsurgeCD:Start(8.5, 1)
+			timerElectrifiedJawsCD:Start(38.5, 1)
+			timerTempestWingCD:Start(43.5, 1)
+			timerFulminatingChargeCD:Start(53.5, 1)
+			timerVolatileCurrentCD:Start(self:IsHeroic() and 65.5 or 68.5, 1)--Only difference on heroic
+--			timerPhaseCD:Start(self:IsHeroic() and 193 or 211)
+		end
 	elseif spellId == 390463 then--Second Intermission Ends Storm Nova
 		self:SetStage(3)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
@@ -548,15 +585,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.wingCount = 0
 		self.vb.magneticCount = 0
 
-		if self:IsHard() then
-			if self:IsMythic() then
-				timerStormEaterCD:Start(3)
-			end
+		if self:IsMythic() then
+			timerStormEaterCD:Start(21.7)--Cast only once, then persistent aura
+			timerThunderousBlastCD:Start(28.6, 1)
+			timerMagneticChargeCD:Start(32.7)
+			timerLightningBreathCD:Start(38.1, 1)
+			timerFulminatingChargeCD:Start(43.2, 1)
+			timerTempestWingCD:Start(70.6, 1)
+		elseif self:IsHeroic() then
 			timerThunderousBlastCD:Start(21.8, 1)
+			timerMagneticChargeCD:Start(25.9)
 			timerLightningBreathCD:Start(31.3, 1)
 			timerFulminatingChargeCD:Start(40.9, 1)
 			timerTempestWingCD:Start(65.9, 1)
-			timerMagneticChargeCD:Start(25.9)
 		else
 			timerThunderousBlastCD:Start(22.5, 1)
 			timerLightningBreathCD:Start(34.5, 1)
@@ -570,89 +611,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 		warnPhase:Play("phasechange")
 		self.vb.breathCount = 0--Reused for Lightning Devastation
+		self.vb.ballCount = 0
 		timerStormsurgeCD:Stop()
 		timerTempestWingCD:Stop()
 		timerFulminatingChargeCD:Stop()
 		timerVolatileCurrentCD:Stop()
 		timerElectrifiedJawsCD:Stop()
 
-		timerLightningStrikeCD:Start(6.2)
-		timerLightningDevastationCD:Start(25, 1)
-		--Old method using this event for all stae change
-		--[[self:SetStage(0.5)
-		if self.vb.phase == 1.5 then
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
-			warnPhase:Play("phasechange")
-			self.vb.breathCount = 0--Reused for Lightning Devastation
-			timerHurricaneWingCD:Stop()
-			timerStaticChargeCD:Stop()
-			timerVolatileCurrentCD:Stop()
-			timerElectrifiedJawsCD:Stop()
-			timerLightningBreathCD:Stop()
-			self:Unschedule(breathCorrect)
---
-			timerLightningDevastationCD:Start(7.3, 1)
-		elseif self.vb.phase == 2 then
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
-			warnPhase:Play("ptwo")
-			self.vb.energyCount = 0
-			self.vb.currentCount = 0
-			self.vb.tankCount = 0
-			self.vb.strikeCount = 0
-			self.vb.wingCount = 0
-			self.vb.chargeCount = 0
---
-			timerLightningDevastationCD:Stop()
---
-			timerElectrifiedJawsCD:Start(29.9, 1)
-			timerTempestWingCD:Start(35, 1)
-			timerFulminatingChargeCD:Start(44, 1)
-			timerVolatileCurrentCD:Start(self:IsHard() and 57 or 60, 1)--Only difference on heroic, we'll see on mythic
-		elseif self.vb.phase == 2.5 then
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
-			warnPhase:Play("phasechange")
-			self.vb.breathCount = 0--Reused for Lightning Devastation
-			timerStormsurgeCD:Stop()
-			timerTempestWingCD:Stop()
-			timerFulminatingChargeCD:Stop()
-			timerVolatileCurrentCD:Stop()
-			timerElectrifiedJawsCD:Stop()
-
-			timerLightningDevastationCD:Start(25, 1)
---			timerStormBreakCD:Start(3)
---			timerBallLightningCD:Start(3)
-		else--P3
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
-			warnPhase:Play("pthree")
---
-			self.vb.energyCount = 0--Used for Mythic Storm-Eater
-			self.vb.chargeCount = 0--Fulminating
-			self.vb.tankCount = 0--Thunderous Blast
-			self.vb.breathCount = 0--Lightning Breath
-			self.vb.strikeCount = 0--Lightning Strike
-			self.vb.wingCount = 0
-			self.vb.magneticCount = 0
---
-			timerLightningDevastationCD:Stop()
-			if self:IsHard() then
-				if self:IsMythic() then
-					timerStormEaterCD:Start(3)
-				end
-				timerThunderousBlastCD:Start(32, 1)
-				timerLightningBreathCD:Start(43, 1)
-				timerFulminatingChargeCD:Start(53, 1)
-				timerTempestWingCD:Start(76, 1)
-				if self:IsHard() then
-					timerMagneticChargeCD:Start(38)
-				end
-			else
-				timerStormEaterCD:Start(3)
-				timerThunderousBlastCD:Start(16.7, 1)
-				timerLightningBreathCD:Start(28.7, 1)
-				timerFulminatingChargeCD:Start(35.7, 1)
-				timerTempestWingCD:Start(60, 1)
-			end
-		end--]]
+		timerLightningStrikeCD:Start(4.8)
+		if self.Options.SetBreathToBait then
+			timerLightningDevastationCD:Start(22.8, 1)
+		else
+			timerLightningDevastationCD:Start(24.3, 1)
+		end
 	end
 end
 
@@ -695,20 +666,27 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 397387 then
 		specWarnFlameShield:Show(args.destName)
 		specWarnFlameShield:Play("targetchange")
-		timerFlameShieldCD:Start(nil, args.sourceGUID)
+		--Time between casts not known yet, fix when groups suck really bad
+		--timerFlameShieldCD:Start(nil, castsPerGUID[args.sourceGUID])
+		--if not self:CheckBossDistance(args.sourceGUID, true, 35278, 80) then
+		--	--Not our platform, set fade, which fades out timer and disables countdowns for it
+		--	timerFlameShieldCD:SetSTFade(true, castsPerGUID[args.sourceGUID])
+		--end
 		if self.Options.NPAuraOnFlameShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 397382 then
 		local icon = self.vb.shroudIcon
-		if self.Options.SetIconOnShatteringShroud then
+		if self.Options.SetIconOnShatteringShroud2 then
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
 			specWarnShatteringShroud:Show()
 			specWarnShatteringShroud:Play("targetyou")
 		end
-		warnShatteringShroud:CombinedShow(0.5, args.destName)
+		if not self:CheckBossDistance(args.sourceGUID, true, 35278, 80) then
+			warnShatteringShroud:CombinedShow(0.5, args.destName)
+		end
 		self.vb.shroudIcon = self.vb.shroudIcon + 1
 	elseif spellId == 388691 then
 		if self.Options.InfoFrame then
@@ -722,6 +700,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellStormCharged:Yell(6, "")--Blue Square
 			self:Unschedule(yellRepeater)
 			yellRepeater(self, 6, 0)
+			playerPolarity = 1--Positive
 		end
 	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
 		if args:IsPlayer() then
@@ -730,19 +709,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellStormCharged:Yell(7, "")--Red X
 			self:Unschedule(yellRepeater)
 			yellRepeater(self, 7, 0)
+			playerPolarity = 2--Negative
 		end
-	elseif spellId == 394582 and args:IsPlayer() then
-		warnFocusedCharge:Show()
-	elseif spellId == 394583 and args:IsPlayer() then
-		warnScatteredCharge:Show()
 	elseif spellId == 394584 then
 		warnInversion:CombinedShow(0.3, args.destName)
+		if self:AntiSpam(4, 5) then
+			timerInversionCD:Start(6)
+		end
 		if args:IsPlayer() then
 			specWarnInversion:Show()
 			specWarnInversion:Play("polarityshift")
-			yellInversion:Yell()
-			yellInversionFades:Countdown(spellId)
+			self:Unschedule(yellRepeater)
+			--Invert the yell based on player debuff
+			if playerPolarity then
+				yellRepeater(self, playerPolarity == 1 and 7 or 8, 0, true)
+			end
 		end
+	elseif spellId == 394582 and args:IsPlayer() and self:AntiSpam(3, 6) then
+		warnFocusedCharge:Show()
+	elseif spellId == 394583 and args:IsPlayer() then
+		warnScatteredCharge:Show()
 	elseif spellId == 377467 then
 		local icon = self.vb.chargeIcon
 		if self.Options.SetIconOnFulminatingCharge then
@@ -775,15 +761,35 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnThunderstruckArmor:Show(args.destName)
 			specWarnThunderstruckArmor:Play("tauntboss")
 		end
-	elseif spellId == 391281 and self:AntiSpam(5, 5) then--Colossal Stormfiends being engaged
-		timerBallLightningCD:Start(8.4)
-		timerStormBreakCD:Start(21.8)
+	elseif spellId == 391281 and self:AntiSpam(5, 7) then--Crackling Energy/Colossal Stormfiends being engaged
+		timerBallLightningCD:Start(8.4, 1)
+		timerStormBreakCD:Start(21.8, 1)
 	elseif spellId == 391402 then
 		warnLightningStrike:Show()
-		timerLightningStrikeCD:Start()--31.6
+		timerLightningStrikeCD:Start(self:IsMythic() and 29.1 or self:IsHeroic() and 31.5 or 32.8)
+	elseif spellId == 389214 then--Overload
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 199547 then--Frostforged Zealot
+			self.vb.frostAddCount = self.vb.frostAddCount + 1
+			castsPerGUID[args.destGUID] = self.vb.frostAddCount
+			timerShatteringShroudCD:Start(7.4, castsPerGUID[args.destGUID])--7.4-8.2
+			if not self:CheckBossDistance(args.destGUID, true, 35278, 80) then
+				timerShatteringShroudCD:SetSTFade(true, castsPerGUID[args.destGUID])
+			end
+		elseif cid == 199549 then--Flamesworn Herald
+			self.vb.fireAddCount = self.vb.fireAddCount + 1
+			castsPerGUID[args.destGUID] = self.vb.fireAddCount
+			timerFlameShieldCD:Start(6.4, castsPerGUID[args.destGUID])--6.4-7.6
+			if not self:CheckBossDistance(args.destGUID, true, 35278, 80) then
+				timerFlameShieldCD:SetSTFade(true, castsPerGUID[args.destGUID])
+			end
+		end
+	elseif spellId == 389878 then
+		warnFuse:Cancel()
+		warnFuse:Schedule(2, args.destName, amount)
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -807,7 +813,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 397382 then
-		if self.Options.SetIconOnShatteringShroud then
+		if self.Options.SetIconOnShatteringShroud2 then
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
@@ -817,10 +823,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnStormsurge:Show()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
-		end
-	elseif spellId == 394584 then
-		if args:IsPlayer() then
-			yellInversionFades:Cancel()
 		end
 	elseif spellId == 377467 then
 		if self.Options.SetIconOnFulminatingCharge then
@@ -836,13 +838,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellMagneticChargeFades:Cancel()
 		end
-	elseif args:IsSpellID(391990, 394574, 394576) then--All variants of positive
+	elseif spellId == 394584 or args:IsSpellID(391990, 394574, 394576) or args:IsSpellID(391991, 394579, 394575) then--All variants of positive, negative, and inversion
 		if args:IsPlayer() then
 			self:Unschedule(yellRepeater)
-		end
-	elseif args:IsSpellID(391991, 394579, 394575) then--All variants of positive
-		if args:IsPlayer() then
-			self:Unschedule(yellRepeater)
+			playerPolarity = nil
 		end
 	end
 end
@@ -866,18 +865,20 @@ function mod:UNIT_DIED(args)
 	elseif cid == 194990 then--Stormseeker Acolyte
 		castsPerGUID[args.destGUID] = nil
 	elseif cid == 199547 then--Frostforged Zealot
-		timerShatteringShroudCD:Stop(args.destGUID)
+		timerShatteringShroudCD:Stop(castsPerGUID[args.destGUID])
+		castsPerGUID[args.destGUID] = nil
 	elseif cid == 199549 then--Flamesworn Herald
-		timerFlameShieldCD:Stop(args.destGUID)
-	elseif cid == 197145 then--Colossal Stormfiend
+		timerFlameShieldCD:Stop(castsPerGUID[args.destGUID])
+		castsPerGUID[args.destGUID] = nil
+--	elseif cid == 197145 or cid == 200943 then--Colossal Stormfiend
 
 	end
 end
 
 --"<330.41 11:01:55> [CHAT_MSG_RAID_BOSS_EMOTE] Raszageth takes a deep breath...#Raszageth###Raszageth##0#0##0#1502#nil#0#false#false#false#false", -- [17507]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
---	if not msg:find("ICON") and npc = target then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
-	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
+	if not msg:find("ICON") and npc = target and (self.vb.phase == 1.5 or self.vb.phase == 2.5) then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
+--	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
 		self:Unschedule(warnDeepBreath)
 		warnDeepBreath(self, true)
 	end
