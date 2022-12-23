@@ -877,7 +877,7 @@ end
 
 --"<330.41 11:01:55> [CHAT_MSG_RAID_BOSS_EMOTE] Raszageth takes a deep breath...#Raszageth###Raszageth##0#0##0#1502#nil#0#false#false#false#false", -- [17507]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if not msg:find("ICON") and npc = target and (self.vb.phase == 1.5 or self.vb.phase == 2.5) then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
+	if not msg:find("ICON") and npc == target and (self.vb.phase == 1.5 or self.vb.phase == 2.5) then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
 --	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
 		self:Unschedule(warnDeepBreath)
 		warnDeepBreath(self, true)
