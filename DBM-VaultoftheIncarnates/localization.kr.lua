@@ -79,6 +79,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2499)
 
+L:SetOptionLocalization({
+	SetBreathToBait = "사잇페이즈 때 숨결 타이머를 만료시켜 시전 타이밍 대신 유도 타이밍 기반으로 타이머를 조정합니다 (경고는 계속 숨결을 시전할 때 뜸)"
+})
+
 L:SetMiscLocalization({
 	negative = "음전하",
 	positive = "양전하",
