@@ -404,7 +404,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsMythic() then
 			timerThunderStrikeCD:Start(38.5)
 		end
-	end
 	elseif spellId == 373415 then
 		DBM:AddMsg("373415 is combat logging now, notify DBM author")
 		--specWarnMoltenRupture:Show()
