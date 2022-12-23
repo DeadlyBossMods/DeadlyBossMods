@@ -129,7 +129,7 @@ local yellFulminatingChargeFades			= mod:NewIconFadesYell(378829)
 local timerStormsurgeCD						= mod:NewCDCountTimer(35, 387261, nil, nil, nil, 2)--Maybe shorttext 28089?
 local timerTempestWingCD					= mod:NewCDCountTimer(35, 385574, nil, nil, nil, 3)
 local timerFulminatingChargeCD				= mod:NewCDCountTimer(35, 378829, nil, nil, nil, 3)
-local timerInversionCD						= mod:NewCDCountTimer(6, 394584, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON))
+local timerInversionCD						= mod:NewCDCountTimer(6, 394584, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddSetIconOption("SetIconOnFulminatingCharge", 378829, true, 0, {1, 2, 3})
 mod:AddInfoFrameOption(387261, true)
