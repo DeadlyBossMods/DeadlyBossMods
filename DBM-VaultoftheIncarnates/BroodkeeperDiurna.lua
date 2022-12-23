@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20221215000000)
+mod:SetHotfixNoticeRev(20221220000000)
 mod:SetMinSyncRevision(20221215000000)
 mod.respawnTime = 33
 
@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, never saw Rapid Incubation Damage done increase/damage taken reduced buff
 --TODO, mythic stuff, like does mythic stone slam timer reset or replace existing p1? does fissure timer reset in p2?
 --[[
-(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485) and type = "begincast"
+(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485 or ability.id = 396269 or ability.id = 396779) and type = "begincast"
  or ability.id = 380175 and type = "cast"
  or ability.id = 375879
  or (ability.id = 375716 or ability.id = 375653 or ability.id = 375457 or ability.id = 375630 or ability.id = 376257 or ability.id = 375575) and type = "begincast"
@@ -62,12 +62,12 @@ local specWarnMortalStoneclaws					= mod:NewSpecialWarningDefensive(375870, nil,
 local specWarnMortalWounds						= mod:NewSpecialWarningTaunt(378782, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
-local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.staff, nil, nil, 5)--Shared CD ability
-local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability
+local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.staff, nil, nil, 5)--Shared CD ability?
+local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability?
 local timerWildfireCD							= mod:NewCDCountTimer(21.4, 375871, nil, nil, nil, 3)--21.4-28
 local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
-local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.6, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
-local timerStormFissureCD						= mod:NewCDTimer(60, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.2, 375870, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shared CD in P1, 7.3-15 P2
+local timerStormFissureCD						= mod:NewCDTimer(24, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:GroupSpells(375842, 375889)--Greatstaff spawn ith greatstaff wrath debuff
@@ -125,7 +125,7 @@ local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, ni
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
 local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(24.4, 380176, L.staff, nil, nil, 5)--Shared CD ability
-local timerFrozenShroudCD						= mod:NewCDCountTimer(42, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
+local timerFrozenShroudCD						= mod:NewCDCountTimer(40.5, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
 local castsPerGUID = {}
@@ -138,9 +138,10 @@ mod.vb.incubationCount = 0
 mod.vb.mageIcon = 6
 mod.vb.StormbringerIcon = 8
 mod.vb.eggsGone = false
-mod.vb.sharedCD = 26
-local heroicAddsTimers = {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
-local normalAddsTimers = {35.6, 24.8, 36.8, 24.9, 43.4, 24.9, 36.5, 24.9, 43.3, 24.8}
+local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 18.2}
+local heroicAddsTimers	= {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
+local normalAddsTimers	= {35.6, 24.8, 36.8, 24.9, 43.4, 24.9, 36.5, 24.9, 43.3, 24.8}
+local p2StaffMythic		= {0, 19, 17, 25, 24.5, 25, 31.9, 17.5, 31, 18.7, 25, 25}--Some of this pattern is accurate but it can change, need to figure out actual cause.
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -158,16 +159,16 @@ function mod:OnCombatStart(delay)
 	timerWildfireCD:Start(8.4-delay, 1)
 	timerRapidIncubationCD:Start(14.3-delay, 1)
 	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
-	timerPrimalistReinforcementsCD:Start(35.6-delay, 1)
+	timerPrimalistReinforcementsCD:Start(self:IsMythic() and 32.9 or self:IsHeroic() and 36.4 or 35.6-delay, 1)
 	timerIcyShroudCD:Start(26.5-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self:IsMythic() then
-		self.vb.sharedCD = 24
-		timerStormFissureCD:Start(1-delay)
-	else--Heroic and Normal confirmed 25 now?
-		self.vb.sharedCD = 25
+		timerStormFissureCD:Start(28-delay)
+		timerPrimalistReinforcementsCD:Start(32.9-delay, 1)
+	else--Heroic and Normal
+		timerPrimalistReinforcementsCD:Start(35.6-delay, 1)
 	end
 end
 
@@ -189,18 +190,18 @@ function mod:SPELL_CAST_START(args)
 		self.vb.incubationCount = self.vb.incubationCount + 1
 		warnRapidIncubation:Show(self.vb.incubationCount)
 		if not self.vb.eggsGone then
-			timerRapidIncubationCD:Start(self.vb.sharedCD, self.vb.incubationCount+1)
+			timerRapidIncubationCD:Start(24, self.vb.incubationCount+1)
 		end
 	elseif spellId == 375871 and self:AntiSpam(10, 1) then
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("watchstep")
-		timerWildfireCD:Start(nil, self.vb.wildFireCount+1)
+		timerWildfireCD:Start(self:IsMythic() and 23 or 21.4, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
 		specWarnIcyShroud:Play("aesoon")
-		timerIcyShroudCD:Start(nil, self.vb.icyCount+1)
+		timerIcyShroudCD:Start(self:IsMythic() and 41 or 39.1, self.vb.icyCount+1)
 	elseif spellId == 388918 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnFrozenShroud:Show(self.vb.icyCount)
@@ -311,18 +312,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerEGreatstaffoftheBroodkeeperCD:Start(20.6, self.vb.staffCount+1)--20-27
+			if self:IsMythic() then
+				local timer = p2StaffMythic[self.vb.staffCount+1] or 17.5
+				timerEGreatstaffoftheBroodkeeperCD:Start(timer, self.vb.staffCount+1)
+			else
+				timerEGreatstaffoftheBroodkeeperCD:Start(20.6, self.vb.staffCount+1)--20-27
+			end
 		end
 	elseif spellId == 375870 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
+		local timer = (self.vb.phase == 1 and 20.2 or 7.3)-1.5--Is this even remotely valid anymore? is it such a short CD in p2 normal/heroic?
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 	elseif spellId == 396269 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
---		local timer = (self.vb.phase == 1 and self.vb.sharedCD or 7.3)-1.5
---		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
+		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
+		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
 	end
 end
 
@@ -375,7 +381,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expireTime then
 			remaining = expireTime-GetTime()
 		end
-		if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+		if self.vb.phase == 2 and (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnMortalWounds:Show(args.destName)
 			specWarnMortalWounds:Play("tauntboss")
 		else
@@ -426,17 +432,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Mortal Stone Claws, since we don't swap timers, no action needed
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
 			if self:IsMythic() then
-				--local remainingClaws = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
-				--if remainingClaws then
-					timerMortalStoneclawsCD:Stop()
-				--	timerMortalStoneSlamCD:Start(remainingClaws, 1)--Does NOT restart anymore
-				--end
+				timerMortalStoneclawsCD:Stop()
+				timerMortalStoneSlamCD:Start(15, 1)--Does NOT restart anymore
 				self.vb.tankCombocount = 0
-			end
-			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
-			if remainingStaff then
 				timerGreatstaffoftheBroodkeeperCD:Stop()
-				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore
+				timerEGreatstaffoftheBroodkeeperCD:Start(19, 1)
+			else
+				--Tank timer doesn't reset, just keeps going, staff timer doesn't restart, just swaps to new object
+				local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
+				if remainingStaff then
+					timerGreatstaffoftheBroodkeeperCD:Stop()
+					timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
+				end
 			end
 			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
 			if remainingIcy then
@@ -452,7 +459,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.StormbringerIcon = 8
 		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
 		specWarnPrimalistReinforcements:Play("killmob")
-		local timer = self:IsHard() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
+		local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
 		if timer then
 			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
 		end

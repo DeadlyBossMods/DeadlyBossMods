@@ -6,7 +6,7 @@ mod:SetCreatureID(187771, 187768, 187772, 187767)
 mod:SetEncounterID(2590)
 mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20221215000000)
+mod:SetHotfixNoticeRev(20221222000000)
 mod:SetMinSyncRevision(20221214000000)
 --mod.respawnTime = 29
 
@@ -115,11 +115,11 @@ local allTimers = {
 		--Primal Blizzard (excluded for now)
 		[373059] = {49.8, 118, 105.8, 108},
 	},
-	["normal"] = {--Needs work, some of these can be lower
+	["normal"] = {--Needs work, some of these can be lower (Also includes LFR)
 		--Conductive Mark
-		[375331] = {16.7, 73.6, 43.7, 44.9, 43.7, 44.9, 47.4, 41.2, 44.9, 45, 42.5},
+		[375331] = {16.7, 70.5, 43.7, 44.9, 43.7, 44.9, 43.8, 41.2, 44.9, 45, 42.5},
 		--Pillars
-		[372322] = {9.5, 42.9, 47.6, 43.7, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
+		[372322] = {8.5, 42.9, 47.6, 43.7, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
 		--Primal Blizzard (excluded for now)
 		[373059] = {60, 149.6, 133, 133},
 	},
@@ -188,8 +188,8 @@ function mod:OnCombatStart(delay)
 		timerChainLightningCD:Start(10.7-delay)
 		timerConductiveMarkCD:Start(16.7-delay, 1)
 		--Opalfang
-		timerEarthenPillarCD:Start(9.5-delay, 1)
-		timerCrushCD:Start(18.4-delay, 1)
+		timerEarthenPillarCD:Start(8.5-delay, 1)
+		timerCrushCD:Start(18.2-delay, 1)
 		--Embar Firepath
 		timerSlashingBlazeCD:Start(9.2-delay, 1)
 		timerMeteorAxeCD:Start(22.3-delay, 1)
@@ -266,7 +266,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.meteorCast = self.vb.meteorCast + 1
 		self.vb.meteorTotal = 0
 --		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
-		timerMeteorAxeCD:Start(nil, self.vb.meteorCast+1)
+		timerMeteorAxeCD:Start(self:IsEasy() and 66 or 39.1, self.vb.meteorCast+1)
 	elseif spellId == 375331 then
 		self.vb.markCast = self.vb.markCast + 1
 		specWarnConductiveMarkSpread:Show()

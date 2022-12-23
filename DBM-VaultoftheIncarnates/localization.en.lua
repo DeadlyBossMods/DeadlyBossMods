@@ -78,6 +78,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2499)
 
+L:SetOptionLocalization({
+	SetBreathToBait = "Adjust breath timers during intermissions to expire based on bait timing instead of cast timing (Alerts will still fire on breath cast)"
+})
+
 L:SetMiscLocalization({
 	negative 	= "negative",
 	positive 	= "positive",

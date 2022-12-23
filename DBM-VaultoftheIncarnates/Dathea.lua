@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 		timerCycloneCD:Start(35.2-delay, 1)
 		timerColaescingStormCD:Start(70-delay, 1)--70-73 (check ito it being 73 consistently on mythic)
 	else
-		timerZephyrSlamCD:Start(9.5-delay, 1)
+		timerZephyrSlamCD:Start(9.4-delay, 1)
 		timerCrosswindsCD:Start(28.9-delay, 1)
 		timerCycloneCD:Start(45.2-delay, 1)
 		timerColaescingStormCD:Start(80-delay, 1)
@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerConductiveMarkCD:Restart(9.7, self.vb.markCount+1)
 			timerZephyrSlamCD:Restart(15.7, self.vb.slamCount+1)
-			timerCrosswindsCD:Restart(35.2, self.vb.crosswindCount+1)
+			timerCrosswindsCD:Restart(34, self.vb.crosswindCount+1)
 			timerColaescingStormCD:Start(86.2, self.vb.stormCount+1)
 		end
 	elseif spellId == 388302 then
