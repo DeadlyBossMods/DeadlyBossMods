@@ -786,7 +786,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 389878 then
 		warnFuse:Cancel()
-		warnFuse:Schedule(2, args.destName, amount)
+		warnFuse:Schedule(2, args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
