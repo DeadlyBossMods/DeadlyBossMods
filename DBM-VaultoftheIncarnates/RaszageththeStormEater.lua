@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2499, "DBM-VaultoftheIncarnates", nil, 1200)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(181224)--way too many CIDs to guess right now
+mod:SetCreatureID(189492)
 mod:SetEncounterID(2607)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20221260000000)
