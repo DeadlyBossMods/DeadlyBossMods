@@ -157,7 +157,7 @@ local specWarnMagneticCharge				= mod:NewSpecialWarningYouPos(399713, nil, nil, 
 local yellMagneticCharge					= mod:NewShortPosYell(399713)
 local yellMagneticChargeFades				= mod:NewIconFadesYell(399713)
 
-local timerStormEaterCD						= mod:NewAITimer(35, 395885, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerStormEaterCD						= mod:NewCDTimer(35, 395885, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerMagneticChargeCD					= mod:NewCDCountTimer(35, 399713, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerThunderousBlastCD				= mod:NewCDCountTimer(35, 386410, 309024, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
