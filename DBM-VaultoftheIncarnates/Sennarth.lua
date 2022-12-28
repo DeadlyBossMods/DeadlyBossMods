@@ -428,7 +428,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 372044 or spellId == 374104 then--Hard version, Easy version
 		warnWrappedInWebs:CombinedShow(0.5, args.destName)
-	elseif spellId == 385083 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
+	elseif spellId == 385083 and not args:IsPlayer() and (args.amount or 1) > 4 and not DBM:UnitDebuff("player", spellId) then
 		specWarnWebBlast:Show(args.destName)
 		specWarnWebBlast:Play("tauntboss")
 	end
