@@ -311,7 +311,7 @@ function mod:SPELL_CAST_START(args)
 			timerGossamerBurstCD:Start(timer, self.vb.burstCount+1)
 		end
 	elseif spellId == 374112 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFreezingBreath:Show()
 			specWarnFreezingBreath:Play("defensive")
 		end
@@ -428,7 +428,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 372044 or spellId == 374104 then--Hard version, Easy version
 		warnWrappedInWebs:CombinedShow(0.5, args.destName)
-	elseif spellId == 385083 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
+	elseif spellId == 385083 and not args:IsPlayer() and (args.amount or 1) > 4 and not DBM:UnitDebuff("player", spellId) then
 		specWarnWebBlast:Show(args.destName)
 		specWarnWebBlast:Play("tauntboss")
 	end

@@ -249,14 +249,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 372056 then
 		self.vb.crushCast = self.vb.crushCast + 1
 		timerCrushCD:Start(nil, self.vb.crushCast+1)
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnCrush:Show()
 			specWarnCrush:Play("defensive")
 		end
 	elseif spellId == 372027 then
 		self.vb.blazeCast = self.vb.blazeCast + 1
 		timerSlashingBlazeCD:Start(nil, self.vb.blazeCast+1)
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSlashingBlaze:Show()
 			specWarnSlashingBlaze:Play("defensive")
 		end
@@ -315,17 +315,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerConductiveMarkCD:Stop()
 		timerChainLightningCD:Stop()
 	elseif spellId == 372056 and not args:IsPlayer() then
-		local amount = args.amount or 1
-		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
-		end
-		if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-			specWarnCrushTaunt:Show(args.destName)
-			specWarnCrushTaunt:Play("tauntboss")
-		else
-			warnCrush:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				specWarnCrushTaunt:Show(args.destName)
+				specWarnCrushTaunt:Play("tauntboss")
+			else
+				warnCrush:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 386370 then
 		warnQuakingConvocation:Show()
@@ -341,17 +344,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 0.6, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
-		local amount = args.amount or 1
-		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
-		end
-		if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-			specWarnSlashingBlazeTaunt:Show(args.destName)
-			specWarnSlashingBlazeTaunt:Play("tauntboss")
-		else
-			warnSlashingBlaze:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				specWarnSlashingBlazeTaunt:Show(args.destName)
+				specWarnSlashingBlazeTaunt:Play("tauntboss")
+			else
+				warnSlashingBlaze:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 386289 then
 		warnBurningConvocation:Show()

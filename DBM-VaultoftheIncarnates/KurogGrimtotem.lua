@@ -327,7 +327,7 @@ function mod:SPELL_CAST_START(args)
 	--Mythic Stuff
 	elseif spellId == 391268 then
 		timerEarthSmiteCD:Start()
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEarthSmite:Show()
 			specWarnEarthSmite:Play("carefly")
 		end
@@ -338,7 +338,7 @@ function mod:SPELL_CAST_START(args)
 		timerRagingInfernoCD:Start(27.7)
 		timerAddEnrageCD:Start(94, L.Fire)
 	elseif spellId == 393309 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFlameSmite:Show()
 			specWarnFlameSmite:Play("shockwave")
 		end
@@ -353,7 +353,7 @@ function mod:SPELL_CAST_START(args)
 		timerFrigidTorrentCD:Start(27.7)
 		timerAddEnrageCD:Start(94, L.Frost)
 	elseif spellId == 393296 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFrostSmite:Show()
 			specWarnFrostSmite:Play("shockwave")
 		end
@@ -374,7 +374,7 @@ function mod:SPELL_CAST_START(args)
 		warnOrbLightning:Show()
 		timerOrbLightningCD:Start()
 	elseif spellId == 393429 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnStormSmite:Show()
 			specWarnStormSmite:Play("shockwave")
 		end
@@ -435,18 +435,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.curAltar = 4
 		updateAltar(self)
 	elseif spellId == 372158 and not args:IsPlayer() then
-		local amount = args.amount or 1
-		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
-		end
-		if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-			specWarnSplinteredBones:Show(args.destName)
-			specWarnSplinteredBones:Play("tauntboss")
-		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				specWarnSplinteredBones:Show(args.destName)
+				specWarnSplinteredBones:Play("tauntboss")
+			else
 				warnSplinteredBones:Show(args.destName, amount)
 			end
 		end
