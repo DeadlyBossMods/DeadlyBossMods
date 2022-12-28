@@ -73,7 +73,7 @@ mod:AddSetIconOption("SetIconOnWeb", 372082, true, false, {1, 2, 3})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24898))
 local warnFrostbreathArachnid						= mod:NewSpellAnnounce("ej24899", 2)
 
-local specWarnFreezingBreath						= mod:NewSpecialWarningDefensive(374112, nil, nil, nil, 1, 2)
+local specWarnFreezingBreath						= mod:NewSpecialWarningDodge(374112, nil, nil, nil, 1, 2)
 
 local timerFreezingBreathCD							= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: Cold Peak
@@ -313,7 +313,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 374112 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFreezingBreath:Show()
-			specWarnFreezingBreath:Play("defensive")
+			specWarnFreezingBreath:Play("shockwave")
 		end
 		timerFreezingBreathCD:Start(nil, args.sourceGUID)
 	elseif spellId == 372539 then

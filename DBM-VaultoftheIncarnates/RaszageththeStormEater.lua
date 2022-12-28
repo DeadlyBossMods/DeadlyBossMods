@@ -396,7 +396,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.energyCount = self.vb.energyCount + 1
 		specWarnHurricaneWing:Show(self.vb.energyCount)
 		specWarnHurricaneWing:Play("pushbackincoming")
-		specWarnHurricaneWing:ScheduleVoice(1.5, "movecenter")
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.energyCount+1) or 35
 		if timer then
 			timerHurricaneWingCD:Start(timer, self.vb.energyCount+1)
