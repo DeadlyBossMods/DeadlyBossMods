@@ -438,11 +438,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			local remaining
-			if expireTime then
-				remaining = expireTime-GetTime()
-			end
 			if not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 				specWarnSplinteredBones:Show(args.destName)
 				specWarnSplinteredBones:Play("tauntboss")
