@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 380175 375870 396269",
 	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264 181113",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
-	"SPELL_AURA_REMOVED 375809 376073 375809 376330 396264",
+	"SPELL_AURA_REMOVED 376073 375809 376330 396264",
 	"SPELL_AURA_REMOVED_DOSE 375809",
 	"SPELL_PERIODIC_DAMAGE 390747",
 	"SPELL_PERIODIC_MISSED 390747",
@@ -45,7 +45,6 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25119))
 ----Broodkeeper Diurna
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25120))
 local warnEggsLeft								= mod:NewCountAnnounce(19873, 1)
-local warnBroodkeepersBond						= mod:NewFadesAnnounce(375809, 1)
 local warnGreatstaffsWrath						= mod:NewTargetNoFilterAnnounce(375889, 2)
 local warnClutchwatchersRage					= mod:NewStackAnnounce(375829, 2)
 local warnRapidIncubation						= mod:NewSpellAnnounce(376073, 3)
@@ -195,7 +194,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375871 and self:AntiSpam(10, 1) then
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
-		specWarnWildfire:Play("watchstep")
+		specWarnWildfire:Play("scatter")
+		specWarnWildfire:ScheduleVoice(1.5, "watchstep")
 		timerWildfireCD:Start(self:IsMythic() and 23 or 21.4, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
@@ -218,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnMortalStoneSlam:Play("defensive")
 		end
 	elseif spellId == 376272 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnBurrowingStrike:Show()
 			specWarnBurrowingStrike:Play("defensive")
 		end
@@ -226,7 +226,7 @@ function mod:SPELL_CAST_START(args)
 			timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375475 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnRendingBite:Show()
 			specWarnRendingBite:Play("defensive")
 		end
@@ -335,14 +335,14 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 375889 then
-		warnGreatstaffsWrath:CombinedShow(1, args.destName)--Aggregated for now in case strat is to just pop multiple eggs and CD like fuck for Clutchwatcher's Rage
+		warnGreatstaffsWrath:CombinedShow(2, args.destName)--Aggregated for now in case strat is to just pop multiple eggs and CD like fuck for Clutchwatcher's Rage
 		if args:IsPlayer() then
 			specWarnGreatstaffsWrath:Show()
 			specWarnGreatstaffsWrath:Play("targetyou")
 			yellGreatstaffsWrath:Yell()
 		end
 	elseif spellId == 380483 then
-		warnEGreatstaffsWrath:CombinedShow(1, args.destName)--Aggregated for now in case strat is to just pop multiple eggs and CD like fuck for Clutchwatcher's Rage
+		warnEGreatstaffsWrath:CombinedShow(2, args.destName)--Aggregated for now in case strat is to just pop multiple eggs and CD like fuck for Clutchwatcher's Rage
 		if args:IsPlayer() then
 			specWarnEGreatstaffsWrath:Show()
 			specWarnEGreatstaffsWrath:Play("targetyou")
@@ -367,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 375829 then
 		warnClutchwatchersRage:Cancel()
-		warnClutchwatchersRage:Schedule(2, args.destName, args.amount or 1)
+		warnClutchwatchersRage:Schedule(3, args.destName, args.amount or 1)
 	elseif spellId == 376330 then
 		if args:IsPlayer() then
 			if self.Options.NPFixate then
@@ -470,8 +470,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 375809 then
-		warnBroodkeepersBond:Show()
-	elseif spellId == 375809 then
 		local amount = args.amount or 0
 		warnEggsLeft:Cancel()
 		warnEggsLeft:Schedule(2, string.format("%d/%d", 28-amount, 28))

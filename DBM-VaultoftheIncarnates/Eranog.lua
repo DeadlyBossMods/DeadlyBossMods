@@ -217,20 +217,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFlamerift:CombinedShow(0.5, args.destName)
 	elseif spellId == 394906 then
 		local amount = args.amount or 1
-		if amount >= 6 then
-			if args:IsPlayer() then
-				specWarnBurningWound:Show(amount)
-				specWarnBurningWound:Play("stackhigh")
-			else
-				if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-					specWarnBurningWoundTaunt:Show(args.destName)
-					specWarnBurningWoundTaunt:Play("tauntboss")
+		if amount >= 3 and self:AntiSpam(3, 1) then
+			if amount >= 6 then
+				if args:IsPlayer() then
+					specWarnBurningWound:Show(amount)
+					specWarnBurningWound:Play("stackhigh")
 				else
-					warnBurningWound:Show(args.destName, amount)
+					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+						specWarnBurningWoundTaunt:Show(args.destName)
+						specWarnBurningWoundTaunt:Play("tauntboss")
+					else
+						warnBurningWound:Show(args.destName, amount)
+					end
 				end
+			else
+				warnBurningWound:Show(args.destName, amount)
 			end
-		else
-			warnBurningWound:Show(args.destName, amount)
 		end
 	end
 end
@@ -271,7 +273,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

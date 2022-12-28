@@ -193,7 +193,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 385812 then
 		timerAerialSlashCD:Start(nil, args.sourceGUID)
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) and self:AntiSpam(3, 1) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) and self:AntiSpam(3, 1) then
 			specWarnAerialSlash:Show()
 			specWarnAerialSlash:Play("defensive")
 		end

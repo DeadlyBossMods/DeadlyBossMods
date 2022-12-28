@@ -75,7 +75,7 @@ mod:AddSetIconOption("SetIconOnStaticCharge", 381615, true, 0, {1, 2, 3})
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25683))
 --Raszageth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25402))
-local warnLightningDevastation					= mod:NewCountAnnounce(385065, 3, nil, nil, nil, 125030)--NOT on our platform
+local warnLightningDevastation					= mod:NewCountAnnounce(385065, 3, nil, nil, 125030)--NOT on our platform
 
 local specWarnStormNova							= mod:NewSpecialWarningSpell(382434, nil, nil, nil, 2, 2)
 local specWarnLightningDevastation				= mod:NewSpecialWarningDodgeCount(385065, nil, 125030, nil, 3, 2)--On our platform!
@@ -112,7 +112,7 @@ local warnStormsurge						= mod:NewEndAnnounce(387261, 1)
 local warnInversion							= mod:NewTargetAnnounce(394584, 4)
 local warnFocusedCharge						= mod:NewYouAnnounce(394582, 1)
 local warnScatteredCharge					= mod:NewYouAnnounce(394583, 4)
-local warnFulminatingCharge					= mod:NewTargetNoFilterAnnounce(378829, 3, nil, nil, nil, 345338)
+local warnFulminatingCharge					= mod:NewTargetNoFilterAnnounce(378829, 3, nil, nil, 345338)
 
 local specWarnStormsurge					= mod:NewSpecialWarningMoveAwayCount(387261, nil, nil, nil, 2, 2)--Maybe shorttext 28089?
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(391990, nil, nil, nil, 1, 13)--Split warning so user can custom sounds
@@ -139,7 +139,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25812))
 --Colossal Stormfiend
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25816))
 local warnFuse								= mod:NewStackAnnounce(389878, 2, nil, "Tank|Healer")
-local warnStormBreak						= mod:NewSpellAnnounce(389870, 3, nil, nil, nil, 7794)--Shortname Teleport
+local warnStormBreak						= mod:NewSpellAnnounce(389870, 3, nil, nil, 7794)--Shortname Teleport
 
 local specWarnBallLightning					= mod:NewSpecialWarningDodge(385068, nil, nil, nil, 2, 2)
 
@@ -242,7 +242,7 @@ local allTimers = {
 			--Volatile Current
 			[388643] = {61.5, 57},--Different from normal
 			--Electrified Jaws
-			[377658] = {38.5, 24.4, 22.9, 30.7, 24.2, 25.8},--Same as normal
+			[377658] = {38.5, 24.4, 22.9, 30, 24.2, 25.8},--Same as normal
 			--Stormsurge
 			[387261] = {8.5, 80, 80, 80},
 			--Fulminating Charge
@@ -258,7 +258,7 @@ local allTimers = {
 			--Fulminating Charge
 			[378829] = {53, 60},
 			--Thunderous blast
-			[386410] = {32, 31, 30, 29},
+			[386410] = {32, 29.9, 30, 29},
 			--Magnetic Charge (Heroic/Mythic Only)
 			[399713] = {38, 63, 33},
 		},
@@ -316,7 +316,9 @@ local function warnDeepBreath(self, myPlatform)
 	if myPlatform then
 		specWarnLightningDevastation:Show(self.vb.breathCount)
 		specWarnLightningDevastation:Play("breathsoon")
-		timerLightningDevastationCD:SetSTFade(true, self.vb.breathCount+1)--If it's on this platform this time, next one isn't so we fade timer for next one
+		if self.vb.phase == 1.5 then--Only fade in first intermission, raid isn't split in second one
+			timerLightningDevastationCD:SetSTFade(true, self.vb.breathCount+1)--If it's on this platform this time, next one isn't so we fade timer for next one
+		end
 	else--No emote, on other platform
 		warnLightningDevastation:Show(self.vb.breathCount)
 	end
@@ -324,14 +326,14 @@ end
 
 local function yellRepeater(self, text, repeatTotal, inversion)
 	repeatTotal = repeatTotal + 1
-	if repeatTotal < 3 then
+--	if repeatTotal < 3 then
 		if inversion then
 			yellInversion:Yell(text)
 		else
 			yellStormCharged:Yell(text)
 		end
 		self:Schedule(1.5, yellRepeater, self, text, repeatTotal, inversion)
-	end
+--	end
 end
 
 function mod:OnCombatStart(delay)

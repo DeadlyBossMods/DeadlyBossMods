@@ -311,7 +311,7 @@ function mod:SPELL_CAST_START(args)
 			timerGossamerBurstCD:Start(timer, self.vb.burstCount+1)
 		end
 	elseif spellId == 374112 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFreezingBreath:Show()
 			specWarnFreezingBreath:Play("defensive")
 		end
