@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnRockBlast								= mod:NewTargetNoFilterAnnounce(380487, 3)
 local warnAwakenedEarth							= mod:NewTargetNoFilterAnnounce(381253, 3)
-local warnConcussiveSlam						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Healer")
+local warnConcussiveSlam						= mod:NewStackAnnounce(376279, 2, nil, "Tank|Healer")
 
 local specWarnRockBlast							= mod:NewSpecialWarningYou(380487, nil, nil, nil, 1, 2)
 local yellRockBlast								= mod:NewShortYell(380487, nil, nil, nil, "YELL")
@@ -208,18 +208,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAwakenedEarth:CombinedShow(0.5, args.destName)
 		self.vb.awakenedIcon = self.vb.awakenedIcon + 1
 	elseif spellId == 376276 and not args:IsPlayer() then
-		local amount = args.amount or 1
-		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
-		end
-		local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 18) - 5
-		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-			specWarnConcussiveSlamTaunt:Show(args.destName)
-			specWarnConcussiveSlamTaunt:Play("tauntboss")
-		else
-			warnConcussiveSlam:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 18) - 5
+			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				specWarnConcussiveSlamTaunt:Show(args.destName)
+				specWarnConcussiveSlamTaunt:Play("tauntboss")
+			else
+				warnConcussiveSlam:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 391592 then
 		if args:IsPlayer() then
