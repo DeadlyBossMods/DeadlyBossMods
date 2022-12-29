@@ -58,7 +58,7 @@ local warnSplinteredBones						= mod:NewStackAnnounce(372158, 2, nil, "Tank|Heal
 local specWarnSunderStrike						= mod:NewSpecialWarningDefensive(390548, nil, nil, nil, 1, 2)
 local specWarnSplinteredBones					= mod:NewSpecialWarningTaunt(372158, nil, nil, nil, 1, 2)
 
-local timerSunderStrikeCD						= mod:NewCDTimer(30.3, 390548, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSunderStrikeCD						= mod:NewCDTimer(19.4, 390548, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --General timers for handling of bosses ability rotation
 local timerDamageCD								= mod:NewTimer(30, "timerDamageCD", 391096, nil, nil, 3)--Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash
 local timerAvoidCD								= mod:NewTimer(60, "timerAvoidCD", 391100, nil, nil, 3)--Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst
@@ -219,7 +219,7 @@ function mod:OnCombatStart(delay)
 	self.vb.damageSpell = "?"
 	self.vb.avoidSpell = "?"
 	self.vb.ultimateSpell = "?"
-	timerSunderStrikeCD:Start(8.2-delay)
+	timerSunderStrikeCD:Start(8-delay)
 	timerPhaseCD:Start(125-delay)--125-127
 	self.vb.damageTimer = 19.5--Alternating in P1
 	self.vb.avoidTimer = 45
@@ -438,12 +438,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			local remaining
-			if expireTime then
-				remaining = expireTime-GetTime()
-			end
-			if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+			if not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 				specWarnSplinteredBones:Show(args.destName)
 				specWarnSplinteredBones:Play("tauntboss")
 			else
@@ -573,10 +568,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.damageCount = 0
 		self.vb.zeroCount = 0
 		self:SetStage(1)
-		timerSunderStrikeCD:Start(7.2)
+		timerSunderStrikeCD:Start(11.3)
 		timerPhaseCD:Start(127)
 		timerDamageCD:Start(14.5, "?")
-		timerAvoidCD:Start(68.4, "?")
+		timerAvoidCD:Start(22.2, "?")--They fixed the skip bug apparently and it's no longer 68.4
 		timerUltimateCD:Start(45, "?")--if it's seismic rupture it's 53 else 45
 	elseif spellId == 374380 then
 		if self.Options.NPAuraOnElementalBond then
