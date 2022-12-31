@@ -37,7 +37,7 @@ local warnFrostTomb								= mod:NewTargetNoFilterAnnounce(371591, 4)
 local warnGlacialConvocation					= mod:NewSpellAnnounce(386440, 4)
 
 local specWarnPrimalBlizzard					= mod:NewSpecialWarningCount(373059, nil, nil, nil, 2, 2)
-local specWarnPrimalBlizzardStack				= mod:NewSpecialWarningStack(373059, nil, 8, nil, nil, 1, 6)
+local specWarnPrimalBlizzardStack				= mod:NewSpecialWarningStack(373059, nil, 7, nil, nil, 1, 6)
 local specWarnFrostSpike						= mod:NewSpecialWarningInterrupt(372315, "HasInterrupt", nil, nil, 1, 2)
 
 local timerPrimalBlizzardCD						= mod:NewCDCountTimer(79.4, 373059, nil, nil, nil, 2)--Can be delayed by many seconds
@@ -283,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 391599 or spellId == 371836 then--Mythic, Non Mythic
 		local amount = args.amount or 1
 		blizzardStacks[args.destName] = amount
-		if args:IsPlayer() and amount >= 8 then
+		if args:IsPlayer() and amount >= 7 then
 			playerBlizzardHigh = true
 			specWarnPrimalBlizzardStack:Show(amount)
 			specWarnPrimalBlizzardStack:Play("stackhigh")
@@ -337,12 +337,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 374039 then
 		self.vb.meteorTotal = self.vb.meteorTotal + 1
 		if self.Options.SetIconOnMeteorAxe then
-			self:SetSortedIcon("tankroster", self.vb.meteorTotal == 2 and 0.1 or 0.4, args.destName, 1, 2, false)
+			self:SetSortedIcon("tankroster", self.vb.meteorTotal == 2 and 0.1 or 1.4, args.destName, 1, 2, false)
 		end
 		if args:IsPlayer() then
-			self:Schedule(self.vb.meteorTotal == 2 and 0.2 or 0.5, checkMyAxe, self)
+			self:Schedule(self.vb.meteorTotal == 2 and 0.2 or 1.5, checkMyAxe, self)
 		end
-		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 0.6, args.destName)
+		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 1.6, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then

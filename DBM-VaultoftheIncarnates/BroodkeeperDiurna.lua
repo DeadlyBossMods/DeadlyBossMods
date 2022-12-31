@@ -5,16 +5,16 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20221220000000)
-mod:SetMinSyncRevision(20221215000000)
+mod:SetHotfixNoticeRev(20221230000000)
+mod:SetMinSyncRevision(20221230000000)
 mod.respawnTime = 33
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918 396269 396779",
-	"SPELL_CAST_SUCCESS 380175 375870 396269",
-	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264 181113",
+	"SPELL_CAST_SUCCESS 380175 375870 396269 181113",
+	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
 	"SPELL_AURA_REMOVED 376073 375809 376330 396264",
 	"SPELL_AURA_REMOVED_DOSE 375809",
@@ -329,6 +329,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
 		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
 		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
+	elseif spellId == 181113 and self:AntiSpam(10, 2) then
+		self.vb.addsCount = self.vb.addsCount + 1
+		self.vb.mageIcon = 6
+		self.vb.StormbringerIcon = 8
+		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
+		specWarnPrimalistReinforcements:Play("killmob")
+		local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
+		if timer then
+			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
+		end
 	end
 end
 
@@ -453,16 +463,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.staffCount = 0
 			self.vb.icyCount = 0--Reused for frozen shroud
 		end
-	elseif spellId == 181113 and self:AntiSpam(10, 2) then
-		self.vb.addsCount = self.vb.addsCount + 1
-		self.vb.mageIcon = 6
-		self.vb.StormbringerIcon = 8
-		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
-		specWarnPrimalistReinforcements:Play("killmob")
-		local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
-		if timer then
-			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -472,7 +472,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 375809 then
 		local amount = args.amount or 0
 		warnEggsLeft:Cancel()
-		warnEggsLeft:Schedule(2, string.format("%d/%d", 28-amount, 28))
+		warnEggsLeft:Schedule(2, amount)
 		if amount == 0 then
 			self.vb.eggsGone = true
 		end

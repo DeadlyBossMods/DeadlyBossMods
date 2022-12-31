@@ -153,15 +153,15 @@ local warnMagneticCharge					= mod:NewTargetNoFilterAnnounce(399713, 3)
 local specWarnStormEater					= mod:NewSpecialWarningSpell(395885, nil, nil, nil, 2, 2, 4)
 local specWarnThunderousBlast				= mod:NewSpecialWarningDefensive(386410, nil, 309024, nil, 1, 2)--"Blast"
 local specWarnThunderstruckArmor			= mod:NewSpecialWarningTaunt(391285, nil, nil, nil, 1, 2)
-local specWarnMagneticCharge				= mod:NewSpecialWarningYouPos(399713, nil, nil, nil, 1, 2)
-local yellMagneticCharge					= mod:NewShortPosYell(399713)
-local yellMagneticChargeFades				= mod:NewIconFadesYell(399713)
+local specWarnMagneticCharge				= mod:NewSpecialWarningYou(399713, nil, nil, nil, 1, 2)
+local yellMagneticCharge					= mod:NewShortYell(399713)
+local yellMagneticChargeFades				= mod:NewShortFadesYell(399713)
 
 local timerStormEaterCD						= mod:NewCDTimer(35, 395885, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerMagneticChargeCD					= mod:NewCDCountTimer(35, 399713, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerThunderousBlastCD				= mod:NewCDCountTimer(35, 386410, 309024, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4, 5, 6})
+mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4})
 mod:GroupSpells(386410, 391285)--Thunderous Blast and associated melted armor debuff
 
 --P1
@@ -182,7 +182,6 @@ mod.vb.stormSurgeCount = 0
 mod.vb.ballCount = 0
 --P3
 mod.vb.magneticCount = 0
-mod.vb.magneticIcon = 4
 local castsPerGUID = {}
 local playerPolarity = nil
 local difficultyName = "normal"
@@ -525,7 +524,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFulminatingChargeCD:Start(timer, self.vb.chargeCount+1)
 		end
 	elseif spellId == 399713 then
-		self.vb.magneticIcon = 4
 		self.vb.magneticCount = self.vb.magneticCount + 1
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.magneticCount+1)
 		if timer then
@@ -743,18 +741,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFulminatingCharge:CombinedShow(0.5, args.destName)
 		self.vb.chargeIcon = self.vb.chargeIcon + 1
 	elseif spellId == 399713 then
-		local icon = self.vb.magneticIcon
 		if self.Options.SetIconOnMagneticCharge then
-			self:SetIcon(args.destName, icon)
+			self:SetIcon(args.destName, 4)
 		end
 		if args:IsPlayer() then
-			specWarnMagneticCharge:Show(self:IconNumToTexture(icon))
-			specWarnMagneticCharge:Play("mm"..icon)
-			yellMagneticCharge:Yell(icon, icon)
-			yellMagneticChargeFades:Countdown(spellId, nil, icon)
+			specWarnMagneticCharge:Show()
+			specWarnMagneticCharge:Play("targetyou")
+			yellMagneticCharge:Yell()
+			yellMagneticChargeFades:Countdown(spellId)
 		end
-		warnMagneticCharge:CombinedShow(0.5, args.destName)
-		self.vb.magneticIcon = self.vb.magneticIcon + 1
+		warnMagneticCharge:Show(args.destName)
 	elseif spellId == 391285 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--Filter idiots in front of boss that aren't tank.
