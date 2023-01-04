@@ -40,7 +40,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 374691 or ability.id = 376669 or ability.id = 374215 or ability.id = 397338 or ability.id = 374430 or ability.id = 390920
  or ability.id = 374623 or ability.id = 374624 or ability.id = 374622 or ability.id = 391019 or ability.id = 391055
  or ability.id = 391268 or ability.id = 393314 or ability.id = 393309 or ability.id = 393295 or ability.id = 394416
- or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 394719 or ability.id = 393429) and type = "begincast"
+ or ability.id = 393296 or ability.id = 392098 or ability.id = 393459 or ability.id = 394719 or ability.id = 393429 or ability.id = 397341) and type = "begincast"
  or ability.id = 373415 and type = "cast" or ability.id = 396241 and type = "applybuff"
  or (ability.id = 375828 or ability.id = 375825 or ability.id = 375824 or ability.id = 375792) and type = "cast"
  or ability.id = 374779
@@ -569,7 +569,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.zeroCount = 0
 		self:SetStage(1)
 		timerSunderStrikeCD:Start(11.3)
-		timerPhaseCD:Start(127)
+		if self.vb.stageTotality == 3 then
+			timerPhaseCD:Start(127)--Second intermission
+		else
+			timerPhaseCD:Start(94)--Primal Attunement
+		end
 		timerDamageCD:Start(14.5, "?")
 		timerAvoidCD:Start(22.2, "?")--They fixed the skip bug apparently and it's no longer 68.4
 		timerUltimateCD:Start(45, "?")--if it's seismic rupture it's 53 else 45

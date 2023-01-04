@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20221217000000)
+mod:SetHotfixNoticeRev(20230103000000)
 mod:SetMinSyncRevision(20221013000000)
 --mod.respawnTime = 29
 
@@ -99,9 +99,9 @@ mod.vb.burstCount = 0--Both bursts
 mod.vb.rimeCast = 0
 mod.vb.spiderlingsCount = 0
 mod.vb.bigAddCount = 0
---P1 being one giant sequenced table is more of a temporary stopgap until CLEU is fixed up and boss movements (start and stop) more visible.
---Likley still use sequencing but borken down by each movement versuses all P1 together
-local difficultyName = "mythic"
+--P1 being one giant sequenced table is more of a lazy solution vs trying to create timer tables for EACH movement (which is how fight is actually scripted)
+--The timers would be more accurate with a new table every movement, but the amount of work involved isnt worth it.
+local difficultyName = "lfr"
 local allTimers = {
 	["mythic"] = {--Very close to heroic so won't alter til transcriptor to make it lower work load
 		[1] = {
@@ -110,7 +110,7 @@ local allTimers = {
 			--Enveloping Webs
 			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},
 			--Gossamer Burst
-			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
+			[373405] = {31.4, 37.7, 65.5, 36.5, 59.6, 37.6},
 			--Call Spiderlings
 			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
 		},
@@ -124,13 +124,13 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Chilling Blast
-			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
+			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},--likely 36 sec cd that resets on encounter events
 			--Enveloping Webs
-			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},
+			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},--likely 26sec cd that rests on encounter events
 			--Gossamer Burst
-			[373405] = {32.8, 37.7, 65.5, 36.5, 59.6, 37.6},
+			[373405] = {31.4, 37.7, 64.3, 36.5, 59.6, 37.6},--likely 36 sec cd that resets on encounter events
 			--Call Spiderlings
-			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
+			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--likely 25 sec cd that resets on encounter events
 		},
 		--[2] = {
 		--	--Chilling Blast
@@ -139,95 +139,39 @@ local allTimers = {
 		--	[372238] = {12.8, 30.4, 30.5, 32.8, 35.2},--Unused for now
 		--},
 	},
-	--[[["heroic"] = {--Not used cause frankly doing it this way for more accuracy sucks BALLS. I'd rather have inaccurate timers
-		[1] = {--Pull (first Encounter Event is ignored that fires 4-5 sec in)
-			--Chilling Blast
-			[371976] = {15.7},
-			--Enveloping Webs
-			[372082] = {18.2},
-			--Gossamer Burst
-			[373405] = {33.2},
-			--Call Spiderlings
-			[372238] = {0, 25.5},
-		},
-		[2] = {--First Move
-			--Chilling Blast
-			[371976] = {10.9, 36.4},
-			--Enveloping Webs
-			[372082] = {2.4, 31.6},
-			--Gossamer Burst
-			[373405] = {27.9},
-			--Call Spiderlings
-			[372238] = {8.4, 25.5, 25.5},
-		},
-		[3] = {--First Move Ending
-			--Chilling Blast
-			[371976] = {17},
-			--Enveloping Webs
-			[372082] = {19.4},
-			--Gossamer Burst
-			[373405] = {34.1},
-			--Call Spiderlings
-			[372238] = {12.1},
-		},
-		[4] = {--Second move
-			--Chilling Blast
-			[371976] = {15.7, 36.4},
-			--Enveloping Webs
-			[372082] = {7.2, 31.5},
-			--Gossamer Burst
-			[373405] = {32.7},
-			--Call Spiderlings
-			[372238] = {3.6, 26.6, 26.7},
-		},
-		[5] = {--second move ending
-			--Chilling Blast
-			[371976] = {17},
-			--Enveloping Webs
-			[372082] = {19.5},
-			--Gossamer Burst
-			[373405] = {34.1},
-			--Call Spiderlings
-			[372238] = {12.1},
-		},
-		[6] = {--third move (reaching top and beginning p2)
-			--Chilling Blast
-			[371976] = {14.6, 37.7},
-			--Enveloping Webs
-			[372082] = {7.3, 30.4},
-			--Gossamer Burst
-			[373405] = {31.6},
-			--Call Spiderlings
-			[372238] = {2.4, 25.6},
-		},
---		[7] = {--third move ending (reaching top and beginning p2)
---			--Chilling Blast
---			[371976] = {13.3, 32.9},
---			--Suffocating Webs
---			[372082] = {7.3, 30.4},
---			--Repelling Burst
---			[373405] = {30.4},
---			--Call Spiderlings
---			[372238] = {9.7, 30.5},
---		},
-	},--]]
-	["normal"] = {
+	["normal"] = {--LFR and normal are NOT the same, especially abilities queued by chilling blast on normal vs LFR
 		[1] = {
-			--Chilling Blast
-			[371976] = {16.1, 36.5, 37.7, 30.4, 36.5, 36.5, 26.6, 40.1},
+			--Chilling Blast (only normal, not cast in LFR)
+			[371976] = {16.1, 36.5, 37.7, 26.7, 36.4, 36.5, 23.1, 37.7, 36.4},--likely 36 sec cd that resets on encounter events
 			--Enveloping Webs
-			[372082] = {18.5, 28, 29.1, 26.7, 20.6, 26.7, 30.3, 42.5, 27.9, 32.8},
+			[372082] = {17.2, 26.7, 32.8, 43.8, 27.9, 31.5, 38.9, 28, 30.3},--likely 26sec cd that rests on encounter events
 			--Gossamer Burst
-			[373405] = {33.2, 36.5, 68.1, 36.4, 64.8, 38.4},
+			[373405] = {31.4, 36.5, 65.3, 34, 64.3, 34},--likely 34sec cd that resets on encounter events
 			--Call Spiderlings
-			[372238] = {2.7, 20.6, 20.7, 21.9, 20.6, 31.6, 26.7, 21.8, 20.7, 27.9, 20.6, 20.7, 20.6},
+			[372238] = {2.7, 20.6, 20.7, 21.8, 20.6, 29.2, 20.7, 20.8, 20.7, 27.9, 20.6, 20.6, 20.6},--likely 20 sec cd that resets on encounter events
 		},
-		[2] = {
-			--Chilling Blast
-			[371976] = {16.6, 32.8},--Unused for now
+		--[2] = {
+		--	--Chilling Blast
+		--	[371976] = {16.6, 32.8},--Unused for now
+		--	--Call Spiderlings
+		--	[372238] = {14.2, 25.5, 25.5},--Unused for now
+		--},
+	},
+	["lfr"] = {--LFR and normal are NOT the same, especially abilities queued by chilling blast on normal vs LFR and lower spiderlings CD
+		[1] = {
+			--Enveloping Webs
+			[372082] = {17.2, 26.7, 29.1, 43.4, 27, 27.9, 43.7, 26.7, 27.9},--likely 26sec cd that rests on encounter events
+			--Gossamer Burst
+			[373405] = {31.4, 36.5, 65.3, 34, 64.3, 34},--likely 34sec cd that resets on encounter events
 			--Call Spiderlings
-			[372238] = {14.2, 25.5, 25.5},--Unused for now
+			[372238] = {2.7, 36, 30.7, 31.2, 15.8, 30.4, 30.3, 37.6, 30.3, 30.4},--likely 30 sec cd that resets on encounter events
 		},
+		--[2] = {
+		--	--Chilling Blast
+		--	[371976] = {16.6, 32.8},--Unused for now
+		--	--Call Spiderlings
+		--	[372238] = {14.2, 25.5, 25.5},--Unused for now
+		--},
 	},
 }
 
@@ -242,17 +186,21 @@ function mod:OnCombatStart(delay)
 	self.vb.spiderlingsCount = 0
 	self.vb.bigAddCount = 1--Starts at 1 because 1 is up with boss on pull
 --	timerCallSpiderlingsCD:Start(1-delay, 1)--cast on engage
-	timerChillingBlastCD:Start(15.2-delay, 1)
-	timerEnvelopingWebsCD:Start(17.9-delay, 1)
-	timerGossamerBurstCD:Start(33.9-delay, 1)
-	timerPhaseCD:Start(43-delay)
-	timerFrostbreathArachnidCD:Start(103.9, 2)--First one engages with boss
+	if not self:IsLFR() then
+		timerChillingBlastCD:Start(15.2-delay, 1)
+	end
+	timerEnvelopingWebsCD:Start(17.2-delay, 1)
+	timerGossamerBurstCD:Start(31.4-delay, 1)
+	timerPhaseCD:Start(42.4-delay)
+	timerFrostbreathArachnidCD:Start(103.1, 2)--First one engages with boss
 	if self:IsMythic() then
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
-	else
+	elseif self:IsNormal() then
 		difficultyName = "normal"
+	else
+		difficultyName = "lfr"
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(372030))
@@ -274,8 +222,10 @@ function mod:OnTimerRecovery()
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
-	else
+	elseif self:IsNormal() then
 		difficultyName = "normal"
+	else
+		difficultyName = "lfr"
 	end
 end
 
@@ -286,9 +236,8 @@ function mod:SPELL_CAST_START(args)
 		--Seems to be cast 3 casts per movement, minus first, first started at movement, 2nd after first with longer cd then 3rd cast shorter cd after 2nd
 		--Repeats on next movement
 		--More consistent in stage 2
-		--timerChillingBlastCD:Start(self.vb.phase == 2 and 32 or self.vb.blastCount == 1 and 36 or 22, self.vb.blastCount+1)
 		if self.vb.phase == 2 then
-			timerChillingBlastCD:Start(self:IsMythic() and 34 or 32, self.vb.blastCount+1)
+			timerChillingBlastCD:Start(32, self.vb.blastCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blastCount+1)
 			if timer then
@@ -347,7 +296,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnCallSpiderlings:Show(self.vb.spiderlingsCount)
 		if self.vb.phase == 2 then
 			--Mythic sequenced, 44, 30, 35?
-			timerCallSpiderlingsCD:Start(self:IsMythic() and 30 or 25, self.vb.spiderlingsCount+1)
+			timerCallSpiderlingsCD:Start(self:IsNormal() and 25 or 30, self.vb.spiderlingsCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.spiderlingsCount+1)
 			if timer then
@@ -385,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 371976 then
 		if args:IsPlayer() then
 			specWarnChillingBlast:Show()
-			specWarnChillingBlast:Play("runout")
+			specWarnChillingBlast:Play("scatter")
 			yellChillingBlast:Yell()
 			yellChillingBlastFades:Countdown(spellId)
 		end
@@ -487,10 +436,12 @@ function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 372539 then
 		--These timers can still variate due to bugs I won't document here or code around (even though I know how to)
 		--needless to say I hope they get fixed
-		timerCallSpiderlingsCD:Start(9.7, 1)
-		timerChillingBlastCD:Start(12.1, 1)
-		timerSuffocatingWebsCD:Start(19.8, 1)
-		timerRepellingBurstCD:Start(29.6, 1)
+		timerCallSpiderlingsCD:Start(8.4, 1)
+		if not self:IsLFR() then
+			timerChillingBlastCD:Start(10.8, 1)
+		end
+		timerSuffocatingWebsCD:Start(18.1, 1)
+		timerRepellingBurstCD:Start(27.8, 1)
 	end
 end
 
