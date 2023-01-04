@@ -157,7 +157,6 @@ local allTimers = {
 		--},
 	},
 	["lfr"] = {--LFR and normal are NOT the same, especially abilities queued by chilling blast on normal vs LFR and lower spiderlings CD
-		[1] = {
 			--Enveloping Webs
 			[372082] = {17.2, 26.7, 29.1, 43.4, 27, 27.9, 43.7, 26.7, 27.9},--likely 26sec cd that rests on encounter events
 			--Gossamer Burst
