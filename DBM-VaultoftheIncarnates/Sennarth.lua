@@ -334,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 371976 then
 		if args:IsPlayer() then
 			specWarnChillingBlast:Show()
-			specWarnChillingBlast:Play("runout")
+			specWarnChillingBlast:Play("scatter")
 			yellChillingBlast:Yell()
 			yellChillingBlastFades:Countdown(spellId)
 		end
