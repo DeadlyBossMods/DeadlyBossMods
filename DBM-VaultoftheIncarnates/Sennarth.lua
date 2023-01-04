@@ -140,6 +140,7 @@ local allTimers = {
 		--},
 	},
 	["normal"] = {--LFR and normal are NOT the same, especially abilities queued by chilling blast on normal vs LFR
+		[1] = {
 			--Chilling Blast (only normal, not cast in LFR)
 			[371976] = {16.1, 36.5, 37.7, 26.7, 36.4, 36.5, 23.1, 37.7, 36.4},--likely 36 sec cd that resets on encounter events
 			--Enveloping Webs
@@ -157,6 +158,7 @@ local allTimers = {
 		--},
 	},
 	["lfr"] = {--LFR and normal are NOT the same, especially abilities queued by chilling blast on normal vs LFR and lower spiderlings CD
+		[1] = {
 			--Enveloping Webs
 			[372082] = {17.2, 26.7, 29.1, 43.4, 27, 27.9, 43.7, 26.7, 27.9},--likely 26sec cd that rests on encounter events
 			--Gossamer Burst
