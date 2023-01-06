@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 --mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 389431 389725 389514 391247 390635"
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 389431 389725 389514 391247",
+	"SPELL_CAST_SUCCESS 390635"
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
@@ -33,8 +33,8 @@ local specWarnDeterringFlame			= mod:NewSpecialWarningSpell(389431, nil, nil, ni
 local specWarnLavaBreath				= mod:NewSpecialWarningDodge(389514, nil, nil, nil, 2, 2)
 
 local timerDeterringFlameCD				= mod:NewAITimer(74.7, 389431, nil, nil, nil, 2)
-local timerMagmaEruptionCD				= mod:NewAITimer(74.7, 389725, nil, nil, nil, 3)
-local timerLavaBreathCD					= mod:NewAITimer(74.7, 389514, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerMagmaEruptionCD				= mod:NewAITimer(53.4, 389725, nil, nil, nil, 3)
+local timerLavaBreathCD					= mod:NewAITimer(43.1, 389514, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --local timerDeterrentStrikeCD			= mod:NewAITimer(9.7, 361387, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Phase Two
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25878))
@@ -88,7 +88,12 @@ function mod:SPELL_CAST_START(args)
 		timerMagmaEruptionCD:Start(2)
 		timerLavaBreathCD:Start(2)
 		timerRainofDestructionCD:Start(2)
-	elseif spellId == 390635 then
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 390635 then
 		specWarnRainofDestruction:Show()
 		specWarnRainofDestruction:Play("specialsoon")
 		timerRainofDestructionCD:Start()
@@ -96,13 +101,6 @@ function mod:SPELL_CAST_START(args)
 end
 
 --[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 361341 then
-
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 361632 then

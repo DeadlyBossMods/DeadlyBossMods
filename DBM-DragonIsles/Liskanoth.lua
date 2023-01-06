@@ -14,23 +14,23 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 389159 391026 388925",
 	"SPELL_CAST_SUCCESS 389954",
-	"SPELL_AURA_APPLIED 389960"
+	"SPELL_AURA_APPLIED 389960",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO, Probably Fix glacial storm and deep freeze events
 --TODO, tweak sounds/warning types?
-local warnBindingIce					= mod:NewTargetNoFilterAnnounce(389954, 2)
+local warnBindingIce					= mod:NewTargetAnnounce(389954, 2)
 local warnChillingBreath				= mod:NewSpellAnnounce(388925, 3, nil, "Tank|Healer", nil, nil, nil, 2)
 
 local specWarnGlacialStorm				= mod:NewSpecialWarningDodge(389289, nil, nil, nil, 2, 2)
 local specWarnDeepFreeze				= mod:NewSpecialWarningDodge(389762, nil, nil, nil, 2, 2)
 local specWarnBindingIce				= mod:NewSpecialWarningYou(389954, nil, nil, nil, 1, 2)
 
-local timerGlacialStormCD				= mod:NewAITimer(74.7, 389289, nil, nil, nil, 3)
+local timerGlacialStormCD				= mod:NewAITimer(22.1, 389289, nil, nil, nil, 3)
 local timerDeepFreezeCD					= mod:NewAITimer(74.7, 389762, nil, nil, nil, 3)
 local timerBindingIceCD					= mod:NewAITimer(74.7, 389954, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerChillingBreathCD				= mod:NewAITimer(9.7, 388925, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -59,10 +59,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnGlacialStorm:Show()
 		specWarnGlacialStorm:Play("watchstep")
 		timerGlacialStormCD:Start()
-	elseif spellId == 391026 then
-		specWarnDeepFreeze:Show()
-		specWarnDeepFreeze:Play("watchstep")
-		timerDeepFreezeCD:Start()
+--	elseif spellId == 391026 then
+--		specWarnDeepFreeze:Show()
+--		specWarnDeepFreeze:Play("watchstep")
+--		timerDeepFreezeCD:Start()
 	elseif spellId == 388925 then
 		warnChillingBreath:Show()
 		warnChillingBreath:Play("breathsoon")
@@ -106,3 +106,11 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:389762") then
+		specWarnDeepFreeze:Show()
+		specWarnDeepFreeze:Play("watchstep")
+		timerDeepFreezeCD:Start()
+	end
+end
