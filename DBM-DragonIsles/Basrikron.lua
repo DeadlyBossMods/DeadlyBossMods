@@ -12,9 +12,9 @@ mod:RegisterCombat("combat")
 --mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 386259 385652 385137 386059",
-	"SPELL_CAST_SUCCESS 386680"
---	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 385652 385137 386059",
+	"SPELL_CAST_SUCCESS 386680",
+	"SPELL_AURA_APPLIED 386462"
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -33,9 +33,9 @@ local specWarnSundneringCrash			= mod:NewSpecialWarningDodge(386259, nil, nil, n
 local specWarnEarthBolt					= mod:NewSpecialWarningInterrupt(385652, "HasInterrupt", nil, nil, 1, 2)
 
 local timerSunderingCrashCD				= mod:NewAITimer(74.7, 386259, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerAwakenCragCD					= mod:NewAITimer(9.7, 385506, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerFracturingTremorCD			= mod:NewAITimer(74.7, 385270, nil, nil, nil, 3)
-local timerShaleBreathCD				= mod:NewAITimer(25.8, 385137, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerAwakenCragCD					= mod:NewAITimer(36.6, 385506, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--Wild Variation, but also world lag
+local timerFracturingTremorCD			= mod:NewCDTimer(16.2, 385270, nil, nil, nil, 3)
+local timerShaleBreathCD				= mod:NewCDTimer(25.8, 385137, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 361632)
 
@@ -60,11 +60,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 386259 then
-		specWarnSundneringCrash:Show()
-		specWarnSundneringCrash:Play("watchstep")
-		timerSunderingCrashCD:Start()
-	elseif spellId == 385652 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	if spellId == 385652 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEarthBolt:Show(args.sourceName)
 		specWarnEarthBolt:Play("kickcast")
 	elseif spellId == 385137 then
@@ -86,15 +82,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 361632 then
-
+	if spellId == 386462 then
+		specWarnSundneringCrash:Show()
+		specWarnSundneringCrash:Play("watchstep")
+		timerSunderingCrashCD:Start()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 361632 then
