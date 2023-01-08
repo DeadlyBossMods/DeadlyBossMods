@@ -95,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerPositiveCharge:Start()
 			self:Unschedule(yellRepeater)
 			yellRepeater(self, 6, 0)
-			yellThunderingFades(15, 5, 6)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Yell(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
 		if self:AntiSpam(30, 1) then
@@ -108,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerNegativeCharge:Start()
 			self:Unschedule(yellRepeater)
 			yellRepeater(self, 7, 0)
-			yellThunderingFades(15, 5, 7)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Yell(15, 5, 7)--Start icon spam with count at 5 remaining
 		end
 	end
 end
