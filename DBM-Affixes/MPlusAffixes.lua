@@ -42,6 +42,8 @@ mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
+local thunderingTotal = 0
+
 local function yellRepeater(self, text, total)
 	total = total + 1
 	if total < 7 then
@@ -83,6 +85,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSpitefulFixate:Show()
 		specWarnSpitefulFixate:Play("targetyou")
 	elseif spellId == 396369 then
+		if self:AntiSpam(30, 1) then
+			thunderingTotal = 0
+		end
+		thunderingTotal = thunderingTotal + 1
 		if args:IsPlayer() then
 			specWarnPositiveCharge:Show()
 			specWarnPositiveCharge:Play("positive")
@@ -92,6 +98,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellThunderingFades(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
+		if self:AntiSpam(30, 1) then
+			thunderingTotal = 0
+		end
+		thunderingTotal = thunderingTotal + 1
 		if args:IsPlayer() then
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
@@ -108,16 +118,20 @@ function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 396369 then
-		if args:IsPlayer() then
+		thunderingTotal = thunderingTotal - 1
+		if args:IsPlayer() or thunderingTotal <= 1 then
 			warnThunderingFades:Show()
 			timerPositiveCharge:Stop()
 			self:Unschedule(yellRepeater)
+			yellThunderingFades:Cancel()
 		end
 	elseif spellId == 396364 then
-		if args:IsPlayer() then
+		thunderingTotal = thunderingTotal - 1
+		if args:IsPlayer() or thunderingTotal <= 1 then
 			warnThunderingFades:Show()
 			timerNegativeCharge:Stop()
 			self:Unschedule(yellRepeater)
+			yellThunderingFades:Cancel()
 		end
 	end
 end
