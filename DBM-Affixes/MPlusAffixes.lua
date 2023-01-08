@@ -31,7 +31,8 @@ local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
-local yellThundering						= mod:NewIconRepeatYell(396363)
+local yellThundering						= mod:NewIconRepeatYell(396363)--15-5
+local yellThunderingFades					= mod:NewIconFadesYell(396363)--5 too 0
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, nil, 5)
@@ -41,9 +42,12 @@ mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
-local function yellRepeater(self, text)
-	yellThundering:Yell(text)
-	self:Schedule(1.5, yellRepeater, self, text)
+local function yellRepeater(self, text, total)
+	total = total + 1
+	if total < 7 then
+		yellThundering:Yell(text)
+		self:Schedule(1.5, yellRepeater, self, text, total)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -84,7 +88,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPositiveCharge:Play("positive")
 			timerPositiveCharge:Start()
 			self:Unschedule(yellRepeater)
-			yellRepeater(self, 6)
+			yellRepeater(self, 6, 0)
+			yellThunderingFades(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
 		if args:IsPlayer() then
@@ -92,7 +97,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNegativeCharge:Play("negative")
 			timerNegativeCharge:Start()
 			self:Unschedule(yellRepeater)
-			yellRepeater(self, 7)
+			yellRepeater(self, 7, 0)
+			yellThunderingFades(15, 5, 7)--Start icon spam with count at 5 remaining
 		end
 	end
 end
