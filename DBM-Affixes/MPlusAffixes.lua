@@ -31,7 +31,7 @@ local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil
 --local yellSharedAgony						= mod:NewYell(327401)
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
-local yellThundering						= mod:NewIconRepeatYell(396363)--15-5
+local yellThundering						= mod:NewIconRepeatYell(396363, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--15-5
 local yellThunderingFades					= mod:NewIconFadesYell(396363)--5 too 0
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
@@ -94,7 +94,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPositiveCharge:Play("positive")
 			timerPositiveCharge:Start()
 			self:Unschedule(yellRepeater)
-			yellRepeater(self, 6, 0)
+			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(6, "")
+			yellRepeater(self, formatedIcon, 0)
 			yellThunderingFades:Yell(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
@@ -107,7 +108,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNegativeCharge:Play("negative")
 			timerNegativeCharge:Start()
 			self:Unschedule(yellRepeater)
-			yellRepeater(self, 7, 0)
+			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(7, "")
+			yellRepeater(self, formatedIcon, 0)
 			yellThunderingFades:Yell(15, 5, 7)--Start icon spam with count at 5 remaining
 		end
 	end
@@ -132,6 +134,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerNegativeCharge:Stop()
 			self:Unschedule(yellRepeater)
 			yellThunderingFades:Cancel()
+			yellThundering:Yell(DBM_COMMON_L.CLEAR)
 		end
 	end
 end
