@@ -472,19 +472,19 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 --			timerChillingBlastCD:Start(10, 1)
 --			timerCallSpiderlingsCD:Start(20)
 --			timerGossamerBurstCD:Start(27.4, self.vb.burstCount+1)
---			timerPhaseCD:Start(99.8)--Til next movement
+			timerPhaseCD:Start(99.8)--Til next movement
 		elseif self.vb.stageTotality == 2 then--Second movement
 			self:SetStage(1.5)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
 			--Stop stage 1 timers and basically restart them
 --			timerChillingBlastCD:Start(16, 1)
 --			timerGossamerBurstCD:Start(33, self.vb.burstCount+1)
---			timerPhaseCD:Start(98.5)--Til next movement
+			timerPhaseCD:Start(98.5)--Til next movement
 		else--Last movement
 			self:SetStage(1.75)--Arbritrary phase numbers since journal classifies movements as intermissions and top as true stage 2
 			--Stop them for last time, and not restart them, stage 2 soon
 --			timerChillingBlastCD:Start(16, 1)
 --			timerGossamerBurstCD:Start(33, self.vb.burstCount+1)
---			timerPhaseCD:Start(53.8)--Til Stage 2
+			timerPhaseCD:Start(53.8)--Til Stage 2 (2nd movement has ended)
 		end
 	end
 end
