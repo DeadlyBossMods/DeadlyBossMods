@@ -28,16 +28,14 @@ local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
---local yellSharedAgony						= mod:NewYell(327401)
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
 local yellThundering						= mod:NewIconRepeatYell(396363, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--15-5
 local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YELL")--5 too 0
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
-local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, nil, 5)
-local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, nil, 5)
---local timerShadowEruptionCD					= mod:NewCDTimer(24, 373729, nil, nil, nil, 2)
+local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
+local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
@@ -119,18 +117,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 396369 then
+	if spellId == 396369 or spellId == 396364 then
 		thunderingTotal = thunderingTotal - 1
 		if args:IsPlayer() or thunderingTotal <= 1 then
 			warnThunderingFades:Show()
 			timerPositiveCharge:Stop()
-			self:Unschedule(yellRepeater)
-			yellThunderingFades:Cancel()
-		end
-	elseif spellId == 396364 then
-		thunderingTotal = thunderingTotal - 1
-		if args:IsPlayer() or thunderingTotal <= 1 then
-			warnThunderingFades:Show()
 			timerNegativeCharge:Stop()
 			self:Unschedule(yellRepeater)
 			yellThunderingFades:Cancel()
