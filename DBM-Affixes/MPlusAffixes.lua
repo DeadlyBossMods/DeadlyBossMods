@@ -32,7 +32,7 @@ local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
 local yellThundering						= mod:NewIconRepeatYell(396363, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--15-5
-local yellThunderingFades					= mod:NewIconFadesYell(396363)--5 too 0
+local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YELL")--5 too 0
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, nil, 5)
