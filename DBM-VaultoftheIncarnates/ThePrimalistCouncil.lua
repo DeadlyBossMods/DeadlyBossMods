@@ -25,7 +25,6 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 373059 or ability.id = 372322 or ability.id = 372056 or ability.id = 372027 or ability.id = 372279 or ability.id = 374038 or ability.id = 375331 or ability.id = 397134) and type = "begincast"
  or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
- or ability.id = 371624 and type = "applydebuff"
 --]]
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -156,8 +155,7 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		--Same on heroic and mythic
 		--Embar Firepath
-		timerSlashingBlazeCD:Start(10.2-delay, 1)
-		timerMeteorAxeCD:Start(23-delay, 1)
+		timerSlashingBlazeCD:Start(10-delay, 1)
 		if self:IsMythic() then
 			difficultyName = "mythic"
 			--Kadros Icewrath
@@ -168,6 +166,8 @@ function mod:OnCombatStart(delay)
 			--Opalfang
 			timerEarthenPillarCD:Start(5-delay, 1)
 			timerCrushCD:Start(28.1-delay, 1)--TODO verify, seems iffy, but maybe delayed by other casts being altered
+			--Embar Firepath
+			timerMeteorAxeCD:Start(22.7-delay, 1)
 		else--Heroic
 			difficultyName = "heroic"
 			--Kadros Icewrath
@@ -178,7 +178,8 @@ function mod:OnCombatStart(delay)
 			--Opalfang
 			timerEarthenPillarCD:Start(6.9-delay, 1)
 			timerCrushCD:Start(18.1-delay, 1)
-
+			--Embar Firepath
+			timerMeteorAxeCD:Start(29.6-delay, 1)
 		end
 	else--Timers are slowed down
 		difficultyName = "normal"
@@ -266,7 +267,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.meteorCast = self.vb.meteorCast + 1
 		self.vb.meteorTotal = 0
 --		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
-		timerMeteorAxeCD:Start(self:IsEasy() and 66 or 39.1, self.vb.meteorCast+1)
+		timerMeteorAxeCD:Start(self:IsEasy() and 66 or self:IsHeroic() and 52.3 or 39.1, self.vb.meteorCast+1)
 	elseif spellId == 375331 then
 		self.vb.markCast = self.vb.markCast + 1
 		specWarnConductiveMarkSpread:Show()
