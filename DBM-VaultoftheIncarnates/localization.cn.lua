@@ -49,13 +49,22 @@ L= DBM:GetModLocalization(2491)
 L:SetTimerLocalization({
 	timerDamageCD = "攻击阶段 (%s)",
 	timerAvoidCD = "防御阶段 (%s)",
-	timerUltimateCD = "终极阶段 (%s)"
+	timerUltimateCD = "终极阶段 (%s)",
+	timerAddEnrageCD = "狂暴 (%s)"
 })
 
 L:SetOptionLocalization({
 	timerDamageCD = "显示攻击阶段的 $spell:382563, $spell:373678, $spell:391055, $spell:373487 的计时器",
 	timerAvoidCD = "显示防御阶段的 $spell:373329, $spell:391019, $spell:395893, $spell:390920 的计时器",
-	timerUltimateCD = "显示终极阶段的 $spell:374022, $spell:372456, $spell:374691, $spell:374215 的计时器"
+	timerUltimateCD = "显示终极阶段的 $spell:374022, $spell:372456, $spell:374691, $spell:374215 的计时器",
+	timerAddEnrageCD = "显示狂暴（M难度）"
+})
+
+L:SetMiscLocalization({
+	Fire	= "烈焰",
+	Frost	= "冰霜",
+	Earth	= "大地",
+	Storm	= "风暴"
 })
 
 ---------------------------
@@ -73,9 +82,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2499)
 
+L:SetOptionLocalization({
+	SetBreathToBait = "根据诱饵时间而不是施法时间调整转阶段的吐息计时器（警报仍会在吐息施放时触发）"
+})
+
 L:SetMiscLocalization({
 	negative = "负电荷",
-	positive = "正电荷"
+	positive = "正电荷",
+	BreathEmote	= "莱萨杰丝深吸了一口气……"
 })
 
 -------------
