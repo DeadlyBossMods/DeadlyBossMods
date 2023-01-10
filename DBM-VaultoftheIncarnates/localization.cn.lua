@@ -57,7 +57,7 @@ L:SetOptionLocalization({
 	timerDamageCD = "显示攻击阶段的 $spell:382563, $spell:373678, $spell:391055, $spell:373487 的计时器",
 	timerAvoidCD = "显示防御阶段的 $spell:373329, $spell:391019, $spell:395893, $spell:390920 的计时器",
 	timerUltimateCD = "显示终极阶段的 $spell:374022, $spell:372456, $spell:374691, $spell:374215 的计时器",
-	timerAddEnrageCD = "显示狂暴（M难度）"	
+	timerAddEnrageCD = "显示狂暴（M难度）"
 })
 
 L:SetMiscLocalization({
