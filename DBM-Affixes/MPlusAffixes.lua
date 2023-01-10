@@ -42,12 +42,6 @@ mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 local thunderingTotal = 0
 
-function mod:StupidDebug(icon)
-	local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "")
-	yellThundering:Yell()
-	yellThunderingFades
-end
-
 local function yellRepeater(self, text, total)
 	total = total + 1
 	if total < 7 then
