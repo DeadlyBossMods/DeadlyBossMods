@@ -119,7 +119,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 396369 or spellId == 396364 then
 		thunderingTotal = thunderingTotal - 1
-		if args:IsPlayer() or thunderingTotal <= 1 then
+		--Your debuff is gone, OR all debuffs but one are gone and you're the one with it
+		if args:IsPlayer() or (thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364))  then
 			warnThunderingFades:Show()
 			timerPositiveCharge:Stop()
 			timerNegativeCharge:Stop()
