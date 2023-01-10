@@ -42,6 +42,12 @@ mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 local thunderingTotal = 0
 
+function mod:StupidDebug(icon)
+	local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "")
+	yellThundering:Yell()
+	yellThunderingFades
+end
+
 local function yellRepeater(self, text, total)
 	total = total + 1
 	if total < 7 then
@@ -94,7 +100,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(yellRepeater)
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(6, "")
 			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Yell(15, 5, 6)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
 		if self:AntiSpam(30, 1) then
@@ -108,7 +114,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(yellRepeater)
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(7, "")
 			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Yell(15, 5, 7)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 5, 7)--Start icon spam with count at 5 remaining
 		end
 	end
 end
