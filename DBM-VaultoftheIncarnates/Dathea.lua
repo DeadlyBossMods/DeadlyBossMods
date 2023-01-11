@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 391600 and type = "cast" and source.id = 189813
 --]]
 --Dathea, Ascended
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(25340))
+mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local warnRagingBurst							= mod:NewCountAnnounce(388302, 3, nil, nil, 86189)
 local warnZephyrSlam							= mod:NewStackAnnounce(375580, 2, nil, "Tank|Healer")
 
