@@ -94,7 +94,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(yellRepeater)
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(6, "")
 			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Yell(15, 5, 6)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 5, 6)--Start icon spam with count at 5 remaining
 		end
 	elseif spellId == 396364 then
 		if self:AntiSpam(30, 1) then
@@ -108,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(yellRepeater)
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(7, "")
 			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Yell(15, 5, 7)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 5, 7)--Start icon spam with count at 5 remaining
 		end
 	end
 end
@@ -119,7 +119,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 396369 or spellId == 396364 then
 		thunderingTotal = thunderingTotal - 1
-		if args:IsPlayer() or thunderingTotal <= 1 then
+		--Your debuff is gone, OR all debuffs but one are gone and you're the one with it
+		if args:IsPlayer() or (thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364))  then
 			warnThunderingFades:Show()
 			timerPositiveCharge:Stop()
 			timerNegativeCharge:Stop()
