@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184986)
 mod:SetEncounterID(2605)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20221218000000)
+mod:SetHotfixNoticeRev(20230112000000)
 --mod:SetMinSyncRevision(20211203000000)
 --mod.respawnTime = 29
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 390548 373678 382563 373487 374022 372456 375450 374691 374215 376669 397338 374430 374623 374624 374622 391019 392125 392192 392152 391268 393314 393295 393296 392098 393459 394719 393429 395893 394416",
 	"SPELL_CAST_SUCCESS 375825 375828 375824 375792 373415",
-	"SPELL_AURA_APPLIED 371971 372158 373487 372458 372514 372517 374779 374380 374427 391056 390920 391419 396109 396113 396106 396085 396241 391696",
+	"SPELL_AURA_APPLIED 371971 372158 373494 372458 372514 372517 374779 374380 374427 391056 390920 391419 396109 396113 396106 396085 396241 391696",
 	"SPELL_AURA_APPLIED_DOSE 372158 374321",
-	"SPELL_AURA_REMOVED 371971 373487 373494 372458 372514 374779 374380 374427 390920 391419 391056",
+	"SPELL_AURA_REMOVED 371971 373494 372458 372514 374779 374380 374427 390920 391419 391056",
 	"SPELL_PERIODIC_DAMAGE 374554 391555",
 	"SPELL_PERIODIC_MISSED 374554 391555",
 	"UNIT_DIED",
@@ -129,9 +129,9 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25068))
 local warnLightningCrash						= mod:NewTargetNoFilterAnnounce(373487, 4)
 local warnShockingBurst							= mod:NewTargetNoFilterAnnounce(390920, 3)
 
-local specWarnLightningCrash					= mod:NewSpecialWarningYouPos(373487, nil, nil, nil, 1, 2)
+local specWarnLightningCrash					= mod:NewSpecialWarningMoveAway(373487, nil, nil, nil, 1, 2)
 local yellLightningCrash						= mod:NewShortPosYell(373487)
-local yellLightningCrashFades					= mod:NewIconFadesYell(373487)
+--local yellLightningCrashFades					= mod:NewIconFadesYell(373487)
 --local specWarnLightningCrashStacks			= mod:NewSpecialWarningStack(373535, nil, 8, nil, nil, 1, 6)
 local specWarnShockingBurst						= mod:NewSpecialWarningMoveAway(390920, nil, nil, nil, 1, 2)
 local yellShockingBurst							= mod:NewShortYell(390920)
@@ -445,16 +445,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnSplinteredBones:Show(args.destName, amount)
 			end
 		end
-	elseif spellId == 373487 then
+	elseif spellId == 373494 then
 		local icon = self.vb.litCrashIcon
 		if self.Options.SetIconOnLightningCrash and icon < 9 then--On 30 man it's 9 icons :\
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnLightningCrash:Show(self:IconNumToTexture(icon))
-			specWarnLightningCrash:Play("mm"..icon)
+			specWarnLightningCrash:Show()
+			specWarnLightningCrash:Play("scatter")
 			yellLightningCrash:Yell(icon, icon)
-			yellLightningCrashFades:Countdown(spellId, nil, icon)
+--			yellLightningCrashFades:Countdown(spellId, nil, icon)
 		end
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 		self.vb.litCrashIcon = self.vb.litCrashIcon + 1
@@ -521,7 +521,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFreezing:Cancel()
 		specWarnFreezing:Schedule(2.5, DBM_COMMON_L.ALLIES)--Might adjust timing
 		specWarnFreezing:ScheduleVoice(2.5, "gathershare")
-	elseif spellId == 396241 then
+--	elseif spellId == 396241 then
 		--berserk
 	elseif spellId == 391696 then
 		if args:IsPlayer() then
@@ -542,13 +542,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnSurge then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 373487 then
+--	elseif spellId == 373487 then
 --		if self.Options.SetIconOnLightningCrash then
 --			self:SetIcon(args.destName, 0)
 --		end
-		if args:IsPlayer() then
-			yellLightningCrashFades:Cancel()
-		end
+--		if args:IsPlayer() then
+--			yellLightningCrashFades:Cancel()
+--		end
 	elseif spellId == 373494 then--Icon removed off secondary debuff
 		if self.Options.SetIconOnLightningCrash then
 			self:SetIcon(args.destName, 0)
