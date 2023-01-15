@@ -26,9 +26,6 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO, GTFO for icy Ground?
---TODO, I cannot be bothered to do these timers. After 3 hours on boss logs (yet again), decided not to bother with more accurate approach. Half assed will have to be good enough
---TODO, timers need more work, but it'll be helpful when phase change events added to combat log or at very least transcriptor for easier table reading.
 --[[
 (ability.id = 371976 or ability.id = 372082 or ability.id = 373405 or ability.id = 373027 or ability.id = 371983) and type = "begincast"
  or (ability.id = 372238 or ability.id = 372648) and type = "cast"

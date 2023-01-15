@@ -23,17 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, also add a stack too high warning on https://www.wowhead.com/beta/spell=373535/lightning-crash when strategies and tuning are established
---TODO, See how things play out with WA/BW on handling some of this bosses mechanics, right now drycode is steering clear of computational/solving for things and sticking to just showing them
---TODO, is https://www.wowhead.com/beta/npc=190807/seismic-rupture tangible or invisible script bunny
---TODO, is https://www.wowhead.com/beta/npc=190586/seismic-pillar tangible/in need of killing or no?
---TODO, GTFO https://www.wowhead.com/beta/spell=374705/seismic-rupture ?
---TODO, revisit thunder strike automation. May want to combine warnings to generalized warning instead of saying soak/avoid
---TODO, target scan https://www.wowhead.com/beta/spell=374622/storm-front ?
---TODO, announce https://www.wowhead.com/beta/spell=391555/raging-inferno spawns on mythic? They spawn from Searing
---TODO, smart change checker for https://www.wowhead.com/beta/spell=391272/icy-tempest on mythic
---TODO, verify Dark Clouds mechanic on mythic
---TODO, add https://www.wowhead.com/beta/spell=374321/breaking-gravel if requires an actual tank swap to clear
 --[[
 (ability.id = 390548 or ability.id = 373678 or ability.id = 382563 or ability.id = 392125 or ability.id = 373487 or ability.id = 373329
  or ability.id = 374022 or ability.id = 392192 or ability.id = 392152 or ability.id = 372456 or ability.id = 375450 or ability.id = 395893

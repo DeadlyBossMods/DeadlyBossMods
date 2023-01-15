@@ -23,16 +23,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---TODO, visit tank swaps when more data is known such strategies to the interaction with Fury extending debuffs, for now, basic debuff checks used (and may be enough)
---TODO, Nascent Proto-Dragon only cast Azure Strike, is this important?
---TODO, https://www.wowhead.com/beta/spell=392292/broodkeeping meaningful?
 --TODO, add https://www.wowhead.com/beta/spell=388644/vicious-thrust ? it's instant cast but maybe a timer? depends how many adds there are. omitting for now to avoid clutter
---TODO, some kind of auto marking of the priority adds (like mages that need interrupt rotations)?
---TODO, further micro manage tank swaps for Borrowing Strike? depends on add count and spawn frequency, are they swapped or just killed off to reset stacks?
+--TODO, improve auto marking of the priority adds (like mages that need interrupt rotations)?
 --TODO, what is range of tremors? does the mob turn while casting it? These answers affect warning defaults/filters, for now it's everyone
---TODO, evalualte any needed antispams for multiple adds casting same spells
---TODO, never saw Rapid Incubation Damage done increase/damage taken reduced buff
---TODO, mythic stuff, like does mythic stone slam timer reset or replace existing p1? does fissure timer reset in p2?
 --[[
 (ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485 or ability.id = 396269 or ability.id = 396779) and type = "begincast"
  or ability.id = 380175 and type = "cast"
