@@ -18,8 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 386352 381253 391592"
 )
 
---TODO, auto mark awakened Earth (after spawn)?
---TODO, keep an eye on https://www.wowhead.com/beta/spell=391570/reactive-dust . not sure what to do with it yet, since this tooltip says something diff than journal
 --[[
 (ability.id = 380487 or ability.id = 377166 or ability.id = 377505 or ability.id = 383073 or ability.id = 376279 or ability.id = 396351) and type = "begincast"
 --]]

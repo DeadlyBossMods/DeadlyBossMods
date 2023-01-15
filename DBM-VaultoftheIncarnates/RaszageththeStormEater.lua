@@ -24,11 +24,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, initial CD timers for spawning in adds, if timers are used for the mythic only stuff
 --TODO, track and alert high stacks of https://www.wowhead.com/beta/spell=385560/windforce-strikes on Oathsworn?
 --TODO, determine number adds and spawn behavior for auto marking Stormseeker Acolyte for interrupt assignments?
 --TODO, use specWarnScatteredCharge once coding is verified it's being avoided for now to avoid SW spam
---TODO, a note that using the emote is able to detect whether dragon is breathing YOUR Platform, but it also requires localizing so many language won't get most important warning of intermission
 --[[
 (ability.id = 377612 or ability.id = 388643 or ability.id = 377658 or ability.id = 377594
  or ability.id = 385065 or ability.id = 397382 or ability.id = 397468 or ability.id = 387261 or ability.id = 385574 or ability.id = 389870
