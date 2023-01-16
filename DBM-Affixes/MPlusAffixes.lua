@@ -104,6 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		thunderingTotal = thunderingTotal + 1
 		if args:IsPlayer() then
+			playerThundering = true
 			specWarnNegativeCharge:Show()
 			specWarnNegativeCharge:Play("negative")
 			timerNegativeCharge:Start()
