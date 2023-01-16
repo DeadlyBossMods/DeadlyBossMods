@@ -92,7 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			playerThundering = true
 			self:Unschedule(yellRepeater)
 			local icon
-			if spellId == 396364 then then
+			if spellId == 396364 then
 				specWarnNegativeCharge:Show()
 				specWarnNegativeCharge:Play("negative")
 				timerNegativeCharge:Start()
