@@ -83,34 +83,29 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, 8) then
 		specWarnSpitefulFixate:Show()
 		specWarnSpitefulFixate:Play("targetyou")
-	elseif spellId == 396369 then
+	elseif spellId == 396369 or spellId == 396364 then
 		if self:AntiSpam(30, 1) then
 			thunderingTotal = 0
 		end
 		thunderingTotal = thunderingTotal + 1
 		if args:IsPlayer() then
 			playerThundering = true
-			specWarnPositiveCharge:Show()
-			specWarnPositiveCharge:Play("positive")
-			timerPositiveCharge:Start()
 			self:Unschedule(yellRepeater)
-			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(6, "")
+			local icon
+			if spellId == 396364 then
+				specWarnNegativeCharge:Show()
+				specWarnNegativeCharge:Play("negative")
+				timerNegativeCharge:Start()
+				icon = 7
+			else
+				specWarnPositiveCharge:Show()
+				specWarnPositiveCharge:Play("positive")
+				timerPositiveCharge:Start()
+				icon = 6
+			end
+			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "")
 			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Countdown(15, 5, 6)--Start icon spam with count at 5 remaining
-		end
-	elseif spellId == 396364 then
-		if self:AntiSpam(30, 1) then
-			thunderingTotal = 0
-		end
-		thunderingTotal = thunderingTotal + 1
-		if args:IsPlayer() then
-			specWarnNegativeCharge:Show()
-			specWarnNegativeCharge:Play("negative")
-			timerNegativeCharge:Start()
-			self:Unschedule(yellRepeater)
-			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(7, "")
-			yellRepeater(self, formatedIcon, 0)
-			yellThunderingFades:Countdown(15, 5, 7)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 5, icon)--Start icon spam with count at 5 remaining
 		end
 	end
 end
