@@ -115,8 +115,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_APPLIED_DOSE
-mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_APPLIED_DOSE
 
 function mod:SPELL_AURA_REMOVED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
