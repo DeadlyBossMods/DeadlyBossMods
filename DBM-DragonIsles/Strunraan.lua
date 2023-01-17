@@ -55,7 +55,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 338858 then
+	if spellId == 387191 then
 		warnEmpoweredStorm:Show()
 		timerEmpoweredStormCD:Start()
 	elseif spellId == 389951 then
