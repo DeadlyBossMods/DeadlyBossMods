@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 386440 or ability.id = 386375 or ability.id = 386370 or ability.id = 386289) and type = "applybuff"
 --]]
 --General
-local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(371514, nil, nil, nil, 1, 8)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 --Kadros Icewrath
