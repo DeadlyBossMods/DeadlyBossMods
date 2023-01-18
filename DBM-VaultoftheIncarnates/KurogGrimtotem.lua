@@ -68,8 +68,8 @@ local specWarnSearingCarnage					= mod:NewSpecialWarningDodge(374022, nil, nil, 
 ----Mythic Only (Flamewrought Eradicator)
 local warnRagingInferno							= mod:NewSpellAnnounce(394416, 3)
 
-local specWarnFlamewroughtEradicator			= mod:NewSpecialWarningSwitch(393314, "-Healer", nil, nil, 1, 2)
-local specWarnFlameSmite						= mod:NewSpecialWarningYou(393309, nil, nil, nil, 2, 2)
+local specWarnFlamewroughtEradicator			= mod:NewSpecialWarningSwitch(393314, "-Healer", nil, nil, 1, 2, 4)
+local specWarnFlameSmite						= mod:NewSpecialWarningYou(393309, nil, nil, nil, 2, 2, 4)
 
 local timerFlameSmiteCD							= mod:NewCDTimer(30, 393309, nil, nil, nil, 5)
 local timerRagingInfernoCD						= mod:NewCDTimer(30, 394416, nil, nil, nil, 1)
@@ -91,9 +91,9 @@ mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, false, {1, 2})
 
 mod:GroupSpells(372456, 372514, 372517)--Group all Below Zero mechanics together
 ----Mythic Only (Icebound Dominator)
-local specWarnIceboundDominator					= mod:NewSpecialWarningSwitch(393295, "-Healer", nil, nil, 1, 2)
-local specWarnFreezing							= mod:NewSpecialWarningMoveTo(391419, nil, nil, nil, 1, 2)--Effect of Icy Tempest (391425)
-local specWarnFrostSmite						= mod:NewSpecialWarningYou(393296, nil, nil, nil, 2, 2)
+local specWarnIceboundDominator					= mod:NewSpecialWarningSwitch(393295, "-Healer", nil, nil, 1, 2, 4)
+local specWarnFreezing							= mod:NewSpecialWarningMoveTo(391419, nil, nil, nil, 1, 2, 4)--Effect of Icy Tempest (391425)
+local specWarnFrostSmite						= mod:NewSpecialWarningYou(393296, nil, nil, nil, 2, 2, 4)
 
 local timerFrostSmiteCD							= mod:NewCDTimer(30, 393296, nil, nil, nil, 5)
 local timerFrigidTorrentCD						= mod:NewCDTimer(32.5, 391019, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -106,8 +106,8 @@ local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(395893, "Melee", ni
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
 ----Mythic Only (Ironwrought Smasher)
-local specWarnIronwroughtSmasher				= mod:NewSpecialWarningSwitch(392098, "-Healer", nil, nil, 1, 2)
-local specWarnEarthSmite						= mod:NewSpecialWarningSpell(391268, nil, nil, nil, 1, 2)
+local specWarnIronwroughtSmasher				= mod:NewSpecialWarningSwitch(392098, "-Healer", nil, nil, 1, 2, 4)
+local specWarnEarthSmite						= mod:NewSpecialWarningSpell(391268, nil, nil, nil, 1, 2, 4)
 
 local timerEarthSmiteCD							= mod:NewCDTimer(30, 391268, nil, nil, nil, 5)--Ironwrought Smasher
 local timerEruptingBedrockCD					= mod:NewCDTimer(60, 395893, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -133,8 +133,8 @@ mod:AddSetIconOption("SetIconOnShockingBurst", 390920, false, false, {4, 5})
 ----Mythic Only (Stormwrought Despoiler)
 local warnOrbLightning							= mod:NewSpellAnnounce(394719, 3)
 
-local specWarnStormwroughtDespoiler				= mod:NewSpecialWarningSwitch(393459, "-Healer", nil, nil, 1, 2)
-local specWarnStormSmite						= mod:NewSpecialWarningYou(393429, nil, nil, nil, 2, 2)
+local specWarnStormwroughtDespoiler				= mod:NewSpecialWarningSwitch(393459, "-Healer", nil, nil, 1, 2, 4)
+local specWarnStormSmite						= mod:NewSpecialWarningYou(393429, nil, nil, nil, 2, 2, 4)
 
 local timerOrbLightningCD						= mod:NewCDTimer(48.5, 394719, nil, nil, nil, 3)
 local timerStormSmiteCD							= mod:NewCDTimer(30, 393429, nil, nil, nil, 5)
