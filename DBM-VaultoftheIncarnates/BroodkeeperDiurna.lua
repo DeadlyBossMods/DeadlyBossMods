@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20230115000000)
+mod:SetHotfixNoticeRev(20230117000000)
 mod:SetMinSyncRevision(20221230000000)
 mod.respawnTime = 33
 
@@ -132,7 +132,7 @@ mod.vb.StormbringerIcon = 8
 mod.vb.eggsGone = false
 local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 18.2}
 local heroicAddsTimers	= {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
-local normalAddsTimers	= {35.6, 24.8, 36.8, 24.9, 43.4, 24.9, 36.5, 24.9, 43.3, 24.8}
+local normalAddsTimers	= {35.6, 24.6, 36.6, 24.9, 43.1, 24.9, 36.5, 24.9, 43.1, 24.8}
 local p2StaffMythic		= {0, 19, 17, 25, 24.5, 25, 31.9, 17.5, 31, 18.7, 25, 25}--Some of this pattern is accurate but it can change, need to figure out actual cause.
 
 function mod:OnCombatStart(delay)
@@ -147,12 +147,14 @@ function mod:OnCombatStart(delay)
 	self.vb.mageIcon = 6
 	self.vb.StormbringerIcon = 8
 	self.vb.eggsGone = false
-	timerMortalStoneclawsCD:Start(3.4-delay, 1)
-	timerWildfireCD:Start(8.4-delay, 1)
-	timerRapidIncubationCD:Start(14.3-delay, 1)
-	timerGreatstaffoftheBroodkeeperCD:Start(16.9-delay, 1)
+	timerMortalStoneclawsCD:Start(3.2-delay, 1)
+	timerWildfireCD:Start(8.2-delay, 1)
+	if not self:IsEasy() then
+		timerRapidIncubationCD:Start(14.3-delay, 1)
+	end
+	timerGreatstaffoftheBroodkeeperCD:Start(16.2-delay, 1)
 	timerPrimalistReinforcementsCD:Start(self:IsMythic() and 32.9 or self:IsHeroic() and 36.4 or 35.6-delay, 1)
-	timerIcyShroudCD:Start(26.5-delay, 1)
+	timerIcyShroudCD:Start(26.2-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -189,17 +191,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("scatter")
 		specWarnWildfire:ScheduleVoice(1.5, "watchstep")
-		timerWildfireCD:Start(self:IsMythic() and 23 or 21.4, self.vb.wildFireCount+1)
+		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 25, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
 		specWarnIcyShroud:Play("aesoon")
-		timerIcyShroudCD:Start(self:IsMythic() and 41 or 39.1, self.vb.icyCount+1)
+		timerIcyShroudCD:Start(self:IsMythic() and 41 or self:IsHeroic() and 39.1 or 44, self.vb.icyCount+1)
 	elseif spellId == 388918 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnFrozenShroud:Show(self.vb.icyCount)
 		specWarnFrozenShroud:Play("aesoon")
-		timerFrozenShroudCD:Start(nil, self.vb.icyCount+1)
+		timerFrozenShroudCD:Start(nil, self.vb.icyCount+1)--40-45
 	elseif spellId == 375870 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneclaws:Show()
@@ -301,7 +303,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase == 1 then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerGreatstaffoftheBroodkeeperCD:Start(24.3, self.vb.staffCount+1)--24-29
+			timerGreatstaffoftheBroodkeeperCD:Start(24.3, self.vb.staffCount+1)--24-29 in all difficulties
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
@@ -315,7 +317,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 375870 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and 20.2 or 7.3)-1.5--Is this even remotely valid anymore? is it such a short CD in p2 normal/heroic?
+		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)-1.5
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 	elseif spellId == 396269 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
@@ -436,7 +438,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
 			if self:IsMythic() then
 				timerMortalStoneclawsCD:Stop()
-				timerMortalStoneSlamCD:Start(15, 1)--Does NOT restart anymore
+				timerMortalStoneSlamCD:Start(15, 1)
 				self.vb.tankCombocount = 0
 				timerGreatstaffoftheBroodkeeperCD:Stop()
 				timerEGreatstaffoftheBroodkeeperCD:Start(19, 1)
