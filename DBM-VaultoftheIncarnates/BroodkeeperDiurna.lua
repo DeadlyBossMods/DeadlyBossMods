@@ -160,9 +160,6 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		timerStormFissureCD:Start(28-delay)
-		timerPrimalistReinforcementsCD:Start(32.9-delay, 1)
-	else--Heroic and Normal
-		timerPrimalistReinforcementsCD:Start(35.6-delay, 1)
 	end
 end
 
