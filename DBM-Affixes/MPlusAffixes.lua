@@ -11,9 +11,9 @@ mod.isTrashModBossFightAllowed = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 240446",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 240447 226512 350209 396369 396364",
+	"SPELL_AURA_APPLIED 240447 226510 226512 350209 396369 396364",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 396369 396364",
+	"SPELL_AURA_REMOVED 396369 396364 226510",
 	"SPELL_DAMAGE 209862",
 	"SPELL_MISSED 209862"
 --	"UNIT_DIED"
@@ -37,6 +37,8 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
+
+mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
@@ -77,9 +79,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnQuake:Show()
 			specWarnQuake:Play("range5")
 		end
-	elseif spellId == 226512 and args:IsPlayer() and self:AntiSpam(3, 7) then
+	elseif spellId == 226512 and args:IsPlayer() and self:AntiSpam(3, 7) then--Sanguine Ichor on player
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
+	elseif spellId == 226510 then--Sanguine Ichor on mob
+		if self.Options.NPSanguine then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, nil, nil, true)
+		end
 	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, 8) then
 		specWarnSpitefulFixate:Show()
 		specWarnSpitefulFixate:Play("targetyou")
@@ -128,6 +134,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerNegativeCharge:Stop()
 			self:Unschedule(yellRepeater)
 			yellThunderingFades:Cancel()
+		end
+	elseif spellId == 226510 then--Sanguine Ichor on mob
+		if self.Options.NPSanguine then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId, nil, nil, nil, nil, true)
 		end
 	end
 end
