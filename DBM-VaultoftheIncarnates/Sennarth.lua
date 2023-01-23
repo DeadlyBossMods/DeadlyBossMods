@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230103000000)
-mod:SetMinSyncRevision(20221013000000)
+mod:SetHotfixNoticeRev(20230122000000)
+mod:SetMinSyncRevision(20230122000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -442,7 +442,6 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 189234 then--Frostbreath Arachnid
-		self:SetStage(1)--Likely totally wrong
 		timerFreezingBreathCD:Stop(args.destGUID)
 	end
 end
