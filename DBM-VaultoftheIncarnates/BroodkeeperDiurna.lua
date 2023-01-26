@@ -131,8 +131,8 @@ mod.vb.mageIcon = 6
 mod.vb.StormbringerIcon = 8
 mod.vb.eggsGone = false
 local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 18.2}
-local heroicAddsTimers	= {36.4, 19.0, 36.6, 20.0, 44.1, 19.8, 36.8, 19.9, 43.1, 21.0, 35.7, 20.0}
-local normalAddsTimers	= {35.6, 24.6, 36.6, 24.9, 43.1, 24.9, 36.5, 24.9, 43.1, 24.8}
+local heroicAddsTimers	= {35.4, 19.0, 36.3, 20.0, 43.2, 19.8, 36.3, 19.9, 43.1, 21.0, 35.7, 20.0}--Last 5 no longer happen?
+local normalAddsTimers	= {35.4, 24.6, 36.3, 24.9, 43.1, 24.9, 36.3, 24.9, 43.1, 24.8}
 local p2StaffMythic		= {0, 19, 17, 25, 24.5, 25, 31.9, 17.5, 31, 18.7, 25, 25}--Some of this pattern is accurate but it can change, need to figure out actual cause.
 
 function mod:OnCombatStart(delay)
@@ -153,7 +153,7 @@ function mod:OnCombatStart(delay)
 		timerRapidIncubationCD:Start(14.3-delay, 1)
 	end
 	timerGreatstaffoftheBroodkeeperCD:Start(16.2-delay, 1)
-	timerPrimalistReinforcementsCD:Start(self:IsMythic() and 32.9 or self:IsHeroic() and 36.4 or 35.6-delay, 1)
+	timerPrimalistReinforcementsCD:Start(self:IsMythic() and 32.9 or 35.4-delay, 1)
 	timerIcyShroudCD:Start(26.2-delay, 1)
 	if self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
