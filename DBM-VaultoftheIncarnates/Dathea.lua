@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Dathea, Ascended
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
+local warnMarkCast								= mod:NewCountAnnounce(391686, 3)
 local warnRagingBurst							= mod:NewCountAnnounce(388302, 3, nil, nil, 86189)
 local warnZephyrSlam							= mod:NewStackAnnounce(375580, 2, nil, "Tank|Healer")
 
@@ -299,6 +300,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 391600 or spellId == 391595) and self:AntiSpam(3, 2) then--391595 confirmed, 391600 i'm keeping for now in case it's used on mythics
 		self.vb.markCount = self.vb.markCount + 1
+		warnMarkCast:Show(self.vb.markCount)
 		timerConductiveMarkCD:Start(self:IsHard() and 25 or 31.5, self.vb.markCount+1)
 	end
 end
