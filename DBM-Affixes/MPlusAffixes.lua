@@ -56,7 +56,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 240446 and self:AntiSpam(3, 6) then
+	if spellId == 240446 and self:AntiSpam(3, "aff6") then
 		warnExplosion:Show()
 	end
 end
@@ -79,18 +79,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnQuake:Show()
 			specWarnQuake:Play("range5")
 		end
-	elseif spellId == 226512 and args:IsPlayer() and self:AntiSpam(3, 7) then--Sanguine Ichor on player
+	elseif spellId == 226512 and args:IsPlayer() and self:AntiSpam(3, "aff7") then--Sanguine Ichor on player
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, nil, nil, true)
 		end
-	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, 8) then
+	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, "aff8") then
 		specWarnSpitefulFixate:Show()
 		specWarnSpitefulFixate:Play("targetyou")
 	elseif spellId == 396369 or spellId == 396364 then
-		if self:AntiSpam(20, "Thundering") then
+		if self:AntiSpam(20, "affseasonal") then
 			thunderingTotal = 0
 			playerThundering = false
 		end
@@ -146,7 +146,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 209862 and destGUID == UnitGUID("player") and self:AntiSpam(3, 7) then
+	if spellId == 209862 and destGUID == UnitGUID("player") and self:AntiSpam(3, "aff7") then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
