@@ -113,6 +113,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "")
 			yellRepeater(self, formatedIcon, 0)
+			yellThunderingFades:Cancel()
 			yellThunderingFades:Countdown(15, 5, icon)--Start icon spam with count at 5 remaining
 		end
 	end
