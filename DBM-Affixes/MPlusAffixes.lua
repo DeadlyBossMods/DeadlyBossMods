@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSpitefulFixate:Show()
 		specWarnSpitefulFixate:Play("targetyou")
 	elseif spellId == 396369 or spellId == 396364 then
-		if self:AntiSpam(20, 1) then
+		if self:AntiSpam(20, "Thundering") then
 			thunderingTotal = 0
 			playerThundering = false
 		end
