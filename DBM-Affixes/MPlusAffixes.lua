@@ -95,6 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			playerThundering = false
 		end
 		thunderingTotal = thunderingTotal + 1
+		DBM:Debug("thundering Total added: "..thunderingTotal, 2)
 		if args:IsPlayer() then
 			playerThundering = true
 			self:Unschedule(yellRepeater)
@@ -123,9 +124,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 396369 or spellId == 396364 then
 		thunderingTotal = thunderingTotal - 1
+		DBM:Debug("thundering Total removed: "..thunderingTotal, 2)
 		--Your debuff is gone, OR all debuffs but one are gone and you're the one with it
 		if args:IsPlayer() or (thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364)) then
-			if playerThundering then--Because it's still possible to get double clear messages/yells
+			if playerThundering then--To avoid double clear yells when player is last clear, cause we force clear at 1, but SPELL_AURA_REMOVED would also fire
 				warnThunderingFades:Show()
 				playerThundering = false
 				yellThundering:Yell(DBM_COMMON_L.CLEAR)
