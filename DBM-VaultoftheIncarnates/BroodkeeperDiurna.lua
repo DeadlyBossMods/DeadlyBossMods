@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20230117000000)
+mod:SetHotfixNoticeRev(20230201000000)
 mod:SetMinSyncRevision(20221230000000)
 mod.respawnTime = 33
 
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 376073 375871 388716 375870 375716 376272 376257 375485 375575 375457 375653 375630 388918 396269 396779 375475",
 	"SPELL_CAST_SUCCESS 380175 375870 396269 181113",
-	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375487 375475 375620 375879 376330 396264 380483",
+	"SPELL_AURA_APPLIED 375889 375829 376073 378782 390561 376272 375475 375620 375879 376330 396264 380483",
 	"SPELL_AURA_APPLIED_DOSE 375829 378782 376272 375475 375879",
 	"SPELL_AURA_REMOVED 376073 375809 376330 396264",
 	"SPELL_AURA_REMOVED_DOSE 375809",
@@ -75,9 +75,8 @@ local warnIonizingCharge						= mod:NewTargetAnnounce(375630, 3)
 
 local specWarnPrimalistReinforcements			= mod:NewSpecialWarningAddsCount(257554, "-Healer", nil, nil, 1, 2)
 local specWarnIceBarrage						= mod:NewSpecialWarningInterruptCount(375716, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, nil, nil, nil, 1, 2, 3)
+local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, false, nil, 2, 1, 2, 3)--Spammy as all hell, should never be on by default
 local specWarnTremors							= mod:NewSpecialWarningDodge(376257, nil, nil, nil, 2, 2)
-local specWarnCauterizingFlashflames			= mod:NewSpecialWarningDispel(375487, "MagicDispeller", nil, nil, 1, 2)
 local specWarnRendingBite						= mod:NewSpecialWarningDefensive(375475, nil, nil, nil, 1, 2, 3)
 local specWarnStaticJolt						= mod:NewSpecialWarningInterruptCount(375653, "HasInterrupt", nil, nil, 1, 2)
 local specWarnIonizingCharge					= mod:NewSpecialWarningMoveAway(375630, nil, nil, nil, 1, 2)
@@ -98,7 +97,6 @@ mod:AddNamePlateOption("NPFixate", 376330, true)
 mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {6, 5, 4})
 mod:AddSetIconOption("SetIconOnStormbringers", "ej25139", true, true, {8, 7})
 
-mod:GroupSpells(375485, 375487)--Cauterizing Flashflames cast and dispel IDs
 mod:GroupSpells(385618, "ej25144", "ej25139")--Icon Marking with general adds announce
 --Stage Two: A Broodkeeper Scorned
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25146))
@@ -226,23 +224,27 @@ function mod:SPELL_CAST_START(args)
 			timerRendingBiteCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 376257 then
-		if self:AntiSpam(1, spellId) then
-			specWarnTremors:Show()
-			specWarnTremors:Play("shockwave")
+		if self:AntiSpam(3, spellId) then
+			if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
+				specWarnTremors:Show()
+				specWarnTremors:Play("shockwave")
+			end
 			timerTremorsCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375485 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			warnCauterizingFlashflames:Show()
 			timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
 		end
 	elseif spellId == 375575 then
-		if self:AntiSpam(1, spellId) then
-			warnFlameSentry:Show()
+		if self:AntiSpam(3, spellId) then
+			if self:CheckBossDistance(args.sourceGUID, false, 13289, 28) then
+				warnFlameSentry:Show()
+			end
 			timerFlameSentryCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375457 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			warnChillingTantrum:Show()
 			timerChillingTantrumCD:Start(nil, args.sourceGUID)
 		end
@@ -393,33 +395,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDiurnasGaze:Show()
 	elseif spellId == 376272 and not args:IsPlayer() then
 		local amount = args.amount or 1
-		--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		--local remaining
-		--if expireTime then
-		--	remaining = expireTime-GetTime()
-		--end
-		--if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-		--	specWarnMortalWounds:Show(args.destName)
-		--	specWarnMortalWounds:Play("tauntboss")
-		--else
+		if amount % 2 == 0 then
 			warnBurrowingStrike:Show(args.destName, amount)
-		--end
+		end
 	elseif spellId == 375475 and not args:IsPlayer() then
 		local amount = args.amount or 1
-		--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		--local remaining
-		--if expireTime then
-		--	remaining = expireTime-GetTime()
-		--end
-		--if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-		--	specWarnMortalWounds:Show(args.destName)
-		--	specWarnMortalWounds:Play("tauntboss")
-		--else
-			warnRendingBite:Show(args.destName, amount)
-		--end
-	elseif spellId == 375487 then
-		specWarnCauterizingFlashflames:CombinedShow(1, args.destName)
-		specWarnCauterizingFlashflames:ScheduleVoice(1, "helpldispel")
+		warnRendingBite:Show(args.destName, amount)
 	elseif spellId == 375879 then
 		local amount = args.amount or 1
 		warnBroodkeepersFury:Show(args.destName, amount)
