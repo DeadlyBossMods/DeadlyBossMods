@@ -226,23 +226,23 @@ function mod:SPELL_CAST_START(args)
 			timerRendingBiteCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 376257 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			specWarnTremors:Show()
 			specWarnTremors:Play("shockwave")
 			timerTremorsCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375485 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			warnCauterizingFlashflames:Show()
 			timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
 		end
 	elseif spellId == 375575 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			warnFlameSentry:Show()
 			timerFlameSentryCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375457 then
-		if self:AntiSpam(1, spellId) then
+		if self:AntiSpam(3, spellId) then
 			warnChillingTantrum:Show()
 			timerChillingTantrumCD:Start(nil, args.sourceGUID)
 		end
@@ -417,9 +417,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		--else
 			warnRendingBite:Show(args.destName, amount)
 		--end
-	elseif spellId == 375487 then
-		specWarnCauterizingFlashflames:CombinedShow(1, args.destName)
-		specWarnCauterizingFlashflames:ScheduleVoice(1, "helpldispel")
+	elseif spellId == 375487 and self:AntiSpam(3, spellId) then
+		specWarnCauterizingFlashflames:Show(DBM_COMMON_L.ADDS)
+		specWarnCauterizingFlashflames:Play("helpldispel")
 	elseif spellId == 375879 then
 		local amount = args.amount or 1
 		warnBroodkeepersFury:Show(args.destName, amount)
