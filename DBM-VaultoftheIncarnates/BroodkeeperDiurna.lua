@@ -227,8 +227,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 376257 then
 		if self:AntiSpam(3, spellId) then
-			specWarnTremors:Show()
-			specWarnTremors:Play("shockwave")
+			if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
+				specWarnTremors:Show()
+				specWarnTremors:Play("shockwave")
+			end
 			timerTremorsCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375485 then
@@ -238,7 +240,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 375575 then
 		if self:AntiSpam(3, spellId) then
-			warnFlameSentry:Show()
+			if self:CheckBossDistance(args.sourceGUID, false, 13289, 28) then
+				warnFlameSentry:Show()
+			end
 			timerFlameSentryCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 375457 then
