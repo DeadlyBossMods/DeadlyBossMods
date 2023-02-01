@@ -75,7 +75,7 @@ local warnIonizingCharge						= mod:NewTargetAnnounce(375630, 3)
 
 local specWarnPrimalistReinforcements			= mod:NewSpecialWarningAddsCount(257554, "-Healer", nil, nil, 1, 2)
 local specWarnIceBarrage						= mod:NewSpecialWarningInterruptCount(375716, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, nil, nil, nil, 1, 2, 3)
+local specWarnBurrowingStrike					= mod:NewSpecialWarningDefensive(376272, false, nil, 2, 1, 2, 3)--Spammy as all hell, should never be on by default
 local specWarnTremors							= mod:NewSpecialWarningDodge(376257, nil, nil, nil, 2, 2)
 local specWarnCauterizingFlashflames			= mod:NewSpecialWarningDispel(375487, "MagicDispeller", nil, nil, 1, 2)
 local specWarnRendingBite						= mod:NewSpecialWarningDefensive(375475, nil, nil, nil, 1, 2, 3)
@@ -397,30 +397,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDiurnasGaze:Show()
 	elseif spellId == 376272 and not args:IsPlayer() then
 		local amount = args.amount or 1
-		--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		--local remaining
-		--if expireTime then
-		--	remaining = expireTime-GetTime()
-		--end
-		--if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-		--	specWarnMortalWounds:Show(args.destName)
-		--	specWarnMortalWounds:Play("tauntboss")
-		--else
+		if amount % 2 == 0 then
 			warnBurrowingStrike:Show(args.destName, amount)
-		--end
+		end
 	elseif spellId == 375475 and not args:IsPlayer() then
 		local amount = args.amount or 1
-		--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		--local remaining
-		--if expireTime then
-		--	remaining = expireTime-GetTime()
-		--end
-		--if (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-		--	specWarnMortalWounds:Show(args.destName)
-		--	specWarnMortalWounds:Play("tauntboss")
-		--else
-			warnRendingBite:Show(args.destName, amount)
-		--end
+		warnRendingBite:Show(args.destName, amount)
 	elseif spellId == 375487 and self:AntiSpam(3, spellId) then
 		specWarnCauterizingFlashflames:Show(DBM_COMMON_L.ADDS)
 		specWarnCauterizingFlashflames:Play("helpldispel")
