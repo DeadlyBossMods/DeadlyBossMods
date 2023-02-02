@@ -255,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnMages and self.vb.mageIcon > 5 then--Only use up to 3 icons
+			if self.Options.SetIconOnMages and self.vb.mageIcon > 3 then--Only use up to 3 icons
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.mageIcon, 1, nil, 12, "SetIconOnMages")
 			end
 			self.vb.mageIcon = self.vb.mageIcon - 1
