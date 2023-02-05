@@ -101,7 +101,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
 local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "Healer")
 
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
-local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(395893, nil, nil, 2, 2, 2)--Cast by boss AND Doppelboulder
+local specWarnEruptingBedrock					= mod:NewSpecialWarningDodge(395893, nil, nil, 2, 2, 2)--Cast by boss AND Doppelboulder
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
 ----Mythic Only (Ironwrought Smasher)
@@ -308,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 395893 then
 		if self:AntiSpam(3, 2) then
 			specWarnEruptingBedrock:Show()
-			specWarnEruptingBedrock:Play("justrun")
+			specWarnEruptingBedrock:Play("watchstep")
 		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerEruptingBedrockCD:Start(nil, args.sourceGUID)
