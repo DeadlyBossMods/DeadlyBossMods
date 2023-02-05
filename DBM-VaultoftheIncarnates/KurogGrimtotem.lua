@@ -184,7 +184,6 @@ mod:GroupSpells(374622, 391696)--Storm Break and it's sub debuff Lethal Current
 
 
 mod.vb.chillCast = 0
-mod.vb.zeroTotal = 0
 mod.vb.curAltar = false
 mod.vb.damageSpell = "?"
 mod.vb.avoidSpell = "?"
@@ -193,25 +192,10 @@ mod.vb.damageCount = 0
 mod.vb.damageTimer = 30
 mod.vb.avoidTimer = 60
 mod.vb.ultTimer = 60
-mod.vb.zeroCount = 0
 local castsPerGUID = {}
 local groundShatterTargets = {}
+local zeroIcons = {}
 local updateAltar
-
-local function checkMyZero(self)
-	local icon = GetRaidTargetIndex("player")
-	if icon then
-		specWarnAbsoluteZero:Show(self:IconNumToTexture(icon))
-		specWarnAbsoluteZero:Play("mm"..icon)
-		yellAbsoluteZero:Yell(icon, icon)
-		yellAbsoluteZeroFades:Countdown(372458, nil, icon)
-	else--No icon setter? Just use blue square icon for both targets
-		specWarnAbsoluteZero:Show("")
-		specWarnAbsoluteZero:Play("targetyou")
-		yellAbsoluteZero:Yell(6, 6)
-		yellAbsoluteZeroFades:Countdown(372458, nil, 6)
-	end
-end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -271,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 			timerSearingCarnageCD:Start()
 		end
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
-		self.vb.zeroTotal = 0
+		table.wipe(zeroIcons)
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			self.vb.zeroCount = self.vb.zeroCount + 1
 			timerAbsoluteZeroCD:Start(nil, self.vb.zeroCount+1)
@@ -458,15 +442,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 	elseif spellId == 372458 then
-		self.vb.zeroTotal = self.vb.zeroTotal + 1
-		if self.Options.SetIconOnAbsoluteZero then
-			self:SetSortedIcon("tankroster", self.vb.zeroTotal == 2 and 0.1 or 1.4, args.destName, 1, 2, false)
+		zeroIcons[#zeroIcons+1] = args.destName
+		if #zeroIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+			table.sort(zeroIcons, DBM.SortByTankRoster)
+			for i = 1, #zeroIcons do
+				local name = zeroIcons[i]
+				if self.Options.SetIconOnAbsoluteZero then
+					self:SetIcon(name, i)
+				end
+				if name == DBM:GetMyPlayerInfo() then
+					specWarnAbsoluteZero:Show(self:IconNumToTexture(i))
+					specWarnAbsoluteZero:Play("mm"..i)
+					yellAbsoluteZero:Yell(i, i)
+					yellAbsoluteZeroFades:Countdown(spellId, nil, i)
+				end
+				warnAbsoluteZero:Show(table.concat(zeroIcons, "<, >"))
+			end
 		end
-		if args:IsPlayer() then
-			self:Unschedule(checkMyZero)
-			self:Schedule(self.vb.zeroTotal == 2 and 0.2 or 1.5, checkMyZero, self)
-		end
-		warnAbsoluteZero:CombinedShow(0.5, args.destName)
 	elseif spellId == 372514 and args:IsPlayer() then
 		timerFrostBite:Start()
 	elseif spellId == 372517 then
