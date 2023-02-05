@@ -165,7 +165,7 @@ local timerFreezingTempestCD					= mod:NewCDTimer(37.7, 374624, nil, nil, nil, 2
 local timerAbsoluteZeroCD						= mod:NewCDCountTimer(24.3, 372456, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 ----Blazing Fiend
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(25079))
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(25079))--Since searing gets bunbled with cast, it leaves category empty
 local timerSearingCarnageCD						= mod:NewCDTimer(23, 374022, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 ----Thundering Destroyer
