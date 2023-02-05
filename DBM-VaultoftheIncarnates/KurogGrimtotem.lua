@@ -539,7 +539,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
-			self:Unschedule(checkMyZero)
 			yellAbsoluteZeroFades:Cancel()
 		end
 	elseif spellId == 372514 and args:IsPlayer() then

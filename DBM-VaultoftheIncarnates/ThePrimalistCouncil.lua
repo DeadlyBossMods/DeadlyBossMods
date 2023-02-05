@@ -374,7 +374,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
-			self:Unschedule(checkMyAxe)
 			yellMeteorAxeFades:Cancel()
 		end
 	end
