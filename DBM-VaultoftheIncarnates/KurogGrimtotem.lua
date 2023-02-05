@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184986)
 mod:SetEncounterID(2605)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20230112000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20230205000000)
+mod:SetMinSyncRevision(20230205000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -86,7 +86,7 @@ local yellAbsoluteZeroFades						= mod:NewIconFadesYell(372456)
 
 local timerFrostBite							= mod:NewBuffFadesTimer(30, 372514, nil, false, nil, 5)
 
-mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, 9, {1, 2})
 
 mod:GroupSpells(372456, 372514, 372517)--Group all Below Zero mechanics together
 ----Mythic Only (Icebound Dominator)
@@ -101,7 +101,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25064))
 local warnEnvelopingEarth						= mod:NewTargetNoFilterAnnounce(391055, 4, nil, "Healer")
 
 local specWarnEnvelopingEarth					= mod:NewSpecialWarningYou(391055, nil, nil, nil, 1, 2)
-local specWarnEruptingBedrock					= mod:NewSpecialWarningRun(395893, nil, nil, 2, 2, 2)--Cast by boss AND Doppelboulder
+local specWarnEruptingBedrock					= mod:NewSpecialWarningDodge(395893, nil, nil, 2, 2, 2)--Cast by boss AND Doppelboulder
 local specWarnSeismicRupture					= mod:NewSpecialWarningDodge(374691, nil, nil, nil, 2, 2)
 
 ----Mythic Only (Ironwrought Smasher)
@@ -184,7 +184,6 @@ mod:GroupSpells(374622, 391696)--Storm Break and it's sub debuff Lethal Current
 
 
 mod.vb.chillCast = 0
-mod.vb.zeroIcon = 1
 mod.vb.curAltar = false
 mod.vb.damageSpell = "?"
 mod.vb.avoidSpell = "?"
@@ -193,9 +192,9 @@ mod.vb.damageCount = 0
 mod.vb.damageTimer = 30
 mod.vb.avoidTimer = 60
 mod.vb.ultTimer = 60
-mod.vb.zeroCount = 0
 local castsPerGUID = {}
 local groundShatterTargets = {}
+local zeroIcons = {}
 local updateAltar
 
 function mod:OnCombatStart(delay)
@@ -256,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 			timerSearingCarnageCD:Start()
 		end
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
-		self.vb.zeroIcon = 1
+		table.wipe(zeroIcons)
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			self.vb.zeroCount = self.vb.zeroCount + 1
 			timerAbsoluteZeroCD:Start(nil, self.vb.zeroCount+1)
@@ -296,16 +295,20 @@ function mod:SPELL_CAST_START(args)
 		warnStormBreak:Show()
 		timerStormBreakCD:Start(nil, args.sourceGUID)
 	elseif spellId == 391019 then
-		specWarnFrigidTorrent:Show()
-		specWarnFrigidTorrent:Play("watchorb")
+		if self:AntiSpam(3, 1) then
+			specWarnFrigidTorrent:Show()
+			specWarnFrigidTorrent:Play("watchorb")
+		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerFrigidTorrentCD:Start()
 		end
 --	elseif spellId == 391055 then
 
 	elseif spellId == 395893 then
-		specWarnEruptingBedrock:Show()
-		specWarnEruptingBedrock:Play("justrun")
+		if self:AntiSpam(3, 2) then
+			specWarnEruptingBedrock:Show()
+			specWarnEruptingBedrock:Play("watchstep")
+		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerEruptingBedrockCD:Start(nil, args.sourceGUID)
 		end
@@ -439,18 +442,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 	elseif spellId == 372458 then
-		local icon = self.vb.zeroIcon
-		if self.Options.SetIconOnAbsoluteZero then
-			self:SetIcon(args.destName, icon)
+		zeroIcons[#zeroIcons+1] = args.destName
+		if #zeroIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+			table.sort(zeroIcons, DBM.SortByTankRoster)
+			for i = 1, #zeroIcons do
+				local name = zeroIcons[i]
+				if self.Options.SetIconOnAbsoluteZero then
+					self:SetIcon(name, i)
+				end
+				if name == DBM:GetMyPlayerInfo() then
+					specWarnAbsoluteZero:Show(self:IconNumToTexture(i))
+					specWarnAbsoluteZero:Play("mm"..i)
+					yellAbsoluteZero:Yell(i, i)
+					yellAbsoluteZeroFades:Countdown(spellId, nil, i)
+				end
+				warnAbsoluteZero:Show(table.concat(zeroIcons, "<, >"))
+			end
 		end
-		if args:IsPlayer() then
-			specWarnAbsoluteZero:Show(self:IconNumToTexture(icon))
-			specWarnAbsoluteZero:Play("mm"..icon)
-			yellAbsoluteZero:Yell(icon, icon)
-			yellAbsoluteZeroFades:Countdown(spellId, nil, icon)
-		end
-		warnAbsoluteZero:CombinedShow(0.5, args.destName)
-		self.vb.zeroIcon = self.vb.zeroIcon + 1
 	elseif spellId == 372514 and args:IsPlayer() then
 		timerFrostBite:Start()
 	elseif spellId == 372517 then

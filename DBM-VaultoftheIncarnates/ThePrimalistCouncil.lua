@@ -85,7 +85,7 @@ local specWarnSlashingBlazeTaunt				= mod:NewSpecialWarningTaunt(372027, nil, ni
 local timerMeteorAxeCD							= mod:NewCDCountTimer(39.1, 374043, nil, nil, nil, 3)
 local timerSlashingBlazeCD						= mod:NewCDCountTimer(27.7, 372027, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 8, {1, 2})
+mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 9, {1, 2})
 
 local blizzardStacks = {}
 local playerBlizzardHigh = false
@@ -96,6 +96,7 @@ mod.vb.crushCast = 0
 mod.vb.meteorCast = 0
 mod.vb.meteorTotal = 0
 mod.vb.blazeCast = 0
+local meteorIcons = 0
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
 	["mythic"] = {--Needs work, some of these can be lower
@@ -123,21 +124,6 @@ local allTimers = {
 		[373059] = {60, 149.6, 133, 133},
 	},
 }
-
-local function checkMyAxe(self)
-	local icon = GetRaidTargetIndex("player")
-	if icon then
-		specWarnMeteorAxe:Show(self:IconNumToTexture(icon))
-		specWarnMeteorAxe:Play("mm"..icon)
-		yellMeteorAxe:Yell(icon, icon)
-		yellMeteorAxeFades:Countdown(374039, nil, icon)
-	else--No icon setter? Just use red icon for both targets
-		specWarnMeteorAxe:Show("")
-		specWarnMeteorAxe:Play("targetyou")
-		yellMeteorAxe:Yell(7, 7)
-		yellMeteorAxeFades:Countdown(374039, nil, 7)
-	end
-end
 
 function mod:OnCombatStart(delay)
 	table.wipe(blizzardStacks)
@@ -261,7 +247,7 @@ function mod:SPELL_CAST_START(args)
 		timerChainLightningCD:Start()
 	elseif spellId == 374038 then
 		self.vb.meteorCast = self.vb.meteorCast + 1
-		self.vb.meteorTotal = 0
+		table.wipe(meteorIcons)
 --		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.meteorCast+1) or 49.7
 		timerMeteorAxeCD:Start(self:IsEasy() and 66 or self:IsHeroic() and 52.3 or 39.1, self.vb.meteorCast+1)
 	elseif spellId == 375331 then
@@ -332,14 +318,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEarthenPillarCD:Stop()
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
-		self.vb.meteorTotal = self.vb.meteorTotal + 1
-		if self.Options.SetIconOnMeteorAxe then
-			self:SetSortedIcon("tankroster", self.vb.meteorTotal == 2 and 0.1 or 1.4, args.destName, 1, 2, false)
+		meteorIcons[#meteorIcons+1] = args.destName
+		if #meteorIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+			table.sort(meteorIcons, DBM.SortByTankRoster)
+			for i = 1, #meteorIcons do
+				local name = meteorIcons[i]
+				if self.Options.SetIconOnMeteorAxe then
+					self:SetIcon(name, i)
+				end
+				if name == DBM:GetMyPlayerInfo() then
+					specWarnMeteorAxe:Show(self:IconNumToTexture(i))
+					specWarnMeteorAxe:Play("mm"..i)
+					yellMeteorAxe:Yell(i, i)
+					yellMeteorAxeFades:Countdown(spellId, nil, i)
+				end
+				warnMeteorAxe:Show(table.concat(meteorIcons, "<, >"))
+			end
 		end
-		if args:IsPlayer() then
-			self:Schedule(self.vb.meteorTotal == 2 and 0.2 or 1.5, checkMyAxe, self)
-		end
-		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 1.6, args.destName)
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
