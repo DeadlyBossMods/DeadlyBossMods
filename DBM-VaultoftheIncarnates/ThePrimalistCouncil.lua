@@ -85,7 +85,7 @@ local specWarnSlashingBlazeTaunt				= mod:NewSpecialWarningTaunt(372027, nil, ni
 local timerMeteorAxeCD							= mod:NewCDCountTimer(39.1, 374043, nil, nil, nil, 3)
 local timerSlashingBlazeCD						= mod:NewCDCountTimer(27.7, 372027, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 8, {1, 2})
+mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 9, {1, 2})
 
 local blizzardStacks = {}
 local playerBlizzardHigh = false
@@ -337,6 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon("tankroster", self.vb.meteorTotal == 2 and 0.1 or 1.4, args.destName, 1, 2, false)
 		end
 		if args:IsPlayer() then
+			self:Unschedule(checkMyAxe)
 			self:Schedule(self.vb.meteorTotal == 2 and 0.2 or 1.5, checkMyAxe, self)
 		end
 		warnMeteorAxe:CombinedShow(self.vb.meteorTotal == 2 and 0.3 or 1.6, args.destName)
@@ -379,6 +380,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
+			self:Unschedule(checkMyAxe)
 			yellMeteorAxeFades:Cancel()
 		end
 	end

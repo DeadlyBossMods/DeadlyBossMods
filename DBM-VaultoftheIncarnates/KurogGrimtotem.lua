@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(184986)
 mod:SetEncounterID(2605)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20230112000000)
---mod:SetMinSyncRevision(20211203000000)
+mod:SetHotfixNoticeRev(20230205000000)
+mod:SetMinSyncRevision(20230205000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -86,7 +86,7 @@ local yellAbsoluteZeroFades						= mod:NewIconFadesYell(372456)
 
 local timerFrostBite							= mod:NewBuffFadesTimer(30, 372514, nil, false, nil, 5)
 
-mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnAbsoluteZero", 372456, true, 9, {1, 2})
 
 mod:GroupSpells(372456, 372514, 372517)--Group all Below Zero mechanics together
 ----Mythic Only (Icebound Dominator)
@@ -184,7 +184,7 @@ mod:GroupSpells(374622, 391696)--Storm Break and it's sub debuff Lethal Current
 
 
 mod.vb.chillCast = 0
-mod.vb.zeroIcon = 1
+mod.vb.zeroTotal = 0
 mod.vb.curAltar = false
 mod.vb.damageSpell = "?"
 mod.vb.avoidSpell = "?"
@@ -197,6 +197,21 @@ mod.vb.zeroCount = 0
 local castsPerGUID = {}
 local groundShatterTargets = {}
 local updateAltar
+
+local function checkMyZero(self)
+	local icon = GetRaidTargetIndex("player")
+	if icon then
+		specWarnAbsoluteZero:Show(self:IconNumToTexture(icon))
+		specWarnAbsoluteZero:Play("mm"..icon)
+		yellAbsoluteZero:Yell(icon, icon)
+		yellAbsoluteZeroFades:Countdown(372458, nil, icon)
+	else--No icon setter? Just use blue square icon for both targets
+		specWarnAbsoluteZero:Show("")
+		specWarnAbsoluteZero:Play("targetyou")
+		yellAbsoluteZero:Yell(6, 6)
+		yellAbsoluteZeroFades:Countdown(372458, nil, 6)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -256,7 +271,7 @@ function mod:SPELL_CAST_START(args)
 			timerSearingCarnageCD:Start()
 		end
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
-		self.vb.zeroIcon = 1
+		self.vb.zeroTotal = 0
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			self.vb.zeroCount = self.vb.zeroCount + 1
 			timerAbsoluteZeroCD:Start(nil, self.vb.zeroCount+1)
@@ -443,18 +458,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 	elseif spellId == 372458 then
-		local icon = self.vb.zeroIcon
+		self.vb.zeroTotal = self.vb.zeroTotal + 1
 		if self.Options.SetIconOnAbsoluteZero then
-			self:SetIcon(args.destName, icon)
+			self:SetSortedIcon("tankroster", self.vb.zeroTotal == 2 and 0.1 or 1.4, args.destName, 1, 2, false)
 		end
 		if args:IsPlayer() then
-			specWarnAbsoluteZero:Show(self:IconNumToTexture(icon))
-			specWarnAbsoluteZero:Play("mm"..icon)
-			yellAbsoluteZero:Yell(icon, icon)
-			yellAbsoluteZeroFades:Countdown(spellId, nil, icon)
+			self:Unschedule(checkMyZero)
+			self:Schedule(self.vb.zeroTotal == 2 and 0.2 or 1.5, checkMyZero, self)
 		end
 		warnAbsoluteZero:CombinedShow(0.5, args.destName)
-		self.vb.zeroIcon = self.vb.zeroIcon + 1
 	elseif spellId == 372514 and args:IsPlayer() then
 		timerFrostBite:Start()
 	elseif spellId == 372517 then
@@ -535,6 +547,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
+			self:Unschedule(checkMyZero)
 			yellAbsoluteZeroFades:Cancel()
 		end
 	elseif spellId == 372514 and args:IsPlayer() then
