@@ -296,16 +296,20 @@ function mod:SPELL_CAST_START(args)
 		warnStormBreak:Show()
 		timerStormBreakCD:Start(nil, args.sourceGUID)
 	elseif spellId == 391019 then
-		specWarnFrigidTorrent:Show()
-		specWarnFrigidTorrent:Play("watchorb")
+		if self:AntiSpam(3, 1) then
+			specWarnFrigidTorrent:Show()
+			specWarnFrigidTorrent:Play("watchorb")
+		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerFrigidTorrentCD:Start()
 		end
 --	elseif spellId == 391055 then
 
 	elseif spellId == 395893 then
-		specWarnEruptingBedrock:Show()
-		specWarnEruptingBedrock:Play("justrun")
+		if self:AntiSpam(3, 2) then
+			specWarnEruptingBedrock:Show()
+			specWarnEruptingBedrock:Play("justrun")
+		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			timerEruptingBedrockCD:Start(nil, args.sourceGUID)
 		end
