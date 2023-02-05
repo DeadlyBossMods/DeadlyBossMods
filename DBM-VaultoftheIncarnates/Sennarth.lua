@@ -43,7 +43,7 @@ local warnChillingBlast							= mod:NewTargetAnnounce(371976, 2)
 local warnEnvelopingWebs						= mod:NewTargetNoFilterAnnounce(372082, 3)
 local warnWrappedInWebs							= mod:NewTargetNoFilterAnnounce(372044, 4)
 local warnCallSpiderlings						= mod:NewCountAnnounce(372238, 2)
-local warnFrostbreathArachnid						= mod:NewSpellAnnounce("ej24899", 2)
+local warnFrostbreathArachnid					= mod:NewSpellAnnounce("ej24899", 2)
 
 local specWarnChillingBlast						= mod:NewSpecialWarningMoveAway(371976, nil, nil, nil, 1, 2)
 local yellChillingBlast							= mod:NewYell(371976)
@@ -54,18 +54,19 @@ local yellEnvelopingWebsFades					= mod:NewIconFadesYell(372082)
 local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, nil, nil, 1, 6)
 local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
 local specWarnWebBlast							= mod:NewSpecialWarningTaunt(385083, nil, nil, nil, 1, 2)
-local specWarnFreezingBreath						= mod:NewSpecialWarningDodge(374112, nil, nil, nil, 1, 2)
+local specWarnFreezingBreath					= mod:NewSpecialWarningDodge(374112, nil, nil, nil, 1, 2)
 
 local timerChillingBlastCD						= mod:NewCDCountTimer(18.5, 371976, nil, nil, nil, 3)--18.5-54.5
 local timerEnvelopingWebsCD						= mod:NewCDCountTimer(24, 372082, nil, nil, nil, 3)--24-46.9
 local timerGossamerBurstCD						= mod:NewCDCountTimer(36.9, 373405, nil, nil, nil, 2)--36.9-67.6
 local timerCallSpiderlingsCD					= mod:NewCDCountTimer(25.1, 372238, nil, nil, nil, 1)--17.6-37
 local timerFrostbreathArachnidCD				= mod:NewCDCountTimer(98.9, "ej24899", nil, nil, nil, 1)
-local timerFreezingBreathCD							= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerFreezingBreathCD						= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerPhaseCD								= mod:NewPhaseTimer(30)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(372030, false)--Useful raid leader tool, but not needed by everyone
+mod:GroupSpells(372082, 372030, 372044)--Wrapped in webs and sticking webbing with enveloping Webs
 
 --Stage Two: Cold Peak
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24885))
