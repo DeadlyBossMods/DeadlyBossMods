@@ -319,7 +319,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
 		meteorIcons[#meteorIcons+1] = args.destName
-		if #meteorIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+		if #meteorIcons == 2 or DBM:NumRealAlivePlayers() < 2 then
 			table.sort(meteorIcons, DBM.SortByTankRoster)
 			for i = 1, #meteorIcons do
 				local name = meteorIcons[i]
