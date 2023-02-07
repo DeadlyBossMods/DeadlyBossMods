@@ -96,7 +96,7 @@ mod.vb.crushCast = 0
 mod.vb.meteorCast = 0
 mod.vb.meteorTotal = 0
 mod.vb.blazeCast = 0
-local meteorIcons = 0
+local meteorIcons = {}
 local difficultyName = "normal"--Unused right now, mythic and normal are same with very minor variances, heroic is probably obsolete but will see on live
 local allTimers = {
 	["mythic"] = {--Needs work, some of these can be lower
@@ -319,7 +319,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCrushCD:Stop()
 	elseif spellId == 374039 then
 		meteorIcons[#meteorIcons+1] = args.destName
-		if #meteorIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+		if #meteorIcons == 2 or DBM:NumRealAlivePlayers() < 2 then
 			table.sort(meteorIcons, DBM.SortByTankRoster)
 			for i = 1, #meteorIcons do
 				local name = meteorIcons[i]

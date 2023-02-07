@@ -443,7 +443,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnLightningCrash:CombinedShow(0.5, args.destName)
 	elseif spellId == 372458 then
 		zeroIcons[#zeroIcons+1] = args.destName
-		if #zeroIcons == 2 or DBM:GetNumRealGroupMembers() == 1 then
+		if #zeroIcons == 2 or DBM:NumRealAlivePlayers() < 2 then
 			table.sort(zeroIcons, DBM.SortByTankRoster)
 			for i = 1, #zeroIcons do
 				local name = zeroIcons[i]

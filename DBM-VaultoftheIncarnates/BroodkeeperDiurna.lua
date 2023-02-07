@@ -185,7 +185,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("scatter")
-		specWarnWildfire:ScheduleVoice(1.5, "watchstep")
+		specWarnWildfire:ScheduleVoice(2, "watchstep")
 		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 25, self.vb.wildFireCount+1)
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
