@@ -538,7 +538,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerLightningDevastationCD:Start(self:IsMythic() and 12.8 or 13.2, 1)
 		end
-		timerPhaseCD:Start(self:IsHard() and 93.3 or 100)
+		timerPhaseCD:Start(self:IsMythic() and 93.3 or 100)
 	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger (Electric Scales)
 		self:SetStage(2)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
