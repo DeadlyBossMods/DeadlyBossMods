@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if expireTime then
 				remaining = expireTime-GetTime()
 			end
-			local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 18) - 5
+			local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 17.9) - 5
 			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 				specWarnConcussiveSlamTaunt:Show(args.destName)
 				specWarnConcussiveSlamTaunt:Play("tauntboss")

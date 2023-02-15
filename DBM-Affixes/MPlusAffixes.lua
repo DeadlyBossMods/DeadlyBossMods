@@ -15,8 +15,8 @@ mod:RegisterEvents(
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 396369 396364 226510",
 	"SPELL_DAMAGE 209862",
-	"SPELL_MISSED 209862"
---	"UNIT_DIED"
+	"SPELL_MISSED 209862",
+	"UNIT_DIED"
 )
 
 --TODO, fine tune tank stacks/throttle?
@@ -42,7 +42,7 @@ mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
-local thunderingTotal = 0
+local thunderingTotal = {}
 local playerThundering = false
 
 local function yellRepeater(self, text, total)
@@ -91,11 +91,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSpitefulFixate:Play("targetyou")
 	elseif spellId == 396369 or spellId == 396364 then
 		if self:AntiSpam(20, "affseasonal") then
-			thunderingTotal = 0
+			table.wipe(thunderingTotal)
 			playerThundering = false
 		end
-		thunderingTotal = thunderingTotal + 1
-		DBM:Debug("thundering Total added: "..thunderingTotal, 2)
+		if not thunderingTotal[args.destName] then
+			thunderingTotal[args.destName] = true
+		end
+		DBM:Debug("thundering Total added: "..#thunderingTotal, 2)
 		if args:IsPlayer() then
 			playerThundering = true
 			self:Unschedule(yellRepeater)
@@ -124,11 +126,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 396369 or spellId == 396364 then
-		thunderingTotal = thunderingTotal - 1
-		DBM:Debug("thundering Total removed: "..thunderingTotal, 2)
+		if thunderingTotal[args.destName] then
+			thunderingTotal[args.destName] = nil
+		end
+		DBM:Debug("thundering Total removed: "..#thunderingTotal, 2)
 		--Your debuff is gone, OR all debuffs but one are gone and you're the one with it
-		if args:IsPlayer() or (thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364)) then
-			if playerThundering then--To avoid double clear yells when player is last clear, cause we force clear at 1, but SPELL_AURA_REMOVED would also fire
+		if args:IsPlayer() or (#thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364)) then
+			if playerThundering then--To avoid double clear yells when player is last clear, cause we force clear at 1, but SPELL_AURA_REMOVED would also fire for 0
 				warnThunderingFades:Show()
 				playerThundering = false
 				yellThundering:Yell(DBM_COMMON_L.CLEAR)
@@ -153,13 +157,16 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
---[[
 function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 190128 then
-
-	elseif cid == 189878 then
-
+	--Players that die, don't fire SPELL_AURA_REMOVED for thundering and cause count to become wrong
+	--This basically ensures dead players aren't count in total
+	if args:IsDestTypePlayer() then--Filter out strange things like mobs or pets that have same name as a player
+		if thunderingTotal[args.destName] then
+			thunderingTotal[args.destName] = nil
+		end
 	end
+	--local cid = self:GetCIDFromGUID(args.destGUID)
+	--if cid == 190128 then
+--
+	--end
 end
---]]

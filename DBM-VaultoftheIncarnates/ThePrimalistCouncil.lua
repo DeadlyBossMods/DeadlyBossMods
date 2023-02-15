@@ -332,8 +332,8 @@ function mod:SPELL_AURA_APPLIED(args)
 					yellMeteorAxe:Yell(i, i)
 					yellMeteorAxeFades:Countdown(spellId, nil, i)
 				end
-				warnMeteorAxe:Show(table.concat(meteorIcons, "<, >"))
 			end
+			warnMeteorAxe:Show(table.concat(meteorIcons, "<, >"))
 		end
 	elseif spellId == 372027 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
