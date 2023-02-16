@@ -97,7 +97,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not thunderingTotal[args.destName] then
 			thunderingTotal[args.destName] = true
 		end
-		DBM:Debug("thundering Total added: "..#thunderingTotal, 2)
 		if args:IsPlayer() then
 			playerThundering = true
 			self:Unschedule(yellRepeater)
@@ -118,6 +117,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellThunderingFades:Cancel()
 			yellThunderingFades:Countdown(15, 5, icon)--Start icon spam with count at 5 remaining
 		end
+		DBM:Debug("thundering Total added: "..#thunderingTotal, 2)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -129,7 +129,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if thunderingTotal[args.destName] then
 			thunderingTotal[args.destName] = nil
 		end
-		DBM:Debug("thundering Total removed: "..#thunderingTotal, 2)
 		--Your debuff is gone, OR all debuffs but one are gone and you're the one with it
 		if args:IsPlayer() or (#thunderingTotal == 1 and DBM:UnitDebuff("player", 396369, 396364)) then
 			if playerThundering then--To avoid double clear yells when player is last clear, cause we force clear at 1, but SPELL_AURA_REMOVED would also fire for 0
@@ -142,6 +141,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:Unschedule(yellRepeater)
 			yellThunderingFades:Cancel()
 		end
+		DBM:Debug("thundering Total removed: "..#thunderingTotal, 2)
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId, nil, nil, nil, nil, true)
