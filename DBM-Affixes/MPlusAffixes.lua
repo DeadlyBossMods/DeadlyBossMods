@@ -148,7 +148,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
-function mod:UNIT_AURA_UNFILTERED(uId)
+function mod:UNIT_AURA_UNFILTERED()
 	local thunderingTotal = 0
 	for uId in DBM:GetGroupMembers() do
 		if DBM:UnitDebuff(uId, 396369, 396364) then
