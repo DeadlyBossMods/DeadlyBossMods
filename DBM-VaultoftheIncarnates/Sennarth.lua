@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(187967)
 mod:SetEncounterID(2592)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230122000000)
-mod:SetMinSyncRevision(20230122000000)
+mod:SetHotfixNoticeRev(20230216000000)
+mod:SetMinSyncRevision(20230216000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -229,7 +229,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 2 then
 			timerChillingBlastCD:Start(32, self.vb.blastCount+1)
 		else
-			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blastCount+1)
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, 1, spellId, self.vb.blastCount+1)
 			if timer then
 				timerChillingBlastCD:Start(timer, self.vb.blastCount+1)
 			end
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 372082 then
 		self.vb.webIcon = 1
 		self.vb.webCount = self.vb.webCount + 1
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.webCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, 1, spellId, self.vb.webCount+1)
 		if timer then
 			timerEnvelopingWebsCD:Start(timer, self.vb.webCount+1)
 		end
@@ -245,7 +245,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnGossamerBurst:Show(self.vb.burstCount)
 		specWarnGossamerBurst:Play("pullin")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.burstCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, 1, spellId, self.vb.burstCount+1)
 		if timer then
 			timerGossamerBurstCD:Start(timer, self.vb.burstCount+1)
 		end
@@ -288,7 +288,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			--Mythic sequenced, 44, 30, 35?
 			timerCallSpiderlingsCD:Start(self:IsNormal() and 25 or 30, self.vb.spiderlingsCount+1)
 		else
-			local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.spiderlingsCount+1)
+			local timer = self:GetFromTimersTable(allTimers, difficultyName, 1, spellId, self.vb.spiderlingsCount+1)
 			if timer then
 				timerCallSpiderlingsCD:Start(timer, self.vb.spiderlingsCount+1)
 			end
