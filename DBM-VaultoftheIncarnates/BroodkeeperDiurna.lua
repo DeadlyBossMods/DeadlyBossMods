@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
-mod:SetUsedIcons(8, 7, 6, 5, 4)
+mod:SetUsedIcons(8, 7, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20230201000000)
 mod:SetMinSyncRevision(20221230000000)
 mod.respawnTime = 33
@@ -94,7 +94,7 @@ local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPFixate", 376330, true)
-mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {6, 5, 4})
+mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnStormbringers", "ej25139", true, true, {8, 7})
 
 mod:GroupSpells(385618, "ej25144", "ej25139")--Icon Marking with general adds announce
@@ -132,9 +132,11 @@ local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 
 local heroicAddsTimers	= {35.4, 19.0, 36.3, 20.0, 43.2, 19.8, 36.3, 19.9, 43.1, 21.0, 35.7, 20.0}--Last 5 no longer happen?
 local normalAddsTimers	= {35.4, 24.6, 36.3, 24.9, 43.1, 24.9, 36.3, 24.9, 43.1, 24.8}
 local p2StaffMythic		= {0, 19, 17, 25, 24.5, 25, 31.9, 17.5, 31, 18.7, 25, 25}--Some of this pattern is accurate but it can change, need to figure out actual cause.
+local addUsedMarks = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
+	table.wipe(addUsedMarks)
 	self:SetStage(1)
 	self.vb.tankCombocount = 0
 	self.vb.staffCount = 0
@@ -255,10 +257,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnMages and self.vb.mageIcon > 3 then--Only use up to 3 icons
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.mageIcon, 1, nil, 12, "SetIconOnMages")
+			if self.Options.SetIconOnMages then
+				for i = 1, 4 do -- 1, 2, 3, 4
+					if not addUsedMarks[i] then
+						addUsedMarks[i] = args.sourceGUID
+						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
+						return
+					end
+				end
 			end
-			self.vb.mageIcon = self.vb.mageIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -273,10 +280,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375653 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnStormbringers and self.vb.StormbringerIcon > 6 then--Only use up to 3 icons
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.StormbringerIcon, 1, nil, 12, "SetIconOnStormbringers")
+			if self.Options.SetIconOnStormbringers
+				for i = 8, 7, -1 do -- 8, 7
+					if not addUsedMarks[i] then
+						addUsedMarks[i] = guid
+						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
+						return
+					end
+				end
 			end
-			self.vb.StormbringerIcon = self.vb.StormbringerIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -323,15 +335,45 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
 		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
 		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
-	elseif spellId == 181113 and self:AntiSpam(10, 2) then
-		self.vb.addsCount = self.vb.addsCount + 1
-		self.vb.mageIcon = 6
-		self.vb.StormbringerIcon = 8
-		specWarnPrimalistReinforcements:Show(self.vb.addsCount)
-		specWarnPrimalistReinforcements:Play("killmob")
-		local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
-		if timer then
-			timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
+	elseif spellId == 181113 then
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 191206 then--Mages
+			if not castsPerGUID[args.sourceGUID] then
+				castsPerGUID[args.sourceGUID] = 0
+				if self.Options.SetIconOnMages then
+					for i = 1, 4 do -- 1, 2, 3, 4
+						if not addUsedMarks[i] then
+							addUsedMarks[i] = args.sourceGUID
+							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
+							return
+						end
+					end
+				end
+			end
+		elseif cid == 191232 then--StormBringers
+			if not castsPerGUID[args.sourceGUID] then
+				castsPerGUID[args.sourceGUID] = 0
+				if self.Options.SetIconOnStormbringers
+					for i = 8, 7, -1 do -- 8, 7
+						if not addUsedMarks[i] then
+							addUsedMarks[i] = guid
+							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
+							return
+						end
+					end
+				end
+			end
+		end
+		if self:AntiSpam(10, 2) then
+			self.vb.addsCount = self.vb.addsCount + 1
+			self.vb.mageIcon = 6
+			self.vb.StormbringerIcon = 8
+			specWarnPrimalistReinforcements:Show(self.vb.addsCount)
+			specWarnPrimalistReinforcements:Play("killmob")
+			local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
+			if timer then
+				timerPrimalistReinforcementsCD:Start(timer, self.vb.addsCount+1)
+			end
 		end
 	end
 end
@@ -474,8 +516,21 @@ function mod:UNIT_DIED(args)
 	elseif cid == 191222 then--Juvenile Frost Proto-Dragon
 		timerRendingBiteCD:Stop(args.destGUID)
 		timerChillingTantrumCD:Stop(args.destGUID)
+	elseif cid == 191206 then--Primalist Mage
+		for i = 1, 4 do -- 1, 2, 3, 4
+			if addUsedMarks[i] == args.destGUID then
+				addUsedMarks[i] = nil
+				return
+			end
+		end
 	elseif cid == 191232 then--Drakonid Stormbringer
 		timerIonizingChargeCD:Stop(args.destGUID)
+		for i = 8, 7, -1 do -- 8, 7
+			if addUsedMarks[i] == args.destGUID then
+				addUsedMarks[i] = nil
+				break
+			end
+		end
 	end
 end
 
