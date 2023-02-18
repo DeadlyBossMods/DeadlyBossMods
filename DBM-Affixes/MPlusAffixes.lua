@@ -155,7 +155,7 @@ function mod:UNIT_AURA_UNFILTERED()
 			thunderingTotal = thunderingTotal + 1
 		end
 	end
-	if thunderingTotal == 0 then--None left, force clear them all
+	if thunderingTotal == 1 then--One left, force clear them all
 		self:UnregisterShortTermEvents()
 		if playerThundering then--Avoid double message from SAR clear
 			warnThunderingFades:Show()
