@@ -349,7 +349,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif cid == 191232 then--StormBringers
 			if not castsPerGUID[args.sourceGUID] then
 				castsPerGUID[args.sourceGUID] = 0
-				if self.Options.SetIconOnStormbringers
+				if self.Options.SetIconOnStormbringers then
 					for i = 8, 7, -1 do -- 8, 7
 						if not addUsedMarks[i] then
 							addUsedMarks[i] = args.sourceGUID
