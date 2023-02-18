@@ -276,10 +276,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 375653 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnStormbringers
+			if self.Options.SetIconOnStormbringers then
 				for i = 8, 7, -1 do -- 8, 7
 					if not addUsedMarks[i] then
-						addUsedMarks[i] = guid
+						addUsedMarks[i] = args.sourceGUID
 						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
 						break
 					end
@@ -352,7 +352,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				if self.Options.SetIconOnStormbringers
 					for i = 8, 7, -1 do -- 8, 7
 						if not addUsedMarks[i] then
-							addUsedMarks[i] = guid
+							addUsedMarks[i] = args.sourceGUID
 							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
 							break
 						end
