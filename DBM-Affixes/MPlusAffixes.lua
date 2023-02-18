@@ -51,6 +51,28 @@ local function yellRepeater(self, text, total)
 	end
 end
 
+local function checkThunderin(self)
+	local thunderingTotal = 0
+	for uId in DBM:GetGroupMembers() do
+		if DBM:UnitDebuff(uId, 396369, 396364) then
+			thunderingTotal = thunderingTotal + 1
+		end
+	end
+	if thunderingTotal == 1 then--One left, force clear them all
+		if playerThundering then--Avoid double message from SAR clear
+			warnThunderingFades:Show()
+			playerThundering = false
+			yellThundering:Yell(DBM_COMMON_L.CLEAR)
+		end
+		timerPositiveCharge:Stop()
+		timerNegativeCharge:Stop()
+		self:Unschedule(yellRepeater)
+		yellThunderingFades:Cancel()
+	else
+		self:Schedule(1, checkThunderin, self)
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
@@ -90,9 +112,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 396369 or spellId == 396364 then
 		if self:AntiSpam(20, "affseasonal") then
 			playerThundering = false
-			mod:RegisterShortTermEvents(
-				"UNIT_AURA_UNFILTERED"
-			)
+			self:Unschedule(checkThunderin)
+			self:Schedule(1, checkThunderin, self)
+--			self:RegisterShortTermEvents(
+--				"UNIT_AURA_UNFILTERED"
+--			)
 		end
 		if args:IsPlayer() then
 			playerThundering = true
@@ -148,6 +172,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+--[[
 function mod:UNIT_AURA_UNFILTERED()
 	local thunderingTotal = 0
 	for uId in DBM:GetGroupMembers() do
@@ -168,3 +193,4 @@ function mod:UNIT_AURA_UNFILTERED()
 		yellThunderingFades:Cancel()
 	end
 end
+--]]
