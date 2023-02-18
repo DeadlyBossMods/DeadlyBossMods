@@ -125,8 +125,6 @@ mod.vb.addsCount = 0
 mod.vb.tankCombocount = 0
 mod.vb.wildFireCount = 0
 mod.vb.incubationCount = 0
-mod.vb.mageIcon = 6
-mod.vb.StormbringerIcon = 8
 mod.vb.eggsGone = false
 local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 18.2}
 local heroicAddsTimers	= {35.4, 19.0, 36.3, 20.0, 43.2, 19.8, 36.3, 19.9, 43.1, 21.0, 35.7, 20.0}--Last 5 no longer happen?
@@ -144,8 +142,6 @@ function mod:OnCombatStart(delay)
 	self.vb.addsCount = 0
 	self.vb.wildFireCount = 0
 	self.vb.incubationCount = 0
-	self.vb.mageIcon = 6
-	self.vb.StormbringerIcon = 8
 	self.vb.eggsGone = false
 	timerMortalStoneclawsCD:Start(3.2-delay, 1)
 	timerWildfireCD:Start(8.2-delay, 1)
@@ -262,7 +258,7 @@ function mod:SPELL_CAST_START(args)
 					if not addUsedMarks[i] then
 						addUsedMarks[i] = args.sourceGUID
 						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
-						return
+						break
 					end
 				end
 			end
@@ -285,7 +281,7 @@ function mod:SPELL_CAST_START(args)
 					if not addUsedMarks[i] then
 						addUsedMarks[i] = guid
 						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
-						return
+						break
 					end
 				end
 			end
@@ -345,7 +341,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						if not addUsedMarks[i] then
 							addUsedMarks[i] = args.sourceGUID
 							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
-							return
+							break
 						end
 					end
 				end
@@ -358,7 +354,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						if not addUsedMarks[i] then
 							addUsedMarks[i] = guid
 							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnStormbringers")
-							return
+							break
 						end
 					end
 				end
@@ -366,8 +362,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if self:AntiSpam(10, 2) then
 			self.vb.addsCount = self.vb.addsCount + 1
-			self.vb.mageIcon = 6
-			self.vb.StormbringerIcon = 8
 			specWarnPrimalistReinforcements:Show(self.vb.addsCount)
 			specWarnPrimalistReinforcements:Play("killmob")
 			local timer = self:IsMythic() and mythicAddsTimers[self.vb.addsCount+1] or self:IsHeroic() and heroicAddsTimers[self.vb.addsCount+1] or self:IsEasy() and normalAddsTimers[self.vb.addsCount+1]
