@@ -52,13 +52,17 @@ local function yellRepeater(self, text, total)
 end
 
 local function checkThunderin(self)
-	local thunderingTotal = 0
+	local thunderingNTotal, thunderingPTotal = 0, 0
 	for uId in DBM:GetGroupMembers() do
-		if DBM:UnitDebuff(uId, 396369, 396364) then
-			thunderingTotal = thunderingTotal + 1
+		if DBM:UnitDebuff(uId, 396364) then
+			thunderingNTotal = thunderingPTotal + 1
+		end
+		if DBM:UnitDebuff(uId, 396369) then
+			thunderingPTotal = thunderingPTotal + 1
 		end
 	end
-	if thunderingTotal == 1 then--One left, force clear them all
+	--No possible clears left (ie only 1 or more debuff left of a single type). Force clear them all
+	if (thunderingNTotal == 0 and thunderingPTotal >= 1) or (thunderingNTotal >= 1 and thunderingPTotal == 0) then
 		if playerThundering then--Avoid double message from SAR clear
 			warnThunderingFades:Show()
 			playerThundering = false
