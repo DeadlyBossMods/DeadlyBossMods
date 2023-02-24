@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
-mod:SetUsedIcons(8, 7, 4, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4)
 mod:SetHotfixNoticeRev(20230201000000)
 mod:SetMinSyncRevision(20221230000000)
 mod.respawnTime = 33
@@ -94,7 +94,7 @@ local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPFixate", 376330, true)
-mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {6, 5, 4})
 mod:AddSetIconOption("SetIconOnStormbringers", "ej25139", true, true, {8, 7})
 
 mod:GroupSpells(385618, "ej25144", "ej25139")--Icon Marking with general adds announce
@@ -254,7 +254,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnMages then
-				for i = 1, 4 do -- 1, 2, 3, 4
+				for i = 6, 4, -1 do -- 6, 5, 4
 					if not addUsedMarks[i] then
 						addUsedMarks[i] = args.sourceGUID
 						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
@@ -337,7 +337,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if not castsPerGUID[args.sourceGUID] then
 				castsPerGUID[args.sourceGUID] = 0
 				if self.Options.SetIconOnMages then
-					for i = 1, 4 do -- 1, 2, 3, 4
+					for i = 6, 4, -1 do -- 6, 5, 4
 						if not addUsedMarks[i] then
 							addUsedMarks[i] = args.sourceGUID
 							self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnMages")
@@ -511,7 +511,7 @@ function mod:UNIT_DIED(args)
 		timerRendingBiteCD:Stop(args.destGUID)
 		timerChillingTantrumCD:Stop(args.destGUID)
 	elseif cid == 191206 then--Primalist Mage
-		for i = 1, 4 do -- 1, 2, 3, 4
+		for i = 6, 4, -1 do -- 6, 5, 4
 			if addUsedMarks[i] == args.destGUID then
 				addUsedMarks[i] = nil
 				return
