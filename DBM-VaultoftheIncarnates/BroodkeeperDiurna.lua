@@ -27,11 +27,11 @@ mod:RegisterEventsInCombat(
 --TODO, improve auto marking of the priority adds (like mages that need interrupt rotations)?
 --TODO, what is range of tremors? does the mob turn while casting it? These answers affect warning defaults/filters, for now it's everyone
 --[[
-(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 376272 or ability.id = 375475 or ability.id = 375485 or ability.id = 396269 or ability.id = 396779) and type = "begincast"
+(ability.id = 376073 or ability.id = 375871 or ability.id = 388716 or ability.id = 388918 or ability.id = 375870 or ability.id = 396269 or ability.id = 396779) and type = "begincast"
  or ability.id = 380175 and type = "cast"
  or ability.id = 375879
- or (ability.id = 375716 or ability.id = 375653 or ability.id = 375457 or ability.id = 375630 or ability.id = 376257 or ability.id = 375575) and type = "begincast"
  or ability.id = 181113
+ or (ability.id = 375716 or ability.id = 375653 or ability.id = 375457 or ability.id = 375630 or ability.id = 376257 or ability.id = 375575 or ability.id = 375475 or ability.id = 376272 or ability.id = 375485) and type = "begincast"
 --]]
 --Stage One: The Primalist Clutch
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25119))
@@ -129,8 +129,23 @@ mod.vb.eggsGone = false
 local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 18.2}
 local heroicAddsTimers	= {35.4, 19.0, 36.3, 20.0, 43.2, 19.8, 36.3, 19.9, 43.1, 21.0, 35.7, 20.0}--Last 5 no longer happen?
 local normalAddsTimers	= {35.4, 24.6, 36.3, 24.9, 43.1, 24.9, 36.3, 24.9, 43.1, 24.8}
-local p2StaffMythic		= {0, 19, 17, 25, 24.5, 25, 31.9, 17.5, 31, 18.7, 25, 25}--Some of this pattern is accurate but it can change, need to figure out actual cause.
 local addUsedMarks = {}
+
+--[[
+Mortal Stoneclaws 2.4 second ICD (P1)
+Mortal Stoneslam 2.4 second ICD (P2 mythic)
+Wildfire 4 second ICD in P1 and 5 second ICD in P2 (probably also 4 on normal/lfr)
+Icy Shroud 4 second ICD but not on staff*
+Frozen Shroud 4 ICD including staff*
+Storm Fissure triggers 3 sec ICD
+greatstaff triggers 3.5 second ICD
+rapid incubation triggers 3 second ICD
+
+
+Key Notes:
+Staff has a 17 second Cd in phase 1 and phase 2, but it'll always be 24 seconds in phase 1 because it has same CD as wildfire and rapid incubation and lowest priority so what happens is it always gets pushed back twice to 24 seconds in stage 1.
+In stage 2, staff sees it's actual 17 second CD from time to time when it avoids ICD pushbacks but it'll see 25-32 seconds most of time do to getting pushback from multiple spells because it's still bottom of cast priority
+--]]
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)

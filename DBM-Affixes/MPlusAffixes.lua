@@ -191,7 +191,7 @@ local function checkForCombatEnd(self, runTimes)
 		combatFound = true
 	end
 	if not combatFound then
-		for uId in self:GetGroupMembers() do
+		for uId in DBM:GetGroupMembers() do
 			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
 				combatFound = true
 				break
