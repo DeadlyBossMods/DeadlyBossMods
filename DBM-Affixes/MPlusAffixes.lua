@@ -87,7 +87,7 @@ local validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=t
 local function checkForCombat(self)
 	--Can't register zone changed new area because trash mod is scoped to only run IN above instances, so it wouldn't actually run zone changed code through event handler
 	local currentZone = DBM:GetCurrentArea() or 0
-	if not in validZones[currentZone] then
+	if not validZones[currentZone] then
 		timerQuakingCD:Stop()--Caveat, this check only runs if thundering activates it,so quaking timer technically won't deactivate in low keys on leaving zone :D
 		timerThunderingCD:Stop()
 		return
