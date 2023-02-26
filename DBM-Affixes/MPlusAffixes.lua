@@ -199,7 +199,7 @@ local function checkForCombatEnd(self, runTimes)
 		end
 	end
 	if combatFound then
-		self:Schedule(1, checkWipe, self, runTimes)
+		self:Schedule(1, checkForCombatEnd, self, runTimes)
 	else
 		timerThunderingCD:RemoveTime(runTimes)
 		timerThunderingCD:Pause()
@@ -214,6 +214,7 @@ end
 
 function mod:PLAYER_REGEN_ENABLED()
 	if DBM.Options.DebugMode then
+		self:Unschedule(checkForCombatEnd)
 		checkForCombatEnd(self, 0)
 	end
 end
