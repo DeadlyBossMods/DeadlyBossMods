@@ -15,7 +15,9 @@ mod:RegisterEvents(
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 396369 396364 226510",
 	"SPELL_DAMAGE 209862",
-	"SPELL_MISSED 209862"
+	"SPELL_MISSED 209862",
+	"PLAYER_REGEN_DISABLED",
+	"PLAYER_REGEN_ENABLED"
 )
 
 --TODO, fine tune tank stacks/throttle?
@@ -29,10 +31,12 @@ local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil,
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
-local yellThundering						= mod:NewIconRepeatYell(396363, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--15-5
-local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YELL")--5 too 0
+local yellThundering						= mod:NewIconRepeatYell(396363, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--15-9
+local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YELL")--8 to 0
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
+local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
+local timerThunderingCD						= mod:NewNextTimer(70, 396363, nil, nil, nil, 3)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
@@ -45,7 +49,7 @@ local playerThundering = false
 
 local function yellRepeater(self, text, total)
 	total = total + 1
-	if total < 7 then
+	if total < 4 then
 		yellThundering:Yell(text)
 		self:Schedule(1.5, yellRepeater, self, text, total)
 	end
@@ -99,6 +103,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 240447 then
+		if self:AntiSpam(3, "aff5") then
+			timerQuakingCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnQuake:Show()
 			specWarnQuake:Play("range5")
@@ -116,11 +123,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 396369 or spellId == 396364 then
 		if self:AntiSpam(20, "affseasonal") then
 			playerThundering = false
+			if DBM.Options.DebugMode then
+				timerThunderingCD:Start()
+			end
 			self:Unschedule(checkThunderin)
 			self:Schedule(1, checkThunderin, self)
---			self:RegisterShortTermEvents(
---				"UNIT_AURA_UNFILTERED"
---			)
 		end
 		if args:IsPlayer() then
 			playerThundering = true
@@ -140,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local formatedIcon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "")
 			yellRepeater(self, formatedIcon, 0)
 			yellThunderingFades:Cancel()
-			yellThunderingFades:Countdown(15, 5, icon)--Start icon spam with count at 5 remaining
+			yellThunderingFades:Countdown(15, 8, icon)--Start icon spam with count at 8 remaining
 		end
 	end
 end
@@ -176,25 +183,37 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
---[[
-function mod:UNIT_AURA_UNFILTERED()
-	local thunderingTotal = 0
-	for uId in DBM:GetGroupMembers() do
-		if DBM:UnitDebuff(uId, 396369, 396364) then
-			thunderingTotal = thunderingTotal + 1
+--Function to make sure GROUP is out of combat, can't just trust player leaving combat as being fully out of combat in case player dies.
+local function checkForCombatEnd(self, runTimes)
+	runTimes = runTimes + 1
+	local combatFound = false
+	if IsEncounterInProgress() then
+		combatFound = true
+	end
+	if not combatFound
+		for uId in self:GetGroupMembers() do
+			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
+				combatFound = true
+				break
+			end
 		end
 	end
-	if thunderingTotal == 1 then--One left, force clear them all
-		self:UnregisterShortTermEvents()
-		if playerThundering then--Avoid double message from SAR clear
-			warnThunderingFades:Show()
-			playerThundering = false
-			yellThundering:Yell(DBM_COMMON_L.CLEAR)
-		end
-		timerPositiveCharge:Stop()
-		timerNegativeCharge:Stop()
-		self:Unschedule(yellRepeater)
-		yellThunderingFades:Cancel()
+	if combatFound then
+		self:Schedule(1, checkWipe, self, runTimes)
+	else
+		timerThunderingCD:RemoveTime(runTimes)
+		timerThunderingCD:Pause()
 	end
 end
---]]
+
+function mod:PLAYER_REGEN_DISABLED()
+	if DBM.Options.DebugMode then
+		timerThunderingCD:Resume()
+	end
+end
+
+function mod:PLAYER_REGEN_ENABLED()
+	if DBM.Options.DebugMode then
+		checkForCombatEnd(self, 0)
+	end
+end
