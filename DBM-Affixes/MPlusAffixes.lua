@@ -48,7 +48,7 @@ local thunderingCounting = false
 
 local function yellRepeater(self, text, total)
 	total = total + 1
-	if total < 4 then
+	if total < 5 then
 		yellThundering:Yell(text)
 		self:Schedule(1.5, yellRepeater, self, text, total)
 	end
