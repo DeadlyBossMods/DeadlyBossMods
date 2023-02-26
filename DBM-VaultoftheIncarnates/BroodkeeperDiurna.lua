@@ -329,12 +329,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			if self:IsMythic() then
-				local timer = p2StaffMythic[self.vb.staffCount+1] or 17.5
-				timerEGreatstaffoftheBroodkeeperCD:Start(timer, self.vb.staffCount+1)
-			else
-				timerEGreatstaffoftheBroodkeeperCD:Start(20.6, self.vb.staffCount+1)--20-27
-			end
+			timerEGreatstaffoftheBroodkeeperCD:Start(17, self.vb.staffCount+1)--20-27
 		end
 	elseif spellId == 375870 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
