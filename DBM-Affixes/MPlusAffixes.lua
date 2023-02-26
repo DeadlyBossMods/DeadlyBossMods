@@ -190,7 +190,7 @@ local function checkForCombatEnd(self, runTimes)
 	if IsEncounterInProgress() then
 		combatFound = true
 	end
-	if not combatFound
+	if not combatFound then
 		for uId in self:GetGroupMembers() do
 			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
 				combatFound = true
