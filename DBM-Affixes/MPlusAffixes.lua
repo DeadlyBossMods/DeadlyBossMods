@@ -15,9 +15,7 @@ mod:RegisterEvents(
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 396369 396364 226510",
 	"SPELL_DAMAGE 209862",
-	"SPELL_MISSED 209862",
-	"PLAYER_REGEN_DISABLED",
-	"PLAYER_REGEN_ENABLED"
+	"SPELL_MISSED 209862"
 )
 
 --TODO, fine tune tank stacks/throttle?
@@ -46,6 +44,7 @@ mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
 local playerThundering = false
+local thunderingCounting = false
 
 local function yellRepeater(self, text, total)
 	total = total + 1
@@ -79,6 +78,40 @@ local function checkThunderin(self)
 	else
 		self:Schedule(1, checkThunderin, self)
 	end
+end
+
+--UGLY function to detect this because there isn't a good API for this.
+--player regen was very unreliable due to fact it only fires for self
+--This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
+local validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
+local function checkForCombat(self)
+	--Can't register zone changed new area because trash mod is scoped to only run IN above instances, so it wouldn't actually run zone changed code through event handler
+	local currentZone = DBM:GetCurrentArea() or 0
+	if not in validZones[currentZone] then
+		timerQuakingCD:Stop()--Caveat, this check only runs if thundering activates it,so quaking timer technically won't deactivate in low keys on leaving zone :D
+		timerThunderingCD:Stop()
+		return
+	end
+	local combatFound = false
+	if IsEncounterInProgress() then
+		combatFound = true
+	end
+	if not combatFound then
+		for uId in DBM:GetGroupMembers() do
+			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
+				combatFound = true
+				break
+			end
+		end
+	end
+	if combatFound and not thunderingCounting then
+		thunderingCounting = true
+		timerThunderingCD:Resume()
+	elseif combatFound and thunderingCounting then
+		thunderingCounting = false
+		timerThunderingCD:Pause()
+	end
+	self:Schedule(1, checkForCombat, self)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -123,11 +156,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 396369 or spellId == 396364 then
 		if self:AntiSpam(20, "affseasonal") then
 			playerThundering = false
+			thunderingCounting = true
 			if DBM.Options.DebugMode then
 				timerThunderingCD:Start()
 			end
 			self:Unschedule(checkThunderin)
 			self:Schedule(1, checkThunderin, self)
+			self:Unschedule(checkForCombat)
+			checkForCombat(self)
 		end
 		if args:IsPlayer() then
 			playerThundering = true
@@ -183,40 +219,6 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
---Function to make sure GROUP is out of combat, can't just trust player leaving combat as being fully out of combat in case player dies.
-local function checkForCombatEnd(self, runTimes)
-	runTimes = runTimes + 1
-	local combatFound = false
-	if IsEncounterInProgress() then
-		combatFound = true
-	end
-	if not combatFound then
-		for uId in DBM:GetGroupMembers() do
-			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
-				combatFound = true
-				break
-			end
-		end
-	end
-	if combatFound then
-		self:Schedule(1, checkForCombatEnd, self, runTimes)
-	else
-		timerThunderingCD:RemoveTime(runTimes)
-		timerThunderingCD:Pause()
-	end
-end
-
 --<610.64 01:20:34> [CHAT_MSG_MONSTER_YELL] Marked by lightning!#Raszageth###Global Affix Stalker##0#0##0#3611#nil#0#false#false#false#false", -- [3882]
 --<614.44 01:20:38> [CLEU] SPELL_AURA_APPLIED#Creature-0-3023-1477-12533-199388-00007705B2#Raszageth#Player-3726-0C073FB8#Onlysummonz-Khaz'goroth#396364#Mark of Wind#DEBUFF#nil", -- [3912]
-function mod:PLAYER_REGEN_DISABLED()
-	if DBM.Options.DebugMode then
-		timerThunderingCD:Resume()
-	end
-end
 
-function mod:PLAYER_REGEN_ENABLED()
-	if DBM.Options.DebugMode then
-		self:Unschedule(checkForCombatEnd)
-		checkForCombatEnd(self, 0)
-	end
-end
