@@ -36,7 +36,7 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerThunderingCD						= mod:NewNextTimer(70, 396363, nil, nil, nil, 3)
+local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
@@ -206,6 +206,8 @@ local function checkForCombatEnd(self, runTimes)
 	end
 end
 
+--<610.64 01:20:34> [CHAT_MSG_MONSTER_YELL] Marked by lightning!#Raszageth###Global Affix Stalker##0#0##0#3611#nil#0#false#false#false#false", -- [3882]
+--<614.44 01:20:38> [CLEU] SPELL_AURA_APPLIED#Creature-0-3023-1477-12533-199388-00007705B2#Raszageth#Player-3726-0C073FB8#Onlysummonz-Khaz'goroth#396364#Mark of Wind#DEBUFF#nil", -- [3912]
 function mod:PLAYER_REGEN_DISABLED()
 	if DBM.Options.DebugMode then
 		timerThunderingCD:Resume()
