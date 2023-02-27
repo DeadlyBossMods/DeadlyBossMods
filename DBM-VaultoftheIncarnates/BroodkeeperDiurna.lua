@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
-mod:SetHotfixNoticeRev(20230201000000)
-mod:SetMinSyncRevision(20221230000000)
+mod:SetHotfixNoticeRev(20230226000000)
+mod:SetMinSyncRevision(20230226000000)
 mod.respawnTime = 33
 
 mod:RegisterCombat("combat")
@@ -114,7 +114,7 @@ local yellDetonatingStoneslamFades				= mod:NewShortFadesYell(396264, nil, nil, 
 local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, nil, nil, nil, 1, 2, 4)
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
-local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(24.4, 380176, L.staff, nil, nil, 5)--Shared CD ability
+local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(17, 380176, L.staff, nil, nil, 5)--Shared CD ability
 local timerFrozenShroudCD						= mod:NewCDCountTimer(40.5, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
@@ -130,22 +130,88 @@ local mythicAddsTimers	= {32.9, 14.7, 48.9, 14.4, 41.1, 18.9, 44.7, 15.3, 41.4, 
 local heroicAddsTimers	= {35.4, 19.0, 36.3, 20.0, 43.2, 19.8, 36.3, 19.9, 43.1, 21.0, 35.7, 20.0}--Last 5 no longer happen?
 local normalAddsTimers	= {35.4, 24.6, 36.3, 24.9, 43.1, 24.9, 36.3, 24.9, 43.1, 24.8}
 local addUsedMarks = {}
-
 --[[
-Mortal Stoneclaws 2.4 second ICD (P1)
-Mortal Stoneslam 2.4 second ICD (P2 mythic)
-Wildfire 4 second ICD in P1 and 5 second ICD in P2 (probably also 4 on normal/lfr)
-Icy Shroud 4 second ICD but not on staff*
-Frozen Shroud 4 ICD including staff*
+Mortal Stoneclaws 2 second ICD (P1)
+Mortal Stoneslam 2 second ICD (P2 mythic)
+Wildfire 2.5 second ICD in P1 and 5 second ICD in P2 when double cast on heroic/mythic (still 2.5 on lfr/normal)
+Icy Shroud 2.5 second ICD
+Frozen Shroud 2.5 ICD including staff*
 Storm Fissure triggers 3 sec ICD
-greatstaff triggers 3.5 second ICD
-rapid incubation triggers 3 second ICD
-
+greatstaff triggers 1 second ICD (not really worth including)
+rapid incubation triggers 3 second ICD, usually it's staff cast after 3 seconds later but in other cases another spell can jump in and push staff further out so 3 sec before staff rule isn't a gaurentee, but the 3 seconds before next spell is
 
 Key Notes:
-Staff has a 17 second Cd in phase 1 and phase 2, but it'll always be 24 seconds in phase 1 because it has same CD as wildfire and rapid incubation and lowest priority so what happens is it always gets pushed back twice to 24 seconds in stage 1.
-In stage 2, staff sees it's actual 17 second CD from time to time when it avoids ICD pushbacks but it'll see 25-32 seconds most of time do to getting pushback from multiple spells because it's still bottom of cast priority
+In stage 1 staff is consistently 24 seconds, whether that's actual CD kind of doesn't matter, since other spells have equal CD it'll queue at 24-27sec regardless
+In stage 2, staff has 20 second cd on easy and 17 seconds on normal (at least based on current data) but it'll rarely ever see it's base CD due to spell queuing/ICD
 --]]
+local function updateAllTimers(self, ICD, exclusion)
+	if not self.Options.ExperimentalTimerCorrection then return end
+	DBM:Debug("updateAllTimers running", 3)
+	exclusion = exclusion or 0
+	--Abilities that use same timer in P1 and P2
+	if timerWildfireCD:GetRemaining(self.vb.wildFireCount+1) < ICD then
+		local elapsed, total = timerWildfireCD:GetTime(self.vb.wildFireCount+1)
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerWildfireCD extended by: "..extend, 2)
+		timerWildfireCD:Update(elapsed, total+extend, self.vb.wildFireCount+1)
+	end
+	if self:IsMythic() and timerStormFissureCD:GetRemaining() < ICD then
+		local elapsed, total = timerStormFissureCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerStormFissureCD extended by: "..extend, 2)
+		timerStormFissureCD:Update(elapsed, total+extend)
+	end
+	--Specific Phase ability timers
+	local phase = self.vb.phase
+	if phase == 1 then
+		if timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+			local elapsed, total = timerMortalStoneclawsCD:GetTime(self.vb.tankCombocount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerMortalStoneclawsCD extended by: "..extend, 2)
+			timerMortalStoneclawsCD:Update(elapsed, total+extend, self.vb.tankCombocount+1)
+		end
+		if timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1) < ICD then
+			local elapsed, total = timerGreatstaffoftheBroodkeeperCD:GetTime(self.vb.staffCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerGreatstaffoftheBroodkeeperCD extended by: "..extend, 2)
+			timerGreatstaffoftheBroodkeeperCD:Update(elapsed, total+extend, self.vb.staffCount+1)
+		end
+		if timerIcyShroudCD:GetRemaining(self.vb.icyCount+1) < ICD then
+			local elapsed, total = timerIcyShroudCD:GetTime(self.vb.icyCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerIcyShroudCD extended by: "..extend, 2)
+			timerIcyShroudCD:Update(elapsed, total+extend, self.vb.icyCount+1)
+		end
+	else--Phase 2
+		if self:IsMythic() then--Mythic P2 has stoneslam versus stoneclaws
+			if timerMortalStoneSlamCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+				local elapsed, total = timerMortalStoneSlamCD:GetTime(self.vb.tankCombocount+1)
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerMortalStoneSlamCD extended by: "..extend, 2)
+				timerMortalStoneSlamCD:Update(elapsed, total+extend, self.vb.tankCombocount+1)
+			end
+		else
+			if timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+				local elapsed, total = timerMortalStoneclawsCD:GetTime(self.vb.tankCombocount+1)
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerMortalStoneclawsCD extended by: "..extend, 2)
+				timerMortalStoneclawsCD:Update(elapsed, total+extend, self.vb.tankCombocount+1)
+			end
+		end
+		if timerEGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1) < ICD then
+			local elapsed, total = timerEGreatstaffoftheBroodkeeperCD:GetTime(self.vb.staffCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerEGreatstaffoftheBroodkeeperCD extended by: "..extend, 2)
+			timerEGreatstaffoftheBroodkeeperCD:Update(elapsed, total+extend, self.vb.staffCount+1)
+		end
+		if timerFrozenShroudCD:GetRemaining(self.vb.icyCount+1) < ICD then
+			local elapsed, total = timerFrozenShroudCD:GetTime(self.vb.icyCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerFrozenShroudCD extended by: "..extend, 2)
+			timerFrozenShroudCD:Update(elapsed, total+extend, self.vb.icyCount+1)
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -194,32 +260,42 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.eggsGone then
 			timerRapidIncubationCD:Start(24, self.vb.incubationCount+1)
 		end
+		updateAllTimers(self, 3)
 	elseif spellId == 375871 and self:AntiSpam(10, 1) then
 		self.vb.wildFireCount = self.vb.wildFireCount + 1
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("scatter")
 		specWarnWildfire:ScheduleVoice(2, "watchstep")
 		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 25, self.vb.wildFireCount+1)
+		if self:IsHard() and self.vb.phase == 2 then
+			updateAllTimers(self, 5)
+		else
+			updateAllTimers(self, 2.5)
+		end
 	elseif spellId == 388716 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
 		specWarnIcyShroud:Play("aesoon")
 		timerIcyShroudCD:Start(self:IsMythic() and 41 or self:IsHeroic() and 39.1 or 44, self.vb.icyCount+1)
+		updateAllTimers(self, 2.5)
 	elseif spellId == 388918 then
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnFrozenShroud:Show(self.vb.icyCount)
 		specWarnFrozenShroud:Play("aesoon")
 		timerFrozenShroudCD:Start(nil, self.vb.icyCount+1)--40-45
+		updateAllTimers(self, 2.5)
 	elseif spellId == 375870 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneclaws:Show()
 			specWarnMortalStoneclaws:Play("defensive")
 		end
+		updateAllTimers(self, 2)
 	elseif spellId == 396269 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneSlam:Show()
 			specWarnMortalStoneSlam:Play("defensive")
 		end
+		updateAllTimers(self, 2)
 	elseif spellId == 376272 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnBurrowingStrike:Show()
@@ -315,6 +391,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnStormFissure:Show()
 		specWarnStormFissure:Play("watchstep")
 		timerStormFissureCD:Start()
+		updateAllTimers(self, 3)
 	end
 end
 
@@ -322,15 +399,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 380175 then
 		self.vb.staffCount = self.vb.staffCount + 1
+		local staffTimer
+		if self:IsHard() then
+			staffTimer = (self.vb.staffCount >= 14) and 17 or 24.3
+		else
+			staffTimer = (self.vb.staffCount >= 13) and 20 or 24.3
+		end
 		if self.vb.phase == 1 then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerGreatstaffoftheBroodkeeperCD:Start(24.3, self.vb.staffCount+1)--24-29 in all difficulties
+			timerGreatstaffoftheBroodkeeperCD:Start(staffTimer, self.vb.staffCount+1)--24-29 in all difficulties
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerEGreatstaffoftheBroodkeeperCD:Start(17, self.vb.staffCount+1)--20-27
+			timerEGreatstaffoftheBroodkeeperCD:Start(staffTimer, self.vb.staffCount+1)--17-33
 		end
+		--updateAllTimers(self, 1)
 	elseif spellId == 375870 then
 		self.vb.tankCombocount = self.vb.tankCombocount + 1
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
@@ -461,25 +545,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Mortal Stone Claws, since we don't swap timers, no action needed
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
 			if self:IsMythic() then
-				timerMortalStoneclawsCD:Stop()
-				timerMortalStoneSlamCD:Start(15, 1)
-				self.vb.tankCombocount = 0
-				timerGreatstaffoftheBroodkeeperCD:Stop()
-				timerEGreatstaffoftheBroodkeeperCD:Start(19, 1)
-			else
-				--Tank timer doesn't reset, just keeps going, staff timer doesn't restart, just swaps to new object
-				local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
+				local remainingStaff = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
 				if remainingStaff then
-					timerGreatstaffoftheBroodkeeperCD:Stop()
-					timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
+					timerMortalStoneclawsCD:Stop()
+					timerMortalStoneclawsCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 				end
+--				timerMortalStoneclawsCD:Stop()
+--				timerMortalStoneSlamCD:Start(15, 1)
+--				self.vb.tankCombocount = 0
+			end
+			--Tank timer doesn't reset, just keeps going, staff timer doesn't restart, just swaps to new object
+			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
+			if remainingStaff then
+				timerGreatstaffoftheBroodkeeperCD:Stop()
+				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 			end
 			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
 			if remainingIcy then
 				timerIcyShroudCD:Stop()
 				timerFrozenShroudCD:Start(remainingIcy, 1)
 			end
-			self.vb.staffCount = 0
 			self.vb.icyCount = 0--Reused for frozen shroud
 		end
 	end
