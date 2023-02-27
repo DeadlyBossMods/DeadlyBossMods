@@ -144,10 +144,9 @@ Key Notes:
 In stage 1 staff is consistently 24 seconds, whether that's actual CD kind of doesn't matter, since other spells have equal CD it'll queue at 24-27sec regardless
 In stage 2, staff has 20 second cd on easy and 17 seconds on normal (at least based on current data) but it'll rarely ever see it's base CD due to spell queuing/ICD
 --]]
-local function updateAllTimers(self, ICD)
+local function updateAllTimers(self, ICD, exclusion)
 	if not self.Options.ExperimentalTimerCorrection then return end
 	DBM:Debug("updateAllTimers running", 3)
-	exclusion = exclusion or 0
 	--Abilities that use same timer in P1 and P2
 	if timerWildfireCD:GetRemaining(self.vb.wildFireCount+1) < ICD then
 		local elapsed, total = timerWildfireCD:GetTime(self.vb.wildFireCount+1)
@@ -164,7 +163,7 @@ local function updateAllTimers(self, ICD)
 	--Specific Phase ability timers
 	local phase = self.vb.phase
 	if phase == 1 then
-		if timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+		if not exclusion and timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
 			local elapsed, total = timerMortalStoneclawsCD:GetTime(self.vb.tankCombocount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerMortalStoneclawsCD extended by: "..extend, 2)
@@ -184,14 +183,14 @@ local function updateAllTimers(self, ICD)
 		end
 	else--Phase 2
 		if self:IsMythic() then--Mythic P2 has stoneslam versus stoneclaws
-			if timerMortalStoneSlamCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+			if not exclusion and timerMortalStoneSlamCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
 				local elapsed, total = timerMortalStoneSlamCD:GetTime(self.vb.tankCombocount+1)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerMortalStoneSlamCD extended by: "..extend, 2)
 				timerMortalStoneSlamCD:Update(elapsed, total+extend, self.vb.tankCombocount+1)
 			end
 		else
-			if timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
+			if not exclusion and timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
 				local elapsed, total = timerMortalStoneclawsCD:GetTime(self.vb.tankCombocount+1)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerMortalStoneclawsCD extended by: "..extend, 2)
@@ -289,13 +288,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnMortalStoneclaws:Show()
 			specWarnMortalStoneclaws:Play("defensive")
 		end
-		updateAllTimers(self, 2)
+		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneSlam:Show()
 			specWarnMortalStoneSlam:Play("defensive")
 		end
-		updateAllTimers(self, 2)
+		updateAllTimers(self, 2, true)
 	elseif spellId == 376272 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnBurrowingStrike:Show()
