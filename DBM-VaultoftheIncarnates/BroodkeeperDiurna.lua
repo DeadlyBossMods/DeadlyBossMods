@@ -144,7 +144,7 @@ Key Notes:
 In stage 1 staff is consistently 24 seconds, whether that's actual CD kind of doesn't matter, since other spells have equal CD it'll queue at 24-27sec regardless
 In stage 2, staff has 20 second cd on easy and 17 seconds on normal (at least based on current data) but it'll rarely ever see it's base CD due to spell queuing/ICD
 --]]
-local function updateAllTimers(self, ICD, exclusion)
+local function updateAllTimers(self, ICD)
 	if not self.Options.ExperimentalTimerCorrection then return end
 	DBM:Debug("updateAllTimers running", 3)
 	exclusion = exclusion or 0
