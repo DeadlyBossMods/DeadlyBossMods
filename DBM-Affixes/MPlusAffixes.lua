@@ -107,7 +107,7 @@ local function checkForCombat(self)
 	if combatFound and not thunderingCounting then
 		thunderingCounting = true
 		timerThunderingCD:Resume()
-	elseif combatFound and thunderingCounting then
+	elseif not combatFound and thunderingCounting then
 		thunderingCounting = false
 		timerThunderingCD:Pause()
 	end
