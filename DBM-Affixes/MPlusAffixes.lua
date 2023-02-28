@@ -124,6 +124,7 @@ do
 			timerQuakingCD:Stop()
 			timerThunderingCD:Stop()
 		end
+	end
 	function mod:LOADING_SCREEN_DISABLED()
 		self:Unschedule(delayedZoneCheck)
 		self:Schedule(1, delayedZoneCheck, self)
