@@ -121,23 +121,7 @@ do
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
-			timerQuakingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			timerThunderingCD:Stop()
-			for i = 1, math.huge do
-				timerThunderingCD:Stop()
-			end
+			self:Stop()
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
@@ -147,6 +131,12 @@ do
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
+end
+
+--/run DBM:GetModByName("MPlusAffixes"):Test()
+function mod:Test()
+	timerThunderingCD:Start(9.7)
+	timerThunderingCD:Pause()
 end
 
 function mod:SPELL_CAST_START(args)
