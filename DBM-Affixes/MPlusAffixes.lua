@@ -123,6 +123,21 @@ do
 			self:Unschedule(checkForCombat)
 			timerQuakingCD:Stop()
 			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			timerThunderingCD:Stop()
+			for i = 1, math.huge do
+				timerThunderingCD:Stop()
+			end
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
