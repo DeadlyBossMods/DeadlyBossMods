@@ -58,7 +58,7 @@ local function checkThunderin(self)
 	local thunderingNTotal, thunderingPTotal = 0, 0
 	for uId in DBM:GetGroupMembers() do
 		if DBM:UnitDebuff(uId, 396364) then
-			thunderingNTotal = thunderingPTotal + 1
+			thunderingNTotal = thunderingNTotal + 1
 		end
 		if DBM:UnitDebuff(uId, 396369) then
 			thunderingPTotal = thunderingPTotal + 1

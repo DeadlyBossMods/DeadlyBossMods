@@ -321,7 +321,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 375485 then
 		if self:AntiSpam(3, spellId) then
-			warnCauterizingFlashflames:Show()
+			if self:CheckBossDistance(args.sourceGUID, false, 13289, 28) then
+				warnCauterizingFlashflames:Show()
+			end
 			timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
 		end
 	elseif spellId == 375575 then
