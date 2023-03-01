@@ -176,9 +176,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(20, "affseasonal") then
 			playerThundering = false
 			thunderingCounting = true
-			if DBM.Options.DebugMode then
-				timerThunderingCD:Start()
-			end
+			timerThunderingCD:Start()
 			self:Unschedule(checkThunderin)
 			self:Schedule(1, checkThunderin, self)
 			self:Unschedule(checkForCombat)
