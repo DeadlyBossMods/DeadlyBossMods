@@ -9,13 +9,8 @@ mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 240446",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 240447 226510 226512 350209 396369 396364",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 396369 396364 226510",
-	"SPELL_DAMAGE 209862",
-	"SPELL_MISSED 209862"
+	"ZONE_CHANGED_NEW_AREA",
+	"LOADING_SCREEN_DISABLED"
 )
 
 --TODO, fine tune tank stacks/throttle?
@@ -23,7 +18,7 @@ mod:RegisterEvents(
 (ability.id = 240446) and type = "begincast"
 --]]
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
-local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1)
+local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1, 396347)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
@@ -34,9 +29,9 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3)
-local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
-local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
+local timerThunderingCD						= mod:NewNextTimer(66, 396363, 396347, nil, nil, 3, nil, nil, nil, 2, 4)
+local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
+local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
@@ -83,15 +78,7 @@ end
 --UGLY function to detect this because there isn't a good API for this.
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
-local validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
 local function checkForCombat(self)
-	--Can't register zone changed new area because trash mod is scoped to only run IN above instances, so it wouldn't actually run zone changed code through event handler
-	local currentZone = DBM:GetCurrentArea() or 0
-	if not validZones[currentZone] then
-		timerQuakingCD:Stop()--Caveat, this check only runs if thundering activates it,so quaking timer technically won't deactivate in low keys on leaving zone :D
-		timerThunderingCD:Stop()
-		return
-	end
 	local combatFound = false
 	if IsEncounterInProgress() then
 		combatFound = true
@@ -112,6 +99,43 @@ local function checkForCombat(self)
 		timerThunderingCD:Pause()
 	end
 	self:Schedule(1, checkForCombat, self)
+end
+
+do
+	local validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
+	local eventsRegistered = false
+	local function delayedZoneCheck(self)
+		local currentZone = DBM:GetCurrentArea() or 0
+		if validZones[currentZone] and not eventsRegistered then
+			eventsRegistered = true
+			self:RegisterShortTermEvents(
+				"SPELL_CAST_START 240446",
+			--	"SPELL_CAST_SUCCESS",
+				"SPELL_AURA_APPLIED 240447 226510 226512 350209 396369 396364",
+			--	"SPELL_AURA_APPLIED_DOSE",
+				"SPELL_AURA_REMOVED 396369 396364 226510",
+				"SPELL_DAMAGE 209862",
+				"SPELL_MISSED 209862",
+				"CHALLENGE_MODE_COMPLETED"
+			)
+		elseif not validZones[currentZone] and eventsRegistered then
+			eventsRegistered = false
+			self:UnregisterShortTermEvents()
+			self:Unschedule(checkForCombat)
+			self:Stop()
+		end
+	end
+	function mod:LOADING_SCREEN_DISABLED()
+		self:Unschedule(delayedZoneCheck)
+		self:Schedule(1, delayedZoneCheck, self)
+		self:Schedule(3, delayedZoneCheck, self)
+	end
+	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
+	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
+end
+
+function mod:CHALLENGE_MODE_COMPLETED()
+	self:Stop()--Stop M+ timers on completion as well
 end
 
 function mod:SPELL_CAST_START(args)
@@ -157,9 +181,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(20, "affseasonal") then
 			playerThundering = false
 			thunderingCounting = true
-			if DBM.Options.DebugMode then
-				timerThunderingCD:Start()
-			end
+			timerThunderingCD:Start()
 			self:Unschedule(checkThunderin)
 			self:Schedule(1, checkThunderin, self)
 			self:Unschedule(checkForCombat)
@@ -221,4 +243,3 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 --<610.64 01:20:34> [CHAT_MSG_MONSTER_YELL] Marked by lightning!#Raszageth###Global Affix Stalker##0#0##0#3611#nil#0#false#false#false#false", -- [3882]
 --<614.44 01:20:38> [CLEU] SPELL_AURA_APPLIED#Creature-0-3023-1477-12533-199388-00007705B2#Raszageth#Player-3726-0C073FB8#Onlysummonz-Khaz'goroth#396364#Mark of Wind#DEBUFF#nil", -- [3912]
-
