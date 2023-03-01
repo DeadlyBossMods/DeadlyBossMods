@@ -115,7 +115,8 @@ do
 			--	"SPELL_AURA_APPLIED_DOSE",
 				"SPELL_AURA_REMOVED 396369 396364 226510",
 				"SPELL_DAMAGE 209862",
-				"SPELL_MISSED 209862"
+				"SPELL_MISSED 209862",
+				"CHALLENGE_MODE_COMPLETED"
 			)
 		elseif not validZones[currentZone] and eventsRegistered then
 			eventsRegistered = false
@@ -131,6 +132,10 @@ do
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
+end
+
+function mod:CHALLENGE_MODE_COMPLETED()
+	self:Stop()--Stop M+ timers on completion as well
 end
 
 function mod:SPELL_CAST_START(args)
