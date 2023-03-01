@@ -29,9 +29,9 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3)
-local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 4)
-local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 4)
+local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, nil, nil, nil, 2, 4)
+local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
+local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
@@ -131,12 +131,6 @@ do
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
-end
-
---/run DBM:GetModByName("MPlusAffixes"):Test()
-function mod:Test()
-	timerThunderingCD:Start(9.7)
-	timerThunderingCD:Pause()
 end
 
 function mod:SPELL_CAST_START(args)
