@@ -18,7 +18,7 @@ mod:RegisterEvents(
 (ability.id = 240446) and type = "begincast"
 --]]
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
-local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1)
+local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1, 396347)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
@@ -29,7 +29,7 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, nil, nil, nil, 2, 4)
+local timerThunderingCD						= mod:NewNextTimer(66, 396363, 396347, nil, nil, 3, nil, nil, nil, 2, 4)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
