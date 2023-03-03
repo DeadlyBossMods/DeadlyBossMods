@@ -98,7 +98,7 @@ local function checkForCombat(self)
 		thunderingCounting = false
 		timerThunderingCD:Pause()
 	end
-	self:Schedule(1, checkForCombat, self)
+	self:Schedule(0.25, checkForCombat, self)
 end
 
 do
