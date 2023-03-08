@@ -34,7 +34,7 @@ local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
 mod:GroupSpells(396363, 396369, 396364)--Thundering with the two charge spells
 
-mod:AddNamePlateOption("NPSanguine", 226510, "Tank", true)
+mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
@@ -118,7 +118,7 @@ do
 				"SPELL_MISSED 209862",
 				"CHALLENGE_MODE_COMPLETED"
 			)
-			if self.Options.NPSanguine and DBM.Options.DebugMode then
+			if self.Options.NPSanguine then
 				DBM:FireEvent("BossMod_EnableHostileNameplates")
 			end
 		elseif not validZones[currentZone] and eventsRegistered then
@@ -126,7 +126,7 @@ do
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
 			self:Stop()
-			if self.Options.NPSanguine and DBM.Options.DebugMode then
+			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 			end
 		end
@@ -178,7 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, nil, nil, not DBM.Options.DebugMode)
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, "aff8") then
 		specWarnSpitefulFixate:Show()
@@ -234,7 +234,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId, nil, nil, nil, nil, not DBM.Options.DebugMode)
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	end
 end
