@@ -118,11 +118,17 @@ do
 				"SPELL_MISSED 209862",
 				"CHALLENGE_MODE_COMPLETED"
 			)
+			if self.Options.NPSanguine and DBM.Options.DebugMode then
+				DBM:FireEvent("BossMod_EnableHostileNameplates")
+			end
 		elseif not validZones[currentZone] and eventsRegistered then
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
 			self:Stop()
+			if self.Options.NPSanguine and DBM.Options.DebugMode then
+				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+			end
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
@@ -172,7 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, nil, nil, true)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, nil, nil, not DBM.Options.DebugMode)
 		end
 	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, "aff8") then
 		specWarnSpitefulFixate:Show()
@@ -228,7 +234,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 226510 then--Sanguine Ichor on mob
 		if self.Options.NPSanguine then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId, nil, nil, nil, nil, true)
+			DBM.Nameplate:Hide(true, args.destGUID, spellId, nil, nil, nil, nil, not DBM.Options.DebugMode)
 		end
 	end
 end
