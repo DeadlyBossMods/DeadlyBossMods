@@ -2,7 +2,7 @@ if GetLocale() ~= "ruRU" then return end
 local L
 
 -----------------------
--- Strunraan, The Sky's Misery --
+-- Струнраан Бедствие Небес --
 -----------------------
 --L= DBM:GetModLocalization(2515)
 
@@ -11,7 +11,7 @@ local L
 --})
 
 -----------------------
--- Liskanoth --
+-- Лисканот Крах Мироздания --
 -----------------------
 --L= DBM:GetModLocalization(2518)
 
@@ -20,7 +20,7 @@ local L
 --})
 
 -----------------------
--- Bazual, The Dreaded Flame --
+-- Базуал Чудовищное Пламя --
 -----------------------
 --L= DBM:GetModLocalization(2517)
 
@@ -29,9 +29,18 @@ local L
 --})
 
 -----------------------
--- Basrikron, The Shale Wing --
+-- Базрикрон Каменное Крыло --
 -----------------------
 --L= DBM:GetModLocalization(2506)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})
+
+-----------------------
+-- Первые Старейшины --
+-----------------------
+--L= DBM:GetModLocalization(2531)
 
 --L:SetMiscLocalization({
 --	Pull	= ""
