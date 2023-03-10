@@ -1,6 +1,7 @@
 ## Interface: 100005
 ## X-Min-Interface: 101000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Aberrus, the Shadowed Crucible|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Аберрий, Затененное Горнило|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -11,12 +12,14 @@
 ## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-Name: Aberrus, the Shadowed Crucible
+## X-DBM-Mod-Name-ruRU: Аберрий, Затененное Горнило
 ## X-DBM-Mod-Sort: 205
 ## X-DBM-Mod-MapID: 2569
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 9
 
 localization.en.lua
+localization.ru.lua
 
 Kazzara.lua
 Molgoth.lua
