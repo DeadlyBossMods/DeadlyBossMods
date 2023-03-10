@@ -35,3 +35,12 @@ local L
 --L:SetMiscLocalization({
 --	Pull	= ""
 --})
+
+-----------------------
+-- The Zaqali Elders --
+-----------------------
+--L= DBM:GetModLocalization(2531)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})

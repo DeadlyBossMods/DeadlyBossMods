@@ -23,8 +23,8 @@
 ## X-DBM-Mod-Name-zhTW: 世界首領 (巨龍崛起)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 210
-## X-DBM-Mod-MapID: 2574, 2444, 2512
-## X-DBM-Mod-LoadCID: 193534, 193535, 193532, 193533
+## X-DBM-Mod-MapID: 2574, 2444, 2512, 2454
+## X-DBM-Mod-LoadCID: 193534, 193535, 193532, 193533, 203220, 203219
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 9
 ## X-Curse-Project-ID: 3358
@@ -38,3 +38,4 @@ Strunraan.lua
 Liskanoth.lua
 Bazual.lua
 Basrikron.lua
+ZaqaliElders.lua
