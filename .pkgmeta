@@ -36,6 +36,7 @@ move-folders:
   DBM-DragonIsles/DBM-WorldEvents: DBM-WorldEvents
   DBM-DragonIsles/DBM-DragonIsles: DBM-DragonIsles
   DBM-DragonIsles/DBM-VaultoftheIncarnates: DBM-VaultoftheIncarnates
+  DBM-DragonIsles/DBM-Aberrus: DBM-Aberrus
   DBM-DragonIsles/DBM-Core: DBM-Core
   DBM-DragonIsles/DBM-GUI: DBM-GUI
   DBM-DragonIsles/DBM-StatusBarTimers: DBM-StatusBarTimers
