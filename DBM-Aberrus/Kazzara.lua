@@ -36,8 +36,8 @@ mod:RegisterEventsInCombat(
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 --
---local timerMoltenCleaveCD						= mod:NewCDCountTimer(29.9, 370615, nil, nil, nil, 3)
---local timerFlameriftCD							= mod:NewCDCountTimer(28.9, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
+--local timerMoltenCleaveCD						= mod:NewAITimer(29.9, 370615, nil, nil, nil, 3)
+--local timerFlameriftCD							= mod:NewAITimer(28.9, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)
