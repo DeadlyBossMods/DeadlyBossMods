@@ -1,6 +1,7 @@
 ## Interface: 100005
 ## X-Min-Interface: 101000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Aberrus, the Shadowed Crucible|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0어둠의 도가니 에베루스|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Аберрий, Затененное Горнило|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0亞貝魯斯，暗影爐缸|r
 ## Author: MysticalOS
@@ -13,6 +14,7 @@
 ## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-Name: Aberrus, the Shadowed Crucible
+## X-DBM-Mod-Name-koKR: 어둠의 도가니 에베루스
 ## X-DBM-Mod-Name-ruRU: Аберрий, Затененное Горнило
 ## X-DBM-Mod-Name-zhTW: 亞貝魯斯，暗影爐缸
 ## X-DBM-Mod-Sort: 205
@@ -21,6 +23,7 @@
 ## X-DBM-Mod-MinExpansion: 9
 
 localization.en.lua
+localization.kr.lua
 localization.ru.lua
 
 Kazzara.lua
