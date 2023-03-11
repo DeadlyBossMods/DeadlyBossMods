@@ -45,7 +45,6 @@ mod:RegisterEventsInCombat(
 --mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 --mod:GroupSpells(390715, 396094)
----Frenzied Tarasek
 
 function mod:OnCombatStart(delay)
 --	if self.Options.NPAuraOnAscension then
@@ -96,6 +95,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	end
 end
+--]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
