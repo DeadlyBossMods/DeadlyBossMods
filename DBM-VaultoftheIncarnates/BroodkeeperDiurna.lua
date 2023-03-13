@@ -122,6 +122,7 @@ local castsPerGUID = {}
 mod.vb.staffCount = 0
 mod.vb.icyCount = 0
 mod.vb.addsCount = 0
+mod.vb.tankComboStarted = false
 mod.vb.tankCombocount = 0
 mod.vb.wildFireCount = 0
 mod.vb.incubationCount = 0
@@ -216,6 +217,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	table.wipe(addUsedMarks)
 	self:SetStage(1)
+	self.vb.tankComboStarted = false
 	self.vb.tankCombocount = 0
 	self.vb.staffCount = 0
 	self.vb.icyCount = 0
@@ -288,12 +290,30 @@ function mod:SPELL_CAST_START(args)
 			specWarnMortalStoneclaws:Show()
 			specWarnMortalStoneclaws:Play("defensive")
 		end
+		if not self.vb.tankComboStarted then
+			self.vb.tankComboStarted = true
+			self.vb.tankCombocount = self.vb.tankCombocount + 1
+		else
+			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
+		end
+		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
+		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)-1.5
+		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMortalStoneSlam:Show()
 			specWarnMortalStoneSlam:Play("defensive")
 		end
+		if not self.vb.tankComboStarted then
+			self.vb.tankComboStarted = true
+			self.vb.tankCombocount = self.vb.tankCombocount + 1
+		else
+			timerMortalStoneSlamCD:Stop()
+		end
+		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
+		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
+		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 376272 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -417,15 +437,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		--updateAllTimers(self, 1)
 	elseif spellId == 375870 then
-		self.vb.tankCombocount = self.vb.tankCombocount + 1
-		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)-1.5
-		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
+		self.vb.tankComboStarted = false
 	elseif spellId == 396269 then
-		self.vb.tankCombocount = self.vb.tankCombocount + 1
-		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
-		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
+		self.vb.tankComboStarted = false
 	elseif spellId == 181113 then
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 191206 then--Mages
@@ -546,20 +560,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Mortal Stone Claws, since we don't swap timers, no action needed
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
 			if self:IsMythic() then
-				local remainingStaff = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
-				if remainingStaff then
+				local remainingCombo = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
+				if remainingCombo then
 					timerMortalStoneclawsCD:Stop()
-					timerMortalStoneclawsCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
+					timerMortalStoneclawsCD:Start(remainingCombo, self.vb.tankCombocount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 				end
---				timerMortalStoneclawsCD:Stop()
---				timerMortalStoneSlamCD:Start(15, 1)
---				self.vb.tankCombocount = 0
 			end
 			--Tank timer doesn't reset, just keeps going, staff timer doesn't restart, just swaps to new object
 			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
 			if remainingStaff then
 				timerGreatstaffoftheBroodkeeperCD:Stop()
-				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, 1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
+				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, self.vb.staffCount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 			end
 			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
 			if remainingIcy then
