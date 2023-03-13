@@ -297,7 +297,7 @@ function mod:SPELL_CAST_START(args)
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)-1.5
+		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
@@ -312,7 +312,7 @@ function mod:SPELL_CAST_START(args)
 			timerMortalStoneSlamCD:Stop()
 		end
 		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and 21.9 or 7.3)-1.5
+		local timer = (self.vb.phase == 1 and 21.9 or 7.3)
 		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 376272 then
