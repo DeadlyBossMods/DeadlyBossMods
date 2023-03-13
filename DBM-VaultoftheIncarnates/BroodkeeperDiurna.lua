@@ -213,6 +213,10 @@ local function updateAllTimers(self, ICD, exclusion)
 	end
 end
 
+local function resetTankComboState(self)
+	self.vb.tankComboStarted = false
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	table.wipe(addUsedMarks)
@@ -293,6 +297,8 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.tankComboStarted then
 			self.vb.tankComboStarted = true
 			self.vb.tankCombocount = self.vb.tankCombocount + 1
+			self:Unschedule(resetTankComboState)
+			self:Schedule(8, resetTankComboState, self)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
@@ -308,6 +314,8 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.tankComboStarted then
 			self.vb.tankComboStarted = true
 			self.vb.tankCombocount = self.vb.tankCombocount + 1
+			self:Unschedule(resetTankComboState)
+			self:Schedule(8, resetTankComboState, self)
 		else
 			timerMortalStoneSlamCD:Stop()
 		end
