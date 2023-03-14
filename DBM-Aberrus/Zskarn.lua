@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(184972)
 mod:SetEncounterID(2689)
-mod:SetUsedIcons(8, 7, 6)
+mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20230313000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -184,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnEmbers then
 			self:SetUnsortedIcon(0.3, args.destName, 1, 4, false)
 		end
-	elseif spellId == 375580 and not args:IsPlayer() then
+	elseif spellId == 404942 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then--Guessed, Filler
 --			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
