@@ -2,9 +2,10 @@ local mod	= DBM:NewMod(2529, "DBM-Aberrus", nil, 1208)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(201774)
+mod:SetCreatureID(201774, 201773, 201934)--Krozgoth, Moltannia, Molgoth
 mod:SetEncounterID(2687)
 --mod:SetUsedIcons(1, 2, 3)
+mod:SetBossHPInfoToHighest()
 --mod:SetHotfixNoticeRev(20221215000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -19,7 +20,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -105,14 +106,19 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 199233 then
+	if cid == 201774 then--Krozgoth
+
+	elseif cid == 201773 then--Moltannia
+
+	elseif cid == 201934 then--Molgoth
 
 	end
 end
---]]
+
 
 --function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 --	if spellId == 396734 then
