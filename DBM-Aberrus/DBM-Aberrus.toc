@@ -27,9 +27,9 @@ localization.kr.lua
 localization.ru.lua
 
 Kazzara.lua
-Molgoth.lua
-ExperimentationofDracthyr.lua
-ZaqaliInvasion.lua
+TheAmalgamationChamber.lua
+TheForgottenExperiments.lua
+AssaultoftheZaqali.lua
 Rashok.lua
 Zskarn.lua
 Magmorax.lua

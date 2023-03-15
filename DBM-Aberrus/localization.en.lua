@@ -18,17 +18,17 @@ local L
 --})
 
 ---------------------------
---  Molgoth --
+--  The Amalgamation Chamber --
 ---------------------------
 --L= DBM:GetModLocalization(2529)
 
 ---------------------------
---  Experimentation of the Dracthyr --
+--  The Forgotten Experiments --
 ---------------------------
 --L= DBM:GetModLocalization(2530)
 
 ---------------------------
---  Zaqali Invasion/ Djaradin Assault --
+--  Assault of the Zaqali --
 ---------------------------
 --L= DBM:GetModLocalization(2524)
 
@@ -38,7 +38,7 @@ local L
 --L= DBM:GetModLocalization(2525)
 
 ---------------------------
---  Zskarn --
+--  The Vigilant Steward, Zskarn --
 ---------------------------
 --L= DBM:GetModLocalization(2532)
 
