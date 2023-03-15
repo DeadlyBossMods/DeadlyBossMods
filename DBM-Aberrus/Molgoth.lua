@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2529, "DBM-Aberrus", nil, 1208)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(184972)
+mod:SetCreatureID(201774)
 mod:SetEncounterID(2687)
 --mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20221215000000)
