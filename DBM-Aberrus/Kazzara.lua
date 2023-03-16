@@ -156,7 +156,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDreadRift:Yell(icon, icon)
 			yellDreadRiftFades:Countdown(spellId, nil, icon)
 		end
-		warnDreadRifts:CombinedShow(0.5, self.vb.riftsCount, args.destName)
+		warnDreadRifts:CombinedShow(1.1, self.vb.riftsCount, args.destName)--Needs to be 1.1 for the 5 set
 		self.vb.riftIcon = self.vb.riftIcon + 1
 	elseif spellId == 402253 then
 		local icon = self.vb.rayIcon
