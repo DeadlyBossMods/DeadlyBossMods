@@ -20,7 +20,11 @@ local L
 ---------------------------
 --  The Amalgamation Chamber --
 ---------------------------
---L= DBM:GetModLocalization(2529)
+L= DBM:GetModLocalization(2529)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "Actively scan distance to each of bosses in stage 1 and automatically hide certain alerts and fade timers for the boss you are NOT near (more than 43 distance)"
+})
 
 ---------------------------
 --  The Forgotten Experiments --
