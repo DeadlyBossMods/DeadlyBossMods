@@ -58,7 +58,7 @@ local timerShadowSpikeCD						= mod:NewAITimer(28.9, 403699, nil, "Tank|Healer",
 
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddRangeFrameOption(5, 390715)
-mod:AddSetIconOption("SetIconOnUmbral", 405016, true, 0, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnUmbral", 405016, false, 0, {1, 2, 3})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 --mod:GroupSpells(390715, 396094)
 --Moltannia
@@ -85,9 +85,9 @@ local warnShadowflameBurst						= mod:NewCastAnnounce(406783, 3)
 local specWarnGloomConflag						= mod:NewSpecialWarningCount(405437, nil, nil, nil, 2, 2)
 local yellGloomConflag							= mod:NewShortYell(405437, nil, nil, nil, "YELL")
 local yellGloomConflagFades						= mod:NewShortFadesYell(405437, nil, nil, nil, "YELL")
-local specWarnBlisteringTwilight				= mod:NewSpecialWarningYouPos(405641, nil, nil, nil, 1, 2)
-local yellBlisteringTwilight					= mod:NewShortPosYell(405641)
-local yellBlisteringTwilightFades				= mod:NewIconFadesYell(405641)
+local specWarnBlisteringTwilight				= mod:NewSpecialWarningYou(405641, nil, nil, nil, 1, 2)
+local yellBlisteringTwilight					= mod:NewShortYell(405641)
+local yellBlisteringTwilightFades				= mod:NewShortFadesYell(405641)
 local specWarnConvergentEruption				= mod:NewSpecialWarningCount(408193, nil, nil, nil, 2, 2)
 local specWarnCrushingVulnerability				= mod:NewSpecialWarningDefensive(405914, nil, nil, nil, 1, 2)
 local specWarnCrushingVulnerabilityTaunt		= mod:NewSpecialWarningTaunt(405914, nil, nil, nil, 1, 2)
@@ -98,7 +98,7 @@ local timerConvergentEruptionCD					= mod:NewAITimer(29.9, 408193, nil, nil, nil
 local timerCrushingVulnerabilityCD				= mod:NewAITimer(28.9, 405914, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerShadowflameBurstCD					= mod:NewAITimer(28.9, 406783, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Might be redundant if always after crushing
 
-mod:AddSetIconOption("SetIconOnBlistering", 405641, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnBlistering", 405641, false, 0, {1, 2, 3, 4})
 
 local nearKroz, nearMolt = true, true
 mod.vb.coalescingCount = 0
@@ -108,7 +108,6 @@ mod.vb.shadowConvergeCount = 0
 
 mod.vb.meteorCast = 0
 mod.vb.moltenEruptionCast = 0
-
 
 
 --As computational as this looks, it's purpose is to just filter information overload.
@@ -345,10 +344,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
-			specWarnBlisteringTwilight:Show(self:IconNumToTexture(icon))
-			specWarnBlisteringTwilight:Play("mm"..icon)
-			yellBlisteringTwilight:Yell(icon, icon)
-			yellBlisteringTwilightFades:Countdown(spellId, nil, icon)
+			specWarnBlisteringTwilight:Show()
+			specWarnBlisteringTwilight:Play("targetyou")
+			yellBlisteringTwilight:Yell()
+			yellBlisteringTwilightFades:Countdown(spellId)
 		end
 		if nearKroz then
 			warnBlisteringTwilight:CombinedShow(0.5, self.vb.umbralCount, args.destName)
