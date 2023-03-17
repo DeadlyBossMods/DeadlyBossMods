@@ -289,7 +289,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 394917 and self.vb.phase == 1 then--Crucible Instability
+	if spellId == 406730 and self.vb.phase == 1 then--Crucible Instability
 		self:SetStage(2)
 		self.vb.bossLeft = self.vb.bossLeft - 2--Stage 1 bosses don't actually die, they fuse. This just updates mods internal count
 		self.vb.meteorCast = 0--Reused for Gloom Conflagration
