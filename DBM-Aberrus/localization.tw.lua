@@ -39,7 +39,14 @@ L:SetOptionLocalization({
 ---------------------------
 --  Rashok --
 ---------------------------
---L= DBM:GetModLocalization(2525)
+L= DBM:GetModLocalization(2525)
+
+L:SetOptionLocalization({
+	TankSwapBehavior	= "設定坦克切換的模組行為",
+	OnlyIfDanger		= "僅當其他坦克即將被不安全的擊中時才顯示嘲諷警告",
+	MinMaxSoak			= "僅當第一次連續攻擊之後，或其他坦克即將被不安全的擊中時，才顯示嘲諷警告",
+	DoubleSoak			= "僅當第一次連續攻擊結束以後，或其他坦克即將被不安全的擊中時，才顯示嘲諷警告"--Default
+})
 
 ---------------------------
 --  The Vigilant Steward, Zskarn --
