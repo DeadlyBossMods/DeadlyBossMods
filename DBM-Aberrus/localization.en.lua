@@ -39,7 +39,14 @@ L:SetOptionLocalization({
 ---------------------------
 --  Rashok --
 ---------------------------
---L= DBM:GetModLocalization(2525)
+L= DBM:GetModLocalization(2525)
+
+L:SetOptionLocalization({
+	TankSwapBehavior	= "Set mod behavior for tank swaps",
+	OnlyIfDanger		= "Shows taunt warning only if other tank is about to take unsafe hit",
+	MinMaxSoak			= "Shows taunt warning after a combos first attack, or if other tank is about to take unsafe hit",
+	DoubleSoak			= "Shows taunt warning after a combo has ended, or if other tank is about to take unsafe hit"--Default
+})
 
 ---------------------------
 --  The Vigilant Steward, Zskarn --
