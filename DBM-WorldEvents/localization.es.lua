@@ -40,8 +40,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergeTimer	= "Sumergir",
-	EmergeTimer		= "Volver a la superficie"
+	SubmergeTimer = "Sumergir",
+	EmergeTimer	 = "Volver a la superficie"
 }
 
 L:SetOptionLocalization({
@@ -84,7 +84,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	NormalizeVolume			= "Normalizar automáticamente el volumen del canal de sonido de diálogo con el de música cuando estés en una zona de la Fiesta de la Cerveza para que el sonido no sea demasiado molesto"
+	NormalizeVolume		 = "Normalizar automáticamente el volumen del canal de sonido de diálogo con el de música cuando estés en una zona de la Fiesta de la Cerveza para que el sonido no sea demasiado molesto"
 })
 
 --------------------------
@@ -93,13 +93,13 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
-	WarnPhase				= "Fase %d",
+	WarnPhase			 	= "Fase %d",
 	warnHorsemanSoldiers	= "Calabazas con pulso",
 	warnHorsemanHead		= "Cabeza de El jinete decapitado"
 })
 
 L:SetOptionLocalization({
-	WarnPhase				= "Mostrar aviso para cambios de fase",
+	WarnPhase			 	= "Mostrar aviso para cambios de fase",
 	warnHorsemanSoldiers	= "Mostrar aviso cuando aparezcan Cabalazas con pulso",
 	warnHorsemanHead		= "Mostrar aviso cuando aparezca la Cabeza de El jinete decapitado"
 })
@@ -133,7 +133,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	timerWave		= "Siguiente oleada gigantesca"
+	timerWave	 	= "Siguiente oleada gigantesca"
 }
 
 L:SetOptionLocalization({
@@ -143,7 +143,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	MassiveWave		= "¡Se acerca una gigantesca oleada de zombis!"
+	MassiveWave	 = "¡Se acerca una gigantesca oleada de zombis!"
 })
 
 ---------------------------
@@ -156,7 +156,7 @@ L:SetGeneralLocalization({
 })
 
 --------------------------
---  Memories of Azeroth: Burning Crusade  --
+--	Memories of Azeroth: Burning Crusade	--
 --------------------------
 L = DBM:GetModLocalization("BCEvent")
 
@@ -165,7 +165,7 @@ L:SetGeneralLocalization({
 })
 
 --------------------------
---  Memories of Azeroth: Wrath of the Lich King  --
+--	Memories of Azeroth: Wrath of the Lich King	--
 --------------------------
 L = DBM:GetModLocalization("WrathEvent")
 
@@ -178,11 +178,90 @@ L:SetMiscLocalization{
 	Burrow				= "se entierra en el suelo!"
 }
 
+L:SetOptionLocalization{
+	WarnEmerge				= "Mostrar aviso al emerger",
+	WarnEmergeSoon			= "Mostrar preaviso antes de emerger",
+	WarnSubmerge			= "Mostrar aviso al enterrarse",
+	WarnSubmergeSoon		= "Mostrar preaviso antes de enterrarse",
+	TimerEmerge				= "Mostrar temporizador para emerger",
+	TimerSubmerge		 	= "Mostrar temporizador para enterrarse",
+	WarningTeleportNow		= "Mostrar aviso para teletransporte",
+	WarningTeleportSoon		= "Mostrar preaviso antes de teletransporte",
+	TimerTeleport			= "Mostrar temporizador para teletransporte"
+}
+
 --------------------------
---  Memories of Azeroth: Cataclysm  --
+--	Memories of Azeroth: Cataclysm	--
 --------------------------
 L = DBM:GetModLocalization("CataEvent")
 
 L:SetGeneralLocalization({
 	name = "MoA: Cataclysm"
 })
+
+L:SetWarningLocalization({
+	warnSplittingBlow		= "%s en %s",--Nombre de hechizo en ubicación
+	warnEngulfingFlame		= "%s en %s"--Nombre de hechizo en ubicación
+})
+
+L:SetOptionLocalization({
+	warnSplittingBlow		= "Mostrar avisos de ubicación para $spell:98951",
+	warnEngulfingFlame		= "Mostrar avisos de ubicación para $spell:99171"
+})
+
+--------------------------------------------
+--	Jefes de mundo de eventos de Azeroth	--
+--------------------------------------------
+
+-- Lord Kazzak (Las Tierras Devastadas)
+L = DBM:GetModLocalization("KazzakClassic")
+
+L:SetGeneralLocalization{
+	name = "Lord Kazzak"
+}
+
+L:SetMiscLocalization({
+	Pull = "¡Por la Legión! ¡Por Kil'Jaeden!"
+})
+
+-- Azuregos (Azshara)
+L = DBM:GetModLocalization("Azuregos")
+
+L:SetGeneralLocalization{
+	name = "Azuregos"
+}
+
+-- Taerar (Vallefresno)
+L = DBM:GetModLocalization("Taerar")
+
+L:SetGeneralLocalization{
+	name = "Taerar"
+}
+
+-- Ysondre (Feralas)
+L = DBM:GetModLocalization("Ysondre")
+
+L:SetGeneralLocalization{
+	name = "Ysondre"
+}
+
+-- Lethon (Tierras del Interior)
+L = DBM:GetModLocalization("Lethon")
+
+L:SetGeneralLocalization{
+	name = "Lethon"
+}
+
+-- Emeriss (Bosque del Ocaso)
+L = DBM:GetModLocalization("Emeriss")
+
+L:SetGeneralLocalization{
+	name = "Emeriss"
+}
+
+-- Caminante del Destino (Tanaris)
+L = DBM:GetModLocalization("DoomwalkerEvent")
+
+L:SetGeneralLocalization{
+	name = "Caminante del Destino (Evento)"
+}
