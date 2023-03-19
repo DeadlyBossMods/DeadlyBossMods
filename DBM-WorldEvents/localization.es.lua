@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("Omen")
 
 L:SetGeneralLocalization({
-  name = "Augurio"
+	name = "Augurio"
 })
 
 ------------------------------
@@ -16,17 +16,17 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
-  HummelActive    = "Hummel entra en combate",
-  BaxterActive    = "Baxter entra en combate",
-  FryeActive      = "Frye entra en combate"
+	HummelActive		= "Hummel entra en combate",
+	BaxterActive		= "Baxter entra en combate",
+	FryeActive			= "Frye entra en combate"
 }
 
 L:SetOptionLocalization({
-  TrioActiveTimer   = "Mostrar temporizadores para cuando los apotecarios entren en combate"
+	TrioActiveTimer		= "Mostrar temporizadores para cuando los apotecarios entren en combate"
 })
 
 L:SetMiscLocalization({
-  SayCombatStart    = "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
+	SayCombatStart		= "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
 })
 
 -----------
@@ -35,24 +35,24 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-  Emerged     = "Ahune vuelve a la superficie",
-  specWarnAttack  = "Ahune es vulnerable - ¡Ataca ahora!"
+	Emerged			= "Ahune vuelve a la superficie",
+	specWarnAttack	= "Ahune es vulnerable - ¡Ataca ahora!"
 })
 
 L:SetTimerLocalization{
-  SubmergeTimer = "Sumergir",
-  EmergeTimer   = "Volver a la superficie"
+	SubmergeTimer = "Sumergir",
+	EmergeTimer	 = "Volver a la superficie"
 }
 
 L:SetOptionLocalization({
-  Emerged     = "Mostrar aviso cuando Ahune vuelva a la superficie",
-  specWarnAttack  = "Mostrar aviso especial cuando Ahune se vuelva vulnerable",
-  SubmergeTimer = "Mostrar temporizador para cuando Ahune se sumerja",
-  EmergeTimer   = "Mostrar temporizador para cuando Ahune vuelva a la superficie"
+	Emerged			= "Mostrar aviso cuando Ahune vuelva a la superficie",
+	specWarnAttack	= "Mostrar aviso especial cuando Ahune se vuelva vulnerable",
+	SubmergeTimer	= "Mostrar temporizador para cuando Ahune se sumerja",
+	EmergeTimer		= "Mostrar temporizador para cuando Ahune vuelva a la superficie"
 })
 
 L:SetMiscLocalization({
-  Pull      = "¡La piedra de hielo se ha derretido!"
+	Pull			= "¡La piedra de hielo se ha derretido!"
 })
 
 ---------------------------
@@ -61,17 +61,17 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
-  specWarnBrew    = "¡Bebe la cerveza antes de que te lance otra!",
-  specWarnBrewStun  = "SUGERENCIA: ¡Te han dado! ¡No te olvides de beber la cerveza!"
+	specWarnBrew		= "¡Bebe la cerveza antes de que te lance otra!",
+	specWarnBrewStun	= "SUGERENCIA: ¡Te han dado! ¡No te olvides de beber la cerveza!"
 })
 
 L:SetOptionLocalization({
-  specWarnBrew    = "Mostrar aviso especial para $spell:47376",
-  specWarnBrewStun  = "Mostrar aviso especial para $spell:47340"
+	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
+	specWarnBrewStun	= "Mostrar aviso especial para $spell:47340"
 })
 
 L:SetMiscLocalization({
-  YellBarrel      = "¡Tengo el barril!"
+	YellBarrel			= "¡Tengo el barril!"
 })
 
 --------------------------
@@ -80,11 +80,11 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Brew")
 
 L:SetGeneralLocalization({
-  name = "Fiesta de la Cerveza"
+	name = "Fiesta de la Cerveza"
 })
 
 L:SetOptionLocalization({
-  NormalizeVolume     = "Normalizar automáticamente el volumen del canal de sonido de diálogo con el de música cuando estés en una zona de la Fiesta de la Cerveza para que el sonido no sea demasiado molesto"
+	NormalizeVolume		 = "Normalizar automáticamente el volumen del canal de sonido de diálogo con el de música cuando estés en una zona de la Fiesta de la Cerveza para que el sonido no sea demasiado molesto"
 })
 
 --------------------------
@@ -93,20 +93,20 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
-  WarnPhase       = "Fase %d",
-  warnHorsemanSoldiers  = "Calabazas con pulso",
-  warnHorsemanHead    = "Cabeza de El jinete decapitado"
+	WarnPhase			 	= "Fase %d",
+	warnHorsemanSoldiers	= "Calabazas con pulso",
+	warnHorsemanHead		= "Cabeza de El jinete decapitado"
 })
 
 L:SetOptionLocalization({
-  WarnPhase       = "Mostrar aviso para cambios de fase",
-  warnHorsemanSoldiers  = "Mostrar aviso cuando aparezcan Cabalazas con pulso",
-  warnHorsemanHead    = "Mostrar aviso cuando aparezca la Cabeza de El jinete decapitado"
+	WarnPhase			 	= "Mostrar aviso para cambios de fase",
+	warnHorsemanSoldiers	= "Mostrar aviso cuando aparezcan Cabalazas con pulso",
+	warnHorsemanHead		= "Mostrar aviso cuando aparezca la Cabeza de El jinete decapitado"
 })
 
 L:SetMiscLocalization({
-  HorsemanSummon      = "Jinete álzate...",
-  HorsemanSoldiers    = "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
+	HorsemanSummon			= "Jinete álzate...",
+	HorsemanSoldiers		= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
 })
 
 --------------------------
@@ -115,7 +115,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Greench")
 
 L:SetGeneralLocalization({
-  name = "Grinch el Abominable"
+	name = "Grinch el Abominable"
 })
 
 -------------------------------------
@@ -124,26 +124,26 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("PlantsVsZombies")
 
 L:SetGeneralLocalization({
-  name = "Flores de paz contra necrófagos"
+	name = "Flores de paz contra necrófagos"
 })
 
 L:SetWarningLocalization({
-  warnTotalAdds = "Total de zombis desde la última oleada gigantesca: %d",
-  specWarnWave  = "¡Oleada gigantesca!"
+	warnTotalAdds	= "Total de zombis desde la última oleada gigantesca: %d",
+	specWarnWave	= "¡Oleada gigantesca!"
 })
 
 L:SetTimerLocalization{
-  timerWave   = "Siguiente oleada gigantesca"
+	timerWave	 	= "Siguiente oleada gigantesca"
 }
 
 L:SetOptionLocalization({
-  warnTotalAdds = "Anunciar total de zombis entre oleadas gigantescas",
-  specWarnWave  = "Mostrar aviso especial cuando comience una oleada gigantesca",
-  timerWave   = "Mostrar temporizador para las siguientes oleadas gigantescas"
+	warnTotalAdds	= "Anunciar total de zombis entre oleadas gigantescas",
+	specWarnWave	= "Mostrar aviso especial cuando comience una oleada gigantesca",
+	timerWave		= "Mostrar temporizador para las siguientes oleadas gigantescas"
 })
 
 L:SetMiscLocalization({
-  MassiveWave   = "¡Se acerca una gigantesca oleada de zombis!"
+	MassiveWave	 = "¡Se acerca una gigantesca oleada de zombis!"
 })
 
 ---------------------------
@@ -152,116 +152,116 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DemonInvasions")
 
 L:SetGeneralLocalization({
-  name = "Invasiones demoníacas"
+	name = "Invasiones demoníacas"
 })
 
 --------------------------
---  Memories of Azeroth: Burning Crusade  --
+--	Memories of Azeroth: Burning Crusade	--
 --------------------------
 L = DBM:GetModLocalization("BCEvent")
 
 L:SetGeneralLocalization({
-  name = "MoA: Burning Crusade"
+	name = "MoA: Burning Crusade"
 })
 
 --------------------------
---  Memories of Azeroth: Wrath of the Lich King  --
+--	Memories of Azeroth: Wrath of the Lich King	--
 --------------------------
 L = DBM:GetModLocalization("WrathEvent")
 
 L:SetGeneralLocalization({
-  name = "MoA: WotLK"
+	name = "MoA: WotLK"
 })
 
 L:SetMiscLocalization{
-  Emerge        = "emerge de la tierra!",
-  Burrow        = "se entierra en el suelo!"
+	Emerge				= "emerge de la tierra!",
+	Burrow				= "se entierra en el suelo!"
 }
 
 L:SetOptionLocalization{
-  WarnEmerge        = "Mostrar aviso al emerger",
-  WarnEmergeSoon      = "Mostrar preaviso antes de emerger",
-  WarnSubmerge      = "Mostrar aviso al enterrarse",
-  WarnSubmergeSoon    = "Mostrar preaviso antes de enterrarse",
-  TimerEmerge       = "Mostrar temporizador para emerger",
-  TimerSubmerge     = "Mostrar temporizador para enterrarse",
-  WarningTeleportNow    = "Mostrar aviso para teletransporte",
-  WarningTeleportSoon   = "Mostrar preaviso antes de teletransporte",
-  TimerTeleport     = "Mostrar temporizador para teletransporte"
+	WarnEmerge				= "Mostrar aviso al emerger",
+	WarnEmergeSoon			= "Mostrar preaviso antes de emerger",
+	WarnSubmerge			= "Mostrar aviso al enterrarse",
+	WarnSubmergeSoon		= "Mostrar preaviso antes de enterrarse",
+	TimerEmerge				= "Mostrar temporizador para emerger",
+	TimerSubmerge		 	= "Mostrar temporizador para enterrarse",
+	WarningTeleportNow		= "Mostrar aviso para teletransporte",
+	WarningTeleportSoon		= "Mostrar preaviso antes de teletransporte",
+	TimerTeleport			= "Mostrar temporizador para teletransporte"
 }
 
 --------------------------
---  Memories of Azeroth: Cataclysm  --
+--	Memories of Azeroth: Cataclysm	--
 --------------------------
 L = DBM:GetModLocalization("CataEvent")
 
 L:SetGeneralLocalization({
-  name = "MoA: Cataclysm"
+	name = "MoA: Cataclysm"
 })
 
 L:SetWarningLocalization({
-  warnSplittingBlow   = "%s en %s",--Nombre de hechizo en ubicación
-  warnEngulfingFlame    = "%s en %s"--Nombre de hechizo en ubicación
+	warnSplittingBlow		= "%s en %s",--Nombre de hechizo en ubicación
+	warnEngulfingFlame		= "%s en %s"--Nombre de hechizo en ubicación
 })
 
 L:SetOptionLocalization({
-  warnSplittingBlow     = "Mostrar avisos de ubicación para $spell:98951",
-  warnEngulfingFlame      = "Mostrar avisos de ubicación para $spell:99171"
+	warnSplittingBlow		= "Mostrar avisos de ubicación para $spell:98951",
+	warnEngulfingFlame		= "Mostrar avisos de ubicación para $spell:99171"
 })
 
 --------------------------------------------
---  Jefes de mundo de eventos de Azeroth  --
+--	Jefes de mundo de eventos de Azeroth	--
 --------------------------------------------
 
 -- Lord Kazzak (Las Tierras Devastadas)
 L = DBM:GetModLocalization("KazzakClassic")
 
 L:SetGeneralLocalization{
-  name = "Lord Kazzak"
+	name = "Lord Kazzak"
 }
 
 L:SetMiscLocalization({
-  Pull    = "¡Por la Legión! ¡Por Kil'Jaeden!"
+	Pull = "¡Por la Legión! ¡Por Kil'Jaeden!"
 })
 
 -- Azuregos (Azshara)
 L = DBM:GetModLocalization("Azuregos")
 
 L:SetGeneralLocalization{
-  name = "Azuregos"
+	name = "Azuregos"
 }
 
 -- Taerar (Vallefresno)
 L = DBM:GetModLocalization("Taerar")
 
 L:SetGeneralLocalization{
-  name = "Taerar"
+	name = "Taerar"
 }
 
 -- Ysondre (Feralas)
 L = DBM:GetModLocalization("Ysondre")
 
 L:SetGeneralLocalization{
-  name = "Ysondre"
+	name = "Ysondre"
 }
 
 -- Lethon (Tierras del Interior)
 L = DBM:GetModLocalization("Lethon")
 
 L:SetGeneralLocalization{
-  name = "Lethon"
+	name = "Lethon"
 }
 
 -- Emeriss (Bosque del Ocaso)
 L = DBM:GetModLocalization("Emeriss")
 
 L:SetGeneralLocalization{
-  name = "Emeriss"
+	name = "Emeriss"
 }
 
 -- Caminante del Destino (Tanaris)
 L = DBM:GetModLocalization("DoomwalkerEvent")
 
 L:SetGeneralLocalization{
-  name = "Caminante del Destino (Evento)"
+	name = "Caminante del Destino (Evento)"
 }
