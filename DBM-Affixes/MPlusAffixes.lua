@@ -102,7 +102,12 @@ local function checkForCombat(self)
 end
 
 do
-	local validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
+	local validZones
+	if DBM:GetTOC() >= 100100 then--Season 2
+		validZones = {[657]=true, [1841]=true, [1754]=true, [1458]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
+	else--Season 1
+		validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
+	end
 	local eventsRegistered = false
 	local function delayedZoneCheck(self)
 		local currentZone = DBM:GetCurrentArea() or 0
