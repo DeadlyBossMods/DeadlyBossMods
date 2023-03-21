@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetBossHPInfoToHighest()
 mod:SetHotfixNoticeRev(20230320000000)
 --mod:SetMinSyncRevision(20221215000000)
@@ -32,12 +32,12 @@ mod:RegisterEventsInCombat(
 --TODO, what do you actually do with TEmporal Anomaly, soak it?
 --Neldris
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26001))
---local warnFlamerift								= mod:NewTargetNoFilterAnnounce(390715, 2)
+local warnMutilation								= mod:NewTargetAnnounce(406317, 2)
 local warnInfusedStrikes							= mod:NewStackAnnounce(406313, 2, nil, "Tank|Healer")
 
 local specWarnMutilation							= mod:NewSpecialWarningMoveAway(406317, nil, nil, nil, 1, 2)
-local yellMutilation								= mod:NewShortYell(406317)
-local yellMutilationFades							= mod:NewShortFadesYell(406317)
+local yellMutilation								= mod:NewShortPosYell(406317)
+local yellMutilationFades							= mod:NewIconFadesYell(406317)
 local specWarnMassiveSlam							= mod:NewSpecialWarningDodgeCount(404472, nil, nil, nil, 2, 2)
 local specWarnForcefulRoar							= mod:NewSpecialWarningCount(404713, nil, nil, nil, 2, 2)
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -52,7 +52,7 @@ local timerInfusedStrikes							= mod:NewFadesTimer(20, 407302, nil, nil, nil, 5
 
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddRangeFrameOption(5, 390715)
-mod:AddSetIconOption("SetIconOnMutilation", 406317, false, 0, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnMutilation", 406317, false, 0, {4, 5, 6})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 mod:GroupSpells(406358, 406317)--Mutilation cast with debuff Id
 --Thadrion
@@ -68,6 +68,7 @@ local timerUnstableEssenceCD						= mod:NewAITimer(29.9, 405042, nil, nil, nil, 
 local timerVolatileSpewCD							= mod:NewAITimer(29.9, 405492, nil, nil, nil, 3)
 local timerUncontrollableFrenzyCD					= mod:NewAITimer(29.9, 405375, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 
+mod:AddSetIconOption("SetIconOnEssence", 405042, false, 0, {1, 2, 3})
 --Rionthus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26329))
 local warnTemporalAnomaly							= mod:NewCastAnnounce(407552, 3)
@@ -82,12 +83,14 @@ local timerDeepBreathCD								= mod:NewAITimer(29.9, 406227, nil, nil, nil, 3, 
 local timerTemporalAnomalyCD						= mod:NewAITimer(29.9, 407552, nil, nil, nil, 5)
 local timerDisintegrateCD							= mod:NewAITimer(29.9, 405391, nil, nil, nil, 3)
 
+mod.vb.mutIcon = 4
 mod.vb.massiveSlamCount = 0
 mod.vb.forcefulRoarCount = 0
 mod.vb.volatileSpewCount = 0
 mod.vb.frenzyCount = 0
 mod.vb.breathCount = 0
 mod.vb.Disintegrate = 0
+local essenceMarks = {}
 
 function mod:OnCombatStart(delay)
 	--Neldris
@@ -97,6 +100,7 @@ function mod:OnCombatStart(delay)
 	timerMassiveSlamCD:Start(1-delay)
 	timerForcefulRoarCD:Start(1-delay)
 	--Thadrion
+	table.wipe(essenceMarks)
 	self.vb.volatileSpewCount = 0
 	self.vb.frenzyCount = 0
 	timerUnstableEssenceCD:Start(1-delay)
@@ -129,6 +133,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 406358 then
+		self.vb.mutIcon = 4
 		timerMutilationCD:Start()
 	elseif spellId == 407733 or spellId == 404472 then
 		self.vb.massiveSlamCount = self.vb.massiveSlamCount + 1
@@ -178,15 +183,18 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 406317 then
+		local icon = self.vb.mutIcon
+		if self.Options.SetIconOnMutilation then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnMutilation:Show()
 			specWarnMutilation:Play("runout")
-			yellMutilation:Yell()
-			yellMutilationFades:Countdown(spellId)
+			yellMutilation:Yell(icon, icon)
+			yellMutilationFades:Countdown(spellId, nil, icon-3)
 		end
-		if self.Options.SetIconOnMutilation then
-			self:SetUnsortedIcon(0.3, args.destName, 1, 3, false)
-		end
+		warnMutilation:CombinedShow(0.5, args.destName)
+		self.vb.mutIcon = self.vb.mutIcon + 1
 	elseif spellId == 406313 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then--Guessed, Filler
@@ -199,6 +207,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnUnstableEssence:Show()
 			specWarnUnstableEssence:Play("targetyou")
+		end
+		if self.Options.SetIconOnEssence then
+			for i = 1, 3, 1 do
+				if not essenceMarks[i] then
+					essenceMarks[i] = args.destGUID
+					self:SetIcon(args.destName, i)
+					return
+				end
+			end
 		end
 	elseif spellId == 407617 then
 		warnTemporalAnomalyAbsorbed:Show(args.destName)
@@ -221,6 +238,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnMutilation then
 			self:Seticon(args.destName, 0)
+		end
+	elseif spellId == 407327 then
+		if self.Options.SetIconOnEssence then
+			for i = 1, 3, 1 do
+				if essenceMarks[i] == args.destGUID then
+					essenceMarks[i] = nil
+					self:SetIcon(args.destName, 0)
+					return
+				end
+			end
 		end
 	end
 end
