@@ -39,7 +39,14 @@ L:SetOptionLocalization({
 ---------------------------
 --  Rashok --
 ---------------------------
---L= DBM:GetModLocalization(2525)
+L= DBM:GetModLocalization(2525)
+
+L:SetOptionLocalization({
+	TankSwapBehavior	= "탱커 교대시 모드 작동 방식 설정",
+	OnlyIfDanger		= "다른 탱커가 위험한 공격을 받을 때 도발 경고 보기",
+	MinMaxSoak			= "연계 공격에서 첫번째 공격 직후 또는 다른 탱커가 위험한 공격을 받을때  도발 경고 보기",
+	DoubleSoak			= "연계 공격이 끝난 후 또는 다른 탱커가 위험한 공격을 받을 때 도발 경고 보기"--Default
+})
 
 ---------------------------
 --  The Vigilant Steward, Zskarn --
