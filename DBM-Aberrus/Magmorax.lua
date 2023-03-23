@@ -128,13 +128,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 394917 then
 
 	end
 end
-
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
