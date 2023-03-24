@@ -12,8 +12,8 @@ mod:SetHotfixNoticeRev(20221215000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 402902 401480 409241 403272 406222 403057 401101 402814 403528 407790 407796 407936 407917 405436 405434 405433 404038",
-	"SPELL_CAST_SUCCESS 402116 407221 401125 401360 407917",
+	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 402814 403528 407790 407796 407936 407917 405436 405434 405433 404038",
+	"SPELL_CAST_SUCCESS 402116 401125 401360 407917",
 	"SPELL_AURA_APPLIED 407182 401998 408131 401010 401123 401126 404565 401128 401130 401133 401134 401135",
 	"SPELL_AURA_APPLIED_DOSE 408131",
 	"SPELL_AURA_REMOVED 407182 401010 407088",
@@ -109,6 +109,7 @@ mod.vb.tankCount = 0
 mod.vb.twistedEarthCount = 0
 mod.vb.fissureCount = 0
 mod.vb.rushingShadowsCount = 0
+mod.vb.shadowsIcon = 1
 --P2
 mod.vb.corruptionCount = 0
 mod.vb.annihilatingCount = 0
@@ -225,6 +226,10 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:SetHeader(DBM_COMMON_L.NO_DEBUFF:format(goodDebuff))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 407919)
 		end
+	elseif spellId == 407207 then
+		self.vb.rushingShadowsCount = self.vb.rushingShadowsCount + 1
+		self.vb.shadowsIcon = 1
+		timerRushingShadowsCD:Start()
 	end
 end
 
@@ -235,10 +240,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnEchoingFissure:Show(self.vb.fissureCount)
 		specWarnEchoingFissure:Play("justrun")
 		timerEchoingFissureCD:Start()
-	elseif spellId == 407221 then
-		self.vb.rushingShadowsCount = self.vb.rushingShadowsCount + 1
-		self.vb.shadowsIcon = 1
-		timerRushingShadowsCD:Start()
 	elseif spellId == 401125 and self:AntiSpam(5, 3) then
 		warnCorruptedbeasts:Show()
 	elseif spellId == 401360 and self:AntiSpam(5, 3) then
@@ -266,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRushingShadows:CombinedShow(0.3, self.vb.rushingShadowsCount, args.destName)
 		self.vb.shadowsIcon = self.vb.shadowsIcon + 1
 	elseif spellId == 401998 and not args:IsPlayer() then
-		specWarnCalamitousStrikeSwap:Show()
+		specWarnCalamitousStrikeSwap:Show(args.destName)
 		specWarnCalamitousStrikeSwap:Play("tauntboss")
 	elseif spellId == 408131 and args:IsPlayer() then
 		warnRupturedVeil:Cancel()
