@@ -162,20 +162,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 408955 then
 		local amount = args.amount or 1
-		if amount >= 2 then
-			if args:IsPlayer() then
-				specWarnIncineratingMaws:Show(amount)
-				specWarnIncineratingMaws:Play("stackhigh")
-			else
-				if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-					specWarnIncineratingMawsSwap:Show(args.destName)
-					specWarnIncineratingMawsSwap:Play("tauntboss")
+		if amount % 3 == 0 then
+			if amount >= 6 then
+				if args:IsPlayer() then
+					specWarnIncineratingMaws:Show(amount)
+					specWarnIncineratingMaws:Play("stackhigh")
 				else
-					warnIncineratingMaws:Show(args.destName, amount)
+					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+						specWarnIncineratingMawsSwap:Show(args.destName)
+						specWarnIncineratingMawsSwap:Play("tauntboss")
+					else
+						warnIncineratingMaws:Show(args.destName, amount)
+					end
 				end
+			else
+				warnIncineratingMaws:Show(args.destName, amount)
 			end
-		else
-			warnIncineratingMaws:Show(args.destName, amount)
 		end
 	elseif spellId == 402994 then
 		local icon = self.vb.riftIcon
