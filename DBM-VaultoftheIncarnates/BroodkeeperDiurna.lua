@@ -294,6 +294,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnMortalStoneclaws:Show()
 			specWarnMortalStoneclaws:Play("defensive")
 		end
+		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we do all this
 		if not self.vb.tankComboStarted then
 			self.vb.tankComboStarted = true
 			self.vb.tankCombocount = self.vb.tankCombocount + 1
@@ -302,7 +303,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
-		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
 		local timer = ((self:IsEasy() or self.vb.phase == 1) and 22.4 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
@@ -311,6 +311,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnMortalStoneSlam:Show()
 			specWarnMortalStoneSlam:Play("defensive")
 		end
+		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we do all this
 		if not self.vb.tankComboStarted then
 			self.vb.tankComboStarted = true
 			self.vb.tankCombocount = self.vb.tankCombocount + 1
@@ -319,9 +320,8 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneSlamCD:Stop()
 		end
-		--Sometimes boss interrupts cast to cast another ability then starts cast over, so we start timer here
-		local timer = (self.vb.phase == 1 and 21.9 or 7.3)
-		timerMortalStoneSlamCD:Start(timer, self.vb.tankCombocount+1)
+
+		timerMortalStoneSlamCD:Start(14, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 376272 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
