@@ -4,8 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201579)
 mod:SetEncounterID(2683)
---mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230322000000)
+mod:SetUsedIcons(1, 2, 3)
+mod:SetHotfixNoticeRev(20230324000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 408358 402989 403740 403671 409093 402344 404846",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 408839 407879 408955",
+	"SPELL_AURA_APPLIED 408839 407879 408955 402994",
 	"SPELL_AURA_APPLIED_DOSE 408839 408955",
-	"SPELL_AURA_REMOVED 408839 407879"
+	"SPELL_AURA_REMOVED 408839 407879 402994"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, dynamic energy calculation for accurate Catastrophic timer. Since energy rate changes based on puddles this would have to be a near constant check
 --TODO, fine tune personal stack alerts
 --TODO, nani? https://www.wowhead.com/ptr/spell=401522/incinerating-maws
-local warnMoltenSpittle								= mod:NewCountAnnounce(402989, 2)
+local warnMoltenSpittle								= mod:NewTargetCountAnnounce(402989, 2)
 local warnIncineratingMaws							= mod:NewStackAnnounce(404846, 2, nil, "Tank|Healer")
 
 local specWarnCatastrophicEruption					= mod:NewSpecialWarningSpell(408358, nil, nil, nil, 3, 2)
@@ -37,8 +37,9 @@ local specWarnHeatStacks							= mod:NewSpecialWarningStack(408839, nil, 12, nil
 local specWarnBlazingTantrum						= mod:NewSpecialWarningMove(407879, "Tank", nil, nil, 1, 2)
 local specWarnIgnitingRoar							= mod:NewSpecialWarningCount(403740, nil, nil, nil, 2, 2)
 local specWarnOverpoweringStomp						= mod:NewSpecialWarningCount(403671, nil, nil, nil, 2, 2)
---local yellFlamerift								= mod:NewShortYell(390715)
---local yellFlameriftFades							= mod:NewShortFadesYell(390715)
+local specWarnMoltenSpittle							= mod:NewSpecialWarningYou(402989, nil, nil, nil, 1, 2)
+local yellMoltenSpittle								= mod:NewShortPosYell(402989)
+local yellMoltenSpittleFades						= mod:NewIconFadesYell(402989)
 local specWarnBlazingBreath							= mod:NewSpecialWarningDodge(409238, nil, nil, nil, 2, 2)
 local specWarnIncineratingMaws						= mod:NewSpecialWarningStack(404846, nil, 2, nil, nil, 1, 6)
 local specWarnIncineratingMawsSwap					= mod:NewSpecialWarningTaunt(404846, nil, nil, nil, 1, 2)
@@ -55,7 +56,7 @@ local timerIncineratingMawsCD						= mod:NewAITimer(28.9, 404846, nil, "Tank|Hea
 
 mod:AddInfoFrameOption(408839, true)
 --mod:AddRangeFrameOption(5, 390715)
---mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4})
+mod:AddSetIconOption("SetIconOnMoltenSpittle", 402989, true, 0, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnTantrum", 407879)
 --mod:GroupSpells(390715, 396094)
 
@@ -64,6 +65,7 @@ mod.vb.spitCount = 0
 mod.vb.roarCount = 0
 mod.vb.stompCount = 0
 mod.vb.breathCount = 0
+mod.vb.riftIcon = 1
 
 function mod:OnCombatStart(delay)
 	table.wipe(heatStacks)
@@ -71,6 +73,7 @@ function mod:OnCombatStart(delay)
 	self.vb.roarCount = 0
 	self.vb.stompCount = 0
 	self.vb.breathCount = 0
+	self.vb.riftIcon = 1
 	timerMoltenSpittleCD:Start(1-delay)
 	timerIngitingRoarCD:Start(1-delay)
 	timerOverpoweringStompCD:Start(1-delay)
@@ -106,6 +109,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCatastrophicEruption:Play("stilldanger")
 	elseif spellId == 402989 then
 		self.vb.spitCount = self.vb.spitCount + 1
+		self.vb.riftIcon = 1
 		warnMoltenSpittle:Show(self.vb.spitCount)
 		timerMoltenSpittleCD:Start()
 	elseif spellId == 403740 then
@@ -174,6 +178,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnIncineratingMaws:Show(args.destName, amount)
 		end
+	elseif spellId == 402994 then
+		local icon = self.vb.riftIcon
+		if self.Options.SetIconOnMoltenSpittle then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnMoltenSpittle:Show()
+			specWarnMoltenSpittle:Play("targetyou")
+			yellMoltenSpittle:Yell(icon, icon)
+			yellMoltenSpittleFades:Countdown(spellId, nil, icon)
+		end
+		warnMoltenSpittle:CombinedShow(0.3, self.vb.spitCount, args.destName)
+		self.vb.riftIcon = self.vb.riftIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -188,6 +205,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 407879 then
 		if self.Options.NPAuraOnTantrum then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 402994 then
+		if self.Options.SetIconOnMoltenSpittle then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellMoltenSpittleFades:Cancel()
 		end
 	end
 end
