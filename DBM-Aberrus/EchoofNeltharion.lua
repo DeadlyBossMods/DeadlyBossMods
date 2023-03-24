@@ -73,10 +73,7 @@ local warnShadowElementalTotem					= mod:NewCastAnnounce(402814, 2)
 local warnShadowShadowStrike					= mod:NewCastAnnounce(407796, 2, nil, nil, "Tank|Healer")
 
 local specWarnCorruption						= mod:NewSpecialWarningYou(401010, nil, nil, nil, 1, 2)
-local yellWildBladestorm						= mod:NewShortYell(401123)--Warrior secondary
-local yellWildMagic								= mod:NewShortYell(401130)--Mage secondary
-local yellChaosDance							= mod:NewShortYell(401134)--DH secondary
-local yellWildBreath							= mod:NewShortYell(401135)--Evoker secondary
+local yellCorruption							= mod:NewShortYell(401010)
 local specWarnAnnihilatingShadows				= mod:NewSpecialWarningCount(404038, nil, nil, nil, 2, 2)
 local specWarnSweepingShadows					= mod:NewSpecialWarningDodgeCount(403846, nil, nil, nil, 2, 2)
 local specWarnSunderShadow						= mod:NewSpecialWarningDefensive(407790, nil, nil, nil, 1, 2)
@@ -279,9 +276,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCorruption:Show()
 			specWarnCorruption:Play("targetyou")
+			yellCorruption:Yell()
 		end
 	elseif spellId == 401123 and args:IsPlayer() then
-		yellWildBladestorm:Yell()
 		--timerBladestormCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
 		--timerBladestormCD:Start(12, 2)
 		--timerBladestormCD:Start(18, 3)
@@ -296,7 +293,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerWildGripCD:Start(20, 2)
 		--timerWildGripCD:Start(30, 3)
 	elseif spellId == 401130 and args:IsPlayer() then
-		yellWildMagic:Yell()
 		--timerWildMagicCD:Start(10, 1)--TODO verify first one happens after 10 seconds and not immediately
 		--timerWildMagicCD:Start(20, 2)
 		--timerWildMagicCD:Start(30, 3)
@@ -305,14 +301,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerWildShiftCD:Start(20, 2)
 		--timerWildShiftCD:Start(30, 3)
 	elseif spellId == 401134 and args:IsPlayer() then
-		yellChaosDance:Yell()
 		--timerChaosDanceCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
 		--timerChaosDanceCD:Start(12, 2)
 		--timerChaosDanceCD:Start(18, 3)
 		--timerChaosDanceCD:Start(24, 4)
 		--timerChaosDanceCD:Start(30, 5)
 	elseif spellId == 401135 and args:IsPlayer() then
-		yellWildBreath:Yell()
 		--timerWildBreathCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
 		--timerWildBreathCD:Start(12, 2)
 		--timerWildBreathCD:Start(18, 3)
