@@ -110,7 +110,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 402989 then
 		self.vb.spitCount = self.vb.spitCount + 1
 		self.vb.riftIcon = 1
-		warnMoltenSpittle:Show(self.vb.spitCount)
 		timerMoltenSpittleCD:Start()
 	elseif spellId == 403740 then
 		self.vb.roarCount = self.vb.roarCount + 1
