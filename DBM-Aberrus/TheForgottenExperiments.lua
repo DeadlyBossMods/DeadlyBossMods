@@ -36,8 +36,8 @@ local warnMutilation								= mod:NewTargetAnnounce(406317, 2)
 local warnInfusedStrikes							= mod:NewStackAnnounce(406313, 2, nil, "Tank|Healer")
 
 local specWarnMutilation							= mod:NewSpecialWarningMoveAway(406317, nil, nil, nil, 1, 2)
-local yellMutilation								= mod:NewShortPosYell(406317)
-local yellMutilationFades							= mod:NewIconFadesYell(406317)
+local yellMutilation								= mod:NewShortYell(406317)
+local yellMutilationFades							= mod:NewShortFadesYell(406317)
 local specWarnMassiveSlam							= mod:NewSpecialWarningDodgeCount(404472, nil, nil, nil, 2, 2)
 local specWarnForcefulRoar							= mod:NewSpecialWarningCount(404713, nil, nil, nil, 2, 2)
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -184,14 +184,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 406317 then
 		local icon = self.vb.mutIcon
-		if self.Options.SetIconOnMutilation then
+		if self.Options.SetIconOnMutilation and icon < 9 then
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
 			specWarnMutilation:Show()
 			specWarnMutilation:Play("runout")
-			yellMutilation:Yell(icon, icon)
-			yellMutilationFades:Countdown(spellId, nil, icon-3)
+			yellMutilation:Yell()
+			yellMutilationFades:Countdown(spellId)
 		end
 		warnMutilation:CombinedShow(0.5, args.destName)
 		self.vb.mutIcon = self.vb.mutIcon + 1
