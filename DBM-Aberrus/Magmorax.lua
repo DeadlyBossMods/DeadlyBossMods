@@ -22,7 +22,8 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-
+(ability.id = 408358 or ability.id = 402989 or ability.id = 403740 or ability.id = 403671 or ability.id = 409093 or ability.id = 402344 or ability.id = 404846) and type = "begincast"
+ or ability.id = 407879 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, dynamic energy calculation for accurate Catastrophic timer. Since energy rate changes based on puddles this would have to be a near constant check
 --TODO, fine tune personal stack alerts
@@ -100,7 +101,6 @@ function mod:OnCombatEnd()
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
-
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
