@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201320)
 mod:SetEncounterID(2680)
-mod:SetUsedIcons(1)
+--mod:SetUsedIcons(1)
 mod:SetHotfixNoticeRev(20230317000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -28,15 +28,15 @@ mod:RegisterEventsInCombat(
  or ability.id = 401419 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr/spell=407706/molten-wrath seems passive, but still maybe have a 15 second timer with right script
-local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
+--local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
 local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
 local warnUnyieldingRage							= mod:NewCountAnnounce(405091, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(405091))
 
 local specWarnAncientFury							= mod:NewSpecialWarningCount(405316, nil, nil, nil, 2, 2)
-local specWarnSearingSlam							= mod:NewSpecialWarningYou(405821, nil, nil, nil, 3, 2)
-local yellSearingSlam								= mod:NewShortYell(405821)
-local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
+local specWarnSearingSlam							= mod:NewSpecialWarningIncomingCount(405821, nil, nil, nil, 2, 14)
+--local yellSearingSlam								= mod:NewShortYell(405821)
+--local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
 local specWarnDoomFlame								= mod:NewSpecialWarningCount(406851, nil, nil, nil, 2, 2)
 local specWarnShadowlavaBlast						= mod:NewSpecialWarningDodgeCount(406333, nil, nil, nil, 2, 2)
 local specWarnChargedSmash							= mod:NewSpecialWarningDodgeCount(400777, nil, nil, nil, 2, 2)
@@ -57,7 +57,7 @@ local timerVolcanicComboCD							= mod:NewCDCountTimer(40, 407641, nil, "Tank|He
 
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddRangeFrameOption(5, 390715)
-mod:AddSetIconOption("SetIconOnSearingSlam", 405821, false, 0, {1})
+--mod:AddSetIconOption("SetIconOnSearingSlam", 405821, false, 0, {1})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("TankSwapBehavior", {"DoubleSoak", "MinMaxSoak", "OnlyIfDanger"}, "DoubleSoak", "misc")
@@ -115,6 +115,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientFury:Play("aesoon")
 	elseif spellId == 405821 then
 		self.vb.slamCount = self.vb.slamCount + 1
+		specWarnSearingSlam:Show(self.vb.slamCount)
+		specWarnSearingSlam:Play("incomingdebuff")
 		local timer = self.vb.slamCount == 1 and 40 or self.vb.slamCount == 2 and 31
 		if timer then
 			timerSearingSlamCD:Start(nil, self.vb.slamCount+1)
@@ -201,17 +203,18 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 405819 or spellId == 407642 then--405819 confirmed on heroic, 407642 for lfr/normal maybe?
-		if args:IsPlayer() then
-			specWarnSearingSlam:Show()
-			specWarnSearingSlam:Play("targetyou")
-			yellSearingSlam:Yell()
-			yellSearingSlamFades:Countdown(spellId)
-		else
-			warnSearingSlam:Show(args.destName)
-		end
-		if self.Options.SetIconOnSearingSlam then
-			self:SetIcon(args.destName, 1)
-		end
+		DBM:Debug("Searing slam back in combat log?")
+--		if args:IsPlayer() then
+--			specWarnSearingSlam:Show()
+--			specWarnSearingSlam:Play("targetyou")
+--			yellSearingSlam:Yell()
+--			yellSearingSlamFades:Countdown(spellId)
+--		else
+--			warnSearingSlam:Show(args.destName)
+--		end
+--		if self.Options.SetIconOnSearingSlam then
+--			self:SetIcon(args.destName, 1)
+--		end
 	elseif (spellId == 407597 or spellId == 407547) and not args:IsPlayer() then
 		local alertTaunt
 		if self.Options.TankSwapBehavior == "OnlyIfDanger" then
@@ -260,12 +263,12 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 405819 or spellId == 407642 then
-		if args:IsPlayer() then
-			yellSearingSlamFades:Cancel()
-		end
-		if self.Options.SetIconOnSearingSlam then
-			self:SetIcon(args.destName, 0)
-		end
+--		if args:IsPlayer() then
+--			yellSearingSlamFades:Cancel()
+--		end
+--		if self.Options.SetIconOnSearingSlam then
+--			self:SetIcon(args.destName, 0)
+--		end
 	elseif spellId == 401419 then
 		warnSiphonEnergyRemoved:Show(args.destName)
 		self.vb.slamCount = 0
