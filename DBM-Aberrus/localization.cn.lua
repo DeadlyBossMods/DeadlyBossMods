@@ -21,7 +21,7 @@ local L
 --})
 
 ---------------------------
---  The Amalgamation Chamber -- 
+--  The Amalgamation Chamber --
 ---------------------------
 L= DBM:GetModLocalization(2529)
 
