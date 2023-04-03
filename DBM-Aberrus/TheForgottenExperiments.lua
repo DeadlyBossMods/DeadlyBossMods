@@ -46,7 +46,7 @@ local specWarnForcefulRoar							= mod:NewSpecialWarningCount(404713, nil, nil, 
 local timerMutilationCD								= mod:NewAITimer(29.9, 406358, nil, nil, nil, 3)
 local timerMassiveSlamCD							= mod:NewAITimer(29.9, 404472, nil, nil, nil, 3)
 local timerForcefulRoarCD							= mod:NewAITimer(29.9, 404713, nil, nil, nil, 2)
-local timerInfusedStrikes							= mod:NewFadesTimer(20, 407302, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)--Track the aura that needs to fall off before tanks "clear" again
+local timerInfusedStrikes							= mod:NewBuffFadesTimer(20, 407302, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)--Track the aura that needs to fall off before tanks "clear" again
 --local timerFlameriftCD							= mod:NewAITimer(28.9, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 

@@ -5,15 +5,15 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230317000000)
+mod:SetHotfixNoticeRev(20230402000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 406678 405812 405919 403978 406725 405736",
-	"SPELL_CAST_SUCCESS 404007",
+	"SPELL_CAST_START 406678 405812 405919 403978 405736",
+	"SPELL_CAST_SUCCESS 404007 406725",
 	"SPELL_AURA_APPLIED 405592 404010 404942",
 	"SPELL_AURA_APPLIED_DOSE 404942",
 	"SPELL_AURA_REMOVED 404010",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 406678 or ability.id = 406725 or ability.id = 406725 or ability.id = 406725 or ability.id = 406725 or ability.id = 406725) and type = "begincast"
- or ability.id = 404007 and type = "cast"
+ or (ability.id = 404007 or ability.id = 406725) and type = "cast"
 --]]
 --TODO, icon method for golems will likely be changed to broodkeeper method since that's what BW is likely to use, but for testing purposes a basic incremental apply per set is probably fine
 --TODO, GTFO for standing in fire traps
@@ -47,7 +47,7 @@ local specWarnSearingClawsTaunt					= mod:NewSpecialWarningTaunt(404942, nil, ni
 
 local timerTacticalDestructionCD				= mod:NewCDCountTimer(61.5, 406678, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShrapnalBombCD						= mod:NewCDCountTimer(42.5, 406725, nil, nil, nil, 3)
-local timerShrapnalBomb							= mod:NewCastTimer(32, 406725, nil, nil, nil, 2)
+local timerShrapnalBomb							= mod:NewCastTimer(30, 406725, nil, nil, nil, 2)
 local timerAnimateGolemsCD						= mod:NewCDCountTimer(60.2, 405812, nil, nil, nil, 1)
 local timerBlastWaveCD							= mod:NewCDCountTimer(33.2, 403978, nil, nil, nil, 2)
 local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
@@ -76,12 +76,19 @@ function mod:OnCombatStart(delay)
 	self.vb.blastWaveCount = 0
 	self.vb.embersCount = 0
 	self.vb.dragonCount = 0
-	timerUnstableEmbersCD:Start(7.7-delay, 1)
-	timerBlastWaveCD:Start(11-delay, 1)
-	timerShrapnalBombCD:Start(14.8-delay, 1)
-	timerDragonDeezTrapsCD:Start(21-delay, 1)
-	timerAnimateGolemsCD:Start(35.7-delay, 1)
-	timerTacticalDestructionCD:Start(47.9-delay, 1)
+	timerUnstableEmbersCD:Start(7-delay, 1)
+	timerBlastWaveCD:Start(10.7-delay, 1)
+	if self:IsMythic() then
+		timerShrapnalBombCD:Start(5.8-delay, 1)
+		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
+		timerAnimateGolemsCD:Start(24.1-delay, 1)
+		timerTacticalDestructionCD:Start(31.3-delay, 1)
+	else
+		timerShrapnalBombCD:Start(14.8-delay, 1)
+		timerDragonDeezTrapsCD:Start(21-delay, 1)
+		timerAnimateGolemsCD:Start(35.7-delay, 1)
+		timerTacticalDestructionCD:Start(47.9-delay, 1)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -90,18 +97,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.destructionCount = self.vb.destructionCount + 1
 		specWarnTacticalDestruction:Show(self.vb.destructionCount)
 		specWarnTacticalDestruction:Play("watchstep")
-		timerTacticalDestructionCD:Start(nil, self.vb.destructionCount+1)
-	elseif spellId == 406725 then
-		self.vb.shrapnalSoakCount = 0
-		self.vb.trapCastCount = self.vb.trapCastCount + 1
-		warnScatterTraps:Show(self.vb.trapCastCount)
-		timerShrapnalBombCD:Start(nil, self.vb.trapCastCount+1)
-		timerShrapnalBomb:Start()
+		timerTacticalDestructionCD:Start(self:IsMythic() and 71.7 or 61.5, self.vb.destructionCount+1)
 	elseif spellId == 405812 then
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
 		specWarnAnimateGolems:Play("killmobs")
-		timerAnimateGolemsCD:Start(nil, self.vb.golemsCount+1)
+		timerAnimateGolemsCD:Start(self:IsMythic() and 73 or 60.2, self.vb.golemsCount+1)
 		if self.Options.SetIconOnGolems  then
 			self:ScanForMobs(203230, 0, 8, 3, nil, 12, "SetIconOnGolems")
 		end
@@ -136,7 +137,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 404007 then
 		self.vb.embersCount = self.vb.embersCount + 1
-		timerUnstableEmbersCD:Start(nil, self.vb.embersCount+1)
+		timerUnstableEmbersCD:Start(self:IsMythic() and 15.8 or 20.7, self.vb.embersCount+1)
+	elseif spellId == 406725 then
+		self.vb.shrapnalSoakCount = 0
+		self.vb.trapCastCount = self.vb.trapCastCount + 1
+		warnScatterTraps:Show(self.vb.trapCastCount)
+		timerShrapnalBombCD:Start(self:IsMythic() and 30.8 or 42.5, self.vb.trapCastCount+1)
+		timerShrapnalBomb:Start()
 	end
 end
 
