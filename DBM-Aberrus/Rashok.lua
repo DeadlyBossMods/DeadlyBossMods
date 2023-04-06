@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20230317000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165",
+	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070",
 --	"SPELL_CAST_SUCCESS 407641",
 	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405091 407642",
 	"SPELL_AURA_APPLIED_DOSE 405091",
@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 401419 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr/spell=407706/molten-wrath seems passive, but still maybe have a 15 second timer with right script
+--TODO, https://www.wowhead.com/ptr/spell=405827/overcharged
 local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
 local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
@@ -45,6 +46,7 @@ local specWarnFlamingUpsurgeTaunt					= mod:NewSpecialWarningTaunt(407547, nil, 
 local specWarnEarthenCrush							= mod:NewSpecialWarningDefensive(407597, nil, nil, nil, 1, 2)
 local specWarnEarthenCrushTaunt						= mod:NewSpecialWarningTaunt(407597, nil, nil, nil, 1, 2)
 local specWarnUnyieldingRage						= mod:NewSpecialWarningSpell(406165, nil, nil, nil, 1, 2)
+local specWarnUnleashedShadowflame					= mod:NewSpecialWarningCount(410070, nil, nil, nil, 2, 2, 4)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(403543, nil, nil, nil, 1, 8)
 
 local timerAncientFuryCD							= mod:NewCDTimer(29.9, 405316, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -53,6 +55,7 @@ local timerDoomFlameCD								= mod:NewCDCountTimer(28.9, 406851, nil, nil, nil,
 local timerShadowlavaBlastCD						= mod:NewCDCountTimer(28.9, 406333, nil, nil, nil, 3)
 local timerChargedSmashCD							= mod:NewCDCountTimer(40, 400777, nil, nil, nil, 3)
 local timerVolcanicComboCD							= mod:NewCDCountTimer(40, 407641, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerUnleashedShadowflameCD					= mod:NewAITimer(40, 410070, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)
@@ -69,6 +72,7 @@ mod.vb.blastCount = 0
 mod.vb.smashCount = 0
 mod.vb.tankCombo = 0--Cast
 mod.vb.comboCount = 0--Combos within cast
+mod.vb.shadowflameCount = 0
 --local allTimers = {--Will only be used if not same on all difficulties, then it'll be cleaner than tons if conditionals
 --	--Searing Slam
 --	[405821] = {4.1, 40.0, 31.0},
@@ -85,12 +89,16 @@ function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.tankCombo = 0
 	self.vb.comboCount = 0
+	self.vb.shadowflameCount = 0
 	timerSearingSlamCD:Start(4.1-delay, 1)
 	timerChargedSmashCD:Start(15.1-delay, 1)
 	timerVolcanicComboCD:Start(24.1-delay, 1)
 	timerDoomFlameCD:Start(35.2-delay, 1)
 	timerShadowlavaBlastCD:Start(81.6-delay, 1)
 	timerAncientFuryCD:Start(100-delay)
+	if self:IsMythic() then
+		timerUnleashedShadowflameCD:Start(1-delay)
+	end
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -183,6 +191,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 406165 then
 		specWarnUnyieldingRage:Show()
 		specWarnUnyieldingRage:Play("carefly")
+	elseif spellId == 410070 then
+		self.vb.shadowflameCount = self.vb.shadowflameCount + 1
+		specWarnUnleashedShadowflame:Show(self.vb.shadowflameCount)
+		specWarnUnleashedShadowflame:Play("specialsoon")--Better voice?
+		timerUnleashedShadowflameCD:Start()
 	end
 end
 
@@ -248,6 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDoomFlameCD:Stop()
 		timerShadowlavaBlastCD:Stop()
 		timerAncientFuryCD:Stop()
+		timerUnleashedShadowflameCD:Stop()
 	elseif spellId == 405091 then--Unyielding Rage (stack)
 		local amount = args.amount or 1
 		if amount == 1 or amount == 4 or amount >= 7 then
@@ -274,12 +288,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.smashCount = 0
 		self.vb.tankCombo = 0
 		self.vb.comboCount = 0
+		self.vb.shadowflameCount = 0
 		timerSearingSlamCD:Start(6.1, 1)
 		timerChargedSmashCD:Start(17.1, 1)
 		timerVolcanicComboCD:Start(26.1, 1)
 		timerDoomFlameCD:Start(37.1, 1)
 		timerShadowlavaBlastCD:Start(83.6, 1)
 		timerAncientFuryCD:Start(102)
+		if self:IsMythic() then
+			timerUnleashedShadowflameCD:Start(2)
+		end
 	end
 end
 

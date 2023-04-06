@@ -12,9 +12,9 @@ mod:SetHotfixNoticeRev(20230324000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 402814 403528 407790 407796 407936 407917 405436 405434 405433 404038",
-	"SPELL_CAST_SUCCESS 401125 401360 407917",
-	"SPELL_AURA_APPLIED 407182 401998 408131 405484 407728 407919 404565",--401123 401126 401128 401130 401133 401134 401135
+	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 403528 407790 407796 407936 407917 405436 405434 405433 404038",
+	"SPELL_CAST_SUCCESS 407917",
+	"SPELL_AURA_APPLIED 407182 401998 408131 405484 407728 407919",--401123 401126 401128 401130 401133 401134 401135
 	"SPELL_AURA_APPLIED_DOSE 408131",
 	"SPELL_AURA_REMOVED 407182 405484 407088 407919",
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
@@ -67,12 +67,7 @@ local warnSurrendertoCorruption					= mod:NewSpellAnnounce(403057, 2)
 ----Voice From Beyond
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(26456))
 local warnRupturedVeil							= mod:NewCountAnnounce(408131, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(408131))
-----Class Calls
 local warnCorruption							= mod:NewTargetCountAnnounce(401010, 3)--Class Call Parent
-local warnDesperateScream						= mod:NewTargetNoFilterAnnounce(404565, 3, nil, "RemoveMagic")--Priest secondary (not parent)
-local warnCorruptedbeasts						= mod:NewSpellAnnounce(401125, 3, nil, false)--Hunter secondary and primary
-local warnShadowStep							= mod:NewSpellAnnounce(401360, 3)--Effect of Wild Treachery (Rogue)
-local warnShadowElementalTotem					= mod:NewCastAnnounce(402814, 2, nil, nil, false)
 local warnShadowShadowStrike					= mod:NewCastAnnounce(407796, 2, nil, nil, "Tank|Healer")
 
 local specWarnCorruption						= mod:NewSpecialWarningYou(401010, nil, nil, nil, 1, 2)
@@ -83,18 +78,10 @@ local specWarnSunderShadow						= mod:NewSpecialWarningDefensive(407790, nil, ni
 local specWarnSunderShadowSwap					= mod:NewSpecialWarningTaunt(407790, nil, nil, nil, 1, 2)
 
 local timerCorruptionCD							= mod:NewCDCountTimer(29.4, 401010, nil, nil, nil, 5)--Parent
---local timerBladestormCD						= mod:NewCDCountTimer("d6", 401123, nil, nil, nil, 5)--Warrior
---local timerShadowStepCD						= mod:NewCDCountTimer("d10", 401360, nil, nil, nil, 5)--Rogue
---local timerWildGripCD							= mod:NewCDCountTimer("d10", 401128, nil, nil, nil, 5)--DK
---local timerWildMagicCD						= mod:NewCDCountTimer("d10", 401130, nil, nil, nil, 5)--Mage
---local timerWildShiftCD						= mod:NewCDCountTimer("d10", 401133, nil, nil, nil, 5)--Druid
---local timerChaosDanceCD						= mod:NewCDCountTimer("d6", 401134, nil, nil, nil, 5)--DH
---local timerWildBreathCD						= mod:NewCDCountTimer("d6", 401135, nil, nil, nil, 5)--Evoker
 local timerAnnihilatingShadowsCD				= mod:NewCDCountTimer(29.4, 404038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerSweepingShadowsCD					= mod:NewCDCountTimer(29.4, 403846, nil, nil, nil, 3)
 local timerSunderShadowCD						= mod:NewCDCountTimer(29.4, 407790, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:GroupSpells(401010, 401123, 401125, 401360, 404565, 401128, 402814, 401133, 401134, 401135, 401130)--Corruption with all sub class Ids
 --Stage Three: Reality Fractures
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26422))
 local warnShatterReality						= mod:NewCastAnnounce(407936, 2)
@@ -210,8 +197,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 401101 then--Basically second and later corruptions
 		self.vb.corruptionCount = self.vb.corruptionCount + 1
 		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
-	elseif spellId == 402814 and self:AntiSpam(5, 3) then
-		warnShadowElementalTotem:Show()
 	elseif args:IsSpellID(405436, 405434, 405433, 404038) then--10, 7.5, 5, 2.5
 		self.vb.annihilatingCount = self.vb.annihilatingCount + 1
 		specWarnAnnihilatingShadows:Show(self.vb.annihilatingCount)
@@ -264,11 +249,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 401125 and self:AntiSpam(5, 3) then
-		warnCorruptedbeasts:Show()
-	elseif spellId == 401360 and self:AntiSpam(5, 3) then
-		warnShadowStep:Show()
-	elseif spellId == 407917 then
+	if spellId == 407917 then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -303,42 +284,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCorruption:Play("targetyou")
 			yellCorruption:Yell()
 		end
---	elseif spellId == 401123 and args:IsPlayer() then
-		--timerBladestormCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
-		--timerBladestormCD:Start(12, 2)
-		--timerBladestormCD:Start(18, 3)
-		--timerBladestormCD:Start(24, 4)
-		--timerBladestormCD:Start(30, 5)
---	elseif spellId == 401126 and self:AntiSpam(5, 3) then
-		--timerShadowStepCD:Start(10, 1)--TODO verify first one happens after 10 seconds and not immediately
-		--timerShadowStepCD:Start(20, 2)
-		--timerShadowStepCD:Start(30, 3)
---	elseif spellId == 401128 and self:AntiSpam(5, 3) then
-		--timerWildGripCD:Start(10, 1)--TODO verify first one happens after 10 seconds and not immediately
-		--timerWildGripCD:Start(20, 2)
-		--timerWildGripCD:Start(30, 3)
---	elseif spellId == 401130 and args:IsPlayer() then
-		--timerWildMagicCD:Start(10, 1)--TODO verify first one happens after 10 seconds and not immediately
-		--timerWildMagicCD:Start(20, 2)
-		--timerWildMagicCD:Start(30, 3)
---	elseif spellId == 401133 and args:IsPlayer() then
-		--timerWildShiftCD:Start(10, 1)--TODO verify first one happens after 10 seconds and not immediately
-		--timerWildShiftCD:Start(20, 2)
-		--timerWildShiftCD:Start(30, 3)
---	elseif spellId == 401134 and args:IsPlayer() then
-		--timerChaosDanceCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
-		--timerChaosDanceCD:Start(12, 2)
-		--timerChaosDanceCD:Start(18, 3)
-		--timerChaosDanceCD:Start(24, 4)
-		--timerChaosDanceCD:Start(30, 5)
---	elseif spellId == 401135 and args:IsPlayer() then
-		--timerWildBreathCD:Start(6, 1)--TODO verify first one happens after 6 seconds and not immediately
-		--timerWildBreathCD:Start(12, 2)
-		--timerWildBreathCD:Start(18, 3)
-		--timerWildBreathCD:Start(24, 4)
-		--timerWildBreathCD:Start(30, 5)
-	elseif spellId == 404565 and args:IsDestTypePlayer() then
-		warnDesperateScream:CombinedShow(0.3, args.destName)
 	elseif spellId == 407728 and not args:IsPlayer() then
 		specWarnSunderShadowSwap:Show(args.destName)
 		specWarnSunderShadowSwap:Play("tauntboss")
