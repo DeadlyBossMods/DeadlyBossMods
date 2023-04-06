@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(20230316000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 403459 405016 407640 403699 404732 403101 404896 405437 405641 408193 405914 406783 403203",
+	"SPELL_CAST_START 403459 405016 407640 403699 404732 403101 404896 405437 405641 408193 405914 406783 403203 409385",
 	"SPELL_CAST_SUCCESS 406730 406780",
 	"SPELL_AURA_APPLIED 401809 402617 405036 405394 406780 405642 405914",
 	"SPELL_AURA_APPLIED_DOSE 401809 402617 405394",
@@ -72,6 +72,7 @@ local timerSwirlingFlameCD						= mod:NewCDCountTimer(20.7, 404896, nil, nil, ni
 local timerFlameSlashCD							= mod:NewCDTimer(11, 403203, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Molgoth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26338))
+local warnShadowandFlame						= mod:NewCastAnnounce(409385, 4)
 local warnShadowflame							= mod:NewCountAnnounce(405394, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(405394))
 local warnBlisteringTwilight					= mod:NewTargetCountAnnounce(405641, 3, nil, nil, nil, nil, nil, nil, true)
 local warnShadowflameBurst						= mod:NewCountAnnounce(406783, 3)
@@ -84,6 +85,7 @@ local specWarnConvergentEruption				= mod:NewSpecialWarningCount(408193, nil, ni
 local specWarnCrushingVulnerability				= mod:NewSpecialWarningDefensive(405914, nil, nil, nil, 1, 2)
 local specWarnCrushingVulnerabilityTaunt		= mod:NewSpecialWarningTaunt(405914, nil, nil, nil, 1, 2)
 
+local timerShadowandFlameCD						= mod:NewAITimer(40, 409385, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGloomConflagCD						= mod:NewCDCountTimer(40, 405437, nil, nil, nil, 3)
 local timerBlisteringTwilightCD					= mod:NewCDCountTimer(40, 405641, nil, nil, nil, 3)
 local timerConvergentEruptionCD					= mod:NewCDCountTimer(40, 408193, nil, nil, nil, 5)
@@ -104,6 +106,7 @@ mod.vb.moltenEruptionCast = 0
 
 mod.vb.crushingVulnCount = 0
 mod.vb.shadowflameBurstCount = 0
+mod.vb.SandFCount = 0
 
 --As computational as this looks, it's purpose is to just filter information overload.
 --Basically, it solves for what should or shouldn't be shown, not what a player should or shouldn't do.
@@ -169,6 +172,7 @@ function mod:OnCombatStart(delay)
 	self.vb.meteorCast = 0
 	self.vb.moltenEruptionCast = 0
 	self.vb.swirlingCount = 0
+	self.vb.SandFCount = 0
 	timerFlameSlashCD:Start(5.9-delay)
 	timerSwirlingFlameCD:Start(9.5-delay, 1)
 	timerMoltenEruptionCD:Start(23-delay, 1)
@@ -284,6 +288,10 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerShadowflameBurstCD:Start(35, self.vb.shadowflameBurstCount+1)
 		end
+	elseif spellId == 409385 then
+		self.vb.SandFCount = self.vb.SandFCount + 1
+		warnShadowandFlame:Show()
+		timerShadowandFlameCD:Start()
 	end
 end
 
@@ -333,6 +341,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBlisteringTwilightCD:Start(8.4, 1)
 		timerGloomConflagCD:Start(18.2, 1)
 		timerConvergentEruptionCD:Start(32.8, 1)
+		if self:IsMythic() then
+			timerShadowandFlameCD:Start(2)
+		end
 	end
 end
 
