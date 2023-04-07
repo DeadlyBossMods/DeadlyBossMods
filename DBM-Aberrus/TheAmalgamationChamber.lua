@@ -139,7 +139,7 @@ local function updateBossDistance(self)
 			timerFieryMeteorCD:SetFade(false, self.vb.meteorCast+1)
 			timerMoltenEruptionCD:SetFade(false, self.vb.moltenEruptionCast+1)
 			timerSwirlingFlameCD:SetFade(false, self.vb.swirlingCount+1)
-			timerFlameSlashCD:SetFade(false, elf.vb.flameSlashCast+1)
+			timerFlameSlashCD:SetFade(false, self.vb.flameSlashCast+1)
 		end
 	else
 		if nearMolt then
@@ -147,7 +147,7 @@ local function updateBossDistance(self)
 			timerFieryMeteorCD:SetFade(true, self.vb.meteorCast+1)
 			timerMoltenEruptionCD:SetFade(true, self.vb.moltenEruptionCast+1)
 			timerSwirlingFlameCD:SetFade(true, self.vb.swirlingCount+1)
-			timerFlameSlashCD:SetFade(true, elf.vb.flameSlashCast+1)
+			timerFlameSlashCD:SetFade(true, self.vb.flameSlashCast+1)
 		end
 	end
 	self:Schedule(2, updateBossDistance, self)
