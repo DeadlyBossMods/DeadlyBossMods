@@ -14,9 +14,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070",
 --	"SPELL_CAST_SUCCESS 407641",
-	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405091 407642",
-	"SPELL_AURA_APPLIED_DOSE 405091",
-	"SPELL_AURA_REMOVED 405819 401419 407642",
+	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405091 407642 405827",
+	"SPELL_AURA_APPLIED_DOSE 405091 405827",
+	"SPELL_AURA_REMOVED 405819 401419 407642 405827",
+	"SPELL_AURA_REMOVED_DOSE 405827",
 	"SPELL_PERIODIC_DAMAGE 403543",
 	"SPELL_PERIODIC_MISSED 403543",
 --	"UNIT_DIED"
@@ -28,7 +29,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 401419 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr/spell=407706/molten-wrath seems passive, but still maybe have a 15 second timer with right script
---TODO, https://www.wowhead.com/ptr/spell=405827/overcharged
 local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
 local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
@@ -58,7 +58,7 @@ local timerVolcanicComboCD							= mod:NewCDCountTimer(40, 407641, nil, "Tank|He
 local timerUnleashedShadowflameCD					= mod:NewAITimer(40, 410070, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
---mod:AddInfoFrameOption(361651, true)
+mod:AddInfoFrameOption(405827)
 --mod:AddRangeFrameOption(5, 390715)
 mod:AddSetIconOption("SetIconOnSearingSlam", 405821, false, 0, {1})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
@@ -73,6 +73,7 @@ mod.vb.smashCount = 0
 mod.vb.tankCombo = 0--Cast
 mod.vb.comboCount = 0--Combos within cast
 mod.vb.shadowflameCount = 0
+local overchargedStacks = {}
 --local allTimers = {--Will only be used if not same on all difficulties, then it'll be cleaner than tons if conditionals
 --	--Searing Slam
 --	[405821] = {4.1, 40.0, 31.0},
@@ -83,6 +84,7 @@ mod.vb.shadowflameCount = 0
 --}
 
 function mod:OnCombatStart(delay)
+	table.wipe(overchargedStacks)
 	self.vb.slamCount = 0
 	self.vb.doomCount = 0
 	self.vb.blastCount = 0
@@ -98,23 +100,27 @@ function mod:OnCombatStart(delay)
 	timerAncientFuryCD:Start(100-delay)
 	if self:IsMythic() then
 		timerUnleashedShadowflameCD:Start(1-delay)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(405827))
+			DBM.InfoFrame:Show(5, "table", overchargedStacks, 1)
+		end
 	end
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
 end
 
---function mod:OnCombatEnd()
+function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.NPAuraOnAscension then
 --		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 --	end
---end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -267,6 +273,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount == 1 or amount == 4 or amount >= 7 then
 			warnUnyieldingRage:Show(amount)
 		end
+	elseif spellId == 405827 then
+		local amount = args.amount or 1
+		overchargedStacks[args.destName] = amount
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(overchargedStacks)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -279,6 +291,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnSearingSlam then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 405827 then
+		overchargedStacks[args.destName] = nil
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(overchargedStacks)
 		end
 	elseif spellId == 401419 then
 		warnSiphonEnergyRemoved:Show(args.destName)
@@ -297,6 +314,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAncientFuryCD:Start(102)
 		if self:IsMythic() then
 			timerUnleashedShadowflameCD:Start(2)
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 405827 then
+		overchargedStacks[args.destName] = args.amount or 1
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(overchargedStacks)
 		end
 	end
 end
