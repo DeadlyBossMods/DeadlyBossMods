@@ -75,12 +75,22 @@ mod.vb.comboCount = 0--Combos within cast
 mod.vb.shadowflameCount = 0
 local overchargedStacks = {}
 --local allTimers = {--Will only be used if not same on all difficulties, then it'll be cleaner than tons if conditionals
---	--Searing Slam
---	[405821] = {4.1, 40.0, 31.0},
---	--Charged Smash
---	[400777] = {15.1, 40.0},
---	--Volcanic Combo
---	[407641] = {24.1, 41.1}
+--	["heroic"] = {
+--		--Searing Slam
+--		[405821] = {4.1, 40.0, 31.0},
+--		--Charged Smash
+--		[400777] = {15.1, 40.0},
+--		--Volcanic Combo
+--		[407641] = {24.1, 41.1}
+--	},
+--	["mythic"] = {
+--		--Searing Slam
+--		[405821] = {9.2, 43.0, 33.0},
+--		--Charged Smash
+--		[400777] = {21.2, 43.0},
+--		--Volcanic Combo
+--		[407641] = {29.2, 45.0}
+--	},
 --}
 
 function mod:OnCombatStart(delay)
