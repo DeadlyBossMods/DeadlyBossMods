@@ -97,6 +97,15 @@ local function checkForCombat(self)
 	self:Schedule(0.25, checkForCombat, self)
 end
 
+local function checkEntangled(self)
+	if timerEntangledCD:GetRemaining() > 0 then
+		--Timer exists, do nothing
+		return
+	end
+	timerEntangledCD:Start(25)
+	self:Schedule(checkEntangled, 30)
+end
+
 do
 	local validZones
 	if DBM:GetTOC() >= 100100 then--Season 2
@@ -126,6 +135,7 @@ do
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
+			self:Unschedule(checkEntangled)
 			self:Stop()
 			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
@@ -142,6 +152,8 @@ do
 end
 
 function mod:CHALLENGE_MODE_COMPLETED()
+	self:Unschedule(checkForCombat)
+	self:Unschedule(checkEntangled)
 	self:Stop()--Stop M+ timers on completion as well
 end
 
@@ -220,11 +232,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 408556 then
 		if self:AntiSpam(20, "affseasonal") then
-			if self:GroupInCombat() then
-				timerEntangledCD:Start(30)
-			else
-				timerEntangledCD:Start(60)
-			end
+			timerEntangledCD:Start(30)
+			--Entangled check runs every 30 seconds, and if conditions aren't met for it activating it skips and goes into next 30 second CD
+			--This checks if it was cast (by seeing if timer exists) if not, it starts next timer for next possible cast
+			self:Unschedule(checkEntangled)
+			self:Schedule(checkEntangled, 35)
 		end
 		if args:IsPlayer() then
 			specWarnEntangled:Show()
