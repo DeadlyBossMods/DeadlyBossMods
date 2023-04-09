@@ -222,7 +222,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rendingCount = self.vb.rendingCount + 1
 		specWarnRendingCharge:Show(self.vb.rendingCount)
 		specWarnRendingCharge:Play("incomingdebuff")
-		self:IsMythic() and ((self.vb.rendingCount % 2 == 0) and 18 or 37)
 		timerRendingChargeCD:Start(self:IsMythic() and ((self.vb.rendingCount % 2 == 0) and 18 or 37) or self.vb.rendingCount == 1 and 33.7 or 44.1, self.vb.rendingCount+1)
 	elseif spellId == 407733 or spellId == 404472 then--2nd and later casts, first cast
 		self.vb.massiveSlamCount = self.vb.massiveSlamCount + 1

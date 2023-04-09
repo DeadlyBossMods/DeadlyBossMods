@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201320)
 mod:SetEncounterID(2680)
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(20230407000000)
+mod:SetHotfixNoticeRev(20230408000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -102,22 +102,11 @@ function mod:OnCombatStart(delay)
 	self.vb.tankCombo = 0
 	self.vb.comboCount = 0
 	self.vb.shadowflameCount = 0
-	if self:IsMythic() then
-		timerSearingSlamCD:Start(9.2-delay, 1)
-		timerChargedSmashCD:Start(21.2-delay, 1)
-		timerVolcanicComboCD:Start(29.2-delay, 1)
-		timerDoomFlameCD:Start(39.2-delay, 1)
-		timerShadowlavaBlastCD:Start(92.7-delay, 1)
-		self:RegisterShortTermEvents(
-			"SPELL_ENERGIZE 405825"
-		)
-	else
-		timerSearingSlamCD:Start(4.1-delay, 1)
-		timerChargedSmashCD:Start(15.1-delay, 1)
-		timerVolcanicComboCD:Start(24.1-delay, 1)
-		timerDoomFlameCD:Start(35.2-delay, 1)
-		timerShadowlavaBlastCD:Start(81.6-delay, 1)
-	end
+	timerSearingSlamCD:Start(9.2-delay, 1)
+	timerChargedSmashCD:Start(21.2-delay, 1)
+	timerVolcanicComboCD:Start(29.2-delay, 1)
+	timerDoomFlameCD:Start(39.2-delay, 1)
+	timerShadowlavaBlastCD:Start(92.7-delay, 1)
 	timerAncientFuryCD:Start(100-delay)
 	if self:IsMythic() then
 		timerUnleashedShadowflameCD:Start(4.2-delay, 1)
@@ -125,6 +114,9 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(405827))
 			DBM.InfoFrame:Show(5, "table", overchargedStacks, 1)
 		end
+		self:RegisterShortTermEvents(
+			"SPELL_ENERGIZE 405825"
+		)
 	end
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -151,8 +143,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientFury:Play("aesoon")
 	elseif spellId == 405821 then
 		self.vb.slamCount = self.vb.slamCount + 1
-		--9.2, 43.0, 33.0
-		local timer = self.vb.slamCount == 1 and (self:IsMythic() and 43 or 40) or self.vb.slamCount == 2 and (self:IsMythic() and 33 or 31)
+		local timer = self.vb.slamCount == 1 and 43 or self.vb.slamCount == 2 or 33
 		if timer then
 			timerSearingSlamCD:Start(nil, self.vb.slamCount+1)
 		end
@@ -169,14 +160,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnChargedSmash:Show(self.vb.smashCount)
 		specWarnChargedSmash:Play("watchstep")
 		if self.vb.smashCount == 1 then
-			timerChargedSmashCD:Start(self:IsMythic() and 43 or 40, self.vb.smashCount+1)
+			timerChargedSmashCD:Start(43, self.vb.smashCount+1)
 		end
 	elseif spellId == 407547 then
 		if self:AntiSpam(10, 1) then--In case the success/parent combo ID isn't detectable
 			self.vb.tankCombo = self.vb.tankCombo + 1
 			self.vb.comboCount = 0
 			if self.vb.tankCombo == 1 then
-				timerVolcanicComboCD:Start(self:IsMythic() and 45 or 40, self.vb.tankCombo+1)
+				timerVolcanicComboCD:Start(45, self.vb.tankCombo+1)
 			end
 		end
 		self.vb.comboCount = self.vb.comboCount + 1
@@ -199,7 +190,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.tankCombo = self.vb.tankCombo + 1
 			self.vb.comboCount = 0
 			if self.vb.tankCombo == 1 then
-				timerVolcanicComboCD:Start(self:IsMythic() and 45 or 40, self.vb.tankCombo+1)
+				timerVolcanicComboCD:Start(45, self.vb.tankCombo+1)
 			end
 		end
 		self.vb.comboCount = self.vb.comboCount + 1
@@ -335,18 +326,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.shadowflameCount = 0
 		if self:IsMythic() then
 			timerUnleashedShadowflameCD:Start(6.2, 1)
-			timerSearingSlamCD:Start(11.2, 1)
-			timerChargedSmashCD:Start(23.2, 1)
-			timerVolcanicComboCD:Start(31.2, 1)
-			timerDoomFlameCD:Start(41.2, 1)
-			timerShadowlavaBlastCD:Start(94.7, 1)
-		else
-			timerSearingSlamCD:Start(6.1, 1)
-			timerChargedSmashCD:Start(17.1, 1)
-			timerVolcanicComboCD:Start(26.1, 1)
-			timerDoomFlameCD:Start(37.1, 1)
-			timerShadowlavaBlastCD:Start(83.6, 1)
 		end
+		timerSearingSlamCD:Start(11.2, 1)
+		timerChargedSmashCD:Start(23.2, 1)
+		timerVolcanicComboCD:Start(31.2, 1)
+		timerDoomFlameCD:Start(41.2, 1)
+		timerShadowlavaBlastCD:Start(94.7, 1)
 		timerAncientFuryCD:Start(102)
 	end
 end
