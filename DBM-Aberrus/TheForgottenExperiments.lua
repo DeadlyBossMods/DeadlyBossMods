@@ -367,7 +367,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerDeepBreathCD:Start(30.4, 1)
 			elseif cid == 200913 then--Thadrion
 				timerUnstableEssenceCD:Start(17, 1)
-				if UnitPoweer(unitID) >= 50 then--Coming out bugged
+				if UnitPower(unitID) >= 50 then--Coming out bugged
 					thadBugged = 1
 					--Will use Violent Eruption right away and it'll invert the spew and essence timers
 					timerVolatileSpewCD:Start(26.6, 1)
