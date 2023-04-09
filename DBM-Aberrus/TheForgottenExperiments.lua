@@ -236,13 +236,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 405042 then
 		self.vb.essenceCount = self.vb.essenceCount + 1
 		warnUnstableEssence:Show(self.vb.essenceCount)
-		local alteredSpellID == self:IsMythic() and spellId..thadBugged or spellId
+		local alteredSpellID = self:IsMythic() and spellId..thadBugged or spellId
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.essenceCount+1) or 29.2
 		timerUnstableEssenceCD:Start(timer, self.vb.essenceCount+1)
 	elseif spellId == 405492 then
 		self.vb.volatileSpewCount = self.vb.volatileSpewCount + 1
 		specWarnVolatileSpew:Show(self.vb.volatileSpewCount)
-		local alteredSpellID == self:IsMythic() and spellId..thadBugged or spellId
+		local alteredSpellID = self:IsMythic() and spellId..thadBugged or spellId
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.volatileSpewCount+1) or 25.5
 		timerVolatileSpewCD:Start(timer, self.vb.volatileSpewCount+1)
 	elseif spellId == 405375 or spellId == 407775 then
