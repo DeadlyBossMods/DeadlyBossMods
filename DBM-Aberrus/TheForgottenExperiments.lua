@@ -6,7 +6,7 @@ mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230404000000)
+mod:SetHotfixNoticeRev(20230408000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -44,7 +44,7 @@ local specWarnRendingCharge							= mod:NewSpecialWarningIncomingCount(406358, n
 local specWarnMassiveSlam							= mod:NewSpecialWarningDodgeCount(404472, nil, nil, nil, 2, 2)
 local specWarnBellowingRoar							= mod:NewSpecialWarningCount(404713, nil, nil, nil, 2, 2)
 
-local timerRendingChargeCD							= mod:NewCDCountTimer(34.2, 406358, nil, nil, nil, 3)
+local timerRendingChargeCD							= mod:NewCDCountTimer(34.2, 406358, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
 local timerMassiveSlamCD							= mod:NewCDCountTimer(39, 404472, nil, nil, nil, 3)
 local timerBellowingRoarCD							= mod:NewCDCountTimer(23.1, 404713, nil, nil, nil, 2)
 
@@ -90,13 +90,73 @@ mod.vb.disintegrateCount = 0
 mod.vb.anomalyCount = 0
 local essenceMarks = {}
 local bossActive = {}
+local difficultyName = "normal"
+local thadBugged = 0--0 no 1 yes
 local allTimers = {
-	--Volatile Spew
-	[405492] = {0, 26.8, 28.8, 25.6, 37.7, 25.6, 25.5},
-	--Unstable Essence
-	[405042] = {0, 52.4, 29.2, 31.6, 29.2, 34.0},
-	--Rending Charge
---	[406358] = {14.4, 33.7, 44.2, 45.0, 46.3},
+	["mythic"] = {
+		--Rending Charge
+	--	[406358] = {14.0, 37.0, 18.0, 37.0, 18.0, 37.0},
+		--Bellowing Roar
+	--	[404713] = {36.0, 55.0, 55.0},
+		--Massive Slam
+	--	[404472] = {5.9, 18.0, 18.0, 19.0, 18.0, 18.0, 19.0, 18.0, 18.0},
+		--Volatile Spew (Working)
+		[4054920] = {0, 20.0, 35.0, 20.0, 35.1, 20.0, 35.0},
+		--Volatile Spew (Bugged)
+		[4054921] = {0, 35.0, 20.0, 35.0, 20.0, 35.0, 20.0},
+		--Unstable Essence (Working)
+		[4050420] = {0, 21.0, 34.0, 21.0, 34.1, 21.0, 34.0},
+		--Unstable Essence (Bugged)
+		[4050421] = {0, 34.0, 21.0, 34.0, 21.0, 34.0, 21.0},
+		--Violent Eruption
+	--	[405375] = {0, 55.0, 55.0, 55.0},
+		--Deep Breath
+	--	[406227] = {0, 55.0, 55.0, 55.0, 55.0},
+		--Temporal Anomaly
+	--	[407552] = {0, 22.0, 33.0, 22.0, 33.0, 22.0, 33.0},
+		--Disintegrate
+	--	[405391] = {0, 55.0, 55.0, 55.0},
+	},
+	["heroic"] = {
+		--Rending Charge
+	--	[406358] = {14.4, 33.7, 44.2, 45.0, 46.3},
+		--Bellowing Roar
+	--	[404713] = {5.8, 35.0, 23.1, 23.0, 23.1, 23.1, 23.1, 23.2, 23.1},
+		--Massive Slam
+	--	[404472] = {30.2, 39, 46.2, 46.2, 46.2},
+		--Volatile Spew
+		[405492] = {0, 26.8, 28.8, 25.6, 37.7, 25.6, 25.5},
+		--Unstable Essence
+		[405042] = {0, 51.2, 29.2, 31.6, 29.2, 34.0},
+		--Violent Eruption
+	--	[405375] = {0, 68.2, 69.3},
+		--Deep Breath
+	--	[406227] = {0s, 42.6, 43.8, 43.7, 43.7, 43.7, 43.7},
+		--Temporal Anomaly
+	--	[407552] = {0, 45.1, 43.8, 43.7, 43.7, 43.7, 43.7},
+		--Disintegrate
+	--	[405391] = {0, 43.9, 43.8, 43.8, 43.7, 43.8, 43.7},
+	},
+	["normal"] = {
+		--Rending Charge
+	--	[406358] = {14.5, 34.8, 44.1, 44.5, 45, 44.2, 45.1, 46.2, 44.9, 46.1, 45.8, 46.1, 44.9},
+		--Bellowing Roar
+	--	[404713] = {5.6, 35.7, 22.7, 22.2, 22.6, 22.2, 22.7, 23, 23.1, 23, 22.3, 22.7, 22.3, 23, 22.7, 22.2, 22.6, 23.4, 23.1, 23.1, 22.6, 23, 23.1, 22.2, 22.7},
+		--Massive Slam
+	--	[404472] = {30.4, 38.5, 44.9, 44.9, 46.2, 45.4, 45, 46.2, 44.5, 46.6, 45.8, 46.1, 44.9},
+		--Volatile Spew
+		[405492] = {5.6, 21.9, 36.8, 30.4, 30, 30.4, 33.2, 31.1, 35.2, 30.4},
+		--Unstable Essence
+		[405042] = {16.6, 39.3, 27.5, 35.2, 27.9, 38, 27.5, 38.9, 28},
+		--Violent Eruption
+	--	[405375] = {38.8, 68.1, 66.5, 66},
+		--Deep Breath
+	--	[406227] = {},
+		--Temporal Anomaly
+	--	[407552] = {},
+		--Disintegrate
+	--	[405391] = {},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -105,9 +165,21 @@ function mod:OnCombatStart(delay)
 	self.vb.rendingCount = 0
 	self.vb.massiveSlamCount = 0
 	self.vb.roarCount = 0
-	timerRendingChargeCD:Start(14.3-delay, 1)
-	timerMassiveSlamCD:Start(30.2-delay, 1)
-	timerBellowingRoarCD:Start(6.2-delay, 1)
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerMassiveSlamCD:Start(5.9-delay, 1)
+		timerRendingChargeCD:Start(14-delay, 1)
+		timerBellowingRoarCD:Start(36-delay, 1)
+	else
+		if self:IsHeroic() then
+			difficultyName = "heroic"
+		else
+			difficultyName = "normal"
+		end
+		timerBellowingRoarCD:Start(6.2-delay, 1)
+		timerRendingChargeCD:Start(14.3-delay, 1)
+		timerMassiveSlamCD:Start(30.2-delay, 1)
+	end
 	--Thadrion
 	table.wipe(essenceMarks)
 	self.vb.essenceCount = 0
@@ -134,54 +206,63 @@ end
 --	end
 --end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "normal"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 406358 then
 		self.vb.rendingCount = self.vb.rendingCount + 1
 		specWarnRendingCharge:Show(self.vb.rendingCount)
 		specWarnRendingCharge:Play("incomingdebuff")
-		timerRendingChargeCD:Start(self.vb.rendingCount == 1 and 33.7 or 44.2, self.vb.rendingCount+1)
+		timerRendingChargeCD:Start(self:IsMythic() and ((self.vb.rendingCount % 2 == 0) and 18 or 37) or self.vb.rendingCount == 1 and 33.7 or 44.1, self.vb.rendingCount+1)
 	elseif spellId == 407733 or spellId == 404472 then--2nd and later casts, first cast
 		self.vb.massiveSlamCount = self.vb.massiveSlamCount + 1
 		specWarnMassiveSlam:Show(self.vb.massiveSlamCount)
 		specWarnMassiveSlam:Play("shockwave")
-		--"Massive Slam-404472-npc:200912-00001E240E = pull:30.3",
-		--"Massive Slam-407733-npc:200912-00001E240E = pull:69.3, 46.2, 46.2, 46.2",
-		timerMassiveSlamCD:Start(spellId == 404472 and 38 or 46.2, self.vb.massiveSlamCount+1)
+		timerMassiveSlamCD:Start(self:IsMythic() and 18 or self.vb.massiveSlamCount == 1 and 38 or 44.2, self.vb.massiveSlamCount+1)
 	elseif spellId == 404713 then
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnBellowingRoar:Show(self.vb.roarCount)
 		specWarnBellowingRoar:Play("carefly")
-		--"Bellowing Roar-404713-npc:200912-00001E240E = pull:5.8, 35.5, 23.1, 23.0, 23.1, 23.1, 23.1, 23.2, 23.1",
-		timerBellowingRoarCD:Start(self.vb.roarCount == 1 and 35 or 23, self.vb.roarCount+1)
+		timerBellowingRoarCD:Start(self:IsMythic() and 55 or self.vb.roarCount == 1 and 35 or 23, self.vb.roarCount+1)
 	elseif spellId == 405042 then
 		self.vb.essenceCount = self.vb.essenceCount + 1
 		warnUnstableEssence:Show(self.vb.essenceCount)
-		--"Unstable Essence-405042-npc:200913-00001E240E = pull:237.1, 52.4, 29.2, 31.6, 29.2, 34.0",
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.essenceCount+1) or 29.2
+		local alteredSpellID = self:IsMythic() and spellId..thadBugged or spellId
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.essenceCount+1) or 29.2
 		timerUnstableEssenceCD:Start(timer, self.vb.essenceCount+1)
 	elseif spellId == 405492 then
 		self.vb.volatileSpewCount = self.vb.volatileSpewCount + 1
 		specWarnVolatileSpew:Show(self.vb.volatileSpewCount)
-		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volatileSpewCount+1) or 25.5
+		local alteredSpellID = self:IsMythic() and spellId..thadBugged or spellId
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.volatileSpewCount+1) or 25.5
 		timerVolatileSpewCD:Start(timer, self.vb.volatileSpewCount+1)
 	elseif spellId == 405375 or spellId == 407775 then
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		specWarnViolentEruption:Show(self.vb.eruptionCount)
 		specWarnViolentEruption:Play("aesoon")
-		timerViolentEruptionCD:Start(nil, self.vb.eruptionCount+1)
+		timerViolentEruptionCD:Start(self:IsMythic() and 55 or 66, self.vb.eruptionCount+1)
 	elseif spellId == 406227 and self:AntiSpam(5, 2) then
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnDeepBreath:Show(self.vb.breathCount)
 		specWarnDeepBreath:Play("breathsoon")
-		timerDeepBreathCD:Start(nil, self.vb.breathCount+1)
+		timerDeepBreathCD:Start(self:IsMythic() and 55 or 43.7, self.vb.breathCount+1)
 	elseif spellId == 407552 then
 		self.vb.anomalyCount = self.vb.anomalyCount + 1
 		warnTemporalAnomaly:Show(self.vb.anomalyCount)
-		timerTemporalAnomalyCD:Start(nil, self.vb.anomalyCount+1)
+		--0, 22.0, 33.0, 22.0, 33.0, 22.0, 33.0
+		timerTemporalAnomalyCD:Start(self:IsMythic() and ((self.vb.anomalyCount % 2 == 0) and 33 or 22) or 43.7, self.vb.anomalyCount+1)
 	elseif spellId == 405391 then
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
-		timerDisintegrateCD:Start(nil, self.vb.disintegrateCount+1)
+		timerDisintegrateCD:Start(self:IsMythic() and 55 or 43.7, self.vb.disintegrateCount+1)
 	end
 end
 
@@ -285,9 +366,16 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerTemporalAnomalyCD:Start(17.8, 1)
 				timerDeepBreathCD:Start(30.4, 1)
 			elseif cid == 200913 then--Thadrion
-				timerVolatileSpewCD:Start(5.3, 1)
 				timerUnstableEssenceCD:Start(17, 1)
-				timerViolentEruptionCD:Start(44.3, 1)
+				if UnitPower(unitID) >= 50 then--Coming out bugged
+					thadBugged = 1
+					--Will use Violent Eruption right away and it'll invert the spew and essence timers
+					timerVolatileSpewCD:Start(26.6, 1)
+
+				else
+					timerVolatileSpewCD:Start(5.3, 1)
+					timerViolentEruptionCD:Start(44.3, 1)
+				end
 			--elseif cid == 200912 then--Neldris (in case a diff boss can start)
 			--	timerRendingChargeCD:Stop()
 			--	timerMassiveSlamCD:Stop()
@@ -306,6 +394,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnDeepBreath:Show(self.vb.breathCount)
 		specWarnDeepBreath:Play("breathsoon")
-		timerDeepBreathCD:Start(nil, self.vb.breathCount+1)
+		timerDeepBreathCD:Start(self:IsMythic() and 55 or 43.7, self.vb.breathCount+1)
 	end
 end

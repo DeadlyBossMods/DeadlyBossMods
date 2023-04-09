@@ -15,7 +15,9 @@ mod:RegisterEvents(
 
 --TODO, fine tune tank stacks/throttle?
 --[[
-(ability.id = 240446) and type = "begincast"
+(ability.id = 240446 or ability.id = 409492 or ability.id = 408805) and type = "begincast"
+ or ability.id = 408556 and type = "applydebuff"
+ or type = "dungeonencounterstart" or type = "dungeonencounterend"
 --]]
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 local warnAfflictedCry						= mod:NewCastAnnounce(409492, 4)
@@ -33,7 +35,7 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
---local timerEntangledCD					= mod:NewNextTimer(66, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
+local timerEntangledCD						= mod:NewCDTimer(60, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
 local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
@@ -84,28 +86,24 @@ end
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
 local function checkForCombat(self)
-	local combatFound = false
-	if IsEncounterInProgress() then
-		combatFound = true
-	end
-	if not combatFound then
-		for uId in DBM:GetGroupMembers() do
-			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
-				combatFound = true
-				break
-			end
-		end
-	end
+	local combatFound = self:GroupInCombat()
 	if combatFound and not thunderingCounting then
 		thunderingCounting = true
 		timerThunderingCD:Resume()
-		--timerEntangledCD:Resume()
 	elseif not combatFound and thunderingCounting then
 		thunderingCounting = false
 		timerThunderingCD:Pause()
-		--timerEntangledCD:Pause()
 	end
 	self:Schedule(0.25, checkForCombat, self)
+end
+
+local function checkEntangled(self)
+	if timerEntangledCD:GetRemaining() > 0 then
+		--Timer exists, do nothing
+		return
+	end
+	timerEntangledCD:Start(25)
+	self:Schedule(checkEntangled, 30)
 end
 
 do
@@ -137,6 +135,7 @@ do
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
+			self:Unschedule(checkEntangled)
 			self:Stop()
 			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
@@ -153,6 +152,8 @@ do
 end
 
 function mod:CHALLENGE_MODE_COMPLETED()
+	self:Unschedule(checkForCombat)
+	self:Unschedule(checkEntangled)
 	self:Stop()--Stop M+ timers on completion as well
 end
 
@@ -230,11 +231,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellThunderingFades:Countdown(15, 8, icon)--Start icon spam with count at 8 remaining
 		end
 	elseif spellId == 408556 then
---		if self:AntiSpam(20, "affseasonal") then
---			timerEntangledCD:Start()
---			self:Unschedule(checkForCombat)
---			checkForCombat(self)
---		end
+		if self:AntiSpam(20, "affseasonal") then
+			timerEntangledCD:Start(30)
+			--Entangled check runs every 30 seconds, and if conditions aren't met for it activating it skips and goes into next 30 second CD
+			--This checks if it was cast (by seeing if timer exists) if not, it starts next timer for next possible cast
+			self:Unschedule(checkEntangled)
+			self:Schedule(checkEntangled, 35)
+		end
 		if args:IsPlayer() then
 			specWarnEntangled:Show()
 			specWarnEntangled:Play("targetyou")--breakvine
