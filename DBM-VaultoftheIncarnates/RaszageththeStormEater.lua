@@ -474,7 +474,7 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		if self:AntiSpam(2, 1)--Aggregate similtanious teleports
+		if self:AntiSpam(2, 1) then--Aggregate similtanious teleports
 			warnStormBreak:Show(castsPerGUID[args.sourceGUID])
 			timerStormBreakCD:Start(nil, castsPerGUID[args.sourceGUID]+1)
 		end
