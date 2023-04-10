@@ -18,9 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 408131",
 	"SPELL_AURA_REMOVED 407182 405484 407088 407919 410966",
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
-	"SPELL_PERIODIC_MISSED 409058 404277 409183"
+	"SPELL_PERIODIC_MISSED 409058 404277 409183",
 --	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -81,7 +81,7 @@ local specWarnSweepingShadows					= mod:NewSpecialWarningDodgeCount(403846, nil,
 local specWarnSunderShadow						= mod:NewSpecialWarningDefensive(407790, nil, nil, nil, 1, 2)
 local specWarnSunderShadowSwap					= mod:NewSpecialWarningTaunt(407790, nil, nil, nil, 1, 2)
 
-local timerCorruptionCD							= mod:NewCDCountTimer(29.4, 401010, nil, nil, nil, 5)--Parent
+local timerCorruptionCD							= mod:NewCDCountTimer(43.4, 401010, nil, nil, nil, 5)--Parent
 local timerUmbralAnnihilationCD					= mod:NewCDCountTimer(29.2, 404038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerSunderShadowCD						= mod:NewCDCountTimer(28.2, 407790, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
@@ -191,7 +191,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSunderShadow:Play("defensive")
 		end
 		timerSunderShadowCD:Start(nil, self.vb.tankCount+1)
-	elseif spellId == 401101 then--Basically second and later corruptions
+	elseif spellId == 401101 and self:AntiSpam(5, 2) then--Basically second and later corruptions
 		self.vb.corruptionCount = self.vb.corruptionCount + 1
 		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
 	elseif args:IsSpellID(405436, 405434, 405433, 404038) then--10, 7.5, 5, 2.5 (405433 used on heroic AND normal, others used?)
@@ -241,9 +241,7 @@ function mod:SPELL_CAST_START(args)
 		timerVolcanicHeartCD:Start(20.7, 1)
 		timerUmbralAnnihilationCD:Start(25.8, 1)
 		timerRushingDarknessCD:Start(31.9, 1)
-		if not self:IsEasy() then
-			timerCorruptionCD:Start(40, 2)
-		end
+		timerCorruptionCD:Start(44.3, 2)
 	end
 end
 
@@ -367,8 +365,9 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
---	if spellId == 396734 then
---
---	end
---end
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 410977 and self:AntiSpam(5, 2) then
+		self.vb.corruptionCount = self.vb.corruptionCount + 1
+		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
+	end
+end
