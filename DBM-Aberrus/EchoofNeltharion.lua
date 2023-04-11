@@ -201,7 +201,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.annihilatingCount >= 5 then
 			timerUmbralAnnihilationCD:Start(10.9, self.vb.annihilatingCount+1)
 		else
-			timerUmbralAnnihilationCD:Start(29.4, self.vb.annihilatingCount+1)
+			timerUmbralAnnihilationCD:Start(29.2, self.vb.annihilatingCount+1)
 		end
 	elseif spellId == 407796 then
 		warnShadowShadowStrike:Show()
