@@ -13,6 +13,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMDMF_AllSavedVars
 ## SavedVariablesPerCharacter: DBMDMF_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: OTHER

@@ -10,6 +10,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMVaultoftheIncarnates_AllSavedVars
 ## SavedVariablesPerCharacter: DBMVaultoftheIncarnates_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: DRAGONFLIGHT
