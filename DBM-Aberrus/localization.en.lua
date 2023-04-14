@@ -56,7 +56,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Magmorax --
 ---------------------------
---L= DBM:GetModLocalization(2527)
+L= DBM:GetModLocalization(2527)
+
+L:SetMiscLocalization({
+	pool		= "{rt%%1$d}Pool %%2$d",--<icon> Pool 1,2,3
+	soakpool	= "Soak Pool"
+})
 
 ---------------------------
 --  Echo of Neltharion --
