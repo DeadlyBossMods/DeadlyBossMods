@@ -215,9 +215,10 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--/run DBM:GetModByName(2527):Test(1)
 function mod:Test(icon)
 	if icon then
-		local text = L.pool:format(icon, icon)--<icon> Pool 1,2,3
+		local text = L.pool:format(icon)--<icon> Pool 1,2,3
 		yellMoltenSpittle:Say(text)--Non soak uses white text per conventions
 	else
 		yellMoltenSpittle:Yell(L.soakpool)

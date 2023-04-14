@@ -58,7 +58,7 @@ mod:AddSetIconOption("SetIconOnUmbral", 405016, false, 0, {1, 2, 3})
 --mod:GroupSpells(390715, 396094)
 --Moltannia
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26337))
-local warnBlazingHeat							= mod:NewCountAnnounce(402617, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(401809))
+local warnBlazingHeat							= mod:NewCountAnnounce(402617, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(402617))
 local warnBlazingHeatFades						= mod:NewFadesAnnounce(402617, 1)
 
 local specWarnFieryMeteor						= mod:NewSpecialWarningCount(404732, nil, nil, nil, 2, 2)
