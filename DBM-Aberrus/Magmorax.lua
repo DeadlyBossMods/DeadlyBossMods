@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201579)
 mod:SetEncounterID(2683)
 mod:SetUsedIcons(1, 2, 3, 8)
-mod:SetHotfixNoticeRev(20230410000000)
+mod:SetHotfixNoticeRev(20230413000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -183,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 				timerBlazingBreathCD:Start(27.8, self.vb.breathCount+1)
 			end
 		else
-			--26.0, 28.0, 41.0, 33.0, 28.0, 41.0, 33.0, 28.0, 41.0
+			--25.0, 28.0, 41.0, 33.0, 28.0, 41.0, 33.0, 28.0, 41.0
 			if self.vb.breathCount % 3 == 0 then
 				timerBlazingBreathCD:Start(33, self.vb.breathCount+1)
 			elseif self.vb.breathCount % 3 == 2 then

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230402000000)
+mod:SetHotfixNoticeRev(20230413000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -49,7 +49,7 @@ local timerTacticalDestructionCD				= mod:NewCDCountTimer(61.5, 406678, nil, nil
 local timerShrapnalBombCD						= mod:NewCDCountTimer(42.5, 406725, nil, nil, nil, 3)
 local timerShrapnalBomb							= mod:NewCastTimer(30, 406725, nil, nil, nil, 2)
 local timerAnimateGolemsCD						= mod:NewCDCountTimer(60.2, 405812, nil, nil, nil, 1)
-local timerBlastWaveCD							= mod:NewCDCountTimer(33.2, 403978, nil, nil, nil, 2)
+local timerBlastWaveCD							= mod:NewCDCountTimer(34, 403978, nil, nil, nil, 2)
 local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -79,10 +79,10 @@ function mod:OnCombatStart(delay)
 	timerUnstableEmbersCD:Start(7-delay, 1)
 	timerBlastWaveCD:Start(10.7-delay, 1)
 	if self:IsMythic() then
-		timerShrapnalBombCD:Start(5.8-delay, 1)
 		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
-		timerAnimateGolemsCD:Start(24.1-delay, 1)
+		timerAnimateGolemsCD:Start(26.6-delay, 1)
 		timerTacticalDestructionCD:Start(31.3-delay, 1)
+		timerShrapnalBombCD:Start(36.4-delay, 1)
 	else
 		timerShrapnalBombCD:Start(14.8-delay, 1)
 		timerDragonDeezTrapsCD:Start(21-delay, 1)
@@ -97,7 +97,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.destructionCount = self.vb.destructionCount + 1
 		specWarnTacticalDestruction:Show(self.vb.destructionCount)
 		specWarnTacticalDestruction:Play("watchstep")
-		timerTacticalDestructionCD:Start(self:IsMythic() and 71.7 or 61.5, self.vb.destructionCount+1)
+		timerTacticalDestructionCD:Start(self:IsMythic() and 73 or 61.5, self.vb.destructionCount+1)
 	elseif spellId == 405812 then
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
@@ -137,12 +137,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 404007 then
 		self.vb.embersCount = self.vb.embersCount + 1
-		timerUnstableEmbersCD:Start(self:IsMythic() and 15.8 or 20.7, self.vb.embersCount+1)
+		timerUnstableEmbersCD:Start(self:IsMythic() and 15.7 or 20.7, self.vb.embersCount+1)
 	elseif spellId == 406725 then
 		self.vb.shrapnalSoakCount = 0
 		self.vb.trapCastCount = self.vb.trapCastCount + 1
 		warnScatterTraps:Show(self.vb.trapCastCount)
-		timerShrapnalBombCD:Start(self:IsMythic() and 30.8 or 42.5, self.vb.trapCastCount+1)
+		timerShrapnalBombCD:Start(self:IsMythic() and 30.4 or 42.5, self.vb.trapCastCount+1)
 		timerShrapnalBomb:Start()
 	end
 end
