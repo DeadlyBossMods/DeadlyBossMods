@@ -44,9 +44,9 @@ local yellVolcanicHeart							= mod:NewShortPosYell(410953)
 local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
 local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, nil, nil, nil, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
 local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
-local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
-local yellRushingDarkness						= mod:NewShortPosYell(402116)
-local yellRushingDarknessFades					= mod:NewIconFadesYell(402116)
+local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
+local yellRushingDarkness						= mod:NewShortPosYell(407221)
+local yellRushingDarknessFades					= mod:NewIconFadesYell(407221)
 local specWarnCalamitousStrike					= mod:NewSpecialWarningDefensive(406222, nil, nil, nil, 1, 2)
 local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, nil, nil, 1, 2)
 --local specWarnPyroBlast						= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -183,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCalamitousStrike:Show()
 			specWarnCalamitousStrike:Play("defensive")
 		end
-		timerCalamitousStrikeCD:Start(self.vb.phase == 1 and 33.6 or 29.2, self.vb.tankCount+1)
+		timerCalamitousStrikeCD:Start(self:SetStage(1) and 33.6 or 29.2, self.vb.tankCount+1)
 	elseif spellId == 407790 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -221,7 +221,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407207 then
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		self.vb.rushingIcon = 4
-		timerRushingDarknessCD:Start(self.vb.phase == 1 and 33.6 or 28, self.vb.RushingDarknessCount+1)
+		timerRushingDarknessCD:Start(self:SetStage(1) and 33.6 or 28, self.vb.RushingDarknessCount+1)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
@@ -254,7 +254,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 410968 then
 		self.vb.volcIcon = 1
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
-		timerVolcanicHeartCD:Start(self.vb.phase == 1 and 33.6 or 16.3, self.vb.volcanicCount+1)
+		timerVolcanicHeartCD:Start(self:SetStage(1) and 33.6 or 16.3, self.vb.volcanicCount+1)
 	end
 end
 
@@ -330,7 +330,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellVolcanicHeartFades:Cancel()
 		end
-	elseif spellId == 407088 and self.vb.phase == 2 then
+	elseif spellId == 407088 and self:SetStage(2, 1) then
 		self:SetStage(3)
 		self.vb.RushingDarknessCount = 0
 		self.vb.tankCount = 0

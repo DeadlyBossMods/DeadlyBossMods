@@ -545,7 +545,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerLightningDevastationCD:Start(self:IsMythic() and 12.8 or 13.2, 1)
 		end
 		timerPhaseCD:Start(self:IsMythic() and 93.3 or 100)
-	elseif spellId == 381249 and self.vb.phase == 1.5 then--Pre stage 2 trigger (Electric Scales)
+	elseif spellId == 381249 and self:SetStage(1.5) then--Pre stage 2 trigger (Electric Scales)
 		self:SetStage(2)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
@@ -606,7 +606,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFulminatingChargeCD:Start(41.5, 1)
 			timerTempestWingCD:Start(66.4, 1)
 		end
-	elseif spellId == 181089 and self.vb.phase == 2 and self.vb.stormSurgeCount > 0 then--Encounter event
+	elseif spellId == 181089 and self:SetStage(2) and self.vb.stormSurgeCount > 0 then--Encounter event
 		--This is now only used for 2.5 since other stages have earlier events to use
 		--But we need to be very specific WHEN to use this event since it fires 7x on fight
 		self:SetStage(2.5)
@@ -877,7 +877,7 @@ end
 
 --"<330.41 11:01:55> [CHAT_MSG_RAID_BOSS_EMOTE] Raszageth takes a deep breath...#Raszageth###Raszageth##0#0##0#1502#nil#0#false#false#false#false", -- [17507]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if not msg:find("ICON") and npc == target and (self.vb.phase == 1.5 or self.vb.phase == 2.5) then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
+	if not msg:find("ICON") and npc == target and (self:SetStage(1.5) or self:SetStage(2.5)) then--This needs vetting, if p2 and p3 mythic have no emotes missing icons, this will work without localizing
 --	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
 		self:Unschedule(warnDeepBreath)
 		warnDeepBreath(self, true)
@@ -886,7 +886,7 @@ end
 
 --Purely for earlier timer canceling, new timers not started on USCS if it can be helped, otherwise timers can't be updated easily from WCLs
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 396734 and self.vb.phase == 1 then--Storm Shroud
+	if spellId == 396734 and self:SetStage(1) then--Storm Shroud
 		timerHurricaneWingCD:Stop()
 		timerStaticChargeCD:Stop()
 		timerVolatileCurrentCD:Stop()

@@ -58,7 +58,7 @@ mod:AddSetIconOption("SetIconOnUmbral", 405016, false, 0, {1, 2, 3})
 --mod:GroupSpells(390715, 396094)
 --Moltannia
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26337))
-local warnBlazingHeat							= mod:NewCountAnnounce(402617, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(401809))
+local warnBlazingHeat							= mod:NewCountAnnounce(402617, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(402617))
 local warnBlazingHeatFades						= mod:NewFadesAnnounce(402617, 1)
 
 local specWarnFieryMeteor						= mod:NewSpecialWarningCount(404732, nil, nil, nil, 2, 2)
@@ -342,7 +342,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 406730 and self.vb.phase == 1 then--Crucible Instability
+	if spellId == 406730 and self:SetStage(2, 1) then--Crucible Instability
 		self:SetStage(2)
 		self.vb.bossLeft = self.vb.bossLeft - 2--Stage 1 bosses don't actually die, they fuse. This just updates mods internal count
 		self.vb.meteorCast = 0--Reused for Gloom Conflagration
