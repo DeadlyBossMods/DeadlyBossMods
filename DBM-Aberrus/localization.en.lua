@@ -34,7 +34,20 @@ L:SetOptionLocalization({
 ---------------------------
 --  Assault of the Zaqali --
 ---------------------------
---L= DBM:GetModLocalization(2524)
+L= DBM:GetModLocalization(2524)
+
+L:SetTimerLocalization{
+	timerGuardsandHuntsmanCD	= "Big Adds (%s)"
+}
+
+L:SetOptionLocalization({
+	timerGuardsandHuntsmanCD	= "Show timers for new Huntsman or Guards climbing the walls"
+})
+
+L:SetMiscLocalization({
+	northWall		= "Commanders ascend the northern battlement!",
+	southWall		= "Commanders ascend the southern battlement!"
+})
 
 ---------------------------
 --  Rashok --
