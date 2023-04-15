@@ -35,7 +35,20 @@ L:SetOptionLocalization({
 ---------------------------
 --  Assault of the Zaqali --
 ---------------------------
---L= DBM:GetModLocalization(2524)
+L= DBM:GetModLocalization(2524)
+
+L:SetTimerLocalization{
+	timerGuardsandHuntsmanCD	= "큰 쫄 (%s)"
+}
+
+L:SetOptionLocalization({
+	timerGuardsandHuntsmanCD	= "새 수렵꾼이나 경비병이 벽을 타고 올라오는 타이머 보기"
+})
+
+L:SetMiscLocalization({
+	northWall		= "Commanders ascend the northern battlement!",
+	southWall		= "Commanders ascend the southern battlement!"
+})
 
 ---------------------------
 --  Rashok --
@@ -57,7 +70,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Magmorax --
 ---------------------------
---L= DBM:GetModLocalization(2527)
+L= DBM:GetModLocalization(2527)
+
+L:SetMiscLocalization({
+	pool		= "{rt%d}바닥 %d",--<icon> Pool 1,2,3
+	soakpool	= "바닥 밟기"
+})
 
 ---------------------------
 --  Echo of Neltharion --
