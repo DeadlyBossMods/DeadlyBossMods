@@ -5,34 +5,36 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230406000000)
+mod:SetHotfixNoticeRev(20230414000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 404585 401258 401867 408959 397383 409271 401108 407009 410351 397386 397514",
-	"SPELL_CAST_SUCCESS 401401",
+	"SPELL_CAST_START 404585 401258 401867 408959 397383 409271 401108 407009 410351 397386",
+	"SPELL_CAST_SUCCESS 397514",
 	"SPELL_AURA_APPLIED 401867 402066 401381 409275 408873 410353 401452",
 	"SPELL_AURA_APPLIED_DOSE 408873 410353",
 	"SPELL_AURA_REMOVED 401867 402066 401452",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
-(ability.id = 410516 or ability.id = 401258 or ability.id = 408959 or ability.id = 409271 or ability.id = 401108 or ability.id = 407009 or ability.id = 410351 or ability.id = 397514) and type = "begincast"
-  or (ability.id = 404585 or ability.id = 397386 or ability.id = 397383 or ability.id = 401867) and type = "begincast"
+(ability.id = 410516 or ability.id = 401258 or ability.id = 408959 or ability.id = 401108 or ability.id = 407009 or ability.id = 410351 or ability.id = 397514) and type = "begincast"
+ or ability.id = 397514 and type = "cast"
+ or (source.type = "NPC" and source.firstSeen = timestamp) and (source.id = 199703 or source.id = 204505 or source.id = 199812) or (target.type = "NPC" and target.firstSeen = timestamp) and (target.id = 199703 or target.id = 204505 or target.id = 199812)
+ or (ability.id = 404585 or ability.id = 397386 or ability.id = 397383 or ability.id = 401867 or ability.id = 409271) and type = "begincast"
 --]]
 --TODO, refine slam and door aoe stack warnings for Barrier Backfire?
 --TODO, nameplate aura for https://www.wowhead.com/ptr/spell=410740/from-the-ashes ? need to make sure it actually has nameplate first
 --TODO, can lava flow be dodged? if so probably should be emphasized, if not, cast alert should be removed
---TOOD, adds timers when cleaner way to detect spawns, as well as timers for their initial casts
 --TODO, stage 2 https://www.wowhead.com/ptr/spell=406585/ignaras-fury fury timer?
---TODO, Devastating Slam may be sequenced but needs bigger sample size
+--TODO, Devastating Slam still needs more review
 --General
 local warnBatteringSlam								= mod:NewCastAnnounce(404585, 3)
 
@@ -53,14 +55,20 @@ local timerVigorousGaleCD							= mod:NewAITimer(29.9, 407009, nil, nil, nil, 2,
 ----Warlord Kagni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26209))
 local warnHeavyCudgel								= mod:NewStackAnnounce(401258, 2, nil, "Tank|Healer")
+local warnMagmaMystic								= mod:NewCountAnnounce("ej26217", 3, 397383)
+local warnWallClimber								= mod:NewCountAnnounce("ej26221", 2, 163789)
 
 local specWarnHeavyCudgel							= mod:NewSpecialWarningDefensive(401258, nil, nil, nil, 1, 2)
 local specWarnHeavyCudgelStack						= mod:NewSpecialWarningStack(401258, nil, 2, nil, nil, 1, 6)
 local specWarnHeavyCudgelSwap						= mod:NewSpecialWarningTaunt(401258, nil, nil, nil, 1, 2)
 local specWarnDevastatingLeap						= mod:NewSpecialWarningDodgeCount(408959, nil, nil, nil, 2, 2)
+local specWarnAdds									= mod:NewSpecialWarningAddsCustom(285849, "-Healer", nil, nil, 1, 2)
 
 local timerHeavyCudgelCD							= mod:NewCDCountTimer(21.0, 401258, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, nil, nil, nil, 3)
+local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, "ej26217", nil, nil, nil, 1, 397383)--Molten Barrier Icon
+local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, nil, nil, 1, 163789)--Ladder Icon
+local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1)--Random guard banner
 ----Magma Mystic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26217))
 local warnMoltenBarrier								= mod:NewCastAnnounce(397383, 4)
@@ -69,8 +77,8 @@ local warnMagmaFlow									= mod:NewTargetNoFilterAnnounce(409271, 2, nil, "Rem
 
 local specWarnLavaBolt								= mod:NewSpecialWarningInterruptCount(397386, "HasInterrupt", nil, nil, 1, 2)--3.7 CD
 
-local timerMoltenBarrierCD							= mod:NewAITimer(29.9, 397383, nil, nil, nil, 2)
-local timerMagmaFlowCD								= mod:NewCDTimer(20.7, 409271, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+--local timerMoltenBarrierCD							= mod:NewAITimer(29.9, 397383, nil, nil, nil, 2)
+--local timerMagmaFlowCD								= mod:NewCDTimer(20.7, 409271, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 ----Obsidian Guard
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26210))
 local warnVolcanicShield							= mod:NewCastAnnounce(401867, 4)
@@ -79,7 +87,7 @@ local warnVolcanicShield							= mod:NewCastAnnounce(401867, 4)
 --local yellVolcanicShield							= mod:NewShortYell(401867)
 --local yellVolcanicShieldFades						= mod:NewShortFadesYell(401867)
 
-local timerVolcanicShieldCD							= mod:NewAITimer(29.9, 401867, nil, nil, nil, 3)
+local timerVolcanicShieldCD							= mod:NewCDTimer(30.3, 401867, nil, nil, nil, 3)--30-40
 ----Flamebound Huntsman
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26213))
 local warnBlazingSpear								= mod:NewTargetAnnounce(401401, 3)
@@ -94,13 +102,13 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26683))
 local warnDesperateImmo								= mod:NewSpellAnnounce(409359, 3)
 local warnFlamingCudgel								= mod:NewStackAnnounce(410351, 2, nil, "Tank|Healer")
 
-local specWarnDevastatingSlam						= mod:NewSpecialWarningCount(410535, nil, nil, nil, 2, 2)
+local specWarnCatastrophicSlam						= mod:NewSpecialWarningCount(410535, nil, nil, nil, 2, 2)
 local specWarnFlamingCudgel							= mod:NewSpecialWarningCount(410351, nil, nil, nil, 2, 2)--Count because it's hybrid warning
 local specWarnFlamingCudgelStack					= mod:NewSpecialWarningStack(410351, nil, 2, nil, nil, 1, 6)
 local specWarnFlamingCudgelSwap						= mod:NewSpecialWarningTaunt(410351, nil, nil, nil, 1, 2)
 
 --local timerIgnarasFuryCD							= mod:NewAITimer(29.9, 406585, nil, nil, nil, 2)
-local timerDevastatingSlamCD						= mod:NewCDCountTimer(30.3, 410535, nil, nil, nil, 5)
+local timerCatastrophicSlamCD						= mod:NewCDCountTimer(30.3, 410535, nil, nil, nil, 5)
 local timerFlamingCudgelCD							= mod:NewCDCountTimer(34, 410351, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddInfoFrameOption(361651, true)
@@ -113,6 +121,44 @@ mod.vb.cudgelCount = 0
 mod.vb.leapCount = 0
 mod.vb.rushCount = 0
 mod.vb.galeCount = 0
+mod.vb.bigAdds = 0
+mod.vb.magmaMysticCount = 0
+mod.vb.wallClimberCount = 0
+--CLEU data pulling is not fully accurate since first hits doesn't mean first seen accuracy.
+--However, based on the way the boss patterns typically being initial, one off, then repeating pattern.
+--The timer assumptions below follow pattern perfectly and should be pretty dang close if not dead on
+--local magmaTimers = {23.9, 75, 130, 175, 230, 275, 330}--23.9, 79.3, 131.9, 178.1, 232.6, 277.5, 334.4
+--local climbersTimers = {34, 80, 140, 180, 240, 280, 340}--34.3, 82.5, 141.9, 180.1, 242.9, 281.6, 341.7
+
+local function magmaLoop(self)
+	self.vb.magmaMysticCount = self.vb.magmaMysticCount + 1
+	warnMagmaMystic:Show(self.vb.magmaMysticCount)
+	local timer
+	if self.vb.magmaMysticCount == 1 then
+		timer = 51.1
+	elseif self.vb.magmaMysticCount % 2 == 0 then
+		timer = 55
+	else
+		timer = 45
+	end
+	timerMagmaMysticCD:Start(timer, self.vb.magmaMysticCount+1)
+	self:Schedule(timer, magmaLoop, self)
+end
+
+local function climberLoop(self)
+	self.vb.wallClimberCount = self.vb.wallClimberCount + 1
+	warnWallClimber:Show(self.vb.wallClimberCount)
+	local timer
+	if self.vb.wallClimberCount == 1 then
+		timer = 46
+	elseif self.vb.wallClimberCount % 2 == 0 then
+		timer = 60
+	else
+		timer = 40
+	end
+	timerWallClimberCD:Start(timer, self.vb.wallClimberCount+1)
+	self:Schedule(timer, climberLoop, self)
+end
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -121,7 +167,15 @@ function mod:OnCombatStart(delay)
 	self.vb.leapCount = 0
 	self.vb.rushCount = 0
 	self.vb.galeCount = 0
+	self.vb.bigAdds = 0
+	self.vb.magmaMysticCount = 0
+	self.vb.wallClimberCount = 0
 	timerHeavyCudgelCD:Start(11.9-delay, 1)
+	timerMagmaMysticCD:Start(23.9-delay, 1)
+	self:Schedule(23.9-delay, magmaLoop, self)
+	timerWallClimberCD:Start(34, 1)
+	self:Schedule(34, climberLoop, self)
+	timerGuardsandHuntsmanCD:Start(40-delay, 1)
 	timerDevastatingLeapCD:Start(98.4-delay, 1)
 --	if self.Options.NPAuraOnLeap then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -152,6 +206,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--12.0, 59.7, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
 		--11.9, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0",
+		--11.9, 59.8, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0"
 		local timer
 		if self.vb.cudgelCount == 1 then--One off
 			timer = 59.5
@@ -173,17 +228,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnDevastatingLeap:Show(self.vb.leapCount)
 		specWarnDevastatingLeap:Play("shockwave")
 		--98.4, 47.5, 52.3, 47.6, 52.3
+		--98.6, 46.2, 53.7, 47.4, 52.4
 		if self.vb.leapCount % 2 == 0 then
 			timerDevastatingLeapCD:Start(52.3, self.vb.leapCount+1)
 		else
-			timerDevastatingLeapCD:Start(47.5, self.vb.leapCount+1)
+			timerDevastatingLeapCD:Start(46.2, self.vb.leapCount+1)
 		end
-	elseif spellId == 397383 then
-		warnMoltenBarrier:Show()
-		timerMoltenBarrierCD:Start(nil, args.sourceGUID)
+--	elseif spellId == 397383 then
+--		warnMoltenBarrier:Show()
+--		timerMoltenBarrierCD:Start(nil, args.sourceGUID)
 	elseif spellId == 409271 then
 		warnMagmaFlowCast:Show()
-		timerMagmaFlowCD:Start(nil, args.sourceGUID)
+--		timerMagmaFlowCD:Start(nil, args.sourceGUID)
 	elseif spellId == 401108 then
 		self.vb.rushCount = self.vb.rushCount + 1
 		warnPhoenixRush:Show(self.vb.rushCount)
@@ -216,7 +272,12 @@ function mod:SPELL_CAST_START(args)
 				specWarnLavaBolt:Play("kickcast")
 			end
 		end
-	elseif spellId == 397514 then--Desperate Immolation
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 397514 then--Desperate Immolation
 		self.vb.cudgelCount = 0
 		self.vb.leapCount = 0--Reused with demo slam
 		self:SetStage(2)
@@ -225,19 +286,15 @@ function mod:SPELL_CAST_START(args)
 		timerDevastatingLeapCD:Stop()
 		timerPhoenixRushCD:Stop()
 		timerVigorousGaleCD:Stop()
-		timerFlamingCudgelCD:Start(26.3, 1)
-		timerDevastatingSlamCD:Start(38.2, 1)
+		self:Unschedule(magmaLoop)
+		self:Unschedule(climberLoop)
+		timerMagmaMysticCD:Stop()
+		timerWallClimberCD:Stop()
+		timerGuardsandHuntsmanCD:Stop()
+		timerFlamingCudgelCD:Start(24.3, 1)
+		timerCatastrophicSlamCD:Start(42.7, 1)
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 401401 then
---		timerBlazingSpearCD:Start(nil, args.sourceGUID)
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -337,17 +394,51 @@ function mod:UNIT_DIED(args)
 --		timerBlazingSpearCD:Stop(args.destGUID)
 	elseif cid == 199703 then--magma-mystic
 		castsPerGUID[args.destGUID] = nil
-		timerMoltenBarrierCD:Stop(args.destGUID)
-		timerMagmaFlowCD:Stop(args.destGUID)
+--		timerMoltenBarrierCD:Stop(args.destGUID)
+--		timerMagmaFlowCD:Stop(args.destGUID)
+	--elseif cid == 204505 or cid == 199812 then--Zaqali Wallclimbers
+
+	end
+end
+
+--"<2.20 22:31:24> [ENCOUNTER_START] 2682#Assault of the Zaqali#16#20", -- [6]
+--"<42.03 22:32:04> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\Ability_Hunter_KillCommand.blp:20|t Commanders ascend the southern battlement!#Warlord Kagni#####0#0##0#939#nil#0#false#false#false#false", -- [1756]
+--"<76.46 22:32:39> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\Ability_Hunter_KillCommand.blp:20|t Commanders ascend the northern battlement!#Warlord Kagni#####0#0##0#941#nil#0#false#false#false#false", -- [4305]
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("Ability_Hunter_KillCommand.blp") then
+		self.vb.bigAdds = self.vb.bigAdds + 1
+		local timer
+		if self.vb.bigAdds == 1 then--One off
+			timer = 33.7
+		elseif self.vb.bigAdds % 5 == 1 then--x, 6, 11, 16, etc
+			timer = 23
+		elseif self.vb.bigAdds % 5 == 2 then--2, 7, 12, 17, etc
+			timer = 21
+		elseif self.vb.bigAdds % 5 == 3 then--3, 8, 13, 18, etc
+			timer = 5
+		elseif self.vb.bigAdds % 5 == 4 then--4, 9, 14, 19, etc
+			timer = 21.9
+		elseif self.vb.bigAdds % 5 == 0 then--5, 10, 15, 20, etc
+			timer = 29
+		end
+		timerGuardsandHuntsmanCD:Start(timer, self.vb.bigAdds+1)
+		local wallText = ""
+		if msg:find(L.northWall) then
+			wallText = DBM_COMMON_L.NORTH
+		elseif msg:find(L.southWall) then
+			wallText = DBM_COMMON_L.SOUTH
+		end
+		specWarnAdds:Show(wallText)
+		specWarnAdds:Play("bigmob")
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 410540 then--Demolishg Slam
 		self.vb.leapCount = self.vb.leapCount + 1
-		specWarnDevastatingSlam:Show(self.vb.leapCount)
-		specWarnDevastatingSlam:Play("helpsoak")
+		specWarnCatastrophicSlam:Show(self.vb.leapCount)
+		specWarnCatastrophicSlam:Play("helpsoak")
 		--383.0, 32.8, 30.3, 34.0, 34.0, 35.2, 32.8, 35.2
-		timerDevastatingSlamCD:Start(nil, self.vb.leapCount+1)
+		timerCatastrophicSlamCD:Start(self:IsMythic() and 36 or 30.3, self.vb.leapCount+1)
 	end
 end
