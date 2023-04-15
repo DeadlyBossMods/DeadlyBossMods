@@ -50,8 +50,8 @@ local warnPhoenixRush								= mod:NewCountAnnounce(401108, 3)
 local specWarnAwakenedFocus							= mod:NewSpecialWarningRun(401381, nil, nil, nil, 4, 2, 4)
 local specWarnVigorousGale							= mod:NewSpecialWarningCount(407009, nil, nil, nil, 2, 13, 4)
 
-local timerPhoenixRushCD							= mod:NewAITimer(29.9, 401108, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerVigorousGaleCD							= mod:NewAITimer(29.9, 407009, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+--local timerPhoenixRushCD							= mod:NewAITimer(29.9, 401108, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+--local timerVigorousGaleCD							= mod:NewAITimer(29.9, 407009, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 ----Warlord Kagni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26209))
 local warnHeavyCudgel								= mod:NewStackAnnounce(401258, 2, nil, "Tank|Healer")
@@ -243,12 +243,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 401108 then
 		self.vb.rushCount = self.vb.rushCount + 1
 		warnPhoenixRush:Show(self.vb.rushCount)
-		timerPhoenixRushCD:Start()
+--		timerPhoenixRushCD:Start()
 	elseif spellId == 407009 then
 		self.vb.galeCount = self.vb.galeCount + 1
 		specWarnVigorousGale:Show(self.vb.galeCount)
 		specWarnVigorousGale:Play("pushbackincoming")
-		timerVigorousGaleCD:Start()
+--		timerVigorousGaleCD:Start()
 	elseif spellId == 410351 then
 		self.vb.cudgelCount = self.vb.cudgelCount + 1
 		specWarnFlamingCudgel:Show(self.vb.cudgelCount)
@@ -284,8 +284,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDesperateImmo:Show()
 		timerHeavyCudgelCD:Stop()
 		timerDevastatingLeapCD:Stop()
-		timerPhoenixRushCD:Stop()
-		timerVigorousGaleCD:Stop()
+--		timerPhoenixRushCD:Stop()
+--		timerVigorousGaleCD:Stop()
 		self:Unschedule(magmaLoop)
 		self:Unschedule(climberLoop)
 		timerMagmaMysticCD:Stop()
