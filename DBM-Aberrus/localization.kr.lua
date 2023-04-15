@@ -42,12 +42,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	timerGuardsandHuntsmanCD	= "새 수렵꾼이나 경비병이 벽을 타고 올라오는 타이머 보기"
+	timerGuardsandHuntsmanCD	= "새 수렵꾼이나 경비병이 성루를 타고 올라오는 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	northWall		= "Commanders ascend the northern battlement!",
-	southWall		= "Commanders ascend the southern battlement!"
+	northWall		= "지휘관이 북쪽 성루를 타고 오릅니다!",
+	southWall		= "지휘관이 남쪽 성루를 타고 오릅니다!"
 })
 
 ---------------------------
