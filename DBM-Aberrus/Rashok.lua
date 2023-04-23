@@ -40,7 +40,7 @@ local yellSearingSlam								= mod:NewShortYell(405821)
 local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
 local specWarnDoomFlame								= mod:NewSpecialWarningCount(406851, nil, nil, nil, 2, 2)
 local specWarnShadowlavaBlast						= mod:NewSpecialWarningDodgeCount(406333, nil, nil, nil, 2, 2)
-local specWarnChargedSmash							= mod:NewSpecialWarningDodgeCount(400777, nil, nil, nil, 2, 2)
+local specWarnChargedSmash							= mod:NewSpecialWarningCount(400777, nil, nil, nil, 2, 2)
 local specWarnFlamingUpsurge						= mod:NewSpecialWarningDefensive(407547, nil, nil, nil, 1, 2)
 local specWarnFlamingUpsurgeTaunt					= mod:NewSpecialWarningTaunt(407547, nil, nil, nil, 1, 2)
 local specWarnEarthenCrush							= mod:NewSpecialWarningDefensive(407597, nil, nil, nil, 1, 2)
@@ -158,7 +158,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 400777 then
 		self.vb.smashCount = self.vb.smashCount + 1
 		specWarnChargedSmash:Show(self.vb.smashCount)
-		specWarnChargedSmash:Play("watchstep")
+		specWarnChargedSmash:Play("helpsoak")
 		if self.vb.smashCount == 1 then
 			timerChargedSmashCD:Start(43, self.vb.smashCount+1)
 		end
