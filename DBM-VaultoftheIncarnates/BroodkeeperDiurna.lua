@@ -162,7 +162,7 @@ local function updateAllTimers(self, ICD, exclusion)
 		timerStormFissureCD:Update(elapsed, total+extend)
 	end
 	--Specific Phase ability timers
-	if self:SetStage(1) then
+	if self:GetStage(1) then
 		if not exclusion and timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1) < ICD then--All difficulties have P1 stoneclaws
 			local elapsed, total = timerMortalStoneclawsCD:GetTime(self.vb.tankCombocount+1)
 			local extend = ICD - (total-elapsed)
@@ -271,7 +271,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWildfire:Play("scatter")
 		specWarnWildfire:ScheduleVoice(2, "watchstep")
 		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 25, self.vb.wildFireCount+1)
-		if self:IsHard() and self:SetStage(2) then
+		if self:IsHard() and self:GetStage(2) then
 			updateAllTimers(self, 5)
 		else
 			updateAllTimers(self, 2.5)
@@ -302,7 +302,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
-		local timer = ((self:IsEasy() or self:SetStage(1)) and 22.4 or 7.3)
+		local timer = ((self:IsEasy() or self:GetStage(1)) and 22.4 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
@@ -433,7 +433,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			staffTimer = (self.vb.staffCount >= 13) and 20 or 24.3
 		end
-		if self:SetStage(1) then
+		if self:GetStage(1) then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnGreatstaffoftheBroodkeeper:Play("specialsoon")
 			timerGreatstaffoftheBroodkeeperCD:Start(staffTimer, self.vb.staffCount+1)--24-29 in all difficulties
@@ -537,7 +537,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expireTime then
 			remaining = expireTime-GetTime()
 		end
-		if self:SetStage(2) and (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+		if self:GetStage(2) and (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnMortalWounds:Show(args.destName)
 			specWarnMortalWounds:Play("tauntboss")
 		else
@@ -557,7 +557,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnBroodkeepersFury:Show(args.destName, amount)
 		timerBroodkeepersFuryCD:Start(30, amount+1)
-		if self:SetStage(2, 1) then
+		if self:GetStage(2, 1) then
 			self:SetStage(2)
 			self.vb.wildFireCount = 0
 			--Just stop outright
