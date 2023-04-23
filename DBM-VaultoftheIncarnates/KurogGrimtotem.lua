@@ -663,7 +663,7 @@ do
 	}
 
 	function updateAltar(self)
-		if self:SetStage(2) then return end
+		if self:GetStage(2) then return end
 		--Collect current timers usiing cached spellname reference so it's actually possible to find timer with API (before we change it)
 		local dElapsed, dTotal = timerDamageCD:GetTime(self.vb.damageSpell)
 		local aElapsed, aTotal = timerAvoidCD:GetTime(self.vb.avoidSpell)
