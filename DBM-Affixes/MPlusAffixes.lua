@@ -236,7 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Entangled check runs every 30 seconds, and if conditions aren't met for it activating it skips and goes into next 30 second CD
 			--This checks if it was cast (by seeing if timer exists) if not, it starts next timer for next possible cast
 			self:Unschedule(checkEntangled)
-			self:Schedule(checkEntangled, 35)
+			self:Schedule(35, checkEntangled, self)
 		end
 		if args:IsPlayer() then
 			specWarnEntangled:Show()
