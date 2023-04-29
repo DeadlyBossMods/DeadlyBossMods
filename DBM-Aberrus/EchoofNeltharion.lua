@@ -258,7 +258,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		self.vb.volcIcon = 1
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 		specWarnVolcanicHeart:Show(self.vb.volcanicCount
-		specWarnVolcanicHeart:Play("incomingdebuff"))
+		specWarnVolcanicHeart:Play("incomingdebuff")
 		timerVolcanicHeartCD:Start(self:GetStage(1) and 33.6 or 16.3, self.vb.volcanicCount+1)
 	end
 end
