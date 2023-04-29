@@ -124,8 +124,8 @@ do
 				"SPELL_AURA_APPLIED 240447 226510 226512 350209 396369 396364 408556",
 			--	"SPELL_AURA_APPLIED_DOSE",
 				"SPELL_AURA_REMOVED 396369 396364 226510",
-				"SPELL_DAMAGE 209862",
-				"SPELL_MISSED 209862",
+--				"SPELL_DAMAGE 209862",
+--				"SPELL_MISSED 209862",
 				"CHALLENGE_MODE_COMPLETED"
 			)
 			if self.Options.NPSanguine then
@@ -268,6 +268,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 209862 and destGUID == UnitGUID("player") and self:AntiSpam(3, "aff7") then
 		specWarnGTFO:Show(spellName)
@@ -275,6 +276,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+--]]
 
 --<610.64 01:20:34> [CHAT_MSG_MONSTER_YELL] Marked by lightning!#Raszageth###Global Affix Stalker##0#0##0#3611#nil#0#false#false#false#false", -- [3882]
 --<614.44 01:20:38> [CLEU] SPELL_AURA_APPLIED#Creature-0-3023-1477-12533-199388-00007705B2#Raszageth#Player-3726-0C073FB8#Onlysummonz-Khaz'goroth#396364#Mark of Wind#DEBUFF#nil", -- [3912]
