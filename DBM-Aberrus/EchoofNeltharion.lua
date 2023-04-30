@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(203133)
 mod:SetEncounterID(2684)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+--mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(20230409000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 407790 407796 407936 407917 405436 405434 405433 404038 409313",
 	"SPELL_CAST_SUCCESS 407917 410968",
-	"SPELL_AURA_APPLIED 407182 401998 408131 405484 407728 407919 410966",
+	"SPELL_AURA_APPLIED 401998 408131 405484 407728 407919",--407182 410966
 	"SPELL_AURA_APPLIED_DOSE 408131",
-	"SPELL_AURA_REMOVED 407182 405484 407088 407919 410966",
+	"SPELL_AURA_REMOVED 405484 407088 407919",--407182 410966
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
 	"SPELL_PERIODIC_MISSED 409058 404277 409183",
 --	"UNIT_DIED"
@@ -36,17 +36,19 @@ mod:RegisterEventsInCombat(
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 --local warnTwistedEarth						= mod:NewCountAnnounce(402902, 2)
-local warnVolcanicHeart							= mod:NewTargetCountAnnounce(410953, 2)
-local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2)
+--local warnVolcanicHeart							= mod:NewTargetCountAnnounce(410953, 2)
+local warnRushingDarkness						= mod:NewCountAnnounce(407221, 2)
+--local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2)
 
-local specWarnVolcanicHeart						= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
-local yellVolcanicHeart							= mod:NewShortPosYell(410953)
-local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
+local specWarnVolcanicHeart							= mod:NewSpecialWarningIncomingCount(410953, nil, nil, nil, 1, 14)
+--local specWarnVolcanicHeart						= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
+--local yellVolcanicHeart							= mod:NewShortPosYell(410953)
+--local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
 local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, nil, nil, nil, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
 local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
 local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
-local yellRushingDarkness						= mod:NewShortPosYell(407221)
-local yellRushingDarknessFades					= mod:NewIconFadesYell(407221)
+--local yellRushingDarkness						= mod:NewShortPosYell(407221)
+--local yellRushingDarknessFades					= mod:NewIconFadesYell(407221)
 local specWarnCalamitousStrike					= mod:NewSpecialWarningDefensive(406222, nil, nil, nil, 1, 2)
 local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, nil, nil, 1, 2)
 --local specWarnPyroBlast						= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -60,8 +62,8 @@ local timerCalamitousStrikeCD					= mod:NewCDCountTimer(33.6, 406222, nil, "Tank
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(5, 390715)
-mod:AddSetIconOption("SetIconOnVolcanicHeart", 410953, true, 0, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {4, 5, 6})
+--mod:AddSetIconOption("SetIconOnVolcanicHeart", 410953, true, 0, {1, 2, 3})
+--mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {4, 5, 6})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 
 --Stage Two: Corruption Takes Hold
@@ -104,8 +106,8 @@ mod.vb.volcanicCount = 0
 mod.vb.twistedEarthCount = 0
 mod.vb.fissureCount = 0
 mod.vb.RushingDarknessCount = 0
-mod.vb.volcIcon = 1
-mod.vb.rushingIcon = 4
+--mod.vb.volcIcon = 1
+--mod.vb.rushingIcon = 4
 --P2
 mod.vb.corruptionCount = 0
 mod.vb.annihilatingCount = 0
@@ -220,7 +222,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 407207 then
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
-		self.vb.rushingIcon = 4
+		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
+--		self.vb.rushingIcon = 4
 		timerRushingDarknessCD:Start(self:GetStage(1) and 33.6 or 28, self.vb.RushingDarknessCount+1)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
@@ -252,49 +255,51 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 410968 then
-		self.vb.volcIcon = 1
+--		self.vb.volcIcon = 1
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
+		specWarnVolcanicHeart:Show(self.vb.volcanicCount)
+		specWarnVolcanicHeart:Play("incomingdebuff")
 		timerVolcanicHeartCD:Start(self:GetStage(1) and 33.6 or 16.3, self.vb.volcanicCount+1)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 407182 then
-		local icon = self.vb.rushingIcon
-		if self.Options.SetIconOnRushingDarkness then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnRushingDarkness:Show()
-			specWarnRushingDarkness:Play("targetyou")
-			yellRushingDarkness:Yell(icon, icon)
-			yellRushingDarknessFades:Countdown(spellId, nil, icon)
-		end
-		warnRushingDarkness:CombinedShow(0.3, self.vb.RushingDarknessCount, args.destName)
-		self.vb.rushingIcon = self.vb.rushingIcon + 1
-	elseif spellId == 410966 then
-		local icon = self.vb.volcIcon
-		if self.Options.SetIconOnVolcanicHeart then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnVolcanicHeart:Show()--DBM_COMMON_L.BREAK_LOS
-			if self:IsMythic() then
-				--Raid wide, must break LOS
-				specWarnVolcanicHeart:Play("breaklos")
-			else
-				--5 yard range, just spread
-				specWarnVolcanicHeart:Play("range5")
-			end
-			yellVolcanicHeart:Yell(icon, icon)
-			yellVolcanicHeartFades:Countdown(spellId, nil, icon)
-		end
-		warnVolcanicHeart:CombinedShow(0.3, self.vb.volcanicCount, args.destName)
-		self.vb.volcIcon = self.vb.volcIcon + 1
-	elseif spellId == 401998 and not args:IsPlayer() then
+	if spellId == 401998 and not args:IsPlayer() then
 		specWarnCalamitousStrikeSwap:Show(args.destName)
 		specWarnCalamitousStrikeSwap:Play("tauntboss")
+	--elseif spellId == 407182 then
+	--	local icon = self.vb.rushingIcon
+	--	if self.Options.SetIconOnRushingDarkness then
+	--		self:SetIcon(args.destName, icon)
+	--	end
+	--	if args:IsPlayer() then
+	--		specWarnRushingDarkness:Show()
+	--		specWarnRushingDarkness:Play("targetyou")
+	--		yellRushingDarkness:Yell(icon, icon)
+	--		yellRushingDarknessFades:Countdown(spellId, nil, icon)
+	--	end
+	--	warnRushingDarkness:CombinedShow(0.3, self.vb.RushingDarknessCount, args.destName)
+	--	self.vb.rushingIcon = self.vb.rushingIcon + 1
+	--elseif spellId == 410966 then
+	--	local icon = self.vb.volcIcon
+	--	if self.Options.SetIconOnVolcanicHeart then
+	--		self:SetIcon(args.destName, icon)
+	--	end
+	--	if args:IsPlayer() then
+	--		specWarnVolcanicHeart:Show()--DBM_COMMON_L.BREAK_LOS
+	--		if self:IsMythic() then
+	--			--Raid wide, must break LOS
+	--			specWarnVolcanicHeart:Play("breaklos")
+	--		else
+	--			--5 yard range, just spread
+	--			specWarnVolcanicHeart:Play("range5")
+	--		end
+	--		yellVolcanicHeart:Yell(icon, icon)
+	--		yellVolcanicHeartFades:Countdown(spellId, nil, icon)
+	--	end
+	--	warnVolcanicHeart:CombinedShow(0.3, self.vb.volcanicCount, args.destName)
+	--	self.vb.volcIcon = self.vb.volcIcon + 1
 	elseif spellId == 408131 and args:IsPlayer() then
 		warnRupturedVeil:Cancel()
 		warnRupturedVeil:Schedule(1, args.amount or 1)
@@ -316,21 +321,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 407182 then
-		if self.Options.SetIconOnRushingDarkness then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellRushingDarknessFades:Cancel()
-		end
-	elseif spellId == 410966 then
-		if self.Options.SetIconOnVolcanicHeart then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellVolcanicHeartFades:Cancel()
-		end
-	elseif spellId == 407088 and self:GetStage(2, 1) then
+	if spellId == 407088 and self:GetStage(2, 1) then
 		self:SetStage(3)
 		self.vb.RushingDarknessCount = 0
 		self.vb.tankCount = 0
@@ -343,6 +334,20 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRushingDarknessCD:Start(26, 1)
 		timerCalamitousStrikeCD:Start(34.5, 1)
 		timerEbonDestructionCD:Start(40.5, 1)
+	--elseif spellId == 407182 then
+	--	if self.Options.SetIconOnRushingDarkness then
+	--		self:SetIcon(args.destName, 0)
+	--	end
+	--	if args:IsPlayer() then
+	--		yellRushingDarknessFades:Cancel()
+	--	end
+	--elseif spellId == 410966 then
+	--	if self.Options.SetIconOnVolcanicHeart then
+	--		self:SetIcon(args.destName, 0)
+	--	end
+	--	if args:IsPlayer() then
+	--		yellVolcanicHeartFades:Cancel()
+	--	end
 	elseif spellId == 407919 and args:IsPlayer() then
 		playerReality = false
 	end

@@ -26,7 +26,7 @@ local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1, 396347)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
 local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
-local specWarnEntangled						= mod:NewSpecialWarningYou(408556, nil, nil, nil, 1, 2)--Change to 14 when new voice ready
+local specWarnEntangled						= mod:NewSpecialWarningYou(408556, nil, nil, nil, 1, 14)
 
 local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
 local specWarnNegativeCharge				= mod:NewSpecialWarningYou(396364, nil, 391991, nil, 1, 13)--Short name is using Netative Charge instead of Mark of Winds
@@ -35,7 +35,8 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerEntangledCD						= mod:NewCDTimer(60, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
+local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
+local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, nil, DBM_COMMON_L.HEALER_ICON, 3, 4)
 local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
@@ -164,6 +165,7 @@ function mod:SPELL_CAST_START(args)
 		warnExplosion:Show()
 	elseif spellId == 409492 and self:AntiSpam(3, "aff3") then
 		warnAfflictedCry:Show()
+		timerAfflictedCD:Start()
 	elseif spellId == 408805 and self:AntiSpam(3, "aff5") then
 		warnDestabalize:Show()
 	end
@@ -240,7 +242,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnEntangled:Show()
-			specWarnEntangled:Play("targetyou")--breakvine
+			specWarnEntangled:Play("breakvine")--breakvine
 		end
 	end
 end
