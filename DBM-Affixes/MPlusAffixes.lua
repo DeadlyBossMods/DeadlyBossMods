@@ -35,7 +35,8 @@ local yellThunderingFades					= mod:NewIconFadesYell(396363, nil, nil, nil, "YEL
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
-local timerEntangledCD						= mod:NewCDTimer(60, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
+local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
+local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, nil, DBM_COMMON_L.HEALER_ICON, 3, 4)
 local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
 local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
 local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
@@ -164,6 +165,7 @@ function mod:SPELL_CAST_START(args)
 		warnExplosion:Show()
 	elseif spellId == 409492 and self:AntiSpam(3, "aff3") then
 		warnAfflictedCry:Show()
+		timerAfflictedCD:Start()
 	elseif spellId == 408805 and self:AntiSpam(3, "aff5") then
 		warnDestabalize:Show()
 	end
