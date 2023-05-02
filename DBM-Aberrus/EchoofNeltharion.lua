@@ -36,9 +36,9 @@ mod:RegisterEventsInCombat(
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 --local warnTwistedEarth						= mod:NewCountAnnounce(402902, 2)
---local warnVolcanicHeart							= mod:NewTargetCountAnnounce(410953, 2)
+--local warnVolcanicHeart							= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
 local warnRushingDarkness						= mod:NewCountAnnounce(407221, 2)
---local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2)
+--local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnVolcanicHeart							= mod:NewSpecialWarningIncomingCount(410953, nil, nil, nil, 1, 14)
 --local specWarnVolcanicHeart						= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
