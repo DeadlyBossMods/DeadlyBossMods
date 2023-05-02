@@ -85,7 +85,14 @@ L:SetMiscLocalization({
 ---------------------------
 --  Scalecommander Sarkareth --
 ---------------------------
---L= DBM:GetModLocalization(2520)
+L= DBM:GetModLocalization(2520)
+
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "디버프 중첩 정보 창 작동 방식 설정",
+	OblivionOnly		= "망각 중첩만 표시 (1 2 3페이즈)",
+	HowlOnly			= "억압의 포효 중첩만 표시 (1페이즈, 이후엔 닫힘)",
+	Hybrid				= "1페이즈에 억압의 포효 중첩, 2페이즈 3페이즈엔 망각 중첩 표시"--Default
+})
 
 -------------
 --  Trash  --
