@@ -77,11 +77,11 @@ function mod:OnCombatStart(delay)
 	self.vb.mawCount = 0
 	self.vb.spitIcon = 1
 	if self:IsEasy() then
-		timerIngitingRoarCD:Start(8.9-delay, 1)
+		timerIngitingRoarCD:Start(8.8-delay, 1)
 		timerMoltenSpittleCD:Start(16.6-delay, 1)
 		timerIncineratingMawsCD:Start(22.2-delay, 1)
 		timerBlazingBreathCD:Start(33.3-delay, 1)
-		timerOverpoweringStompCD:Start(76.7,-delay, 1)
+		timerOverpoweringStompCD:Start(76.6,-delay, 1)
 	else
 		timerIngitingRoarCD:Start(4.9-delay, 1)
 		timerMoltenSpittleCD:Start(12.9-delay, 1)

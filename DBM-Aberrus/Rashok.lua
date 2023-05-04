@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201320)
 mod:SetEncounterID(2680)
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(20230408000000)
+mod:SetHotfixNoticeRev(20230503000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070",
+	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070 407596 407544",
 --	"SPELL_CAST_SUCCESS 407641",
 	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405091 407642 405827",
 	"SPELL_AURA_APPLIED_DOSE 405091 405827",
@@ -24,8 +24,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--NOTE, in LFR (and maybe normal), tank combo is not in random order so might be able to clean up tank code there
 --[[
-(ability.id = 405316 or ability.id = 405821 or ability.id = 406851 or ability.id = 406333 or ability.id = 406145 or ability.id = 400777 or ability.id = 407547 or ability.id = 407597 or ability.id = 406165) and type = "begincast"
+(ability.id = 405316 or ability.id = 405821 or ability.id = 406851 or ability.id = 406333 or ability.id = 406145 or ability.id = 400777 or ability.id = 407547 or ability.id = 407597 or ability.id = 406165 or ability.id = 407596 or ability.id = 407544) and type = "begincast"
  or ability.id = 401419 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr/spell=407706/molten-wrath seems passive, but still maybe have a 15 second timer with right script
@@ -41,8 +42,8 @@ local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
 local specWarnDoomFlame								= mod:NewSpecialWarningCount(406851, nil, nil, nil, 2, 2)
 local specWarnShadowlavaBlast						= mod:NewSpecialWarningDodgeCount(406333, nil, nil, nil, 2, 2)
 local specWarnChargedSmash							= mod:NewSpecialWarningCount(400777, nil, nil, nil, 2, 2)
-local specWarnFlamingUpsurge						= mod:NewSpecialWarningDefensive(407547, nil, nil, nil, 1, 2)
-local specWarnFlamingUpsurgeTaunt					= mod:NewSpecialWarningTaunt(407547, nil, nil, nil, 1, 2)
+local specWarnFlamingSlash							= mod:NewSpecialWarningDefensive(407547, nil, nil, nil, 1, 2)
+local specWarnFlamingSlashTaunt						= mod:NewSpecialWarningTaunt(407547, nil, nil, nil, 1, 2)
 local specWarnEarthenCrush							= mod:NewSpecialWarningDefensive(407597, nil, nil, nil, 1, 2)
 local specWarnEarthenCrushTaunt						= mod:NewSpecialWarningTaunt(407597, nil, nil, nil, 1, 2)
 local specWarnUnyieldingRage						= mod:NewSpecialWarningSpell(406165, nil, nil, nil, 1, 2)
@@ -75,6 +76,14 @@ mod.vb.comboCount = 0--Combos within cast
 mod.vb.shadowflameCount = 0
 local overchargedStacks = {}
 --local allTimers = {--Will only be used if not same on all difficulties, then it'll be cleaner than tons if conditionals
+--	["lfr"] = {
+--		--Searing Slam
+--		[405821] = {9.2, 42.8, 31.0},
+--		--Charged Smash
+--		[400777] = {15.1, 40.0},
+--		--Volcanic Combo
+--		[407641] = {24.1, 41.1}
+--	},
 --	["heroic"] = {
 --		--Searing Slam
 --		[405821] = {4.1, 40.0, 31.0},
@@ -85,7 +94,7 @@ local overchargedStacks = {}
 --	},
 --	["mythic"] = {
 --		--Searing Slam
---		[405821] = {9.2, 43.0, 33.0},
+--		[405821] = {9.2, 42.8, 33.0},
 --		--Charged Smash
 --		[400777] = {21.2, 43.0},
 --		--Volcanic Combo
@@ -103,7 +112,7 @@ function mod:OnCombatStart(delay)
 	self.vb.comboCount = 0
 	self.vb.shadowflameCount = 0
 	timerSearingSlamCD:Start(9.2-delay, 1)
-	timerChargedSmashCD:Start(21.2-delay, 1)
+	timerChargedSmashCD:Start(21.1-delay, 1)
 	timerVolcanicComboCD:Start(29.2-delay, 1)
 	timerDoomFlameCD:Start(39.2-delay, 1)
 	timerShadowlavaBlastCD:Start(92.7-delay, 1)
@@ -143,7 +152,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientFury:Play("aesoon")
 	elseif spellId == 405821 then
 		self.vb.slamCount = self.vb.slamCount + 1
-		local timer = self.vb.slamCount == 1 and 43 or self.vb.slamCount == 2 or 33
+		local timer = self.vb.slamCount == 1 and 42.8 or self.vb.slamCount == 2 or 33
 		if timer then
 			timerSearingSlamCD:Start(nil, self.vb.slamCount+1)
 		end
@@ -162,7 +171,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.smashCount == 1 then
 			timerChargedSmashCD:Start(43, self.vb.smashCount+1)
 		end
-	elseif spellId == 407547 then
+	elseif spellId == 407547 or spellId == 407544 then--Hard, Easy
 		if self:AntiSpam(10, 1) then--In case the success/parent combo ID isn't detectable
 			self.vb.tankCombo = self.vb.tankCombo + 1
 			self.vb.comboCount = 0
@@ -172,20 +181,20 @@ function mod:SPELL_CAST_START(args)
 		end
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnFlamingUpsurge:Show()
-			specWarnFlamingUpsurge:Play("defensive")
+			specWarnFlamingSlash:Show()
+			specWarnFlamingSlash:Play("defensive")
 		else
 			--Other tank has this debuff already and it will NOT be gone when cast finishes, TAUNT NOW!
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
 				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", spellId)
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
-					specWarnFlamingUpsurgeTaunt:Show(UnitName("boss1target"))
-					specWarnFlamingUpsurgeTaunt:Play("tauntboss")
+					specWarnFlamingSlashTaunt:Show(UnitName("boss1target"))
+					specWarnFlamingSlashTaunt:Play("tauntboss")
 				end
 			end
 		end
-	elseif spellId == 407597 then
+	elseif spellId == 407597 or spellId == 407596 then--Hard, Easy
 		if self:AntiSpam(10, 1) then--In case the success/parent combo ID isn't detectable
 			self.vb.tankCombo = self.vb.tankCombo + 1
 			self.vb.comboCount = 0
@@ -274,8 +283,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if alertTaunt then
-			specWarnFlamingUpsurgeTaunt:Show(args.destName)
-			specWarnFlamingUpsurgeTaunt:Play("tauntboss")
+			specWarnFlamingSlashTaunt:Show(args.destName)
+			specWarnFlamingSlashTaunt:Play("tauntboss")
 		end
 	elseif spellId == 401419 then
 		warnSiphonEnergyApplied:Show(args.destName)
