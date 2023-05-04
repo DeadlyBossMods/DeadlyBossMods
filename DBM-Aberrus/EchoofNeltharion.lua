@@ -138,8 +138,8 @@ function mod:OnCombatStart(delay)
 	self.vb.ebonCount = 0
 	playerReality = false
 --	timerTwistedEarthCD:Start(1-delay)--Used 2 sec into pull
-	timerVolcanicHeartCD:Start(16-delay, 1)
 	timerRushingDarknessCD:Start(10.8-delay, 1)
+	timerVolcanicHeartCD:Start(16-delay, 1)
 	timerCalamitousStrikeCD:Start(24.3-delay, 1)
 	timerEchoingFissureCD:Start(30.4-delay, 1)
 --	if self.Options.NPAuraOnAscension then
