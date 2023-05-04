@@ -404,7 +404,7 @@ function mod:OnCombatStart(delay)
 		timerSwirlingFlameCD:Start(10.7-delay, 1)
 		timerMoltenEruptionCD:Start(16.7-delay, 1)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
-	elseif self:IsHeroic() and
+	elseif self:IsHeroic() then
 		timerFlameSlashCD:Start(5.9-delay, 1)
 		timerSwirlingFlameCD:Start(9.5-delay, 1)
 		timerMoltenEruptionCD:Start(23-delay, 1)
