@@ -155,7 +155,7 @@ local altTimers = {--Table of lowest averages for timers that are at least somew
 		--Fiery Meteor
 		[404732] = 31.7,
 		--Molten Eruption
-		[403101] = 23.1},
+		[403101] = 23.1,
 		----Shadow Duder
 		--Shadow Spike
 		[403699] = 10.9,
@@ -205,7 +205,6 @@ local altTimers = {--Table of lowest averages for timers that are at least somew
 		[405437] = 44.9,
 		--Blistering Twilight
 		[405641] = 40,--IFFY
-				  --22.3, 	  51.1, 47.4, 45.0, 47.4, 46.3--if he decides to skip the bonus cast
 		--Convergent Eruption (Heroic+)
 --		[408193] = {},
 		--Withering Vulnerability
