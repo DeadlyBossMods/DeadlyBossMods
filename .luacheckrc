@@ -179,6 +179,8 @@ globals = {
 	"C_Map.GetMapInfo",
 	"C_Map.GetPlayerMapPosition",
 	"C_Map.GetWorldPosFromMapPos",
+	"C_MythicPlus",
+	"C_MythicPlus.GetCurrentSeason",
 	"C_NamePlate.GetNamePlateForUnit",
 	"C_NamePlate.GetNamePlates",
 	"C_PlayerInfo.IsPlayerInChromieTime",
