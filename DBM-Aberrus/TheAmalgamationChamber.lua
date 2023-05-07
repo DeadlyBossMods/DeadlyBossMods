@@ -361,7 +361,7 @@ local function updateBossDistance(self)
 end
 
 local function yellRepeater(self, text)
-	yellThundering:Yell(text)
+	yellShadowandFlameRepeat:Yell(text)
 	self:Schedule(1.5, yellRepeater, self, text)
 end
 
