@@ -407,11 +407,6 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
---/run DBM:GetModByName("2520"):StupidFuckingInvertedArgsTest(3)
-function mod:StupidFuckingInvertedArgsTest(icon)
-	yellHurtlingBarrage:Yell(icon-2, icon)
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 401951 then
@@ -568,7 +563,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnHurtlingBarrage:Show()
 			specWarnHurtlingBarrage:Play("targetyou")
-			yellHurtlingBarrage:Yell(icon-2, icon)
+			yellHurtlingBarrage:Yell(icon, icon-2)
 			yellHurtlingBarrageFades:Countdown(spellId, nil, icon)
 		end
 		warnHurtlingBarrage:CombinedShow(0.3, self.vb.surgeCount, args.destName)
