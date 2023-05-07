@@ -82,8 +82,9 @@ local specWarnBlisteringTwilight				= mod:NewSpecialWarningYou(405641, nil, nil,
 local yellBlisteringTwilight					= mod:NewShortYell(405641)
 local yellBlisteringTwilightFades				= mod:NewShortFadesYell(405641)
 local specWarnConvergentEruption				= mod:NewSpecialWarningCount(408193, nil, nil, nil, 2, 2)
-local specWarnWitheringVulnerability				= mod:NewSpecialWarningDefensive(405914, nil, nil, nil, 1, 2)
+local specWarnWitheringVulnerability			= mod:NewSpecialWarningDefensive(405914, nil, nil, nil, 1, 2)
 local specWarnWitheringVulnerabilityTaunt		= mod:NewSpecialWarningTaunt(405914, nil, nil, nil, 1, 2)
+local yellShadowandFlameRepeat					= mod:NewIconRepeatYell(409385, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 
 local timerShadowandFlameCD						= mod:NewCDCountTimer(47.4, 409385, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGloomConflagCD						= mod:NewCDCountTimer(40, 405437, nil, nil, nil, 3)
@@ -359,6 +360,11 @@ local function updateBossDistance(self)
 	self:Schedule(2, updateBossDistance, self)
 end
 
+local function yellRepeater(self, text)
+	yellShadowandFlameRepeat:Yell(text)
+	self:Schedule(1.5, yellRepeater, self, text)
+end
+
 function mod:OnCombatStart(delay)
 	nearKroz, nearMolt = true, true
 	self:SetStage(1)
@@ -630,10 +636,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (amount % 3 == 0) and amount >= 18 then--Adjust as needed
 			warnCorruptingShadow:Show(amount)
 		end
+		if self:IsMythic() and self:GetStage(2) and amount == 1 then
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 3)
+		end
 	elseif spellId == 402617 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) and amount >= 18 then--Adjust as needed
 			warnBlazingHeat:Show(amount)
+		end
+		if self:IsMythic() and self:GetStage(2) and amount == 1 then
+			self:Unschedule(yellRepeater)
+			yellRepeater(self, 7)
 		end
 	elseif spellId == 405394 and args:IsPlayer() then
 		local amount = args.amount or 1
@@ -681,8 +695,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 401809 and args:IsPlayer() then
 		warnCorruptingShadowFades:Show()
+		if self:IsMythic() then
+			self:Unschedule(yellRepeater)
+		end
 	elseif spellId == 402617 and args:IsPlayer() then
 		warnBlazingHeatFades:Show()
+		if self:IsMythic() then
+			self:Unschedule(yellRepeater)
+		end
 	elseif spellId == 405036 then
 		if self.Options.SetIconOnUmbral then
 			self:SetIcon(args.destName, 0)

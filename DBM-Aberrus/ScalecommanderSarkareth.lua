@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON 404505 404507",
 	"SPELL_AURA_APPLIED 401951 401383 401215 403997 407576 401905 401680 401330 404218 404705 407496 404288 411241 405486 403520 408429",
 	"SPELL_AURA_APPLIED_DOSE 401951 401383 403997 407576 401330 404269 411241 408429",
-	"SPELL_AURA_REMOVED 401951 401383 401680 401330 404218 404705 407496 404288 404269 411241 403520 408429 401215",
+	"SPELL_AURA_REMOVED 401951 401383 401680 401330 404218 404705 407496 404288 404269 411241 403520 408429 401215 405486",
 	"SPELL_AURA_REMOVED_DOSE 401951 401383",
 	"SPELL_PERIODIC_DAMAGE 406989",
 	"SPELL_PERIODIC_MISSED 406989",
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --[[
 
 --]]
---NOTE, next to no chance Mass Disteingrate and Infinite Duress target debuffs stay public auras by time fight is reached on mythic. Both have incoming debuff alerts out the gate
+--NOTE, next to no chance Mass Disteingratem Infinite Duress, and Hurtling target debuffs stay public auras by time fight is reached on mythic. Both have incoming debuff alerts out the gate
 --TODO, probably fix stacks for Howl on mythic. It probably just applies 2 stacks outright and not _DOSE event, like Sire did
 --TODO, timer track https://www.wowhead.com/ptr/spell=410247/echoing-howl ? I suspect most would ignore DBM anyways and just have a WA for this
 --TODO, verify Mass Disintegrate cast ID
@@ -130,10 +130,13 @@ mod:AddNamePlateOption("NPAuraOnMight", 404269)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26145))
 local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403524, 3, nil, nil, nil, nil, nil, nil, true)
 local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
+local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403771, nil, nil, nil, 2, 2)
-local specWarnHurtlingBarrage					= mod:NewSpecialWarningDodgeCount(405022, nil, nil, nil, 2, 2)--May be spammy as fuck if multiple of these pop off at once
-local yellHurtlingBarrage						= mod:NewShortYell(405022)
+local specWarnHurtlingBarrageIncoming			= mod:NewSpecialWarningIncomingCount(405022, nil, nil, nil, 1, 14)
+local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
+local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
+local yellHurtlingBarrageFades					= mod:NewIconFadesYell(405022)
 local specWarnScouringEternity					= mod:NewSpecialWarningDodgeCount(403625, nil, nil, nil, 3, 2)
 local specWarnEmbraceofNothingness				= mod:NewSpecialWarningYou(403524, nil, nil, nil, 1, 2)
 local yellEmbraceofNothingness					= mod:NewShortYell(403524, nil, nil, nil, "YELL")
@@ -152,6 +155,8 @@ local timerEmbraceofNothingnessCD				= mod:NewAITimer(29.9, 403524, nil, nil, ni
 local timerVoidSlashCD							= mod:NewAITimer(29.9, 408422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVoidSlash							= mod:NewTargetTimer(18, 408422, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
 
+mod:AddSetIconOption("SetIconOnHurtling", 405022, true, 0, {3, 4, 5, 6})
+
 local oblivionStacks = {}
 local howlStacks = {}
 local castsPerGUID = {}
@@ -162,7 +167,7 @@ mod.vb.howlCount = 0
 mod.vb.surgeCount = 0
 mod.vb.bombCount = 0
 mod.vb.disintegrateCount = 0
-mod.vb.disintegrateIcon = 1
+mod.vb.disintegrateIcon = 1--Also used for infinite
 mod.vb.breathSetCount = 0
 mod.vb.breathCount = 0
 --mod.vb.embersCount = 0
@@ -172,6 +177,7 @@ mod.vb.addIcon = 7
 mod.vb.blossomCount = 0
 --P3 Variables
 mod.vb.nothingnessCount = 0
+mod.vb.hurtlingIcon = 3
 
 function mod:OnCombatStart(delay)
 	table.wipe(oblivionStacks)
@@ -188,6 +194,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tankCount = 0
 	self.vb.blossomCount = 0
 	self.vb.nothingnessCount = 0
+	self.vb.hurtlingIcon = 3
 	timerOppressingHowlCD:Start(1-delay)
 	timerGlitteringSurgeCD:Start(1-delay)
 	timerScorchingBombCD:Start(1-delay)
@@ -345,8 +352,9 @@ function mod:SPELL_CAST_START(args)
 		timerCosmicAscensionCD:Start()
 	elseif spellId == 405022 then
 		self.vb.surgeCount = self.vb.surgeCount + 1
-		specWarnHurtlingBarrage:Show(self.vb.surgeCount)
-		specWarnHurtlingBarrage:Play("farfromline")
+		self.vb.hurtlingIcon = 3
+		specWarnHurtlingBarrageIncoming:Show(self.vb.surgeCount)
+		specWarnHurtlingBarrageIncoming:Play("incomingdebuff")
 		timerHurtlingBarrageCD:Start()
 	elseif spellId == 403625 then
 		self.vb.blossomCount = self.vb.blossomCount + 1
@@ -548,9 +556,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 405486 then
-		if args:IsPlayer() then
-			yellHurtlingBarrage:Yell()
+		local icon = self.vb.hurtlingIcon
+		if self.Options.SetIconOnHurtling then
+			self:SetIcon(args.destName, icon)
 		end
+		if args:IsPlayer() then
+			specWarnHurtlingBarrage:Show()
+			specWarnHurtlingBarrage:Play("targetyou")
+			yellHurtlingBarrage:Yell(icon, icon-2)
+			yellHurtlingBarrageFades:Countdown(spellId, nil, icon)
+		end
+		warnHurtlingBarrage:CombinedShow(0.3, self.vb.surgeCount, args.destName)
+		self.vb.hurtlingIcon = self.vb.hurtlingIcon + 1
 	elseif spellId == 403520 then
 		if args:IsPlayer() then
 			specWarnEmbraceofNothingness:Show()
@@ -626,6 +643,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 403520 then
 		if args:IsPlayer() then
 			yellEmbraceofNothingnessFades:Cancel()
+		end
+	elseif spellId == 405486 then
+		if self.Options.SetIconOnHurtling then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellHurtlingBarrageFades:Cancel()
 		end
 	end
 end

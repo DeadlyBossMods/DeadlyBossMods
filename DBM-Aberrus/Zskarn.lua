@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, icon method for golems will likely be changed to broodkeeper method since that's what BW is likely to use, but for testing purposes a basic incremental apply per set is probably fine
 --TODO, GTFO for standing in fire traps
 local warnSoakedShrapnal						= mod:NewAddsLeftAnnounce(404955, 2)
-local warnScatterTraps							= mod:NewCountAnnounce(404533, 2)
+local warnScatterTraps							= mod:NewCountAnnounce(406725, 2)
 local warnSalvageParts							= mod:NewTargetNoFilterAnnounce(405592, 1)
 local warnSearingClaws							= mod:NewStackAnnounce(404942, 2, nil, "Tank|Healer")
 
@@ -55,7 +55,7 @@ local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, n
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 404007)
-mod:AddSetIconOption("SetIconOnGolems", 404533, true, 5, {8, 7, 6})
+mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6})
 mod:AddSetIconOption("SetIconOnEmbers", 404007, false, 0, {1, 2, 3, 4})
 
 local castsPerGUID = {}
