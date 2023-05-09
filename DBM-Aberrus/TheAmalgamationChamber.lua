@@ -215,7 +215,7 @@ local altTimers = {--Table of lowest averages for timers that are at least somew
 	},
 }
 local allTimers = {
-	["mythic"] = {
+	["hard"] = {
 		----Fire Duder
 		--Flame Slash
 		[403203] = {7, 15.7, 26.8, 15.8, 19.5, 15.8, 19.5, 15.8, 19.5},
@@ -242,45 +242,45 @@ local allTimers = {
 		--Blistering Twilight
 		[405641] = {22.3, 51.3, 47.5, 47.6, 47.5, 47.4},
 		--Convergent Eruption (Heroic+)
-		[408193] = {35.7, 51.2, 47.5, 47.5, 47.5, 47.4},
+		[408193] = {33.6, 51.2, 47.5, 47.5, 47.5, 47.4},
 		--Withering Vulnerability
-		[405914] = {17.4, 24.4, 26.8, 24.3, 23.2, 24.3, 23.2, 24.3, 23.1, 24.3, 23.1, 24.3},
+		[405914] = {16.6, 24.4, 26.8, 24.3, 23.2, 24.3, 23.2, 24.3, 23.1, 24.3, 23.1, 24.3},
 		--Shadowflame Burst
 		[406783] = {19.4, 24.4, 26.8, 24.3, 23.2, 24.3, 23.2, 24.3, 23.1, 24.3, 23.1, 24.3},
 	},
-	["heroic"] = {--Heroic might be same as other difficulties now, unknown
-		----Fire Duder
-		--Flame Slash
-		[403203] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
-		--Swirling Flame
-		[404896] = {9.7, 20.7, 22.0, 21.9, 20.7, 23.1},
-		--Fiery Meteor
-		[404732] = {32.8, 31.7, 34.0},
-		--Molten Eruption
-		[403101] = {23.1, 23.1, 24.4, 34.0},
-		----Shadow Duder
-		--Shadow Spike
-		[403699] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
-		--Umbral Detonation
-		[405016] = {19.5, 21.9, 21.9, 21.8, 21.9},
-		--Coalescing Void
-		[403459] = {30.4, 22.0, 21.9, 21.9, 21.9},
-		--Shadows Convergence
-		[407640] = {23.1, 20.7, 22.0, 21.9, 21.9},
-		----Phase 2
-		--Shadow and Flame (mythic Only)
---		[409385] = {},
-		--Gloom Conflag
-		[405437] = {31.6, 40.3, 40.2, 40.2, 40.1, 40.1, 40.0},
-		--Blistering Twilight
-		[405641] = {21.8, 40.2, 40.2, 40.2, 40.1, 40.2, 40.1},
-		--Convergent Eruption (Heroic+)
-		[408193] = {46.1, 40.1, 40.2, 40.1, 40.2, 40.1},
-		--Withering Vulnerability
-		[405914] = {17, 35.3, 35.2, 35.3, 36.5, 40.2, 40.1, 42.5},
-		--Shadowflame Burst
-		[406783] = {19, 35.3, 35.3, 35.3, 36.5, 40.1, 40.1, 42.5},
-	},
+	--["heroic"] = {--Heroic might be same as other difficulties now, unknown
+	--	----Fire Duder
+	--	--Flame Slash
+	--	[403203] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
+	--	--Swirling Flame
+	--	[404896] = {9.7, 20.7, 22.0, 21.9, 20.7, 23.1},
+	--	--Fiery Meteor
+	--	[404732] = {32.8, 31.7, 34.0},
+	--	--Molten Eruption
+	--	[403101] = {23.1, 23.1, 24.4, 34.0},
+	--	----Shadow Duder
+	--	--Shadow Spike
+	--	[403699] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
+	--	--Umbral Detonation
+	--	[405016] = {19.5, 21.9, 21.9, 21.8, 21.9},
+	--	--Coalescing Void
+	--	[403459] = {30.4, 22.0, 21.9, 21.9, 21.9},
+	--	--Shadows Convergence
+	--	[407640] = {23.1, 20.7, 22.0, 21.9, 21.9},
+	--	----Phase 2
+	--	--Shadow and Flame (mythic Only)
+--	--	[409385] = {},
+	--	--Gloom Conflag
+	--	[405437] = {0, },
+	--	--Blistering Twilight
+	--	[405641] = {},
+	--	--Convergent Eruption (Heroic+)
+	--	[408193] = {33.6, 51, 48.5},
+	--	--Withering Vulnerability
+	--	[405914] = {16.6, 24.3, 27.9, 24.2, 24.2, 24.2},
+	--	--Shadowflame Burst
+	--	[406783] = {0, 24.3, 27.9, 24.3, 24.2},
+	--},
 	["easy"] = {
 		----Fire Duder
 		--Flame Slash
@@ -374,19 +374,12 @@ function mod:OnCombatStart(delay)
 	self.vb.umbralIcon = 1
 	self.vb.shadowConvergeCount = 0
 	self.vb.shadowStrikeCount = 0
-	if self:IsMythic() then
-		difficultyName = "mythic"
+	if self:IsHard() then
+		difficultyName = "hard"
 		timerShadowSpikeCD:Start(9.3-delay, 1)
 		timerUmbralDetonationCD:Start(14.2-delay, 1)
 		timerShadowsConvergenceCD:Start(22.7-delay, 1)
 		timerCoalescingVoidCD:Start(35.2-delay, 1)
-	elseif self:IsHeroic() then
-		difficultyName = "heroic"
-		timerShadowSpikeCD:Start(5.9-delay, 1)
-		timerUmbralDetonationCD:Start(19.3-delay, 1)
-		timerShadowsConvergenceCD:Start(22.8-delay, 1)
-		timerCoalescingVoidCD:Start(30.3-delay, 1)
-		DBM:AddMsg("Very high chance of timers being wrong on this mode. Blizz didn't retest it after changing a lot of things. Will be fixed ASAP")
 	else--LFR and normal confirmed same, and heroic and mythic posibly also same
 		difficultyName = "easy"
 		timerShadowSpikeCD:Start(9.3-delay, 1)
@@ -405,16 +398,11 @@ function mod:OnCombatStart(delay)
 	self.vb.swirlingCount = 0
 	self.vb.SandFCount = 0
 	self.vb.flameSlashCast = 0
-	if self:IsMythic() then
+	if self:IsHard() then
 		timerFlameSlashCD:Start(7-delay, 1)
 		timerSwirlingFlameCD:Start(10.7-delay, 1)
 		timerMoltenEruptionCD:Start(16.7-delay, 1)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
-	elseif self:IsHeroic() then
-		timerFlameSlashCD:Start(5.9-delay, 1)
-		timerSwirlingFlameCD:Start(9.5-delay, 1)
-		timerMoltenEruptionCD:Start(23-delay, 1)
-		timerFieryMeteorCD:Start(32.7-delay, 1)
 	else--Normal and LFR confirmed
 		timerFlameSlashCD:Start(9.3-delay, 1)
 		timerSwirlingFlameCD:Start(12.2-delay, 1)
@@ -433,10 +421,8 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnTimerRecovery()
-	if self:IsMythic() then
-		difficultyName = "mythic"
-	elseif self:IsHeroic() then
-		difficultyName = "heroic"
+	if self:IsHard() then
+		difficultyName = "hard"
 	else
 		difficultyName = "easy"
 	end
@@ -604,24 +590,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSwirlingFlameCD:Stop()
 		timerFlameSlashCD:Stop()
 		if self:IsMythic() then
-			timerWitheringVulnerabilityCD:Start(17.3, 1)
-			timerShadowflameBurstCD:Start(19.4, 1)
-			timerBlisteringTwilightCD:Start(22.2, 1)
 			timerShadowandFlameCD:Start(29.6, 1)
 			timerConvergentEruptionCD:Start(35.7, 1)
-			timerGloomConflagCD:Start(50, 1)
 		elseif self:IsHeroic() then
-			timerWitheringVulnerabilityCD:Start(17, 1)
-			timerShadowflameBurstCD:Start(19, 1)
-			timerBlisteringTwilightCD:Start(21.8, 1)
-			timerGloomConflagCD:Start(31.6, 1)
-			timerConvergentEruptionCD:Start(46.1, 1)
-		else
-			timerWitheringVulnerabilityCD:Start(16.5, 1)
-			timerShadowflameBurstCD:Start(18.5, 1)
-			timerBlisteringTwilightCD:Start(21.4, 1)
-			timerGloomConflagCD:Start(50, 1)
+			timerConvergentEruptionCD:Start(33.6, 1)
 		end
+		--Same in all
+		timerWitheringVulnerabilityCD:Start(16.5, 1)
+		timerShadowflameBurstCD:Start(18.5, 1)
+		timerBlisteringTwilightCD:Start(21.4, 1)
+		timerGloomConflagCD:Start(50, 1)
 	elseif spellId == 409385 then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
