@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201579)
 mod:SetEncounterID(2683)
 mod:SetUsedIcons(1, 2, 3, 8)
-mod:SetHotfixNoticeRev(20230413000000)
+mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -82,7 +82,13 @@ function mod:OnCombatStart(delay)
 		timerIncineratingMawsCD:Start(22.2-delay, 1)
 		timerBlazingBreathCD:Start(33.3-delay, 1)
 		timerOverpoweringStompCD:Start(76.6,-delay, 1)
-	else
+	elseif self:IsHeroic() then
+		timerIngitingRoarCD:Start(6.2-delay, 1)
+		timerMoltenSpittleCD:Start(16.2-delay, 1)
+		timerIncineratingMawsCD:Start(24.9-delay, 1)
+		timerBlazingBreathCD:Start(31.2-delay, 1)
+		timerOverpoweringStompCD:Start(89.9-delay, 1)
+	else--Mythic
 		timerIngitingRoarCD:Start(4.9-delay, 1)
 		timerMoltenSpittleCD:Start(12.9-delay, 1)
 		timerIncineratingMawsCD:Start(19.9-delay, 1)
@@ -129,7 +135,16 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerMoltenSpittleCD:Start(41, self.vb.spitCount+1)
 			end
-		else
+		elseif self:IsHeroic() then
+			--16.2, 29.9, 32.4, 37.5, 29.9, 32.5, 37.5, 29.9, 32.4
+			if self.vb.spitCount % 3 == 0 then
+				timerMoltenSpittleCD:Start(37.5, self.vb.spitCount+1)
+			elseif self.vb.spitCount % 3 == 1 then
+				timerMoltenSpittleCD:Start(29.9, self.vb.spitCount+1)
+			else--2/3
+				timerMoltenSpittleCD:Start(32.4, self.vb.spitCount+1)
+			end
+		else--Mythic
 			--13.0, 24.0, 26.0, 25.0, 27.0, 24.0, 26.0, 25.0, 27.0, 24.0, 26.0, 25.0, 27.0
 			if self.vb.spitCount % 4 == 0 then
 				timerMoltenSpittleCD:Start(26.9, self.vb.spitCount+1)
@@ -146,15 +161,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnIgnitingRoar:Show(self.vb.roarCount)
 		specWarnIgnitingRoar:Play("aesoon")
 		if self:IsEasy() then
-			--8.9, 40.0, 44.4, 28.9, 40.0, 44.5, 28.9, 40.0, 44.4
+			--8.8, 40.0, 44.4, 28.9, 40.0, 44.5, 28.9, 40.0, 44.4
 			if self.vb.roarCount % 3 == 0 then
-				timerIngitingRoarCD:Start(28.9, self.vb.roarCount+1)
+				timerIngitingRoarCD:Start(28.8, self.vb.roarCount+1)
 			elseif self.vb.roarCount % 2 == 0 then
 				timerIngitingRoarCD:Start(44.4, self.vb.roarCount+1)
 			else
 				timerIngitingRoarCD:Start(40, self.vb.roarCount+1)
 			end
-		else
+		elseif self:IsHeroic() then
+			--6.2, 49.9, 49.9, 49.9, 49.9, 49.9, 49.9, 49.9
+			timerIngitingRoarCD:Start(49.9, self.vb.roarCount+1)
+		else--Mythic
 			--5.0, 40.0, 39.0, 23.0, 40.0, 39.0, 23.0, 40.0, 39.0, 23.0
 			if self.vb.roarCount % 3 == 0 then
 				timerIngitingRoarCD:Start(23, self.vb.roarCount+1)
@@ -168,19 +186,27 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stompCount = self.vb.stompCount + 1
 		specWarnOverpoweringStomp:Show(self.vb.stompCount)
 		specWarnOverpoweringStomp:Play("carefly")
-		timerOverpoweringStompCD:Start(self:IsEasy() and 113.3 or 101.7, self.vb.stompCount+1)
+		timerOverpoweringStompCD:Start(self:IsEasy() and 113.3 or 100, self.vb.stompCount+1)
 	elseif spellId == 409093 or spellId == 402344 then--409093 confirmed for heroic/normal, 402344 unknown
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnBlazingBreath:Show(self.vb.breathCount)
 		specWarnBlazingBreath:Play("breathsoon")
 		if self:IsEasy() then
-			--33.3, 27.8, 42.2, 43.3, 27.8, 42.2, 43.4, 27.8, 42.2
+			--33.3, 27.7, 42.2, 43.3, 27.8, 42.2, 43.4, 27.8, 42.2
+			--33.3, 27.7, 42.2, 43.3, 27.7, 42.2
 			if self.vb.breathCount % 3 == 0 then
 				timerBlazingBreathCD:Start(43.3, self.vb.breathCount+1)
 			elseif self.vb.breathCount % 3 == 2 then
 				timerBlazingBreathCD:Start(42.2, self.vb.breathCount+1)
 			else
-				timerBlazingBreathCD:Start(27.8, self.vb.breathCount+1)
+				timerBlazingBreathCD:Start(27.7, self.vb.breathCount+1)
+			end
+		elseif self:IsHeroic() then
+			--31.2, 35, 64.9, 34.9, 65, 34.9
+			if self.vb.breathCount % 2 == 0 then
+				timerBlazingBreathCD:Start(64.9, self.vb.breathCount+1)
+			else
+				timerBlazingBreathCD:Start(34.9, self.vb.breathCount+1)
 			end
 		else
 			--25.0, 28.0, 41.0, 33.0, 28.0, 41.0, 33.0, 28.0, 41.0
@@ -197,31 +223,13 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			--22.2, 22.3, 22.2, 22.2, 22.2, 24.8, 21.8, 22.3, 22.2, 22.2, 24.5, 22.2, 22.3, 22.2
 			if self.vb.mawCount % 5 == 0 then
-				timerIncineratingMawsCD:Start(24.5, self.vb.mawCount+1)
+				timerIncineratingMawsCD:Start(24.4, self.vb.mawCount+1)
 			else
 				timerIncineratingMawsCD:Start(22.2, self.vb.mawCount+1)
 			end
 		else
-			--20.0, 20.0, 20.0, 20.0, 42.0, 20.0, 20.0, 20.0, 20.0, 22.0, 20.0, 20.0, 20.0
-			--20.2, 19.7, 20.0, 20.0, 42.0, 20.0, 20.0, 20.0, 42.1, 20.0, 20.0, 20.0
-			--19.9, 20.0, 20.0, 20.0, 42.0, 20.0, 20.0, 20.0
-			--20.0, 20.0, 20.0, 20.0, 20.0, 22.0
---			if self.vb.mawCount % 4 == 0 then--accurate one pull but not another
---				timerIncineratingMawsCD:Start(42, self.vb.mawCount+1)
---			else
-				timerIncineratingMawsCD:Start(20, self.vb.mawCount+1)
---			end
+			timerIncineratingMawsCD:Start(self:IsMythic() and 20 or 25, self.vb.mawCount+1)
 		end
-	end
-end
-
---/run DBM:GetModByName(2527):Test(1)
-function mod:Test(icon)
-	if icon then
-		local text = L.pool:format(icon)--<icon> Pool 1,2,3
-		yellMoltenSpittle:Say(text)--Non soak uses white text per conventions
-	else
-		yellMoltenSpittle:Yell(L.soakpool)
 	end
 end
 

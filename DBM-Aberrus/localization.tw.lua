@@ -36,7 +36,20 @@ L:SetOptionLocalization({
 ---------------------------
 --  Assault of the Zaqali --
 ---------------------------
---L= DBM:GetModLocalization(2524)
+L= DBM:GetModLocalization(2524)
+
+L:SetTimerLocalization{
+	timerGuardsandHuntsmanCD	= "大怪出現 (%s)"
+}
+
+L:SetOptionLocalization({
+	timerGuardsandHuntsmanCD	= "顯示新來獵人和護衛爬牆的計時器"
+})
+
+L:SetMiscLocalization({
+	northWall		= "北方的城垛",
+	southWall		= "南方的城垛"
+})
 
 ---------------------------
 --  Rashok --
@@ -58,7 +71,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Magmorax --
 ---------------------------
---L= DBM:GetModLocalization(2527)
+L= DBM:GetModLocalization(2527)
+
+L:SetMiscLocalization({
+	pool		= "{rt%d}池 %d",--<icon> Pool 1,2,3
+	soakpool	= "吸收池"
+})
 
 ---------------------------
 --  Echo of Neltharion --
@@ -68,7 +86,14 @@ L:SetOptionLocalization({
 ---------------------------
 --  Scalecommander Sarkareth --
 ---------------------------
---L= DBM:GetModLocalization(2520)
+L= DBM:GetModLocalization(2520)
+
+L:SetOptionLocalization({
+	InfoFrameBehaviorTwo	= "設置資訊框架層數堆疊追蹤的行為",
+	OblivionOnly			= "只顯示空寂湮沒的層數 (階段 1 2 與 3)",--Default
+	HowlOnly				= "只顯示壓制嚎叫的層數 (階段 1，否則關閉)",
+	Hybrid					= "在階段1顯示壓制嚎叫層數，並且在階段2與3顯示空寂湮沒層數"
+})
 
 -------------
 --  Trash  --

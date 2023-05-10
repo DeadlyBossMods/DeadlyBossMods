@@ -87,10 +87,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2520)
 
 L:SetOptionLocalization({
-	InfoFrameBehavior	= "Set mod behavior for infoframe stack tracking",
-	OblivionOnly		= "Only show Oblivion stacks (stages 1 2 and 3)",
-	HowlOnly			= "Only show Oppressing Howl stacks (stage 1, closes otherwise)",
-	Hybrid				= "Show Oppressing Howl stacks in stage 1 and Oblivion stacks in stages 2 and 3"--Default
+	InfoFrameBehaviorTwo	= "Set mod behavior for infoframe stack tracking",
+	OblivionOnly			= "Only show Oblivion stacks (stages 1 2 and 3)",--Default
+	HowlOnly				= "Only show Oppressing Howl stacks (stage 1, closes otherwise)",
+	Hybrid					= "Show Oppressing Howl stacks in stage 1 and Oblivion stacks in stages 2 and 3"
 })
 
 -------------
