@@ -207,7 +207,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnBellowingRoar:Show(self.vb.roarCount)
 		specWarnBellowingRoar:Play("carefly")
-		timerBellowingRoarCD:Start(self:IsMythic() and 55 or self.vb.roarCount == 1 and 57.1 or 38.9}, self.vb.roarCount+1)
+		timerBellowingRoarCD:Start(self:IsMythic() and 55 or self.vb.roarCount == 1 and 57.1 or 38.9, self.vb.roarCount+1)
 	elseif spellId == 405042 then
 		self.vb.essenceCount = self.vb.essenceCount + 1
 		warnUnstableEssence:Show(self.vb.essenceCount)
