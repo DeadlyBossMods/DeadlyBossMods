@@ -5,28 +5,29 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(203133)
 mod:SetEncounterID(2684)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20230409000000)
+mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 407790 407796 407936 407917 405436 405434 405433 404038 409313",
+	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
 	"SPELL_CAST_SUCCESS 407917 410968",
 	"SPELL_AURA_APPLIED 401998 408131 405484 407728 407919",--407182 410966
 	"SPELL_AURA_APPLIED_DOSE 408131",
 	"SPELL_AURA_REMOVED 405484 407088 407919",--407182 410966
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
-	"SPELL_PERIODIC_MISSED 409058 404277 409183",
+	"SPELL_PERIODIC_MISSED 409058 404277 409183"
 --	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
-(ability.id = 402902 or ability.id = 409313 or ability.id = 401480 or ability.id = 409241 or ability.id = 401480 or ability.id = 403272 or ability.id = 406222 or ability.id = 407790 or ability.id = 403057
+(ability.id = 401022 or ability.id = 402902 or ability.id = 409313 or ability.id = 401480 or ability.id = 409241 or ability.id = 401480 or ability.id = 403272 or ability.id = 406222 or ability.id = 407790 or ability.id = 403057
  or ability.id = 401101 or ability.id = 405436 or ability.id = 405434 or ability.id = 405433 or ability.id = 405433 or ability.id = 404038 or ability.id = 403528 or ability.id = 407796
  or ability.id = 407936 or ability.id = 407917 or ability.id = 407207) and type = "begincast"
+ or ability.id = 410968 and type = "cast"
  or ability.id = 407088 and (type = "applybuff" or type = "removebuff")
  or ability.id = 405484 and type = "applydebuff"
 --]]
@@ -55,10 +56,10 @@ local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, 
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
 local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, nil, nil, nil, 3)
-local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
-local timerEchoingFissureCD						= mod:NewCDCountTimer(33.6, 402116, nil, nil, nil, 2)
-local timerRushingDarknessCD					= mod:NewCDCountTimer(33.6, 407221, nil, nil, nil, 3)
-local timerCalamitousStrikeCD					= mod:NewCDCountTimer(33.6, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
+local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, nil, nil, nil, 2)
+local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, nil, 3)
+local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(5, 390715)
@@ -84,8 +85,8 @@ local specWarnSunderShadow						= mod:NewSpecialWarningDefensive(407790, nil, ni
 local specWarnSunderShadowSwap					= mod:NewSpecialWarningTaunt(407790, nil, nil, nil, 1, 2)
 
 local timerCorruptionCD							= mod:NewCDCountTimer(43.4, 401010, nil, nil, nil, 5)--Parent
-local timerUmbralAnnihilationCD					= mod:NewCDCountTimer(29.2, 404038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerSunderShadowCD						= mod:NewCDCountTimer(28.2, 407790, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerUmbralAnnihilationCD					= mod:NewCDCountTimer(29.1, 404038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSunderShadowCD						= mod:NewCDCountTimer(27.9, 407790, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --Stage Three: Reality Fractures
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26422))
@@ -138,10 +139,10 @@ function mod:OnCombatStart(delay)
 	self.vb.ebonCount = 0
 	playerReality = false
 --	timerTwistedEarthCD:Start(1-delay)--Used 2 sec into pull
-	timerRushingDarknessCD:Start(10.8-delay, 1)
-	timerVolcanicHeartCD:Start(16-delay, 1)
-	timerCalamitousStrikeCD:Start(24.3-delay, 1)
-	timerEchoingFissureCD:Start(30.4-delay, 1)
+	timerRushingDarknessCD:Start(10.7-delay, 1)
+	timerVolcanicHeartCD:Start(15.6-delay, 1)
+	timerCalamitousStrikeCD:Start(24.1-delay, 1)
+	timerEchoingFissureCD:Start(33.7-delay, 1)
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -179,13 +180,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnEchoingFissure:Show(self.vb.fissureCount)
 		specWarnEchoingFissure:Play("justrun")
 		timerEchoingFissureCD:Start(nil, self.vb.fissureCount+1)
-	elseif spellId == 406222 then
+	elseif spellId == 406222 or spellId == 401022 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnCalamitousStrike:Show()
 			specWarnCalamitousStrike:Play("defensive")
 		end
-		timerCalamitousStrikeCD:Start(self:GetStage(1) and 33.6 or 29.2, self.vb.tankCount+1)
+		timerCalamitousStrikeCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.tankCount+1)
 	elseif spellId == 407790 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -200,7 +201,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilatingCount = self.vb.annihilatingCount + 1
 		specWarnUmbralAnnihilation:Show(self.vb.annihilatingCount)
 		specWarnUmbralAnnihilation:Play("aesoon")
-		if self.vb.annihilatingCount >= 5 then
+		if self.vb.annihilatingCount >= 5 then--Still true?
 			timerUmbralAnnihilationCD:Start(10.9, self.vb.annihilatingCount+1)
 		else
 			timerUmbralAnnihilationCD:Start(29.2, self.vb.annihilatingCount+1)
@@ -218,22 +219,22 @@ function mod:SPELL_CAST_START(args)
 		timerEbonDestructionCD:Start(nil, self.vb.ebonCount+1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_COMMON_L.NO_DEBUFF:format(realityName))
-			DBM.InfoFrame:Show(5, "playerrealityName", 407919)
+			DBM.InfoFrame:Show(5, "playergooddebuff", 407919)
 		end
 	elseif spellId == 407207 then
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 --		self.vb.rushingIcon = 4
-		timerRushingDarknessCD:Start(self:GetStage(1) and 33.6 or 28, self.vb.RushingDarknessCount+1)
+		timerRushingDarknessCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.RushingDarknessCount+1)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
-		timerTwistedEarthCD:Stop()
+--		timerTwistedEarthCD:Stop()
 		timerEchoingFissureCD:Stop()
 		timerRushingDarknessCD:Stop()
 		timerCalamitousStrikeCD:Stop()
 		timerVolcanicHeartCD:Stop()
-		timerCorruptionCD:Start(6.9, 1)--Time to p2 surrender to corruption cast
+		timerCorruptionCD:Start(14, 1)--Time to first debuffs
 	elseif spellId == 403057 then--Surrender To Corruption
 		self.vb.corruptionCount = self.vb.corruptionCount + 1--Counts as first corruption cast
 		warnSurrendertoCorruption:Show()
@@ -241,10 +242,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.volcanicCount = 0
 		self.vb.RushingDarknessCount = 0
 		timerSunderShadowCD:Start(14.8, 1)
-		timerVolcanicHeartCD:Start(20.7, 1)
+		timerVolcanicHeartCD:Start(21.2, 1)
 		timerUmbralAnnihilationCD:Start(25.8, 1)
 		timerRushingDarknessCD:Start(31.9, 1)
-		timerCorruptionCD:Start(44.3, 2)
 	end
 end
 
@@ -259,7 +259,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 		specWarnVolcanicHeart:Show(self.vb.volcanicCount)
 		specWarnVolcanicHeart:Play("incomingdebuff")
-		timerVolcanicHeartCD:Start(self:GetStage(1) and 33.6 or 16.3, self.vb.volcanicCount+1)
+		timerVolcanicHeartCD:Start(self:GetStage(1) and 36.3 or 17, self.vb.volcanicCount+1)
 	end
 end
 
@@ -330,10 +330,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSunderShadowCD:Stop()
 		timerRushingDarknessCD:Stop()
 		timerVolcanicHeartCD:Stop()
-		timerSunderRealityCD:Start(19.9, 1)
-		timerRushingDarknessCD:Start(26, 1)
-		timerCalamitousStrikeCD:Start(34.5, 1)
-		timerEbonDestructionCD:Start(40.5, 1)
+		timerSunderRealityCD:Start(21.9, 1)
+		timerRushingDarknessCD:Start(27.6, 1)
+		timerCalamitousStrikeCD:Start(36, 1)
+		timerEbonDestructionCD:Start(42.1, 1)
 	--elseif spellId == 407182 then
 	--	if self.Options.SetIconOnRushingDarkness then
 	--		self:SetIcon(args.destName, 0)
@@ -368,7 +368,6 @@ function mod:UNIT_DIED(args)
 
 	end
 end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 410977 and self:AntiSpam(5, 2) then
@@ -376,3 +375,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
 	end
 end
+--]]
