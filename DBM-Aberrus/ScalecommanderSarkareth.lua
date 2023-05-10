@@ -765,6 +765,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDesolateBlossomCD:Stop()
 		timerInfiniteDuressCD:Stop()
 		timerVoidClawsCD:Stop()
+		timerPhaseCD:Start(10)
 	elseif spellId == 410625 then
 		timerEndExistenceCast:Start()
 	end
