@@ -6,7 +6,7 @@ mod:SetCreatureID(201774, 201773, 201934)--Krozgoth, Moltannia, Molgoth
 mod:SetEncounterID(2687)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230504000000)
+mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, also target scan Swirling Flame?
 --TODO, secondary alert for Swirling Shadowflame ?
 --TODO, if both tank abilities in P2 are a combo, just use generic tank combo timer
---TODO, see what version of timers all modes use, probably the final normal/LFR ones
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(405084, nil, nil, nil, 1, 8)
 
@@ -114,7 +113,7 @@ mod.vb.SandFCount = 0
 
 local difficultyName = "easy"
 local altTimers = {--Table of lowest averages for timers that are at least somewhat consistent
-	["mythic"] = {
+	["hard"] = {
 		----Fire Duder
 		--Flame Slash
 		[403203] = false,--Too variable
@@ -147,39 +146,6 @@ local altTimers = {--Table of lowest averages for timers that are at least somew
 		--Shadowflame Burst
 		[406783] = 23.1,
 	},
-	["heroic"] = {--Heroic might be same as other difficulties now, unknown
-		----Fire Duder
-		--Flame Slash
-		[403203] = 10.9,
-		--Swirling Flame
-		[404896] = 20.7,
-		--Fiery Meteor
-		[404732] = 31.7,
-		--Molten Eruption
-		[403101] = 23.1,
-		----Shadow Duder
-		--Shadow Spike
-		[403699] = 10.9,
-		--Umbral Detonation
-		[405016] = 21.9,
-		--Coalescing Void
-		[403459] = 21.9,
-		--Shadows Convergence
-		[407640] = 20.7,
-		----Phase 2
-		--Shadow and Flame (mythic Only)
---		[409385] = {},
-		--Gloom Conflag
-		[405437] = 40,
-		--Blistering Twilight
-		[405641] = 40.1,
-		--Convergent Eruption (Heroic+)
-		[408193] = 40.1,
-		--Withering Vulnerability
-		[405914] = 35.3,
-		--Shadowflame Burst
-		[406783] = 35.3,
-	},
 	["easy"] = {
 		----Fire Duder
 		--Flame Slash
@@ -205,22 +171,22 @@ local altTimers = {--Table of lowest averages for timers that are at least somew
 		--Gloom Conflag
 		[405437] = 44.9,
 		--Blistering Twilight
-		[405641] = 40,--IFFY
+		[405641] = false,--Too variable
 		--Convergent Eruption (Heroic+)
 --		[408193] = {},
 		--Withering Vulnerability
-		[405914] = false,--Too variable
+		[405914] = 23.1,
 		--Shadowflame Burst
-		[406783] = false,--Too variable
+		[406783] = 23.1,
 	},
 }
 local allTimers = {
 	["hard"] = {
 		----Fire Duder
 		--Flame Slash
-		[403203] = {7, 15.7, 26.8, 15.8, 19.5, 15.8, 19.5, 15.8, 19.5},
+		[403203] = {7, 15.7, 26.7, 15.8, 19.4, 15.8, 19.5, 15.8, 19.5},
 		--Swirling Flame
-		[404896] = {10.6, 14.6, 26.7, 14.5, 20.6, 14.6, 20.7, 14.6, 20.7},
+		[404896] = {10.6, 14.5, 26.7, 14.1, 20.6, 14.6, 20.7, 14.6, 20.7},
 		--Fiery Meteor
 		[404732] = {35.2, 35.2, 35.3, 35.3},
 		--Molten Eruption
@@ -240,7 +206,7 @@ local allTimers = {
 		--Gloom Conflag
 		[405437] = {50.4, 47.5, 47.6, 47.5, 47.4, 47.4},
 		--Blistering Twilight
-		[405641] = {22.3, 51.3, 47.5, 47.6, 47.5, 47.4},
+		[405641] = {21.4, 51.3, 47.5, 47.6, 47.5, 47.4},
 		--Convergent Eruption (Heroic+)
 		[408193] = {33.6, 51.2, 47.5, 47.5, 47.5, 47.4},
 		--Withering Vulnerability
@@ -248,45 +214,12 @@ local allTimers = {
 		--Shadowflame Burst
 		[406783] = {19.4, 24.4, 26.8, 24.3, 23.2, 24.3, 23.2, 24.3, 23.1, 24.3, 23.1, 24.3},
 	},
-	--["heroic"] = {--Heroic might be same as other difficulties now, unknown
-	--	----Fire Duder
-	--	--Flame Slash
-	--	[403203] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
-	--	--Swirling Flame
-	--	[404896] = {9.7, 20.7, 22.0, 21.9, 20.7, 23.1},
-	--	--Fiery Meteor
-	--	[404732] = {32.8, 31.7, 34.0},
-	--	--Molten Eruption
-	--	[403101] = {23.1, 23.1, 24.4, 34.0},
-	--	----Shadow Duder
-	--	--Shadow Spike
-	--	[403699] = {5, 10.6, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9, 10.9},
-	--	--Umbral Detonation
-	--	[405016] = {19.5, 21.9, 21.9, 21.8, 21.9},
-	--	--Coalescing Void
-	--	[403459] = {30.4, 22.0, 21.9, 21.9, 21.9},
-	--	--Shadows Convergence
-	--	[407640] = {23.1, 20.7, 22.0, 21.9, 21.9},
-	--	----Phase 2
-	--	--Shadow and Flame (mythic Only)
---	--	[409385] = {},
-	--	--Gloom Conflag
-	--	[405437] = {0, },
-	--	--Blistering Twilight
-	--	[405641] = {},
-	--	--Convergent Eruption (Heroic+)
-	--	[408193] = {33.6, 51, 48.5},
-	--	--Withering Vulnerability
-	--	[405914] = {16.6, 24.3, 27.9, 24.2, 24.2, 24.2},
-	--	--Shadowflame Burst
-	--	[406783] = {0, 24.3, 27.9, 24.3, 24.2},
-	--},
 	["easy"] = {
 		----Fire Duder
 		--Flame Slash
-		[403203] = {9.3, 15.7, 25.4, 15.7, 19.1, 15.8, 19.4, 16.2, 19.5, 15.8},
+		[403203] = {9.3, 15.7, 25.4, 15.7, 18.3, 15.8, 19.4, 16.2, 19.5, 15.8},
 		--Swirling Flame
-		[404896] = {12.1, 15.7, 25.5, 15.7, 19.5, 15.8, 19.4, 15.8, 20.4, 15.0},
+		[404896] = {10.9, 14.6, 25.5, 15.7, 18.3, 15.8, 19.4, 15.8, 20.4, 15.0},
 		--Fiery Meteor
 		[404732] = {35.2, 35.1, 35.2, 35.2, 35.4},
 		--Molten Eruption (Heroic+)
@@ -306,14 +239,13 @@ local allTimers = {
 		--Gloom Conflag
 		[405437] = {50.3, 44.9, 45.2, 44.9, 46.2},
 		--Blistering Twilight
-		[405641] = {21.4, 40, 12.1, 43.1, 45.3, 46.3, 46.3},
-				  --22.3, 	  51.1, 47.4, 45.0, 47.4, 46.3--if he decides to skip the bonus cast
+		[405641] = {20.2, 15.7, 37.5, 15.7, 31.6},
 		--Convergent Eruption (Heroic+)
 --		[408193] = {},
 		--Withering Vulnerability
-		[405914] = {16.5, 38.9, 12.1, 35.2, 7.3, 35.2, 9.7, 35.3, 12.2, 35.2, 11.0},
+		[405914] = {15.8, 24.2, 28.1, 24.2, 23.1},
 		--Shadowflame Burst
-		[406783] = {18.5, 38.9, 12.1, 35.2, 7.3, 35.2, 9.7, 35.3, 12.2, 35.2, 11.0},
+		[406783] = {18.5, 24.2, 28.1, 24.2, 23.1},
 	},
 }
 
@@ -596,9 +528,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerConvergentEruptionCD:Start(33.6, 1)
 		end
 		--Same in all
-		timerWitheringVulnerabilityCD:Start(16.5, 1)
+		timerWitheringVulnerabilityCD:Start(15.8, 1)
 		timerShadowflameBurstCD:Start(18.5, 1)
-		timerBlisteringTwilightCD:Start(21.4, 1)
+		timerBlisteringTwilightCD:Start(20.2, 1)
 		timerGloomConflagCD:Start(50, 1)
 	elseif spellId == 409385 then
 		if self.Options.RangeFrame then
