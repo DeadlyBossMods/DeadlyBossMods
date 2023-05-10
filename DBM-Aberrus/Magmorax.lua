@@ -243,7 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnHeatStacks:Show(amount)
 				specWarnHeatStacks:Play("stackhigh")
 			elseif amount % 4 == 3 then--(3, 7, 11, 15) Otherwise, don't spam elevated warning
-				warnHeatStacks(amount)
+				warnHeatStacks:Show(amount)
 			end
 		end
 		if self.Options.InfoFrame then
