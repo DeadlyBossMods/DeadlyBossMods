@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230503000000)
+mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -83,17 +83,17 @@ function mod:OnCombatStart(delay)
 		timerAnimateGolemsCD:Start(26.4-delay, 1)
 		timerTacticalDestructionCD:Start(31.3-delay, 1)
 		timerShrapnalBombCD:Start(36.4-delay, 1)
-	elseif self:IsHeroic() then--Recheck
+	elseif self:IsHeroic() then--Validated
 		timerUnstableEmbersCD:Start(7-delay, 1)
-		timerShrapnalBombCD:Start(14.3-delay, 1)
-		timerDragonDeezTrapsCD:Start(22.4-delay, 1)
+		timerDragonDeezTrapsCD:Start(19.3-delay, 1)
+		timerShrapnalBombCD:Start(33.9-delay, 1)
+		timerAnimateGolemsCD:Start(54.6-delay, 1)
+		timerTacticalDestructionCD:Start(60.7-delay, 1)
+	elseif self:IsNormal() then--Validated
+		timerDragonDeezTrapsCD:Start(15.7-delay, 1)
 		timerAnimateGolemsCD:Start(35-delay, 1)
-		timerTacticalDestructionCD:Start(47.9-delay, 1)
-	elseif self:IsNormal() then--Recheck
-		timerShrapnalBombCD:Start(5-delay, 1)
-		timerDragonDeezTrapsCD:Start(22.4-delay, 1)
-		timerAnimateGolemsCD:Start(35-delay, 1)
-		timerTacticalDestructionCD:Start(60-delay, 1)
+		timerShrapnalBombCD:Start(45.1-delay, 1)
+		timerTacticalDestructionCD:Start(70-delay, 1)
 	else--Recheck
 		timerDragonDeezTrapsCD:Start(20.5-delay, 1)
 		timerAnimateGolemsCD:Start(35-delay, 1)
@@ -107,12 +107,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.destructionCount = self.vb.destructionCount + 1
 		specWarnTacticalDestruction:Show(self.vb.destructionCount)
 		specWarnTacticalDestruction:Play("watchstep")
-		timerTacticalDestructionCD:Start(self:IsHeroic() and 61.5 or 72.5, self.vb.destructionCount+1)
+		timerTacticalDestructionCD:Start(71.6, self.vb.destructionCount+1)
 	elseif spellId == 405812 then
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
 		specWarnAnimateGolems:Play("killmobs")
-		timerAnimateGolemsCD:Start(self:IsHeroic() and 60.2 or 73, self.vb.golemsCount+1)
+		timerAnimateGolemsCD:Start(73, self.vb.golemsCount+1)
 		if self.Options.SetIconOnGolems  then
 			self:ScanForMobs(203230, 0, 8, 3, nil, 12, "SetIconOnGolems")
 		end
@@ -134,7 +134,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blastWaveCount = self.vb.blastWaveCount + 1
 		specWarnBlastWave:Show(self.vb.blastWaveCount)
 		specWarnBlastWave:Play("carefly")
-		timerBlastWaveCD:Start(self:IsNormal() and 40 or self:IsLFR() and 38 or 34, self.vb.blastWaveCount+1)
+		timerBlastWaveCD:Start(self:IsEasy() and 38 or 34, self.vb.blastWaveCount+1)
 	end
 end
 
@@ -142,18 +142,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 404007 then
 		self.vb.embersCount = self.vb.embersCount + 1
-		timerUnstableEmbersCD:Start(self:IsMythic() and 15.7 or 20.3, self.vb.embersCount+1)
+		timerUnstableEmbersCD:Start(15.7, self.vb.embersCount+1)
 	elseif spellId == 406725 then
 		self.vb.shrapnalSoakCount = 0
 		self.vb.trapCastCount = self.vb.trapCastCount + 1
 		warnScatterTraps:Show(self.vb.trapCastCount)
-		timerShrapnalBombCD:Start(self:IsMythic() and 30.4 or self:IsHeroic() and 42.5 or 36.8, self.vb.trapCastCount+1)
+		timerShrapnalBombCD:Start(30.3, self.vb.trapCastCount+1)
 		timerShrapnalBomb:Start()
 	elseif spellId == 405736 then
 		self.vb.dragonCount = self.vb.dragonCount + 1
 		specWarnDragonDeezTraps:Show()
 		specWarnDragonDeezTraps:Play("watchstep")
-		timerDragonDeezTrapsCD:Start(self:IsLFR() and 35 or 32.5, self.vb.dragonCount)
+		timerDragonDeezTrapsCD:Start(self:IsEasy() and 35 or 30.4, self.vb.dragonCount)
 	end
 end
 
