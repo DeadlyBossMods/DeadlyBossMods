@@ -37,11 +37,11 @@ local specWarnTerrorClaws							= mod:NewSpecialWarningDefensive(404744, nil, ni
 local specWarnTerrorClawsTaunt						= mod:NewSpecialWarningTaunt(404744, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(406530, nil, nil, nil, 1, 8)
 --
-local timerDreadRiftsCD								= mod:NewCDCountTimer(34.3, 406516, nil, nil, nil, 3)
-local timerRaysofAnguishCD							= mod:NewCDCountTimer(34.1, 407069, nil, nil, nil, 3)
+local timerDreadRiftsCD								= mod:NewCDCountTimer(34, 406516, nil, nil, nil, 3)
+local timerRaysofAnguishCD							= mod:NewCDCountTimer(34, 407069, nil, nil, nil, 3)
 local timerHellbeamCD								= mod:NewCDCountTimer(35.5, 400430, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerWingsofExtinctionCD						= mod:NewCDCountTimer(34.1, 403326, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerTerrorClawsCD							= mod:NewCDTimer(15.9, 404744, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerWingsofExtinctionCD						= mod:NewCDCountTimer(34, 403326, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerTerrorClawsCD							= mod:NewCDTimer(15.6, 404744, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnDreadRifts", 406516, false, 0, {1, 2, 3, 4, 5, 6, 7, 8})--Default to off, players need to get used to this not existing
