@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230509000000)
+mod:SetHotfixNoticeRev(20230510000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -448,6 +448,7 @@ do
 	function mod:UNIT_AURA(uId)
 		local hasFixate = DBM:UnitDebuff("player", 401381)
 		if hasFixate and not warnedFixate then
+			warnedFixate = true
 			specWarnAwakenedFocus:Show()
 			specWarnAwakenedFocus:Play("justrun")
 		elseif not hasFixate and warnedFixate then
