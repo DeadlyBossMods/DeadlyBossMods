@@ -177,7 +177,6 @@ mod.vb.hurtlingIcon = 3
 --Non Synced Variables
 local oblivionStacks = {}
 local castsPerGUID = {}
-local usingHowl = true--Cache to avoid constant option table spamming
 local oblivionDisabled = false--Cache to avoid constant option table spamming
 local difficultyName = "easy"
 local allTimers = {
@@ -340,12 +339,10 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehaviorTwo == "OblivionOnly" then
-			usingHowl = false--Means infoframe just shows oblivion entire fight and never shows howl
 			oblivionDisabled = false
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(401951))
 			DBM.InfoFrame:Show(20, "table", oblivionStacks, 1)
 		else
-			usingHowl = true
 			if self.Options.InfoFrameBehaviorTwo == "HowlOnly" then
 				oblivionDisabled = true--Means in phase 2 and 3 infoframe just closes
 				--If hybrid is enabled, oblivionDisabled will be set to false on stage 2 trigger
@@ -890,7 +887,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			--If oblivion only, no changes need to run on Phase 2
 			if self.Options.InfoFrameBehaviorTwo == "Hybrid" then
 				--Transition from Howl to Oblivion for phase 2 and phase 3
-				usingHowl = false
 				oblivionDisabled = false
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(401951))
 				DBM.InfoFrame:Show(20, "table", oblivionStacks, 1)
