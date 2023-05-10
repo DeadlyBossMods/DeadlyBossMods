@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230421000000)
+mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -57,7 +57,7 @@ local timerVigorousGaleCD							= mod:NewAITimer(29.9, 407009, nil, nil, nil, 2,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26209))
 local warnHeavyCudgel								= mod:NewStackAnnounce(401258, 2, nil, "Tank|Healer")
 local warnMagmaMystic								= mod:NewCountAnnounce("ej26217", 3, 397383)
-local warnWallClimber								= mod:NewCountAnnounce("ej26221", 2, 163789)
+local warnWallClimber								= mod:NewCountAnnounce("ej26221", 2, 163789, false, 2)
 
 local specWarnHeavyCudgel							= mod:NewSpecialWarningDefensive(401258, nil, nil, nil, 1, 2)
 local specWarnHeavyCudgelStack						= mod:NewSpecialWarningStack(401258, nil, 2, nil, nil, 1, 6)
@@ -68,7 +68,7 @@ local specWarnAdds									= mod:NewSpecialWarningAddsCustom(285849, "-Healer", 
 local timerHeavyCudgelCD							= mod:NewCDCountTimer(21.0, 401258, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, nil, nil, nil, 3)
 local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, "ej26217", nil, nil, nil, 1, 397383)--Molten Barrier Icon
-local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, nil, nil, 1, 163789)--Ladder Icon
+local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, false, 2, 1, 163789)--Ladder Icon
 local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1)--Random guard banner
 ----Magma Mystic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26217))
@@ -78,8 +78,8 @@ local warnMagmaFlow									= mod:NewTargetNoFilterAnnounce(409271, 2, nil, "Rem
 
 local specWarnLavaBolt								= mod:NewSpecialWarningInterruptCount(397386, "HasInterrupt", nil, nil, 1, 2)--3.7 CD
 
---local timerMoltenBarrierCD							= mod:NewAITimer(29.9, 397383, nil, nil, nil, 2)
---local timerMagmaFlowCD								= mod:NewCDTimer(20.7, 409271, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+--local timerMoltenBarrierCD						= mod:NewAITimer(29.9, 397383, nil, nil, nil, 2)
+--local timerMagmaFlowCD							= mod:NewCDTimer(20.7, 409271, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 ----Obsidian Guard
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26210))
 local warnScorchingRoar								= mod:NewCastAnnounce(408620, 4)
@@ -130,7 +130,7 @@ mod.vb.wallClimberCount = 0
 --CLEU data pulling is not fully accurate since first hits doesn't mean first seen accuracy.
 --However, based on the way the boss patterns typically being initial, one off, then repeating pattern.
 --The timer assumptions below follow pattern perfectly and should be pretty dang close if not dead on
---local magmaTimers = {22.2, 75, 130, 175, 230, 275, 330, 375}--23.9, 79.3, 131.9, 178.1, 232.6, 277.5, 334.4, 381.4
+--local magmaTimers = {21.7, 80, 135, 180, 235, 280, 335, 380}--21.7, 79.3, 131.9, 178.1, 232.6, 277.5, 334.4, 381.4
 --local climbersTimers = {31.6, 80, 140, 180, 240, 280, 340}--34.3, 82.5, 141.9, 180.1, 242.9, 281.6, 341.7
 
 local function magmaLoop(self)
@@ -138,7 +138,7 @@ local function magmaLoop(self)
 	warnMagmaMystic:Show(self.vb.magmaMysticCount)
 	local timer
 	if self.vb.magmaMysticCount == 1 then
-		timer = 55
+		timer = 60--Think it's techincally 55 still, but this offsets the landing/attackable for rest of fight
 	elseif self.vb.magmaMysticCount % 2 == 0 then
 		timer = 55
 	else
@@ -221,7 +221,7 @@ function mod:SPELL_CAST_START(args)
 		elseif self.vb.cudgelCount % 4 == 2 then--2, 6, 10, 14, etc
 			timer = 21
 		elseif self.vb.cudgelCount % 4 == 3 then--3, 7, 11, 15, etc
-			timer = 26
+			timer = 25.9
 		elseif self.vb.cudgelCount % 4 == 0 then--4, 8, 12, 16, etc
 			timer = 22
 		elseif self.vb.cudgelCount % 4 == 1 then--5, 9, 13, 17, etc
@@ -234,12 +234,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 408959 then
 		self.vb.leapCount = self.vb.leapCount + 1
 		specWarnDevastatingLeap:Show(self.vb.leapCount)
-		specWarnDevastatingLeap:Play("shockwave")
+		specWarnDevastatingLeap:Play("watchstep")
 		--98.4, 47.5, 52.3, 47.6, 52.3
 		--98.6, 46.2, 53.7, 47.4, 52.4
 		--98.2, 47.4, 52.2, 47.3, 53.5"
 		if self.vb.leapCount % 2 == 0 then
-			timerDevastatingLeapCD:Start(52.3, self.vb.leapCount+1)
+			timerDevastatingLeapCD:Start(52.1, self.vb.leapCount+1)
 		else
 			timerDevastatingLeapCD:Start(46.2, self.vb.leapCount+1)
 		end
@@ -284,8 +284,18 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnFlamingCudgel:Play("scatter")
 		end
-		--357.1, 12.0, 24.0, 12.0, 24.0, 12.0, 24.0
-		timerFlamingCudgelCD:Start(nil, self.vb.cudgelCount+1)
+		--18, 23, 19, 11.9,
+		--18, 23, 19, 12
+		--18, 23, 19, 12, 23, 19
+		local timer
+		if self.vb.cudgelCount % 3 == 2 then
+			timer = 19
+		elseif self.vb.cudgelCount % 3 == 0 then
+			timer = 12
+		elseif self.vb.cudgelCount % 3 == 1 then
+			timer = 23
+		end
+		timerFlamingCudgelCD:Start(timer, self.vb.cudgelCount+1)
 	elseif spellId == 397386 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -322,8 +332,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMagmaMysticCD:Stop()
 		timerWallClimberCD:Stop()
 		timerGuardsandHuntsmanCD:Stop()
-		timerFlamingCudgelCD:Start(24.3, 1)
-		timerCatastrophicSlamCD:Start(42.7, 1)
+		timerFlamingCudgelCD:Start(18.7, 1)
+		timerCatastrophicSlamCD:Start(25.6, 1)
 	end
 end
 
@@ -509,11 +519,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 410540 then--Demolishg Slam
+	if spellId == 410540 then--Catastrophic Slam
 		self.vb.leapCount = self.vb.leapCount + 1
 		specWarnCatastrophicSlam:Show(self.vb.leapCount)
 		specWarnCatastrophicSlam:Play("helpsoak")
-		--383.0, 32.8, 30.3, 34.0, 34.0, 35.2, 32.8, 35.2 (heroic)
-		timerCatastrophicSlamCD:Start(self:IsMythic() and 35.2 or 30.3, self.vb.leapCount+1)
+		--25.6, 26.7, 26.7, 26.7 (new heroic/normal timers)
+		timerCatastrophicSlamCD:Start(self:IsMythic() and 35.2 or 26.7, self.vb.leapCount+1)
 	end
 end
