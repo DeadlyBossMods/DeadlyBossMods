@@ -250,7 +250,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 405819 or spellId == 407642 then--405819 confirmed on heroic, 407642 for lfr/normal maybe?
+	if (spellId == 405819 or spellId == 407642) and self:AntiSpam(5, 3) then--405819 confirmed on heroic, 407642 for lfr/normal maybe?
 		if args:IsPlayer() then
 			specWarnSearingSlam:Show()
 			specWarnSearingSlam:Play("targetyou")
@@ -378,6 +378,23 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 			timerAncientFuryCD:Update(elapsedTimer, 100)
 		else
 			timerAncientFuryCD:Stop()
+		end
+	end
+end
+
+--Temp workaround, won't work if target has no boss mod
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("405821") and targetName and self:AntiSpam(5, 3) then--Eruption Backup (if scan fails)
+		if targetName == UnitName("player") then
+			specWarnSearingSlam:Show()
+			specWarnSearingSlam:Play("targetyou")
+			yellSearingSlam:Yell()
+--			yellSearingSlamFades:Countdown(5)
+		else
+			warnSearingSlam:Show(targetName)
+		end
+		if self.Options.SetIconOnSearingSlam then
+			self:SetIcon(targetName, 1)
 		end
 	end
 end
