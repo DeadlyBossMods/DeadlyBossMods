@@ -253,7 +253,7 @@ local allTimers = {
 			--Void Bomb (P2 ability returning)
 			[404027] = {28.5, 61.2, 61.2},
 			--Cosmic Ascension
-			[403741] = {7.2, 61.2, 61.2},
+			[403741] = {7.2, 61.2, 98.7},
 			--Hurtling Barrage
 			[405022] = {19.7, 84.9, 54.9},
 			--Void Slash
