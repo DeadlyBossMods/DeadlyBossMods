@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201261)
 mod:SetEncounterID(2688)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20230316000000)
---mod:SetMinSyncRevision(20221215000000)
+mod:SetHotfixNoticeRev(20230510000000)
+mod:SetMinSyncRevision(20230510000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -29,7 +29,7 @@ local specWarnHellsteelCarnage						= mod:NewSpecialWarningDodgeCount(401319, ni
 local specWarnDreadRift								= mod:NewSpecialWarningYou(406525, nil, nil, nil, 1, 2)
 local yellDreadRift									= mod:NewShortPosYell(406525)
 local yellDreadRiftFades							= mod:NewIconFadesYell(406525)
-local specWarnRayofAnguish							= mod:NewSpecialWarningYouPos(402253, nil, nil, nil, 1, 2)
+local specWarnRayofAnguish							= mod:NewSpecialWarningYou(402253, nil, nil, nil, 1, 2)
 local yellRayofAnguish								= mod:NewShortYell(402253)
 local specWarnHellbeam								= mod:NewSpecialWarningDodgeCount(400430, nil, nil, nil, 2, 2)
 local specWarnWindsofExtinction						= mod:NewSpecialWarningCount(403326, nil, nil, nil, 2, 13)
@@ -96,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wingsCount = self.vb.wingsCount + 1
 		specWarnWindsofExtinction:Show(self.vb.wingsCount)
 		specWarnWindsofExtinction:Play("pushbackincoming")
-		timerWingsofExtinctionCD:Start()
+		timerWingsofExtinctionCD:Start(nil, self.vb.wingsCount+1)
 	elseif spellId == 404744 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then--Boss1 doesn't exist, so it uses guid and token scanner
 			specWarnTerrorClaws:Show()

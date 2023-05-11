@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20230509000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 406678 405812 405919 403978",
+	"SPELL_CAST_START 406678 405812 405919 403978 405886",
 	"SPELL_CAST_SUCCESS 404007 406725 405736",
 	"SPELL_AURA_APPLIED 405592 404010 404942",
 	"SPELL_AURA_APPLIED_DOSE 404942",
@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 406678 or ability.id = 406725 or ability.id = 403978 or ability.id = 405812 or ability.id = 405919) and type = "begincast"
+(ability.id = 406678 or ability.id = 406725 or ability.id = 403978 or ability.id = 405812 or ability.id = 405919 or ability.id = 405886) and type = "begincast"
  or (ability.id = 404007 or ability.id = 406725 or ability.id = 405736) and type = "cast"
 --]]
 --TODO, icon method for golems will likely be changed to broodkeeper method since that's what BW is likely to use, but for testing purposes a basic incremental apply per set is probably fine
@@ -66,6 +66,7 @@ mod.vb.golemsCount = 0
 mod.vb.blastWaveCount = 0
 mod.vb.embersCount = 0
 mod.vb.dragonCount = 0
+mod.vb.expectedBombs = 3
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -78,23 +79,27 @@ function mod:OnCombatStart(delay)
 	self.vb.dragonCount = 0
 	timerBlastWaveCD:Start(10.7-delay, 1)--Same in All
 	if self:IsMythic() then--Recheck
+		self.vb.expectedBombs = 4
 		timerUnstableEmbersCD:Start(7-delay, 1)
 		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
 		timerAnimateGolemsCD:Start(26.4-delay, 1)
 		timerTacticalDestructionCD:Start(31.3-delay, 1)
 		timerShrapnalBombCD:Start(36.4-delay, 1)
 	elseif self:IsHeroic() then--Validated
+		self.vb.expectedBombs = 3
 		timerUnstableEmbersCD:Start(7-delay, 1)
 		timerDragonDeezTrapsCD:Start(19.3-delay, 1)
 		timerShrapnalBombCD:Start(33.9-delay, 1)
 		timerAnimateGolemsCD:Start(54.6-delay, 1)
 		timerTacticalDestructionCD:Start(60.7-delay, 1)
 	elseif self:IsNormal() then--Validated
+		self.vb.expectedBombs = 2
 		timerDragonDeezTrapsCD:Start(15.7-delay, 1)
 		timerAnimateGolemsCD:Start(35-delay, 1)
 		timerShrapnalBombCD:Start(45.1-delay, 1)
 		timerTacticalDestructionCD:Start(70-delay, 1)
 	else--Recheck
+		self.vb.expectedBombs = 2
 		timerDragonDeezTrapsCD:Start(20.5-delay, 1)
 		timerAnimateGolemsCD:Start(35-delay, 1)
 		timerTacticalDestructionCD:Start(70-delay, 1)
@@ -116,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.SetIconOnGolems  then
 			self:ScanForMobs(203230, 0, 8, 3, nil, 12, "SetIconOnGolems")
 		end
-	elseif spellId == 405919 then
+	elseif spellId == 405919 or spellId == 405886 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 		end
@@ -151,7 +156,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShrapnalBomb:Start()
 	elseif spellId == 405736 then
 		self.vb.dragonCount = self.vb.dragonCount + 1
-		specWarnDragonDeezTraps:Show()
+		specWarnDragonDeezTraps:Show(self.vb.dragonCount)
 		specWarnDragonDeezTraps:Play("watchstep")
 		timerDragonDeezTrapsCD:Start(self:IsEasy() and 35 or 30.4, self.vb.dragonCount)
 	end
@@ -204,8 +209,8 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
 	if spellId == 404955 then
 		self.vb.shrapnalSoakCount = self.vb.shrapnalSoakCount + 1
-		warnSoakedShrapnal:Show(4 - self.vb.shrapnalSoakCount)
-		if self.vb.shrapnalSoakCount == 4 then
+		warnSoakedShrapnal:Show(self.vb.expectedBombs - self.vb.shrapnalSoakCount)
+		if self.vb.shrapnalSoakCount == self.vb.expectedBombs then
 			timerShrapnalBomb:Stop()
 		end
 	end

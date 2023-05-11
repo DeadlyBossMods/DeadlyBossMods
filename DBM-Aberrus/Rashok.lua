@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070 407596 407544",
 --	"SPELL_CAST_SUCCESS 407641",
-	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405091 407642 405827",
-	"SPELL_AURA_APPLIED_DOSE 405091 405827",
+	"SPELL_AURA_APPLIED 405819 407547 407597 401419 407642 405827",
+	"SPELL_AURA_APPLIED_DOSE 405827",
 	"SPELL_AURA_REMOVED 405819 401419 407642 405827",
 	"SPELL_AURA_REMOVED_DOSE 405827",
 	"SPELL_PERIODIC_DAMAGE 403543",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
 local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
-local warnUnyieldingRage							= mod:NewCountAnnounce(405091, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(405091))
+local warnUnyieldingRage							= mod:NewSpellAnnounce(406165, 3)
 
 local specWarnAncientFury							= mod:NewSpecialWarningCount(405316, nil, nil, nil, 2, 2)
 local specWarnSearingSlam							= mod:NewSpecialWarningYou(405821, nil, nil, nil, 2, 2)
@@ -46,7 +46,7 @@ local specWarnFlamingSlash							= mod:NewSpecialWarningDefensive(407547, nil, n
 local specWarnFlamingSlashTaunt						= mod:NewSpecialWarningTaunt(407547, nil, nil, nil, 1, 2)
 local specWarnEarthenCrush							= mod:NewSpecialWarningDefensive(407597, nil, nil, nil, 1, 2)
 local specWarnEarthenCrushTaunt						= mod:NewSpecialWarningTaunt(407597, nil, nil, nil, 1, 2)
-local specWarnUnyieldingRage						= mod:NewSpecialWarningSpell(406165, nil, nil, nil, 1, 2)
+
 local specWarnUnleashedShadowflame					= mod:NewSpecialWarningCount(410070, nil, nil, nil, 2, 2, 4)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(403543, nil, nil, nil, 1, 8)
 
@@ -222,8 +222,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 406165 then
-		specWarnUnyieldingRage:Show()
-		specWarnUnyieldingRage:Play("carefly")
+		warnUnyieldingRage:Show()
 	elseif spellId == 410070 then
 		self.vb.shadowflameCount = self.vb.shadowflameCount + 1
 		specWarnUnleashedShadowflame:Show(self.vb.shadowflameCount)
@@ -299,11 +298,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShadowlavaBlastCD:Stop()
 		timerAncientFuryCD:Stop()
 		timerUnleashedShadowflameCD:Stop()
-	elseif spellId == 405091 then--Unyielding Rage (stack)
-		local amount = args.amount or 1
-		if amount == 1 or amount == 4 or amount >= 7 then
-			warnUnyieldingRage:Show(amount)
-		end
 	elseif spellId == 405827 then
 		local amount = args.amount or 1
 		overchargedStacks[args.destName] = amount
