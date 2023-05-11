@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(203284)
 mod:SetEncounterID(2685)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230509000000)
+mod:SetHotfixNoticeRev(20230510000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -249,19 +249,19 @@ local allTimers = {
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {4.7, 56.2},
+			[407496] = {4.7, 56.2, 83.7},
 			--Void Bomb (P2 ability returning)
-			[404027] = {28.5},
+			[404027] = {28.5, 61.2, 61.2},
 			--Cosmic Ascension
-			[403771] = {9.2, 61.2},
+			[403771] = {9.2, 61.2, 61.2},
 			--Hurtling Barrage
-			[405022] = {19.7},
+			[405022] = {19.7, 84.9, 54.9},
 			--Void Slash
-			[408422] = {21, 36.2},
+			[408422] = {21, 36.2, 37.5},
 			--Scouring Eternity
-			[403625] = {46.2},
+			[403625] = {46.2, 77.7},
 			--Embrace of Nothingness
-			[403517] = {24.7},
+			[403517] = {24.7, 111.2},
 		},
 	},
 	["easy"] = {--Normal confirmed, LFR assumed

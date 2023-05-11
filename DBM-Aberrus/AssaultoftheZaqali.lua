@@ -457,7 +457,7 @@ do
 
 		local hasShield = DBM:UnitDebuff("player", 401867)
 		if hasShield and not warnedShield then
-			warnedShield = false
+			warnedShield = true
 			specWarnVolcanicShield:Show()
 			specWarnVolcanicShield:Play("targetyou")
 			yellVolcanicShield:Yell()
