@@ -35,7 +35,7 @@ local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
 local warnUnyieldingRage							= mod:NewSpellAnnounce(406165, 3)
 
-local specWarnAncientFury							= mod:NewSpecialWarningCount(405316, nil, nil, nil, 2, 2)
+local specWarnAncientFury							= mod:NewSpecialWarningSpell(405316, nil, nil, nil, 2, 2)
 local specWarnSearingSlam							= mod:NewSpecialWarningYou(405821, nil, nil, nil, 2, 2)
 local yellSearingSlam								= mod:NewShortYell(405821)
 local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
