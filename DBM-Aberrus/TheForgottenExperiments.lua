@@ -103,7 +103,7 @@ local allTimers = {
 		--Massive Slam
 	--	[404472] = {5.9, 18.0, 18.0, 19.0, 18.0, 18.0, 19.0, 18.0, 18.0},
 		--Volatile Spew (Working)
-		[405492] = {0, 20.0, 35.0, 20.0, 35.1, 20.0, 35.0},
+	--	[405492] = {0, 20.0, 35.0, 20.0, 35.1, 20.0, 35.0},
 		--Unstable Essence (Working)
 	--	[405042] = {6.3, 33.9, 20.9, 34, 21},
 		--Violent Eruption
@@ -195,6 +195,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rendingCount = self.vb.rendingCount + 1
 		specWarnRendingCharge:Show(self.vb.rendingCount)
 		specWarnRendingCharge:Play("incomingdebuff")
+		local timer
 		if self:IsMythic() then
 			--14, 37, 18, 37, 18
 			if self.vb.rendingCount % 2 == 0 then
@@ -253,7 +254,7 @@ function mod:SPELL_CAST_START(args)
 				timer = (self.vb.thadInverted == 1) and 20.9 or 33.9
 			end
 		else
-			timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.essenceCount+1) or 27.5
+			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.essenceCount+1) or 27.5
 		end
 		timerUnstableEssenceCD:Start(timer, self.vb.essenceCount+1)
 	elseif spellId == 405492 then
@@ -269,7 +270,7 @@ function mod:SPELL_CAST_START(args)
 				timer = 34.9
 			end
 		else
-			timer = self:GetFromTimersTable(allTimers, difficultyName, false, alteredSpellID, self.vb.volatileSpewCount+1) or 30.3
+			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.volatileSpewCount+1) or 30.3
 		end
 		timerVolatileSpewCD:Start(timer, self.vb.volatileSpewCount+1)
 	elseif spellId == 405375 or spellId == 407775 then
