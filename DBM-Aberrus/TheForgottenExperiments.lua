@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 406358 404472 407733 404713 405042 405492 405375 406227 407552 405391 407775 412117",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 406313 407302 407327 407617 405392",
-	"SPELL_AURA_APPLIED_DOSE 406313 407302",
+	"SPELL_AURA_APPLIED_DOSE 406313 407302 407327",
 	"SPELL_AURA_REMOVED 407327",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -58,6 +58,7 @@ local warnUnstableEssence							= mod:NewCastAnnounce(405042, 3)
 local warnUnstableEssenceTargets					= mod:NewTargetAnnounce(405042, 2)
 
 local specWarnUnstableEssence						= mod:NewSpecialWarningYou(405042, nil, nil, nil, 1, 2)
+local yellUnstableEssence							= mod:NewShortYell(405042, AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnVolatileSpew							= mod:NewSpecialWarningDodgeCount(405492, nil, nil, nil, 2, 2)
 local specWarnViolentEruption						= mod:NewSpecialWarningCount(405375, nil, nil, nil, 2, 2)
 
@@ -65,7 +66,7 @@ local timerUnstableEssenceCD						= mod:NewCDCountTimer(29.2, 405042, nil, nil, 
 local timerVolatileSpewCD							= mod:NewCDCountTimer(26, 405492, nil, nil, nil, 3)
 local timerViolentEruptionCD						= mod:NewCDCountTimer(68.3, 405375, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 
-mod:AddSetIconOption("SetIconOnEssence", 405042, false, 0, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnEssence", 405042, false, 0, {1, 2, 3, 4, 5, 6, 7, 8})
 --Rionthus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26329))
 local warnTemporalAnomaly							= mod:NewCastAnnounce(407552, 3)
@@ -261,18 +262,30 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 407302 and self:AntiSpam(3, 1) then
 		timerInfusedStrikes:Restart()
 	elseif spellId == 407327 then
-		warnUnstableEssenceTargets:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnUnstableEssence:Show()
-			specWarnUnstableEssence:Play("targetyou")
-		end
-		if self.Options.SetIconOnEssence then
-			for i = 1, 3, 1 do
-				if not essenceMarks[i] then
-					essenceMarks[i] = args.destGUID
-					self:SetIcon(args.destName, i)
-					return
+		local amount = args.amount or 1
+		if amount == 1 then
+			warnUnstableEssenceTargets:CombinedShow(0.3, args.destName)
+			if args:IsPlayer() then
+				specWarnUnstableEssence:Show()
+				specWarnUnstableEssence:Play("targetyou")
+			end
+			if self.Options.SetIconOnEssence then
+				for i = 1, 8, 1 do
+					if not essenceMarks[i] then
+						essenceMarks[i] = args.destGUID
+						self:SetIcon(args.destName, i)
+						return
+					end
 				end
+			end
+		else
+			if args:IsPlayer() and amount > 10 then
+				local icon = GetRaidTargetIndex("player")
+				local text = amount
+				if icon then
+					text = "{rt"..icon.."} "..amount.." {rt"..icon.."}"
+				end
+				yellUnstableEssence:Yell(text)
 			end
 		end
 	elseif spellId == 407617 then
@@ -292,7 +305,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 407327 then
 		if self.Options.SetIconOnEssence then
-			for i = 1, 3, 1 do
+			for i = 1, 8, 1 do
 				if essenceMarks[i] == args.destGUID then
 					essenceMarks[i] = nil
 					self:SetIcon(args.destName, 0)
