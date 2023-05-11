@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20230510000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 404585 401258 401867 408959 397383 409271 401108 407009 410351 397386 408620",
+	"SPELL_CAST_START 401258 401867 408959 397383 409271 401108 407009 410351 397386 408620",
 	"SPELL_CAST_SUCCESS 397514",
 	"SPELL_AURA_APPLIED 401867 402066 401381 409275 408873 410353 401452",
 	"SPELL_AURA_APPLIED_DOSE 408873 410353",
@@ -35,9 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, nameplate aura for https://www.wowhead.com/ptr/spell=410740/from-the-ashes ? need to make sure it actually has nameplate first
 --TODO, can lava flow be dodged? if so probably should be emphasized, if not, cast alert should be removed
 --TODO, stage 2 https://www.wowhead.com/ptr/spell=406585/ignaras-fury fury timer?
---TODO, Devastating Slam still needs more review
 --General
-local warnBatteringSlam								= mod:NewCastAnnounce(404585, 3)
 
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
@@ -89,7 +87,7 @@ local specWarnVolcanicShield						= mod:NewSpecialWarningYou(401867, nil, nil, n
 local yellVolcanicShield							= mod:NewShortYell(401867)
 local yellVolcanicShieldFades						= mod:NewShortFadesYell(401867)
 
-local timerScorchingRoarCD							= mod:NewCDTimer(17, 408620, nil, nil, nil, 2)
+local timerScorchingRoarCD							= mod:NewCDTimer(9.7, 408620, nil, nil, nil, 2)
 local timerVolcanicShieldCD							= mod:NewCDTimer(30.3, 401867, nil, nil, nil, 3)--30-40
 ----Flamebound Huntsman
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26213))
@@ -138,7 +136,7 @@ local function magmaLoop(self)
 	warnMagmaMystic:Show(self.vb.magmaMysticCount)
 	local timer
 	if self.vb.magmaMysticCount == 1 then
-		timer = 60--Think it's techincally 55 still, but this offsets the landing/attackable for rest of fight
+		timer = 58--Think it's techincally 55 still, but this offsets the landing/attackable for rest of fight
 	elseif self.vb.magmaMysticCount % 2 == 0 then
 		timer = 55
 	else
@@ -203,9 +201,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 404585 then
-		warnBatteringSlam:Show()
-	elseif spellId == 401258 then
+	if spellId == 401258 then
 		self.vb.cudgelCount = self.vb.cudgelCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnHeavyCudgel:Show(self.vb.cudgelCount)

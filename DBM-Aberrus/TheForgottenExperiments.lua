@@ -4,17 +4,17 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
-mod:DisableEEKillDetection()--ENCOUNTER_END fires for each boss dying for some reason
 mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230509000000)
-mod:SetMinSyncRevision(20230509000000)
+mod:SetHotfixNoticeRev(20230510000000)
+mod:SetMinSyncRevision(20230510000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(25)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 406358 404472 407733 404713 405042 405492 405375 406227 407552 405391 407775",
+	"SPELL_CAST_START 406358 404472 407733 404713 405042 405492 405375 406227 407552 405391 407775 412117",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 406313 407302 407327 407617 405392",
 	"SPELL_AURA_APPLIED_DOSE 406313 407302",
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 406358 or ability.id = 407733 or ability.id = 404472 or ability.id = 404713 or ability.id = 405042 or ability.id = 405492 or ability.id = 407775 or ability.id = 405375 or ability.id = 406227 or ability.id = 407552 or ability.id = 405391) and type  = "begincast"
+(ability.id = 412117 or ability.id = 406358 or ability.id = 407733 or ability.id = 404472 or ability.id = 404713 or ability.id = 405042 or ability.id = 405492 or ability.id = 407775 or ability.id = 405375 or ability.id = 406227 or ability.id = 407552 or ability.id = 405391) and type  = "begincast"
  or (source.type = "NPC" and source.firstSeen = timestamp) and (source.id = 200912 or source.id = 200913 or source.id = 200918) or (target.type = "NPC" and target.firstSeen = timestamp) and (target.id = 200912 or target.id = 200913 or target.id = 200918)
 --]]
 --TODO, what do you actually do with Temporal Anomaly, soak it?
@@ -198,11 +198,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnRendingCharge:Show(self.vb.rendingCount)
 		specWarnRendingCharge:Play("incomingdebuff")
 		timerRendingChargeCD:Start(self:IsMythic() and ((self.vb.rendingCount % 2 == 0) and 18 or 37) or self.vb.rendingCount == 1 and 33.7 or 38.2, self.vb.rendingCount+1)
-	elseif spellId == 407733 or spellId == 404472 then--2nd and later casts, first cast
+	elseif spellId == 407733 or spellId == 404472 or spellId == 412117 then--2nd and later casts, first cast
 		self.vb.massiveSlamCount = self.vb.massiveSlamCount + 1
 		specWarnMassiveSlam:Show(self.vb.massiveSlamCount)
 		specWarnMassiveSlam:Play("shockwave")
-		timerMassiveSlamCD:Start(self:IsMythic() and 18 or self.vb.massiveSlamCount == 1 and 9.7 or 38.2, self.vb.massiveSlamCount+1)
+		--Every slam is two slams, where first one is 404472 or 412117 and secondary slam 9.7 seconds later is 407733
+		--so if ID not secondary cast, start 9.7 timer, else start long timer for next set of two
+		timerMassiveSlamCD:Start(self:IsMythic() and 18 or spellId == 407733 and 29.1 or 9.7, self.vb.massiveSlamCount+1)
 	elseif spellId == 404713 then
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnBellowingRoar:Show(self.vb.roarCount)
