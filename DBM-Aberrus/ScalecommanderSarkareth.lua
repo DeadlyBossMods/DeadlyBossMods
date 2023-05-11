@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20230510000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403771 405022 403625 403517 408422 401704",
+	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403741 405022 403625 403517 408422 401704",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 404505 404507",
 	"SPELL_AURA_APPLIED 401951 401215 403997 407576 401905 401680 401330 404218 404705 407496 404288 411241 405486 403520 408429 403284 410654 410625",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, clearer understanding of Hurtling Barrage is needed (how many, how many targets, etc). Also if the target aura is hidden or not
 --TODO, add incoming alert for nothingness if debuff target aura is hidden
 --[[
-(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403771 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
+(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
  or ability.id = 403517 and type = "cast"
  or (ability.id = 403284 or ability.id = 410654) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 404505 or ability.id = 404507) and type = "summon"
@@ -135,7 +135,7 @@ local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403517, 3, nil, 
 local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
 local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403771, nil, nil, nil, 2, 2)
+local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, nil, nil, 2, 2)
 local specWarnHurtlingBarrageIncoming			= mod:NewSpecialWarningIncomingCount(405022, nil, nil, nil, 1, 14)
 local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
 local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
@@ -150,7 +150,7 @@ local specWarnVoidSlashOut						= mod:NewSpecialWarningMoveAway(408422, nil, nil
 local yellVoidSlashFades						= mod:NewShortFadesYell(408422)
 local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, nil, 1, 2)
 
-local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403771, nil, nil, nil, 3)
+local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, nil, nil, nil, 3)
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
 local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, nil, nil, nil, 3)
@@ -211,7 +211,7 @@ local allTimers = {
 			--Void Bomb (P2 ability returning)
 			[404027] = {28.5},
 			--Cosmic Ascension
-			[403771] = {9.2, 61.2},
+			[403741] = {9.2, 61.2},
 			--Hurtling Barrage
 			[405022] = {19.7},
 			--Void Slash
@@ -253,7 +253,7 @@ local allTimers = {
 			--Void Bomb (P2 ability returning)
 			[404027] = {28.5, 61.2, 61.2},
 			--Cosmic Ascension
-			[403771] = {9.2, 61.2, 61.2},
+			[403741] = {7.2, 61.2, 61.2},
 			--Hurtling Barrage
 			[405022] = {19.7, 84.9, 54.9},
 			--Void Slash
@@ -293,7 +293,7 @@ local allTimers = {
 			--Void Bomb (P2 ability returning)
 			[404027] = {30.3, 65.3, 65.3},
 			--Cosmic Ascension
-			[403771] = {9.7, 65.3, 105.3},
+			[403741] = {7.7, 65.3, 105.3},
 			--Hurtling Barrage
 			[405022] = {21, 46.6, 102.6, 65.3},
 			--Void Slash
@@ -510,7 +510,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidClaws:Show()
 			specWarnVoidClaws:Play("defensive")
 		end
-	elseif spellId == 403771 then
+	elseif spellId == 403741 then
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnCosmicAscension:Show(self.vb.breathCount)
 		specWarnCosmicAscension:Play("watchstep")
@@ -848,7 +848,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.tankCount = 0----Reused for Void Slash
 		if self:IsHard() then
 			timerInfiniteDuressCD:Start(4.7, 1)
-			timerCosmicAscensionCD:Start(9.2, 1)
+			timerCosmicAscensionCD:Start(7.2, 1)
 			timerHurtlingBarrageCD:Start(19.7, 1)
 			timerVoidSlashCD:Start(21, 1)
 			timerEmbraceofNothingnessCD:Start(24.7, 1)
@@ -856,7 +856,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerScouringEternityCD:Start(46.2, 1)
 			--timerMotesofOblivionCD:Start(3)
 		else--Easy
-			timerCosmicAscensionCD:Start(9.7, 1)
+			timerCosmicAscensionCD:Start(7.7, 1)
 			timerHurtlingBarrageCD:Start(21, 1)
 			timerVoidSlashCD:Start(22.3, 1)
 			timerVoidBombCD:Start(30.3, 1)
