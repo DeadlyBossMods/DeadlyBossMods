@@ -12,10 +12,10 @@ mod:SetHotfixNoticeRev(20230509000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 402902 407207 401480 409241 403272 406222 403057 401101 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
-	"SPELL_CAST_SUCCESS 407917 410968",
-	"SPELL_AURA_APPLIED 401998 408131 405484 407728 407919",--407182 410966
-	"SPELL_AURA_APPLIED_DOSE 408131",
+	"SPELL_CAST_START 407207 403272 406222 403057 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
+	"SPELL_CAST_SUCCESS 402902 401480 407917 410968 409241",
+	"SPELL_AURA_APPLIED 401998 405484 407728 407919",--407182 410966
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 405484 407088 407919",--407182 410966
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
 	"SPELL_PERIODIC_MISSED 409058 404277 409183"
@@ -24,39 +24,40 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 401022 or ability.id = 402902 or ability.id = 409313 or ability.id = 401480 or ability.id = 409241 or ability.id = 401480 or ability.id = 403272 or ability.id = 406222 or ability.id = 407790 or ability.id = 403057
+(ability.id = 401022 or ability.id = 409313 or ability.id = 401480 or ability.id = 403272 or ability.id = 406222 or ability.id = 407790 or ability.id = 403057
  or ability.id = 401101 or ability.id = 405436 or ability.id = 405434 or ability.id = 405433 or ability.id = 405433 or ability.id = 404038 or ability.id = 403528 or ability.id = 407796
  or ability.id = 407936 or ability.id = 407917 or ability.id = 407207) and type = "begincast"
- or ability.id = 410968 and type = "cast"
+ or (ability.id = 401480 or ability.id = 410968 or ability.id = 409241 or ability.id = 402902) and type = "cast"
  or ability.id = 407088 and (type = "applybuff" or type = "removebuff")
  or ability.id = 405484 and type = "applydebuff"
 --]]
 --TODO, delete redundant/incorrect events when real events known
 --TODO, Add shatter? https://www.wowhead.com/ptr/spell=401825/shatter
 --TODO, revisit heroic timers since it was so bugged that normal is trusted more than heroic was, for now
+local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
---local warnTwistedEarth						= mod:NewCountAnnounce(402902, 2)
---local warnVolcanicHeart							= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
+local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
+--local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
 local warnRushingDarkness						= mod:NewCountAnnounce(407221, 2)
 --local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnVolcanicHeart							= mod:NewSpecialWarningIncomingCount(410953, nil, nil, nil, 1, 14)
---local specWarnVolcanicHeart						= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
---local yellVolcanicHeart							= mod:NewShortPosYell(410953)
+local specWarnVolcanicHeart						= mod:NewSpecialWarningIncomingCount(410953, nil, nil, nil, 1, 14)
+--local specWarnVolcanicHeart					= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
+--local yellVolcanicHeart						= mod:NewShortPosYell(410953)
 --local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
-local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, nil, nil, nil, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
+local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, false, nil, 2, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
 local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
 local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
 --local yellRushingDarkness						= mod:NewShortPosYell(407221)
---local yellRushingDarknessFades					= mod:NewIconFadesYell(407221)
+--local yellRushingDarknessFades				= mod:NewIconFadesYell(407221)
 local specWarnCalamitousStrike					= mod:NewSpecialWarningDefensive(406222, nil, nil, nil, 1, 2)
 local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, nil, nil, 1, 2)
 --local specWarnPyroBlast						= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
 local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, nil, nil, nil, 3)
---local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
+local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
 local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, nil, nil, nil, 2)
 local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, nil, 3)
 local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -69,10 +70,8 @@ local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank
 
 --Stage Two: Corruption Takes Hold
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26421))
-local warnSurrendertoCorruption					= mod:NewSpellAnnounce(403057, 2)
 ----Voice From Beyond
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(26456))
-local warnRupturedVeil							= mod:NewCountAnnounce(408131, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(408131))
 local warnCorruption							= mod:NewTargetCountAnnounce(401010, 3)--Class Call Parent
 local warnShadowShadowStrike					= mod:NewCastAnnounce(407796, 2, nil, nil, "Tank|Healer")
 
@@ -162,20 +161,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
-		self.vb.twistedEarthCount = self.vb.twistedEarthCount + 1
-		specWarnTwistedEarth:Show(self.vb.twistedEarthCount)
-		specWarnTwistedEarth:Play("watchstep")
-		--if spellId == 401480 then--first cast
-		--	timerTwistedEarthCD:Start(30, 2)
-		--else
-		--	if self.vb.twistedEarthCount % 2 == 0 then
-		--		timerTwistedEarthCD:Start(35, self.vb.twistedEarthCount+1)
-		--	else
-		--		timerTwistedEarthCD:Start(26.2, self.vb.twistedEarthCount+1)
-		--	end
-		--end
-	elseif spellId == 403272 then
+	if spellId == 403272 then
 		self.vb.fissureCount = self.vb.fissureCount + 1
 		specWarnEchoingFissure:Show(self.vb.fissureCount)
 		specWarnEchoingFissure:Play("justrun")
@@ -194,9 +180,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnSunderShadow:Play("defensive")
 		end
 		timerSunderShadowCD:Start(nil, self.vb.tankCount+1)
-	elseif spellId == 401101 and self:AntiSpam(5, 2) then--Basically second and later corruptions
-		self.vb.corruptionCount = self.vb.corruptionCount + 1
-		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
 	elseif args:IsSpellID(405436, 405434, 405433, 404038) then--10, 7.5, 5, 2.5 (405433 used on heroic AND normal, others used?)
 		self.vb.annihilatingCount = self.vb.annihilatingCount + 1
 		specWarnUmbralAnnihilation:Show(self.vb.annihilatingCount)
@@ -221,6 +204,9 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:SetHeader(DBM_COMMON_L.NO_DEBUFF:format(realityName))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 407919)
 		end
+		self:Unschedule(checkRealityOnSelf)
+		self:Schedule(1, checkRealityOnSelf, self)
+		self:Schedule(4, checkRealityOnSelf, self)
 	elseif spellId == 407207 then
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
@@ -229,22 +215,26 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
---		timerTwistedEarthCD:Stop()
+		timerTwistedEarthCD:Stop()
 		timerEchoingFissureCD:Stop()
 		timerRushingDarknessCD:Stop()
 		timerCalamitousStrikeCD:Stop()
 		timerVolcanicHeartCD:Stop()
 		timerCorruptionCD:Start(14, 1)--Time to first debuffs
 	elseif spellId == 403057 then--Surrender To Corruption
-		self.vb.corruptionCount = self.vb.corruptionCount + 1--Counts as first corruption cast
-		warnSurrendertoCorruption:Show()
 		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
+		self.vb.twistedEarthCount = 0
 		self.vb.volcanicCount = 0
 		self.vb.RushingDarknessCount = 0
 		timerSunderShadowCD:Start(14.8, 1)
 		timerVolcanicHeartCD:Start(21.2, 1)
 		timerUmbralAnnihilationCD:Start(25.8, 1)
 		timerRushingDarknessCD:Start(31.9, 1)
+		if self:IsHard() then
+			timerTwistedEarthCD:Start(71.5, 1)
+		end
 	end
 end
 
@@ -260,6 +250,33 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnVolcanicHeart:Show(self.vb.volcanicCount)
 		specWarnVolcanicHeart:Play("incomingdebuff")
 		timerVolcanicHeartCD:Start(self:GetStage(1) and 36.3 or 17, self.vb.volcanicCount+1)
+	elseif args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
+		self.vb.twistedEarthCount = self.vb.twistedEarthCount + 1
+		if self.Options.SpecWarn402902dodgecount then
+			specWarnTwistedEarth:Show(self.vb.twistedEarthCount)
+			specWarnTwistedEarth:Play("watchstep")
+		else
+			warnTwistedEarth:Show(self.vb.twistedEarthCount)
+		end
+		if self:IsHard() then
+			if self.vb.phase == 1 then
+				if spellId == 401480 then--first cast
+					timerTwistedEarthCD:Start(40, 2)
+				else
+					--2, 40, 37.5, 36.4
+					if self.vb.twistedEarthCount == 2 then
+						timerTwistedEarthCD:Start(37.5, self.vb.twistedEarthCount+1)
+					elseif self.vb.twistedEarthCount == 3 then
+						timerTwistedEarthCD:Start(36.4, self.vb.twistedEarthCount+1)
+					end
+				end
+			else
+				--71.5, 58.2
+				if self.vb.twistedEarthCount == 2 then
+					timerTwistedEarthCD:Start(58.2, self.vb.twistedEarthCount+1)
+				end
+			end
+		end
 	end
 end
 
@@ -300,11 +317,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	--	end
 	--	warnVolcanicHeart:CombinedShow(0.3, self.vb.volcanicCount, args.destName)
 	--	self.vb.volcIcon = self.vb.volcIcon + 1
-	elseif spellId == 408131 and args:IsPlayer() then
-		warnRupturedVeil:Cancel()
-		warnRupturedVeil:Schedule(1, args.amount or 1)
 	elseif spellId == 405484 then
-		warnCorruption:CombinedShow(0.3, args.destName)
+		if self:AntiSpam(5, 3) then
+			self.vb.corruptionCount = self.vb.corruptionCount + 1
+			timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
+		end
+		warnCorruption:CombinedShow(0.3, self.vb.corruptionCount, args.destName)
 		if args:IsPlayer() then
 			specWarnCorruption:Show()
 			specWarnCorruption:Play("targetyou")
@@ -321,8 +339,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 407088 and self:GetStage(2, 1) then
+	if spellId == 407088 and self:GetStage(3, 1) then
 		self:SetStage(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
 		self.vb.RushingDarknessCount = 0
 		self.vb.tankCount = 0
 		timerCorruptionCD:Stop()

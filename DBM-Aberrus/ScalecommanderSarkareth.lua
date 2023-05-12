@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, old void claws used on lfr/normal? https://www.wowhead.com/ptr/spell=403364/void-claws and 403358
 --TODO, clearer understanding of Hurtling Barrage is needed (how many, how many targets, etc). Also if the target aura is hidden or not
 --TODO, add incoming alert for nothingness if debuff target aura is hidden
+--TODO, GTFO for https://www.wowhead.com/spell=401621/scorching-bomb
 --[[
 (ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
  or ability.id = 403517 and type = "cast"
@@ -43,6 +44,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 401383 or ability.id = 401215 or ability.id = 403997 or ability.id = 407576 or ability.id = 401905 or ability.id = 401680 or ability.id = 401330 or ability.id = 404218 or ability.id = 404705 or ability.id = 407496 or ability.id = 404288 or ability.id = 411241 or ability.id = 405486 or ability.id = 403520 or ability.id = 408429) and type = "applydebuff"
 --]]
 --General
+local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
 local warnOblivionStack						= mod:NewCountAnnounce(401951, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(401951))
 local warnMindFragment						= mod:NewAddsLeftAnnounce(403997, 1)--Not technically adds, but wording of option and alert text is ambigious that it doesn't matter, it fits
 local warnEmptynessBetweenStars				= mod:NewFadesAnnounce(401215, 1)
@@ -61,7 +63,7 @@ mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybrid"}, "OblivionOnly", "misc")
 --Stage One: The Legacy of the Dracthyr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
-local warnOppressingHowl						= mod:NewCountAnnounce(401383, 3)
+local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3)
 local warnDazzled								= mod:NewTargetNoFilterAnnounce(401905, 4, nil, false)--Not entirely much you can do about it's a lot but if it's a couple, a healer might want to see this to TRY and save them
 local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, nil, nil, nil, nil, true)
 local warnBurningClaws							= mod:NewStackAnnounce(401325, 2, nil, "Tank|Healer")
@@ -839,6 +841,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 410654 then--Stage 3 Begin
 		self:SetStage(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
 		self.vb.bombCount = 0--Reused for Void Bombs
 		self.vb.breathCount = 0--Reused for Cosmic Ascension
 		self.vb.surgeCount = 0--Reused for Hurtling Barrage
@@ -868,6 +872,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEndExistenceCast:Stop()
 		--True start of phase 2 timers
 		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
 		self.vb.bombCount = 0--Reused for Void Bombs
 		self.vb.breathCount = 0--Reused for Abyssal Breath
 		self.vb.disintegrateCount = 0--Reused for Inifinite Duress
