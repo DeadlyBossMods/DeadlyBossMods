@@ -393,6 +393,11 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--TODO
+--All boss abilities are cast based on energy. on mythic they gain 2 energy per second, and then cast ultimate then 5 seconds before gaining again
+--They gain energy before active on mythic, so on activation energy needs to be checked for more precise initial timers
+--as for CD handlers on spell casts, again those should check energy to know which of the alternating cycle is next instead of assuming it based on count
+--This work is put off until mythic transcriptor logs because they just provide more meaningful side by side energy to spellcast
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 3 do
 		local unitID = "boss"..i

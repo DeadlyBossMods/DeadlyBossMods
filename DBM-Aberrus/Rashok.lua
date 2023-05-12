@@ -12,11 +12,11 @@ mod:SetHotfixNoticeRev(20230509000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 406165 410070 407596 407544",
+	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 410070 407596 407544",
 --	"SPELL_CAST_SUCCESS 407641",
 	"SPELL_AURA_APPLIED 405819 407547 407597 401419 407642 405827",
 	"SPELL_AURA_APPLIED_DOSE 405827",
-	"SPELL_AURA_REMOVED 405819 401419 407642 405827",
+	"SPELL_AURA_REMOVED 405819 401419 407642 405827 405091",
 	"SPELL_AURA_REMOVED_DOSE 405827",
 	"SPELL_PERIODIC_DAMAGE 403543",
 	"SPELL_PERIODIC_MISSED 403543",
@@ -33,9 +33,9 @@ mod:RegisterEventsInCombat(
 local warnSearingSlam								= mod:NewTargetNoFilterAnnounce(405821, 4)
 local warnSiphonEnergyApplied						= mod:NewTargetNoFilterAnnounce(401419, 2)
 local warnSiphonEnergyRemoved						= mod:NewFadesAnnounce(401419, 2)
-local warnUnyieldingRage							= mod:NewSpellAnnounce(406165, 3)
+local warnUnyieldingRage							= mod:NewFadesAnnounce(406165, 1)
 
-local specWarnAncientFury							= mod:NewSpecialWarningCount(405316, nil, nil, nil, 2, 2)
+local specWarnAncientFury							= mod:NewSpecialWarningSpell(405316, nil, nil, nil, 2, 2)
 local specWarnSearingSlam							= mod:NewSpecialWarningYou(405821, nil, nil, nil, 2, 2)
 local yellSearingSlam								= mod:NewShortYell(405821)
 local yellSearingSlamFades							= mod:NewShortFadesYell(405821)
@@ -221,8 +221,6 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		end
-	elseif spellId == 406165 then
-		warnUnyieldingRage:Show()
 	elseif spellId == 410070 then
 		self.vb.shadowflameCount = self.vb.shadowflameCount + 1
 		specWarnUnleashedShadowflame:Show(self.vb.shadowflameCount)
@@ -340,6 +338,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDoomFlameCD:Start(41.2, 1)
 		timerShadowlavaBlastCD:Start(97, 1)
 		timerAncientFuryCD:Start(102)
+	elseif spellId == 405091 then
+		warnUnyieldingRage:Show()
 	end
 end
 

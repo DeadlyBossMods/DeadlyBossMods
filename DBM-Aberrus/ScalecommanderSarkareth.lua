@@ -2,17 +2,17 @@ local mod	= DBM:NewMod(2520, "DBM-Aberrus", nil, 1208)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(203284)
+mod:SetCreatureID(201754)
 mod:SetEncounterID(2685)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230510000000)
+mod:SetHotfixNoticeRev(20230511000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403771 405022 403625 403517 408422 401704",
+	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403741 405022 403625 403517 408422 401704",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 404505 404507",
 	"SPELL_AURA_APPLIED 401951 401215 403997 407576 401905 401680 401330 404218 404705 407496 404288 411241 405486 403520 408429 403284 410654 410625",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, clearer understanding of Hurtling Barrage is needed (how many, how many targets, etc). Also if the target aura is hidden or not
 --TODO, add incoming alert for nothingness if debuff target aura is hidden
 --[[
-(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403771 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
+(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
  or ability.id = 403517 and type = "cast"
  or (ability.id = 403284 or ability.id = 410654) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 404505 or ability.id = 404507) and type = "summon"
@@ -48,8 +48,8 @@ local warnMindFragment						= mod:NewAddsLeftAnnounce(403997, 1)--Not technicall
 local warnEmptynessBetweenStars				= mod:NewFadesAnnounce(401215, 1)
 local warnAstralFlare						= mod:NewCountAnnounce(407576, 1, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(407576))--Optional, don't want it to drown out the important messages of collecting mind fragments
 
-local specWarnOblivionStack					= mod:NewSpecialWarningStack(401951, nil, 12, nil, nil, 1, 6)
-local specWarnEmptynessBetweenStars			= mod:NewSpecialWarningYou(401215, nil, nil, nil, 1, 2)
+local specWarnOblivionStack					= mod:NewSpecialWarningStack(401951, nil, 6, nil, nil, 1, 6)
+local specWarnEmptynessBetweenStars			= mod:NewSpecialWarningYou(401215, nil, nil, nil, 1, 5)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(406989, nil, nil, nil, 1, 8)
 
 local timerPhaseCD							= mod:NewPhaseTimer(30)
@@ -102,7 +102,7 @@ local yellVoidFractureFades						= mod:NewShortFadesYell(404218)
 local specWarnAbyssalBreath						= mod:NewSpecialWarningCount(404456, nil, nil, nil, 2, 2)
 local specWarnEmptyStrike						= mod:NewSpecialWarningDefensive(404769, nil, nil, nil, 1, 2, 4)
 local specWarnCosmicVolley						= mod:NewSpecialWarningInterruptCount(411302, "HasInterrupt", nil, nil, 1, 2, 4)
-local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2, 4)
+local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDesolateBlossom					= mod:NewSpecialWarningDodgeCount(404403, nil, nil, nil, 2, 2)
 local specWarnInfiniteDuress					= mod:NewSpecialWarningIncomingCount(404288, nil, nil, nil, 1, 14, 3)
 local specWarnInfiniteDuressYou					= mod:NewSpecialWarningYou(404288, nil, nil, nil, 1, 2, 3)
@@ -135,7 +135,7 @@ local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403517, 3, nil, 
 local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
 local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403771, nil, nil, nil, 2, 2)
+local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, nil, nil, 2, 2)
 local specWarnHurtlingBarrageIncoming			= mod:NewSpecialWarningIncomingCount(405022, nil, nil, nil, 1, 14)
 local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
 local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
@@ -150,7 +150,7 @@ local specWarnVoidSlashOut						= mod:NewSpecialWarningMoveAway(408422, nil, nil
 local yellVoidSlashFades						= mod:NewShortFadesYell(408422)
 local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, nil, 1, 2)
 
-local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403771, nil, nil, nil, 3)
+local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, nil, nil, nil, 3)
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
 local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, nil, nil, nil, 3)
@@ -181,45 +181,45 @@ local oblivionDisabled = false--Cache to avoid constant option table spamming
 local difficultyName = "easy"
 local allTimers = {
 	["mythic"] = {
-		[1] = {--Heroic filler timers for now
+		[1] = {
 			--Scorching Bomb
-			[401500] = {1, 32.2, 26.6, 18.9},
+			[401500] = {},
 			--Glittering Surge
-			[401810] = {3.3, 97.6},
+			[401810] = {},
 			--Burning Claws
-			[401325] = {20, 18.8, 18.8, 16.6},
+			[401325] = {},
 			--Mass Disintegrate
-			[401642] = {23.3, 24, 22.6, 21.1},
+			[401642] = {},
 			--Searing Breath
-			[402050] = {26.6, 15.5, 19.9},
+			[402050] = {},
 		},
 		[2] = {
 			--Abyssal Breath
-			[404456] = {3.5, 43.5, 35.3},
+			[404456] = {},
 			--Desolate Blossom
-			[404403] = {10.6, 43.4, 37.6},
+			[404403] = {},
 			--Void Bomb
-			[404027] = {15.3, 59.9},
+			[404027] = {},
 			--Void Claws
-			[411236] = {18.8, 17.6, 21.2},
+			[411236] = {},
 			--Infinite Duress
-			[407496] = {29.4, 35.2},
+			[407496] = {},
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {4.7, 56.2},
+			[407496] = {},
 			--Void Bomb (P2 ability returning)
-			[404027] = {28.5},
+			[404027] = {},
 			--Cosmic Ascension
-			[403771] = {9.2, 61.2},
+			[403741] = {},
 			--Hurtling Barrage
-			[405022] = {19.7},
+			[405022] = {},
 			--Void Slash
-			[408422] = {21, 36.2},
+			[408422] = {},
 			--Scouring Eternity
-			[403625] = {46.2},
+			[403625] = {},
 			--Embrace of Nothingness
-			[403517] = {24.7},
+			[403517] = {},
 		},
 	},
 	["heroic"] = {--Heroic Confirmed
@@ -243,25 +243,25 @@ local allTimers = {
 			--Void Bomb
 			[404027] = {15.3, 59.9},
 			--Void Claws
-			[411236] = {18.8, 17.6, 21.2},
+			[411236] = {18.8, 17.6, 21.2, 42.3},
 			--Infinite Duress
 			[407496] = {29.4, 35.2},
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {4.7, 56.2, 83.7},
+			[407496] = {4.7, 56.2, 83.7, 37.5, 36.3},
 			--Void Bomb (P2 ability returning)
-			[404027] = {28.5, 61.2, 61.2},
+			[404027] = {28.5, 61.2, 61.2, 96.3},
 			--Cosmic Ascension
-			[403771] = {9.2, 61.2, 61.2},
+			[403741] = {7.2, 61.2, 98.7, 58.7},
 			--Hurtling Barrage
-			[405022] = {19.7, 84.9, 54.9},
+			[405022] = {19.7, 84.9, 54.9, 35, 67.5},
 			--Void Slash
-			[408422] = {21, 36.2, 37.5},
+			[408422] = {21, 36.2, 37.5, 85.0, 11.2, 61.3},
 			--Scouring Eternity
-			[403625] = {46.2, 77.7},
+			[403625] = {46.2, 77.7, 81.4},
 			--Embrace of Nothingness
-			[403517] = {24.7, 111.2},
+			[403517] = {24.7, 111.2, 50.0},
 		},
 	},
 	["easy"] = {--Normal confirmed, LFR assumed
@@ -291,17 +291,17 @@ local allTimers = {
 		[3] = {
 			--Infinite Duress (P2 ability that still isn't in normal/LFR)
 			--Void Bomb (P2 ability returning)
-			[404027] = {30.3, 65.3, 65.3},
+			[404027] = {30.3, 65.3, 65.3, 102.7, 65.3},
 			--Cosmic Ascension
-			[403771] = {9.7, 65.3, 105.3},
+			[403741] = {7.7, 65.3, 105.3, 62.6, 105.3},
 			--Hurtling Barrage
-			[405022] = {21, 46.6, 102.6, 65.3},
+			[405022] = {21, 46.6, 102.6, 65.3, 102.6},
 			--Void Slash
-			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3},
+			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3, 39.9, 90.6, 11.9},
 			--Scouring Eternity
-			[403625] = {49.7, 82.5, 86.1},
+			[403625] = {49.7, 82.5, 86.1, 81.3},
 			--Embrace of Nothingness
-			[403517] = {26.3, 118.6, 53.3},
+			[403517] = {26.3, 118.6, 53.3, 114.7, 53.3},
 		},
 	},
 }
@@ -331,7 +331,7 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
@@ -355,7 +355,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
@@ -510,7 +510,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidClaws:Show()
 			specWarnVoidClaws:Play("defensive")
 		end
-	elseif spellId == 403771 then
+	elseif spellId == 403741 then
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnCosmicAscension:Show(self.vb.breathCount)
 		specWarnCosmicAscension:Play("watchstep")
@@ -606,7 +606,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 401215 then
 		if args:IsPlayer() then
 			specWarnEmptynessBetweenStars:Show()
-			specWarnEmptynessBetweenStars:Play("stilldanger")
+			specWarnEmptynessBetweenStars:Play("teleyou")
 			yellVoidFractureFades:Cancel()
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 			if expireTime then--Buff has various durations based on difficulty, 15-25, this is just easiest
@@ -848,7 +848,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.tankCount = 0----Reused for Void Slash
 		if self:IsHard() then
 			timerInfiniteDuressCD:Start(4.7, 1)
-			timerCosmicAscensionCD:Start(9.2, 1)
+			timerCosmicAscensionCD:Start(7.2, 1)
 			timerHurtlingBarrageCD:Start(19.7, 1)
 			timerVoidSlashCD:Start(21, 1)
 			timerEmbraceofNothingnessCD:Start(24.7, 1)
@@ -856,7 +856,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerScouringEternityCD:Start(46.2, 1)
 			--timerMotesofOblivionCD:Start(3)
 		else--Easy
-			timerCosmicAscensionCD:Start(9.7, 1)
+			timerCosmicAscensionCD:Start(7.7, 1)
 			timerHurtlingBarrageCD:Start(21, 1)
 			timerVoidSlashCD:Start(22.3, 1)
 			timerVoidBombCD:Start(30.3, 1)
