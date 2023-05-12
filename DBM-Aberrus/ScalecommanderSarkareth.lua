@@ -48,8 +48,8 @@ local warnMindFragment						= mod:NewAddsLeftAnnounce(403997, 1)--Not technicall
 local warnEmptynessBetweenStars				= mod:NewFadesAnnounce(401215, 1)
 local warnAstralFlare						= mod:NewCountAnnounce(407576, 1, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(407576))--Optional, don't want it to drown out the important messages of collecting mind fragments
 
-local specWarnOblivionStack					= mod:NewSpecialWarningStack(401951, nil, 12, nil, nil, 1, 6)
-local specWarnEmptynessBetweenStars			= mod:NewSpecialWarningYou(401215, nil, nil, nil, 1, 2)
+local specWarnOblivionStack					= mod:NewSpecialWarningStack(401951, nil, 6, nil, nil, 1, 6)
+local specWarnEmptynessBetweenStars			= mod:NewSpecialWarningYou(401215, nil, nil, nil, 1, 5)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(406989, nil, nil, nil, 1, 8)
 
 local timerPhaseCD							= mod:NewPhaseTimer(30)
@@ -102,7 +102,7 @@ local yellVoidFractureFades						= mod:NewShortFadesYell(404218)
 local specWarnAbyssalBreath						= mod:NewSpecialWarningCount(404456, nil, nil, nil, 2, 2)
 local specWarnEmptyStrike						= mod:NewSpecialWarningDefensive(404769, nil, nil, nil, 1, 2, 4)
 local specWarnCosmicVolley						= mod:NewSpecialWarningInterruptCount(411302, "HasInterrupt", nil, nil, 1, 2, 4)
-local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2, 4)
+local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDesolateBlossom					= mod:NewSpecialWarningDodgeCount(404403, nil, nil, nil, 2, 2)
 local specWarnInfiniteDuress					= mod:NewSpecialWarningIncomingCount(404288, nil, nil, nil, 1, 14, 3)
 local specWarnInfiniteDuressYou					= mod:NewSpecialWarningYou(404288, nil, nil, nil, 1, 2, 3)
@@ -606,7 +606,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 401215 then
 		if args:IsPlayer() then
 			specWarnEmptynessBetweenStars:Show()
-			specWarnEmptynessBetweenStars:Play("stilldanger")
+			specWarnEmptynessBetweenStars:Play("teleyou")
 			yellVoidFractureFades:Cancel()
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 			if expireTime then--Buff has various durations based on difficulty, 15-25, this is just easiest
