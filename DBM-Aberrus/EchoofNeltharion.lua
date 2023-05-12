@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 407207 403272 406222 403057 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
 	"SPELL_CAST_SUCCESS 402902 401480 407917 410968 409241",
-	"SPELL_AURA_APPLIED 401998 405484 407728 407919",--407182 410966
+	"SPELL_AURA_APPLIED 401998 405484 407728 407919 407036",--407182 410966
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 405484 407088 407919",--407182 410966
+	"SPELL_AURA_REMOVED 405484 407088 407919 407036",--407182 410966
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
 	"SPELL_PERIODIC_MISSED 409058 404277 409183"
 --	"UNIT_DIED"
@@ -74,6 +74,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26421))
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(26456))
 local warnCorruption							= mod:NewTargetCountAnnounce(401010, 3)--Class Call Parent
 local warnShadowShadowStrike					= mod:NewCastAnnounce(407796, 2, nil, nil, "Tank|Healer")
+local warnHidden								= mod:NewAddsLeftAnnounce(407036, 1)--Announces how many are still hidden, but also kinda acts as a "one has also become unhidden" alert
 
 local specWarnRazetheEarth						= mod:NewSpecialWarningDodge(409313, nil, nil, nil, 2, 2)
 local specWarnCorruption						= mod:NewSpecialWarningYou(401010, nil, nil, nil, 1, 2)
@@ -111,6 +112,7 @@ mod.vb.RushingDarknessCount = 0
 --P2
 mod.vb.corruptionCount = 0
 mod.vb.annihilatingCount = 0
+mod.vb.hiddenCount = 3
 --P3
 mod.vb.sunderRealityCount = 0
 mod.vb.ebonCount = 0
@@ -136,6 +138,7 @@ function mod:OnCombatStart(delay)
 	self.vb.annihilatingCount = 0
 	self.vb.sunderRealityCount = 0
 	self.vb.ebonCount = 0
+	self.vb.hiddenCount = 3
 	playerReality = false
 --	timerTwistedEarthCD:Start(1-delay)--Used 2 sec into pull
 	timerRushingDarknessCD:Start(10.7-delay, 1)
@@ -333,6 +336,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSunderShadowSwap:Play("tauntboss")
 	elseif spellId == 407919 and args:IsPlayer() then
 		playerReality = true
+	elseif spellId == 407036 then
+		self.vb.hiddenCount = self.vb.hiddenCount + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -370,6 +375,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	--	end
 	elseif spellId == 407919 and args:IsPlayer() then
 		playerReality = false
+	elseif spellId == 407036 then
+		self.vb.hiddenCount = self.vb.hiddenCount - 1
+		warnHidden:Show(self.vb.hiddenCount)
 	end
 end
 
