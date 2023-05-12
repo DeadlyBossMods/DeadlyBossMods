@@ -467,7 +467,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 						--Next cast at 100 energy
 						local violentTimer = (100 - bossPower) / 2
 						timerViolentEruptionCD:Start(violentTimer, 1)
-					else bossPower < 30 then--Volatile Spew will be first (and will be cast twice before special)
+					elseif bossPower < 30 then--Volatile Spew will be first (and will be cast twice before special)
 						--Next cast at 30 energy
 						local spewTimer = (30 - bossPower) / 2
 						timerVolatileSpewCD:Start(spewTimer, 1)
