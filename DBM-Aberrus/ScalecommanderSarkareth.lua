@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201754)
 mod:SetEncounterID(2685)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230510000000)
+mod:SetHotfixNoticeRev(20230511000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -181,45 +181,45 @@ local oblivionDisabled = false--Cache to avoid constant option table spamming
 local difficultyName = "easy"
 local allTimers = {
 	["mythic"] = {
-		[1] = {--Heroic filler timers for now
+		[1] = {
 			--Scorching Bomb
-			[401500] = {1, 32.2, 26.6, 18.9},
+			[401500] = {},
 			--Glittering Surge
-			[401810] = {3.3, 97.6},
+			[401810] = {},
 			--Burning Claws
-			[401325] = {20, 18.8, 18.8, 16.6},
+			[401325] = {},
 			--Mass Disintegrate
-			[401642] = {23.3, 24, 22.6, 21.1},
+			[401642] = {},
 			--Searing Breath
-			[402050] = {26.6, 15.5, 19.9},
+			[402050] = {},
 		},
 		[2] = {
 			--Abyssal Breath
-			[404456] = {3.5, 43.5, 35.3},
+			[404456] = {},
 			--Desolate Blossom
-			[404403] = {10.6, 43.4, 37.6},
+			[404403] = {},
 			--Void Bomb
-			[404027] = {15.3, 59.9},
+			[404027] = {},
 			--Void Claws
-			[411236] = {18.8, 17.6, 21.2},
+			[411236] = {},
 			--Infinite Duress
-			[407496] = {29.4, 35.2},
+			[407496] = {},
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {4.7, 56.2},
+			[407496] = {},
 			--Void Bomb (P2 ability returning)
-			[404027] = {28.5},
+			[404027] = {},
 			--Cosmic Ascension
-			[403741] = {9.2, 61.2},
+			[403741] = {},
 			--Hurtling Barrage
-			[405022] = {19.7},
+			[405022] = {},
 			--Void Slash
-			[408422] = {21, 36.2},
+			[408422] = {},
 			--Scouring Eternity
-			[403625] = {46.2},
+			[403625] = {},
 			--Embrace of Nothingness
-			[403517] = {24.7},
+			[403517] = {},
 		},
 	},
 	["heroic"] = {--Heroic Confirmed
@@ -243,25 +243,25 @@ local allTimers = {
 			--Void Bomb
 			[404027] = {15.3, 59.9},
 			--Void Claws
-			[411236] = {18.8, 17.6, 21.2},
+			[411236] = {18.8, 17.6, 21.2, 42.3},
 			--Infinite Duress
 			[407496] = {29.4, 35.2},
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {4.7, 56.2, 83.7},
+			[407496] = {4.7, 56.2, 83.7, 37.5, 36.3},
 			--Void Bomb (P2 ability returning)
-			[404027] = {28.5, 61.2, 61.2},
+			[404027] = {28.5, 61.2, 61.2, 96.3},
 			--Cosmic Ascension
-			[403741] = {7.2, 61.2, 98.7},
+			[403741] = {7.2, 61.2, 98.7, 58.7},
 			--Hurtling Barrage
-			[405022] = {19.7, 84.9, 54.9},
+			[405022] = {19.7, 84.9, 54.9, 35, 67.5},
 			--Void Slash
-			[408422] = {21, 36.2, 37.5},
+			[408422] = {21, 36.2, 37.5, 85.0, 11.2, 61.3},
 			--Scouring Eternity
-			[403625] = {46.2, 77.7},
+			[403625] = {46.2, 77.7, 81.4},
 			--Embrace of Nothingness
-			[403517] = {24.7, 111.2},
+			[403517] = {24.7, 111.2, 50.0},
 		},
 	},
 	["easy"] = {--Normal confirmed, LFR assumed
@@ -291,17 +291,17 @@ local allTimers = {
 		[3] = {
 			--Infinite Duress (P2 ability that still isn't in normal/LFR)
 			--Void Bomb (P2 ability returning)
-			[404027] = {30.3, 65.3, 65.3},
+			[404027] = {30.3, 65.3, 65.3, 102.7, 65.3},
 			--Cosmic Ascension
-			[403741] = {7.7, 65.3, 105.3},
+			[403741] = {7.7, 65.3, 105.3, 62.6, 105.3},
 			--Hurtling Barrage
-			[405022] = {21, 46.6, 102.6, 65.3},
+			[405022] = {21, 46.6, 102.6, 65.3, 102.6},
 			--Void Slash
-			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3},
+			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3, 39.9, 90.6, 11.9},
 			--Scouring Eternity
-			[403625] = {49.7, 82.5, 86.1},
+			[403625] = {49.7, 82.5, 86.1, 81.3},
 			--Embrace of Nothingness
-			[403517] = {26.3, 118.6, 53.3},
+			[403517] = {26.3, 118.6, 53.3, 114.7, 53.3},
 		},
 	},
 }
@@ -331,7 +331,7 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
@@ -355,7 +355,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
