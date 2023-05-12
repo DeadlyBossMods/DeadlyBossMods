@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 	self.vb.annihilatingCount = 0
 	self.vb.sunderRealityCount = 0
 	self.vb.ebonCount = 0
-	self.vb.hiddenCount = 3
+	self.vb.hiddenCount = 0
 	playerReality = false
 --	timerTwistedEarthCD:Start(1-delay)--Used 2 sec into pull
 	timerRushingDarknessCD:Start(10.7-delay, 1)
@@ -255,7 +255,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVolcanicHeartCD:Start(self:GetStage(1) and 36.3 or 17, self.vb.volcanicCount+1)
 	elseif args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
 		self.vb.twistedEarthCount = self.vb.twistedEarthCount + 1
-		if self.Options.SpecWarn402902dodgecount then
+		if self.Options[specWarnTwistedEarth.option] then
 			specWarnTwistedEarth:Show(self.vb.twistedEarthCount)
 			specWarnTwistedEarth:Play("watchstep")
 		else
