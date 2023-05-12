@@ -93,7 +93,6 @@ mod.vb.anomalyCount = 0
 local essenceMarks = {}
 local bossActive = {}
 local difficultyName = "other"
-mod.vb.thadInverted = 0
 local allTimers = {
 	["mythic"] = {
 		--Rending Charge
@@ -159,7 +158,6 @@ function mod:OnCombatStart(delay)
 	self.vb.essenceCount = 0
 	self.vb.volatileSpewCount = 0
 	self.vb.eruptionCount = 0
-	self.vb.thadInverted = 0
 	--Rionthus
 	self.vb.breathCount = 0
 	self.vb.disintegrateCount = 0
