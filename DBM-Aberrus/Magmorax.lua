@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201579)
 mod:SetEncounterID(2683)
 mod:SetUsedIcons(1, 2, 3, 8)
-mod:SetHotfixNoticeRev(20230509000000)
+mod:SetHotfixNoticeRev(20230513000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -89,13 +89,13 @@ function mod:OnCombatStart(delay)
 		timerBlazingBreathCD:Start(31.2-delay, 1)
 		timerOverpoweringStompCD:Start(89.9-delay, 1)
 	else--Mythic
-		timerIngitingRoarCD:Start(4.9-delay, 1)
-		timerMoltenSpittleCD:Start(12.9-delay, 1)
-		timerIncineratingMawsCD:Start(19.9-delay, 1)
-		timerBlazingBreathCD:Start(25-delay, 1)
-		timerOverpoweringStompCD:Start(68.9-delay, 1)
+		timerIngitingRoarCD:Start(5.5-delay, 1)
+		timerMoltenSpittleCD:Start(14.4-delay, 1)
+		timerIncineratingMawsCD:Start(22.2-delay, 1)
+		timerBlazingBreathCD:Start(28-delay, 1)
+		timerOverpoweringStompCD:Start(43-delay, 1)
 	end
-	timerCatastrophicCD:Start(340-delay)
+	timerCatastrophicCD:Start(335-delay)
 	if self.Options.NPAuraOnTantrum then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -123,6 +123,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 408358 then
 		specWarnCatastrophicEruption:Show()
 		specWarnCatastrophicEruption:Play("stilldanger")
+		timerIngitingRoarCD:Stop()
+		timerMoltenSpittleCD:Stop()
+		timerIncineratingMawsCD:Stop()
+		timerBlazingBreathCD:Stop()
+		timerOverpoweringStompCD:Stop()
 	elseif spellId == 402989 then
 		self.vb.spitCount = self.vb.spitCount + 1
 		self.vb.spitIcon = 1
@@ -145,15 +150,11 @@ function mod:SPELL_CAST_START(args)
 				timerMoltenSpittleCD:Start(32.4, self.vb.spitCount+1)
 			end
 		else--Mythic
-			--13.0, 24.0, 26.0, 25.0, 27.0, 24.0, 26.0, 25.0, 27.0, 24.0, 26.0, 25.0, 27.0
-			if self.vb.spitCount % 4 == 0 then
-				timerMoltenSpittleCD:Start(26.9, self.vb.spitCount+1)
-			elseif self.vb.spitCount % 4 == 3 then
-				timerMoltenSpittleCD:Start(25, self.vb.spitCount+1)
-			elseif self.vb.spitCount % 4 == 2 then
-				timerMoltenSpittleCD:Start(25.9, self.vb.spitCount+1)
+			--14.4, 40.0, 26.6, 40.0, 26.6, 40, 26.7
+			if self.vb.spitCount % 2 == 0 then
+				timerMoltenSpittleCD:Start(26.6, self.vb.spitCount+1)
 			else
-				timerMoltenSpittleCD:Start(24, self.vb.spitCount+1)
+				timerMoltenSpittleCD:Start(40, self.vb.spitCount+1)
 			end
 		end
 	elseif spellId == 403740 then
@@ -173,20 +174,18 @@ function mod:SPELL_CAST_START(args)
 			--6.2, 49.9, 49.9, 49.9, 49.9, 49.9, 49.9, 49.9
 			timerIngitingRoarCD:Start(49.9, self.vb.roarCount+1)
 		else--Mythic
-			--5.0, 40.0, 39.0, 23.0, 40.0, 39.0, 23.0, 40.0, 39.0, 23.0
-			if self.vb.roarCount % 3 == 0 then
-				timerIngitingRoarCD:Start(23, self.vb.roarCount+1)
-			elseif self.vb.roarCount % 2 == 0 then
-				timerIngitingRoarCD:Start(39, self.vb.roarCount+1)
+			--5.0, 41.8, 24.8, 41.8, 24.8, 41.8, ...
+			if self.vb.roarCount % 2 == 0 then
+				timerIngitingRoarCD:Start(24.8, self.vb.roarCount+1)
 			else
-				timerIngitingRoarCD:Start(40, self.vb.roarCount+1)
+				timerIngitingRoarCD:Start(41.8, self.vb.roarCount+1)
 			end
 		end
 	elseif spellId == 403671 then
 		self.vb.stompCount = self.vb.stompCount + 1
 		specWarnOverpoweringStomp:Show(self.vb.stompCount)
 		specWarnOverpoweringStomp:Play("carefly")
-		timerOverpoweringStompCD:Start(self:IsEasy() and 113.3 or 100, self.vb.stompCount+1)
+		timerOverpoweringStompCD:Start(self:IsMythic() and 66.6 or self:IsEasy() and 113.3 or 100, self.vb.stompCount+1)
 	elseif spellId == 409093 or spellId == 402344 then--409093 confirmed for heroic/normal, 402344 unknown
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnBlazingBreath:Show(self.vb.breathCount)
@@ -209,13 +208,11 @@ function mod:SPELL_CAST_START(args)
 				timerBlazingBreathCD:Start(34.9, self.vb.breathCount+1)
 			end
 		else
-			--25.0, 28.0, 41.0, 33.0, 28.0, 41.0, 33.0, 28.0, 41.0
-			if self.vb.breathCount % 3 == 0 then
-				timerBlazingBreathCD:Start(33, self.vb.breathCount+1)
-			elseif self.vb.breathCount % 3 == 2 then
-				timerBlazingBreathCD:Start(41, self.vb.breathCount+1)
+			--28.8, 35.5, 31, 35.5, 31.1, ...
+			if self.vb.breathCount % 2 == 0 then
+				timerBlazingBreathCD:Start(31, self.vb.breathCount+1)
 			else
-				timerBlazingBreathCD:Start(28, self.vb.breathCount+1)
+				timerBlazingBreathCD:Start(35.5, self.vb.breathCount+1)
 			end
 		end
 	elseif spellId == 404846 then
@@ -227,8 +224,17 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerIncineratingMawsCD:Start(22.2, self.vb.mawCount+1)
 			end
+		elseif self:IsMythic() then
+			--22.2, 14.4, 24.4, 27.8, 14.4, 24.4, 27.7, 14.4
+			if self.vb.mawCount % 3 == 0 then
+				timerIncineratingMawsCD:Start(27.8, self.vb.breathCount+1)
+			elseif self.vb.mawCount % 3 == 2 then
+				timerIncineratingMawsCD:Start(24.4, self.vb.breathCount+1)
+			else
+				timerIncineratingMawsCD:Start(14.4, self.vb.breathCount+1)
+			end
 		else
-			timerIncineratingMawsCD:Start(self:IsMythic() and 20 or 25, self.vb.mawCount+1)
+			timerIncineratingMawsCD:Start(25, self.vb.mawCount+1)
 		end
 	end
 end
