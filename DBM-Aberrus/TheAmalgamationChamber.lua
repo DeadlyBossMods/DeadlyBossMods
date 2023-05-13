@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 403459 405016 407640 403699 404732 403101 404896 405437 405641 408193 405914 406783 403203 409385",
 	"SPELL_CAST_SUCCESS 406730 409385",
-	"SPELL_AURA_APPLIED 401809 402617 405036 405394 405642 405914",
+	"SPELL_AURA_APPLIED 401809 402617 405036 405394 405642 405914 413597",
 	"SPELL_AURA_APPLIED_DOSE 401809 402617 405394",
 	"SPELL_AURA_REMOVED 401809 402617 405036 405642",
 	"SPELL_PERIODIC_DAMAGE 405084 405645",
@@ -594,7 +594,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnBlisteringTwilight:CombinedShow(0.5, self.vb.umbralCount, args.destName)
 		self.vb.umbralIcon = self.vb.umbralIcon + 1
-	elseif spellId == 405914 and not args:IsPlayer() then
+	elseif (spellId == 413597 or spellId == 405914) and not args:IsPlayer() then
 		specWarnWitheringVulnerabilityTaunt:Show(args.destName)
 		specWarnWitheringVulnerabilityTaunt:Play("tauntboss")
 	end

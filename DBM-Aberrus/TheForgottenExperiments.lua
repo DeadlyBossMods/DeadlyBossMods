@@ -6,8 +6,8 @@ mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230510000000)
-mod:SetMinSyncRevision(20230510000000)
+mod:SetHotfixNoticeRev(20230512000000)
+mod:SetMinSyncRevision(20230512000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -93,7 +93,6 @@ mod.vb.anomalyCount = 0
 local essenceMarks = {}
 local bossActive = {}
 local difficultyName = "other"
-mod.vb.thadInverted = 0
 local allTimers = {
 	["mythic"] = {
 		--Rending Charge
@@ -159,7 +158,6 @@ function mod:OnCombatStart(delay)
 	self.vb.essenceCount = 0
 	self.vb.volatileSpewCount = 0
 	self.vb.eruptionCount = 0
-	self.vb.thadInverted = 0
 	--Rionthus
 	self.vb.breathCount = 0
 	self.vb.disintegrateCount = 0
@@ -215,6 +213,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			--Mythic only uses 407733 and instead is simple alternation
 			--24, 17.9, 37, 18, 36.9
+			--Doesn't need energy calculation, it's always same rotation since it's engage boss
 			if self.vb.massiveSlamCount % 2 == 0 then
 				timer = 36.9
 			else
@@ -232,6 +231,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBellowingRoar:Play("carefly")
 		local timer
 		if self:IsMythic() then
+			--Doesn't need energy calculation, it's always same rotation since it's engage boss
 			if self.vb.roarCount % 2 == 0 then
 				timer = 25
 			else
@@ -246,12 +246,11 @@ function mod:SPELL_CAST_START(args)
 		warnUnstableEssence:Show(self.vb.essenceCount)
 		local timer
 		if self:IsMythic() then
-			--6.3, 33.9, 20.9, 34, 21 (Starts at 0)
-			--32.2, 21, 33.9, 21, 34, 21, 34, 21 (starts juiced)
-			if self.vb.essenceCount % 2 == 0 then
-				timer = (self.vb.thadInverted == 1) and 33.9 or 20.9
-			else
-				timer = (self.vb.thadInverted == 1) and 20.9 or 33.9
+			local unit = self:GetUnitIdFromGUID(args.sourceGUID)
+			if UnitPower(unit) < 30 then--It's 7 energy cast
+				timer = 20.9
+			else--It's 55 Energy cast, so next one will be after full rotationof ultimate
+				timer = 33.9
 			end
 		else
 			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.essenceCount+1) or 27.5
@@ -262,11 +261,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnVolatileSpew:Show(self.vb.volatileSpewCount)
 		local timer
 		if self:IsMythic() then
-			--15.3, 35, 19.9, 34.9, 19.9 (Starts at 0)
-			--7.2, 34.9, 19.9, 35.0, 19.9, 35.1, 19.8 (starts juiced)
-			if self.vb.volatileSpewCount % 2 == 0 then
+			local unit = self:GetUnitIdFromGUID(args.sourceGUID)
+			if UnitPower(unit) < 50 then--It's 30 energy cast
 				timer = 19.9
-			else
+			else--It's 75 Energy cast, so next one will be after full rotationof ultimate
 				timer = 34.9
 			end
 		else
@@ -407,14 +405,43 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 200918 then--Rionthus
 				if self:IsMythic() then
-					if UnitPower(unitID) >= 50 then
-						timerDeepBreathCD:Start(17.5, 1)
-						timerTemporalAnomalyCD:Start(36.4, 1)
-						timerDisintegrateCD:Start(46.4, 1)
-					else
-						timerTemporalAnomalyCD:Start(3.4, 1)
-						timerDisintegrateCD:Start(13.4, 1)
-						timerDeepBreathCD:Start(39.5, 1)
+					--Boss gains 2 energy per second, but +5 seconds after hitting 100 before restarting
+					--Temporal Anomaly is cast at 17 mythic
+					--Disintegrate is cast at 41 mythic
+					--Only acception for energy rules for casts is if the cast is within first 5 seconds of spawn
+					--it'll be delayed and cast after 5 second no cast window, as long as a new spells energy window hasn't activated (else cast is skipped)
+					--(this exception is not really coded in at moment)
+					local bossPower = UnitPower(unitID)
+					if bossPower < 17 then--Temporal Anomaly first
+						--Next cast at 17 energy
+						local tempTimer = (17 - bossPower) / 2
+						timerTemporalAnomalyCD:Start(tempTimer, 1)
+						--Next cast at 41 energy
+						local disTimer = (41 - bossPower) / 2
+						timerDisintegrateCD:Start(disTimer, 1)
+						--Next cast at 100 energy
+						local deepTimer = (100 - bossPower) / 2
+						timerDeepBreathCD:Start(deepTimer, 1)
+					elseif bossPower < 41 then--Disintegrate first
+						--Next cast at 41 energy
+						local disTimer = (41 - bossPower) / 2
+						timerDisintegrateCD:Start(disTimer, 1)
+						--Next cast at 100 energy
+						local deepTimer = (100 - bossPower) / 2
+						timerDeepBreathCD:Start(deepTimer, 1)
+						--Next cast at 17 energy after energy reset
+						local tempTimer = (117 - bossPower) / 2
+						timerTemporalAnomalyCD:Start(tempTimer + 5, 1)
+					else--Deep Breath first
+						--Next cast at 100 energy
+						local deepTimer = (100 - bossPower) / 2
+						timerDeepBreathCD:Start(deepTimer, 1)
+						--Next cast at 17 energy after energy reset
+						local tempTimer = (117 - bossPower) / 2
+						timerTemporalAnomalyCD:Start(tempTimer + 5, 1)
+						--Next cast at 41 energy after energy reset
+						local disTimer = (141 - bossPower) / 2
+						timerDisintegrateCD:Start(disTimer + 5, 1)
 					end
 				else
 					timerDisintegrateCD:Start(6.2, 1)
@@ -423,26 +450,68 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 			elseif cid == 200913 then--Thadrion
 				if self:IsMythic() then
-					if UnitPower(unitID) >= 50 then
-						self.vb.thadInverted = 1
-						timerVolatileSpewCD:Start(7.2, 1)
-						timerViolentEruptionCD:Start(18.1, 1)
-						timerUnstableEssenceCD:Start(32.2, 1)
-					else
-						self.vb.thadInverted = 0
-						timerUnstableEssenceCD:Start(6.3, 1)
-						timerVolatileSpewCD:Start(15.3, 1)
-						timerViolentEruptionCD:Start(26.3, 1)
+					--Boss gains 2 energy per second, but +5 seconds after hitting 100 before restarting
+					--Volatile Spew is cast at 30 and 75 Energy on mythic
+					--Unstable Essence is cast at 7 energy and 55 Energy on Mythic
+					--Only acception for energy rules for casts is if the cast is within first 5 seconds of spawn
+					--it'll be delayed and cast after 5 second no cast window, as long as a new spells energy window hasn't activated (else cast is skipped)
+					--(this exception is not really coded in at moment)
+					local bossPower = UnitPower(unitID)
+					if bossPower < 7 then--Unstable might be first, but this probably won't happen until 11.x
+						timerUnstableEssenceCD:Start(5, 1)--Min CD of 5 rule will be applied anyways so no need to calculate it
+						--Next cast at 30 energy
+						local spewTimer = (30 - bossPower) / 2
+						timerVolatileSpewCD:Start(spewTimer, 1)
+						--Next cast at 100 energy
+						local violentTimer = (100 - bossPower) / 2
+						timerViolentEruptionCD:Start(violentTimer, 1)
+					elseif bossPower < 30 then--Volatile Spew will be first (and will be cast twice before special)
+						--Next cast at 30 energy
+						local spewTimer = (30 - bossPower) / 2
+						timerVolatileSpewCD:Start(spewTimer, 1)
+						--Next cast is at 55 energy
+						local unstableTimer = (55 - bossPower) / 2
+						timerUnstableEssenceCD:Start(unstableTimer, 1)
+						--Next cast at 100 energy
+						local violentTimer = (100 - bossPower) / 2
+						timerViolentEruptionCD:Start(violentTimer, 1)
+					elseif bossPower < 55 then--Unstable will be first
+						--Next cast is at 55 energy
+						local unstableTimer = (55 - bossPower) / 2
+						timerUnstableEssenceCD:Start(unstableTimer, 1)
+						--Next cast at 75 energy
+						local spewTimer = (75 - bossPower) / 2
+						timerVolatileSpewCD:Start(spewTimer, 1)
+						--Next cast at 100 energy
+						local violentTimer = (100 - bossPower) / 2
+						timerViolentEruptionCD:Start(violentTimer, 1)
+					elseif bossPower < 75 then--Volatile Spew will be first (but only cast once)
+						--Next cast at 75 energy
+						local spewTimer = (75 - bossPower) / 2
+						timerVolatileSpewCD:Start(spewTimer, 1)
+						--Next cast at 100 energy
+						local violentTimer = (100 - bossPower) / 2
+						timerViolentEruptionCD:Start(violentTimer, 1)
+						--Next cast is at 7 energy so we have to calculate to (100 energy + 7) / 2 then + 5 seconds outside energy calculation
+						local unstableTimer = (107 - bossPower) / 2
+						timerUnstableEssenceCD:Start(unstableTimer + 5, 1)
+					else--He's just gonna ultimate first
+						--Next cast at 100 energy
+						local violentTimer = (100 - bossPower) / 2
+						timerViolentEruptionCD:Start(violentTimer, 1)
+						--Next cast is at 7 energy so we have to calculate to (100 energy + 7) / 2 then + 5 seconds outside energy calculation
+						local unstableTimer = (107 - bossPower) / 2
+						timerUnstableEssenceCD:Start(unstableTimer + 5, 1)
+						--Next cast at 30 energy
+						local spewTimer = (130 - bossPower) / 2
+						timerVolatileSpewCD:Start(spewTimer + 5, 1)
 					end
 				else
-					timerVolatileSpewCD:Start(5.3, 1)
-					timerUnstableEssenceCD:Start(16.5, 1)
-					timerViolentEruptionCD:Start(38.4, 1)
+					--Always comes out at 29 power, first power update will fire at 31
+					timerVolatileSpewCD:Start(5.3, 1)--Used at 41 and 80 Power first time (then after first rotation switches to 26/??)
+					timerUnstableEssenceCD:Start(16.5, 1)--Used at 61-63 Power (also at 11 power but boss never starts at low)
+					timerViolentEruptionCD:Start(38.4, 1)--Used at 100 Power (then can switch to cooldown code after)
 				end
-			--elseif cid == 200912 then--Neldris (in case a diff boss can start)
-			--	timerRendingChargeCD:Stop()
-			--	timerMassiveSlamCD:Stop()
-			--	timerBellowingRoarCD:Stop()
 			end
 		end
 	end

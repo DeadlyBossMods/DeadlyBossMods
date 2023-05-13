@@ -80,11 +80,11 @@ function mod:OnCombatStart(delay)
 	timerBlastWaveCD:Start(10.7-delay, 1)--Same in All
 	if self:IsMythic() then--Recheck
 		self.vb.expectedBombs = 4
-		timerUnstableEmbersCD:Start(7-delay, 1)
+		timerUnstableEmbersCD:Start(9.1-delay, 1)
 		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
-		timerAnimateGolemsCD:Start(26.4-delay, 1)
-		timerTacticalDestructionCD:Start(31.3-delay, 1)
-		timerShrapnalBombCD:Start(36.4-delay, 1)
+		timerAnimateGolemsCD:Start(26.2-delay, 1)
+		timerTacticalDestructionCD:Start(31-delay, 1)
+		timerShrapnalBombCD:Start(35.9-delay, 1)
 	elseif self:IsHeroic() then--Validated
 		self.vb.expectedBombs = 3
 		timerUnstableEmbersCD:Start(7-delay, 1)
@@ -117,7 +117,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
 		specWarnAnimateGolems:Play("killmobs")
-		timerAnimateGolemsCD:Start(73, self.vb.golemsCount+1)
+		timerAnimateGolemsCD:Start(73, self.vb.golemsCount+1)--Can get spell queued up to 78
 		if self.Options.SetIconOnGolems  then
 			self:ScanForMobs(203230, 0, 8, 3, nil, 12, "SetIconOnGolems")
 		end
@@ -139,7 +139,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blastWaveCount = self.vb.blastWaveCount + 1
 		specWarnBlastWave:Show(self.vb.blastWaveCount)
 		specWarnBlastWave:Play("carefly")
-		timerBlastWaveCD:Start(self:IsEasy() and 38 or 34, self.vb.blastWaveCount+1)
+		timerBlastWaveCD:Start(self:IsEasy() and 38 or 33.2, self.vb.blastWaveCount+1)
 	end
 end
 

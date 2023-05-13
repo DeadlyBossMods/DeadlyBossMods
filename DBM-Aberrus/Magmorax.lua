@@ -34,7 +34,7 @@ local warnMoltenSpittle								= mod:NewTargetCountAnnounce(402989, 2)
 local warnIncineratingMaws							= mod:NewStackAnnounce(404846, 2, nil, "Tank|Healer")
 
 local specWarnCatastrophicEruption					= mod:NewSpecialWarningSpell(408358, nil, nil, nil, 3, 2)
-local specWarnHeatStacks							= mod:NewSpecialWarningStack(408839, nil, 12, nil, nil, 1, 6)
+local specWarnHeatStacks							= mod:NewSpecialWarningStack(408839, nil, 35, nil, nil, 1, 6)
 local specWarnBlazingTantrum						= mod:NewSpecialWarningMove(407879, "Tank", nil, nil, 1, 2)
 local specWarnIgnitingRoar							= mod:NewSpecialWarningCount(403740, nil, nil, nil, 2, 2)
 local specWarnOverpoweringStomp						= mod:NewSpecialWarningCount(403671, nil, nil, nil, 2, 2)
@@ -239,10 +239,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		heatStacks[args.destName] = amount
 		if args:IsPlayer() then
-			if amount >= 16 then--Emphasize at higher stacks
+			if amount >= 35 then--Emphasize at higher stacks
 				specWarnHeatStacks:Show(amount)
 				specWarnHeatStacks:Play("stackhigh")
-			elseif amount % 4 == 3 then--(3, 7, 11, 15) Otherwise, don't spam elevated warning
+			elseif amount % 4 == 0 then--(4, 8, 12, 16) Otherwise, don't spam elevated warning
 				warnHeatStacks:Show(amount)
 			end
 		end
