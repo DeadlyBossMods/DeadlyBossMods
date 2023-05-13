@@ -39,10 +39,10 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
 --local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
-local warnRushingDarkness						= mod:NewCountAnnounce(407221, 2)
+local warnRushingDarkness						= mod:NewIncomingCountAnnounce(407221, 2)
 --local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
+local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 
-local specWarnVolcanicHeart						= mod:NewSpecialWarningIncomingCount(410953, nil, nil, nil, 1, 14)
 --local specWarnVolcanicHeart					= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
 --local yellVolcanicHeart						= mod:NewShortPosYell(410953)
 --local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
@@ -63,6 +63,7 @@ local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, n
 local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
+mod:AddPrivateAuraSoundOption(true)
 --mod:AddRangeFrameOption(5, 390715)
 --mod:AddSetIconOption("SetIconOnVolcanicHeart", 410953, true, 0, {1, 2, 3})
 --mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {4, 5, 6})
@@ -148,6 +149,8 @@ function mod:OnCombatStart(delay)
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
+	self:EnablePrivateAuraSound(407182, "targetyou", 2)--Rushing Darkness
+	self:EnablePrivateAuraSound(410966, "runout", 2)--Volcanic Heart
 end
 
 function mod:OnCombatEnd()
@@ -250,8 +253,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 410968 then
 --		self.vb.volcIcon = 1
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
-		specWarnVolcanicHeart:Show(self.vb.volcanicCount)
-		specWarnVolcanicHeart:Play("incomingdebuff")
+		warnVolcanicHeart:Show(self.vb.volcanicCount)
 		timerVolcanicHeartCD:Start(self:GetStage(1) and 36.3 or 17, self.vb.volcanicCount+1)
 	elseif args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
 		self.vb.twistedEarthCount = self.vb.twistedEarthCount + 1
