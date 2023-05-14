@@ -49,7 +49,7 @@ local timerRendingChargeCD							= mod:NewCDCountTimer(34.2, 406358, nil, nil, n
 local timerMassiveSlamCD							= mod:NewCDCountTimer(39, 404472, nil, nil, nil, 3)
 local timerBellowingRoarCD							= mod:NewCDCountTimer(23.1, 404713, nil, nil, nil, 2)
 
-mod:AddPrivateAuraSoundOption(true)
+mod:AddPrivateAuraSoundOption(406317, true, 406358)
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddRangeFrameOption(5, 390715)
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
