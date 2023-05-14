@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
-mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20230509000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 406678 405812 405919 403978 405886",
-	"SPELL_CAST_SUCCESS 404007 406725 405736",
+	"SPELL_CAST_SUCCESS 404007 406725 405736 181113",
 	"SPELL_AURA_APPLIED 405592 404010 404942",
 	"SPELL_AURA_APPLIED_DOSE 404942",
 	"SPELL_AURA_REMOVED 404010",
@@ -55,7 +55,7 @@ local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, n
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 404007)
-mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6})
+mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6, 5})
 mod:AddSetIconOption("SetIconOnEmbers", 404007, false, 0, {1, 2, 3, 4})
 
 local castsPerGUID = {}
@@ -67,6 +67,7 @@ mod.vb.blastWaveCount = 0
 mod.vb.embersCount = 0
 mod.vb.dragonCount = 0
 mod.vb.expectedBombs = 3
+mod.vb.addIcon = 8
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -114,13 +115,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnTacticalDestruction:Play("watchstep")
 		timerTacticalDestructionCD:Start(71.6, self.vb.destructionCount+1)
 	elseif spellId == 405812 then
+		self.vb.addIcon = 8
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
 		specWarnAnimateGolems:Play("killmobs")
 		timerAnimateGolemsCD:Start(73, self.vb.golemsCount+1)--Can get spell queued up to 78
-		if self.Options.SetIconOnGolems  then
-			self:ScanForMobs(203230, 0, 8, 3, nil, 12, "SetIconOnGolems")
-		end
 	elseif spellId == 405919 or spellId == 405886 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -159,6 +158,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDragonDeezTraps:Show(self.vb.dragonCount)
 		specWarnDragonDeezTraps:Play("watchstep")
 		timerDragonDeezTrapsCD:Start(self:IsEasy() and 35 or 30.4, self.vb.dragonCount)
+	elseif spellId == 181113 then--Encounter Spawn
+		if self.Options.SetIconOnGolems then
+			self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnGolems")
+		end
+		self.vb.addIcon = self.vb.addIcon - 1
 	end
 end
 

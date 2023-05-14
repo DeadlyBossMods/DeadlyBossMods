@@ -65,12 +65,13 @@ mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
 local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3)
 local warnDazzled								= mod:NewTargetNoFilterAnnounce(401905, 4, nil, false)--Not entirely much you can do about it's a lot but if it's a couple, a healer might want to see this to TRY and save them
+local warnMassDisintegrateSoon					= mod:NewIncomingCountAnnounce(401642, 2)
 local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, nil, nil, nil, nil, true)
 local warnBurningClaws							= mod:NewStackAnnounce(401325, 2, nil, "Tank|Healer")
 
 local specWarnGlitteringSurge					= mod:NewSpecialWarningCount(401810, nil, nil, nil, 2, 2)
 local specWarnScorchingBomb						= mod:NewSpecialWarningCount(401500, nil, nil, nil, 2, 2)
-local specWarnMassDisintegrate					= mod:NewSpecialWarningIncomingCount(401642, nil, nil, nil, 1, 14)
+
 local specWarnMassDisintegrateYou				= mod:NewSpecialWarningYou(401642, nil, nil, nil, 1, 2)
 local yellMassDisintegrate						= mod:NewShortPosYell(401642)
 local yellMassDisintegrateFades					= mod:NewIconFadesYell(401642)
@@ -95,6 +96,7 @@ mod:AddSetIconOption("SetIconOnMassDisintegrate", 401642, true, 0, {1, 2, 3, 4})
 --Stage Two: A Touch of the Forbidden
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26142))
 local warnVoidFracture							= mod:NewTargetAnnounce(404218, 3, nil, false)
+local warnInfiniteDuressSoon					= mod:NewIncomingCountAnnounce(404288, 2)
 local warnInfiniteDuress						= mod:NewTargetCountAnnounce(404288, 3, nil, nil, nil, nil, nil, nil, true)
 local warnVoidClaws								= mod:NewStackAnnounce(411236, 2, nil, "Tank|Healer")
 
@@ -106,7 +108,6 @@ local specWarnEmptyStrike						= mod:NewSpecialWarningDefensive(404769, nil, nil
 local specWarnCosmicVolley						= mod:NewSpecialWarningInterruptCount(411302, "HasInterrupt", nil, nil, 1, 2, 4)
 local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDesolateBlossom					= mod:NewSpecialWarningDodgeCount(404403, nil, nil, nil, 2, 2)
-local specWarnInfiniteDuress					= mod:NewSpecialWarningIncomingCount(404288, nil, nil, nil, 1, 14, 3)
 local specWarnInfiniteDuressYou					= mod:NewSpecialWarningYou(404288, nil, nil, nil, 1, 2, 3)
 local yellInfiniteDuress						= mod:NewShortPosYell(404288)
 local yellInfiniteDuressFades					= mod:NewIconFadesYell(404288)
@@ -135,10 +136,10 @@ mod:AddNamePlateOption("NPAuraOnMight", 404269)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26145))
 local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403517, 3, nil, nil, nil, nil, nil, nil, true)
 local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
+local warnHurtlingBarrageSoon					= mod:NewIncomingCountAnnounce(405022, 2)
 local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, nil, nil, 2, 2)
-local specWarnHurtlingBarrageIncoming			= mod:NewSpecialWarningIncomingCount(405022, nil, nil, nil, 1, 14)
 local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
 local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
 local yellHurtlingBarrageFades					= mod:NewIconFadesYell(405022)
@@ -401,8 +402,7 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 401642 or spellId == 401704) and self:AntiSpam(8, 1) then
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
 		self.vb.disintegrateIcon = 1
-		specWarnMassDisintegrate:Show(self.vb.disintegrateCount)
-		specWarnMassDisintegrate:Play("incomingdebuff")
+		warnMassDisintegrateSoon:Show(self.vb.disintegrateCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 401642, self.vb.disintegrateCount+1)
 		if timer then
 			timerMassDisintegrateCD:Start(timer, self.vb.disintegrateCount+1)
@@ -496,8 +496,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407496 or spellId == 404288 then--407496 confirmed, 404288 unknown (mythic?)
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
 		self.vb.disintegrateIcon = 1
-		specWarnInfiniteDuress:Show(self.vb.disintegrateCount)
-		specWarnInfiniteDuress:Play("incomingdebuff")
+		warnInfiniteDuressSoon:Show(self.vb.disintegrateCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 407496, self.vb.disintegrateCount+1)
 		if timer then
 			timerInfiniteDuressCD:Start(timer, self.vb.disintegrateCount+1)
@@ -523,8 +522,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 405022 then
 		self.vb.surgeCount = self.vb.surgeCount + 1
 		self.vb.hurtlingIcon = 3
-		specWarnHurtlingBarrageIncoming:Show(self.vb.surgeCount)
-		specWarnHurtlingBarrageIncoming:Play("incomingdebuff")
+		warnHurtlingBarrageSoon:Show(self.vb.surgeCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.surgeCount+1)
 		if timer then
 			timerHurtlingBarrageCD:Start(timer, self.vb.surgeCount+1)

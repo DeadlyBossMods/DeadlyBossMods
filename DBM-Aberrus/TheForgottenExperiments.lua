@@ -40,8 +40,8 @@ local timerInfusedStrikes							= mod:NewBuffFadesTimer(20, 407302, nil, nil, ni
 --Neldris
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26001))
 local warnInfusedStrikes							= mod:NewStackAnnounce(406313, 2, nil, "Tank|Healer")
+local warnRendingCharge								= mod:NewIncomingCountAnnounce(406358, 3)
 
-local specWarnRendingCharge							= mod:NewSpecialWarningIncomingCount(406358, nil, nil, nil, 1, 14)
 local specWarnMassiveSlam							= mod:NewSpecialWarningDodgeCount(404472, nil, nil, nil, 2, 2)
 local specWarnBellowingRoar							= mod:NewSpecialWarningCount(404713, nil, nil, nil, 2, 2)
 
@@ -49,6 +49,7 @@ local timerRendingChargeCD							= mod:NewCDCountTimer(34.2, 406358, nil, nil, n
 local timerMassiveSlamCD							= mod:NewCDCountTimer(39, 404472, nil, nil, nil, 3)
 local timerBellowingRoarCD							= mod:NewCDCountTimer(23.1, 404713, nil, nil, nil, 2)
 
+mod:AddPrivateAuraSoundOption(true)
 --mod:AddInfoFrameOption(361651, true)
 --mod:AddRangeFrameOption(5, 390715)
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
@@ -162,6 +163,7 @@ function mod:OnCombatStart(delay)
 	self.vb.breathCount = 0
 	self.vb.disintegrateCount = 0
 	self.vb.anomalyCount = 0
+	self:EnablePrivateAuraSound(406317, "targetyou", 2)--Rending Charge
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -191,8 +193,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 406358 then
 		self.vb.rendingCount = self.vb.rendingCount + 1
-		specWarnRendingCharge:Show(self.vb.rendingCount)
-		specWarnRendingCharge:Play("incomingdebuff")
+		warnRendingCharge:Show(self.vb.rendingCount)
 		local timer
 		if self:IsMythic() then
 			--14, 37, 18, 37, 18
