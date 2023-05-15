@@ -954,7 +954,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 401621 or spellId == 402746 or spellId == 403524 or spellId == 404062 spellId == 406428) and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+	if (spellId == 401621 or spellId == 402746 or spellId == 403524 or spellId == 404062 or spellId == 406428) and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
