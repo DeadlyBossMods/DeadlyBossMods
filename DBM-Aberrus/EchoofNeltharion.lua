@@ -48,7 +48,7 @@ local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 --local yellVolcanicHeart						= mod:NewShortPosYell(410953)
 --local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
 local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, false, nil, 2, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
-local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
+local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, 381446, nil, 2, 2)
 local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
 --local yellRushingDarkness						= mod:NewShortPosYell(407221)
 --local yellRushingDarknessFades				= mod:NewIconFadesYell(407221)
@@ -59,7 +59,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 
 
 local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, nil, nil, nil, 3)
 local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
-local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, nil, nil, nil, 2)
+local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, 381446, nil, nil, 2)
 local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, nil, 3)
 local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -93,12 +93,12 @@ local timerSunderShadowCD						= mod:NewCDCountTimer(27.9, 407790, nil, "Tank|He
 
 --Stage Three: Reality Fractures
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26422))
-local warnSunderReality							= mod:NewCastAnnounce(407936, 2)
+local warnSunderReality							= mod:NewCastAnnounce(407936, 2, nil, nil, nil, 109401)
 
 local specWarnEbonDestruction					= mod:NewSpecialWarningCount(407917, nil, 64584, nil, 2, 2)
 local specWarnEbonDestructionMove				= mod:NewSpecialWarningMoveTo(407917, nil, 64584, nil, 3, 2)
 
-local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, nil, nil, nil, 5)
+local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, 109401, nil, nil, 5)--"Portals"
 local timerEbonDestructionCD					= mod:NewCDCountTimer(29.2, 407917, 64584, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Big Bang"
 
 mod:AddInfoFrameOption(407919, true)

@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 402253 then
 		if args:IsPlayer() then
 			specWarnRayofAnguish:Show()
-			specWarnRayofAnguish:Play("targetyou")--"mm"..icon
+			specWarnRayofAnguish:Play("laserrun")
 			yellRayofAnguish:Yell()
 		end
 		warnDreadRayofAnguish:CombinedShow(0.5, self.vb.rayCount, args.destName)

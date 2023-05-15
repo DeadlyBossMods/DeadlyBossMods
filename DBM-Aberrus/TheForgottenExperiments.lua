@@ -74,11 +74,11 @@ local warnTemporalAnomaly							= mod:NewCastAnnounce(407552, 3)
 local warnTemporalAnomalyAbsorbed					= mod:NewTargetNoFilterAnnounce(407552, 2)
 local warnDisintegrate								= mod:NewTargetAnnounce(405391, 2)
 
-local specWarnDeepBreath							= mod:NewSpecialWarningDodgeCount(406227, nil, nil, nil, 2, 2)
+local specWarnDeepBreath							= mod:NewSpecialWarningDodgeCount(406227, nil, 18357, nil, 2, 2)
 local specWarnDisintegrate							= mod:NewSpecialWarningMoveAway(405391, nil, nil, nil, 1, 2)
 local yellDisintegrate								= mod:NewShortYell(405391)
 
-local timerDeepBreathCD								= mod:NewCDCountTimer(42.7, 406227, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerDeepBreathCD								= mod:NewCDCountTimer(42.7, 406227, 18357, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Breath"
 local timerTemporalAnomalyCD						= mod:NewCDCountTimer(43.7, 407552, nil, nil, nil, 5)
 local timerDisintegrateCD							= mod:NewCDCountTimer(43.7, 405391, nil, nil, nil, 3)
 
