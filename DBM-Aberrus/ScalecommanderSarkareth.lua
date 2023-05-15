@@ -877,7 +877,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerVoidBombCD:Start(24.5, 1)
 			--timerScouringEternityCD:Start(46.2, 1)
 			--timerMotesofOblivionCD:Start(3)
-		if self:IsHeroic() then
+		elseif self:IsHeroic() then
 			timerInfiniteDuressCD:Start(4.7, 1)
 			timerCosmicAscensionCD:Start(7.2, 1)
 			timerHurtlingBarrageCD:Start(19.7, 1)
@@ -912,7 +912,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerVoidClawsCD:Start(17.8, 1)
 			timerInfiniteDuressCD:Start(27.8, 1)
 			timerPhaseCD:Start(103)
-		if self:IsHeroic() then
+		elseif self:IsHeroic() then
 			timerAbyssalBreathCD:Start(3.5, 1)
 			timerDesolateBlossomCD:Start(10.6, 1)
 			timerVoidBombCD:Start(15.3, 1)
