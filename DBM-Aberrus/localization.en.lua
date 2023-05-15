@@ -61,6 +61,11 @@ L:SetOptionLocalization({
 	DoubleSoak			= "Shows taunt warning after a combo has ended, or if other tank is about to take unsafe hit"--Default
 })
 
+L:SetMiscLocalization({
+	pool		= "{rt%d}Pool %d",--<icon> Pool 1,2,3
+	soakpool	= "Soak Pool"
+})
+
 ---------------------------
 --  The Vigilant Steward, Zskarn --
 ---------------------------

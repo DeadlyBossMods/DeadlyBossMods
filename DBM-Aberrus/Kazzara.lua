@@ -31,7 +31,7 @@ local yellDreadRift									= mod:NewShortPosYell(406525)
 local yellDreadRiftFades							= mod:NewIconFadesYell(406525)
 local specWarnRayofAnguish							= mod:NewSpecialWarningYou(402253, nil, nil, nil, 1, 2)
 local yellRayofAnguish								= mod:NewShortYell(402253)
-local specWarnHellbeam								= mod:NewSpecialWarningDodgeCount(400430, nil, nil, nil, 2, 2)
+local specWarnHellbeam								= mod:NewSpecialWarningDodgeCount(400430, nil, 18357, nil, 2, 2)
 local specWarnWindsofExtinction						= mod:NewSpecialWarningCount(403326, nil, nil, nil, 2, 13)
 local specWarnTerrorClaws							= mod:NewSpecialWarningDefensive(404744, nil, nil, nil, 1, 2)
 local specWarnTerrorClawsTaunt						= mod:NewSpecialWarningTaunt(404744, nil, nil, nil, 1, 2)
@@ -39,7 +39,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(406530, nil, nil, nil, 1,
 --
 local timerDreadRiftsCD								= mod:NewCDCountTimer(34, 406516, nil, nil, nil, 3)
 local timerRaysofAnguishCD							= mod:NewCDCountTimer(34, 407069, nil, nil, nil, 3)
-local timerHellbeamCD								= mod:NewCDCountTimer(35.5, 400430, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerHellbeamCD								= mod:NewCDCountTimer(35.5, 400430, 18357, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Breath"
 local timerWingsofExtinctionCD						= mod:NewCDCountTimer(34, 403326, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerTerrorClawsCD							= mod:NewCDTimer(15.6, 404744, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 402253 then
 		if args:IsPlayer() then
 			specWarnRayofAnguish:Show()
-			specWarnRayofAnguish:Play("targetyou")--"mm"..icon
+			specWarnRayofAnguish:Play("laserrun")
 			yellRayofAnguish:Yell()
 		end
 		warnDreadRayofAnguish:CombinedShow(0.5, self.vb.rayCount, args.destName)

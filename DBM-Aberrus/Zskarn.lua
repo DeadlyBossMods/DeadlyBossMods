@@ -39,18 +39,19 @@ local specWarnTacticalDestruction				= mod:NewSpecialWarningDodgeCount(406678, n
 local specWarnDragonDeezTraps					= mod:NewSpecialWarningDodgeCount(405736, nil, nil, nil, 1, 2)
 local specWarnAnimateGolems						= mod:NewSpecialWarningSwitchCount(405812, nil, nil, nil, 1, 2)
 local specWarnActivateTrap						= mod:NewSpecialWarningInterruptCount(405919, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBlastWave							= mod:NewSpecialWarningCount(403978, nil, nil, nil, 2, 2)
+local specWarnBlastWave							= mod:NewSpecialWarningCount(403978, nil, 149213, nil, 2, 2)
 local specWarnUnstableEmbers					= mod:NewSpecialWarningMoveAway(404007, nil, nil, nil, 1, 2)
 local yellUnstableEmbers						= mod:NewShortYell(404007)
 local specWarnSearingClawsTaunt					= mod:NewSpecialWarningTaunt(404942, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
 local timerTacticalDestructionCD				= mod:NewCDCountTimer(61.5, 406678, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerShrapnalBombCD						= mod:NewCDCountTimer(42.5, 406725, nil, nil, nil, 3)
-local timerShrapnalBomb							= mod:NewCastTimer(30, 406725, nil, nil, nil, 2)
+local timerShrapnalBombCD						= mod:NewCDCountTimer(42.5, 406725, 167180, nil, nil, 3)--"Bombs"
+local timerShrapnalBomb							= mod:NewCastTimer(30, 406725, 185824, nil, nil, 2)--"Detonate"
 local timerAnimateGolemsCD						= mod:NewCDCountTimer(60.2, 405812, nil, nil, nil, 1)
-local timerBlastWaveCD							= mod:NewCDCountTimer(34, 403978, nil, nil, nil, 2)
-local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerBlastWaveCD							= mod:NewCDCountTimer(34, 403978, 149213, nil, nil, 2)--"Knockback"
+local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, 264364, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)--"Embers"
+local timerEliminationProtocol					= mod:NewCastTimer(10, 409942, 207544, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--"Beams"
 local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -147,6 +148,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 404007 then
 		self.vb.embersCount = self.vb.embersCount + 1
 		timerUnstableEmbersCD:Start(15.7, self.vb.embersCount+1)
+		if self:IsMythic() then
+			timerEliminationProtocol:Start()
+		end
 	elseif spellId == 406725 then
 		self.vb.shrapnalSoakCount = 0
 		self.vb.trapCastCount = self.vb.trapCastCount + 1

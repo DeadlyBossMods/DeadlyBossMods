@@ -5,22 +5,22 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20230509000000)
---mod:SetMinSyncRevision(20221215000000)
+mod:SetHotfixNoticeRev(20230513000000)
+mod:SetMinSyncRevision(20230513000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 407207 403272 406222 403057 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
-	"SPELL_CAST_SUCCESS 402902 401480 407917 410968 409241",
+	"SPELL_CAST_SUCCESS 402902 401480 407917 409241 410968",
 	"SPELL_AURA_APPLIED 401998 405484 407728 407919 407036",--407182 410966
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 405484 407088 407919 407036",--407182 410966
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
-	"SPELL_PERIODIC_MISSED 409058 404277 409183"
+	"SPELL_PERIODIC_MISSED 409058 404277 409183",
 --	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 401480 or ability.id = 410968 or ability.id = 409241 or ability.id = 402902) and type = "cast"
  or ability.id = 407088 and (type = "applybuff" or type = "removebuff")
  or ability.id = 405484 and type = "applydebuff"
+ or ability.id = 410966 and type = "applydebuff"
 --]]
 --TODO, delete redundant/incorrect events when real events known
 --TODO, Add shatter? https://www.wowhead.com/ptr/spell=401825/shatter
@@ -47,7 +48,7 @@ local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 --local yellVolcanicHeart						= mod:NewShortPosYell(410953)
 --local yellVolcanicHeartFades					= mod:NewIconFadesYell(410953)
 local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, false, nil, 2, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
-local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, nil, nil, 2, 2)
+local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, 381446, nil, 2, 2)
 local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
 --local yellRushingDarkness						= mod:NewShortPosYell(407221)
 --local yellRushingDarknessFades				= mod:NewIconFadesYell(407221)
@@ -58,12 +59,13 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 
 
 local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, nil, nil, nil, 3)
 local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
-local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, nil, nil, nil, 2)
+local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, 381446, nil, nil, 2)
 local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, nil, 3)
 local timerCalamitousStrikeCD					= mod:NewCDCountTimer(36.3, 406222, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(true)
+mod:AddPrivateAuraSoundOption(407182, true, 407221)--Rushing Darkness
+mod:AddPrivateAuraSoundOption(410966, true, 410953)--Volcanic Heart
 --mod:AddRangeFrameOption(5, 390715)
 --mod:AddSetIconOption("SetIconOnVolcanicHeart", 410953, true, 0, {1, 2, 3})
 --mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {4, 5, 6})
@@ -91,13 +93,13 @@ local timerSunderShadowCD						= mod:NewCDCountTimer(27.9, 407790, nil, "Tank|He
 
 --Stage Three: Reality Fractures
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26422))
-local warnSunderReality							= mod:NewCastAnnounce(407936, 2)
+local warnSunderReality							= mod:NewCastAnnounce(407936, 2, nil, nil, nil, 109401)
 
-local specWarnEbonDestruction					= mod:NewSpecialWarningCount(407917, nil, nil, nil, 2, 2)
-local specWarnEbonDestructionMove				= mod:NewSpecialWarningMoveTo(407917, nil, nil, nil, 3, 2)
+local specWarnEbonDestruction					= mod:NewSpecialWarningCount(407917, nil, 64584, nil, 2, 2)
+local specWarnEbonDestructionMove				= mod:NewSpecialWarningMoveTo(407917, nil, 64584, nil, 3, 2)
 
-local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, nil, nil, nil, 5)
-local timerEbonDestructionCD					= mod:NewCDCountTimer(29.2, 407917, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, 109401, nil, nil, 5)--"Portals"
+local timerEbonDestructionCD					= mod:NewCDCountTimer(29.2, 407917, 64584, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Big Bang"
 
 mod:AddInfoFrameOption(407919, true)
 
@@ -119,6 +121,9 @@ mod.vb.sunderRealityCount = 0
 mod.vb.ebonCount = 0
 local realityName = DBM:GetSpellInfo(407919)
 local playerReality = false
+local mythicTwistedP1Timers = {2, 20.6, 19.4, 18.2, 18.2, 18.2, 19.5, 17.0}
+local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}
+local volcanicP2Timers = {21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 19.4, 14.5}
 
 
 local function checkRealityOnSelf(self)
@@ -141,11 +146,11 @@ function mod:OnCombatStart(delay)
 	self.vb.ebonCount = 0
 	self.vb.hiddenCount = 0
 	playerReality = false
---	timerTwistedEarthCD:Start(1-delay)--Used 2 sec into pull
-	timerRushingDarknessCD:Start(10.7-delay, 1)
+--	timerTwistedEarthCD:Start(2-delay)--Used 2 sec into pull
+	timerRushingDarknessCD:Start(10.5-delay, 1)
 	timerVolcanicHeartCD:Start(15.6-delay, 1)
-	timerCalamitousStrikeCD:Start(24.1-delay, 1)
-	timerEchoingFissureCD:Start(33.7-delay, 1)
+	timerCalamitousStrikeCD:Start(self:IsMythic() and 25.1 or 24.1-delay, 1)--Delayed by extra wall on mythic
+	timerEchoingFissureCD:Start(33.6-delay, 1)
 --	if self.Options.NPAuraOnAscension then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -200,7 +205,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407936 then
 		self.vb.sunderRealityCount = self.vb.sunderRealityCount + 1
 		warnSunderReality:Show()
-		timerSunderRealityCD:Start(nil, self.vb.sunderRealityCount+1)
+		timerSunderRealityCD:Start(self.vb.sunderRealityCount == 1 and 29.2 or 30.4, self.vb.sunderRealityCount+1)
 	elseif spellId == 407917 then
 		self.vb.ebonCount = self.vb.ebonCount + 1
 		specWarnEbonDestruction:Show(self.vb.ebonCount)
@@ -236,11 +241,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.RushingDarknessCount = 0
 		timerSunderShadowCD:Start(14.8, 1)
 		timerVolcanicHeartCD:Start(21.2, 1)
-		timerUmbralAnnihilationCD:Start(25.8, 1)
-		timerRushingDarknessCD:Start(31.9, 1)
+		timerUmbralAnnihilationCD:Start(25.7, 1)
+		timerRushingDarknessCD:Start(31.8, 1)
 		if self:IsHard() then
-			timerTwistedEarthCD:Start(71.5, 1)
+			timerTwistedEarthCD:Start(self:IsMythic() and 41.5 or 71.5, 1)
 		end
+	end
+end
+
+--Work around for stage 2 bug where sometimes cast success event is missing
+local function fixBrokenHeartTimer(self)
+	self.vb.volcanicCount = self.vb.volcanicCount + 1
+	local timer = volcanicP2Timers[self.vb.volcanicCount+1]
+	if timer then
+		timerVolcanicHeartCD:Start(timer-5, self.vb.volcanicCount+1)
 	end
 end
 
@@ -250,11 +264,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 410968 then
+	elseif spellId == 410968 then--Event is bugged, doesn't always fire
 --		self.vb.volcIcon = 1
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 		warnVolcanicHeart:Show(self.vb.volcanicCount)
-		timerVolcanicHeartCD:Start(self:GetStage(1) and 36.3 or 17, self.vb.volcanicCount+1)
+		if self:GetStage(1) then
+			timerVolcanicHeartCD:Start(17, self.vb.volcanicCount+1)
+		else
+			--21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 19.4, 14.5
+			self:Unschedule(fixBrokenHeartTimer)
+			local timer = volcanicP2Timers[self.vb.volcanicCount+1]
+			if timer then
+				timerVolcanicHeartCD:Start(timer, self.vb.volcanicCount+1)
+				self:Schedule(timer+5, fixBrokenHeartTimer)--Should only be needed for 5-6th cast, but letting it run for all for good measure
+			end
+		end
 	elseif args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
 		self.vb.twistedEarthCount = self.vb.twistedEarthCount + 1
 		if self.Options[specWarnTwistedEarth.option] then
@@ -263,7 +287,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnTwistedEarth:Show(self.vb.twistedEarthCount)
 		end
-		if self:IsHard() then
+		if self:IsMythic() then
+			if self.vb.phase == 1 then
+				local timer = mythicTwistedP1Timers[self.vb.twistedEarthCount+1]
+				if timer then
+					timerTwistedEarthCD:Start(timer, self.vb.twistedEarthCount+1)
+				end
+			else
+				local timer = mythicTwistedP2Timers[self.vb.twistedEarthCount+1]
+				if timer then
+					timerTwistedEarthCD:Start(timer, self.vb.twistedEarthCount+1)
+				end
+			end
+		else--Heroic
 			if self.vb.phase == 1 then
 				if spellId == 401480 then--first cast
 					timerTwistedEarthCD:Start(40, 2)
@@ -325,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 405484 then
 		if self:AntiSpam(5, 3) then
 			self.vb.corruptionCount = self.vb.corruptionCount + 1
-			timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
+			timerCorruptionCD:Start(self.vb.corruptionCount == 1 and 45.4 or 43.4, self.vb.corruptionCount+1)
 		end
 		warnCorruption:CombinedShow(0.3, self.vb.corruptionCount, args.destName)
 		if args:IsPlayer() then
@@ -357,7 +393,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSunderShadowCD:Stop()
 		timerRushingDarknessCD:Stop()
 		timerVolcanicHeartCD:Stop()
-		timerSunderRealityCD:Start(21.9, 1)
+		self:Unschedule(fixBrokenHeartTimer)
+		timerSunderRealityCD:Start(21.5, 1)
 		timerRushingDarknessCD:Start(27.6, 1)
 		timerCalamitousStrikeCD:Start(36, 1)
 		timerEbonDestructionCD:Start(42.1, 1)
@@ -396,13 +433,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 199233 then
 
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 410977 and self:AntiSpam(5, 2) then
-		self.vb.corruptionCount = self.vb.corruptionCount + 1
-		timerCorruptionCD:Start(nil, self.vb.corruptionCount+1)
 	end
 end
 --]]

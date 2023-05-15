@@ -46,7 +46,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26604))
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26737))
 local warnPhoenixRush								= mod:NewCountAnnounce(401108, 3)
 
-local specWarnAwakenedFocus							= mod:NewSpecialWarningRun(401381, nil, nil, nil, 4, 2, 4)
+local specWarnAwakenedFocus							= mod:NewSpecialWarningRun(401381, nil, 374610, nil, 4, 2, 4)--"Fixate"
 local specWarnVigorousGale							= mod:NewSpecialWarningCount(407009, nil, nil, nil, 2, 13, 4)
 
 local timerPhoenixRushCD							= mod:NewAITimer(29.9, 401108, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -60,11 +60,11 @@ local warnWallClimber								= mod:NewCountAnnounce("ej26221", 2, 163789, false,
 local specWarnHeavyCudgel							= mod:NewSpecialWarningDefensive(401258, nil, nil, nil, 1, 2)
 local specWarnHeavyCudgelStack						= mod:NewSpecialWarningStack(401258, nil, 2, nil, nil, 1, 6)
 local specWarnHeavyCudgelSwap						= mod:NewSpecialWarningTaunt(401258, nil, nil, nil, 1, 2)
-local specWarnDevastatingLeap						= mod:NewSpecialWarningDodgeCount(408959, nil, nil, nil, 2, 2)
+local specWarnDevastatingLeap						= mod:NewSpecialWarningDodgeCount(408959, nil, 67382, nil, 2, 2)
 local specWarnAdds									= mod:NewSpecialWarningAddsCustom(285849, "-Healer", nil, nil, 1, 2)
 
 local timerHeavyCudgelCD							= mod:NewCDCountTimer(21.0, 401258, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, nil, nil, nil, 3)
+local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, 67382, nil, nil, 3)--"Leap"
 local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, "ej26217", nil, nil, nil, 1, 397383)--Molten Barrier Icon
 local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, false, 2, 1, 163789)--Ladder Icon
 local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1)--Random guard banner
