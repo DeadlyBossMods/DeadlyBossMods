@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201754)
 mod:SetEncounterID(2685)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230511000000)
+mod:SetHotfixNoticeRev(20230515000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -15,33 +15,26 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403741 405022 403625 403517 408422 401704",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 404505 404507",
-	"SPELL_AURA_APPLIED 401951 401215 403997 407576 401905 401680 401330 404218 404705 407496 404288 411241 405486 403520 408429 403284 410654 410625",
+	"SPELL_AURA_APPLIED 401951 401215 403997 407576 401905 401680 401330 404218 410642 404705 407496 404288 411241 405486 403520 408429 403284 410654 410625",
 	"SPELL_AURA_APPLIED_DOSE 401951 403997 407576 401330 404269 411241 408429",
-	"SPELL_AURA_REMOVED 401951 401680 401330 404218 404705 407496 404288 404269 411241 403520 408429 401215 405486 410654 410625",
+	"SPELL_AURA_REMOVED 401951 401680 401330 404218 410642 404705 407496 404288 404269 411241 403520 408429 401215 405486 410654 410625",
 	"SPELL_AURA_REMOVED_DOSE 401951",
+	"SPELL_DAMAGE 401621 402746 403524 404062 406428",
+	"SPELL_MISSED 401621 402746 403524 404062 406428",
 	"SPELL_PERIODIC_DAMAGE 406989",
 	"SPELL_PERIODIC_MISSED 406989",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---NOTE, next to no chance Mass Disteingratem Infinite Duress, and Hurtling target debuffs stay public auras by time fight is reached on mythic. Both have incoming debuff alerts out the gate
---TODO, timer track https://www.wowhead.com/ptr/spell=410247/echoing-howl ? I suspect most would ignore DBM anyways and just have a WA for this
---TODO, better handle triple breath stuff if it's incorrect
---TODO, drifting embers spawn count, if it's periodic spawn and not constant anyways https://www.wowhead.com/ptr/spell=402746/drifting-embers
---TODO, what kind of warning for flowers? Dodge for now but may be wrong
---TODO, track https://www.wowhead.com/ptr/spell=404269/ebon-might stacks? or is nameplate aura at 5 stacks enough?
 --TODO, old void claws used on lfr/normal? https://www.wowhead.com/ptr/spell=403364/void-claws and 403358
---TODO, clearer understanding of Hurtling Barrage is needed (how many, how many targets, etc). Also if the target aura is hidden or not
---TODO, add incoming alert for nothingness if debuff target aura is hidden
---TODO, GTFO for https://www.wowhead.com/spell=401621/scorching-bomb
 --[[
 (ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
  or ability.id = 403517 and type = "cast"
  or (ability.id = 403284 or ability.id = 410654) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 404505 or ability.id = 404507) and type = "summon"
  or ability.id = 410625
- or (ability.id = 401383 or ability.id = 401215 or ability.id = 403997 or ability.id = 407576 or ability.id = 401905 or ability.id = 401680 or ability.id = 401330 or ability.id = 404218 or ability.id = 404705 or ability.id = 407496 or ability.id = 404288 or ability.id = 411241 or ability.id = 405486 or ability.id = 403520 or ability.id = 408429) and type = "applydebuff"
+ or (ability.id = 401383 or ability.id = 401215 or ability.id = 403997 or ability.id = 407576 or ability.id = 401905 or ability.id = 401680 or ability.id = 401330 or ability.id = 404218 or ability.id = 410642 or ability.id = 404705 or ability.id = 407496 or ability.id = 404288 or ability.id = 411241 or ability.id = 405486 or ability.id = 403520 or ability.id = 408429) and type = "applydebuff"
 --]]
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
@@ -56,7 +49,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(406989, nil, nil, nil, 1, 8
 
 local timerPhaseCD							= mod:NewPhaseTimer(30)
 local timerEmptynessBetweenStars			= mod:NewBuffFadesTimer(15, 401215, nil, nil, nil, 3)
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddInfoFrameOption(401951, false)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
@@ -65,26 +58,26 @@ mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
 local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3)
 local warnDazzled								= mod:NewTargetNoFilterAnnounce(401905, 4, nil, false)--Not entirely much you can do about it's a lot but if it's a couple, a healer might want to see this to TRY and save them
-local warnMassDisintegrateSoon					= mod:NewIncomingCountAnnounce(401642, 2)
-local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, nil, nil, nil, nil, true)
+--local warnMassDisintegrateSoon					= mod:NewIncomingCountAnnounce(401642, 2, nil, nil, 405391)--Re-enable only if it becomes private aura
+local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, 405391, nil, nil, nil, true)
 local warnBurningClaws							= mod:NewStackAnnounce(401325, 2, nil, "Tank|Healer")
 
 local specWarnGlitteringSurge					= mod:NewSpecialWarningCount(401810, nil, nil, nil, 2, 2)
-local specWarnScorchingBomb						= mod:NewSpecialWarningCount(401500, nil, nil, nil, 2, 2)
+local specWarnScorchingBomb						= mod:NewSpecialWarningCount(401500, nil, 167180, nil, 2, 2)
 
-local specWarnMassDisintegrateYou				= mod:NewSpecialWarningYou(401642, nil, nil, nil, 1, 2)
-local yellMassDisintegrate						= mod:NewShortPosYell(401642)
+local specWarnMassDisintegrateYou				= mod:NewSpecialWarningYou(401642, nil, 405391, nil, 1, 2)
+local yellMassDisintegrate						= mod:NewShortPosYell(401642, 405391)
 local yellMassDisintegrateFades					= mod:NewIconFadesYell(401642)
-local specWarnSearingBreath						= mod:NewSpecialWarningCount(402050, nil, nil, nil, 2, 2)
+local specWarnSearingBreath						= mod:NewSpecialWarningCount(402050, nil, 18357, nil, 2, 2)
 --local specWarnDriftingEmbers					= mod:NewSpecialWarningDodgeCount(402746, nil, nil, nil, 2, 2)
 local specWarnBurningClaws						= mod:NewSpecialWarningDefensive(401325, nil, nil, nil, 1, 2)
 local specWarnBurningClawsTaunt					= mod:NewSpecialWarningTaunt(401325, nil, nil, nil, 1, 2)
 
 local timerOppressingHowlCD						= mod:NewNextTimer(29.9, 401383, nil, nil, nil, 2)
 local timerGlitteringSurgeCD					= mod:NewCDCountTimer(29.9, 401810, nil, nil, nil, 2)
-local timerScorchingBombCD						= mod:NewCDCountTimer(29.9, 401500, nil, nil, nil, 3)
-local timerMassDisintegrateCD					= mod:NewCDCountTimer(29.9, 401642, nil, nil, nil, 3)
-local timerSearingBreathCD						= mod:NewCDCountTimer(29.9, 402050, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerScorchingBombCD						= mod:NewCDCountTimer(29.9, 401500, 167180, nil, nil, 3)
+local timerMassDisintegrateCD					= mod:NewCDCountTimer(29.9, 401642, 405391, nil, nil, 3)--"Disintegrate"
+local timerSearingBreathCD						= mod:NewCDCountTimer(29.9, 402050, 18357, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--"Breath"
 --local timerDriftingEmbersCD					= mod:NewAITimer(29.9, 402746, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerBurningClawsCD						= mod:NewCDCountTimer(29.9, 401325, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBurningClaws							= mod:NewTargetTimer(27, 401325, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
@@ -96,39 +89,40 @@ mod:AddSetIconOption("SetIconOnMassDisintegrate", 401642, true, 0, {1, 2, 3, 4})
 --Stage Two: A Touch of the Forbidden
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26142))
 local warnVoidFracture							= mod:NewTargetAnnounce(404218, 3, nil, false)
-local warnInfiniteDuressSoon					= mod:NewIncomingCountAnnounce(404288, 2)
+--local warnInfiniteDuressSoon					= mod:NewIncomingCountAnnounce(404288, 2)--Re-enable only if it becomes private aura
 local warnInfiniteDuress						= mod:NewTargetCountAnnounce(404288, 3, nil, nil, nil, nil, nil, nil, true)
 local warnVoidClaws								= mod:NewStackAnnounce(411236, 2, nil, "Tank|Healer")
 
-local specWarnVoidBomb							= mod:NewSpecialWarningCount(404027, nil, nil, nil, 2, 2)
+local specWarnVoidBomb							= mod:NewSpecialWarningCount(404027, nil, 167180, nil, 2, 2)
 local specWarnVoidFracture						= mod:NewSpecialWarningYou(404218, nil, nil, nil, 1, 2)--Maybe change to MoveTo alert to say move to emptyness?
 local yellVoidFractureFades						= mod:NewShortFadesYell(404218)
-local specWarnAbyssalBreath						= mod:NewSpecialWarningCount(404456, nil, nil, nil, 2, 2)
+local specWarnAbyssalBreath						= mod:NewSpecialWarningCount(404456, nil, 18357, nil, 2, 2)
 local specWarnEmptyStrike						= mod:NewSpecialWarningDefensive(404769, nil, nil, nil, 1, 2, 4)
-local specWarnCosmicVolley						= mod:NewSpecialWarningInterruptCount(411302, "HasInterrupt", nil, nil, 1, 2, 4)
+local specWarnCosmicVolley						= mod:NewSpecialWarningInterruptCount(411302, "HasInterrupt", 31295, nil, 1, 2, 4)
 local specWarnBlastingScream					= mod:NewSpecialWarningInterruptCount(404754, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDesolateBlossom					= mod:NewSpecialWarningDodgeCount(404403, nil, nil, nil, 2, 2)
 local specWarnInfiniteDuressYou					= mod:NewSpecialWarningYou(404288, nil, nil, nil, 1, 2, 3)
 local yellInfiniteDuress						= mod:NewShortPosYell(404288)
 local yellInfiniteDuressFades					= mod:NewIconFadesYell(404288)
 local specWarnVoidClaws							= mod:NewSpecialWarningDefensive(411236, nil, nil, nil, 1, 2)
-local specWarnVoidClawsOut						= mod:NewSpecialWarningMoveAway(411236, nil, nil, nil, 1, 2)
-local yellVoidClawsFades						= mod:NewShortFadesYell(411236)
+local specWarnVoidClawsOut						= mod:NewSpecialWarningMoveAway(411236, nil, nil, nil, 1, 2)--For Void Blast (411238) effect
+local yellVoidClawsFades						= mod:NewShortFadesYell(411236, 37859)--For Void Blast (411238) effect
 local specWarnVoidClawsTaunt					= mod:NewSpecialWarningTaunt(411236, nil, nil, nil, 1, 2)
 
 local timerEndExistenceCast						= mod:NewCastTimer(15, 410625, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerVoidBombCD							= mod:NewCDCountTimer(29.9, 404027, nil, nil, nil, 3)
-local timerAbyssalBreathCD						= mod:NewCDCountTimer(29.9, 404456, nil, nil, nil, 3)
-local timerEmptyStrikeCD						= mod:NewAITimer(29.9, 404769, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic Add
-local timerCosmicVolleyCD						= mod:NewAITimer(29.9, 411302, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Mythic Add
-local timerBlastingScreamCD						= mod:NewCDTimer(8.5, 404754, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerVoidBombCD							= mod:NewCDCountTimer(29.9, 404027, 167180, nil, nil, 3)--"Bombs"
+local timerAbyssalBreathCD						= mod:NewCDCountTimer(29.9, 404456, 18357, nil, nil, 1)
+local timerEmptyStrikeCD						= mod:NewCDTimer(12.2, 404769, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic Add
+--local timerCosmicVolleyCD						= mod:NewCDTimer(4.8, 411302, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Mythic Add
+local timerBlastingScreamCD						= mod:NewCDTimer(8.5, 404754, 31295, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerDesolateBlossomCD					= mod:NewCDCountTimer(29.9, 404403, nil, nil, nil, 3)
 local timerInfiniteDuressCD		 				= mod:NewCDCountTimer(29.9, 404288, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 local timerVoidClawsCD							= mod:NewCDCountTimer(29.9, 411236, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVoidClaws							= mod:NewTargetTimer(18, 411236, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
+local timerEbonMight							= mod:NewCastCountTimer("d29.9", 404269, 299144, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--"Immune"
 
 mod:AddSetIconOption("SetIconOnEmptyRecollection", 404505, true, 5, {8})
-mod:AddSetIconOption("SetIconOnNullGlimmer", 404507, true, 5, {7, 6, 5, 4, 3})
+mod:AddSetIconOption("SetIconOnNullGlimmer", 404507, true, 5, {7, 6, 5, 4, 3})--8, 7, 6 in phase 3
 mod:AddSetIconOption("SetIconOnInfiniteDuress", 404288, true, 0, {1})
 mod:AddNamePlateOption("NPAuraOnRescind", 404705)
 mod:AddNamePlateOption("NPAuraOnMight", 404269)
@@ -139,24 +133,24 @@ local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
 local warnHurtlingBarrageSoon					= mod:NewIncomingCountAnnounce(405022, 2)
 local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, nil, nil, 2, 2)
+local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, 161862, nil, 2, 2)
 local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
 local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
 local yellHurtlingBarrageFades					= mod:NewIconFadesYell(405022)
-local specWarnScouringEternity					= mod:NewSpecialWarningDodgeCount(403625, nil, nil, nil, 3, 2)
-local specWarnEmbraceofNothingness				= mod:NewSpecialWarningYou(403517, nil, nil, nil, 1, 2)
-local yellEmbraceofNothingness					= mod:NewShortYell(403517, nil, nil, nil, "YELL")
-local yellEmbraceofNothingnessFades				= mod:NewShortFadesYell(403517, nil, nil, nil, "YELL")
+local specWarnScouringEternity					= mod:NewSpecialWarningDodgeCount(403625, nil, 123244, nil, 3, 2)
+local specWarnEmbraceofNothingness				= mod:NewSpecialWarningYou(403517, nil, 229042, nil, 1, 2)
+local yellEmbraceofNothingness					= mod:NewShortYell(403517, 229042, nil, nil, "YELL")
+local yellEmbraceofNothingnessFades				= mod:NewShortFadesYell(403517, 229042, nil, nil, "YELL")
 --local specWarnMotesofOblivion					= mod:NewSpecialWarningDodgeCount(406428, nil, nil, nil, 2, 2)
 local specWarnVoidSlash							= mod:NewSpecialWarningDefensive(408422, nil, nil, nil, 1, 2)
 local specWarnVoidSlashOut						= mod:NewSpecialWarningMoveAway(408422, nil, nil, nil, 1, 2)
 local yellVoidSlashFades						= mod:NewShortFadesYell(408422)
 local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, nil, 1, 2)
 
-local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, nil, nil, nil, 3)
+local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, 161862, nil, nil, 1)
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
-local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, nil, nil, nil, 3)
+local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, 229042, nil, nil, 3)--"Black Hole"
 --local timerMotesofOblivionCD					= mod:NewAITimer(29.9, 406428, nil, nil, nil, 3)
 local timerVoidSlashCD							= mod:NewCDCountTimer(29.9, 408422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVoidSlash							= mod:NewTargetTimer(18, 408422, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
@@ -177,6 +171,7 @@ mod.vb.blossomCount = 0
 --P3 Variables
 mod.vb.nothingnessCount = 0
 mod.vb.hurtlingIcon = 3
+mod.vb.bigAddKilled = 0
 --Non Synced Variables
 local oblivionStacks = {}
 local castsPerGUID = {}
@@ -186,43 +181,47 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Scorching Bomb
-			[401500] = {},
+			[401500] = {0.8, 29.6, 23.4, 17.0},
 			--Glittering Surge
-			[401810] = {},
+			[401810] = {2.8, 88.0},
 			--Burning Claws
-			[401325] = {},
+			[401325] = {17.9, 18.0, 16.0, 15.0},
 			--Mass Disintegrate
-			[401642] = {},
+			[401642] = {20.8, 22.1, 19.9, 19.0},
 			--Searing Breath
-			[402050] = {},
+			[402050] = {25.4, 12.5, 18.0},
 		},
 		[2] = {
 			--Abyssal Breath
-			[404456] = {},
+			[404456] = {3.4, 42.2, 31.1},
+			--Ebon Might (5 stacks)
+			[404269] = {32.3, 30, 27.4},
 			--Desolate Blossom
-			[404403] = {},
+			[404403] = {10.0, 41.1, 35.5},
 			--Void Bomb
-			[404027] = {},
+			[404027] = {14.5, 56.6},
 			--Void Claws
-			[411236] = {},
+			[411236] = {17.8, 16.7, 20.0, 20.0, 20.0},
 			--Infinite Duress
-			[407496] = {},
+			[407496] = {27.8, 33.4, 30.0},
 		},
 		[3] = {
 			--Infinite Duress (P2 ability returning)
-			[407496] = {},
+			[407496] = {4.5, 53.0, 78.8, 35.3, 34.1},
 			--Void Bomb (P2 ability returning)
-			[404027] = {},
+			[404027] = {24.5, 60.0, 57.6},
 			--Cosmic Ascension
-			[403741] = {},
+			[403741] = {6.8, 57.6, 93.0, 60},
+			--Ebon Might (5 stacks)
+			--[404269] = {},
 			--Hurtling Barrage
-			[405022] = {},
+			[405022] = {18.6, 80.0, 84.0},
 			--Void Slash
-			[408422] = {},
+			[408422] = {19.8, 17.7, 36.4, 15.3, 55.2, 35.3},
 			--Scouring Eternity
-			[403625] = {},
+			[403625] = {44.6, 73.0, 76.5},
 			--Embrace of Nothingness
-			[403517] = {},
+			[403517] = {23.3, 38.2, 26.5, 40.0, 47.0, 34.7},
 		},
 	},
 	["heroic"] = {--Heroic Confirmed
@@ -262,7 +261,7 @@ local allTimers = {
 			--Void Slash
 			[408422] = {21, 36.2, 37.5, 85.0, 11.2, 61.3},
 			--Scouring Eternity
-			[403625] = {46.2, 77.7, 81.4},
+			[403625] = {46.2, 77.7, 81.4, 77.9},
 			--Embrace of Nothingness
 			[403517] = {24.7, 111.2, 50.0},
 		},
@@ -300,9 +299,9 @@ local allTimers = {
 			--Hurtling Barrage
 			[405022] = {21, 46.6, 102.6, 65.3, 102.6},
 			--Void Slash
-			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3, 39.9, 90.6, 11.9},
+			[408422] = {22.3, 38.6, 39.9, 90.6, 11.9, 25.3, 39.9, 90.6, 11.9, 25.3},
 			--Scouring Eternity
-			[403625] = {49.7, 82.5, 86.1, 81.3},
+			[403625] = {49.7, 82.5, 86.1, 81.3, 82.5},
 			--Embrace of Nothingness
 			[403517] = {26.3, 118.6, 53.3, 114.7, 53.3},
 		},
@@ -322,23 +321,34 @@ function mod:OnCombatStart(delay)
 	self.vb.blossomCount = 0
 	self.vb.nothingnessCount = 0
 	self.vb.hurtlingIcon = 3
+	self.vb.bigAddKilled = 0
 --	timerScorchingBombCD:Start(1-delay, 1)--Used 1 second into pull
-	timerGlitteringSurgeCD:Start(3.3-delay, 1)
-	timerOppressingHowlCD:Start(14.4-delay)
-	timerBurningClawsCD:Start(20-delay, 1)
-	timerMassDisintegrateCD:Start(23.3-delay, 1)
-	timerSearingBreathCD:Start(26.6-delay, 1)
-	--timerDriftingEmbersCD:Start(1-delay)
-	timerPhaseCD:Start(112)--Normal and heroic confirmed, LFR and mythic unknown
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerGlitteringSurgeCD:Start(2.8-delay, 1)
+		timerOppressingHowlCD:Start(13-delay)
+		timerBurningClawsCD:Start(17.9-delay, 1)
+		timerMassDisintegrateCD:Start(20.8-delay, 1)
+		timerSearingBreathCD:Start(25.4-delay, 1)
+		--timerDriftingEmbersCD:Start(1-delay)
+		timerPhaseCD:Start(101.9)--Mythic Confirmed
+		berserkTimer:Start(450)--Might not actually start here but phase 3
+	else
+		if self:IsHeroic() then
+			difficultyName = "heroic"
+		else
+			difficultyName = "easy"
+		end
+		timerGlitteringSurgeCD:Start(3.3-delay, 1)
+		timerOppressingHowlCD:Start(14.4-delay)
+		timerBurningClawsCD:Start(20-delay, 1)
+		timerMassDisintegrateCD:Start(23.3-delay, 1)
+		timerSearingBreathCD:Start(26.6-delay, 1)
+		--timerDriftingEmbersCD:Start(1-delay)
+		timerPhaseCD:Start(112)--Normal and heroic confirmed, LFR Unknown
+	end
 	if self.Options.NPAuraOnRescind or self.Options.NPAuraOnMight then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
-	if self:IsMythic() then
-		difficultyName = "heroic"
-	elseif self:IsHeroic() then
-		difficultyName = "heroic"
-	else
-		difficultyName = "easy"
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehaviorTwo == "OblivionOnly" then
@@ -358,7 +368,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		difficultyName = "heroic"
+		difficultyName = "mythic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	else
@@ -377,7 +387,6 @@ function mod:OnCombatEnd()
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
-
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -402,7 +411,7 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 401642 or spellId == 401704) and self:AntiSpam(8, 1) then
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
 		self.vb.disintegrateIcon = 1
-		warnMassDisintegrateSoon:Show(self.vb.disintegrateCount)
+--		warnMassDisintegrateSoon:Show(self.vb.disintegrateCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 401642, self.vb.disintegrateCount+1)
 		if timer then
 			timerMassDisintegrateCD:Start(timer, self.vb.disintegrateCount+1)
@@ -442,6 +451,12 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerAbyssalBreathCD:Start(timer, self.vb.breathCount+1)
 		end
+		if self:IsMythic() then
+			local mightTimer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 404269, self.vb.breathCount+1)
+			if mightTimer then
+				timerEbonMight:Start(mightTimer, self.vb.breathCount)
+			end
+		end
 	elseif spellId == 411302 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -459,14 +474,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnCosmicVolley:Play("kickcast")
 			end
 		end
-		timerCosmicVolleyCD:Start(nil, args.sourceGUID)
+--		timerCosmicVolleyCD:Start(nil, args.sourceGUID)
 	elseif spellId == 404754 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnNullGlimmer then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnNullGlimmer")
-			end
-			self.vb.addIcon = self.vb.addIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -496,7 +507,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407496 or spellId == 404288 then--407496 confirmed, 404288 unknown (mythic?)
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
 		self.vb.disintegrateIcon = 1
-		warnInfiniteDuressSoon:Show(self.vb.disintegrateCount)
+--		warnInfiniteDuressSoon:Show(self.vb.disintegrateCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 407496, self.vb.disintegrateCount+1)
 		if timer then
 			timerInfiniteDuressCD:Start(timer, self.vb.disintegrateCount+1)
@@ -512,6 +523,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidClaws:Play("defensive")
 		end
 	elseif spellId == 403741 then
+		self.vb.addIcon = 8--8, 7, 6 in Phase 3
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnCosmicAscension:Show(self.vb.breathCount)
 		specWarnCosmicAscension:Play("watchstep")
@@ -519,6 +531,12 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerCosmicAscensionCD:Start(timer, self.vb.breathCount+1)
 		end
+		--if self:IsMythic() then
+		--	local mightTimer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 404269, self.vb.breathCount+1)
+		--	if mightTimer then
+		--		timerEbonMight:Start(mightTimer)
+		--	end
+		--end
 	elseif spellId == 405022 then
 		self.vb.surgeCount = self.vb.surgeCount + 1
 		self.vb.hurtlingIcon = 3
@@ -573,12 +591,12 @@ function mod:SPELL_SUMMON(args)
 				self:ScanForMobs(args.destGUID, 2, 8, 1, nil, 12, "SetIconOnEmptyRecollection")
 			end
 		end
-		timerEmptyStrikeCD:Start(1, args.destGUID)
-		timerCosmicVolleyCD:Start(1, args.destGUID)
+--		timerCosmicVolleyCD:Start(2.1, args.destGUID)
+		timerEmptyStrikeCD:Start(7, args.destGUID)
 	elseif spellId == 404507 then--Null Glimmer (regular adds)
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
-			if self.Options.SetIconOnNullGlimmer then--Only use up to 5 icons
+			if self.Options.SetIconOnNullGlimmer then
 				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnNullGlimmer")
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
@@ -714,7 +732,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		timerVoidSlash:Restart(21, args.destName)--Needs to show for even non tanks getting hit though
-	elseif spellId == 404218 then
+	elseif spellId == 404218 or spellId == 410642 then
 		if args:IsPlayer() then
 			specWarnVoidFracture:Show()
 			specWarnVoidFracture:Play("bombyou")
@@ -759,12 +777,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSearingBreathCD:Stop()
 		--timerDriftingEmbersCD:Stop()
 		timerBurningClawsCD:Stop()
+		timerPhaseCD:Stop()
 	elseif spellId == 410654 then--Stage 2-3 Intermission
 		timerVoidBombCD:Stop()
 		timerAbyssalBreathCD:Stop()
 		timerDesolateBlossomCD:Stop()
 		timerInfiniteDuressCD:Stop()
 		timerVoidClawsCD:Stop()
+		timerPhaseCD:Stop()
 		timerPhaseCD:Start(10)
 	elseif spellId == 410625 then
 		timerEndExistenceCast:Start()
@@ -814,7 +834,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellVoidClawsFades:Cancel()
 		end
 		timerVoidSlash:Stop(args.destName)--Needs to show for even non tanks getting hit though
-	elseif spellId == 404218 then
+	elseif spellId == 404218 or spellId == 410642 then
 		if args:IsPlayer() then
 			yellVoidFractureFades:Cancel()
 		end
@@ -848,7 +868,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.disintegrateCount = 0--Reused for Inifinite Duress
 		--self.vb.embersCount--Reused for Motes of Oblivion
 		self.vb.tankCount = 0----Reused for Void Slash
-		if self:IsHard() then
+		if self:IsMythic() then
+			timerInfiniteDuressCD:Start(4.5, 1)
+			timerCosmicAscensionCD:Start(6.8, 1)
+			timerHurtlingBarrageCD:Start(18.6, 1)
+			timerVoidSlashCD:Start(19.8, 1)
+			timerEmbraceofNothingnessCD:Start(23.3, 1)
+			timerVoidBombCD:Start(24.5, 1)
+			--timerScouringEternityCD:Start(46.2, 1)
+			--timerMotesofOblivionCD:Start(3)
+		if self:IsHeroic() then
 			timerInfiniteDuressCD:Start(4.7, 1)
 			timerCosmicAscensionCD:Start(7.2, 1)
 			timerHurtlingBarrageCD:Start(19.7, 1)
@@ -876,17 +905,26 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.breathCount = 0--Reused for Abyssal Breath
 		self.vb.disintegrateCount = 0--Reused for Inifinite Duress
 		self.vb.tankCount = 0----Reused for Void Claws
-		if self:IsHard() then
+		if self:IsMythic() then
+			timerAbyssalBreathCD:Start(3.4, 1)
+			timerDesolateBlossomCD:Start(10, 1)
+			timerVoidBombCD:Start(14.5, 1)
+			timerVoidClawsCD:Start(17.8, 1)
+			timerInfiniteDuressCD:Start(27.8, 1)
+			timerPhaseCD:Start(103)
+		if self:IsHeroic() then
 			timerAbyssalBreathCD:Start(3.5, 1)
 			timerDesolateBlossomCD:Start(10.6, 1)
 			timerVoidBombCD:Start(15.3, 1)
 			timerVoidClawsCD:Start(18.8, 1)
 			timerInfiniteDuressCD:Start(29.4, 1)
+			timerPhaseCD:Start(110)
 		else--Easy
 			timerAbyssalBreathCD:Start(3.7, 1)
 			timerDesolateBlossomCD:Start(11.2, 1)
 			timerVoidBombCD:Start(16.2, 1)
 			timerVoidClawsCD:Start(19.9, 1)
+			timerPhaseCD:Start(110)
 		end
 		if self.Options.InfoFrame then
 			--If oblivion only, no changes need to run on Phase 2
@@ -915,6 +953,13 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
+	if (spellId == 401621 or spellId == 402746 or spellId == 403524 or spellId == 404062 spellId == 406428) and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnGTFO:Show(spellName)
+		specWarnGTFO:Play("watchfeet")
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 406989 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
@@ -930,9 +975,11 @@ function mod:UNIT_DIED(args)
 		castsPerGUID[args.destGUID] = nil
 		timerBlastingScreamCD:Stop(args.destGUID)
 	elseif cid == 202969 then--Empty Recollection
+		self.vb.bigAddKilled = self.vb.bigAddKilled + 1
 		castsPerGUID[args.destGUID] = nil
 		timerEmptyStrikeCD:Stop(args.destGUID)
-		timerCosmicVolleyCD:Stop(args.destGUID)
+--		timerCosmicVolleyCD:Stop(args.destGUID)
+		timerEbonMight:Stop(self.vb.bigAddKilled)
 	end
 end
 
