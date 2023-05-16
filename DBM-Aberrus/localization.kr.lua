@@ -62,6 +62,11 @@ L:SetOptionLocalization({
 	DoubleSoak			= "연계 공격이 끝난 후 또는 다른 탱커가 위험한 공격을 받을 때 도발 경고 보기"--Default
 })
 
+L:SetMiscLocalization({
+	pool		= "{rt%d}바닥 %d",--<icon> Pool 1,2,3
+	soakpool	= "바닥 밟기"
+})
+
 ---------------------------
 --  The Vigilant Steward, Zskarn --
 ---------------------------
