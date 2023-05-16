@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20230513000000)
+mod:SetHotfixNoticeRev(20230515000000)
 mod:SetMinSyncRevision(20230513000000)
 --mod.respawnTime = 29
 
@@ -276,7 +276,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			local timer = volcanicP2Timers[self.vb.volcanicCount+1]
 			if timer then
 				timerVolcanicHeartCD:Start(timer, self.vb.volcanicCount+1)
-				self:Schedule(timer+5, fixBrokenHeartTimer)--Should only be needed for 5-6th cast, but letting it run for all for good measure
+				self:Schedule(timer+5, fixBrokenHeartTimer, self)--Should only be needed for 5-6th cast, but letting it run for all for good measure
 			end
 		end
 	elseif args:IsSpellID(402902, 401480, 409241) and self:AntiSpam(5, 1) then--2 and 3 confirmed, 1 unknown
