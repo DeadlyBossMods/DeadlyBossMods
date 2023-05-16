@@ -104,7 +104,7 @@ local function checkEntangled(self)
 		return
 	end
 	timerEntangledCD:Start(25)
-	self:Schedule(checkEntangled, 30)
+	self:Schedule(30, checkEntangled, self)
 end
 
 do
