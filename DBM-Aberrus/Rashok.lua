@@ -185,7 +185,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 407641 then
 		self.vb.tankCombo = self.vb.tankCombo + 1
 		self.vb.comboCount = 0
-		local timer = self.vb.tankCombo == 1 and 14.9 or self.vb.tankCombo == 2 or 32.9
+		local timer = (self.vb.tankCombo == 1) and 14.9 or (self.vb.tankCombo == 2) or 32.9
 		if timer then
 			timerVolcanicComboCD:Start(timer, self.vb.tankCombo+1)
 		end
