@@ -6,6 +6,7 @@ mod:SetCreatureID(199855, 199853)--Vakan, Gholna
 mod:SetEncounterID(2696)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
+mod:SetHotfixNoticeRev(20230516000000)
 --mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")
@@ -226,10 +227,10 @@ end
 
 --Alerts if standing in stuff and you do not have opposite debuff that clears it
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 403384 and not DBM:UnitDebuff("player", 403779) and self:AntiSpam(3, 2) then--Molten Pool
+	if spellId == 403384 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then--Molten Pool
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
-	elseif spellId == 403948 and not DBM:UnitDebuff("player", 402824) and self:AntiSpam(3, 2) then--Blistering Cyclone
+	elseif spellId == 403948 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then--Blistering Cyclone
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

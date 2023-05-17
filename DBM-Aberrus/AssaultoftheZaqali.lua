@@ -341,21 +341,24 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 409275 then
 		warnMagmaFlow:CombinedShow(0.3, args.destName)
 	elseif spellId == 408873 then
-		local amount = args.amount or 1
-		if amount >= 2 then--And you pretty much swap every other cast
-			if args:IsPlayer() then
-				specWarnHeavyCudgelStack:Show(amount)
-				specWarnHeavyCudgelStack:Play("stackhigh")
-			else
-				if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-					specWarnHeavyCudgelSwap:Show(args.destName)
-					specWarnHeavyCudgelSwap:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then--And you pretty much swap every other cast
+				if args:IsPlayer() then
+					specWarnHeavyCudgelStack:Show(amount)
+					specWarnHeavyCudgelStack:Play("stackhigh")
 				else
-					warnHeavyCudgel:Show(args.destName, amount)
+					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+						specWarnHeavyCudgelSwap:Show(args.destName)
+						specWarnHeavyCudgelSwap:Play("tauntboss")
+					else
+						warnHeavyCudgel:Show(args.destName, amount)
+					end
 				end
+			else
+				warnHeavyCudgel:Show(args.destName, amount)
 			end
-		else
-			warnHeavyCudgel:Show(args.destName, amount)
 		end
 	elseif spellId == 410353 then
 		local amount = args.amount or 1

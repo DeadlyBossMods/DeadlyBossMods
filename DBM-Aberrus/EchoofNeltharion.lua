@@ -14,9 +14,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 407207 403272 406222 403057 407790 407796 407936 407917 405436 405434 405433 404038 409313 401022",
 	"SPELL_CAST_SUCCESS 402902 401480 407917 409241 410968",
-	"SPELL_AURA_APPLIED 401998 405484 407728 407919 407036",--407182 410966
+	"SPELL_AURA_APPLIED 401998 405484 407728 407919",--407182 410966
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 405484 407088 407919 407036",--407182 410966
+	"SPELL_AURA_REMOVED 405484 407088 407919",--407182 410966
+	"SPELL_AURA_REMOVED_DOSE 407088",
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
 	"SPELL_PERIODIC_MISSED 409058 404277 409183",
 --	"UNIT_DIED"
@@ -35,7 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, delete redundant/incorrect events when real events known
 --TODO, Add shatter? https://www.wowhead.com/ptr/spell=401825/shatter
 --TODO, revisit heroic timers since it was so bugged that normal is trusted more than heroic was, for now
-local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
@@ -94,8 +95,8 @@ local timerSunderShadowCD						= mod:NewCDCountTimer(27.9, 407790, nil, "Tank|He
 --Stage Three: Reality Fractures
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26422))
 local warnSunderReality							= mod:NewCastAnnounce(407936, 2, nil, nil, nil, 109401)
+local warnEbonDestruction						= mod:NewCountAnnounce(407917, 4)
 
-local specWarnEbonDestruction					= mod:NewSpecialWarningCount(407917, nil, 64584, nil, 2, 2)
 local specWarnEbonDestructionMove				= mod:NewSpecialWarningMoveTo(407917, nil, 64584, nil, 3, 2)
 
 local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, 109401, nil, nil, 5)--"Portals"
@@ -115,7 +116,6 @@ mod.vb.RushingDarknessCount = 0
 --P2
 mod.vb.corruptionCount = 0
 mod.vb.annihilatingCount = 0
-mod.vb.hiddenCount = 3
 --P3
 mod.vb.sunderRealityCount = 0
 mod.vb.ebonCount = 0
@@ -144,7 +144,6 @@ function mod:OnCombatStart(delay)
 	self.vb.annihilatingCount = 0
 	self.vb.sunderRealityCount = 0
 	self.vb.ebonCount = 0
-	self.vb.hiddenCount = 0
 	playerReality = false
 --	timerTwistedEarthCD:Start(2-delay)--Used 2 sec into pull
 	timerRushingDarknessCD:Start(10.5-delay, 1)
@@ -208,8 +207,7 @@ function mod:SPELL_CAST_START(args)
 		timerSunderRealityCD:Start(self.vb.sunderRealityCount == 1 and 29.2 or 30.4, self.vb.sunderRealityCount+1)
 	elseif spellId == 407917 then
 		self.vb.ebonCount = self.vb.ebonCount + 1
-		specWarnEbonDestruction:Show(self.vb.ebonCount)
-		specWarnEbonDestruction:Play("findshelter")
+		warnEbonDestruction:Show(self.vb.ebonCount)
 		timerEbonDestructionCD:Start(nil, self.vb.ebonCount+1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_COMMON_L.NO_DEBUFF:format(realityName))
@@ -374,8 +372,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSunderShadowSwap:Play("tauntboss")
 	elseif spellId == 407919 and args:IsPlayer() then
 		playerReality = true
-	elseif spellId == 407036 then
-		self.vb.hiddenCount = self.vb.hiddenCount + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -414,9 +410,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	--	end
 	elseif spellId == 407919 and args:IsPlayer() then
 		playerReality = false
-	elseif spellId == 407036 then
-		self.vb.hiddenCount = self.vb.hiddenCount - 1
-		warnHidden:Show(self.vb.hiddenCount)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 407088 then
+		warnHidden:Show(args.amount or 1)
 	end
 end
 
@@ -428,11 +428,9 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 199233 then
-
+		warnHidden:Show()
 	end
 end
---]]
