@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201320)
 mod:SetEncounterID(2680)
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(20230511000000)
+mod:SetHotfixNoticeRev(20230517000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 407547 407597 410070 407596 407544",
+	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 410070 407596 407544",
 	"SPELL_CAST_SUCCESS 407641",
 	"SPELL_AURA_APPLIED 405819 407547 407597 401419 407642 405827",
 	"SPELL_AURA_APPLIED_DOSE 405827",
@@ -117,7 +117,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientFury:Play("aesoon")
 	elseif spellId == 405821 then
 		self.vb.slamCount = self.vb.slamCount + 1
-		local timer = (self.vb.slamCount == 1) and 45.9 or (self.vb.slamCount == 2) or 32.9
+		local timer = (self.vb.slamCount == 1) and 45.9 or (self.vb.slamCount == 2) and 32.9
 		if timer then
 			timerSearingSlamCD:Start(nil, self.vb.slamCount+1)
 		end
@@ -136,7 +136,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.smashCount == 1 then
 			timerChargedSmashCD:Start(45.9, self.vb.smashCount+1)
 		end
-	elseif spellId == 407547 or spellId == 407544 then--Hard, Easy
+	elseif spellId == 407544 then--407544 cast start ID
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnFlamingSlash:Show()
@@ -145,14 +145,14 @@ function mod:SPELL_CAST_START(args)
 			--Other tank has this debuff already and it will NOT be gone when cast finishes, TAUNT NOW!
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
-				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", spellId)
+				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", 407547)
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
 					specWarnFlamingSlashTaunt:Show(UnitName("boss1target"))
 					specWarnFlamingSlashTaunt:Play("tauntboss")
 				end
 			end
 		end
-	elseif spellId == 407597 or spellId == 407596 then--Hard, Easy
+	elseif spellId == 407596 then--407596 cast start ID
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnEarthenCrush:Show()
@@ -161,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 			--Other tank has this debuff already and it will NOT be gone when cast finishes, TAUNT NOW!
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
-				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", spellId)
+				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", 407597)
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
 					specWarnEarthenCrushTaunt:Show(UnitName("boss1target"))
 					specWarnEarthenCrushTaunt:Play("tauntboss")
@@ -185,7 +185,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 407641 then
 		self.vb.tankCombo = self.vb.tankCombo + 1
 		self.vb.comboCount = 0
-		local timer = (self.vb.tankCombo == 1) and 14.9 or (self.vb.tankCombo == 2) or 32.9
+		local timer = (self.vb.tankCombo == 1) and 14.9 or (self.vb.tankCombo == 2) and 32.9
 		if timer then
 			timerVolcanicComboCD:Start(timer, self.vb.tankCombo+1)
 		end
