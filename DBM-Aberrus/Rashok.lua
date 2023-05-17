@@ -117,7 +117,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientFury:Play("aesoon")
 	elseif spellId == 405821 then
 		self.vb.slamCount = self.vb.slamCount + 1
-		local timer = self.vb.slamCount == 1 and 45.9 or self.vb.slamCount == 2 or 32.9
+		local timer = (self.vb.slamCount == 1) and 45.9 or (self.vb.slamCount == 2) or 32.9
 		if timer then
 			timerSearingSlamCD:Start(nil, self.vb.slamCount+1)
 		end
@@ -173,7 +173,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnUnleashedShadowflame:Show(self.vb.shadowflameCount)
 		specWarnUnleashedShadowflame:Play("specialsoon")--Better voice?
 		--4.1, 45.9, 32.9
-		local timer = self.vb.shadowflameCount == 1 and 45.9 or self.vb.shadowflameCount == 2 and 32.9
+		local timer = (self.vb.shadowflameCount == 1) and 45.9 or (self.vb.shadowflameCount == 2) and 32.9
 		if timer then
 			timerUnleashedShadowflameCD:Start(timer, self.vb.shadowflameCount+1)
 		end
