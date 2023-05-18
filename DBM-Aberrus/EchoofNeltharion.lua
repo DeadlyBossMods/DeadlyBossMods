@@ -204,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407936 then
 		self.vb.sunderRealityCount = self.vb.sunderRealityCount + 1
 		warnSunderReality:Show()
-		timerSunderRealityCD:Start(self.vb.sunderRealityCount == 1 and 29.2 or 30.4, self.vb.sunderRealityCount+1)
+		timerSunderRealityCD:Start(29.1, self.vb.sunderRealityCount+1)
 	elseif spellId == 407917 then
 		self.vb.ebonCount = self.vb.ebonCount + 1
 		warnEbonDestruction:Show(self.vb.ebonCount)

@@ -177,6 +177,7 @@ local oblivionStacks = {}
 local castsPerGUID = {}
 local oblivionDisabled = false--Cache to avoid constant option table spamming
 local difficultyName = "easy"
+local playerVoidFracture = false
 local allTimers = {
 	["mythic"] = {
 		[1] = {
@@ -322,6 +323,7 @@ function mod:OnCombatStart(delay)
 	self.vb.nothingnessCount = 0
 	self.vb.hurtlingIcon = 3
 	self.vb.bigAddKilled = 0
+	playerVoidFracture = false
 --	timerScorchingBombCD:Start(1-delay, 1)--Used 1 second into pull
 	if self:IsMythic() then
 		difficultyName = "mythic"
@@ -734,6 +736,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerVoidSlash:Restart(21, args.destName)--Needs to show for even non tanks getting hit though
 	elseif spellId == 404218 or spellId == 410642 then
 		if args:IsPlayer() then
+			playerVoidFracture = true
 			specWarnVoidFracture:Show()
 			specWarnVoidFracture:Play("bombyou")
 			if self:IsMythic() then
@@ -836,6 +839,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerVoidSlash:Stop(args.destName)--Needs to show for even non tanks getting hit though
 	elseif spellId == 404218 or spellId == 410642 then
 		if args:IsPlayer() then
+			playerVoidFracture = false
 			yellVoidFractureFades:Cancel()
 		end
 	elseif spellId == 404705 then
@@ -954,7 +958,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 401621 or spellId == 402746 or spellId == 403524 or spellId == 404062 or spellId == 406428) and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+	if (spellId == 401621 or spellId == 402746 or spellId == 403524 or spellId == 404062 or (spellId == 406428 and not playerVoidFracture)) and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
