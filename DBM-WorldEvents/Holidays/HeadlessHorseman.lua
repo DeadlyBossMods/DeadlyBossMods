@@ -59,6 +59,7 @@ end
 --Use syncing since these unit events require "target" or "focus" to detect.
 --At least someone in group should be targeting this stuff and sync it to those that aren't (like a healer)
 function mod:OnSync(event)
+	if not self:IsInCombat() then return end
 	if event == "HeadRepositions" then
 		warnHorsemanHead:Show()
 	elseif event == "BodyStage1" then
