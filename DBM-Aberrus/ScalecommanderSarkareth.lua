@@ -122,7 +122,7 @@ local timerVoidClaws							= mod:NewTargetTimer(18, 411236, nil, "Tank|Healer", 
 local timerEbonMight							= mod:NewCastCountTimer("d29.9", 404269, 299144, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--"Immune"
 
 mod:AddSetIconOption("SetIconOnEmptyRecollection", 404505, true, 5, {8})
-mod:AddSetIconOption("SetIconOnNullGlimmer", 404507, true, 5, {7, 6, 5, 4, 3})--8, 7, 6 in phase 3
+mod:AddSetIconOption("SetIconOnNullGlimmer", 404507, true, 5, {7, 6, 5, 4, 3})
 mod:AddSetIconOption("SetIconOnInfiniteDuress", 404288, true, 0, {1})
 mod:AddNamePlateOption("NPAuraOnRescind", 404705)
 mod:AddNamePlateOption("NPAuraOnMight", 404269)
@@ -525,7 +525,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidClaws:Play("defensive")
 		end
 	elseif spellId == 403741 then
-		self.vb.addIcon = 8--8, 7, 6 in Phase 3
+		self.vb.addIcon = 7
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnCosmicAscension:Show(self.vb.breathCount)
 		specWarnCosmicAscension:Play("watchstep")
