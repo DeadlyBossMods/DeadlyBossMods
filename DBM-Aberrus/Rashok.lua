@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 405316 405821 406851 406333 406145 400777 410070 407596 407544",
 	"SPELL_CAST_SUCCESS 407641",
-	"SPELL_AURA_APPLIED 405819 407547 407597 401419 407642 405827",
+	"SPELL_AURA_APPLIED 405819 407547 407597 401419 405827",
 	"SPELL_AURA_APPLIED_DOSE 405827",
-	"SPELL_AURA_REMOVED 405819 401419 407642 405827 405091",
+	"SPELL_AURA_REMOVED 405819 401419 405827 405091",
 	"SPELL_AURA_REMOVED_DOSE 405827",
 	"SPELL_PERIODIC_DAMAGE 403543",
 	"SPELL_PERIODIC_MISSED 403543",
@@ -85,10 +85,10 @@ function mod:OnCombatStart(delay)
 	self.vb.tankCombo = 0
 	self.vb.comboCount = 0
 	self.vb.shadowflameCount = 0
-	timerSearingSlamCD:Start(9.2-delay, 1)
+	timerSearingSlamCD:Start(9.1-delay, 1)
 	timerChargedSmashCD:Start(21.1-delay, 1)
 	timerVolcanicComboCD:Start(29.1-delay, 1)
-	timerDoomFlameCD:Start(39.2-delay, 1)
+	timerDoomFlameCD:Start(39.1-delay, 1)
 	timerShadowlavaBlastCD:Start(95-delay, 1)
 	timerAncientFuryCD:Start(100-delay)
 	if self:IsMythic() then
@@ -194,7 +194,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if (spellId == 405819 or spellId == 407642) then--405819 confirmed on heroic, 407642 for lfr/normal maybe?
+	if spellId == 405819 then--405819 confirmed on all difficulties
 		if args:IsPlayer() then
 			specWarnSearingSlam:Show()
 			specWarnSearingSlam:Play("targetyou")
@@ -255,7 +255,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 405819 or spellId == 407642 then
+	if spellId == 405819 then
 		if args:IsPlayer() then
 			yellSearingSlamFades:Cancel()
 		end
@@ -301,7 +301,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 403543 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) and not DBM:UnitDebuff("player", 405819, 407642) then
+	if spellId == 403543 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) and not DBM:UnitDebuff("player", 405819) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

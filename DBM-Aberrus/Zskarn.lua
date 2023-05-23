@@ -100,9 +100,9 @@ function mod:OnCombatStart(delay)
 		timerAnimateGolemsCD:Start(35-delay, 1)
 		timerShrapnalBombCD:Start(45.1-delay, 1)
 		timerTacticalDestructionCD:Start(70-delay, 1)
-	else--Recheck
+	else--Validated
 		self.vb.expectedBombs = 2
-		timerDragonDeezTrapsCD:Start(20.5-delay, 1)
+		timerDragonDeezTrapsCD:Start(20.3-delay, 1)
 		timerAnimateGolemsCD:Start(35-delay, 1)
 		timerTacticalDestructionCD:Start(70-delay, 1)
 	end
