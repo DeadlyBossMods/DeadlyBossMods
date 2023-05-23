@@ -148,6 +148,7 @@ local yellVoidSlashFades						= mod:NewShortFadesYell(408422)
 local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, nil, 1, 2)
 
 local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, 161862, nil, nil, 1)
+local timerAstralFormation						= mod:NewCDCountTimer(29.9, 403510, 370470, nil, nil, 5)--Shorttext Pillar
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
 local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, 229042, nil, nil, 3)--"Black Hole"
@@ -529,6 +530,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnCosmicAscension:Show(self.vb.breathCount)
 		specWarnCosmicAscension:Play("watchstep")
+		timerAstralFormation:Start(9.5)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.breathCount+1)
 		if timer then
 			timerCosmicAscensionCD:Start(timer, self.vb.breathCount+1)
