@@ -378,14 +378,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFlamingCudgel:Show(args.destName, amount)
 		end
 	elseif spellId == 401452 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 2) then
 			specWarnBlazingSpear:Show()
 			specWarnBlazingSpear:Play("runout")
 			yellBlazingSpear:Yell()
 			yellBlazingSpearFades:Countdown(spellId)
-		else
-			warnBlazingSpear:Show(args.destName)
 		end
+		warnBlazingSpear:CombinedShow(1, args.destName)
 	--elseif spellId == 401867 or spellId == 402066 then
 	--	if args:IsPlayer() then
 	--		specWarnVolcanicShield:Show()
@@ -418,7 +417,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

@@ -220,7 +220,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 --		self.vb.rushingIcon = 4
-		timerRushingDarknessCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.RushingDarknessCount+1)
+		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 29, self.vb.RushingDarknessCount+1)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
@@ -238,9 +238,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.volcanicCount = 0
 		self.vb.RushingDarknessCount = 0
 		timerSunderShadowCD:Start(14.8, 1)
-		timerVolcanicHeartCD:Start(21.2, 1)
-		timerUmbralAnnihilationCD:Start(25.7, 1)
-		timerRushingDarknessCD:Start(31.8, 1)
+		timerVolcanicHeartCD:Start(20.7, 1)
+		timerUmbralAnnihilationCD:Start(25.1, 1)
+		timerRushingDarknessCD:Start(30.9, 1)
 		if self:IsHard() then
 			timerTwistedEarthCD:Start(self:IsMythic() and 41.5 or 71.5, 1)
 		end
