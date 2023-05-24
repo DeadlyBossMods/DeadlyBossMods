@@ -150,7 +150,7 @@ local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, 
 local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, 161862, nil, nil, 1)
 local timerAstralFormation						= mod:NewCDCountTimer(29.9, 403510, 370470, nil, nil, 5)--Shorttext Pillar
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
-local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Hide"
 local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, 229042, nil, nil, 3)--"Black Hole"
 --local timerMotesofOblivionCD					= mod:NewAITimer(29.9, 406428, nil, nil, nil, 3)
 local timerVoidSlashCD							= mod:NewCDCountTimer(29.9, 408422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -896,9 +896,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerCosmicAscensionCD:Start(7.7, 1)
 			timerHurtlingBarrageCD:Start(21, 1)
 			timerVoidSlashCD:Start(22.3, 1)
-			timerVoidBombCD:Start(30.3, 1)
-			timerScouringEternityCD:Start(49.7, 1)
 			timerEmbraceofNothingnessCD:Start(26.3, 1)
+			timerVoidBombCD:Start(30.3, 1)
+			timerScouringEternityCD:Start(48.6, 1)
 			--timerMotesofOblivionCD:Start(3)
 		end
 	elseif spellId == 410625 then
