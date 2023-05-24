@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20230515000000)
+mod:SetHotfixNoticeRev(20230524000000)
 mod:SetMinSyncRevision(20230513000000)
 --mod.respawnTime = 29
 
@@ -220,7 +220,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 --		self.vb.rushingIcon = 4
-		timerRushingDarknessCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.RushingDarknessCount+1)
+		--As of May 23rd reset, stage 3 has a new darkness cast that causes the 17 second time between darkness 1 and 2 in stage 3
+		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or ((self.vb.RushingDarknessCount == 1) and 17 or 29), self.vb.RushingDarknessCount+1)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
@@ -238,9 +239,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.volcanicCount = 0
 		self.vb.RushingDarknessCount = 0
 		timerSunderShadowCD:Start(14.8, 1)
-		timerVolcanicHeartCD:Start(21.2, 1)
-		timerUmbralAnnihilationCD:Start(25.7, 1)
-		timerRushingDarknessCD:Start(31.8, 1)
+		timerVolcanicHeartCD:Start(20.7, 1)
+		timerUmbralAnnihilationCD:Start(25.1, 1)
+		timerRushingDarknessCD:Start(30.9, 1)
 		if self:IsHard() then
 			timerTwistedEarthCD:Start(self:IsMythic() and 41.5 or 71.5, 1)
 		end
@@ -390,8 +391,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRushingDarknessCD:Stop()
 		timerVolcanicHeartCD:Stop()
 		self:Unschedule(fixBrokenHeartTimer)
+		timerRushingDarknessCD:Start(10.8, 1)
 		timerSunderRealityCD:Start(21.5, 1)
-		timerRushingDarknessCD:Start(27.6, 1)
 		timerCalamitousStrikeCD:Start(36, 1)
 		timerEbonDestructionCD:Start(42.1, 1)
 	--elseif spellId == 407182 then

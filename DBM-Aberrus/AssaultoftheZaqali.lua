@@ -128,7 +128,7 @@ mod.vb.wallClimberCount = 0
 --CLEU data pulling is not fully accurate since first hits doesn't mean first seen accuracy.
 --However, based on the way the boss patterns typically being initial, one off, then repeating pattern.
 --The timer assumptions below follow pattern perfectly and should be pretty dang close if not dead on
---local magmaTimers = {21.7, 80, 135, 180, 235, 280, 335, 380}--21.7, 79.3, 131.9, 178.1, 232.6, 277.5, 334.4, 381.4
+--local magmaTimers = {21.7, 80, 135, 180, 235, 280, 335, 380}--21.7, 78.3, 131.9, 178.1, 232.6, 277.5, 334.4, 381.4
 --local climbersTimers = {31.6, 80, 140, 180, 240, 280, 340}--34.3, 82.5, 141.9, 180.1, 242.9, 281.6, 341.7
 
 local function magmaLoop(self)
@@ -213,9 +213,9 @@ function mod:SPELL_CAST_START(args)
 		--12.0, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
 		local timer
 		if self.vb.cudgelCount == 1 then--One off
-			timer = 59.5
+			timer = 58.4
 		elseif self.vb.cudgelCount % 4 == 2 then--2, 6, 10, 14, etc
-			timer = 21
+			timer = 20.9
 		elseif self.vb.cudgelCount % 4 == 3 then--3, 7, 11, 15, etc
 			timer = 25.9
 		elseif self.vb.cudgelCount % 4 == 0 then--4, 8, 12, 16, etc
@@ -378,14 +378,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFlamingCudgel:Show(args.destName, amount)
 		end
 	elseif spellId == 401452 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 2) then
 			specWarnBlazingSpear:Show()
 			specWarnBlazingSpear:Play("runout")
 			yellBlazingSpear:Yell()
 			yellBlazingSpearFades:Countdown(spellId)
-		else
-			warnBlazingSpear:Show(args.destName)
 		end
+		warnBlazingSpear:CombinedShow(1, args.destName)
 	--elseif spellId == 401867 or spellId == 402066 then
 	--	if args:IsPlayer() then
 	--		specWarnVolcanicShield:Show()
@@ -418,7 +417,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
