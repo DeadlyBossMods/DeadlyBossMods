@@ -165,9 +165,9 @@ function mod:SPELL_CAST_START(args)
 			--8.8, 40.0, 44.4, 28.9, 40.0, 44.5, 28.9, 40.0, 44.4
 			if self.vb.roarCount % 3 == 0 then
 				timerIngitingRoarCD:Start(28.8, self.vb.roarCount+1)
-			elseif self.vb.roarCount % 2 == 0 then
+			elseif self.vb.roarCount % 3 == 2 then
 				timerIngitingRoarCD:Start(44.4, self.vb.roarCount+1)
-			else
+			else--3 == 1
 				timerIngitingRoarCD:Start(40, self.vb.roarCount+1)
 			end
 		elseif self:IsHeroic() then
