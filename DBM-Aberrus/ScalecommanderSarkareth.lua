@@ -114,7 +114,7 @@ local timerVoidBombCD							= mod:NewCDCountTimer(29.9, 404027, 167180, nil, nil
 local timerAbyssalBreathCD						= mod:NewCDCountTimer(29.9, 404456, 18357, nil, nil, 1)
 local timerEmptyStrikeCD						= mod:NewCDTimer(12.2, 404769, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic Add
 --local timerCosmicVolleyCD						= mod:NewCDTimer(4.8, 411302, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Mythic Add
-local timerBlastingScreamCD						= mod:NewCDTimer(8.5, 404754, 31295, false, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Spammy so off by default
+local timerBlastingScreamCD						= mod:NewCDTimer(7.3, 404754, 31295, false, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Spammy so off by default
 local timerDesolateBlossomCD					= mod:NewCDCountTimer(29.9, 404403, nil, nil, nil, 3)
 local timerInfiniteDuressCD		 				= mod:NewCDCountTimer(29.9, 404288, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 local timerVoidClawsCD							= mod:NewCDCountTimer(29.9, 411236, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -150,7 +150,7 @@ local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, 
 local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, 161862, nil, nil, 1)
 local timerAstralFormation						= mod:NewCDCountTimer(29.9, 403510, 370470, nil, nil, 5)--Shorttext Pillar
 local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
-local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Hide"
 local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, 229042, nil, nil, 3)--"Black Hole"
 --local timerMotesofOblivionCD					= mod:NewAITimer(29.9, 406428, nil, nil, nil, 3)
 local timerVoidSlashCD							= mod:NewCDCountTimer(29.9, 408422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -896,9 +896,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerCosmicAscensionCD:Start(7.7, 1)
 			timerHurtlingBarrageCD:Start(21, 1)
 			timerVoidSlashCD:Start(22.3, 1)
-			timerVoidBombCD:Start(30.3, 1)
-			timerScouringEternityCD:Start(49.7, 1)
 			timerEmbraceofNothingnessCD:Start(26.3, 1)
+			timerVoidBombCD:Start(30.3, 1)
+			timerScouringEternityCD:Start(48.6, 1)
 			--timerMotesofOblivionCD:Start(3)
 		end
 	elseif spellId == 410625 then
