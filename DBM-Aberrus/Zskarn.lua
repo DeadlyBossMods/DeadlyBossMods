@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230509000000)
+mod:SetHotfixNoticeRev(20230525000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -53,7 +53,7 @@ local timerBlastWaveCD							= mod:NewCDCountTimer(34, 403978, 149213, nil, nil,
 local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, 264364, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)--"Embers"
 local timerEliminationProtocol					= mod:NewCastTimer(10, 409942, 207544, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--"Beams"
 local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, nil, 3)
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 404007)
 mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6, 5})
@@ -81,12 +81,13 @@ function mod:OnCombatStart(delay)
 	self.vb.dragonCount = 0
 	timerBlastWaveCD:Start(10.7-delay, 1)--Same in All
 	if self:IsMythic() then--Recheck
-		self.vb.expectedBombs = 4
+		self.vb.expectedBombs = 3
 		timerUnstableEmbersCD:Start(9.1-delay, 1)
 		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
 		timerAnimateGolemsCD:Start(26.2-delay, 1)
 		timerTacticalDestructionCD:Start(31-delay, 1)
 		timerShrapnalBombCD:Start(35.9-delay, 1)
+		berserkTimer:Start(510-delay)
 	elseif self:IsHeroic() then--Validated
 		self.vb.expectedBombs = 3
 		timerUnstableEmbersCD:Start(7-delay, 1)
