@@ -7,7 +7,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 101612",
 	"SPELL_AURA_REMOVED 101612",
 	"UNIT_SPELLCAST_SUCCEEDED player",
-	"UNIT_POWER_FREQUENT player"
+	"UNIT_POWER_UPDATE player"
 )
 mod.noStatistics = true
 
@@ -56,7 +56,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	end
 end
 
-function mod:UNIT_POWER_FREQUENT(_, type)
+function mod:UNIT_POWER_UPDATE(_, type)
 	if type == "ALTERNATE" then
 		local playerPower = UnitPower("player", 10)
 		if playerPower > gameEarnedPoints then
