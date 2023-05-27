@@ -214,7 +214,7 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:Show(5, "playergooddebuff", 407919)
 		end
 		self:Unschedule(checkRealityOnSelf)
-		self:Schedule(1, checkRealityOnSelf, self)
+		checkRealityOnSelf(self)
 		self:Schedule(4, checkRealityOnSelf, self)
 	elseif spellId == 407207 then
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
