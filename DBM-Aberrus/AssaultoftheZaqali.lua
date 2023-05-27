@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230510000000)
+mod:SetHotfixNoticeRev(20230526000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -233,7 +233,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDevastatingLeap:Play("watchstep")
 		--98.4, 47.5, 52.3, 47.6, 52.3
 		--98.6, 46.2, 53.7, 47.4, 52.4
-		--98.2, 47.4, 52.2, 47.3, 53.5"
+		--98.2, 47.4, 52.2, 47.3, 53.5
 		if self.vb.leapCount % 2 == 0 then
 			timerDevastatingLeapCD:Start(52.1, self.vb.leapCount+1)
 		else
@@ -253,24 +253,25 @@ function mod:SPELL_CAST_START(args)
 		--90.1, 23.1, 80.2, 24.3, 72.9
 		--93.6, 19.5, 79.2, 24.4"
 		--90.3, 25.6, 79.2, 20.7, 75.4, 25.5
+		--90.5, 24.6, 75.7
+		--91.2, 24.2, 74.9, 27
+		--91.4, 20.2, 79.4
 		if self.vb.rushCount % 2 == 0 then
-			timerPhoenixRushCD:Start(19.8, self.vb.rushCount+1)--19-25.6
+			timerPhoenixRushCD:Start(71.7, self.vb.rushCount+1)--71.7-80.2
 		else
-			timerPhoenixRushCD:Start(72.9, self.vb.rushCount+1)--72.9-80.2
+			timerPhoenixRushCD:Start(19.8, self.vb.rushCount+1)--19-27.9
 		end
 	elseif spellId == 407009 then
 		self.vb.galeCount = self.vb.galeCount + 1
 		specWarnVigorousGale:Show(self.vb.galeCount)
 		specWarnVigorousGale:Play("pushbackincoming")
-		--73.2, 80.2, 19.4, 82.6, 18.2
-		--71.9, 80.5, 23.1, 74.1, 24.2, 76.5, 23.1
-		--73.3, 79.0, 17.0, 83.8, 19.4
-		--72.0, 81.6, 19.8, 82.5, 18.3
-		--75.9, 75.5, 19.6, 81.5, 23.2
+		--74, 64.7, 32
+		--72.9, 65.5, 35.2
+		--74.2, 64.4, 35.2
 		if self.vb.galeCount % 2 == 0 then
-			timerVigorousGaleCD:Start(17, self.vb.galeCount+1)--17-23
+			timerVigorousGaleCD:Start(32, self.vb.galeCount+1)--32-35.2
 		else
-			timerVigorousGaleCD:Start(74.1, self.vb.galeCount+1)--74.1-83.8
+			timerVigorousGaleCD:Start(63.1, self.vb.galeCount+1)--63.1-65.5
 		end
 	elseif spellId == 410351 then
 		self.vb.cudgelCount = self.vb.cudgelCount + 1
