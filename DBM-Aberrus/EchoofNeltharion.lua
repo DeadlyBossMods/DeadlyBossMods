@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(6)
 mod:SetHotfixNoticeRev(20230524000000)
 mod:SetMinSyncRevision(20230513000000)
 --mod.respawnTime = 29
@@ -42,7 +42,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
 --local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
 local warnRushingDarkness						= mod:NewIncomingCountAnnounce(407221, 2)
---local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
+local warnRushingDarknessWallTarget				= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
 local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 
 --local specWarnVolcanicHeart					= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
@@ -51,8 +51,8 @@ local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 local specWarnTwistedEarth						= mod:NewSpecialWarningDodgeCount(402902, false, nil, 2, 2, 2)--Twisted earth spawn+Dodge for Volcanic Blast
 local specWarnEchoingFissure					= mod:NewSpecialWarningDodgeCount(402116, nil, 381446, nil, 2, 2)
 local specWarnRushingDarkness					= mod:NewSpecialWarningDodgeCount(407221, nil, nil, nil, 2, 2)
---local yellRushingDarkness						= mod:NewShortPosYell(407221)
---local yellRushingDarknessFades				= mod:NewIconFadesYell(407221)
+local yellRushingDarkness						= mod:NewYell(407221, L.WallBreaker)
+local yellRushingDarknessFades					= mod:NewIconFadesYell(407221)
 local specWarnCalamitousStrike					= mod:NewSpecialWarningDefensive(406222, nil, nil, nil, 1, 2)
 local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, nil, nil, 1, 2)
 --local specWarnPyroBlast						= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -69,7 +69,7 @@ mod:AddPrivateAuraSoundOption(407182, true, 407221)--Rushing Darkness
 mod:AddPrivateAuraSoundOption(410966, true, 410953)--Volcanic Heart
 --mod:AddRangeFrameOption(5, 390715)
 --mod:AddSetIconOption("SetIconOnVolcanicHeart", 410953, true, 0, {1, 2, 3})
---mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {4, 5, 6})
+mod:AddSetIconOption("SetIconOnRushingDarkness", 407221, true, 0, {6})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 
 --Stage Two: Corruption Takes Hold
@@ -130,6 +130,18 @@ local function checkRealityOnSelf(self)
 	if not playerReality then
 		specWarnEbonDestructionMove:Show(realityName)
 		specWarnEbonDestructionMove:Play("findshelter")
+	end
+end
+
+function mod:RushingDarknessTarget(targetname, uId)
+	if not targetname then return end
+	warnRushingDarknessWallTarget:Show(self.vb.RushingDarknessCount, targetname)
+	if targetname == UnitName("player") then
+		yellRushingDarkness:Yell(6, 6)
+		yellRushingDarknessFades:Countdown(5, nil, 6)
+	end
+	if self.Options.SetIconOnRushingDarkness then
+		self:SetIcon(targetname, 6, 5)
 	end
 end
 
@@ -222,6 +234,9 @@ function mod:SPELL_CAST_START(args)
 --		self.vb.rushingIcon = 4
 		--As of May 23rd reset, stage 3 has a new darkness cast that causes the 17 second time between darkness 1 and 2 in stage 3
 		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or ((self.vb.RushingDarknessCount == 1) and 17 or 29), self.vb.RushingDarknessCount+1)
+		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
+			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
+		end
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
