@@ -135,7 +135,7 @@ end
 
 function mod:RushingDarknessTarget(targetname, uId)
 	if not targetname then return end
-	warnRushingDarknessWallTarget:Show(targetname)
+	warnRushingDarknessWallTarget:Show(self.vb.RushingDarknessCount, targetname)
 	if targetname == UnitName("player") then
 		yellRushingDarkness:Yell(6, 6)
 		yellRushingDarknessFades:Countdown(5, nil, 6)
