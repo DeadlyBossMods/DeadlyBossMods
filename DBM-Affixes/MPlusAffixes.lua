@@ -88,6 +88,24 @@ local function checkThunderin(self)
 end
 --]]
 
+local function checkEntangled(self)
+	if timerEntangledCD:GetRemaining() > 0 then
+		--Timer exists, do nothing
+		return
+	end
+	timerEntangledCD:Start(25)
+	self:Schedule(30, checkEntangled, self)
+end
+
+local function checkIncorp(self)
+	if timerIncorporealCD:GetRemaining() > 0 then
+		--Timer exists, do nothing
+		return
+	end
+	timerIncorporealCD:Start(40)
+	self:Schedule(45, checkIncorp, self)
+end
+
 --UGLY function to detect this because there isn't a good API for this.
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
@@ -99,17 +117,9 @@ local function checkForCombat(self)
 	elseif not combatFound and incorporealCounting then
 		incorporealCounting = false
 		timerIncorporealCD:Pause()
+		self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
 	end
 	self:Schedule(0.25, checkForCombat, self)
-end
-
-local function checkEntangled(self)
-	if timerEntangledCD:GetRemaining() > 0 then
-		--Timer exists, do nothing
-		return
-	end
-	timerEntangledCD:Start(25)
-	self:Schedule(30, checkEntangled, self)
 end
 
 do
@@ -162,6 +172,7 @@ end
 function mod:CHALLENGE_MODE_COMPLETED()
 	self:Unschedule(checkForCombat)
 	self:Unschedule(checkEntangled)
+	self:Unschedule(checkIncorp)
 	self:Stop()--Stop M+ timers on completion as well
 end
 
@@ -255,7 +266,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		incorporealCounting = true
 		timerIncorporealCD:Start()
 		self:Unschedule(checkForCombat)
+		self:Unschedule(checkIncorp)
 		checkForCombat(self)
+		self:Schedule(50, checkIncorp, self)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

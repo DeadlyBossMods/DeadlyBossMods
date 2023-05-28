@@ -84,7 +84,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Echo of Neltharion --
 ---------------------------
---L= DBM:GetModLocalization(2523)
+L= DBM:GetModLocalization(2523)
+
+L:SetMiscLocalization({
+	WallBreaker	= "Wall Breaker"
+})
 
 ---------------------------
 --  Scalecommander Sarkareth --
