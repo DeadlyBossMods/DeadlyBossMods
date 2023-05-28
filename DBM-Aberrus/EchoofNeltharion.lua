@@ -42,7 +42,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
 --local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
 local warnRushingDarkness						= mod:NewIncomingCountAnnounce(407221, 2)
-local warnRushingDarkness						= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
+local warnRushingDarknessWallTarget				= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
 local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
 
 --local specWarnVolcanicHeart					= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
@@ -135,7 +135,7 @@ end
 
 function mod:RushingDarknessTarget(targetname, uId)
 	if not targetname then return end
-	warnRushingDarkness:Show(targetname)
+	warnRushingDarknessWallTarget:Show(targetname)
 	if targetname == UnitName("player") then
 		yellRushingDarkness:Yell(6, 6)
 		yellRushingDarknessFades:Countdown(5, nil, 6)
