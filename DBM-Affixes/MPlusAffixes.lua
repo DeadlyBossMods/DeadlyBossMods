@@ -23,10 +23,11 @@ local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 local warnIncorporeal						= mod:NewCastAnnounce(408801, 4)
 local warnAfflictedCry						= mod:NewSpellAnnounce(409492, 4)
 local warnDestabalize						= mod:NewCastAnnounce(408805, 4, nil, nil, false)
-local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1, 396347)
+--local warnThunderingFades					= mod:NewFadesAnnounce(396363, 1, 396347)
+local warnSpitefulFixate					= mod:NewYouAnnounce(350209, 4)
 
 local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
-local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, nil, nil, nil, 1, 2)
+local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, false, nil, 2, 1, 2)
 local specWarnEntangled						= mod:NewSpecialWarningYou(408556, nil, nil, nil, 1, 14)
 
 --local specWarnPositiveCharge				= mod:NewSpecialWarningYou(396369, nil, 391990, nil, 1, 13)--Short name is using Positive Charge instead of Mark of Lightning
@@ -218,8 +219,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 350209 and args:IsPlayer() and self:AntiSpam(3, "aff5") then
-		specWarnSpitefulFixate:Show()
-		specWarnSpitefulFixate:Play("targetyou")
+		if self.Options.Specwarn350209you then
+			specWarnSpitefulFixate:Show()
+			specWarnSpitefulFixate:Play("targetyou")
+		else
+			warnSpitefulFixate:Show()
+		end
 	--elseif spellId == 396369 or spellId == 396364 then
 	--	if self:AntiSpam(20, "affseasonal") then
 	--		playerThundering = false
