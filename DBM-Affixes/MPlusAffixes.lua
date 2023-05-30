@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
-mod:SetZone(DBM_DISABLE_ZONE_DETECTION)--All of the S1 DF M+ Dungeons (2516, 2526, 2515, 2521, 1477, 1571, 1176, 960)
+mod:SetZone(DBM_DISABLE_ZONE_DETECTION)--Stays active in all zones for zone change handlers, but registers events based on dungeon ids
 
 mod.isTrashMod = true
 mod.isTrashModBossFightAllowed = true
@@ -39,7 +39,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
 local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 3, nil, nil, nil, true)
 local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, nil, DBM_COMMON_L.HEALER_ICON, 3, 3)
-local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3, nil, nil, nil, true)
+local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)
 --local timerThunderingCD						= mod:NewNextTimer(66, 396363, nil, nil, nil, 3, 396347, nil, nil, 2, 4)
 --local timerPositiveCharge					= mod:NewBuffFadesTimer(15, 396369, 391990, nil, 2, 5, nil, nil, nil, 1, 5)
 --local timerNegativeCharge					= mod:NewBuffFadesTimer(15, 396364, 391991, nil, 2, 5, nil, nil, nil, 1, 5)
