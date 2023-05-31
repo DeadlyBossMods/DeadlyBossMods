@@ -146,7 +146,7 @@ function mod:SPELL_CAST_START(args)
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
 				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", 407547)
-				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
+				if (expireTimeTarget and expireTimeTarget-GetTime() >= 2) and self:AntiSpam(1, 1) then
 					specWarnFlamingSlashTaunt:Show(UnitName("boss1target"))
 					specWarnFlamingSlashTaunt:Play("tauntboss")
 				end
@@ -162,7 +162,7 @@ function mod:SPELL_CAST_START(args)
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
 				local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", 407597)
-				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
+				if (expireTimeTarget and expireTimeTarget-GetTime() >= 2) and self:AntiSpam(1, 1) then
 					specWarnEarthenCrushTaunt:Show(UnitName("boss1target"))
 					specWarnEarthenCrushTaunt:Play("tauntboss")
 				end
@@ -230,7 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				alertTaunt = true
 			end
 		end
-		if alertTaunt then
+		if alertTaunt and self:AntiSpam(1, 1) then
 			specWarnFlamingSlashTaunt:Show(args.destName)
 			specWarnFlamingSlashTaunt:Play("tauntboss")
 		end
