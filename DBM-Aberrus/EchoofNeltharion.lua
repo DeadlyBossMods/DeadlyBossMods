@@ -180,23 +180,14 @@ function mod:OnCombatStart(delay)
 	timerVolcanicHeartCD:Start(15.6-delay, 1)
 	timerCalamitousStrikeCD:Start(self:IsMythic() and 25.1 or 24.1-delay, 1)--Delayed by extra wall on mythic
 	timerEchoingFissureCD:Start(33.6-delay, 1)
---	if self.Options.NPAuraOnAscension then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 	self:EnablePrivateAuraSound(407182, "targetyou", 2)--Rushing Darkness
 	self:EnablePrivateAuraSound(410966, "runout", 2)--Volcanic Heart
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnAscension then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)

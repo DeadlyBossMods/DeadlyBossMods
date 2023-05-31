@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
---mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20230526000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
@@ -17,8 +16,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 401867 402066 401381 409275 408873 410353 401452",
 	"SPELL_AURA_APPLIED_DOSE 408873 410353",
 	"SPELL_AURA_REMOVED 401867 402066 401452",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_AURA player",
@@ -182,21 +179,6 @@ function mod:OnCombatStart(delay)
 		timerVigorousGaleCD:Start(71.9, 1)--71-75
 		timerPhoenixRushCD:Start(90.1, 1)--90-94
 	end
---	if self.Options.NPAuraOnLeap then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.NPAuraOnLeap then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -416,16 +398,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 200836 or cid == 202937 then--obsidian-guard
@@ -437,8 +409,6 @@ function mod:UNIT_DIED(args)
 		castsPerGUID[args.destGUID] = nil
 --		timerMoltenBarrierCD:Stop(args.destGUID)
 --		timerMagmaFlowCD:Stop(args.destGUID)
-	--elseif cid == 204505 or cid == 199812 then--Zaqali Wallclimbers
-
 	end
 end
 

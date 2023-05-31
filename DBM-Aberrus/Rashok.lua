@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED_DOSE 405827",
 	"SPELL_PERIODIC_DAMAGE 403543",
 	"SPELL_PERIODIC_MISSED 403543",
---	"UNIT_DIED"
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -322,12 +321,3 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 		end
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 199233 then
-
-	end
-end
---]]

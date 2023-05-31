@@ -44,7 +44,6 @@ local specWarnUmbralDetonation					= mod:NewSpecialWarningYou(405016, nil, 49685
 local yellUmbralDetonation						= mod:NewShortYell(405016, 49685)--"Bomb"
 local yellUmbralDetonationFades					= mod:NewShortFadesYell(405016)
 local specWarnShadowsConvergence				= mod:NewSpecialWarningDodgeCount(407640, nil, nil, nil, 2, 2, 3)
---local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 
 local timerCoalescingVoidCD						= mod:NewCDCountTimer(21.9, 403459, nil, nil, nil, 2)
 local timerUmbralDetonationCD					= mod:NewCDCountTimer(21.9, 405016, 167180, nil, nil, 3)--"Bombs"
@@ -52,10 +51,7 @@ local timerShadowsConvergenceCD					= mod:NewCDCountTimer(20.7, 407640, nil, nil
 local timerShadowSpikeCD						= mod:NewCDCountTimer(11, 403699, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddInfoFrameOption(361651, true)
 mod:AddSetIconOption("SetIconOnUmbral", 405016, false, 0, {1, 2, 3})
---mod:AddNamePlateOption("NPAuraOnAscension", 385541)
---mod:GroupSpells(390715, 396094)
 --Moltannia
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26337))
 local warnBlazingHeat							= mod:NewCountAnnounce(402617, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(402617))
@@ -347,9 +343,6 @@ function mod:OnCombatStart(delay)
 	timerMoltenEruptionCD:SetFade(false, 1)
 	timerSwirlingFlameCD:SetFade(false, 1)
 	timerFlameSlashCD:SetFade(false, 1)
---	if self.Options.NPAuraOnAscension then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 	self:Schedule(2, updateBossDistance, self)
 end
 
@@ -365,12 +358,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.NPAuraOnAscension then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
