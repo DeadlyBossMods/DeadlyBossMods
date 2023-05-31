@@ -127,7 +127,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRayofAnguish:Play("laserrun")
 			yellRayofAnguish:Yell()
 		end
-		warnDreadRayofAnguish:CombinedShow(0.5, self.vb.rayCount, args.destName)
+		warnDreadRayofAnguish:CombinedShow(1.1, self.vb.rayCount, args.destName)
 	elseif spellId == 404743 and not args:IsPlayer() then
 		specWarnTerrorClawsTaunt:Show(args.destName)
 		specWarnTerrorClawsTaunt:Play("tauntboss")

@@ -56,7 +56,7 @@ mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybrid"}, "OblivionOnly", "misc")
 --Stage One: The Legacy of the Dracthyr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
-local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3)
+local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3, nil, nil, nil, nil, nil, 2)
 local warnDazzled								= mod:NewTargetNoFilterAnnounce(401905, 4, nil, false)--Not entirely much you can do about it's a lot but if it's a couple, a healer might want to see this to TRY and save them
 --local warnMassDisintegrateSoon					= mod:NewIncomingCountAnnounce(401642, 2, nil, nil, 405391)--Re-enable only if it becomes private aura
 local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, 405391, nil, nil, nil, true)
@@ -395,6 +395,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 401383 then
 		warnOppressingHowl:Show()
+		warnOppressingHowl:Play("carefly")
 	elseif spellId == 401810 then
 		self.vb.surgeCount = self.vb.surgeCount + 1
 		specWarnGlitteringSurge:Show(self.vb.surgeCount)

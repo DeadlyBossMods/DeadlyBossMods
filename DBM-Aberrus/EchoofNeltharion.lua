@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 mod:SetUsedIcons(6)
-mod:SetHotfixNoticeRev(20230524000000)
+mod:SetHotfixNoticeRev(20230530000000)
 mod:SetMinSyncRevision(20230513000000)
 --mod.respawnTime = 29
 
@@ -123,7 +123,7 @@ local realityName = DBM:GetSpellInfo(407919)
 local playerReality = false
 local mythicTwistedP1Timers = {2, 20.6, 19.4, 18.2, 18.2, 18.2, 19.5, 17.0}
 local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}
-local volcanicP2Timers = {21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 19.4, 14.5}
+local volcanicP2Timers = {21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 18, 14.5}
 
 
 local function checkRealityOnSelf(self)
@@ -132,6 +132,24 @@ local function checkRealityOnSelf(self)
 		specWarnEbonDestructionMove:Play("findshelter")
 	end
 end
+
+--Work around for stage 2 bug where sometimes cast success event is missing
+local function fixBrokenHeartTimer(self)
+	self.vb.volcanicCount = self.vb.volcanicCount + 1
+	local timer = volcanicP2Timers[self.vb.volcanicCount+1]
+	if timer then
+		timerVolcanicHeartCD:Start(timer-5, self.vb.volcanicCount+1)
+	end
+end
+
+--[[
+local function checkForSkippedDarkness(self)
+	if self.vb.RushingDarknessCount == 0 then--first one skipped (which is like 95% of pulls)
+		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
+		timerRushingDarknessCD:Start(12, 2)
+	end
+end
+--]]
 
 function mod:RushingDarknessTarget(targetname, uId)
 	if not targetname then return end
@@ -192,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnCalamitousStrike:Show()
-			specWarnCalamitousStrike:Play("defensive")
+			specWarnCalamitousStrike:Play("carefly")
 		end
 		timerCalamitousStrikeCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.tankCount+1)
 	elseif spellId == 407790 then
@@ -229,11 +247,14 @@ function mod:SPELL_CAST_START(args)
 		checkRealityOnSelf(self)
 		self:Schedule(4, checkRealityOnSelf, self)
 	elseif spellId == 407207 then
+--		self:Unschedule(checkForSkippedDarkness)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 --		self.vb.rushingIcon = 4
 		--As of May 23rd reset, stage 3 has a new darkness cast that causes the 17 second time between darkness 1 and 2 in stage 3
-		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or ((self.vb.RushingDarknessCount == 1) and 17 or 29), self.vb.RushingDarknessCount+1)
+		--As of May 30th reset, stage 3 no longer has new darkness that causes the 17 second time between darkness 1 and 2 in stage 3
+		--timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or ((self.vb.RushingDarknessCount == 1) and 17 or 29), self.vb.RushingDarknessCount+1)
+		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 29, self.vb.RushingDarknessCount+1)
 		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
 			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
 		end
@@ -260,15 +281,6 @@ function mod:SPELL_CAST_START(args)
 		if self:IsHard() then
 			timerTwistedEarthCD:Start(self:IsMythic() and 41.5 or 71.5, 1)
 		end
-	end
-end
-
---Work around for stage 2 bug where sometimes cast success event is missing
-local function fixBrokenHeartTimer(self)
-	self.vb.volcanicCount = self.vb.volcanicCount + 1
-	local timer = volcanicP2Timers[self.vb.volcanicCount+1]
-	if timer then
-		timerVolcanicHeartCD:Start(timer-5, self.vb.volcanicCount+1)
 	end
 end
 
@@ -318,10 +330,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				if spellId == 401480 then--first cast
 					timerTwistedEarthCD:Start(40, 2)
 				else
-					--2, 40, 37.5, 36.4
-					if self.vb.twistedEarthCount == 2 then
-						timerTwistedEarthCD:Start(37.5, self.vb.twistedEarthCount+1)
-					elseif self.vb.twistedEarthCount == 3 then
+					--2, 40, 36.4, 36.4
+					if self.vb.twistedEarthCount < 4 then--2 and 3
 						timerTwistedEarthCD:Start(36.4, self.vb.twistedEarthCount+1)
 					end
 				end
@@ -406,10 +416,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRushingDarknessCD:Stop()
 		timerVolcanicHeartCD:Stop()
 		self:Unschedule(fixBrokenHeartTimer)
-		timerRushingDarknessCD:Start(10.8, 1)
-		timerSunderRealityCD:Start(21.5, 1)
+--		timerRushingDarknessCD:Start(10.8, 1)
+--		self:Schedule(15.8, checkForSkippedDarkness, self)
+		timerSunderRealityCD:Start(19.5, 1)
+		timerRushingDarknessCD:Start(27, 1)
 		timerCalamitousStrikeCD:Start(36, 1)
-		timerEbonDestructionCD:Start(42.1, 1)
+		timerEbonDestructionCD:Start(40.2, 1)
 	--elseif spellId == 407182 then
 	--	if self.Options.SetIconOnRushingDarkness then
 	--		self:SetIcon(args.destName, 0)

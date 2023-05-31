@@ -6,7 +6,7 @@ mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230512000000)
+mod:SetHotfixNoticeRev(20230530000000)
 mod:SetMinSyncRevision(20230512000000)
 --mod.respawnTime = 29
 
@@ -15,12 +15,9 @@ mod:SetWipeTime(25)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 406358 404472 407733 404713 405042 405492 405375 406227 407552 405391 407775 412117",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 406311 407302 407327 407617 405392",
-	"SPELL_AURA_APPLIED_DOSE 406311 407302 407327",
+	"SPELL_AURA_APPLIED 406313 407302 407327 407617 405392",
+	"SPELL_AURA_APPLIED_DOSE 406313 407302 407327",
 	"SPELL_AURA_REMOVED 407327",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
@@ -50,9 +47,6 @@ local timerMassiveSlamCD							= mod:NewCDCountTimer(39, 404472, nil, nil, nil, 
 local timerBellowingRoarCD							= mod:NewCDCountTimer(23.1, 404713, nil, nil, nil, 2)
 
 mod:AddPrivateAuraSoundOption(406317, true, 406358)
---mod:AddInfoFrameOption(361651, true)
---mod:AddRangeFrameOption(5, 390715)
---mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 --Thadrion
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26322))
 local warnUnstableEssence							= mod:NewCastAnnounce(405042, 3)
@@ -93,48 +87,11 @@ mod.vb.disintegrateCount = 0
 mod.vb.anomalyCount = 0
 local essenceMarks = {}
 local bossActive = {}
-local difficultyName = "other"
 local allTimers = {
-	["mythic"] = {
-		--Rending Charge
-	--	[406358] = {14.0, 37.0, 18.0, 37.0, 18.0, 37.0},
-		--Bellowing Roar
-	--	[404713] = {36.0, 55.0, 55.0},
-		--Massive Slam
-	--	[404472] = {5.9, 18.0, 18.0, 19.0, 18.0, 18.0, 19.0, 18.0, 18.0},
-		--Volatile Spew (Working)
-	--	[405492] = {0, 20.0, 35.0, 20.0, 35.1, 20.0, 35.0},
-		--Unstable Essence (Working)
-	--	[405042] = {6.3, 33.9, 20.9, 34, 21},
-		--Violent Eruption
-	--	[405375] = {0, 55.0, 55.0, 55.0},
-		--Deep Breath
-	--	[406227] = {0, 55.0, 55.0, 55.0, 55.0},
-		--Temporal Anomaly
-	--	[407552] = {0, 22.0, 33.0, 22.0, 33.0, 22.0, 33.0},
-		--Disintegrate
-	--	[405391] = {0, 55.0, 55.0, 55.0},
-	},
-	["other"] = {
-		--Rending Charge
-	--	[406358] = {19.4, 35.2, 38.2},
-		--Bellowing Roar
-	--	[404713] = {10.9, 57.1, 38.9},
-		--Massive Slam
-	--	[404472] = {35.9, 9.7, 38.8, 38.9},
-		--Volatile Spew
-		[405492] = {5.6, 21.8, 36.4, 30.3, 30, 30.4, 33.2, 31.1, 35.2, 30.4},--Confirmed up to 5th cast
-		--Unstable Essence
-		[405042] = {16.5, 38.9, 27.5, 35.2, 27.9, 38, 27.5, 38.9, 28},
-		--Violent Eruption
-	--	[405375] = {38.4, 67.2, 66.5, 66},
-		--Deep Breath
-	--	[406227] = {31.9, 42.4, 43.1, 43.1, 43.7, 43.2, 43.2, 43.2, 43.1, 43.3, 43.2, 43.2, 43.2, 43.2, 43.2, 43.2},
-		--Temporal Anomaly
-	--	[407552] = {16.8, 46.6, 43.8, 43.8, 43.7, 43.8, 43.8, 43.7, 43.8, 43.8, 43.8, 43.7, 43.8, 43.8, 43.7, 43.8, 43.8},
-		--Disintegrate
-	--	[405391] = {6.2, 43.6, 43.6, 43.3, 43.7, 43.7, 43.7, 43.8, 43.8, 43.9, 43.7, 43.8, 43.7, 43.8, 43.8, 43.8, 43.8},
-	},
+	--Volatile Spew
+	[405492] = {5.6, 21.8, 36.4, 30.3, 30, 30.4, 33.2, 31.1, 35.2, 30.4},--Confirmed up to 5th cast
+	--Unstable Essence
+	[405042] = {16.5, 37.6, 27.5, 35.2, 27.9, 38, 27.5, 38.9, 28},
 }
 
 function mod:OnCombatStart(delay)
@@ -144,12 +101,10 @@ function mod:OnCombatStart(delay)
 	self.vb.massiveSlamCount = 0
 	self.vb.roarCount = 0
 	if self:IsMythic() then
-		difficultyName = "mythic"
 		timerBellowingRoarCD:Start(6-delay, 1)
 		timerRendingChargeCD:Start(14-delay, 1)
 		timerMassiveSlamCD:Start(24-delay, 1)
 	else
-		difficultyName = "other"
 		timerBellowingRoarCD:Start(10.9-delay, 1)
 		timerRendingChargeCD:Start(19.4-delay, 1)
 		timerMassiveSlamCD:Start(35.2-delay, 1)
@@ -164,29 +119,6 @@ function mod:OnCombatStart(delay)
 	self.vb.disintegrateCount = 0
 	self.vb.anomalyCount = 0
 	self:EnablePrivateAuraSound(406317, "targetyou", 2)--Rending Charge
---	if self.Options.NPAuraOnAscension then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
-end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.NPAuraOnAscension then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
---end
-
-function mod:OnTimerRecovery()
-	if self:IsMythic() then
-		difficultyName = "mythic"
-	else
-		difficultyName = "other"
-	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -254,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 				timer = 33.9
 			end
 		else
-			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.essenceCount+1) or 27.5
+			timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.essenceCount+1) or 27.5
 		end
 		timerUnstableEssenceCD:Start(timer, self.vb.essenceCount+1)
 	elseif spellId == 405492 then
@@ -270,7 +202,7 @@ function mod:SPELL_CAST_START(args)
 				timer = 34.9
 			end
 		else
-			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.volatileSpewCount+1) or 30.3
+			timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volatileSpewCount+1) or 30.3
 		end
 		timerVolatileSpewCD:Start(timer, self.vb.volatileSpewCount+1)
 	elseif spellId == 405375 or spellId == 407775 then
@@ -293,18 +225,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 394917 then
-
-	end
-end
---]]
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 406311 and not args:IsPlayer() then
+	if spellId == 406313 and not args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then--Guessed, Filler
 			warnInfusedStrikes:Show(args.destName, amount)
@@ -366,16 +289,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 370648 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 200912 then--Neldris
@@ -393,11 +306,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---TODO
---All boss abilities are cast based on energy. on mythic they gain 2 energy per second, and then cast ultimate then 5 seconds before gaining again
---They gain energy before active on mythic, so on activation energy needs to be checked for more precise initial timers
---as for CD handlers on spell casts, again those should check energy to know which of the alternating cycle is next instead of assuming it based on count
---This work is put off until mythic transcriptor logs because they just provide more meaningful side by side energy to spellcast
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 3 do
 		local unitID = "boss"..i
