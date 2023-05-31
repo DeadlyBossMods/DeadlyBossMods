@@ -56,7 +56,6 @@ local timerIncineratingMawsCD						= mod:NewCDCountTimer(20, 404846, nil, "Tank|
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddInfoFrameOption(408839, true)
---mod:AddRangeFrameOption(5, 390715)
 mod:AddSetIconOption("SetIconOnMoltenSpittle", 402989, true, 0, {1, 2, 3, 8})
 mod:AddNamePlateOption("NPAuraOnTantrum", 407879)
 

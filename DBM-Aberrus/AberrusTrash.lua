@@ -6,22 +6,28 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 409612",
-	"SPELL_AURA_APPLIED 411808",
+	"SPELL_CAST_START 409612 406911",
+--	"SPELL_CAST_SUCCESS 413785",
+	"SPELL_AURA_APPLIED 411808 413785",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 411808"
+	"SPELL_AURA_REMOVED 411808 413785",
+	"UNIT_DIED"
 )
 
---TODO, icon mark shared suffering? Maybe when they fix ENCOUNTER_START, for now I don't want to risk trash mod messing with a boss mods icon marking
---Lady's Trash, minus bottled anima, which will need a unit event to detect it looks like
-local warnSlimeInjection					= mod:NewTargetAnnounce(411808, 3)
-
+--[[
+(ability.id = 409612 or ability.id = 406911) and type = "begincast"
+ or ability.id = 413785 and type = "cast"
+]]--
 local specWarnUmbralTorrent					= mod:NewSpecialWarningDodge(409612, nil, nil, nil, 2, 2)
 local specWarnSlimeInjection				= mod:NewSpecialWarningMoveAway(411808, nil, nil, nil, 1, 2)
 local yellSlimeInjection					= mod:NewYell(411808)
 local yellSlimeInjectionFades				= mod:NewShortFadesYell(411808)
---local specWarnSharedSuffering				= mod:NewSpecialWarningYou(339607, nil, nil, nil, 1, 2)
---local specWarnDirgefromBelow				= mod:NewSpecialWarningInterrupt(310839, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDarkBindings					= mod:NewSpecialWarningMoveAway(413785, nil, nil, nil, 1, 2)
+local yellDarkBindings						= mod:NewYell(413785)
+local yellDarkBindingsFades					= mod:NewShortFadesYell(413785)
+local specWarnBrutalCauterization			= mod:NewSpecialWarningInterrupt(406911, "HasInterrupt", nil, nil, 1, 2)
+
+local timerBrutalCauterizationCD			= mod:NewCDTimer(14.5, 406911, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 
 --local playerName = UnitName("player")
 
@@ -32,23 +38,30 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 409612 and self:AntiSpam(5, 2) then
 		specWarnUmbralTorrent:Show()
 		specWarnUmbralTorrent:Play("watchorb")
-	--elseif spellId == 310839 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-	--	specWarnDirgefromBelow:Show(args.sourceName)
-	--	specWarnDirgefromBelow:Play("kickcast")
+	elseif spellId == 406911 then
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		local timer = (cid == 201288) and 14.5 or 21--Sundered Champions have shorter cd than Sarek Cinderbreath
+		timerBrutalCauterizationCD:Start(timer, args.sourceGUID)
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnBrutalCauterization:Show(args.sourceName)
+			specWarnBrutalCauterization:Play("kickcast")
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 411808 then
-		warnSlimeInjection:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnSlimeInjection:Show()
-			specWarnSlimeInjection:Play("runout")
-			yellSlimeInjection:Yell()
-			yellSlimeInjectionFades:Countdown(spellId)
-		end
+	if spellId == 411808 and args:IsPlayer() then
+		specWarnSlimeInjection:Show()
+		specWarnSlimeInjection:Play("scatter")
+		yellSlimeInjection:Yell()
+		yellSlimeInjectionFades:Countdown(spellId)
+	elseif spellId == 413785 and args:IsPlayer() then
+		specWarnDarkBindings:Show()
+		specWarnDarkBindings:Play("scatter")
+		yellDarkBindings:Yell()
+		yellDarkBindingsFades:Countdown(spellId)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -56,9 +69,15 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 411808 and args:IsPlayer() then
-		if args:IsPlayer() then
-			yellSlimeInjectionFades:Cancel()
-		end
+		yellSlimeInjectionFades:Cancel()
+	elseif spellId == 413785 and args:IsPlayer() then
+		yellDarkBindingsFades:Cancel()
 	end
 end
---]]
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 201288 or cid == 205619 then--Sundered Champion & Sarek Cinderbreath
+		timerBrutalCauterizationCD:Stop(args.destGUID)
+	end
+end
