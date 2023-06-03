@@ -27,7 +27,7 @@ local yellDarkBindings						= mod:NewYell(413785)
 local yellDarkBindingsFades					= mod:NewShortFadesYell(413785)
 local specWarnBrutalCauterization			= mod:NewSpecialWarningInterrupt(406911, "HasInterrupt", nil, nil, 1, 2)
 
-local timerBrutalCauterizationCD			= mod:NewCDTimer(14.5, 406911, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+--local timerBrutalCauterizationCD			= mod:NewCDTimer(14.5, 406911, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 
 --local playerName = UnitName("player")
 
