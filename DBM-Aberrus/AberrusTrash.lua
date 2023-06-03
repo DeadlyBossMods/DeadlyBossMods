@@ -10,8 +10,8 @@ mod:RegisterEvents(
 --	"SPELL_CAST_SUCCESS 413785",
 	"SPELL_AURA_APPLIED 411808 413785",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 411808 413785",
-	"UNIT_DIED"
+	"SPELL_AURA_REMOVED 411808 413785"
+--	"UNIT_DIED"
 )
 
 --[[
@@ -39,9 +39,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnUmbralTorrent:Show()
 		specWarnUmbralTorrent:Play("watchorb")
 	elseif spellId == 406911 then
-		local cid = self:GetCIDFromGUID(args.sourceGUID)
-		local timer = (cid == 201288) and 14.5 or 21--Sundered Champions have shorter cd than Sarek Cinderbreath
-		timerBrutalCauterizationCD:Start(timer, args.sourceGUID)
+		--local cid = self:GetCIDFromGUID(args.sourceGUID)
+		--local timer = (cid == 201288) and 14.5 or 21--Sundered Champions have shorter cd than Sarek Cinderbreath
+		--timerBrutalCauterizationCD:Start(timer, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnBrutalCauterization:Show(args.sourceName)
 			specWarnBrutalCauterization:Play("kickcast")
@@ -75,9 +75,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 201288 or cid == 205619 then--Sundered Champion & Sarek Cinderbreath
 		timerBrutalCauterizationCD:Stop(args.destGUID)
 	end
 end
+--]]
