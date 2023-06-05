@@ -278,7 +278,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				if expireTime then
 					remaining = expireTime-GetTime()
 				end
-				if (not remaining or remaining and remaining < 14.4) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				local neededTime = timerIncineratingMawsCD:GetRemaining(self.vb.mawCount+1) or 14.4
+				if (not remaining or remaining and remaining < neededTime) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 					specWarnIncineratingMawsSwap:Show(args.destName)
 					specWarnIncineratingMawsSwap:Play("tauntboss")
 				else
