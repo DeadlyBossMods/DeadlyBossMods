@@ -218,7 +218,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--This uses minimum amount of taunts but poses greater risk of messup since it's reactiev only and not proactive
 			return
 		elseif self.Options.TankSwapBehavior == "DoubleSoak" and self.vb.comboCount == 2 and args.destName == self.vb.firstHitTank then
-			--This basically means the first tank took first 2 hits then 2nd tank taunted 3rd
+			--This basically means the first tank took first 2 hits then 2nd tank taunts 3rd
 			alertTaunt = true
 		elseif self.Options.TankSwapBehavior == "MinMaxSoak" and self.vb.comboCount == 1 then
 			--Min Max soaking to spread combo across both tanks to mitigate having one tank eat all the damage

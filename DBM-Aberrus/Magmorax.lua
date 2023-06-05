@@ -232,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerIncineratingMawsCD:Start(14.4, self.vb.breathCount+1)
 			end
-		else
+		else--Heroic
 			timerIncineratingMawsCD:Start(25, self.vb.mawCount+1)
 		end
 	end
@@ -265,20 +265,25 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 408955 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then--Boss applies 3 stacks per cast
-			if amount >= 6 then--And you pretty much swap every other cast
-				if args:IsPlayer() then
+			if args:IsPlayer() then
+				if amount >= 6 then--Only big alert if other tank misses a swap
 					specWarnIncineratingMaws:Show(amount)
 					specWarnIncineratingMaws:Play("stackhigh")
 				else
-					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-						specWarnIncineratingMawsSwap:Show(args.destName)
-						specWarnIncineratingMawsSwap:Play("tauntboss")
-					else
-						warnIncineratingMaws:Show(args.destName, amount)
-					end
+					warnIncineratingMaws:Show(args.destName, amount)
 				end
 			else
-				warnIncineratingMaws:Show(args.destName, amount)
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 14.4) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+					specWarnIncineratingMawsSwap:Show(args.destName)
+					specWarnIncineratingMawsSwap:Play("tauntboss")
+				else
+					warnIncineratingMaws:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 402994 then
