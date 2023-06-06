@@ -86,6 +86,7 @@ local function checkForCombat(self)
 				local incorpRemaining = timerIncorporealCD:GetRemaining()
 				local afflictRemaining = timerAfflictedCD:GetRemaining()
 				if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+					self:Unschedule(checkIncorp)
 					self:Schedule(incorpRemaining+5, checkIncorp, self)
 					DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
 				end
@@ -103,6 +104,7 @@ local function checkForCombat(self)
 			if DBM.Options.DebugMode then
 				local afflictRemaining = timerAfflictedCD:GetRemaining()
 				if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+					self:Unschedule(checkAfflicted)
 					self:Schedule(afflictRemaining+5, checkAfflicted, self)
 					DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
 				end
