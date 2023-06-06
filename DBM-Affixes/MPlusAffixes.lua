@@ -82,6 +82,11 @@ local function checkForCombat(self)
 		if combatFound and not incorporealCounting then
 			incorporealCounting = true
 			timerIncorporealCD:Resume()
+			if DBM.Options.DebugMode then
+				local incorpRemaining = timerIncorporealCD:GetRemaining()
+				self:Schedule(incorpRemaining+5, checkIncorp, self)
+				DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
+			end
 		elseif not combatFound and incorporealCounting then
 			incorporealCounting = false
 			timerIncorporealCD:Pause()
@@ -92,6 +97,11 @@ local function checkForCombat(self)
 		if combatFound and not afflictedCounting then
 			afflictedCounting = true
 			timerAfflictedCD:Resume()
+			if DBM.Options.DebugMode then
+				local afflictRemaining = timerAfflictedCD:GetRemaining()
+				self:Schedule(afflictRemaining+5, checkAfflicted, self)
+				DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
+			end
 		elseif not combatFound and afflictedCounting then
 			afflictedCounting = false
 			timerAfflictedCD:Pause()
