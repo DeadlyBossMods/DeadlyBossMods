@@ -72,6 +72,7 @@ mod.vb.blastCount = 0
 mod.vb.smashCount = 0
 mod.vb.tankCombo = 0--Cast
 mod.vb.comboCount = 0--Combos within cast
+mod.vb.firstHitTank = ""
 mod.vb.shadowflameCount = 0
 local overchargedStacks = {}
 
@@ -83,6 +84,7 @@ function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.tankCombo = 0
 	self.vb.comboCount = 0
+	self.vb.firstHitTank = ""
 	self.vb.shadowflameCount = 0
 	timerSearingSlamCD:Start(9.1-delay, 1)
 	timerChargedSmashCD:Start(21.1-delay, 1)
@@ -182,6 +184,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 407641 then
+		self.vb.firstHitTank = ""
 		self.vb.tankCombo = self.vb.tankCombo + 1
 		self.vb.comboCount = 0
 		local timer = (self.vb.tankCombo == 1) and 14.9 or (self.vb.tankCombo == 2) and 32.9
@@ -207,13 +210,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif (spellId == 407597 or spellId == 407547) and not args:IsPlayer() then
 		local alertTaunt
+		if self.vb.comboCount == 1 then
+			self.vb.firstHitTank = args.destName
+		end
 		if self.Options.TankSwapBehavior == "OnlyIfDanger" then
 			--This means there are 0 preemtive taunts at all and you only taunt when a combo hit starts and it's not safe for the current target to take
 			--This uses minimum amount of taunts but poses greater risk of messup since it's reactiev only and not proactive
 			return
-		elseif self.Options.TankSwapBehavior == "DoubleSoak" and self.vb.comboCount == 2 then
-			--This basically means the only strategy here is each tank just eats both hits and calls it a day
-			--Then next tank takes the next combo.
+		elseif self.Options.TankSwapBehavior == "DoubleSoak" and self.vb.comboCount == 2 and args.destName == self.vb.firstHitTank then
+			--This basically means the first tank took first 2 hits then 2nd tank taunts 3rd
 			alertTaunt = true
 		elseif self.Options.TankSwapBehavior == "MinMaxSoak" and self.vb.comboCount == 1 then
 			--Min Max soaking to spread combo across both tanks to mitigate having one tank eat all the damage
