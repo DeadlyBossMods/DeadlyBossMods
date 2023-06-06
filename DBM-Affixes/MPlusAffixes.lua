@@ -34,7 +34,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
 local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 3, nil, nil, nil, true)
-local timerAfflictedCD						= mod:NewCDTimer(27, 409492, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON, nil, 3, 3)--actually 30, but offsetting by 3 cause ghosts appear before they cast
+local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON, nil, 3, 3)
 local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
@@ -60,7 +60,7 @@ local function checkAfflicted(self)
 		--Timer exists, do nothing
 		return
 	end
-	timerAfflictedCD:Start(22)--delayed by 5 seconds, then 3 subtraced in addition 30-8
+	timerAfflictedCD:Start(25)
 	self:Schedule(30, checkAfflicted, self)
 end
 
@@ -103,7 +103,7 @@ local function checkForCombat(self)
 			if DBM.Options.DebugMode then
 				local afflictRemaining = timerAfflictedCD:GetRemaining()
 				if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-					self:Schedule(afflictRemaining+8, checkAfflicted, self)--readd the 3, plus the 5 offset
+					self:Schedule(afflictRemaining+5, checkAfflicted, self)
 					DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
 				end
 			end
@@ -197,7 +197,7 @@ function mod:SPELL_CAST_START(args)
 		self:Unschedule(checkForCombat)
 		self:Unschedule(checkAfflicted)
 		checkForCombat(self)
-		self:Schedule(35, checkAfflicted, self)--5 seconds after event, which is 3 seconds after timer expire
+		self:Schedule(35, checkAfflicted, self)
 	elseif spellId == 408805 and self:AntiSpam(3, "aff3") then
 		warnDestabalize:Show()
 	end
