@@ -376,7 +376,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 405484 then
 		if self:AntiSpam(5, 3) then
 			self.vb.corruptionCount = self.vb.corruptionCount + 1
-			timerCorruptionCD:Start(self.vb.corruptionCount == 1 and 45.4 or 43.4, self.vb.corruptionCount+1)
+			timerCorruptionCD:Start(43.4, self.vb.corruptionCount+1)
 		end
 		warnCorruption:CombinedShow(0.3, self.vb.corruptionCount, args.destName)
 		if args:IsPlayer() then

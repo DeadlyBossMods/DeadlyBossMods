@@ -514,7 +514,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerShadowandFlameCD:Start(29.6, 1)
 			timerConvergentEruptionCD:Start(35.7, 1)
 		elseif self:IsHeroic() then
-			timerConvergentEruptionCD:Start(33.6, 1)
+			timerConvergentEruptionCD:Start(32.4, 1)
 		end
 		--Same in all
 		timerWitheringVulnerabilityCD:Start(15.8, 1)
