@@ -174,7 +174,7 @@ function mod:OnCombatStart(delay)
 	timerWallClimberCD:Start(30, 1)
 	self:Schedule(30, climberLoop, self)
 	timerGuardsandHuntsmanCD:Start(40-delay, 1 .. "-" .. DBM_COMMON_L.SOUTH)
-	timerDevastatingLeapCD:Start(97-delay, 1)
+	timerDevastatingLeapCD:Start(95.9-delay, 1)
 	if self:IsMythic() then
 		timerVigorousGaleCD:Start(71.9, 1)--71-75
 		timerPhoenixRushCD:Start(90.1, 1)--90-94

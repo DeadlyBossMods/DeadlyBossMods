@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 mod:SetUsedIcons(6)
-mod:SetHotfixNoticeRev(20230530000000)
-mod:SetMinSyncRevision(20230513000000)
+mod:SetHotfixNoticeRev(20230614000000)
+mod:SetMinSyncRevision(20230614000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -35,7 +35,6 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, delete redundant/incorrect events when real events known
 --TODO, Add shatter? https://www.wowhead.com/ptr/spell=401825/shatter
---TODO, revisit heroic timers since it was so bugged that normal is trusted more than heroic was, for now
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
@@ -111,6 +110,7 @@ mod.vb.volcanicCount = 0
 mod.vb.twistedEarthCount = 0
 mod.vb.fissureCount = 0
 mod.vb.RushingDarknessCount = 0
+mod.vb.skippedDarkness = false
 --mod.vb.volcIcon = 1
 --mod.vb.rushingIcon = 4
 --P2
@@ -124,6 +124,7 @@ local playerReality = false
 local mythicTwistedP1Timers = {2, 20.6, 19.4, 18.2, 18.2, 18.2, 19.5, 17.0}
 local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}
 local volcanicP2Timers = {21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 18, 14.5}
+local volcanicP2LFRTimers = {21.3, 15.6, 16.9, 17, 12, 16.9, 12, 16.9, 12, 17}
 
 
 local function checkRealityOnSelf(self)
@@ -142,14 +143,13 @@ local function fixBrokenHeartTimer(self)
 	end
 end
 
---[[
 local function checkForSkippedDarkness(self)
 	if self.vb.RushingDarknessCount == 0 then--first one skipped (which is like 95% of pulls)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
+		self.vb.skippedDarkness = true
 		timerRushingDarknessCD:Start(12, 2)
 	end
 end
---]]
 
 function mod:RushingDarknessTarget(targetname, uId)
 	if not targetname then return end
@@ -170,6 +170,7 @@ function mod:OnCombatStart(delay)
 	self.vb.twistedEarthCount = 0
 	self.vb.fissureCount = 0
 	self.vb.RushingDarknessCount = 0
+	self.vb.skippedDarkness = false
 	self.vb.corruptionCount = 0
 	self.vb.annihilatingCount = 0
 	self.vb.sunderRealityCount = 0
@@ -238,14 +239,18 @@ function mod:SPELL_CAST_START(args)
 		checkRealityOnSelf(self)
 		self:Schedule(4, checkRealityOnSelf, self)
 	elseif spellId == 407207 then
---		self:Unschedule(checkForSkippedDarkness)
+		self:Unschedule(checkForSkippedDarkness)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 --		self.vb.rushingIcon = 4
 		--As of May 23rd reset, stage 3 has a new darkness cast that causes the 17 second time between darkness 1 and 2 in stage 3
 		--As of May 30th reset, stage 3 no longer has new darkness that causes the 17 second time between darkness 1 and 2 in stage 3
-		--timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or ((self.vb.RushingDarknessCount == 1) and 17 or 29), self.vb.RushingDarknessCount+1)
-		timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 29, self.vb.RushingDarknessCount+1)
+		--As of June 13th reset, it's kind of up in air how to handle this cause it's still going back and forth, so now code is gonna account for BOTH variations of initial timers
+		if self:GetStage(3) and (self.vb.RushingDarknessCount == 1) and not self.vb.skippedDarkness then
+			timerRushingDarknessCD:Start(17, self.vb.RushingDarknessCount+1)
+		else
+			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 29, self.vb.RushingDarknessCount+1)
+		end
 		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
 			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
 		end
@@ -290,7 +295,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			--21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 19.4, 14.5
 			self:Unschedule(fixBrokenHeartTimer)
-			local timer = volcanicP2Timers[self.vb.volcanicCount+1]
+			local timer = self:IsLFR() and volcanicP2LFRTimers[self.vb.volcanicCount+1] or volcanicP2Timers[self.vb.volcanicCount+1]
 			if timer then
 				timerVolcanicHeartCD:Start(timer, self.vb.volcanicCount+1)
 				self:Schedule(timer+5, fixBrokenHeartTimer, self)--Should only be needed for 5-6th cast, but letting it run for all for good measure
@@ -407,10 +412,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRushingDarknessCD:Stop()
 		timerVolcanicHeartCD:Stop()
 		self:Unschedule(fixBrokenHeartTimer)
---		timerRushingDarknessCD:Start(10.8, 1)
---		self:Schedule(15.8, checkForSkippedDarkness, self)
+		timerRushingDarknessCD:Start(10.8, 1)--Start initial timer (you know, for the cast that's skipped 95% of time)
+		self:Schedule(15.8, checkForSkippedDarkness, self)--Schedule checker to see if the normally skipped cast happened, and if not, start backup timer for second cast
 		timerSunderRealityCD:Start(19.5, 1)
-		timerRushingDarknessCD:Start(27, 1)
+--		timerRushingDarknessCD:Start(27, 1)
 		timerCalamitousStrikeCD:Start(36, 1)
 		timerEbonDestructionCD:Start(40.2, 1)
 	--elseif spellId == 407182 then
