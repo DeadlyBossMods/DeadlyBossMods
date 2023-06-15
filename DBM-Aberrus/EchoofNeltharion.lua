@@ -42,7 +42,7 @@ local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
 --local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
 local warnRushingDarkness						= mod:NewIncomingCountAnnounce(407221, 2)
 local warnRushingDarknessWallTarget				= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
-local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3)
+local warnVolcanicHeart							= mod:NewIncomingCountAnnounce(410953, 3, nil, nil, 167180)
 
 --local specWarnVolcanicHeart					= mod:NewSpecialWarningMoveAway(410953, nil, nil, nil, 1, 2)
 --local yellVolcanicHeart						= mod:NewShortPosYell(410953)
@@ -57,7 +57,7 @@ local specWarnCalamitousStrikeSwap				= mod:NewSpecialWarningTaunt(406222, nil, 
 --local specWarnPyroBlast						= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
-local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, nil, nil, nil, 3)
+local timerVolcanicHeartCD						= mod:NewCDCountTimer(26.2, 410953, 167180, nil, nil, 3)--ShortText "Bombs"
 local timerTwistedEarthCD						= mod:NewCDCountTimer(26.2, 402902, nil, nil, nil, 3)
 local timerEchoingFissureCD						= mod:NewCDCountTimer(36.3, 402116, 381446, nil, nil, 2)
 local timerRushingDarknessCD					= mod:NewCDCountTimer(36.3, 407221, nil, nil, nil, 3)
