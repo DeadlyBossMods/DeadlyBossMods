@@ -77,6 +77,7 @@ mod.vb.shadowflameCount = 0
 local overchargedStacks = {}
 
 function mod:OnCombatStart(delay)
+	self:SetStage(1)
 	table.wipe(overchargedStacks)
 	self.vb.slamCount = 0
 	self.vb.doomCount = 0
@@ -272,6 +273,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:UpdateTable(overchargedStacks)
 		end
 	elseif spellId == 401419 then
+		self:SetStage(0)--I don't nessesarily agree with this, but needed for WA compatability.
 		warnSiphonEnergyRemoved:Show(args.destName)
 		self.vb.slamCount = 0
 		self.vb.doomCount = 0
