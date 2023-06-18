@@ -664,58 +664,46 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnInfiniteDuress:CombinedShow(0.3, self.vb.disintegrateCount, args.destName)
 		self.vb.disintegrateIcon = self.vb.disintegrateIcon + 1
 	elseif spellId == 401330 then
-		local amount = args.amount or 1
-		if amount >= 1 then
-			if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
-				specWarnBurningClawsTaunt:Show(args.destName)
-				specWarnBurningClawsTaunt:Play("tauntboss")
-			else
-				warnBurningClaws:Show(args.destName, amount)
-			end
+		if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
+			specWarnBurningClawsTaunt:Show(args.destName)
+			specWarnBurningClawsTaunt:Play("tauntboss")
 		else
+			local amount = args.amount or 1
 			warnBurningClaws:Show(args.destName, amount)
 		end
 		timerBurningClaws:Restart(27, args.destName)
 	elseif spellId == 411241 then
-		local amount = args.amount or 1
-		if amount >= 1 then
-			if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
-				specWarnVoidClawsTaunt:Show(args.destName)
-				specWarnVoidClawsTaunt:Play("tauntboss")
-			else
-				warnVoidClaws:Show(args.destName, amount)
-				if args:IsPlayer() then
-					specWarnVoidClawsOut:Cancel()
-					specWarnVoidClawsOut:Schedule(12)
-					specWarnVoidClawsOut:ScheduleVoice(12, "runout")
-					yellVoidClawsFades:Cancel()
-					yellVoidClawsFades:Countdown(spellId)
-				end
-			end
+		if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
+			specWarnVoidClawsTaunt:Show(args.destName)
+			specWarnVoidClawsTaunt:Play("tauntboss")
 		else
+			local amount = args.amount or 1
 			warnVoidClaws:Show(args.destName, amount)
+			if args:IsPlayer() then
+				specWarnVoidClawsOut:Cancel()
+				specWarnVoidClawsOut:Schedule(12)
+				specWarnVoidClawsOut:ScheduleVoice(12, "runout")
+				yellVoidClawsFades:Cancel()
+				yellVoidClawsFades:Countdown(spellId)
+			end
 		end
 		timerVoidClaws:Restart(18, args.destName)
 	elseif spellId == 408429 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--Frontal filter, in case it can hit anyone that's in front of boss
-			local amount = args.amount or 1
-			if amount >= 1 then
-				if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
-					specWarnVoidSlashTaunt:Show(args.destName)
-					specWarnVoidSlashTaunt:Play("tauntboss")
-				else
-					warnVoidSlash:Show(args.destName, amount)
-					if args:IsPlayer() then
-						specWarnVoidSlashOut:Cancel()
-						specWarnVoidSlashOut:Schedule(12)
-						specWarnVoidSlashOut:ScheduleVoice(12, "runout")
-						yellVoidClawsFades:Cancel()
-						yellVoidClawsFades:Countdown(spellId)
-					end
-				end
+			if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then--and not DBM:UnitDebuff("player", spellId)
+				specWarnVoidSlashTaunt:Show(args.destName)
+				specWarnVoidSlashTaunt:Play("tauntboss")
 			else
+				local amount = args.amount or 1
 				warnVoidSlash:Show(args.destName, amount)
+				if args:IsPlayer() then
+					specWarnVoidSlashOut:Cancel()
+					specWarnVoidSlashOut:Schedule(12)
+					specWarnVoidSlashOut:ScheduleVoice(12, "runout")
+					yellVoidClawsFades:Cancel()
+					yellVoidClawsFades:Countdown(spellId)
+				end
 			end
 		end
 		timerVoidSlash:Restart(21, args.destName)--Needs to show for even non tanks getting hit though
