@@ -27,7 +27,7 @@
 ## X-DBM-Mod-Name-ruRU: Бойцовская гильдия
 ## X-DBM-Mod-Name-ptBR: Brigões
 ## X-DBM-Mod-Name-itIT: Circolo dei Combattenti
-## X-DBM-Mod-Sort: 317
+## X-DBM-Mod-Sort: 217
 ## X-DBM-Mod-MapID: 369,1043
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
