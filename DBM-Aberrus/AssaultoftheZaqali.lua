@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(199659)--Warlord Kagni
 mod:SetEncounterID(2682)
-mod:SetHotfixNoticeRev(20230526000000)
+mod:SetHotfixNoticeRev(20230619000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -51,7 +51,7 @@ local timerVigorousGaleCD							= mod:NewCDCountTimer(29.9, 407009, nil, nil, ni
 ----Warlord Kagni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26209))
 local warnHeavyCudgel								= mod:NewStackAnnounce(401258, 2, nil, "Tank|Healer")
-local warnMagmaMystic								= mod:NewCountAnnounce("ej26217", 3, 397383)
+local warnMagmaMystic								= mod:NewCountAnnounce(397383, 3)
 local warnWallClimber								= mod:NewCountAnnounce("ej26221", 2, 163789, false, 2)
 
 local specWarnHeavyCudgel							= mod:NewSpecialWarningDefensive(401258, nil, nil, nil, 1, 2)
@@ -62,9 +62,9 @@ local specWarnAdds									= mod:NewSpecialWarningAddsCustom(285849, "-Healer", 
 
 local timerHeavyCudgelCD							= mod:NewCDCountTimer(21.0, 401258, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, 67382, nil, nil, 3)--"Leap"
-local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, "ej26217", nil, nil, nil, 1, 397383)--Molten Barrier Icon
+local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, 397383, nil, nil, nil, 1)--Molten Barrier Icon
 local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, false, 2, 1, 163789)--Ladder Icon
-local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1)--Random guard banner
+local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1, nil, nil, nil, nil, nil, nil, nil, 404382)--Random guard banner
 ----Magma Mystic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26217))
 local warnMoltenBarrier								= mod:NewCastAnnounce(397383, 4)
@@ -100,13 +100,13 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26683))
 local warnDesperateImmo								= mod:NewSpellAnnounce(409359, 3)
 local warnFlamingCudgel								= mod:NewStackAnnounce(410351, 2, nil, "Tank|Healer")
 
-local specWarnCatastrophicSlam						= mod:NewSpecialWarningCount(410535, nil, nil, nil, 2, 2)
+local specWarnCatastrophicSlam						= mod:NewSpecialWarningCount(410516, nil, nil, nil, 2, 2)
 local specWarnFlamingCudgel							= mod:NewSpecialWarningCount(410351, nil, nil, nil, 2, 2)--Count because it's hybrid warning
 local specWarnFlamingCudgelStack					= mod:NewSpecialWarningStack(410351, nil, 2, nil, nil, 1, 6)
 local specWarnFlamingCudgelSwap						= mod:NewSpecialWarningTaunt(410351, nil, nil, nil, 1, 2)
 
 --local timerIgnarasFuryCD							= mod:NewAITimer(29.9, 406585, nil, nil, nil, 2)
-local timerCatastrophicSlamCD						= mod:NewCDCountTimer(30.3, 410535, nil, nil, nil, 5)
+local timerCatastrophicSlamCD						= mod:NewCDCountTimer(30.3, 410516, nil, nil, nil, 5)
 local timerFlamingCudgelCD							= mod:NewCDCountTimer(34, 410351, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddInfoFrameOption(361651, true)
