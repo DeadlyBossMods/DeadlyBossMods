@@ -326,7 +326,7 @@ function mod:OnCombatStart(delay)
 		timerMassDisintegrateCD:Start(20.8-delay, 1)
 		timerSearingBreathCD:Start(25.4-delay, 1)
 		--timerDriftingEmbersCD:Start(1-delay)
-		timerPhaseCD:Start(101.9)--Mythic Confirmed
+		timerPhaseCD:Start(101.9, 2)--Mythic Confirmed
 		berserkTimer:Start(450)--Might not actually start here but phase 3
 	else
 		if self:IsHeroic() then
@@ -340,7 +340,7 @@ function mod:OnCombatStart(delay)
 		timerMassDisintegrateCD:Start(23.3-delay, 1)
 		timerSearingBreathCD:Start(26.6-delay, 1)
 		--timerDriftingEmbersCD:Start(1-delay)
-		timerPhaseCD:Start(112)--Normal and heroic confirmed, LFR Unknown
+		timerPhaseCD:Start(112, 2)--Normal and heroic confirmed, LFR Unknown
 	end
 	if self.Options.NPAuraOnRescind or self.Options.NPAuraOnMight then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -888,20 +888,20 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerVoidBombCD:Start(14.5, 1)
 			timerVoidClawsCD:Start(17.8, 1)
 			timerInfiniteDuressCD:Start(27.8, 1)
-			timerPhaseCD:Start(103)
+			timerPhaseCD:Start(103, 3)
 		elseif self:IsHeroic() then
 			timerAbyssalBreathCD:Start(3.5, 1)
 			timerDesolateBlossomCD:Start(10.6, 1)
 			timerVoidBombCD:Start(15.3, 1)
 			timerVoidClawsCD:Start(18.8, 1)
 			timerInfiniteDuressCD:Start(29.4, 1)
-			timerPhaseCD:Start(110)
+			timerPhaseCD:Start(110, 3)
 		else--Easy
 			timerAbyssalBreathCD:Start(3.7, 1)
 			timerDesolateBlossomCD:Start(11.2, 1)
 			timerVoidBombCD:Start(16.2, 1)
 			timerVoidClawsCD:Start(19.9, 1)
-			timerPhaseCD:Start(110)
+			timerPhaseCD:Start(110, 3)
 		end
 		if self.Options.InfoFrame then
 			--If oblivion only, no changes need to run on Phase 2
