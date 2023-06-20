@@ -45,15 +45,12 @@ mod:AddInfoFrameOption(373059, false)
 --Dathea Stormlash
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24958))
 local warnConductiveMark						= mod:NewTargetAnnounce(371624, 4, nil, false)--Even with global target filter on by default, off by default due to spam potential
---local warnChainLightning						= mod:NewTargetAnnounce(374021, 2)
 local warnStormingConvocation					= mod:NewSpellAnnounce(386375, 4)
 
 local specWarnConductiveMarkSpread				= mod:NewSpecialWarningMoveAway(371624, nil, nil, nil, 2, 2)
 local specWarnConductiveMark					= mod:NewSpecialWarningMoveTo(371624, nil, nil, nil, 1, 13)
 local yellConductiveMark						= mod:NewYell(371624, 28836)
 local specWarnLightningBolt						= mod:NewSpecialWarningInterrupt(372394, "HasInterrupt", nil, nil, 1, 2)
---local specWarnChainLightning					= mod:NewSpecialWarningMoveAway(374021, nil, nil, nil, 1, 2)
---local yellChainLightning						= mod:NewShortYell(374021)
 
 local timerConductiveMarkCD						= mod:NewCDCountTimer(24.4, 371624, nil, nil, nil, 3)
 local timerChainLightningCD						= mod:NewCDTimer(9.1, 374021, nil, "Healer", nil, 3)--9.1-15.4
@@ -282,13 +279,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnConductiveMark:Play("movetopillar")
 			yellConductiveMark:Yell()
 		end
---	elseif spellId == 374021 then
---		warnChainLightning:CombinedShow(0.3, args.destName)
---		if args:IsPlayer() then
---			specWarnChainLightning:Show()
---			specWarnChainLightning:Play("range5")
---			yellChainLightning:Yell()
---		end
 	elseif spellId == 386375 then
 		warnStormingConvocation:Show()
 		timerConductiveMarkCD:Stop()

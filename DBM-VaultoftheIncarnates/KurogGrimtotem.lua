@@ -49,10 +49,10 @@ local specWarnSplinteredBones					= mod:NewSpecialWarningTaunt(372158, nil, nil,
 
 local timerSunderStrikeCD						= mod:NewCDTimer(19.4, 390548, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --General timers for handling of bosses ability rotation
-local timerDamageCD								= mod:NewTimer(30, "timerDamageCD", 391096, nil, nil, 3)--Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash
-local timerAvoidCD								= mod:NewTimer(60, "timerAvoidCD", 391100, nil, nil, 3)--Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst
-local timerUltimateCD							= mod:NewTimer(60, "timerUltimateCD", 374680, nil, nil, 3)--Searing Carnage, Absolute Zero, Seismic Rupture, Thunder Strike
-local timerAddEnrageCD							= mod:NewTimer(60, "timerAddEnrageCD", 28131, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerDamageCD								= mod:NewTimer(30, "timerDamageCD", 391096, nil, nil, 3, nil, nil, nil, nil, nil, nil, nil, 391096)--Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash
+local timerAvoidCD								= mod:NewTimer(60, "timerAvoidCD", 391100, nil, nil, 3, nil, nil, nil, nil, nil, nil, nil, 391100)--Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst
+local timerUltimateCD							= mod:NewTimer(60, "timerUltimateCD", 374680, nil, nil, 3, nil, nil, nil, nil, nil, nil, nil, 374680)--Searing Carnage, Absolute Zero, Seismic Rupture, Thunder Strike
+local timerAddEnrageCD							= mod:NewTimer(60, "timerAddEnrageCD", 28131, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON, nil, nil, nil, nil, nil, 400473)
 
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPAuraOnSurge", 371971, true)
@@ -252,19 +252,19 @@ function mod:SPELL_CAST_START(args)
 		specWarnSearingCarnage:Show()
 		specWarnSearingCarnage:Play("watchstep")
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
-			timerSearingCarnageCD:Start()
+			timerSearingCarnageCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 372456 or spellId == 375450 then--Hard, easy (assumed)
 		table.wipe(zeroIcons)
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
 			self.vb.zeroCount = self.vb.zeroCount + 1
-			timerAbsoluteZeroCD:Start(nil, self.vb.zeroCount+1)
+			timerAbsoluteZeroCD:Start(nil, self.vb.zeroCount+1, args.sourceGUID)
 		end
 	elseif spellId == 374691 then
 		specWarnSeismicRupture:Show()
 		specWarnSeismicRupture:Play("watchstep")
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
-			timerSeismicRuptureCD:Start()
+			timerSeismicRuptureCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 376669 or spellId == 374215 then--Mythic, Non (assumed)
 		if DBM:UnitDebuff("player", 373494) then--Vulnerable to nature damage
@@ -275,7 +275,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnThunderStrike:Play("helpsoak")
 		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
-			timerThunderStrikeCD:Start()
+			timerThunderStrikeCD:Start(nil, args.sourceGUID)
 		end
 	elseif spellId == 397338 then
 		table.wipe(groundShatterTargets)
@@ -300,7 +300,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFrigidTorrent:Play("watchorb")
 		end
 		if args:GetSrcCreatureID() ~= 184986 then--Mythic Add
-			timerFrigidTorrentCD:Start()
+			timerFrigidTorrentCD:Start(nil, args.sourceGUID)
 		end
 --	elseif spellId == 391055 then
 
@@ -314,7 +314,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	--Mythic Stuff
 	elseif spellId == 391268 then
-		timerEarthSmiteCD:Start()
+		timerEarthSmiteCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEarthSmite:Show()
 			specWarnEarthSmite:Play("carefly")
@@ -330,10 +330,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnFlameSmite:Show()
 			specWarnFlameSmite:Play("shockwave")
 		end
-		timerFlameSmiteCD:Start()
+		timerFlameSmiteCD:Start(nil, args.sourceGUID)
 	elseif spellId == 394416 then
 		warnRagingInferno:Show()
-		timerRagingInfernoCD:Start()
+		timerRagingInfernoCD:Start(nil, args.sourceGUID)
 	elseif spellId == 393295 then
 		specWarnIceboundDominator:Show()
 		specWarnIceboundDominator:Play("bigmob")
@@ -345,7 +345,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFrostSmite:Show()
 			specWarnFrostSmite:Play("shockwave")
 		end
-		timerFrostSmiteCD:Start()
+		timerFrostSmiteCD:Start(nil, args.sourceGUID)
 	elseif spellId == 392098 then
 		specWarnIronwroughtSmasher:Show()
 		specWarnIronwroughtSmasher:Play("bigmob")
@@ -360,37 +360,37 @@ function mod:SPELL_CAST_START(args)
 		timerAddEnrageCD:Start(94, L.Storm)
 	elseif spellId == 394719 then
 		warnOrbLightning:Show()
-		timerOrbLightningCD:Start()
+		timerOrbLightningCD:Start(nil, args.sourceGUID)
 	elseif spellId == 393429 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnStormSmite:Show()
 			specWarnStormSmite:Play("shockwave")
 		end
-		timerStormSmiteCD:Start()
+		timerStormSmiteCD:Start(nil, args.sourceGUID)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 375825 then--Frozen Destroyer
-		timerFreezingTempestCD:Start(30.4)
+		timerFreezingTempestCD:Start(30.4, args.sourceGUID)
 		if self:IsMythic() then
-			timerAbsoluteZeroCD:Start(20.3, 1)
+			timerAbsoluteZeroCD:Start(20.3, 1, args.sourceGUID)
 		end
 	elseif spellId == 375828 then--Blazing Fiend
 		if self:IsMythic() then
-			timerSearingCarnageCD:Start(20.2)
+			timerSearingCarnageCD:Start(20.2, args.sourceGUID)
 		end
 	elseif spellId == 375824 then--Tectonic Crusher
-		timerGroundShatterCD:Start(5.9)
-		timerViolentUpheavelCD:Start(20.6)
+		timerGroundShatterCD:Start(5.9, args.sourceGUID)
+		timerViolentUpheavelCD:Start(20.6, args.sourceGUID)
 		if self:IsMythic() then
-			timerSeismicRuptureCD:Start(45)
+			timerSeismicRuptureCD:Start(45, args.sourceGUID)
 		end
 	elseif spellId == 375792 then--Thundering Ravager
-		timerStormBreakCD:Start(7.2)
+		timerStormBreakCD:Start(7.2, args.sourceGUID)
 		if self:IsMythic() then
-			timerThunderStrikeCD:Start(38.5)
+			timerThunderStrikeCD:Start(38.5, args.sourceGUID)
 		end
 	elseif spellId == 373415 then
 		DBM:AddMsg("373415 is combat logging now, notify DBM author")
@@ -551,7 +551,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetStage(1)
 		timerSunderStrikeCD:Start(11.3)
 		if self.vb.stageTotality == 3 then
-			timerPhaseCD:Start(127)--Second intermission
+			timerPhaseCD:Start(127)--Second intermission (Primal Barrier)
 		else
 			timerPhaseCD:Start(94)--Primal Attunement
 		end
@@ -587,31 +587,46 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	--Intermission Adds
 	if cid == 190688 then--Blazing Fiend
-		timerSearingCarnageCD:Stop()
+		timerSearingCarnageCD:Stop(args.destGUID)
 	elseif cid == 190686 then--Frozen Destroyer
-		timerFreezingTempestCD:Stop()
+		timerAbsoluteZeroCD:Stop(args.destGUID)
+		timerFreezingTempestCD:Stop(args.destGUID)
 		timerAbsoluteZeroCD:Stop()
+		timerFreezingTempestCD:Stop()
 	elseif cid == 190588 then--Tectonic Crusher
+		timerGroundShatterCD:Stop(args.destGUID)
+		timerViolentUpheavelCD:Stop(args.destGUID)
+		timerSeismicRuptureCD:Stop(args.destGUID)
 		timerGroundShatterCD:Stop()
 		timerViolentUpheavelCD:Stop()
 		timerSeismicRuptureCD:Stop()
 	elseif cid == 190690 then--Thundering Ravager
+		timerStormBreakCD:Stop(args.destGUID)
+		timerThunderStrikeCD:Stop(args.destGUID)
 		timerStormBreakCD:Stop()
 		timerThunderStrikeCD:Stop()
 	--Mythic Adds
 	elseif cid == 198311 then--Flamewrought Eradicator
+		timerFlameSmiteCD:Stop(args.destGUID)
+		timerRagingInfernoCD:Stop(args.destGUID)
 		timerFlameSmiteCD:Stop()
 		timerRagingInfernoCD:Stop()
 		timerAddEnrageCD:Stop(L.Fire)
 	elseif cid == 198308 then--Icewrought Dominator
+		timerFrostSmiteCD:Stop(args.destGUID)
+		timerFrigidTorrentCD:Stop(args.destGUID)
 		timerFrostSmiteCD:Stop()
 		timerFrigidTorrentCD:Stop()
 		timerAddEnrageCD:Stop(L.Frost)
 	elseif cid == 197595 then--Ironwrought Smasher
+		timerEarthSmiteCD:Stop(args.destGUID)
+		timerEruptingBedrockCD:Stop(args.destGUID)
 		timerEarthSmiteCD:Stop()
 		timerEruptingBedrockCD:Stop()
 		timerAddEnrageCD:Stop(L.Earth)
 	elseif cid == 198326 then--Stormwrought Despoiler
+		timerOrbLightningCD:Stop(args.destGUID)
+		timerStormSmiteCD:Stop(args.destGUID)
 		timerOrbLightningCD:Stop()
 		timerStormSmiteCD:Stop()
 		timerAddEnrageCD:Stop(L.Storm)

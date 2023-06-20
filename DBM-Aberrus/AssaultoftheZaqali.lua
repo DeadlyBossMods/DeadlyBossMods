@@ -64,7 +64,7 @@ local timerHeavyCudgelCD							= mod:NewCDCountTimer(21.0, 401258, nil, nil, nil
 local timerDevastatingLeapCD						= mod:NewCDCountTimer(29.9, 408959, 67382, nil, nil, 3)--"Leap"
 local timerMagmaMysticCD							= mod:NewCDCountTimer(29.9, "ej26217", nil, nil, nil, 1, 397383)--Molten Barrier Icon
 local timerWallClimberCD							= mod:NewCDCountTimer(29.9, "ej26221", nil, false, 2, 1, 163789)--Ladder Icon
-local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1)--Random guard banner
+local timerGuardsandHuntsmanCD						= mod:NewTimer(30, "timerGuardsandHuntsmanCD", 285849, nil, nil, 1, nil, nil, nil, nil, nil, nil, nil, 404382)--Random guard banner
 ----Magma Mystic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26217))
 local warnMoltenBarrier								= mod:NewCastAnnounce(397383, 4)
