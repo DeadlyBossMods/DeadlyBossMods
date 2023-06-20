@@ -6,7 +6,7 @@ mod:SetCreatureID(200912, 200913, 200918)
 mod:SetEncounterID(2693)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230619000000)
+mod:SetHotfixNoticeRev(20230530000000)
 mod:SetMinSyncRevision(20230512000000)
 --mod.respawnTime = 29
 
@@ -49,32 +49,32 @@ local timerBellowingRoarCD							= mod:NewCDCountTimer(23.1, 404713, nil, nil, n
 mod:AddPrivateAuraSoundOption(406317, true, 406358, 1)
 --Thadrion
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26322))
-local warnUnstableEssence							= mod:NewCastAnnounce(407327, 3)
-local warnUnstableEssenceTargets					= mod:NewTargetAnnounce(407327, 2)
+local warnUnstableEssence							= mod:NewCastAnnounce(405042, 3)
+local warnUnstableEssenceTargets					= mod:NewTargetAnnounce(405042, 2)
 
-local specWarnUnstableEssence						= mod:NewSpecialWarningYou(407327, nil, nil, nil, 1, 2)
-local yellUnstableEssence							= mod:NewShortYell(407327, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
+local specWarnUnstableEssence						= mod:NewSpecialWarningYou(405042, nil, nil, nil, 1, 2)
+local yellUnstableEssence							= mod:NewShortYell(405042, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnVolatileSpew							= mod:NewSpecialWarningDodgeCount(405492, nil, nil, nil, 2, 2)
 local specWarnViolentEruption						= mod:NewSpecialWarningCount(405375, nil, nil, nil, 2, 2)
 
-local timerUnstableEssenceCD						= mod:NewCDCountTimer(29.2, 407327, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerUnstableEssenceCD						= mod:NewCDCountTimer(29.2, 405042, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerVolatileSpewCD							= mod:NewCDCountTimer(26, 405492, nil, nil, nil, 3)
 local timerViolentEruptionCD						= mod:NewCDCountTimer(68.3, 405375, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 
-mod:AddSetIconOption("SetIconOnEssence", 407327, false, 0, {1, 2, 3, 4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnEssence", 405042, false, 0, {1, 2, 3, 4, 5, 6, 7, 8})
 --Rionthus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26329))
 local warnTemporalAnomaly							= mod:NewCastAnnounce(407552, 3)
 local warnTemporalAnomalyAbsorbed					= mod:NewTargetNoFilterAnnounce(407552, 2)
-local warnDisintegrate								= mod:NewTargetAnnounce(405392, 2)
+local warnDisintegrate								= mod:NewTargetAnnounce(405391, 2)
 
 local specWarnDeepBreath							= mod:NewSpecialWarningDodgeCount(406227, nil, 18357, nil, 2, 2)
-local specWarnDisintegrate							= mod:NewSpecialWarningMoveAway(405392, nil, nil, nil, 1, 2)
-local yellDisintegrate								= mod:NewShortYell(405392)
+local specWarnDisintegrate							= mod:NewSpecialWarningMoveAway(405391, nil, nil, nil, 1, 2)
+local yellDisintegrate								= mod:NewShortYell(405391)
 
 local timerDeepBreathCD								= mod:NewCDCountTimer(42.7, 406227, 18357, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Breath"
 local timerTemporalAnomalyCD						= mod:NewCDCountTimer(43.7, 407552, nil, nil, nil, 5)
-local timerDisintegrateCD							= mod:NewCDCountTimer(43.7, 405392, nil, nil, nil, 3)
+local timerDisintegrateCD							= mod:NewCDCountTimer(43.7, 405391, nil, nil, nil, 3)
 
 mod.vb.rendingCount = 0
 mod.vb.massiveSlamCount = 0

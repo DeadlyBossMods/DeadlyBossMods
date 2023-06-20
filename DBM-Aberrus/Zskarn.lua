@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230619000000)
+mod:SetHotfixNoticeRev(20230525000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -40,8 +40,8 @@ local specWarnDragonDeezTraps					= mod:NewSpecialWarningDodgeCount(405736, nil,
 local specWarnAnimateGolems						= mod:NewSpecialWarningSwitchCount(405812, nil, nil, nil, 1, 2)
 local specWarnActivateTrap						= mod:NewSpecialWarningInterruptCount(405919, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlastWave							= mod:NewSpecialWarningCount(403978, nil, 149213, nil, 2, 2)
-local specWarnUnstableEmbers					= mod:NewSpecialWarningMoveAway(404010, nil, nil, nil, 1, 2)
-local yellUnstableEmbers						= mod:NewShortYell(404010)
+local specWarnUnstableEmbers					= mod:NewSpecialWarningMoveAway(404007, nil, nil, nil, 1, 2)
+local yellUnstableEmbers						= mod:NewShortYell(404007)
 local specWarnSearingClawsTaunt					= mod:NewSpecialWarningTaunt(404942, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
@@ -50,14 +50,14 @@ local timerShrapnalBombCD						= mod:NewCDCountTimer(42.5, 406725, 167180, nil, 
 local timerShrapnalBomb							= mod:NewCastTimer(30, 406725, 185824, nil, nil, 2)--"Detonate"
 local timerAnimateGolemsCD						= mod:NewCDCountTimer(60.2, 405812, nil, nil, nil, 1)
 local timerBlastWaveCD							= mod:NewCDCountTimer(34, 403978, 149213, nil, nil, 2)--"Knockback"
-local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404010, 264364, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)--"Embers"
+local timerUnstableEmbersCD						= mod:NewCDCountTimer(20.7, 404007, 264364, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)--"Embers"
 local timerEliminationProtocol					= mod:NewCastTimer(10, 409942, 207544, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--"Beams"
 local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, nil, 3)
 local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 404007)
 mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6, 5})
-mod:AddSetIconOption("SetIconOnEmbers", 404010, false, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnEmbers", 404007, false, 0, {1, 2, 3, 4})
 
 local castsPerGUID = {}
 mod.vb.destructionCount = 0
