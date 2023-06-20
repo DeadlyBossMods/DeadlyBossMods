@@ -53,7 +53,7 @@ local yellConductiveMark						= mod:NewYell(371624, 28836)
 local specWarnLightningBolt						= mod:NewSpecialWarningInterrupt(372394, "HasInterrupt", nil, nil, 1, 2)
 
 local timerConductiveMarkCD						= mod:NewCDCountTimer(24.4, 371624, nil, nil, nil, 3)
-local timerChainLightningCD						= mod:NewCDTimer(9.1, 372279, nil, "Healer", nil, 3)--9.1-15.4
+local timerChainLightningCD						= mod:NewCDTimer(9.1, 374021, nil, "Healer", nil, 3)--9.1-15.4
 
 mod:AddRangeFrameOption(5, 371624)
 --Opalfang
@@ -61,28 +61,28 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(24967))
 local warnCrush									= mod:NewStackAnnounce(372056, 2, nil, "Tank|Healer")
 local warnQuakingConvocation					= mod:NewSpellAnnounce(386370, 4)
 
-local specWarnEarthenPillar						= mod:NewSpecialWarningCount(397134, nil, nil, nil, 2, 2)--Warn everyone for now, change if it has emotes or debuff later
+local specWarnEarthenPillar						= mod:NewSpecialWarningCount(370991, nil, nil, nil, 2, 2)--Warn everyone for now, change if it has emotes or debuff later
 local specWarnCrush								= mod:NewSpecialWarningDefensive(372056, nil, nil, nil, 2, 2)
 local specWarnCrushTaunt						= mod:NewSpecialWarningTaunt(372056, nil, nil, nil, 1, 2)
 
-local timerEarthenPillarCD						= mod:NewCDCountTimer(40.8, 397134, nil, nil, nil, 3)--40.8--71
+local timerEarthenPillarCD						= mod:NewCDCountTimer(40.8, 370991, nil, nil, nil, 3)--40.8--71
 local timerCrushCD								= mod:NewCDCountTimer(21.6, 372056, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Embar Firepath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24965))
-local warnMeteorAxe								= mod:NewTargetNoFilterAnnounce(374038, 4)
+local warnMeteorAxe								= mod:NewTargetNoFilterAnnounce(374043, 4)
 local warnSlashingBlaze							= mod:NewStackAnnounce(372027, 2, nil, "Tank|Healer")
 local warnBurningConvocation					= mod:NewSpellAnnounce(386289, 4)
 
-local specWarnMeteorAxe							= mod:NewSpecialWarningYouPos(374038, nil, nil, nil, 1, 2)
-local yellMeteorAxe								= mod:NewShortPosYell(374038, 374043, nil, nil, "YELL")
-local yellMeteorAxeFades						= mod:NewIconFadesYell(374038, 374043, nil, nil, "YELL")
+local specWarnMeteorAxe							= mod:NewSpecialWarningYouPos(374043, nil, nil, nil, 1, 2)
+local yellMeteorAxe								= mod:NewShortPosYell(374043, nil, nil, nil, "YELL")
+local yellMeteorAxeFades						= mod:NewIconFadesYell(374043, nil, nil, nil, "YELL")
 local specWarnSlashingBlaze						= mod:NewSpecialWarningDefensive(372027, nil, nil, nil, 2, 2)
 local specWarnSlashingBlazeTaunt				= mod:NewSpecialWarningTaunt(372027, nil, nil, nil, 1, 2)
 
-local timerMeteorAxeCD							= mod:NewCDCountTimer(39.1, 374038, nil, nil, nil, 3)
+local timerMeteorAxeCD							= mod:NewCDCountTimer(39.1, 374043, nil, nil, nil, 3)
 local timerSlashingBlazeCD						= mod:NewCDCountTimer(27.7, 372027, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnMeteorAxe", 374038, true, 9, {1, 2})
+mod:AddSetIconOption("SetIconOnMeteorAxe", 374043, true, 9, {1, 2})
 
 local blizzardStacks = {}
 local playerBlizzardHigh = false
