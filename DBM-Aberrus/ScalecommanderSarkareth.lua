@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201754)
 mod:SetEncounterID(2685)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230515000000)
+mod:SetHotfixNoticeRev(20230620000000)
 --mod:SetMinSyncRevision(20221215000000)
 mod.respawnTime = 30
 
@@ -13,7 +13,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 401383 401810 401500 401642 402050 401325 404027 404456 404769 411302 404754 404403 411030 407496 404288 411236 403741 405022 403625 403517 408422 401704",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 404505 404507",
 	"SPELL_AURA_APPLIED 401951 401215 403997 407576 401905 401680 401330 404218 404705 407496 404288 411241 405486 403520 408429 403284 410654 410625",
 	"SPELL_AURA_APPLIED_DOSE 401951 403997 407576 401330 404269 411241 408429",
@@ -24,16 +23,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 406989",
 	"SPELL_PERIODIC_MISSED 406989",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, old void claws used on lfr/normal? https://www.wowhead.com/ptr/spell=403364/void-claws and 403358
 --[[
-(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404754 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
+(ability.id = 401383 or ability.id = 401810 or ability.id = 401500 or ability.id = 401642 or ability.id = 402050 or ability.id = 401325 or ability.id = 404027 or ability.id = 404456 or ability.id = 404769 or ability.id = 411302 or ability.id = 404403 or ability.id = 411030 or ability.id = 407496 or ability.id = 404288 or ability.id = 411236 or ability.id = 403741 or ability.id = 405022 or ability.id = 403625 or ability.id = 408422 or ability.id = 401704) and type = "begincast"
  or ability.id = 403517 and type = "cast"
  or (ability.id = 403284 or ability.id = 410654) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 404505 or ability.id = 404507) and type = "summon"
  or ability.id = 410625
+ or ability.id = 404754 and type = "begincast"
  or (ability.id = 401383 or ability.id = 401215 or ability.id = 403997 or ability.id = 407576 or ability.id = 401905 or ability.id = 401680 or ability.id = 401330 or ability.id = 404218 or ability.id = 410642 or ability.id = 404705 or ability.id = 407496 or ability.id = 404288 or ability.id = 411241 or ability.id = 405486 or ability.id = 403520 or ability.id = 408429) and type = "applydebuff"
 --]]
 --General
@@ -83,7 +81,6 @@ mod:AddSetIconOption("SetIconOnMassDisintegrate", 401642, true, 0, {1, 2, 3, 4})
 --Stage Two: A Touch of the Forbidden
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26142))
 local warnVoidFracture							= mod:NewTargetAnnounce(404218, 3, nil, false)
---local warnInfiniteDuressSoon					= mod:NewIncomingCountAnnounce(404288, 2)--Re-enable only if it becomes private aura
 local warnInfiniteDuress						= mod:NewTargetCountAnnounce(404288, 3, nil, nil, nil, nil, nil, nil, true)
 local warnVoidClaws								= mod:NewStackAnnounce(411236, 2, nil, "Tank|Healer")
 
@@ -156,7 +153,6 @@ mod.vb.bombCount = 0
 mod.vb.disintegrateCount = 0
 mod.vb.disintegrateIcon = 1--Also used for infinite
 mod.vb.breathCount = 0
---mod.vb.embersCount = 0
 mod.vb.tankCount = 0
 --P2 Variables
 mod.vb.addIcon = 7
@@ -169,7 +165,7 @@ mod.vb.bigAddKilled = 0
 local oblivionStacks = {}
 local castsPerGUID = {}
 local oblivionDisabled = false--Cache to avoid constant option table spamming
-local difficultyName = "easy"
+local difficultyName = "lfr"
 local playerVoidFracture = false
 local allTimers = {
 	["mythic"] = {
@@ -260,7 +256,7 @@ local allTimers = {
 			[403517] = {24.7, 111.2, 50.0},
 		},
 	},
-	["easy"] = {--Normal confirmed, LFR assumed
+	["normal"] = {--Normal confirmed, LFR assumed
 		[1] = {
 			--Scorching Bomb
 			[401500] = {1, 58.8},
@@ -300,6 +296,43 @@ local allTimers = {
 			[403517] = {26.3, 118.6, 53.3, 114.7, 53.3},
 		},
 	},
+	["lfr"] = {--Normal confirmed, LFR assumed
+		[1] = {
+			--Scorching Bomb
+			[401500] = {1.1, 62.3},
+			--Glittering Surge
+			[401810] = {3.5, 97.4},
+			--Burning Claws
+			[401325] = {21.1, 20, 20, 17.6},
+			--Mass Disintegrate
+			[401642] = {24.7, 24.7, 47},
+			--Searing Breath
+			[402050] = {28.2, 37.6},
+		},
+		[2] = {
+			--Abyssal Breath
+			[404456] = {4, 49.3},
+			--Desolate Blossom
+			[404403] = {12, 49.3, 42.6},
+			--Void Bomb
+			[404027] = {17.3, 67.9},
+			--Void Claws
+			[411236] = {21.3, 19.9, 23.9, 23.9, 23.9},
+			--Infinite Duress (Doesn't exist on normal/LFR)
+		},
+		[3] = {
+			--Infinite Duress (P2 ability that still isn't in normal/LFR)
+			--Void Bomb (P2 ability does NOT return in LFR)
+			--Cosmic Ascension
+			[403741] = {7.2, 61.2, 98.7, 58.7, 98.7, 58.7, 98.7, 58.7, 98.7},
+			--Hurtling Barrage (Doesn't exist on LFR)
+			--Void Slash
+			[408422] = {21, 36.2, 37.4, 85, 11.2, 61.2, 85, 11.2, 23.7, 37.4, 84.9, 11.2, 23.7, 37.5},
+			--Scouring Eternity
+			[403625] = {46.1, 77.8, 81.4, 76.4, 80.1, 76.4, 81.3, 76.5},
+			--Embrace of Nothingness (Doesn't exist on LFR)
+		},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -310,7 +343,6 @@ function mod:OnCombatStart(delay)
 	self.vb.bombCount = 0
 	self.vb.disintegrateCount = 0
 	self.vb.breathCount = 0
-	--self.vb.embersCount = 0
 	self.vb.tankCount = 0
 	self.vb.blossomCount = 0
 	self.vb.nothingnessCount = 0
@@ -325,22 +357,29 @@ function mod:OnCombatStart(delay)
 		timerBurningClawsCD:Start(17.9-delay, 1)
 		timerMassDisintegrateCD:Start(20.8-delay, 1)
 		timerSearingBreathCD:Start(25.4-delay, 1)
-		--timerDriftingEmbersCD:Start(1-delay)
 		timerPhaseCD:Start(101.9, 2)--Mythic Confirmed
 		berserkTimer:Start(450)--Might not actually start here but phase 3
 	else
-		if self:IsHeroic() then
-			difficultyName = "heroic"
-		else
-			difficultyName = "easy"
+		if self:IsLFR() then
+			difficultyName = "lfr"
+			timerGlitteringSurgeCD:Start(3.5-delay, 1)
+			timerOppressingHowlCD:Start(15.3-delay)
+			timerBurningClawsCD:Start(21.1-delay, 1)
+			timerMassDisintegrateCD:Start(24.7-delay, 1)
+			timerSearingBreathCD:Start(28.2-delay, 1)
+		else--Normal and heroic have same p1 timers
+			timerGlitteringSurgeCD:Start(3.3-delay, 1)
+			timerOppressingHowlCD:Start(14.4-delay)
+			timerBurningClawsCD:Start(20-delay, 1)
+			timerMassDisintegrateCD:Start(23.3-delay, 1)
+			timerSearingBreathCD:Start(26.6-delay, 1)
+			if self:IsHeroic() then
+				difficultyName = "heroic"
+			else
+				difficultyName = "normal"
+			end
 		end
-		timerGlitteringSurgeCD:Start(3.3-delay, 1)
-		timerOppressingHowlCD:Start(14.4-delay)
-		timerBurningClawsCD:Start(20-delay, 1)
-		timerMassDisintegrateCD:Start(23.3-delay, 1)
-		timerSearingBreathCD:Start(26.6-delay, 1)
-		--timerDriftingEmbersCD:Start(1-delay)
-		timerPhaseCD:Start(112, 2)--Normal and heroic confirmed, LFR Unknown
+		timerPhaseCD:Start(112, 2)--Same on LFR, Normal, and Heroic
 	end
 	if self.Options.NPAuraOnRescind or self.Options.NPAuraOnMight then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -366,8 +405,10 @@ function mod:OnTimerRecovery()
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
+	elseif self:IsNormal() then
+		difficultyName = "normal"
 	else
-		difficultyName = "easy"
+		difficultyName = "lfr"
 	end
 end
 
@@ -484,7 +525,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnBlastingScream:Play("kickcast")
 			end
 		end
-		timerBlastingScreamCD:Start(nil, args.sourceGUID)
+		timerBlastingScreamCD:Start(self:IsLFR() and 12 or 7, args.sourceGUID)
 	elseif spellId == 404769 then
 		timerEmptyStrikeCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -502,7 +543,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407496 or spellId == 404288 then--407496 confirmed, 404288 unknown (mythic?)
 		self.vb.disintegrateCount = self.vb.disintegrateCount + 1
 		self.vb.disintegrateIcon = 1
---		warnInfiniteDuressSoon:Show(self.vb.disintegrateCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 407496, self.vb.disintegrateCount+1)
 		if timer then
 			timerInfiniteDuressCD:Start(timer, self.vb.disintegrateCount+1)
@@ -588,7 +628,7 @@ function mod:SPELL_SUMMON(args)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		end
-		timerBlastingScreamCD:Start(8.7, args.destGUID)
+		timerBlastingScreamCD:Start(8.2, args.destGUID)
 	end
 end
 
@@ -751,16 +791,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerScorchingBombCD:Stop()
 		timerMassDisintegrateCD:Stop()
 		timerSearingBreathCD:Stop()
-		--timerDriftingEmbersCD:Stop()
 		timerBurningClawsCD:Stop()
-		timerPhaseCD:Stop()
+		timerPhaseCD:Stop()--Boss phases on a timer, or health percent
 	elseif spellId == 410654 then--Stage 2-3 Intermission
 		timerVoidBombCD:Stop()
 		timerAbyssalBreathCD:Stop()
 		timerDesolateBlossomCD:Stop()
 		timerInfiniteDuressCD:Stop()
 		timerVoidClawsCD:Stop()
-		timerPhaseCD:Stop()
+		timerPhaseCD:Stop()-Boss phases on a timer, or health percent
 		timerPhaseCD:Start(10)
 	elseif spellId == 410625 then
 		timerEndExistenceCast:Start()
@@ -843,7 +882,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.surgeCount = 0--Reused for Hurtling Barrage
 		self.vb.blossomCount = 0--Reused for Scouring Eternity
 		self.vb.disintegrateCount = 0--Reused for Inifinite Duress
-		--self.vb.embersCount--Reused for Motes of Oblivion
 		self.vb.tankCount = 0----Reused for Void Slash
 		if self:IsMythic() then
 			timerInfiniteDuressCD:Start(4.5, 1)
@@ -853,7 +891,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerEmbraceofNothingnessCD:Start(23.3, 1)
 			timerVoidBombCD:Start(24.5, 1)
 			--timerScouringEternityCD:Start(46.2, 1)
-			--timerMotesofOblivionCD:Start(3)
 		elseif self:IsHeroic() then
 			timerInfiniteDuressCD:Start(4.7, 1)
 			timerCosmicAscensionCD:Start(7.2, 1)
@@ -862,15 +899,17 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerEmbraceofNothingnessCD:Start(24.7, 1)
 			timerVoidBombCD:Start(28.5, 1)
 			timerScouringEternityCD:Start(46.2, 1)
-			--timerMotesofOblivionCD:Start(3)
-		else--Easy
+		elseif self:IsNormal() then
 			timerCosmicAscensionCD:Start(7.7, 1)
 			timerHurtlingBarrageCD:Start(21, 1)
 			timerVoidSlashCD:Start(22.3, 1)
 			timerEmbraceofNothingnessCD:Start(26.3, 1)
 			timerVoidBombCD:Start(30.3, 1)
 			timerScouringEternityCD:Start(48.6, 1)
-			--timerMotesofOblivionCD:Start(3)
+		else--LFR
+			timerCosmicAscensionCD:Start(7.2, 1)
+			timerVoidSlashCD:Start(21, 1)
+			timerScouringEternityCD:Start(46.1, 1)
 		end
 	elseif spellId == 410625 then
 		timerEndExistenceCast:Stop()
@@ -896,12 +935,18 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerVoidClawsCD:Start(18.8, 1)
 			timerInfiniteDuressCD:Start(29.4, 1)
 			timerPhaseCD:Start(110, 3)
-		else--Easy
+		elseif self:IsNormal() then
 			timerAbyssalBreathCD:Start(3.7, 1)
 			timerDesolateBlossomCD:Start(11.2, 1)
 			timerVoidBombCD:Start(16.2, 1)
 			timerVoidClawsCD:Start(19.9, 1)
 			timerPhaseCD:Start(110, 3)
+		else
+			timerAbyssalBreathCD:Start(4, 1)
+			timerDesolateBlossomCD:Start(12, 1)
+			timerVoidBombCD:Start(17.3, 1)
+			timerVoidClawsCD:Start(21.3, 1)
+--			timerPhaseCD:Start(96.7, 3)--Unknown, LFR pushes health threshold before timed threshold can be triggered
 		end
 		if self.Options.InfoFrame then
 			--If oblivion only, no changes need to run on Phase 2
