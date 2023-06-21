@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Shot", "DBM-DMF")
+local mod	= DBM:NewMod("Shot", "DBM-WorldEvents", 4)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
