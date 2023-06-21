@@ -799,7 +799,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDesolateBlossomCD:Stop()
 		timerInfiniteDuressCD:Stop()
 		timerVoidClawsCD:Stop()
-		timerPhaseCD:Stop()-Boss phases on a timer, or health percent
+		timerPhaseCD:Stop()--Boss phases on a timer, or health percent
 		timerPhaseCD:Start(10)
 	elseif spellId == 410625 then
 		timerEndExistenceCast:Start()
