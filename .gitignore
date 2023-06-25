@@ -1,2 +1,4 @@
 .env
 DBM-Core/Libs/
+/.release
+/release.sh

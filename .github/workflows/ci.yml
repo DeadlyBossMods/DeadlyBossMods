@@ -38,6 +38,18 @@ jobs:
           WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
           WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
 
+      - name: Create Package
+        uses: QartemisT/packager@master
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          args: -n "DBM-{project-version}{classic}" -d -z
+
+      - uses: actions/upload-artifact@v3
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: DBM-PR#${{ github.event.number }}-${{ github.sha }}
+          path: .release/
+
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
         with:

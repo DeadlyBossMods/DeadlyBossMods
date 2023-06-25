@@ -1,7 +1,9 @@
 package-as: DBM-DragonIsles
 
 externals:
-  DBM-DragonIsles: https://github.com/DeadlyBossMods/DBM-Unified
+  DBM-DragonIsles:
+    url: https://github.com/Mitalie/DBM-Unified
+    branch: bwcompat
   DBM-DragonIsles/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
   DBM-DragonIsles/Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
   DBM-DragonIsles/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
