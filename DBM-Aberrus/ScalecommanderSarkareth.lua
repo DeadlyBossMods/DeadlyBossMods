@@ -883,6 +883,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.blossomCount = 0--Reused for Scouring Eternity
 		self.vb.disintegrateCount = 0--Reused for Inifinite Duress
 		self.vb.tankCount = 0----Reused for Void Slash
+		timerEbonMight:Start(11)
 		if self:IsMythic() then
 			timerInfiniteDuressCD:Start(4.5, 1)
 			timerCosmicAscensionCD:Start(6.8, 1)
