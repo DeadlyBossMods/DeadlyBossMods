@@ -6,8 +6,8 @@ mod:SetCreatureID(201774, 201773, 201934)--Krozgoth, Moltannia, Molgoth
 mod:SetEncounterID(2687)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20230510000000)
-mod:SetMinSyncRevision(20230510000000)
+mod:SetHotfixNoticeRev(20230626000000)
+mod:SetMinSyncRevision(20230626000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 409385 or ability.id = 403459 or ability.id = 405016 or ability.id = 407640 or ability.id = 403699 or ability.id = 404732 or ability.id = 403101 or ability.id = 404896 or ability.id = 403203 or ability.id = 405437 or ability.id = 405641 or ability.id = 408193 or ability.id = 405914 or ability.id = 406783) and type = "begincast"
  or (ability.id = 406730 or ability.id = 406780) and type = "cast"
+ or (target.id = 201774 or target.id = 201773) and type = "death"
 --]]
 --TODO, also target scan Swirling Flame?
 --TODO, secondary alert for Swirling Shadowflame ?
@@ -494,7 +495,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 406730 and self:GetStage(2, 1) then--Crucible Instability
 		self:SetStage(2)
-		self.vb.bossLeft = self.vb.bossLeft - 2--Stage 1 bosses don't actually die, they fuse. This just updates mods internal count
 		self.vb.meteorCast = 0--Reused for Gloom Conflagration
 		self.vb.umbralCount = 0--Reused for Blistering Twilight
 		self.vb.moltenEruptionCast = 0--Reused for Converging Eruption
