@@ -123,7 +123,7 @@ local realityName = DBM:GetSpellInfo(407919)
 local playerReality = false
 local mythicTwistedP1Timers = {2, 20.6, 19.4, 18.2, 18.2, 18.2, 19.5, 17.0}
 local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}
-local volcanicP2Timers = {21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 18, 14.5}
+local volcanicP2Timers = {21.3, 15.7, 17.0, 14.8, 17.3, 16.7, 18, 14.5}
 local volcanicP2LFRTimers = {21.3, 15.6, 16.9, 17, 12, 16.9, 12, 16.9, 12, 17}
 
 
