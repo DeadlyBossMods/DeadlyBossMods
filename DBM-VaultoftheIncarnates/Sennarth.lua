@@ -71,17 +71,17 @@ mod:GroupSpells(372082, 372030, 372044)--Wrapped in webs and sticking webbing wi
 --Stage Two: Cold Peak
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24885))
 local warnApexofIce									= mod:NewCastAnnounce(372539, 3)
-local warnSuffocatinWebs							= mod:NewTargetNoFilterAnnounce(373027, 3)
+local warnSuffocatinWebs							= mod:NewTargetNoFilterAnnounce(373048, 3)
 
-local specWarnSuffocatingWebs						= mod:NewSpecialWarningYouPos(373027, nil, nil, nil, 1, 2)
-local yellSuffocatingWebs							= mod:NewShortPosYell(373027)
-local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373027)
+local specWarnSuffocatingWebs						= mod:NewSpecialWarningYouPos(373048, nil, nil, nil, 1, 2)
+local yellSuffocatingWebs							= mod:NewShortPosYell(373048)
+local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373048)
 local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
 
-local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373027, nil, nil, nil, 3)--38-46
+local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373048, nil, nil, nil, 3)--38-46
 local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37 (unknown on normal
 
-mod:AddSetIconOption("SetIconOnSufWeb", 373027, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnSufWeb", 373048, true, false, {1, 2, 3})
 
 local stickyStacks = {}
 mod.vb.webIcon = 1

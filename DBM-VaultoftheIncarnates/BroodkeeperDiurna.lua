@@ -44,7 +44,7 @@ local warnRapidIncubation						= mod:NewSpellAnnounce(376073, 3)
 local warnMortalWounds							= mod:NewStackAnnounce(378782, 2, nil, "Tank|Healer")
 local warnDiurnasGaze							= mod:NewYouAnnounce(390561, 3)
 
-local specWarnGreatstaffoftheBroodkeeper		= mod:NewSpecialWarningCount(375842, nil, nil, nil, 2, 2)
+local specWarnGreatstaffoftheBroodkeeper		= mod:NewSpecialWarningCount(380175, nil, nil, nil, 2, 2)
 local specWarnGreatstaffsWrath					= mod:NewSpecialWarningYou(375889, nil, nil, nil, 1, 2)
 local yellGreatstaffsWrath						= mod:NewYell(375889)
 local specWarnWildfire							= mod:NewSpecialWarningDodge(375871, nil, nil, nil, 2, 2)
@@ -54,7 +54,7 @@ local specWarnMortalStoneclaws					= mod:NewSpecialWarningDefensive(375870, nil,
 local specWarnMortalWounds						= mod:NewSpecialWarningTaunt(378782, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(390747, nil, nil, nil, 1, 8)
 
-local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 375842, L.staff, nil, nil, 5)--Shared CD ability?
+local timerGreatstaffoftheBroodkeeperCD			= mod:NewCDCountTimer(24.4, 380175, L.staff, nil, nil, 5)--Shared CD ability?
 local timerRapidIncubationCD					= mod:NewCDCountTimer(24.4, 376073, nil, nil, nil, 1)--Shared CD ability?
 local timerWildfireCD							= mod:NewCDCountTimer(21.4, 375871, nil, nil, nil, 3)--21.4-28
 local timerIcyShroudCD							= mod:NewCDCountTimer(39.1, 388716, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
@@ -62,7 +62,7 @@ local timerMortalStoneclawsCD					= mod:NewCDCountTimer(20.2, 375870, nil, nil, 
 local timerStormFissureCD						= mod:NewCDTimer(24, 396779, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:GroupSpells(375842, 375889)--Greatstaff spawn ith greatstaff wrath debuff
+mod:GroupSpells(380175, 375889)--Greatstaff spawn ith greatstaff wrath debuff
 mod:GroupSpells(375870, 378782)--Mortal Claws with Mortal Wounds
 ----Primalist Reinforcements
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25129))
@@ -114,7 +114,7 @@ local yellDetonatingStoneslamFades				= mod:NewShortFadesYell(396264, nil, nil, 
 local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, nil, nil, nil, 1, 2, 4)
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
-local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(17, 380176, L.staff, nil, nil, 5)--Shared CD ability
+--local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(17, 380176, L.staff, nil, nil, 5)--Shared CD ability
 local timerFrozenShroudCD						= mod:NewCDCountTimer(40.5, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
@@ -197,11 +197,11 @@ local function updateAllTimers(self, ICD, exclusion)
 				timerMortalStoneclawsCD:Update(elapsed, total+extend, self.vb.tankCombocount+1)
 			end
 		end
-		if timerEGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1) < ICD then
-			local elapsed, total = timerEGreatstaffoftheBroodkeeperCD:GetTime(self.vb.staffCount+1)
+		if timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1) < ICD then
+			local elapsed, total = timerGreatstaffoftheBroodkeeperCD:GetTime(self.vb.staffCount+1)
 			local extend = ICD - (total-elapsed)
-			DBM:Debug("timerEGreatstaffoftheBroodkeeperCD extended by: "..extend, 2)
-			timerEGreatstaffoftheBroodkeeperCD:Update(elapsed, total+extend, self.vb.staffCount+1)
+			DBM:Debug("timerGreatstaffoftheBroodkeeperCD extended by: "..extend, 2)
+			timerGreatstaffoftheBroodkeeperCD:Update(elapsed, total+extend, self.vb.staffCount+1)
 		end
 		if timerFrozenShroudCD:GetRemaining(self.vb.icyCount+1) < ICD then
 			local elapsed, total = timerFrozenShroudCD:GetTime(self.vb.icyCount+1)
@@ -440,7 +440,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnEGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
 			specWarnEGreatstaffoftheBroodkeeper:Play("specialsoon")
-			timerEGreatstaffoftheBroodkeeperCD:Start(staffTimer, self.vb.staffCount+1)--17-33
+			timerGreatstaffoftheBroodkeeperCD:Start(staffTimer, self.vb.staffCount+1)--17-33
 		end
 		--updateAllTimers(self, 1)
 	elseif spellId == 375870 then
@@ -574,11 +574,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 			--Tank timer doesn't reset, just keeps going, staff timer doesn't restart, just swaps to new object
-			local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
-			if remainingStaff then
-				timerGreatstaffoftheBroodkeeperCD:Stop()
-				timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, self.vb.staffCount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
-			end
+			--local remainingStaff = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.staffCount+1)
+			--if remainingStaff then
+			--	timerGreatstaffoftheBroodkeeperCD:Stop()
+			--	timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, self.vb.staffCount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
+			--end
 			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
 			if remainingIcy then
 				timerIcyShroudCD:Stop()

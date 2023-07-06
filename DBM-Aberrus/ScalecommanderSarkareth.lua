@@ -56,33 +56,33 @@ mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
 local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3, nil, nil, nil, nil, nil, 2)
 local warnDazzled								= mod:NewTargetNoFilterAnnounce(401905, 4, nil, false)--Not entirely much you can do about it's a lot but if it's a couple, a healer might want to see this to TRY and save them
-local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401642, 3, nil, nil, 405391, nil, nil, nil, true)
-local warnBurningClaws							= mod:NewStackAnnounce(401325, 2, nil, "Tank|Healer")
+local warnMassDisintegrate						= mod:NewTargetCountAnnounce(401680, 3, nil, nil, 405391, nil, nil, nil, true)
+local warnBurningClaws							= mod:NewStackAnnounce(401330, 2, nil, "Tank|Healer")
 
 local specWarnGlitteringSurge					= mod:NewSpecialWarningCount(401810, nil, nil, nil, 2, 2)
 local specWarnScorchingBomb						= mod:NewSpecialWarningCount(401500, nil, 167180, nil, 2, 2)
 
-local specWarnMassDisintegrateYou				= mod:NewSpecialWarningYou(401642, nil, 405391, nil, 1, 2)
-local yellMassDisintegrate						= mod:NewShortPosYell(401642, 405391)
-local yellMassDisintegrateFades					= mod:NewIconFadesYell(401642)
+local specWarnMassDisintegrateYou				= mod:NewSpecialWarningYou(401680, nil, 405391, nil, 1, 2)
+local yellMassDisintegrate						= mod:NewShortPosYell(401680, 405391)
+local yellMassDisintegrateFades					= mod:NewIconFadesYell(401680)
 local specWarnSearingBreath						= mod:NewSpecialWarningCount(402050, nil, 18357, nil, 2, 2)
-local specWarnBurningClaws						= mod:NewSpecialWarningDefensive(401325, nil, nil, nil, 1, 2)
-local specWarnBurningClawsTaunt					= mod:NewSpecialWarningTaunt(401325, nil, nil, nil, 1, 2)
+local specWarnBurningClaws						= mod:NewSpecialWarningDefensive(401330, nil, nil, nil, 1, 2)
+local specWarnBurningClawsTaunt					= mod:NewSpecialWarningTaunt(401330, nil, nil, nil, 1, 2)
 
 local timerOppressingHowlCD						= mod:NewNextTimer(29.9, 401383, nil, nil, nil, 2)
 local timerGlitteringSurgeCD					= mod:NewCDCountTimer(29.9, 401810, nil, nil, nil, 2)
 local timerScorchingBombCD						= mod:NewCDCountTimer(29.9, 401500, 167180, nil, nil, 3)
-local timerMassDisintegrateCD					= mod:NewCDCountTimer(29.9, 401642, 405391, nil, nil, 3)--"Disintegrate"
+local timerMassDisintegrateCD					= mod:NewCDCountTimer(29.9, 401680, 405391, nil, nil, 3)--"Disintegrate"
 local timerSearingBreathCD						= mod:NewCDCountTimer(29.9, 402050, 18357, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--"Breath"
-local timerBurningClawsCD						= mod:NewCDCountTimer(29.9, 401325, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerBurningClaws							= mod:NewTargetTimer(27, 401325, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
+local timerBurningClawsCD						= mod:NewCDCountTimer(29.9, 401330, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBurningClaws							= mod:NewTargetTimer(27, 401330, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
 
-mod:AddSetIconOption("SetIconOnMassDisintegrate", 401642, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnMassDisintegrate", 401680, true, 0, {1, 2, 3, 4})
 --Stage Two: A Touch of the Forbidden
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26142))
 local warnVoidFracture							= mod:NewTargetAnnounce(404218, 3, nil, false)
 local warnInfiniteDuress						= mod:NewTargetCountAnnounce(404288, 3, nil, nil, nil, nil, nil, nil, true)
-local warnVoidClaws								= mod:NewStackAnnounce(411236, 2, nil, "Tank|Healer")
+local warnVoidClaws								= mod:NewStackAnnounce(411241, 2, nil, "Tank|Healer")
 
 local specWarnVoidBomb							= mod:NewSpecialWarningCount(404027, nil, 167180, nil, 2, 2)
 local specWarnVoidFracture						= mod:NewSpecialWarningYou(404218, nil, nil, nil, 1, 2)--Maybe change to MoveTo alert to say move to emptyness?
@@ -95,10 +95,10 @@ local specWarnDesolateBlossom					= mod:NewSpecialWarningDodgeCount(404403, nil,
 local specWarnInfiniteDuressYou					= mod:NewSpecialWarningYou(404288, nil, nil, nil, 1, 2, 3)
 local yellInfiniteDuress						= mod:NewShortPosYell(404288)
 local yellInfiniteDuressFades					= mod:NewIconFadesYell(404288)
-local specWarnVoidClaws							= mod:NewSpecialWarningDefensive(411236, nil, nil, nil, 1, 2)
-local specWarnVoidClawsOut						= mod:NewSpecialWarningMoveAway(411236, nil, nil, nil, 1, 2)--For Void Blast (411238) effect
-local yellVoidClawsFades						= mod:NewShortFadesYell(411236, 37859)--For Void Blast (411238) effect
-local specWarnVoidClawsTaunt					= mod:NewSpecialWarningTaunt(411236, nil, nil, nil, 1, 2)
+local specWarnVoidClaws							= mod:NewSpecialWarningDefensive(411241, nil, nil, nil, 1, 2)
+local specWarnVoidClawsOut						= mod:NewSpecialWarningMoveAway(411241, nil, nil, nil, 1, 2)--For Void Blast (411238) effect
+local yellVoidClawsFades						= mod:NewShortFadesYell(411241, 37859)--For Void Blast (411238) effect
+local specWarnVoidClawsTaunt					= mod:NewSpecialWarningTaunt(411241, nil, nil, nil, 1, 2)
 
 local timerEndExistenceCast						= mod:NewCastTimer(15, 410625, nil, "HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerVoidBombCD							= mod:NewCDCountTimer(29.9, 404027, 167180, nil, nil, 3)--"Bombs"
@@ -108,8 +108,8 @@ local timerEmptyStrikeCD						= mod:NewCDTimer(12.2, 404769, nil, "Tank|Healer",
 local timerBlastingScreamCD						= mod:NewCDTimer(7.3, 404754, 31295, false, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Spammy so off by default
 local timerDesolateBlossomCD					= mod:NewCDCountTimer(29.9, 404403, nil, nil, nil, 3)
 local timerInfiniteDuressCD		 				= mod:NewCDCountTimer(29.9, 404288, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)
-local timerVoidClawsCD							= mod:NewCDCountTimer(29.9, 411236, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerVoidClaws							= mod:NewTargetTimer(18, 411236, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
+local timerVoidClawsCD							= mod:NewCDCountTimer(29.9, 411241, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerVoidClaws							= mod:NewTargetTimer(18, 411241, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
 local timerEbonMight							= mod:NewCastCountTimer("d29.9", 404269, 299144, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)--"Immune"
 
 mod:AddSetIconOption("SetIconOnEmptyRecollection", 404505, true, 5, {8})
@@ -119,33 +119,33 @@ mod:AddNamePlateOption("NPAuraOnRescind", 404705)
 mod:AddNamePlateOption("NPAuraOnMight", 404269)
 --Stage Three: The Seas of Infinity
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26145))
-local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403517, 3, nil, nil, nil, nil, nil, nil, true)
-local warnVoidSlash								= mod:NewStackAnnounce(408422, 2, nil, "Tank|Healer")
-local warnHurtlingBarrageSoon					= mod:NewIncomingCountAnnounce(405022, 2)
-local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405022, 3, nil, nil, nil, nil, nil, nil, true)
+local warnEmbraceofNothingness					= mod:NewTargetCountAnnounce(403520, 3, nil, nil, nil, nil, nil, nil, true)
+local warnVoidSlash								= mod:NewStackAnnounce(408429, 2, nil, "Tank|Healer")
+local warnHurtlingBarrageSoon					= mod:NewIncomingCountAnnounce(405486, 2)
+local warnHurtlingBarrage						= mod:NewTargetCountAnnounce(405486, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCosmicAscension					= mod:NewSpecialWarningDodgeCount(403741, nil, 161862, nil, 2, 2)
-local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405022, nil, nil, nil, 1, 2)
-local yellHurtlingBarrage						= mod:NewShortPosYell(405022)
-local yellHurtlingBarrageFades					= mod:NewIconFadesYell(405022)
+local specWarnHurtlingBarrage					= mod:NewSpecialWarningYou(405486, nil, nil, nil, 1, 2)
+local yellHurtlingBarrage						= mod:NewShortPosYell(405486)
+local yellHurtlingBarrageFades					= mod:NewIconFadesYell(405486)
 local specWarnScouringEternity					= mod:NewSpecialWarningDodgeCount(403625, nil, 123244, nil, 3, 2)
-local specWarnEmbraceofNothingness				= mod:NewSpecialWarningYou(403517, nil, 229042, nil, 1, 2)
-local yellEmbraceofNothingness					= mod:NewShortYell(403517, 229042, nil, nil, "YELL")
-local yellEmbraceofNothingnessFades				= mod:NewShortFadesYell(403517, 229042, nil, nil, "YELL")
-local specWarnVoidSlash							= mod:NewSpecialWarningDefensive(408422, nil, nil, nil, 1, 2)
-local specWarnVoidSlashOut						= mod:NewSpecialWarningMoveAway(408422, nil, nil, nil, 1, 2)
-local yellVoidSlashFades						= mod:NewShortFadesYell(408422)
-local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408422, nil, nil, nil, 1, 2)
+local specWarnEmbraceofNothingness				= mod:NewSpecialWarningYou(403520, nil, 229042, nil, 1, 2)
+local yellEmbraceofNothingness					= mod:NewShortYell(403520, 229042, nil, nil, "YELL")
+local yellEmbraceofNothingnessFades				= mod:NewShortFadesYell(403520, 229042, nil, nil, "YELL")
+local specWarnVoidSlash							= mod:NewSpecialWarningDefensive(408429, nil, nil, nil, 1, 2)
+local specWarnVoidSlashOut						= mod:NewSpecialWarningMoveAway(408429, nil, nil, nil, 1, 2)
+local yellVoidSlashFades						= mod:NewShortFadesYell(408429)
+local specWarnVoidSlashTaunt					= mod:NewSpecialWarningTaunt(408429, nil, nil, nil, 1, 2)
 
 local timerCosmicAscensionCD					= mod:NewCDCountTimer(29.9, 403741, 161862, nil, nil, 1)
 local timerAstralFormation						= mod:NewCDCountTimer(29.9, 403510, 370470, nil, nil, 5)--Shorttext Pillar
-local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405022, nil, nil, nil, 3)
+local timerHurtlingBarrageCD					= mod:NewCDCountTimer(29.9, 405486, nil, nil, nil, 3)
 local timerScouringEternityCD					= mod:NewCDCountTimer(29.9, 403625, 123244, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Hide"
-local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403517, 229042, nil, nil, 3)--"Black Hole"
-local timerVoidSlashCD							= mod:NewCDCountTimer(29.9, 408422, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerVoidSlash							= mod:NewTargetTimer(18, 408422, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
+local timerEmbraceofNothingnessCD				= mod:NewCDCountTimer(29.9, 403520, 229042, nil, nil, 3)--"Black Hole"
+local timerVoidSlashCD							= mod:NewCDCountTimer(29.9, 408429, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerVoidSlash							= mod:NewTargetTimer(18, 408429, nil, "Tank|Healer", nil, 2, nil, DBM_COMMON_L.TANK_ICON)--AOE damage from expiring
 
-mod:AddSetIconOption("SetIconOnHurtling", 405022, true, 0, {3, 4})--2 on heroic
+mod:AddSetIconOption("SetIconOnHurtling", 405486, true, 0, {3, 4})--2 on heroic
 
 --P1 Variables
 mod.vb.surgeCount = 0
