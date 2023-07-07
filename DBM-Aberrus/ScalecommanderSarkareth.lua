@@ -708,8 +708,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurningClawsTaunt:Show(args.destName)
 			specWarnBurningClawsTaunt:Play("tauntboss")
 		else
-			local amount = args.amount or 1
-			warnBurningClaws:Show(args.destName, amount)
+			if args.event == "SPELL_AURA_APPLIED" then--Blizzard is shoving non stack into stack arg
+				warnBurningClaws:Show(args.destName, 1)
+			else
+				local amount = args.amount or 1
+				warnBurningClaws:Show(args.destName, amount)
+			end
 		end
 		timerBurningClaws:Restart(27, args.destName)
 	elseif spellId == 411241 then
@@ -717,8 +721,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidClawsTaunt:Show(args.destName)
 			specWarnVoidClawsTaunt:Play("tauntboss")
 		else
-			local amount = args.amount or 1
-			warnVoidClaws:Show(args.destName, amount)
+			if args.event == "SPELL_AURA_APPLIED" then--Blizzard is shoving non stack into stack arg
+				warnVoidClaws:Show(args.destName, 1)
+			else
+				local amount = args.amount or 1
+				warnVoidClaws:Show(args.destName, amount)
+			end
 			if args:IsPlayer() then
 				specWarnVoidClawsOut:Cancel()
 				specWarnVoidClawsOut:Schedule(12)
@@ -735,8 +743,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnVoidSlashTaunt:Show(args.destName)
 				specWarnVoidSlashTaunt:Play("tauntboss")
 			else
-				local amount = args.amount or 1
-				warnVoidSlash:Show(args.destName, amount)
+				if args.event == "SPELL_AURA_APPLIED" then--Blizzard is shoving non stack into stack arg
+					warnVoidSlash:Show(args.destName, 1)
+				else
+					local amount = args.amount or 1
+					warnVoidSlash:Show(args.destName, amount)
+				end
 				if args:IsPlayer() then
 					specWarnVoidSlashOut:Cancel()
 					specWarnVoidSlashOut:Schedule(12)
