@@ -43,7 +43,7 @@ local warnChillingBlast							= mod:NewTargetAnnounce(371976, 2)
 local warnEnvelopingWebs						= mod:NewTargetNoFilterAnnounce(372082, 3)
 local warnWrappedInWebs							= mod:NewTargetNoFilterAnnounce(372044, 4)
 local warnCallSpiderlings						= mod:NewCountAnnounce(372238, 2)
-local warnFrostbreathArachnid					= mod:NewSpellAnnounce("ej24899", 2)
+local warnFrostbreathArachnid					= mod:NewSpellAnnounce(-24899, 2)
 
 local specWarnChillingBlast						= mod:NewSpecialWarningMoveAway(371976, nil, nil, nil, 1, 2)
 local yellChillingBlast							= mod:NewYell(371976)
@@ -60,7 +60,7 @@ local timerChillingBlastCD						= mod:NewCDCountTimer(18.5, 371976, nil, nil, ni
 local timerEnvelopingWebsCD						= mod:NewCDCountTimer(24, 372082, nil, nil, nil, 3)--24-46.9
 local timerGossamerBurstCD						= mod:NewCDCountTimer(36.9, 373405, nil, nil, nil, 2)--36.9-67.6
 local timerCallSpiderlingsCD					= mod:NewCDCountTimer(25.1, 372238, nil, nil, nil, 1)--17.6-37
-local timerFrostbreathArachnidCD				= mod:NewCDCountTimer(98.9, "ej24899", nil, nil, nil, 1)
+local timerFrostbreathArachnidCD				= mod:NewCDCountTimer(98.9, -24899, nil, nil, nil, 1)
 local timerFreezingBreathCD						= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerPhaseCD								= mod:NewPhaseTimer(30)
 
