@@ -546,7 +546,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:IsMythic() and self:GetStage(2) and amount == 1 then
 			self:Unschedule(yellRepeater)
-			yellRepeater(self, 7)
+			yellRepeater(self, 2)
 		end
 	elseif spellId == 405394 and args:IsPlayer() then
 		local amount = args.amount or 1
