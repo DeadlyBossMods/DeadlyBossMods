@@ -80,7 +80,7 @@ local yellBlisteringTwilightFades				= mod:NewShortFadesYell(405642)
 local specWarnConvergentEruption				= mod:NewSpecialWarningCount(408193, nil, nil, nil, 2, 2)
 local specWarnWitheringVulnerability			= mod:NewSpecialWarningDefensive(405914, nil, nil, nil, 1, 2)
 local specWarnWitheringVulnerabilityTaunt		= mod:NewSpecialWarningTaunt(405914, nil, nil, nil, 1, 2)
-local yellShadowandFlameRepeat					= mod:NewIconRepeatYell(409385, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false, 2)
+local yellShadowandFlameRepeat					= mod:NewIconRepeatYell(409385, nil, false, 2)
 
 local timerPhaseCD								= mod:NewPhaseTimer(30)
 local timerShadowandFlameCD						= mod:NewCDCountTimer(47.4, 409385, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
