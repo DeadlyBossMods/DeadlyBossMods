@@ -1,4 +1,4 @@
-## Interface: 100100
+## Interface: 100105
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Bosses (Dragonflight)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Jefes de Mundo (Dragonflight)|r
