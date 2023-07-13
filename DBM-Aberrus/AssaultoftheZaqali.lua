@@ -106,7 +106,7 @@ local specWarnFlamingCudgelStack					= mod:NewSpecialWarningStack(410351, nil, 2
 local specWarnFlamingCudgelSwap						= mod:NewSpecialWarningTaunt(410351, nil, nil, nil, 1, 2)
 
 --local timerIgnarasFuryCD							= mod:NewAITimer(29.9, 406585, nil, nil, nil, 2)
-local timerCatastrophicSlamCD						= mod:NewCDCountTimer(30.3, 410516, nil, nil, nil, 5)
+local timerCatastrophicSlamCD						= mod:NewCDCountTimer(26.7, 410516, nil, nil, nil, 5)
 local timerFlamingCudgelCD							= mod:NewCDCountTimer(34, 410351, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddInfoFrameOption(361651, true)
@@ -176,8 +176,8 @@ function mod:OnCombatStart(delay)
 	timerGuardsandHuntsmanCD:Start(40-delay, 1 .. "-" .. DBM_COMMON_L.SOUTH)
 	timerDevastatingLeapCD:Start(95.9-delay, 1)
 	if self:IsMythic() then
-		timerVigorousGaleCD:Start(71.9, 1)--71-75
-		timerPhoenixRushCD:Start(90.1, 1)--90-94
+		timerVigorousGaleCD:Start(71.3, 1)--71-75
+		timerPhoenixRushCD:Start(89.7, 1)--90-94
 	end
 end
 
@@ -494,6 +494,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnCatastrophicSlam:Show(self.vb.leapCount)
 		specWarnCatastrophicSlam:Play("helpsoak")
 		--25.6, 26.7, 26.7, 26.7 (new heroic/normal timers)
-		timerCatastrophicSlamCD:Start(self:IsMythic() and 35.2 or 26.7, self.vb.leapCount+1)
+		timerCatastrophicSlamCD:Start(26.7, self.vb.leapCount+1)
 	end
 end
