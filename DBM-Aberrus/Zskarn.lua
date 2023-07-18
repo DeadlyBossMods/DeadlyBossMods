@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(202375)
 mod:SetEncounterID(2689)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20230619000000)
+mod:SetHotfixNoticeRev(20230718000000)
 --mod:SetMinSyncRevision(20221215000000)
 --mod.respawnTime = 29
 
@@ -86,7 +86,7 @@ function mod:OnCombatStart(delay)
 		timerDragonDeezTrapsCD:Start(19.2-delay, 1)
 		timerAnimateGolemsCD:Start(26.2-delay, 1)
 		timerTacticalDestructionCD:Start(31-delay, 1)
-		timerShrapnalBombCD:Start(35.9-delay, 1)
+		timerShrapnalBombCD:Start(34-delay, 1)
 	elseif self:IsHeroic() then--Validated
 		self.vb.expectedBombs = 3
 		timerUnstableEmbersCD:Start(7-delay, 1)
@@ -115,7 +115,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.destructionCount = self.vb.destructionCount + 1
 		specWarnTacticalDestruction:Show(self.vb.destructionCount)
 		specWarnTacticalDestruction:Play("watchstep")
-		timerTacticalDestructionCD:Start(71.6, self.vb.destructionCount+1)
+		timerTacticalDestructionCD:Start(71.6, self.vb.destructionCount+1)--Mythic might be 72.8 now
 	elseif spellId == 405812 then
 		self.vb.addIcon = 8
 		self.vb.golemsCount = self.vb.golemsCount + 1
@@ -156,13 +156,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.shrapnalSoakCount = 0
 		self.vb.trapCastCount = self.vb.trapCastCount + 1
 		warnScatterTraps:Show(self.vb.trapCastCount)
-		timerShrapnalBombCD:Start(30.3, self.vb.trapCastCount+1)
+		timerShrapnalBombCD:Start(self:IsMythic() and 45.3 or 30.3, self.vb.trapCastCount+1)
 		timerShrapnalBomb:Start()
 	elseif spellId == 405736 then
 		self.vb.dragonCount = self.vb.dragonCount + 1
 		specWarnDragonDeezTraps:Show(self.vb.dragonCount)
 		specWarnDragonDeezTraps:Play("watchstep")
-		timerDragonDeezTrapsCD:Start(self:IsEasy() and 35 or 30.4, self.vb.dragonCount)
+		timerDragonDeezTrapsCD:Start(self:IsMythic() and 34 or self:IsEasy() and 35 or 30.4, self.vb.dragonCount)
 	elseif spellId == 181113 then--Encounter Spawn
 		if self.Options.SetIconOnGolems then
 			self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnGolems")
