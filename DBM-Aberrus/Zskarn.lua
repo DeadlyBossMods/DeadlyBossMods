@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, icon method for golems will likely be changed to broodkeeper method since that's what BW is likely to use, but for testing purposes a basic incremental apply per set is probably fine
 --TODO, GTFO for standing in fire traps
-local warnSoakedShrapnal						= mod:NewAddsLeftAnnounce(404955, 2)
+local warnSoakedShrapnal						= mod:NewAddsLeftAnnounce(406725, 2)
 local warnScatterTraps							= mod:NewCountAnnounce(406725, 2)
 local warnSalvageParts							= mod:NewTargetNoFilterAnnounce(405592, 1)
 local warnSearingClaws							= mod:NewStackAnnounce(404942, 2, nil, "Tank|Healer")

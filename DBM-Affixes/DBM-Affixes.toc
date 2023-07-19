@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name-koKR: 어픽스
 ## X-DBM-Mod-Name-ruRU: Аффиксы
 ## X-DBM-Mod-MapID: 2296, 2450, 2481, 657, 1841, 1754, 1458, 2527, 2519, 2451, 2520
-## X-DBM-Mod-Sort: 205
+## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
 
 localization.en.lua
