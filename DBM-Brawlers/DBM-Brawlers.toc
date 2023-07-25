@@ -1,13 +1,13 @@
 ## Interface: 100105
-## Title:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffBrawlers|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffБойцовская гильдия|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ff싸움꾼 조합|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffKampfgilde|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ff搏击俱乐部|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ff鬥陣俱樂部|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffHermandad de camorristas|r
-## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffBastonneurs|r
-## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff4565ffCircolo dei Combattenti|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffBrawlers|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffБойцовская гильдия|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ff싸움꾼 조합|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffKampfgilde|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ff搏击俱乐部|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ff鬥陣俱樂部|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffHermandad de camorristas|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffBastonneurs|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffCircolo dei Combattenti|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
