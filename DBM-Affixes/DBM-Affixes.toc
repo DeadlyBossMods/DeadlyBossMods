@@ -1,9 +1,9 @@
 ## Interface: 100105
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cffff6010Dungeon and Raid Affixes|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cffff6010던전과 공격대 어픽스|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cffff6010Аффиксы подземелий и рейдов|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cffff6010地下城以及團隊詞綴|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cffff6010副本词缀|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff6010Dungeon and Raid Affixes|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff6010던전과 공격대 어픽스|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff6010Аффиксы подземелий и рейдов|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff6010地下城以及團隊詞綴|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff6010副本词缀|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core

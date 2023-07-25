@@ -1,14 +1,14 @@
 ## Interface: 100105
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10World Events|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Eventos del mundo|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10월드 이벤트|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Игровые события|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10世界事件|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Weltereignisse|r
-## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Eventos Mundiais|r
-## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Évènements Mondiaux|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10世界事件|r
-## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff10ff10Eventi Mondiali|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10World Events|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Eventos del mundo|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10월드 이벤트|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Игровые события|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10世界事件|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Weltereignisse|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Eventos Mundiais|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Évènements Mondiaux|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10世界事件|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cff10ff10Eventi Mondiali|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
