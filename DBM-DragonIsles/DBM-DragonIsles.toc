@@ -6,6 +6,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Мировые боссы (Драконы)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10필드 보스 (용군단)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10世界首領 (巨龍崛起)|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10世界首领 (巨龙时代)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -22,6 +23,7 @@
 ## X-DBM-Mod-Name-ruRU: Мировые боссы (Драконы)
 ## X-DBM-Mod-Name-koKR: 필드 보스 (용군단)
 ## X-DBM-Mod-Name-zhTW: 世界首領 (巨龍崛起)
+## X-DBM-Mod-Name-zhCN: 世界首领 (巨龙时代)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 210
 ## X-DBM-Mod-MapID: 2574, 2444, 2512, 2454
