@@ -249,7 +249,7 @@ function mod:SPELL_CAST_START(args)
 		if self:GetStage(3) and (self.vb.RushingDarknessCount == 1) and not self.vb.skippedDarkness then
 			timerRushingDarknessCD:Start(17, self.vb.RushingDarknessCount+1)
 		else
-			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 29, self.vb.RushingDarknessCount+1)
+			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 27.9, self.vb.RushingDarknessCount+1)--27.9-29.2, almost always 29 but sometimes 28 :\
 		end
 		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
 			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
@@ -416,7 +416,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Schedule(15.8, checkForSkippedDarkness, self)--Schedule checker to see if the normally skipped cast happened, and if not, start backup timer for second cast
 		timerSunderRealityCD:Start(19.5, 1)
 --		timerRushingDarknessCD:Start(27, 1)
-		timerCalamitousStrikeCD:Start(36, 1)
+		timerCalamitousStrikeCD:Start(35.9, 1)
 		timerEbonDestructionCD:Start(40.2, 1)
 	--elseif spellId == 407182 then
 	--	if self.Options.SetIconOnRushingDarkness then
