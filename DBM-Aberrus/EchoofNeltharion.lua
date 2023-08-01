@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 mod:SetUsedIcons(6)
-mod:SetHotfixNoticeRev(20230619000000)
+mod:SetHotfixNoticeRev(20230801000000)
 mod:SetMinSyncRevision(20230614000000)
 --mod.respawnTime = 29
 
@@ -289,7 +289,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 		warnVolcanicHeart:Show(self.vb.volcanicCount)
 		if self:GetStage(1) then
-			timerVolcanicHeartCD:Start(17, self.vb.volcanicCount+1)
+			timerVolcanicHeartCD:Start(36.4, self.vb.volcanicCount+1)
 		else
 			--21.3, 15.7, 17.0, 17.0, 17.3, 16.7, 19.4, 14.5
 			self:Unschedule(fixBrokenHeartTimer)
