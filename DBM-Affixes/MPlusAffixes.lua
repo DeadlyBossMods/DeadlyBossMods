@@ -82,12 +82,12 @@ local function checkForCombat(self)
 		if combatFound and not incorporealCounting then
 			incorporealCounting = true
 			timerIncorporealCD:Resume()
-			local incorpRemaining = timerIncorporealCD:GetRemaining()
-			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-				self:Unschedule(checkIncorp)
+--			local incorpRemaining = timerIncorporealCD:GetRemaining()
+--			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+--				self:Unschedule(checkIncorp)
 --				self:Schedule(incorpRemaining+5, checkIncorp, self)
 --				DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
-			end
+--			end
 		elseif not combatFound and incorporealCounting then
 			--Get remaining time, and pause it at < 1 second remaining
 			--This is still probably not accurate because most of the time the timer actually does pause fully as soon as you leave combat
@@ -104,12 +104,12 @@ local function checkForCombat(self)
 		if combatFound and not afflictedCounting then
 			afflictedCounting = true
 			timerAfflictedCD:Resume()
-			local afflictRemaining = timerAfflictedCD:GetRemaining()
-			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-				self:Unschedule(checkAfflicted)
+--			local afflictRemaining = timerAfflictedCD:GetRemaining()
+--			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+--				self:Unschedule(checkAfflicted)
 --				self:Schedule(afflictRemaining+5, checkAfflicted, self)
 --				DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
-			end
+--			end
 		elseif not combatFound and afflictedCounting then
 			--Get remaining time, and pause it at < 1 second remaining
 			--This is still probably not accurate because most of the time the timer actually does pause fully as soon as you leave combat
