@@ -60,7 +60,7 @@ local function checkAfflicted(self)
 		--Timer exists, do nothing
 		return
 	end
-	timerAfflictedCD:Start(25)
+	timerAfflictedCD:Start(20)
 	self:Schedule(30, checkAfflicted, self)
 end
 
@@ -69,7 +69,7 @@ local function checkIncorp(self)
 		--Timer exists, do nothing
 		return
 	end
-	timerIncorporealCD:Start(40)
+	timerIncorporealCD:Start(35)
 	self:Schedule(45, checkIncorp, self)
 end
 
@@ -82,44 +82,32 @@ local function checkForCombat(self)
 		if combatFound and not incorporealCounting then
 			incorporealCounting = true
 			timerIncorporealCD:Resume()
---			local incorpRemaining = timerIncorporealCD:GetRemaining()
---			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
---				self:Unschedule(checkIncorp)
---				self:Schedule(incorpRemaining+5, checkIncorp, self)
---				DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
---			end
-		elseif not combatFound and incorporealCounting then
-			--Get remaining time, and pause it at < 1 second remaining
-			--This is still probably not accurate because most of the time the timer actually does pause fully as soon as you leave combat
-			--However, sometimes it also keeps ticking it's better to be inaccurate over than inaccurate under
 			local incorpRemaining = timerIncorporealCD:GetRemaining()
-			if (incorpRemaining > 0) and (incorpRemaining < 1) then
-				incorporealCounting = false
-				timerIncorporealCD:Pause()
-				self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
+			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+				self:Unschedule(checkIncorp)
+				self:Schedule(incorpRemaining+10, checkIncorp, self)
+				DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
 			end
+		elseif not combatFound and incorporealCounting then
+			incorporealCounting = false
+			timerIncorporealCD:Pause()
+			self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
 		end
 	end
 	if afflictedDetected then
 		if combatFound and not afflictedCounting then
 			afflictedCounting = true
 			timerAfflictedCD:Resume()
---			local afflictRemaining = timerAfflictedCD:GetRemaining()
---			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
---				self:Unschedule(checkAfflicted)
---				self:Schedule(afflictRemaining+5, checkAfflicted, self)
---				DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
---			end
-		elseif not combatFound and afflictedCounting then
-			--Get remaining time, and pause it at < 1 second remaining
-			--This is still probably not accurate because most of the time the timer actually does pause fully as soon as you leave combat
-			--However, sometimes it also keeps ticking it's better to be inaccurate over than inaccurate under
 			local afflictRemaining = timerAfflictedCD:GetRemaining()
-			if (afflictRemaining > 0) and (afflictRemaining < 1) then
-				afflictedCounting = false
-				timerAfflictedCD:Pause()
-				self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
+			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+				self:Unschedule(checkAfflicted)
+				self:Schedule(afflictRemaining+10, checkAfflicted, self)
+				DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
 			end
+		elseif not combatFound and afflictedCounting then
+			afflictedCounting = false
+			timerAfflictedCD:Pause()
+			self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
 		end
 	end
 	self:Schedule(0.25, checkForCombat, self)
@@ -259,11 +247,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEntangled:Show()
 			specWarnEntangled:Play("breakvine")--breakvine
 		end
-	elseif spellId == 408801 and self:AntiSpam(20, "aff7") then
+	elseif spellId == 408801 and self:AntiSpam(25, "aff7") then
 		if not incorpDetected then
 			incorpDetected = true
 		end
-		--This one is interesting cause it runs every 45 seconds, sometimes skips a cast and goes 90, but also pauses out of combat (but sometimes doesn't pause)
+		--This one is interesting cause it runs every 45 seconds, sometimes skips a cast and goes 90, but also pauses out of combat
 		incorporealCounting = true
 		timerIncorporealCD:Start()
 		self:Unschedule(checkForCombat)
