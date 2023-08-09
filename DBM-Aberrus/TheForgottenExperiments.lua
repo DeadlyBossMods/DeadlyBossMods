@@ -370,7 +370,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 406313 then
-		tankStacks[args.destName] = amount
+		tankStacks[args.destName] = nil
 	end
 end
 
