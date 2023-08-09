@@ -29,7 +29,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  The Forgotten Experiments --
 ---------------------------
---L= DBM:GetModLocalization(2530)
+L= DBM:GetModLocalization(2530)
+
+L:SetMiscLocalization({
+	SafeClear		= "Safe Clear"
+})
 
 ---------------------------
 --  Assault of the Zaqali --
