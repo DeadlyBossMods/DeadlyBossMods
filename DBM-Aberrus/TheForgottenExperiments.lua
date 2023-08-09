@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 local warnInfusedStrikes							= mod:NewStackAnnounce(406311, 2, nil, "Tank|Healer")
 local warnInfusedExplosion							= mod:NewCountAnnounce(407302, 4, nil, "Tank|Healer")
 
+local specWarnInfusedStrikesSelf					= mod:NewSpecialWarningStack(406311, nil, 6, nil, nil, 1, 6)
 local specWarnInfusedStrikesTaunt					= mod:NewSpecialWarningTaunt(406311, nil, nil, nil, 1, 2)
 local specWarnInfusedStrikesHug						= mod:NewSpecialWarningMoveTo(406311, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
@@ -306,7 +307,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		else
-			warnInfusedStrikes:Show(args.destName, amount)
+			--If it's safe for you to clear, and you're at 6 stacks, the warning should also be emphasized on self so you start looking for your co tank (and maybe glance at infoframe)
+			if self.vb.tankSafeClear and amount >= 6 then
+				specWarnInfusedStrikesSelf:Show(amount)
+				specWarnInfusedStrikesSelf:Play("stackhigh")
+			else
+				warnInfusedStrikes:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 407302 and self:AntiSpam(3, 1) then
 		self.vb.tankSafeClear = false
