@@ -368,7 +368,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 406313 then
-		tDeleteItem(corruptedBloodTarget, args.destName)
+		tDeleteItem(tankStacks, args.destName)
 	end
 end
 
