@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 406358 404472 407733 404713 405042 405492 405375 406227 407552 405391 407775 412117",
 	"SPELL_AURA_APPLIED 406313 407302 407327 407617 405392",
 	"SPELL_AURA_APPLIED_DOSE 406313 407302 407327",
-	"SPELL_AURA_REMOVED 407327",
+	"SPELL_AURA_REMOVED 407327 406313",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
@@ -30,13 +30,21 @@ mod:RegisterEventsInCombat(
 --TODO, what do you actually do with Temporal Anomaly, soak it?
 --NOTE, Rending Charge is a private aura
 --General
+local warnInfusedStrikes							= mod:NewStackAnnounce(406311, 2, nil, "Tank|Healer")
+local warnInfusedExplosion							= mod:NewCountAnnounce(407302, 4, nil, "Tank|Healer")
+
+local specWarnInfusedStrikesSelf					= mod:NewSpecialWarningStack(406311, nil, 6, nil, nil, 1, 6)
+local specWarnInfusedStrikesTaunt					= mod:NewSpecialWarningTaunt(406311, nil, nil, nil, 1, 2)
+local specWarnInfusedStrikesHug						= mod:NewSpecialWarningMoveTo(406311, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 8)
 
-local timerInfusedStrikes							= mod:NewBuffFadesTimer(20, 407302, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)--Track the aura that needs to fall off before tanks "clear" again
+local timerInfusedExplosion							= mod:NewBuffFadesTimer(20, 407302, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEALER_ICON)--Track the aura that needs to fall off before tanks "clear" again
 --local berserkTimer								= mod:NewBerserkTimer(600)
+
+mod:AddInfoFrameOption(406311, "Tank")
 --Neldris
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26001))
-local warnInfusedStrikes							= mod:NewStackAnnounce(406311, 2, nil, "Tank|Healer")
+
 local warnRendingCharge								= mod:NewIncomingCountAnnounce(406358, 3)
 
 local specWarnMassiveSlam							= mod:NewSpecialWarningDodgeCount(404472, nil, nil, nil, 2, 2)
@@ -85,6 +93,8 @@ mod.vb.eruptionCount = 0
 mod.vb.breathCount = 0
 mod.vb.disintegrateCount = 0
 mod.vb.anomalyCount = 0
+mod.vb.tankSafeClear = true
+local tankStacks = {}
 local essenceMarks = {}
 local bossActive = {}
 local allTimers = {
@@ -94,13 +104,46 @@ local allTimers = {
 	[405042] = {16.5, 37.6, 27.5, 35.2, 27.9, 38, 27.5, 38.9, 28},
 }
 
+local updateInfoFrame
+do
+	local twipe, tsort = table.wipe, table.sort
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		twipe(lines)
+		twipe(sortedLines)
+		--Show tank names and their current stacks
+		for name, count in pairs(tankStacks) do
+			addLine(name, count)
+		end
+		--Show a clear yes or no (also green or red) on whether it's safe to clear said stacks
+		if mod.vb.tankSafeClear then
+			addLine(L.SafeClear, "|cFF088A08"..YES.."|r")
+		else
+			addLine(L.SafeClear, "|cffff0000"..NO.."|r")
+		end
+		return lines, sortedLines
+	end
+end
+
+local function resetRaidDebuff(self)
+	self.vb.tankSafeClear = true
+end
+
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(bossActive)
+	tankStacks = {}
 	--Neldris
 	self.vb.rendingCount = 0
 	self.vb.massiveSlamCount = 0
 	self.vb.roarCount = 0
+	self.vb.tankSafeClear = true
 	if self:IsMythic() then
 		timerBellowingRoarCD:Start(6-delay, 1)
 		timerRendingChargeCD:Start(14-delay, 1)
@@ -120,6 +163,16 @@ function mod:OnCombatStart(delay)
 	self.vb.disintegrateCount = 0
 	self.vb.anomalyCount = 0
 	self:EnablePrivateAuraSound(406317, "targetyou", 2)--Rending Charge
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(406313))
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -228,13 +281,40 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 406313 and not args:IsPlayer() then
+	if spellId == 406313 then
 		local amount = args.amount or 1
-		if amount % 3 == 0 then--Guessed, Filler
-			warnInfusedStrikes:Show(args.destName, amount)
+		tankStacks[args.destName] = amount
+		if not args:IsPlayer() then
+			if amount % 3 == 0 then
+				if amount >= 6 then
+					--If you have no debuff, and other tank is high, you need to get a stack so you can clear that tank
+					if not DBM:UnitDebuff("player", spellId) then
+						specWarnInfusedStrikesTaunt:Show(args.destName)
+						specWarnInfusedStrikesTaunt:Play("tauntboss")
+					elseif self.vb.tankSafeClear then--You do have stacks, and it's safe to clear them with other tank
+						specWarnInfusedStrikesHug:Show(args.destName)
+						specWarnInfusedStrikesHug:Play("gathershare")
+					end
+				else
+					warnInfusedStrikes:Show(args.destName, amount)
+				end
+			end
+		else
+			--If it's safe for you to clear, and you're at 6 stacks, the warning should also be emphasized on self so you start looking for your co tank (and maybe glance at infoframe)
+			if self.vb.tankSafeClear and amount >= 6 then
+				specWarnInfusedStrikesSelf:Show(amount)
+				specWarnInfusedStrikesSelf:Play("stackhigh")
+			else
+				warnInfusedStrikes:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 407302 and self:AntiSpam(3, 1) then
-		timerInfusedStrikes:Restart()
+		self.vb.tankSafeClear = false
+		local amount = args.amount or 1
+		warnInfusedExplosion:Show(args.amount or 1)
+		timerInfusedExplosion:Restart()
+		self:Unschedule(resetRaidDebuff)
+		self:Schedule(21, resetRaidDebuff, self)--1 extra second for good measure
 	elseif spellId == 407327 then
 		local amount = args.amount or 1
 		if amount == 1 then
@@ -287,6 +367,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				end
 			end
 		end
+	elseif spellId == 406313 then
+		tankStacks[args.destName] = nil
 	end
 end
 

@@ -484,7 +484,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 409385 then
 		self.vb.SandFCount = self.vb.SandFCount + 1
 		warnShadowandFlame:Show(self.vb.SandFCount)
-		timerShadowandFlameCD:Start(nil, self.vb.SandFCount+1)
+		timerShadowandFlameCD:Start(self.vb.SandFCount == 1 and 52 or 47, self.vb.SandFCount+1)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
@@ -511,7 +511,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlameSlashCD:Stop()
 		timerPhaseCD:Start(11.7)
 		if self:IsMythic() then
-			timerShadowandFlameCD:Start(29.6, 1)
+			timerShadowandFlameCD:Start(29, 1)
 			timerConvergentEruptionCD:Start(35.7, 1)
 		elseif self:IsHeroic() then
 			timerConvergentEruptionCD:Start(32.4, 1)
