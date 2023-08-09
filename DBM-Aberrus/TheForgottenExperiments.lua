@@ -118,10 +118,8 @@ do
 		twipe(lines)
 		twipe(sortedLines)
 		--Show tank names and their current stacks
-		if #tankStacks > 0 then
-			for name, count in pairs(tankStacks) do
-				addLine(name, count)
-			end
+		for name, count in pairs(tankStacks) do
+			addLine(name, count)
 		end
 		--Show a clear yes or no (also green or red) on whether it's safe to clear said stacks
 		if mod.vb.tankSafeClear then
@@ -140,7 +138,7 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(bossActive)
-	table.wipe(tankStacks)
+	tankStacks = {}
 	--Neldris
 	self.vb.rendingCount = 0
 	self.vb.massiveSlamCount = 0
