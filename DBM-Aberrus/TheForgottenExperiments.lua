@@ -118,11 +118,8 @@ do
 		twipe(lines)
 		twipe(sortedLines)
 		--Show tank names and their current stacks
-		for i=1, #tankStacks do
-			local name = tankStacks[i]
-			local uId = DBM:GetRaidUnitId(name)
-			local _, _, count = DBM:UnitDebuff(uId, 406313)
-			if count then
+		if #tankStacks > 0 then
+			for name, count in pairs(tankStacks) do
 				addLine(name, count)
 			end
 		end
@@ -288,9 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 406313 then
 		local amount = args.amount or 1
-		if not tContains(tankStacks, args.destName) then
-			table.insert(tankStacks, args.destName)
-		end
+		tankStacks[args.destName] = amount
 		if not args:IsPlayer() then
 			if amount % 3 == 0 then
 				if amount >= 6 then
@@ -375,7 +370,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 406313 then
-		tDeleteItem(tankStacks, args.destName)
+		tankStacks[args.destName] = amount
 	end
 end
 
