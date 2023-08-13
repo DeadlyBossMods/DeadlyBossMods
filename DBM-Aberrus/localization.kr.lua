@@ -33,7 +33,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2530)
 
 L:SetMiscLocalization({
-	SafeClear		= "안전 해제"
+	SafeClear		= "해제 안전"
 })
 
 ---------------------------
