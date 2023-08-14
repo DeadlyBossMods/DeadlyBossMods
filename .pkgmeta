@@ -23,6 +23,7 @@ ignore:
   - DBM-DragonIsles/Libs/LibDeflate/README.md
   - DBM-DragonIsles/Libs/LibDeflate/CONTRIBUTING.md
   - DBM-DragonIsles/Libs/LibDeflate/changelog.md
+  - DBM-DragonIsles/Libs/LibDropDownMenu/README.md
   - DBM-DragonIsles/Libs/LibStub/tests
   - DBM-DragonIsles/Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
