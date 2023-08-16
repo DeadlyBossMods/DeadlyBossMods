@@ -153,12 +153,14 @@ end
 function mod:RushingDarknessTarget(targetname, uId)
 	if not targetname then return end
 	warnRushingDarknessWallTarget:Show(self.vb.RushingDarknessCount, targetname)
-	if targetname == UnitName("player") then
-		yellRushingDarkness:Yell(6, 6)
-		yellRushingDarknessFades:Countdown(5, nil, 6)
-	end
-	if self.Options.SetIconOnRushingDarkness then
-		self:SetIcon(targetname, 6, 5)
+	if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
+		if targetname == UnitName("player") then
+			yellRushingDarkness:Yell(6, 6)
+			yellRushingDarknessFades:Countdown(5, nil, 6)
+		end
+		if self.Options.SetIconOnRushingDarkness then
+			self:SetIcon(targetname, 6, 5)
+		end
 	end
 end
 
@@ -249,9 +251,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 27.9, self.vb.RushingDarknessCount+1)--27.9-29.2, almost always 29 but sometimes 28 :\
 		end
-		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
-			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
-		end
+		self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
 		specWarnRazetheEarth:Play("watchstep")
