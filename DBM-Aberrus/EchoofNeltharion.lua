@@ -40,6 +40,7 @@ local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
 --local warnVolcanicHeart						= mod:NewTargetCountAnnounce(410953, 2, nil, nil, nil, nil, nil, nil, true)
+local warnRushingDarkness						= mod:NewIncomingCountAnnounce(407221, 2)
 local warnRushingDarknessWallTarget				= mod:NewTargetCountAnnounce(407221, 2, nil, nil, nil, nil, nil, nil, true)
 local warnVolcanicHeart							= mod:NewCountAnnounce(410953, 3, nil, nil, 167180)--This is using count object instead of incoming count because weak auras are scanning for "Bombs (number")
 
@@ -251,6 +252,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
 			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
+		else
+			warnRushingDarkness:Show(self.vb.RushingDarknessCount)
 		end
 	elseif spellId == 409313 then--Intermission 1.5
 		specWarnRazetheEarth:Show()
