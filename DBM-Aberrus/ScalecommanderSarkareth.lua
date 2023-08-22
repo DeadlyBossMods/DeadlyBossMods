@@ -358,7 +358,7 @@ function mod:OnCombatStart(delay)
 		timerMassDisintegrateCD:Start(20.8-delay, 1)
 		timerSearingBreathCD:Start(25.4-delay, 1)
 		timerPhaseCD:Start(101.9, 2)--Mythic Confirmed
-		berserkTimer:Start(450)--Might not actually start here but phase 3
+		berserkTimer:Start(480)
 	else
 		if self:IsLFR() then
 			difficultyName = "lfr"
