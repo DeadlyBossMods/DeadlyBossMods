@@ -147,7 +147,7 @@ local function checkForSkippedDarkness(self)
 	if self.vb.RushingDarknessCount == 0 then--first one skipped (which is like 95% of pulls)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1
 		self.vb.skippedDarkness = true
-		timerRushingDarknessCD:Start(12, 2)
+		timerRushingDarknessCD:Start(10.2, 2)
 	end
 end
 
@@ -417,7 +417,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Schedule(15.8, checkForSkippedDarkness, self)--Schedule checker to see if the normally skipped cast happened, and if not, start backup timer for second cast
 		timerSunderRealityCD:Start(19.5, 1)
 --		timerRushingDarknessCD:Start(27, 1)
-		timerCalamitousStrikeCD:Start(35.9, 1)
+		timerCalamitousStrikeCD:Start(34.4, 1)
 		timerEbonDestructionCD:Start(40.2, 1)
 	--elseif spellId == 407182 then
 	--	if self.Options.SetIconOnRushingDarkness then
