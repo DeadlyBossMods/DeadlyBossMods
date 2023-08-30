@@ -68,6 +68,7 @@ local timerSwirlingFlameCD						= mod:NewCDCountTimer(20.7, 404896, 86189, nil, 
 local timerFlameSlashCD							= mod:NewCDCountTimer(11, 403203, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Molgoth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26338))
+local warnPhase2								= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnShadowandFlame						= mod:NewCastAnnounce(409385, 4)
 local warnShadowflame							= mod:NewCountAnnounce(405394, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(405394))
 local warnBlisteringTwilight					= mod:NewTargetCountAnnounce(405641, 3, nil, nil, 167180, nil, nil, nil, true)
@@ -495,6 +496,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 406730 and self:GetStage(2, 1) then--Crucible Instability
 		self:SetStage(2)
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
 		self.vb.meteorCast = 0--Reused for Gloom Conflagration
 		self.vb.umbralCount = 0--Reused for Blistering Twilight
 		self.vb.moltenEruptionCast = 0--Reused for Converging Eruption
