@@ -97,7 +97,7 @@ local yellBlazingSpearFades							= mod:NewShortFadesYell(401401)
 --local timerBlazingSpearCD							= mod:NewAITimer(29.9, 401401, nil, nil, nil, 3)
 --Stage Two: Warlord's Will
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26683))
-local warnDesperateImmo								= mod:NewSpellAnnounce(409359, 3)
+local warnDesperateImmo								= mod:NewSpellAnnounce(409359, 3, nil, nil, nil, nil, nil, 2)
 local warnFlamingCudgel								= mod:NewStackAnnounce(410351, 2, nil, "Tank|Healer")
 
 local specWarnCatastrophicSlam						= mod:NewSpecialWarningCount(410516, nil, nil, nil, 2, 2)
@@ -302,6 +302,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.leapCount = 0--Reused with demo slam
 		self:SetStage(2)
 		warnDesperateImmo:Show()
+		warnDesperateImmo:Play("ptwo")
 		timerHeavyCudgelCD:Stop()
 		timerDevastatingLeapCD:Stop()
 		timerPhoenixRushCD:Stop()
