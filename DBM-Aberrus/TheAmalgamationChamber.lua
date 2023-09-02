@@ -218,7 +218,7 @@ local allTimers = {
 		--Flame Slash
 		[403203] = {9.3, 15.7, 25.4, 15.7, 18.3, 15.8, 19.4, 16.2, 19.5, 15.8},
 		--Swirling Flame
-		[404896] = {10.9, 14.6, 25.5, 15.7, 18.3, 15.8, 19.4, 15.8, 20.4, 15.0},
+		[404896] = {10.9, 14.6, 25.5, 14.5, 18.3, 15.8, 19.4, 15.8, 20.4, 15.0},
 		--Fiery Meteor
 		[404732] = {35.2, 35.1, 35.2, 35.2, 35.4},
 		--Molten Eruption (Heroic+)
@@ -227,7 +227,7 @@ local allTimers = {
 		--Shadow Spike
 		[403699] = {9.3, 15.7, 15.7, 10.9, 15.7, 19.5, 16.2, 19.4, 15.8, 19.5, 15.9},
 		--Umbral Detonation
-		[405016] = {16.6, 21.9, 19.4, 36.9, 34.0, 35.3},
+		[405016] = {16.6, 21.9, 18.3, 36.9, 34.0, 35.3},
 		--Coalescing Void
 		[403459] = {35.2, 35.1, 35.3, 35.2, 35.4},
 		--Shadows Convergence (Heroic+)
@@ -314,7 +314,7 @@ function mod:OnCombatStart(delay)
 	else--LFR and normal confirmed same, and heroic and mythic posibly also same
 		difficultyName = "easy"
 		timerShadowSpikeCD:Start(9.3-delay, 1)
-		timerUmbralDetonationCD:Start(16.6-delay, 1)
+		timerUmbralDetonationCD:Start(14.2-delay, 1)
 		--timerShadowsConvergenceCD:Start(22.8-delay, 1)
 		timerCoalescingVoidCD:Start(35.2-delay, 1)
 	end
@@ -336,7 +336,7 @@ function mod:OnCombatStart(delay)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
 	else--Normal and LFR confirmed
 		timerFlameSlashCD:Start(9.3-delay, 1)
-		timerSwirlingFlameCD:Start(12.2-delay, 1)
+		timerSwirlingFlameCD:Start(10.5-delay, 1)
 		--timerMoltenEruptionCD:Start(23-delay, 1)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
 	end
