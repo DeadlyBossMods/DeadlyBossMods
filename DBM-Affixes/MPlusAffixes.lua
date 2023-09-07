@@ -115,7 +115,10 @@ end
 
 do
 	local validZones
-	if (C_MythicPlus.GetCurrentSeason() or 0) == 10 then--DF Season 2
+	if (C_MythicPlus.GetCurrentSeason() or 0) == 11 then--DF Season 3
+		--2579, 1279, 1501, 1466, 1763, 643, 1862
+		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
+	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 10 then--DF Season 2
 		--657, 1841, 1754, 1458, 2527, 2519, 2451, 2520
 		validZones = {[657]=true, [1841]=true, [1754]=true, [1458]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
 	else--Season 1
