@@ -30,9 +30,7 @@
 ## X-DBM-Mod-LoadCID: 193534, 193535, 193532, 193533, 199855, 199853
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 9
-## X-Curse-Project-ID: 3358
-## X-WoWI-ID: 8814
-## X-Wago-ID: qv633o6b
+
 
 localization.en.lua
 localization.ru.lua

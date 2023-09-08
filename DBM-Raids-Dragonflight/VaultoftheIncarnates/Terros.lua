@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(2500, "DBM-VaultoftheIncarnates", nil, 1200)
+local mod	= DBM:NewMod(2500, "DBM-Raids-Dragonflight", 3, 1200)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
