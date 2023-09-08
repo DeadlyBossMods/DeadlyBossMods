@@ -26,7 +26,6 @@ localization.en.lua
 localization.kr.lua
 localization.tw.lua
 localization.cn.lua
-localization.es.lua
 localization.ru.lua
 
 VaultoftheIncarnates\Eranog.lua
