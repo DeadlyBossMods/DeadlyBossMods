@@ -6,6 +6,7 @@ mod:SetCreatureID(199855, 199853)--Vakan, Gholna
 mod:SetEncounterID(2696)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
+mod:SetBossHPInfoToHighest()
 mod:SetHotfixNoticeRev(20230516000000)
 --mod:SetMinSyncRevision(11969)
 

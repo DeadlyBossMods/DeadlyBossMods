@@ -4,7 +4,7 @@ local mod	= DBM:NewMod(2564, "DBM-Raids-Dragonflight", 1, 1207)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(165066)
+--mod:SetCreatureID(209333)--Likely ID, it's one with corrupted model, but commented til confirmed so no false engages off RP/event npcs
 mod:SetEncounterID(2820)
 --mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20210126000000)

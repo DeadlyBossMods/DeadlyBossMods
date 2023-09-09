@@ -4,7 +4,7 @@ local mod	= DBM:NewMod(2562, "DBM-DragonIsles", nil, 1205)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(199855, 199853)--Vakan, Gholna
+mod:SetCreatureID(209574)
 mod:SetEncounterID(2828)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
@@ -28,14 +28,14 @@ mod:RegisterEventsInCombat(
 
 
 --General
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(403384, nil, nil, nil, 1, 8)
+--local specWarnGTFO						= mod:NewSpecialWarningGTFO(403384, nil, nil, nil, 1, 8)
 
-local warnEnvelopingDarkness			= mod:NewTargetAnnounce(404171, 2)
+--local warnEnvelopingDarkness			= mod:NewTargetAnnounce(404171, 2)
 
-local specWarnUmbralSmash				= mod:NewSpecialWarningYou(403772, nil, nil, nil, 1, 2)
+--local specWarnUmbralSmash				= mod:NewSpecialWarningYou(403772, nil, nil, nil, 1, 2)
 
-local timerUmbralSmashCD				= mod:NewAITimer(22.1, 403772, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerBlazingPitchCD				= mod:NewAITimer(22.1, 403855, nil, nil, nil, 3)
+--local timerUmbralSmashCD				= mod:NewAITimer(22.1, 403772, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--local timerBlazingPitchCD				= mod:NewAITimer(22.1, 403855, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(5, 361632)
 
