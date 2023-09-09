@@ -201,4 +201,61 @@ L = DBM:GetModLocalization("AberrusTrash")
 L:SetGeneralLocalization({
 	name =	"에베루스 일반몹"
 })
+
 --]]
+---------------------------
+--  Amirdrassil, the Dream's Hope --
+---------------------------
+---------------------------
+--  Gnarlroot --
+---------------------------
+--L= DBM:GetModLocalization(2564)
+
+---------------------------
+--  Igira the Cruel --
+---------------------------
+--L= DBM:GetModLocalization(2554)
+
+---------------------------
+--  Volcoross --
+---------------------------
+--L= DBM:GetModLocalization(2557)
+
+---------------------------
+--  Council of Dreams --
+---------------------------
+--L= DBM:GetModLocalization(2555)
+
+---------------------------
+--  Larodar, Keeper of the Flame --
+---------------------------
+--L= DBM:GetModLocalization(2553)
+
+---------------------------
+--  Nymue, Weaver of the Cycle --
+---------------------------
+--L= DBM:GetModLocalization(2556)
+
+---------------------------
+--  Smolderon --
+---------------------------
+--L= DBM:GetModLocalization(2563)
+
+---------------------------
+--  Tindral Sageswift, Seer of the Flame --
+---------------------------
+--L= DBM:GetModLocalization(2565)
+
+---------------------------
+--  Fyrakk the Blazing --
+---------------------------
+--L= DBM:GetModLocalization(2519)
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("AmirdrassilTrash")
+
+L:SetGeneralLocalization({
+	name =	"아미드랏실 일반몹"
+})

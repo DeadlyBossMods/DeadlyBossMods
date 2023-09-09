@@ -2,6 +2,7 @@
 ## X-Min-Interface: 100107
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (DF)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010공격대 (용군단)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +15,7 @@
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-SubCategoriesID: 2549, 2569, 2522
 ## X-DBM-Mod-Name: Raids (Dragonflight)
+## X-DBM-Mod-Name-koKR: 공격대 (용군단)
 ## X-DBM-Mod-Sort: 201
 ## X-DBM-Mod-MapID: 2549, 2522
 ## X-DBM-Mod-MinCoreRevision: 20230617000000
