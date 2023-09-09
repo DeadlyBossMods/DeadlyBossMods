@@ -1,0 +1,50 @@
+## Interface: 100107
+## X-Min-Interface: 100107
+## Version: @project-version@
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (DF)|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMRaidsDragonflight_AllSavedVars
+## SavedVariablesPerCharacter: DBMRaidsDragonflight_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: DRAGONFLIGHT
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-SubCategoriesID: 2549, 2569, 2522
+## X-DBM-Mod-Name: Raids (Dragonflight)
+## X-DBM-Mod-Sort: 201
+## X-DBM-Mod-MapID: 2549, 2522
+## X-DBM-Mod-MinCoreRevision: 20230617000000
+## X-DBM-Mod-MinExpansion: 9
+## X-Curse-Project-ID: 3358
+## X-WoWI-ID: 8814
+## X-Wago-ID: qv633o6b
+
+localization.en.lua
+localization.kr.lua
+localization.tw.lua
+localization.cn.lua
+localization.ru.lua
+
+VaultoftheIncarnates\Eranog.lua
+VaultoftheIncarnates\Terros.lua
+VaultoftheIncarnates\ThePrimalistCouncil.lua
+VaultoftheIncarnates\Sennarth.lua
+VaultoftheIncarnates\Dathea.lua
+VaultoftheIncarnates\KurogGrimtotem.lua
+VaultoftheIncarnates\BroodkeeperDiurna.lua
+VaultoftheIncarnates\RaszageththeStormEater.lua
+VaultoftheIncarnates\VaultoftheIncarnatesTrash.lua
+
+Amirdrassil\Gnarlroot.lua
+Amirdrassil\IgiratheCruel.lua
+Amirdrassil\Volcoross.lua
+Amirdrassil\CouncilofDreams.lua
+Amirdrassil\Larodar.lua
+Amirdrassil\Nymue.lua
+Amirdrassil\Smolderon.lua
+Amirdrassil\TindralSageswift.lua
+Amirdrassil\Fyrakk.lua
+Amirdrassil\AmirdrassilTrash.lua

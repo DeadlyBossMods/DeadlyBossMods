@@ -8,18 +8,6 @@ local L
 ---------------------------
 --L= DBM:GetModLocalization(2522)
 
---L:SetWarningLocalization({
---})
---
---L:SetTimerLocalization{
---}
---
---L:SetOptionLocalization({
---})
---
---L:SetMiscLocalization({
---})
-
 ---------------------------
 --  The Amalgamation Chamber --融合体密室
 ---------------------------
