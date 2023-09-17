@@ -183,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 			timerAgonizingClawsCD:Start(10, self.vb.clawsCount+1)
 			--Only time there is a second charge per cycle, is one that is cast 3 seconds after vines
 			local remainingVinee = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
-			if remainingVinee < 25 then
+			if remainingVinee < 30 then
 				timerBarrelingChargeCD:Start(30, self.vb.chargeCount+1)
 				DBM:Debug("Starting Vines synced Charge CD")
 			end
