@@ -8,18 +8,18 @@ mod:SetCreatureID(208363, 208365, 208367)--Urctos, Aerwynn, Pip
 mod:SetEncounterID(2728)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
---mod:SetHotfixNoticeRev(20210126000000)
+mod:SetHotfixNoticeRev(20231117000000)
 --mod:SetMinSyncRevision(20210126000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 421032 418591 421024",
+	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 418591 421024",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 420948 423420 421022 425114 421298 418755 420858 421236 418720",
+	"SPELL_AURA_APPLIED 420948 423420 421022 425114 421298 418755 420858 421236 418720 421032",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
-	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720",
+	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 426390",
 	"SPELL_PERIODIC_MISSED 426390"
@@ -28,7 +28,8 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-
+(ability.id = 418187 or ability.id = 420525 or ability.id = 420947 or ability.id = 421020 or ability.id = 421292 or ability.id = 420937 or ability.id = 420671 or ability.id = 420856 or ability.id = 421029 or ability.id = 418591 or ability.id = 421024) and type = "begincast"
+ or (ability.id = 418755 or ability.id = 421292 or ability.id = 421029)
 --]]
 --TODO: see how Dream Tactics on mythic decides which two of the bosses will sync up so timers can be updated/synced when it happens.
 --TODO, use cast start event or success/applied event for barreling charge timer?
@@ -58,10 +59,10 @@ local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 
 --local timerSinseekerCD							= mod:NewAITimer(49, 335114, nil, nil, nil, 3)
-local timerBlindingRageCD							= mod:NewAITimer(11.8, 420525, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerBlindingRageCD							= mod:NewNextCountTimer(200, 420525, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerBlindingRage								= mod:NewBuffActiveTimer(15, 420525, nil, nil, nil, 5)
-local timerBarrelingChargeCD						= mod:NewAITimer(11.8, 420948, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
-local timerAgonizingClawsCD							= mod:NewAITimer(11.8, 421020, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBarrelingChargeCD						= mod:NewCDCountTimer(11.8, 420948, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
+local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421020, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Aerwynn
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27301))
 local warnRelentlessBarrage							= mod:NewSpellAnnounce(420937, 4)--You done fucked up
@@ -73,34 +74,38 @@ local specWarnPoisonousJavelin						= mod:NewSpecialWarningMoveAway(420856, nil,
 local yellPoisonousJavelin							= mod:NewShortYell(420856, nil, false)
 local yellPoisonousJavelinFades						= mod:NewShortFadesYell(420856)--For unstable Venom
 
-local timerConstrictingThicketCD					= mod:NewAITimer(11.8, 421292, nil, nil, nil, 2)
+local timerConstrictingThicketCD					= mod:NewNextCountTimer(11.8, 421292, nil, nil, nil, 2)
 local timerConstrictingThicket						= mod:NewBuffActiveTimer(15, 421292, nil, nil, nil, 5)
-local timerNoxiousBlossomCD							= mod:NewAITimer(11.8, 420671, nil, nil, nil, 3)
-local timerPoisonousJavelinCD						= mod:NewAITimer(11.8, 420856, nil, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)
+local timerNoxiousBlossomCD							= mod:NewCDCountTimer(21, 420671, nil, nil, nil, 3)
+local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420856, nil, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)
 
 --Pip
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
-local warnCaptivatingFinale							= mod:NewSpellAnnounce(421029, 4)--You done fucked up
+local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--You done fucked up
 local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418591, 2)
 local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418591, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnSongoftheDragon						= mod:NewSpecialWarningCount(421029, nil, nil, nil, 2, 2)
+local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
+local yellCaptivatingFinale							= mod:NewShortYell(421032)
 local specWarnPolymorphBomb							= mod:NewSpecialWarningYou(418591, nil, nil, nil, 1, 2)
 local yellPolymorphBomb								= mod:NewShortPosYell(418591)
 local yellPolymorphBombFades						= mod:NewIconFadesYell(418591)
 local specWarnEmeraldWinds							= mod:NewSpecialWarningCount(421024, nil, nil, nil, 2, 13)
 
-local timerSongoftheDragonCD						= mod:NewAITimer(11.8, 421029, nil, nil, nil, 2)
+local timerSongoftheDragonCD						= mod:NewNextCountTimer(200, 421029, nil, nil, nil, 2)
 local timerSongoftheDragon							= mod:NewBuffActiveTimer(20, 421029, nil, nil, nil, 5)
-local timerPolymorphBombCD							= mod:NewAITimer(11.8, 418591, nil, nil, nil, 3)
-local timerEmeraldWindsCD							= mod:NewAITimer(11.8, 421024, nil, nil, nil, 2)
+local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418591, nil, nil, nil, 3)
+local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, nil, nil, nil, 2)
 
 mod:AddPrivateAuraSoundOption(418589, true, 418591, 1)--Polymorph Bomb
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
 
+mod.vb.specialsActive = 0
 --Urctos
+mod.vb.clawsCount = 0
 mod.vb.rageCount = 0
 mod.vb.chargeCount = 0
 --Aerwynn
@@ -113,28 +118,41 @@ mod.vb.polyCount = 0
 mod.vb.polyIcon = 1
 mod.vb.windsCount = 0
 
+local function castBeforeSpecial(self, cooldown)
+	if timerBlindingRageCD:GetRemaining(self.vb.rageCount+1) < cooldown then
+		return false
+	elseif timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1) < cooldown then
+		return false
+	elseif timerSongoftheDragonCD:GetRemaining(self.vb.songCount+1) < cooldown then
+		return false
+	end
+	return true
+end
+
 function mod:OnCombatStart(delay)
+	self.vb.specialsActive = 0
 	--Urctos
+	self.vb.clawsCount = 0
 	self.vb.rageCount = 0
 	self.vb.chargeCount = 0
-	timerBlindingRageCD:Start(1-delay)
-	timerBarrelingChargeCD:Start(1-delay)
-	timerAgonizingClawsCD:Start(1-delay)
+	timerAgonizingClawsCD:Start(7.8-delay, 1)
+	timerBarrelingChargeCD:Start(28.8-delay, 1)
+	timerBlindingRageCD:Start(55.8-delay, 1)
 	--Aerwynn
 	self.vb.vinesCount = 0
 	self.vb.blossomCount = 0
 	self.vb.javCount = 0
-	timerConstrictingThicketCD:Start(1-delay)
-	timerNoxiousBlossomCD:Start(1-delay)
-	timerPoisonousJavelinCD:Start(1-delay)
+	timerNoxiousBlossomCD:Start(10.8-delay, 1)
+	timerPoisonousJavelinCD:Start(19.8-delay, 1)
+	timerConstrictingThicketCD:Start(128-delay, 1)
 	--Pip
 	self.vb.songCount = 0
 	self.vb.polyCount = 0
 	self.vb.polyIcon = 1
 	self.vb.windsCount = 0
-	timerSongoftheDragonCD:Start(1-delay)
-	timerPolymorphBombCD:Start(1-delay)
-	timerEmeraldWindsCD:Start(1-delay)
+	timerPolymorphBombCD:Start(34.9-delay, 1)
+	timerEmeraldWindsCD:Start(45.3-delay, 1)
+	timerSongoftheDragonCD:Start(196-delay, 1)
 	self:EnablePrivateAuraSound(418589, "bombyou", 2)
 end
 
@@ -144,51 +162,95 @@ end
 --	end
 --end
 
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 418187 and self:AntiSpam(3, 1) then
 		warnRebirth:Show()
 	elseif spellId == 420525 then
+		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.rageCount = self.vb.rageCount + 1
 		specWarnBlindingRage:Show(self.vb.rageCount)
 		specWarnBlindingRage:Play("aesoon")
-		timerBlindingRageCD:Start()
+		--Timers that specifically reset on blind rage begin
+		timerNoxiousBlossomCD:Restart(7, self.vb.blossomCount+1)
+		timerPolymorphBombCD:Restart(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
+		DBM:Debug("Starting second polymorph blinding rage timer, in case first happened before blinding rage")
 	elseif spellId == 420947 then
-		timerBarrelingChargeCD:Start()
+		self.vb.chargeCount = self.vb.chargeCount + 1
+		--If a special is NOT active, he'll use claws exactly 10 seconds of any charge
+		--ALso, if a special is active, any charge he's casting isn't timer based, it's a loop, his normal charge Cd is disabled during all boss specials
+		if self.vb.specialsActive == 0 then
+			timerAgonizingClawsCD:Start(10, self.vb.clawsCount+1)
+			--Only time there is a second charge per cycle, is one that is cast 3 seconds after vines
+			local remainingVinee = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
+			if remainingVinee < 25 then
+				timerBarrelingChargeCD:Start(30, self.vb.chargeCount+1)
+				DBM:Debug("Starting Vines synced Charge CD")
+			end
+		else
+			--Cast during a special, it's constricting, it'll loop in 8 seconds
+			timerBarrelingChargeCD:Start(8, self.vb.chargeCount+1)
+		end
 	elseif spellId == 421020 then
-		timerAgonizingClawsCD:Start()
+		self.vb.clawsCount = self.vb.clawsCount + 1
+		if self.vb.clawsCount % 2 == 1 then--Might be cleaner to just go "first claw after a special to avoid breakage
+			timerAgonizingClawsCD:Start(6, self.vb.clawsCount+1)
+		end
 	elseif spellId == 421292 then
+		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.vinesCount = self.vb.vinesCount + 1
 		specWarnConstrictingThicket:Show(self.vb.vinesCount)
 		specWarnConstrictingThicket:Play("aesoon")
-		timerConstrictingThicketCD:Start()
+		--Timers that specifically reset on constricting begin
+--		timerBarrelingChargeCD:Restart(3, self.vb.chargeCount+1)--Done somewhere else to start earlier, but this technically where it happens
 	elseif spellId == 420937 then
 		warnRelentlessBarrage:Show()
 	elseif spellId == 420671 then
 		self.vb.blossomCount = self.vb.blossomCount + 1
 		warnNoxiousBlossom:Show(self.vb.blossomCount)
-		timerNoxiousBlossomCD:Start()
+		--Is cast during specials, but Cd resets during them, twice, once on special begin and once again on special end
+		if castBeforeSpecial(self, 20.7) then
+			timerNoxiousBlossomCD:Start(20.7, self.vb.blossomCount+1)
+		end
 	elseif spellId == 420856 then
 		self.vb.javCount = self.vb.javCount + 1
-		timerPoisonousJavelinCD:Start()
+		if castBeforeSpecial(self, 25) then
+			timerPoisonousJavelinCD:Start(25, self.vb.javCount+1)
+		end
 	elseif spellId == 421029 then
+		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.songCount = self.vb.songCount + 1
 		specWarnSongoftheDragon:Show(self.vb.songCount)
 		specWarnSongoftheDragon:Play("takedamage")
-		timerSongoftheDragonCD:Start()
-	elseif spellId == 421032 then
-		warnCaptivatingFinale:Show()
+		--Timers that specifically reset on song begin
+		timerNoxiousBlossomCD:Restart(2.9, self.vb.blossomCount+1)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
 		self.vb.polyCount = self.vb.polyCount + 1
 		warnPolymorphBomb:Show(self.vb.polyCount)
-		timerPolymorphBombCD:Start()
+		--If cast during special, it's blinding rage and we need the 9 second loop
+		if self.vb.specialsActive > 0 then
+			timerPolymorphBombCD:Start(9, self.vb.polyCount+1)
+			DBM:Debug("Starting during special polymorph CD")
+		else
+			if castBeforeSpecial(self, 25) then
+				--Normal cd behavior, no specials locking it out, start it's reg cd
+				timerPolymorphBombCD:Start(18.9, self.vb.polyCount+1)
+				DBM:Debug("Starting Regular polymorph CD")
+			else
+				--Specials are soon, now we just need to see if that soon special is blind and if it is, create the "3rd bomb" timer that syncs to blind
+				local remainingRage = timerBlindingRageCD:GetRemaining(self.vb.rageCount+1)
+				if remainingRage < 25 then
+					timerPolymorphBombCD:Start(remainingRage, self.vb.polyCount+1)
+					DBM:Debug("Starting Blinding rage synced polymorph CD")
+				end
+			end
+		end
 	elseif spellId == 421024 then
 		self.vb.windsCount = self.vb.windsCount + 1
 		specWarnEmeraldWinds:Show(self.vb.windsCount)
 		specWarnEmeraldWinds:Play("pushbackincoming")
-		timerEmeraldWindsCD:Start()
+		--timerEmeraldWindsCD:Start(timer, self.vb.windsCount+1)--NEver started here
 	end
 end
 
@@ -204,7 +266,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 420948 then
-		self.vb.chargeCount = self.vb.chargeCount + 1
 		if args:IsPlayer() then
 			specWarnBarrelingCharge:Show(self.vb.chargeCount)
 			specWarnBarrelingCharge:Play("chargemove")
@@ -277,10 +338,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnPolymorphBombTargets:CombinedShow(0.5, self.vb.polyCount, args.destName)
 		end
 		self.vb.polyIcon = self.vb.polyIcon + 1
+	elseif spellId == 421032 then
+		warnCaptivatingFinale:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnCaptivatingFinale:Show()
+			specWarnCaptivatingFinale:Play("targetyou")
+			yellCaptivatingFinale:Yell()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+
+--ability.id = 418755 or ability.id = 421292 or ability.id = 421029
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 420948 then
@@ -289,8 +359,29 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 421298 then
 		timerConstrictingThicket:Stop()
-	elseif spellId == 418755 then--Weakened Defenses
-		timerBlindingRage:Stop()
+	elseif spellId == 418755 or spellId == 421292 or spellId == 421029 then--Weakened Defenses, Constricting Thicket, Song of the Dragon
+		self.vb.specialsActive = self.vb.specialsActive - 1
+		--Stop specific specials timers
+		if spellId == 418755 then--Weakened Defenses (blinding rage)
+			timerBlindingRage:Stop()
+			timerBlindingRageCD:Start(200, self.vb.rageCount+1)
+		elseif spellId == 421292 then--Constricting Thicket
+			timerConstrictingThicketCD:Start(200, self.vb.vinesCount+1)
+		else
+			timerSongoftheDragonCD:Start(200, self.vb.songCount+1)
+		end
+		--Timers that always reset on special end, regardless of who's special it is
+		if self.vb.specialsActive == 0 then
+			timerAgonizingClawsCD:Start(8, self.vb.clawsCount+1)
+			timerBarrelingChargeCD:Restart(29, self.vb.chargeCount+1)
+
+			timerNoxiousBlossomCD:Restart(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
+			timerPoisonousJavelinCD:Start(20, self.vb.javCount+1)
+
+			timerPolymorphBombCD:Restart(16, self.vb.polyCount+1)
+			timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
+			DBM:Debug("All specials have ended, restarting all non special timers")
+		end
 	elseif spellId == 420858 then
 		if args:IsPlayer() then
 			yellPoisonousJavelinFades:Cancel()
