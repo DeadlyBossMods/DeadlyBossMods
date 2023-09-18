@@ -4,10 +4,10 @@ local mod	= DBM:NewMod(2563, "DBM-Raids-Dragonflight", 1, 1207)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(200927)--Iffy
+mod:SetCreatureID(200927)
 mod:SetEncounterID(2824)
 --mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20210126000000)
+mod:SetHotfixNoticeRev(20230916000000)
 --mod:SetMinSyncRevision(20210126000000)
 --mod.respawnTime = 29
 
@@ -15,19 +15,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 421343 422691 426725 422172",
-	"SPELL_CAST_SUCCESS 421455 422277",
+	"SPELL_CAST_SUCCESS 422277",
 	"SPELL_AURA_APPLIED 421656 422577 421455 422067",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 421656 422577 421455 422067",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421532",
-	"SPELL_PERIODIC_MISSED 421532"
+	"SPELL_PERIODIC_MISSED 421532",
 --	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
-
+ (ability.id = 421343 or ability.id = 422691 or ability.id = 426725 or ability.id = 422172) and type = "begincast"
+  or ability.id = 422277 and type = "cast"
+  or ability.id = 422067
+  or ability.id = 421455 and type = "applydebuff"
 --]]
 --TODO, add https://www.wowhead.com/ptr-2/spell=426018/seeking-inferno later
 --TODO, better tracking of personal dps buffs in P2?
@@ -54,22 +57,22 @@ local yellOverheated								= mod:NewShortYell(421455)
 local yellOverheatedFades							= mod:NewShortFadesYell(421455)
 local specWarnLavaGeysers							= mod:NewSpecialWarningCount(422691, nil, nil, nil, 2, 2)
 
-local timerBrandofDamnationCD						= mod:NewAITimer(49, 421343, nil, nil, nil, 5)
+local timerBrandofDamnationCD						= mod:NewCDCountTimer(29.9, 421343, nil, nil, nil, 5)
 local timerSearingAftermathCD						= mod:NewTargetTimer(6, 422577, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerOverheatedCD								= mod:NewAITimer(49, 421455, nil, nil, nil, 5)
-local timerLavaGeysersCD							= mod:NewAITimer(49, 422691, nil, nil, nil, 3)
+local timerOverheatedCD								= mod:NewCDCountTimer(29.9, 421455, nil, nil, nil, 5)
+local timerLavaGeysersCD							= mod:NewCDCountTimer(21.9, 422691, nil, nil, nil, 3)
+local timerPhaseCD									= mod:NewPhaseTimer(60)
 --Stage Two: World In Flames
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
-local warnWorldinFlames								= mod:NewCountAnnounce(422172, 4)
+local warnDevourEssence								= mod:NewCountAnnounce(422277, 3)
 
 local specWarnEncroachingDestruction				= mod:NewSpecialWarningSpell(426725, nil, nil, nil, 3, 2)
 
-local timerEncroachingDestructionCD					= mod:NewAITimer(6, 426725, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local specWarnDevourEssence							= mod:NewSpecialWarningDodgeCount(422277, nil, nil, nil, 2, 2)
+local timerEncroachingDestructionCD					= mod:NewNextTimer(395, 426725, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--basically soft berserk timer
 local specWarnWorldinFlames							= mod:NewSpecialWarningDodgeCount(422172, nil, nil, nil, 2, 2)
 
-local timerDevourEssenceCD							= mod:NewAITimer(49, 422277, nil, nil, nil, 3)
-local timerWorldinFlamesCD							= mod:NewAITimer(49, 422172, nil, nil, nil, 3)
+local timerDevourEssenceCD							= mod:NewCDCountTimer(49, 422277, nil, nil, nil, 3)
+--local timerWorldinFlamesCD							= mod:NewAITimer(49, 422172, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
@@ -78,6 +81,7 @@ local timerWorldinFlamesCD							= mod:NewAITimer(49, 422172, nil, nil, nil, 3)
 mod.vb.brandCount = 0
 mod.vb.overheatedCount = 0
 mod.vb.geyserCount = 0
+mod.vb.cycleCount = 0
 mod.vb.encroached = false
 
 function mod:OnCombatStart(delay)
@@ -85,10 +89,13 @@ function mod:OnCombatStart(delay)
 	self.vb.brandCount = 0
 	self.vb.overheatedCount = 0
 	self.vb.geyserCount = 0
+	self.vb.cycleCount = 0
 	self.vb.encroached = false
-	timerBrandofDamnationCD:Start(1-delay)
-	timerOverheatedCD:Start(1-delay)
-	timerLavaGeysersCD:Start(1-delay)
+	timerOverheatedCD:Start(10-delay, 1)
+	timerBrandofDamnationCD:Start(12.9-delay, 1)
+	timerLavaGeysersCD:Start(26.9-delay, 1)
+	timerPhaseCD:Start(62.7-delay, 1)--Basically phase/world in flames timer
+	timerEncroachingDestructionCD:Start(393.8-delay)
 end
 
 --function mod:OnCombatEnd()
@@ -103,38 +110,30 @@ function mod:SPELL_CAST_START(args)
 		self.vb.brandCount = self.vb.brandCount + 1
 		specWarnBrandofDamnation:Show(self.vb.brandCount)
 		specWarnBrandofDamnation:Play("specialsoon")
-		timerBrandofDamnationCD:Start()
+		if self.vb.brandCount % 2 == 1 then--Other timers started in phase change event
+			timerBrandofDamnationCD:Start(nil, self.vb.brandCount+1)
+		end
 	elseif spellId == 422691 then
 		self.vb.geyserCount = self.vb.geyserCount + 1
 		specWarnLavaGeysers:Show()
 		specWarnLavaGeysers:Play("watchstep")
-		timerLavaGeysersCD:Start()
+		if self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
+			timerLavaGeysersCD:Start(nil, self.vb.geyserCount+1)
+		end
 	elseif spellId == 426725 then
 		self.vb.encroached = true
 		specWarnEncroachingDestruction:Show()
 		specWarnEncroachingDestruction:Play("stilldanger")
 	elseif spellId == 422172 and not self.vb.encroached then
-		self.vb.geyserCount = self.vb.geyserCount + 1
-		if self:AntiSpam(10, 1) then--In case it's sets of 2 or 3 like ragnaros version
-			specWarnWorldinFlames:Show(self.vb.geyserCount)
-			specWarnWorldinFlames:Play("watchstep")
-			timerWorldinFlamesCD:Start()
-		else
-			warnWorldinFlames:Show(self.vb.geyserCount)
-		end
+		specWarnWorldinFlames:Show(self.vb.geyserCount)
+		specWarnWorldinFlames:Play("watchstep")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 421455 then
-		self.vb.overheatedCount = self.vb.overheatedCount + 1
-		timerOverheatedCD:Start()
-	elseif spellId == 422277 then
-		self.vb.overheatedCount = self.vb.overheatedCount + 1
-		specWarnDevourEssence:Show(self.vb.overheatedCount)
-		specWarnDevourEssence:Play("watchstep")
-		timerDevourEssenceCD:Start()
+	if spellId == 422277 then
+		warnDevourEssence:Show(self.vb.overheatedCount)
 	end
 end
 
@@ -164,16 +163,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 422067 then
 		self:SetStage(2)
-		self.vb.overheatedCount = 0--Reused for Devour Essence
-		self.vb.geyserCount = 0--Reused for World in Flame
 		self.vb.encroached = false
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("phasechange")
 		timerBrandofDamnationCD:Stop()
 		timerOverheatedCD:Stop()
 		timerLavaGeysersCD:Stop()
-		timerEncroachingDestructionCD:Start(2)
-		timerDevourEssenceCD:Start(2)
+		timerPhaseCD:Stop()
+		timerDevourEssenceCD:Start(5, self.vb.cycleCount+1)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -192,16 +189,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 422067 then
 		self:SetStage(1)
-		self.vb.brandCount = 0
-		self.vb.overheatedCount = 0
-		self.vb.geyserCount = 0
+		self.vb.cycleCount = self.vb.cycleCount + 1
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
 		timerEncroachingDestructionCD:Stop()
 		timerDevourEssenceCD:Stop()
-		timerBrandofDamnationCD:Start(2)
-		timerOverheatedCD:Start(2)
-		timerLavaGeysersCD:Start(2)
+		timerOverheatedCD:Start(10, self.vb.overheatedCount+1)
+		timerBrandofDamnationCD:Start(13, self.vb.brandCount+1)
+		timerLavaGeysersCD:Start(27, self.vb.geyserCount+1)
+		timerPhaseCD:Start(64.3, self.vb.cycleCount+1)
 	end
 end
 --mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
@@ -221,10 +217,14 @@ function mod:UNIT_DIED(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 405814 then
-
+	if spellId == 425372 then--Overheated
+		self.vb.overheatedCount = self.vb.overheatedCount + 1
+		if self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
+			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)
+		end
 	end
 end
---]]
+
