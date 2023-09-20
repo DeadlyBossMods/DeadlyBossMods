@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 421603 426016 424140 423265",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665",
+	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180",
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665",
 	"SPELL_AURA_REMOVED 424580 424495 424581 420540 421603 425582 424180 422115",
 --	"SPELL_AURA_REMOVED_DOSE",
@@ -319,6 +319,23 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSupernova:Stop()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
+		end
+		if self:GetStage(1.5) then
+			self:SetStage(2)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+			timerBlazingMushroomCD:Start(2)
+			timerFieryGrowthCD:Start(2)
+			timerFallingStarsCD:Start(2)
+			timerMassEntanglementCD:Start(2)
+		else
+			self:SetStage(3)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerBlazingMushroomCD:Start(3)
+			timerFieryGrowthCD:Start(3)
+			timerFallingStarsCD:Start(3)
+			timerMassEntanglementCD:Start(3)
 		end
 	end
 end
