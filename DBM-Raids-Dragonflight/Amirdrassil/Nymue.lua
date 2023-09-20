@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --local warnSpreadshot								= mod:NewSpellAnnounce(334404, 3)
 
---local specWarnSinseeker							= mod:NewSpecialWarningYou(335114, nil, nil, nil, 3, 2)
+--local specWarnSinseeker							= mod:NewSpecialWarningYou(335114, nil, nil, nil, 1, 2)
 --local yellSinseeker								= mod:NewShortYell(335114)
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
