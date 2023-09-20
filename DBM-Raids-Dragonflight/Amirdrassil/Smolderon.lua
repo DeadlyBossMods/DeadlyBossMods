@@ -53,7 +53,7 @@ local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
 local specWarnSearingAftermathOther					= mod:NewSpecialWarningTaunt(422577, nil, nil, nil, 1, 2)
 local specWarnOverheated							= mod:NewSpecialWarningMoveAway(421455, nil, nil, nil, 1, 2)
-local yellOverheated								= mod:NewShortYell(421455)
+--local yellOverheated								= mod:NewShortYell(421455)
 local yellOverheatedFades							= mod:NewShortFadesYell(421455)
 local specWarnLavaGeysers							= mod:NewSpecialWarningCount(422691, nil, nil, nil, 2, 2)
 
@@ -158,7 +158,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnOverheated:Show()
 			specWarnOverheated:Play("targetyou")
-			yellOverheated:Yell()
+--			yellOverheated:Yell()
 			yellOverheatedFades:Countdown(spellId)
 		end
 	elseif spellId == 422067 then
