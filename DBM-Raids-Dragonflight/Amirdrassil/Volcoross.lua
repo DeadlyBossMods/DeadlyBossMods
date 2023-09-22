@@ -13,15 +13,15 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 421672 425401 425400 420933 421616 420415 423117 421703",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 421284",
 	"SPELL_AURA_APPLIED 421207 419054",
 	"SPELL_AURA_APPLIED_DOSE 419054",
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
-	"SPELL_PERIODIC_MISSED 421082 423494"
+	"SPELL_PERIODIC_MISSED 421082 423494",
 --	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -43,34 +43,45 @@ local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1, 8)
 
-local timerSerpentsFuryCD							= mod:NewAITimer(49, 421672, nil, nil, nil, 3)
-local timerFloodoftheFirelandsCD					= mod:NewAITimer(49, 420933, nil, nil, nil, 5)
-local timerVolcanicDisgorgeCD						= mod:NewAITimer(49, 421616, nil, nil, nil, 3)
-local timerScorchtailCrashCD						= mod:NewAITimer(11.8, 420415, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerCataclysmJawsCD							= mod:NewAITimer(11.8, 423117, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerCoilingFlamesCD							= mod:NewNextCountTimer(70, 421207, nil, nil, nil, 3)
+local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, nil, nil, nil, 3)
+local timerFloodoftheFirelandsCD					= mod:NewNextCountTimer(70, 420933, nil, nil, nil, 5)
+local timerVolcanicDisgorgeCD						= mod:NewNextCountTimer(10, 421616, nil, nil, nil, 3)
+local timerScorchtailCrashCD						= mod:NewCDCountTimer(20, 420415, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})
 
+mod.vb.coilingCount = 0
 mod.vb.furyCount = 0
 mod.vb.floodCount = 0
 mod.vb.volcanicCount = 0
 mod.vb.tailCount = 0
 mod.vb.jawsCount = 0
 
+local allTimers = {
+	--Cata Jaws
+	[423117] = {5.0, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0}
+	--Volcanic Disgorge
+	[421616] = {30, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
+}
+
 function mod:OnCombatStart(delay)
+	self.vb.coilingCount = 0
 	self.vb.furyCount = 0
 	self.vb.floodCount = 0
 	self.vb.volcanicCount = 0
 	self.vb.tailCount = 0
 	self.vb.jawsCount = 0
-	timerSerpentsFuryCD:Start(1-delay)
-	timerFloodoftheFirelandsCD:Start(1-delay)
-	timerVolcanicDisgorgeCD:Start(1-delay)
-	timerScorchtailCrashCD:Start(1-delay)
-	timerCataclysmJawsCD:Start(1-delay)
+	timerCataclysmJawsCD:Start(5-delay, 1)
+	timerSerpentsFuryCD:Start(10-delay, 1)
+	timerCoilingFlamesCD:Start(17.5-delay, 1)
+	timerScorchtailCrashCD:Start(20-delay, 1)
+	timerVolcanicDisgorgeCD:Start(30-delay, 1)
+	timerFloodoftheFirelandsCD:Start(70-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -81,25 +92,25 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 421672 or spellId == 425401 or spellId == 425400 then--Unknown, Unknown, Mythic
+	if spellId == 421672 or spellId == 425401 or spellId == 425400 then--herioc, Unknown, Mythic?
 		self.vb.furyCount = self.vb.furyCount + 1
 		warnSperentsFury:Show(self.vb.furyCount)
-		timerSerpentsFuryCD:Start()
+		timerSerpentsFuryCD:Start(nil, self.vb.furyCount+1)
 	elseif spellId == 420933 then
 		self.vb.floodCount = self.vb.floodCount + 1
 		specWarnFloodoftheFirleands:Show(self.vb.floodCount)
 		specWarnFloodoftheFirleands:Play("helpsoak")
-		timerFloodoftheFirelandsCD:Start()
+		timerFloodoftheFirelandsCD:Start(nil, self.vb.floodCount+1)
 	elseif spellId == 421616 then
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
 		specWarnVolcanicDisgorge:Play("watchstep")
-		timerVolcanicDisgorgeCD:Start()
-	elseif spellId == 420415 then
-		self.vb.tailCount = self.vb.tailCount + 1
-		specWarnScorchtailCrash:Show(self.vb.tailCount)
-		specWarnScorchtailCrash:Play("watchstep")
-		timerScorchtailCrashCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volcanicCount+1)
+		if timer then
+			timerVolcanicDisgorgeCD:Start(timer, self.vb.volcanicCount+1)
+		end
+--	elseif spellId == 420415 then
+
 	elseif spellId == 423117 then
 		self.vb.jawsCount = self.vb.jawsCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -116,20 +127,22 @@ function mod:SPELL_CAST_START(args)
 			--	end
 			--end
 		end
-		timerCataclysmJawsCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.jawsCount+1)
+		if timer then
+			timerCataclysmJawsCD:Start(timer, self.vb.jawsCount+1)
+		end
 	elseif spellId == 421703 then
 		warnSerpentsWrath:Show()
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 334945 then
-
+	if spellId == 421284 then
+		self.vb.coilingCount = self.vb.coilingCount + 1
+		timerCoilingFlamesCD:Start(nil, self.vb.coilingCount)
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -185,10 +198,14 @@ function mod:UNIT_DIED(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 405814 then
-
+	if spellId == 421684 then--Scorchtail Crash
+		self.vb.tailCount = self.vb.tailCount + 1
+		specWarnScorchtailCrash:Show(self.vb.tailCount)
+		specWarnScorchtailCrash:Play("watchstep")
+		timerScorchtailCrashCD:Start(nil, self.vb.tailCount+1)
 	end
 end
---]]
+
