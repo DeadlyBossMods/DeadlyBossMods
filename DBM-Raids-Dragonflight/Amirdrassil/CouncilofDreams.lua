@@ -8,8 +8,8 @@ mod:SetCreatureID(208363, 208365, 208367)--Urctos, Aerwynn, Pip
 mod:SetEncounterID(2728)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20231117000000)
---mod:SetMinSyncRevision(20210126000000)
+mod:SetHotfixNoticeRev(20230922000000)
+mod:SetMinSyncRevision(20230922000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -144,7 +144,6 @@ function mod:OnCombatStart(delay)
 	self.vb.javCount = 0
 	timerNoxiousBlossomCD:Start(10.8-delay, 1)
 	timerPoisonousJavelinCD:Start(19.8-delay, 1)
-	timerConstrictingThicketCD:Start(128-delay, 1)
 	--Pip
 	self.vb.songCount = 0
 	self.vb.polyCount = 0
@@ -152,7 +151,6 @@ function mod:OnCombatStart(delay)
 	self.vb.windsCount = 0
 	timerPolymorphBombCD:Start(34.9-delay, 1)
 	timerEmeraldWindsCD:Start(45.3-delay, 1)
-	timerSongoftheDragonCD:Start(196-delay, 1)
 	self:EnablePrivateAuraSound(418589, "bombyou", 2)
 end
 
@@ -176,10 +174,10 @@ function mod:SPELL_CAST_START(args)
 		timerPolymorphBombCD:Restart(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
 		DBM:Debug("Starting second polymorph blinding rage timer, in case first happened before blinding rage")
 	elseif spellId == 420947 then
-		self.vb.chargeCount = self.vb.chargeCount + 1
 		--If a special is NOT active, he'll use claws exactly 10 seconds of any charge
 		--ALso, if a special is active, any charge he's casting isn't timer based, it's a loop, his normal charge Cd is disabled during all boss specials
 		if self.vb.specialsActive == 0 then
+			self.vb.chargeCount = self.vb.chargeCount + 1
 			timerAgonizingClawsCD:Start(10, self.vb.clawsCount+1)
 			--Only time there is a second charge per cycle, is one that is cast 3 seconds after vines
 			local remainingVinee = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
@@ -206,7 +204,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 420937 then
 		warnRelentlessBarrage:Show()
 	elseif spellId == 420671 then
-		self.vb.blossomCount = self.vb.blossomCount + 1
+		if self.vb.specialsActive == 0 then--Don't increment counts during specials
+			self.vb.blossomCount = self.vb.blossomCount + 1
+		end
 		warnNoxiousBlossom:Show(self.vb.blossomCount)
 		--Is cast during specials, but Cd resets during them, twice, once on special begin and once again on special end
 		if castBeforeSpecial(self, 20.7) then
@@ -226,7 +226,9 @@ function mod:SPELL_CAST_START(args)
 		timerNoxiousBlossomCD:Restart(2.9, self.vb.blossomCount+1)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
-		self.vb.polyCount = self.vb.polyCount + 1
+		if self.vb.specialsActive == 0 then--Don't increment counts during specials
+			self.vb.polyCount = self.vb.polyCount + 1
+		end
 		warnPolymorphBomb:Show(self.vb.polyCount)
 		--If cast during special, it's blinding rage and we need the 9 second loop
 		if self.vb.specialsActive > 0 then
@@ -364,11 +366,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Stop specific specials timers
 		if spellId == 418755 then--Weakened Defenses (blinding rage)
 			timerBlindingRage:Stop()
-			timerBlindingRageCD:Start(200, self.vb.rageCount+1)
+			timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
 		elseif spellId == 421292 then--Constricting Thicket
-			timerConstrictingThicketCD:Start(200, self.vb.vinesCount+1)
+			timerSongoftheDragonCD:Start(56, self.vb.songCount+1)
 		else
-			timerSongoftheDragonCD:Start(200, self.vb.songCount+1)
+			timerBlindingRageCD:Start(56, self.vb.rageCount+1)
 		end
 		--Timers that always reset on special end, regardless of who's special it is
 		if self.vb.specialsActive == 0 then
