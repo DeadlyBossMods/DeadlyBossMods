@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 420948 423420 421022 425114 421298 418755 420858 421236 418720 421032",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
-	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029",
+	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 426390",
 	"SPELL_PERIODIC_MISSED 426390"
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 418187 or ability.id = 420525 or ability.id = 420947 or ability.id = 421020 or ability.id = 421292 or ability.id = 420937 or ability.id = 420671 or ability.id = 420856 or ability.id = 421029 or ability.id = 418591 or ability.id = 421024) and type = "begincast"
- or (ability.id = 418755 or ability.id = 421292 or ability.id = 421029)
+ or (ability.id = 418755 or ability.id = 421292 or ability.id = 421029 or ability.id = 420525)
 --]]
 --TODO: see how Dream Tactics on mythic decides which two of the bosses will sync up so timers can be updated/synced when it happens.
 --TODO, use cast start event or success/applied event for barreling charge timer?
@@ -361,10 +361,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 421298 then
 		timerConstrictingThicket:Stop()
-	elseif spellId == 418755 or spellId == 421292 or spellId == 421029 then--Weakened Defenses, Constricting Thicket, Song of the Dragon
+	elseif spellId == 420525 or spellId == 421292 or spellId == 421029 then--Weakened Defenses, Constricting Thicket, Song of the Dragon
 		self.vb.specialsActive = self.vb.specialsActive - 1
 		--Stop specific specials timers
-		if spellId == 418755 then--Weakened Defenses (blinding rage)
+		if spellId == 420525 then--Weakened Defenses (blinding rage)
 			timerBlindingRage:Stop()
 			timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
 		elseif spellId == 421292 then--Constricting Thicket
