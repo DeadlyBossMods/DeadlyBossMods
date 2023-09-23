@@ -111,7 +111,7 @@ mod.vb.treeCount = 0
 local difficultyName = "heroic"
 local allTimers = {
 	["heroic"] = {
-		[1] = {
+		[1] = {--P1 needs re-review
 			--Blazing  Mushroom
 			[423260] = {21.8, 40},
 			--Fiery Growth
@@ -137,17 +137,57 @@ local allTimers = {
 		},
 		[3] = {
 			--Blazing  Mushroom
-			[423260] = {7, 30, 36.5, 40.4},
+			[423260] = {7, 29.9, 36.5, 40.4},
 			--Fiery Growth
-			[424581] = {3.9, 87, 48.9, 55},
+			[424581] = {3.9, 86.9, 48.9, 54.9},
 			--Falling Stars
 			[420236] = {19.9, 48.5, 65.4, 46},
 			--Mass Entanglement
-			[424495] = {13.8, 50, 63.9, 62.5},
+			[424495] = {13.8, 49.9, 63.9, 62.5},
 			--Moonkin Form
-			[420540] = {25.9, 49.5, 43.4, 50},
+			[420540] = {25.9, 49.5, 43.4, 49.9},
 			--Tree Form
-			[422115] = {41.9, 52, 55.9, 48},
+			[422115] = {41.9, 52, 55.9, 47.9},
+		},
+	},
+	["normal"] = {
+		[1] = {--Phase 1 differed on normal the weekend after heroic testing, heroic may be changed too
+			--Blazing  Mushroom
+			[423260] = {11.9, 34.9},
+			--Fiery Growth
+			[424581] = {34.9, 35},
+			--Falling Stars
+			[420236] = {15.2, 34.7},
+			--Mass Entanglement
+			[424495] = {5.9, 34.9},
+			--Moonkin Form
+			[420540] = {19.9, 35},
+		},
+		[2] = {--Same as Heroic
+			--Blazing  Mushroom
+			[423260] = {18, 47.9},
+			--Fiery Growth
+			[424581] = {21.9, 48},
+			--Falling Stars
+			[420236] = {9.9, 48},
+			--Mass Entanglement
+			[424495] = {5, 47.9},
+			--Tree Form
+			[422115] = {25.9, 48},
+		},
+		[3] = {--Same as Heroic
+			--Blazing  Mushroom
+			[423260] = {7, 29.9, 36.5, 40.4},
+			--Fiery Growth
+			[424581] = {3.9, 86.9, 48.9, 54.9},
+			--Falling Stars
+			[420236] = {19.9, 48.5, 65.4, 46},
+			--Mass Entanglement
+			[424495] = {13.8, 49.9, 63.9, 62.5},
+			--Moonkin Form
+			[420540] = {25.9, 49.5, 43.4, 49.9},
+			--Tree Form
+			[422115] = {41.9, 52, 55.9, 47.9},
 		},
 	},
 }
@@ -161,21 +201,28 @@ function mod:OnCombatStart(delay)
 	self.vb.entangleCount = 0
 	self.vb.moonkinCount = 0
 	self.vb.treeCount = 0
-	timerFallingStarsCD:Start(5.8-delay, 1)
-	timerMassEntanglementCD:Start(13.8-delay, 1)
-	timerBlazingMushroomCD:Start(21.8-delay, 1)
-	timerFieryGrowthCD:Start(24.8-delay, 1)
-	timerMoonkinCD:Start(27.8-delay, 1)
-	timerPhaseCD:Start(81.8-delay, 1.5)
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
 		difficultyName = "heroic"
+		timerFallingStarsCD:Start(5.8-delay, 1)
+		timerMassEntanglementCD:Start(13.8-delay, 1)
+		timerBlazingMushroomCD:Start(21.8-delay, 1)
+		timerFieryGrowthCD:Start(24.8-delay, 1)
+		timerMoonkinCD:Start(27.8-delay, 1)
+		timerPhaseCD:Start(81.8-delay, 1.5)
 --	elseif self:IsNormal() then
 --		difficultyName = "normal"
---	else
+	else
 --		difficultyName = "lfr"
---	end
+		difficultyName = "normal"
+		timerMassEntanglementCD:Start(5.9-delay, 1)
+		timerBlazingMushroomCD:Start(11.9-delay, 1)
+		timerFallingStarsCD:Start(15.2-delay, 1)
+		timerMoonkinCD:Start(19.9-delay, 1)
+		timerFieryGrowthCD:Start(34.9-delay, 1)
+		timerPhaseCD:Start(81.8-delay, 1.5)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -185,15 +232,16 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
---	if self:IsMythic() then
---		difficultyName = "mythic"
---	elseif self:IsHeroic() then
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 --	elseif self:IsNormal() then
 --		difficultyName = "normal"
---	else
+	else
 --		difficultyName = "lfr"
---	end
+		difficultyName = "normal"
+	end
 end
 
 function mod:SPELL_CAST_START(args)
