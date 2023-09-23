@@ -39,6 +39,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
+local timerPhaseCD									= mod:NewPhaseTimer(60)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: The Firelord's Fury
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27637))
@@ -61,7 +62,6 @@ local timerBrandofDamnationCD						= mod:NewCDCountTimer(29.9, 421343, nil, nil,
 local timerSearingAftermathCD						= mod:NewTargetTimer(6, 422577, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerOverheatedCD								= mod:NewCDCountTimer(29.9, 421455, nil, nil, nil, 5)
 local timerLavaGeysersCD							= mod:NewCDCountTimer(21.9, 422691, nil, nil, nil, 3)
-local timerPhaseCD									= mod:NewPhaseTimer(60)
 --Stage Two: World In Flames
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
 local warnDevourEssence								= mod:NewCountAnnounce(422277, 3)
