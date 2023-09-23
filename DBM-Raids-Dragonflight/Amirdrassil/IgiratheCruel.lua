@@ -142,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wrackingCount = self.vb.wrackingCount + 1
 		specWarnWrackingSkewer:Show()
 		specWarnWrackingSkewer:Play("specialsoon")--Vague voice instead of backseating til more time to review strategies
-		if elf.vb.wrackingCount == 1 then
+		if self.vb.wrackingCount == 1 then
 			timerWrackingSkewerCD:Start(30, 2)
 		end
 	elseif spellId == 418531 then
@@ -273,7 +273,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnKnifeStance:Show()
 		self.vb.heartCount = 0
 		timerHeartStopperCD:Start(19, 1)
-	elseif spellid == 415090 then--Axe Stance
+	elseif spellId == 415090 then--Axe Stance
 		warnAxeStance:Show()
 		self.vb.wrackingCount = 0
 		timerWrackingSkewerCD:Start(19, 1)
