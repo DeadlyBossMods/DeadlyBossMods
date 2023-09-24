@@ -193,7 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnBlisteringSpear:Show()
-			specWarnBlisteringSpear:Play("targetyou")
+			specWarnBlisteringSpear:Play("spear")
 			yellBlisteringSpear:Yell(icon, icon)
 			yellBlisteringSpearFades:Countdown(spellId, nil, icon)
 		end
