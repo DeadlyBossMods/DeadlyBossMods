@@ -220,12 +220,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cleaveCount = 0
 		timerUprootAgonyCD:Stop()
 		if self:IsHard() then
-			timerTorturedScreamCD:Start(4.6, 1)
-			timerDreadfireBarrageCD:Start(9.5, 1)
-			timerFlamingPestilenceCD:Start(21.5, 1)
-			timerShadowflameCleaveCD:Start(27.6, 1)
-			timerControlledBurnCD:Start(40, 1)
-			timerPotentFertilizationCD:Start(98.9, self.vb.fertCount+1)
+			timerTorturedScreamCD:Start(4.8, 1)
+			timerDreadfireBarrageCD:Start(10.7, 1)
+			timerFlamingPestilenceCD:Start(17.8, 1)
+			timerShadowflameCleaveCD:Start(22.5, 1)
+			timerControlledBurnCD:Start(31.9, 1)
+			timerPotentFertilizationCD:Start(93.4, self.vb.fertCount+1)
 		else
 			timerTorturedScreamCD:Start(6.1, 1)
 			timerDreadfireBarrageCD:Start(13.8, 1)
