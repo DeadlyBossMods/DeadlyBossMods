@@ -154,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSearingAftermath:Show(args.destName)
 		end
 	elseif spellId == 421455 then
-		warnOverheated:CombinedShow(0.3, args.destName)
+		warnOverheated:CombinedShow(0.3, self.vb.overheatedCount, args.destName)
 		if args:IsPlayer() then
 			specWarnOverheated:Show()
 			specWarnOverheated:Play("targetyou")

@@ -177,7 +177,6 @@ function mod:SPELL_CAST_START(args)
 		--ALso, if a special is active, any charge he's casting isn't timer based, it's a loop, his normal charge Cd is disabled during all boss specials
 		if self.vb.specialsActive == 0 then
 			self.vb.chargeCount = self.vb.chargeCount + 1
-			timerAgonizingClawsCD:Start(10, self.vb.clawsCount+1)
 			--Only time there is a second charge per cycle, is one that is cast 3 seconds after vines
 			local remainingVinee = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
 			if remainingVinee < 30 then
@@ -190,8 +189,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 421020 then
 		self.vb.clawsCount = self.vb.clawsCount + 1
-		if self.vb.clawsCount % 2 == 1 then--Might be cleaner to just go "first claw after a special to avoid breakage
+		--8, 6, 25, 6
+		if self.vb.clawsCount % 2 == 1 then--1 and 3
 			timerAgonizingClawsCD:Start(6, self.vb.clawsCount+1)
+		elseif self.vb.clawsCount == 2 then
+			timerAgonizingClawsCD:Start(25, self.vb.clawsCount+1)
 		end
 	elseif spellId == 421292 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
@@ -372,7 +374,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		--Timers that always reset on special end, regardless of who's special it is
 		if self.vb.specialsActive == 0 then
-			timerAgonizingClawsCD:Start(8, self.vb.clawsCount+1)
+			self.vb.clawsCount = 0
+			timerAgonizingClawsCD:Start(8, 1)
 			timerBarrelingChargeCD:Restart(29, self.vb.chargeCount+1)
 
 			timerNoxiousBlossomCD:Restart(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
