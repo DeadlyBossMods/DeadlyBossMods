@@ -89,7 +89,6 @@ local specWarnSongoftheDragon						= mod:NewSpecialWarningCount(421029, nil, nil
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
 local yellCaptivatingFinale							= mod:NewShortYell(421032)
 local specWarnPolymorphBomb							= mod:NewSpecialWarningYou(418591, nil, nil, nil, 1, 2)
-local yellPolymorphBomb								= mod:NewShortPosYell(418591)
 local yellPolymorphBombFades						= mod:NewIconFadesYell(418591)
 local specWarnEmeraldWinds							= mod:NewSpecialWarningCount(421024, nil, nil, nil, 2, 13)
 
@@ -315,7 +314,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnPoisonousJavelin:Play("scatter")
 				yellPoisonousJavelin:Yell()
 			end
-			if self:IsHard() then
+			if self:IsMythic() then
 				yellPoisonousJavelinFades:Cancel()
 				yellPoisonousJavelinFades:Countdown(spellId)
 			end
@@ -334,7 +333,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnPolymorphBomb:Show()
 				specWarnPolymorphBomb:Play("targetyou")
-				yellPolymorphBomb:Yell(icon, icon)
 				yellPolymorphBombFades:Countdown(spellId, nil, icon)
 			end
 			warnPolymorphBombTargets:CombinedShow(0.5, self.vb.polyCount, args.destName)

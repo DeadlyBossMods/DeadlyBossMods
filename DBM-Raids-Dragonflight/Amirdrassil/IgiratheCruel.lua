@@ -104,7 +104,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 414425 then
 		self.vb.spearCount = self.vb.spearCount + 1
 		self.vb.spearIcon = 1
-		if self.vb.spearCount >= 4 then
+		if not self:IsEasy() and self.vb.spearCount >= 4 then
 			timerBlisteringSpearCD:Start(70, self.vb.spearCount+1)
 		else
 			timerBlisteringSpearCD:Start(140, self.vb.spearCount+1)
@@ -130,7 +130,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		warnMarkedforTorment:Show(self.vb.tormentCount)
 		self:SetStage(self.vb.tormentCount)--Matching BW behavior which is kinda meh, but WA parity and all
-		if self.vb.tormentCount >= 4 then
+		if not self:IsEasy() and self.vb.tormentCount >= 4 then
 			timerMarkedforTormentCD:Start(70, self.vb.tormentCount+1)
 		else
 			timerMarkedforTormentCD:Start(140, self.vb.tormentCount+1)

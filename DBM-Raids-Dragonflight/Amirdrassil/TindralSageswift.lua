@@ -7,8 +7,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209090)--Primary ID
 mod:SetEncounterID(2786)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230923000000)
---mod:SetMinSyncRevision(20210126000000)
+mod:SetHotfixNoticeRev(20230924000000)
+mod:SetMinSyncRevision(20230924000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509",
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665",
-	"SPELL_AURA_REMOVED 424580 424495 424581 420540 421603 425582 424180 422115",
+	"SPELL_AURA_REMOVED 424580 424495 424581 421603 425582 424180 422115",--420540
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 424499 423649",
 	"SPELL_PERIODIC_MISSED 424499 423649"
@@ -66,14 +66,16 @@ local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, nil, nil, nil
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, false, false, {1, 2, 3})
 ----Moonkin of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27495))
 local warnIncarnationMoonkin						= mod:NewSpellAnnounce(420540, 2)
 
 local specWarnSunfire								= mod:NewSpecialWarningMoveAway(420238, nil, nil, nil, 1, 2)
+local specWarnFireBeam								= mod:NewSpecialWarningCount(421398, nil, nil, nil, 2, 2)
 
-local timerFirebeamCD								= mod:NewCDCountTimer(49, 421398, nil, nil, nil, 3)
+local timerMoonkinCD								= mod:NewNextCountTimer(20, 420540, nil, nil, nil, 6)
+local timerFirebeamCD								= mod:NewNextCountTimer(49, 421398, nil, nil, nil, 3)
 --Intermission: Burning Pursuit
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27500))
 local warnEmpoweredFeather							= mod:NewYouAnnounce(422509, 1)
@@ -81,7 +83,6 @@ local warnDreamEssence								= mod:NewCountAnnounce(424258, 1, nil, nil, DBM_CO
 local warnSuperNova									= mod:NewCastAnnounce(424140, 4)
 local warnSuperNovaEnded							= mod:NewSpellAnnounce(424140, 1)
 
-local timerMoonkinCD								= mod:NewNextCountTimer(20, 420540, nil, nil, nil, 6)
 local timerSupernova								= mod:NewCastTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddInfoFrameOption(424140, true)
@@ -95,7 +96,7 @@ local specWarnSupressingEmber						= mod:NewSpecialWarningYou(424579, nil, nil, 
 local specWarnTranquilityofFlame					= mod:NewSpecialWarningCount(423265, nil, nil, nil, 2, 2)
 
 local timerTreeofFlameCD							= mod:NewNextCountTimer(20, 422115, nil, nil, nil, 6)
-local timerTranquilityofFlameCD						= mod:NewCDCountTimer(20, 423265, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerTranquilityofFlameCD						= mod:NewNextCountTimer(20, 423265, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerSuperNovaCD								= mod:NewNextCountTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --base abilities
@@ -107,9 +108,60 @@ mod.vb.entangleCount = 0
 --Forms
 mod.vb.moonkinCount = 0
 mod.vb.treeCount = 0
+--Form Abilities
+mod.vb.beamCount = 0
+mod.vb.tranqCount = 0
 
 local difficultyName = "heroic"
 local allTimers = {
+	["normal"] = {
+		[1] = {--Phase 1 differed on normal the weekend after heroic testing, heroic may be changed too
+			--Blazing  Mushroom
+			[423260] = {11.9, 34.9},
+			--Fiery Growth
+			[424581] = {34.9, 35},
+			--Falling Stars
+			[420236] = {15.2, 34.7},
+			--Mass Entanglement
+			[424495] = {5.9, 34.9},
+			--Moonkin Form
+			[420540] = {19.9, 35},
+			--Fire Beam
+			[421398] = {25.0, 35.0},
+		},
+		[2] = {--Same as Heroic
+			--Blazing  Mushroom
+			[423260] = {18, 47.9},
+			--Fiery Growth
+			[424581] = {21.9, 48},
+			--Falling Stars
+			[420236] = {9.9, 48},
+			--Mass Entanglement
+			[424495] = {5, 47.9},
+			--Tree Form
+			[422115] = {25.9, 48},
+			--Tranquility of Flame
+			[423265] = {35.0, 48.0}
+		},
+		[3] = {--Same as Heroic
+			--Blazing  Mushroom
+			[423260] = {7, 29.9, 36.5, 40.4},
+			--Fiery Growth
+			[424581] = {3.9, 86.9, 48.9, 54.9},
+			--Falling Stars
+			[420236] = {19.9, 48.5, 65.4, 46},
+			--Mass Entanglement
+			[424495] = {13.8, 49.9, 63.9, 62.5},
+			--Moonkin Form
+			[420540] = {25.9, 49.5, 43.4, 49.9},
+			--Fire Beam
+			[421398] = {34.0, 46.5, 43.5, 50.0},
+			--Tree Form
+			[422115] = {41.9, 52, 55.9, 47.9},
+			--Tranquility of Flame
+			[423265] = {48.0, 47.0, 59.0, 47.0},
+		},
+	},
 	["heroic"] = {
 		[1] = {--P1 needs re-review
 			--Blazing  Mushroom
@@ -122,6 +174,8 @@ local allTimers = {
 			[424495] = {13.8, 40},
 			--Moonkin Form
 			[420540] = {27.8, 40},
+			--Fire Beam
+			[421398] = {40, 40},
 		},
 		[2] = {
 			--Blazing  Mushroom
@@ -134,6 +188,8 @@ local allTimers = {
 			[424495] = {5, 48},
 			--Tree Form
 			[422115] = {25.9, 48},
+			--Tranquility of Flame
+			[423265] = {35, 48},
 		},
 		[3] = {
 			--Blazing  Mushroom
@@ -148,46 +204,10 @@ local allTimers = {
 			[420540] = {25.9, 49.5, 43.4, 49.9},
 			--Tree Form
 			[422115] = {41.9, 52, 55.9, 47.9},
-		},
-	},
-	["normal"] = {
-		[1] = {--Phase 1 differed on normal the weekend after heroic testing, heroic may be changed too
-			--Blazing  Mushroom
-			[423260] = {11.9, 34.9},
-			--Fiery Growth
-			[424581] = {34.9, 35},
-			--Falling Stars
-			[420236] = {15.2, 34.7},
-			--Mass Entanglement
-			[424495] = {5.9, 34.9},
-			--Moonkin Form
-			[420540] = {19.9, 35},
-		},
-		[2] = {--Same as Heroic
-			--Blazing  Mushroom
-			[423260] = {18, 47.9},
-			--Fiery Growth
-			[424581] = {21.9, 48},
-			--Falling Stars
-			[420236] = {9.9, 48},
-			--Mass Entanglement
-			[424495] = {5, 47.9},
-			--Tree Form
-			[422115] = {25.9, 48},
-		},
-		[3] = {--Same as Heroic
-			--Blazing  Mushroom
-			[423260] = {7, 29.9, 36.5, 40.4},
-			--Fiery Growth
-			[424581] = {3.9, 86.9, 48.9, 54.9},
-			--Falling Stars
-			[420236] = {19.9, 48.5, 65.4, 46},
-			--Mass Entanglement
-			[424495] = {13.8, 49.9, 63.9, 62.5},
-			--Moonkin Form
-			[420540] = {25.9, 49.5, 43.4, 49.9},
-			--Tree Form
-			[422115] = {41.9, 52, 55.9, 47.9},
+			--Fire Beam
+			[421398] = {34, 46.5, 43.5, 50},
+			--Tranquility of Flame
+			[423265] = {50, 47, 59, 47},
 		},
 	},
 }
@@ -201,8 +221,10 @@ function mod:OnCombatStart(delay)
 	self.vb.entangleCount = 0
 	self.vb.moonkinCount = 0
 	self.vb.treeCount = 0
+	self.vb.beamCount = 0
+	self.vb.tranqCount = 0
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"--TEMP
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerFallingStarsCD:Start(5.8-delay, 1)
@@ -210,6 +232,7 @@ function mod:OnCombatStart(delay)
 		timerBlazingMushroomCD:Start(21.8-delay, 1)
 		timerFieryGrowthCD:Start(24.8-delay, 1)
 		timerMoonkinCD:Start(27.8-delay, 1)
+		timerFirebeamCD:Start(34.0, 1)
 		timerPhaseCD:Start(81.8-delay, 1.5)
 --	elseif self:IsNormal() then
 --		difficultyName = "normal"
@@ -220,6 +243,7 @@ function mod:OnCombatStart(delay)
 		timerBlazingMushroomCD:Start(11.9-delay, 1)
 		timerFallingStarsCD:Start(15.2-delay, 1)
 		timerMoonkinCD:Start(19.9-delay, 1)
+		timerFirebeamCD:Start(25, 1)
 		timerFieryGrowthCD:Start(34.9-delay, 1)
 		timerPhaseCD:Start(81.8-delay, 1.5)
 	end
@@ -233,7 +257,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		difficultyName = "mythic"
+		difficultyName = "heroic"--TEMP
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 --	elseif self:IsNormal() then
@@ -282,8 +306,14 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerMassEntanglementCD:Start(timer, self.vb.entangleCount+1)
 		end
---	elseif spellId == 421398 then
-		--TODO, firebeam stuff
+	elseif spellId == 421398 then
+		self.vb.beamCount = self.vb.beamCount + 1
+		specWarnFireBeam:Show(self.vb.beamCount)
+		specWarnFireBeam:Play("watchstep")
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.beamCount+1)
+		if timer then
+			timerFirebeamCD:Start(timer, self.vb.beamCount+1)
+		end
 	elseif spellId == 421603 then--Incarnation of Owl cast time (likely intermission)
 		timerBlazingMushroomCD:Stop()
 		timerFieryGrowthCD:Stop()
@@ -302,8 +332,13 @@ function mod:SPELL_CAST_START(args)
 		warnSuperNova:Show()
 		timerSupernova:Start()
 	elseif spellId == 423265 then
-		specWarnTranquilityofFlame:Show()
+		self.vb.tranqCount = self.vb.tranqCount + 1
+		specWarnTranquilityofFlame:Show(self.vb.tranqCount)
 		specWarnTranquilityofFlame:Play("aesoon")
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.tranqCount+1)
+		if timer then
+			timerTranquilityofFlameCD:Start(timer, self.vb.tranqCount+1)
+		end
 	end
 end
 
@@ -364,7 +399,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 420540 then--Moonkin Form starting
 		self.vb.moonkinCount = self.vb.moonkinCount + 1
 		warnIncarnationMoonkin:Show(self.vb.moonkinCount)
-		timerFirebeamCD:Start(self:GetStage(3) and 3 or 6)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.moonkinCount+1)
 		if timer then
 			timerMoonkinCD:Start(timer, self.vb.moonkinCount+1)
@@ -372,7 +406,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 422115 then--Tree form starting
 		self.vb.treeCount = self.vb.treeCount + 1
 		warnIncarnationTreeofFlame:Show(self.vb.treeCount)
-		timerTranquilityofFlameCD:Start(self:GetStage(3) and 4 or 9)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.treeCount+1)
 		if timer then
 			timerTreeofFlameCD:Start(timer, self.vb.treeCount+1)
@@ -430,10 +463,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellMassEntanglementFades:Cancel()
 		end
-	elseif spellId == 420540 then--Moonkin Form ending
-		timerFirebeamCD:Stop()
+--	elseif spellId == 420540 then--Moonkin Form ending
+
 	elseif spellId == 422115 then--Tree form ending
-		timerTranquilityofFlameCD:Stop()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -450,6 +482,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.entangleCount = 0
 		self.vb.moonkinCount = 0
 		self.vb.treeCount = 0
+		self.vb.beamCount = 0
+		self.vb.tranqCount = 0
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -462,6 +496,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBlazingMushroomCD:Start(18, 1)
 			timerFieryGrowthCD:Start(21.9, 1)
 			timerTreeofFlameCD:Start(25.9, 1)
+			timerTranquilityofFlameCD:Start(35, 1)
 			timerPhaseCD:Start(102, 2.5)
 		else
 			self:SetStage(3)
@@ -472,7 +507,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerMassEntanglementCD:Start(13.8, 1)
 			timerFallingStarsCD:Start(19.9, 1)
 			timerMoonkinCD:Start(25.9, 1)
+			timerFirebeamCD:Start(34, 1)
 			timerTreeofFlameCD:Start(41.9, 1)
+			timerTranquilityofFlameCD:Start(48, 1)
 			timerSuperNovaCD:Start(219.9)
 		end
 	end
