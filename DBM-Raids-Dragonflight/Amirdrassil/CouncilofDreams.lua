@@ -48,7 +48,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(426390, nil, nil, nil, 1,
 --Urctos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27300))
 local warnBarrelingCharge							= mod:NewTargetCountAnnounce(420948, 3, nil, nil, nil, nil, nil, nil, true)
-local warnAgonizingClaws							= mod:NewStackAnnounce(421020, 2, nil, "Tank|Healer")
+local warnAgonizingClaws							= mod:NewStackAnnounce(421022, 2, nil, "Tank|Healer")
 local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked up
 
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
@@ -62,39 +62,39 @@ local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil
 local timerBlindingRageCD							= mod:NewNextCountTimer(200, 420525, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerBlindingRage								= mod:NewBuffActiveTimer(15, 420525, nil, nil, nil, 5)
 local timerBarrelingChargeCD						= mod:NewCDCountTimer(11.8, 420948, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
-local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421020, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421022, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Aerwynn
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27301))
 local warnRelentlessBarrage							= mod:NewSpellAnnounce(420937, 4)--You done fucked up
 local warnNoxiousBlossom							= mod:NewCountAnnounce(420937, 3)
-local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420856, 3)--, nil, nil, nil, nil, nil, nil, true
+local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420858, 3)--, nil, nil, nil, nil, nil, nil, true
 
 local specWarnConstrictingThicket					= mod:NewSpecialWarningCount(421292, nil, nil, nil, 2, 2)
-local specWarnPoisonousJavelin						= mod:NewSpecialWarningMoveAway(420856, nil, nil, nil, 1, 2)
-local yellPoisonousJavelin							= mod:NewShortYell(420856, nil, false)
-local yellPoisonousJavelinFades						= mod:NewShortFadesYell(420856)--For unstable Venom
+local specWarnPoisonousJavelin						= mod:NewSpecialWarningMoveAway(420858, nil, nil, nil, 1, 2)
+local yellPoisonousJavelin							= mod:NewShortYell(420858, nil, false)
+local yellPoisonousJavelinFades						= mod:NewShortFadesYell(420858)--For unstable Venom
 
 local timerConstrictingThicketCD					= mod:NewNextCountTimer(11.8, 421292, nil, nil, nil, 2)
 local timerConstrictingThicket						= mod:NewBuffActiveTimer(15, 421292, nil, nil, nil, 5)
 local timerNoxiousBlossomCD							= mod:NewCDCountTimer(21, 420671, nil, nil, nil, 3)
-local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420856, nil, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)
+local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420858, nil, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)
 
 --Pip
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
 local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--You done fucked up
-local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418591, 2)
-local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418591, 3, nil, nil, nil, nil, nil, nil, true)
+local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
+local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnSongoftheDragon						= mod:NewSpecialWarningCount(421029, nil, nil, nil, 2, 2)
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
 local yellCaptivatingFinale							= mod:NewShortYell(421032)
-local specWarnPolymorphBomb							= mod:NewSpecialWarningYou(418591, nil, nil, nil, 1, 2)
-local yellPolymorphBombFades						= mod:NewIconFadesYell(418591)
+local specWarnPolymorphBomb							= mod:NewSpecialWarningYou(418720, nil, nil, nil, 1, 2)
+local yellPolymorphBombFades						= mod:NewIconFadesYell(418720)
 local specWarnEmeraldWinds							= mod:NewSpecialWarningCount(421024, nil, nil, nil, 2, 13)
 
 local timerSongoftheDragonCD						= mod:NewNextCountTimer(200, 421029, nil, nil, nil, 2)
 local timerSongoftheDragon							= mod:NewBuffActiveTimer(20, 421029, nil, nil, nil, 5)
-local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418591, nil, nil, nil, 3)
+local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418720, nil, nil, nil, 3)
 local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, nil, nil, nil, 2)
 
 mod:AddPrivateAuraSoundOption(418589, true, 418591, 1)--Polymorph Bomb

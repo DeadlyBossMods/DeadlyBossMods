@@ -36,12 +36,12 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27467))
 local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
 local warnShadowSpines								= mod:NewCountAnnounce(422053, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(422053))
-local warnControlledBurn							= mod:NewTargetCountAnnounce(421971, 3, nil, nil, nil, nil, nil, nil, true)
+local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDreadfireBarrage							= mod:NewStackAnnounce(424352, 2, nil, "Tank|Healer")
 
-local specWarnControlledBurn						= mod:NewSpecialWarningYou(421971, nil, nil, nil, 1, 2)
-local yellControlledBurn							= mod:NewShortPosYell(421971)
-local yellControlledBurnFades						= mod:NewIconFadesYell(421971)
+local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, nil, nil, 1, 2)
+local yellControlledBurn							= mod:NewShortPosYell(421972)
+local yellControlledBurnFades						= mod:NewIconFadesYell(421972)
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, nil, nil, 1, 2)
 local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, nil, nil, 2, 2)
@@ -49,13 +49,13 @@ local specWarnShadowflameCleave						= mod:NewSpecialWarningDodgeCount(422039, n
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(422023, nil, nil, nil, 1, 8)
 
 local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, nil, nil, nil, 1)
-local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421971, nil, nil, nil, 3)
+local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, nil, nil, nil, 3)
 local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, nil, nil, nil, 3)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
-mod:AddSetIconOption("SetIconOnControlledBurn", 421971, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, false, {1, 2, 3, 4})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
 local warnPotentFertilization						= mod:NewCountAnnounce(421013, 3)
