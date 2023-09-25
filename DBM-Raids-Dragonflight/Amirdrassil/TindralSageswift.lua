@@ -55,9 +55,9 @@ local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, 
 --local specWarnBlazingMushroomAvoid					= mod:NewSpecialWarningDodgeCount(423260, nil, nil, nil, 2, 2)--Everyone default, since it's debuff based
 local specWarnFieryGrowth							= mod:NewSpecialWarningMoveAway(424581, nil, nil, nil, 1, 2)
 local yellFieryGrowth								= mod:NewShortPosYell(424581)
-local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, nil, nil, 1, 2)--Keep an eye on BW changing key to 424580
-local yellFallingStars								= mod:NewShortYell(420236)--Keep an eye on BW changing key to 424580
-local yellFallingStarsFades							= mod:NewShortFadesYell(420236)--Keep an eye on BW changing key to 424580
+local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, nil, nil, 1, 2)
+local yellFallingStars								= mod:NewShortYell(420236)
+local yellFallingStarsFades							= mod:NewShortFadesYell(420236)
 local specWarnMassEntanglement						= mod:NewSpecialWarningMoveAway(424495, nil, nil, nil, 1, 2)
 local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
 
