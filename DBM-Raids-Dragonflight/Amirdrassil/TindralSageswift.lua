@@ -55,9 +55,9 @@ local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, 
 --local specWarnBlazingMushroomAvoid					= mod:NewSpecialWarningDodgeCount(423260, nil, nil, nil, 2, 2)--Everyone default, since it's debuff based
 local specWarnFieryGrowth							= mod:NewSpecialWarningMoveAway(424581, nil, nil, nil, 1, 2)
 local yellFieryGrowth								= mod:NewShortPosYell(424581)
-local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, nil, nil, 1, 2)
-local yellFallingStars								= mod:NewShortYell(420236)
-local yellFallingStarsFades							= mod:NewShortFadesYell(420236)
+local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, nil, nil, 1, 2)--Keep an eye on BW changing key to 424580
+local yellFallingStars								= mod:NewShortYell(420236)--Keep an eye on BW changing key to 424580
+local yellFallingStarsFades							= mod:NewShortFadesYell(420236)--Keep an eye on BW changing key to 424580
 local specWarnMassEntanglement						= mod:NewSpecialWarningMoveAway(424495, nil, nil, nil, 1, 2)
 local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
 
@@ -90,7 +90,7 @@ mod:AddInfoFrameOption(424140, true)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27506))
 local warnIncarnationTreeofFlame					= mod:NewSpellAnnounce(422115, 2)
 local warnSupressiveEmber							= mod:NewTargetAnnounce(424579, 3, nil, false)
-local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424258))
+local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424665))
 
 local specWarnSupressingEmber						= mod:NewSpecialWarningYou(424579, nil, nil, nil, 1, 2)
 local specWarnTranquilityofFlame					= mod:NewSpecialWarningCount(423265, nil, nil, nil, 2, 2)

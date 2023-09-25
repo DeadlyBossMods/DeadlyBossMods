@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 421284",
 	"SPELL_AURA_APPLIED 421207 419054",
 	"SPELL_AURA_APPLIED_DOSE 419054",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 421207",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
 	"SPELL_PERIODIC_MISSED 421082 423494",
@@ -31,6 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, disgorge targets?
 --TODO, chat bubbles for Coiling Flames
 --TODO, work out right taunt timing, just swap for each jaws or on venom stacks?
+--TODO, add obvious https://www.wowhead.com/ptr-2/spell=424218/combusting-rage if tanks aren't in range?
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
 local warnSperentsFury								= mod:NewCountAnnounce(421672, 3)
 local warnMoltenVenom								= mod:NewStackAnnounce(419054, 2, nil, "Tank|Healer")
@@ -38,6 +39,8 @@ local warnSerpentsWrath								= mod:NewSpellAnnounce(421703, 4)
 local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, nil, nil, 1, 2)
+local yellCoilingFlames								= mod:NewShortYell(421207, 7897)--Shortname Flames
+local yellCoilingFlamesFades						= mod:NewShortFadesYell(421207)
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
 local yellVolcanicDisgorge							= mod:NewShortYell(421616)
@@ -45,7 +48,7 @@ local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1, 8)
 
-local timerCoilingFlamesCD							= mod:NewNextCountTimer(70, 421207, nil, nil, nil, 3)
+local timerCoilingFlamesCD							= mod:NewNextCountTimer(70, 421207, 7897, nil, nil, 3)--Shortname Flames
 local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, nil, nil, nil, 3)
 local timerFloodoftheFirelandsCD					= mod:NewNextCountTimer(70, 420933, nil, nil, nil, 5)
 local timerVolcanicDisgorgeCD						= mod:NewNextCountTimer(10, 421616, nil, nil, nil, 3)
@@ -164,6 +167,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCoilingFlames:Show()
 			specWarnCoilingFlames:Play("targetyou")
+			yellCoilingFlames:Yell()
+			yellCoilingFlamesFades:Countdown(spellId)
 		end
 	elseif spellId == 419054 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -186,16 +191,15 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 334945 then
-
+	if spellId == 421207 then
+		if args:IsPlayer() then
+			yellCoilingFlamesFades:Cancel()
+		end
 	end
 end
 --mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
---]]
-
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 423494 or spellId == 421082) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
