@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
 	"SPELL_PERIODIC_MISSED 421082 423494",
 --	"UNIT_DIED",
+	"UNIT_SPELLCAST_START boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -34,12 +35,13 @@ mod:RegisterEventsInCombat(
 local warnSperentsFury								= mod:NewCountAnnounce(421672, 3)
 local warnMoltenVenom								= mod:NewStackAnnounce(419054, 2, nil, "Tank|Healer")
 local warnSerpentsWrath								= mod:NewSpellAnnounce(421703, 4)
+local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, nil, nil, 1, 2)
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
-local specWarnVolcanicDisgorge						= mod:NewSpecialWarningDodgeCount(421616, nil, nil, nil, 2, 2)
+local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
+local yellVolcanicDisgorge							= mod:NewShortYell(421616)
 local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, nil, nil, 3, 2)
---local yellSinseeker								= mod:NewShortYell(335114)
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1, 8)
 
@@ -68,6 +70,17 @@ local allTimers = {
 	--Volcanic Disgorge
 	[421616] = {30, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
 }
+
+function mod:DisgorgeTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnVolcanicDisgorge:Show()
+		specWarnVolcanicDisgorge:Play("targetyou")
+		yellVolcanicDisgorge:Yell()
+	else
+		warnVolcanicDisgorge:Show(self.vb.volcanicCount, targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.coilingCount = 0
@@ -103,6 +116,7 @@ function mod:SPELL_CAST_START(args)
 		timerFloodoftheFirelandsCD:Start(nil, self.vb.floodCount+1)
 	elseif spellId == 421616 then
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
+--		self:BossTargetScanner(args.sourceGUID, "DisgorgeTarget", 0.1, 8, true)
 		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
 		specWarnVolcanicDisgorge:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volcanicCount+1)
@@ -199,6 +213,16 @@ function mod:UNIT_DIED(args)
 	end
 end
 --]]
+
+--"<31.18 15:55:30> [UNIT_SPELLCAST_START] Volcoross(75.6%-43.0%){Target:Nnoggie} -Volcanic Disgorge- 2.5s [[boss1:Cast-3-5773-2549-5244-421616-0099903FD1:421616]]",
+--"<31.18 15:55:30> [CLEU] SPELL_CAST_START#Creature-0-5773-2549-5244-208478-0000103F2B#Volcoross(75.6%-43.0%)##nil#421616#Volcanic Disgorge#nil#nil",
+--"<31.20 15:55:30> [UNIT_TARGET] boss1#Volcoross#Target: ??#TargetOfTarget: ??",
+--"<31.69 15:55:30> [UNIT_TARGET] boss1#Volcoross#Target: Revvezt#TargetOfTarget: Volcoross",
+function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	if spellId == 421616 then
+		self:BossUnitTargetScanner(uId, "DisgorgeTarget", 1.1, true)--Allow tank true
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 421684 then--Scorchtail Crash

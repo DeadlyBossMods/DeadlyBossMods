@@ -228,7 +228,12 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Larodar, Keeper of the Flame --
 ---------------------------
---L= DBM:GetModLocalization(2553)
+L= DBM:GetModLocalization(2553)
+
+L:SetMiscLocalization({
+	currentHealth		= "%d%%",
+	currentHealthIcon	= "{rt%d}%d%%"
+})
 
 ---------------------------
 --  Nymue, Weaver of the Cycle --
