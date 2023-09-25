@@ -122,26 +122,26 @@ local allTimers = {
 	["normal"] = {
 		--Phase 1
 		--Fiery Force of Nature
-		[417653] = {6.0, 114.6, 44.0},
+		[417653] = {6.0, 113.4, 44.0, 64.7, 114.5},
 		--Blazing Thorns
-		[426206] = {14.0, 36.0, 75.6},
+		[426206] = {14.0, 36.0, 74.5, 111.6, 36.0, 75.6},
 		--Furious Charge
-		[418637] = {20.0, 20.0, 20.0, 53.6, 20.1, 19.9},
+		[418637] = {20.0, 20.0, 20.0, 52.5, 19.9, 19.9, 20.0, 69.6, 20.0, 20.0, 53.5},
 		--Scorching Roots
-		[422614] = {30.1, 114.4},
+		[422614] = {30.1, 113.3, 108.7},
 		--Raging Inferno
-		[417634] = {100},
+		[417634] = {100, 110.6, 111.6},
 		--Phase 2
 		--Falling Embers
-		[427252] = {7.3, 35.0, 20.0, 33.4, 16.7, 33.4},
+		[427252] = {7.3, 35.0, 20.0, 33.4, 16.7, 33.4, 25.0, 33.4, 16.7, 33.4, 16.7, 41.7, 16.7, 33.4, 16.7, 33.4},
 		--FlashFire
-		[427299] = {34, 45.0, 41.8, 41.8},
+		[427299] = {34, 45.0, 41.8, 41.8, 50.1, 50.2, 41.7, 41.7, 41.8},
 		--Fire Whirl
-		[427343] = {54, 50.1, 50.2},
+		[427343] = {54, 50.1, 50.2, 41.7, 41.8, 41.8, 41.7, 50.1},
 		--Smoldering backdraft
-		[421318] = {17.3, 53.3, 58.5},
+		[421318] = {17.3, 53.3, 58.5, 50.1, 50.1, 58.5, 50.0, 58.5},
 		--Ashen Call
-		[421325] = {25.7, 61.7, 50.1},
+		[421325] = {25.7, 61.7, 50.1, 50.1, 58.5, 50.1, 58.4, 50.1},
 	},
 }
 
@@ -250,7 +250,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.infernoCount = self.vb.infernoCount + 1
 		specWarnFireWhirl:Show(self.vb.infernoCount)
 		specWarnFireWhirl:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1) or 50
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1)
 		if timer then
 			timerFireWhirlCD:Start(timer, self.vb.infernoCount+1)
 		end
@@ -291,7 +291,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 427299 and self:AntiSpam(5, 1) then
 		self.vb.thornsCount = self.vb.thornsCount + 1
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.thornsCount+1) or 41.8
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.thornsCount+1)
 		if timer then
 			timerFlashFireCD:Start(timer, self.vb.thornsCount+1)
 		end
