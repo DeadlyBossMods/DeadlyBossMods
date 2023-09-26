@@ -14,7 +14,7 @@ mod:SetHotfixNoticeRev(20230916000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 421343 422691 426725 422172",
+	"SPELL_CAST_START 421343 422691 426725 422172 425885",
 	"SPELL_CAST_SUCCESS 422277",
 	"SPELL_AURA_APPLIED 421656 422577 421455 422067",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -47,6 +47,7 @@ local warnCauterizingWound							= mod:NewYouAnnounce(421656, 3)
 local warnCauterizingWoundOver						= mod:NewFadesAnnounce(421656, 1)
 local warnSearingAftermath							= mod:NewTargetNoFilterAnnounce(422577, 2, nil, "Healer")
 local warnOverheated								= mod:NewTargetCountAnnounce(421455, 3, nil, nil, nil, nil, nil, nil, true)
+local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
@@ -62,6 +63,9 @@ local timerBrandofDamnationCD						= mod:NewCDCountTimer(29.9, 421343, nil, nil,
 local timerSearingAftermathCD						= mod:NewTargetTimer(6, 422577, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerOverheatedCD								= mod:NewCDCountTimer(29.9, 421455, nil, nil, nil, 5)
 local timerLavaGeysersCD							= mod:NewCDCountTimer(21.9, 422691, nil, nil, nil, 3)
+local timerSeekingInfernoCD							= mod:NewCDCountTimer(21.9, 425885, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+
+mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)--Seeking Inferno
 --Stage Two: World In Flames
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
 local warnDevourEssence								= mod:NewCountAnnounce(422277, 3)
@@ -82,6 +86,7 @@ mod.vb.brandCount = 0
 mod.vb.overheatedCount = 0
 mod.vb.geyserCount = 0
 mod.vb.cycleCount = 0
+mod.vb.infernoCount = 0
 mod.vb.encroached = false
 
 function mod:OnCombatStart(delay)
@@ -90,12 +95,17 @@ function mod:OnCombatStart(delay)
 	self.vb.overheatedCount = 0
 	self.vb.geyserCount = 0
 	self.vb.cycleCount = 0
+	self.vb.infernoCount = 0
 	self.vb.encroached = false
 	timerOverheatedCD:Start(10-delay, 1)
 	timerBrandofDamnationCD:Start(12.9-delay, 1)
 	timerLavaGeysersCD:Start(26.9-delay, 1)
 	timerPhaseCD:Start(62.7-delay, 1)--Basically phase/world in flames timer
 	timerEncroachingDestructionCD:Start(393.8-delay)
+	if self:IsMythic() then
+		self:EnablePrivateAuraSound(426010, "justrun", 2)
+		timerSeekingInfernoCD:Start(1-delay)
+	end
 end
 
 --function mod:OnCombatEnd()
@@ -127,6 +137,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 422172 and not self.vb.encroached then
 		specWarnWorldinFlames:Show(self.vb.geyserCount)
 		specWarnWorldinFlames:Play("watchstep")
+	elseif spellId == 425885 then
+		self.vb.infernoCount = self.vb.infernoCount + 1
+		warnSeekingInferno:Show(self.vb.infernoCount)
+		timerSeekingInfernoCD:Start()
 	end
 end
 

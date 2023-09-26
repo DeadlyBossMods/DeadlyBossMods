@@ -90,7 +90,7 @@ mod:AddInfoFrameOption(424140, true)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27506))
 local warnIncarnationTreeofFlame					= mod:NewSpellAnnounce(422115, 2)
 local warnSupressiveEmber							= mod:NewTargetAnnounce(424579, 3, nil, false)
-local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424258))
+local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424665))
 
 local specWarnSupressingEmber						= mod:NewSpecialWarningYou(424579, nil, nil, nil, 1, 2)
 local specWarnTranquilityofFlame					= mod:NewSpecialWarningCount(423265, nil, nil, nil, 2, 2)

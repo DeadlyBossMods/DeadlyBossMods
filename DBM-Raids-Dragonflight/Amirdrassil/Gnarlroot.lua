@@ -14,15 +14,16 @@ mod:SetMinSyncRevision(20230923000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 421898 421971 424352 422026 422039 421013",
+	"SPELL_CAST_START 421898 421971 424352 422026 422039 421013 425816 425819",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 422466 421972 426106 421038 421840",
+	"SPELL_SUMMON 425366",
+	"SPELL_AURA_APPLIED 422466 421972 426106 421038 421840 425820",
 	"SPELL_AURA_APPLIED_DOSE 422466 426106 421038",
 	"SPELL_AURA_REMOVED 421972 421840",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 422023 424970",
-	"SPELL_PERIODIC_MISSED 422023 424970"
---	"UNIT_DIED",
+	"SPELL_PERIODIC_MISSED 422023 424970",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -31,21 +32,24 @@ mod:RegisterEventsInCombat(
  or ability.id = 421840
 --]]
 --TODO, maybe nameplate aura timers for https://www.wowhead.com/ptr-2/spell=422053/shadow-spines if it's not spam cast?
---TODO, add Tainted Treant mechanics for mythic
+--TODO, How many tainted treant are there to fine tune marking
 --Stage One: Garden of Despair
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27467))
 local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
 local warnShadowSpines								= mod:NewCountAnnounce(422053, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(422053))
 local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, nil, nil, nil, nil, true)
 local warnDreadfireBarrage							= mod:NewStackAnnounce(424352, 2, nil, "Tank|Healer")
+local warnFlamingSap								= mod:NewTargetAnnounce(425819, 2)
 
 local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, nil, nil, 1, 2)
 local yellControlledBurn							= mod:NewShortPosYell(421972)
 local yellControlledBurnFades						= mod:NewIconFadesYell(421972)
---local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, nil, nil, 1, 2)
 local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, nil, nil, 2, 2)
 local specWarnShadowflameCleave						= mod:NewSpecialWarningDodgeCount(422039, nil, nil, nil, 2, 2)
+local specWarnBlazingPollen							= mod:NewSpecialWarningInterruptCount(425816, "HasInterrupt", nil, nil, 1, 2, 4)
+local specWarnFlamingSap							= mod:NewSpecialWarningMoveAway(425819, nil, nil, nil, 1, 2, 4)
+local yellFlamingSap								= mod:NewShortYell(425819)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(422023, nil, nil, nil, 1, 8)
 
 local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, nil, nil, nil, 1)
@@ -53,9 +57,12 @@ local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, nil, nil, ni
 local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, nil, nil, nil, 3)
+local timerBlazingPollenCD							= mod:NewCDNPTimer(11.8, 425816, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -27902, true, 5, {8, 7, 6})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
 local warnPotentFertilization						= mod:NewCountAnnounce(421013, 3)
@@ -70,6 +77,7 @@ local timerPotentFertilizationCD					= mod:NewAITimer(49, 421013, nil, nil, nil,
 
 --p1
 mod.vb.pestilanceCount = 0
+mod.vb.treantIcon = 8
 mod.vb.burnCount = 0
 mod.vb.burnIcon = 1
 mod.vb.barrageCount = 0
@@ -77,10 +85,13 @@ mod.vb.screamCount = 0
 mod.vb.cleaveCount = 0
 --p2
 mod.vb.fertCount = 0
+local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
+	table.wipe(castsPerGUID)
 	self:SetStage(1)
 	self.vb.pestilanceCount = 0
+	self.vb.treantIcon = 8
 	self.vb.burnCount = 0
 	self.vb.burnIcon = 1
 	self.vb.barrageCount = 0
@@ -114,6 +125,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421898 then
 		self.vb.pestilanceCount = self.vb.pestilanceCount + 1
+		self.vb.treantIcon = 8
 		warnFlamingPestilence:Show(self.vb.pestilanceCount)
 		timerFlamingPestilenceCD:Start(self:IsHard() and 34.7 or 49.1, self.vb.pestilanceCount+1)
 	elseif spellId == 421971 then
@@ -141,10 +153,28 @@ function mod:SPELL_CAST_START(args)
 		timerDreadfireBarrageCD:Stop()
 		timerTorturedScreamCD:Stop()
 		timerShadowflameCleaveCD:Stop()
---	elseif spellId == stuff then
---		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
---
---		end
+	elseif spellId == 425816 then
+--		timerBlazingPollenCD:Start(nil, args.sourceGUID)
+--		timerFlamingSapCD:Start(nil, args.sourceGUID)
+		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
+			castsPerGUID[args.sourceGUID] = 0
+			if self.Options.SetIconOnBlazingTaintedTreant then
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.treantIcon, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+			end
+			self.vb.treantIcon = self.vb.treantIcon - 1
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+			specWarnBlazingPollen:Show(args.sourceName, count)
+			if count < 6 then
+				specWarnBlazingPollen:Play("kick"..count.."r")
+			else
+				specWarnBlazingPollen:Play("kickcast")
+			end
+		end
+	elseif spellId == 425819 then
+		--timerFlamingSapCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -156,6 +186,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 --]]
+
+--https://www.wowhead.com/ptr-2/spell=418491/everweaving-threads
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 425366 then--Tainted Treant
+		if not castsPerGUID[args.destGUID] then
+			--timerBlazingPollenCD:Start(nil, args.destGUID)
+			castsPerGUID[args.destGUID] = 0
+			if self.Options.SetIconOnBlazingTaintedTreant then
+				self:ScanForMobs(args.destGUID, 2, self.vb.treantIcon, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+			end
+			self.vb.treantIcon = self.vb.treantIcon - 1
+		end
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -200,6 +245,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 421840 then
 		warnUprootedAgony:Show()
 		timerUprootAgonyCD:Start()
+	elseif spellId == 425820 then
+		warnFlamingSap:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnFlamingSap:Show()
+			specWarnFlamingSap:Play("range5")
+			yellFlamingSap:Yell()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -249,15 +301,17 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
 --https://www.wowhead.com/ptr-2/npc=210231/tainted-lasher
+--https://www.wowhead.com/ptr-2/npc=211904/tainted-treant
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 165067 then
-
+	if cid == 211904 then--Tainted Treant
+		timerBlazingPollenCD:Stop(args.destGUID)
+		timerFlamingSapCD:Stop(args.destGUID)
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 405814 then
 

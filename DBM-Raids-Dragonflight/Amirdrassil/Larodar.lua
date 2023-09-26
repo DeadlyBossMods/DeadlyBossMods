@@ -16,8 +16,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 421318 421325",
 	"SPELL_CAST_SUCCESS 417653 419485 427299",
-	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407",
-	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407",
+	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407 418520",
+	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407 418520",
 	"SPELL_AURA_REMOVED 421316 427299 421594",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 417632",
@@ -45,7 +45,10 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(417632, nil, nil, nil, 1,
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: The Cycle of Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27241))
+local warnForces									= mod:NewCountAnnounce(417653, 3)
+local warnBlisteringSplinters						= mod:NewCountAnnounce(418520, 3, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(418520))--Player
 local warnDreamBlossom								= mod:NewTargetNoFilterAnnounce(425468, 2, nil, false)--non filtered, but off by default
+local warnScorchingRoots							= mod:NewCountAnnounce(422614, 3)
 local warnCharredTreant								= mod:NewSpellAnnounce(417667, 2, nil, "Healer")
 local warnRenewedTreant								= mod:NewSpellAnnounce(417668, 1)
 local warnScorchingBramblethorn						= mod:NewTargetNoFilterAnnounce(426387, 2, nil, false)--Hella spammy. not to be defaulted
@@ -58,7 +61,7 @@ local yellIgnitingGrowth							= mod:NewShortYell(425889)
 local specWarnDreamBlossom							= mod:NewSpecialWarningYou(425468, nil, nil, nil, 1, 2)
 local yellDreamBlossom								= mod:NewShortYell(425468, nil, false)
 local specWarnFieryFlourish							= mod:NewSpecialWarningInterruptCount(426524, "HasInterrupt", nil, nil, 1, 2)
-local specWarnScorchingPursuit						= mod:NewSpecialWarningRun(420544, nil, nil, nil, 4, 2)
+local specWarnScorchingPursuit						= mod:NewSpecialWarningRun(420544, nil, nil, nil, 4, 2)--BW using 420546, but may change to 420544
 local yellScorchingPursuit							= mod:NewShortYell(420544)
 local specWarnScorchingBramblethorn					= mod:NewSpecialWarningYou(426387, nil, nil, nil, 1, 2)
 local specWarnFuriousCharge							= mod:NewSpecialWarningRun(418637, nil, nil, nil, 4, 2)
@@ -207,6 +210,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 422614 then
 		self.vb.scorchingRootCount = self.vb.scorchingRootCount + 1
+		warnScorchingRoots:Show(self.vb.scorchingRootCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.scorchingRootCount+1)
 		if timer then
 			timerScorchingRootsCD:Start(timer, self.vb.scorchingRootCount+1)
@@ -234,7 +238,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.infernoCount = self.vb.infernoCount + 1
 		specWarnRagingInferno:Show(DBM_COMMON_L.SHIELD)
 		specWarnRagingInferno:Play("findshield")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1) or 110.6
 		if timer then
 			timerRagingInfernoCD:Start(timer, self.vb.infernoCount+1)
 		end
@@ -278,6 +282,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 417653 then
 		self.vb.forcesCount = self.vb.forcesCount + 1
+		warnForces:Show(self.vb.forcesCount)
 		self.vb.treeIcon = 8
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.forcesCount+1)
 		if timer then
@@ -349,6 +354,14 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnBlazingCoalescence:Cancel()
 --			warnBlazingCoalescence:Schedule(1, args.amount or 1)
 			warnBlazingCoalescence:Show(args.amount or 1)
+		end
+
+	elseif spellId == 418520 then
+		if args:IsPlayer() then
+			local amount = args.amount or 1
+			if amount % 2 == 1 then -- 1, 3, 5...
+				warnBlisteringSplinters:Show(amount)
+			end
 		end
 	elseif spellId == 421407 then
 		warnSearingAsh:Show(args.amount or 1)
