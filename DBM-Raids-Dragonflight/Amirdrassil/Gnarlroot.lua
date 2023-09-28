@@ -6,7 +6,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209333)
 mod:SetEncounterID(2820)
-mod:SetUsedIcons(1, 2, 3, 4)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20230923000000)
 mod:SetMinSyncRevision(20230923000000)
 --mod.respawnTime = 29
@@ -61,8 +61,8 @@ local timerBlazingPollenCD							= mod:NewCDNPTimer(11.8, 425816, nil, nil, nil,
 local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
-mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -27902, true, 5, {8, 7, 6})
+mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -27902, true, 5, {8, 7, 6, 5})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
 local warnPotentFertilization						= mod:NewCountAnnounce(421013, 3)
@@ -77,7 +77,6 @@ local timerPotentFertilizationCD					= mod:NewAITimer(49, 421013, nil, nil, nil,
 
 --p1
 mod.vb.pestilanceCount = 0
-mod.vb.treantIcon = 8
 mod.vb.burnCount = 0
 mod.vb.burnIcon = 1
 mod.vb.barrageCount = 0
@@ -86,12 +85,13 @@ mod.vb.cleaveCount = 0
 --p2
 mod.vb.fertCount = 0
 local castsPerGUID = {}
+local addUsedMarks = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
+	table.wipe(addUsedMarks)
 	self:SetStage(1)
 	self.vb.pestilanceCount = 0
-	self.vb.treantIcon = 8
 	self.vb.burnCount = 0
 	self.vb.burnIcon = 1
 	self.vb.barrageCount = 0
@@ -125,7 +125,6 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421898 then
 		self.vb.pestilanceCount = self.vb.pestilanceCount + 1
-		self.vb.treantIcon = 8
 		warnFlamingPestilence:Show(self.vb.pestilanceCount)
 		timerFlamingPestilenceCD:Start(self:IsHard() and 34.7 or 49.1, self.vb.pestilanceCount+1)
 	elseif spellId == 421971 then
@@ -159,9 +158,14 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnBlazingTaintedTreant then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.treantIcon, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+				for i = 8, 5, -1 do
+					if not addUsedMarks[i] then
+						addUsedMarks[i] = args.sourceGUID
+						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+						break
+					end
+				end
 			end
-			self.vb.treantIcon = self.vb.treantIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -195,9 +199,14 @@ function mod:SPELL_SUMMON(args)
 			--timerBlazingPollenCD:Start(nil, args.destGUID)
 			castsPerGUID[args.destGUID] = 0
 			if self.Options.SetIconOnBlazingTaintedTreant then
-				self:ScanForMobs(args.destGUID, 2, self.vb.treantIcon, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+				for i = 8, 5, -1 do
+					if not addUsedMarks[i] then
+						addUsedMarks[i] = args.destGUID
+						self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnBlazingTaintedTreant")
+						break
+					end
+				end
 			end
-			self.vb.treantIcon = self.vb.treantIcon - 1
 		end
 	end
 end
@@ -308,6 +317,12 @@ function mod:UNIT_DIED(args)
 	if cid == 211904 then--Tainted Treant
 		timerBlazingPollenCD:Stop(args.destGUID)
 		timerFlamingSapCD:Stop(args.destGUID)
+		for i = 8, 5, -1 do
+			if addUsedMarks[i] == args.destGUID then
+				addUsedMarks[i] = nil
+				return
+			end
+		end
 	end
 end
 
