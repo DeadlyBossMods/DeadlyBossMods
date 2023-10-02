@@ -7,32 +7,29 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200927)
 mod:SetEncounterID(2824)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230916000000)
---mod:SetMinSyncRevision(20210126000000)
+mod:SetHotfixNoticeRev(20230929000000)
+mod:SetMinSyncRevision(20230929000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 421343 422691 426725 422172 425885",
+	"SPELL_CAST_START 421343 422691 426725 422172",
 	"SPELL_CAST_SUCCESS 422277",
 	"SPELL_AURA_APPLIED 421656 422577 421455 422067",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 421656 422577 421455 422067",
---	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421532",
 	"SPELL_PERIODIC_MISSED 421532",
---	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
- (ability.id = 421343 or ability.id = 422691 or ability.id = 426725 or ability.id = 422172) and type = "begincast"
+ (ability.id = 421343 or ability.id = 422691 or ability.id = 426725 or ability.id = 422172 or ability.id = 425885) and type = "begincast"
   or ability.id = 422277 and type = "cast"
   or ability.id = 422067
   or ability.id = 421455 and type = "applydebuff"
 --]]
---TODO, add https://www.wowhead.com/ptr-2/spell=426018/seeking-inferno later
 --TODO, better tracking of personal dps buffs in P2?
 --general
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -99,12 +96,11 @@ function mod:OnCombatStart(delay)
 	self.vb.encroached = false
 	timerOverheatedCD:Start(10-delay, 1)
 	timerBrandofDamnationCD:Start(12.9-delay, 1)
-	timerLavaGeysersCD:Start(26.9-delay, 1)
-	timerPhaseCD:Start(62.7-delay, 1)--Basically phase/world in flames timer
-	timerEncroachingDestructionCD:Start(393.8-delay)
+	timerLavaGeysersCD:Start(self:IsMythic() and 24 or 26.9-delay, 1)
+	timerPhaseCD:Start(62.7-delay, 1)--62-64.9. Basically phase/world in flames timer
 	if self:IsMythic() then
 		self:EnablePrivateAuraSound(426010, "justrun", 2)
-		timerSeekingInfernoCD:Start(1-delay)
+		timerSeekingInfernoCD:Start(26-delay, 1)
 	end
 end
 
@@ -120,15 +116,15 @@ function mod:SPELL_CAST_START(args)
 		self.vb.brandCount = self.vb.brandCount + 1
 		specWarnBrandofDamnation:Show(self.vb.brandCount)
 		specWarnBrandofDamnation:Play("specialsoon")
-		if self.vb.brandCount % 2 == 1 then--Other timers started in phase change event
-			timerBrandofDamnationCD:Start(nil, self.vb.brandCount+1)
+		if self.vb.brandCount < 8 and self.vb.brandCount % 2 == 1 then--Other timers started in phase change event
+			timerBrandofDamnationCD:Start(nil, self.vb.brandCount+1)--29.9
 		end
 	elseif spellId == 422691 then
 		self.vb.geyserCount = self.vb.geyserCount + 1
 		specWarnLavaGeysers:Show()
 		specWarnLavaGeysers:Play("watchstep")
-		if self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
-			timerLavaGeysersCD:Start(nil, self.vb.geyserCount+1)
+		if self.vb.geyserCount < 8 and self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
+			timerLavaGeysersCD:Start(nil, self.vb.geyserCount+1)--21.9
 		end
 	elseif spellId == 426725 then
 		self.vb.encroached = true
@@ -137,10 +133,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 422172 and not self.vb.encroached then
 		specWarnWorldinFlames:Show(self.vb.geyserCount)
 		specWarnWorldinFlames:Play("watchstep")
-	elseif spellId == 425885 then
-		self.vb.infernoCount = self.vb.infernoCount + 1
-		warnSeekingInferno:Show(self.vb.infernoCount)
-		timerSeekingInfernoCD:Start()
+--	elseif spellId == 425885 then--Seeking Inferno
+
 	end
 end
 
@@ -183,6 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBrandofDamnationCD:Stop()
 		timerOverheatedCD:Stop()
 		timerLavaGeysersCD:Stop()
+		timerSeekingInfernoCD:Stop()
 		timerPhaseCD:Stop()
 		timerDevourEssenceCD:Start(5, self.vb.cycleCount+1)
 	end
@@ -210,8 +205,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDevourEssenceCD:Stop()
 		timerOverheatedCD:Start(10, self.vb.overheatedCount+1)
 		timerBrandofDamnationCD:Start(13, self.vb.brandCount+1)
-		timerLavaGeysersCD:Start(27, self.vb.geyserCount+1)
-		timerPhaseCD:Start(64.3, self.vb.cycleCount+1)
+		timerLavaGeysersCD:Start(self:IsMythic() and 24 or 27, self.vb.geyserCount+1)
+		timerPhaseCD:Start(63.8, self.vb.cycleCount+1)
+		if self:IsMythic() then
+			timerSeekingInfernoCD:Start(26, self.vb.infernoCount+1)
+		end
+		if self.vb.cycleCount == 3 then
+			timerEncroachingDestructionCD:Start(100)
+		end
 	end
 end
 --mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
@@ -224,20 +225,18 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 165067 then
-
-	end
-end
---]]
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 425372 then--Overheated
 		self.vb.overheatedCount = self.vb.overheatedCount + 1
-		if self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
-			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)
+		if self.vb.overheatedCount < 8 and self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
+			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)--29.9
+		end
+	elseif spellId == 426144 then
+		self.vb.infernoCount = self.vb.infernoCount + 1
+		warnSeekingInferno:Show(self.vb.infernoCount)
+		-- "Seeking Inferno-426144-npc:200927-0000174417 = pull:26.0, 25.0, 74.5, 25.0, 74.2, 25.0, 74.8, 25.0,
+		if self.vb.infernoCount < 8 and self.vb.infernoCount % 2 == 1 then--1, 3, 5, 7--Other timers started in phase change event
+			timerSeekingInfernoCD:Start(25, self.vb.infernoCount+1)
 		end
 	end
 end

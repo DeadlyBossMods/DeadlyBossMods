@@ -6,7 +6,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(206172)
 mod:SetEncounterID(2708)
-mod:SetUsedIcons(8, 7)
+mod:SetUsedIcons(8, 7, 6)
 mod:SetHotfixNoticeRev(20230923000000)
 mod:SetMinSyncRevision(20230923000000)
 --mod.respawnTime = 29
@@ -14,16 +14,16 @@ mod:SetMinSyncRevision(20230923000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 420846 423094",--426519 426147 424477
+	"SPELL_CAST_START 420846 423094 426854",--426519 426147 424477
 	"SPELL_CAST_SUCCESS 420907",
-	"SPELL_SUMMON 421419",
+	"SPELL_SUMMON 421419 428465",
 	"SPELL_AURA_APPLIED 420554 420920 425745 425781 423195 427722 426520",
 	"SPELL_AURA_APPLIED_DOSE 420554 420920",
 	"SPELL_AURA_REMOVED 413443 425745 425781 423195 427722 426520",
 --	"SPELL_AURA_REMOVED_DOSE",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, https://www.wowhead.com/ptr-2/spell=413540/dream-tether for mythic?
 --TODO, possibly infoframe to track some things, but need the fight overview and mythic mechanics to gauge it
+--TODO, https://www.wowhead.com/ptr-2/spell=428471/waking-decimation cast bar, likely from add spawn if no aura or cast spell is added for it
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
 --local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnProtectorsShroudOver						= mod:NewEndAnnounce(425794, 1)
@@ -42,7 +43,7 @@ local warnViolentFlora								= mod:NewCountAnnounce(424477, 2)
 local warnInflorescence								= mod:NewYouAnnounce(423195, 1)
 
 local specWarnContinuum								= mod:NewSpecialWarningYou(420846, nil, nil, nil, 2, 2)
---local specWarnThreadedBlast						= mod:NewSpecialWarningDefensive(426147, nil, nil, nil, 1, 2)--Literally spammed
+local specWarnNatureVolley							= mod:NewSpecialWarningInterruptCount(426854, "HasInterrupt", nil, nil, 1, 2)
 local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426520, nil, nil, nil, 1, 2)
 local yellWeaversBurden								= mod:NewShortYell(426520)
 local yellWeaversBurdenFades						= mod:NewShortFadesYell(426520)
@@ -54,6 +55,7 @@ local specWarnViridianRain							= mod:NewSpecialWarningDodgeCount(420907, nil, 
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
 local timerContinuumCD								= mod:NewNextCountTimer(90, 420846, nil, nil, nil, 3)
+local timerNatureVolleyCD							= mod:NewCDNPTimer(11.8, 426854, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(11.8, 426520, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerThreadsofLifeCD							= mod:NewCDCountTimer(49, 425745, nil, nil, nil, 3)
 local timerViolentFloraCD							= mod:NewCDCountTimer(49, 424477, nil, nil, nil, 3)
@@ -62,7 +64,8 @@ local timerViridianRainCD							= mod:NewCDCountTimer(49, 420907, nil, nil, nil,
 
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {8, 7})
+mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
+mod:AddSetIconOption("SetIconOnManifestedDream", -28223, true, 5, {8})
 mod:AddNamePlateOption("NPFixate", 425745, true)
 
 mod.vb.contCount = 0
@@ -71,7 +74,7 @@ mod.vb.burdenCount = 0
 mod.vb.threadsCount = 0
 mod.vb.floraCount = 0
 mod.vb.rainCount = 0
-mod.vb.wardenIcon = 8
+mod.vb.wardenIcon = 7
 local castsPerGUID = {}
 local playerInflorescence = false
 local difficultyName = "heroic"
@@ -96,7 +99,7 @@ function mod:OnCombatStart(delay)
 	self.vb.threadsCount = 0
 	self.vb.floraCount = 0
 	self.vb.rainCount = 0
-	self.vb.wardenIcon = 8
+	self.vb.wardenIcon = 7
 	timerViridianRainCD:Start(7-delay, 1)
 	timerViolentFloraCD:Start(15.1-delay, 1)
 	timerWeaversBurdenCD:Start(27-delay, 1)
@@ -141,7 +144,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 420846 then
 		self.vb.contCount = self.vb.contCount + 1
-		self.vb.wardenIcon = 8
+		self.vb.wardenIcon = 7
 		specWarnContinuum:Show(self.vb.contCount)
 		specWarnContinuum:Play("aesoon")
 		timerContinuumCD:Start(nil, self.vb.contCount+1)
@@ -152,12 +155,25 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerThreadsofLifeCD:Start(timer, self.vb.threadsCount+1)
 		end
---	elseif spellId == 426147 then
---		self.vb.blastCount = self.vb.blastCount + 1
---		if self:IsTanking("player", "boss1", nil, true) then
---			specWarnThreadedBlast:Show(self.vb.blastCount)
---			specWarnThreadedBlast:Play("defensive")
---		end
+	elseif spellId == 426854 then
+--		timerNatureVolleyCD:Start(nil, args.sourceGUID)
+		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
+			castsPerGUID[args.sourceGUID] = 0
+			if self.Options.SetIconOnWarden then
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.wardenIcon, 1, nil, 12, "SetIconOnWarden")
+			end
+			self.vb.wardenIcon = self.vb.wardenIcon - 1
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+			specWarnNatureVolley:Show(args.sourceName, count)
+			if count < 6 then
+				specWarnNatureVolley:Play("kick"..count.."r")
+			else
+				specWarnNatureVolley:Play("kickcast")
+			end
+		end
 --	elseif spellId == 426519 then
 --		self.vb.burdenCount = self.vb.burdenCount + 1
 --		timerWeaversBurdenCD:Start()
@@ -187,14 +203,20 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 421419 then--Cycle Warden
 		if not castsPerGUID[args.destGUID] then
+			timerNatureVolleyCD:Start(nil, args.destGUID)
 			castsPerGUID[args.destGUID] = 0
 			if self.Options.SetIconOnWarden then
 				self:ScanForMobs(args.destGUID, 2, self.vb.wardenIcon, 1, nil, 12, "SetIconOnWarden")
 			end
 			self.vb.wardenIcon = self.vb.wardenIcon - 1
 		end
---	elseif spellId == 384757 then--Thunder Caller
-
+	elseif spellId == 428465 then--Manifested Dream
+		if not castsPerGUID[args.destGUID] then
+			castsPerGUID[args.destGUID] = 0
+			if self.Options.SetIconOnManifestedDream then
+				self:ScanForMobs(args.destGUID, 2, 8, 1, nil, 12, "SetIconOnManifestedDream")
+			end
+		end
 	end
 end
 
@@ -219,7 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		else
 			warnLifeSplice:Show(args.destName, amount)
 --		end
-	elseif spellId == 427722 or spellId == 426520 then--426520 confirmed on heroic
+	elseif spellId == 427722 or spellId == 426520 then--426520 confirmed on heroic, 427722 is probably lfr/normal
 		if args:IsPlayer() then
 			specWarnWeaversBurden:Show()
 			specWarnWeaversBurden:Play("runout")
@@ -279,16 +301,16 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
---https://www.wowhead.com/ptr-2/spell=421419/continuum
---https://www.wowhead.com/ptr-2/npc=208813/threads-of-life
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 209800 then--cycle-warden
+	if cid == 428465 then--Manifested Dream
 
+	elseif cid == 209800 then--cycle-warden
+		timerNatureVolleyCD:Stop(args.destGUID)
 	end
 end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 423858 then--Violent Flora

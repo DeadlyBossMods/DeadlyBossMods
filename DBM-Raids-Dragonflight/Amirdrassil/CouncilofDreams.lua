@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 418591 421024",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 418757",
 	"SPELL_AURA_APPLIED 420948 423420 421022 425114 421298 418755 420858 421236 418720 421032",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
 	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525",
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 418187 or ability.id = 420525 or ability.id = 420947 or ability.id = 421020 or ability.id = 421292 or ability.id = 420937 or ability.id = 420671 or ability.id = 420856 or ability.id = 421029 or ability.id = 418591 or ability.id = 421024) and type = "begincast"
- or (ability.id = 418755 or ability.id = 421292 or ability.id = 421029 or ability.id = 420525)
+ or ability.id = 418755 or ability.id = 421292 or ability.id = 421029 or ability.id = 420525 or ability.id = 418757 and type = "cast"
 --]]
 --TODO: see how Dream Tactics on mythic decides which two of the bosses will sync up so timers can be updated/synced when it happens.
 --TODO, use cast start event or success/applied event for barreling charge timer?
@@ -103,6 +103,7 @@ mod:AddPrivateAuraSoundOption(418589, true, 418591, 1)--Polymorph Bomb
 mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
 
 mod.vb.specialsActive = 0
+mod.vb.nextSpecial = 1
 --Urctos
 mod.vb.clawsCount = 0
 mod.vb.rageCount = 0
@@ -126,6 +127,46 @@ local function castBeforeSpecial(self, cooldown)
 		return false
 	end
 	return true
+end
+
+local function specialInterrupted(self, spellId)
+	self.vb.specialsActive = self.vb.specialsActive - 1
+	--Timers that always reset on special end, regardless of who's special it is
+	if self.vb.specialsActive == 0 then
+		self.vb.nextSpecial = self.vb.nextSpecial + 1
+		self.vb.clawsCount = 0
+		timerAgonizingClawsCD:Start(8, 1)
+		timerBarrelingChargeCD:Restart(29, self.vb.chargeCount+1)
+
+		timerNoxiousBlossomCD:Restart(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
+		timerPoisonousJavelinCD:Start(20, self.vb.javCount+1)
+
+		timerPolymorphBombCD:Restart(16, self.vb.polyCount+1)
+		timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
+		DBM:Debug("All specials have ended, restarting all non special timers")
+
+		if self:Mythic() then
+			--Hard coded rotation for mythic
+			if self.vb.nextSpecial % 3 == 2 or self.vb.nextSpecial % 3 == 1 then -- 1, 2
+				timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
+			end
+			if self.vb.nextSpecial % 3 == 2 or self.vb.nextSpecial % 3 == 0 then -- 2, 3
+				timerSongoftheDragonCD:Start(56, self.vb.songCount+1)
+			end
+			if self.vb.nextSpecial % 3 == 0 or self.vb.nextSpecial % 3 == 1 then -- 1, 3
+				timerBlindingRageCD:Start(56, self.vb.rageCount+1)
+			end
+		else
+			--Standard order rotation for non mythic
+			if spellId == 418757 then--blinding rage interrupted
+				timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
+			elseif spellId == 421292 then--Constricting Thicket interrupted
+				timerSongoftheDragonCD:Start(56, self.vb.songCount+1)
+			else--Song of dragon interrupted
+				timerBlindingRageCD:Start(56, self.vb.rageCount+1)
+			end
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -173,10 +214,10 @@ function mod:SPELL_CAST_START(args)
 		timerPolymorphBombCD:Restart(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
 		DBM:Debug("Starting second polymorph blinding rage timer, in case first happened before blinding rage")
 	elseif spellId == 420947 then
+		self.vb.chargeCount = self.vb.chargeCount + 1
 		--If a special is NOT active, he'll use claws exactly 10 seconds of any charge
 		--ALso, if a special is active, any charge he's casting isn't timer based, it's a loop, his normal charge Cd is disabled during all boss specials
 		if self.vb.specialsActive == 0 then
-			self.vb.chargeCount = self.vb.chargeCount + 1
 			--Only time there is a second charge per cycle, is one that is cast 3 seconds after vines
 			local remainingVinee = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
 			if remainingVinee < 30 then
@@ -205,9 +246,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 420937 then
 		warnRelentlessBarrage:Show()
 	elseif spellId == 420671 then
-		if self.vb.specialsActive == 0 then--Don't increment counts during specials
-			self.vb.blossomCount = self.vb.blossomCount + 1
-		end
+		self.vb.blossomCount = self.vb.blossomCount + 1
 		warnNoxiousBlossom:Show(self.vb.blossomCount)
 		--Is cast during specials, but Cd resets during them, twice, once on special begin and once again on special end
 		if castBeforeSpecial(self, 20.7) then
@@ -227,9 +266,7 @@ function mod:SPELL_CAST_START(args)
 		timerNoxiousBlossomCD:Restart(2.9, self.vb.blossomCount+1)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
-		if self.vb.specialsActive == 0 then--Don't increment counts during specials
-			self.vb.polyCount = self.vb.polyCount + 1
-		end
+		self.vb.polyCount = self.vb.polyCount + 1
 		warnPolymorphBomb:Show(self.vb.polyCount)
 		--If cast during special, it's blinding rage and we need the 9 second loop
 		if self.vb.specialsActive > 0 then
@@ -257,14 +294,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 334945 then
-
+	if spellId == 418757 then--PolyMorph Bomb Cast on Urctos
+		timerBlindingRage:Stop()
+		specialInterrupted(self, spellId)
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -361,30 +397,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 421298 then
 		timerConstrictingThicket:Stop()
-	elseif spellId == 420525 or spellId == 421292 or spellId == 421029 then--Weakened Defenses, Constricting Thicket, Song of the Dragon
-		self.vb.specialsActive = self.vb.specialsActive - 1
-		--Stop specific specials timers
-		if spellId == 420525 then--Weakened Defenses (blinding rage)
-			timerBlindingRage:Stop()
-			timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
-		elseif spellId == 421292 then--Constricting Thicket
-			timerSongoftheDragonCD:Start(56, self.vb.songCount+1)
-		else
-			timerBlindingRageCD:Start(56, self.vb.rageCount+1)
-		end
-		--Timers that always reset on special end, regardless of who's special it is
-		if self.vb.specialsActive == 0 then
-			self.vb.clawsCount = 0
-			timerAgonizingClawsCD:Start(8, 1)
-			timerBarrelingChargeCD:Restart(29, self.vb.chargeCount+1)
-
-			timerNoxiousBlossomCD:Restart(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
-			timerPoisonousJavelinCD:Start(20, self.vb.javCount+1)
-
-			timerPolymorphBombCD:Restart(16, self.vb.polyCount+1)
-			timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
-			DBM:Debug("All specials have ended, restarting all non special timers")
-		end
+	elseif spellId == 421292 or spellId == 421029 then--Constricting Thicket, Song of the Dragon
+		specialInterrupted(self, spellId)
 	elseif spellId == 420858 then
 		if args:IsPlayer() then
 			yellPoisonousJavelinFades:Cancel()
