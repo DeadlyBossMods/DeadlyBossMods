@@ -14,7 +14,7 @@ mod:SetMinSyncRevision(20230923000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 420846 423094 426854",--426519 426147 424477
+	"SPELL_CAST_START 420846 423094 426854 429108 429180",--426519 426147 424477
 	"SPELL_CAST_SUCCESS 420907",
 	"SPELL_SUMMON 421419 428465",
 	"SPELL_AURA_APPLIED 420554 420920 425745 425781 423195 427722 426520",
@@ -44,6 +44,7 @@ local warnInflorescence								= mod:NewYouAnnounce(423195, 1)
 
 local specWarnContinuum								= mod:NewSpecialWarningYou(420846, nil, nil, nil, 2, 2)
 local specWarnNatureVolley							= mod:NewSpecialWarningInterruptCount(426854, "HasInterrupt", nil, nil, 1, 2)
+local specWarnLumberingSlam							= mod:NewSpecialWarningDodge(429108, nil, nil, nil, 2, 2)
 local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426520, nil, nil, nil, 1, 2)
 local yellWeaversBurden								= mod:NewShortYell(426520)
 local yellWeaversBurdenFades						= mod:NewShortFadesYell(426520)
@@ -56,6 +57,7 @@ local specWarnViridianRain							= mod:NewSpecialWarningDodgeCount(420907, nil, 
 
 local timerContinuumCD								= mod:NewNextCountTimer(90, 420846, nil, nil, nil, 3)
 local timerNatureVolleyCD							= mod:NewCDNPTimer(11.8, 426854, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerLumberingSlamCD							= mod:NewCDTimer(11.8, 429108, nil, nil, nil, 3)
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(11.8, 426520, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerThreadsofLifeCD							= mod:NewCDCountTimer(49, 425745, nil, nil, nil, 3)
 local timerViolentFloraCD							= mod:NewCDCountTimer(49, 424477, nil, nil, nil, 3)
@@ -174,6 +176,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnNatureVolley:Play("kickcast")
 			end
 		end
+	elseif spellId == 429108 or spellId == 429180 then
+		specWarnLumberingSlam:Show()
+		specWarnLumberingSlam:Play("shockwave")
+		--timerLumberingSlamCD:Start(nil, args.sourceGUID)
 --	elseif spellId == 426519 then
 --		self.vb.burdenCount = self.vb.burdenCount + 1
 --		timerWeaversBurdenCD:Start()
@@ -305,10 +311,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 428465 then--Manifested Dream
-
-	elseif cid == 209800 then--cycle-warden
+	if cid == 209800 then--cycle-warden
 		timerNatureVolleyCD:Stop(args.destGUID)
+		--timerLumberingSlamCD:Stop(args.destGUID)
+--	elseif cid == 428465 then--Manifested Dream
+
 	end
 end
 
