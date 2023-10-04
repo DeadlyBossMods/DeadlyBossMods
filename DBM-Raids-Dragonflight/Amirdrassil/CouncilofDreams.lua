@@ -192,6 +192,7 @@ function mod:OnCombatStart(delay)
 	timerPolymorphBombCD:Start(34.9-delay, 1)
 	timerEmeraldWindsCD:Start(45.3-delay, 1)
 	self:EnablePrivateAuraSound(418589, "bombyou", 2)
+	self:EnablePrivateAuraSound(429123, "bombyou", 2, 418589)--Register secondary private aura (different ID for differentn difficulty?)
 end
 
 --function mod:OnCombatEnd()

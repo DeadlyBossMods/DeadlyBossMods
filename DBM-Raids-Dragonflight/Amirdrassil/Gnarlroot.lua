@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209333)
 mod:SetEncounterID(2820)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20230923000000)
+mod:SetHotfixNoticeRev(20231003000000)
 mod:SetMinSyncRevision(20230923000000)
 --mod.respawnTime = 29
 
@@ -32,7 +32,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 421840
 --]]
 --TODO, maybe nameplate aura timers for https://www.wowhead.com/ptr-2/spell=422053/shadow-spines if it's not spam cast?
---TODO, How many tainted treant are there to fine tune marking
 --Stage One: Garden of Despair
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27467))
 local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
@@ -86,6 +85,64 @@ mod.vb.cleaveCount = 0
 mod.vb.fertCount = 0
 local castsPerGUID = {}
 local addUsedMarks = {}
+local difficultyName = "normal"
+--Timers Table Notes
+--If initial and loop timers were close enough, they were combined and minned since 1-2sec variation is acceptable
+--If the initial and repeat timers were radically different (consistently) like with Shadowflame heroic, two entries are used to separate them
+local allTimers = {
+	["lfr"] = {--Repeats unknown, not a single person testing LFR logged it on WCL
+		--Controlled Burn
+		[421971] = {36.4, 38.3},
+		--Dreadfire Barrage
+		[424352] = {10.6, 29.8, 27.6},
+		--Flaming Pestilence
+		[421898] = {18.7, 44.0},
+		--Shadowflame Cleave
+		[422039] = {24.2, 31.8, 32.0},
+		[4220392] = {24.2, 31.8, 32.0},--Same as above, but so table entry isn't nil for global checks
+		--Tortured Scream
+		[422026] = {4.0, 27.0, 18.3, 29.4},
+	},
+	["normal"] = {
+		--Controlled Burn
+		[421971] = {39.9, 43.0},--Repeat: 42.2, 43.0
+		--Dreadfire Barrage
+		[424352] = {12.2, 32.4, 29.1},--Repeat: 14.5, 32.3, 29.1
+		--Flaming Pestilence
+		[421898] = {21.4, 49.2},--Repeat: 23.7, 49.2
+		--Shadowflame Cleave
+		[422039] = {27.6, 36.9},--Repeat: 29.9, 36.9
+		[4220392] = {27.6, 36.9},--Same as above, but so table entry isn't nil for global checks
+		--Tortured Scream
+		[422026] = {4.5, 29.2, 23.0, 30.8},--Repeat: 6.8, 29.2, 23, 30.8
+	},
+	["heroic"] = {
+		--Controlled Burn
+		[421971] = {31.5, 32.0},--Repeat: 0, 34.9 / 0, 32.9
+		--Dreadfire Barrage
+		[424352] = {9.5, 24.8, 21.5, 21.5},--Repeat: 0, 25.0, 24.1, 21.5 / 0, 24.8, 22.3, 23.5 / 0, 24.8, 22.4, 23.4
+		--Flaming Pestilence
+		[421898] = {17.2, 34.7},--Repeat: 0, 36.1 / 0, 35.3
+		--Shadowflame Cleave
+		[422039] = {22.0, 20.4, 29.5},--Repeat: 0, 21.3, 30.9, 17.3 / 0, 21.1, 29.4, 18.9
+		[4220392] = {0, 21.1, 29.4, 17.3},--Repeat: 0, 21.3, 30.9, 17.3 / 0, 21.1, 29.4, 18.9
+		--Tortured Scream
+		[422026] = {3.6, 22.4, 20.3, 20.0, 17.2},--Repeat: 0, 22.4, 21.9, 20.9, 17.2 / 0, 22.4, 21.2, 20.0, 18.8
+	},
+	["mythic"] = {
+		--Controlled Burn
+		[421971] = {31.8, 38.9},--Repeat: 33.5, 38.8
+		--Dreadfire Barrage
+		[424352] = {9.4, 25.9, 20.0, 18.9},--Repeat: 11.1, 26.0, 19.9, 18.9
+		--Flaming Pestilence
+		[421898] = {16.5, 44.8},--Repeat: 18.2, 44.8
+		--Shadowflame Cleave
+		[422039] = {21.2, 28.2, 30.7},--Repeat: 22.9, 28.2, 30.7
+		[4220392] = {21.2, 28.2, 30.7},--Same as above, but so table entry isn't nil for global checks
+		--Tortured Scream
+		[422026] = {3.5, 23.5, 16.4, 22.4, 20.1},--Repeat: 5.2, 23.6, 16.4, 22.4, 20.1
+	},
+}
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -98,21 +155,38 @@ function mod:OnCombatStart(delay)
 	self.vb.screamCount = 0
 	self.vb.cleaveCount = 0
 	self.vb.fertCount = 0
-	if self:IsHard() then
+	--Mythic and heroic initials very close
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerTorturedScreamCD:Start(3.5-delay, 1)
+		timerDreadfireBarrageCD:Start(9.4-delay, 1)
+		timerFlamingPestilenceCD:Start(16.5-delay, 1)
+		timerShadowflameCleaveCD:Start(21.2-delay, 1)
+		timerControlledBurnCD:Start(31.8-delay, 1)
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
 		timerTorturedScreamCD:Start(3.6-delay, 1)
 		timerDreadfireBarrageCD:Start(9.5-delay, 1)
 		timerFlamingPestilenceCD:Start(17.2-delay, 1)
 		timerShadowflameCleaveCD:Start(22-delay, 1)
 		timerControlledBurnCD:Start(31.5-delay, 1)
-		timerPotentFertilizationCD:Start(96.7-delay, 1)
-	else
-		timerTorturedScreamCD:Start(4.6-delay, 1)
-		timerDreadfireBarrageCD:Start(12.4-delay, 1)
-		timerFlamingPestilenceCD:Start(21.5-delay, 1)
+	--Normal and LFR initials are still quite different
+	elseif self:IsNormal() then
+		difficultyName = "normal"
+		timerTorturedScreamCD:Start(4.5-delay, 1)
+		timerDreadfireBarrageCD:Start(12.2-delay, 1)
+		timerFlamingPestilenceCD:Start(21.4-delay, 1)
 		timerShadowflameCleaveCD:Start(27.6-delay, 1)
-		timerControlledBurnCD:Start(40-delay, 1)
-		timerPotentFertilizationCD:Start(98.9-delay, 1)
+		timerControlledBurnCD:Start(39.9-delay, 1)
+	else
+		difficultyName = "lfr"
+		timerTorturedScreamCD:Start(4-delay, 1)
+		timerDreadfireBarrageCD:Start(10.6-delay, 1)
+		timerFlamingPestilenceCD:Start(18.7-delay, 1)
+		timerShadowflameCleaveCD:Start(24.2-delay, 1)
+		timerControlledBurnCD:Start(36.4-delay, 1)
 	end
+	timerPotentFertilizationCD:Start(96.7-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -121,29 +195,61 @@ end
 --	end
 --end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	elseif self:IsNormal() then
+		difficultyName = "normal"
+	else
+		difficultyName = "lfr"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421898 then
 		self.vb.pestilanceCount = self.vb.pestilanceCount + 1
 		warnFlamingPestilence:Show(self.vb.pestilanceCount)
-		timerFlamingPestilenceCD:Start(self:IsHard() and 34.7 or 49.1, self.vb.pestilanceCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.pestilanceCount+1)
+		if timer then
+			timerFlamingPestilenceCD:Start(timer, self.vb.pestilanceCount+1)
+		end
 	elseif spellId == 421971 then
-		self.vb.burnCount = 0
+		self.vb.burnCount = self.vb.burnCount + 1
 		self.vb.burnIcon = 1
-		timerControlledBurnCD:Start(self:IsHard() and 32 or 43.0, self.vb.burnCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.burnCount+1)
+		if timer then
+			timerControlledBurnCD:Start(timer, self.vb.burnCount+1)
+		end
 	elseif spellId == 424352 then
 		self.vb.barrageCount = self.vb.barrageCount + 1
-		timerDreadfireBarrageCD:Start(self:IsHard() and 21.5 or 29.1, self.vb.barrageCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.barrageCount+1)
+		if timer then
+			timerDreadfireBarrageCD:Start(timer, self.vb.barrageCount+1)
+		end
 	elseif spellId == 422026 then
 		self.vb.screamCount = self.vb.screamCount + 1
 		specWarnTorturedScream:Show(self.vb.screamCount)
 		specWarnTorturedScream:Play("aesoon")
-		timerTorturedScreamCD:Start(self:IsHard() and 18.9 or 23.1, self.vb.screamCount+1)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.screamCount+1)
+		if timer then
+			timerTorturedScreamCD:Start(timer, self.vb.screamCount+1)
+		end
 	elseif spellId == 422039 then
 		self.vb.cleaveCount = self.vb.cleaveCount + 1
 		specWarnShadowflameCleave:Show(self.vb.cleaveCount)
 		specWarnShadowflameCleave:Play("shockwave")
-		timerShadowflameCleaveCD:Start(self:IsHard() and 17.3 or 36.9, self.vb.cleaveCount+1)
+		local timer
+		if self.vb.fertCount > 0 then--All sets besides initial
+			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId..2, self.vb.cleaveCount+1)
+		else--Initial timers
+			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.cleaveCount+1)
+		end
+		if timer then
+			timerShadowflameCleaveCD:Start(timer, self.vb.cleaveCount+1)
+		end
 	elseif spellId == 421013 then
 		self:SetStage(2)
 		self.vb.fertCount = self.vb.fertCount + 1
@@ -280,20 +386,36 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.screamCount = 0
 		self.vb.cleaveCount = 0
 		timerUprootAgonyCD:Stop()
-		if self:IsHard() then
+		if self:IsMythic() then
+			timerTorturedScreamCD:Start(5.2, 1)
+			timerDreadfireBarrageCD:Start(11.1, 1)
+			timerFlamingPestilenceCD:Start(18.2, 1)
+			timerShadowflameCleaveCD:Start(22.9, 1)
+			timerControlledBurnCD:Start(33.5, 1)
+			timerPotentFertilizationCD:Start(92, self.vb.fertCount+1)--Recheck
+		elseif self:IsHeroic() then--Heroic needs rechecking
 			timerTorturedScreamCD:Start(4.8, 1)
 			timerDreadfireBarrageCD:Start(10.7, 1)
 			timerFlamingPestilenceCD:Start(17.8, 1)
 			timerShadowflameCleaveCD:Start(22.5, 1)
 			timerControlledBurnCD:Start(31.9, 1)
 			timerPotentFertilizationCD:Start(93.4, self.vb.fertCount+1)
-		else
-			timerTorturedScreamCD:Start(6.1, 1)
-			timerDreadfireBarrageCD:Start(13.8, 1)
+		elseif self:IsNormal() then
+			timerTorturedScreamCD:Start(6.8, 1)
+			timerDreadfireBarrageCD:Start(14.5, 1)
 			timerFlamingPestilenceCD:Start(23.1, 1)
 			timerShadowflameCleaveCD:Start(29.2, 1)
 			timerControlledBurnCD:Start(41.5, 1)
-			timerPotentFertilizationCD:Start(98.5, self.vb.fertCount+1)
+			timerPotentFertilizationCD:Start(98.5, self.vb.fertCount+1)--Recheck
+		else--LFR
+			--None known
+			DBM:AddMsg("LFR timers are not known/vetted beyond this point")
+			--timerTorturedScreamCD:Start(4.8, 1)
+			--timerDreadfireBarrageCD:Start(10.7, 1)
+			--timerFlamingPestilenceCD:Start(17.8, 1)
+			--timerShadowflameCleaveCD:Start(22.5, 1)
+			--timerControlledBurnCD:Start(31.9, 1)
+			--timerPotentFertilizationCD:Start(93.4, self.vb.fertCount+1)
 		end
 	end
 end
