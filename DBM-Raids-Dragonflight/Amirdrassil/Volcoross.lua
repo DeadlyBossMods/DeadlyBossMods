@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 421672 425401 425400 420933 421616 420415 423117 421703",
 	"SPELL_CAST_SUCCESS 421284",
-	"SPELL_AURA_APPLIED 421207 419054",
+	"SPELL_AURA_APPLIED 421207 419054 427201",
 	"SPELL_AURA_APPLIED_DOSE 419054",
-	"SPELL_AURA_REMOVED 421207",
+	"SPELL_AURA_REMOVED 421207 427201",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
 	"SPELL_PERIODIC_MISSED 421082 423494",
@@ -40,7 +40,11 @@ local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, ni
 
 local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, nil, nil, 1, 2)
 local yellCoilingFlames								= mod:NewShortYell(421207, 7897)--Shortname Flames
-local yellCoilingFlamesFades						= mod:NewIconFadesYell(421207)
+local yellCoilingFlamesFades						= mod:NewShortFadesYell(421207)
+local specWarnCoilingEruption						= mod:NewSpecialWarningYou(427201, nil, nil, nil, 1, 2)
+local yellCoilingEruption							= mod:NewShortPosYell(427201, nil, nil, nil, "YELL")
+local yellCoilingEruptionFades						= mod:NewIconFadesYell(427201, nil, nil, nil, "YELL")
+
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
 local yellVolcanicDisgorge							= mod:NewShortYell(421616)
@@ -58,7 +62,8 @@ local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|
 
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, true, false, {1, 2, 3})
+--mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, true, false, {1, 2, 3})
 
 mod.vb.coilingCount = 0
 mod.vb.flamesIcon = 1
@@ -167,16 +172,28 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 421207 then
-		local icon = self.vb.flamesIcon
-		if self.Options.SetIconOnCoilingFlames then
-			self:SetIcon(args.destName, icon)
-		end
+		--local icon = self.vb.flamesIcon
+		--if self.Options.SetIconOnCoilingFlames then
+		--	self:SetIcon(args.destName, icon)
+		--end
 		if args:IsPlayer() then
 			specWarnCoilingFlames:Show()
 			specWarnCoilingFlames:Play("targetyou")
 			yellCoilingFlames:Yell()
-			yellCoilingFlamesFades:Countdown(spellId, nil, icon)
+			yellCoilingFlamesFades:Countdown(spellId)
 		end
+	elseif spellId == 427201 then
+		local icon = self.vb.flamesIcon
+		if self.Options.SetIconOnCoilingEruption then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnCoilingEruption:Show()
+			specWarnCoilingEruption:Play("targetyou")
+			yellCoilingEruption:Yell(icon, icon)
+			yellCoilingEruptionFades:Countdown(spellId, nil, icon)
+		end
+		self.vb.flamesIcon = self.vb.flamesIcon + 1
 	elseif spellId == 419054 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
@@ -201,11 +218,18 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 421207 then
-		if self.Options.SetIconOnCoilingFlames then
+		--if self.Options.SetIconOnCoilingFlames then
+		--	self:SetIcon(args.destName, 0)
+		--end
+		if args:IsPlayer() then
+			yellCoilingFlamesFades:Cancel()
+		end
+	elseif spellId == 427201 then
+		if self.Options.SetIconOnCoilingEruption then
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
-			yellCoilingFlamesFades:Cancel()
+			yellCoilingEruptionFades:Cancel()
 		end
 	end
 end
