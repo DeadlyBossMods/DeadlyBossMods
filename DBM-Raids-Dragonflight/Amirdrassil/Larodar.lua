@@ -16,8 +16,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 421318 421325",
 	"SPELL_CAST_SUCCESS 417653 419485 427299",
-	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407 418520",
-	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407 418520",
+	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407 418520 429032 428946",
+	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407 418520 429032 428946",
 	"SPELL_AURA_REMOVED 421316 427299 421594",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 417632",
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 --TODO, best way to track https://www.wowhead.com/ptr-2/spell=425531/dream-fatigue ? Infoframe?
 --TODO, nameplate aura for 424997 on Seed of life? (IE do they have visible nameplates it'd be usefulf or)
 --TODO, maybe infoframe for tracking Blazing Coal stacks?
+--TODO, more with the tank stuff?
 --General
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
@@ -55,6 +56,8 @@ local warnScorchingBramblethorn						= mod:NewTargetNoFilterAnnounce(426387, 2, 
 local warnNaturesBulwark							= mod:NewSpellAnnounce(419485, 1)
 local warnBlazingCoalescence						= mod:NewCountAnnounce(426249, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))--Player
 local warnBlazingCoalescenceBoss					= mod:NewStackAnnounce(426256, 4)--Boss
+local warnEverlastingBlaze							= mod:NewCountAnnounce(429032, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(429032))--Player
+local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
 
 local specWarnIgnitingGrowth						= mod:NewSpecialWarningMoveAway(425889, nil, nil, nil, 1, 2, 4)
 local yellIgnitingGrowth							= mod:NewShortYell(425889)
@@ -355,7 +358,11 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnBlazingCoalescence:Schedule(1, args.amount or 1)
 			warnBlazingCoalescence:Show(args.amount or 1)
 		end
-
+	elseif spellId == 429032 then
+		if args:IsPlayer() then
+			warnEverlastingBlaze:Cancel()
+			warnEverlastingBlaze:Schedule(1, args.amount or 1)
+		end
 	elseif spellId == 418520 then
 		if args:IsPlayer() then
 			local amount = args.amount or 1
@@ -382,6 +389,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEncasedInAsh:Play("targetyou")
 			yellEncasedInAsh:Yell()
 		end
+	elseif spellId == 428946 then
+		warnAshenAsphyxiation:Show(args.destName, args.amount or 1)
 	elseif spellId == 421316 then
 		self:SetStage(1.5)
 		timerFieryForceofNatureCD:Stop()
