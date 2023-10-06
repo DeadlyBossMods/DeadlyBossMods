@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 421603 426016 424140 423265",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509 424582",
+	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509 424582 426686 424140",
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
-	"SPELL_AURA_REMOVED 424580 424495 424581 421603 425582 424180 422115",--420540
+	"SPELL_AURA_REMOVED 424580 424581 421603 425582 424180 422115 424140",--420540
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 424499 423649",
 	"SPELL_PERIODIC_MISSED 424499 423649"
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 424495 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
- or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
+ or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr-2/spell=425888/igniting-growth ?
 --TODO, review dream essence for spam
@@ -46,7 +46,8 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(27488))
 ----Tindral Sageswift
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27509))
 local warnSearingWrath								= mod:NewStackAnnounce(422000, 2, nil, "Tank|Healer")
-local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, "Tank", nil, nil, nil, 2)
+local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, nil, nil, nil, nil, 2)
+local warnPoisonousMushroomDebuff					= mod:NewTargetNoFilterAnnounce(426686, 4)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnMassEntanglement							= mod:NewTargetCountAnnounce(424495, 3)
 local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
@@ -61,7 +62,7 @@ local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, ni
 local yellFallingStars								= mod:NewShortYell(420236)
 local yellFallingStarsFades							= mod:NewShortFadesYell(420236)
 local specWarnMassEntanglement						= mod:NewSpecialWarningMoveAway(424495, nil, nil, nil, 1, 2)
-local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
+--local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
 
 local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
@@ -447,7 +448,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMassEntanglement:Show()
 			specWarnMassEntanglement:Play("targetyou")
-			yellMassEntanglementFades:Countdown(spellId)
+--			yellMassEntanglementFades:Countdown(spellId)
 		end
 		warnMassEntanglement:CombinedShow(0.5, self.vb.entangleCount, args.destName)
 	elseif spellId == 420238 then
@@ -486,7 +487,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSeedofFlame:Cancel()
 			warnSeedofFlame:Schedule(1, args.amount or 1)
 		end
-	elseif spellId == 424180 then
+	elseif spellId == 424180 or spellId == 424140 then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"))
@@ -507,6 +508,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			warnLingeringCinder:Show(args.amount or 1)
 		end
+	elseif spellId == 426686 then
+		if args:IsPlayer() then
+
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then--Primarily used to show
+				warnPoisonousMushroomDebuff:Show(args.destName)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -524,13 +534,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnFieryGrowth then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 424495 then
-		if self.Options.SetIconOnEntangle then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellMassEntanglementFades:Cancel()
-		end
 --	elseif spellId == 420540 then--Moonkin Form ending
 
 	elseif spellId == 422115 then--Tree form ending
@@ -541,7 +544,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 --	elseif spellId == 425582 then--Mythic owl form ending
 
-	elseif spellId == 424180 then
+	elseif spellId == 424180 or spellId == 424140 then--Supernova ending on boss
 		warnSuperNovaEnded:Show()
 		timerSupernova:Stop()
 		self.vb.shroomCount = 0
