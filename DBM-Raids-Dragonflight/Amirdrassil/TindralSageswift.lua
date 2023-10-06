@@ -16,8 +16,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 421603 426016 424140 423265",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509",
-	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665",
+	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509 424582",
+	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
 	"SPELL_AURA_REMOVED 424580 424495 424581 421603 425582 424180 422115",--420540
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 424499 423649",
@@ -49,6 +49,7 @@ local warnSearingWrath								= mod:NewStackAnnounce(422000, 2, nil, "Tank|Heale
 local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, "Tank", nil, nil, nil, 2)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnMassEntanglement							= mod:NewTargetCountAnnounce(424495, 3)
+local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
 
 local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, nil, 1, 2)
 --local specWarnBlazingMushroom						= mod:NewSpecialWarningSoakCount(423260, "Tank", nil, nil, 2, 2)--Tank default for sure, anyone else can enable
@@ -66,7 +67,7 @@ local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, nil, nil, nil
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, false, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
 ----Moonkin of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27495))
 local warnIncarnationMoonkin						= mod:NewSpellAnnounce(420540, 2)
@@ -439,6 +440,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 422509 and args:IsPlayer() then
 		warnEmpoweredFeather:Show()
+	elseif spellId == 424582 then
+		if args:IsPlayer() then
+			warnLingeringCinder:Show(args.amount or 1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
