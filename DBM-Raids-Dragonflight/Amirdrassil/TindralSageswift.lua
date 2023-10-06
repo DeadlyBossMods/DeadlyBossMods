@@ -213,6 +213,7 @@ local allTimers = {
 			--Tranquility of Flame
 			[423265] = {50, 47, 59, 47},
 		},
+	},
 	["mythic"] = {
 		[1] = {--P1 needs re-review
 			--Blazing  Mushroom
