@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 421603 426016 424140 423265",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509 424582",
+	"SPELL_AURA_APPLIED 422000 424581 424580 424495 420238 420540 425582 424258 422115 424579 424665 424180 422509 424582 426686 424140",
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
-	"SPELL_AURA_REMOVED 424580 424495 424581 421603 425582 424180 422115",--420540
+	"SPELL_AURA_REMOVED 424580 424581 421603 425582 424180 422115 424140",--420540
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 424499 423649",
 	"SPELL_PERIODIC_MISSED 424499 423649"
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 424495 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
- or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
+ or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
 --]]
 --TODO, https://www.wowhead.com/ptr-2/spell=425888/igniting-growth ?
 --TODO, review dream essence for spam
@@ -46,10 +46,12 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(27488))
 ----Tindral Sageswift
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27509))
 local warnSearingWrath								= mod:NewStackAnnounce(422000, 2, nil, "Tank|Healer")
-local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, "Tank", nil, nil, nil, 2)
+local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, nil, nil, nil, nil, 2)
+local warnPoisonousMushroomDebuff					= mod:NewTargetNoFilterAnnounce(426686, 4)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnMassEntanglement							= mod:NewTargetCountAnnounce(424495, 3)
 local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
+local warnIncarnationOwl							= mod:NewCountAnnounce(425582, 4)
 
 local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, nil, 1, 2)
 --local specWarnBlazingMushroom						= mod:NewSpecialWarningSoakCount(423260, "Tank", nil, nil, 2, 2)--Tank default for sure, anyone else can enable
@@ -60,17 +62,18 @@ local specWarnFallingStars							= mod:NewSpecialWarningMoveAway(420236, nil, ni
 local yellFallingStars								= mod:NewShortYell(420236)
 local yellFallingStarsFades							= mod:NewShortFadesYell(420236)
 local specWarnMassEntanglement						= mod:NewSpecialWarningMoveAway(424495, nil, nil, nil, 1, 2)
-local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
+--local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
 
 local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, nil, nil, nil, 3)
+local timerOwlCD									= mod:NewNextCountTimer(20, 425582, nil, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
 ----Moonkin of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27495))
-local warnIncarnationMoonkin						= mod:NewSpellAnnounce(420540, 2)
+local warnIncarnationMoonkin						= mod:NewCountAnnounce(420540, 2)
 
 local specWarnSunfire								= mod:NewSpecialWarningMoveAway(420238, nil, nil, nil, 1, 2)
 local specWarnFireBeam								= mod:NewSpecialWarningCount(421398, nil, nil, nil, 2, 2)
@@ -89,7 +92,7 @@ local timerSupernova								= mod:NewCastTimer(20, 424140, nil, nil, nil, 2, nil
 mod:AddInfoFrameOption(424140, true)
 --Stage Two: Tree of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27506))
-local warnIncarnationTreeofFlame					= mod:NewSpellAnnounce(422115, 2)
+local warnIncarnationTreeofFlame					= mod:NewCountAnnounce(422115, 2)
 local warnSupressiveEmber							= mod:NewTargetAnnounce(424579, 3, nil, false)
 local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424665))
 
@@ -109,6 +112,7 @@ mod.vb.entangleCount = 0
 --Forms
 mod.vb.moonkinCount = 0
 mod.vb.treeCount = 0
+mod.vb.owlCount = 0
 --Form Abilities
 mod.vb.beamCount = 0
 mod.vb.tranqCount = 0
@@ -211,6 +215,60 @@ local allTimers = {
 			[423265] = {50, 47, 59, 47},
 		},
 	},
+	["mythic"] = {
+		[1] = {--P1 needs re-review
+			--Blazing  Mushroom
+			[423260] = {},
+			--Fiery Growth
+			[424581] = {},
+			--Falling Stars
+			[420236] = {},
+			--Mass Entanglement
+			[424495] = {},
+			--Moonkin Form
+			[420540] = {},
+			--Fire Beam
+			[421398] = {},
+			--Owl Form (mythic)
+			[425582] = {},
+		},
+		[2] = {
+			--Blazing  Mushroom
+			[423260] = {},
+			--Fiery Growth
+			[424581] = {},
+			--Falling Stars
+			[420236] = {},
+			--Mass Entanglement
+			[424495] = {},
+			--Tree Form
+			[422115] = {},
+			--Tranquility of Flame
+			[423265] = {},
+			--Owl Form (mythic)
+			[425582] = {},
+		},
+		[3] = {
+			--Blazing  Mushroom
+			[423260] = {},
+			--Fiery Growth
+			[424581] = {},
+			--Falling Stars
+			[420236] = {},
+			--Mass Entanglement
+			[424495] = {},
+			--Moonkin Form
+			[420540] = {},
+			--Tree Form
+			[422115] = {},
+			--Fire Beam
+			[421398] = {},
+			--Tranquility of Flame
+			[423265] = {},
+			--Owl Form (mythic)
+			[425582] = {},
+		},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -221,6 +279,7 @@ function mod:OnCombatStart(delay)
 	self.vb.starsCount = 0
 	self.vb.entangleCount = 0
 	self.vb.moonkinCount = 0
+	self.vb.owlCount = 0
 	self.vb.treeCount = 0
 	self.vb.beamCount = 0
 	self.vb.tranqCount = 0
@@ -389,7 +448,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMassEntanglement:Show()
 			specWarnMassEntanglement:Play("targetyou")
-			yellMassEntanglementFades:Countdown(spellId)
+--			yellMassEntanglementFades:Countdown(spellId)
 		end
 		warnMassEntanglement:CombinedShow(0.5, self.vb.entangleCount, args.destName)
 	elseif spellId == 420238 then
@@ -411,8 +470,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if timer then
 			timerTreeofFlameCD:Start(timer, self.vb.treeCount+1)
 		end
---	elseif spellId == 425582 then--Mythic in phase owl form
-		--Do stuff
+	elseif spellId == 425582 then--Mythic in phase owl form
+		self.vb.owlCount = self.vb.owlCount + 1
+		warnIncarnationOwl:Show(self.vb.owlCount)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.owlCount+1)
+		if timer then
+			timerOwlCD:Start(timer, self.vb.owlCount+1)
+		end
 	elseif spellId == 424258 then
 		if args:IsPlayer() then
 			warnDreamEssence:Cancel()
@@ -423,7 +487,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSeedofFlame:Cancel()
 			warnSeedofFlame:Schedule(1, args.amount or 1)
 		end
-	elseif spellId == 424180 then
+	elseif spellId == 424180 or spellId == 424140 then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"))
@@ -444,6 +508,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			warnLingeringCinder:Show(args.amount or 1)
 		end
+	elseif spellId == 426686 then
+		if args:IsPlayer() then
+
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then--Primarily used to show
+				warnPoisonousMushroomDebuff:Show(args.destName)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -461,13 +534,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnFieryGrowth then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 424495 then
-		if self.Options.SetIconOnEntangle then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellMassEntanglementFades:Cancel()
-		end
 --	elseif spellId == 420540 then--Moonkin Form ending
 
 	elseif spellId == 422115 then--Tree form ending
@@ -478,7 +544,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 --	elseif spellId == 425582 then--Mythic owl form ending
 
-	elseif spellId == 424180 then
+	elseif spellId == 424180 or spellId == 424140 then--Supernova ending on boss
 		warnSuperNovaEnded:Show()
 		timerSupernova:Stop()
 		self.vb.shroomCount = 0
@@ -486,6 +552,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.starsCount = 0
 		self.vb.entangleCount = 0
 		self.vb.moonkinCount = 0
+		self.vb.owlCount = 0
 		self.vb.treeCount = 0
 		self.vb.beamCount = 0
 		self.vb.tranqCount = 0

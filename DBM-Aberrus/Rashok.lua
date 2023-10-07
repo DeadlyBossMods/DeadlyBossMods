@@ -53,7 +53,7 @@ local timerSearingSlamCD							= mod:NewCDCountTimer(40, 405821, nil, nil, nil, 
 local timerDoomFlameCD								= mod:NewCDCountTimer(28.9, 406851, nil, nil, nil, 5)
 local timerShadowlavaBlastCD						= mod:NewCDCountTimer(28.9, 406333, nil, nil, nil, 3)
 local timerChargedSmashCD							= mod:NewCDCountTimer(40, 400777, nil, nil, nil, 3)
-local timerVolcanicComboCD							= mod:NewCDCountTimer(40, 407641, DBM_COMMON_L.TANKCOMBOC, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerVolcanicComboCD							= mod:NewCDCountTimer(40, 407641, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerUnleashedShadowflameCD					= mod:NewCDCountTimer(40, 410070, 98565, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--"Burning Orbs"
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
