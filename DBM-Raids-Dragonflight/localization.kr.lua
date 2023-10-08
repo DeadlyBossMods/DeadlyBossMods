@@ -214,7 +214,11 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --
 ---------------------------
---L= DBM:GetModLocalization(2554)
+L= DBM:GetModLocalization(2554)
+
+L:SetMiscLocalization({
+	HealAbsorbs	= "치유 흡수 (%s)"
+})
 
 ---------------------------
 --  Volcoross --
@@ -224,7 +228,11 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Council of Dreams --
 ---------------------------
---L= DBM:GetModLocalization(2555)
+L= DBM:GetModLocalization(2555)
+
+L:SetMiscLocalization({
+	Ducks		= "오리 (%s)"
+})
 
 ---------------------------
 --  Larodar, Keeper of the Flame --
