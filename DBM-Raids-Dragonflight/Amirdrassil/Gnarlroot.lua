@@ -36,26 +36,26 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27467))
 local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
 local warnShadowSpines								= mod:NewCountAnnounce(422053, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(422053))
-local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, nil, nil, nil, nil, true)
+local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, 167180, nil, nil, nil, true)
 local warnDreadfireBarrage							= mod:NewStackAnnounce(424352, 2, nil, "Tank|Healer")
 local warnFlamingSap								= mod:NewTargetAnnounce(425819, 2)
 
-local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, nil, nil, 1, 2)
-local yellControlledBurn							= mod:NewShortPosYell(421972)
+local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, 37859, nil, 1, 2)
+local yellControlledBurn							= mod:NewShortPosYell(421972, 37859)--Shortname "Bomb"
 local yellControlledBurnFades						= mod:NewIconFadesYell(421972)
-local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, nil, nil, 1, 2)
-local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, nil, nil, 2, 2)
+local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, 120360, nil, 1, 2)
+local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, 31295, nil, 2, 2)
 local specWarnShadowflameCleave						= mod:NewSpecialWarningDodgeCount(422039, nil, nil, nil, 2, 2)
 local specWarnBlazingPollen							= mod:NewSpecialWarningInterruptCount(425816, "HasInterrupt", nil, nil, 1, 2, 4)
 local specWarnFlamingSap							= mod:NewSpecialWarningMoveAway(425819, nil, nil, nil, 1, 2, 4)
 local yellFlamingSap								= mod:NewShortYell(425819)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(422023, nil, nil, nil, 1, 8)
 
-local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, nil, nil, nil, 1)
-local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, nil, nil, nil, 3)
-local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, nil, nil, nil, 3)
+local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, 167180, nil, nil, 3)--Shortname "Bombs"
+local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, 120360, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname Barrage
+local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, 31295, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Scream shorttext
+local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 3)
 local timerBlazingPollenCD							= mod:NewCDNPTimer(11.8, 425816, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
@@ -72,7 +72,7 @@ local warnUprootedAgonyOver							= mod:NewEndAnnounce(421840, 2)
 --local specWarnEmberCharred						= mod:NewSpecialWarningYou(421038, nil, nil, nil, 1, 2)
 
 local timerUprootAgonyCD							= mod:NewBuffActiveTimer(20, 421840, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerPotentFertilizationCD					= mod:NewAITimer(49, 421013, nil, nil, nil, 6)
+local timerPotentFertilizationCD					= mod:NewIntermissionCountTimer(49, 421013, nil, nil, nil, 6)
 
 --p1
 mod.vb.pestilanceCount = 0
@@ -330,7 +330,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnControlledBurn:Show()
-			specWarnControlledBurn:Play("targetyou")
+			specWarnControlledBurn:Play("bombyou")
 			yellControlledBurn:Yell(icon, icon)
 			yellControlledBurnFades:Countdown(spellId, nil, icon)
 		end

@@ -36,7 +36,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerPhaseCD									= mod:NewPhaseTimer(60)
+local timerPhaseCD									= mod:NewStageTimer(60)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: The Firelord's Fury
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27637))
@@ -97,7 +97,7 @@ function mod:OnCombatStart(delay)
 	timerOverheatedCD:Start(10-delay, 1)
 	timerBrandofDamnationCD:Start(12.9-delay, 1)
 	timerLavaGeysersCD:Start(self:IsMythic() and 24 or 26.9-delay, 1)
-	timerPhaseCD:Start(62.7-delay, 1)--62-64.9. Basically phase/world in flames timer
+	timerPhaseCD:Start(62.7-delay, 2)--62-64.9. Basically phase/world in flames timer
 	if self:IsMythic() then
 		self:EnablePrivateAuraSound(426010, "justrun", 2)
 		timerSeekingInfernoCD:Start(26-delay, 1)
@@ -206,7 +206,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerOverheatedCD:Start(10, self.vb.overheatedCount+1)
 		timerBrandofDamnationCD:Start(13, self.vb.brandCount+1)
 		timerLavaGeysersCD:Start(self:IsMythic() and 24 or 27, self.vb.geyserCount+1)
-		timerPhaseCD:Start(63.8, self.vb.cycleCount+1)
+		timerPhaseCD:Start(63.8, 2)
 		if self:IsMythic() then
 			timerSeekingInfernoCD:Start(26, self.vb.infernoCount+1)
 		end

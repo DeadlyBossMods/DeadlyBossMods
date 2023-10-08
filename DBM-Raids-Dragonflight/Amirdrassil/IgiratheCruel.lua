@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
+	"UNIT_AURA player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -32,41 +33,42 @@ mod:RegisterEventsInCombat(
 --TODO, secondary warning for https://wowhead.com/ptr-2/spell=424347 ?
 --TODO, Smashing Viscera is a hidden aura that's not logged, but UNIT_AURA might work
 local warnDrenchedBlades							= mod:NewStackAnnounce(414340, 2, nil, "Tank|Healer")
-local warnBlisteringSpear							= mod:NewTargetCountAnnounce(414888, 3, nil, nil, nil, nil, nil, nil, true)
-local warnMarkedforTorment							= mod:NewCountAnnounce(422776, 3)
+local warnBlisteringSpear							= mod:NewTargetCountAnnounce(414888, 3, nil, nil, 282481, nil, nil, nil, true)
+local warnMarkedforTorment							= mod:NewCountAnnounce(422776, 3, nil, nil, 99256)
 local warnGatheringTorment							= mod:NewYouAnnounce(414367, 4)
 --Torments
-local warnSmashingVisceraSoon						= mod:NewSoonAnnounce(424456, 2)--Sword Stance
+local warnSmashingVisceraSoon						= mod:NewSoonAnnounce(424456, 2, nil, nil, 47482)--Sword Stance
 local warnHeartstopperSoon							= mod:NewSoonAnnounce(415623, 2)--Knife Stance
 local warnWrackingSkewerSoon						= mod:NewSoonAnnounce(416048, 2)--Axe Stance
---local warnSmashingViscera							= mod:NewTargetNoFilterAnnounce(424456, 3)
+--local warnSmashingViscera							= mod:NewTargetNoFilterAnnounce(424456, 3)--Re-add if it gets put back in combat log
 local warnHeartStopper								= mod:NewTargetCountAnnounce(415623, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnDrenchedBlades						= mod:NewSpecialWarningTaunt(414340, nil, nil, nil, 1, 2)
-local specWarnBlisteringSpear						= mod:NewSpecialWarningYou(414888, nil, nil, nil, 1, 2)
-local yellBlisteringSpear							= mod:NewShortPosYell(414888, nil, false)
+local specWarnBlisteringSpear						= mod:NewSpecialWarningYou(414888, nil, 369351, nil, 1, 2)
+local yellBlisteringSpear							= mod:NewShortPosYell(414888, 369351, false)--Shorttext "Spear"
 local yellBlisteringSpearFades						= mod:NewIconFadesYell(414888, nil, false)
-local specWarnBlisteringTorment						= mod:NewSpecialWarningYou(414770, nil, nil, nil, 1, 2)
-local yellBlisteringTorment							= mod:NewShortPosYell(414770)
-local specWarnTwistedBlade							= mod:NewSpecialWarningDodgeCount(416996, nil, nil, nil, 2, 2)
+local specWarnBlisteringTorment						= mod:NewSpecialWarningYou(414770, nil, 184656, nil, 1, 2)--Shorttext "Chains"
+local yellBlisteringTorment							= mod:NewShortPosYell(414770, 184656)
+local specWarnTwistedBlade							= mod:NewSpecialWarningDodgeCount(416996, nil, 138737, nil, 2, 2)
 local specWarnFleshMortification					= mod:NewSpecialWarningYou(419462, nil, nil, nil, 1, 2)
 local specWarnRuinousEnd							= mod:NewSpecialWarningSpell(419048, nil, nil, nil, 3, 2)
 --Torments
 local specWarnWrackingSkewer						= mod:NewSpecialWarningCount(416048, nil, nil, nil, 2, 2)
---local specWarnSmashingViscera						= mod:NewSpecialWarningYou(424456, nil, nil, nil, 1, 2)--Not in combat log
---local yellSmashingViscera							= mod:NewShortYell(424456)
+local specWarnSmashingViscera						= mod:NewSpecialWarningYou(424456, nil, 47482, nil, 1, 2)--Not in combat log
+local yellSmashingViscera							= mod:NewShortYell(424456, 47482)
+local yellSmashingVisceraFades						= mod:NewShortFadesYell(424456)
 local specWarnHeartStopper							= mod:NewSpecialWarningYou(415623, nil, nil, nil, 1, 2)
 local yellHeartStopperFades							= mod:NewShortFadesYell(415623)
 local specWarnVitalRupture							= mod:NewSpecialWarningYou(426056, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
-local timerBlisteringSpearCD						= mod:NewCDCountTimer(49, 414888, nil, nil, nil, 3)
-local timerTwistedBladeCD							= mod:NewCDCountTimer(49, 416996, nil, nil, nil, 3)
-local timerMarkedforTormentCD						= mod:NewCDCountTimer(49, 422776, nil, nil, nil, 6)
+local timerBlisteringSpearCD						= mod:NewCDCountTimer(49, 414888, 282481, nil, nil, 3)--Short text "Spears"
+local timerTwistedBladeCD							= mod:NewCDCountTimer(49, 416996, 138737, nil, nil, 3)--Short Text "Blades"
+local timerMarkedforTormentCD						= mod:NewCDCountTimer(49, 422776, 99256, nil, nil, 6)--Short text "Torment"
 --Torments
-local timerWrackingSkewerCD							= mod:NewCDCountTimer(49, 416048, nil, nil, nil, 5)
-local timerSmashingVisceraCD						= mod:NewCDCountTimer(49, 424456, nil, nil, nil, 3)
-local timerHeartStopperCD							= mod:NewCDCountTimer(49, 415623, nil, nil, nil, 3)
+local timerWrackingSkewerCD							= mod:NewCDCountTimer(49, 416048, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)--Shorttext "Soak"
+local timerSmashingVisceraCD						= mod:NewCDCountTimer(49, 424456, 47482, nil, nil, 3)--Shorttext "Leap"
+local timerHeartStopperCD							= mod:NewCDCountTimer(49, 415623, L.HealAbsorbs, nil, nil, 3)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("5/6/10")
@@ -289,6 +291,23 @@ function mod:UNIT_DIED(args)
 	end
 end
 --]]
+
+do
+	local warnedLeap = false
+	function mod:UNIT_AURA(uId)
+		local hasLeap = DBM:UnitDebuff("player", 424456)
+		if hasLeap and not warnedLeap then
+			warnedLeap = true
+			specWarnSmashingViscera:Show()
+			specWarnSmashingViscera:Play("targetyou")
+			yellSmashingViscera:Yell()
+			yellSmashingVisceraFades:Countdown(4)
+		elseif not hasLeap and warnedLeap then
+			warnedLeap = false
+			yellSmashingVisceraFades:Cancel()
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 415020 then--Sword Stance

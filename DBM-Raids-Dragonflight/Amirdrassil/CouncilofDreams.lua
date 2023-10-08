@@ -31,14 +31,10 @@ mod:RegisterEventsInCombat(
 (ability.id = 418187 or ability.id = 420525 or ability.id = 420947 or ability.id = 421020 or ability.id = 421292 or ability.id = 420937 or ability.id = 420671 or ability.id = 420856 or ability.id = 421029 or ability.id = 418591 or ability.id = 421024) and type = "begincast"
  or ability.id = 418755 or ability.id = 421292 or ability.id = 421029 or ability.id = 420525 or ability.id = 418757 and type = "cast"
 --]]
---TODO: see how Dream Tactics on mythic decides which two of the bosses will sync up so timers can be updated/synced when it happens.
---TODO, use cast start event or success/applied event for barreling charge timer?
 --TODO, fine tune audio and text alerts for specials when they can be seen better
 --TODO, maybe absorb infoframe for https://www.wowhead.com/ptr-2/spell=421031/song-of-the-dragon
---TODO, figure out polybomb, it seems like a private and non private at same time
 --TODO, maybe do more with Polymorph Bomb stuff like slippery tracking. Again it might be infoframe stuff. But if people make WAs for it probably won't
 --TODO, GUID based timers once real timers, for full nameplate aura support
---T
 --General
 local warnRebirth									= mod:NewCastAnnounce(418187, 4)
 
@@ -47,13 +43,13 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(426390, nil, nil, nil, 1,
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Urctos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27300))
-local warnBarrelingCharge							= mod:NewTargetCountAnnounce(420948, 3, nil, nil, nil, nil, nil, nil, true)
+local warnBarrelingCharge							= mod:NewTargetCountAnnounce(420948, 3, nil, nil, 100, nil, nil, nil, true)--Shortname "Charge"
 local warnAgonizingClaws							= mod:NewStackAnnounce(421022, 2, nil, "Tank|Healer")
 local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked up
 
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
 local specWarnBarrelingCharge						= mod:NewSpecialWarningYouCount(420948, nil, nil, nil, 1, 2)
-local yellBarrelingCharge							= mod:NewShortYell(420948)
+local yellBarrelingCharge							= mod:NewShortYell(420948, 100)
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948)
 local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil, 1, 2)--Not grouped on purpose, so that it stays on diff WA key in GUI
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
@@ -61,23 +57,23 @@ local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil
 --local timerSinseekerCD							= mod:NewAITimer(49, 335114, nil, nil, nil, 3)
 local timerBlindingRageCD							= mod:NewNextCountTimer(200, 420525, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerBlindingRage								= mod:NewBuffActiveTimer(15, 420525, nil, nil, nil, 5)
-local timerBarrelingChargeCD						= mod:NewCDCountTimer(11.8, 420948, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
+local timerBarrelingChargeCD						= mod:NewCDCountTimer(11.8, 420948, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
 local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421022, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Aerwynn
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27301))
 local warnRelentlessBarrage							= mod:NewSpellAnnounce(420937, 4)--You done fucked up
 local warnNoxiousBlossom							= mod:NewCountAnnounce(420937, 3)
-local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420858, 3)--, nil, nil, nil, nil, nil, nil, true
+local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420858, 3, nil, nil, 298110)--, nil, nil, nil, nil, nil, nil, true
 
 local specWarnConstrictingThicket					= mod:NewSpecialWarningCount(421292, nil, nil, nil, 2, 2)
 local specWarnPoisonousJavelin						= mod:NewSpecialWarningMoveAway(420858, nil, nil, nil, 1, 2)
-local yellPoisonousJavelin							= mod:NewShortYell(420858, nil, false)
+local yellPoisonousJavelin							= mod:NewShortYell(420858, 298110, false)
 local yellPoisonousJavelinFades						= mod:NewShortFadesYell(420858)--For unstable Venom
 
 local timerConstrictingThicketCD					= mod:NewNextCountTimer(11.8, 421292, nil, nil, nil, 2)
 local timerConstrictingThicket						= mod:NewBuffActiveTimer(15, 421292, nil, nil, nil, 5)
-local timerNoxiousBlossomCD							= mod:NewCDCountTimer(21, 420671, nil, nil, nil, 3)
-local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420858, nil, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)
+local timerNoxiousBlossomCD							= mod:NewCDCountTimer(21, 420671, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3)
+local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420858, 298110, nil, nil, 3, nil, DBM_COMMON_L.POISON_ICON)--Shortname "Javelin
 
 --Pip
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
@@ -94,8 +90,8 @@ local specWarnEmeraldWinds							= mod:NewSpecialWarningCount(421024, nil, nil, 
 
 local timerSongoftheDragonCD						= mod:NewNextCountTimer(200, 421029, nil, nil, nil, 2)
 local timerSongoftheDragon							= mod:NewBuffActiveTimer(20, 421029, nil, nil, nil, 5)
-local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418720, nil, nil, nil, 3)
-local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, nil, nil, nil, 2)
+local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418720, L.Ducks, nil, nil, 3)--Ducks already has count in mod localization
+local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, DBM_COMMON_L.PUSHBACK.." (%s)", nil, nil, 2)
 
 mod:AddPrivateAuraSoundOption(418589, true, 418591, 1)--Polymorph Bomb
 --mod:AddRangeFrameOption("5/6/10")
