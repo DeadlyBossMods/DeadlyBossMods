@@ -36,26 +36,26 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27467))
 local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
 local warnShadowSpines								= mod:NewCountAnnounce(422053, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(422053))
-local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, nil, nil, nil, nil, true)
+local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, 167180, nil, nil, nil, true)
 local warnDreadfireBarrage							= mod:NewStackAnnounce(424352, 2, nil, "Tank|Healer")
 local warnFlamingSap								= mod:NewTargetAnnounce(425819, 2)
 
-local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, nil, nil, 1, 2)
-local yellControlledBurn							= mod:NewShortPosYell(421972)
+local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, 37859, nil, 1, 2)
+local yellControlledBurn							= mod:NewShortPosYell(421972, 37859)--Shortname "Bomb"
 local yellControlledBurnFades						= mod:NewIconFadesYell(421972)
-local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, nil, nil, 1, 2)
-local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, nil, nil, 2, 2)
+local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, 120360, nil, 1, 2)
+local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, 31295, nil, 2, 2)
 local specWarnShadowflameCleave						= mod:NewSpecialWarningDodgeCount(422039, nil, nil, nil, 2, 2)
 local specWarnBlazingPollen							= mod:NewSpecialWarningInterruptCount(425816, "HasInterrupt", nil, nil, 1, 2, 4)
 local specWarnFlamingSap							= mod:NewSpecialWarningMoveAway(425819, nil, nil, nil, 1, 2, 4)
 local yellFlamingSap								= mod:NewShortYell(425819)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(422023, nil, nil, nil, 1, 8)
 
-local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, nil, nil, nil, 1)
-local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, nil, nil, nil, 3)
-local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, nil, nil, nil, 3)
+local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerControlledBurnCD							= mod:NewCDCountTimer(49, 421972, 167180, nil, nil, 3)--Shortname "Bombs"
+local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, 120360, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname Barrage
+local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, 31295, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Scream shorttext
+local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 3)
 local timerBlazingPollenCD							= mod:NewCDNPTimer(11.8, 425816, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
@@ -64,7 +64,7 @@ mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, 0, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -27902, true, 5, {8, 7, 6, 5})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
-local warnPotentFertilization						= mod:NewCountAnnounce(421013, 3)
+local warnDoomCultivation							= mod:NewCountAnnounce(421013, 3)
 local warnEmberCharred								= mod:NewCountAnnounce(421038, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(421038))
 local warnUprootedAgony								= mod:NewSpellAnnounce(421840, 1)
 local warnUprootedAgonyOver							= mod:NewEndAnnounce(421840, 2)
@@ -72,7 +72,7 @@ local warnUprootedAgonyOver							= mod:NewEndAnnounce(421840, 2)
 --local specWarnEmberCharred						= mod:NewSpecialWarningYou(421038, nil, nil, nil, 1, 2)
 
 local timerUprootAgonyCD							= mod:NewBuffActiveTimer(20, 421840, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerPotentFertilizationCD					= mod:NewAITimer(49, 421013, nil, nil, nil, 6)
+local timerDoomCultivationCD						= mod:NewIntermissionCountTimer(49, 421013, nil, nil, nil, 6)
 
 --p1
 mod.vb.pestilanceCount = 0
@@ -82,7 +82,7 @@ mod.vb.barrageCount = 0
 mod.vb.screamCount = 0
 mod.vb.cleaveCount = 0
 --p2
-mod.vb.fertCount = 0
+mod.vb.doomCount = 0
 local castsPerGUID = {}
 local addUsedMarks = {}
 local difficultyName = "normal"
@@ -154,7 +154,7 @@ function mod:OnCombatStart(delay)
 	self.vb.barrageCount = 0
 	self.vb.screamCount = 0
 	self.vb.cleaveCount = 0
-	self.vb.fertCount = 0
+	self.vb.doomCount = 0
 	--Mythic and heroic initials very close
 	if self:IsMythic() then
 		difficultyName = "mythic"
@@ -186,7 +186,7 @@ function mod:OnCombatStart(delay)
 		timerShadowflameCleaveCD:Start(24.2-delay, 1)
 		timerControlledBurnCD:Start(36.4-delay, 1)
 	end
-	timerPotentFertilizationCD:Start(96.7-delay, 1)
+	timerDoomCultivationCD:Start(96.7-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -242,7 +242,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadowflameCleave:Show(self.vb.cleaveCount)
 		specWarnShadowflameCleave:Play("shockwave")
 		local timer
-		if self.vb.fertCount > 0 then--All sets besides initial
+		if self.vb.doomCount > 0 then--All sets besides initial
 			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId..2, self.vb.cleaveCount+1)
 		else--Initial timers
 			timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.cleaveCount+1)
@@ -252,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 421013 then
 		self:SetStage(2)
-		self.vb.fertCount = self.vb.fertCount + 1
+		self.vb.doomCount = self.vb.doomCount + 1
 		timerFlamingPestilenceCD:Stop()
 		timerControlledBurnCD:Stop()
 		timerDreadfireBarrageCD:Stop()
@@ -330,7 +330,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnControlledBurn:Show()
-			specWarnControlledBurn:Play("targetyou")
+			specWarnControlledBurn:Play("bombyou")
 			yellControlledBurn:Yell(icon, icon)
 			yellControlledBurnFades:Countdown(spellId, nil, icon)
 		end
@@ -392,21 +392,21 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerFlamingPestilenceCD:Start(18.2, 1)
 			timerShadowflameCleaveCD:Start(22.9, 1)
 			timerControlledBurnCD:Start(33.5, 1)
-			timerPotentFertilizationCD:Start(92, self.vb.fertCount+1)--Recheck
+			timerDoomCultivationCD:Start(92, self.vb.doomCount+1)--Recheck
 		elseif self:IsHeroic() then--Heroic needs rechecking
 			timerTorturedScreamCD:Start(4.8, 1)
 			timerDreadfireBarrageCD:Start(10.7, 1)
 			timerFlamingPestilenceCD:Start(17.8, 1)
 			timerShadowflameCleaveCD:Start(22.5, 1)
 			timerControlledBurnCD:Start(31.9, 1)
-			timerPotentFertilizationCD:Start(93.4, self.vb.fertCount+1)
+			timerDoomCultivationCD:Start(93.4, self.vb.doomCount+1)
 		elseif self:IsNormal() then
 			timerTorturedScreamCD:Start(6.8, 1)
 			timerDreadfireBarrageCD:Start(14.5, 1)
 			timerFlamingPestilenceCD:Start(23.1, 1)
 			timerShadowflameCleaveCD:Start(29.2, 1)
 			timerControlledBurnCD:Start(41.5, 1)
-			timerPotentFertilizationCD:Start(98.5, self.vb.fertCount+1)--Recheck
+			timerDoomCultivationCD:Start(98.5, self.vb.doomCount+1)--Recheck
 		else--LFR
 			--None known
 			DBM:AddMsg("LFR timers are not known/vetted beyond this point")
@@ -415,7 +415,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			--timerFlamingPestilenceCD:Start(17.8, 1)
 			--timerShadowflameCleaveCD:Start(22.5, 1)
 			--timerControlledBurnCD:Start(31.9, 1)
-			--timerPotentFertilizationCD:Start(93.4, self.vb.fertCount+1)
+			--timerDoomCultivationCD:Start(93.4, self.vb.doomCount+1)
 		end
 	end
 end

@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(208478)
 mod:SetEncounterID(2737)
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(20210126000000)
 --mod:SetMinSyncRevision(20210126000000)
 --mod.respawnTime = 29
@@ -26,7 +26,8 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-
+(ability.id = 421672 or ability.id = 425401 or ability.id = 425400 or ability.id = 420933 or ability.id = 421616 or ability.id = 420415 or ability.id = 423117 or ability.id = 421703) and type = "begincast"
+ or ability.id = 421284 and type = "cast"
 --]]
 --TODO, disgorge targets?
 --TODO, chat bubbles for Coiling Flames
@@ -38,8 +39,8 @@ local warnMoltenVenom								= mod:NewStackAnnounce(419054, 2, nil, "Tank|Healer
 local warnSerpentsWrath								= mod:NewSpellAnnounce(421703, 4)
 local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, nil, nil, 1, 2)
-local yellCoilingFlames								= mod:NewShortYell(421207, 7897)--Shortname Flames
+local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, 7897, nil, 1, 2)
+local yellCoilingFlames								= mod:NewYell(421207, 7897)--Shortname Flames
 local yellCoilingFlamesFades						= mod:NewShortFadesYell(421207)
 local specWarnCoilingEruption						= mod:NewSpecialWarningYou(427201, nil, nil, nil, 1, 2)
 local yellCoilingEruption							= mod:NewShortPosYell(427201, nil, nil, nil, "YELL")
@@ -47,25 +48,24 @@ local yellCoilingEruptionFades						= mod:NewIconFadesYell(427201, nil, nil, nil
 
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
-local yellVolcanicDisgorge							= mod:NewShortYell(421616)
-local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, nil, nil, 3, 2)
+local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
+local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, 136870, nil, 3, 2)
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1, 8)
 
-local timerCoilingFlamesCD							= mod:NewNextCountTimer(70, 421207, 7897, nil, nil, 3)--Shortname Flames
-local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, nil, nil, nil, 3)
-local timerFloodoftheFirelandsCD					= mod:NewNextCountTimer(70, 420933, nil, nil, nil, 5)
-local timerVolcanicDisgorgeCD						= mod:NewNextCountTimer(10, 421616, nil, nil, nil, 3)
-local timerScorchtailCrashCD						= mod:NewCDCountTimer(20, 420415, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, 7897, nil, nil, 3)--Shortname "Flames"
+local timerCoilingFlames							= mod:NewCastTimer(7.5, 421672, 7897, nil, nil, 5)
+local timerFloodoftheFirelandsCD					= mod:NewNextCountTimer(70, 420933, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 5)
+local timerVolcanicDisgorgeCD						= mod:NewNextCountTimer(10, 421616, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3)
+local timerScorchtailCrashCD						= mod:NewCDCountTimer(20, 420415, 136870, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short name "Tail Slam"
 local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, true, false, {1, 2, 3})
+--mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, true, false, {1, 2, 3, 4})
 
-mod.vb.coilingCount = 0
 mod.vb.flamesIcon = 1
 mod.vb.furyCount = 0
 mod.vb.floodCount = 0
@@ -77,7 +77,7 @@ local allTimers = {
 	--Cata Jaws
 	[423117] = {5.0, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0},
 	--Volcanic Disgorge
-	[421616] = {30, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
+	[421616] = {29.9, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
 }
 
 function mod:DisgorgeTarget(targetname, uId)
@@ -92,7 +92,6 @@ function mod:DisgorgeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.coilingCount = 0
 	self.vb.flamesIcon = 1
 	self.vb.furyCount = 0
 	self.vb.floodCount = 0
@@ -100,11 +99,10 @@ function mod:OnCombatStart(delay)
 	self.vb.tailCount = 0
 	self.vb.jawsCount = 0
 	timerCataclysmJawsCD:Start(5-delay, 1)
-	timerSerpentsFuryCD:Start(10-delay, 1)
-	timerCoilingFlamesCD:Start(17.5-delay, 1)
+	timerSerpentsFuryCD:Start(9.9-delay, 1)
 	timerScorchtailCrashCD:Start(20-delay, 1)
-	timerVolcanicDisgorgeCD:Start(30-delay, 1)
-	timerFloodoftheFirelandsCD:Start(70-delay, 1)
+	timerVolcanicDisgorgeCD:Start(29.9-delay, 1)
+	timerFloodoftheFirelandsCD:Start(69.9-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -117,8 +115,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421672 or spellId == 425401 or spellId == 425400 then--herioc, Unknown, Mythic?
 		self.vb.furyCount = self.vb.furyCount + 1
+		self.vb.flamesIcon = 1
 		warnSperentsFury:Show(self.vb.furyCount)
 		timerSerpentsFuryCD:Start(nil, self.vb.furyCount+1)
+		timerCoilingFlames:Start(7.5)
 	elseif spellId == 420933 then
 		self.vb.floodCount = self.vb.floodCount + 1
 		specWarnFloodoftheFirleands:Show(self.vb.floodCount)
@@ -157,15 +157,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 421703 then
 		warnSerpentsWrath:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 421284 then
-		self.vb.flamesIcon = 1
-		self.vb.coilingCount = self.vb.coilingCount + 1
-		timerCoilingFlamesCD:Start(nil, self.vb.coilingCount)
 	end
 end
 
