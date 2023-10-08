@@ -1,9 +1,10 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20221128
+--Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20231008
 --Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
 local L
 
+----<<<<化身巨龙牢窟>>>>----
 ---------------------------
 --  Eranog -- 艾拉诺格
 ---------------------------
@@ -102,6 +103,7 @@ L:SetGeneralLocalization({
 })
 
 --[[
+----<<<<亚贝鲁斯>>>>----
 ---------------------------
 --  Kazzara -- 卡扎拉
 ---------------------------
@@ -201,3 +203,71 @@ L:SetGeneralLocalization({
 	name =	"亚贝鲁斯小怪"
 })
 --]]
+
+----<<<<阿梅达希尔，梦境之愿>>>>----
+---------------------------
+--  Gnarlroot --瘤根
+---------------------------
+--L= DBM:GetModLocalization(2564)
+
+---------------------------
+--  Igira the Cruel --残虐者艾姬拉
+---------------------------
+L= DBM:GetModLocalization(2554)
+
+L:SetMiscLocalization({
+	HealAbsorbs	= "治疗被吸收 (%s)"
+})
+
+---------------------------
+--  Volcoross --沃尔科罗斯
+---------------------------
+--L= DBM:GetModLocalization(2557)
+
+---------------------------
+--  Council of Dreams --梦境议会
+---------------------------
+L= DBM:GetModLocalization(2555)
+
+L:SetMiscLocalization({
+	Ducks		= "变鸭子 (%s)"
+})
+
+---------------------------
+--  Larodar, Keeper of the Flame --拉罗达尔，烈焰守护者
+---------------------------
+L= DBM:GetModLocalization(2553)
+
+L:SetMiscLocalization({
+	currentHealth		= "%d%%",
+	currentHealthIcon	= "{rt%d}%d%%"
+})
+
+---------------------------
+--  Nymue, Weaver of the Cycle --尼穆威，轮回编织者
+---------------------------
+--L= DBM:GetModLocalization(2556)
+
+---------------------------
+--  Smolderon --
+---------------------------
+--L= DBM:GetModLocalization(2563)
+
+---------------------------
+--  Tindral Sageswift, Seer of the Flame --丁达尔·迅贤，烈焰预言者
+---------------------------
+--L= DBM:GetModLocalization(2565)
+
+---------------------------
+--  Fyrakk the Blazing --火光之龙菲莱克
+---------------------------
+--L= DBM:GetModLocalization(2519)
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("AmirdrassilTrash")
+
+L:SetGeneralLocalization({
+	name =	"梦境之愿小怪"
+})
