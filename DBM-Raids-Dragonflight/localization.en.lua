@@ -240,7 +240,8 @@ L= DBM:GetModLocalization(2553)
 
 L:SetMiscLocalization({
 	currentHealth		= "%d%%",
-	currentHealthIcon	= "{rt%d}%d%%"
+	currentHealthIcon	= "{rt%d}%d%%",
+	Roots				= "Roots (%s)"
 })
 
 ---------------------------
