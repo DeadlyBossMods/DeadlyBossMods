@@ -237,7 +237,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Larodar, Keeper of the Flame --
 ---------------------------
---L= DBM:GetModLocalization(2553)
+L= DBM:GetModLocalization(2553)
+
+L:SetMiscLocalization({
+	Roots				= "뿌리 (%s)"
+})
 
 ---------------------------
 --  Nymue, Weaver of the Cycle --
