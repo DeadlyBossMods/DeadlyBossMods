@@ -217,7 +217,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2554)
 
 L:SetMiscLocalization({
-	HealAbsorb	= "치유 흡수 (%s)"
+	HealAbsorbs	= "치유 흡수 (%s)"--Might be common localized later
 })
 
 ---------------------------
@@ -240,7 +240,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2553)
 
 L:SetMiscLocalization({
-	Roots				= "뿌리 (%s)"
+	Roots				= "뿌리 (%s)",
+	HealAbsorb			= "치유 흡수 (%s)"--Might be common localized later
 })
 
 ---------------------------
