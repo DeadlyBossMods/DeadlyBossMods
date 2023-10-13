@@ -216,7 +216,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2554)
 
 L:SetMiscLocalization({
-	HealAbsorbs	= "Heal Absorbs (%s)"
+	HealAbsorb	= "Heal Absorb (%s)"--Might be common localized later
 })
 
 ---------------------------
@@ -241,7 +241,8 @@ L= DBM:GetModLocalization(2553)
 L:SetMiscLocalization({
 	currentHealth		= "%d%%",
 	currentHealthIcon	= "{rt%d}%d%%",
-	Roots				= "Roots (%s)"
+	Roots				= "Roots (%s)",
+	HealAbsorb			= "Heal Absorb (%s)"-Might be common localized later
 })
 
 ---------------------------

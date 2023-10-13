@@ -216,7 +216,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2554)
 
 L:SetMiscLocalization({
-	HealAbsorbs	= "治疗被吸收 (%s)"
+	HealAbsorb	= "治疗被吸收 (%s)"
 })
 
 ---------------------------
