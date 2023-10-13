@@ -61,7 +61,7 @@ local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, 0, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -27902, true, 5, {8, 7, 6, 5})
+mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -28350, true, 5, {8, 7, 6, 5})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
 local warnDoomCultivation							= mod:NewCountAnnounce(421013, 3)
@@ -72,7 +72,7 @@ local warnUprootedAgonyOver							= mod:NewEndAnnounce(421840, 2)
 --local specWarnEmberCharred						= mod:NewSpecialWarningYou(421038, nil, nil, nil, 1, 2)
 
 local timerUprootAgonyCD							= mod:NewBuffActiveTimer(20, 421840, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerDoomCultivationCD						= mod:NewIntermissionCountTimer(49, 421013, nil, nil, nil, 6)
+local timerDoomCultivationCD						= mod:NewStageCountCycleTimer(49, 421013, nil, nil, nil, 6)
 
 --p1
 mod.vb.pestilanceCount = 0
@@ -186,7 +186,7 @@ function mod:OnCombatStart(delay)
 		timerShadowflameCleaveCD:Start(24.2-delay, 1)
 		timerControlledBurnCD:Start(36.4-delay, 1)
 	end
-	timerDoomCultivationCD:Start(96.7-delay, 1)
+	timerDoomCultivationCD:Start(96.7-delay, 2, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -392,21 +392,21 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerFlamingPestilenceCD:Start(18.2, 1)
 			timerShadowflameCleaveCD:Start(22.9, 1)
 			timerControlledBurnCD:Start(33.5, 1)
-			timerDoomCultivationCD:Start(92, self.vb.doomCount+1)--Recheck
+			timerDoomCultivationCD:Start(92, 2, self.vb.doomCount+1)--Recheck
 		elseif self:IsHeroic() then--Heroic needs rechecking
 			timerTorturedScreamCD:Start(4.8, 1)
 			timerDreadfireBarrageCD:Start(10.7, 1)
 			timerFlamingPestilenceCD:Start(17.8, 1)
 			timerShadowflameCleaveCD:Start(22.5, 1)
 			timerControlledBurnCD:Start(31.9, 1)
-			timerDoomCultivationCD:Start(93.4, self.vb.doomCount+1)
+			timerDoomCultivationCD:Start(93.4, 2, self.vb.doomCount+1)
 		elseif self:IsNormal() then
 			timerTorturedScreamCD:Start(6.8, 1)
 			timerDreadfireBarrageCD:Start(14.5, 1)
 			timerFlamingPestilenceCD:Start(23.1, 1)
 			timerShadowflameCleaveCD:Start(29.2, 1)
 			timerControlledBurnCD:Start(41.5, 1)
-			timerDoomCultivationCD:Start(98.5, self.vb.doomCount+1)--Recheck
+			timerDoomCultivationCD:Start(98.5, 2, self.vb.doomCount+1)--Recheck
 		else--LFR
 			--None known
 			DBM:AddMsg("LFR timers are not known/vetted beyond this point")
