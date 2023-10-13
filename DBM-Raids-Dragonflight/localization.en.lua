@@ -242,7 +242,7 @@ L:SetMiscLocalization({
 	currentHealth		= "%d%%",
 	currentHealthIcon	= "{rt%d}%d%%",
 	Roots				= "Roots (%s)",
-	HealAbsorb			= "Heal Absorb (%s)"-Might be common localized later
+	HealAbsorb			= "Heal Absorb (%s)"--Might be common localized later
 })
 
 ---------------------------
