@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 
 if mod:IsRetail() then--10.1.7 fight rework
+	mod:SetZone(1004)
 	mod:SetCreatureID(207438)
 	mod:SetEncounterID(2725)
 
@@ -126,6 +127,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 		end
 	end
 else--OG fight, for classic (when world events are reunified that is
+	mod:SetZone(189)
 	mod:SetCreatureID(23682, 23775)
 	--mod:SetModelID(22351)--Model doesn't work/render for some reason.
 
