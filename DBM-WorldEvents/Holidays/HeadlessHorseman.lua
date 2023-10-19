@@ -10,6 +10,10 @@ if mod:IsRetail() then--10.1.7 fight rework
 --	mod:SetReCombatTime(10)
 	mod:RegisterCombat("combat")
 
+	mod:RegisterEvents(
+		"GOSSIP_SHOW"
+	)
+
 	mod:RegisterEventsInCombat(
 		"SPELL_CAST_START 415262 423626 414844 415047",--423626
 		"SPELL_AURA_APPLIED 423623",
@@ -30,6 +34,9 @@ if mod:IsRetail() then--10.1.7 fight rework
 	local timerPumpkinBreathCD							= mod:NewCDCountTimer(41.4, 414844, nil, nil, nil, 3)
 	local timerVineMarchCD								= mod:NewCDCountTimer(41.4, 415047, nil, nil, nil, 1)
 
+	mod:AddBoolOption("AGCurses", false)
+	mod:AddBoolOption("AGBoss", false)
+
 	mod.vb.cackleCount = 0
 	mod.vb.breathCount = 0
 	mod.vb.vineCount = 0
@@ -40,7 +47,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 		--Pumpkin Breath
 		[414844] = {6.1, 41.3, 54.6},
 		--Vine March
-		[415047] = {20.6, 54.6, 42.5}
+		[415047] = {20.6, 54.6, 42.5},
 		--Hot Head
 		[423626] = {62}
 	}
@@ -106,6 +113,19 @@ if mod:IsRetail() then--10.1.7 fight rework
 		end
 	end
 	mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+	function mod:GOSSIP_SHOW()
+		local gossipOptionID = self:GetGossipID()
+		if gossipOptionID then
+			--Embers, ?, ?, ?
+			if self.Options.AGCurses and (gossipOptionID == 110383 or gossipOptionID == 999999 or gossipOptionID == 999999 or gossipOptionID == 999999) then
+				self:SelectGossip(gossipOptionID)
+			end
+			if self.Options.AGBoss and gossipOptionID == 36316 then
+				self:SelectGossip(gossipOptionID)
+			end
+		end
+	end
 else--OG fight, for classic (when world events are reunified that is
 	mod:SetCreatureID(23682, 23775)
 	--mod:SetModelID(22351)--Model doesn't work/render for some reason.
