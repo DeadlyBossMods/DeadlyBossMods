@@ -49,7 +49,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 		--Vine March
 		[415047] = {20.6, 54.6, 42.5},
 		--Hot Head
-		[423626] = {62}
+		[423626] = {62}--Sometimes 77? might still have a checkpoint/dps check to be 62
 	}
 
 	function mod:OnCombatStart(delay)
@@ -117,8 +117,8 @@ if mod:IsRetail() then--10.1.7 fight rework
 	function mod:GOSSIP_SHOW()
 		local gossipOptionID = self:GetGossipID()
 		if gossipOptionID then
-			--Embers, ?, ?, ?
-			if self.Options.AGCurses and (gossipOptionID == 110383 or gossipOptionID == 999999 or gossipOptionID == 999999 or gossipOptionID == 999999) then
+			--Embers, Delusions, Shadows, Thorns
+			if self.Options.AGCurses and (gossipOptionID == 110383 or gossipOptionID == 110379 or gossipOptionID == 110372 or gossipOptionID == 110377) then
 				self:SelectGossip(gossipOptionID)
 			end
 			if self.Options.AGBoss and gossipOptionID == 36316 then
