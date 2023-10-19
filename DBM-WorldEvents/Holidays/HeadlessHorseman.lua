@@ -17,40 +17,75 @@ if mod:IsRetail() then--10.1.7 fight rework
 		"SPELL_MISSED 415329"
 	)
 
+	--TODO, better detectoin of curse activation on player and additional warnings for effects
 	local warnVineMarch									= mod:NewSpellAnnounce(415047, 3)
 
 	local specWarnHotHead								= mod:NewSpecialWarningYou(423626, nil, nil, nil, 1, 2)
 	local specWarnInsidiousCackle						= mod:NewSpecialWarningMoveAway(415262, nil, nil, nil, 1, 2)
-	local specWarnPumpkinBreath							= mod:NewSpecialWarningDodge(414844, nil, nil, nil, 2, 2)
+	local specWarnPumpkinBreath							= mod:NewSpecialWarningDodgeCount(414844, nil, nil, nil, 2, 2)
 	local specWarnGTFO									= mod:NewSpecialWarningGTFO(415329, nil, nil, nil, 1, 8)
 
-	--local timerHotHeadCD								= mod:NewCDTimer(49, 423626, nil, nil, nil, 3)
-	local timerInsidiousCackleCD						= mod:NewCDTimer(41.4, 415262, nil, nil, nil, 2)
-	local timerPumpkinBreathCD							= mod:NewCDTimer(41.4, 414844, nil, nil, nil, 3)
-	local timerVineMarchCD								= mod:NewCDTimer(41.4, 415047, nil, nil, nil, 1)
+	local timerHotHeadCD								= mod:NewCDCountTimer(49, 423626, nil, nil, nil, 3)
+	local timerInsidiousCackleCD						= mod:NewCDCountTimer(41.4, 415262, nil, nil, nil, 2)
+	local timerPumpkinBreathCD							= mod:NewCDCountTimer(41.4, 414844, nil, nil, nil, 3)
+	local timerVineMarchCD								= mod:NewCDCountTimer(41.4, 415047, nil, nil, nil, 1)
+
+	mod.vb.cackleCount = 0
+	mod.vb.breathCount = 0
+	mod.vb.vineCount = 0
+	mod.vb.hotCount = 0
+	local allTimers = {
+		--Insidious Cackle
+		[415262] = {35.3, 54.6},
+		--Pumpkin Breath
+		[414844] = {6.1, 41.3, 54.6},
+		--Vine March
+		[415047] = {20.6, 54.6, 42.5}
+		--Hot Head
+		[423626] = {62}
+	}
 
 	function mod:OnCombatStart(delay)
-		timerPumpkinBreathCD:Start(6-delay)--6.1, 41.4, 54.6
-		timerVineMarchCD:Start(20-delay)--20.8, 54.5, 42.5
-		timerInsidiousCackleCD:Start(35-delay)--35.3, 54.6
-		--timerHotHeadCD:Start(62.1)--Might be health based
+		self.vb.cackleCount = 0
+		self.vb.breathCount = 0
+		self.vb.vineCount = 0
+		self.vb.hotCount = 0
+		timerPumpkinBreathCD:Start(6-delay, 1)
+		timerVineMarchCD:Start(20-delay, 1)
+		timerInsidiousCackleCD:Start(35-delay, 1)
+		timerHotHeadCD:Start(62, 1)
 	end
 
 	function mod:SPELL_CAST_START(args)
 		local spellId = args.spellId
 		if spellId == 415262 then
-			specWarnInsidiousCackle:Show()
+			self.vb.cackleCount = self.vb.cackleCount + 1
+			specWarnInsidiousCackle:Show(self.vb.cackleCount)
 			specWarnInsidiousCackle:Play("scatter")
-			--timerInsidiousCackleCD:Start()
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.cackleCount+1)
+			if timer then
+				timerInsidiousCackleCD:Start(timer, self.vb.cackleCount+1)
+			end
 		elseif spellId == 414844 then
-			specWarnPumpkinBreath:Show()
+			self.vb.breathCount = self.vb.breathCount + 1
+			specWarnPumpkinBreath:Show(self.vb.breathCount)
 			specWarnPumpkinBreath:Play("breathsoon")
-			--timerPumpkinBreathCD:Start()--More data needed
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.breathCount+1)
+			if timer then
+				timerPumpkinBreathCD:Start(timer, self.vb.breathCount+1)
+			end
 		elseif spellId == 423626 then
-			--timerHotHeadCD:Start()
+			self.vb.hotCount = self.vb.hotCount + 1
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.hotCount+1)
+			if timer then
+				timerHotHeadCD:Start(timer, self.vb.hotCount+1)
+			end
 		elseif spellId == 415047 then
-			warnVineMarch:Show()
-			--timerVineMarchCD:Start()
+			warnVineMarch:Show(self.vb.vineCount)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1)
+			if timer then
+				timerVineMarchCD:Start(timer, self.vb.ignitingCount+1)
+			end
 		end
 	end
 
