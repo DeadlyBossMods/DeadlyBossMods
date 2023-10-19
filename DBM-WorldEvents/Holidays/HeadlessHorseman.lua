@@ -91,7 +91,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 			warnVineMarch:Show(self.vb.vineCount)
 			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1)
 			if timer then
-				timerVineMarchCD:Start(timer, self.vb.ignitingCount+1)
+				timerVineMarchCD:Start(timer, self.vb.vineCount+1)
 			end
 		end
 	end
