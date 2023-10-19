@@ -7,7 +7,6 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod:SetCreatureID(207438)
 	mod:SetEncounterID(2725)
 
---	mod:SetReCombatTime(10)
 	mod:RegisterCombat("combat")
 
 	mod:RegisterEvents(
@@ -15,13 +14,13 @@ if mod:IsRetail() then--10.1.7 fight rework
 	)
 
 	mod:RegisterEventsInCombat(
-		"SPELL_CAST_START 415262 423626 414844 415047",--423626
+		"SPELL_CAST_START 415262 423626 414844 415047",
 		"SPELL_AURA_APPLIED 423623",
 		"SPELL_DAMAGE 415329",
 		"SPELL_MISSED 415329"
 	)
 
-	--TODO, better detectoin of curse activation on player and additional warnings for effects
+	--TODO, better detection of curse activation on player and additional warnings for effects
 	local warnVineMarch									= mod:NewSpellAnnounce(415047, 3)
 
 	local specWarnHotHead								= mod:NewSpecialWarningYou(423626, nil, nil, nil, 1, 2)
