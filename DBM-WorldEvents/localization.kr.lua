@@ -101,14 +101,14 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase				= "단계 전환 경고 보기",
 	warnHorsemanSoldiers	= "고동치는 호박 등장 경고 보기",
-	warnHorsemanHead		= "저주받은 기사 머리 등장 경고 보기"
+	warnHorsemanHead		= "저주받은 기사 머리 등장 경고 보기",
+	AGCurses				= "저주받은 기사에서 저주를 활성화하는 대화 자동 선택",
+	AGBoss					= "저주받은 기사를 소환하는 대화 자동 선택"
 })
 
 L:SetMiscLocalization({
 	HorsemanSummon		= "기사여, 일어나라...",
-	HorsemanSoldiers	= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
-	AGCurses				= "저주받은 기사에서 저주를 활성화하는 대화 자동 선택",
-	AGBoss					= "저주받은 기사를 소환하는 대화 자동 선택"
+	HorsemanSoldiers	= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!"
 })
 
 ------------------------------
