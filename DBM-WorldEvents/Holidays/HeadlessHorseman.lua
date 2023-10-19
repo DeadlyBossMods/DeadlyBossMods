@@ -11,7 +11,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod:RegisterCombat("combat")
 
 	mod:RegisterEventsInCombat(
-		"SPELL_CAST_START 415262 423626 207438 415047",--423626
+		"SPELL_CAST_START 415262 423626 414844 415047",--423626
 		"SPELL_AURA_APPLIED 423623",
 		"SPELL_DAMAGE 415329",
 		"SPELL_MISSED 415329"
@@ -50,6 +50,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 			--timerHotHeadCD:Start()
 		elseif spellId == 415047 then
 			warnVineMarch:Show()
+			--timerVineMarchCD:Start()
 		end
 	end
 
