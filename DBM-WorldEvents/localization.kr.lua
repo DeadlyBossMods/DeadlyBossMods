@@ -106,7 +106,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon		= "기사여, 일어나라...",
-	HorsemanSoldiers	= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!"
+	HorsemanSoldiers	= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
+	AGCurses				= "저주받은 기사에서 저주를 활성화하는 대화 자동 선택",
+	AGBoss					= "저주받은 기사를 소환하는 대화 자동 선택"
 })
 
 ------------------------------
