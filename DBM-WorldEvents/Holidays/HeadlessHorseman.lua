@@ -88,10 +88,11 @@ if mod:IsRetail() then--10.1.7 fight rework
 				timerHotHeadCD:Start(timer, self.vb.hotCount+1)
 			end
 		elseif spellId == 415047 then
+			self.vb.vineCount = self.vb.vineCount + 1
 			warnVineMarch:Show(self.vb.vineCount)
 			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1)
 			if timer then
-				timerVineMarchCD:Start(timer, self.vb.ignitingCount+1)
+				timerVineMarchCD:Start(timer, self.vb.vineCount+1)
 			end
 		end
 	end
