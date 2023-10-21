@@ -7,8 +7,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(206172)
 mod:SetEncounterID(2708)
 mod:SetUsedIcons(8, 7, 6)
-mod:SetHotfixNoticeRev(20230923000000)
-mod:SetMinSyncRevision(20230923000000)
+mod:SetHotfixNoticeRev(20231021000000)
+mod:SetMinSyncRevision(20231021000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")

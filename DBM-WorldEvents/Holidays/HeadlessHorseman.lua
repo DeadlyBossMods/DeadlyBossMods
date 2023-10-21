@@ -47,9 +47,11 @@ if mod:IsRetail() then--10.1.7 fight rework
 		--Pumpkin Breath
 		[414844] = {6.1, 41.3, 54.6, 55.8},
 		--Vine March
-		[415047] = {20.6, 54.6, 42.5, 54.6},
+		[415047] = {20.6, 42.5, 42.5, 54.6},--It's a holiday boss, only effort i'll use here is to use lowest variation
+				  --20.6, 54.6, 42.5, 54.6
+				  --20.7, 42.5, 55.8 (when hot headead is 77, vine march 2 is 42 and 3rd one is later instead
 		--Hot Head
-		[423626] = {61.9, 70.4}--Sometimes 77? might still have a checkpoint/dps check to be 62
+		[423626] = {61.9, 70.4}--Sometimes 77 for first. might still have a checkpoint/dps check to be 62
 	}
 
 	function mod:OnCombatStart(delay)
