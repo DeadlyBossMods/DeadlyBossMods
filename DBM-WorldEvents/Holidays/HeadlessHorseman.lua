@@ -120,10 +120,10 @@ if mod:IsRetail() then--10.1.7 fight rework
 		if gossipOptionID then
 			--Embers, Delusions, Shadows, Thorns
 			if self.Options.AGCurses and (gossipOptionID == 110383 or gossipOptionID == 110379 or gossipOptionID == 110372 or gossipOptionID == 110377) then
-				self:SelectGossip(gossipOptionID)
+				self:SelectGossip(gossipOptionID, true)
 			end
 			if self.Options.AGBoss and gossipOptionID == 36316 then
-				self:SelectGossip(gossipOptionID)
+				self:SelectGossip(gossipOptionID, true)
 			end
 		end
 	end
