@@ -251,6 +251,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 209800 then--cycle-warden
 		timerLumberingSlamCD:Stop(args.destGUID)
 		timerRadialFlourishCD:Stop(args.destGUID)
 --	elseif cid == 428465 then--Manifested Dream
