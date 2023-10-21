@@ -43,13 +43,13 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod.vb.hotCount = 0
 	local allTimers = {
 		--Insidious Cackle
-		[415262] = {35.3, 54.6},
+		[415262] = {35.3, 54.6, 55.8, 46.2},
 		--Pumpkin Breath
-		[414844] = {6.1, 41.3, 54.6},
+		[414844] = {6.1, 41.3, 54.6, 55.8},
 		--Vine March
-		[415047] = {20.6, 54.6, 42.5},
+		[415047] = {20.6, 54.6, 42.5, 54.6},
 		--Hot Head
-		[423626] = {62}--Sometimes 77? might still have a checkpoint/dps check to be 62
+		[423626] = {61.9, 70.4}--Sometimes 77? might still have a checkpoint/dps check to be 62
 	}
 
 	function mod:OnCombatStart(delay)
