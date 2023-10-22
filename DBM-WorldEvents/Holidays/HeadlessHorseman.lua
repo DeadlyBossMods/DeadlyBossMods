@@ -72,7 +72,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 			self.vb.cackleCount = self.vb.cackleCount + 1
 			specWarnInsidiousCackle:Show(self.vb.cackleCount)
 			specWarnInsidiousCackle:Play("scatter")
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.cackleCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.cackleCount+1) or 46
 			if timer then
 				timerInsidiousCackleCD:Start(timer, self.vb.cackleCount+1)
 			end
@@ -80,20 +80,20 @@ if mod:IsRetail() then--10.1.7 fight rework
 			self.vb.breathCount = self.vb.breathCount + 1
 			specWarnPumpkinBreath:Show(self.vb.breathCount)
 			specWarnPumpkinBreath:Play("breathsoon")
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.breathCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.breathCount+1) or 41.3
 			if timer then
 				timerPumpkinBreathCD:Start(timer, self.vb.breathCount+1)
 			end
 		elseif spellId == 423626 then
 			self.vb.hotCount = self.vb.hotCount + 1
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.hotCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.hotCount+1) or 70.4
 			if timer then
 				timerHotHeadCD:Start(timer, self.vb.hotCount+1)
 			end
 		elseif spellId == 415047 then
 			self.vb.vineCount = self.vb.vineCount + 1
 			warnVineMarch:Show(self.vb.vineCount)
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1) or 42.5
 			if timer then
 				timerVineMarchCD:Start(timer, self.vb.vineCount+1)
 			end
