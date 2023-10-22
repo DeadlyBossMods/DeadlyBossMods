@@ -43,13 +43,16 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod.vb.hotCount = 0
 	local allTimers = {
 		--Insidious Cackle
-		[415262] = {35.3, 54.6, 55.8, 46.2},
+		[415262] = {35.3, 54.6, 46.0, 46.2},
+				  --35.3, 54.6, 55.8, 46.2
 		--Pumpkin Breath
 		[414844] = {6.1, 41.3, 54.6, 55.8},
 		--Vine March
-		[415047] = {20.6, 54.6, 42.5, 54.6},
+		[415047] = {20.6, 42.5, 42.5, 54.6},--It's a holiday boss, only effort i'll use here is to use lowest variation
+				  --20.6, 54.6, 42.5, 54.6
+				  --20.7, 42.5, 55.8 (when hot headead is 77, vine march 2 is 42 and 3rd one is later instead
 		--Hot Head
-		[423626] = {61.9, 70.4}--Sometimes 77? might still have a checkpoint/dps check to be 62
+		[423626] = {61.9, 70.4}--Sometimes 77 for first. might still have a checkpoint/dps check to be 62
 	}
 
 	function mod:OnCombatStart(delay)
@@ -69,7 +72,7 @@ if mod:IsRetail() then--10.1.7 fight rework
 			self.vb.cackleCount = self.vb.cackleCount + 1
 			specWarnInsidiousCackle:Show(self.vb.cackleCount)
 			specWarnInsidiousCackle:Play("scatter")
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.cackleCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.cackleCount+1) or 46
 			if timer then
 				timerInsidiousCackleCD:Start(timer, self.vb.cackleCount+1)
 			end
@@ -77,20 +80,20 @@ if mod:IsRetail() then--10.1.7 fight rework
 			self.vb.breathCount = self.vb.breathCount + 1
 			specWarnPumpkinBreath:Show(self.vb.breathCount)
 			specWarnPumpkinBreath:Play("breathsoon")
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.breathCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.breathCount+1) or 41.3
 			if timer then
 				timerPumpkinBreathCD:Start(timer, self.vb.breathCount+1)
 			end
 		elseif spellId == 423626 then
 			self.vb.hotCount = self.vb.hotCount + 1
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.hotCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.hotCount+1) or 70.4
 			if timer then
 				timerHotHeadCD:Start(timer, self.vb.hotCount+1)
 			end
 		elseif spellId == 415047 then
 			self.vb.vineCount = self.vb.vineCount + 1
 			warnVineMarch:Show(self.vb.vineCount)
-			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.vineCount+1) or 42.5
 			if timer then
 				timerVineMarchCD:Start(timer, self.vb.vineCount+1)
 			end
