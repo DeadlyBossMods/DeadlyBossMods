@@ -43,7 +43,8 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod.vb.hotCount = 0
 	local allTimers = {
 		--Insidious Cackle
-		[415262] = {35.3, 54.6, 55.8, 46.2},
+		[415262] = {35.3, 54.6, 46.0, 46.2},
+				  --35.3, 54.6, 55.8, 46.2
 		--Pumpkin Breath
 		[414844] = {6.1, 41.3, 54.6, 55.8},
 		--Vine March
