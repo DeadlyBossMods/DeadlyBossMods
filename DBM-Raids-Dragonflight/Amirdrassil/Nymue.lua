@@ -9,7 +9,7 @@ mod:SetEncounterID(2708)
 mod:SetUsedIcons(8, 7, 6)
 mod:SetHotfixNoticeRev(20231021000000)
 mod:SetMinSyncRevision(20231021000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -41,20 +41,20 @@ local warnContinuum									= mod:NewCountAnnounce(420846, 2)
 local warnVerdantMatrix								= mod:NewCountAnnounce(420554, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(420554))
 local warnInflorescence								= mod:NewYouAnnounce(423195, 1)
 local warnSurgingGrowth								= mod:NewCountAnnounce(420971, 2)
-local warnWeaversBurden								= mod:NewCountAnnounce(426519, 2)
+local warnWeaversBurden								= mod:NewCountAnnounce(426519, 2, nil, nil, 167180)
 
 local specWarnImpendingLoom							= mod:NewSpecialWarningDodgeCount(429615, nil, nil, nil, 2, 2)
 local specWarnViridianRain							= mod:NewSpecialWarningDodgeCount(420907, nil, nil, nil, 2, 2)
-local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426519, nil, nil, nil, 1, 2)--Main tank warning only
-local yellWeaversBurden								= mod:NewShortYell(426519)
+local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426519, nil, 37859, nil, 1, 2)--Main tank warning only
+local yellWeaversBurden								= mod:NewShortYell(426519, 37859)--ST "Bomb"
 --local yellWeaversBurdenFades						= mod:NewShortFadesYell(426519)
-local specWarnWeaversBurdenOther					= mod:NewSpecialWarningTaunt(426519, nil, nil, nil, 1, 2)
+local specWarnWeaversBurdenOther					= mod:NewSpecialWarningTaunt(426519, nil, 37859, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
-local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, nil, nil, nil, 3)
+local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 --local timerSurgingGrowthCD						= mod:NewAITimer(49, 420971, nil, nil, nil, 3)
-local timerViridianRainCD							= mod:NewCDCountTimer(19.8, 420907, nil, nil, nil, 3)
-local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerViridianRainCD							= mod:NewCDCountTimer(19.8, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
+local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, 167180, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--ST "Bombs"
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption(427722, true, 426519, 1)--Weaver's Burden
@@ -66,7 +66,7 @@ local specWarnLumberingSlam							= mod:NewSpecialWarningDodge(429108, nil, nil,
 local specWarnRadialFlourish						= mod:NewSpecialWarningDodge(425370, nil, nil, nil, 2, 2)
 
 local timerFullBloomCD								= mod:NewCDCountTimer(49, 426855, nil, nil, nil, 6)
-local timerLumberingSlamCD							= mod:NewCDNPTimer(19.7, 429108, nil, nil, nil, 3)
+local timerLumberingSlamCD							= mod:NewCDNPTimer(19.7, 429108, nil, nil, nil, 3)--No reason to CL it, it's a nameplate only timer
 local timerRadialFlourishCD							= mod:NewCDNPTimer(5, 425370, nil, false, nil, 3)--5-12 so kinda fickle, off by default
 
 mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
