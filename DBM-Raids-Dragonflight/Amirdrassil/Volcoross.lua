@@ -7,7 +7,7 @@ mod:SetEncounterID(2737)
 mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(20210126000000)
 --mod:SetMinSyncRevision(20210126000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -43,9 +43,11 @@ local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, 7897, 
 local yellCoilingFlames								= mod:NewYell(421207, 7897)--Shortname Flames
 local yellCoilingFlamesFades						= mod:NewShortFadesYell(421207)
 local specWarnCoilingEruption						= mod:NewSpecialWarningYou(427201, nil, nil, nil, 1, 2)
-local yellCoilingEruption							= mod:NewShortPosYell(427201, nil, nil, nil, "YELL")
-local yellCoilingEruptionFades						= mod:NewIconFadesYell(427201, nil, nil, nil, "YELL")
+local yellCoilingEruption							= mod:NewShortYell(427201, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")--NewShortPosYell
+local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, nil, "YELL")--NewIconFadesYell
 
+local specWarnMoltenVenom							= mod:NewSpecialWarningStack(419054, nil, 6, nil, nil, 1, 6)
+--local specWarnMoltenVenomSwap						= mod:NewSpecialWarningTaunt(419054, nil, nil, nil, 1, 2)--Need to evaulate whether tanks swap for this or jaws. double tank mechanic fights are redundant
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
 local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
@@ -55,6 +57,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1,
 
 local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, 7897, nil, nil, 3)--Shortname "Flames"
 local timerCoilingFlames							= mod:NewCastTimer(7.5, 421672, 7897, nil, nil, 5)
+local timerCoilingEruption							= mod:NewCastTimer(16, 427201, L.DebuffSoaks, nil, nil, 5)
 local timerFloodoftheFirelandsCD					= mod:NewNextCountTimer(70, 420933, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 5)
 local timerVolcanicDisgorgeCD						= mod:NewNextCountTimer(10, 421616, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3)
 local timerScorchtailCrashCD						= mod:NewCDCountTimer(20, 420415, 136870, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short name "Tail Slam"
@@ -64,7 +67,7 @@ local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|
 --mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, false, false, {1, 2, 3, 4})--Off by default since other mods don't use icons at all
 
 mod.vb.flamesIcon = 1
 mod.vb.furyCount = 0
@@ -173,6 +176,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCoilingFlames:Yell()
 			yellCoilingFlamesFades:Countdown(spellId)
 		end
+		if self:IsMythic() and self:AntiSpam(5, 2) then
+			timerCoilingEruption:Start(16, self.vb.furyCount)--Time until mythic debuffs expire so combination of this one expiring, next one applying, and also expiring
+		end
 	elseif spellId == 427201 then
 		local icon = self.vb.flamesIcon
 		if self.Options.SetIconOnCoilingEruption then
@@ -181,26 +187,27 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCoilingEruption:Show()
 			specWarnCoilingEruption:Play("targetyou")
-			yellCoilingEruption:Yell(icon, icon)
-			yellCoilingEruptionFades:Countdown(spellId, nil, icon)
+			yellCoilingEruption:Yell(icon, icon)--icon, icon
+			yellCoilingEruptionFades:Countdown(spellId)--, nil, icon
 		end
 		self.vb.flamesIcon = self.vb.flamesIcon + 1
 	elseif spellId == 419054 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
---			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
---			local remaining
---			if expireTime then
---				remaining = expireTime-GetTime()
---			end
---			local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 17.9) - 5
---			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
---				specWarnConcussiveSlamTaunt:Show(args.destName)
---				specWarnConcussiveSlamTaunt:Play("tauntboss")
---			else
-				warnMoltenVenom:Show(args.destName, amount)
---			end
+			if amount % 3 == 0 then
+				if args:IsPlayer() and amount >= 6 then
+					specWarnMoltenVenom:Show()
+					specWarnMoltenVenom:Play("stackhigh")
+				else
+--					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+--						specWarnMoltenVenomSwap:Show(args.destName)
+--						specWarnMoltenVenomSwap:Play("tauntboss")
+--					else
+						warnMoltenVenom:Show(args.destName, amount)
+--					end
+				end
+			end
 		end
 	end
 end
@@ -224,24 +231,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
---mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 423494 or spellId == 421082) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if (spellId == 423494 or spellId == 421082) and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 165067 then
-
-	end
-end
---]]
 
 --"<31.18 15:55:30> [UNIT_SPELLCAST_START] Volcoross(75.6%-43.0%){Target:Nnoggie} -Volcanic Disgorge- 2.5s [[boss1:Cast-3-5773-2549-5244-421616-0099903FD1:421616]]",
 --"<31.18 15:55:30> [CLEU] SPELL_CAST_START#Creature-0-5773-2549-5244-208478-0000103F2B#Volcoross(75.6%-43.0%)##nil#421616#Volcanic Disgorge#nil#nil",
@@ -261,4 +258,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerScorchtailCrashCD:Start(nil, self.vb.tailCount+1)
 	end
 end
-

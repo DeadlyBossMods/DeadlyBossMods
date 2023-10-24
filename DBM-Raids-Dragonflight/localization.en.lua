@@ -222,7 +222,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Volcoross --
 ---------------------------
---L= DBM:GetModLocalization(2557)
+L= DBM:GetModLocalization(2557)
+
+L:SetMiscLocalization({
+	DebuffSoaks			= "Debuff Soaks (%s)"--Might be common localized later
+})
 
 ---------------------------
 --  Council of Dreams --
