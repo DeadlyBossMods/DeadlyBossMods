@@ -119,15 +119,12 @@ if mod:IsRetail() then--10.1.7 fight rework
 	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 	function mod:GOSSIP_SHOW()
-		local gossipOptionID = self:GetGossipID()
-		if gossipOptionID then
+		if self.Options.AGCurses then
 			--Embers, Delusions, Shadows, Thorns, All at once (center one)
-			if self.Options.AGCurses and (gossipOptionID == 110383 or gossipOptionID == 110379 or gossipOptionID == 110372 or gossipOptionID == 110377 or gossipOptionID == 110369) then
-				self:SelectGossip(gossipOptionID, true)
-			end
-			if self.Options.AGBoss and gossipOptionID == 36316 then
-				self:SelectGossip(gossipOptionID, true)
-			end
+			self:SelectMatchingGossip(true, 110383, 110379, 110372, 110377, 111387)
+		end
+		if self.Options.AGBoss then
+			self:SelectMatchingGossip(true, 36316)
 		end
 	end
 else--OG fight, for classic (when world events are reunified that is
