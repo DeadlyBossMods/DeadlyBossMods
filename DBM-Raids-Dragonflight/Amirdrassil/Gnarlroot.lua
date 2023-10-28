@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 422023 424970",
 	"SPELL_PERIODIC_MISSED 422023 424970",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -447,12 +446,3 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 405814 then
-
-	end
-end
---]]
-
