@@ -14,12 +14,12 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 428960 419506 420422 417455 417431 419144 412761 428963 428400 428971 428968 428965 419123 422524 422837 410223 425492",
-	"SPELL_CAST_SUCCESS 428954 414186 421937 422935",
+	"SPELL_CAST_START 428960 419506 420422 417455 417431 419144 412761 428963 428400 428971 428968 428965 419123 422524 422837 410223 425492 422518",
+	"SPELL_CAST_SUCCESS 428954 414186 421937 422935 429875 429876",
 	"SPELL_SUMMON 422029",
-	"SPELL_AURA_APPLIED 428961 417807 417443 429866 422457 423717",
-	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866",
-	"SPELL_AURA_REMOVED 425346",
+	"SPELL_AURA_APPLIED 428961 417807 417443 429866 422457 423717 429672",
+	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866 429672",
+	"SPELL_AURA_REMOVED 425346 419144",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 419504 425483",
 	"SPELL_PERIODIC_MISSED 419504 425483",
@@ -273,6 +273,28 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadowflameDevastation:Play("breathsoon")
 		timerShadowflameDevastationCD:Start()
 	elseif spellId == 422837 then
+		if self:GetStage(3, 1) then
+			self:SetStage(3)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			self.vb.firestormCount = 0
+			self.vb.blazeCount = 0
+			self.vb.tankCount = 0
+			self.vb.shadowflameBreathCount = 0
+			timerSpiritsCD:Stop()
+			timerGreaterFirestormCD:Stop()
+			timerFlamefallCD:Stop()
+			timerShadowflameDevastationCD:Stop()
+			timerFyralathsBiteCD:Stop()
+			timerBlazeCD:Stop()
+			timerEternalFirestormCD:Start(3)
+			timerApocalypseroarCD:Start(3)
+			timerShadowflameBreathCD:Start(3)
+			timerInfernalMawCD:Start(3)
+			if self:IsHard() then
+				timerBlazeCD:Start(3)--Heroic/Mythic only
+			end
+		end
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnApocalypseRoar:Show(self.vb.roarCount)
 		specWarnApocalypseRoar:Play("pushbackincoming")
