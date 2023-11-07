@@ -70,7 +70,7 @@ local timerRadialFlourishCD							= mod:NewCDNPTimer(5, 425370, nil, false, nil,
 local timerWakingDecimation							= mod:NewCastTimer(36, 428471, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--1sec delay before energy starts + 30 + 5 second cast
 
 mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
-mod:AddSetIconOption("SetIconOnManifestedDream", -28223, true, 5, {8})
+mod:AddSetIconOption("SetIconOnManifestedDream", -28482, true, 5, {8})
 
 mod.vb.contCount = 0
 mod.vb.loomCount = 0

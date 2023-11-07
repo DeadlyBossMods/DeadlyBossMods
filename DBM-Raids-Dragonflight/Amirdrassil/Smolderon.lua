@@ -36,7 +36,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerPhaseCD									= mod:NewStageTimer(60)
+local timerPhaseCD									= mod:NewStageTimer(60, 422172)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: The Firelord's Fury
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27637))
