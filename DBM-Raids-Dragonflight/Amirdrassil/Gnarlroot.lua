@@ -37,7 +37,7 @@ local warnFlamingPestilence							= mod:NewCountAnnounce(421898, 3)
 local warnShadowSpines								= mod:NewCountAnnounce(422053, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(422053))
 local warnControlledBurn							= mod:NewTargetCountAnnounce(421972, 3, nil, nil, 167180, nil, nil, nil, true)
 local warnDreadfireBarrage							= mod:NewStackAnnounce(424352, 2, nil, "Tank|Healer")
-local warnFlamingSap								= mod:NewTargetAnnounce(425819, 2)
+local warnFlamingSap								= mod:NewTargetAnnounce(425820, 2)
 
 local specWarnControlledBurn						= mod:NewSpecialWarningYou(421972, nil, 37859, nil, 1, 2)
 local yellControlledBurn							= mod:NewShortPosYell(421972, 37859)--Shortname "Bomb"
@@ -46,8 +46,8 @@ local specWarnDreadfireBarrage						= mod:NewSpecialWarningTaunt(424352, nil, 12
 local specWarnTorturedScream						= mod:NewSpecialWarningCount(422026, nil, 31295, nil, 2, 2)
 local specWarnShadowflameCleave						= mod:NewSpecialWarningDodgeCount(422039, nil, nil, nil, 2, 2)
 local specWarnBlazingPollen							= mod:NewSpecialWarningInterruptCount(425816, "HasInterrupt", nil, nil, 1, 2, 4)
-local specWarnFlamingSap							= mod:NewSpecialWarningMoveAway(425819, nil, nil, nil, 1, 2, 4)
-local yellFlamingSap								= mod:NewShortYell(425819)
+local specWarnFlamingSap							= mod:NewSpecialWarningMoveAway(425820, nil, nil, nil, 1, 2, 4)
+local yellFlamingSap								= mod:NewShortYell(425820)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(422023, nil, nil, nil, 1, 8)
 
 local timerFlamingPestilenceCD						= mod:NewCDCountTimer(34.7, 421898, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
@@ -56,7 +56,7 @@ local timerDreadfireBarrageCD						= mod:NewCDCountTimer(21.5, 424352, 120360, "
 local timerTorturedScreamCD							= mod:NewCDCountTimer(11.8, 422026, 31295, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Scream shorttext
 local timerShadowflameCleaveCD						= mod:NewCDCountTimer(49, 422039, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 3)
 local timerBlazingPollenCD							= mod:NewCDNPTimer(11.8, 425816, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
-local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425819, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerFlamingSapCD								= mod:NewCDNPTimer(11.8, 425820, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, 0, {1, 2, 3, 4})

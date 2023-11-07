@@ -59,7 +59,7 @@ local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421022, nil, "Tank|He
 --Aerwynn
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27301))
 local warnRelentlessBarrage							= mod:NewSpellAnnounce(420937, 4)--You done fucked up
-local warnNoxiousBlossom							= mod:NewCountAnnounce(420937, 3)
+local warnNoxiousBlossom							= mod:NewCountAnnounce(420671, 3)
 local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420858, 3, nil, nil, 298110)--, nil, nil, nil, nil, nil, nil, true
 
 local specWarnConstrictingThicket					= mod:NewSpecialWarningCount(421292, nil, nil, nil, 2, 2)

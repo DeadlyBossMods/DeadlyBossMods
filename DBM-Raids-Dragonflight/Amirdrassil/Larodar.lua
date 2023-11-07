@@ -7,14 +7,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(208445)
 mod:SetEncounterID(2731)
 mod:SetUsedIcons(6, 7, 8)
-mod:SetHotfixNoticeRev(20230924000000)
-mod:SetMinSyncRevision(20230924000000)
---mod.respawnTime = 29
+mod:SetHotfixNoticeRev(20231021000000)
+mod:SetMinSyncRevision(20231021000000)
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 421318 421325",
+	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 429973 421325",
 	"SPELL_CAST_SUCCESS 417653 419485 427299 428901",
 	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407 418520 429032 428946 428901",
 	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407 418520 429032 428946",
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 425889 or ability.id = 426524 or ability.id = 422614 or ability.id = 418637 or ability.id = 426206 or ability.id = 417634 or ability.id = 427252 or ability.id = 427343 or ability.id = 421318 or ability.id = 421325) and type = "begincast"
+(ability.id = 425889 or ability.id = 426524 or ability.id = 422614 or ability.id = 418637 or ability.id = 426206 or ability.id = 417634 or ability.id = 427252 or ability.id = 427343 or ability.id = 429973 or ability.id = 421325) and type = "begincast"
  or (ability.id = 417653 or ability.id = 419485 or ability.id = 427299 or ability.id = 428901) and type = "cast"
  or ability.id = 421316 and (type = "applybuff" or type = "removebuff")
 --]]
@@ -48,7 +48,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(417632, nil, nil, nil, 1,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27241))
 local warnForces									= mod:NewCountAnnounce(417653, 3)
 local warnBlisteringSplinters						= mod:NewCountAnnounce(418520, 3, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(418520))--Player
---local warnDreamBlossom								= mod:NewTargetNoFilterAnnounce(425468, 2, nil, false)--non filtered, but off by default
+--local warnDreamBlossom							= mod:NewTargetNoFilterAnnounce(425468, 2, nil, false)--non filtered, but off by default
 local warnScorchingRoots							= mod:NewCountAnnounce(422614, 3)
 local warnCharredTreant								= mod:NewSpellAnnounce(417667, 2, nil, "Healer")
 local warnRenewedTreant								= mod:NewSpellAnnounce(417668, 1)
@@ -61,8 +61,8 @@ local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|H
 
 --local specWarnIgnitingGrowth						= mod:NewSpecialWarningMoveAway(425888, nil, nil, nil, 1, 2, 4)
 --local yellIgnitingGrowth							= mod:NewShortYell(425888, nil, false)
---local specWarnDreamBlossom							= mod:NewSpecialWarningYou(425468, nil, nil, nil, 1, 2)
---local yellDreamBlossom								= mod:NewShortYell(425468, nil, false)
+--local specWarnDreamBlossom						= mod:NewSpecialWarningYou(425468, nil, nil, nil, 1, 2)
+--local yellDreamBlossom							= mod:NewShortYell(425468, nil, false)
 local specWarnFieryFlourish							= mod:NewSpecialWarningInterruptCount(426524, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnScorchingPursuit					= mod:NewSpecialWarningRun(420544, nil, nil, nil, 4, 2)--BW using 420546, but may change to 420544
 --local yellScorchingPursuit						= mod:NewShortYell(420544)
@@ -97,7 +97,7 @@ local warnFlashFire									= mod:NewTargetNoFilterAnnounce(427299, 3, nil, "Hea
 local warnEncasedInAsh								= mod:NewTargetNoFilterAnnounce(427306, 4, nil, "RemoveMagic")
 local warnAshenCall									= mod:NewCountAnnounce(421325, 2)
 local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
---local warnAshenDevastation							= mod:NewTargetNoFilterAnnounce(428901, 4, nil, nil, 167180)--Shortname "Bombs"
+--local warnAshenDevastation						= mod:NewTargetNoFilterAnnounce(428901, 4, nil, nil, 167180)--Shortname "Bombs"
 
 local specWarnFallingEmbers							= mod:NewSpecialWarningSoakCount(427252, nil, nil, nil, 2, 2)
 local specWarnFlashFire								= mod:NewSpecialWarningMoveAway(427299, nil, nil, nil, 1, 2)--Blizzard didn't flag right spellids as private aura, so this probably still works for now
@@ -106,17 +106,17 @@ local yellFlashFireFades							= mod:NewShortFadesYell(427299)--Blizzard didn't 
 local specWarnEncasedInAsh							= mod:NewSpecialWarningYou(427306, nil, nil, nil, 1, 2)
 local yellEncasedInAsh								= mod:NewShortYell(427306)
 local specWarnFireWhirl								= mod:NewSpecialWarningDodgeCount(427343, nil, 86189, nil, 2, 2)
-local specWarnSmolderingBackdraft					= mod:NewSpecialWarningDefensive(421318, nil, nil, nil, 1, 2)
+local specWarnSmolderingBackdraft					= mod:NewSpecialWarningDefensive(429973, nil, nil, nil, 1, 2)
 local specWarnSmolderingSuffocation					= mod:NewSpecialWarningTaunt(421594, nil, nil, nil, 1, 2)
 local yellSmolderingSuffocationRepeater				= mod:NewIconRepeatYell(421594, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false, nil, "YELL")--using custom yell text "%s" because of custom needs (it has to use not only icons but two asci emoji
---local specWarnAshenDevestation						= mod:NewSpecialWarningMoveAway(428901, nil, 37859, nil, 1, 2, 4)
---local yellAshenDevestation							= mod:NewShortYell(428901, 37859)--Shortname "Bomb"
---local yellAshenDevestationFades						= mod:NewShortFadesYell(428901)
+--local specWarnAshenDevestation					= mod:NewSpecialWarningMoveAway(428901, nil, 37859, nil, 1, 2, 4)
+--local yellAshenDevestation						= mod:NewShortYell(428901, 37859)--Shortname "Bomb"
+--local yellAshenDevestationFades					= mod:NewShortFadesYell(428901)
 
 local timerFallingEmbersCD							= mod:NewCDCountTimer(49, 427252, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerFlashFireCD								= mod:NewCDCountTimer(49, 427299, L.HealAbsorb, nil, nil, 3)
 local timerFireWhirlCD								= mod:NewCDCountTimer(50, 427343, 86189, nil, nil, 3)--Shortname "Tornados"
-local timerSmolderingBackdraftCD					= mod:NewCDCountTimer(49, 421318, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSmolderingBackdraftCD					= mod:NewCDCountTimer(49, 429973, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerAshenCallCD								= mod:NewCDCountTimer(11.8, 421325, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerAshenDevestationCD						= mod:NewCDCountTimer(49, 428901, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
@@ -138,17 +138,17 @@ local allTimers = {
 	["mythic"] = {
 		--Stage 1
 		--Fiery Force of Nature
-		[417653] = {},
+		[417653] = {6.5, 114.9, 109.6, 115.0},
 		--Blazing Thorns
-		[426206] = {},
+		[426206] = {31.3, 24.7, 24.7, 46.3, 65.6, 63.2, 24.7, 24.7, 46.5, 65.5},
 		--Furious Charge
-		[418637] = {},
+		[418637] = {22.3, 22.4, 22.5, 46.5, 22.2, 31.1, 13.4, 66.5, 22.4, 22.5, 46.6, 22.3, 31.1, 13.3},
 		--Scorching Roots
-		[422614] = {},
+		[422614] = {38.0, 120.0, 104.5, 120.2},
 		--Raging Inferno
-		[417634] = {},
+		[417634] = {101.3, 111.6, 112.1, 111.9},
 		--Igniting Growth (Mythic Only)
-		[425889] = {},
+		[425889] = {14.5, 133.6, 90.2, 133.9},
 		--Stage 2
 		--Falling Embers
 		[427252] = {},--Had no variations
@@ -163,7 +163,43 @@ local allTimers = {
 		--Ashen Devestation
 		[428901] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
 	},
-	["normal"] = {
+	["heroic"] = {
+		--Stage 1 (same as mythic stage 1 likely)
+		--Fiery Force of Nature
+		[417653] = {6.7, 115.4, 110.3},
+				  --6.7, 118.6
+		--Blazing Thorns
+		[426206] = {31.4, 24.8, 24.5, 46.8, 65.5},
+				  --31.6, 24.6, 24.6, 50.1, 65.6
+		--Furious Charge
+		[418637] = {22.5, 22.3, 22.4, 46.9, 22.2, 31.3, 13.3, 67.0},
+				  --22.6, 22.3, 22.4, 50.2, 22.2, 31.1, 13.3
+		--Scorching Roots
+		[422614] = {38.1, 120.5},
+				  --38.1, 123.9
+		--Raging Inferno
+		[417634] = {101.7, 112.8},
+				  --104.2
+		--Stage 2
+		--Falling Embers
+		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
+				  --7.4, 26.7, 25.0, 23.3, 30.1, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3
+		--FlashFire
+		[427299] = {29.1, 46.7, 26.6, 36.7, 30.9, 37.5, 37.5},--Lowest times used of variations
+				  --29.1, 46.7, 26.6, 36.7, 36.7, 37.5
+				  --29.1, 46.7, 26.6, 42.5, 30.9, 37.5, 37.5
+		--Fire Whirl
+		[427343] = {54.0, 40.9, 32.5, 36.6, 36.7, 39.1},
+				  --54.1, 40.9, 32.4, 36.7, 36.6, 39.2
+		--Smoldering backdraft
+		[429973] = {14.0, 25.9, 30.0, 19.1, 29.2, 20.7, 25.0, 24.2, 25.0, 26.7},--Lowest times used of variations
+				  --14.0, 25.9, 30.0, 19.2, 29.2, 25.8, 25.0, 24.2, 25.0, 26.7
+				  --14.1, 25.9, 30.0, 19.1, 29.2, 20.7, 30.0, 24.1, 25.0, 26.7
+		--Ashen Call
+		[421325] = {20.7, 44.2, 42.5, 42.5, 38.3, 40.8},
+				  --20.7, 44.2, 42.5, 42.5, 38.3, 40.8
+	},
+	["normal"] = {--Likely obsolete and the same as heroic
 		--Stage 1
 		--Fiery Force of Nature
 		[417653] = {6.0, 113.4, 44.0, 64.7, 114.5},
@@ -183,7 +219,7 @@ local allTimers = {
 		--Fire Whirl
 		[427343] = {54.0, 50.1, 50.2, 41.7, 41.8, 41.8, 41.7, 50.1},
 		--Smoldering backdraft
-		[421318] = {17.3, 53.3, 58.5, 50.1, 50.1, 58.5, 50.0, 58.5},
+		[429973] = {17.3, 53.3, 58.5, 50.1, 50.1, 58.5, 50.0, 58.5},
 		--Ashen Call
 		[421325] = {25.7, 61.7, 50.1, 50.1, 58.5, 50.1, 58.4, 50.1},
 	},
@@ -214,6 +250,16 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(421461, "runout", 2)--Flash Fire
 	self:EnablePrivateAuraSound(428901, "runout", 2)--Ashen Devastation
 	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerFieryForceofNatureCD:Start(6.5-delay, 1)
+		timerIgnitingGrowthCD:Start(14.4-delay, 1)
+		timerFuriousChargeCD:Start(22.3-delay, 1)
+		timerBlazingThornsCD:Start(31.3-delay, 1)
+		timerScorchingRootsCD:Start(38-delay, 1)
+		timerRagingInfernoCD:Start(101-delay, 1)
+	elseif self:IsHeroic() then
+		--Pretty much same as mythic
+		difficultyName = "heroic"
 		timerFieryForceofNatureCD:Start(6.5-delay, 1)
 		timerIgnitingGrowthCD:Start(14.4-delay, 1)
 		timerFuriousChargeCD:Start(22.3-delay, 1)
@@ -221,6 +267,7 @@ function mod:OnCombatStart(delay)
 		timerScorchingRootsCD:Start(38-delay, 1)
 		timerRagingInfernoCD:Start(101-delay, 1)
 	else--Only normal vetted
+		difficultyName = "normal"
 		timerFieryForceofNatureCD:Start(6.1-delay, 1)
 		timerBlazingThornsCD:Start(14-delay, 1)
 		timerFuriousChargeCD:Start(20-delay, 1)
@@ -235,6 +282,18 @@ end
 --	end
 --end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+--	elseif self:IsNormal() then
+--		difficultyName = "normal"
+	else
+--		difficultyName = "lfr"
+		difficultyName = "normal"
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -318,7 +377,7 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerFireWhirlCD:Start(timer, self.vb.infernoCount+1)
 		end
-	elseif spellId == 421318 then
+	elseif spellId == 429973 then
 		self.vb.furiousChargeCount = self.vb.furiousChargeCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSmolderingBackdraft:Show()
@@ -462,7 +521,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 428946 then
 		warnAshenAsphyxiation:Show(args.destName, args.amount or 1)
-	elseif spellId == 421316 then
+	elseif spellId == 421316 then--Consuming Flame
 		self:SetStage(1.5)
 		timerFieryForceofNatureCD:Stop()
 		timerScorchingRootsCD:Stop()
@@ -478,7 +537,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 421316 then
+	if spellId == 421316 then--Consuming Flame
 		self:SetStage(2)
 		self.vb.ignitingCount = 0--Reused in stage 2 for Ashen Devestation
 		self.vb.scorchingRootCount = 0--Reused in stage 2 for Fallen Embers
@@ -489,13 +548,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerConsumingFlame:Stop()
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		timerFallingEmbersCD:Start(7.3, 1)
-		timerSmolderingBackdraftCD:Start(17.3, 1)
-		timerAshenCallCD:Start(25.7, 1)
-		timerFlashFireCD:Start(34, 1)
-		timerFireWhirlCD:Start(54, 1)
 		if self:IsMythic() then
-		--	timerAshenDevestationCD:Start(0, 1)
+			timerFallingEmbersCD:Start(7.4, 1)
+			timerSmolderingBackdraftCD:Start(14.1, 1)
+			timerAshenCallCD:Start(20.8, 1)
+			timerFlashFireCD:Start(29, 1)
+			timerAshenDevestationCD:Start(47.4, 1)
+			timerFireWhirlCD:Start(60, 1)
+		elseif self:IsHeroic() then
+			timerFallingEmbersCD:Start(7.4, 1)
+			timerSmolderingBackdraftCD:Start(14, 1)
+			timerAshenCallCD:Start(20.7, 1)
+			timerFlashFireCD:Start(29.1, 1)
+			timerFireWhirlCD:Start(54, 1)
+		else--Normal needs rechecking. Ashen and smoldering likely changed to match mythic and heroic
+			timerFallingEmbersCD:Start(7.3, 1)
+			timerSmolderingBackdraftCD:Start(17.3, 1)--14?
+			timerAshenCallCD:Start(25.7, 1)--20.7?
+			timerFlashFireCD:Start(34, 1)--29?
+			timerFireWhirlCD:Start(54, 1)
 		end
 	elseif spellId == 421594 then
 		if args:IsPlayer() then
