@@ -1,5 +1,3 @@
-local wowToc, testBuild = DBM:GetTOC()
-if (wowToc < 100200) and not testBuild then return end
 local mod	= DBM:NewMod(2562, "DBM-DragonIsles", nil, 1205)
 local L		= mod:GetLocalizedStrings()
 

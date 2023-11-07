@@ -1,4 +1,4 @@
-## Interface: 100107
+## Interface: 100200
 ## X-Min-Interface: 100100
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Aberrus, the Shadowed Crucible|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010어둠의 도가니 아베루스|r
