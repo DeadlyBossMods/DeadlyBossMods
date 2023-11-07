@@ -1,4 +1,4 @@
-## Interface: 100107
+## Interface: 100200
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (DF)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Jefes de Mundo (DF)|r

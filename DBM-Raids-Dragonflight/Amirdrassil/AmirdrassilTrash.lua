@@ -1,5 +1,3 @@
-local wowToc, testBuild = DBM:GetTOC()
-if (wowToc < 100200) and not testBuild then return end
 local mod	= DBM:NewMod("AmirdrassilTrash", "DBM-Raids-Dragonflight", 1)
 local L		= mod:GetLocalizedStrings()
 
