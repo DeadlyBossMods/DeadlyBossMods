@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(206172)
 mod:SetEncounterID(2708)
 mod:SetUsedIcons(8, 7, 6)
-mod:SetHotfixNoticeRev(20231027000000)
-mod:SetMinSyncRevision(20231027000000)
+mod:SetHotfixNoticeRev(20231113000000)
+mod:SetMinSyncRevision(20231113000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 420846 429108 429180 429615 426855",--426519 426147
 	"SPELL_CAST_SUCCESS 420907 425370",
 	"SPELL_SUMMON 421419 428465",
-	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479",
-	"SPELL_AURA_APPLIED_DOSE 420554 428479",
+	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479 429983",
+	"SPELL_AURA_APPLIED_DOSE 420554 428479 429983",
 	"SPELL_AURA_REMOVED 423195",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -49,7 +49,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(428474, nil, nil, nil, 1,
 
 local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 --local timerEphemeralFloraCD						= mod:NewAITimer(49, 430563, nil, nil, nil, 3)
---local timerSurgingGrowthCD						= mod:NewAITimer(49, 420971, nil, nil, nil, 3)
+local timerSurgingGrowthCD							= mod:NewCDCountTimer(9, 420971, nil, nil, nil, 3)
 local timerViridianRainCD							= mod:NewCDCountTimer(19.1, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, 167180, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--ST "Bombs"
 local berserkTimer									= mod:NewBerserkTimer(720)
@@ -92,7 +92,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bloomCount = 0
 	self.vb.floraCount = 0
 	self.vb.wardenIcon = 7
---	timerSurgingGrowthCD:Start(10)--It's difficult to accurately time, it has no cast event and using soaks is iffy
+	timerSurgingGrowthCD:Start(10, 1)--It's difficult to accurately time, it has no cast event and using soaks is iffy
 	timerViridianRainCD:Start(21, 1)
 	timerWeaversBurdenCD:Start(21, 1)
 	timerImpendingLoomCD:Start(24, 1)
@@ -117,7 +117,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 420846 then
-		self:SetStage(1)
+		self:SetStage(0)
 		self.vb.contCount = self.vb.contCount + 1
 		--No count resets in BW, so no count resets in DBM
 --		self.vb.loomCount = 0
@@ -143,13 +143,13 @@ function mod:SPELL_CAST_START(args)
 			timerImpendingLoomCD:Start(nil, self.vb.loomCount+1)
 		end
 	elseif spellId == 426855 then--Full Bloom
-		self:SetStage(2)
+		self:SetStage(0)
 		self.vb.bloomCount = self.vb.bloomCount + 1
 		warnFullBloom:Show(self.vb.bloomCount)
 		self.vb.wardenIcon = 7
 		timerViridianRainCD:Stop()
 		timerImpendingLoomCD:Stop()
---		timerSurgingGrowthCD:Stop()
+		timerSurgingGrowthCD:Stop()
 		timerWeaversBurdenCD:Stop()
 		--Register events for Miasma during intermission only
 		if self:IsMythic() then
@@ -168,8 +168,7 @@ function mod:SPELL_CAST_START(args)
 
 --	elseif spellId == 424477 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
---		specWarnSurgingGrowth:Show(self.vb.surgingCount)
---		specWarnSurgingGrowth:Play("watchstep")
+--		warnSurgingGrowth:Show(self.vb.surgingCount)
 --		timerSurgingGrowthCD:Start(nil, self.vb.surgingCount+1)
 	end
 end
@@ -195,8 +194,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerRadialFlourishCD:Start(nil, args.sourceGUID)
 --	elseif spellId == 420971 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
---		specWarnSurgingGrowth:Show(self.vb.surgingCount)
---		specWarnSurgingGrowth:Play("watchstep")
+--		warnSurgingGrowth:Show(self.vb.surgingCount)
 --		timerSurgingGrowthCD:Start()
 --	elseif (spellId == 430562 or spellId == 430531) and self:AntiSpam(5, 2) then
 --		self.vb.floraCount = self.vb.floraCount + 1
@@ -256,6 +254,10 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnBlazingCoalescence:Schedule(1, args.amount or 1)
 			warnLucidVulnerability:Show(args.amount or 1)
 		end
+	elseif spellId == 429983 and self:AntiSpam(5, 2) then
+		self.vb.surgingCount = self.vb.surgingCount + 1
+		warnSurgingGrowth:Show(self.vb.surgingCount)
+		timerSurgingGrowthCD:Start(nil, self.vb.surgingCount+1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
