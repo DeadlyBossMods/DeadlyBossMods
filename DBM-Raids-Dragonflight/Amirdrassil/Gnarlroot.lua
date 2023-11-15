@@ -360,7 +360,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShadowflameCleaveCD:Start(22.9, 1)
 			timerControlledBurnCD:Start(33.5, 1)
 			timerDoomCultivationCD:Start(92, 2, self.vb.doomCount+1)--Recheck
-		elseif self:IsHeroic() then--Heroic needs rechecking
+		elseif self:IsHeroic() then
 			timerTorturedScreamCD:Start(4.5, 1)
 			timerDreadfireBarrageCD:Start(10.5, 1)
 			timerFlamingPestilenceCD:Start(16.5, 1)
