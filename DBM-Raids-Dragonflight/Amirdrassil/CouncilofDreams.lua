@@ -74,7 +74,7 @@ local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420858, 298110, nil
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
 local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--You done fucked up
 local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
-local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)
+--local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)--Possible to detect private aura with RAID_BOSS_WHISPER syncs, but yeah...
 
 local specWarnSongoftheDragon						= mod:NewSpecialWarningCount(421029, nil, nil, nil, 2, 2)
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
@@ -136,7 +136,7 @@ local function specialInterrupted(self, spellId)
 		timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
 		DBM:Debug("All specials have ended, restarting all non special timers")
 
-		if self:Mythic() then
+		if self:IsMythic() then
 			--Hard coded rotation for mythic
 			if self.vb.nextSpecial % 3 == 2 or self.vb.nextSpecial % 3 == 1 then -- 1, 2
 				timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
@@ -365,7 +365,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnPolymorphBomb:Play("targetyou")
 				yellPolymorphBombFades:Countdown(spellId, nil, icon)
 			end
-			warnPolymorphBombTargets:CombinedShow(0.5, self.vb.polyCount, args.destName)
 		end
 		self.vb.polyIcon = self.vb.polyIcon + 1
 	elseif spellId == 421032 then

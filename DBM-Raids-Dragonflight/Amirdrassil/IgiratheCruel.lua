@@ -26,7 +26,9 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-
+(ability.id = 414425 or ability.id = 416996 or ability.id = 422776 or ability.id = 419048 or ability.id = 416048 or ability.id = 418531 or ability.id = 415624) and type = "begincast"
+ or ability.id = 424456 and type = "cast"
+ or ability.id = 415020 or ability.id = 415094 or ability.id = 415090 or ability.id = 425282 or ability.id = 425283 or ability.id = 414357
 --]]
 --TODO, secondary warning for https://wowhead.com/ptr-2/spell=424347 ?
 --TODO, Smashing Viscera is a hidden aura that's not logged, but UNIT_AURA might work
@@ -46,7 +48,7 @@ local specWarnBlisteringSpear						= mod:NewSpecialWarningYou(414888, nil, 36935
 local yellBlisteringSpear							= mod:NewShortPosYell(414888, 369351, false)--Shorttext "Spear"
 local yellBlisteringSpearFades						= mod:NewIconFadesYell(414888, nil, false)
 local specWarnBlisteringTorment						= mod:NewSpecialWarningYou(414770, nil, 184656, nil, 1, 2)--Shorttext "Chains"
-local yellBlisteringTorment							= mod:NewShortPosYell(414770, 184656)
+local yellBlisteringTorment							= mod:NewShortYell(414770, 184656)
 local specWarnTwistedBlade							= mod:NewSpecialWarningDodgeCount(416996, nil, 138737, nil, 2, 2)
 local specWarnFleshMortification					= mod:NewSpecialWarningYou(419462, nil, nil, nil, 1, 2)
 local specWarnRuinousEnd							= mod:NewSpecialWarningSpell(419048, nil, nil, nil, 3, 2)
@@ -61,7 +63,7 @@ local specWarnVitalRupture							= mod:NewSpecialWarningYou(426056, nil, nil, ni
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
 
 local timerBlisteringSpearCD						= mod:NewCDCountTimer(49, 414888, 282481, nil, nil, 3)--Short text "Spears"
-local timerTwistedBladeCD							= mod:NewCDCountTimer(49, 416996, 138737, nil, nil, 3)--Short Text "Blades"
+local timerTwistedBladeCD							= mod:NewCDCountTimer(20.6, 416996, 138737, nil, nil, 3)--Short Text "Blades"
 local timerMarkedforTormentCD						= mod:NewCDCountTimer(49, 422776, 99256, nil, nil, 6)--Short text "Torment"
 --Torments
 local timerUmbralDestructionCD						= mod:NewCDCountTimer(49, 416048, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)--Shorttext "Soak"
@@ -83,9 +85,9 @@ mod.vb.umbralCount = 0
 mod.vb.heartCount = 0
 --mod.vb.heartIcon = 1
 mod.vb.smashingCount = 0
-local bladesNormalTimers = {8.2, 25.6, 47.6, 25.1, 25.9, 15.8, 25.6, 46.3, 25.6, 25.5, 15.8, 25.5, 48.6, 25.5, 25.6, 15.8, 25.5, 47.4, 25.5, 25.5, 14.6, 25.6, 49.9, 25.6}
-local bladesHeroicTimers = {7.2, 25.4, 48.9, 25.7, 25.4, 15.9, 26.1, 47.7, 25.6, 25.7, 15.8, 25.7, 48.6, 25.5, 25.6, 15.9, 25.6, 43.8, 25.5}
-local bladesMythicTimers = {15.8, 20.8, 68.3, 30.5, 26.8, 20.8, 43.9, 25.5, 25.7, 25.6, 20.7, 61.0, 30.4, 26.8, 20.0}
+--local bladesNormalTimers = {4.8, 25.6, 47.6, 25.1, 25.9, 15.8, 25.6, 46.3, 25.6, 25.5, 15.8, 25.5, 48.6, 25.5, 25.6, 15.8, 25.5, 47.4, 25.5, 25.5, 14.6, 25.6, 49.9, 25.6}
+--local bladesHeroicTimers = {7.2, 25.4, 48.9, 25.7, 25.4, 15.9, 26.1, 47.7, 25.6, 25.7, 15.8, 25.7, 48.6, 25.5, 25.6, 15.9, 25.6, 43.8, 25.5}
+--local bladesMythicTimers = {15.8, 20.8, 68.3, 30.5, 26.8, 20.8, 43.9, 25.5, 25.7, 25.6, 20.7, 61.0, 30.4, 26.8, 20.0}
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -99,9 +101,9 @@ function mod:OnCombatStart(delay)
 		timerMarkedforTormentCD:Start(46-delay, 1)
 		berserkTimer:Start(420-delay)
 	else
-		timerBlisteringSpearCD:Start(15.9-delay, 1)
-		timerTwistedBladeCD:Start(7.2-delay, 1)
-		timerMarkedforTormentCD:Start(40.5-delay, 1)
+		timerBlisteringSpearCD:Start(10.8-delay, 1)
+		timerTwistedBladeCD:Start(4.8-delay, 1)
+		timerMarkedforTormentCD:Start(46-delay, 1)
 	end
 end
 
@@ -129,25 +131,24 @@ function mod:SPELL_CAST_START(args)
 				timerBlisteringSpearCD:Start(20.5, self.vb.spearCount+1)
 			end
 		else
-			if not self:IsEasy() and self.vb.spearCount >= 4 then
-				timerBlisteringSpearCD:Start(70, self.vb.spearCount+1)
-			else
-				timerBlisteringSpearCD:Start(140, self.vb.spearCount+1)
-			end
+			--Do nothing here for now
 		end
 	elseif spellId == 416996 then
 		self.vb.twistedCount = self.vb.twistedCount + 1
 		specWarnTwistedBlade:Show(self.vb.twistedCount)
 		specWarnTwistedBlade:Play("watchstep")
-		local timer
-		if self:IsMythic() then
-			timer = bladesMythicTimers[self.vb.twistedCount+1]
-		elseif self:IsHeroic() then
-			timer = bladesHeroicTimers[self.vb.twistedCount+1]
-		else
-			timer = bladesNormalTimers[self.vb.twistedCount+1]
+		--local timer
+		--if self:IsMythic() then
+		--	timer = bladesMythicTimers[self.vb.twistedCount+1]
+		--elseif self:IsHeroic() then
+		--	timer = bladesHeroicTimers[self.vb.twistedCount+1]
+		--else
+		--	timer = bladesNormalTimers[self.vb.twistedCount+1]
+		--end
+		timerTwistedBladeCD:Start(20.6, self.vb.twistedCount+1)
+		if self:IsEasy() then
+			timerBlisteringSpearCD:Start(6, self.vb.spearCount+1)
 		end
-		timerTwistedBladeCD:Start(timer, self.vb.twistedCount+1)
 	elseif spellId == 422776 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		warnMarkedforTorment:Show(self.vb.tormentCount)
@@ -156,6 +157,10 @@ function mod:SPELL_CAST_START(args)
 			timerMarkedforTormentCD:Start(70, self.vb.tormentCount+1)
 		else
 			timerMarkedforTormentCD:Start(140, self.vb.tormentCount+1)
+		end
+		if self:IsEasy() then
+			timerBlisteringSpearCD:Restart(38.8, self.vb.spearCount+1)
+			timerTwistedBladeCD:Restart(108.1, self.vb.twistedCount+1)
 		end
 	elseif spellId == 419048 then
 		specWarnRuinousEnd:Show()
@@ -167,14 +172,19 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.umbralCount == 1 then
 			timerUmbralDestructionCD:Start(30, 2)
 		end
+		if self:IsEasy() then
+			timerBlisteringSpearCD:Start(15.5, self.vb.spearCount+1)
+		end
 	elseif spellId == 418531 then
 		self.vb.smashingCount = self.vb.smashingCount + 1
 		if self.vb.smashingCount == 1 then
 			timerSmashingVisceraCD:Start(30, 2)
 		end
-	elseif spellId == 415624 then
+		if self:IsEasy() then
+			timerBlisteringSpearCD:Start(15.5, self.vb.spearCount+1)
+		end
+	elseif spellId == 415624 and self:AntiSpam(8, 1) then
 		self.vb.heartCount = self.vb.heartCount + 1
---		self.vb.heartIcon = 1
 		if self.vb.heartCount == 1 then
 			timerHeartStopperCD:Start(30, 2)
 		end
@@ -229,18 +239,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFleshMortification:Show()
 		specWarnFleshMortification:Play("otherout")--Still reviewing best sound for this or if new one needed
 	elseif spellId == 415623 then
---		local icon = self.vb.heartIcon
---		if self.Options.SetIconOnHeartStopper then
---			self:SetIcon(args.destName, icon)
---		end
+		if self:AntiSpam(8, 1) then
+			self.vb.heartCount = self.vb.heartCount + 1
+			if self.vb.heartCount == 1 then
+				timerHeartStopperCD:Start(30, 2)
+			end
+		end
 		if args:IsPlayer() then
 			specWarnHeartStopper:Show()
 			specWarnHeartStopper:Play("targetyou")
---			yellHeartStopper:Yell(icon, icon)
 			yellHeartStopperFades:Countdown(spellId)--, nil, icon
 		end
 		warnHeartStopper:CombinedShow(1.1, self.vb.heartCount, args.destName)
---		self.vb.heartIcon = self.vb.heartIcon + 1
 	elseif spellId == 414770 then
 		if args:IsPlayer() then
 			specWarnBlisteringTorment:Show()
