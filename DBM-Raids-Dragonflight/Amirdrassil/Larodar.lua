@@ -516,7 +516,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlashFire:Show()
 			specWarnFlashFire:Play("runout")
-			specWarnFlashFire:Yell()
+			yellFlashFire:Yell()
 			yellFlashFireFades:Countdown(spellId)
 		end
 --	elseif spellId == 428901 then

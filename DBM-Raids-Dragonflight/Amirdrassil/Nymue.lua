@@ -308,10 +308,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 		--Weavers burden is a private aura, but one of targets is always the active tank.
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnWeaversBurden:Show()
-			specWarnWeaversBurden:Play("runout")
 			yellWeaversBurden:Yell()
---			yellWeaversBurdenFades:Countdown(8)
 		else
 			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
 			--Delayed by a frame so as not to snipe the debuff
