@@ -164,7 +164,7 @@ local allTimers = {
 		},
 	},
 	["heroic"] = {--Current as of Live Nov 15th for heroic
-		[1] = {-
+		[1] = {
 			--Blazing  Mushroom
 			[423260] = {22.1, 40},
 			--Fiery Growth
