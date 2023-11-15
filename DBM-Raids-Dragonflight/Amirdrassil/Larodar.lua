@@ -372,7 +372,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.infernoCount = self.vb.infernoCount + 1
 		specWarnRagingInferno:Show(DBM_COMMON_L.SHIELD)
 		specWarnRagingInferno:Play("findshield")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1) or 110.6
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1) or 101.8
 		if timer then
 			timerRagingInfernoCD:Start(timer, self.vb.infernoCount+1)
 		end

@@ -127,12 +127,16 @@ local function specialInterrupted(self, spellId)
 		self.vb.nextSpecial = self.vb.nextSpecial + 1
 		self.vb.clawsCount = 0
 		timerAgonizingClawsCD:Start(8, 1)
-		timerBarrelingChargeCD:Restart(29, self.vb.chargeCount+1)
+		timerBarrelingChargeCD:Stop()
+		timerBarrelingChargeCD:Start(29, self.vb.chargeCount+1)
 
-		timerNoxiousBlossomCD:Restart(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
+
+		timerNoxiousBlossomCD:Stop()
+		timerNoxiousBlossomCD:Start(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
 		timerPoisonousJavelinCD:Start(20, self.vb.javCount+1)
 
-		timerPolymorphBombCD:Restart(16, self.vb.polyCount+1)
+		timerPolymorphBombCD:Stop()
+		timerPolymorphBombCD:Start(16, self.vb.polyCount+1)
 		timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
 		DBM:Debug("All specials have ended, restarting all non special timers")
 
@@ -202,8 +206,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlindingRage:Show(self.vb.rageCount)
 		specWarnBlindingRage:Play("aesoon")
 		--Timers that specifically reset on blind rage begin
-		timerNoxiousBlossomCD:Restart(7, self.vb.blossomCount+1)
-		timerPolymorphBombCD:Restart(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
+		timerNoxiousBlossomCD:Stop()
+		timerPolymorphBombCD:Stop()
+		timerNoxiousBlossomCD:Start(7, self.vb.blossomCount+1)
+		timerPolymorphBombCD:Start(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
 		DBM:Debug("Starting second polymorph blinding rage timer, in case first happened before blinding rage")
 	elseif spellId == 420947 then
 		self.vb.chargeCount = self.vb.chargeCount + 1
@@ -255,7 +261,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnSongoftheDragon:Show(self.vb.songCount)
 		specWarnSongoftheDragon:Play("takedamage")
 		--Timers that specifically reset on song begin
-		timerNoxiousBlossomCD:Restart(2.9, self.vb.blossomCount+1)
+		timerNoxiousBlossomCD:Stop()
+		timerNoxiousBlossomCD:Start(2.9, self.vb.blossomCount+1)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
 		self.vb.polyCount = self.vb.polyCount + 1
