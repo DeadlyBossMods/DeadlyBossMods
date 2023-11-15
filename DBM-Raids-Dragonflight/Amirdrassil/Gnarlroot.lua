@@ -305,19 +305,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.burnIcon = self.vb.burnIcon + 1
 	elseif spellId == 426106 then
 		local amount = args.amount or 1
-		if args:IsPlayer() then--This basically can swap every 1-2 stacks based on it's cooldown.
-			warnDreadfireBarrage:Show(args.destName, amount)
-		else
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			local remaining
-			if expireTime then
-				remaining = expireTime-GetTime()
-			end
-			if (not remaining or remaining and remaining < 22) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-				specWarnDreadfireBarrage:Show(args.destName)
-				specWarnDreadfireBarrage:Play("tauntboss")
-			else
+		--Applies 5 stacks at a time (then just refreshes after that)
+		--so this should effectively warn once per barrage
+		if amount >= 5 then
+			if args:IsPlayer() then--This basically can swap every 1-2 stacks based on it's cooldown.
 				warnDreadfireBarrage:Show(args.destName, amount)
+			else
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 22) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+					specWarnDreadfireBarrage:Show(args.destName)
+					specWarnDreadfireBarrage:Play("tauntboss")
+				else
+					warnDreadfireBarrage:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 421038 then

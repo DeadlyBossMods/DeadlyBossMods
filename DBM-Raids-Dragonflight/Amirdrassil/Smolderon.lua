@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
   or ability.id = 421455 and type = "applydebuff"
 --]]
 --TODO, better tracking of personal dps buffs in P2?
+--TODO, review swapping mechanics with overheated overlap?
 --general
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
@@ -45,10 +46,12 @@ local warnOverheated								= mod:NewTargetCountAnnounce(421455, 3, nil, nil, ni
 local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
+local yellBrandofDamnation							= mod:NewShortYell(421343, nil, nil, nil, "YELL")
+local yellBrandofDamnationFades						= mod:NewShortFadesYell(421343, nil, nil, nil, "YELL")
+local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, nil, nil, nil, 1, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
 local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
-local specWarnSearingAftermathOther					= mod:NewSpecialWarningTaunt(422577, nil, nil, nil, 1, 2)
 local specWarnOverheated							= mod:NewSpecialWarningMoveAway(421455, nil, nil, nil, 1, 2)
 --local yellOverheated								= mod:NewShortYell(421455)
 local yellOverheatedFades							= mod:NewShortFadesYell(421455)
@@ -112,8 +115,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421343 then
 		self.vb.brandCount = self.vb.brandCount + 1
-		specWarnBrandofDamnation:Show(self.vb.brandCount)
-		specWarnBrandofDamnation:Play("specialsoon")
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnBrandofDamnation:Show(self.vb.brandCount)
+			specWarnBrandofDamnation:Play("targetyou")
+			yellBrandofDamnation:Yell()
+			yellBrandofDamnationFades:Countdown(4)
+		elseif self:IsTank() then
+			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			specWarnBrandofDamnationTaunt:Show(bossTarget)
+			specWarnBrandofDamnationTaunt:Play("tauntboss")
+		else
+			specWarnBrandofDamnation:Show(self.vb.brandCount)
+			specWarnBrandofDamnation:Play("specialsoon")
+		end
 		if self.vb.brandCount < 8 and self.vb.brandCount % 2 == 1 then--Other timers started in phase change event
 			timerBrandofDamnationCD:Start(nil, self.vb.brandCount+1)--29.9
 		end

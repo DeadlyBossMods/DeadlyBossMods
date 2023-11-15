@@ -46,13 +46,14 @@ local specWarnCoilingEruption						= mod:NewSpecialWarningYou(427201, nil, nil, 
 local yellCoilingEruption							= mod:NewShortYell(427201, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")--NewShortPosYell
 local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, nil, "YELL")--NewIconFadesYell
 
-local specWarnMoltenVenom							= mod:NewSpecialWarningStack(419054, nil, 6, nil, nil, 1, 6)
+--local specWarnMoltenVenom							= mod:NewSpecialWarningStack(419054, nil, 6, nil, nil, 1, 6)
 --local specWarnMoltenVenomSwap						= mod:NewSpecialWarningTaunt(419054, nil, nil, nil, 1, 2)--Need to evaulate whether tanks swap for this or jaws. double tank mechanic fights are redundant
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
 local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
 local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, 136870, nil, 3, 2)
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
+local specWarnCataclysmJawsTaunt					= mod:NewSpecialWarningTaunt(423117, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(421082, nil, nil, nil, 1, 8)
 
 local timerSerpentsFuryCD							= mod:NewNextCountTimer(70, 421672, 7897, nil, nil, 3)--Shortname "Flames"
@@ -144,15 +145,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnCataclysmJaws:Show()
 			specWarnCataclysmJaws:Play("defensive")
 		else
-			--Other tank has this debuff already and it will NOT be gone when cast finishes, TAUNT NOW!
-			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
-			--if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
-			--	local _, _, _, _, _, expireTimeTarget = DBM:UnitDebuff("boss1target", 407547)
-			--	if (expireTimeTarget and expireTimeTarget-GetTime() >= 2) and self:AntiSpam(1, 1) then
-			--		specWarnFlamingSlashTaunt:Show(UnitName("boss1target"))
-			--		specWarnFlamingSlashTaunt:Play("tauntboss")
-			--	end
-			--end
+			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			--Delayed by a frame so as not to snipe the debuff
+			specWarnCataclysmJawsTaunt:Show(bossTarget)
+			specWarnCataclysmJawsTaunt:Play("tauntboss")
 		end
 		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.jawsCount+1)
 		if timer then
@@ -196,17 +192,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if amount % 3 == 0 then
-				if args:IsPlayer() and amount >= 6 then
-					specWarnMoltenVenom:Show()
-					specWarnMoltenVenom:Play("stackhigh")
-				else
+--				if args:IsPlayer() and amount >= 6 then
+--					specWarnMoltenVenom:Show()
+--					specWarnMoltenVenom:Play("stackhigh")
+--				else
 --					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 --						specWarnMoltenVenomSwap:Show(args.destName)
 --						specWarnMoltenVenomSwap:Play("tauntboss")
 --					else
 						warnMoltenVenom:Show(args.destName, amount)
 --					end
-				end
+--				end
 			end
 		end
 	end

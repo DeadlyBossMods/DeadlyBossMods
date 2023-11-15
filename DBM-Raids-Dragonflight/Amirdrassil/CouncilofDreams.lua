@@ -44,6 +44,7 @@ local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked u
 
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
 local specWarnBarrelingCharge						= mod:NewSpecialWarningYouCount(420948, nil, nil, nil, 1, 2)
+local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, nil, nil, nil, 3, 14)
 local yellBarrelingCharge							= mod:NewShortYell(420948, 100)
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948)
 local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil, 1, 2)--Not grouped on purpose, so that it stays on diff WA key in GUI
@@ -55,7 +56,8 @@ local timerBlindingRage								= mod:NewBuffActiveTimer(15, 420525, nil, nil, ni
 local timerBarrelingChargeCD						= mod:NewCDCountTimer(11.8, 420948, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Tank focused, but soaked by everyone so it's on for everyone
 local timerAgonizingClawsCD							= mod:NewCDCountTimer(6, 421022, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Aerwynn
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(27301))
+local Aerwynn = DBM:EJ_GetSectionInfo(27301)
+mod:AddTimerLine(Aerwynn)
 local warnRelentlessBarrage							= mod:NewSpellAnnounce(420937, 4)--You done fucked up
 local warnNoxiousBlossom							= mod:NewCountAnnounce(420671, 3)
 local warnPoisonousJavelin							= mod:NewTargetCountAnnounce(420858, 3, nil, nil, 298110)--, nil, nil, nil, nil, nil, nil, true
@@ -95,6 +97,7 @@ mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
 
 mod.vb.specialsActive = 0
 mod.vb.nextSpecial = 1
+mod.vb.chargeSpecial = false
 --Urctos
 mod.vb.clawsCount = 0
 mod.vb.rageCount = 0
@@ -236,6 +239,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 421292 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
+		self.vb.chargeSpecial = true
 		self.vb.vinesCount = self.vb.vinesCount + 1
 		specWarnConstrictingThicket:Show(self.vb.vinesCount)
 		specWarnConstrictingThicket:Play("aesoon")
@@ -305,8 +309,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 420948 then
 		if args:IsPlayer() then
-			specWarnBarrelingCharge:Show(self.vb.chargeCount)
-			specWarnBarrelingCharge:Play("chargemove")
+			if self.vb.chargeSpecial then
+				specWarnBarrelingChargeSpecial:Show(Aerwynn)
+				specWarnBarrelingChargeSpecial:Play("movetoboss")
+			else
+				specWarnBarrelingCharge:Show(self.vb.chargeCount)
+				specWarnBarrelingCharge:Play("chargemove")
+			end
 			yellBarrelingCharge:Yell()
 			yellBarrelingChargeFades:Countdown(spellId)
 		else
@@ -396,6 +405,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 421298 then
 		timerConstrictingThicket:Stop()
 	elseif spellId == 421292 or spellId == 421029 then--Constricting Thicket, Song of the Dragon
+		if spellId == 421292 then
+			self.vb.chargeSpecial = false
+		end
 		specialInterrupted(self, spellId)
 	elseif spellId == 420858 then
 		if args:IsPlayer() then
