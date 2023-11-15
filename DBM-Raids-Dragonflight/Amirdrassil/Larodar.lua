@@ -1,5 +1,3 @@
-local wowToc, testBuild = DBM:GetTOC()
-if (wowToc < 100200) and not testBuild then return end
 local mod	= DBM:NewMod(2553, "DBM-Raids-Dragonflight", 1, 1207)
 local L		= mod:GetLocalizedStrings()
 
@@ -16,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 429973 421325",
 	"SPELL_CAST_SUCCESS 417653 419485 427299 428901",
-	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 421407 418520 429032 428946 428901",
-	"SPELL_AURA_APPLIED_DOSE 426249 426256 421407 418520 429032 428946",
+	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 418520 429032 428946 428901",--421407
+	"SPELL_AURA_APPLIED_DOSE 426249 426256 418520 429032 428946",--421407
 	"SPELL_AURA_REMOVED 421316 427299 421594 428901",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 417632",
@@ -96,7 +94,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(27243))
 local warnFlashFire									= mod:NewTargetNoFilterAnnounce(427299, 3, nil, "Healer")
 local warnEncasedInAsh								= mod:NewTargetNoFilterAnnounce(427306, 4, nil, "RemoveMagic")
 local warnAshenCall									= mod:NewCountAnnounce(421325, 2)
-local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
+--local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
 --local warnAshenDevastation						= mod:NewTargetNoFilterAnnounce(428901, 4, nil, nil, 167180)--Shortname "Bombs"
 
 local specWarnFallingEmbers							= mod:NewSpecialWarningSoakCount(427252, nil, nil, nil, 2, 2)
@@ -151,17 +149,29 @@ local allTimers = {
 		[425889] = {14.5, 133.6, 90.2, 133.9},
 		--Stage 2
 		--Falling Embers
-		[427252] = {},--Had no variations
+		[427252] = {7.4, 26.7, 31.8, 25.0, 18.4, 38.5, 23.4},--Had no variations
 		--FlashFire
-		[427299] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[427299] = {29.0, 50.1, 30.1, 36.7},--Lowest of each used until can figure out how to detect which sequence is used on demand
+				--  29.0, 50.1, 36.7, 50.2
+				--  29.1, 56.8, 43.5, 36.7
+				--  29.0, 56.8, 30.1, 50.1
+				--  29.0, 56.8, 43.5
 		--Fire Whirl
-		[427343] = {},--Had no variation
+		[427343] = {60.8, 43.4, 50.1},--Had no variation
 		--Smoldering backdraft
-		[421318] = {},--Had no variations
+		[429973] = {14.1, 26.7, 31.7, 25.0, 36.8, 25.0, 18.4},--Had no variations
 		--Ashen Call
-		[421325] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[421325] = {20.8, 58.4, 56.9},--Lowest of each used until can figure out how to detect which sequence is used on demand
+				--  20.8, 63.4, 56.9
+				--  20.8, 58.4, 61.8
+				--  20.8, 58.4, 61.8
+				--  22.8, 58.3, 61.9
 		--Ashen Devestation
-		[428901] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[428901] = {47.4, 68.6},--Lowest of each used until can figure out how to detect which sequence is used on demand
+				--  47.4, 73.5
+				--  47.4, 68.6
+				--  47.4, 73.5
+				--  47.4, 68.6
 	},
 	["heroic"] = {
 		--Stage 1 (same as mythic stage 1 likely)
@@ -201,27 +211,32 @@ local allTimers = {
 	},
 	["normal"] = {--Likely obsolete and the same as heroic
 		--Stage 1
-		--Fiery Force of Nature
-		[417653] = {6.0, 113.4, 44.0, 64.7, 114.5},
+		--Fiery Force of Nature (Differs from heroic, maybe)
+		[417653] = {6.6, 104.8},
 		--Blazing Thorns
-		[426206] = {14.0, 36.0, 74.5, 111.6, 36.0, 75.6},
+		[426206] = {30.8, 24.1, 24.2, 37.8, 52.7},
 		--Furious Charge
-		[418637] = {20.0, 20.0, 20.0, 52.5, 19.9, 19.9, 20.0, 69.6, 20.0, 20.0, 53.5},
+		[418637] = {22.0, 22.0, 24.2, 35.6, 24.2, 28.6, 25.3},
 		--Scorching Roots
-		[422614] = {30.1, 113.3, 108.7},
+		[422614] = {37.4, 110.3},
 		--Raging Inferno
-		[417634] = {100, 110.6, 111.6},
-		--Stage 2
+		[417634] = {90.5},
+		--Stage 2 (Seems to be same as Heroic)
 		--Falling Embers
-		[427252] = {7.3, 35.0, 20.0, 33.4, 16.7, 33.4, 25.0, 33.4, 16.7, 33.4, 16.7, 41.7, 16.7, 33.4, 16.7, 33.4},
+		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
+				  --7.4, 26.7, 25.0, 23.3
 		--FlashFire
-		[427299] = {34.0, 45.0, 41.8, 41.8, 50.1, 50.2, 41.7, 41.7, 41.8},
+		[427299] = {29.1, 46.7, 26.6, 36.7, 30.9, 37.5, 37.5},--Lowest times used of variations
+				  --29.0, 46.7
 		--Fire Whirl
-		[427343] = {54.0, 50.1, 50.2, 41.7, 41.8, 41.8, 41.7, 50.1},
+		[427343] = {54.0, 40.9, 32.5, 36.6, 36.7, 39.1},
+				  --54.0, 40.8
 		--Smoldering backdraft
-		[429973] = {17.3, 53.3, 58.5, 50.1, 50.1, 58.5, 50.0, 58.5},
+		[429973] = {14.0, 25.9, 30.0, 19.1, 29.2, 20.7, 25.0, 24.2, 25.0, 26.7},--Lowest times used of variations
+				  --14.0, 25.9, 30.0, 19.1
 		--Ashen Call
-		[421325] = {25.7, 61.7, 50.1, 50.1, 58.5, 50.1, 58.4, 50.1},
+		[421325] = {20.7, 44.2, 42.5, 42.5, 38.3, 40.8},
+				  --20.7, 44.2
 	},
 }
 
@@ -269,10 +284,10 @@ function mod:OnCombatStart(delay)
 	else--Only normal vetted
 		difficultyName = "normal"
 		timerFieryForceofNatureCD:Start(6.1-delay, 1)
-		timerBlazingThornsCD:Start(14-delay, 1)
-		timerFuriousChargeCD:Start(20-delay, 1)
-		timerScorchingRootsCD:Start(30.1-delay, 1)
-		timerRagingInfernoCD:Start(100-delay, 1)
+		timerFuriousChargeCD:Start(22-delay, 1)
+		timerBlazingThornsCD:Start(30.8-delay, 1)
+		timerScorchingRootsCD:Start(37.4-delay, 1)
+		timerRagingInfernoCD:Start(90.5-delay, 1)
 	end
 end
 
@@ -492,8 +507,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnBlisteringSplinters:Show(amount)
 			end
 		end
-	elseif spellId == 421407 then
-		warnSearingAsh:Show(args.amount or 1)
+--	elseif spellId == 421407 then
+--		warnSearingAsh:Show(args.amount or 1)
 	elseif spellId == 426256 then
 		warnBlazingCoalescenceBoss:Show(args.destName, args.amount or 1)
 	elseif spellId == 427299 then
@@ -563,9 +578,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerFireWhirlCD:Start(54, 1)
 		else--Normal needs rechecking. Ashen and smoldering likely changed to match mythic and heroic
 			timerFallingEmbersCD:Start(7.3, 1)
-			timerSmolderingBackdraftCD:Start(17.3, 1)--14?
-			timerAshenCallCD:Start(25.7, 1)--20.7?
-			timerFlashFireCD:Start(34, 1)--29?
+			timerSmolderingBackdraftCD:Start(14, 1)
+			timerAshenCallCD:Start(20, 1)
+			timerFlashFireCD:Start(29, 1)
 			timerFireWhirlCD:Start(54, 1)
 		end
 	elseif spellId == 421594 then

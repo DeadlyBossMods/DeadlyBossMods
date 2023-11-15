@@ -136,7 +136,7 @@ local function specialInterrupted(self, spellId)
 		timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
 		DBM:Debug("All specials have ended, restarting all non special timers")
 
-		if self:Mythic() then
+		if self:IsMythic() then
 			--Hard coded rotation for mythic
 			if self.vb.nextSpecial % 3 == 2 or self.vb.nextSpecial % 3 == 1 then -- 1, 2
 				timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
