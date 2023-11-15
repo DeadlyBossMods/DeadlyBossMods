@@ -172,9 +172,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingAftermath:Play("runout")
 			yellSearingAftermath:Yell()
 			yellSearingAftermathFades:Countdown(spellId)
-		elseif self:IsTank() then
-			specWarnSearingAftermathOther:Show(args.destName)
-			specWarnSearingAftermathOther:Play("tauntboss")
 		else
 			warnSearingAftermath:Show(args.destName)
 		end
