@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200927)
 mod:SetEncounterID(2824)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20230929000000)
+mod:SetHotfixNoticeRev(20231115000000)
 mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 421343 422691 426725 422172",
-	"SPELL_CAST_SUCCESS 422277",
+	"SPELL_CAST_SUCCESS 422277 430677",
 	"SPELL_AURA_APPLIED 421656 422577 421455 422067",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 421656 422577 421455 422067",
@@ -24,11 +24,12 @@ mod:RegisterEventsInCombat(
 
 --[[
  (ability.id = 421343 or ability.id = 422691 or ability.id = 426725 or ability.id = 422172 or ability.id = 425885) and type = "begincast"
-  or ability.id = 422277 and type = "cast"
+  or (ability.id = 430677 or ability.id = 422277) and type = "cast"
   or ability.id = 422067
   or ability.id = 421455 and type = "applydebuff"
 --]]
 --TODO, better tracking of personal dps buffs in P2?
+--TODO, review swapping mechanics with overheated overlap?
 --general
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
@@ -45,10 +46,12 @@ local warnOverheated								= mod:NewTargetCountAnnounce(421455, 3, nil, nil, ni
 local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
+local yellBrandofDamnation							= mod:NewShortYell(421343, nil, nil, nil, "YELL")
+local yellBrandofDamnationFades						= mod:NewShortFadesYell(421343, nil, nil, nil, "YELL")
+local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, nil, nil, nil, 1, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
 local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
-local specWarnSearingAftermathOther					= mod:NewSpecialWarningTaunt(422577, nil, nil, nil, 1, 2)
 local specWarnOverheated							= mod:NewSpecialWarningMoveAway(421455, nil, nil, nil, 1, 2)
 --local yellOverheated								= mod:NewShortYell(421455)
 local yellOverheatedFades							= mod:NewShortFadesYell(421455)
@@ -57,7 +60,7 @@ local specWarnLavaGeysers							= mod:NewSpecialWarningCount(422691, nil, nil, n
 local timerBrandofDamnationCD						= mod:NewCDCountTimer(29.9, 421343, nil, nil, nil, 5)
 local timerSearingAftermathCD						= mod:NewTargetTimer(6, 422577, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerOverheatedCD								= mod:NewCDCountTimer(29.9, 421455, nil, nil, nil, 5)
-local timerLavaGeysersCD							= mod:NewCDCountTimer(21.9, 422691, nil, nil, nil, 3)
+local timerLavaGeysersCD							= mod:NewCDCountTimer(25.9, 422691, nil, nil, nil, 3)
 local timerSeekingInfernoCD							= mod:NewCDCountTimer(21.9, 425885, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)--Seeking Inferno
@@ -112,8 +115,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 421343 then
 		self.vb.brandCount = self.vb.brandCount + 1
-		specWarnBrandofDamnation:Show(self.vb.brandCount)
-		specWarnBrandofDamnation:Play("specialsoon")
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnBrandofDamnation:Show(self.vb.brandCount)
+			specWarnBrandofDamnation:Play("targetyou")
+			yellBrandofDamnation:Yell()
+			yellBrandofDamnationFades:Countdown(4)
+		elseif self:IsTank() then
+			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			specWarnBrandofDamnationTaunt:Show(bossTarget)
+			specWarnBrandofDamnationTaunt:Play("tauntboss")
+		else
+			specWarnBrandofDamnation:Show(self.vb.brandCount)
+			specWarnBrandofDamnation:Play("specialsoon")
+		end
 		if self.vb.brandCount < 8 and self.vb.brandCount % 2 == 1 then--Other timers started in phase change event
 			timerBrandofDamnationCD:Start(nil, self.vb.brandCount+1)--29.9
 		end
@@ -122,7 +136,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLavaGeysers:Show(self.vb.geyserCount)
 		specWarnLavaGeysers:Play("watchstep")
 		if self.vb.geyserCount < 8 and self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
-			timerLavaGeysersCD:Start(nil, self.vb.geyserCount+1)--21.9
+			timerLavaGeysersCD:Start(nil, self.vb.geyserCount+1)--25.9
 		end
 	elseif spellId == 426725 then
 		self.vb.encroached = true
@@ -140,6 +154,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 422277 then
 		warnDevourEssence:Show(self.vb.overheatedCount)
+	elseif spellId == 430677 then
+		self.vb.overheatedCount = self.vb.overheatedCount + 1
+		if self.vb.overheatedCount < 8 and self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
+			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)--29.9
+		end
 	end
 end
 
@@ -153,9 +172,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingAftermath:Play("runout")
 			yellSearingAftermath:Yell()
 			yellSearingAftermathFades:Countdown(spellId)
-		elseif self:IsTank() then
-			specWarnSearingAftermathOther:Show(args.destName)
-			specWarnSearingAftermathOther:Play("tauntboss")
 		else
 			warnSearingAftermath:Show(args.destName)
 		end
@@ -177,7 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLavaGeysersCD:Stop()
 		timerSeekingInfernoCD:Stop()
 		timerPhaseCD:Stop()
-		timerDevourEssenceCD:Start(5, self.vb.cycleCount+1)
+		timerDevourEssenceCD:Start(3.7, self.vb.cycleCount+1)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -224,12 +240,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 425372 then--Overheated
-		self.vb.overheatedCount = self.vb.overheatedCount + 1
-		if self.vb.overheatedCount < 8 and self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
-			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)--29.9
-		end
-	elseif spellId == 426144 then
+	if spellId == 426144 then
 		self.vb.infernoCount = self.vb.infernoCount + 1
 		warnSeekingInferno:Show(self.vb.infernoCount)
 		-- "Seeking Inferno-426144-npc:200927-0000174417 = pull:26.0, 25.0, 74.5, 25.0, 74.2, 25.0, 74.8, 25.0,

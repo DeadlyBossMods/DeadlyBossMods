@@ -59,7 +59,7 @@ local yellFyralathsFlame							= mod:NewShortYell(428961)
 local specWarnWildFire								= mod:NewSpecialWarningCount(420422, nil, nil, nil, 2, 2)
 local specWarnDreamRend								= mod:NewSpecialWarningRunCount(417455, nil, nil, nil, 4, 2)
 local specWarnFyralathsBite							= mod:NewSpecialWarningDefensive(417431, nil, nil, nil, 1, 2)
---local specWarnFyralathsMark							= mod:NewSpecialWarningTaunt(417443, nil, nil, nil, 1, 2)
+local specWarnFyralathsMark							= mod:NewSpecialWarningTaunt(417443, nil, nil, nil, 1, 2)
 
 local timerDarkflameShadesCD						= mod:NewCDCountTimer(49, 428954, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --local timerFyralathsFlameCD						= mod:NewCDNPTimer(11.8, 428960, nil, nil, nil, 3, nil, DBM_COMMON_L.TANK_ICON)
@@ -444,18 +444,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 417443 then
 		local amount = args.amount or 1
---		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
---		local remaining
---		if expireTime then
---			remaining = expireTime-GetTime()
---		end
---		local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 417431, self.vb.tankCount+1) or 17.9) - 5
---		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
---			specWarnFyralathsMark:Show(args.destName)
---			specWarnFyralathsMark:Play("tauntboss")
---		else
+		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+		local remaining
+		if expireTime then
+			remaining = expireTime-GetTime()
+		end
+		local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 417431, self.vb.tankCount+1) or 15) - 5
+		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+			specWarnFyralathsMark:Show(args.destName)
+			specWarnFyralathsMark:Play("tauntboss")
+		else
 			warnFyralathsMark:Show(args.destName, amount)
---		end
+		end
 	elseif spellId == 425494 then
 		local amount = args.amount or 1
 --		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
