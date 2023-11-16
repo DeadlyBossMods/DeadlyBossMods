@@ -70,10 +70,9 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnBlisteringSpear", 414888, false, false, {1, 2, 3, 4, 5, 6})
 
-local blisteringMythicTimers = {38.5, 33.2, 35.1, 20.2}
+local blisteringMythicTimers = {38.5, 32.7, 35.1, 20.2}
 local blisteringHeroicTimers = {38.5, 23.1, 23.1, 23.1, 21.1}
 local blisteringEasyTimers = {38.5, 30.4, 40.1, 20.7}
-
 
 mod.vb.spearCount = 0--used for sequencing
 mod.vb.spearTotal = 0--Used for timer text
@@ -294,9 +293,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.heartCount = 0
 		warnUmbralDestructionSoon:Show()
 		warnHeartstopperSoon:Show()
-		--New timers not known yet
---		timerHeartStopperCD:Start(14.3, 1)--Could be way off, totally extrapolated using marked for torment as timestamp then adjusting 30 sec difference
---		timerUmbralDestructionCD:Start(18.3, 1)--^^
+		timerHeartStopperCD:Start(22.6, 1)--Could be way off, totally extrapolated using marked for torment as timestamp then adjusting 30 sec difference
+		timerUmbralDestructionCD:Start(26.6, 1)--^^
 	elseif spellId == 425283 then--Axe Sword Stance
 		self.vb.smashingCount = 0
 		self.vb.umbralCount = 0
