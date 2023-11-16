@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(208445)
 mod:SetEncounterID(2731)
 mod:SetUsedIcons(6, 7, 8)
-mod:SetHotfixNoticeRev(20231021000000)
-mod:SetMinSyncRevision(20231021000000)
+mod:SetHotfixNoticeRev(20231115000000)
+mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -176,17 +176,13 @@ local allTimers = {
 	["heroic"] = {
 		--Stage 1 (same as mythic stage 1 likely)
 		--Fiery Force of Nature
-		[417653] = {6.7, 115.4, 110.3},
-				  --6.7, 118.6
+		[417653] = {6.6, 104.8, 98.6},
 		--Blazing Thorns
-		[426206] = {31.4, 24.8, 24.5, 46.8, 65.5},
-				  --31.6, 24.6, 24.6, 50.1, 65.6
+		[426206] = {30.7, 24.2, 24.2, 37.8, 52.7, 63.7, 24.2},
 		--Furious Charge
-		[418637] = {22.5, 22.3, 22.4, 46.9, 22.2, 31.3, 13.3, 67.0},
-				  --22.6, 22.3, 22.4, 50.2, 22.2, 31.1, 13.3
+		[418637] = {21.9, 22.0, 24.2, 35.6, 24.2, 28.5, 25.3, 42.8, 22.0},
 		--Scorching Roots
-		[422614] = {38.1, 120.5},
-				  --38.1, 123.9
+		[422614] = {37.3, 110.3, 92.2},
 		--Raging Inferno
 		[417634] = {101.7, 112.8},
 				  --104.2
@@ -276,10 +272,9 @@ function mod:OnCombatStart(delay)
 		--Pretty much same as mythic
 		difficultyName = "heroic"
 		timerFieryForceofNatureCD:Start(6.5-delay, 1)
-		timerIgnitingGrowthCD:Start(14.4-delay, 1)
-		timerFuriousChargeCD:Start(22.3-delay, 1)
-		timerBlazingThornsCD:Start(31.3-delay, 1)
-		timerScorchingRootsCD:Start(38-delay, 1)
+		timerFuriousChargeCD:Start(21.9-delay, 1)
+		timerBlazingThornsCD:Start(30.7-delay, 1)
+		timerScorchingRootsCD:Start(37.3-delay, 1)
 		timerRagingInfernoCD:Start(101-delay, 1)
 	else--Only normal vetted
 		difficultyName = "normal"

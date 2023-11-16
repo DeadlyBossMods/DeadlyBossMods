@@ -6,7 +6,7 @@ mod:SetCreatureID(204931)
 
 mod:SetEncounterID(2677)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20231114000000)
+mod:SetHotfixNoticeRev(20231116000000)
 mod:SetMinSyncRevision(20231114000000)
 mod.respawnTime = 29
 
@@ -22,13 +22,15 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 419504 425483",
 	"SPELL_PERIODIC_MISSED 419504 425483",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --[[
 (ability.id = 428960 or ability.id = 419506 or ability.id = 420422 or ability.id = 417455 or ability.id = 417431 or ability.id = 419144 or ability.id = 412761 or ability.id = 428963 or ability.id = 428400 or ability.id = 428971 or ability.id = 428968 or ability.id = 428965 or ability.id = 419123 or ability.id = 422837 or ability.id = 410223 or ability.id = 425492 or ability.id = 422518) and type = "begincast"
  or (ability.id = 428954 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524) and type = "cast"
  or ability.id = 419144 and (type = "applybuff" or type = "removebuff")
+ or ability.id = 414187 and type = "applydebuff"
 --]]
 --TODO, right cast ID for Darkflame cleave to add nameplate CD timer to mob
 --TODO, what do with Flamespawn on mythic?
@@ -148,39 +150,39 @@ local allTimers = {--428954 for darkflame flames mythic
 	["normal"] = {--Normal WIP
 		[1] = {
 			--Wildfire
-			[420422] = {3.9, 24.0, 53.5},
+			[420422] = {3.9, 24.0, 53.4},
 			--Fyralaths Bite
-			[417431] = {8.9, 15.0, 15.0, 23.5, 15.0},
+			[417431] = {8.9, 15.0, 15.0, 23.5, 15.0, 15.0},
 			--Firestorm
 			[419506] = {12.9, 53.5},
 			--Dreams Rend
-			[417455] = {41.9},
-			--No Blaze on Normal
---			[414186] = {},
+			[417455] = {41.9, 53.4},
+			--Blaze (Heroic+ only)
+			[414186] = {32, 23.9, 29.5},
 		},
 		[2] = {
 			--Flamefall
-			[420422] = {5.8},
+			[420422] = {5.8, 75, 79.9},
 			--Fyralaths Bite
-			[417431] = {18.8, 11.0, 60.0, 11.0, 11.0, 58.0, 11.0, 11.0},
+			[417431] = {18.7, 11.0, 60.0, 11.0, 11.0, 58.0, 11.0, 11.0},
 			--Greater Firestorm
-			[422518] = {35.8},
+			[422518] = {35.8, 79.9},
 			--Shadowflame Devastation
-			[422524] = {58.8},
+			[422524] = {58.8, 80},
 			--Spirits of the Kaldorai
 			[422029] = {20, 20, 20, 25, 30, 25, 25, 25},
-			--No Blaze on Normal
---			[414186] = {},
+			--Blaze (Heroic+ only)
+			[414186] = {20.7, 14.9, 25, 30, 26.9, 23, 30, 25},
 		},
 		[3] = {
 			--Infernal Maw
-			[425492] = {4.9, 3.0, 10.0, 3.0, 25.0, 3.0, 10.0},
+			[425492] = {4.9, 3.0, 10.0, 3.0, 25.0, 3.0, 10.0, 3.0, 25.0, 10.0, 3.0, 25.0, 3.0, 10.0, 3.0},
 			--Shadowflame Breath
-			[410223] = {10, 41.0},
+			[410223] = {10, 41.0, 41.0, 41.0},
 			--Apocalypse Roar
-			[422837] = {34},
-			--No Blaze on Normal
---			[414186] = {},
+			[422837] = {34, 41.0, 40.9, 40.9},
+			--Blaze (Heroic+ only)
+			[414186] = {12, 40.9, 40.9},
 		},
 	},
 }
@@ -223,10 +225,10 @@ function mod:OnCombatStart(delay)
 		self:EnablePrivateAuraSound(428988, "flameyou", 15)--Molten Eruption (because both molten and shadow are bombs, can't just use bombyou for both, so better to elemental asign)
 		self:EnablePrivateAuraSound(428970, "shadowyou", 15)--Shadow Cage (because both molten and shadow are bombs, can't just use bombyou for both, so better to elemental asign)
 		timerDarkflameShadesCD:Start(1)
---		timerBlazeCD:Start(1)--Heroic/Mythic only
+		timerBlazeCD:Start(32, 1)--Heroic/Mythic only
 	elseif self:IsHeroic() then
-		difficultyName = "heroic"
---		timerBlazeCD:Start(1)--Heroic/Mythic only
+		difficultyName = "normal"--Same as heroic, plus blaze
+		timerBlazeCD:Start(32, 1)--Heroic/Mythic only
 	else
 		difficultyName = "normal"
 	end
@@ -380,13 +382,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerDarkflameShadesCD:Start(timer, self.vb.darkflameShadesCount+1)
 		end
-	elseif spellId == 414186 then--Not verified yet
-		self.vb.blazeCount = self.vb.blazeCount + 1
-		warnBlaze:Show(self.vb.blazeCount)
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
-		if timer then
-			timerBlazeCD:Start(timer, self.vb.blazeCount+1)
-		end
+--	elseif spellId == 414186 then--Not verified yet
+--		self.vb.blazeCount = self.vb.blazeCount + 1
+--		warnBlaze:Show(self.vb.blazeCount)
+--		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
+--		if timer then
+--			timerBlazeCD:Start(timer, self.vb.blazeCount+1)
+--		end
 	elseif spellId == 422524 then
 		self.vb.shadowflameDevastation = self.vb.shadowflameDevastation + 1
 		specWarnShadowflameDevastation:Show(self.vb.shadowflameDevastation)
@@ -413,9 +415,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerInfernalMawCD:Start(4.9, 1)
 			timerShadowflameBreathCD:Start(10, 1)
 			timerApocalypseroarCD:Start(34, 1)
-			--if self:IsHard() then
-			--	timerBlazeCD:Start(3)--Heroic/Mythic only
-			--end
+			if self:IsHard() then
+				timerBlazeCD:Start(12, 1)--Heroic/Mythic only
+			end
 		end
 	end
 end
@@ -431,7 +433,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 417807 then
 		if args:IsPlayer() then
 			local amount = args.amount or 1
-			if amount % 2 == 1 then -- 1, 3, 5...
+			if amount % 4 == 0 then --4, 8, 12, etc...
 				warnAflame:Show(amount)
 			end
 		end
@@ -496,9 +498,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGreaterFirestormCD:Start(35.8, 1)
 		timerShadowflameDevastationCD:Start(58.8, 1)
 
-		--if self:IsHard() then
-		--	timerBlazeCD:Start(2)--Heroic/Mythic only
-		--end
+		if self:IsHard() then
+			timerBlazeCD:Start(20.7, 1)--Heroic/Mythic only
+		end
 	end
 end
 --mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
@@ -524,6 +526,17 @@ do
 			if timer then
 				timerSpiritsCD:Start(timer, self.vb.spiritsCount+1)
 			end
+		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 414186 and self:AntiSpam(12, 2) then--Event not verified yet, but there is no CLEU
+		self.vb.blazeCount = self.vb.blazeCount + 1
+		warnBlaze:Show(self.vb.blazeCount)
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
+		if timer then
+			timerBlazeCD:Start(timer, self.vb.blazeCount+1)
 		end
 	end
 end
