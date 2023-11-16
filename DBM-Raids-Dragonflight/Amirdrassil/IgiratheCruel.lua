@@ -114,7 +114,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spearTotal = self.vb.spearTotal + 1
 		self.vb.spearIcon = 1
 		--If initial itmers, or out of weapons on heroic and later, loop base Cd
-		if self.vb.tormentCount == 0 or (self:IsHard() and self.vb.tormentCount >= 3 and self.vb.TwistingCount >= 2) then
+		if (self.vb.tormentCount == 0 and self.vb.spearCount == 1) or (self:IsHard() and self.vb.tormentCount >= 3 and self.vb.TwistingCount >= 2) then
 			timerBlisteringSpearCD:Start(20.5, self.vb.spearTotal+1)
 		else--Timers will follow sequence of event during active weapons basically
 			local timer = self:IsMythic() and blisteringMythicTimers[self.vb.spearCount+1] or self:IsHeroic() and blisteringHeroicTimers[self.vb.spearCount+1] or blisteringEasyTimers[self.vb.spearCount+1]
