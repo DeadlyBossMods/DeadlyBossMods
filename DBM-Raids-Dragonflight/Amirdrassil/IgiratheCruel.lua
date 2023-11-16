@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200926)
 mod:SetEncounterID(2709)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20231013000000)
-mod:SetMinSyncRevision(20231013000000)
+mod:SetHotfixNoticeRev(20231116000000)
+mod:SetMinSyncRevision(20231116000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, secondary warning for https://wowhead.com/ptr-2/spell=424347 ?
 --TODO, Smashing Viscera is a hidden aura that's not logged, but UNIT_AURA might work
+--TODO, rework mythic handling too
 --https://www.warcraftlogs.com/reports/N2k1xpg9rVqRDyQZ#fight=11&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20414425%20or%20ability.id%20%3D%20416996%20or%20ability.id%20%3D%20422776%20or%20ability.id%20%3D%20419048%20or%20ability.id%20%3D%20416048%20or%20ability.id%20%3D%20418531%20or%20ability.id%20%3D%20415624)%20and%20type%20%3D%20%22begincast%22%0A%20or%20ability.id%20%3D%20424456%20and%20type%20%3D%20%22cast%22%0A%20or%20ability.id%20%3D%20415020%20or%20ability.id%20%3D%20415094%20or%20ability.id%20%3D%20415090%20or%20ability.id%20%3D%20425282%20or%20ability.id%20%3D%20425283%20or%20ability.id%20%3D%20414357%0A%20or%20ability.name%20%3D%20%22Heart%20Stopper%22&view=events
 local warnDrenchedBlades							= mod:NewStackAnnounce(414340, 2, nil, "Tank|Healer")
 local warnBlisteringSpear							= mod:NewTargetCountAnnounce(414888, 3, nil, nil, 282481, nil, nil, nil, true)
@@ -77,24 +78,28 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 mod:AddSetIconOption("SetIconOnBlisteringSpear", 414888, false, false, {1, 2, 3, 4, 5, 6})
 --mod:AddSetIconOption("SetIconOnHeartStopper", 415623, false, false, {1, 2, 3, 4, 5, 6})
 
-mod.vb.spearCount = 0
+local blisteringHardTimers = {9.2, 23.1, 23.1, 23.1, 21.1}--Needs more data
+local blisteringEasyTimers = {9.2, 30.4, 40.1, 20.7}--Needs more data
+
+mod.vb.spearCount = 0--used for sequencing
+mod.vb.spearTotal = 0--Used for timer text
 mod.vb.spearIcon = 1
-mod.vb.twistedCount = 0
+--mod.vb.twistedCount = 0--used for sequencing
+mod.vb.twistedTotal = 0--Used for timer text
 mod.vb.tormentCount = 0
 --Toremnts
 mod.vb.umbralCount = 0
 mod.vb.heartCount = 0
 --mod.vb.heartIcon = 1
 mod.vb.smashingCount = 0
---local bladesNormalTimers = {4.8, 25.6, 47.6, 25.1, 25.9, 15.8, 25.6, 46.3, 25.6, 25.5, 15.8, 25.5, 48.6, 25.5, 25.6, 15.8, 25.5, 47.4, 25.5, 25.5, 14.6, 25.6, 49.9, 25.6}
---local bladesHeroicTimers = {7.2, 25.4, 48.9, 25.7, 25.4, 15.9, 26.1, 47.7, 25.6, 25.7, 15.8, 25.7, 48.6, 25.5, 25.6, 15.9, 25.6, 43.8, 25.5}
---local bladesMythicTimers = {15.8, 20.8, 68.3, 30.5, 26.8, 20.8, 43.9, 25.5, 25.7, 25.6, 20.7, 61.0, 30.4, 26.8, 20.0}
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.spearCount = 0
+	self.vb.spearTotal = 0
 	self.vb.spearIcon = 1
-	self.vb.twistedCount = 0
+--	self.vb.twistedCount = 0
+	self.vb.twistedTotal = 0
 	self.vb.tormentCount = 0
 	if self:IsMythic() then
 		timerBlisteringSpearCD:Start(4.5-delay, 1)
@@ -103,8 +108,8 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(420-delay)
 	else
 		timerBlisteringSpearCD:Start(10.8-delay, 1)
-		timerTwistedBladeCD:Start(4.8-delay, 1)
-		timerMarkedforTormentCD:Start(46-delay, 1)
+		timerTwistedBladeCD:Start(4.5-delay, 1)
+		timerMarkedforTormentCD:Start(45-delay, 1)
 	end
 end
 
@@ -118,25 +123,30 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 414425 then
 		self.vb.spearCount = self.vb.spearCount + 1
+		self.vb.spearTotal = self.vb.spearTotal + 1
 		self.vb.spearIcon = 1
 		if self:IsMythic() then
 			--4.7, 20.9, 125.6, 20.8, 120.7, 20.7, 118.2, 20.7
-			if self.vb.spearCount % 2 == 0 then
+			if self.vb.spearTotal % 2 == 0 then
 				--Not done here, done at weapons on mythic (and possibly other difficulties too when re-reviewed
-				if self.vb.spearCount >= 8 then--Not sure this is still true but leaving for now
-					timerBlisteringSpearCD:Start(47.4, self.vb.spearCount+1)
+				if self.vb.spearTotal >= 8 then--Not sure this is still true but leaving for now
+					timerBlisteringSpearCD:Start(47.4, self.vb.spearTotal+1)
 				--else
 				--	timerBlisteringSpearCD:Start(120, self.vb.spearCount+1)
 				end
 			else
-				timerBlisteringSpearCD:Start(20.5, self.vb.spearCount+1)
+				timerBlisteringSpearCD:Start(20.5, self.vb.spearTotal+1)
 			end
 		else
-			--Do nothing here for now
+			local timer = self:IsHard() and blisteringHardTimers[self.vb.spearCount+1] or blisteringEasyTimers[self.vb.spearCount+1]
+			if timer then
+				timerBlisteringSpearCD:Start(timer, self.vb.spearTotal+1)
+			end
 		end
 	elseif spellId == 416996 then
-		self.vb.twistedCount = self.vb.twistedCount + 1
-		specWarnTwistedBlade:Show(self.vb.twistedCount)
+--		self.vb.twistedCount = self.vb.twistedCount + 1
+		self.vb.twistedTotal = self.vb.twistedTotal + 1
+		specWarnTwistedBlade:Show(self.vb.twistedTotal)
 		specWarnTwistedBlade:Play("watchstep")
 		--local timer
 		--if self:IsMythic() then
@@ -146,10 +156,12 @@ function mod:SPELL_CAST_START(args)
 		--else
 		--	timer = bladesNormalTimers[self.vb.twistedCount+1]
 		--end
-		timerTwistedBladeCD:Start(20.6, self.vb.twistedCount+1)
-		if self:IsEasy() then
-			timerBlisteringSpearCD:Start(6, self.vb.spearCount+1)
-		end
+		--Always start timer, in case out of weapons (or you don't go to one)
+		--But it'll be corrected on weaponi cast
+		timerTwistedBladeCD:Start(20.6, self.vb.twistedTotal+1)
+--		if self:IsEasy() then
+--			timerBlisteringSpearCD:Start(6, self.vb.twistedTotal+1)
+--		end
 	elseif spellId == 422776 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		warnMarkedforTorment:Show(self.vb.tormentCount)
@@ -157,11 +169,7 @@ function mod:SPELL_CAST_START(args)
 		if not self:IsEasy() and self.vb.tormentCount >= 4 then
 			timerMarkedforTormentCD:Start(70, self.vb.tormentCount+1)
 		else
-			timerMarkedforTormentCD:Start(140, self.vb.tormentCount+1)
-		end
-		if self:IsEasy() then
-			timerBlisteringSpearCD:Restart(38.8, self.vb.spearCount+1)
-			timerTwistedBladeCD:Restart(108.1, self.vb.twistedCount+1)
+			timerMarkedforTormentCD:Start(139.3, self.vb.tormentCount+1)
 		end
 	elseif spellId == 419048 then
 		specWarnRuinousEnd:Show()
@@ -171,23 +179,23 @@ function mod:SPELL_CAST_START(args)
 		specWarnUmbralDestruction:Show()
 		specWarnUmbralDestruction:Play("specialsoon")--Vague voice instead of backseating til more time to review strategies
 		if self.vb.umbralCount == 1 then
-			timerUmbralDestructionCD:Start(30, 2)
+			timerUmbralDestructionCD:Start(self:IsHard() and 25 or 30, 2)
 		end
-		if self:IsEasy() then
-			timerBlisteringSpearCD:Start(15.5, self.vb.spearCount+1)
-		end
+--		if self:IsEasy() then
+--			timerBlisteringSpearCD:Start(15.5, self.vb.spearTotal+1)
+--		end
 	elseif spellId == 418531 then
 		self.vb.smashingCount = self.vb.smashingCount + 1
 		if self.vb.smashingCount == 1 then
-			timerSmashingVisceraCD:Start(30, 2)
+			timerSmashingVisceraCD:Start(self:IsHard() and 25 or 30, 2)
 		end
-		if self:IsEasy() then
-			timerBlisteringSpearCD:Start(15.5, self.vb.spearCount+1)
-		end
+--		if self:IsEasy() then
+--			timerBlisteringSpearCD:Start(15.5, self.vb.spearTotal+1)
+--		end
 	elseif spellId == 415624 and self:AntiSpam(8, 1) then
 		self.vb.heartCount = self.vb.heartCount + 1
 		if self.vb.heartCount == 1 then
-			timerHeartStopperCD:Start(30, 2)
+			timerHeartStopperCD:Start(self:IsHard() and 25 or 30, 2)
 		end
 	end
 end
@@ -232,7 +240,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBlisteringSpear:Yell(icon, icon)
 			yellBlisteringSpearFades:Countdown(spellId, nil, icon)
 		end
-		warnBlisteringSpear:CombinedShow(0.5, self.vb.spearCount, args.destName)
+		warnBlisteringSpear:CombinedShow(0.5, self.vb.spearTotal, args.destName)
 		self.vb.spearIcon = self.vb.spearIcon + 1
 	elseif spellId == 414367 and args:IsPlayer() then
 		warnGatheringTorment:Show()
@@ -321,43 +329,55 @@ do
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 415020 then--Sword Stance
-		self.vb.smashingCount = 0
-		warnSmashingVisceraSoon:Show()
-		timerSmashingVisceraCD:Start(19, 1)
-	elseif spellId == 415094 then--Knife Stance
-		self.vb.heartCount = 0
-		warnHeartstopperSoon:Show()
-		timerHeartStopperCD:Start(19, 1)
-	elseif spellId == 415090 then--Axe Stance
-		self.vb.umbralCount = 0
-		warnUmbralDestructionSoon:Show()
-		timerUmbralDestructionCD:Start(19, 1)
-	--Mythic
-	elseif spellId == 425282 then--Axe Knife Stance
-		self.vb.umbralCount = 0
-		self.vb.heartCount = 0
-		warnUmbralDestructionSoon:Show()
-		warnHeartstopperSoon:Show()
-		timerHeartStopperCD:Start(14.3, 1)
-		timerUmbralDestructionCD:Start(18.3, 1)
-		timerBlisteringSpearCD:Start(73.6, self.vb.spearCount+1)
-	elseif spellId == 425283 then--Axe Sword Stance
-		self.vb.smashingCount = 0
-		self.vb.umbralCount = 0
-		warnSmashingVisceraSoon:Show()
-		warnUmbralDestructionSoon:Show()
-		timerUmbralDestructionCD:Start(7.9, 1)
-		timerSmashingVisceraCD:Start(13.4, 1)
-		timerBlisteringSpearCD:Start(73.6, self.vb.spearCount+1)
-	elseif spellId == 414357 then--Sword Knife Stance
-		self.vb.smashingCount = 0
-		self.vb.heartCount = 0
-		warnSmashingVisceraSoon:Show()
-		warnHeartstopperSoon:Show()
-		timerHeartStopperCD:Start(7.5, 1)
-		timerSmashingVisceraCD:Start(11.5, 1)
-		timerBlisteringSpearCD:Start(73.6, self.vb.spearCount+1)
+	if spellId == 415020 or spellId == 415094 or spellId == 415090 or spellId == 425282 or spellId == 425283 or spellId == 414357 then
+		--Reset global variables
+		self.vb.spearCount = 0
+		self.vb.twistedCount = 0
+		--Non Mythic specific weapon handling
+		if spellId == 415020 then--Sword Stance
+			self.vb.smashingCount = 0
+			warnSmashingVisceraSoon:Show()
+			timerBlisteringSpearCD:Restart(9.2, self.vb.spearTotal+1)
+			timerSmashingVisceraCD:Start(19, 1)
+			timerTwistedBladeCD:Restart(73, self.vb.twistedTotal+1)
+		elseif spellId == 415094 then--Knife Stance
+			self.vb.heartCount = 0
+			warnHeartstopperSoon:Show()
+			timerBlisteringSpearCD:Restart(9.2, self.vb.spearTotal+1)
+			timerHeartStopperCD:Start(19, 1)
+			timerTwistedBladeCD:Restart(73, self.vb.twistedTotal+1)
+		elseif spellId == 415090 then--Axe Stance
+			self.vb.umbralCount = 0
+			warnUmbralDestructionSoon:Show()
+			timerBlisteringSpearCD:Restart(9.2, self.vb.spearTotal+1)
+			timerUmbralDestructionCD:Start(19, 1)
+			timerTwistedBladeCD:Restart(73, self.vb.twistedTotal+1)
+		--Mythic specific weapon handling
+		elseif spellId == 425282 then--Axe Knife Stance
+			self.vb.umbralCount = 0
+			self.vb.heartCount = 0
+			warnUmbralDestructionSoon:Show()
+			warnHeartstopperSoon:Show()
+			timerHeartStopperCD:Start(14.3, 1)
+			timerUmbralDestructionCD:Start(18.3, 1)
+			timerBlisteringSpearCD:Restart(73.6, self.vb.spearTotal+1)
+		elseif spellId == 425283 then--Axe Sword Stance
+			self.vb.smashingCount = 0
+			self.vb.umbralCount = 0
+			warnSmashingVisceraSoon:Show()
+			warnUmbralDestructionSoon:Show()
+			timerUmbralDestructionCD:Start(7.9, 1)
+			timerSmashingVisceraCD:Start(13.4, 1)
+			timerBlisteringSpearCD:Restart(73.6, self.vb.spearTotal+1)
+		elseif spellId == 414357 then--Sword Knife Stance
+			self.vb.smashingCount = 0
+			self.vb.heartCount = 0
+			warnSmashingVisceraSoon:Show()
+			warnHeartstopperSoon:Show()
+			timerHeartStopperCD:Start(7.5, 1)
+			timerSmashingVisceraCD:Start(11.5, 1)
+			timerBlisteringSpearCD:Restart(73.6, self.vb.spearTotal+1)
+		end
 	end
 end
 
