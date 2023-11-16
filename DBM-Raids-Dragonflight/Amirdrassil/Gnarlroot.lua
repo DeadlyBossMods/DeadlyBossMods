@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209333)
 mod:SetEncounterID(2820)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20231115000000)
-mod:SetMinSyncRevision(20231115000000)
+mod:SetHotfixNoticeRev(20231116000000)
+mod:SetMinSyncRevision(20231116000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -113,15 +113,15 @@ local allTimers = {
 	},
 	["mythic"] = {
 		--Controlled Burn
-		[421971] = {31.8, 38.9},
+		[421971] = {34, 33.9},
 		--Dreadfire Barrage
-		[424352] = {9.4, 25.9, 20.0, 18.9},
+		[424352] = {8.9, 20.0, 20.0, 13.9, 18.0},
 		--Flaming Pestilence
-		[421898] = {16.5, 44.8},
+		[421898] = {14.9, 42.0},
 		--Shadowflame Cleave
-		[422039] = {21.2, 28.2, 30.7},
+		[422039] = {20, 23.9, 27.0},
 		--Tortured Scream
-		[422026] = {3.5, 23.5, 16.4, 22.4, 20.1},
+		[422026] = {2.9, 23.0, 28.0, 21.9},
 	},
 }
 
@@ -139,11 +139,11 @@ function mod:OnCombatStart(delay)
 	--Mythic and heroic initials very close
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerTorturedScreamCD:Start(3.5-delay, 1)
-		timerDreadfireBarrageCD:Start(9.4-delay, 1)
-		timerFlamingPestilenceCD:Start(16.5-delay, 1)
-		timerShadowflameCleaveCD:Start(21.2-delay, 1)
-		timerControlledBurnCD:Start(31.8-delay, 1)
+		timerTorturedScreamCD:Start(2.9-delay, 1)
+		timerDreadfireBarrageCD:Start(8.9-delay, 1)
+		timerFlamingPestilenceCD:Start(14.9-delay, 1)
+		timerShadowflameCleaveCD:Start(20-delay, 1)
+		timerControlledBurnCD:Start(34-delay, 1)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerTorturedScreamCD:Start(3-delay, 1)
@@ -160,7 +160,7 @@ function mod:OnCombatStart(delay)
 		timerControlledBurnCD:Start(33.2-delay, 1)
 		timerDoomCultivationCD:Start(93.2-delay, 2, 1)
 	end
-	timerDoomCultivationCD:Start(93.2-delay, 2, 1)--Technically this variates too based on difficult, but meh, 2-3 sec at most
+	timerDoomCultivationCD:Start(93-delay, 2, 1)--Technically this variates too based on difficult, but meh, 2-3 sec at most
 end
 
 --function mod:OnCombatEnd()
@@ -358,12 +358,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cleaveCount = 0
 		timerUprootAgonyCD:Stop()
 		if self:IsMythic() then
-			timerTorturedScreamCD:Start(5.2, 1)
-			timerDreadfireBarrageCD:Start(11.1, 1)
-			timerFlamingPestilenceCD:Start(18.2, 1)
-			timerShadowflameCleaveCD:Start(22.9, 1)
-			timerControlledBurnCD:Start(33.5, 1)
-			timerDoomCultivationCD:Start(92, 2, self.vb.doomCount+1)--Recheck
+			timerTorturedScreamCD:Start(4.3, 1)
+			timerDreadfireBarrageCD:Start(10.4, 1)
+			timerFlamingPestilenceCD:Start(16.4, 1)
+			timerShadowflameCleaveCD:Start(21.4, 1)
+			timerControlledBurnCD:Start(35.4, 1)
+			timerDoomCultivationCD:Start(94.1, 2, self.vb.doomCount+1)--Recheck multiple times
 		elseif self:IsHeroic() then
 			timerTorturedScreamCD:Start(4.5, 1)
 			timerDreadfireBarrageCD:Start(10.5, 1)
