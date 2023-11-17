@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 local warnSperentsFury								= mod:NewCountAnnounce(421672, 3)
 local warnMoltenVenom								= mod:NewStackAnnounce(419054, 2, nil, "Tank|Healer")
 local warnSerpentsWrath								= mod:NewSpellAnnounce(421703, 4)
---local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
+local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, 7897, nil, 1, 2)
 local yellCoilingFlames								= mod:NewYell(421207, 7897)--Shortname Flames
