@@ -50,7 +50,7 @@ local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, ni
 --local specWarnMoltenVenomSwap						= mod:NewSpecialWarningTaunt(419054, nil, nil, nil, 1, 2)--Need to evaulate whether tanks swap for this or jaws. double tank mechanic fights are redundant
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
---local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
+local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
 local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, 136870, nil, 3, 2)
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnCataclysmJawsTaunt					= mod:NewSpecialWarningTaunt(423117, nil, nil, nil, 1, 2)
@@ -131,8 +131,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 421616 then
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 --		self:BossTargetScanner(args.sourceGUID, "DisgorgeTarget", 0.1, 8, true)
-		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
-		specWarnVolcanicDisgorge:Play("watchstep")
+--		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
+--		specWarnVolcanicDisgorge:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volcanicCount+1)
 		if timer then
 			timerVolcanicDisgorgeCD:Start(timer, self.vb.volcanicCount+1)
