@@ -354,7 +354,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 410223 then
 		self.vb.shadowflameBreathCount = self.vb.shadowflameBreathCount + 1
-		specWarnShadowflameBreath:Show(specWarnShadowflameBreath)
+		specWarnShadowflameBreath:Show(self.vb.shadowflameBreathCount)
 		specWarnShadowflameBreath:Play("breathsoon")
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.shadowflameBreathCount+1)
 		if timer then
