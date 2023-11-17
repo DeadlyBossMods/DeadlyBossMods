@@ -22,8 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 419504 425483",
 	"SPELL_PERIODIC_MISSED 419504 425483",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_DIED"
 )
 
 --[[
@@ -166,7 +165,7 @@ local allTimers = {--428954 for darkflame flames mythic
 			--Fyralaths Bite
 			[417431] = {18.7, 11.0, 60.0, 11.0, 11.0, 58.0, 11.0, 11.0},
 			--Greater Firestorm
-			[422518] = {35.8, 79.9},
+			[422518] = {35.8, 79.9, 80.0},
 			--Shadowflame Devastation
 			[422524] = {58.8, 80},
 			--Spirits of the Kaldorai
@@ -186,6 +185,16 @@ local allTimers = {--428954 for darkflame flames mythic
 		},
 	},
 }
+
+local function blazeLoop(self)
+	self.vb.blazeCount = self.vb.blazeCount + 1
+	warnBlaze:Show(self.vb.blazeCount)
+	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
+	if timer then
+		timerBlazeCD:Start(timer, self.vb.blazeCount+1)
+		self:Schedule(timer, blazeLoop, self)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -226,9 +235,11 @@ function mod:OnCombatStart(delay)
 		self:EnablePrivateAuraSound(428970, "shadowyou", 15)--Shadow Cage (because both molten and shadow are bombs, can't just use bombyou for both, so better to elemental asign)
 		timerDarkflameShadesCD:Start(1)
 		timerBlazeCD:Start(32, 1)--Heroic/Mythic only
+		self:Schedule(32, blazeLoop, self)
 	elseif self:IsHeroic() then
 		difficultyName = "normal"--Same as heroic, plus blaze
 		timerBlazeCD:Start(32, 1)--Heroic/Mythic only
+		self:Schedule(32, blazeLoop, self)
 	else
 		difficultyName = "normal"
 	end
@@ -304,6 +315,7 @@ function mod:SPELL_CAST_START(args)
 			timerDreamRendCD:Stop()
 			timerFyralathsBiteCD:Stop()
 			timerBlazeCD:Stop()--Heroic/Mythic only
+			self:Unschedule(blazeLoop)
 			timerDarkflameShadesCD:Stop()--Mythic Only
 			timerCorrupt:Start(13)
 		end
@@ -412,11 +424,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerShadowflameDevastationCD:Stop()
 			timerFyralathsBiteCD:Stop()
 			timerBlazeCD:Stop()
+			self:Unschedule(blazeLoop)
 			timerInfernalMawCD:Start(4.9, 1)
 			timerShadowflameBreathCD:Start(10, 1)
 			timerApocalypseroarCD:Start(34, 1)
 			if self:IsHard() then
 				timerBlazeCD:Start(12, 1)--Heroic/Mythic only
+				self:Schedule(12, blazeLoop, self)
 			end
 		end
 	end
@@ -500,6 +514,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 		if self:IsHard() then
 			timerBlazeCD:Start(20.7, 1)--Heroic/Mythic only
+			self:Schedule(20.7, blazeLoop, 1)
 		end
 	end
 end
@@ -526,17 +541,6 @@ do
 			if timer then
 				timerSpiritsCD:Start(timer, self.vb.spiritsCount+1)
 			end
-		end
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 414186 and self:AntiSpam(12, 2) then--Event not verified yet, but there is no CLEU
-		self.vb.blazeCount = self.vb.blazeCount + 1
-		warnBlaze:Show(self.vb.blazeCount)
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
-		if timer then
-			timerBlazeCD:Start(timer, self.vb.blazeCount+1)
 		end
 	end
 end
