@@ -150,7 +150,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRuinousEnd:Play("aesoon")
 	elseif spellId == 416048 then
 		self.vb.umbralCount = self.vb.umbralCount + 1
-		specWarnUmbralDestruction:Show()
+		specWarnUmbralDestruction:Show(self.vb.umbralCount)
 		specWarnUmbralDestruction:Play("specialsoon")--Vague voice instead of backseating til more time to review strategies
 		if self.vb.umbralCount == 1 then
 			timerUmbralDestructionCD:Start(self:IsMythic() and 32.7 or self:IsHeroic() and 25 or 30, 2)

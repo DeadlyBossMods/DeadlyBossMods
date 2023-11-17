@@ -27,8 +27,9 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 425889 or ability.id = 426524 or ability.id = 422614 or ability.id = 418637 or ability.id = 426206 or ability.id = 417634 or ability.id = 427252 or ability.id = 427343 or ability.id = 429973 or ability.id = 421325) and type = "begincast"
- or (ability.id = 417653 or ability.id = 419485 or ability.id = 427299 or ability.id = 428901) and type = "cast"
+ or (ability.id = 417653 or ability.id = 427299 or ability.id = 428901) and type = "cast"
  or ability.id = 421316 and (type = "applybuff" or type = "removebuff")
+ or ability.id = 419485 and type = "cast"
 --]]
 --TODO, repeat yells for igniting growth? depends on if it's few targets or everyone.
 --TODO, https://www.wowhead.com/ptr-2/spell=426393/seed-of-life is probably cast on pull, so no reason to alert, unless cast more than once
@@ -137,41 +138,35 @@ local allTimers = {
 		--Stage 1
 		--Fiery Force of Nature
 		[417653] = {6.5, 114.9, 109.6, 115.0},
+				--	6.7, 116.4, 111.2
 		--Blazing Thorns
-		[426206] = {31.3, 24.7, 24.7, 46.3, 65.6, 63.2, 24.7, 24.7, 46.5, 65.5},
+		[426206] = {31.3, 24.7, 24.7, 46.3, 65.6, 63.2, 24.6, 24.7, 46.5, 65.5},
+				--	31.4, 24.7, 24.7, 47.8, 65.5, 64.7, 24.6
 		--Furious Charge
-		[418637] = {22.3, 22.4, 22.5, 46.5, 22.2, 31.1, 13.4, 66.5, 22.4, 22.5, 46.6, 22.3, 31.1, 13.3},
+		[418637] = {22.3, 22.4, 22.4, 46.5, 22.2, 30.9, 13.4, 66.5, 22.4, 22.3, 46.6, 22.3, 31.1, 13.3},
+				--	22.5, 22.4, 22.4, 48.0, 22.2, 30.9, 13.5, 67.7, 22.6, 22.3
 		--Scorching Roots
 		[422614] = {38.0, 120.0, 104.5, 120.2},
+				--	38.2, 121.6, 105.8,
 		--Raging Inferno
 		[417634] = {101.3, 111.6, 112.1, 111.9},
+				--	102.4, 114.3
 		--Igniting Growth (Mythic Only)
 		[425889] = {14.5, 133.6, 90.2, 133.9},
+				--	14.8, 135.0, 92.2,
 		--Stage 2
 		--Falling Embers
 		[427252] = {7.4, 26.7, 31.8, 25.0, 18.4, 38.5, 23.4},--Had no variations
 		--FlashFire
 		[427299] = {29.0, 50.1, 30.1, 36.7},--Lowest of each used until can figure out how to detect which sequence is used on demand
-				--  29.0, 50.1, 36.7, 50.2
-				--  29.1, 56.8, 43.5, 36.7
-				--  29.0, 56.8, 30.1, 50.1
-				--  29.0, 56.8, 43.5
 		--Fire Whirl
 		[427343] = {60.8, 43.4, 50.1},--Had no variation
 		--Smoldering backdraft
 		[429973] = {14.1, 26.7, 31.7, 25.0, 36.8, 25.0, 18.4},--Had no variations
 		--Ashen Call
 		[421325] = {20.8, 58.4, 56.9},--Lowest of each used until can figure out how to detect which sequence is used on demand
-				--  20.8, 63.4, 56.9
-				--  20.8, 58.4, 61.8
-				--  20.8, 58.4, 61.8
-				--  22.8, 58.3, 61.9
 		--Ashen Devestation
 		[428901] = {47.4, 68.6},--Lowest of each used until can figure out how to detect which sequence is used on demand
-				--  47.4, 73.5
-				--  47.4, 68.6
-				--  47.4, 73.5
-				--  47.4, 68.6
 	},
 	["heroic"] = {
 		--Stage 1 (same as mythic stage 1 likely)

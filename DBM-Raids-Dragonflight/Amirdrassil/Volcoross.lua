@@ -79,7 +79,7 @@ mod.vb.jawsCount = 0
 
 local allTimers = {
 	--Cata Jaws
-	[423117] = {5.0, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0},
+	[423117] = {4.8, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0},
 	--Volcanic Disgorge
 	[421616] = {29.9, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
 }
@@ -102,11 +102,11 @@ function mod:OnCombatStart(delay)
 	self.vb.volcanicCount = 0
 	self.vb.tailCount = 0
 	self.vb.jawsCount = 0
-	timerCataclysmJawsCD:Start(5-delay, 1)
-	timerSerpentsFuryCD:Start(9.9-delay, 1)
+	timerCataclysmJawsCD:Start(4.8-delay, 1)
+	timerSerpentsFuryCD:Start(9.8-delay, 1)
 	timerScorchtailCrashCD:Start(20-delay, 1)
-	timerVolcanicDisgorgeCD:Start(29.9-delay, 1)
-	timerFloodoftheFirelandsCD:Start(69.9-delay, 1)
+	timerVolcanicDisgorgeCD:Start(29.8-delay, 1)
+	timerFloodoftheFirelandsCD:Start(69.8-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -131,8 +131,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 421616 then
 		self.vb.volcanicCount = self.vb.volcanicCount + 1
 --		self:BossTargetScanner(args.sourceGUID, "DisgorgeTarget", 0.1, 8, true)
-		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
-		specWarnVolcanicDisgorge:Play("watchstep")
+--		specWarnVolcanicDisgorge:Show(self.vb.volcanicCount)
+--		specWarnVolcanicDisgorge:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, false, false, spellId, self.vb.volcanicCount+1)
 		if timer then
 			timerVolcanicDisgorgeCD:Start(timer, self.vb.volcanicCount+1)

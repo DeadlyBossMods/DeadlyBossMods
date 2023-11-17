@@ -12,20 +12,21 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 420846 429108 429180 429615 426855",--426519 426147
-	"SPELL_CAST_SUCCESS 420907 425370",
+	"SPELL_CAST_START 420846 429108 429180 429615 426855 426519",--426147
+	"SPELL_CAST_SUCCESS 420907 426519 422721",
 	"SPELL_SUMMON 421419 428465",
 	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479 429983",
 	"SPELL_AURA_APPLIED_DOSE 420554 428479 429983",
 	"SPELL_AURA_REMOVED 423195",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
 )
 
 --[[
-(ability.id = 420846 or ability.id = 429108 or ability.id = 429180 or ability.id = 429615 or ability.id = 426855) and type = "begincast"
+(ability.id = 420846 or ability.id = 429108 or ability.id = 429180 or ability.id = 429615 or ability.id = 426855 or ability.id = 426519) and type = "begincast"
  or (ability.id = 420907 or ability.id = 425370) and type = "cast"
  or ability.id = 429655
+ or (ability.id = 422721 or ability.id = 425370) and type = "cast"
+ or ability.id = 429983 and (type = "applydebuff" or type = "applydebuffstack")
 --]]
 --TODO, Unravel stack tracking in Stage 2?
 --TODO, Wait for blizzard to add events for surging and flora to enable warnings/timers
@@ -58,13 +59,13 @@ mod:AddPrivateAuraSoundOption(427722, true, 426519, 1)--Weaver's Burden
 --Stage Two: Creation Complete
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28356))
 local warnFullBloom									= mod:NewCountAnnounce(426855, 2)
+local warnRadialFlourish							= mod:NewCountAnnounce(425370, 2, nil, false)
 
 local specWarnLumberingSlam							= mod:NewSpecialWarningDodge(429108, nil, nil, nil, 2, 2)
-local specWarnRadialFlourish						= mod:NewSpecialWarningDodge(425370, nil, nil, nil, 2, 2)
 
 local timerFullBloomCD								= mod:NewCDCountTimer(49, 426855, nil, nil, nil, 6)
 local timerLumberingSlamCD							= mod:NewCDNPTimer(18.2, 429108, nil, nil, nil, 3)--No reason to CL it, it's a nameplate only timer
-local timerRadialFlourishCD							= mod:NewCDNPTimer(5, 425370, nil, false, nil, 3)--5-12 so kinda fickle, off by default
+local timerRadialFlourishCD							= mod:NewCDNPTimer(5.5, 425370, nil, false, nil, 3)--5-12 so kinda fickle, off by default
 local timerWakingDecimation							= mod:NewCastTimer(36, 428471, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--1sec delay before energy starts + 30 + 5 second cast
 
 mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
@@ -93,8 +94,8 @@ function mod:OnCombatStart(delay)
 	self.vb.floraCount = 0
 	self.vb.wardenIcon = 7
 	timerSurgingGrowthCD:Start(10, 1)--It's difficult to accurately time, it has no cast event and using soaks is iffy
+	timerWeaversBurdenCD:Start(19, 1)--Start
 	timerViridianRainCD:Start(21, 1)
-	timerWeaversBurdenCD:Start(20, 1)
 	timerImpendingLoomCD:Start(24, 1)
 	timerFullBloomCD:Start(70, 1)
 --	if self:IsMythic() then
@@ -159,13 +160,22 @@ function mod:SPELL_CAST_START(args)
 			)
 		end
 	elseif spellId == 429108 or spellId == 429180 then
-		if self:CheckBossDistance(args.sourceGUID, false, 1180, 33) then
+		if self:CheckBossDistance(args.sourceGUID, false, nil, 43) then
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
 		timerLumberingSlamCD:Start(nil, args.sourceGUID)
---	elseif spellId == 426519 then
-
+	elseif spellId == 426519 then
+		self.vb.burdenCount = self.vb.burdenCount + 1
+		warnWeaversBurden:Show(self.vb.burdenCount)
+		--21.0, 19.1, 20.0 then 36-37, 19.0, 20.1
+		if self.vb.burdenCount % 3 ~= 0 then--3rd cast in each set is last one before full bloom
+			if self.vb.burdenCount % 3 ~= 0 then
+				timerWeaversBurdenCD:Start(18, self.vb.burdenCount+1)
+			else
+				timerWeaversBurdenCD:Start(20, self.vb.burdenCount+1)
+			end
+		end
 --	elseif spellId == 424477 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
 --		warnSurgingGrowth:Show(self.vb.surgingCount)
@@ -186,12 +196,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerViridianRainCD:Start(20, self.vb.rainCount+1)
 			end
 		end
-	elseif spellId == 425370 then
-		if self:CheckBossDistance(args.sourceGUID, false, 1180, 33) then
-			specWarnRadialFlourish:Show()
-			specWarnRadialFlourish:Play("watchstep")
+	elseif spellId == 422721 then
+		if self:CheckBossDistance(args.sourceGUID, false, nil, 43) then
+			warnRadialFlourish:Show()
 		end
 		timerRadialFlourishCD:Start(nil, args.sourceGUID)
+	elseif spellId == 426519 then
+		--Weavers burden is a private aura, but one of targets is always the active tank.
+		if args:IsPlayer() then
+			yellWeaversBurden:Yell()
+		else
+			--Delayed by a frame so as not to snipe the debuff
+			specWarnWeaversBurdenOther:Schedule(0.1, args.destName)
+			specWarnWeaversBurdenOther:ScheduleVoice(0.1, "tauntboss")
+		end
 --	elseif spellId == 420971 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
 --		warnSurgingGrowth:Show(self.vb.surgingCount)
@@ -291,29 +309,5 @@ function mod:UNIT_DIED(args)
 		timerRadialFlourishCD:Stop(args.destGUID)
 	elseif cid == 213143 then--Manifested Dream
 		timerWakingDecimation:Stop(args.destGUID)
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 426519 then--Weaver's Burden
-		self.vb.burdenCount = self.vb.burdenCount + 1
-		warnWeaversBurden:Show(self.vb.burdenCount)
-		--21.0, 19.1, 20.0 then 36-37, 19.0, 20.1
-		if self.vb.burdenCount % 3 ~= 0 then--3rd cast in each set is last one before full bloom
-			if self.vb.burdenCount % 3 ~= 0 then
-				timerWeaversBurdenCD:Start(18, self.vb.burdenCount+1)
-			else
-				timerWeaversBurdenCD:Start(20, self.vb.burdenCount+1)
-			end
-		end
-		--Weavers burden is a private aura, but one of targets is always the active tank.
-		if self:IsTanking("player", "boss1", nil, true) then
-			yellWeaversBurden:Yell()
-		else
-			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
-			--Delayed by a frame so as not to snipe the debuff
-			specWarnWeaversBurdenOther:Schedule(0.1, bossTarget)
-			specWarnWeaversBurdenOther:ScheduleVoice(0.1, "tauntboss")
-		end
 	end
 end
