@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 local warnSperentsFury								= mod:NewCountAnnounce(421672, 3)
 local warnMoltenVenom								= mod:NewStackAnnounce(419054, 2, nil, "Tank|Healer")
 local warnSerpentsWrath								= mod:NewSpellAnnounce(421703, 4)
-local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
+--local warnVolcanicDisgorge							= mod:NewTargetCountAnnounce(421616, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, 7897, nil, 1, 2)
 local yellCoilingFlames								= mod:NewYell(421207, 7897)--Shortname Flames
@@ -50,7 +50,7 @@ local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, ni
 --local specWarnMoltenVenomSwap						= mod:NewSpecialWarningTaunt(419054, nil, nil, nil, 1, 2)--Need to evaulate whether tanks swap for this or jaws. double tank mechanic fights are redundant
 local specWarnFloodoftheFirleands					= mod:NewSpecialWarningSoakCount(420933, nil, nil, nil, 2, 2)
 local specWarnVolcanicDisgorge						= mod:NewSpecialWarningYou(421616, nil, nil, nil, 2, 2)
-local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
+--local yellVolcanicDisgorge							= mod:NewShortYell(421616, DBM_COMMON_L.POOLS)
 local specWarnScorchtailCrash						= mod:NewSpecialWarningDodgeCount(420415, nil, 136870, nil, 3, 2)
 local specWarnCataclysmJaws							= mod:NewSpecialWarningDefensive(423117, nil, nil, nil, 1, 2)
 local specWarnCataclysmJawsTaunt					= mod:NewSpecialWarningTaunt(423117, nil, nil, nil, 1, 2)
@@ -79,7 +79,7 @@ mod.vb.jawsCount = 0
 
 local allTimers = {
 	--Cata Jaws
-	[423117] = {5.0, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0},
+	[423117] = {4.8, 30.0, 30.0, 40.0, 30.0, 40.0, 30.0, 25.0, 25.0, 20.0},
 	--Volcanic Disgorge
 	[421616] = {29.9, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0}
 }
@@ -102,11 +102,11 @@ function mod:OnCombatStart(delay)
 	self.vb.volcanicCount = 0
 	self.vb.tailCount = 0
 	self.vb.jawsCount = 0
-	timerCataclysmJawsCD:Start(5-delay, 1)
-	timerSerpentsFuryCD:Start(9.9-delay, 1)
+	timerCataclysmJawsCD:Start(4.8-delay, 1)
+	timerSerpentsFuryCD:Start(9.8-delay, 1)
 	timerScorchtailCrashCD:Start(20-delay, 1)
-	timerVolcanicDisgorgeCD:Start(29.9-delay, 1)
-	timerFloodoftheFirelandsCD:Start(69.9-delay, 1)
+	timerVolcanicDisgorgeCD:Start(29.8-delay, 1)
+	timerFloodoftheFirelandsCD:Start(69.8-delay, 1)
 end
 
 --function mod:OnCombatEnd()
