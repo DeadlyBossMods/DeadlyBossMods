@@ -189,7 +189,7 @@ local allTimers = {--428954 for darkflame flames mythic
 local function blazeLoop(self)
 	self.vb.blazeCount = self.vb.blazeCount + 1
 	warnBlaze:Show(self.vb.blazeCount)
-	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.blazeCount+1)
+	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 414186, self.vb.blazeCount+1)
 	if timer then
 		timerBlazeCD:Start(timer, self.vb.blazeCount+1)
 		self:Schedule(timer, blazeLoop, self)
