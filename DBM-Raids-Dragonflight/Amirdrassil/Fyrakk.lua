@@ -29,12 +29,12 @@ mod:RegisterEventsInCombat(
 (ability.id = 428960 or ability.id = 419506 or ability.id = 420422 or ability.id = 417455 or ability.id = 417431 or ability.id = 419144 or ability.id = 412761 or ability.id = 428963 or ability.id = 428400 or ability.id = 428971 or ability.id = 428968 or ability.id = 428965 or ability.id = 419123 or ability.id = 422837 or ability.id = 410223 or ability.id = 425492 or ability.id = 422518) and type = "begincast"
  or (ability.id = 428954 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524) and type = "cast"
  or ability.id = 419144 and (type = "applybuff" or type = "removebuff")
- or ability.id = 414187 and type = "applydebuff"
+ or (ability.id = 414187 or ability.id = 425525) and type = "applydebuff"
 --]]
 --TODO, right cast ID for Darkflame cleave to add nameplate CD timer to mob
 --TODO, what do with Flamespawn on mythic?
 --TODO, what to do with Aflame stacks, it seems like something that may be spammy if stacks up quickly so it's off by default for now
---TODO, tank swap stacks/when to taunt
+--TODO, tank swap stacks/when to taunt in stage 3
 --TODO, spawn events or IEEU for the big adds in stage 2 for starting initial nameplate timers
 --TODO, do more with raging ember and screaming soul?
 --TODO, seeds detection/timer in stage 3, it's a big part of things
@@ -117,6 +117,7 @@ mod:AddPrivateAuraSoundOption(428970, true, 428968, 1)--Shadow Cage
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26670))
 local warnBloom										= mod:NewYouAnnounce(423717, 1)
 local warnInfernalMaw								= mod:NewStackAnnounce(425492, 3, nil, "Tank|Healer")
+local warnEternalFirestorm							= mod:NewCountAnnounce(422935, 4)
 
 local specWarnApocalypseRoar						= mod:NewSpecialWarningCount(422837, nil, nil, nil, 2, 13)
 local specWarnInfernalMaw							= mod:NewSpecialWarningDefensive(425492, nil, nil, nil, 1, 2)
@@ -124,6 +125,7 @@ local specWarnInfernalMaw							= mod:NewSpecialWarningDefensive(425492, nil, ni
 
 local timerApocalypseroarCD							= mod:NewCDCountTimer(49, 422837, nil, nil, nil, 2)
 local timerInfernalMawCD							= mod:NewCDCountTimer(49, 425492, nil, "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerEternalFirestormCD						= mod:NewCDCountTimer(41, 422935, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 
 mod:AddPrivateAuraSoundOption(423601, true, 423601, 1)--Seed of Amirdrassil
 mod:AddPrivateAuraSoundOption(430048, true, 430048, 1)--Corrupted Seed
@@ -182,6 +184,8 @@ local allTimers = {--428954 for darkflame flames mythic
 			[422837] = {34, 41.0, 40.9, 40.9},
 			--Blaze (Heroic+ only)
 			[414186] = {12, 40.9, 40.9},
+			--Eternal Firestorm
+			[422935] = {18, 40.9, 41.0, 41.0, 41.0},
 		},
 	},
 }
@@ -194,6 +198,16 @@ local function blazeLoop(self)
 		timerBlazeCD:Start(timer, self.vb.blazeCount+1)
 		self:Schedule(timer, blazeLoop, self)
 	end
+end
+
+local function eternalFireLoop(self)
+	self.vb.firestormCount = self.vb.firestormCount + 1
+	warnEternalFirestorm:Show(self.vb.firestormCount)
+--	local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, 414186, self.vb.blazeCount+1)
+--	if timer then
+		timerEternalFirestormCD:Start(41, self.vb.firestormCount+1)
+		self:Schedule(41, eternalFireLoop, self)
+--	end
 end
 
 function mod:OnCombatStart(delay)
@@ -427,6 +441,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:Unschedule(blazeLoop)
 			timerInfernalMawCD:Start(4.9, 1)
 			timerShadowflameBreathCD:Start(10, 1)
+			timerEternalFirestormCD:Start(18, 1)
+			self:Schedule(18, eternalFireLoop, self)
 			timerApocalypseroarCD:Start(34, 1)
 			if self:IsHard() then
 				timerBlazeCD:Start(12, 1)--Heroic/Mythic only
