@@ -58,6 +58,7 @@ local warnBlazingCoalescenceBoss					= mod:NewStackAnnounce(426256, 4)--Boss
 local warnEverlastingBlaze							= mod:NewCountAnnounce(429032, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(429032))--Player
 local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
 
+local specWarnCharredBrambles						= mod:NewSpecialWarningSwitch(418655, "Healer", nil, nil, 1, 2)
 --local specWarnIgnitingGrowth						= mod:NewSpecialWarningMoveAway(425888, nil, nil, nil, 1, 2, 4)
 --local yellIgnitingGrowth							= mod:NewShortYell(425888, nil, false)
 --local specWarnDreamBlossom						= mod:NewSpecialWarningYou(425468, nil, nil, nil, 1, 2)
@@ -137,31 +138,31 @@ local allTimers = {
 	["mythic"] = {
 		--Stage 1
 		--Fiery Force of Nature
-		[417653] = {6.5, 114.9, 109.6, 115.0},
+		[417653] = {6.5, 105.4, 97.7},
 		--Blazing Thorns
-		[426206] = {31.3, 24.7, 24.7, 46.3, 65.6, 63.2, 24.6, 24.7, 46.5, 65.5},
+		[426206] = {30.7, 24.2, 24.2, 38.4, 52.8},
 
 		--Furious Charge
-		[418637] = {22.3, 22.4, 22.4, 46.5, 22.2, 30.9, 13.4, 66.5, 22.4, 22.3, 46.6, 22.3, 31.1, 13.3},
+		[418637] = {21.9, 22.0, 24.2, 36.2, 24.2, 28.6, 25.3},
 		--Scorching Roots
-		[422614] = {38.0, 120.0, 104.5, 120.2},
+		[422614] = {37.3, 110.9},
 		--Raging Inferno
-		[417634] = {101.3, 111.6, 112.1, 111.9},
+		[417634] = {91.0, 101.1},
 		--Igniting Growth (Mythic Only)
-		[425889] = {14.5, 133.6, 90.2, 133.9},
+		[425889] = {14.2, 124.1, 79.0},
 		--Stage 2
 		--Falling Embers
-		[427252] = {7.4, 26.7, 31.8, 25.0, 18.4, 38.5, 23.4},--Had no variations
+		[427252] = {},--Had no variations
 		--FlashFire
-		[427299] = {29.0, 50.1, 30.1, 36.7},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[427299] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
 		--Fire Whirl
-		[427343] = {60.8, 43.4, 50.1},--Had no variation
+		[427343] = {},--Had no variation
 		--Smoldering backdraft
-		[429973] = {14.1, 26.7, 31.7, 25.0, 36.8, 25.0, 18.4},--Had no variations
+		[429973] = {},--Had no variations
 		--Ashen Call
-		[421325] = {20.8, 58.4, 56.9},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[421325] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
 		--Ashen Devestation
-		[428901] = {47.4, 68.6},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[428901] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
 	},
 	["heroic"] = {
 		--Stage 1 (same as mythic stage 1 likely)
@@ -174,8 +175,7 @@ local allTimers = {
 		--Scorching Roots
 		[422614] = {37.3, 110.3, 92.2},
 		--Raging Inferno
-		[417634] = {101.7, 112.8},
-				  --104.2
+		[417634] = {90, 101.9},
 		--Stage 2
 		--Falling Embers
 		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
@@ -188,7 +188,7 @@ local allTimers = {
 		[427343] = {54.0, 40.9, 32.5, 36.6, 36.7, 39.1},
 				  --54.1, 40.9, 32.4, 36.7, 36.6, 39.2
 		--Smoldering backdraft
-		[429973] = {14.0, 25.9, 30.0, 19.1, 29.2, 20.7, 25.0, 24.2, 25.0, 26.7},--Lowest times used of variations
+		[429973] = {14.0, 25.9, 30.0, 19.1, 29.2, 20.7, 25.0, 24.1, 25.0, 26.7},--Lowest times used of variations
 				  --14.0, 25.9, 30.0, 19.2, 29.2, 25.8, 25.0, 24.2, 25.0, 26.7
 				  --14.1, 25.9, 30.0, 19.1, 29.2, 20.7, 30.0, 24.1, 25.0, 26.7
 		--Ashen Call
@@ -256,8 +256,7 @@ function mod:OnCombatStart(delay)
 		timerIgnitingGrowthCD:Start(14.4-delay, 1)
 		timerFuriousChargeCD:Start(22.3-delay, 1)
 		timerBlazingThornsCD:Start(31.3-delay, 1)
-		timerScorchingRootsCD:Start(38-delay, 1)
-		timerRagingInfernoCD:Start(101-delay, 1)
+		timerScorchingRootsCD:Start(38-delay, 1)s
 	elseif self:IsHeroic() then
 		--Pretty much same as mythic
 		difficultyName = "heroic"
@@ -265,15 +264,14 @@ function mod:OnCombatStart(delay)
 		timerFuriousChargeCD:Start(21.9-delay, 1)
 		timerBlazingThornsCD:Start(30.7-delay, 1)
 		timerScorchingRootsCD:Start(37.3-delay, 1)
-		timerRagingInfernoCD:Start(101-delay, 1)
 	else--Only normal vetted
 		difficultyName = "normal"
 		timerFieryForceofNatureCD:Start(6.1-delay, 1)
 		timerFuriousChargeCD:Start(22-delay, 1)
 		timerBlazingThornsCD:Start(30.8-delay, 1)
 		timerScorchingRootsCD:Start(37.4-delay, 1)
-		timerRagingInfernoCD:Start(90.5-delay, 1)
 	end
+	timerRagingInfernoCD:Start(90.5-delay, 1)
 end
 
 --function mod:OnCombatEnd()
@@ -618,6 +616,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 417668 and self:AntiSpam(3, 5) then
 		warnRenewedTreant:Show()
 	elseif spellId == 418655 and self:AntiSpam(3, 6) then
-		--Roots healing warning
+		specWarnCharredBrambles:Show()
+		specWarnCharredBrambles:Play("healfull")
 	end
 end
