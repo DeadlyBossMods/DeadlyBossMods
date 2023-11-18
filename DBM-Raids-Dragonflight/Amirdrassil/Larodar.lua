@@ -256,7 +256,7 @@ function mod:OnCombatStart(delay)
 		timerIgnitingGrowthCD:Start(14.4-delay, 1)
 		timerFuriousChargeCD:Start(22.3-delay, 1)
 		timerBlazingThornsCD:Start(31.3-delay, 1)
-		timerScorchingRootsCD:Start(38-delay, 1)s
+		timerScorchingRootsCD:Start(38-delay, 1)
 	elseif self:IsHeroic() then
 		--Pretty much same as mythic
 		difficultyName = "heroic"
