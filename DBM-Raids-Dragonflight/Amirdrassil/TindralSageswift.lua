@@ -12,9 +12,9 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 421603 426016 424140 423265",
+	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 426016 424140 423265",
 	"SPELL_CAST_SUCCESS 424495",
-	"SPELL_AURA_APPLIED 422000 424581 424495 420540 425582 424258 422115 424579 424665 424180 422509 424582 424140",--424580 426686 420238
+	"SPELL_AURA_APPLIED 422000 424581 424495 420540 425582 424258 422115 424579 424665 424180 422509 424582 424140 421603",--424580 426686 420238
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
 	"SPELL_AURA_REMOVED 424581 421603 424180 422115 424140",--424580
 --	"SPELL_AURA_REMOVED_DOSE",
@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
  or ability.id = 424495 and type = "cast"
  or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
+ or ability.id = 421603
 --]]
 --TODO, https://www.wowhead.com/ptr-2/spell=425888/igniting-growth ?
 --TODO, review dream essence for spam
@@ -47,7 +48,7 @@ local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, nil, nil,
 --local warnPoisonousMushroomDebuff					= mod:NewTargetNoFilterAnnounce(426686, 4)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
-local warnIncarnationOwl							= mod:NewCountAnnounce(425582, 4)
+local warnIncarnationOwl							= mod:NewCountAnnounce(425582, 4, nil, nil, 302954)
 
 local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, nil, 1, 2)
 --local specWarnBlazingMushroom						= mod:NewSpecialWarningSoakCount(423260, "Tank", nil, nil, 2, 2)--Tank default for sure, anyone else can enable
@@ -64,7 +65,7 @@ local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, 
 local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
-local timerOwlCD									= mod:NewNextCountTimer(20, 425582, 425607, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Flare bomb" (what owl phase is)
+local timerOwlCD									= mod:NewNextCountTimer(20, 425582, 302954, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
 
 mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
 ----Moonkin of the Flame
@@ -212,57 +213,57 @@ local allTimers = {
 		},
 	},
 	["mythic"] = {
-		[1] = {
+		[1] = {--VODDED Timers
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {9.8, 45.0},
+			[423260] = {18, 40},
 			--Fiery Growth
-			[424581] = {24.0, 42.9},
+			[424581] = {21, 40},
 			--Falling Stars
-			[420236] = {5.8, 44.1},
-			--Mass Entanglement
-			[424495] = {21.9, 22.0, 21.0},
+			[420236] = {14, 40},
+			--Mass Entanglement (Roots)
+			[424495] = {27, 20, 20},
 			--Moonkin Form
-			[420540] = {25.9, 43.0},
+			[420540] = {},
 			--Fire Beam
-			[421398] = {29.9, 48.0},
+			[421398] = {7, 26, 7, 33},
 			--Owl Form (mythic)
-			[425582] = {14.8, 44.0},
+			[425582] = {21, 42},
 		},
-		[2] = {
+		[2] = {--VODDED Timers
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {22.7, 34.1},
+			[423260] = {23, 48},
 			--Fiery Growth
-			[424581] = {24.7, 51.0},
+			[424581] = {26, 23, 25},
 			--Falling Stars
-			[420236] = {31.6, 23.0, 24.0},
+			[420236] = {20, 36, 39},
 			--Mass Entanglement
-			[424495] = {13.7, 32.0, 26.0},
+			[424495] = {32, 31, 21},
 			--Tree Form
-			[422115] = {34.1, 48.5},
-			--Flaming Germination
-			[423265] = {34.3, 53.4},
+			[422115] = {36, 22, 30},
+			--Flaming Germination (Seeds)
+			[423265] = {37, 22, 30},
 			--Owl Form (mythic)
-			[425582] = {9.6, 55.8},
+			[425582] = {28, 52},
 		},
-		[3] = {
+		[3] = {--VODDED Timers
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {26.9},
+			[423260] = {},--Not cast with 1 person alive?
 			--Fiery Growth
-			[424581] = {30.9, 22.0},
+			[424581] = {},--Not cast with 1 person alive?
 			--Falling Stars
-			[420236] = {38.9},
+			[420236] = {20},
 			--Mass Entanglement
-			[424495] = {6.9},
+			[424495] = {24},
 			--Moonkin Form
-			[420540] = {15.9},
+			[420540] = {29},
 			--Tree Form
-			[422115] = {41.4},
+			[422115] = {37},
 			--Fire Beam
-			[421398] = {18.9},
+			[421398] = {31},
 			--Flaming Germination
-			[423265] = {42.9},
+			[423265] = {37},
 			--Owl Form (mythic)
-			[425582] = {9.1, 49.8},
+			[425582] = {22},
 		},
 	},
 }
@@ -281,14 +282,14 @@ function mod:OnCombatStart(delay)
 	self.vb.tranqCount = 0
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerFallingStarsCD:Start(5.8-delay, 1)
-		timerBlazingMushroomCD:Start(9.8-delay, 1)
-		timerOwlCD:Start(14.8-delay, 1)
-		timerMassEntanglementCD:Start(21.9-delay, 1)
-		timerFieryGrowthCD:Start(24-delay, 1)
-		timerMoonkinCD:Start(25.9-delay, 1)
-		timerFirebeamCD:Start(39.9, 1)
-		timerPhaseCD:Start(85.8-delay, 1.5)
+		timerFirebeamCD:Start(7, 1)
+		timerFallingStarsCD:Start(14-delay, 1)
+		timerBlazingMushroomCD:Start(18-delay, 1)
+		timerOwlCD:Start(21-delay, 1)
+		timerFieryGrowthCD:Start(21-delay, 1)
+		timerMassEntanglementCD:Start(27-delay, 1)
+--		timerMoonkinCD:Start(25.9-delay, 1)
+		timerPhaseCD:Start(80-delay, 1.5)--Cast Start
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerFallingStarsCD:Start(6.1-delay, 1)
@@ -297,7 +298,7 @@ function mod:OnCombatStart(delay)
 		timerFieryGrowthCD:Start(25.1-delay, 1)
 		timerMoonkinCD:Start(28.1-delay, 1)
 		timerFirebeamCD:Start(34.0, 1)
-		timerPhaseCD:Start(80.1-delay, 1.5)
+		timerPhaseCD:Start(80.1-delay, 1.5)--Cast start
 --	elseif self:IsNormal() then
 --		difficultyName = "normal"
 	else
@@ -309,7 +310,7 @@ function mod:OnCombatStart(delay)
 		timerFallingStarsCD:Start(24.1-delay, 1)
 		timerMoonkinCD:Start(29.1-delay, 1)
 		timerFirebeamCD:Start(34.1, 1)
-		timerPhaseCD:Start(80.1-delay, 1.5)
+		timerPhaseCD:Start(79.1-delay, 1.5)--Applied (cast start not in combat log on normal)
 	end
 end
 
@@ -373,20 +374,6 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.beamCount+1)
 		if timer then
 			timerFirebeamCD:Start(timer, self.vb.beamCount+1)
-		end
-	elseif spellId == 421603 then--Incarnation of Owl cast time (likely intermission)
-		timerBlazingMushroomCD:Stop()
-		timerFieryGrowthCD:Stop()
-		timerFallingStarsCD:Stop()
-		timerMassEntanglementCD:Stop()
-		if self:GetStage(1) then
-			self:SetStage(1.5)
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
-			warnPhase:Play("phasechange")
-		else
-			self:SetStage(2.5)
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
-			warnPhase:Play("phasechange")
 		end
 	elseif spellId == 426016 or spellId == 424140 then
 		warnSuperNova:Show()
@@ -490,6 +477,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSeedofFlame:Cancel()
 			warnSeedofFlame:Schedule(1, args.amount or 1)
 		end
+	elseif spellId == 421603 then--Incarnation of Owl (Intermission version)
+		timerBlazingMushroomCD:Stop()
+		timerFieryGrowthCD:Stop()
+		timerFallingStarsCD:Stop()
+		timerMassEntanglementCD:Stop()
+		if self:GetStage(1) then
+			self:SetStage(1.5)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
+			warnPhase:Play("phasechange")
+			timerPhaseCD:Start(41.2, 2)
+		else
+			self:SetStage(2.5)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
+			warnPhase:Play("phasechange")
+			timerPhaseCD:Start(28.1, 3)--28.1-34
+		end
 	elseif spellId == 424180 or spellId == 424140 then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -509,13 +512,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
 			if self:IsMythic() then
-				timerOwlCD:Start(9.6, 1)
-				timerMassEntanglementCD:Start(13.7, 1)
-				timerBlazingMushroomCD:Start(22.7, 1)
-				timerFallingStarsCD:Start(31.6, 1)
-				timerFieryGrowthCD:Start(24.7, 1)
-				timerTreeofFlameCD:Start(34.1, 1)
-				timerFlamingGerminationCD:Start(34.3, 1)--Something is wrong here
+				timerFallingStarsCD:Start(20, 1)
+				timerBlazingMushroomCD:Start(23, 1)
+				timerFieryGrowthCD:Start(26, 1)
+				timerOwlCD:Start(28, 1)
+				timerMassEntanglementCD:Start(32, 1)
+				timerTreeofFlameCD:Start(36, 1)
+				timerFlamingGerminationCD:Start(37, 1)
+				timerPhaseCD:Start(100, 2.5)
 			elseif self:IsHeroic() then--Live Vetted
 				timerMassEntanglementCD:Start(20, 1)
 				timerFallingStarsCD:Start(30, 1)
@@ -523,6 +527,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerFieryGrowthCD:Start(42, 1)
 				timerTreeofFlameCD:Start(46, 1)
 				timerFlamingGerminationCD:Start(55, 1)
+				--timerPhaseCD:Start(100, 2.5)
 			elseif self:IsNormal() then--Live Vetted
 				timerMassEntanglementCD:Start(26, 1)
 				timerFallingStarsCD:Start(36, 1)
@@ -538,7 +543,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerTreeofFlameCD:Start(53, 1)
 				timerFlamingGerminationCD:Start(57, 1)
 			end
---			timerPhaseCD:Start(140, 2.5)--Verify
 		else
 			self:SetStage(3)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
