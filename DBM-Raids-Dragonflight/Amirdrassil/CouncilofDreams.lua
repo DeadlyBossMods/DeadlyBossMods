@@ -374,8 +374,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 418757 then--PolyMorph Bomb Cast on Urctos
 		timerBlindingRage:Stop()
-		timerPolymorphBombCD:Stop()--cancel the recast timer
-		timerNoxiousBlossomCD:Stop()--cancel the recast timer
+		timerPolymorphBombCD:Stop()--cancel the recast timers
+		timerNoxiousBlossomCD:Stop()--cancel the recast timers
 		specialInterrupted(self, spellId)
 	end
 end
@@ -482,6 +482,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 421292 or spellId == 421029 then--Constricting Thicket, Song of the Dragon
 		if spellId == 421292 then
 			self.vb.chargeSpecial = false
+			timerBarrelingChargeCD:Stop()--cancel the recast timers
 		end
 		specialInterrupted(self, spellId)
 	elseif spellId == 420858 then
