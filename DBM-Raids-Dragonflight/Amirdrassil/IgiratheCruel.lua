@@ -263,7 +263,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:IsHard() and self.vb.tormentCount >= 4 then
 			timerTwistingBladeCD:Start(self:IsMythic() and 118.8 or 11.5, self.vb.TwistingTotal+1)--Mythic twisted not seen yet
 			timerBlisteringSpearCD:Start(18.8, self.vb.spearTotal+1)
-			timerMarkedforTormentCD:Start(self:IsMythic() and 119.9 or 54 self.vb.tormentCount+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 119.9 or 54, self.vb.tormentCount+1)
 		else
 			timerBlisteringSpearCD:Start(14, self.vb.spearTotal+1)
 			timerTwistingBladeCD:Start(self:IsMythic() and 94.1 or 77.7, self.vb.TwistingTotal+1)
