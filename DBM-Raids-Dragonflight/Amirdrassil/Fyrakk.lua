@@ -551,7 +551,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.blazeCount = 0
 		self.vb.tankCount = 0
 		self.vb.incarnCount = 0
-		aflameCount = 0
+		self.vb.aflameCount = 0
 		timerSpiritsCD:Start(2)
 		timerFlamefallCD:Start(5.8, 1)
 
