@@ -61,9 +61,9 @@ local specWarnMassEntanglement						= mod:NewSpecialWarningMoveAway(424495, nil,
 --local yellMassEntanglementFades						= mod:NewShortFadesYell(424495)
 
 local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
-local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, nil, nil, nil, 3)
+local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerOwlCD									= mod:NewNextCountTimer(20, 425582, 425607, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Flare bomb" (what owl phase is)
 
 mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
@@ -74,7 +74,7 @@ local warnIncarnationMoonkin						= mod:NewCountAnnounce(420540, 2)
 --local specWarnSunfire								= mod:NewSpecialWarningMoveAway(420238, nil, nil, nil, 1, 2)
 local specWarnFireBeam								= mod:NewSpecialWarningCount(421398, nil, nil, nil, 2, 2)
 
-local timerMoonkinCD								= mod:NewNextCountTimer(20, 420540, nil, false, nil, 6)--Kinda redundant, ability has own timer
+local timerMoonkinCD								= mod:NewNextCountTimer(20, 420540, L.MoonkinForm.." (%s)", false, nil, 6)--Kinda redundant, ability has own timer
 local timerFirebeamCD								= mod:NewNextCountTimer(49, 421398, nil, nil, nil, 3)
 --Intermission: Burning Pursuit
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27500))
@@ -93,10 +93,10 @@ local warnSupressiveEmber							= mod:NewTargetAnnounce(424579, 3, nil, false)
 local warnSeedofFlame								= mod:NewCountAnnounce(424665, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424665))
 
 local specWarnSupressingEmber						= mod:NewSpecialWarningYou(424579, nil, nil, nil, 1, 2)
-local specWarnFlamingGermination					= mod:NewSpecialWarningCount(423265, nil, nil, nil, 2, 2)
+local specWarnFlamingGermination					= mod:NewSpecialWarningCount(423265, nil, 99727, nil, 2, 2)
 
-local timerTreeofFlameCD							= mod:NewNextCountTimer(20, 422115, nil, false, nil, 6)--Kinda redundant, ability has own timer
-local timerFlamingGerminationCD						= mod:NewNextCountTimer(20, 423265, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerTreeofFlameCD							= mod:NewNextCountTimer(20, 422115, L.TreeForm.." (%s)", false, nil, 6)--Kinda redundant, ability has own timer
+local timerFlamingGerminationCD						= mod:NewNextCountTimer(20, 423265, 99727, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Short name "Flame Seeds"
 local timerSuperNovaCD								= mod:NewNextCountTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --base abilities
@@ -515,7 +515,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerFallingStarsCD:Start(31.6, 1)
 				timerFieryGrowthCD:Start(24.7, 1)
 				timerTreeofFlameCD:Start(34.1, 1)
-				timerFlamingGerminationCD:Start(34.3, 1)
+				timerFlamingGerminationCD:Start(34.3, 1)--Something is wrong here
 			elseif self:IsHeroic() then--Live Vetted
 				timerMassEntanglementCD:Start(20, 1)
 				timerFallingStarsCD:Start(30, 1)

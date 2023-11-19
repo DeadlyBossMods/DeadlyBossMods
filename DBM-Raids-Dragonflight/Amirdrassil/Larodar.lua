@@ -70,8 +70,8 @@ local specWarnScorchingBramblethorn					= mod:NewSpecialWarningYou(426387, nil, 
 local specWarnFuriousCharge							= mod:NewSpecialWarningRun(418637, nil, 100, nil, 4, 2)
 local yellFuriousCharge								= mod:NewShortYell(418637, 100)
 local specWarnNaturesFury							= mod:NewSpecialWarningTaunt(423719, nil, nil, nil, 1, 2)
-local specWarnBlazingThornsSoak						= mod:NewSpecialWarningSoakCount(426206, "-Healer", nil, nil, 1, 2)
-local specWarnBlazingThornsAvoid					= mod:NewSpecialWarningDodgeCount(426206, "-Healer", nil, nil, 1, 2)
+local specWarnBlazingThornsAvoid					= mod:NewSpecialWarningDodgeCount(426206, "-Healer", nil, nil, 1, 2)--Initial cast to dodge
+local specWarnBlazingThornsSoak						= mod:NewSpecialWarningSoakCount(426249, "-Healer", nil, nil, 1, 2)--Follow up orbs to soak
 local specWarnRagingInferno							= mod:NewSpecialWarningMoveTo(417634, nil, 37625, nil, 3, 2)--Shortname Inferno
 
 local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425888, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -340,12 +340,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 426206 then
 		self.vb.thornsCount = self.vb.thornsCount + 1
-		if DBM:UnitDebuff("player", 429032) then--Everlasting Blaze
-			specWarnBlazingThornsAvoid:Show(self.vb.thornsCount)
-			specWarnBlazingThornsAvoid:Play("watchstep")
-		else
-			specWarnBlazingThornsSoak:Show(self.vb.thornsCount)
-			specWarnBlazingThornsSoak:Play("helpsoak")
+		specWarnBlazingThornsAvoid:Show(self.vb.thornsCount)
+		specWarnBlazingThornsAvoid:Play("watchstep")
+		if not DBM:UnitDebuff("player", 429032) then
+			specWarnBlazingThornsSoak:Schedule(4, self.vb.thornsCount)
+			specWarnBlazingThornsSoak:ScheduleVoice(4, "helpsoak")
 		end
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.thornsCount+1)
 		if timer then
