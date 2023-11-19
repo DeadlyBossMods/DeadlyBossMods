@@ -159,7 +159,7 @@ function mod:OnCombatStart(delay)
 		timerShadowflameCleaveCD:Start(22.1-delay, 1)
 		timerControlledBurnCD:Start(33.2-delay, 1)
 	end
-	timerDoomCultivationCD:Start(93-delay, 2, 1)--Technically this variates too based on difficult, but meh, 2-3 sec at most
+	timerDoomCultivationCD:Start(92.2-delay, 2, 1)--Technically this variates too based on difficult, but meh, 2-3 sec at most
 end
 
 --function mod:OnCombatEnd()
