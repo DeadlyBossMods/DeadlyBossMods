@@ -478,7 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 417807 then
 		local amount = args.amount or 1
-		if amount == 1 and self:AntiSpam(6, 2)
+		if amount == 1 and self:AntiSpam(6, 2) then
 			self.vb.aflameCount = self.vb.aflameCount + 1
 			local timer
 			if self:GetStage(1) then
