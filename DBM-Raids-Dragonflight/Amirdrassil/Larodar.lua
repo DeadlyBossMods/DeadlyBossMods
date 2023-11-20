@@ -336,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 			timerFuriousChargeCD:Update(elapsed, total+extend, self.vb.furiousChargeCount+1)
 		end
 	elseif spellId == 426524 then
-		timerFieryFlourishCD:Start(nil, args.sourceGUID)
+		timerFieryFlourishCD:Start(self:IsMythic() and 4.9 or 9.7, args.sourceGUID)
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnForces then
