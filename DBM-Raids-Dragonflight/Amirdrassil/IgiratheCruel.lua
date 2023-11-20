@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200926)
 mod:SetEncounterID(2709)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20231116000000)
+mod:SetHotfixNoticeRev(20231119000000)
 mod:SetMinSyncRevision(20231116000000)
 mod.respawnTime = 29
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 414425 416996 422776 419048 416048 418531 415624",
 	"SPELL_CAST_SUCCESS 424456",
-	"SPELL_AURA_APPLIED 414340 414888 414367 419462 415623 414770 426056",
+	"SPELL_AURA_APPLIED 414340 414888 414367 419462 415623 414770 426056 422961",
 	"SPELL_AURA_APPLIED_DOSE 414340",
-	"SPELL_AURA_REMOVED 414888",--415623
+	"SPELL_AURA_REMOVED 414888 422961",--415623
 	"UNIT_AURA player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -25,6 +25,8 @@ mod:RegisterEventsInCombat(
 (ability.id = 414425 or ability.id = 416996 or ability.id = 422776 or ability.id = 419048 or ability.id = 416048 or ability.id = 418531 or ability.id = 415624) and type = "begincast"
  or ability.id = 424456 and type = "cast"
  or ability.id = 415020 or ability.id = 415094 or ability.id = 415090 or ability.id = 425282 or ability.id = 425283 or ability.id = 414357
+ or ability.id = 422961 or ability.id = 301495
+ or ability.id = 415623 and type = "applydebuff"
 --]]
 --TODO, secondary warning for https://wowhead.com/ptr-2/spell=424347 ?
 --TODO, Smashing Viscera is a hidden aura that's not logged, but UNIT_AURA might work
@@ -61,6 +63,8 @@ local specWarnVitalRupture							= mod:NewSpecialWarningYou(426056, nil, nil, ni
 
 local timerBlisteringSpearCD						= mod:NewCDCountTimer(49, 414888, 282481, nil, nil, 3)--Short text "Spears"
 local timerTwistingBladeCD							= mod:NewCDCountTimer(20.6, 416996, 138737, nil, nil, 3)--Short Text "Blades"
+
+local timerMarkedforTorment							= mod:NewCastTimer(20, 422776, 99256, nil, nil, 2)--Short text "Torment"
 local timerMarkedforTormentCD						= mod:NewCDCountTimer(49, 422776, 99256, nil, nil, 6)--Short text "Torment"
 --Torments
 local timerUmbralDestructionCD						= mod:NewCDCountTimer(49, 416048, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)--Shorttext "Soak"
@@ -70,9 +74,9 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnBlisteringSpear", 414888, false, false, {1, 2, 3, 4, 5, 6})
 
-local blisteringMythicTimers = {38.5, 32.7, 35.1, 20.2}
-local blisteringHeroicTimers = {38.5, 23.1, 23.1, 23.1, 21.1}
-local blisteringEasyTimers = {38.5, 30.4, 40.1, 20.7}
+local blisteringMythicTimers = {14, 32.1, 35.1, 20.2}
+local blisteringHeroicTimers = {14, 23.0, 23.0, 22.5, 20.2}
+local blisteringEasyTimers = {14, 30.3, 40.0, 20.6}
 
 mod.vb.spearCount = 0--used for sequencing
 mod.vb.spearTotal = 0--Used for timer text
@@ -98,11 +102,12 @@ function mod:OnCombatStart(delay)
 		timerBlisteringSpearCD:Start(4.5-delay, 1)
 		timerTwistingBladeCD:Start(15.4-delay, 1)
 		timerMarkedforTormentCD:Start(45.8-delay, 1)
-		berserkTimer:Start(420-delay)
+		berserkTimer:Start(420-delay)--430 if a specific weapon combo is done 3rd
 	else
 		timerBlisteringSpearCD:Start(10.6-delay, 1)
 		timerTwistingBladeCD:Start(4.5-delay, 1)
 		timerMarkedforTormentCD:Start(45-delay, 1)
+		berserkTimer:Start(600-delay)
 	end
 end
 
@@ -112,9 +117,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spearCount = self.vb.spearCount + 1
 		self.vb.spearTotal = self.vb.spearTotal + 1
 		self.vb.spearIcon = 1
-		--If initial itmers, or out of weapons on heroic and later, loop base Cd
-		if (self.vb.tormentCount == 0 and self.vb.spearCount == 1) or (self:IsHard() and self.vb.tormentCount >= 3 and self.vb.TwistingCount >= 2) then
+		--If initial timer before any weapons
+		if (self.vb.tormentCount == 0 and self.vb.spearCount == 1) then
 			timerBlisteringSpearCD:Start(20.5, self.vb.spearTotal+1)
+		--WHen out of weapons
+		elseif self:IsHard() and self.vb.tormentCount >= 4 then
+			timerBlisteringSpearCD:Start(30, self.vb.spearTotal+1)
 		elseif self.vb.tormentCount >= 1 then--Timers will follow sequence of event during active weapons basically
 			local timer = self:IsMythic() and blisteringMythicTimers[self.vb.spearCount+1] or self:IsHeroic() and blisteringHeroicTimers[self.vb.spearCount+1] or blisteringEasyTimers[self.vb.spearCount+1]
 			if timer then
@@ -126,25 +134,17 @@ function mod:SPELL_CAST_START(args)
 		self.vb.TwistingTotal = self.vb.TwistingTotal + 1
 		specWarnTwistingBlade:Show(self.vb.TwistingTotal)
 		specWarnTwistingBlade:Play("watchstep")
+		--Changes to 25.5 when out of weapons
+		if self:IsHard() and self.vb.tormentCount >= 4 then
+			timerTwistingBladeCD:Start(25.5, self.vb.TwistingTotal+1)
 		--Always two Twisting blades in each set, so if count 1 then always start 2nd timer
-		--Else, only start timer here if out of weapons and it'll go beyond 2 casts
-		if self.vb.TwistingCount == 1 or (self:IsHard() and self.vb.tormentCount >= 3 and self.vb.TwistingCount >= 2) then
+		elseif self.vb.TwistingCount == 1 then
 			timerTwistingBladeCD:Start(20.6, self.vb.TwistingTotal+1)
 		end
 	elseif spellId == 422776 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		warnMarkedforTorment:Show(self.vb.tormentCount)
 		self:SetStage(self.vb.tormentCount)--Matching BW behavior which is kinda meh, but WA parity is needed
-		if not self:IsEasy() and self.vb.tormentCount >= 4 then
-			timerMarkedforTormentCD:Start(70, self.vb.tormentCount+1)
-		else
-			timerMarkedforTormentCD:Start(self:IsMythic() and 145 or 139.3, self.vb.tormentCount+1)
-		end
-		--Handle initial timer resets
-		self.vb.spearCount = 0
-		self.vb.TwistingCount = 0
-		timerBlisteringSpearCD:Start(38.5, self.vb.spearTotal+1)
-		timerTwistingBladeCD:Start(self:IsMythic() and 118.8 or 73.6, self.vb.TwistingTotal+1)
 	elseif spellId == 419048 then
 		specWarnRuinousEnd:Show()
 		specWarnRuinousEnd:Play("aesoon")
@@ -163,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 415624 and self:AntiSpam(8, 1) then
 		self.vb.heartCount = self.vb.heartCount + 1
 		if self.vb.heartCount == 1 then
-			timerHeartStopperCD:Start(self:IsMythic() and 32.7 or self:IsHeroic() and 25 or 30, 2)
+			timerHeartStopperCD:Start(self:IsMythic() and 32.7 or self:IsHeroic() and 25 or 30, 2)--Cast start only in combat log on mythic
 		end
 	end
 end
@@ -220,7 +220,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(8, 1) then
 			self.vb.heartCount = self.vb.heartCount + 1
 			if self.vb.heartCount == 1 then
-				timerHeartStopperCD:Start(30, 2)
+				timerHeartStopperCD:Start(self:IsMythic() and 32.7 or self:IsHeroic() and 25 or 30, 2)--Cast start not in combat log on non mythic
 			end
 		end
 		if args:IsPlayer() then
@@ -240,6 +240,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVitalRupture:Show()
 			specWarnVitalRupture:Play("targetyou")
 		end
+	elseif spellId == 422961 then--Torment Beginning
+		timerMarkedforTorment:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -252,6 +254,20 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellBlisteringSpearFades:Cancel()
+		end
+	elseif spellId == 422961 then--Torment Ending
+		timerMarkedforTorment:Stop()
+		--Handle initial timer resets
+		self.vb.spearCount = 0
+		self.vb.TwistingCount = 0
+		if self:IsHard() and self.vb.tormentCount >= 4 then
+			timerTwistingBladeCD:Start(self:IsMythic() and 118.8 or 11.5, self.vb.TwistingTotal+1)--Mythic twisted not seen yet
+			timerBlisteringSpearCD:Start(18.8, self.vb.spearTotal+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 119.9 or 54, self.vb.tormentCount+1)
+		else
+			timerBlisteringSpearCD:Start(14, self.vb.spearTotal+1)
+			timerTwistingBladeCD:Start(self:IsMythic() and 94.1 or 77.7, self.vb.TwistingTotal+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 120 or 114.9, self.vb.tormentCount+1)
 		end
 	end
 end
@@ -273,12 +289,16 @@ do
 	end
 end
 
+-- "<72.49 22:05:33> [CLEU] SPELL_AURA_REMOVED#Creature-0-4251-2549-21526-200926-000057D47F#Igira the Cruel#Creature-0-4251-2549-21526-207999-000057D47F#Flesh Mortification#422961#Marked for Torment#BUFF#nil",
+-- "<77.51 22:05:38> [UNIT_SPELLCAST_SUCCEEDED] Igira the Cruel(72.7%-0.0%){Target:??} -Axe Knife Stance- [[boss1:Cast-3-4251-2549-21526-425282-004257D59D:425282]]",
+--<217.25 22:07:58> [CLEU] SPELL_AURA_REMOVED#Creature-0-4251-2549-21526-200926-000057D47F#Igira the Cruel#Creature-0-4251-2549-21526-207999-000057D47F#Flesh Mortification#422961#Marked for Torment#BUFF#nil",
+--"<222.27 22:08:03> [UNIT_SPELLCAST_SUCCEEDED] Igira the Cruel(34.2%-0.0%){Target:??} -Axe Sword Stance- [[boss1:Cast-3-4251-2549-21526-425283-001757D62E:425283]]",
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Non Mythic specific weapon handling
 	if spellId == 415020 then--Sword Stance
 		self.vb.smashingCount = 0
 		warnSmashingVisceraSoon:Show()
-		timerSmashingVisceraCD:Start(19, 1)
+		timerSmashingVisceraCD:Start(19.9, 1)
 	elseif spellId == 415094 then--Knife Stance
 		self.vb.heartCount = 0
 		warnHeartstopperSoon:Show()
@@ -286,29 +306,29 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 415090 then--Axe Stance
 		self.vb.umbralCount = 0
 		warnUmbralDestructionSoon:Show()
-		timerUmbralDestructionCD:Start(19, 1)
+		timerUmbralDestructionCD:Start(18.8, 1)
 	--Mythic specific weapon handling
 	elseif spellId == 425282 then--Axe Knife Stance
 		self.vb.umbralCount = 0
 		self.vb.heartCount = 0
 		warnUmbralDestructionSoon:Show()
 		warnHeartstopperSoon:Show()
-		timerHeartStopperCD:Start(22.6, 1)--Could be way off, totally extrapolated using marked for torment as timestamp then adjusting 30 sec difference
-		timerUmbralDestructionCD:Start(26.6, 1)--^^
+		timerHeartStopperCD:Start(21.2, 1)
+		timerUmbralDestructionCD:Start(25.2, 1)
 	elseif spellId == 425283 then--Axe Sword Stance
 		self.vb.smashingCount = 0
 		self.vb.umbralCount = 0
 		warnSmashingVisceraSoon:Show()
 		warnUmbralDestructionSoon:Show()
-		timerUmbralDestructionCD:Start(18.5, 1)--Could be way off, totally extrapolated using marked for torment as timestamp then adjusting 30 sec difference
-		timerSmashingVisceraCD:Start(25, 1)----^^
+		timerUmbralDestructionCD:Start(18.8, 1)
+		timerSmashingVisceraCD:Start(25.3, 1)
 	elseif spellId == 414357 then--Sword Knife Stance
 		self.vb.smashingCount = 0
 		self.vb.heartCount = 0
 		warnSmashingVisceraSoon:Show()
 		warnHeartstopperSoon:Show()
-		timerHeartStopperCD:Start(18.5, 1)--Could be way off, totally extrapolated using marked for torment as timestamp then adjusting 30 sec difference
-		timerSmashingVisceraCD:Start(22.5, 1)--^^
+		timerHeartStopperCD:Start(18.8, 1)
+		timerSmashingVisceraCD:Start(22.8, 1)
 	end
 end
 

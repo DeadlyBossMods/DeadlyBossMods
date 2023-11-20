@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(208445)
 mod:SetEncounterID(2731)
 mod:SetUsedIcons(6, 7, 8)
-mod:SetHotfixNoticeRev(20231115000000)
+mod:SetHotfixNoticeRev(20231119000000)
 mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
 
@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 429973 421325",
-	"SPELL_CAST_SUCCESS 417653 419485 427299 428901",
-	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 418520 429032 428946 428901",--421407
+	"SPELL_CAST_SUCCESS 417653 419485 427299",
+	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 418520 429032 428946",--421407
 	"SPELL_AURA_APPLIED_DOSE 426249 426256 418520 429032 428946",--421407
-	"SPELL_AURA_REMOVED 421316 427299 421594 428901",
+	"SPELL_AURA_REMOVED 421316 427299 421594",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 417632",
 	"SPELL_PERIODIC_MISSED 417632",
@@ -78,7 +78,7 @@ local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425888, DBM_COMMON_L
 local timerFieryForceofNatureCD						= mod:NewCDCountTimer(11.8, 417653, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerFieryFlourishCD							= mod:NewCDNPTimer(11.8, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerScorchingRootsCD							= mod:NewCDCountTimer(49, 422614, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
-local timerFuriousChargeCD							= mod:NewCDCountTimer(49, 418637, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--SN "Charge"
+local timerFuriousChargeCD							= mod:NewCDCountTimer(22.5, 418637, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--SN "Charge"
 local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerRagingInfernoCD							= mod:NewCDCountTimer(49, 417634, 37625, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--SN "Inferno"
 
@@ -138,31 +138,61 @@ local allTimers = {
 	["mythic"] = {
 		--Stage 1
 		--Fiery Force of Nature
-		[417653] = {6.5, 105.4, 97.7},
+		[417653] = {6.5, 104.9, 97.7},
+				--	6.6, 105.5, 98.3
+				--	6.5, 104.9, 98.8
+				--	6.6, 104.9, 98.6
 		--Blazing Thorns
-		[426206] = {30.7, 24.2, 24.2, 38.4, 52.8},
-
+		[426206] = {30.7, 24.2, 24.2, 37.3, 52.7, 64.4, 24.2, 24.2, 46.5, 65.5},
+				--	30.7, 24.2, 24.2, 38.5, 52.8, 64.3, 24.2
+				--	30.7, 24.2, 24.2, 38.0, 52.6, 64.7, 24.2, 24.1
+				--	30.8, 24.2, 24.2, 37.8, 52.8, 64.5, 24.2
 		--Furious Charge
-		[418637] = {21.9, 22.0, 24.2, 36.2, 24.2, 28.6, 25.3},
+		--[418637] = {21.9, 22.0, 24.2, 24.2, 24.2, 28.6, 25.2},--Wildly variant, no longer used, auto corrected elsewhere
+				--	21.9, 22.0, 24.2, 36.2, 24.2, 28.6, 25.3
+				--	21.9, 24.2, 35.1, 24.2, 28.6, 25.2, 43.5, 22.0, 24.2, 22.50, 46.60, 22.30, 31.10, 13.30
+				--	22.0, 22.0, 24.2, 35.6, 24.2, 28.6, 25.2, 43.7, 21.9
 		--Scorching Roots
-		[422614] = {37.3, 110.9},
-		--Raging Inferno
-		[417634] = {91.0, 101.1},
+		[422614] = {37.3, 110.3, 92.8, 120.2},
+				--	37.3, 110.9, 93.0, 120.2
+				--	37.3, 111.0, 92.8
+				--	37.3, 110.5, 93.3
+				--	37.4, 110.3, 93.1
 		--Igniting Growth (Mythic Only)
-		[425889] = {14.2, 124.1, 79.0},
+		[425889] = {14.2, 123.5, 79.0},
+				--	14.2, 124.1, 79.0
+				--	14.3, 124.2, 79.6
+				--	14.3, 123.5, 79.9
 		--Stage 2
 		--Falling Embers
-		[427252] = {},--Had no variations
+		[427252] = {7.4, 26.7, 35.9, 21.7, 18.4, 38.5, 23.4},
+				--	7.4, 26.7, 35.9, 21.7
+				--	7.4, 26.7, 35.9, 21.8
+				--	7.4, 26.7, 35.9, 21.7
+
 		--FlashFire
-		[427299] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[427299] = {29.0, 50.1, 27.6, 50.2},
+				--	29.0, 50.1, 36.7, 50.2
+				--	29.0, 51.8, 27.6
+				--	29.0, 51.8
+				--	29.0, 51.8
 		--Fire Whirl
-		[427343] = {},--Had no variation
+		[427343] = {59.1, 32.5, 50.2},
+				--	60.8, 32.5, 50.2
+				--	59.1, 38.4
+				--	59.1, 38.
 		--Smoldering backdraft
-		[429973] = {},--Had no variations
+		[429973] = {14.0, 25.8, 19.2, 21.7, 16.7, 25.10, 18.4},
+				--	14.0, 25.8, 19.2, 21.7, 16.7, 25.10, 18.4
+				--	14.0, 25.9, 24.2, 21.7, 16.7
+				--	14.1, 25.9, 24.2, 21.8, 16.7
+				--	14.0, 25.9, 24.2, 21.7
 		--Ashen Call
-		[421325] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[421325] = {20.7, 55.1, 56.9},
+				--	20.7, 55.1, 56.9
+				--	20.7, 55.1
 		--Ashen Devestation
-		[428901] = {},--Lowest of each used until can figure out how to detect which sequence is used on demand
+		[428896] = {45.4, 68.5},--Lowest of each used until can figure out how to detect which sequence is used on demand
 	},
 	["heroic"] = {
 		--Stage 1 (same as mythic stage 1 likely)
@@ -174,8 +204,6 @@ local allTimers = {
 		[418637] = {21.9, 22.0, 24.2, 35.6, 24.2, 28.5, 25.3, 42.8, 22.0},
 		--Scorching Roots
 		[422614] = {37.3, 110.3, 92.2},
-		--Raging Inferno
-		[417634] = {90, 101.9},
 		--Stage 2
 		--Falling Embers
 		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
@@ -205,8 +233,6 @@ local allTimers = {
 		[418637] = {22.0, 22.0, 24.2, 35.6, 24.2, 28.6, 25.3},
 		--Scorching Roots
 		[422614] = {37.4, 110.3},
-		--Raging Inferno
-		[417634] = {90.5},
 		--Stage 2 (Seems to be same as Heroic)
 		--Falling Embers
 		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
@@ -253,10 +279,10 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerFieryForceofNatureCD:Start(6.5-delay, 1)
-		timerIgnitingGrowthCD:Start(14.4-delay, 1)
-		timerFuriousChargeCD:Start(22.3-delay, 1)
-		timerBlazingThornsCD:Start(31.3-delay, 1)
-		timerScorchingRootsCD:Start(38-delay, 1)
+		timerIgnitingGrowthCD:Start(14.2-delay, 1)
+		timerFuriousChargeCD:Start(21.9-delay, 1)
+		timerBlazingThornsCD:Start(30.7-delay, 1)
+		timerScorchingRootsCD:Start(37.3-delay, 1)
 	elseif self:IsHeroic() then
 		--Pretty much same as mythic
 		difficultyName = "heroic"
@@ -301,6 +327,13 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerIgnitingGrowthCD:Start(timer, self.vb.ignitingCount+1)
 		end
+		--Charge timer correction
+		if timerFuriousChargeCD:GetRemaining(self.vb.furiousChargeCount+1) < 7.7 then
+			local elapsed, total = timerFuriousChargeCD:GetTime(self.vb.furiousChargeCount+1)
+			local extend = 7.7 - (total-elapsed)
+			DBM:Debug("timerFuriousChargeCD extended by: "..extend, 2)
+			timerFuriousChargeCD:Update(elapsed, total+extend, self.vb.furiousChargeCount+1)
+		end
 	elseif spellId == 426524 then
 --		timerFieryFlourishCD:Start(nil, args.sourceGUID)
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
@@ -334,10 +367,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnFuriousCharge:Play("justrun")
 			yellFuriousCharge:Yell()
 		end
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.furiousChargeCount+1) or 20
-		if timer then
-			timerFuriousChargeCD:Start(timer, self.vb.furiousChargeCount+1)
-		end
+		--local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.furiousChargeCount+1) or 22
+		--if timer then
+		--	timerFuriousChargeCD:Start(timer, self.vb.furiousChargeCount+1)
+		--end
+		timerFuriousChargeCD:Start(22.0, self.vb.furiousChargeCount+1)
 	elseif spellId == 426206 then
 		self.vb.thornsCount = self.vb.thornsCount + 1
 		specWarnBlazingThornsAvoid:Show(self.vb.thornsCount)
@@ -354,9 +388,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.infernoCount = self.vb.infernoCount + 1
 		specWarnRagingInferno:Show(DBM_COMMON_L.SHIELD)
 		specWarnRagingInferno:Play("findshield")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.infernoCount+1) or 101.8
-		if timer then
-			timerRagingInfernoCD:Start(timer, self.vb.infernoCount+1)
+		timerRagingInfernoCD:Start(101, self.vb.infernoCount+1)
+		--Charge timer correction
+		if timerFuriousChargeCD:GetRemaining(self.vb.furiousChargeCount+1) < 13 then
+			local elapsed, total = timerFuriousChargeCD:GetTime(self.vb.furiousChargeCount+1)
+			local extend = 13 - (total-elapsed)
+			DBM:Debug("timerFuriousChargeCD extended by: "..extend, 2)
+			timerFuriousChargeCD:Update(elapsed, total+extend, self.vb.furiousChargeCount+1)
 		end
 	elseif spellId == 427252 then
 		self.vb.scorchingRootCount = self.vb.scorchingRootCount + 1
@@ -416,12 +454,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerFlashFireCD:Start(timer, self.vb.thornsCount+1)
 		end
-	elseif spellId == 428901 and self:AntiSpam(5, 2) then
-		self.vb.ignitingCount = self.vb.ignitingCount + 1
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.ignitingCount+1)
-		if timer then
-			timerAshenDevestationCD:Start(timer, self.vb.ignitingCount+1)
-		end
+--	elseif spellId == 428901 and self:AntiSpam(5, 2) then
+--		self.vb.ignitingCount = self.vb.ignitingCount + 1
+--		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.ignitingCount+1)
+--		if timer then
+--			timerAshenDevestationCD:Start(timer, self.vb.ignitingCount+1)
+--		end
 	end
 end
 
@@ -547,11 +585,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase:Play("ptwo")
 		if self:IsMythic() then
 			timerFallingEmbersCD:Start(7.4, 1)
-			timerSmolderingBackdraftCD:Start(14.1, 1)
-			timerAshenCallCD:Start(20.8, 1)
+			timerSmolderingBackdraftCD:Start(14.0, 1)
+			timerAshenCallCD:Start(20.7, 1)
 			timerFlashFireCD:Start(29, 1)
-			timerAshenDevestationCD:Start(47.4, 1)
-			timerFireWhirlCD:Start(60, 1)
+			timerAshenDevestationCD:Start(45.4, 1)
+			timerFireWhirlCD:Start(59.1, 1)
 		elseif self:IsHeroic() then
 			timerFallingEmbersCD:Start(7.4, 1)
 			timerSmolderingBackdraftCD:Start(14, 1)
@@ -617,5 +655,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 418655 and self:AntiSpam(3, 6) then
 		specWarnCharredBrambles:Show()
 		specWarnCharredBrambles:Play("healfull")
+	elseif spellId == 428896 then
+		self.vb.ignitingCount = self.vb.ignitingCount + 1
+		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.ignitingCount+1)
+		if timer then
+			timerAshenDevestationCD:Start(timer, self.vb.ignitingCount+1)
+		end
 	end
 end

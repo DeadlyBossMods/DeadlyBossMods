@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 420846 429108 429180 429615 426855 426519",--426147
+	"SPELL_CAST_START 420846 429108 429180 429615 426855 426519 428471",--426147
 	"SPELL_CAST_SUCCESS 420907 426519 422721",
 	"SPELL_SUMMON 421419 428465",
 	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479 429983",
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 429983 and (type = "applydebuff" or type = "applydebuffstack")
 --]]
 --TODO, Unravel stack tracking in Stage 2?
---TODO, Wait for blizzard to add events for surging and flora to enable warnings/timers
+--NOTE, blizzard has refused adding mythic mechanic to combat log so it can't be accurately supported by this mod
 --Stage One: Rapid Iteration
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28355))
 local warnContinuum									= mod:NewCountAnnounce(420846, 2)
@@ -60,6 +60,7 @@ mod:AddPrivateAuraSoundOption(427722, true, 426519, 1)--Weaver's Burden
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28356))
 local warnFullBloom									= mod:NewCountAnnounce(426855, 2)
 local warnRadialFlourish							= mod:NewCountAnnounce(425370, 2, nil, false)
+local warnWakingDecimation							= mod:NewCountAnnounce(428471, 4)
 
 local specWarnLumberingSlam							= mod:NewSpecialWarningDodge(429108, nil, nil, nil, 2, 2)
 
@@ -78,7 +79,7 @@ mod.vb.surgingCount = 0
 mod.vb.rainCount = 0
 mod.vb.wardenIcon = 7
 mod.vb.bloomCount = 0
-mod.vb.floraCount = 0
+--mod.vb.floraCount = 0
 local castsPerGUID = {}
 local playerInflorescence = false
 
@@ -91,7 +92,7 @@ function mod:OnCombatStart(delay)
 	self.vb.surgingCount = 0
 	self.vb.rainCount = 0
 	self.vb.bloomCount = 0
-	self.vb.floraCount = 0
+--	self.vb.floraCount = 0
 	self.vb.wardenIcon = 7
 	timerSurgingGrowthCD:Start(10, 1)--It's difficult to accurately time, it has no cast event and using soaks is iffy
 	timerWeaversBurdenCD:Start(19, 1)--Start
@@ -139,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 429615 then
 		self.vb.loomCount = self.vb.loomCount + 1
 		specWarnImpendingLoom:Show(self.vb.loomCount)
-		specWarnImpendingLoom:Play("watchstep")
+		specWarnImpendingLoom:Play("farfromline")
 		if self.vb.loomCount % 2 == 1 then
 			timerImpendingLoomCD:Start(nil, self.vb.loomCount+1)
 		end
@@ -160,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 			)
 		end
 	elseif spellId == 429108 or spellId == 429180 then
-		if self:CheckBossDistance(args.sourceGUID, false, nil, 43) then
+		if self:CheckBossDistance(args.sourceGUID, false) then
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
@@ -180,6 +181,8 @@ function mod:SPELL_CAST_START(args)
 --		self.vb.surgingCount = self.vb.surgingCount + 1
 --		warnSurgingGrowth:Show(self.vb.surgingCount)
 --		timerSurgingGrowthCD:Start(nil, self.vb.surgingCount+1)
+	elseif spellId == 428471 then
+		warnWakingDecimation:Show()
 	end
 end
 
