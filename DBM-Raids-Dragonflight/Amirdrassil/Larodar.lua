@@ -69,14 +69,15 @@ local specWarnFieryFlourish							= mod:NewSpecialWarningInterruptCount(426524, 
 local specWarnScorchingBramblethorn					= mod:NewSpecialWarningYou(426387, nil, nil, nil, 1, 2)
 local specWarnFuriousCharge							= mod:NewSpecialWarningRun(418637, nil, 100, nil, 4, 2)
 local yellFuriousCharge								= mod:NewShortYell(418637, 100)
-local specWarnNaturesFury							= mod:NewSpecialWarningTaunt(423719, nil, nil, nil, 1, 2)
+local specWarnFuriousChargePreTaunt					= mod:NewSpecialWarningTaunt(418637, nil, 100, nil, 1, 2)--Taunt on cast start
+local specWarnNaturesFury							= mod:NewSpecialWarningTaunt(423719, nil, nil, nil, 1, 2)--Yell to taunt again if you didn't taunt in pre cast
 local specWarnBlazingThornsAvoid					= mod:NewSpecialWarningDodgeCount(426206, "-Healer", nil, nil, 1, 2)--Initial cast to dodge
 local specWarnBlazingThornsSoak						= mod:NewSpecialWarningSoakCount(426249, "-Healer", nil, nil, 1, 2)--Follow up orbs to soak
 local specWarnRagingInferno							= mod:NewSpecialWarningMoveTo(417634, nil, 37625, nil, 3, 2)--Shortname Inferno
 
 local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425888, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerFieryForceofNatureCD						= mod:NewCDCountTimer(11.8, 417653, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerFieryFlourishCD							= mod:NewCDNPTimer(11.8, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerFieryFlourishCD							= mod:NewCDNPTimer(9.7, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerScorchingRootsCD							= mod:NewCDCountTimer(49, 422614, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerFuriousChargeCD							= mod:NewCDCountTimer(22.5, 418637, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--SN "Charge"
 local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
@@ -335,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 			timerFuriousChargeCD:Update(elapsed, total+extend, self.vb.furiousChargeCount+1)
 		end
 	elseif spellId == 426524 then
---		timerFieryFlourishCD:Start(nil, args.sourceGUID)
+		timerFieryFlourishCD:Start(self:IsMythic() and 4.9 or 9.7, args.sourceGUID)
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnForces then
@@ -366,6 +367,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnFuriousCharge:Show()
 			specWarnFuriousCharge:Play("justrun")
 			yellFuriousCharge:Yell()
+		else
+			--Delayed by half cast to ensure taunt debuff lasts til charge ends
+			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			specWarnFuriousChargePreTaunt:Schedule(1.5, bossTarget)
+			specWarnFuriousChargePreTaunt:ScheduleVoice(1.5, "tauntboss")
 		end
 		--local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.furiousChargeCount+1) or 22
 		--if timer then
@@ -495,8 +501,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 423719 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--May be unnessesary, but precaution for a drycode, remove later
-			specWarnNaturesFury:Show(args.destName)
-			specWarnNaturesFury:Play("tauntboss")
+			--Redundant tanking check done so it doesn't warn to taunt again if you already did in pre cast.
+			if not self:IsTanking("player", "boss1", nil, true) then
+				specWarnNaturesFury:Show(args.destName)
+				specWarnNaturesFury:Play("tauntboss")
+			end
 		end
 	elseif spellId == 421594 then
 		if args:IsPlayer() then

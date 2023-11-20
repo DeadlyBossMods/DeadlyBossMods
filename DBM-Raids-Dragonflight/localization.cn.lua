@@ -102,8 +102,6 @@ L:SetGeneralLocalization({
 	name =	"化身巨龙牢窟小怪"
 })
 
---[[
-----<<<<亚贝鲁斯>>>>----
 ---------------------------
 --  Kazzara -- 卡扎拉
 ---------------------------
@@ -202,7 +200,6 @@ L = DBM:GetModLocalization("AberrusTrash")
 L:SetGeneralLocalization({
 	name =	"亚贝鲁斯小怪"
 })
---]]
 
 ----<<<<阿梅达希尔，梦境之愿>>>>----
 ---------------------------

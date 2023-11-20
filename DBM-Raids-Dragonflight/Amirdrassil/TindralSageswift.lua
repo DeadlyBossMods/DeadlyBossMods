@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209090)--Primary ID
 mod:SetEncounterID(2786)
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(20231115000000)
 mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
@@ -54,7 +54,7 @@ local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, 
 --local specWarnBlazingMushroom						= mod:NewSpecialWarningSoakCount(423260, "Tank", nil, nil, 2, 2)--Tank default for sure, anyone else can enable
 --local specWarnBlazingMushroomAvoid					= mod:NewSpecialWarningDodgeCount(423260, nil, nil, nil, 2, 2)--Everyone default, since it's debuff based
 local specWarnFieryGrowth							= mod:NewSpecialWarningMoveAway(424581, nil, nil, nil, 1, 2)
-local yellFieryGrowth								= mod:NewShortPosYell(424581)
+local yellFieryGrowth								= mod:NewShortPosYell(424581, nil, false, 2)
 local specWarnFallingStars							= mod:NewSpecialWarningCount(420236, nil, nil, nil, 2, 2)
 --local yellFallingStars								= mod:NewShortYell(420236)
 --local yellFallingStarsFades							= mod:NewShortFadesYell(420236)
@@ -67,7 +67,7 @@ local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, ni
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerOwlCD									= mod:NewNextCountTimer(20, 425582, 302954, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
 
-mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3, 4})
 ----Moonkin of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27495))
 local warnIncarnationMoonkin						= mod:NewCountAnnounce(420540, 2)

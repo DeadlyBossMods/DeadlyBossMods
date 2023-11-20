@@ -99,18 +99,6 @@ L:SetGeneralLocalization({
 ---------------------------
 --L= DBM:GetModLocalization(2522)
 
---L:SetWarningLocalization({
---})
---
---L:SetTimerLocalization{
---}
---
---L:SetOptionLocalization({
---})
---
---L:SetMiscLocalization({
---})
-
 ---------------------------
 --  The Amalgamation Chamber --
 ---------------------------
@@ -124,6 +112,10 @@ L:SetOptionLocalization({
 --  The Forgotten Experiments --
 ---------------------------
 --L= DBM:GetModLocalization(2530)
+
+L:SetMiscLocalization({
+	SafeClear		= "安全清除"
+})
 
 ---------------------------
 --  Assault of the Zaqali --
@@ -155,6 +147,11 @@ L:SetOptionLocalization({
 	DoubleSoak			= "僅當第一次連續攻擊結束以後，或其他坦克即將被不安全的擊中時，才顯示嘲諷警告"--Default
 })
 
+L:SetMiscLocalization({
+	pool		= "{rt%d}圈 %d",--<icon> Pool 1,2,3
+	soakpool	= "踩圈"
+})
+
 ---------------------------
 --  The Vigilant Steward, Zskarn --
 ---------------------------
@@ -173,7 +170,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Echo of Neltharion --
 ---------------------------
---L= DBM:GetModLocalization(2523)
+L= DBM:GetModLocalization(2523)
+
+L:SetMiscLocalization({
+	WallBreaker	= "破牆者"
+})
 
 ---------------------------
 --  Scalecommander Sarkareth --

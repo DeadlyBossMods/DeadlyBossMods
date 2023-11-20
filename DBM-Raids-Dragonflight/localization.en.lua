@@ -97,7 +97,6 @@ L:SetGeneralLocalization({
 	name =	"VotI Trash"
 })
 
---[[
 ---------------------------
 --  Kazzara --
 ---------------------------
@@ -200,7 +199,6 @@ L = DBM:GetModLocalization("AberrusTrash")
 L:SetGeneralLocalization({
 	name =	"Aberrus Trash"
 })
---]]
 
 ---------------------------
 --  Amirdrassil, the Dream's Hope --

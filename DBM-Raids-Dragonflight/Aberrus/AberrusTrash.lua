@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("AberrusTrash", "DBM-Aberrus", 1)
+local mod	= DBM:NewMod("AberrusTrash", "DBM-Raids-Dragonflight", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
