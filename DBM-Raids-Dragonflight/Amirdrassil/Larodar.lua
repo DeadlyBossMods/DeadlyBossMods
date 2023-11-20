@@ -69,7 +69,8 @@ local specWarnFieryFlourish							= mod:NewSpecialWarningInterruptCount(426524, 
 local specWarnScorchingBramblethorn					= mod:NewSpecialWarningYou(426387, nil, nil, nil, 1, 2)
 local specWarnFuriousCharge							= mod:NewSpecialWarningRun(418637, nil, 100, nil, 4, 2)
 local yellFuriousCharge								= mod:NewShortYell(418637, 100)
-local specWarnNaturesFury							= mod:NewSpecialWarningTaunt(423719, nil, nil, nil, 1, 2)
+local specWarnFuriousChargePreTaunt					= mod:NewSpecialWarningTaunt(418637, nil, 100, nil, 1, 2)--Taunt on cast start
+local specWarnNaturesFury							= mod:NewSpecialWarningTaunt(423719, nil, nil, nil, 1, 2)--Yell to taunt again if you didn't taunt in pre cast
 local specWarnBlazingThornsAvoid					= mod:NewSpecialWarningDodgeCount(426206, "-Healer", nil, nil, 1, 2)--Initial cast to dodge
 local specWarnBlazingThornsSoak						= mod:NewSpecialWarningSoakCount(426249, "-Healer", nil, nil, 1, 2)--Follow up orbs to soak
 local specWarnRagingInferno							= mod:NewSpecialWarningMoveTo(417634, nil, 37625, nil, 3, 2)--Shortname Inferno
@@ -366,6 +367,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnFuriousCharge:Show()
 			specWarnFuriousCharge:Play("justrun")
 			yellFuriousCharge:Yell()
+		else
+			--Delayed by half cast to ensure taunt debuff lasts til charge ends
+			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			specWarnFuriousChargePreTaunt:Schedule(1.5, bossTarget)
+			specWarnFuriousChargePreTaunt:ScheduleVoice(1.5, "tauntboss")
 		end
 		--local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.furiousChargeCount+1) or 22
 		--if timer then
@@ -495,8 +501,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 423719 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--May be unnessesary, but precaution for a drycode, remove later
-			specWarnNaturesFury:Show(args.destName)
-			specWarnNaturesFury:Play("tauntboss")
+			--Redundant tanking check done so it doesn't warn to taunt again if you already did in pre cast.
+			if not self:IsTanking("player", "boss1", nil, true) then
+				specWarnNaturesFury:Show(args.destName)
+				specWarnNaturesFury:Play("tauntboss")
+			end
 		end
 	elseif spellId == 421594 then
 		if args:IsPlayer() then

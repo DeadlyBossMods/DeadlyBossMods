@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 420846 429108 429180 429615 426855 426519 428471",--426147
-	"SPELL_CAST_SUCCESS 420907 426519 422721",
+	"SPELL_CAST_SUCCESS 420907 426519 422721 429108 429180",
 	"SPELL_SUMMON 421419 428465",
 	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479 429983",
 	"SPELL_AURA_APPLIED_DOSE 420554 428479 429983",
@@ -50,7 +50,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(428474, nil, nil, nil, 1,
 
 local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 --local timerEphemeralFloraCD						= mod:NewAITimer(49, 430563, nil, nil, nil, 3)
-local timerSurgingGrowthCD							= mod:NewCDCountTimer(9, 420971, nil, nil, nil, 3)
+local timerSurgingGrowthCD							= mod:NewCDCountTimer(8, 420971, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
 local timerViridianRainCD							= mod:NewCDCountTimer(19.1, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, 167180, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--ST "Bombs"
 local berserkTimer									= mod:NewBerserkTimer(720)
@@ -95,7 +95,7 @@ function mod:OnCombatStart(delay)
 --	self.vb.floraCount = 0
 	self.vb.wardenIcon = 7
 	timerSurgingGrowthCD:Start(10, 1)--It's difficult to accurately time, it has no cast event and using soaks is iffy
-	timerWeaversBurdenCD:Start(19, 1)--Start
+	timerWeaversBurdenCD:Start(18, 1)--Start
 	timerViridianRainCD:Start(21, 1)
 	timerImpendingLoomCD:Start(24, 1)
 	timerFullBloomCD:Start(70, 1)
@@ -165,7 +165,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
-		timerLumberingSlamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 426519 then
 		self.vb.burdenCount = self.vb.burdenCount + 1
 		warnWeaversBurden:Show(self.vb.burdenCount)
@@ -213,6 +212,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnWeaversBurdenOther:Schedule(0.1, args.destName)
 			specWarnWeaversBurdenOther:ScheduleVoice(0.1, "tauntboss")
 		end
+	elseif spellId == 429108 or spellId == 429180 then
+		timerLumberingSlamCD:Start(15.2, args.sourceGUID)
 --	elseif spellId == 420971 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
 --		warnSurgingGrowth:Show(self.vb.surgingCount)
@@ -275,7 +276,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnBlazingCoalescence:Schedule(1, args.amount or 1)
 			warnLucidVulnerability:Show(args.amount or 1)
 		end
-	elseif spellId == 429983 and self:AntiSpam(5, 2) then
+	elseif spellId == 429983 and self:AntiSpam(5, 2) and self.vb.phase % 2 == 1 then
 		self.vb.surgingCount = self.vb.surgingCount + 1
 		warnSurgingGrowth:Show(self.vb.surgingCount)
 		timerSurgingGrowthCD:Start(nil, self.vb.surgingCount+1)

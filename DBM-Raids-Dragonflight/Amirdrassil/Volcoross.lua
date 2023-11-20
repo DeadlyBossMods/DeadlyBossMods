@@ -150,7 +150,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnCataclysmJaws:Play("defensive")
 		else
 			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
-			--Delayed by a frame so as not to snipe the debuff
 			specWarnCataclysmJawsTaunt:Show(bossTarget)
 			specWarnCataclysmJawsTaunt:Play("tauntboss")
 		end
