@@ -98,100 +98,50 @@ L:SetGeneralLocalization({
 	name =	"Трэш мобы Хранилище Воплощений"
 })
 
---[[
 ---------------------------
 --  Kazzara --
 ---------------------------
 --L= DBM:GetModLocalization(2522)
 
 ---------------------------
---  The Amalgamation Chamber --
+--  Molgoth --
 ---------------------------
-L= DBM:GetModLocalization(2529)
-
-L:SetOptionLocalization({
-	AdvancedBossFiltering	= "Actively scan distance to each of bosses in stage 1 and automatically hide certain alerts and fade timers for the boss you are NOT near (more than 43 distance)"
-})
+--L= DBM:GetModLocalization(2529)
 
 ---------------------------
---  The Forgotten Experiments --
+--  Experimentation of the Dracthyr --
 ---------------------------
-L= DBM:GetModLocalization(2530)
-
-L:SetMiscLocalization({
-	SafeClear		= "Safe Clear"
-})
+--L= DBM:GetModLocalization(2530)
 
 ---------------------------
---  Assault of the Zaqali --
+--  Zaqali Invasion/ Djaradin Assault --
 ---------------------------
-L= DBM:GetModLocalization(2524)
-
-L:SetTimerLocalization{
-	timerGuardsandHuntsmanCD	= "Big Adds (%s)"
-}
-
-L:SetOptionLocalization({
-	timerGuardsandHuntsmanCD	= "Show timers for new Huntsman or Guards climbing the walls"
-})
-
-L:SetMiscLocalization({
-	northWall		= "Commanders ascend the northern battlement!",
-	southWall		= "Commanders ascend the southern battlement!"
-})
+--L= DBM:GetModLocalization(2524)
 
 ---------------------------
 --  Rashok --
 ---------------------------
-L= DBM:GetModLocalization(2525)
-
-L:SetOptionLocalization({
-	TankSwapBehavior	= "Set mod behavior for tank swaps",
-	OnlyIfDanger		= "Shows taunt warning only if other tank is about to take unsafe hit",
-	MinMaxSoak			= "Shows taunt warning after a combos first attack, or if other tank is about to take unsafe hit",
-	DoubleSoak			= "Shows taunt warning after a combo has ended, or if other tank is about to take unsafe hit"--Default
-})
-
-L:SetMiscLocalization({
-	pool		= "{rt%d}Pool %d",--<icon> Pool 1,2,3
-	soakpool	= "Soak Pool"
-})
+--L= DBM:GetModLocalization(2525)
 
 ---------------------------
---  The Vigilant Steward, Zskarn --
+--  Zskarn --
 ---------------------------
 --L= DBM:GetModLocalization(2532)
 
 ---------------------------
 --  Magmorax --
 ---------------------------
-L= DBM:GetModLocalization(2527)
-
-L:SetMiscLocalization({
-	pool		= "{rt%d}Pool %d",--<icon> Pool 1,2,3
-	soakpool	= "Soak Pool"
-})
+--L= DBM:GetModLocalization(2527)
 
 ---------------------------
 --  Echo of Neltharion --
 ---------------------------
-L= DBM:GetModLocalization(2523)
-
-L:SetMiscLocalization({
-	WallBreaker	= "Wall Breaker"
-})
+--L= DBM:GetModLocalization(2523)
 
 ---------------------------
 --  Scalecommander Sarkareth --
 ---------------------------
-L= DBM:GetModLocalization(2520)
-
-L:SetOptionLocalization({
-	InfoFrameBehaviorTwo	= "Set mod behavior for infoframe stack tracking",
-	OblivionOnly			= "Only show Oblivion stacks (stages 1 2 and 3)",--Default
-	HowlOnly				= "Only show Oppressing Howl stacks (stage 1, closes otherwise)",
-	Hybrid					= "Show Oppressing Howl stacks in stage 1 and Oblivion stacks in stages 2 and 3"
-})
+--L= DBM:GetModLocalization(2520)
 
 -------------
 --  Trash  --
@@ -201,7 +151,6 @@ L = DBM:GetModLocalization("AberrusTrash")
 L:SetGeneralLocalization({
 	name =	"Трэш мобы Аберрий, Затененное Горнило"
 })
---]]
 
 ---------------------------
 --  Amirdrassil, the Dream's Hope --

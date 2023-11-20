@@ -98,7 +98,6 @@ L:SetGeneralLocalization({
 	name =	"현신의 금고 일반몹"
 })
 
---[[
 ---------------------------
 --  Kazzara --
 ---------------------------
@@ -202,7 +201,6 @@ L:SetGeneralLocalization({
 	name =	"에베루스 일반몹"
 })
 
---]]
 ---------------------------
 --  Amirdrassil, the Dream's Hope --
 ---------------------------
