@@ -77,7 +77,7 @@ local specWarnRagingInferno							= mod:NewSpecialWarningMoveTo(417634, nil, 376
 
 local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425888, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerFieryForceofNatureCD						= mod:NewCDCountTimer(11.8, 417653, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerFieryFlourishCD							= mod:NewCDNPTimer(11.8, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerFieryFlourishCD							= mod:NewCDNPTimer(9.7, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerScorchingRootsCD							= mod:NewCDCountTimer(49, 422614, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerFuriousChargeCD							= mod:NewCDCountTimer(22.5, 418637, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--SN "Charge"
 local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
@@ -336,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 			timerFuriousChargeCD:Update(elapsed, total+extend, self.vb.furiousChargeCount+1)
 		end
 	elseif spellId == 426524 then
---		timerFieryFlourishCD:Start(nil, args.sourceGUID)
+		timerFieryFlourishCD:Start(nil, args.sourceGUID)
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but just in case
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnForces then
