@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 429615 then
 		self.vb.loomCount = self.vb.loomCount + 1
 		specWarnImpendingLoom:Show(self.vb.loomCount)
-		specWarnImpendingLoom:Play("watchstep")
+		specWarnImpendingLoom:Play("farfromline")
 		if self.vb.loomCount % 2 == 1 then
 			timerImpendingLoomCD:Start(nil, self.vb.loomCount+1)
 		end
@@ -161,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 			)
 		end
 	elseif spellId == 429108 or spellId == 429180 then
-		if self:CheckBossDistance(args.sourceGUID, false, nil, 43) then
+		if self:CheckBossDistance(args.sourceGUID, false) then
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
