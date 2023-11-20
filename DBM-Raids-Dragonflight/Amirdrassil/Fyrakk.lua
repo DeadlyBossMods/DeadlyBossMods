@@ -563,7 +563,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 		if self:IsHard() then
 			timerBlazeCD:Start(20.7, 1)--Heroic/Mythic only
-			self:Schedule(20.7, blazeLoop, 1)
+			self:Schedule(20.7, blazeLoop, self)
 			timeAFlameCD:Start(35.4, 1)
 		else
 			timeAFlameCD:Start(27.1, 1)
