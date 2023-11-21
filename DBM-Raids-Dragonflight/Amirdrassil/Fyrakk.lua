@@ -6,8 +6,8 @@ mod:SetCreatureID(204931)
 
 mod:SetEncounterID(2677)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20231116000000)
-mod:SetMinSyncRevision(20231114000000)
+mod:SetHotfixNoticeRev(20231121000000)
+mod:SetMinSyncRevision(20231121000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -235,6 +235,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shadowflameDevastation = 0
 	self.vb.roarCount = 0
 	self.vb.incarnCount = 0
+	self.vb.dreamRendCount = 0
 	timerWildFireCD:Start(3.9, 1)
 	timeAFlameCD:Start(self:IsHard() and 7.9 or 12, 1)
 	timerFyralathsBiteCD:Start(8.9, 1)
