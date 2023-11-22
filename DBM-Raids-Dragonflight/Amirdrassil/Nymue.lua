@@ -187,11 +187,11 @@ function mod:SPELL_CAST_START(args)
 		warnWeaversBurden:Show(self.vb.burdenCount)
 		--21.0, 19.1, 20.0 then 36-37, 19.0, 20.1
 		if self.vb.burdenCount % 3 ~= 0 then--3rd cast in each set is last one before full bloom
-			if self.vb.burdenCount % 3 ~= 0 then
+--			if self.vb.burdenCount % 3 ~= 0 then
 				timerWeaversBurdenCD:Start(18, self.vb.burdenCount+1)
-			else
-				timerWeaversBurdenCD:Start(20, self.vb.burdenCount+1)
-			end
+--			else
+--				timerWeaversBurdenCD:Start(20, self.vb.burdenCount+1)
+--			end
 		end
 --	elseif spellId == 424477 then
 --		self.vb.surgingCount = self.vb.surgingCount + 1
