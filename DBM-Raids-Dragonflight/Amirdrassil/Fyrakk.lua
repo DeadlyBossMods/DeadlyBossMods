@@ -176,7 +176,7 @@ local allTimers = {--428954 for darkflame flames mythic
 			--Shadowflame Devastation
 			[422524] = {58.8, 80},
 			--Spirits of the Kaldorai
-			[422029] = {20, 20, 20, 25, 30, 25, 25, 25},
+			[422029] = {20, 20, 20, 25, 26, 25, 25, 25},
 			--Blaze (Heroic+ only)
 			[414186] = {20.7, 14.9, 25, 30, 26.9, 23, 30, 25},
 			--Incarnate
@@ -553,14 +553,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.tankCount = 0
 		self.vb.incarnCount = 0
 		self.vb.aflameCount = 0
-		timerSpiritsCD:Start(2)
 		timerFlamefallCD:Start(5.8, 1)
 
-		timerFyralathsBiteCD:Start(18.8, 1)
-		timerSpiritsCD:Start(20, 1)
-		timerGreaterFirestormCD:Start(35.8, 1)
-		timerIncarnateCD:Start(44.6, 1)
-		timerShadowflameDevastationCD:Start(58.8, 1)
+		timerFyralathsBiteCD:Start(18.4, 1)
+		timerSpiritsCD:Start(19.5, 1)
+		timerGreaterFirestormCD:Start(35.4, 1)
+		timerIncarnateCD:Start(44, 1)
+		timerShadowflameDevastationCD:Start(58.5, 1)
 
 		if self:IsHard() then
 			timerBlazeCD:Start(20.7, 1)--Heroic/Mythic only
