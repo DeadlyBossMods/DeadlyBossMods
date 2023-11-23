@@ -382,7 +382,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.thornsCount = self.vb.thornsCount + 1
 		specWarnBlazingThornsAvoid:Show(self.vb.thornsCount)
 		specWarnBlazingThornsAvoid:Play("watchstep")
-		if not DBM:UnitDebuff("player", 429032) then
+		if not DBM:UnitDebuff("player", 429032) and not self:IsLFR() then
 			specWarnBlazingThornsSoak:Schedule(4, self.vb.thornsCount)
 			specWarnBlazingThornsSoak:ScheduleVoice(4, "helpsoak")
 		end

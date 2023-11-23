@@ -306,7 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		--Applies 5 stacks at a time (then just refreshes after that)
 		--so this should effectively warn once per barrage
-		if amount >= 5 then
+		if amount % 5 == 0 then
 			if args:IsPlayer() then--This basically can swap every 1-2 stacks based on it's cooldown.
 				warnDreadfireBarrage:Show(args.destName, amount)
 			else
