@@ -514,8 +514,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShadowflameBurstCD:Start(18.5, 1)
 		timerBlisteringTwilightCD:Start(20.2, 1)
 		timerGloomConflagCD:Start(50, 1)
-	elseif spellId == 409385 then
-
 	end
 end
 
