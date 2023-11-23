@@ -58,7 +58,6 @@ local timerUnleashedShadowflameCD					= mod:NewCDCountTimer(40, 410070, 98565, n
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 mod:AddInfoFrameOption(405827)
---mod:AddRangeFrameOption(5, 390715)
 mod:AddSetIconOption("SetIconOnSearingSlam", 405821, false, 0, {1})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)

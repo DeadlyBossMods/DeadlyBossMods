@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 403459 405016 407640 403699 404732 403101 404896 405437 405641 408193 405914 406783 403203 409385",
-	"SPELL_CAST_SUCCESS 406730 409385",
+	"SPELL_CAST_SUCCESS 406730",
 	"SPELL_AURA_APPLIED 401809 402617 405036 405394 405642 405914 413597",
 	"SPELL_AURA_APPLIED_DOSE 401809 402617 405394",
 	"SPELL_AURA_REMOVED 401809 402617 405036 405642",
@@ -92,7 +92,6 @@ local timerWitheringVulnerabilityCD				= mod:NewCDCountTimer(35.3, 405914, nil, 
 local timerShadowflameBurstCD					= mod:NewCDCountTimer(35.3, 406783, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Might be redundant if always after crushing
 
 mod:AddSetIconOption("SetIconOnBlistering", 405642, false, 0, {1, 2, 3, 4})
-mod:AddRangeFrameOption(6, 409385)
 
 local nearKroz, nearMolt = true, true
 mod.vb.coalescingCount = 0
@@ -356,12 +355,6 @@ function mod:OnTimerRecovery()
 	end
 end
 
-function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	--Krozgoth Spells
@@ -486,9 +479,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.SandFCount = self.vb.SandFCount + 1
 		warnShadowandFlame:Show(self.vb.SandFCount)
 		timerShadowandFlameCD:Start(self.vb.SandFCount == 1 and 52 or 47, self.vb.SandFCount+1)
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(6)
-		end
 	end
 end
 
@@ -525,9 +515,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBlisteringTwilightCD:Start(20.2, 1)
 		timerGloomConflagCD:Start(50, 1)
 	elseif spellId == 409385 then
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
+
 	end
 end
 

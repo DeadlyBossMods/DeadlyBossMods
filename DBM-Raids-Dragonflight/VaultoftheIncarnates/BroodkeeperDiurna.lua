@@ -91,7 +91,6 @@ local timerRendingBiteCD						= mod:NewCDTimer(11, 375475, nil, "Tank|Healer", n
 local timerChillingTantrumCD					= mod:NewCDTimer(11.1, 375457, nil, nil, nil, 3)
 local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPFixate", 376330, true)
 mod:AddSetIconOption("SetIconOnMages", "ej25144", true, true, {6, 5, 4})
@@ -245,9 +244,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end

@@ -49,7 +49,6 @@ local timerFrenziedDevastationCD				= mod:NewNextTimer(387.9, 377505, nil, nil, 
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(361651, true)--Likely will be used for dust
 mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, true, false, {1, 2, 3, 4, 5, 6, 7, 8})
 
@@ -117,9 +116,6 @@ end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end

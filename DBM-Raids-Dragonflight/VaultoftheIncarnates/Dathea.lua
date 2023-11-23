@@ -51,7 +51,6 @@ local timerCrosswindsCD							= mod:NewCDCountTimer(33, 388410, nil, nil, nil, 3
 local timerZephyrSlamCD							= mod:NewCDCountTimer(15.7, 375580, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:AddRangeFrameOption(5, 391686)
 --mod:AddInfoFrameOption(391686, true)
 --Volatile Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25903))
@@ -99,9 +98,6 @@ function mod:OnCombatStart(delay)
 		timerCycloneCD:Start(45.2-delay, 1)
 		timerColaescingStormCD:Start(80-delay, 1)
 	end
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
-	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(391686))
 --		DBM.InfoFrame:Show(self:IsMythic() and 20 or 10, "playerdebuffstacks", 391686)
@@ -109,9 +105,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end

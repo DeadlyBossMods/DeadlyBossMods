@@ -55,7 +55,6 @@ local specWarnLightningBolt						= mod:NewSpecialWarningInterrupt(372394, "HasIn
 local timerConductiveMarkCD						= mod:NewCDCountTimer(24.4, 371624, nil, nil, nil, 3)
 local timerChainLightningCD						= mod:NewCDTimer(9.1, 372279, nil, "Healer", nil, 3)--9.1-15.4
 
-mod:AddRangeFrameOption(5, 371624)
 --Opalfang
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(24967))
 local warnCrush									= mod:NewStackAnnounce(372056, 2, nil, "Tank|Healer")
@@ -174,9 +173,6 @@ function mod:OnCombatStart(delay)
 		timerSlashingBlazeCD:Start(9.2-delay, 1)
 		timerMeteorAxeCD:Start(22.3-delay, 1)
 	end
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(373059))
 		DBM.InfoFrame:Show(self:IsMythic() and 20 or 10, "table", blizzardStacks, 1)--On mythic, see everyone to coordinate clears, else just show top idiots because cleares are infinite
@@ -184,9 +180,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end

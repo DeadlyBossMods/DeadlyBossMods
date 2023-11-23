@@ -67,7 +67,6 @@ local timerScorchtailCrashCD						= mod:NewCDCountTimer(20, 420415, 136870, nil,
 local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, false, false, {1, 2, 3, 4})--Off by default since other mods don't use icons at all
@@ -85,7 +84,7 @@ local allTimers = {
 	--Volcanic Disgorge
 	[421616] = {29.9, 20.0, 40.0, 10.0, 10.0, 10.0, 10.0, 30.0, 10.0, 10.0, 10.0, 10.0, 40.0, 20.0},
 	--Scorchtail Crash
-	[420421] = {19.9, 20, 20, 30, 10, 10, 10, 7.3, 30, 10, 10, 10, 10, 27, 19.9, 20}
+	[420421] = {19.9, 20, 20, 30, 10, 10, 10, 7.3, 27.5, 10, 10, 7.5, 10, 27, 19.9, 20}
 }
 
 function mod:DisgorgeTarget(targetname, uId)
@@ -112,12 +111,6 @@ function mod:OnCombatStart(delay)
 	timerVolcanicDisgorgeCD:Start(29.8-delay, 1)
 	timerFloodoftheFirelandsCD:Start(69.8-delay, 1)
 end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

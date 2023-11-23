@@ -301,12 +301,6 @@ function mod:OnCombatStart(delay)
 	timerRagingInfernoCD:Start(90.5-delay, 1)
 end
 
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
-
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		difficultyName = "mythic"
