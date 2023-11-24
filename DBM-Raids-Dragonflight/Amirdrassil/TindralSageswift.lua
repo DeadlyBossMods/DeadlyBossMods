@@ -245,7 +245,7 @@ local allTimers = {
 			--Owl Form (mythic)
 			[425582] = {28.0, 51.0},
 		},
-		[3] = {-
+		[3] = {
 			--Blazing  Mushroom (Wild Mushroom on mythic)
 			[423260] = {48.0, 60.0, 67.0},
 			--Fiery Growth
