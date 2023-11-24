@@ -91,7 +91,6 @@ local timerPolymorphBombCD							= mod:NewCDCountTimer(18.9, 418720, L.Ducks, ni
 local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, DBM_COMMON_L.PUSHBACK.." (%s)", nil, nil, 2)
 
 mod:AddPrivateAuraSoundOption(418589, true, 418591, 1)--Polymorph Bomb
---mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
 
@@ -250,12 +249,6 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(429123, "bombyou", 2, 418589)--Register secondary private aura (different ID for differentn difficulty?)
 	nextSpecial = GetTime() + 55.8
 end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

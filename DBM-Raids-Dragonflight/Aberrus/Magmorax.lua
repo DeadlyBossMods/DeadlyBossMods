@@ -106,9 +106,6 @@ end
 
 function mod:OnCombatEnd()
 	table.wipe(heatStacks)
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end

@@ -110,7 +110,6 @@ local timerCatastrophicSlamCD						= mod:NewCDCountTimer(26.7, 410516, nil, nil,
 local timerFlamingCudgelCD							= mod:NewCDCountTimer(34, 410351, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 --mod:AddInfoFrameOption(361651, true)
---mod:AddRangeFrameOption(5, 390715)
 --mod:AddSetIconOption("SetIconOnMagneticCharge", 399713, true, 0, {4})
 --mod:GroupSpells(390715, 396094)
 

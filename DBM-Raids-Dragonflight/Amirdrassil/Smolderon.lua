@@ -76,7 +76,6 @@ local specWarnWorldinFlames							= mod:NewSpecialWarningDodgeCount(422172, nil,
 local timerDevourEssenceCD							= mod:NewCDCountTimer(49, 422277, nil, nil, nil, 3)
 --local timerWorldinFlamesCD							= mod:NewAITimer(49, 422172, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})
 
@@ -104,12 +103,6 @@ function mod:OnCombatStart(delay)
 		timerSeekingInfernoCD:Start(26-delay, 1)
 	end
 end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

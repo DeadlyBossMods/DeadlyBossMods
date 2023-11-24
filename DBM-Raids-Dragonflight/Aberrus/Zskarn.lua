@@ -55,7 +55,6 @@ local timerEliminationProtocol					= mod:NewCastTimer(10, 409942, 207544, nil, n
 local timerDragonDeezTrapsCD					= mod:NewCDCountTimer(32.2, 405736, nil, nil, nil, 3)
 local berserkTimer								= mod:NewBerserkTimer(600)
 
-mod:AddRangeFrameOption(5, 404010)
 mod:AddSetIconOption("SetIconOnGolems", 405812, true, 5, {8, 7, 6, 5})
 mod:AddSetIconOption("SetIconOnEmbers", 404010, false, 0, {1, 2, 3, 4})
 
@@ -180,9 +179,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnstableEmbers:Show()
 			specWarnUnstableEmbers:Play("range5")
 			yellUnstableEmbers:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
 		end
 		if self.Options.SetIconOnEmbers then
 			self:SetUnsortedIcon(0.3, args.destName, 1, 4, false)
@@ -204,11 +200,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 404010 then
-		if args:IsPlayer() then
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
-		end
 		if self.Options.SetIconOnEmbers then
 			self:SetIcon(args.destName, 0)
 		end

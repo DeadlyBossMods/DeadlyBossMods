@@ -52,7 +52,6 @@ local timerMoltenSpikesCD						= mod:NewCDCountTimer(21.4, 396022, nil, nil, nil
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)
-mod:AddRangeFrameOption(5, 390715)
 mod:GroupSpells(390715, 396094)
 ---Frenzied Tarasek
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26005))
@@ -104,9 +103,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -201,9 +197,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFlamerift:Play("range5")
 			yellFlamerift:Yell()
 			yellFlameriftFades:Countdown(spellId)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
@@ -250,9 +243,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 390715 or spellId == 396094 then
 		if args:IsPlayer() then
 			yellFlameriftFades:Cancel()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
 		end
 	elseif spellId == 370307 then--Army ending
 		self.vb.roarCount = 0

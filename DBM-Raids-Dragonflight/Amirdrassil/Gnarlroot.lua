@@ -162,12 +162,6 @@ function mod:OnCombatStart(delay)
 	timerDoomCultivationCD:Start(92.2-delay, 2, 1)--Technically this variates too based on difficult, but meh, 2-3 sec at most
 end
 
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
-
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		difficultyName = "mythic"

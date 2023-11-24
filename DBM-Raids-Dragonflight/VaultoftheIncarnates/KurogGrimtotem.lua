@@ -177,8 +177,6 @@ local timerStormBreakCD							= mod:NewCDTimer(20.8, 374622, nil, nil, nil, 2)
 local timerThunderStrikeCD						= mod:NewCDTimer(41, 374215, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 mod:GroupSpells(374622, 391696)--Storm Break and it's sub debuff Lethal Current
---mod:AddRangeFrameOption(10, 374620)
-
 
 mod.vb.chillCast = 0
 mod.vb.curAltar = false
@@ -220,9 +218,6 @@ end
 
 function mod:OnCombatEnd()
 	table.wipe(castsPerGUID)
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
