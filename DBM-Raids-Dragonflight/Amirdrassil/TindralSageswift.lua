@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209090)--Primary ID
 mod:SetEncounterID(2786)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20231115000000)
+mod:SetHotfixNoticeRev(20231122000000)
 mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
 
@@ -213,57 +213,57 @@ local allTimers = {
 		},
 	},
 	["mythic"] = {
-		[1] = {--VODDED Timers
+		[1] = {
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {18, 40},
+			[423260] = {18.0, 40.0},
 			--Fiery Growth
-			[424581] = {21, 40},
+			[424581] = {20.0, 40.0},
 			--Falling Stars
-			[420236] = {14, 40},
+			[420236] = {14.0, 40.0},
 			--Mass Entanglement (Roots)
-			[424495] = {27, 20, 20},
+			[424495] = {27.0, 20.0, 20.0},
 			--Moonkin Form
-			[420540] = {},
+			[420540] = {6.2, 26.0, 40.0},
 			--Fire Beam
-			[421398] = {7, 26, 7, 33},
+			[421398] = {7.2, 26.0, 7.0, 33.0},
 			--Owl Form (mythic)
-			[425582] = {21, 42},
+			[425582] = {23.0, 40.0},
 		},
-		[2] = {--VODDED Timers
+		[2] = {
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {23, 48},
+			[423260] = {23.0, 47.0},
 			--Fiery Growth
-			[424581] = {26, 23, 25},
+			[424581] = {25.0, 22.0, 25.0},
 			--Falling Stars
-			[420236] = {20, 36, 39},
+			[420236] = {20.0, 35.0, 39.0},
 			--Mass Entanglement
-			[424495] = {32, 31, 21},
+			[424495] = {32.0, 31.0, 20.0},
 			--Tree Form
-			[422115] = {36, 22, 30},
+			[422115] = {36.0, 22.0, 29.0},
 			--Flaming Germination (Seeds)
-			[423265] = {37, 22, 30},
+			[423265] = {37.0, 22.0, 29.0},
 			--Owl Form (mythic)
-			[425582] = {28, 52},
+			[425582] = {28.0, 51.0},
 		},
-		[3] = {--VODDED Timers
+		[3] = {-
 			--Blazing  Mushroom (Wild Mushroom on mythic)
-			[423260] = {},--Not cast with 1 person alive?
+			[423260] = {48.0, 60.0, 67.0},
 			--Fiery Growth
-			[424581] = {},--Not cast with 1 person alive?
+			[424581] = {50.0, 40.0, 35.0, 45.0, 40.0},
 			--Falling Stars
-			[420236] = {20},
+			[420236] = {20.0, 38.0, 40.0, 40.0, 40.0, 40.0, 40.0},
 			--Mass Entanglement
-			[424495] = {24},
+			[424495] = {24.0, 42.0, 19.0, 29.0, 19.0, 24.0, 24.0, 21.0},
 			--Moonkin Form
-			[420540] = {29},
+			[420540] = {29.0, 63.0, 50.0, 46.0, 19.0},
 			--Tree Form
-			[422115] = {37},
+			[422115] = {36.0, 35.0, 47.0, 43.0, 51.0},
 			--Fire Beam
-			[421398] = {31},
+			[421398] = {31.0, 63.0, 49.0, 46.1, 19.0},
 			--Flaming Germination
-			[423265] = {37},
+			[423265] = {37.0, 35.0, 47.0, 43.0, 51.0},
 			--Owl Form (mythic)
-			[425582] = {22},
+			[425582] = {22.0, 40.0, 48.0, 42.0, 47.0},
 		},
 	},
 }
@@ -282,13 +282,13 @@ function mod:OnCombatStart(delay)
 	self.vb.tranqCount = 0
 	if self:IsMythic() then
 		difficultyName = "mythic"
+		timerMoonkinCD:Start(6.2-delay, 1)
 		timerFirebeamCD:Start(7, 1)
 		timerFallingStarsCD:Start(14-delay, 1)
 		timerBlazingMushroomCD:Start(18-delay, 1)
-		timerOwlCD:Start(21-delay, 1)
-		timerFieryGrowthCD:Start(21-delay, 1)
+		timerFieryGrowthCD:Start(20-delay, 1)
+		timerOwlCD:Start(23-delay, 1)
 		timerMassEntanglementCD:Start(27-delay, 1)
---		timerMoonkinCD:Start(25.9-delay, 1)
 		timerPhaseCD:Start(80-delay, 1.5)--Cast Start
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
@@ -511,10 +511,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetStage(2)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
-			if self:IsMythic() then
+			if self:IsMythic() then--Live Vetted
 				timerFallingStarsCD:Start(20, 1)
 				timerBlazingMushroomCD:Start(23, 1)
-				timerFieryGrowthCD:Start(26, 1)
+				timerFieryGrowthCD:Start(25, 1)
 				timerOwlCD:Start(28, 1)
 				timerMassEntanglementCD:Start(32, 1)
 				timerTreeofFlameCD:Start(36, 1)
@@ -547,16 +547,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetStage(3)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
-			if self:IsMythic() then
-				timerMassEntanglementCD:Start(6.9, 1)
-				timerOwlCD:Start(9.1, 1)
-				timerMoonkinCD:Start(15.9, 1)
-				timerFirebeamCD:Start(18.9, 1)
-				timerBlazingMushroomCD:Start(26.9, 1)
-				timerFieryGrowthCD:Start(30.9, 1)
-				timerFallingStarsCD:Start(38.9, 1)
-				timerTreeofFlameCD:Start(41.4, 1)
-				timerFlamingGerminationCD:Start(42.9, 1)
+			if self:IsMythic() then--Live Vetted
+				timerFallingStarsCD:Start(20, 1)
+				timerOwlCD:Start(22, 1)
+				timerMassEntanglementCD:Start(24, 1)
+				timerMoonkinCD:Start(29, 1)
+				timerFirebeamCD:Start(31, 1)
+				timerTreeofFlameCD:Start(36, 1)
+				timerFlamingGerminationCD:Start(37, 1)
+				timerBlazingMushroomCD:Start(48, 1)
+				timerFieryGrowthCD:Start(50, 1)
 			elseif self:IsHeroic() then--Live Vetted
 				timerFieryGrowthCD:Start(24, 1)
 				timerBlazingMushroomCD:Start(27, 1)
@@ -585,7 +585,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerMoonkinCD:Start(50, 1)
 				timerFirebeamCD:Start(52, 1)
 			end
---			timerSuperNovaCD:Start(219.9)--Unverified on live
+			timerSuperNovaCD:Start(269)--Blizzard energy, so ~3
 		end
 	elseif spellId == 424579 then
 		warnSupressiveEmber:CombinedShow(0.3, args.destName)
