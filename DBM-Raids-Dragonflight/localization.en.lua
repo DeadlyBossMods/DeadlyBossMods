@@ -273,11 +273,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2519)
 
 L:SetTimerLocalization{
-	timerMythicDebuffs			= "Circles (%s)"
+	timerMythicDebuffs			= "Cages (%s)"
 }
 
 L:SetWarningLocalization{
-	warnMythicDebuffs			= "Debuff Circles (%s)"
+	warnMythicDebuffs			= "Cages (%s)"
 }
 
 L:SetOptionLocalization{

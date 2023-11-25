@@ -49,7 +49,7 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(428474, nil, nil, nil, 1,
 
 local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 local timerEphemeralFloraCD							= mod:NewCDCountTimer(49, 430563, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerSurgingGrowthCD							= mod:NewCDCountTimer(8, 420971, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
+local timerSurgingGrowthCD							= mod:NewCDCountTimer(7, 420971, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)--7-9, usually 8-9
 local timerViridianRainCD							= mod:NewCDCountTimer(19.1, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, 167180, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--ST "Bombs"
 local berserkTimer									= mod:NewBerserkTimer(720)
@@ -143,8 +143,8 @@ function mod:SPELL_CAST_START(args)
 		--"<117.10 10:52:42> [CLEU] SPELL_AURA_APPLIED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A94E8A7#****#429983#Surging Growth#DEBUFF#4",
 		--"<143.10 10:53:08> [CLEU] SPELL_AURA_REMOVED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A59CE90#****#429983#Surging Growth#DEBUFF#3",
 		timerSurgingGrowthCD:Start(27.3, self.vb.surgingCount+1)
+		timerWeaversBurdenCD:Start(34.7, self.vb.burdenCount+1)
 		timerViridianRainCD:Start(36.7, self.vb.rainCount+1)
-		timerWeaversBurdenCD:Start(36.7, self.vb.burdenCount+1)
 		timerImpendingLoomCD:Start(40.6, self.vb.loomCount+1)
 		timerFullBloomCD:Start(87.2, self.vb.bloomCount+1)
 		if self:IsMythic() then

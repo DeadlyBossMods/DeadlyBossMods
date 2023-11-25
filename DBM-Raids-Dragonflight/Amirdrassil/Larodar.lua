@@ -134,9 +134,9 @@ mod.vb.thornsCount = 0--Reused in Stage 2 for Flash Fire
 mod.vb.infernoCount = 0--Reused in Stage 2 for Fire Whirl
 
 local castsPerGUID = {}
-local difficultyName = "normal"
+local difficultyName = "other"
 local allTimers = {
-	["mythic"] = {
+	["mythic"] = {--Stage 1 seems same as other difficulties, but kept split for now
 		--Stage 1
 		--Fiery Force of Nature
 		[417653] = {6.5, 104.9, 97.7},
@@ -195,20 +195,21 @@ local allTimers = {
 		--Ashen Devestation
 		[428896] = {45.4, 68.5},--Lowest of each used until can figure out how to detect which sequence is used on demand
 	},
-	["heroic"] = {
+	["other"] = {
 		--Stage 1 (same as mythic stage 1 likely)
 		--Fiery Force of Nature
-		[417653] = {6.6, 104.8, 98.6},
+		[417653] = {6.5, 103.6, 98.6},
 		--Blazing Thorns
-		[426206] = {30.7, 24.2, 24.2, 37.8, 52.7, 63.7, 24.2},
+		[426206] = {30.7, 24.1, 24.2, 37.6, 52.7, 63.7, 24.1, 24.1},
 		--Furious Charge
-		[418637] = {21.9, 22.0, 24.2, 35.6, 24.2, 28.5, 25.3, 42.8, 22.0},
+--		[418637] = {21.9, 22.0, 24.2, 35.6, 24.2, 28.5, 25.3, 42.8, 22.0},
 		--Scorching Roots
-		[422614] = {37.3, 110.3, 92.2},
+		[422614] = {37.3, 109.1, 92.2},
 		--Stage 2
 		--Falling Embers
 		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
 				  --7.4, 26.7, 25.0, 23.3, 30.1, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3
+				  --7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3
 		--FlashFire
 		[427299] = {29.1, 46.7, 26.6, 36.7, 30.9, 37.5, 37.5},--Lowest times used of variations
 				  --29.1, 46.7, 26.6, 36.7, 36.7, 37.5
@@ -223,33 +224,6 @@ local allTimers = {
 		--Ashen Call
 		[421325] = {20.7, 44.2, 42.5, 42.5, 38.3, 40.8},
 				  --20.7, 44.2, 42.5, 42.5, 38.3, 40.8
-	},
-	["normal"] = {--Likely obsolete and the same as heroic
-		--Stage 1
-		--Fiery Force of Nature (Differs from heroic, maybe)
-		[417653] = {6.6, 104.8},
-		--Blazing Thorns
-		[426206] = {30.8, 24.1, 24.2, 37.8, 52.7},
-		--Furious Charge
-		[418637] = {22.0, 22.0, 24.2, 35.6, 24.2, 28.6, 25.3},
-		--Scorching Roots
-		[422614] = {37.4, 110.3},
-		--Stage 2 (Seems to be same as Heroic)
-		--Falling Embers
-		[427252] = {7.4, 26.7, 25.0, 23.3, 30.0, 20.0, 25.0, 25.0, 25.0, 26.7, 23.3},
-				  --7.4, 26.7, 25.0, 23.3
-		--FlashFire
-		[427299] = {29.1, 46.7, 26.6, 36.7, 30.9, 37.5, 37.5},--Lowest times used of variations
-				  --29.0, 46.7
-		--Fire Whirl
-		[427343] = {54.0, 40.9, 32.5, 36.6, 36.7, 39.1},
-				  --54.0, 40.8
-		--Smoldering backdraft
-		[429973] = {14.0, 25.9, 30.0, 19.1, 29.2, 20.7, 25.0, 24.2, 25.0, 26.7},--Lowest times used of variations
-				  --14.0, 25.9, 30.0, 19.1
-		--Ashen Call
-		[421325] = {20.7, 44.2, 42.5, 42.5, 38.3, 40.8},
-				  --20.7, 44.2
 	},
 }
 
@@ -284,19 +258,12 @@ function mod:OnCombatStart(delay)
 		timerFuriousChargeCD:Start(21.9-delay, 1)
 		timerBlazingThornsCD:Start(30.7-delay, 1)
 		timerScorchingRootsCD:Start(37.3-delay, 1)
-	elseif self:IsHeroic() then
-		--Pretty much same as mythic
-		difficultyName = "heroic"
-		timerFieryForceofNatureCD:Start(6.5-delay, 1)
+	else--Only normal vetted
+		difficultyName = "other"
+		timerFieryForceofNatureCD:Start(6.1-delay, 1)
 		timerFuriousChargeCD:Start(21.9-delay, 1)
 		timerBlazingThornsCD:Start(30.7-delay, 1)
 		timerScorchingRootsCD:Start(37.3-delay, 1)
-	else--Only normal vetted
-		difficultyName = "normal"
-		timerFieryForceofNatureCD:Start(6.1-delay, 1)
-		timerFuriousChargeCD:Start(22-delay, 1)
-		timerBlazingThornsCD:Start(30.8-delay, 1)
-		timerScorchingRootsCD:Start(37.4-delay, 1)
 	end
 	timerRagingInfernoCD:Start(90.5-delay, 1)
 end
@@ -304,13 +271,8 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		difficultyName = "mythic"
-	elseif self:IsHeroic() then
-		difficultyName = "heroic"
---	elseif self:IsNormal() then
---		difficultyName = "normal"
 	else
---		difficultyName = "lfr"
-		difficultyName = "normal"
+		difficultyName = "other"
 	end
 end
 
