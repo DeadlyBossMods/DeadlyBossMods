@@ -104,24 +104,57 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2522)
 
 ---------------------------
---  Molgoth --
+--  The Amalgamation Chamber --
 ---------------------------
---L= DBM:GetModLocalization(2529)
+L= DBM:GetModLocalization(2529)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "Активно сканировать расстояние до каждого из боссов на 1-й фазе и автоматически скрывать определенные оповещения и таймеры исчезновения для босса, рядом с которым Вы НЕ находитесь (расстояние более 43 м.)."
+})
 
 ---------------------------
---  Experimentation of the Dracthyr --
+--  The Forgotten Experiments --
 ---------------------------
---L= DBM:GetModLocalization(2530)
+L= DBM:GetModLocalization(2530)
+
+L:SetMiscLocalization({
+	SafeClear		= "Безопасная очистка"
+})
 
 ---------------------------
---  Zaqali Invasion/ Djaradin Assault --
+--  Assault of the Zaqali --
 ---------------------------
---L= DBM:GetModLocalization(2524)
+L= DBM:GetModLocalization(2524)
+
+L:SetTimerLocalization{
+	timerGuardsandHuntsmanCD	= "Большие адды (%s)"
+}
+
+L:SetOptionLocalization({
+	timerGuardsandHuntsmanCD	= "Показывать таймеры для новых Охотников или Стражей, взбирающихся на стены"
+})
+
+L:SetMiscLocalization({
+	northWall		= "Commanders ascend the northern battlement!",
+	southWall		= "Commanders ascend the southern battlement!"
+})
 
 ---------------------------
 --  Rashok --
 ---------------------------
---L= DBM:GetModLocalization(2525)
+L= DBM:GetModLocalization(2525)
+
+L:SetOptionLocalization({
+	TankSwapBehavior	= "Установить поведение мода при смене танков",
+	OnlyIfDanger		= "Показывать предупреждение о таунте только в том случае, если другой танк собирается принять небезопасный удар",
+	MinMaxSoak			= "Показывать предупреждение о таунте после первой комбо-атаки или если другой танк собирается получить небезопасный удар",
+	DoubleSoak			= "Показывать предупреждение о таунте после завершения комбо-атаки или если другой танк собирается получить небезопасный удар"--По умолчанию
+})
+
+L:SetMiscLocalization({
+	pool		= "{rt%d}Лужа %d",
+	soakpool	= "Поглощение лужи"
+})
 
 ---------------------------
 --  Zskarn --
@@ -131,17 +164,33 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Magmorax --
 ---------------------------
---L= DBM:GetModLocalization(2527)
+L= DBM:GetModLocalization(2527)
+
+L:SetMiscLocalization({
+	pool		= "{rt%d}Лужа %d",
+	soakpool	= "Поглощение лужи"
+})
 
 ---------------------------
 --  Echo of Neltharion --
 ---------------------------
---L= DBM:GetModLocalization(2523)
+L= DBM:GetModLocalization(2523)
+
+L:SetMiscLocalization({
+	WallBreaker	= "Разрушение стены"
+})
 
 ---------------------------
 --  Scalecommander Sarkareth --
 ---------------------------
---L= DBM:GetModLocalization(2520)
+L= DBM:GetModLocalization(2520)
+
+L:SetOptionLocalization({
+	InfoFrameBehaviorTwo	= "Установить поведение мода для отслеживания стаков на инфофрейме",
+	OblivionOnly			= "Показывать только стаки Забвения (фазы 1, 2 и 3)",--По умолчанию
+	HowlOnly				= "Показывать только стаки Подавляющего воя (1-я фаза, в остальных случаях закрывается)",
+	Hybrid					= "Показывать стаки Подавляющего воя на 1-й фазе и стаки Забвения на фазах 2 и 3"
+})
 
 -------------
 --  Trash  --
@@ -163,22 +212,41 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --
 ---------------------------
---L= DBM:GetModLocalization(2554)
+L= DBM:GetModLocalization(2554)
+
+L:SetMiscLocalization({
+	HealAbsorb	= "Поглощение исцеления (%s)"
+})
 
 ---------------------------
 --  Volcoross --
 ---------------------------
---L= DBM:GetModLocalization(2557)
+L= DBM:GetModLocalization(2557)
+
+L:SetMiscLocalization({
+	DebuffSoaks			= "Поглощение дебаффов (%s)"
+})
 
 ---------------------------
 --  Council of Dreams --
 ---------------------------
---L= DBM:GetModLocalization(2555)
+L= DBM:GetModLocalization(2555)
+
+L:SetMiscLocalization({
+	Ducks		= "Утки (%s)"
+})
 
 ---------------------------
 --  Larodar, Keeper of the Flame --
 ---------------------------
---L= DBM:GetModLocalization(2553)
+L= DBM:GetModLocalization(2553)
+
+L:SetMiscLocalization({
+	currentHealth		= "%d%%",
+	currentHealthIcon	= "{rt%d}%d%%",
+	Roots				= "Корни (%s)",
+	HealAbsorb			= "Поглощение исцеления (%s)"
+})
 
 ---------------------------
 --  Nymue, Weaver of the Cycle --
@@ -193,12 +261,30 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Tindral Sageswift, Seer of the Flame --
 ---------------------------
---L= DBM:GetModLocalization(2565)
+L= DBM:GetModLocalization(2565)
+
+L:SetMiscLocalization({
+	TreeForm			= "Форма дерева",
+	MoonkinForm			= "Форма Лунного совуха"
+})
 
 ---------------------------
 --  Fyrakk the Blazing --
 ---------------------------
---L= DBM:GetModLocalization(2519)
+L= DBM:GetModLocalization(2519)
+
+L:SetTimerLocalization{
+	timerMythicDebuffs			= "Клетки (%s)"
+}
+
+L:SetWarningLocalization{
+	warnMythicDebuffs			= "Клетки (%s)"
+}
+
+L:SetOptionLocalization{
+	warnMythicDebuffs			= "Сообщать о наложении дебаффов $spell:428988 и $spell:428970 (со счетчиком)",
+	timerMythicDebuffs			= "Показать таймер (со счетчиком) для дебаффов $spell:428988 и $spell:428970"
+}
 
 -------------
 --  Trash  --
