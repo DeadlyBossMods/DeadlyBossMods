@@ -102,7 +102,9 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase				= "Предупреждение о смене фаз",
 	warnHorsemanSoldiers	= "Предупреждение о призыве Пульсирующих тыкв",
-	warnHorsemanHead		= "Спецпредупреждение о появлении головы всадника"
+	warnHorsemanHead		= "Предупреждение о появлении Всадника без головы",
+	AGCurses				= "Автоматический выбор диалога для активации проклятий для Всадника без головы",
+	AGBoss					= "Автоматический выбор диалога для вызова Всадника без головы"
 })
 
 L:SetMiscLocalization({
