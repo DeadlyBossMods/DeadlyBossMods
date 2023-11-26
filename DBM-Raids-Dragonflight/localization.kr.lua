@@ -269,7 +269,20 @@ L:SetMiscLocalization({
 ---------------------------
 --  Fyrakk the Blazing --
 ---------------------------
---L= DBM:GetModLocalization(2519)
+L= DBM:GetModLocalization(2519)
+
+L:SetTimerLocalization{
+	timerMythicDebuffs			= "우리 (%s)"
+}
+
+L:SetWarningLocalization{
+	warnMythicDebuffs			= "우리 (%s)"
+}
+
+L:SetOptionLocalization{
+	warnMythicDebuffs			= "$spell:428988|1과;와; $spell:428970 디버프가 시전되면 알림 (횟수 포함)",
+	timerMythicDebuffs			= "$spell:428988|1과;와; $spell:428970 디버프 타이머 보기 (횟수 포함)"
+}
 
 -------------
 --  Trash  --
