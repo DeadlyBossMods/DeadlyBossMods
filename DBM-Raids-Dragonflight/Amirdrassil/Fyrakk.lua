@@ -203,7 +203,7 @@ local function blazeLoop(self)
 	elseif stage == 1.5 or stage == 2 then--Still best sequenced sine it's larger pattern
 		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 414187, self.vb.blazeCount+1)
 	else--Stage 3
-		timer = self:IsMythic() and (elf.vb.blazeCount % 2 == 0 and 33 or 13) or 40.9
+		timer = self:IsMythic() and (self.vb.blazeCount % 2 == 0 and 33 or 13) or 40.9
 	end
 	if timer then
 		timerBlazeCD:Start(timer, self.vb.blazeCount+1)
