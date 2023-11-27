@@ -136,7 +136,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.contCount = self.vb.contCount + 1
 		--No count resets in BW, so no count resets in DBM
 		self.vb.loomCount = 0
---		self.vb.burdenCount = 0
+		self.vb.burdenCount = 0
 		self.vb.surgingCount = 0
 		self.vb.rainCount = 0
 		self.vb.floraCount = 0
@@ -147,7 +147,7 @@ function mod:SPELL_CAST_START(args)
 		--"<117.10 10:52:42> [CLEU] SPELL_AURA_APPLIED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A94E8A7#****#429983#Surging Growth#DEBUFF#4",
 		--"<143.10 10:53:08> [CLEU] SPELL_AURA_REMOVED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A59CE90#****#429983#Surging Growth#DEBUFF#3",
 		timerSurgingGrowthCD:Start(27.3, 1)--self.vb.surgingCount+1
-		timerWeaversBurdenCD:Start(34.7, self.vb.burdenCount+1)
+		timerWeaversBurdenCD:Start(34.7, 1)--self.vb.burdenCount+1
 		timerViridianRainCD:Start(36.7, 1)--self.vb.rainCount+1
 		timerImpendingLoomCD:Start(40.6, 1)--self.vb.loomCount+1
 		timerFullBloomCD:Start(87.2, self.vb.bloomCount+1)
