@@ -48,11 +48,12 @@ local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
 local yellBrandofDamnation							= mod:NewShortYell(421343, nil, nil, nil, "YELL")
 local yellBrandofDamnationFades						= mod:NewShortFadesYell(421343, nil, nil, nil, "YELL")
-local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, nil, nil, nil, 1, 2)
+local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, false, nil, 2, 1, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
 local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
 local specWarnOverheated							= mod:NewSpecialWarningMoveAway(421455, nil, nil, nil, 1, 2)
+local specWarnOverheatedTaunt						= mod:NewSpecialWarningTaunt(421455, nil, nil, nil, 1, 2)
 --local yellOverheated								= mod:NewShortYell(421455)
 local yellOverheatedFades							= mod:NewShortFadesYell(421455)
 local specWarnLavaGeysers							= mod:NewSpecialWarningCount(422691, nil, nil, nil, 2, 2)
@@ -175,6 +176,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverheated:Play("targetyou")
 --			yellOverheated:Yell()
 			yellOverheatedFades:Countdown(spellId)
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				specWarnOverheatedTaunt:Show(args.destName)
+				specWarnOverheatedTaunt:Play("tauntboss")
+			end
 		end
 	elseif spellId == 422067 then
 		self:SetStage(2)
