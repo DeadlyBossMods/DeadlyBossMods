@@ -64,7 +64,6 @@ local timerDreamRendCD								= mod:NewCDCountTimer(49, 417455, 193997, nil, nil
 local timerBlazeCD									= mod:NewCDCountTimer(49, 414187, nil, nil, nil, 3)
 local timeAFlameCD									= mod:NewCDCountTimer(49, 417807, nil, "RemoveMagic", 2, 5, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFyralathsBiteCD							= mod:NewCDCountTimer(49, 417431, DBM_COMMON_L.FRONTAL.." (%s)", nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCorrupt									= mod:NewCastTimer(13, 419144, nil, nil, nil, 6)
 
 mod:AddPrivateAuraSoundOption(419060, true, 419506, 1)--Firestorm
 mod:AddPrivateAuraSoundOption(426370, true, 426370, 1)--Darkflame Cleave
@@ -77,6 +76,7 @@ local warnShadowflameEruption						= mod:NewCountAnnounce(429866, 4, nil, false,
 local specWarnIncarnate								= mod:NewSpecialWarningDodgeCount(412761, nil, 374763, nil, 2, 2)
 local specWarnShadowflameBreath						= mod:NewSpecialWarningDodgeCount(410223, nil, 17088, nil, 2, 2)
 
+local timerCorrupt									= mod:NewCastTimer(13, 419144, nil, nil, nil, 6)
 local timerShadowflameOrbsCD						= mod:NewCDCountTimer(49, 421937, nil, nil, nil, 5)
 local timerIncarnateCD								= mod:NewCDCountTimer(8.5, 412761, 374763, nil, nil, 6)--Short name "Lift off"
 --local timerIncarnate								= mod:NewCastTimer(8.5, 412761, 374763, nil, nil, 2)
