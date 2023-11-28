@@ -18,7 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 420554 425745 425781 423195 427722 428479 429983",
 	"SPELL_AURA_APPLIED_DOSE 420554 428479 429983",
 	"SPELL_AURA_REMOVED 423195",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"RAID_BOSS_WHISPER"
 )
 
 --[[
@@ -36,12 +37,13 @@ local warnVerdantMatrix								= mod:NewCountAnnounce(420554, 2, nil, nil, DBM_C
 local warnInflorescence								= mod:NewYouAnnounce(423195, 1, nil, false, 2)--Can be spammy depending on player movements, off by default, most might track this with WA anyways
 local warnSurgingGrowth								= mod:NewCountAnnounce(420971, 2)
 local warnWeaversBurden								= mod:NewCountAnnounce(426519, 2, nil, nil, 167180)
+local warnWeaversBurdenTargets						= mod:NewTargetCountAnnounce(426519, 2, nil, nil, 167180, nil, nil, nil, true)
 local warnEphemeralFlora							= mod:NewCountAnnounce(430563, 3)
 local warnLucidVulnerability						= mod:NewCountAnnounce(428479, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(428479))--Player
 
 local specWarnImpendingLoom							= mod:NewSpecialWarningDodgeCount(429615, nil, nil, nil, 2, 2)
 local specWarnViridianRain							= mod:NewSpecialWarningDodgeCount(420907, nil, nil, nil, 2, 2)
-local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426519, nil, 37859, nil, 1, 2)--Main tank warning only
+local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426519, nil, 37859, nil, 1, 2)
 local yellWeaversBurden								= mod:NewShortYell(426519, 37859)--ST "Bomb"
 --local yellWeaversBurdenFades						= mod:NewShortFadesYell(426519)
 local specWarnWeaversBurdenOther					= mod:NewSpecialWarningTaunt(426519, nil, 37859, nil, 1, 2)
@@ -71,6 +73,7 @@ local timerWakingDecimation							= mod:NewCastTimer(36, 428471, nil, nil, nil, 
 mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
 mod:AddSetIconOption("SetIconOnManifestedDream", -28482, true, 5, {8})
 
+mod.vb.rbwDetected = false
 mod.vb.contCount = 0
 mod.vb.loomCount = 0
 mod.vb.burdenCount = 0
@@ -94,6 +97,7 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(castsPerGUID)
+	self.vb.rbwDetected = false
 	self.vb.contCount = 0
 	self.vb.loomCount = 0
 	self.vb.burdenCount = 0
@@ -131,24 +135,24 @@ function mod:SPELL_CAST_START(args)
 		self:SetStage(0)
 		self.vb.contCount = self.vb.contCount + 1
 		--No count resets in BW, so no count resets in DBM
---		self.vb.loomCount = 0
---		self.vb.burdenCount = 0
---		self.vb.surgingCount = 0
---		self.vb.rainCount = 0
---		self.vb.floraCount = 0
+		self.vb.loomCount = 0
+		self.vb.burdenCount = 0
+		self.vb.surgingCount = 0
+		self.vb.rainCount = 0
+		self.vb.floraCount = 0
 		warnContinuum:Show(self.vb.contCount)
 		--Block first surging that happens during this cast
 		self:AntiSpam(25, 2)--Block surging alert/timers initially, since 8 second loop doesn't start yet and we wanna start 28 timer
 		--"<115.76 10:52:40> [CLEU] SPELL_CAST_START#Creature-0-1471-2549-13215-206172-0000588831#Nymue(70.4%-0.0%)##nil#420846#Continuum#nil#nil",
 		--"<117.10 10:52:42> [CLEU] SPELL_AURA_APPLIED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A94E8A7#****#429983#Surging Growth#DEBUFF#4",
 		--"<143.10 10:53:08> [CLEU] SPELL_AURA_REMOVED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A59CE90#****#429983#Surging Growth#DEBUFF#3",
-		timerSurgingGrowthCD:Start(27.3, self.vb.surgingCount+1)
-		timerWeaversBurdenCD:Start(34.7, self.vb.burdenCount+1)
-		timerViridianRainCD:Start(36.7, self.vb.rainCount+1)
-		timerImpendingLoomCD:Start(40.6, self.vb.loomCount+1)
+		timerSurgingGrowthCD:Start(27.3, 1)--self.vb.surgingCount+1
+		timerWeaversBurdenCD:Start(34.7, 1)--self.vb.burdenCount+1
+		timerViridianRainCD:Start(36.7, 1)--self.vb.rainCount+1
+		timerImpendingLoomCD:Start(40.6, 1)--self.vb.loomCount+1
 		timerFullBloomCD:Start(87.2, self.vb.bloomCount+1)
 		if self:IsMythic() then
-			timerEphemeralFloraCD:Start(45, self.vb.floraCount+1)
+			timerEphemeralFloraCD:Start(45, 1)--self.vb.floraCount+1
 			self:Schedule(45, blizzardHatesCombatLogLoop, self)
 		end
 		self:UnregisterShortTermEvents()
@@ -184,7 +188,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 426519 then
 		self.vb.burdenCount = self.vb.burdenCount + 1
-		warnWeaversBurden:Show(self.vb.burdenCount)
+		if not self.vb.rbwDetected then
+			warnWeaversBurden:Show(self.vb.burdenCount)
+		end
 		--21.0, 19.1, 20.0 then 36-37, 19.0, 20.1
 		if self.vb.burdenCount % 3 ~= 0 then--3rd cast in each set is last one before full bloom
 --			if self.vb.burdenCount % 3 ~= 0 then
@@ -223,7 +229,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 426519 then
 		--Weavers burden is a private aura, but one of targets is always the active tank.
 		if args:IsPlayer() then
-			yellWeaversBurden:Yell()
+			if not self.vb.rbwDetected then
+				yellWeaversBurden:Yell()
+			end
 		else
 			--Delayed by a frame so as not to snipe the debuff
 			specWarnWeaversBurdenOther:Schedule(0.1, args.destName)
@@ -330,5 +338,39 @@ function mod:UNIT_DIED(args)
 		timerRadialFlourishCD:Stop(args.destGUID)
 	elseif cid == 213143 then--Manifested Dream
 		timerWakingDecimation:Stop(args.destGUID)
+	end
+end
+
+--Since blizzard hasn't fixed this yet,
+--and other addons and WAs are publically using this
+--I guess DBM has to as well
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:427722") then
+		if not self.vb.rbwDetected then
+			self.vb.rbwDetected = true
+			--Unregister private auras, not needed
+			if self.paSounds then
+				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
+			end
+		else--Only use these warnings if private aura sound already disabled, so don't get double sound
+			specWarnWeaversBurden:Show()
+			specWarnWeaversBurden:Play("runout")
+			yellWeaversBurden:Yell()
+--			yellWeaversBurdenFades:Countdown(6)
+		end
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("427722") and targetName then
+		if not self.vb.rbwDetected then
+			self.vb.rbwDetected = true
+			--Unregister private auras, not needed
+			if self.paSounds then
+				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
+			end
+		end
+		targetName = Ambiguate(targetName, "none")
+		warnWeaversBurdenTargets:CombinedShow(0.6, self.vb.burdenCount, targetName)
 	end
 end

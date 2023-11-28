@@ -6,8 +6,8 @@ mod:SetCreatureID(204931)
 
 mod:SetEncounterID(2677)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20231125000000)
-mod:SetMinSyncRevision(20231125000000)
+mod:SetHotfixNoticeRev(20231127000000)
+mod:SetMinSyncRevision(20231127000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -62,9 +62,8 @@ local timerFirestormCD								= mod:NewCDCountTimer(49, 419506, nil, nil, nil, 3
 local timerWildFireCD								= mod:NewCDCountTimer(49, 420422, nil, nil, nil, 2)
 local timerDreamRendCD								= mod:NewCDCountTimer(49, 417455, 193997, nil, nil, 3)--"Pull" short text. MIght change to "Pull in" though if it's unclear to users
 local timerBlazeCD									= mod:NewCDCountTimer(49, 414187, nil, nil, nil, 3)
-local timeAFlameCD									= mod:NewCDCountTimer(49, 417807, nil, nil, nil, 2)
-local timerFyralathsBiteCD							= mod:NewCDCountTimer(49, 417431, DBM_COMMON_L.FRONTAL.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCorrupt									= mod:NewCastTimer(13, 419144, nil, nil, nil, 6)
+local timeAFlameCD									= mod:NewCDCountTimer(49, 417807, nil, "RemoveMagic", 2, 5, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerFyralathsBiteCD							= mod:NewCDCountTimer(49, 417431, DBM_COMMON_L.FRONTAL.." (%s)", nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(419060, true, 419506, 1)--Firestorm
 mod:AddPrivateAuraSoundOption(426370, true, 426370, 1)--Darkflame Cleave
@@ -77,6 +76,7 @@ local warnShadowflameEruption						= mod:NewCountAnnounce(429866, 4, nil, false,
 local specWarnIncarnate								= mod:NewSpecialWarningDodgeCount(412761, nil, 374763, nil, 2, 2)
 local specWarnShadowflameBreath						= mod:NewSpecialWarningDodgeCount(410223, nil, 17088, nil, 2, 2)
 
+local timerCorrupt									= mod:NewCastTimer(13, 419144, nil, nil, nil, 6)
 local timerShadowflameOrbsCD						= mod:NewCDCountTimer(49, 421937, nil, nil, nil, 5)
 local timerIncarnateCD								= mod:NewCDCountTimer(8.5, 412761, 374763, nil, nil, 6)--Short name "Lift off"
 --local timerIncarnate								= mod:NewCastTimer(8.5, 412761, 374763, nil, nil, 2)
@@ -203,7 +203,7 @@ local function blazeLoop(self)
 	elseif stage == 1.5 or stage == 2 then--Still best sequenced sine it's larger pattern
 		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 414187, self.vb.blazeCount+1)
 	else--Stage 3
-		timer = self:IsMythic() and (self.vb.blazeCount % 2 == 0 and 33 or 13) or 40.9
+		timer = self:IsMythic() and (self.vb.blazeCount % 2 == 0 and 33 or 13) or (self.vb.blazeCount % 2 == 0 and 28 or 13)
 	end
 	if timer then
 		timerBlazeCD:Start(timer, self.vb.blazeCount+1)
