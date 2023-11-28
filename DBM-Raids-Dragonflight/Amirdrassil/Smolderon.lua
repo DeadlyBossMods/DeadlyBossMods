@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
   or ability.id = 421455 and type = "applydebuff"
 --]]
 --TODO, better tracking of personal dps buffs in P2?
---TODO, review swapping mechanics with overheated overlap?
 --general
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
