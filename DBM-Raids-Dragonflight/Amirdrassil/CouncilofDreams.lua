@@ -45,8 +45,8 @@ local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked u
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
 local specWarnBarrelingCharge						= mod:NewSpecialWarningYouCount(420948, nil, nil, nil, 1, 2)
 local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, nil, nil, nil, 3, 14)
-local yellBarrelingCharge							= mod:NewShortYell(420948, 100)
-local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948)
+local yellBarrelingCharge							= mod:NewShortYell(420948, 100, nil, nil, "YELL")
+local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948, nil, nil, nil, "YELL")
 local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil, 1, 2)--Not grouped on purpose, so that it stays on diff WA key in GUI
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 
