@@ -542,7 +542,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			remaining = expireTime-GetTime()
 		end
 		local timer = (self:GetFromTimersTable(allTimers, false, false, 417431, self.vb.tankCount+1) or 15) - 5
-		if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+		if amount >= 2 and (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnFyralathsMark:Show(args.destName)
 			specWarnFyralathsMark:Play("tauntboss")
 		else
