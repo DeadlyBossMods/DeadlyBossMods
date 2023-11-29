@@ -178,10 +178,13 @@ function mod:SPELL_AURA_APPLIED(args)
 --			yellOverheated:Yell()
 			yellOverheatedFades:Countdown(spellId)
 		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
-				specWarnOverheatedTaunt:Show(args.destName)
-				specWarnOverheatedTaunt:Play("tauntboss")
+			--Check if overheated when on person tanking the main boss, by seeing if you're tanking the main boss
+			if not self:IsTanking("player", "boss1", nil, true) then
+				local uId = DBM:GetRaidUnitId(args.destName)
+				if self:IsTanking(uId) then--Not tanking boss and not overheated target and they are a tank, taunt boss
+					specWarnOverheatedTaunt:Show(args.destName)
+					specWarnOverheatedTaunt:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 422067 then
