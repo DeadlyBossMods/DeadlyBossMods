@@ -47,7 +47,7 @@ local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
 local yellBrandofDamnation							= mod:NewShortYell(421343, nil, nil, nil, "YELL")
 local yellBrandofDamnationFades						= mod:NewShortFadesYell(421343, nil, nil, nil, "YELL")
-local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, false, nil, 2, 1, 2)
+local specWarnAftermathTaunt						= mod:NewSpecialWarningTaunt(422577, nil, nil, nil, 1, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
 local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
@@ -113,10 +113,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnBrandofDamnation:Play("targetyou")
 			yellBrandofDamnation:Yell()
 			yellBrandofDamnationFades:Countdown(4)
-		elseif self:IsTank() then
-			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
-			specWarnBrandofDamnationTaunt:Show(bossTarget)
-			specWarnBrandofDamnationTaunt:Play("tauntboss")
 		else
 			specWarnBrandofDamnation:Show(self.vb.brandCount)
 			specWarnBrandofDamnation:Play("specialsoon")
@@ -165,6 +161,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingAftermath:Play("runout")
 			yellSearingAftermath:Yell()
 			yellSearingAftermathFades:Countdown(spellId)
+		elseif self:IsTank() then
+			specWarnAftermathTaunt:Show(args.destName)
+			specWarnAftermathTaunt:Play("tauntboss")
 		else
 			warnSearingAftermath:Show(args.destName)
 		end
