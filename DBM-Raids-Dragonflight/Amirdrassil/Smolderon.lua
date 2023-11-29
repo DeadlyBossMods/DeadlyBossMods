@@ -47,7 +47,7 @@ local warnSeekingInferno							= mod:NewIncomingCountAnnounce(425885, 2)
 local specWarnBrandofDamnation						= mod:NewSpecialWarningCount(421343, nil, nil, nil, 2, 2)
 local yellBrandofDamnation							= mod:NewShortYell(421343, nil, nil, nil, "YELL")
 local yellBrandofDamnationFades						= mod:NewShortFadesYell(421343, nil, nil, nil, "YELL")
-local specWarnBrandofDamnationTaunt					= mod:NewSpecialWarningTaunt(421343, false, nil, 2, 1, 2)
+local specWarnAftermathTaunt						= mod:NewSpecialWarningTaunt(422577, nil, nil, nil, 1, 2)
 local specWarnSearingAftermath						= mod:NewSpecialWarningMoveAway(422577, nil, nil, nil, 1, 2)
 local yellSearingAftermath							= mod:NewShortYell(422577)
 local yellSearingAftermathFades						= mod:NewShortFadesYell(422577)
@@ -113,10 +113,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnBrandofDamnation:Play("targetyou")
 			yellBrandofDamnation:Yell()
 			yellBrandofDamnationFades:Countdown(4)
-		elseif self:IsTank() then
-			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
-			specWarnBrandofDamnationTaunt:Show(bossTarget)
-			specWarnBrandofDamnationTaunt:Play("tauntboss")
 		else
 			specWarnBrandofDamnation:Show(self.vb.brandCount)
 			specWarnBrandofDamnation:Play("specialsoon")
@@ -128,6 +124,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.geyserCount = self.vb.geyserCount + 1
 		specWarnLavaGeysers:Show(self.vb.geyserCount)
 		specWarnLavaGeysers:Play("watchstep")
+		if self:IsTank() then
+			specWarnLavaGeysers:ScheduleVoice(1, "moveboss")
+		end
 		if self.vb.geyserCount < 8 and self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
 			timerLavaGeysersCD:Start(self:IsMythic() and 25 or 26, self.vb.geyserCount+1)--25.9
 		end
@@ -165,6 +164,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingAftermath:Play("runout")
 			yellSearingAftermath:Yell()
 			yellSearingAftermathFades:Countdown(spellId)
+		elseif self:IsTank() then
+			specWarnAftermathTaunt:Show(args.destName)
+			specWarnAftermathTaunt:Play("tauntboss")
 		else
 			warnSearingAftermath:Show(args.destName)
 		end
@@ -176,10 +178,13 @@ function mod:SPELL_AURA_APPLIED(args)
 --			yellOverheated:Yell()
 			yellOverheatedFades:Countdown(spellId)
 		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
-				specWarnOverheatedTaunt:Show(args.destName)
-				specWarnOverheatedTaunt:Play("tauntboss")
+			--Check if overheated when on person tanking the main boss, by seeing if you're tanking the main boss
+			if not self:IsTanking("player", "boss1", nil, true) then
+				local uId = DBM:GetRaidUnitId(args.destName)
+				if self:IsTanking(uId) then--Not tanking boss and not overheated target and they are a tank, taunt boss
+					specWarnOverheatedTaunt:Show(args.destName)
+					specWarnOverheatedTaunt:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 422067 then
