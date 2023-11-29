@@ -6,7 +6,7 @@ mod:SetCreatureID(209574)
 mod:SetEncounterID(2828)
 mod:SetReCombatTime(20)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
---mod:SetHotfixNoticeRev(20230516000000)
+mod:SetHotfixNoticeRev(20231129000000)
 --mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")
@@ -27,15 +27,6 @@ local timerGroggyBashCD					= mod:NewCDTimer(33, 420895, nil, nil, nil, 5, nil, 
 --local timerPulverizingOutburstCD		= mod:NewAITimer(15.9, 420925, nil, nil, nil, 3)--Health based? 15-59 is too much variation for a CD timer
 local timerSlumberingRoarCD				= mod:NewCDTimer(70.9, 421260, nil, nil, nil, 2)--Small sample
 
---mod:AddRangeFrameOption(5, 361632)
-
-function mod:OnCombatStart(delay, yellTriggered)
---	if yellTriggered then
-
---	end
-end
-
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 420895 then
@@ -47,7 +38,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 420925 then
 		specWarnPulverizingOutburst:Show()
 		specWarnPulverizingOutburst:Play("chargemove")
-		timerPulverizingOutburstCD:Start()
+--		timerPulverizingOutburstCD:Start()
 	elseif spellId == 421260 then
 		timerSlumberingRoarCD:Start()
 	end
