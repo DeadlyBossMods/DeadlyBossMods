@@ -54,7 +54,8 @@ end
 
 --Attempt win detection without using the yell
 function mod:UNIT_FLAGS(uId)
-	if UnitIsFriend("player", uId) then
+	local cid = DBM:GetUnitCreatureId(uId) or 0
+	if cid == 209574 and UnitIsFriend("player", uId) then
 		DBM:EndCombat(self)
 	end
 end
