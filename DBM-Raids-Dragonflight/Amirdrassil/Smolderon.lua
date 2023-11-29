@@ -124,6 +124,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.geyserCount = self.vb.geyserCount + 1
 		specWarnLavaGeysers:Show(self.vb.geyserCount)
 		specWarnLavaGeysers:Play("watchstep")
+		if self:IsTank() then
+			specWarnLavaGeysers:ScheduleVoice(1, "moveboss")
+		end
 		if self.vb.geyserCount < 8 and self.vb.geyserCount % 2 == 1 then--Other timers started in phase change event
 			timerLavaGeysersCD:Start(self:IsMythic() and 25 or 26, self.vb.geyserCount+1)--25.9
 		end

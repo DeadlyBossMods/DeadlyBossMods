@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 418591 421024",
 	"SPELL_CAST_SUCCESS 418757",
-	"SPELL_AURA_APPLIED 420948 423420 421022 425114 421298 418755 420858 421236 418720 421032",
+	"SPELL_AURA_APPLIED 420948 421022 425114 421298 418755 420858 421236 418720 421032",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
 	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525",
 	"SPELL_PERIODIC_DAMAGE 426390",
@@ -78,7 +78,7 @@ local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--Yo
 local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
 --local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)--Possible to detect private aura with RAID_BOSS_WHISPER syncs, but yeah...
 
-local specWarnSongoftheDragon						= mod:NewSpecialWarningCount(421029, nil, nil, nil, 2, 2)
+local specWarnSongoftheDragon						= mod:NewSpecialWarningMoveTo(421029, nil, nil, nil, 2, 2)
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
 local yellCaptivatingFinale							= mod:NewShortYell(421032)
 local specWarnPolymorphBomb							= mod:NewSpecialWarningYou(418720, nil, nil, nil, 1, 2)
@@ -327,7 +327,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 421029 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.songCount = self.vb.songCount + 1
-		specWarnSongoftheDragon:Show(self.vb.songCount)
+		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
 		specWarnSongoftheDragon:Play("takedamage")
 		--Timers that specifically reset on song begin
 		if not self:IsMythic() then--Review further. It definitely still happens on normal though
@@ -385,19 +385,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBarrelingChargeSpecial:Play("movetoboss")
 			else
 				specWarnBarrelingCharge:Show(self.vb.chargeCount)
-				specWarnBarrelingCharge:Play("chargemove")
+				specWarnBarrelingCharge:Play("targetyou")
 			end
 			yellBarrelingCharge:Yell()
 			yellBarrelingChargeFades:Countdown(spellId)
 		else
-			warnBarrelingCharge:Show(self.vb.chargeCount, args.destName)
-		end
-	elseif spellId == 423420 then
-		if not args:IsPlayer() then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then--May be unnessesary, but precaution for a drycode, remove later
-				specWarnTrampled:Show(args.destName)
-				specWarnTrampled:Play("tauntboss")
+			if DBM:UnitDebuff("player", 423420) then--Can't soak, need to avoid
+				specWarnBarrelingCharge:Show(self.vb.chargeCount)
+				specWarnBarrelingCharge:Play("chargemove")
+			else
+				warnBarrelingCharge:Show(self.vb.chargeCount, args.destName)
 			end
 		end
 	elseif spellId == 421022 then
@@ -472,6 +469,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 420948 then
 		if args:IsPlayer() then
 			yellBarrelingChargeFades:Cancel()
+		else
+			specWarnTrampled:Show(args.destName)
+			specWarnTrampled:Play("tauntboss")
 		end
 	elseif spellId == 421298 then
 		timerConstrictingThicket:Stop()
