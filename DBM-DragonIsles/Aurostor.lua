@@ -15,13 +15,13 @@ mod:RegisterKill("yell", L.Win)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 420895 420925 421260",
-	"SPELL_AURA_APPLIED 421279",
+	"SPELL_AURA_APPLIED 421260",
 	"UNIT_FLAGS target"
 )
 
 local specWarnGroggyBash				= mod:NewSpecialWarningYou(420895, nil, nil, nil, 1, 2)
 local specWarnPulverizingOutburst		= mod:NewSpecialWarningDodge(420925, nil, nil, nil, 1, 2)
-local specWarnVulnerableSlumber			= mod:NewSpecialWarningJump(421279, nil, nil, nil, 1, 6)
+local specWarnRoarDebuff				= mod:NewSpecialWarningJump(421260, nil, nil, nil, 1, 6)
 
 local timerGroggyBashCD					= mod:NewCDTimer(33, 420895, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerPulverizingOutburstCD		= mod:NewAITimer(15.9, 420925, nil, nil, nil, 3)--Health based? 15-59 is too much variation for a CD timer
@@ -46,9 +46,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 421279 and args:IsPlayer() then
-		specWarnVulnerableSlumber:Show()
-		specWarnVulnerableSlumber:Play("keepjump")
+	if spellId == 421260 and args:IsPlayer() then
+		specWarnRoarDebuff:Show()
+		specWarnRoarDebuff:Play("keepjump")
 	end
 end
 
