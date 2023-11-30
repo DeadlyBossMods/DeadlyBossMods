@@ -6,8 +6,8 @@ mod:SetCreatureID(208363, 208365, 208367)--Urctos, Aerwynn, Pip
 mod:SetEncounterID(2728)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20231122000000)
-mod:SetMinSyncRevision(20231122000000)
+mod:SetHotfixNoticeRev(20231129000000)
+mod:SetMinSyncRevision(20231129000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -116,18 +116,7 @@ mod.vb.windsCount = 0
 local nextSpecial = 0
 
 local function castBeforeSpecial(self, cooldown)
-	--Check syncable timers first, that way this function has disconnect protection, if timers were enabled
-	local remainingRage = timerBlindingRageCD:GetRemaining(self.vb.rageCount+1)
-	local remainingVines = timerConstrictingThicketCD:GetRemaining(self.vb.vinesCount+1)
-	local remainingSong = timerSongoftheDragonCD:GetRemaining(self.vb.songCount+1)
-	if (remainingRage > 0) and (remainingRage < cooldown) then
-		return false
-	elseif (remainingVines > 0) and (remainingVines < cooldown) then
-		return false
-	elseif (remainingSong > 0) and (remainingSong < cooldown) then
-		return false
-	--Check local timer caching second in case user turned timers off
-	elseif nextSpecial > 0 and (nextSpecial - GetTime() < cooldown) then
+	if nextSpecial > 0 and ((nextSpecial - GetTime()) < cooldown) then
 		return false
 	end
 	return true

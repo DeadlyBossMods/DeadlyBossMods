@@ -48,8 +48,9 @@ local L
 -----------------------
 -- Aurostor, The Hibernator --
 -----------------------
---L= DBM:GetModLocalization(2562)
+L= DBM:GetModLocalization(2562)
 
---L:SetMiscLocalization({
---	Pull	= ""
---})
+L:SetMiscLocalization({
+--	Pull	= "",
+	Win		= "Thank you...exhausted...can finally...sleep."
+})

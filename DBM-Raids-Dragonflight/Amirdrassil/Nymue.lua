@@ -182,7 +182,8 @@ function mod:SPELL_CAST_START(args)
 			)
 		end
 	elseif spellId == 429108 or spellId == 429180 then
-		if self:CheckBossDistance(args.sourceGUID, false) and self:AntiSpam(4, 3) then--Antispam needed since checkbossdistance is not working (even though it should be)
+--		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
+		if self:AntiSpam(4, 5) then
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
@@ -222,7 +223,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 422721 then
-		if self:CheckBossDistance(args.sourceGUID, false) then
+--		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
+		if self:AntiSpam(4, 4) then
 			warnRadialFlourish:Show()
 		end
 		timerRadialFlourishCD:Start(nil, args.sourceGUID)
@@ -324,7 +326,7 @@ end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	--Taking damage from miasma with vulnerability debuff
-	if spellId == 428474 and destGUID == UnitGUID("player") and DBM:UnitDebuff("player", 428479) and self:AntiSpam(3, 4) then
+	if spellId == 428474 and destGUID == UnitGUID("player") and DBM:UnitDebuff("player", 428479) and self:AntiSpam(3, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
