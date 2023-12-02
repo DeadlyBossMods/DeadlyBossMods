@@ -49,7 +49,7 @@ local yellWeaversBurden								= mod:NewShortYell(426519, 37859)--ST "Bomb"
 local specWarnWeaversBurdenOther					= mod:NewSpecialWarningTaunt(426519, nil, 37859, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(428474, nil, nil, nil, 1, 8)
 
-local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
+local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, L.Threads, nil, nil, 3)
 local timerEphemeralFloraCD							= mod:NewCDCountTimer(49, 430563, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerSurgingGrowthCD							= mod:NewCDCountTimer(7, 420971, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)--7-9, usually 8-9
 local timerViridianRainCD							= mod:NewCDCountTimer(19.1, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
