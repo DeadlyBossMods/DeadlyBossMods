@@ -249,7 +249,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Nymue, Weaver of the Cycle --
 ---------------------------
---L= DBM:GetModLocalization(2556)
+L= DBM:GetModLocalization(2556)
+
+L:SetMiscLocalization({
+	Threads			= "실타래 (%s)"
+})
 
 ---------------------------
 --  Smolderon --
