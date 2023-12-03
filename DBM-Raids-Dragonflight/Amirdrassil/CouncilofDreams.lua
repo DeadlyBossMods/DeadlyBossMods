@@ -223,7 +223,7 @@ function mod:OnCombatStart(delay)
 		--Pip
 		timerPolymorphBombCD:Start(36-delay, 1)
 		timerEmeraldWindsCD:Start(42.9-delay, 1)
-	elseif self:IsNormal()
+	elseif self:IsNormal() then
 		--Urctos
 		timerAgonizingClawsCD:Start(7.9-delay, 1)
 		timerBarrelingChargeCD:Start(28.9-delay, 1)
