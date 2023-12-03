@@ -303,7 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnBlazingCoalescence:Schedule(1, args.amount or 1)
 			warnLucidVulnerability:Show(args.amount or 1)
 		end
-	elseif spellId == 429983 and self:AntiSpam(5, 2) and self.vb.phase % 2 == 1 then
+	elseif spellId == 429983 and self:AntiSpam(5, 2) and self.vb.phase % 2 == 1 and not self:IsLFR() then
 		self.vb.surgingCount = self.vb.surgingCount + 1
 		warnSurgingGrowth:Show(self.vb.surgingCount)
 		timerSurgingGrowthCD:Start(nil, self.vb.surgingCount+1)
