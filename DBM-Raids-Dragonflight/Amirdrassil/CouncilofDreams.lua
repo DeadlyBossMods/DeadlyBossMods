@@ -6,7 +6,7 @@ mod:SetCreatureID(208363, 208365, 208367)--Urctos, Aerwynn, Pip
 mod:SetEncounterID(2728)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20231129000000)
+mod:SetHotfixNoticeRev(20231202000000)
 mod:SetMinSyncRevision(20231129000000)
 mod.respawnTime = 29
 
@@ -145,7 +145,7 @@ local function specialInterrupted(self, spellId)
 			timerPolymorphBombCD:Stop()
 			timerPolymorphBombCD:Start(16, self.vb.polyCount+1)
 			timerEmeraldWindsCD:Start(43, self.vb.windsCount+1)
-		else
+		elseif self:IsNormal() then
 			--Urctos
 			timerAgonizingClawsCD:Start(8, 1)
 			timerBarrelingChargeCD:Stop()
@@ -158,6 +158,19 @@ local function specialInterrupted(self, spellId)
 			timerPolymorphBombCD:Stop()
 			timerPolymorphBombCD:Start(16, self.vb.polyCount+1)
 			timerEmeraldWindsCD:Start(45.5, self.vb.windsCount+1)
+		else--LFR
+			--Urctos
+			timerAgonizingClawsCD:Start(10.6, 1)
+			timerBarrelingChargeCD:Stop()
+			timerBarrelingChargeCD:Start(38.6, self.vb.chargeCount+1)
+			--Aerwynn
+			timerNoxiousBlossomCD:Stop()
+			timerNoxiousBlossomCD:Start(14.6, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
+			timerPoisonousJavelinCD:Start(26.6, self.vb.javCount+1)
+			--Pip
+			timerPolymorphBombCD:Stop()
+			timerPolymorphBombCD:Start(21.3, self.vb.polyCount+1)
+			timerEmeraldWindsCD:Start(60.1, self.vb.windsCount+1)
 		end
 		DBM:Debug("All specials have ended, restarting all non special timers")
 
@@ -180,12 +193,12 @@ local function specialInterrupted(self, spellId)
 			--Standard order rotation for non mythic
 			if spellId == 418757 then--blinding rage interrupted
 				self.vb.vinesNext = true
-				timerConstrictingThicketCD:Start(56, self.vb.vinesCount+1)
+				timerConstrictingThicketCD:Start(self:IsLFR() and 74.6 or 56, self.vb.vinesCount+1)
 			elseif spellId == 421292 then--Constricting Thicket interrupted
-				timerSongoftheDragonCD:Start(56, self.vb.songCount+1)
+				timerSongoftheDragonCD:Start(self:IsLFR() and 74.6 or 56, self.vb.songCount+1)
 				self.vb.songNext = true
 			else--Song of dragon interrupted
-				timerBlindingRageCD:Start(56, self.vb.rageCount+1)
+				timerBlindingRageCD:Start(self:IsLFR() and 74.6 or 56, self.vb.rageCount+1)
 				self.vb.rageNext = true
 			end
 		end
@@ -210,7 +223,7 @@ function mod:OnCombatStart(delay)
 		--Pip
 		timerPolymorphBombCD:Start(36-delay, 1)
 		timerEmeraldWindsCD:Start(42.9-delay, 1)
-	else
+	elseif self:IsNormal()
 		--Urctos
 		timerAgonizingClawsCD:Start(7.9-delay, 1)
 		timerBarrelingChargeCD:Start(28.9-delay, 1)
@@ -221,6 +234,17 @@ function mod:OnCombatStart(delay)
 		--Pip
 		timerPolymorphBombCD:Start(34.9-delay, 1)
 		timerEmeraldWindsCD:Start(45-delay, 1)
+	else--LFR has to be a special snowflake
+		--Urctos
+		timerAgonizingClawsCD:Start(10.6-delay, 1)
+		timerBarrelingChargeCD:Start(38.6-delay, 1)
+		timerBlindingRageCD:Start(74.6-delay, 1)
+		--Aerwynn
+		timerNoxiousBlossomCD:Start(14.6-delay, 1)
+		timerPoisonousJavelinCD:Start(26.6)
+		--Pip
+		timerPolymorphBombCD:Start(46.6-delay, 1)
+		timerEmeraldWindsCD:Start(60-delay, 1)
 	end
 
 	--Aerwynn
@@ -254,19 +278,27 @@ function mod:SPELL_CAST_START(args)
 		if self:IsHard() then
 			timerPolymorphBombCD:Start(7, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
 			timerNoxiousBlossomCD:Start(9, self.vb.blossomCount+1)
-		else
+		elseif self:IsNormal() then
 			timerNoxiousBlossomCD:Start(7, self.vb.blossomCount+1)
 			timerPolymorphBombCD:Start(9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
+		else--LFR
+			timerPolymorphBombCD:Start(7.9, self.vb.polyCount+1)--Technically it's for the 2nd cast, first cast one event before this cast
 		end
 		DBM:Debug("Starting second polymorph blinding rage timer, in case first happened before blinding rage")
 	elseif spellId == 420947 then
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		--No specials active, normal behavior
 		if self.vb.specialsActive == 0 then
-			if castBeforeSpecial(self, 25) then
-				timerBarrelingChargeCD:Start(20, self.vb.chargeCount+1)
-			elseif self.vb.vinesNext then--If next special is soon, and it is vines, schedule a 3rd charge timer that overlaps with vines
-				timerBarrelingChargeCD:Start(self:IsEasy() and 30 or 26, self.vb.chargeCount+1)
+			if self:IsLFR() then--Special snowflake because charge is never cast twice unless vines next
+				if self.vb.vinesNext then--No need to check special Cd, if it was cast not during a special it's the only cast of it
+					timerBarrelingChargeCD:Start(40, self.vb.chargeCount+1)
+				end
+			else
+				if castBeforeSpecial(self, 25) then
+					timerBarrelingChargeCD:Start(20, self.vb.chargeCount+1)
+				elseif self.vb.vinesNext then--If next special is soon, and it is vines, schedule a 3rd charge timer that overlaps with vines
+					timerBarrelingChargeCD:Start(self:IsEasy() and 30 or 26, self.vb.chargeCount+1)
+				end
 			end
 		else
 			--Cast during a special, it has to be constricting and it'll loop in 8 seconds
@@ -274,12 +306,13 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 421020 then
 		self.vb.clawsCount = self.vb.clawsCount + 1
-		--8, 6, 25, 6 (LFR and normal)
+		--8, 6, 25, 6 (normal)
 		--5, 4, 16, 4 (heroic and mythic)
+		--10.6, 8, 33.3, 8 (LFR)
 		if self.vb.clawsCount % 2 == 1 then--1 and 3
-			timerAgonizingClawsCD:Start(self:IsEasy() and 6 or 4, self.vb.clawsCount+1)
+			timerAgonizingClawsCD:Start(self:IsLFR() and 8 or self:IsNormal() and 6 or 4, self.vb.clawsCount+1)
 		elseif self.vb.clawsCount == 2 then
-			timerAgonizingClawsCD:Start(self:IsEasy() and 25 or 16, self.vb.clawsCount+1)
+			timerAgonizingClawsCD:Start(self:IsLFR() and 33.3 or self:IsNormal() and 25 or 16, self.vb.clawsCount+1)
 		end
 	elseif spellId == 421292 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
@@ -297,21 +330,25 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.specialsActive == 0 then
 			--Is cast during specials, but Cd resets during them, twice, once on special begin and once again on special end
 			if castBeforeSpecial(self, 35) then--Extra large used cause there is a large gap between 2nd cast and specials now.
-				timerNoxiousBlossomCD:Start(self:IsEasy() and 22 or 20.7, self.vb.blossomCount+1)
+				timerNoxiousBlossomCD:Start(self:IsLFR() and 29.3 or self:IsNormal() and 22 or 20.7, self.vb.blossomCount+1)
 			elseif self.vb.rageNext and castBeforeSpecial(self, 20) then
 				if self:IsMythic() then
 					if self.vb.vinesNext then
 						timerNoxiousBlossomCD:Start(27, self.vb.blossomCount+1)
 					end
-				else
+				elseif not self:IsLFR() then--Doesn't happen in LFR?
 					timerNoxiousBlossomCD:Start(21, self.vb.blossomCount+1)
 				end
+			end
+		else
+			if self.vb.songNext then--technically active not next
+				timerNoxiousBlossomCD:Start(10, self.vb.blossomCount+1)
 			end
 		end
 	elseif spellId == 420856 then
 		self.vb.javCount = self.vb.javCount + 1
 		if castBeforeSpecial(self, 25) then
-			timerPoisonousJavelinCD:Start(25, self.vb.javCount+1)
+			timerPoisonousJavelinCD:Start(self:IsLFR() and 33.3 or 25, self.vb.javCount+1)
 		end
 	elseif spellId == 421029 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
@@ -321,7 +358,7 @@ function mod:SPELL_CAST_START(args)
 		--Timers that specifically reset on song begin
 		if not self:IsMythic() then--Review further. It definitely still happens on normal though
 			timerNoxiousBlossomCD:Stop()
-			timerNoxiousBlossomCD:Start(2.9, self.vb.blossomCount+1)
+			timerNoxiousBlossomCD:Start(self:IsLFR() and 3.9 or 2.9, self.vb.blossomCount+1)
 		end
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
@@ -332,9 +369,9 @@ function mod:SPELL_CAST_START(args)
 			timerPolymorphBombCD:Start(9, self.vb.polyCount+1)
 			DBM:Debug("Starting during special polymorph CD")
 		else
-			if castBeforeSpecial(self, 25) then
+			if castBeforeSpecial(self, self:IsLFR() and 30 or 25) then
 				--Normal cd behavior, no specials locking it out, start it's reg cd
-				timerPolymorphBombCD:Start(20, self.vb.polyCount+1)
+				timerPolymorphBombCD:Start(self:IsLFR() and 25 or 20, self.vb.polyCount+1)
 				DBM:Debug("Starting Regular polymorph CD")
 			else
 				--Specials are soon, now we just need to see if that soon special is blind and if it is, create the "3rd bomb" timer that syncs to blind
