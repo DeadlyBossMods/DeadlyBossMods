@@ -49,8 +49,9 @@ local L
 -----------------------
 -- Ауростор Пережидающий Зиму --
 -----------------------
---L= DBM:GetModLocalization(2562)
+L= DBM:GetModLocalization(2562)
 
---L:SetMiscLocalization({
---	Pull	= ""
---})
+L:SetMiscLocalization({
+--	Pull	= "",
+	Win		= "Спасибо... так устал... наконец-то... посплю..."
+})

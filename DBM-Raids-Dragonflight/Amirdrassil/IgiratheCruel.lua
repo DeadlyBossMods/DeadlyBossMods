@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 424456",
 	"SPELL_AURA_APPLIED 414340 414888 414367 419462 415623 414770 426056 422961",
 	"SPELL_AURA_APPLIED_DOSE 414340",
-	"SPELL_AURA_REMOVED 414888 422961",--415623
+	"SPELL_AURA_REMOVED 414888 422961 415623",
 	"UNIT_AURA player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -254,6 +254,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellBlisteringSpearFades:Cancel()
+		end
+	elseif spellId == 415623 then
+		if args:IsPlayer() then
+			yellHeartStopperFades:Cancel()
 		end
 	elseif spellId == 422961 then--Torment Ending
 		timerMarkedforTorment:Stop()
