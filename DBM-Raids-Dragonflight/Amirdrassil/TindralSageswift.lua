@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 426016 424140 423265",
+	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 426016 424140 423265 421636",
 	"SPELL_CAST_SUCCESS 424495",
 	"SPELL_AURA_APPLIED 422000 424581 424495 420540 425582 424258 422115 424579 424665 424180 422509 424582 424140 421603",--424580 426686 420238
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
@@ -84,6 +84,9 @@ local warnDreamEssence								= mod:NewCountAnnounce(424258, 1, nil, nil, DBM_CO
 local warnSuperNova									= mod:NewCastAnnounce(424140, 4)
 local warnSuperNovaEnded							= mod:NewSpellAnnounce(424140, 1)
 
+local specWarnTyphoon								= mod:NewSpecialWarningSpell(421636, nil, nil, nil, 2, 13)
+
+local timerTyphoon									= mod:NewCastTimer(5.5, 421636, DBM_COMMON_L.PUSHBACK, nil, nil, 2)
 local timerSupernova								= mod:NewCastTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddInfoFrameOption(424140, true)
@@ -386,6 +389,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerFlamingGerminationCD:Start(timer, self.vb.tranqCount+1)
 		end
+	elseif spellId == 421636 then
+		specWarnTyphoon:Show()
+		specWarnTyphoon:Play("pushbackincoming")
 	end
 end
 
@@ -482,6 +488,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFieryGrowthCD:Stop()
 		timerFallingStarsCD:Stop()
 		timerMassEntanglementCD:Stop()
+		timerTyphoon:Start()--5.5
 		if self:GetStage(1) then
 			self:SetStage(1.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
