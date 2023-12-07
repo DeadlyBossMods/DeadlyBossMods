@@ -606,6 +606,7 @@ function mod:SPELL_AURA_REMOVED(args)
 
 		timerFyralathsBiteCD:Start(18.4, 1)
 		timerSpiritsCD:Start(19.5, 1)
+		timeAFlameCD:Start(27.1, 1)
 		timerGreaterFirestormCD:Start(35.4, 1)
 		timerIncarnateCD:Start(44, 1)
 		timerShadowflameDevastationCD:Start(58.5, 1)
@@ -613,9 +614,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:IsHard() then
 			timerBlazeCD:Start(20.7, 1)--Heroic/Mythic only
 			self:Schedule(20.7, blazeLoop, self)
-			timeAFlameCD:Start(35.4, 1)
-		else
-			timeAFlameCD:Start(27.1, 1)
 		end
 	end
 end
