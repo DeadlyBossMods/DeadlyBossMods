@@ -51,7 +51,7 @@ local warnAflame									= mod:NewCountAnnounce(417807, 3, nil, nil, DBM_CORE_L.
 local warnFyralathsMark								= mod:NewStackAnnounce(417443, 3, nil, "Tank|Healer")
 
 local specWarnWildFire								= mod:NewSpecialWarningCount(420422, nil, nil, nil, 2, 2)
-local specWarnDreamRend								= mod:NewSpecialWarningRunCount(417455, nil, 193997, nil, 4, 2)
+local specWarnDreamRend								= mod:NewSpecialWarningRunCount(417455, nil, nil, nil, 4, 2)
 local specWarnFyralathsBite							= mod:NewSpecialWarningDefensive(417431, nil, nil, nil, 1, 2)
 local specWarnFyralathsMark							= mod:NewSpecialWarningTaunt(417443, nil, 37454, nil, 1, 2)
 
@@ -60,7 +60,7 @@ local timerDarkflameCleaveCD						= mod:NewCDCountTimer(49, 426368, 845, nil, ni
 local timerDarkflameCleave							= mod:NewCastCountTimer(4, 426368, 845, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerFirestormCD								= mod:NewCDCountTimer(49, 419506, nil, nil, nil, 3)
 local timerWildFireCD								= mod:NewCDCountTimer(49, 420422, nil, nil, nil, 2)
-local timerDreamRendCD								= mod:NewCDCountTimer(49, 417455, 193997, nil, nil, 3)--"Pull" short text. MIght change to "Pull in" though if it's unclear to users
+local timerDreamRendCD								= mod:NewCDCountTimer(49, 417455, nil, nil, nil, 3)--"Pull" short text. MIght change to "Pull in" though if it's unclear to users
 local timerBlazeCD									= mod:NewCDCountTimer(49, 414187, nil, nil, nil, 3)
 local timeAFlameCD									= mod:NewCDCountTimer(49, 417807, nil, "RemoveMagic", 2, 5, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFyralathsBiteCD							= mod:NewCDCountTimer(49, 417431, DBM_COMMON_L.FRONTAL.." (%s)", nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)
