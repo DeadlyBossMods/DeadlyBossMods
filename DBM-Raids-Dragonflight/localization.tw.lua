@@ -79,10 +79,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2499)
 
+L:SetOptionLocalization({
+	SetBreathToBait = "在過場階段調整吐息計時器，到期根據誘餌計時而不是施法計時 (吐息施放時施放時警報仍會觸發)"
+})
+
 L:SetMiscLocalization({
 	negative = "負極",
-	positive = "正極"
-	--BreathEmote	= "菈薩葛絲開始深呼吸..."
+	positive = "正極",
+	BreathEmote	= "深呼吸..."
 })
 
 -------------
@@ -195,4 +199,102 @@ L = DBM:GetModLocalization("AberrusTrash")
 
 L:SetGeneralLocalization({
 	name =	"亞貝魯斯小怪"
+})
+
+---------------------------
+--  Amirdrassil, the Dream's Hope --
+---------------------------
+---------------------------
+--  Gnarlroot --
+---------------------------
+--L= DBM:GetModLocalization(2564)
+
+---------------------------
+--  Igira the Cruel --
+---------------------------
+L= DBM:GetModLocalization(2554)
+
+L:SetMiscLocalization({
+	HealAbsorb	= "治療吸收 (%s)"--Might be common localized later
+})
+
+---------------------------
+--  Volcoross --
+---------------------------
+L= DBM:GetModLocalization(2557)
+
+L:SetMiscLocalization({
+	DebuffSoaks			= "減益吸收 (%s)"--Might be common localized later
+})
+
+---------------------------
+--  Council of Dreams --
+---------------------------
+L= DBM:GetModLocalization(2555)
+
+L:SetMiscLocalization({
+	Ducks		= "鴨子 (%s)"
+})
+
+---------------------------
+--  Larodar, Keeper of the Flame --
+---------------------------
+L= DBM:GetModLocalization(2553)
+
+L:SetMiscLocalization({
+	currentHealth		= "%d%%",
+	currentHealthIcon	= "{rt%d}%d%%",
+	Roots				= "樹根 (%s)",
+	HealAbsorb			= "治療吸收 (%s)"--Might be common localized later
+})
+
+---------------------------
+--  Nymue, Weaver of the Cycle --
+---------------------------
+L= DBM:GetModLocalization(2556)
+
+L:SetMiscLocalization({
+	Threads			= "絲線 (%s)"
+})
+
+---------------------------
+--  Smolderon --
+---------------------------
+--L= DBM:GetModLocalization(2563)
+
+---------------------------
+--  Tindral Sageswift, Seer of the Flame --
+---------------------------
+L= DBM:GetModLocalization(2565)
+
+L:SetMiscLocalization({
+	TreeForm			= "樹人型態",
+	MoonkinForm			= "梟獸型態"
+})
+
+---------------------------
+--  Fyrakk the Blazing --
+---------------------------
+L= DBM:GetModLocalization(2519)
+
+L:SetTimerLocalization{
+	timerMythicDebuffs			= "牢籠 (%s)"
+}
+
+L:SetWarningLocalization{
+	warnMythicDebuffs			= "牢籠 (%s)"
+}
+
+L:SetOptionLocalization{
+	warnMythicDebuffs			= "當$spell:428988以及$spell:428970減益施放時通告(包含計數)",
+	timerMythicDebuffs			= "顯示$spell:428988以及$spell:428970減益的計時(包含計數)"
+}
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("AmirdrassilTrash")
+
+L:SetGeneralLocalization({
+	name =	"埃達希爾小怪"
 })
