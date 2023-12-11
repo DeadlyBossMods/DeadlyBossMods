@@ -354,8 +354,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 412761 then
 		self.vb.incarnCount = self.vb.incarnCount + 1
 		specWarnIncarnate:Show(self.vb.incarnCount)
-		specWarnIncarnate:Play("carefly")
 		if self:GetStage(1) then
+			specWarnIncarnate:Play("carefly")--Stage 1, it's transition which comes with knockback
 			self:SetStage(1.5)
 			self.vb.addsAlive = 0
 			self.vb.orbsCount = 0
@@ -376,6 +376,7 @@ function mod:SPELL_CAST_START(args)
 				self:Schedule(17, blazeLoop, self)
 			end
 		else
+			specWarnIncarnate:Play("mobsoon")--Stage 2, he's lifting off for big adds
 			local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.incarnCount+1)
 			if timer then
 				timerIncarnateCD:Start(timer, self.vb.incarnCount+1)
