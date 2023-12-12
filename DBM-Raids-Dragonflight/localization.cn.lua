@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20231008
+--Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20231212
 --Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
@@ -119,12 +119,16 @@ L:SetOptionLocalization({
 ---------------------------
 --  The Forgotten Experiments --被遗忘的实验体
 ---------------------------
---L= DBM:GetModLocalization(2530)
+L= DBM:GetModLocalization(2530)
+
+L:SetMiscLocalization({
+	SafeClear		= "安全清除"
+})
 
 ---------------------------
 --  Assault of the Zaqali --扎卡利突袭
 ---------------------------
---L= DBM:GetModLocalization(2524)
+L= DBM:GetModLocalization(2524)
 
 L:SetTimerLocalization{
 	timerGuardsandHuntsmanCD	= "大怪 (%s)"
@@ -153,7 +157,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	pool		= "{rt%d}岩浆池 %d",--<icon> Pool 1,2,3
-	soakpool	= "吸收岩浆池"
+	soakpool	= "踩岩浆池"
 })
 
 ---------------------------
@@ -164,17 +168,17 @@ L:SetMiscLocalization({
 ---------------------------
 --  Magmorax --玛格莫莱克斯
 ---------------------------
---L= DBM:GetModLocalization(2527)
+L= DBM:GetModLocalization(2527)
 
 L:SetMiscLocalization({
 	pool		= "{rt%d}岩浆池 %d",--<icon> Pool 1,2,3
-	soakpool	= "吸收岩浆池"
+	soakpool	= "踩岩浆池"
 })
 
 ---------------------------
 --  Echo of Neltharion --奈萨里奥的回响
 ---------------------------
---L= DBM:GetModLocalization(2523)
+L= DBM:GetModLocalization(2523)
 
 L:SetMiscLocalization({
 	WallBreaker	= "破墙点我"
@@ -183,7 +187,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  Scalecommander Sarkareth --鳞长萨卡雷斯
 ---------------------------
---L= DBM:GetModLocalization(2520)
+L= DBM:GetModLocalization(2520)
 
 L:SetOptionLocalization({
 	InfoFrameBehaviorTwo	= "设置信息窗的层数跟踪行为",
@@ -219,7 +223,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Volcoross --沃尔科罗斯
 ---------------------------
---L= DBM:GetModLocalization(2557)
+L= DBM:GetModLocalization(2557)
+
+L:SetMiscLocalization({
+	DebuffSoaks			= "Debuff被吸收(%s)"--Might be common localized later
+})
 
 ---------------------------
 --  Council of Dreams --梦境议会
@@ -237,13 +245,19 @@ L= DBM:GetModLocalization(2553)
 
 L:SetMiscLocalization({
 	currentHealth		= "%d%%",
-	currentHealthIcon	= "{rt%d}%d%%"
+	currentHealthIcon	= "{rt%d}%d%%",
+	Roots				= "树根 (%s)",
+	HealAbsorb			= "治疗被吸收 (%s)"--Might be common localized later
 })
 
 ---------------------------
 --  Nymue, Weaver of the Cycle --尼穆威，轮回编织者
 ---------------------------
---L= DBM:GetModLocalization(2556)
+L= DBM:GetModLocalization(2556)
+
+L:SetMiscLocalization({
+	Threads			= "丝线 (%s)"
+})
 
 ---------------------------
 --  Smolderon --
@@ -253,12 +267,30 @@ L:SetMiscLocalization({
 ---------------------------
 --  Tindral Sageswift, Seer of the Flame --丁达尔·迅贤，烈焰预言者
 ---------------------------
---L= DBM:GetModLocalization(2565)
+L= DBM:GetModLocalization(2565)
+
+L:SetMiscLocalization({
+	TreeForm			= "树人形态",
+	MoonkinForm			= "枭兽形态"
+})
 
 ---------------------------
 --  Fyrakk the Blazing --火光之龙菲莱克
 ---------------------------
---L= DBM:GetModLocalization(2519)
+L= DBM:GetModLocalization(2519)
+
+L:SetTimerLocalization{
+	timerMythicDebuffs			= "牢笼 (%s)"
+}
+
+L:SetWarningLocalization{
+	warnMythicDebuffs			= "牢笼 (%s)"
+}
+
+L:SetOptionLocalization{
+	warnMythicDebuffs			= "警告：当Debuff $spell:428988 和 $spell:428970 被施放时 (带计数)",
+	timerMythicDebuffs			= "计时器：当Debuff $spell:428988 和 $spell:428970 被施放时 (带计数)"
+}
 
 -------------
 --  Trash  --
