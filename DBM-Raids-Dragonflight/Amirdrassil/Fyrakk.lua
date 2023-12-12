@@ -6,7 +6,7 @@ mod:SetCreatureID(204931)
 
 mod:SetEncounterID(2677)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20231208000000)
+mod:SetHotfixNoticeRev(20231212000000)
 mod:SetMinSyncRevision(20231208000000)
 mod.respawnTime = 29
 
@@ -161,7 +161,7 @@ local allTimers = {
 	[2] = {--Same in all difficulties, minus Aflame
 		--Flamefall
 		[420422] = {5.8, 75, 79.9},
-		--Fyralaths Bite
+		--Fyr'alath's Bite
 		[417431] = {17.9, 11.0, 60.0, 11.0, 11.0, 58.0, 11.0, 11.0},
 		--Greater Firestorm
 		[422518] = {35.8, 79.9, 80.0},
@@ -178,11 +178,7 @@ local allTimers = {
 		--Aflame (Normal)
 		[4178071] = {35.4, 74.0, 80.0},
 	},
-	[3] = {--Some timers assumed from pattern loop but probably fine
-		--Infernal Maw (Mythic)
-		[4254922] = {4.9, 3.0, 10.0, 3.0, 30.0, 3.0, 10.0, 3.0, 30.0, 3, 30, 3, 10, 3},
-		--Infernal Maw (Non Mythic)
-		[4254921] = {4.9, 3.0, 10.0, 3.0, 25.0, 3.0, 10.0, 3.0, 25.0, 3.0, 25.0, 3.0, 10.0, 3.0},
+	[3] = {
 		--Eternal Firestorm Embers
 		[402736] = {3.8, 6.4, 11.5, 11.5, 11.5, 5, 6.4, 11.5, 11.5, 11.5, 5, 6.4, 11.5, 11.5, 11.5, 5, 6.4, 11.5, 11.5, 11.5, 5, 6.4, 11.5, 11.5, 11.5},--Effectively 5, 6.4, 11.5, 11.5, 11.5 repeating, but with variance and no way to resync when it strays a little
 	},
@@ -435,11 +431,17 @@ function mod:SPELL_CAST_START(args)
 			specWarnInfernalMaw:Show()
 			specWarnInfernalMaw:Play("defensive")
 		end
-		local checkedId = self:IsMythic() and 4254922 or 4254921
-		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, checkedId, self.vb.tankCount+1)
-		if timer then
-			timerInfernalMawCD:Start(timer, self.vb.tankCount+1)
+		--Mythic 30, 3, 10, 3 repeating
+		--Non Mythic 25, 3, 10, 3 repeating
+		local timer
+		if self.vb.tankCount % 4 == 0 then
+			timer = self:IsMythic() and 30 or 25
+		elseif self.vb.tankCount % 4 == 2 then
+			timer = 10
+		else--cast 1, and cast 3
+			timer = 3
 		end
+		timerInfernalMawCD:Start(timer, self.vb.tankCount+1)
 	end
 end
 
