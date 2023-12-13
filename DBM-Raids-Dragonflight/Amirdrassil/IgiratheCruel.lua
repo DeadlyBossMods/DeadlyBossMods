@@ -253,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerBlisteringSpearCD:Start(34, self.vb.spearTotal+1)
 			timerTwistingBladeCD:Start(self:IsMythic() and 114.1 or 97.7, self.vb.TwistingTotal+1)
-			timerMarkedforTormentCD:Start(self:IsMythic() and 140 or 134.9, self.vb.tormentCount+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 140 or 133.8, self.vb.tormentCount+1)
 		end
 	end
 end
