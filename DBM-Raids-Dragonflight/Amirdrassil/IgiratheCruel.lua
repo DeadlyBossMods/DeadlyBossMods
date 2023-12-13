@@ -315,7 +315,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnHeartstopperSoon:Show()
 		local initialTimer = self:IsLFR() and 23.9 or 19
 		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
-		timerHeartStopperCD:Start(19, 1)
+		timerHeartStopperCD:Start(adjustedTimer, 1)
 	elseif spellId == 415090 then--Axe Stance
 		self.vb.umbralCount = 0
 		warnUmbralDestructionSoon:Show()
