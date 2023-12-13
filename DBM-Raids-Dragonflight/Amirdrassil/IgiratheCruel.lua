@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200926)
 mod:SetEncounterID(2709)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20231119000000)
-mod:SetMinSyncRevision(20231116000000)
+mod:SetHotfixNoticeRev(20231213000000)
+mod:SetMinSyncRevision(20231213000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -89,6 +89,7 @@ mod.vb.umbralCount = 0
 mod.vb.heartCount = 0
 --mod.vb.heartIcon = 1
 mod.vb.smashingCount = 0
+local tormentOverTime = 0
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -98,6 +99,7 @@ function mod:OnCombatStart(delay)
 	self.vb.TwistingCount = 0
 	self.vb.TwistingTotal = 0
 	self.vb.tormentCount = 0
+	tormentOverTime = 0
 	if self:IsMythic() then
 		timerBlisteringSpearCD:Start(4.5-delay, 1)
 		timerTwistingBladeCD:Start(15.4-delay, 1)
@@ -241,7 +243,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVitalRupture:Play("targetyou")
 		end
 	elseif spellId == 422961 then--Torment Beginning
+		tormentOverTime = GetTime() + 20--Expected duration
 		timerMarkedforTorment:Start()
+		--Timers started in applied instead of removed, so they don't need adjusting later in LFR due to overtime
+		if self:IsHard() and self.vb.tormentCount >= 4 then
+			timerTwistingBladeCD:Start(self:IsMythic() and 138.8 or 31.5, self.vb.TwistingTotal+1)--Mythic twisted not seen yet
+			timerBlisteringSpearCD:Start(38.8, self.vb.spearTotal+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 139.9 or 74, self.vb.tormentCount+1)
+		else
+			timerBlisteringSpearCD:Start(34, self.vb.spearTotal+1)
+			timerTwistingBladeCD:Start(self:IsMythic() and 114.1 or 97.7, self.vb.TwistingTotal+1)
+			timerMarkedforTormentCD:Start(self:IsMythic() and 140 or 134.9, self.vb.tormentCount+1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -260,19 +273,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellHeartStopperFades:Cancel()
 		end
 	elseif spellId == 422961 then--Torment Ending
+		tormentOverTime = GetTime() - tormentOverTime--Should be 0 all the time in non LFR, in LFR it will be 0 or greater
 		timerMarkedforTorment:Stop()
 		--Handle initial timer resets
 		self.vb.spearCount = 0
 		self.vb.TwistingCount = 0
-		if self:IsHard() and self.vb.tormentCount >= 4 then
-			timerTwistingBladeCD:Start(self:IsMythic() and 118.8 or 11.5, self.vb.TwistingTotal+1)--Mythic twisted not seen yet
-			timerBlisteringSpearCD:Start(18.8, self.vb.spearTotal+1)
-			timerMarkedforTormentCD:Start(self:IsMythic() and 119.9 or 54, self.vb.tormentCount+1)
-		else
-			timerBlisteringSpearCD:Start(14, self.vb.spearTotal+1)
-			timerTwistingBladeCD:Start(self:IsMythic() and 94.1 or 77.7, self.vb.TwistingTotal+1)
-			timerMarkedforTormentCD:Start(self:IsMythic() and 120 or 114.9, self.vb.tormentCount+1)
-		end
 	end
 end
 
@@ -302,15 +307,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 415020 then--Sword Stance
 		self.vb.smashingCount = 0
 		warnSmashingVisceraSoon:Show()
-		timerSmashingVisceraCD:Start(19.9, 1)
+		local initialTimer = self:IsLFR() and 24.7 or 19.9
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
+		timerSmashingVisceraCD:Start(adjustedTimer, 1)
 	elseif spellId == 415094 then--Knife Stance
 		self.vb.heartCount = 0
 		warnHeartstopperSoon:Show()
+		local initialTimer = self:IsLFR() and 23.9 or 19
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
 		timerHeartStopperCD:Start(19, 1)
 	elseif spellId == 415090 then--Axe Stance
 		self.vb.umbralCount = 0
 		warnUmbralDestructionSoon:Show()
-		timerUmbralDestructionCD:Start(18.8, 1)
+		local initialTimer = self:IsLFR() and 23.7 or 18.8
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
+		timerUmbralDestructionCD:Start(adjustedTimer, 1)
 	--Mythic specific weapon handling
 	elseif spellId == 425282 then--Axe Knife Stance
 		self.vb.umbralCount = 0

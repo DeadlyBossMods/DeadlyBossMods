@@ -454,12 +454,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassEntanglementCD:Stop()
 		timerTyphoon:Start()--5.5
 		if self:GetStage(1) then
-			self:SetStage(1.5)
+--			self:SetStage(1.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(41.2, 2)
 		else
-			self:SetStage(2.5)
+--			self:SetStage(2.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(28.1, 3)--28.1-34
@@ -478,7 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.treeCount = 0
 		self.vb.beamCount = 0
 		self.vb.tranqCount = 0
-		if self:GetStage(1.5) then
+		if self:GetStage(2, 1) then
 			self:SetStage(2)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
