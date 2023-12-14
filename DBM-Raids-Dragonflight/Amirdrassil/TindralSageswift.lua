@@ -112,15 +112,15 @@ local allTimers = {
 	["normal"] = {
 		[1] = {--Current as of Live Nov 15th for normal
 			--Blazing  Mushroom
-			[423260] = {19.2, 34},
+			[423260] = {19.0, 34},
 			--Fiery Growth
-			[424581] = {13.1, 37.0},
+			[424581] = {13.0, 37.0},
 			--Falling Stars
-			[420236] = {24.1, 34.9},
+			[420236] = {24.0, 34.9},
 			--Mass Entanglement
-			[424495] = {6.1, 37.0},
+			[424495] = {6.1, 36.9},
 			--Moonkin Form
-			[420540] = {29.1, 35.0},
+			[420540] = {29.1, 34.9},
 			--Fire Beam
 			[421398] = {34.1, 33.9},
 		},
@@ -292,15 +292,12 @@ function mod:OnCombatStart(delay)
 		timerMoonkinCD:Start(28.1-delay, 1)
 		timerFirebeamCD:Start(34.0, 1)
 		timerPhaseCD:Start(80.1-delay, 1.5)--Cast start
---	elseif self:IsNormal() then
---		difficultyName = "normal"
-	else
---		difficultyName = "lfr"
+	else--Normal and LFR are the same
 		difficultyName = "normal"
-		timerMassEntanglementCD:Start(6.1-delay, 1)
-		timerFieryGrowthCD:Start(13.1-delay, 1)
-		timerBlazingMushroomCD:Start(19.2-delay, 1)
-		timerFallingStarsCD:Start(24.1-delay, 1)
+		timerMassEntanglementCD:Start(6.0-delay, 1)
+		timerFieryGrowthCD:Start(13.0-delay, 1)
+		timerBlazingMushroomCD:Start(19.0-delay, 1)
+		timerFallingStarsCD:Start(24.0-delay, 1)
 		timerMoonkinCD:Start(29.1-delay, 1)
 		timerFirebeamCD:Start(34.1, 1)
 		timerPhaseCD:Start(79.1-delay, 1.5)--Applied (cast start not in combat log on normal)
@@ -457,12 +454,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassEntanglementCD:Stop()
 		timerTyphoon:Start()--5.5
 		if self:GetStage(1) then
-			self:SetStage(1.5)
+--			self:SetStage(1.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(41.2, 2)
 		else
-			self:SetStage(2.5)
+--			self:SetStage(2.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(28.1, 3)--28.1-34
@@ -481,7 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.treeCount = 0
 		self.vb.beamCount = 0
 		self.vb.tranqCount = 0
-		if self:GetStage(1.5) then
+		if self:GetStage(2, 1) then
 			self:SetStage(2)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")

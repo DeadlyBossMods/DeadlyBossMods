@@ -182,8 +182,8 @@ function mod:SPELL_CAST_START(args)
 			)
 		end
 	elseif spellId == 429108 or spellId == 429180 then
---		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
-		if self:AntiSpam(4, 5) then
+		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
+--		if self:AntiSpam(4, 5) then
 			specWarnLumberingSlam:Show()
 			specWarnLumberingSlam:Play("shockwave")
 		end
@@ -223,8 +223,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 422721 then
---		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
-		if self:AntiSpam(4, 4) then
+		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
+--		if self:AntiSpam(4, 4) then
 			warnRadialFlourish:Show()
 		end
 		timerRadialFlourishCD:Start(nil, args.sourceGUID)
