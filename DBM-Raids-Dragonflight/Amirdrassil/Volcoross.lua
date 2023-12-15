@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON 420421",
 	"SPELL_AURA_APPLIED 421207 419054 427201",
 	"SPELL_AURA_APPLIED_DOSE 419054",
-	"SPELL_AURA_REMOVED 421207 427201",
+	"SPELL_AURA_REMOVED 421207 427201 419054",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
 	"SPELL_PERIODIC_MISSED 421082 423494",
@@ -77,6 +77,7 @@ mod.vb.floodCount = 0
 mod.vb.volcanicCount = 0
 mod.vb.tailCount = 0
 mod.vb.jawsCount = 0
+local playerStacks = 0
 
 local allTimers = {
 	--Cata Jaws
@@ -105,6 +106,7 @@ function mod:OnCombatStart(delay)
 	self.vb.volcanicCount = 0
 	self.vb.tailCount = 0
 	self.vb.jawsCount = 0
+	playerStacks = 0
 	timerCataclysmJawsCD:Start(4.8-delay, 1)
 	timerSerpentsFuryCD:Start(9.8-delay, 1)
 	timerScorchtailCrashCD:Start(20-delay, 1)
@@ -141,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnCataclysmJaws:Show()
 			specWarnCataclysmJaws:Play("defensive")
-		else
+		elseif playerStacks < 3 then
 			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
 			specWarnCataclysmJawsTaunt:Show(bossTarget)
 			specWarnCataclysmJawsTaunt:Play("tauntboss")
@@ -200,18 +202,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
+			if args:IsPlayer() then
+				playerStacks = amount
+			end
 			if amount % 3 == 0 then
---				if args:IsPlayer() and amount >= 6 then
---					specWarnMoltenVenom:Show()
---					specWarnMoltenVenom:Play("stackhigh")
---				else
---					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
---						specWarnMoltenVenomSwap:Show(args.destName)
---						specWarnMoltenVenomSwap:Play("tauntboss")
---					else
-						warnMoltenVenom:Show(args.destName, amount)
---					end
---				end
+				warnMoltenVenom:Show(args.destName, amount)
 			end
 		end
 	end
@@ -233,6 +228,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellCoilingEruptionFades:Cancel()
+		end
+	elseif spellId == 419054 then
+		if args:IsPlayer() then
+			playerStacks = 0
 		end
 	end
 end
