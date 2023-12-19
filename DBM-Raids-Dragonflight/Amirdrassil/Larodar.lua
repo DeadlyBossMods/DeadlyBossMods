@@ -80,7 +80,8 @@ local timerFieryForceofNatureCD						= mod:NewCDCountTimer(11.8, 417653, DBM_COM
 local timerFieryFlourishCD							= mod:NewCDNPTimer(9.7, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerScorchingRootsCD							= mod:NewCDCountTimer(49, 422614, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerFuriousChargeCD							= mod:NewCDCountTimer(22.5, 418637, 100, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--SN "Charge"
-local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerBlazingThornsSoak						= mod:NewCastTimer(5, 426249, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerRagingInfernoCD							= mod:NewCDCountTimer(49, 417634, 37625, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--SN "Inferno"
 
 mod:AddPrivateAuraSoundOption(425888, true, 425888, 1)--Igniting Growth
@@ -345,6 +346,9 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.thornsCount+1)
 		if timer then
 			timerBlazingThornsCD:Start(timer, self.vb.thornsCount+1)
+		end
+		if self:IsHard() then
+			timerBlazingThornsSoak:Start(5, self.vb.thornsCount)
 		end
 	elseif spellId == 417634 then
 		self.vb.infernoCount = self.vb.infernoCount + 1
