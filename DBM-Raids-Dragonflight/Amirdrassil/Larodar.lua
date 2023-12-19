@@ -57,10 +57,11 @@ local warnBlazingCoalescence						= mod:NewCountAnnounce(426249, 2, nil, nil, DB
 local warnBlazingCoalescenceBoss					= mod:NewStackAnnounce(426256, 4)--Boss
 local warnEverlastingBlaze							= mod:NewCountAnnounce(429032, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(429032))--Player
 local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
+local warnIgnitingGrowth							= mod:NewCountAnnounce(425889, 3)
 
 local specWarnCharredBrambles						= mod:NewSpecialWarningSwitch(418655, "Healer", nil, nil, 1, 2)
---local specWarnIgnitingGrowth						= mod:NewSpecialWarningMoveAway(425888, nil, nil, nil, 1, 2, 4)
---local yellIgnitingGrowth							= mod:NewShortYell(425888, nil, false)
+--local specWarnIgnitingGrowth						= mod:NewSpecialWarningMoveAway(425889, nil, nil, nil, 1, 2, 4)
+--local yellIgnitingGrowth							= mod:NewShortYell(425889, nil, false)
 --local specWarnDreamBlossom						= mod:NewSpecialWarningYou(425468, nil, nil, nil, 1, 2)
 --local yellDreamBlossom							= mod:NewShortYell(425468, nil, false)
 local specWarnFieryFlourish							= mod:NewSpecialWarningInterruptCount(426524, "HasInterrupt", nil, nil, 1, 2)
@@ -75,7 +76,7 @@ local specWarnBlazingThornsAvoid					= mod:NewSpecialWarningDodgeCount(426206, "
 local specWarnBlazingThornsSoak						= mod:NewSpecialWarningSoakCount(426249, "-Healer", nil, nil, 1, 2)--Follow up orbs to soak
 local specWarnRagingInferno							= mod:NewSpecialWarningMoveTo(417634, nil, 37625, nil, 3, 2)--Shortname Inferno
 
-local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425888, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerIgnitingGrowthCD							= mod:NewCDCountTimer(49, 425889, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerFieryForceofNatureCD						= mod:NewCDCountTimer(11.8, 417653, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerFieryFlourishCD							= mod:NewCDNPTimer(9.7, 426524, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerScorchingRootsCD							= mod:NewCDCountTimer(49, 422614, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
@@ -84,7 +85,7 @@ local timerBlazingThornsCD							= mod:NewCDCountTimer(49, 426206, DBM_COMMON_L.
 local timerBlazingThornsSoak						= mod:NewCastTimer(5, 426249, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerRagingInfernoCD							= mod:NewCDCountTimer(49, 417634, 37625, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--SN "Inferno"
 
-mod:AddPrivateAuraSoundOption(425888, true, 425888, 1)--Igniting Growth
+mod:AddPrivateAuraSoundOption(425888, true, 425889, 1)--Igniting Growth
 mod:AddPrivateAuraSoundOption(425468, true, 425468, 1)--Dream Blossom
 mod:AddPrivateAuraSoundOption(420544, true, 420544, 4)--Scorching Pursuit
 mod:AddSetIconOption("SetIconOnForces", 417653, true, 5, {8, 7, 6})
@@ -281,6 +282,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 425889 then
 		self.vb.ignitingCount = self.vb.ignitingCount + 1
+		warnIgnitingGrowth:Show(self.vb.ignitingCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.ignitingCount+1)
 		if timer then
 			timerIgnitingGrowthCD:Start(timer, self.vb.ignitingCount+1)
