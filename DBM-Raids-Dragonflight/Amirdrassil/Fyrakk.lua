@@ -154,7 +154,7 @@ mod.vb.swirlCount = 0
 local allTimers = {
 	[1.5] = {
 		--Blaze (Mythic Only intermission Blaze)
-		[414187] = {17, 12, 8},
+		[414187] = {29, 8},--29 guessed
 		--Shadowflame Orbs
 		[421937] = {3.5, 6, 6},
 	},
@@ -368,8 +368,8 @@ function mod:SPELL_CAST_START(args)
 			timerDarkflameCleaveCD:Stop()--Mythic Only
 			timerCorrupt:Start(13)
 			if self:IsMythic() then
-				timerBlazeCD:Start(17, 1)--Mythic only
-				self:Schedule(17, blazeLoop, self)
+				timerBlazeCD:Start(29, 1)--Mythic only
+				self:Schedule(29, blazeLoop, self)
 			end
 		else
 			specWarnIncarnate:Play("mobsoon")--Stage 2, he's lifting off for big adds
