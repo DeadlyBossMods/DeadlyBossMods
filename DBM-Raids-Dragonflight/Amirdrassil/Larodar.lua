@@ -433,7 +433,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 426387 then
+	if spellId == 426387 and self:AntiSpam(3.5, args.destName) then
 		if args:IsPlayer() then
 			specWarnScorchingBramblethorn:Show()
 			specWarnScorchingBramblethorn:Play("targetyou")
