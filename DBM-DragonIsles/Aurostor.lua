@@ -15,8 +15,7 @@ mod:RegisterKill("yell", L.Win)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 420895 420925 421260",
-	"SPELL_AURA_APPLIED 421260",
-	"UNIT_FLAGS target"
+	"SPELL_AURA_APPLIED 421260 181089"
 )
 
 local specWarnGroggyBash				= mod:NewSpecialWarningYou(420895, nil, nil, nil, 1, 2)
@@ -49,13 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 421260 and args:IsPlayer() then
 		specWarnRoarDebuff:Show()
 		specWarnRoarDebuff:Play("keepjump")
-	end
-end
-
---Attempt win detection without using the yell
-function mod:UNIT_FLAGS(uId)
-	local cid = DBM:GetUnitCreatureId(uId) or 0
-	if cid == 209574 and UnitIsFriend("player", uId) then
+	elseif spellId == 181089 then--Encounter Event
 		DBM:EndCombat(self)
 	end
 end
