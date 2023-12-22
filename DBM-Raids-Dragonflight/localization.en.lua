@@ -297,3 +297,7 @@ L = DBM:GetModLocalization("AmirdrassilTrash")
 L:SetGeneralLocalization({
 	name =	"Amirdrassil Trash"
 })
+
+L:SetMiscLocalization({
+	FyrakkRP			= "You again. A pity I do not have time to eradicate you myself."
+})
