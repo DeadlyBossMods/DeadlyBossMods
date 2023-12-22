@@ -100,7 +100,7 @@ local warnFlashFire									= mod:NewTargetNoFilterAnnounce(427299, 3, nil, "Hea
 local warnEncasedInAsh								= mod:NewTargetNoFilterAnnounce(427306, 4, nil, "RemoveMagic")
 local warnAshenCall									= mod:NewCountAnnounce(421325, 2)
 --local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
---local warnAshenDevastation						= mod:NewTargetNoFilterAnnounce(428901, 4, nil, nil, 167180)--Shortname "Bombs"
+local warnAshenDevastation							= mod:NewCountAnnounce(428896, 3, nil, nil, 167180)--Shortname "Bombs"
 
 local specWarnFallingEmbers							= mod:NewSpecialWarningSoakCount(427252, nil, nil, nil, 2, 2)
 local specWarnFlashFire								= mod:NewSpecialWarningMoveAway(427299, nil, nil, nil, 1, 2)--Blizzard didn't flag right spellids as private aura, so this probably still works for now
@@ -112,16 +112,16 @@ local specWarnFireWhirl								= mod:NewSpecialWarningDodgeCount(427343, nil, 86
 local specWarnSmolderingBackdraft					= mod:NewSpecialWarningDefensive(429973, nil, nil, nil, 1, 2)
 local specWarnSmolderingSuffocation					= mod:NewSpecialWarningTaunt(421594, nil, nil, nil, 1, 2)
 local yellSmolderingSuffocationRepeater				= mod:NewIconRepeatYell(421594, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false, nil, "YELL")--using custom yell text "%s" because of custom needs (it has to use not only icons but two asci emoji
---local specWarnAshenDevestation					= mod:NewSpecialWarningMoveAway(428901, nil, 37859, nil, 1, 2, 4)
---local yellAshenDevestation						= mod:NewShortYell(428901, 37859)--Shortname "Bomb"
---local yellAshenDevestationFades					= mod:NewShortFadesYell(428901)
+--local specWarnAshenDevestation					= mod:NewSpecialWarningMoveAway(428896, nil, 37859, nil, 1, 2, 4)
+--local yellAshenDevestation						= mod:NewShortYell(428896, 37859)--Shortname "Bomb"
+--local yellAshenDevestationFades					= mod:NewShortFadesYell(428896)
 
 local timerFallingEmbersCD							= mod:NewCDCountTimer(49, 427252, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerFlashFireCD								= mod:NewCDCountTimer(49, 427299, L.HealAbsorb, nil, nil, 3)
 local timerFireWhirlCD								= mod:NewCDCountTimer(50, 427343, 86189, nil, nil, 3)--Shortname "Tornados"
 local timerSmolderingBackdraftCD					= mod:NewCDCountTimer(49, 429973, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerAshenCallCD								= mod:NewCDCountTimer(11.8, 421325, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerAshenDevestationCD						= mod:NewCDCountTimer(49, 428901, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerAshenDevestationCD						= mod:NewCDCountTimer(49, 428896, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(421461, true, 427299, 1)--Flash Fire
 mod:AddPrivateAuraSoundOption(428901, true, 428901, 1)--Ashen Devestation
@@ -626,8 +626,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 418655 and self:AntiSpam(3, 6) then
 		specWarnCharredBrambles:Show()
 		specWarnCharredBrambles:Play("healfull")
-	elseif spellId == 428896 then
+	elseif spellId == 428896 and self:AntiSpam(3, 7) then
 		self.vb.ignitingCount = self.vb.ignitingCount + 1
+		warnAshenDevastation:Show(self.vb.ignitingCount)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, false, spellId, self.vb.ignitingCount+1)
 		if timer then
 			timerAshenDevestationCD:Start(timer, self.vb.ignitingCount+1)
