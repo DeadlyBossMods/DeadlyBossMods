@@ -369,7 +369,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
 		self.vb.polyCount = self.vb.polyCount + 1
-		warnPolymorphBomb:Show(self.vb.polyCount)
+--		warnPolymorphBomb:Show(self.vb.polyCount)
 		--If cast during special, it's blinding rage and we need the 9 second loop
 		if self.vb.specialsActive > 0 then
 			timerPolymorphBombCD:Start(9, self.vb.polyCount+1)
