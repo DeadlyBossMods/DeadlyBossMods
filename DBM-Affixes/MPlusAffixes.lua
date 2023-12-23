@@ -161,8 +161,9 @@ do
 	end
 	function mod:LOADING_SCREEN_DISABLED()
 		self:Unschedule(delayedZoneCheck)
-		self:Schedule(1, delayedZoneCheck, self)
-		self:Schedule(3, delayedZoneCheck, self)
+		--Checks Delayed 1 second after core checks to prevent race condition of checking before core did and updated cached ID
+		self:Schedule(2, delayedZoneCheck, self)
+		self:Schedule(6, delayedZoneCheck, self)
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
