@@ -1,7 +1,7 @@
 ## Interface: 100200
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Affixes|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010신화+ 어픽스|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010Аффиксы подземелий и рейдов|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010М+Аффиксы|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010傳奇+詞綴|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010副本词缀|r
 ## Author: MysticalOS
@@ -15,7 +15,7 @@
 ## X-DBM-Mod-No-Statistics: 1
 ## X-DBM-Mod-Name: M+ Affixes
 ## X-DBM-Mod-Name-koKR: 신화+ 어픽스
-## X-DBM-Mod-Name-ruRU: Аффиксы
+## X-DBM-Mod-Name-ruRU: М+ Аффиксы
 ## X-DBM-Mod-MapID: 2579, 1279, 1501, 1466, 1763, 643, 1862
 ## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
