@@ -9,12 +9,3 @@ L = DBM:GetModLocalization("MPlusAffixes")
 L:SetGeneralLocalization({
 	name =	"М+ аффиксы"
 })
-
------------------------
--- <<< Fated Raid Affixes >>> --
------------------------
-L = DBM:GetModLocalization("FatedAffixes")
-
-L:SetGeneralLocalization({
-	name =	"Судьбоносные аффиксы"
-})

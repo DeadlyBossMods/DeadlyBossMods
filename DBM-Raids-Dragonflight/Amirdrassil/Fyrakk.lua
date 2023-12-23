@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 419506 420422 417455 417431 412761 428963 428400 428971 428968 428965 419123 422837 410223 425492 422518 419144",
-	"SPELL_CAST_SUCCESS 428954 414186 422935 422524 426368",
+	"SPELL_CAST_SUCCESS 428954 422935 422524 426368",--414186
 	"SPELL_AURA_APPLIED 417807 417443 429866 423717 425494 422517",
 	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866 425494",
 	"SPELL_AURA_REMOVED 419144",
@@ -46,7 +46,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(26666))
 local warnDarkflameShades							= mod:NewCountAnnounce(428954, 2)
 local warnDarkflameCleave							= mod:NewCountAnnounce(426368, 4, nil, nil, 845)
 local warnFirestorm									= mod:NewCountAnnounce(419506, 4, nil, nil, nil, nil, nil, nil, 2)
-local warnBlaze										= mod:NewCountAnnounce(414187, 3, nil, nil, nil, nil, nil, nil, 2)
+local warnBlaze										= mod:NewCountAnnounce(414186, 3, nil, nil, nil, nil, nil, nil, 2)
 local warnAflame									= mod:NewCountAnnounce(417807, 3, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(417807))--Player
 local warnFyralathsMark								= mod:NewStackAnnounce(417443, 3, nil, "Tank|Healer")
 
@@ -61,13 +61,13 @@ local timerDarkflameCleave							= mod:NewCastCountTimer(4, 426368, 845, nil, ni
 local timerFirestormCD								= mod:NewCDCountTimer(49, 419506, nil, nil, nil, 3)
 local timerWildFireCD								= mod:NewCDCountTimer(49, 420422, nil, nil, nil, 2)
 local timerDreamRendCD								= mod:NewCDCountTimer(49, 417455, nil, nil, nil, 3)--"Pull" short text. MIght change to "Pull in" though if it's unclear to users
-local timerBlazeCD									= mod:NewCDCountTimer(49, 414187, nil, nil, nil, 3)
+local timerBlazeCD									= mod:NewCDCountTimer(49, 414186, nil, nil, nil, 3)
 local timeAFlameCD									= mod:NewCDCountTimer(49, 417807, nil, "RemoveMagic", 2, 5, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFyralathsBiteCD							= mod:NewCDCountTimer(49, 417431, DBM_COMMON_L.FRONTAL.." (%s)", nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(419060, true, 419506, 1)--Firestorm
 mod:AddPrivateAuraSoundOption(426370, true, 426370, 1)--Darkflame Cleave
-mod:AddPrivateAuraSoundOption(414187, true, 414187, 1)--Blaze
+mod:AddPrivateAuraSoundOption(414187, true, 414186, 1)--Blaze
 --Intermission: Amirdrassil in Peril
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26667))
 local warnShadowflameOrbs							= mod:NewCountAnnounce(421937, 2)
@@ -86,7 +86,7 @@ mod:AddPrivateAuraSoundOption(429903, true, 429903, 1)--Flamebound
 mod:AddPrivateAuraSoundOption(429906, true, 429906, 1)--Shadowbound
 --Stage Two: Children of the Stars
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26668))
-local warnSpirits									= mod:NewCountAnnounce(422029, 3, nil, nil, 263222)
+local warnSpirits									= mod:NewCountAnnounce(422032, 3, nil, nil, 263222)
 local warnGreaterFirestorm							= mod:NewCountAnnounce(422518, 3)
 local warnExplodingCore								= mod:NewCastAnnounce(428400, 4)
 local warnMythicDebuffs								= mod:NewAnnounce("warnMythicDebuffs", 3, 428970, nil, nil, nil, 428970)
@@ -96,7 +96,7 @@ local specWarnShadowGauntlet						= mod:NewSpecialWarningDefensive(428965, nil, 
 local specWarnFlamefall								= mod:NewSpecialWarningRunCount(419123, nil, nil, nil, 4, 2)
 local specWarnShadowflameDevastation				= mod:NewSpecialWarningDodgeCount(422524, nil, 406227, nil, 2, 2)--Short name "Deep Breath"
 
-local timerSpiritsCD								= mod:NewCDCountTimer(49, 422029, 263222, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Spirits"
+local timerSpiritsCD								= mod:NewCDCountTimer(49, 422032, 263222, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Spirits"
 local timerGreaterFirestormCD						= mod:NewCDCountTimer(49, 422518, 419506, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerMoltenGauntletCD							= mod:NewCDNPTimer(11.7, 428963, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerMoltenEruptionCD							= mod:NewCDNPTimer(23, 428971, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -154,7 +154,7 @@ mod.vb.swirlCount = 0
 local allTimers = {
 	[1.5] = {
 		--Blaze (Mythic Only intermission Blaze)
-		[414187] = {29, 8},--29 guessed
+		[414186] = {29, 8},--29 guessed
 		--Shadowflame Orbs
 		[421937] = {3.5, 6, 6},
 	},
@@ -168,9 +168,9 @@ local allTimers = {
 		--Shadowflame Devastation
 		[422524] = {58.8, 80},
 		--Spirits of the Kaldorai
-		[422029] = {20, 20, 20, 25, 26, 25, 25, 25},
+		[422032] = {20, 20, 20, 25, 26, 25, 25, 25},
 		--Blaze (Heroic+ only)
-		[414187] = {20.7, 14.9, 25, 30, 26.9, 23, 30, 25},
+		[414186] = {20.7, 14.9, 25, 30, 26.9, 23, 30, 25},
 		--Incarnate
 		[412761] = {44.6, 80.0, 79.5},
 		--Aflame (Heroic)
@@ -197,7 +197,7 @@ local function blazeLoop(self)
 			timer = self.vb.blazeCount % 2 == 0 and 29.5 or 23.9
 		end
 	elseif stage == 1.5 or stage == 2 then--Still best sequenced sine it's larger pattern
-		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 414187, self.vb.blazeCount+1)
+		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 414186, self.vb.blazeCount+1)
 	else--Stage 3
 		timer = self:IsMythic() and (self.vb.blazeCount % 2 == 0 and 33 or 13) or (self.vb.blazeCount % 2 == 0 and 28 or 13)
 	end
@@ -637,7 +637,7 @@ do
 		if mob == spiritsName then--Spirits yell when they spawn, no other time, so match action name with auto localized name, no localizing required
 			self.vb.spiritsCount = self.vb.spiritsCount + 1
 			warnSpirits:Show(self.vb.spiritsCount)
-			local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 422029, self.vb.spiritsCount+1)
+			local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 422032, self.vb.spiritsCount+1)
 			if timer then
 				timerSpiritsCD:Start(timer, self.vb.spiritsCount+1)
 			end
