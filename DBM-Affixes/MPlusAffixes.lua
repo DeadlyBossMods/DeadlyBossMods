@@ -167,18 +167,23 @@ do
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
-end
 
-function mod:CHALLENGE_MODE_COMPLETED()
-	afflictedCounting = false
-	incorporealCounting = false
-	incorpDetected = false
-	afflictedDetected = false
-	self:UnregisterShortTermEvents()
-	self:Unschedule(checkForCombat)
-	self:Unschedule(checkEntangled)
-	self:Unschedule(checkAfflicted)
-	self:Stop()--Stop M+ timers on completion as well
+	function mod:CHALLENGE_MODE_COMPLETED()
+		--This basically force unloads things even when in a dungeon, so it's not countdown affixes that are disabled
+		afflictedCounting = false
+		incorporealCounting = false
+		incorpDetected = false
+		afflictedDetected = false
+		eventsRegistered = false
+		self:UnregisterShortTermEvents()
+		self:Unschedule(checkForCombat)
+		self:Unschedule(checkEntangled)
+		self:Unschedule(checkAfflicted)
+		self:Stop()--Stop M+ timers on completion as well
+		if self.Options.NPSanguine then
+			DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+		end
+	end
 end
 
 function mod:SPELL_CAST_START(args)
