@@ -124,7 +124,7 @@ local timerAshenCallCD								= mod:NewCDCountTimer(11.8, 421325, DBM_COMMON_L.A
 local timerAshenDevestationCD						= mod:NewCDCountTimer(49, 428896, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(421461, true, 427299, 1)--Flash Fire
-mod:AddPrivateAuraSoundOption(428901, true, 428901, 1)--Ashen Devestation
+mod:AddPrivateAuraSoundOption(428901, true, 428896, 1)--Ashen Devestation
 
 --Stage 1
 mod.vb.ignitingCount = 0--Reused in stage 2 for Ashen Devestation
