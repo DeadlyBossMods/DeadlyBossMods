@@ -146,6 +146,7 @@ do
 			if self.Options.NPSanguine then
 				DBM:FireEvent("BossMod_EnableHostileNameplates")
 			end
+			DBM:Debug("Registering M+ events")
 		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
 			afflictedCounting = false
@@ -160,6 +161,7 @@ do
 			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 			end
+			DBM:Debug("Unregistering M+ events")
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
