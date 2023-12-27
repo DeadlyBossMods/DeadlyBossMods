@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(200926)
 mod:SetEncounterID(2709)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20231213000000)
+mod:SetHotfixNoticeRev(20231227000000)
 mod:SetMinSyncRevision(20231213000000)
 mod.respawnTime = 29
 
@@ -308,19 +308,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.smashingCount = 0
 		warnSmashingVisceraSoon:Show()
 		local initialTimer = self:IsLFR() and 24.7 or 19.9
-		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or initialTimer
 		timerSmashingVisceraCD:Start(adjustedTimer, 1)
 	elseif spellId == 415094 then--Knife Stance
 		self.vb.heartCount = 0
 		warnHeartstopperSoon:Show()
 		local initialTimer = self:IsLFR() and 23.9 or 19
-		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or initialTimer
 		timerHeartStopperCD:Start(adjustedTimer, 1)
 	elseif spellId == 415090 then--Axe Stance
 		self.vb.umbralCount = 0
 		warnUmbralDestructionSoon:Show()
 		local initialTimer = self:IsLFR() and 23.7 or 18.8
-		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or 0
+		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or initialTimer
 		timerUmbralDestructionCD:Start(adjustedTimer, 1)
 	--Mythic specific weapon handling
 	elseif spellId == 425282 then--Axe Knife Stance
