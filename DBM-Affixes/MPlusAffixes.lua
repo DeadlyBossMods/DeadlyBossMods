@@ -115,20 +115,23 @@ end
 
 do
 	local validZones
-	if (C_MythicPlus.GetCurrentSeason() or 0) == 11 then--DF Season 3
-		--2579, 1279, 1501, 1466, 1763, 643, 1862
-		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
+	if (C_MythicPlus.GetCurrentSeason() or 0) == 9 then--DF Season 1
+		--2516, 2526, 2515, 2521, 1477, 1571, 1176, 960
+		validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
 	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 10 then--DF Season 2
 		--657, 1841, 1754, 1458, 2527, 2519, 2451, 2520
 		validZones = {[657]=true, [1841]=true, [1754]=true, [1458]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
-	else--Season 1
-		--2516, 2526, 2515, 2521, 1477, 1571, 1176, 960
-		validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [1477]=true, [1571]=true, [1176]=true, [960]=true}
+	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 12 then--DF Season 4
+		--NOT YET KNOWN, season 3 placeholders
+		validZones = {[657]=true, [1841]=true, [1754]=true, [1458]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
+	else--Season 3 (11) (latest LIVE season put in else so if api fails, it just always returns latest)
+		--2579, 1279, 1501, 1466, 1763, 643, 1862
+		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
 	end
 	local eventsRegistered = false
-	local function delayedZoneCheck(self)
+	local function delayedZoneCheck(self, force)
 		local currentZone = DBM:GetCurrentArea() or 0
-		if validZones[currentZone] and not eventsRegistered then
+		if not force and validZones[currentZone] and not eventsRegistered then
 			eventsRegistered = true
 			self:RegisterShortTermEvents(
 				"SPELL_CAST_START 240446 409492 408805",
@@ -143,7 +146,8 @@ do
 			if self.Options.NPSanguine then
 				DBM:FireEvent("BossMod_EnableHostileNameplates")
 			end
-		elseif not validZones[currentZone] and eventsRegistered then
+			DBM:Debug("Registering M+ events")
+		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
 			afflictedCounting = false
 			incorporealCounting = false
@@ -157,6 +161,7 @@ do
 			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 			end
+			DBM:Debug("Unregistering M+ events")
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
@@ -170,19 +175,7 @@ do
 
 	function mod:CHALLENGE_MODE_COMPLETED()
 		--This basically force unloads things even when in a dungeon, so it's not countdown affixes that are disabled
-		afflictedCounting = false
-		incorporealCounting = false
-		incorpDetected = false
-		afflictedDetected = false
-		eventsRegistered = false
-		self:UnregisterShortTermEvents()
-		self:Unschedule(checkForCombat)
-		self:Unschedule(checkEntangled)
-		self:Unschedule(checkAfflicted)
-		self:Stop()--Stop M+ timers on completion as well
-		if self.Options.NPSanguine then
-			DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-		end
+		delayedZoneCheck(self, true)
 	end
 end
 
