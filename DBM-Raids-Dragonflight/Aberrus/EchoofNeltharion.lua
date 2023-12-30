@@ -217,6 +217,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnUmbralAnnihilation:Play("aesoon")
 		if self.vb.annihilatingCount >= 5 then--Still true?
 			timerUmbralAnnihilationCD:Start(10.9, self.vb.annihilatingCount+1)
+		elseif self.vb.annihilatingCount == 2 then--A wild fluke that keeps coming up in debug
+			timerUmbralAnnihilationCD:Start(27.9, self.vb.annihilatingCount+1)
 		else
 			timerUmbralAnnihilationCD:Start(29.2, self.vb.annihilatingCount+1)
 		end

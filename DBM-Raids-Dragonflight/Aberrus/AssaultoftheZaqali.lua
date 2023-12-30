@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 401258 401867 408959 397383 409271 401108 407009 410351 397386 408620",
-	"SPELL_CAST_SUCCESS 397514",
+	"SPELL_CAST_SUCCESS 397514 401258 410351",
 	"SPELL_AURA_APPLIED 401867 402066 401381 409275 408873 410353 401452",
 	"SPELL_AURA_APPLIED_DOSE 408873 410353",
 	"SPELL_AURA_REMOVED 401867 402066 401452",
@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 410516 or ability.id = 401258 or ability.id = 408959 or ability.id = 401108 or ability.id = 407009 or ability.id = 410351 or ability.id = 397514) and type = "begincast"
- or ability.id = 397514 and type = "cast"
+ or (ability.id = 397514 or ability.id = 412818 or ability.id = 412820) and type = "cast"
  or (source.type = "NPC" and source.firstSeen = timestamp) and (source.id = 199703 or source.id = 204505 or source.id = 199812) or (target.type = "NPC" and target.firstSeen = timestamp) and (target.id = 199703 or target.id = 204505 or target.id = 199812)
  or (ability.id = 404585 or ability.id = 397386 or ability.id = 397383 or ability.id = 401867 or ability.id = 409271) and type = "begincast"
 --]]
@@ -183,28 +183,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 401258 then
-		self.vb.cudgelCount = self.vb.cudgelCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnHeavyCudgel:Show(self.vb.cudgelCount)
+			specWarnHeavyCudgel:Show(self.vb.cudgelCount+1)
 			specWarnHeavyCudgel:Play("defensive")
 		end
-		--12.0, 59.7, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
-		--11.9, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0",
-		--11.9, 59.8, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0"
-		--12.0, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
-		local timer
-		if self.vb.cudgelCount == 1 then--One off
-			timer = 58.4
-		elseif self.vb.cudgelCount % 4 == 2 then--2, 6, 10, 14, etc
-			timer = 20.9
-		elseif self.vb.cudgelCount % 4 == 3 then--3, 7, 11, 15, etc
-			timer = 25.9
-		elseif self.vb.cudgelCount % 4 == 0 then--4, 8, 12, 16, etc
-			timer = 22
-		elseif self.vb.cudgelCount % 4 == 1 then--5, 9, 13, 17, etc
-			timer = 31
-		end
-		timerHeavyCudgelCD:Start(timer, self.vb.cudgelCount+1)
+		--Timers moved to success event
 	elseif spellId == 401867 and self:CheckBossDistance(args.sourceGUID, true, 32698, 48) then
 		warnVolcanicShield:Show()
 		timerVolcanicShieldCD:Start(nil, args.sourceGUID)
@@ -255,25 +238,13 @@ function mod:SPELL_CAST_START(args)
 			timerVigorousGaleCD:Start(63.1, self.vb.galeCount+1)--63.1-65.5
 		end
 	elseif spellId == 410351 then
-		self.vb.cudgelCount = self.vb.cudgelCount + 1
-		specWarnFlamingCudgel:Show(self.vb.cudgelCount)
+		specWarnFlamingCudgel:Show(self.vb.cudgelCount+1)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnFlamingCudgel:Play("defensive")
 		else
 			specWarnFlamingCudgel:Play("scatter")
 		end
-		--18, 23, 19, 11.9,
-		--18, 23, 19, 12
-		--18, 23, 19, 12, 23, 19
-		local timer
-		if self.vb.cudgelCount % 3 == 2 then
-			timer = 19
-		elseif self.vb.cudgelCount % 3 == 0 then
-			timer = 12
-		elseif self.vb.cudgelCount % 3 == 1 then
-			timer = 23
-		end
-		timerFlamingCudgelCD:Start(timer, self.vb.cudgelCount+1)
+		--Timers moved to success event
 	elseif spellId == 397386 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -313,6 +284,40 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGuardsandHuntsmanCD:Stop()
 		timerFlamingCudgelCD:Start(18.7, 1)
 		timerCatastrophicSlamCD:Start(25.6, 1)
+	elseif spellId == 401258 then
+		--Only increment and start timer on success, if tank dies during cast, it triggers a recast and can break all timers if started in START
+		self.vb.cudgelCount = self.vb.cudgelCount + 1
+		--12.0, 59.7, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
+		--11.9, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0",
+		--11.9, 59.8, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0"
+		--12.0, 59.5, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0, 22.0, 31.0, 21.0, 26.0
+		local timer
+		if self.vb.cudgelCount == 1 then--One off
+			timer = 58.4
+		elseif self.vb.cudgelCount % 4 == 2 then--2, 6, 10, 14, etc
+			timer = 20.9
+		elseif self.vb.cudgelCount % 4 == 3 then--3, 7, 11, 15, etc
+			timer = 25.9
+		elseif self.vb.cudgelCount % 4 == 0 then--4, 8, 12, 16, etc
+			timer = 22
+		elseif self.vb.cudgelCount % 4 == 1 then--5, 9, 13, 17, etc
+			timer = 31
+		end
+		timerHeavyCudgelCD:Start(timer - 3, self.vb.cudgelCount+1)--Timer minus cast time
+	elseif spellId == 410351 then
+		self.vb.cudgelCount = self.vb.cudgelCount + 1
+		--18, 23, 19, 11.9,
+		--18, 23, 19, 12
+		--18, 23, 19, 12, 23, 19
+		local timer
+		if self.vb.cudgelCount % 3 == 2 then
+			timer = 19
+		elseif self.vb.cudgelCount % 3 == 0 then
+			timer = 12
+		elseif self.vb.cudgelCount % 3 == 1 then
+			timer = 23
+		end
+		timerFlamingCudgelCD:Start(timer - 3, self.vb.cudgelCount+1)--Timer minus cast time
 	end
 end
 
