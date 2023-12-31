@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, tank swap stacks/when to taunt in stage 3, or maybe periods of time it shoudln't happen on mythic (if holding seed and shit going on, don't distract with taunt warning type deal)
 --TODO, more common locals/short names applied to mod?
 --General
-local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+local warnPhase										= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(419504, nil, nil, nil, 1, 8)
 
@@ -45,8 +45,8 @@ local timerPhaseCD									= mod:NewStageTimer(60, 408330)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26666))
 local warnDarkflameShades							= mod:NewCountAnnounce(428954, 2)
 local warnDarkflameCleave							= mod:NewCountAnnounce(426368, 4, nil, nil, 845)
-local warnFirestorm									= mod:NewCountAnnounce(419506, 4, nil, nil, nil, nil, nil, nil, 2)
-local warnBlaze										= mod:NewCountAnnounce(414186, 3, nil, nil, nil, nil, nil, nil, 2)
+local warnFirestorm									= mod:NewCountAnnounce(419506, 4, nil, nil, nil, nil, nil, 2)--icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
+local warnBlaze										= mod:NewCountAnnounce(414186, 3, nil, nil, nil, nil, nil, 2)
 local warnAflame									= mod:NewCountAnnounce(417807, 3, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(417807))--Player
 local warnFyralathsMark								= mod:NewStackAnnounce(417443, 3, nil, "Tank|Healer")
 

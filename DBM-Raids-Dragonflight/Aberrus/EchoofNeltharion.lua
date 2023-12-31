@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, delete redundant/incorrect events when real events known
 --TODO, Add shatter? https://www.wowhead.com/ptr/spell=401825/shatter
-local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 --Stage One: The Earth Warder
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26192))
 local warnTwistedEarth							= mod:NewCountAnnounce(402902, 2)
@@ -217,6 +217,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnUmbralAnnihilation:Play("aesoon")
 		if self.vb.annihilatingCount >= 5 then--Still true?
 			timerUmbralAnnihilationCD:Start(10.9, self.vb.annihilatingCount+1)
+		elseif self.vb.annihilatingCount == 2 then--A wild fluke that keeps coming up in debug
+			timerUmbralAnnihilationCD:Start(27.9, self.vb.annihilatingCount+1)
 		else
 			timerUmbralAnnihilationCD:Start(29.2, self.vb.annihilatingCount+1)
 		end

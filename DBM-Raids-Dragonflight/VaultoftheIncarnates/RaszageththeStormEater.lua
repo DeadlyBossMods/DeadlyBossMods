@@ -39,7 +39,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 382530 and (type = "applybuff" or type = "removebuff")
 --]]
 --General
-local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+local warnPhase									= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(388115, nil, nil, nil, 1, 8)
 
