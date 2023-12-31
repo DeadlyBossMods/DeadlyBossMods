@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 --TODO, maybe infoframe for tracking Blazing Coal stacks?
 --TODO, more with the tank stuff?
 --General
-local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+local warnPhase										= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(417632, nil, nil, nil, 1, 8)
 
