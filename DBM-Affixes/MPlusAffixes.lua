@@ -22,7 +22,7 @@ mod:RegisterEvents(
 --]]
 local warnExplosion							= mod:NewCastAnnounce(240446, 4)
 local warnIncorporeal						= mod:NewCastAnnounce(408801, 4)
-local warnAfflictedCry						= mod:NewCastAnnounce(409492, 4, nil, nil, nil, nil, nil, 14)--spellId, color, castTime, icon, optionDefault, optionName, _, soundOption
+local warnAfflictedCry						= mod:NewCastAnnounce(409492, 4, nil, nil, "Healer|RemoveMagic|RemoveCurse|RemoveDisease|RemovePoison", 2, nil, 14)--Flagged to only warn players who actually have literally any skill to deal with spirits, else alert is just extra noise to some rogue or warrior with no skills for mechanic
 local warnDestabalize						= mod:NewCastAnnounce(408805, 4, nil, nil, false)
 local warnSpitefulFixate					= mod:NewYouAnnounce(350209, 4)
 
@@ -34,7 +34,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
 local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 3, nil, nil, nil, true)
-local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON, nil, 3, 3)
+local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON, nil, 3, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
 local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
