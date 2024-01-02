@@ -357,7 +357,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 426016 or spellId == 424140 then
 		warnSuperNova:Show()
-		timerSupernova:Start()
 	elseif spellId == 423265 then
 		self.vb.tranqCount = self.vb.tranqCount + 1
 		specWarnFlamingGermination:Show(self.vb.tranqCount)
@@ -454,17 +453,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassEntanglementCD:Stop()
 		timerTyphoon:Start()--5.5
 		if self:GetStage(1) then
---			self:SetStage(1.5)
+			self:SetStage(1.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(41.2, 2)
 		else
---			self:SetStage(2.5)
+			self:SetStage(2.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(28.1, 3)--28.1-34
 		end
 	elseif spellId == 424180 or spellId == 424140 then
+		timerSupernova:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"))
