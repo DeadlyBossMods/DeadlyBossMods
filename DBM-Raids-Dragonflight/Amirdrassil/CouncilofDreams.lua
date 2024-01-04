@@ -119,10 +119,10 @@ local nextSpecial = 0
 local playerpreWarned = false
 
 local function castBeforeSpecial(self, cooldown)
-	if nextSpecial > 0 and ((nextSpecial - GetTime()) < cooldown) then
-		return false
+	if nextSpecial > 0 and ((nextSpecial - GetTime()) > cooldown) then
+		return true
 	end
-	return true
+	return false
 end
 
 local function specialInterrupted(self, spellId)
