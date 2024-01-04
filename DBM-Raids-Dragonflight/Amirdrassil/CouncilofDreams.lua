@@ -6,7 +6,7 @@ mod:SetCreatureID(208363, 208365, 208367)--Urctos, Aerwynn, Pip
 mod:SetEncounterID(2728)
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20231202000000)
+mod:SetHotfixNoticeRev(20240104000000)
 mod:SetMinSyncRevision(20231129000000)
 mod.respawnTime = 29
 
