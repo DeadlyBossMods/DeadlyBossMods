@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
+(ability.id = 425576 or ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
  or ability.id = 424495 and type = "cast"
  or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
  or ability.id = 421603
@@ -44,7 +44,7 @@ local warnSearingWrath								= mod:NewStackAnnounce(422000, 2, nil, "Tank|Heale
 local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, nil, nil, nil, nil, 2)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
-local warnIncarnationOwl							= mod:NewCountAnnounce(425582, 4, nil, nil, 302954)
+local warnIncarnationOwl							= mod:NewCountAnnounce(425576, 4, nil, nil, 302954)
 
 local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, nil, 1, 2)
 local specWarnFieryGrowth							= mod:NewSpecialWarningMoveAway(424581, nil, nil, nil, 1, 2)
@@ -56,7 +56,7 @@ local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, 
 local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
-local timerOwlCD									= mod:NewNextCountTimer(20, 425582, 302954, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
+local timerOwlCD									= mod:NewNextCountTimer(20, 425576, 302954, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
 
 mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3, 4})
 ----Moonkin of the Flame
