@@ -296,16 +296,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.chargeCount = self.vb.chargeCount + 1
 		--No specials active, normal behavior
 		if self.vb.specialsActive == 0 then
-			if self:IsLFR() then--Special snowflake because charge is never cast twice unless vines next
-				if self.vb.vinesNext then--No need to check special Cd, if it was cast not during a special it's the only cast of it
-					timerBarrelingChargeCD:Start(40, self.vb.chargeCount+1)
-				end
-			else
-				if castBeforeSpecial(self, 25) then
-					timerBarrelingChargeCD:Start(20, self.vb.chargeCount+1)
-				elseif self.vb.vinesNext then--If next special is soon, and it is vines, schedule a 3rd charge timer that overlaps with vines
-					timerBarrelingChargeCD:Start(self:IsEasy() and 30 or 26, self.vb.chargeCount+1)
-				end
+			if not self:IsEasy() and castBeforeSpecial(self, 25) then--Only cast twice per cycle on heroic and mythic
+				timerBarrelingChargeCD:Start(20, self.vb.chargeCount+1)
+			elseif self.vb.vinesNext then--If next special is soon, and it is vines, schedule a 2nd (easy) or 3rd (hard) charge timer that overlaps with vines
+				timerBarrelingChargeCD:Start(self:IsLFR() and 39.9 or self:IsNormal() and 30 or 26, self.vb.chargeCount+1)
 			end
 		else
 			--Cast during a special, it has to be constricting and it'll loop in 8 seconds
