@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 419506 420422 417455 417431 412761 428963 428400 428971 428968 428965 419123 422837 410223 425492 422518 419144",
-	"SPELL_CAST_SUCCESS 428954 422935 422524 426368",--414186
+	"SPELL_CAST_SUCCESS 428954 422935 422524 426368",
 	"SPELL_AURA_APPLIED 417807 417443 429866 423717 425494 422517",
 	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866 425494",
 	"SPELL_AURA_REMOVED 419144",
@@ -457,13 +457,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerDarkflameShadesCD:Start(timer, self.vb.tankCount+2)
 		end
---	elseif spellId == 414186 then--Not verified yet
---		self.vb.blazeCount = self.vb.blazeCount + 1
---		warnBlaze:Show(self.vb.blazeCount)
---		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.blazeCount+1)
---		if timer then
---			timerBlazeCD:Start(timer, self.vb.blazeCount+1)
---		end
 	elseif spellId == 422524 then
 		self.vb.shadowflameDevastation = self.vb.shadowflameDevastation + 1
 		specWarnShadowflameDevastation:Show(self.vb.shadowflameDevastation)
@@ -555,17 +548,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 425494 then
 		local amount = args.amount or 1
-		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
-		end
-		local timer = (self:GetFromTimersTable(allTimers, false, false, 425492, self.vb.tankCount+1) or 3) - 5
-		if not args:IsPlayer() and amount >= 4 and (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-			specWarnInfernalMawTaunt:Show(args.destName)
-			specWarnInfernalMawTaunt:Play("tauntboss")
-		else
-			warnInfernalMaw:Show(args.destName, amount)
+		if amount % 4 == 0 then--if amount >= 4 and (amount % 2 == 0) then (maybe use this instead of every 4 feels too infrequent)
+			if not args:IsPlayer() then
+				specWarnInfernalMawTaunt:Show(args.destName)
+				specWarnInfernalMawTaunt:Play("tauntboss")
+			else
+				warnInfernalMaw:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 423717 and args:IsPlayer() then
 		warnBloom:Show()
