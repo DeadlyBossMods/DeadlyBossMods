@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 426016 424140 423265 421636",
+	"SPELL_CAST_START 423260 426669 424581 420236 424495 421398 426016 424140 423265 421636 429169",
 	"SPELL_CAST_SUCCESS 424495",
 	"SPELL_AURA_APPLIED 422000 424581 424495 420540 425582 424258 422115 424579 424665 424180 422509 424582 424140 421603",--424580 426686 420238
 	"SPELL_AURA_APPLIED_DOSE 422000 424258 424665 424582",
@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 425576 or ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
+(ability.id = 429169 or ability.id = 425576 or ability.id = 423260 or ability.id = 426669 or ability.id = 424581 or ability.id = 420236 or ability.id = 421398 or ability.id = 421603 or ability.id = 426016 or ability.id = 424140 or ability.id = 423265) and type = "begincast"
  or ability.id = 424495 and type = "cast"
  or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
  or ability.id = 421603
@@ -253,7 +253,7 @@ local allTimers = {
 			[422115] = {36.0, 35.0, 47.0, 43.0, 51.0},
 			--Fire Beam
 			[421398] = {31.0, 63.0, 49.0, 46.1, 19.0},
-			--Flaming Germination
+			--Flaming Germination (Seeds)
 			[423265] = {37.0, 35.0, 47.0, 43.0, 51.0},
 			--Owl Form (mythic)
 			[425582] = {22.0, 40.0, 48.0, 42.0, 47.0},
@@ -355,7 +355,7 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerFirebeamCD:Start(timer, self.vb.beamCount+1)
 		end
-	elseif spellId == 426016 or spellId == 424140 then
+	elseif spellId == 426016 or spellId == 424140 or spellId == 429169 then
 		warnSuperNova:Show()
 	elseif spellId == 423265 then
 		self.vb.tranqCount = self.vb.tranqCount + 1
@@ -463,7 +463,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnPhase:Play("phasechange")
 			timerPhaseCD:Start(28.1, 3)--28.1-34
 		end
-	elseif spellId == 424180 or spellId == 424140 then
+	elseif spellId == 424180 or spellId == 424140 then--424140 intermission, 424180 unknown
 		timerSupernova:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -556,7 +556,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerMoonkinCD:Start(50, 1)
 				timerFirebeamCD:Start(52, 1)
 			end
-			timerSuperNovaCD:Start(269)--Blizzard energy, so ~3
+			timerSuperNovaCD:Start(self:IsEasy() and 407 or 269)--Blizzard energy, so ~3
 		end
 	elseif spellId == 424579 then
 		warnSupressiveEmber:CombinedShow(0.3, args.destName)

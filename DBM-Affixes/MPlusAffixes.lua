@@ -86,7 +86,7 @@ local function checkForCombat(self)
 			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
 				self:Unschedule(checkIncorp)
 				self:Schedule(incorpRemaining+10, checkIncorp, self)
-				DBM:Debug("Experimental reschedule of checkIncorp running because you're in debug mode")
+				DBM:Debug("Experimental reschedule of checkIncorp running")
 			end
 		elseif not combatFound and incorporealCounting then
 			incorporealCounting = false
@@ -102,7 +102,7 @@ local function checkForCombat(self)
 			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
 				self:Unschedule(checkAfflicted)
 				self:Schedule(afflictRemaining+10, checkAfflicted, self)
-				DBM:Debug("Experimental reschedule of checkAfflicted running because you're in debug mode")
+				DBM:Debug("Experimental reschedule of checkAfflicted running")
 			end
 		elseif not combatFound and afflictedCounting then
 			afflictedCounting = false
