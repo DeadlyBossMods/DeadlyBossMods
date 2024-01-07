@@ -12,7 +12,7 @@
 ## SavedVariablesPerCharacter: DBMRaidsDragonflight_SavedStats
 ## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Type: WORLDBOSS
+## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-SubCategoriesID: 2549, 2569, 2522
