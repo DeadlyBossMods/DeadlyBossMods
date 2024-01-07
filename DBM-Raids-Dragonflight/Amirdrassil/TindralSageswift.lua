@@ -91,7 +91,7 @@ local specWarnFlamingGermination					= mod:NewSpecialWarningCount(423265, nil, 9
 
 local timerTreeofFlameCD							= mod:NewNextCountTimer(20, 422115, L.TreeForm.." (%s)", false, nil, 6)--Kinda redundant, ability has own timer
 local timerFlamingGerminationCD						= mod:NewNextCountTimer(20, 423265, 99727, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Short name "Flame Seeds"
-local timerSuperNovaCD								= mod:NewNextCountTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSuperNovaCD								= mod:NewNextTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --base abilities
 mod.vb.shroomCount = 0
@@ -260,6 +260,10 @@ local allTimers = {
 		},
 	},
 }
+
+local function delaySuperNova(self)
+	timerSuperNovaCD:Start(self:IsEasy() and 387 or 249)--Blizzard energy, so ~3
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -556,7 +560,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerMoonkinCD:Start(50, 1)
 				timerFirebeamCD:Start(52, 1)
 			end
-			timerSuperNovaCD:Start(self:IsEasy() and 407 or 269)--Blizzard energy, so ~3
+			self:Schedule(20, delaySuperNova, self)--So the cd bar is only shown after the existing cast bar is gone (2 supernova bars confusing some users)
 		end
 	elseif spellId == 424579 then
 		warnSupressiveEmber:CombinedShow(0.3, args.destName)
