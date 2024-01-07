@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 419506 420422 417455 417431 412761 428963 428400 428971 428968 428965 419123 422837 410223 425492 422518 419144",
-	"SPELL_CAST_SUCCESS 428954 422935 422524 426368",
+	"SPELL_CAST_SUCCESS 430441 422935 422524 426368",
 	"SPELL_AURA_APPLIED 417807 417443 429866 423717 425494 422517",
 	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866 425494",
 	"SPELL_AURA_REMOVED 419144",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 419506 or ability.id = 420422 or ability.id = 417455 or ability.id = 417431 or ability.id = 419144 or ability.id = 412761 or ability.id = 428963 or ability.id = 428400 or ability.id = 428971 or ability.id = 428968 or ability.id = 428965 or ability.id = 419123 or ability.id = 422837 or ability.id = 410223 or ability.id = 425492 or ability.id = 422518) and type = "begincast"
- or (ability.id = 428954 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524 or ability.id = 426368) and type = "cast"
+ or (ability.id = 430441 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524 or ability.id = 426368) and type = "cast"
  or ability.id = 419144 and (type = "applybuff" or type = "removebuff")
  or (ability.id = 414187 or ability.id = 425525 or ability.id = 428988 or ability.id = 428970) and type = "applydebuff"
  or ability.id = 422517 and type = "applybuff"
@@ -43,7 +43,7 @@ local timerPhaseCD									= mod:NewStageTimer(60, 408330)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: The Dream Render
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26666))
-local warnDarkflameShades							= mod:NewCountAnnounce(428954, 2)
+local warnDarkflameShades							= mod:NewCountAnnounce(430441, 2, nil, false)
 local warnDarkflameCleave							= mod:NewCountAnnounce(426368, 4, nil, nil, 845)
 local warnFirestorm									= mod:NewCountAnnounce(419506, 4, nil, nil, nil, nil, nil, 2)--icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
 local warnBlaze										= mod:NewCountAnnounce(414186, 3, nil, nil, nil, nil, nil, 2)
@@ -55,7 +55,7 @@ local specWarnDreamRend								= mod:NewSpecialWarningRunCount(417455, nil, nil,
 local specWarnFyralathsBite							= mod:NewSpecialWarningDefensive(417431, nil, nil, nil, 1, 2)
 local specWarnFyralathsMark							= mod:NewSpecialWarningTaunt(417443, nil, 37454, nil, 1, 2)
 
-local timerDarkflameShadesCD						= mod:NewCDCountTimer(49, 428954, nil, false, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerDarkflameShadesCD						= mod:NewCDCountTimer(49, 430441, nil, false, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerDarkflameCleaveCD						= mod:NewCDCountTimer(49, 426368, 845, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Shortname "Cleave"
 local timerDarkflameCleave							= mod:NewCastCountTimer(4, 426368, 845, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerFirestormCD								= mod:NewCDCountTimer(49, 419506, nil, nil, nil, 3)
@@ -451,7 +451,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 428954 then--Not verified yet
+	if spellId == 430441 then
 		warnDarkflameShades:Show(self.vb.tankCount+1)
 		local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, spellId, self.vb.tankCount+2)
 		if timer then
