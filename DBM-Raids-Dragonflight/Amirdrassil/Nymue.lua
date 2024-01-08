@@ -73,7 +73,6 @@ local timerWakingDecimation							= mod:NewCastTimer(36, 428471, nil, nil, nil, 
 mod:AddSetIconOption("SetIconOnWarden", -27432, true, 5, {7, 6})
 mod:AddSetIconOption("SetIconOnManifestedDream", -28482, true, 5, {8})
 
-mod.vb.rbwDetected = false
 mod.vb.contCount = 0
 mod.vb.loomCount = 0
 mod.vb.burdenCount = 0
@@ -97,7 +96,6 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(castsPerGUID)
-	self.vb.rbwDetected = false
 	self.vb.contCount = 0
 	self.vb.loomCount = 0
 	self.vb.burdenCount = 0
@@ -189,9 +187,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 426519 then
 		self.vb.burdenCount = self.vb.burdenCount + 1
-		if not self.vb.rbwDetected then
-			warnWeaversBurden:Show(self.vb.burdenCount)
-		end
+		warnWeaversBurden:Show(self.vb.burdenCount)
 		--21.0, 19.1, 20.0 then 36-37, 19.0, 20.1
 		if self.vb.burdenCount % 3 ~= 0 then--3rd cast in each set is last one before full bloom
 --			if self.vb.burdenCount % 3 ~= 0 then
@@ -231,9 +227,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 426519 then
 		--Weavers burden is a private aura, but one of targets is always the active tank.
 		if args:IsPlayer() then
-			if not self.vb.rbwDetected then
-				yellWeaversBurden:Yell()
-			end
+			specWarnWeaversBurden:Show()
+			--No sound on purpose, private aura will do sound
+			yellWeaversBurden:Yell()
 		else
 			--Delayed by a frame so as not to snipe the debuff
 			specWarnWeaversBurdenOther:Schedule(0.1, args.destName)
@@ -280,16 +276,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnVerdantMatrix:Cancel()
 			warnVerdantMatrix:Schedule(1, args.amount or 1)
 		end
---	elseif spellId == 427722 then
---		if args:IsPlayer() then
---			specWarnWeaversBurden:Show()
---			specWarnWeaversBurden:Play("runout")
---			yellWeaversBurden:Yell()
---			yellWeaversBurdenFades:Countdown(spellId)
---		else
---			specWarnWeaversBurdenOther:Show(args.destName)
---			specWarnWeaversBurdenOther:Play("tauntboss")
---		end
 	elseif spellId == 423195 then
 		if args:IsPlayer() then
 			playerInflorescence = true
@@ -320,10 +306,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerInflorescence = false
 		end
---	elseif spellId == 427722 then
---		if args:IsPlayer() then
---			yellWeaversBurdenFades:Cancel()
---		end
 	end
 end
 
@@ -343,39 +325,5 @@ function mod:UNIT_DIED(args)
 		timerRadialFlourishCD:Stop(args.destGUID)
 	elseif cid == 213143 then--Manifested Dream
 		timerWakingDecimation:Stop(args.destGUID)
-	end
-end
-
---Since blizzard hasn't fixed this yet,
---and other addons and WAs are publically using this
---I guess DBM has to as well
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:427722") then
-		if not self.vb.rbwDetected then
-			self.vb.rbwDetected = true
-			--Unregister private auras, not needed
-			if self.paSounds then
-				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
-			end
-		else--Only use these warnings if private aura sound already disabled, so don't get double sound
-			specWarnWeaversBurden:Show()
-			specWarnWeaversBurden:Play("runout")
-			yellWeaversBurden:Yell()
---			yellWeaversBurdenFades:Countdown(6)
-		end
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("427722") and targetName then
-		if not self.vb.rbwDetected then
-			self.vb.rbwDetected = true
-			--Unregister private auras, not needed
-			if self.paSounds then
-				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
-			end
-		end
-		targetName = Ambiguate(targetName, "none")
-		warnWeaversBurdenTargets:CombinedShow(0.6, self.vb.burdenCount, targetName)
 	end
 end

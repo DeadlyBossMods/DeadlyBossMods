@@ -76,7 +76,7 @@ mod:AddSetIconOption("SetIconOnBlisteringSpear", 414888, false, false, {1, 2, 3,
 
 local blisteringMythicTimers = {14, 32.1, 35.1, 20.2}
 local blisteringHeroicTimers = {14, 23.0, 23.0, 22.5, 20.2}
-local blisteringEasyTimers = {14, 30.3, 40.0, 20.6}
+local blisteringEasyTimers = {14, 30.3, 38.9, 20.6}
 
 mod.vb.spearCount = 0--used for sequencing
 mod.vb.spearTotal = 0--Used for timer text
@@ -108,7 +108,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerBlisteringSpearCD:Start(10.6-delay, 1)
 		timerTwistingBladeCD:Start(4.5-delay, 1)
-		timerMarkedforTormentCD:Start(45-delay, 1)
+		timerMarkedforTormentCD:Start(44.7-delay, 1)
 		berserkTimer:Start(600-delay)
 	end
 end

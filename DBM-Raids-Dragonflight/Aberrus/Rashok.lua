@@ -60,8 +60,7 @@ local timerUnleashedShadowflameCD					= mod:NewCDCountTimer(40, 410070, 98565, n
 mod:AddInfoFrameOption(405827)
 mod:AddSetIconOption("SetIconOnSearingSlam", 405821, false, 0, {1})
 --mod:AddNamePlateOption("NPAuraOnAscension", 385541)
-mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
-mod:AddDropdownOption("TankSwapBehavior", {"DoubleSoak", "MinMaxSoak", "OnlyIfDanger"}, "DoubleSoak", "misc")
+mod:AddDropdownOption("TankSwapBehavior", {"DoubleSoak", "MinMaxSoak", "OnlyIfDanger"}, "DoubleSoak", "misc", nil, 407641)
 --mod:GroupSpells(390715, 396094)
 
 mod.vb.slamCount = 0

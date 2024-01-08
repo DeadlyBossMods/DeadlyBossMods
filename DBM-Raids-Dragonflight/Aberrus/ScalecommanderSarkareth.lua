@@ -50,8 +50,7 @@ local timerEmptynessBetweenStars			= mod:NewBuffFadesTimer(15, 401215, nil, nil,
 local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddInfoFrameOption(401951, false)
-mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
-mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybrid"}, "OblivionOnly", "misc")
+mod:AddDropdownOption("InfoFrameBehaviorTwo", {"OblivionOnly", "HowlOnly", "Hybrid"}, "OblivionOnly", "misc", nil, 401951)
 --Stage One: The Legacy of the Dracthyr
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26140))
 local warnOppressingHowl						= mod:NewSpellAnnounce(401383, 3, nil, nil, nil, nil, nil, 2)

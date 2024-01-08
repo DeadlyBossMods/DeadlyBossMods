@@ -44,7 +44,7 @@ local warnSearingWrath								= mod:NewStackAnnounce(422000, 2, nil, "Tank|Heale
 local warnBlazingMushroom							= mod:NewCountAnnounce(423260, 3, nil, nil, nil, nil, nil, 2)
 local warnFieryGrowth								= mod:NewTargetCountAnnounce(424581, 3)
 local warnLingeringCinder							= mod:NewCountAnnounce(424582, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(424582))
-local warnIncarnationOwl							= mod:NewCountAnnounce(425576, 4, nil, nil, 302954)
+local warnIncarnationOwl							= mod:NewCountAnnounce(425576, 4)
 
 local specWarnSearingWrath							= mod:NewSpecialWarningTaunt(422000, nil, nil, nil, 1, 2)
 local specWarnFieryGrowth							= mod:NewSpecialWarningMoveAway(424581, nil, nil, nil, 1, 2)
@@ -56,7 +56,7 @@ local timerBlazingMushroomCD						= mod:NewNextCountTimer(49, 423260, nil, nil, 
 local timerFieryGrowthCD							= mod:NewNextCountTimer(49, 424581, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerFallingStarsCD							= mod:NewNextCountTimer(49, 420236, nil, nil, nil, 3)
 local timerMassEntanglementCD						= mod:NewNextCountTimer(49, 424495, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
-local timerOwlCD									= mod:NewNextCountTimer(20, 425576, 302954, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
+local timerOwlCD									= mod:NewNextCountTimer(20, 425576, L.Feathers.." (%s)", nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)--Short name "Feathers"
 
 mod:AddSetIconOption("SetIconOnFieryGrowth", 424581, true, false, {1, 2, 3, 4})
 ----Moonkin of the Flame
@@ -91,7 +91,7 @@ local specWarnFlamingGermination					= mod:NewSpecialWarningCount(423265, nil, 9
 
 local timerTreeofFlameCD							= mod:NewNextCountTimer(20, 422115, L.TreeForm.." (%s)", false, nil, 6)--Kinda redundant, ability has own timer
 local timerFlamingGerminationCD						= mod:NewNextCountTimer(20, 423265, 99727, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON)--Short name "Flame Seeds"
-local timerSuperNovaCD								= mod:NewNextCountTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSuperNovaCD								= mod:NewNextTimer(20, 424140, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --base abilities
 mod.vb.shroomCount = 0
@@ -260,6 +260,10 @@ local allTimers = {
 		},
 	},
 }
+
+local function delaySuperNova(self)
+	timerSuperNovaCD:Start(self:IsEasy() and 387 or 249)--Blizzard energy, so ~3
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -556,7 +560,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerMoonkinCD:Start(50, 1)
 				timerFirebeamCD:Start(52, 1)
 			end
-			timerSuperNovaCD:Start(self:IsEasy() and 407 or 269)--Blizzard energy, so ~3
+			self:Schedule(20, delaySuperNova, self)--So the cd bar is only shown after the existing cast bar is gone (2 supernova bars confusing some users)
 		end
 	elseif spellId == 424579 then
 		warnSupressiveEmber:CombinedShow(0.3, args.destName)

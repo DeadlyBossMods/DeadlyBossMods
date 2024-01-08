@@ -268,7 +268,8 @@ L= DBM:GetModLocalization(2565)
 
 L:SetMiscLocalization({
 	TreeForm			= "Tree Form",
-	MoonkinForm			= "Moonkin Form"
+	MoonkinForm			= "Moonkin Form",
+	Feathers			= "Feathers"
 })
 
 ---------------------------
