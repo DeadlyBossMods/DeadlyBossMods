@@ -149,8 +149,8 @@ function mod:OnCombatStart(delay)
 		timerRendingChargeCD:Start(14-delay, 1)
 		timerMassiveSlamCD:Start(24-delay, 1)
 	else
-		timerBellowingRoarCD:Start(10.9-delay, 1)
-		timerRendingChargeCD:Start(19.4-delay, 1)
+		timerBellowingRoarCD:Start(10.6-delay, 1)
+		timerRendingChargeCD:Start(19-delay, 1)
 		timerMassiveSlamCD:Start(35.2-delay, 1)
 	end
 	--Thadrion

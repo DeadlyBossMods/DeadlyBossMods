@@ -237,7 +237,7 @@ local allTimers = {
 		--Gloom Conflag
 		[405437] = {50.3, 44.9, 45.2, 44.9, 46.2},
 		--Blistering Twilight
-		[405641] = {20.2, 15.7, 37.5, 15.7, 31.6},
+		[405641] = {20.2, 15.7, 36.4, 15.7, 31.6},
 		--Convergent Eruption (Heroic+)
 --		[408193] = {},
 		--Withering Vulnerability
