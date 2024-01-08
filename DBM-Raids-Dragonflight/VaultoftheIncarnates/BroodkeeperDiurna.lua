@@ -83,13 +83,13 @@ local specWarnIonizingCharge					= mod:NewSpecialWarningMoveAway(375630, nil, ni
 local yellIonizingCharge						= mod:NewYell(375630)
 
 local timerPrimalistReinforcementsCD			= mod:NewAddsCustomTimer(60, 257554, nil, nil, nil, 1)
-local timerBurrowingStrikeCD					= mod:NewCDTimer(8.1, 376272, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
-local timerTremorsCD							= mod:NewCDTimer(11, 376257, nil, nil, nil, 3)
-local timerCauterizingFlashflamesCD				= mod:NewCDTimer(11.7, 375485, nil, "MagicDispeller", nil, 5)
-local timerFlameSentryCD						= mod:NewCDTimer(12.2, 375575, nil, nil, nil, 3)
-local timerRendingBiteCD						= mod:NewCDTimer(11, 375475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
-local timerChillingTantrumCD					= mod:NewCDTimer(11.1, 375457, nil, nil, nil, 3)
-local timerIonizingChargeCD						= mod:NewCDTimer(10, 375630, nil, nil, nil, 3)
+local timerBurrowingStrikeCD					= mod:NewCDNPTimer(8.1, 376272, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
+local timerTremorsCD							= mod:NewCDNPTimer(11, 376257, nil, nil, nil, 3)
+local timerCauterizingFlashflamesCD				= mod:NewCDNPTimer(11.7, 375485, nil, "MagicDispeller", nil, 5)
+local timerFlameSentryCD						= mod:NewCDNPTimer(10.4, 375575, nil, nil, nil, 3)
+local timerRendingBiteCD						= mod:NewCDNPTimer(11, 375475, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.HEROIC_ICON)
+local timerChillingTantrumCD					= mod:NewCDNPTimer(11.1, 375457, nil, nil, nil, 3)
+local timerIonizingChargeCD						= mod:NewCDNPTimer(10, 375630, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(361651, true)
 mod:AddNamePlateOption("NPFixate", 376330, true)
@@ -266,7 +266,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWildfire:Show()
 		specWarnWildfire:Play("scatter")
 		specWarnWildfire:ScheduleVoice(2, "watchstep")
-		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 25, self.vb.wildFireCount+1)
+		timerWildfireCD:Start(self:IsMythic() and 23 or self:IsHeroic() and 21.4 or 22, self.vb.wildFireCount+1)
 		if self:IsHard() and self:GetStage(2) then
 			updateAllTimers(self, 5)
 		else
@@ -276,7 +276,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.icyCount = self.vb.icyCount + 1
 		specWarnIcyShroud:Show(self.vb.icyCount)
 		specWarnIcyShroud:Play("aesoon")
-		timerIcyShroudCD:Start(self:IsMythic() and 41 or self:IsHeroic() and 39.1 or 44, self.vb.icyCount+1)
+		timerIcyShroudCD:Start(self:IsMythic() and 41 or self:IsHeroic() and 39.1 or 41.5, self.vb.icyCount+1)
 		updateAllTimers(self, 2.5)
 	elseif spellId == 388918 then
 		self.vb.icyCount = self.vb.icyCount + 1
@@ -323,17 +323,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnBurrowingStrike:Show()
 			specWarnBurrowingStrike:Play("defensive")
 		end
-		if self:AntiSpam(1, spellId) then
-			timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
-		end
+		timerBurrowingStrikeCD:Start(nil, args.sourceGUID)
 	elseif spellId == 375475 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnRendingBite:Show()
 			specWarnRendingBite:Play("defensive")
 		end
-		if self:AntiSpam(1, spellId) then
-			timerRendingBiteCD:Start(nil, args.sourceGUID)
-		end
+		timerRendingBiteCD:Start(nil, args.sourceGUID)
 	elseif spellId == 376257 then
 		if self:AntiSpam(3, spellId) then
 			if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
@@ -347,24 +343,22 @@ function mod:SPELL_CAST_START(args)
 			if self:CheckBossDistance(args.sourceGUID, false, 13289, 28) then
 				warnCauterizingFlashflames:Show()
 			end
-			timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
 		end
+		timerCauterizingFlashflamesCD:Start(self:IsMythic() and 8.6 or 11.7, args.sourceGUID)--TODO, recheck heroic
 	elseif spellId == 375575 then
 		if self:AntiSpam(3, spellId) then
 			if self:CheckBossDistance(args.sourceGUID, false, 13289, 28) then
 				warnFlameSentry:Show()
 			end
-			timerFlameSentryCD:Start(nil, args.sourceGUID)
 		end
+		timerFlameSentryCD:Start(nil, args.sourceGUID)
 	elseif spellId == 375457 then
 		if self:AntiSpam(3, spellId) then
 			warnChillingTantrum:Show()
-			timerChillingTantrumCD:Start(nil, args.sourceGUID)
 		end
+		timerChillingTantrumCD:Start(nil, args.sourceGUID)
 	elseif spellId == 375630 then
-		if self:AntiSpam(1, spellId) then
-			timerIonizingChargeCD:Start(nil, args.sourceGUID)
-		end
+		timerIonizingChargeCD:Start(nil, args.sourceGUID)
 	elseif spellId == 375716 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
