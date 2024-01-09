@@ -1,8 +1,8 @@
 ## Interface: 100200
 ## Version: @project-version@
-## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (DF)|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Jefes de Mundo (DF)|r
-## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Jefes de Mundo (DF)|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (Dragonflight)|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Jefes de Mundo (Dragonflight)|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10Jefes de Mundo (Dragonflight)|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff10ff10Мировые боссы (Драконы)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10필드 보스 (용군단)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10世界首領 (巨龍崛起)|r
@@ -17,9 +17,9 @@
 ## X-DBM-Mod-Type: WORLDBOSS
 ## X-DBM-Mod-Category: DRAGONFLIGHT
 ## X-DBM-StatTypes: normal
-## X-DBM-Mod-Name: World Bosses (DF)
-## X-DBM-Mod-Name-esES: Jefes de Mundo (DF)
-## X-DBM-Mod-Name-esMX: Jefes de Mundo (DF)
+## X-DBM-Mod-Name: World Bosses (Dragonflight)
+## X-DBM-Mod-Name-esES: Jefes de Mundo (Dragonflight)
+## X-DBM-Mod-Name-esMX: Jefes de Mundo (Dragonflight)
 ## X-DBM-Mod-Name-ruRU: Мировые боссы (Драконы)
 ## X-DBM-Mod-Name-koKR: 필드 보스 (용군단)
 ## X-DBM-Mod-Name-zhTW: 世界首領 (巨龍崛起)
