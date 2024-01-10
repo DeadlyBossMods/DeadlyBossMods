@@ -83,16 +83,11 @@ function mod:DefileTarget(targetname, uId)
 		specWarnDefileCast:Show()
 		specWarnDefileCast:Play("runout")
 		yellDefile:Yell()
+	elseif self:IsClassic() and self:CheckNearby(10, targetname) then
+		specWarnDefileNear:Show(targetname)
+		specWarnDefileNear:Play("runaway")
 	else
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnDefileNear:Show(targetname)
-				specWarnDefileNear:Play("runaway")
-			else
-				warnDefileCast:Show(targetname)
-			end
-		end
+		warnDefileCast:Show(targetname)
 	end
 end
 
