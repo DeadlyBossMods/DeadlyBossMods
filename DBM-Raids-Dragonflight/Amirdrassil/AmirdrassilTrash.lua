@@ -7,7 +7,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 425062 425149 425995",
-	"SPELL_AURA_APPLIED 428765 425300",
+	"SPELL_AURA_APPLIED 428765 425300 425388 425381",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 428765 425300",
 	"CHAT_MSG_MONSTER_YELL"
@@ -16,14 +16,19 @@ mod:RegisterEvents(
 --TODO, kick blazing pulse
 --TODO, inferno heart spread
 local warnShadowflameBomb					= mod:NewTargetAnnounce(425300, 3)
+local warnInfernoHeart						= mod:NewTargetAnnounce(425388, 3)
 local warnShadowchargedSlam					= mod:NewCastAnnounce(425062, 3, nil, nil, "Melee")
 
+local specWarnShadowflameBomb				= mod:NewSpecialWarningMoveAway(425300, nil, nil, nil, 1, 2)
 local yellShadowflameBomb					= mod:NewYell(425300)
 local yellShadowflameBombFades				= mod:NewShortFadesYell(425300)
+local specWarnInfernoHeart					= mod:NewSpecialWarningMoveAway(425388, nil, nil, nil, 1, 2)
+local yellInfernoHeart						= mod:NewYell(425388)
+local yellInfernoHeartFades					= mod:NewShortFadesYell(425388)
 local specWarnChargedStomp					= mod:NewSpecialWarningDodge(425149, "Melee", nil, nil, 4, 2)
 local specWarnFeatherBomb					= mod:NewSpecialWarningDodge(428765, nil, nil, nil, 2, 2)
-local specWarnShadowflameBomb				= mod:NewSpecialWarningMoveAway(425300, nil, nil, nil, 1, 2)
 local specWarnTranquility					= mod:NewSpecialWarningInterrupt(425995, "HasInterrupt", nil, nil, 1, 2)
+local specWarnBlazingPulse					= mod:NewSpecialWarningInterrupt(425381, "HasInterrupt", nil, nil, 1, 2)
 
 local timerFeatherBombCD					= mod:NewNextTimer(22.9, 428765, nil, nil, nil, 3)--CD for it starting after RP starts
 local timerFeatherBomb						= mod:NewBuffActiveTimer(6, 428765, nil, nil, nil, 5)--How long it's active and when not to come up
@@ -59,6 +64,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellShadowflameBomb:Yell()
 			yellShadowflameBombFades:Countdown(spellId)
 		end
+	elseif spellId == 425388 then
+		warnInfernoHeart:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnInfernoHeart:Show()
+			specWarnInfernoHeart:Play("runout")
+			yellInfernoHeart:Yell()
+			yellInfernoHeartFades:Countdown(spellId)
+		end
+	elseif spellId == 425381 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnBlazingPulse:Show(args.destName)
+		specWarnBlazingPulse:Play("kickcast")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -70,6 +86,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 425300 then
 		if args:IsPlayer() then
 			yellShadowflameBombFades:Cancel()
+		end
+	elseif spellId == 425388 then
+		if args:IsPlayer() then
+			yellInfernoHeartFades:Cancel()
 		end
 	end
 end
