@@ -114,7 +114,6 @@ mod.vb.polyCount = 0
 mod.vb.polyIcon = 1
 mod.vb.windsCount = 0
 local nextSpecial = 0
-local playerpreWarned = false
 
 local function castBeforeSpecial(self, cooldown)
 	if (nextSpecial - GetTime()) > cooldown then
@@ -264,7 +263,6 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(418589, "bombyou", 2)
 	self:EnablePrivateAuraSound(429123, "bombyou", 2, 418589)--Register secondary private aura (different ID for differentn difficulty?)
 	nextSpecial = GetTime() + (self:IsLFR() and 74.6 or 55.8)
-	playerpreWarned = false
 end
 
 function mod:SPELL_CAST_START(args)
