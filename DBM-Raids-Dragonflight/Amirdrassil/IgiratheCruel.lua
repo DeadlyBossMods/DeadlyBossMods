@@ -57,6 +57,7 @@ local specWarnSmashingViscera						= mod:NewSpecialWarningYou(424456, nil, 47482
 local yellSmashingViscera							= mod:NewShortYell(424456, 47482)
 local yellSmashingVisceraFades						= mod:NewShortFadesYell(424456)
 local specWarnHeartStopper							= mod:NewSpecialWarningYou(415623, nil, nil, nil, 1, 2)
+local specWarnHeartStopperTaunt						= mod:NewSpecialWarningTaunt(415623, nil, nil, nil, 1, 2)
 local yellHeartStopperFades							= mod:NewShortFadesYell(415623)
 local specWarnVitalRupture							= mod:NewSpecialWarningYou(426056, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(409058, nil, nil, nil, 1, 8)
@@ -89,6 +90,7 @@ mod.vb.umbralCount = 0
 mod.vb.heartCount = 0
 --mod.vb.heartIcon = 1
 mod.vb.smashingCount = 0
+mod.vb.useHeartStopperBackup = false
 local tormentOverTime = 0
 
 function mod:OnCombatStart(delay)
@@ -99,6 +101,7 @@ function mod:OnCombatStart(delay)
 	self.vb.TwistingCount = 0
 	self.vb.TwistingTotal = 0
 	self.vb.tormentCount = 0
+	self.vb.useHeartStopperBackup = false
 	tormentOverTime = 0
 	if self:IsMythic() then
 		timerBlisteringSpearCD:Start(4.5-delay, 1)
@@ -145,6 +148,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 422776 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
+		self.vb.useHeartStopperBackup = false
 		warnMarkedforTorment:Show(self.vb.tormentCount)
 		self:SetStage(self.vb.tormentCount)--Matching BW behavior which is kinda meh, but WA parity is needed
 	elseif spellId == 419048 then
@@ -228,6 +232,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeartStopper:Show()
 			specWarnHeartStopper:Play("targetyou")
 			yellHeartStopperFades:Countdown(spellId)--, nil, icon
+			--Unschedule if you also got it
+			specWarnHeartStopperTaunt:Cancel()
+			specWarnHeartStopperTaunt:CancelVoice()
+		elseif self.vb.useHeartStopperBackup then--Mythic difficulty and boss has debuffs and soaks
+			local uId = DBM:GetRaidUnitId(args.destName)
+			--If heartstopper is on tank that isn't you and you do not have it, taunt the boss on mythic difficulty
+			if self:IsTanking(uId) and not DBM:UnitDebuff("player", spellId) then
+				--Scheduled so first wait to make sure you don't also get it
+				specWarnHeartStopperTaunt:Schedule(0.8, args.destName)
+				specWarnHeartStopperTaunt:ScheduleVoice(0.8, "tauntboss")
+			end
 		end
 		warnHeartStopper:CombinedShow(1.1, self.vb.heartCount, args.destName)
 	elseif spellId == 414770 then
@@ -325,6 +340,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 425282 then--Axe Knife Stance
 		self.vb.umbralCount = 0
 		self.vb.heartCount = 0
+		self.vb.useHeartStopperBackup = true
 		warnUmbralDestructionSoon:Show()
 		warnHeartstopperSoon:Show()
 		timerHeartStopperCD:Start(21.2, 1)
