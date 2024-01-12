@@ -267,7 +267,7 @@ function mod:OnCombatStart(delay)
 		timerBlazingThornsCD:Start(30.7-delay, 1)
 		timerScorchingRootsCD:Start(37.3-delay, 1)
 	end
-	timerRagingInfernoCD:Start(90.5-delay, 1)
+	timerRagingInfernoCD:Start(90.3-delay, 1)
 end
 
 function mod:OnTimerRecovery()
