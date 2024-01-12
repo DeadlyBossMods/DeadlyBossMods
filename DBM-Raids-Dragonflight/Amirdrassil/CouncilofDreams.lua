@@ -19,8 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
 	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525",
 	"SPELL_PERIODIC_DAMAGE 426390",
-	"SPELL_PERIODIC_MISSED 426390",
-	"RAID_BOSS_WHISPER"
+	"SPELL_PERIODIC_MISSED 426390"
 )
 
 --[[
@@ -76,8 +75,8 @@ local timerPoisonousJavelinCD						= mod:NewCDCountTimer(25, 420858, 298110, nil
 --Pip
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
 local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--You done fucked up
---local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
-local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)--Possible to detect private aura with RAID_BOSS_WHISPER syncs, but yeah...
+local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
+--local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)--Blizzard finally fixed RBW detection, but maybe they'll unprivate in season 4?
 
 local specWarnSongoftheDragon						= mod:NewSpecialWarningMoveTo(421029, nil, nil, nil, 2, 2)
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
@@ -95,7 +94,6 @@ mod:AddPrivateAuraSoundOption(418589, true, 418720, 1)--Polymorph Bomb
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
 
-mod.vb.rbwDetected = false
 mod.vb.specialsActive = 0
 mod.vb.nextSpecial = 1
 mod.vb.chargeSpecial = false
@@ -210,7 +208,6 @@ local function specialInterrupted(self, spellId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.rbwDetected = false
 	self.vb.specialsActive = 0
 	--Urctos
 	self.vb.clawsCount = 0
@@ -364,7 +361,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 418591 then
 		self.vb.polyIcon = 1
 		self.vb.polyCount = self.vb.polyCount + 1
---		warnPolymorphBomb:Show(self.vb.polyCount)
+		warnPolymorphBomb:Show(self.vb.polyCount)
 		--If cast during special, it's blinding rage and we need the 9 second loop
 		if self.vb.specialsActive > 0 then
 			timerPolymorphBombCD:Start(9, self.vb.polyCount+1)
@@ -472,12 +469,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, icon)
 			end
 			if args:IsPlayer() then
-				if not playerpreWarned then
-					specWarnPolymorphBomb:Show()
-					specWarnPolymorphBomb:Play("targetyou")
-				else
-					playerpreWarned = false
-				end
+				specWarnPolymorphBomb:Show()
+				specWarnPolymorphBomb:Play("targetyou")
 				yellPolymorphBombFades:Countdown(spellId, nil, icon)
 			end
 		end
@@ -536,34 +529,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:418720") then
-		if not self.vb.rbwDetected then
-			self.vb.rbwDetected = true
-			--Unregister private auras, not needed
-			if self.paSounds then
-				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
-			end
-		else--Only use these warnings if private aura sound already disabled, so don't get double sound
-			playerpreWarned = true
-			specWarnPolymorphBomb:Show()
-			specWarnPolymorphBomb:Play("runout")
-			--Yells done in other event handler, this is pre debuff
-		end
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("418720") and targetName then
-		if not self.vb.rbwDetected then
-			self.vb.rbwDetected = true
-			--Unregister private auras, not needed
-			if self.paSounds then
-				self:DisablePrivateAuraSounds()--Dirty, does full purge but this fight only has the one so it's fine for now
-			end
-		end
-		targetName = Ambiguate(targetName, "none")
-		warnPolymorphBombTargets:CombinedShow(0.6, self.vb.polyCount, targetName)
-	end
-end
