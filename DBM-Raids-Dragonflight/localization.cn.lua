@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20231212
+--Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> 20240115
 --Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
@@ -271,7 +271,8 @@ L= DBM:GetModLocalization(2565)
 
 L:SetMiscLocalization({
 	TreeForm			= "树人形态",
-	MoonkinForm			= "枭兽形态"
+	MoonkinForm			= "枭兽形态",
+	Feathers			= "羽毛"
 })
 
 ---------------------------
@@ -299,4 +300,8 @@ L = DBM:GetModLocalization("AmirdrassilTrash")
 
 L:SetGeneralLocalization({
 	name =	"梦境之愿小怪"
+})
+
+L:SetMiscLocalization({
+	FyrakkRP			= "You again. A pity I do not have time to eradicate you myself."
 })
