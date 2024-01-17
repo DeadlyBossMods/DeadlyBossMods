@@ -1,4 +1,4 @@
-## Interface: 100200
+## Interface: 100205
 ## X-Min-Interface: 100107
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (DF)|r
