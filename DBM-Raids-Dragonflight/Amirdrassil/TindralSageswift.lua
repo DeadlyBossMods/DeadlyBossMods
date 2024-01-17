@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(209090)--Primary ID
 mod:SetEncounterID(2786)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20240104000000)
+mod:SetHotfixNoticeRev(20240116000000)
 mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
 
@@ -218,7 +218,7 @@ local allTimers = {
 			--Moonkin Form
 			[420540] = {6.2, 26.0, 40.0},
 			--Fire Beam
-			[421398] = {7.2, 26.0, 7.0, 33.0},
+			[421398] = {7.2, 33.0, 33.0},
 			--Owl Form (mythic)
 			[425582] = {23.0, 40.0},
 		},
