@@ -116,11 +116,11 @@ local warnInfernalMaw								= mod:NewStackAnnounce(425492, 3, nil, "Tank|Healer
 local warnEternalFirestorm							= mod:NewCountAnnounce(422935, 4)
 local warnEternalFirestormSwirl						= mod:NewCountAnnounce(402736, 3, nil, nil, 143413)--Short name "Swirl" 143413
 
-local specWarnApocalypseRoar						= mod:NewSpecialWarningCount(422837, nil, nil, nil, 2, 13)
+local specWarnApocalypseRoar						= mod:NewSpecialWarningCount(422837, nil, 140459, nil, 2, 13)
 local specWarnInfernalMaw							= mod:NewSpecialWarningDefensive(425492, nil, nil, nil, 1, 2)
 local specWarnInfernalMawTaunt						= mod:NewSpecialWarningTaunt(425492, nil, nil, nil, 1, 2)
 
-local timerApocalypseroarCD							= mod:NewCDCountTimer(49, 422837, DBM_COMMON_L.PUSHBACK.." (%s)", nil, nil, 2)
+local timerApocalypseroarCD							= mod:NewCDCountTimer(49, 422837, 140459, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerInfernalMawCD							= mod:NewCDCountTimer(49, 425492, nil, "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerEternalFirestormCD						= mod:NewCDCountTimer(41, 422935, 419506, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEternalFirestormSwirlCD					= mod:NewCDCountTimer(41, 402736, 143413, nil, nil, 3)--short name "Swirl"
