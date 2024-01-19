@@ -38,7 +38,6 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(426390, nil, nil, nil, 1,
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Urctos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27300))
-local warnBarrelingCharge							= mod:NewTargetCountAnnounce(420948, 3, nil, nil, 100, nil, nil, nil, true)--Shortname "Charge"
 local warnAgonizingClaws							= mod:NewStackAnnounce(421022, 2, nil, "Tank|Healer")
 local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked up
 
@@ -428,6 +427,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				else
 					specWarnBarrelingCharge:Play("shareone")
 				end
+			else--LFR/Normal (single soak group)
+				specWarnBarrelingCharge:Play("helpsoak")
 			end
 		end
 	elseif spellId == 421022 then
