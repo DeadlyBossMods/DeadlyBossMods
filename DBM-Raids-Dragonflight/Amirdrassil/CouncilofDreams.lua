@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 418591 421024",
 	"SPELL_CAST_SUCCESS 418757",
-	"SPELL_AURA_APPLIED 420948 421022 425114 421298 418755 420858 421236 418720 421032",
+	"SPELL_AURA_APPLIED 420948 421022 425114 421298 418755 420858 421236 418720 421032 421031",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
-	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525",
+	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525 421031",
 	"SPELL_PERIODIC_DAMAGE 426390",
 	"SPELL_PERIODIC_MISSED 426390"
 )
@@ -38,12 +38,11 @@ local specWarnGTFO									= mod:NewSpecialWarningGTFO(426390, nil, nil, nil, 1,
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Urctos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27300))
-local warnBarrelingCharge							= mod:NewTargetCountAnnounce(420948, 3, nil, nil, 100, nil, nil, nil, true)--Shortname "Charge"
 local warnAgonizingClaws							= mod:NewStackAnnounce(421022, 2, nil, "Tank|Healer")
 local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked up
 
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
-local specWarnBarrelingCharge						= mod:NewSpecialWarningYouCount(420948, nil, nil, nil, 1, 2)
+local specWarnBarrelingCharge						= mod:NewSpecialWarningCount(420948, nil, nil, nil, 1, 2)
 local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, nil, nil, nil, 3, 14)
 local yellBarrelingCharge							= mod:NewShortYell(420948, 100, nil, nil, "YELL")
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948, nil, nil, nil, "YELL")
@@ -77,6 +76,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(27302))
 local warnCaptivatingFinale							= mod:NewTargetNoFilterAnnounce(421032, 4)--You done fucked up
 local warnPolymorphBomb								= mod:NewIncomingCountAnnounce(418720, 2)
 --local warnPolymorphBombTargets						= mod:NewTargetCountAnnounce(418720, 3, nil, nil, nil, nil, nil, nil, true)--Blizzard finally fixed RBW detection, but maybe they'll unprivate in season 4?
+local warnSongFaded									= mod:NewFadesAnnounce(421029, 1)
 
 local specWarnSongoftheDragon						= mod:NewSpecialWarningMoveTo(421029, nil, nil, nil, 2, 2)
 local specWarnCaptivatingFinale						= mod:NewSpecialWarningYou(421032, nil, nil, nil, 1, 2)
@@ -114,6 +114,7 @@ mod.vb.polyCount = 0
 mod.vb.polyIcon = 1
 mod.vb.windsCount = 0
 local nextSpecial = 0
+local playerSong = false
 
 local function castBeforeSpecial(self, cooldown)
 	if (nextSpecial - GetTime()) > cooldown then
@@ -152,7 +153,7 @@ local function specialInterrupted(self, spellId)
 			timerBarrelingChargeCD:Start(29, self.vb.chargeCount+1)
 			--Aerwynn
 			timerNoxiousBlossomCD:Stop()
-			timerNoxiousBlossomCD:Start(11, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
+			timerNoxiousBlossomCD:Start(10.3, self.vb.blossomCount+1)--Even though this one can be cast during specials, it restarts when specials end
 			timerPoisonousJavelinCD:Start(20, self.vb.javCount+1)
 			--Pip
 			timerPolymorphBombCD:Stop()
@@ -203,6 +204,13 @@ local function specialInterrupted(self, spellId)
 				self.vb.rageNext = true
 			end
 		end
+	end
+end
+
+local function checkSong()
+	if playerSong then--Still have it, warn again
+		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
+		specWarnSongoftheDragon:Play("takedamage")
 	end
 end
 
@@ -349,8 +357,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 421029 then
 		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.songCount = self.vb.songCount + 1
-		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
-		specWarnSongoftheDragon:Play("takedamage")
 		--Timers that specifically reset on song begin
 		if not self:IsMythic() then--Review further. It definitely still happens on normal though
 			timerNoxiousBlossomCD:Stop()
@@ -402,7 +408,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 420948 then
 		if args:IsPlayer() then
-			if self.vb.chargeSpecial then
+			if self.vb.chargeSpecial then--Special activate that needs interrupting by charge
 				specWarnBarrelingChargeSpecial:Show(Aerwynn)
 				specWarnBarrelingChargeSpecial:Play("movetoboss")
 			else
@@ -412,11 +418,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBarrelingCharge:Yell()
 			yellBarrelingChargeFades:Countdown(spellId)
 		else
+			specWarnBarrelingCharge:Show(self.vb.chargeCount)
 			if DBM:UnitDebuff("player", 423420) then--Can't soak, need to avoid
-				specWarnBarrelingCharge:Show(self.vb.chargeCount)
 				specWarnBarrelingCharge:Play("chargemove")
-			else
-				warnBarrelingCharge:Show(self.vb.chargeCount, args.destName)
+			elseif not self:IsEasy() then--Alternating soaks on heroic/mythic
+				if self.vb.chargeCount % 2 == 0 then
+					specWarnBarrelingCharge:Play("sharetwo")
+				else
+					specWarnBarrelingCharge:Play("shareone")
+				end
+			else--LFR/Normal (single soak group)
+				specWarnBarrelingCharge:Play("helpsoak")
 			end
 		end
 	elseif spellId == 421022 then
@@ -480,6 +492,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCaptivatingFinale:Play("targetyou")
 			yellCaptivatingFinale:Yell()
 		end
+	elseif spellId == 421031 and args:IsPlayer() then
+		playerSong = true
+		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
+		specWarnSongoftheDragon:Play("takedamage")
+		self:Schedule(6, checkSong, self)--Schedule 2nd warning half way through debuff
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -516,12 +533,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellPolymorphBombFades:Cancel()
 		end
+	elseif spellId == 421031 and args:IsPlayer() then
+		playerSong = false
+		warnSongFaded:Show()
+		self:Unschedule(checkSong)
 	end
 end
 --mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 426390 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 426390 and destGUID == UnitGUID("player") and not playerSong and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
