@@ -566,12 +566,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 207796 then--Burning Colossus
 			self.vb.addsAlive = self.vb.addsAlive + 1
-			timerMoltenGauntletCD:Start(6.9, args.destGUID)
---			timerMoltenEruptionCD:Start(6.9, args.destGUID)--Using a shared global timer for now
+			timerMoltenGauntletCD:Start(6.2, args.destGUID)
 		elseif cid == 214012 then--Dark Colossus
 			self.vb.addsAlive = self.vb.addsAlive + 1
-			timerShadowGauntletCD:Start(6.9, args.destGUID)
---			timerShadowCageCD:Start(6.9, args.destGUID)
+			timerShadowGauntletCD:Start(6.2, args.destGUID)
 			--If starting timer object here, no reason for mythic check
 			self.vb.debuffsCount = 0
 			timerMythicDebuffs:Start(6.9, 1)
