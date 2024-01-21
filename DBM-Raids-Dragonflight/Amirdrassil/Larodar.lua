@@ -88,6 +88,9 @@ mod:AddPrivateAuraSoundOption(425888, true, 425889, 1)--Igniting Growth
 mod:AddPrivateAuraSoundOption(425468, true, 425468, 1)--Dream Blossom
 mod:AddPrivateAuraSoundOption(420544, true, 420544, 4)--Scorching Pursuit
 mod:AddSetIconOption("SetIconOnForces", 417653, true, 5, {8, 7, 6})
+
+mod:JustSetCustomKeys(426256, "|cff69ccf0426256|r (" .. DBM_COMMON_L.BOSS .. ")")
+mod:JustSetCustomKeys(426249, "|cff69ccf0426249|r (" .. PLAYER .. ")")
 --Intermission: Unreborn Again
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27242))
 local warnConsumingFlame							= mod:NewTargetNoFilterAnnounce(421316, 2)
