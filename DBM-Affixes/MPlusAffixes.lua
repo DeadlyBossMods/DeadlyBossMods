@@ -196,7 +196,7 @@ function mod:SPELL_CAST_START(args)
 		self:Unschedule(checkForCombat)
 		self:Unschedule(checkAfflicted)
 		checkForCombat(self)
-		self:Schedule(35, checkAfflicted, self)
+		self:Schedule(40, checkAfflicted, self)
 	elseif spellId == 408805 and self:AntiSpam(3, "aff3") then
 		warnDestabalize:Show()
 	end
