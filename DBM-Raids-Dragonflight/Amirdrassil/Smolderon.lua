@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 421343 422691 426725 422172",
-	"SPELL_CAST_SUCCESS 422277 430677",
+	"SPELL_CAST_SUCCESS 422277 430677 421343",
 	"SPELL_AURA_APPLIED 421656 422577 421455 422067",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 421656 422577 421455 422067",
@@ -85,6 +85,7 @@ mod.vb.geyserCount = 0
 mod.vb.cycleCount = 0
 mod.vb.infernoCount = 0
 mod.vb.encroached = false
+local playerWasFirstBrand = false
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -94,6 +95,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cycleCount = 0
 	self.vb.infernoCount = 0
 	self.vb.encroached = false
+	playerWasFirstBrand = false
 	timerOverheatedCD:Start(10-delay, 1)
 	timerBrandofDamnationCD:Start(12.9-delay, 1)
 	timerLavaGeysersCD:Start(self:IsMythic() and 24 or 26.9-delay, 1)
@@ -112,7 +114,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnBrandofDamnation:Show(self.vb.brandCount)
 			specWarnBrandofDamnation:Play("targetyou")
 			yellBrandofDamnation:Yell()
-			yellBrandofDamnationFades:Countdown(4)
+			yellBrandofDamnationFades:Countdown(self:IsEasy() and 4 or 3)
 		else
 			specWarnBrandofDamnation:Show(self.vb.brandCount)
 			specWarnBrandofDamnation:Play("specialsoon")
@@ -151,6 +153,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.overheatedCount < 8 and self.vb.overheatedCount % 2 == 1 then--Other timers started in phase change event
 			timerOverheatedCD:Start(nil, self.vb.overheatedCount+1)--29.9
 		end
+	elseif spellId == 421343 and args:IsPlayer() then
+		playerWasFirstBrand = true
 	end
 end
 
@@ -179,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOverheatedFades:Countdown(spellId)
 		else
 			--Check if overheated when on person tanking the main boss, by seeing if you're tanking the main boss
-			if not self:IsTanking("player", "boss1", nil, true) then
+			if not self:IsTanking("player", "boss1", nil, true) and not playerWasFirstBrand then
 				local uId = DBM:GetRaidUnitId(args.destName)
 				if self:IsTanking(uId) then--Not tanking boss and not overheated target and they are a tank, taunt boss
 					specWarnOverheatedTaunt:Show(args.destName)
@@ -216,6 +220,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 422067 then
 		self:SetStage(1)
+		playerWasFirstBrand = false
 		self.vb.cycleCount = self.vb.cycleCount + 1
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
