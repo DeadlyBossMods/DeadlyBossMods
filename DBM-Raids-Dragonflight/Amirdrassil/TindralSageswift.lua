@@ -391,7 +391,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 422000 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
-			if amount >= 12 then
+			if amount >= 9 then
 				if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 					specWarnSearingWrath:Show(args.destName)
 					specWarnSearingWrath:Play("tauntboss")
