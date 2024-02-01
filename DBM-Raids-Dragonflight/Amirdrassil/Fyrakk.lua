@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 419506 420422 417455 417431 412761 428963 428400 428971 428968 428965 419123 422837 410223 425492 422518 419144",
 	"SPELL_CAST_SUCCESS 430441 422935 422524 426368",
-	"SPELL_AURA_APPLIED 417807 417443 429866 423717 425494 422517",
+	"SPELL_AURA_APPLIED 417807 417443 429866 423717 425494 422517 429903 429906",
 	"SPELL_AURA_APPLIED_DOSE 417807 417443 429866 425494",
 	"SPELL_AURA_REMOVED 419144",
 	"SPELL_PERIODIC_DAMAGE 419504 425483",
@@ -75,6 +75,8 @@ local warnShadowflameEruption						= mod:NewCountAnnounce(429866, 4, nil, false,
 
 local specWarnIncarnate								= mod:NewSpecialWarningDodgeCount(412761, nil, 374763, nil, 2, 2)
 local specWarnShadowflameBreath						= mod:NewSpecialWarningDodgeCount(410223, nil, 17088, nil, 2, 2)
+local specWarnFlamebound							= mod:NewSpecialWarningYou(429903, nil, nil, nil, 1, 15, 4)
+local specWarnShadowbound							= mod:NewSpecialWarningYou(429906, nil, nil, nil, 1, 15, 4)
 
 local timerCorrupt									= mod:NewCastTimer(13, 419144, nil, nil, nil, 6)
 local timerShadowflameOrbsCD						= mod:NewCDCountTimer(49, 421937, nil, nil, nil, 5)
@@ -82,8 +84,8 @@ local timerIncarnateCD								= mod:NewCDCountTimer(8.5, 412761, 374763, nil, ni
 --local timerIncarnate								= mod:NewCastTimer(8.5, 412761, 374763, nil, nil, 2)
 local timerShadowflameBreathCD						= mod:NewCDCountTimer(49, 410223, 17088, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
-mod:AddPrivateAuraSoundOption(429903, true, 429903, 1)--Flamebound
-mod:AddPrivateAuraSoundOption(429906, true, 429906, 1)--Shadowbound
+--mod:AddPrivateAuraSoundOption(429903, true, 429903, 1)--Flamebound
+--mod:AddPrivateAuraSoundOption(429906, true, 429906, 1)--Shadowbound
 --Stage Two: Children of the Stars
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(26668))
 local warnSpirits									= mod:NewCountAnnounce(422032, 3, nil, nil, 263222)
@@ -275,8 +277,8 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(425525, "runout", 2)--Eternal Firestorm
 	if self:IsMythic() then
 		self:EnablePrivateAuraSound(426370, "gathershare", 2)--Darkflame Cleave
-		self:EnablePrivateAuraSound(429903, "flameyou", 15)--Flamebound
-		self:EnablePrivateAuraSound(429906, "shadowyou", 15)--Shadowbound
+--		self:EnablePrivateAuraSound(429903, "flameyou", 15)--Flamebound
+--		self:EnablePrivateAuraSound(429906, "shadowyou", 15)--Shadowbound
 		self:EnablePrivateAuraSound(428988, "flameyou", 15)--Molten Eruption (because both molten and shadow are bombs, can't just use bombyou for both, so better to elemental asign)
 		self:EnablePrivateAuraSound(428970, "shadowyou", 15)--Shadow Cage (because both molten and shadow are bombs, can't just use bombyou for both, so better to elemental asign)
 		timerWildFireCD:Start(4, 1)
@@ -575,6 +577,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerMythicDebuffs:Start(6.9, 1)
 			self:Schedule(6.9, mythicDebuffs, self)
 		end
+	elseif spellId == 429903 and args:IsPlayer() then
+		specWarnFlamebound:Show()
+		specWarnFlamebound:Play("flameyou")
+	elseif spellId == 429906 and args:IsPlayer() then
+		specWarnShadowbound:Show()
+		specWarnShadowbound:Play("shadowyou")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
