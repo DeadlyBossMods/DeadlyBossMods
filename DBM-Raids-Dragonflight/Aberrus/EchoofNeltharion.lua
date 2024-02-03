@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED_DOSE 407088",
 	"SPELL_PERIODIC_DAMAGE 409058 404277 409183",
 	"SPELL_PERIODIC_MISSED 409058 404277 409183",
---	"UNIT_DIED"
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -454,9 +453,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 199233 then
-		warnHidden:Show()
-	end
-end
