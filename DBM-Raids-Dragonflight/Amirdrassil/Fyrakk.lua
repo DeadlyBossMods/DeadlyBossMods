@@ -6,7 +6,7 @@ mod:SetCreatureID(204931)
 
 mod:SetEncounterID(2677)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20231212000000)
+mod:SetHotfixNoticeRev(20240206000000)
 mod:SetMinSyncRevision(20231208000000)
 mod.respawnTime = 29
 
@@ -156,7 +156,7 @@ mod.vb.swirlCount = 0
 local allTimers = {
 	[1.5] = {
 		--Blaze (Mythic Only intermission Blaze)
-		[414186] = {29, 8},--29 guessed
+		[4141862] = {28, 8},
 		--Shadowflame Orbs
 		[421937] = {3.5, 6, 6},
 	},
@@ -172,7 +172,9 @@ local allTimers = {
 		--Spirits of the Kaldorai
 		[422032] = {20, 20, 20, 25, 26, 25, 25, 25},
 		--Blaze (Heroic+ only)
-		[414186] = {20.7, 14.9, 25, 30, 26.9, 23, 30, 25},
+		[414186] = {20, 14.9, 25, 30, 26.9, 23, 30, 25},
+		--Blaze (Mythic only)
+		[4141862] = {20, 14.9, 25, 33.9, 22.9, 23, 33.9, 21},
 		--Incarnate
 		[412761] = {44.6, 80.0, 79.5},
 		--Aflame (Heroic)
@@ -199,7 +201,7 @@ local function blazeLoop(self)
 			timer = self.vb.blazeCount % 2 == 0 and 29.5 or 23.9
 		end
 	elseif stage == 1.5 or stage == 2 then--Still best sequenced sine it's larger pattern
-		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 414186, self.vb.blazeCount+1)
+		timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, self:IsMythic() and 4141862 or 414186, self.vb.blazeCount+1)
 	else--Stage 3
 		timer = self:IsMythic() and (self.vb.blazeCount % 2 == 0 and 33 or 13) or (self.vb.blazeCount % 2 == 0 and 28 or 13)
 	end
@@ -370,8 +372,8 @@ function mod:SPELL_CAST_START(args)
 			timerDarkflameCleaveCD:Stop()--Mythic Only
 			timerCorrupt:Start(13)
 			if self:IsMythic() then
-				timerBlazeCD:Start(29, 1)--Mythic only
-				self:Schedule(29, blazeLoop, self)
+				timerBlazeCD:Start(28, 1)--Mythic only
+				self:Schedule(28, blazeLoop, self)
 			end
 		else
 			if self.vb.incarnCount == 3 then--only two sets of adds, 3rd one is only a knockback cause he's going dragon again
@@ -472,7 +474,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDarkflameCleave:Show(self.vb.darkflameCleaveCount)
 		timerDarkflameCleave:Start(4, self.vb.darkflameCleaveCount)
 		timerDarkflameCleaveCD:Start(61, self.vb.darkflameCleaveCount+1)
-	elseif spellId == 422935 then
+	elseif spellId == 422935 then--Eternal Firestorm
 		if self:GetStage(3, 1) then
 			self:SetStage(3)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
