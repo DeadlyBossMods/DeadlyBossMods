@@ -334,7 +334,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.specialsActive == 0 then
 			--Is cast during specials, but Cd resets during them, twice, once on special begin and once again on special end
 			if castBeforeSpecial(self, 35) then--Extra large used cause there is a large gap between 2nd cast and specials now.
-				timerNoxiousBlossomCD:Start(self:IsLFR() and 29.3 or self:IsNormal() and 22 or 20.7, self.vb.blossomCount+1)
+				timerNoxiousBlossomCD:Start(self:IsLFR() and 29.3 or self:IsNormal() and 22 or 20, self.vb.blossomCount+1)
 			elseif self.vb.rageNext and castBeforeSpecial(self, 20) then
 				if self:IsMythic() then
 					if self.vb.vinesNext then

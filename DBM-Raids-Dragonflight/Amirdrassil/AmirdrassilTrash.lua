@@ -38,7 +38,7 @@ local timerFeatherBomb						= mod:NewBuffActiveTimer(6, 428765, nil, nil, nil, 5
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 425062 and self:AntiSpam(5, 6) then
+	if spellId == 425062 and self:AntiSpam(5, 1) then
 		warnShadowchargedSlam:Show()
 	elseif spellId == 425995 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnTranquility:Show(args.sourceName)
@@ -105,7 +105,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:OnSync(event, arg)
-	if event == "DontDie" then
+	if event == "DontDie" and self:AntiSpam(10, 3) then
 		timerFeatherBombCD:Start(22.9)
 	end
 end
