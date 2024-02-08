@@ -53,7 +53,7 @@ local yellBlisteringTorment							= mod:NewShortYell(414770, 184656)
 local specWarnTwistingBlade							= mod:NewSpecialWarningDodgeCount(416996, nil, 138737, nil, 2, 2)
 local specWarnRuinousEnd							= mod:NewSpecialWarningSpell(419048, nil, nil, nil, 3, 2)
 --Torments
-local specWarnUmbralDestruction						= mod:NewSpecialWarningCount(416048, nil, nil, nil, 2, 2)
+local specWarnUmbralDestruction						= mod:NewSpecialWarningCount(416048, nil, nil, nil, 2, 14)
 local specWarnSmashingViscera						= mod:NewSpecialWarningYou(424456, nil, 47482, nil, 1, 2)--Not in combat log
 local yellSmashingViscera							= mod:NewShortYell(424456, 47482)
 local yellSmashingVisceraFades						= mod:NewShortFadesYell(424456)
@@ -93,6 +93,7 @@ mod.vb.heartCount = 0
 mod.vb.smashingCount = 0
 mod.vb.useHeartStopperBackup = false
 local tormentOverTime = 0
+local playerHearted = false
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -158,9 +159,21 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 416048 then
 		self.vb.umbralCount = self.vb.umbralCount + 1
 		specWarnUmbralDestruction:Show(self.vb.umbralCount)
-		specWarnUmbralDestruction:Play("specialsoon")--Vague voice instead of backseating til more time to review strategies
 		if self.vb.umbralCount == 1 then
+			if not playerHearted then--Didn't get hearts in last debuffs, give the share count (player can still determine if they soak or not)
+				specWarnUmbralDestruction:Play("shareone")
+			else--Player DID have heart in last soak, make sure that player stays out
+				playerHearted = false--Clear them for next soak
+				specWarnUmbralDestruction:Play("otherout")
+			end
 			timerUmbralDestructionCD:Start(self:IsMythic() and 32.7 or self:IsHeroic() and 25 or 30, 2)
+		else
+			if not playerHearted then
+				specWarnUmbralDestruction:Play("sharetwo")
+			else
+				--Don't need to reset variable on 2nd cast
+				specWarnUmbralDestruction:Play("otherout")
+			end
 		end
 	elseif spellId == 418531 then
 		self.vb.smashingCount = self.vb.smashingCount + 1
@@ -230,6 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
+			playerHearted = true
 			specWarnHeartStopper:Show()
 			specWarnHeartStopper:Play("targetyou")
 			yellHeartStopperFades:Countdown(spellId)--, nil, icon
@@ -293,6 +307,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Handle initial timer resets
 		self.vb.spearCount = 0
 		self.vb.TwistingCount = 0
+		playerHearted = false
 	end
 end
 

@@ -61,12 +61,11 @@ mod:AddSetIconOption("SetIconOnControlledBurn", 421972, true, 0, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnBlazingTaintedTreant", -28350, true, 5, {8, 7, 6, 5})
 --Intermission: Frenzied Growth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27475))
-local warnDoomCultivation							= mod:NewCountAnnounce(421013, 3)
 local warnEmberCharred								= mod:NewCountAnnounce(421038, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(421038))
 local warnUprootedAgony								= mod:NewSpellAnnounce(421840, 1)
 local warnUprootedAgonyOver							= mod:NewEndAnnounce(421840, 2)
 
---local specWarnEmberCharred						= mod:NewSpecialWarningYou(421038, nil, nil, nil, 1, 2)
+local specWarnDoomCultivation						= mod:NewSpecialWarningDodgeCount(421013, "Melee", nil, nil, 2, 2)--Prevent melee dying if they tunnel boss too long
 
 local timerUprootAgonyCD							= mod:NewBuffActiveTimer(20, 421840, nil, nil, nil, 5, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerDoomCultivationCD						= mod:NewStageCountCycleTimer(49, 421013, nil, nil, nil, 6)
@@ -213,6 +212,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 421013 then
 		self:SetStage(2)
 		self.vb.doomCount = self.vb.doomCount + 1
+		specWarnDoomCultivation:Show(self.vb.doomCount)
+		specWarnDoomCultivation:Play("runout")
 		timerFlamingPestilenceCD:Stop()
 		timerControlledBurnCD:Stop()
 		timerDreadfireBarrageCD:Stop()

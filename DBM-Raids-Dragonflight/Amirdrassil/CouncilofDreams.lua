@@ -42,7 +42,7 @@ local warnAgonizingClaws							= mod:NewStackAnnounce(421022, 2, nil, "Tank|Heal
 local warnUrsineRage								= mod:NewSpellAnnounce(425114, 4)--You done fucked up
 
 local specWarnBlindingRage							= mod:NewSpecialWarningCount(420525, nil, nil, nil, 2, 2)
-local specWarnBarrelingCharge						= mod:NewSpecialWarningCount(420948, nil, nil, nil, 1, 2)
+local specWarnBarrelingCharge						= mod:NewSpecialWarningCount(420948, nil, nil, nil, 1, 14)
 local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, nil, nil, nil, 3, 14)
 local yellBarrelingCharge							= mod:NewShortYell(420948, 100, nil, nil, "YELL")
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948, nil, nil, nil, "YELL")
