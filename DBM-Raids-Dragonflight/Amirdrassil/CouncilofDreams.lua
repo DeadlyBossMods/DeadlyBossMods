@@ -437,7 +437,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if self.Options.SpecWarn421022taunt and not args:IsPlayer() then
-				specWarnAgonizingClaws:Show()
+				specWarnAgonizingClaws:Show(args.destName)
 				specWarnAgonizingClaws:Play("tauntboss")
 			else
 				warnAgonizingClaws:Show(args.destName, amount)
