@@ -46,6 +46,7 @@ local specWarnBarrelingCharge						= mod:NewSpecialWarningCount(420948, nil, nil
 local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, nil, nil, nil, 3, 14)
 local yellBarrelingCharge							= mod:NewShortYell(420948, 100, nil, nil, "YELL")
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948, nil, nil, nil, "YELL")
+local specWarnAgonizingClaws						= mod:NewSpecialWarningTaunt(421022, false, nil, nil, 1, 2)
 local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil, 1, 2)--Not grouped on purpose, so that it stays on diff WA key in GUI
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 
@@ -435,18 +436,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
---			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
---			local remaining
---			if expireTime then
---				remaining = expireTime-GetTime()
---			end
---			local timer = (self:GetFromTimersTable(allTimers, difficultyName, false, 376279, self.vb.slamCount+1) or 17.9) - 5
---			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
---				specWarnConcussiveSlamTaunt:Show(args.destName)
---				specWarnConcussiveSlamTaunt:Play("tauntboss")
---			else
+			if self.Options.SpecWarn421022taunt and not args:IsPlayer() then
+				specWarnAgonizingClaws:Show()
+				specWarnAgonizingClaws:Play("tauntboss")
+			else
 				warnAgonizingClaws:Show(args.destName, amount)
---			end
+			end
 		end
 	elseif spellId == 425114 then
 		warnUrsineRage:Show()
