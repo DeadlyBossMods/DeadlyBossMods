@@ -21,7 +21,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active"
+	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active",
+	AGBoss				= "Auto select gossip to summon Apothecary Trio"
 })
 
 L:SetMiscLocalization({

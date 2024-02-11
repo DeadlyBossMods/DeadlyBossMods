@@ -9,7 +9,8 @@ mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_SAY"
+	"CHAT_MSG_MONSTER_SAY",
+	"GOSSIP_SHOW"
 )
 
 mod:RegisterEventsInCombat(
@@ -26,6 +27,13 @@ local timerHummel				= mod:NewTimer(10.5, "HummelActive", "132349", nil, false, 
 local timerBaxter				= mod:NewTimer(16, "BaxterActive", "132349", nil, false, "TrioActiveTimer")
 local timerFrye					= mod:NewTimer(25, "FryeActive", "132349", nil, false, "TrioActiveTimer")
 mod:AddBoolOption("TrioActiveTimer", true, "timer", nil, 1)
+mod:AddBoolOption("AGBoss", true)
+
+function mod:GOSSIP_SHOW()
+	if self.Options.AGBoss then
+		self:SelectMatchingGossip(true, 37537)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 68821 and self:AntiSpam(3, 1) then
