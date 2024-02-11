@@ -22,7 +22,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "각 보스 활성화 타이머 바 보기"
+	TrioActiveTimer		= "연금술사 삼인방 활성화 타이머 바 보기",
+	AGBoss				= "연금술사 삼인방 소환 대화 자동 선택"
 })
 
 L:SetMiscLocalization({
