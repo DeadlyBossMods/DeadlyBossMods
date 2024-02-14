@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 418187 420525 420947 421020 421292 420937 420671 420856 421029 418591 421024",
 	"SPELL_CAST_SUCCESS 418757",
-	"SPELL_AURA_APPLIED 420948 421022 425114 421298 418755 420858 421236 418720 421032 421031",
+	"SPELL_AURA_APPLIED 420948 421022 425114 421298 418755 420858 421236 418720 421032 421031 421029",
 	"SPELL_AURA_APPLIED_DOSE 421022 420858",
 	"SPELL_AURA_REMOVED 420948 421298 418755 420858 421236 418720 421292 421029 420525 421031",
 	"SPELL_PERIODIC_DAMAGE 426390",
@@ -145,7 +145,7 @@ local function specialInterrupted(self, spellId)
 			timerPoisonousJavelinCD:Start(21, self.vb.javCount+1)
 			--Pip
 			timerPolymorphBombCD:Stop()
-			timerPolymorphBombCD:Start(16, self.vb.polyCount+1)
+			timerPolymorphBombCD:Start(15.3, self.vb.polyCount+1)
 			timerEmeraldWindsCD:Start(43, self.vb.windsCount+1)
 		elseif self:IsNormal() then
 			--Urctos
@@ -356,7 +356,6 @@ function mod:SPELL_CAST_START(args)
 			timerPoisonousJavelinCD:Start(self:IsLFR() and 33.3 or 25, self.vb.javCount+1)
 		end
 	elseif spellId == 421029 then
-		self.vb.specialsActive = self.vb.specialsActive + 1
 		self.vb.songCount = self.vb.songCount + 1
 		--Timers that specifically reset on song begin
 		if not self:IsMythic() then--Review further. It definitely still happens on normal though
@@ -492,6 +491,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
 		specWarnSongoftheDragon:Play("takedamage")
 		self:Schedule(6, checkSong, self)--Schedule 2nd warning half way through debuff
+	elseif spellId == 421029 then
+		--Song isn't active until buff goes up, so if you interrupt bear SUPER fast, you can early terminate a combo on mythic
+		--Log referencing bug behavior if
+		--https://www.warcraftlogs.com/reports/MV98mgGfX4yPYQHr#fight=last&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20418187%20or%20ability.id%20%3D%20420525%20or%20ability.id%20%3D%20420947%20or%20ability.id%20%3D%20421020%20or%20ability.id%20%3D%20421292%20or%20ability.id%20%3D%20420937%20or%20ability.id%20%3D%20420671%20or%20ability.id%20%3D%20420856%20or%20ability.id%20%3D%20421029%20or%20ability.id%20%3D%20418591%20or%20ability.id%20%3D%20421024)%20and%20type%20%3D%20%22begincast%22%20%20or%20ability.id%20%3D%20418755%20or%20ability.id%20%3D%20421292%20or%20ability.id%20%3D%20421029%20or%20ability.id%20%3D%20420525%20or%20ability.id%20%3D%20418757%20and%20type%20%3D%20%22cast%22&view=events
+		--So don't intecfremnt specials active count if we recently ended a special phase early due to above bug
+		--Song is never cast first, specials active should always be 1 unless SUPER early bear interrupt
+		if self:IsMythic() and self.vb.specialsActive == 0 and castBeforeSpecial(self, 50) then
+			DBM:AddMsg("Special phase terminated early due to interrupting Blind rage before song finished casting, making blizzards encounter code think BOTH specials have ended already. Tanks, Aim the bear away now!")
+		else
+			self.vb.specialsActive = self.vb.specialsActive + 1
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
