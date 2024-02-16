@@ -152,7 +152,9 @@ function mod:SPELL_CAST_START(args)
 		--"<115.76 10:52:40> [CLEU] SPELL_CAST_START#Creature-0-1471-2549-13215-206172-0000588831#Nymue(70.4%-0.0%)##nil#420846#Continuum#nil#nil",
 		--"<117.10 10:52:42> [CLEU] SPELL_AURA_APPLIED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A94E8A7#****#429983#Surging Growth#DEBUFF#4",
 		--"<143.10 10:53:08> [CLEU] SPELL_AURA_REMOVED_DOSE#Creature-0-1471-2549-13215-206172-0000588831#Nymue#Player-1084-0A59CE90#****#429983#Surging Growth#DEBUFF#3",
-		timerSurgingGrowthCD:Start(21, 1)--self.vb.surgingCount+1
+		if not self:IsMythic() then
+			timerSurgingGrowthCD:Start(21, 1)--self.vb.surgingCount+1
+		end
 		timerWeaversBurdenCD:Start(34.7, 1)--self.vb.burdenCount+1
 		timerViridianRainCD:Start(36.7, 1)--self.vb.rainCount+1
 		timerImpendingLoomCD:Start(40.6, 1)--self.vb.loomCount+1
