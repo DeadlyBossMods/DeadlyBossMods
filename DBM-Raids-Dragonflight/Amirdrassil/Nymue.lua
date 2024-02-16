@@ -42,6 +42,7 @@ local warnEphemeralFlora							= mod:NewCountAnnounce(430563, 3)
 local warnLucidVulnerability						= mod:NewCountAnnounce(428479, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(428479))--Player
 
 local specWarnImpendingLoom							= mod:NewSpecialWarningDodgeCount(429615, nil, nil, nil, 2, 2)
+local specWarnEphemeralFlora						= mod:NewSpecialWarningSoakCount(430563, "Melee", nil, nil, 2, 2)
 local specWarnViridianRain							= mod:NewSpecialWarningDodgeCount(420907, nil, nil, nil, 2, 2)
 local specWarnWeaversBurden							= mod:NewSpecialWarningMoveAway(426519, nil, 37859, nil, 1, 2)
 local yellWeaversBurden								= mod:NewShortYell(426519, 37859)--ST "Bomb"
@@ -88,7 +89,12 @@ local playerInflorescence = false
 
 local function blizzardHatesCombatLogLoop(self, isLoop)
 	self.vb.floraCount = self.vb.floraCount + 1
-	warnEphemeralFlora:Show(self.vb.floraCount)
+	if self.Options.SpecWarn430563soakcount then
+		specWarnEphemeralFlora:Show(self.vb.floraCount)
+		specWarnEphemeralFlora:Play("helpsoak")
+	else
+		warnEphemeralFlora:Show(self.vb.floraCount)
+	end
 	if not isLoop then--Loop single time per rotation
 		timerEphemeralFloraCD:Start(27, self.vb.floraCount+1)
 		self:Schedule(27, blizzardHatesCombatLogLoop, self, true)
