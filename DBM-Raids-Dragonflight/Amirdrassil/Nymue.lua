@@ -49,8 +49,10 @@ local yellWeaversBurden								= mod:NewShortYell(426519, 37859)--ST "Bomb"
 local specWarnWeaversBurdenOther					= mod:NewSpecialWarningTaunt(426519, nil, 37859, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(428474, nil, nil, nil, 1, 8)
 
+local colorRed = DBM:GetSpellInfo(291520)
+
 local timerImpendingLoomCD							= mod:NewCDCountTimer(23.8, 429615, L.Threads, nil, nil, 3)
-local timerEphemeralFloraCD							= mod:NewCDCountTimer(49, 430563, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerEphemeralFloraCD							= mod:NewCDCountTimer(49, 430563, colorRed.." "..DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerSurgingGrowthCD							= mod:NewCDCountTimer(7, 429983, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)--5.1-9, usually 8-9
 local timerViridianRainCD							= mod:NewCDCountTimer(19.1, 420907, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 3)
 local timerWeaversBurdenCD							= mod:NewCDCountTimer(17.8, 426519, 167180, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--ST "Bombs"
