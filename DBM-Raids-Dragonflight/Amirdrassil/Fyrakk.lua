@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 419506 or ability.id = 420422 or ability.id = 417455 or ability.id = 417431 or ability.id = 419144 or ability.id = 412761 or ability.id = 428963 or ability.id = 428400 or ability.id = 428971 or ability.id = 428968 or ability.id = 428965 or ability.id = 419123 or ability.id = 422837 or ability.id = 410223 or ability.id = 425492 or ability.id = 422518) and type = "begincast"
- or (ability.id = 430441 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524 or ability.id = 426368) and type = "cast"
+ or (ability.id = 430441 or ability.id = 414186 or ability.id = 421937 or ability.id = 422935 or ability.id = 429875 or ability.id = 429876 or ability.id = 422524 or ability.id = 426368 or ability.id = 414186 or ability.id = 422032) and type = "cast"
  or ability.id = 419144 and (type = "applybuff" or type = "removebuff")
  or (ability.id = 414187 or ability.id = 425525 or ability.id = 428988 or ability.id = 428970) and type = "applydebuff"
  or ability.id = 422517 and type = "applybuff"
