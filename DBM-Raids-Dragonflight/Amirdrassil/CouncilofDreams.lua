@@ -517,6 +517,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Song is never cast first, specials active should always be 1 unless SUPER early bear interrupt
 		if self:IsMythic() and self.vb.specialsActive == 0 and castBeforeSpecial(self, 50) then
 			DBM:AddMsg("Special phase terminated early due to interrupting Blind rage before song finished casting, making blizzards encounter code think BOTH specials have ended already. Tanks, Aim the bear away now!")
+			DBM:PlaySoundFile("Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg", true)
 		else
 			self.vb.specialsActive = self.vb.specialsActive + 1
 		end
