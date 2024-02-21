@@ -209,7 +209,7 @@ local function specialInterrupted(self, spellId)
 end
 
 local function checkSong()
-	if playerSong then--Still have it, warn again
+	if playerSong and not DBM:UnitDebuff("player", 418720) then--Still have it, warn again
 		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
 		specWarnSongoftheDragon:Play("takedamage")
 	end
@@ -435,7 +435,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if self.Options.SpecWarn421022taunt and not args:IsPlayer() then
+			if self.Options.SpecWarn421022taunt2 and not args:IsPlayer() then
 				if self.vb.clawsCount % 2 == 1 then--1 and 3
 					specWarnAgonizingClaws:Show(args.destName)
 					specWarnAgonizingClaws:Play("tauntboss")
@@ -446,8 +446,8 @@ function mod:SPELL_AURA_APPLIED(args)
 						remaining = expireTime-GetTime()
 					end
 					--Don't taunt if charge is incoming and you can't take it cause you'll still have debuff
-					local neededTime = timerBarrelingChargeCD:GetRemaining(self.vb.chargeCount+1) or 20
-					if (not remaining or remaining and remaining < neededTime) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+					local timerLeft = timerBarrelingChargeCD:GetRemaining(self.vb.chargeCount+1) or 20
+					if (not remaining or remaining and remaining < timerLeft) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 						specWarnAgonizingClaws:Show(args.destName)
 						specWarnAgonizingClaws:Play("tauntboss")
 					else
@@ -504,8 +504,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 421031 and args:IsPlayer() then
 		playerSong = true
-		specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
-		specWarnSongoftheDragon:Play("takedamage")
+		if not DBM:UnitDebuff("player", 418720) then
+			specWarnSongoftheDragon:Show(DBM_COMMON_L.POOL)
+			specWarnSongoftheDragon:Play("takedamage")
+		end
 		self:Schedule(6, checkSong, self)--Schedule 2nd warning half way through debuff
 	elseif spellId == 421029 then
 		--Song isn't active until buff goes up, so if you interrupt bear SUPER fast, you can early terminate a combo on mythic
@@ -530,20 +532,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellBarrelingChargeFades:Cancel()
 		else
-			if self.vb.clawsCount == 2 then
-				--Only show taunt warning after charge, if the tank who took charge would die to claws 3
-				local uId = DBM:GetRaidUnitId(args.destName)
-				if uId then
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 421022)--Claws debuff
-					local remaining
-					if expireTime then
-						remaining = expireTime-GetTime()
-					end
-					--Don't taunt if charge is incoming and you can't take it cause you'll still have debuff
-					if remaining and remaining >= 12 and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-						specWarnTrampled:Show(args.destName)
-						specWarnTrampled:Play("tauntboss")
-					end
+			--Only show taunt warning after charge, if the tank who took charge would die to claws 3
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 421022)--Claws debuff
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				local timerLeft = timerAgonizingClawsCD:GetRemaining(self.vb.clawsCount+1) or 20
+				if (not remaining or remaining and remaining < timerLeft) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+					specWarnTrampled:Show(args.destName)
+					specWarnTrampled:Play("tauntboss")
 				end
 			end
 		end
