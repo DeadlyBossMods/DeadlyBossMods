@@ -47,7 +47,6 @@ local specWarnBarrelingChargeSpecial				= mod:NewSpecialWarningMoveTo(420948, ni
 local yellBarrelingCharge							= mod:NewShortYell(420948, 100, nil, nil, "YELL")
 local yellBarrelingChargeFades						= mod:NewShortFadesYell(420948, nil, nil, nil, "YELL")
 local specWarnAgonizingClaws						= mod:NewSpecialWarningTaunt(421022, nil, nil, 2, 1, 2)
-local specWarnTrampled								= mod:NewSpecialWarningTaunt(423420, nil, nil, nil, 1, 2)--Not grouped on purpose, so that it stays on diff WA key in GUI
 --local specWarnPyroBlast							= mod:NewSpecialWarningInterrupt(396040, "HasInterrupt", nil, nil, 1, 2)
 
 --local timerSinseekerCD							= mod:NewAITimer(49, 335114, nil, nil, nil, 3)
@@ -543,8 +542,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				local timerLeft = timerAgonizingClawsCD:GetRemaining(self.vb.clawsCount+1) or 20
 				--Claws debuff wont' be gone yet off other tank, so you need to take it
 				if (remaining and remaining > timerLeft) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
-					specWarnTrampled:Show(args.destName)
-					specWarnTrampled:Play("tauntboss")
+					specWarnAgonizingClaws:Show(args.destName)
+					specWarnAgonizingClaws:Play("tauntboss")
 				end
 			end
 		end
