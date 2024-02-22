@@ -439,7 +439,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if self.vb.clawsCount % 2 == 1 then--1 and 3
 					specWarnAgonizingClaws:Show(args.destName)
 					specWarnAgonizingClaws:Play("tauntboss")
-				else--Claws 2 and 4 need additional safety check to avoid getting killed by charge
+				else--Claws 2 and 4 need additional safety check to avoid getting hit by extra damage charge
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 423420)
 					local remaining
 					if expireTime then
@@ -541,7 +541,8 @@ function mod:SPELL_AURA_REMOVED(args)
 					remaining = expireTime-GetTime()
 				end
 				local timerLeft = timerAgonizingClawsCD:GetRemaining(self.vb.clawsCount+1) or 20
-				if (not remaining or remaining and remaining < timerLeft) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
+				--Claws debuff wont' be gone yet off other tank, so you need to take it
+				if (remaining and remaining > timerLeft) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 					specWarnTrampled:Show(args.destName)
 					specWarnTrampled:Play("tauntboss")
 				end
