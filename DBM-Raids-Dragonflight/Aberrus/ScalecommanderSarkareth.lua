@@ -432,6 +432,15 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.surgeCount+1)
 		if timer then
 			timerGlitteringSurgeCD:Start(timer, self.vb.surgeCount+1)
+		else--Early push, abort timers even earlier
+			DBM:ShowTestSpecialWarning(L.EarlyStaging, 1, nil, true)
+			timerOppressingHowlCD:Stop()
+			timerGlitteringSurgeCD:Stop()
+			timerScorchingBombCD:Stop()
+			timerMassDisintegrateCD:Stop()
+			timerSearingBreathCD:Stop()
+			timerBurningClawsCD:Stop()
+			timerPhaseCD:Restart(11)
 		end
 	elseif spellId == 401500 then
 		self.vb.bombCount = self.vb.bombCount + 1
