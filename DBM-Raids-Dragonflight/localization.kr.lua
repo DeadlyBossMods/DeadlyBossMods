@@ -192,6 +192,10 @@ L:SetOptionLocalization({
 	Hybrid					= "1페이즈에 억압의 포효 중첩, 2페이즈 3페이즈엔 망각 중첩 표시"
 })
 
+L:SetMiscLocalization({
+	EarlyStaging			= "생명력 기준점을 넘어서 페이즈 조기 종료"
+})
+
 -------------
 --  Trash  --
 -------------
