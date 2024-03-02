@@ -1,0 +1,27 @@
+name: luals-checker
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - master
+
+run-name: LuaLS Check
+jobs:
+  LuaLS-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: ./workspace
+      - name: LuaLS check
+        uses: DeadlyBossMods/LuaLS-config@main
+        with:
+          luals-repo: emmericp/lua-language-server
+          luals-ref: 606e9cd238dbc924929d7047497de30ff44ee50c
+          luals-check-dir: ${{ github.workspace }}/workspace
