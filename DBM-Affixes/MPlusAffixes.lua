@@ -34,7 +34,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8
 
 local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
 local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 3, nil, nil, nil, true)
-local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, 2, DBM_COMMON_L.HEALER_ICON, nil, mod:IsHealer() and 3, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
+local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, 2, DBM_COMMON_L.HEALER_ICON, nil, mod:IsHealer() and 3 or nil, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
 local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
@@ -129,7 +129,7 @@ do
 		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
 	end
 	local eventsRegistered = false
-	local function delayedZoneCheck(self, force)
+	function mod:DelayedZoneCheck(force)
 		local currentZone = DBM:GetCurrentArea() or 0
 		if not force and validZones[currentZone] and not eventsRegistered then
 			eventsRegistered = true
@@ -165,17 +165,17 @@ do
 		end
 	end
 	function mod:LOADING_SCREEN_DISABLED()
-		self:Unschedule(delayedZoneCheck)
+		self:UnscheduleMethod("DelayedZoneCheck")
 		--Checks Delayed 1 second after core checks to prevent race condition of checking before core did and updated cached ID
-		self:Schedule(2, delayedZoneCheck, self)
-		self:Schedule(6, delayedZoneCheck, self)
+		self:ScheduleMethod(2, "DelayedZoneCheck")
+		self:ScheduleMethod(6, "DelayedZoneCheck")
 	end
 	mod.OnInitialize = mod.LOADING_SCREEN_DISABLED
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
 
 	function mod:CHALLENGE_MODE_COMPLETED()
 		--This basically force unloads things even when in a dungeon, so it's not countdown affixes that are disabled
-		delayedZoneCheck(self, true)
+		self:DelayedZoneCheck(true)
 	end
 end
 
