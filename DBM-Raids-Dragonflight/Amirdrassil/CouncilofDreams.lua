@@ -243,7 +243,7 @@ function mod:OnCombatStart(delay)
 		timerBlindingRageCD:Start(55.8-delay, 1)
 		--Aerwynn
 		timerNoxiousBlossomCD:Start(10.9-delay, 1)
-		timerPoisonousJavelinCD:Start(19.9)
+		timerPoisonousJavelinCD:Start(19.9, 1)
 		--Pip
 		timerPolymorphBombCD:Start(34.9-delay, 1)
 		timerEmeraldWindsCD:Start(45-delay, 1)
@@ -254,7 +254,7 @@ function mod:OnCombatStart(delay)
 		timerBlindingRageCD:Start(74.6-delay, 1)
 		--Aerwynn
 		timerNoxiousBlossomCD:Start(14.6-delay, 1)
-		timerPoisonousJavelinCD:Start(26.6)
+		timerPoisonousJavelinCD:Start(26.6, 1)
 		--Pip
 		timerPolymorphBombCD:Start(46.6-delay, 1)
 		timerEmeraldWindsCD:Start(60-delay, 1)
