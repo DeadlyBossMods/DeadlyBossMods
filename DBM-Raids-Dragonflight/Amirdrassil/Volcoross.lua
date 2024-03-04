@@ -22,8 +22,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 421082 423494",
 	"SPELL_PERIODIC_MISSED 421082 423494",
 --	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_START boss1"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -254,9 +254,11 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	end
 end
 
+--[[
 --Maybe still use this later with clever filtering
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 421356 or spellId == 421359 or spellId == 421684 then--Scorchtail Crash
 
 	end
 end
+--]]
