@@ -335,7 +335,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			if args:IsPlayer() and amount > 10 then
 				local icon = GetRaidTargetIndex("player")
-				local text = amount
+				local text = tostring(amount)
 				if icon then
 					text = "{rt"..icon.."} "..amount.." {rt"..icon.."}"
 				end
