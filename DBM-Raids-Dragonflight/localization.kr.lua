@@ -218,10 +218,6 @@ L:SetGeneralLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2554)
 
-L:SetMiscLocalization({
-	HealAbsorbs	= "치유 흡수 (%s)"--Might be common localized later
-})
-
 ---------------------------
 --  Volcoross --
 ---------------------------
