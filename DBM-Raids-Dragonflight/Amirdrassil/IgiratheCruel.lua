@@ -71,7 +71,7 @@ local timerMarkedforTormentCD						= mod:NewCDCountTimer(49, 422776, 99256, nil,
 --Torments
 local timerUmbralDestructionCD						= mod:NewCDCountTimer(49, 416048, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)--Shorttext "Soak"
 local timerSmashingVisceraCD						= mod:NewCDCountTimer(49, 424456, 47482, nil, nil, 3)--Shorttext "Leap"
-local timerHeartStopperCD							= mod:NewCDCountTimer(49, 415623, L.HealAbsorbs, nil, nil, 3)
+local timerHeartStopperCD							= mod:NewCDCountTimer(49, 415623, L.HealAbsorb, nil, nil, 3)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnBlisteringSpear", 414888, false, false, {1, 2, 3, 4, 5, 6})
