@@ -214,7 +214,7 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --残虐者艾姬拉
 ---------------------------
-L= DBM:GetModLocalization(2554)
+--L= DBM:GetModLocalization(2554)
 
 ---------------------------
 --  Volcoross --沃尔科罗斯

@@ -212,7 +212,7 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --
 ---------------------------
-L= DBM:GetModLocalization(2554)
+--L= DBM:GetModLocalization(2554)
 
 ---------------------------
 --  Volcoross --
