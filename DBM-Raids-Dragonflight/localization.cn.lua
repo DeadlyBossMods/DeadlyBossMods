@@ -214,11 +214,7 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --残虐者艾姬拉
 ---------------------------
-L= DBM:GetModLocalization(2554)
-
-L:SetMiscLocalization({
-	HealAbsorb	= "治疗被吸收 (%s)"
-})
+--L= DBM:GetModLocalization(2554)
 
 ---------------------------
 --  Volcoross --沃尔科罗斯

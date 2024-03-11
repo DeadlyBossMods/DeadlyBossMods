@@ -216,11 +216,7 @@ L:SetGeneralLocalization({
 ---------------------------
 --  Igira the Cruel --
 ---------------------------
-L= DBM:GetModLocalization(2554)
-
-L:SetMiscLocalization({
-	HealAbsorbs	= "치유 흡수 (%s)"--Might be common localized later
-})
+--L= DBM:GetModLocalization(2554)
 
 ---------------------------
 --  Volcoross --
