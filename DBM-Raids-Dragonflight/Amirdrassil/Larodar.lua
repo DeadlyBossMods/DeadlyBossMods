@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(208445)
 mod:SetEncounterID(2731)
 mod:SetUsedIcons(6, 7, 8)
-mod:SetHotfixNoticeRev(20231119000000)
+mod:SetHotfixNoticeRev(20240315000000)
 mod:SetMinSyncRevision(20231115000000)
 mod.respawnTime = 29
 
@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 425889 426524 422614 418637 426206 417634 427252 427343 429973 421325",
 	"SPELL_CAST_SUCCESS 417653 419485 427299",
-	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 418520 429032 428946",--421407
-	"SPELL_AURA_APPLIED_DOSE 426249 426256 418520 429032 428946",--421407
+	"SPELL_AURA_APPLIED 425888 425468 420544 426387 423719 426249 426256 421316 427299 427306 421594 418520 429032",-- 428946 421407
+	"SPELL_AURA_APPLIED_DOSE 426249 426256 418520 429032",-- 428946 421407
 	"SPELL_AURA_REMOVED 421316 427299 421594",
 --	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_PERIODIC_DAMAGE 417632",
@@ -103,7 +103,6 @@ local warnEncasedInAsh								= mod:NewTargetNoFilterAnnounce(427306, 4, nil, "R
 local warnAshenCall									= mod:NewCountAnnounce(421325, 2)
 --local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
 local warnAshenDevastation							= mod:NewCountAnnounce(428896, 3, nil, nil, 167180)--Shortname "Bombs"
-local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
 
 local specWarnFallingEmbers							= mod:NewSpecialWarningSoakCount(427252, nil, nil, nil, 2, 2)
 local specWarnFlashFire								= mod:NewSpecialWarningMoveAway(427299, nil, nil, nil, 1, 2)--Blizzard didn't flag right spellids as private aura, so this probably still works for now
@@ -251,7 +250,7 @@ function mod:OnCombatStart(delay)
 	self.vb.thornsCount = 0
 	self.vb.infernoCount = 0
 	table.wipe(castsPerGUID)
-	self:EnablePrivateAuraSound(425888, "runout", 2)--Igniting Growth
+	self:EnablePrivateAuraSound(425888, "targetyou", 2)--Igniting Growth
 	self:EnablePrivateAuraSound(425468, "targetyou", 2)--Dream Blossom. Bad sound, needs better?
 	self:EnablePrivateAuraSound(420544, "justrun", 2)--Scorching Pursuit
 	self:EnablePrivateAuraSound(421461, "runout", 2)--Flash Fire
@@ -528,8 +527,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEncasedInAsh:Play("targetyou")
 			yellEncasedInAsh:Yell()
 		end
-	elseif spellId == 428946 then
-		warnAshenAsphyxiation:Show(args.destName, args.amount or 1)
 	elseif spellId == 421316 then--Consuming Flame
 		self:SetStage(1.5)
 		timerFieryForceofNatureCD:Stop()
