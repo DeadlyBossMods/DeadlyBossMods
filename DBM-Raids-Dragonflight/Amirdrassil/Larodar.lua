@@ -251,7 +251,7 @@ function mod:OnCombatStart(delay)
 	self.vb.thornsCount = 0
 	self.vb.infernoCount = 0
 	table.wipe(castsPerGUID)
-	self:EnablePrivateAuraSound(425888, "runout", 2)--Igniting Growth
+	self:EnablePrivateAuraSound(425888, "targetyou", 2)--Igniting Growth
 	self:EnablePrivateAuraSound(425468, "targetyou", 2)--Dream Blossom. Bad sound, needs better?
 	self:EnablePrivateAuraSound(420544, "justrun", 2)--Scorching Pursuit
 	self:EnablePrivateAuraSound(421461, "runout", 2)--Flash Fire
