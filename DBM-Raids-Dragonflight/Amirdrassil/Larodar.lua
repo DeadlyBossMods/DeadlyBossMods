@@ -103,7 +103,7 @@ local warnEncasedInAsh								= mod:NewTargetNoFilterAnnounce(427306, 4, nil, "R
 local warnAshenCall									= mod:NewCountAnnounce(421325, 2)
 --local warnSearingAsh								= mod:NewCountAnnounce(421407, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(426249))
 local warnAshenDevastation							= mod:NewCountAnnounce(428896, 3, nil, nil, 167180)--Shortname "Bombs"
-local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
+--local warnAshenAsphyxiation							= mod:NewStackAnnounce(428946, 3, nil, "Tank|Healer")
 
 local specWarnFallingEmbers							= mod:NewSpecialWarningSoakCount(427252, nil, nil, nil, 2, 2)
 local specWarnFlashFire								= mod:NewSpecialWarningMoveAway(427299, nil, nil, nil, 1, 2)--Blizzard didn't flag right spellids as private aura, so this probably still works for now
@@ -528,8 +528,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEncasedInAsh:Play("targetyou")
 			yellEncasedInAsh:Yell()
 		end
-	elseif spellId == 428946 then
-		warnAshenAsphyxiation:Show(args.destName, args.amount or 1)
+--	elseif spellId == 428946 then
+--		warnAshenAsphyxiation:Show(args.destName, args.amount or 1)
 	elseif spellId == 421316 then--Consuming Flame
 		self:SetStage(1.5)
 		timerFieryForceofNatureCD:Stop()
