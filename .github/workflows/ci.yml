@@ -11,13 +11,12 @@ on:
       - master
 
 jobs:
-  build:
+  test:
+    name: Testing
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
@@ -27,20 +26,35 @@ jobs:
       - name: Run DBM Checks
         uses: DeadlyBossMods/DBM-Actions@master
 
-      - name: Create Package
-        uses: QartemisT/packager@master
-        if: ${{ github.event_name != 'pull_request' }}
-        with:
-          args: -n "DBM-{project-version}{classic}"
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
-          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
-
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
         if: ${{ failure() }}
+
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    needs:
+      - test
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ['Classic', 'Wrath', 'Cata', 'Retail']
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Package
+        uses: BigWigsMods/packager@master
+        with:
+          args: -g ${{ matrix.branch }} -m .pkgmeta-${{ matrix.branch }}
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}

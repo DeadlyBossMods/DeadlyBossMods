@@ -1,0 +1,36 @@
+package-as: DBM-Core
+
+externals:
+  Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
+  Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+  Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
+  Libs/LibLatency: https://repos.wowace.com/wow/liblatency/trunk/LibLatency
+  Libs/LibSharedMedia-3.0: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
+  Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
+  Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
+  Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
+  Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
+  Libs/LibDropDownMenu: https://github.com/HizurosWoWAddOns/LibDropDownMenu
+  DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
+
+ignore:
+  - DBM-Core/Libs/LibDeflate/docs
+  - DBM-Core/Libs/LibDeflate/examples
+  - DBM-Core/Libs/LibDeflate/LibDeflate.toc
+  - DBM-Core/Libs/LibDeflate/README.md
+  - DBM-Core/Libs/LibDeflate/CONTRIBUTING.md
+  - DBM-Core/Libs/LibDeflate/changelog.md
+  - DBM-Core/Libs/LibDropDownMenu/README.md
+  - DBM-Core/Libs/LibStub/tests
+  - DBM-Core/Libs/LibDataBroker-1.1/README.textile
+  - DBM-VPVEM/README.md
+
+enable-nolib-creation: no
+
+move-folders:
+  DBM-Core/DBM-Core: DBM-Core
+  DBM-Core/DBM-GUI: DBM-GUI
+  DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers
+  DBM-Core/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
