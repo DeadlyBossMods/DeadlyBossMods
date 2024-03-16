@@ -44,7 +44,8 @@ L.LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정한 전�
 
 L.BIGWIGS_ICON_CONFLICT		= L.DBM .. "이 BigWigs와" .. L.DBM .. " 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
-L.MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse, Wago, WoWI 또는 GitHub 릴리즈 페이지에서 다운로드 받으실 수 있습니다."
+L.MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있지만 설치가 되어있질 않습니다. Curse, Wago, WoWI 또는 GitHub 릴리즈 페이지에서 다운로드 받으실 수 있습니다."
+L.MOD_MISSING					= "레이드 모듈 없음"
 
 L.COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 L.COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
@@ -180,7 +181,8 @@ L.VOICE_DISABLED				= "현재 " .. L.DBM .. " 음성팩이 한 개 이상 설치
 L.VOICE_COUNT_MISSING		= "초읽기 음성중 %d초로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
 L.WEAKAURA_KEY							= " (|cff308530WA 키:|r %s)"
 
-L.UPDATEREMINDER_HEADER			= "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전의 사용 기한이 지났습니다.\n Curse, Wago, WoWI, GitHub 릴리즈 페이지 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
+L.UPDATEREMINDER_HEADER			= "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전의 사용 기한이 지났습니다.\n%s (%s) 버전을 Curse, Wago, WoWI, GitHub 릴리즈 페이지를 통해 다운로드 할 수 있습니다"
+L.UPDATEREMINDER_HEADER_SUBMODULE		= "사용중인 %s 모듈의 사용 기한이 지났습니다.\n%s 버전을 Curse, Wago, WoWI, GitHub 릴리즈 페이지를 통해 다운로드 할 수 있습니다"
 L.UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 다운로드 링크를 클립보드로 복사합니다."
 L.UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 클립보드로 복사합니다."
 L.UPDATEREMINDER_DISABLE			= "경고: " .. L.DEADLY_BOSS_MODS .. "의 버전이 오래되어 새로운 "..L.DBM.." 버전과 호환되지 않아 강제로 비활성화되며 업데이트 전까진 사용할 수 없습니다. 이는 구버전 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
