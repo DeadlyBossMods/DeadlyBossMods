@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Classic Era?
-    url: https://github.com/DeadlyBossMods/DBM-Classic/issues/new/choose
+    url: https://github.com/DeadlyBossMods/DBM-BCVanilla/issues/new/choose
     about: Is your issue for Classic Era WoW?
   - name: Wrath Classic?
-    url: https://github.com/DeadlyBossMods/DBM-WoTLKC/issues/new/choose
+    url: https://github.com/DeadlyBossMods/DBM-WoTLK/issues/new/choose
     about: Is your issue for Wrath Classic WoW?
