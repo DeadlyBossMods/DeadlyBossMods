@@ -27,6 +27,9 @@
 ## DefaultState: enabled
 ## Author: MysticalOS, QartemisT
 ## Version: @project-version@
+## X-Curse-Project-ID: 3358
+## X-WoWI-ID: 8814
+## X-Wago-ID: qv633o6b
 ## X-Website: https://deadlybossmods.com
 
 Libs\LibStub\LibStub.lua
