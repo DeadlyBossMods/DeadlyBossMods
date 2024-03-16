@@ -1,0 +1,29 @@
+## Interface: 100205
+## Interface-Classic: 11501
+## Interface-Wrath: 30403
+## Interface-Cata: 40400
+## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Status Bar Timers|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Temporizadores de Estado|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Temporizadores de Estado|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Barre Temporizzatori|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0상태 바 타이머|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0狀態條計時器|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0状态条计时器|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Ядро|r|cffffe00a>|r |cff69ccf0Таймеры|r
+## Notes: DBM - status bar timer library
+## Notes-esES: DBM - librería de temporizadores de estado
+## Notes-esMX: DBM - librería de temporizadores de estado
+## Notes-itIT: DBM - libreria barre di stato temporizzatori
+## Notes-koKR: DBM - 상태 바 타이머 라이브러리
+## Notes-zhTW: DBM 狀態條計時器函式庫
+## Notes-zhCN: DBM 状态条计时器函数库
+## Notes-ruRU: DBM - библиотека таймеров
+## SavedVariables: DBT_AllPersistentOptions
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: MysticalOS, QartemisT
+## Version: @project-version@
+## X-Website: https://deadlybossmods.com
+
+DBT.lua

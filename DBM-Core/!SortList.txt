@@ -1,0 +1,76 @@
+Battle for Azeroth:
+Party 415
+
+Legion Sort List:
+Antorus 501
+Argus 502
+Tomb of Sargeras 503
+Trial of Valor 504
+Nighthold 505
+Emerald Nightmare 506
+Broken Isles 507
+Party 515
+Challenges: 516 (external)
+Brawlers 517 (Migrates)
+World Events 518 (Migrates)
+Darkmoon Faire 519 (Migrates)
+PVP 599 (External)
+
+Warlords of Draenor Sort List:
+Hellfire Citadel 601
+Blackrock Foundry 602
+Highmaul 603
+Draenor 604
+Garrison Invasions 605
+Party 615
+
+Mists of Pandaria Sort List:
+Siege of Org 701
+Throne of Thunder 702
+Terrace of endless spring 703
+Heart of Fear 704
+Mogushan Vaults 705
+Pandaria 706
+Scenario 707
+Party 715
+Timeless Isle 716 (External)
+
+Cataclysm Sort List:
+DragonSoul 801
+Firelands 802
+Throne of Four winds 803
+Bastion of Twilight 804
+BlackwingDescent 805
+Baradin Hold 806
+Party 815
+
+Wrath Sort List:
+ICC 901
+Coliseum 902
+Ulduar 903
+Onyxia 904
+Eye of etern 905
+Chamber 906
+Naxx 907
+Vault 908
+Party 915
+
+BC Sort List:
+Sunwell 1001
+BT 1002
+Hyjal 1003
+TK 1004
+SSC 1005
+Outland 1006
+Karazhan 1007
+Party 1015
+
+Classic Sort List:
+<Classic Naxx> 1101
+AQ40 1102
+AQ20 1103
+BWL 1104
+MC 1105
+<Classic Onyxia> 1106
+Azeroth 1107
+Party 1115

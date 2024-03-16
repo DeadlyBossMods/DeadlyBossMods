@@ -1,0 +1,86 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="DBM_GUI_DropDownTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_0_16" type="global"/>
+			<KeyValue key="backdropBorderColor" value="LIGHTGRAY_FONT_COLOR" type="global"/>
+			<KeyValue key="backdropBorderColorAlpha" value="0.6" type="number"/>
+		</KeyValues>
+		<Frames>
+			<ScrollFrame name="$parentList" hidden="true">
+				<KeyValues>
+					<KeyValue key="noScrollBar" value="true" type="boolean"/>
+				</KeyValues>
+				<Size>
+					<AbsDimension x="24" y="0"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad function="ScrollFrame_OnLoad"/>
+					<OnMouseWheel function="ScrollFrameTemplate_OnMouseWheel"/>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, self:GetParent().buttonHeight, function(frame)
+							frame:GetParent():update()
+						end);
+					</OnVerticalScroll>
+				</Scripts>
+				<Frames>
+					<Slider name="$parentScrollBar">
+						<Size x="16" y="0"/>
+						<Frames>
+							<Button name="$parentScrollUpButton" parentKey="ScrollUpButton" inherits="UIPanelScrollUpButtonTemplate">
+								<Anchors>
+									<Anchor point="BOTTOM" relativePoint="TOP"/>
+								</Anchors>
+								<Scripts>
+									<OnClick function="UIPanelScrollBarScrollUpButton_OnClick"/>
+								</Scripts>
+							</Button>
+							<Button name="$parentScrollDownButton" parentKey="ScrollDownButton" inherits="UIPanelScrollDownButtonTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM"/>
+								</Anchors>
+								<Scripts>
+									<OnClick function="UIPanelScrollBarScrollDownButton_OnClick"/>
+								</Scripts>
+							</Button>
+						</Frames>
+						<ThumbTexture name="$parentThumbTexture" parentKey="ThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
+							<Size x="18" y="24"/>
+							<TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
+						</ThumbTexture>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="0" y="-20"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="19"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnValueChanged>
+								self:GetParent():SetVerticalScroll(value);
+							</OnValueChanged>
+						</Scripts>
+					</Slider>
+					<Frame name="$parentScrollChildFrame" hidden="true"/>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+	</Frame>
+</Ui>
