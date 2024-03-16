@@ -25,6 +25,8 @@
 --
 local _, private = ...
 
+--WARNING: DBM is at EXACTLY 200 local variables. it won't run with a single more variable
+--More modulation or scoping is needed to reduce this
 local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
 local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
@@ -36,7 +38,7 @@ local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)--NYI in first build
 local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
 
-local DBMPrefix = isClassic and "D5C" or isWrath and "D5WC" or "D5"--D5 will be used for all future classic flavors as well
+local DBMPrefix = "D5"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
 private.DBMSyncProtocol = DBMSyncProtocol
@@ -85,27 +87,10 @@ local fakeBWVersion, fakeBWHash = 324, "a4b080f"--324.4
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-if isRetail then
-	DBM.DisplayVersion = "10.2.30 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
-elseif isClassic then
-	DBM.DisplayVersion = "1.15.21 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
-elseif isBCC then
-	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 3--When this is incremented, trigger force disable regardless of major patch
-elseif isCata then
-	DBM.DisplayVersion = "4.4.0 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
-elseif isWrath then
-	DBM.DisplayVersion = "3.4.64 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
-end
+DBM.DisplayVersion = "10.2.30 alpha"--Core version
+DBM.classicSubVersion = 0
+DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -464,13 +449,13 @@ local usedProfile = "Default"
 local dbmIsEnabled = true
 private.dbmIsEnabled = dbmIsEnabled
 -- Table variables
-local newerVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossNames, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossNames, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 -- False variables
 local voiceSessionDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, savedDifficulty, difficultyText, difficultyIndex, lastGroupLeader
 -- 0 variables
-local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
+local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 local SWFilterDisabled = 12
 
@@ -514,13 +499,12 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Serpentshrine",--Combined into DBM-Raids-BC
 	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
 
-	"DBM-Raids-Cata",--Combined into DBM-Raids-Cataclysm (otherwise, toc file has issues on cata classic)
-	"DBM-BaradinHold",--Combined into DBM-Raids-Cataclysm
-	"DBM-BastionTwilight",--Combined into DBM-Raids-Cataclysm
-	"DBM-BlackwingDescent",--Combined into DBM-Raids-Cataclysm
-	"DBM-DragonSoul",--Combined into DBM-Raids-Cataclysm
-	"DBM-Firelands",--Combined into DBM-Raids-Cataclysm
-	"DBM-ThroneFourWinds",--Combined into DBM-Raids-Cataclysm
+	"DBM-BaradinHold",--Combined into DBM-Raids-Cata
+	"DBM-BastionTwilight",--Combined into DBM-Raids-Cata
+	"DBM-BlackwingDescent",--Combined into DBM-Raids-Cata
+	"DBM-DragonSoul",--Combined into DBM-Raids-Cata
+	"DBM-Firelands",--Combined into DBM-Raids-Cata
+	"DBM-ThroneFourWinds",--Combined into DBM-Raids-Cata
 
 	"DBM-HeartofFear",--Combined into DBM-Raids-MoP
 	"DBM-MogushanVaults",--Combined into DBM-Raids-MoP
@@ -553,10 +537,6 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 
 	"DBM-DMF",--Combined into DBM-WorldEvents
 }
-if isRetail then
-	--Retail doesn't use this folder, classic era, bc, and wrath still do
-	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
-end
 
 --[InstanceID] = {level,zoneType}
 --zoneType: 1 = outdoor, 2 = dungeon, 3 = raid
@@ -1675,6 +1655,12 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
+			--Establish a classic sub mod version for version checks and out of date notification/checking
+			local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
+			if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
+				local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
+				DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
+			end
 			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isCata and "-Cata" or isWrath and "-Wrath" or ""))) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
@@ -2197,7 +2183,11 @@ do
 			end
 			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
-					self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), v.VPVersion or ""), false)--Only display VP version if not running two mods
+					if v.classicSubVers then
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), v.VPVersion or ""), false)--Only display VP version if not running two mods
+					else
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), v.VPVersion or ""), false)--Only display VP version if not running two mods
+					end
 				end
 				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
@@ -2401,6 +2391,7 @@ do
 				raid[playerName].revision = DBM.Revision
 				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
+				raid[playerName].classicSubVers = DBM.classicSubVersion
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
 				raidGuids[UnitGUID("player") or ""] = playerName
@@ -2412,6 +2403,7 @@ do
 		if IsInRaid() then
 			if not inRaid then
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
+				twipe(newersubVersionPerson)
 				twipe(forceDisablePerson)
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
@@ -2461,6 +2453,7 @@ do
 					raidGuids[v.guid] = nil
 					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
+					removeEntry(newersubVersionPerson, i)
 					removeEntry(forceDisablePerson, i)
 					fireEvent("DBM_raidLeave", i)
 				else
@@ -2499,6 +2492,7 @@ do
 			if not inRaid then
 				-- joined a new party
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
+				twipe(newersubVersionPerson)
 				twipe(forceDisablePerson)
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
@@ -2547,6 +2541,7 @@ do
 					raidGuids[v.guid] = nil
 					raid[k] = nil
 					removeEntry(newerVersionPerson, k)
+					removeEntry(newersubVersionPerson, k)
 					removeEntry(forceDisablePerson, k)
 					fireEvent("DBM_partyLeave", k)
 				else
@@ -2579,6 +2574,7 @@ do
 			fireEvent("DBM_raidLeave", playerName)
 			twipe(raid)
 			twipe(newerVersionPerson)
+			twipe(newersubVersionPerson)
 			twipe(forceDisablePerson)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
@@ -2592,6 +2588,7 @@ do
 			raid[playerName].revision = DBM.Revision
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
+			raid[playerName].classicSubVers = DBM.classicSubVersion
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
@@ -3709,7 +3706,7 @@ end
 --------------------------------
 do
 	local pvpShown = false
-	local seasonalShown = false
+	local dungeonShown = false
 	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true}
 	local bcZones = {[564] = true, [534] = true, [532] = true, [565] = true, [544] = true, [548] = true, [580] = true, [550] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
@@ -3727,36 +3724,30 @@ do
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
 	function DBM:CheckAvailableMods()
 		if _G["BigWigs"] then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
-		if isRetail then
-			if not self:IsTrivial() then
-				if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist("DBM-Party-Dragonflight") and not seasonalShown then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
-					seasonalShown = true
-				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
-				elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-				elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cataclysm") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
-				elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-				elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
-				elseif legionZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Legion") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
-				elseif bfaZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BfA") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
-				elseif shadowlandsZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Shadowlands") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
-				end
-			elseif challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
-			end
-		else--Classic
-			local checkedDungeon = isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
-			if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not C_AddOns.DoesAddOnExist(checkedDungeon) then
+		if not self:IsTrivial() then
+			local checkedDungeon = isRetail and "DBM-Party-Dragonflight" or isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
+			if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
+				dungeonShown = true
+			elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+			elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
+			elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
+			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
+			elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
+			elseif legionZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Legion") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
+			elseif bfaZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BfA") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
+			elseif shadowlandsZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Shadowlands") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
 			end
+		elseif challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
+			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
 		end
 		if pvpZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-PvP") and not pvpShown then
 			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"))
@@ -4414,8 +4405,14 @@ do
 
 	local function SendVersion(guild)
 		if guild then
-			local message = ("%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable))
-			sendGuildSync(2, "GV", message)
+			local message
+			if DBM.classicSubVersion then
+				message = ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable), tostring(DBM.classicSubVersion))
+				sendGuildSync(3, "GV", message)
+			else
+				message = ("%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable))
+				sendGuildSync(2, "GV", message)
+			end
 			return
 		end
 		if DBM.Options.FakeBWVersion and not dbmIsEnabled then
@@ -4428,15 +4425,12 @@ do
 		if not voiceSessionDisabled and VoicePack ~= "None" and DBM.VoiceVersions[VoicePack] then
 			VPVersion = "/ VP" .. VoicePack .. ": v" .. DBM.VoiceVersions[VoicePack]
 		end
-		if VPVersion then
-			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), VPVersion))
-		else
-			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable)))
-		end
+		sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), VPVersion))
 	end
 
-	local function HandleVersion(revision, version, displayVersion, forceDisable, sender)
+	local function HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		if version > DBM.Revision then -- Update reminder
+			--Core Version Handling
 			if #newerVersionPerson < 4 then
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
@@ -4502,6 +4496,24 @@ do
 					end
 				end
 			end
+			if #newersubVersionPerson < 4 then
+				if not checkEntry(newersubVersionPerson, sender) then
+					newersubVersionPerson[#newersubVersionPerson + 1] = sender
+--					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
+				end
+				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
+					--TODO, expand this to also show newer classic module revision on GUI?
+					--if DBM.HighestRelease < version then
+					--	DBM.HighestRelease = version--Increase HighestRelease
+					--	DBM.NewerVersion = displayVersion--Apply NewerVersion
+					--end
+					updateSubNotificationDisplayed = 2
+--					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
+					local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
+					AddMsg(DBM, L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
+					showConstantReminder = 1
+				end
+			end
 		end
 	end
 
@@ -4536,9 +4548,20 @@ do
 		end
 	end
 
-	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, VPVersion)
-		revision, version = tonumber(revision), tonumber(version)
-		if protocol >= 2 then
+	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, VPVersion)
+		revision, version, classicSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers)
+		if protocol >= 3 then
+			--Nil it out on retail, replace with string on classic versions
+			if classicSubVers and classicSubVers == 0 then
+				if isRetail then
+					classicSubVers = nil
+				else
+					classicSubVers = L.MOD_MISSING
+				end
+			end
+		elseif protocol >= 2 then
+			--Protocol 2 did not send classicSubVers
+			VPVersion = classicSubVers
 			forceDisable = tonumber(forceDisable) or 0
 		else
 			-- Protocol 1 did not send forceDisable, VPVersion was in that position
@@ -4550,19 +4573,28 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].VPVersion = VPVersion
+			raid[sender].classicSubVers = classicSubVers
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-			HandleVersion(revision, version, displayVersion, forceDisable, sender)
+			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end
 		DBM:GROUP_ROSTER_UPDATE()
 	end
 
-	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable)
-		revision, version, forceDisable = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0
+	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable, classicSubVers)
+		revision, version, forceDisable, classicSubVers = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0, tonumber(classicSubVers)
+		--Nil it out on retail, replace with string on classic versions
+		if classicSubVers and classicSubVers == 0 then
+			if isRetail then
+				classicSubVers = nil
+			else
+				classicSubVers = L.MOD_MISSING
+			end
+		end
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
-			HandleVersion(revision, version, displayVersion, forceDisable, sender)
+			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end
 	end
 
@@ -4858,6 +4890,10 @@ do
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
+		elseif (prefix == "D5WC" or prefix == "D5C") and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "GUILD") then
+			--Accept Legacy syncs for about 3 months. 03-16-24
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
+			handleSync(channel, correctSender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
@@ -6795,6 +6831,12 @@ do
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
+				--Nothing
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
+				--Nothing
+			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
 					self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
@@ -7627,6 +7669,11 @@ function DBM:IsCata()
 	return isCata
 end
 bossModPrototype.IsCata = DBM.IsCata
+
+function DBM:IsPostCata()
+	return isCata or isRetail
+end
+bossModPrototype.IsPostCata = DBM.IsPostCata
 
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()

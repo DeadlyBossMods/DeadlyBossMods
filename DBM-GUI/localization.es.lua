@@ -72,7 +72,7 @@ L.UseSoundChannel			= "Canal de audio para alertas"
 L.UseMasterChannel			= "Canal de audio principal"
 L.UseDialogChannel			= "Canal de audio de diálogo"
 L.UseSFXChannel				= "Canal de audio de efectos de sonido"
-L.Latency_Text				= "Latencia máxima para sincronización: %d"
+L.Latency_Text				= "Latencia máx. para sincronización: %d"
 
 L.Button_RangeFrame			= "Mostrar/ocultar\nmarco de distancia"
 L.Button_InfoFrame			= "Mostrar/ocultar\nmarco de información"
@@ -93,12 +93,12 @@ L.Editbox_WindowWidth		= "Horizontal"
 L.Editbox_WindowHeight		= "Vertical"
 
 L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU para cualquier módulo que ya esté cargado)"
-L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupen por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
+L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
 L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe."
 L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
-L.NoDescription						= "Esta habilidad no tiene descripción."
-L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una habilidad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
+L.NoDescription						= "Esta facultad no tiene descripción."
+L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una facultad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
 
 --
 
@@ -126,7 +126,7 @@ L.LogCurrentHeroic					= "Mazmorras heroicas de nivel actual (Nota: si estás ha
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"
 
-L.Area_SoundAlerts			= "Opciones de alertas de sonido e iluminación del icono del juego"
+L.Area_SoundAlerts			= "Opciones de alertas de sonido y destello del icono del juego"
 L.LFDEnhance				= "Reproducir sonido de comprobación de banda y destellar icono del juego para avisos del buscador de mazmorra/banda/grupo y campos de batalla por el canal de audio general o de diálogo (en otras palabras, reproduce el sonido aunque el canal de efectos de sonido esté desactivado, y en general suena más alto)"
 L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar icono del juego cuando haya un jefe de mundo cerca"
 L.RLReadyCheckSound			= "Reproducir sonido por el canal de audio general o de diálogo y destellar el icono del juego cuando se haga una comprobación de banda"
@@ -398,10 +398,10 @@ L.NoBarFade					= "Utilizar color inicial y color final para barras pequeñas y 
 L.BarInlineIcons			= "Iconos en barras"
 L.DisableRightClickBar		= "Desactivar clic derecho para cancelar temporizadores"
 L.ShortTimerText			= "Texto de temporizador breve"
-L.KeepBar					= "Mantener hasta que se lance la habilidad"
+L.KeepBar					= "Mantener hasta que se lance la facultad"
 L.KeepBar2					= "(siempre que el módulo lo permita)"
-L.FadeBar					= "Desteñir barras de habilidades lejanas"
-L.BarSkin					= "Skin de barra"
+L.FadeBar					= "Desteñir barras de facultades lejanas"
+L.BarSkin					= "Estilo de barra"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "Inicio y descanso"
@@ -432,8 +432,8 @@ L.SpamBlockNoCountdowns				= "Desactivar sonidos de cuenta atrás"
 
 L.Area_SpamFilter_Nameplates	= "Opciones de filtro y desactivación global de placa de nombre"
 L.SpamBlockNoNameplate			= "Ocultar auras de placas de nombres (las desactiva por completo)"
-L.SpamBlockNoNameplateCD		= "Ocultar iconos de placas de nombre para tiempos de reutilización de habilidades"
-L.SpamBlockNoBossGUIDs			= "Ocultar iconos de placas de nombre para tiempos de reutilización de habilidades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activado.)"
+L.SpamBlockNoNameplateCD		= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades"
+L.SpamBlockNoBossGUIDs			= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activado.)"
 
 
 L.Area_SpamFilter_Misc		= "Opciones de filtros globales varios"

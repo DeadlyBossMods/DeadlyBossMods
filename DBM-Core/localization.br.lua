@@ -44,7 +44,8 @@ L.LOOT_SPEC_REMINDER				= "A sua especialização atual é %s. A sua escolha atu
 
 L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " detectou que você tem ícones habilitados tanto no BigWigs quanto no "..L.DBM..". Por favor desabilite um dos dois para evitar conflitos com o líder da raide"
 
-L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Esta disponível em |Hgarrmission:DBM:forums|h|cff3588ffdeadlybossmods.com|r. Está mensagem só será exibida uma vez."
+L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Você pode baixá-lo no Curse, Wago, WoWI ou Github."
+L.MOD_MISSING						= "Sem módulo de raide"
 
 L.COMBAT_STARTED					= "%s na mira. Boa sorte e divirta-se! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "Entrando em uma luta em progresso contra %s. Boa sorte e divirta-se! :)"
@@ -184,12 +185,13 @@ L.VOICE_COUNT_MISSING				= "Voz de contagem regressiva %d esta selecionada para 
 L.BIG_WIGS							= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY						= " (|cff308530Chave WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Sua versão do "..L.DEADLY_BOSS_MODS.." está desatualizada.\n A versão %s (%s) está disponível para baixar no site da curse, WoWI ou aqui:"
+L.UPDATEREMINDER_HEADER				= "Sua versão de "..L.DEADLY_BOSS_MODS.." está desatualizada.\n A versão %s (%s) está disponível para baixar no site de Curse, Wago, WoWI ou Github."
+L.UPDATEREMINDER_HEADER_SUBMODULE	= "Sua módulo de %s está desatualizado.\n A versão %s está disponível para baixar no site de Curse, Wago, WoWI ou Github."
 L.UPDATEREMINDER_FOOTER				= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_DISABLE			= "AVISO: O seu "..L.DBM.." foi desativado por estar drasticamente desatualizado (pelo menos %d revisões), atualize para utilizar novamente. Isso garante que versões antigas ou códigos incompatíveis não arruínem à experiência de jogo para você ou para os membros da raide."
 L.UPDATEREMINDER_DISABLETEST		= "AVISO: Devido ao seu " .. L.DEADLY_BOSS_MODS.. " estar desatualizado e este ser um reino de teste/beta, ele foi desativado à força e não pode ser usado até ser atualizado. Isso é para garantir que mods desatualizados não estejam sendo usados para gerar feedback de teste."
-L.UPDATEREMINDER_HOTFIX				= "A sua versão do "..L.DBM.." contem cronômetroes ou avisos incorretos para este chefe. Isso foi corrigido em uma versão mais recente ( ou alpha caso não exista versão estável mais recente disponível)"
+L.UPDATEREMINDER_HOTFIX				= "Sua versão de "..L.DBM.." contem cronômetros ou avisos incorretos para este chefe. Isso foi corrigido em uma versão mais recente (ou alpha caso não exista versão estável mais recente disponível)"
 L.UPDATEREMINDER_HOTFIX_ALPHA		= L.UPDATEREMINDER_HOTFIX--TEMP, FIX ME!
 L.UPDATEREMINDER_MAJORPATCH			= "AVISO: O seu "..L.DBM.." foi desativado por estar drasticamente desatualizado (pelo menos %d revisões), atualize para utilizar novamente. Isso garante que versões antigas ou códigos incompatíveis não arruínem à experiência de jogo para você ou para os membros da raide. Certifique-se de baixar a versão mais recente em deadlybossmods.com ou curse o mais breve possível."
 L.VEM								= "AVISO: Você esta usando "..L.DBM.." e Voice Encounter Mods. "..L.DBM.." não funcionara corretamente nesta configuração e portanto não será carregada."
@@ -202,7 +204,7 @@ L.DBMLDB 							= "AVISO: O DBM-LDB agora está incorporado ao DBM-Core. Embora 
 L.DBMLOOTREMINDER 					= "AVISO: O mod de terceiros DBM-LootReminder está instalado. Este addon não é mais compatível com o cliente do WoW Retail e causará problemas no " .. L.DBM .. ", impedindo-o de enviar timers de pull. Recomenda-se desinstalar este addon."
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de "..L.DBM.." não funcionara corretamente até que você recomece o jogo por completo. Esta atualização contem novos arquivos ou mudanças no .toc que não podem ser carregadas via ReloadUI. Você pode encontrar funcionalidades quebradas ou erros caso continue sem recomeçar o jogo por completo."
 L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM.. " está desatualizada e este mod de luta específico possui recursos mais recentes ou correções de bugs. É recomendado que você atualize para esta luta para melhorar sua experiência."
-L.PLATER_NP_AURAS_MSG 				= L.DBM .. " inclui um recurso avançado para mostrar os cronômetroes de recarga do inimigo usando ícones nas placas de identificação. Isso está ativado por padrão para a maioria dos usuários, mas para os usuários do Plater está desativado por padrão nas opções do Plater, a menos que você o habilite. Para aproveitar ao máximo o DBM (e o Plater), é recomendável que você habilite este recurso no Plater na seção 'Buff Special'. Se você não deseja ver esta mensagem novamente, também pode simplesmente desativar completamente a opção 'Ícones de recarga nas placas de identificação' nas opções de desativação global ou de placas de identificação do DBM."
+L.PLATER_NP_AURAS_MSG 				= L.DBM .. " inclui um recurso avançado para mostrar os cronômetros de recarga do inimigo usando ícones nas placas de identificação. Isso está ativado por padrão para a maioria dos usuários, mas para os usuários do Plater está desativado por padrão nas opções do Plater, a menos que você o habilite. Para aproveitar ao máximo o DBM (e o Plater), é recomendável que você habilite este recurso no Plater na seção 'Buff Special'. Se você não deseja ver esta mensagem novamente, também pode simplesmente desativar completamente a opção 'Ícones de recarga nas placas de identificação' nas opções de desativação global ou de placas de identificação do DBM."
 
 L.MOVABLE_BAR						= "Arraste-me!"
 

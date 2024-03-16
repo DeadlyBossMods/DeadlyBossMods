@@ -44,7 +44,8 @@ L.LOOT_SPEC_REMINDER			= "你目前的專精為:%s。而你目前的拾取選擇
 
 L.BIGWIGS_ICON_CONFLICT			= L.DBM.."偵測到你同時開啟BigWigs和"..L.DBM.."的團隊圖示。請關閉其中之一的團隊圖示功能以免產生衝突。"
 
-L.MOD_AVAILABLE					= "%s在此區域有模組可用。你可以在Curse、Wago、WoWI或從GitHub正式版頁面下載。"
+L.MOD_AVAILABLE					= "%s在此區域有模組可用但未安裝。你可以在Curse、Wago、WoWI或從GitHub正式版頁面下載。"
+L.MOD_MISSING					= "無團隊模組"
 
 L.COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 L.COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"
@@ -185,6 +186,7 @@ L.BIG_WIGS						= "BigWigs"
 L.WEAKAURA_KEY					= " (|cff308530WA鍵:|r %s)"
 
 L.UPDATEREMINDER_HEADER				= "你的Deadly Boss Mod已經過期。\n你可以在Curse網站或是WOWI網站以及GitHub專案網頁下載到新版本%s (%s)"
+L.UPDATEREMINDER_HEADER_SUBMODULE	= "你的 %s 模組已經過期。\n 你可以在Curse網站或是WOWI網站以及GitHub專案網頁下載到新版本 %s"
 L.UPDATEREMINDER_FOOTER				= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製下載網址到剪貼簿。"
 L.UPDATEREMINDER_FOOTER_GENERIC		= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
 L.UPDATEREMINDER_DISABLE			= "警告: 你的"..L.DBM.."版本已大幅度的過期並且無法與新版本相容，"..L.DBM.."已被強制關閉並且無法使用直到更新為止。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
