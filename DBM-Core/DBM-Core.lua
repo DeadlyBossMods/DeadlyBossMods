@@ -11442,6 +11442,7 @@ do
 		local bar = DBT:GetBar(id)
 		if bar then
 			icon = parseSpellIcon(icon)
+			fireEvent("DBM_TimerUpdateIcon", id, icon)
 			return bar:SetIcon(icon)
 		end
 	end
