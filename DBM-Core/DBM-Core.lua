@@ -11300,8 +11300,8 @@ do
 		if not bar then
 			bar = self:Start(totalTime, ...)
 		end
-		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 		if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
+			fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 			local newRemaining = totalTime - elapsed
 			if not bar.keep and newRemaining > 0 then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
@@ -11322,8 +11322,8 @@ do
 					end
 				end
 			end
+			return DBT:UpdateBar(id, elapsed, totalTime)
 		end
-		return DBT:UpdateBar(id, elapsed, totalTime)
 	end
 
 	function timerPrototype:AddTime(extendAmount, ...)
