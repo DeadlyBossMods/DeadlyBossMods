@@ -214,6 +214,8 @@ globals = {
 	"C_GossipInfo.GetOptions",
 	"C_GossipInfo.SelectOption",
 	"C_GossipInfo.SelectOptionByIndex",
+	"C_Item.GetItemInfo",
+	"C_Item.IsItemInRange",
 	"C_LFGInfo.GetDungeonInfo",
 	"C_Map.GetBestMapForUnit",
 	"C_Map.GetMapInfo",
