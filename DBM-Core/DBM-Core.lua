@@ -4070,6 +4070,7 @@ end
 --NOTE. Don't ever try to move this out of core. My testing showed it required storing nearly every local variable in core in private, gravely poluting and inflating it beyond any kind of rational
 
 do
+	local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
 	local function checkForActualPull()
 		if (DBM.Options.RecordOnlyBosses and #inCombat == 0) or (not isRetail and difficultyIndex ~= 8) then
 			DBM:StopLogging()
@@ -7859,6 +7860,7 @@ end
 do
 	local rangeCache = {}
 	local rangeUpdated = {}
+	local IsItemInRange = C_Item and C_Item.IsItemInRange or IsItemInRange
 
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
