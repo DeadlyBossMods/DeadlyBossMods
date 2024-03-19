@@ -286,7 +286,7 @@ L.ERROR_NO_PERMISSION		= "No tienes permiso para hacer eso."
 L.TIME_TOO_SHORT			= "El temporizador de llamada debe durar más de 3 segundos."
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
-L.BREAK_START				= "El descanso comienza ahora. ¡Tienes %s! (Enviado por %s)"
+L.BREAK_START				= "El descanso inicia ahora. ¡Tienes %s! (Enviado por %s)"
 L.BREAK_MIN					= "¡El descanso termina en %s minuto(s)!"
 L.BREAK_SEC					= "¡El descanso termina en %s segundo(s)!"
 L.TIMER_BREAK				= "¡Toca descanso!"
@@ -479,7 +479,7 @@ L.AUTO_TIMER_TEXTS.intermissioncount	= "Intermedio %%s"
 L.AUTO_TIMER_TEXTS.adds			= "Esbirros"
 L.AUTO_TIMER_TEXTS.addscustom	= "Esbirros (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay		= "Diálogo"
-L.AUTO_TIMER_TEXTS.combat		= "Comienza el encuentro"
+L.AUTO_TIMER_TEXTS.combat		= "Inicia el encuentro"
 --This basically clones np only bar option and display text from regular counterparts
 L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
 L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
