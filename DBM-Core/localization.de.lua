@@ -9,10 +9,9 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	--L.DBM								= "BW"
 end
 
-L.HOW_TO_USE_MOD					= "Willkommen bei "..L.DBM..". Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. "..L.DBM.." setzt Standardeinstellungen für deine Spezialisierung, die du aber noch genauer anpassen kannst."
-L.SILENT_REMINDER					= "Erinnerung: "..L.DBM.." befindet sich noch im Lautlos-Modus."
---L.NEWS_UPDATE							= "|h|c11ff1111News|r|h: This update is basically a re-release of 9.1.9 to clear a false malware detection on the hash of the previous file release. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"
-
+L.HOW_TO_USE_MOD			= "Willkommen bei "..L.DBM..". Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. "..L.DBM.." setzt Standardeinstellungen für deine Spezialisierung, die du aber noch genauer anpassen kannst."
+L.SILENT_REMINDER			= "Erinnerung: "..L.DBM.." befindet sich noch im Lautlos-Modus."
+L.NEWS_UPDATE				= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
 L.COPY_URL_DIALOG_NEWS		= "Die aktuellsten Meldungen findest du immer unter dem unten stehenden Link"
 
 L.LOAD_MOD_ERROR			= "Fehler beim Laden der Boss Mods für %s: %s"

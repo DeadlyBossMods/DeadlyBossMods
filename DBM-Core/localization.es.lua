@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD			= "Bienvenido a "..L.DBM..". Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 L.SILENT_REMINDER			= "Recordatorio: "..L.DBM.." sigue en modo silencioso."
-L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: Esta actualización es básicamente una nueva versión de 9.1.9 para eliminar una detección falsa de malware en el hash de la versión anterior del archivo. Leer más sobre esto |Hgarrmission:DBM:news|h|cff3588ff[aquí]|r|h"
+L.NEWS_UPDATE				= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
 
 L.COPY_URL_DIALOG_NEWS		= "Para leer las últimas noticias, visita el enlace a continuación"
 
