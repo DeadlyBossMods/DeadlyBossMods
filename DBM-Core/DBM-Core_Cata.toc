@@ -1,12 +1,5 @@
-## Interface: 100206
-## Interface-Classic: 11501
-## Interface-Wrath: 30403
-## Interface-Cata: 40400
-## X-Min-Interface: 100205
-## X-Min-Interface-Classic: 11501
-## X-Min-Interface-BCC: 20504
-## X-Min-Interface-Wrath: 30403
-## X-Min-Interface-Cata: 40400
+## Interface: 40400
+## X-Min-Interface: 40400
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r

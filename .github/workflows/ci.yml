@@ -41,8 +41,6 @@ jobs:
       - test
     strategy:
       fail-fast: false
-      matrix:
-        branch: ['Classic', 'Wrath', 'Cata', 'Retail']
 
     steps:
       - uses: actions/checkout@v4
@@ -51,8 +49,6 @@ jobs:
 
       - name: Create Package
         uses: BigWigsMods/packager@master
-        with:
-          args: -g ${{ matrix.branch }} -m .pkgmeta-${{ matrix.branch }} -n "DBM-Core-{project-abbreviated-hash}{classic}"
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
