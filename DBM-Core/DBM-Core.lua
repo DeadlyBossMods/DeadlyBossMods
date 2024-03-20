@@ -1661,7 +1661,7 @@ do
 				local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
 				DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 			end
-			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isCata and "-Cata" or isWrath and "-Wrath" or ""))) or 0
+			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface")) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -3707,6 +3707,7 @@ end
 do
 	local pvpShown = false
 	local dungeonShown = false
+	local sodRaids = {[48] = true, [90] = true}
 	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true}
 	local bcZones = {[564] = true, [534] = true, [532] = true, [565] = true, [544] = true, [548] = true, [580] = true, [550] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
@@ -3729,7 +3730,9 @@ do
 			if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
 				dungeonShown = true
-			elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
+			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 			elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
@@ -3746,7 +3749,8 @@ do
 			elseif shadowlandsZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Shadowlands") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
 			end
-		elseif challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
+		end
+		if challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
 			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
 		end
 		if pvpZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-PvP") and not pvpShown then

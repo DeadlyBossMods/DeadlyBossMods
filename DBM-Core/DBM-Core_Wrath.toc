@@ -1,0 +1,89 @@
+## Interface: 30403
+## X-Min-Interface: 30403
+
+## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Ядро|r|cffffe00a>|r |cff69ccf0Основной модуль|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Base|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0핵심 모듈|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Núcleo|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Núcleo|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Noyau|r
+## Notes: Deadly Boss Mods
+## Dependencies: DBM-StatusBarTimers
+## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims, LibDBIcon-1.0, LibDeflate, LibSerialize, LibSpecialization
+## SavedVariables: DBM_AllSavedOptions, DBM_MinimapIcon
+## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: MysticalOS, QartemisT
+## Version: @project-version@
+## X-Curse-Project-ID: 3358
+## X-WoWI-ID: 8814
+## X-Wago-ID: qv633o6b
+## X-Website: https://deadlybossmods.com
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibChatAnims\LibChatAnims.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibLatency\LibLatency.xml
+Libs\LibDurability\LibDurability.xml
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\lib.xml
+Libs\LibDeflate\LibDeflate.lua
+Libs\LibSerialize\lib.xml
+Libs\LibSpecialization\LibSpecialization.xml
+Libs\LibDropDownMenu\LibDropDownMenu.xml
+
+localization.en.lua
+localization.br.lua
+localization.cn.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.it.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+
+commonlocal.en.lua
+commonlocal.tw.lua
+commonlocal.br.lua
+commonlocal.cn.lua
+commonlocal.de.lua
+commonlocal.es.lua
+commonlocal.fr.lua
+commonlocal.it.lua
+commonlocal.kr.lua
+commonlocal.ru.lua
+
+# Pre-core modules
+modules\Modules.lua
+
+modules\SpecRole.lua
+modules\Scheduler.lua
+modules\DevTools.lua
+modules\Icons.lua
+modules\TargetScanning.lua
+
+# Core
+DBM-Core.lua
+DBM-Arrow.lua
+DBM-Flash.lua
+DBM-RangeCheck.lua
+DBM-InfoFrame.lua
+DBM-HudMap.lua
+DBM-Nameplate.lua
+
+# Modules
+modules\Commands.lua
+modules\Hyperlinks.lua
+modules\MinimapButton.lua
+modules\Notes.lua
+modules\Sounds.lua
+modules\UpdateReminder.lua
+
+modules\objects\Localization.lua
