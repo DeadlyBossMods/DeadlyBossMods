@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD					= "Добро пожаловать в " .. L.DBM .. ". Наберите /dbm help, чтобы получить список поддерживаемых команд. Для доступа к настройкам наберите /dbm в чате. Загрузите конкретные зоны вручную, чтобы настроить определённых боссов на свой вкус. " .. L.DBM .. " установит настройки по умолчанию для Вашей специализации, но Вы, возможно, захотите настроить их более тонко."
 L.SILENT_REMINDER					= "Напоминание: " .. L.DBM .. " всё ещё в тихом режиме."
-L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
+L.NEWS_UPDATE						= "|h|c11ff1111Новости|r|h: Это обновление меняет структуру модов, поэтому Классические и Основные версии теперь используют унифицированные (одинаковые) модули. Это означает, что модули Vanilla, TBC, Wrath и Cata теперь устанавливаются отдельно, используя те же пакеты, что и Актуальные. Подробнее об этом |Hgarrmission:DBM:news|h|cff3588ff[здесь]|r|h"
 
 L.COPY_URL_DIALOG_NEWS				= "Чтобы прочитать последние новости, перейдите по ссылке ниже"
 
