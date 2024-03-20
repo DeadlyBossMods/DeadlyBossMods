@@ -76,7 +76,7 @@ local function LinkHook(self, link)
 	elseif arg1 == "update" then
 		DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
 	elseif arg1 == "news" then
-		DBM:ShowUpdateReminder(nil, nil, L.COPY_URL_DIALOG_NEWS, "https://patreon.com/posts/dbm-9-1-9-false-55047651")
+		DBM:ShowUpdateReminder(nil, nil, L.COPY_URL_DIALOG_NEWS, "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BNews%5D-DBM-Module-Restructuring-and-unification")
 	elseif arg1 == "noteshare" then
 		local mod = DBM:GetModByName(arg2 or "")
 		if mod then
