@@ -87,9 +87,9 @@ local fakeBWVersion, fakeBWHash = 324, "a4b080f"--324.4
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.31 alpha"--Core version
+DBM.DisplayVersion = "10.2.32 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 3, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -384,7 +384,7 @@ DBM.DefaultOptions = {
 	LatencyThreshold = 250,
 	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
-	NewsMessageShown2 = 1,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
+	NewsMessageShown2 = 2,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
@@ -6834,7 +6834,9 @@ do
 		if self.Options.ShowReminders then
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
---			C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 2 then self.Options.NewsMessageShown2 = 2 self:AddMsg(L.NEWS_UPDATE) end end)
+			if not isRetail then
+				C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
+			end
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4

@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD			= "Bienvenido a "..L.DBM..". Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 L.SILENT_REMINDER			= "Recordatorio: "..L.DBM.." sigue en modo silencioso."
-L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: Esta actualización es básicamente una nueva versión de 9.1.9 para eliminar una detección falsa de malware en el hash de la versión anterior del archivo. Leer más sobre esto |Hgarrmission:DBM:news|h|cff3588ff[aquí]|r|h"
+L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: Esta actualización cambia la estructura del módulo para que ahora el clásico y el juego principal utilizan módulos unificados (iguales). Esto significa que los módulos de Vanilla, TBC, Wrath y Cata ahora se instalan por separado utilizando los mismos paquetes que el juego original. Lee más al respecto |Hgarrmission:DBM:noticias|h|cff3588ff[aquí]|r|h"--UPDATE ME
 
 L.COPY_URL_DIALOG_NEWS		= "Para leer las últimas noticias, visita el enlace a continuación"
 
@@ -385,8 +385,8 @@ L.AUTO_SPEC_WARN_TEXTS.moveto		= "%s - ¡Ve a >%%s<!"
 L.AUTO_SPEC_WARN_TEXTS.soak			= "%s - ¡Absorbe!"
 L.AUTO_SPEC_WARN_TEXTS.soakcount	= "%s - ¡Absorbe! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.jump			= "%s - ¡Salta!"
-L.AUTO_SPEC_WARN_TEXTS.run			= "%s - ¡Huye!"
-L.AUTO_SPEC_WARN_TEXTS.runcount		= "%s - ¡Huye! (%%s)"
+L.AUTO_SPEC_WARN_TEXTS.run			= "%s - ¡Corre!"
+L.AUTO_SPEC_WARN_TEXTS.runcount		= "%s - ¡Corre! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.cast			= "%s - ¡Deja de lanzar!"
 L.AUTO_SPEC_WARN_TEXTS.lookaway		= "%s en %%s - ¡Aparta!"
 L.AUTO_SPEC_WARN_TEXTS.reflect		= "%s en >%%s< - ¡No ataques!"
@@ -433,8 +433,8 @@ L.AUTO_SPEC_WARN_OPTIONS.moveto			= "Mostrar aviso especial para juntarse con al
 L.AUTO_SPEC_WARN_OPTIONS.soak			= "Mostrar aviso especial para absorber $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.soakcount		= "Mostrar aviso especial (con contador) para interceptar $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.jump			= "Mostrar aviso especial para saltar para $spell:%s"
-L.AUTO_SPEC_WARN_OPTIONS.run 			= "Mostrar aviso especial para huir de $spell:%s"
-L.AUTO_SPEC_WARN_OPTIONS.runcount		= "Mostrar aviso especial (con contador) para huir de $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.run 			= "Mostrar aviso especial para correr de $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.runcount		= "Mostrar aviso especial (con contador) para correr de $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.cast 			= "Mostrar aviso especial para dejar de lanzar durante $spell:%s"--Spell Interrupt
 L.AUTO_SPEC_WARN_OPTIONS.lookaway		= "Mostrar aviso especial para apartar de $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.reflect 		= "Mostrar aviso especial para dejar de atacar durante $spell:%s"--Spell Reflect
