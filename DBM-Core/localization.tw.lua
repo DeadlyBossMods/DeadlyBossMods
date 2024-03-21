@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD				= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。"..L.DBM.."會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
 L.SILENT_REMINDER				= "提醒："..L.DBM.."正處於無聲模式。"
-L.NEWS_UPDATE							= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
+L.NEWS_UPDATE					= "|h|c11ff1111更新說明|r|h: 此更新更改了模組結構，因此經典版和正式版現在使用統一的（相同）模組。這意味著經典版、燃燒的遠征、巫妖王之怒以及浩劫與重生現在分別安裝並使用與正式版相同的插件包。 讀取更多訊息在|Hgarrmission:DBM:news|h|cff3588ff[此處]|r|h"--UPDATE ME
 
 L.COPY_URL_DIALOG_NEWS			= "要閱讀最新說明，請拜訪以下連結"
 
