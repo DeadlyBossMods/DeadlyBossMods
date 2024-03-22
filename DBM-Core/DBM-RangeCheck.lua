@@ -71,7 +71,7 @@ local itsBCAgain--Needs to be called outside of below scope, itsDFBaby does not
 do
 	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected
 
-	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
+	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, C_Item and C_Item.IsItemInRange or IsItemInRange, UnitInRange
 	-- All ranges are tested and compared against UnitDistanceSquared.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
