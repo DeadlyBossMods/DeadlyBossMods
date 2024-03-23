@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231212
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20240323
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -18,7 +18,7 @@ CL.INTERMISSION						= "转场"
 CL.NO_DEBUFF						= "没有 %s"
 CL.ALLY								= "队友"
 CL.ALLIES							= "人群"
-CL.TANK								= "坦克"--Such as "Move to Tank"
+CL.TANK								= "坦克"
 CL.CLEAR							= "清空"
 CL.SAFE								= "安全"
 CL.NOTSAFE							= "不安全"
@@ -54,8 +54,8 @@ CL.FAR_AWAY							= "远离"
 CL.PIT								= "洞"
 CL.TOTEM							= "图腾"
 CL.TOTEMS							= "图腾"
---CL.HORIZONTAL						= "Horizontal"
---CL.VERTICAL							= "Vertical"
+CL.HORIZONTAL						= "水平"
+CL.VERTICAL							= "垂直"
 -- 机制
 CL.BOMB								= "炸弹"
 CL.BOMBS							= "炸弹"
@@ -77,10 +77,10 @@ CL.BOSSAPART						= "拉开Boss"
 CL.MINDCONTROL						= "心控"
 CL.TANKCOMBO						= "坦克连击"
 CL.AOEDAMAGE						= "AOE 伤害"
-CL.GROUPSOAK						= "群体吸收"
-CL.GROUPSOAKS						= "群体吸收"
---CL.HEALABSORB						= "Heal Absorb"
---CL.HEALABSORBS					= "Heal Absorbs"
+CL.GROUPSOAK						= "吸收"
+CL.GROUPSOAKS						= "吸收"
+CL.HEALABSORB						= "治疗吸收"
+CL.HEALABSORBS						= "治疗吸收"
 CL.DODGES							= "躲闪"
 CL.POOL								= "池子"
 CL.POOLS							= "池子"
@@ -96,6 +96,6 @@ CL.TRAPS							= "陷阱"
 CL.ROOTS							= "树根"
 CL.MARK								= "标记"
 CL.MARKS							= "标记"
---CL.CURSE							= "Curse"
---CL.CURSES							= "Curses"
---CL.SWIRLS							= "Swirls"--Plural of Swirl
+CL.CURSE							= "诅咒"
+CL.CURSES							= "诅咒"
+CL.SWIRLS							= "漩涡"
