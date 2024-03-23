@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231008
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20240232
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -157,7 +157,7 @@ L.OPTION_CATEGORY_DROPDOWNS		= "下拉"
 L.OPTION_CATEGORY_YELLS			= "大喊"
 L.OPTION_CATEGORY_NAMEPLATES		= "姓名版"
 L.OPTION_CATEGORY_ICONS			= "图标"
---L.OPTION_CATEGORY_PAURAS				= "Private Auras"
+L.OPTION_CATEGORY_PAURAS				= "私人光环"
 
 L.AUTO_RESPONDED						= "已自动回复."
 L.STATUS_WHISPER						= "%s：%s，%d/%d存活"
@@ -192,7 +192,7 @@ L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
 L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
 L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
---L.UPDATEREMINDER_DISABLETEST			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being out of date and this being a test/beta realm, it has been force disabled and cannot be used until updated. This is to ensure out of date mods aren't being used to generate test feedback"
+L.UPDATEREMINDER_DISABLETEST		= "警告：你的测试版 " .. L.DEADLY_BOSS_MODS .. "已经过期，它已被强制禁用，直到你更新。这是为了确保过期模组不会被用于生成反馈。"
 L.UPDATEREMINDER_HOTFIX			= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的" .. L.DBM .. "已经修复了这个问题。"
 L.UPDATEREMINDER_HOTFIX_ALPHA	= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的" .. L.DBM .. "（或Alpha版本）已经修复了这个问题。"
 L.UPDATEREMINDER_MAJORPATCH		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期，它已被禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。这次更新是一个非常重要的补丁，请立刻到Curse, Wago, WOWI或者到GitHub Releases页面获取最新版本"
@@ -206,7 +206,7 @@ L.DBMLDB							= "警告: DBM-LDB 已经集成入" .. L.DBM .. "核心。建议�
 L.DBMLOOTREMINDER					= "警告: 第三方插件DBM-LootReminder已安装。该插件不兼容正式服，并会导致" .. L.DBM .. "挂掉，无法发送开怪提醒。建议移除。"
 L.UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，" .. L.DBM .. "可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
 L.OUT_OF_DATE_NAG				= "你的" .. L.DBM .. "版本已经过期，新版本针对特定的首领战斗增加新的功能和错误的修复。建议您进行更新来改善您的游戏体验。"
---L.PLATER_NP_AURAS_MSG					= L.DBM .. " includes an advanced feature to show enemy cooldown timers using icons on nameplates. This is on by default for most users, but for Plater users it is off by default in Plater options unless you enable it. To get the most out of DBM (and Plater) it's recommended you enable this feature in Plater under 'Buff Special' section. If you don't want to see this message again, you can also just entirely disable 'Cooldown icons on nameplates' option in DBM global disable or nameplate options panels"
+L.PLATER_NP_AURAS_MSG					= L.DBM .. "现在提供可以在敌人姓名版提供技能冷却的高级功能。对于大部分用户来说，本功能默认开启，但 Plater 用户需要在 Plater “Buff选项” 中手动开启。如果你不想见到本消息，你也可以在DBM设置界面的“姓名版全局开启与过滤选项”中关掉它"
 
 L.MOVABLE_BAR				= "拖动我！"
 
@@ -240,8 +240,8 @@ L.RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%0.1f码）"
 L.RANGECHECK_IN_RANGE_TEXT	= "%d人在监视距离内"
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f码)"--One target
 
---L.INFOFRAME_TITLE						= "DBM Info Frame"
-L.INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
+L.INFOFRAME_TITLE				= "信息窗"
+L.INFOFRAME_SHOW_SELF			= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "设置最大行数"
 L.INFOFRAME_SETCOLS				= "设置最大列数"
 L.INFOFRAME_LINESDEFAULT		= "由模组设置"
@@ -501,14 +501,14 @@ L.AUTO_TIMER_OPTIONS.cdnp				= "姓名版计时条：$spell:%s冷却时间"
 L.AUTO_TIMER_OPTIONS.cdnpcount			= "姓名版计时条：$spell:%s冷却时间（带计数）"
 L.AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "计时条：特殊技能冷却"
---L.AUTO_TIMER_OPTIONS.cdcombo								= "Show timer for ability combo cooldown"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.cdcombo			= "计时条：连击技能冷却"
 L.AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s（带计数）"
 L.AUTO_TIMER_OPTIONS.nextnp				= "姓名版计时条：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnpcount		= "姓名版计时条：下一次$spell:%s（带计数）"
 L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial		= "计时条：下一次特殊技能"
---L.AUTO_TIMER_OPTIONS.nextcombo							= "Show timer for next ability combo"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.nextcombo			= "计时条：下一次技能冷却"
 L.AUTO_TIMER_OPTIONS.achievement		= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
 L.AUTO_TIMER_OPTIONS.stagecount			= "计时条：下一阶段（带计数）"
