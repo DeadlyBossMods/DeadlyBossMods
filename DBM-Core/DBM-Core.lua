@@ -25,9 +25,9 @@
 --
 local _, private = ...
 
---WARNING: DBM is at EXACTLY 200 local variables. it won't run with a single more variable
+--WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
 --More modulation or scoping is needed to reduce this
-local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+local wowTOC = select(4, GetBuildInfo())
 local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
@@ -108,6 +108,7 @@ function DBM:ReleaseDate(year, month, day, hour, minute, second)
 end
 
 function DBM:GetTOC()
+	local wowVersionString, wowBuild, _, wowTOC = select(4, GetBuildInfo())
 	return wowTOC, testBuild, wowVersionString, wowBuild
 end
 
@@ -683,27 +684,30 @@ local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 -- Polyfill for C_AddOns, Classic and Retail have the fully featured table, Wrath has only Metadata (as of Dec 15th 2023)
-local cachedAddOns = nil
-local C_AddOns = {
-	GetAddOnMetadata = C_AddOns.GetAddOnMetadata,
-	GetNumAddOns = C_AddOns.GetNumAddOns or GetNumAddOns, ---@diagnostic disable-line:deprecated
-	GetAddOnInfo = C_AddOns.GetAddOnInfo or GetAddOnInfo, ---@diagnostic disable-line:deprecated
-	LoadAddOn = C_AddOns.LoadAddOn or LoadAddOn, ---@diagnostic disable-line:deprecated
-	IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded, ---@diagnostic disable-line:deprecated
-	EnableAddOn = C_AddOns.EnableAddOn or EnableAddOn, ---@diagnostic disable-line:deprecated
-	GetAddOnEnableState = C_AddOns.GetAddOnEnableState or function(addon, character)
-		return GetAddOnEnableState(character, addon) ---@diagnostic disable-line:deprecated
-	end,
-	DoesAddOnExist = C_AddOns.DoesAddOnExist or function(addon)
-		if not cachedAddOns then
-			cachedAddOns = {}
-			for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
-				cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
+local C_AddOns
+do
+	local cachedAddOns = nil
+	C_AddOns = {
+		GetAddOnMetadata = _G.C_AddOns.GetAddOnMetadata,
+		GetNumAddOns = _G.C_AddOns.GetNumAddOns or GetNumAddOns, ---@diagnostic disable-line:deprecated
+		GetAddOnInfo = _G.C_AddOns.GetAddOnInfo or GetAddOnInfo, ---@diagnostic disable-line:deprecated
+		LoadAddOn = _G.C_AddOns.LoadAddOn or LoadAddOn, ---@diagnostic disable-line:deprecated
+		IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded, ---@diagnostic disable-line:deprecated
+		EnableAddOn = _G.C_AddOns.EnableAddOn or EnableAddOn, ---@diagnostic disable-line:deprecated
+		GetAddOnEnableState = _G.C_AddOns.GetAddOnEnableState or function(addon, character)
+			return GetAddOnEnableState(character, addon) ---@diagnostic disable-line:deprecated
+		end,
+		DoesAddOnExist = _G.C_AddOns.DoesAddOnExist or function(addon)
+			if not cachedAddOns then
+				cachedAddOns = {}
+				for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
+					cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
+				end
 			end
-		end
-		return cachedAddOns[addon]
-	end,
-}
+			return cachedAddOns[addon]
+		end,
+	}
+end
 
 ---------------------------------
 --  General (local) functions  --
@@ -3046,37 +3050,42 @@ function DBM:AddDefaultOptions(t1, t2)
 	end
 end
 
-local soundMigrationtable = {
-	[8174] = 569200,--PVPFlagTaken
-	[15391] = 543587,--UR_Algalon_BHole01
-	[9278] = 552035,--HoodWolfTransformPlayer01
-	[6674] = 566558,--BellTollNightElf
-	[11742] = 566558,--BellTollNightElf
-	[8585] = 546633,--CThunYouWillDIe
-	[11965] = 551703,--Horseman_Laugh_01
-	[37666] = 876098,--Blizzard Raid Emote
-	[11466] = 552503,--BLACK_Illidan_04
-	[68563] = 1412178,--VO_703_Illidan_Stormrage_03
-	[11052] = 553050,--CAV_Kaz_Mark02
-	[12506] = 553193,--KILJAEDEN02
-	[11482] = 553566,--BLCKTMPLE_LadyMal_Aggro01
-	[8826] = 554236,--Loa_Naxx_Aggro02
-	[128466] = 554236,--Loa_Naxx_Aggro02
-	[49764] = 555337,--TEMPEST_Millhouse_Pyro01
-	[11213] = 563787,--TEMPEST_VoidRvr_Aggro01
-	[15757] = 564859,--UR_YoggSaron_Slay01
-	[25780] = 572130,--VO_BH_ALIZABAL_RESET_01
-	[109293] = 2016732,--VO_801_Bwonsamdi_35_M
-	[109295] = 2016734,--VO_801_Bwonsamdi_37_M
-	[109296] = 2016735,--VO_801_Bwonsamdi_38_M
-	[109308] = 2016747,--VO_801_Bwonsamdi_50_M
-	[15588] = 553345,--UR_Kologarn_Slay02
-	[15553] = 552023,--UR_Hodir_Slay01
-	[109069] = 2015891,--VO_801_Scrollsage_Nola_34_F
-	[15742] = 562111,--UR_Thorim_P1Wipe01
-	[17067] = 563333,--IC_Valithria_Berserk01
-	[16971] = 555967,--IC_Muradin_Saurfang02
-}
+do
+	local soundMigrationtable = {
+		[8174] = 569200,--PVPFlagTaken
+		[15391] = 543587,--UR_Algalon_BHole01
+		[9278] = 552035,--HoodWolfTransformPlayer01
+		[6674] = 566558,--BellTollNightElf
+		[11742] = 566558,--BellTollNightElf
+		[8585] = 546633,--CThunYouWillDIe
+		[11965] = 551703,--Horseman_Laugh_01
+		[37666] = 876098,--Blizzard Raid Emote
+		[11466] = 552503,--BLACK_Illidan_04
+		[68563] = 1412178,--VO_703_Illidan_Stormrage_03
+		[11052] = 553050,--CAV_Kaz_Mark02
+		[12506] = 553193,--KILJAEDEN02
+		[11482] = 553566,--BLCKTMPLE_LadyMal_Aggro01
+		[8826] = 554236,--Loa_Naxx_Aggro02
+		[128466] = 554236,--Loa_Naxx_Aggro02
+		[49764] = 555337,--TEMPEST_Millhouse_Pyro01
+		[11213] = 563787,--TEMPEST_VoidRvr_Aggro01
+		[15757] = 564859,--UR_YoggSaron_Slay01
+		[25780] = 572130,--VO_BH_ALIZABAL_RESET_01
+		[109293] = 2016732,--VO_801_Bwonsamdi_35_M
+		[109295] = 2016734,--VO_801_Bwonsamdi_37_M
+		[109296] = 2016735,--VO_801_Bwonsamdi_38_M
+		[109308] = 2016747,--VO_801_Bwonsamdi_50_M
+		[15588] = 553345,--UR_Kologarn_Slay02
+		[15553] = 552023,--UR_Hodir_Slay01
+		[109069] = 2015891,--VO_801_Scrollsage_Nola_34_F
+		[15742] = 562111,--UR_Thorim_P1Wipe01
+		[17067] = 563333,--IC_Valithria_Berserk01
+		[16971] = 555967,--IC_Muradin_Saurfang02
+	}
+	function DBM:GetSoundMigration(sound)
+		return soundMigrationtable[sound]
+	end
+end
 
 function DBM:LoadModOptions(modId, inCombat, first)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
@@ -3150,8 +3159,8 @@ function DBM:LoadModOptions(modId, inCombat, first)
 					--Fix options for custom special warning sounds not in addons folder that are using soundkit Ids not and File Data Ids
 					elseif option:find("SWSound") then
 						local checkedOption = savedOptions[id][profileNum][option]
-						if checkedOption and (type(checkedOption) == "number") and soundMigrationtable[checkedOption] then
-							savedOptions[id][profileNum][option] = soundMigrationtable[checkedOption]
+						if checkedOption and (type(checkedOption) == "number") and self:GetSoundMigration(checkedOption) then
+							savedOptions[id][profileNum][option] = self:GetSoundMigration(checkedOption)
 							self:Debug("Migrated " .. option .. " to file data Id")
 						end
 					end
@@ -3562,8 +3571,8 @@ do
 				FixElv(setting)
 			end
 			-- Migrate soundkit to FileData ID changes
-			if type(self.Options[setting]) == "number" and soundMigrationtable[self.Options[setting]] then
-				self.Options[setting] = soundMigrationtable[self.Options[setting]]
+			if type(self.Options[setting]) == "number" and self:GetSoundMigration(self.Options[setting]) then
+				self.Options[setting] = self:GetSoundMigration(self.Options[setting])
 			end
 		end
 	end
@@ -5310,94 +5319,94 @@ end
 --  Kill/Wipe Detection  --
 ---------------------------
 
-local lastValidCombat = 0
-function checkWipe(self, confirm, confirmTime)
-	if #inCombat > 0 then
-		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
-			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
-		end
-		--hack for no iEEU information is provided.
-		if not bossuIdFound then
-			for i = 1, 10 do
-				if UnitExists("boss" .. i) then
-					bossuIdFound = true
-					break
-				end
-			end
-		end
-		local wipe -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
-		if (isRetail and IsInScenarioGroup()) or (difficultyIndex == 11) or (difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
-			wipe = 0
-		elseif IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
-			wipe = 0
-		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
-			wipe = 0
-		elseif bossuIdFound and LastInstanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
-			wipe = 2
-			for i = 1, 10 do
-				if UnitExists("boss" .. i) then
-					wipe = 0 -- Boss found. No wipe
-					break
-				end
-			end
-		else -- Unit combat status detection. No combat unit in your party and no EncounterProgress marked, that means wipe
-			wipe = 1
-			local uId = (IsInRaid() and "raid") or "party"
-			for i = 0, GetNumGroupMembers() do
-				local id = (i == 0 and "player") or uId .. i
-				if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-					wipe = 0 -- Someone still in combat. No wipe
-					break
-				end
-			end
-		end
-		if wipe == 0 then
-			lastValidCombat = GetTime()--Time stamp last valid in combat
-			self:Schedule(3, checkWipe, self)
-		elseif confirm then
-			local timeSinceValid = GetTime() - lastValidCombat
-			if timeSinceValid > confirmTime then
-				for i = #inCombat, 1, -1 do
-					local mod = inCombat[i]
-					if not mod.noStatistics then
-						self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
-					end
-					self:EndCombat(mod, true, nil, "checkWipe")
-				end
-			else--Have not reached required out of combat time yet, check again every 3 seconds until we do
-				self:Schedule(3, checkWipe, self, true, confirmTime)
-			end
-		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
-			for _, v in ipairs(inCombat) do
-				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
-			end
-			self:Schedule(3, checkWipe, self, true, maxDelayTime)
-		end
-	end
-end
-
-function checkBossHealth(self, mod)
-	if #inCombat > 0 then
-		for _, v in ipairs(inCombat) do
-			if not v.multiMobPullDetection or v.mainBoss then
-				self:GetBossHP(v.mainBoss or v.combatInfo.mob or -1, mod.onlyHighest)
-			else
-				for _, mob in ipairs(v.multiMobPullDetection) do
-					self:GetBossHP(mob, mod.onlyHighest)
-				end
-			end
-		end
-		self:Schedule(mod.bossHealthUpdateTime or 1, checkBossHealth, self, mod)
-	end
-end
-
-function checkCustomBossHealth(self, mod)
-	mod:CustomHealthUpdate()
-	self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
-end
-
 do
+	local lastValidCombat = 0
+	function checkWipe(self, confirm, confirmTime)
+		if #inCombat > 0 then
+			if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
+				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
+			end
+			--hack for no iEEU information is provided.
+			if not bossuIdFound then
+				for i = 1, 10 do
+					if UnitExists("boss" .. i) then
+						bossuIdFound = true
+						break
+					end
+				end
+			end
+			local wipe -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
+			if (isRetail and IsInScenarioGroup()) or (difficultyIndex == 11) or (difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
+				wipe = 0
+			elseif IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
+				wipe = 0
+			elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
+				wipe = 0
+			elseif bossuIdFound and LastInstanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
+				wipe = 2
+				for i = 1, 10 do
+					if UnitExists("boss" .. i) then
+						wipe = 0 -- Boss found. No wipe
+						break
+					end
+				end
+			else -- Unit combat status detection. No combat unit in your party and no EncounterProgress marked, that means wipe
+				wipe = 1
+				local uId = (IsInRaid() and "raid") or "party"
+				for i = 0, GetNumGroupMembers() do
+					local id = (i == 0 and "player") or uId .. i
+					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+						wipe = 0 -- Someone still in combat. No wipe
+						break
+					end
+				end
+			end
+			if wipe == 0 then
+				lastValidCombat = GetTime()--Time stamp last valid in combat
+				self:Schedule(3, checkWipe, self)
+			elseif confirm then
+				local timeSinceValid = GetTime() - lastValidCombat
+				if timeSinceValid > confirmTime then
+					for i = #inCombat, 1, -1 do
+						local mod = inCombat[i]
+						if not mod.noStatistics then
+							self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
+						end
+						self:EndCombat(mod, true, nil, "checkWipe")
+					end
+				else--Have not reached required out of combat time yet, check again every 3 seconds until we do
+					self:Schedule(3, checkWipe, self, true, confirmTime)
+				end
+			else
+				local maxDelayTime = (savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
+				for _, v in ipairs(inCombat) do
+					maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
+				end
+				self:Schedule(3, checkWipe, self, true, maxDelayTime)
+			end
+		end
+	end
+
+	function checkBossHealth(self, mod)
+		if #inCombat > 0 then
+			for _, v in ipairs(inCombat) do
+				if not v.multiMobPullDetection or v.mainBoss then
+					self:GetBossHP(v.mainBoss or v.combatInfo.mob or -1, mod.onlyHighest)
+				else
+					for _, mob in ipairs(v.multiMobPullDetection) do
+						self:GetBossHP(mob, mod.onlyHighest)
+					end
+				end
+			end
+			self:Schedule(mod.bossHealthUpdateTime or 1, checkBossHealth, self, mod)
+		end
+	end
+
+	function checkCustomBossHealth(self, mod)
+		mod:CustomHealthUpdate()
+		self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
+	end
+
 	local tooltipsHidden = false
 	--Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
@@ -8220,26 +8229,28 @@ function bossModPrototype:UnitClass(uId)
 	return playerClass--else return "player"
 end
 
--- if we catch someone in a tank stance keep sending them warnings, classic only
-local playerIsTank = false
+do
+	-- if we catch someone in a tank stance keep sending them warnings, classic only
+	local playerIsTank = false
 
-function bossModPrototype:IsTank()
-	--IsTanking already handles external calls, no need here.
-	if not currentSpecID then
-		DBM:SetCurrentSpecInfo()
-	end
-	if not isRetail then
-		if private.specRoleTable[currentSpecID]["Tank"] then
-			-- 17 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
-			if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff('player', 5487, 9634) then
-				playerIsTank = true
-				return true
-			end
+	function bossModPrototype:IsTank()
+		--IsTanking already handles external calls, no need here.
+		if not currentSpecID then
+			DBM:SetCurrentSpecInfo()
 		end
-		return false
+		if not isRetail then
+			if private.specRoleTable[currentSpecID]["Tank"] then
+				-- 17 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
+				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff('player', 5487, 9634) then
+					playerIsTank = true
+					return true
+				end
+			end
+			return false
+		end
+		local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+		return role == "TANK"
 	end
-	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
-	return role == "TANK"
 end
 
 function bossModPrototype:IsDps(uId)
@@ -9055,7 +9066,9 @@ do
 			end
 		end
 	end
+end
 
+do
 	local textureCode = " |T%s:12:12|t "
 	local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
 
