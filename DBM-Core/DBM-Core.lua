@@ -108,7 +108,7 @@ function DBM:ReleaseDate(year, month, day, hour, minute, second)
 end
 
 function DBM:GetTOC()
-	local wowVersionString, wowBuild, _, wowTOC = select(4, GetBuildInfo())
+	local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
 	return wowTOC, testBuild, wowVersionString, wowBuild
 end
 
