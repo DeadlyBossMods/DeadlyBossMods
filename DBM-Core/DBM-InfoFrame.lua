@@ -396,7 +396,7 @@ local bossHealthSortedLines = {}
 local function updateBossHealth()
 	twipe(lines)
 	twipe(bossHealthSortedLines)
-	local bossHealth, localizedBossNames = DBM:GetCachedBossHealth()
+	local bossHealth, localizedBossNames, bossIcons = DBM:GetCachedBossHealth()
 	for cId, name in pairs(value[1]) do
 		if type(name) ~= "string" then
 			name = localizedBossNames[cId] or ("Boss " .. cId)
@@ -411,6 +411,15 @@ local function updateBossHealth()
 		lines[name] = hp < math.huge and (math.ceil(hp) .. "%") or DBM_COMMON_L.UNKNOWN
 	end
 	updateLines(bossHealthSortedLines)
+	updateIcons()
+	-- updateIcons doesn't work 100% reliably for bosses in classic (no boss unit ids), so add cached data if updateIcons didn't find the boss.
+	-- Example: no one is targeting the sheep in the Mechanical Menagerie fight while it has reflect up, without the code below the icon would disappear in this case.
+	for k, icon in pairs(bossIcons) do
+		local bossName = localizedBossNames[k]
+		if bossName and not icons[bossName] then
+			icons[bossName] = icon
+		end
+	end
 end
 
 local function updatePlayerPower()

@@ -450,7 +450,7 @@ local usedProfile = "Default"
 local dbmIsEnabled = true
 private.dbmIsEnabled = dbmIsEnabled
 -- Table variables
-local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossNames, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 -- False variables
 local voiceSessionDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false
 -- Nil variables
@@ -8650,66 +8650,56 @@ end
 ----------------------------
 --  Boss Health Function  --
 ----------------------------
---This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
-function DBM:GetBossHP(cIdOrGUID, onlyHighest)
-	local uId = bossHealthuIdCache[cIdOrGUID] or "target"
-	local guid = UnitGUID(uId)
-	--Target or Cached (if already called with this cid or GUID before)
-	if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
-		if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
-		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-			bossHealth[cIdOrGUID] = hp
-		end
-		bossNames[cIdOrGUID] = UnitName(uId)
-		return hp, uId, UnitName(uId)
-	--Focus, does not exist in classic
-	elseif isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
-		if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
-		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
-		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-			bossHealth[cIdOrGUID] = hp
-		end
-		bossNames[cIdOrGUID] = UnitName("focus")
-		return hp, "focus", UnitName("focus")
-	else
-		--Boss UnitIds
-		if isRetail then
-			for i = 1, 10 do
-				local unitID = "boss" .. i
-				local bossguid = UnitGUID(unitID)
-				if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
-					if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
-					local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
-					if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-						bossHealth[cIdOrGUID] = hp
+do
+	local bossNames, bossIcons = {}, {}
+
+	--This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
+	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
+		local uId = bossHealthuIdCache[cIdOrGUID] or "target"
+		local guid = UnitGUID(uId)
+		--Target or Cached (if already called with this cid or GUID before)
+		if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
+			if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
+			local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+			if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+				bossHealth[cIdOrGUID] = hp
+			end
+			bossNames[cIdOrGUID] = UnitName(uId)
+			bossIcons[cIdOrGUID] = GetRaidTargetIndex(uId)
+			return hp, uId, UnitName(uId)
+		--Focus, does not exist in classic
+		elseif isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
+			if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
+			local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
+			if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+				bossHealth[cIdOrGUID] = hp
+			end
+			bossNames[cIdOrGUID] = UnitName("focus")
+			bossIcons[cIdOrGUID] = GetRaidTargetIndex("focus")
+			return hp, "focus", UnitName("focus")
+		else
+			--Boss UnitIds
+			if isRetail then
+				for i = 1, 10 do
+					local unitID = "boss" .. i
+					local bossguid = UnitGUID(unitID)
+					if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
+						if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
+						local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
+						if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+							bossHealth[cIdOrGUID] = hp
+						end
+						bossHealthuIdCache[cIdOrGUID] = unitID
+						bossNames[cIdOrGUID] = UnitName(unitID)
+						bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitID)
+						return hp, unitID, UnitName(unitID)
 					end
-					bossHealthuIdCache[cIdOrGUID] = unitID
-					bossNames[cIdOrGUID] = UnitName(unitID)
-					return hp, unitID, UnitName(unitID)
 				end
 			end
-		end
-		--Scan raid/party target frames
-		local idType = (IsInRaid() and "raid") or "party"
-		for i = 0, GetNumGroupMembers() do
-			local unitId = ((i == 0) and "target") or idType .. i .. "target"
-			local bossguid = UnitGUID(unitId)
-			if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
-				if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
-				local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
-				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-					bossHealth[cIdOrGUID] = hp
-				end
-				bossHealthuIdCache[cIdOrGUID] = unitId
-				bossNames[cIdOrGUID] = UnitName(unitId)
-				return hp, unitId, UnitName(unitId)
-			end
-		end
-		if not isRetail then
-			--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
-			for i = 1, 20 do
-				local unitId = "nameplate" .. i
+			--Scan raid/party target frames
+			local idType = (IsInRaid() and "raid") or "party"
+			for i = 0, GetNumGroupMembers() do
+				local unitId = ((i == 0) and "target") or idType .. i .. "target"
 				local bossguid = UnitGUID(unitId)
 				if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
 					if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
@@ -8719,70 +8709,89 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 					end
 					bossHealthuIdCache[cIdOrGUID] = unitId
 					bossNames[cIdOrGUID] = UnitName(unitId)
+					bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
 					return hp, unitId, UnitName(unitId)
+				end
+			end
+			if not isRetail then
+				--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
+				for i = 1, 20 do
+					local unitId = "nameplate" .. i
+					local bossguid = UnitGUID(unitId)
+					if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
+						if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
+						local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
+						if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+							bossHealth[cIdOrGUID] = hp
+						end
+						bossHealthuIdCache[cIdOrGUID] = unitId
+						bossNames[cIdOrGUID] = UnitName(unitId)
+						bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
+						return hp, unitId, UnitName(unitId)
+					end
 				end
 			end
 		end
 	end
-end
 
-function DBM:GetBossHPByUnitID(uId)
-	if UnitHealthMax(uId) ~= 0 then
-		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-		bossHealth[uId] = hp
-		return hp, uId, UnitName(uId)
-	end
-end
-
-function bossModPrototype:SetMainBossID(cid)
-	self.mainBoss = cid
-end
-
-function bossModPrototype:SetBossHPInfoToHighest(numBoss)
-	if numBoss ~= false then
-		self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
-	end
-	self.highesthealth = true
-end
-
-function bossModPrototype:GetHighestBossHealth()
-	local hp
-	if not self.multiMobPullDetection or self.mainBoss then
-		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
-		if hp and (hp > 100 or hp <= 0) then
-			hp = nil
+	function DBM:GetBossHPByUnitID(uId)
+		if UnitHealthMax(uId) ~= 0 then
+			local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+			bossHealth[uId] = hp
+			return hp, uId, UnitName(uId)
 		end
-	else
-		for _, mob in ipairs(self.multiMobPullDetection) do
-			if (bossHealth[mob] or 0) > (hp or 0) and (bossHealth[mob] or 0) < 100 then-- ignore full health.
-				hp = bossHealth[mob]
+	end
+
+	function bossModPrototype:SetMainBossID(cid)
+		self.mainBoss = cid
+	end
+
+	function bossModPrototype:SetBossHPInfoToHighest(numBoss)
+		if numBoss ~= false then
+			self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
+		end
+		self.highesthealth = true
+	end
+
+	function bossModPrototype:GetHighestBossHealth()
+		local hp
+		if not self.multiMobPullDetection or self.mainBoss then
+			hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
+			if hp and (hp > 100 or hp <= 0) then
+				hp = nil
+			end
+		else
+			for _, mob in ipairs(self.multiMobPullDetection) do
+				if (bossHealth[mob] or 0) > (hp or 0) and (bossHealth[mob] or 0) < 100 then-- ignore full health.
+					hp = bossHealth[mob]
+				end
 			end
 		end
+		return hp
 	end
-	return hp
-end
 
-function bossModPrototype:GetLowestBossHealth()
-	local hp
-	if not self.multiMobPullDetection or self.mainBoss then
-		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
-		if hp and (hp > 100 or hp <= 0) then
-			hp = nil
-		end
-	else
-		for _, mob in ipairs(self.multiMobPullDetection) do
-			if (bossHealth[mob] or 100) < (hp or 100) and (bossHealth[mob] or 100) > 0 then-- ignore zero health.
-				hp = bossHealth[mob]
+	function bossModPrototype:GetLowestBossHealth()
+		local hp
+		if not self.multiMobPullDetection or self.mainBoss then
+			hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
+			if hp and (hp > 100 or hp <= 0) then
+				hp = nil
+			end
+		else
+			for _, mob in ipairs(self.multiMobPullDetection) do
+				if (bossHealth[mob] or 100) < (hp or 100) and (bossHealth[mob] or 100) > 0 then-- ignore zero health.
+					hp = bossHealth[mob]
+				end
 			end
 		end
+		return hp
 	end
-	return hp
-end
 
-bossModPrototype.GetBossHP = DBM.GetBossHP
+	bossModPrototype.GetBossHP = DBM.GetBossHP
 
-function DBM:GetCachedBossHealth()
-	return bossHealth, bossNames
+	function DBM:GetCachedBossHealth()
+		return bossHealth, bossNames, bossIcons
+	end
 end
 
 -------------------------
