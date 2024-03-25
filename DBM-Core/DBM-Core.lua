@@ -2411,7 +2411,7 @@ do
 				raid[playerName].revision = DBM.Revision
 				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
-				if not isRetail
+				if not isRetail then
 					raid[playerName].classicSubVers = DBM.classicSubVersion
 				end
 				raid[playerName].locale = GetLocale()
@@ -2610,7 +2610,7 @@ do
 			raid[playerName].revision = DBM.Revision
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
-			if not isRetail
+			if not isRetail then
 				raid[playerName].classicSubVers = DBM.classicSubVersion
 			end
 			raid[playerName].locale = GetLocale()
