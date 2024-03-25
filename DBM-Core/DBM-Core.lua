@@ -1674,10 +1674,12 @@ do
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
 			--Establish a classic sub mod version for version checks and out of date notification/checking
-			local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
-			if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
-				local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
-				DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
+			if not isRetail then
+				local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
+				if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
+					local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
+					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
+				end
 			end
 			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface")) or 0
 			isLoaded = true
@@ -2409,7 +2411,9 @@ do
 				raid[playerName].revision = DBM.Revision
 				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
-				raid[playerName].classicSubVers = DBM.classicSubVersion
+				if not isRetail
+					raid[playerName].classicSubVers = DBM.classicSubVersion
+				end
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
 				raidGuids[UnitGUID("player") or ""] = playerName
@@ -2606,7 +2610,9 @@ do
 			raid[playerName].revision = DBM.Revision
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
-			raid[playerName].classicSubVers = DBM.classicSubVersion
+			if not isRetail
+				raid[playerName].classicSubVers = DBM.classicSubVersion
+			end
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
