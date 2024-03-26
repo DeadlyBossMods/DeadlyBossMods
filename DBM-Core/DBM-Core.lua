@@ -4440,7 +4440,7 @@ do
 	local function SendVersion(guild)
 		if guild then
 			local message
-			if DBM.classicSubVersion then
+			if not isRetail and DBM.classicSubVersion then
 				message = ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable), tostring(DBM.classicSubVersion))
 				sendGuildSync(3, "GV", message)
 			else
@@ -4612,7 +4612,9 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].VPVersion = VPVersion
-			raid[sender].classicSubVers = classicSubVers
+			if not isRetail then
+				raid[sender].classicSubVers = classicSubVers
+			end
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
