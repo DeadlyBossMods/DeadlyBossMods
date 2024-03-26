@@ -385,7 +385,7 @@ DBM.DefaultOptions = {
 	LatencyThreshold = 250,
 	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
-	NewsMessageShown2 = 2,--Apparently varaible without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
+	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
@@ -826,15 +826,24 @@ local function sendSync(protocol, prefix, msg)
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
+		local sendChannel = "SOLO"
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "INSTANCE_CHAT")
+			sendChannel = "INSTANCE_CHAT"
 		else
 			if IsInRaid() then
-				SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "RAID")
+				sendChannel = "RAID"
 			elseif IsInGroup(1) then
-				SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "PARTY")
-			else--for solo raid
-				handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
+				sendChannel = "PARTY"
+			end
+		end
+		if sendChannel == "SOLO" then
+			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
+		else
+			SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
+			if (prefix == "V" or prefix == "H") and not isRetail then
+				--Also send V and H syncs to old DBM versions so we can force disable them and get them out of circulation
+				local oldPrefix = isWrath and "D5WC" or "D5C"
+				SendAddonMessage(oldPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 			end
 		end
 	end
@@ -846,6 +855,11 @@ local function sendGuildSync(protocol, prefix, msg)
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
 		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		if (prefix == "GV" or prefix == "GH") and not isRetail then
+			--Also send V and H syncs to old DBM versions so we can force disable them and get them out of circulation
+			local oldPrefix = isWrath and "D5WC" or "D5C"
+			SendAddonMessage(oldPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")
+		end
 	end
 end
 private.sendGuildSync = sendGuildSync
@@ -1660,10 +1674,12 @@ do
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
 			--Establish a classic sub mod version for version checks and out of date notification/checking
-			local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
-			if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
-				local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
-				DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
+			if not isRetail then
+				local checkedSubmodule = isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or isClassic and "DBM-Raids-Vanilla"
+				if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
+					local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
+					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
+				end
 			end
 			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface")) or 0
 			isLoaded = true
@@ -2395,7 +2411,9 @@ do
 				raid[playerName].revision = DBM.Revision
 				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
-				raid[playerName].classicSubVers = DBM.classicSubVersion
+				if not isRetail then
+					raid[playerName].classicSubVers = DBM.classicSubVersion
+				end
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
 				raidGuids[UnitGUID("player") or ""] = playerName
@@ -2592,7 +2610,9 @@ do
 			raid[playerName].revision = DBM.Revision
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
-			raid[playerName].classicSubVers = DBM.classicSubVersion
+			if not isRetail then
+				raid[playerName].classicSubVers = DBM.classicSubVersion
+			end
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
@@ -4420,7 +4440,7 @@ do
 	local function SendVersion(guild)
 		if guild then
 			local message
-			if DBM.classicSubVersion then
+			if not isRetail and DBM.classicSubVersion then
 				message = ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable), tostring(DBM.classicSubVersion))
 				sendGuildSync(3, "GV", message)
 			else
@@ -4576,6 +4596,7 @@ do
 				else
 					classicSubVers = L.MOD_MISSING
 				end
+				forceDisable = tonumber(forceDisable) or 0
 			end
 		elseif protocol >= 2 then
 			--Protocol 2 did not send classicSubVers
@@ -4591,7 +4612,9 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].VPVersion = VPVersion
-			raid[sender].classicSubVers = classicSubVers
+			if not isRetail then
+				raid[sender].classicSubVers = classicSubVers
+			end
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
@@ -6844,7 +6867,7 @@ do
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
 			if not isRetail then
-				C_TimerAfter(35, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
+				C_TimerAfter(35, function() if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
 			end
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
