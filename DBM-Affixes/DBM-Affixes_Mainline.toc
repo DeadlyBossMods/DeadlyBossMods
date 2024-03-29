@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name: M+ Affixes
 ## X-DBM-Mod-Name-koKR: 신화+ 어픽스
 ## X-DBM-Mod-Name-ruRU: М+ Аффиксы
-## X-DBM-Mod-MapID: 2579, 1279, 1501, 1466, 1763, 643, 1862
+## X-DBM-Mod-MapID: 2579, 1279, 1501, 1466, 1763, 643, 1862, 2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520
 ## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
 
