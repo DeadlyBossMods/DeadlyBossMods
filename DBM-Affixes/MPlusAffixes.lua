@@ -122,8 +122,8 @@ do
 		--657, 1841, 1754, 1458, 2527, 2519, 2451, 2520
 		validZones = {[657]=true, [1841]=true, [1754]=true, [1458]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
 	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 12 then--DF Season 4
-		--NOT YET KNOWN, season 3 placeholders
-		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
+		--2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520
+		validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
 	else--Season 3 (11) (latest LIVE season put in else so if api fails, it just always returns latest)
 		--2579, 1279, 1501, 1466, 1763, 643, 1862
 		validZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
