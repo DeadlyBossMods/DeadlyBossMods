@@ -366,16 +366,16 @@ local function updateIcons()
 		local icon = GetRaidTargetIndex(uId)
 		local icon2 = GetRaidTargetIndex(uId .. "target")
 		if icon and icon <= 8 then
-			icons[DBM:GetUnitFullName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+			icons[DBM:GetUnitFullName(uId)] = icon
 		end
 		if icon2 and icon2 <= 8 then
-			icons[DBM:GetUnitFullName(uId .. "target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
+			icons[DBM:GetUnitFullName(uId .. "target")] = icon2
 		end
 	end
 	for i = 1, 10 do
 		local icon = GetRaidTargetIndex("boss" .. i)
 		if icon then
-			icons[UnitName("boss" .. i)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+			icons[UnitName("boss" .. i)] = icon
 		end
 	end
 end
@@ -414,8 +414,10 @@ local function updateBossHealth()
 	updateIcons()
 	-- updateIcons doesn't work 100% reliably for bosses in classic (no boss unit ids), so add cached data if updateIcons didn't find the boss.
 	-- Example: no one is targeting the sheep in the Mechanical Menagerie fight while it has reflect up, without the code below the icon would disappear in this case.
-	for k, icon in pairs(bossIcons) do
-		local bossName = localizedBossNames[k]
+	-- Also, this is necessary for bosses with customized names (e.g., Mechanical Menagerie)
+	for cId, icon in pairs(bossIcons) do
+		local renamedBoss = value[1][cId]
+		local bossName = type(renamedBoss) == "string" and renamedBoss or localizedBossNames[cId]
 		if bossName and not icons[bossName] then
 			icons[bossName] = icon
 		end
@@ -1004,7 +1006,8 @@ local function onUpdate(frame, table)
 		end
 		local rightText = lines[leftText]
 		local extra, extraName = ssplit("*", leftText) -- Find just unit name, if extra info had to be added to make unique
-		local icon = icons[extraName or leftText] and icons[extraName or leftText] .. leftText
+		local icon = icons[extraName or leftText]
+		local textWithIcon = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t%s"):format(icon, leftText)
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId then
@@ -1025,26 +1028,26 @@ local function onUpdate(frame, table)
 					linesShown = linesShown + 1
 					if unitId and UnitIsUnit(unitId, "player") then -- It's player.
 						if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
-							infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
+							infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, 255, 0, 0, 255, 255, 255)
 						else -- Green
-							infoFrame:SetLine(linesShown, icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
+							infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 						end
 					else -- It's not player, do nothing special with it. Ordinary class colored text.
 						if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
 							local numberValue = tonumber(rightText)
 							if numberValue < 6 then
-								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
+								infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
 							elseif numberValue < 11 then
-								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
+								infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 							else
 								if numberValue == 9000 then -- Out of range players
-									infoFrame:SetLine(linesShown, icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
+									infoFrame:SetLine(linesShown, textWithIcon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
 								else
-									infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+									infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
 								end
 							end
 						else
-							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+							infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
 						end
 					end
 				end
@@ -1079,7 +1082,7 @@ local function onUpdate(frame, table)
 				end
 			end
 			linesShown = linesShown + 1
-			infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
+			infoFrame:SetLine(linesShown, textWithIcon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
 		end
 	end
 	local maxWidth1, maxWidth2, linesPerRow = {}, {}, 5
@@ -1169,6 +1172,22 @@ function infoFrame:Show(modMaxLines, event, ...)
 		-- Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
 		-- This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
 		value[1] = DBM:GetSpellInfo(value[1])
+	elseif event == "bosshealth" then
+		if type(value[1]) ~= "table" then
+			error("DBM-InfoFrame: bosshealth frame expects a table of bossIds -> names or a mod as parameter, got " .. type(value[1]), 2)
+		end
+		if value[1].multiMobPullDetection or value[1].creatureId then -- Looks like a mod
+			-- Get default bosses from mod
+			local mod = value[1]
+			value[1] = {}
+			if mod.multiMobPullDetection then
+				for _, v in ipairs(mod.multiMobPullDetection) do
+					value[1][v] = true
+				end
+			elseif mod.creatureId then -- Boss health frame for a single target? Sure, let's support it anyways.
+				value[1][mod.creatureId] = true
+			end
+		end -- else: is not a mod, just use as is
 	end
 	currentEvent = event
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
