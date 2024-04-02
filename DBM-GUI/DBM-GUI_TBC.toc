@@ -1,7 +1,4 @@
-## Interface: 100206
-## Interface-Classic: 11501
-## Interface-Wrath: 30403
-## Interface-Cata: 40400
+## Interface: 20504
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0GUI für Einstellungen|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0设置界面|r

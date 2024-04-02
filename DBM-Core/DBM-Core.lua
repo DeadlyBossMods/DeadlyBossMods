@@ -87,9 +87,9 @@ local fakeBWVersion, fakeBWHash = 324, "a4b080f"--324.4
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.32 alpha"--Core version
+DBM.DisplayVersion = "10.2.32"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 3, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 4, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -4474,7 +4474,7 @@ do
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-					if forceDisable > PForceDisable and not checkEntry(forceDisablePerson, sender) then
+					if (dbmToc < wowTOC or forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
 						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from " .. sender .. " : Rev - " .. forceDisable, 3)
 					end
