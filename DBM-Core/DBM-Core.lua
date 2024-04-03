@@ -1593,9 +1593,11 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
-	local function infniteLoopNotice(self, message)
-		AddMsg(self, message)
-		self:Schedule(30, infniteLoopNotice, self, message)
+	local function infniteLoopNotice(self, message, onlyInRaid, exceptFirst)
+		if not onlyInRaid or exceptFirst or onlyInRaid and IsInRaid() then
+			AddMsg(self, message)
+		end
+		self:Schedule(30, infniteLoopNotice, self, message, onlyInRaid)
 	end
 
 	local function runDelayedFunctions(self)
@@ -2012,7 +2014,7 @@ do
 				if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then
 					self.Options.NewsMessageShown2 = 3
 					--Show every minute indefinitely
-					self:Schedule(60, infniteLoopNotice, self, L.NEWS_UPDATE)
+					self:Schedule(60, infniteLoopNotice, self, L.NEWS_UPDATE, true, true)
 				end
 			end
 		end
