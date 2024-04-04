@@ -3807,24 +3807,24 @@ do
 		if not self:IsTrivial() then
 			local checkedDungeon = isRetail and "DBM-Party-Dragonflight" or isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, true)
 				dungeonShown = true
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla/SoD mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla/SoD mods"), nil, isClassic)--Play sound only in Vanilla
 				--Reshow news message as well in classic flavors
-				if not isRetail and (DBM.classicSubVersion or 0) < 1 then
-					C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE) end end)
-				end
+				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE, nil, true) end)
+				--end
 			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"), nil, isBCC)--Play sound only in TBC
 			elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"), nil, isWrath)--Play sound only in wrath
 				--Reshow news message as well in classic flavors
-				if not isRetail and (DBM.classicSubVersion or 0) < 1 then
-					C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE) end end)
-				end
+				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE, nil, true) end)
+				--end
 			elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"), nil, isCata)--Play sound only in cata
 			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
 			elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
@@ -3838,10 +3838,10 @@ do
 			end
 		end
 		if challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
-			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
+			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"), nil, true)
 		end
 		if pvpZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-PvP") and not pvpShown then
-			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"))
+			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"), nil, true)
 			pvpShown = true
 		end
 	end
@@ -7127,7 +7127,7 @@ end
 -----------------------
 --  Misc. Functions  --
 -----------------------
-function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame)
+function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug)
 	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
@@ -7139,8 +7139,11 @@ function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame)
 	else
 		frame:AddMessage(text, 0.41, 0.8, 0.94)
 	end
-	if DBM.Options.DebugSound and useSound then
+	if DBM.Options.DebugSound and isDebug then
 		DBM:PlaySoundFile(567458)--"Ding"
+	end
+	if useSound then
+		DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)
 	end
 end
 AddMsg = DBM.AddMsg
@@ -10990,7 +10993,7 @@ do
 							if bar.timer > 0.2 then
 								local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 								if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, true)
+									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 									fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 								else
 									DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
@@ -11069,7 +11072,7 @@ do
 						if bar.timer > 0.2 then
 							local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 							if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, true)
+								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 								fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 							else
 								DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
