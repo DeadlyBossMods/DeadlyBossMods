@@ -1593,9 +1593,11 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
-	local function infniteLoopNotice(self, message)
-		AddMsg(self, message)
-		self:Schedule(30, infniteLoopNotice, self, message)
+	local function infniteLoopNotice(self, message, onlyInRaid, exceptFirst)
+		if not onlyInRaid or exceptFirst or onlyInRaid and IsInRaid() then
+			AddMsg(self, message)
+		end
+		self:Schedule(30, infniteLoopNotice, self, message, onlyInRaid)
 	end
 
 	local function runDelayedFunctions(self)
@@ -2002,6 +2004,58 @@ do
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
 		end
+	end
+
+	function DBM:PLAYER_ENTERING_WORLD()
+		if self.Options.ShowReminders then
+			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
+			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
+			if not isRetail then
+				if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then
+					self.Options.NewsMessageShown2 = 3
+					--Show every minute indefinitely
+					self:Schedule(60, infniteLoopNotice, self, L.NEWS_UPDATE, true, true)
+				end
+			end
+		end
+		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
+			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
+				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
+				--Nothing
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
+				--Nothing
+			end
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
+				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
+					self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
+				end
+			end
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
+				if not C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor") then
+					self:AddMsg("Error: unable to register Transcriptor addon message prefix (reached client side addon message filter limit)")
+				end
+			end
+		end
+		--Check if any previous changed cvars were not restored and restore them
+		if self.Options.RestoreSettingSFX then
+			SetCVar("Sound_EnableSFX", 1)
+			self.Options.RestoreSettingSFX = nil
+			self:Debug("Restoring Sound_EnableSFX CVAR")
+		end
+		if self.Options.RestoreSettingAmbiance then
+			SetCVar("Sound_EnableAmbience", 1)
+			self.Options.RestoreSettingAmbiance = nil
+			self:Debug("Restoring Sound_EnableAmbience CVAR")
+		end
+		if self.Options.RestoreSettingMusic then
+			SetCVar("Sound_EnableMusic", 1)
+			self.Options.RestoreSettingMusic = nil
+			self:Debug("Restoring Sound_EnableMusic CVAR")
+		end
+		--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 	end
 end
 
@@ -6859,56 +6913,6 @@ function DBM:SendVariableInfo(mod, target)
 		if v2 then
 			SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tVI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
 		end
-	end
-end
-
-do
-	function DBM:PLAYER_ENTERING_WORLD()
-		if self.Options.ShowReminders then
-			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
-			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
-			if not isRetail then
-				C_TimerAfter(35, function() if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
-			end
-		end
-		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
-			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
-				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
-				--Nothing
-			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
-				--Nothing
-			end
-			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
-				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
-					self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
-				end
-			end
-			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
-				if not C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor") then
-					self:AddMsg("Error: unable to register Transcriptor addon message prefix (reached client side addon message filter limit)")
-				end
-			end
-		end
-		--Check if any previous changed cvars were not restored and restore them
-		if self.Options.RestoreSettingSFX then
-			SetCVar("Sound_EnableSFX", 1)
-			self.Options.RestoreSettingSFX = nil
-			self:Debug("Restoring Sound_EnableSFX CVAR")
-		end
-		if self.Options.RestoreSettingAmbiance then
-			SetCVar("Sound_EnableAmbience", 1)
-			self.Options.RestoreSettingAmbiance = nil
-			self:Debug("Restoring Sound_EnableAmbience CVAR")
-		end
-		if self.Options.RestoreSettingMusic then
-			SetCVar("Sound_EnableMusic", 1)
-			self.Options.RestoreSettingMusic = nil
-			self:Debug("Restoring Sound_EnableMusic CVAR")
-		end
-		--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 	end
 end
 
