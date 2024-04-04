@@ -1593,11 +1593,9 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
-	local function infniteLoopNotice(self, message, onlyInRaid, exceptFirst)
-		if not onlyInRaid or exceptFirst or onlyInRaid and IsInRaid() then
-			AddMsg(self, message)
-		end
-		self:Schedule(30, infniteLoopNotice, self, message, onlyInRaid)
+	local function infiniteLoopNotice(self, message)
+		AddMsg(self, message)
+		self:Schedule(30, infiniteLoopNotice, self, message)
 	end
 
 	local function runDelayedFunctions(self)
@@ -1696,12 +1694,12 @@ do
 			private:OnModuleLoad()
 			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.VEM)
+				self:Schedule(15, infiniteLoopNotice, self, L.VEM)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDPROFILES)
+				self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
@@ -1710,7 +1708,7 @@ do
 				version = tonumber(string.sub(version, 2, 4)) or 0
 				if version < 122 and not self.Options.DebugMode then
 					self:Disable(true)
-					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
+					self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
 			end
@@ -1720,7 +1718,7 @@ do
 			end
 			if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.DPMCORE)
+				self:Schedule(15, infiniteLoopNotice, self, L.DPMCORE)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
@@ -2011,11 +2009,8 @@ do
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
 			if not isRetail then
-				if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then
-					self.Options.NewsMessageShown2 = 3
-					--Show every minute indefinitely
-					self:Schedule(60, infniteLoopNotice, self, L.NEWS_UPDATE, true, true)
-				end
+				--Shown only once per character on login. Repeat showings now handled by the raid module check on raid zone in, and boss pull and wipes within vanilla and wrath raids
+				C_TimerAfter(60, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
 			end
 		end
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
@@ -3791,7 +3786,7 @@ end
 do
 	local pvpShown = false
 	local dungeonShown = false
-	local sodRaids = {[48] = true, [90] = true}
+	local sodRaids = {[48] = true, [90] = true, [109] = true}
 	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true}
 	local bcZones = {[564] = true, [534] = true, [532] = true, [565] = true, [544] = true, [548] = true, [580] = true, [550] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
@@ -3815,11 +3810,19 @@ do
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
 				dungeonShown = true
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla/SoD mods"))
+				--Reshow news message as well in classic flavors
+				if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+					C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE) end end)
+				end
 			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 			elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
+				--Reshow news message as well in classic flavors
+				if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+					C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE) end end)
+				end
 			elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
 			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
@@ -4021,6 +4024,10 @@ do
 			--self:Debug(v.modId .. " is " .. enabled, 2)
 			if not C_AddOns.IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
+					if self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] and v.modId == "DBM-Party-Vanilla" then
+						--Don't load dungeon mods in SoD Raids
+						return
+					end
 					self:LoadMod(v)
 				else
 					self:AddMsg(L.LOAD_MOD_DISABLED:format(v.name))
