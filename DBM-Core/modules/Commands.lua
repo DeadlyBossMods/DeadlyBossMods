@@ -136,14 +136,6 @@ if not _G["BigWigs"] then
 	SlashCmdList["DEADLYBOSSMODSBREAK"] = function(msg)
 		Break(tonumber(msg) or 10)
 	end
-	if C_PartyInfo then
-		---@diagnostic disable-next-line:duplicate-set-field
-		C_PartyInfo.DoCountdown = function(msg)
-			if SlashCmdList.DEADLYBOSSMODSPULL then
-				SlashCmdList.DEADLYBOSSMODSPULL(msg)
-			end
-		end
-	end
 end
 
 SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"

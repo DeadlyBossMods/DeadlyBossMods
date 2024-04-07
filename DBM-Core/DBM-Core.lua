@@ -83,13 +83,13 @@ local DBM = {
 }
 _G.DBM = DBM
 
-local fakeBWVersion, fakeBWHash = 324, "a4b080f"--324.4
+local fakeBWVersion, fakeBWHash = 326, "6808000"--326.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.32"--Core version
+DBM.DisplayVersion = "10.2.35 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 4, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 4, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1593,11 +1593,9 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
-	local function infniteLoopNotice(self, message, onlyInRaid, exceptFirst)
-		if not onlyInRaid or exceptFirst or onlyInRaid and IsInRaid() then
-			AddMsg(self, message)
-		end
-		self:Schedule(30, infniteLoopNotice, self, message, onlyInRaid)
+	local function infiniteLoopNotice(self, message)
+		AddMsg(self, message)
+		self:Schedule(30, infiniteLoopNotice, self, message)
 	end
 
 	local function runDelayedFunctions(self)
@@ -1696,12 +1694,12 @@ do
 			private:OnModuleLoad()
 			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.VEM)
+				self:Schedule(15, infiniteLoopNotice, self, L.VEM)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDPROFILES)
+				self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
@@ -1710,7 +1708,7 @@ do
 				version = tonumber(string.sub(version, 2, 4)) or 0
 				if version < 122 and not self.Options.DebugMode then
 					self:Disable(true)
-					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
+					self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
 			end
@@ -1720,7 +1718,7 @@ do
 			end
 			if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
 				self:Disable(true)
-				self:Schedule(15, infniteLoopNotice, self, L.DPMCORE)
+				self:Schedule(15, infiniteLoopNotice, self, L.DPMCORE)
 				return
 			end
 			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
@@ -2006,56 +2004,55 @@ do
 		end
 	end
 
-	function DBM:PLAYER_ENTERING_WORLD()
-		if self.Options.ShowReminders then
-			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
-			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
-			if not isRetail then
-				if (self.Options.NewsMessageShown2 < 3) or ((DBM.classicSubVersion or 0) < 1) then
-					self.Options.NewsMessageShown2 = 3
-					--Show every minute indefinitely
-					self:Schedule(60, infniteLoopNotice, self, L.NEWS_UPDATE, true, true)
+	function DBM:PLAYER_ENTERING_WORLD(isLogin, isReload)
+		if isLogin or isReload then
+			if self.Options.ShowReminders then
+				C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
+				C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
+				if not isRetail then
+					--Shown only once per character on login. Repeat showings now handled by the raid module check on raid zone in, and boss pull and wipes within vanilla and wrath raids
+					C_TimerAfter(60, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
 				end
 			end
-		end
-		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
-			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
-				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
-				--Nothing
-			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
-				--Nothing
-			end
-			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
-				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
-					self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
+			if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
+				if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
+					self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+				end
+				if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
+					--Nothing
+				end
+				if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
+					--Nothing
+				end
+				if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
+					if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
+						self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
+					end
+				end
+				if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
+					if not C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor") then
+						self:AddMsg("Error: unable to register Transcriptor addon message prefix (reached client side addon message filter limit)")
+					end
 				end
 			end
-			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
-				if not C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor") then
-					self:AddMsg("Error: unable to register Transcriptor addon message prefix (reached client side addon message filter limit)")
-				end
+			--Check if any previous changed cvars were not restored and restore them
+			if self.Options.RestoreSettingSFX then
+				SetCVar("Sound_EnableSFX", 1)
+				self.Options.RestoreSettingSFX = nil
+				self:Debug("Restoring Sound_EnableSFX CVAR")
 			end
+			if self.Options.RestoreSettingAmbiance then
+				SetCVar("Sound_EnableAmbience", 1)
+				self.Options.RestoreSettingAmbiance = nil
+				self:Debug("Restoring Sound_EnableAmbience CVAR")
+			end
+			if self.Options.RestoreSettingMusic then
+				SetCVar("Sound_EnableMusic", 1)
+				self.Options.RestoreSettingMusic = nil
+				self:Debug("Restoring Sound_EnableMusic CVAR")
+			end
+			--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 		end
-		--Check if any previous changed cvars were not restored and restore them
-		if self.Options.RestoreSettingSFX then
-			SetCVar("Sound_EnableSFX", 1)
-			self.Options.RestoreSettingSFX = nil
-			self:Debug("Restoring Sound_EnableSFX CVAR")
-		end
-		if self.Options.RestoreSettingAmbiance then
-			SetCVar("Sound_EnableAmbience", 1)
-			self.Options.RestoreSettingAmbiance = nil
-			self:Debug("Restoring Sound_EnableAmbience CVAR")
-		end
-		if self.Options.RestoreSettingMusic then
-			SetCVar("Sound_EnableMusic", 1)
-			self.Options.RestoreSettingMusic = nil
-			self:Debug("Restoring Sound_EnableMusic CVAR")
-		end
-		--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 	end
 end
 
@@ -3791,7 +3788,7 @@ end
 do
 	local pvpShown = false
 	local dungeonShown = false
-	local sodRaids = {[48] = true, [90] = true}
+	local sodRaids = {[48] = true, [90] = true, [109] = true}
 	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true}
 	local bcZones = {[564] = true, [534] = true, [532] = true, [565] = true, [544] = true, [548] = true, [580] = true, [550] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
@@ -3812,16 +3809,24 @@ do
 		if not self:IsTrivial() then
 			local checkedDungeon = isRetail and "DBM-Party-Dragonflight" or isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, true)
 				dungeonShown = true
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla/SoD mods"), nil, isClassic)--Play sound only in Vanilla
+				--Reshow news message as well in classic flavors
+				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE_REPEAT, nil, true) end)
+				--end
 			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"), nil, isBCC)--Play sound only in TBC
 			elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"), nil, isWrath)--Play sound only in wrath
+				--Reshow news message as well in classic flavors
+				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
+				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE_REPEAT, nil, true) end)
+				--end
 			elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"), nil, isCata)--Play sound only in cata
 			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
 			elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
@@ -3835,10 +3840,10 @@ do
 			end
 		end
 		if challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
-			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
+			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"), nil, true)
 		end
 		if pvpZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-PvP") and not pvpShown then
-			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"))
+			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"), nil, true)
 			pvpShown = true
 		end
 	end
@@ -4021,6 +4026,10 @@ do
 			--self:Debug(v.modId .. " is " .. enabled, 2)
 			if not C_AddOns.IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
+					if self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] and v.modId == "DBM-Party-Vanilla" then
+						--Don't load dungeon mods in SoD Raids
+						return
+					end
 					self:LoadMod(v)
 				else
 					self:AddMsg(L.LOAD_MOD_DISABLED:format(v.name))
@@ -7120,7 +7129,7 @@ end
 -----------------------
 --  Misc. Functions  --
 -----------------------
-function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame)
+function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug)
 	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
@@ -7132,8 +7141,11 @@ function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame)
 	else
 		frame:AddMessage(text, 0.41, 0.8, 0.94)
 	end
-	if DBM.Options.DebugSound and useSound then
+	if DBM.Options.DebugSound and isDebug then
 		DBM:PlaySoundFile(567458)--"Ding"
+	end
+	if useSound then
+		DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)
 	end
 end
 AddMsg = DBM.AddMsg
@@ -10983,7 +10995,7 @@ do
 							if bar.timer > 0.2 then
 								local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 								if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, true)
+									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 									fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 								else
 									DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
@@ -11062,7 +11074,7 @@ do
 						if bar.timer > 0.2 then
 							local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 							if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, true)
+								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 								fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 							else
 								DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
