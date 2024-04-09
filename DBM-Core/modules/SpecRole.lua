@@ -594,6 +594,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
 				["CasterDps"] = true,
+				["HasInterrupt"] = true,
 			},
 			["SHAMAN2"] = {	--Enhancement Shaman
 				["Dps"] = true,
@@ -603,12 +604,14 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
 				["Physical"] = true,
+				["HasInterrupt"] = true,
 			},
 			["SHAMAN3"] = {	--Restoration Shaman
 				["Healer"] = true,
 				["Ranged"] = true,
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
+				["HasInterrupt"] = true,
 			},
 			["WARLOCK1"] = { --Affliction Warlock
 				["Dps"] = true,
