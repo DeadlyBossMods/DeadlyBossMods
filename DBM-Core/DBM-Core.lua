@@ -4343,15 +4343,17 @@ do
 	local function runPullStuff(sender, timer, blizzardTimer)
 		if newShit and not blizzardTimer then return end--Ignore old DBM version comms
 		local unitId
-		if blizzardTimer then
-			unitId = DBM:GetUnitIdFromGUID(sender)
-			sender = UnitName(unitId) or sender
-		else
-			unitId = DBM:GetRaidUnitId(sender)
-		end
-		local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-		if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
-			return
+		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
+			if blizzardTimer then
+				unitId = DBM:GetUnitIdFromGUID(sender)
+				sender = UnitName(unitId) or sender
+			else
+				unitId = DBM:GetRaidUnitId(sender)
+			end
+			local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+			if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+				return
+			end
 		end
 		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
 		if unitId then
@@ -4364,7 +4366,7 @@ do
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if timer == 0 or DBM:AntiSpam(1, "PT" .. sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+		if timer == 0 or DBM:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
 			if not dummyMod then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -5086,6 +5088,7 @@ do
 	end
 
 	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedBy)
+		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
 		runPullStuff(initiatedBy, 0, true)
 	end
 end
