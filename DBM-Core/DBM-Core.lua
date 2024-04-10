@@ -4356,7 +4356,8 @@ do
 		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
 		if unitId then
 			local senderMapID = IsInInstance() and select(-1, UnitPosition(unitId)) or C_Map.GetBestMapForUnit(unitId) or 0
-			if DBM.Options.DontShowPTNoID and senderMapID and tonumber(senderMapID) ~= LastInstanceMapID then return end
+			local playerMapID = IsInInstance() and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
+			if DBM.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
 		end
 		timer = tonumber(timer or 0)
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
