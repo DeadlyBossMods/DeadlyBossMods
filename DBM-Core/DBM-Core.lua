@@ -37,6 +37,7 @@ local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)--NYI in first build
 local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
+local newShit = (wowTOC >= 100207) or isCata
 
 local DBMPrefix = "D5"
 local DBMSyncProtocol = 1
@@ -1961,6 +1962,12 @@ do
 				"LOADING_SCREEN_ENABLED",
 				"ZONE_CHANGED_NEW_AREA"
 			)
+			if newShit then
+				self:RegisterEvents(
+					"START_PLAYER_COUNTDOWN",
+					"CANCEL_PLAYER_COUNTDOWN"
+				)
+			end
 			if not isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
@@ -4332,20 +4339,34 @@ do
 	end
 
 	local dummyMod -- dummy mod for the pull timer
-	syncHandlers["PT"] = function(sender, _, timer, senderMapID, target)
-		if DBM.Options.DontShowUserTimers then return end
-		local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-		if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
-			return
+
+	local function runPullStuff(sender, timer, blizzardTimer)
+		if newShit and not blizzardTimer then return end--Ignore old DBM version comms
+		local unitId
+		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
+			if blizzardTimer then
+				unitId = DBM:GetUnitIdFromGUID(sender)
+				sender = UnitName(unitId) or sender
+			else
+				unitId = DBM:GetRaidUnitId(sender)
+			end
+			local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+			if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+				return
+			end
 		end
 		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
-		if DBM.Options.DontShowPTNoID and senderMapID and tonumber(senderMapID) ~= LastInstanceMapID then return end
+		if unitId then
+			local senderMapID = IsInInstance() and select(-1, UnitPosition(unitId)) or C_Map.GetBestMapForUnit(unitId) or 0
+			local playerMapID = IsInInstance() and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
+			if DBM.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
+		end
 		timer = tonumber(timer or 0)
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if timer == 0 or DBM:AntiSpam(1, "PT" .. sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+		if timer == 0 or DBM:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
 			if not dummyMod then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -4362,13 +4383,15 @@ do
 				dummyMod.timer:Stop()
 			end
 			local timerTrackerRunning = false
-			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
-				for _, tttimer in pairs(TimerTracker.timerList) do
-					if not tttimer.isFree then--Timer event running
-						if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
-							FreeTimerTrackerTimer(tttimer)
-						else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
-							timerTrackerRunning = true
+			if not blizzardTimer then
+				if not DBM.Options.DontShowPTCountdownText and TimerTracker then
+					for _, tttimer in pairs(TimerTracker.timerList) do
+						if not tttimer.isFree then--Timer event running
+							if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
+								FreeTimerTrackerTimer(tttimer)
+							else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
+								timerTrackerRunning = true
+							end
 						end
 					end
 				end
@@ -4379,7 +4402,7 @@ do
 			if not DBM.Options.DontShowPT2 then
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
-			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
+			if not DBM.Options.DontShowPTCountdownText and TimerTracker and not blizzardTimer then
 				if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
 					--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
 					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
@@ -4397,6 +4420,7 @@ do
 				end
 			end
 			if not DBM.Options.DontShowPTText then
+				local target = unitId and UnitName(unitId.."target")
 				if target then
 					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
@@ -4429,6 +4453,10 @@ do
 				end
 			end
 		end
+	end
+	syncHandlers["PT"] = function(sender, _, timer)
+		if DBM.Options.DontShowUserTimers or newShit then return end
+		runPullStuff(sender, timer)
 	end
 
 	do
@@ -5053,6 +5081,15 @@ do
 		if prefix == DBMPrefix and msg then
 			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
 		end
+	end
+
+	function DBM:START_PLAYER_COUNTDOWN(initiatedBy, timeSeconds)--totalTime
+		runPullStuff(initiatedBy, timeSeconds, true)
+	end
+
+	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedBy)
+		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
+		runPullStuff(initiatedBy, 0, true)
 	end
 end
 
