@@ -3816,7 +3816,7 @@ do
 		if not self:IsTrivial() then
 			local checkedDungeon = isRetail and "DBM-Party-Dragonflight" or isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, true)
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, isRetail or isCata)
 				dungeonShown = true
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla/SoD mods"), nil, isClassic)--Play sound only in Vanilla
