@@ -9538,6 +9538,11 @@ do
 	end
 
 	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
+	function bossModPrototype:NewSpellSourceAnnounce(spellId, color, ...)
+		return newAnnounce(self, "spellsource", spellId, color or 2, ...)
+	end
+
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewIncomingAnnounce(spellId, color, ...)
 		return newAnnounce(self, "incoming", spellId, color or 2, ...)
 	end
