@@ -566,7 +566,7 @@ L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefe
 L.TabCategory_Frames		= "Marcos e integración"
 L.Area_NamelateInfo			= "Información de auras de placas de nombres de DBM"
 -- Panel: InfoFrame
-L.Panel_InfoFrame			= "Marco de info."
+L.Panel_InfoFrame			= "Marco de información"
 
 -- Panel: Range
 L.Panel_Range				= "Marco de distancia"
