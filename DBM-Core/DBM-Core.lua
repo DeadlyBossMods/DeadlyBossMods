@@ -2750,6 +2750,7 @@ do
 	end
 
 	function DBM:GetRaidSubgroup(name)
+		name = name or playerName
 		return (raid[name] and raid[name].subgroup) or 0
 	end
 
