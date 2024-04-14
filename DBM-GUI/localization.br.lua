@@ -240,7 +240,6 @@ L.DontShowPTNoID			= "Bloquear o temporizador de Puxada se não foi enviado na m
 L.DontShowPT				= "Não exibir a barra de puxada"
 L.DontShowPTText			= "Não exibir texto de anúncio do temporizador de puxada"
 L.DontPlayPTCountdown		= "Não tocar o áudio da contagem regressiva de puxada/customizado"
-L.DontShowPTCountdownText	= "Não exibir o texto da contagem regressiva de puxada/customizado"
 L.PT_Threshold				= "Não exibir o texto da contagem regressiva de puxada/customizado acima de: %d"
 
 -- Panel: Blizzard Features

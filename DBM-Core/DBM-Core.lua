@@ -378,7 +378,6 @@ DBM.DefaultOptions = {
 	BlockNoteShare = false,
 	DontAutoGossip = false,
 	DontShowPT2 = false,
-	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
 	DontShowPTText = false,
 	DontShowPTNoID = false,
@@ -4016,7 +4015,7 @@ do
 		--TimerTracker Cleanup, required to work around logic code blizzard put into TimerTracker for /countdown timers
 		--TimerTracker is hard coded that if a type 3 timer exists, to give it prio over type 1 and type 2. This causes the M+ timer not to show, even if only like 0.01 sec was left on the /countdown
 		--We want to avoid situations where players start a 10 second timer, but click keystone with fractions of a second left, preventing them from seeing the M+ timer
-		if not DBM.Options.DontShowPTCountdownText and TimerTracker then -- Doesn't exist in classic
+		if TimerTracker then -- Doesn't exist in classic
 			for _, tttimer in pairs(TimerTracker.timerList) do
 				if tttimer.type == 3 and not tttimer.isFree then
 					FreeTimerTrackerTimer(tttimer)
@@ -4385,7 +4384,7 @@ do
 			end
 			local timerTrackerRunning = false
 			if not blizzardTimer then
-				if not DBM.Options.DontShowPTCountdownText and TimerTracker then
+				if TimerTracker then
 					for _, tttimer in pairs(TimerTracker.timerList) do
 						if not tttimer.isFree then--Timer event running
 							if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
@@ -4403,7 +4402,7 @@ do
 			if not DBM.Options.DontShowPT2 then
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
-			if not DBM.Options.DontShowPTCountdownText and TimerTracker and not blizzardTimer then
+			if TimerTracker and not blizzardTimer then
 				if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
 					--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
 					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
@@ -5818,7 +5817,7 @@ do
 				if dummyMod then--stop pull timer
 					dummyMod.text:Cancel()
 					dummyMod.timer:Stop()
-					if not self.Options.DontShowPTCountdownText and TimerTracker then
+					if TimerTracker then
 						for _, tttimer in pairs(TimerTracker.timerList) do
 							if tttimer.type == 3 and not tttimer.isFree then
 								FreeTimerTrackerTimer(tttimer)

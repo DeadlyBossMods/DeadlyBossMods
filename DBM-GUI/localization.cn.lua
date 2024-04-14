@@ -459,7 +459,6 @@ L.Area_PullTimer			= "开怪和倒计时过滤设置"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
 L.DontShowPT				= "不显示开怪和倒计时条"
 L.DontShowPTText			= "不显示开怪和倒计时文字"
-L.DontShowPTCountdownText	= "不显示开怪倒计时动画"
 L.DontPlayPTCountdown		= "不播放开怪倒计时语音"
 L.PT_Threshold				= "不显示高于 %d 秒的倒计时动画"
 

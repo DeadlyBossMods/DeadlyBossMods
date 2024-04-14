@@ -458,7 +458,6 @@ L.Area_PullTimer					= "Pull, Break, & Custom Timer Filter Options"
 L.DontShowPTNoID					= "Block DBM Pull Timers if not sent from same zone as you (will never block BigWigs timers that are sent with no zone ID)"
 L.DontShowPT						= "Do not show Pull/Break Timer bar"
 L.DontShowPTText					= "Do not show announce text for Pull/Break Timer"
-L.DontShowPTCountdownText			= "Do not show Pull countdown text"
 L.DontPlayPTCountdown				= "Do not play Pull/Break/Custom Timer countdown audio at all"
 L.PT_Threshold						= "Do not play Pull/Break/Custom Timer countdown audio above: %d"
 

@@ -8,7 +8,6 @@ local pbcPTArea = pbcPanel:CreateArea(L.Area_PullTimer)
 pbcPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 pbcPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
 pbcPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
-pbcPTArea:CreateCheckButton(L.DontShowPTCountdownText, true, nil, "DontShowPTCountdownText")
 local SPTCDA = pbcPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
 
 local PTSlider = pbcPTArea:CreateSlider(L.PT_Threshold, 1, 10, 1, 300)
