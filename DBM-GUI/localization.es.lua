@@ -453,7 +453,6 @@ L.Area_PullTimer			= "Opciones de filtros de inicio de encuentro, descanso, y pe
 L.DontShowPTNoID			= "Ocultar temporizadores de inicio de encuentro que se inician en zonas distintas"
 L.DontShowPT				= "Ocultar barras de temporizadores de inicio de encuentro y descanso"
 L.DontShowPTText			= "Ocultar anuncios de temporizadores de inicio de encuentro y descanso"
-L.DontShowPTCountdownText	= "Ocultar texto de cuenta atrás de temporizadores de inicio de encuentro, descanso, y personalizados"
 L.DontPlayPTCountdown		= "Desactivar sonidos de cuenta atrás de temporizadores de inicio de encuentro, descanso, y personalizados"
 L.PT_Threshold				= "Ocultar temporizadores por encima de: %d s"
 
@@ -566,7 +565,7 @@ L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefe
 L.TabCategory_Frames		= "Marcos e integración"
 L.Area_NamelateInfo			= "Información de auras de placas de nombres de DBM"
 -- Panel: InfoFrame
-L.Panel_InfoFrame			= "Marco de info."
+L.Panel_InfoFrame			= "Marco de información"
 
 -- Panel: Range
 L.Panel_Range				= "Marco de distancia"

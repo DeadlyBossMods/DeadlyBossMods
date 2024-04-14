@@ -452,7 +452,6 @@ L.Area_PullTimer					= "開怪、休息、戰鬥和自定義計時器過濾器�
 L.DontShowPTNoID					= "阻擋與你不同區域ID送出的開怪倒數計時條(永遠不會阻擋在沒有區域ID的情況下發送的Bigwigs計時器)"
 L.DontShowPT						= "不要顯示開怪/休息倒數計時條"
 L.DontShowPTText					= "不要顯示開怪/休息計時提示文字"
-L.DontShowPTCountdownText			= "不要顯示開怪計時倒數文字"
 L.DontPlayPTCountdown				= "完全不要播放開怪/休息/開戰/自訂計時器倒數音效"
 L.PT_Threshold						= "不要播放高於%d秒以上的休息/開戰/自訂倒數計時器音效"
 

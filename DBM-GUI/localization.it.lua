@@ -279,7 +279,6 @@ L.Area_PullTimer			= "Opzioni Filtro Temporizzatori Pull, Pause, e Personalizzat
 L.DontShowPTNoID			= "Blocca Temporizzatori Pull se non inviati dalla tua zona"
 L.DontShowPT				= "Niente barre Temporizzatore Pull/Pausa"
 L.DontShowPTText			= "Niente annunci testuali Temporizzatore Pull/Pausa"
-L.DontShowPTCountdownText	= "Niente testo conto alla rovescia Pull"
 L.DontPlayPTCountdown		= "Niente audio conto alla rovescia Pull/Pausa/Temp. Personale"
 L.PT_Threshold				= "No audio conto alla rovescia Pull/Pausa/Temp. Personale sopra: %d"
 

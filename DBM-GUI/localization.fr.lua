@@ -421,7 +421,6 @@ L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, & personn
 L.DontShowPTNoID			= "Bloquer les décomptes de pull envoyés depuis une zone différente de la vôtre (ne bloquera jamais les décomptes BigWigs envoyés sans ID de zone)"
 L.DontShowPT				= "Ne pas afficher la barre de pull/pause"
 L.DontShowPTText			= "Ne pas afficher le texte d'alerte du décompte de pull/pause"
-L.DontShowPTCountdownText	= "Ne pas afficher le texte du décompte de pull"
 L.DontPlayPTCountdown		= "Ne jouer aucun son de décompte de pull/pause/perso"
 L.PT_Threshold				= "Pas de son du décompte de pull/pause/perso au delà de : %d"
 
