@@ -1713,6 +1713,8 @@ do
 				end
 			end
 			--DBM plater nameplate cooldown icons are enabled, but platers are not. Inform user feature is not fully enabled or fully disabled
+			--LuaLS doesn't like Plater
+			---@diagnostic disable-next-line: undefined-global
 			if Plater and not Plater.db.profile.bossmod_support_bars_enabled and not DBM.Options.DontShowNameplateIconsCD then
 				C_TimerAfter(15, function() AddMsg(self, L.PLATER_NP_AURAS_MSG) end)
 			end
@@ -3692,6 +3694,8 @@ end
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
 		self:FlashClientIcon()
+		--LuaLS doesn't like Plater
+		---@diagnostic disable-next-line: undefined-global
 		if not BINDING_HEADER_oRA3 then
 			DBM:PlaySoundFile(567478, true)--Because regular sound uses SFX channel which is too low of volume most of time
 		end
