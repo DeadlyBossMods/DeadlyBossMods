@@ -88,9 +88,9 @@ local fakeBWVersion, fakeBWHash = 326, "6808000"--326.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.35 alpha"--Core version
+DBM.DisplayVersion = "10.2.35"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 4, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 4, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -5569,7 +5569,7 @@ do
 		["worldboss"] = "normal",
 		["timewalker"] = "timewalker",
 		["progressivechallenges"] = "normal",
-		["delve1"] = "normal",
+		["delves"] = "normal",
 		--BFA
 		["normalwarfront"] = "normal",
 		["heroicwarfront"] = "heroic",
@@ -6461,8 +6461,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "wisdomscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 171 then--Path of Ascention (Shadowlands)
 		return "humilityscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 192 then--Non Instanced Challenge 1 (Likely Delves base difficulty)
-		return "delve1", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+--	elseif difficulty == 192 then--Non Instanced Challenge 1 (Unknown)
+--		return "delve1", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 205 then--Follower Dungeon (Dragonflight 10.2.5+)
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
@@ -7820,7 +7820,7 @@ end
 
 function bossModPrototype:IsDelve()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "delve1"
+	return diff == "delves"
 end
 
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly)
