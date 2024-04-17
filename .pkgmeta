@@ -34,7 +34,9 @@ move-folders:
   DBM-Core/DBM-Brawlers: DBM-Brawlers
   DBM-Core/DBM-DMF: DBM-DMF
   DBM-Core/DBM-DragonIsles: DBM-DragonIsles
+  DBM-Core/DBM-KhazAlgar: DBM-KhazAlgar
   DBM-Core/DBM-Raids-Dragonflight: DBM-Raids-Dragonflight
+  DBM-Core/DBM-Raids-WarWithin: DBM-Raids-WarWithin
   DBM-Core/DBM-Aberrus: DBM-Aberrus
   DBM-Core/DBM-Core: DBM-Core
   DBM-Core/DBM-GUI: DBM-GUI
