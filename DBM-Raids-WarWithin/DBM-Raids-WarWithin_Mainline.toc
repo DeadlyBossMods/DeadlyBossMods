@@ -2,7 +2,7 @@
 ## X-Min-Interface: 100206
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (WW)|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010공격대 (내부 전쟁)|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010Рейды (Война Внутри)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -15,7 +15,7 @@
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-SubCategoriesID: 2657
 ## X-DBM-Mod-Name: Raids (War Within)
-## X-DBM-Mod-Name-koKR: 공격대 (내부 전쟁)
+## X-DBM-Mod-Name-ruRU: Рейды (Война Внутри)
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-MapID: 2657
 ## X-DBM-Mod-MinCoreRevision: 20230617000000
@@ -25,7 +25,7 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
-localization.kr.lua
+localization.ru.lua
 
 NerubarPalace\UlgraxtheDevourer.lua
 NerubarPalace\TheBloodboundHorror.lua

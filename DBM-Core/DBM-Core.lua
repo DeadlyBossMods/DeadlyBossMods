@@ -1089,21 +1089,24 @@ do
 --		end
 	end
 
+	--- Check if the player is the target. *The* player, not *a* player, see IsDestTypePlayer() for unit type checks.
+	---@ref
 	function argsMT:IsPlayer()
 		-- If blizzard ever removes destFlags, this will automatically switch to fallback
 		if args.destFlags and COMBATLOG_OBJECT_AFFILIATION_MINE then
 			return bband(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 		else
-			return raid[args.destName] ~= nil--Unit in group, friendly
+			return args.destName == playerName
 		end
 	end
 
+	--- Check if the player is the source. *The* player, not *a* player, see IsSrcTypePlayer() for unit type checks.
 	function argsMT:IsPlayerSource()
 		-- If blizzard ever removes sourceFlags, this will automatically switch to fallback
 		if args.sourceFlags and COMBATLOG_OBJECT_AFFILIATION_MINE then
 			return bband(args.sourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 		else
-			return raid[args.sourceName] ~= nil -- Unit in group, friendly
+			return args.sourceName == playerName
 		end
 	end
 
