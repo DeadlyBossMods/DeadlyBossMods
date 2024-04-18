@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
+	"SPELL_CAST_START 434776"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -26,29 +26,33 @@ mod:RegisterEventsInCombat(
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
 --local warnSomeAbility							= mod:NewSpellAnnounce(422277, 3)
 
---local specWarnSomeAbility						= mod:NewSpecialWarningSpell(426725, nil, nil, nil, 3, 2)
+local specWarnSlatheringMaw						= mod:NewSpecialWarningCount(434776, nil, nil, nil, 2, 2)
 --local yellSearingAftermath					= mod:NewShortYell(422577)
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
---local timerWorldinFlamesCD					= mod:NewAITimer(49, 422172, nil, nil, nil, 3)
+local timerSlatheringMawCD						= mod:NewAITimer(49, 434776, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
---function mod:OnCombatStart(delay)
+mod.vb.mawCount = 0
 
---end
+function mod:OnCombatStart(delay)
+	self.vb.mawCount = 0
+	timerSlatheringMawCD:Start(1-delay)
+end
 
---[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 421343 then
-
+	if spellId == 434776 then
+		self.vb.mawCount = self.vb.mawCount + 1
+		specWarnSlatheringMaw:Show()
+		specWarnSlatheringMaw:Play("gathershare")
+		timerSlatheringMawCD:Start()
 	end
 end
---]]
 
 --[[
 function mod:SPELL_CAST_SUCCESS(args)

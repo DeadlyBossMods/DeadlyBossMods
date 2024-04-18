@@ -8,7 +8,7 @@ local DBM_GUI = DBM_GUI
 
 local DBM = DBM
 local CreateFrame = CreateFrame
-
+local IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded
 local frame = _G["DBM_GUI_OptionsFrame"]
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
