@@ -9397,6 +9397,7 @@ do
 		return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 	end
 
+	---@param name VPSound
 	function announcePrototype:Play(name, customPath)
 		local voice = DBM.Options.ChosenVoicePack2
 		if voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
@@ -10407,6 +10408,7 @@ do
 --		["reflect"] = "target",
 	}
 
+	---@param name VPSound
 	function specialWarningPrototype:Play(name, customPath)
 		local always = DBM.Options.AlwaysPlayVoice
 		local voice = DBM.Options.ChosenVoicePack2

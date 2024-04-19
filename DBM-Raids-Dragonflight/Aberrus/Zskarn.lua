@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.addIcon = 8
 		self.vb.golemsCount = self.vb.golemsCount + 1
 		specWarnAnimateGolems:Show(self.vb.golemsCount)
-		specWarnAnimateGolems:Play("killmobs")
+		specWarnAnimateGolems:Play("killmob")
 		timerAnimateGolemsCD:Start(73, self.vb.golemsCount+1)--Can get spell queued up to 78
 	elseif spellId == 405919 or spellId == 405886 then
 		if not castsPerGUID[args.sourceGUID] then
