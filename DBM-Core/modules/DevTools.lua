@@ -42,7 +42,7 @@ do
 
 	function module:Debug(text, level, useSound)
 		--But we still want to generate callbacks for level 1 and 2 events
-		if DBM.Options.DebugLevel == 3 or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
+		if (DBM.Options and DBM.Options.DebugLevel == 3) or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
