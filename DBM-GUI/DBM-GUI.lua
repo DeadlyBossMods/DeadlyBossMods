@@ -942,7 +942,7 @@ do
     local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN"}
 
 	-- WotLK compat, search for "local C_AddOns" in DBM-Core.lua for more details
-	local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded ---@diagnostic disable-line:deprecated
+	local IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded ---@diagnostic disable-line:deprecated
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then

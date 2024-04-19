@@ -234,6 +234,7 @@ globals = {
 	"C_Scenario.IsInScenario",
 	"C_Seasons.GetActiveSeason",
 	"C_Seasons.HasActiveSeason",
+	"C_Spell",
 	"C_Timer.After",
 	"C_Timer.NewTicker",
 	"C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo",
