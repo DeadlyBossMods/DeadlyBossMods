@@ -8,6 +8,7 @@ local tinsert, twipe = table.insert, table.wipe
 ---------------
 -- Prototype --
 ---------------
+---@class DBMModule
 local modulePrototype = {}
 
 function modulePrototype:RegisterEvents(...)
@@ -95,6 +96,7 @@ function private:NewModule(name)
 		error("DBM:NewModule(): Module names must be unique", 2)
 	end
 	local frame = CreateFrame("Frame", "DBM" .. name)
+	---@class DBMModule
 	local obj = setmetatable({
 		frame = frame,
 		unitFrames = {},

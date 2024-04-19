@@ -3,6 +3,7 @@ local private = select(2, ...)
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
+---@class DevToolsModule: DBMModule
 local module = private:NewModule("DevTools")
 
 function module:OnModuleLoad()
