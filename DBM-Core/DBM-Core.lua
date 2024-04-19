@@ -23,7 +23,8 @@
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --    * nBlueWiz (a lot of previous fixes in the koKR localization as well as boss mod work) Contact: everfinale@gmail.com
 --
-local _, private = ...
+---@class DBMCoreNamespace
+local private = select(2, ...)
 
 --WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
 --More modulation or scoping is needed to reduce this
@@ -1746,6 +1747,7 @@ do
 			end
 			if LibStub and LibStub("LibDBIcon-1.0", true) then
 				local LibDBIcon = LibStub("LibDBIcon-1.0")
+				---@diagnostic disable-next-line: param-type-mismatch
 				LibDBIcon:Register("DBM", private.dataBroker, DBM_MinimapIcon)
 				if DBM_MinimapIcon.showInCompartment == nil then
 					LibDBIcon:AddButtonToCompartment("DBM")

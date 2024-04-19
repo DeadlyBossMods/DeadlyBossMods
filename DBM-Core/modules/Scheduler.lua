@@ -1,4 +1,5 @@
-local _, private = ...
+---@class DBMCoreNamespace
+local private = select(2, ...)
 
 local twipe, tremove = table.wipe, table.remove
 local floor = math.floor
