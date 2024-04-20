@@ -1,4 +1,5 @@
-local _, private = ...
+---@class DBMCoreNamespace
+local private = select(2, ...)
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local GetTime = GetTime
@@ -26,6 +27,11 @@ local iconVariables = {}
 local iconUnitTable = {}
 local iconSet = {}
 
+---@class DBMMod
+local bossModPrototype = private.bossModPrototype or {}
+private.bossModPrototype = bossModPrototype
+
+---@class IconModule: DBMModule
 local module = private:NewModule("Icons")
 
 function module:OnModuleEnd()
@@ -38,13 +44,13 @@ local function clearIconTable(scanId)
 	iconSet[scanId] = nil
 end
 
---Primary icon methods
-function module:SetIcon(mod, target, icon, timer, ignoreOld)
+-- Set icon on a target.
+function bossModPrototype:SetIcon(target, icon, timer, ignoreOld)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 	if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
-	mod:UnscheduleMethod("SetIcon", target)
+	self:UnscheduleMethod("SetIcon", target)
 	if type(icon) ~= "number" or type(target) ~= "string" then--icon/target probably backwards.
 		DBM:Debug("|cffff0000SetIcon is being used impropperly. Check icon/target order|r")
 		return--Fail silently instead of spamming icon lua errors if we screw up
@@ -57,19 +63,19 @@ function module:SetIcon(mod, target, icon, timer, ignoreOld)
 	if uId and UnitIsUnit(uId, "player") and DBM:GetNumRealGroupMembers() < 2 then return end--Solo raid, no reason to put icon on yourself.
 	if uId then--target accepts uid, unitname both.
 		--save previous icon into a table.
-		local oldIcon = self:GetIcon(uId) or 0
-		if not mod.iconRestore[uId] and not ignoreOld then
-			mod.iconRestore[uId] = oldIcon
+		local oldIcon = module:GetIcon(uId) or 0
+		if not self.iconRestore[uId] and not ignoreOld then
+			self.iconRestore[uId] = oldIcon
 		end
 		--set icon
 		if ignoreOld then
 			SetRaidTarget(uId, icon)
 		elseif (oldIcon ~= icon) then--Don't set icon if it's already set to what we're setting it to
-			SetRaidTarget(uId, mod.iconRestore[uId] and icon == 0 and mod.iconRestore[uId] or icon)
+			SetRaidTarget(uId, self.iconRestore[uId] and icon == 0 and self.iconRestore[uId] or icon)
 		end
 		--schedule restoring old icon if timer enabled.
 		if timer then
-			mod:ScheduleMethod(timer, "SetIcon", target, 0)
+			self:ScheduleMethod(timer, "SetIcon", target, 0)
 		end
 	end
 end
@@ -108,7 +114,7 @@ do
 		mod:Schedule(1.5, clearIconTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
-	function module:SetUnsortedIcon(mod, delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
+	function bossModPrototype:SetUnsortedIcon(delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
 		if not target then return end
 		if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
 			return
@@ -131,11 +137,11 @@ do
 				iconSet[scanId] = iconSet[scanId] + 1
 				tinsert(iconUnitTable[scanId], uId)
 			end
-			mod:Unschedule(SetIconByTable)
+			self:Unschedule(SetIconByTable)
 			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconByTable(mod, startIcon, descendingIcon, returnFunc, scanId)
-			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				mod:Schedule(delay or 0.5, SetIconByTable, mod, startIcon, descendingIcon, returnFunc, scanId)
+				SetIconByTable(self, startIcon, descendingIcon, returnFunc, scanId)
+			elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:Schedule(delay or 0.5, SetIconByTable, self, startIcon, descendingIcon, returnFunc, scanId)
 			end
 		end
 	end
@@ -145,12 +151,14 @@ function module:GetIcon(uIdOrTarget)
 	local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
+bossModPrototype.GetIcon = module.GetIcon
 
-function module:RemoveIcon(mod, target)
-	return self:SetIcon(mod, target, 0)
+
+function bossModPrototype:RemoveIcon(target)
+	return self:SetIcon(target, 0)
 end
 
-function module:ClearIcons()
+function bossModPrototype:ClearIcons()
 	if IsInRaid() then
 		for i = 1, GetNumGroupMembers() do
 			if UnitExists("raid" .. i) and GetRaidTargetIndex("raid" .. i) then
@@ -166,7 +174,7 @@ function module:ClearIcons()
 	end
 end
 
-function module:CanSetIcon(optionName)
+function bossModPrototype:CanSetIcon(optionName)
 	return private.canSetIcons[optionName] or false
 end
 
@@ -222,7 +230,7 @@ do
 		mod:Schedule(1.5, clearIconTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
-	function module:SetSortedIcon(mod, sortType, delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
+	function bossModPrototype:SetSortedIcon(sortType, delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
 		if type(sortType) ~= "string" then
 			DBM:AddMsg("SetSortedIcon tried to call invalid type, please update your encounter modules for this zone. If error persists, report this issue")
 			return
@@ -249,13 +257,18 @@ do
 				iconSet[scanId] = iconSet[scanId] + 1
 				tinsert(iconUnitTable[scanId], uId)
 			end
-			mod:Unschedule(SetIconBySortedTable)
+			self:Unschedule(SetIconBySortedTable)
 			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
-			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				mod:Schedule(delay or 0.5, SetIconBySortedTable, mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
+				SetIconBySortedTable(self, sortType, startIcon, descendingIcon, returnFunc, scanId)
+			elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:Schedule(delay or 0.5, SetIconBySortedTable, self, sortType, startIcon, descendingIcon, returnFunc, scanId)
 			end
 		end
+	end
+
+	--Backwards compat for old mods using this method, which is now merged into SetSortedIcon
+	function bossModPrototype:SetAlphaIcon(delay, target, maxIcon, returnFunc, scanId)
+		return self:SetSortedIcon("alpha", delay, target, 1, maxIcon, false, returnFunc, scanId)
 	end
 end
 
@@ -399,8 +412,8 @@ do
 		"mouseover", "target", "focus", "targettarget", "mouseovertarget"
 	}
 
-	function module:ScanForMobs(mod, scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
-		if not optionName then optionName = mod.findFastestComputer[1] end
+	function bossModPrototype:ScanForMobs(scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
+		if not optionName then optionName = self.findFastestComputer[1] end
 		if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 			--Declare variables.
 			DBM:Debug("canSetIcons or allAllowed true for "..(optionName or "nil"), 2)
@@ -440,9 +453,9 @@ do
 			if not eventsRegistered and scansActive > 0 then
 				eventsRegistered = true
 				if isRetail then
-					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+					module:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 				else
-					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED")
+					module:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED")
 				end
 				DBM:Debug("Target events Registered", 2)
 			end
