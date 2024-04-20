@@ -564,7 +564,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 424579 then
 		warnSupressiveEmber:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnSupressingEmber:Show()
 			specWarnSupressingEmber:Play("targetyou")
 		end
