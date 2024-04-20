@@ -6656,7 +6656,7 @@ do
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown
 	else
 		newPath = false
-		GetSpellInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, GetSpellTexture, GetSpellCooldown
+		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
 	function DBM:GetSpellInfo(spellId)
 		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
@@ -6695,7 +6695,7 @@ do
 		--		texture = spellTable.texture
 		--	end
 		--else
-			texture = GetSpellTexture()
+			texture = GetSpellTexture(spellId)
 		--end
 		return texture
 	end
@@ -6708,7 +6708,7 @@ do
 				start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
 			end
 		else
-			start, duration, enable = GetSpellCooldown()
+			start, duration, enable = GetSpellCooldown(spellId)
 		end
 		return start, duration, enable
 	end
