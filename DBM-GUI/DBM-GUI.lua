@@ -513,7 +513,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 					else
 						local _title = DBM:GetSpellInfo(spellID)
 						if _title then
-							title, desc, icon = _title, tonumber(spellID), GetSpellTexture(spellID or 0)
+							title, desc, icon = _title, tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
 						end
 					end
 				elseif spellID:find("^ej") then

@@ -643,11 +643,11 @@ do
 	}
 	local iconEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(395893))},
+		[391096] = {DBM:GetSpellTexture(373678), DBM:GetSpellTexture(373487), DBM:GetSpellTexture(382563), (DBM:GetSpellTexture(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {GetSpellTexture(373678), GetSpellTexture(390920), GetSpellTexture(382563), (GetSpellTexture(395893))},
+		[391100] = {DBM:GetSpellTexture(373678), DBM:GetSpellTexture(390920), DBM:GetSpellTexture(382563), (DBM:GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
-		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
+		[374680] = {DBM:GetSpellTexture(372456), DBM:GetSpellTexture(374217), DBM:GetSpellTexture(374022), (DBM:GetSpellTexture(374705))}
 	}
 	local spellMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
@@ -659,11 +659,11 @@ do
 	}
 	local iconMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
-		[391096] = {GetSpellTexture(373678), GetSpellTexture(373487), GetSpellTexture(382563), (GetSpellTexture(391055))},
+		[391096] = {DBM:GetSpellTexture(373678), DBM:GetSpellTexture(373487), DBM:GetSpellTexture(382563), (DBM:GetSpellTexture(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {GetSpellTexture(391019), GetSpellTexture(390920), GetSpellTexture(373329), (GetSpellTexture(395893))},
+		[391100] = {DBM:GetSpellTexture(391019), DBM:GetSpellTexture(390920), DBM:GetSpellTexture(373329), (DBM:GetSpellTexture(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
-		[374680] = {GetSpellTexture(372456), GetSpellTexture(374217), GetSpellTexture(374022), (GetSpellTexture(374705))}
+		[374680] = {DBM:GetSpellTexture(372456), DBM:GetSpellTexture(374217), DBM:GetSpellTexture(374022), (DBM:GetSpellTexture(374705))}
 	}
 
 	function updateAltar(self)
