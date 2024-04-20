@@ -139,9 +139,9 @@ do
 		--Hard return filter target, with no other checks like tank or hostility if final scan and cache exists
 		if filteredTargetCache[cidOrGuid] and isFinalScan then
 			targetScanCount[cidOrGuid] = nil
-			bossModPrototype:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
+			self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 			local scanningTime = (targetScanCount[cidOrGuid] or 1) * scanInterval
-			bossModPrototype[returnFunc](bossModPrototype, filteredTargetCache[cidOrGuid].targetname, filteredTargetCache[cidOrGuid].targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
+			self[returnFunc](self, filteredTargetCache[cidOrGuid].targetname, filteredTargetCache[cidOrGuid].targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
 			DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
 			filteredTargetCache[cidOrGuid] = nil
 		--Perform normal scan criteria matching
