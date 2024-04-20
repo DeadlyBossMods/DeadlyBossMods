@@ -667,7 +667,6 @@ local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, U
 local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 --local UnitTokenFromGUID, UnitPercentHealthFromGUID = UnitTokenFromGUID, UnitPercentHealthFromGUID
-local GetSpellInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, GetSpellTexture, GetSpellCooldown
 local GetDungeonInfo = C_LFGInfo.GetDungeonInfo or GetDungeonInfo -- Classic has C_LFGInfo but not C_LFGInfo.GetDungeonInfo, need to use global for classic
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo
 local EJ_GetSectionInfo, GetSectionIconFlags
@@ -995,7 +994,7 @@ local function parseSpellIcon(spellId, objectType, fallbackIcon)
 		if spellId < 0 then--Journal ID in new format
 			icon = select(4, DBM:EJ_GetSectionInfo(-spellId))
 		else--SpellId
-			icon = spellId >= 6 and GetSpellTexture(spellId)
+			icon = spellId >= 6 and DBM:GetSpellTexture(spellId)
 		end
 	end
 	return icon or fallbackIcon or 136116
@@ -6648,34 +6647,71 @@ function DBM:GetDungeonInfo(id)
 	return type(temp) == "table" and temp.name or tostring(temp)
 end
 
---Handle new spell name requesting with wrapper, to make api changes easier to handle
---Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
-function DBM:GetSpellInfo(spellId)
-	--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
-	if not spellId or spellId == "" then
-		error("|cffff0000Invalid call to GetSpellInfo for spellId. spellId is missing! |r")
-	end
-	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+do
+	--Handle new spell name requesting with wrapper, to make api changes easier to handle
+	local GetSpellInfo, GetSpellTexture, GetSpellCooldown
+	local newPath
 	if C_Spell and C_Spell.GetSpellInfo then
-		local spellTable = C_Spell.GetSpellInfo(spellId)
-		if spellTable then
-			name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = spellTable.name, nil, spellTable.iconID, spellTable.castTime, spellTable.minRange, spellTable.maxRange, spellTable.spellID
-		end
+		newPath = true
+		GetSpellInfo, GetSpellTexture, GetSpellCooldown = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown
 	else
-		name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
-		--I want this for debug purposes to catch spellids that are removed from game/changed, but quietly to end user
-		if not returnedSpellId then--Bad request all together
-			if type(spellId) == "string" then
-				self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId .. " as a string!")
-			else
-				if spellId > 4 then
-					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId)
-				end
-			end
-			return
-		end--Good request, return now
+		newPath = false
+		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
-	return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+	function DBM:GetSpellInfo(spellId)
+		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
+		if not spellId or spellId == "" then
+			error("|cffff0000Invalid call to GetSpellInfo for spellId. spellId is missing! |r")
+		end
+		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+		if newPath then
+			local spellTable = GetSpellInfo(spellId)
+			if spellTable then
+				name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = spellTable.name, nil, spellTable.iconID, spellTable.castTime, spellTable.minRange, spellTable.maxRange, spellTable.spellID
+			end
+		else
+			name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+			--I want this for debug purposes to catch spellids that are removed from game/changed, but quietly to end user
+			if not returnedSpellId then--Bad request all together
+				if type(spellId) == "string" then
+					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId .. " as a string!")
+				else
+					if spellId > 4 then
+						self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId)
+					end
+				end
+				return
+			end--Good request, return now
+		end
+		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+	end
+
+	function DBM:GetSpellTexture(spellId)
+		--Doesn't need a table at this time
+		local texture
+		--if newPath then
+		--	local spellTable = GetSpellTexture(spellId)
+		--	if spellTable then
+		--		texture = spellTable.texture
+		--	end
+		--else
+			texture = GetSpellTexture(spellId)
+		--end
+		return texture
+	end
+
+	function DBM:GetSpellCooldown(spellId)
+		local start, duration, enable
+		if newPath then
+			local spellTable = GetSpellCooldown(spellId)
+			if spellTable then
+				start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
+			end
+		else
+			start, duration, enable = GetSpellCooldown(spellId)
+		end
+		return start, duration, enable
+	end
 end
 
 do
@@ -8510,7 +8546,7 @@ do
 			for spellID, _ in pairs(interruptSpells) do
 				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
 				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
-				if (GetSpellCooldown(spellID)) ~= 0 then--Spell is on cooldown
+				if (DBM:GetSpellCooldown(spellID)) ~= 0 then--Spell is on cooldown
 					return false
 				end
 			end
@@ -8619,7 +8655,7 @@ do
 		end
 		if dispelType then
 			--Singe magic requires checking if pet is out
-			if dispelType == "magic" and (GetSpellCooldown(89808)) == 0 and (UnitExists("pet") and self:GetCIDFromGUID(UnitGUID("pet")) == 416) then
+			if dispelType == "magic" and (DBM:GetSpellCooldown(89808)) == 0 and (UnitExists("pet") and self:GetCIDFromGUID(UnitGUID("pet")) == 416) then
 				lastCheck = GetTime()
 				lastReturn = true
 				return true
@@ -8628,7 +8664,7 @@ do
 			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 			--As such, we have to check if a spell is known in addition to it not being on cooldown
 			for spellID, _ in pairs(typeCheck[dispelType]) do
-				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					if (spellID == 4987 or spellID == 88423) and not DBM:IsHealer() then--These spellIds can only dispel if healer specced
 						lastReturn = false
@@ -8640,7 +8676,7 @@ do
 			end
 		else--use lazy check until all mods are migrated to define type
 			for spellID, _ in pairs(lazyCheck) do
-				if IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				if IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					lastReturn = true
 					return true
@@ -8728,7 +8764,7 @@ do
 			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 			--As such, we have to check if a spell is known in addition to it not being on cooldown
 			for spellID, _ in pairs(typeCheck[ccType]) do
-				if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					lastReturn = true
 					return lastReturn
@@ -8736,7 +8772,7 @@ do
 			end
 		else--use full check since ANY CC works
 			for spellID, _ in pairs(ccLazyList) do
-				if IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				if IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					lastReturn = true
 					return true
@@ -9397,6 +9433,7 @@ do
 		return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 	end
 
+	---@param name VPSound
 	function announcePrototype:Play(name, customPath)
 		local voice = DBM.Options.ChosenVoicePack2
 		if voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
@@ -10407,6 +10444,7 @@ do
 --		["reflect"] = "target",
 	}
 
+	---@param name VPSound
 	function specialWarningPrototype:Play(name, customPath)
 		local always = DBM.Options.AlwaysPlayVoice
 		local voice = DBM.Options.ChosenVoicePack2

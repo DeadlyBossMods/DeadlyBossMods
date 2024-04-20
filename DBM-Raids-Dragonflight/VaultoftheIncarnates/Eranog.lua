@@ -169,7 +169,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 396022 then
 		self.vb.spikesCount = self.vb.spikesCount + 1
 		specWarnMoltenSpikes:Show(self.vb.spikesCount)
-		specWarnMoltenSpikes:Play(self.vb.spikesCount)
+		specWarnMoltenSpikes:Play("Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack2.."\\count\\"..self.vb.spikesCount..".ogg")
 		if self.vb.spikesCount < 3 then
 			timerMoltenSpikesCD:Start(nil, self.vb.spikesCount+1)
 		end
