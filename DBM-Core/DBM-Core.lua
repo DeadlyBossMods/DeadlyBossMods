@@ -80,10 +80,10 @@ local function showRealDate(curseDate)
 end
 
 ---@class DBM
-local DBM = {
-	Revision = parseCurseDate("@project-date-integer@"),
-}
+local DBM = private.DBM or {}
+private.DBM = DBM
 _G.DBM = DBM
+DBM.Revision = parseCurseDate("@project-date-integer@")
 
 local fakeBWVersion, fakeBWHash = 326, "6808000"--326.0
 local bwVersionResponseString = "V^%d^%s"
@@ -1344,6 +1344,7 @@ do
 	end
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
+	---@param self DBM|DBMMod
 	---@param ... DBMEvent|string
 	function DBM:RegisterEvents(...)
 		for i = 1, select('#', ...) do
@@ -1406,8 +1407,8 @@ do
 		end
 	end
 
+	---@param self DBM|DBMMod
 	function DBM:UnregisterInCombatEvents(srmOnly, srmIncluded)
-		---@cast self DBMMod
 		for event, mods in pairs(registeredEvents) do
 			if srmOnly then
 				local i = 1
@@ -1451,6 +1452,7 @@ do
 		end
 	end
 
+	---@param self DBM|DBMMod
 	---@param ... DBMEvent|string
 	function DBM:RegisterShortTermEvents(...)
 		DBM:Debug("RegisterShortTermEvents fired", 2)
@@ -1473,6 +1475,7 @@ do
 		-- End fix
 	end
 
+	---@param self DBM|DBMMod
 	function DBM:UnregisterShortTermEvents()
 		DBM:Debug("UnregisterShortTermEvents fired", 2)
 		if self.shortTermRegisterEvents then
@@ -2814,6 +2817,7 @@ do
 	}
 
 	--Not to be confused with GetUnitIdFromCID
+	---@param self DBM|DBMMod
 	function DBM:GetUnitIdFromGUID(guid, bossOnly)
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
@@ -2836,6 +2840,7 @@ do
 	end
 
 	--Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
+	---@param self DBM|DBMMod
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 		--Always prioritize a quick boss unit scan on retail first
 		if not isClassic and not isBCC then
@@ -2991,6 +2996,7 @@ function DBM:GetNumRealGroupMembers()
 	return realGroupMembers
 end
 
+---@param self DBM|DBMMod
 function DBM:GetUnitCreatureId(uId)
 	return self:GetCIDFromGUID(UnitGUID(uId))
 end
@@ -2999,6 +3005,7 @@ end
 ----<type>:<subtype>:<realmID>:<mapID>:<serverID>:<dbID>:<creationbits>
 --Player/Item
 ----<type>:<realmID>:<dbID>
+---@param self DBM|DBMMod
 function DBM:GetCIDFromGUID(guid)
 	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
 	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "Pet") then
@@ -3015,12 +3022,14 @@ function DBM:IsNonPlayableGUID(guid)
 	return guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "NPC")--To determine, add pet or not?
 end
 
+---@param self DBM|DBMMod
 function DBM:IsCreatureGUID(guid)
 	local guidType = strsplit("-", guid or "")
 	return guidType and (guidType == "Creature" or guidType == "Vehicle")--To determine, add pet or not?
 end
 
 --Scope, will only check if a unit is within 43 yards now
+---@param self DBM|DBMMod
 function DBM:CheckNearby(range, targetname)
 	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
 		return true--No target name means check if anyone is near self, period
@@ -3037,6 +3046,7 @@ function DBM:CheckNearby(range, targetname)
 	return false
 end
 
+---@param self DBM|DBMMod
 function DBM:IsTrivial(customLevel)
 	--if timewalking or chromie time or challenge modes. it's always non trivial content
 	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 or difficultyIndex == 8 then
@@ -3061,6 +3071,7 @@ end
 
 --Ugly, Needs improvement in code style to just dump all numeric values as args
 --it's not meant to just wrap C_GossipInfo.GetOptions() but to dump out the meaningful values from it
+---@param self DBM|DBMMod
 ---@return string?
 function DBM:GetGossipID(force)
 	if self.Options.DontAutoGossip and not force then return nil end
@@ -3083,6 +3094,7 @@ function DBM:GetGossipID(force)
 end
 
 --Hybrid all in one object to auto check and confirm multiple gossip IDs at once
+---@param self DBM|DBMMod
 function DBM:SelectMatchingGossip(confirm, ...)
 	if self.Options.DontAutoGossip then return false end
 	local requestedIds = {...}
@@ -3106,6 +3118,7 @@ function DBM:SelectMatchingGossip(confirm, ...)
 	return false
 end
 
+---@param self DBM|DBMMod
 function DBM:SelectGossip(gossipOptionID, confirm)
 	if gossipOptionID and not self.Options.DontAutoGossip then
 		if gossipOptionID < 10 then--Using Index
@@ -6519,6 +6532,7 @@ function DBM:GetKeyStoneLevel()
 	return difficultyModifier
 end
 
+---@param self DBM|DBMMod
 function DBM:HasMapRestrictions()
 	--Check playerX and playerY. if they are nil restrictions are active
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
@@ -7230,6 +7244,7 @@ end
 -----------------------
 --  Misc. Functions  --
 -----------------------
+---@param self DBM|DBMMod
 function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug)
 	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
@@ -7349,8 +7364,9 @@ function DBM:RoleCheck(ignoreLoot)
 end
 
 -- An anti spam function to throttle spammy events (e.g. SPELL_AURA_APPLIED on all group members)
---- @param time number? time to wait between two events (optional, default 2.5 seconds)
---- @param id any? id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
+---@param self DBM|DBMMod
+---@param time number? time to wait between two events (optional, default 2.5 seconds)
+---@param id any? id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
 function DBM:AntiSpam(time, id)
 	if GetTime() - (id and (self["lastAntiSpam" .. tostring(id)] or 0) or self.lastAntiSpam or 0) > (time or 2.5) then
 		if id then
@@ -7385,34 +7401,15 @@ end
 do
 	--Search Tags: iconto, toicon, raid icon, diamond, star, triangle
 	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
+
+	---@param self DBM|DBMMod
 	function DBM:IconNumToString(number)
 		return iconStrings[number] or number
 	end
+
+	---@param self DBM|DBMMod
 	function DBM:IconNumToTexture(number)
 		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t" or number
-	end
-end
-
-do
-	local DevTools = private:GetModule("DevTools")
-	function DBM:Debug(...)
-		return DevTools:Debug(...)
-	end
-
-	function DBM:FindDungeonMapIDs(...)
-		return DevTools:FindDungeonMapIDs(...)
-	end
-
-	function DBM:FindInstanceIDs(...)
-		return DevTools:FindInstanceIDs(...)
-	end
-
-	function DBM:FindScenarioIDs(...)
-		return DevTools:FindScenarioIDs(...)
-	end
-
-	function DBM:FindEncounterIDs(...)
-		return DevTools:FindEncounterIDs(...)
 	end
 end
 
@@ -7806,6 +7803,7 @@ function DBM:IsSeasonal(season)
 	end
 end
 
+---@param self DBM|DBMMod
 function DBM:IsFated()
 	--Returns table if fated, nil otherwise
 	if C_ModifiedInstance and C_ModifiedInstance.GetModifiedInstanceInfoFromMapID(LastInstanceMapID) then
@@ -7816,21 +7814,25 @@ end
 bossModPrototype.IsFated = DBM.IsFated
 
 --Catch alls to basically allow encounter mods to use pre retail changes within mods
+---@param self DBM|DBMMod
 function DBM:IsClassic()
 	return not isRetail
 end
 bossModPrototype.IsClassic = DBM.IsClassic
 
+---@param self DBM|DBMMod
 function DBM:IsRetail()
 	return isRetail
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
+---@param self DBM|DBMMod
 function DBM:IsCata()
 	return isCata
 end
 bossModPrototype.IsCata = DBM.IsCata
 
+---@param self DBM|DBMMod
 function DBM:IsPostCata()
 	return isCata or isRetail
 end
@@ -7941,38 +7943,6 @@ bossModPrototype.IsTrivial = DBM.IsTrivial
 bossModPrototype.GetGossipID = DBM.GetGossipID
 bossModPrototype.SelectMatchingGossip = DBM.SelectMatchingGossip
 bossModPrototype.SelectGossip = DBM.SelectGossip
-
-do
-	local TargetScanning = private:GetModule("TargetScanning")
-
-	function bossModPrototype:GetBossTarget(...)
-		return TargetScanning:GetBossTarget(self, ...)
-	end
-
-	function bossModPrototype:BossTargetScannerAbort(...)
-		return TargetScanning:BossTargetScannerAbort(self, ...)
-	end
-
-	function bossModPrototype:BossUnitTargetScannerAbort(...)
-		return TargetScanning:BossUnitTargetScannerAbort(self, ...)
-	end
-
-	function bossModPrototype:BossUnitTargetScanner(...)
-		return TargetScanning:BossUnitTargetScanner(self, ...)
-	end
-
-	function bossModPrototype:BossTargetScanner(...)
-		return TargetScanning:BossTargetScanner(self, ...)
-	end
-
-	function bossModPrototype:StartRepeatedScan(...)
-		return TargetScanning:StartRepeatedScan(self, ...)
-	end
-
-	function bossModPrototype:StopRepeatedScan(...)
-		return TargetScanning:StopRepeatedScan(...)--self/bossModPrototype missing not a bug, function doesn't need it
-	end
-end
 
 do
 	local bossCache = {}
@@ -8179,6 +8149,7 @@ do
 		return private.specRoleTable[currentSpecID]["MeleeDps"]
 	end
 
+	---@param self DBM|DBMMod
 	function DBM:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			--Class checks performed first due to mechanical check needing to be broader than a specID check
@@ -8220,6 +8191,7 @@ do
 	end
 	bossModPrototype.IsMelee = DBM.IsMelee
 
+	---@param self DBM|DBMMod
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
@@ -8411,6 +8383,7 @@ function bossModPrototype:IsDps(uId)
 	return role == "DAMAGER"
 end
 
+---@param self DBM|DBMMod
 function DBM:IsHealer(uId)
 	if uId then--External unit call.
 		if not isRetail then
@@ -8438,6 +8411,7 @@ function DBM:IsHealer(uId)
 end
 bossModPrototype.IsHealer = DBM.IsHealer
 
+---@param self DBM|DBMMod
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
@@ -8797,6 +8771,7 @@ do
 	local bossNames, bossIcons = {}, {}
 
 	--This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
+	---@param self DBM|DBMMod
 	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 		local uId = bossHealthuIdCache[cIdOrGUID] or "target"
 		local guid = UnitGUID(uId)
