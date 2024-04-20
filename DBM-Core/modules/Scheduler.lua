@@ -1,5 +1,4 @@
----@class DBMCoreNamespace
-local private = select(2, ...)
+local _, private = ...
 
 local twipe, tremove = table.wipe, table.remove
 local floor = math.floor
@@ -10,7 +9,6 @@ local LastInstanceMapID = -1
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
 
----@class SchedulerModule: DBMModule
 local module = private:NewModule("DBMScheduler")
 
 --------------------------

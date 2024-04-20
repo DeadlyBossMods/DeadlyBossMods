@@ -1,5 +1,4 @@
----@class DBMCoreNamespace
-local private = select(2, ...)
+local _, private = ...
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local wowTOC = select(4, GetBuildInfo())

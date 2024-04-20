@@ -1,5 +1,4 @@
----@class DBMCoreNamespace
-local private = select(2, ...)
+local _, private = ...
 
 ---@class DBM
 local DBM = DBM
