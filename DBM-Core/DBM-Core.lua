@@ -80,10 +80,10 @@ local function showRealDate(curseDate)
 end
 
 ---@class DBM
-local DBM = {
-	Revision = parseCurseDate("@project-date-integer@"),
-}
+local DBM = private.DBM or {}
+private.DBM = DBM
 _G.DBM = DBM
+DBM.Revision = parseCurseDate("@project-date-integer@")
 
 local fakeBWVersion, fakeBWHash = 326, "6808000"--326.0
 local bwVersionResponseString = "V^%d^%s"
@@ -7390,29 +7390,6 @@ do
 	end
 	function DBM:IconNumToTexture(number)
 		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t" or number
-	end
-end
-
-do
-	local DevTools = private:GetModule("DevTools")
-	function DBM:Debug(...)
-		return DevTools:Debug(...)
-	end
-
-	function DBM:FindDungeonMapIDs(...)
-		return DevTools:FindDungeonMapIDs(...)
-	end
-
-	function DBM:FindInstanceIDs(...)
-		return DevTools:FindInstanceIDs(...)
-	end
-
-	function DBM:FindScenarioIDs(...)
-		return DevTools:FindScenarioIDs(...)
-	end
-
-	function DBM:FindEncounterIDs(...)
-		return DevTools:FindEncounterIDs(...)
 	end
 end
 
