@@ -7943,38 +7943,6 @@ bossModPrototype.SelectMatchingGossip = DBM.SelectMatchingGossip
 bossModPrototype.SelectGossip = DBM.SelectGossip
 
 do
-	local TargetScanning = private:GetModule("TargetScanning")
-
-	function bossModPrototype:GetBossTarget(...)
-		return TargetScanning:GetBossTarget(self, ...)
-	end
-
-	function bossModPrototype:BossTargetScannerAbort(...)
-		return TargetScanning:BossTargetScannerAbort(self, ...)
-	end
-
-	function bossModPrototype:BossUnitTargetScannerAbort(...)
-		return TargetScanning:BossUnitTargetScannerAbort(self, ...)
-	end
-
-	function bossModPrototype:BossUnitTargetScanner(...)
-		return TargetScanning:BossUnitTargetScanner(self, ...)
-	end
-
-	function bossModPrototype:BossTargetScanner(...)
-		return TargetScanning:BossTargetScanner(self, ...)
-	end
-
-	function bossModPrototype:StartRepeatedScan(...)
-		return TargetScanning:StartRepeatedScan(self, ...)
-	end
-
-	function bossModPrototype:StopRepeatedScan(...)
-		return TargetScanning:StopRepeatedScan(...)--self/bossModPrototype missing not a bug, function doesn't need it
-	end
-end
-
-do
 	local bossCache = {}
 	local lastTank
 
