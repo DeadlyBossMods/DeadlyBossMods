@@ -23,7 +23,8 @@
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --    * nBlueWiz (a lot of previous fixes in the koKR localization as well as boss mod work) Contact: everfinale@gmail.com
 --
-local _, private = ...
+---@class DBMCoreNamespace
+local private = select(2, ...)
 
 --WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
 --More modulation or scoping is needed to reduce this
@@ -438,7 +439,8 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 --------------
 ---@class DBMMod
 ---@field OnSync fun(self: DBMMod, event: string, ...: string)
-local bossModPrototype = {}
+local bossModPrototype = private.bossModPrototype or {}
+private.bossModPrototype = bossModPrototype
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local playerName = UnitName("player") or error("failed to get player name")
 local playerLevel = UnitLevel("player")
@@ -1746,6 +1748,7 @@ do
 			end
 			if LibStub and LibStub("LibDBIcon-1.0", true) then
 				local LibDBIcon = LibStub("LibDBIcon-1.0")
+				---@diagnostic disable-next-line: param-type-mismatch
 				LibDBIcon:Register("DBM", private.dataBroker, DBM_MinimapIcon)
 				if DBM_MinimapIcon.showInCompartment == nil then
 					LibDBIcon:AddButtonToCompartment("DBM")
@@ -13013,45 +13016,6 @@ do
 			end
 		end
 	end
-
-	local iconsModule = private:GetModule("Icons")
-
-	function bossModPrototype:SetIcon(...)
-		return iconsModule:SetIcon(self, ...)
-	end
-
-	function bossModPrototype:SetIconByTable(...)
-		return iconsModule:SetIconByTable(self, ...)
-	end
-
-	function bossModPrototype:SetUnsortedIcon(...)
-		return iconsModule:SetUnsortedIcon(self, ...)
-	end
-
-	--Backwards compat for old mods using this method, which is now merged into SetSortedIcon
-	function bossModPrototype:SetAlphaIcon(delay, target, maxIcon, returnFunc, scanId, ...)
-		return iconsModule:SetSortedIcon(self, "alpha", delay, target, 1, maxIcon, false, returnFunc, scanId, ...)
-	end
-
-	function bossModPrototype:SetIconBySortedTable(...)
-		return iconsModule:SetIconBySortedTable(self, ...)
-	end
-
-	function bossModPrototype:SetSortedIcon(...)
-		return iconsModule:SetSortedIcon(self, ...)
-	end
-
-	function bossModPrototype:ScanForMobs(...)
-		return iconsModule:ScanForMobs(self, ...)
-	end
-
-	function bossModPrototype:RemoveIcon(...)
-		return iconsModule:RemoveIcon(self, ...)
-	end
-
-	bossModPrototype.GetIcon = iconsModule.GetIcon
-	bossModPrototype.ClearIcons = iconsModule.ClearIcons
-	bossModPrototype.CanSetIcon = iconsModule.CanSetIcon
 end
 
 -----------------------

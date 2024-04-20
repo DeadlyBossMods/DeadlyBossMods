@@ -1,9 +1,11 @@
-local _, private = ...
+---@class DBMCoreNamespace
+local private = select(2, ...)
 
 local twipe = table.wipe
 local UnitExists, UnitPlayerOrPetInRaid, UnitGUID =
 	UnitExists, UnitPlayerOrPetInRaid, UnitGUID
 
+---@class TargetScanningModule: DBMModule
 local module = private:NewModule("TargetScanning")
 
 --Traditional loop scanning method tables
