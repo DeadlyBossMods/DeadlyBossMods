@@ -26,6 +26,13 @@ jobs:
       - name: Run DBM Checks
         uses: DeadlyBossMods/DBM-Actions@master
 
+      - name: LuaLS globals check
+        uses: DeadlyBossMods/LuaLS-config@main
+        with:
+          luals-ref: 3.8.3
+          luals-check-dir: ${{ github.workspace }}/workspace
+          extra-args: "--only_check_globals"
+
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
         with:
