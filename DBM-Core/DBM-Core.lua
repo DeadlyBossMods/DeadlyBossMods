@@ -6667,6 +6667,7 @@ do
 		if newPath then
 			local spellTable = GetSpellInfo(spellId)
 			if spellTable then
+				---@diagnostic disable-next-line: undefined-field
 				name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = spellTable.name, nil, spellTable.iconID, spellTable.castTime, spellTable.minRange, spellTable.maxRange, spellTable.spellID
 			end
 		else
@@ -6705,6 +6706,7 @@ do
 		if newPath then
 			local spellTable = GetSpellCooldown(spellId)
 			if spellTable then
+				---@diagnostic disable-next-line: undefined-field
 				start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
 			end
 		else
