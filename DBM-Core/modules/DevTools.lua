@@ -7,8 +7,7 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local module = private:NewModule("DevTools")
 
 ---@class DBM
-local DBM = private.DBM or {}
-private.DBM = DBM
+local DBM = private:GetPrototype("DBM")
 
 function module:OnModuleLoad()
 	self:OnDebugToggle()

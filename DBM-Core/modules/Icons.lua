@@ -28,8 +28,7 @@ local iconUnitTable = {}
 local iconSet = {}
 
 ---@class DBMMod
-local bossModPrototype = private.bossModPrototype or {}
-private.bossModPrototype = bossModPrototype
+local bossModPrototype = private:GetPrototype("DBMMod")
 
 ---@class IconModule: DBMModule
 local module = private:NewModule("Icons")

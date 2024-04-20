@@ -61,6 +61,7 @@ commonlocal.kr.lua
 commonlocal.ru.lua
 
 # Pre-core modules
+modules\objects\PrototypeRegistry.lua
 modules\Modules.lua
 
 modules\SpecRole.lua
@@ -87,3 +88,4 @@ modules\Sounds.lua
 modules\UpdateReminder.lua
 
 modules\objects\Localization.lua
+modules\objects\EnrageTimer.lua

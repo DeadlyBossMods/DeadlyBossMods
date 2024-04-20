@@ -1,7 +1,10 @@
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 local L = DBM_CORE_L
 
 ---@class DBM
-local DBM = DBM
+local DBM = private:GetPrototype("DBM")
 
 local returnKey = {
 	__index = function(_, k)
@@ -56,7 +59,9 @@ local defaultMiscLocalization = {
 ---@field options table<string, string>
 ---@field cats table<string, string>
 ---@field miscStrings table<string, string>
-local modLocalizationPrototype = {}
+local modLocalizationPrototype = private:GetPrototype("ModLocalization")
+
+local mt = {__index = modLocalizationPrototype}
 
 function modLocalizationPrototype:SetGeneralLocalization(t)
 	for i, v in pairs(t) do
@@ -106,9 +111,7 @@ function DBM:CreateModLocalization(name)
 		miscStrings = setmetatable({}, defaultMiscLocalization),
 		cats = setmetatable({}, defaultCatLocalization),
 	}
-	setmetatable(obj, {
-		__index = modLocalizationPrototype
-	})
+	setmetatable(obj, mt)
 	modLocalizations[name] = obj
 	return obj
 end
