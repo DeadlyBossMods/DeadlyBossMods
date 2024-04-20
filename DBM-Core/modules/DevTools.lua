@@ -6,6 +6,10 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 ---@class DevToolsModule: DBMModule
 local module = private:NewModule("DevTools")
 
+---@class DBM
+local DBM = private.DBM or {}
+private.DBM = DBM
+
 function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
@@ -18,13 +22,13 @@ do
 		local transcriptor = _G["Transcriptor"]
 		if DBM.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging()) then
 			local active = UnitExists(uId) and "true" or "false"
-			self:Debug("UNIT_TARGETABLE_CHANGED event fired for "..UnitName(uId)..". Active: "..active)
+			DBM:Debug("UNIT_TARGETABLE_CHANGED event fired for "..UnitName(uId)..". Active: "..active)
 		end
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		local spellName = DBM:GetSpellInfo(spellId)
-		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
+		DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
@@ -42,7 +46,7 @@ do
 		end
 	end
 
-	function module:Debug(text, level, useSound)
+	function DBM:Debug(text, level, useSound)
 		--But we still want to generate callbacks for level 1 and 2 events
 		if (DBM.Options and DBM.Options.DebugLevel == 3) or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
 			DBM:FireEvent("DBM_Debug", text, level)
@@ -62,7 +66,7 @@ end
 do
 	--To speed up creating new mods.
 	local EJ_SetDifficulty, EJ_GetEncounterInfoByIndex = EJ_SetDifficulty, EJ_GetEncounterInfoByIndex
-	function module:FindDungeonMapIDs(low, peak, contains)
+	function DBM:FindDungeonMapIDs(low, peak, contains)
 		local start = low or 1
 		local range = peak or 4000
 		DBM:AddMsg("-----------------")
@@ -76,7 +80,7 @@ do
 		end
 	end
 
-	function module:FindInstanceIDs(low, peak, contains)
+	function DBM:FindInstanceIDs(low, peak, contains)
 		local start = low or 1
 		local range = peak or 3000
 		DBM:AddMsg("-----------------")
@@ -90,7 +94,7 @@ do
 		end
 	end
 
-	function module:FindScenarioIDs(low, peak, contains)
+	function DBM:FindScenarioIDs(low, peak, contains)
 		local start = low or 1
 		local range = peak or 3000
 		DBM:AddMsg("-----------------")
@@ -107,7 +111,7 @@ do
 	--/run DBM:FindEncounterIDs(237, 1)--Classic Dungeons need diff 1 specified
 	--/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs
 	--/run DBM:FindInstanceIDs(1, 300)--Find Classic Dungeon Journal IDs
-	function module:FindEncounterIDs(instanceID, diff)
+	function DBM:FindEncounterIDs(instanceID, diff)
 		if not instanceID then
 			DBM:AddMsg("Error: Function requires instanceID be provided")
 		end

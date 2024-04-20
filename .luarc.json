@@ -1,6 +1,12 @@
 {
 	"$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
 	"runtime.version": "Lua 5.1",
+	"diagnostics.disable": [
+		"empty-block",
+		"invisible",
+		"deprecated",
+		"duplicate-doc-field"
+	],
 	"diagnostics.globals": [
 		"ALL",
 		"ALWAYS",
@@ -26,6 +32,8 @@
 		"NO",
 		"NONE",
 		"OKAY",
+		"PET",
+		"PLAYER",
 		"PLAYER_DIFFICULTY_TIMEWALKER",
 		"PLAYER_DIFFICULTY1",
 		"PLAYER_DIFFICULTY2",
