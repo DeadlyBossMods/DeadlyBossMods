@@ -4373,7 +4373,7 @@ do
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
 			if blizzardTimer then
 				unitId = DBM:GetUnitIdFromGUID(sender)
-				sender = UnitName(unitId) or sender
+				sender = DBM:GetUnitFullName(unitId) or sender
 			else
 				unitId = DBM:GetRaidUnitId(sender)
 			end
