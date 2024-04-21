@@ -93,6 +93,7 @@ modules\UpdateReminder.lua
 
 modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
+modules\objects\Timer.lua
 modules\objects\EnrageTimer.lua
 modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua

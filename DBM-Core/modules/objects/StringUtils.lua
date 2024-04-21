@@ -41,4 +41,7 @@ function DBM:strFromTime(time)
 	return stringUtils.strFromTime(time)
 end
 
-
+--Another custom server name strip function that first strips out the "><" DBM wraps around playernames
+function stringUtils.stripServerName(cap)
+	return DBM:GetShortServerName(cap:sub(2, -2))
+end
