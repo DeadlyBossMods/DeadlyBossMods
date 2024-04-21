@@ -95,3 +95,4 @@ modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
 modules\objects\EnrageTimer.lua
 modules\objects\Announce.lua
+modules\objects\SpecialWarning.lua
