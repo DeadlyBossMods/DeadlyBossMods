@@ -3,7 +3,7 @@ local private = select(2, ...)
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local wowTOC = select(4, GetBuildInfo())
-local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
+local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATACLYSM_CLASSIC or 14)
 local newShit = (wowTOC >= 100207) or isCata
 
 local L = DBM_CORE_L
