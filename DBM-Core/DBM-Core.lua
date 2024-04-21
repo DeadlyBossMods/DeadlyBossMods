@@ -36,8 +36,7 @@ local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_Game
 local currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
---local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)--NYI in first build
-local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
+local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATACLYSM_CLASSIC or 14)
 local newShit = (wowTOC >= 100207) or isCata
 
 local DBMPrefix = "D5"
