@@ -10424,7 +10424,8 @@ do
 --		["reflect"] = "target",
 	}
 
-	---@param name VPSound
+	---@param name VPSound?
+	---@param customPath? string
 	function specialWarningPrototype:Play(name, customPath)
 		local always = DBM.Options.AlwaysPlayVoice
 		local voice = DBM.Options.ChosenVoicePack2
