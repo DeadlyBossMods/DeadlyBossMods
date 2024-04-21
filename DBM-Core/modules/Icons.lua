@@ -30,8 +30,8 @@ local iconSet = {}
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
----@class IconModule: DBMModule
-local module = private:NewModule("Icons")
+---@class IconsModule: DBMModule
+local module = private:NewModule("IconsModule")
 
 function module:OnModuleEnd()
 	table.wipe(addsGUIDs)

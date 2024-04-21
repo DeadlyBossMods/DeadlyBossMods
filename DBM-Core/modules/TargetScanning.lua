@@ -6,7 +6,7 @@ local UnitExists, UnitPlayerOrPetInRaid, UnitGUID =
 	UnitExists, UnitPlayerOrPetInRaid, UnitGUID
 
 ---@class TargetScanningModule: DBMModule
-local module = private:NewModule("TargetScanning")
+local module = private:NewModule("TargetScanningModule")
 
 --Traditional loop scanning method tables
 local targetScanCount = {}

@@ -62,6 +62,10 @@ commonlocal.ru.lua
 
 # Pre-core modules
 modules\objects\PrototypeRegistry.lua
+modules\objects\GameVersion.lua
+modules\objects\StringUtils.lua
+modules\objects\TableUtils.lua
+modules\objects\StandardFont.lua
 modules\Modules.lua
 
 modules\SpecRole.lua
@@ -88,4 +92,6 @@ modules\Sounds.lua
 modules\UpdateReminder.lua
 
 modules\objects\Localization.lua
+modules\objects\VoicePacks.lua
 modules\objects\EnrageTimer.lua
+modules\objects\Announce.lua
