@@ -9840,7 +9840,7 @@ do
 		return newYell(self, "shortposition", ...)
 	end
 
-	---@overload fun(self: DBMMod, self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
 	function bossModPrototype:NewComboYell(...)
 		return newYell(self, "combo", ...)
 	end
