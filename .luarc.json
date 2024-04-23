@@ -78,6 +78,7 @@
 
 		"NineSliceUtil",
 		"CreateRadioButtonGroup",
-		"PanelTemplates_SetTab"
+		"PanelTemplates_SetTab",
+		"WOW_PROJECT_CATACLYSM_CLASSIC"
 	]
 }
