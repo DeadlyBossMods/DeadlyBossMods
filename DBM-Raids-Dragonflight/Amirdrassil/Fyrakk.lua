@@ -224,7 +224,7 @@ local function eternalFireSwirlLoop(self)
 	warnEternalFirestorm:Show(self.vb.swirlCount)
 	local timer = self:GetFromTimersTable(allTimers, false, self.vb.phase, 402736, self.vb.swirlCount+1)
 	if timer then
-		timerEternalFirestormCD:Start(timer, self.vb.swirlCount+1)
+		timerEternalFirestormSwirlCD:Start(timer, self.vb.swirlCount+1)
 		self:Schedule(timer, eternalFireSwirlLoop, self)
 	end
 end
