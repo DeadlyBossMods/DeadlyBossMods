@@ -22,6 +22,5 @@ jobs:
       - name: LuaLS check
         uses: DeadlyBossMods/LuaLS-config@main
         with:
-          luals-repo: emmericp/lua-language-server
-          luals-ref: 606e9cd238dbc924929d7047497de30ff44ee50c
+          luals-ref: 3.8.3
           luals-check-dir: ${{ github.workspace }}/workspace
