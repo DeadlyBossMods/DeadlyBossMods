@@ -4,6 +4,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (WW)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010공격대 (내부 전쟁)|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010Рейды (Война Внутри)|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010团队副本 (地心之战)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-Name: Raids (War Within)
 ## X-DBM-Mod-Name-koKR: 공격대 (내부 전쟁)
 ## X-DBM-Mod-Name-ruRU: Рейды (Война Внутри)
+## X-DBM-Mod-Name-zhCN: 团队副本（地心之战）
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-MapID: 2657
 ## X-DBM-Mod-MinCoreRevision: 20230617000000
@@ -29,6 +31,7 @@
 localization.en.lua
 localization.kr.lua
 localization.ru.lua
+localization.cn.lua
 
 NerubarPalace\UlgraxtheDevourer.lua
 NerubarPalace\TheBloodboundHorror.lua
