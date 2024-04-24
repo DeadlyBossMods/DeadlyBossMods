@@ -4264,7 +4264,7 @@ do
 			else
 				unitId = self:GetRaidUnitId(sender)
 			end
-			local LFGTankException = private.isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
 			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 				return
 			end
@@ -4382,7 +4382,7 @@ do
 					local unitId = self:GetUnitIdFromGUID(sender)
 					sender = self:GetUnitFullName(unitId) or sender
 				end
-				local LFGTankException = private.isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+				local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
 				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 					return
 				end
