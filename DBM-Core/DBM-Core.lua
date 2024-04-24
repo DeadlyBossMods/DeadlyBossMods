@@ -4277,7 +4277,7 @@ do
 		end
 		timer = tonumber(timer or 0)
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
-		if timer > 60 or (timer > 0 and timer < 3) then
+		if (timer > 0 and timer < 3) then--timer > 60 or 
 			return
 		end
 		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
@@ -4375,18 +4375,18 @@ do
 
 	do
 		local dummyMod2 -- dummy mod for the break timer
-		function breakTimerStart(self, timer, sender, blizzardTimer, isRecovery)
-			if private.newShit and not blizzardTimer and not isRecovery then return end
-			if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
-				if blizzardTimer then
-					local unitId = self:GetUnitIdFromGUID(sender)
-					sender = self:GetUnitFullName(unitId) or sender
-				end
+		function breakTimerStart(self, timer, sender)--, blizzardTimer, isRecovery
+	--		if private.newShit and not blizzardTimer and not isRecovery then return end
+			--if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
+			--	if blizzardTimer then
+			--		local unitId = self:GetUnitIdFromGUID(sender)
+			--		sender = self:GetUnitFullName(unitId) or sender
+			--	end
 				local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
 				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 					return
 				end
-			end
+			--end
 			if not dummyMod2 then
 				local threshold = self.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -4433,7 +4433,7 @@ do
 	end
 
 	syncHandlers["BT"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers or private.newShit then return end
+		if DBM.Options.DontShowUserTimers then return end--or private.newShit
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
@@ -4451,7 +4451,7 @@ do
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		breakTimerStart(DBM, timer, sender, nil, true)
+		breakTimerStart(DBM, timer, sender)--, nil, true
 	end
 
 	local function SendVersion(guild)
@@ -5011,16 +5011,16 @@ do
 	function DBM:START_PLAYER_COUNTDOWN(initiatedBy, timeSeconds)--totalTime
 		--Ignore this event in combat
 		if #inCombat > 0 then return end
-		if timeSeconds > 60 then--treat as a break timer
-			breakTimerStart(self, timeSeconds, initiatedBy, true)
-		else--Treat as a pull timer
+--		if timeSeconds > 60 then--treat as a break timer
+--			breakTimerStart(self, timeSeconds, initiatedBy, true)
+--		else--Treat as a pull timer
 			pullTimerStart(self, initiatedBy, timeSeconds, true)
-		end
+--		end
 	end
 
 	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedBy)
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
-		breakTimerStart(self, 0, initiatedBy, true)
+--		breakTimerStart(self, 0, initiatedBy, true)
 		pullTimerStart(self, initiatedBy, 0, true)
 	end
 end
