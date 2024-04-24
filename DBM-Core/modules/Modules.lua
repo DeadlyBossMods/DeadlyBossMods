@@ -91,6 +91,9 @@ end
 -------------
 local modules = {}
 
+---@generic T
+---@param name `T`
+---@return T
 function private:NewModule(name)
 	if modules[name] then
 		error("DBM:NewModule(): Module names must be unique", 2)
@@ -118,6 +121,9 @@ function private:NewModule(name)
 	return obj
 end
 
+---@generic T
+---@param name `T`
+---@return T
 function private:GetModule(name)
 	return modules[name]
 end

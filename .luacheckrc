@@ -51,6 +51,7 @@ globals = {
 	"time",
 
 	-- Utility functions
+	"abs",
 	"CopyTable",
 	"Enum",
 	"fastrandom",
