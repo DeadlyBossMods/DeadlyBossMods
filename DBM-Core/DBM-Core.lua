@@ -4277,7 +4277,7 @@ do
 		end
 		timer = tonumber(timer or 0)
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
-		if (timer > 0 and timer < 3) then--timer > 60 or 
+		if (timer > 0 and timer < 3) then--timer > 60 or
 			return
 		end
 		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
