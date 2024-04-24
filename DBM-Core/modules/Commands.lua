@@ -403,7 +403,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = not DBM.Options.DebugMode
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
-		private:GetModule("DevTools"):OnDebugToggle()
+		private:GetModule("DevToolsModule"):OnDebugToggle()
 	elseif cmd:sub(1, 4) == "test" then
 		DBM:DemoMode()
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then

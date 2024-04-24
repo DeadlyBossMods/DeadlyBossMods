@@ -28,11 +28,10 @@ local iconUnitTable = {}
 local iconSet = {}
 
 ---@class DBMMod
-local bossModPrototype = private.bossModPrototype or {}
-private.bossModPrototype = bossModPrototype
+local bossModPrototype = private:GetPrototype("DBMMod")
 
----@class IconModule: DBMModule
-local module = private:NewModule("Icons")
+---@class IconsModule: DBMModule
+local module = private:NewModule("IconsModule")
 
 function module:OnModuleEnd()
 	table.wipe(addsGUIDs)
@@ -63,7 +62,7 @@ function bossModPrototype:SetIcon(target, icon, timer, ignoreOld)
 	if uId and UnitIsUnit(uId, "player") and DBM:GetNumRealGroupMembers() < 2 then return end--Solo raid, no reason to put icon on yourself.
 	if uId then--target accepts uid, unitname both.
 		--save previous icon into a table.
-		local oldIcon = module:GetIcon(uId) or 0
+		local oldIcon = self:GetIcon(uId) or 0
 		if not self.iconRestore[uId] and not ignoreOld then
 			self.iconRestore[uId] = oldIcon
 		end
@@ -91,7 +90,7 @@ do
 		end
 		for _, v in ipairs(iconUnitTable[scanId]) do
 			if not mod.iconRestore[v] then
-				mod.iconRestore[v] = module:GetIcon(v) or 0
+				mod.iconRestore[v] = bossModPrototype:GetIcon(v) or 0
 			end
 			if CustomIcons then
 				SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.
@@ -147,12 +146,10 @@ do
 	end
 end
 
-function module:GetIcon(uIdOrTarget)
+function bossModPrototype:GetIcon(uIdOrTarget)
 	local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
-bossModPrototype.GetIcon = module.GetIcon
-
 
 function bossModPrototype:RemoveIcon(target)
 	return self:SetIcon(target, 0)
@@ -207,7 +204,7 @@ do
 		end
 		for _, v in ipairs(iconUnitTable[scanId]) do
 			if not mod.iconRestore[v] then
-				mod.iconRestore[v] = module:GetIcon(v) or 0
+				mod.iconRestore[v] = bossModPrototype:GetIcon(v) or 0
 			end
 			if CustomIcons then
 				SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.

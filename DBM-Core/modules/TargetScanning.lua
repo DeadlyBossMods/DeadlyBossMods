@@ -6,7 +6,7 @@ local UnitExists, UnitPlayerOrPetInRaid, UnitGUID =
 	UnitExists, UnitPlayerOrPetInRaid, UnitGUID
 
 ---@class TargetScanningModule: DBMModule
-local module = private:NewModule("TargetScanning")
+local module = private:NewModule("TargetScanningModule")
 
 --Traditional loop scanning method tables
 local targetScanCount = {}
@@ -17,8 +17,7 @@ local unitScanCount = 0
 local unitMonitor = {}
 
 ---@class DBMMod
-local bossModPrototype = private.bossModPrototype or {}
-private.bossModPrototype = bossModPrototype
+local bossModPrototype = private:GetPrototype("DBMMod")
 
 function module:OnModuleEnd()
 	twipe(targetScanCount)

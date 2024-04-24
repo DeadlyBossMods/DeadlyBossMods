@@ -10,7 +10,7 @@ local LastInstanceMapID = -1
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
 
----@class SchedulerModule: DBMModule
+---@class DBMScheduler: DBMModule
 local module = private:NewModule("DBMScheduler")
 
 --------------------------

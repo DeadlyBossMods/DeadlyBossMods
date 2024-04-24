@@ -96,13 +96,13 @@ local allTimers = {
 	["mythic"] = {--Very close to heroic so won't alter til transcriptor to make it lower work load
 		[1] = {
 			--Chilling Blast
-			[371976] = {15.5, 37.6, 37.4, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
+			[371976] = {15.5, 37.6, 36.8, 29.1, 37.2, 37.5, 21.9, 36.5, 37.3},
 			--Enveloping Webs
-			[372082] = {18.1, 26.7, 30.5, 44.8, 26.7, 30.4, 38.9, 26.4, 30.4},
+			[372082] = {18.1, 26.7, 30.5, 43.5, 26.7, 30.4, 38.9, 26.4, 30.4},
 			--Gossamer Burst
-			[373405] = {31.4, 37.7, 65.5, 36.5, 59.6, 37.6},
+			[373405] = {31.4, 37.7, 63.1, 36.5, 59.6, 37.6},
 			--Call Spiderlings
-			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 20.7, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
+			[372238] = {0, 25.5, 25.5, 25.9, 35.1, 25.5, 25.5, 25.5, 19.5, 26.7, 26.7},--5th has largest variance, 14-23 because sequencing isn't right way to do this, just the lazy way
 		},
 		--[2] = {
 		--	--Chilling Blast
@@ -114,13 +114,13 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Chilling Blast
-			[371976] = {15.5, 37.6, 37.4, 26.7, 37.2, 36.4, 21.9, 36.5, 37.3},--likely 36 sec cd that resets on encounter events
+			[371976] = {15.5, 37.6, 36.8, 26.7, 37.2, 36.4, 21.9, 36.5, 37.3},--likely 36 sec cd that resets on encounter events
 			--Enveloping Webs
-			[372082] = {18.1, 26.7, 30.5, 43.8, 24.3, 26.6, 38.9, 26.4, 30.4},--likely 26sec cd that rests on encounter events
+			[372082] = {18.1, 26.7, 30.5, 43.5, 24.3, 26.6, 38.9, 26.4, 30.4},--likely 26sec cd that rests on encounter events
 			--Gossamer Burst
-			[373405] = {31.4, 37.7, 64.3, 36.5, 59.6, 37.6},--likely 36 sec cd that resets on encounter events
+			[373405] = {31.4, 37.7, 63.1, 36.5, 59.6, 37.6},--likely 36 sec cd that resets on encounter events
 			--Call Spiderlings
-			[372238] = {0, 25.5, 25.5, 26.7, 38.8, 25.5, 25.5, 25.5, 19.4, 26.7, 26.7},--likely 25 sec cd that resets on encounter events
+			[372238] = {0, 25.5, 25.5, 25.9, 35.1, 25.5, 25.5, 25.5, 19.4, 26.7, 26.7},--likely 25 sec cd that resets on encounter events
 		},
 		--[2] = {
 		--	--Chilling Blast
@@ -181,7 +181,7 @@ function mod:OnCombatStart(delay)
 	timerEnvelopingWebsCD:Start(17.2-delay, 1)
 	timerGossamerBurstCD:Start(31.4-delay, 1)
 	timerPhaseCD:Start(42.4-delay)
-	timerFrostbreathArachnidCD:Start(103.1, 2)--First one engages with boss
+	timerFrostbreathArachnidCD:Start(102.8, 2)--First one engages with boss
 	if self:IsMythic() then
 		difficultyName = "mythic"
 	elseif self:IsHeroic() then
