@@ -15,6 +15,7 @@ if LibStub then
 end
 
 local function Pull(timer)
+	--TODO, sync up permissions to be on same page as break timers and BW
 	local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
 	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
@@ -23,9 +24,9 @@ local function Pull(timer)
 		return DBM:AddMsg(L.TIME_TOO_SHORT)
 	end
 	if newShit then
-		--Send blizzard pull timer that all users see (including modless)
+		--Send blizzard countdown timer that all users see (including modless)
 		C_PartyInfo.DoCountdown(timer)
-		DBM:Debug("Sending Blizzard Pull Timer")
+		DBM:Debug("Sending Blizzard Countdown Timer")
 	else
 		private.sendSync(private.DBMSyncProtocol, "PT", timer .. "\t" .. DBM:GetCurrentArea())
 		DBM:Debug("Sending DBM Pull Timer")
@@ -33,6 +34,7 @@ local function Pull(timer)
 end
 
 local function Break(timer)
+	--TODO, sync up permissions to be on same page as pull timers and BW
 	if IsInGroup() and (DBM:GetRaidRank() == 0 or (isRetail and IsPartyLFG())) or IsEncounterInProgress() or select(2, IsInInstance()) == "pvp" then--No break timers if not assistant or if it's dungeon/raid finder/BG
 		DBM:AddMsg(L.ERROR_NO_PERMISSION)
 		return
@@ -41,7 +43,14 @@ local function Break(timer)
 		DBM:AddMsg(L.BREAK_USAGE)
 		return
 	end
-	private.sendSync(private.DBMSyncProtocol, "BT", timer * 60)
+	if newShit then
+		--Send blizzard countdown timer that all users see (including modless)
+		C_PartyInfo.DoCountdown(timer * 60)
+		DBM:Debug("Sending Blizzard Countdown Timer")
+	else
+		private.sendSync(private.DBMSyncProtocol, "BT", timer * 60)
+		DBM:Debug("Sending DBM Break Timer")
+	end
 end
 
 local ShowLag, ShowDurability
