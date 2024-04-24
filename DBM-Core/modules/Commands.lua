@@ -21,7 +21,10 @@ local function Pull(timer)
 		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
 	end
 	if timer > 0 and timer < 3 then
-		return DBM:AddMsg(L.TIME_TOO_SHORT)
+		return DBM:AddMsg(L.PULL_TIME_TOO_SHORT)
+	end
+	if timer > 60 then
+		return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
 	end
 	if newShit then
 		--Send blizzard countdown timer that all users see (including modless)

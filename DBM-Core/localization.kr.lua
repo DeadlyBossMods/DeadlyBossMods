@@ -279,7 +279,8 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
-L.TIME_TOO_SHORT					= "풀링 타이머는 3초 이상으로 설정해야 합니다."
+L.PULL_TIME_TOO_SHORT					= "풀링 타이머는 3초 이상으로 설정해야 합니다."
+L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."
 L.BREAK_START				= "쉬는 시간 시작 -- %s 받았습니다! (%s|1이;가; 전송)"

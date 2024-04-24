@@ -282,7 +282,8 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION				= "Non hai i permessi per eseguire questo comando."
---L.TIME_TOO_SHORT						= "Pull timer must be longer than 3 seconds."
+--L.PULL_TIME_TOO_SHORT						= "Pull timer must be longer than 3 seconds."
+L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE				= "Il temporizzatore della pausa non può durare più di 60 minuti. Assicurati di aver inserito il tempo in minuti e non in secondi."
 L.BREAK_START				= "Inizia la pausa -- hai %s! (Iniziata da %s)"
