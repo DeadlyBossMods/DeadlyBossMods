@@ -47,7 +47,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(370648, nil, nil, nil, 1, 
 
 local timerMoltenCleaveCD						= mod:NewCDCountTimer(29.9, 370615, nil, nil, nil, 3)
 local timerFlameriftCD							= mod:NewCDCountTimer(28.9, 390715, nil, nil, nil, 3, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerIncineratingRoarCD					= mod:NewCDCountTimer(23.9, 396023, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerIncineratingRoarCD					= mod:NewCDCountTimer(22, 396023, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerMoltenSpikesCD						= mod:NewCDCountTimer(21.4, 396022, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

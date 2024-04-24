@@ -47,7 +47,7 @@ local warnSunderStrikeDebuff					= mod:NewStackAnnounce(372158, 2, nil, "Tank|He
 local specWarnSunderStrike						= mod:NewSpecialWarningDefensive(372158, nil, nil, nil, 1, 2)
 local specWarnSunderStrikeDebuff				= mod:NewSpecialWarningTaunt(372158, nil, nil, nil, 1, 2)
 
-local timerSunderStrikeCD						= mod:NewCDTimer(19.4, 372158, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSunderStrikeCD						= mod:NewCDTimer(17, 372158, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --General timers for handling of bosses ability rotation
 local timerDamageCD								= mod:NewTimer(30, "timerDamageCD", 391096, nil, nil, 3, nil, nil, nil, nil, nil, nil, nil, 391096, nil, nil, "next")--Magma Burst, Biting Chill, Enveloping Earth, Lightning Crash
 local timerAvoidCD								= mod:NewTimer(60, "timerAvoidCD", 391100, nil, nil, 3, nil, nil, nil, nil, nil, nil, nil, 391100, nil, nil, "next")--Molten Rupture, Frigid Torrent, Erupting Bedrock, Shocking Burst
@@ -159,7 +159,7 @@ local specWarnFrostBinds						= mod:NewSpecialWarningInterrupt(374623, "HasInter
 
 local specWarnFreezingTempest					= mod:NewSpecialWarningMoveTo(374624, nil, nil, nil, 3, 2)
 
-local timerFreezingTempestCD					= mod:NewCDTimer(37.7, 374624, nil, nil, nil, 2)
+local timerFreezingTempestCD					= mod:NewCDTimer(36.5, 374624, nil, nil, nil, 2)
 local timerAbsoluteZeroCD						= mod:NewCDCountTimer(24.3, 372458, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Add version
 
 ----Blazing Fiend
@@ -374,8 +374,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerSearingCarnageCD:Start(20.2, args.sourceGUID)
 		end
 	elseif spellId == 375824 then--Tectonic Crusher
-		timerGroundShatterCD:Start(5.9, args.sourceGUID)
-		timerViolentUpheavelCD:Start(20.6, args.sourceGUID)
+		timerGroundShatterCD:Start(5.5, args.sourceGUID)
+		timerViolentUpheavelCD:Start(20.1, args.sourceGUID)
 		if self:IsMythic() then
 			timerSeismicRuptureCD:Start(45, args.sourceGUID)
 		end
@@ -538,7 +538,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.damageCount = 0
 		self.vb.zeroCount = 0
 		self:SetStage(1)
-		timerSunderStrikeCD:Start(11.3)
+		timerSunderStrikeCD:Start(7.4)
 		if self.vb.stageTotality == 3 then
 			timerPhaseCD:Start(127)--Second intermission (Primal Barrier)
 		else

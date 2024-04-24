@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812 384273 387627 391382 395501",
+	"SPELL_CAST_START 387849 388302 376943 388410 375580 387943 385812 384273 387627 391382 395501 397431",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 387857",
 	"SPELL_AURA_APPLIED 391686 375580",
@@ -60,7 +60,8 @@ local specWarnBlowback							= mod:NewSpecialWarningSpell(395501, nil, nil, nil,
 local specWarnDivertedEssence					= mod:NewSpecialWarningInterruptCount(387943, "HasInterrupt", nil, nil, 1, 2)
 local specWarnAerialSlash						= mod:NewSpecialWarningDefensive(385812, nil, nil, nil, 1, 2)
 
-local timerAerialSlashCD						= mod:NewCDTimer(12, 385812, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerAerialSlashCD						= mod:NewCDNPTimer(11.7, 385812, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDivertedEssenceCD					= mod:NewCDNPTimer(13.4, 387943, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--13.4-15.8. Variance caused by interrupt timing. 13.4 if you kick instantly, 15.8 if you kick at last moment, it's basically 13.4 + cast time
 
 mod:AddSetIconOption("SetIconOnVolatileInfuser", "ej25903", true, 5, {8, 7, 6, 5, 4})
 --Thunder Caller
@@ -88,8 +89,8 @@ function mod:OnCombatStart(delay)
 	timerConductiveMarkCD:Start(4.6-delay, 1)
 	timerRagingBurstCD:Start(7-delay, 1)
 	if self:IsHard() then
-		timerZephyrSlamCD:Start(15.7-delay, 1)
-		timerCrosswindsCD:Start(25.5-delay, 1)
+		timerZephyrSlamCD:Start(15.4-delay, 1)
+		timerCrosswindsCD:Start(25.2-delay, 1)
 		timerCycloneCD:Start(35.2-delay, 1)
 		timerColaescingStormCD:Start(70-delay, 1)--70-73 (check ito it being 73 consistently on mythic)
 	else
@@ -164,7 +165,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnZephyrSlam:Play("carefly")
 		end
 		timerZephyrSlamCD:Start(nil, self.vb.slamCount+1)
-	elseif spellId == 387943 then
+	elseif spellId == 387943 or spellId == 397431 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnVolatileInfuser and self.vb.addIcon > 3 then--Only use up to 5 icons
@@ -182,6 +183,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnDivertedEssence:Play("kickcast")
 			end
 		end
+		timerDivertedEssenceCD:Start(nil, args.sourceGUID)--13.4-15.8
 	elseif spellId == 385812 then
 		timerAerialSlashCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) and self:AntiSpam(3, 1) then
@@ -231,7 +233,8 @@ function mod:SPELL_SUMMON(args)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		end
-		timerAerialSlashCD:Start(6, args.destGUID)
+		timerDivertedEssenceCD:Start(2.3, args.destGUID)
+		timerAerialSlashCD:Start(5.1, args.destGUID)
 --	elseif spellId == 384757 then--Thunder Caller
 
 	end
@@ -275,6 +278,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 192934 then--Volatile Infuser
 		timerAerialSlashCD:Stop(args.destGUID)
+		timerDivertedEssenceCD:Stop(args.destGUID)
 --	elseif cid == 194647 then--Thunder Caller
 
 	end
