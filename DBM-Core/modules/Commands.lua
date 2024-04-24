@@ -42,12 +42,17 @@ local function Break(timer)
 	if timer > 60 then
 		return DBM:AddMsg(L.BREAK_USAGE)
 	end
+	timer = timer * 60
+	--Make sure 1 minute break timer is sent as a break timer and not a pull timer
+	if timer == 60 then
+		timer = 61
+	end
 	if newShit then
 		--Send blizzard countdown timer that all users see (including modless)
-		C_PartyInfo.DoCountdown(timer * 60)
+		C_PartyInfo.DoCountdown(timer)
 		DBM:Debug("Sending Blizzard Countdown Timer")
 	else
-		private.sendSync(private.DBMSyncProtocol, "BT", timer * 60)
+		private.sendSync(private.DBMSyncProtocol, "BT", timer)
 		DBM:Debug("Sending DBM Break Timer")
 	end
 end
