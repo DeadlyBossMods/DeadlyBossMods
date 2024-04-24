@@ -285,8 +285,8 @@ L.TIMER_USAGE = {
 }
 
 L.ERROR_NO_PERMISSION				= "У Вас недостаточно прав для выполнения этой операции."
-L.PULL_TIME_TOO_SHORT					= "Таймер атаки должен быть больше 3 секунд."
-L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
+L.PULL_TIME_TOO_SHORT				= "Таймер атаки должен быть больше 3 секунд."
+L.PULL_TIME_TOO_LONG				= "Таймер атаки не может быть дольше 60 секунд."
 
 L.BREAK_USAGE						= "Перерыв не может быть дольше 60 минут. Убедитесь, что Вы вводите время в минутах, а не секундах."
 L.BREAK_START						= "Перерыв начинается -- у Вас есть %s! (отправил %s)"
