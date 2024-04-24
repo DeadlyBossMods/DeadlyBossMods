@@ -1548,7 +1548,7 @@ do
 			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				breakTimerStart(DBM, remaining, playerName)
+				breakTimerStart(self, remaining, playerName, nil, true)
 			else--It must have ended while we were offline, kill variable.
 				self.Options.RestoreSettingBreakTimer = nil
 			end
@@ -4254,18 +4254,18 @@ do
 
 	local dummyMod -- dummy mod for the pull timer
 
-	local function runPullStuff(sender, timer, blizzardTimer)
+	local function pullTimerStart(self, sender, timer, blizzardTimer)
 		if private.newShit and not blizzardTimer then return end--Ignore old DBM version comms
 		local unitId
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
 			if blizzardTimer then
-				unitId = DBM:GetUnitIdFromGUID(sender)
-				sender = DBM:GetUnitFullName(unitId) or sender
+				unitId = self:GetUnitIdFromGUID(sender)
+				sender = self:GetUnitFullName(unitId) or sender
 			else
-				unitId = DBM:GetRaidUnitId(sender)
+				unitId = self:GetRaidUnitId(sender)
 			end
-			local LFGTankException = private.isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 				return
 			end
 		end
@@ -4273,27 +4273,27 @@ do
 		if unitId then
 			local senderMapID = IsInInstance() and select(-1, UnitPosition(unitId)) or C_Map.GetBestMapForUnit(unitId) or 0
 			local playerMapID = IsInInstance() and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
-			if DBM.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
+			if self.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
 		end
 		timer = tonumber(timer or 0)
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
-		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
+		if (timer > 0 and timer < 3) then--timer > 60 or
 			return
 		end
-		if timer == 0 or DBM:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
+		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
 			if not dummyMod then
-				local threshold = DBM.Options.PTCountThreshold2
+				local threshold = self.Options.PTCountThreshold2
 				threshold = floor(threshold)
 				---@class DBMDummyMod: DBMMod
-				dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+				dummyMod = self:NewMod("PullTimerCountdownDummy")
 				dummyMod.isDummyMod = true
-				DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
+				self:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
 				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
 				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
+				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
 			end
 			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
+			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
 				dummyMod.timer:Stop()
 			end
 			local timerTrackerRunning = false
@@ -4312,8 +4312,8 @@ do
 			end
 			dummyMod.text:Cancel()
 			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-			DBM:FlashClientIcon()
-			if not DBM.Options.DontShowPT2 then
+			self:FlashClientIcon()
+			if not self.Options.DontShowPT2 then
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
 			if TimerTracker and not blizzardTimer then
@@ -4333,7 +4333,7 @@ do
 					end
 				end
 			end
-			if not DBM.Options.DontShowPTText then
+			if not self.Options.DontShowPTText then
 				local target = unitId and UnitName(unitId.."target")
 				if target then
 					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
@@ -4343,13 +4343,13 @@ do
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 				end
 			end
-			if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
-				DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
+			if self.Options.EventSoundPullTimer and self.Options.EventSoundPullTimer ~= "" and self.Options.EventSoundPullTimer ~= "None" then
+				self:PlaySoundFile(self.Options.EventSoundPullTimer, nil, true)
 			end
-			if DBM.Options.RecordOnlyBosses then
-				DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+			if self.Options.RecordOnlyBosses then
+				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 			end
-			if private.isRetail and DBM.Options.CheckGear and not private.testBuild then
+			if private.isRetail and self.Options.CheckGear and not private.testBuild then
 				local bagilvl, equippedilvl = GetAverageItemLevel()
 				local difference = bagilvl - equippedilvl
 				local weapon = GetInventoryItemLink("player", 16)
@@ -4370,29 +4370,40 @@ do
 	end
 	syncHandlers["PT"] = function(sender, _, timer)
 		if DBM.Options.DontShowUserTimers or private.newShit then return end
-		runPullStuff(sender, timer)
+		pullTimerStart(DBM, sender, timer)
 	end
 
 	do
 		local dummyMod2 -- dummy mod for the break timer
-		function breakTimerStart(self, timer, sender)
+		function breakTimerStart(self, timer, sender)--, blizzardTimer, isRecovery
+	--		if private.newShit and not blizzardTimer and not isRecovery then return end
+			--if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
+			--	if blizzardTimer then
+			--		local unitId = self:GetUnitIdFromGUID(sender)
+			--		sender = self:GetUnitFullName(unitId) or sender
+			--	end
+				local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+					return
+				end
+			--end
 			if not dummyMod2 then
-				local threshold = DBM.Options.PTCountThreshold2
+				local threshold = self.Options.PTCountThreshold2
 				threshold = floor(threshold)
 				---@class DBMDummyMod2: DBMMod
-				dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
+				dummyMod2 = self:NewMod("BreakTimerCountdownDummy")
 				dummyMod2.isDummyMod = true
-				DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
+				self:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
 				dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, private.isRetail and "237538" or "136106")
 				--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-				dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, private.isRetail and "237538" or "136106", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold, nil, nil, nil, nil, nil, nil, "break")
+				dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, private.isRetail and "237538" or "136106", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 1, threshold, nil, nil, nil, nil, nil, nil, "break")
 			end
 			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
+			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
 				dummyMod2.timer:Stop()
 			end
 			dummyMod2.text:Cancel()
-			DBM.Options.RestoreSettingBreakTimer = nil
+			self.Options.RestoreSettingBreakTimer = nil
 			if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 			self.Options.RestoreSettingBreakTimer = timer .. "/" .. time()
 			if not self.Options.DontShowPT2 then
@@ -4422,7 +4433,7 @@ do
 	end
 
 	syncHandlers["BT"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers then return end
+		if DBM.Options.DontShowUserTimers then return end--or private.newShit
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
@@ -4440,7 +4451,7 @@ do
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		breakTimerStart(DBM, timer, sender)
+		breakTimerStart(DBM, timer, sender)--, nil, true
 	end
 
 	local function SendVersion(guild)
@@ -4998,12 +5009,19 @@ do
 	end
 
 	function DBM:START_PLAYER_COUNTDOWN(initiatedBy, timeSeconds)--totalTime
-		runPullStuff(initiatedBy, timeSeconds, true)
+		--Ignore this event in combat
+		if #inCombat > 0 then return end
+--		if timeSeconds > 60 then--treat as a break timer
+--			breakTimerStart(self, timeSeconds, initiatedBy, true)
+--		else--Treat as a pull timer
+			pullTimerStart(self, initiatedBy, timeSeconds, true)
+--		end
 	end
 
 	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedBy)
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
-		runPullStuff(initiatedBy, 0, true)
+--		breakTimerStart(self, 0, initiatedBy, true)
+		pullTimerStart(self, initiatedBy, 0, true)
 	end
 end
 

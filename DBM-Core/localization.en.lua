@@ -289,7 +289,8 @@ L.TIMER_USAGE							= {
 }
 
 L.ERROR_NO_PERMISSION					= "You don't have the required permission to do this."
-L.TIME_TOO_SHORT						= "Pull timer must be longer than 3 seconds."
+L.PULL_TIME_TOO_SHORT					= "Pull timer must be longer than 3 seconds."
+L.PULL_TIME_TOO_LONG					= "Pull timer cannot be longer than 60 seconds. Consider using a /break timer instead."
 
 L.BREAK_USAGE							= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
 L.BREAK_START							= "Break starting now -- you have %s! (Sent by %s)"

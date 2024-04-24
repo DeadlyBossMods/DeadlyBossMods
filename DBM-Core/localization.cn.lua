@@ -284,8 +284,9 @@ L.TIMER_USAGE	= {
 	"/dbm timer endloop: 停止所有的 ltimer（循环计时器）."
 }
 
-L.ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"
-L.TIME_TOO_SHORT				= "战斗倒计时需要大于三秒。"
+L.ERROR_NO_PERMISSION		= "权限不足。需要队长或助理权限。"
+L.PULL_TIME_TOO_SHORT			= "战斗倒计时需要大于三秒。"
+L.PULL_TIME_TOO_LONG				= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE				= "休息时间不能超过60分钟。请确保你输入的是分钟而不是秒。"
 L.BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"

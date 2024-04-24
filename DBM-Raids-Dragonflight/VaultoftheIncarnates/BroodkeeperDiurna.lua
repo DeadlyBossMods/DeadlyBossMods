@@ -569,7 +569,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--	timerGreatstaffoftheBroodkeeperCD:Stop()
 			--	timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, self.vb.staffCount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 			--end
-			local remainingIcy = timerGreatstaffoftheBroodkeeperCD:GetRemaining(self.vb.icyCount+1)
+			local remainingIcy = timerIcyShroudCD:GetRemaining(self.vb.icyCount+1)
 			if remainingIcy then
 				timerIcyShroudCD:Stop()
 				timerFrozenShroudCD:Start(remainingIcy, 1)

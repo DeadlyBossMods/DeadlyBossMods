@@ -283,7 +283,8 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION		= "No tienes permiso para hacer eso."
-L.TIME_TOO_SHORT			= "El temporizador de llamada debe durar más de 3 segundos."
+L.PULL_TIME_TOO_SHORT			= "El temporizador de llamada debe durar más de 3 segundos."
+L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
 L.BREAK_START				= "El descanso inicia ahora. ¡Tienes %s! (Enviado por %s)"

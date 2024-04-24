@@ -282,7 +282,8 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION		= "Vous n'avez pas la permission requise pour faire cela."
-L.TIME_TOO_SHORT			= "Le chronomètre de pull doit être supérieur à 3 secondes."
+L.PULL_TIME_TOO_SHORT			= "Le chronomètre de pull doit être supérieur à 3 secondes."
+L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE				= "Les chronomètres de pause ne peuvent pas durer plus de 60 minutes. Assurez vous de mettre le temps en minutes et pas secondes."
 L.BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s)!"

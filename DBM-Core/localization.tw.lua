@@ -286,7 +286,8 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION		= "無權進行此操作。"
-L.TIME_TOO_SHORT			= "備戰計時器必須超過3秒。 "
+L.PULL_TIME_TOO_SHORT			= "備戰計時器必須超過3秒。 "
+L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
 
 L.BREAK_USAGE					= "休息時間不可以長過60分鐘。請確定您輸入的時間是分鐘而不是秒。"
 L.BREAK_START					= "現在開始休息-你有%s分鐘! (由 %s 發送)"

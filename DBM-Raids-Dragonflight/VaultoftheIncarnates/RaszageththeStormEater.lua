@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 377612 388643 377658 377594 385065 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434 390463",
+	"SPELL_CAST_START 377612 388643 377658 377594 385553 397382 397468 387261 385574 389870 385068 395885 386410 382434 390463",
 	"SPELL_CAST_SUCCESS 381615 396037 399713 181089 381249 378829 382434 390463",
 	"SPELL_AURA_APPLIED 381615 388631 395906 388115 396037 385541 397382 397387 388691 391990 394574 394576 391991 394579 394575 394582 391993 394584 377467 395929 391285 399713 391281 389214 389878 394583 391402",
 	"SPELL_AURA_APPLIED_DOSE 389878",
@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 395929",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_SPELLCAST_START boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -421,15 +422,8 @@ function mod:SPELL_CAST_START(args)
 			timerLightningBreathCD:Start(timer, self.vb.breathCount+1)
 			self:Schedule(timer+4, breathCorrect, self)
 		end
-	elseif spellId == 385065 then
-		self.vb.breathCount = self.vb.breathCount + 1
-		local timer = self.vb.phase == 1.5 and (self:IsMythic() and 9.7 or self:IsHeroic() and 12.1 or 13.3) or (self:IsMythic() and 29 or self:IsHeroic() and 31.5 or 32.7)
-		if self.Options.SetBreathToBait then
-			timer = timer - 1.5--Sets timer for baiting breath instead of breath activation
-		end
-		timerLightningDevastationCD:Start(timer, self.vb.breathCount+1)
-		self:Unschedule(warnDeepBreath)
-		self:Schedule(0.5, warnDeepBreath, self, false)
+--	elseif spellId == 385065 then
+
 	elseif spellId == 397382 then
 		self.vb.shroudIcon = 1
 		--Time between casts not known yet, fix when groups suck really bad
@@ -877,6 +871,24 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 --	if msg:find(L.BreathEmote) or msg == L.BreathEmote then
 		self:Unschedule(warnDeepBreath)
 		warnDeepBreath(self, true)
+	end
+end
+
+--Faster than combat log
+--<146.14 00:37:27> [UNIT_SPELLCAST_START] Raszageth(64.6%-0.0%){Target:??} -Lightning Devastation- 6.5s [[boss1:Cast-3-3895-2522-5422-385065-0065A96D89:385065]]", -- [4032]
+--<146.34 00:37:27> [CHAT_MSG_RAID_BOSS_EMOTE] Raszageth takes a deep breath...#Raszageth###Raszageth##0#0##0#3303#nil#0#false#false#false#false", -- [4039]
+--<148.75 00:37:30> [CLEU] SPELL_CAST_START#Creature-0-3895-2522-5422-189492-0000296C3C#Raszageth(64.6%-0.0%)##nil#385065#Lightning Devastation#nil#nil", -- [4120]
+function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	if spellId == 385065 then
+		self.vb.breathCount = self.vb.breathCount + 1
+		--TODO, recheck heroic and mythic, since normal is faster now in Season 4
+		local timer = self.vb.phase == 1.5 and (self:IsMythic() and 9.7 or self:IsHeroic() and 12.1 or 10.7) or (self:IsMythic() and 29 or self:IsHeroic() and 31.5 or 32.7)
+		if self.Options.SetBreathToBait then
+			timer = timer - 1.5--Sets timer for baiting breath instead of breath activation
+		end
+		timerLightningDevastationCD:Start(timer, self.vb.breathCount+1)
+		self:Unschedule(warnDeepBreath)
+		self:Schedule(0.5, warnDeepBreath, self, false)
 	end
 end
 
