@@ -6609,6 +6609,7 @@ do
 	end
 
 	function DBM:GetSpellTexture(spellId)
+		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		--Doesn't need a table at this time
 		local texture
 		--if newPath then

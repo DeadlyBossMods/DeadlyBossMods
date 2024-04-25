@@ -846,7 +846,7 @@ end
 
 function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly, forceDBM)
 	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
-	local currentTexture = tonumber(texture) or texture or DBM:GetSpellTexture(spellId)
+	local currentTexture = tonumber(texture) or texture or spellId and DBM:GetSpellTexture(spellId)
 
 	if SupportedNPModIcons() and not forceDBM then --aura icon handling
 		--Not running supported NP Mod, internal handling
