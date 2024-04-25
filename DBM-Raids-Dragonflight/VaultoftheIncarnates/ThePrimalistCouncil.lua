@@ -105,11 +105,11 @@ local allTimers = {
 	},
 	["heroic"] = {--Needs work, some of these can be lower
 		--Conductive Mark
-		[375331] = {15.7, 55.9, 35.3, 36.5, 34.1, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},
+		[375331] = {15.7, 55.9, 35.3, 36.5, 32.8, 36.5, 36.5, 35.2, 37.7, 32.8, 35.2},
 		--Pillars
-		[372322] = {7.2, 35.3, 37.7, 35.2, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},
+		[372322] = {7.2, 35.3, 37.7, 31.7, 36.5, 35.3, 35.2, 34.1, 37.7, 34, 35.2, 37.6},
 		--Primal Blizzard (excluded for now)
-		[373059] = {49.8, 118, 105.8, 108},
+		[373059] = {49.8, 116.6, 105.8, 108},
 	},
 	["normal"] = {--Needs work, some of these can be lower (Also includes LFR)
 		--Conductive Mark
@@ -152,7 +152,7 @@ function mod:OnCombatStart(delay)
 			timerPrimalBlizzardCD:Start(48-delay, 1)
 			--Dathea Stormlsh
 			timerChainLightningCD:Start(12.1-delay)
-			timerConductiveMarkCD:Start(15.7-delay, 1)
+			timerConductiveMarkCD:Start(14.2-delay, 1)
 			--Opalfang
 			timerEarthenPillarCD:Start(6.9-delay, 1)
 			timerCrushCD:Start(18.1-delay, 1)

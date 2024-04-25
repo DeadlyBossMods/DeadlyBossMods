@@ -530,9 +530,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.breathCount = 0--Reused for Lightning Devastation
 
 		if self.Options.SetBreathToBait then
-			timerLightningDevastationCD:Start(self:IsMythic() and 11.3 or 11.7, 1)
+			timerLightningDevastationCD:Start(self:IsMythic() and 10.5 or 10.9, 1)
 		else
-			timerLightningDevastationCD:Start(self:IsMythic() and 12.8 or 13.2, 1)
+			timerLightningDevastationCD:Start(self:IsMythic() and 12 or 12.4, 1)
 		end
 		timerPhaseCD:Start(self:IsMythic() and 93.3 or 100)
 	elseif spellId == 381249 and self:GetStage(1.5) then--Pre stage 2 trigger (Electric Scales)
@@ -756,7 +756,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStormBreakCD:Start(21.8, 1)
 	elseif spellId == 391402 then
 		warnLightningStrike:Show()
-		timerLightningStrikeCD:Start(self:IsMythic() and 29.1 or self:IsHeroic() and 31.5 or 32.8)
+		timerLightningStrikeCD:Start(self:IsMythic() and 29.1 or self:IsHeroic() and 31.1 or 32.8)
 	elseif spellId == 389214 then--Overload
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 199547 then--Frostforged Zealot
@@ -882,7 +882,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 385065 then
 		self.vb.breathCount = self.vb.breathCount + 1
 		--TODO, recheck heroic and mythic, since normal is faster now in Season 4
-		local timer = self.vb.phase == 1.5 and (self:IsMythic() and 9.7 or self:IsHeroic() and 12.1 or 10.7) or (self:IsMythic() and 29 or self:IsHeroic() and 31.5 or 32.7)
+		local timer = self.vb.phase == 1.5 and (self:IsMythic() and 9.7 or self:IsHeroic() and 12.1 or 10.7) or (self:IsMythic() and 29 or self:IsHeroic() and 30.4 or 32.7)
 		if self.Options.SetBreathToBait then
 			timer = timer - 1.5--Sets timer for baiting breath instead of breath activation
 		end
