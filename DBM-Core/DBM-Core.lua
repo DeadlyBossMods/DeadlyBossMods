@@ -7680,10 +7680,10 @@ function bossModPrototype:IsLFR()
 	return diff == "lfr" or diff == "lfr25"
 end
 
---Dungeons: follower, normal, heroic. (Raids excluded)
+--Dungeons: follower, normal. (Raids excluded)
 function bossModPrototype:IsEasyDungeon()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "heroic5" or diff == "normal5" or diff == "follower5"
+	return diff == "normal5" or diff == "follower5"
 end
 
 --Dungeons: Any 5 man dungeon
@@ -7692,7 +7692,7 @@ function bossModPrototype:IsDungeon()
 	return diff == "heroic5" or diff == "mythic5" or diff == "challenge5" or diff == "normal5"
 end
 
---Dungeons: follower, normal, heroic. Raids: LFR, normal
+--Dungeons: follower, normal, heroic. Raids: LFR, normal (rescope this to exclude heroic now that heroic5 is the new mythic 0?)
 function bossModPrototype:IsEasy()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower5"
