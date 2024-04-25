@@ -114,7 +114,7 @@ local specWarnDetonatingStoneslamTaunt			= mod:NewSpecialWarningTaunt(396264, ni
 
 local timerBroodkeepersFuryCD					= mod:NewNextCountTimer(30, 375879, nil, nil, nil, 5)--Static CD
 --local timerEGreatstaffoftheBroodkeeperCD		= mod:NewCDCountTimer(17, 380176, L.staff, nil, nil, 5)--Shared CD ability
-local timerFrozenShroudCD						= mod:NewCDCountTimer(40.5, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
+local timerFrozenShroudCD						= mod:NewCDCountTimer(39.9, 388918, nil, nil, nil, 2, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Static CD
 local timerMortalStoneSlamCD					= mod:NewCDCountTimer(20.7, 396269, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON..DBM_COMMON_L.MYTHIC_ICON)
 
 local castsPerGUID = {}
@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
-		local timer = ((self:IsEasy() or self:GetStage(1)) and 22.4 or 7.3)
+		local timer = ((self:IsEasy() or self:GetStage(1)) and 21.4 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
@@ -419,9 +419,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.staffCount = self.vb.staffCount + 1
 		local staffTimer
 		if self:IsHard() then
-			staffTimer = (self.vb.staffCount >= 14) and 17 or 24.3
+			staffTimer = (self.vb.staffCount >= 14) and 17 or 23.1
 		else
-			staffTimer = (self.vb.staffCount >= 13) and 20 or 24.3
+			staffTimer = (self.vb.staffCount >= 13) and 20 or 23.1
 		end
 		if self:GetStage(1) then
 			specWarnGreatstaffoftheBroodkeeper:Show(self.vb.staffCount)
