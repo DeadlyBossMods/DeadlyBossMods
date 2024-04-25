@@ -898,7 +898,7 @@ function DBM:ParseSpellName(spellId, objectType)
 		if spellId < 0 then--New Journal Format
 			spellName = DBM:EJ_GetSectionInfo(-spellId)
 		else
-			spellName = DBM:GetSpellInfo(spellId)
+			spellName = DBM:GetSpellName(spellId)
 		end
 	end
 	return spellName
@@ -1132,7 +1132,7 @@ do
 				DBM:Debug("DBM RegisterEvents Warning: " .. spellId .. " is not a number!")
 				return
 			end
-			local spellName = DBM:GetSpellInfo(spellId)
+			local spellName = DBM:GetSpellName(spellId)
 			if spellId and not spellName then
 				DBM:Debug("DBM RegisterEvents Warning: " .. spellId .. " spell id does not exist!")
 				return
@@ -1151,7 +1151,7 @@ do
 
 		function unregisterSpellId(event, spellId)
 			if not registeredSpellIds[event] then return end
-			local spellName = DBM:GetSpellInfo(spellId)
+			local spellName = DBM:GetSpellName(spellId)
 			if spellId and not spellName then
 				DBM:Debug("DBM unregisterSpellId Warning: " .. spellId .. " spell id does not exist!")
 				return
@@ -5331,7 +5331,7 @@ do
 		if id then
 			local spellId = tonumber(id)
 			if spellId then
-				local spellName = DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
 				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2)
 			end
 		end
@@ -6570,11 +6570,11 @@ end
 
 do
 	--Handle new spell name requesting with wrapper, to make api changes easier to handle
-	local GetSpellInfo, GetSpellTexture, GetSpellCooldown
+	local GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName
 	local newPath
 	if C_Spell and C_Spell.GetSpellInfo then
 		newPath = true
-		GetSpellInfo, GetSpellTexture, GetSpellCooldown = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown
+		GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown, C_Spell.GetSpellName
 	else
 		newPath = false
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
@@ -6621,6 +6621,17 @@ do
 			texture = GetSpellTexture(spellId)
 		--end
 		return texture
+	end
+
+	function DBM:GetSpellName(spellId)
+		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
+		local spellName
+		if newPath then--Use spellname only function, avoid pulling entire spellinfo table if not needed
+			spellName = GetSpellName(spellId)
+		else
+			spellName = self:GetSpellInfo(spellId)
+		end
+		return spellName
 	end
 
 	function DBM:GetSpellCooldown(spellId)

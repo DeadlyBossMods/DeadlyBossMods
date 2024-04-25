@@ -1171,7 +1171,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "table" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" and event ~= "test2" then
 		-- Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
 		-- This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
-		value[1] = DBM:GetSpellInfo(value[1])
+		value[1] = DBM:GetSpellName(value[1])
 	elseif event == "bosshealth" then
 		if type(value[1]) ~= "table" then
 			error("DBM-InfoFrame: bosshealth frame expects a table of bossIds -> names or a mod as parameter, got " .. type(value[1]), 2)
