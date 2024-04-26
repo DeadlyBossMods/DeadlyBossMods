@@ -93,7 +93,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerUnleashedShadowflameCD:Start(4.2-delay, 1)
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(405827))
+			DBM.InfoFrame:SetHeader(DBM:GetSpellName(405827))
 			DBM.InfoFrame:Show(5, "table", overchargedStacks, 1)
 		end
 		self:RegisterShortTermEvents(

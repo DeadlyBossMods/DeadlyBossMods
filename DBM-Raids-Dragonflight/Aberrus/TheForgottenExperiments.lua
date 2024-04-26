@@ -164,7 +164,7 @@ function mod:OnCombatStart(delay)
 	self.vb.anomalyCount = 0
 	self:EnablePrivateAuraSound(406317, "targetyou", 2)--Rending Charge
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(406313))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(406313))
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
 end

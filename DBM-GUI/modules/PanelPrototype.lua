@@ -29,7 +29,7 @@ local function parseDescription(name, usesHTML)
 			if spellId < 0 then
 			    return "$journal:" .. -spellId
 			end
-			spellName = DBM:GetSpellInfo(spellId)
+			spellName = DBM:GetSpellName(spellId)
 			if not spellName then
 				spellName = CL.UNKNOWN
 				DBM:Debug("Spell ID does not exist: " .. spellId)

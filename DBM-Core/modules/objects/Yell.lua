@@ -17,7 +17,7 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 ---@class Yell
 local yellPrototype = private:GetPrototype("Yell")
 local mt = {__index = yellPrototype}
-local voidForm = DBM:GetSpellInfo(194249)
+local voidForm = DBM:GetSpellName(194249)
 
 local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 	if not spellId and not yellText then
@@ -37,7 +37,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 				spellId = -spellId
 				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN)
 			else
-				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or CL.UNKNOWN)
+				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellName(spellId) or CL.UNKNOWN)
 			end
 		else
 			displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(CL.UNKNOWN)
@@ -46,7 +46,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 	--Passed spellid as yellText.
 	--Auto localize spelltext using yellText instead
 	if yellText and type(yellText) == "number" then
-		displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(yellText) or CL.UNKNOWN)
+		displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellName(yellText) or CL.UNKNOWN)
 	end
 	---@class Yell
 	local obj = setmetatable(

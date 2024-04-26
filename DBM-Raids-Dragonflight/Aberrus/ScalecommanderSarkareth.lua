@@ -386,14 +386,14 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehaviorTwo == "OblivionOnly" then
 			oblivionDisabled = false
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(401951))
+			DBM.InfoFrame:SetHeader(DBM:GetSpellName(401951))
 			DBM.InfoFrame:Show(20, "table", oblivionStacks, 1)
 		else
 			if self.Options.InfoFrameBehaviorTwo == "HowlOnly" then
 				oblivionDisabled = true--Means in phase 2 and 3 infoframe just closes
 				--If hybrid is enabled, oblivionDisabled will be set to false on stage 2 trigger
 			end
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(401383))
+			DBM.InfoFrame:SetHeader(DBM:GetSpellName(401383))
 			DBM.InfoFrame:Show(20, "playerdebuffstacks", 401383)--Stacks aren't in combat log so has to use less efficient UnitAura method
 		end
 	end
@@ -971,7 +971,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self.Options.InfoFrameBehaviorTwo == "Hybrid" then
 				--Transition from Howl to Oblivion for phase 2 and phase 3
 				oblivionDisabled = false
-				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(401951))
+				DBM.InfoFrame:SetHeader(DBM:GetSpellName(401951))
 				DBM.InfoFrame:Show(20, "table", oblivionStacks, 1)
 			else
 				--Just close it out, It was howl only

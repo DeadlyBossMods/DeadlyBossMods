@@ -174,7 +174,7 @@ function mod:OnCombatStart(delay)
 		timerMeteorAxeCD:Start(22.3-delay, 1)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(373059))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(373059))
 		DBM.InfoFrame:Show(self:IsMythic() and 20 or 10, "table", blizzardStacks, 1)--On mythic, see everyone to coordinate clears, else just show top idiots because cleares are infinite
 	end
 end

@@ -117,7 +117,7 @@ mod.vb.annihilatingCount = 0
 --P3
 mod.vb.sunderRealityCount = 0
 mod.vb.ebonCount = 0
-local realityName = DBM:GetSpellInfo(407919)
+local realityName = DBM:GetSpellName(407919)
 local playerReality = false
 local mythicTwistedP1Timers = {2, 20.6, 19.4, 18.2, 18.2, 18.2, 19.5, 17.0}
 local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}

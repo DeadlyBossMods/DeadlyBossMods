@@ -635,11 +635,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 do
 	local spellEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
+		[391096] = {DBM:GetSpellName(373678), DBM:GetSpellName(373487), DBM:GetSpellName(382563), (DBM:GetSpellName(395893))},
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(395893))},
+		[391100] = {DBM:GetSpellName(373678), DBM:GetSpellName(390920), DBM:GetSpellName(382563), (DBM:GetSpellName(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
-		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
+		[374680] = {DBM:GetSpellName(372456), DBM:GetSpellName(374217), DBM:GetSpellName(374022), (DBM:GetSpellName(374705))}
 	}
 	local iconEasyMapping = {
 		--Biting Chill, Shocking Burst, Magma Burst, Erupting Bedrock
@@ -651,11 +651,11 @@ do
 	}
 	local spellMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
-		[391096] = {DBM:GetSpellInfo(373678), DBM:GetSpellInfo(373487), DBM:GetSpellInfo(382563), (DBM:GetSpellInfo(391055))},
+		[391096] = {DBM:GetSpellName(373678), DBM:GetSpellName(373487), DBM:GetSpellName(382563), (DBM:GetSpellName(391055))},
 		--Frigid Torrent, Shocking Burst, Molten Rupture, Erupting Bedrock
-		[391100] = {DBM:GetSpellInfo(391019), DBM:GetSpellInfo(390920), DBM:GetSpellInfo(373329), (DBM:GetSpellInfo(395893))},
+		[391100] = {DBM:GetSpellName(391019), DBM:GetSpellName(390920), DBM:GetSpellName(373329), (DBM:GetSpellName(395893))},
 		--Ultimate Selection (Absolute Zero, Thunder Strike, Searing Carnage, Seismic Rupture
-		[374680] = {DBM:GetSpellInfo(372456), DBM:GetSpellInfo(374217), DBM:GetSpellInfo(374022), (DBM:GetSpellInfo(374705))}
+		[374680] = {DBM:GetSpellName(372456), DBM:GetSpellName(374217), DBM:GetSpellName(374022), (DBM:GetSpellName(374705))}
 	}
 	local iconMapping = {
 		--Biting Chill, Lightning Crash, Magma Burst, Enveloping Earth
