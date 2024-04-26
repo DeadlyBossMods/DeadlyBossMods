@@ -8496,7 +8496,8 @@ do
 		[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
 		[365585] = true,--Evoker: Expunge (Poison)
 	}
-	--Obviously only checks spells releventt for the dispel type
+	--Obviously only checks spells relevant for the dispel type
+	---@enum (key) DispelType
 	local typeCheck = {
 		["magic"] = {
 			[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
@@ -8538,6 +8539,7 @@ do
 		},
 	}
 	local lastCheck, lastReturn = 0, true
+	---@param dispelType DispelType
 	function bossModPrototype:CheckDispelFilter(dispelType)
 		if not DBM.Options.FilterDispel then return true end
 		-- Retail - Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450) Monk: Detox (218164), Priest: Purify (527) Priest: Purify Disease (213634), Paladin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475), Warlock: Singe Magic (89808)
