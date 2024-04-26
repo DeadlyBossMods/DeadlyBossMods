@@ -4335,7 +4335,7 @@ do
 			end
 			if not self.Options.DontShowPTText then
 				local target = unitId and UnitName(unitId.."target")
-				if target then
+				if target and not raid[target] then
 					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
 				else
