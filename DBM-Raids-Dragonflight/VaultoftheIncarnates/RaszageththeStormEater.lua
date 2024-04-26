@@ -389,7 +389,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 377612 then
-		local modifier = self:IsMythic() and self.vb.energyCount * 0.5 or 0--Purposely calculated before increasing count
+		local modifier = self:IsMythic() and (self.vb.energyCount * 0.5) or 0--Purposely calculated before increasing count
 		self.vb.energyCount = self.vb.energyCount + 1
 		specWarnHurricaneWing:Show(self.vb.energyCount)
 		specWarnHurricaneWing:Play("pushbackincoming")
