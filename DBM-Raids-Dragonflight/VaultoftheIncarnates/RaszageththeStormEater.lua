@@ -49,8 +49,9 @@ local timerPhaseCD								= mod:NewPhaseTimer(30)
 
 --Stage One: The Winds of Change
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(25244))
-local warnStaticCharge							= mod:NewTargetNoFilterAnnounce(381615, 3)
+local warnStaticCharge							= mod:NewTargetNoFilterAnnounce(381615, 3, nil, nil, 37859)
 local warnLightningStrike						= mod:NewSpellAnnounce(376126, 3)
+local warnHurricaneWingOver						= mod:NewFadesAnnounce(377612, 1, nil, nil, nil, nil, nil, 2)
 
 local specWarnHurricaneWing						= mod:NewSpecialWarningCount(377612, nil, nil, nil, 2, 13)
 local specWarnStaticCharge						= mod:NewSpecialWarningYouPos(381615, nil, 37859, nil, 1, 2)
@@ -61,7 +62,8 @@ local specWarnElectrifiedJaws					= mod:NewSpecialWarningDefensive(395906, nil, 
 local specWarnElectrifiedJawsOther				= mod:NewSpecialWarningTaunt(395906, nil, nil, nil, 1, 2)
 local specWarnLightingBreath					= mod:NewSpecialWarningDodgeCount(377594, nil, 18357, nil, 2, 2)
 
-local timerHurricaneWingCD						= mod:NewCDCountTimer(35, 377612, nil, nil, nil, 2)
+local timerHurricaneWingCD						= mod:NewCDCountTimer(35, 377612, DBM_COMMON_L.PUSHBACK.." (%s)", nil, nil, 2)
+local timerHurricaneWing						= mod:NewCastTimer(8, 377612, DBM_COMMON_L.PUSHBACK, nil, nil, 5)
 local timerStaticChargeCD						= mod:NewCDCountTimer(35, 381615, 167180, nil, nil, 3)--"Bombs"
 local timerStaticCharge							= mod:NewCastTimer(35, 381615, 167180, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--"Bombs"
 local timerVolatileCurrentCD					= mod:NewCDCountTimer(47, 388643, 384738, nil, nil, 3)
@@ -387,6 +389,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 377612 then
+		local modifier = self:IsMythic() and self.vb.energyCount * 0.5 or 0--Purposely calculated before increasing count
 		self.vb.energyCount = self.vb.energyCount + 1
 		specWarnHurricaneWing:Show(self.vb.energyCount)
 		specWarnHurricaneWing:Play("pushbackincoming")
@@ -394,6 +397,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerHurricaneWingCD:Start(timer, self.vb.energyCount+1)
 		end
+		timerHurricaneWing:Start(9 + modifier)--6 sec cast + 3 sec duration + mythic cast count mod if applicable
+		warnHurricaneWingOver:Schedule(9 + modifier)
+		warnHurricaneWingOver:ScheduleVoice(9 + modifier, "safenow")
 	elseif spellId == 388643 then
 		self.vb.currentCount = self.vb.currentCount + 1
 		specWarnVolatileCurrent:Show(self.vb.currentCount)
