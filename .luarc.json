@@ -7,6 +7,9 @@
 		"deprecated",
 		"duplicate-doc-field"
 	],
+	"diagnostics.neededFileStatus": {
+		"global-element": "Any"
+	},
 	"diagnostics.globals": [
 		"ALL",
 		"ALWAYS",
@@ -79,6 +82,29 @@
 		"NineSliceUtil",
 		"CreateRadioButtonGroup",
 		"PanelTemplates_SetTab",
-		"WOW_PROJECT_CATACLYSM_CLASSIC"
+		"DBM_COMMON_L",
+		"DBM_CORE_L",
+		"SLASH_DEADLYBOSSMODSDWAY1",
+		"SLASH_DBMHUDAR1",
+		"SLASH_DBMRANGE1",
+		"SLASH_DBMRANGE2",
+		"SLASH_DBMRRANGE1",
+		"SLASH_DBMRRANGE2",
+		"SLASH_DEADLYBOSSMODSPULL1",
+		"SLASH_DEADLYBOSSMODSBREAK1",
+		"SLASH_DEADLYBOSSMODSRPULL1",
+		"SLASH_DEADLYBOSSMODS1",
+		"SlashCmdList",
+		"DBM_UseDualProfile",
+		"DBM_CharSavedRevision",
+		"DBM_DISABLE_ZONE_DETECTION",
+		"DBM_OPTION_SPACER",
+		"DBM_MinimapIcon",
+		"DBM_UsedProfile",
+		"DBM_AllSavedOptions",
+		"DBMExtraGlobal",
+		"DBM_GUI_L",
+		"OptionsList_OnLoad",
+		"DBT_AllPersistentOptions"
 	]
 }
