@@ -128,7 +128,7 @@ L.Panel_ExtraFeatures		= "Funciones adicionales"
 
 L.Area_SoundAlerts			= "Opciones de alertas de sonido y destello del icono del juego"
 L.LFDEnhance				= "Reproducir sonido de comprobación de banda y destellar icono del juego para avisos del buscador de mazmorra/banda/grupo y campos de batalla por el canal de audio general o de diálogo (en otras palabras, reproduce el sonido aunque el canal de efectos de sonido esté desactivado, y en general suena más alto)"
-L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar icono del juego cuando haya un jefe de mundo cerca"
+L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar icono del juego cuando haya un jefe del mundo cerca"
 L.RLReadyCheckSound			= "Reproducir sonido por el canal de audio general o de diálogo y destellar el icono del juego cuando se haga una comprobación de banda"
 L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce mientras estás ausente"
 L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego al recibir respuestas automáticas de DBM por susurro"
@@ -255,7 +255,7 @@ L.ShowGuildMessagesPlus		= "Mostrar también mensajes de inicio, victoria y derr
 L.Area_ChatAlerts			= "Opciones de alertas adicionales"
 L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
 L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
-L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe de mundo (impreciso si el jugador en combate está en otro reino)"
+L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe del mundo (impreciso si el jugador en combate está en otro reino)"
 L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando un beneficio del mundo empieza en tu reino"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
