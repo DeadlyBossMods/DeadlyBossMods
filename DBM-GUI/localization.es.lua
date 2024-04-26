@@ -111,11 +111,11 @@ L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcript
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "Filtros del registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; escribe '/dbm pull' antes de iniciar un encuentro para registrar el uso previo de pociones)"
-L.DoNotLogLFG				= "No registrar Buscar Grupo o Buscar Banda (contenido en cola)"
+L.DoNotLogLFG				= "No registrar grupos del buscador de mazmorras o buscador de bandas"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
-L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscar bandas si el filtro está desactivado)"
+L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscador de bandas si el filtro está desactivado)"
 L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
 L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
 L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
@@ -549,7 +549,7 @@ L.ReceivingFooter					= "Las anulaciones de opciones de iconos y burbujas de cha
 L.ReceivingFooter2					= "Si activas estas opciones, es entre tú y líder de banda si tu configuración causa conflicto con su intención."--NYI
 L.ReceivingFooter3					= "Si activas 'reemplazar mi configuración de módulo', tu configuración original se perderá al anularla."--NYI
 
-L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscar banda"
+L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscador de banda"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidad"
