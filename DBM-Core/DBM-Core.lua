@@ -8587,16 +8587,15 @@ do
 end
 
 do
-	--ccLazyList used for abilities that any CC will break (except root and slow type spells since they don't stop casts)
-	--TODO, allow ccType to be multiple. IE "stun,knock,disorient"
 	--Spell tables likely missing stuff
-	local ccLazyList = {
-		[107570] = true,--Warrior: Storm Bolt (Stun)
-		[46968] = true,--Warrior: Shockwave (Stun)
-		[221562] = true,--DK: Asphyxiate (Stun)
-		[179057] = true,--DH: Chaos Nova (Stun)
-	}
+	---@enum (key) CCType
 	local typeCheck = {
+		["disrupt"] = {--used for abilities that any CC will break (except root and slow type spells since they don't stop casts)
+			[107570] = true,--Warrior: Storm Bolt (Stun)
+			[46968] = true,--Warrior: Shockwave (Stun)
+			[221562] = true,--DK: Asphyxiate (Stun)
+			[179057] = true,--DH: Chaos Nova (Stun)
+		},
 		["stun"] = {
 			[107570] = true,--Warrior: Storm Bolt (Stun)
 			[46968] = true,--Warrior: Shockwave (Stun)
@@ -8648,6 +8647,7 @@ do
 		},
 	}
 	local lastCheck, lastReturn = 0, true
+	---@param ccType CCType
 	function bossModPrototype:CheckCCFilter(ccType)
 		if not DBM.Options.FilterCrowdControl then return true end
 		--start, duration, enable = GetSpellCooldown
@@ -8656,24 +8656,14 @@ do
 		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckCCFilter running from multiple mobs casting at once
 			return lastReturn
 		end
-		if ccType then
-			--We cannot do inverse check here because some classes actually have two ccs for same type (such as warrior)
-			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
-			--As such, we have to check if a spell is known in addition to it not being on cooldown
-			for spellID, _ in pairs(typeCheck[ccType]) do
-				if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
-					lastCheck = GetTime()
-					lastReturn = true
-					return lastReturn
-				end
-			end
-		else--use full check since ANY CC works
-			for spellID, _ in pairs(ccLazyList) do
-				if IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
-					lastCheck = GetTime()
-					lastReturn = true
-					return true
-				end
+		--We cannot do inverse check here because some classes actually have two ccs for same type (such as warrior)
+		--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
+		--As such, we have to check if a spell is known in addition to it not being on cooldown
+		for spellID, _ in pairs(typeCheck[ccType]) do
+			if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				lastCheck = GetTime()
+				lastReturn = true
+				return lastReturn
 			end
 		end
 		lastCheck = GetTime()
