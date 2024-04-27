@@ -3939,11 +3939,28 @@ do
 		end
 	end
 
+	---@return string?
+	local function isDmfActiveClassic()
+		if DBM:IsSeasonal("SeasonOfDiscovery") then
+			-- GetServerTime() returns local time in classic and there doesn't seem to be a good way to get actual server date in classic. This is good enough.
+			local dmfOffset = (GetServerTime() - 1713736800) / (60 * 60 * 24 * 28) % 1
+			return dmfOffset <= 0.25 and "m1456" -- Thunderbluff
+				or dmfOffset >= 0.5 and dmfOffset <= 0.75 and "m1429" -- Elwynn
+				or nil -- Not active
+		else
+			return nil -- TODO: implement Classic era logic and whatever Cataclysm is doing. Slightly more annoying to calculate than SoD
+		end
+	end
+
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		self:Debug("LoadModsOnDemand fired for table " .. checkTable .. " value " .. tostring(checkValue))
+		local dmfMod
 		for _, v in ipairs(self.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = C_AddOns.GetAddOnEnableState(v.modId, playerName)
+			if v.modId == "DBM-WorldEvents" and enabled ~= 0 and not C_AddOns.IsAddOnLoaded(v.modId) then
+				dmfMod = v
+			end
 			--self:Debug(v.modId .. " is " .. enabled, 2)
 			if not C_AddOns.IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
@@ -3959,6 +3976,10 @@ do
 		end
 		if private.isRetail then
 			self:ScenarioCheck()--Do not filter. Because ScenarioCheck function includes filter.
+		end
+		-- Hard-code loading logic for DMF classic which depends on time and map
+		if dmfMod and checkTable == "mapId" and private.isClassic and isDmfActiveClassic() == checkValue then
+			self:LoadMod(dmfMod, true)
 		end
 	end
 end
