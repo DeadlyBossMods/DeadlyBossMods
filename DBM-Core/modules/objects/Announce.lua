@@ -475,7 +475,7 @@ function announcePrototype:Cancel(...)
 end
 
 ---@param name VPSound?
----@param customPath? string
+---@param customPath? string|number
 function announcePrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	if private.voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
