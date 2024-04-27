@@ -100,7 +100,7 @@ function mod:OnCombatStart(delay)
 		timerColaescingStormCD:Start(80-delay, 1)
 	end
 --	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(391686))
+--		DBM.InfoFrame:SetHeader(DBM:GetSpellName(391686))
 --		DBM.InfoFrame:Show(self:IsMythic() and 20 or 10, "playerdebuffstacks", 391686)
 --	end
 end

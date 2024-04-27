@@ -62,7 +62,7 @@ local specWarnKillOrder							= mod:NewSpecialWarningYou(370597, nil, nil, nil, 
 mod:AddNamePlateOption("NPAuraOnKillOrder", 370597, true)
 mod:AddNamePlateOption("NPAuraOnRampage", 371562, true)
 --Flamescale Captain (Mythic)
-mod:AddTimerLine(DBM:GetSpellInfo(396039))
+mod:AddTimerLine(DBM:GetSpellName(396039))
 local warnLeapingFlames							= mod:NewSpellAnnounce(394917, 3)
 
 local specWarnPyroBlast							= mod:NewSpecialWarningInterruptCount(396040, "HasInterrupt", nil, nil, 1, 2)

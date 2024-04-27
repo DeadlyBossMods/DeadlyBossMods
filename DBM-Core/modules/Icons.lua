@@ -90,7 +90,7 @@ do
 		end
 		for _, v in ipairs(iconUnitTable[scanId]) do
 			if not mod.iconRestore[v] then
-				mod.iconRestore[v] = bossModPrototype:GetIcon(v) or 0
+				mod.iconRestore[v] = mod:GetIcon(v) or 0
 			end
 			if CustomIcons then
 				SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.
@@ -204,7 +204,7 @@ do
 		end
 		for _, v in ipairs(iconUnitTable[scanId]) do
 			if not mod.iconRestore[v] then
-				mod.iconRestore[v] = bossModPrototype:GetIcon(v) or 0
+				mod.iconRestore[v] = mod:GetIcon(v) or 0
 			end
 			if CustomIcons then
 				SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.

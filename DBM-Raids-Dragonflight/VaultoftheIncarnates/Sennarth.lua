@@ -192,7 +192,7 @@ function mod:OnCombatStart(delay)
 		difficultyName = "lfr"
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(372030))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(372030))
 		DBM.InfoFrame:Show(20, "table", stickyStacks, 1)
 	end
 end

@@ -856,7 +856,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			--If timertext is a number, accept it as a secondary auto translate spellid
 			if type(timerText) == "number" then
 				timerTextValue = timerText
-				spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
+				spellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
 				timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
@@ -1120,7 +1120,7 @@ function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 		DBM:Debug("|cffff0000GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live|r")
 		spellName = DBM:ParseSpellName(spellId, timerType)
 		--Name wasn't provided, but we succeeded in getting a name, generate one into object now for caching purposes
-		--This would really only happen if GetSpellInfo failed to return spell name on first attempt (which now happens in 9.0)
+		--This would really only happen if GetSpellName failed to return spell name on first attempt (which now happens in 9.0)
 		if spellName then
 			self.name = spellName
 		end

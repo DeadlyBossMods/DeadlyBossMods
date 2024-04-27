@@ -99,7 +99,7 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(408839))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(408839))
 		DBM.InfoFrame:Show(30, "table", heatStacks, 1)
 	end
 end

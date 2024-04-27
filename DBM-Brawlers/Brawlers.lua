@@ -244,7 +244,7 @@ function mod:OnSync(msg)
 end
 
 do
-	local QueuedBuff = DBM:GetSpellInfo(132639)
+	local QueuedBuff = DBM:GetSpellName(132639)
 	function mod:UNIT_AURA()
 		local currentQueueRank = select(16, DBM:UnitBuff("player", QueuedBuff))
 		if currentQueueRank and currentQueueRank ~= lastRank then
