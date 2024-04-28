@@ -91,6 +91,8 @@ modules\Notes.lua
 modules\Sounds.lua
 modules\UpdateReminder.lua
 
+modules\objects\Difficulties.lua
+modules\objects\BossMod.lua
 modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
 modules\objects\Timer.lua
