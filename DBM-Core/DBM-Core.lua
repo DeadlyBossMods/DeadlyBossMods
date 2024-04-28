@@ -8930,7 +8930,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name .. "SWSound"] = defaultSound or 1
 	self.DefaultOptions[name .. "SWNote"] = true
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
@@ -8949,10 +8949,11 @@ end
 --auraspellId must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 --groupSpellId is used if a diff option key is used in all other options with spell (will be quite common)
 --defaultSound is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["PrivateAuraSound" .. auraspellId] = (default == nil) or default
@@ -9023,11 +9024,9 @@ end
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	if (groupSpellId or spellId) and not DBM.Options.GroupOptionsExcludeIcon then
 		self:GroupSpells(groupSpellId or spellId, name)
@@ -9094,12 +9093,9 @@ end
 function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	if isRunTo == true then isRunTo = 2 end--Support legacy
 	self.DefaultOptions[name] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
-	--This comes down to fact it is using name instead of a hard set string like rangeframe does
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "misc")
@@ -9115,7 +9111,7 @@ end
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self.DefaultOptions["RangeFrame"] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["RangeFrame"] = (default == nil) or default
@@ -9128,9 +9124,10 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self:SetOptionCategory("RangeFrame", "misc")
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddHudMapOption(name, spellId, default)
 	self.DefaultOptions[name] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
@@ -9149,12 +9146,9 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 		error("AddNamePlateOption must provide valid spellId", 2)
 	end
 	self.DefaultOptions[name] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
-	--This comes down to fact it is using name instead of a hard set string like rangeframe does
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "nameplate")
@@ -9168,12 +9162,9 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 		oVersion = tostring(optionVersion)
 	end
 	self.DefaultOptions["InfoFrame" .. oVersion] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
-	--This comes down to fact it is using name instead of a hard set string like rangeframe does
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["InfoFrame" .. oVersion] = (default == nil) or default
 	if spellId then
 		self:GroupSpells(spellId, "InfoFrame" .. oVersion)
@@ -9193,7 +9184,7 @@ function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.readyCheckQuestId = questId
 	self.readyCheckMaxLevel = maxLevel or 999
 	self.DefaultOptions["ReadyCheck"] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["ReadyCheck"] = (default == nil) or default
@@ -9201,9 +9192,10 @@ function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self:SetOptionCategory("ReadyCheck", "misc")
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddSpeedClearOption(name, default)
 	self.DefaultOptions["SpeedClearTimer"] = (default == nil) or default
-	if default and type(default) == "string" then
+	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["SpeedClearTimer"] = (default == nil) or default
