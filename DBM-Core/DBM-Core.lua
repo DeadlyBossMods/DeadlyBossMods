@@ -9021,7 +9021,20 @@ function bossModPrototype:DisablePrivateAuraSounds()
 	self.paSounds = nil
 end
 
+---@meta
+---@alias iconTypes
+---|0: Player icon setting using no sorting. Most common in boss mods
+---|1: Player icon setting using melee > ranged with alphabetical sorting on multiple melee
+---|2: Player icon setting using melee > ranged with raid roster index sorting on multiple melee
+---|3: Player icon setting using ranged > melee with alphabetical sorting on multiple ranged
+---|4: Player icon setting using ranged > melee with raid roster index sorting on multiple ranged
+---|5: Enemy icon setting using priority icon elect feature that chooses most ideal assist based on latency and boss mod version
+---|6: Player icon setting using only alphabetical sorting
+---|7: Player icon setting using only raid roster index sorting
+---|8: Player icon setting using tank > non tank with alphabetical sorting on multiple melee
+---|9: Player icon setting using tank > non tank with raid roster index sorting on multiple melee
 ---@param default SpecFlags|boolean?
+---@param iconType iconTypes|number?
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
 	if type(default) == "string" then
