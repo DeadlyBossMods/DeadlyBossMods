@@ -92,7 +92,7 @@ local timerEmeraldWindsCD							= mod:NewCDCountTimer(11.8, 421024, DBM_COMMON_L
 
 mod:AddPrivateAuraSoundOption(418589, true, 418720, 1)--Polymorph Bomb
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnPoly", 418720, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnPoly", 418720, true, 0, {1, 2, 3, 4})
 
 mod.vb.specialsActive = 0
 mod.vb.nextSpecial = 1

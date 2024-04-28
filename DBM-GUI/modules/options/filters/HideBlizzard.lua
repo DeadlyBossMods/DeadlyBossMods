@@ -1,18 +1,20 @@
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local private = select(2, ...)
 
 local L = DBM_GUI_L
 
 local hideBlizzPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_HideBlizzard, "option")
 
-if isRetail then
+if private.isRetail then
 	local hideToastArea = hideBlizzPanel:CreateArea(L.Area_HideToast)
 	hideToastArea:CreateCheckButton(L.HideGarrisonUpdates, true, nil, "HideGarrisonToasts")
 	hideToastArea:CreateCheckButton(L.HideGuildChallengeUpdates, true, nil, "HideGuildChallengeUpdates")
+end
 
+if not private.isClassic and not private.isBCC then
 	local hideMovieArea = hideBlizzPanel:CreateArea(L.Area_Cinematics)
 	hideMovieArea:CreateCheckButton(L.DuringFight, true, nil, "HideMovieDuringFight")
 	hideMovieArea:CreateCheckButton(L.InstanceAnywhere, true, nil, "HideMovieInstanceAnywhere")
---	hideMovieArea:CreateCheckButton(L.NonInstanceAnywhere, true, nil, "HideMovieNonInstanceAnywhere")
+	--	hideMovieArea:CreateCheckButton(L.NonInstanceAnywhere, true, nil, "HideMovieNonInstanceAnywhere")
 	hideMovieArea:CreateCheckButton(L.OnlyAfterSeen, true, nil, "HideMovieOnlyAfterSeen")
 end
 
@@ -23,7 +25,7 @@ blockSoundArea:CreateCheckButton(L.DisableMusic, true, nil, "DisableMusic")
 
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
 hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
-if not isRetail then--Hiding it on retail causes taint, there are ways to work around it but involves modifying other addons like elvui first
+if not private.isRetail then--Hiding it on retail causes taint, there are ways to work around it but involves modifying other addons like elvui first
 	hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 end
 --hideBlizzArea:CreateCheckButton(L.HideQuestTooltips, true, nil, "HideQuestTooltips")--Needs reimplimenting the way BW does it, not altering cvar but manually revising tooltips on fly

@@ -208,6 +208,7 @@
 ---|"movetomobs"
 ---|"movetopillar"
 ---|"movetopool"
+---|"movetostatue"
 ---|"movetotank"
 ---|"mpurple"
 ---|"myellow"
