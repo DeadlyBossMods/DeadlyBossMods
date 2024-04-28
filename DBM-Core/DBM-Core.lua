@@ -9023,16 +9023,16 @@ end
 
 ---@meta
 ---@alias iconTypes
----|0: Player icon setting using no sorting. Most common in boss mods
----|1: Player icon setting using melee > ranged with alphabetical sorting on multiple melee
----|2: Player icon setting using melee > ranged with raid roster index sorting on multiple melee
----|3: Player icon setting using ranged > melee with alphabetical sorting on multiple ranged
----|4: Player icon setting using ranged > melee with raid roster index sorting on multiple ranged
----|5: Enemy icon setting using icon elect that chooses ideal setter based on latency and mod version
----|6: Player icon setting using only alphabetical sorting
----|7: Player icon setting using only raid roster index sorting
----|8: Player icon setting using tank > non tank with alphabetical sorting on multiple melee
----|9: Player icon setting using tank > non tank with raid roster index sorting on multiple melee
+---|0: Player icon using no sorting. Most common in boss mods
+---|1: Player icon using melee > ranged with alphabetical sorting on multiple melee
+---|2: Player icon using melee > ranged with raid roster index sorting on multiple melee
+---|3: Player icon using ranged > melee with alphabetical sorting on multiple ranged
+---|4: Player icon using ranged > melee with raid roster index sorting on multiple ranged
+---|5: NPC icon using feature that chooses ideal setter. Always use 5 for NPCS
+---|6: Player icon using only alphabetical sorting
+---|7: Player icon using only raid roster index sorting
+---|8: Player icon using tank > non tank with alphabetical sorting on multiple melee
+---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
 ---@param default SpecFlags|boolean?
 ---@param iconType iconTypes|number?
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
@@ -9045,13 +9045,11 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		self:GroupSpells(groupSpellId or spellId, name)
 	end
 	self:SetOptionCategory(name, "icon")
-	--Legacy bool and nil support
+	--Legacy notice about outdated bool and nil support
+	--Will be removed before TWW
+	iconType = iconType or 0
 	if type(iconType) ~= "number" then
-		if iconType then--true
-			iconType = 5
-		else --false/nil
-			iconType = 0
-		end
+		error("DBM iconType must be a number. If you are seeing this error your content mods are probabably out of date")
 	end
 	if iconType == 1 then
 		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_MELEE_A:format(spellId) or self.localization.options[name]
