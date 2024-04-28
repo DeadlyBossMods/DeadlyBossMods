@@ -50,7 +50,7 @@ local timerFrenziedDevastationCD				= mod:NewNextTimer(387.9, 377505, nil, nil, 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(361651, true)--Likely will be used for dust
-mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, true, false, {1, 2, 3, 4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnAwakenedEarth", 381253, true, 0, {1, 2, 3, 4, 5, 6, 7, 8})
 
 --mod.vb.rockIcon = 1
 mod.vb.awakenedIcon = 1

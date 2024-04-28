@@ -9028,7 +9028,7 @@ end
 ---|2: Player icon setting using melee > ranged with raid roster index sorting on multiple melee
 ---|3: Player icon setting using ranged > melee with alphabetical sorting on multiple ranged
 ---|4: Player icon setting using ranged > melee with raid roster index sorting on multiple ranged
----|5: Enemy icon setting using priority icon elect feature that chooses most ideal assist based on latency and boss mod version
+---|5: Enemy icon setting using icon elect that chooses ideal setter based on latency and mod version
 ---|6: Player icon setting using only alphabetical sorting
 ---|7: Player icon setting using only raid roster index sorting
 ---|8: Player icon setting using tank > non tank with alphabetical sorting on multiple melee

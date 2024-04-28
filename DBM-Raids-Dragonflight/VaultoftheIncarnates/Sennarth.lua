@@ -80,7 +80,7 @@ local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil,
 local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373048, nil, nil, nil, 3)--38-46
 local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37 (unknown on normal
 
-mod:AddSetIconOption("SetIconOnSufWeb", 373048, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnSufWeb", 373048, true, 0, {1, 2, 3})
 
 local stickyStacks = {}
 mod.vb.webIcon = 1

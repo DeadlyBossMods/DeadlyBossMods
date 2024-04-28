@@ -68,8 +68,8 @@ local timerCataclysmJawsCD							= mod:NewNextCountTimer(10, 423117, nil, "Tank|
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, false, false, {1, 2, 3, 4})--Off by default since other mods don't use icons at all
+--mod:AddSetIconOption("SetIconOnCoilingFlames", 421207, false, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnCoilingEruption", 427201, false, 0, {1, 2, 3, 4})--Off by default since other mods don't use icons at all
 
 mod.vb.flamesIcon = 1
 mod.vb.furyCount = 0
