@@ -9020,11 +9020,14 @@ function bossModPrototype:DisablePrivateAuraSounds()
 	self.paSounds = nil
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
+	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
+	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	if (groupSpellId or spellId) and not DBM.Options.GroupOptionsExcludeIcon then
 		self:GroupSpells(groupSpellId or spellId, name)
@@ -9087,12 +9090,16 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 	end
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	if isRunTo == true then isRunTo = 2 end--Support legacy
 	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
+	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
+	--This comes down to fact it is using name instead of a hard set string like rangeframe does
+	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "misc")
@@ -9105,6 +9112,7 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self.DefaultOptions["RangeFrame"] = (default == nil) or default
 	if default and type(default) == "string" then
@@ -9135,6 +9143,7 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 	self:SetOptionCategory(name, "misc")
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 	if not spellId then
 		error("AddNamePlateOption must provide valid spellId", 2)
@@ -9143,12 +9152,16 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
+	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
+	--This comes down to fact it is using name instead of a hard set string like rangeframe does
+	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options[name] = (default == nil) or default
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "nameplate")
 	self.localization.options[name] = forceDBM and L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED:format(spellId) or L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, optionalThreshold)
 	local oVersion = ""
 	if optionVersion then
@@ -9158,6 +9171,9 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
+	--For some reason LuaLS doesnt understand GetRoleFlagValue converts string to boolean despite fact it's defined that it does
+	--This comes down to fact it is using name instead of a hard set string like rangeframe does
+	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["InfoFrame" .. oVersion] = (default == nil) or default
 	if spellId then
 		self:GroupSpells(spellId, "InfoFrame" .. oVersion)
@@ -9172,6 +9188,7 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 	self:SetOptionCategory("InfoFrame" .. oVersion, "misc")
 end
 
+---@param default SpecFlags|boolean?
 function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.readyCheckQuestId = questId
 	self.readyCheckMaxLevel = maxLevel or 999
