@@ -580,7 +580,7 @@ local specInstructionalRemapVoiceTable = {
 }
 
 ---@param name VPSound?
----@param customPath? string
+---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
 	local always = DBM.Options.AlwaysPlayVoice
 	local voice = DBM.Options.ChosenVoicePack2

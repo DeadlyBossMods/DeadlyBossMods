@@ -111,11 +111,11 @@ L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcript
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "Filtros del registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; escribe '/dbm pull' antes de iniciar un encuentro para registrar el uso previo de pociones)"
-L.DoNotLogLFG				= "No registrar Buscar Grupo o Buscar Banda (contenido en cola)"
+L.DoNotLogLFG				= "No registrar grupos del buscador de mazmorras o buscador de bandas"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
-L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscar bandas si el filtro está desactivado)"
+L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscador de bandas si el filtro está desactivado)"
 L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
 L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
 L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
@@ -325,20 +325,20 @@ L.Slider_BarWidth 			= "Anchura de barras: %d"
 L.Slider_BarScale 			= "Escala de barras: %0.2f"
 L.BarSaturation				= "Saturación de barras para temporizadores pequeños (cuando las barras grandes están desactivadas): %0.2f"
 --Types
-L.BarStartColorAdd			= "Color inicial (esbirros)"
-L.BarEndColorAdd			= "Color final (esbirros)"
-L.BarStartColorAOE			= "Color inicial (áreas)"
-L.BarEndColorAOE			= "Color final (áreas)"
-L.BarStartColorDebuff		= "Color inicial (objetivo)"
-L.BarEndColorDebuff			= "Color final (objetivo)"
-L.BarStartColorInterrupt	= "Color inicial (interrumpir)"
-L.BarEndColorInterrupt		= "Color final (interrumpir)"
-L.BarStartColorRole			= "Color inicial (rol)"
-L.BarEndColorRole			= "Color final (rol)"
-L.BarStartColorPhase		= "Color inicial (fase)"
-L.BarEndColorPhase			= "Color final (fase)"
-L.BarStartColorUI			= "Color inicial (importante)"
-L.BarEndColorUI				= "Color final (importante)"
+L.BarStartColorAdd			= "Color inicial 1 (esbirros)"
+L.BarEndColorAdd			= "Color final 1 (esbirros)"
+L.BarStartColorAOE			= "Color inicial 2 (áreas)"
+L.BarEndColorAOE			= "Color final 2 (áreas)"
+L.BarStartColorDebuff		= "Color inicial 3 (objetivo)"
+L.BarEndColorDebuff			= "Color final 3 (objetivo)"
+L.BarStartColorInterrupt	= "Color inicial 4 (interrumpir)"
+L.BarEndColorInterrupt		= "Color final 4 (interrumpir)"
+L.BarStartColorRole			= "Color inicial 5 (rol)"
+L.BarEndColorRole			= "Color final 5 (rol)"
+L.BarStartColorPhase		= "Color inicial 6 (fase)"
+L.BarEndColorPhase			= "Color final 6 (fase)"
+L.BarStartColorUI			= "Color inicial 7 (importante)"
+L.BarEndColorUI				= "Color final 7 (importante)"
 L.BarStartColorI2			= "Color inicial 8 (importante)"
 L.BarEndColorI2				= "Color final 8 (importante)"
 --Type 7 options
@@ -549,7 +549,7 @@ L.ReceivingFooter					= "Las anulaciones de opciones de iconos y burbujas de cha
 L.ReceivingFooter2					= "Si activas estas opciones, es entre tú y líder de banda si tu configuración causa conflicto con su intención."--NYI
 L.ReceivingFooter3					= "Si activas 'reemplazar mi configuración de módulo', tu configuración original se perderá al anularla."--NYI
 
-L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscar banda"
+L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscador de banda"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidad"
