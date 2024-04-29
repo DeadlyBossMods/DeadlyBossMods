@@ -2491,7 +2491,7 @@ do
 		if force or #inCombat > 0 then
 			updateAllRoster(self)
 		else
-			self:Schedule(3, updateAllRoster, self)
+			self:Schedule(3.5, updateAllRoster, self)
 		end
 	end
 
@@ -5110,13 +5110,17 @@ do
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
 						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
-						sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
+							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+						end
 						return
 					end
 				end
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
-				sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
+					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+				end
 				return
 			end
 		end
@@ -5132,13 +5136,17 @@ do
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
 						self:EndCombat(v, nil, nil, "BOSS_KILL")
-						sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
+							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+						end
 						return
 					end
 				end
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, nil, nil, "BOSS_KILL")
-				sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
+					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+				end
 				return
 			end
 		end
@@ -8507,17 +8515,36 @@ end
 -----------------------
 --  Synchronization  --
 -----------------------
-function bossModPrototype:SendSync(event, ...)
-	event = event or ""
-	local arg = select("#", ...) > 0 and strjoin("\t", tostringall(...)) or ""
-	local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision or 0, event, arg)
-	local spamId = self.id .. event .. arg -- *not* the same as the sync string, as it doesn't use the revision information
-	local time = GetTime()
-	--Mod syncs are more strict and enforce latency threshold always.
-	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
-	if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
-		self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
-		sendSync(DBMSyncProtocol, "M", str)
+do
+	local function prepareSync(self, event, ...)
+		event = event or ""
+		local arg = select("#", ...) > 0 and strjoin("\t", tostringall(...)) or ""
+		local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision or 0, event, arg)
+		local spamId = self.id .. event .. arg -- *not* the same as the sync string, as it doesn't use the revision information
+		local time = GetTime()
+		--Mod syncs are more strict and enforce latency threshold always.
+		--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
+		if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
+			self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
+			sendSync(DBMSyncProtocol, "M", str)
+		end
+	end
+
+	---Send boss mod communication
+	---@param event string
+	---@param ... any
+	function bossModPrototype:SendSync(event, ...)
+		prepareSync(self, event, ...)
+	end
+
+	---Variant of SendSync used to prevent comms spam
+	---@param throttle number
+	---@param event string
+	---@param ... any
+	function bossModPrototype:SendThrottledSync(throttle, event, ...)
+		if self:AntiSpam(throttle, "SyncSpam"..event) then
+			prepareSync(self, event, ...)
+		end
 	end
 end
 
