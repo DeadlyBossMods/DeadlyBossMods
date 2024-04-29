@@ -1,4 +1,4 @@
-## Interface: 100206
+## Interface: 100206, 110000
 ## X-Min-Interface: 100206
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
