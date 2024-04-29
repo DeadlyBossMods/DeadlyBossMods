@@ -1157,9 +1157,9 @@ do
 					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 					if not arg1 and event:sub(-11) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
-						eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target"
+						eventWithArgs = event .. " target"
 						if not private.isClassic then
-							eventWithArgs = eventWithArgs .. " focus"
+							eventWithArgs = eventWithArgs .. " focus boss1 boss2 boss3 boss4 boss5"
 						end
 						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
 					end
