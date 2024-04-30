@@ -659,7 +659,10 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 	return false
 end
 
--- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
+---Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
+---@param protocol number
+---@param prefix string
+---@param msg any
 local function sendSync(protocol, prefix, msg)
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
@@ -688,6 +691,10 @@ local function sendSync(protocol, prefix, msg)
 end
 private.sendSync = sendSync
 
+---Customized syncing specifically for guild comms
+---@param protocol number
+---@param prefix string
+---@param msg any
 local function sendGuildSync(protocol, prefix, msg)
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
@@ -702,7 +709,10 @@ local function sendGuildSync(protocol, prefix, msg)
 end
 private.sendGuildSync = sendGuildSync
 
---Custom sync function that should only be used for user generated sync messages
+---Custom sync function that should only be used for user generated sync messages
+---@param protocol number
+---@param prefix string
+---@param msg any
 local function sendLoggedSync(protocol, prefix, msg)
 	if dbmIsEnabled then
 		msg = msg or ""
@@ -721,7 +731,12 @@ local function sendLoggedSync(protocol, prefix, msg)
 	end
 end
 
---Sync Object specifically for out in the world sync messages that have different rules than standard syncs
+---Sync Object specifically for out in the world sync messages that have different rules than standard syncs
+---@param self DBM
+---@param protocol number
+---@param prefix string
+---@param msg any
+---@param noBNet boolean?
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
 	DBM:Debug("SendWorldSync running for " .. prefix)
@@ -767,7 +782,7 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	end
 end
 
--- sends a whisper to a player by his or her character name or BNet presence id
+-- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
 	if type(target) == "number" then
@@ -779,6 +794,11 @@ local function sendWhisper(target, msg)
 	end
 end
 
+---Automatic spell icon parsing
+---@param spellId any
+---@param objectType string?
+---@param fallbackIcon any?
+---@return any
 function DBM:ParseSpellIcon(spellId, objectType, fallbackIcon)
 	local icon
 	if objectType and objectType == "achievement" then
@@ -799,6 +819,10 @@ function DBM:ParseSpellIcon(spellId, objectType, fallbackIcon)
 	return icon or fallbackIcon or 136116
 end
 
+---Automatic spell name parsing
+---@param spellId any
+---@param objectType string?
+---@return any
 function DBM:ParseSpellName(spellId, objectType)
 	local spellName
 	if objectType and objectType == "achievement" then
@@ -2127,7 +2151,14 @@ do
 	end
 
 	local ignore = {}
-	--Standard Pizza Timer
+	---Standard Pizza Timer
+	---@param time number
+	---@param text string
+	---@param broadcast any
+	---@param sender any
+	---@param loop boolean?
+	---@param terminate boolean?
+	---@param whisperTarget any
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
 		if terminate or time == 0 then
 			self:Unschedule(loopTimer)
@@ -2287,6 +2318,8 @@ do
 		end)
 	end)
 
+	---Throttled Roster Updating to save cpu and reduce comms
+	---@param self DBM
 	local function updateAllRoster(self)
 		if IsInRaid() then
 			if not inRaid then
@@ -2546,6 +2579,9 @@ do
 		return total
 	end
 
+	---Name optional, if omited returns playerName rank
+	---@param name string?
+	---@return integer
 	function DBM:GetRaidRank(name)
 		name = name or playerName
 		if name == playerName then--If name is player, try to get actual rank. Because raid[name].rank sometimes seems returning 0 even player is promoted.
@@ -2555,6 +2591,9 @@ do
 		end
 	end
 
+	---Name optional, if omited returns playerName subgroup
+	---@param name string?
+	---@return integer
 	function DBM:GetRaidSubgroup(name)
 		name = name or playerName
 		return (raid[name] and raid[name].subgroup) or 0
@@ -2610,8 +2649,10 @@ do
 		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
 	}
 
-	--Not to be confused with GetUnitIdFromCID
+	---Not to be confused with GetUnitIdFromCID
 	---@param self DBM|DBMMod
+	---@param guid string
+	---@param bossOnly boolean?
 	function DBM:GetUnitIdFromGUID(guid, bossOnly)
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
@@ -2633,8 +2674,10 @@ do
 		end
 	end
 
-	--Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
+	---Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
 	---@param self DBM|DBMMod
+	---@param creatureID number
+	---@param bossOnly boolean?
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 		--Always prioritize a quick boss unit scan on retail first
 		if not private.isClassic and not private.isBCC then
@@ -2658,7 +2701,9 @@ do
 		end
 	end
 
-	--Deprecated, only old mods use this (newer mods use GetUnitIdFromGUID or GetUnitIdFromCID)
+	---Deprecated, only old mods use this (newer mods use GetUnitIdFromGUID or GetUnitIdFromCID)
+	---@param name string
+	---@param bossOnly boolean?
 	function DBM:GetBossUnitId(name, bossOnly)
 		local returnUnitID
 		if not private.isClassic and not private.isBCC then
@@ -2678,6 +2723,7 @@ do
 		return returnUnitID
 	end
 
+	---@param name string
 	function DBM:GetPlayerGUIDByName(name)
 		return raid[name] and raid[name].guid
 	end
@@ -2712,6 +2758,9 @@ do
 		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
 
+	---@param name any
+	---@param higher boolean?
+	---@return number
 	function DBM:GetGroupId(name, higher)
 		local raidMember = raid[name] or raid[GetUnitName(name, true) or ""]
 		return raidMember and raidMember.groupId or UnitInRaid(name) or higher and 99 or 0
@@ -2843,7 +2892,8 @@ end
 --Ugly, Needs improvement in code style to just dump all numeric values as args
 --it's not meant to just wrap C_GossipInfo.GetOptions() but to dump out the meaningful values from it
 ---@param self DBM|DBMMod
----@return string?
+---@param force boolean?
+---@return number?
 function DBM:GetGossipID(force)
 	if self.Options.DontAutoGossip and not force then return nil end
 	local table = C_GossipInfo.GetOptions()
@@ -2890,6 +2940,8 @@ function DBM:SelectMatchingGossip(confirm, ...)
 end
 
 ---@param self DBM|DBMMod
+---@param gossipOptionID number
+---@param confirm boolean?
 function DBM:SelectGossip(gossipOptionID, confirm)
 	if gossipOptionID and not self.Options.DontAutoGossip then
 		if gossipOptionID < 10 then--Using Index
@@ -5265,7 +5317,7 @@ do
 		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", gossipOptionID) .. " on creatureID " .. cid)
+			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid)
 		end
 	end
 
@@ -6035,7 +6087,7 @@ do
 				bossuIdFound = false
 				eeSyncSender = {}
 				eeSyncReceived = 0
-				self:CreatePizzaTimer(time, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
+				self:CreatePizzaTimer(0, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
 				--module cleanup
