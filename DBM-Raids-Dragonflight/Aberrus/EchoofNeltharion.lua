@@ -250,7 +250,7 @@ function mod:SPELL_CAST_START(args)
 		if self:GetStage(3) and (self.vb.RushingDarknessCount == 1) and not self.vb.skippedDarkness then
 			timerRushingDarknessCD:Start(17, self.vb.RushingDarknessCount+1)
 		else
-			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 27.9, self.vb.RushingDarknessCount+1)--27.9-29.2, almost always 29 but sometimes 28 :\
+			timerRushingDarknessCD:Start(self:GetStage(1) and 35.9 or 35.2, self.vb.RushingDarknessCount+1)--27.9-29.2, almost always 29 but sometimes 28 :\
 		end
 		if self:IsMythic() and self:GetStage(1) then--Mythic P1 only wall breaker strat used by all top guilds (which means everyone else will use it too and expect it in DBM)
 			self:BossTargetScanner(args.sourceGUID, "RushingDarknessTarget", 0.2, 8, true, nil, nil, nil, true)
