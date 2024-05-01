@@ -6369,6 +6369,8 @@ do
 		newPath = false
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
+	---Wrapper for Blizzard GetSpellInfo global that converts new table returns to old arg returns
+	---<br>This avoids having to significantly update nearly 20 years of boss mods.
 	---@param spellId string|number
 	function DBM:GetSpellInfo(spellId)
 		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
@@ -6415,6 +6417,7 @@ do
 		return texture
 	end
 
+	---Wrapper for Blizzard GetSpellName global that auto handles using GetSpellName on newer clients and GetSpellInfo for older ones
 	---@param spellId string|number
 	function DBM:GetSpellName(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
@@ -6427,6 +6430,8 @@ do
 		return spellName
 	end
 
+	---Wrapper for Blizzard GetSpellCooldown global that converts new table returns to old arg returns
+	---<br>This avoids having to significantly update nearly 20 years of boss mods.
 	---@param spellId string|number
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
