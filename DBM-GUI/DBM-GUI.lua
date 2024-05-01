@@ -508,12 +508,14 @@ function DBM_GUI:CreateBossModPanel(mod)
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
 				elseif tonumber(spellID) then
 					spellID = tonumber(spellID)
-					if spellID < 0 then
-						title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
-					else
-						local _title = DBM:GetSpellName(spellID)
-						if _title then
-							title, desc, icon = _title, tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
+					if spellID then--Because LuaLS doesn't understand tonumber(spellID) as a nil check
+						if spellID < 0 then
+							title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
+						else
+							local _title = DBM:GetSpellName(spellID)
+							if _title then
+								title, desc, icon = _title, tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
+							end
 						end
 					end
 				elseif spellID:find("^ej") then

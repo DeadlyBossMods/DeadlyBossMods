@@ -2591,9 +2591,9 @@ do
 		end
 	end
 
-	--This is primarily used for cached player unitIds by name lookup
-	--I'm not even sure why a boss check is in it, since GetBossUnitId existed (and is now deprecated)
-	--I'll leave the boss checking for now since I don't know if any mods (or core) are using this function this way
+	---This is primarily used for cached player unitIds by name lookup
+	---<br>I'm not even sure why a boss check is in it, since GetBossUnitId existed (and is now deprecated)
+	---<br>I'll leave the boss checking for now since I don't know if any mods (or core) are using this function this way
 	function DBM:GetRaidUnitId(name)
 		for i = 1, 10 do
 			local unitId = "boss" .. i
@@ -2712,8 +2712,8 @@ do
 		return GetUnitName(uId, true)
 	end
 
-	--Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
-	--Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
+	---Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
+	---<br>Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
 	function DBM:GetShortServerName(name)
 		if not self.Options.StripServerName then return name end--If strip is disabled, just return name
 		local shortName, serverName = string.split("-", name)
@@ -2791,9 +2791,9 @@ function DBM:GetNumGroupMembers()
 	return IsInGroup() and GetNumGroupMembers() or 1
 end
 
---For returning the number of players actually in zone with us for status functions
---This is very touchy though and will fail if everyone isn't in same SUB zone (ie same room/area)
---It should work for pretty much any case but outdoor
+---For returning the number of players actually in zone with us for status functions
+---<br>This is very touchy though and will fail if everyone isn't in same SUB zone (ie same room/area)
+---<br>It should work for pretty much any case but outdoor
 function DBM:GetNumRealGroupMembers()
 	if not IsInInstance() then--Not accurate outside of instances (such as world bosses)
 		return IsInGroup() and GetNumGroupMembers() or 1--So just return regular group members.
@@ -2888,7 +2888,7 @@ function DBM:GetGossipID(force)
 	return nil
 end
 
---Hybrid all in one object to auto check and confirm multiple gossip IDs at once
+---Hybrid all in one object to auto check and confirm multiple gossip IDs at once
 ---@param self DBM|DBMMod
 function DBM:SelectMatchingGossip(confirm, ...)
 	if self.Options.DontAutoGossip then return false end
@@ -6369,6 +6369,7 @@ do
 		newPath = false
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
+	---@param spellId string|number
 	function DBM:GetSpellInfo(spellId)
 		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
 		if not spellId or spellId == "" then
@@ -6398,6 +6399,7 @@ do
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
 
+	---@param spellId string|number
 	function DBM:GetSpellTexture(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		--Doesn't need a table at this time
@@ -6413,6 +6415,7 @@ do
 		return texture
 	end
 
+	---@param spellId string|number
 	function DBM:GetSpellName(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		local spellName
@@ -6424,6 +6427,7 @@ do
 		return spellName
 	end
 
+	---@param spellId string|number
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
 		if newPath then
@@ -6444,6 +6448,13 @@ do
 	local GetPlayerAuraBySpellID = C_UnitAuras and C_UnitAuras.GetPlayerAuraBySpellID
 	local GetAuraDataBySpellName = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName
 	local newUnitAuraAPIs = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName and true--Purposely separate from GetAuraDataBySpellName upvalue because I don't want to spam check if a function exists in such a frequent API call
+	---Custom UnitAura wrapper that can check spells by spellID or spell name for up to 5 spells at once
+	---@param uId string
+	---@param spellInput number|string|nil|unknown
+	---@param spellInput2 number|string|nil|unknown?
+	---@param spellInput3 number|string|nil|unknown?
+	---@param spellInput4 number|string|nil|unknown?
+	---@param spellInput5 number|string|nil|unknown?
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -6478,6 +6489,13 @@ do
 		end
 	end
 
+	---Custom UnitDebuff wrapper that can check spells by spellID or spell name for up to 5 spells at once
+	---@param uId string
+	---@param spellInput number|string|nil|unknown
+	---@param spellInput2 number|string|nil|unknown?
+	---@param spellInput3 number|string|nil|unknown?
+	---@param spellInput4 number|string|nil|unknown?
+	---@param spellInput5 number|string|nil|unknown?
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -6512,6 +6530,13 @@ do
 		end
 	end
 
+	---Custom UnitBuff wrapper that can check spells by spellID or spell name for up to 5 spells at once
+	---@param uId string
+	---@param spellInput number|string|nil|unknown
+	---@param spellInput2 number|string|nil|unknown?
+	---@param spellInput3 number|string|nil|unknown?
+	---@param spellInput4 number|string|nil|unknown?
+	---@param spellInput5 number|string|nil|unknown?
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -7589,6 +7614,13 @@ end
 bossModPrototype.IsHealer = DBM.IsHealer
 
 ---@param self DBM|DBMMod
+---@param playerUnitID string?
+---@param enemyUnitID string?
+---@param isName string?
+---@param onlyRequested boolean?
+---@param enemyGUID string?
+---@param includeTarget boolean?
+---@param onlyS3 boolean?
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
@@ -7765,6 +7797,7 @@ do
 		self.mainBoss = cid
 	end
 
+	---Used to instruct boss mod to record the health % of highest health boss when multiple bosses
 	function bossModPrototype:SetBossHPInfoToHighest(numBoss)
 		if numBoss ~= false then
 			self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
@@ -7887,6 +7920,7 @@ end
 --auraspellId must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 --groupSpellId is used if a diff option key is used in all other options with spell (will be quite common)
 --defaultSound is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param auraspellId number
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
@@ -7915,6 +7949,8 @@ end
 ---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
 ---@param default SpecFlags|boolean?
 ---@param iconType iconTypes|number?
+---@param iconsUsed table?
+---@param conflictWarning boolean?
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
 	if type(default) == "string" then
@@ -8071,6 +8107,7 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 end
 
 ---@param default SpecFlags|boolean?
+---@param maxLevel number?
 function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.readyCheckQuestId = questId
 	self.readyCheckMaxLevel = maxLevel or 999
@@ -8179,7 +8216,7 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
---This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
+---This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
 function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
 	catSpell = tostring(catSpell)
 	if not self.groupSpells[catSpell] then
@@ -8191,8 +8228,8 @@ function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
 	self.groupOptions[catSpell].customKeys = customKeys
 end
 
---Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
---This lets us group options up that aren't using valid IDs, and show the ID it is using for WA in the gui next to custom name
+---Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
+---This lets us group options up that aren't using valid IDs, and show the ID it is using for WA in the gui next to custom name
 function bossModPrototype:GroupWASpells(customName, ...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
@@ -8215,7 +8252,7 @@ function bossModPrototype:GroupWASpells(customName, ...)
 	end
 end
 
---Duplicate function just for private auras to do literally same thing as GroupSpells without ability to pass extra arg
+---Duplicate function just for private auras to do literally same thing as GroupSpells without ability to pass extra arg
 function bossModPrototype:GroupSpellsPA(...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
@@ -8348,7 +8385,7 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	end
 end
 
--- needs to be called _AFTER_ RegisterCombat
+---Needs to be called _AFTER_ RegisterCombat
 function bossModPrototype:RegisterKill(msgType, ...)
 	if not self.combatInfo then
 		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
@@ -8417,6 +8454,7 @@ function bossModPrototype:SetEncounterID(...)
 	end
 end
 
+---Used to disable ENCOUNTER_START from detecting boss combat
 function bossModPrototype:DisableESCombatDetection()
 	self.noESDetection = true
 	if self.combatInfo then
@@ -8424,6 +8462,7 @@ function bossModPrototype:DisableESCombatDetection()
 	end
 end
 
+---Used to disable ENCOUNTER_END for kill detection
 function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
 	if self.combatInfo then
@@ -8431,6 +8470,7 @@ function bossModPrototype:DisableEEKillDetection()
 	end
 end
 
+---Used to disable BOSS_KILL for kill detection
 function bossModPrototype:DisableBKKillDetection()
 	self.noBKDetection = true
 	if self.combatInfo then
@@ -8438,6 +8478,7 @@ function bossModPrototype:DisableBKKillDetection()
 	end
 end
 
+---Used to disable INSTANCE_ENCOUNTER_ENGAGE_UNIT from detecting boss combat
 function bossModPrototype:DisableIEEUCombatDetection()
 	self.noIEEUDetection = true
 	if self.combatInfo then
@@ -8445,6 +8486,7 @@ function bossModPrototype:DisableIEEUCombatDetection()
 	end
 end
 
+---Used to prevent engaging a boss that's friendly
 function bossModPrototype:DisableFriendlyDetection()
 	self.noFriendlyEngagement = true
 	if self.combatInfo then
@@ -8452,6 +8494,7 @@ function bossModPrototype:DisableFriendlyDetection()
 	end
 end
 
+---Used to disable using PLAYER_REGEN_DISABLED from detecting boss combat
 function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
 	if self.combatInfo then
@@ -8466,6 +8509,7 @@ function bossModPrototype:DisableMultiBossPulls()
 	end
 end
 
+---Used to permit mod from sending syncs for world bosses.
 function bossModPrototype:EnableWBEngageSync()
 	self.WBEsync = true
 	if self.combatInfo then
@@ -8473,6 +8517,7 @@ function bossModPrototype:EnableWBEngageSync()
 	end
 end
 
+---Used when a bosses death condition should be ignored (maybe they die repeatedly for example)
 function bossModPrototype:DisableBossDeathKill()
 	self.noBossDeathKill = true
 	if self.combatInfo then
@@ -8480,17 +8525,18 @@ function bossModPrototype:DisableBossDeathKill()
 	end
 end
 
+---Used when a boss is scripted in a hacky way that their creature Id changes mid fight, and we want to treat multiple IDs as a single boss
 function bossModPrototype:SetMultiIDSingleBoss()
 	self.multiIDSingleBoss = true
 end
 
---used for knowing if a specific mod is engaged
+---Used for knowing if a specific mod is engaged
 function bossModPrototype:IsInCombat()
 	return self.inCombat
 end
 
---Used for knowing if any person is in any kind of combat period
-function bossModPrototype:GroupInCombat()
+---Used for checking if any person in group is in any kind of combat
+function DBM:GroupInCombat()
 	local combatFound = false
 	--Any Boss engaged
 	if IsEncounterInProgress() then
@@ -8511,16 +8557,21 @@ function bossModPrototype:GroupInCombat()
 	end
 	return combatFound
 end
+bossModPrototype.bossModPrototype = DBM.GroupInCombat
 
 function bossModPrototype:IsAlive()
 	return not UnitIsDeadOrGhost("player")
 end
 
+---Sets minimum amount of time before a pull is concidered valid.
+---@param t number
 function bossModPrototype:SetMinCombatTime(t)
 	self.minCombatTime = t
 end
 
--- needs to be called after RegisterCombat
+---Needs to be called after RegisterCombat
+---<br>Sets time out of combat required before a module should declare a wipe
+---@param t number
 function bossModPrototype:SetWipeTime(t)
 	if not self.combatInfo then
 		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
@@ -8528,7 +8579,11 @@ function bossModPrototype:SetWipeTime(t)
 	self.combatInfo.wipeTimer = t
 end
 
--- fix for LFR ToES Tsulong combat detection bug after killed.
+---Used to specify amount of time before allowing a boss to be pulled again.
+---<br>t used to specify recombat time after a kill.
+---<br> t2 used to specify recombat time after a wipe.
+---@param t number?
+---@param t2 number?
 function bossModPrototype:SetReCombatTime(t, t2)--T1, after kill. T2 after wipe
 	self.reCombatTime = t
 	self.reCombatTime2 = t2
