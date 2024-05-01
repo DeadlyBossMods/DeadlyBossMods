@@ -192,6 +192,10 @@ function bossModPrototype:UnregisterOnUpdateHandler()
 	table.wipe(private.updateFunctions)
 end
 
+---Set the stage number.
+---<br>Use 0 to auto increment by 1
+---<br>Use 0.5 to auto increment by 0.5
+---@param stage number
 function bossModPrototype:SetStage(stage)
 	if stage == 0 then--Increment request instead of hard value
 		if not self.vb.phase then return end--Person DCed mid fight and somehow managed to perfectly time running SetStage with a value of 0 before getting variable recovery
@@ -213,11 +217,14 @@ function bossModPrototype:SetStage(stage)
 	end
 end
 
---If args are passed, returns true or false
---If no args given, just returns current stage and stage total
---stage: stage value to checkf or true/false rules
---checkType: 0 or nil for just current stage match, 1 for less than check, 2 for greater than check, 3 not equal check
---useTotal: uses stage total instead of current
+---If args are passed, returns true or false for specific Stage
+---If no args given, just returns current stage and stage total
+---stage: stage value to checkf or true/false rules
+---checkType: 0 or nil for just current stage match, 1 for less than check, 2 for greater than check, 3 not equal check
+---useTotal: uses stage total instead of current
+---@param stage number?
+---@param checkType number?
+---@param useTotal boolean?
 function bossModPrototype:GetStage(stage, checkType, useTotal)
 	local currentStage, currentTotal = self.vb.phase or 0, self.vb.stageTotality or 0
 	if stage then
@@ -351,6 +358,13 @@ do
 	local rangeUpdated = {}
 	local IsItemInRange = C_Item and C_Item.IsItemInRange or IsItemInRange
 
+	---Used when we want to alert or filter based on proximity to the casting boss
+	---@param cidOrGuid number|string
+	---@param onlyBoss boolean?
+	---@param itemId number?
+	---@param distance number?
+	---@param defaultReturn boolean?
+	---@return boolean
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		cidOrGuid = cidOrGuid or self.creatureId
@@ -380,7 +394,11 @@ do
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
 	end
 
-	--This is still restricted because it uses friendly api, which isn't available to us in combat
+	---This is still restricted because it uses friendly api, which isn't available to us in combat
+	---@param cidOrGuid number|string
+	---@param onlyBoss boolean?
+	---@param defaultReturn boolean?
+	---@return boolean
 	function bossModPrototype:CheckTankDistance(cidOrGuid, _, onlyBoss, defaultReturn)--distance
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		--distance = distance or 43--Basically unused
@@ -450,9 +468,14 @@ do
 --		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
 		[351338] = true,--Evoker Quell
 	}
-	--checkOnlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
-	--checkCooldown should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
-	--ignoreTandF is passed usually when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
+	---checkOnlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
+	---<br>checkCooldown should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
+	---<br>ignoreTandF is passed usually when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
+	---@param sourceGUID string
+	---@param checkOnlyTandF boolean?
+	---@param checkCooldown boolean?
+	---@param ignoreTandF boolean?
+	---@return boolean
 	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
 		--Check healer spec filter
 		if self:IsHealer() and (self.isTrashMod and DBM.Options.FilterTInterruptHealer or not self.isTrashMod and DBM.Options.FilterBInterruptHealer) then
@@ -562,6 +585,7 @@ do
 		},
 	}
 	local lastCheck, lastReturn = 0, true
+	---Smart alert filtering based on cooldown check for dispel type
 	---@param dispelType DispelType
 	function bossModPrototype:CheckDispelFilter(dispelType)
 		if not DBM.Options.FilterDispel then return true end
@@ -670,6 +694,7 @@ do
 		},
 	}
 	local lastCheck, lastReturn = 0, true
+	---Smart alert filtering based on cooldown check for cc type
 	---@param ccType CCType
 	function bossModPrototype:CheckCCFilter(ccType)
 		if not DBM.Options.FilterCrowdControl then return true end
@@ -695,7 +720,12 @@ do
 	end
 end
 
-
+---Automatic parsing of allTimers tables in boss mods
+---@param table table
+---@param difficultyName string|boolean
+---@param phase number|boolean
+---@param spellId number
+---@param count number?
 function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spellId, count)
 	local prev = table
 
