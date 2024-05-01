@@ -8589,7 +8589,7 @@ end
 ---<br> t2 used to specify recombat time after a wipe.
 ---@param t number?
 ---@param t2 number?
-function bossModPrototype:SetReCombatTime(t, t2)--T1, after kill. T2 after wipe
+function bossModPrototype:SetReCombatTime(t, t2)
 	self.reCombatTime = t
 	self.reCombatTime2 = t2
 end
@@ -8674,11 +8674,13 @@ function bossModPrototype:SetRevision(revision)
 	self.revision = revision
 end
 
---Either treat it as a valid number, or a curse string that needs to be made into a valid number
+---Will block boss mod communication from other users if their revision older than defined revision
+---<br> string revisions are date integer format (new), number revisions are legacy revisions (that should be updated)
 function bossModPrototype:SetMinSyncRevision(revision)
 	self.minSyncRevision = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
 
+---Used for chat message that specific module is out of date and has key fixes
 function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
