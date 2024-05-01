@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(201668)
 mod:SetEncounterID(2684)
 mod:SetUsedIcons(6)
-mod:SetHotfixNoticeRev(20230801000000)
+mod:SetHotfixNoticeRev(20240501000000)
 mod:SetMinSyncRevision(20230614000000)
 mod.respawnTime = 29
 
@@ -96,8 +96,9 @@ local warnEbonDestruction						= mod:NewCountAnnounce(407917, 4)
 
 local specWarnEbonDestructionMove				= mod:NewSpecialWarningMoveTo(407917, nil, 64584, nil, 3, 2)
 
-local timerSunderRealityCD						= mod:NewCDCountTimer(29.1, 407936, 109401, nil, nil, 5)--"Portals"
-local timerEbonDestructionCD					= mod:NewCDCountTimer(29.2, 407917, 64584, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Big Bang"
+local timerSunderRealityCD						= mod:NewCDCountTimer(35.1, 407936, 109401, nil, nil, 5)--"Portals"
+local timerSunderReality						= mod:NewCastTimer(12, 407936, 109401, nil, nil, 5)--"Portals"
+local timerEbonDestructionCD					= mod:NewCDCountTimer(35.2, 407917, 64584, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Big Bang"
 
 mod:AddInfoFrameOption(407919, true)
 
@@ -202,7 +203,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCalamitousStrike:Show()
 			specWarnCalamitousStrike:Play("carefly")
 		end
-		timerCalamitousStrikeCD:Start(self:GetStage(1) and 36.3 or 29, self.vb.tankCount+1)
+		timerCalamitousStrikeCD:Start(self:GetStage(1) and 36.3 or 35.2, self.vb.tankCount+1)
 	elseif spellId == 407790 then
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -214,7 +215,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilatingCount = self.vb.annihilatingCount + 1
 		specWarnUmbralAnnihilation:Show(self.vb.annihilatingCount)
 		specWarnUmbralAnnihilation:Play("aesoon")
-		if self.vb.annihilatingCount >= 5 then--Still true?
+		if self.vb.annihilatingCount >= 5 then
 			timerUmbralAnnihilationCD:Start(10.9, self.vb.annihilatingCount+1)
 		elseif self.vb.annihilatingCount == 2 then--A wild fluke that keeps coming up in debug
 			timerUmbralAnnihilationCD:Start(27.9, self.vb.annihilatingCount+1)
@@ -226,7 +227,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 407936 then
 		self.vb.sunderRealityCount = self.vb.sunderRealityCount + 1
 		warnSunderReality:Show()
-		timerSunderRealityCD:Start(29.1, self.vb.sunderRealityCount+1)
+		timerSunderRealityCD:Start(nil, self.vb.sunderRealityCount+1)
+		timerSunderReality:Start()
 	elseif spellId == 407917 then
 		self.vb.ebonCount = self.vb.ebonCount + 1
 		warnEbonDestruction:Show(self.vb.ebonCount)
@@ -401,7 +403,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 407088 and self:GetStage(3, 1) then
+	if spellId == 407088 and self:GetStage(3, 1) then--Empowered Shadows
 		self:SetStage(3)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
