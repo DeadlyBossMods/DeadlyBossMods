@@ -43,7 +43,11 @@ local function clearIconTable(scanId)
 	iconSet[scanId] = nil
 end
 
--- Set icon on a target.
+---Set icon on a target
+---@param target string accepts unitID or unitname
+---@param icon number 0-8
+---@param timer number? auto removes icon after set time
+---@param ignoreOld boolean? doesn't attempt to restore previous icon on removal
 function bossModPrototype:SetIcon(target, icon, timer, ignoreOld)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 	if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
@@ -113,12 +117,20 @@ do
 		mod:Schedule(1.5, clearIconTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
+	---Method for auto setting icons on multiple targets in order recieved (usually CLEU order)
+	---@param delay number? amount of time that must pass since last target before method finishes
+	---@param target string accepts unitID or unitname
+	---@param startIcon number? icon method starts on
+	---@param maxIcon number? Max number of targets being searched for
+	---@param descendingIcon boolean? icons count down instead of up
+	---@param returnFunc any allows specifying return function such as auto announcing icons being set
+	---@param scanId number? Default 1, since sorted defaults to 2, this allows both objects to be used while omitting on a single mod (but need to be numbered if 2 of same object used)
 	function bossModPrototype:SetUnsortedIcon(delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
 		if not target then return end
 		if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
 			return
 		end
-		scanId = scanId or 1--Default 1, since sorted defaults to 2, this allows both objects to be used while omitting on a single mod (but need to be numbered if 2 of same object used)
+		scanId = scanId or 1
 		if not startIcon then startIcon = 1 end
 		local uId = DBM:GetRaidUnitId(target)
 		if uId or UnitExists(target) then--target accepts uid, unitname both.
@@ -146,11 +158,14 @@ do
 	end
 end
 
+---Basically just a DBM wrapper for GetRaidTargetIndex but also supports target name
+---@param uIdOrTarget string
 function bossModPrototype:GetIcon(uIdOrTarget)
 	local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
 
+---Alias for SetIcon(target, 0)
 function bossModPrototype:RemoveIcon(target)
 	return self:SetIcon(target, 0)
 end
@@ -227,6 +242,15 @@ do
 		mod:Schedule(1.5, clearIconTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
+	---Icon method with many auto sorting options
+	---@param sortType string tankalpha, tankroster, meleealpha, meleeroster, rangedalpha, rangedroster, roster, alpha
+	---@param delay number? amount of time that must pass since last target before method finishes
+	---@param target string accepts unitID or unitname
+	---@param startIcon number|table? icon method starts on. If passed as table, then it defines completely custom icon order
+	---@param maxIcon number? Max number of targets being searched for
+	---@param descendingIcon boolean? icons count down instead of up
+	---@param returnFunc string? allows specifying return function such as auto announcing icons being set
+	---@param scanId number? Default 2, since unsorted defaults to 1, this allows both objects to be used while omitting on a single mod (but need to be numbered if 2 of same object used)
 	function bossModPrototype:SetSortedIcon(sortType, delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
 		if type(sortType) ~= "string" then
 			DBM:AddMsg("SetSortedIcon tried to call invalid type, please update your encounter modules for this zone. If error persists, report this issue")
@@ -236,7 +260,7 @@ do
 		if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
 			return
 		end
-		scanId = scanId or 2--Default 2, since unsorted defaults to 1, this allows both objects to be used while omitting on a single mod (but need to be numbered if 2 of same object used)
+		scanId = scanId or 2
 		if not startIcon then startIcon = 1 end
 		local uId = DBM:GetRaidUnitId(target)
 		if uId or UnitExists(target) then--target accepts uid, unitname both.
@@ -409,12 +433,24 @@ do
 		"mouseover", "target", "focus", "targettarget", "mouseovertarget"
 	}
 
+	---Auto marking enemies/npcs with a large variety of options and filterss
+	---@param scanId string|number Accepts cid and guid
+	---@param iconSetMethod number? 0: Descending / 1:Ascending / 2: Force Set / 9:Force Stop
+	---@param mobIcon number? Start or fixed icon being set by method
+	---@param maxIcon number? Max number of targets being searched for
+	---@param scanTable table? allows sending a custom table for icon setting
+	---@param scanningTime number? amount of time to scan before aborting
+	---@param optionName string? Put option name here if more than 1 ScanForMobs is called in a single mod
+	---@param allowFriendly boolean? Allows marking friendly targets
+	---@param skipMarked boolean? Doesn't mark units if they already have an icon present
+	---@param allAllowed boolean? Bypasses elect feature and lets ANY assist set icons
+	---@param wipeGUID boolean? Allows ScanForMobs to be used on same unit multiple times during a single pull
 	function bossModPrototype:ScanForMobs(scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 			--Declare variables.
 			DBM:Debug("canSetIcons or allAllowed true for "..(optionName or "nil"), 2)
-			if not scanId then--Accepts cid and guid
+			if not scanId then
 				error("DBM:ScanForMobs calld without scanId")
 				return
 			end
