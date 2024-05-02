@@ -2126,12 +2126,12 @@ do
 
 	local ignore = {}
 	---Standard Pizza Timer
-	---@param time number
-	---@param text string
-	---@param broadcast any
-	---@param sender any
-	---@param loop boolean?
-	---@param terminate boolean?
+	---@param time number --time in seconds
+	---@param text string --timer text
+	---@param broadcast boolean? --if it should be broadcast to the raid
+	---@param sender any --who sent it (if it was started by sync)
+	---@param loop boolean? --if the timer should loop indefinitely
+	---@param terminate boolean? --if this is true, terminates the timer
 	---@param whisperTarget any
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
 		if terminate or time == 0 then
@@ -2553,8 +2553,8 @@ do
 		return total
 	end
 
-	---Name optional, if omited returns playerName rank
-	---@param name string?
+	---Gets raid rank (0-2) for requested player by name
+	---@param name string? --optional, if omited returns playerName rank
 	---@return integer
 	function DBM:GetRaidRank(name)
 		name = name or playerName
@@ -2565,8 +2565,8 @@ do
 		end
 	end
 
-	---Name optional, if omited returns playerName subgroup
-	---@param name string?
+	---Gets raid subgroup for requested player by name
+	---@param name string? --optional, if omited returns playerName subgroup
 	---@return integer
 	function DBM:GetRaidSubgroup(name)
 		name = name or playerName
@@ -2626,7 +2626,7 @@ do
 	---Not to be confused with GetUnitIdFromCID
 	---@param self DBM|DBMMod
 	---@param guid string
-	---@param bossOnly boolean?
+	---@param bossOnly boolean? --Used when you only need to check "boss" unitids. Bypasses UnitTokenFromGUID (which checks EVERYTHING)
 	function DBM:GetUnitIdFromGUID(guid, bossOnly)
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
@@ -2651,7 +2651,7 @@ do
 	---Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
 	---@param self DBM|DBMMod
 	---@param creatureID number
-	---@param bossOnly boolean?
+	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 		--Always prioritize a quick boss unit scan on retail first
 		if not private.isClassic and not private.isBCC then
@@ -2677,7 +2677,7 @@ do
 
 	---Deprecated, only old mods use this (newer mods use GetUnitIdFromGUID or GetUnitIdFromCID)
 	---@param name string
-	---@param bossOnly boolean?
+	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetBossUnitId(name, bossOnly)
 		local returnUnitID
 		if not private.isClassic and not private.isBCC then
@@ -6371,7 +6371,7 @@ do
 	end
 	---Wrapper for Blizzard GetSpellInfo global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
-	---@param spellId string|number
+	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellInfo(spellId)
 		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
 		if not spellId or spellId == "" then
@@ -6401,7 +6401,7 @@ do
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
 
-	---@param spellId string|number
+	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellTexture(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		--Doesn't need a table at this time
@@ -6418,7 +6418,7 @@ do
 	end
 
 	---Wrapper for Blizzard GetSpellName global that auto handles using GetSpellName on newer clients and GetSpellInfo for older ones
-	---@param spellId string|number
+	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellName(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		local spellName
@@ -6432,7 +6432,7 @@ do
 
 	---Wrapper for Blizzard GetSpellCooldown global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
-	---@param spellId string|number
+	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
 		if newPath then
@@ -6455,11 +6455,11 @@ do
 	local newUnitAuraAPIs = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName and true--Purposely separate from GetAuraDataBySpellName upvalue because I don't want to spam check if a function exists in such a frequent API call
 	---Custom UnitAura wrapper that can check spells by spellID or spell name for up to 5 spells at once
 	---@param uId string
-	---@param spellInput number|string|nil|unknown
-	---@param spellInput2 number|string|nil|unknown?
-	---@param spellInput3 number|string|nil|unknown?
-	---@param spellInput4 number|string|nil|unknown?
-	---@param spellInput5 number|string|nil|unknown?
+	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
+	---@param spellInput2 number|string|nil|unknown? --optional 2nd spell, accepts spellname or spellid
+	---@param spellInput3 number|string|nil|unknown? --optional 3rd spell, accepts spellname or spellid
+	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
+	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -6496,11 +6496,11 @@ do
 
 	---Custom UnitDebuff wrapper that can check spells by spellID or spell name for up to 5 spells at once
 	---@param uId string
-	---@param spellInput number|string|nil|unknown
-	---@param spellInput2 number|string|nil|unknown?
-	---@param spellInput3 number|string|nil|unknown?
-	---@param spellInput4 number|string|nil|unknown?
-	---@param spellInput5 number|string|nil|unknown?
+	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
+	---@param spellInput2 number|string|nil|unknown? --optional 2nd spell, accepts spellname or spellid
+	---@param spellInput3 number|string|nil|unknown? --optional 3rd spell, accepts spellname or spellid
+	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
+	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -6537,11 +6537,11 @@ do
 
 	---Custom UnitBuff wrapper that can check spells by spellID or spell name for up to 5 spells at once
 	---@param uId string
-	---@param spellInput number|string|nil|unknown
-	---@param spellInput2 number|string|nil|unknown?
-	---@param spellInput3 number|string|nil|unknown?
-	---@param spellInput4 number|string|nil|unknown?
-	---@param spellInput5 number|string|nil|unknown?
+	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
+	---@param spellInput2 number|string|nil|unknown? --optional 2nd spell, accepts spellname or spellid
+	---@param spellInput3 number|string|nil|unknown? --optional 3rd spell, accepts spellname or spellid
+	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
+	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
@@ -7619,13 +7619,13 @@ end
 bossModPrototype.IsHealer = DBM.IsHealer
 
 ---@param self DBM|DBMMod
----@param playerUnitID string?
----@param enemyUnitID string?
----@param isName string?
----@param onlyRequested boolean?
----@param enemyGUID string?
----@param includeTarget boolean?
----@param onlyS3 boolean?
+---@param playerUnitID string? unitID of requested unit. this or isName must be provided
+---@param enemyUnitID string? unitID of tanked unit we're checking. This or enemyGUID must be provided
+---@param isName string? name of the requested unit. This or playerUnitID must be provided
+---@param onlyRequested boolean? true if tight search, false if loose search that will return ALL tank specs
+---@param enemyGUID string? guid of tanked unit we're checking. This or enemyUnitID must be provided
+---@param includeTarget boolean? set to true to allow bosses target to be good enough if threat check fails
+---@param onlyS3 boolean? true for tight threat check (status 3 securly tanked required). loose threat otherwise
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
@@ -7954,8 +7954,8 @@ end
 ---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
 ---@param default SpecFlags|boolean?
 ---@param iconType iconTypes|number?
----@param iconsUsed table?
----@param conflictWarning boolean?
+---@param iconsUsed table? table defining used icons such as {1, 2, 3}
+---@param conflictWarning boolean? set to true if this mod has 2 or more icon options that use the same icons
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
 	if type(default) == "string" then
@@ -8112,7 +8112,7 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 end
 
 ---@param default SpecFlags|boolean?
----@param maxLevel number?
+---@param maxLevel number? set max level if you want to disable this readycheck from firing at a certain point
 function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.readyCheckQuestId = questId
 	self.readyCheckMaxLevel = maxLevel or 999
@@ -8585,10 +8585,8 @@ function bossModPrototype:SetWipeTime(t)
 end
 
 ---Used to specify amount of time before allowing a boss to be pulled again.
----<br>t used to specify recombat time after a kill.
----<br> t2 used to specify recombat time after a wipe.
----@param t number?
----@param t2 number?
+---@param t number? used to specify recombat time after a kill.
+---@param t2 number? used to specify recombat time after a wipe
 function bossModPrototype:SetReCombatTime(t, t2)
 	self.reCombatTime = t
 	self.reCombatTime2 = t2
