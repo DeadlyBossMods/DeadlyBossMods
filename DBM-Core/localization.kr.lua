@@ -159,17 +159,17 @@ L.OPTION_CATEGORY_PAURAS				= "비공개 오라"
 L.AUTO_RESPONDED						= "귓속말에 자동응답 메시지를 보냈습니다."
 L.STATUS_WHISPER						= "%s: %s, %d/%d 생존"
 --Bosses
-L.AUTO_RESPOND_WHISPER				= "%s님은 %s 전투 때문에 바쁩니다. (%s, %d/%d 생존)"
-L.WHISPER_COMBAT_END_KILL			= "%s님이 %s 전투에서 승리했습니다!"
-L.WHISPER_COMBAT_END_KILL_STATS		= "%s님이 %s 전투에서 승리했습니다! 총 %d회 승리했습니다."
-L.WHISPER_COMBAT_END_WIPE_AT			= "%s님이 %s %s에서 전멸했습니다."
-L.WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s님이 %s %s에서 전멸했습니다. 이 난이도에서 총 %d회 전멸했습니다."
+L.AUTO_RESPOND_WHISPER				= "%s|1은;는; %s 전투 때문에 바쁩니다. (%s, %d/%d 생존)"
+L.WHISPER_COMBAT_END_KILL			= "%s|1이;가; %s 전투에서 승리했습니다!"
+L.WHISPER_COMBAT_END_KILL_STATS		= "%s|1이;가; %s 전투에서 승리했습니다! 총 %d회 승리했습니다."
+L.WHISPER_COMBAT_END_WIPE_AT			= "%s|1이;가; %s %s에서 전멸했습니다."
+L.WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s|1이;가; %s %s에서 전멸했습니다. 이 난이도에서 총 %d회 전멸했습니다."
 --Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
-L.AUTO_RESPOND_WHISPER_SCENARIO		= "%s님이 %s 시나리오를 진행중입니다. (%d/%d 생존)"
-L.WHISPER_SCENARIO_END_KILL			= "%s님이 %s 시나리오를 완료했습니다!"
-L.WHISPER_SCENARIO_END_KILL_STATS	= "%s님이 %s 시나리오를 완료했습니다! 이 난이도를 %d회 완료했습니다!"
-L.WHISPER_SCENARIO_END_WIPE			= "%s님이 %s 시나리오를 완료하지 못했습니다."
-L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료하지 못했습니다. 이 난이도를 총 %d회 실패했습니다."
+L.AUTO_RESPOND_WHISPER_SCENARIO		= "%s|1이;가; %s 시나리오를 진행중입니다. (%d/%d 생존)"
+L.WHISPER_SCENARIO_END_KILL			= "%s|1이;가; %s 시나리오를 완료했습니다!"
+L.WHISPER_SCENARIO_END_KILL_STATS	= "%s|1이;가; %s 시나리오를 완료했습니다! 이 난이도를 %d회 완료했습니다!"
+L.WHISPER_SCENARIO_END_WIPE			= "%s|1이;가; %s 시나리오를 완료하지 못했습니다."
+L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s|1이;가; %s 시나리오를 완료하지 못했습니다. 이 난이도를 총 %d회 실패했습니다."
 
 L.VERSIONCHECK_HEADER		= "보스 모드 - 버전"
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
@@ -205,7 +205,7 @@ L.PLATER_NP_AURAS_MSG					= L.DBM .. "엔 이름표에 적들의 쿨타임 타�
 
 L.MOVABLE_BAR				= "드래그 하세요!"
 
-L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 " .. L.DBM .. " 타이머를 전송했습니다: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s의 타이머 무시]|r|h"
+L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h|1이;가; 당신에게 " .. L.DBM .. " 타이머를 전송했습니다: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s의 타이머 무시]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "정말 %s의 " .. L.DBM .. " 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 L.PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 3초 이상이어야 합니다."
 
