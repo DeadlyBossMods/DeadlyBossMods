@@ -334,7 +334,7 @@ function mod:OnCombatStart(delay)
 		timerMoltenEruptionCD:Start(16.7-delay, 1)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
 	else--Normal and LFR confirmed
-		timerFlameSlashCD:Start(9.3-delay, 1)
+		timerFlameSlashCD:Start(7-delay, 1)
 		timerSwirlingFlameCD:Start(10.5-delay, 1)
 		--timerMoltenEruptionCD:Start(23-delay, 1)
 		timerFieryMeteorCD:Start(35.2-delay, 1)
