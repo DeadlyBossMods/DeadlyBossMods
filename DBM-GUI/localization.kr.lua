@@ -472,7 +472,7 @@ L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 알림 보지 않기 (참고: '도발' 알림은 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 알림 보지 않기"
 L.FilterCrowdControl			= "메즈기가 쿨타임일땐 메즈 기반 차단 알림 보지 않기"
-L.FilterTrashWarnings		= "추종자, 일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
+L.FilterTrashWarnings		= "추종자, 일반, 저레벨 던전에선 일반몹 알림 보지 않기"
 
 L.Area_BInterruptFilter				= "보스 차단 알림 필터 설정"
 L.FilterTargetFocus					= "현재 대상/주시 대상/액션 대상(적)이 아니면 알림 표시 안함"
