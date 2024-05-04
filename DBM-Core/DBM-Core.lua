@@ -2847,6 +2847,8 @@ end
 
 --Scope, will only check if a unit is within 43 yards now
 ---@param self DBM|DBMMod
+---@param range number
+---@param targetname string?
 function DBM:CheckNearby(range, targetname)
 	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
 		return true--No target name means check if anyone is near self, period
@@ -2890,6 +2892,7 @@ end
 
 ---Hybrid all in one object to auto check and confirm multiple gossip IDs at once
 ---@param self DBM|DBMMod
+---@param confirm boolean?
 function DBM:SelectMatchingGossip(confirm, ...)
 	if self.Options.DontAutoGossip then return false end
 	local requestedIds = {...}
@@ -3419,6 +3422,7 @@ do
 		end
 	end
 
+	---@param self DBM
 	function loadOptions(self)
 		--init
 		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
@@ -3523,6 +3527,7 @@ function DBM:READY_CHECK()
 end
 
 do
+	---@param self DBM
 	local function throttledTalentCheck(self)
 		local lastSpecID = currentSpecID
 		self:SetCurrentSpecInfo()
@@ -3696,6 +3701,8 @@ do
 		end
 	end
 
+	---@param force boolean?
+	---@param cleanup boolean?
 	function DBM:TransitionToDungeonBGM(force, cleanup)
 		if cleanup then--Runs on zone change/cinematic Start (first load delay) and combat end
 			self:Unschedule(self.TransitionToDungeonBGM)
@@ -5189,7 +5196,10 @@ do
 		return false
 	end
 
-	-- called for all mob chat events
+	---called for all mob chat events
+	---@param self DBM
+	---@param type string
+	---@param msg string
 	local function onMonsterMessage(self, type, msg)
 		-- pull detection
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
@@ -5314,6 +5324,9 @@ end
 
 do
 	local lastValidCombat = 0
+	---@param self DBM
+	---@param confirm boolean?
+	---@param confirmTime number?
 	function checkWipe(self, confirm, confirmTime)
 		if #inCombat > 0 then
 			difficulties:RefreshCache()
@@ -5378,6 +5391,8 @@ do
 		end
 	end
 
+	---@param self DBM
+	---@param mod table
 	function checkBossHealth(self, mod)
 		if #inCombat > 0 then
 			for _, v in ipairs(inCombat) do
@@ -5393,6 +5408,8 @@ do
 		end
 	end
 
+	---@param self DBM
+	---@param mod table
 	function checkCustomBossHealth(self, mod)
 		mod:CustomHealthUpdate()
 		self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
