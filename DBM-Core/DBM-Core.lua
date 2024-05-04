@@ -39,6 +39,7 @@ local CL = DBM_COMMON_L
 local stringUtils = private:GetPrototype("StringUtils")
 local tableUtils = private:GetPrototype("TableUtils")
 local difficulties = private:GetPrototype("Difficulties")
+local test = private:GetPrototype("DBMTest")
 
 -------------------------------
 --  Globals/Default Options  --
@@ -550,7 +551,7 @@ local floor, mhuge, mmin, mmax, mrandom = math.floor, math.huge, math.min, math.
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
-local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
+local UnitAffectingCombat, InCombatLockdown, IsFalling, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 --local UnitTokenFromGUID, UnitPercentHealthFromGUID = UnitTokenFromGUID, UnitPercentHealthFromGUID
@@ -560,7 +561,6 @@ local EJ_GetSectionInfo, GetSectionIconFlags
 if C_EncounterJournal then
 	EJ_GetSectionInfo, GetSectionIconFlags = C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags
 end
-local GetInstanceInfo = GetInstanceInfo
 local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitIsGroupLeader, UnitIsGroupAssistant = UnitIsGroupLeader, UnitIsGroupAssistant
@@ -570,6 +570,10 @@ local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local pformat = stringUtils.pformat
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
+
+-- Store globals that can be hooked/overriden by tests in private
+private.GetInstanceInfo = GetInstanceInfo
+private.IsEncounterInProgress = IsEncounterInProgress
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -979,6 +983,7 @@ do
 			end
 		end
 	end
+	private.mainEventHandler = handleEvent -- Only for testing.
 
 	local registerUnitEvent, unregisterUnitEvent, registerSpellId, unregisterSpellId, registerCLEUEvent, unregisterCLEUEvent
 	do
@@ -1142,6 +1147,7 @@ do
 	---@param self DBM|DBMMod
 	---@param ... DBMEvent|string
 	function DBM:RegisterEvents(...)
+		test:Trace(self, "RegisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
@@ -1205,6 +1211,7 @@ do
 	---@param self DBM|DBMMod
 	function DBM:UnregisterInCombatEvents(srmOnly, srmIncluded)
 		for event, mods in pairs(registeredEvents) do
+			test:Trace(mod, "UnregisterEvents", "InCombat")
 			if srmOnly then
 				local i = 1
 				while mods[i] do
@@ -1251,6 +1258,7 @@ do
 	---@param ... DBMEvent|string
 	function DBM:RegisterShortTermEvents(...)
 		DBM:Debug("RegisterShortTermEvents fired", 2)
+		test:Trace(self, "RegisterEvents", "ShortTerm", ...)
 		local _shortTermRegisterEvents = {...}
 		for k, v in pairs(_shortTermRegisterEvents) do
 			if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
@@ -1273,6 +1281,7 @@ do
 	---@param self DBM|DBMMod
 	function DBM:UnregisterShortTermEvents()
 		DBM:Debug("UnregisterShortTermEvents fired", 2)
+		test:Trace(self, "UnregisterEvents", "ShortTerm")
 		if self.shortTermRegisterEvents then
 			DBM:Debug("UnregisterShortTermEvents found registered shortTermRegisterEvents", 2)
 			for event, mods in pairs(registeredEvents) do
@@ -1389,6 +1398,10 @@ do
 		end
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
+
+	function private.HookCombatLogGetCurrentEventInfo(func)
+		CombatLogGetCurrentEventInfo = func
+	end
 end
 
 --------------
@@ -3368,6 +3381,31 @@ function DBM:DeleteAllModOption(modId, name, profile)
 	self:AddMsg(L.MPROFILE_DELETE_SUCCESS:format(name, profile))
 end
 
+function private.createDefaultModStats()
+	local defaultStats = {}
+	defaultStats.followerKills = 0
+	defaultStats.followerPulls = 0
+	defaultStats.normalKills = 0
+	defaultStats.normalPulls = 0
+	defaultStats.heroicKills = 0
+	defaultStats.heroicPulls = 0
+	defaultStats.challengeKills = 0
+	defaultStats.challengePulls = 0
+	defaultStats.challengeBestRank = 0
+	defaultStats.mythicKills = 0
+	defaultStats.mythicPulls = 0
+	defaultStats.normal25Kills = 0
+	defaultStats.normal25Kills = 0
+	defaultStats.normal25Pulls = 0
+	defaultStats.heroic25Kills = 0
+	defaultStats.heroic25Pulls = 0
+	defaultStats.lfr25Kills = 0
+	defaultStats.lfr25Pulls = 0
+	defaultStats.timewalkerKills = 0
+	defaultStats.timewalkerPulls = 0
+	return defaultStats
+end
+
 function DBM:ClearAllStats(modId)
 	-- modId is string like "DBM-Highmaul"
 	if not modId or not self.ModLists[modId] then return end
@@ -3377,28 +3415,7 @@ function DBM:ClearAllStats(modId)
 	if not _G[savedStatsName] then _G[savedStatsName] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		local mod = self:GetModByName(id)
-		-- prevent nil table error
-		local defaultStats = {}
-		defaultStats.followerKills = 0
-		defaultStats.followerPulls = 0
-		defaultStats.normalKills = 0
-		defaultStats.normalPulls = 0
-		defaultStats.heroicKills = 0
-		defaultStats.heroicPulls = 0
-		defaultStats.challengeKills = 0
-		defaultStats.challengePulls = 0
-		defaultStats.challengeBestRank = 0
-		defaultStats.mythicKills = 0
-		defaultStats.mythicPulls = 0
-		defaultStats.normal25Kills = 0
-		defaultStats.normal25Kills = 0
-		defaultStats.normal25Pulls = 0
-		defaultStats.heroic25Kills = 0
-		defaultStats.heroic25Pulls = 0
-		defaultStats.lfr25Kills = 0
-		defaultStats.lfr25Pulls = 0
-		defaultStats.timewalkerKills = 0
-		defaultStats.timewalkerPulls = 0
+		local defaultStats = private.createDefaultModStats()
 		mod.stats = {}
 		mod.stats = defaultStats
 		_G[savedStatsName][id] = {}
@@ -3744,7 +3761,7 @@ do
 
 	---@param self DBM
 	local function SecondaryLoadCheck(self)
-		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
+		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
 		difficulties:RefreshCache(true)
 		LastGroupSize = instanceGroupSize
 		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty, 2)
@@ -3794,6 +3811,7 @@ do
 			end
 		end
 	end
+
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
 		if private.isRetail then
@@ -3973,6 +3991,14 @@ function DBM:LoadMod(mod, force)
 --			collectgarbage("collect")
 --		end
 		return true
+	end
+end
+
+function DBM:LoadModByName(modName, force)
+	for _, v in ipairs(self.AddOns) do
+		if v.modId == modName then
+			self:LoadMod(v, force)
+		end
 	end
 end
 
@@ -4194,7 +4220,7 @@ do
 				unitId = self:GetRaidUnitId(sender)
 			end
 			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
 				return
 			end
 		end
@@ -4312,7 +4338,7 @@ do
 			--		sender = self:GetUnitFullName(unitId) or sender
 			--	end
 				local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
 					return
 				end
 			--end
@@ -4365,7 +4391,7 @@ do
 		if DBM.Options.DontShowUserTimers then return end--or private.newShit
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
-		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
 			return
 		end
 		if timer == 0 or DBM:AntiSpam(1, "BT" .. sender) then
@@ -4699,7 +4725,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossEngage[modId .. realm] and (GetTime() - lastBossEngage[modId .. realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 		lastBossEngage[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
@@ -4710,7 +4736,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossDefeat[modId .. realm] and (GetTime() - lastBossDefeat[modId .. realm] < 30) then return end
 		lastBossDefeat[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
@@ -4739,7 +4765,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossEngage[modId .. realm] and (GetTime() - lastBossEngage[modId .. realm] < 30) then return end
 		lastBossEngage[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (private.isRetail and not IsEncounterInProgress() or #inCombat == 0) then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (private.isRetail and not private.IsEncounterInProgress() or #inCombat == 0) then
 			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
 			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
@@ -4752,7 +4778,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossDefeat[modId .. realm] and (GetTime() - lastBossDefeat[modId .. realm] < 30) then return end
 		lastBossDefeat[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
 			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
 			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
@@ -5024,7 +5050,7 @@ do
 				end
 			end
 		end
-		if self.Options.AFKHealthWarning2 and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		if self.Options.AFKHealthWarning2 and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
 			local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
@@ -5221,7 +5247,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-		if IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
+		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
 			local targetName = target or "nil"
 			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2)
 		end
@@ -5329,7 +5355,7 @@ do
 			local wipe -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
 			if (private.isRetail and IsInScenarioGroup()) or (difficulties.difficultyIndex == 11) or (difficulties.difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 				wipe = 0
-			elseif IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
+			elseif private.IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
 				wipe = 0
 			elseif difficulties.savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
 				wipe = 0
@@ -5479,6 +5505,7 @@ do
 				event = ""
 			end
 			--check completed. starting combat
+			test:Trace(mod, "StartCombat", event)
 			tinsert(inCombat, mod)
 			-- Pull time is always considered as in combat, this makes sure checkWipe() triggers only after the minimum time without combat has passed since start.
 			lastValidCombat = GetTime()
@@ -5759,7 +5786,7 @@ do
 					end
 				end
 			end
-			if self.Options.AFKHealthWarning2 and UnitIsUnit(uId, "player") and (health < (private.isHardcoreServer and 95 or 85)) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+			if self.Options.AFKHealthWarning2 and UnitIsUnit(uId, "player") and (health < (private.isHardcoreServer and 95 or 85)) and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 				local voice = DBM.Options.ChosenVoicePack2
 				local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
 				if not private.voiceSessionDisabled and voice ~= "None" then
@@ -6334,6 +6361,7 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		end
+		test:Trace(self, "PlaySound", path)
 	end
 end
 
@@ -6586,7 +6614,7 @@ function DBM:UNIT_DIED(args)
 	end
 	----GUIDIsPlayer
 	--no point in playing alert on death itself on hardcore. if you're dead it's over, no reason to salt the wound
-	if not private.isHardcoreServer and self.Options.AFKHealthWarning2 and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+	if not private.isHardcoreServer and self.Options.AFKHealthWarning2 and GUID == UnitGUID("player") and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 		self:FlashClientIcon()
 		local voice = DBM.Options.ChosenVoicePack2
 		local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
@@ -7108,8 +7136,10 @@ function DBM:AntiSpam(time, id)
 		else
 			self.lastAntiSpam = GetTime()
 		end
+		test:Trace(self, "AntiSpam", id, true)
 		return true
 	end
+	test:Trace(self, "AntiSpam", id, false)
 	return false
 end
 
@@ -7164,7 +7194,7 @@ do
 	local function checkOptions(self, id, mapID)
 		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
 		local allowBlock = false
-		if self.Options.HideMovieDuringFight and IsEncounterInProgress() then
+		if self.Options.HideMovieDuringFight and private.IsEncounterInProgress() then
 			allowBlock = true
 		end
 		local isInstance, instanceType = IsInInstance()
@@ -8546,7 +8576,7 @@ end
 function DBM:GroupInCombat()
 	local combatFound = false
 	--Any Boss engaged
-	if IsEncounterInProgress() then
+	if private.IsEncounterInProgress() then
 		combatFound = true
 	end
 	--Self in Combat
@@ -8710,3 +8740,12 @@ do
 		end
 	end
 end
+
+-- Expose some file-local data to private for testing purposes only.
+-- Ideally these could probably be deleted if core was properly split up.
+
+function private.SetLastInstanceMapID(id)
+	LastInstanceMapID = id
+end
+
+private.mainFrame = mainFrame  -- Only for testing.

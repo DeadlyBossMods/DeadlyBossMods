@@ -105,6 +105,7 @@
 		"DBMExtraGlobal",
 		"DBM_GUI_L",
 		"OptionsList_OnLoad",
-		"DBT_AllPersistentOptions"
+		"DBT_AllPersistentOptions",
+		"DBM_TestResults_Export"
 	]
 }

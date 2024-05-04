@@ -12,6 +12,7 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 
 local scheduler = private:GetModule("DBMScheduler")
 local tableUtils = private:GetPrototype("TableUtils")
+local test = private:GetPrototype("DBMTest")
 
 local modsById = setmetatable({}, {__mode = "v"})
 local mt = {__index = bossModPrototype}
@@ -63,6 +64,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		},
 		mt
 	)
+	test:Trace(obj, "NewMod", name, modId)
 
 	if tonumber(name) and EJ_GetEncounterInfo then
 		local t = EJ_GetEncounterInfo(tonumber(name))
@@ -249,6 +251,7 @@ end
 
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
+	test:Trace(self, "RegisterEvents", "InCombat", ...)
 	if self.inCombatOnlyEvents then
 		geterrorhandler()("combat events already set")
 	end

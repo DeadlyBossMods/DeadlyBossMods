@@ -26,6 +26,7 @@ ignore:
   - DBM-Core/Libs/LibStub/tests
   - DBM-Core/Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
+  - DBM-Test
 
 enable-nolib-creation: no
 
