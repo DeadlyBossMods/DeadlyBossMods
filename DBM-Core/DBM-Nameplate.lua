@@ -851,12 +851,12 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 end
 
 ---@param isGUID boolean? whether or not it's name based or guid based unit, guid preferred
----@param unit string? the actual name or guid. Can be black when using force
+---@param unit string? the actual name or guid. Can be blank when using force
 ---@param spellId number? if show is called with spellId, hide must also be called with spellid
 ---@param texture number|string? accepts texture ID or spell ID
 ---@param force boolean? set to true to to do a cleanup on all nameplates (basically combat end call)
----@param isHostile boolean? sets true for firing BossMod_DisableFriendlyNameplates callback
----@param isFriendly boolean? sets true for firing BossMod_DisableHostileNameplates callback
+---@param isHostile boolean? sets true for firing BossMod_DisableFriendlyNameplates callback on force
+---@param isFriendly boolean? sets true for firing BossMod_DisableHostileNameplates callback on force
 ---@param forceDBM boolean? makes it use internal handler even when 3rd party nameplate mod exists
 function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly, forceDBM)
 	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
