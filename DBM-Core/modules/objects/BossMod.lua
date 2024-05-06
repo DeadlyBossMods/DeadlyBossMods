@@ -762,10 +762,10 @@ end
 
 
 --Function to actually register specific media to specific auras
----@param auraspellId number Private aura spellId
+---@param auraspellId number ID of Private aura we're actually monitoring (if it doesn't match option key, put option key in altOptionId)
 ---@param voice VPSound|any voice pack media path
 ---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
----@param altOptionId any Used if registering additional private aura Ids to an existing option (ie an ability has multiple IDs)
+---@param altOptionId any Used if auraspellId doesn't match option key (usually happens when registering multiple ids for a single spell)
 function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion, altOptionId)
 	if DBM.Options.DontPlayPrivateAuraSound then return end
 	local optionId = altOptionId or auraspellId
