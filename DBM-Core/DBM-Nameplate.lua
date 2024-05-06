@@ -807,8 +807,15 @@ end
 --/run DBM.Nameplate:Hide(true, UnitGUID("target"), 227723)
 --/run DBM.Nameplate:Hide(false, GetUnitName("target", true), 227723)
 
---isGUID: guid or name (bool)
 --ie, anchored to UIParent Center (ie player is in center) and to bottom of nameplate aura.
+
+---@param isGUID boolean? whether or not it's name based or guid based unit, guid preferred
+---@param unit string the actual name or guid
+---@param spellId number? if show is called with spellId, hide must also be called with spellid
+---@param texture number|string? accepts texture ID or spell ID
+---@param duration number? adds countdown duration to icon
+---@param desaturate boolean?
+---@param forceDBM boolean? makes it use internal handler even when 3rd party nameplate mod exists
 function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, forceDBM)
 
 	-- nameplate icons are disabled;
@@ -818,7 +825,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 	if playerGUID == unit or playerName == unit then return end
 
 	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
-	local currentTexture = tonumber(texture) or texture or DBM:GetSpellTexture(spellId)
+	local currentTexture = tonumber(texture) or texture or DBM:GetSpellTexture(spellId or 0)
 
 	-- build aura info table
 	local curTime = GetTime()
@@ -844,6 +851,14 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 	NameplateIcon_Show(isGUID, unit, aura_tbl)
 end
 
+---@param isGUID boolean? whether or not it's name based or guid based unit, guid preferred
+---@param unit string? the actual name or guid. Can be blank when using force
+---@param spellId number? if show is called with spellId, hide must also be called with spellid
+---@param texture number|string? accepts texture ID or spell ID
+---@param force boolean? set to true to to do a cleanup on all nameplates (basically combat end call)
+---@param isHostile boolean? sets true for firing BossMod_DisableFriendlyNameplates callback on force
+---@param isFriendly boolean? sets true for firing BossMod_DisableHostileNameplates callback on force
+---@param forceDBM boolean? makes it use internal handler even when 3rd party nameplate mod exists
 function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly, forceDBM)
 	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
 	local currentTexture = tonumber(texture) or texture or spellId and DBM:GetSpellTexture(spellId)
