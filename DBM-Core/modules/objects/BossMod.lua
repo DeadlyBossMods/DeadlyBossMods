@@ -765,11 +765,11 @@ end
 ---@param auraspellId number ID of Private aura we're actually monitoring (if it doesn't match option key, put option key in altOptionId)
 ---@param voice VPSound|any voice pack media path
 ---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
----@param altOptionId any Used if auraspellId doesn't match option key (usually happens when registering multiple ids for a single spell)
+---@param altOptionId number? Used if auraspellId doesn't match option key (usually happens when registering multiple ids for a single spell)
 function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion, altOptionId)
 	if DBM.Options.DontPlayPrivateAuraSound then return end
 	local optionId = altOptionId or auraspellId
-	if self.Options["PrivateAuraSound" .. optionId] then
+	if optionId and self.Options["PrivateAuraSound" .. optionId] then
 		if not self.paSounds then self.paSounds = {} end
 		local soundId = self.Options["PrivateAuraSound" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
@@ -803,6 +803,8 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 			self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
 				spellID = auraspellId,
 				unitToken = "player",
+				--Another cause of LuaLS being stupid for some reason
+				---@diagnostic disable-next-line: assign-type-mismatch
 				soundFileName = mediaPath,
 				outputChannel = "master",
 			})
