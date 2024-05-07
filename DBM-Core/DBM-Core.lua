@@ -80,9 +80,9 @@ local fakeBWVersion, fakeBWHash = 326, "ec8db89"--326.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.38 alpha"--Core version
+DBM.DisplayVersion = "10.2.38"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 4, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 5, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -654,11 +654,12 @@ local function sendSync(protocol, prefix, msg)
 		if sendChannel == "SOLO" then
 			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 		else
-			SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
-			if (prefix == "V" or prefix == "H") and not private.isRetail then
-				--Also send V and H syncs to old DBM versions so we can force disable them and get them out of circulation
-				local oldPrefix = private.isWrath and "D5WC" or "D5C"
-				SendAddonMessage(oldPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
+			--Per https://warcraft.wiki.gg/wiki/Patch_10.2.7/API_changes#Addon_messaging_changes
+			--We want to start watching for situations DBM exceeds it's 10 messages per 10 seconds limits
+			--While at it, catch other failure types too
+			local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
+			if type(result) == "number" and result ~= 0 then
+				DBM:Debug("sendSync failed with a result of " ..result.. " for prefix " .. prefix)
 			end
 		end
 	end
@@ -673,11 +674,9 @@ local function sendGuildSync(protocol, prefix, msg)
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
-		if (prefix == "GV" or prefix == "GH") and not private.isRetail then
-			--Also send V and H syncs to old DBM versions so we can force disable them and get them out of circulation
-			local oldPrefix = private.isWrath and "D5WC" or "D5C"
-			SendAddonMessage(oldPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")
+		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD"))--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		if type(result) == "number" and result ~= 0 then
+			DBM:Debug("sendGuildSync failed with a result of " ..result.. " for prefix " .. prefix)
 		end
 	end
 end
@@ -691,15 +690,22 @@ local function sendLoggedSync(protocol, prefix, msg)
 	if dbmIsEnabled then
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
+		local sendChannel = "SOLO"
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "INSTANCE_CHAT")
+			sendChannel = "INSTANCE_CHAT"
 		else
 			if IsInRaid() then
-				C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "RAID")
+				sendChannel = "RAID"
 			elseif IsInGroup(1) then
-				C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "PARTY")
-			else--for solo raid
-				handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
+				sendChannel = "PARTY"
+			end
+		end
+		if sendChannel == "SOLO" then
+			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
+		else
+			local result = select(-1, C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
+			if type(result) == "number" and result ~= 0 then
+				DBM:Debug("sendLoggedSync failed with a result of " ..result.. " for prefix " .. prefix)
 			end
 		end
 	end
@@ -715,12 +721,23 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
-	if IsInRaid() then
-		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "RAID")
-	elseif IsInGroup(1) then
-		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "PARTY")
-	else--for solo raid
+	local sendChannel = "SOLO"
+	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+		sendChannel = "INSTANCE_CHAT"
+	else
+		if IsInRaid() then
+			sendChannel = "RAID"
+		elseif IsInGroup(1) then
+			sendChannel = "PARTY"
+		end
+	end
+	if sendChannel == "SOLO" then
 		handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
+	else
+		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
+		if type(result) == "number" and result ~= 0 then
+			DBM:Debug("SendWorldSync failed with a result of " ..result.. " for prefix " .. prefix)
+		end
 	end
 	if IsInGuild() then
 		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
@@ -1462,7 +1479,9 @@ do
 				self.Options.RestoreSettingBreakTimer = nil
 			end
 		end
-		sendGuildSync(DBMSyncProtocol, "GH")
+		if not IsInInstance() then
+			sendGuildSync(DBMSyncProtocol, "GH")
+		end
 		difficulties:RefreshCache()
 	end
 
@@ -1764,7 +1783,6 @@ do
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"LOADING_SCREEN_ENABLED",
 				"ZONE_CHANGED_NEW_AREA"
 			)
 			if private.newShit then
@@ -1829,12 +1847,6 @@ do
 			if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 				if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 					self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-				end
-				if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
-					--Nothing
-				end
-				if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
-					--Nothing
 				end
 				if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 					if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
@@ -3840,20 +3852,6 @@ do
 		end
 	end
 
-	function DBM:LOADING_SCREEN_ENABLED()
-		--TimerTracker Cleanup, required to work around logic code blizzard put into TimerTracker for /countdown timers
-		--TimerTracker is hard coded that if a type 3 timer exists, to give it prio over type 1 and type 2. This causes the M+ timer not to show, even if only like 0.01 sec was left on the /countdown
-		--We want to avoid situations where players start a 10 second timer, but click keystone with fractions of a second left, preventing them from seeing the M+ timer
-		if TimerTracker then -- Doesn't exist in classic
-			for _, tttimer in pairs(TimerTracker.timerList) do
-				if tttimer.type == 3 and not tttimer.isFree then
-					FreeTimerTrackerTimer(tttimer)
-					break
-				end
-			end
-		end
-	end
-
 	---@return string?
 	local function isDmfActiveClassic()
 		if DBM:IsSeasonal("SeasonOfDiscovery") then
@@ -4232,42 +4230,11 @@ do
 			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
 				dummyMod.timer:Stop()
 			end
-			local timerTrackerRunning = false
-			if not blizzardTimer then
-				if TimerTracker then
-					for _, tttimer in pairs(TimerTracker.timerList) do
-						if not tttimer.isFree then--Timer event running
-							if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
-								FreeTimerTrackerTimer(tttimer)
-							else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
-								timerTrackerRunning = true
-							end
-						end
-					end
-				end
-			end
 			dummyMod.text:Cancel()
 			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
 			self:FlashClientIcon()
 			if not self.Options.DontShowPT2 then
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
-			end
-			if TimerTracker and not blizzardTimer then
-				if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
-					--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
-					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
-					--Find the timer object DBM just created and hack our own changes into it.
-					for _, tttimer in pairs(TimerTracker.timerList) do
-						if tttimer.type == 3 and not tttimer.isFree then
-							--We don't want the PVP bar, we only want timer text
-							if timer > 10 then
-								--b.startNumbers:Play()
-								tttimer.bar:Hide()
-							end
-							break
-						end
-					end
-				end
 			end
 			if not self.Options.DontShowPTText then
 				local target = unitId and UnitName(unitId.."target")
@@ -4391,7 +4358,8 @@ do
 	end
 
 	local function SendVersion(guild)
-		if guild then
+		--Due to increasing addon comm throttling in instances, guild version sharing is disabled in instances to reduce comms
+		if guild and not IsInInstance() then
 			local message
 			if not private.isRetail and DBM.classicSubVersion then
 				message = ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable), tostring(DBM.classicSubVersion))
@@ -4884,10 +4852,6 @@ do
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
-		elseif (prefix == "D5WC" or prefix == "D5C") and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "GUILD") then
-			--Accept Legacy syncs for about 3 months. 03-16-24
-			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			handleSync(channel, correctSender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
@@ -5701,14 +5665,6 @@ do
 				if dummyMod then--stop pull timer
 					dummyMod.text:Cancel()
 					dummyMod.timer:Stop()
-					if TimerTracker then
-						for _, tttimer in pairs(TimerTracker.timerList) do
-							if tttimer.type == 3 and not tttimer.isFree then
-								FreeTimerTrackerTimer(tttimer)
-								break
-							end
-						end
-					end
 				end
 				local bigWigs = _G["BigWigs"]
 				if bigWigs and bigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
