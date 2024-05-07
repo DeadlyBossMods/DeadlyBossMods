@@ -80,9 +80,9 @@ local fakeBWVersion, fakeBWHash = 326, "ec8db89"--326.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.38 alpha"--Core version
+DBM.DisplayVersion = "10.2.38"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 4, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 5, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1847,12 +1847,6 @@ do
 			if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 				if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 					self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-				end
-				if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
-					--Nothing
-				end
-				if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
-					--Nothing
 				end
 				if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 					if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
@@ -4858,10 +4852,6 @@ do
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
-		elseif (prefix == "D5WC" or prefix == "D5C") and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "GUILD") then
-			--Accept Legacy syncs for about 3 months. 03-16-24
-			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			handleSync(channel, correctSender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
