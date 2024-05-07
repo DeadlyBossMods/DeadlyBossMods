@@ -7941,11 +7941,10 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self:SetOptionCategory(name, cat, optionType, waCustomName)
 end
 
---auraspellId must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
---groupSpellId is used if a diff option key is used in all other options with spell (will be quite common)
---defaultSound is used to set default Special announce sound (1-4) just like regular special announce objects
----@param auraspellId number
+---@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 ---@param default SpecFlags|boolean?
+---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
+---@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
@@ -7953,6 +7952,8 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["PrivateAuraSound" .. auraspellId] = (default == nil) or default
+	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
+	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
 	self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
 	self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound" .. auraspellId)
