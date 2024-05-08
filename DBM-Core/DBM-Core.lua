@@ -8517,6 +8517,7 @@ function bossModPrototype:IsInCombat()
 end
 
 ---Used for checking if any person in group is in any kind of combat
+---@param self DBM|DBMMod
 function DBM:GroupInCombat()
 	local combatFound = false
 	--Any Boss engaged

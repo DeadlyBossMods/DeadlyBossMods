@@ -77,6 +77,7 @@ end
 --UGLY function to detect this because there isn't a good API for this.
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
+---@param self DBMMod
 local function checkForCombat(self)
 	local combatFound = self:GroupInCombat()
 	if incorpDetected then
