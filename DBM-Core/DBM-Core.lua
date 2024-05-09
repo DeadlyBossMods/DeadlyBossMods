@@ -1098,6 +1098,7 @@ do
 		end
 
 		function unregisterCLEUEvent(mod, event)
+			test:Trace(mod, "UnregisterEvents", "Regular", event)
 			local argTable = {strsplit(" ", event)}
 			local eventCleared = false
 			-- filtered cleu event. save information in registeredSpellIds table.
@@ -1190,6 +1191,7 @@ do
 
 	local function unregisterUEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+			test:Trace(mod, "UnregisterEvents", "Regular", event)
 			local eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if eventName:sub(-11) == "_UNFILTERED" then
 				mainFrame:UnregisterEvent(eventName:sub(0, -12))
@@ -1211,7 +1213,6 @@ do
 	---@param self DBM|DBMMod
 	function DBM:UnregisterInCombatEvents(srmOnly, srmIncluded)
 		for event, mods in pairs(registeredEvents) do
-			test:Trace(mod, "UnregisterEvents", "InCombat")
 			if srmOnly then
 				local i = 1
 				while mods[i] do
@@ -1240,6 +1241,7 @@ do
 				local match = false
 				for i = #mods, 1, -1 do
 					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event) then
+						test:Trace(self, "UnregisterEvents", "InCombat", event)
 						tremove(mods, i)
 						match = true
 					end
@@ -1281,7 +1283,6 @@ do
 	---@param self DBM|DBMMod
 	function DBM:UnregisterShortTermEvents()
 		DBM:Debug("UnregisterShortTermEvents fired", 2)
-		test:Trace(self, "UnregisterEvents", "ShortTerm")
 		if self.shortTermRegisterEvents then
 			DBM:Debug("UnregisterShortTermEvents found registered shortTermRegisterEvents", 2)
 			for event, mods in pairs(registeredEvents) do
@@ -1301,6 +1302,7 @@ do
 					local match = false
 					for i = #mods, 1, -1 do
 						if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event) then
+							test:Trace(self, "UnregisterEvents", "ShortTerm", event)
 							tremove(mods, i)
 							match = true
 						end
@@ -1400,7 +1402,9 @@ do
 	mainFrame:SetScript("OnEvent", handleEvent)
 
 	function private.HookCombatLogGetCurrentEventInfo(func)
+		local old = CombatLogGetCurrentEventInfo
 		CombatLogGetCurrentEventInfo = func
+		return old
 	end
 end
 
@@ -3381,7 +3385,7 @@ function DBM:DeleteAllModOption(modId, name, profile)
 	self:AddMsg(L.MPROFILE_DELETE_SUCCESS:format(name, profile))
 end
 
-function private.createDefaultModStats()
+function DBM:CreateDefaultModStats()
 	local defaultStats = {}
 	defaultStats.followerKills = 0
 	defaultStats.followerPulls = 0
@@ -3415,7 +3419,7 @@ function DBM:ClearAllStats(modId)
 	if not _G[savedStatsName] then _G[savedStatsName] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		local mod = self:GetModByName(id)
-		local defaultStats = private.createDefaultModStats()
+		local defaultStats = DBM:CreateDefaultModStats()
 		mod.stats = {}
 		mod.stats = defaultStats
 		_G[savedStatsName][id] = {}
@@ -8744,8 +8748,10 @@ end
 -- Expose some file-local data to private for testing purposes only.
 -- Ideally these could probably be deleted if core was properly split up.
 
-function private.SetLastInstanceMapID(id)
+function private.HookLastInstanceMapID(id)
+	local old = LastInstanceMapID
 	LastInstanceMapID = id
+	return old
 end
 
-private.mainFrame = mainFrame  -- Only for testing.
+private.mainFrame = mainFrame

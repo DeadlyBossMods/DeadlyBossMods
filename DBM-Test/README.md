@@ -9,7 +9,7 @@ Test runs output a plain text test report that summarize the behavior of a mod.
 The flow for adding a new test is:
 
 1. Use Transcriptor to record a boss fight
-2. Define a test case for a boss mod based on the log (TODO: link to example)
+2. Define a test case for a boss mod based on the log using the script `Tools/ParseTranscriptor.lua`
 3. Run the test via `/dbm test <test name>` to get a test report
 4. Manually inspect the test report to validate that the mod is doing what you expect it to do
 5. The test report will also point out potential problems such as unused timers or spell ID mismatches (NYI)

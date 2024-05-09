@@ -1,8 +1,9 @@
+#@alpha@
 ## Interface: 100206
 ## Interface-Classic: 11502
 ## Interface-Wrath: 30403
 ## Interface-Cata: 40400
-## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0DBM - Testing|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
 ## Dependencies: DBM-Core
 ## SavedVariables: DBM_TestResults_Export
 ## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
@@ -10,7 +11,8 @@
 ## LoadOnDemand: 1
 ## X-DBM-Test: true
 
+Registry.lua
+Report.lua
+Runner.lua
 
-# TODO: this should go to DBM-BCVanilla/DBM-Test-Raids-Vanilla
-Season of Discovery/Sunken Temple/Atal'arion.lua
-Season of Discovery/Sunken Temple/Reports/Atal'arion.lua
+#@end-alpha@
