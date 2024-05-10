@@ -1844,20 +1844,14 @@ do
 					C_TimerAfter(60, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
 				end
 			end
-			if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
-				if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
-					self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-				end
-				if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
-					if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
-						self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
-					end
-				end
-				if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
-					if not C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor") then
-						self:AddMsg("Error: unable to register Transcriptor addon message prefix (reached client side addon message filter limit)")
-					end
-				end
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered(DBMPrefix) then
+				C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) -- main prefix for DBM4
+			end
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
+				C_ChatInfo.RegisterAddonMessagePrefix("BigWigs")
+			end
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Transcriptor") then
+				C_ChatInfo.RegisterAddonMessagePrefix("Transcriptor")
 			end
 			--Check if any previous changed cvars were not restored and restore them
 			if self.Options.RestoreSettingSFX then
