@@ -8720,4 +8720,10 @@ test:RegisterLocalHook("LastInstanceMapID", function(val)
 	return old
 end)
 
+test:RegisterLocalHook("GetTime", function(val)
+	local old = GetTime
+	GetTime = val
+	return old
+end)
+
 private.mainFrame = mainFrame

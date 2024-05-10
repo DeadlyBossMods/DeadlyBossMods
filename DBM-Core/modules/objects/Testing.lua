@@ -13,7 +13,8 @@ DBM.Test = test
 local traceField = "Trace"
 test[traceField] = function() end
 
-function test:HandleCommand(args)
+function test:HandleCommand(testName, timeWarp)
+	timeWarp = timeWarp and tonumber(timeWarp:match("(%d+)"))
 	local numTestAddOnsFound = 0
 	C_AddOns.LoadAddOn("DBM-Test")
 	for i = 1, C_AddOns.GetNumAddOns() do
@@ -25,21 +26,33 @@ function test:HandleCommand(args)
 	if numTestAddOnsFound == 0 then
 		DBM:AddMsg("No test AddOns installed, install an alpha or dev version of DBM to get DBM-Test-* mods.")
 	end
-	if args:lower() == "list" or args:lower() == "help" then
+	if testName:lower() == "list" or testName:lower() == "help" then
 		DBM:AddMsg("Available tests:")
-		for _, testName in ipairs(self.Registry.sortedTests) do
-			DBM:AddMsg("  " .. testName)
+		for _, v in ipairs(self.Registry.sortedTests) do
+			DBM:AddMsg("  " .. v)
 		end
 		if #self.Registry.sortedTests == 0 then
 			DBM:AddMsg("  (none)")
 		end
-		DBM:AddMsg("Run /dbm test <name> to execute a test.")
+		DBM:AddMsg("Run /dbm test <name> <time warp factor> to execute a test.")
 	else
-		if not self.Registry.tests[args] then
-			DBM:AddMsg("Test " .. args .. " not found, run /dbm test list to see available tests.")
+		if not self.Registry.tests[testName] then
+			DBM:AddMsg("Test " .. testName .. " not found, run /dbm test list to see available tests.")
 			return
 		end
-		self:RunTest(args)
+		self:RunTest(testName, timeWarp)
+	end
+end
+
+---@type table<Frame>
+test.framesForTimeWarp = {}
+
+function test:RegisterTimeWarpFrame(frame)
+	-- Frames are registered on DBM load -- which is before the full testing module containing the time warper loads
+	if test.TimeWarper then
+		test.TimeWarper:RegisterFrame(frame)
+	else
+		test.framesForTimeWarp[frame] = true
 	end
 end
 
