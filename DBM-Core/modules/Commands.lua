@@ -429,7 +429,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if args == "" then
 			DBM:DemoMode()
 		else
-			test:HandleCommand(args)
+			test:HandleCommand(string.split(" ", args))
 		end
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")

@@ -14,5 +14,6 @@
 Registry.lua
 Report.lua
 Runner.lua
+TimeWarper.lua
 
 #@end-alpha@
