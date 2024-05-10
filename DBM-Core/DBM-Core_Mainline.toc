@@ -62,6 +62,7 @@ commonlocal.ru.lua
 
 # Pre-core modules
 modules\objects\PrototypeRegistry.lua
+modules\objects\Testing.lua
 modules\objects\GameVersion.lua
 modules\objects\StringUtils.lua
 modules\objects\TableUtils.lua

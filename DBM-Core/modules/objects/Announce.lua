@@ -15,6 +15,8 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
+local test = private:GetPrototype("DBMTest")
+
 local mt = {__index = announcePrototype}
 
 ---@diagnostic disable: inject-field
@@ -160,7 +162,7 @@ function DBM:UpdateWarningOptions()
 	end
 end
 
-function DBM:AddWarning(text, force)
+function DBM:AddWarning(text, force, announceObject)
 	local added = false
 	if not frame.font1ticker then
 		font1elapsed = 0
@@ -196,6 +198,8 @@ function DBM:AddWarning(text, force)
 		font2:SetText(prevText2)
 		font2elapsed = font3elapsed
 		self:AddWarning(text, true)
+	else
+		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
 	end
 end
 
@@ -383,7 +387,7 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 			end
 		end
 		text = text:gsub(">.-<", cachedColorFunctions[self.color])
-		DBM:AddWarning(text)
+		DBM:AddWarning(text, nil, self)
 		if DBM.Options.ShowWarningsInChat then
 			if not DBM.Options.WarningIconChat then
 				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
@@ -528,6 +532,7 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 	---@class Announce
 	local obj = setmetatable(
 		{
+			objClass = "Announce",
 			text = self.localization.warnings[text],
 			combinedtext = {},
 			combinedcount = 0,
@@ -539,6 +544,7 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 		},
 		mt
 	)
+	test:Trace(self, "NewAnnounce", obj, "untyped")
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
@@ -574,6 +580,7 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 	---@class Announce
 	local obj = setmetatable( -- todo: fix duplicate code
 		{
+			objClass = "Announce",
 			text = text,
 			combinedtext = {},
 			combinedcount = 0,
@@ -591,6 +598,7 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 		},
 		mt
 	)
+	test:Trace(self, "NewAnnounce", obj, announceType)
 	local catType = "announce"--Default to General announce
 	if not self.NoSortAnnounce then--ALL announce objects will be assigned "announce", usually for mods that sort by phase instead
 		--Change if Personal or Other
