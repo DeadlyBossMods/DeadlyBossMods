@@ -197,7 +197,7 @@ function DBM:AddWarning(text, force, announceObject)
 		font1elapsed = font2elapsed
 		font2:SetText(prevText2)
 		font2elapsed = font3elapsed
-		self:AddWarning(text, true)
+		self:AddWarning(text, true, announceObject)
 	else
 		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
 	end
