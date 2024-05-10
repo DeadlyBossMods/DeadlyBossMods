@@ -172,7 +172,7 @@ end
 local trackedHudMarkers = {}
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
-	if not private.dbmIsEnabled then
+	if not DBM:IsEnabled() then
 		DBM:ForceDisableSpam()
 		return
 	end
