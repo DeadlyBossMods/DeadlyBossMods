@@ -36,6 +36,9 @@ function test:Trace(mod, event, ...)
 		end
 		if event == "StartTimer" or event == "ShowAnnounce" or event == "ShowSpecialWarning" or event == "ShowYell" then
 			local obj = ...
+			if not obj or not obj.testUseCount then
+				geterrorhandler()("trace of type " .. event .. " without warning object ")
+			end
 			obj.testUseCount = (obj.testUseCount or 0) + 1
 		end
 		---@class TraceEntryEvent

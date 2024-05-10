@@ -112,7 +112,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject)
 		local prevText1 = font2:GetText()
 		font1:SetText(prevText1)
 		font1elapsed = font2elapsed
-		self:AddSpecialWarning(text, true)
+		self:AddSpecialWarning(text, true, specWarnObject)
 	else
 		test:Trace(specWarnObject and specWarnObject.mod or self, "ShowSpecialWarning", specWarnObject, text)
 	end
