@@ -8,11 +8,6 @@ local DBM = private:GetPrototype("DBM")
 local test = private:GetPrototype("DBMTest")
 DBM.Test = test
 
-local testRunning = false
----@class DBMMod?
-local modUnderTest = nil
-local currentEventKey = nil
-
 -- Overriden by DBM-Test once loaded.
 -- This field is intentionally set in an odd way to prevent LuaLS from suggesting this function.
 local traceField = "Trace"
