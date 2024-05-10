@@ -153,7 +153,6 @@ function test:Setup()
 	table.wipe(trace)
 	self.testRunning = true
 	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
-	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
 	self:HookPrivate("GetInstanceInfo", getInstanceInfoHook)
 	fakeIsEncounterInProgress = false
 	self:HookPrivate("IsEncounterInProgress", isEncounterInProgressHook)

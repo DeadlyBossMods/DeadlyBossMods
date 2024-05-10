@@ -1417,11 +1417,11 @@ do
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
 
-	function private.HookCombatLogGetCurrentEventInfo(func)
+	test:RegisterLocalHook("CombatLogGetCurrentEventInfo", function(val)
 		local old = CombatLogGetCurrentEventInfo
-		CombatLogGetCurrentEventInfo = func
+		CombatLogGetCurrentEventInfo = val
 		return old
-	end
+	end)
 end
 
 --------------
@@ -8713,12 +8713,11 @@ do
 end
 
 -- Expose some file-local data to private for testing purposes only.
--- Ideally these could probably be deleted if core was properly split up.
 
-function private.HookLastInstanceMapID(id)
+test:RegisterLocalHook("LastInstanceMapID", function(val)
 	local old = LastInstanceMapID
-	LastInstanceMapID = id
+	LastInstanceMapID = val
 	return old
-end
+end)
 
 private.mainFrame = mainFrame
