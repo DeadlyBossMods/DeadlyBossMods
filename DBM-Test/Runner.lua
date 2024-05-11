@@ -201,12 +201,17 @@ function test:Teardown()
 		end
 		mod._testingTempOverrides = nil
 	end
-	for opt, value in pairs(self.restoreOptions) do
-		DBM.Options[opt] = value
+	if self.restoreOptions then
+		for opt, value in pairs(self.restoreOptions) do
+			DBM.Options[opt] = value
+		end
+		self.restoreOptions = nil
 	end
-	self.restoreOptions = nil
-	for cvar, value in pairs(self.restoreCVars) do
-		SetCVar(cvar, value)
+	if self.restoreCVars then
+		for cvar, value in pairs(self.restoreCVars) do
+			SetCVar(cvar, value)
+		end
+		self.restoreCVars = nil
 	end
 end
 
