@@ -15,6 +15,8 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
+local test = private:GetPrototype("DBMTest")
+
 local playerName = UnitName("player")
 
 ---@diagnostic disable: inject-field
@@ -89,7 +91,7 @@ function DBM:UpdateSpecialWarningOptions()
 	end
 end
 
-function DBM:AddSpecialWarning(text, force)
+function DBM:AddSpecialWarning(text, force, specWarnObject)
 	local added = false
 	if not frame.font1ticker then
 		font1elapsed = 0
@@ -111,6 +113,8 @@ function DBM:AddSpecialWarning(text, force)
 		font1:SetText(prevText1)
 		font1elapsed = font2elapsed
 		self:AddSpecialWarning(text, true)
+	else
+		test:Trace(specWarnObject and specWarnObject.mod or self, "ShowSpecialWarning", specWarnObject, text)
 	end
 end
 
@@ -416,7 +420,7 @@ function specialWarningPrototype:Show(...)
 			if self.announceType and not self.announceType:find("switch") then
 				text = text:gsub(">.-<", classColoringFunction)
 			end
-			DBM:AddSpecialWarning(text)
+			DBM:AddSpecialWarning(text, nil, self)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
 				self.mod:AddMsg(colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. text .. "|r", nil)
@@ -645,6 +649,7 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 	---@class SpecialWarning
 	local obj = setmetatable(
 		{
+			objClass = "SpecialWarning",
 			text = self.localization.warnings[text],
 			combinedtext = {},
 			combinedcount = 0,
@@ -658,6 +663,7 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 		},
 		mt
 	)
+	test:Trace(self, "NewSpecialWarning", obj, "untyped")
 	local optionId = optionName or optionName ~= false and text
 	if optionId then
 		obj.voiceOptionId = hasVoice and "Voice" .. optionId or nil
@@ -692,6 +698,7 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 	---@class SpecialWarning
 	local obj = setmetatable( -- todo: fix duplicate code
 		{
+			objClass = "SpecialWarning",
 			text = text,
 			combinedtext = {},
 			combinedcount = 0,
@@ -709,6 +716,7 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		},
 		mt
 	)
+	test:Trace(self, "NewSpecialWarning", obj, announceType)
 	if optionName then
 		obj.option = optionName
 	elseif optionName ~= false then

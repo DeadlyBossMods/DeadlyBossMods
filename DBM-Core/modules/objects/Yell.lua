@@ -14,6 +14,8 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
+local test = private:GetPrototype("DBMTest")
+
 ---@class Yell
 local yellPrototype = private:GetPrototype("Yell")
 local mt = {__index = yellPrototype}
@@ -51,6 +53,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 	---@class Yell
 	local obj = setmetatable(
 		{
+			objClass = "Yell",
 			spellId = spellId,
 			text = displayText or yellText,
 			mod = self,
@@ -59,6 +62,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 		},
 		mt
 	)
+	test:Trace(self, "NewYell", obj, "untyped")
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
@@ -73,6 +77,8 @@ end
 --Standard "Yell" object that will use SAY/YELL based on what's defined in the object (Defaulting to SAY if nil)
 --I realize object being :Yell is counter intuitive to default being "SAY" but for many years the default was YELL and it's too many years of mods to change now
 function yellPrototype:Yell(...)
+	local text = stringUtils.pformat(self.text, ...)
+	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
 		DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 		return
@@ -80,9 +86,9 @@ function yellPrototype:Yell(...)
 	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
 	if not self.option or self.mod.Options[self.option] then
 		if self.yellType == "combo" then
-			SendChatMessage(stringUtils.pformat(self.text, ...), self.chatType or "YELL")
+			SendChatMessage(text, self.chatType or "YELL")
 		else
-			SendChatMessage(stringUtils.pformat(self.text, ...), self.chatType or "SAY")
+			SendChatMessage(text, self.chatType or "SAY")
 		end
 	end
 end
@@ -90,13 +96,15 @@ yellPrototype.Show = yellPrototype.Yell
 
 --Force override to use say message, even when object defines "YELL"
 function yellPrototype:Say(...)
+	local text = stringUtils.pformat(self.text, ...)
+	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
 		DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 		return
 	end
 	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
 	if not self.option or self.mod.Options[self.option] then
-		SendChatMessage(stringUtils.pformat(self.text, ...), "SAY")
+		SendChatMessage(text, "SAY")
 	end
 end
 
