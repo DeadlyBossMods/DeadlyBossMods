@@ -504,18 +504,22 @@ function announcePrototype:Play(name, customPath)
 	end
 end
 
-function announcePrototype:ScheduleVoice(t, ...)
+---@param t number
+---@param name VPSound?
+---@param customPath? string|number
+function announcePrototype:ScheduleVoice(t, name, customPath)
 	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
+	return DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 end
 
 ---Object Permits scheduling voice multiple times for same object
 ---@param t number
----@param ... any
-function announcePrototype:ScheduleVoiceOverLap(t, ...)
+---@param name VPSound?
+---@param customPath? string|number
+function announcePrototype:ScheduleVoiceOverLap(t, name, customPath)
 	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
-	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
+	return DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 end
 
 function announcePrototype:CancelVoice(...)

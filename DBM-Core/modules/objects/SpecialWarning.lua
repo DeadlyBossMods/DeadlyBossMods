@@ -627,19 +627,21 @@ function specialWarningPrototype:Play(name, customPath)
 end
 
 ---@param t number
----@param ... any
-function specialWarningPrototype:ScheduleVoice(t, ...)
+---@param name VPSound?
+---@param customPath? string|number
+function specialWarningPrototype:ScheduleVoice(t, name, customPath)
 	if not canVoiceReplace(self) then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
+	return DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 end
 
 ---Object Permits scheduling voice multiple times for same object
 ---@param t number
----@param ... any
-function specialWarningPrototype:ScheduleVoiceOverLap(t, ...)
+---@param name VPSound?
+---@param customPath? string|number
+function specialWarningPrototype:ScheduleVoiceOverLap(t, name, customPath)
 	if not canVoiceReplace(self) then return end
-	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
+	return DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 end
 
 function specialWarningPrototype:CancelVoice(...)
