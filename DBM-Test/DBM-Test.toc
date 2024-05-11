@@ -1,4 +1,3 @@
-#@alpha@
 ## Interface: 100206
 ## Interface-Classic: 11502
 ## Interface-Wrath: 30403
@@ -15,5 +14,3 @@ Registry.lua
 Report.lua
 Runner.lua
 TimeWarper.lua
-
-#@end-alpha@
