@@ -305,8 +305,9 @@ function announcePrototype:SetText(customName)
 	self.spellName = spellName
 end
 
---Not to be confused with SetText, which only sets the text of object.
---This changes actual ID so announce callback also swaps ID for WAs
+---Not to be confused with SetText, which only sets the text of object.
+---<br>This changes actual ID so announce callback also swaps ID for WAs
+---@param altSpellId string|number
 function announcePrototype:UpdateKey(altSpellId)
 	self.spellId = altSpellId
 	self.icon = DBM:ParseSpellIcon(altSpellId, self.announceType, self.icon)
@@ -419,7 +420,9 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 	end
 end
 
---Object that's used when precision isn't possible (number of targets variable or unknown
+---Object that's used when precision isn't possible (number of targets variable or unknown)
+---@param delay number
+---@param ... any
 function announcePrototype:CombinedShow(delay, ...)
 	if self.option and not self.mod.Options[self.option] then return end
 	if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
@@ -468,10 +471,15 @@ function announcePrototype:PreciseShow(maxTotal, ...)
 	end
 end
 
+---@param t number
+---@param ... any
 function announcePrototype:Schedule(t, ...)
 	return DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
 end
 
+---@param time number?
+---@param numAnnounces number?
+---@param ... any
 function announcePrototype:Countdown(time, numAnnounces, ...)
 	DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 end
@@ -502,7 +510,9 @@ function announcePrototype:ScheduleVoice(t, ...)
 	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 end
 
---Object Permits scheduling voice multiple times for same object
+---Object Permits scheduling voice multiple times for same object
+---@param t number
+---@param ... any
 function announcePrototype:ScheduleVoiceOverLap(t, ...)
 	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
 	return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
@@ -513,7 +523,15 @@ function announcePrototype:CancelVoice(...)
 	return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 end
 
--- old constructor (no auto-localize)
+---old constructor (no auto-localize)
+---@param text string
+---@param color number? 1 = Positive Message, 2 = Normal Message, 3 - Higher Priority, 4 - Highest Priority
+---@param icon number|string? Use number for spellId, -number for journalID, number as string for textureID
+---@param optionDefault SpecFlags|boolean?
+---@param optionName string|boolean? String for custom option name. Using false hides option completely
+---@param soundOption number|boolean? 0 = No Sound, 1 = Sound with no voice pack support, >=2 = Voice pack version/support
+---@param spellID number|string? Used to define a spellID used for GroupSpells and WeakAura key
+---@param waCustomName any? Used to show custom name/text for Spell header (usually used when a made up SpellID is used)
 function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID, waCustomName)
 	if not text then
 		error("NewAnnounce: you must provide announce text", 2)
