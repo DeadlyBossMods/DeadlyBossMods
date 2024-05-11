@@ -785,7 +785,23 @@ function timerPrototype:AddOption(optionDefault, optionName, colorType, countdow
 	end
 end
 
---If a new countdown default is added to a NewTimer object, change optionName of timer to reset a new default
+---If a new countdown default is added to a NewTimer object, change optionName of timer to reset a new default
+---@param timer number|string
+---@param name string
+---@param icon number|string? Use number for spellId, -number for journalID, number as string for textureID
+---@param optionDefault SpecFlags|boolean?
+---@param optionName string|boolean? String for custom option name. Using false hides option completely
+---@param colorType number|string? number for colortype. String for supporting checking an entirely different optionkey for color type
+---@param keep boolean? Use to keep timer on screen when it expires
+---@param countdown number?
+---@param countdownMax number?
+---@param r number? Override bar red value
+---@param g number? Override bar green value
+---@param b number? Override bar blue value
+---@param spellId string|number? Used to define a spellID used for GroupSpells and WeakAura key
+---@param requiresCombat boolean? Disables audio countdowns when not in combat
+---@param waCustomName any? Used to show custom name/text for Spell header (usually used when a made up SpellID is used)
+---@param customType string? Used to define alternate timer type for WeakAura callbacks via the timerTypeSimplification table
 function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType)
 	if r and type(r) == "string" then
 		DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r" .. name .. r)
