@@ -172,7 +172,7 @@ end
 local trackedHudMarkers = {}
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
-	if not private.dbmIsEnabled then
+	if not DBM:IsEnabled() then
 		DBM:ForceDisableSpam()
 		return
 	end
@@ -429,7 +429,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if args == "" then
 			DBM:DemoMode()
 		else
-			test:HandleCommand(args)
+			test:HandleCommand(string.split(" ", args))
 		end
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")

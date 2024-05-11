@@ -36,6 +36,9 @@ function test:Trace(mod, event, ...)
 		end
 		if event == "StartTimer" or event == "ShowAnnounce" or event == "ShowSpecialWarning" or event == "ShowYell" then
 			local obj = ...
+			if not obj or not obj.testUseCount then
+				geterrorhandler()("trace of type " .. event .. " without warning object ")
+			end
 			obj.testUseCount = (obj.testUseCount or 0) + 1
 		end
 		---@class TraceEntryEvent
@@ -150,7 +153,6 @@ function test:Setup()
 	table.wipe(trace)
 	self.testRunning = true
 	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
-	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
 	self:HookPrivate("GetInstanceInfo", getInstanceInfoHook)
 	fakeIsEncounterInProgress = false
 	self:HookPrivate("IsEncounterInProgress", isEncounterInProgressHook)
@@ -165,10 +167,31 @@ function test:Setup()
 		mod.lastWipeTime = nil
 		mod.lastKillTime = nil
 	end
+	self:ForceOption("EventSoundVictory2", false)
+end
+
+function test:ForceOption(opt, value)
+	self.restoreOptions = self.restoreOptions or {}
+	if self.restoreOptions[opt] == nil then
+		self.restoreOptions[opt] = DBM.Options[opt]
+	end
+	DBM.Options[opt] = value
+end
+
+function test:ForceCVar(cvar, value)
+	self.restoreCVars = self.restoreCVars or {}
+	if self.restoreCVars[cvar] == nil then
+		self.restoreCVars[cvar] = GetCVar(cvar)
+	end
+	SetCVar(cvar, value)
 end
 
 function test:Teardown()
 	self.testRunning = false
+	-- Get rid of any lingering :Schedule calls, they are broken anyways due to time warping
+	DBM:Disable()
+	DBM:Enable()
+	DBT:CancelAllBars()
 	self:UnhookPrivates()
 	for _, mod in ipairs(DBM.Mods) do
 		if mod._testingTempOverrides then
@@ -176,6 +199,14 @@ function test:Teardown()
 				mod[k] = v
 			end
 		end
+		mod._testingTempOverrides = nil
+	end
+	for opt, value in pairs(self.restoreOptions) do
+		DBM.Options[opt] = value
+	end
+	self.restoreOptions = nil
+	for cvar, value in pairs(self.restoreCVars) do
+		SetCVar(cvar, value)
 	end
 end
 
@@ -195,29 +226,33 @@ function test:InjectEvent(event, ...)
 end
 
 local currentThread
-local function sleepUntil(time)
-	while time - GetTime() > 0 do
-		coroutine.yield()
-	end
-end
 
 ---@param testData TestDefinition
-function test:Playback(testData)
+function test:Playback(testData, timeWarp)
 	DBM:AddMsg("Starting test: " .. testData.name)
+	if timeWarp >= 10 then
+		DBM:AddMsg("Timewarp >= 10, disabling sounds")
+		self:ForceCVar("Sound_EnableAllSound", false)
+	end
 	self:SetFakeInstanceInfo(testData.instanceInfo)
-	local startTime = GetTime()
 	local maxTimestamp = testData.log[#testData.log][1]
+	local timeWarper = test.TimeWarper:New(timeWarp)
+	timeWarper:Start()
+	local startTime = timeWarper.fakeTime
 	for _, v in ipairs(testData.log) do
 		local ts = v[1]
-		if startTime + ts > GetTime() then
-			sleepUntil(startTime + ts)
-		end
+		timeWarper:WaitUntil(startTime + ts)
 		currentEventKey = eventToString(v, maxTimestamp)
 		currentRawEvent = v
-		self:InjectEvent(select(2, unpack(v)))
+		xpcall(self.InjectEvent, geterrorhandler(), self, select(2, unpack(v)))
 		currentRawEvent = nil
 		currentEventKey = nil
 	end
+	if timeWarp <= 5 then
+		DBM:AddMsg("Test playback finished, waiting for delayed cleanup events (3 seconds)")
+	end
+	timeWarper:WaitUntil(timeWarper.fakeTime + 3.1)
+	timeWarper:Stop()
 	local reporter = self:NewReporter(testData, trace)
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
@@ -233,13 +268,13 @@ end
 
 local frame = CreateFrame("Frame")
 frame:Show()
-frame:SetScript("OnUpdate", function()
+frame:SetScript("OnUpdate", function(_, elapsed)
 	if currentThread then
 		if coroutine.status(currentThread) == "dead" then
 			currentThread = nil
 			test:Teardown()
 		else
-			local ok, err = coroutine.resume(currentThread)
+			local ok, err = coroutine.resume(currentThread, elapsed)
 			if not ok then geterrorhandler()(err) end
 		end
 	end
@@ -258,7 +293,7 @@ end)
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
 ---@alias GameVersion "SeasonOfDiscovery"
 
-function test:RunTest(testName)
+function test:RunTest(testName, timeWarp)
 	local testData = self.Registry.tests[testName]
 	if not testData then
 		error("test " .. testName .. " not found", 2)
@@ -290,6 +325,8 @@ function test:RunTest(testName)
 		self:Trace(modUnderTest, unpack(v))
 	end
 	currentEventKey = nil
+	currentRawEvent = nil
 	currentThread = coroutine.create(self.Playback)
-	coroutine.resume(currentThread, self, testData)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1)
+	if not ok then error(err) end
 end

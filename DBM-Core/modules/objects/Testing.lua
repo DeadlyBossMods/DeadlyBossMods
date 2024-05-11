@@ -8,17 +8,13 @@ local DBM = private:GetPrototype("DBM")
 local test = private:GetPrototype("DBMTest")
 DBM.Test = test
 
-local testRunning = false
----@class DBMMod?
-local modUnderTest = nil
-local currentEventKey = nil
-
 -- Overriden by DBM-Test once loaded.
 -- This field is intentionally set in an odd way to prevent LuaLS from suggesting this function.
 local traceField = "Trace"
 test[traceField] = function() end
 
-function test:HandleCommand(args)
+function test:HandleCommand(testName, timeWarp)
+	timeWarp = timeWarp and tonumber(timeWarp:match("(%d+)"))
 	local numTestAddOnsFound = 0
 	C_AddOns.LoadAddOn("DBM-Test")
 	for i = 1, C_AddOns.GetNumAddOns() do
@@ -30,21 +26,33 @@ function test:HandleCommand(args)
 	if numTestAddOnsFound == 0 then
 		DBM:AddMsg("No test AddOns installed, install an alpha or dev version of DBM to get DBM-Test-* mods.")
 	end
-	if args:lower() == "list" or args:lower() == "help" then
+	if testName:lower() == "list" or testName:lower() == "help" then
 		DBM:AddMsg("Available tests:")
-		for _, testName in ipairs(self.Registry.sortedTests) do
-			DBM:AddMsg("  " .. testName)
+		for _, v in ipairs(self.Registry.sortedTests) do
+			DBM:AddMsg("  " .. v)
 		end
 		if #self.Registry.sortedTests == 0 then
 			DBM:AddMsg("  (none)")
 		end
-		DBM:AddMsg("Run /dbm test <name> to execute a test.")
+		DBM:AddMsg("Run /dbm test <name> <time warp factor> to execute a test.")
 	else
-		if not self.Registry.tests[args] then
-			DBM:AddMsg("Test " .. args .. " not found, run /dbm test list to see available tests.")
+		if not self.Registry.tests[testName] then
+			DBM:AddMsg("Test " .. testName .. " not found, run /dbm test list to see available tests.")
 			return
 		end
-		self:RunTest(args)
+		self:RunTest(testName, timeWarp)
+	end
+end
+
+---@type table<Frame>
+test.framesForTimeWarp = {}
+
+function test:RegisterTimeWarpFrame(frame)
+	-- Frames are registered on DBM load -- which is before the full testing module containing the time warper loads
+	if test.TimeWarper then
+		test.TimeWarper:RegisterFrame(frame)
+	else
+		test.framesForTimeWarp[frame] = true
 	end
 end
 
@@ -59,31 +67,50 @@ local function checkDevBuild()
 	return true
 end
 
+local localHooks = {}
+local restoreLocalHooks = {}
 local restorePrivates = {}
--- Temporarily change the value of a field in DBM's private namespace.
--- DBM explicitly exposes Hook functions to write some locals, e.g., private.HookLastInstanceMapID overrides the LastInstanceMapID local in core.
+
+-- Temporarily change the value of a field in DBM's private namespace or update a local variable in a file.
+-- Updating locals works by files registering a callback via RegisterLocalHook below.
 function test:HookPrivate(key, value)
 	if not checkDevBuild() then return end
-	if private["Hook" .. key] then
-		local old = private["Hook" .. key](value)
-		-- Only store old value once since it may be hooked multiple times
-		restorePrivates[key] = restorePrivates[key] or old
-	else
-		restorePrivates[key] = restorePrivates[key] or private[key]
+	if localHooks[key] then
+		restoreLocalHooks[key] = restoreLocalHooks[key] or {}
+		for _, v in ipairs(localHooks[key]) do
+			local old = v(value)
+			if restoreLocalHooks[key][v] == nil then -- handle nested hooking calls
+				restoreLocalHooks[key][v] = old
+			end
+		end
+	end
+	if private[key] ~= nil then -- FIXME: support privates that are currently nil
+		if restorePrivates[key] == nil then
+			restorePrivates[key] = private[key]
+		end
 		private[key] = value
 	end
+end
+
+-- Register a function to change a file-local variable temporarily via HookPrivate
+function test:RegisterLocalHook(id, hookingFunc)
+	local entries = localHooks[id] or {}
+	localHooks[id] = entries
+	entries[#entries + 1] = hookingFunc
 end
 
 function test:UnhookPrivates()
 	if not checkDevBuild() then return end
 	for k, v in pairs(restorePrivates) do
-		if private["Hook" .. k] then
-			private["Hook" .. k](v)
-		else
-			private[k] = v
-		end
+		private[k] = v
 	end
 	table.wipe(restorePrivates)
+	for _, v in pairs(restoreLocalHooks) do
+		for func, val in pairs(v) do
+			func(val)
+		end
+	end
+	table.wipe(restoreLocalHooks)
 end
 
 function test:GetPrivate(key)

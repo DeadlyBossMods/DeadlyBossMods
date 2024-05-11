@@ -170,7 +170,7 @@ largeBarsAnchor:SetClampedToScreen(true)
 largeBarsAnchor:SetMovable(true)
 largeBarsAnchor:Show()
 
-local ipairs, pairs, next, type, setmetatable, tinsert, tsort = ipairs, pairs, next, type, setmetatable, table.insert, table.sort
+local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
 
 function DBT:AddDefaultOptions(t1, t2)
@@ -184,7 +184,7 @@ function DBT:AddDefaultOptions(t1, t2)
 end
 
 do
-	local CreateFrame, GetTime, IsShiftKeyDown = CreateFrame, GetTime, IsShiftKeyDown
+	local CreateFrame, IsShiftKeyDown = CreateFrame, IsShiftKeyDown
 
 	local function onUpdate(self)
 		if self.obj then
@@ -233,6 +233,7 @@ do
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
 		frame:SetScript("OnUpdate", onUpdate)
+		DBM.Test:RegisterTimeWarpFrame(frame)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
@@ -390,6 +391,13 @@ do
 	end
 
 	function DBT:LoadOptions(id)
+		if id == "DBM" then
+			DBM.Test:RegisterLocalHook("GetTime", function(val)
+				local old = GetTime
+				GetTime = val
+				return old
+			end)
+		end
 		if not DBT_AllPersistentOptions then
 			DBT_AllPersistentOptions = {}
 		end
@@ -627,6 +635,12 @@ function DBT:CancelBar(id)
 		end
 	end
 	return false
+end
+
+function DBT:CancelAllBars()
+	for bar in self:GetBarIterator() do
+		bar:Cancel()
+	end
 end
 
 function DBT:UpdateBar(id, elapsed, totalTime)

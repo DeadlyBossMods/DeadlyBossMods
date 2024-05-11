@@ -427,7 +427,6 @@ local lastCombatStarted = GetTime()
 local chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
-private.dbmIsEnabled = dbmIsEnabled
 -- Table variables
 local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 -- False variables
@@ -1418,11 +1417,11 @@ do
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
 
-	function private.HookCombatLogGetCurrentEventInfo(func)
+	test:RegisterLocalHook("CombatLogGetCurrentEventInfo", function(val)
 		local old = CombatLogGetCurrentEventInfo
-		CombatLogGetCurrentEventInfo = func
+		CombatLogGetCurrentEventInfo = val
 		return old
-	end
+	end)
 end
 
 --------------
@@ -6949,7 +6948,6 @@ do
 	function DBM:Disable(forceDisable)
 		DBMScheduler:Unschedule()
 		dbmIsEnabled = false
-		private.dbmIsEnabled = false
 		forceDisabled = forceDisable
 	end
 
@@ -8715,12 +8713,17 @@ do
 end
 
 -- Expose some file-local data to private for testing purposes only.
--- Ideally these could probably be deleted if core was properly split up.
 
-function private.HookLastInstanceMapID(id)
+test:RegisterLocalHook("LastInstanceMapID", function(val)
 	local old = LastInstanceMapID
-	LastInstanceMapID = id
+	LastInstanceMapID = val
 	return old
-end
+end)
+
+test:RegisterLocalHook("GetTime", function(val)
+	local old = GetTime
+	GetTime = val
+	return old
+end)
 
 private.mainFrame = mainFrame

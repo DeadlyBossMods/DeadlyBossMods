@@ -3,12 +3,14 @@ local private = select(2, ...)
 
 local twipe, tremove = table.wipe, table.remove
 local floor = math.floor
+local test = private:GetPrototype("DBMTest")
 local GetTime = GetTime
 local pairs, next = pairs, next
 local LastInstanceMapID = -1
 
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
+test:RegisterTimeWarpFrame(schedulerFrame)
 
 ---@class DBMScheduler: DBMModule
 local module = private:NewModule("DBMScheduler")
@@ -280,3 +282,11 @@ end
 function module:Unschedule(f, mod, ...)
 	return unschedule(f, mod, ...)
 end
+
+-- Expose locals for testing.
+
+test:RegisterLocalHook("GetTime", function(val)
+	local old = GetTime
+	GetTime = val
+	return old
+end)
