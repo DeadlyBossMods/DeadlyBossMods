@@ -1,0 +1,5 @@
+{
+	"wowAPI.autoAddGlobals": false,
+	"Lua.completion.autoRequire": false,
+	"editorconfig.generateAuto": false
+}
