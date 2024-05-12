@@ -66,7 +66,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 	)
 	test:Trace(obj, "NewMod", name, modId)
 
-	if tonumber(name) and EJ_GetEncounterInfo then
+	if tonumber(name) and EJ_GetEncounterInfo and EJ_GetEncounterInfo(tonumber(name)) then
 		local t = EJ_GetEncounterInfo(tonumber(name))
 		if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 			t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
