@@ -29,8 +29,8 @@ jobs:
       - name: LuaLS globals check
         uses: DeadlyBossMods/LuaLS-config@main
         with:
-          luals-ref: 3.8.3
           luals-check-dir: ${{ github.workspace }}/workspace
+          # Do not use --num_threads here, multi-processing is slower when only a few checks are enabled
           extra-args: "--only_check_globals"
 
       - name: Send Status to Discord
@@ -56,6 +56,9 @@ jobs:
 
       - name: Create Package
         uses: BigWigsMods/packager@master
+        with:
+          # Ugly hack to use a different .pkgmeta for alpha builds to work around https://github.com/BigWigsMods/packager/issues/165
+          args: $(if [[ -z $(git tag --points-at HEAD) ]]; then echo "-m .pkgmeta-alpha" ; else echo "-m .pkgmeta" ; fi)
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

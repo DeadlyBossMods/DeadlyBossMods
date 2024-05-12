@@ -26,7 +26,8 @@ ignore:
   - DBM-Core/Libs/LibStub/tests
   - DBM-Core/Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
-  - DBM-Test
+  - DBM-Test/Tools
+  - DBM-Test/README.md
 
 enable-nolib-creation: no
 
@@ -43,3 +44,4 @@ move-folders:
   DBM-Core/DBM-GUI: DBM-GUI
   DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Core/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
+  DBM-Core/DBM-Test: DBM-Test
