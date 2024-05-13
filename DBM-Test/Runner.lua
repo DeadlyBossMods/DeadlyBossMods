@@ -191,6 +191,16 @@ local function isEncounterInProgressHook()
 	return fakeIsEncounterInProgress
 end
 
+local function modAntiSpamHook(self, time, id)
+	-- Mods often define AntiSpam timeouts in whole seconds and some periodic damage effects trigger exactly every second
+	-- This can lead to flaky tests as they sometimes trigger and sometimes don't because even with fake time there is unfortunately still some dependency on actual frame timings
+	-- Just subtracting 0.1 seconds fixes this problem; an example affected by this is SoD/ST/FesteringRotslime
+	if time and time > 0 and math.floor(time) == time then
+		time = time - 0.1
+	end
+	return DBM.AntiSpam(self, time, id)
+end
+
 local function enableAllWarnings(mod, objects)
 	for _, obj in ipairs(objects) do
 		if obj.option then
@@ -198,6 +208,8 @@ local function enableAllWarnings(mod, objects)
 		end
 	end
 end
+
+local nilValue = newproxy(false)
 
 ---@param mod DBMMod
 local function setupModOptions(mod)
@@ -239,6 +251,9 @@ function test:Setup(modUnderTest)
 		-- TODO: validate that stats was changed as expected on test end
 	end
 	setupModOptions(modUnderTest)
+	---@diagnostic disable-next-line: undefined-field
+	modUnderTest._testingTempOverrides.AntiSpam = nilValue
+	modUnderTest.AntiSpam = modAntiSpamHook
 	-- DBM settings
 	self:ForceOption("EventSoundVictory2", false)
 end
@@ -247,17 +262,14 @@ end
 function test:ForceOption(opt, value)
 	self.restoreOptions = self.restoreOptions or {}
 	if self.restoreOptions[opt] == nil then
-		self.restoreOptions[opt] = DBM.Options[opt]
+		local oldValue = DBM.Options[opt]
+		self.restoreOptions[opt] = oldValue == nil and nilValue or oldValue
 	end
 	DBM.Options[opt] = value
 end
 
 function test:ForceOptionDefault(opt)
-	self.restoreOptions = self.restoreOptions or {}
-	if self.restoreOptions[opt] == nil then
-		self.restoreOptions[opt] = DBM.Options[opt]
-	end
-	DBM.Options[opt] = DBM.DefaultOptions[opt]
+	self:ForceOption(opt, DBM.DefaultOptions[opt])
 end
 
 -- FIXME: this will become persistent if we reload while a test is running, maybe use ADDONS_UNLOADING or something to undo this?
@@ -279,14 +291,22 @@ function test:Teardown()
 	for _, mod in ipairs(DBM.Mods) do
 		if mod._testingTempOverrides then
 			for k, v in pairs(mod._testingTempOverrides) do
-				mod[k] = v
+				if v == nilValue then
+					mod[k] = nil
+				else
+					mod[k] = v
+				end
 			end
 		end
 		mod._testingTempOverrides = nil
 	end
 	if self.restoreOptions then
 		for opt, value in pairs(self.restoreOptions) do
-			DBM.Options[opt] = value
+			if value == nilValue then
+				DBM.Options[opt] = nil
+			else
+				DBM.Options[opt] = value
+			end
 		end
 		self.restoreOptions = nil
 	end
