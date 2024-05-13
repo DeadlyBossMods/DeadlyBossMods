@@ -142,7 +142,7 @@ local function combatLogGetCurrentEventInfoHook()
 	end
 end
 
-local function setFakeCLEUArgs(...)
+function test:SetFakeCLEUArgs(...)
 	table.wipe(fakeCLEUArgs)
 	fakeCLEUArgs.n = 0
 	for i = 1, select("#", ...) do
@@ -156,6 +156,14 @@ local function setFakeCLEUArgs(...)
 		end
 		fakeCLEUArgs.n = fakeCLEUArgs.n + 1
 		fakeCLEUArgs[fakeCLEUArgs.n] = select(i, ...)
+	end
+	if fakeCLEUArgs[5] == self.testData.playerName then
+		fakeCLEUArgs[4] = UnitGUID("player")
+		fakeCLEUArgs[5] = UnitName("player")
+	end
+	if fakeCLEUArgs[9] == self.testData.playerName then
+		fakeCLEUArgs[8] = UnitGUID("player")
+		fakeCLEUArgs[0] = UnitName("player")
 	end
 end
 
@@ -297,7 +305,7 @@ function test:InjectEvent(event, ...)
 	end
 	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		setFakeCLEUArgs(...)
+		self:SetFakeCLEUArgs(...)
 		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, combatLogGetCurrentEventInfoHook())
 		table.wipe(fakeCLEUArgs)
 	else
