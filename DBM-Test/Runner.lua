@@ -426,3 +426,25 @@ function test:RunTest(testName, timeWarp)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1)
 	if not ok then error(err) end
 end
+
+function test:RunTests(testNames, timeWarp)
+	-- FIXME: aggregate errors and report them at the end
+	local cr = coroutine.create(function()
+		for _, testName in ipairs(testNames) do
+			xpcall(self.RunTest, geterrorhandler(), self, testName, timeWarp)
+			while self.testRunning do
+				coroutine.yield()
+			end
+		end
+	end)
+	local f = CreateFrame("Frame")
+	-- FIXME: can probably be merged with the main coroutine
+	f:SetScript("OnUpdate", function()
+		local status = coroutine.status(cr)
+		if status == "suspended" then
+			coroutine.resume(cr)
+		elseif status == "dead" then
+			f:Hide()
+		end
+	end)
+end
