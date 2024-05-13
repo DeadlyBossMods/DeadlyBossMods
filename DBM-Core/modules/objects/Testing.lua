@@ -38,12 +38,28 @@ function test:HandleCommand(testName, timeWarp)
 			DBM:AddMsg("  (none)")
 		end
 		DBM:AddMsg("Run /dbm test <name> <time warp factor> to execute a test.")
+		DBM:AddMsg("Run /dbm test * <time warp factor> to run all tests.")
+		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test SoD runs all tests for SoD.")
 	else
-		if not self.Registry.tests[testName] then
-			DBM:AddMsg("Test " .. testName .. " not found, run /dbm test list to see available tests.")
+		if self.Registry.tests[testName] then
+			-- Matching exactly 1 test is handled differently because of RunTest shows errors/output immediately, RunTest*s* is more for extracting results from saved variables
+			self:RunTest(testName, timeWarp)
 			return
 		end
-		self:RunTest(testName, timeWarp)
+		local tests = {}
+		if testName == "*" then
+			testName = ""
+		end
+		for _, v in ipairs(self.Registry.sortedTests) do
+			if v:sub(1, #testName) == testName then
+				tests[#tests + 1] = v
+			end
+		end
+		if #tests == 0 then
+			DBM:AddMsg("No tests matching prefix " .. testName .. " found, run /dbm test list to see available tests.")
+			return
+		end
+		self:RunTests(tests, timeWarp)
 	end
 end
 
