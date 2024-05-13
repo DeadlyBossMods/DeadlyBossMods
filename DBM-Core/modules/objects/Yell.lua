@@ -62,6 +62,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 		},
 		mt
 	)
+	self.yells[#self.yells + 1] = obj
 	test:Trace(self, "NewYell", obj, "untyped")
 	if optionName then
 		obj.option = optionName

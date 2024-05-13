@@ -149,7 +149,33 @@ local function isEncounterInProgressHook()
 	return fakeIsEncounterInProgress
 end
 
-function test:Setup()
+local function enableAllWarnings(mod, objects)
+	for _, obj in ipairs(objects) do
+		if obj.option then
+			mod.Options[obj.option] = true
+		end
+	end
+end
+
+---@param mod DBMMod
+local function setupModOptions(mod)
+	---@diagnostic disable-next-line: undefined-field
+	local modTempOverrides = mod._testingTempOverrides
+	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up if you reload while a test is running
+	modTempOverrides.Options = mod.Options
+	---@diagnostic disable-next-line: inject-field
+	mod.Options = {}
+	for k, v in pairs(modTempOverrides.Options) do
+		mod.Options[k] = v
+	end
+	enableAllWarnings(mod, mod.timers)
+	enableAllWarnings(mod, mod.announces)
+	enableAllWarnings(mod, mod.specwarns)
+	enableAllWarnings(mod, mod.yells)
+end
+
+---@param modUnderTest DBMMod
+function test:Setup(modUnderTest)
 	table.wipe(trace)
 	self.testRunning = true
 	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
@@ -158,18 +184,23 @@ function test:Setup()
 	self:HookPrivate("IsEncounterInProgress", isEncounterInProgressHook)
 	self:HookPrivate("statusGuildDisabled", true) -- FIXME: this only stays active until first EndCombat, use options instead?
 	self:HookPrivate("statusWhisperDisabled", true)
+	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
 		mod._testingTempOverrides = mod._testingTempOverrides or {}
 		mod._testingTempOverrides.stats = mod.stats
-		-- Do not use DBM:ClearAllStats() here as it also messes with the saved variables
+		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
 		mod.stats = DBM:CreateDefaultModStats()
 		-- Avoid the recombat limit when testing the same mod multiple times
 		mod.lastWipeTime = nil
 		mod.lastKillTime = nil
+		-- TODO: validate that stats was changed as expected on test end
 	end
+	setupModOptions(modUnderTest)
+	-- DBM settings
 	self:ForceOption("EventSoundVictory2", false)
 end
 
+-- FIXME: we are modifying a saved table directly here, so reloading while a test is running will break this
 function test:ForceOption(opt, value)
 	self.restoreOptions = self.restoreOptions or {}
 	if self.restoreOptions[opt] == nil then
@@ -178,6 +209,15 @@ function test:ForceOption(opt, value)
 	DBM.Options[opt] = value
 end
 
+function test:ForceOptionDefault(opt)
+	self.restoreOptions = self.restoreOptions or {}
+	if self.restoreOptions[opt] == nil then
+		self.restoreOptions[opt] = DBM.Options[opt]
+	end
+	DBM.Options[opt] = DBM.DefaultOptions[opt]
+end
+
+-- FIXME: this will become persistent if we reload while a test is running, maybe use ADDONS_UNLOADING or something to undo this?
 function test:ForceCVar(cvar, value)
 	self.restoreCVars = self.restoreCVars or {}
 	if self.restoreCVars[cvar] == nil then
@@ -318,7 +358,7 @@ function test:RunTest(testName, timeWarp)
 	if not modUnderTest then
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
-	self:Setup() -- Must be done after loading the mod to prepare mod (stats, options, ...)
+	self:Setup(modUnderTest) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
