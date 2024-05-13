@@ -5770,6 +5770,7 @@ do
 
 	function DBM:EndCombat(mod, wipe, srmIncluded, event)
 		if removeEntry(inCombat, mod) then
+			test:Trace(mod, "EndCombat", event)
 			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then-- unregister all events including SPELL_AURA_REMOVED events

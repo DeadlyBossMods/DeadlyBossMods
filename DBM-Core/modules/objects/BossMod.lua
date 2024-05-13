@@ -500,7 +500,7 @@ do
 		end
 
 		local unitID
-		if UnitGUID("target") == sourceGUID then
+		if UnitGUID("target") == sourceGUID or test.testRunning then
 			unitID = "target"
 		elseif not private.isClassic and (UnitGUID("focus") == sourceGUID) then
 			unitID = "focus"

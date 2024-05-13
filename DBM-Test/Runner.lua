@@ -2,13 +2,20 @@
 ---@class DBMTest
 local test = DBM.Test
 
+-- FIXME: i don't like this "global" state
 local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
 ---@type TestTrace
 local trace = {}
+test.trace = trace -- Export for dev/debugging
 -- FIXME: the way event keys are handled is pretty ugly, also the name is terrible because so many things are called "events"
 local currentEventKey
+---@type TestLogEntry?
 local currentRawEvent
+---@type table<any, table<any, TraceEntry[]>>
+local antiSpams = {}
+
+local unknownRawTrigger = {0, "Unknown trigger"}
 
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
@@ -23,13 +30,27 @@ function test:Trace(mod, event, ...)
 		if not traceEntry or traceEntry.trigger ~= key then
 			---@class TraceEntry
 			traceEntry = {
+				---@type string
 				trigger = key,
-				rawTrigger = currentRawEvent,
+				---@type TestLogEntry
+				rawTrigger = currentRawEvent or unknownRawTrigger,
 				---@type TraceEntryEvent[]
-				traces = {}
+				traces = {},
+				-- Set if this event triggered an end of combat trace
+				didTriggerCombatEnd = false,
 			}
 			trace[#trace + 1] = traceEntry
 		end
+		---@class TraceEntryEvent
+		local entry = {
+			mod = mod,
+			event = event,
+			-- For AntiSpam events: next trace entries where this AntiSpam returned false
+			---@type TraceEntry[]?
+			filteredAntiSpams = nil,
+			...
+		}
+		traceEntry.traces[#traceEntry.traces + 1] = entry
 		if event == "NewTimer" or event == "NewAnnounce" or event == "NewSpecialWarning" or event == "NewYell" then
 			local obj = ...
 			obj.testUseCount = 0
@@ -41,12 +62,25 @@ function test:Trace(mod, event, ...)
 			end
 			obj.testUseCount = (obj.testUseCount or 0) + 1
 		end
-		---@class TraceEntryEvent
-		traceEntry.traces[#traceEntry.traces + 1] = {
-			mod = mod,
-			event = event,
-			...
-		}
+		if event == "EndCombat" then
+			traceEntry.didTriggerCombatEnd = true
+		end
+		if event == "AntiSpam" then
+			local id, result = ...
+			antiSpams[mod] = antiSpams[mod] or {}
+			if result then -- starting to filter next events
+				antiSpams[mod][id] = {}
+				entry.filteredAntiSpams = antiSpams[mod][id]
+			else -- filtered, record in previous event
+				local previousAntiSpams = antiSpams[mod][id]
+				if previousAntiSpams then
+					previousAntiSpams[#previousAntiSpams + 1] = traceEntry
+				else
+					-- happens if an AntiSpam from a previous test is still active which is unlikely but not impossible because they aren't cleared
+					DBM:AddMsg("Warning: incomplete trace of AntiSpam")
+				end
+			end
+		end
 	end
 end
 
@@ -177,6 +211,7 @@ end
 ---@param modUnderTest DBMMod
 function test:Setup(modUnderTest)
 	table.wipe(trace)
+	table.wipe(antiSpams)
 	self.testRunning = true
 	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
 	self:HookPrivate("GetInstanceInfo", getInstanceInfoHook)
@@ -279,6 +314,7 @@ function test:Playback(testData, timeWarp)
 		DBM:AddMsg("Timewarp >= 10, disabling sounds")
 		self:ForceCVar("Sound_EnableAllSound", false)
 	end
+	self.testData = testData
 	self:SetFakeInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New(timeWarp)
@@ -332,7 +368,11 @@ end)
 ---@field mod string The boss mod being tested.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string Name of the player who recorded the log.
----@field log table[] Log to replay
+---@field log TestLogEntry[] Log to replay
+
+---@class TestLogEntry
+---@field [1] number
+---@field [2] string
 
 -- TODO: this isn't checked or used yet, also, we probably only need to distinguish the 3 main versions because SoD should be able to run all era mods
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
@@ -347,11 +387,13 @@ function test:RunTest(testName, timeWarp)
 		error("only a single test can run at a time")
 	end
 	if not DBM:GetModByName(testData.mod) then
-		self.testRunning = true -- Trace loading events
+		self.testRunning = true
+		-- Trace loading events to know about timer/warning constructor calls
 		currentEventKey = "InternalLoading"
-		currentRawEvent = nil
+		currentRawEvent = {0, "InternalLoading"}
 		DBM:LoadModByName(testData.addon, true)
 		currentEventKey = nil
+		currentRawEvent = nil
 		self.testRunning = false
 	end
 	local modUnderTest = DBM:GetModByName(testData.mod)
@@ -364,8 +406,9 @@ function test:RunTest(testName, timeWarp)
 	if not loadingEvents then
 		error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
 	end
-	currentEventKey = eventToString({0, "ADDON_LOADED", testData.addon}, testData.log[#testData.log][1])
-	currentRawEvent = nil
+	local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
+	currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
+	currentRawEvent = fakeLoadingEvent
 	for _, v in ipairs(loadingEvents) do
 		self:Trace(modUnderTest, unpack(v))
 	end
