@@ -220,6 +220,41 @@ function reporter:ReportWarningObject(...)
 	return result:gsub("\n$", "")
 end
 
+function reporter:ReportIcons()
+	-- FIXME: support grouping, something like the eggs in Gnomeregan/Menagerie are a good example
+	-- FIXME: lots of duplication vs. ReportWarningObject, could these be merged?
+	local icons = {}
+	for _, entry in ipairs(self.trace) do
+		for _, v in ipairs(entry.traces) do
+			if v.event == "ScanForMobs" then
+				local scanId, iconSetMethod, mobIcon = unpack(v)
+				icons[#icons + 1] = {
+					scanId = scanId, iconSetMethod = iconSetMethod, mobIcon = mobIcon,
+					triggers = {{firstTrigger = entry.trigger}}
+				}
+			end
+		end
+	end
+	table.sort(icons, function(e1, e2)
+		if e1.mobIcon and e2.mobIcon and e1.mobIcon ~= e2.mobIcon then
+			return e1.mobIcon < e2.mobIcon
+		else
+			return e1.scanId < e2.scanId
+		end
+	end)
+	local result = ""
+	for _, v in ipairs(icons) do
+		result = result .. ("\tIcon %s, target=%s, scanMethod=%s\n"):format(tostringall(v.mobIcon, v.scanId, v.iconScanMethod))
+		for _, trigger in ipairs(v.triggers) do
+			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
+		end
+	end
+	if result == "" then
+		result = "\tNone"
+	end
+	return result:gsub("\n$", "")
+end
+
 local function stripMarkup(text)
 	if type(text) ~= "string" then
 		return text
@@ -337,6 +372,9 @@ Yells:
 Voice pack sounds:
 %s
 
+Icons:
+%s
+
 Event trace:
 %s
 ]]
@@ -350,6 +388,7 @@ Event trace:
 		self:ReportWarningObject("ShowSpecialWarning"),
 		self:ReportWarningObject("ShowYell"),
 		self:ReportWarningObject("PlaySound", filterNonVoicepack),
+		self:ReportIcons(),
 		self:ReportEventTrace()
 	)
 	return self:Report()
