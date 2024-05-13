@@ -37,9 +37,13 @@ function test:HandleCommand(testName, timeWarp)
 		if #self.Registry.sortedTests == 0 then
 			DBM:AddMsg("  (none)")
 		end
-		DBM:AddMsg("Run /dbm test <name> <time warp factor> to execute a test.")
-		DBM:AddMsg("Run /dbm test * <time warp factor> to run all tests.")
+		DBM:AddMsg("/dbm test <name> <time warp factor> -- execute a test")
+		DBM:AddMsg("/dbm test * <time warp factor> -- run all tests")
 		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test SoD runs all tests for SoD.")
+		DBM:AddMsg("/dbm test clear -- clear exported test data")
+	elseif testName:lower() == "clear" then
+		DBM_TestResults_Export = {}
+		DBM:AddMsg("Cleared exported test results.")
 	else
 		if self.Registry.tests[testName] then
 			-- Matching exactly 1 test is handled differently because of RunTest shows errors/output immediately, RunTest*s* is more for extracting results from saved variables
