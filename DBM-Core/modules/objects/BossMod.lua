@@ -47,6 +47,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 			announces = {},
 			specwarns = {},
 			timers = {},
+			yells = {},
 			vb = {},
 			iconRestore = {},
 			modId = modId,
