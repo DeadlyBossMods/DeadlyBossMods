@@ -213,13 +213,11 @@ end
 local nilValue = newproxy(false)
 
 ---@param mod DBMMod
-local function setupModOptions(mod)
-	---@diagnostic disable-next-line: undefined-field
-	local modTempOverrides = mod._testingTempOverrides
+function test:SetupModOptions(mod)
+	local modTempOverrides = self.restoreModVariables[mod]
 	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up if you reload while a test is running
 	modTempOverrides.Options = mod.Options
-	---@diagnostic disable-next-line: inject-field
-	mod.Options = {}
+	mod["Options"] = {}
 	for k, v in pairs(modTempOverrides.Options) do
 		mod.Options[k] = v
 	end
@@ -241,10 +239,10 @@ function test:Setup(modUnderTest)
 	self:HookPrivate("statusGuildDisabled", true) -- FIXME: this only stays active until first EndCombat, use options instead?
 	self:HookPrivate("statusWhisperDisabled", true)
 	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
+	self.restoreModVariables = self.restoreModVariables or {}
 	for _, mod in ipairs(DBM.Mods) do
-		---@diagnostic disable-next-line: inject-field
-		mod._testingTempOverrides = mod._testingTempOverrides or {}
-		mod._testingTempOverrides.stats = mod.stats
+		self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
+		self.restoreModVariables[mod].stats = mod.stats
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
 		mod.stats = DBM:CreateDefaultModStats()
 		-- Avoid the recombat limit when testing the same mod multiple times
@@ -252,9 +250,8 @@ function test:Setup(modUnderTest)
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
 	end
-	setupModOptions(modUnderTest)
-	---@diagnostic disable-next-line: undefined-field
-	modUnderTest._testingTempOverrides.AntiSpam = nilValue
+	self:SetupModOptions(modUnderTest)
+	self.restoreModVariables[modUnderTest].AntiSpam = nilValue
 	modUnderTest.AntiSpam = modAntiSpamHook
 	-- DBM settings
 	self:ForceOption("EventSoundVictory2", false)
@@ -291,8 +288,8 @@ function test:Teardown()
 	DBT:CancelAllBars()
 	self:UnhookPrivates()
 	for _, mod in ipairs(DBM.Mods) do
-		if mod._testingTempOverrides then
-			for k, v in pairs(mod._testingTempOverrides) do
+		if self.restoreModVariables[mod] then
+			for k, v in pairs(self.restoreModVariables[mod]) do
 				if v == nilValue then
 					mod[k] = nil
 				else
@@ -300,8 +297,7 @@ function test:Teardown()
 				end
 			end
 		end
-		---@diagnostic disable-next-line: inject-field
-		mod._testingTempOverrides = nil
+		self.restoreModVariables[mod] = nil
 	end
 	if self.restoreOptions then
 		for opt, value in pairs(self.restoreOptions) do
