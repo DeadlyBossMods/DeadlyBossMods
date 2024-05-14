@@ -17,6 +17,7 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
@@ -241,6 +242,7 @@ function test:Setup(modUnderTest)
 	self:HookPrivate("statusWhisperDisabled", true)
 	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
+		---@diagnostic disable-next-line: inject-field
 		mod._testingTempOverrides = mod._testingTempOverrides or {}
 		mod._testingTempOverrides.stats = mod.stats
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
@@ -298,6 +300,7 @@ function test:Teardown()
 				end
 			end
 		end
+		---@diagnostic disable-next-line: inject-field
 		mod._testingTempOverrides = nil
 	end
 	if self.restoreOptions then
