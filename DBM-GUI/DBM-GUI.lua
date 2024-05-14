@@ -687,6 +687,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
 				_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
+				---@diagnostic disable-next-line: inject-field
 				DBM:GetModByName(id).Options = importTable[id]
 			end
 			DBM:AddMsg("Profile imported.")
@@ -990,7 +991,9 @@ do
 				end
 			end
 
-			for _, mod in ipairs(DBM.Mods) do
+			for _, v in ipairs(DBM.Mods) do
+				---@class DBMMod
+				local mod = v
 				if mod.modId == addon.modId then
 					if not mod.panel and (not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0))) then
 						if addon.subTabs and addon.subPanels[mod.subTab] then

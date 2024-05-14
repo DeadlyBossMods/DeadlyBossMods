@@ -14,8 +14,36 @@ local scheduler = private:GetModule("DBMScheduler")
 local tableUtils = private:GetPrototype("TableUtils")
 local test = private:GetPrototype("DBMTest")
 
+---@type table<string, DBMMod>
 local modsById = setmetatable({}, {__mode = "v"})
 local mt = {__index = bossModPrototype}
+
+-- The definition of DBM mods is unfortunately spread out across multiple files and functions.
+-- This class definition defines some fields that are either expected to be set by a mod implementation directly
+-- or are set by helper functions in DBM.
+
+---@class DBMMod
+---@field OnCombatStart fun(self: DBMMod, delay: number, startedByCastOrRegenDisabledOrMessage: boolean, startedByEncounter: boolean)
+---@field OnCombatEnd fun(self: DBMMod, wipe: boolean, delayedSecondCall: boolean?)
+---@field OnLeavingCombat fun()
+---@field OnSync fun(self: DBMMod, event: string, ...: string)
+---@field OnBWSync fun(self: DBMMod, msg: string, extra: string, sender: string)
+---@field OnTranscriptorSync fun(self: DBMMod, msg: string, sender: string)
+---@field OnInitialize fun(self: DBMMod, mod: DBMMod)
+---@field OnTimerRecovery fun(self: DBMMod)
+---@field CustomHealthUpdate fun(self: DBMMod): string
+---@field stats ModStats
+---@field registeredUnitEvents table<string, boolean>?
+---@field bossHealthUpdateTime number?
+---@field isTrashModBossFightAllowed boolean?
+---@field respawnTime number?
+---@field noStatistics boolean?
+---@field statTypes string?
+---@field upgradedMPlus boolean?
+---@field onlyHighest boolean?
+---@field soloChallenge boolean?
+---@field disableHealthCombat boolean?
+---@field isCustomMod boolean?
 
 function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 	name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
@@ -120,6 +148,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 	return obj
 end
 
+---@return DBMMod
 function DBM:GetModByName(name)
 	return modsById[tostring(name)]
 end
