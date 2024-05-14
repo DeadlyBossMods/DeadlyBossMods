@@ -19,19 +19,23 @@ function test:NewReporter(testData, trace)
 	return obj
 end
 
+-- Sorts warning objects by class/text/type
 local function compareObjects(obj1, obj2)
 	local class1, class2 = obj1.objClass, obj2.objClass
 	local key1, key2 = obj1.spellId or obj1.text or obj1, obj2.spellId or obj2.text or obj2
+	local type1, type2 = obj1.type or obj1.announceType or obj1.yellType or "unknown", obj2.type or obj2.announceType or obj2.yellType or "unknown"
 	if class1 ~= class2 then
 		return class1 < class2
 	elseif type(key1) ~= type(key2) then
 		return type(key1) == "string"
-	else
+	elseif key1 ~= key2 then
 		return key1 < key2
+	else
+		return type1 < type2
 	end
 end
 
-local function objectToString(obj, skipType)
+function reporter:ObjectToString(obj, skipType)
 	if type(obj) == "string" then -- used for PlaySound from voice packs which doesn't have an object, this is a bit ugly
 		local fileName = obj:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
 		return ("%sVoicePack/%s"):format(not skipType and "[PlaySound] " or "", fileName)
@@ -45,23 +49,43 @@ local function objectToString(obj, skipType)
 	elseif obj.objClass == "SpecialWarning" then
 		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), tostring(obj.spellId))
 	elseif obj.objClass == "Yell" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", obj.text, tostring(obj.announceType), obj.yellType, tostring(obj.spellId))
+		-- Handle localizations that insert the player's name *on loading*
+		-- TODO: this will fail if you are testing with a character named like a spell...
+		local text = obj.text:gsub(UnitName("player"), "PlayerName")
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", text, tostring(obj.yellType), tostring(obj.spellId))
 	else
 		return "<unknown object type>"
 	end
 end
 
-local function objectsToString(objs, skipType)
+function reporter:ObjectsToString(objs, skipType)
 	for k, v in ipairs(objs) do
-		objs[k] = objectToString(v, skipType)
+		objs[k] = self:ObjectToString(v, skipType)
 	end
 end
 
-function reporter:ReportUntriggeredEvents()
+local function addSpellNames(str)
+	str = tostring(str)
+	return str:gsub("(%d+)", function(spellId)
+		local name = spellId and spellId ~= "0" and DBM:GetSpellInfo(spellId) or "Unknown spell"
+		return spellId .. " (" .. name .. ")"
+	end)
+end
+
+local function extractSpellId(rawEvent)
+	local event, subEvent = unpack(rawEvent, 2)
+	if event ~= "COMBAT_LOG_EVENT_UNFILTERED" or not (subEvent:match("^SPELL_") or subEvent:match("^RANGE_")) then
+		return
+	end
+	return rawEvent[12]
+end
+
+function reporter:FindUntriggeredEvents(findings)
 	-- TODO: validate the logic for UNIT_ events with params
 	local registeredEvents = {}
 	for _, entry in ipairs(self.trace) do
 		for _, v in ipairs(entry.traces) do
+			-- All events are eventually registered as "Regular"
 			if v.event == "RegisterEvents" and v[1] == "Regular" then
 				for i = 2, #v do
 					local fullEvent = v[i]
@@ -78,28 +102,25 @@ function reporter:ReportUntriggeredEvents()
 					end
 				end
 			end
-			if entry.rawTrigger then
-				local triggerEvent = entry.rawTrigger[2]
+			local triggerEvent = entry.rawTrigger[2]
+			if registeredEvents[triggerEvent] then
+				registeredEvents[triggerEvent] = registeredEvents[triggerEvent] + 1
+			end
+			if triggerEvent == "COMBAT_LOG_EVENT_UNFILTERED" then
+				triggerEvent = entry.rawTrigger[3]
 				if registeredEvents[triggerEvent] then
 					registeredEvents[triggerEvent] = registeredEvents[triggerEvent] + 1
 				end
-				if triggerEvent == "COMBAT_LOG_EVENT_UNFILTERED" then
-					triggerEvent = entry.rawTrigger[3]
+				local spellId = extractSpellId(entry.rawTrigger)
+				if spellId then
+					triggerEvent = triggerEvent .. " " .. spellId
 					if registeredEvents[triggerEvent] then
 						registeredEvents[triggerEvent] = registeredEvents[triggerEvent] + 1
-					end
-					local spellId = triggerEvent:match("^SPELL_") and entry.rawTrigger[12]
-					if spellId then
-						triggerEvent = triggerEvent .. " " .. spellId
-						if registeredEvents[triggerEvent] then
-							registeredEvents[triggerEvent] = registeredEvents[triggerEvent] + 1
-						end
 					end
 				end
 			end
 		end
 	end
-	local unusedEvents = {}
 	-- if an args event went unused (e.g., FOO 123) then mark the main event (FOO) as used to not report it twice
 	for fullEvent, count in pairs(registeredEvents) do
 		if count == 0 then
@@ -111,18 +132,63 @@ function reporter:ReportUntriggeredEvents()
 	end
 	for event, count in pairs(registeredEvents) do
 		if count == 0 then
-			unusedEvents[#unusedEvents + 1] = event
+			findings[#findings + 1] = {type = "untriggered-event", event = event, text = "Unused event registration: " .. addSpellNames(event)}
 		end
 	end
-	table.sort(unusedEvents)
-	if #unusedEvents > 0 then
-		return "\t" .. table.concat(unusedEvents, "\n\t")
+end
+
+function reporter:FindSpellIdMismatches(findings)
+	for _, trigger in ipairs(self.trace) do
+		local triggerSpellId = extractSpellId(trigger.rawTrigger)
+		local triggerEvent = trigger.rawTrigger[3]
+		if triggerSpellId and triggerEvent then
+			for _, v in ipairs(trigger.traces) do
+				-- Just checks starts/shows, stopping/Unscheduling etc on other spell IDs is common and okay (e.g., phase changes)
+				-- TODO: handle schedules
+				if v.event == "StartTimer" or v.event == "ShowAnnounce" or v.event == "ShowSpecialWarning" or v.event == "ShowYell" then
+					local obj = v[1]
+					if obj.spellId and obj.spellId > 0 and obj.spellId ~= triggerSpellId then
+						findings[#findings + 1] = {
+							type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId,
+							text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
+						}
+					end
+				end
+			end
+		end
+	end
+end
+
+function reporter:ReportFindings()
+	local findings = {}
+	self:FindUntriggeredEvents(findings)
+	self:FindSpellIdMismatches(findings)
+	local dedup = {}
+	for _, v in ipairs(findings) do
+		dedup[v.text] = v
+	end
+	table.wipe(findings)
+	for _, v in pairs(dedup) do
+		findings[#findings + 1] = v
+	end
+	-- Make order more deterministic
+	table.sort(findings, function(e1, e2)
+		if e1.type ~= e2.type then
+			return e1.type < e2.type
+		else
+			return (e1.event or e1.spellId or e1.text) < (e2.event or e2.spellId or e2.text)
+		end
+	end)
+	if #findings > 0 then
+		for i, v in ipairs(findings) do
+			findings[i] = v.text or v.type or "Unknown"
+		end
+		return "\t" .. table.concat(findings, "\n\t")
 	else
 		return "\tNone"
 	end
 end
 
--- FIXME: expand to generic warnings (but the word "warning" is overloaded here -- maybe "findings", "potential bugs", or "oddities"?)
 function reporter:ReportUnusedObjects()
 	local objs = {}
 	for _, entry in ipairs(self.trace) do
@@ -139,7 +205,7 @@ function reporter:ReportUnusedObjects()
 		end
 	end
 	table.sort(unusedObjects, compareObjects)
-	objectsToString(unusedObjects)
+	self:ObjectsToString(unusedObjects)
 	if #unusedObjects > 0 then
 		return "\t" .. table.concat(unusedObjects, "\n\t")
 	else
@@ -152,11 +218,17 @@ local function condenseTriggers(triggers)
 	local ids = {}
 	local lastTimestamp = {}
 	for _, trigger in ipairs(triggers) do
+		-- FIXME: should use some other type here, but both trigger and rawTrigger are kinda ugly at the moment
 		local timestamp, id = trigger:match("^%[%s*(%d*%.%d*)%] (.*)")
 		timestamp = tonumber(timestamp)
-		if not timestamp or not id then -- Schedule() current triggers an unknown source without a timestamp
+		if not timestamp or not id then -- Schedule() currently triggers an unknown source without a timestamp
 			result[#result + 1] = {firstTrigger = trigger, repeated = {}}
 		else
+			-- group SPELL_AURA_APPLIED_DOSE
+			-- FIXME: rather ugly and doesn't support everything, we should also group non-DOSE and DOSE, DAMAGE and MISSED, REFRESH etc but we need some way to report that both events happened
+			if id:match("^SPELL_AURA_APPLIED_DOSE") then
+				id = id:gsub(", (%d+), (%d+)$", "")
+			end
 			local entries = ids[id] or {}
 			ids[id] = entries
 			entries[#entries + 1] = lastTimestamp[id] and timestamp - lastTimestamp[id] or timestamp
@@ -186,13 +258,16 @@ function reporter:ReportWarningObject(...)
 			if eventNames[v.event] then
 				local filterExcluded = false
 				for _, f in ipairs(filtersFunctions) do
-					filterExcluded = filterExcluded or f(v, entry.trigger)
+					filterExcluded = filterExcluded or f(v, entry)
 				end
 				if not filterExcluded then
 					local obj = v[1]
 					local entries = objs[obj] or {}
 					objs[obj] = entries
-					entries[#entries + 1] = entry.trigger
+					-- Don't report the same trigger twice if it runs multiple actions on an object (e.g., timer restart)
+					if entry.trigger ~= entries[#entries] then
+						entries[#entries + 1] = entry.trigger
+					end
 				end
 			end
 		end
@@ -206,12 +281,47 @@ function reporter:ReportWarningObject(...)
 	end)
 	local result = ""
 	for _, v in ipairs(sortedObjs) do
-		result = result .. "\t" .. objectToString(v.obj, true) .. "\n"
+		result = result .. "\t" .. self:ObjectToString(v.obj, true) .. "\n"
 		for _, trigger in ipairs(v.triggers) do
 			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
 			if #trigger.repeated > 1 then
 				result = result .. "\t\t\t Triggered " .. #trigger.repeated .. "x, delta times: " .. table.concat(trigger.repeated, ", ") .. "\n"
 			end
+		end
+	end
+	if result == "" then
+		result = "\tNone"
+	end
+	return result:gsub("\n$", "")
+end
+
+function reporter:ReportIcons()
+	-- FIXME: support grouping, something like the eggs in Gnomeregan/Menagerie are a good example
+	-- FIXME: lots of duplication vs. ReportWarningObject, could these be merged?
+	local icons = {}
+	for _, entry in ipairs(self.trace) do
+		for _, v in ipairs(entry.traces) do
+			if v.event == "ScanForMobs" then
+				local scanId, iconSetMethod, mobIcon = unpack(v)
+				icons[#icons + 1] = {
+					scanId = scanId, iconSetMethod = iconSetMethod, mobIcon = mobIcon,
+					triggers = {{firstTrigger = entry.trigger}}
+				}
+			end
+		end
+	end
+	table.sort(icons, function(e1, e2)
+		if e1.mobIcon and e2.mobIcon and e1.mobIcon ~= e2.mobIcon then
+			return e1.mobIcon < e2.mobIcon
+		else
+			return e1.scanId < e2.scanId
+		end
+	end)
+	local result = ""
+	for _, v in ipairs(icons) do
+		result = result .. ("\tIcon %s, target=%s, scanMethod=%s\n"):format(tostringall(v.mobIcon, v.scanId, v.iconScanMethod))
+		for _, trigger in ipairs(v.triggers) do
+			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
 		end
 	end
 	if result == "" then
@@ -236,42 +346,97 @@ local function stripMarkup(text)
 	return text:trim()
 end
 
+---@param event TraceEntryEvent
 local function eventToStringForReport(event)
 	local result = {}
+	local extraLines = {}
 	for _, v in ipairs(event) do
 		-- TODO: is this a good place to filter/simplify colors/textures etc?
 		v = stripMarkup(v)
-		if event.event == "PlaySound" and type(v) == "string" and v:match("^Interface\\AddOns\\DBM%-VP") then
-			v = "VoicePack/" .. v:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
+		if event.event == "PlaySound" then
+			-- Make voice packs show up as VoicePack/<id>
+			if type(v) == "string" and v:match("^Interface\\AddOns\\DBM%-VP") then
+				v = "VoicePack/" .. v:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
+			-- Make core sounds show up as DBM/<file>
+			elseif type(v) == "string" and v:match("^Interface\\AddOns\\DBM-Core\\sounds\\") then
+				v = "DBM/" .. v:gsub("Interface\\AddOns\\DBM-Core\\sounds\\", ""):gsub("\\", "/"):gsub("%.ogg$", "")
+			-- Special warnings with the non-default "1" sound show up as DBM/SpecialWarningSound1
+			-- (Sound 1 is filtered)
+			else
+				for i = 2, 5 do
+					if v == DBM.Options["SpecialWarningSound" .. i] then
+						v = "DBM/SpecialWarningSound" .. i
+						break
+					end
+				end
+			end
 		end
 		if type(v) ~= "table" then
 			result[#result + 1] = tostring(v)
 		end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
 	end
-	return event.event .. ": " .. table.concat(result, ", ")
+	if event.event == "AntiSpam" then
+		result[#result] = nil -- filter bool result
+		local filteredSpams = {}
+		if event.filteredAntiSpams and #event.filteredAntiSpams > 0 then
+			for _, v in ipairs(event.filteredAntiSpams) do
+				local ts, filteredEvent, arg1 = unpack(v.rawTrigger)
+				if filteredEvent == "COMBAT_LOG_EVENT_UNFILTERED" then
+					filteredEvent = arg1
+				end
+				filteredSpams[filteredEvent] = filteredSpams[filteredEvent] or {}
+				table.insert(filteredSpams[filteredEvent], ts)
+			end
+		end
+		for k, v in pairs(filteredSpams) do
+			filteredSpams[#filteredSpams + 1] = {event = k, ts = v}
+		end
+		table.sort(filteredSpams, function(e1, e2) return #e1.ts < #e2.ts end)
+		if #filteredSpams > 0 then
+			for _, filtered in ipairs(filteredSpams) do
+				extraLines[#extraLines + 1] = "Filtered: " .. #filtered.ts .. "x " .. filtered.event .. " at " .. table.concat(filtered.ts, ", ")
+			end
+		end
+	end
+	local str = event.event .. ": " .. table.concat(result, ", ")
+	if #extraLines > 0 then
+		return str .. "\n\t\t\t" .. table.concat(extraLines, "\n\t\t\t")
+	else
+		return str
+	end
 end
 
+local genericWarningSounds = {
+	[DBM.Options.RaidWarningSound] = true,
+	[DBM.Options.SpecialWarningSound] = true,
+}
+
+---@param entry TraceEntryEvent
+---@param trigger TraceEntry
 function reporter:FilterTraceEntry(entry, trigger)
 	if entry.event == "UnregisterEvents" or entry.event == "RegisterEvents" then
 		if entry.mod ~= self.mod then
 			return true
 		end
 		-- InCombat events show up during load and on start, filter the first one
-		if entry.event == "RegisterEvents" and entry[1] == "InCombat" and trigger:match("^%[[%d%.]+%] ADDON_LOADED: ") then
+		if entry.event == "RegisterEvents" and entry[1] == "InCombat" and trigger.rawTrigger[2] == "ADDON_LOADED" then
 			return true
 		end
 	end
 	-- Internal usage of AntiSpam
-	if entry.event == "AntiSpam" then
-		local id = entry[1]
-		return id == "FLASH" or id == "EE"
+	if entry.event == "AntiSpam" and entry.mod == DBM then
+		return true
 	end
-	-- Generic announce sound
-	if entry.event == "PlaySound" and entry[1] == 566558 then
+	-- AntiSpams returned false, they are summarized in the previous true event
+	if entry.event == "AntiSpam" and not entry[2] then
+		return true
+	end
+	-- Generic warning sounds
+	if entry.event == "PlaySound" and genericWarningSounds[entry[1]] then
 		return true
 	end
 	-- Avoid spam during encounter end
-	if trigger:match("^%[[%d%.]+%] ENCOUNTER_END: ") then
+	if trigger.didTriggerCombatEnd then
 		if entry.event == "UnregisterEvents" or entry.event == "StopTimer" then
 			return true
 		end
@@ -284,7 +449,7 @@ function reporter:ReportEventTrace()
 	for _, entry in ipairs(self.trace) do
 		local traces = {}
 		for _, v in ipairs(entry.traces) do
-			if not self:FilterTraceEntry(v, entry.trigger) then
+			if not self:FilterTraceEntry(v, entry) then
 				traces[#traces + 1] = eventToStringForReport(v)
 			end
 		end
@@ -300,7 +465,7 @@ function reporter:ReportWithHeader()
 end
 
 local function filterEncounterEnd(_, trigger)
-	return trigger:match("^%[[%d%.]+%] ENCOUNTER_END: ")
+	return trigger.didTriggerCombatEnd
 end
 
 local function filterNonVoicepack(entry)
@@ -316,7 +481,7 @@ function reporter:Report(forceRefresh)
 Test: %s
 Mod:  %s/%s
 
-Registered but untriggered events:
+Findings:
 %s
 
 Unused objects:
@@ -337,19 +502,23 @@ Yells:
 Voice pack sounds:
 %s
 
+Icons:
+%s
+
 Event trace:
 %s
 ]]
 	self.cachedReport = reportFormat:format(
 		self.testData.name,
 		self.testData.addon, self.testData.mod,
-		self:ReportUntriggeredEvents(),
+		self:ReportFindings(),
 		self:ReportUnusedObjects(),
 		self:ReportWarningObject("StartTimer", "StopTimer", "UpdateTimer", "PauseTimer", "ResumeTimer", filterEncounterEnd),
 		self:ReportWarningObject("ShowAnnounce"),
 		self:ReportWarningObject("ShowSpecialWarning"),
 		self:ReportWarningObject("ShowYell"),
 		self:ReportWarningObject("PlaySound", filterNonVoicepack),
+		self:ReportIcons(),
 		self:ReportEventTrace()
 	)
 	return self:Report()

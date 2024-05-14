@@ -2,13 +2,20 @@
 ---@class DBMTest
 local test = DBM.Test
 
+-- FIXME: i don't like this "global" state
 local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
 ---@type TestTrace
 local trace = {}
+test.trace = trace -- Export for dev/debugging
 -- FIXME: the way event keys are handled is pretty ugly, also the name is terrible because so many things are called "events"
 local currentEventKey
+---@type TestLogEntry?
 local currentRawEvent
+---@type table<any, table<any, TraceEntry[]>>
+local antiSpams = {}
+
+local unknownRawTrigger = {0, "Unknown trigger"}
 
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
@@ -23,13 +30,27 @@ function test:Trace(mod, event, ...)
 		if not traceEntry or traceEntry.trigger ~= key then
 			---@class TraceEntry
 			traceEntry = {
+				---@type string
 				trigger = key,
-				rawTrigger = currentRawEvent,
+				---@type TestLogEntry
+				rawTrigger = currentRawEvent or unknownRawTrigger,
 				---@type TraceEntryEvent[]
-				traces = {}
+				traces = {},
+				-- Set if this event triggered an end of combat trace
+				didTriggerCombatEnd = false,
 			}
 			trace[#trace + 1] = traceEntry
 		end
+		---@class TraceEntryEvent
+		local entry = {
+			mod = mod,
+			event = event,
+			-- For AntiSpam events: next trace entries where this AntiSpam returned false
+			---@type TraceEntry[]?
+			filteredAntiSpams = nil,
+			...
+		}
+		traceEntry.traces[#traceEntry.traces + 1] = entry
 		if event == "NewTimer" or event == "NewAnnounce" or event == "NewSpecialWarning" or event == "NewYell" then
 			local obj = ...
 			obj.testUseCount = 0
@@ -41,12 +62,25 @@ function test:Trace(mod, event, ...)
 			end
 			obj.testUseCount = (obj.testUseCount or 0) + 1
 		end
-		---@class TraceEntryEvent
-		traceEntry.traces[#traceEntry.traces + 1] = {
-			mod = mod,
-			event = event,
-			...
-		}
+		if event == "EndCombat" then
+			traceEntry.didTriggerCombatEnd = true
+		end
+		if event == "AntiSpam" then
+			local id, result = ...
+			antiSpams[mod] = antiSpams[mod] or {}
+			if result then -- starting to filter next events
+				antiSpams[mod][id] = {}
+				entry.filteredAntiSpams = antiSpams[mod][id]
+			else -- filtered, record in previous event
+				local previousAntiSpams = antiSpams[mod][id]
+				if previousAntiSpams then
+					previousAntiSpams[#previousAntiSpams + 1] = traceEntry
+				else
+					-- happens if an AntiSpam from a previous test is still active which is unlikely but not impossible because they aren't cleared
+					DBM:AddMsg("Warning: incomplete trace of AntiSpam")
+				end
+			end
+		end
 	end
 end
 
@@ -108,7 +142,7 @@ local function combatLogGetCurrentEventInfoHook()
 	end
 end
 
-local function setFakeCLEUArgs(...)
+function test:SetFakeCLEUArgs(...)
 	table.wipe(fakeCLEUArgs)
 	fakeCLEUArgs.n = 0
 	for i = 1, select("#", ...) do
@@ -122,6 +156,14 @@ local function setFakeCLEUArgs(...)
 		end
 		fakeCLEUArgs.n = fakeCLEUArgs.n + 1
 		fakeCLEUArgs[fakeCLEUArgs.n] = select(i, ...)
+	end
+	if fakeCLEUArgs[5] == self.testData.playerName then
+		fakeCLEUArgs[4] = UnitGUID("player")
+		fakeCLEUArgs[5] = UnitName("player")
+	end
+	if fakeCLEUArgs[9] == self.testData.playerName then
+		fakeCLEUArgs[8] = UnitGUID("player")
+		fakeCLEUArgs[0] = UnitName("player")
 	end
 end
 
@@ -149,8 +191,35 @@ local function isEncounterInProgressHook()
 	return fakeIsEncounterInProgress
 end
 
-function test:Setup()
+local function enableAllWarnings(mod, objects)
+	for _, obj in ipairs(objects) do
+		if obj.option then
+			mod.Options[obj.option] = true
+		end
+	end
+end
+
+---@param mod DBMMod
+local function setupModOptions(mod)
+	---@diagnostic disable-next-line: undefined-field
+	local modTempOverrides = mod._testingTempOverrides
+	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up if you reload while a test is running
+	modTempOverrides.Options = mod.Options
+	---@diagnostic disable-next-line: inject-field
+	mod.Options = {}
+	for k, v in pairs(modTempOverrides.Options) do
+		mod.Options[k] = v
+	end
+	enableAllWarnings(mod, mod.timers)
+	enableAllWarnings(mod, mod.announces)
+	enableAllWarnings(mod, mod.specwarns)
+	enableAllWarnings(mod, mod.yells)
+end
+
+---@param modUnderTest DBMMod
+function test:Setup(modUnderTest)
 	table.wipe(trace)
+	table.wipe(antiSpams)
 	self.testRunning = true
 	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
 	self:HookPrivate("GetInstanceInfo", getInstanceInfoHook)
@@ -158,18 +227,23 @@ function test:Setup()
 	self:HookPrivate("IsEncounterInProgress", isEncounterInProgressHook)
 	self:HookPrivate("statusGuildDisabled", true) -- FIXME: this only stays active until first EndCombat, use options instead?
 	self:HookPrivate("statusWhisperDisabled", true)
+	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
 		mod._testingTempOverrides = mod._testingTempOverrides or {}
 		mod._testingTempOverrides.stats = mod.stats
-		-- Do not use DBM:ClearAllStats() here as it also messes with the saved variables
+		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
 		mod.stats = DBM:CreateDefaultModStats()
 		-- Avoid the recombat limit when testing the same mod multiple times
 		mod.lastWipeTime = nil
 		mod.lastKillTime = nil
+		-- TODO: validate that stats was changed as expected on test end
 	end
+	setupModOptions(modUnderTest)
+	-- DBM settings
 	self:ForceOption("EventSoundVictory2", false)
 end
 
+-- FIXME: we are modifying a saved table directly here, so reloading while a test is running will break this
 function test:ForceOption(opt, value)
 	self.restoreOptions = self.restoreOptions or {}
 	if self.restoreOptions[opt] == nil then
@@ -178,6 +252,15 @@ function test:ForceOption(opt, value)
 	DBM.Options[opt] = value
 end
 
+function test:ForceOptionDefault(opt)
+	self.restoreOptions = self.restoreOptions or {}
+	if self.restoreOptions[opt] == nil then
+		self.restoreOptions[opt] = DBM.Options[opt]
+	end
+	DBM.Options[opt] = DBM.DefaultOptions[opt]
+end
+
+-- FIXME: this will become persistent if we reload while a test is running, maybe use ADDONS_UNLOADING or something to undo this?
 function test:ForceCVar(cvar, value)
 	self.restoreCVars = self.restoreCVars or {}
 	if self.restoreCVars[cvar] == nil then
@@ -222,7 +305,7 @@ function test:InjectEvent(event, ...)
 	end
 	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		setFakeCLEUArgs(...)
+		self:SetFakeCLEUArgs(...)
 		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, combatLogGetCurrentEventInfoHook())
 		table.wipe(fakeCLEUArgs)
 	else
@@ -239,6 +322,7 @@ function test:Playback(testData, timeWarp)
 		DBM:AddMsg("Timewarp >= 10, disabling sounds")
 		self:ForceCVar("Sound_EnableAllSound", false)
 	end
+	self.testData = testData
 	self:SetFakeInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New(timeWarp)
@@ -292,7 +376,11 @@ end)
 ---@field mod string The boss mod being tested.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string Name of the player who recorded the log.
----@field log table[] Log to replay
+---@field log TestLogEntry[] Log to replay
+
+---@class TestLogEntry
+---@field [1] number
+---@field [2] string
 
 -- TODO: this isn't checked or used yet, also, we probably only need to distinguish the 3 main versions because SoD should be able to run all era mods
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
@@ -307,25 +395,28 @@ function test:RunTest(testName, timeWarp)
 		error("only a single test can run at a time")
 	end
 	if not DBM:GetModByName(testData.mod) then
-		self.testRunning = true -- Trace loading events
+		self.testRunning = true
+		-- Trace loading events to know about timer/warning constructor calls
 		currentEventKey = "InternalLoading"
-		currentRawEvent = nil
+		currentRawEvent = {0, "InternalLoading"}
 		DBM:LoadModByName(testData.addon, true)
 		currentEventKey = nil
+		currentRawEvent = nil
 		self.testRunning = false
 	end
 	local modUnderTest = DBM:GetModByName(testData.mod)
 	if not modUnderTest then
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
-	self:Setup() -- Must be done after loading the mod to prepare mod (stats, options, ...)
+	self:Setup(modUnderTest) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
 		error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
 	end
-	currentEventKey = eventToString({0, "ADDON_LOADED", testData.addon}, testData.log[#testData.log][1])
-	currentRawEvent = nil
+	local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
+	currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
+	currentRawEvent = fakeLoadingEvent
 	for _, v in ipairs(loadingEvents) do
 		self:Trace(modUnderTest, unpack(v))
 	end
@@ -334,4 +425,26 @@ function test:RunTest(testName, timeWarp)
 	currentThread = coroutine.create(self.Playback)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1)
 	if not ok then error(err) end
+end
+
+function test:RunTests(testNames, timeWarp)
+	-- FIXME: aggregate errors and report them at the end
+	local cr = coroutine.create(function()
+		for _, testName in ipairs(testNames) do
+			xpcall(self.RunTest, geterrorhandler(), self, testName, timeWarp)
+			while self.testRunning do
+				coroutine.yield()
+			end
+		end
+	end)
+	local f = CreateFrame("Frame")
+	-- FIXME: can probably be merged with the main coroutine
+	f:SetScript("OnUpdate", function()
+		local status = coroutine.status(cr)
+		if status == "suspended" then
+			coroutine.resume(cr)
+		elseif status == "dead" then
+			f:Hide()
+		end
+	end)
 end

@@ -47,6 +47,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 			announces = {},
 			specwarns = {},
 			timers = {},
+			yells = {},
 			vb = {},
 			iconRestore = {},
 			modId = modId,
@@ -476,6 +477,9 @@ do
 --		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
 		[351338] = true,--Evoker Quell
 	}
+	if private.isClassic then
+		interruptSpells[8042] = true -- Shaman Earth Shock
+	end
 	---@param sourceGUID string
 	---@param checkOnlyTandF boolean? is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
 	---@param checkCooldown boolean? should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
@@ -499,7 +503,7 @@ do
 		end
 
 		local unitID
-		if UnitGUID("target") == sourceGUID then
+		if UnitGUID("target") == sourceGUID or test.testRunning then
 			unitID = "target"
 		elseif not private.isClassic and (UnitGUID("focus") == sourceGUID) then
 			unitID = "focus"

@@ -30,6 +30,8 @@ local iconSet = {}
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
+local test = private:GetPrototype("DBMTest")
+
 ---@class IconsModule: DBMModule
 local module = private:NewModule("IconsModule")
 
@@ -446,6 +448,8 @@ do
 	---@param allAllowed boolean? Bypasses elect feature and lets ANY assist set icons
 	---@param wipeGUID boolean? Allows ScanForMobs to be used on same unit multiple times during a single pull
 	function bossModPrototype:ScanForMobs(scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
+		-- TODO: it would be much nicer to trace actually attempting to set an icon, but that requires faking target scanning
+		test:Trace(self, "ScanForMobs", scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 			--Declare variables.
