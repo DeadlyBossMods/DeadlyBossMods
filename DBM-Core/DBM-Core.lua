@@ -4477,19 +4477,15 @@ do
 					end
 				end
 			end
+		end
+		if not private.isRetail and classicSubVers and classicSubVers > DBM.classicSubVersion then -- Update reminder
 			if #newersubVersionPerson < 4 then
 				if not checkEntry(newersubVersionPerson, sender) then
 					newersubVersionPerson[#newersubVersionPerson + 1] = sender
---					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
+					DBM:Debug("Newer classic subversion detected from " .. sender .. " : Rev - " .. classicSubVers .. ", Rev Diff - " .. (classicSubVers - DBM.classicSubVersion), 3)
 				end
 				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
-					--TODO, expand this to also show newer classic module revision on GUI?
-					--if DBM.HighestRelease < version then
-					--	DBM.HighestRelease = version--Increase HighestRelease
-					--	DBM.NewerVersion = displayVersion--Apply NewerVersion
-					--end
 					updateSubNotificationDisplayed = 2
---					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 					local checkedSubmodule = private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
 					showConstantReminder = 1
