@@ -1,78 +1,78 @@
 local L
 
 ---------------------
--- Fungal Folly --
+-- Funga--L Folly --
 ---------------------
-L = DBM:GetModLocalization("z2664")
+--L = DBM:GetModLocalization("z2664")
 
-L:SetTimerLocalization({
+--L:SetTimerLocalization({
 
-})
+--})
 
-L:SetOptionLocalization({
+--L:SetOptionLocalization({
 
-})
+--})
 
-L:SetMiscLocalization({
+--L:SetMiscLocalization({
 
-})
+--})
 
 ---------------------
 -- Mycomancer Cavern --
 ---------------------
-L = DBM:GetModLocalization("z2679")
+--L = DBM:GetModLocalization("z2679")
 
 ---------------------
--- Earthcrawl Mines --
+-- Earthcraw--L Mines --
 ---------------------
-L = DBM:GetModLocalization("z2680")
+--L = DBM:GetModLocalization("z2680")
 
 ---------------------
 -- Kriegval's Rest --
 ---------------------
-L = DBM:GetModLocalization("z2681")
+--L = DBM:GetModLocalization("z2681")
 
 ---------------------
 -- Zekvir's Lair --
 ---------------------
-L = DBM:GetModLocalization("z2682")
+--L = DBM:GetModLocalization("z2682")
 
 ---------------------
 -- The Waterworks --
 ---------------------
-L = DBM:GetModLocalization("z2683")
+--L = DBM:GetModLocalization("z2683")
 
 ---------------------
 -- The Dread Pit --
 ---------------------
-L = DBM:GetModLocalization("z2684")
+--L = DBM:GetModLocalization("z2684")
 
 ---------------------
 -- Skittering Breach --
 ---------------------
-L = DBM:GetModLocalization("z2685")
+--L = DBM:GetModLocalization("z2685")
 
 ---------------------
--- Nightfall Sanctum --
+-- Nightfal--L Sanctum --
 ---------------------
-L = DBM:GetModLocalization("z2686")
+--L = DBM:GetModLocalization("z2686")
 
 ---------------------
 -- The Sinkhole --
 ---------------------
-L = DBM:GetModLocalization("z2687")
+--L = DBM:GetModLocalization("z2687")
 
 ---------------------
--- The Spiral Weave --
+-- The Spira--L Weave --
 ---------------------
-L = DBM:GetModLocalization("z2688")
+--L = DBM:GetModLocalization("z2688")
 
 ---------------------
 -- Tak-Rethan Abyss --
 ---------------------
-L = DBM:GetModLocalization("z2689")
+--L = DBM:GetModLocalization("z2689")
 
 ---------------------
 -- The Underkeep --
 ---------------------
-L = DBM:GetModLocalization("z2690")
+--L = DBM:GetModLocalization("z2690")
