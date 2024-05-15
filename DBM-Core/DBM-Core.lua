@@ -4259,7 +4259,7 @@ do
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
 			if not self.Options.DontShowPTText and timer then
-				local target = unitId and UnitName(unitId.."target")
+				local target = unitId and DBM:GetUnitFullName(unitId.."target")
 				if target and not raid[target] then
 					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
