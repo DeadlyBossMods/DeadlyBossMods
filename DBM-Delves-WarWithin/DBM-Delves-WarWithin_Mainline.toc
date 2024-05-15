@@ -2,6 +2,7 @@
 ## X-Min-Interface: 110000
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffDelves (TWW)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ff구렁 (내부 전쟁)|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff4565ffПогружение в норы (Война Внутри)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +15,7 @@
 ## X-DBM-StatTypes: normal
 ## X-DBM-Mod-Name: Delves (TWW)
 ## X-DBM-Mod-Name-koKR: 구렁 (내부 전쟁)
+## X-DBM-Mod-Name-ruRU: Погружение в норы (Война Внутри)
 ## X-DBM-Mod-Sort: 120
 ## X-DBM-Mod-MapID: 2688
 ## X-DBM-Mod-MinCoreRevision: 20200524142133
