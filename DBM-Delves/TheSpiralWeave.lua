@@ -23,13 +23,13 @@ local warnDrones							= mod:NewSpellAnnounce(449072, 2)
 local specWarnFearfulShriek					= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)
 local specWarnShadowsofStrife				= mod:NewSpecialWarningInterrupt(449318, "HasInterrupt", nil, nil, 1, 2)--High Prio Interrupt
 local specWarnBurrowingTremors				= mod:NewSpecialWarningRun(448644, nil, nil, nil, 4, 2)--Boss
-local specWarnImpalingStrikes				= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)--Boss
+local specWarnImpalingStrikes				= mod:NewSpecialWarningDodge(449038, nil, nil, nil, 2, 2)--Boss
 
 local timerShadowsofStrifeCD				= mod:NewCDNPTimer(12.4, 449318, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12.4-15.1
 local timerWebbedAegisCD					= mod:NewCDNPTimer(23.1, 450546, nil, nil, nil, 5)
 local timerBurrowingTremorsCD				= mod:NewCDTimer(31.5, 448644, nil, nil, nil, 5)
 local timerCallDronesCD						= mod:NewCDTimer(31.5, 449072, nil, nil, nil, 1)
-local timerImpalingStrikesCD				= mod:NewCDTimer(31.5, 433410, nil, nil, nil, 3)
+local timerImpalingStrikesCD				= mod:NewCDTimer(31.5, 449038, nil, nil, nil, 3)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 off interrupt
 
