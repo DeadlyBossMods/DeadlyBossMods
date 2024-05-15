@@ -4502,7 +4502,7 @@ do
 				end
 			end
 		end
-		if not private.isRetail and classicSubVers and classicSubVers > DBM.classicSubVersion then -- Update reminder
+		if not private.isRetail and type(classicSubVers) == 'number' and classicSubVers > DBM.classicSubVersion then -- Update reminder
 			if #newersubVersionPerson < 4 then
 				if not checkEntry(newersubVersionPerson, sender) then
 					newersubVersionPerson[#newersubVersionPerson + 1] = sender
