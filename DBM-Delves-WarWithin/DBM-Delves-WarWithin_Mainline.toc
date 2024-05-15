@@ -15,11 +15,23 @@
 ## X-DBM-Mod-Name: Delves (TWW)
 ## X-DBM-Mod-Name-koKR: 구렁 (내부 전쟁)
 ## X-DBM-Mod-Sort: 120
-## X-DBM-Mod-MapID: 2688
+## X-DBM-Mod-MapID: 2664, 2679, 2680, 2681, 2682, 2683, 2684, 2685, 2686, 2687, 2688, 2689, 2690, 2767, 2768
 ## X-DBM-Mod-MinCoreRevision: 20200524142133
 ## X-DBM-Mod-MinExpansion: 10
 ## Version: @project-version@
 
 localization.en.lua
 localization.kr.lua
+FungalFollylua
+MycomancerCavern.lua
+EarthcrawlMines.lua
+KriegvalsRest.lua
+ZekvirsLair.lua
+TheWaterworks.lua
+TheDreadPit.lua
+SkitteringBreach.lua
+NightfallSanctum.lua
+TheSinkhole.lua
 TheSpiralWeave.lua
+TakRethanAbyss.lua
+TheUnderkeep.lua
