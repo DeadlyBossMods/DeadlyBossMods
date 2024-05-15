@@ -3836,7 +3836,9 @@ do
 	end
 
 	--Faster and more accurate loading for instances, but useless outside of them
-	function DBM:LOADING_SCREEN_DISABLED()
+	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
+		--With an Odd twist, loading screens fire when using vehicles in delves, but not entering or leaving them, so if we're IN a delve we need to ignore them
+		if difficulties:InstanceType(LastInstanceMapID) == 4 then return end
 		if private.isRetail then
 			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
 		end
@@ -3845,7 +3847,9 @@ do
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
 		--SecondaryLoadCheck(self)
-		self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+		if not delayedCheck then
+			self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+		end
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self)
 		if self:HasMapRestrictions() then
@@ -3857,6 +3861,14 @@ do
 		end
 	end
 
+	--Zones that change without loading screen
+	local specialZoneIDs = {
+		[2454] = true,--Zaralek Caverns
+		[2574] = true,--Dragon Isles
+		[2444] = true,--Dragon Isles
+		[2601] = true,--Khaz Algar
+	}
+
 	-- Load based on MapIDs
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		local mapID = C_Map.GetBestMapForUnit("player")
@@ -3864,6 +3876,10 @@ do
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
+		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
+		if specialZoneIDs[LastInstanceMapID] or difficulties:InstanceType(LastInstanceMapID) == 4 then
+			self:LOADING_SCREEN_DISABLED(true)
+		end
 	end
 
 	function DBM:CHALLENGE_MODE_RESET()
@@ -5330,7 +5346,7 @@ do
 				end
 			end
 			local wipe -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
-			if (private.isRetail and IsInScenarioGroup()) or (difficulties.difficultyIndex == 11) or (difficulties.difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
+			if (private.isRetail and IsInScenarioGroup()) or (difficulties.difficultyIndex == 11) or (difficulties.difficultyIndex == 12) or (difficulties.difficultyIndex == 208) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 				wipe = 0
 			elseif private.IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
 				wipe = 0
