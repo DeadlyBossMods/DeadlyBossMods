@@ -3857,6 +3857,14 @@ do
 		end
 	end
 
+	--Zones that change without loading screen
+	local specialZoneIDs = {
+		[2454] = true,--Zaralek Caverns
+		[2574] = true,--Dragon Isles
+		[2444] = true,--Dragon Isles
+		[2601] = true,--Khaz Algar
+	}
+
 	-- Load based on MapIDs
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		local mapID = C_Map.GetBestMapForUnit("player")
@@ -3864,6 +3872,10 @@ do
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
+		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
+		if specialZoneIDs[LastInstanceMapID] or difficulties:InstanceType(LastInstanceMapID) == 4 then
+			self:LOADING_SCREEN_DISABLED()
+		end
 	end
 
 	function DBM:CHALLENGE_MODE_RESET()
@@ -5330,7 +5342,7 @@ do
 				end
 			end
 			local wipe -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
-			if (private.isRetail and IsInScenarioGroup()) or (difficulties.difficultyIndex == 11) or (difficulties.difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
+			if (private.isRetail and IsInScenarioGroup()) or (difficulties.difficultyIndex == 11) or (difficulties.difficultyIndex == 12) or (difficulties.difficultyIndex == 208) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 				wipe = 0
 			elseif private.IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
 				wipe = 0
