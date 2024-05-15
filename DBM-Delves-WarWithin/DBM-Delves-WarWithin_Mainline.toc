@@ -4,8 +4,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariables: DBMDelves_AllSavedVars
-## SavedVariablesPerCharacter: DBMDelves_SavedStats
+## SavedVariables: DBMDelvesWarWithin_AllSavedVars
+## SavedVariablesPerCharacter: DBMDelvesWarWithin_SavedStats
 ## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: SCENARIO
