@@ -1664,7 +1664,15 @@ do
 									else
 										local id = tonumber(subTabs[k])
 										if id then
-											self.AddOns[#self.AddOns].subTabs[k] = strsplit("-", GetRealZoneText(id):trim() or id)--For handling zones like Warfront: Arathi - Alliance
+											--For handling zones like Warfront: Arathi - Alliance
+											local subTabName = GetRealZoneText(id):trim() or id
+											for w in string.gmatch(subTabName, " - ") do
+												if w:trim() ~= "" then
+													subTabName = w
+													break
+												end
+											end
+											self.AddOns[#self.AddOns].subTabs[k] = subTabName
 										else
 											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
 										end

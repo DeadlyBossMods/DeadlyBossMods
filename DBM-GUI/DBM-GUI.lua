@@ -904,7 +904,14 @@ do
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
 			local challengeMode = challengeModeIds[challengeMap]
 			local id = challengeMode
-			local mapName = strsplit("-", GetRealZoneText(id):trim() or id)
+			--For handling zones like Warfront: Arathi - Alliance
+			local mapName = GetRealZoneText(id):trim() or id
+			for w in string.gmatch(mapName, " - ") do
+				if w:trim() ~= "" then
+					mapName = w
+					break
+				end
+			end
 			if not currentSeasons[mapName] then
 				local modId
 				for _, addon in ipairs(DBM.AddOns) do
