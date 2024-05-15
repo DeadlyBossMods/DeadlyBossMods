@@ -1,0 +1,22 @@
+## Interface: 110000
+## X-Min-Interface: 110000
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffDelves (TWW)|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMDelves_AllSavedVars
+## SavedVariablesPerCharacter: DBMDelves_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: SCENARIO
+## X-DBM-Mod-Category: OTHER
+## X-DBM-StatTypes: normal
+## X-DBM-Mod-Name: Delves (TWW)
+## X-DBM-Mod-Sort: 120
+## X-DBM-Mod-MapID: 2688
+## X-DBM-Mod-MinCoreRevision: 20200524142133
+## X-DBM-Mod-MinExpansion: 10
+## Version: @project-version@
+
+localization.en.lua
+TheSpiralWeave.lua
