@@ -6,7 +6,7 @@ mod:SetRevision("@file-date-integer@")
 mod:RegisterCombat("scenario", 2688)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 449318 450546 433410 449072 448644 449038",
+	"SPELL_CAST_START 449318 450546 433410 449072 448644 449038 450714",
 	--"SPELL_CAST_SUCCESS",
 	--"SPELL_AURA_APPLIED",
 	--"SPELL_AURA_REMOVED",
@@ -16,11 +16,13 @@ mod:RegisterEventsInCombat(
 	"ENCOUNTER_END"
 )
 
+--TODO Add Void Bolt interrupt. it hits for 1.4 Million on level 2
 local warnShadowsofStrife					= mod:NewCastAnnounce(449318, 3)--High Prio Interrupt
 local warnWebbedAegis						= mod:NewCastAnnounce(450546, 3)--Can only be CCed
 local warnDrones							= mod:NewSpellAnnounce(449072, 2)
 
 local specWarnFearfulShriek					= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)
+local specWarnJaggedBarbs					= mod:NewSpecialWarningDodge(450714, nil, nil, nil, 2, 2)
 local specWarnShadowsofStrife				= mod:NewSpecialWarningInterrupt(449318, "HasInterrupt", nil, nil, 1, 2)--High Prio Interrupt
 local specWarnBurrowingTremors				= mod:NewSpecialWarningRun(448644, nil, nil, nil, 4, 2)--Boss
 local specWarnImpalingStrikes				= mod:NewSpecialWarningDodge(449038, nil, nil, nil, 2, 2)--Boss
@@ -71,6 +73,11 @@ function mod:SPELL_CAST_START(args)
 			timerImpalingStrikesCD:Start(25.1)
 		else
 			timerImpalingStrikesCD:Start(31.5)
+		end
+	elseif args.spellId == 450714 then
+		if self:AntiSpam(3, 2) then
+			specWarnJaggedBarbs:Show()
+			specWarnJaggedBarbs:Play("shockwave")
 		end
 	end
 end
@@ -123,6 +130,7 @@ function mod:ENCOUNTER_START(eID)
 	if eID == 2990 then
 		--Start some timers
 		self.vb.impalingCount = 0
+		timerImpalingStrikesCD:Start(6.4)
 		timerBurrowingTremorsCD:Start(12.5)
 		timerCallDronesCD:Start(27.1)
 	end

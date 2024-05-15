@@ -3836,7 +3836,7 @@ do
 	end
 
 	--Faster and more accurate loading for instances, but useless outside of them
-	function DBM:LOADING_SCREEN_DISABLED()
+	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
 		--With an Odd twist, loading screens fire when using vehicles in delves, but not entering or leaving them, so if we're IN a delve we need to ignore them
 		if difficulties:InstanceType(LastInstanceMapID) == 4 then return end
 		if private.isRetail then
@@ -3847,7 +3847,9 @@ do
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
 		--SecondaryLoadCheck(self)
-		self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+		if not delayedCheck then
+			self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+		end
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self)
 		if self:HasMapRestrictions() then
@@ -3876,7 +3878,7 @@ do
 		DBM:CheckAvailableModsByMap()
 		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
 		if specialZoneIDs[LastInstanceMapID] or difficulties:InstanceType(LastInstanceMapID) == 4 then
-			self:LOADING_SCREEN_DISABLED()
+			self:LOADING_SCREEN_DISABLED(true)
 		end
 	end
 
