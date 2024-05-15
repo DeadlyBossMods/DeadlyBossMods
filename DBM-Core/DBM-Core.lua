@@ -3837,6 +3837,8 @@ do
 
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
+		--With an Odd twist, loading screens fire when using vehicles in delves, but not entering or leaving them, so if we're IN a delve we need to ignore them
+		if difficulties:InstanceType(LastInstanceMapID) == 4 then return end
 		if private.isRetail then
 			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
 		end
