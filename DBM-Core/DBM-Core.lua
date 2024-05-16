@@ -663,7 +663,7 @@ local function sendSync(protocol, prefix, msg)
 			--While at it, catch other failure types too
 			local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
 			if type(result) == "number" and result ~= 0 then
-				DBM:Debug("sendSync failed with a result of " ..result.. " for prefix " .. prefix)
+				DBM:Debug("|cffff0000sendSync failed with a result of " ..result.. " for prefix |r" .. prefix)
 			end
 		end
 	end
@@ -680,7 +680,7 @@ local function sendGuildSync(protocol, prefix, msg)
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
 		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD"))--Even guild syncs send realm so we can keep antispam the same across realid as well.
 		if type(result) == "number" and result ~= 0 then
-			DBM:Debug("sendGuildSync failed with a result of " ..result.. " for prefix " .. prefix)
+			DBM:Debug("|cffff0000sendGuildSync failed with a result of " ..result.. " for prefix |r" .. prefix)
 		end
 	end
 end
@@ -709,7 +709,7 @@ local function sendLoggedSync(protocol, prefix, msg)
 		else
 			local result = select(-1, C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
 			if type(result) == "number" and result ~= 0 then
-				DBM:Debug("sendLoggedSync failed with a result of " ..result.. " for prefix " .. prefix)
+				DBM:Debug("|cffff0000sendLoggedSync failed with a result of " ..result.. " for prefix |r" .. prefix)
 			end
 		end
 	end
@@ -740,7 +740,7 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	else
 		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
 		if type(result) == "number" and result ~= 0 then
-			DBM:Debug("SendWorldSync failed with a result of " ..result.. " for prefix " .. prefix)
+			DBM:Debug("|cffff0000SendWorldSync failed with a result of " ..result.. " for prefix |r" .. prefix)
 		end
 	end
 	if IsInGuild() then
