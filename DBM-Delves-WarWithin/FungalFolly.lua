@@ -6,7 +6,7 @@ mod:SetRevision("@file-date-integer@")
 mod:RegisterCombat("scenario", 2664)
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START ",
+	"SPELL_CAST_START 415492 207481 425315",
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_REMOVED",
@@ -16,22 +16,33 @@ mod:RegisterEventsInCombat(
 	"ENCOUNTER_END"
 )
 
---local warnDrones							= mod:NewSpellAnnounce(449072, 2)
+local warnFungalCharge						= mod:NewSpellAnnounce(415492, 2)
 
---local specWarnFearfulShriek				= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)
+local specWarnFungalStorm					= mod:NewSpecialWarningRun(207481, nil, nil, nil, 4, 2)--MoveTo if I confirm the mushrooms do in fact stun/stop it
+local specWarnFungsplosion					= mod:NewSpecialWarningDodge(425319, nil, nil, nil, 2, 2)
 
---local timerShadowsofStrifeCD				= mod:NewCDNPTimer(12.4, 449318, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
---local timerBurrowingTremorsCD				= mod:NewCDTimer(31.5, 448644, nil, nil, nil, 5)
+local timerFungalChargeCD					= mod:NewCDTimer(29.9, 415492, nil, nil, nil, 5)
+local timerFungalStormCD					= mod:NewCDTimer(30.3, 207481, nil, nil, nil, 3)
+local timerFungsplosionCD					= mod:NewCDTimer(30.3, 425319, nil, nil, nil, 3)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 off interrupt
 
---[[
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 449318 then
+--local Mushrooms = DBM:GetSpellName(415495)
 
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 415492 then
+		warnFungalCharge:Show()
+		timerFungalChargeCD:Start()
+	elseif args.spellId == 207481 then
+		specWarnFungalStorm:Show()
+		specWarnFungalStorm:Play("whirlwind")
+		timerFungalStormCD:Start()
+	elseif args.spellId == 425315 then
+		specWarnFungsplosion:Show()
+		specWarnFungsplosion:Play("watchstep")
+		timerFungsplosionCD:Start()
 	end
 end
---]]
 
 --[[
 function mod:SPELL_CAST_SUCCESS(args)
@@ -79,6 +90,9 @@ end
 function mod:ENCOUNTER_START(eID)
 	if eID == 2831 then--Spinshroom
 		--Start some timers
+		timerFungalStormCD:Start(5.8)
+		timerFungalChargeCD:Start(20.3)
+		timerFungsplosionCD:Start(26.4)
 	end
 end
 
@@ -88,6 +102,9 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 			DBM:EndCombat(self)
 		else
 			--Stop Timers manually
+			timerFungalStormCD:Stop()
+			timerFungalChargeCD:Stop()
+			timerFungsplosionCD:Stop()
 		end
 	end
 end

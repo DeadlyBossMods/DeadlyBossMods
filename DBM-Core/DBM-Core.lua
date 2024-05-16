@@ -3839,7 +3839,7 @@ do
 			end
 		end
 		-- LoadMod
-		self:LoadModsOnDemand("instanceID", mapID, delay or 0)
+		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
@@ -3889,7 +3889,7 @@ do
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		local mapID = C_Map.GetBestMapForUnit("player")
 		if mapID then
-			self:LoadModsOnDemand("mapID", "m" .. mapID)
+			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
 		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
@@ -3945,7 +3945,7 @@ do
 				end
 			end
 		end
-		if private.isRetail and checkTable == "instanceID"  then
+		if private.isRetail and delay then
 			self:ScenarioCheck(delay)--Do not filter. Because ScenarioCheck function includes filter.
 		end
 		-- Hard-code loading logic for DMF classic which depends on time and map
