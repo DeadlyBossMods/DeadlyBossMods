@@ -95,9 +95,16 @@ function mod:ENCOUNTER_START(eID)
 	end
 end
 
-function mod:ENCOUNTER_END(eID)
+function mod:ENCOUNTER_END(eID, _, _, _, success)
 	if eID == 2877 then--Web General Ab'enar
-		DBM:EndCombat(self)
+		if success then
+			DBM:EndCombat(self)
+		else
+			timerWebBoltCD:Stop()
+			timerCurseOfAgonyCD:Stop()
+			timerBurningCartCD:Stop()
+			timerRunicShacklesCD:Stop()
+		end
 	end
 end
 

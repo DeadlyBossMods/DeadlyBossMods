@@ -6,29 +6,21 @@ mod:SetRevision("@file-date-integer@")
 mod:RegisterCombat("scenario", 2688)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 449318 450546 433410 449072 448644 449038 450714",
+	"SPELL_CAST_START 449072 448644 449038 450714",
 	--"SPELL_CAST_SUCCESS",
 	--"SPELL_AURA_APPLIED",
 	--"SPELL_AURA_REMOVED",
 	--"SPELL_PERIODIC_DAMAGE",
-	"UNIT_DIED",
 	"ENCOUNTER_START",
 	"ENCOUNTER_END"
 )
 
---TODO Add Void Bolt interrupt. it hits for 1.4 Million on level 2
-local warnShadowsofStrife					= mod:NewCastAnnounce(449318, 3)--High Prio Interrupt
-local warnWebbedAegis						= mod:NewCastAnnounce(450546, 3)--Can only be CCed
 local warnDrones							= mod:NewSpellAnnounce(449072, 2)
 
-local specWarnFearfulShriek					= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)
 local specWarnJaggedBarbs					= mod:NewSpecialWarningDodge(450714, nil, nil, nil, 2, 2)
-local specWarnShadowsofStrife				= mod:NewSpecialWarningInterrupt(449318, "HasInterrupt", nil, nil, 1, 2)--High Prio Interrupt
 local specWarnBurrowingTremors				= mod:NewSpecialWarningRun(448644, nil, nil, nil, 4, 2)--Boss
 local specWarnImpalingStrikes				= mod:NewSpecialWarningDodge(449038, nil, nil, nil, 2, 2)--Boss
 
-local timerShadowsofStrifeCD				= mod:NewCDNPTimer(12.4, 449318, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12.4-15.1
-local timerWebbedAegisCD					= mod:NewCDNPTimer(23.1, 450546, nil, nil, nil, 5)
 local timerBurrowingTremorsCD				= mod:NewCDTimer(31.5, 448644, nil, nil, nil, 5)
 local timerCallDronesCD						= mod:NewCDTimer(31.5, 449072, nil, nil, nil, 1)
 local timerImpalingStrikesCD				= mod:NewCDTimer(31.5, 449038, nil, nil, nil, 3)
@@ -38,26 +30,7 @@ local timerImpalingStrikesCD				= mod:NewCDTimer(31.5, 449038, nil, nil, nil, 3)
 mod.vb.impalingCount = 0
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 449318 then
-		timerShadowsofStrifeCD:Start(nil, args.sourceGUID)
-		if self.Options.SpecWarn449318interrupt and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnShadowsofStrife:Show(args.sourceName)
-			specWarnShadowsofStrife:Play("kickcast")
-		elseif self:AntiSpam(3, 7) then
-			warnShadowsofStrife:Show()
-		end
-	elseif args.spellId == 450546 then
-		timerWebbedAegisCD:Start(nil, args.sourceGUID)
-		if self:AntiSpam(3, 6) then
-			warnWebbedAegis:Show()
-			warnWebbedAegis:Play("crowdcontrol")
-		end
-	elseif args.spellId == 433410 then
-		if self:AntiSpam(3, 2) then
-			specWarnFearfulShriek:Show()
-			specWarnFearfulShriek:Play("watchstep")
-		end
-	elseif args.spellId == 449072 then
+	if args.spellId == 449072 then
 		warnDrones:Show()
 		timerCallDronesCD:Start()
 	elseif args.spellId == 448644 then
@@ -114,18 +87,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 --]]
 
-function mod:UNIT_DIED(args)
-	--if args.destGUID == UnitGUID("player") then--Solo scenario, a player death is a wipe
-
-	--end
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 208242 then--Nerubian Darkcaster
-		timerShadowsofStrifeCD:Stop(args.destGUID)
-	elseif cid == 216584 then--Nerubian Captain
-		timerWebbedAegisCD:Stop(args.destGUID)
-	end
-end
-
 function mod:ENCOUNTER_START(eID)
 	if eID == 2990 then
 		--Start some timers
@@ -136,8 +97,14 @@ function mod:ENCOUNTER_START(eID)
 	end
 end
 
-function mod:ENCOUNTER_END(eID)
+function mod:ENCOUNTER_END(eID, _, _, _, success)
 	if eID == 2990 then
-		DBM:EndCombat(self)
+		if success then
+			DBM:EndCombat(self)
+		else
+			timerImpalingStrikesCD:Stop()
+			timerBurrowingTremorsCD:Stop()
+			timerCallDronesCD:Stop()
+		end
 	end
 end

@@ -86,9 +86,13 @@ end
 --]]
 
 --[[
-function mod:ENCOUNTER_END(eID)
-	if eID == 2990 then
-		DBM:EndCombat(self)
+function mod:ENCOUNTER_END(eID, _, _, _, success)
+	if eID == 2894 then
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
 	end
 end
 --]]
