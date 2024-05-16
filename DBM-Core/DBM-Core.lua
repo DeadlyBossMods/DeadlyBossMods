@@ -3951,7 +3951,7 @@ do
 			self:ScenarioCheck(delay)--Do not filter. Because ScenarioCheck function includes filter.
 		end
 		-- Hard-code loading logic for DMF classic which depends on time and map
-		if dmfMod and checkTable == "mapID" and private.isClassic and isDmfActiveClassic() == checkValue then
+		if dmfMod and checkTable == "mapId" and private.isClassic and isDmfActiveClassic() == checkValue then
 			self:LoadMod(dmfMod, true)
 		end
 	end
