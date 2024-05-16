@@ -23,7 +23,7 @@
 localization.en.lua
 localization.kr.lua
 TrashCommon.lua
-FungalFollylua
+FungalFolly.lua
 MycomancerCavern.lua
 EarthcrawlMines.lua
 KriegvalsRest.lua
