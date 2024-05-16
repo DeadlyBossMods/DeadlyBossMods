@@ -81,9 +81,9 @@ local fakeBWVersion, fakeBWHash = 329, "e3dbf73"--329.2
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.41 alpha"--Core version
+DBM.DisplayVersion = "10.2.41"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 5, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 5, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -2747,7 +2747,7 @@ do
 		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm
 	end
 
-	--Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
+	---Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
 	function DBM:GetUnitFullName(uId)
 		if not uId then return end
 		return GetUnitName(uId, true)
@@ -2765,10 +2765,12 @@ do
 		end
 	end
 
+	---@param guid string
 	function DBM:GetFullPlayerNameByGUID(guid)
 		return raidGuids[guid]
 	end
 
+	---@param guid string
 	function DBM:GetPlayerNameByGUID(guid)
 		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
