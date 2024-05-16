@@ -3880,7 +3880,9 @@ do
 		[2454] = true,--Zaralek Caverns
 		[2574] = true,--Dragon Isles
 		[2444] = true,--Dragon Isles
-		[2601] = true,--Khaz Algar
+		[2601] = true,--Khaz Algar (Underground)
+		[2774] = true,--Khaz Algar (Underground)
+		[2552] = true,--Khaz Algar (Surface)
 	}
 
 	-- Load based on MapIDs

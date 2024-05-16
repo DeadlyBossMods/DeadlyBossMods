@@ -22,6 +22,7 @@
 
 localization.en.lua
 localization.kr.lua
+TrashCommon.lua
 FungalFollylua
 MycomancerCavern.lua
 EarthcrawlMines.lua

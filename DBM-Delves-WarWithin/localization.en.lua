@@ -1,5 +1,14 @@
 local L
 
+-----------------------
+-- <<< Delve Trash >>> --
+-----------------------
+L = DBM:GetModLocalization("DelveTrashCommon")
+
+L:SetGeneralLocalization({
+	name =	"Delve Trash"
+})
+
 ---------------------
 -- Funga--L Folly --
 ---------------------
