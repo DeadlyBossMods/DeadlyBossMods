@@ -5570,7 +5570,7 @@ do
 			elseif mod.inScenario then
 				local scenarioType, currentStage, numStages = C_Scenario.GetInfo()
 				--Delves start in stage 2 of 3 because stage 1 is "entering" apparently.
-				if currentStage > (scenarioType == "delves" and 2 or 1) and numStages > 1 then
+				if currentStage > (scenarioType == "Delves" and 2 or 1) and numStages > 1 then
 					mod.ignoreBestkill = true
 				end
 			else--Reset ignoreBestkill after wipe
