@@ -3797,7 +3797,8 @@ do
 	end
 
 	---@param self DBM
-	local function SecondaryLoadCheck(self)
+	---@param delay number?
+	local function SecondaryLoadCheck(self, delay)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
 		difficulties:RefreshCache(true)
 		LastGroupSize = instanceGroupSize
@@ -3838,7 +3839,7 @@ do
 			end
 		end
 		-- LoadMod
-		self:LoadModsOnDemand("instanceID", mapID)
+		self:LoadModsOnDemand("instanceID", mapID, delay or 0)
 		self:CheckAvailableMods()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
@@ -3864,7 +3865,7 @@ do
 			self:Schedule(1, SecondaryLoadCheck, self)--Minimum time delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
 		end
 		self:TransitionToDungeonBGM(false, true)
-		self:Schedule(5, SecondaryLoadCheck, self)
+		self:Schedule(5, SecondaryLoadCheck, self, 5)
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
@@ -3919,7 +3920,10 @@ do
 		end
 	end
 
-	function DBM:LoadModsOnDemand(checkTable, checkValue)
+	---@param checkTable string
+	---@param checkValue any
+	---@param delay number?
+	function DBM:LoadModsOnDemand(checkTable, checkValue, delay)
 		self:Debug("LoadModsOnDemand fired for table " .. checkTable .. " value " .. tostring(checkValue))
 		local dmfMod
 		for _, v in ipairs(self.AddOns) do
@@ -3942,7 +3946,7 @@ do
 			end
 		end
 		if private.isRetail and checkTable == "instanceID"  then
-			self:ScenarioCheck()--Do not filter. Because ScenarioCheck function includes filter.
+			self:ScenarioCheck(delay)--Do not filter. Because ScenarioCheck function includes filter.
 		end
 		-- Hard-code loading logic for DMF classic which depends on time and map
 		if dmfMod and checkTable == "mapID" and private.isClassic and isDmfActiveClassic() == checkValue then
@@ -3952,11 +3956,11 @@ do
 end
 
 --Scenario mods
-function DBM:ScenarioCheck()
+function DBM:ScenarioCheck(delay)
 	if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 		for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
-				self:StartCombat(v.mod, 0, "LOADING_SCREEN_DISABLED")
+				self:StartCombat(v.mod, delay or 0, "LOADING_SCREEN_DISABLED")
 			end
 		end
 	end
