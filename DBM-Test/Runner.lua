@@ -17,6 +17,7 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
@@ -191,6 +192,16 @@ local function isEncounterInProgressHook()
 	return fakeIsEncounterInProgress
 end
 
+local function modAntiSpamHook(self, time, id)
+	-- Mods often define AntiSpam timeouts in whole seconds and some periodic damage effects trigger exactly every second
+	-- This can lead to flaky tests as they sometimes trigger and sometimes don't because even with fake time there is unfortunately still some dependency on actual frame timings
+	-- Just subtracting 0.1 seconds fixes this problem; an example affected by this is SoD/ST/FesteringRotslime
+	if time and time > 0 and math.floor(time) == time then
+		time = time - 0.1
+	end
+	return DBM.AntiSpam(self, time, id)
+end
+
 local function enableAllWarnings(mod, objects)
 	for _, obj in ipairs(objects) do
 		if obj.option then
@@ -199,14 +210,14 @@ local function enableAllWarnings(mod, objects)
 	end
 end
 
+local nilValue = newproxy(false)
+
 ---@param mod DBMMod
-local function setupModOptions(mod)
-	---@diagnostic disable-next-line: undefined-field
-	local modTempOverrides = mod._testingTempOverrides
+function test:SetupModOptions(mod)
+	local modTempOverrides = self.restoreModVariables[mod]
 	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up if you reload while a test is running
 	modTempOverrides.Options = mod.Options
-	---@diagnostic disable-next-line: inject-field
-	mod.Options = {}
+	mod["Options"] = {}
 	for k, v in pairs(modTempOverrides.Options) do
 		mod.Options[k] = v
 	end
@@ -228,9 +239,10 @@ function test:Setup(modUnderTest)
 	self:HookPrivate("statusGuildDisabled", true) -- FIXME: this only stays active until first EndCombat, use options instead?
 	self:HookPrivate("statusWhisperDisabled", true)
 	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
+	self.restoreModVariables = self.restoreModVariables or {}
 	for _, mod in ipairs(DBM.Mods) do
-		mod._testingTempOverrides = mod._testingTempOverrides or {}
-		mod._testingTempOverrides.stats = mod.stats
+		self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
+		self.restoreModVariables[mod].stats = mod.stats
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
 		mod.stats = DBM:CreateDefaultModStats()
 		-- Avoid the recombat limit when testing the same mod multiple times
@@ -238,7 +250,9 @@ function test:Setup(modUnderTest)
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
 	end
-	setupModOptions(modUnderTest)
+	self:SetupModOptions(modUnderTest)
+	self.restoreModVariables[modUnderTest].AntiSpam = nilValue
+	modUnderTest.AntiSpam = modAntiSpamHook
 	-- DBM settings
 	self:ForceOption("EventSoundVictory2", false)
 end
@@ -247,17 +261,14 @@ end
 function test:ForceOption(opt, value)
 	self.restoreOptions = self.restoreOptions or {}
 	if self.restoreOptions[opt] == nil then
-		self.restoreOptions[opt] = DBM.Options[opt]
+		local oldValue = DBM.Options[opt]
+		self.restoreOptions[opt] = oldValue == nil and nilValue or oldValue
 	end
 	DBM.Options[opt] = value
 end
 
 function test:ForceOptionDefault(opt)
-	self.restoreOptions = self.restoreOptions or {}
-	if self.restoreOptions[opt] == nil then
-		self.restoreOptions[opt] = DBM.Options[opt]
-	end
-	DBM.Options[opt] = DBM.DefaultOptions[opt]
+	self:ForceOption(opt, DBM.DefaultOptions[opt])
 end
 
 -- FIXME: this will become persistent if we reload while a test is running, maybe use ADDONS_UNLOADING or something to undo this?
@@ -277,16 +288,24 @@ function test:Teardown()
 	DBT:CancelAllBars()
 	self:UnhookPrivates()
 	for _, mod in ipairs(DBM.Mods) do
-		if mod._testingTempOverrides then
-			for k, v in pairs(mod._testingTempOverrides) do
-				mod[k] = v
+		if self.restoreModVariables[mod] then
+			for k, v in pairs(self.restoreModVariables[mod]) do
+				if v == nilValue then
+					mod[k] = nil
+				else
+					mod[k] = v
+				end
 			end
 		end
-		mod._testingTempOverrides = nil
+		self.restoreModVariables[mod] = nil
 	end
 	if self.restoreOptions then
 		for opt, value in pairs(self.restoreOptions) do
-			DBM.Options[opt] = value
+			if value == nilValue then
+				DBM.Options[opt] = nil
+			else
+				DBM.Options[opt] = value
+			end
 		end
 		self.restoreOptions = nil
 	end
