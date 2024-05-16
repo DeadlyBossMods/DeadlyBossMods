@@ -3851,8 +3851,6 @@ do
 
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
-		--With an Odd twist, loading screens fire when using vehicles in delves, but not entering or leaving them, so if we're IN a delve we need to ignore them
-		if difficulties:InstanceType(LastInstanceMapID) == 4 then return end
 		if private.isRetail then
 			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
 		end
@@ -3894,6 +3892,7 @@ do
 		DBM:CheckAvailableModsByMap()
 		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
 		if specialZoneIDs[LastInstanceMapID] or difficulties:InstanceType(LastInstanceMapID) == 4 then
+			DBM:Debug("Forcing LOADING_SCREEN_DISABLED", 2)
 			self:LOADING_SCREEN_DISABLED(true)
 		end
 	end
@@ -5569,8 +5568,9 @@ do
 			if (difficulties.savedDifficulty == "worldboss" and startHp < 98) or (event == "UNIT_HEALTH" and delay > 4) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
 				mod.ignoreBestkill = true
 			elseif mod.inScenario then
-				local _, currentStage, numStages = C_Scenario.GetInfo()
-				if currentStage > 1 and numStages > 1 then
+				local scenarioType, currentStage, numStages = C_Scenario.GetInfo()
+				--Delves start in stage 2 of 3 because stage 1 is "entering" apparently.
+				if currentStage > (scenarioType == "delves" and 2 or 1) and numStages > 1 then
 					mod.ignoreBestkill = true
 				end
 			else--Reset ignoreBestkill after wipe
