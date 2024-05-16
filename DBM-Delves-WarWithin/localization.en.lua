@@ -10,7 +10,7 @@ L:SetGeneralLocalization({
 })
 
 ---------------------
--- Funga--L Folly --
+-- Fungal Folly --
 ---------------------
 --L = DBM:GetModLocalization("z2664")
 
@@ -32,7 +32,7 @@ L:SetGeneralLocalization({
 --L = DBM:GetModLocalization("z2679")
 
 ---------------------
--- Earthcraw--L Mines --
+-- Earthcrawl Mines --
 ---------------------
 --L = DBM:GetModLocalization("z2680")
 
@@ -72,7 +72,7 @@ L:SetGeneralLocalization({
 --L = DBM:GetModLocalization("z2687")
 
 ---------------------
--- The Spira--L Weave --
+-- The Spiral Weave --
 ---------------------
 --L = DBM:GetModLocalization("z2688")
 
