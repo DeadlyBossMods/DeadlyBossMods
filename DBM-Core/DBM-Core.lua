@@ -3838,7 +3838,7 @@ do
 			end
 		end
 		-- LoadMod
-		self:LoadModsOnDemand("mapId", mapID)
+		self:LoadModsOnDemand("instanceID", mapID)
 		self:CheckAvailableMods()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
@@ -3859,8 +3859,9 @@ do
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
 		--SecondaryLoadCheck(self)
+		--In instance tranfers with no loading screen, InstanceInfo can actually return nil for first few seconds
 		if not delayedCheck then
-			self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+			self:Schedule(1, SecondaryLoadCheck, self)--Minimum time delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
 		end
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self)
@@ -3887,7 +3888,7 @@ do
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		local mapID = C_Map.GetBestMapForUnit("player")
 		if mapID then
-			self:LoadModsOnDemand("mapId", "m" .. mapID)
+			self:LoadModsOnDemand("mapID", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
 		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
@@ -3940,11 +3941,11 @@ do
 				end
 			end
 		end
-		if private.isRetail then
+		if private.isRetail and checkTable == "instanceID"  then
 			self:ScenarioCheck()--Do not filter. Because ScenarioCheck function includes filter.
 		end
 		-- Hard-code loading logic for DMF classic which depends on time and map
-		if dmfMod and checkTable == "mapId" and private.isClassic and isDmfActiveClassic() == checkValue then
+		if dmfMod and checkTable == "mapID" and private.isClassic and isDmfActiveClassic() == checkValue then
 			self:LoadMod(dmfMod, true)
 		end
 	end
