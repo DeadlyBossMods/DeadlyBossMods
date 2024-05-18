@@ -305,6 +305,12 @@ local function transcribeCleu(rawParams)
 	if destIsNpc then
 		destName = stripHealthInfo(destName)
 	end
+	if srcIsNpc then
+		sourceName = stripHealthInfo(sourceName)
+	end
+	if destIsNpc then
+		destName = stripHealthInfo(destName)
+	end
 	sourceFlags = sourceFlags or reconstructFlags(sourceName, srcIsPlayer, srcIsPet, srcIsNpc)
 	local destFlags = reconstructFlags(destName, destIsPlayer, destIsPet, destIsNpc)
 	return literalsTable(
