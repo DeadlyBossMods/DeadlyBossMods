@@ -3,7 +3,7 @@ local filter = require "Transcriptor-Filter"
 local unpack = unpack or table.unpack -- Lua 5.1 compat
 
 local function usage()
-	print("Usage: lua ParseTranscriptor.lua --transcriptor <path to SavedVariables/Transcriptor.lua> [--entry \"[YYYY-MM-DD]@[HH:MM:SS]\" --start <log offset> --end <log offset> --player <player who logged this>]")
+	print("Usage: lua ParseTranscriptor.lua --transcriptor <path to SavedVariables/Transcriptor.lua> [--entry \"[YYYY-MM-DD]@[HH:MM:SS]\" --start <log offset> --end <log offset> --player <player who logged this> --noheader]")
 	os.exit(1)
 end
 
@@ -23,6 +23,9 @@ local function parseArgs(...)
 		else
 			usage()
 		end
+	end
+	if currentKey then -- flag without args at the end
+		args[currentKey] = true
 	end
 	return args
 end
@@ -243,7 +246,13 @@ local function transcribeCleu(rawParams)
 			end
 		else
 			if not flagWarningShown and params[1] == "SPELL_CAST_START" then -- not all entries are logged with flags
-				print("-- Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate.")
+				local warn = "-- Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate."
+				if args.noheader then
+					io.stderr:write(warn)
+					io.stderr:write("\n")
+				else
+					print(warn)
+				end
 				flagWarningShown = true
 			end
 			event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2 = unpack(params, 1, i - 1)
@@ -353,6 +362,9 @@ local function getMetadataFromLog()
 	return player, instanceInfo, logName:match("Version: 1%.") and "SeasonOfDiscovery" or ""
 end
 
+local deducedPlayer, instanceInfo, gameVersion = getMetadataFromLog()
+playerName = playerName or deducedPlayer
+
 local function getLog()
 	local result = {}
 	local timeOffset
@@ -370,7 +382,14 @@ local function getLog()
 			result[#result + 1] = ("{%.2f, %s},"):format(time, table.concat(testEvent, ", "))
 		end
 	end
-	return table.concat(result, "\n\t\t")
+	local resultStr = ""
+	if playerName ~= deducedPlayer then
+		resultStr = "-- Warning: log was created by player " .. deducedPlayer .. ", but player " .. playerName .. " was given on the CLI for reconstructions, this can potentially cause problems (but is usually fine)\n\t"
+	end
+	resultStr = resultStr .. "log = {\n\t\t"
+	resultStr = resultStr ..  table.concat(result, "\n\t\t")
+	resultStr = resultStr ..  "\n\t}"
+	return resultStr
 end
 
 local template = [[
@@ -381,17 +400,10 @@ DBM.Test:DefineTest{
 	mod = %s,
 	instanceInfo = %s,
 	playerName = %s,
-	log = {
-		%s
-	}
+	%s,
 }
 ]]
 
-local deducedPlayer, instanceInfo, gameVersion = getMetadataFromLog()
-if playerName and deducedPlayer ~= playerName then
-	print("-- Warning: log seems to be created by player " .. deducedPlayer .. ", you provided player " .. playerName .. " on CLI, this mismatch can mess with flags and targets")
-end
-playerName = playerName or deducedPlayer
 
 local function generateTest()
 	local str = template:format(
@@ -403,4 +415,12 @@ local function generateTest()
 	return str
 end
 
-print(generateTest())
+local function generateLogOnly()
+	return ("\t%s\n}\n"):format(getLog())
+end
+
+if args.noheader then
+	print(generateLogOnly())
+else
+	print(generateTest())
+end
