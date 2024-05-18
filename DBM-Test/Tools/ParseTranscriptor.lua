@@ -281,7 +281,12 @@ local function transcribeCleu(rawParams)
 		return
 	end
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_REFRESH" then
-		if extraArg1 == "BUFF" and destIsPlayerOrPet or extraArg1 == "DEBUFF" and destIsNpc then
+		-- Filter buffs by non-NPCs on players (some bosses case buffs on players, e.g., purgable mind controls)
+		if extraArg1 == "BUFF" and destIsPlayerOrPet and not srcIsNpc then
+			return
+		end
+		-- Filter debuffs on NPCs cast by non-NPCs
+		if extraArg1 == "DEBUFF" and destIsNpc and not srcIsNpc then
 			return
 		end
 	end
