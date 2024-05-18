@@ -40,19 +40,20 @@ function reporter:ObjectToString(obj, skipType)
 		local fileName = obj:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
 		return ("%sVoicePack/%s"):format(not skipType and "[PlaySound] " or "", fileName)
 	end
+	local spellId = obj.spellId and obj.spellId > 50 and tostring(obj.spellId) or "<none>"
 	if obj.objClass == "Timer" then
 		-- FIXME: this should be fixed in timers, not here, can't see a good reason for the late evaluation of the localized text in timers whereas everything else can do it early
 		local text = obj.text or obj.type and obj.mod:GetLocalizedTimerText(obj.type, obj.spellId, obj.name) or obj.name
-		return ("%s%s, time=%.2f, type=%s, spellId=%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, tostring(obj.spellId))
+		return ("%s%s, time=%.2f, type=%s, spellId=%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, spellId)
 	elseif obj.objClass == "Announce" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), spellId)
 	elseif obj.objClass == "SpecialWarning" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), spellId)
 	elseif obj.objClass == "Yell" then
 		-- Handle localizations that insert the player's name *on loading*
 		-- TODO: this will fail if you are testing with a character named like a spell...
 		local text = obj.text:gsub(UnitName("player"), "PlayerName")
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", text, tostring(obj.yellType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", text, tostring(obj.yellType), spellId)
 	else
 		return "<unknown object type>"
 	end
@@ -147,7 +148,8 @@ function reporter:FindSpellIdMismatches(findings)
 				-- TODO: handle schedules
 				if v.event == "StartTimer" or v.event == "ShowAnnounce" or v.event == "ShowSpecialWarning" or v.event == "ShowYell" then
 					local obj = v[1]
-					if obj.spellId and obj.spellId > 0 and obj.spellId ~= triggerSpellId then
+					-- spellId field is sometimes used for non-spellId things like phases/stages
+					if obj.spellId and obj.spellId > 50 and obj.spellId ~= triggerSpellId then
 						findings[#findings + 1] = {
 							type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId,
 							text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
