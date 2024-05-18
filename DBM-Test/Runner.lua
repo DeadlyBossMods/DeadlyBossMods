@@ -321,7 +321,7 @@ end)
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
----@field mod string The boss mod being tested.
+---@field mod string|integer The boss mod being tested.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string Name of the player who recorded the log.
 ---@field log TestLogEntry[] Log to replay
@@ -332,7 +332,7 @@ end)
 
 -- TODO: this isn't checked or used yet, also, we probably only need to distinguish the 3 main versions because SoD should be able to run all era mods
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
----@alias GameVersion "SeasonOfDiscovery"
+---@alias GameVersion "Retail"|"Classic"|"ClassicEra"|"SeasonOfDiscovery"
 
 function test:RunTest(testName, timeWarp)
 	local testData = self.Registry.tests[testName]

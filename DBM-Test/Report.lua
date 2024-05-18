@@ -388,7 +388,12 @@ local function eventToStringForReport(event)
 			end
 		end
 		if type(v) ~= "table" then
-			result[#result + 1] = tostring(v)
+			if event.event == "StartTimer" and type(v) == "number" then
+				-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
+				result[#result + 1] = ("%.1f"):format(v)
+			else
+				result[#result + 1] = tostring(v)
+			end
 		end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
 	end
 	if event.event == "AntiSpam" then

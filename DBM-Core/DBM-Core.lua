@@ -3983,7 +3983,7 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if mod.minExpansion > GetExpansionLevel() then
+	if mod.minExpansion > GetExpansionLevel() and not force then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
 	elseif not private.testBuild and mod.minToc > private.wowTOC then
