@@ -40,19 +40,20 @@ function reporter:ObjectToString(obj, skipType)
 		local fileName = obj:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
 		return ("%sVoicePack/%s"):format(not skipType and "[PlaySound] " or "", fileName)
 	end
+	local spellId = obj.spellId and obj.spellId > 50 and tostring(obj.spellId) or "<none>"
 	if obj.objClass == "Timer" then
 		-- FIXME: this should be fixed in timers, not here, can't see a good reason for the late evaluation of the localized text in timers whereas everything else can do it early
 		local text = obj.text or obj.type and obj.mod:GetLocalizedTimerText(obj.type, obj.spellId, obj.name) or obj.name
-		return ("%s%s, time=%.2f, type=%s, spellId=%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, tostring(obj.spellId))
+		return ("%s%s, time=%.2f, type=%s, spellId=%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, spellId)
 	elseif obj.objClass == "Announce" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), spellId)
 	elseif obj.objClass == "SpecialWarning" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), spellId)
 	elseif obj.objClass == "Yell" then
 		-- Handle localizations that insert the player's name *on loading*
 		-- TODO: this will fail if you are testing with a character named like a spell...
 		local text = obj.text:gsub(UnitName("player"), "PlayerName")
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", text, tostring(obj.yellType), tostring(obj.spellId))
+		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Yell] " or "", text, tostring(obj.yellType), spellId)
 	else
 		return "<unknown object type>"
 	end
@@ -147,7 +148,8 @@ function reporter:FindSpellIdMismatches(findings)
 				-- TODO: handle schedules
 				if v.event == "StartTimer" or v.event == "ShowAnnounce" or v.event == "ShowSpecialWarning" or v.event == "ShowYell" then
 					local obj = v[1]
-					if obj.spellId and obj.spellId > 0 and obj.spellId ~= triggerSpellId then
+					-- spellId field is sometimes used for non-spellId things like phases/stages
+					if obj.spellId and obj.spellId > 50 and obj.spellId ~= triggerSpellId then
 						findings[#findings + 1] = {
 							type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId,
 							text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
@@ -213,6 +215,19 @@ function reporter:ReportUnusedObjects()
 	end
 end
 
+-- Group similar events for deduplication of events
+local function getDeduplicationKey(trigger)
+	-- group SPELL_AURA_APPLIED_DOSE
+	-- FIXME: rather ugly and doesn't support everything, we should also group non-DOSE and DOSE, DAMAGE and MISSED, REFRESH etc but we need some way to report that both events happened
+	if trigger:match("^SPELL_AURA_APPLIED_DOSE") then
+		trigger = trigger:gsub(", (%d+), (%d+)$", "")
+	end
+	-- group different NPCs with same cID
+	trigger = trigger:gsub("(Creature%-%d+%-%d+%-%d+%-%d+%-%d+)%-%x+", "%1")
+	trigger = trigger:gsub("(Vehicle%-%d+%-%d+%-%d+%-%d+%-%d+)%-%x+", "%1")
+	return trigger
+end
+
 local function condenseTriggers(triggers)
 	local result = {}
 	local ids = {}
@@ -224,11 +239,7 @@ local function condenseTriggers(triggers)
 		if not timestamp or not id then -- Schedule() currently triggers an unknown source without a timestamp
 			result[#result + 1] = {firstTrigger = trigger, repeated = {}}
 		else
-			-- group SPELL_AURA_APPLIED_DOSE
-			-- FIXME: rather ugly and doesn't support everything, we should also group non-DOSE and DOSE, DAMAGE and MISSED, REFRESH etc but we need some way to report that both events happened
-			if id:match("^SPELL_AURA_APPLIED_DOSE") then
-				id = id:gsub(", (%d+), (%d+)$", "")
-			end
+			id = getDeduplicationKey(id)
 			local entries = ids[id] or {}
 			ids[id] = entries
 			entries[#entries + 1] = lastTimestamp[id] and timestamp - lastTimestamp[id] or timestamp
@@ -285,7 +296,12 @@ function reporter:ReportWarningObject(...)
 		for _, trigger in ipairs(v.triggers) do
 			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
 			if #trigger.repeated > 1 then
-				result = result .. "\t\t\t Triggered " .. #trigger.repeated .. "x, delta times: " .. table.concat(trigger.repeated, ", ") .. "\n"
+				-- avoid stupid floating point things like 98.84 - 98.44 showing up as 0.40000000000001
+				local deltas = {}
+				for i, delta in ipairs(trigger.repeated) do
+					deltas[i] = ("%.2f"):format(delta)
+				end
+				result = result .. "\t\t\t Triggered " .. #trigger.repeated .. "x, delta times: " .. table.concat(deltas, ", ") .. "\n"
 			end
 		end
 	end
@@ -372,7 +388,12 @@ local function eventToStringForReport(event)
 			end
 		end
 		if type(v) ~= "table" then
-			result[#result + 1] = tostring(v)
+			if event.event == "StartTimer" and type(v) == "number" then
+				-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
+				result[#result + 1] = ("%.1f"):format(v)
+			else
+				result[#result + 1] = tostring(v)
+			end
 		end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
 	end
 	if event.event == "AntiSpam" then

@@ -3983,7 +3983,7 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if mod.minExpansion > GetExpansionLevel() then
+	if mod.minExpansion > GetExpansionLevel() and not force then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
 	elseif not private.testBuild and mod.minToc > private.wowTOC then
@@ -8792,6 +8792,18 @@ end)
 test:RegisterLocalHook("GetTime", function(val)
 	local old = GetTime
 	GetTime = val
+	return old
+end)
+
+test:RegisterLocalHook("UnitDetailedThreatSituation", function(val)
+	local old = UnitDetailedThreatSituation
+	UnitDetailedThreatSituation = val
+	return old
+end)
+
+test:RegisterLocalHook("UnitAffectingCombat", function(val)
+	local old = UnitAffectingCombat
+	UnitAffectingCombat = val
 	return old
 end)
 
