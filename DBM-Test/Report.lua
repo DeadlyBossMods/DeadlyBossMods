@@ -287,7 +287,12 @@ function reporter:ReportWarningObject(...)
 		for _, trigger in ipairs(v.triggers) do
 			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
 			if #trigger.repeated > 1 then
-				result = result .. "\t\t\t Triggered " .. #trigger.repeated .. "x, delta times: " .. table.concat(trigger.repeated, ", ") .. "\n"
+				-- avoid stupid floating point things like 98.84 - 98.44 showing up as 0.40000000000001
+				local deltas = {}
+				for i, delta in ipairs(trigger.repeated) do
+					deltas[i] = ("%.2f"):format(delta)
+				end
+				result = result .. "\t\t\t Triggered " .. #trigger.repeated .. "x, delta times: " .. table.concat(deltas, ", ") .. "\n"
 			end
 		end
 	end
