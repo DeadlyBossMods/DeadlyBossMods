@@ -446,13 +446,26 @@ function test:RunTest(testName, timeWarp)
 	if not ok then error(err) end
 end
 
+function test:StopTests()
+	self.stopRequested = true
+	if self.timeWarper then
+		self.timeWarper:Stop()
+	end
+	 -- explicitly call teardown because the coroutine cancelation will only do so on the next frame which is too late for the stop-on-unload case
+	self:Teardown()
+end
+
 function test:RunTests(testNames, timeWarp)
+	self.stopRequested = false
 	-- FIXME: aggregate errors and report them at the end
 	local cr = coroutine.create(function()
 		for _, testName in ipairs(testNames) do
 			xpcall(self.RunTest, geterrorhandler(), self, testName, timeWarp)
 			while self.testRunning do
 				coroutine.yield()
+			end
+			if self.stopRequested then
+				break
 			end
 		end
 	end)
@@ -467,3 +480,11 @@ function test:RunTests(testNames, timeWarp)
 		end
 	end)
 end
+
+-- Undo temporary changes when logging out/reloading while a test is running
+-- Some changes must touch persistent config options by design, e.g., disabling sound
+local stopOnUnload = CreateFrame("Frame")
+stopOnUnload:RegisterEvent("ADDONS_UNLOADING")
+stopOnUnload:SetScript("OnEvent", function()
+	test:StopTests()
+end)

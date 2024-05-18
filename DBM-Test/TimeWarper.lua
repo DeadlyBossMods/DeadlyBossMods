@@ -70,12 +70,20 @@ function test.TimeWarper:Stop()
 	active = false
 end
 
+local function checkActive()
+	if not active then
+		error("test stopped, time warp canceled")
+	end
+end
+
 -- Call coroutine.yield() until a given point in (fake) time has been reached.
 -- Pass the real time elapsed since the last coroutine.resume to coroutine.resume, i.e., run the coroutine in an OnUpdate handler.
 function test.TimeWarper:WaitUntil(time)
+	checkActive()
 	while time > self.fakeTime do
 		if self.fakeTimeSteps >= self.factor or not self.lastFrameTime then
 			self.lastFrameTime = coroutine.yield()
+			checkActive()
 			self.fakeTimeSteps = 0
 		end
 		self.fakeTime = self.fakeTime + self.lastFrameTime
