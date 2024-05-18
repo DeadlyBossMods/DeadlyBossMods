@@ -464,7 +464,7 @@ function announcePrototype:PreciseShow(maxTotal, ...)
 	end
 	DBMScheduler:Unschedule(self.Show, self.mod, self)
 	local viableTotal = DBM:NumRealAlivePlayers()
-	if (maxTotal == #self.combinedtext) or (viableTotal == #self.combinedtext) then--All targets gathered, show immediately
+	if (maxTotal == #self.combinedtext + self.combinedcount) or (viableTotal == #self.combinedtext + self.combinedcount) then--All targets gathered, show immediately
 		self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
 	else--And even still, use scheduling backup in case counts still fail
 		DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
