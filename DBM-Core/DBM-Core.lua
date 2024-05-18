@@ -8795,4 +8795,16 @@ test:RegisterLocalHook("GetTime", function(val)
 	return old
 end)
 
+test:RegisterLocalHook("UnitDetailedThreatSituation", function(val)
+	local old = UnitDetailedThreatSituation
+	UnitDetailedThreatSituation = val
+	return old
+end)
+
+test:RegisterLocalHook("UnitAffectingCombat", function(val)
+	local old = UnitAffectingCombat
+	UnitAffectingCombat = val
+	return old
+end)
+
 private.mainFrame = mainFrame

@@ -49,13 +49,16 @@ function test.TimeWarper:Start()
 	end
 	self.fakeTime = math.max(highestSeenTime, GetTime())
 	self.fakeTimeSteps = 0
-	test:HookPrivate("GetTime", function() -- Unhooking is done by the generic unhook all in test:Teardown()
-		if self.fakeTime then
-			return self.fakeTime
-		else
-			return GetTime()
-		end
-	end)
+	 -- Unhooking is done by the generic unhook all in test:Teardown()
+	test:HookPrivate("GetTime", function() return self:GetTime() end)
+end
+
+function test.TimeWarper:GetTime()
+	if self.fakeTime then
+		return self.fakeTime
+	else
+		return GetTime()
+	end
 end
 
 function test.TimeWarper:Stop()

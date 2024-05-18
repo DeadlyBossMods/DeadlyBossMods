@@ -131,77 +131,6 @@ local function eventToString(event, maxTimestamp)
 	return ("[%" .. maxTimestampStrLength .. ".2f] %s: %s%s"):format(event[1], eventName, summary and "[" .. summary .. "] " or "", args)
 end
 
-local fakeCLEUArgs = {
-	-- Number of args to handle nil values gracefully
-	n = nil
-}
-local function combatLogGetCurrentEventInfoHook()
-	if fakeCLEUArgs.n then
-		return unpack(fakeCLEUArgs, 1, fakeCLEUArgs.n)
-	else
-		return CombatLogGetCurrentEventInfo()
-	end
-end
-
-function test:SetFakeCLEUArgs(...)
-	table.wipe(fakeCLEUArgs)
-	fakeCLEUArgs.n = 0
-	for i = 1, select("#", ...) do
-		-- Add missing args, see transcribeCleu() in ParseTranscriptor
-		if fakeCLEUArgs.n == 0 then
-			fakeCLEUArgs.n = fakeCLEUArgs.n + 1
-			fakeCLEUArgs[fakeCLEUArgs.n] = 0 -- timestamp
-		elseif fakeCLEUArgs.n == 2 then
-			fakeCLEUArgs.n = fakeCLEUArgs.n + 1
-			fakeCLEUArgs[fakeCLEUArgs.n] = false -- hideCaster
-		end
-		fakeCLEUArgs.n = fakeCLEUArgs.n + 1
-		fakeCLEUArgs[fakeCLEUArgs.n] = select(i, ...)
-	end
-	if fakeCLEUArgs[5] == self.testData.playerName then
-		fakeCLEUArgs[4] = UnitGUID("player")
-		fakeCLEUArgs[5] = UnitName("player")
-	end
-	if fakeCLEUArgs[9] == self.testData.playerName then
-		fakeCLEUArgs[8] = UnitGUID("player")
-		fakeCLEUArgs[0] = UnitName("player")
-	end
-end
-
----@type InstanceInfo
-local fakeInstanceInfo
-local function getInstanceInfoHook()
-	if fakeInstanceInfo then
-		return fakeInstanceInfo.name, fakeInstanceInfo.instanceType, fakeInstanceInfo.difficultyID,
-			fakeInstanceInfo.difficultyName, fakeInstanceInfo.maxPlayers, fakeInstanceInfo.dynamicDifficulty,
-			fakeInstanceInfo.isDynamic, fakeInstanceInfo.instanceID, fakeInstanceInfo.instanceGroupSize,
-			fakeInstanceInfo.lfgDungeonID
-	else
-		return GetInstanceInfo()
-	end
-end
-
----@param instanceInfo InstanceInfo
-function test:SetFakeInstanceInfo(instanceInfo)
-	fakeInstanceInfo = instanceInfo
-	self:HookPrivate("LastInstanceMapID", instanceInfo.instanceID)
-end
-
-local fakeIsEncounterInProgress
-local function isEncounterInProgressHook()
-	return fakeIsEncounterInProgress
-end
-
-local function modAntiSpamHook(self, time, id)
-	-- Mods often define AntiSpam timeouts in whole seconds and some periodic damage effects trigger exactly every second
-	-- This can lead to flaky tests as they sometimes trigger and sometimes don't because even with fake time there is unfortunately still some dependency on actual frame timings
-	-- Just subtracting 0.1 seconds fixes this problem; an example affected by this is SoD/ST/FesteringRotslime
-	if time and time > 0 and math.floor(time) == time then
-		time = time - 0.1
-	end
-	return DBM.AntiSpam(self, time, id)
-end
-
 local function enableAllWarnings(mod, objects)
 	for _, obj in ipairs(objects) do
 		if obj.option then
@@ -210,12 +139,10 @@ local function enableAllWarnings(mod, objects)
 	end
 end
 
-local nilValue = newproxy(false)
-
 ---@param mod DBMMod
 function test:SetupModOptions(mod)
 	local modTempOverrides = self.restoreModVariables[mod]
-	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up if you reload while a test is running
+	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up accidentally
 	modTempOverrides.Options = mod.Options
 	mod["Options"] = {}
 	for k, v in pairs(modTempOverrides.Options) do
@@ -227,51 +154,55 @@ function test:SetupModOptions(mod)
 	enableAllWarnings(mod, mod.yells)
 end
 
+function test:SetupDBMOptions()
+	-- Change settings to not depend on user configuration
+	-- Set DBM settings to default, but don't touch DBM.Options itself because it is saved
+	local dbmOptions = {
+		DebugMode = DBM.Options.DebugMode,
+		DebugLevel = DBM.Options.DebugLevel,
+	}
+	DBM:AddDefaultOptions(dbmOptions, DBM.DefaultOptions)
+	self:HookDbmVar("Options", dbmOptions)
+	DBM.Options.EventSoundVictory2 = false
+	DBM.Options.DontShowTargetAnnouncements = false
+	DBM.Options.FilterTankSpec = false
+	DBM.Options.FilterBTargetFocus = false
+	DBM.Options.FilterBInterruptCooldown = false
+	DBM.Options.FilterTTargetFocus = false
+	DBM.Options.FilterTInterruptCooldown = false
+	DBM.Options.FilterDispel = false
+	DBM.Options.FilterCrowdControl = false
+	DBM.Options.FilterTrashWarnings2 = false
+	DBM.Options.FilterVoidFormSay = false
+	DBM.Options.DebugSound = false
+	-- Don't spam guild members when testing
+	DBM.Options.DisableGuildStatus = true
+	DBM.Options.AutoRespond = false
+	-- Don't show intro messages
+	DBM.Options.SettingsMessageShown = true
+	DBM.Options.NewsMessageShown2 = 3
+end
+
 ---@param modUnderTest DBMMod
 function test:Setup(modUnderTest)
 	table.wipe(trace)
 	table.wipe(antiSpams)
 	self.testRunning = true
-	self:HookPrivate("CombatLogGetCurrentEventInfo", combatLogGetCurrentEventInfoHook)
-	self:HookPrivate("GetInstanceInfo", getInstanceInfoHook)
-	fakeIsEncounterInProgress = false
-	self:HookPrivate("IsEncounterInProgress", isEncounterInProgressHook)
-	self:HookPrivate("statusGuildDisabled", true) -- FIXME: this only stays active until first EndCombat, use options instead?
-	self:HookPrivate("statusWhisperDisabled", true)
-	-- store stats for all mods to test to not mess them up if the test or a mod trigger is bad
-	self.restoreModVariables = self.restoreModVariables or {}
+	self:SetupHooks(modUnderTest)
+	-- Store stats for all mods to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
-		self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
-		self.restoreModVariables[mod].stats = mod.stats
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
-		mod.stats = DBM:CreateDefaultModStats()
+		self:HookModVar(mod, "stats", DBM:CreateDefaultModStats())
 		-- Avoid the recombat limit when testing the same mod multiple times
 		mod.lastWipeTime = nil
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
 	end
+	-- Change settings to not depend on user configuration
+	self:SetupDBMOptions()
 	self:SetupModOptions(modUnderTest)
-	self.restoreModVariables[modUnderTest].AntiSpam = nilValue
-	modUnderTest.AntiSpam = modAntiSpamHook
-	-- DBM settings
-	self:ForceOption("EventSoundVictory2", false)
 end
 
--- FIXME: we are modifying a saved table directly here, so reloading while a test is running will break this
-function test:ForceOption(opt, value)
-	self.restoreOptions = self.restoreOptions or {}
-	if self.restoreOptions[opt] == nil then
-		local oldValue = DBM.Options[opt]
-		self.restoreOptions[opt] = oldValue == nil and nilValue or oldValue
-	end
-	DBM.Options[opt] = value
-end
-
-function test:ForceOptionDefault(opt)
-	self:ForceOption(opt, DBM.DefaultOptions[opt])
-end
-
--- FIXME: this will become persistent if we reload while a test is running, maybe use ADDONS_UNLOADING or something to undo this?
 function test:ForceCVar(cvar, value)
 	self.restoreCVars = self.restoreCVars or {}
 	if self.restoreCVars[cvar] == nil then
@@ -286,29 +217,7 @@ function test:Teardown()
 	DBM:Disable()
 	DBM:Enable()
 	DBT:CancelAllBars()
-	self:UnhookPrivates()
-	for _, mod in ipairs(DBM.Mods) do
-		if self.restoreModVariables[mod] then
-			for k, v in pairs(self.restoreModVariables[mod]) do
-				if v == nilValue then
-					mod[k] = nil
-				else
-					mod[k] = v
-				end
-			end
-		end
-		self.restoreModVariables[mod] = nil
-	end
-	if self.restoreOptions then
-		for opt, value in pairs(self.restoreOptions) do
-			if value == nilValue then
-				DBM.Options[opt] = nil
-			else
-				DBM.Options[opt] = value
-			end
-		end
-		self.restoreOptions = nil
-	end
+	self:TeardownHooks()
 	if self.restoreCVars then
 		for cvar, value in pairs(self.restoreCVars) do
 			SetCVar(cvar, value)
@@ -317,16 +226,35 @@ function test:Teardown()
 	end
 end
 
+function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid, dstName, _, _, spellId, spellName, _, ...)
+	if (subEvent == "SWING_DAMAGE" or subEvent == "SWING_MISSED") and (srcGuid:match("^Creature%-") or srcGuid:match("^Vehicle%-")) then
+		self.Mocks:SetThreat(dstGuid, dstName, srcGuid, srcName)
+	end
+	if subEvent == "SPELL_AURA_REMOVED" or subEvent == "SPELL_AURA_BROKEN" or subEvent == "SPELL_AURA_BROKEN_SPELL" then
+		self.Mocks:RemoveUnitAura(dstName, dstGuid, spellId, spellName)
+	end
+	if subEvent == "SPELL_AURA_APPLIED" or subEvent == "SPELL_AURA_APPLIED_DOSE" or subEvent == "SPELL_AURA_REMOVED_DOSE" or subEvent == "SPELL_AURA_REFRESH" then
+		local auraType, amount = ...
+		self.Mocks:ApplyUnitAura(dstName, dstGuid, spellId, spellName, auraType, amount)
+	end
+end
+
 function test:InjectEvent(event, ...)
 	if event == "IsEncounterInProgress()" then
-		fakeIsEncounterInProgress = ...
+		self.Mocks:SetEncounterInProgress(...)
 		return
+	end
+	if event == "PLAYER_REGEN_DISABLED" then
+		self.Mocks:SetUnitAffectingCombat("player", UnitName("player"), UnitGUID("player"), true)
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		self.Mocks:SetUnitAffectingCombat("player", UnitName("player"), UnitGUID("player"), false)
 	end
 	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		self:SetFakeCLEUArgs(...)
-		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, combatLogGetCurrentEventInfoHook())
-		table.wipe(fakeCLEUArgs)
+		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
+		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
+		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, self.Mocks.CombatLogGetCurrentEventInfo())
+		self.Mocks:SetFakeCLEUArgs()
 	else
 		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, ...)
 	end
@@ -342,9 +270,10 @@ function test:Playback(testData, timeWarp)
 		self:ForceCVar("Sound_EnableAllSound", false)
 	end
 	self.testData = testData
-	self:SetFakeInstanceInfo(testData.instanceInfo)
+	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New(timeWarp)
+	self.timeWarper = timeWarper
 	timeWarper:Start()
 	local startTime = timeWarper.fakeTime
 	for _, v in ipairs(testData.log) do
