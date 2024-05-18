@@ -215,6 +215,19 @@ function reporter:ReportUnusedObjects()
 	end
 end
 
+-- Group similar events for deduplication of events
+local function getDeduplicationKey(trigger)
+	-- group SPELL_AURA_APPLIED_DOSE
+	-- FIXME: rather ugly and doesn't support everything, we should also group non-DOSE and DOSE, DAMAGE and MISSED, REFRESH etc but we need some way to report that both events happened
+	if trigger:match("^SPELL_AURA_APPLIED_DOSE") then
+		trigger = trigger:gsub(", (%d+), (%d+)$", "")
+	end
+	-- group different NPCs with same cID
+	trigger = trigger:gsub("(Creature%-%d+%-%d+%-%d+%-%d+%-%d+)%-%x+", "%1")
+	trigger = trigger:gsub("(Vehicle%-%d+%-%d+%-%d+%-%d+%-%d+)%-%x+", "%1")
+	return trigger
+end
+
 local function condenseTriggers(triggers)
 	local result = {}
 	local ids = {}
@@ -226,11 +239,7 @@ local function condenseTriggers(triggers)
 		if not timestamp or not id then -- Schedule() currently triggers an unknown source without a timestamp
 			result[#result + 1] = {firstTrigger = trigger, repeated = {}}
 		else
-			-- group SPELL_AURA_APPLIED_DOSE
-			-- FIXME: rather ugly and doesn't support everything, we should also group non-DOSE and DOSE, DAMAGE and MISSED, REFRESH etc but we need some way to report that both events happened
-			if id:match("^SPELL_AURA_APPLIED_DOSE") then
-				id = id:gsub(", (%d+), (%d+)$", "")
-			end
+			id = getDeduplicationKey(id)
 			local entries = ids[id] or {}
 			ids[id] = entries
 			entries[#entries + 1] = lastTimestamp[id] and timestamp - lastTimestamp[id] or timestamp
