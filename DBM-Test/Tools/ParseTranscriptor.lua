@@ -167,6 +167,10 @@ local function getInstanceInfo(info)
 	)
 end
 
+local function stripHealthInfo(name)
+	return name:gsub("%([^)]+%%%)$", "")
+end
+
 local function transcribeUnitSpellEvent(event, params)
 	if params:match("^PLAYER_SPELL") then
 		return
@@ -280,6 +284,12 @@ local function transcribeCleu(rawParams)
 		if extraArg1 == "BUFF" and destIsPlayerOrPet or extraArg1 == "DEBUFF" and destIsNpc then
 			return
 		end
+	end
+	if srcIsNpc then
+		sourceName = stripHealthInfo(sourceName)
+	end
+	if destIsNpc then
+		destName = stripHealthInfo(destName)
 	end
 	sourceFlags = sourceFlags or reconstructFlags(sourceName, srcIsPlayer, srcIsPet, srcIsNpc)
 	local destFlags = reconstructFlags(destName, destIsPlayer, destIsPet, destIsNpc)
