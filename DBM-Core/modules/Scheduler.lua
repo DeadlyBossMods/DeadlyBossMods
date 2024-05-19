@@ -144,23 +144,6 @@ do
 	end
 end
 
-local wrappers = {}
-local function range(max, cur, ...)
-	cur = cur or 1
-	if cur > max then
-		return ...
-	end
-	return cur, range(max, cur + 1, select(2, ...))
-end
-local function getWrapper(n)
-	wrappers[n] = wrappers[n] or loadstring(([[
-		return function(func, tbl)
-			return func(]] .. ("tbl[%s], "):rep(n):sub(0, -3) .. [[)
-		end
-	]]):format(range(n)))()
-	return wrappers[n]
-end
-
 local nextModSyncSpamUpdate = 0
 --mainFrame:SetScript("OnUpdate", function(self, elapsed)
 local function onUpdate(self, elapsed)
@@ -170,15 +153,7 @@ local function onUpdate(self, elapsed)
 	local nextTask = getMin()
 	while nextTask and nextTask.func and nextTask.time <= time do
 		deleteMin()
-		local n = nextTask.n
-		if n == #nextTask then
-			nextTask.func(unpack(nextTask))
-		else
-			-- too many nil values (or a trailing nil)
-			-- this is bad because unpack will not work properly
-			-- TODO: is there a better solution?
-			getWrapper(n)(nextTask.func, nextTask)
-		end
+		nextTask.func(unpack(nextTask, 1, nextTask.n))
 		pushCachedTable(nextTask)
 		nextTask = getMin()
 	end
