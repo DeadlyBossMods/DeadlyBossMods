@@ -532,6 +532,7 @@ do
 		end
 
 		local unitID
+		-- Always assume we are currently targeting the unit in question in tests
 		if UnitGUID("target") == sourceGUID or test.testRunning then
 			unitID = "target"
 		elseif not private.isClassic and (UnitGUID("focus") == sourceGUID) then
@@ -915,3 +916,6 @@ function bossModPrototype:GetLocalizedStrings()
 	self.localization.miscStrings.name = self.localization.general.name
 	return self.localization.miscStrings
 end
+
+-- this exists so time-warped tests can use self:GetTime() which can easily be overriden in time-warped tests
+bossModPrototype.GetTime = GetTime

@@ -1,0 +1,14 @@
+## Interface: 100207
+## Interface-Classic: 11502
+## Interface-Wrath: 30403
+## Interface-Cata: 40400
+## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Tests for Dragonflight mods|r
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## Dependencies: DBM-Test
+## DefaultState: enabled
+## LoadOnDemand: 1
+## X-DBM-Test: true
+
+Raids-Dragonflight/VaultoftheIncarnates/BroodkeeperDiurna.lua
+
+Raids-Dragonflight/VaultoftheIncarnates/Reports/BroodkeeperDiurna.lua

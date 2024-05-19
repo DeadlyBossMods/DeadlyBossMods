@@ -41,6 +41,9 @@ function test:HandleCommand(testName, timeWarp)
 		DBM:AddMsg("/dbm test * <time warp factor> -- run all tests")
 		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test SoD runs all tests for SoD.")
 		DBM:AddMsg("/dbm test clear -- clear exported test data")
+	elseif testName:lower() == "stop" then
+		test:StopTests()
+		DBM:AddMsg("Stopping running tests.")
 	elseif testName:lower() == "clear" then
 		DBM_TestResults_Export = {}
 		DBM:AddMsg("Cleared exported test results.")
