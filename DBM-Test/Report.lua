@@ -366,7 +366,7 @@ end
 local function eventToStringForReport(event)
 	local result = {}
 	local extraLines = {}
-	for _, v in ipairs(event) do
+	for paramId, v in ipairs(event) do
 		-- TODO: is this a good place to filter/simplify colors/textures etc?
 		v = stripMarkup(v)
 		if event.event == "PlaySound" then
@@ -392,6 +392,15 @@ local function eventToStringForReport(event)
 				-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
 				result[#result + 1] = ("%.1f"):format(v)
 			else
+				if (event.event == "ShowAnnounce" or event.event == "ShowYell") and paramId == 2 then
+					-- These sometimes include the player name, either from UnitName("player") or from the name/guid translation from the test runner
+					-- FIXME: these can fail if your character name matches a spell name
+					if v == UnitName("player") then
+						v = "PlayerName"
+					elseif v:match(" on .*" .. UnitName("player")) then
+						v = v:gsub(UnitName("player"), "PlayerName")
+					end
+				end
 				result[#result + 1] = tostring(v)
 			end
 		end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
