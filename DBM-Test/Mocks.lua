@@ -238,6 +238,16 @@ function mocks:RemoveUnitAura(name, guid, spellId, spellName)
 	auras[spellName] = nil
 end
 
+local unitPower = {}
+function mocks.UnitPower(uId)
+	return unitPower[uId]
+end
+
+function mocks:UpdateUnitPower(uId, name, power)
+	unitPower[uId] = power
+	unitPower["fakeunitid-name-" .. name] = power
+end
+
 function test:HookModVar(mod, key, val)
 	self.restoreModVariables = self.restoreModVariables or {}
 	self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
@@ -278,9 +288,11 @@ function test:SetupHooks(modUnderTest)
 	self:HookDbmVar("UnitDebuff", mocks.DBMUnitDebuff)
 	self:HookDbmVar("UnitAura", mocks.DBMUnitAura)
 	self:HookDbmVar("GetUnitFullName", mocks.DBMGetUnitFullName)
+	self:HookPrivate("UnitPower", mocks.UnitPower)
 	table.wipe(bosses)
 	table.wipe(unitTargets)
 	table.wipe(unitAuras)
+	table.wipe(unitPower)
 end
 
 function test:TeardownHooks()

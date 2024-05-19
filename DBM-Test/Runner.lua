@@ -271,6 +271,13 @@ function test:InjectEvent(event, ...)
 		end
 		return self:InjectEvent(event)
 	end
+	if event == "UNIT_POWER_UPDATE" and select("#", ...) > 2 then
+		local uid, name, powerType, power = ...
+		powerType = powerType:match("TYPE:(%w+)/")
+		power = tonumber(power:match("(%d+)"))
+		self.Mocks:UpdateUnitPower(uid, name, power)
+		return self:InjectEvent(event, uid, powerType)
+	end
 	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
