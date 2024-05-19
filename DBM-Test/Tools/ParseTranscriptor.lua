@@ -62,7 +62,10 @@ local log = nil
 for k, v in pairs(transcriptorDB) do
 	if not args.entry or k:sub(1, #args.entry) == args.entry then
 		if log then
-			print("Multiple logs found in file, use --entry to select one")
+			print("Multiple logs found in file, use --entry to select one of the following. A unique prefix is sufficient. ")
+			for entry in pairs(transcriptorDB) do
+				print(entry)
+			end
 			os.exit(1)
 		end
 		log = v
@@ -75,8 +78,8 @@ if not log or not logName then
 	os.exit(1)
 end
 
-local firstLog = args.start
-local lastLog = args["end"]
+local firstLog = tonumber(args.start)
+local lastLog = tonumber(args["end"])
 
 if not firstLog or not lastLog then
 	local encounterStarts = {}
@@ -84,24 +87,31 @@ if not firstLog or not lastLog then
 	local bossKills = {}
 	for i, v in ipairs(log.total) do
 		if v:find("%[ENCOUNTER_START%]") then
-			encounterStarts[#encounterStarts + 1] = i
+			encounterStarts[#encounterStarts + 1] = {offset = i, name = v:match("%d#([^#]+)#") }
 		elseif v:find("%[ENCOUNTER_END%]") then
-			encounterEnds[#encounterEnds + 1] = i
+			encounterEnds[#encounterEnds + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
 		elseif v:find("%[BOSS_KILL%]") then
-			bossKills[#bossKills + 1] = i
+			bossKills[#bossKills + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
 		end
 	end
 	if #encounterStarts ~= 1 or #encounterEnds ~= 1 then
 		print("Log doesn't contain exactly one ENCOUNTER_START/END")
-		print("ENCOUNTER_START at: " .. table.concat(encounterStarts, ", "))
-		print("ENCOUNTER_END at: " .. table.concat(encounterEnds, ", "))
+		local encounterStartHelp, encounterEndHelp = {}, {}
+		for i, v in ipairs(encounterStarts) do
+			encounterStartHelp[i] = v.offset .. " (" .. v.name .. ")"
+		end
+		for i, v in ipairs(encounterEnds) do
+			encounterEndHelp[i] = v.offset .. " (" .. v.name .. ")"
+		end
+		print("ENCOUNTER_START at: " .. table.concat(encounterStartHelp, ", "))
+		print("ENCOUNTER_END at: " .. table.concat(encounterEndHelp, ", "))
 		print("Use --start and --end to select offsets explicitly")
 		os.exit(1)
 	end
-	firstLog = encounterStarts[1]
-	lastLog = encounterEnds[1]
+	firstLog = encounterStarts[1].offset
+	lastLog = encounterEnds[1].offset
 	-- BOSS_KILL often triggers after ENCOUNTER_END, we want to include both to test that we don't trigger end multiple times
-	local lastBossKill = bossKills[#bossKills]
+	local lastBossKill = bossKills[#bossKills].offset
 	if lastBossKill and lastBossKill < lastLog + 50 then
 		lastLog = math.max(lastLog, lastBossKill)
 	end
@@ -329,8 +339,8 @@ local function transcribeEvent(event, params)
 	if event:match("^UNIT_SPELL") then
 		return transcribeUnitSpellEvent(event, params)
 	end
-	if event == "UNIT_TARGET" or event == "PLAYER_TARGET_CHANGED" then
-		-- TODO: use this to reconstruct targets, e.g. for IsTanking
+	if event == "PLAYER_TARGET_CHANGED" then
+		-- TODO: do we ever care about player targets? typically used in filters and we don't want to filter
 		return
 	end
 	if event == "CLEU" then
@@ -347,9 +357,9 @@ end
 local function getMetadataFromLog()
 	local player
 	local instanceInfo = {}
-	for i = firstLog, lastLog do
-		local line = log.total[i]
-		if not instanceInfo.name and line:match("GetInstanceInfo%(%) =") then
+	for i, line in ipairs(log.total) do
+		-- Only grab instance info from within relevant log area
+		if i >= firstLog and i <= lastLog and not instanceInfo.name and line:match("GetInstanceInfo%(%) =") then
 			instanceInfo.name, instanceInfo.instanceType,
 			instanceInfo.difficultyID, instanceInfo.difficultyName,
 			instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty,
@@ -358,6 +368,7 @@ local function getMetadataFromLog()
 				"%[DBM_Debug%] GetInstanceInfo%(%) = ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^#]+)"
 			))
 		end
+		-- But we can grab the player id from anywhere
 		if not player then
 			player = line:match("%[UNIT_SPELLCAST_SUCCEEDED%] PLAYER_SPELL{([^}]+)} %-.*%- %[%[player:Cast%-")
 		end
@@ -409,7 +420,6 @@ DBM.Test:DefineTest{
 	%s,
 }
 ]]
-
 
 local function generateTest()
 	local str = template:format(
