@@ -87,8 +87,31 @@ function mocks.DBMGetRaidUnitId(_, name)
 	return "fakeunitid-name-" .. name
 end
 
-function mocks.DBMGetUnitIdFromGUID(_, guid)
-	return "fakeunitid-guid-" .. guid
+local bosses = {}
+function mocks.DBMGetUnitIdFromGUID(_, guid, scanOnlyBoss)
+	return bosses[guid] and bosses[guid].uId or not scanOnlyBoss and "fakeunitid-guid-" .. guid
+end
+
+function mocks:UpdateBoss(uId, name, guid, canAttack, exists, visible)
+	local boss = {uId = uId, name = name, guid = guid, canAttack = canAttack, exists = exists, visible = visible}
+	bosses[guid] = boss
+	bosses[uId] = boss
+end
+
+local unitTargets = {}
+function mocks:UpdateTarget(uId, name, target)
+	unitTargets["fakeunit-name" .. name] = target
+	unitTargets[uId] = target
+end
+
+function mocks.DBMGetUnitFullName(_, uId)
+	if not uId then return end
+	local base = uId:match("(.-)target$")
+	if base then
+		return unitTargets[base]
+	end
+	local fromFakeId = uId:match("fakeunitid%-name%-(.*)")
+	return fromFakeId or bosses[uId] and bosses[uId].name
 end
 
 local function parseFakeUnit(id)
@@ -254,6 +277,9 @@ function test:SetupHooks(modUnderTest)
 	self:HookDbmVar("UnitBuff", mocks.DBMUnitBuff)
 	self:HookDbmVar("UnitDebuff", mocks.DBMUnitDebuff)
 	self:HookDbmVar("UnitAura", mocks.DBMUnitAura)
+	self:HookDbmVar("GetUnitFullName", mocks.DBMGetUnitFullName)
+	table.wipe(bosses)
+	table.wipe(unitTargets)
 	table.wipe(unitAuras)
 end
 
