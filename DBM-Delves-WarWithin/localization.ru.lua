@@ -1,19 +1,88 @@
 if GetLocale() ~= "ruRU" then return end
 local L
 
+-----------------------
+-- <<< Delve Trash >>> --
+-----------------------
+L = DBM:GetModLocalization("DelveTrashCommon")
+
+L:SetGeneralLocalization({
+	name =	"Трэш мобы Погружение в норы"
+})
+
+---------------------
+-- Fungal Folly --
+---------------------
+--L = DBM:GetModLocalization("z2664")
+
+--L:SetTimerLocalization({
+
+--})
+
+--L:SetOptionLocalization({
+
+--})
+
+--L:SetMiscLocalization({
+
+--})
+
+---------------------
+-- Mycomancer Cavern --
+---------------------
+--L = DBM:GetModLocalization("z2679")
+
+---------------------
+-- Earthcrawl Mines --
+---------------------
+--L = DBM:GetModLocalization("z2680")
+
+---------------------
+-- Kriegval's Rest --
+---------------------
+--L = DBM:GetModLocalization("z2681")
+
+---------------------
+-- Zekvir's Lair --
+---------------------
+--L = DBM:GetModLocalization("z2682")
+
+---------------------
+-- The Waterworks --
+---------------------
+--L = DBM:GetModLocalization("z2683")
+
+---------------------
+-- The Dread Pit --
+---------------------
+--L = DBM:GetModLocalization("z2684")
+
+---------------------
+-- Skittering Breach --
+---------------------
+--L = DBM:GetModLocalization("z2685")
+
+---------------------
+-- Nightfal--L Sanctum --
+---------------------
+--L = DBM:GetModLocalization("z2686")
+
+---------------------
+-- The Sinkhole --
+---------------------
+--L = DBM:GetModLocalization("z2687")
+
 ---------------------
 -- The Spiral Weave --
 ---------------------
-L = DBM:GetModLocalization("z2688")
+--L = DBM:GetModLocalization("z2688")
 
-L:SetTimerLocalization({
+---------------------
+-- Tak-Rethan Abyss --
+---------------------
+--L = DBM:GetModLocalization("z2689")
 
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-
-})
+---------------------
+-- The Underkeep --
+---------------------
+--L = DBM:GetModLocalization("z2690")
