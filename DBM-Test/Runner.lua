@@ -249,6 +249,35 @@ function test:InjectEvent(event, ...)
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		self.Mocks:SetUnitAffectingCombat("player", UnitName("player"), UnitGUID("player"), false)
 	end
+	if event == "UNIT_TARGET" and select("#", ...) > 1 then
+		local uId, unitName, target = ...
+		target = target:match("Target: (.*)")
+		if target == "??" then
+			target = nil
+		end
+		if target == self.testData.playerName then
+			target = UnitName("player")
+		end
+		self.Mocks:UpdateTarget(uId, unitName, target)
+		-- strip extra params to not provide the mod with more information than it would have in the real environment
+		return self:InjectEvent(event, uId)
+	end
+	if event == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" and select("#", ...) > 0 then
+		for i = 2, select("#", ...), 8 do
+			local bossUid, canAttack, exists, visible, name, guid = select(i, ...)
+			if guid then
+				self.Mocks:UpdateBoss(bossUid, name, guid, canAttack, exists, visible)
+			end
+		end
+		return self:InjectEvent(event)
+	end
+	if event == "UNIT_POWER_UPDATE" and select("#", ...) > 2 then
+		local uid, name, powerType, power = ...
+		powerType = powerType:match("TYPE:(%w+)/")
+		power = tonumber(power:match("(%d+)"))
+		self.Mocks:UpdateUnitPower(uid, name, power)
+		return self:InjectEvent(event, uid, powerType)
+	end
 	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)

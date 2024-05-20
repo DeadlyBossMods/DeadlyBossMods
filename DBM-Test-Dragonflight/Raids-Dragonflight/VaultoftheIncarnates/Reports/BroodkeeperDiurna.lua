@@ -449,7 +449,7 @@ Event trace:
 	[173.73] SPELL_AURA_APPLIED: [Drakonid Stormbringer->Jungri: Ionizing Charge] Creature-0-3883-2522-18928-191232-0000463B10, Drakonid Stormbringer, 0xa48, Player-121-08C3325D, Jungri, 0x511, 375620, Ionizing Charge, 0, DEBUFF, 0
 		ShowSpecialWarning: Ionizing Charge - move away from others
 		PlaySound: VoicePack/range5
-		ShowYell: Ionizing Charge on Tandanu
+		ShowYell: Ionizing Charge on PlayerName
 	Unknown trigger
 		ShowAnnounce: Ionizing Charge on Carolmi-Quel'Thalas, Dracaryn-MoonGuard, Itìs-Proudmoore, Jungri, Tellashalala-Area52
 	[174.15] SPELL_CAST_START: [Juvenile Frost Proto-Dragon: Chilling Tantrum] Creature-0-3883-2522-18928-191222-0000463B10, Juvenile Frost Proto-Dragon, 0xa48, "", nil, 0x0, 375457, Chilling Tantrum, 0, 0
