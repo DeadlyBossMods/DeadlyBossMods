@@ -146,12 +146,40 @@ function reporter:FindUntriggeredEvents(findings)
 	end
 	for event, count in pairs(registeredEvents) do
 		if count == 0 then
-			findings[#findings + 1] = {type = "untriggered-event", event = event, text = "Unused event registration: " .. addSpellNames(event)}
+			findings[#findings + 1] = {type = "untriggered-event", event = event, sortKey = 1, extraSortKey = event, text = "Unused event registration: " .. addSpellNames(event)}
 		end
 	end
 end
 
+---@param ignores TestIgnoreWarnings
+local function ignoreSpellIdMismatch(ignores, triggerSpellId, warnSpellId)
+	if not ignores or not ignores.spellIdMismatches then
+		return false
+	end
+	local triggerSpellName = DBM:GetSpellInfo(triggerSpellId) or tostring(triggerSpellId)
+	local warnSpellName = DBM:GetSpellInfo(warnSpellId) or tostring(warnSpellId)
+	local ignoreKey = ignores.spellIdMismatches[triggerSpellId] and triggerSpellId or triggerSpellName
+	local ignoreList = ignores.spellIdMismatches[ignoreKey]
+	if not ignoreList then
+		return false
+	end
+	if ignoreList == true or ignoreList == warnSpellId or ignoreList == warnSpellName then
+		return ignoreKey
+	end
+	if type(ignoreList) == "table" then
+		for _, v in ipairs(ignoreList) do
+			if v == warnSpellId then
+				return ignoreKey, warnSpellId
+			elseif v == warnSpellName then
+				return ignoreKey, warnSpellName
+			end
+		end
+	end
+	return false
+end
+
 function reporter:FindSpellIdMismatches(findings)
+	local ignoredTriggerSpells = {}
 	for _, trigger in ipairs(self.trace) do
 		local triggerSpellId = extractSpellId(trigger.rawTrigger)
 		local triggerEvent = trigger.rawTrigger[3]
@@ -163,12 +191,53 @@ function reporter:FindSpellIdMismatches(findings)
 					local obj = v[1]
 					-- spellId field is sometimes used for non-spellId things like phases/stages
 					if obj.spellId and obj.spellId > 50 and obj.spellId ~= triggerSpellId then
+						local ignoreKey, ignoreValue = ignoreSpellIdMismatch(self.testData.ignoreWarnings, triggerSpellId, obj.spellId)
+						if ignoreKey then
+							ignoredTriggerSpells[ignoreKey] = ignoredTriggerSpells[ignoreKey] or {}
+							if ignoreValue then
+								ignoredTriggerSpells[ignoreKey][ignoreValue] = true
+							end
+						else
+							findings[#findings + 1] = {
+								type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId, sortKey = 2,
+								text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
+							}
+						end
+					end
+				end
+			end
+		end
+	end
+	if self.testData.ignoreWarnings and self.testData.ignoreWarnings.spellIdMismatches then
+		for k, v in pairs(self.testData.ignoreWarnings.spellIdMismatches) do
+			if type(v) ~= "table" and not ignoredTriggerSpells[k] then
+				findings[#findings + 1] = {
+					type = "unused-spell-mismatch-ignore", spellId = k, sortKey = 2.1,
+					text = ("ignoreWarnings ignores spell mismatches between %s and %s, but no such mismatch was found"):format(tostring(k), tostring(v == true and "*" or v))
+				}
+			elseif type(v) == "table" then
+				for _, ignoreMismatch in ipairs(v) do
+					if not ignoredTriggerSpells[k][ignoreMismatch] then
 						findings[#findings + 1] = {
-							type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId,
-							text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
+							type = "unused-spell-mismatch-ignore", spellId = k, sortKey = 2.1,
+							text = ("ignoreWarnings ignores spell mismatches between %s and %s, but no such mismatch was found"):format(tostring(k), tostring(ignoreMismatch))
 						}
 					end
 				end
+			end
+		end
+	end
+end
+
+function reporter:FindPreciseShowsThatAlwaysFailed(findings)
+	local objs = self:FindObjects()
+	for _, obj in ipairs(objs) do
+		for maxTotal in pairs(obj.testUsedWithPreciseShow) do
+			if not obj.testUsedWithPreciseShowSucess[maxTotal] then
+				findings[#findings + 1] = {
+					type = "precise-show-always-failed", spellId = obj.spellId, sortKey = 3, extraSortKey = maxTotal,
+					text = ("%s uses PreciseShow(%d) but never gets %d targets"):format(self:ObjectToString(obj), maxTotal, maxTotal)
+				}
 			end
 		end
 	end
@@ -178,6 +247,7 @@ function reporter:ReportFindings()
 	local findings = {}
 	self:FindUntriggeredEvents(findings)
 	self:FindSpellIdMismatches(findings)
+	self:FindPreciseShowsThatAlwaysFailed(findings)
 	local dedup = {}
 	for _, v in ipairs(findings) do
 		dedup[v.text] = v
@@ -188,10 +258,18 @@ function reporter:ReportFindings()
 	end
 	-- Make order more deterministic
 	table.sort(findings, function(e1, e2)
-		if e1.type ~= e2.type then
-			return e1.type < e2.type
+		if e1.sortKey ~= e2.sortKey then
+			return e1.sortKey < e2.sortKey
+		elseif e1.spellId ~= e2.spellId then
+			if type(e1.spellId) ~= type(e2.spellId) then
+				return type(e1.spellId) < type(e2.spellId)
+			else
+				return e1.spellId < e2.spellId
+			end
+		elseif e1.extraSortKey ~= e2.extraSortKey then
+			return e1.extraSortKey < e2.extraSortKey
 		else
-			return (e1.event or e1.spellId or e1.text) < (e2.event or e2.spellId or e2.text)
+			return e1.text < e2.text
 		end
 	end)
 	if #findings > 0 then
@@ -204,7 +282,10 @@ function reporter:ReportFindings()
 	end
 end
 
-function reporter:ReportUnusedObjects()
+function reporter:FindObjects()
+	if self.cachedObjects then
+		return self.cachedObjects
+	end
 	local objs = {}
 	for _, entry in ipairs(self.trace) do
 		for _, v in ipairs(entry.traces) do
@@ -213,13 +294,19 @@ function reporter:ReportUnusedObjects()
 			end
 		end
 	end
+	table.sort(objs, compareObjects)
+	self.cachedObjects = objs
+	return objs
+end
+
+function reporter:ReportUnusedObjects()
+	local objs = self:FindObjects()
 	local unusedObjects = {}
 	for _, v in ipairs(objs) do
 		if not v.testUseCount or v.testUseCount == 0 then
 			unusedObjects[#unusedObjects + 1] = v
 		end
 	end
-	table.sort(unusedObjects, compareObjects)
 	self:ObjectsToString(unusedObjects)
 	if #unusedObjects > 0 then
 		return "\t" .. table.concat(unusedObjects, "\n\t")
