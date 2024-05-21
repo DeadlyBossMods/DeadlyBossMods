@@ -7,6 +7,11 @@ local nilValue = newproxy(false)
 local mocks = {}
 test.Mocks = mocks
 
+function mocks.GetTime()
+	return test.timeWarper and test.timeWarper:GetTime() or GetTime()
+end
+
+
 local fakeCLEUArgs = {
 	-- Number of args to handle nil values gracefully
 	n = nil
@@ -248,6 +253,15 @@ function mocks:UpdateUnitPower(uId, name, power)
 	unitPower["fakeunitid-name-" .. name] = power
 end
 
+function mocks.UnitExists(uId)
+	return bosses[uId] and bosses[uId].exists or UnitExists(uId)
+end
+
+function mocks.UnitGUID(uId)
+	local fromFakeId = uId:match("fakeunitid%-guid%-(.*)")
+	return bosses[uId] and bosses[uId].guid or fromFakeId or UnitGUID(uId)
+end
+
 function test:HookModVar(mod, key, val)
 	self.restoreModVariables = self.restoreModVariables or {}
 	self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
@@ -277,10 +291,7 @@ function test:SetupHooks(modUnderTest)
 	self:HookPrivate("UnitDetailedThreatSituation", mocks.UnitDetailedThreatSituation)
 	table.wipe(threatInfo)
 	self:HookPrivate("UnitAffectingCombat", mocks.UnitAffectingCombat)
-	table.wipe(unitsInCombat)
-	self:HookModVar(modUnderTest, "AntiSpam", mocks.AntiSpam)
-	mocks.GetTime = function() return self.timeWarper and self.timeWarper:GetTime() or GetTime() end
-	self:HookModVar(modUnderTest, "GetTime", mocks.GetTime)
+	self:HookPrivate("UnitGUID", mocks.UnitGUID)
 	self:HookDbmVar("GetRaidUnitId", mocks.DBMGetRaidUnitId)
 	self:HookDbmVar("GetUnitIdFromGUID", mocks.DBMGetUnitIdFromGUID)
 	self:HookDbmVar("NumRealAlivePlayers", mocks.DBMNumRealAlivePlayers)

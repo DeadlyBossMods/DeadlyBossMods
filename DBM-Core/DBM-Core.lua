@@ -8858,4 +8858,10 @@ test:RegisterLocalHook("UnitAffectingCombat", function(val)
 	return old
 end)
 
+test:RegisterLocalHook("UnitGUID", function(val)
+	local old = UnitGUID
+	UnitGUID = val
+	return old
+end)
+
 private.mainFrame = mainFrame
