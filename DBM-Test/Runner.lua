@@ -2,6 +2,8 @@
 ---@class DBMTest
 local test = DBM.Test
 
+local dbmPrivate = test:GetPrivate()
+
 -- FIXME: i don't like this "global" state
 local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
@@ -239,6 +241,8 @@ function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid,
 	end
 end
 
+local fakeUnitEventFrame = CreateFrame("Frame")
+
 function test:InjectEvent(event, ...)
 	if event == "IsEncounterInProgress()" then
 		self.Mocks:SetEncounterInProgress(...)
@@ -278,14 +282,17 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateUnitPower(uid, name, power)
 		return self:InjectEvent(event, uid, powerType)
 	end
-	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
-		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, self.Mocks.CombatLogGetCurrentEventInfo())
+		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
 	else
-		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, ...)
+		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
+	end
+	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
+	if event:match("^UNIT_") then
+		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)
 	end
 end
 
