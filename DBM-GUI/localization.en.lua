@@ -19,6 +19,7 @@ L.OTabOptions						= "Core Options"
 L.OTabAbout							= "About"
 
 L.FOLLOWER							= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    		= "Story"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
 
 L.TabCategory_CURRENT_SEASON		= "Current Season"
 

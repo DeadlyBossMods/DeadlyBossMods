@@ -206,7 +206,7 @@ end
 ---Dungeons: follower, normal. (Raids excluded)
 function bossModPrototype:IsEasyDungeon()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal5" or diff == "follower5"
+	return diff == "normal5" or diff == "follower" or diff == "quest"
 end
 
 ---Dungeons: Any 5 man dungeon
@@ -218,7 +218,7 @@ end
 ---Dungeons: follower, normal, heroic. Raids: LFR, normal (rescope this to exclude heroic now that heroic5 is the new mythic 0?)
 function bossModPrototype:IsEasy()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower5"
+	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower" or diff == "quest"
 end
 
 ---Dungeons: mythic, mythic+. Raids: heroic, mythic
@@ -233,10 +233,16 @@ function bossModPrototype:IsNormal()
 	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
 end
 
-
+---Dungeons with AI "follower" npcs. 1-5 players
 function bossModPrototype:IsFollower()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "follower"
+end
+
+---Dungeons designed for just the player. "quest dungeons"
+function bossModPrototype:IsQuest()
+	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "quest"
 end
 
 ---Pretty much ANYTHING that has a heroic mode
@@ -354,9 +360,13 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "humilityscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 --	elseif difficulty == 192 then--Non Instanced Challenge 1 (Unknown)
 --		return "delve1", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 205 then--Follower Dungeon (Dragonflight 10.2.5+)
+	elseif difficulty == 205 then--Follower (Party Dungeon - Dragonflight 10.2.5+)
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
+		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
+		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
 		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0

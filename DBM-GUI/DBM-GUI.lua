@@ -756,7 +756,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 	area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -270 or -25)
 
 	local statOrder = {
-		"lfr", "follower", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
+		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
 	}
 
 	for _, mod in ipairs(DBM.Mods) do
@@ -824,6 +824,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 			local statTypes = {
 				follower	= L.FOLLOWER,--no PLAYER_DIFFICULTY entry yet
+				story		= L.STORY,--no PLAYER_DIFFICULTY entry yet
 				lfr25		= PLAYER_DIFFICULTY3,
 				normal		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 				normal25	= RAID_DIFFICULTY2,
