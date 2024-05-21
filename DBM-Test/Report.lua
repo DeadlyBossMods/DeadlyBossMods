@@ -35,7 +35,20 @@ local function compareObjects(obj1, obj2)
 	end
 end
 
-function reporter:ObjectToString(obj, skipType)
+local function triggerDeltasPretty(times)
+	if not times or #times == 0 then
+		return ""
+	end
+	local res = {}
+	local prev = 0
+	for _, v in ipairs(times) do
+		res[#res + 1] = ("%.2f"):format(v - prev)
+		prev = v
+	end
+	return ", triggerDeltas = " .. table.concat(res, ", ")
+end
+
+function reporter:ObjectToString(obj, skipType, showTriggerTimes)
 	if type(obj) == "string" then -- used for PlaySound from voice packs which doesn't have an object, this is a bit ugly
 		local fileName = obj:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
 		return ("%sVoicePack/%s"):format(not skipType and "[PlaySound] " or "", fileName)
@@ -44,11 +57,11 @@ function reporter:ObjectToString(obj, skipType)
 	if obj.objClass == "Timer" then
 		-- FIXME: this should be fixed in timers, not here, can't see a good reason for the late evaluation of the localized text in timers whereas everything else can do it early
 		local text = obj.text or obj.type and obj.mod:GetLocalizedTimerText(obj.type, obj.spellId, obj.name) or obj.name
-		return ("%s%s, time=%.2f, type=%s, spellId=%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, spellId)
+		return ("%s%s, time=%.2f, type=%s, spellId=%s%s"):format(not skipType and "[Timer] " or "", text, obj.timer, obj.type, spellId, triggerDeltasPretty(showTriggerTimes))
 	elseif obj.objClass == "Announce" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), spellId)
+		return ("%s%s, type=%s, spellId=%s%s"):format(not skipType and "[Announce] " or "", obj.text, tostring(obj.announceType), spellId, triggerDeltasPretty(showTriggerTimes))
 	elseif obj.objClass == "SpecialWarning" then
-		return ("%s%s, type=%s, spellId=%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), spellId)
+		return ("%s%s, type=%s, spellId=%s%s"):format(not skipType and "[Special Warning] " or "", obj.text, tostring(obj.announceType), spellId, triggerDeltasPretty(showTriggerTimes))
 	elseif obj.objClass == "Yell" then
 		-- Handle localizations that insert the player's name *on loading*
 		-- TODO: this will fail if you are testing with a character named like a spell...
@@ -263,6 +276,7 @@ function reporter:ReportWarningObject(...)
 			eventNames[arg] = true
 		end
 	end
+	local showEvent = ...
 	local objs = {}
 	for _, entry in ipairs(self.trace) do
 		for _, v in ipairs(entry.traces) do
@@ -273,11 +287,14 @@ function reporter:ReportWarningObject(...)
 				end
 				if not filterExcluded then
 					local obj = v[1]
-					local entries = objs[obj] or {}
+					local entries = objs[obj] or {showTriggerTimes = {}}
 					objs[obj] = entries
 					-- Don't report the same trigger twice if it runs multiple actions on an object (e.g., timer restart)
 					if entry.trigger ~= entries[#entries] then
 						entries[#entries + 1] = entry.trigger
+					end
+					if v.event == showEvent then -- ShowAnnounce/StartTimer etc
+						entries.showTriggerTimes[#entries.showTriggerTimes + 1] = entry.rawTrigger[1]
 					end
 				end
 			end
@@ -285,14 +302,14 @@ function reporter:ReportWarningObject(...)
 	end
 	local sortedObjs = {}
 	for k, v in pairs(objs) do
-		sortedObjs[#sortedObjs + 1] = {obj = k, triggers = condenseTriggers(v)}
+		sortedObjs[#sortedObjs + 1] = {obj = k, triggers = condenseTriggers(v), showTriggerTimes = v.showTriggerTimes}
 	end
 	table.sort(sortedObjs, function(e1, e2)
 		return compareObjects(e1.obj, e2.obj)
 	end)
 	local result = ""
 	for _, v in ipairs(sortedObjs) do
-		result = result .. "\t" .. self:ObjectToString(v.obj, true) .. "\n"
+		result = result .. "\t" .. self:ObjectToString(v.obj, true, v.showTriggerTimes) .. "\n"
 		for _, trigger in ipairs(v.triggers) do
 			result = result .. "\t\t" .. trigger.firstTrigger .. "\n"
 			if #trigger.repeated > 1 then
