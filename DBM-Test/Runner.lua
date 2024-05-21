@@ -103,6 +103,10 @@ local function functionArgsPretty(...)
 		if type(arg) == "number" then
 			res[#res + 1] = ("%.1f"):format(arg)
 		elseif type(arg) == "string" then
+			-- to handle announce:CombinedShow(args.destName) since we fake args.destName to set to the current real player
+			if arg == UnitName("player") then
+				arg = "PlayerName"
+			end
 			res[#res + 1] = ("%q"):format(arg)
 		elseif type(arg) == "table" then
 			res[#res + 1] = shortObjectName(arg)
@@ -166,9 +170,11 @@ function test:Trace(mod, event, ...)
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
 	-- FIXME: this logic will get real messy real fast as we add more events -- come up with a way to define per-event behavior somehow
 	if key == "InternalLoading" then
-		local entries = loadingTrace[mod] or {}
-		loadingTrace[mod] = entries
-		entries[#entries + 1] = {event, ...}
+		if mod then -- We only care about mod-related events, sometimes other events such as internal Schedules can trigger during load (e.g., timer recovery)
+			local entries = loadingTrace[mod] or {}
+			loadingTrace[mod] = entries
+			entries[#entries + 1] = {event, ...}
+		end
 	else
 		local traceEntry = trace[#trace]
 		if not traceEntry or traceEntry.trigger ~= key then
