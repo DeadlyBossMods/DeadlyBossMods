@@ -31,9 +31,10 @@ for entry in lfs.dir(reportsFolderName) do
 	if lfs.attributes(fileName, "mode") == "file" then
 		local f, err = io.open(fileName, "r")
 		if not f then error(err) end
-		local _ = f:read("*l")
-		local testName = f:read("*l"):match("^Test: ([^\r\n]+)")
-		reportFiles[testName] = fileName
+		local testName = f:read("*l") and f:read("*l"):match("^Test: ([^\r\n]+)")
+		if testName then
+			reportFiles[testName] = fileName
+		end
 		f:close()
 	end
 end
