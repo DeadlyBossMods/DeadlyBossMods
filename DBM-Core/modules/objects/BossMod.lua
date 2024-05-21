@@ -878,7 +878,9 @@ function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
-	return self:Schedule(t, self[method], self, ...)
+	local id = self:Schedule(t, self[method], self, ...)
+	test:Trace(self, "SetScheduleMethodName", id, self, method, ...)
+	return id
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
 
