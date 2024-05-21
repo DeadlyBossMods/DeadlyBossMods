@@ -363,47 +363,60 @@ local function stripMarkup(text)
 end
 
 ---@param event TraceEntryEvent
-local function eventToStringForReport(event)
+function reporter:EventToStringForReport(event, indent, subIndent)
 	local result = {}
 	local extraLines = {}
-	for paramId, v in ipairs(event) do
-		-- TODO: is this a good place to filter/simplify colors/textures etc?
-		v = stripMarkup(v)
-		if event.event == "PlaySound" then
-			-- Make voice packs show up as VoicePack/<id>
-			if type(v) == "string" and v:match("^Interface\\AddOns\\DBM%-VP") then
-				v = "VoicePack/" .. v:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
-			-- Make core sounds show up as DBM/<file>
-			elseif type(v) == "string" and v:match("^Interface\\AddOns\\DBM-Core\\sounds\\") then
-				v = "DBM/" .. v:gsub("Interface\\AddOns\\DBM-Core\\sounds\\", ""):gsub("\\", "/"):gsub("%.ogg$", "")
-			-- Special warnings with the non-default "1" sound show up as DBM/SpecialWarningSound1
-			-- (Sound 1 is filtered)
-			else
-				for i = 2, 5 do
-					if v == DBM.Options["SpecialWarningSound" .. i] then
-						v = "DBM/SpecialWarningSound" .. i
-						break
-					end
-				end
-			end
+	if event.event == "ScheduleTask" then
+		local funcName = event.scheduleData.funcName or "(anonymous function)"
+		result[#result + 1] = ("%s at %.2f (+%.2f)"):format(funcName, event.scheduleData.time, event.scheduleData.delta)
+	elseif event.event == "UnscheduleTask" then
+		local unscheduledTask = event.scheduleData.unscheduledTask
+		if unscheduledTask then
+			local funcName = unscheduledTask.scheduledBy.scheduleData.funcName or "(anonymous function)"
+			result[#result + 1] = ("%s scheduled by %s at %.2f"):format(funcName, unscheduledTask.scheduledBy.event, unscheduledTask.rawTrigger[1])
+		else
+			result[#result + 1] = "(unknown function)" -- can't happen
 		end
-		if type(v) ~= "table" then
-			if event.event == "StartTimer" and type(v) == "number" then
-				-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
-				result[#result + 1] = ("%.1f"):format(v)
-			else
-				if (event.event == "ShowAnnounce" or event.event == "ShowYell") and paramId == 2 then
-					-- These sometimes include the player name, either from UnitName("player") or from the name/guid translation from the test runner
-					-- FIXME: these can fail if your character name matches a spell name
-					if v == UnitName("player") then
-						v = "PlayerName"
-					elseif v:match(" on .*" .. UnitName("player")) then
-						v = v:gsub(UnitName("player"), "PlayerName")
+	else
+		for paramId, v in ipairs(event) do
+			-- TODO: is this a good place to filter/simplify colors/textures etc?
+			v = stripMarkup(v)
+			if event.event == "PlaySound" then
+				-- Make voice packs show up as VoicePack/<id>
+				if type(v) == "string" and v:match("^Interface\\AddOns\\DBM%-VP") then
+					v = "VoicePack/" .. v:match("Interface\\AddOns\\DBM%-VP[^\\]-\\(.-)%.ogg")
+				-- Make core sounds show up as DBM/<file>
+				elseif type(v) == "string" and v:match("^Interface\\AddOns\\DBM-Core\\sounds\\") then
+					v = "DBM/" .. v:gsub("Interface\\AddOns\\DBM-Core\\sounds\\", ""):gsub("\\", "/"):gsub("%.ogg$", "")
+				-- Special warnings with the non-default "1" sound show up as DBM/SpecialWarningSound1
+				-- (Sound 1 is filtered)
+				else
+					for i = 2, 5 do
+						if v == DBM.Options["SpecialWarningSound" .. i] then
+							v = "DBM/SpecialWarningSound" .. i
+							break
+						end
 					end
 				end
-				result[#result + 1] = tostring(v)
 			end
-		end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
+			if type(v) ~= "table" then
+				if event.event == "StartTimer" and type(v) == "number" then
+					-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
+					result[#result + 1] = ("%.1f"):format(v)
+				else
+					if (event.event == "ShowAnnounce" or event.event == "ShowYell") and paramId == 2 then
+						-- These sometimes include the player name, either from UnitName("player") or from the name/guid translation from the test runner
+						-- FIXME: these can fail if your character name matches a spell name
+						if v == UnitName("player") then
+							v = "PlayerName"
+						elseif v:match(" on .*" .. UnitName("player")) then
+							v = v:gsub(UnitName("player"), "PlayerName")
+						end
+					end
+					result[#result + 1] = tostring(v)
+				end
+			end -- TODO: would it be useful to have a short string representation of the object instead of dropping it?
+		end
 	end
 	if event.event == "AntiSpam" then
 		result[#result] = nil -- filter bool result
@@ -428,11 +441,27 @@ local function eventToStringForReport(event)
 			end
 		end
 	end
+	if event.event == "ScheduleTask" then
+		if event.scheduleData.unscheduledBy then
+			local unscheduleEvent = event.scheduleData.unscheduledBy[2]
+			if unscheduleEvent == "COMBAT_LOG_EVENT_UNFILTERED" then
+				unscheduleEvent = event.scheduleData.unscheduledBy[3]
+			end
+			extraLines[#extraLines + 1] = "Unscheduled by " .. unscheduleEvent .. " at " .. ("%.2f"):format(event.scheduleData.unscheduledBy[1])
+		end
+		if event.scheduleData.scheduleExecution then
+			for _, v in ipairs(event.scheduleData.scheduleExecution.traces) do
+				if not self:FilterTraceEntry(v, event.scheduleData.scheduleExecution) then
+					extraLines[#extraLines + 1] = self:EventToStringForReport(v, 0, math.max((subIndent or 1) - 1, indent) + 2)
+				end
+			end
+		end
+	end
 	local str = event.event .. ": " .. table.concat(result, ", ")
 	if #extraLines > 0 then
-		return str .. "\n\t\t\t" .. table.concat(extraLines, "\n\t\t\t")
+		return ("\t"):rep(indent) .. str .. "\n" .. ("\t"):rep(indent + (subIndent or 1)) .. table.concat(extraLines, "\n" .. ("\t"):rep(indent + (subIndent or 1)))
 	else
-		return str
+		return ("\t"):rep(indent) .. str
 	end
 end
 
@@ -444,6 +473,9 @@ local genericWarningSounds = {
 ---@param entry TraceEntryEvent
 ---@param trigger TraceEntry
 function reporter:FilterTraceEntry(entry, trigger)
+	if entry.hidden then
+		return true
+	end
 	if entry.event == "UnregisterEvents" or entry.event == "RegisterEvents" then
 		if entry.mod ~= self.mod then
 			return true
@@ -471,6 +503,10 @@ function reporter:FilterTraceEntry(entry, trigger)
 			return true
 		end
 	end
+	-- Schedule-related events are only in here for backtracking and are shown with the corresponding ScheduleTask method
+	if entry.event == "ExecuteScheduledTaskPre" or entry.event == "ExecuteScheduledTaskPost" or entry.event == "SchedulerHideFromTraceIfUnscheduled" then
+		return true
+	end
 	return entry.event:match("^New")
 end
 
@@ -478,13 +514,16 @@ function reporter:ReportEventTrace()
 	local result = ""
 	for _, entry in ipairs(self.trace) do
 		local traces = {}
-		for _, v in ipairs(entry.traces) do
-			if not self:FilterTraceEntry(v, entry) then
-				traces[#traces + 1] = eventToStringForReport(v)
+		-- Task executions are reported at the point they are scheduled, don't report them at the top level
+		if entry.rawTrigger[2] ~= "ExecuteScheduledTask" then
+			for _, v in ipairs(entry.traces) do
+				if not self:FilterTraceEntry(v, entry) then
+					traces[#traces + 1] = self:EventToStringForReport(v, 2)
+				end
 			end
 		end
 		if #traces > 0 then
-			result = result .. "\t" .. entry.trigger .. "\n\t\t" .. table.concat(traces, "\n\t\t") .. "\n"
+			result = result .. "\t" .. entry.trigger .. "\n" .. table.concat(traces, "\n") .. "\n"
 		end
 	end
 	return result:gsub("\n$", "")

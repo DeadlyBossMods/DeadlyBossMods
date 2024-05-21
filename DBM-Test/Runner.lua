@@ -19,9 +19,150 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+local function eventArgsToStringPretty(event, offset, isCleu)
+	local result = ""
+	for i = offset, #event do
+		local filtered = false
+		if event[i] == "" then
+			result = result .. '""'
+		elseif isCleu and (i == 6 or i == 10) then -- flags
+			result = result .. "0x" .. ("%x"):format(tonumber(event[i]) or 0)
+		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
+			filtered = true
+		else
+			result = result .. tostring(event[i])
+		end
+		if i < #event and not filtered then
+			result = result .. ", "
+		end
+	end
+	return result:gsub(", $", "")
+end
+
+local function getRootEvent(event)
+	if event[2] == "ExecuteScheduledTask" then
+		return getRootEvent(event[3].rawTrigger)
+	else
+		return event
+	end
+end
+
+-- FIXME: the term "event" is overloaded here as it's both used as the trigger and the resulting mod action, this one is for triggers, not traces
+-- FIXME: this should probably be done during reporting and not playback
+local function eventToString(event, includeTimestamp)
+	local eventName, args, summary
+	local ts = ""
+	if includeTimestamp then
+		local maxTimestampStrLength = math.floor(math.log10(math.floor(math.max(includeTimestamp, 1) * 100 + 0.5) / 100)) + 4
+		ts = ("[%" .. maxTimestampStrLength .. ".2f] "):format(event[1])
+	end
+	if event[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+		eventName = event[3]
+		args = string.join(", ", eventArgsToStringPretty(event, 4, true))
+		local sourceName = event[5]
+		local destName = event[9]
+		local spellName = event[13]
+		if destName then
+			summary = (sourceName or "") .. "->" .. destName
+		else
+			summary = sourceName
+		end
+		if eventName:match("^SPELL_") and spellName and summary then
+			summary = summary .. ": " .. spellName
+		end
+	elseif event[2] == "ExecuteScheduledTask" then
+		local rootEvent = getRootEvent(event)
+		return ("%sScheduled at %.2f by %s"):format(ts, rootEvent[1], eventToString(rootEvent, false))
+	else
+		eventName = event[2]
+		args = string.join(", ", eventArgsToStringPretty(event, 3))
+	end
+	return ("%s%s: %s%s"):format(ts, eventName, summary and "[" .. summary .. "] " or "", args)
+end
+
+---@type table<integer, ScheduledTask>
+local scheduledTasks = {}
+local tableUtils = dbmPrivate:GetPrototype("TableUtils")
+
+local function shortObjectName(obj, currentMod)
+	return obj == DBM and "DBM"
+		or obj == currentMod and "mod"
+		or type(obj) == "table" and (
+			obj.objClass == "Timer" and "timer" .. (obj.spellId or "") .. obj.type
+			or obj.objClass == "Announce" and "announce" .. (obj.spellId or "") .. (obj.announceType or "")
+			or obj.objClass == "SpecialWarning" and "specWarn" .. (obj.spellId or "") .. (obj.announceType or "")
+			or obj.objClass == "Yell" and "yell" .. (obj.spellId or "") .. (obj.yellType or "")
+		)
+		or "(unknown object)"
+end
+
+local function functionArgsPretty(...)
+	local res = {}
+	for i = 1, select("#", ...) do
+		local arg = select(i, ...)
+		if type(arg) == "number" then
+			res[#res + 1] = ("%.1f"):format(arg)
+		elseif type(arg) == "string" then
+			res[#res + 1] = ("%q"):format(arg)
+		elseif type(arg) == "table" then
+			res[#res + 1] = shortObjectName(arg)
+		elseif type(arg) == "boolean" then
+			res[#res + 1] = tostring(arg)
+		elseif type(arg) == "nil" then
+			res[#res + 1] = "nil"
+		else
+			res[#res + 1] = "(unknown " .. type(arg) .. ")"
+		end
+	end
+	while res[#res] == "nil" do -- drop trailing nils to omit unused args
+		res[#res] = nil
+	end
+	return table.concat(res, ", ")
+end
+
 ---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
+	if event == "ScheduleTask" then -- the other Scheduler-traces for events discarded here are filtered by the "did we see the schedule?" logic below
+		-- Filter non-mod schedules because they're used a lot internally
+		if mod ~= self.modUnderTest then
+			return
+		end
+		-- Timers use Schedule in the mod namespace internally
+		local func, tbl, val = select(3, ...)
+		if func == tableUtils.removeEntry and type(tbl) == "table" and tbl._testObjClass == "Timer.startedTimers" and type(val) == "string" then
+			return
+		end
+	end
+	-- We only care about timers where we observed the schedule event
+	if event == "UnscheduleTask" or event == "ExecuteScheduledTaskPre" or event == "ExecuteScheduledTaskPost" or event == "SetScheduleMethodName" or event == "SchedulerHideFromTraceIfUnscheduled" then
+		local id = ...
+		if not scheduledTasks[id] then
+			return
+		end
+	end
+	if event == "SetScheduleMethodName" then
+		local id, obj, method = ...
+		local objString = shortObjectName(obj, mod)
+		local methodStr = method:match("^[%a_][%w_]*$") and ":" .. method or ("[%q]"):format(method)
+		scheduledTasks[id].scheduledBy.scheduleData.funcName = objString .. methodStr .. "(" .. functionArgsPretty(select(4, ...)) .. ")"
+		return
+	end
+	if event == "SchedulerHideFromTraceIfUnscheduled" then
+		local id = ...
+		---@class ScheduledTask
+		local scheduledTask = scheduledTasks[id]
+		scheduledTask.hideIfUnscheduled = true
+	end
+	if event == "CombinedWarningPreciseShow" then
+		local obj, maxTotal = ...
+		obj.testUsedWithPreciseShow[maxTotal] = true
+		return
+	elseif event == "CombinedWarningPreciseShowSuccess" then
+		local obj, maxTotal = ...
+		obj.testUsedWithPreciseShowSucess[maxTotal] = true
+		return
+	end
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
 	-- FIXME: this logic will get real messy real fast as we add more events -- come up with a way to define per-event behavior somehow
 	if key == "InternalLoading" then
@@ -51,12 +192,25 @@ function test:Trace(mod, event, ...)
 			-- For AntiSpam events: next trace entries where this AntiSpam returned false
 			---@type TraceEntry[]?
 			filteredAntiSpams = nil,
+			-- For ScheduleTask events: information on execution or cancelation
+			---@type {scheduleExecution: TraceEntry?, unscheduledBy: TestLogEntry?, unscheduledTask: ScheduledTask?, funcName: string?, time: number, delta: number}
+			scheduleData = nil,
 			...
 		}
+		if currentRawEvent and currentRawEvent[2] == "ExecuteScheduledTask" then
+			local origEntry = currentRawEvent[3].scheduledBy
+			origEntry.scheduleData.scheduleExecution = traceEntry
+		end
 		traceEntry.traces[#traceEntry.traces + 1] = entry
 		if event == "NewTimer" or event == "NewAnnounce" or event == "NewSpecialWarning" or event == "NewYell" then
 			local obj = ...
 			obj.testUseCount = 0
+			obj.testUsedWithPreciseShow = {}
+			obj.testUsedWithPreciseShowSucess = {}
+			if obj.startedTimers then
+				-- used to identify this table later to filter some schedule logic on it
+				obj.startedTimers._testObjClass = "Timer.startedTimers"
+			end
 		end
 		if event == "StartTimer" or event == "ShowAnnounce" or event == "ShowSpecialWarning" or event == "ShowYell" then
 			local obj = ...
@@ -84,53 +238,39 @@ function test:Trace(mod, event, ...)
 				end
 			end
 		end
+		if event == "ScheduleTask" then
+			local traceId, time = ...
+			---@class ScheduledTask
+			scheduledTasks[traceId] = {
+				scheduledBy = entry,
+				rawTrigger = currentRawEvent,
+				time = time
+			}
+			entry.scheduleData = {
+				delta = time,
+				time = time + (currentRawEvent and currentRawEvent[1] or 0)
+			}
+		elseif event == "UnscheduleTask" then
+			local traceId = ...
+			local scheduledTask = scheduledTasks[traceId]
+			scheduledTask.scheduledBy.scheduleData.unscheduledBy = currentRawEvent
+			entry.scheduleData = {unscheduledTask = scheduledTasks[traceId]}
+			if scheduledTask.hideIfUnscheduled then
+				entry.hidden = true
+				scheduledTask.scheduledBy.hidden = true
+			end
+		elseif event == "ExecuteScheduledTaskPre" then
+			local traceId = ...
+			local scheduledTask = scheduledTasks[traceId]
+			local scheduleTrigger = {scheduledTask.scheduledBy.scheduleData.time, "ExecuteScheduledTask", scheduledTask}
+			currentEventKey = eventToString(scheduleTrigger, self.testData.log[#self.testData.log][1])
+			currentRawEvent = scheduleTrigger
+		elseif event == "ExecuteScheduledTaskPost" then
+			-- Note: this is not guaranteed to trigger if the scheduled task throws an error, but that doesn't actually matter
+			currentEventKey = nil
+			currentRawEvent = nil
+		end
 	end
-end
-
-local function eventArgsToStringPretty(event, offset, isCleu)
-	local result = ""
-	for i = offset, #event do
-		local filtered = false
-		if event[i] == "" then
-			result = result .. '""'
-		elseif isCleu and (i == 6 or i == 10) then -- flags
-			result = result .. "0x" .. ("%x"):format(tonumber(event[i]) or 0)
-		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
-			filtered = true
-		else
-			result = result .. tostring(event[i])
-		end
-		if i < #event and not filtered then
-			result = result .. ", "
-		end
-	end
-	return result:gsub(", $", "")
-end
-
--- FIXME: the term "event" is overloaded here as it's both used as the trigger and the resulting mod action, this one is for triggers, not traces
--- FIXME: this should probably be done during reporting and not playback
-local function eventToString(event, maxTimestamp)
-	local eventName, args, summary
-	if event[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
-		eventName = event[3]
-		args = string.join(", ", eventArgsToStringPretty(event, 4, true))
-		local sourceName = event[5]
-		local destName = event[9]
-		local spellName = event[13]
-		if destName then
-			summary = (sourceName or "") .. "->" .. destName
-		else
-			summary = sourceName
-		end
-		if eventName:match("^SPELL_") and spellName and summary then
-			summary = summary .. ": " .. spellName
-		end
-	else
-		eventName = event[2]
-		args = string.join(", ", eventArgsToStringPretty(event, 3))
-	end
-	local maxTimestampStrLength = math.floor(math.log10(math.floor(math.max(maxTimestamp, 1) * 100 + 0.5) / 100)) + 4
-	return ("[%" .. maxTimestampStrLength .. ".2f] %s: %s%s"):format(event[1], eventName, summary and "[" .. summary .. "] " or "", args)
 end
 
 local function enableAllWarnings(mod, objects)
