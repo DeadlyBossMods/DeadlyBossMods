@@ -77,13 +77,13 @@ local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 
-local fakeBWVersion, fakeBWHash = 329, "e3dbf73"--329.2
+local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.42 alpha"--Core version
+DBM.DisplayVersion = "10.2.42"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 5, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 5, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -2346,7 +2346,7 @@ do
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				end
-				if private.isRetail then
+				if private.isRetail or private.isCata then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
@@ -2435,7 +2435,7 @@ do
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				end
-				if private.isRetail then
+				if private.isRetail or private.isCata then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
@@ -3586,7 +3586,7 @@ do
 		end
 		if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
 			self:SpecChanged()
-			if private.isRetail and IsInGroup() then
+			if (private.isRetail or private.isCata) and IsInGroup() then
 				self:RoleCheck(false)
 			end
 		end
@@ -5505,6 +5505,11 @@ do
 	}
 
 	---@param mod DBMMod
+	---@param delay number
+	---@param event string?
+	---@param synced boolean?
+	---@param syncedStartHp number?
+	---@param syncedEvent string?
 	function DBM:StartCombat(mod, delay, event, synced, syncedStartHp, syncedEvent)
 		---@class DBMMod
 		mod = mod
@@ -5820,6 +5825,9 @@ do
 	DBM.UNIT_HEALTH_FREQUENT = DBM.UNIT_HEALTH
 
 	---@param mod DBMMod
+	---@param wipe boolean?
+	---@param srmIncluded boolean? unregister all events including SPELL_AURA_REMOVED events
+	---@param event string?
 	function DBM:EndCombat(mod, wipe, srmIncluded, event)
 		---@class DBMMod
 		mod = mod
@@ -5827,9 +5835,9 @@ do
 			test:Trace(mod, "EndCombat", event)
 			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
-				if srmIncluded then-- unregister all events including SPELL_AURA_REMOVED events
+				if srmIncluded then
 					mod:UnregisterInCombatEvents(false, true)
-				else-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
+				else
 					mod:UnregisterInCombatEvents()
 					self:Schedule(2, mod.UnregisterInCombatEvents, mod, true) -- 2 seconds should be enough for all auras to fade
 				end
@@ -6051,7 +6059,7 @@ do
 					end
 				end
 			end
-			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
+			if mod.OnCombatEnd then mod:OnCombatEnd(wipe or false) end
 			if mod.OnLeavingCombat then delayedFunction = mod.OnLeavingCombat end
 			mod.engagedDiff = nil
 			mod.engagedDiffText = nil
@@ -6279,7 +6287,7 @@ function DBM:GetStage(modId)
 	end
 end
 
----@param self DBM|DBMMod
+---@param self DBMModOrDBM
 function DBM:HasMapRestrictions()
 	--Check playerX and playerY. if they are nil restrictions are active
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
@@ -6389,17 +6397,23 @@ do
 	end
 end
 
---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
+---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
+---@param sectionID string|number Should be number, but accepts string too since Blizzards api converts strings to number.
 function DBM:EJ_GetSectionInfo(sectionID)
+	if not sectionID then return end
 	if not private.isRetail then
 		return "EJ_GetSectionInfo not supported on Classic, please report this message and boss"
 	end
+	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
+	---@diagnostic disable-next-line: param-type-mismatch
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
 		self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r" .. sectionID)
 		return
 	end
 	local flag1, flag2, flag3, flag4
+	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
+	---@diagnostic disable-next-line: param-type-mismatch
 	local flags = GetSectionIconFlags(sectionID)
 	if flags then
 		flag1, flag2, flag3, flag4 = unpack(flags)
@@ -6425,7 +6439,7 @@ do
 	end
 	---Wrapper for Blizzard GetSpellInfo global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
-	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
+	---@param spellId string|number Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellInfo(spellId)
 		--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
 		if not spellId or spellId == "" then
@@ -7138,20 +7152,34 @@ end)
 
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)
-	local spec = GetSpecialization()
-	if not spec then return end
-	local role = GetSpecializationRole(spec)
-	if not role then return end
-	local specID = GetLootSpecialization()
-	local _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
+	local role
+	if private.isRetail then
+		local spec = GetSpecialization()
+		if not spec then return end
+		role = GetSpecializationRole(spec)
+		if not role then return end
+		local specID = GetLootSpecialization()
+		local _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
+		--Loot reminder even if spec isn't known or we are in LFR where we have a valid for role without us being ones that set us.
+		if not ignoreLoot and lootrole and (role ~= lootrole) and self.Options.RoleSpecAlert then
+			self:AddMsg(L.LOOT_SPEC_REMINDER:format(_G[role] or CL.UNKNOWN, _G[lootrole]))
+		end
+	else--Cata
+		if not currentSpecID then
+			DBM:SetCurrentSpecInfo()
+		end
+		if private.specRoleTable[currentSpecID]["Healer"] then
+			role = "HEALER"
+		elseif private.specRoleTable[currentSpecID]["Tank"] then
+			role = "TANK"
+		else
+			role = "DAMAGER"
+		end
+	end
 	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15)) or not IsPartyLFG()) then
 		if UnitGroupRolesAssigned("player") ~= role then
 			UnitSetRole("player", role)
 		end
-	end
-	--Loot reminder even if spec isn't known or we are in LFR where we have a valid for role without us being ones that set us.
-	if not ignoreLoot and lootrole and (role ~= lootrole) and self.Options.RoleSpecAlert then
-		self:AddMsg(L.LOOT_SPEC_REMINDER:format(_G[role] or CL.UNKNOWN, _G[lootrole]))
 	end
 end
 
