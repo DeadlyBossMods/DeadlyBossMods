@@ -6398,14 +6398,12 @@ do
 end
 
 ---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
----@param sectionID string|number Should be number, but accepts string too since Blizzards api converts strings to number.
-function DBM:EJ_GetSectionInfo(sectionID)
+function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string too since Blizzards api converts strings to number.
 	if not sectionID then return end
 	if not private.isRetail then
 		return "EJ_GetSectionInfo not supported on Classic, please report this message and boss"
 	end
 	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
-	---@diagnostic disable-next-line: param-type-mismatch
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
 		self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r" .. sectionID)
@@ -6413,7 +6411,6 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	end
 	local flag1, flag2, flag3, flag4
 	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
-	---@diagnostic disable-next-line: param-type-mismatch
 	local flags = GetSectionIconFlags(sectionID)
 	if flags then
 		flag1, flag2, flag3, flag4 = unpack(flags)
