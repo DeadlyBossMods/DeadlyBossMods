@@ -525,7 +525,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 		local remaining
 		if expireTime then
-			remaining = expireTime-self:GetTime()
+			remaining = expireTime-GetTime()
 		end
 		if self:GetStage(2) and (not remaining or remaining and remaining < 6.1) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 			specWarnMortalWounds:Show(args.destName)
