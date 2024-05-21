@@ -45,7 +45,7 @@ function mocks:SetFakeCLEUArgs(mockPlayerName, ...)
 	end
 	if fakeCLEUArgs[9] == mockPlayerName then
 		fakeCLEUArgs[8] = UnitGUID("player")
-		fakeCLEUArgs[0] = UnitName("player")
+		fakeCLEUArgs[9] = UnitName("player")
 	end
 end
 

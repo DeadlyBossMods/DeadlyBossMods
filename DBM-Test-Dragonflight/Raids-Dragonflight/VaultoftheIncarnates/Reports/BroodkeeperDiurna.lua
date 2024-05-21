@@ -533,7 +533,7 @@ Event trace:
 		ShowYell: Ionizing Charge on PlayerName
 	[173.73] SPELL_AURA_APPLIED: [Drakonid Stormbringer->Carolmi-Quel'Thalas: Ionizing Charge] Creature-0-3883-2522-18928-191232-0000463B10, Drakonid Stormbringer, 0xa48, Player-1428-0949B0C0, Carolmi-Quel'Thalas, 0x512, 375620, Ionizing Charge, 0, DEBUFF, 0
 		ScheduleTask: announce375630target:CombinedShow("Carolmi-Quel'Thalas") at 174.03 (+0.30)
-			ShowAnnounce: Ionizing Charge on Carolmi-Quel'Thalas, Dracaryn-MoonGuard, Itìs-Proudmoore, Jungri, Tellashalala-Area52
+			ShowAnnounce: Ionizing Charge on Carolmi-Quel'Thalas, Dracaryn-MoonGuard, Itìs-Proudmoore, PlayerName, Tellashalala-Area52
 	[174.15] SPELL_CAST_START: [Juvenile Frost Proto-Dragon: Chilling Tantrum] Creature-0-3883-2522-18928-191222-0000463B10, Juvenile Frost Proto-Dragon, 0xa48, "", nil, 0x0, 375457, Chilling Tantrum, 0, 0
 		AntiSpam: 375457
 		ShowAnnounce: Casting Chilling Tantrum: 2.0 sec
