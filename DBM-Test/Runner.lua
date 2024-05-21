@@ -139,8 +139,8 @@ local function enableAllWarnings(mod, objects)
 	end
 end
 
----@param mod DBMMod
-function test:SetupModOptions(mod)
+function test:SetupModOptions()
+	local mod = self.modUnderTest
 	local modTempOverrides = self.restoreModVariables[mod]
 	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up accidentally
 	modTempOverrides.Options = mod.Options
@@ -183,12 +183,11 @@ function test:SetupDBMOptions()
 	DBM.Options.NewsMessageShown2 = 3
 end
 
----@param modUnderTest DBMMod
-function test:Setup(modUnderTest)
+function test:Setup()
 	table.wipe(trace)
 	table.wipe(antiSpams)
 	self.testRunning = true
-	self:SetupHooks(modUnderTest)
+	self:SetupHooks()
 	-- Store stats for all mods to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
@@ -200,7 +199,7 @@ function test:Setup(modUnderTest)
 	end
 	-- Change settings to not depend on user configuration
 	self:SetupDBMOptions()
-	self:SetupModOptions(modUnderTest)
+	self:SetupModOptions()
 end
 
 function test:ForceCVar(cvar, value)
@@ -213,6 +212,7 @@ end
 
 function test:Teardown()
 	self.testRunning = false
+	self.modUnderTest = nil
 	-- Get rid of any lingering :Schedule calls, they are broken anyways due to time warping
 	DBM:Disable()
 	DBM:Enable()
@@ -385,7 +385,8 @@ function test:RunTest(testName, timeWarp)
 	if not modUnderTest then
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
-	self:Setup(modUnderTest) -- Must be done after loading the mod to prepare mod (stats, options, ...)
+	self.modUnderTest = modUnderTest
+	self:Setup() -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
