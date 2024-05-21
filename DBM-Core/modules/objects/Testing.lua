@@ -139,7 +139,7 @@ function test:UnhookPrivates()
 	table.wipe(restoreLocalHooks)
 end
 
-function test:GetPrivate(key)
-	if not checkDevBuild() then return end
-	return private[key]
+function test:GetPrivate()
+	if not checkDevBuild() then error() end
+	return private
 end
