@@ -81,7 +81,7 @@ local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.42"--Core version
+DBM.DisplayVersion = "10.2.43 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 5, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
@@ -3120,6 +3120,8 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			local stats = savedStats[id]
 			stats.followerKills = stats.followerKills or 0
 			stats.followerPulls = stats.followerPulls or 0
+			stats.storyKills = stats.storyKills or 0
+			stats.storyPulls = stats.storyPulls or 0
 			stats.normalKills = stats.normalKills or 0
 			stats.normalPulls = stats.normalPulls or 0
 			stats.heroicKills = stats.heroicKills or 0
@@ -3420,6 +3422,8 @@ function DBM:CreateDefaultModStats()
 	local defaultStats = {}
 	defaultStats.followerKills = 0
 	defaultStats.followerPulls = 0
+	defaultStats.storyKills = 0
+	defaultStats.storyPulls = 0
 	defaultStats.normalKills = 0
 	defaultStats.normalPulls = 0
 	defaultStats.heroicKills = 0
@@ -5467,7 +5471,9 @@ do
 		["event5"] = "normal",
 		["event20"] = "lfr25",
 		["event40"] = "lfr25",
+		["quest"] = "follower",--For now, unless a conflict arises
 		["follower"] = "follower",
+		["story"] = "story",
 		["normal5"] = "normal",
 		["heroic5"] = "heroic",
 		["challenge5"] = "challenge",
