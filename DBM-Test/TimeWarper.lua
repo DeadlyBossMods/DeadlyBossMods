@@ -1,6 +1,8 @@
 ---@class DBMTest
 local test = DBM.Test
 
+local active = nil
+
 ---@class TimeWarper
 test.TimeWarper = {
 	---@type table<Frame, boolean|function>
@@ -12,6 +14,9 @@ local timeWarperMt = {__index = test.TimeWarper}
 ---@param frame Frame
 function test.TimeWarper:RegisterFrame(frame)
 	self.framesToHook[frame] = true
+	if active then
+		self:HookOnUpdateHandler(frame)
+	end
 end
 
 -- This mod loads on demand after frames are already registered
@@ -20,31 +25,34 @@ for frame in pairs(test.framesForTimeWarp) do
 end
 table.wipe(test.framesForTimeWarp)
 
-local active = false
 
 -- Avoid non-monotonic timestamps between multiple time warp invocations.
 -- This is important for state that persists across multiple tests, e.g., global AntiSpam timestamps
 local highestSeenTime = GetTime()
 
+function test.TimeWarper:HookOnUpdateHandler(frame)
+	local onUpdate = frame:GetScript("OnUpdate")
+	self.framesToHook[frame] = onUpdate or false
+	frame:SetScript("OnUpdate", function() end)
+	local oldSetScript = frame.SetScript
+	---@diagnostic disable-next-line: duplicate-set-field
+	frame.SetScript = function(frame, scriptType, handler)
+		if scriptType == "OnUpdate" then
+			self.framesToHook[frame] = handler or false
+		else
+			return oldSetScript(frame, scriptType, handler)
+		end
+	end
+end
+
 function test.TimeWarper:Start()
 	if active then
 		error("only a single time warp can be active at a time")
 	end
-	active = true
+	active = self
 	for frame, val in pairs(self.framesToHook) do
 		if val == true then
-			local onUpdate = frame:GetScript("OnUpdate")
-			self.framesToHook[frame] = onUpdate
-			frame:SetScript("OnUpdate", function() end)
-			local oldSetScript = frame.SetScript
-			---@diagnostic disable-next-line: duplicate-set-field
-			frame.SetScript = function(frame, scriptType, handler)
-				if scriptType == "OnUpdate" then
-					self.framesToHook[frame] = handler or false
-				else
-					return oldSetScript(frame, scriptType, handler)
-				end
-			end
+			self:HookOnUpdateHandler(frame)
 		end
 	end
 	self.fakeTime = math.max(highestSeenTime, GetTime())
@@ -70,7 +78,7 @@ function test.TimeWarper:Stop()
 	end
 	highestSeenTime = self.fakeTime
 	self.fakeTime = nil
-	active = false
+	active = nil
 end
 
 local function checkActive()
