@@ -56,7 +56,8 @@ function test.TimeWarper:Start()
 		end
 	end
 	self.fakeTime = math.max(highestSeenTime, GetTime())
-	self.fakeTimeSteps = 0
+	self.fakeTimeSinceLastFrame = 0
+	self.lastFrameTime = 0
 	 -- Unhooking is done by the generic unhook all in test:Teardown()
 	test:HookPrivate("GetTime", function() return self:GetTime() end)
 end
@@ -90,18 +91,18 @@ end
 -- Call coroutine.yield() until a given point in (fake) time has been reached.
 -- Pass the real time elapsed since the last coroutine.resume to coroutine.resume, i.e., run the coroutine in an OnUpdate handler.
 function test.TimeWarper:WaitUntil(time)
-	checkActive()
+	local timeStep = 1 / 30
 	while time > self.fakeTime do
-		if self.fakeTimeSteps >= self.factor or not self.lastFrameTime then
+		if self.fakeTimeSinceLastFrame >= self.lastFrameTime * self.factor then
 			self.lastFrameTime = coroutine.yield()
 			checkActive()
-			self.fakeTimeSteps = 0
+			self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame - self.lastFrameTime * self.factor
 		end
-		self.fakeTime = self.fakeTime + self.lastFrameTime
-		self.fakeTimeSteps = self.fakeTimeSteps + 1
+		self.fakeTime = self.fakeTime + timeStep
+		self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame + timeStep
 		for frame, updateFunc in pairs(self.framesToHook) do
 			if frame:IsVisible() and type(updateFunc) == "function" then
-				updateFunc(frame, self.lastFrameTime)
+				updateFunc(frame, timeStep)
 			end
 		end
 	end
