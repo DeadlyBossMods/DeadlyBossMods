@@ -299,15 +299,20 @@ end
 ---@param customunitID string? if provided, makes check require GUID match this unitID (such as "target")
 ---@param loose boolean? In a loose check, this just checks if we're in combat and alone. Designed for solo runs like torghast or delves
 ---@param allowFriendly boolean?
+---@param strict boolean? Used for even more strict filtering that makes it also require player themselves are in combat (usually used in outdoor world such as timeless isle)
 ---@return boolean
-function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly)
+function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly, strict)
 	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) and (allowFriendly or not UnitIsFriend("player", customunitID)) then return true end
 	else
 		local unitId = DBM:GetUnitIdFromGUID(sourceGUID)
 		if unitId and UnitExists(unitId) and UnitAffectingCombat(unitId) and (allowFriendly or not UnitIsFriend("player", unitId)) then
-			return true
+			if strict and not InCombatLockdown() then
+				return false
+			else
+				return true
+			end
 		end
 	end
 	return false
