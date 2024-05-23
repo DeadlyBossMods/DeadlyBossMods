@@ -109,14 +109,13 @@ Timers:
 		[293.19] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Fury] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375879, Broodkeeper's Fury, 0, BUFF, 0
 
 Announces:
-	Destroy Egg (%s), type=count, spellId=19873, triggerDeltas = 22.19, 3.98, 27.01, 3.99, 29.01, 27.01, 30.99, 2.01, 26.98, 31.01, 7.02, 20.98, 8.01, 23.99, 30.99
+	Destroy Egg (%s), type=count, spellId=19873, triggerDeltas = 22.19, 3.98, 27.01, 3.99, 29.01, 27.01, 33.00, 26.98, 31.01, 7.02, 20.98, 8.01, 23.99, 30.99
 		[ 22.19] Scheduled at 20.19 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 19, 0
 		[ 26.17] Scheduled at 24.17 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 18, 0
 		[ 53.18] Scheduled at 51.18 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 17, 0
 		[ 57.17] Scheduled at 55.17 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 16, 0
 		[ 86.18] Scheduled at 84.18 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 14, 0
 		[113.19] Scheduled at 111.19 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 12, 0
-		[144.18] Scheduled at 142.18 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 11, 0
 		[146.19] Scheduled at 144.19 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 10, 0
 		[173.17] Scheduled at 171.17 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 8, 0
 		[204.18] Scheduled at 202.18 by SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 7, 0
@@ -475,11 +474,12 @@ Event trace:
 			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Itìs-Proudmoore, Neilpeart-Tortheldrin, Unhailed-Frostmourne
 	[142.18] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 11, 0
 		ScheduleTask: announce19873count:Schedule(11.0) at 144.18 (+2.00)
-			ShowAnnounce: Destroy Egg (11)
+			Unscheduled by SPELL_AURA_REMOVED_DOSE at 144.19
 	[143.34] SPELL_CAST_START: [Tarasek Earthreaver: Tremors] Creature-0-3883-2522-18928-191225-0000463AE8, Tarasek Earthreaver, 0xa48, "", nil, 0x0, 376257, Tremors, 0, 0
 		AntiSpam: 376257
 		StartTimer: 11.0, Tremors
 	[144.19] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 10, 0
+		UnscheduleTask: announce19873count:Schedule(11.0) scheduled by ScheduleTask at 142.18
 		ScheduleTask: announce19873count:Schedule(10.0) at 146.19 (+2.00)
 			ShowAnnounce: Destroy Egg (10)
 	[147.27] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
