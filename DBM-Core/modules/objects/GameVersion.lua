@@ -1,7 +1,7 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-private.wowTOC = select(4, GetBuildInfo())
+private.wowTOC = (select(4, GetBuildInfo()))
 private.testBuild = IsTestBuild()
 private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 private.isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
