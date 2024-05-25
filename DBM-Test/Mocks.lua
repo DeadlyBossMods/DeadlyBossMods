@@ -262,8 +262,8 @@ function mocks.UnitGUID(uId)
 	return bosses[uId] and bosses[uId].guid or fromFakeId or UnitGUID(uId)
 end
 
+test.restoreModVariables = {}
 function test:HookModVar(mod, key, val)
-	self.restoreModVariables = self.restoreModVariables or {}
 	self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
 	local old = mod[key]
 	if old == nil then

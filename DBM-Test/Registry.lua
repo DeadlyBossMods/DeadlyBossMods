@@ -2,8 +2,11 @@
 local test = DBM.Test
 
 test.Registry = {
+	---@type table<string, TestDefinition>
 	tests = {},
+	---@type table<string, string>
 	expectedResults = {},
+	---@type string[]
 	sortedTests = {}
 }
 

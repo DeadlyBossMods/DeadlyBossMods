@@ -9,7 +9,6 @@ local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
 ---@type TestTrace
 local trace = {}
-test.trace = trace -- Export for dev/debugging
 -- FIXME: the way event keys are handled is pretty ugly, also the name is terrible because so many things are called "events"
 local currentEventKey
 ---@type TestLogEntry?
@@ -331,9 +330,11 @@ function test:SetupDBMOptions()
 	DBM.Options.NewsMessageShown2 = 3
 end
 
-function test:Setup()
-	table.wipe(trace)
+function test:Setup(testData)
+	trace = {}
 	table.wipe(antiSpams)
+	self.reporter = self:NewReporter(testData, trace)
+	self.reporter:SetupErrorHandler()
 	self.testRunning = true
 	self:SetupHooks()
 	-- Store stats for all mods to not mess them up if the test or a mod trigger is bad
@@ -361,6 +362,7 @@ end
 function test:Teardown()
 	self.testRunning = false
 	self.modUnderTest = nil
+	self.reporter:UnsetErrorHandler()
 	-- Get rid of any lingering :Schedule calls, they are broken anyways due to time warping
 	DBM:Disable()
 	DBM:Enable()
@@ -444,26 +446,32 @@ end
 
 local currentThread
 
+local function errorHandlerWithStack(err)
+	local msg = err .. "\n Stack:\n" .. debugstack(2)
+	geterrorhandler()(msg)
+end
+
 ---@param testData TestDefinition
-function test:Playback(testData, timeWarp)
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
+function test:Playback(testData, timeWarp, callback)
 	DBM:AddMsg("Starting test: " .. testData.name)
-	if timeWarp >= 10 then
-		DBM:AddMsg("Timewarp >= 10, disabling sounds")
-		self:ForceCVar("Sound_EnableAllSound", false)
+	if callback then
+		callback("TestStart", testData, nil)
 	end
 	self.testData = testData
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
-	local timeWarper = test.TimeWarper:New(timeWarp)
+	local timeWarper = test.TimeWarper:New()
 	self.timeWarper = timeWarper
 	timeWarper:Start()
+	timeWarper:SetSpeed(timeWarp)
 	local startTime = timeWarper.fakeTime
 	for _, v in ipairs(testData.log) do
 		local ts = v[1]
 		timeWarper:WaitUntil(startTime + ts)
 		currentEventKey = eventToString(v, maxTimestamp)
 		currentRawEvent = v
-		xpcall(self.InjectEvent, geterrorhandler(), self, select(2, unpack(v)))
+		xpcall(self.InjectEvent, errorHandlerWithStack, self, select(2, unpack(v)))
 		currentRawEvent = nil
 		currentEventKey = nil
 	end
@@ -472,16 +480,12 @@ function test:Playback(testData, timeWarp)
 	end
 	timeWarper:WaitUntil(timeWarper.fakeTime + 3.1)
 	timeWarper:Stop()
-	local reporter = self:NewReporter(testData, trace)
+	local reporter = self.reporter
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
-	local expected = self.Registry.expectedResults[testData.name]
-	if not expected or expected:trim() ~= reporter:Report():trim() then
-		DBM:AddMsg("Test failed!")
-		reporter:ReportDiff(expected)
-	else
-		DBM:AddMsg("Test succeeded!")
+	if callback then
+		callback("TestFinish", testData, reporter)
 	end
 end
 
@@ -494,7 +498,12 @@ frame:SetScript("OnUpdate", function(_, elapsed)
 			test:Teardown()
 		else
 			local ok, err = coroutine.resume(currentThread, elapsed)
-			if not ok then geterrorhandler()(err) end
+			if not ok then
+				if err:match("^test stopped") then
+					return
+				end
+				geterrorhandler()(err)
+			end
 		end
 	end
 end)
@@ -532,7 +541,10 @@ Maybe a better solution would be to support some kind of comment in the report?
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
 ---@alias GameVersion "Retail"|"Classic"|"ClassicEra"|"SeasonOfDiscovery"
 
-function test:RunTest(testName, timeWarp)
+---@alias TestCallbackEvent "TestStart"|"TestFinish"
+
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
+function test:RunTest(testName, timeWarp, callback)
 	local testData = self.Registry.tests[testName]
 	if not testData then
 		error("test " .. testName .. " not found", 2)
@@ -555,7 +567,7 @@ function test:RunTest(testName, timeWarp)
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
 	self.modUnderTest = modUnderTest
-	self:Setup() -- Must be done after loading the mod to prepare mod (stats, options, ...)
+	self:Setup(testData) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
@@ -570,7 +582,7 @@ function test:RunTest(testName, timeWarp)
 	currentEventKey = nil
 	currentRawEvent = nil
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1, callback)
 	if not ok then error(err) end
 end
 
@@ -583,12 +595,16 @@ function test:StopTests()
 	self:Teardown()
 end
 
-function test:RunTests(testNames, timeWarp)
+---@param testsOrNames (TestDefinition|string)[]
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?, count: integer, total: integer)
+function test:RunTests(testsOrNames, timeWarp, callback)
 	self.stopRequested = false
-	-- FIXME: aggregate errors and report them at the end
 	local cr = coroutine.create(function()
-		for _, testName in ipairs(testNames) do
-			xpcall(self.RunTest, geterrorhandler(), self, testName, timeWarp)
+		for i, testOrName in ipairs(testsOrNames) do
+			local testName = type(testOrName) == "string" and testOrName or testOrName.name
+			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, function(event, testDef, reporter)
+				if callback then callback(event, testDef, reporter, i, #testsOrNames) end
+			end)
 			while self.testRunning do
 				coroutine.yield()
 			end
@@ -598,7 +614,6 @@ function test:RunTests(testNames, timeWarp)
 		end
 	end)
 	local f = CreateFrame("Frame")
-	-- FIXME: can probably be merged with the main coroutine
 	f:SetScript("OnUpdate", function()
 		local status = coroutine.status(cr)
 		if status == "suspended" then

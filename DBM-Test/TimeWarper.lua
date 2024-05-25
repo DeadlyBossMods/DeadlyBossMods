@@ -71,6 +71,12 @@ function test.TimeWarper:GetTime()
 end
 
 function test.TimeWarper:Stop()
+	if not active then
+		return
+	end
+	if active ~= self then
+		return active:Stop()
+	end
 	for frame, val in pairs(self.framesToHook) do
 		frame.SetScript = nil
 		if val ~= true then -- true means it was never hooked
@@ -108,10 +114,18 @@ function test.TimeWarper:WaitUntil(time)
 	end
 end
 
-function test.TimeWarper:New(factor)
+function test.TimeWarper:SetSpeed(factor)
+	if factor >= 10 and self.factor < 10 then
+		DBM:AddMsg("Timewarp >= 10, disabling sounds")
+		test:ForceCVar("Sound_EnableAllSound", false)
+	end
+	self.factor = factor
+end
+
+function test.TimeWarper:New()
 	---@class TimeWarper
 	local obj = setmetatable({
-		factor = factor
+		factor = 1
 	}, timeWarperMt)
 	return obj
 end
