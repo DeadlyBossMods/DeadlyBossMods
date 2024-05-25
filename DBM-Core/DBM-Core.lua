@@ -8116,10 +8116,15 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 end
 
 ---Still used for situations we may use static arrows to point for a specific way to move. Legacy arrows also supported toward/away from specific player units
+---@meta
+---@alias arrowTypes
+---|1: Shows an arrow pointing toward player target
+---|2: Shows an arrow pointing away from player target
+---|3: Shows an arrow pointing toward specific location
 ---@param name string Option name
----@param spellId number if used, auto localizes using spellid. Must be a spell id. Doesn't currently support journal IDs
+---@param spellId number if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
----@param isRunTo number|boolean 1: toward target, 2: away from target, 3: toward specific location
+---@param isRunTo arrowTypes|number
 function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	if isRunTo == true then isRunTo = 2 end--Support legacy
 	self.DefaultOptions[name] = (default == nil) or default
@@ -8177,7 +8182,7 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 end
 
 ---@param name string Option name
----@param spellId number if used, auto localizes using spellid. Must be a spell id. Doesn't currently support journal IDs
+---@param spellId number if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
 ---@param forceDBM boolean? Used in very rare cases we need to use nameplate feature without a clean place to use enable/disable callbacks for 3rd party NP addons
 function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
