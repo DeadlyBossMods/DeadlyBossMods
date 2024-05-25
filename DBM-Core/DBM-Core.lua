@@ -4585,8 +4585,8 @@ do
 				else
 					classicSubVers = L.MOD_MISSING
 				end
-				forceDisable = tonumber(forceDisable) or 0
 			end
+			forceDisable = tonumber(forceDisable) or 0
 		elseif protocol >= 2 then
 			--Protocol 2 did not send classicSubVers
 			VPVersion = classicSubVers
