@@ -14,7 +14,8 @@ function test:NewReporter(testData, trace)
 		testData = testData,
 		trace = trace,
 		---@diagnostic disable-next-line: dbm-event-checker
-		mod = DBM:GetModByName(testData.mod) ---@type DBMMod
+		mod = DBM:GetModByName(testData.mod), ---@type DBMMod
+		errors = {},
 	}, reporterMt)
 	return obj
 end
@@ -697,9 +698,16 @@ Event trace:
 	return self:Report()
 end
 
-function reporter:ReportDiff(expected)
+function reporter:HasDiff()
+	local expected = test.Registry.expectedResults[self.testData.name]
+	return not expected or expected:trim() ~= self:Report():trim()
+end
+
+function reporter:ReportDiff()
+	local expected = test.Registry.expectedResults[self.testData.name]
+	local msg = ("Test report for %s (mod %s) got unexpected diff. "):format(self.testData.name, self.testData.mod)
 	if not expected then
-		geterrorhandler()("no golden test report available, please update golden data")
+		msg = msg .. "No golden test report available, please update golden data."
 	else
 		local firstDiff, lastNewLine = 0, 0
 		-- \t doesn't work in WoW
@@ -717,10 +725,58 @@ function reporter:ReportDiff(expected)
 		local diffWant = want:sub(math.max(firstDiff - 100, lastNewLine + 1), math.min(want:find("\n", firstDiff + 1) or #want, firstDiff + 50) - 1)
 		local diffGot = got:sub(math.max(firstDiff - 100, lastNewLine + 1), math.min(got:find("\n", firstDiff + 1) or #got, firstDiff + 50) - 1)
 		local lastCommon = want:sub(math.max(firstDiff - 10, lastNewLine + 1), math.max(firstDiff - 1, 0))
-		geterrorhandler()(("test got unexpected result, please update golden if this diff is expected, first diff:\n%s (want)\n%s (got)\ndiff after: %s"):format(
-			diffWant, diffGot, lastCommon
-		))
+		local diffAfter = ""
+		if not lastCommon:match("^%s*$") then
+			diffAfter = "\ndiff after: " .. lastCommon
+		end
+		msg = msg .. ("\nUpdate golden if this diff is expected, first diff:\n%s (want)\n%s (got)%s"):format(
+			diffWant, diffGot, diffAfter
+		)
 	end
-	-- Show after error so it grabs keyboard focus
-	DBM:ShowUpdateReminder(nil, nil, ("Test report for %s (%s/%s)"):format(self.testData.name, self.testData.addon, self.testData.mod), self:ReportWithHeader())
+	DBM:ShowUpdateReminder(nil, nil, msg, self:ReportWithHeader(), 300, "LEFT")
+end
+
+---@alias TestResultEnum "Success"|"Failure"
+---@return TestResultEnum
+function reporter:GetResult()
+	return not self:HasDiff() and "Success" or "Failure"
+end
+
+function reporter:HasErrors()
+	return #self.errors > 0
+end
+
+local realErrorHandler
+local ourErrorsHandlers = setmetatable({}, {__mode = "k"})
+
+function reporter:GetRealErrorHandler()
+	local errorHandler = geterrorhandler()
+	if ourErrorsHandlers[errorHandler] then
+		-- handle the case when you click on report errors while another test is running
+		errorHandler = realErrorHandler or HandleLuaError
+	end
+	return errorHandler
+end
+
+function reporter:ReportErrors()
+	local errorHandler = self:GetRealErrorHandler()
+	for _, err in ipairs(self.errors) do
+		errorHandler(err)
+	end
+end
+
+function reporter:SetupErrorHandler()
+	self.oldErrorHandler = geterrorhandler()
+	realErrorHandler = self.oldErrorHandler
+	local errorHandler = function(err)
+		self.errors[#self.errors + 1] = err
+	end
+	ourErrorsHandlers[errorHandler] = true
+	seterrorhandler(errorHandler)
+end
+
+function reporter:UnsetErrorHandler()
+	if self.oldErrorHandler then
+		seterrorhandler(self.oldErrorHandler)
+	end
 end
