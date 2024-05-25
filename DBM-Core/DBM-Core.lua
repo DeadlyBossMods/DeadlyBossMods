@@ -8115,7 +8115,11 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 	end
 end
 
+---Still used for situations we may use static arrows to point for a specific way to move. Legacy arrows also supported toward/away from specific player units
+---@param name string Option name
+---@param spellId number if used, auto localizes using spellid. Must be a spell id. Doesn't currently support journal IDs
 ---@param default SpecFlags|boolean?
+---@param isRunTo number|boolean 1: toward target, 2: away from target, 3: toward specific location
 function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	if isRunTo == true then isRunTo = 2 end--Support legacy
 	self.DefaultOptions[name] = (default == nil) or default
@@ -8134,6 +8138,9 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
+---Legacy object at this point. Range checks aren't added to new modules due to no longer being usable inside raids. they should NOT be removed from old modules in event blizzard ever adds built in functionality we can automate
+---@param range number|string Non optional, should be number if fixed ranged or string with custom string such as "various" or "10/6"
+---@param spellId number? if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self.DefaultOptions["RangeFrame"] = (default == nil) or default
@@ -8150,6 +8157,9 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self:SetOptionCategory("RangeFrame", "misc")
 end
 
+---Legacy object at this point. HUD checks aren't added to new modules due to no longer being usable inside raids.
+---@param name string Option name
+---@param spellId number? if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddHudMapOption(name, spellId, default)
 	self.DefaultOptions[name] = (default == nil) or default
@@ -8166,7 +8176,10 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 	self:SetOptionCategory(name, "misc")
 end
 
+---@param name string Option name
+---@param spellId number if used, auto localizes using spellid. Must be a spell id. Doesn't currently support journal IDs
 ---@param default SpecFlags|boolean?
+---@param forceDBM boolean? Used in very rare cases we need to use nameplate feature without a clean place to use enable/disable callbacks for 3rd party NP addons
 function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 	if not spellId then
 		error("AddNamePlateOption must provide valid spellId", 2)
@@ -8181,6 +8194,7 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 	self.localization.options[name] = forceDBM and L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED:format(spellId) or L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
+---@param spellId number? if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, optionalThreshold)
 	local oVersion = ""
