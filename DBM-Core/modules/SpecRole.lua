@@ -510,7 +510,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356)),--Shield Slam
 			},
 			["DRUID1"] = {	--Balance Druid
-				["Healer"] = true,
+				["Healer"] = private.isClassic and true or false,
 				["Dps"] = true,
 				["Ranged"] = true,
 				["RangedDps"] = true,
@@ -520,9 +520,9 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RemoveCurse"] = true,
 			},
 			["DRUID2"] = { --Feral Druid
-				["Healer"] = true,
+				["Healer"] = private.isClassic and true or false,
 				["Dps"] = true,
-				["Tank"] = true,
+				["Tank"] = IsPlayerSpell(23922) and true or private.isClassic and true or false,--Only sets true if Nuturing Instinct is learned for non vanilla
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
@@ -579,7 +579,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,
 				["MagicDispeller"] = true,
 				["RemoveMagic"] = true,
-				["HasInterrupt"] = IsSpellKnown(15487),--Silence is a talent tree talent
 			},
 			["ROGUE1"] = { --Assassination Rogue
 				["Dps"] = true,
