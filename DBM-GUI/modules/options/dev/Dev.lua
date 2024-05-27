@@ -96,18 +96,30 @@ end
 
 ---@type TestDefinition[]
 local queuedTests = {}
+local runAllOrStopButton
 
-local stopButton = testPanel:CreateButton("Stop tests", 80, 30, function()
+local function stopAll()
 	DBM.Test:StopTests()
 	for _, test in ipairs(queuedTests) do
 		setCombinedTestResults(test.uiInfo, test)
 	end
+	table.wipe(queuedTests)
 	for _, button in ipairs(runButtons) do
 		button:Enable()
 	end
+	runAllOrStopButton:SetText("Run all tests")
+end
+
+runAllOrStopButton = testPanel:CreateButton("Run all tests", 100, 35, function()
+	if #queuedTests > 0 then
+		stopAll()
+	elseif runButtons[1] then
+		runButtons[1]:GetScript("OnClick")(runButtons[1])
+	else
+		error("no tests installed")
+	end
 end)
-stopButton:SetPoint("TOPRIGHT", testPanel.frame, "TOPRIGHT", -10, -5)
-stopButton:Hide()
+runAllOrStopButton:SetPoint("TOPRIGHT", testPanel.frame, "TOPRIGHT", -10, -5)
 
 ---@param test TestDefinition
 local function onTestStart(test)
@@ -136,7 +148,7 @@ local function onTestFinish(test, results, testCount, numTests)
 		for _, button in ipairs(runButtons) do
 			button:Enable()
 		end
-		stopButton:Hide()
+		runAllOrStopButton:SetText("Run all tests")
 	end
 end
 
@@ -155,7 +167,7 @@ local function onRunTestClicked(tests)
 		for _, button in ipairs(runButtons) do
 			button:Disable()
 		end
-		stopButton:Show()
+		runAllOrStopButton:SetText("Stop tests")
 		for i = #tests, 1, -1 do
 			local test = tests[i]
 			queuedTests[#queuedTests + 1] = test
