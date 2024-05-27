@@ -523,7 +523,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 -----------------
 local LibSpec
 do
-	if private.isRetail and LibStub then
+	if (private.isRetail or private.isCata) and LibStub then
 		LibSpec = LibStub("LibSpecialization", true)
 		if LibSpec then
 			local function update(specID, _, _, playerName)
@@ -6237,7 +6237,7 @@ do
 		["EVOKER"] = 1465,
 	}
 
-	function DBM:SetCurrentSpecInfo()
+	function DBM:SetCurrentSpecInfo(useEraFallback)
 		if private.isRetail then
 			currentSpecGroup = GetSpecialization() or 1
 			if GetSpecializationInfo(currentSpecGroup) then
@@ -6245,6 +6245,14 @@ do
 				currentSpecID = tonumber(currentSpecID)
 			else
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+			end
+		elseif private.isCata and not useEraFallback then
+			currentSpecGroup = GetPrimaryTalentTree() or 1
+			if GetTalentTabInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+				currentSpecID = tonumber(currentSpecID)
+			else
+				currentSpecID = playerClass .. tostring(1)--Probably low level, or initially loading into world
 			end
 		else
 			local numTabs = GetNumTalentTabs()
@@ -7409,7 +7417,7 @@ do
 		if uId then--This version includes ONLY melee dps
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -7460,7 +7468,7 @@ do
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -7495,7 +7503,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -7513,7 +7521,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -7530,7 +7538,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
