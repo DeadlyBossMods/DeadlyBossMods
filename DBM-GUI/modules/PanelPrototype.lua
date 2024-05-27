@@ -221,6 +221,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider:SetScript("OnValueChanged", function(_, value)
 		sliderText:SetFormattedText(text, value)
 	end)
+	slider.textFrame = sliderText
 	self:SetLastObj(slider)
 	return slider
 end
