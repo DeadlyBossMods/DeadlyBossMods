@@ -48,7 +48,7 @@ function test:HandleCommand(testName, timeWarp)
 		end
 		DBM:AddMsg("/dbm test <name> <time warp factor> -- execute a test")
 		DBM:AddMsg("/dbm test * <time warp factor> -- run all tests")
-		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test SoD runs all tests for SoD.")
+		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test Dragonflight runs all tests for Dragonflight.")
 		DBM:AddMsg("/dbm test clear -- clear exported test data")
 	elseif testName:lower() == "stop" then
 		test:StopTests()
