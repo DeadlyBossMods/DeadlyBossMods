@@ -6230,6 +6230,19 @@ do
 		["EVOKER"] = 1465,
 	}
 
+	local catafallbackClassToRole = {
+		["MAGE"] = 799,
+		["PALADIN"] = 855,
+		["WARRIOR"] = 746,
+		["DRUID"] = 752,
+		["DEATHKNIGHT"] = 251,
+		["HUNTER"] = 811,
+		["PRIEST"] = 795,
+		["ROGUE"] = 182,
+		["SHAMAN"] = 263,
+		["WARLOCK"] = 871,
+	}
+
 	function DBM:SetCurrentSpecInfo(useEraFallback)
 		if private.isRetail then
 			currentSpecGroup = GetSpecialization() or 1
@@ -6245,7 +6258,7 @@ do
 				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 				currentSpecID = tonumber(currentSpecID)
 			else
-				currentSpecID = playerClass .. tostring(1)--Probably low level, or initially loading into world
+				currentSpecID, currentSpecName = catafallbackClassToRole[playerClass], playerClass
 			end
 		else
 			local numTabs = GetNumTalentTabs()
