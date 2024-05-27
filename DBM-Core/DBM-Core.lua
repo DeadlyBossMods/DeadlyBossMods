@@ -392,7 +392,6 @@ DBM.DefaultOptions = {
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
-	TestDefaultTimewarpSpeed = 5,
 }
 
 ---@type DBMMod[]
