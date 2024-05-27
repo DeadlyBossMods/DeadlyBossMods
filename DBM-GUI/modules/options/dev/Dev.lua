@@ -165,7 +165,7 @@ local function onRunTestClicked(tests)
 			test.uiInfo.statusText:SetTextColor(BLUE_FONT_COLOR:GetRGB())
 		end
 		onTestStart(tests[1])
-		DBM.Test:RunTests(tests, DBM.Options.TestDefaultTimewarpSpeed, testStatusCallback)
+		DBM.Test:RunTests(tests, nil, testStatusCallback)
 	end
 end
 
