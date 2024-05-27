@@ -6230,36 +6230,39 @@ do
 		["EVOKER"] = 1465,
 	}
 
+	--In event api fails to pull any data at all, just assign classes to generic DPS role (typically unspecced players such as sub level 11)
 	local catafallbackClassToRole = {
-		["MAGE"] = 799,
-		["PALADIN"] = 855,
-		["WARRIOR"] = 746,
-		["DRUID"] = 752,
-		["DEATHKNIGHT"] = 251,
-		["HUNTER"] = 811,
-		["PRIEST"] = 795,
-		["ROGUE"] = 182,
-		["SHAMAN"] = 263,
-		["WARLOCK"] = 871,
+		["MAGE"] = 799,--Arcane Mage
+		["PALADIN"] = 855,--Ret Paladin
+		["WARRIOR"] = 746,--Arms Warrior
+		["DRUID"] = 752,--Balance druid
+		["DEATHKNIGHT"] = 251,--Frost DK
+		["HUNTER"] = 811,--Beastmaster Hunter
+		["PRIEST"] = 795,--Shadow Priest
+		["ROGUE"] = 182,--Assassination Rogue
+		["SHAMAN"] = 263,--Enhancement Shaman
+		["WARLOCK"] = 871,--Affliction Warlock
 	}
 
-	function DBM:SetCurrentSpecInfo(useEraFallback)
+	function DBM:SetCurrentSpecInfo()
 		if private.isRetail then
-			currentSpecGroup = GetSpecialization() or 1
-			if GetSpecializationInfo(currentSpecGroup) then
-				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			currentSpecGroup = GetSpecialization()
+			if currentSpecGroup and GetSpecializationInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)
 				currentSpecID = tonumber(currentSpecID)
 			else
-				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
-		elseif private.isCata and not useEraFallback then
-			currentSpecGroup = GetPrimaryTalentTree() or 1
-			if GetTalentTabInfo(currentSpecGroup) then
-				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isCata then
+			currentSpecGroup = GetPrimaryTalentTree()
+			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)
 				currentSpecID = tonumber(currentSpecID)
 			else
-				currentSpecID, currentSpecName = catafallbackClassToRole[playerClass], playerClass
+				currentSpecID, currentSpecName = catafallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
+			DBM:Debug("Current specID set to: "..currentSpecID, 2)
 		else
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
@@ -7185,9 +7188,9 @@ function DBM:RoleCheck(ignoreLoot)
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
 		end
-		if private.specRoleTable[currentSpecID]["Healer"] then
+		if currentSpecID and private.specRoleTable[currentSpecID]["Healer"] then
 			role = "HEALER"
-		elseif private.specRoleTable[currentSpecID]["Tank"] then
+		elseif currentSpecID and private.specRoleTable[currentSpecID]["Tank"] then
 			role = "TANK"
 		else
 			role = "DAMAGER"
