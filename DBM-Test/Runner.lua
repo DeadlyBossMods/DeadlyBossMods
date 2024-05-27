@@ -491,13 +491,13 @@ end
 
 local frame = CreateFrame("Frame")
 frame:Show()
-frame:SetScript("OnUpdate", function(_, elapsed)
+frame:SetScript("OnUpdate", function(self)
 	if currentThread then
 		if coroutine.status(currentThread) == "dead" then
 			currentThread = nil
 			test:Teardown()
 		else
-			local ok, err = coroutine.resume(currentThread, elapsed)
+			local ok, err = coroutine.resume(currentThread)
 			if not ok then
 				if err:match("^[^\n]*test stopped, time warp canceled") then
 					return
@@ -545,6 +545,7 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
 function test:RunTest(testName, timeWarp, callback)
+	timeWarp = timeWarp or DBM_Test_DefaultTimeWarp or 0
 	local testData = self.Registry.tests[testName]
 	if not testData then
 		error("test " .. testName .. " not found", 2)
@@ -582,7 +583,7 @@ function test:RunTest(testName, timeWarp, callback)
 	currentEventKey = nil
 	currentRawEvent = nil
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1, callback)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, callback)
 	if not ok then error(err) end
 end
 
@@ -598,6 +599,7 @@ end
 ---@param testsOrNames (TestDefinition|string)[]
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?, count: integer, total: integer)
 function test:RunTests(testsOrNames, timeWarp, callback)
+	local startTime = GetTimePreciseSec()
 	self.stopRequested = false
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
@@ -612,6 +614,7 @@ function test:RunTests(testsOrNames, timeWarp, callback)
 				break
 			end
 		end
+		DBM:Debug(("Running %d |1test;tests; took %.2f seconds real time."):format(#testsOrNames, GetTimePreciseSec() - startTime), 1)
 	end)
 	local f = CreateFrame("Frame")
 	f:SetScript("OnUpdate", function()
