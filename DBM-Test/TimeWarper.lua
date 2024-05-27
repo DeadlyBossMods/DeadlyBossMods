@@ -94,14 +94,21 @@ local function checkActive()
 	end
 end
 
+local GetTimePreciseSec = GetTimePreciseSec
+
 -- Call coroutine.yield() until a given point in (fake) time has been reached.
 -- Pass the real time elapsed since the last coroutine.resume to coroutine.resume, i.e., run the coroutine in an OnUpdate handler.
 function test.TimeWarper:WaitUntil(time)
 	local timeStep = 1 / 30
+	local minRealFps = 20 -- the exact value here doesn't really matter, and it's not accurate anyways, this is mainly here to implement dynamic speed without terrible lag
+	self.currentFrameStart = self.currentFrameStart or GetTimePreciseSec()
 	while time > self.fakeTime do
-		if self.fakeTimeSinceLastFrame >= self.lastFrameTime * self.factor then
-			self.lastFrameTime = coroutine.yield()
+		if self.fakeTimeSinceLastFrame >= self.lastFrameTime * self.factor or GetTimePreciseSec() - self.currentFrameStart > 1 / minRealFps then
+			coroutine.yield()
 			checkActive()
+			self.lastFrameTime = GetTimePreciseSec() - self.currentFrameStart
+			self.currentFrameStart = GetTimePreciseSec()
+			-- this goes negative if we hit the fps limit, so it effectively speeds up later to catch up
 			self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame - self.lastFrameTime * self.factor
 		end
 		self.fakeTime = self.fakeTime + timeStep
@@ -114,12 +121,22 @@ function test.TimeWarper:WaitUntil(time)
 	end
 end
 
-function test.TimeWarper:SetSpeed(factor)
-	if factor >= 10 and self.factor < 10 then
+function test.TimeWarper:DisableSound()
+	if not self.soundDisabled then
 		DBM:AddMsg("Timewarp >= 10, disabling sounds")
 		test:ForceCVar("Sound_EnableAllSound", false)
+		self.soundDisabled = true
 	end
-	self.factor = factor
+end
+
+-- Sets fake time to a fixed multiplier of real time.
+-- Simulated FPS will stay consistent at 30 fps no matter how much your real FPS drop.
+-- Set to 0 to simulate as fast as possible.
+function test.TimeWarper:SetSpeed(factor)
+	if factor >= 10 or factor <= 0 then
+		self:DisableSound()
+	end
+	self.factor = factor <= 0 and 1e9 or factor
 end
 
 function test.TimeWarper:New()
