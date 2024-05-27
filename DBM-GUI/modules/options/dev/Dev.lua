@@ -12,16 +12,41 @@ infoArea:CreateText("You are seeing this UI tab because you have an alpha or dev
 
 local testPanel = DBM_GUI.Cat_Development:CreateNewPanel("Tests", "option")
 
-local slider = testPanel:CreateSlider("Time warp: %dx", 1, 500, 1, 400)
-slider:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 20, -20)
-slider:HookScript("OnValueChanged", function(self)
-	local value = math.floor(self:GetValue())
-	DBM.Options.TestDefaultTimewarpSpeed = value
+---@class TimeWarpSlider: DBMPanelSlider
+local timeWarpSlider = testPanel:CreateSlider("", 1, 500, 1, 400)
+timeWarpSlider:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 20, -20)
+timeWarpSlider:SetScript("OnValueChanged", function(self, value)
+	local sliderMax = select(2, self:GetMinMaxValues())
+	if value >= sliderMax then -- slider at max == dynamic fastest speed
+		DBM_Test_DefaultTimeWarp = 0
+		timeWarpSlider.textFrame:SetText("Time warp: dynamic (fastest)")
+		if DBM.Test.timeWarper then
+			DBM.Test.timeWarper:SetSpeed(0)
+		end
+		return
+	end
+	value = self:TransformInput(value)
+	DBM_Test_DefaultTimeWarp = value
+	timeWarpSlider.textFrame:SetFormattedText("Time warp: %dx", value)
 	if DBM.Test.timeWarper then
 		DBM.Test.timeWarper:SetSpeed(value)
 	end
 end)
-slider:SetValue(DBM.Options.TestDefaultTimewarpSpeed)
+
+-- exponential slider that isn't too steep and feels good
+timeWarpSlider.steepness = 3.3
+function timeWarpSlider:TransformInput(value)
+	local sliderMin, sliderMax = self:GetMinMaxValues()
+	value = (value - sliderMin) / (sliderMax - sliderMin)
+	return (math.exp(value * self.steepness) - 1) / (math.exp(self.steepness) - 1) * (sliderMax - sliderMin) + sliderMin
+end
+
+function timeWarpSlider:TransformInputInverse(value)
+	local sliderMin, sliderMax = self:GetMinMaxValues()
+	value = (value - sliderMin) / (sliderMax - sliderMin)
+	return math.log((math.exp(self.steepness) - 1) * (value - 1 / (1 - math.exp(self.steepness)))) / self.steepness * (sliderMax - sliderMin) + sliderMin
+end
+
 
 local runButtons = {}
 
@@ -298,6 +323,9 @@ testPanel.frame:HookScript("OnShow", function(self)
 		area:CreateText("Could not find any test definitions, check if DBM-Test-* mods are installed and enabled.", nil, true)
 		return
 	end
+	local savedTimeWarpSliderVal = DBM_Test_DefaultTimeWarp or 0
+	savedTimeWarpSliderVal = savedTimeWarpSliderVal > 0 and savedTimeWarpSliderVal or 500
+	timeWarpSlider:SetValue(timeWarpSlider:TransformInputInverse(savedTimeWarpSliderVal))
 	for _, testName in ipairs(DBM.Test.Registry.sortedTests) do
 		local pathElements = {string.split("/", testName)}
 		insertElement(root, 1, testName, pathElements)
