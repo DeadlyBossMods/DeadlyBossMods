@@ -84,7 +84,7 @@ local function setFrameWidth(extraWidth)
 	frame:SetWidth(430 + extraWidth)
 	fontstringFooter:SetWidth(410 + extraWidth)
 	editBox:SetWidth(250 + extraWidth)
-	fontstring:SetWidth(410 + extraWidth)
+	fontstring:SetWidth(400 + extraWidth)
 end
 
 function DBM:ShowUpdateReminder(newVersion, newRevision, text, url, extraWidth, textJustify)

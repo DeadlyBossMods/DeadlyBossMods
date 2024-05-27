@@ -499,7 +499,7 @@ frame:SetScript("OnUpdate", function(_, elapsed)
 		else
 			local ok, err = coroutine.resume(currentThread, elapsed)
 			if not ok then
-				if err:match("^test stopped") then
+				if err:match("^[^\n]*test stopped, time warp canceled") then
 					return
 				end
 				geterrorhandler()(err)

@@ -204,9 +204,10 @@ local function createTestEntry(testName, tests, parents, indentation)
 	end
 	statusText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 7, yPos)
 	statusText:SetMaxLines(1)
-	local nameText = testPanel:CreateText(testName, 400, false)
-	nameText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 60 + xOffset, yPos)
+	local nameText = testPanel:CreateText(testName, 0, false)
+	nameText:SetWidth(400) -- set width last like this instead of via parameter to avoid some odd placement for truncated text
 	nameText:SetMaxLines(1)
+	nameText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 60 + xOffset, yPos)
 	local runButton = testPanel:CreateButton("Run", 40, 22, onRunTestClicked(tests))
 	runButton.myheight = yDistance
 	runButtons[#runButtons + 1] = runButton
@@ -261,6 +262,9 @@ end
 
 ---@class node TestTreeNode
 local function createTestTreeEntry(node)
+	-- Note: this not ideal if we have nodes that have a test and children (e.g., tests named a/b and a/b/c), it happens to work by coincidence
+	-- as the only code that relies on having uiInfo in the node is the code that iterates over parents and both entries have the same parents.
+	-- Also note that tests a/b and a/b/c shouldn't exist at the same time if you follow the naming pattern.
 	if node.test then
 		node.uiInfo = createTestEntry(node.test.name, {node.test}, getParents(node), node.depth)
 	end
@@ -268,7 +272,6 @@ local function createTestTreeEntry(node)
 		local name = node.path == "" and "All tests" or (node.path .. "/*")
 		node.uiInfo = createTestEntry(name, gatherChildTests(node), getParents(node), node.depth)
 	end
-	assert(not (node.test and node.count > 1))
 	for _, v in ipairs(node.children) do
 		createTestTreeEntry(v)
 	end
@@ -281,7 +284,7 @@ local root = {
 	---@type TestTreeNode[]
 	children = {},
 	---@type TestDefinition
-	test = nil, -- Mutually exclusive with #children > 0, this this marks a leaf node.
+	test = nil, -- Node contains a test, if we follow the intended naming then this is mutually exclusive with #children > 0.
 	path = "",
 	depth = 0,
 	count = 0,
@@ -315,13 +318,17 @@ local function decrementDepth(node)
 end
 
 local function pruneTree(node)
-	for k, v in ipairs(node.children) do
+	local i = 1
+	while i <= #node.children do
+		local v = node.children[i]
+		pruneTree(v)
 		if not v.test and #v.children == 1 then
 			v.children[1].parent = v.children[1].parent.parent
-			node.children[k] = v.children[1]
+			node.children[i] = v.children[1]
 			decrementDepth(v.children[1])
+		else
+			i = i + 1
 		end
-		pruneTree(v)
 	end
 end
 
