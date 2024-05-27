@@ -406,7 +406,7 @@ function DBM:IsLogableContent(force)
 		return true
 	end
 	--Trivial raid (ie one below players level)
-	if self.Options.LogTrivialRaids and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] < private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) then
+	if self.Options.LogTrivialRaids and instanceDifficultyBylevel[lastInstanceMapId] and self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) then
 		return true
 	end
 	--Current level Mythic dungeon
