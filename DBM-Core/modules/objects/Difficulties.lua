@@ -378,7 +378,7 @@ function DBM:IsLogableContent(force)
 	--2: Check for what content specifically selected for logging
 	--3: Boss Only filter is handled somewhere else (where StartLogging is called)
 	local lastInstanceMapId = DBM:GetCurrentArea()
-	if self.Options.DoNotLogLFG and private.isRetail and IsPartyLFG() then
+	if self.Options.DoNotLogLFG and (private.isRetail or private.isCata) and IsPartyLFG() then
 		return false
 	end
 
@@ -398,23 +398,23 @@ function DBM:IsLogableContent(force)
 
 	--Now we do checks relying on pre coded trivial check table
 	--Current level Mythic raid
-	if self.Options.LogCurrentMythicRaids and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] >= private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId] and instanceDifficultyBylevel[lastInstanceMapId][2] == 3) and difficulties.difficultyIndex == 16 then
+	if self.Options.LogCurrentMythicRaids and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId] and instanceDifficultyBylevel[lastInstanceMapId][2] == 3) and difficulties.difficultyIndex == 16 then
 		return true
 	end
 	--Current player level non Mythic raid
-	if self.Options.LogCurrentRaids and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] >= private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) and difficulties.difficultyIndex ~= 16 then
+	if self.Options.LogCurrentRaids and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) and difficulties.difficultyIndex ~= 16 then
 		return true
 	end
 	--Trivial raid (ie one below players level)
-	if self.Options.LogTrivialRaids and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] < private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) then
+	if self.Options.LogTrivialRaids and instanceDifficultyBylevel[lastInstanceMapId] and self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 3) then
 		return true
 	end
 	--Current level Mythic dungeon
-	if self.Options.LogCurrentMythicZero and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] >= private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId][2] == 2) and difficulties.difficultyIndex == 23 then
+	if self.Options.LogCurrentMythicZero and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 2) and difficulties.difficultyIndex == 23 then
 		return true
 	end
 	--Current level Heroic dungeon
-	if self.Options.LogCurrentHeroic and instanceDifficultyBylevel[lastInstanceMapId] and (instanceDifficultyBylevel[lastInstanceMapId][1] >= private.playerLevel) and (instanceDifficultyBylevel[lastInstanceMapId][2] == 2) and (difficulties.difficultyIndex == 2 or difficulties.difficultyIndex == 174) then
+	if self.Options.LogCurrentHeroic and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 2) and (difficulties.difficultyIndex == 2 or difficulties.difficultyIndex == 174) then
 		return true
 	end
 

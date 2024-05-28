@@ -23,8 +23,9 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, proper detection of  slathering Maw. is cast ID used now for the gather part, or run out part after gather?
+--TODO, proper detection of slathering Maw. is cast ID used now for the gather part, or run out part after gather?
 --TODO, announce netting targets unfiltered?
+--TODO, now boss seems to be mid rework so work on this mod haulted until some stuff clarified.
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
 local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3)
 
@@ -35,6 +36,7 @@ local specWarnStalkersWebbing					= mod:NewSpecialWarningDodgeCount(441451, nil,
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerSlatheringMawCD						= mod:NewAITimer(49, 434776, nil, nil, nil, 3)
+local timerStalkersWebbingCD					= mod:NewAITimer(49, 441451, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
@@ -47,6 +49,7 @@ function mod:OnCombatStart(delay)
 	self.vb.mawCount = 0
 	self.vb.webbingCount = 0
 	timerSlatheringMawCD:Start(1-delay)
+	timerStalkersWebbingCD:Start(1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -60,6 +63,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.webbingCount = self.vb.webbingCount + 1
 		specWarnStalkersWebbing:Show(self.vb.webbingCount)
 		specWarnStalkersWebbing:Play("watchstep")
+		timerStalkersWebbingCD:Start()
 	end
 end
 

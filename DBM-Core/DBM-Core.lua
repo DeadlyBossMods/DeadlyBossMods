@@ -81,10 +81,10 @@ local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.43 alpha"--Core version
+DBM.DisplayVersion = "10.2.45 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 5, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
+DBM.ReleaseRevision = releaseDate(2024, 5, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+PForceDisable = private.isCata and 11 or 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -523,7 +523,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 -----------------
 local LibSpec
 do
-	if private.isRetail and LibStub then
+	if (private.isRetail or private.isCata) and LibStub then
 		LibSpec = LibStub("LibSpecialization", true)
 		if LibSpec then
 			local function update(specID, _, _, playerName)
@@ -1614,13 +1614,6 @@ do
 							local mapIdTable = {strsplit(",", C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 
 							local minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface") or 0)
-							if private.isBCC then
-								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-BCC") or minToc)
-							elseif private.isCata then
-								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Cata") or minToc)
-							elseif private.isWrath then
-								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Wrath") or minToc)
-							end
 
 							local firstMapId = mapIdTable[1]
 							local firstMapName
@@ -3608,7 +3601,7 @@ do
 		self:Schedule(2, throttledTalentCheck, self)
 	end
 	--Throttle this api too.
-	DBM.PLAYER_TALENT_UPDATE = DBM.CHARACTER_POINTS_CHANGED -- Wrath support
+	DBM.PLAYER_TALENT_UPDATE = DBM.CHARACTER_POINTS_CHANGED -- Wrath/Cata support
 end
 
 do
@@ -6237,15 +6230,39 @@ do
 		["EVOKER"] = 1465,
 	}
 
+	--In event api fails to pull any data at all, just assign classes to generic DPS role (typically unspecced players such as sub level 11)
+	local catafallbackClassToRole = {
+		["MAGE"] = 799,--Arcane Mage
+		["PALADIN"] = 855,--Ret Paladin
+		["WARRIOR"] = 746,--Arms Warrior
+		["DRUID"] = 752,--Balance druid
+		["DEATHKNIGHT"] = 251,--Frost DK
+		["HUNTER"] = 811,--Beastmaster Hunter
+		["PRIEST"] = 795,--Shadow Priest
+		["ROGUE"] = 182,--Assassination Rogue
+		["SHAMAN"] = 263,--Enhancement Shaman
+		["WARLOCK"] = 871,--Affliction Warlock
+	}
+
 	function DBM:SetCurrentSpecInfo()
 		if private.isRetail then
-			currentSpecGroup = GetSpecialization() or 1
-			if GetSpecializationInfo(currentSpecGroup) then
-				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			currentSpecGroup = GetSpecialization()
+			if currentSpecGroup and GetSpecializationInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)
 				currentSpecID = tonumber(currentSpecID)
 			else
-				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
+			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isCata then
+			currentSpecGroup = GetPrimaryTalentTree()
+			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)
+				currentSpecID = tonumber(currentSpecID)
+			else
+				currentSpecID, currentSpecName = catafallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			end
+			DBM:Debug("Current specID set to: "..currentSpecID, 2)
 		else
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
@@ -7171,12 +7188,20 @@ function DBM:RoleCheck(ignoreLoot)
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
 		end
-		if private.specRoleTable[currentSpecID]["Healer"] then
-			role = "HEALER"
-		elseif private.specRoleTable[currentSpecID]["Tank"] then
-			role = "TANK"
-		else
-			role = "DAMAGER"
+		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
+			--Refresh entire spec table if not in combat and it's still missing for some reason
+			DBMExtraGlobal:rebuildSpecTable()
+		end
+		if currentSpecID and private.specRoleTable[currentSpecID] then
+			if private.specRoleTable[currentSpecID]["Healer"] then
+				role = "HEALER"
+			elseif private.specRoleTable[currentSpecID]["Tank"] then
+				role = "TANK"
+			else
+				role = "DAMAGER"
+			end
+		else--By some miracle, despite excessive redundancy, it still failed because classic spagetti code.
+			role = "DAMAGER"--Set default role (which is what cataclysm does btw, it sets everyone to damager on raid join unless changed by our mod)
 		end
 	end
 	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15)) or not IsPartyLFG()) then
@@ -7409,7 +7434,7 @@ do
 		if uId then--This version includes ONLY melee dps
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -7460,7 +7485,7 @@ do
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -7495,7 +7520,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -7513,7 +7538,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -7530,7 +7555,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if private.isRetail and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
@@ -7656,7 +7681,7 @@ do
 		if not private.isRetail then
 			if private.specRoleTable[currentSpecID]["Tank"] then
 				-- 17 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
-				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff('player', 5487, 9634) then
+				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
 					playerIsTank = true
 					return true
 				end
