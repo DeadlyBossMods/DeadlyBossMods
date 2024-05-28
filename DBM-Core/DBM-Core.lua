@@ -81,10 +81,10 @@ local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.44 alpha"--Core version
+DBM.DisplayVersion = "10.2.44"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 5, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
+PForceDisable = private.isCata and 11 or 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -7187,17 +7187,21 @@ function DBM:RoleCheck(ignoreLoot)
 	else--Cata
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
-			if not InCombatLockdown() then
-				--Refresh entire spec table if not in combat
-				DBMExtraGlobal:rebuildSpecTable()
-			end
 		end
-		if currentSpecID and private.specRoleTable[currentSpecID]["Healer"] then
-			role = "HEALER"
-		elseif currentSpecID and private.specRoleTable[currentSpecID]["Tank"] then
-			role = "TANK"
-		else
-			role = "DAMAGER"
+		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
+			--Refresh entire spec table if not in combat and it's still missing for some reason
+			DBMExtraGlobal:rebuildSpecTable()
+		end
+		if currentSpecID and private.specRoleTable[currentSpecID] then
+			if private.specRoleTable[currentSpecID]["Healer"] then
+				role = "HEALER"
+			elseif private.specRoleTable[currentSpecID]["Tank"] then
+				role = "TANK"
+			else
+				role = "DAMAGER"
+			end
+		else--By some miracle, despite excessive redundancy, it still failed because classic spagetti code.
+			role = "DAMAGER"--Set default role (which is what cataclysm does btw, it sets everyone to damager on raid join unless changed by our mod)
 		end
 	end
 	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15)) or not IsPartyLFG()) then
