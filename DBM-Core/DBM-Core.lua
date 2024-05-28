@@ -3601,7 +3601,7 @@ do
 		self:Schedule(2, throttledTalentCheck, self)
 	end
 	--Throttle this api too.
-	DBM.PLAYER_TALENT_UPDATE = DBM.CHARACTER_POINTS_CHANGED -- Wrath support
+	DBM.PLAYER_TALENT_UPDATE = DBM.CHARACTER_POINTS_CHANGED -- Wrath/Cata support
 end
 
 do
@@ -7187,6 +7187,10 @@ function DBM:RoleCheck(ignoreLoot)
 	else--Cata
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
+			if not InCombatLockdown() then
+				--Refresh entire spec table if not in combat
+				DBMExtraGlobal:rebuildSpecTable()
+			end
 		end
 		if currentSpecID and private.specRoleTable[currentSpecID]["Healer"] then
 			role = "HEALER"
