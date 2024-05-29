@@ -81,9 +81,9 @@ local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.45 alpha"--Core version
+DBM.DisplayVersion = "10.2.46 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 5, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 5, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isCata and 11 or 10--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -6283,6 +6283,10 @@ do
 			--This should only happen for a level 1 player or someone who's in middle of respecing
 			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
 		end
+		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
+			--Refresh entire spec table if not in combat and it's still missing for some reason
+			DBMExtraGlobal:rebuildSpecTable()
+		end
 	end
 end
 
@@ -7187,10 +7191,6 @@ function DBM:RoleCheck(ignoreLoot)
 	else--Cata
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
-		end
-		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
-			--Refresh entire spec table if not in combat and it's still missing for some reason
-			DBMExtraGlobal:rebuildSpecTable()
 		end
 		if currentSpecID and private.specRoleTable[currentSpecID] then
 			if private.specRoleTable[currentSpecID]["Healer"] then
