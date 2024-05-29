@@ -455,6 +455,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFieryGrowthCD:Stop()
 		timerFallingStarsCD:Stop()
 		timerMassEntanglementCD:Stop()
+		timerFlamingGerminationCD:Stop()
 		timerTyphoon:Start()--5.5
 		if self:GetStage(1) then
 			self:SetStage(1.5)
