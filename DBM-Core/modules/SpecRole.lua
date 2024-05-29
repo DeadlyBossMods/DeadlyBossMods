@@ -625,7 +625,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["CasterDps"] = true,
 			},
-			[250] = {--Blood DK
+			[398] = {--Blood DK
 				["Tank"] = true,
 				["Melee"] = true,
 				["Dps"] = false,
@@ -633,7 +633,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 			},
-			[251] = {--Frost DK
+			[399] = {--Frost DK
 				["Tank"] = false,
 				["Melee"] = true,
 				["Dps"] = true,
@@ -641,7 +641,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 			},
-			[252] = {--Unholy DK
+			[400] = {--Unholy DK
 				["Tank"] = false,
 				["Melee"] = true,
 				["Dps"] = true,

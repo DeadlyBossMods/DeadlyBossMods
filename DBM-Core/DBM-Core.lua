@@ -6283,6 +6283,10 @@ do
 			--This should only happen for a level 1 player or someone who's in middle of respecing
 			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
 		end
+		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
+			--Refresh entire spec table if not in combat and it's still missing for some reason
+			DBMExtraGlobal:rebuildSpecTable()
+		end
 	end
 end
 
@@ -7187,10 +7191,6 @@ function DBM:RoleCheck(ignoreLoot)
 	else--Cata
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
-		end
-		if not InCombatLockdown() and currentSpecID and not private.specRoleTable[currentSpecID] then
-			--Refresh entire spec table if not in combat and it's still missing for some reason
-			DBMExtraGlobal:rebuildSpecTable()
 		end
 		if currentSpecID and private.specRoleTable[currentSpecID] then
 			if private.specRoleTable[currentSpecID]["Healer"] then
