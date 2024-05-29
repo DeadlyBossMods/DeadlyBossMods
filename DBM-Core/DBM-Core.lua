@@ -785,7 +785,12 @@ local function sendWhisper(target, msg)
 			BNSendWhisper(target, msg)
 		end
 	elseif type(target) == "string" then
-		SendChatMessage(msg, "WHISPER", nil, target) -- Whispering to ourselves here is okay and somewhat useful for whisper-warnings
+		local length = string.len(target)
+		--Only send sync if it's to a target with a shorter name due to blizzard bug
+		--https://github.com/Stanzilla/WoWUIBugs/issues/573
+		if length < 47 then
+			SendChatMessage(msg, "WHISPER", nil, target) -- Whispering to ourselves here is okay and somewhat useful for whisper-warnings
+		end
 	end
 end
 
@@ -2108,7 +2113,12 @@ do
 					end
 				end
 				if notify and v.revision < self.ReleaseRevision then
-					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
+					local length = string.len(v.name)
+					--Only send sync if it's to a target with a shorter name due to blizzard bug
+					--https://github.com/Stanzilla/WoWUIBugs/issues/573
+					if length < 47 then
+						SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
+					end
 				end
 			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
 				self:AddMsg(L.VERSIONCHECK_ENTRY_TWO:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.BIG_WIGS, bwVersionResponseString:format(v.bwversion, v.bwhash)), false)
@@ -2177,7 +2187,12 @@ do
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
-					C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t0\t%s"):format(text), "WHISPER", whisperTarget)
+					local length = string.len(whisperTarget)
+					--Only send sync if it's to a target with a shorter name due to blizzard bug
+					--https://github.com/Stanzilla/WoWUIBugs/issues/573
+					if length < 47 then
+						C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t0\t%s"):format(text), "WHISPER", whisperTarget)
+					end
 				else
 					sendLoggedSync(DBMSyncProtocol, "U", ("0\t%s"):format(text))
 				end
@@ -2197,7 +2212,12 @@ do
 			if whisperTarget then
 				--no dbm function uses whisper for pizza timers
 				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-				C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t%s\t%s"):format(time, text), "WHISPER", whisperTarget)
+				local length = string.len(whisperTarget)
+				--Only send sync if it's to a target with a shorter name due to blizzard bug
+				--https://github.com/Stanzilla/WoWUIBugs/issues/573
+				if length < 47 then
+					C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t%s\t%s"):format(time, text), "WHISPER", whisperTarget)
+				end
 			else
 				sendLoggedSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text))
 			end
@@ -6730,10 +6750,17 @@ do
 			end
 		end
 		if not selectedClient then return end
-		self:Debug("Requesting timer recovery to " .. selectedClient.name)
-		requestedFrom[selectedClient.name] = true
-		requestTime = GetTime()
-		SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tRT", "WHISPER", selectedClient.name)
+		local length = string.len(selectedClient.name)
+		--Only send sync if it's to a target with a shorter name due to blizzard bug
+		--https://github.com/Stanzilla/WoWUIBugs/issues/573
+		if length < 47 then
+			self:Debug("Requesting timer recovery to " .. selectedClient.name)
+			requestedFrom[selectedClient.name] = true
+			requestTime = GetTime()
+			SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tRT", "WHISPER", selectedClient.name)
+		else
+			self:Debug("Passing timer recovery due to blizzard bug to " .. selectedClient.name)
+		end
 	end
 
 	---@param mod DBMMod
@@ -6800,7 +6827,12 @@ do
 			--But only if we are not in combat with a boss
 			if DBT:GetBar(L.TIMER_BREAK) then
 				local remaining = DBT:GetBar(L.TIMER_BREAK).timer
-				SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tBTR3\t" .. remaining, "WHISPER", target)
+				local length = string.len(target)
+				--Only send sync if it's to a target with a shorter name due to blizzard bug
+				--https://github.com/Stanzilla/WoWUIBugs/issues/573
+				if length < 47 then
+					SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tBTR3\t" .. remaining, "WHISPER", target)
+				end
 			end
 			return
 		end
@@ -6838,25 +6870,35 @@ end
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
 	if not dbmIsEnabled then return end
-	return SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tCI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	local length = string.len(target)
+	--Only send sync if it's to a target with a shorter name due to blizzard bug
+	--https://github.com/Stanzilla/WoWUIBugs/issues/573
+	if length < 47 then
+		return SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tCI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	end
 end
 
 ---@param mod DBMMod
 function DBM:SendTimerInfo(mod, target)
 	if not dbmIsEnabled then return end
-	for _, v in ipairs(mod.timers) do
-		--Pass on any timer that has no type, or has one that isn't an ai timer
-		if not v.type or v.type and v.type ~= "ai" then
-			for _, uId in ipairs(v.startedTimers) do
-				local elapsed, totalTime, timeLeft
-				if select("#", string.split("\t", uId)) > 1 then
-					elapsed, totalTime = v:GetTime(select(2, string.split("\t", uId)))
-				else
-					elapsed, totalTime = v:GetTime()
-				end
-				timeLeft = totalTime - elapsed
-				if timeLeft > 0 and totalTime > 0 then
-					SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tTR\t%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), "WHISPER", target)
+	local length = string.len(target)
+	--Only send sync if it's to a target with a shorter name due to blizzard bug
+	--https://github.com/Stanzilla/WoWUIBugs/issues/573
+	if length < 47 then
+		for _, v in ipairs(mod.timers) do
+			--Pass on any timer that has no type, or has one that isn't an ai timer
+			if not v.type or v.type and v.type ~= "ai" then
+				for _, uId in ipairs(v.startedTimers) do
+					local elapsed, totalTime, timeLeft
+					if select("#", string.split("\t", uId)) > 1 then
+						elapsed, totalTime = v:GetTime(select(2, string.split("\t", uId)))
+					else
+						elapsed, totalTime = v:GetTime()
+					end
+					timeLeft = totalTime - elapsed
+					if timeLeft > 0 and totalTime > 0 then
+						SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tTR\t%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), "WHISPER", target)
+					end
 				end
 			end
 		end
@@ -6866,10 +6908,15 @@ end
 ---@param mod DBMMod
 function DBM:SendVariableInfo(mod, target)
 	if not dbmIsEnabled then return end
-	for vname, v in pairs(mod.vb) do
-		local v2 = tostring(v)
-		if v2 then
-			SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tVI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
+	local length = string.len(target)
+	--Only send sync if it's to a target with a shorter name due to blizzard bug
+	--https://github.com/Stanzilla/WoWUIBugs/issues/573
+	if length < 47 then
+		for vname, v in pairs(mod.vb) do
+			local v2 = tostring(v)
+			if v2 then
+				SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tVI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
+			end
 		end
 	end
 end
