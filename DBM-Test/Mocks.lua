@@ -7,6 +7,11 @@ local nilValue = newproxy(false)
 local mocks = {}
 test.Mocks = mocks
 
+function mocks.GetTime()
+	return test.timeWarper and test.timeWarper:GetTime() or GetTime()
+end
+
+
 local fakeCLEUArgs = {
 	-- Number of args to handle nil values gracefully
 	n = nil
@@ -40,7 +45,7 @@ function mocks:SetFakeCLEUArgs(mockPlayerName, ...)
 	end
 	if fakeCLEUArgs[9] == mockPlayerName then
 		fakeCLEUArgs[8] = UnitGUID("player")
-		fakeCLEUArgs[0] = UnitName("player")
+		fakeCLEUArgs[9] = UnitName("player")
 	end
 end
 
@@ -248,8 +253,17 @@ function mocks:UpdateUnitPower(uId, name, power)
 	unitPower["fakeunitid-name-" .. name] = power
 end
 
+function mocks.UnitExists(uId)
+	return bosses[uId] and bosses[uId].exists or UnitExists(uId)
+end
+
+function mocks.UnitGUID(uId)
+	local fromFakeId = uId:match("fakeunitid%-guid%-(.*)")
+	return bosses[uId] and bosses[uId].guid or fromFakeId or UnitGUID(uId)
+end
+
+test.restoreModVariables = {}
 function test:HookModVar(mod, key, val)
-	self.restoreModVariables = self.restoreModVariables or {}
 	self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}
 	local old = mod[key]
 	if old == nil then
@@ -269,18 +283,15 @@ function test:HookDbmVar(key, val)
 	DBM[key] = val
 end
 
-function test:SetupHooks(modUnderTest)
+function test:SetupHooks()
 	self:HookPrivate("CombatLogGetCurrentEventInfo", mocks.CombatLogGetCurrentEventInfo)
 	self:HookPrivate("GetInstanceInfo", mocks.GetInstanceInfo)
 	mocks:SetEncounterInProgress(false)
 	self:HookPrivate("IsEncounterInProgress", mocks.IsEncounterInProgress)
 	self:HookPrivate("UnitDetailedThreatSituation", mocks.UnitDetailedThreatSituation)
-	table.wipe(threatInfo)
 	self:HookPrivate("UnitAffectingCombat", mocks.UnitAffectingCombat)
-	table.wipe(unitsInCombat)
-	self:HookModVar(modUnderTest, "AntiSpam", mocks.AntiSpam)
-	mocks.GetTime = function() return self.timeWarper and self.timeWarper:GetTime() or GetTime() end
-	self:HookModVar(modUnderTest, "GetTime", mocks.GetTime)
+	self:HookPrivate("UnitGUID", mocks.UnitGUID)
+	self:HookModVar(self.modUnderTest, "AntiSpam", mocks.AntiSpam)
 	self:HookDbmVar("GetRaidUnitId", mocks.DBMGetRaidUnitId)
 	self:HookDbmVar("GetUnitIdFromGUID", mocks.DBMGetUnitIdFromGUID)
 	self:HookDbmVar("NumRealAlivePlayers", mocks.DBMNumRealAlivePlayers)
@@ -288,11 +299,48 @@ function test:SetupHooks(modUnderTest)
 	self:HookDbmVar("UnitDebuff", mocks.DBMUnitDebuff)
 	self:HookDbmVar("UnitAura", mocks.DBMUnitAura)
 	self:HookDbmVar("GetUnitFullName", mocks.DBMGetUnitFullName)
-	self:HookPrivate("UnitPower", mocks.UnitPower)
+	table.wipe(threatInfo)
+	table.wipe(unitsInCombat)
 	table.wipe(bosses)
 	table.wipe(unitTargets)
 	table.wipe(unitAuras)
 	table.wipe(unitPower)
+end
+
+function mocks:HookModGlobal(key, val)
+	if rawget(self.modEnv, key) then
+		error("tried to hook " .. key .. " twice in modEnv, this function must only be called once before all mods load")
+	end
+	local old = self.modEnv[key]
+	if type(old) ~= "function" then
+		-- if we need this implement it by making __index a function instead of a direct reference to _G
+		error("tried to hook " .. key .. " of type " .. type(old) .. ", only functions are supported for now")
+	end
+	self.modEnv[key] = function(...)
+		if test.testRunning then
+			return val(...)
+		else
+			return old(...)
+		end
+	end
+end
+
+-- Must be called before mods are loaded because they may cache pre-existing globals otherwise
+function mocks:InitializeModEnvironment()
+	if self.modEnv then
+		return
+	end
+	self.modEnv = setmetatable({}, {__index = _G})
+	self:HookModGlobal("UnitPower", mocks.UnitPower)
+	self:HookModGlobal("UnitExists", mocks.UnitExists)
+	self:HookModGlobal("UnitGUID", mocks.UnitGUID)
+	self:HookModGlobal("GetTime", mocks.GetTime)
+end
+
+-- Called by DBM:NewMod() if tests are active, tests activate prior to loading the mod under test anyways to trace loading events
+function mocks:SetModEnvironment(stackDepth)
+	self:InitializeModEnvironment()
+	setfenv(stackDepth + 1, self.modEnv)
 end
 
 function test:TeardownHooks()

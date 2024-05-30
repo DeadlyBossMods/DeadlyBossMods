@@ -154,7 +154,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	return textblock
 end
 
-function PanelPrototype:CreateButton(title, width, height, onclick, font)
+function PanelPrototype:CreateButton(title, width, height, onclick, font, highlightFont)
 	---@class DBMPanelButton: Button
 	---@field myheight number
 	---@field addon table
@@ -166,9 +166,9 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font)
 	if onclick then
 		button:SetScript("OnClick", onclick)
 	end
-	if font then
-		button:SetNormalFontObject(font)
-		button:SetHighlightFontObject(font)
+	if font or highlightFont then
+		button:SetNormalFontObject(font or highlightFont)
+		button:SetHighlightFontObject(highlightFont or font)
 	end
 	if _G[button:GetName() .. "Text"]:GetStringWidth() > button:GetWidth() then
 		button:SetWidth(_G[button:GetName() .. "Text"]:GetStringWidth() + 25)
@@ -221,6 +221,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider:SetScript("OnValueChanged", function(_, value)
 		sliderText:SetFormattedText(text, value)
 	end)
+	slider.textFrame = sliderText
 	self:SetLastObj(slider)
 	return slider
 end

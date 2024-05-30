@@ -16,8 +16,7 @@ test.testRunning = false
 local traceField = "Trace"
 test[traceField] = function() end
 
-function test:HandleCommand(testName, timeWarp)
-	timeWarp = timeWarp and tonumber(timeWarp:match("(%d+)"))
+function test:LoadAllTests()
 	local numTestAddOnsFound = 0
 	C_AddOns.LoadAddOn("DBM-Test")
 	for i = 1, C_AddOns.GetNumAddOns() do
@@ -26,6 +25,16 @@ function test:HandleCommand(testName, timeWarp)
 			C_AddOns.LoadAddOn(i)
 		end
 	end
+	return numTestAddOnsFound
+end
+
+function test:TestsLoaded()
+	return self.Registry ~= nil and #self.Registry.sortedTests > 0
+end
+
+function test:HandleCommand(testName, timeWarp)
+	timeWarp = timeWarp and tonumber(timeWarp:match("(%d+)"))
+	local numTestAddOnsFound = self:LoadAllTests()
 	if numTestAddOnsFound == 0 then
 		DBM:AddMsg("No test AddOns installed, install an alpha or dev version of DBM to get DBM-Test-* mods.")
 	end
@@ -39,7 +48,7 @@ function test:HandleCommand(testName, timeWarp)
 		end
 		DBM:AddMsg("/dbm test <name> <time warp factor> -- execute a test")
 		DBM:AddMsg("/dbm test * <time warp factor> -- run all tests")
-		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test SoD runs all tests for SoD.")
+		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test Dragonflight runs all tests for Dragonflight.")
 		DBM:AddMsg("/dbm test clear -- clear exported test data")
 	elseif testName:lower() == "stop" then
 		test:StopTests()
@@ -48,11 +57,6 @@ function test:HandleCommand(testName, timeWarp)
 		DBM_TestResults_Export = {}
 		DBM:AddMsg("Cleared exported test results.")
 	else
-		if self.Registry.tests[testName] then
-			-- Matching exactly 1 test is handled differently because of RunTest shows errors/output immediately, RunTest*s* is more for extracting results from saved variables
-			self:RunTest(testName, timeWarp)
-			return
-		end
 		local tests = {}
 		if testName == "*" then
 			testName = ""
@@ -66,7 +70,23 @@ function test:HandleCommand(testName, timeWarp)
 			DBM:AddMsg("No tests matching prefix " .. testName .. " found, run /dbm test list to see available tests.")
 			return
 		end
-		self:RunTests(tests, timeWarp)
+		local successes = 0
+		self:RunTests(tests, timeWarp, function(event, test, report, count, totalTests)
+			if event ~= "TestFinish" then return end
+			DBM:AddMsg("Test " .. test.name .. " finished, result: " .. report:GetResult())
+			if report:GetResult() == "Success" then
+				successes = successes + 1
+			end
+			if report:HasDiff() then
+				report:ReportDiff()
+			end
+			if report:HasErrors() then
+				report:ReportErrors()
+			end
+			if count == totalTests and totalTests > 1 then
+				DBM:AddMsg(("%d/%d tests succeeded!"):format(successes, totalTests))
+			end
+		end)
 	end
 end
 
@@ -139,7 +159,7 @@ function test:UnhookPrivates()
 	table.wipe(restoreLocalHooks)
 end
 
-function test:GetPrivate(key)
-	if not checkDevBuild() then return end
-	return private[key]
+function test:GetPrivate()
+	if not checkDevBuild() then error() end
+	return private
 end

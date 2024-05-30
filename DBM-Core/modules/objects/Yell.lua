@@ -110,7 +110,9 @@ function yellPrototype:Say(...)
 end
 
 function yellPrototype:Schedule(t, ...)
-	return DBMScheduler:Schedule(t, self.Yell, self.mod, self, ...)
+	local id = DBMScheduler:Schedule(t, self.Yell, self.mod, self, ...)
+	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", ...)
+	return id
 end
 
 --Standard schedule object to schedule a say/yell based on what's defined in object

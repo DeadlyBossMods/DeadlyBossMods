@@ -81,3 +81,5 @@ modules\options\frames\Frames.lua
 modules\options\frames\InfoFrame.lua
 modules\options\frames\Range.lua
 modules\options\frames\Nameplate.lua
+
+modules\options\dev\Dev.lua

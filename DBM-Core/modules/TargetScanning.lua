@@ -18,6 +18,7 @@ local unitMonitor = {}
 
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
+local test = private:GetPrototype("DBMTest")
 
 function module:OnModuleEnd()
 	twipe(targetScanCount)
@@ -311,3 +312,10 @@ do
 		repeatedScanEnabled[returnFunc] = nil
 	end
 end
+
+
+test:RegisterLocalHook("UnitGUID", function(val)
+	local old = UnitGUID
+	UnitGUID = val
+	return old
+end)

@@ -1,0 +1,15 @@
+## Interface: 40400
+## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Тесты|r|cffffe00a>|r |cff69ccf0Тесты для DBM Ядра|r
+## Dependencies: DBM-Core
+## SavedVariables: DBM_TestResults_Export, DBM_Test_DefaultTimeWarp
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## DefaultState: enabled
+## LoadOnDemand: 1
+## X-DBM-Test: true
+
+Registry.lua
+Report.lua
+Runner.lua
+TimeWarper.lua
+Mocks.lua

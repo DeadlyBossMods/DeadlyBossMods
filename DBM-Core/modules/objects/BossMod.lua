@@ -94,6 +94,9 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		mt
 	)
 	test:Trace(obj, "NewMod", name, modId)
+	if test.testRunning and test.Mocks and test.Mocks.SetModEnvironment then
+		test.Mocks:SetModEnvironment(2)
+	end
 
 	if tonumber(name) and EJ_GetEncounterInfo and EJ_GetEncounterInfo(tonumber(name)) then
 		local t = EJ_GetEncounterInfo(tonumber(name))
@@ -875,7 +878,9 @@ function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
-	return self:Schedule(t, self[method], self, ...)
+	local id = self:Schedule(t, self[method], self, ...)
+	test:Trace(self, "SetScheduleMethodName", id, self, method, ...)
+	return id
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
 
@@ -921,6 +926,3 @@ function bossModPrototype:GetLocalizedStrings()
 	self.localization.miscStrings.name = self.localization.general.name
 	return self.localization.miscStrings
 end
-
--- this exists so time-warped tests can use self:GetTime() which can easily be overriden in time-warped tests
-bossModPrototype.GetTime = GetTime

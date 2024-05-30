@@ -4,6 +4,15 @@ DBM.Test:DefineTest{
 	gameVersion = "Retail",
 	addon = "DBM-Raids-Dragonflight",
 	mod = 2493,
+	ignoreWarnings = {
+		phaseChangeSpells = {
+			"Encounter Spawn",
+			"Broodkeeper's Fury",
+		},
+		spellIdMismatches = {
+			["Ionizing Charge"] = "Ionizing Charge",
+		},
+	},
 	-- TODO: this log was logged without the DBM GetInstanceInfo() transcription in an LFR raid, at least some values here are missing or potentially wrong: dynamicDifficulty, lfgDungeonID, difficultyName
 	-- this is not really relevant for this test, though.
 	instanceInfo = {name = "Vault of the Incarnates", instanceType = "raid", difficultyID = 17, difficultyName = "lfr", maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2522, instanceGroupSize = 25, lfgDungeonID = nil},

@@ -2,12 +2,13 @@
 ---@class DBMTest
 local test = DBM.Test
 
+local dbmPrivate = test:GetPrivate()
+
 -- FIXME: i don't like this "global" state
 local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
 ---@type TestTrace
 local trace = {}
-test.trace = trace -- Export for dev/debugging
 -- FIXME: the way event keys are handled is pretty ugly, also the name is terrible because so many things are called "events"
 local currentEventKey
 ---@type TestLogEntry?
@@ -17,15 +18,162 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+local function eventArgsToStringPretty(event, offset, isCleu)
+	local result = ""
+	for i = offset, #event do
+		local filtered = false
+		if event[i] == "" then
+			result = result .. '""'
+		elseif isCleu and (i == 6 or i == 10) then -- flags
+			result = result .. "0x" .. ("%x"):format(tonumber(event[i]) or 0)
+		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
+			filtered = true
+		else
+			result = result .. tostring(event[i])
+		end
+		if i < #event and not filtered then
+			result = result .. ", "
+		end
+	end
+	return result:gsub(", $", "")
+end
+
+local function getRootEvent(event)
+	if event[2] == "ExecuteScheduledTask" then
+		return getRootEvent(event[3].rawTrigger)
+	else
+		return event
+	end
+end
+
+-- FIXME: the term "event" is overloaded here as it's both used as the trigger and the resulting mod action, this one is for triggers, not traces
+-- FIXME: this should probably be done during reporting and not playback
+local function eventToString(event, includeTimestamp)
+	local eventName, args, summary
+	local ts = ""
+	if includeTimestamp then
+		local maxTimestampStrLength = math.floor(math.log10(math.floor(math.max(includeTimestamp, 1) * 100 + 0.5) / 100)) + 4
+		ts = ("[%" .. maxTimestampStrLength .. ".2f] "):format(event[1])
+	end
+	if event[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+		eventName = event[3]
+		args = string.join(", ", eventArgsToStringPretty(event, 4, true))
+		local sourceName = event[5]
+		local destName = event[9]
+		local spellName = event[13]
+		if destName then
+			summary = (sourceName or "") .. "->" .. destName
+		else
+			summary = sourceName
+		end
+		if eventName:match("^SPELL_") and spellName and summary then
+			summary = summary .. ": " .. spellName
+		end
+	elseif event[2] == "ExecuteScheduledTask" then
+		local rootEvent = getRootEvent(event)
+		return ("%sScheduled at %.2f by %s"):format(ts, rootEvent[1], eventToString(rootEvent, false))
+	else
+		eventName = event[2]
+		args = string.join(", ", eventArgsToStringPretty(event, 3))
+	end
+	return ("%s%s: %s%s"):format(ts, eventName, summary and "[" .. summary .. "] " or "", args)
+end
+
+---@type table<integer, ScheduledTask>
+local scheduledTasks = {}
+local tableUtils = dbmPrivate:GetPrototype("TableUtils")
+
+local function shortObjectName(obj, currentMod)
+	return obj == DBM and "DBM"
+		or obj == currentMod and "mod"
+		or type(obj) == "table" and (
+			obj.objClass == "Timer" and "timer" .. (obj.spellId or "") .. obj.type
+			or obj.objClass == "Announce" and "announce" .. (obj.spellId or "") .. (obj.announceType or "")
+			or obj.objClass == "SpecialWarning" and "specWarn" .. (obj.spellId or "") .. (obj.announceType or "")
+			or obj.objClass == "Yell" and "yell" .. (obj.spellId or "") .. (obj.yellType or "")
+		)
+		or "(unknown object)"
+end
+
+local function functionArgsPretty(...)
+	local res = {}
+	for i = 1, select("#", ...) do
+		local arg = select(i, ...)
+		if type(arg) == "number" then
+			res[#res + 1] = ("%.1f"):format(arg)
+		elseif type(arg) == "string" then
+			-- to handle announce:CombinedShow(args.destName) since we fake args.destName to set to the current real player
+			if arg == UnitName("player") then
+				arg = "PlayerName"
+			end
+			res[#res + 1] = ("%q"):format(arg)
+		elseif type(arg) == "table" then
+			res[#res + 1] = shortObjectName(arg)
+		elseif type(arg) == "boolean" then
+			res[#res + 1] = tostring(arg)
+		elseif type(arg) == "nil" then
+			res[#res + 1] = "nil"
+		else
+			res[#res + 1] = "(unknown " .. type(arg) .. ")"
+		end
+	end
+	while res[#res] == "nil" do -- drop trailing nils to omit unused args
+		res[#res] = nil
+	end
+	return table.concat(res, ", ")
+end
+
 ---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
+	if event == "ScheduleTask" then -- the other Scheduler-traces for events discarded here are filtered by the "did we see the schedule?" logic below
+		-- Filter non-mod schedules because they're used a lot internally
+		if mod ~= self.modUnderTest then
+			return
+		end
+		-- Timers use Schedule in the mod namespace internally
+		local func, tbl, val = select(3, ...)
+		if func == tableUtils.removeEntry and type(tbl) == "table" and tbl._testObjClass == "Timer.startedTimers" and type(val) == "string" then
+			return
+		end
+	end
+	-- We only care about timers where we observed the schedule event
+	if event == "UnscheduleTask" or event == "ExecuteScheduledTaskPre" or event == "ExecuteScheduledTaskPost" or event == "SetScheduleMethodName" or event == "SchedulerHideFromTraceIfUnscheduled" then
+		local id = ...
+		if not scheduledTasks[id] then
+			return
+		end
+	end
+	if event == "SetScheduleMethodName" then
+		local id, obj, method = ...
+		local objString = shortObjectName(obj, mod)
+		local methodStr = method:match("^[%a_][%w_]*$") and ":" .. method or ("[%q]"):format(method)
+		scheduledTasks[id].scheduledBy.scheduleData.funcName = objString .. methodStr .. "(" .. functionArgsPretty(select(4, ...)) .. ")"
+		return
+	end
+	if event == "SchedulerHideFromTraceIfUnscheduled" then
+		local id = ...
+		---@class ScheduledTask
+		local scheduledTask = scheduledTasks[id]
+		scheduledTask.hideIfUnscheduled = true
+	end
+	if event == "CombinedWarningPreciseShow" then
+		local obj, maxTotal = ...
+		obj.testUsedWithPreciseShow[maxTotal] = true
+		return
+	elseif event == "CombinedWarningPreciseShowSuccess" then
+		local obj, maxTotal = ...
+		obj.testUsedWithPreciseShowSucess[maxTotal] = true
+		return
+	end
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
 	-- FIXME: this logic will get real messy real fast as we add more events -- come up with a way to define per-event behavior somehow
 	if key == "InternalLoading" then
-		local entries = loadingTrace[mod] or {}
-		loadingTrace[mod] = entries
-		entries[#entries + 1] = {event, ...}
+		if mod then -- We only care about mod-related events, sometimes other events such as internal Schedules can trigger during load (e.g., timer recovery)
+			local entries = loadingTrace[mod] or {}
+			loadingTrace[mod] = entries
+			entries[#entries + 1] = {event, ...}
+		end
 	else
 		local traceEntry = trace[#trace]
 		if not traceEntry or traceEntry.trigger ~= key then
@@ -49,12 +197,25 @@ function test:Trace(mod, event, ...)
 			-- For AntiSpam events: next trace entries where this AntiSpam returned false
 			---@type TraceEntry[]?
 			filteredAntiSpams = nil,
+			-- For ScheduleTask events: information on execution or cancelation
+			---@type {scheduleExecution: TraceEntry?, unscheduledBy: TestLogEntry?, unscheduledTask: ScheduledTask?, funcName: string?, time: number, delta: number}
+			scheduleData = nil,
 			...
 		}
+		if currentRawEvent and currentRawEvent[2] == "ExecuteScheduledTask" then
+			local origEntry = currentRawEvent[3].scheduledBy
+			origEntry.scheduleData.scheduleExecution = traceEntry
+		end
 		traceEntry.traces[#traceEntry.traces + 1] = entry
 		if event == "NewTimer" or event == "NewAnnounce" or event == "NewSpecialWarning" or event == "NewYell" then
 			local obj = ...
 			obj.testUseCount = 0
+			obj.testUsedWithPreciseShow = {}
+			obj.testUsedWithPreciseShowSucess = {}
+			if obj.startedTimers then
+				-- used to identify this table later to filter some schedule logic on it
+				obj.startedTimers._testObjClass = "Timer.startedTimers"
+			end
 		end
 		if event == "StartTimer" or event == "ShowAnnounce" or event == "ShowSpecialWarning" or event == "ShowYell" then
 			local obj = ...
@@ -82,53 +243,39 @@ function test:Trace(mod, event, ...)
 				end
 			end
 		end
+		if event == "ScheduleTask" then
+			local traceId, time = ...
+			---@class ScheduledTask
+			scheduledTasks[traceId] = {
+				scheduledBy = entry,
+				rawTrigger = currentRawEvent,
+				time = time
+			}
+			entry.scheduleData = {
+				delta = time,
+				time = time + (currentRawEvent and currentRawEvent[1] or 0)
+			}
+		elseif event == "UnscheduleTask" then
+			local traceId = ...
+			local scheduledTask = scheduledTasks[traceId]
+			scheduledTask.scheduledBy.scheduleData.unscheduledBy = currentRawEvent
+			entry.scheduleData = {unscheduledTask = scheduledTasks[traceId]}
+			if scheduledTask.hideIfUnscheduled then
+				entry.hidden = true
+				scheduledTask.scheduledBy.hidden = true
+			end
+		elseif event == "ExecuteScheduledTaskPre" then
+			local traceId = ...
+			local scheduledTask = scheduledTasks[traceId]
+			local scheduleTrigger = {scheduledTask.scheduledBy.scheduleData.time, "ExecuteScheduledTask", scheduledTask}
+			currentEventKey = eventToString(scheduleTrigger, self.testData.log[#self.testData.log][1])
+			currentRawEvent = scheduleTrigger
+		elseif event == "ExecuteScheduledTaskPost" then
+			-- Note: this is not guaranteed to trigger if the scheduled task throws an error, but that doesn't actually matter
+			currentEventKey = nil
+			currentRawEvent = nil
+		end
 	end
-end
-
-local function eventArgsToStringPretty(event, offset, isCleu)
-	local result = ""
-	for i = offset, #event do
-		local filtered = false
-		if event[i] == "" then
-			result = result .. '""'
-		elseif isCleu and (i == 6 or i == 10) then -- flags
-			result = result .. "0x" .. ("%x"):format(tonumber(event[i]) or 0)
-		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
-			filtered = true
-		else
-			result = result .. tostring(event[i])
-		end
-		if i < #event and not filtered then
-			result = result .. ", "
-		end
-	end
-	return result:gsub(", $", "")
-end
-
--- FIXME: the term "event" is overloaded here as it's both used as the trigger and the resulting mod action, this one is for triggers, not traces
--- FIXME: this should probably be done during reporting and not playback
-local function eventToString(event, maxTimestamp)
-	local eventName, args, summary
-	if event[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
-		eventName = event[3]
-		args = string.join(", ", eventArgsToStringPretty(event, 4, true))
-		local sourceName = event[5]
-		local destName = event[9]
-		local spellName = event[13]
-		if destName then
-			summary = (sourceName or "") .. "->" .. destName
-		else
-			summary = sourceName
-		end
-		if eventName:match("^SPELL_") and spellName and summary then
-			summary = summary .. ": " .. spellName
-		end
-	else
-		eventName = event[2]
-		args = string.join(", ", eventArgsToStringPretty(event, 3))
-	end
-	local maxTimestampStrLength = math.floor(math.log10(math.floor(math.max(maxTimestamp, 1) * 100 + 0.5) / 100)) + 4
-	return ("[%" .. maxTimestampStrLength .. ".2f] %s: %s%s"):format(event[1], eventName, summary and "[" .. summary .. "] " or "", args)
 end
 
 local function enableAllWarnings(mod, objects)
@@ -139,8 +286,8 @@ local function enableAllWarnings(mod, objects)
 	end
 end
 
----@param mod DBMMod
-function test:SetupModOptions(mod)
+function test:SetupModOptions()
+	local mod = self.modUnderTest
 	local modTempOverrides = self.restoreModVariables[mod]
 	-- mod.Options is in a saved table, so make a copy of the whole thing to not mess it up accidentally
 	modTempOverrides.Options = mod.Options
@@ -183,12 +330,13 @@ function test:SetupDBMOptions()
 	DBM.Options.NewsMessageShown2 = 3
 end
 
----@param modUnderTest DBMMod
-function test:Setup(modUnderTest)
-	table.wipe(trace)
+function test:Setup(testData)
+	trace = {}
 	table.wipe(antiSpams)
+	self.reporter = self:NewReporter(testData, trace)
+	self.reporter:SetupErrorHandler()
 	self.testRunning = true
-	self:SetupHooks(modUnderTest)
+	self:SetupHooks()
 	-- Store stats for all mods to not mess them up if the test or a mod trigger is bad
 	for _, mod in ipairs(DBM.Mods) do
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
@@ -200,7 +348,7 @@ function test:Setup(modUnderTest)
 	end
 	-- Change settings to not depend on user configuration
 	self:SetupDBMOptions()
-	self:SetupModOptions(modUnderTest)
+	self:SetupModOptions()
 end
 
 function test:ForceCVar(cvar, value)
@@ -213,6 +361,8 @@ end
 
 function test:Teardown()
 	self.testRunning = false
+	self.modUnderTest = nil
+	self.reporter:UnsetErrorHandler()
 	-- Get rid of any lingering :Schedule calls, they are broken anyways due to time warping
 	DBM:Disable()
 	DBM:Enable()
@@ -238,6 +388,8 @@ function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid,
 		self.Mocks:ApplyUnitAura(dstName, dstGuid, spellId, spellName, auraType, amount)
 	end
 end
+
+local fakeUnitEventFrame = CreateFrame("Frame")
 
 function test:InjectEvent(event, ...)
 	if event == "IsEncounterInProgress()" then
@@ -278,39 +430,48 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateUnitPower(uid, name, power)
 		return self:InjectEvent(event, uid, powerType)
 	end
-	-- FIXME: handle UNIT_* differently, will always end up as UNIT_*_UNFILTERED which is *usually* wrong, probably best to just send them twice?
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
-		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, self.Mocks.CombatLogGetCurrentEventInfo())
+		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
 	else
-		self:GetPrivate("mainEventHandler")(self:GetPrivate("mainFrame"), event, ...)
+		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
+	end
+	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
+	if event:match("^UNIT_") then
+		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)
 	end
 end
 
 local currentThread
 
+local function errorHandlerWithStack(err)
+	local msg = err .. "\n Stack:\n" .. debugstack(2)
+	geterrorhandler()(msg)
+end
+
 ---@param testData TestDefinition
-function test:Playback(testData, timeWarp)
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
+function test:Playback(testData, timeWarp, callback)
 	DBM:AddMsg("Starting test: " .. testData.name)
-	if timeWarp >= 10 then
-		DBM:AddMsg("Timewarp >= 10, disabling sounds")
-		self:ForceCVar("Sound_EnableAllSound", false)
+	if callback then
+		callback("TestStart", testData, nil)
 	end
 	self.testData = testData
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
-	local timeWarper = test.TimeWarper:New(timeWarp)
+	local timeWarper = test.TimeWarper:New()
 	self.timeWarper = timeWarper
 	timeWarper:Start()
+	timeWarper:SetSpeed(timeWarp)
 	local startTime = timeWarper.fakeTime
 	for _, v in ipairs(testData.log) do
 		local ts = v[1]
 		timeWarper:WaitUntil(startTime + ts)
 		currentEventKey = eventToString(v, maxTimestamp)
 		currentRawEvent = v
-		xpcall(self.InjectEvent, geterrorhandler(), self, select(2, unpack(v)))
+		xpcall(self.InjectEvent, errorHandlerWithStack, self, select(2, unpack(v)))
 		currentRawEvent = nil
 		currentEventKey = nil
 	end
@@ -319,29 +480,30 @@ function test:Playback(testData, timeWarp)
 	end
 	timeWarper:WaitUntil(timeWarper.fakeTime + 3.1)
 	timeWarper:Stop()
-	local reporter = self:NewReporter(testData, trace)
+	local reporter = self.reporter
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
-	local expected = self.Registry.expectedResults[testData.name]
-	if not expected or expected:trim() ~= reporter:Report():trim() then
-		DBM:AddMsg("Test failed!")
-		reporter:ReportDiff(expected)
-	else
-		DBM:AddMsg("Test succeeded!")
+	if callback then
+		callback("TestFinish", testData, reporter)
 	end
 end
 
 local frame = CreateFrame("Frame")
 frame:Show()
-frame:SetScript("OnUpdate", function(_, elapsed)
+frame:SetScript("OnUpdate", function(self)
 	if currentThread then
 		if coroutine.status(currentThread) == "dead" then
 			currentThread = nil
 			test:Teardown()
 		else
-			local ok, err = coroutine.resume(currentThread, elapsed)
-			if not ok then geterrorhandler()(err) end
+			local ok, err = coroutine.resume(currentThread)
+			if not ok then
+				if err:match("^[^\n]*test stopped, time warp canceled") then
+					return
+				end
+				geterrorhandler()(err)
+			end
 		end
 	end
 end)
@@ -351,9 +513,25 @@ end)
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
 ---@field mod string|integer The boss mod being tested.
+---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string Name of the player who recorded the log.
 ---@field log TestLogEntry[] Log to replay
+
+--[[
+I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,
+you can't add comments there (cause they themselves would be a diff), so acknowledging them in the test definition is better.
+But putting them there is extra work, extra code, and the ignore logic is somewhat messy and error-prone.
+
+Maybe a better solution would be to support some kind of comment in the report?
+]]
+
+---@class TestIgnoreWarnings
+---@field sharedWith boolean|string? By default the ignoreWarnings field is shared across all tests for the mod, set this to a regex to match only certain test names of the same mod. Set to false to not share this.
+--- List of spell IDs or spell names that are used to detect phase changes, this surpresses spellID mismatch warnings caused by these spells.
+---@field phaseChangeSpells string|number|(string|number)[]?
+--- Suppress warning spellID mismatch warnings if the spell ID or spell name given as key is used to trigger a warning associated with a spell ID or spell name in the value. Set value to true to ignore all mismatches.
+---@field spellIdMismatches table<string|number, string|number|boolean|(string|number)[]>?
 
 ---@class TestLogEntry
 ---@field [1] number
@@ -363,7 +541,11 @@ end)
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
 ---@alias GameVersion "Retail"|"Classic"|"ClassicEra"|"SeasonOfDiscovery"
 
-function test:RunTest(testName, timeWarp)
+---@alias TestCallbackEvent "TestStart"|"TestFinish"
+
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
+function test:RunTest(testName, timeWarp, callback)
+	timeWarp = timeWarp or DBM_Test_DefaultTimeWarp or 0
 	local testData = self.Registry.tests[testName]
 	if not testData then
 		error("test " .. testName .. " not found", 2)
@@ -385,7 +567,8 @@ function test:RunTest(testName, timeWarp)
 	if not modUnderTest then
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
-	self:Setup(modUnderTest) -- Must be done after loading the mod to prepare mod (stats, options, ...)
+	self.modUnderTest = modUnderTest
+	self:Setup(testData) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
@@ -400,7 +583,7 @@ function test:RunTest(testName, timeWarp)
 	currentEventKey = nil
 	currentRawEvent = nil
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp or 1)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, callback)
 	if not ok then error(err) end
 end
 
@@ -413,12 +596,17 @@ function test:StopTests()
 	self:Teardown()
 end
 
-function test:RunTests(testNames, timeWarp)
+---@param testsOrNames (TestDefinition|string)[]
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?, count: integer, total: integer)
+function test:RunTests(testsOrNames, timeWarp, callback)
+	local startTime = GetTimePreciseSec()
 	self.stopRequested = false
-	-- FIXME: aggregate errors and report them at the end
 	local cr = coroutine.create(function()
-		for _, testName in ipairs(testNames) do
-			xpcall(self.RunTest, geterrorhandler(), self, testName, timeWarp)
+		for i, testOrName in ipairs(testsOrNames) do
+			local testName = type(testOrName) == "string" and testOrName or testOrName.name
+			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, function(event, testDef, reporter)
+				if callback then callback(event, testDef, reporter, i, #testsOrNames) end
+			end)
 			while self.testRunning do
 				coroutine.yield()
 			end
@@ -426,9 +614,9 @@ function test:RunTests(testNames, timeWarp)
 				break
 			end
 		end
+		DBM:Debug(("Running %d |1test;tests; took %.2f seconds real time."):format(#testsOrNames, GetTimePreciseSec() - startTime), 1)
 	end)
 	local f = CreateFrame("Frame")
-	-- FIXME: can probably be merged with the main coroutine
 	f:SetScript("OnUpdate", function()
 		local status = coroutine.status(cr)
 		if status == "suspended" then
