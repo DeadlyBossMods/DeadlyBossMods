@@ -81,7 +81,7 @@ local fakeBWVersion, fakeBWHash = 330, "8c25119"--330.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.46"--Core version
+DBM.DisplayVersion = "10.2.47 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 5, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 12--When this is incremented, trigger force disable regardless of major patch
@@ -6447,7 +6447,7 @@ end
 ---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
 function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string too since Blizzards api converts strings to number.
 	if not sectionID then return end
-	if private.isClassic or private.isWrath then
+	if private.isClassic or private.isBCC or private.isWrath then
 		return "EJ_GetSectionInfo not supported on Classic, please report this message and boss"
 	end
 	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
