@@ -39,7 +39,7 @@
 ---|"bitenow"
 ---|"bloodfeast"
 ---|"bluemushroomcoming"
----|"blueyou"
+---|"blueyou" 17
 ---|"bombnow"
 ---|"bombrun"
 ---|"bombsoon"
@@ -74,6 +74,7 @@
 ---|"com_go"
 ---|"crowdcontrol"
 ---|"crusher"
+---|"debuffyou" 17
 ---|"defensive"
 ---|"demolisher"
 ---|"di"
@@ -206,12 +207,14 @@
 ---|"movesoon"
 ---|"movetimebubble"
 ---|"movetoboss"
+---|"movetoegg" 17
 ---|"movetojelly"
 ---|"movetomobs"
 ---|"movetopillar"
 ---|"movetopool"
----|"movetostatue"
+---|"movetostatue" 17
 ---|"movetotank"
+---|"movetoweb" 17
 ---|"mpurple"
 ---|"myellow"
 ---|"negative"
@@ -220,7 +223,7 @@
 ---|"north"
 ---|"northeast"
 ---|"northwest"
----|"orangeyou"
+---|"orangeyou" 17
 ---|"orbrun"
 ---|"otherin"
 ---|"otherout"
@@ -235,12 +238,12 @@
 ---|"ptwo"
 ---|"pullin"
 ---|"pulverize"
----|"purpleyou"
+---|"purpleyou" 17
 ---|"pushbackincoming"
 ---|"quake"
 ---|"range5"
 ---|"readyrescue"
----|"redyou"
+---|"redyou" 17
 ---|"right"
 ---|"runaway"
 ---|"runin"
@@ -269,7 +272,7 @@
 ---|"spear"
 ---|"specialsoon"
 ---|"speedup"
----|"stackhigh"
+---|"stackhigh" 6
 ---|"stepring"
 ---|"stilldanger"
 ---|"stompsoon"
@@ -304,7 +307,7 @@
 ---|"useextraaction"
 ---|"useitem"
 ---|"uu"
----|"watchfeet"
+---|"watchfeet" 8
 ---|"watchimpale"
 ---|"watchorb"
 ---|"watchstep"
@@ -313,7 +316,7 @@
 ---|"whirlwind"
 ---|"wroughtchaosyou"
 ---|"wwsoon"
----|"yellowyou"
+---|"yellowyou" 17
 ---|"Thogar/A1"
 ---|"Thogar/A14"
 ---|"Thogar/A2"
