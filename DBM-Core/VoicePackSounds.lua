@@ -4,7 +4,7 @@
 ---|"1695gorak"
 ---|"1695uktar"
 ---|"1695ukurogg"
----|"aesoon"
+---|"aesoon" 2
 ---|"artillery" 12
 ---|"attackblood" 12
 ---|"attackbloodthirster" 12
@@ -54,10 +54,10 @@
 ---|"breaktormentsecond" 12
 ---|"breaktormentthird" 12
 ---|"breakvine" 14
----|"breathsoon"
+---|"breathsoon" 2
 ---|"bringlighttomob" 12
 ---|"bringlighttoshadow" 12
----|"carefly"
+---|"carefly" 2
 ---|"catchballs" 12
 ---|"center"
 ---|"centerleft"
@@ -65,9 +65,9 @@
 ---|"chainboss" 13
 ---|"changecolor" 14
 ---|"changemoon"
----|"changemt"
----|"changetarget"
----|"chargemove"
+---|"changemt" 2
+---|"changetarget" 2
+---|"chargemove" 2
 ---|"checkhp"
 ---|"cleave" 12
 ---|"cntnuemove"
@@ -217,7 +217,7 @@
 ---|"movetoweb" 17
 ---|"mpurple"
 ---|"myellow"
----|"negative"
+---|"negative" 13
 ---|"newmatrix"
 ---|"newportal"
 ---|"north"
@@ -232,7 +232,7 @@
 ---|"phasechange"
 ---|"polarityshift"
 ---|"pone" 12
----|"positive"
+---|"positive" 13
 ---|"pthree"
 ---|"ptran"
 ---|"ptwo"
@@ -245,10 +245,10 @@
 ---|"readyrescue"
 ---|"redyou" 17
 ---|"right"
----|"runaway"
----|"runin"
+---|"runaway" 2
+---|"runin" 2
 ---|"runintofire" 12
----|"runout"
+---|"runout" 2
 ---|"runoverflowers" 12
 ---|"runtoedge"
 ---|"safenow"
@@ -262,7 +262,7 @@
 ---|"sharetwo"
 ---|"shieldcharge" 12
 ---|"shieldover"
----|"shockwave"
+---|"shockwave" 2
 ---|"silencesoon"
 ---|"slagelementalcoming" 12
 ---|"soulcleave" 12
@@ -274,12 +274,12 @@
 ---|"speedup"
 ---|"stackhigh" 6
 ---|"stepring"
----|"stilldanger"
+---|"stilldanger" 2
 ---|"stompsoon"
 ---|"stompstart"
----|"stopatk"
----|"stopattack"
----|"stopcast"
+---|"stopatk" 2
+---|"stopattack" 2
+---|"stopcast" 2
 ---|"stopmove"
 ---|"stunsoon"
 ---|"sunderhigh"
@@ -288,10 +288,10 @@
 ---|"takedamage"
 ---|"tankheal"
 ---|"targetchange"
----|"targetyou"
----|"tauntboss"
----|"telesoon"
----|"teleyou"
+---|"targetyou" 2
+---|"tauntboss" 2
+---|"telesoon" 5
+---|"teleyou" 5
 ---|"thanks"
 ---|"throweyedebuff" 12
 ---|"throweyehealer" 12
@@ -310,8 +310,8 @@
 ---|"watchfeet" 8
 ---|"watchimpale"
 ---|"watchorb"
----|"watchstep"
----|"watchwave"
+---|"watchstep" 2
+---|"watchwave" 2
 ---|"west"
 ---|"whirlwind"
 ---|"wroughtchaosyou" 12
