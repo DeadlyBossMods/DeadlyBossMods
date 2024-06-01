@@ -312,7 +312,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.tankSafeClear = false
 		local amount = args.amount or 1
 		warnInfusedExplosion:Show(args.amount or 1)
-		timerInfusedExplosion:Restart()
+		timerInfusedExplosion:Stop()
+		timerInfusedExplosion:Start()
 		self:Unschedule(resetRaidDebuff)
 		self:Schedule(21, resetRaidDebuff, self)--1 extra second for good measure
 	elseif spellId == 407327 then
