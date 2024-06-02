@@ -646,13 +646,15 @@ local function sendSync(protocol, prefix, msg)
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
 		local sendChannel = "SOLO"
-		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			sendChannel = "INSTANCE_CHAT"
-		else
-			if IsInRaid() then
-				sendChannel = "RAID"
-			elseif IsInGroup(1) then
-				sendChannel = "PARTY"
+		if not IsTrialAccount() then
+			if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+				sendChannel = "INSTANCE_CHAT"
+			else
+				if IsInRaid() then
+					sendChannel = "RAID"
+				elseif IsInGroup(1) then
+					sendChannel = "PARTY"
+				end
 			end
 		end
 		if sendChannel == "SOLO" then
@@ -695,13 +697,15 @@ local function sendLoggedSync(protocol, prefix, msg)
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
 		local sendChannel = "SOLO"
-		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			sendChannel = "INSTANCE_CHAT"
-		else
-			if IsInRaid() then
-				sendChannel = "RAID"
-			elseif IsInGroup(1) then
-				sendChannel = "PARTY"
+		if not IsTrialAccount() then
+			if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+				sendChannel = "INSTANCE_CHAT"
+			else
+				if IsInRaid() then
+					sendChannel = "RAID"
+				elseif IsInGroup(1) then
+					sendChannel = "PARTY"
+				end
 			end
 		end
 		if sendChannel == "SOLO" then
@@ -726,13 +730,15 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	local sendChannel = "SOLO"
-	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-		sendChannel = "INSTANCE_CHAT"
-	else
-		if IsInRaid() then
-			sendChannel = "RAID"
-		elseif IsInGroup(1) then
-			sendChannel = "PARTY"
+	if not IsTrialAccount() then
+		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+			sendChannel = "INSTANCE_CHAT"
+		else
+			if IsInRaid() then
+				sendChannel = "RAID"
+			elseif IsInGroup(1) then
+				sendChannel = "PARTY"
+			end
 		end
 	end
 	if sendChannel == "SOLO" then
@@ -743,7 +749,7 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 			DBM:Debug("|cffff0000SendWorldSync failed with a result of " ..result.. " for prefix |r" .. prefix)
 		end
 	end
-	if IsInGuild() then
+	if IsInGuild() and sendChannel ~= "SOLO" then
 		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 	if self.Options.EnableWBSharing and not noBNet then
@@ -780,6 +786,7 @@ end
 -- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
+	if IsTrialAccount() then return end
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
 			BNSendWhisper(target, msg)
@@ -2183,7 +2190,7 @@ do
 			DBT:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
-			if broadcast then
+			if broadcast and not IsTrialAccount() then
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
@@ -2356,7 +2363,7 @@ do
 				twipe(forceDisablePerson)
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
-				if dbmIsEnabled then
+				if dbmIsEnabled and not IsTrialAccount() then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				end
 				if private.isRetail or private.isCata then
@@ -2445,7 +2452,7 @@ do
 				twipe(forceDisablePerson)
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
-				if dbmIsEnabled then
+				if dbmIsEnabled and not IsTrialAccount() then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				end
 				if private.isRetail or private.isCata then
@@ -4455,7 +4462,7 @@ do
 			end
 			return
 		end
-		if DBM.Options.FakeBWVersion and not dbmIsEnabled then
+		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
 			SendAddonMessage("BigWigs", bwVersionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
 			return
 		end
@@ -5340,7 +5347,7 @@ do
 	function DBM:RAID_BOSS_WHISPER(msg)
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
-		if msg and msg ~= "" and IsInGroup() and not _G["BigWigs"] then
+		if msg and msg ~= "" and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
 			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Send any emote to transcriptor, even if no spellid
 		end
 	end
@@ -6809,7 +6816,7 @@ end
 do
 	local spamProtection = {}
 	function DBM:SendTimers(target)
-		if not dbmIsEnabled then return end
+		if not dbmIsEnabled or IsTrialAccount() then return end
 		self:Debug("SendTimers requested by " .. target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
@@ -6869,7 +6876,7 @@ end
 
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
-	if not dbmIsEnabled then return end
+	if not dbmIsEnabled or IsTrialAccount() then return end
 	local length = string.len(target)
 	--Only send sync if it's to a target with a shorter name due to blizzard bug
 	--https://github.com/Stanzilla/WoWUIBugs/issues/573
@@ -6880,7 +6887,7 @@ end
 
 ---@param mod DBMMod
 function DBM:SendTimerInfo(mod, target)
-	if not dbmIsEnabled then return end
+	if not dbmIsEnabled or IsTrialAccount() then return end
 	local length = string.len(target)
 	--Only send sync if it's to a target with a shorter name due to blizzard bug
 	--https://github.com/Stanzilla/WoWUIBugs/issues/573
@@ -6907,7 +6914,7 @@ end
 
 ---@param mod DBMMod
 function DBM:SendVariableInfo(mod, target)
-	if not dbmIsEnabled then return end
+	if not dbmIsEnabled or IsTrialAccount() then return end
 	local length = string.len(target)
 	--Only send sync if it's to a target with a shorter name due to blizzard bug
 	--https://github.com/Stanzilla/WoWUIBugs/issues/573
@@ -8830,7 +8837,7 @@ do
 end
 
 function bossModPrototype:SendBigWigsSync(msg, extra)
-	if not dbmIsEnabled then return end
+	if not dbmIsEnabled or IsTrialAccount() then return end
 	msg = "B^" .. msg
 	if extra then
 		msg = msg .. "^" .. extra

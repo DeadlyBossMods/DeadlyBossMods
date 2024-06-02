@@ -226,7 +226,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
 		local difficultyIndex = DBM:GetCurrentDifficulty()
 		local permission = true
-		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
 			DBM:AddMsg(L.ERROR_NO_PERMISSION)
 			permission = false
 		end
@@ -246,7 +246,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 16) == "broadcast ltimer" then
 		local difficultyIndex = DBM:GetCurrentDifficulty()
 		local permission = true
-		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
 			DBM:AddMsg(L.ERROR_NO_PERMISSION)
 			permission = false
 		end
