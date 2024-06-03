@@ -3204,7 +3204,7 @@ end
 function DBM:PLAYER_LEVEL_CHANGED()
 	private.playerLevel = UnitLevel("player")
 	if private.playerLevel < 15 and private.playerLevel > 9 then
-		self:PLAYER_SPECIALIZATION_CHANGED() -- Classic this is "CHARACTER_POINTS_CHANGED", but we just use this function anyway
+		self:PLAYER_SPECIALIZATION_CHANGED("player") -- Classic this is "CHARACTER_POINTS_CHANGED", but we just use this function anyway
 	end
 end
 
@@ -3617,9 +3617,11 @@ do
 	end
 
 	--Retail API doesn't need throttle
-	function DBM:PLAYER_SPECIALIZATION_CHANGED()
-		self:Unschedule(throttledTalentCheck)
-		throttledTalentCheck(self)
+	function DBM:PLAYER_SPECIALIZATION_CHANGED(unit)
+		if unit == "player" then
+			self:Unschedule(throttledTalentCheck)
+			throttledTalentCheck(self)
+		end
 	end
 	--Throttle checks on talent point updates so that if multiple CHARACTER_POINTS_CHANGED fire in succession
 	--It doesnt spam DBMs code and cause performance lag
