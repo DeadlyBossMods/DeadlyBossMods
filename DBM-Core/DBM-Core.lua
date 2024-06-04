@@ -582,7 +582,13 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 ---------------------------------
 local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 
---Whisper/Whisper Sync filter function
+---Whisper/Whisper Sync filter function
+---@param sender any string for non realId and number for realId. Pass to true for realID
+---@param checkFriends boolean? checks sender against friends list
+---@param checkGuild boolean? checks sender against guild roster
+---@param filterRaid boolean? checks sender against group members of your raid
+---@param isRealIdMessage boolean? set true if this is a RealID whisper/comm
+---@return boolean
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
 		--Check Battle.net friends
@@ -1454,11 +1460,13 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
+	---@param self DBM
 	local function infiniteLoopNotice(self, message)
 		AddMsg(self, message)
 		self:Schedule(30, infiniteLoopNotice, self, message)
 	end
 
+	---@param self DBM
 	local function runDelayedFunctions(self)
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack2
@@ -4282,7 +4290,12 @@ do
 
 	local dummyMod -- dummy mod for the pull timer
 
+	---@param self DBM
+	---@param sender string
+	---@param timer any string or number only, but luaLS bitches if I actually tell it that
+	---@param blizzardTimer boolean?
 	local function pullTimerStart(self, sender, timer, blizzardTimer)
+		if not timer then return end
 		if private.newShit and not blizzardTimer then return end--Ignore old DBM version comms
 		local unitId
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
@@ -5472,7 +5485,7 @@ do
 	end
 
 	local tooltipsHidden = false
-	--Delayed Guild Combat sync object so we allow time for RL to disable them
+	---Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
 		if not dbmIsEnabled then return end
 		if not private.statusGuildDisabled and updateNotificationDisplayed == 0 then
@@ -6949,7 +6962,6 @@ do
 		return alive
 	end
 
-	--Cleanup in 8.x with C_Map.GetMapGroupMembersInfo
 	local function getNumRealAlivePlayers()
 		local alive = 0
 		local isInInstance = IsInInstance()
@@ -7337,6 +7349,7 @@ do
 	local requiresRecentKill = {
 		[2238] = 2519--Fyrakk in Amirdrassil
 	}
+	---@param self DBM
 	local function checkOptions(self, id, mapID)
 		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
 		local allowBlock = false
@@ -8806,6 +8819,7 @@ end
 --  Synchronization  --
 -----------------------
 do
+	---@param self DBMMod
 	local function prepareSync(self, event, ...)
 		event = event or ""
 		local arg = select("#", ...) > 0 and strjoin("\t", tostringall(...)) or ""
