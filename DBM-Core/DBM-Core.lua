@@ -3839,18 +3839,9 @@ do
 		difficulties:RefreshCache(true)
 		LastGroupSize = instanceGroupSize
 		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty, 2)
-		-- Auto Logging for entire zone if record only bosses is off
-		-- This Bypasses Same ID check because we still need to recheck this on keystone difficulty check
-		if not self.Options.RecordOnlyBosses then
-			if LastInstanceType == "raid" or LastInstanceType == "party" then
-				self:StartLogging(0)
-			else
-				self:StopLogging()
-			end
-		end
-		if LastInstanceMapID == mapID then
+		if LastInstanceMapID == mapID and difficulties.difficultyIndex == difficulty then
 			self:TransitionToDungeonBGM()
-			self:Debug("No action taken because mapID hasn't changed since last check", 2)
+			self:Debug("No action taken because mapID and difficultyID hasn't changed since last check", 2)
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		LastInstanceMapID = mapID
@@ -3872,6 +3863,15 @@ do
 				for i = #inCombat, 1, -1 do
 					self:EndCombat(inCombat[i], true, nil, "Left zone of world boss")
 				end
+			end
+		end
+		-- Auto Logging for entire zone if record only bosses is off
+		-- This Bypasses Same ID check because we still need to recheck this on keystone difficulty check
+		if not self.Options.RecordOnlyBosses then
+			if LastInstanceType == "raid" or LastInstanceType == "party" then
+				self:StartLogging(0)
+			else
+				self:StopLogging()
 			end
 		end
 		-- LoadMod
