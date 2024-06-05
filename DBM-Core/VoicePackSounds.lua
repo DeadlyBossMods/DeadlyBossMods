@@ -227,6 +227,7 @@
 ---|"orbrun"
 ---|"otherin"
 ---|"otherout"
+---|"paranoiayou" 17
 ---|"pfive"
 ---|"pfour"
 ---|"phasechange"
@@ -241,6 +242,7 @@
 ---|"purpleyou" 17
 ---|"pushbackincoming"
 ---|"quake" 12
+---|"rageyou" 17
 ---|"range5"
 ---|"readyrescue"
 ---|"redyou" 17
