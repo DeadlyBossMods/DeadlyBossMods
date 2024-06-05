@@ -57,7 +57,7 @@ local specWarnFreezingBreath					= mod:NewSpecialWarningDodge(374112, nil, nil, 
 
 local timerChillingBlastCD						= mod:NewCDCountTimer(18.5, 371976, nil, nil, nil, 3)--18.5-54.5
 local timerEnvelopingWebsCD						= mod:NewCDCountTimer(24, 372082, nil, nil, nil, 3)--24-46.9
-local timerGossamerBurstCD						= mod:NewCDCountTimer(36.9, 373405, nil, nil, nil, 2)--36.9-67.6
+local timerGossamerBurstCD						= mod:NewCDCountTimer(34, 373405, nil, nil, nil, 2)--34-67.6
 local timerCallSpiderlingsCD					= mod:NewCDCountTimer(25.1, 372238, nil, nil, nil, 1)--17.6-37
 local timerFrostbreathArachnidCD				= mod:NewCDCountTimer(98.9, -24899, nil, nil, nil, 1)
 local timerFreezingBreathCD						= mod:NewCDTimer(11.1, 374112, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -240,10 +240,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnGossamerBurst:Show(self.vb.burstCount)
 		specWarnGossamerBurst:Play("pullin")
-		local timer = self:GetFromTimersTable(allTimers, difficultyName, 1, spellId, self.vb.burstCount+1)
-		if timer then
-			timerGossamerBurstCD:Start(timer, self.vb.burstCount+1)
-		end
+		timerGossamerBurstCD:Start(34, self.vb.burstCount+1)
 	elseif spellId == 374112 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnFreezingBreath:Show()
