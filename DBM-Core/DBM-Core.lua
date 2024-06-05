@@ -3839,11 +3839,14 @@ do
 		difficulties:RefreshCache(true)
 		LastGroupSize = instanceGroupSize
 		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty, 2)
+		-- Difficulty index also checked because in challenge modes and M+, difficulty changes with no ID change
+		-- if ID changes we need to execute updated autologging and checkavailable mods checks
+		-- ID and difficulty hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		if LastInstanceMapID == mapID and difficulties.difficultyIndex == difficulty then
 			self:TransitionToDungeonBGM()
 			self:Debug("No action taken because mapID and difficultyID hasn't changed since last check", 2)
 			return
-		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
+		end
 		LastInstanceMapID = mapID
 		DBMScheduler:UpdateZone()--Also update zone in scheduler
 		fireEvent("DBM_UpdateZone", mapID)
@@ -3866,7 +3869,6 @@ do
 			end
 		end
 		-- Auto Logging for entire zone if record only bosses is off
-		-- This Bypasses Same ID check because we still need to recheck this on keystone difficulty check
 		if not self.Options.RecordOnlyBosses then
 			if LastInstanceType == "raid" or LastInstanceType == "party" then
 				self:StartLogging(0)
