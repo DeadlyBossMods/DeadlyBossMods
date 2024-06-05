@@ -200,7 +200,7 @@ function mod:OnCombatStart(delay)
 	self.vb.damageSpell = "?"
 	self.vb.avoidSpell = "?"
 	self.vb.ultimateSpell = "?"
-	timerSunderStrikeCD:Start(8-delay)
+	timerSunderStrikeCD:Start(7.2-delay)
 	timerPhaseCD:Start(125-delay)--125-127
 	self.vb.damageTimer = 19.5--Alternating in P1
 	self.vb.avoidTimer = 45
@@ -538,7 +538,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.damageCount = 0
 		self.vb.zeroCount = 0
 		self:SetStage(1)
-		timerSunderStrikeCD:Start(7.4)
+		timerSunderStrikeCD:Start(7.1)
 		if self.vb.stageTotality == 3 then
 			timerPhaseCD:Start(127)--Second intermission (Primal Barrier)
 		else
