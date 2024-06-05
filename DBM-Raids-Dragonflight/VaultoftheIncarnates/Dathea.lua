@@ -146,7 +146,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.cycloneCount = self.vb.cycloneCount + 1
 		specWarnCyclone:Show(self.vb.cycloneCount)
 		specWarnCyclone:Play("pullin")
-		timerCycloneCD:Start(self:IsHeroic() and 75 or 86.2, self.vb.cycloneCount+1)
+		timerCycloneCD:Start(self:IsHeroic() and 72.8 or 86.2, self.vb.cycloneCount+1)
 		if timerZephyrSlamCD:GetRemaining(self.vb.slamCount+1) < 13.2 then
 			timerZephyrSlamCD:Stop()
 			timerZephyrSlamCD:Start(13.2, self.vb.slamCount+1)--13.2-15

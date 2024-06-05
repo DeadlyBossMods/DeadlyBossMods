@@ -176,7 +176,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ebonCount = 0
 	playerReality = false
 --	timerTwistedEarthCD:Start(2-delay)--Used 2 sec into pull
-	timerRushingDarknessCD:Start(10.5-delay, 1)
+	timerRushingDarknessCD:Start(8.9-delay, 1)
 	timerVolcanicHeartCD:Start(15.6-delay, 1)
 	timerCalamitousStrikeCD:Start(self:IsMythic() and 25.1 or 24.1-delay, 1)--Delayed by extra wall on mythic
 	timerEchoingFissureCD:Start(33.6-delay, 1)
@@ -248,7 +248,7 @@ function mod:SPELL_CAST_START(args)
 		--As of May 30th reset, stage 3 no longer has new darkness that causes the 17 second time between darkness 1 and 2 in stage 3
 		--As of June 13th reset, it's kind of up in air how to handle this cause it's still going back and forth, so now code is gonna account for BOTH variations of initial timers
 		if self:GetStage(3) and (self.vb.RushingDarknessCount == 1) and not self.vb.skippedDarkness then
-			timerRushingDarknessCD:Start(17, self.vb.RushingDarknessCount+1)
+			timerRushingDarknessCD:Start(16.6, self.vb.RushingDarknessCount+1)
 		else
 			timerRushingDarknessCD:Start(self:GetStage(2) and 27.9 or 35.2, self.vb.RushingDarknessCount+1)--new, now every 35-36 due to inceased cast time of portals
 		end

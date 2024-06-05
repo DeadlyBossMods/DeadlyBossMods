@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
-		local timer = ((self:IsEasy() or self:GetStage(1)) and 21.4 or 7.3)
+		local timer = ((self:IsEasy() or self:GetStage(1)) and 20.3 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
