@@ -6,7 +6,7 @@ mod:SetRevision("@file-date-integer@")
 mod:RegisterCombat("scenario", 2664)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 415492 207481 425315",
+	"SPELL_CAST_START 415492 415406 425315",
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_REMOVED",
@@ -18,11 +18,11 @@ mod:RegisterEventsInCombat(
 
 local warnFungalCharge						= mod:NewSpellAnnounce(415492, 2)
 
-local specWarnFungalStorm					= mod:NewSpecialWarningRun(207481, nil, nil, nil, 4, 2)--MoveTo if I confirm the mushrooms do in fact stun/stop it
+local specWarnFungalStorm					= mod:NewSpecialWarningRun(415406, nil, nil, nil, 4, 2)--MoveTo if I confirm the mushrooms do in fact stun/stop it
 local specWarnFungsplosion					= mod:NewSpecialWarningDodge(425319, nil, nil, nil, 2, 2)
 
 local timerFungalChargeCD					= mod:NewCDTimer(29.9, 415492, nil, nil, nil, 5)
-local timerFungalStormCD					= mod:NewCDTimer(30.3, 207481, nil, nil, nil, 3)
+local timerFungalStormCD					= mod:NewCDTimer(30.3, 415406, nil, nil, nil, 3)
 local timerFungsplosionCD					= mod:NewCDTimer(30.3, 425319, nil, nil, nil, 3)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 off interrupt
@@ -33,7 +33,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 415492 then
 		warnFungalCharge:Show()
 		timerFungalChargeCD:Start()
-	elseif args.spellId == 207481 then
+	elseif args.spellId == 415406 then
 		specWarnFungalStorm:Show()
 		specWarnFungalStorm:Play("whirlwind")
 		timerFungalStormCD:Start()
