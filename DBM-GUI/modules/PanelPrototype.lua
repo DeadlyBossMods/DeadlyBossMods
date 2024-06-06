@@ -105,7 +105,7 @@ function PanelPrototype:CreateSpellDesc(text)
 		textblock:SetText("Loading...")
 		spell:ContinueOnSpellLoad(function()
 			text = GetSpellDescription(spell:GetSpellID())
-			if text == "" then
+			if not text or text == "" then
 				text = L.NoDescription
 			else
 				test.hasDesc = true
