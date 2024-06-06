@@ -577,6 +577,32 @@ private.IsEncounterInProgress = IsEncounterInProgress
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
+-- Polyfill for C_AddOns, Cata, Era and Retail have the fully featured table, Wrath has only Metadata (as of Jun 6th 2024)
+local C_AddOns
+do
+	local cachedAddOns = nil
+	C_AddOns = {
+		GetAddOnMetadata = _G.C_AddOns.GetAddOnMetadata,
+		GetNumAddOns = _G.C_AddOns.GetNumAddOns or GetNumAddOns, ---@diagnostic disable-line:deprecated
+		GetAddOnInfo = _G.C_AddOns.GetAddOnInfo or GetAddOnInfo, ---@diagnostic disable-line:deprecated
+		LoadAddOn = _G.C_AddOns.LoadAddOn or LoadAddOn, ---@diagnostic disable-line:deprecated
+		IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded, ---@diagnostic disable-line:deprecated
+		EnableAddOn = _G.C_AddOns.EnableAddOn or EnableAddOn, ---@diagnostic disable-line:deprecated
+		GetAddOnEnableState = _G.C_AddOns.GetAddOnEnableState or function(addon, character)
+			return GetAddOnEnableState(character, addon) ---@diagnostic disable-line:deprecated
+		end,
+		DoesAddOnExist = _G.C_AddOns.DoesAddOnExist or function(addon)
+			if not cachedAddOns then
+				cachedAddOns = {}
+				for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
+					cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
+				end
+			end
+			return cachedAddOns[addon]
+		end,
+	}
+end
+
 ---------------------------------
 --  General (local) functions  --
 ---------------------------------
