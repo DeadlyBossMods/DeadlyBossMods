@@ -21,6 +21,7 @@ local yellPrototype = private:GetPrototype("Yell")
 local mt = {__index = yellPrototype}
 local voidForm = DBM:GetSpellName(194249)
 
+---@param self DBMMod
 local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 	if not spellId and not yellText then
 		error("NewYell: you must provide either spellId or yellText", 2)
@@ -115,7 +116,9 @@ function yellPrototype:Schedule(t, ...)
 	return id
 end
 
---Standard schedule object to schedule a say/yell based on what's defined in object
+---Standard schedule object to schedule a say/yell based on what's defined in object
+---@param time number
+---@param numAnnounces number?
 function yellPrototype:Countdown(time, numAnnounces, ...)
 	if time > 60 then--It's a spellID not a time
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
@@ -128,7 +131,9 @@ function yellPrototype:Countdown(time, numAnnounces, ...)
 	end
 end
 
---Scheduled Force override to use SAY message, even when object defines "YELL"
+---Scheduled Force override to use SAY message, even when object defines "YELL"
+---@param time number
+---@param numAnnounces number?
 function yellPrototype:CountdownSay(time, numAnnounces, ...)
 	if time > 60 then--It's a spellID not a time
 		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
