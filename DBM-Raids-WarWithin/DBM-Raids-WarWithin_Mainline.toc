@@ -1,4 +1,4 @@
-## Interface: 100207
+## Interface: 100207, 110000
 ## X-Min-Interface: 100206
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (WW)|r
@@ -37,7 +37,7 @@ NerubarPalace\UlgraxtheDevourer.lua
 NerubarPalace\TheBloodboundHorror.lua
 NerubarPalace\Sikran.lua
 NerubarPalace\Rashanan.lua
-NerubarPalace\EggtenderOvinax.lua
+NerubarPalace\BloodtwisterOvinax.lua
 NerubarPalace\NexusPrincessKyveza.lua
 NerubarPalace\TheSilkenCourt.lua
 NerubarPalace\QueenAnsurek.lua
