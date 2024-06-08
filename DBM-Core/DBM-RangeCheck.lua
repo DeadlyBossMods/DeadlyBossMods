@@ -9,6 +9,7 @@ DBM.RangeCheck = rangeCheck
 --  Locals  --
 --------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 
 local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
@@ -137,11 +138,11 @@ do
 
 	--Retail is limited to just returning true or false for being within 43 (40+hitbox) of target while in instances (outdoors retail can still use UnitDistanceSquared)
 	function getDistanceBetweenAll(checkrange)
-		local restrictionsActive = DBM:HasMapRestrictions()
+		local restrictionsActive = not isWrath and DBM:HasMapRestrictions()
 		checkrange = restrictionsActive and 43 or checkrange
 		for uId in DBM:GetGroupMembers() do
 			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) then
-				local range = DBM:HasMapRestrictions() and itsDFBaby(uId) or UnitDistanceSquared(uId) * 0.5
+				local range = DBM:HasMapRestrictions() and (not isWrath and itsDFBaby(uId) or itsBCAgain(uId, checkrange)) or UnitDistanceSquared(uId) * 0.5
 				if checkrange < (range + 0.5) then
 					return true
 				end
@@ -153,14 +154,14 @@ do
 	function getDistanceBetween(uId, x, y)
 		local restrictionsActive = DBM:HasMapRestrictions()
 		if not x then -- If only one arg then 2nd arg is always assumed to be player
-			return restrictionsActive and itsDFBaby(uId) or UnitDistanceSquared(uId) ^ 0.5
+			return restrictionsActive and (not isWrath and itsDFBaby(uId) or itsBCAgain(uId)) or UnitDistanceSquared(uId) ^ 0.5
 		end
 		if type(x) == "string" and UnitExists(x) then -- arguments: uId, uId2
 			-- First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work
 			if UnitIsUnit("player", uId) then
-				return restrictionsActive and itsDFBaby(x) or UnitDistanceSquared(x) ^ 0.5
+				return restrictionsActive and (not isWrath and itsDFBaby(x) or itsBCAgain(x)) or UnitDistanceSquared(x) ^ 0.5
 			elseif UnitIsUnit("player", x) then
-				return restrictionsActive and itsDFBaby(uId) or UnitDistanceSquared(uId) ^ 0.5
+				return restrictionsActive and (not isWrath and itsDFBaby(uId) or itsBCAgain(uId)) or UnitDistanceSquared(uId) ^ 0.5
 			else -- Neither unit is player, no way to avoid UnitPosition
 				if restrictionsActive then -- Cannot compare two units that don't involve player with restrictions, just fail quietly
 					return 1000
@@ -867,7 +868,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 		return
 	end
 	local restrictionsActive = DBM:HasMapRestrictions()
-	if restrictionsActive then--Don't popup on retail or classic era at all if in an instance (it now only works in wrath)
+	if not isWrath and restrictionsActive then--Don't popup on retail or classic era at all if in an instance (it now only works in wrath)
 		return
 	end
 	if type(range) == "function" then -- The first argument is optional
@@ -912,7 +913,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 end
 
 function rangeCheck:Hide(force)
-	if restoreRange and not force and not (mainFrame.restrictions or DBM:HasMapRestrictions()) then -- Restore range frame to way it was when boss mod is done with it
+	if restoreRange and not force and (isWrath or not (mainFrame.restrictions or DBM:HasMapRestrictions())) then -- Restore range frame to way it was when boss mod is done with it
 		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
 	else
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
@@ -940,7 +941,7 @@ end
 
 function rangeCheck:UpdateRestrictions(force)
 	mainFrame.restrictions = force or DBM:HasMapRestrictions()
-	if mainFrame.restrictions then
+	if mainFrame.restrictions and not isWrath then
 		rangeCheck:Hide(true)
 	end
 end
@@ -976,14 +977,14 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
-		if DBM:HasMapRestrictions() then
+		if not isWrath and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
 			UpdateLocalRangeFrame(tonumber(msg))
 		end
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
-		if DBM:HasMapRestrictions() then
+		if not isWrath and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
 			UpdateLocalRangeFrame(tonumber(msg), true)
