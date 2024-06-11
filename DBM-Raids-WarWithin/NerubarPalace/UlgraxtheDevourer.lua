@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 434776 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
+	"SPELL_CAST_START 434803 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -89,7 +89,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 434776 then
+	if spellId == 434803 then
 		self.vb.lashingsCount = self.vb.lashingsCount + 1
 		specWarnBrutalLashings:Show()
 		specWarnBrutalLashings:Play("gathershare")
