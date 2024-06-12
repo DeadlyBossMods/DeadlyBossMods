@@ -45,8 +45,8 @@ local specWarnCoilingFlames							= mod:NewSpecialWarningYou(421207, nil, 7897, 
 local yellCoilingFlames								= mod:NewYell(421207, 7897)--Shortname Flames
 local yellCoilingFlamesFades						= mod:NewShortFadesYell(421207)
 local specWarnCoilingEruption						= mod:NewSpecialWarningYou(427201, nil, nil, nil, 1, 2)
-local yellCoilingEruption							= mod:NewShortYell(427201, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")--NewShortPosYell
-local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, nil, "YELL")--NewIconFadesYell
+local yellCoilingEruption							= mod:NewShortYell(427201, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
+local yellCoilingEruptionFades						= mod:NewShortFadesYell(427201, nil, nil, nil, "YELL")
 
 --local specWarnMoltenVenom							= mod:NewSpecialWarningStack(419054, nil, 6, nil, nil, 1, 6)
 --local specWarnMoltenVenomSwap						= mod:NewSpecialWarningTaunt(419054, nil, nil, nil, 1, 2)--Need to evaulate whether tanks swap for this or jaws. double tank mechanic fights are redundant

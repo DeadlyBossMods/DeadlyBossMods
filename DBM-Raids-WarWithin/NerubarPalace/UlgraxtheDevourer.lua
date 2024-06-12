@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, announce deaths of adds (viscera)? depends how many adds there are. if it's 1-3 at a time, maybe. if it's 10 of em, no
 --TODO, target scan Juggernaut charge? depends which of two IDs it uses. One has AI faces target and one has "aie does not face target"
 --TODO, obviously phase detection. If I had to guess, Hulking Crash is signal that feeding frenzy is over. POWER updates is less efficient and TEMPORARY
+--TODO, change option keys to match BW for weak aura compatability before live
 --Gleeful Brutality
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30011))
 local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3)--Non Mythic
