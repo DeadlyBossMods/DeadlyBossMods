@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, add https://www.wowhead.com/beta/spell=441775/void-blast if it's not spammed, similar boat to poison bolt
 --TODO, maybe Entropic should be a run away warning instead for melee?
 --TODO, lots of cleanup of boss mechanics that interrupt other boss mechanics with better clarity and voices
+--TODO, change option keys to match BW for weak aura compatability before live
 local anubarash, takazj = DBM:EJ_GetSectionInfo(29012), DBM:EJ_GetSectionInfo(29017)
 --General Stuff
 local specWarnMarkofParanoia					= mod:NewSpecialWarningYou(455849, nil, nil, nil, 1, 17, 4)

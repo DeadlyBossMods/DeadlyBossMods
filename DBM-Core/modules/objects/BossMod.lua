@@ -321,23 +321,31 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowF
 	return false
 end
 
-function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
-	if not private.isRetail then
-		print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
-		return false
-	end
-	if not criteriaIDToCheck then
-		error("usage: mod:IsCriteriaComplected(criteriaId)")
-		return false
-	end
-	local _, _, numCriteria = C_Scenario.GetStepInfo()
-	for i = 1, numCriteria do
-		local _, _, criteriaCompleted, _, _, _, _, _, criteriaID = C_Scenario.GetCriteriaInfo(i)
-		if criteriaID == criteriaIDToCheck and criteriaCompleted then
-			return true
+do
+	local GetCriteriaInfo = C_ScenarioInfo.GetCriteriaInfo or C_Scenario.GetCriteriaInfo
+	function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
+		if not private.isRetail then
+			print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
+			return false
 		end
+		if not criteriaIDToCheck then
+			error("usage: mod:IsCriteriaComplected(criteriaId)")
+			return false
+		end
+		local _, _, numCriteria = C_Scenario.GetStepInfo()
+		for i = 1, numCriteria do
+			local info, _, criteriaCompleted, _, _, _, _, _, criteriaID = GetCriteriaInfo(i)
+			--Quick/lazy fix for War Within. Cleanup later when all clients are updated
+			if type(info) == "table" then
+				criteriaCompleted = info.completed
+				criteriaID = info.criteriaID
+			end
+			if criteriaID and criteriaID == criteriaIDToCheck and criteriaCompleted then
+				return true
+			end
+		end
+		return false
 	end
-	return false
 end
 
 function bossModPrototype:LatencyCheck(custom)

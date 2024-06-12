@@ -29,6 +29,8 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how the nature/shadow combo works for tank mechanic. hard to add taunt warnings right now since they might be bad advice, so for now only warning for casts
 --https://www.wowhead.com/beta/spell=443021/volatile-concoction and https://www.wowhead.com/beta/spell=441368/volatile-concoction used too?
 --TODO, nameplate timer for https://www.wowhead.com/beta/spell=438847/web-blast ?
+--TODO, add https://www.wowhead.com/beta/spell=458212/necrotic-wound stacks?
+--TODO, change option keys to match BW for weak aura compatability before live
 local warnExperimentalDosage					= mod:NewIncomingAnnounce(442526, 3)
 local warnReverberation							= mod:NewStackAnnounce(443274, 2)
 

@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, refine add auto marking when known spawn frequency and count is known
 --TODO, can blood horrors be killed? should they be auto marked with https://www.wowhead.com/beta/spell=445197/manifest-horror ?
 --TODO, Manifest Horror nameplate timer? i kinda assume it's just sort of spam cast til dead
+--TODO, change option keys to match BW for weak aura compatability before live
 --Phase One: The Black Blood
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29061))
 local warnBanefulShift							= mod:NewYouAnnounce(443612, 2)

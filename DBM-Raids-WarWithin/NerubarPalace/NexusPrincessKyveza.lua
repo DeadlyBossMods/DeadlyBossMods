@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --NOTE: see if https://www.wowhead.com/beta/spell=438153/twilight-massacre can be target scanned off phantom themselves to defeat the private aura
 --TODO: Get the right tank stack swap count
 --TODO: Eclipse Timer/alerts? https://www.wowhead.com/beta/spell=434645/eclipse . probelm is it lacks clear CLEU ID, probably using emote/USCS
+--TODO, change option keys to match BW for weak aura compatability before live
 local warnAss									= mod:NewTargetAnnounce(436971, 3)
 local warnDeathMasks							= mod:NewCountAnnounce(448364, 4)
 local warnChasmalGash							= mod:NewStackAnnounce(440576, 2, nil, "Tank|Healer")

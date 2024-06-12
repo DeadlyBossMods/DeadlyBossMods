@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 434776 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
+	"SPELL_CAST_START 434803 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -33,15 +33,16 @@ mod:RegisterEventsInCombat(
 --TODO, announce deaths of adds (viscera)? depends how many adds there are. if it's 1-3 at a time, maybe. if it's 10 of em, no
 --TODO, target scan Juggernaut charge? depends which of two IDs it uses. One has AI faces target and one has "aie does not face target"
 --TODO, obviously phase detection. If I had to guess, Hulking Crash is signal that feeding frenzy is over. POWER updates is less efficient and TEMPORARY
+--TODO, change option keys to match BW for weak aura compatability before live
 --Gleeful Brutality
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30011))
 local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3)--Non Mythic
 local warnHardenedNetting						= mod:NewTargetAnnounce(439419, 3)--Mythic
-local warnVenomLash								= mod:NewCountAnnounce(441451, 3)
+local warnVenomLash								= mod:NewCountAnnounce(435136, 3)
 local warnDigestiveVenom						= mod:NewTargetAnnounce(435138, 3)
 local warnHungeringBelows						= mod:NewCountAnnounce(438012, 3)
 
-local specWarnBrutalLashings					= mod:NewSpecialWarningCount(434776, nil, nil, nil, 2, 2)
+local specWarnBrutalLashings					= mod:NewSpecialWarningCount(434803, nil, nil, nil, 2, 2)
 local specWarnStalkersWebbing					= mod:NewSpecialWarningDodgeCount(441451, nil, nil, nil, 2, 2)--aka Viscous Slobber apparently
 local specWarnDigestiveVenom					= mod:NewSpecialWarningYou(435138, nil, nil, nil, 1, 2)
 local yellDigestiveVenom						= mod:NewShortYell(435138)
@@ -50,20 +51,20 @@ local specWarnTenderized						= mod:NewSpecialWarningTaunt(434705, nil, nil, nil
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerBrutalLashingsCD						= mod:NewAITimer(49, 434776, nil, nil, nil, 3)
+local timerBrutalLashingsCD						= mod:NewAITimer(49, 434803, nil, nil, nil, 3)
 local timerStalkersWebbingCD					= mod:NewAITimer(49, 441451, nil, nil, nil, 3)
 local timerVenomLashCD							= mod:NewAITimer(49, 435136, nil, nil, nil, 2)
 local timerBrutalCrushCD						= mod:NewAITimer(49, 434697, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Feeding Frenzy
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28845))
-local specWarnChitteringSwarm					= mod:NewSpecialWarningSwitch(445052, nil, nil, nil, 1, 2)
-local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436203, nil, nil, nil, 2, 2)
-local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodgeCount(451412, nil, nil, nil, 2, 2)
+local specWarnChitteringSwarm					= mod:NewSpecialWarningSwitch(445052, nil, nil, nil, 1, 2)--BW using -28848 instead?
+local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, nil, nil, 2, 2)
+local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodgeCount(443842, nil, nil, nil, 2, 2)
 local specWarnHulkingCrash						= mod:NewSpecialWarningDodge(445290, nil, nil, nil, 2, 2)
 
 local timerChitteringSwarmCD					= mod:NewAITimer(49, 445052, nil, nil, nil, 1)
-local timerJuggernautChargeCD					= mod:NewAITimer(49, 436203, nil, nil, nil, 3)
-local timerSwallowingDarknessCD					= mod:NewAITimer(49, 451412, nil, nil, nil, 3)
+local timerJuggernautChargeCD					= mod:NewAITimer(49, 436200, nil, nil, nil, 3)
+local timerSwallowingDarknessCD					= mod:NewAITimer(49, 443842, nil, nil, nil, 3)
 local timerHungeringBellowsCD					= mod:NewAITimer(49, 438012, nil, nil, nil, 2)
 
 --mod:AddInfoFrameOption(407919, true)
@@ -89,7 +90,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 434776 then
+	if spellId == 434803 then
 		self.vb.lashingsCount = self.vb.lashingsCount + 1
 		specWarnBrutalLashings:Show()
 		specWarnBrutalLashings:Play("gathershare")

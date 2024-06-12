@@ -37,7 +37,6 @@ local warnVerdantMatrix								= mod:NewCountAnnounce(420554, 2, nil, nil, DBM_C
 local warnInflorescence								= mod:NewYouAnnounce(423195, 1, nil, false, 2)--Can be spammy depending on player movements, off by default, most might track this with WA anyways
 local warnSurgingGrowth								= mod:NewCountAnnounce(429983, 2)
 local warnWeaversBurden								= mod:NewCountAnnounce(426519, 2, nil, nil, 167180)
-local warnWeaversBurdenTargets						= mod:NewTargetCountAnnounce(426519, 2, nil, nil, 167180, nil, nil, nil, true)
 local warnEphemeralFlora							= mod:NewCountAnnounce(430563, 3)
 local warnLucidVulnerability						= mod:NewCountAnnounce(428479, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(428479))--Player
 

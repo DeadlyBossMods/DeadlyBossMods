@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, target scan Web Reave? Or probably CHAT_MSG_RAID_BOSS_EMOTE or WHISPER. it's not a private aura (yet)
 --TODO, emphasize Enveloping webs cast itself? will probably only have a soon warning for it that's emphasized with a precise timer
 --TODO, actually detect her retreating on phase changes to stop/restart timers (possibly https://www.wowhead.com/beta/spell=457877/acidic-carapace)
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(27649))
+--TODO, change option keys to match BW for weak aura compatability before live
 local warnSavageAssault							= mod:NewStackAnnounce(444687, 2, nil, "Tank|Healer")
 local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2)--General announce, private aura sound will be personal emphasis
 local warnInfestedSpawn							= mod:NewIncomingCountAnnounce(455373, 2)
