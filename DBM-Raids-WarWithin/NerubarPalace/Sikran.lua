@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 456420 435401 432965 435403 439559 453258 442428",
 	"SPELL_CAST_SUCCESS 439511",
-	"SPELL_AURA_APPLIED 459273 438845 435410 434155 439191",
+	"SPELL_AURA_APPLIED 459273 438845 435410 433517 439191",
 	"SPELL_AURA_APPLIED_DOSE 459273 438845",
-	"SPELL_AURA_REMOVED 459273 434155 439191"
+	"SPELL_AURA_REMOVED 459273 433517 439191"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -29,8 +29,8 @@ mod:RegisterEventsInCombat(
 --TODO, move timer for phase blades to correct cast event
 --TODO, change option keys to match BW for weak aura compatability before live
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
-local warnPhaseBlades							= mod:NewTargetNoFilterAnnounce(434155, 3)
-local warnRainofArrows							= mod:NewCountAnnounce(453258, 3)
+local warnPhaseBlades							= mod:NewTargetNoFilterAnnounce(433517, 3)
+local warnRainofArrows							= mod:NewCountAnnounce(439559, 3)
 local warnDecimate								= mod:NewTargetNoFilterAnnounce(442428, 3)
 
 local specWarnShatteringSweep					= mod:NewSpecialWarningCount(456420, nil, nil, nil, 2, 2)
@@ -38,9 +38,9 @@ local specWarnExpose							= mod:NewSpecialWarningDefensive(435401, nil, nil, ni
 local specWarnPhaseLunge						= mod:NewSpecialWarningDefensive(435403, nil, nil, nil, 1, 2)
 local specWarnExposedWeakness					= mod:NewSpecialWarningTaunt(438845, nil, nil, nil, 1, 2)
 local specWarnPiercedDefenses					= mod:NewSpecialWarningTaunt(435410, nil, nil, nil, 1, 2)
-local specWarnPhaseBlades						= mod:NewSpecialWarningYou(434155, nil, nil, nil, 1, 2)
-local yellPhaseBlades							= mod:NewPosYell(434155)
-local yellPhaseBladesFades						= mod:NewIconFadesYell(434155)
+local specWarnPhaseBlades						= mod:NewSpecialWarningYou(433517, nil, nil, nil, 1, 2)
+local yellPhaseBlades							= mod:NewPosYell(433517)
+local yellPhaseBladesFades						= mod:NewIconFadesYell(433517)
 local specWarnDecimate							= mod:NewSpecialWarningYou(442428, nil, nil, nil, 1, 2)
 local yellDecimate								= mod:NewPosYell(442428)
 local yellDecimateFades							= mod:NewIconFadesYell(442428)
@@ -49,12 +49,12 @@ local yellDecimateFades							= mod:NewIconFadesYell(442428)
 local timerShatteringSweepCD					= mod:NewAITimer(49, 456420, nil, nil, nil, 2)
 local timerCosmicShards							= mod:NewBuffFadesTimer(6, 459273, nil, nil, nil, 5)
 local timerCaptainsFlourishCD					= mod:NewAITimer(40, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerPhaseBladesCD						= mod:NewAITimer(49, 434155, nil, nil, nil, 3)
-local timerRainofArrowsCD						= mod:NewAITimer(49, 453258, nil, nil, nil, 3)
+local timerPhaseBladesCD						= mod:NewAITimer(49, 433517, nil, nil, nil, 3)
+local timerRainofArrowsCD						= mod:NewAITimer(49, 439559, nil, nil, nil, 3)
 local timerDecimateCD							= mod:NewAITimer(49, 442428, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnPhaseBlades", 434155, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnPhaseBlades", 433517, true, 0, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnDecimate", 442428, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--	specWarnFlamingSlashTaunt:Show(args.destName)
 		--	specWarnFlamingSlashTaunt:Play("tauntboss")
 		--end
-	elseif spellId == 434155 then
+	elseif spellId == 433517 then
 		if self:AntiSpam(10, 2) then
 			self.vb.bladesIcon = 1
 			timerPhaseBladesCD:Start()
@@ -221,7 +221,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 459273 and args:IsPlayer() then
 		timerCosmicShards:Stop()
-	elseif spellId == 434155 then
+	elseif spellId == 433517 then
 		if self.Options.SetIconOnPhaseBlades then
 			self:SetIcon(args.destName, 0)
 		end
