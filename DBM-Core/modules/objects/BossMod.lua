@@ -578,24 +578,7 @@ do
 end
 
 do
-	--lazyCheck mostly for migration, doesn't distinquish dispel types
-	local lazyCheck = {
-		[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
-		[2782] = true,--Druid: Remove Corruption (Curse and Poison)
-		[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
-		[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
-		[527] = true,--Priest: Purify (Magic and Disease)
-		[213634] = true,--Priest: Purify Disease (Disease)
-		[4987] = true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
-		[51886] = true,--Shaman: Cleanse Spirit (Curse)
-		[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
-		[475] = true,--Mage: Remove Curse (Curse)
-		[89808] = true,--Warlock: Singe Magic (Magic)
-		[360823] = true,--Evoker: Naturalize (Magic and Poison)
-		[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-		[365585] = true,--Evoker: Expunge (Poison)
-	}
-	--Obviously only checks spells relevant for the dispel type
+	--Only checks spells relevant for the dispel type
 	---@enum (key) DispelType
 	local typeCheck = {
 		["magic"] = {
@@ -672,13 +655,7 @@ do
 				end
 			end
 		else--use lazy check until all mods are migrated to define type
-			for spellID, _ in pairs(lazyCheck) do
-				if IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
-					lastCheck = GetTime()
-					lastReturn = true
-					return true
-				end
-			end
+			error("DBM CheckDispelFilter must provide dispel type")
 		end
 		lastCheck = GetTime()
 		lastReturn = false

@@ -276,6 +276,9 @@ function specialWarningPrototype:SetText(customName)
 	self.spellName = spellName
 end
 
+---Not to be confused with SetText, which only sets the text of object.
+---<br>This changes actual ID so announce callback also swaps ID for WAs
+---@param altSpellId string|number
 function specialWarningPrototype:UpdateKey(altSpellId)
 	self.spellId = altSpellId
 	self.icon = DBM:ParseSpellIcon(altSpellId, self.announceType, self.icon)
@@ -478,7 +481,9 @@ function specialWarningPrototype:Show(...)
 	end
 end
 
---Object that's used when precision isn't possible (number of targets variable or unknown
+---Object that's used when precision isn't possible (number of targets variable or unknown
+---@param delay number
+---@param ... any
 function specialWarningPrototype:CombinedShow(delay, ...)
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
