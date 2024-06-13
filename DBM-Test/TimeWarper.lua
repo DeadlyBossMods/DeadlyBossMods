@@ -103,7 +103,7 @@ function test.TimeWarper:WaitUntil(time)
 	local minRealFps = 20 -- the exact value here doesn't really matter, and it's not accurate anyways, this is mainly here to implement dynamic speed without terrible lag
 	self.currentFrameStart = self.currentFrameStart or GetTimePreciseSec()
 	while time > self.fakeTime do
-		if self.fakeTimeSinceLastFrame >= self.lastFrameTime * self.factor or GetTimePreciseSec() - self.currentFrameStart > 1 / minRealFps then
+		while self.fakeTimeSinceLastFrame >= self.lastFrameTime * self.factor or GetTimePreciseSec() - self.currentFrameStart > 1 / minRealFps do
 			coroutine.yield()
 			checkActive()
 			self.lastFrameTime = GetTimePreciseSec() - self.currentFrameStart
