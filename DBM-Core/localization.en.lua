@@ -288,7 +288,8 @@ L.TIMER_USAGE							= {
 	"/dbm timer endloop: Stops any looping ltimer."
 }
 
-L.ERROR_NO_PERMISSION					= "You don't have the required permission to do this."
+L.ERROR_NO_PERMISSION					= "You don't have the required permission to send pull/break timer."
+L.ERROR_NO_PERMISSION_COMBAT			= "Pull/Break timer cannot be sent while encounter in progress"
 L.PULL_TIME_TOO_SHORT					= "Pull timer must be longer than 3 seconds."
 L.PULL_TIME_TOO_LONG					= "Pull timer cannot be longer than 60 seconds. Consider using a /break timer instead."
 

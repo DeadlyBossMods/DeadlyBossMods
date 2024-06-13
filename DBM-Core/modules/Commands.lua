@@ -20,8 +20,11 @@ local function Pull(timer)
 	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
 	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
 	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
+	end
+	if IsEncounterInProgress() then
+		return DBM:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 0 and timer < 3 then
 		return DBM:AddMsg(L.PULL_TIME_TOO_SHORT)
@@ -43,8 +46,11 @@ local function Break(timer)
 	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
 	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
 	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
+	end
+	if IsEncounterInProgress() then
+		return DBM:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 60 then
 		return DBM:AddMsg(L.BREAK_USAGE)
