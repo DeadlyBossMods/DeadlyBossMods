@@ -45,9 +45,15 @@ do
 		end
 	end
 
+	---Utility function for debugging DBM and blizzard events
+	---@param text string|number
+	---@param level number? Level 1: non spammy events. Level 2: mildly spammy events. Level 3: very spammy events.
+	---@param useSound boolean? Play 'ding' sound when displaying message
+	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	function DBM:Debug(text, level, useSound, alwaysFireEvent)
-		--But we still want to generate callbacks for level 1 and 2 events
-		if (DBM.Options and DBM.Options.DebugLevel == 3) or (level or 1) < 3 or alwaysFireEvent then--Cap debug level to 2 for transcriptor unless user specifically specifies 3
+		--Still fire debug callbacks for transcriptor even if user level debug is not enabled
+		--Cap debug level to 2 for transcriptor unless user specifically specifies 3
+		if (DBM.Options and DBM.Options.DebugLevel == 3) or (level or 1) < 3 or alwaysFireEvent then
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
