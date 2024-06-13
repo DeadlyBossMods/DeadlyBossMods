@@ -1,11 +1,6 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local wowTOC = select(4, GetBuildInfo())
-local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATACLYSM_CLASSIC or 14)
-local newShit = (wowTOC >= 100207) or isCata
-
 local L = DBM_CORE_L
 
 local test = private:GetPrototype("DBMTest")
@@ -32,7 +27,7 @@ local function Pull(timer)
 	--if timer > 60 then
 	--	return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
 	--end
-	if newShit then
+	if private.newShit then
 		--Send blizzard countdown timer that all users see (including modless)
 		C_PartyInfo.DoCountdown(timer)
 		DBM:Debug("Sending Blizzard Countdown Timer")
@@ -60,7 +55,7 @@ local function Break(timer)
 	--if timer == 60 then
 	--	timer = 61
 	--end
-	--if newShit then
+	--if private.newShit then
 	--	--Send blizzard countdown timer that all users see (including modless)
 	--	C_PartyInfo.DoCountdown(timer)
 	--	DBM:Debug("Sending Blizzard Countdown Timer")
@@ -320,7 +315,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			local uId
 			if target == "target" and UnitExists("target") then
 				uId = "target"
-			elseif isRetail and target == "focus" and UnitExists("focus") then
+			elseif private.isRetail and target == "focus" and UnitExists("focus") then
 				uId = "focus"
 			else -- Try to use it as player name
 				uId = DBM:GetRaidUnitId(targetOG)
@@ -401,7 +396,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif subCmd == "target" then
 				DBM.Arrow:ShowRunTo("target")
 				return
-			elseif isRetail and subCmd == "focus" then
+			elseif private.isRetail and subCmd == "focus" then
 				DBM.Arrow:ShowRunTo("focus")
 				return
 			elseif subCmd == "map" then
