@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2601, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(218425)--Needs confirmation, could also use 218510
+mod:SetCreatureID(217748)--Needs confirmation, could also use 218510
 mod:SetEncounterID(2920)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod:SetHotfixNoticeRev(20240614000000)
@@ -120,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.assCount = self.vb.assCount + 1
 		self.vb.assIcon = 1
 	elseif spellId == 437620 then
-		if args:GetSrcCreatureID() == 218425 then--Boss casting it
+		if args:GetSrcCreatureID() == 217748 then--Boss casting it
 			self.vb.riftCount = self.vb.riftCount + 1
 			if self.vb.riftCount == 1 then
 				timerNetherRiftCD:Start(30, 2)
@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 			timerTwilightMassacreCD:Start(30, 2)
 		end
 	elseif spellId == 439576 then
-		if args:GetSrcCreatureID() == 218425 then--Boss casting it
+		if args:GetSrcCreatureID() == 217748 then--Boss casting it
 			self.vb.daggersCount = self.vb.daggersCount + 1
 			if self.vb.daggersCount == 1 then
 				timerNexusDaggersCD:Start(30, 2)
@@ -222,20 +222,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 6 then--Tuned giga high for now. obviously fix later
-				if args:IsPlayer() then
-					specWarnChasmalGashStack:Show(amount)
-					specWarnChasmalGashStack:Play("stackhigh")
-				else
-					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
-						specWarnChasmalGashSwap:Show(args.destName)
-						specWarnChasmalGashSwap:Play("tauntboss")
+			if amount % 3 == 0 then
+				if amount >= 6 then--Tuned giga high for now. obviously fix later
+					if args:IsPlayer() then
+						specWarnChasmalGashStack:Show(amount)
+						specWarnChasmalGashStack:Play("stackhigh")
 					else
-						warnChasmalGash:Show(args.destName, amount)
+						if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
+							specWarnChasmalGashSwap:Show(args.destName)
+							specWarnChasmalGashSwap:Play("tauntboss")
+						else
+							warnChasmalGash:Show(args.destName, amount)
+						end
 					end
+				else
+					warnChasmalGash:Show(args.destName, amount)
 				end
-			else
-				warnChasmalGash:Show(args.destName, amount)
 			end
 		end
 	end
