@@ -120,13 +120,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.assCount = self.vb.assCount + 1
 		self.vb.assIcon = 1
 	elseif spellId == 437620 then
-		if args:GetSrcCreatureID() == 217748 then--Boss casting it
+		if self:AntiSpam(5, 1) then
 			self.vb.riftCount = self.vb.riftCount + 1
 			if self.vb.riftCount == 1 then
 				timerNetherRiftCD:Start(30, 2)
 			end
-		end
-		if self:AntiSpam(5, 1) then
 			specWarnNetherRift:Show(self.vb.riftCount)
 			specWarnNetherRift:Play("watchstep")
 		end
@@ -140,13 +138,11 @@ function mod:SPELL_CAST_START(args)
 			timerTwilightMassacreCD:Start(30, 2)
 		end
 	elseif spellId == 439576 then
-		if args:GetSrcCreatureID() == 217748 then--Boss casting it
+		if self:AntiSpam(5, 2) then
 			self.vb.daggersCount = self.vb.daggersCount + 1
 			if self.vb.daggersCount == 1 then
 				timerNexusDaggersCD:Start(30, 2)
 			end
-		end
-		if self:AntiSpam(5, 2) then
 			specWarnNexusDaggers:Show(self.vb.daggersCount)
 			specWarnNexusDaggers:Play("watchstep")
 		end
