@@ -131,14 +131,14 @@ function mod:SPELL_CAST_START(args)
 			specWarnBrutalCrush:Show()
 			specWarnBrutalCrush:Play("defensive")
 		end
-		timerBrutalCrushCD:Start()
+		timerBrutalCrushCD:Start(nil, self.vb.brutalHungeringCount+1)
 	elseif spellId == 445052 then--Chittering Swarm
 		specWarnChitteringSwarm:Show()
 		specWarnChitteringSwarm:Play("killmob")
 	elseif spellId == 436200 or spellId == 436203 then--First charge, subsiquent ones
 		if spellId == 436200 then
 			self.vb.webbingChargeCount = 1
-			specWarnJuggernautCharge:Show()
+			specWarnJuggernautCharge:Show(1)
 			specWarnJuggernautCharge:Play("chargemove")
 			timerJuggernautChargeCD:Start(4.6, 2)
 		else
@@ -150,11 +150,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 451412 or spellId == 443842 then--Hard/Easy assumed (hard has knockback, easy does not)
 		self.vb.lashdarknessCount = self.vb.lashdarknessCount + 1
-		specWarnSwallowingDarkness:Show()
+		specWarnSwallowingDarkness:Show(self.vb.lashdarknessCount)
 		specWarnSwallowingDarkness:Play("watchstep")
 	elseif spellId == 438012 then
 		self.vb.brutalHungeringCount = self.vb.brutalHungeringCount + 1
-		warnHungeringBelows:Show()
+		warnHungeringBelows:Show(self.vb.brutalHungeringCount)
 		timerHungeringBellowsCD:Start(18, self.vb.brutalHungeringCount+1)
 	elseif spellId == 445290 or spellId == 445123 then--Hard/Easy assumed (hard has shorter cast time)
 		specWarnHulkingCrash:Show()
@@ -182,7 +182,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 455831 then
 		warnHardenedNetting:CombinedShow(0.5, args.destName)
 	elseif spellId == 435138 then
-		warnDigestiveVenom:CombinedShow(0.5, args.destName)
+		warnDigestiveVenom:CombinedShow(1.5, args.destName)--Goes out really slow
 		if args:IsPlayer() then
 			specWarnDigestiveVenom:Show()
 			specWarnDigestiveVenom:Play("targetyou")--Request final voice when blizzard finalizes spell name. is it web or is it drool/puddle. this matters

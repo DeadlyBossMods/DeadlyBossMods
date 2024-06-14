@@ -42,7 +42,7 @@ local warnExperimentalDosage					= mod:NewIncomingAnnounce(442526, 3)
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442430, nil, nil, nil, 2, 2)
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, nil, nil, 1, 2)
 local yellUnstableWeb							= mod:NewShortYell(446349)
-local specWarnVolatileConcoction				= mod:NewSpecialWarningYou(441362, nil, nil, nil, 1, 2)
+local specWarnVolatileConcoction				= mod:NewSpecialWarningDefensive(441362, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
 local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, nil, nil, nil, 3)
