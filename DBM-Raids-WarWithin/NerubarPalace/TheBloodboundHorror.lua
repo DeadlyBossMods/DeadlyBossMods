@@ -72,7 +72,7 @@ local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "H
 local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, nil, nil, 1, 2)
 
 local timerBlackBulwarkCD						= mod:NewCDNPTimer(17.1, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
-local timerSpectralSlamCD						= mod:NewCDNPTimer(15.9, 445016, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnWatchers", 444830, true, 5, {8})
@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSpectralSlam:Show()
 			specWarnSpectralSlam:Play("defensive")
 		end
-	elseif spellId == 445174 then
+	elseif spellId == 445174 and self:AntiSpam(3, 1) then
 		warnManifestHorror:Show()
 	end
 end
