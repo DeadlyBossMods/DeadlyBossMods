@@ -38,21 +38,44 @@ end
 
 local playerName = args.player
 
-local function loadTranscriptorDB(fileName)
+local function loadTranscriptorLuaString(code)
 	local env = {}
 	if _VERSION == "Lua 5.1" then
 		print("Lua 5.1 can choke on huge Transcriptor logs, try using a newer version of Lua if you get errors about the constant limit")
-		local f, err = loadfile(fileName)
+		local f, err = loadstring(code)
 		if not f then error(err) end
 		setfenv(f, env)
 		f()
 	else
-		---@diagnostic disable-next-line: redundant-parameter
-		local f, err = loadfile(fileName, nil, env)
+		---@diagnostic disable-next-line: redundant-parameter -- project setup as Lua 5.1 because I want to stay 5.1 compatible
+		local f, err = load(code, nil, nil, env)
 		if not f then error(err) end
 		f()
 	end
 	return env.TranscriptDB
+end
+
+local function jsonToLua(json)
+	-- The secret TWW logs are split with some weird tool that outputs json
+	-- So far this code doesn't have any dependencies, I don't feel like pulling in one just to read json, so this hack is the best I can do
+	local lines = {}
+	for line in json:gmatch("([^\n]*)\n?") do
+		line = line:gsub("^(%s*)\"([^\"]+)\": [%[{]%s*$", "%1[\"%2\"] = {")
+		line = line:gsub("^(%s*)\"([^\"]+)\":", "%1[\"%2\"] = ")
+		line = line:gsub("^(%s*)],?(%s*)$", "%1},%2")
+		lines[#lines + 1] = line
+	end
+	return "TranscriptDB = {jsonLog = " .. table.concat(lines, "\n") .. "}"
+end
+
+local function loadTranscriptorDB(fileName)
+	local file, err = io.open(fileName, "rb")
+	if not file then error(err) end
+	local code = file:read("*a")
+	if fileName:match(".json$") then
+		code = jsonToLua(code)
+	end
+	return loadTranscriptorLuaString(code)
 end
 
 local transcriptorDB = loadTranscriptorDB(args.transcriptor)
@@ -111,7 +134,7 @@ if not firstLog or not lastLog then
 	firstLog = encounterStarts[1].offset
 	lastLog = encounterEnds[1].offset
 	-- BOSS_KILL often triggers after ENCOUNTER_END, we want to include both to test that we don't trigger end multiple times
-	local lastBossKill = bossKills[#bossKills].offset
+	local lastBossKill = #bossKills > 0 and bossKills[#bossKills].offset
 	if lastBossKill and lastBossKill < lastLog + 50 then
 		lastLog = math.max(lastLog, lastBossKill)
 	end
@@ -333,7 +356,7 @@ local function transcribeCleu(rawParams)
 end
 
 local function transcribeEvent(event, params)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
