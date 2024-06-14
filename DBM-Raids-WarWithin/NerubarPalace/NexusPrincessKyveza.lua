@@ -147,7 +147,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self:AntiSpam(5, 2) then
-			specWarnNexusDaggers:Show()
+			specWarnNexusDaggers:Show(self.vb.daggersCount)
 			specWarnNexusDaggers:Play("watchstep")
 		end
 	elseif spellId == 440377 or spellId == 453683 then
