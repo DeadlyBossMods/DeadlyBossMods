@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 442526 442432 443003 443005 446700",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 443274 446349 446694 446690 442263 442250 442250",
-	"SPELL_AURA_APPLIED_DOSE 443274",
+	"SPELL_AURA_APPLIED 446349 446694 446690 442263 442250 442250",--443274
+--	"SPELL_AURA_APPLIED_DOSE 443274",
 	"SPELL_AURA_REMOVED 446349 446694 446690 442263 442250",
 	"SPELL_PERIODIC_DAMAGE 442799",
 	"SPELL_PERIODIC_MISSED 442799",
@@ -37,7 +37,7 @@ or ability.id = 446349 and type = "applydebuff"
 or ability.id = 442432 and type = "removebuff"
 --]]
 local warnExperimentalDosage					= mod:NewIncomingAnnounce(442526, 3)
-local warnReverberation							= mod:NewStackAnnounce(443274, 2)
+--local warnReverberation							= mod:NewStackAnnounce(443274, 2)
 
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442430, nil, nil, nil, 2, 2)
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, nil, nil, 1, 2)
@@ -110,7 +110,7 @@ function mod:SPELL_CAST_START(args)
 		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)
 	elseif spellId == 442432 and self:AntiSpam(5, 1) then
 		self.vb.ingestCount = self.vb.ingestCount + 1
-		specWarnIngestBlackBlood:Show()
+		specWarnIngestBlackBlood:Show(self.vb.ingestCount)
 		specWarnIngestBlackBlood:Play("specialsoon")
 		timerIngestBlackBloodCD:Start(nil, self.vb.ingestCount+1)
 		timerUnstableWebCD:Stop()
@@ -160,14 +160,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 443274 then
-		warnReverberation:Show(args.destName, args.amount or 1)
-	elseif spellId == 446349 then
+	if spellId == 446349 then
 		if args:IsPlayer() then
 			specWarnUnstableWeb:Show()
 			specWarnUnstableWeb:Play("runout")
 			yellUnstableWeb:Yell()
 		end
+--	elseif spellId == 443274 then
+--		warnReverberation:Show(args.destName, args.amount or 1)
 	elseif spellId == 446694 then
 		if self.Options.NPAuraOnNecrotic then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)

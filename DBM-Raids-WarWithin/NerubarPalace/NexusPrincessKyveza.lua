@@ -25,7 +25,6 @@ mod:RegisterEventsInCombat(
 
 --NOTE: if they don't make ass a private aura, change yells to also include icons
 --NOTE: Possibly auto mark phantoms via https://www.wowhead.com/beta/spell=436950/stalking-shadows
---NOTE: Emphasize nether rift? throttle it more?
 --NOTE: see if https://www.wowhead.com/beta/spell=438153/twilight-massacre can be target scanned off phantom themselves to defeat the private aura
 --TODO: Get the right tank stack swap count
 --TODO: Eclipse Timer/alerts? https://www.wowhead.com/beta/spell=434645/eclipse . probelm is it lacks clear CLEU ID, probably using emote/USCS
@@ -48,7 +47,7 @@ local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
 local specWarnNexusDaggers						= mod:NewSpecialWarningDodgeCount(439576, nil, nil, nil, 2, 2)
 local specWarnVoidShredders						= mod:NewSpecialWarningDefensive(440377, nil, nil, nil, 1, 2)
-local specWarnChasmalGashStack					= mod:NewSpecialWarningStack(440576, nil, 6, nil, nil, 1, 6)
+local specWarnChasmalGashStack					= mod:NewSpecialWarningStack(440576, nil, 8, nil, nil, 1, 6)
 local specWarnChasmalGashSwap					= mod:NewSpecialWarningTaunt(440576, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
@@ -200,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.assIcon = self.vb.assIcon + 1
 	elseif spellId == 437343 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsEasy() then
 			yellQueensBane:Countdown(spellId)
 		end
 	elseif spellId == 447169 then
@@ -218,8 +217,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 3 == 0 then
-				if amount >= 6 then--Tuned giga high for now. obviously fix later
+			if amount % 4 == 0 then
+--				if amount >= 8 then
 					if args:IsPlayer() then
 						specWarnChasmalGashStack:Show(amount)
 						specWarnChasmalGashStack:Play("stackhigh")
@@ -231,9 +230,9 @@ function mod:SPELL_AURA_APPLIED(args)
 							warnChasmalGash:Show(args.destName, amount)
 						end
 					end
-				else
-					warnChasmalGash:Show(args.destName, amount)
-				end
+--				else
+--					warnChasmalGash:Show(args.destName, amount)
+--				end
 			end
 		end
 	end

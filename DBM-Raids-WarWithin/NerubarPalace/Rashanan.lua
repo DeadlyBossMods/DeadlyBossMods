@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2609, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(200927)
+mod:SetCreatureID(214504)
 mod:SetEncounterID(2918)
 --mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20231115000000)
@@ -57,7 +57,7 @@ local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, nil, nil, nil, 3, 
 
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
-mod:AddPrivateAuraSoundOption(434406, true, 439789, 1)--Rolling Acid target
+mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
 mod:AddPrivateAuraSoundOption(455284, true, 455373, 1)--Infested Spawn target
 mod:AddPrivateAuraSoundOption(439783, true, 439784, 1)--Spineret's Strands target
 
@@ -87,12 +87,12 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerEnvelopingWebsCD:Start(1)
 	end
-	self:EnablePrivateAuraSound(434406, "targetyou", 2)--Likely dungeon version of Rolling Acid
-	self:EnablePrivateAuraSound(439790, "targetyou", 2, 434406)--Likely the raid version of Rolling Acid
+	self:EnablePrivateAuraSound(439790, "targetyou", 2)--Raid version, (434406 is in dungeon)
+	--self:EnablePrivateAuraSound(434406, "targetyou", 2, 439790)--Likely dungeon version of Rolling Acid
 	self:EnablePrivateAuraSound(455284, "mobout", 2)--Maybe better sound later, but this one does say "mob out" as in "mob on you, get out and spread" which is the mechanic
 	self:EnablePrivateAuraSound(439815, "mobout", 2, 455284)--Secondary ID for Infested Spawn
-	self:EnablePrivateAuraSound(439783, "pullin", 12)--Likely the dungeon version of Spinneret's Strands
-	self:EnablePrivateAuraSound(434090, "pullin", 12, 439783)--Likely the raid version of Spinneret's Strands
+	self:EnablePrivateAuraSound(439783, "pullin", 12)--Raid version of Spinneret's Strands
+--	self:EnablePrivateAuraSound(434090, "pullin", 12, 439783)--Likely the Dungeon version of Spinneret's Strands
 end
 
 function mod:SPELL_CAST_START(args)
@@ -110,7 +110,7 @@ function mod:SPELL_CAST_START(args)
 		timerRollingAcidCD:Start()--nilil, self.vb.rollingCount+1
 	elseif spellId == 455373 then
 		self.vb.spawnCount = self.vb.spawnCount + 1
-		warnInfestedSpawn:Show()
+		warnInfestedSpawn:Show(self.vb.spawnCount)
 		timerInfestedSpawnCD:Start()
 	elseif spellId == 439784 then
 		self.vb.strandsCount = self.vb.strandsCount + 1
