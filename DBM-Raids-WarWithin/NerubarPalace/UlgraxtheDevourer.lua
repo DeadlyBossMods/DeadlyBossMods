@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(215657)--VERIFY
 mod:SetEncounterID(2902)
 --mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20231115000000)
+mod:SetHotfixNoticeRev(20240614000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -19,9 +19,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
-	"UNIT_POWER_UPDATE boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, proper detection of slathering Maw. is cast ID used now for the gather part, or run out part after gather?
@@ -34,6 +32,9 @@ mod:RegisterEventsInCombat(
 --TODO, target scan Juggernaut charge? depends which of two IDs it uses. One has AI faces target and one has "aie does not face target"
 --TODO, obviously phase detection. If I had to guess, Hulking Crash is signal that feeding frenzy is over. POWER updates is less efficient and TEMPORARY
 --TODO, change option keys to match BW for weak aura compatability before live
+--[[
+(ability.id = 434803 or ability.id = 441451 or ability.id = 441452 or ability.id = 435136 or ability.id = 434697 or ability.id = 445052 or ability.id = 436203 or ability.id = 436200 or ability.id = 451412 or ability.id = 443842 or ability.id = 438012 or ability.id = 445290 or ability.id = 445123) and type = "begincast"
+--]]
 --Gleeful Brutality
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30011))
 local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3)--Non Mythic
@@ -51,27 +52,30 @@ local specWarnTenderized						= mod:NewSpecialWarningTaunt(434705, nil, nil, nil
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerBrutalLashingsCD						= mod:NewAITimer(49, 434803, nil, nil, nil, 3)
-local timerStalkersWebbingCD					= mod:NewAITimer(49, 441451, nil, nil, nil, 3)
-local timerVenomLashCD							= mod:NewAITimer(49, 435136, nil, nil, nil, 2)
-local timerBrutalCrushCD						= mod:NewAITimer(49, 434697, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBrutalLashingsCD						= mod:NewCDCountTimer(36.0, 434803, nil, nil, nil, 3)
+local timerStalkersWebbingCD					= mod:NewCDCountTimer(49, 441451, nil, nil, nil, 3)
+local timerVenomLashCD							= mod:NewCDCountTimer(32.9, 435136, nil, nil, nil, 2)
+local timerBrutalCrushCD						= mod:NewCDCountTimer(14.0, 434697, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Feeding Frenzy
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28845))
+local warnJuggernautCharge						= mod:NewCountAnnounce(436200, 4)--Charges 2+ of the set
+
 local specWarnChitteringSwarm					= mod:NewSpecialWarningSwitch(445052, nil, nil, nil, 1, 2)--BW using -28848 instead?
-local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, nil, nil, 2, 2)
+local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, nil, nil, 2, 2)--Activation
 local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodgeCount(443842, nil, nil, nil, 2, 2)
 local specWarnHulkingCrash						= mod:NewSpecialWarningDodge(445290, nil, nil, nil, 2, 2)
 
-local timerChitteringSwarmCD					= mod:NewAITimer(49, 445052, nil, nil, nil, 1)
-local timerJuggernautChargeCD					= mod:NewAITimer(49, 436200, nil, nil, nil, 3)
-local timerSwallowingDarknessCD					= mod:NewAITimer(49, 443842, nil, nil, nil, 3)
-local timerHungeringBellowsCD					= mod:NewAITimer(49, 438012, nil, nil, nil, 2)
+local timerChitteringSwarmCD					= mod:NewCDTimer(49, 445052, nil, nil, nil, 1)
+local timerJuggernautChargeCD					= mod:NewCDCountTimer(49, 436200, nil, nil, nil, 3)
+local timerSwallowingDarknessCD					= mod:NewCDTimer(49, 443842, nil, nil, nil, 3)
+local timerHungeringBellowsCD					= mod:NewCDCountTimer(18, 438012, nil, nil, nil, 2)
+local timerHulkingCrashCD						= mod:NewCDCountTimer(18, 445290, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnAdds", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
-mod.vb.lashingsCount = 0
+mod.vb.lashingsCount = 0--Ability that's go smash and knock players around (Brutal Lashings and Hulking Crash)
 mod.vb.webbingChargeCount = 0--Abilities that leave webbing/Netting (Stalkers Webbing and Juggernaut
 mod.vb.lashdarknessCount = 0--Abilities that remove webbing/netting (Venomous Lash and Swallowing Darkness)
 mod.vb.brutalHungeringCount = 0--Abilities for tank/healer (Brutal Crush and Hungering Bellows)
@@ -82,10 +86,10 @@ function mod:OnCombatStart(delay)
 	self.vb.webbingChargeCount = 0
 	self.vb.lashdarknessCount = 0
 	self.vb.brutalHungeringCount = 0
-	timerBrutalLashingsCD:Start(1)
-	timerStalkersWebbingCD:Start(1)
-	timerVenomLashCD:Start(1)
-	timerBrutalCrushCD:Start(1)
+	timerBrutalCrushCD:Start(3, 1)--Can be delayed by kiting or pulling boss from far away, then get further spell queued
+	timerStalkersWebbingCD:Start(8, 1)
+	timerVenomLashCD:Start(14.1, 1)
+	timerBrutalLashingsCD:Start(20.4, 1)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -94,16 +98,33 @@ function mod:SPELL_CAST_START(args)
 		self.vb.lashingsCount = self.vb.lashingsCount + 1
 		specWarnBrutalLashings:Show()
 		specWarnBrutalLashings:Play("gathershare")
-		timerBrutalLashingsCD:Start()
+		timerBrutalLashingsCD:Start(nil, self.vb.lashingsCount+1)
+		timerBrutalCrushCD:Stop()
+		timerBrutalCrushCD:Start(16, self.vb.brutalHungeringCount+1)
 	elseif spellId == 441451 or spellId == 441452 then
 		self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
 		specWarnStalkersWebbing:Show(self.vb.webbingChargeCount)
 		specWarnStalkersWebbing:Play("watchstep")
-		timerStalkersWebbingCD:Start()
+		if self.vb.webbingChargeCount % 3 == 1 then
+			timerStalkersWebbingCD:Start(36, self.vb.webbingChargeCount+1)
+		elseif self.vb.webbingChargeCount % 3 == 2 then
+			timerStalkersWebbingCD:Start(33.9, self.vb.webbingChargeCount+1)
+		end
 	elseif spellId == 435136 then
 		self.vb.lashdarknessCount = self.vb.lashdarknessCount + 1
 		warnVenomLash:Show(self.vb.lashdarknessCount)
-		timerVenomLashCD:Start()
+		if self.vb.lashdarknessCount % 3 == 1 then
+			timerVenomLashCD:Start(32.9, self.vb.lashdarknessCount+1)
+		elseif self.vb.lashdarknessCount % 3 == 2 then
+			timerVenomLashCD:Start(37, self.vb.lashdarknessCount+1)
+		end
+		if timerBrutalCrushCD:GetRemaining(self.vb.brutalHungeringCount+1) < 5 then
+			local elapsed, total = timerBrutalCrushCD:GetTime(self.vb.brutalHungeringCount+1)
+			local extend = 5 - (total-elapsed)
+			DBM:Debug("timerBrutalCrushCD extended by: "..extend, 2)
+			timerBrutalCrushCD:Stop()
+			timerBrutalCrushCD:Update(elapsed, total+extend, self.vb.brutalHungeringCount+1)
+		end
 	elseif spellId == 434697 then
 		self.vb.brutalHungeringCount  = self.vb.brutalHungeringCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -114,24 +135,34 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 445052 then--Chittering Swarm
 		specWarnChitteringSwarm:Show()
 		specWarnChitteringSwarm:Play("killmob")
-		timerChitteringSwarmCD:Start()
-	elseif spellId == 436203 or spellId == 436200 then
-		self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
-		specWarnJuggernautCharge:Show()
-		specWarnJuggernautCharge:Play("chargemove")
-		timerJuggernautChargeCD:Start()
+	elseif spellId == 436200 or spellId == 436203 then--First charge, subsiquent ones
+		if spellId == 436200 then
+			self.vb.webbingChargeCount = 1
+			specWarnJuggernautCharge:Show()
+			specWarnJuggernautCharge:Play("chargemove")
+			timerJuggernautChargeCD:Start(4.6, 2)
+		else
+			self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
+			warnJuggernautCharge:Show(self.vb.webbingChargeCount)
+			if self.vb.webbingChargeCount < 5 then
+				timerJuggernautChargeCD:Start(7.1, self.vb.webbingChargeCount+1)
+			end
+		end
 	elseif spellId == 451412 or spellId == 443842 then--Hard/Easy assumed (hard has knockback, easy does not)
 		self.vb.lashdarknessCount = self.vb.lashdarknessCount + 1
 		specWarnSwallowingDarkness:Show()
 		specWarnSwallowingDarkness:Play("watchstep")
-		timerSwallowingDarknessCD:Start()
 	elseif spellId == 438012 then
 		self.vb.brutalHungeringCount = self.vb.brutalHungeringCount + 1
 		warnHungeringBelows:Show()
-		timerHungeringBellowsCD:Start()
+		timerHungeringBellowsCD:Start(18, self.vb.brutalHungeringCount+1)
 	elseif spellId == 445290 or spellId == 445123 then--Hard/Easy assumed (hard has shorter cast time)
 		specWarnHulkingCrash:Show()
 		specWarnHulkingCrash:Play("watchstep")
+		if self:GetStage(2) then
+			self.vb.lashingsCount = self.vb.lashingsCount + 1
+			timerHulkingCrashCD:Start(18, self.vb.lashingsCount+1)
+		end
 	end
 end
 
@@ -140,22 +171,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 422277 then
 
-	end
-end
---]]
-
---[[
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 449598 then--Ravenous Spawn
-		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(args.destGUID, 2, 8, 1, nil, 12, "SetIconOnAdds")
-		end
-	elseif spellId == 457281 then--Bile-Soaked Spawn
-		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, nil, 12, "SetIconOnAdds")
-		end
-		self.vb.addIcon = self.vb.addIcon - 1
 	end
 end
 --]]
@@ -206,53 +221,38 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 216205 then--https://www.wowhead.com/beta/npc=216205/ravenous-spawn
-
-	elseif cid == 227300 then--https://www.wowhead.com/beta/npc=227300/bile-soaked-spawn
-
-	end
-end
---]]
-
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 426144 then
-
-	end
-end
---]]
-
---TEMPORARY phasing (unless this ends up being only way)
-function mod:UNIT_POWER_UPDATE(uId)
-	local powerLevel = UnitPower(uId)
-	if powerLevel == 100 and self:GetStage(2) then
-		self:SetStage(1)
-		self.vb.lashdarknessCount = 0
-		self.vb.webbingChargeCount = 0
-		self.vb.brutalHungeringCount = 0
-		timerChitteringSwarmCD:Stop()
-		timerJuggernautChargeCD:Stop()
-		timerSwallowingDarknessCD:Stop()
-		timerHungeringBellowsCD:Stop()
-		timerBrutalLashingsCD:Start(2)
-		timerStalkersWebbingCD:Start(2)
-		timerVenomLashCD:Start(2)
-		timerBrutalCrushCD:Start(2)
-	elseif powerLevel == 0 and self:GetStage(1) then
+	if spellId == 441425 and self:GetStage(1) then--Phase Transition None (Fires on both beginning and ending of phase 2)
 		self:SetStage(2)
 		self.vb.lashdarknessCount = 0
 		self.vb.webbingChargeCount = 0
 		self.vb.brutalHungeringCount = 0
+		self.vb.lashingsCount = 0
 		timerBrutalLashingsCD:Stop()
 		timerStalkersWebbingCD:Stop()
 		timerVenomLashCD:Stop()
 		timerBrutalCrushCD:Stop()
-		timerChitteringSwarmCD:Start(2)
-		timerJuggernautChargeCD:Start(2)
-		timerSwallowingDarknessCD:Start(2)
-		timerHungeringBellowsCD:Start(2)
+		timerChitteringSwarmCD:Start(7.6)--Cast only once
+		timerJuggernautChargeCD:Start(13.2, 1)--Cast only once (but multi hit so still count timer)
+		timerSwallowingDarknessCD:Start(48.3)--Cast only once
+		--Technically these can also be started below by 441445
+		timerHungeringBellowsCD:Start(59.9, 1)
+		timerHulkingCrashCD:Start(69.9, 1)
+--	elseif spellId == 441445 then---Phase Transition P1 -> P2
+		--We don't do much with this one. This is when boss switches to cycling Hungering Belows and Hulking Crash
+	elseif spellId == 441427 then--Phase Transition P2 -> P1
+		self:SetStage(1)
+		self.vb.lashdarknessCount = 0
+		self.vb.webbingChargeCount = 0
+		self.vb.brutalHungeringCount = 0
+		self.vb.lashingsCount = 0
+		timerChitteringSwarmCD:Stop()
+		timerJuggernautChargeCD:Stop()
+		timerSwallowingDarknessCD:Stop()
+		timerHungeringBellowsCD:Stop()
+		timerBrutalCrushCD:Start(3, 1)
+		timerStalkersWebbingCD:Start(8, 1)
+		timerVenomLashCD:Start(14, 1)
+		timerBrutalLashingsCD:Start(23, 1)
 	end
 end
