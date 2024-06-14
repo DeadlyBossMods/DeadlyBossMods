@@ -243,6 +243,7 @@ local function reconstructFlags(name, isPlayer, isPet, isNpc)
 end
 
 local flagWarningShown
+local seenFriendlyCids = {}
 
 local function transcribeCleu(rawParams)
 	local params = {}
@@ -316,6 +317,13 @@ local function transcribeCleu(rawParams)
 	if (event:match("_ENERGIZE$") or event:match("_HEAL$")) and destIsPlayerOrPet then
 		return
 	end
+	if event:match("_HEAL$") and srcIsPlayer and destIsNpc then -- Likely healing summons, opportunity to learn summon creature IDs not yet ignored
+		if destCid then
+			seenFriendlyCids[destCid] = destName
+		end
+		return
+	end
+
 	if (event:match("^SPELL_CAST") or event == "SPELL_EXTRA_ATTACKS") and srcIsPlayerOrPet then
 		return
 	end
@@ -462,4 +470,11 @@ if args.noheader then
 	print(generateLogOnly())
 else
 	print(generateTest())
+end
+
+if args["show-ignore-candidates"] then
+	print("Potentially ignoreable creature IDs (healed by players)")
+	for cid, name in pairs(seenFriendlyCids) do
+		print(cid .. ", -- " .. name)
+	end
 end
