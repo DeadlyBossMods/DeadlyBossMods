@@ -93,13 +93,13 @@ function mod:OnCombatStart(delay)
 	timerNexusDaggersCD:Start(46, 1)
 	timerStarlessNightCD:Start(86, 1)
 	self:EnablePrivateAuraSound(438141, "runout", 2)--Twilight Massacre
-	self:EnablePrivateAuraSound(436671, "targetyou", 2)--Regicide
-	self:EnablePrivateAuraSound(436664, "targetyou", 2, 436671)--Regicide
-	self:EnablePrivateAuraSound(436677, "targetyou", 2, 436671)--Regicide
-	self:EnablePrivateAuraSound(436665, "targetyou", 2, 436671)--Regicide
-	self:EnablePrivateAuraSound(436663, "targetyou", 2, 436671)--Regicide
-	self:EnablePrivateAuraSound(436666, "targetyou", 2, 436671)--Regicide
-	self:EnablePrivateAuraSound(435534, "targetyou", 2, 436671)--Regicide
+	self:EnablePrivateAuraSound(436671, "lineyou", 17)--Regicide
+	self:EnablePrivateAuraSound(436664, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(436677, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(436665, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(436663, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(436666, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(435534, "lineyou", 17, 436671)--Regicide
 	if self:IsMythic() then
 		timerDeathMasksCD:Start(1)
 		if self.Options.NPOnMask then

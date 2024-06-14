@@ -267,12 +267,12 @@ function mod:OnCombatStart(delay)
 	--Hopefully the API doesn't mind registering 16 private auras at same time on pull
 	--It's not DBMs fault designers got carried away :D
 	self:EnablePrivateAuraSound(419060, "runout", 2)--Firestorm
-	self:EnablePrivateAuraSound(414187, "targetyou", 2)--Blaze
-	self:EnablePrivateAuraSound(421825, "targetyou", 2, 414187)--Register Additional blaze Ids (6 in total)
-	self:EnablePrivateAuraSound(421826, "targetyou", 2, 414187)--Register Additional blaze Ids (6 in total)
-	self:EnablePrivateAuraSound(421827, "targetyou", 2, 414187)--Register Additional blaze Ids (6 in total)
-	self:EnablePrivateAuraSound(421828, "targetyou", 2, 414187)--Register Additional blaze Ids (6 in total)
-	self:EnablePrivateAuraSound(421829, "targetyou", 2, 414187)--Register Additional blaze Ids (6 in total)
+	self:EnablePrivateAuraSound(414187, "lineyou", 17)--Blaze
+	self:EnablePrivateAuraSound(421825, "lineyou", 17, 414187)--Register Additional blaze Ids (6 in total)
+	self:EnablePrivateAuraSound(421826, "lineyou", 17, 414187)--Register Additional blaze Ids (6 in total)
+	self:EnablePrivateAuraSound(421827, "lineyou", 17, 414187)--Register Additional blaze Ids (6 in total)
+	self:EnablePrivateAuraSound(421828, "lineyou", 17, 414187)--Register Additional blaze Ids (6 in total)
+	self:EnablePrivateAuraSound(421829, "lineyou", 17, 414187)--Register Additional blaze Ids (6 in total)
 	self:EnablePrivateAuraSound(422520, "runout", 2)--Greater Firestorm
 	self:EnablePrivateAuraSound(423601, "seedyou", 15)--Seed of Amirdrassil
 	self:EnablePrivateAuraSound(430048, "seedyou", 15)--Corrupted Seed
