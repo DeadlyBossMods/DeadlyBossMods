@@ -96,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 434803 then
 		self.vb.lashingsCount = self.vb.lashingsCount + 1
-		specWarnBrutalLashings:Show()
+		specWarnBrutalLashings:Show(self.vb.lashingsCount)
 		specWarnBrutalLashings:Play("gathershare")
 		timerBrutalLashingsCD:Start(nil, self.vb.lashingsCount+1)
 		timerBrutalCrushCD:Stop()
@@ -178,11 +178,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 439419 then
-		warnStalkerNetting:CombinedShow(0.5, args.destName)
+		warnStalkerNetting:CombinedShow(1.5, args.destName)
 	elseif spellId == 455831 then
 		warnHardenedNetting:CombinedShow(0.5, args.destName)
 	elseif spellId == 435138 then
-		warnDigestiveVenom:CombinedShow(1.5, args.destName)--Goes out really slow
+		warnDigestiveVenom:CombinedShow(1, args.destName)--Goes out really slow
 		if args:IsPlayer() then
 			specWarnDigestiveVenom:Show()
 			specWarnDigestiveVenom:Play("targetyou")--Request final voice when blizzard finalizes spell name. is it web or is it drool/puddle. this matters
@@ -233,10 +233,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerVenomLashCD:Stop()
 		timerBrutalCrushCD:Stop()
 		timerChitteringSwarmCD:Start(7.6)--Cast only once
-		timerJuggernautChargeCD:Start(13.2, 1)--Cast only once (but multi hit so still count timer)
+		timerJuggernautChargeCD:Start(12.1, 1)--Cast only once (but multi hit so still count timer)
 		timerSwallowingDarknessCD:Start(48.3)--Cast only once
 		--Technically these can also be started below by 441445
-		timerHungeringBellowsCD:Start(59.9, 1)
+		timerHungeringBellowsCD:Start(59, 1)
 		timerHulkingCrashCD:Start(69.9, 1)
 --	elseif spellId == 441445 then---Phase Transition P1 -> P2
 		--We don't do much with this one. This is when boss switches to cycling Hungering Belows and Hulking Crash
