@@ -37,8 +37,8 @@ mod:RegisterEventsInCombat(
 --]]
 --Gleeful Brutality
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30011))
-local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3)--Non Mythic
-local warnHardenedNetting						= mod:NewTargetAnnounce(439419, 3)--Mythic
+local warnStalkerNetting						= mod:NewTargetAnnounce(439419, 3, nil, false)--Non Mythic
+local warnHardenedNetting						= mod:NewTargetAnnounce(439419, 3, nil, false)--Mythic
 local warnVenomLash								= mod:NewCountAnnounce(435136, 3)
 local warnDigestiveVenom						= mod:NewTargetAnnounce(435138, 3)
 local warnHungeringBelows						= mod:NewCountAnnounce(438012, 3)
@@ -159,7 +159,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 445290 or spellId == 445123 then--Hard/Easy assumed (hard has shorter cast time)
 		specWarnHulkingCrash:Show()
 		specWarnHulkingCrash:Play("watchstep")
-		if self:GetStage(2) then
+		--Anti spam needed to prevent race condition wehre timer restarts at wrong time, we basically do want to ignore hulking that happens ON TRANSITION
+		if self:GetStage(2) and self:AntiSpam(3, 1) then
 			self.vb.lashingsCount = self.vb.lashingsCount + 1
 			timerHulkingCrashCD:Start(18, self.vb.lashingsCount+1)
 		end
@@ -237,7 +238,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerSwallowingDarknessCD:Start(48.3)--Cast only once
 		--Technically these can also be started below by 441445
 		timerHungeringBellowsCD:Start(59, 1)
-		timerHulkingCrashCD:Start(69.9, 1)
+		--Anti spam needed to prevent race condition wehre timer restarts at wrong time, we basically do want to ignore hulking that happens ON TRANSITION
+		if self:AntiSpam(3, 1) then
+			timerHulkingCrashCD:Start(69, 1)
+		end
 --	elseif spellId == 441445 then---Phase Transition P1 -> P2
 		--We don't do much with this one. This is when boss switches to cycling Hungering Belows and Hulking Crash
 	elseif spellId == 441427 then--Phase Transition P2 -> P1
