@@ -59,6 +59,7 @@ local timerNetherRiftCD							= mod:NewCDCountTimer(30, 437620, nil, nil, nil, 3
 local timerNexusDaggersCD						= mod:NewCDCountTimer(30, 439576, nil, nil, nil, 3)
 local timerVoidShreddersCD						= mod:NewCDCountTimer(30, 440377, nil, "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil, 6)
+local timerStarlessNight						= mod:NewBuffActiveTimer(24, 435405, nil, nil, nil, 5)
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnAss", 436971, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
@@ -175,6 +176,7 @@ function mod:SPELL_CAST_START(args)
 		timerVoidShreddersCD:Stop()
 		self.vb.starlessCount = self.vb.starlessCount + 1
 		warnStarlessNight:Show(self.vb.starlessCount)
+		timerStarlessNight:Start(29)-- 24 + 5
 	end
 end
 
@@ -265,6 +267,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.riftCount = 0
 		self.vb.daggersCount = 0
 		self.vb.shredderCount = 0
+		timerStarlessNight:Stop()
 		timerVoidShreddersCD:Start(10.8, 1)
 		timerAssCD:Start(18, self.vb.assCount+1)
 		timerNetherRiftCD:Start(26.8, 1)
