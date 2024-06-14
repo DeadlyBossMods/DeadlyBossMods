@@ -155,8 +155,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidShredders:Show()
 			specWarnVoidShredders:Play("defensive")
 		end
+		--Sets of 3, except on pull since technically it starts at 2nd of 3 in the rotation
+		--So if night at 0, a single 30 second timer after first cast for 2nd and last in rotation
+		--if night at 1, it's 11, 34, 30 for the 3 set
 		if self.vb.shredderCount == 1 then
-			timerVoidShreddersCD:Start(30, 2)
+			timerVoidShreddersCD:Start(self.vb.starlessCount == 0 and 30 or 34, 2)
+		elseif self.vb.starlessCount >= 1 and self.vb.shredderCount == 12 then
+			timerVoidShreddersCD:Start(30, 3)
 		end
 	elseif spellId == 442277 then
 		warnEternalNight:Show()
