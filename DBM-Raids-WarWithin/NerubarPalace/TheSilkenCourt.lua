@@ -232,11 +232,11 @@ function mod:SPELL_CAST_START(args)
 		timerImpalingEruptionCD:Start()
 	elseif spellId == 438343 then
 		self.vb.rainCount = self.vb.rainCount + 1
-		warnVenomousRain:Show()
+		warnVenomousRain:Show(self.vb.rainCount)
 		timerVenomousRainCD:Start()
 	elseif spellId == 439838 then
 		self.vb.webBombCount = self.vb.webBombCount + 1
-		warnWebBomb:Show()
+		warnWebBomb:Show(self.vb.webBombCount)
 		timerWebBombCD:Start()
 	elseif spellId == 450045 then
 		self.vb.leapCount = self.vb.leapCount + 1
