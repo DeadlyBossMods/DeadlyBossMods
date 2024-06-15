@@ -13,24 +13,16 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 434803 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705",
---	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, proper detection of slathering Maw. is cast ID used now for the gather part, or run out part after gather?
---TODO, announce netting targets unfiltered?
---TODO, now boss seems to be mid rework so work on this mod haulted until some stuff clarified.
 --TODO, auto marking or countdown yell for Digestive Venom? countdown seens unneeded if you dispel it soon as you arrive and icons depends on number of webs/venoms
---TODO, clean way to detect boss phasing into feeding frenzy. Can't assume right now if it's adds or rage that'll happen first (or something else)
 --TODO, auto marking with spell summon events?
 --TODO, announce deaths of adds (viscera)? depends how many adds there are. if it's 1-3 at a time, maybe. if it's 10 of em, no
---TODO, target scan Juggernaut charge? depends which of two IDs it uses. One has AI faces target and one has "aie does not face target"
---TODO, obviously phase detection. If I had to guess, Hulking Crash is signal that feeding frenzy is over. POWER updates is less efficient and TEMPORARY
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
 (ability.id = 434803 or ability.id = 441451 or ability.id = 441452 or ability.id = 435136 or ability.id = 434697 or ability.id = 445052 or ability.id = 436203 or ability.id = 436200 or ability.id = 451412 or ability.id = 443842 or ability.id = 438012 or ability.id = 445290 or ability.id = 445123) and type = "begincast"
@@ -167,15 +159,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 422277 then
-
-	end
-end
---]]
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 439419 then
@@ -202,15 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 421656 then
-
-	end
-end
---]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)

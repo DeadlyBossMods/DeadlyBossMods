@@ -37,7 +37,6 @@ or ability.id = 446349 and type = "applydebuff"
 or ability.id = 442432 and type = "removebuff"
 --]]
 local warnExperimentalDosage					= mod:NewIncomingCountAnnounce(442526, 3)
---local warnReverberation							= mod:NewStackAnnounce(443274, 2)
 
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442430, nil, nil, nil, 2, 2)
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, nil, nil, 1, 2)
@@ -166,8 +165,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnstableWeb:Play("runout")
 			yellUnstableWeb:Yell()
 		end
---	elseif spellId == 443274 then
---		warnReverberation:Show(args.destName, args.amount or 1)
 	elseif spellId == 446694 then
 		if self.Options.NPAuraOnNecrotic then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -192,7 +189,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

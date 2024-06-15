@@ -175,15 +175,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 422277 then
-
-	end
-end
---]]
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 436870 then
@@ -218,21 +209,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if amount % 4 == 0 then
---				if amount >= 8 then
-					if args:IsPlayer() then
-						specWarnChasmalGashStack:Show(amount)
-						specWarnChasmalGashStack:Play("stackhigh")
+				if args:IsPlayer() then
+					specWarnChasmalGashStack:Show(amount)
+					specWarnChasmalGashStack:Play("stackhigh")
+				else
+					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
+						specWarnChasmalGashSwap:Show(args.destName)
+						specWarnChasmalGashSwap:Play("tauntboss")
 					else
-						if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
-							specWarnChasmalGashSwap:Show(args.destName)
-							specWarnChasmalGashSwap:Play("tauntboss")
-						else
-							warnChasmalGash:Show(args.destName, amount)
-						end
+						warnChasmalGash:Show(args.destName, amount)
 					end
---				else
---					warnChasmalGash:Show(args.destName, amount)
---				end
+				end
 			end
 		end
 	end
@@ -285,21 +272,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 218429 or cid == 218265 then--Nether Phantom
-
-	end
-end
---]]
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 426144 then
-
-	end
-end
 --]]

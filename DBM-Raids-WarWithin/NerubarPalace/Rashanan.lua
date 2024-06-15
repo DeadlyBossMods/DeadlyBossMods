@@ -22,9 +22,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, maybe auto mark https://www.wowhead.com/beta/spell=434579/corrosion so still assign clears by icon
 --TODO, maybe use https://www.wowhead.com/beta/spell=455287/infested-bite to announce or mark infested spawns after the fact for healing?
---TODO, target scan Web Reave? Or probably CHAT_MSG_RAID_BOSS_EMOTE or WHISPER. it's not a private aura (yet)
 --TODO, emphasize Enveloping webs cast itself? will probably only have a soon warning for it that's emphasized with a precise timer
 --TODO, change option keys to match BW for weak aura compatability before live
+--[[
+(ability.id = 444687 or ability.id = 439789 or ability.id = 455373 or ability.id = 439784 or ability.id = 439795 or ability.id = 439811 or ability.id = 454989 or ability.id = 452806) and type = "begincast"
+--]]
 local warnSavageWound							= mod:NewStackAnnounce(458067, 2, nil, "Tank|Healer")
 local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2)--General announce, private aura sound will be personal emphasis
 local warnInfestedSpawn							= mod:NewIncomingCountAnnounce(455373, 2)
@@ -37,8 +39,8 @@ local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, n
 local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
 local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, nil, 2, 2)
 local yellWebReave								= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
-local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
+local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerSavageAssaultCD						= mod:NewAITimer(49, 444687, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -49,8 +51,6 @@ local timerWebReaveCD							= mod:NewAITimer(49, 439795, nil, nil, nil, 3, nil, 
 local timerErosiveSprayCD						= mod:NewAITimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
---mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
 mod:AddPrivateAuraSoundOption(455284, true, 455373, 1)--Infested Spawn target
 mod:AddPrivateAuraSoundOption(439783, true, 439784, 1)--Spineret's Strands target
