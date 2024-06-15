@@ -36,7 +36,7 @@ mod:RegisterEventsInCombat(
 or ability.id = 446349 and type = "applydebuff"
 or ability.id = 442432 and type = "removebuff"
 --]]
-local warnExperimentalDosage					= mod:NewIncomingAnnounce(442526, 3)
+local warnExperimentalDosage					= mod:NewIncomingCountAnnounce(442526, 3)
 --local warnReverberation							= mod:NewStackAnnounce(443274, 2)
 
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442430, nil, nil, nil, 2, 2)
