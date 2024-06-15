@@ -4,6 +4,8 @@ local test = DBM.Test
 
 local dbmPrivate = test:GetPrivate()
 
+local realErrorHandler = geterrorhandler()
+
 -- FIXME: i don't like this "global" state
 local loadingTrace = {}
 ---@alias TestTrace TraceEntry[]
@@ -362,7 +364,7 @@ end
 function test:Teardown()
 	self.testRunning = false
 	self.modUnderTest = nil
-	self.reporter:UnsetErrorHandler()
+	if self.reporter then self.reporter:UnsetErrorHandler() end
 	-- Get rid of any lingering :Schedule calls, they are broken anyways due to time warping
 	DBM:Disable()
 	DBM:Enable()
@@ -454,6 +456,7 @@ end
 ---@param testData TestDefinition
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
 function test:Playback(testData, timeWarp, callback)
+	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
 	if callback then
 		callback("TestStart", testData, nil)
@@ -568,12 +571,12 @@ function test:RunTest(testName, timeWarp, callback)
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
 	self.modUnderTest = modUnderTest
-	self:Setup(testData) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
 		error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
 	end
+	self:Setup(testData) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
 	currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
 	currentRawEvent = fakeLoadingEvent
@@ -584,7 +587,7 @@ function test:RunTest(testName, timeWarp, callback)
 	currentRawEvent = nil
 	currentThread = coroutine.create(self.Playback)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, callback)
-	if not ok then error(err) end
+	if not ok then realErrorHandler(err) end
 end
 
 function test:StopTests()
@@ -620,7 +623,8 @@ function test:RunTests(testsOrNames, timeWarp, callback)
 	f:SetScript("OnUpdate", function()
 		local status = coroutine.status(cr)
 		if status == "suspended" then
-			coroutine.resume(cr)
+			local ok, err = coroutine.resume(cr)
+			if not ok then realErrorHandler(err) end
 		elseif status == "dead" then
 			f:Hide()
 		end

@@ -278,8 +278,8 @@ L.TIMER_USAGE	= {
 	"/dbm timer endloop: 반복 작동중인 모든 ltimer를 멈춥니다."
 }
 
-L.ERROR_NO_PERMISSION				= "풀링/휴식 타이머를 전송하기 위해 필요한 권한을 가지고 있지 않습니다."
-L.ERROR_NO_PERMISSION_COMBAT			= "보스 전투가 진행중인 동안에는 풀링/휴식 타이머를 전송할 수 없습니다"
+L.ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
+L.ERROR_NO_PERMISSION_COMBAT			= "보스 전투가 진행중인 동안에는 풀링/휴식 타이머를 보낼 수 없습니다"
 L.PULL_TIME_TOO_SHORT					= "풀링 타이머는 3초 이상으로 설정해야 합니다."
 L.PULL_TIME_TOO_LONG							= "풀링 타이머는 60초 이상 설정할 수 없습니다."
 

@@ -11,7 +11,7 @@ local DBM = private:GetPrototype("DBM")
 private.voiceSessionDisabled = false
 private.swFilterDisabled = 12
 
-local minVoicePackVersion = private.isRetail and 16 or private.isCata and 16 or private.isWrath and 16 or 10
+local minVoicePackVersion = private.isRetail and 17 or private.isCata and 16 or private.isWrath and 16 or 10
 
 function DBM:CheckVoicePackVersion(value)
 	local activeVP = self.Options.ChosenVoicePack2
