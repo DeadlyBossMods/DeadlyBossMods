@@ -42,7 +42,7 @@ local warnChillingBlast							= mod:NewTargetAnnounce(371976, 2)
 local warnEnvelopingWebs						= mod:NewTargetNoFilterAnnounce(372082, 3)
 local warnWrappedInWebs							= mod:NewTargetNoFilterAnnounce(372044, 4)
 local warnCallSpiderlings						= mod:NewCountAnnounce(372238, 2)
-local warnFrostbreathArachnid					= mod:NewSpellAnnounce(-24899, 2)
+local warnFrostbreathArachnid					= mod:NewCountAnnounce(-24899, 2)
 
 local specWarnChillingBlast						= mod:NewSpecialWarningMoveAway(371976, nil, nil, nil, 1, 2)
 local yellChillingBlast							= mod:NewYell(371976)

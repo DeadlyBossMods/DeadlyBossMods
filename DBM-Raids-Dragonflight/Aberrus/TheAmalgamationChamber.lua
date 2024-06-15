@@ -477,7 +477,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 409385 then
 		self.vb.SandFCount = self.vb.SandFCount + 1
-		warnShadowandFlame:Show(self.vb.SandFCount)
+		warnShadowandFlame:Show()
 		timerShadowandFlameCD:Start(self.vb.SandFCount == 1 and 52 or 47, self.vb.SandFCount+1)
 	end
 end
