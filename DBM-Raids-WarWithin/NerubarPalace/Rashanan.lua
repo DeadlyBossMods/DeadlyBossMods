@@ -43,12 +43,12 @@ local yellWebReave								= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerSavageAssaultCD						= mod:NewAITimer(49, 444687, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerRollingAcidCD						= mod:NewAITimer(21.3, 439789, nil, nil, nil, 3)
-local timerInfestedSpawnCD						= mod:NewAITimer(21.3, 455373, nil, nil, nil, 1)
-local timerSpinneretsStrandsCD					= mod:NewAITimer(33.9, 439784, nil, nil, nil, 3)
-local timerWebReaveCD							= mod:NewAITimer(49, 439795, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerErosiveSprayCD						= mod:NewAITimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerSavageAssaultCD						= mod:NewCDCountTimer(49, 444687, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerRollingAcidCD						= mod:NewCDCountTimer(21.3, 439789, nil, nil, nil, 3)
+local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, nil, nil, nil, 1)
+local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil, nil, 3)
+local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
