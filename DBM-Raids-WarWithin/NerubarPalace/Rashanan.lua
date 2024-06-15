@@ -166,7 +166,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 439789 then
 		self.vb.rollingCount = self.vb.rollingCount + 1
 		warnRollingAcid:Show(self.vb.rollingCount)
-		timerRollingAcidCD:Start()--nilil, self.vb.rollingCount+1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.rollingCount+1)
+		if timer then
+			timerRollingAcidCD:Start(timer, self.vb.rollingCount+1)
+		end
 	elseif spellId == 455373 then
 		self.vb.spawnCount = self.vb.spawnCount + 1
 		warnInfestedSpawn:Show(self.vb.spawnCount)
