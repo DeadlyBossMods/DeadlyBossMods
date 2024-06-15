@@ -749,9 +749,9 @@ function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
 	return newAnnounce(self, "addsleft", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewCountAnnounce(spellId, color, ...)
-	---@type Announce1Num
+	---@type Announce1
 	return newAnnounce(self, "count", spellId, color or 2, ...)
 end
 
