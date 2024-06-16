@@ -194,7 +194,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 134795 then
 		timerShriekCD:Start()
 		if brawlersMod:PlayerFighting() then
-			warnDisorientingShriek:Show(args.sourceName)
+			warnDisorientingShriek:Show()
 		else
 			warnDisorientingShriek:Show()
 			timerShriekCD:SetSTFade(true)
