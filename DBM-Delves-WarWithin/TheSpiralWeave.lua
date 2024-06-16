@@ -88,23 +88,30 @@ end
 --]]
 
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2990 then--Overseer Kaskel
 		self.vb.impalingCount = 0
 		timerImpalingStrikesCD:Start(6.4)
 		timerBurrowingTremorsCD:Start(12.5)
 		timerCallDronesCD:Start(27.1)
+	elseif eID == 3006 then--The Puppetmaster
+		DBM:AddMsg("Boss alerts/timers not yet implemented for The Puppetmaster")
 	end
 end
 
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2990 then
+	if eID == 2990 then--Overseer Kaskel
 		if success then
 			DBM:EndCombat(self)
 		else
 			timerImpalingStrikesCD:Stop()
 			timerBurrowingTremorsCD:Stop()
 			timerCallDronesCD:Stop()
+		end
+	elseif eID == 3006 then--The Puppetmaster
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
 		end
 	end
 end

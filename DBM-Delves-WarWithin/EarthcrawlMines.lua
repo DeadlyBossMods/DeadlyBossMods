@@ -92,6 +92,8 @@ function mod:ENCOUNTER_START(eID)
 		timerCurseOfAgonyCD:Start(7.5)
 		timerBurningCartCD:Start(13.2)
 		timerRunicShacklesCD:Start(22.1)
+	elseif eID == 3005 then--Maklin Drillstab
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Maklin Drillstab")
 	end
 end
 
@@ -104,6 +106,12 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 			timerCurseOfAgonyCD:Stop()
 			timerBurningCartCD:Stop()
 			timerRunicShacklesCD:Stop()
+		end
+	elseif eID == 3005 then--Maklin Drillstab
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Timers
 		end
 	end
 end
