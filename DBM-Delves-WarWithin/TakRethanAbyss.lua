@@ -78,12 +78,20 @@ end
 
 function mod:ENCOUNTER_START(eID)
 	if eID == 2895 then--Undersea Abomination
-		--Start some timers
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Undersea Abomination")
+	elseif eID == 3004 then--Evolved Nerubian Leaders
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Evolved Nerubian Leaders")
 	end
 end
 
 function mod:ENCOUNTER_END(eID, _, _, _, success)
 	if eID == 2895 then--Undersea Abomination
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3004 then--Evolved Nerubian Leaders
 		if success then
 			DBM:EndCombat(self)
 		else

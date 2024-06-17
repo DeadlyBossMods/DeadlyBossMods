@@ -12,8 +12,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"UNIT_DIED",
---	"ENCOUNTER_START",
---	"ENCOUNTER_END"
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 --This zone has 4 encounterIDs flagged to it, i'm gonna guess the 3 zones missing one, are mis zone flagged.
@@ -77,17 +77,38 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---[[
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2946 then--Nerl'athekk the Skulking
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Nerl'athekk the Skulking")
+	elseif eID == 2947 then--Speaker Xanventh
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Speaker Xanventh")
+	elseif eID == 2948 then--Cave Giant Boss
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Cave Giant Boss")
+	elseif eID == 2949 then--Faceless One
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Faceless One")
 	end
 end
---]]
 
---[[
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2895 then--Undersea Abomination
+	if eID == 2946 then--Nerl'athekk the Skulking
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 2947 then--Speaker Xanventh
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 2948 then--Cave Giant Boss
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 2949 then--Faceless One
 		if success then
 			DBM:EndCombat(self)
 		else
@@ -95,4 +116,3 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 		end
 	end
 end
---]]

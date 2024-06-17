@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 
-mod:RegisterCombat("scenario", 2687, 2767)
+mod:RegisterCombat("scenario", 2687, 2767)--2767 likely not used player facing
 
 mod:RegisterEventsInCombat(
 --	"SPELL_CAST_START ",
@@ -12,8 +12,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"UNIT_DIED",
---	"ENCOUNTER_START",
---	"ENCOUNTER_END"
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 --NOTE: This one lacks encounter ID for easy win detection and boss timers
@@ -77,17 +77,38 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---[[
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2999 then--Mirror Master Murkna
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Mirror Master Murkna")
+	elseif eID == 3000 then--Bloated Drowner
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Bloated Drowner")
+	elseif eID == 3001 then--Cragpie
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Cragpie")
+	elseif eID == 3002 then--Leviathan Caller
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Leviathan Caller")
 	end
 end
---]]
 
---[[
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2894 then
+	if eID == 2999 then--Mirror Master Murkna
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3000 then--Bloated Drowner
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3001 then--Cragpie
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3002 then--Leviathan Caller
 		if success then
 			DBM:EndCombat(self)
 		else
@@ -95,4 +116,3 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 		end
 	end
 end
---]]

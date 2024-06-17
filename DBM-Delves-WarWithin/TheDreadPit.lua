@@ -77,13 +77,13 @@ end
 --]]
 
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2989 then--Under-Lord Vik'tis
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Under-Lord Vik'tis")
 	end
 end
 
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2990 then
+	if eID == 2989 then--Under-Lord Vik'tis
 		if success then
 			DBM:EndCombat(self)
 		else

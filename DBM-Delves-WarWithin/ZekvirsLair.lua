@@ -78,7 +78,7 @@ end
 
 function mod:ENCOUNTER_START(eID)
 	if eID == 2985 or eID == 2987 then--Zekvir
-		--Start some timers
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Zekvir")
 	end
 end
 

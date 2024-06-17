@@ -12,8 +12,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"UNIT_DIED",
---	"ENCOUNTER_START",
---	"ENCOUNTER_END"
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 --This zone has 3 encounterIDs flagged to it, going to waita nd see since could be misflagged ids
@@ -77,15 +77,30 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---[[
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2991 then--Researcher Ven'kex
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Researcher Ven'kex")
+	elseif eID == 2992 then--Researcher Xik'vik
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Researcher Xik'vik")
+	elseif eID == 2993 then--Crazed Abomination
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Crazed Abomination")
 	end
 end
 
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2894 then
+	if eID == 2991 then--Researcher Ven'kex
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 2992 then--Researcher Xik'vik
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 2993 then--Crazed Abomination
 		if success then
 			DBM:EndCombat(self)
 		else
@@ -93,4 +108,3 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 		end
 	end
 end
---]]

@@ -12,8 +12,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"UNIT_DIED",
---	"ENCOUNTER_START",
---	"ENCOUNTER_END"
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 --NOTE: This one lacks encounter ID for easy win detection and boss timers
@@ -77,15 +77,31 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---[[
 function mod:ENCOUNTER_START(eID)
-	if eID == 2990 then
-		--Start some timers
+	if eID == 2998 then--Reformed Fury
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Reformed Fury")
+	elseif eID == 3007 then--Speaker Halven
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Speaker Halven")
+	elseif eID == 3008 then--Speaker Pelzeth
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Speaker Pelzeth")
 	end
 end
 
+
 function mod:ENCOUNTER_END(eID, _, _, _, success)
-	if eID == 2895 then
+	if eID == 2998 then--Reformed Fury
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3007 then--Speaker Halven
+		if success then
+			DBM:EndCombat(self)
+		else
+			--Stop Timers manually
+		end
+	elseif eID == 3008 then--Speaker Pelzeth
 		if success then
 			DBM:EndCombat(self)
 		else
@@ -93,4 +109,4 @@ function mod:ENCOUNTER_END(eID, _, _, _, success)
 		end
 	end
 end
---]]
+

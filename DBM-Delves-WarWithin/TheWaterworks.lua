@@ -78,7 +78,7 @@ end
 
 function mod:ENCOUNTER_START(eID)
 	if eID == 2894 then--Waxface
-		--Start some timers
+		DBM:AddMsg("Boss alerts/timers not yet implemented for Waxface")
 	end
 end
 

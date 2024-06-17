@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 444687 439789 455373 439784 439795 439811 454989 452806",
 	"SPELL_AURA_APPLIED 458067",
-	"SPELL_AURA_APPLIED_DOSE 458067",
+	"SPELL_AURA_APPLIED_DOSE 458067"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_SPELLCAST_START boss1"
+--	"UNIT_SPELLCAST_START boss1"
 )
 
 --TODO, maybe auto mark https://www.wowhead.com/beta/spell=434579/corrosion so still assign clears by icon
@@ -38,7 +38,7 @@ local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
 local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
 local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, nil, 2, 2)
-local yellWebReave								= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
+--local yellWebReave								= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
@@ -242,15 +242,15 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
-function mod:WebReaveTarget(targetname)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		yellWebReave:Yell()
-	end
-end
+--function mod:WebReaveTarget(targetname)
+--	if not targetname then return end
+--	if targetname == UnitName("player") then
+--		yellWebReave:Yell()
+--	end
+--end
 
-function mod:UNIT_SPELLCAST_START(uId, _, spellId)
-	if spellId == 439795 then
-		self:BossUnitTargetScanner(uId, "WebReaveTarget")
-	end
-end
+--function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+--	if spellId == 439795 then
+--		self:BossUnitTargetScanner(uId, "WebReaveTarget")
+--	end
+--end
