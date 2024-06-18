@@ -93,6 +93,15 @@ local challengeModeIds = {
 	[456] = 643, -- Throne of the Tides
 	[463] = 2579, -- Dawn of the Infinite: Galakrond's Fall
 	[464] = 2579, -- Dawn of the Infinite: Murozond's Rise
+	[499] = 2649, -- Priory of the Sacred Flame
+	[500] = 2648, -- The Rookery
+	[501] = 2652, -- The Stonevault
+	[502] = 2669, -- City of Threads
+	[503] = 2660, -- Ara-Kara, City of Echoes
+	[504] = 2651, -- Darkflame Cleft
+	[505] = 2662, -- The Dawnbreaker
+	[506] = 2661, -- Cinderbrew Meadery
+	[507] = 670, -- Grim Batol
 }
 
 do
