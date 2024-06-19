@@ -16,7 +16,7 @@ mod:RegisterEvents(
 --NOTE: Many abilities are shared by mobs that can spawn in ANY delve. However Some warnings/mobs might actually be specific to certain delves
 --for now ALL are being put in common til we have enough data to scope trash abilities to appropriate modules
 local warnShadowsofStrife					= mod:NewCastAnnounce(449318, 3)--High Prio Interrupt
-local warnWebbedAegis						= mod:NewCastAnnounce(450546, 3)--Can only be CCed
+local warnWebbedAegis						= mod:NewCastAnnounce(450546, 3)
 local warnDebilitatingVenom					= mod:NewTargetNoFilterAnnounce(424614, 3)--Brann will dispel this if healer role
 
 local specWarnFearfulShriek					= mod:NewSpecialWarningDodge(433410, nil, nil, nil, 2, 2)
@@ -24,11 +24,12 @@ local specWarnJaggedBarbs					= mod:NewSpecialWarningDodge(450714, nil, nil, nil
 local specWarnLavablast	    				= mod:NewSpecialWarningDodge(445781, nil, nil, nil, 2, 2)
 local specWarnFungalBreath    				= mod:NewSpecialWarningDodge(415253, nil, nil, nil, 2, 2)
 local specWarnShadowsofStrife				= mod:NewSpecialWarningInterrupt(449318, "HasInterrupt", nil, nil, 1, 2)--High Prio Interrupt
+local specWarnWebbedAegis					= mod:NewSpecialWarningInterrupt(450546, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRotWaveVolley					= mod:NewSpecialWarningInterrupt(425040, "HasInterrupt", nil, nil, 1, 2)
 
-local timerShadowsofStrifeCD				= mod:NewCDNPTimer(12.4, 449318, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12.4-15.1
+--local timerShadowsofStrifeCD				= mod:NewCDNPTimer(12.4, 449318, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12.4-15.1
 local timerRotWaveVolleyCD					= mod:NewCDNPTimer(12.4, 425040, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--14.6-17
-local timerWebbedAegisCD					= mod:NewCDNPTimer(23.1, 450546, nil, nil, nil, 5)
+--local timerWebbedAegisCD					= mod:NewCDNPTimer(23.1, 450546, nil, nil, nil, 5)
 local timerLavablastCD					    = mod:NewCDNPTimer(15.8, 445781, nil, nil, nil, 3)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 off interrupt
@@ -67,7 +68,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 449318 then
-		timerShadowsofStrifeCD:Start(nil, args.sourceGUID)
+--		timerShadowsofStrifeCD:Start(nil, args.sourceGUID)
 		if self.Options.SpecWarn449318interrupt and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnShadowsofStrife:Show(args.sourceName)
 			specWarnShadowsofStrife:Play("kickcast")
@@ -81,10 +82,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnRotWaveVolley:Play("kickcast")
 		end
 	elseif args.spellId == 450546 then
-		timerWebbedAegisCD:Start(nil, args.sourceGUID)
-		if self:AntiSpam(3, 6) then
+	--	timerWebbedAegisCD:Start(nil, args.sourceGUID)
+		if self.Options.SpecWarn450546interrupt and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnWebbedAegis:Show(args.sourceName)
+			specWarnWebbedAegis:Play("kickcast")
+		elseif self:AntiSpam(3, 7) then
 			warnWebbedAegis:Show()
-			warnWebbedAegis:Play("crowdcontrol")
 		end
 	elseif args.spellId == 433410 then
 		if self:AntiSpam(3, 2) then
@@ -145,9 +148,9 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 208242 then--Nerubian Darkcaster
-		timerShadowsofStrifeCD:Stop(args.destGUID)
+	--	timerShadowsofStrifeCD:Stop(args.destGUID)
 	elseif cid == 216584 then--Nerubian Captain
-		timerWebbedAegisCD:Stop(args.destGUID)
+	--	timerWebbedAegisCD:Stop(args.destGUID)
     elseif cid == 223541 then--Stolen Loader
         timerLavablastCD:Stop(args.destGUID)
 	elseif cid == 207460 then--Fungarian Flinger
