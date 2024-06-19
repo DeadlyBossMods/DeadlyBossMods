@@ -23,9 +23,9 @@ local warnRunicShackles						= mod:NewSpellAnnounce(448444, 2)
 local specWarnBurningCart					= mod:NewSpecialWarningDodge(448412, nil, nil, nil, 2, 2)
 
 local timerCurseOfAgonyCD					= mod:NewCDTimer(23.8, 448443, nil, nil, nil, 3, nil, DBM_COMMON_L.CURSE_ICON)
-local timerRunicShacklesCD					= mod:NewCDTimer(37.2, 448444, nil, nil, nil, 3, nil, DBM_COMMON_L.CURSE_ICON)--Poor Sample size
+local timerRunicShacklesCD					= mod:NewCDTimer(35.2, 448444, nil, nil, nil, 3, nil, DBM_COMMON_L.CURSE_ICON)--Poor Sample size
 local timerWebBoltCD						= mod:NewCDTimer(6, 448443, nil, false, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerBurningCartCD					= mod:NewCDTimer(35.6, 448412, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerBurningCartCD					= mod:NewCDTimer(35.2, 448412, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 off interrupt
 
@@ -90,8 +90,8 @@ function mod:ENCOUNTER_START(eID)
 		--Start some timers
 		timerWebBoltCD:Start(2.2)
 		timerCurseOfAgonyCD:Start(7.5)
-		timerBurningCartCD:Start(13.2)
-		timerRunicShacklesCD:Start(22.1)
+		timerBurningCartCD:Start(12.3)
+		timerRunicShacklesCD:Start(20.8)
 	elseif eID == 3005 then--Maklin Drillstab
 		DBM:AddMsg("Boss alerts/timers not yet implemented for Maklin Drillstab")
 	end
