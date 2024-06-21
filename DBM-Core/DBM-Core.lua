@@ -1865,6 +1865,11 @@ do
 					"CANCEL_PLAYER_COUNTDOWN"
 				)
 			end
+			if private.wowTOC >= 110000 then
+				self:RegisterEvents(
+					"PLAYER_MAP_CHANGED"
+				)
+			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
@@ -3810,10 +3815,10 @@ do
 		end
 	end
 
-	---@param force boolean?
-	---@param cleanup boolean?
+	---@param force boolean? Only used when /dbm musicstart is used directly by user
+	---@param cleanup boolean? Runs on zone change/cinematic Start (first load delay) and combat end
 	function DBM:TransitionToDungeonBGM(force, cleanup)
-		if cleanup then--Runs on zone change/cinematic Start (first load delay) and combat end
+		if cleanup then
 			self:Unschedule(self.TransitionToDungeonBGM)
 			if self.Options.RestoreSettingCustomMusic then
 				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingCustomMusic)
@@ -3864,15 +3869,16 @@ do
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
 		difficulties:RefreshCache(true)
 		LastGroupSize = instanceGroupSize
-		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty, 2)
+		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty .. " and delay " .. (delay or 0), 2)
 		-- Difficulty index also checked because in challenge modes and M+, difficulty changes with no ID change
 		-- if ID changes we need to execute updated autologging and checkavailable mods checks
 		-- ID and difficulty hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		if LastInstanceMapID == mapID and difficulties.difficultyIndex == difficulty then
 			self:TransitionToDungeonBGM()
-			self:Debug("No action taken because mapID and difficultyID hasn't changed since last check", 2)
+			self:Debug("|c00F2F200No action taken because mapID and difficultyID hasn't changed since last check |r", 2)
 			return
 		end
+		self:Debug("|c0069CCF0mapID or difficulty has changed, updating LastInstanceMapID |r", 2)
 		LastInstanceMapID = mapID
 		DBMScheduler:UpdateZone()--Also update zone in scheduler
 		fireEvent("DBM_UpdateZone", mapID)
@@ -3916,11 +3922,13 @@ do
 
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
-		if private.isRetail then
+		--Extra stuff we want to clean up after loading screens only
+		if not private.isClassic and not private.isBCC then
 			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
 		end
 		fireEvent("DBM_TimerStop", "DBMLFGTimer")
 		timerRequestInProgress = false
+		--Regular load zone code beyond this point
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
 		--SecondaryLoadCheck(self)
@@ -3944,9 +3952,9 @@ do
 		[2454] = true,--Zaralek Caverns
 		[2574] = true,--Dragon Isles
 		[2444] = true,--Dragon Isles
-		[2601] = true,--Khaz Algar (Underground)
-		[2774] = true,--Khaz Algar (Underground)
-		[2552] = true,--Khaz Algar (Surface)
+--		[2601] = true,--Khaz Algar (Underground)
+--		[2774] = true,--Khaz Algar (Underground)
+--		[2552] = true,--Khaz Algar (Surface)
 	}
 
 	-- Load based on MapIDs
@@ -3956,14 +3964,40 @@ do
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
-		--if a special zone or delve, we need to force update LastInstanceMapID and run zone change functions without loading screen
-		if specialZoneIDs[LastInstanceMapID] or difficulties:InstanceType(LastInstanceMapID) == 4 then
+		--if a special zone, we need to force update LastInstanceMapID and run zone change functions without loading screen
+		--This hack and table can go away in TWW pre patch when we gain access to PLAYER_MAP_CHANGED
+		if private.wowTOC < 110000 and specialZoneIDs[LastInstanceMapID] then--or difficulties:InstanceType(LastInstanceMapID) == 4
 			DBM:Debug("Forcing LOADING_SCREEN_DISABLED", 2)
 			self:LOADING_SCREEN_DISABLED(true)
 		end
 	end
 
+	---Special event that fires when changing zones in TWW
+	---@param oldZone number if oldZone is -1, it means it's a loading screen
+	---@param newZone number
+	function DBM:PLAYER_MAP_CHANGED(oldZone, newZone)
+		self:Debug("PLAYER_MAP_CHANGED fired with oldZone " .. oldZone .. " and newZone " .. newZone, 2)
+		if oldZone == -1 then return end--Let legacy LOADING_SCREEN_DISABLED handle it for now. In future, PLAYER_MAP_CHANGED may replace LSD if classic gets it
+		if LastInstanceMapID ~= newZone then
+			self:Debug("Zone changed, firing secondary load check", 2)
+			--Different ID than cached, run secondary load checks
+			--Delay is still needed due to GetInstanceInfo not returning new information yet instantly on PLAYER_MAP_CHANGED
+			self:TransitionToDungeonBGM(false, true)
+			self:Unschedule(SecondaryLoadCheck)
+			self:Schedule(1, SecondaryLoadCheck, self, 1)
+			self:Schedule(5, SecondaryLoadCheck, self, 5)
+			if self:HasMapRestrictions() then
+				self.Arrow:Hide()
+				self.HudMap:Disable()
+				if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+					self.RangeCheck:Hide(true)
+				end
+			end
+		end
+	end
+
 	function DBM:CHALLENGE_MODE_RESET()
+		--TODO, if blizzard ever removes loading screen from challenge modes start, then we need to run additional stuff from SecondaryLoadCheck here
 		difficulties.difficultyIndex = 8
 		self:CheckAvailableMods()
 		if not self.Options.RecordOnlyBosses then
@@ -6784,7 +6818,7 @@ do
 			tinsert(sortMe, v)
 		end
 		tsort(sortMe, sort)
-		self:Debug("RequestTimers Running", 2)
+		self:Debug("RequestTimers Running", 3)
 		local selectedClient
 		local listNum = 0
 		for _, v in ipairs(sortMe) do
