@@ -581,6 +581,10 @@ L.AUTO_READY_CHECK_OPTION_TEXT			= "當首領開打時撥放準備檢查的音�
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "顯示 %s 的最快清除計時器"
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "為這場戰鬥的私人光環$spell:%s播放DBM音效警告。"
 
+L.AUTO_GOSSIP_BUFFS						= "自動選擇npc的對話選項或專業增益"
+L.AUTO_GOSSIP_PERFORM_ACTION			= "自動選擇對話選項來執行動作 (例如使用傳送功能)"
+L.AUTO_GOSSIP_START_ENCOUNTER			= "自動選擇對話選項來開始遭遇戰"
+
 -- New special warnings
 L.MOVE_WARNING_BAR			= "可移動提示"
 L.MOVE_WARNING_MESSAGE		= "感謝您使用"..L.DEADLY_BOSS_MODS..""
