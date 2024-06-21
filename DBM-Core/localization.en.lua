@@ -604,6 +604,10 @@ L.AUTO_READY_CHECK_OPTION_TEXT			= "Play ready check sound when boss is pulled (
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Show timer for fastest clear of %s"
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s private auras on this fight."
 
+L.AUTO_GOSSIP_BUFFS						= "Auto select gossip choice(s) for npc or profession buffs"
+L.AUTO_GOSSIP_PERFORM_ACTION			= "Auto select gossip choice(s) to perform actions (such as using transports)"
+L.AUTO_GOSSIP_START_ENCOUNTER			= "Auto select gossip choice to start encounter"--This will never need to be plural, since it won't be in a trash mod like other two
+
 -- New special warnings
 L.MOVE_WARNING_BAR						= "Announce movable"
 L.MOVE_WARNING_MESSAGE					= "Thanks for using " .. L.DEADLY_BOSS_MODS

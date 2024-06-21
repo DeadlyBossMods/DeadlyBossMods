@@ -8350,6 +8350,34 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 	self:SetOptionCategory("InfoFrame" .. oVersion, "misc")
 end
 
+
+---@meta
+---@alias gossipTypes
+---|"Action": Auto select gossip choice(s) to perform actions (such as using transports)
+---|"Encounter": Auto select gossip choice to start encounter
+---|"Buff": Auto select gossip choice(s) for npc or profession buffs
+---@param default SpecFlags|boolean?
+---@param gossipType gossipTypes|string
+function bossModPrototype:AddGossipOption(default, gossipType, optionVersion)
+	local oVersion = ""
+	if optionVersion then
+		oVersion = tostring(optionVersion)
+	end
+	self.DefaultOptions["AutoGossip" .. gossipType .. oVersion] = (default == nil) or default
+	if type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["AutoGossipAction" .. gossipType .. oVersion] = (default == nil) or default
+	if gossipType == "Action" then
+		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_PERFORM_ACTION
+	elseif gossipType == "Encounter" then
+		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_START_ENCOUNTER
+	else--Type 1 most common so the default fallback if left blank
+		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_BUFFS
+	end
+	self:SetOptionCategory("AutoGossip" .. gossipType .. oVersion, "misc")
+end
+
 ---@param default SpecFlags|boolean?
 ---@param maxLevel number? set max level if you want to disable this readycheck from firing at a certain point
 function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
