@@ -555,6 +555,10 @@ L.AUTO_READY_CHECK_OPTION_TEXT		= "보스가 풀링되면 전투 준비 효과�
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "%s의 완료 신기록 타이머 표시"
 L.AUTO_PRIVATEAURA_OPTION_TEXT		= "이 전투에서 설정한 $spell:%s 비공개 오라에 DBM 효과음 경고를 재생합니다."
 
+L.AUTO_GOSSIP_BUFFS						= "NPC나 전문기술 버프 오브젝트 대화 자동 선택"
+L.AUTO_GOSSIP_PERFORM_ACTION			= "사물을 작동시키는 (순간이동 사용 같은) 선택지 자동 선택"
+L.AUTO_GOSSIP_START_ENCOUNTER			= "보스 전투 시작 대화 자동 선택"--This will never need to be plural, since it won't be in a trash mod like other two
+
 -- New special warnings
 L.MOVE_WARNING_BAR				= "알림 이동"
 L.MOVE_WARNING_MESSAGE			= L.DEADLY_BOSS_MODS .. "를 이용해 주셔셔 감사합니다."
