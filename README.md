@@ -17,7 +17,7 @@ Older content is split into multiple addons to reduce mod update size. These are
 * [Cataclysm Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-cataclysm-mods)
 * [Wrath of the Lich King Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-wotlk)
 * [Burning Cruisade and Vanilla Raid Mods](https://curseforge.com/wow/addons/dbm-bc)
-* [5 man Dungeon Mods](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-dungeons)
+* [Dungeons, Delves, & Events Mods](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-dungeons)
 
 ## Additional Mods
 * [Event Sound Pack](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-event-sound-pack)
