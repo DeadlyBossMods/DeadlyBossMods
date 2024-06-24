@@ -6328,7 +6328,7 @@ do
 		["PALADIN"] = 855,--Ret Paladin
 		["WARRIOR"] = 746,--Arms Warrior
 		["DRUID"] = 752,--Balance druid
-		["DEATHKNIGHT"] = 251,--Frost DK
+		["DEATHKNIGHT"] = 399,--Frost DK
 		["HUNTER"] = 811,--Beastmaster Hunter
 		["PRIEST"] = 795,--Shadow Priest
 		["ROGUE"] = 182,--Assassination Rogue
