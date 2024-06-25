@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20240232
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20240625
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -15,7 +15,8 @@ end
 
 L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
 L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于静音模式。"
-L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: 此次更新主要在 9.1.9 的版本上去除了导致杀毒软件误报警的情况。详情点击 |Hgarrmission:DBM:news|h|cff3588ff[这里]|r|h"
+L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。详情点击 |Hgarrmission:DBM:news|h|cff3588ff[这里]|r|h"
+L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111News|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。你当前进入的团队缺少相应模组，无法提供战斗警报。本信息将持续显示，直到你安装了正确的的模组。"
 
 L.COPY_URL_DIALOG_NEWS				= "阅读最新新闻，请点击下方连接"
 
@@ -284,9 +285,10 @@ L.TIMER_USAGE	= {
 	"/dbm timer endloop: 停止所有的 ltimer（循环计时器）."
 }
 
-L.ERROR_NO_PERMISSION		= "权限不足。需要队长或助理权限。"
-L.PULL_TIME_TOO_SHORT			= "战斗倒计时需要大于三秒。"
-L.PULL_TIME_TOO_LONG				= "Pull timer cannot be longer than 60 seconds"
+L.ERROR_NO_PERMISSION			= "权限不足。需要队长或助理权限才能启动战斗倒计时或者休息。"
+L.ERROR_NO_PERMISSION_COMBAT	= "战斗倒计时或者休息不能在战斗中发送。"
+L.PULL_TIME_TOO_SHORT			= "战斗倒计时需要大于3秒。"
+L.PULL_TIME_TOO_LONG			= "战斗倒计时需要小于60秒。"
 
 L.BREAK_USAGE				= "休息时间不能超过60分钟。请确保你输入的是分钟而不是秒。"
 L.BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
@@ -312,6 +314,7 @@ L.AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource		= ">%%s< 施放 %s 于 >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s)：>%%s<"
 L.AUTO_ANNOUNCE_TEXTS.spell				= "%s"
+L.AUTO_ANNOUNCE_TEXTS.spellsource		= ">%%s< 施放 %s"
 L.AUTO_ANNOUNCE_TEXTS.incoming			= "Debuff %s 即将到来"
 L.AUTO_ANNOUNCE_TEXTS.incomingcount		= "Debuff %s 即将到来(%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 				= "%s 结束"
@@ -336,6 +339,7 @@ L.AUTO_ANNOUNCE_OPTIONS.targetNF		= "警报：$spell:%s的目标(忽略全局目
 L.AUTO_ANNOUNCE_OPTIONS.targetsource	= "警报：$spell:%s的目标(带来源)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "警报：当$spell:%s施法时"
+L.AUTO_ANNOUNCE_OPTIONS.spellsource		= "警报：当$spell:%s施法时(带来源)"
 L.AUTO_ANNOUNCE_OPTIONS.incoming		= "警报：当debuff $spell:%s 即将到来时"
 L.AUTO_ANNOUNCE_OPTIONS.incomingcount	= "警报：当debuffs $spell:%s 即将到来时（带计数）"
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "警报：$spell:%s结束"
@@ -579,6 +583,9 @@ L.AUTO_INFO_FRAME_OPTION_TEXT3		= "信息框：$spell:%s （当%%s阈值达到�
 L.AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "为%s显示快速消除计数器"
 L.AUTO_PRIVATEAURA_OPTION_TEXT		= "在这场战斗中，为DBM的私人光环$spell:%s播放音效"
+L.AUTO_GOSSIP_BUFFS					= "自动选择NPC对话来开启专业增益"
+L.AUTO_GOSSIP_PERFORM_ACTION		= "自动选择NPC对话来执行动作（例如传送）"
+L.AUTO_GOSSIP_START_ENCOUNTER		= "自动选择NPC对话来开始战斗"--This will never need to be plural, since it won't be in a trash mod like other two
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "可拖动的团队警报"
