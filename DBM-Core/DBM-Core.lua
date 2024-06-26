@@ -536,6 +536,8 @@ do
 		end
 	end
 end
+-- this is not technically a lib and instead a standalone addon but the api is available via LibStub
+local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -2815,14 +2817,17 @@ do
 	---Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
 	---<br>Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
 	function DBM:GetShortServerName(name)
-		if not self.Options.StripServerName then return name end--If strip is disabled, just return name
-		local shortName, serverName = string.split("-", name)
-		if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
-			return shortName .. "*"
-		else
-			return name
-		end
-	end
+        if not self.Options.StripServerName then return name end--If strip is disabled, just return name
+        if CustomNames then
+            name = CustomNames.Get(name)
+        end
+        local shortName, serverName = string.split("-", name)
+        if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
+            return shortName .. "*"
+        else
+            return name
+        end
+    end
 
 	---@param guid string
 	function DBM:GetFullPlayerNameByGUID(guid)
