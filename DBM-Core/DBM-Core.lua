@@ -2819,6 +2819,7 @@ do
 	function DBM:GetShortServerName(name)
         if not self.Options.StripServerName then return name end--If strip is disabled, just return name
         if CustomNames then
+			---@diagnostic disable-next-line: undefined-field
             name = CustomNames.Get(name)
         end
         local shortName, serverName = string.split("-", name)
