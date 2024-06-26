@@ -5069,20 +5069,22 @@ do
 		end
 	end
 
-	function DBM:START_PLAYER_COUNTDOWN(initiatedBy, timeSeconds)--totalTime
+	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds, _, _, initiatedByName)--totalTime, informChat
 		--Ignore this event in combat
 		if #inCombat > 0 then return end
 --		if timeSeconds > 60 then--treat as a break timer
 --			breakTimerStart(self, timeSeconds, initiatedBy, true)
 --		else--Treat as a pull timer
-			pullTimerStart(self, initiatedBy, timeSeconds, true)
+			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
+			pullTimerStart(self, initiatedByName or initiatedByGuid, timeSeconds, true)
 --		end
 	end
 
-	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedBy)
+	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid, _, initiatedByName)--informChat
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
 --		breakTimerStart(self, 0, initiatedBy, true)
-		pullTimerStart(self, initiatedBy, 0, true)
+		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
+		pullTimerStart(self, initiatedByName or initiatedByGuid, 0, true)
 	end
 end
 
