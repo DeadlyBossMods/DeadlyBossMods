@@ -237,7 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnPhaseBlades:PreciseShow(4, args.destName)--4 is max targets, but it can scale down to less
 		self.vb.bladesIcon = self.vb.bladesIcon + 1
-	elseif spellId == 439191 then
+--	elseif spellId == 439191 then
 
 	end
 end
@@ -254,13 +254,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellPhaseBladesFades:Cancel()
 		end
-	elseif spellId == 439191 then
-		if self.Options.SetIconOnDecimate then
-			self:SetIcon(args.destName, 0)
-		end
-		if args:IsPlayer() then
-			yellDecimateFades:Cancel()
-		end
+	--elseif spellId == 439191 then
+	--	if self.Options.SetIconOnDecimate then
+	--		self:SetIcon(args.destName, 0)
+	--	end
+	--	if args:IsPlayer() then
+	--		yellDecimateFades:Cancel()
+	--	end
 	end
 end
 
@@ -278,7 +278,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:459349") then
 		local icon = self.vb.decimateIcon
 		if self.Options.SetIconOnDecimate then
-			self:SetIcon(targetName, icon)
+			self:SetIcon(targetName, icon, 6)
 		end
 		warnDecimate:PreciseShow(3, targetName)--3 is max targets, but it can scale down to less
 		self.vb.decimateIcon = self.vb.decimateIcon + 1
