@@ -126,8 +126,10 @@ function mod:SPELL_CAST_START(args)
 		--Now do combo stuff
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnExpose:Show()
-			specWarnExpose:Play("defensive")
+			if spellId == 432965 then
+				specWarnExpose:Show()
+				specWarnExpose:Play("defensive")
+			end
 		else
 			--Other tank has this debuff already and it will NOT be gone when cast finishes, TAUNT NOW!
 			--This doesn't check TankSwapBehavior dropdown because this always validates that the player about to get hit by this, shouldn't be hit by it
