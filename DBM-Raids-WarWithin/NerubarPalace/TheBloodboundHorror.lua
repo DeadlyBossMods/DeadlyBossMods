@@ -4,8 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214502)
 mod:SetEncounterID(2917)
-mod:SetUsedIcons(6, 7, 8)
-mod:SetHotfixNoticeRev(20240614000000)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetHotfixNoticeRev(20240628000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -33,9 +33,9 @@ mod:RegisterEventsInCombat(
 --TODO, Manifest Horror nameplate timer? i kinda assume it's just sort of spam cast til dead
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
-(444363 452237 445936 442530 451288 445016 445174) and type = "begincast"
+(ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530 or ability.id = 451288 or ability.id = 445016 or ability.id = 445174) and type = "begincast"
  or ability.id = 443203 and type = "cast"
- or ability.id = 443042 and type = "applydebuff")
+ or ability.id = 443042 and type = "applydebuff"
  or (ability.id = 444830 or ability.id = 444835) and type = "summon"
 --]]
 --Phase One: The Black Blood
@@ -58,7 +58,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(445518, nil, nil, nil, 1, 
 
 local timerGruesomeDigorgeCD					= mod:NewNextCountTimer(49, 444363, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBanefulShift							= mod:NewBuffFadesTimer(40, 443612, nil, nil, nil, 5)
-local timerBloodcurdleCD						= mod:NewAITimer(40, 452237, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerBloodcurdleCD						= mod:NewNextCountTimer(40, 452237, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerSpewingHemorrhageCD					= mod:NewNextCountTimer(40, 445936, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.DEADLY_ICON)
 local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
@@ -99,40 +99,50 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	table.wipe(addUsedMarks)
 	--playerPhased = false
-	timerGruesomeDigorgeCD:Start(16, 1)
+	timerGruesomeDigorgeCD:Start(self:IsMythic() and 14 or 16, 1)
 	timerSpewingHemorrhageCD:Start(32, 1)
 	timerGoresplatterCD:Start(120, 1)
 	timerCrimsonRainCD:Start(11, 1)
-	timerGraspFromBeyondCD:Start(22, 1)
+	timerGraspFromBeyondCD:Start(self:IsMythic() and 19.1 or 22, 1)
 	if self:IsMythic() then
-		timerBloodcurdleCD:Start(1)
+		timerBloodcurdleCD:Start(9, 1)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 444363 then
-		--16.0, 51.0, 77.0, 51.0, 77.0, 51.0, 77.1, 51.0
+		--16.0, 51.0, 77.0, 51.0, 77.0, 51.0, 77.1, 51.0 (heroic)
+		--14.0, 59.0, 69.1, 59.0, 69.1, 58.9, 69.0 (mythic)
 		self.vb.disgorgeCount = self.vb.disgorgeCount + 1
 		specWarnGruesomeDisgorge:Show(self.vb.disgorgeCount)
 		specWarnGruesomeDisgorge:Play("shockwave")
 		if self.vb.disgorgeCount % 2 == 0 then
-			timerGruesomeDigorgeCD:Start(77, self.vb.disgorgeCount+1)
+			timerGruesomeDigorgeCD:Start(self:IsMythic() and 69.1 or 77, self.vb.disgorgeCount+1)
 		else
-			timerGruesomeDigorgeCD:Start(51, self.vb.disgorgeCount+1)
+			timerGruesomeDigorgeCD:Start(self:IsMythic() and 59 or 51, self.vb.disgorgeCount+1)
 		end
 	elseif spellId == 452237 then
+		--9.0, 32.0, 27.0, 32.0, 37.0, 32.0, 27.0, 32.0, 37.0, 32.0, 27.0, 32.0, 37.0, 32.0
+		--(37.0, 32.0, 27.0, 32.0 repeating)
 		self.vb.curdleCount = self.vb.curdleCount + 1
-		timerBloodcurdleCD:Start()
+		if self.vb.curdleCount % 4 == 2 then
+			timerBloodcurdleCD:Start(27, self.vb.curdleCount+1)
+		elseif self.vb.curdleCount % 4 == 4 then
+			timerBloodcurdleCD:Start(37, self.vb.curdleCount+1)
+		else--1 and 3
+			timerBloodcurdleCD:Start(32, self.vb.curdleCount+1)
+		end
 	elseif spellId == 445936 then
-		--32.0, 49.0, 79.0, 49.0, 79.0, 49.0, 79.0, 49.0
+		--32.0, 49.0, 79.0, 49.0, 79.0, 49.0, 79.0, 49.0 (heroic)
+		--32.0, 59.0, 69.1, 59.0, 69.0, 59.0, 69.0 (Mythic)
 		self.vb.hemorrhageCount = self.vb.hemorrhageCount + 1
 		specWarnSpewingHemorrhage:Show(self.vb.hemorrhageCount)
 		specWarnSpewingHemorrhage:Play("justrun")
 		if self.vb.hemorrhageCount % 2 == 0 then
-			timerSpewingHemorrhageCD:Start(79, self.vb.hemorrhageCount+1)
+			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 79, self.vb.hemorrhageCount+1)
 		else
-			timerSpewingHemorrhageCD:Start(49, self.vb.hemorrhageCount+1)
+			timerSpewingHemorrhageCD:Start(self:IsMythic() and 59 or 49, self.vb.hemorrhageCount+1)
 		end
 	elseif spellId == 442530 then
 		self.vb.goresplatterCount = self.vb.goresplatterCount + 1
@@ -172,7 +182,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 443203 then
-		--"Crimson Rain-443203-npc:214502-00006B455A = pull:11.0, 128.0, 128.0, 128.0"
+		--"Crimson Rain-443203-npc:214502-00006B455A = pull:11.0, 128.0, 128.0, 128.0" (heroic) (mythic is same)
 		self.vb.membraneCount = self.vb.membraneCount +1
 		warnCrimsonRain:Show(self.vb.membraneCount)
 		timerCrimsonRainCD:Start(nil, self.vb.membraneCount+1)
@@ -229,12 +239,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 443042 then
 		if self:AntiSpam(5, 2) then
-			--22.0, 28.0, 28.0, 28.0, 44.0, 28.0, 28.0, 28.0, 44.0, 28.0, 28.0, 28.0, 44.1, 28.0, 28.0, 28.0
+			--22.0, 28.0, 28.0, 28.0, 44.0, 28.0, 28.0, 28.0, 44.0, 28.0, 28.0, 28.0, 44.1, 28.0, 28.0, 28.0 (heroic)
+			--19.1, 27.9, 31.2, 27.8, 41.1, 27.9, 31.1, 27.9, 41.2, 27.8, 31.1, 27.9, 41.1 (mythic)
 			self.vb.graspCount = self.vb.graspCount + 1
-			if self.vb.graspCount % 4 == 0 then
-				timerGraspFromBeyondCD:Start(44, self.vb.graspCount+1)
+			if self:IsMythic() then
+				--41.1, 27.9, 31.1, 27.9 repeating
+				if self.vb.graspCount % 4 == 0 then
+					timerGraspFromBeyondCD:Start(41.1, self.vb.graspCount+1)
+				elseif self.vb.graspCount % 4 == 2 then
+					timerGraspFromBeyondCD:Start(31.1, self.vb.graspCount+1)
+				else--1 and 3
+					timerGraspFromBeyondCD:Start(27.8, self.vb.graspCount+1)
+				end
 			else
-				timerGraspFromBeyondCD:Start(28, self.vb.graspCount+1)
+				if self.vb.graspCount % 4 == 0 then
+					timerGraspFromBeyondCD:Start(44, self.vb.graspCount+1)
+				else
+					timerGraspFromBeyondCD:Start(28, self.vb.graspCount+1)
+				end
 			end
 		end
 		if args:IsPlayer() then
@@ -280,14 +302,8 @@ function mod:UNIT_DIED(args)
 	if cid == 221667 then--lost-watcher
 		timerBlackBulwarkCD:Stop(args.destGUID)
 		timerSpectralSlamCD:Stop(args.destGUID)
-		for i = 7, 3, -1 do
-			if addUsedMarks[i] == args.destGUID then
-				addUsedMarks[i] = nil
-				return
-			end
-		end
 	elseif cid == 221945 then--forgotten-harbinger
-		for i = 7, 3, -1 do
+		for i = 7, 2, -1 do
 			if addUsedMarks[i] == args.destGUID then
 				addUsedMarks[i] = nil
 				return
