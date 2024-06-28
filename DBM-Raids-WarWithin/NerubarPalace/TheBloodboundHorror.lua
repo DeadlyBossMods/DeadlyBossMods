@@ -194,7 +194,7 @@ function mod:SPELL_SUMMON(args)
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
 			if self.Options.SetIconOnHarb then
-				for i = 7, 3, -1 do--7-4 confirmed, 3 is just in case
+				for i = 7, 2, -1 do--7-4 confirmed, 2 is just in case
 					if not addUsedMarks[i] then
 						addUsedMarks[i] = args.destGUID
 						self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnHarb", nil, nil, true)

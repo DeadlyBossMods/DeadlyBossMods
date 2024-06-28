@@ -5,28 +5,27 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214503)
 mod:SetEncounterID(2898)
 mod:SetUsedIcons(1, 2, 3, 4)
---mod:SetHotfixNoticeRev(20231115000000)
---mod:SetMinSyncRevision(20230929000000)
+mod:SetHotfixNoticeRev(20240628000000)
+mod:SetMinSyncRevision(20240628000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 456420 435401 432965 435403 439559 453258 442428",
-	"SPELL_CAST_SUCCESS 439511",
 	"SPELL_AURA_APPLIED 459273 438845 435410 433517 439191",
 	"SPELL_AURA_APPLIED_DOSE 459273 438845",
-	"SPELL_AURA_REMOVED 459273 433517 439191"
+	"SPELL_AURA_REMOVED 459273 433517 439191",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, figure out how tanks survive being hit for 15 million on mythic, cause I see no viable strategy besides 3 tanking. On heroic and lower you can 2 tank...kinda
 --TODO, GTFO for rain of arrows with correct ID
 --TODO, remove icons and icon yells when blizzard makes phase blades a private aura and add PA sound instead
---TODO, move timer for phase blades to correct cast event
 --TODO, change option keys to match BW for weak aura compatability before live
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
 local warnPhaseBlades							= mod:NewTargetNoFilterAnnounce(433517, 3)
@@ -42,16 +41,16 @@ local specWarnPhaseBlades						= mod:NewSpecialWarningYou(433517, nil, nil, nil,
 local yellPhaseBlades							= mod:NewPosYell(433517)
 local yellPhaseBladesFades						= mod:NewIconFadesYell(433517)
 local specWarnDecimate							= mod:NewSpecialWarningYou(442428, nil, nil, nil, 1, 2)
-local yellDecimate								= mod:NewPosYell(442428)
-local yellDecimateFades							= mod:NewIconFadesYell(442428)
+local yellDecimate								= mod:NewShortYell(442428)
+local yellDecimateFades							= mod:NewShortFadesYell(442428)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerShatteringSweepCD					= mod:NewAITimer(49, 456420, nil, nil, nil, 2)
+local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, nil, nil, nil, 2)
 local timerCosmicShards							= mod:NewBuffFadesTimer(6, 459273, nil, nil, nil, 5)
-local timerCaptainsFlourishCD					= mod:NewAITimer(40, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerPhaseBladesCD						= mod:NewAITimer(49, 433517, nil, nil, nil, 3)
-local timerRainofArrowsCD						= mod:NewAITimer(49, 439559, nil, nil, nil, 3)
-local timerDecimateCD							= mod:NewAITimer(49, 442428, nil, nil, nil, 3)
+local timerCaptainsFlourishCD					= mod:NewCDCountTimer(40, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerPhaseBladesCD						= mod:NewCDCountTimer(49, 433517, nil, nil, nil, 3)
+local timerRainofArrowsCD						= mod:NewCDCountTimer(49, 439559, nil, nil, nil, 3)
+local timerDecimateCD							= mod:NewCDCountTimer(49, 442428, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnPhaseBlades", 433517, true, 0, {1, 2, 3, 4})
@@ -67,6 +66,16 @@ mod.vb.arrowsCount = 0
 mod.vb.decimateCount = 0
 mod.vb.decimateIcon = 1
 
+local savedDifficulty = "heroic"
+local allTimers = {
+	["heroic"] = {
+		[432965] = {6.9, 23.2, 22.0, 23.1, 25.5, 22.0, 22.0, 22.3, 28.0, 23.2, 23.1, 22.4, 28.0, 23.1, 23.2, 23.2}, -- Captain's Flourish (Expose ID)
+		[433517] = {14.3, 45.1, 52.0, 42.6, 54.8, 42.6, 54.8, 42.7}, -- Phase Blades
+		[439559] = {35.1, 52.3, 43.8, 53.6, 43.8, 53.1, 43.9}, -- Rain of Arrows
+		[442428] = {42.7, 39.0, 56.2, 38.3, 57.3, 39.7, 57.3, 40.3} -- Decimate
+	}
+}
+
 function mod:OnCombatStart(delay)
 	self.vb.sweepCount = 0
 	self.vb.tankCombo = 0
@@ -74,11 +83,28 @@ function mod:OnCombatStart(delay)
 	self.vb.bladesCount = 0
 	self.vb.arrowsCount = 0
 	self.vb.decimateCount = 0
-	timerShatteringSweepCD:Start(1)
-	timerCaptainsFlourishCD:Start(1)
-	timerPhaseBladesCD:Start(1)
-	timerRainofArrowsCD:Start(1)
-	timerDecimateCD:Start(1)
+	--if self:IsMythic() then
+	--	savedDifficulty = "mythic"
+	--elseif self:IsHeroic() then
+	savedDifficulty = "heroic"
+	--else--Combine LFR and Normal
+	--	savedDifficulty = "normal"
+	--end
+	timerCaptainsFlourishCD:Start(allTimers[savedDifficulty][432965][1]-delay, 1)
+	timerPhaseBladesCD:Start(allTimers[savedDifficulty][433517][1]-delay, 1)
+	timerRainofArrowsCD:Start(allTimers[savedDifficulty][439559][1]-delay, 1)
+	timerDecimateCD:Start(allTimers[savedDifficulty][442428][1]-delay, 1)
+	timerShatteringSweepCD:Start(91.1, 1)
+end
+
+function mod:OnTimerRecovery()
+	--if self:IsMythic() then
+	--	savedDifficulty = "mythic"
+	--elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	--else--Combine LFR and Normal
+	--	savedDifficulty = "normal"
+	--end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -87,8 +113,17 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sweepCount = self.vb.sweepCount + 1
 		specWarnShatteringSweep:Show()
 		specWarnShatteringSweep:Play("aesoon")
-		timerShatteringSweepCD:Start()
+		timerShatteringSweepCD:Start(nil, self.vb.sweepCount+1)
 	elseif spellId == 435401 or spellId == 432965 then--Likely diff ID for first and second swing.
+		--First part of Combo
+		self.vb.firstHitTank = ""
+		self.vb.tankCombo = self.vb.tankCombo + 1
+		self.vb.comboCount = 0
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 432965, self.vb.tankCombo+1)
+		if timer then
+			timerCaptainsFlourishCD:Start(timer, self.vb.tankCombo+1)
+		end
+		--Now do combo stuff
 		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnExpose:Show()
@@ -123,21 +158,17 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 439559 or spellId == 453258 then
 		self.vb.arrowsCount = self.vb.arrowsCount + 1
 		warnRainofArrows:Show(self.vb.arrowsCount)
-		timerRainofArrowsCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 439559, self.vb.arrowsCount+1)
+		if timer then
+			timerRainofArrowsCD:Start(timer, self.vb.arrowsCount+1)
+		end
 	elseif spellId == 442428 then
 		self.vb.decimateCount = self.vb.decimateCount + 1
 		self.vb.decimateIcon = 1
-		timerDecimateCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 439511 then
-		self.vb.firstHitTank = ""
-		self.vb.tankCombo = self.vb.tankCombo + 1
-		self.vb.comboCount = 0
-		timerCaptainsFlourishCD:Start()--nil, self.vb.tankCombo+1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 442428, self.vb.decimateCount+1)
+		if timer then
+			timerDecimateCD:Start(timer, self.vb.decimateCount+1)
+		end
 	end
 end
 
@@ -184,9 +215,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		--	specWarnFlamingSlashTaunt:Play("tauntboss")
 		--end
 	elseif spellId == 433517 then
-		if self:AntiSpam(10, 2) then
+		if self:AntiSpam(10, 2) then--Backup
+			self.vb.bladesCount = self.vb.bladesCount + 1
 			self.vb.bladesIcon = 1
-			timerPhaseBladesCD:Start()
+			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 433517, self.vb.bladesCount+1)
+			if timer then
+				timerPhaseBladesCD:Start(timer, self.vb.bladesCount+1)
+			end
 		end
 		local icon = self.vb.bladesIcon
 		if self.Options.SetIconOnPhaseBlades then
@@ -201,18 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhaseBlades:PreciseShow(4, args.destName)--4 is max targets, but it can scale down to less
 		self.vb.bladesIcon = self.vb.bladesIcon + 1
 	elseif spellId == 439191 then
-		local icon = self.vb.decimateIcon
-		if self.Options.SetIconOnDecimate then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnDecimate:Show()
-			specWarnDecimate:Play("targetyou")
-			yellDecimate:Yell(icon, icon)
-			yellDecimateFades:Countdown(5, nil, icon)
-		end
-		warnDecimate:PreciseShow(3, args.destName)--3 is max targets, but it can scale down to less
-		self.vb.decimateIcon = self.vb.decimateIcon + 1
+
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -238,6 +262,27 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:459349") then
+		specWarnDecimate:Show()
+		specWarnDecimate:Play("targetyou")
+		yellDecimate:Yell()--icon, icon
+		yellDecimateFades:Countdown(5.5)--, nil, icon
+	end
+end
+
+--Icons will only be marked on targets that have either DBM or BW installed
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("spell:459349") then
+		local icon = self.vb.decimateIcon
+		if self.Options.SetIconOnDecimate then
+			self:SetIcon(targetName, icon)
+		end
+		warnDecimate:PreciseShow(3, targetName)--3 is max targets, but it can scale down to less
+		self.vb.decimateIcon = self.vb.decimateIcon + 1
+	end
+end
+
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 421532 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
@@ -257,10 +302,15 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 426144 then
-
+	if spellId == 433475 then
+		if self:AntiSpam(10, 2) then
+			self.vb.bladesCount = self.vb.bladesCount + 1
+			self.vb.bladesIcon = 1
+			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 433517, self.vb.bladesCount+1)
+			if timer then
+				timerPhaseBladesCD:Start(timer, self.vb.bladesCount+1)
+			end
+		end
 	end
 end
---]]

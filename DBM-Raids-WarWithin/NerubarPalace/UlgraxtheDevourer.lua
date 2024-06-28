@@ -14,13 +14,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 434803 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705 458129",
-	"SPELL_AURA_REMOVED 458129",
+	"SPELL_AURA_REMOVED 458129 435138",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, auto marking with spell summon events?
+--TODO, auto marking with spell summon events? prio on bile soaked?
 --TODO, announce deaths of adds (viscera)? depends how many adds there are. if it's 1-3 at a time, maybe. if it's 10 of em, no
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
@@ -41,6 +41,7 @@ local yellBrutalLashingsFades					= mod:NewShortFadesYell(434803, nil, nil, nil,
 local specWarnStalkersWebbing					= mod:NewSpecialWarningDodgeCount(441452, nil, nil, nil, 2, 2)--aka Viscous Slobber apparently
 local specWarnDigestiveVenom					= mod:NewSpecialWarningYou(435138, nil, nil, nil, 1, 2)
 local yellDigestiveVenom						= mod:NewShortYell(435138)
+local yellDigestiveVenomFades					= mod:NewShortFadesYell(435138)
 local specWarnBrutalCrush						= mod:NewSpecialWarningDefensive(434697, nil, nil, nil, 1, 2)
 local specWarnTenderized						= mod:NewSpecialWarningTaunt(434705, nil, nil, nil, 1, 2)
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
@@ -189,6 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDigestiveVenom:Show()
 			specWarnDigestiveVenom:Play("targetyou")--Request final voice when blizzard finalizes spell name. is it web or is it drool/puddle. this matters
 			yellDigestiveVenom:Yell()
+			yellDigestiveVenomFades:Countdown(spellId)
 		end
 	elseif spellId == 434705 then
 		if not args:IsPlayer() then
@@ -218,6 +220,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 458129 then
 		yellBrutalLashingsFades:Cancel()
+	elseif spellId == 435138 then
+		if args:IsPlayer() then
+			yellDigestiveVenomFades:Countdown(spellId)
+		end
 	end
 end
 

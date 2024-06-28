@@ -264,7 +264,7 @@ function mod:SPELL_CAST_START(args)
 		timerWebVortexCD:Start()
 	elseif spellId == 450129 then
 		self.vb.rainCount = self.vb.rainCount + 1
-		specWarnEntropicDesolation:Show()
+		specWarnEntropicDesolation:Show(self.vb.rainCount)
 		specWarnEntropicDesolation:Play("aesoon")
 		timerEntropicDesolationCD:Start()
 	elseif spellId == 441782 then
@@ -337,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellWebBombFades:Countdown(spellId)
 		end
 	elseif spellId == 440001 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnBindingWebs:Show()
 			specWarnBindingWebs:Play("lineapart")--Maybe use a diff sound during charge like "block charge"?
 		end
