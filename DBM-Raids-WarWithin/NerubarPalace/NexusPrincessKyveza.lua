@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(217748)--Needs confirmation, could also use 218510
 mod:SetEncounterID(2920)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20240614000000)
+mod:SetHotfixNoticeRev(20240628000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -24,10 +24,8 @@ mod:RegisterEventsInCombat(
 )
 
 --NOTE: if they don't make ass a private aura, change yells to also include icons
---NOTE: Possibly auto mark phantoms via https://www.wowhead.com/beta/spell=436950/stalking-shadows
 --NOTE: see if https://www.wowhead.com/beta/spell=438153/twilight-massacre can be target scanned off phantom themselves to defeat the private aura
 --TODO: Get the right tank stack swap count
---TODO: Eclipse Timer/alerts? https://www.wowhead.com/beta/spell=434645/eclipse . probelm is it lacks clear CLEU ID, probably using emote/USCS
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
 (ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 448364 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
@@ -85,11 +83,11 @@ function mod:OnCombatStart(delay)
 	self.vb.shredderCount = 0
 	self.vb.starlessCount = 0
 	self:SetStage(1)
-	timerAssCD:Start(13.3, 1)
+	timerVoidShreddersCD:Start(6, 1)
+	timerAssCD:Start(11.3, 1)
+	timerNetherRiftCD:Start(22, 1)
 	timerTwilightMassacreCD:Start(34, 1)
-	timerNetherRiftCD:Start(22.3, 1)
-	timerVoidShreddersCD:Start(40, 1)
-	timerNexusDaggersCD:Start(46, 1)
+	timerNexusDaggersCD:Start(45.2, 1)
 	timerStarlessNightCD:Start(86, 1)
 	self:EnablePrivateAuraSound(438141, "runout", 2)--Twilight Massacre
 	self:EnablePrivateAuraSound(436671, "lineyou", 17)--Regicide
@@ -151,12 +149,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidShredders:Show()
 			specWarnVoidShredders:Play("defensive")
 		end
-		--Sets of 3, except on pull since technically it starts at 2nd of 3 in the rotation
-		--So if night at 0, a single 30 second timer after first cast for 2nd and last in rotation
-		--if night at 1, it's 11, 34, 30 for the 3 set
 		if self.vb.shredderCount == 1 then
-			timerVoidShreddersCD:Start(self.vb.starlessCount == 0 and 30 or 34, 2)
-		elseif self.vb.starlessCount >= 1 and self.vb.shredderCount == 12 then
+			timerVoidShreddersCD:Start(34, 2)
+		elseif self.vb.shredderCount == 2 then
 			timerVoidShreddersCD:Start(30, 3)
 		end
 	elseif spellId == 442277 then
@@ -253,7 +248,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.shredderCount = 0
 		timerStarlessNight:Stop()
 		timerVoidShreddersCD:Start(10.8, 1)
-		timerAssCD:Start(18, self.vb.assCount+1)
+		timerAssCD:Start(16, self.vb.assCount+1)
 		timerNetherRiftCD:Start(26.8, 1)
 		timerTwilightMassacreCD:Start(38.8, 1)
 		timerNexusDaggersCD:Start(50, 1)

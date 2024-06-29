@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(374554, nil, nil, nil, 1, 8)
 
-local timerPhaseCD								= mod:NewPhaseTimer(30)
+local timerPhaseCD								= mod:NewStageTimer(30)
 local berserkTimer								= mod:NewBerserkTimer(600)
 
 --Stage One: Elemental Mastery

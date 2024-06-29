@@ -84,8 +84,8 @@ function mod:OnCombatStart(delay)
 	self.vb.webCount = 0
 	self.vb.tankCount = 0
 	timerVolatileConcoctionCD:Start(2, 1)
-	timerIngestBlackBloodCD:Start(17.5, 1)
-	timerExperimentalDosageCD:Start(34, 1)
+	timerIngestBlackBloodCD:Start(17, 1)
+--	timerExperimentalDosageCD:Start(33, 1)--Started by Injest black Blood
 	if self:IsHard() then
 		timerUnstableWebCD:Start(15, 1)
 	end
@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 442526 then
 		self.vb.dosageCount = self.vb.dosageCount + 1
 		warnExperimentalDosage:Show(self.vb.dosageCount)
-		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)
+		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)--50
 	elseif spellId == 442432 and self:AntiSpam(5, 1) then
 		self.vb.ingestCount = self.vb.ingestCount + 1
 		specWarnIngestBlackBlood:Show(self.vb.ingestCount)
@@ -118,7 +118,9 @@ function mod:SPELL_CAST_START(args)
 		--Timers that restart here
 		timerExperimentalDosageCD:Start(16, self.vb.dosageCount+1)
 		timerVolatileConcoctionCD:Start(18, self.vb.tankCount+1)
-		timerUnstableWebCD:Start(31, self.vb.webCount+1)
+		if self:IsHard() then
+			timerUnstableWebCD:Start(31, self.vb.webCount+1)
+		end
 --	elseif spellId == 446349 then
 --		self.vb.webCount = self.vb.webCount + 1
 --		timerUnstableWebCD:Start()
@@ -128,14 +130,14 @@ function mod:SPELL_CAST_START(args)
 			specWarnVolatileConcoction:Show()
 			specWarnVolatileConcoction:Play("defensive")
 		end
-		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)
+		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)--20
 	elseif spellId == 443005 then--Shadow (unconfirmed it's even used)
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnVolatileConcoction:Show()
 			specWarnVolatileConcoction:Play("defensive")
 		end
-		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)
+		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)--20
 	elseif spellId == 446700 then
 		timerPoisonBurstCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, nil, true) then
