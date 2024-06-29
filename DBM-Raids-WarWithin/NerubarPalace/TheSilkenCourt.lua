@@ -97,9 +97,10 @@ local timerRagingFuryIntermissionCD			= mod:NewIntermissionCountTimer(100, 45132
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnVoidStep							= mod:NewCountAnnounce(450483, 2)
+local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4)
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
-local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
+--local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
 local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, nil, 2, 2)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
@@ -419,8 +420,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 450129 then
 		self:Unschedule(checkSkippedEntropicDesolation)
 		self.vb.rainCount = self.vb.rainCount + 1
-		specWarnEntropicDesolation:Show(self.vb.rainCount)
-		specWarnEntropicDesolation:Play("runout")
+		warnEntropicDesolation:Show()
+--		specWarnEntropicDesolation:Show(self.vb.rainCount)
+--		specWarnEntropicDesolation:Play("runout")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450129, self.vb.rainCount+1)
 		if timer then
 			timerEntropicDesolationCD:Start(timer, self.vb.rainCount+1)
@@ -532,7 +534,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 449857 then
-		warnImpaled:CombinedShow(0.5, args.destName)
+		warnImpaled:CombinedShow(1.5, args.destName)--Collects impaled targets over 1.5 seconds to reduce spam from bad dodging
 		if args:IsPlayer() then
 			yellImpaled:Yell()
 		end
