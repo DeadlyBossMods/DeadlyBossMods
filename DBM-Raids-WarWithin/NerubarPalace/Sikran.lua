@@ -18,7 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 459273 433517 439191",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
 	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -51,10 +50,10 @@ local yellDecimateFades							= mod:NewShortFadesYell(442428)
 
 local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, nil, nil, nil, 2)
 local timerCosmicShards							= mod:NewBuffFadesTimer(6, 459273, nil, nil, nil, 5)
-local timerCaptainsFlourishCD					= mod:NewCDCountTimer(40, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerPhaseBladesCD						= mod:NewCDCountTimer(49, 433517, nil, nil, nil, 3)
-local timerRainofArrowsCD						= mod:NewCDCountTimer(49, 439559, nil, nil, nil, 3)
-local timerDecimateCD							= mod:NewCDCountTimer(49, 442428, nil, nil, nil, 3)
+local timerCaptainsFlourishCD					= mod:NewCDCountTimer(22, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerPhaseBladesCD						= mod:NewCDCountTimer(42.6, 433517, nil, nil, nil, 3)
+local timerRainofArrowsCD						= mod:NewCDCountTimer(52.3, 439559, nil, nil, nil, 3)
+local timerDecimateCD							= mod:NewCDCountTimer(38.1, 442428, nil, nil, nil, 3)
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnPhaseBlades", 433517, true, 0, {1, 2, 3, 4})
@@ -65,25 +64,10 @@ mod.vb.sweepCount = 0
 mod.vb.tankCombo = 0
 mod.vb.comboCount = 0
 mod.vb.bladesCount = 0
-mod.vb.bladesIcon = 1
 mod.vb.arrowsCount = 0
 mod.vb.decimateCount = 0
+mod.vb.bladesIcon = 1
 mod.vb.decimateIcon = 1
-
---NOT the correct way to do this, temporary until it can be sequenced more accurately around the bosses timer resets
-local savedDifficulty = "heroic"
-local allTimers = {
-	["heroic"] = {
-		-- Captain's Flourish (Expose ID)
-		[432965] = {6.9, 23.2, 22.0, 23.1, 25.5, 22.0, 22.0, 22.3, 28.0, 23.2, 23.1, 22.4, 28.0, 23.1, 23.2, 23.2},
-		-- Phase Blades
-		[433517] = {14.3, 45.1, 52.0, 42.6, 54.8, 42.6, 54.8, 42.7},
-		-- Rain of Arrows
-		[439559] = {35.1, 52.3, 43.8, 53.6, 43.8, 53.1, 43.9},
-		-- Decimate
-		[442428] = {42.7, 39.0, 56.2, 38.3, 57.3, 39.7, 57.3, 40.3}
-	}
-}
 
 function mod:OnCombatStart(delay)
 	self.vb.sweepCount = 0
@@ -92,28 +76,19 @@ function mod:OnCombatStart(delay)
 	self.vb.bladesCount = 0
 	self.vb.arrowsCount = 0
 	self.vb.decimateCount = 0
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
-	savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
-	timerCaptainsFlourishCD:Start(allTimers[savedDifficulty][432965][1]-delay, 1)
-	timerPhaseBladesCD:Start(allTimers[savedDifficulty][433517][1]-delay, 1)
-	timerRainofArrowsCD:Start(allTimers[savedDifficulty][439559][1]-delay, 1)
-	timerDecimateCD:Start(allTimers[savedDifficulty][442428][1]-delay, 1)
-	timerShatteringSweepCD:Start(91.1, 1)
-end
-
-function mod:OnTimerRecovery()
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
-		savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
+	if self:IsMythic() then
+		timerCaptainsFlourishCD:Start(6.3-delay, 1)
+		timerPhaseBladesCD:Start(12.4-delay, 1)
+		timerRainofArrowsCD:Start(23-delay, 1)
+		timerDecimateCD:Start(50.8-delay, 1)
+		timerShatteringSweepCD:Start(89.9, 1)
+	else
+		timerCaptainsFlourishCD:Start(6.9-delay, 1)
+		timerPhaseBladesCD:Start(14.3-delay, 1)
+		timerRainofArrowsCD:Start(35.1-delay, 1)
+		timerDecimateCD:Start(42.7-delay, 1)
+		timerShatteringSweepCD:Start(90.6, 1)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -123,14 +98,23 @@ function mod:SPELL_CAST_START(args)
 		specWarnShatteringSweep:Show()
 		specWarnShatteringSweep:Play("aesoon")
 		timerShatteringSweepCD:Start(nil, self.vb.sweepCount+1)
+		--Restart timers
+		self.vb.tankCombo = 0
+		self.vb.bladesCount = 0
+		self.vb.arrowsCount = 0
+		self.vb.decimateCount = 0
+		timerCaptainsFlourishCD:Start(10.9, 1)
+		timerPhaseBladesCD:Start(19.4, 1)
+		timerRainofArrowsCD:Start(self:IsMythic() and 29.1 or 39.7, 1)
+		timerDecimateCD:Start(self:IsMythic() and 62.3 or 48.4, 1)
 	elseif spellId == 435401 or spellId == 432965 then--Likely diff ID for first and second swing.
 		--First part of Combo
-		self.vb.firstHitTank = ""
+		--self.vb.firstHitTank = ""
 		self.vb.tankCombo = self.vb.tankCombo + 1
 		self.vb.comboCount = 0
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 432965, self.vb.tankCombo+1)
-		if timer then
-			timerCaptainsFlourishCD:Start(timer, self.vb.tankCombo+1)
+		if self.vb.tankCombo < 4 then
+			--On mythic, the first tank combos are always 25.1 apart but then they are 27.9 apart after first sweep
+			timerCaptainsFlourishCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 25.1 or 27.9) or 22, self.vb.tankCombo+1)
 		end
 		--Now do combo stuff
 		self.vb.comboCount = self.vb.comboCount + 1
@@ -169,16 +153,24 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 439559 or spellId == 453258 then
 		self.vb.arrowsCount = self.vb.arrowsCount + 1
 		warnRainofArrows:Show(self.vb.arrowsCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 439559, self.vb.arrowsCount+1)
-		if timer then
-			timerRainofArrowsCD:Start(timer, self.vb.arrowsCount+1)
+		if self:IsMythic() then
+			--Behavior changes fairly radically after first sweep on mythic
+			if self.vb.arrowsCount == 1 then
+				timerRainofArrowsCD:Start(self.vb.sweepCount == 0 and 42.6 or 26.3, self.vb.arrowsCount+1)
+			elseif self.vb.arrowsCount == 2 and self.vb.sweepCount > 0 then
+				timerRainofArrowsCD:Start(26.3, self.vb.arrowsCount+1)--52.3
+			end
+		else
+			if self.vb.arrowsCount == 1 then
+				timerRainofArrowsCD:Start(52.3, self.vb.arrowsCount+1)
+			end
 		end
 	elseif spellId == 442428 then
 		self.vb.decimateCount = self.vb.decimateCount + 1
 		self.vb.decimateIcon = 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 442428, self.vb.decimateCount+1)
-		if timer then
-			timerDecimateCD:Start(timer, self.vb.decimateCount+1)
+		if self.vb.decimateCount == 1 then
+			--26.1 before sweep, 28 after? (mythic). need more data, it's just an assumption atm
+			timerDecimateCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 26.1 or 28) or 38.1, self.vb.decimateCount+1)
 		end
 	end
 end
@@ -193,9 +185,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCosmicShards:Start()
 	elseif (spellId == 438845 or spellId == 435410) and not args:IsPlayer() then--Exposed weakness / Pierced Defenses
 		--local alertTaunt
-		if self.vb.comboCount == 1 then
-			self.vb.firstHitTank = args.destName
-		end
+		--if self.vb.comboCount == 1 then
+		--	self.vb.firstHitTank = args.destName
+		--end
 		if spellId == 438845 and (args.amount or 1) == 2 then--Only thing we can be sure of, you don't want a tank taking all 3 hits
 			specWarnExposedWeakness:Show(args.destName)
 			specWarnExposedWeakness:Play("tauntboss")
@@ -229,9 +221,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 2) then--Backup
 			self.vb.bladesCount = self.vb.bladesCount + 1
 			self.vb.bladesIcon = 1
-			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 433517, self.vb.bladesCount+1)
-			if timer then
-				timerPhaseBladesCD:Start(timer, self.vb.bladesCount+1)
+			if self:IsMythic() then
+				if self.vb.bladesCount < 3 then
+					--Mythic consistently same before and after sweep, within the standard variation of ~28
+					timerPhaseBladesCD:Start(27.6, 1)
+				end
+			else
+				if self.vb.bladesCount == 1 then
+					--The 45 seems to be a consisted fluke only in first rotation (ie before first sweep)
+					timerPhaseBladesCD:Start(self.vb.sweepCount == 0 and 45.1 or 42.6, 1)
+				end
 			end
 		end
 		local icon = self.vb.bladesIcon
@@ -304,23 +303,14 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 209800 then--cycle-warden
-
-	end
-end
---]]
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 433475 then
 		if self:AntiSpam(10, 2) then
 			self.vb.bladesCount = self.vb.bladesCount + 1
 			self.vb.bladesIcon = 1
-			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 433517, self.vb.bladesCount+1)
-			if timer then
-				timerPhaseBladesCD:Start(timer, self.vb.bladesCount+1)
+			if self.vb.bladesCount == 1 then
+				--The 45 seems to be a consisted fluke only in first rotation (ie before first sweep)
+				timerPhaseBladesCD:Start(self.vb.sweepCount == 0 and 45.1 or 42.6, 1)
 			end
 		end
 	end

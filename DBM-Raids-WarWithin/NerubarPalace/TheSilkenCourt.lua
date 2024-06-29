@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598",--451611, 440503
 	"SPELL_AURA_APPLIED_DOSE 438218",
-	"SPELL_AURA_REMOVED 455080 450980 451277"--451611, 440503
+	"SPELL_AURA_REMOVED 455080 450980 451277 440001"--451611, 440503
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -68,6 +68,7 @@ mod:AddTimerLine(takazj)
 local warnVenomousRain						= mod:NewCountAnnounce(438343, 2)
 local warnWebBomb							= mod:NewCountAnnounce(439838, 3)--General announce for everyone, personal special announce to target
 local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2)
+local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
 
 --local specWarnWebBomb						= mod:NewSpecialWarningYou(439838, nil, nil, nil, 1, 2)--Not exposed
 --local yellWebBomb							= mod:NewShortYell(439838)
@@ -524,6 +525,10 @@ function mod:SPELL_AURA_REMOVED(args)
 --		if args:IsPlayer() then
 --			yellWebBombFades:Cancel()
 --		end
+	elseif spellId == 440001 then
+		if args:IsPlayer() then
+			warnBindingWeb:Show()
+		end
 	elseif spellId == 450980 then--Shatter Existence Absorb
 		self:SetStage(2)
 		self:Unschedule(checkSkippedWebVortex)
