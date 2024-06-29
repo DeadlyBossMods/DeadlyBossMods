@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 458129 435138",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -205,12 +206,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 458129 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnBrutalLashingsTarget:Show()
 			specWarnBrutalLashingsTarget:Play("gathershare")
 			yellBrutalLashings:Yell()
 			yellBrutalLashingsFades:Countdown(spellId)
-		else
+		elseif self:AntiSpam(3, 2) then
 			specWarnBrutalLashings:Show(self.vb.lashingsCount)
 			specWarnBrutalLashings:Play("helpsoak")
 		end
@@ -238,6 +239,24 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:434776") and self:AntiSpam(3, 1) then
+		specWarnBrutalLashingsTarget:Show()
+		specWarnBrutalLashingsTarget:Play("gathershare")
+		yellBrutalLashings:Yell()
+		yellBrutalLashingsFades:Countdown(8)
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
+		if targetName ~= UnitName("player") then
+			specWarnBrutalLashingsTarget:Show(self.vb.lashingsCount)
+			specWarnBrutalLashingsTarget:Play("helpsoak")
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--<168.89 20:49:18> [UNIT_SPELLCAST_SUCCEEDED] Ulgrax the Devourer(11.0%-100.0%){Target:Meeresdk} -Phase Transition None- [[boss1:Cast-3-2085-2657-32566-4
