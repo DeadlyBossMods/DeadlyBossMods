@@ -34,6 +34,10 @@ mod:RegisterEventsInCombat(
 --TODO, lots of cleanup of boss mechanics that interrupt other boss mechanics with better clarity and voices
 --TODO, change option keys to match BW for weak aura compatability before live
 --NOTE, https://www.wowhead.com/beta/spell=440503/impaling-eruption was not exposed, re-add of that changes
+--[[
+(ability.id = 438218 or ability.id = 438801 or ability.id = 440246 or ability.id = 440504 or ability.id = 438343 or ability.id = 439838 or ability.id = 450045 or ability.id = 451016 or ability.id = 438677 or ability.id = 452231 or ability.id = 441626 or ability.id = 450129 or ability.id = 441782 or ability.id = 450483 or ability.id = 438355 or ability.id = 443068 or ability.id = 451327 or ability.id = 442994) and type = "begincast"
+ or (ability.id = 451277 or ability.id = 450980) and (type = "applybuff" or type = "removebuff")
+--]]
 local anubarash, takazj = DBM:EJ_GetSectionInfo(29012), DBM:EJ_GetSectionInfo(29017)
 --General Stuff
 local specWarnMarkofParanoia					= mod:NewSpecialWarningYou(455849, nil, nil, nil, 1, 17, 4)
@@ -129,6 +133,66 @@ mod.vb.cataCount = 0
 
 local savedDifficulty = "heroic"
 local allTimers = {
+	["normal"] = {
+		[1] = {
+			-- Piercing Strike
+			[438218] = {18, 19.9, 20, 22.9, 38.0},
+			-- Call of the Swarm
+			[438801] = {13.1, 64.8},
+			-- Reckless Charge
+			[440246] = {43.9, 59.9},
+			-- Impaling Eruption
+			[440504] = {30, 32.9, 31.0},
+			-- Venomous Rain
+			[438343] = {7.7, 31.7, 30.2, 31.8},
+			-- Web Bomb
+			[439838] = {24.3, 33.2, 33.3},
+			-- Skittering Leap
+			[450045] = {17, 31.5, 28.7, 30.3},
+		},
+		[2] = {
+			-- Call of the Swarm
+			[438801] = {26.0, 51},
+			-- Piercing Strike
+			[438218] = {14.0, 20, 20, 20, 20, 20},
+			-- Impaling Eruption
+			[440504] = {9, 39.9, 40.0},
+			-- Stinging Swarm
+			[438677] = {46.0, 49.9},
+			-- Web Vortex
+			[441626] = {32.2, 49.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			-- Entropic Desolation
+			[450129] = {35.0, 49.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			-- Strands of Reality
+			[441782] = {18.1, 75.3},
+			-- Void Step
+			[450483] = {27.1, 26.7, 25.2, 23.4},
+			-- Cataclysmic Entropy
+			[438355] = {56.9, 48.6},
+		},
+		[3] = {
+			-- Piercing Strike
+			[438218] = {25.0, 23.0, 40, 22.9, 56.0, 20},
+			-- Reckless Charge
+			[440246] = {58.8, 75},
+			-- Stinging Swarm
+			[438677] = {75.0, 100.0},
+			-- Web Vortex
+			[441626] = {42.3, 73.8},
+			-- Entropic Desolation
+			[450129] = {45.1, 73.8},
+			-- Strands of Reality
+			[441782] = {26.3, 153.8},
+			-- Void Step
+			[450483] = {37.3, 26.6, 23.3, 25.9, 24.6, 25.2, 24.0},
+			-- Cataclysmic Entropy
+			[438355] = {90.1, 100.1},
+			-- Spike Eruption
+			[443068] = {45.0, 62.9, 63.0},
+			-- Unleashed Swarm
+			[442994] = {30.0, 118.9},
+		}
+	},
 	["heroic"] = {
 		[1] = {
 			-- Piercing Strike
@@ -223,13 +287,13 @@ function mod:OnCombatStart(delay)
 	self.vb.strandsCount = 0
 	self.vb.cataCount = 0
 	--self.vb.rageCount = 0
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
-	savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
+	if self:IsMythic() then
+		savedDifficulty = "heroic"--TEMP?
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
 	--Anub
 	timerPiercingStrikeCD:Start(allTimers[savedDifficulty][1][438218][1]-delay, 1)--15.1
 	timerCalloftheSwarmCD:Start(allTimers[savedDifficulty][1][438801][1]-delay, 1)--18.0
@@ -239,7 +303,7 @@ function mod:OnCombatStart(delay)
 	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
-	timerVoidAscensionCD:Start(126.6, 1.5)
+	timerVoidAscensionCD:Start(self:IsEasy() and 131 or 126.6, 1.5)
 	if self.Options.NPAuraOnPerseverance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -255,13 +319,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
+	if self:IsMythic() then
+		savedDifficulty = "heroic"--TEMP?
+	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -543,17 +607,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.stingingCount = 0
 		self.vb.cataCount = 0
 		--Anub
-		timerImpalingEruptionCD:Start(allTimers[savedDifficulty][2][440504][1], 1)--9.0
-		timerPiercingStrikeCD:Start(allTimers[savedDifficulty][2][438218][1], 1)--14.1
-		timerCalloftheSwarmCD:Start(allTimers[savedDifficulty][2][438801][1], 1)--31.0
-		timerStingingSwarmCD:Start(allTimers[savedDifficulty][2][438677][1], 1)--39.0
+		timerImpalingEruptionCD:Start(allTimers[savedDifficulty][2][440504][1], 1)
+		timerPiercingStrikeCD:Start(allTimers[savedDifficulty][2][438218][1], 1)
+		timerCalloftheSwarmCD:Start(allTimers[savedDifficulty][2][438801][1], 1)
+		timerStingingSwarmCD:Start(allTimers[savedDifficulty][2][438677][1], 1)
 		--Takazj
-		timerStrandsofRealityCD:Start(allTimers[savedDifficulty][2][441782][1], 1)--14.2
-		timerVoidStepCD:Start(allTimers[savedDifficulty][2][450483][1], 1)--27.2
-		timerWebVortexCD:Start(allTimers[savedDifficulty][2][441626][1], 1)--32.2
-		timerEntropicDesolationCD:Start(allTimers[savedDifficulty][2][450129][1], 1)--35.0
-		timerCataclysmicEntropyCD:Start(allTimers[savedDifficulty][2][438355][1], 1)--55.4
-		timerRagingFuryIntermissionCD:Start(132, 2.5)
+		timerStrandsofRealityCD:Start(allTimers[savedDifficulty][2][441782][1], 1)
+		timerVoidStepCD:Start(allTimers[savedDifficulty][2][450483][1], 1)
+		timerWebVortexCD:Start(allTimers[savedDifficulty][2][441626][1], 1)
+		timerEntropicDesolationCD:Start(allTimers[savedDifficulty][2][450129][1], 1)
+		timerCataclysmicEntropyCD:Start(allTimers[savedDifficulty][2][438355][1], 1)
+		timerRagingFuryIntermissionCD:Start(self:IsEasy() and 128.7 or 132, 2.5)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -572,17 +636,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.stingingCount = 0
 		self.vb.cataCount = 0
 		--Anub
-		timerSpikeEruptionCD:Start(allTimers[savedDifficulty][3][443068][1], 1)--20.0
-		timerPiercingStrikeCD:Start(allTimers[savedDifficulty][3][438218][1], 1)--25.0
-		timerUnleashedSwarmCD:Start(allTimers[savedDifficulty][3][442994][1], 1)--30.0
-		timerRecklessChargeCD:Start(allTimers[savedDifficulty][3][440246][1], 1)--59.0
-		timerStingingSwarmCD:Start(allTimers[savedDifficulty][3][438677][1], 1)--93.0
+		timerSpikeEruptionCD:Start(allTimers[savedDifficulty][3][443068][1], 1)
+		timerPiercingStrikeCD:Start(allTimers[savedDifficulty][3][438218][1], 1)
+		timerUnleashedSwarmCD:Start(allTimers[savedDifficulty][3][442994][1], 1)
+		timerRecklessChargeCD:Start(allTimers[savedDifficulty][3][440246][1], 1)
+		timerStingingSwarmCD:Start(allTimers[savedDifficulty][3][438677][1], 1)
 		--Takazj
-		timerStrandsofRealityCD:Start(allTimers[savedDifficulty][3][441782][1], 1)--28.4
-		timerVoidStepCD:Start(allTimers[savedDifficulty][3][450483][1], 1)--37.4
-		timerWebVortexCD:Start(allTimers[savedDifficulty][3][441626][1], 1)--42.4
-		timerEntropicDesolationCD:Start(allTimers[savedDifficulty][3][450129][1], 1)--45.2
-		timerCataclysmicEntropyCD:Start(allTimers[savedDifficulty][3][438355][1], 1)--115.1
+		timerStrandsofRealityCD:Start(allTimers[savedDifficulty][3][441782][1], 1)
+		timerVoidStepCD:Start(allTimers[savedDifficulty][3][450483][1], 1)
+		timerWebVortexCD:Start(allTimers[savedDifficulty][3][441626][1], 1)
+		timerEntropicDesolationCD:Start(allTimers[savedDifficulty][3][450129][1], 1)
+		timerCataclysmicEntropyCD:Start(allTimers[savedDifficulty][3][438355][1], 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
