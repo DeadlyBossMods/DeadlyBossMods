@@ -66,7 +66,7 @@ local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil
 local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Grasp"
 --Phase Two: The Unseeming
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29068))
-local warnManifestHorror						= mod:NewCastAnnounce(445174, 4)
+local warnManifestHorror						= mod:NewCastAnnounce(445174, 4, nil, nil, false, 2)--Spammy, opt in
 local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 
 local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", nil, nil, 1, 2)
@@ -285,7 +285,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGraspFromBeyond:Yell()
 		end
 	elseif spellId == 445272 then
-		warnBloodPact:Show(args.destName, args.amount or 1)
+		warnBloodPact:Cancel()
+		warnBloodPact:Schedule(2, args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
