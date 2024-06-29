@@ -76,19 +76,17 @@ function mod:OnCombatStart(delay)
 	self.vb.bladesCount = 0
 	self.vb.arrowsCount = 0
 	self.vb.decimateCount = 0
+	timerCaptainsFlourishCD:Start(6-delay, 1)
 	if self:IsMythic() then
-		timerCaptainsFlourishCD:Start(6.3-delay, 1)
 		timerPhaseBladesCD:Start(12.4-delay, 1)
 		timerRainofArrowsCD:Start(23-delay, 1)
 		timerDecimateCD:Start(50.8-delay, 1)
-		timerShatteringSweepCD:Start(89.9, 1)
-	else
-		timerCaptainsFlourishCD:Start(6.9-delay, 1)
+	else--Confirmed heroic and normal
 		timerPhaseBladesCD:Start(14.3-delay, 1)
 		timerRainofArrowsCD:Start(35.1-delay, 1)
 		timerDecimateCD:Start(42.7-delay, 1)
-		timerShatteringSweepCD:Start(90.6, 1)
 	end
+	timerShatteringSweepCD:Start(89.9, 1)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -103,10 +101,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bladesCount = 0
 		self.vb.arrowsCount = 0
 		self.vb.decimateCount = 0
-		timerCaptainsFlourishCD:Start(10.9, 1)
-		timerPhaseBladesCD:Start(19.4, 1)
+		timerCaptainsFlourishCD:Start(10.7, 1)
+		timerPhaseBladesCD:Start(19.3, 1)
 		timerRainofArrowsCD:Start(self:IsMythic() and 29.1 or 39.7, 1)
-		timerDecimateCD:Start(self:IsMythic() and 62.3 or 48.4, 1)
+		timerDecimateCD:Start(self:IsMythic() and 62.3 or 48.3, 1)
 	elseif spellId == 435401 or spellId == 432965 then--Likely diff ID for first and second swing.
 		--First part of Combo
 		--self.vb.firstHitTank = ""
@@ -114,7 +112,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = 0
 		if self.vb.tankCombo < 4 then
 			--On mythic, the first tank combos are always 25.1 apart but then they are 27.9 apart after first sweep
-			timerCaptainsFlourishCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 25.1 or 27.9) or 22, self.vb.tankCombo+1)
+			--22s are rare, so making the min for normal and heroic 23 for now
+			timerCaptainsFlourishCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 25.1 or 27.9) or 23, self.vb.tankCombo+1)
 		end
 		--Now do combo stuff
 		self.vb.comboCount = self.vb.comboCount + 1
@@ -158,7 +157,7 @@ function mod:SPELL_CAST_START(args)
 			if self.vb.arrowsCount == 1 then
 				timerRainofArrowsCD:Start(self.vb.sweepCount == 0 and 42.6 or 26.3, self.vb.arrowsCount+1)
 			elseif self.vb.arrowsCount == 2 and self.vb.sweepCount > 0 then
-				timerRainofArrowsCD:Start(26.3, self.vb.arrowsCount+1)--52.3
+				timerRainofArrowsCD:Start(26.3, self.vb.arrowsCount+1)
 			end
 		else
 			if self.vb.arrowsCount == 1 then
@@ -170,6 +169,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.decimateIcon = 1
 		if self.vb.decimateCount == 1 then
 			--26.1 before sweep, 28 after? (mythic). need more data, it's just an assumption atm
+			--Normal might be 39.8 instead of 38.1, need more data
 			timerDecimateCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 26.1 or 28) or 38.1, self.vb.decimateCount+1)
 		end
 	end
@@ -229,7 +229,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				if self.vb.bladesCount == 1 then
 					--The 45 seems to be a consisted fluke only in first rotation (ie before first sweep)
-					timerPhaseBladesCD:Start(self.vb.sweepCount == 0 and 45.1 or 42.6, 1)
+					timerPhaseBladesCD:Start(self.vb.sweepCount == 0 and 44.9 or 42.5, 1)
 				end
 			end
 		end
