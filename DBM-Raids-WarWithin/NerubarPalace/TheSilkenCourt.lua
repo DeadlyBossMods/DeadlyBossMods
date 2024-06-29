@@ -276,6 +276,7 @@ local function checkSkippedEntropicDesolation(self)
 end
 
 function mod:OnCombatStart(delay)
+	self:SetStage(1)
 	self.vb.piercingCount = 0
 	self.vb.swarmCount = 0
 	self.vb.chargeCount = 0
@@ -550,7 +551,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local uId = DBM:GetUnitIdFromGUID(args.destGUID, true)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, uId)
 		end
-	elseif spellId == 451277 then--Spike Storm Absorb
+	elseif spellId == 451277 and self:GetStage(2) then--Spike Storm Absorb
 		self:SetStage(2.5)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
