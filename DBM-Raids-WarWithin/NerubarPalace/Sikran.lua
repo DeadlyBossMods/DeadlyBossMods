@@ -27,6 +27,10 @@ mod:RegisterEventsInCombat(
 --TODO, GTFO for rain of arrows with correct ID
 --TODO, remove icons and icon yells when blizzard makes phase blades a private aura and add PA sound instead
 --TODO, change option keys to match BW for weak aura compatability before live
+--[[
+(ability.id = 456420 or ability.id = 435401 or ability.id = 432965 or ability.id = 435403 or ability.id = 439559 or ability.id = 453258 or ability.id = 442428) and type = "begincast"
+ or ability.id = 433517 and type = "applydebuff"
+--]]
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
 local warnPhaseBlades							= mod:NewTargetNoFilterAnnounce(433517, 3)
 local warnRainofArrows							= mod:NewCountAnnounce(439559, 3)
@@ -66,13 +70,18 @@ mod.vb.arrowsCount = 0
 mod.vb.decimateCount = 0
 mod.vb.decimateIcon = 1
 
+--NOT the correct way to do this, temporary until it can be sequenced more accurately around the bosses timer resets
 local savedDifficulty = "heroic"
 local allTimers = {
 	["heroic"] = {
-		[432965] = {6.9, 23.2, 22.0, 23.1, 25.5, 22.0, 22.0, 22.3, 28.0, 23.2, 23.1, 22.4, 28.0, 23.1, 23.2, 23.2}, -- Captain's Flourish (Expose ID)
-		[433517] = {14.3, 45.1, 52.0, 42.6, 54.8, 42.6, 54.8, 42.7}, -- Phase Blades
-		[439559] = {35.1, 52.3, 43.8, 53.6, 43.8, 53.1, 43.9}, -- Rain of Arrows
-		[442428] = {42.7, 39.0, 56.2, 38.3, 57.3, 39.7, 57.3, 40.3} -- Decimate
+		-- Captain's Flourish (Expose ID)
+		[432965] = {6.9, 23.2, 22.0, 23.1, 25.5, 22.0, 22.0, 22.3, 28.0, 23.2, 23.1, 22.4, 28.0, 23.1, 23.2, 23.2},
+		-- Phase Blades
+		[433517] = {14.3, 45.1, 52.0, 42.6, 54.8, 42.6, 54.8, 42.7},
+		-- Rain of Arrows
+		[439559] = {35.1, 52.3, 43.8, 53.6, 43.8, 53.1, 43.9},
+		-- Decimate
+		[442428] = {42.7, 39.0, 56.2, 38.3, 57.3, 39.7, 57.3, 40.3}
 	}
 }
 

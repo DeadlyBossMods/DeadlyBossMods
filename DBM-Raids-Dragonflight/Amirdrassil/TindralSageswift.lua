@@ -34,7 +34,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, 
 
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(423649, nil, nil, nil, 1, 8)
 
-local timerPhaseCD									= mod:NewPhaseTimer(60)
+local timerPhaseCD									= mod:NewStageTimer(60)
 --local berserkTimer								= mod:NewBerserkTimer(600)
 --Stage One: Moonkin of the Flame
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(27488))

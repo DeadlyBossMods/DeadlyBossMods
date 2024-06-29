@@ -1069,7 +1069,6 @@ end
 function bossModPrototype:NewStageTimer(...)
 	return newTimer(self, "stage", ...)
 end
-bossModPrototype.NewPhaseTimer = bossModPrototype.NewStageTimer--Deprecated naming, once all mods are converted over, NewPhaseTimer will be wiped out for NewStageTimer
 
 ---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 function bossModPrototype:NewStageCountTimer(...)
@@ -1083,12 +1082,13 @@ function bossModPrototype:NewStageContextTimer(...)
 	return newTimer(self, "stagecontext", ...)
 end
 
---Same as NewStageContextTimer, with count
+---Same as NewStageContextTimer, with count
 ---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 function bossModPrototype:NewStageContextCountTimer(...)
 	return newTimer(self, "stagecontextcount", ...)
 end
 
+---For a fight that alternates stage 1 and stage 2, but also tracks total cycles. Example: Stage 2 (3)
 ---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 function bossModPrototype:NewStageCountCycleTimer(...)
 	return newTimer(self, "stagecountcycle", ...)

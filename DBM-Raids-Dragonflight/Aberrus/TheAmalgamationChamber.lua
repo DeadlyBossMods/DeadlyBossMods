@@ -83,7 +83,7 @@ local specWarnWitheringVulnerability			= mod:NewSpecialWarningDefensive(405914, 
 local specWarnWitheringVulnerabilityTaunt		= mod:NewSpecialWarningTaunt(405914, nil, nil, nil, 1, 2)
 local yellShadowandFlameRepeat					= mod:NewIconRepeatYell(409385, nil, false, 2)
 
-local timerPhaseCD								= mod:NewPhaseTimer(30)
+local timerPhaseCD								= mod:NewStageTimer(30)
 local timerShadowandFlameCD						= mod:NewCDCountTimer(47.4, 409385, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerGloomConflagCD						= mod:NewCDCountTimer(40, 405437, nil, nil, nil, 3)
 local timerBlisteringTwilightCD					= mod:NewCDCountTimer(40, 405642, 167180, nil, nil, 3)--"Bombs"
