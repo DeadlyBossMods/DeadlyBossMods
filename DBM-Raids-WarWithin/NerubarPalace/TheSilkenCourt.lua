@@ -99,7 +99,7 @@ mod:AddTimerLine(takazj)
 local warnVoidStep							= mod:NewCountAnnounce(450483, 2)
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
-local specWarnEntropicDesolation			= mod:NewSpecialWarningCount(450129, nil, nil, nil, 2, 2)
+local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
 local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, nil, 2, 2)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
@@ -114,6 +114,7 @@ local specWarnEnragedFerocity				= mod:NewSpecialWarningDispel(443598, "RemoveEn
 ----Anub'arash
 mod:AddTimerLine(anubarash)
 local specWarnUnleashedSwarm				= mod:NewSpecialWarningCount(442994, nil, nil, nil, 2, 2)
+local specWarnSpikeEruption					= mod:NewSpecialWarningDodgeCount(443068, nil, nil, nil, 2, 2)
 
 local timerSpikeEruptionCD					= mod:NewCDCountTimer(49, 443068, nil, nil, nil, 3)
 local timerUnleashedSwarmCD					= mod:NewCDCountTimer(49, 442994, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -419,7 +420,7 @@ function mod:SPELL_CAST_START(args)
 		self:Unschedule(checkSkippedEntropicDesolation)
 		self.vb.rainCount = self.vb.rainCount + 1
 		specWarnEntropicDesolation:Show(self.vb.rainCount)
-		specWarnEntropicDesolation:Play("aesoon")
+		specWarnEntropicDesolation:Play("runout")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450129, self.vb.rainCount+1)
 		if timer then
 			timerEntropicDesolationCD:Start(timer, self.vb.rainCount+1)
@@ -469,6 +470,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 443068 then
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
+		specWarnSpikeEruption:Show(self.vb.eruptionCount)
+		specWarnSpikeEruption:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443068, self.vb.eruptionCount+1)
 		if timer then
 			timerSpikeEruptionCD:Start(timer, self.vb.eruptionCount+1)
