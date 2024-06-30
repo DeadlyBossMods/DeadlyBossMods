@@ -1,36 +1,21 @@
 local filter = require "Transcriptor-Filter"
+local cliArgs = require "ArgParser"
 
 local unpack = unpack or table.unpack -- Lua 5.1 compat
 
+local function logInfo(str, ...)
+	if select("#", ...) > 0 then
+		str = str:format(...)
+	end
+	io.stderr:write(str, "\n")
+end
+
 local function usage()
-	print("Usage: lua ParseTranscriptor.lua --transcriptor <path to SavedVariables/Transcriptor.lua> [--entry \"[YYYY-MM-DD]@[HH:MM:SS]\" --start <log offset> --end <log offset> --player <player who logged this> --noheader]")
+	logInfo("Usage: lua ParseTranscriptor.lua --transcriptor <path to SavedVariables/Transcriptor.lua> [--entry \"[YYYY-MM-DD]@[HH:MM:SS]\" --start <log offset> --end <log offset> --player <player who logged this> --noheader]")
 	os.exit(1)
 end
 
-local function parseArgs(...)
-	local args = {}
-	local currentKey
-	for i = 1, select("#", ...) do
-		local arg = select(i, ...)
-		if arg:match("^%-%-") then
-			if currentKey then
-				args[currentKey] = true
-			end
-			currentKey = arg:match("^%-%-(.*)")
-		elseif currentKey then
-			args[currentKey] = arg
-			currentKey = nil
-		else
-			usage()
-		end
-	end
-	if currentKey then -- flag without args at the end
-		args[currentKey] = true
-	end
-	return args
-end
-
-local args = parseArgs(...)
+local args = cliArgs:Parse(...)
 
 if not args.transcriptor then
 	usage()
@@ -107,39 +92,74 @@ end
 local firstLog = tonumber(args.start)
 local lastLog = tonumber(args["end"])
 
-if not firstLog or not lastLog then
-	local encounterStarts = {}
-	local encounterEnds = {}
-	local bossKills = {}
-	for i, v in ipairs(log.total) do
+local encounterStarts = {}
+local encounterEnds = {}
+local bossKills = {}
+for i, v in ipairs(log.total) do
+	local id, name, difficulty, groupSize, success
+	if v:find("%[ENCOUNTER_[SE][TN][AD]") then
+		id, name, difficulty, groupSize, success = v:match("%] (%d+)#([^#]+)#(%d+)#(%d+)#?(%d*)")
+		id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
+		success = success == "1"
+		local entry = {offset = i, id = id, name = name, difficulty = difficulty, groupSize = groupSize, success = success}
 		if v:find("%[ENCOUNTER_START%]") then
-			encounterStarts[#encounterStarts + 1] = {offset = i, name = v:match("%d#([^#]+)#") }
+			encounterStarts[#encounterStarts + 1] = entry
 		elseif v:find("%[ENCOUNTER_END%]") then
-			encounterEnds[#encounterEnds + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
-		elseif v:find("%[BOSS_KILL%]") then
-			bossKills[#bossKills + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
+			encounterEnds[#encounterEnds + 1] = entry
 		end
 	end
-	if #encounterStarts ~= 1 or #encounterEnds ~= 1 then
-		print("Log doesn't contain exactly one ENCOUNTER_START/END")
-		local encounterStartHelp, encounterEndHelp = {}, {}
+	if v:find("%[BOSS_KILL%]") then
+		bossKills[#bossKills + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
+	end
+end
+
+logInfo("ENCOUNTER_START events:")
+for _, v in ipairs(encounterStarts) do
+	logInfo("%d: %s (%d), difficulty = %d, groupSize = %d", v.offset, v.name, v.id, v.difficulty, v.groupSize)
+end
+logInfo("ENCOUNTER_END events:")
+for _, v in ipairs(encounterEnds) do
+	logInfo("%d: %s (%d) (%s), difficulty = %d, groupSize = %d", v.offset, v.name, v.id, v.success and "Kill" or "Wipe", v.difficulty, v.groupSize)
+end
+
+if not firstLog then
+	if #encounterStarts == 1 then
+		firstLog = encounterStarts[1].offset
+	elseif #encounterStarts == 0 then
+		logInfo("Log has no ENCOUNTER_START, starting at offset 1, use --start to override")
+		firstLog = 1
+	else
+		logInfo("Log contains more than one ENCOUNTER_START")
+		local encounterStartHelp = {}
 		for i, v in ipairs(encounterStarts) do
 			encounterStartHelp[i] = v.offset .. " (" .. v.name .. ")"
 		end
+		print("ENCOUNTER_START at: " .. table.concat(encounterStartHelp, ", "))
+		print("Use --start to select offset explicitly")
+		os.exit(1)
+	end
+end
+
+if not lastLog then
+	if #encounterEnds == 1 then
+		lastLog = encounterEnds[1].offset
+		-- BOSS_KILL often triggers after ENCOUNTER_END, we want to include both to test that we don't trigger end multiple times
+		local lastBossKill = #bossKills > 0 and bossKills[#bossKills].offset
+		if lastBossKill and lastBossKill < lastLog + 100 then
+			lastLog = math.max(lastLog, lastBossKill)
+		end
+	elseif #encounterEnds == 0 then
+		logInfo("Log has no ENCOUNTER_END, using entire log file, use --end to override")
+		lastLog = #log.total
+	else
+		logInfo("Log contains more than one ENCOUNTER_END")
+		local encounterEndHelp = {}
 		for i, v in ipairs(encounterEnds) do
 			encounterEndHelp[i] = v.offset .. " (" .. v.name .. ")"
 		end
-		print("ENCOUNTER_START at: " .. table.concat(encounterStartHelp, ", "))
 		print("ENCOUNTER_END at: " .. table.concat(encounterEndHelp, ", "))
-		print("Use --start and --end to select offsets explicitly")
+		print("Use --end to select offset explicitly")
 		os.exit(1)
-	end
-	firstLog = encounterStarts[1].offset
-	lastLog = encounterEnds[1].offset
-	-- BOSS_KILL often triggers after ENCOUNTER_END, we want to include both to test that we don't trigger end multiple times
-	local lastBossKill = #bossKills > 0 and bossKills[#bossKills].offset
-	if lastBossKill and lastBossKill < lastLog + 50 then
-		lastLog = math.max(lastLog, lastBossKill)
 	end
 end
 
@@ -265,7 +285,7 @@ local function transcribeCleu(rawParams)
 			event, sourceFlags, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2 = unpack(params, 1, i - 1)
 			-- clear special flags to make flags look more uniform across events
 			-- deliberately doing this in a bit ugly way to not pull in a dependency on bit.* for Lua 5.1
-			-- TODO: target/focus could be used to reconstruct targets
+			-- TODO: target/focus could be used to reconstruct targets, but in practice logs won't contain this info
 			if sourceFlags >= 0x80000000 then -- NONE
 				sourceFlags = sourceFlags - 0x80000000
 			end
@@ -283,13 +303,7 @@ local function transcribeCleu(rawParams)
 			end
 		else
 			if not flagWarningShown and params[1] == "SPELL_CAST_START" then -- not all entries are logged with flags
-				local warn = "-- Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate."
-				if args.noheader then
-					io.stderr:write(warn)
-					io.stderr:write("\n")
-				else
-					print(warn)
-				end
+				logInfo("Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate, but usually this is not a problem.")
 				flagWarningShown = true
 			end
 			event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2 = unpack(params, 1, i - 1)
@@ -437,7 +451,8 @@ local function getLog()
 	for i = firstLog, lastLog do
 		local line = log.total[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
-		time = tonumber(time)
+		time = tonumber(time) or error("unparseable timestamp in " .. line)
+		totalTime = time
 		if not tonumber(time) or not event or not params then
 			error("unparseable line" .. line)
 		end
@@ -454,6 +469,8 @@ local function getLog()
 			result[#result + 1] = ("{%.2f, %s},"):format(time, table.concat(testEvent, ", "))
 		end
 	end
+	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", lastLog - firstLog + 1, #result, (1 - #result / (lastLog - firstLog + 1)) * 100)
+	logInfo("%.1f seconds total, %.0f entries/second", totalTime, #result / totalTime)
 	local resultStr = ""
 	if playerName ~= deducedPlayer then
 		resultStr = "-- Warning: log was created by player " .. deducedPlayer .. ", but player " .. playerName .. " was given on the CLI for reconstructions, this can potentially cause problems (but is usually fine)\n\t"
