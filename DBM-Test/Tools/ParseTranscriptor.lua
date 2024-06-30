@@ -37,6 +37,7 @@ if not args.transcriptor then
 end
 
 local playerName = args.player
+local playerGuid
 
 local function loadTranscriptorLuaString(code)
 	local env = {}
@@ -413,9 +414,24 @@ end
 local deducedPlayer, instanceInfo, gameVersion = getMetadataFromLog()
 playerName = playerName or deducedPlayer
 
+local function buildAnonTable()
+	-- TODO: actually build the anonymization table here, currently this is just used to get info about the logging player
+	for i = firstLog, lastLog do -- do we want to use the entire log or just the segment we are looking at? probably saver to restrict to the segment
+		local line = log.total[i]
+		local guid, name = line:match("^<[%d.]+ [^>]+> %[CLEU%] SPELL_[^#]+#([^#]+)#([^#]+)")
+		-- grab GUID of logging player, easer to do here than in getMetadataFromLog above because above we grab it from UCS which doesn't have GUIDs
+		if name == playerName then
+			playerGuid = guid
+		end
+	end
+end
+
 local function getLog()
 	local result = {}
 	local timeOffset
+	local totalTime = 0
+	local logContainsLoggingPlayer = false
+	buildAnonTable()
 	for i = firstLog, lastLog do
 		local line = log.total[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
@@ -426,6 +442,12 @@ local function getLog()
 		timeOffset = timeOffset or time
 		time = time - timeOffset
 		local testEvent = transcribeEvent(event, params)
+		if not logContainsLoggingPlayer and playerGuid and testEvent and event == "CLEU" then
+			local quotedPlayerGuid = "\"" .. playerGuid .. "\""
+			if testEvent[3] == quotedPlayerGuid  or testEvent[7] == quotedPlayerGuid then
+				logContainsLoggingPlayer = true
+			end
+		end
 		if testEvent then
 			result[#result + 1] = ("{%.2f, %s},"):format(time, table.concat(testEvent, ", "))
 		end
@@ -433,6 +455,15 @@ local function getLog()
 	local resultStr = ""
 	if playerName ~= deducedPlayer then
 		resultStr = "-- Warning: log was created by player " .. deducedPlayer .. ", but player " .. playerName .. " was given on the CLI for reconstructions, this can potentially cause problems (but is usually fine)\n\t"
+	end
+	-- Ugly hack to prevent problems where the logging player is not in any of the filtered events
+	if not logContainsLoggingPlayer then
+		if not playerGuid then
+			error("log does not seem to contain logging player " .. playerName)
+		end
+		table.insert(result, 1,
+			"{0.00, \"COMBAT_LOG_EVENT_UNFILTERED\", \"SPELL_CAST_SUCCESS\", \"" .. playerGuid .. "\", \"" .. playerName .. "\", 0x511, 0x0, \"" .. playerGuid .. "\", \"" .. playerName .. "\", 0x511, 0x0, 0, \"Fake spell to ensure logging player has at least one entry, this is added if the logging player would not show up otherwise, please ignore this entry\", 0x0, nil, nil},"
+		)
 	end
 	resultStr = resultStr .. "log = {\n\t\t"
 	resultStr = resultStr ..  table.concat(result, "\n\t\t")
@@ -447,7 +478,6 @@ DBM.Test:DefineTest{
 	addon = %s,
 	mod = %s,
 	instanceInfo = %s,
-	playerName = %s,
 	%s,
 }
 ]]
@@ -456,7 +486,6 @@ local function generateTest()
 	local str = template:format(
 		literal(""), literal(gameVersion), literal(""), literal(""),
 		getInstanceInfo(instanceInfo),
-		literal(playerName),
 		getLog()
 	)
 	return str
