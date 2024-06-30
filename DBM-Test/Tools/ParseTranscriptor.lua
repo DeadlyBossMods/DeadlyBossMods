@@ -61,9 +61,11 @@ local function jsonToLua(json)
 	-- So far this code doesn't have any dependencies, I don't feel like pulling in one just to read json, so this hack is the best I can do
 	local lines = {}
 	for line in json:gmatch("([^\n]*)\n?") do
-		line = line:gsub("^(%s*)\"([^\"]+)\": [%[{]%s*$", "%1[\"%2\"] = {")
+		line = line:gsub("^(%s*)\"(.-)\": [%[{]%s*$", "%1[\"%2\"] = {")
 		line = line:gsub("^(%s*)\"([^\"]+)\":", "%1[\"%2\"] = ")
 		line = line:gsub("^(%s*)],?(%s*)$", "%1},%2")
+		-- FIXME: properly support \u escapes, but what is this even? UTF-16? raw unicode codepoints (but why are they all 16 bit?)
+		line = line:gsub("\\u(%x%x%x)", "U%1")
 		lines[#lines + 1] = line
 	end
 	return "TranscriptDB = {jsonLog = " .. table.concat(lines, "\n") .. "}"
