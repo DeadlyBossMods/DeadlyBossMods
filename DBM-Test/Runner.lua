@@ -309,6 +309,7 @@ function test:SetupDBMOptions()
 	local dbmOptions = {
 		DebugMode = DBM.Options.DebugMode,
 		DebugLevel = DBM.Options.DebugLevel,
+		DebugSound = DBM.Options.DebugSound
 	}
 	DBM:AddDefaultOptions(dbmOptions, DBM.DefaultOptions)
 	self:HookDbmVar("Options", dbmOptions)
@@ -323,7 +324,6 @@ function test:SetupDBMOptions()
 	DBM.Options.FilterCrowdControl = false
 	DBM.Options.FilterTrashWarnings2 = false
 	DBM.Options.FilterVoidFormSay = false
-	DBM.Options.DebugSound = false
 	-- Don't spam guild members when testing
 	DBM.Options.DisableGuildStatus = true
 	DBM.Options.AutoRespond = false
