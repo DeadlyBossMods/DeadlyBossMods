@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, Manifest Horror nameplate timer? i kinda assume it's just sort of spam cast til dead
 --TODO, change option keys to match BW for weak aura compatability before live
 --TODO, possibly rework timers to restart on Goresplatter so they can be more accurate and not rely in hacky fixes
+--TODO, add spawn nameplate timer
 --[[
 (ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530 or ability.id = 451288 or ability.id = 445016 or ability.id = 445174) and type = "begincast"
  or ability.id = 443203 and type = "cast"

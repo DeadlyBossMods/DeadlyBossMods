@@ -93,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 456420 then
 		self.vb.sweepCount = self.vb.sweepCount + 1
-		specWarnShatteringSweep:Show()
+		specWarnShatteringSweep:Show(self.vb.sweepCount)
 		specWarnShatteringSweep:Play("aesoon")
 		timerShatteringSweepCD:Start(nil, self.vb.sweepCount+1)
 		--Restart timers
