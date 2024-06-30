@@ -11,6 +11,7 @@ function mocks.GetTime()
 	return test.timeWarper and test.timeWarper:GetTime() or GetTime()
 end
 
+local bband = bit.band
 
 local fakeCLEUArgs = {
 	-- Number of args to handle nil values gracefully
@@ -24,7 +25,7 @@ function mocks.CombatLogGetCurrentEventInfo()
 	end
 end
 
-function mocks:SetFakeCLEUArgs(mockPlayerName, ...)
+function mocks:SetFakeCLEUArgs(...)
 	table.wipe(fakeCLEUArgs)
 	fakeCLEUArgs.n = 0
 	for i = 1, select("#", ...) do
@@ -39,13 +40,17 @@ function mocks:SetFakeCLEUArgs(mockPlayerName, ...)
 		fakeCLEUArgs.n = fakeCLEUArgs.n + 1
 		fakeCLEUArgs[fakeCLEUArgs.n] = select(i, ...)
 	end
-	if fakeCLEUArgs[5] == mockPlayerName then
-		fakeCLEUArgs[4] = UnitGUID("player")
-		fakeCLEUArgs[5] = UnitName("player")
-	end
-	if fakeCLEUArgs[9] == mockPlayerName then
-		fakeCLEUArgs[8] = UnitGUID("player")
-		fakeCLEUArgs[9] = UnitName("player")
+	if select("#", ...) > 0 then
+		local srcFlags = fakeCLEUArgs[6]
+		local dstFlags = fakeCLEUArgs[10]
+		if bband(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+			fakeCLEUArgs[4] = UnitGUID("player")
+			fakeCLEUArgs[5] = UnitName("player")
+		end
+		if bband(dstFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+			fakeCLEUArgs[8] = UnitGUID("player")
+			fakeCLEUArgs[9] = UnitName("player")
+		end
 	end
 end
 

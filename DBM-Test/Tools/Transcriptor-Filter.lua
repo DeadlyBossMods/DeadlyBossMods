@@ -33,9 +33,10 @@ filter.ignoredCreatureIds = set{
 	5924, -- Disease Cleansing Totem
 	11100, -- Mana Tide Totem
 	3908, -- Healing Stream Totem
+	59764, -- Healing Tide Totem
 	7415, -- Mana Spring Totem
-	225409, -- Surging Totem
-	202079, -- Shadowfiend
+	225409, 225409, -- Surging Totem
+	202079, 19668, -- Shadowfiend
 	202390, 202391, 202392, -- Homunculus
 	224466, -- Voidwraith
 	217429, -- Overfiend
@@ -67,6 +68,18 @@ filter.ignoredCreatureIds = set{
 	17252, -- Felguard
 	1863, -- Succubus
 	198489, -- Denizen of the Dream
+	228224, -- Fenryr
+	228226, -- Hati
+	26125, -- Risen Ghoul
+	77942, -- Primal Storm Elemental
+	149555, -- Abomination
+	163366, -- Magus of the Dead
+	24207, -- Army of the Dead
+	221632, -- Highlord Darion Mograine
+	221633, -- High Inquisitor Whitemane
+	221634, -- Nazgrim
+	221635, -- King Thoras Trollbane
+	217228, -- Blood Beast
 }
 
 
