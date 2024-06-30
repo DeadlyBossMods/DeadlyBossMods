@@ -4,6 +4,7 @@ local test = DBM.Test
 
 local dbmPrivate = test:GetPrivate()
 
+local bband = bit.band
 local realErrorHandler = geterrorhandler()
 
 -- FIXME: i don't like this "global" state
@@ -409,7 +410,7 @@ function test:InjectEvent(event, ...)
 		if target == "??" then
 			target = nil
 		end
-		if target == self.testData.playerName then
+		if target == self.logPlayerName then
 			target = UnitName("player")
 		end
 		self.Mocks:UpdateTarget(uId, unitName, target)
@@ -433,7 +434,7 @@ function test:InjectEvent(event, ...)
 		return self:InjectEvent(event, uid, powerType)
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
+		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
@@ -444,6 +445,22 @@ function test:InjectEvent(event, ...)
 	if event:match("^UNIT_") then
 		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)
 	end
+end
+
+---@param log TestLogEntry[]
+local function findRecordingPlayer(log)
+	for _, v in ipairs(log) do
+		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local srcFlags = v[6]
+			local dstFlags = v[10]
+			if bband(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				return v[5]
+			elseif bband(dstFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				return v[9]
+			end
+		end
+	end
+	error("failed to deduce who recorded the log based on flags, make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
 end
 
 local currentThread
@@ -461,6 +478,11 @@ function test:Playback(testData, timeWarp)
 		self.testCallback("TestStart", testData, nil)
 	end
 	self.testData = testData
+	-- Currently only required to correctly handle UNIT_TARGET messages.
+	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
+	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
+	-- 100 messages or so anyways, so whatever.
+	self.logPlayerName = findRecordingPlayer(testData.log)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New()
@@ -526,7 +548,7 @@ end)
 ---@field mod string|integer The boss mod being tested.
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
----@field playerName string Name of the player who recorded the log.
+---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field log TestLogEntry[] Log to replay
 
 --[[
