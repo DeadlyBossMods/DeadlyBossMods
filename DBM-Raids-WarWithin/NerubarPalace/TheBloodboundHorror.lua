@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, Manifest Horror nameplate timer? i kinda assume it's just sort of spam cast til dead
 --TODO, change option keys to match BW for weak aura compatability before live
 --TODO, possibly rework timers to restart on Goresplatter so they can be more accurate and not rely in hacky fixes
+--TODO, add spawn nameplate timer
 --[[
 (ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530 or ability.id = 451288 or ability.id = 445016 or ability.id = 445174) and type = "begincast"
  or ability.id = 443203 and type = "cast"
@@ -72,7 +73,7 @@ local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, nil, nil, 1, 2)
 
-local timerBlackBulwarkCD						= mod:NewCDNPTimer(17.1, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation
 
 --mod:AddInfoFrameOption(407919, true)

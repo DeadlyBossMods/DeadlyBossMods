@@ -93,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 456420 then
 		self.vb.sweepCount = self.vb.sweepCount + 1
-		specWarnShatteringSweep:Show()
+		specWarnShatteringSweep:Show(self.vb.sweepCount)
 		specWarnShatteringSweep:Play("aesoon")
 		timerShatteringSweepCD:Start(nil, self.vb.sweepCount+1)
 		--Restart timers
@@ -104,7 +104,7 @@ function mod:SPELL_CAST_START(args)
 		timerCaptainsFlourishCD:Start(10.7, 1)
 		timerPhaseBladesCD:Start(19.3, 1)
 		timerRainofArrowsCD:Start(self:IsMythic() and 29.1 or 39.7, 1)
-		timerDecimateCD:Start(self:IsMythic() and 62.3 or 48.3, 1)
+		timerDecimateCD:Start(self:IsMythic() and 61.9 or 48.3, 1)
 	elseif spellId == 435401 or spellId == 432965 then--Second cast / First cast
 		if spellId == 432965 then
 			--First part of Combo
@@ -114,7 +114,7 @@ function mod:SPELL_CAST_START(args)
 			if self.vb.tankCombo < 4 then
 				--On mythic, the first tank combos are always 25.1 apart but then they are 27.9 apart after first sweep
 				--22s are rare, so making the min for normal and heroic 23 for now
-				timerCaptainsFlourishCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 25.1 or 27.9) or 23, self.vb.tankCombo+1)
+				timerCaptainsFlourishCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 25.1 or 27.2) or 23, self.vb.tankCombo+1)
 			end
 		end
 		--Now do combo stuff
