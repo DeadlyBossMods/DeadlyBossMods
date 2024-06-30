@@ -73,7 +73,7 @@ local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, nil, nil, 1, 2)
 
-local timerBlackBulwarkCD						= mod:NewCDNPTimer(17.1, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
+local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
 local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation
 
 --mod:AddInfoFrameOption(407919, true)
