@@ -454,12 +454,11 @@ local function errorHandlerWithStack(err)
 end
 
 ---@param testData TestDefinition
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
-function test:Playback(testData, timeWarp, callback)
+function test:Playback(testData, timeWarp)
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
-	if callback then
-		callback("TestStart", testData, nil)
+	if self.testCallback then
+		self.testCallback("TestStart", testData, nil)
 	end
 	self.testData = testData
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
@@ -487,8 +486,10 @@ function test:Playback(testData, timeWarp, callback)
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
-	if callback then
-		callback("TestFinish", testData, reporter)
+	local cb = self.testCallback
+	if cb then
+		self.testCallback = nil -- coroutine scheduler also attempts to call this on failure, prevent calling it twice if this throws
+		cb("TestFinish", testData, reporter)
 	end
 end
 
@@ -506,6 +507,13 @@ frame:SetScript("OnUpdate", function(self)
 					return
 				end
 				geterrorhandler()(err)
+				-- The error we encountered in the coroutine still belongs to the test, but anything after is just a bug in the callback
+				if test.reporter then test.reporter:UnsetErrorHandler() end
+				-- We might still need to call the callback to update UI etc in case the main function above throws
+				-- The typically scenario were this happens is if findRecordingPlayer() throws
+				if test.testCallback then
+					test.testCallback("TestFinish", test.testData, test.reporter)
+				end
 			end
 		end
 	end
@@ -585,8 +593,9 @@ function test:RunTest(testName, timeWarp, callback)
 	end
 	currentEventKey = nil
 	currentRawEvent = nil
+	self.testCallback = callback
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, callback)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp)
 	if not ok then realErrorHandler(err) end
 end
 
