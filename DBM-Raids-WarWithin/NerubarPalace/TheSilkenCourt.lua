@@ -361,7 +361,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 440504 then
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		specWarnImpalingEruption:Show(self.vb.eruptionCount)
-		specWarnImpalingEruption:Play("watchfeet")
+		specWarnImpalingEruption:Play("shockwave")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440504, self.vb.eruptionCount+1)
 		if timer then
 			timerImpalingEruptionCD:Start(timer, self.vb.eruptionCount+1)
