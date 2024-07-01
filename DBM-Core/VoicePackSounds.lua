@@ -283,6 +283,7 @@
 ---|"stopatk" 2
 ---|"stopattack" 2
 ---|"stopcast" 2
+---|"stopchargewithline" 17
 ---|"stopmove"
 ---|"stunsoon"
 ---|"sunderhigh"
