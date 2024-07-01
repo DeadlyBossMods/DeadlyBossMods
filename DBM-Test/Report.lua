@@ -218,7 +218,7 @@ function reporter:FindSpellIdMismatches(findings)
 				}
 			elseif type(v) == "table" then
 				for _, ignoreMismatch in ipairs(v) do
-					if not ignoredTriggerSpells[k][ignoreMismatch] then
+					if not ignoredTriggerSpells[k] or not ignoredTriggerSpells[k][ignoreMismatch] then
 						findings[#findings + 1] = {
 							type = "unused-spell-mismatch-ignore", spellId = k, sortKey = 2.1,
 							text = ("ignoreWarnings ignores spell mismatches between %s and %s, but no such mismatch was found"):format(tostring(k), tostring(ignoreMismatch))
@@ -739,7 +739,7 @@ end
 ---@alias TestResultEnum "Success"|"Failure"
 ---@return TestResultEnum
 function reporter:GetResult()
-	return not self:HasDiff() and "Success" or "Failure"
+	return not self:HasDiff() and not self:HasErrors() and "Success" or "Failure"
 end
 
 function reporter:HasErrors()
@@ -778,5 +778,6 @@ end
 function reporter:UnsetErrorHandler()
 	if self.oldErrorHandler then
 		seterrorhandler(self.oldErrorHandler)
+		self.oldErrorHandler = nil
 	end
 end

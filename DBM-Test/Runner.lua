@@ -4,6 +4,7 @@ local test = DBM.Test
 
 local dbmPrivate = test:GetPrivate()
 
+local bband = bit.band
 local realErrorHandler = geterrorhandler()
 
 -- FIXME: i don't like this "global" state
@@ -309,6 +310,7 @@ function test:SetupDBMOptions()
 	local dbmOptions = {
 		DebugMode = DBM.Options.DebugMode,
 		DebugLevel = DBM.Options.DebugLevel,
+		DebugSound = DBM.Options.DebugSound
 	}
 	DBM:AddDefaultOptions(dbmOptions, DBM.DefaultOptions)
 	self:HookDbmVar("Options", dbmOptions)
@@ -323,7 +325,6 @@ function test:SetupDBMOptions()
 	DBM.Options.FilterCrowdControl = false
 	DBM.Options.FilterTrashWarnings2 = false
 	DBM.Options.FilterVoidFormSay = false
-	DBM.Options.DebugSound = false
 	-- Don't spam guild members when testing
 	DBM.Options.DisableGuildStatus = true
 	DBM.Options.AutoRespond = false
@@ -409,7 +410,7 @@ function test:InjectEvent(event, ...)
 		if target == "??" then
 			target = nil
 		end
-		if target == self.testData.playerName then
+		if target == self.logPlayerName then
 			target = UnitName("player")
 		end
 		self.Mocks:UpdateTarget(uId, unitName, target)
@@ -433,7 +434,7 @@ function test:InjectEvent(event, ...)
 		return self:InjectEvent(event, uid, powerType)
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		self.Mocks:SetFakeCLEUArgs(self.testData.playerName, ...)
+		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
@@ -446,6 +447,22 @@ function test:InjectEvent(event, ...)
 	end
 end
 
+---@param log TestLogEntry[]
+local function findRecordingPlayer(log)
+	for _, v in ipairs(log) do
+		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local srcFlags = v[6]
+			local dstFlags = v[10]
+			if bband(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				return v[5]
+			elseif bband(dstFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				return v[9]
+			end
+		end
+	end
+	error("failed to deduce who recorded the log based on flags, make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
+end
+
 local currentThread
 
 local function errorHandlerWithStack(err)
@@ -454,14 +471,18 @@ local function errorHandlerWithStack(err)
 end
 
 ---@param testData TestDefinition
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
-function test:Playback(testData, timeWarp, callback)
+function test:Playback(testData, timeWarp)
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
-	if callback then
-		callback("TestStart", testData, nil)
+	if self.testCallback then
+		self.testCallback("TestStart", testData, nil)
 	end
 	self.testData = testData
+	-- Currently only required to correctly handle UNIT_TARGET messages.
+	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
+	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
+	-- 100 messages or so anyways, so whatever.
+	self.logPlayerName = findRecordingPlayer(testData.log)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New()
@@ -487,8 +508,10 @@ function test:Playback(testData, timeWarp, callback)
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
-	if callback then
-		callback("TestFinish", testData, reporter)
+	local cb = self.testCallback
+	if cb then
+		self.testCallback = nil -- coroutine scheduler also attempts to call this on failure, prevent calling it twice if this throws
+		cb("TestFinish", testData, reporter)
 	end
 end
 
@@ -506,6 +529,13 @@ frame:SetScript("OnUpdate", function(self)
 					return
 				end
 				geterrorhandler()(err)
+				-- The error we encountered in the coroutine still belongs to the test, but anything after is just a bug in the callback
+				if test.reporter then test.reporter:UnsetErrorHandler() end
+				-- We might still need to call the callback to update UI etc in case the main function above throws
+				-- The typically scenario were this happens is if findRecordingPlayer() throws
+				if test.testCallback then
+					test.testCallback("TestFinish", test.testData, test.reporter)
+				end
 			end
 		end
 	end
@@ -518,7 +548,7 @@ end)
 ---@field mod string|integer The boss mod being tested.
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
----@field playerName string Name of the player who recorded the log.
+---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field log TestLogEntry[] Log to replay
 
 --[[
@@ -585,8 +615,9 @@ function test:RunTest(testName, timeWarp, callback)
 	end
 	currentEventKey = nil
 	currentRawEvent = nil
+	self.testCallback = callback
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, callback)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp)
 	if not ok then realErrorHandler(err) end
 end
 
