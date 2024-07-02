@@ -184,6 +184,7 @@ mod.vb.damageSpell = "?"
 mod.vb.avoidSpell = "?"
 mod.vb.ultimateSpell = "?"
 mod.vb.damageCount = 0
+mod.vb.zeroCount = 0
 mod.vb.damageTimer = 30
 mod.vb.avoidTimer = 60
 mod.vb.ultTimer = 60
@@ -197,6 +198,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chillCast = 0
 	self.vb.curAltar = false
 	self.vb.damageCount = 0
+	self.vb.zeroCount = 0
 	self.vb.damageSpell = "?"
 	self.vb.avoidSpell = "?"
 	self.vb.ultimateSpell = "?"
