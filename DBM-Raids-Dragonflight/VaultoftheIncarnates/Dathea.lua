@@ -134,7 +134,7 @@ function mod:SPELL_CAST_START(args)
 			timerColaescingStormCD:Start(75.5, self.vb.stormCount+1)
 		else
 			timerConductiveMarkCD:Start(9.7, self.vb.markCount+1)
-			timerZephyrSlamCD:Start(15.7, self.vb.slamCount+1)
+			timerZephyrSlamCD:Start(14.6, self.vb.slamCount+1)
 			timerCrosswindsCD:Start(34, self.vb.crosswindCount+1)
 			timerColaescingStormCD:Start(86.2, self.vb.stormCount+1)
 		end

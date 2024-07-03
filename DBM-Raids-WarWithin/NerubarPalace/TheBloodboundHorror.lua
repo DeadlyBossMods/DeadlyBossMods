@@ -40,8 +40,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 443042 and type = "applydebuff"
  or (ability.id = 444830 or ability.id = 444835) and type = "summon"
 --]]
---Phase One: The Black Blood
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(29061))
 local warnBanefulShift							= mod:NewYouAnnounce(443612, 2)
 local warnBanefulShiftFades						= mod:NewFadesAnnounce(443612, 2)
 local warnCrimsonRain							= mod:NewCountAnnounce(443203, 2)
@@ -65,8 +63,8 @@ local timerSpewingHemorrhageCD					= mod:NewNextCountTimer(40, 445936, nil, nil,
 local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.DEADLY_ICON)
 local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Grasp"
---Phase Two: The Unseeming
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(29068))
+--The Unseeming
+mod:AddTimerLine(DBM:GetSpellName(420847))--Fix spellname when ID is known, seems to be using a spell that's only in hotfixed data
 local warnManifestHorror						= mod:NewCastAnnounce(445174, 4, nil, nil, false, 2)--Spammy, opt in
 local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 
