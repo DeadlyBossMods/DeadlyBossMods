@@ -6605,6 +6605,7 @@ do
 	---Wrapper for Blizzard GetSpellCooldown global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
+	---@return number, number, number
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
 		if newPath then
@@ -7745,6 +7746,7 @@ do
 	end
 end
 
+---@param uId string? Used for querying external unit. If nil, queries "player"
 function bossModPrototype:UnitClass(uId)
 	if uId then--Return unit requested
 		local _, class = UnitClass(uId)
@@ -7777,6 +7779,8 @@ do
 	end
 end
 
+---@param uId string? Used for querying external unit. If nil, queries "player"
+---@return boolean
 function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
@@ -7793,6 +7797,8 @@ function bossModPrototype:IsDps(uId)
 end
 
 ---@param self DBMModOrDBM
+---@param uId string? Used for querying external unit. If nil, queries "player"
+---@return boolean
 function DBM:IsHealer(uId)
 	if uId then--External unit call.
 		if not private.isRetail then
@@ -7828,6 +7834,7 @@ bossModPrototype.IsHealer = DBM.IsHealer
 ---@param enemyGUID string? guid of tanked unit we're checking. This or enemyUnitID must be provided
 ---@param includeTarget boolean? set to true to allow bosses target to be good enough if threat check fails
 ---@param onlyS3 boolean? true for tight threat check (status 3 securly tanked required). loose threat otherwise
+---@return boolean
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
@@ -7910,8 +7917,10 @@ end
 do
 	local bossNames, bossIcons = {}, {}
 
-	--This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
+	---This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
 	---@param self DBMModOrDBM
+	---@param cIdOrGUID number|string
+	---@param onlyHighest boolean?
 	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 		local uId = bossHealthuIdCache[cIdOrGUID] or "target"
 		local guid = UnitGUID(uId)
@@ -8057,7 +8066,15 @@ end
 ---------------
 --  Options  --
 ---------------
+---@param name any Option name must be string, but language server gets confused if it's not set to any
 ---@param default SpecFlags|boolean?
+---@param cat string? category type: ie "timer", "announce", "misc", "sound", etc
+---@param func any? Custom function to call when option is changed
+---@param extraOption string|number? Used for attached options such as timer color or special warning sound
+---@param extraOptionTwo string|number? Used for attached options such as countdown voice or special warning note
+---@param spellId any? spellId to group with other options for same spell
+---@param optionType string?
+---@param waCustomName string? used to inject custom weak aura spellId key text
 function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType, waCustomName)
 	if checkDuplicateObjects[name] and name ~= "timer_berserk" then
 		DBM:Debug("|cffff0000Option already exists for: |r" .. name)
@@ -8098,6 +8115,13 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	end
 end
 
+---@param name any
+---@param default SpecFlags|boolean?
+---@param defaultSound number|string? Can be number for built in spec warn sound 1-4 or string for custom sound path
+---@param cat string? category type: ie "timer", "announce", "misc", "sound", etc
+---@param spellId any? spellId to group with other options for same spell
+---@param optionType string?
+---@param waCustomName string? used to inject custom weak aura spellId key text
 function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType, waCustomName)
 	if checkDuplicateObjects[name] then
 		DBM:Debug("|cffff0000Option already exists for: |r" .. name)
@@ -8485,6 +8509,7 @@ end
 
 ---Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
 ---This lets us group options up that aren't using valid IDs, and show the ID it is using for WA in the gui next to custom name
+---@param customName string? Used to inject custom weak aura spellId key text
 function bossModPrototype:GroupWASpells(customName, ...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
@@ -8551,6 +8576,11 @@ function bossModPrototype:GroupSpells(...)
 	end
 end
 
+---@param name any
+---@param cat string category type: ie "timer", "announce", "misc", "sound", etc
+---@param optionType string? option type: ie "gtfo", "adds", "addscount", "addscustom", "stage", etc
+---@param waCustomName string? used to inject custom weak aura spellId key text
+---@param hasPrivate boolean? used to mark option as private aura option so it displays PA icon in GUI
 function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName, hasPrivate)
 	optionType = optionType or ""
 	for _, options in pairs(self.optionCategories) do

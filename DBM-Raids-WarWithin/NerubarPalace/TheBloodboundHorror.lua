@@ -64,7 +64,7 @@ local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, nil, nil, ni
 local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Grasp"
 --The Unseeming
-mod:AddTimerLine(DBM:GetSpellName(420847))--Fix spellname when ID is known, seems to be using a spell that's only in hotfixed data
+mod:AddTimerLine(DBM:GetSpellName(462306))
 local warnManifestHorror						= mod:NewCastAnnounce(445174, 4, nil, nil, false, 2)--Spammy, opt in
 local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 
