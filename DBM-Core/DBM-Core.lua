@@ -1963,6 +1963,8 @@ do
 		end
 	end
 
+	---@param event string
+	---@param ... any?
 	function DBM:FireEvent(event, ...)
 		fireEvent(event, ...)
 	end
@@ -8073,9 +8075,9 @@ end
 ---@param extraOption string|number? Used for attached options such as timer color or special warning sound
 ---@param extraOptionTwo string|number? Used for attached options such as countdown voice or special warning note
 ---@param spellId any? spellId to group with other options for same spell
----@param optionType string?
+---@param optionSubType string? ie "gtfo", "adds", "achievement", "stage", etc
 ---@param waCustomName string? used to inject custom weak aura spellId key text
-function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType, waCustomName)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionSubType, waCustomName)
 	if checkDuplicateObjects[name] and name ~= "timer_berserk" then
 		DBM:Debug("|cffff0000Option already exists for: |r" .. name)
 	else
@@ -8099,16 +8101,16 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
 			self:GroupWASpells(waCustomName, spellId, name)
 		else
-			if optionType and optionType == "achievement" then
+			if optionSubType and optionSubType == "achievement" then
 				spellId = "at" .. spellId--"at" for achievement timer
 			end
-			local optionTypeMatch = optionType or ""
+			local optionTypeMatch = optionSubType or ""
 			if not optionTypeMatch:find("stage") then
 				self:GroupSpells(spellId, name)
 			end
 		end
 	end
-	self:SetOptionCategory(name, cat, optionType, waCustomName)
+	self:SetOptionCategory(name, cat, optionSubType, waCustomName)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
 		self.optionFuncs[name] = func
@@ -8578,15 +8580,15 @@ end
 
 ---@param name any
 ---@param cat string category type: ie "timer", "announce", "misc", "sound", etc
----@param optionType string? option type: ie "gtfo", "adds", "addscount", "addscustom", "stage", etc
+---@param optionSubType string? ie "gtfo", "adds", "achievement", "stage", etc
 ---@param waCustomName string? used to inject custom weak aura spellId key text
 ---@param hasPrivate boolean? used to mark option as private aura option so it displays PA icon in GUI
-function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName, hasPrivate)
-	optionType = optionType or ""
+function bossModPrototype:SetOptionCategory(name, cat, optionSubType, waCustomName, hasPrivate)
+	optionSubType = optionSubType or ""
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and self.groupSpells[name] and not (optionType == "gtfo" or optionType == "adds" or optionType == "addscount" or optionType == "addscustom" or optionType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
+	if self.addon and self.groupSpells[name] and not (optionSubType == "gtfo" or optionSubType == "adds" or optionSubType == "addscount" or optionSubType == "addscustom" or optionSubType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
