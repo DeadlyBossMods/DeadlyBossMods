@@ -35,7 +35,7 @@ local warnPhaseBlades							= mod:NewTargetNoFilterAnnounce(433517, 3)
 local warnRainofArrows							= mod:NewCountAnnounce(439559, 3)
 local warnDecimate								= mod:NewTargetNoFilterAnnounce(442428, 3)
 
-local specWarnShatteringSweep					= mod:NewSpecialWarningCount(456420, nil, nil, nil, 2, 2)
+local specWarnShatteringSweep					= mod:NewSpecialWarningRunCount(456420, nil, nil, nil, 4, 2)
 local specWarnExpose							= mod:NewSpecialWarningDefensive(435401, nil, nil, nil, 1, 2)
 local specWarnPhaseLunge						= mod:NewSpecialWarningDefensive(435403, nil, nil, nil, 1, 2)
 local specWarnExposedWeakness					= mod:NewSpecialWarningTaunt(438845, nil, nil, nil, 1, 2)
@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 456420 then
 		self.vb.sweepCount = self.vb.sweepCount + 1
 		specWarnShatteringSweep:Show(self.vb.sweepCount)
-		specWarnShatteringSweep:Play("aesoon")
+		specWarnShatteringSweep:Play("justrun")
 		timerShatteringSweepCD:Start(nil, self.vb.sweepCount+1)
 		--Restart timers
 		self.vb.tankCombo = 0
