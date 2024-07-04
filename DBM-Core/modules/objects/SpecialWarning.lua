@@ -673,7 +673,7 @@ end
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|boolean? String for custom option name. Using false hides option completely
 ---@param optionVersion any optional: has to be number, but luaLS has a fit if we tell it that
----@param runSound boolean|number? 1 = Personal, 2 = Everyone, 3 = Very Important, 4 = Run Away
+---@param runSound number? 1 = Personal, 2 = Everyone, 3 = Very Important, 4 = Run Away
 ---@param hasVoice boolean|number? Voice pack version required for used sound file.
 ---@param difficulty number? Raid Difficulty index used for displaying difficulty icon next to option
 ---@param icon number|string? Use number for spellId, -number for journalID, number as string for textureID
@@ -685,11 +685,6 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 	end
 	if type(text) == "string" and text:match("OptionVersion") then
 		error("NewSpecialWarning: you must provide remove optionversion hack for " .. optionDefault)
-	end
-	if runSound == true then
-		runSound = 2
-	elseif not runSound then
-		runSound = 1
 	end
 	if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 		hasVoice = 2
