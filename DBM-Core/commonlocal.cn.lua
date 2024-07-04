@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20240323
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20240704
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -76,6 +76,7 @@ CL.BOSSTOGETHER						= "拉近Boss"
 CL.BOSSAPART						= "拉开Boss"
 CL.MINDCONTROL						= "心控"
 CL.TANKCOMBO						= "坦克连击"
+CL.TANKDEBUFF						= "坦克Debuff"
 CL.AOEDAMAGE						= "AOE 伤害"
 CL.GROUPSOAK						= "吸收"
 CL.GROUPSOAKS						= "吸收"
@@ -88,6 +89,9 @@ CL.DEBUFFS							= "Debuffs"
 CL.DISPELS 							= "驱散"
 CL.PUSHBACK							= "推回"
 CL.FRONTAL							= "正面"
+CL.RUNAWAY							= "快躲开"
+CL.SPREAD							= "分散"
+CL.SPREADS							= "分散"
 CL.LASER							= "射线"
 CL.LASERS							= "射线"
 CL.RIFT								= "裂隙"
