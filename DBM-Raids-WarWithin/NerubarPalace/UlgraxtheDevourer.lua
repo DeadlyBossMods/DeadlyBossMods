@@ -55,15 +55,15 @@ local timerBrutalCrushCD						= mod:NewCDCountTimer(13.0, 434697, nil, "Tank|Hea
 local timerPhaseChange							= mod:NewStageCountTimer(10, 438012, nil, nil, nil, 6)
 --Feeding Frenzy
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28845))
-local warnJuggernautCharge						= mod:NewCountAnnounce(436200, 4, nil, nil, nil, nil, nil, 2)--Charges 2+ of the set
+local warnJuggernautCharge						= mod:NewCountAnnounce(436200, 4, nil, nil, 100, nil, nil, 2)--Charges 2+ of the set
 
 local specWarnChitteringSwarm					= mod:NewSpecialWarningSwitch(445052, nil, nil, nil, 1, 2)--BW using -28848 instead?
-local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, nil, nil, 2, 2)--Activation
+local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, 100, nil, 2, 2)--Activation
 local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodgeCount(443842, nil, nil, nil, 2, 2)
 local specWarnHulkingCrash						= mod:NewSpecialWarningDodge(445123, nil, nil, nil, 2, 2)
 
 local timerChitteringSwarmCD					= mod:NewCDTimer(49, 445052, nil, nil, nil, 1)
-local timerJuggernautChargeCD					= mod:NewCDCountTimer(49, 436200, nil, nil, nil, 3)
+local timerJuggernautChargeCD					= mod:NewCDCountTimer(49, 436200, 100, nil, nil, 3)
 local timerSwallowingDarknessCD					= mod:NewCDTimer(49, 443842, nil, nil, nil, 3)
 local timerHungeringBellowsCD					= mod:NewCDCountTimer(9, 438012, nil, nil, nil, 2)
 --local timerHulkingCrashCD						= mod:NewCDCountTimer(18, 445123, nil, nil, nil, 3)

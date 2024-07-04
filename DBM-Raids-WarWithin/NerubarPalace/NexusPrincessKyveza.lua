@@ -26,20 +26,21 @@ mod:RegisterEventsInCombat(
 --NOTE: if they don't make ass a private aura, change yells to also include icons
 --NOTE: see if https://www.wowhead.com/beta/spell=438153/twilight-massacre can be target scanned off phantom themselves to defeat the private aura
 --TODO: Get the right tank stack swap count
---TODO, change option keys to match BW for weak aura compatability before live
+--TODO, recheck option keys to match BW for weak aura compatability before live
 --[[
 (ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 448364 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
  or ability.id = 435405 and type = "removebuff"
 --]]
-local warnAss									= mod:NewTargetAnnounce(436971, 3)
+local warnAss									= mod:NewTargetAnnounce(436867, 3)
 local warnDeathMasks							= mod:NewCountAnnounce(448364, 4)
+local warnTwilightMassacre						= mod:NewCountAnnounce(438245, 3, nil, nil, 281001)--Shortname "Massacre"
 local warnChasmalGash							= mod:NewStackAnnounce(440576, 2, nil, "Tank|Healer")
 local warnStarlessNight							= mod:NewCountAnnounce(435414, 3)
 local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 
-local specWarnAss								= mod:NewSpecialWarningSpell(436971, nil, nil, nil, 3, 2)
-local yellAss									= mod:NewShortYell(436971)
-local yellAssFades								= mod:NewShortFadesYell(436971)
+local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
+local yellAss									= mod:NewShortYell(436867)
+local yellAssFades								= mod:NewShortFadesYell(436867)
 local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
@@ -49,17 +50,17 @@ local specWarnChasmalGashStack					= mod:NewSpecialWarningStack(440576, nil, 8, 
 local specWarnChasmalGashSwap					= mod:NewSpecialWarningTaunt(440576, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerAssCD								= mod:NewCDCountTimer(120, 436971, nil, nil, nil, 3)
+local timerAssCD								= mod:NewCDCountTimer(120, 436867, nil, nil, nil, 3)
 local timerDeathMasksCD							= mod:NewAITimer(49, 448364, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerTwilightMassacreCD					= mod:NewCDCountTimer(30, 438245, nil, nil, nil, 3)
-local timerNetherRiftCD							= mod:NewCDCountTimer(30, 437620, nil, nil, nil, 3)
+local timerTwilightMassacreCD					= mod:NewCDCountTimer(30, 438245, 281001, nil, nil, 3)--Shortname "Massacre"
+local timerNetherRiftCD							= mod:NewCDCountTimer(30, 437620, DBM_COMMON_L.RIFT.." (%s)", nil, nil, 3)--shortname Rift
 local timerNexusDaggersCD						= mod:NewCDCountTimer(30, 439576, nil, nil, nil, 3)
-local timerVoidShreddersCD						= mod:NewCDCountTimer(30, 440377, nil, "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerVoidShreddersCD						= mod:NewCDCountTimer(30, 440377, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil, 6)
 local timerStarlessNight						= mod:NewBuffActiveTimer(24, 435405, nil, nil, nil, 5)
 
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnAss", 436971, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
+mod:AddSetIconOption("SetIconOnAss", 436867, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
 mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
@@ -131,6 +132,7 @@ function mod:SPELL_CAST_START(args)
 		timerDeathMasksCD:Start()
 	elseif spellId == 438245 then
 		self.vb.massacreCount = self.vb.massacreCount + 1
+		warnTwilightMassacre:Show(self.vb.massacreCount)
 		if self.vb.massacreCount == 1 then
 			timerTwilightMassacreCD:Start(30, 2)
 		end

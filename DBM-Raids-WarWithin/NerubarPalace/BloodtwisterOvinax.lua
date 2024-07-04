@@ -30,24 +30,24 @@ mod:RegisterEventsInCombat(
 --https://www.wowhead.com/beta/spell=443021/volatile-concoction and https://www.wowhead.com/beta/spell=441368/volatile-concoction used too?
 --TODO, nameplate timer for https://www.wowhead.com/beta/spell=438847/web-blast ?
 --TODO, add https://www.wowhead.com/beta/spell=458212/necrotic-wound stacks?
---TODO, change option keys to match BW for weak aura compatability before live
+--TODO, recheck option keys to match BW for weak aura compatability before live
 --[[
 (ability.id = 442526 or ability.id = 442432 or ability.id = 443003 or ability.id = 443005 or ability.id = 446700) and type = "begincast"
 or ability.id = 446349 and type = "applydebuff"
 or ability.id = 442432 and type = "removebuff"
 --]]
-local warnExperimentalDosage					= mod:NewIncomingCountAnnounce(442526, 3)
+local warnExperimentalDosage					= mod:NewIncomingCountAnnounce(442526, 3, nil, nil, 143340)--Shortname "Injection"
 
-local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442430, nil, nil, nil, 2, 2)
-local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, nil, nil, 1, 2)
-local yellUnstableWeb							= mod:NewShortYell(446349)
+local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442432, nil, 325225, nil, 2, 2)--Shortname "Container Breach"
+local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, 389280, nil, 1, 2)--Shortname "Web"
+local yellUnstableWeb							= mod:NewShortYell(446349, 389280)
 local specWarnVolatileConcoction				= mod:NewSpecialWarningDefensive(441362, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
-local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, nil, nil, nil, 3)
-local timerIngestBlackBloodCD					= mod:NewCDCountTimer(170, 442430, nil, nil, nil, 3)
-local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)
-local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, 143340, nil, nil, 3)--Shortname "Injection"
+local timerIngestBlackBloodCD					= mod:NewCDCountTimer(170, 442432, 325225, nil, nil, 3)--Shortname "Container Breach"
+local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
+local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(440421, true, 440421, 1)--Black Blood
 

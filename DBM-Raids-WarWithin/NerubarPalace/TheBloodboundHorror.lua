@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, change option keys to match BW for weak aura compatability before live
 --TODO, possibly rework timers to restart on Goresplatter so they can be more accurate and not rely in hacky fixes
 --TODO, add spawn nameplate timer
+--TODO, track personal https://www.wowhead.com/beta/spell=445570/unseeming-blight ?
 --[[
 (ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530 or ability.id = 451288 or ability.id = 445016 or ability.id = 445174) and type = "begincast"
  or ability.id = 443203 and type = "cast"
@@ -53,16 +54,16 @@ local yellBloodcurdleFades						= mod:NewShortFadesYell(452237)
 local specWarnSpewingHemorrhage					= mod:NewSpecialWarningRunCount(445936, nil, nil, nil, 4, 2)
 local specWarnGoresplatter						= mod:NewSpecialWarningDodgeCount(442530, nil, nil, nil, 2, 2)
 local specWarnGraspFromBeyond					= mod:NewSpecialWarningMoveAway(443042, nil, 367465, nil, 1, 2)
-local yellGraspFromBeyond						= mod:NewShortYell(443042, 367465)--ShortYell "Grasp"
+local yellGraspFromBeyond						= mod:NewShortYell(443042, 285205)--ShortYell "Tentacle"
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(445518, nil, nil, nil, 1, 8)
 
 local timerGruesomeDigorgeCD					= mod:NewNextCountTimer(49, 444363, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBanefulShift							= mod:NewBuffFadesTimer(40, 443612, nil, nil, nil, 5)
-local timerBloodcurdleCD						= mod:NewNextCountTimer(40, 452237, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerBloodcurdleCD						= mod:NewNextCountTimer(40, 452237, DBM_COMMON_L.SPREADS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerSpewingHemorrhageCD					= mod:NewNextCountTimer(40, 445936, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.DEADLY_ICON)
 local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
-local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Grasp"
+local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Tentacles"
 --The Unseeming
 mod:AddTimerLine(DBM:GetSpellName(462306))
 local warnManifestHorror						= mod:NewCastAnnounce(445174, 4, nil, nil, false, 2)--Spammy, opt in

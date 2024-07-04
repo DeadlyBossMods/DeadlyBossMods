@@ -32,7 +32,7 @@ local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2)--General a
 local warnInfestedSpawn							= mod:NewIncomingCountAnnounce(455373, 2)
 local warnSpinneretsStrands						= mod:NewIncomingCountAnnounce(439784, 3)--General announce, private aura sound will be personal emphasis
 local warnErosiveSpray							= mod:NewCountAnnounce(439811, 2)
-local warnEnvelopingWebs						= mod:NewCountAnnounce(454989, 4)
+local warnEnvelopingWebs						= mod:NewCountAnnounce(454989, 4, nil, nil, 157317)--Shortname "Webs"
 local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
@@ -43,13 +43,13 @@ local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, nil,
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerSavageAssaultCD						= mod:NewCDCountTimer(49, 444687, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSavageAssaultCD						= mod:NewCDCountTimer(49, 444687, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRollingAcidCD						= mod:NewCDCountTimer(21.3, 439789, nil, nil, nil, 3)
 local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, nil, nil, nil, 1)
 local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil, nil, 3)
 local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Webs"
 
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
 mod:AddPrivateAuraSoundOption(455284, true, 455373, 1)--Infested Spawn target
