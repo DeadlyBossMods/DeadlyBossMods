@@ -686,6 +686,7 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 	if type(text) == "string" and text:match("OptionVersion") then
 		error("NewSpecialWarning: you must provide remove optionversion hack for " .. optionDefault)
 	end
+	runSound = runSound or 1
 	if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 		hasVoice = 2
 	end
