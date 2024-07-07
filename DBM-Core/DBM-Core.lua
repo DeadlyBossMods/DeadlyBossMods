@@ -8612,6 +8612,23 @@ end
 --------------
 --  Combat  --
 --------------
+---@meta
+---@alias combatTypes
+---|"combat": Default Option. Triggers Combat on ENCOUNTER_START, INSTANCE_ENCOUNTER_ENGAGE_UNIT, UNIT_HEALTH, PLAYER_REGEN_DISABLED
+---|"yell": Triggers Combat on CHAT_MSG_MONSTER_YELL
+---|"say": Triggers Combat on CHAT_MSG_SAY or CHAT_MSG_MONSTER_SAY
+---|"emote": Triggers Combat on CHAT_MSG_EMOTE or CHAT_MSG_MONSTER_EMOTE
+---|"yell_regex": Triggers Combat on CHAT_MSG_MONSTER_YELL using regex matching
+---|"say_regex": Triggers Combat on CHAT_MSG_SAY or CHAT_MSG_MONSTER_SAY using regex matching
+---|"emote_regex": Triggers Combat on CHAT_MSG_EMOTE or CHAT_MSG_MONSTER_EMOTE using regex matching
+---|"combat_yell": Same as combat, but also uses CHAT_MSG_MONSTER_YELL exact matching
+---|"combat_say": Same as combat, but also uses CHAT_MSG_SAY or CHAT_MSG_MONSTER_SAY exact matching
+---|"combat_emote": Same as combat, but also uses CHAT_MSG_EMOTE or CHAT_MSG_MONSTER_EMOTE exact matching
+---|"combat_yellfind": Same as combat, but also uses CHAT_MSG_MONSTER_YELL loose matching
+---|"combat_sayfind": Same as combat, but also uses CHAT_MSG_SAY or CHAT_MSG_MONSTER_SAY loose matching
+---|"combat_emotefind": Same as combat, but also uses CHAT_MSG_EMOTE or CHAT_MSG_MONSTER_EMOTE loose matching
+---|"scenario": Tells mod to treat an entire scenario as combat
+---@param cType combatTypes
 function bossModPrototype:RegisterCombat(cType, ...)
 	if cType then
 		cType = cType:lower()
@@ -8709,6 +8726,7 @@ function bossModPrototype:SetDetectCombatInVehicle(flag)
 	combatInfo.noCombatInVehicle = not flag
 end
 
+---Used to set creature IDs this mod will scan for Boss Health and legacy or backup combat detection methods
 function bossModPrototype:SetCreatureID(...)
 	self.creatureId = ...
 	if select("#", ...) > 1 then
@@ -8736,6 +8754,7 @@ function bossModPrototype:SetCreatureID(...)
 	end
 end
 
+---Used to set Encounter IDs this mod will pass to ENCOUNTER_START/ENCOUNTER_END/BOSS_KILL
 function bossModPrototype:SetEncounterID(...)
 	self.encounterId = ...
 	if select("#", ...) > 1 then
@@ -8954,6 +8973,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	end
 end
 
+---@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "@file-date-integer@" to be auto set by packager
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
 	if not revision or type(revision) == "string" then
