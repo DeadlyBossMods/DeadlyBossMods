@@ -864,14 +864,22 @@ function bossModPrototype:DisablePrivateAuraSounds()
 	self.paSounds = nil
 end
 
+---@param t number
+---@param f function
+---@param ... any?
 function bossModPrototype:Schedule(t, f, ...)
 	return scheduler:Schedule(t, f, self, ...)
 end
 
+---@param f function? If nil, all schedules for this mod are unscheduled
+---@param ... any?
 function bossModPrototype:Unschedule(f, ...)
 	return scheduler:Unschedule(f, self, ...)
 end
 
+---@param t number
+---@param method string
+---@param ... any?
 function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
@@ -882,6 +890,8 @@ function bossModPrototype:ScheduleMethod(t, method, ...)
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
 
+---@param method string
+---@param ... any?
 function bossModPrototype:UnscheduleMethod(method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
