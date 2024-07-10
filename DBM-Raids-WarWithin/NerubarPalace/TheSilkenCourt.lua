@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 451016 438677 452231 441626 450129 441782 450483 438355 443068 451327 442994",
+	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 451016 438677 452231 441626 450129 441782 450483 438355 443068 451327 442994 441791",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 438656 440179 456245 438200 456235",--451611, 440503
 	"SPELL_AURA_APPLIED_DOSE 438218 438200",
@@ -49,6 +49,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(29011))
 mod:AddTimerLine(anubarash)
 local warnPiercingStrike						= mod:NewStackAnnounce(438218, 2, nil, "Tank|Healer", 2)
 local warnCalloftheSwarm						= mod:NewCountAnnounce(438801, 2)
+local warnBurrowedEruption						= mod:NewCountAnnounce(441791, 2)
 local warnImpaled								= mod:NewTargetNoFilterAnnounce(449857, 4)
 local warnEntangled								= mod:NewTargetNoFilterAnnounce(440179, 1)
 
@@ -61,8 +62,9 @@ local yellImpaled								= mod:NewShortYell(449857, nil, false)
 local timerPiercingStrikeCD						= mod:NewCDCountTimer(49, 438218, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, nil, nil, nil, 1)
 local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, nil, nil, nil, 3)
 local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, nil, nil, nil, 3)
-local timerEntangledCD							= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
+--local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
 --mod:AddInfoFrameOption(407919, true)
@@ -125,6 +127,7 @@ local timerSpikeEruptionCD					= mod:NewCDCountTimer(49, 443068, nil, nil, nil, 
 local timerUnleashedSwarmCD					= mod:NewCDCountTimer(49, 442994, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --local timerRagingFuryCD					= mod:NewCDCountTimer(49, 451327, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
 
+mod.vb.burrowedEruptionCount = 0
 mod.vb.piercingCount = 0
 mod.vb.swarmCount = 0--Call of the Swarm and Unleashed Swarm
 mod.vb.chargeCount = 0
@@ -155,6 +158,8 @@ local allTimers = {
 			[439838] = {24.3, 33.2, 33.3},
 			-- Skittering Leap
 			[450045] = {17, 31.5, 28.7, 30.3},
+			-- Burrowed Eruption
+			[441791] = {},
 		},
 		[2] = {
 			-- Call of the Swarm
@@ -215,6 +220,8 @@ local allTimers = {
 			[439838] = {25.0, 36.2},
 			-- Skittering Leap
 			[450045] = {15.6, 30.9, 30.1, 15.0, 15.0},
+			-- Burrowed Eruption
+			[441791] = {},
 		},
 		[2] = {
 			-- Call of the Swarm
@@ -283,6 +290,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
+	self.vb.burrowedEruptionCount = 0
 	self.vb.piercingCount = 0
 	self.vb.swarmCount = 0
 	self.vb.chargeCount = 0
@@ -306,6 +314,7 @@ function mod:OnCombatStart(delay)
 	timerCalloftheSwarmCD:Start(allTimers[savedDifficulty][1][438801][1]-delay, 1)--18.0
 	timerImpalingEruptionCD:Start(allTimers[savedDifficulty][1][440504][1]-delay, 1)--21.1
 	timerRecklessChargeCD:Start(allTimers[savedDifficulty][1][440246][1]-delay, 1)--43.3
+	--timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
 	--Takazj
 	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
@@ -486,6 +495,13 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443068, self.vb.eruptionCount+1)
 		if timer then
 			timerSpikeEruptionCD:Start(timer, self.vb.eruptionCount+1)
+		end
+	elseif spellId == 441791 then
+		self.vb.burrowedEruptionCount = self.vb.burrowedEruptionCount + 1
+		warnBurrowedEruption:Show(self.vb.burrowedEruptionCount)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441791, self.vb.burrowedEruptionCount+1)
+		if timer then
+			timerBurrowedEruptionCD:Start(timer, self.vb.burrowedEruptionCount+1)
 		end
 	elseif spellId == 451327 and self:GetStage(3) then--Raging Fury
 		if self:GetStage(2) then
