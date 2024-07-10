@@ -14,34 +14,35 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 436971 437620 448364 438245 439576 440377 453683 442277 435405",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 436870 437343 447169 447174 440576",
+	"SPELL_AURA_APPLIED 447169 447174 440576",--436870 437343
 	"SPELL_AURA_APPLIED_DOSE 447174 440576",
-	"SPELL_AURA_REMOVED 436870 437343 447169 435405"
+	"SPELL_AURA_REMOVED 447169 435405"--436870 437343
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---NOTE: if they don't make ass a private aura, change yells to also include icons
+--NOTE: They made ass a private aura. Called it :D
 --NOTE: see if https://www.wowhead.com/beta/spell=438153/twilight-massacre can be target scanned off phantom themselves to defeat the private aura
 --TODO: Get the right tank stack swap count
 --TODO, recheck option keys to match BW for weak aura compatability before live
+--TODO, verify queensbane is actually hidden, cause they flagged wrong spellids.
 --[[
 (ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 448364 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
  or ability.id = 435405 and type = "removebuff"
 --]]
-local warnAss									= mod:NewTargetAnnounce(436867, 3)
+--local warnAss									= mod:NewIncomingCountAnnounce(436867, 3)
 local warnDeathMasks							= mod:NewCountAnnounce(448364, 4)
 local warnTwilightMassacre						= mod:NewCountAnnounce(438245, 3, nil, nil, 281001)--Shortname "Massacre"
 local warnChasmalGash							= mod:NewStackAnnounce(440576, 2, nil, "Tank|Healer")
 local warnStarlessNight							= mod:NewCountAnnounce(435414, 3)
 local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 
-local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
-local yellAss									= mod:NewShortYell(436867)
-local yellAssFades								= mod:NewShortFadesYell(436867)
-local yellQueensBane							= mod:NewShortFadesYell(437343)
+--local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
+--local yellAss									= mod:NewShortYell(436867)
+--local yellAssFades							= mod:NewShortFadesYell(436867)
+--local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
 local specWarnNexusDaggers						= mod:NewSpecialWarningDodgeCount(439576, nil, nil, nil, 2, 2)
@@ -60,10 +61,11 @@ local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil
 local timerStarlessNight						= mod:NewBuffActiveTimer(24, 435405, nil, nil, nil, 5)
 
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnAss", 436867, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
+--mod:AddSetIconOption("SetIconOnAss", 436867, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
 mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
+mod:AddPrivateAuraSoundOption(436870, true, 436867, 1)--Assassination Targets
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.assCount = 0
@@ -98,6 +100,7 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(436663, "lineyou", 17, 436671)--Regicide
 	self:EnablePrivateAuraSound(436666, "lineyou", 17, 436671)--Regicide
 	self:EnablePrivateAuraSound(435534, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound(436870, "runout", 2)--Assassination
 	if self:IsMythic() then
 		timerDeathMasksCD:Start(1)
 		if self.Options.NPOnMask then
@@ -174,26 +177,26 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 436870 then
-		warnAss:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() then
-			specWarnAss:Show()
-			specWarnAss:Play("targetyou")
-			yellAss:Yell()
-			yellAssFades:Countdown(spellId, 3)
-		end
-		if self.Options.SetIconOnAss then
-			self:SetIcon(args.destName, self.vb.assIcon)
-		end
-		self.vb.assIcon = self.vb.assIcon + 1
-	elseif spellId == 437343 then
-		if args:IsPlayer() and not self:IsEasy() then
-			yellQueensBane:Countdown(spellId)
-		end
-	elseif spellId == 447169 then
+	if spellId == 447169 then
 		if self.Options.NPOnMask then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	--elseif spellId == 437343 then
+	--	if args:IsPlayer() and not self:IsEasy() then
+	--		yellQueensBane:Countdown(spellId)
+	--	end
+	--elseif spellId == 436870 then
+	--	warnAss:CombinedShow(0.5, args.destName)
+	--	if args:IsPlayer() then
+	--		specWarnAss:Show()
+	--		specWarnAss:Play("targetyou")
+	--		yellAss:Yell()
+	--		yellAssFades:Countdown(spellId, 3)
+	--	end
+	--	if self.Options.SetIconOnAss then
+	--		self:SetIcon(args.destName, self.vb.assIcon)
+	--	end
+	--	self.vb.assIcon = self.vb.assIcon + 1
 	elseif spellId == 447174 then
 		local amount = args.amount or 1
 		--Only warn death cloak aoe if it's at least 1 million damage per second
@@ -225,21 +228,21 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 436870 then
-		if args:IsPlayer() then
-			yellAssFades:Cancel()
-		end
-		if self.Options.SetIconOnAss then
-			self:SetIcon(args.destName, 0)
-		end
-	elseif spellId == 437343 then
-		if args:IsPlayer() then
-			yellQueensBane:Cancel()
-		end
-	elseif spellId == 447169 then
+	if spellId == 447169 then
 		if self.Options.NPOnMask then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	--elseif spellId == 437343 then
+	--	if args:IsPlayer() then
+	--		yellQueensBane:Cancel()
+	--	end
+	--elseif spellId == 436870 then
+	--	if args:IsPlayer() then
+	--		yellAssFades:Cancel()
+	--	end
+	--	if self.Options.SetIconOnAss then
+	--		self:SetIcon(args.destName, 0)
+	--	end
 	elseif spellId == 435405 then
 		self:SetStage(1)
 --		self.vb.assCount = 0--Doesn't reset, it's linked to returning to phase 1 after starry
