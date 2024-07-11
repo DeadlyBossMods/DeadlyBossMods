@@ -1075,14 +1075,15 @@ function bossModPrototype:NewStageCountTimer(...)
 	return newTimer(self, "stagecount", ...)
 end
 
---Used mainly for compat with BW/LW timers where they use "stages" but then use the spell/journal descriptor instead of "stage d"
---Basically, it's a generic spellName timer for "stages" callback
+---Used mainly for compat with BW/LW timers where they use "stages" but then use the spell/journal descriptor instead of "stage d"
+---<br>Basically, it's a generic spellName timer for "stages" callback
 ---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 function bossModPrototype:NewStageContextTimer(...)
 	return newTimer(self, "stagecontext", ...)
 end
 
 ---Same as NewStageContextTimer, with count
+---<br>Basically, it's a generic spellName timer for "stages" callback
 ---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 function bossModPrototype:NewStageContextCountTimer(...)
 	return newTimer(self, "stagecontextcount", ...)
