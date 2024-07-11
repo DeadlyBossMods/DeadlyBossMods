@@ -81,10 +81,10 @@ local fakeBWVersion, fakeBWHash = 341, "51c5bf8"--341.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.53 alpha"--Core version
+DBM.DisplayVersion = "10.2.54 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 7, 9, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = private.isClassic and 13 or 12--When this is incremented, trigger force disable regardless of major patch
+DBM.ReleaseRevision = releaseDate(2024, 7, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+PForceDisable = (private.isWrath or private.isClassic) and 13 or 12--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -536,8 +536,6 @@ do
 		end
 	end
 end
--- this is not technically a lib and instead a standalone addon but the api is available via LibStub
-local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -604,6 +602,9 @@ do
 		end,
 	}
 end
+
+-- this is not technically a lib and instead a standalone addon but the api is available via LibStub
+local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
 
 ---------------------------------
 --  General (local) functions  --
@@ -6351,9 +6352,10 @@ do
 			if MAX_TALENT_TABS then
 				for i = 1, MAX_TALENT_TABS do
 					if i <= numTabs then
-						local _, _, _, _, pointsSpent = GetTalentTabInfo(i)--specID, specName will be used in next update once era spec table rebuilt
-						if pointsSpent > highestPointsSpent then
-							highestPointsSpent = pointsSpent
+						local _, _, wrathPointsSpent, _, pointsSpent = GetTalentTabInfo(i)--specID, specName will be used in next update once era spec table rebuilt
+						local usedPoints = private.isWrath and wrathPointsSpent or pointsSpent
+						if usedPoints > highestPointsSpent then
+							highestPointsSpent = usedPoints
 							currentSpecGroup = i
 							currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
 							currentSpecName = currentSpecID

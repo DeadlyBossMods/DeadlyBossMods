@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 444687 439789 455373 439784 439795 439811 454989 452806",
+	"SPELL_CAST_START 444687 439789 455373 439784 439795 439811 454989 452806 456853",
 	"SPELL_AURA_APPLIED 458067",
 	"SPELL_AURA_APPLIED_DOSE 458067"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -38,7 +38,7 @@ local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
 local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
 local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, nil, 2, 2)
---local yellWebReave								= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
+--local yellWebReave							= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
@@ -50,6 +50,7 @@ local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil,
 local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEnvelopingWebsCD						= mod:NewAITimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Webs"
+local timerMovementCD							= mod:NewStageContextCountTimer(49, 334371, nil, nil, nil, 6, 178717)
 
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
 mod:AddPrivateAuraSoundOption(455284, true, 455373, 1)--Infested Spawn target
@@ -62,22 +63,25 @@ mod.vb.strandsCount = 0
 mod.vb.reaveCount = 0
 mod.vb.sprayCount = 0
 mod.vb.envelopingCount = 0
+mod.vb.movementCount = 0
 
 local savedDifficulty = "heroic"
 local allTimers = {
 	["normal"] = {
 		--Erosive Spray
-		[439811] = {},
+		[439811] = {3.0, 31.4, 47.0, 59.7, 47.0, 59.1, 47.1, 61.1},
 		--Infested Spawn
-		[455373] = {},
+		[455373] = {62.4, 85.3, 80.5, 52.9, 80.8},
 		--Rolling Acid
-		[439789] = {},
+		[439789] = {43.4, 81.2, 52.9, 100.2},
 		--Savage Assault
-		[444687] = {},
+		[444687] = {10.9, 15.6, 23.5, 7.8, 15.7, 36.2, 7.8, 15.7, 23.5, 7.8, 15.7, 35.5, 7.9, 15.7, 23.5, 7.8, 15.7, 35.4, 7.8, 15.7, 23.5, 7.8},
 		--Spinneret's Strands
-		[439784] = {},
+		[439784] = {14.9, 52.9, 100.9, 84.7, 80.4},
 		--Web Reave
 		[439795] = {},
+		--Caustic Hail
+		[456853] = {90.0, 106.8, 106.1},
 	},
 	["heroic"] = {
 		--Erosive Spray
@@ -92,20 +96,24 @@ local allTimers = {
 		[439784] = {14.2, 27.1, 20.2, 96.4, 81.8, 78.3, 30.3, 19.7, 79.3, 121.1},
 		--Web Reave
 		[439795] = {106.3, 101.6, 103.6, 104.0, 101.9},
+		--Caustic Hail
+		[456853] = {86.4, 102, 102.2, 103.5, 104.0},
 	},
 	["mythic"] = {
 		--Erosive Spray
-		[439811] = {},
+		[439811] = {2.9, 29.6, 44.4, 54.2, 44.4, 49.1, 44.4, 51.3, 44.4, 48.9, 44.4, 49.5, 44.4, 78.4},
 		--Infested Spawn
-		[455373] = {},
+		[455373] = {39.8, 78.9, 24.2, 69.4, 90.1, 25.2, 68.1, 29.7, 69.7},
 		--Rolling Acid
-		[439789] = {},
+		[439789] = {16.0, 30.3, 112.7, 49.1, 29.7, 14.7, 156.3, 44.4, 93.9, 78.4},--156 is probably 150
 		--Savage Assault
-		[444687] = {},
+		[444687] = {10.3, 14.8, 23.8, 9.0, 11.7, 39.4, 14.8, 23.7, 5.9, 14.8, 3.7, 30.6, 14.8, 23.1, 6.4, 14.8, 3.7, 32.7, 14.8, 23.6, 6.0, 14.8, 3.7, 30.4, 14.8, 23.7, 5.9, 14.8, 3.7, 31.0, 14.8, 23.1, 6.5, 14.8, 3.7, 59.9, 14.8},
 		--Spinneret's Strands
-		[439784] = {},
+		[439784] = {19.6, 45.0, 73.4, 93.5, 76.0, 38.9, 93.4, 49.4, 25.3, 97.6},--One of these possibly 6 seconds off
 		--Web Reave
-		[439795] = {},
+		[439795] = {51.1, 50.4, 93.6, 95.7, 93.4, 93.9, 122.8},--One of these might be 6 seconds off
+		--Caustic Hail
+		[456853] = {86.3, 98.6, 93.6, 95.7, 93.4, 122.8},
 	},
 }
 
@@ -117,19 +125,23 @@ function mod:OnCombatStart(delay)
 	self.vb.reaveCount = 0
 	self.vb.sprayCount = 0
 	self.vb.envelopingCount = 0
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
+	self.vb.movementCount = 0
+	if self:IsMythic() then
+		savedDifficulty = "mythic"
+	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
 	timerSavageAssaultCD:Start(allTimers[savedDifficulty][444687][1]-delay, 1)
 	timerRollingAcidCD:Start(allTimers[savedDifficulty][439789][1]-delay, 1)
 	timerInfestedSpawnCD:Start(allTimers[savedDifficulty][455373][1]-delay, 1)
 	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][439784][1]-delay, 1)
-	timerWebReaveCD:Start(allTimers[savedDifficulty][439795][1]-delay, 1)
 	timerErosiveSprayCD:Start(allTimers[savedDifficulty][439811][1]-delay, 1)
+	timerMovementCD:Start(allTimers[savedDifficulty][456853][1]-delay, 1)
+	if self:IsHard() then
+		timerWebReaveCD:Start(allTimers[savedDifficulty][439795][1]-delay, 1)
+	end
 	if self:IsMythic() then
 		timerEnvelopingWebsCD:Start(1)
 	end
@@ -142,13 +154,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnTimerRecovery()
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
+	if self:IsMythic() then
+		savedDifficulty = "mythic"
+	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
-	--	savedDifficulty = "normal"
-	--end
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -212,6 +224,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnAcidEruption:Play("kickcast")
 		else
 			warnAcidEruption:Show()
+		end
+	elseif spellId == 456853 then
+		self.vb.movementCount = self.vb.movementCount + 1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.movementCount+1)
+		if timer then
+			timerMovementCD:Start(timer, self.vb.movementCount+1)
 		end
 	end
 end
