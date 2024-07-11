@@ -536,8 +536,6 @@ do
 		end
 	end
 end
--- this is not technically a lib and instead a standalone addon but the api is available via LibStub
-local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -604,6 +602,9 @@ do
 		end,
 	}
 end
+
+-- this is not technically a lib and instead a standalone addon but the api is available via LibStub
+local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
 
 ---------------------------------
 --  General (local) functions  --
