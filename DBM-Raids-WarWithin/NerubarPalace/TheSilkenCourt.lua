@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(217489, 217491)--Anub'arash, Skeinspinner Takazj
 mod:SetEncounterID(2921)
---mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20240628000000)
+mod:SetHotfixNoticeRev(20240711000000)
 mod:SetMinSyncRevision(20240628000000)
 mod.respawnTime = 29
 
@@ -15,6 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 451016 438677 452231 441626 450129 441782 450483 438355 443068 451327 442994 441791",
 --	"SPELL_CAST_SUCCESS",
+	"SPELL_SUMMON 438249",
 	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 438656 440179 456245 438200 456235",--451611, 440503
 	"SPELL_AURA_APPLIED_DOSE 438218 438200",
 	"SPELL_AURA_REMOVED 455080 450980 451277 440001"--451611, 440503, 438656
@@ -67,9 +68,7 @@ local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, nil, nil, ni
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
---mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
---mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
+mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {6, 7, 8})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")
@@ -138,8 +137,10 @@ mod.vb.leapCount = 0--Skittering Leap & Void Step
 mod.vb.stingingCount = 0
 mod.vb.strandsCount = 0
 mod.vb.cataCount = 0
+mod.vb.scarabIcon = 8
 --mod.vb.rageCount = 0--Only cast once?
 
+local castsPerGUID = {}
 local savedDifficulty = "heroic"
 local allTimers = {
 	["normal"] = {
@@ -148,6 +149,8 @@ local allTimers = {
 			[438218] = {18, 19.9, 20, 22.9, 38.0},
 			-- Call of the Swarm
 			[438801] = {13.1, 64.8},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {40.1, 59.9},
 			-- Reckless Charge
 			[440246] = {43.9, 59.9},
 			-- Impaling Eruption
@@ -158,8 +161,6 @@ local allTimers = {
 			[439838] = {24.3, 33.2, 33.3},
 			-- Skittering Leap
 			[450045] = {17, 31.5, 28.7, 30.3},
-			-- Burrowed Eruption
-			[441791] = {},
 		},
 		[2] = {
 			-- Call of the Swarm
@@ -184,6 +185,8 @@ local allTimers = {
 		[3] = {
 			-- Piercing Strike
 			[438218] = {25.0, 23.0, 40, 22.9, 56.0, 20},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {55.0, 75},
 			-- Reckless Charge
 			[440246] = {58.8, 75},
 			-- Stinging Swarm
@@ -210,6 +213,8 @@ local allTimers = {
 			[438218] = {15.1, 19.9, 27.0, 19.0},
 			-- Call of the Swarm
 			[438801] = {18.0, 65.0},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {40, 59.5},
 			-- Reckless Charge
 			[440246] = {43.3, 59.5},
 			-- Impaling Eruption
@@ -220,8 +225,6 @@ local allTimers = {
 			[439838] = {25.0, 36.2},
 			-- Skittering Leap
 			[450045] = {15.6, 30.9, 30.1, 15.0, 15.0},
-			-- Burrowed Eruption
-			[441791] = {},
 		},
 		[2] = {
 			-- Call of the Swarm
@@ -246,6 +249,8 @@ local allTimers = {
 		[3] = {
 			-- Piercing Strike
 			[438218] = {25.0, 20.0, 30.0, 21.0, 20.0, 20.0, 20.0},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {55.2, 108.8},
 			-- Reckless Charge
 			[440246] = {59.0, 108.8},
 			-- Stinging Swarm
@@ -265,7 +270,71 @@ local allTimers = {
 			-- Unleashed Swarm
 			[442994] = {30.0, 89.0},
 		}
-	}
+	},
+	["mythic"] = {
+		[1] = {
+			-- Piercing Strike
+			[438218] = {15.0, 23.0, 25.0, 24.0},
+			-- Call of the Swarm
+			[438801] = {23.0, 50.0},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {40.0, 59.9},
+			-- Reckless Charge
+			[440246] = {43.0, 59.9},
+			-- Impaling Eruption
+			[440504] = {8.0, 24.0, 25.0, 23.0},
+			-- Venomous Rain
+			[438343] = {15.2, 41.9, 33.2},
+			-- Web Bomb
+			[439838] = {31.4, 32.9, 28.1},
+			-- Skittering Leap
+			[450045] = {19.3, 27.3, 61.1},
+		},
+		[2] = {
+			-- Call of the Swarm
+			[438801] = {0},
+			-- Piercing Strike
+			[438218] = {0},
+			-- Impaling Eruption
+			[440504] = {0},
+			-- Stinging Swarm
+			[438677] = {0},
+			-- Web Vortex
+			[441626] = {0},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			-- Entropic Desolation
+			[450129] = {0},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			-- Strands of Reality
+			[441782] = {0},
+			-- Void Step
+			[450483] = {0},
+			-- Cataclysmic Entropy
+			[438355] = {0},
+		},
+		[3] = {
+			-- Piercing Strike
+			[438218] = {0},
+			-- Burrowed Eruption (precursor to Reckless Charge)
+			[441791] = {0},
+			-- Reckless Charge
+			[440246] = {0},
+			-- Stinging Swarm
+			[438677] = {0},
+			-- Web Vortex
+			[441626] = {0},
+			-- Entropic Desolation
+			[450129] = {0},
+			-- Strands of Reality
+			[441782] = {0},
+			-- Void Step
+			[450483] = {0},
+			-- Cataclysmic Entropy
+			[438355] = {0},
+			-- Spike Eruption
+			[443068] = {0},
+			-- Unleashed Swarm
+			[442994] = {0},
+		}
+	},
 }
 
 local function checkSkippedWebVortex(self)
@@ -319,7 +388,7 @@ function mod:OnCombatStart(delay)
 	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
-	timerVoidAscensionCD:Start(self:IsEasy() and 131 or 126.6, 1.5)
+	timerVoidAscensionCD:Start(self:IsHeroic() and 126.6 or 131, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
 	if self.Options.NPAuraOnPerseverance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -357,6 +426,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnPiercingStrike:Play("defensive")
 		end
 	elseif spellId == 438801 then
+		self.vb.scarabIcon = 8
 		self.vb.swarmCount = self.vb.swarmCount + 1
 		warnCalloftheSwarm:Show(self.vb.swarmCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438801, self.vb.swarmCount+1)
@@ -535,14 +605,15 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 422277 then
-
+	if spellId == 438249 then
+		if self.Options.SetIconOnScarab then
+			self:ScanForMobs(args.destGUID, 2, self.vb.scarabIcon, 1, nil, 12, "SetIconOnScarab")
+		end
+		self.vb.scarabIcon = self.vb.scarabIcon - 1
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -706,16 +777,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
---[[
---https://www.wowhead.com/beta/npc=218884/shattershell-scarab
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 209800 then--cycle-warden
-
-	end
-end
 --]]
 
 --[[
