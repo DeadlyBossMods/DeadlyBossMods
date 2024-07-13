@@ -140,7 +140,6 @@ mod.vb.cataCount = 0
 mod.vb.scarabIcon = 8
 --mod.vb.rageCount = 0--Only cast once?
 
-local castsPerGUID = {}
 local savedDifficulty = "heroic"
 local allTimers = {
 	["normal"] = {
@@ -292,47 +291,47 @@ local allTimers = {
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {0},
+			[438801] = {20.0, 48.0},
 			-- Piercing Strike
-			[438218] = {0},
+			[438218] = {15.0, 19.0, 20.0, 23.0, 19.0, 24.0},
 			-- Impaling Eruption
-			[440504] = {0},
+			[440504] = {9.0, 35.0, 35.0, 35.0},
 			-- Stinging Swarm
-			[438677] = {0},
+			[438677] = {36.0, 37.0},
 			-- Web Vortex
-			[441626] = {0},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[441626] = {32.7, 2.5, 34.6, 2.5, 33.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
 			-- Entropic Desolation
-			[450129] = {0},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[450129] = {38.0, 37.1},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
 			-- Strands of Reality
-			[441782] = {0},
+			[441782] = {14.1, 32.2, 36.1},
 			-- Void Step
-			[450483] = {0},
+			[450483] = {52.8, 26.6, 23.7},
 			-- Cataclysmic Entropy
-			[438355] = {0},
+			[438355] = {55.8, 61.3},
 		},
 		[3] = {
 			-- Piercing Strike
-			[438218] = {0},
+			[438218] = {26.0, 20.0, 20.0, 34.0, 22.0, 21.0, 20.0},
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {0},
+			[441791] = {81.0, 97.0},
 			-- Reckless Charge
-			[440246] = {0},
+			[440246] = {84.4, 96.6},
 			-- Stinging Swarm
-			[438677] = {0},
+			[438677] = {63.0, 77.0},
 			-- Web Vortex
-			[441626] = {0},
+			[441626] = {20.2, 2.5, 68.5, 2.5, 73.9, 2.5},
 			-- Entropic Desolation
-			[450129] = {0},
+			[450129] = {25.5, 71.0, 76.4},
 			-- Strands of Reality
-			[441782] = {0},
+			[441782] = {42.8, 38.8, 48.2, 47.2},
 			-- Void Step
-			[450483] = {0},
+			[450483] = {37.8, 50.4, 24.6, 49.7, 23.1, 3.0},
 			-- Cataclysmic Entropy
-			[438355] = {0},
+			[438355] = {115.8, 75.8},
 			-- Spike Eruption
-			[443068] = {0},
+			[443068] = {23.0, 37.0, 37.0, 37.0, 37.0},
 			-- Unleashed Swarm
-			[442994] = {0},
+			[442994] = {30.0, 80.0},
 		}
 	},
 }

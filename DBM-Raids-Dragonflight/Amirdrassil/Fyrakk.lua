@@ -33,7 +33,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 417807 and type = "applydebuff"
 --]]
 --TODO, tank swap stacks/when to taunt in stage 3, or maybe periods of time it shoudln't happen on mythic (if holding seed and shit going on, don't distract with taunt warning type deal)
---TODO, more common locals/short names applied to mod?
 --General
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
