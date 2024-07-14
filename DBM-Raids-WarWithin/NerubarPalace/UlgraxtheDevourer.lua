@@ -252,7 +252,7 @@ end
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
 		if targetName ~= UnitName("player") then
-			specWarnBrutalLashingsTarget:Show(self.vb.lashingsCount)
+			specWarnBrutalLashingsTarget:Show()
 			specWarnBrutalLashingsTarget:Play("helpsoak")
 		end
 	end

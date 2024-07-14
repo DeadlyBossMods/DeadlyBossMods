@@ -110,6 +110,7 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 		instanceDifficultyBylevel[109] = {50, 3} -- Sunken Temple level up raid
+		instanceDifficultyBylevel[2784] = {60, 2} -- Demon Fall Canyon dungeon
 	end
 end
 

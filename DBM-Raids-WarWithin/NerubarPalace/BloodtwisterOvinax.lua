@@ -32,9 +32,10 @@ mod:RegisterEventsInCombat(
 --TODO, add https://www.wowhead.com/beta/spell=458212/necrotic-wound stacks?
 --TODO, recheck option keys to match BW for weak aura compatability before live
 --[[
-(ability.id = 442526 or ability.id = 442432 or ability.id = 443003 or ability.id = 443005 or ability.id = 446700) and type = "begincast"
+(ability.id = 442526 or ability.id = 442432 or ability.id = 443003 or ability.id = 443005) and type = "begincast"
 or ability.id = 446349 and type = "applydebuff"
 or ability.id = 442432 and type = "removebuff"
+or ability.id = 446700 and type = "begincast"
 --]]
 local warnExperimentalDosage					= mod:NewTargetCountAnnounce(442526, 3, nil, nil, 143340)--Shortname "Injection"
 
@@ -64,7 +65,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(28999))
 mod:AddNamePlateOption("NPAuraOnRavenous", 446690, true)
 --Blood Parasite
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29003))
-local specWarnFixate					= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 2)
+local specWarnFixate							= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 2)
 
 mod:AddNamePlateOption("NPAuraOnAccelerated", 442263, true)
 mod:AddNamePlateOption("NPFixate", 442250, true)
@@ -139,7 +140,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)--20
 	elseif spellId == 446700 then
-		timerPoisonBurstCD:Start(nil, args.sourceGUID)
+		if not self:IsMythic() then--On mythic, they're basically change cast after spell lockout
+			timerPoisonBurstCD:Start(16.7, args.sourceGUID)
+		end
 		if self:CheckInterruptFilter(args.sourceGUID, nil, true) then
 			specWarnPoisonBurst:Show(args.sourceName)
 			specWarnPoisonBurst:Play("kickcast")

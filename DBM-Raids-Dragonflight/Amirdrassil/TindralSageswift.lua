@@ -27,8 +27,6 @@ mod:RegisterEventsInCombat(
  or (ability.id = 424180 or ability.id = 420540 or ability.id = 422115 or ability.id = 425582 or ability.id = 424140) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
  or ability.id = 421603
 --]]
---TODO, https://www.wowhead.com/ptr-2/spell=425888/igniting-growth ?
---TODO, review dream essence for spam
 --General
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
