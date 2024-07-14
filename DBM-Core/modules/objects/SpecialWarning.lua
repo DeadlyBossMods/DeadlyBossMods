@@ -325,6 +325,7 @@ local specTypeFilterTable = {
 	["stack"] = "stack",
 	["switch"] = "switch",
 	["switchcount"] = "switch",
+	["switchcustom"] = "switch",
 	["adds"] = "switch",
 	["addscount"] = "switch",
 	["addscustom"] = "switch",
@@ -344,8 +345,6 @@ local specTypeFilterTable = {
 ---@field Show fun(self: SpecAnnounce2strnum, arg1: string, arg2: number)
 ---@class SpecAnnounce2numstr: SpecialWarning
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
----@class SpecAnnounce2strstr: SpecialWarning
----@field Show fun(self: SpecAnnounce2strstr, arg1: string, arg2: string)
 
 function specialWarningPrototype:Show(...)
 	--Check if option for this warning is even enabled
@@ -730,7 +729,7 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 	if optionId then
 		obj.voiceOptionId = hasVoice and "Voice" .. optionId or nil
 		obj.option = optionId .. (optionVersion or "")
-		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID, nil, waCustomName)
+		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", spellID, nil, waCustomName)
 	end
 	tinsert(self.specwarns, obj)
 	return obj
@@ -804,22 +803,7 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		end
 	end
 	if obj.option then
-		local catType = "announce"--Default to General announce
-		if self.NoSortAnnounce then--ALL special announce objects will be assigned "specialannounce", usually for mods that sort by phase instead
-			catType = "specialannounce"
-		else
-			--Directly affects another target (boss or player) that you need to know about
-			if announceType == "target" or announceType == "targetcount" or announceType == "close" or announceType == "reflect" then
-				catType = "announceother"
-			--Directly affects you
-			elseif announceType == "you" or announceType == "youcount" or announceType == "youpos" or announceType == "move" or announceType == "dodge" or announceType == "dodgecount" or announceType == "moveaway" or announceType == "moveawaycount" or announceType == "keepmove" or announceType == "stopmove" or announceType == "run" or announceType == "runcount" or announceType == "stack" or announceType == "moveto" or announceType == "soak" or announceType == "soakcount" or announceType == "soakpos" then
-				catType = "announcepersonal"
-			--Things you have to do to fulfil your role
-			elseif announceType == "taunt" or announceType == "dispel" or announceType == "interrupt" or announceType == "interruptcount" or announceType == "switch" or announceType == "switchcount" then
-				catType = "announcerole"
-			end
-		end
-		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType)
+		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", spellId, announceType)
 	end
 	obj.voiceOptionId = hasVoice and "Voice" .. spellId or nil
 	tinsert(self.specwarns, obj)

@@ -648,19 +648,12 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 		mt
 	)
 	test:Trace(self, "NewAnnounce", obj, announceType)
-	local catType = "announce"--Default to General announce
-	if not self.NoSortAnnounce then--ALL announce objects will be assigned "announce", usually for mods that sort by phase instead
-		--Change if Personal or Other
-		if announceType == "target" or announceType == "targetcount" or announceType == "stack" then
-			catType = "announceother"
-		end
-	end
 	if optionName then
 		obj.option = optionName
-		self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)
 	elseif optionName ~= false then
-		obj.option = catType .. spellId .. announceType .. (optionVersion or "")
-		self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
+		obj.option = "announce" .. spellId .. announceType .. (optionVersion or "")
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)
 		if noFilter and announceType == "target" then
 			self.localization.options[obj.option] = L.AUTO_ANNOUNCE_OPTIONS["targetNF"]:format(spellId)
 		else
