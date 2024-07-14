@@ -141,7 +141,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25816))
 local warnFuse								= mod:NewStackAnnounce(389878, 2, nil, "Tank|Healer")
 local warnStormBreak						= mod:NewCountAnnounce(389870, 3, nil, nil, 7794)--Shortname Teleport
 
-local specWarnBallLightning					= mod:NewSpecialWarningDodge(385068, nil, nil, nil, 2, 2)
+local specWarnBallLightning					= mod:NewSpecialWarningDodgeCount(385068, nil, nil, nil, 2, 2)
 
 local timerLightningStrikeCD				= mod:NewCDTimer(31.6, 376126, nil, nil, nil, 3)
 local timerStormBreakCD						= mod:NewCDCountTimer(23.1, 389870, 7794, nil, nil, 3)
@@ -662,7 +662,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 397387 then
-		specWarnFlameShield:Show(args.destName)
+		specWarnFlameShield:Show()
 		specWarnFlameShield:Play("targetchange")
 		--Time between casts not known yet, fix when groups suck really bad
 		--timerFlameShieldCD:Start(nil, castsPerGUID[args.sourceGUID])

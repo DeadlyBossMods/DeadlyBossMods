@@ -184,7 +184,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 401258 then
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnHeavyCudgel:Show(self.vb.cudgelCount+1)
+			specWarnHeavyCudgel:Show()
 			specWarnHeavyCudgel:Play("defensive")
 		end
 		--Timers moved to success event

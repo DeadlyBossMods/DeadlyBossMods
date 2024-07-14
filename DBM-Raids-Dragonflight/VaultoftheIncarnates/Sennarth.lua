@@ -51,7 +51,7 @@ local specWarnEnvelopingWebs					= mod:NewSpecialWarningYouPos(372082, nil, nil,
 local yellEnvelopingWebs						= mod:NewShortPosYell(372082)
 local yellEnvelopingWebsFades					= mod:NewIconFadesYell(372082)
 local specWarnStickyWebbing						= mod:NewSpecialWarningStack(372030, nil, 3, nil, nil, 1, 6)
-local specWarnGossamerBurst						= mod:NewSpecialWarningSpell(373405, nil, nil, nil, 2, 12)
+local specWarnGossamerBurst						= mod:NewSpecialWarningCount(373405, nil, nil, nil, 2, 12)
 local specWarnWebBlast							= mod:NewSpecialWarningTaunt(385083, nil, nil, nil, 1, 2)
 local specWarnFreezingBreath					= mod:NewSpecialWarningDodge(374112, nil, nil, nil, 1, 2)
 
@@ -74,7 +74,7 @@ local warnSuffocatinWebs							= mod:NewTargetNoFilterAnnounce(373048, 3)
 local specWarnSuffocatingWebs						= mod:NewSpecialWarningYouPos(373048, nil, nil, nil, 1, 2)
 local yellSuffocatingWebs							= mod:NewShortPosYell(373048)
 local yellSuffocatingWebsFades						= mod:NewIconFadesYell(373048)
-local specWarnRepellingBurst						= mod:NewSpecialWarningSpell(371983, nil, nil, nil, 2, 12)
+local specWarnRepellingBurst						= mod:NewSpecialWarningCount(371983, nil, nil, nil, 2, 12)
 
 local timerSuffocatingWebsCD						= mod:NewCDCountTimer(38.8, 373048, nil, nil, nil, 3)--38-46
 local timerRepellingBurstCD							= mod:NewCDCountTimer(33.9, 371983, nil, nil, nil, 2)--33-37 (unknown on normal
