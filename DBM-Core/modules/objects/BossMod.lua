@@ -95,7 +95,6 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 			inCombat = false,
 			isTrashMod = false,
 			isDummyMod = false,
-			NoSortAnnounce = false
 		},
 		mt
 	)
