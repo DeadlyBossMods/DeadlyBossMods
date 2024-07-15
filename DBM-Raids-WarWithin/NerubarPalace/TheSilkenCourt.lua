@@ -371,7 +371,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cataCount = 0
 	--self.vb.rageCount = 0
 	if self:IsMythic() then
-		savedDifficulty = "heroic"--TEMP?
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
@@ -404,7 +404,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		savedDifficulty = "heroic"--TEMP?
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
