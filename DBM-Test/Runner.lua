@@ -390,6 +390,9 @@ function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid,
 		local auraType, amount = ...
 		self.Mocks:ApplyUnitAura(dstName, dstGuid, spellId, spellName, auraType, amount)
 	end
+	if subEvent == "SPELL_CAST_START" and srcGuid and srcName then
+		self.Mocks:LearnGuidNameMapping(srcGuid, srcName)
+	end
 end
 
 local fakeUnitEventFrame = CreateFrame("Frame")

@@ -97,29 +97,53 @@ function mocks.DBMGetRaidUnitId(_, name)
 	return "fakeunitid-name-" .. name
 end
 
+-- Boss target reconstruction
 local bosses = {}
+local unitTargets = {}
+local guids = {}
+
+-- Used by target scanner to get unit ID for a given guid
 function mocks.DBMGetUnitIdFromGUID(_, guid, scanOnlyBoss)
+	-- Since we primarily scan bosses this will return a boss unit id in retail
+	-- But for classic we'll end up with a lot of fakeunitid-guid-* ids
 	return bosses[guid] and bosses[guid].uId or not scanOnlyBoss and "fakeunitid-guid-" .. guid
 end
 
+-- Triggered by INSTANCE_ENCOUNTER_ENGAGE_UNIT to learn boss unit IDs and GUIDs
 function mocks:UpdateBoss(uId, name, guid, canAttack, exists, visible)
 	local boss = {uId = uId, name = name, guid = guid, canAttack = canAttack, exists = exists, visible = visible}
 	bosses[guid] = boss
 	bosses[uId] = boss
 end
 
-local unitTargets = {}
+-- Triggered by UNIT_TARGET events that give us a unit ID and names
 function mocks:UpdateTarget(uId, name, target)
-	unitTargets["fakeunit-name" .. name] = target
+	unitTargets["fakeunitid-name-" .. name] = target
 	unitTargets[uId] = target
 end
 
+-- Triggered by SPELL_CAST_START events to learn names of creatures by GUID.
+-- This is useful in classic where we often end up with GUIDs without any further information due to lack of IEEU events and boss unit ids
+function mocks:LearnGuidNameMapping(guid, name)
+	guids[guid] = name
+end
+
+-- Used by target scanner
 function mocks.DBMGetUnitFullName(_, uId)
 	if not uId then return end
 	local base = uId:match("(.-)target$")
-	if base then
-		return unitTargets[base]
+	if base then -- target scanner use
+		-- In retail this is likely to be a boss unit id from DBMGetUnitIdFromGUID above, very convenient because we get UNIT_TARGET events for these
+		if unitTargets[base] then
+			return unitTargets[base]
+		end
+		-- However, in classic this will be a fakeunitid-guid-*
+		local guid = base:match("^fakeunitid%-guid%-(.*)")
+		if guid and guids[guid] then
+			return unitTargets["fakeunitid-name-" .. guids[guid]]
+		end
 	end
+	-- Generic use case
 	local fromFakeId = uId:match("fakeunitid%-name%-(.*)")
 	return fromFakeId or bosses[uId] and bosses[uId].name
 end
