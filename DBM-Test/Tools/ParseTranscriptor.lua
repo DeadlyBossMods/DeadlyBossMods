@@ -381,7 +381,7 @@ local function transcribeCleu(rawParams)
 end
 
 local function transcribeEvent(event, params)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
@@ -434,7 +434,7 @@ local function buildAnonTable()
 	-- TODO: actually build the anonymization table here, currently this is just used to get info about the logging player
 	for i = firstLog, lastLog do -- do we want to use the entire log or just the segment we are looking at? probably saver to restrict to the segment
 		local line = log.total[i]
-		local guid, name = line:match("^<[%d.]+ [^>]+> %[CLEU%] SPELL_[^#]+#([^#]+)#([^#]+)")
+		local guid, name = line:match("^<[%d.]+ [^>]+> %[CLEU%] SPELL_[^#]+##?%d*#?(Player%-[^#]+)#([^#]+)")
 		-- grab GUID of logging player, easer to do here than in getMetadataFromLog above because above we grab it from UCS which doesn't have GUIDs
 		if name == playerName then
 			playerGuid = guid
@@ -521,7 +521,7 @@ else
 end
 
 if args["show-ignore-candidates"] then
-	print("Potentially ignoreable creature IDs (healed by players)")
+	print("Potentially ignoreable creature IDs (healed by players):")
 	for cid, name in pairs(seenFriendlyCids) do
 		print(cid .. ", -- " .. name)
 	end
