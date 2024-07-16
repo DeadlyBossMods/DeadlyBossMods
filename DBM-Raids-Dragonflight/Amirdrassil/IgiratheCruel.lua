@@ -111,8 +111,8 @@ function mod:OnCombatStart(delay)
 		timerMarkedforTormentCD:Start(45.8-delay, 1)
 		berserkTimer:Start(420-delay)--430 if a specific weapon combo is done 3rd
 	else
-		timerBlisteringSpearCD:Start(10.6-delay, 1)
-		timerTwistingBladeCD:Start(4.5-delay, 1)
+		timerBlisteringSpearCD:Start(10.1-delay, 1)
+		timerTwistingBladeCD:Start(4-delay, 1)
 		timerMarkedforTormentCD:Start(44.7-delay, 1)
 		berserkTimer:Start(600-delay)
 	end
@@ -274,6 +274,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 422961 then--Torment Beginning
 		tormentOverTime = GetTime() + 20--Expected duration
 		timerMarkedforTorment:Start()
+		--Precent errors during stutter cast
+		timerBlisteringSpearCD:Stop()
+		timerTwistingBladeCD:Stop()
+		timerMarkedforTormentCD:Stop()
 		--Timers started in applied instead of removed, so they don't need adjusting later in LFR due to overtime
 		if self:IsHard() and self.vb.tormentCount >= 4 then
 --			timerTwistingBladeCD:Start(self:IsMythic() and 138.8 or 30.9, self.vb.TwistingTotal+1)--Mythic twisted not seen yet
@@ -337,7 +341,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 415020 then--Sword Stance
 		self.vb.smashingCount = 0
 		warnSmashingVisceraSoon:Show()
-		local initialTimer = self:IsLFR() and 24.7 or 19.9
+		local initialTimer = self:IsLFR() and 23.7 or 19.9
 		local adjustedTimer = self:IsLFR() and (initialTimer - tormentOverTime) or initialTimer
 		timerSmashingVisceraCD:Start(adjustedTimer, 1)
 	elseif spellId == 415094 then--Knife Stance
