@@ -34,6 +34,7 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.cn.lua
+localization.tw.lua
 
 NerubarPalace\UlgraxtheDevourer.lua
 NerubarPalace\TheBloodboundHorror.lua

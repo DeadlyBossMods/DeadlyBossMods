@@ -7837,8 +7837,8 @@ end
 bossModPrototype.IsHealer = DBM.IsHealer
 
 ---@param self DBMModOrDBM
----@param playerUnitID string? unitID of requested unit. this or isName must be provided
----@param enemyUnitID string? unitID of tanked unit we're checking. This or enemyGUID must be provided
+---@param playerUnitID playerUUIDs|targetUIDs? unitID of requested unit. this or isName must be provided
+---@param enemyUnitID enemyUIDs|targetUIDs? unitID of tanked unit we're checking. This or enemyGUID must be provided
 ---@param isName string? name of the requested unit. This or playerUnitID must be provided
 ---@param onlyRequested boolean? true if tight search, false if loose search that will return ALL tank specs
 ---@param enemyGUID string? guid of tanked unit we're checking. This or enemyUnitID must be provided

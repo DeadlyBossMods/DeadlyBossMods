@@ -198,6 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 434705 then
 		if not args:IsPlayer() then
 			local uID = DBM:GetUnitIdFromGUID(args.destGUID)
+			---@diagnostic disable-next-line: param-type-mismatch
 			if self:IsTanking(uID, "boss1") then--Filter non tank spec numpties in front of boss for some reason
 				if not DBM:UnitDebuff("player", spellId) then--Double check player didn't also get hit
 					specWarnTenderized:Show(args.destName)

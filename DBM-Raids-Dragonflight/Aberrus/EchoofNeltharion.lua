@@ -81,7 +81,7 @@ local specWarnRazetheEarth						= mod:NewSpecialWarningDodge(409313, nil, nil, n
 local specWarnCorruption						= mod:NewSpecialWarningYou(401010, nil, nil, nil, 1, 2)
 local yellCorruption							= mod:NewShortYell(401010)
 local specWarnUmbralAnnihilation				= mod:NewSpecialWarningCount(405433, nil, nil, nil, 2, 2)
-local specWarnSweepingShadows					= mod:NewSpecialWarningDodgeCount(403846, nil, nil, nil, 2, 2)
+--local specWarnSweepingShadows					= mod:NewSpecialWarningDodgeCount(403846, nil, nil, nil, 2, 2)--Not used by mod?
 local specWarnSunderShadow						= mod:NewSpecialWarningDefensive(407790, nil, nil, nil, 1, 2)
 local specWarnSunderShadowSwap					= mod:NewSpecialWarningTaunt(407790, nil, nil, nil, 1, 2)
 
