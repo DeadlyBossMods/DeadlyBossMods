@@ -546,6 +546,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "Schreie (mit Position), wenn du von $sp
 L.AUTO_YELL_OPTION_TEXT.combo			= "Schreie (mit angepasstem Text), wenn du gleichzeitig von $spell:%s und einem weiteren Zauber betroffen bist"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "Schreie wiederholt (mit Spielername) wenn du von $spell:%s betroffen bist"
 L.AUTO_YELL_OPTION_TEXT.repeaticon		= "Schreie wiederholt (mit Icon) wenn du von $spell:%s betroffen bist"
+L.AUTO_YELL_OPTION_TEXT.icontarget		= "Schreie Icons wenn du das Ziel von $spell:%s bist um andere zu warnen"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= "%s auf " .. UnitName("player")

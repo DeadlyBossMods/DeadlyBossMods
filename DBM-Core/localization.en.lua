@@ -576,7 +576,8 @@ L.AUTO_YELL_OPTION_TEXT = {
 	shortposition						= "Yell (with position) when you are affected by $spell:%s",
 	combo								= "Yell (with custom text) when you are affected by $spell:%s and other spells at same time",
 	repeatplayer						= "Yell repeatedly (with player name) when you are affected by $spell:%s",
-	repeaticon							= "Yell repeatedly (with icon) when you are affected by $spell:%s"
+	repeaticon							= "Yell repeatedly (with icon) when you are affected by $spell:%s",
+	icontarget							= "Yell icons when you are targeted by $spell:%s to warn others",
 }
 L.AUTO_YELL_ANNOUNCE_TEXT = {
 	shortyell							= "%s", -- OPTIONAL
@@ -589,7 +590,8 @@ L.AUTO_YELL_ANNOUNCE_TEXT = {
 	shortposition 						= "{rt%%1$d}%s %%2$d",--Icon, Spellname, number -- OPTIONAL
 	combo								= "%s and %%s",--Spell name (from option, plus spellname given in arg)
 	repeatplayer						= UnitName("player"),--Doesn't need translation, it's just player name spam -- OPTIONAL
-	repeaticon							= "{rt%%1$d}"--Doesn't need translation. It's just icon spam -- OPTIONAL
+	repeaticon							= "{rt%%1$d}",--Doesn't need translation. It's just icon spam -- OPTIONAL
+	icontarget							= "{rt%%1$d}{rt%%1$d}{rt%%1$d}",--Doesn't need translation. It's just an icon repeated 3 times-- OPTIONAL
 }
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE					= "%s faded"

@@ -79,6 +79,9 @@ end
 --Standard "Yell" object that will use SAY/YELL based on what's defined in the object (Defaulting to SAY if nil)
 --I realize object being :Yell is counter intuitive to default being "SAY" but for many years the default was YELL and it's too many years of mods to change now
 function yellPrototype:Yell(...)
+	if self.yellType == "icontarget" and not ... then -- Default to skull for icontarget
+		return self:Yell(8)
+	end
 	local text = stringUtils.pformat(self.text, ...)
 	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
@@ -98,6 +101,9 @@ yellPrototype.Show = yellPrototype.Yell
 
 --Force override to use say message, even when object defines "YELL"
 function yellPrototype:Say(...)
+	if self.yellType == "icontarget" and not ... then -- Default to skull for icontarget
+		return self:Say(8)
+	end
 	local text = stringUtils.pformat(self.text, ...)
 	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
@@ -203,4 +209,9 @@ end
 ---@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
 function bossModPrototype:NewIconRepeatYell(...)
 	return newYell(self, "repeaticon", ...)
+end
+
+---@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+function bossModPrototype:NewIconTargetYell(...)
+	return newYell(self, "icontarget", ...)
 end
