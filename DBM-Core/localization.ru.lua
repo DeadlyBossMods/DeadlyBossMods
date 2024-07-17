@@ -558,6 +558,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "Кричать (с позицией), �
 L.AUTO_YELL_OPTION_TEXT.combo		= "Кричать (с пользовательским текстом), когда на Вас $spell:%s и в тоже время другие заклинания"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "Кричать повторно (с именем игрока), когда на Вас $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.repeaticon	= "Кричать повторно (с меткой), когда на Вас $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.icontarget	= "Кричать значками, когда на Вас $spell:%s, чтобы предупредить других"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= "%s на " .. UnitName("player") .. "!"
@@ -570,6 +571,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s %%2$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s и %%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer				= UnitName("player")
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}"
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget	= "{rt%%1$d}{rt%%1$d}{rt%%1$d}{rt%%1$d}{rt%%1$d}"
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Перевод не требуется
 L.AUTO_YELL_CUSTOM_FADE				= "%s спал"
