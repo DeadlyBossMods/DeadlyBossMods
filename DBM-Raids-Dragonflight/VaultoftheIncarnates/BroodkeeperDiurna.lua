@@ -558,7 +558,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--On mythic mortal claws swaps to mortal slam, doesn't change on heroic and below
 			if self:IsMythic() then
 				local remainingCombo = timerMortalStoneclawsCD:GetRemaining(self.vb.tankCombocount+1)
-				if remainingCombo then
+				if remainingCombo and remainingCombo > 0 then
 					timerMortalStoneclawsCD:Stop()
 					timerMortalStoneclawsCD:Start(remainingCombo, self.vb.tankCombocount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 				end
@@ -570,7 +570,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--	timerEGreatstaffoftheBroodkeeperCD:Start(remainingStaff, self.vb.staffCount+1)--Does NOT restart anymore, even though on mythic it inherits a cast sequence, it still finishes out previous CD
 			--end
 			local remainingIcy = timerIcyShroudCD:GetRemaining(self.vb.icyCount+1)
-			if remainingIcy then
+			if remainingIcy and remainingIcy > 0 then
 				timerIcyShroudCD:Stop()
 				timerFrozenShroudCD:Start(remainingIcy, 1)
 			end
