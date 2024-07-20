@@ -354,6 +354,7 @@ local allTimers = {
 }
 
 function mod:OnCombatStart(delay)
+	self:SetStage(1)
 	self.vb.movementFinished = false
 	self.vb.assaultCountTotal = 0
 	self.vb.rollingCountTotal = 0
