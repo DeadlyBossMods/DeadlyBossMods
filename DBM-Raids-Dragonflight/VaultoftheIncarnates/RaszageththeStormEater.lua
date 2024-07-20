@@ -443,8 +443,10 @@ function mod:SPELL_CAST_START(args)
 		--TODO, add cast bar though
 	elseif spellId == 387261 then
 		self.vb.stormSurgeCount = self.vb.stormSurgeCount + 1
-		specWarnStormsurge:Show(self.vb.stormSurgeCount)
-		specWarnStormsurge:Play("scatter")
+		if not self:IsLFR() then
+			specWarnStormsurge:Show(self.vb.stormSurgeCount)
+			specWarnStormsurge:Play("scatter")
+		end
 		local timer = self:GetFromTimersTable(allTimers, difficultyName, self.vb.phase, spellId, self.vb.stormSurgeCount+1)
 		if timer then
 			timerStormsurgeCD:Start(timer, self.vb.stormSurgeCount+1)

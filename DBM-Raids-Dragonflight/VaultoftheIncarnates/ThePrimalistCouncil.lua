@@ -267,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPrimalBlizzardCD:Stop()
 	elseif spellId == 371624 then
 		warnConductiveMark:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsLFR() then
 			specWarnConductiveMark:Show(DBM_COMMON_L.PILLAR)
 			specWarnConductiveMark:Play("movetopillar")
 			yellConductiveMark:Yell()
