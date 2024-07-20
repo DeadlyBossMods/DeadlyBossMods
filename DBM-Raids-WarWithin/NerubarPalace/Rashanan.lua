@@ -508,13 +508,13 @@ function mod:SPELL_INTERRUPT(args)
 			timerWebReaveCD:Start(3.6, self.vb.reaveCount+1)
 		end
 		if self:IsMythic() then
-			timerEnvelopingWebsCD:Start(allTimers[savedDifficulty][self.vb.phase][454989][1], self.vb.envelopingCount+1)
+			timerEnvelopingWebsCD:Start(allTimers[savedDifficulty][self.vb.phase][454989][1], self.vb.envelopingCountTotal+1)
 		end
-		timerSavageAssaultCD:Start(allTimers[savedDifficulty][self.vb.phase][444687][1], self.vb.assaultCount+1)
-		timerRollingAcidCD:Start(allTimers[savedDifficulty][self.vb.phase][439789][1], self.vb.rollingCount+1)
-		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][self.vb.phase][455373][1], self.vb.spawnCount+1)
-		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][self.vb.phase][439784][1], self.vb.strandsCount+1)
-		timerErosiveSprayCD:Start(allTimers[savedDifficulty][self.vb.phase][439811][1], self.vb.sprayCount+1)
+		timerSavageAssaultCD:Start(allTimers[savedDifficulty][self.vb.phase][444687][1], self.vb.assaultCountTotal+1)
+		timerRollingAcidCD:Start(allTimers[savedDifficulty][self.vb.phase][439789][1], self.vb.rollingCountTotal+1)
+		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][self.vb.phase][455373][1], self.vb.spawnCountTotal+1)
+		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][self.vb.phase][439784][1], self.vb.strandsCountTotal+1)
+		timerErosiveSprayCD:Start(allTimers[savedDifficulty][self.vb.phase][439811][1], self.vb.sprayCountTotal+1)
 		timerMovementCD:Start(self:IsHard() and (self.vb.movementCount == 5 and 115 or 86.3) or 90.5, self.vb.movementCount+1)--5th movement rule is confirmed on mythic but not on heroic
 	end
 end
