@@ -130,27 +130,27 @@ local allTimers = {
 		},
 		[5] = {
 			--Erosive Spray
-			[439811] = {},
+			[439811] = {0},
 			--Infested Spawn
-			[455373] = {},
+			[455373] = {0},
 			--Rolling Acid
-			[439789] = {},
+			[439789] = {0},
 			--Savage Assault
-			[444687] = {},
+			[444687] = {0},
 			--Spinneret's Strands
-			[439784] = {},
+			[439784] = {0},
 		},
 		[6] = {
 			--Erosive Spray
-			[439811] = {},
+			[439811] = {0},
 			--Infested Spawn
-			[455373] = {},
+			[455373] = {0},
 			--Rolling Acid
-			[439789] = {},
+			[439789] = {0},
 			--Savage Assault
-			[444687] = {},
+			[444687] = {0},
 			--Spinneret's Strands
-			[439784] = {},
+			[439784] = {0},
 		},
 		[7] = {
 			--Erosive Spray
