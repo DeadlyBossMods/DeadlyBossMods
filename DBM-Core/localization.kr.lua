@@ -536,6 +536,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "$spell:%s 대상일 때 말풍선으로
 L.AUTO_YELL_OPTION_TEXT.combo		= "$spell:%s|1과;와; 다른 디버프가 같이 걸렸을 때 말풍선으로 알리기 (사용자 지정 문자 포함)"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "$spell:%s에 걸렸을 때 말풍선 알림 반복 (플레이어 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.repeaticon	= "$spell:%s에 걸렸을 때 말풍선 알림 반복 (공격대 징표 포함)"
+L.AUTO_YELL_OPTION_TEXT.icontarget	= "$spell:%s의 대상일 때 말풍선으로 공격대 징표 알림 반복"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. "에게 %s"
 L.AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. "에게 %s (%%d)"
