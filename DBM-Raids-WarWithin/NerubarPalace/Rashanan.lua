@@ -378,11 +378,11 @@ function mod:OnCombatStart(delay)
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
-	timerSavageAssaultCD:Start(allTimers[savedDifficulty][444687][1]-delay, 1)
-	timerRollingAcidCD:Start(allTimers[savedDifficulty][439789][1]-delay, 1)
-	timerInfestedSpawnCD:Start(allTimers[savedDifficulty][455373][1]-delay, 1)
-	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][439784][1]-delay, 1)
-	timerErosiveSprayCD:Start(allTimers[savedDifficulty][439811][1]-delay, 1)
+	timerSavageAssaultCD:Start(allTimers[savedDifficulty][1][444687][1]-delay, 1)
+	timerRollingAcidCD:Start(allTimers[savedDifficulty][1][439789][1]-delay, 1)
+	timerInfestedSpawnCD:Start(allTimers[savedDifficulty][1][455373][1]-delay, 1)
+	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][1][439784][1]-delay, 1)
+	timerErosiveSprayCD:Start(allTimers[savedDifficulty][1][439811][1]-delay, 1)
 	timerMovementCD:Start(self:IsMythic() and 86.3 or 90, 1)
 	self:EnablePrivateAuraSound(439790, "targetyou", 2)--Raid version, (434406 is in dungeon)
 	--self:EnablePrivateAuraSound(434406, "targetyou", 2, 439790)--Likely dungeon version of Rolling Acid
@@ -411,7 +411,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
 		end
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.assaultCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
 		if timer then
 			timerSavageAssaultCD:Start(timer, self.vb.assaultCountTotal+1)
 		end
@@ -419,7 +419,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rollingCountTotal = self.vb.rollingCountTotal + 1
 		self.vb.rollingCount = self.vb.rollingCount + 1
 		warnRollingAcid:Show(self.vb.rollingCountTotal)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.rollingCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.rollingCount+1)
 		if timer then
 			timerRollingAcidCD:Start(timer, self.vb.rollingCountTotal+1)
 		end
@@ -427,7 +427,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spawnCountTotal = self.vb.spawnCountTotal + 1
 		self.vb.spawnCount = self.vb.spawnCount + 1
 		warnInfestedSpawn:Show(self.vb.spawnCountTotal)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.spawnCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.spawnCount+1)
 		if timer then
 			timerInfestedSpawnCD:Start(timer, self.vb.spawnCountTotal+1)
 		end
@@ -435,7 +435,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.strandsCountTotal = self.vb.strandsCountTotal + 1
 		self.vb.strandsCount = self.vb.strandsCount + 1
 		warnSpinneretsStrands:Show(self.vb.strandsCountTotal)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.strandsCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.strandsCount+1)
 		if timer then
 			timerSpinneretsStrandsCD:Start(timer, self.vb.strandsCountTotal+1)
 		end
@@ -443,7 +443,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.reaveCount = self.vb.reaveCount + 1
 		specWarnWebReave:Show(self.vb.reaveCount)
 		specWarnWebReave:Play("gathershare")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.reaveCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reaveCount+1)
 		if timer then
 			timerWebReaveCD:Start(timer, self.vb.reaveCount+1)
 		end
@@ -451,7 +451,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sprayCountTotal = self.vb.sprayCountTotal + 1
 		self.vb.sprayCount = self.vb.sprayCount + 1
 		warnErosiveSpray:Show(self.vb.sprayCountTotal)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.sprayCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.sprayCount+1)
 		if timer then
 			timerErosiveSprayCD:Start(timer, self.vb.sprayCountTotal+1)
 		end
@@ -459,7 +459,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.envelopingCountTotal = self.vb.envelopingCountTotal + 1
 		self.vb.envelopingCount = self.vb.envelopingCount + 1
 		warnEnvelopingWebs:Show(self.vb.envelopingCountTotal)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.envelopingCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.envelopingCount+1)
 		if timer then
 			timerEnvelopingWebsCD:Start(timer, self.vb.envelopingCountTotal+1)
 		end
@@ -507,13 +507,13 @@ function mod:SPELL_INTERRUPT(args)
 			timerWebReaveCD:Start(3.6, self.vb.reaveCount+1)
 		end
 		if self:IsMythic() then
-			timerEnvelopingWebsCD:Start(allTimers[savedDifficulty][454989][1], self.vb.envelopingCount+1)
+			timerEnvelopingWebsCD:Start(allTimers[savedDifficulty][self.vb.phase][454989][1], self.vb.envelopingCount+1)
 		end
-		timerSavageAssaultCD:Start(allTimers[savedDifficulty][444687][1], self.vb.assaultCount+1)
-		timerRollingAcidCD:Start(allTimers[savedDifficulty][439789][1], self.vb.rollingCount+1)
-		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][455373][1], self.vb.spawnCount+1)
-		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][439784][1], self.vb.strandsCount+1)
-		timerErosiveSprayCD:Start(allTimers[savedDifficulty][439811][1], self.vb.sprayCount+1)
+		timerSavageAssaultCD:Start(allTimers[savedDifficulty][self.vb.phase][444687][1], self.vb.assaultCount+1)
+		timerRollingAcidCD:Start(allTimers[savedDifficulty][self.vb.phase][439789][1], self.vb.rollingCount+1)
+		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][self.vb.phase][455373][1], self.vb.spawnCount+1)
+		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][self.vb.phase][439784][1], self.vb.strandsCount+1)
+		timerErosiveSprayCD:Start(allTimers[savedDifficulty][self.vb.phase][439811][1], self.vb.sprayCount+1)
 		timerMovementCD:Start(self:IsHard() and (self.vb.movementCount == 5 and 115 or 86.3) or 90.5, self.vb.movementCount+1)--5th movement rule is confirmed on mythic but not on heroic
 	end
 end
