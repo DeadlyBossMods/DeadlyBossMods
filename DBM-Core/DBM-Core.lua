@@ -5759,7 +5759,7 @@ do
 				--show speed timer
 				if self.Options.AlwaysShowSpeedKillTimer2 and mod.stats and not mod.ignoreBestkill and not mod.noStatistics then
 					local bestTime
-					if difficulties.difficultyIndex == 8 then--Mythic+/Challenge Mode
+					if difficulties.difficultyIndex == 8 or difficulties.difficultyIndex == 208 then--Mythic+/Challenge Mode and Delves
 						local bestMPRank = mod.stats.challengeBestRank or 0
 						if bestMPRank == difficulties.difficultyModifier then
 							--Don't show speed kill timer if not our highest rank. DBM only stores highest rank
@@ -6057,7 +6057,7 @@ do
 					if bestTime and bestTime > 0 and bestTime < 1.5 then
 						mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime
 					else
-						if usedDifficultyIndex == 8 then--Mythic+/Challenge Mode
+						if usedDifficultyIndex == 8 or usedDifficultyIndex == 208 then--Mythic+/Challenge Mode
 							if mod.stats.challengeBestRank > difficulties.difficultyModifier then--Don't save time stats at all
 								--DO nothing
 							elseif mod.stats.challengeBestRank < difficulties.difficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)

@@ -364,11 +364,16 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 205 then--Follower (Party Dungeon - Dragonflight 10.2.5+)
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
-		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
+		local delveTier
+		if delveInfo and delveInfo[1] and delveInfo[1].tierText then
+			delveTier = tonumber(delveInfo[1].tierText) or 0
+		end
+		return "delves", difficultyName .. "+ (" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
 		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
-		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		return "story", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
