@@ -125,7 +125,7 @@ local mythicTwistedP2Timers = {41.6, 18.2, 12.1, 29.2, 13.4, 14.6}
 local volcanicP2Timers = {21.3, 15.7, 17.0, 14.8, 17.3, 16.7, 18, 14.5}
 local volcanicP2LFRTimers = {21.3, 15.6, 16.9, 17, 12, 16.9, 12, 16.9, 12, 17}
 
-
+---@param self DBMMod
 local function checkRealityOnSelf(self)
 	if not playerReality then
 		specWarnEbonDestructionMove:Show(realityName)
@@ -134,6 +134,7 @@ local function checkRealityOnSelf(self)
 end
 
 --Work around for stage 2 bug where sometimes cast success event is missing
+---@param self DBMMod
 local function fixBrokenHeartTimer(self)
 	self.vb.volcanicCount = self.vb.volcanicCount + 1
 	local timer = volcanicP2Timers[self.vb.volcanicCount+1]
@@ -142,6 +143,7 @@ local function fixBrokenHeartTimer(self)
 	end
 end
 
+---@param self DBMMod
 local function checkForSkippedDarkness(self)
 	if self.vb.RushingDarknessCount == 0 then--first one skipped (which is like 95% of pulls)
 		self.vb.RushingDarknessCount = self.vb.RushingDarknessCount + 1

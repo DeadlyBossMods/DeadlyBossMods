@@ -231,6 +231,7 @@ local allTimers = {
 	},
 }
 
+---@param self DBMMod
 local function smolderingYellRepeater(self)
 	local health = UnitHealth("player") / UnitHealthMax("player") * 100
 	if health < 75 then -- Only let players know when you are below 75%

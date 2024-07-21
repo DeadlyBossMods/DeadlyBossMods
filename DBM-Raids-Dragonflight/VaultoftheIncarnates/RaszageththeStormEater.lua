@@ -300,6 +300,7 @@ local allTimers = {
 	},
 }
 
+---@param self DBMMod
 local function breathCorrect(self)
 	DBM:Debug("Boss skipped a breath, scheduling next one")
 	self:Unschedule(breathCorrect)
@@ -311,6 +312,7 @@ local function breathCorrect(self)
 	end
 end
 
+---@param self DBMMod
 local function warnDeepBreath(self, myPlatform)
 	if myPlatform then
 		specWarnLightningDevastation:Show(self.vb.breathCount)
@@ -323,6 +325,7 @@ local function warnDeepBreath(self, myPlatform)
 	end
 end
 
+---@param self DBMMod
 local function yellRepeater(self, text, repeatTotal, inversion)
 	repeatTotal = repeatTotal + 1
 --	if repeatTotal < 3 then

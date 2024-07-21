@@ -51,6 +51,7 @@ local afflictedDetected = false
 local unstableDetected = false
 local unstableCounting = false
 
+---@param self DBMMod
 local function checkEntangled(self)
 	if timerEntangledCD:GetRemaining() > 0 then
 		--Timer exists, do nothing
@@ -60,6 +61,7 @@ local function checkEntangled(self)
 	self:Schedule(30, checkEntangled, self)
 end
 
+---@param self DBMMod
 local function checkAfflicted(self)
 	if timerAfflictedCD:GetRemaining() > 0 then
 		--Timer exists, do nothing
@@ -69,6 +71,7 @@ local function checkAfflicted(self)
 	self:Schedule(30, checkAfflicted, self)
 end
 
+---@param self DBMMod
 local function checkIncorp(self)
 	if timerIncorporealCD:GetRemaining() > 0 then
 		--Timer exists, do nothing
