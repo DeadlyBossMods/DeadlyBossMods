@@ -115,9 +115,9 @@ local allTimers = {
 		--Conductive Mark
 		[375331] = {16.7, 70.5, 43.7, 44.9, 43.7, 44.9, 43.8, 41.2, 44.9, 45, 42.5},
 		--Pillars
-		[372322] = {8.5, 42.4, 47.6, 40.1, 43.7, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
+		[372322] = {8.5, 42.4, 47.6, 40.1, 42.5, 46.1, 43.7, 42.5, 47.3, 42.5, 43.7, 47.4},
 		--Primal Blizzard (excluded for now)
-		[373059] = {60, 146.1, 133, 133},
+		[373059] = {60, 144.6, 133, 133},
 	},
 }
 
@@ -267,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPrimalBlizzardCD:Stop()
 	elseif spellId == 371624 then
 		warnConductiveMark:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsLFR() then
 			specWarnConductiveMark:Show(DBM_COMMON_L.PILLAR)
 			specWarnConductiveMark:Play("movetopillar")
 			yellConductiveMark:Yell()
