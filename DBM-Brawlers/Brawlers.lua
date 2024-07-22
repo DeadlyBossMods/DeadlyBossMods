@@ -34,6 +34,7 @@ local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
 
+---@param self DBMMod
 local function setDialog(self, set)
 	if not self.Options.NormalizeVolume then return end
 	if set then

@@ -131,6 +131,7 @@ do
 	end
 end
 
+---@param self DBMMod
 local function resetRaidDebuff(self)
 	self.vb.tankSafeClear = true
 end

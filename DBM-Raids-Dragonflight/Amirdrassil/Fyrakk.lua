@@ -187,6 +187,7 @@ local allTimers = {
 	},
 }
 
+---@param self DBMMod
 local function blazeLoop(self)
 	self.vb.blazeCount = self.vb.blazeCount + 1
 	warnBlaze:Show(self.vb.blazeCount)
@@ -210,6 +211,7 @@ local function blazeLoop(self)
 	end
 end
 
+---@param self DBMMod
 local function eternalFireLoop(self)
 	self.vb.firestormCount = self.vb.firestormCount + 1
 	warnEternalFirestorm:Show(self.vb.firestormCount)
@@ -218,6 +220,7 @@ local function eternalFireLoop(self)
 	self:Schedule(timer, eternalFireLoop, self)
 end
 
+---@param self DBMMod
 local function eternalFireSwirlLoop(self)
 	self.vb.swirlCount = self.vb.swirlCount + 1
 	warnEternalFirestormSwirl:Show(self.vb.swirlCount)
@@ -229,6 +232,7 @@ local function eternalFireSwirlLoop(self)
 end
 
 --Countmod inherits firestorm count on initial then iterates on loop
+---@param self DBMMod
 local function mythicDebuffs(self)
 	self.vb.debuffsCount = self.vb.debuffsCount + 1
 	warnMythicDebuffs:Show(self.vb.debuffsCount)
@@ -236,6 +240,7 @@ local function mythicDebuffs(self)
 	self:Schedule(23, mythicDebuffs, self)
 end
 
+---@param self DBMMod
 local function orbsLoop(self)
 	self.vb.orbsCount = self.vb.orbsCount + 1
 	warnShadowflameOrbs:Show(self.vb.orbsCount)

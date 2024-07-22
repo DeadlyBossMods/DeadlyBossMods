@@ -116,6 +116,7 @@ mod.vb.windsCount = 0
 local nextSpecial = 0
 local playerSong = false
 
+---@param self DBMMod
 local function castBeforeSpecial(self, cooldown)
 	if (nextSpecial - GetTime()) > cooldown then
 		return true
@@ -123,6 +124,7 @@ local function castBeforeSpecial(self, cooldown)
 	return false
 end
 
+---@param self DBMMod
 local function specialInterrupted(self, spellId)
 	self.vb.specialsActive = self.vb.specialsActive - 1
 	--Timers that always reset on special end, regardless of who's special it is

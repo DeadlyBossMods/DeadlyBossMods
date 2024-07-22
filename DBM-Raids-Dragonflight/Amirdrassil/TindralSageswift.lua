@@ -259,6 +259,7 @@ local allTimers = {
 	},
 }
 
+---@param self DBMMod
 local function delaySuperNova(self)
 	timerSuperNovaCD:Start(self:IsEasy() and 387 or 249)--Blizzard energy, so ~3
 end
