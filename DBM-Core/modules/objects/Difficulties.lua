@@ -366,8 +366,8 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
 		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
 		local delveTier
-		if delveInfo and delveInfo[1] and delveInfo[1].tierText then
-			delveTier = tonumber(delveInfo[1].tierText) or 0
+		if delveInfo and delveInfo and delveInfo.tierText then
+			delveTier = tonumber(delveInfo.tierText) or 0
 		end
 		return "delves", difficultyName .. "+ (" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
