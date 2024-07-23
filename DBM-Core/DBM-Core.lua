@@ -81,9 +81,9 @@ local fakeBWVersion, fakeBWHash = 341, "51c5bf8"--341.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.0 alpha"--Core version
+DBM.DisplayVersion = "11.0.1 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 7, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 7, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = (private.isWrath or private.isClassic) and 13 or 12--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -436,7 +436,7 @@ local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchF
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, lastGroupLeader
 -- 0 variables
-local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0, 0
+local eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
@@ -1575,7 +1575,6 @@ do
 					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 				end
 			end
-			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface")) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -4552,7 +4551,7 @@ do
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-					if (dbmToc < private.wowTOC or forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
+					if (forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
 						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from " .. sender .. " : Rev - " .. forceDisable, 3)
 					end
@@ -7156,8 +7155,6 @@ do
 	function DBM:ForceDisableSpam()
 		if private.testBuild then
 			DBM:AddMsg(L.UPDATEREMINDER_DISABLETEST)
-		elseif dbmToc < private.wowTOC then
-			DBM:AddMsg(L.UPDATEREMINDER_MAJORPATCH)
 		else
 			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
 		end
