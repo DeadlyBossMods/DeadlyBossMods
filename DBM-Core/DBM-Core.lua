@@ -5566,7 +5566,7 @@ do
 		["worldboss"] = "normal",
 		["timewalker"] = "timewalker",
 		["progressivechallenges"] = "normal",
-		["delves"] = "normal",
+		["delves"] = "challenge",
 		--BFA
 		["normalwarfront"] = "normal",
 		["heroicwarfront"] = "heroic",
