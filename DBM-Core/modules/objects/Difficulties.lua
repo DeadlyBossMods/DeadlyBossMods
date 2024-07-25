@@ -131,7 +131,8 @@ function DBM:GetGroupSize()
 	return groupSize
 end
 
-function DBM:GetKeyStoneLevel()
+---Useful for M+, Delves, or tiered SoD raids when you specifically need to know modifier level
+function DBM:GetModifierLevel()
 	return difficulties.difficultyModifier
 end
 
@@ -312,7 +313,17 @@ function DBM:GetCurrentInstanceDifficulty()
 		local keystoneLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() or 0
 		return "challenge5", PLAYER_DIFFICULTY6 .. "+ (" .. keystoneLevel .. ") - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 148 or difficulty == 185 or difficulty == 215 or difficulty == 226 then--20 man classic raid / 226 is SoD 20
-		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		local modifierLevel = 0
+		if difficulty == 226 then--Molten Core SoD
+			if self:UnitDebuff("player", 458841) then--Sweltering Heat
+				modifierLevel = 1
+			elseif self:UnitDebuff("player", 458843) then--Blistering Heat
+				modifierLevel = 2
+			elseif self:UnitDebuff("player", 458843) then--Molten Heat
+				modifierLevel = 3
+			end
+		end
+		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, modifierLevel
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)

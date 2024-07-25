@@ -840,7 +840,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				heroic		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
 				heroic25	= RAID_DIFFICULTY4,
 				mythic		= PLAYER_DIFFICULTY6,
-				challenge	= mod.addon.type == "SCENARIO" and PLAYER_DIFFICULTY1 or (mod.addon.minExpansion < 6 and not mod.upgradedMPlus) and CHALLENGE_MODE or (PLAYER_DIFFICULTY6 .. "+"),
+				challenge	= (mod.addon.minExpansion < 6 and not mod.upgradedMPlus) and CHALLENGE_MODE or PLAYER_DIFFICULTY6 .. "+",
 				timewalker	= PLAYER_DIFFICULTY_TIMEWALKER
 			}
 			if (mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO") or -- Fixes dungeons being labled incorrectly
@@ -866,7 +866,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					local kills, pulls, bestRank, bestTime = mod.stats[statType .. "Kills"] or 0, mod.stats[statType .. "Pulls"] or 0, mod.stats[statType .. "BestRank"] or 0, mod.stats[statType .. "BestTime"]
 					section.value1:SetText(kills)
 					section.value2:SetText(pulls - kills)
-					if bestRank > 0 then--statType == "challenge" and
+					if bestRank > 0 then--Used by "challenge" and "normal" for M+, Delves, and SoD raids
 						section.value3:SetText(bestTime and ("%d:%02d (%d)"):format(mfloor(bestTime / 60), bestTime % 60, bestRank) or "-")
 					else
 						section.value3:SetText(bestTime and ("%d:%02d"):format(mfloor(bestTime / 60), bestTime % 60) or "-")
