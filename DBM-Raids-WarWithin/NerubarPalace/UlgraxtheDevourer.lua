@@ -40,7 +40,7 @@ local specWarnBrutalLashingsTarget				= mod:NewSpecialWarningYou(434803, nil, ni
 local yellBrutalLashings						= mod:NewShortYell(434803, nil, nil, nil, "YELL")
 local yellBrutalLashingsFades					= mod:NewShortFadesYell(434803, nil, nil, nil, "YELL")
 local specWarnStalkersWebbing					= mod:NewSpecialWarningDodgeCount(441452, nil, nil, nil, 2, 2)--aka Viscous Slobber apparently
-local specWarnDigestiveVenom					= mod:NewSpecialWarningYou(435138, nil, nil, nil, 1, 2)
+local specWarnDigestiveVenom					= mod:NewSpecialWarningMoveTo(435138, nil, nil, nil, 1, 17)
 local yellDigestiveVenom						= mod:NewShortYell(435138)
 local yellDigestiveVenomFades					= mod:NewShortFadesYell(435138)
 local specWarnBrutalCrush						= mod:NewSpecialWarningDefensive(434697, nil, nil, nil, 1, 2)
@@ -58,8 +58,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(28845))
 local warnJuggernautCharge						= mod:NewCountAnnounce(436200, 4, nil, nil, 100, nil, nil, 2)--Charges 2+ of the set
 
 local specWarnChitteringSwarm					= mod:NewSpecialWarningSwitch(445052, nil, nil, nil, 1, 2)--BW using -28848 instead?
-local specWarnJuggernautCharge					= mod:NewSpecialWarningDodgeCount(436200, nil, 100, nil, 2, 2)--Activation
-local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodgeCount(443842, nil, nil, nil, 2, 2)
+local specWarnSwallowingDarkness				= mod:NewSpecialWarningDodge(443842, nil, nil, nil, 2, 2)
 local specWarnHulkingCrash						= mod:NewSpecialWarningDodge(445123, nil, nil, nil, 2, 2)
 
 local timerChitteringSwarmCD					= mod:NewCDTimer(49, 445052, nil, nil, nil, 1)
@@ -76,6 +75,7 @@ mod.vb.lashingsCount = 0--Ability that's go smash and knock players around (Brut
 mod.vb.webbingChargeCount = 0--Abilities that leave webbing/Netting (Stalkers Webbing and Juggernaut
 mod.vb.lashdarknessCount = 0--Abilities that remove webbing/netting (Venomous Lash and Swallowing Darkness)
 mod.vb.brutalHungeringCount = 0--Abilities for tank/healer (Brutal Crush and Hungering Bellows)
+local webName = DBM:GetSpellName(389280)
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -131,8 +131,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 436200 or spellId == 436203 then--First charge, subsiquent ones
 		if spellId == 436200 then
 			self.vb.webbingChargeCount = 1
-			specWarnJuggernautCharge:Show(1)
-			specWarnJuggernautCharge:Play("chargemove")
 			timerJuggernautChargeCD:Start(4.6, 2)
 		else
 			self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
@@ -143,8 +141,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 451412 or spellId == 443842 then--Hard/Easy assumed (hard has knockback, easy does not)
-		self.vb.lashdarknessCount = self.vb.lashdarknessCount + 1
-		specWarnSwallowingDarkness:Show(self.vb.lashdarknessCount)
+		specWarnSwallowingDarkness:Show()
 		specWarnSwallowingDarkness:Play("watchstep")
 	elseif spellId == 438012 then
 		self.vb.brutalHungeringCount = self.vb.brutalHungeringCount + 1
@@ -190,8 +187,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 435138 then
 		warnDigestiveVenom:CombinedShow(1, args.destName)--Goes out really slow
 		if args:IsPlayer() then
-			specWarnDigestiveVenom:Show()
-			specWarnDigestiveVenom:Play("targetyou")--Request final voice when blizzard finalizes spell name. is it web or is it drool/puddle. this matters
+			specWarnDigestiveVenom:Show(webName)
+			specWarnDigestiveVenom:Play("movetoweb")--Request final voice when blizzard finalizes spell name. is it web or is it drool/puddle. this matters
 			yellDigestiveVenom:Yell()
 			yellDigestiveVenomFades:Countdown(spellId)
 		end
