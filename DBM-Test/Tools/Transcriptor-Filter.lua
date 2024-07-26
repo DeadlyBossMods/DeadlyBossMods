@@ -81,7 +81,7 @@ filter.ignoredCreatureIds = set{
 	221635, -- King Thoras Trollbane
 	217228, -- Blood Beast
 	54983, -- Treant
-	212489, -- Spirit Wolf
+	212489, 219986 -- Spirit Wolf
 }
 
 
