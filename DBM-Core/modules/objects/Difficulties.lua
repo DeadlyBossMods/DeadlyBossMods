@@ -317,7 +317,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		if difficulty == 226 then--Molten Core SoD
 			if self:UnitDebuff("player", 458841) then--Sweltering Heat
 				modifierLevel = 1
-			elseif self:UnitDebuff("player", 458843) then--Blistering Heat
+			elseif self:UnitDebuff("player", 458842) then--Blistering Heat
 				modifierLevel = 2
 			elseif self:UnitDebuff("player", 458843) then--Molten Heat
 				modifierLevel = 3
