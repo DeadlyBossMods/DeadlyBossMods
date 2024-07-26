@@ -6553,6 +6553,7 @@ do
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown, C_Spell.GetSpellName
 	else
 		newPath = false
+		---@diagnostic disable-next-line: undefined-global
 		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
 	---Wrapper for Blizzard GetSpellInfo global that converts new table returns to old arg returns
