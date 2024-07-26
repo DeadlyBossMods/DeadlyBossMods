@@ -397,6 +397,13 @@ end
 
 local fakeUnitEventFrame = CreateFrame("Frame")
 
+-- Inject an extra event from somewhere in the event loop, will be triggered after the current event is done processing.
+-- Doing it like this is important to not mess up event trigger tracing.
+function test:InjectExtraEvent(event, ...)
+	self.extraEvents = self.extraEvents or {}
+	self.extraEvents[#self.extraEvents + 1] = {0, event, ...}
+end
+
 function test:InjectEvent(event, ...)
 	if event == "IsEncounterInProgress()" then
 		self.Mocks:SetEncounterInProgress(...)
@@ -419,6 +426,33 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateTarget(uId, unitName, target)
 		-- strip extra params to not provide the mod with more information than it would have in the real environment
 		return self:InjectEvent(event, uId)
+	end
+	if event:match("^UNIT_SPELLCAST") and select("#", ...) > 3 then
+		local uId, castGuid, spellId, unitName, unitHealth, unitPower, unitTarget = ...
+		if unitTarget == "??" then
+			unitTarget = nil
+		end
+		if unitTarget == self.logPlayerName then
+			unitTarget = UnitName("player")
+		end
+		self.Mocks:UpdateTarget(uId, unitName, unitTarget)
+		self.Mocks:UpdateUnitHealth(uId, unitName, unitHealth)
+		self.Mocks:UpdateUnitPower(uId, unitName, unitPower)
+		-- UNIT_HEALTH is usually used like this: UnitGUID(uId), check cid, then call UnitHealth(uId)
+		if uId:match("^boss") then
+			self:InjectExtraEvent("UNIT_HEALTH", uId)
+		else
+			-- Relevant for classic :(
+			local guessedGuid = self.Mocks:GuessGuid(unitName)
+			if guessedGuid then
+				-- Annoyingly we'll need to do it by faking *target* because by default UNIT_* registrations are only for target in classic
+				-- Easiest way to do so is to just treat target as a boss unit id
+				self.Mocks:UpdateBoss("target", unitName, guessedGuid, true, true, true)
+				self.Mocks:UpdateUnitHealth("target", nil, unitHealth)
+				self:InjectExtraEvent("UNIT_HEALTH", "target")
+			end
+		end
+		return self:InjectEvent(event, uId, castGuid, spellId) -- strip extra params
 	end
 	if event == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" and select("#", ...) > 0 then
 		for i = 2, select("#", ...), 8 do
@@ -493,8 +527,20 @@ function test:Playback(testData, timeWarp)
 	timeWarper:Start()
 	timeWarper:SetSpeed(timeWarp)
 	local startTime = timeWarper.fakeTime
-	for _, v in ipairs(testData.log) do
-		local ts = v[1]
+	local ts = 0
+	local i = 1
+	while i <= #testData.log do
+		local v
+		-- Events may trigger additional events, e.g., UNIT_HEALTH from logs that contain health info about units
+		if self.extraEvents and #self.extraEvents > 0 then
+			v = self.extraEvents[#self.extraEvents]
+			self.extraEvents[#self.extraEvents] = nil
+			v[1] = ts
+		else
+			v = testData.log[i]
+			i = i + 1
+		end
+		ts = v[1]
 		timeWarper:WaitUntil(startTime + ts)
 		currentEventKey = eventToString(v, maxTimestamp)
 		currentRawEvent = v

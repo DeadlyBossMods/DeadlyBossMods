@@ -234,8 +234,11 @@ local function transcribeUnitSpellEvent(event, params)
 	if params:match("^PLAYER_SPELL") then
 		return
 	end
-	local unit, guid, spellId = params:match("%[%[([^:]+):([^:]+):([^%]]+)%]%]")
-	return literalsTable(event, unit, guid, tonumber(spellId))
+	-- Transcriptor has some useful extra data that we can use to reconstruct unit targets, health and power
+	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.]*)%%%-([%d.]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
+	unitHp = tonumber(unitHp) or 0
+	unitPower = tonumber(unitPower) or 0
+	return literalsTable(event, unit, guid, tonumber(spellId), unitName, unitHp, unitPower, unitTarget)
 end
 
 -- Rough attempt at flag reconstruction, not 100% correct, we could be a bit more smart here about REACTION by tracking a GUID across multiple events
@@ -498,8 +501,7 @@ DBM.Test:DefineTest{
 	mod = %s,
 	instanceInfo = %s,
 	%s,
-}
-]]
+}]]
 
 local function generateTest()
 	local str = template:format(
@@ -520,9 +522,9 @@ else
 	print(generateTest())
 end
 
-if args["show-ignore-candidates"] then
-	print("Potentially ignoreable creature IDs (healed by players):")
+if next(seenFriendlyCids) then
+	logInfo("Potentially ignoreable creature IDs (healed by players):")
 	for cid, name in pairs(seenFriendlyCids) do
-		print(cid .. ", -- " .. name)
+		logInfo(cid .. ", -- " .. name)
 	end
 end
