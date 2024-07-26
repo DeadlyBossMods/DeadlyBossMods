@@ -323,7 +323,11 @@ function DBM:GetCurrentInstanceDifficulty()
 				modifierLevel = 3
 			end
 		end
-		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, modifierLevel
+		if modifierLevel == 0 then
+			return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		else
+			return "normal20", difficultyName .. "+ (" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
+		end
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
