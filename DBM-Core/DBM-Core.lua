@@ -5650,6 +5650,7 @@ do
 			mod.engagedDiff = difficulties.savedDifficulty
 			mod.engagedDiffText = difficulties.difficultyText
 			mod.engagedDiffIndex = difficulties.difficultyIndex
+			mod.engagedDiffModifier = difficulties.difficultyModifier
 			mod.inCombat = true
 			---@class CombatInfo
 			local combatInfo = mod.combatInfo
@@ -5965,6 +5966,7 @@ do
 			local usedDifficulty = mod.engagedDiff or difficulties.savedDifficulty
 			local usedDifficultyText = mod.engagedDiffText or difficulties.difficultyText
 			local usedDifficultyIndex = mod.engagedDiffIndex or difficulties.difficultyIndex
+			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if wipe and mod.stats and not mod.noStatistics then
@@ -6059,10 +6061,10 @@ do
 						mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime
 					else
 						if usedDifficultyIndex == 8 or usedDifficultyIndex == 208 or usedDifficultyIndex == 226 then--Mythic+/Challenge Mode, Delves, and sod Molten Core
-							if mod.stats[statVarTable[usedDifficulty] .. "BestRank"] > difficulties.difficultyModifier then--Don't save time stats at all
+							if mod.stats[statVarTable[usedDifficulty] .. "BestRank"] > usedDifficultyModifier then--Don't save time stats at all
 								--DO nothing
-							elseif mod.stats[statVarTable[usedDifficulty] .. "BestRank"] < difficulties.difficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
-								mod.stats[statVarTable[usedDifficulty] .. "BestRank"] = difficulties.difficultyModifier--Update best rank
+							elseif mod.stats[statVarTable[usedDifficulty] .. "BestRank"] < usedDifficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
+								mod.stats[statVarTable[usedDifficulty] .. "BestRank"] = usedDifficultyModifier--Update best rank
 								mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime--Write this time no matter what.
 							else--Best rank must match current rank, so update time normally
 								mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = mmin(bestTime or mhuge, thisTime)
@@ -6110,7 +6112,7 @@ do
 					local check = not private.statusGuildDisabled and (private.isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
-						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficulties.difficultyModifier, name, thisTimeString)
+						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, usedDifficultyModifier, name, thisTimeString)
 					end
 					self:Schedule(1, self.AddMsg, self, msg)
 				end
@@ -6153,6 +6155,7 @@ do
 			mod.engagedDiff = nil
 			mod.engagedDiffText = nil
 			mod.engagedDiffIndex = nil
+			mod.engagedDiffModifier = nil
 			mod.vb.stageTotality = nil
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDisabled, private.chatBubblesDisabled = false, false, false, false
