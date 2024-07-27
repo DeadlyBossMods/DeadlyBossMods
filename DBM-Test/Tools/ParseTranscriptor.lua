@@ -92,21 +92,30 @@ end
 local firstLog = tonumber(args.start)
 local lastLog = tonumber(args["end"])
 
+local function parseEncounterEvent(line)
+	local id, name, difficulty, groupSize, success = line:match("%[ENCOUNTER_[SE][TN][AD]%w*%] (%d+)#([^#]+)#(%d+)#(%d+)#?(%d*)")
+	if not id then return end
+	id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
+	success = success == "1"
+	return id, name, difficulty, groupSize, success, line:match("%[ENCOUNTER_START%]")
+end
+
 local encounterStarts = {}
 local encounterEnds = {}
 local bossKills = {}
+local lastEncounterIsInProgressEnd
 for i, v in ipairs(log.total) do
-	local id, name, difficulty, groupSize, success
-	if v:find("%[ENCOUNTER_[SE][TN][AD]") then
-		id, name, difficulty, groupSize, success = v:match("%] (%d+)#([^#]+)#(%d+)#(%d+)#?(%d*)")
-		id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
-		success = success == "1"
+	local id, name, difficulty, groupSize, success, isStart = parseEncounterEvent(v)
+	if id then
 		local entry = {offset = i, id = id, name = name, difficulty = difficulty, groupSize = groupSize, success = success}
-		if v:find("%[ENCOUNTER_START%]") then
+		if isStart then
 			encounterStarts[#encounterStarts + 1] = entry
-		elseif v:find("%[ENCOUNTER_END%]") then
+		else
 			encounterEnds[#encounterEnds + 1] = entry
 		end
+	end
+	if v:find("%[IsEncounterInProgress%(%)%] false") then
+		lastEncounterIsInProgressEnd = i
 	end
 	if v:find("%[BOSS_KILL%]") then
 		bossKills[#bossKills + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
@@ -122,9 +131,30 @@ for _, v in ipairs(encounterEnds) do
 	logInfo("%d: %s (%d) (%s), difficulty = %d, groupSize = %d", v.offset, v.name, v.id, v.success and "Kill" or "Wipe", v.difficulty, v.groupSize)
 end
 
+local function findFrameBoundaries(offset)
+	-- There is sometimes relevant stuff that is triggered by ENCOUNTER_START which is not guaranteed to be after this log entry
+	-- So we include the whole frame, note that timestamps across a frame are guaranteed to be identical
+	local frameTimestamp = log.total[offset]:match("^(<[%d*.]*) ")
+	local firstEntry, lastEntry
+	for i = 1, #log.total do
+		local prevLastEntry = lastEntry
+		if log.total[i]:sub(1, #frameTimestamp) == frameTimestamp then
+			if not firstEntry then
+				firstEntry = i
+			end
+			lastEntry = i
+		end
+		if lastEntry and prevLastEntry == lastEntry then
+			return firstEntry, lastEntry
+		end
+	end
+end
+
 if not firstLog then
 	if #encounterStarts == 1 then
-		firstLog = encounterStarts[1].offset
+		-- There is sometimes relevant stuff that is triggered by ENCOUNTER_START which may be logged before the actual event
+		-- So we just include the whole frame
+		firstLog = findFrameBoundaries(encounterStarts[1].offset)
 	elseif #encounterStarts == 0 then
 		logInfo("Log has no ENCOUNTER_START, starting at offset 1, use --start to override")
 		firstLog = 1
@@ -148,9 +178,16 @@ if not lastLog then
 		if lastBossKill and lastBossKill < lastLog + 100 then
 			lastLog = math.max(lastLog, lastBossKill)
 		end
+		-- Same as above, include the whole frame
+		lastLog = select(2, findFrameBoundaries(lastLog))
 	elseif #encounterEnds == 0 then
-		logInfo("Log has no ENCOUNTER_END, using entire log file, use --end to override")
-		lastLog = #log.total
+		if lastEncounterIsInProgressEnd then
+			logInfo("Log has no ENCOUNTER_END, using last IsEncounterInProgress() = false which is at %d (%d entries after this)", lastEncounterIsInProgressEnd, #log.total - lastEncounterIsInProgressEnd)
+			lastLog = select(2, findFrameBoundaries(lastEncounterIsInProgressEnd))
+		else
+			logInfo("Log has no ENCOUNTER_END and no IsEncounterInProgress() = false, using entire log file, use --end to override")
+			lastLog = #log.total
+		end
 	else
 		logInfo("Log contains more than one ENCOUNTER_END")
 		local encounterEndHelp = {}
@@ -220,9 +257,10 @@ local function literalsTable(...)
 	return tbl
 end
 
+---@param info DBMInstanceInfo
 local function getInstanceInfo(info)
-	return ("{name = %s, instanceType = %s, difficultyID = %s, difficultyName = %s, maxPlayers = %s, dynamicDifficulty = %s, isDynamic = %s, instanceID = %s, instanceGroupSize = %s, lfgDungeonID = %s}"):format(
-		literals(info.name, info.instanceType, info.difficultyID, info.difficultyName, info.maxPlayers, info.dynamicDifficulty, info.isDynamic, info.instanceID, info.instanceGroupSize, info.lfgDungeonID)
+	return ("{name = %s, instanceType = %s, difficultyID = %s, difficultyName = %s, difficultyModifier = %s, maxPlayers = %s, dynamicDifficulty = %s, isDynamic = %s, instanceID = %s, instanceGroupSize = %s, lfgDungeonID = %s}"):format(
+		literals(info.name, info.instanceType, info.difficultyID, info.difficultyName, info.difficultyModifier, info.maxPlayers, info.dynamicDifficulty, info.isDynamic, info.instanceID, info.instanceGroupSize, info.lfgDungeonID)
 	)
 end
 
@@ -405,32 +443,44 @@ local function transcribeEvent(event, params)
 	return result
 end
 
+-- TODO: this relies a lot on DBM debug logs -- we could try to make some educated guesses if we don't have these
 local function getMetadataFromLog()
 	local player
-	local instanceInfo = {}
+	local instanceInfo = {} ---@type DBMInstanceInfo
+	local encounterInfo = {}
 	for i, line in ipairs(log.total) do
-		-- Only grab instance info from within relevant log area
-		if i >= firstLog and i <= lastLog and not instanceInfo.name and line:match("GetInstanceInfo%(%) =") then
-			instanceInfo.name, instanceInfo.instanceType,
-			instanceInfo.difficultyID, instanceInfo.difficultyName,
-			instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty,
-			instanceInfo.isDynamic, instanceInfo.instanceID,
-			instanceInfo.instanceGroupSize, instanceInfo.lfgDungeonID = guessTypes(line:match(
-				"%[DBM_Debug%] GetInstanceInfo%(%) = ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^#]+)"
-			))
+		-- Only grab instance and encounter info from within relevant log area
+		if i >= firstLog and i <= lastLog then
+			if line:match("GetInstanceInfo%(%) =") then
+				---@diagnostic disable-next-line: assign-type-mismatch
+				instanceInfo.name, instanceInfo.instanceType, instanceInfo.difficultyID, instanceInfo.difficultyName, instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty, instanceInfo.isDynamic, instanceInfo.instanceID, instanceInfo.instanceGroupSize, instanceInfo.lfgDungeonID
+				= guessTypes(line:match(
+					"%[DBM_Debug%] GetInstanceInfo%(%) = ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^#]+)"
+				))
+			elseif line:match("DBM:GetCurrentInstanceDifficulty%(%) = normal20, 20 Player%+ %(%d%)") then -- SoD/Molten Core heat levels
+				local modifier = line:match("%((%d)%)")
+				instanceInfo.difficultyModifier = tonumber(modifier) or 0
+			elseif line:match("%[ENCOUNTER_[SE][TN][AD]") then
+				local id, name, difficulty, _, success, isStart = parseEncounterEvent(line)
+				if not encounterInfo.id or id == encounterInfo.id then -- multiple different encounters in one log? you'll have to do something by hand
+					encounterInfo.id = id
+					encounterInfo.name = name
+					encounterInfo.difficulty = difficulty
+					if not isStart then
+						encounterInfo.kill = success
+					end
+				end
+			end
 		end
 		-- But we can grab the player id from anywhere
 		if not player then
 			player = line:match("%[UNIT_SPELLCAST_SUCCEEDED%] PLAYER_SPELL{([^}]+)} %-.*%- %[%[player:Cast%-")
 		end
-		if player and instanceInfo.name then
-			break
-		end
 	end
-	return player, instanceInfo, logName:match("Version: 1%.") and "SeasonOfDiscovery" or ""
+	return player, instanceInfo, encounterInfo, logName:match("Version: 1%.") and "SeasonOfDiscovery" or "Retail" -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
 end
 
-local deducedPlayer, instanceInfo, gameVersion = getMetadataFromLog()
+local deducedPlayer, instanceInfo, encounterInfo, gameVersion = getMetadataFromLog()
 playerName = playerName or deducedPlayer
 
 local function buildAnonTable()
