@@ -324,7 +324,7 @@ function test:SetupDBMOptions()
 	DBM.Options.FilterDispel = false
 	DBM.Options.FilterCrowdControl = false
 	DBM.Options.FilterTrashWarnings2 = false
-	DBM.Options.FilterVoidFormSay = false
+	DBM.Options.FilterVoidFormSay2 = false
 	-- Don't spam guild members when testing
 	DBM.Options.DisableGuildStatus = true
 	DBM.Options.AutoRespond = false

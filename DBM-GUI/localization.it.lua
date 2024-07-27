@@ -262,7 +262,7 @@ L.SpamBlockNoRangeRestore	= "Non ripristinare distanziometro allo stato preceden
 L.Area_SpamFilter			= "Opzioni Filtro Spam"
 L.DontShowFarWarnings		= "Non mostrare annunci/temporizzatori di eventi lontani"
 L.StripServerName			= "Togli nome reame negli avvisi e temporizzatori"
-L.FilterVoidFormSay			= "Niente posizioni/conteggi in chat in Forma del Vuoto"
+L.FilterVoidFormSay2			= "Niente posizioni/conteggi in chat in Forma del Vuoto"
 
 L.Area_SpecFilter			= "Opzioni Filtro Ruolo"
 L.FilterTankSpec			= "Filtra avvisi per i Tank quando senza spec da Tank. (Nota: E' sconsigliato disabilitarlo a tutti gli utenti in quanto gli avvisi 'taunt' sono tutti attivi di base.)"

@@ -466,7 +466,7 @@ L.SpamBlockNoTrivialSpecWarnSound	= "No reproducir sonidos de anuncio especiales
 L.Area_SpamFilter			= "Opciones de filtros de avisos"
 L.DontShowFarWarnings		= "Ocultar anuncios y temporizadores de eventos que están demasiado lejos"
 L.StripServerName			= "Omitir nombre del reino en avisos y temporizadores"
-L.FilterVoidFormSay			= "Desactivar el envío de mensajes de posición y cuenta atrás en el chat durante Forma del Vacío"
+L.FilterVoidFormSay2			= "Desactivar el envío de mensajes de posición y cuenta atrás en el chat durante Forma del Vacío"
 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
 L.FilterTankSpec			= "Ocultar avisos designados para tanques cuando no sea tu rol"

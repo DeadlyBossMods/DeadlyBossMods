@@ -472,7 +472,7 @@ L.SpamBlockNoTrivialSpecWarnSound	= "如果相对你等级是不重要的内容�
 L.Area_SpamFilter					= "信息过滤选项"
 L.DontShowFarWarnings				= "不为过远的事件显示计时条/警报"
 L.StripServerName					= "警报和计时器中不显示服务器名"
-L.FilterVoidFormSay					= "当在虚无状态下，不播发位置或报数喊叫"
+L.FilterVoidFormSay2					= "当在虚无状态下，不播发位置或报数喊叫"
 
 L.Area_SpecFilter					= "角色过滤选项"
 L.FilterTankSpec					= "当非坦克专精时，过滤掉给予坦克的专用信息"
