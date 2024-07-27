@@ -101,6 +101,7 @@ end
 local bosses = {}
 local unitTargets = {}
 local guids = {}
+local namesToGuids = {}
 
 -- Used by target scanner to get unit ID for a given guid
 function mocks.DBMGetUnitIdFromGUID(_, guid, scanOnlyBoss)
@@ -126,6 +127,13 @@ end
 -- This is useful in classic where we often end up with GUIDs without any further information due to lack of IEEU events and boss unit ids
 function mocks:LearnGuidNameMapping(guid, name)
 	guids[guid] = name
+	namesToGuids[name] = guid
+end
+
+-- Conflicts are ignored, best we can do for classic.
+-- Used for the health check case which usually only cares about cid which should have a unique name.
+function mocks:GuessGuid(name)
+	return namesToGuids[name]
 end
 
 -- Used by target scanner
@@ -273,13 +281,35 @@ function mocks:RemoveUnitAura(name, guid, spellId, spellName)
 end
 
 local unitPower = {}
-function mocks.UnitPower(uId)
-	return unitPower[uId]
+function mocks.UnitPower(uId, ...)
+	return unitPower[uId] or UnitPower(uId, ...)
+end
+
+function mocks.UnitPowerMax(uId)
+	return unitPower[uId] and 100 or UnitPowerMax(uId)
 end
 
 function mocks:UpdateUnitPower(uId, name, power)
 	unitPower[uId] = power
-	unitPower["fakeunitid-name-" .. name] = power
+	if name then
+		unitPower["fakeunitid-name-" .. name] = power
+	end
+end
+
+local unitHealth = {}
+function mocks.UnitHealth(uId)
+	return unitHealth[uId] or UnitHealth(uId)
+end
+
+function mocks.UnitHealthMax(uId)
+	return unitHealth[uId] and 100 or UnitHealthMax(uId)
+end
+
+function mocks:UpdateUnitHealth(uId, name, health)
+	unitHealth[uId] = health
+	if name then
+		unitHealth["fakeunitid-name-" .. name] = health
+	end
 end
 
 function mocks.UnitExists(uId)
@@ -334,6 +364,9 @@ function test:SetupHooks()
 	table.wipe(unitTargets)
 	table.wipe(unitAuras)
 	table.wipe(unitPower)
+	table.wipe(unitHealth)
+	table.wipe(guids)
+	table.wipe(namesToGuids)
 end
 
 function mocks:HookModGlobal(key, val)
@@ -361,6 +394,9 @@ function mocks:InitializeModEnvironment()
 	end
 	self.modEnv = setmetatable({}, {__index = _G})
 	self:HookModGlobal("UnitPower", mocks.UnitPower)
+	self:HookModGlobal("UnitPowerMax", mocks.UnitPowerMax)
+	self:HookModGlobal("UnitHealth", mocks.UnitHealth)
+	self:HookModGlobal("UnitHealthMax", mocks.UnitHealthMax)
 	self:HookModGlobal("UnitExists", mocks.UnitExists)
 	self:HookModGlobal("UnitGUID", mocks.UnitGUID)
 	self:HookModGlobal("GetTime", mocks.GetTime)
