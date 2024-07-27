@@ -553,9 +553,43 @@ DBM.Test:DefineTest{
 	%s,
 }]]
 
+local function guessMod()
+	if not encounterInfo.name then return "" end
+	return encounterInfo.name:gsub("%s*", ""):gsub("'", "")
+end
+
+-- TODO: all of these guessing functions could be much smarter, but I'm adding stuff as I go
+local function guessTestName()
+	if not encounterInfo.name then return "" end
+	local difficulty = ""
+	if instanceInfo.instanceID == 409 and instanceInfo.difficultyModifier then -- MC heat levels
+		difficulty = "Heat-" .. instanceInfo.difficultyModifier .. "/"
+	end
+	local name = guessMod() .. "/" .. difficulty .. (encounterInfo.kill and "Kill" or "Wipe")
+	if args.prefix then
+		return args.prefix:gsub("/$", "") .. "/" .. name
+	else
+		logInfo("Use --prefix to provide a prefix for test name")
+		return name
+	end
+end
+
+local function guessAddon()
+	if gameVersion == "SeasonOfDiscovery" then
+		if instanceInfo.instanceType == "raid" then
+			-- Onyxia and the outdoor bosses are for 40 players, but luckily Onyxia uses a different difficulty ID
+			return instanceInfo.maxPlayers == 40 and instanceInfo.difficultyID == 9 and "DBM-Azeroth"
+				or "DBM-Raids-Vanilla"
+		elseif instanceInfo.instanceType == "party" then -- UBRS & co also return party here
+			return "DBM-Party-Vanilla"
+		end
+	end
+	return ""
+end
+
 local function generateTest()
 	local str = template:format(
-		literal(""), literal(gameVersion), literal(""), literal(""),
+		literal(guessTestName()), literal(gameVersion), literal(guessAddon()), literal(guessMod()),
 		getInstanceInfo(instanceInfo),
 		getLog()
 	)
