@@ -2704,6 +2704,9 @@ do
 		local returnUnitID
 		if UnitTokenFromGUID then
 			returnUnitID = UnitTokenFromGUID(playerGUID)
+		end
+		if returnUnitID then
+			return returnUnitID
 		else
 			--Sadly this can't use caching from raid table, because we don't know the name, only the guid
 			for _, unitId in ipairs(fullPlayerUids) do
