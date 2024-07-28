@@ -686,8 +686,9 @@ L.DBM_INSTALL_REMINDER_HEADER	= "Incomplete DBM installation detected!"
 L.DBM_INSTALL_REMINDER_EXPLAIN	= "Welcome to %s. DBM mods for bosses here are in the %s which you do not have installed. DBM will not show timers or warnings in this zone unless you install the %s!"
 L.DBM_INSTALL_REMINDER_DISABLE	= "Disable all DBM warnings and timers in this zone." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
 L.DBM_INSTALL_REMINDER_DISABLE2 = "Do not show this message again for this package." -- Used for unimportant mods, i.e., dungeons
-L.DBM_INSTALL_REMINDER_DL_WAGO	= "Copy this to download from Wago.io"
-L.DBM_INSTALL_REMINDER_DL_CURSE	= "Copy this to download from Curse"
+L.DBM_INSTALL_REMINDER_DL_WAGO	= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the Wago.io link to your clipboard."
+L.DBM_INSTALL_REMINDER_DL_CURSE	= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the Curseforge link to your clipboard."
+--"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
 L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla and Season of Discovery package"
 L.DBM_INSTALL_PACKAGE_WRATH		= "Wrath package"
 L.DBM_INSTALL_PACKAGE_CATA		= "Cataclysm package"
