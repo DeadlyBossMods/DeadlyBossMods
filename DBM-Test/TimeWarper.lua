@@ -121,6 +121,10 @@ function test.TimeWarper:WaitUntil(time)
 	end
 end
 
+function test.TimeWarper:WaitFor(seconds)
+	return self:WaitUntil(self.fakeTime + seconds)
+end
+
 function test.TimeWarper:DisableSound()
 	if not self.soundDisabled then
 		DBM:AddMsg("Timewarp >= 10, disabling sounds")
