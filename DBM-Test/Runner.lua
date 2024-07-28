@@ -324,7 +324,7 @@ function test:SetupDBMOptions()
 	DBM.Options.FilterDispel = false
 	DBM.Options.FilterCrowdControl = false
 	DBM.Options.FilterTrashWarnings2 = false
-	DBM.Options.FilterVoidFormSay = false
+	DBM.Options.FilterVoidFormSay2 = false
 	-- Don't spam guild members when testing
 	DBM.Options.DisableGuildStatus = true
 	DBM.Options.AutoRespond = false
@@ -521,6 +521,19 @@ function test:Playback(testData, timeWarp)
 	-- 100 messages or so anyways, so whatever.
 	self.logPlayerName = findRecordingPlayer(testData.log)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
+	if testData.instanceInfo.difficultyModifier then
+		-- Only MC is supported right now
+	   if testData.instanceInfo.instanceID == 409 then
+			local heatLevel = testData.instanceInfo.difficultyModifier
+			if heatLevel == 1 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 458841, "Sweltering Heat", "DEBUFF")
+			elseif heatLevel == 2 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 458842, "Blistering Heat", "DEBUFF")
+			elseif heatLevel == 3 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 458843, "Molten Heat", "DEBUFF")
+			end
+	   end
+   end
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New()
 	self.timeWarper = timeWarper
@@ -590,13 +603,16 @@ frame:SetScript("OnUpdate", function(self)
 	end
 end)
 
+---@class DBMInstanceInfo: InstanceInfo
+---@field difficultyModifier number?
+
 ---@class TestDefinition
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
 ---@field mod string|integer The boss mod being tested.
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
----@field instanceInfo InstanceInfo Fake GetInstanceInfo() data for the test.
+---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field log TestLogEntry[] Log to replay
 

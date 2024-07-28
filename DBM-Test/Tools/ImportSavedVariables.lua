@@ -77,14 +77,20 @@ for entry in lfs.dir(reportsFolderName) do
 	end
 end
 
+local function testNameToFilename(testName)
+	testName = testName:gsub("^[^/]*/[^/]*/", "")
+	return testName:gsub("-", ""):gsub("/", "-"):gsub("\\", "-"):gsub(":", "-")
+end
+
 local function handleResult(testName, testResult)
 	local reportFile = reportFiles[testName] and reportFiles[testName].fileName
 	local oldResult = reportFiles[testName] and reportFiles[testName].contents
 	if not reportFile and not args["create-files"] then
+		print("no file found for test '" .. testName .. "' use --create-files to create one")
 		return
 	end
 	if not reportFile then
-		reportFile = reportsFolderName .. "/" .. testName:gsub("-", ""):gsub("/", "-"):gsub("\\", "-"):gsub(":", "-") .. ".lua"
+		reportFile = reportsFolderName .. "/" .. testNameToFilename(testName) .. ".lua"
 		if lfs.attributes(reportFile) then
 			print("Cannot write test report for test " .. testName .. " to " .. reportFile .. ": file already exists and is not a report for that test")
 		end

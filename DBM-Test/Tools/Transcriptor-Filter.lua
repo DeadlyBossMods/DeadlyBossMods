@@ -22,19 +22,22 @@ filter.ignoredSpellIds = set{
 }
 
 filter.ignoredCreatureIds = set{
-	2523, 3904, 7400, -- Searing Totem
-	7465, -- Magma Totem
-	7844, -- Fire Nova Totem
+	2523, 3904, 7400, 7402, -- Searing Totem
+	7465, 7466, -- Magma Totem
+	7844, 7466, 7845, -- Fire Nova Totem
 	7468, -- Nature Resistance Totem
+	7425, -- Fire Resistance Totem
 	5913, -- Tremor Totem
 	7483, -- Windfury Totem
-	5922, -- Strength of Earth Totem
-	7486, -- Grace of Air Totem
+	11101, -- Mana Tide Totem
+	5922, 7403, -- Strength of Earth Totem
+	7486, 7487, -- Grace of Air Totem
 	5924, -- Disease Cleansing Totem
 	11100, -- Mana Tide Totem
 	3908, -- Healing Stream Totem
 	59764, -- Healing Tide Totem
 	7415, -- Mana Spring Totem
+	2630, -- Earthbind Totem
 	225409, 225409, -- Surging Totem
 	202079, 19668, -- Shadowfiend
 	202390, 202391, 202392, -- Homunculus

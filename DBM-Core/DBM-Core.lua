@@ -81,7 +81,7 @@ local fakeBWVersion, fakeBWHash = 341, "51c5bf8"--341.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.1"--Core version
+DBM.DisplayVersion = "11.0.2 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 7, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = (private.isWrath or private.isClassic) and 13 or 12--When this is incremented, trigger force disable regardless of major patch
@@ -196,7 +196,7 @@ DBM.DefaultOptions = {
 	FilterDispel = true,
 	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
-	FilterVoidFormSay = true,
+	FilterVoidFormSay2 = false,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	RecordOnlyBosses = false,
@@ -2689,7 +2689,36 @@ do
 		return raid[name] and raid[name].id
 	end
 
-	local fullUids = {
+	local fullPlayerUids = {
+		"player", "party1", "party2", "party3", "party4",
+		"raid1", "raid2", "raid3", "raid4", "raid5", "raid6", "raid7", "raid8", "raid9", "raid10",
+		"raid11", "raid12", "raid13", "raid14", "raid15", "raid16", "raid17", "raid18", "raid19", "raid20",
+		"raid21", "raid22", "raid23", "raid24", "raid25", "raid26", "raid27", "raid28", "raid29", "raid30",
+		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
+	}
+
+	---Used Strictly to look up Player UnitId by GUID
+	---@param self DBMModOrDBM
+	---@param playerGUID string
+	function DBM:GetRaidUnitIdByGuid(playerGUID)
+		local returnUnitID
+		if UnitTokenFromGUID then
+			returnUnitID = UnitTokenFromGUID(playerGUID)
+		end
+		if returnUnitID then
+			return returnUnitID
+		else
+			--Sadly this can't use caching from raid table, because we don't know the name, only the guid
+			for _, unitId in ipairs(fullPlayerUids) do
+				local guid2 = UnitGUID(unitId)
+				if playerGUID == guid2 then
+					return unitId
+				end
+			end
+		end
+	end
+
+	local fullEnemyUids = {
 		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
 		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
 		"party1target", "party2target", "party3target", "party4target",
@@ -2707,25 +2736,25 @@ do
 		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
 	}
 
-	---Not to be confused with GetUnitIdFromCID
+	---Used Strictly to look up Enemy UnitId by GUID
 	---@param self DBMModOrDBM
-	---@param guid string
+	---@param enemyGUID string
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids. Bypasses UnitTokenFromGUID (which checks EVERYTHING)
-	function DBM:GetUnitIdFromGUID(guid, bossOnly)
+	function DBM:GetUnitIdFromGUID(enemyGUID, bossOnly)
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
-		--(because blizzard checks every token imaginable, even more than fullUids does and they have boss as the END in their order selection)
+		--(because blizzard checks every token imaginable, even more than fullEnemyUids does and they have boss as the END in their order selection)
 		--DBM prioiritzes the most common/useful tokens first, and rarely iterates passed even boss1, which is first token in OUR priorities
 		if UnitTokenFromGUID and not bossOnly then
-			returnUnitID = UnitTokenFromGUID(guid)
+			returnUnitID = UnitTokenFromGUID(enemyGUID)
 		end
 		if returnUnitID then
 			return returnUnitID
 		else
-			local usedTable = bossOnly and bossTargetuIds or fullUids
+			local usedTable = bossOnly and bossTargetuIds or fullEnemyUids
 			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
-				if guid == guid2 then
+				if enemyGUID == guid2 then
 					return unitId
 				end
 			end
@@ -2749,7 +2778,7 @@ do
 			end
 		end
 		if not bossOnly then
-			for _, unitId in ipairs(fullUids) do
+			for _, unitId in ipairs(fullEnemyUids) do
 				local guid2 = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(guid2)
 				if cid == creatureID then
@@ -4352,7 +4381,7 @@ do
 		local unitId
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
 			if blizzardTimer then
-				unitId = self:GetUnitIdFromGUID(sender)
+				unitId = self:GetRaidUnitIdByGuid(sender)
 				sender = self:GetUnitFullName(unitId) or sender
 			else
 				unitId = self:GetRaidUnitId(sender)
@@ -5062,22 +5091,22 @@ do
 		end
 	end
 
-	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds, _, _, initiatedByName)--totalTime, informChat
+	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds)
 		--Ignore this event in combat
 		if #inCombat > 0 then return end
 --		if timeSeconds > 60 then--treat as a break timer
 --			breakTimerStart(self, timeSeconds, initiatedBy, true)
 --		else--Treat as a pull timer
 			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-			pullTimerStart(self, initiatedByName or initiatedByGuid, timeSeconds, true)
+			pullTimerStart(self, initiatedByGuid, timeSeconds, true)
 --		end
 	end
 
-	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid, _, initiatedByName)--informChat
+	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid)
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
 --		breakTimerStart(self, 0, initiatedBy, true)
 		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-		pullTimerStart(self, initiatedByName or initiatedByGuid, 0, true)
+		pullTimerStart(self, initiatedByGuid, 0, true)
 	end
 end
 
@@ -7313,12 +7342,9 @@ end
 ---@param time number? time to wait between two events (optional, default 2.5 seconds)
 ---@param id any? id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
 function DBM:AntiSpam(time, id)
-	if GetTime() - (id and (self["lastAntiSpam" .. tostring(id)] or 0) or self.lastAntiSpam or 0) > (time or 2.5) then
-		if id then
-			self["lastAntiSpam" .. tostring(id)] = GetTime()
-		else
-			self.lastAntiSpam = GetTime()
-		end
+	id = id or "(nil)"
+	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or 0) > (time or 2.5) then
+		self["lastAntiSpam" .. tostring(id)] = GetTime()
 		test:Trace(self, "AntiSpam", id, true)
 		return true
 	end

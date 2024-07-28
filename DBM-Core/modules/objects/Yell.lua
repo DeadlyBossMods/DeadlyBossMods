@@ -88,7 +88,7 @@ function yellPrototype:Yell(...)
 		DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 		return
 	end
-	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
+	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay2) then return end
 	if not self.option or self.mod.Options[self.option] then
 		if self.yellType == "combo" then
 			SendChatMessage(text, self.chatType or "YELL")
@@ -110,7 +110,7 @@ function yellPrototype:Say(...)
 		DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 		return
 	end
-	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
+	if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not private.isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay2) then return end
 	if not self.option or self.mod.Options[self.option] then
 		SendChatMessage(text, "SAY")
 	end
