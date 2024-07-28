@@ -332,6 +332,9 @@ function test:SetupDBMOptions()
 	-- Don't show intro messages
 	DBM.Options.SettingsMessageShown = true
 	DBM.Options.NewsMessageShown2 = 3
+	-- Order player names by log order because the default is non-deterministic due to the replaying player's name sneaking in during replay
+	DBM.Options.WarningAlphabetical = false
+	DBM.Options.SWarningAlphabetical = false
 end
 
 function test:Setup(testData)

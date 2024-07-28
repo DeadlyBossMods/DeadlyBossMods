@@ -1,5 +1,6 @@
 local filter = require "Transcriptor-Filter"
 local cliArgs = require "ArgParser"
+local anonymizer = require "Anonymizer"
 
 local unpack = unpack or table.unpack -- Lua 5.1 compat
 
@@ -268,12 +269,14 @@ local function stripHealthInfo(name)
 	return name:gsub("%([^)]+%%%)$", "")
 end
 
-local function transcribeUnitSpellEvent(event, params)
+local function transcribeUnitSpellEvent(event, params, anon)
 	if params:match("^PLAYER_SPELL") then
-		return
+		return -- Note: don't forget to scrub player name if you want to support this event
 	end
 	-- Transcriptor has some useful extra data that we can use to reconstruct unit targets, health and power
 	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.]*)%%%-([%d.]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
+	guid = anon:ScrubGUID(guid)
+	unitTarget = anon:ScrubTarget(unitTarget)
 	unitHp = tonumber(unitHp) or 0
 	unitPower = tonumber(unitPower) or 0
 	return literalsTable(event, unit, guid, tonumber(spellId), unitName, unitHp, unitPower, unitTarget)
@@ -309,7 +312,7 @@ end
 local flagWarningShown
 local seenFriendlyCids = {}
 
-local function transcribeCleu(rawParams)
+local function transcribeCleu(rawParams, anon)
 	local params = {}
 	local i = 1 -- to handle nil
 	for param in rawParams:gmatch("([^#]*)") do
@@ -412,6 +415,18 @@ local function transcribeCleu(rawParams)
 	end
 	sourceFlags = sourceFlags or reconstructFlags(sourceName, srcIsPlayer, srcIsPet, srcIsNpc)
 	local destFlags = reconstructFlags(destName, destIsPlayer, destIsPet, destIsNpc)
+	if sourceGUID and sourceGUID ~= "" then
+		sourceName = anon:ScrubName(sourceName, sourceGUID)
+		sourceGUID = anon:ScrubGUID(sourceGUID)
+	end
+	if destGUID and destGUID ~= "" then
+		destName = anon:ScrubName(destName, destGUID)
+		destGUID = anon:ScrubGUID(destGUID)
+	end
+	if event:match("_HEAL_ABSORBED") and extraArg1 and extraArg1 ~= "" then
+		extraArg2 = anon:ScrubName(extraArg2, extraArg1)
+		extraArg1 = anon:ScrubGUID(extraArg1)
+	end
 	return literalsTable(
 		"COMBAT_LOG_EVENT_UNFILTERED", event,				-- skipping timestamp and hideCaster
 		sourceGUID, sourceName, hex(sourceFlags), hex(0),	-- 0x0 == sourceRaidFlags, not logged
@@ -421,20 +436,28 @@ local function transcribeCleu(rawParams)
 	)
 end
 
-local function transcribeEvent(event, params)
+local function transcribeEvent(event, params, anon)
 	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
-		return transcribeUnitSpellEvent(event, params)
+		return transcribeUnitSpellEvent(event, params, anon)
 	end
 	if event == "PLAYER_TARGET_CHANGED" then
 		-- TODO: do we ever care about player targets? typically used in filters and we don't want to filter
 		return
 	end
 	if event == "CLEU" then
-		return transcribeCleu(params)
+		return transcribeCleu(params, anon)
 	end
+	if event == "UNIT_TARGET" then
+		params = params:gsub("([^#]*#)([^#]*)(#Target: )([^#]*)(#TargetOfTarget: )([^#]*)", function(arg1, arg2, arg3, arg4, arg5, arg6)
+			return arg1 .. anon:ScrubTarget(arg2) .. arg3 .. anon:ScrubTarget(arg4) .. arg5 .. anon:ScrubTarget(arg6)
+		end)
+	end
+	-- TODO: UNIT_TARGETABLE_CHANGED, UNIT_AURA, UNIT_POWER (?), NAME_PLATE_UNIT_ADDED, INSTANCE_ENCOUNTER_ENGAGE_UNIT, GOSSIP_SHOW
+	-- CHAT_MSG_MONSTER_* arg5 and arg12
+	-- CHAT_MSG_MONSTER_SAY for pets(!)
 	-- Generic event
 	local result = {literal(event)}
 	for param in params:gmatch("([^#]*)") do
@@ -483,24 +506,13 @@ end
 local deducedPlayer, instanceInfo, encounterInfo, gameVersion = getMetadataFromLog()
 playerName = playerName or deducedPlayer
 
-local function buildAnonTable()
-	-- TODO: actually build the anonymization table here, currently this is just used to get info about the logging player
-	for i = firstLog, lastLog do -- do we want to use the entire log or just the segment we are looking at? probably saver to restrict to the segment
-		local line = log.total[i]
-		local guid, name = line:match("^<[%d.]+ [^>]+> %[CLEU%] SPELL_[^#]+##?%d*#?(Player%-[^#]+)#([^#]+)")
-		-- grab GUID of logging player, easer to do here than in getMetadataFromLog above because above we grab it from UCS which doesn't have GUIDs
-		if name == playerName then
-			playerGuid = guid
-		end
-	end
-end
-
 local function getLog()
 	local result = {}
 	local timeOffset
 	local totalTime = 0
 	local logContainsLoggingPlayer = false
-	buildAnonTable()
+	local anon = anonymizer:New(log.total, firstLog, lastLog)
+	playerGuid = anon:RealPlayerGuidByName(playerName)
 	for i = firstLog, lastLog do
 		local line = log.total[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
@@ -511,7 +523,7 @@ local function getLog()
 		end
 		timeOffset = timeOffset or time
 		time = time - timeOffset
-		local testEvent = transcribeEvent(event, params)
+		local testEvent = transcribeEvent(event, params, anon)
 		if not logContainsLoggingPlayer and playerGuid and testEvent and event == "CLEU" then
 			local quotedPlayerGuid = "\"" .. playerGuid .. "\""
 			if testEvent[3] == quotedPlayerGuid  or testEvent[7] == quotedPlayerGuid then
