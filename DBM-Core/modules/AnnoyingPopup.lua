@@ -141,7 +141,7 @@ local popupData = {
 	},
 	Dungeons = {
 		package = L.DBM_INSTALL_PACKAGE_DUNGEON,
-		wagoUrl = "https://addons.wago.io/addons/xZKxZENk",
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-old-dungeon-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-dungeons",
 		useFriendlyMessage = true
 	}
