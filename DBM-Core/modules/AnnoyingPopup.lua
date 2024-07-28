@@ -186,6 +186,27 @@ local annoyingPopupZonesCata = {
 	[754]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
 }
 
+local annoyingPopupZonesRetail = {
+	--DF Season 4 M+ Dungeons
+	[2516]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2526]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2515]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2521]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2527]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2519]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2451]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2520]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	--TWW Season 1 M+ Dungeons
+	[2652]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2662]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2660]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2669]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[670]   = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[1822]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2286]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	[2290]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+}
+
 function DBM:ShowAnnoyingPopup(packageId, zone)
 	if DBM_AnnoyingPopupDisables and DBM_AnnoyingPopupDisables[packageId] then
 		return
@@ -232,6 +253,11 @@ function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 		end
 	elseif zoneLookup == "Cata" then
 		local zoneInfo = annoyingPopupZonesCata[mapId]
+		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
+		end
+	elseif zoneLookup == "Retail" then
+		local zoneInfo = annoyingPopupZonesRetail[mapId]
 		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
 			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
 		end
