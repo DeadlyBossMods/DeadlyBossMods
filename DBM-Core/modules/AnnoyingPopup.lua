@@ -234,32 +234,21 @@ function DBM:ShowAnnoyingPopup(packageId, zone)
 end
 
 function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
+	local zoneInfo
 	if zoneLookup == "Vanilla" then
-		if self:IsSeasonal("SeasonOfDiscovery") then -- Only SoD for now
-			local zoneInfo = annoyingPopupZonesSoD[mapId]
-			if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
-				self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
-			end
+		if self:IsSeasonal("SeasonOfDiscovery") then
+			zoneInfo = annoyingPopupZonesSoD[mapId]
 		else
-			local zoneInfo = annoyingPopupZonesVanilla[mapId]
-			if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
-				self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
-			end
+			zoneInfo = annoyingPopupZonesVanilla[mapId]
 		end
 	elseif zoneLookup == "Wrath" then
-		local zoneInfo = annoyingPopupZonesWrath[mapId]
-		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
-			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
-		end
+		zoneInfo = annoyingPopupZonesWrath[mapId]
 	elseif zoneLookup == "Cata" then
-		local zoneInfo = annoyingPopupZonesCata[mapId]
-		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
-			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
-		end
+		zoneInfo = annoyingPopupZonesCata[mapId]
 	elseif zoneLookup == "Retail" then
-		local zoneInfo = annoyingPopupZonesRetail[mapId]
-		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
-			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
-		end
+		zoneInfo = annoyingPopupZonesRetail[mapId]
+	end
+	if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+		self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
 	end
 end
