@@ -126,8 +126,18 @@ end
 local popupData = {
 	Vanilla = {
 		package = L.DBM_INSTALL_PACKAGE_VANILLA,
-		wagoUrl = "https://addons.wago.io/addons/7x61xpN1",
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-bc-vanilla-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/dbm-vanilla",
+	},
+	Wrath = {
+		package = L.DBM_INSTALL_PACKAGE_WRATH,
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-wrath-of-the-lich-king-mods",
+		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-wotlk",
+	},
+	Cata = {
+		package = L.DBM_INSTALL_PACKAGE_CATA,
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-cataclysm-mods",
+		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-cataclysm-mods",
 	},
 	Dungeons = {
 		package = L.DBM_INSTALL_PACKAGE_DUNGEON,
@@ -144,6 +154,37 @@ local annoyingPopupZonesSoD = {
 	[2784] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- Demon Fall Canyon in SoD, it's a bit harder than usual dungeons, so let's show a warning. Remove if too many people complain.
 }
 
+local annoyingPopupZonesVanilla = {
+	[249]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Onyxia
+	[409]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Molten Core
+	[469]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Blackwing Lair
+	[509]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Ruins of Ahn'Qiraj
+	[531]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Temple of Ahn'Qiraj
+	[533]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Naxxramas
+}
+
+--No hard dungeons in wrath, so just popup for raids
+local annoyingPopupZonesWrath = {
+	[249]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Onyxia (wrath version)
+	[724]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[649]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[616]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[631]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[533]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Naxxramas (Wrath)
+	[603]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[624]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+}
+
+--Iffy on hard cata dungeons, but it's not complained about much so omited for now
+local annoyingPopupZonesCata = {
+	[757]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[671]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[669]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[967]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[720]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[951]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+	[754]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
+}
 
 function DBM:ShowAnnoyingPopup(packageId, zone)
 	if DBM_AnnoyingPopupDisables and DBM_AnnoyingPopupDisables[packageId] then
@@ -171,9 +212,26 @@ function DBM:ShowAnnoyingPopup(packageId, zone)
 	end
 end
 
-function DBM:AnnoyingPopupCheckZone(mapId)
-	if self:IsSeasonal("SeasonOfDiscovery") then -- Only SoD for now
-		local zoneInfo = annoyingPopupZonesSoD[mapId]
+function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
+	if zoneLookup == "Vanilla" then
+		if self:IsSeasonal("SeasonOfDiscovery") then -- Only SoD for now
+			local zoneInfo = annoyingPopupZonesSoD[mapId]
+			if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+				self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
+			end
+		else
+			local zoneInfo = annoyingPopupZonesVanilla[mapId]
+			if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+				self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
+			end
+		end
+	elseif zoneLookup == "Wrath" then
+		local zoneInfo = annoyingPopupZonesWrath[mapId]
+		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
+		end
+	elseif zoneLookup == "Cata" then
+		local zoneInfo = annoyingPopupZonesCata[mapId]
 		if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
 			self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
 		end

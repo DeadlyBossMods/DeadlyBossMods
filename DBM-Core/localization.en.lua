@@ -689,4 +689,6 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "Do not show this message again for this packa
 L.DBM_INSTALL_REMINDER_DL_WAGO	= "Copy this to download from Wago.io"
 L.DBM_INSTALL_REMINDER_DL_CURSE	= "Copy this to download from Curse"
 L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla and Season of Discovery package"
+L.DBM_INSTALL_PACKAGE_WRATH		= "Wrath package"
+L.DBM_INSTALL_PACKAGE_CATA		= "Cataclysm package"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves, and Events package"
