@@ -326,7 +326,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		if modifierLevel == 0 then
 			return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 		else
-			return "normal20", difficultyName .. "+ (" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
+			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
 		end
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -380,11 +380,12 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
 		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
-		local delveTier
+		local delveTier = 0
 		if delveInfo and delveInfo and delveInfo.tierText then
-			delveTier = tonumber(delveInfo.tierText) or 0
+			---@diagnostic disable-next-line: cast-local-type
+			delveTier = tonumber(delveInfo.tierText)
 		end
-		return "delves", difficultyName .. "+ (" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
+		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
 		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
