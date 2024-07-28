@@ -244,11 +244,21 @@ function reporter:FindPreciseShowsThatAlwaysFailed(findings)
 	end
 end
 
+function reporter:FindWipeDetectionFailure(findings)
+	if self.inCombatAfterTest then
+		findings[#findings + 1] = {
+			type = "combat-didnt-end", sortKey = 4,
+			text = ("DBM still reported a mod in combat %.1f seconds after log playback"):format(self.inCombatAfterTest)
+		}
+	end
+end
+
 function reporter:ReportFindings()
 	local findings = {}
 	self:FindUntriggeredEvents(findings)
 	self:FindSpellIdMismatches(findings)
 	self:FindPreciseShowsThatAlwaysFailed(findings)
+	self:FindWipeDetectionFailure(findings)
 	local dedup = {}
 	for _, v in ipairs(findings) do
 		dedup[v.text] = v
@@ -780,4 +790,8 @@ function reporter:UnsetErrorHandler()
 		seterrorhandler(self.oldErrorHandler)
 		self.oldErrorHandler = nil
 	end
+end
+
+function reporter:FlagCombat(waitedFor)
+	self.inCombatAfterTest = waitedFor
 end
