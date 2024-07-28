@@ -3816,6 +3816,7 @@ do
 			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"), nil, true)
 			pvpShown = true
 		end
+		self:AnnoyingPopupCheckZone(LastInstanceMapID) -- Show extra annoying popup in SoD for current raids. People seem to be struggling with installing DBM Vanilla/SoD there.
 	end
 
 	local sodPvpZones = {

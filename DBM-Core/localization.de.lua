@@ -641,3 +641,13 @@ L.WORLD_BUFFS.zgHeartBooty	= "Der Blutgott, der Seelenschinder, wurde besiegt! W
 L.WORLD_BUFFS.zgHeartYojamba= "Beginnt mit dem Ritual, meine Diener. Wir müssen das Herz von Hakkar wieder in das Nichts verbannen!"
 L.WORLD_BUFFS.rendHead		= "Rend Blackhand, der falsche Kriegshäuptling, ist gefallen!"
 --L.WORLD_BUFFS.blackfathomBoon						= "boon of Blackfathom"
+
+-- Annoying popup, especially for classic players
+L.DBM_INSTALL_REMINDER_HEADER	= "Unvollständige DBM-Installation entdeckt!"
+L.DBM_INSTALL_REMINDER_EXPLAIN	= "Willkommen in %s. DBM Mods für Bosse hier sind im %s welches nicht installiert ist. DBM wird keine Timer und Warnungen in dieser Zone anzeigen bis das %s installiert wird!"
+L.DBM_INSTALL_REMINDER_DISABLE	= "Alle Warnungen und Timer in dieser Zone deaktivieren." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
+L.DBM_INSTALL_REMINDER_DISABLE2 = "Diese Nachricht für dieses Paket nicht nochmal anzeigen." -- Used for unimportant mods, i.e., dungeons
+L.DBM_INSTALL_REMINDER_DL_WAGO	= "Kopieren um von Wago.io herunterzuladen"
+L.DBM_INSTALL_REMINDER_DL_CURSE	= "Kopieren um von Curse herunterzuladen"
+L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla und Season of Discovery Paket"
+L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves und Events Paket"
