@@ -629,3 +629,15 @@ L.WORLD_BUFFS.zgHeartBooty	= "공포의 혈신, 영혼의 약탈자 학카르가
 L.WORLD_BUFFS.zgHeartYojamba	= "나의 종복들이여, 의식을 시작하라! 학카르의 심장을 다시 공허의 차원으로 쫓아내야 한다!"
 L.WORLD_BUFFS.rendHead		= "가짜 대족장 렌드 블랙핸드가 쓰러졌도다!"
 L.WORLD_BUFFS.blackfathomBoon	= "검은심연의 은혜"
+
+-- Annoying popup, especially for classic players
+L.DBM_INSTALL_REMINDER_HEADER	= "완료되지 않은 DBM 설치 작업이 감지되었습니다!"
+L.DBM_INSTALL_REMINDER_EXPLAIN	= "%s을 이용해 주셔서 감사합니다. %s에 있는 보스들의 DBM 모듈을 설치하지 않았습니다. %s 설치를 하기 전까지 DBM은 이 지역에서 타이머나 경고를 표시하지 않을 것입니다!"
+L.DBM_INSTALL_REMINDER_DISABLE	= "이 지역의 모든 DBM 경고와 타이머 작동을 중지합니다." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
+L.DBM_INSTALL_REMINDER_DISABLE2 = "이 패키지를 설치하면 이 메시지는 나오지 않습니다." -- Used for unimportant mods, i.e., dungeons
+L.DBM_INSTALL_REMINDER_DL_WAGO	= "Wago.io에서 다운로드를 하려면 이것을 복사하세요"
+L.DBM_INSTALL_REMINDER_DL_CURSE	= "Curse에서 다운로드를 하려면 이것을 복사하세요"
+L.DBM_INSTALL_PACKAGE_VANILLA	= "오리지널 및 디스커버리 시즌 패키지"
+L.DBM_INSTALL_PACKAGE_WRATH		= "리분 패키지"
+L.DBM_INSTALL_PACKAGE_CATA		= "대격변 패키지"
+L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 이벤트 패키지"
