@@ -297,7 +297,10 @@ end
 ---@param self SpecialWarning
 ---@param soundId number?
 ---@return boolean
-local function canVoiceReplace(self, soundId)
+local function canVoiceReplace(self, soundId, isNote)
+	if isNote then--Sound ID 5 is Notes feature, this is always allowed to play
+		return false
+	end
 	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" then
 		return false
 	end
@@ -488,7 +491,7 @@ function specialWarningPrototype:Show(...)
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None") then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-			if self.hasVoice and not DBM.Options.VPDontMuteSounds and canVoiceReplace(self, soundId) and self.hasVoice <= private.swFilterDisabled then return end
+			if self.hasVoice and not DBM.Options.VPDontMuteSounds and canVoiceReplace(self, soundId, noteHasName) and self.hasVoice <= private.swFilterDisabled then return end
 			DBM:PlaySpecialWarningSound(soundId or 1)
 		end
 	else

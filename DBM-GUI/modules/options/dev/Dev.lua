@@ -14,7 +14,6 @@ local testPanel = DBM_GUI.Cat_Development:CreateNewPanel("Tests", "option")
 
 ---@class TimeWarpSlider: DBMPanelSlider
 local timeWarpSlider = testPanel:CreateSlider("", 1, 500, 1, 400)
-timeWarpSlider:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 20, -20)
 timeWarpSlider:SetScript("OnValueChanged", function(self, value)
 	local sliderMax = select(2, self:GetMinMaxValues())
 	if value >= sliderMax then -- slider at max == dynamic fastest speed
@@ -92,6 +91,7 @@ local function setCombinedTestResults(uiInfo, test, result)
 	else
 		uiInfo.statusText:SetTextColor(ORANGE_FONT_COLOR:GetRGB())
 	end
+	uiInfo.statusText:Hide() uiInfo.statusText:Show() -- Do not remove, this actually avoids some problem with it not reliably showing up while running tests
 end
 
 ---@type TestDefinition[]
@@ -110,7 +110,7 @@ local function stopAll()
 	runAllOrStopButton:SetText("Run all tests")
 end
 
-runAllOrStopButton = testPanel:CreateButton("Run all tests", 100, 35, function()
+runAllOrStopButton = testPanel:CreateButton("Run all tests", 120, 35, function()
 	if #queuedTests > 0 then
 		stopAll()
 	elseif runButtons[1] then
@@ -119,12 +119,14 @@ runAllOrStopButton = testPanel:CreateButton("Run all tests", 100, 35, function()
 		error("no tests installed")
 	end
 end)
-runAllOrStopButton:SetPoint("TOPRIGHT", testPanel.frame, "TOPRIGHT", -10, -5)
+runAllOrStopButton:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 10, -5)
+timeWarpSlider:SetPoint("LEFT", runAllOrStopButton, "RIGHT", 10, 0)
 
 ---@param test TestDefinition
 local function onTestStart(test)
 	test.uiInfo.statusText:SetText("Running")
 	test.uiInfo.statusText:SetTextColor(LIGHTBLUE_FONT_COLOR:GetRGB())
+	test.uiInfo.statusText:Hide() test.uiInfo.statusText:Show() -- Do not remove, this actually avoids some problem with it not reliably showing up while running tests
 end
 
 ---@param results TestReporter
@@ -197,23 +199,24 @@ local function createTestEntry(testName, tests, parents, indentation)
 		childTestState = {}
 	}
 
+	local runButton = testPanel:CreateButton("Run", 40, 22, onRunTestClicked(tests))
+	runButton.myheight = yDistance
+	runButtons[#runButtons + 1] = runButton
+	runButton:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 10, yPos)
 	local statusText = testPanel:CreateText("", 55, false)
 	uiInfo.statusText = statusText
 	if #tests > 0 then
 		statusText:SetText("0/" .. #tests)
 	end
-	statusText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 7, yPos)
+	statusText:SetPoint("LEFT", runButton, "RIGHT", 2, 0)
 	statusText:SetMaxLines(1)
-	local nameText = testPanel:CreateText(testName, 0, false)
-	nameText:SetWidth(400) -- set width last like this instead of via parameter to avoid some odd placement for truncated text
-	nameText:SetMaxLines(1)
-	nameText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 60 + xOffset, yPos)
-	local runButton = testPanel:CreateButton("Run", 40, 22, onRunTestClicked(tests))
-	runButton.myheight = yDistance
-	runButtons[#runButtons + 1] = runButton
-	runButton:SetPoint("TOPRIGHT", testPanel.frame, "TOPRIGHT", -10, yPos)
 	local durationText = testPanel:CreateText(getTestDurationString(tests), 50, false, nil, "RIGHT")
-	durationText:SetPoint("RIGHT", runButton, "LEFT", -5, 0)
+	durationText:SetPoint("LEFT", statusText, "RIGHT", 0, 0)
+	--durationText:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 90, yPos)
+	local nameText = testPanel:CreateText(testName, 0, false)
+	nameText:SetWidth(500) -- set width last like this instead of via parameter to avoid some odd placement for truncated text
+	nameText:SetMaxLines(1)
+	nameText:SetPoint("LEFT", durationText, "RIGHT", xOffset, 0)
 	if #tests == 1 then
 		---@class TestDefinition
 		local test = tests[1]
@@ -223,7 +226,7 @@ local function createTestEntry(testName, tests, parents, indentation)
 			end
 		end)
 		uiInfo.showDiffButton = showDiffButton
-		showDiffButton:SetPoint("RIGHT", runButton, "LEFT", -50, 0)
+		showDiffButton:SetPoint("TOPRIGHT", testPanel.frame, "TOPRIGHT", -25, yPos)
 		showDiffButton:Hide()
 		local showErrorsButton = testPanel:CreateButton("Show errors", 0, 22, function(self)
 			if test.uiInfo.lastResults then

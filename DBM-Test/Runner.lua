@@ -85,6 +85,7 @@ end
 ---@type table<integer, ScheduledTask>
 local scheduledTasks = {}
 local tableUtils = dbmPrivate:GetPrototype("TableUtils")
+local difficulties = dbmPrivate:GetPrototype("Difficulties")
 
 local function shortObjectName(obj, currentMod)
 	return obj == DBM and "DBM"
@@ -564,9 +565,19 @@ function test:Playback(testData, timeWarp)
 	if timeWarp <= 5 then
 		DBM:AddMsg("Test playback finished, waiting for delayed cleanup events (3 seconds)")
 	end
-	timeWarper:WaitUntil(timeWarper.fakeTime + 3.1)
+	timeWarper:WaitFor(3.1) -- Events like AURA_REMOVED are only unregistered after 3 seconds for icon cleanup
+	local extraTime = 0
+	if DBM:InCombat() then
+		-- Worldbosses wait for 15 seconds for wipe, everything else for 5. Using 3.1 for normal mods because checkWipe runs every 3 seconds.
+		extraTime = difficulties.savedDifficulty == "worldboss" and 12.1 or 3.1
+		DBM:AddMsg("DBM is still reporting in combat, waiting for " .. math.floor(extraTime) .. " more seconds")
+		timeWarper:WaitFor(extraTime)
+	end
 	timeWarper:Stop()
 	local reporter = self.reporter
+	if DBM:InCombat() then
+		reporter:FlagCombat(extraTime + 3.1)
+	end
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
