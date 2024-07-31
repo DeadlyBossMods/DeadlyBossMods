@@ -13,6 +13,8 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 ---@class Difficulties
 local difficulties = private:GetPrototype("Difficulties")
 
+local test = private:GetPrototype("DBMTest")
+
 difficulties.savedDifficulty = nil
 difficulties.difficultyIndex = nil
 difficulties.difficultyText = nil
@@ -142,6 +144,9 @@ end
 
 ---@param self DBM|DBMMod
 function DBM:IsTrivial(customLevel)
+	if test.testRunning then
+		return false
+	end
 	local lastInstanceMapId = DBM:GetCurrentArea()
 	--if timewalking or chromie time or challenge modes. it's always non trivial content
 	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or self:IsRemix() or difficulties.difficultyIndex == 24 or difficulties.difficultyIndex == 33 or difficulties.difficultyIndex == 8 then
@@ -232,7 +237,7 @@ end
 ---Pretty much ANYTHING that has a normal mode
 function bossModPrototype:IsNormal()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
+	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront" or diff == "follower"
 end
 
 ---Dungeons with AI "follower" npcs. 1-5 players
@@ -242,9 +247,10 @@ function bossModPrototype:IsFollower()
 end
 
 ---Dungeons designed for just the player. "quest dungeons"
-function bossModPrototype:IsQuest()
+---<br> NOT to be confused with follower, which are just normal dungeons with AI followers
+function bossModPrototype:IsStory()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "quest"
+	return diff == "quest" or diff == "story"
 end
 
 ---Pretty much ANYTHING that has a heroic mode
