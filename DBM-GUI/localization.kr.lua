@@ -451,7 +451,7 @@ L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전�
 L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 설정 상태로 거리 창 복구 안함"
 
 L.Area_PullTimer			= "풀링, 휴식, 사용자 지정 바 관련 필터 설정"
-L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단 (지역 ID 없이 전송된 BigWigs 타이머는 차단하지 않습니다)"
+L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단"
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontPlayPTCountdown		= "풀링/휴식/사용자 지정 초읽기 전구간 음성 재생 안함"
