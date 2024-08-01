@@ -113,6 +113,8 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 		instanceDifficultyBylevel[109] = {50, 3} -- Sunken Temple level up raid
 		instanceDifficultyBylevel[2784] = {60, 2} -- Demon Fall Canyon dungeon
+		instanceDifficultyBylevel[2789] = {60, 3} -- Lord kazzak
+		instanceDifficultyBylevel[2791] = {60, 3} -- Azuregos
 	end
 end
 
