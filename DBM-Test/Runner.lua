@@ -346,6 +346,7 @@ function test:Setup(testData)
 		-- Do not use DBM:ClearAllStats() here as it also messes with the saved table
 		self:HookModVar(mod, "stats", DBM:CreateDefaultModStats())
 		-- Avoid the recombat limit when testing the same mod multiple times
+		---@diagnostic disable-next-line: inject-field
 		mod.lastWipeTime = nil
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
