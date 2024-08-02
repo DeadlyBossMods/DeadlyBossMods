@@ -6665,7 +6665,6 @@ do
 	---Wrapper for Blizzard GetSpellCooldown global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
-	---@return number, number, number
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
 		if newPath then

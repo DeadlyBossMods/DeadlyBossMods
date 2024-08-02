@@ -348,6 +348,7 @@ function test:Setup(testData)
 		-- Avoid the recombat limit when testing the same mod multiple times
 		---@diagnostic disable-next-line: inject-field
 		mod.lastWipeTime = nil
+		---@diagnostic disable-next-line: inject-field
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
 	end
