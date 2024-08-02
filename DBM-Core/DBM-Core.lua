@@ -439,7 +439,7 @@ local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, 
 local eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 
-local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
+local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
 	"DBM-HighMail",
@@ -1651,7 +1651,7 @@ do
 				local enabled = C_AddOns.GetAddOnEnableState(i, playerName)
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
-						if checkEntry(bannedMods, addonName) then
+						if checkEntry(deprecatedMods, addonName) then
 							AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 						else
 							local mapIdTable = {strsplit(",", C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
@@ -1739,7 +1739,7 @@ do
 					end
 				end
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
+					if checkEntry(deprecatedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						C_TimerAfter(0.01, function()
@@ -1757,7 +1757,7 @@ do
 					end
 				end
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-CountPack") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
+					if checkEntry(deprecatedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = C_AddOns.LoadAddOn(addonName)
@@ -1773,7 +1773,7 @@ do
 					end
 				end
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-VictoryPack") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
+					if checkEntry(deprecatedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = C_AddOns.LoadAddOn(addonName)
@@ -1789,7 +1789,7 @@ do
 					end
 				end
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-DefeatPack") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
+					if checkEntry(deprecatedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = C_AddOns.LoadAddOn(addonName)
@@ -1805,7 +1805,7 @@ do
 					end
 				end
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-MusicPack") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
+					if checkEntry(deprecatedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = C_AddOns.LoadAddOn(addonName)
