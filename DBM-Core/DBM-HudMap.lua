@@ -1075,7 +1075,7 @@ do
 				t.frame:SetFrameStrata("LOW")
 				t.frame.owner = t ---@diagnostic disable-line: inject-field
 				t.text = t.frame:CreateFontString()
-				t.text:SetFont(standardFont, 10, "")
+				t.text:SetFont(standardFont, 10)
 				t.text:SetDrawLayer("OVERLAY")
 				t.text:SetPoint("BOTTOM", t.frame, "CENTER")
 				t.edges = {}
