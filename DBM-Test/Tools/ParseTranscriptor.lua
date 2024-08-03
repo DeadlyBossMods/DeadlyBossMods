@@ -595,6 +595,7 @@ local function getLog()
 	resultStr = resultStr .. "\tlog = {\n\t\t"
 	resultStr = resultStr ..  table.concat(resultLog, ",\n\t\t")
 	resultStr = resultStr ..  "\n\t}"
+	anon:CheckForLeaks(resultStr, args["ignore-leaks"])
 	return resultStr
 end
 

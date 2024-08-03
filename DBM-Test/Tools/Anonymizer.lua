@@ -165,14 +165,46 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepNames)
 	return setmetatable(obj, anonymizer)
 end
 
-function anonymizer:RealPlayerGuidByName(name)
-	-- FIXME: this is somewhat ugly, only used to get the real GUID of the recording player though
-	local id = self.playerNames[name]
-	for guid, v in pairs(self.playerGuids) do
-		if "Player" .. v == id then
-			return guid
+
+local function failOnLeakedString(badString, ignoreErrors)
+	io.stderr:write(("Detected leak in anonymizer, string %q looks non-anonymized\n"):format(badString))
+	if not ignoreErrors then
+		io.stderr:write("use --ignore-leaks to ignore this\n")
+		os.exit(1)
+	end
+end
+
+local function checkLeakedString(output, str, ignoreErrors)
+	if output:find(str, 0, true) then
+		failOnLeakedString(str, ignoreErrors)
+	end
+end
+
+-- Search for a GUID containing a server ID, these should be set to 1 by the anonymizer
+local function checkLeakedGuid(output, pattern, ignoreErrors)
+	local prefix, serverId = output:match(pattern)
+	if serverId and serverId ~= "1" then
+		failOnLeakedString(prefix .. serverId, ignoreErrors)
+	end
+end
+
+function anonymizer:CheckForLeaks(output, ignoreErrors)
+	for _, v in pairs(self.roles) do
+		if v.realName ~= v.anonName then
+			checkLeakedString(output, v.realName, ignoreErrors)
 		end
 	end
+	checkLeakedGuid(output, "(Creature%-%d*%-)(%d*)", ignoreErrors)
+	checkLeakedGuid(output, "(Pet%-%d*%-)(%d*)", ignoreErrors)
+	checkLeakedGuid(output, "(GameObject%-%d*%-)(%d*)", ignoreErrors)
+	checkLeakedGuid(output, "(Vehicle%-%d*%-)(%d*)", ignoreErrors)
+	checkLeakedGuid(output, "(Cast%-%d*%-)(%d*)", ignoreErrors)
+	-- GUID types not yet supported, they should never show up in the output until we support them above
+	checkLeakedString(output, "BattlePet-", ignoreErrors)
+	checkLeakedString(output, "BNetAccount-", ignoreErrors)
+	checkLeakedString(output, "ClientActor-", ignoreErrors)
+	checkLeakedString(output, "Item-", ignoreErrors)
+	checkLeakedString(output, "Vignette-", ignoreErrors)
 end
 
 return anonymizer
