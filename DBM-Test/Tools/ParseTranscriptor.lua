@@ -23,7 +23,6 @@ if not args.transcriptor then
 end
 
 local playerName = args.player
-local playerGuid
 
 local function loadTranscriptorLuaString(code)
 	local env = {}
@@ -50,7 +49,7 @@ local function jsonToLua(json)
 		line = line:gsub("^(%s*)\"(.-)\": [%[{]%s*$", "%1[\"%2\"] = {")
 		line = line:gsub("^(%s*)\"([^\"]+)\":", "%1[\"%2\"] = ")
 		line = line:gsub("^(%s*)],?(%s*)$", "%1},%2")
-		-- FIXME: properly support \u escapes, but what is this even? UTF-16? raw unicode codepoints (but why are they all 16 bit?)
+		-- FIXME: properly support \u escapes, but what is this even? UTF-16?
 		line = line:gsub("\\u(%x%x%x)", "U%1")
 		lines[#lines + 1] = line
 	end
@@ -195,10 +194,14 @@ if not lastLog then
 		for i, v in ipairs(encounterEnds) do
 			encounterEndHelp[i] = v.offset .. " (" .. v.name .. ")"
 		end
-		print("ENCOUNTER_END at: " .. table.concat(encounterEndHelp, ", "))
-		print("Use --end to select offset explicitly")
+		logInfo("ENCOUNTER_END at: " .. table.concat(encounterEndHelp, ", "))
+		logInfo("Use --end to select offset explicitly")
 		os.exit(1)
 	end
+end
+if lastLog > #log.total then
+	logInfo("Specified last log entry %d, but log only has %d lines", lastLog, #log.total)
+	os.exit(1)
 end
 
 local function guessType(str)
@@ -284,14 +287,10 @@ end
 
 -- Rough attempt at flag reconstruction, not 100% correct, we could be a bit more smart here about REACTION by tracking a GUID across multiple events
 -- Or using sourceFlags from a previous event to build destFlags if source flags are logged
-local function reconstructFlags(name, isPlayer, isPet, isNpc)
+local function reconstructFlags(isPlayer, isPet, isNpc)
 	local flags = 0
 	if isPlayer then
-		if name == playerName then
-			flags = flags + 0x1 -- AFFILIATION_MINE
-		else
-			flags = flags + 0x2 -- AFFILIATION_PARTY -- don't distinguish party vs raid
-		end
+		-- AFFILIATION_MINE/PARTY gets set by the test runner later to implement perspective shifting
 		flags = flags + 0x0010  -- REACTION_FRIENDLY
 		flags = flags + 0x0100  -- CONTROL_PLAYER
 		flags = flags + 0x0400  -- TYPE_PLAYER
@@ -356,6 +355,9 @@ local function transcribeCleu(rawParams, anon)
 	if spellId and filter.ignoredSpellIds[spellId] then
 		return
 	end
+	-- Scrub health/power info, TODO: this could potentially be used to fake UNIT_HEALTH events
+	sourceName = sourceName and sourceName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1")
+	destName = destName and destName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1")
 	local sourceCid = sourceGUID and tonumber(sourceGUID:match("Creature%-0%-%d*%-%d*%-%d*%-(%d+)") or tonumber(sourceGUID:match("GameObject%-0%-%d*%-%d*%-%d*%-(%d+)")))
 	local destCid = destGUID and tonumber(destGUID:match("Creature%-0%-%d*%-%d*%-%d*%-(%d+)") or destGUID:match("GameObject%-0%-%d*%-%d*%-%d*%-(%d+)"))
 	if sourceCid and filter.ignoredCreatureIds[sourceCid] or destCid and filter.ignoredCreatureIds[destCid] then
@@ -413,8 +415,11 @@ local function transcribeCleu(rawParams, anon)
 	if destIsNpc then
 		destName = stripHealthInfo(destName)
 	end
-	sourceFlags = sourceFlags or reconstructFlags(sourceName, srcIsPlayer, srcIsPet, srcIsNpc)
-	local destFlags = reconstructFlags(destName, destIsPlayer, destIsPet, destIsNpc)
+	if sourceFlags then -- scrub AFFILIATION_MINE/PARTY/RAID (bits 0-2) if we already have flags, this is important for perspective shifting
+		sourceFlags = math.floor(sourceFlags / 8) * 8
+	end
+	sourceFlags = sourceFlags or reconstructFlags(srcIsPlayer, srcIsPet, srcIsNpc)
+	local destFlags = reconstructFlags(destIsPlayer, destIsPet, destIsNpc)
 	if sourceGUID and sourceGUID ~= "" then
 		sourceName = anon:ScrubName(sourceName, sourceGUID)
 		sourceGUID = anon:ScrubGUID(sourceGUID)
@@ -450,14 +455,45 @@ local function transcribeEvent(event, params, anon)
 	if event == "CLEU" then
 		return transcribeCleu(params, anon)
 	end
+	-- FIXME: it kinda sucks that we only parse after this, but since type guessing may depend on the event it's ugly both ways :/
 	if event == "UNIT_TARGET" then
 		params = params:gsub("([^#]*#)([^#]*)(#Target: )([^#]*)(#TargetOfTarget: )([^#]*)", function(arg1, arg2, arg3, arg4, arg5, arg6)
 			return arg1 .. anon:ScrubTarget(arg2) .. arg3 .. anon:ScrubTarget(arg4) .. arg5 .. anon:ScrubTarget(arg6)
 		end)
 	end
-	-- TODO: UNIT_TARGETABLE_CHANGED, UNIT_AURA, UNIT_POWER (?), NAME_PLATE_UNIT_ADDED, INSTANCE_ENCOUNTER_ENGAGE_UNIT, GOSSIP_SHOW
-	-- CHAT_MSG_MONSTER_* arg5 and arg12
-	-- CHAT_MSG_MONSTER_SAY for pets(!)
+	if event:match("^CHAT_MSG_MONSTER") then
+		params = params:gsub("^" .. ("([^#]*)#"):rep(12), function(msg, name, arg3, arg4, targetName, arg6, arg7, arg8, arg9, arg10, arg11, senderGuid)
+			-- Messages can *come from* pets
+			return ("%s#"):rep(12):format(msg, anon:ScrubPetName(name) or name, arg3, arg4, anon:ScrubName(targetName) or targetName, arg6, arg7, arg8, arg9, arg10, arg11, senderGuid == "nil" and senderGuid or anon:ScrubGUID(senderGuid))
+		end)
+	end
+	if event == "NAME_PLATE_UNIT_ADDED" then -- Especially relevant for mind controlled players (but currently filtered above anyways)
+		local name, guid, extra = params:match("([^#]*)#([^#]*)(.*)")
+		params = (anon:ScrubName(name, guid) or name) .. "#" .. anon:ScrubGUID(guid) .. extra
+	end
+	if event == "UNIT_TARGETABLE_CHANGED" then
+		params = params:gsub("(Name:)([^#]*)(#GUID:)([^#]*)", function(prefix, name, separator, guid)
+			return prefix .. anon:ScrubName(name, guid) .. separator .. anon:ScrubGUID(guid)
+		end)
+	end
+	if event == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" then
+		-- capture limits prevents us from doing this a single glorious regex
+		local prefix, suffix
+		prefix, params = params:match("([^#]*#)(.*)")
+		params, suffix = params:match("(" .. ("[^#]*#"):rep(8 * 5) .. ")(.*)")
+		local newParams = ""
+		for boss in params:gmatch("(" .. ("[^#]*#"):rep(8) .. ")") do
+			newParams = newParams .. boss:gsub("^" .. ("([^#]*)#"):rep(8), function(arg1, arg2, arg3, arg4, arg5, guid, arg7, arg8)
+				return ("%s#"):rep(8):format(arg1, arg2, arg3, arg4, arg5, guid == "nil" and guid or anon:ScrubGUID(guid), arg7, arg8)
+			end)
+		end
+		params = prefix .. newParams .. suffix
+	end
+	if event == "GOSSIP_SHOW" then
+		local guid, suffix = params:match("([^#]*)#(.*)")
+		params = anon:ScrubGUID(guid) .. "#" .. suffix
+	end
+	-- TODO: UNIT_AURA?
 	-- Generic event
 	local result = {literal(event)}
 	for param in params:gmatch("([^#]*)") do
@@ -507,12 +543,10 @@ local deducedPlayer, instanceInfo, encounterInfo, gameVersion = getMetadataFromL
 playerName = playerName or deducedPlayer
 
 local function getLog()
-	local result = {}
+	local resultLog, resultPlayers = {}, {}
 	local timeOffset
 	local totalTime = 0
-	local logContainsLoggingPlayer = false
-	local anon = anonymizer:New(log.total, firstLog, lastLog)
-	playerGuid = anon:RealPlayerGuidByName(playerName)
+	local anon = anonymizer:New(log.total, firstLog, lastLog, playerName, args["keep-names"])
 	for i = firstLog, lastLog do
 		local line = log.total[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
@@ -524,33 +558,42 @@ local function getLog()
 		timeOffset = timeOffset or time
 		time = time - timeOffset
 		local testEvent = transcribeEvent(event, params, anon)
-		if not logContainsLoggingPlayer and playerGuid and testEvent and event == "CLEU" then
-			local quotedPlayerGuid = "\"" .. playerGuid .. "\""
-			if testEvent[3] == quotedPlayerGuid  or testEvent[7] == quotedPlayerGuid then
-				logContainsLoggingPlayer = true
-			end
-		end
 		if testEvent then
-			result[#result + 1] = ("{%.2f, %s},"):format(time, table.concat(testEvent, ", "))
+			resultLog[#resultLog + 1] = ("{%.2f, %s}"):format(time, table.concat(testEvent, ", "))
 		end
 	end
-	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", lastLog - firstLog + 1, #result, (1 - #result / (lastLog - firstLog + 1)) * 100)
-	logInfo("%.1f seconds total, %.0f entries/second", totalTime, #result / totalTime)
+	local sortedRoles = {}
+	local maxNameLen = 0
+	for _, v in pairs(anon.roles) do
+		sortedRoles[#sortedRoles + 1] = v
+		-- FIXME: doesn't handle UTF-8 for the non-anon case
+		maxNameLen = math.max(maxNameLen, #v.anonName)
+	end
+	table.sort(sortedRoles, function(e1, e2)
+		if e1.role == e2.role then
+			local perRoleId1 = tonumber(e1.anonName:match("(%d+)"))
+			local perRoleId2 = tonumber(e2.anonName:match("(%d+)"))
+			if perRoleId1 and perRoleId2 then
+				return perRoleId1 < perRoleId2
+			else -- for the non-anonymized case
+				return e1.anonName < e2.anonName
+			end
+		else
+			return e1.role > e2.role -- alphabetical role sort happens to be Unknown > Tank > Healer > Dps which is what we want :)
+		end
+	end)
+	for _, roleInfo in ipairs(sortedRoles) do
+		resultPlayers[#resultPlayers + 1] = roleInfo:PrettyTableString(maxNameLen)
+	end
+	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", lastLog - firstLog + 1, #resultLog, (1 - #resultLog / (lastLog - firstLog + 1)) * 100)
+	logInfo("%.1f seconds total, %.0f entries/second", totalTime, #resultLog / totalTime)
 	local resultStr = ""
-	if playerName ~= deducedPlayer then
-		resultStr = "-- Warning: log was created by player " .. deducedPlayer .. ", but player " .. playerName .. " was given on the CLI for reconstructions, this can potentially cause problems (but is usually fine)\n\t"
-	end
-	-- Ugly hack to prevent problems where the logging player is not in any of the filtered events
-	if not logContainsLoggingPlayer then
-		if not playerGuid then
-			error("log does not seem to contain logging player " .. playerName)
-		end
-		table.insert(result, 1,
-			"{0.00, \"COMBAT_LOG_EVENT_UNFILTERED\", \"SPELL_CAST_SUCCESS\", \"" .. playerGuid .. "\", \"" .. playerName .. "\", 0x511, 0x0, \"" .. playerGuid .. "\", \"" .. playerName .. "\", 0x511, 0x0, 0, \"Fake spell to ensure logging player has at least one entry, this is added if the logging player would not show up otherwise, please ignore this entry\", 0x0, nil, nil},"
-		)
-	end
-	resultStr = resultStr .. "log = {\n\t\t"
-	resultStr = resultStr ..  table.concat(result, "\n\t\t")
+	resultStr = resultStr .. "players = {\n\t\t"
+	resultStr = resultStr ..  table.concat(resultPlayers, ",\n\t\t")
+	resultStr = resultStr .. "\n\t},\n"
+	resultStr = resultStr .. "\tperspective = \"" .. anon:ScrubName(playerName) .. "\",\n"
+	resultStr = resultStr .. "\tlog = {\n\t\t"
+	resultStr = resultStr ..  table.concat(resultLog, ",\n\t\t")
 	resultStr = resultStr ..  "\n\t}"
 	return resultStr
 end
@@ -612,7 +655,7 @@ local function generateLogOnly()
 	return ("\t%s\n}\n"):format(getLog())
 end
 
-if args.noheader then
+if args.noheader or args["no-header"] then
 	print(generateLogOnly())
 else
 	print(generateTest())

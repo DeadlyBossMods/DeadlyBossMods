@@ -622,6 +622,15 @@ end)
 ---@class DBMInstanceInfo: InstanceInfo
 ---@field difficultyModifier number?
 
+---@class DBMTestPlayerDefinition
+---@field [1] string Anonymized or real name
+---@field [2] string Anonymized GUID
+---@field role ("Tank"|"Healer"|"Dps"|"Unknown")? Detected role, nil if it can be derived from the anonymized name
+---@field logRecorder boolean? True if this player recorded the log
+---@field healer number? Set if a secondary role was detected
+---@field tank number? Set if a secondary role was detected
+---@field dps number? Set if a secondary role was detected
+
 ---@class TestDefinition
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
@@ -630,7 +639,10 @@ end)
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
+---@field perspective string? Player name from whose perspective the log gets replayed
+---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
 ---@field log TestLogEntry[] Log to replay
+
 
 --[[
 I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,
