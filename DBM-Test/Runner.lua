@@ -130,6 +130,23 @@ end
 ---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
+	if event == "SetTimerProperty" or event == "StopTimer" or event == "UpdateTimer" or event == "PauseTimer" or event == "ResumeTimer" then
+		-- Target timers may refer to the *real* player's name, we only have two options to fix that:
+		-- 1. mangle the timer information here
+		-- 2. add code to every single timer method in Timer.lua
+		-- This implementation here is option 1.
+		-- You might say there is option 3: just don't ever tell the mod the real player's name, but that's not feasible because
+		-- the mod may do local playerName = UnitName("player") on load and the perspective may change between tests
+		local timer, timerId = ...
+		if timer.type == "target" then
+			-- Timer IDs are just \t-separated list of name and timer format args, target timers always have the target as first arg
+			local firstTimerArg = timerId:match("[^\t]*\t([^\t]*)")
+			if firstTimerArg == UnitName("player") then
+				timerId = timerId:gsub("([^\t]*)\t([^\t]*)", "%1\tPlayerName")
+				return self:Trace(mod, event, timer, timerId, select(3, ...)) -- Not a potentially infinite loop because "PlayerName" is not a valid player name
+			end
+		end
+	end
 	if event == "ScheduleTask" then -- the other Scheduler-traces for events discarded here are filtered by the "did we see the schedule?" logic below
 		-- Filter non-mod schedules because they're used a lot internally
 		if mod ~= self.modUnderTest then
