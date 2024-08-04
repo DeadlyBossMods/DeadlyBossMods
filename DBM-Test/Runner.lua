@@ -490,9 +490,13 @@ function test:InjectEvent(event, ...)
 	end
 end
 
----@param log TestLogEntry[]
-local function findRecordingPlayer(log)
-	for _, v in ipairs(log) do
+---@param testData TestDefinition
+local function findRecordingPlayer(testData)
+	if testData.perspective then
+		return testData.perspective
+	end
+	-- Older test files without an explicitly defined perspective had this implicitly encoded in flags
+	for _, v in ipairs(testData.log) do
 		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local srcFlags = v[6]
 			local dstFlags = v[10]
@@ -503,7 +507,38 @@ local function findRecordingPlayer(log)
 			end
 		end
 	end
-	error("failed to deduce who recorded the log based on flags, make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
+	error("failed to deduce who recorded the log, please set testData.perspective or make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
+end
+
+---@param testData TestDefinition
+local function adjustFlagsForPerspective(testData, playerName)
+	local clearFlags = bit.bnot(bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_AFFILIATION_PARTY, COMBATLOG_OBJECT_AFFILIATION_RAID))
+	for _, v in ipairs(testData.log) do
+		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local srcName = v[5]
+			local srcFlags = v[6]
+			local dstName = v[9]
+			local dstFlags = v[10]
+			if bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				srcFlags = bband(srcFlags, clearFlags)
+				if srcName == playerName then
+					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
+				else
+					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
+				end
+				v[6] = srcFlags
+			end
+			if bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				dstFlags = bband(dstFlags, clearFlags)
+				if dstName == playerName then
+					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
+				else
+					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
+				end
+				v[10] = dstFlags
+			end
+		end
+	end
 end
 
 local currentThread
@@ -514,7 +549,7 @@ local function errorHandlerWithStack(err)
 end
 
 ---@param testData TestDefinition
-function test:Playback(testData, timeWarp)
+function test:Playback(testData, timeWarp, overridePerspective)
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
 	if self.testCallback then
@@ -525,7 +560,8 @@ function test:Playback(testData, timeWarp)
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
 	-- 100 messages or so anyways, so whatever.
-	self.logPlayerName = findRecordingPlayer(testData.log)
+	self.logPlayerName = overridePerspective or findRecordingPlayer(testData)
+	adjustFlagsForPerspective(testData, self.logPlayerName)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	if testData.instanceInfo.difficultyModifier then
 		-- Only MC is supported right now
