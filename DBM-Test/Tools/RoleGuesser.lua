@@ -7,7 +7,9 @@ function roleGuesser:New(recordingPlayer)
 	local obj = {
 		---@type table<string, RoleGuesserPlayerStats>
 		players = {},
-		recordingPlayer = recordingPlayer
+		recordingPlayer = recordingPlayer,
+		numPlayers = 0,
+		playersAlive = 0
 	}
 	return setmetatable(obj, mt)
 end
@@ -37,18 +39,22 @@ function roleGuesserPlayerStats:Anonymize(name, guid)
 	self.anonGuid = guid
 end
 
-function roleGuesserPlayerStats:PrettyTableString(maxNameLen)
+function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries)
 	local extraInfo = ""
 	if self.realName == self.anonName then
 		extraInfo = (", role = %q"):format(self.role)
 	end
-	if self.originalLogRecorder then
-		extraInfo = extraInfo .. ", logRecorder = true"
-	end
 	if self.heal > 0.3 and self.role ~= "Healer"
 	or self.damage > 0.3 and self.role ~= "Dps" and (self.role ~= "Tank" or self.damage > 0.7)
-	or (self.tanking > 0.3 or self.healed > 0.3) and self.role ~= "Tank" then
+	or (self.tanking > 0.3 or self.healed > 0.3) and self.role ~= "Tank"
+	or verboseSecondaries then
 		extraInfo = extraInfo .. (", healer = %.2f, tank = %.2f, dps = %.2f"):format(self.heal, math.max(self.tanking, self.healed), self.damage)
+		if verboseSecondaries then
+			extraInfo = extraInfo .. (", healed = %.2f"):format(self.healed)
+		end
+	end
+	if self.originalLogRecorder then
+		extraInfo = extraInfo .. ", logRecorder = true"
 	end
 	return ("{%q,%s %q%s}"):format(self.anonName, (" "):rep((maxNameLen or 0) - #self.anonName), self.anonGuid, extraInfo)
 end
@@ -88,12 +94,29 @@ function roleGuesser:HandleCombatLog(line)
 	local srcPlayer = srcGuid and srcGuid:match("^Player")
 	local dstPlayer = dstGuid and dstGuid:match("^Player")
 	if srcPlayer then
-		self.players[srcGuid] = self.players[srcGuid] or self:initPlayerStats(srcName)
+		if not self.players[srcGuid] then
+			self.players[srcGuid] = self:initPlayerStats(srcName)
+			self.numPlayers = self.numPlayers + 1
+			self.playersAlive = self.playersAlive + 1
+		end
 		srcPlayer = self.players[srcGuid]
 	end
 	if dstPlayer then
-		self.players[dstGuid] = self.players[dstGuid] or self:initPlayerStats(dstName)
+		if not self.players[dstGuid] then
+			self.players[dstGuid] = self:initPlayerStats(dstName)
+			self.numPlayers = self.numPlayers + 1
+			self.playersAlive = self.playersAlive + 1
+		end
 		dstPlayer = self.players[dstGuid]
+	end
+	-- Only track while most players are alive to not mess up logs of wipes there the tank dies
+	if event == "SPELL_RESURRECT" and dstPlayer then
+		self.playersAlive = self.playersAlive + 1 -- If the first time we see someone is when they get ressed then we double count them as alive, but that's unrealistic
+	elseif event == "UNIT_DIED" and dstPlayer then
+		self.playersAlive = self.playersAlive - 1
+	end
+	if self.playersAlive / self.numPlayers <= 0.75 then
+		return
 	end
 	-- Healers are those who heal other players
 	if srcPlayer and dstPlayer and (event == "SPELL_HEAL" or event == "SPELL_PERIODIC_HEAL") and srcGuid ~= dstGuid then
@@ -128,7 +151,7 @@ function roleGuesser:GetPlayerInfo()
 		-- Some heuristics based on wild guesses, this doesn't need to be 100% accurate, just make a somewhat reasonable guess
 		if v.heal >= 0.5 or v.heal >= 0.1 and v.damage < v.heal and v.tanking < 0.2 then
 			v.role = "Healer"
-		elseif v.tanking >= 0.5 or v.healed >= 0.6 then
+		elseif v.tanking >= 0.8 or v.healed >= 0.8 or v.tanking >= 0.5 and v.healed >= 0.5 then
 			v.role = "Tank"
 		else
 			v.role = "Dps"

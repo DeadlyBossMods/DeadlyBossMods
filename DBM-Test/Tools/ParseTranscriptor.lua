@@ -592,7 +592,7 @@ local function getLog()
 		end
 	end)
 	for _, roleInfo in ipairs(sortedRoles) do
-		resultPlayers[#resultPlayers + 1] = roleInfo:PrettyTableString(maxNameLen)
+		resultPlayers[#resultPlayers + 1] = roleInfo:PrettyTableString(maxNameLen, args["verbose-roles"])
 	end
 	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", lastLog - firstLog + 1, #resultLog, (1 - #resultLog / (lastLog - firstLog + 1)) * 100)
 	logInfo("%.1f seconds total, %.0f entries/second", totalTime, #resultLog / totalTime)
