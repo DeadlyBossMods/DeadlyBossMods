@@ -501,6 +501,9 @@ function test:InjectEvent(event, ...)
 	else
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
 	end
+	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName then
+		return
+	end
 	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
 	if event:match("^UNIT_") then
 		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)

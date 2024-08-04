@@ -493,6 +493,15 @@ local function transcribeEvent(event, params, anon)
 		local guid, suffix = params:match("([^#]*)#(.*)")
 		params = anon:ScrubGUID(guid) .. "#" .. suffix
 	end
+	if event == "CHAT_MSG_ADDON" then
+		local subEvent, msg, name = params:match("([^#]*)#([^#]*)#([^#]*)")
+		if subEvent == "RAID_BOSS_WHISPER_SYNC" then
+			-- Name will always contain the server here, even if there is no cross-server stuff otherwise; this is annoying because the anonymizer might not have learned the name with the server suffix
+			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, anon:ScrubName(name) or anon:ScrubName(name:match("([^-]*)")), 0, false)
+		else
+			logInfo("Unhandled CHAT_MSG_ADDON log message " .. params)
+		end
+	end
 	-- TODO: UNIT_AURA?
 	-- Generic event
 	local result = {literal(event)}
