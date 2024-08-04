@@ -21,6 +21,21 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+local function stripMarkup(text)
+	if type(text) ~= "string" then
+		return text
+	end
+	text = text:gsub("|r", "")
+	text = text:gsub("|c%x%x%x%x%x%x%x%x", "")
+	text = text:gsub("|T[^|]-|t", "")
+	text = text:gsub("|H[^|]-|h", "")
+	text = text:gsub("|h", "")
+	text = text:gsub("\t", "\\t")
+	text = text:gsub("\n", "\\n")
+	text = text:gsub("\r", "\\r")
+	return text:trim()
+end
+
 local function eventArgsToStringPretty(event, offset, isCleu)
 	local result = ""
 	for i = offset, #event do
@@ -32,7 +47,7 @@ local function eventArgsToStringPretty(event, offset, isCleu)
 		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
 			filtered = true
 		else
-			result = result .. tostring(event[i])
+			result = result .. tostring(stripMarkup(event[i])) -- CHAT_MSG_MONSTER_* sometimes contains markup
 		end
 		if i < #event and not filtered then
 			result = result .. ", "
