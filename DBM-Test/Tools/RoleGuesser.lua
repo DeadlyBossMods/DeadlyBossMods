@@ -45,7 +45,7 @@ function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries
 		extraInfo = (", role = %q"):format(self.role)
 	end
 	if self.heal > 0.3 and self.role ~= "Healer"
-	or self.damage > 0.3 and self.role ~= "Dps" and (self.role ~= "Tank" or self.damage > 0.7)
+	or self.damage > 0.2 and self.role ~= "Dps" and (self.role ~= "Tank" or self.damage > 0.4)
 	or (self.tanking > 0.3 or self.healed > 0.3) and self.role ~= "Tank"
 	or verboseSecondaries then
 		extraInfo = extraInfo .. (", healer = %.2f, tank = %.2f, dps = %.2f"):format(self.heal, math.max(self.tanking, self.healed), self.damage)
