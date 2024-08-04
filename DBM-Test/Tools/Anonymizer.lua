@@ -37,6 +37,7 @@ scrubbers["GameObject"] = npcScrubber
 -- If there is something where a pass-through is okay the caller needs to make it explicit
 
 function anonymizer:ScrubGUID(guid)
+	if guid == "nil" then return guid end
 	local guidType = guid:match("([^-]*)%-")
 	if not scrubbers[guidType] then
 		error("no scrubber for guid " .. guid)
@@ -58,7 +59,7 @@ function anonymizer:ScrubName(name, guid)
 		or self.nonPlayerNames[name]
 		or self.playerNames[name]
 		-- playerServers will be set if this is indeed someone frome another server, checking it avoids bugs with non-players with dashes in the name
-		or self.playerServers[strippedName] and self.playerNames[name]
+		or self.playerServers[strippedName] and self.playerNames[strippedName]
 		or self.petNames[name]
 end
 
