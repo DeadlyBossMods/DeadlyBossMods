@@ -549,18 +549,20 @@ local function errorHandlerWithStack(err)
 end
 
 ---@param testData TestDefinition
-function test:Playback(testData, timeWarp, overridePerspective)
+---@param testOptions DBMTestOptions
+function test:Playback(testData, timeWarp, testOptions)
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
 	if self.testCallback then
-		self.testCallback("TestStart", testData, nil)
+		self.testCallback("TestStart", testData, testOptions, nil)
 	end
 	self.testData = testData
+	self.testOptions = testOptions
 	-- Currently only required to correctly handle UNIT_TARGET messages.
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
 	-- 100 messages or so anyways, so whatever.
-	self.logPlayerName = overridePerspective or findRecordingPlayer(testData)
+	self.logPlayerName = testOptions.perspective or findRecordingPlayer(testData)
 	adjustFlagsForPerspective(testData, self.logPlayerName)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	if testData.instanceInfo.difficultyModifier then
@@ -625,7 +627,7 @@ function test:Playback(testData, timeWarp, overridePerspective)
 	local cb = self.testCallback
 	if cb then
 		self.testCallback = nil -- coroutine scheduler also attempts to call this on failure, prevent calling it twice if this throws
-		cb("TestFinish", testData, reporter)
+		xpcall(cb, realErrorHandler, "TestFinish", testData, testOptions, reporter)
 	end
 end
 
@@ -648,7 +650,7 @@ frame:SetScript("OnUpdate", function(self)
 				-- We might still need to call the callback to update UI etc in case the main function above throws
 				-- The typically scenario were this happens is if findRecordingPlayer() throws
 				if test.testCallback then
-					test.testCallback("TestFinish", test.testData, test.reporter)
+					xpcall(test.testCallback, realErrorHandler, "TestFinish", test.testData, test.testOptions, test.reporter)
 				end
 			end
 		end
@@ -705,8 +707,14 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 ---@alias TestCallbackEvent "TestStart"|"TestFinish"
 
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
-function test:RunTest(testName, timeWarp, callback)
+
+---@class DBMTestOptions
+---@field perspective string? Override the perspective from which the log is played back
+
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
+---@param testOptions? DBMTestOptions
+function test:RunTest(testName, timeWarp, testOptions, callback)
+	testOptions = testOptions or {}
 	timeWarp = timeWarp or DBM_Test_DefaultTimeWarp or 0
 	local testData = self.Registry.tests[testName]
 	if not testData then
@@ -746,7 +754,7 @@ function test:RunTest(testName, timeWarp, callback)
 	currentRawEvent = nil
 	self.testCallback = callback
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, testOptions)
 	if not ok then realErrorHandler(err) end
 end
 
@@ -760,15 +768,19 @@ function test:StopTests()
 end
 
 ---@param testsOrNames (TestDefinition|string)[]
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?, count: integer, total: integer)
-function test:RunTests(testsOrNames, timeWarp, callback)
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?, count: integer, total: integer)
+---@param testOptions? DBMTestOptions
+function test:RunTests(testsOrNames, timeWarp, testOptions, callback)
+	testOptions = testOptions or {}
 	local startTime = GetTimePreciseSec()
 	self.stopRequested = false
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
 			local testName = type(testOrName) == "string" and testOrName or testOrName.name
-			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, function(event, testDef, reporter)
-				if callback then callback(event, testDef, reporter, i, #testsOrNames) end
+			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, testOptions, function(event, testDef, testOptions, reporter)
+				if callback then
+					xpcall(callback, realErrorHandler, event, testDef, testOptions, reporter, i, #testsOrNames)
+				end
 			end)
 			while self.testRunning do
 				coroutine.yield()

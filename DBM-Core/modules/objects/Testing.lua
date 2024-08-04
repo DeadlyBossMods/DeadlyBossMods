@@ -71,7 +71,7 @@ function test:HandleCommand(testName, timeWarp)
 			return
 		end
 		local successes = 0
-		self:RunTests(tests, timeWarp, function(event, test, report, count, totalTests)
+		self:RunTests(tests, timeWarp, nil, function(event, test, testOptions, report, count, totalTests)
 			if event ~= "TestFinish" then return end
 			DBM:AddMsg("Test " .. test.name .. " finished, result: " .. report:GetResult())
 			if report:GetResult() == "Success" then
