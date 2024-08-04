@@ -493,6 +493,9 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateUnitPower(uid, name, power)
 		return self:InjectEvent(event, uid, powerType)
 	end
+	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName then
+		return
+	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
@@ -500,9 +503,6 @@ function test:InjectEvent(event, ...)
 		self.Mocks:SetFakeCLEUArgs()
 	else
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
-	end
-	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName then
-		return
 	end
 	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
 	if event:match("^UNIT_") then
