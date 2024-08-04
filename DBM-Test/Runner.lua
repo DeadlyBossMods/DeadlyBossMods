@@ -21,6 +21,21 @@ local antiSpams = {}
 
 local unknownRawTrigger = {0, "Unknown trigger"}
 
+local function stripMarkup(text)
+	if type(text) ~= "string" then
+		return text
+	end
+	text = text:gsub("|r", "")
+	text = text:gsub("|c%x%x%x%x%x%x%x%x", "")
+	text = text:gsub("|T[^|]-|t", "")
+	text = text:gsub("|H[^|]-|h", "")
+	text = text:gsub("|h", "")
+	text = text:gsub("\t", "\\t")
+	text = text:gsub("\n", "\\n")
+	text = text:gsub("\r", "\\r")
+	return text:trim()
+end
+
 local function eventArgsToStringPretty(event, offset, isCleu)
 	local result = ""
 	for i = offset, #event do
@@ -32,7 +47,7 @@ local function eventArgsToStringPretty(event, offset, isCleu)
 		elseif isCleu and (i == 7 or i == 11) then -- raidFlags, we don't set them in test data, so no reason to include
 			filtered = true
 		else
-			result = result .. tostring(event[i])
+			result = result .. tostring(stripMarkup(event[i])) -- CHAT_MSG_MONSTER_* sometimes contains markup
 		end
 		if i < #event and not filtered then
 			result = result .. ", "
@@ -130,6 +145,23 @@ end
 ---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
+	if event == "SetTimerProperty" or event == "StopTimer" or event == "UpdateTimer" or event == "PauseTimer" or event == "ResumeTimer" then
+		-- Target timers may refer to the *real* player's name, we only have two options to fix that:
+		-- 1. mangle the timer information here
+		-- 2. add code to every single timer method in Timer.lua
+		-- This implementation here is option 1.
+		-- You might say there is option 3: just don't ever tell the mod the real player's name, but that's not feasible because
+		-- the mod may do local playerName = UnitName("player") on load and the perspective may change between tests
+		local timer, timerId = ...
+		if timer.type == "target" then
+			-- Timer IDs are just \t-separated list of name and timer format args, target timers always have the target as first arg
+			local firstTimerArg = timerId:match("[^\t]*\t([^\t]*)")
+			if firstTimerArg == UnitName("player") then
+				timerId = timerId:gsub("([^\t]*)\t([^\t]*)", "%1\tPlayerName")
+				return self:Trace(mod, event, timer, timerId, select(3, ...)) -- Not a potentially infinite loop because "PlayerName" is not a valid player name
+			end
+		end
+	end
 	if event == "ScheduleTask" then -- the other Scheduler-traces for events discarded here are filtered by the "did we see the schedule?" logic below
 		-- Filter non-mod schedules because they're used a lot internally
 		if mod ~= self.modUnderTest then
@@ -332,6 +364,9 @@ function test:SetupDBMOptions()
 	-- Don't show intro messages
 	DBM.Options.SettingsMessageShown = true
 	DBM.Options.NewsMessageShown2 = 3
+	-- Order player names by log order because the default is non-deterministic due to the replaying player's name sneaking in during replay
+	DBM.Options.WarningAlphabetical = false
+	DBM.Options.SWarningAlphabetical = false
 end
 
 function test:Setup(testData)
@@ -473,6 +508,9 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateUnitPower(uid, name, power)
 		return self:InjectEvent(event, uid, powerType)
 	end
+	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName then
+		return
+	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
@@ -487,9 +525,13 @@ function test:InjectEvent(event, ...)
 	end
 end
 
----@param log TestLogEntry[]
-local function findRecordingPlayer(log)
-	for _, v in ipairs(log) do
+---@param testData TestDefinition
+local function findRecordingPlayer(testData)
+	if testData.perspective then
+		return testData.perspective
+	end
+	-- Older test files without an explicitly defined perspective had this implicitly encoded in flags
+	for _, v in ipairs(testData.log) do
 		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local srcFlags = v[6]
 			local dstFlags = v[10]
@@ -500,7 +542,38 @@ local function findRecordingPlayer(log)
 			end
 		end
 	end
-	error("failed to deduce who recorded the log based on flags, make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
+	error("failed to deduce who recorded the log, please set testData.perspective or make sure at least one player has flags AFFILIATION_MINE and OBJECT_TYPE_PLAYER set")
+end
+
+---@param testData TestDefinition
+local function adjustFlagsForPerspective(testData, playerName)
+	local clearFlags = bit.bnot(bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_AFFILIATION_PARTY, COMBATLOG_OBJECT_AFFILIATION_RAID))
+	for _, v in ipairs(testData.log) do
+		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local srcName = v[5]
+			local srcFlags = v[6]
+			local dstName = v[9]
+			local dstFlags = v[10]
+			if bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				srcFlags = bband(srcFlags, clearFlags)
+				if srcName == playerName then
+					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
+				else
+					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
+				end
+				v[6] = srcFlags
+			end
+			if bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+				dstFlags = bband(dstFlags, clearFlags)
+				if dstName == playerName then
+					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
+				else
+					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
+				end
+				v[10] = dstFlags
+			end
+		end
+	end
 end
 
 local currentThread
@@ -511,18 +584,21 @@ local function errorHandlerWithStack(err)
 end
 
 ---@param testData TestDefinition
-function test:Playback(testData, timeWarp)
+---@param testOptions DBMTestOptions
+function test:Playback(testData, timeWarp, testOptions)
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
 	if self.testCallback then
-		self.testCallback("TestStart", testData, nil)
+		self.testCallback("TestStart", testData, testOptions, nil)
 	end
 	self.testData = testData
+	self.testOptions = testOptions
 	-- Currently only required to correctly handle UNIT_TARGET messages.
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
 	-- 100 messages or so anyways, so whatever.
-	self.logPlayerName = findRecordingPlayer(testData.log)
+	self.logPlayerName = testOptions.perspective or findRecordingPlayer(testData)
+	adjustFlagsForPerspective(testData, self.logPlayerName)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	if testData.instanceInfo.difficultyModifier then
 		-- Only MC is supported right now
@@ -586,7 +662,7 @@ function test:Playback(testData, timeWarp)
 	local cb = self.testCallback
 	if cb then
 		self.testCallback = nil -- coroutine scheduler also attempts to call this on failure, prevent calling it twice if this throws
-		cb("TestFinish", testData, reporter)
+		xpcall(cb, realErrorHandler, "TestFinish", testData, testOptions, reporter)
 	end
 end
 
@@ -609,7 +685,7 @@ frame:SetScript("OnUpdate", function(self)
 				-- We might still need to call the callback to update UI etc in case the main function above throws
 				-- The typically scenario were this happens is if findRecordingPlayer() throws
 				if test.testCallback then
-					test.testCallback("TestFinish", test.testData, test.reporter)
+					xpcall(test.testCallback, realErrorHandler, "TestFinish", test.testData, test.testOptions, test.reporter)
 				end
 			end
 		end
@@ -619,6 +695,15 @@ end)
 ---@class DBMInstanceInfo: InstanceInfo
 ---@field difficultyModifier number?
 
+---@class DBMTestPlayerDefinition
+---@field [1] string Anonymized or real name
+---@field [2] string Anonymized GUID
+---@field role ("Tank"|"Healer"|"Dps"|"Unknown")? Detected role, nil if it can be derived from the anonymized name
+---@field logRecorder boolean? True if this player recorded the log
+---@field healer number? Set if a secondary role was detected
+---@field tank number? Set if a secondary role was detected
+---@field dps number? Set if a secondary role was detected
+
 ---@class TestDefinition
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
@@ -627,7 +712,10 @@ end)
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
+---@field perspective string? Player name from whose perspective the log gets replayed
+---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
 ---@field log TestLogEntry[] Log to replay
+
 
 --[[
 I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,
@@ -654,8 +742,14 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 ---@alias TestCallbackEvent "TestStart"|"TestFinish"
 
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?)
-function test:RunTest(testName, timeWarp, callback)
+
+---@class DBMTestOptions
+---@field perspective string? Override the perspective from which the log is played back
+
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
+---@param testOptions? DBMTestOptions
+function test:RunTest(testName, timeWarp, testOptions, callback)
+	testOptions = testOptions or {}
 	timeWarp = timeWarp or DBM_Test_DefaultTimeWarp or 0
 	local testData = self.Registry.tests[testName]
 	if not testData then
@@ -695,7 +789,7 @@ function test:RunTest(testName, timeWarp, callback)
 	currentRawEvent = nil
 	self.testCallback = callback
 	currentThread = coroutine.create(self.Playback)
-	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp)
+	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, testOptions)
 	if not ok then realErrorHandler(err) end
 end
 
@@ -709,15 +803,19 @@ function test:StopTests()
 end
 
 ---@param testsOrNames (TestDefinition|string)[]
----@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, reporter: TestReporter?, count: integer, total: integer)
-function test:RunTests(testsOrNames, timeWarp, callback)
+---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?, count: integer, total: integer)
+---@param testOptions? DBMTestOptions
+function test:RunTests(testsOrNames, timeWarp, testOptions, callback)
+	testOptions = testOptions or {}
 	local startTime = GetTimePreciseSec()
 	self.stopRequested = false
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
 			local testName = type(testOrName) == "string" and testOrName or testOrName.name
-			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, function(event, testDef, reporter)
-				if callback then callback(event, testDef, reporter, i, #testsOrNames) end
+			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, testOptions, function(event, testDef, testOptions, reporter)
+				if callback then
+					xpcall(callback, realErrorHandler, event, testDef, testOptions, reporter, i, #testsOrNames)
+				end
 			end)
 			while self.testRunning do
 				coroutine.yield()

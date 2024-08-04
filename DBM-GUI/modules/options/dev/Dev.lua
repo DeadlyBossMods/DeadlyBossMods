@@ -130,7 +130,7 @@ local function onTestStart(test)
 end
 
 ---@param results TestReporter
-local function onTestFinish(test, results, testCount, numTests)
+local function onTestFinish(test, testOptions, results, testCount, numTests)
 	if queuedTests[#queuedTests] == test then
 		queuedTests[#queuedTests] = nil
 	end
@@ -179,7 +179,7 @@ local function onRunTestClicked(tests)
 			test.uiInfo.statusText:SetTextColor(BLUE_FONT_COLOR:GetRGB())
 		end
 		onTestStart(tests[1])
-		DBM.Test:RunTests(tests, nil, testStatusCallback)
+		DBM.Test:RunTests(tests, nil, nil, testStatusCallback)
 	end
 end
 

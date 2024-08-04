@@ -519,7 +519,7 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 					-- StartTimer can have a dynamic arg, so round to one .1 second precision to avoid flakes
 					result[#result + 1] = ("%.1f"):format(v)
 				else
-					if (event.event == "ShowAnnounce" or event.event == "ShowYell") and paramId == 2 then
+					if (event.event == "ShowAnnounce" or event.event == "ShowYell" or event.event == "ShowSpecialWarning") and paramId == 2 then
 						-- These sometimes include the player name, either from UnitName("player") or from the name/guid translation from the test runner
 						-- FIXME: these can fail if your character name matches a spell name
 						if v == UnitName("player") then
