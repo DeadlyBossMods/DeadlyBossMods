@@ -3810,7 +3810,7 @@ do
 				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
 				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE_REPEAT, nil, true) end)
 				--end
-				self:AnnoyingPopupCheckZone(LastInstanceMapID, "Wrath") -- Show extra annoying popup in current content that's non trivial in classic
+				self:AnnoyingPopupCheckZone(LastInstanceMapID, "WoTLK") -- Show extra annoying popup in current content that's non trivial in classic
 			elseif cataZones[LastInstanceMapID] then
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"), nil, private.isCata)--Play sound only in cata
