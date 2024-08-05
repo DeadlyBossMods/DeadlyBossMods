@@ -8,7 +8,7 @@ local DBM_GUI = DBM_GUI
 DBM_GUI.Cat_Development = DBM_GUI:CreateNewPanel("Development & Testing", "option")
 
 local infoArea = DBM_GUI.Cat_Development:CreateArea("Development and Testing UI")
-infoArea:CreateText("You are seeing this UI tab because you have an alpha or development build of DBM installed.", nil, true)
+infoArea:CreateText("This is a work in progress development and testing feature for simulating boss pulls with DBM.", nil, true)
 
 local testPanel = DBM_GUI.Cat_Development:CreateNewPanel("Tests", "option")
 
