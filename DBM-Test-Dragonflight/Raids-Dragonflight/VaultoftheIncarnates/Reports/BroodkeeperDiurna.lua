@@ -149,7 +149,7 @@ Announces:
 		[239.08] Scheduled at 237.08 by SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463B65, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		[261.27] Scheduled at 259.27 by SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0001463B7B, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		[293.32] Scheduled at 291.32 by SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Lebran-Hakkar: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0001463B9B, Greatstaff of the Broodkeeper, 0xa48, Player-1136-091F1B1B, Lebran-Hakkar, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
-	Rapid Incubation, type=spell, spellId=376073, triggerDeltas = 73.29
+	Rapid Incubation (%s), type=count, spellId=376073, triggerDeltas = 73.29
 		[ 73.29] SPELL_CAST_START: [Broodkeeper Diurna: Rapid Incubation] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 376073, Rapid Incubation, 0, 0
 	Mortal Wounds on >%s< (%d), type=stack, spellId=378782, triggerDeltas = 5.07, 25.57, 22.45, 25.22, 22.77, 24.00, 24.00, 24.00, 24.37, 23.61, 24.01, 24.01
 		[  5.07] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
@@ -259,7 +259,7 @@ Event trace:
 		StartTimer: 26.2, Icy Shroud (1)
 	[  3.26] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 11.26 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (2)
+		StartTimer: 20.3, Mortal Stoneclaws (2)
 	[  5.07] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[  8.28] SPELL_CAST_START: [Broodkeeper Diurna: Wildfire] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375871, Wildfire, 0, 0
@@ -275,7 +275,7 @@ Event trace:
 		StartTimer: 23.1, Staff
 	[ 19.82] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Kurtdouglas-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463A8C, Greatstaff of the Broodkeeper, 0xa48, Player-60-057187CD, Kurtdouglas-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Kurtdouglas-Stormrage") at 21.82 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Kurtdouglas-Stormrage, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Kurtdouglas-Stormrage, Caan-Stormrage, Unhailed-Frostmourne
 	[ 20.19] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 19, 0
 		ScheduleTask: announce19873count:Schedule(19.0) at 22.19 (+2.00)
 			ShowAnnounce: Destroy Egg (19)
@@ -291,7 +291,7 @@ Event trace:
 		StartTimer: 41.5, Icy Shroud (2)
 	[ 28.81] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 36.81 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (3)
+		StartTimer: 20.3, Mortal Stoneclaws (3)
 	[ 30.64] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[ 33.29] SPELL_CAST_START: [Broodkeeper Diurna: Wildfire] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375871, Wildfire, 0, 0
@@ -329,7 +329,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (17)
 	[ 51.28] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 59.28 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (4)
+		StartTimer: 20.3, Mortal Stoneclaws (4)
 	[ 53.09] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[ 55.17] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 16, 0
@@ -363,13 +363,13 @@ Event trace:
 		StartTimer: 41.5, Icy Shroud (3)
 	[ 70.43] SPELL_AURA_APPLIED: [Drakonid Stormbringer->Stratalas-Dalaran: Ionizing Charge] Creature-0-3883-2522-18928-191232-0000463AA8, Drakonid Stormbringer, 0xa48, Player-3683-0B6747EA, Stratalas-Dalaran, 0x512, 375620, Ionizing Charge, 0, DEBUFF, 0
 		ScheduleTask: announce375630target:CombinedShow("Stratalas-Dalaran") at 70.73 (+0.30)
-			ShowAnnounce: Ionizing Charge on Fudoswrath-Staghelm, Mataadoorr-Quel'Thalas, Nitah-MoonGuard, Ravinnah-Suramar, Stratalas-Dalaran
+			ShowAnnounce: Ionizing Charge on Fudoswrath-Staghelm, Nitah-MoonGuard, Ravinnah-Suramar, Mataadoorr-Quel'Thalas, Stratalas-Dalaran
 	[ 73.29] SPELL_CAST_START: [Broodkeeper Diurna: Rapid Incubation] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 376073, Rapid Incubation, 0, 0
-		ShowAnnounce: Rapid Incubation
+		ShowAnnounce: Rapid Incubation (1)
 		StartTimer: 24.0, Rapid Incubation (2)
 	[ 76.49] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 84.49 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (5)
+		StartTimer: 20.3, Mortal Stoneclaws (5)
 	[ 78.31] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[ 78.92] SPELL_CAST_SUCCESS: [Broodkeeper Diurna: Greatstaff of the Broodkeeper] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 380175, Greatstaff of the Broodkeeper, 0, 0
@@ -378,7 +378,7 @@ Event trace:
 		StartTimer: 23.1, Staff
 	[ 82.62] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Dysmember-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463ACB, Greatstaff of the Broodkeeper, 0xa48, Player-60-0C2ADCAC, Dysmember-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Dysmember-Stormrage") at 84.62 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Dysmember-Stormrage, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Caan-Stormrage, Dysmember-Stormrage
 	[ 83.19] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 15, 0
 		ScheduleTask: announce19873count:Schedule(15.0) at 85.19 (+2.00)
 			Unscheduled by SPELL_AURA_REMOVED_DOSE at 84.18
@@ -401,7 +401,7 @@ Event trace:
 		StartTimer: 24.9, Adds (4)
 	[ 99.27] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 107.27 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (6)
+		StartTimer: 20.3, Mortal Stoneclaws (6)
 	[100.82] SPELL_CAST_START: [Dragonspawn Flamebender: Flame Sentry] Creature-0-3883-2522-18928-191230-0000463AD0, Dragonspawn Flamebender, 0xa48, "", nil, 0x0, 375575, Flame Sentry, 0, 0
 		AntiSpam: 375575
 		StartTimer: 10.4, Flame Sentry
@@ -427,7 +427,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (12)
 	[111.37] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Neilpeart-Tortheldrin: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463AE8, Greatstaff of the Broodkeeper, 0xa48, Player-1168-09E38807, Neilpeart-Tortheldrin, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Neilpeart-Tortheldrin") at 113.37 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Dysmember-Stormrage, Itìs-Proudmoore, Neilpeart-Tortheldrin, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Itìs-Proudmoore, Dysmember-Stormrage, Caan-Stormrage, Neilpeart-Tortheldrin
 	[111.76] SPELL_CAST_START: [Dragonspawn Flamebender: Flame Sentry] Creature-0-3883-2522-18928-191230-0000463AD0, Dragonspawn Flamebender, 0xa48, "", nil, 0x0, 375575, Flame Sentry, 0, 0
 		AntiSpam: 375575
 		StartTimer: 10.4, Flame Sentry
@@ -446,7 +446,7 @@ Event trace:
 		ScanForMobs: Creature-0-3883-2522-18928-191206-0000C63AE8, 2, 5, 1
 	[123.27] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 131.27 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (7)
+		StartTimer: 20.3, Mortal Stoneclaws (7)
 	[125.08] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[125.11] SPELL_CAST_START: [Primalist Mage: Ice Barrage] Creature-0-3883-2522-18928-191206-0000C63AE8, Primalist Mage, 0xa48, "", nil, 0x0, 375716, Ice Barrage, 0, 0
@@ -471,7 +471,7 @@ Event trace:
 		StartTimer: 23.1, Staff
 	[141.77] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Itìs-Proudmoore: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463B06, Greatstaff of the Broodkeeper, 0xa48, Player-5-0BE1E561, Itìs-Proudmoore, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Itìs-Proudmoore") at 143.77 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Itìs-Proudmoore, Neilpeart-Tortheldrin, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Neilpeart-Tortheldrin, Caan-Stormrage, Itìs-Proudmoore
 	[142.18] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 11, 0
 		ScheduleTask: announce19873count:Schedule(11.0) at 144.18 (+2.00)
 			Unscheduled by SPELL_AURA_REMOVED_DOSE at 144.19
@@ -484,7 +484,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (10)
 	[147.27] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 155.27 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (8)
+		StartTimer: 20.3, Mortal Stoneclaws (8)
 	[149.08] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[158.26] SPELL_CAST_START: [Broodkeeper Diurna: Icy Shroud] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 388716, Icy Shroud, 0, 0
@@ -512,7 +512,7 @@ Event trace:
 		StartTimer: 23.1, Staff
 	[168.48] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463B21, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Caan-Stormrage") at 170.48 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Caan-Stormrage
 	[170.18] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 9, 0
 		ScheduleTask: announce19873count:Schedule(9.0) at 172.18 (+2.00)
 			Unscheduled by SPELL_AURA_REMOVED_DOSE at 171.17
@@ -522,7 +522,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (8)
 	[171.29] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 179.29 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (9)
+		StartTimer: 20.3, Mortal Stoneclaws (9)
 	[171.71] SPELL_CAST_START: [Drakonid Stormbringer: Ionizing Charge] Creature-0-3883-2522-18928-191232-0000463B10, Drakonid Stormbringer, 0xa48, "", nil, 0x0, 375630, Ionizing Charge, 0, 0
 		StartTimer: 10.0, Ionizing Charge
 	[173.08] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
@@ -533,7 +533,7 @@ Event trace:
 		ShowYell: Ionizing Charge on PlayerName
 	[173.73] SPELL_AURA_APPLIED: [Drakonid Stormbringer->Carolmi-Quel'Thalas: Ionizing Charge] Creature-0-3883-2522-18928-191232-0000463B10, Drakonid Stormbringer, 0xa48, Player-1428-0949B0C0, Carolmi-Quel'Thalas, 0x512, 375620, Ionizing Charge, 0, DEBUFF, 0
 		ScheduleTask: announce375630target:CombinedShow("Carolmi-Quel'Thalas") at 174.03 (+0.30)
-			ShowAnnounce: Ionizing Charge on Carolmi-Quel'Thalas, Dracaryn-MoonGuard, Itìs-Proudmoore, PlayerName, Tellashalala-Area52
+			ShowAnnounce: Ionizing Charge on PlayerName, Dracaryn-MoonGuard, Itìs-Proudmoore, Tellashalala-Area52, Carolmi-Quel'Thalas
 	[174.15] SPELL_CAST_START: [Juvenile Frost Proto-Dragon: Chilling Tantrum] Creature-0-3883-2522-18928-191222-0000463B10, Juvenile Frost Proto-Dragon, 0xa48, "", nil, 0x0, 375457, Chilling Tantrum, 0, 0
 		AntiSpam: 375457
 		ShowAnnounce: Casting Chilling Tantrum: 2.0 sec
@@ -554,7 +554,7 @@ Event trace:
 		PlaySound: VoicePack/kick1r
 	[195.64] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 203.64 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (10)
+		StartTimer: 20.3, Mortal Stoneclaws (10)
 	[196.83] SPELL_CAST_START: [Primalist Mage: Ice Barrage] Creature-0-3883-2522-18928-191206-0000C63B2A, Primalist Mage, 0xa48, "", nil, 0x0, 375716, Ice Barrage, 0, 0
 		ScanForMobs: Creature-0-3883-2522-18928-191206-0000C63B2A, 2, 6, 1
 		ShowSpecialWarning: Ice Barrage - interrupt Primalist Mage! (1)
@@ -567,7 +567,7 @@ Event trace:
 		StartTimer: 23.1, Staff
 	[200.53] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463B41, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Caan-Stormrage") at 202.53 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Caan-Stormrage
 	[202.18] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 7, 0
 		ScheduleTask: announce19873count:Schedule(7.0) at 204.18 (+2.00)
 			ShowAnnounce: Destroy Egg (7)
@@ -590,7 +590,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (6)
 	[219.26] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 227.26 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (11)
+		StartTimer: 20.3, Mortal Stoneclaws (11)
 	[221.06] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[226.27] SPELL_CAST_SUCCESS: [Broodkeeper Diurna: Greatstaff of the Broodkeeper] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 380175, Greatstaff of the Broodkeeper, 0, 0
@@ -627,7 +627,7 @@ Event trace:
 		StartTimer: 11.0, Tremors
 	[237.08] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0000463B65, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Caan-Stormrage") at 239.08 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Dysmember-Stormrage
+			ShowAnnounce: Greatstaff's Wrath on Dysmember-Stormrage, Caan-Stormrage
 	[238.19] SPELL_AURA_REMOVED_DOSE: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 4, 0
 		ScheduleTask: announce19873count:Schedule(4.0) at 240.19 (+2.00)
 			ShowAnnounce: Destroy Egg (4)
@@ -636,7 +636,7 @@ Event trace:
 		StartTimer: 10.4, Flame Sentry
 	[243.26] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 251.26 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (12)
+		StartTimer: 20.3, Mortal Stoneclaws (12)
 	[245.07] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[246.26] SPELL_CAST_START: [Broodkeeper Diurna: Icy Shroud] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 388716, Icy Shroud, 0, 0
@@ -678,7 +678,7 @@ Event trace:
 		StartTimer: 22.0, Wildfire (12)
 	[259.27] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Caan-Stormrage: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0001463B7B, Greatstaff of the Broodkeeper, 0xa48, Player-60-0F4263ED, Caan-Stormrage, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Caan-Stormrage") at 261.27 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Lebran-Hakkar, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Lebran-Hakkar, Caan-Stormrage
 	[260.04] SPELL_CAST_START: [Tarasek Earthreaver: Tremors] Creature-0-3883-2522-18928-191225-0000463B52, Tarasek Earthreaver, 0xa48, "", nil, 0x0, 376257, Tremors, 0, 0
 		AntiSpam: 376257
 		StartTimer: 11.0, Tremors
@@ -691,7 +691,7 @@ Event trace:
 			ShowAnnounce: Destroy Egg (2)
 	[267.26] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 275.26 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (13)
+		StartTimer: 20.3, Mortal Stoneclaws (13)
 	[269.08] SPELL_AURA_APPLIED: [Broodkeeper Diurna->Unhailed-Frostmourne: Mortal Wounds] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Player-3725-0C0F490C, Unhailed-Frostmourne, 0x512, 378782, Mortal Wounds, 0, DEBUFF, 0
 		ShowAnnounce: Mortal Wounds on Unhailed-Frostmourne (1)
 	[283.28] SPELL_CAST_START: [Broodkeeper Diurna: Wildfire] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375871, Wildfire, 0, 0
@@ -711,10 +711,10 @@ Event trace:
 		StartTimer: 41.5, Icy Shroud (8)
 	[291.32] SPELL_AURA_APPLIED: [Greatstaff of the Broodkeeper->Lebran-Hakkar: Greatstaff's Wrath] Creature-0-3883-2522-18928-191448-0001463B9B, Greatstaff of the Broodkeeper, 0xa48, Player-1136-091F1B1B, Lebran-Hakkar, 0x512, 375889, Greatstaff's Wrath, 0, DEBUFF, 0
 		ScheduleTask: announce375889target:CombinedShow("Lebran-Hakkar") at 293.32 (+2.00)
-			ShowAnnounce: Greatstaff's Wrath on Caan-Stormrage, Lebran-Hakkar, Unhailed-Frostmourne
+			ShowAnnounce: Greatstaff's Wrath on Unhailed-Frostmourne, Caan-Stormrage, Lebran-Hakkar
 	[292.79] SPELL_CAST_START: [Broodkeeper Diurna: Mortal Stoneclaws] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, "", nil, 0x0, 375870, Mortal Stoneclaws, 0, 0
 		ScheduleTask: (anonymous function) at 300.79 (+8.00)
-		StartTimer: 21.4, Mortal Stoneclaws (14)
+		StartTimer: 20.3, Mortal Stoneclaws (14)
 	[293.17] SPELL_AURA_REMOVED: [Broodkeeper Diurna->Broodkeeper Diurna: Broodkeeper's Bond] Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, Creature-0-3883-2522-18928-190245-0000463935, Broodkeeper Diurna, 0xa48, 375809, Broodkeeper's Bond, 0, BUFF, 0
 		ScheduleTask: announce19873count:Schedule(0.0) at 295.17 (+2.00)
 			ShowAnnounce: Destroy Egg (0)

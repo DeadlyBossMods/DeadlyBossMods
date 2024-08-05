@@ -601,6 +601,11 @@ do
 			return cachedAddOns[addon]
 		end,
 	}
+
+	---Needed for non core files still calling this in wrath client
+	function DBM:DoesAddOnExist(addon)
+		return C_AddOns.DoesAddOnExist(addon)
+	end
 end
 
 -- this is not technically a lib and instead a standalone addon but the api is available via LibStub
@@ -3783,7 +3788,7 @@ do
 				end
 				if self:IsSeasonal("SeasonOfDiscovery") then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Vanilla")
-				elseif seasonalZones[LastInstanceMapID] then--M+ Dungeons Only
+				elseif seasonalZones[LastInstanceMapID] and private.isRetail then--M+ Dungeons Only
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
 				end
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID] or (LastInstanceMapID == 249 and private.isClassic)) then
