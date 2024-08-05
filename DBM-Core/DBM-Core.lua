@@ -601,6 +601,11 @@ do
 			return cachedAddOns[addon]
 		end,
 	}
+
+	---Needed for non core files still calling this in wrath client
+	function DBM:DoesAddOnExist(addon)
+		return C_AddOns.DoesAddOnExist(addon)
+	end
 end
 
 -- this is not technically a lib and instead a standalone addon but the api is available via LibStub
