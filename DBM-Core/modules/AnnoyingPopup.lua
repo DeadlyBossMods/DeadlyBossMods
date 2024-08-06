@@ -165,14 +165,14 @@ local annoyingPopupZonesVanilla = {
 
 --No hard dungeons in wrath, so just popup for raids
 local annoyingPopupZonesWrath = {
-	[249]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Onyxia (wrath version)
-	[724]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[649]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[616]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[631]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[533]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Naxxramas (Wrath)
-	[603]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[624]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[249]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- Onyxia (wrath version)
+	[724]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[649]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[616]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[631]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[533]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- Naxxramas (Wrath)
+	[603]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[624]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
 }
 
 --Iffy on hard cata dungeons, but it's not complained about much so omited for now
@@ -241,7 +241,7 @@ function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 		else
 			zoneInfo = annoyingPopupZonesVanilla[mapId]
 		end
-	elseif zoneLookup == "Wrath" then
+	elseif zoneLookup == "WoTLK" then
 		zoneInfo = annoyingPopupZonesWrath[mapId]
 	elseif zoneLookup == "Cata" then
 		zoneInfo = annoyingPopupZonesCata[mapId]
