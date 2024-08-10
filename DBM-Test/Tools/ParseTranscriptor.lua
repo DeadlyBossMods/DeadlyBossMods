@@ -525,7 +525,7 @@ local function getMetadataFromLog()
 				= guessTypes(line:match(
 					"%[DBM_Debug%] GetInstanceInfo%(%) = ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^#]+)"
 				))
-			elseif line:match("DBM:GetCurrentInstanceDifficulty%(%) = normal20, 20 Player%+ %(%d%)") then -- SoD/Molten Core heat levels
+			elseif line:match("DBM:GetCurrentInstanceDifficulty%(%) = normal20, 20 Player%(%d%)") then -- SoD/Molten Core heat levels
 				local modifier = line:match("%((%d)%)")
 				instanceInfo.difficultyModifier = tonumber(modifier) or 0
 			elseif line:match("%[ENCOUNTER_[SE][TN][AD]") then
