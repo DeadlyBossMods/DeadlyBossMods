@@ -428,7 +428,7 @@ function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid,
 		local auraType, amount = ...
 		self.Mocks:ApplyUnitAura(dstName, dstGuid, spellId, spellName, auraType, amount)
 	end
-	if subEvent == "SPELL_CAST_START" and srcGuid and srcName then
+	if (subEvent == "SPELL_CAST_START" or subEvent == "SWING_DAMAGE" or subEvent == "SWING_MISSED") and srcGuid and srcName then
 		self.Mocks:LearnGuidNameMapping(srcGuid, srcName)
 	end
 end
@@ -486,6 +486,7 @@ function test:InjectEvent(event, ...)
 				-- Annoyingly we'll need to do it by faking *target* because by default UNIT_* registrations are only for target in classic
 				-- Easiest way to do so is to just treat target as a boss unit id
 				self.Mocks:UpdateBoss("target", unitName, guessedGuid, true, true, true)
+				self.Mocks:UpdateTarget("target", unitName, unitTarget)
 				self.Mocks:UpdateUnitHealth("target", nil, unitHealth)
 				self:InjectExtraEvent("UNIT_HEALTH", "target")
 			end
