@@ -58,8 +58,8 @@ Timers:
 			 Triggered 9x, delta times: 52.93, 27.58, 74.05, 39.61, 59.09, 28.25, 10.29, 59.10, 28.05
 		[ 53.01] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 			 Triggered 28x, delta times: 53.01, 27.60, 0.08, 73.98, 39.54, 0.01, 0.00, 0.00, 0.01, 59.10, 0.10, 0.07, 0.07, 28.07, 0.05, 10.11, 0.00, 0.04, 59.11, 0.21, 0.04, 0.09, 0.06, 0.00, 27.75, 0.12, 0.08, 0.06
-		[ 59.03] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-			 Triggered 8x, delta times: 59.03, 101.62, 39.57, 59.34, 28.12, 10.16, 59.51, 28.00
+		[160.65] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
+			 Triggered 2x, delta times: 160.65, 98.91
 
 Announces:
 	Phase Blades incoming debuff (%s), type=incomingcount, spellId=433517, triggerDeltas = 13.13, 28.12, 28.07, 40.26, 28.24, 28.13, 42.65, 27.99, 28.17, 41.46, 28.04, 28.07, 41.36, 27.91
@@ -155,8 +155,6 @@ Event trace:
 		StartTimer: 6.0, Cosmic Shards fades
 	[ 57.13] SPELL_CAST_START: [Sikran: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 432965, Expose, 0, 0
 		StartTimer: 25.1, Tank Combo (4)
-	[ 59.03] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[ 59.42] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -267,8 +265,6 @@ Event trace:
 			ShowAnnounce: Cosmic Shards (6)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
-	[200.22] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[202.38] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -346,8 +342,6 @@ Event trace:
 		StartTimer: 19.3, Phase Blades (10)
 		StartTimer: 29.1, Rain of Arrows (9)
 		StartTimer: 61.9, Decimate (7)
-	[287.68] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[291.80] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
 		ScheduleTask: announce459273count:Schedule(1.0) at 296.80 (+5.00)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 291.80
@@ -370,8 +364,6 @@ Event trace:
 			ShowAnnounce: Cosmic Shards (4)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
-	[297.84] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[299.96] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -430,8 +422,6 @@ Event trace:
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
 		PlaySound: VoicePack/tauntboss
-	[357.35] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[362.33] UNIT_SPELLCAST_SUCCEEDED: boss1, Cast-3-1-2657-2-433475-000000021F, 433475, Sikran, 6, 78, Tank2, 0
 		AntiSpam: 2
 		ShowAnnounce: Phase Blades incoming debuff (12)
@@ -473,8 +463,6 @@ Event trace:
 		StartTimer: 19.3, Phase Blades (13)
 		StartTimer: 29.1, Rain of Arrows (12)
 		StartTimer: 61.9, Decimate (9)
-	[385.35] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[403.69] UNIT_SPELLCAST_SUCCEEDED: boss1, Cast-3-1-2657-2-433475-00000002A6, 433475, Sikran, 4.8, 15, Dps14, 0
 		AntiSpam: 2
 		ShowAnnounce: Phase Blades incoming debuff (13)

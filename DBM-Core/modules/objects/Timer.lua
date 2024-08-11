@@ -477,8 +477,8 @@ function timerPrototype:Stop(...)
 	if select("#", ...) == 0 then
 		for i = #self.startedTimers, 1, -1 do
 			DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
-			DBT:CancelBar(self.startedTimers[i])
 			test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
+			DBT:CancelBar(self.startedTimers[i])
 			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 			tremove(self.startedTimers, i)
 		end
@@ -499,8 +499,8 @@ function timerPrototype:Stop(...)
 					guid = UnitGUID("boss1")
 				end
 				DBM:FireEvent("DBM_TimerStop", id, guid)
-				DBT:CancelBar(id)
 				test:Trace(self.mod, "StopTimer", self, id)
+				DBT:CancelBar(id)
 				DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 				tremove(self.startedTimers, i)
 			end
@@ -530,8 +530,8 @@ function timerPrototype:HardStop(guid)
 	end
 	for i = #self.startedTimers, 1, -1 do
 		DBM:FireEvent("DBM_TimerStop", self.startedTimers[i], guid)
-		DBT:CancelBar(self.startedTimers[i])
 		test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
+		DBT:CancelBar(self.startedTimers[i])
 		DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 		tremove(self.startedTimers, i)
 	end
@@ -673,9 +673,8 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 			else--New remaining less than 0
 				DBM:FireEvent("DBM_TimerStop", id)
 				removeEntry(self.startedTimers, id)
-				local canceled = DBT:CancelBar(id)
 				test:Trace(self.mod, "StopTimer", self, id)
-				return canceled
+				return DBT:CancelBar(id)
 			end
 		end
 	end
