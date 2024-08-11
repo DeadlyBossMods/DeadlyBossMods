@@ -58,8 +58,8 @@ Timers:
 			 Triggered 9x, delta times: 52.93, 27.58, 74.05, 39.61, 59.09, 28.25, 10.29, 59.10, 28.05
 		[ 53.01] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 			 Triggered 28x, delta times: 53.01, 27.60, 0.08, 73.98, 39.54, 0.01, 0.00, 0.00, 0.01, 59.10, 0.10, 0.07, 0.07, 28.07, 0.05, 10.11, 0.00, 0.04, 59.11, 0.21, 0.04, 0.09, 0.06, 0.00, 27.75, 0.12, 0.08, 0.06
-		[ 59.03] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-			 Triggered 8x, delta times: 59.03, 101.62, 39.57, 59.34, 28.12, 10.16, 59.51, 28.00
+		[160.65] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
+			 Triggered 2x, delta times: 160.65, 98.91
 
 Announces:
 	Phase Blades incoming debuff (%s), type=incomingcount, spellId=433517, triggerDeltas = 13.13, 28.12, 28.07, 40.26, 28.24, 28.13, 42.65, 27.99, 28.17, 41.46, 28.04, 28.07, 41.36, 27.91
@@ -80,16 +80,16 @@ Announces:
 	Rain of Arrows (%s), type=count, spellId=439559, triggerDeltas = 22.91, 42.76, 53.66, 27.06, 26.27, 45.67, 26.80, 26.29, 44.54, 26.84, 26.38, 44.22, 26.65
 		[ 22.91] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 			 Triggered 13x, delta times: 22.91, 42.76, 53.66, 27.06, 26.27, 45.67, 26.80, 26.29, 44.54, 26.84, 26.38, 44.22, 26.65
-	Cosmic Shards (%s), type=count, spellId=459273, triggerDeltas = 58.01, 27.68, 73.98, 39.56, 59.34, 28.12, 10.15, 59.51, 28.01
-		[ 58.01] Scheduled at 53.01 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
-		[ 85.69] Scheduled at 80.69 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000031, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
-		[159.67] Scheduled at 154.67 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
-		[199.23] Scheduled at 194.23 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 6, 0
-		[258.57] Scheduled at 253.57 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
-		[286.69] Scheduled at 281.69 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
-		[296.84] Scheduled at 291.84 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
-		[356.35] Scheduled at 351.35 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 7, 0
-		[384.36] Scheduled at 379.36 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
+	Cosmic Shards (%s), type=count, spellId=459273, triggerDeltas = 53.51, 27.68, 73.98, 39.56, 59.34, 28.12, 10.15, 59.51, 28.01
+		[ 53.51] Scheduled at 53.01 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
+		[ 81.19] Scheduled at 80.69 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000031, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
+		[155.17] Scheduled at 154.67 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
+		[194.73] Scheduled at 194.23 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 6, 0
+		[254.07] Scheduled at 253.57 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
+		[282.19] Scheduled at 281.69 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
+		[292.34] Scheduled at 291.84 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
+		[351.85] Scheduled at 351.35 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 7, 0
+		[379.86] Scheduled at 379.36 by SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
 
 Special warnings:
 	Expose on >%s< - taunt now, type=taunt, spellId=438845, triggerDeltas = 8.41, 51.01, 43.91, 55.15, 43.90, 56.05, 41.53, 56.14, 69.26
@@ -144,19 +144,17 @@ Event trace:
 	[ 50.57] SPELL_CAST_START: [Sikran: Decimate] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 442428, Decimate, 0, 0
 		StartTimer: 26.1, Decimate (2)
 	[ 52.93] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 57.93 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 53.43 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 53.01
 		StartTimer: 6.0, Cosmic Shards fades
 	[ 53.01] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 52.93
-		ScheduleTask: announce459273count:Schedule(2.0) at 58.01 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 53.51 (+0.50)
 			ShowAnnounce: Cosmic Shards (2)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[ 57.13] SPELL_CAST_START: [Sikran: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 432965, Expose, 0, 0
 		StartTimer: 25.1, Tank Combo (4)
-	[ 59.03] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000D5, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[ 59.42] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -167,18 +165,18 @@ Event trace:
 		AntiSpam: 2
 		ShowAnnounce: Phase Blades incoming debuff (3)
 	[ 80.51] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000031, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 85.51 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 81.01 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 80.61
 		StartTimer: 6.0, Cosmic Shards fades
 	[ 80.61] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000031, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 80.51
-		ScheduleTask: announce459273count:Schedule(2.0) at 85.61 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 81.11 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 80.69
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[ 80.69] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000031, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 80.61
-		ScheduleTask: announce459273count:Schedule(3.0) at 85.69 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 81.19 (+0.50)
 			ShowAnnounce: Cosmic Shards (3)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -205,12 +203,12 @@ Event trace:
 	[146.39] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 		ShowAnnounce: Rain of Arrows (4)
 	[154.56] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 159.56 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 155.06 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 154.67
 		StartTimer: 6.0, Cosmic Shards fades
 	[154.67] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000108, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 154.56
-		ScheduleTask: announce459273count:Schedule(2.0) at 159.67 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 155.17 (+0.50)
 			ShowAnnounce: Cosmic Shards (2)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -234,41 +232,39 @@ Event trace:
 		StartTimer: 29.1, Rain of Arrows (6)
 		StartTimer: 61.9, Decimate (5)
 	[194.17] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 199.17 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 194.67 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 194.21
 		StartTimer: 6.0, Cosmic Shards fades
 	[194.21] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 194.17
-		ScheduleTask: announce459273count:Schedule(2.0) at 199.21 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 194.71 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 194.22
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[194.22] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 194.21
-		ScheduleTask: announce459273count:Schedule(3.0) at 199.22 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 194.72 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 194.22
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[194.22] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
 		UnscheduleTask: announce459273count:Schedule(3.0) scheduled by ScheduleTask at 194.22
-		ScheduleTask: announce459273count:Schedule(4.0) at 199.22 (+5.00)
+		ScheduleTask: announce459273count:Schedule(4.0) at 194.72 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 194.22
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[194.22] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
 		UnscheduleTask: announce459273count:Schedule(4.0) scheduled by ScheduleTask at 194.22
-		ScheduleTask: announce459273count:Schedule(5.0) at 199.22 (+5.00)
+		ScheduleTask: announce459273count:Schedule(5.0) at 194.72 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 194.23
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[194.23] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 6, 0
 		UnscheduleTask: announce459273count:Schedule(5.0) scheduled by ScheduleTask at 194.22
-		ScheduleTask: announce459273count:Schedule(6.0) at 199.23 (+5.00)
+		ScheduleTask: announce459273count:Schedule(6.0) at 194.73 (+0.50)
 			ShowAnnounce: Cosmic Shards (6)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
-	[200.22] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000057, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[202.38] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -284,30 +280,30 @@ Event trace:
 	[245.13] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 		ShowAnnounce: Rain of Arrows (7)
 	[253.26] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 258.26 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 253.76 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 253.33
 		StartTimer: 6.0, Cosmic Shards fades
 	[253.33] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 253.26
-		ScheduleTask: announce459273count:Schedule(2.0) at 258.33 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 253.83 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 253.43
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[253.43] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 253.33
-		ScheduleTask: announce459273count:Schedule(3.0) at 258.43 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 253.93 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 253.50
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[253.50] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
 		UnscheduleTask: announce459273count:Schedule(3.0) scheduled by ScheduleTask at 253.43
-		ScheduleTask: announce459273count:Schedule(4.0) at 258.50 (+5.00)
+		ScheduleTask: announce459273count:Schedule(4.0) at 254.00 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 253.57
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[253.57] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000EE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
 		UnscheduleTask: announce459273count:Schedule(4.0) scheduled by ScheduleTask at 253.50
-		ScheduleTask: announce459273count:Schedule(5.0) at 258.57 (+5.00)
+		ScheduleTask: announce459273count:Schedule(5.0) at 254.07 (+0.50)
 			ShowAnnounce: Cosmic Shards (5)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -323,18 +319,18 @@ Event trace:
 	[271.42] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 		ShowAnnounce: Rain of Arrows (8)
 	[281.51] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 286.51 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 282.01 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 281.64
 		StartTimer: 6.0, Cosmic Shards fades
 	[281.64] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 281.51
-		ScheduleTask: announce459273count:Schedule(2.0) at 286.64 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 282.14 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 281.69
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[281.69] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 281.64
-		ScheduleTask: announce459273count:Schedule(3.0) at 286.69 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 282.19 (+0.50)
 			ShowAnnounce: Cosmic Shards (3)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -346,32 +342,28 @@ Event trace:
 		StartTimer: 19.3, Phase Blades (10)
 		StartTimer: 29.1, Rain of Arrows (9)
 		StartTimer: 61.9, Decimate (7)
-	[287.68] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000111, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[291.80] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 296.80 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 292.30 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 291.80
 		StartTimer: 6.0, Cosmic Shards fades
 	[291.80] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 291.80
-		ScheduleTask: announce459273count:Schedule(2.0) at 296.80 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 292.30 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 291.80
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[291.80] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 291.80
-		ScheduleTask: announce459273count:Schedule(3.0) at 296.80 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 292.30 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 291.84
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[291.84] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
 		UnscheduleTask: announce459273count:Schedule(3.0) scheduled by ScheduleTask at 291.80
-		ScheduleTask: announce459273count:Schedule(4.0) at 296.84 (+5.00)
+		ScheduleTask: announce459273count:Schedule(4.0) at 292.34 (+0.50)
 			ShowAnnounce: Cosmic Shards (4)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
-	[297.84] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-0000000098, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[299.96] SPELL_AURA_APPLIED_DOSE: [Sikran->Dps14: Expose] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, Player-1-00000020, Dps14, 0x512, 438845, Expose, 0, DEBUFF, 2, 0
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
@@ -387,42 +379,42 @@ Event trace:
 	[342.80] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 		ShowAnnounce: Rain of Arrows (10)
 	[350.90] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 355.90 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 351.40 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 350.95
 		StartTimer: 6.0, Cosmic Shards fades
 	[350.95] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 350.90
-		ScheduleTask: announce459273count:Schedule(2.0) at 355.95 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 351.45 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 351.16
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[351.16] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 350.95
-		ScheduleTask: announce459273count:Schedule(3.0) at 356.16 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 351.66 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 351.20
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[351.20] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
 		UnscheduleTask: announce459273count:Schedule(3.0) scheduled by ScheduleTask at 351.16
-		ScheduleTask: announce459273count:Schedule(4.0) at 356.20 (+5.00)
+		ScheduleTask: announce459273count:Schedule(4.0) at 351.70 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 351.29
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[351.29] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
 		UnscheduleTask: announce459273count:Schedule(4.0) scheduled by ScheduleTask at 351.20
-		ScheduleTask: announce459273count:Schedule(5.0) at 356.29 (+5.00)
+		ScheduleTask: announce459273count:Schedule(5.0) at 351.79 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 351.35
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[351.35] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 6, 0
 		UnscheduleTask: announce459273count:Schedule(5.0) scheduled by ScheduleTask at 351.29
-		ScheduleTask: announce459273count:Schedule(6.0) at 356.35 (+5.00)
+		ScheduleTask: announce459273count:Schedule(6.0) at 351.85 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 351.35
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[351.35] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 7, 0
 		UnscheduleTask: announce459273count:Schedule(6.0) scheduled by ScheduleTask at 351.35
-		ScheduleTask: announce459273count:Schedule(7.0) at 356.35 (+5.00)
+		ScheduleTask: announce459273count:Schedule(7.0) at 351.85 (+0.50)
 			ShowAnnounce: Cosmic Shards (7)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -430,38 +422,36 @@ Event trace:
 		AntiSpam: 1
 		ShowSpecialWarning: Expose on Dps14 - taunt now
 		PlaySound: VoicePack/tauntboss
-	[357.35] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000AE, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[362.33] UNIT_SPELLCAST_SUCCEEDED: boss1, Cast-3-1-2657-2-433475-000000021F, 433475, Sikran, 6, 78, Tank2, 0
 		AntiSpam: 2
 		ShowAnnounce: Phase Blades incoming debuff (12)
 	[369.18] SPELL_CAST_START: [Sikran: Rain of Arrows] Creature-0-1-2657-1-214503-0000000002, Sikran, 0xa48, "", nil, 0x0, 439559, Rain of Arrows, 0, 0
 		ShowAnnounce: Rain of Arrows (11)
 	[378.95] SPELL_AURA_APPLIED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		ScheduleTask: announce459273count:Schedule(1.0) at 383.95 (+5.00)
+		ScheduleTask: announce459273count:Schedule(1.0) at 379.45 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 379.10
 		StartTimer: 6.0, Cosmic Shards fades
 	[379.10] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 2, 0
 		UnscheduleTask: announce459273count:Schedule(1.0) scheduled by ScheduleTask at 378.95
-		ScheduleTask: announce459273count:Schedule(2.0) at 384.10 (+5.00)
+		ScheduleTask: announce459273count:Schedule(2.0) at 379.60 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 379.22
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[379.22] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 3, 0
 		UnscheduleTask: announce459273count:Schedule(2.0) scheduled by ScheduleTask at 379.10
-		ScheduleTask: announce459273count:Schedule(3.0) at 384.22 (+5.00)
+		ScheduleTask: announce459273count:Schedule(3.0) at 379.72 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 379.30
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[379.30] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 4, 0
 		UnscheduleTask: announce459273count:Schedule(3.0) scheduled by ScheduleTask at 379.22
-		ScheduleTask: announce459273count:Schedule(4.0) at 384.30 (+5.00)
+		ScheduleTask: announce459273count:Schedule(4.0) at 379.80 (+0.50)
 			Unscheduled by SPELL_AURA_APPLIED_DOSE at 379.36
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
 	[379.36] SPELL_AURA_APPLIED_DOSE: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 5, 0
 		UnscheduleTask: announce459273count:Schedule(4.0) scheduled by ScheduleTask at 379.30
-		ScheduleTask: announce459273count:Schedule(5.0) at 384.36 (+5.00)
+		ScheduleTask: announce459273count:Schedule(5.0) at 379.86 (+0.50)
 			ShowAnnounce: Cosmic Shards (5)
 		StopTimer: Timer459273fades
 		StartTimer: 6.0, Cosmic Shards fades
@@ -473,8 +463,6 @@ Event trace:
 		StartTimer: 19.3, Phase Blades (13)
 		StartTimer: 29.1, Rain of Arrows (12)
 		StartTimer: 61.9, Decimate (9)
-	[385.35] SPELL_AURA_REMOVED: [Cosmic Simulacrum->Tank2: Cosmic Shards] Creature-0-1-2657-1-228746-00000000B8, Cosmic Simulacrum, 0xa48, Player-1-00000011, Tank2, 0x511, 459273, Cosmic Shards, 0, DEBUFF, 0
-		StopTimer: Timer459273fades
 	[403.69] UNIT_SPELLCAST_SUCCEEDED: boss1, Cast-3-1-2657-2-433475-00000002A6, 433475, Sikran, 4.8, 15, Dps14, 0
 		AntiSpam: 2
 		ShowAnnounce: Phase Blades incoming debuff (13)

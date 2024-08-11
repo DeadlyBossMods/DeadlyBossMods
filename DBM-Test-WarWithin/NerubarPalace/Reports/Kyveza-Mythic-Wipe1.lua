@@ -30,7 +30,6 @@ Timers:
 	Starless Night ends, time=24.00, type=active, spellId=435405, triggerDeltas = 96.09, 129.99
 		[ 96.09] SPELL_CAST_START: [Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 435405, Starless Night, 0, 0
 			 Triggered 2x, delta times: 96.09, 129.99
-		[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
 	Starless Night (%s), time=120.00, type=cdcount, spellId=435405, triggerDeltas = 0.00, 125.09, 130.01
 		[  0.00] ENCOUNTER_START: 2920, Nexus-Princess Ky'veza, 16, 20, 0
 		[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
@@ -154,7 +153,6 @@ Event trace:
 		ShowAnnounce: Starless Night (1)
 		StartTimer: 29.0, Starless Night ends
 	[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
-		StopTimer: Timer435405active
 		StartTimer: 10.8, Tank Debuff (4)
 		StartTimer: 16.0, Assassination (2)
 		StartTimer: 26.8, Rift (4)

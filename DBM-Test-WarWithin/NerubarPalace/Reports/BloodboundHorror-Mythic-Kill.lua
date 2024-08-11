@@ -46,7 +46,6 @@ Timers:
 	Baneful Shift fades, time=40.00, type=fades, spellId=443612, triggerDeltas = 19.01, 128.04, 128.04
 		[ 19.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
 			 Triggered 3x, delta times: 19.01, 128.04, 128.04
-		[ 59.01] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
 	Gruesome Disgorge (%s), time=49.00, type=nextcount, spellId=444363, triggerDeltas = 0.00, 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
 		[ 14.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
@@ -250,7 +249,6 @@ Event trace:
 		StartTimer: 31.1, Grasp (3)
 	[ 59.01] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
 		ShowAnnounce: Baneful Shift faded
-		StopTimer: Timer443612fades
 	[ 67.99] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (4)
 	[ 70.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
