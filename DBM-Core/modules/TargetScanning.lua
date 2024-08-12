@@ -147,6 +147,11 @@ do
 		--Cache the filtered target if using a filter target fallback
 		--so when scan ends we can return that instead of tank when scan ends
 		--(because boss might have already swapped back to aggro target by then)
+		if targetFilter then
+			--Chinese Wrath client seems to always have realm name in combat log, even if player is from same realm.
+			--This should do no harm when combat log is correct but fix it when it isn't
+			targetFilter = Ambiguate(targetFilter, "none")
+		end
 		if targetname and targetname ~= CL.UNKNOWN and filterFallback and targetFilter and targetFilter == targetname then
 			filteredTargetCache[cidOrGuid] = {}
 			filteredTargetCache[cidOrGuid].target = targetname
