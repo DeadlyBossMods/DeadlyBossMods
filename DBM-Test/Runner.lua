@@ -162,6 +162,19 @@ function test:Trace(mod, event, ...)
 			end
 		end
 	end
+	-- Common source of non-determinism are timers that get canceled exactly as they expire, e.g., canceling on SPELL_AURA_REMOVED due normal buff expiry.
+	-- It looks like the reason for this non-determinism is that we invoke the OnUpdate handlers in an effectively random order.
+	-- Ultimately this is something that should probably be fixed somehow, but it's somewhat annoying (see comment in TimeWarper.lua).
+	if event == "StopTimer" then
+		-- If this ever happens with an UnscheduleTask event then we have a small problem, because the resulting task execution is an actual difference that's hard to get rid of here
+		local _, timerId = ...
+		local bar = DBT:GetBar(timerId)
+		local remaining = bar and bar.timer or 0
+		-- I see dead timers, they don't know they are dead
+		if remaining <= 0 then
+			return
+		end
+	end
 	if event == "ScheduleTask" then -- the other Scheduler-traces for events discarded here are filtered by the "did we see the schedule?" logic below
 		-- Filter non-mod schedules because they're used a lot internally
 		if mod ~= self.modUnderTest then
@@ -428,7 +441,7 @@ function test:OnInjectCombatLog(_, subEvent, _, srcGuid, srcName, _, _, dstGuid,
 		local auraType, amount = ...
 		self.Mocks:ApplyUnitAura(dstName, dstGuid, spellId, spellName, auraType, amount)
 	end
-	if subEvent == "SPELL_CAST_START" and srcGuid and srcName then
+	if (subEvent == "SPELL_CAST_START" or subEvent == "SWING_DAMAGE" or subEvent == "SWING_MISSED") and srcGuid and srcName then
 		self.Mocks:LearnGuidNameMapping(srcGuid, srcName)
 	end
 end
@@ -486,6 +499,7 @@ function test:InjectEvent(event, ...)
 				-- Annoyingly we'll need to do it by faking *target* because by default UNIT_* registrations are only for target in classic
 				-- Easiest way to do so is to just treat target as a boss unit id
 				self.Mocks:UpdateBoss("target", unitName, guessedGuid, true, true, true)
+				self.Mocks:UpdateTarget("target", unitName, unitTarget)
 				self.Mocks:UpdateUnitHealth("target", nil, unitHealth)
 				self:InjectExtraEvent("UNIT_HEALTH", "target")
 			end

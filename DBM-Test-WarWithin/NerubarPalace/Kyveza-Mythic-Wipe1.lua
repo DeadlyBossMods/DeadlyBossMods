@@ -3,7 +3,7 @@ DBM.Test:DefineTest{
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2601,
-	instanceInfo = {name = "Nerubar Palace", instanceType = "raid", difficultyID = 16, difficultyName = "Heroic", maxPlayers = 20, dynamicDifficulty = 0, isDynamic = false, instanceID = 2657, instanceGroupSize = 20, lfgDungeonID = nil},
+	instanceInfo = {name = "Nerubar Palace", instanceType = "raid", difficultyID = 16, difficultyName = "mythic", maxPlayers = 20, dynamicDifficulty = 0, isDynamic = false, instanceID = 2657, instanceGroupSize = 20, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000013", logRecorder = true},
 		{"Tank2",   "Player-1-00000020"},

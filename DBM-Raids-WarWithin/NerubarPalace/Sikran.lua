@@ -171,7 +171,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 459273 and args:IsPlayer() then
 		warnCosmicShards:Cancel()
 		--0.5 aggregation so all ones blowing up at once during Shattering Sweep are only single warned
-		warnCosmicShards:Schedule(05, args.amount or 1)
+		warnCosmicShards:Schedule(0.5, args.amount or 1)
 		timerCosmicShards:Stop()
 		timerCosmicShards:Start()
 	elseif spellId == 438845 and not args:IsPlayer() then--Exposed weakness / Pierced Defenses
