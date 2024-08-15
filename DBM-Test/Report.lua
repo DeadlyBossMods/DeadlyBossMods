@@ -746,6 +746,10 @@ function reporter:ReportDiff()
 	DBM:ShowUpdateReminder(nil, nil, msg, self:ReportWithHeader(), 300, "LEFT")
 end
 
+function reporter:ShowReport()
+	test:ShowTestReportFrame(self:Report())
+end
+
 ---@alias TestResultEnum "Success"|"Failure"
 ---@return TestResultEnum
 function reporter:GetResult()
