@@ -59,7 +59,7 @@ function anonymizer:ScrubName(name, guid)
 		or self.nonPlayerNames[name]
 		or self.playerNames[name]
 		-- playerServers will be set if this is indeed someone frome another server, checking it avoids bugs with non-players with dashes in the name
-		or self.playerServers[strippedName] and self.playerNames[strippedName]
+		or strippedName and self.playerServers[strippedName] and self.playerNames[strippedName]
 		or self.petNames[name]
 end
 
@@ -71,7 +71,30 @@ function anonymizer:ScrubTarget(name)
 	if name == "??" then
 		return name
 	end
-	return self.nonPlayerNames[name] or self.playerNames[name] or self.petNames[name]
+	-- Some fights have dummy targets/controllers that only show up in this event, so we haven't seen them. Best guess: something that contains at least 3 spaces is probably not to be anonymized
+	return self.nonPlayerNames[name] or self.playerNames[name] or self.petNames[name] or name:match(" .* .* ") and name
+end
+
+local seenChatMsgTranslations = {}
+
+function anonymizer:ScrubChatMessage(msg, name)
+	-- Most CHAT_MSG_* things contain the name of a the affected target which makes scrubbing easy
+	-- However, RAID_BOSS_EMOTE (without CHAT_MSG_ prefix) does not contain this. Luckily it always seems to fire immediately after
+	-- the CHAT_MSG variant, so we just learn the translation there and cache it, works well enough.
+	if seenChatMsgTranslations[msg] then
+		return seenChatMsgTranslations[msg]
+	end
+	if not name then
+		return msg
+	end
+	local strippedName = name:match("([^-]*)%-") or name
+	local anonName = self:ScrubName(name)
+	if not anonName then -- target is sometimes a random dummy unit/controller
+		return msg
+	end
+	local result = msg:gsub(name:gsub("%-", "%%-"), anonName):gsub(strippedName, name)
+	seenChatMsgTranslations[msg] = result
+	return result
 end
 
 -- Technically this is a pseudonymizer, not an anonymizer, but that's what we want
