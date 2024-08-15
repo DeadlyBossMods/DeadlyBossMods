@@ -784,11 +784,11 @@ function reporter:HasErrors()
 end
 
 local realErrorHandler
-local ourErrorsHandlers = setmetatable({}, {__mode = "k"})
+local ourErrorHandlers = setmetatable({}, {__mode = "k"})
 
 function reporter:GetRealErrorHandler()
 	local errorHandler = geterrorhandler()
-	if ourErrorsHandlers[errorHandler] then
+	if ourErrorHandlers[errorHandler] then
 		-- handle the case when you click on report errors while another test is running
 		errorHandler = realErrorHandler or HandleLuaError
 	end
@@ -802,13 +802,16 @@ function reporter:ReportErrors()
 	end
 end
 
-function reporter:SetupErrorHandler()
+function reporter:SetupErrorHandler(passthroughErrors)
 	self.oldErrorHandler = geterrorhandler()
 	realErrorHandler = self.oldErrorHandler
 	local errorHandler = function(err)
 		self.errors[#self.errors + 1] = err
+		if passthroughErrors then
+			realErrorHandler(err)
+		end
 	end
-	ourErrorsHandlers[errorHandler] = true
+	ourErrorHandlers[errorHandler] = true
 	seterrorhandler(errorHandler)
 end
 
