@@ -13,3 +13,4 @@ Report.lua
 Runner.lua
 TimeWarper.lua
 Mocks.lua
+ReportFrame.lua
