@@ -16,6 +16,8 @@ function test:NewReporter(testData, trace)
 		---@diagnostic disable-next-line: dbm-event-checker
 		mod = DBM:GetModByName(testData.mod), ---@type DBMMod
 		errors = {},
+		taints = {},
+		strayObjects = {}, -- Warning objects that didn't show up while loading but were triggered by the test
 	}, reporterMt)
 	return obj
 end
@@ -233,12 +235,14 @@ end
 function reporter:FindPreciseShowsThatAlwaysFailed(findings)
 	local objs = self:FindObjects()
 	for _, obj in ipairs(objs) do
-		for maxTotal in pairs(obj.testUsedWithPreciseShow) do
-			if not obj.testUsedWithPreciseShowSucess[maxTotal] then
-				findings[#findings + 1] = {
-					type = "precise-show-always-failed", spellId = obj.spellId, sortKey = 3, extraSortKey = maxTotal,
-					text = ("%s uses PreciseShow(%d) but never gets %d targets"):format(self:ObjectToString(obj), maxTotal, maxTotal)
-				}
+		if obj.testUsedWithPreciseShow then
+			for maxTotal in pairs(obj.testUsedWithPreciseShow) do
+				if not obj.testUsedWithPreciseShowSucess[maxTotal] then
+					findings[#findings + 1] = {
+						type = "precise-show-always-failed", spellId = obj.spellId, sortKey = 3, extraSortKey = maxTotal,
+						text = ("%s uses PreciseShow(%d) but never gets %d targets"):format(self:ObjectToString(obj), maxTotal, maxTotal)
+					}
+				end
 			end
 		end
 	end
@@ -297,14 +301,33 @@ function reporter:FindObjects()
 	if self.cachedObjects then
 		return self.cachedObjects
 	end
+	local seenObjs = {}
 	local objs = {}
+	-- Objects we saw during loading
 	for _, entry in ipairs(self.trace) do
 		for _, v in ipairs(entry.traces) do
 			if v.mod == self.mod and (v.event == "NewTimer" or v.event == "NewAnnounce" or v.event == "NewSpecialWarning" or v.event == "NewYell") then
-				objs[#objs + 1] = v[1]
+				local obj = v[1]
+				objs[#objs + 1] = obj
+				seenObjs[obj] = true
 			end
 		end
 	end
+	local function gatherObjects(list)
+		for _, obj in ipairs(list) do
+			if not seenObjs[obj] then
+				objs[#objs + 1] = obj
+				seenObjs[obj] = true
+			end
+		end
+	end
+	-- Objects the mod defines, these should be identical to what we already saw above if the mod was loaded properly
+	gatherObjects(self.mod.timers)
+	gatherObjects(self.mod.announces)
+	gatherObjects(self.mod.specwarns)
+	gatherObjects(self.mod.yells)
+	-- Objects we saw during test execution but not during test load, if there is anything new here then a second mod triggered
+	gatherObjects(self.strayObjects) -- TODO: We might want to tag these in the report, because we usually don't want that (but I do have some interesting multi-encounter pull logs)
 	table.sort(objs, compareObjects)
 	self.cachedObjects = objs
 	return objs

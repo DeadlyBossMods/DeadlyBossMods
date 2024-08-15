@@ -142,6 +142,16 @@ local function functionArgsPretty(...)
 	return table.concat(res, ", ")
 end
 
+local function injectTestDataIntoWarningObject(obj)
+	obj.testUseCount = 0
+	obj.testUsedWithPreciseShow = {}
+	obj.testUsedWithPreciseShowSucess = {}
+	if obj.startedTimers then
+		-- used to identify this table later to filter some schedule logic on it
+		obj.startedTimers._testObjClass = "Timer.startedTimers"
+	end
+end
+
 ---@param mod DBMModOrDBM
 function test:Trace(mod, event, ...)
 	if not self.testRunning then return end
@@ -208,10 +218,16 @@ function test:Trace(mod, event, ...)
 	end
 	if event == "CombinedWarningPreciseShow" then
 		local obj, maxTotal = ...
+		if not obj.testUsedWithPreciseShow then
+			injectTestDataIntoWarningObject(obj)
+		end
 		obj.testUsedWithPreciseShow[maxTotal] = true
 		return
 	elseif event == "CombinedWarningPreciseShowSuccess" then
 		local obj, maxTotal = ...
+		if not obj.testUsedWithPreciseShowSucess then
+			injectTestDataIntoWarningObject(obj)
+		end
 		obj.testUsedWithPreciseShowSucess[maxTotal] = true
 		return
 	end
@@ -258,20 +274,18 @@ function test:Trace(mod, event, ...)
 		traceEntry.traces[#traceEntry.traces + 1] = entry
 		if event == "NewTimer" or event == "NewAnnounce" or event == "NewSpecialWarning" or event == "NewYell" then
 			local obj = ...
-			obj.testUseCount = 0
-			obj.testUsedWithPreciseShow = {}
-			obj.testUsedWithPreciseShowSucess = {}
-			if obj.startedTimers then
-				-- used to identify this table later to filter some schedule logic on it
-				obj.startedTimers._testObjClass = "Timer.startedTimers"
-			end
+			injectTestDataIntoWarningObject(obj)
 		end
 		if event == "StartTimer" or event == "ShowAnnounce" or event == "ShowSpecialWarning" or event == "ShowYell" then
 			local obj = ...
-			if not obj or not obj.testUseCount then
+			if not obj then
 				geterrorhandler()("trace of type " .. event .. " without warning object ")
 			end
-			obj.testUseCount = (obj.testUseCount or 0) + 1
+			if not obj.testUseCount then
+				self.reporter:Taint("StrayObjects")
+				injectTestDataIntoWarningObject(obj)
+			end
+			obj.testUseCount = obj.testUseCount + 1
 		end
 		if event == "EndCombat" then
 			traceEntry.didTriggerCombatEnd = true
@@ -794,14 +808,18 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
-		error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
+		self.reporter:Taint("ModEnv")
+		--error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
+	else
+		local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
+		currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
+		currentRawEvent = fakeLoadingEvent
+		for _, v in ipairs(loadingEvents) do
+			self:Trace(modUnderTest, unpack(v))
+		end
 	end
-	self:Setup(testData) -- Must be done after loading the mod to prepare mod (stats, options, ...)
-	local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
-	currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
-	currentRawEvent = fakeLoadingEvent
-	for _, v in ipairs(loadingEvents) do
-		self:Trace(modUnderTest, unpack(v))
+	if not GetLocale():match("^en") then
+		self.reporter:Taint("Lang", GetLocale())
 	end
 	currentEventKey = nil
 	currentRawEvent = nil
