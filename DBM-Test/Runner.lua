@@ -611,7 +611,11 @@ function test:Playback(testData, timeWarp, testOptions)
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
 	-- 100 messages or so anyways, so whatever.
-	self.logPlayerName = testOptions.perspective or findRecordingPlayer(testData)
+	local perspective = findRecordingPlayer(testData)
+	if testOptions.perspective and testOptions.perspective ~= perspective then
+		self.reporter:Taint("Perspective", perspective, testOptions.perspective)
+	end
+	self.logPlayerName = testOptions.perspective or perspective
 	adjustFlagsForPerspective(testData, self.logPlayerName)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	if testData.instanceInfo.difficultyModifier then

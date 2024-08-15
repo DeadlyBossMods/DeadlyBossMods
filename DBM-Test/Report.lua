@@ -749,7 +749,7 @@ end
 ---@alias TestResultEnum "Success"|"Failure"
 ---@return TestResultEnum
 function reporter:GetResult()
-	return not self:HasDiff() and not self:HasErrors() and "Success" or "Failure"
+	return (not self:HasDiff() or self:IsTainted()) and not self:HasErrors() and "Success" or "Failure"
 end
 
 function reporter:HasErrors()
@@ -794,4 +794,25 @@ end
 
 function reporter:FlagCombat(waitedFor)
 	self.inCombatAfterTest = waitedFor
+end
+
+---@alias DBMTestTaintType "Lang"|"ModEnv"|"DBMOptions"|"ModOptions"|"Perspective"|"StrayObjects"
+
+---@type table<DBMTestTaintType, string>
+local taintDescriptions = {
+	Lang = "Running on an %s client, golden test reports are created with English clients",
+	ModEnv = "Mod was not loaded with full test support enabled, global hooks in mods are disabled",
+	DBMOptions = "Running with DBM options set to something other than the test defaults",
+	ModOptions = "Running with mod options set to something other than the test defaults",
+	Perspective = "Test specifies player %s, but running as player %s",
+	StrayObjects = "Encountered stray warning objects during test run, an unexpected mod might have been triggered or mod was loaded without full test support"
+}
+
+---@param taintType DBMTestTaintType
+function reporter:Taint(taintType, ...)
+	self.taints[#self.taints + 1] = {type = taintType, description = taintDescriptions[taintType]:format(...)}
+end
+
+function reporter:IsTainted()
+	return #self.taints > 0
 end
