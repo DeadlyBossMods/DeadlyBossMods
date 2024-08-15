@@ -2,8 +2,8 @@
 local private = select(2, ...)
 
 local twipe = table.wipe
-local UnitExists, UnitPlayerOrPetInRaid, UnitGUID =
-	UnitExists, UnitPlayerOrPetInRaid, UnitGUID
+local UnitExists, UnitPlayerOrPetInRaid, UnitGUID, Ambiguate =
+	UnitExists, UnitPlayerOrPetInRaid, UnitGUID, Ambiguate
 
 ---@class TargetScanningModule: DBMModule
 local module = private:NewModule("TargetScanningModule")
