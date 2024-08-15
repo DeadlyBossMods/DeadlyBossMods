@@ -1,0 +1,7 @@
+## Interface: 11503
+## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Tests for The War Within mods|r
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## Dependencies: DBM-Test
+## DefaultState: enabled
+## LoadOnDemand: 1
+## X-DBM-Test: true
