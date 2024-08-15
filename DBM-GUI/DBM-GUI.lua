@@ -978,6 +978,13 @@ do
 				end
 
 				if not IsAddOnLoaded(addon.modId) then
+					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
+					autoLoadFrame:SetScript("OnShow", function()
+						if not addon.attemptedAutoLoad then
+							addon.attemptedAutoLoad = true
+							DBM:LoadMod(addon, true)
+						end
+					end)
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
 					button.addon = addon
 					button.headline = addon.panel:CreateText(L.BossModLoad_now, 350, nil, nil, "CENTER")
