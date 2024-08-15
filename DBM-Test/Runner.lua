@@ -396,11 +396,11 @@ function test:SetupDBMOptions()
 	DBM.Options.SWarningAlphabetical = false
 end
 
-function test:Setup(testData)
+function test:Setup(testData, testOptions)
 	trace = {}
 	table.wipe(antiSpams)
 	self.reporter = self:NewReporter(testData, trace)
-	self.reporter:SetupErrorHandler()
+	self.reporter:SetupErrorHandler(testOptions.allowErrors)
 	self.testRunning = true
 	self:SetupHooks()
 	-- Store stats for all mods to not mess them up if the test or a mod trigger is bad
@@ -777,6 +777,7 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 ---@class DBMTestOptions
 ---@field perspective string? Override the perspective from which the log is played back
+---@field allowErrors boolean? Throw errors immediately
 
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
 ---@param testOptions? DBMTestOptions
@@ -805,6 +806,7 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
 	end
 	self.modUnderTest = modUnderTest
+	self:Setup(testData, testOptions) -- Must be done after loading the mod to prepare mod (stats, options, ...)
 	-- Recover loading events for this mod stored above - must be done like this to support testing multiple mods in one addon in one session
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
