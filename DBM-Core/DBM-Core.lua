@@ -76,6 +76,7 @@ end
 local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
+DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
 local fakeBWVersion, fakeBWHash = 351, "186d70b"--351.1
 local bwVersionResponseString = "V^%d^%s"
@@ -7574,6 +7575,7 @@ do
 		return false
 	end
 
+	---@param uId playerUUIDs?
 	function bossModPrototype:IsMeleeDps(uId)
 		if uId then--This version includes ONLY melee dps
 			local name = GetUnitName(uId, true)
@@ -7619,6 +7621,7 @@ do
 	end
 
 	---@param self DBMModOrDBM
+	---@param uId playerUUIDs?
 	function DBM:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			--Class checks performed first due to mechanical check needing to be broader than a specID check
@@ -7661,6 +7664,7 @@ do
 	bossModPrototype.IsMelee = DBM.IsMelee
 
 	---@param self DBMModOrDBM
+	---@param uId playerUUIDs?
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
@@ -7679,6 +7683,7 @@ do
 	end
 	bossModPrototype.IsRanged = DBM.IsRanged
 
+	---@param uId playerUUIDs?
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
@@ -7696,6 +7701,7 @@ do
 		return private.specRoleTable[currentSpecID]["SpellCaster"]
 	end
 
+	---@param uId playerUUIDs?
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
@@ -7838,7 +7844,7 @@ do
 	end
 end
 
----@param uId string? Used for querying external unit. If nil, queries "player"
+---@param uId playerUUIDs? Used for querying external unit. If nil, queries "player"
 ---@return boolean
 function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
@@ -7856,7 +7862,7 @@ function bossModPrototype:IsDps(uId)
 end
 
 ---@param self DBMModOrDBM
----@param uId string? Used for querying external unit. If nil, queries "player"
+---@param uId playerUUIDs? Used for querying external unit. If nil, queries "player"
 ---@return boolean
 function DBM:IsHealer(uId)
 	if uId then--External unit call.

@@ -1,4 +1,4 @@
-## Interface: 100207, 110000, 110002
+## Interface: 110002
 ## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Тесты|r|cffffe00a>|r |cff69ccf0Тесты для DBM Ядра|r
 ## Dependencies: DBM-Core
@@ -13,3 +13,4 @@ Report.lua
 Runner.lua
 TimeWarper.lua
 Mocks.lua
+ReportFrame.lua
