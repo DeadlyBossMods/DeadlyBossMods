@@ -543,9 +543,11 @@ function test:InjectEvent(event, ...)
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
+		DBM:FireEvent("DBMTest_CombatLogEvent", event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
 	else
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
+		DBM:FireEvent("DBMTest_Event", event, ...)
 	end
 	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
 	if event:match("^UNIT_") then
@@ -651,6 +653,18 @@ function test:Playback(testData, timeWarp, testOptions)
 	self.timeWarper = timeWarper
 	timeWarper:Start()
 	timeWarper:SetSpeed(timeWarp)
+	---@type DBMTestCallbackStart
+	local testStartCallbackArgs = {
+		Name = testData.name,
+		Duration = maxTimestamp + 3.1,
+		NumEvents = #testData.log,
+		InstanceInfo = testData.instanceInfo,
+		ModUnderTest = self.modUnderTest,
+		Perspective = self.logPlayerName,
+		Players = testData.players or {},
+		Mocks = self.Mocks:GetMockEnvironment()
+	}
+	DBM:FireEvent("DBMTest_Start", testStartCallbackArgs)
 	local startTime = timeWarper.fakeTime
 	local ts = 0
 	local i = 1
@@ -684,11 +698,17 @@ function test:Playback(testData, timeWarp, testOptions)
 		DBM:AddMsg("DBM is still reporting in combat, waiting for " .. math.floor(extraTime) .. " more seconds")
 		timeWarper:WaitFor(extraTime)
 	end
-	timeWarper:Stop()
 	local reporter = self.reporter
 	if DBM:InCombat() then
 		reporter:FlagCombat(extraTime + 3.1)
 	end
+	---@type DBMTestCallbackStop
+	local testStopCallbackArgs = {
+		Name = test.testData.name,
+		Report = reporter:Report(),
+	}
+	DBM:FireEvent("DBMTest_Stop", testStopCallbackArgs) -- Must fire before stopping the time warper otherwise Public/Example.lua breaks
+	timeWarper:Stop()
 	local report = reporter:ReportWithHeader()
 	DBM_TestResults_Export = DBM_TestResults_Export or {}
 	DBM_TestResults_Export[testData.name] = report
@@ -724,18 +744,6 @@ frame:SetScript("OnUpdate", function(self)
 		end
 	end
 end)
-
----@class DBMInstanceInfo: InstanceInfo
----@field difficultyModifier number?
-
----@class DBMTestPlayerDefinition
----@field [1] string Anonymized or real name
----@field [2] string Anonymized GUID
----@field role ("Tank"|"Healer"|"Dps"|"Unknown")? Detected role, nil if it can be derived from the anonymized name
----@field logRecorder boolean? True if this player recorded the log
----@field healer number? Set if a secondary role was detected
----@field tank number? Set if a secondary role was detected
----@field dps number? Set if a secondary role was detected
 
 ---@class TestDefinition
 ---@field name string Unique test ID.

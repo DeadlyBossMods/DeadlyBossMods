@@ -1960,6 +1960,36 @@ end
 --  Callbacks  --
 -----------------
 do
+	---@alias DBMCallbackEvent DBMTestEvent
+	--- |"BossMod_ShowNameplateAura"
+	--- |"BossMod_HideNameplateAura"
+	--- |"BossMod_EnableHostileNameplates"
+	--- |"BossMod_EnableFriendlyNameplates"
+	--- |"BossMod_DisableFriendlyNameplates"
+	--- |"BossMod_DisableHostileNameplates"
+	--- |"DBM_Debug"
+	--- |"DBM_SetStage"
+	--- |"DBM_AffixEvent"
+	--- |"DBM_TimerStart"
+	--- |"DBM_TimerStop"
+	--- |"DBM_TimerFadeUpdate"
+	--- |"DBM_TimerUpdate"
+	--- |"DBM_TimerPause"
+	--- |"DBM_TimerResume"
+	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_Announce"
+	--- |"DBM_raidJoin"
+	--- |"DBM_raidLeave"
+	--- |"DBM_partyJoin"
+	--- |"DBM_partyLeave"
+	--- |"DBM_MusicStart"
+	--- |"DBM_MusicStop"
+	--- |"DBM_UpdateZone"
+	--- |"DBM_Pull"
+	--- |"DBM_Kill"
+	--- |"DBM_Wipe"
+	--- |"DBM_PlaySound"
+	--- |"DBM_TestModStarted"
 	local callbacks = {}
 
 	function fireEvent(event, ...)
@@ -1969,12 +1999,13 @@ do
 		end
 	end
 
-	---@param event string
+	---@param event DBMCallbackEvent
 	---@param ... any?
 	function DBM:FireEvent(event, ...)
 		fireEvent(event, ...)
 	end
 
+	---@param event DBMCallbackEvent
 	function DBM:IsCallbackRegistered(event, f)
 		if not event or type(f) ~= "function" then
 			error("Usage: IsCallbackRegistered(event, callbackFunc)", 2)
@@ -1986,6 +2017,7 @@ do
 		return false
 	end
 
+	---@param event DBMCallbackEvent
 	function DBM:RegisterCallback(event, f)
 		if not event or type(f) ~= "function" then
 			error("Usage: DBM:RegisterCallback(event, callbackFunc)", 2)
@@ -1995,6 +2027,7 @@ do
 		return #callbacks[event]
 	end
 
+	---@param event DBMCallbackEvent
 	function DBM:UnregisterCallback(event, f)
 		if not event or not callbacks[event] then return end
 		if f then
