@@ -400,9 +400,9 @@ function mocks:HookModGlobal(key, val)
 end
 
 -- Must be called before mods are loaded because they may cache pre-existing globals otherwise
-function mocks:InitializeModEnvironment()
+function mocks:GetMockEnvironment()
 	if self.modEnv then
-		return
+		return self.modEnv
 	end
 	self.modEnv = setmetatable({}, {__index = _G})
 	self:HookModGlobal("UnitPower", mocks.UnitPower)
@@ -411,12 +411,18 @@ function mocks:InitializeModEnvironment()
 	self:HookModGlobal("UnitHealthMax", mocks.UnitHealthMax)
 	self:HookModGlobal("UnitExists", mocks.UnitExists)
 	self:HookModGlobal("UnitGUID", mocks.UnitGUID)
+	self:HookModGlobal("UnitDetailedThreatSituation", mocks.UnitDetailedThreatSituation)
+	self:HookModGlobal("UnitAffectingCombat", mocks.UnitAffectingCombat)
 	self:HookModGlobal("GetTime", mocks.GetTime)
+	self:HookModGlobal("CombatLogGetCurrentEventInfo", mocks.CombatLogGetCurrentEventInfo)
+	self:HookModGlobal("GetInstanceInfo", mocks.GetInstanceInfo)
+	self:HookModGlobal("IsEncounterInProgress", mocks.IsEncounterInProgress)
+	return self.modEnv
 end
 
 -- Called by DBM:NewMod() if tests are active, tests activate prior to loading the mod under test anyways to trace loading events
 function mocks:SetModEnvironment(stackDepth)
-	self:InitializeModEnvironment()
+	self:GetMockEnvironment()
 	setfenv(stackDepth + 1, self.modEnv)
 end
 

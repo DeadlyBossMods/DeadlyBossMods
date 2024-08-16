@@ -3,7 +3,8 @@ std = "lua51"
 max_line_length = false
 exclude_files = {
 	"**/Libs/**/*.lua",
-	".luacheckrc"
+	".luacheckrc",
+	"DBM-Test/Public/Callbacks.lua", -- @meta LuaLS file triggers false positives
 }
 ignore = {
 	"1..", -- Everything related to globals, the LuaLS check is better because it doesn't require us to define every single API functions
