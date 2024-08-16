@@ -13,9 +13,13 @@ local timeWarperMt = {__index = test.TimeWarper}
 
 ---@param frame Frame
 function test.TimeWarper:RegisterFrame(frame)
-	self.framesToHook[frame] = true
+	if self.framesToHook[frame] ~= nil then
+		return
+	end
 	if active then
 		self:HookOnUpdateHandler(frame)
+	else
+		self.framesToHook[frame] = true
 	end
 end
 
