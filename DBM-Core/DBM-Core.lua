@@ -1868,7 +1868,7 @@ do
 					"CANCEL_PLAYER_COUNTDOWN"
 				)
 			end
-			if private.wowTOC >= 110000 then
+			if private.wowTOC >= 110002 then
 				self:RegisterEvents(
 					"PLAYER_MAP_CHANGED"
 				)
@@ -4040,7 +4040,7 @@ do
 		DBM:CheckAvailableModsByMap()
 		--if a special zone, we need to force update LastInstanceMapID and run zone change functions without loading screen
 		--This hack and table can go away in TWW pre patch when we gain access to PLAYER_MAP_CHANGED
-		if private.wowTOC < 110000 and specialZoneIDs[LastInstanceMapID] then--or difficulties:InstanceType(LastInstanceMapID) == 4
+		if private.wowTOC < 110002 and specialZoneIDs[LastInstanceMapID] then--or difficulties:InstanceType(LastInstanceMapID) == 4
 			DBM:Debug("Forcing LOADING_SCREEN_DISABLED", 2)
 			self:LOADING_SCREEN_DISABLED(true)
 		end
