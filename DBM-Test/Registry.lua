@@ -10,7 +10,13 @@ test.Registry = {
 	sortedTests = {}
 }
 
+---@type table<string|integer, TestDefinition[]>
 local testsByMod = {}
+
+function test:GetTestsForMod(mod)
+	mod = type(mod) == "table" and mod.id or mod
+	return testsByMod[mod]
+end
 
 ---@param def1 TestDefinition
 ---@param def2 TestDefinition
