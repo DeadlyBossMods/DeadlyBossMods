@@ -46,8 +46,11 @@ local Start = {
 
 ---@class DBMTestCallbackStop
 local Stop = {
-	Name	= nil, ---@type string
-	Report	= nil, ---@type string
+	Name		= nil, ---@type string
+	-- Will be nil if the test got stopped by the user
+	Report		= nil, ---@type string?
+	-- Early test cancelation by the user
+	Canceled	= nil, ---@type boolean
 }
 
 ---@class DBMTestCallbackTimewarp
