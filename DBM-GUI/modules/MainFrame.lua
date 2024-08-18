@@ -221,6 +221,37 @@ frameList:SetScript("OnShow", function()
 end)
 frameList.offset = 0
 frameList.buttons = {}
+
+function frame:LoadAndShowFrame(subFrame)
+	self:ClearSelection()
+	self.tabs[self.tab].selection = subFrame
+	if not subFrame.isLoaded then
+		if subFrame.isSeason then
+			---@diagnostic disable-next-line: deprecated
+			if not IsAddOnLoaded(subFrame.addonId) then
+				for _, addon in ipairs(DBM.AddOns) do
+					if addon.modId == subFrame.addonId then
+						DBM:LoadMod(addon, true)
+						break
+					end
+				end
+			end
+			subFrame.isLoaded = true
+		end
+		if subFrame.tab ~= 1 then
+			for _, mod in ipairs(DBM.Mods) do
+				if mod.id == subFrame.modId then
+					DBM_GUI:CreateBossModPanel(mod, subFrame.isTest)
+					subFrame.isLoaded = true
+					break
+				end
+			end
+		end
+	end
+	subFrame.selectButton:LockHighlight()
+	frame:DisplayFrame(subFrame)
+end
+
 for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	---@class DBMListFrameButton: Button
 	---@field element table
@@ -229,33 +260,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
-		frame:ClearSelection()
-		frame.tabs[frame.tab].selection = self.element
-		if not self.element.isLoaded then
-			if self.element.isSeason then
-				---@diagnostic disable-next-line: deprecated
-				if not IsAddOnLoaded(self.element.addonId) then
-					for _, addon in ipairs(DBM.AddOns) do
-						if addon.modId == self.element.addonId then
-							DBM:LoadMod(addon, true)
-							break
-						end
-					end
-				end
-				self.element.isLoaded = true
-			end
-			if frame.tab ~= 1 then
-				for _, mod in ipairs(DBM.Mods) do
-					if mod.id == self.element.modId then
-						DBM_GUI:CreateBossModPanel(mod)
-						self.element.isLoaded = true
-						break
-					end
-				end
-			end
-		end
-		self:LockHighlight()
-		frame:DisplayFrame(self.element)
+		frame:LoadAndShowFrame(self.element)
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)

@@ -637,7 +637,8 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 	})
 end
 
-function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forceChildren, addonId, isSeason)
+---@return DBMPanel
+function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forceChildren, addonId, isSeason, isTest)
 	---@class DBMPanelFrame: Frame
 	local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
 	panel.mytype = "panel"
@@ -649,6 +650,7 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 	panel.showSub = showSub or showSub == nil
 	panel.modId = frameName
 	panel.addonId = addonId
+	panel.isTest = isTest
 	panel.isSeason = isSeason
 	panel:Hide()
 	if frameType == "option" then
