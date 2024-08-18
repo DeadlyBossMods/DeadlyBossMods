@@ -13,9 +13,13 @@ local timeWarperMt = {__index = test.TimeWarper}
 
 ---@param frame Frame
 function test.TimeWarper:RegisterFrame(frame)
-	self.framesToHook[frame] = true
+	if self.framesToHook[frame] ~= nil then
+		return
+	end
 	if active then
 		self:HookOnUpdateHandler(frame)
+	else
+		self.framesToHook[frame] = true
 	end
 end
 
@@ -127,6 +131,7 @@ function test.TimeWarper:WaitUntil(time)
 				updateFunc(frame, timeStep)
 			end
 		end
+		DBM:FireEvent("DBMTest_Tick", timeStep)
 	end
 end
 
@@ -150,6 +155,12 @@ function test.TimeWarper:SetSpeed(factor)
 		self:DisableSound()
 	end
 	self.factor = factor <= 0 and 1e9 or factor
+	---@type DBMTestCallbackTimewarp
+	local testStopCallbackArgs = {
+		Speed = factor,
+		Timewarper = self --[[@as DBMTestTimewarperPublic]]
+	}
+	DBM:FireEvent("DBMTest_Timewarp", testStopCallbackArgs)
 end
 
 function test.TimeWarper:New()
