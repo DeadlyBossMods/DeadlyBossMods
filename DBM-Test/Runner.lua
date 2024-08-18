@@ -724,6 +724,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	local testStopCallbackArgs = {
 		Name = test.testData.name,
 		Report = reporter:Report(),
+		Canceled = false
 	}
 	DBM:FireEvent("DBMTest_Stop", testStopCallbackArgs) -- Must fire before stopping the time warper otherwise Public/Example.lua breaks
 	timeWarper:Stop()
@@ -748,6 +749,7 @@ frame:SetScript("OnUpdate", function(self)
 			local ok, err = coroutine.resume(currentThread)
 			if not ok then
 				if err:match("^[^\n]*test stopped, time warp canceled") then
+					DBM:FireEvent("DBMTest_Stop", {Name = test.testData.name, Canceled = true})
 					return
 				end
 				geterrorhandler()(err)
