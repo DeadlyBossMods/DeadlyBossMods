@@ -613,6 +613,23 @@ local function errorHandlerWithStack(err)
 	geterrorhandler()(msg)
 end
 
+local function extractEncounterInfo(log)
+	local res ---@type DBMTestEncounterInfo?
+	for _, v in ipairs(log) do
+		if v[2] == "ENCOUNTER_START" then
+			res = {
+				StartOffset = v[1],
+				EncounterId = v[3],
+				EncounterName = v[4],
+				DifficultyId = v[5],
+				GroupSize = v[6],
+			}
+			break
+		end
+	end
+	return res
+end
+
 ---@param testData TestDefinition
 ---@param testOptions DBMTestOptions
 function test:Playback(testData, timeWarp, testOptions)
@@ -660,6 +677,7 @@ function test:Playback(testData, timeWarp, testOptions)
 		NumEvents = #testData.log,
 		InstanceInfo = testData.instanceInfo,
 		ModUnderTest = self.modUnderTest,
+		EncounterInfo = extractEncounterInfo(testData.log),
 		Perspective = self.logPlayerName,
 		Players = testData.players or {},
 		Mocks = self.Mocks:GetMockEnvironment()

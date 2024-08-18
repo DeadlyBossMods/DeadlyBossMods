@@ -21,10 +21,13 @@ local Start = {
 	Name			= nil, ---@type string
 	-- Test run time in seconds
 	Duration		= nil, ---@type number
-	-- Approximate number of events to be injected, the test running may generate extra events or filter events
+	-- Approximate number of events to be injected, the test runner may generate extra events or filter events
 	NumEvents		= nil, ---@type number
 	-- Reference to a DBM mod that is expected to be triggered
 	ModUnderTest	= nil, ---@type DBMMod
+	-- Information about the first ENCOUNTER_START event that the test fires if the log contains one (most do).
+	-- Included for informational purposes, prefer listening to DBMTest_Event for ENCOUNTER_START for triggering on all events.
+	EncounterInfo	= nil, ---@type DBMTestEncounterInfo?
 	-- Name of the simulated player, combat log events will be rewritten to match the current real player, but other events will refer to this name
 	Perspective		= nil, ---@type string
 	-- List of players participating in the fight, empty in some older test definitions
@@ -52,6 +55,16 @@ local Timewarp = {
 	-- Timewarp factor, value <= 0 indicates dynamic speed that tries to play back the log as fast as possible.
 	Speed		= nil, ---@type number
 	Timewarper	= nil, ---@type DBMTestTimewarperPublic
+}
+
+---@class DBMTestEncounterInfo
+local EncounterInfo = {
+	EncounterId		= nil, ---@type number
+	EncounterName	= nil, ---@type string
+	DifficultyId	= nil, ---@type number
+	GroupSize		= nil, ---@type number
+	-- Time in seconds after which the ENCOUNTER_START event happens during the test, this will be 0 for most tests, but logs may contain extra events that happen before the pull
+	StartOffset		= nil, ---@type number
 }
 
 ---@class DBMInstanceInfo: InstanceInfo
