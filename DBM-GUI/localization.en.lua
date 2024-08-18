@@ -604,3 +604,12 @@ L.FontShadow						= "Font Shadow"
 L.FontType							= "Select font"
 
 L.FontHeight	= 16 -- OPTIONAL
+
+
+
+-- Testing
+
+L.RunTest							= "Run test"
+L.StopTest							= "Stop test"
+L.TestModEntry						= "[Playground] %s"
+L.EnterTestMode						= "Playground mode"

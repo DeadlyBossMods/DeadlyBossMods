@@ -3148,7 +3148,7 @@ do
 	end
 end
 
-function DBM:LoadModOptions(modId, inCombat, first)
+function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
 	local savedStatsName = modId:gsub("-", "") .. "_SavedStats"
@@ -3165,7 +3165,9 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		existId[id] = true
 		-- init
 		if not savedOptions[id] then savedOptions[id] = {} end
+		---@class DBMMod
 		local mod = self:GetModByName(id)
+		mod.showTestUI = enableTestUi
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
@@ -4194,7 +4196,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if self.NewerVersion and showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
-		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true, enableTestSupport) -- Show the test UI immediately to make it clear that the mod is loaded with test support
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 			DBM_GUI:CreateBossModTab(mod, mod.panel)

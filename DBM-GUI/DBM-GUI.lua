@@ -445,22 +445,26 @@ local function addOptions(mod, catpanel, v)
 	end
 end
 
-function DBM_GUI:CreateBossModPanel(mod)
-	if not mod.panel then
+---@param mod DBMMod
+function DBM_GUI:CreateBossModPanel(mod, isTestView)
+	local panel = isTestView and mod.testPanel or mod.panel
+	if not panel then
 		DBM:AddMsg("Couldn't create boss mod panel for " .. mod.localization.general.name)
 		return false
 	end
-	local panel = mod.panel
-	local category
 
+	local extraOffset = 0
+	if isTestView then
+		extraOffset = extraOffset + DBM_GUI:AddModTestOptionsAbove(panel, mod)
+	end
 	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
-	iconstat:SetPoint("TOP", panel.frame, 0, -10)
+	iconstat:SetPoint("TOP", panel.frame, 0, -10 - extraOffset)
 	iconstat:SetFontObject(GameFontNormal)
 	iconstat:SetText(L.IconsInUse)
 	for i = 1, 8 do
 		local icon = panel.frame:CreateTexture()
 		icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
-		icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26)
+		icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26 - extraOffset)
 		icon:SetSize(16, 16)
 		if not mod.usedIcons or not mod.usedIcons[i] then
 			icon:SetAlpha(0.25)
@@ -485,15 +489,25 @@ function DBM_GUI:CreateBossModPanel(mod)
 		end
 	end
 
-	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
+	local reset = panel:CreateButton(L.Mod_Reset, 155, 28, nil, GameFontNormalSmall)
 	reset.myheight = 40
-	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
+	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -2 - extraOffset)
 	reset:SetScript("OnClick", function()
 		DBM:LoadModDefaultOption(mod)
 	end)
+	if not isTestView then
+		local playground = panel:CreateButton(L.EnterTestMode, 155, 28, nil, GameFontNormalSmall)
+		playground.myheight = 40
+		playground:SetPoint("TOPLEFT", reset, "BOTTOMLEFT", 0, -2)
+		playground:SetScript("OnClick", function()
+			mod.showTestUI = true
+			DBM_GUI:UpdateModList()
+			DBM_GUI_OptionsFrame:LoadAndShowFrame(mod.testPanel.frame)
+		end)
+	end
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. mod.localization.general.name), true)
 	button:SetChecked(mod.Options.Enabled)
-	button:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -14)
+	button:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -14 - extraOffset)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
@@ -555,7 +569,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 
 	local scannedCategories = {}
 	for _, catident in pairs(mod.categorySort) do
-		category = mod.optionCategories[catident]
+		local category = mod.optionCategories[catident]
 		if not scannedCategories[catident] and category then
 			scannedCategories[catident] = true
 			local catpanel = panel:CreateArea(mod.localization.cats[catident])
@@ -995,6 +1009,7 @@ do
 						DBM:LoadMod(self.addon, true)
 					end)
 					button:SetPoint("CENTER", 0, -20)
+					---@diagnostic disable-next-line: inject-field
 					addon.panel.loadButton = button
 				else
 					DBM_GUI:CreateBossModTab(addon, addon.panel)
@@ -1019,11 +1034,17 @@ do
 				---@class DBMMod
 				local mod = v
 				if mod.modId == addon.modId then
-					if not mod.panel and (not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0))) then
+					if not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0)) then
 						if addon.subTabs and addon.subPanels[mod.subTab] then
-							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+							mod.panel = mod.panel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+							if mod.showTestUI then
+								mod.testPanel = mod.testPanel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
+							end
 						else
-							mod.panel = currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+							mod.panel = mod.panel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+							if mod.showTestUI then
+								mod.testPanel = mod.testPanel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
+							end
 						end
 					end
 				end
