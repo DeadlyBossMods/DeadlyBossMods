@@ -808,6 +808,21 @@ Maybe a better solution would be to support some kind of comment in the report?
 ---@field perspective string? Override the perspective from which the log is played back
 ---@field allowErrors boolean? Throw errors immediately
 
+function test:OnBeforeLoadAddOn()
+	self.testRunning = true
+	-- Trace loading events to know about timer/warning constructor calls
+	currentEventKey = "InternalLoading"
+	currentRawEvent = {0, "InternalLoading"}
+end
+
+function test:OnAfterLoadAddOn()
+	if currentEventKey == "InternalLoading" then
+		currentEventKey = nil
+		currentRawEvent = nil
+		self.testRunning = false
+	end
+end
+
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
 ---@param testOptions? DBMTestOptions
 function test:RunTest(testName, timeWarp, testOptions, callback)
@@ -821,14 +836,7 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 		error("only a single test can run at a time")
 	end
 	if not DBM:GetModByName(testData.mod) then
-		self.testRunning = true
-		-- Trace loading events to know about timer/warning constructor calls
-		currentEventKey = "InternalLoading"
-		currentRawEvent = {0, "InternalLoading"}
-		DBM:LoadModByName(testData.addon, true)
-		currentEventKey = nil
-		currentRawEvent = nil
-		self.testRunning = false
+		DBM:LoadModByName(testData.addon, true, true) -- calls the OnBefore/OnAfter handlers above
 	end
 	local modUnderTest = DBM:GetModByName(testData.mod)
 	if not modUnderTest then
