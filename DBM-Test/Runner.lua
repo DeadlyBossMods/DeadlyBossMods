@@ -181,7 +181,7 @@ function test:Trace(mod, event, ...)
 		local bar = DBT:GetBar(timerId)
 		local remaining = bar and bar.timer or 0
 		-- I see dead timers, they don't know they are dead
-		if remaining <= 0 then
+		if remaining <= 1/30 then -- Less than one frame left (at test default 30 fps)
 			return
 		end
 	end
