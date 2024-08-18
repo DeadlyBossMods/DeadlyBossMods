@@ -12,38 +12,47 @@ infoArea:CreateText("This is a work in progress development and testing feature 
 
 local testPanel = DBM_GUI.Cat_Development:CreateNewPanel("Tests", "option")
 
----@class TimeWarpSlider: DBMPanelSlider
-local timeWarpSlider = testPanel:CreateSlider("", 1, 500, 1, 400)
-timeWarpSlider:SetScript("OnValueChanged", function(self, value)
-	local sliderMax = select(2, self:GetMinMaxValues())
-	if value >= sliderMax then -- slider at max == dynamic fastest speed
-		DBM_Test_DefaultTimeWarp = 0
-		timeWarpSlider.textFrame:SetText("Time warp: dynamic (fastest)")
-		if DBM.Test.timeWarper then
-			DBM.Test.timeWarper:SetSpeed(0)
+function DBM_GUI:CreateTimewarpSlider(panel)
+	---@class TimeWarpSlider: DBMPanelSlider
+	local timeWarpSlider = panel:CreateSlider("", 1, 500, 1, 400)
+	timeWarpSlider:SetScript("OnValueChanged", function(self, value)
+		local sliderMax = select(2, self:GetMinMaxValues())
+		if value >= sliderMax then -- slider at max == dynamic fastest speed
+			DBM_Test_DefaultTimeWarp = 0
+			timeWarpSlider.textFrame:SetText("Time warp: dynamic (fastest)")
+			if DBM.Test.timeWarper then
+				DBM.Test.timeWarper:SetSpeed(0)
+			end
+			return
 		end
-		return
-	end
-	value = self:TransformInput(value)
-	DBM_Test_DefaultTimeWarp = value
-	timeWarpSlider.textFrame:SetFormattedText("Time warp: %dx", value)
-	if DBM.Test.timeWarper then
-		DBM.Test.timeWarper:SetSpeed(value)
-	end
-end)
+		value = self:TransformInput(value)
+		DBM_Test_DefaultTimeWarp = value
+		timeWarpSlider.textFrame:SetFormattedText("Time warp: %dx", value)
+		if DBM.Test.timeWarper then
+			DBM.Test.timeWarper:SetSpeed(value)
+		end
+	end)
 
--- exponential slider that isn't too steep and feels good
-timeWarpSlider.steepness = 3.3
-function timeWarpSlider:TransformInput(value)
-	local sliderMin, sliderMax = self:GetMinMaxValues()
-	value = (value - sliderMin) / (sliderMax - sliderMin)
-	return (math.exp(value * self.steepness) - 1) / (math.exp(self.steepness) - 1) * (sliderMax - sliderMin) + sliderMin
-end
+	timeWarpSlider:SetScript("OnShow", function(self)
+		local savedTimeWarpSliderVal = DBM_Test_DefaultTimeWarp or 0
+		savedTimeWarpSliderVal = savedTimeWarpSliderVal > 0 and savedTimeWarpSliderVal or 10
+		timeWarpSlider:SetValue(timeWarpSlider:TransformInputInverse(savedTimeWarpSliderVal))
+	end)
 
-function timeWarpSlider:TransformInputInverse(value)
-	local sliderMin, sliderMax = self:GetMinMaxValues()
-	value = (value - sliderMin) / (sliderMax - sliderMin)
-	return math.log((math.exp(self.steepness) - 1) * (value - 1 / (1 - math.exp(self.steepness)))) / self.steepness * (sliderMax - sliderMin) + sliderMin
+	-- exponential slider that isn't too steep and feels good
+	timeWarpSlider.steepness = 3.3
+	function timeWarpSlider:TransformInput(value)
+		local sliderMin, sliderMax = self:GetMinMaxValues()
+		value = (value - sliderMin) / (sliderMax - sliderMin)
+		return (math.exp(value * self.steepness) - 1) / (math.exp(self.steepness) - 1) * (sliderMax - sliderMin) + sliderMin
+	end
+
+	function timeWarpSlider:TransformInputInverse(value)
+		local sliderMin, sliderMax = self:GetMinMaxValues()
+		value = (value - sliderMin) / (sliderMax - sliderMin)
+		return math.log((math.exp(self.steepness) - 1) * (value - 1 / (1 - math.exp(self.steepness)))) / self.steepness * (sliderMax - sliderMin) + sliderMin
+	end
+	return timeWarpSlider
 end
 
 
@@ -120,6 +129,7 @@ runAllOrStopButton = testPanel:CreateButton("Run all tests", 120, 35, function()
 	end
 end)
 runAllOrStopButton:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 10, -5)
+local timeWarpSlider = DBM_GUI:CreateTimewarpSlider(testPanel)
 timeWarpSlider:SetPoint("LEFT", runAllOrStopButton, "RIGHT", 10, 0)
 
 ---@param test TestDefinition
@@ -353,9 +363,6 @@ testPanel.frame:HookScript("OnShow", function(self)
 		area:CreateText("Could not find any test definitions, check if DBM-Test-* mods are installed and enabled.", nil, true)
 		return
 	end
-	local savedTimeWarpSliderVal = DBM_Test_DefaultTimeWarp or 0
-	savedTimeWarpSliderVal = savedTimeWarpSliderVal > 0 and savedTimeWarpSliderVal or 500
-	timeWarpSlider:SetValue(timeWarpSlider:TransformInputInverse(savedTimeWarpSliderVal))
 	for _, testName in ipairs(DBM.Test.Registry.sortedTests) do
 		local pathElements = {string.split("/", testName)}
 		insertElement(root, 1, testName, pathElements)
