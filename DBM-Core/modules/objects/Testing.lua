@@ -17,11 +17,20 @@ test.testRunning = false
 local traceField = "Trace"
 test[traceField] = function() end
 
-function test:LoadAllTests()
-	local numTestAddOnsFound = 0
-	local loaded, err = C_AddOns.LoadAddOn("DBM-Test")
+local LoadAddOn = _G.C_AddOns.LoadAddOn or LoadAddOn ---@diagnostic disable-line:deprecated
+
+function test:Load()
+	local loaded, err = LoadAddOn("DBM-Test")
 	if not loaded then
 		DBM:AddMsg("Failed to load DBM-Test: " .. (_G["ADDON_" .. err] or CL.UNKNOWN))
+		return loaded, err
+	end
+	return true
+end
+
+function test:LoadAllTests()
+	local numTestAddOnsFound = 0
+	if not self:Load() then
 		return nil
 	end
 	for i = 1, C_AddOns.GetNumAddOns() do

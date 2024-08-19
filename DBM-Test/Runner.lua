@@ -181,7 +181,7 @@ function test:Trace(mod, event, ...)
 		local bar = DBT:GetBar(timerId)
 		local remaining = bar and bar.timer or 0
 		-- I see dead timers, they don't know they are dead
-		if remaining <= 0 then
+		if remaining <= 1/30 then -- Less than one frame left (at test default 30 fps)
 			return
 		end
 	end
@@ -613,6 +613,23 @@ local function errorHandlerWithStack(err)
 	geterrorhandler()(msg)
 end
 
+local function extractEncounterInfo(log)
+	local res ---@type DBMTestEncounterInfo?
+	for _, v in ipairs(log) do
+		if v[2] == "ENCOUNTER_START" then
+			res = {
+				StartOffset = v[1],
+				EncounterId = v[3],
+				EncounterName = v[4],
+				DifficultyId = v[5],
+				GroupSize = v[6],
+			}
+			break
+		end
+	end
+	return res
+end
+
 ---@param testData TestDefinition
 ---@param testOptions DBMTestOptions
 function test:Playback(testData, timeWarp, testOptions)
@@ -660,6 +677,7 @@ function test:Playback(testData, timeWarp, testOptions)
 		NumEvents = #testData.log,
 		InstanceInfo = testData.instanceInfo,
 		ModUnderTest = self.modUnderTest,
+		EncounterInfo = extractEncounterInfo(testData.log),
 		Perspective = self.logPlayerName,
 		Players = testData.players or {},
 		Mocks = self.Mocks:GetMockEnvironment()
@@ -706,6 +724,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	local testStopCallbackArgs = {
 		Name = test.testData.name,
 		Report = reporter:Report(),
+		Canceled = false
 	}
 	DBM:FireEvent("DBMTest_Stop", testStopCallbackArgs) -- Must fire before stopping the time warper otherwise Public/Example.lua breaks
 	timeWarper:Stop()
@@ -730,6 +749,7 @@ frame:SetScript("OnUpdate", function(self)
 			local ok, err = coroutine.resume(currentThread)
 			if not ok then
 				if err:match("^[^\n]*test stopped, time warp canceled") then
+					DBM:FireEvent("DBMTest_Stop", {Name = test.testData.name, Canceled = true})
 					return
 				end
 				geterrorhandler()(err)
@@ -788,6 +808,21 @@ Maybe a better solution would be to support some kind of comment in the report?
 ---@field perspective string? Override the perspective from which the log is played back
 ---@field allowErrors boolean? Throw errors immediately
 
+function test:OnBeforeLoadAddOn()
+	self.testRunning = true
+	-- Trace loading events to know about timer/warning constructor calls
+	currentEventKey = "InternalLoading"
+	currentRawEvent = {0, "InternalLoading"}
+end
+
+function test:OnAfterLoadAddOn()
+	if currentEventKey == "InternalLoading" then
+		currentEventKey = nil
+		currentRawEvent = nil
+		self.testRunning = false
+	end
+end
+
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
 ---@param testOptions? DBMTestOptions
 function test:RunTest(testName, timeWarp, testOptions, callback)
@@ -801,14 +836,7 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 		error("only a single test can run at a time")
 	end
 	if not DBM:GetModByName(testData.mod) then
-		self.testRunning = true
-		-- Trace loading events to know about timer/warning constructor calls
-		currentEventKey = "InternalLoading"
-		currentRawEvent = {0, "InternalLoading"}
-		DBM:LoadModByName(testData.addon, true)
-		currentEventKey = nil
-		currentRawEvent = nil
-		self.testRunning = false
+		DBM:LoadModByName(testData.addon, true, true) -- calls the OnBefore/OnAfter handlers above
 	end
 	local modUnderTest = DBM:GetModByName(testData.mod)
 	if not modUnderTest then

@@ -19,7 +19,11 @@ frame:SetScript("OnUpdate", function(_, elapsed) measuredTime = measuredTime + e
 
 
 function handlers.Start(args)
-	printf("Starting DBM test %s (%d seconds, %d events) for DBM mod %s", args.Name, args.Duration, args.NumEvents, args.ModUnderTest.id)
+	printf("Starting DBM test %s (%d seconds, %d events) for DBM mod %s", args.Name, args.Duration, args.NumEvents, args.ModUnderTest:GetLocalizedStrings().name)
+	local encounter = args.EncounterInfo
+	if encounter then
+		printf("Encounter %s (id %d, difficulty %d, group size %d) starts after %.2f seconds", encounter.EncounterName, encounter.EncounterId, encounter.DifficultyId, encounter.GroupSize, encounter.StartOffset)
+	end
 	 -- Callings mocks.GetInstanceInfo() also works, but it's included in the args explicitly because it has an extra field: difficultyModifier (used for Mythic+ and Molten Core heat levels)
 	local instanceInfo = args.InstanceInfo
 	printf("Instance: %s (%d), difficulty: %s (%d)", instanceInfo.name, instanceInfo.instanceID, instanceInfo.difficultyName, instanceInfo.difficultyID)

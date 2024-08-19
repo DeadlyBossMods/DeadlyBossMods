@@ -59,5 +59,5 @@ local L
 L = DBM:GetModLocalization("NerubarPalaceTrash")
 
 L:SetGeneralLocalization({
-	name =	"Трэш мобы Замок Неруб'ар"
+	name =	"Трэш мобы Неруб'арский дворец"
 })

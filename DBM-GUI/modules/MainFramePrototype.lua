@@ -52,6 +52,7 @@ function frame:DisplayButton(button, element)
 	button:Show()
 	button:SetHeight(18)
 	button.element = element
+	element.selectButton = button
 	button.text:ClearAllPoints()
 	button.text:SetPoint("LEFT", (element.haschilds and 14 or 6) + 8 * element.depth, 2)
 	button.toggle:ClearAllPoints()

@@ -1587,6 +1587,7 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions(self)
+			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
 			DBT:LoadOptions("DBM")
 			self.AddOns = {}
 			private:OnModuleLoad()
@@ -3147,7 +3148,7 @@ do
 	end
 end
 
-function DBM:LoadModOptions(modId, inCombat, first)
+function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
 	local savedStatsName = modId:gsub("-", "") .. "_SavedStats"
@@ -3164,7 +3165,9 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		existId[id] = true
 		-- init
 		if not savedOptions[id] then savedOptions[id] = {} end
+		---@class DBMMod
 		local mod = self:GetModByName(id)
+		mod.showTestUI = enableTestUi
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
@@ -4138,7 +4141,8 @@ function DBM:ScenarioCheck(delay)
 	end
 end
 
-function DBM:LoadMod(mod, force)
+function DBM:LoadMod(mod, force, enableTestSupport)
+	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport and DBM_ModsToLoadWithFullTestSupport[mod.modId]
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
@@ -4168,7 +4172,15 @@ function DBM:LoadMod(mod, force)
 		EJ_SetDifficulty(difficulties.difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
 	end
 	self:Debug("LoadAddOn should have fired for " .. mod.name, 2)
-	local loaded, reason = C_AddOns.LoadAddOn(mod.modId)
+	local loaded, reason
+	if enableTestSupport then
+		test:Load()
+		test:OnBeforeLoadAddOn()
+		loaded, reason = C_AddOns.LoadAddOn(mod.modId)
+		test:OnAfterLoadAddOn()
+	else
+		loaded, reason = C_AddOns.LoadAddOn(mod.modId)
+	end
 	if not loaded then
 		if reason == "DISABLED" then
 			self:AddMsg(L.LOAD_MOD_DISABLED:format(mod.name))
@@ -4184,7 +4196,7 @@ function DBM:LoadMod(mod, force)
 		if self.NewerVersion and showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
-		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true, enableTestSupport) -- Show the test UI immediately to make it clear that the mod is loaded with test support
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 			DBM_GUI:CreateBossModTab(mod, mod.panel)
@@ -4211,10 +4223,10 @@ function DBM:LoadMod(mod, force)
 	end
 end
 
-function DBM:LoadModByName(modName, force)
+function DBM:LoadModByName(modName, force, enableTestSupport)
 	for _, v in ipairs(self.AddOns) do
 		if v.modId == modName then
-			self:LoadMod(v, force)
+			self:LoadMod(v, force, enableTestSupport)
 		end
 	end
 end
