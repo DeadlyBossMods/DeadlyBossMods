@@ -2895,7 +2895,7 @@ do
 	---@param higher boolean?
 	---@return number
 	function DBM:GetGroupId(name, higher)
-		local raidMember = raid[name] or raid[GetUnitName(name, true) or ""]
+		local raidMember = raid[name] or raid[self:GetUnitFullName(name) or ""]
 		return raidMember and raidMember.groupId or UnitInRaid(name) or higher and 99 or 0
 	end
 end
