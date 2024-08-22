@@ -643,6 +643,7 @@ L.WORLD_BUFFS.zgHeartYojamba	= "Commencez le rituel, mes serviteurs. Nous devons
 L.WORLD_BUFFS.rendHead			= "Le faux chef Rend Blackhand est tombé !"
 L.WORLD_BUFFS.blackfathomBoon	= "Bienfait de Brassenoire"
 
+-- Annoying popup, especially for classic players
 L.DBM_INSTALL_REMINDER_HEADER = "Installation incomplète de DBM détectée !"
 L.DBM_INSTALL_REMINDER_EXPLAIN = "Bienvenue à %s. Les mods DBM pour les boss ici se trouvent dans le %s que vous n'avez pas installé. DBM n'affichera pas de chronomètres ou d'annonces dans cette zone à moins que vous n'installiez le %s !"
 L.DBM_INSTALL_REMINDER_DISABLE = "Désactiver tous les annonces et chronomètres de DBM dans cette zone." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
