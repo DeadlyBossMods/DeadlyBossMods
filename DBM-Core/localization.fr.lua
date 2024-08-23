@@ -79,7 +79,7 @@ L.BONUS_SKIPPED = L.DBM .. " a automatiquement fermé la fenêtre de butin bonus
 
 L.AFK_WARNING = "Vous êtes ABS et en combat (%d pour cent de santé restante), déclenchement d'une alerte sonore. Si vous n'êtes pas ABS, effacez votre statut ABS ou désactivez cette option dans les 'fonctionnalités supplémentaires'."
 
-L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la nouvelle fonctionnalité d'IA de minuterie pour générer des approximations de minuterie)"
+L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la nouvelle fonctionnalité d'IA de chronomètre pour générer des approximations de chronomètre)"
 
 L.PROFILE_NOT_FOUND				= "<"..L.DBM.."> Votre profile actuel est corrompu. "..L.DBM.." va charger le profil par défaut."
 L.PROFILE_CREATED				= "'%s' profil créé."
@@ -137,7 +137,7 @@ L.GENERIC_WARNING_OTHERS	= "et un autre"
 L.GENERIC_WARNING_OTHERS2	= "et %d autres"
 L.GENERIC_WARNING_BERSERK	= "Enrage dans %s %s"
 L.GENERIC_TIMER_BERSERK		= "Enrage"
-L.OPTION_TIMER_BERSERK		= "Montrer les chronos pour $spell:26662"
+L.OPTION_TIMER_BERSERK		= "Afficher les chronomètres pour $spell:26662"
 L.BAD						= "Mauvais"
 
 L.OPTION_CATEGORY_TIMERS			= "Barres"
@@ -160,14 +160,14 @@ L.AUTO_RESPONDED					= "Répondu automatiquement."
 L.STATUS_WHISPER					= "%s: %s, %d/%d joueurs en vie"
 --Bosses
 L.AUTO_RESPOND_WHISPER				= "%s est occupé à combattre %s (%s, %d/%d joueurs en vie)"
-L.WHISPER_COMBAT_END_KILL			= "%s a vaincu %s!"
-L.WHISPER_COMBAT_END_KILL_STATS		= "%s a vaincu %s! Celui-ci a été tué %d fois."
+L.WHISPER_COMBAT_END_KILL			= "%s a vaincu %s !"
+L.WHISPER_COMBAT_END_KILL_STATS		= "%s a vaincu %s ! Celui-ci a été tué %d fois."
 L.WHISPER_COMBAT_END_WIPE_AT		= "%s a wipé sur %s à %s"
 L.WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s a wipé sur %s à %s. Le groupe cumule %d wipes dans cette difficulté."
 --Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
 L.AUTO_RESPOND_WHISPER_SCENARIO	  	= "%s est occupé dans %s (%d/%d personnes en vie)"
-L.WHISPER_SCENARIO_END_KILL		  	= "%s vient de terminer %s!"
-L.WHISPER_SCENARIO_END_KILL_STATS	= "%s vient de terminer %s! Ils ont un total de %d victoires."
+L.WHISPER_SCENARIO_END_KILL		  	= "%s vient de terminer %s !"
+L.WHISPER_SCENARIO_END_KILL_STATS	= "%s vient de terminer %s ! Ils ont un total de %d victoires."
 L.WHISPER_SCENARIO_END_WIPE		 	= "%s a échoué dans %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s a échoué dans %s. Ils ont un total de %d échecs dans cette difficulté."
 
@@ -187,11 +187,11 @@ L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
 
 L.UPDATEREMINDER_HEADER				= "Votre version de "..L.DEADLY_BOSS_MODS.." est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Votre module de %s est périmé.\n La version %s est disponible au Curse, Wago, WoWInterface ou Github."
-L.UPDATEREMINDER_FOOTER				= "Faites la combinaison " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papier."
-L.UPDATEREMINDER_FOOTER_GENERIC 	= "Faites la combinaison " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papier."
+L.UPDATEREMINDER_FOOTER				= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papier."
+L.UPDATEREMINDER_FOOTER_GENERIC 	= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papier."
 L.UPDATEREMINDER_DISABLE			= "ATTENTION : Compte tenu que votre version de "..L.DEADLY_BOSS_MODS.." est périmée et incompatible avec les nouvelles versions, "..L.DBM.." a été désactivé jusqu'à ce que vous le mettiez à jour. Ceci, pour éviter de mauvaises expériences de jeu pour vous et les membres du raid."
 L.UPDATEREMINDER_DISABLETEST		= "ATTENTION : En raison de la version obsolète de votre " .. L.DEADLY_BOSS_MODS .. " et du fait qu'il s'agit d'un royaume de test/bêta, il a été désactivé de force et ne peut pas être utilisé avant d'être mis à jour. Ceci est pour garantir que des mods obsolètes ne sont pas utilisés pour générer des retours d'expérience sur les tests."
-L.UPDATEREMINDER_HOTFIX		  		= "Votre version de "..L.DBM.." contient des timers et alertes incorrects sur ce boss. Ceci a été corrigé dans la dernière version (ou alpha si la prochaine version n'est pas encore disponible)."
+L.UPDATEREMINDER_HOTFIX		  		= "Votre version de "..L.DBM.." contient des chronomètres et alertes incorrects sur ce boss. Ceci a été corrigé dans la dernière version (ou alpha si la prochaine version n'est pas encore disponible)."
 L.UPDATEREMINDER_HOTFIX_ALPHA		= "La version de "..L.DBM.." sur laquelle vous êtes a des problèmes connus sur ce combat qui sont corrigées dans une future version (ou au moins une version alpha)"
 L.UPDATEREMINDER_MAJORPATCH			= "ATTENTION : Du au fait que votre "..L.DBM.." n'est pas à jour, celui-ci a été désactivé, puisqu'il y a eu une mise à jour majeure du jeu. Ceci pour être sûr que du code incompatible ou trop vieux ne réduise l'expérience de jeu pour vous ou des membres de votre groupe. Téléchargez une nouvelle version sur deadlybossmods.com ou curse dès que possible."
 L.VEM								= "ATTENTION : Vous utilisez et "..L.DBM.." et Voice Encounter Mods. DBM ne tournera pas dans cette configuration et ne sera donc pas chargé."
@@ -203,8 +203,8 @@ L.DPMCORE 							= "ATTENTION : Les mods JcJ mortels sont abandonnés et non com
 L.DBMLDB 							= "ATTENTION : DBM-LDB est maintenant intégré dans DBM-Core. Bien qu'il ne causera aucun problème, il est recommandé de supprimer 'DBM-LDB' de votre dossier d'add-ons."
 L.DBMLOOTREMINDER 					= "ATTENTION : Le mod tiers DBM-LootReminder est installé. Cet add-on n'est plus compatible avec le client WoW Retail et causera des problèmes avec " .. L.DBM .. " et ne pourra pas envoyer de chronomètres de pull. Désinstallation de cet add-on recommandée."
 L.UPDATE_REQUIRES_RELAUNCH			= "ATTENTION: Cette mise à jour de "..L.DBM.." ne fonctionnera pas correctement si vous ne relancez pas totalement le client de jeu. Cette mise à jour contient de nouveaux fichiers ou des modifications de fichers .toc qui ne peuvent pas être chargés par un reloadUI. Vous pouvez rencontrer des erreurs tant que vous ne relancez pas le client."
-L.OUT_OF_DATE_NAG					= "Votre version de "..L.DBM.." est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un timer ou un cri important que votre raid prévoit que vous ayez."
-L.PLATER_NP_AURAS_MSG				= L.DBM .. " inclut une fonctionnalité avancée pour afficher les minuteries de recharge ennemies à l'aide d'icônes sur les barres d'info. Cela est activé par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, il est désactivé par défaut dans les options de Plater, à moins que vous ne l'activiez. Pour tirer le meilleur parti de DBM (et de Plater), il est recommandé d'activer cette fonctionnalité dans Plater sous la section 'Buff Special'. Si vous ne voulez pas voir ce message à nouveau, vous pouvez également simplement désactiver complètement l'option 'Icônes de recharge sur les barres d'info' dans les options de désactivation globales de DBM ou dans les panneaux d'options des barres d'info."
+L.OUT_OF_DATE_NAG					= "Votre version de "..L.DBM.." est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un chronomètre ou un cri important que votre raid prévoit que vous ayez."
+L.PLATER_NP_AURAS_MSG				= L.DBM .. " inclut une fonctionnalité avancée pour afficher les chronomètres de recharge ennemies à l'aide d'icônes sur les barres d'info. Cela est activé par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, il est désactivé par défaut dans les options de Plater, à moins que vous ne l'activiez. Pour tirer le meilleur parti de DBM (et de Plater), il est recommandé d'activer cette fonctionnalité dans Plater sous la section 'Buff Special'. Si vous ne voulez pas voir ce message à nouveau, vous pouvez également simplement désactiver complètement l'option 'Icônes de recharge sur les barres d'info' dans les options de désactivation globales de DBM ou dans les panneaux d'options des barres d'info."
 
 L.MOVABLE_BAR					= "Bougez-moi !"
 
@@ -257,7 +257,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
 	"/range <number> or /distance <number>: Affiche la fenêtre de portée. /rrange or /rdistance pour inverser les couleurs.",
 	"/hudar <number>: Affiche le radar de portée HUD.",
-	"/dbm timer: Lance un timer DBM perso, voir '/dbm timer' pour plus de détails.",
+	"/dbm timer: Lance un chronomètre DBM perso, voir '/dbm timer' pour plus de détails.",
 	"/dbm arrow : affiche la flèche DBM, voir /dbm arrow help pour les détails.",
 	"/dbm hud: Affiche le HUD de DBM, voir '/dbm hud' pour plus de détails.",
 	"/dbm help2: Affiche les commandes slash de gestion de raid."
@@ -266,7 +266,7 @@ L.SLASHCMD_HELP2				= {
 	"Commandes slash disponibles:",
 	"-----------------",
 	"/dbm pull <sec> : lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant "..L.DBM.." ce délai de pull (nécessite d'être chef du raid ou assistant).",
-	"/dbm break <min>: Envoire un timer de pause de <min> minutes au raid (nécessite d'être chef du raid ou assistant).",
+	"/dbm break <min>: Envoire un chronomètre de pause de <min> minutes au raid (nécessite d'être chef du raid ou assistant).",
 	"/dbm version: Effectue une vérification de version de "..L.DBM.." (alias: ver).",
 	"/dbm version2: Effectue une vérification de version de "..L.DBM.." qui chuchote aux membres pas à jour (alias: ver2).",
 	"/dbm lag: Effectue une vérification de latence du raid.",
@@ -282,13 +282,13 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION		= "Vous n'avez pas la permission requise pour faire cela."
-L.PULL_TIME_TOO_SHORT			= "Le chronomètre de pull doit être supérieur à 3 secondes."
-L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
+L.PULL_TIME_TOO_SHORT		= "Le chronomètre de pull doit être supérieur à 3 secondes."
+L.PULL_TIME_TOO_LONG		= "Le chronomètre de pull ne peut pas dépasser 60 secondes."
 
 L.BREAK_USAGE				= "Les chronomètres de pause ne peuvent pas durer plus de 60 minutes. Assurez vous de mettre le temps en minutes et pas secondes."
-L.BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s)!"
-L.BREAK_MIN					= "Fin de la pause dans %s minute(s)!"
-L.BREAK_SEC					= "Fin de la pause dans %s secondes!"
+L.BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s) !"
+L.BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
+L.BREAK_SEC					= "Fin de la pause dans %s secondes !"
 L.TIMER_BREAK				= "Pause !"
 L.ANNOUNCE_BREAK_OVER		= "La pause est terminée"
 
@@ -361,8 +361,8 @@ L.AUTO_SPEC_WARN_TEXTS.sooncount		= "%s (%%s) imminent"
 L.AUTO_SPEC_WARN_TEXTS.bait				= "%s imminent - appâtez maintenant"
 L.AUTO_SPEC_WARN_TEXTS.prewarn			= "%s dans %s"
 L.AUTO_SPEC_WARN_TEXTS.dispel			= "%s on >%%s< - dissipez maintenant"
-L.AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - interrompez >%%s<!"
-L.AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - interrompez >%%s<! (%%d)"
+L.AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - interrompez >%%s< !"
+L.AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - interrompez >%%s< ! (%%d)"
 L.AUTO_SPEC_WARN_TEXTS.you				= "%s sur vous"
 L.AUTO_SPEC_WARN_TEXTS.youcount			= "%s (%%s) sur vous"
 L.AUTO_SPEC_WARN_TEXTS.youpos 			= "%s (Position : %%s) sur vous"
@@ -390,7 +390,7 @@ L.AUTO_SPEC_WARN_TEXTS.runcount			= "%s - fuyez (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.cast				= "%s - arrêtez d'incanter"
 L.AUTO_SPEC_WARN_TEXTS.lookaway			= "%s sur %%s - regardez ailleurs"
 L.AUTO_SPEC_WARN_TEXTS.reflect	 		= "%s sur >%%s< - arrêtez d'attaquer"
-L.AUTO_SPEC_WARN_TEXTS.count	   		= "%s! (%%s)"
+L.AUTO_SPEC_WARN_TEXTS.count	   		= "%s ! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.stack			= "%s (%%d)"
 L.AUTO_SPEC_WARN_TEXTS.switch			= "%s - Changer de cible"
 L.AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Changer de cible (%%s)"
@@ -550,8 +550,8 @@ L.AUTO_YELL_OPTION_TEXT.repeatplayer 	= "Crie de manière répétée (avec le no
 L.AUTO_YELL_OPTION_TEXT.repeaticon 		= "Crie de manière répétée (avec icône) lorsque vous êtes affecté par $spell:%s"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell		= "%s" -- OPTIONAL
-L.AUTO_YELL_ANNOUNCE_TEXT.yell			= "%s sur " .. UnitName("player") .. "!"
-L.AUTO_YELL_ANNOUNCE_TEXT.count			= "%s sur " .. UnitName("player") .. "! (%%d)"
+L.AUTO_YELL_ANNOUNCE_TEXT.yell			= "%s sur " .. UnitName("player") .. " !"
+L.AUTO_YELL_ANNOUNCE_TEXT.count			= "%s sur " .. UnitName("player") .. " ! (%%d)"
 L.AUTO_YELL_ANNOUNCE_TEXT.fade			= "%s disparaît dans %%d"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortfade		= "%%d" -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.iconfade		= "{rt%%2$d}%%1$d" -- OPTIONAL
@@ -642,3 +642,16 @@ L.WORLD_BUFFS.zgHeartBooty		= "Le Dieu sanglant, l'Écorcheur d'âmes, a été v
 L.WORLD_BUFFS.zgHeartYojamba	= "Commencez le rituel, mes serviteurs. Nous devons renvoyer le cœur d'Hakkar dans le vide !"
 L.WORLD_BUFFS.rendHead			= "Le faux chef Rend Blackhand est tombé !"
 L.WORLD_BUFFS.blackfathomBoon	= "Bienfait de Brassenoire"
+
+-- Annoying popup, especially for classic players
+L.DBM_INSTALL_REMINDER_HEADER = "Installation incomplète de DBM détectée !"
+L.DBM_INSTALL_REMINDER_EXPLAIN = "Bienvenue à %s. Les mods DBM pour les boss ici se trouvent dans le %s que vous n'avez pas installé. DBM n'affichera pas de chronomètres ou d'annonces dans cette zone à moins que vous n'installiez le %s !"
+L.DBM_INSTALL_REMINDER_DISABLE = "Désactiver tous les annonces et chronomètres de DBM dans cette zone." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
+L.DBM_INSTALL_REMINDER_DISABLE2 = "Ne plus afficher ce message pour ce paquet." -- Used for unimportant mods, i.e., dungeons
+L.DBM_INSTALL_REMINDER_DL_WAGO = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Wago.io dans votre presse-papiers."
+L.DBM_INSTALL_REMINDER_DL_CURSE = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Curseforge dans votre presse-papiers."
+--"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
+L.DBM_INSTALL_PACKAGE_VANILLA = "Paquet Vanilla et La saison de la découverte"
+L.DBM_INSTALL_PACKAGE_WRATH = "Paquet Wrath"
+L.DBM_INSTALL_PACKAGE_CATA = "Paquet Cataclysm"
+L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet Donjons, Gouffres et Événements"
