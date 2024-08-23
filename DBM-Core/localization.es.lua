@@ -187,8 +187,8 @@ L.WEAKAURA_KEY				= " (|cff308530Clave WA:|r %s)"
 
 L.UPDATEREMINDER_HEADER				= "Tu versión de "..L.DEADLY_BOSS_MODS.." está desactualizada.\nPuedes descargar la versión %s (%s) a través de Curse, Wago, Github o WoWInterface."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Tu módulo de %s está desactualizada.\nPuedes descargar la versión %s a través de Curse, Wago, Github o WoWInterface."
-L.UPDATEREMINDER_FOOTER				= "Pulsa " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de descarga en tu portapapeles."
-L.UPDATEREMINDER_FOOTER_GENERIC		= "Pulsa " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace en tu portapapeles."
+L.UPDATEREMINDER_FOOTER				= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de descarga en tu portapapeles."
+L.UPDATEREMINDER_FOOTER_GENERIC		= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace en tu portapapeles."
 L.UPDATEREMINDER_DISABLE			= "AVISO: Se ha desactivado "..L.DEADLY_BOSS_MODS.." porque tu versión está demasiado desactualizada. Con tal de prevenir conflictos con las versiones de otros jugadores, no se podrá volver a activar "..L.DBM.." hasta que lo actualices."
 L.UPDATEREMINDER_DISABLETEST		= "AVISO: Se ha desactivado " .. L.DEADLY_BOSS_MODS.. " porque tu versión está demasiado desactualizada y este es un reino de prueba/beta. no se podrá volver a activar "..L.DBM.." hasta que lo actualices. Esto es para garantizar que no se utilicen modificaciones obsoletas para generar comentarios de prueba."
 L.UPDATEREMINDER_HOTFIX				= "Tu versión de "..L.DBM.." actual tiene errores conocidos en este encuentro. Por favor, actualiza a la última versión."
@@ -641,3 +641,16 @@ L.WORLD_BUFFS.zgHeartBooty		= "¡El Dios de la Sangre, el Cazador de Almas, ha s
 L.WORLD_BUFFS.zgHeartYojamba	= "Comiencen el ritual, sirvientes. ¡Debemos desterrar el corazón de Hakkar al vacío!"
 L.WORLD_BUFFS.rendHead			= "¡El falso Jefe de Guerra Rend Puño Negro ha caído!"
 L.WORLD_BUFFS.blackfathomBoon	= "Favor de Brazanegra"
+
+-- Annoying popup, especially for classic players
+L.DBM_INSTALL_REMINDER_HEADER = "¡Se ha detectado una instalación incompleta de DBM!"
+L.DBM_INSTALL_REMINDER_EXPLAIN = "Bienvenido a %s. Los módulos de DBM para los jefes aquí están en el %s que no tienes instalado. ¡DBM no mostrará temporizadores ni advertencias en esta zona a menos que instales el %s!"
+L.DBM_INSTALL_REMINDER_DISABLE = "Desactiva todos los avisos y temporizadores de DBM en esta zona."  -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
+L.DBM_INSTALL_REMINDER_DISABLE2 = "No mostrar este mensaje nuevamente para este paquete." -- Used for unimportant mods, i.e., dungeons
+L.DBM_INSTALL_REMINDER_DL_WAGO = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Wago.io en tu portapapeles."
+L.DBM_INSTALL_REMINDER_DL_CURSE = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Curseforge en tu portapapeles."
+--"Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "
+L.DBM_INSTALL_PACKAGE_VANILLA = "Paquete de Era y Temporada de descubrimiento"
+L.DBM_INSTALL_PACKAGE_WRATH = "Paquete de Wrath"
+L.DBM_INSTALL_PACKAGE_CATA = "Paquete de Cataclysm"
+L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquete de Mazmorras, Abismos y Eventos"
