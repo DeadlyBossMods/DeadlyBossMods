@@ -5535,8 +5535,8 @@ end
 --  Kill/Wipe Detection  --
 ---------------------------
 
+local lastValidCombat = 0
 do
-	local lastValidCombat = 0
 	---@param self DBM
 	---@param confirm boolean?
 	---@param confirmTime number?
@@ -7232,6 +7232,38 @@ end
 --  Enable/Disable DBM  --
 --------------------------
 do
+	-- Clear all stored timers for antispam, sync spam, combat re-detection etc.
+	-- This is run after tests with time warping because these may refer to a time in the future
+	function DBM:ClearSpamTimers()
+		-- TODO: many of these timers follow the same anti-spam pattern, it would be useful to move those to a shared function to clean up this mess
+		local time = _G.GetTime() -- to not accidentally pull in time-warped time, but it should be called after timewarping is disabled
+		table.wipe(private.modSyncSpam)
+		table.wipe(lastBossEngage)
+		table.wipe(lastBossDefeat)
+		lastCombatStarted = time
+		lastValidCombat = time
+		--lastLFGAlert = time -- local to the event handler, but doesn't really matter
+		local function clearAntiSpam(obj)
+			for k, v in pairs(obj) do -- TODO: consider moving lastAntiSpam to its own table, it'd be much cleaner
+				if type(k) == "string" and k:match("^lastAntiSpam") and type(v) == "number" then
+					obj[k] = nil
+				end
+			end
+		end
+		for _, mod in ipairs(DBM.Mods) do
+			---@diagnostic disable-next-line: inject-field
+			mod.lastKillTime = nil
+			---@diagnostic disable-next-line: inject-field
+			mod.lastWipeTime = nil
+			---@diagnostic disable-next-line: inject-field
+			if mod.combatInfo then
+				mod.combatInfo.pull = nil
+			end
+			clearAntiSpam(mod)
+		end
+		clearAntiSpam(DBM)
+	end
+
 	local forceDisabled = false
 	function DBM:Disable(forceDisable)
 		for _, mod in ipairs(inCombat) do
@@ -7241,6 +7273,8 @@ do
 		DBMScheduler:Unschedule()
 		dbmIsEnabled = false
 		forceDisabled = forceDisable
+		DBT:CancelAllBars()
+		DBM:ClearSpamTimers()
 	end
 
 	function DBM:Enable()
