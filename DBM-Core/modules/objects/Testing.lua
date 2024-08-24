@@ -121,10 +121,6 @@ end
 -- These functions are intentionally disabled in release builds to prevent people from using these to tamper with DBM's private namespace in release builds.
 
 local function checkDevBuild()
---[===[@non-alpha@
-	error("this function is only available in dev and alpha builds of DBM", 3)
-	do return false end -- Safety to prevent people from just overriding error() to circumvent the alpha check.
---@end-non-alpha@]===]
 	return true
 end
 

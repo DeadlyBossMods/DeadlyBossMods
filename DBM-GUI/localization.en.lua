@@ -1,6 +1,7 @@
-DBM_GUI_L = {}
+-- ---@class DBMGUILocalization -- FIXME: this triggers 69 warnings due to localizations in other languages that do not exist
+local L = {}
 
-local L = DBM_GUI_L
+DBM_GUI_L = L
 
 L.MainFrame							= "Deadly Boss Mods" -- OPTIONAL
 
@@ -608,8 +609,27 @@ L.FontHeight	= 16 -- OPTIONAL
 
 
 -- Testing
+L.DevPanel							= "Development & Testing"
+L.DevPanelArea						= "Development and Testing UI"
+L.DevPanelExplanation				= "This is a development and testing UI which validates that DBM is working as expected by playing back combat logs."
 
+L.TimewarpSetting					= "Time warp: %dx"
+L.TimewarpDynamic					= "Time warp: dynamic (fastest)"
+
+
+L.Test								= "Test"
+L.Tests								= "Tests"
+L.AllTests							= "All tests"
 L.RunTest							= "Run test"
+L.RunTestShort						= "Run" -- Same intend as RunTest, but a smaller button
 L.StopTest							= "Stop test"
+L.StopTests							= "Stop tests"
+L.RunAllTests						= "Run all tests"
+L.Queued							= "Queued"
+L.Running							= "Running"
+L.Failed							= "Failed"
+L.ShowReport						= "Show report"
+L.ShowDiff							= "Show diff"
+L.ShowErrors						= "Show errors"
 L.TestModEntry						= "[Playground] %s"
 L.EnterTestMode						= "Playground mode"
