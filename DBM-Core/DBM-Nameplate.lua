@@ -19,7 +19,7 @@ local CooldownFrame_Set = CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
 
----@class DBMNameplate: NameplateBase
+---@class DBMNameplate: Frame, NamePlateBaseMixin
 ---@field DBMAuraFrame DBMAuraFrame
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
@@ -398,8 +398,7 @@ end
 local function NameplateIcon_UpdateUnitAuras(isGUID,unit)
 	-- find frame for this unit;
 	if not isGUID then
-		local frame = GetNamePlateForUnit(unit)
-		---@cast frame DBMNameplate?
+		local frame = GetNamePlateForUnit(unit) --[[@as DBMNameplate?]]
 		if frame and frame.DBMAuraFrame then
 			frame.DBMAuraFrame:ArrangeIcons()
 		end
@@ -482,8 +481,7 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 	-- find frame for this unit
 	-- (or hide all visible textures if force ~= nil)
 	if not isGUID and not force then --Only need to find one unit
-		local frame = GetNamePlateForUnit(unit)
-		---@cast frame DBMNameplate?
+		local frame = GetNamePlateForUnit(unit) --[[@as DBMNameplate?]]
 		if frame and frame.DBMAuraFrame then
 			if not index then
 				frame.DBMAuraFrame:RemoveAll()
