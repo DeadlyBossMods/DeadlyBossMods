@@ -33,10 +33,16 @@ function DBM_GUI:CreateTimewarpSlider(panel)
 		end
 	end)
 
-	timeWarpSlider:SetScript("OnShow", function(self)
-		local savedTimeWarpSliderVal = DBM_Test_DefaultTimeWarp or 0
-		savedTimeWarpSliderVal = savedTimeWarpSliderVal > 0 and savedTimeWarpSliderVal or 10
-		timeWarpSlider:SetValue(timeWarpSlider:TransformInputInverse(savedTimeWarpSliderVal))
+	timeWarpSlider:SetScript("OnShow", function()
+		timeWarpSlider:SetValue(timeWarpSlider:TransformInputInverse(DBM_Test_DefaultTimeWarp or 10))
+	end)
+
+	-- Saved variable is in DBM-Test because it's also used by the CLI. The slider triggers OnShow before this one is loaded, so trigger again to update the value
+	timeWarpSlider:RegisterEvent("ADDON_LOADED")
+	timeWarpSlider:SetScript("OnEvent", function(self, event, addonName)
+		if event == "ADDON_LOADED" and addonName == "DBM-Test" then
+			self:GetScript("OnShow")(self)
+		end
 	end)
 
 	-- exponential slider that isn't too steep and feels good
@@ -49,6 +55,9 @@ function DBM_GUI:CreateTimewarpSlider(panel)
 
 	function timeWarpSlider:TransformInputInverse(value)
 		local sliderMin, sliderMax = self:GetMinMaxValues()
+		if value <= 0 then
+			return sliderMax
+		end
 		value = (value - sliderMin) / (sliderMax - sliderMin)
 		return math.log((math.exp(self.steepness) - 1) * (value - 1 / (1 - math.exp(self.steepness)))) / self.steepness * (sliderMax - sliderMin) + sliderMin
 	end
