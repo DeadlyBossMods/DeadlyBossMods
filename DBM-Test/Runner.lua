@@ -506,6 +506,7 @@ function test:InjectEvent(event, ...)
 		-- UNIT_HEALTH is usually used like this: UnitGUID(uId), check cid, then call UnitHealth(uId)
 		if uId:match("^boss") then
 			self:InjectExtraEvent("UNIT_HEALTH", uId)
+			self:InjectExtraEvent("UNIT_POWER_UPDATE", uId)
 		else
 			-- Relevant for classic :(
 			local guessedGuid = self.Mocks:GuessGuid(unitName)
@@ -516,6 +517,7 @@ function test:InjectEvent(event, ...)
 				self.Mocks:UpdateTarget("target", unitName, unitTarget)
 				self.Mocks:UpdateUnitHealth("target", nil, unitHealth)
 				self:InjectExtraEvent("UNIT_HEALTH", "target")
+				self:InjectExtraEvent("UNIT_POWER_UPDATE", "target")
 			end
 		end
 		return self:InjectEvent(event, uId, castGuid, spellId) -- strip extra params
