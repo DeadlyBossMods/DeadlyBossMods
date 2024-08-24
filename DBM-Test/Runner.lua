@@ -291,7 +291,7 @@ function test:Trace(mod, event, ...)
 			traceEntry.didTriggerCombatEnd = true
 		end
 		if event == "AntiSpam" then
-			local id, result = ...
+			local id, _, result = ...
 			antiSpams[mod] = antiSpams[mod] or {}
 			if result then -- starting to filter next events
 				antiSpams[mod][id] = {}

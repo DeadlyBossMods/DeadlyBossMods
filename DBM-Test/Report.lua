@@ -557,7 +557,13 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 		end
 	end
 	if event.event == "AntiSpam" then
+		local targetName = event[2]
 		result[#result] = nil -- filter bool result
+		result[#result] = nil -- filter target name as it's already part of the ID
+		if targetName and targetName == UnitName("player") then -- May refer to the player due to combat log rewriting
+			-- id is "<id> on <targetName>" if targetName is specified
+			result[#result] = result[#result]:gsub("on " .. UnitName("player") .. "$", "on PlayerName")
+		end
 		local filteredSpams = {}
 		if event.filteredAntiSpams and #event.filteredAntiSpams > 0 then
 			for _, v in ipairs(event.filteredAntiSpams) do
@@ -628,7 +634,7 @@ function reporter:FilterTraceEntry(entry, trigger)
 		return true
 	end
 	-- AntiSpams returned false, they are summarized in the previous true event
-	if entry.event == "AntiSpam" and not entry[2] then
+	if entry.event == "AntiSpam" and not entry[3] then
 		return true
 	end
 	-- Generic warning sounds

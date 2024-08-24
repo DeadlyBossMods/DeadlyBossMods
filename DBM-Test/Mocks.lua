@@ -82,14 +82,14 @@ function mocks:SetEncounterInProgress(value)
 	fakeIsEncounterInProgress = value
 end
 
-function mocks.AntiSpam(mod, time, id)
+function mocks.AntiSpam(mod, time, ...)
 	-- Mods often define AntiSpam timeouts in whole seconds and some periodic damage effects trigger exactly every second
 	-- This can lead to flaky tests as they sometimes trigger and sometimes don't because even with fake time there is unfortunately still some dependency on actual frame timings
 	-- Just subtracting 0.1 seconds fixes this problem; an example affected by this is SoD/ST/FesteringRotslime
 	if time and time > 0 and math.floor(time) == time then
 		time = time - 0.1
 	end
-	return DBM.AntiSpam(mod, time, id)
+	return DBM.AntiSpam(mod, time, ...)
 end
 
 -- TODO: mocking the whole "raid" local in DBM would increase coverage a bit
