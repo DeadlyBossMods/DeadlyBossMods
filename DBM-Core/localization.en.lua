@@ -693,3 +693,6 @@ L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla and Season of Discovery package"
 L.DBM_INSTALL_PACKAGE_WRATH		= "Wrath package"
 L.DBM_INSTALL_PACKAGE_CATA		= "Cataclysm package"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves, and Events package"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS			= "DBM was used in test mode with time warping in the current session, it is recommended to reload your UI prior to using DBM in a real boss fight. Everything should still work as expected, but no gurantees!"

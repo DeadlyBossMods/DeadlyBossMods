@@ -635,7 +635,6 @@ end
 ---@param testData TestDefinition
 ---@param testOptions DBMTestOptions
 function test:Playback(testData, timeWarp, testOptions)
-	DBM.TaintedByTests = true
 	coroutine.yield() -- To make sure all calls including the first come from the coroutine OnUpdate handler to correctly handle errors
 	DBM:AddMsg("Starting test: " .. testData.name)
 	if self.testCallback then
