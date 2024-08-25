@@ -724,7 +724,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	---@type DBMTestCallbackStop
 	local testStopCallbackArgs = {
 		Name = test.testData.name,
-		Report = reporter:Report(),
+		Reporter = reporter,
 		Canceled = false
 	}
 	DBM:FireEvent("DBMTest_Stop", testStopCallbackArgs) -- Must fire before stopping the time warper otherwise Public/Example.lua breaks
