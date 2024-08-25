@@ -611,11 +611,26 @@ L.FontHeight	= 16 -- OPTIONAL
 -- Testing
 L.DevPanel							= "Development & Testing"
 L.DevPanelArea						= "Development and Testing UI"
-L.DevPanelExplanation				= "This is a development and testing UI which validates that DBM is working as expected by playing back combat logs."
+L.DevPanelExplanation				= "This is a development and testing UI which validates that DBM is working as expected by playing back combat logs." -- Test UI panel under options
+L.DevModPanelExplanation			= [[Welcome to the development and testing playground for this mod.
+You can play back logs of boss fights here to see how the mod behaves and to test integrations with DBM callbacks. See DBM-Test/README.md for more details on integrations and callbacks. DBM comes with example logs for many raids, but you can also import your own logs from Transcriptor.
+]] -- Playground mode in mods
 
 L.TimewarpSetting					= "Time warp: %dx"
 L.TimewarpDynamic					= "Time warp: dynamic (fastest)"
+L.TestSupportArea					= "Mod loading options"
+L.ModNotLoadedWithTests				= "Warning: This mod is currently not loaded with full test support. If the mod directly calls API functions such as UnitHealth() or UnitName() these will not work correctly. This is often the case for functions related to unit health, power, or targets."
+L.ModLoadedWithTests				= "Mod is currently loaded with test support because at least one mod in the addon has tests enabled."
+L.AlwaysLoadModWithTests			= "Always load this mod with full test support (slows down loading slightly)"
+L.ModLoadRequiresReload				= ", requires UI reload to take effect" -- Appended to L.AlwaysLoadModWithTests
+L.TestSelectArea					= "Test data" -- Title of the UI area
+L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
+L.SelectPerspective					= "Log perspective (simulated player)"
+L.ImportTranscriptor				= "Import Transcriptor log"
+L.NoTestDataAvailable				= "No test data available"
+L.RewriteAllToYou					= "All players at the same time"
 
+L.RealModOptionsBelow				= "Mod options below are synced between playground mode and your real settings."
 
 L.Test								= "Test"
 L.Tests								= "Tests"
