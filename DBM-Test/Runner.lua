@@ -364,7 +364,7 @@ function test:SetupModOptions()
 	enableAllWarnings(mod, mod.yells)
 end
 
-function test:SetupDBMOptions()
+function test:SetupDBMOptions(defaults, disableFilters, deterministicSorting)
 	-- Change settings to not depend on user configuration
 	-- Set DBM settings to default, but don't touch DBM.Options itself because it is saved
 	local dbmOptions = {
@@ -372,30 +372,36 @@ function test:SetupDBMOptions()
 		DebugLevel = DBM.Options.DebugLevel,
 		DebugSound = DBM.Options.DebugSound
 	}
-	DBM:AddDefaultOptions(dbmOptions, DBM.DefaultOptions)
+	DBM:AddDefaultOptions(dbmOptions, defaults)
 	self:HookDbmVar("Options", dbmOptions)
-	DBM.Options.EventSoundVictory2 = false
-	DBM.Options.DontShowTargetAnnouncements = false
-	DBM.Options.FilterTankSpec = false
-	DBM.Options.FilterBTargetFocus = false
-	DBM.Options.FilterBInterruptCooldown = false
-	DBM.Options.FilterTTargetFocus = false
-	DBM.Options.FilterTInterruptCooldown = false
-	DBM.Options.FilterDispel = false
-	DBM.Options.FilterCrowdControl = false
-	DBM.Options.FilterTrashWarnings2 = false
-	DBM.Options.FilterVoidFormSay2 = false
+	if disableFilters then
+		DBM.Options.EventSoundVictory2 = false
+		DBM.Options.DontShowTargetAnnouncements = false
+		DBM.Options.FilterTankSpec = false
+		DBM.Options.FilterBTargetFocus = false
+		DBM.Options.FilterBInterruptCooldown = false
+		DBM.Options.FilterTTargetFocus = false
+		DBM.Options.FilterTInterruptCooldown = false
+		DBM.Options.FilterDispel = false
+		DBM.Options.FilterCrowdControl = false
+		DBM.Options.FilterTrashWarnings2 = false
+		DBM.Options.FilterVoidFormSay2 = false
+	end
+	if deterministicSorting then
+		-- Order player names by log order because the default is non-deterministic due to the replaying player's name sneaking in during replay
+		DBM.Options.WarningAlphabetical = false
+		DBM.Options.SWarningAlphabetical = false
+	end
+	-- Forced settings for all tests
 	-- Don't spam guild members when testing
 	DBM.Options.DisableGuildStatus = true
 	DBM.Options.AutoRespond = false
 	-- Don't show intro messages
 	DBM.Options.SettingsMessageShown = true
 	DBM.Options.NewsMessageShown2 = 3
-	-- Order player names by log order because the default is non-deterministic due to the replaying player's name sneaking in during replay
-	DBM.Options.WarningAlphabetical = false
-	DBM.Options.SWarningAlphabetical = false
 end
 
+---@param testOptions DBMTestOptions
 function test:Setup(testData, testOptions)
 	trace = {}
 	table.wipe(antiSpams)
@@ -414,9 +420,14 @@ function test:Setup(testData, testOptions)
 		mod.lastKillTime = nil
 		-- TODO: validate that stats was changed as expected on test end
 	end
-	-- Change settings to not depend on user configuration
-	self:SetupDBMOptions()
-	self:SetupModOptions()
+	if testOptions.playground then
+		-- Even in playground mode we still need this, there are some options we simply must always override: syncing to your guild, auto-reply etc
+		self:SetupDBMOptions(DBM.Options)
+	else
+		-- Change settings to not depend on user configuration
+		self:SetupDBMOptions(DBM.DefaultOptions, true, true)
+		self:SetupModOptions()
+	end
 end
 
 function test:ForceCVar(cvar, value)
@@ -808,6 +819,7 @@ Maybe a better solution would be to support some kind of comment in the report?
 ---@class DBMTestOptions
 ---@field perspective string? Override the perspective from which the log is played back
 ---@field allowErrors boolean? Throw errors immediately
+---@field playground boolean? True if the test was started from playground mode
 
 function test:OnBeforeLoadAddOn()
 	self.testRunning = true
