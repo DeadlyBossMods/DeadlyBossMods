@@ -160,7 +160,7 @@ local function resize(targetFrame, first)
 			end
 			frameHeight = frameHeight + child:GetHeight() + 20
 		elseif child.mytype == "line" then
-			local width = targetFrame:GetWidth() - 30
+			local width = targetFrame:GetWidth() - 30 + (child.extraWidth or 0)
 			child:SetWidth(width - 20)
 			_G[child:GetName() .. "BG"]:SetWidth(width - _G[child:GetName() .. "Text"]:GetWidth() - 25)
 			frameHeight = frameHeight + 32

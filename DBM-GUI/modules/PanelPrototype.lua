@@ -270,7 +270,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	return textbox
 end
 
-function PanelPrototype:CreateLine(text)
+function PanelPrototype:CreateLine(text, extraWidth)
 	---@class DBMPanelLine: Frame
 	local line = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	line:SetSize(self.frame:GetWidth() - 20, 20)
@@ -281,6 +281,7 @@ function PanelPrototype:CreateLine(text)
 	end
 	line.myheight = 20
 	line.mytype = "line"
+	line.extraWidth = extraWidth
 	local linetext = line:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 	linetext:SetPoint("TOPLEFT", line, "TOPLEFT")
 	linetext:SetJustifyH("LEFT")
