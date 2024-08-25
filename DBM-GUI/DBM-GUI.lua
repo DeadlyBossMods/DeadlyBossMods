@@ -445,6 +445,7 @@ local function addOptions(mod, catpanel, v)
 	end
 end
 
+local isFirstModPanel = true
 ---@param mod DBMMod
 function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	local panel = isTestView and mod.testPanel or mod.panel
@@ -579,6 +580,12 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			end
 		end
 	end
+	-- For some reason the options aren't loaded in properly if the very first mod view you load is a test view
+	-- But just forcing a call to show fixes this
+	if isFirstModPanel and isTestView then
+		DBM_GUI:ShowHide(true)
+	end
+	isFirstModPanel = true
 end
 
 local function GetSpecializationGroup()
