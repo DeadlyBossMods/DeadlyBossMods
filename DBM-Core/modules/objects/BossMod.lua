@@ -103,8 +103,9 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		test.Mocks:SetModEnvironment(2)
 	end
 
-	if tonumber(name) and EJ_GetEncounterInfo and EJ_GetEncounterInfo(tonumber(name)) then
-		local t = EJ_GetEncounterInfo(tonumber(name))
+	local encounterId = tonumber(name)
+	if encounterId and EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId) then
+		local t = EJ_GetEncounterInfo(encounterId)
 		if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 			t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
 		elseif type(nameModifier) == "function" then--custom name modify function
