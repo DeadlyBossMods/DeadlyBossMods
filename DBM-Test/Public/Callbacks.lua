@@ -48,7 +48,7 @@ local Start = {
 local Stop = {
 	Name		= nil, ---@type string
 	-- Will be nil if the test got stopped by the user
-	Report		= nil, ---@type string?
+	Reporter	= nil, ---@type DBMTestReporterPublic?
 	-- Early test cancelation by the user
 	Canceled	= nil, ---@type boolean
 }
@@ -87,3 +87,23 @@ local Timewarper = {}
 -- Register a frame with an OnUpdate handler for timewarping
 ---@param frame Frame
 function Timewarper:RegisterFrame(frame) end
+
+---@class DBMTestReporterPublic
+local TestReporter = {}
+
+---@return "Success"|"Failure"
+function TestReporter:GetResult() end
+
+-- True if the mod threw any errors during the test, also returns true for errors that were allowed to propagate during the test run.
+---@return boolean
+function TestReporter:HasErrors() end
+
+-- Pass on any errors that happened to the default error handler.
+function TestReporter:ReportErrors() end
+
+-- Generate a neatly formatted test report.
+---@return string
+function TestReporter:Report() end
+
+-- Show the report as created by :Report() in a popup.
+function TestReporter:ShowReport() end
