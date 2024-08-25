@@ -1588,6 +1588,8 @@ do
 			onLoadCallbacks = nil
 			loadOptions(self)
 			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
+			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
+			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
 			self.AddOns = {}
 			private:OnModuleLoad()
@@ -3148,7 +3150,7 @@ do
 	end
 end
 
-function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
+function DBM:LoadModOptions(modId, inCombat, first)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
 	local savedStatsName = modId:gsub("-", "") .. "_SavedStats"
@@ -3167,7 +3169,7 @@ function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
 		if not savedOptions[id] then savedOptions[id] = {} end
 		---@class DBMMod
 		local mod = self:GetModByName(id)
-		mod.showTestUI = enableTestUi
+		mod.showTestUI = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests[id]
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
@@ -4142,7 +4144,7 @@ function DBM:ScenarioCheck(delay)
 end
 
 function DBM:LoadMod(mod, force, enableTestSupport)
-	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport and DBM_ModsToLoadWithFullTestSupport[mod.modId]
+	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport.addonsWithTests[mod.modId]
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
@@ -4196,7 +4198,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if self.NewerVersion and showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
-		self:LoadModOptions(mod.modId, InCombatLockdown(), true, enableTestSupport) -- Show the test UI immediately to make it clear that the mod is loaded with test support
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true) -- Show the test UI immediately to make it clear that the mod is loaded with test support
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 			DBM_GUI:CreateBossModTab(mod, mod.panel)
