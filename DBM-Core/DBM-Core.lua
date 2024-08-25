@@ -7407,14 +7407,20 @@ end
 ---@param self DBMModOrDBM
 ---@param time number? time to wait between two events (optional, default 2.5 seconds)
 ---@param id any? id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
-function DBM:AntiSpam(time, id)
+---@param targetName any? string optional extra ID to filter spams per target
+function DBM:AntiSpam(time, id, targetName)
 	id = id or "(nil)"
+	if targetName then
+		-- Yes, mods could just piece together an id like this themselves
+		-- The actual point of this is tests: targetName may refer to the real player replaying the log due to combat log rewriting and hence needs to be filtered in the report.
+		id = id .. " on " .. targetName
+	end
 	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or 0) > (time or 2.5) then
 		self["lastAntiSpam" .. tostring(id)] = GetTime()
-		test:Trace(self, "AntiSpam", id, true)
+		test:Trace(self, "AntiSpam", id, targetName or false, true)
 		return true
 	end
-	test:Trace(self, "AntiSpam", id, false)
+	test:Trace(self, "AntiSpam", id, targetName or false, false)
 	return false
 end
 
