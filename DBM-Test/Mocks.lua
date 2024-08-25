@@ -428,12 +428,12 @@ end
 
 function mocks:IsModLoadedWithMocks(mod)
 	local mockEnv = self:GetMockEnvironment()
-	for k, v in pairs(mod) do
-			if type(v) == "function" then
-					if getfenv(v) == mockEnv then -- any function having that environment is good enough, this is just for showing a warning in the UI
-							return true
-					end
+	for _, v in pairs(mod) do
+		if type(v) == "function" then
+			if getfenv(v) == mockEnv then -- any function having that environment is good enough, this is just for showing a warning in the UI
+				return true
 			end
+		end
 	end
 	return false
 end
