@@ -496,7 +496,7 @@ function test:InjectEvent(event, ...)
 		if target == "??" then
 			target = nil
 		end
-		if target == self.logPlayerName then
+		if target == self.logPlayerName or self.allOnYou and self.players[target] then
 			target = UnitName("player")
 		end
 		self.Mocks:UpdateTarget(uId, unitName, target)
@@ -508,7 +508,7 @@ function test:InjectEvent(event, ...)
 		if unitTarget == "??" then
 			unitTarget = nil
 		end
-		if unitTarget == self.logPlayerName then
+		if unitTarget == self.logPlayerName or self.allOnYou and self.players[unitTarget] then
 			unitTarget = UnitName("player")
 		end
 		self.Mocks:UpdateTarget(uId, unitName, unitTarget)
@@ -549,7 +549,7 @@ function test:InjectEvent(event, ...)
 		self.Mocks:UpdateUnitPower(uid, name, power)
 		return self:InjectEvent(event, uid, powerType)
 	end
-	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName then
+	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName and not self.allOnYou then
 		return
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
@@ -589,7 +589,7 @@ local function findRecordingPlayer(testData)
 end
 
 ---@param testData TestDefinition
-local function adjustFlagsForPerspective(testData, playerName)
+local function adjustFlagsForPerspective(testData, playerName, allOnYou)
 	local clearFlags = bit.bnot(bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_AFFILIATION_PARTY, COMBATLOG_OBJECT_AFFILIATION_RAID))
 	for _, v in ipairs(testData.log) do
 		if v[2] == "COMBAT_LOG_EVENT_UNFILTERED" then
@@ -599,7 +599,7 @@ local function adjustFlagsForPerspective(testData, playerName)
 			local dstFlags = v[10]
 			if bband(srcFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
 				srcFlags = bband(srcFlags, clearFlags)
-				if srcName == playerName then
+				if srcName == playerName or allOnYou then
 					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
 				else
 					srcFlags = srcFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
@@ -608,7 +608,7 @@ local function adjustFlagsForPerspective(testData, playerName)
 			end
 			if bband(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
 				dstFlags = bband(dstFlags, clearFlags)
-				if dstName == playerName then
+				if dstName == playerName or allOnYou then
 					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_MINE
 				else
 					dstFlags = dstFlags + COMBATLOG_OBJECT_AFFILIATION_PARTY
@@ -658,11 +658,18 @@ function test:Playback(testData, timeWarp, testOptions)
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
 	-- 100 messages or so anyways, so whatever.
 	local perspective = findRecordingPlayer(testData)
-	if testOptions.perspective and testOptions.perspective ~= perspective then
-		self.reporter:Taint("Perspective", perspective, testOptions.perspective)
+	if testOptions.perspective and testOptions.perspective ~= perspective or testOptions.allOnYou then
+		self.reporter:Taint("Perspective", perspective, testOptions.perspective or testOptions.allOnYou and "Everyone")
 	end
 	self.logPlayerName = testOptions.perspective or perspective
-	adjustFlagsForPerspective(testData, self.logPlayerName)
+	self.allOnYou = testOptions.allOnYou
+	self.players = {}
+	if testData.players then
+		for _, v in ipairs(testData.players) do
+			self.players[v[1]] = true
+		end
+	end
+	adjustFlagsForPerspective(testData, self.logPlayerName, self.allOnYou)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	if testData.instanceInfo.difficultyModifier then
 		-- Only MC is supported right now
@@ -818,6 +825,7 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 ---@class DBMTestOptions
 ---@field perspective string? Override the perspective from which the log is played back
+---@field allOnYou boolean? Rewrite every single combat log entry to match the player
 ---@field allowErrors boolean? Throw errors immediately
 ---@field playground boolean? True if the test was started from playground mode
 
