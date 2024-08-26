@@ -41,9 +41,9 @@ L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " ha desactivado el marco de distancia din
 L.DYNAMIC_ADD_COUNT			= L.DBM .. " ha desactivado los avisos de esbirros para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 L.DYNAMIC_MULTIPLE			= L.DBM .. " ha desactivado varias funciones para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 
-L.LOOT_SPEC_REMINDER		= "Tu especialización es %s. Tu especialización de botín es %s."
+L.LOOT_SPEC_REMINDER		= "Tu especialización es %s. La opción de botín seleccionada es %s."
 
-L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " ha detectado que tienes habilitados los iconos de banda en BigWigs y " .. L.DBM .. ". Por favor, desactívalos en uno de los dos addons para evitar conflictos con la configuración de tu líder de banda."
+L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " ha detectado que tienes activados los iconos de banda en BigWigs y " .. L.DBM .. ". Por favor, desactívalos en uno de los dos addons para evitar conflictos con la configuración de tu líder de banda."
 
 L.MOD_AVAILABLE				= "El módulo de %s está disponible para este contenido. Puedes descargarlo a través de Curse, Wago, Github o WoWInterface."
 L.MOD_MISSING				= "Sin módulo de banda"
