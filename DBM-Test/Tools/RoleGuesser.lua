@@ -58,13 +58,20 @@ function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries
 	end
 	return ("{%q,%s %q%s}"):format(self.anonName, (" "):rep((maxNameLen or 0) - #self.anonName), self.anonGuid, extraInfo)
 end
+local unpack = unpack or table.unpack -- Lua 5.1 compat
 
 function roleGuesser:HandleCombatLog(line)
 	-- TODO: why is parsing not handled in one central place?
 	local args = line:match("%[CLEU%] (.*)")
 	local params = {}
 	local i = 1
-	for param in args:gmatch("([^#]*)") do
+	local offset = 1
+	while true do -- This looks like gmatch could do the job, but it's subtly different between Lua 5.1 and 5.4 when it comes to handling empty matches at the end of the string
+		local matchStart, matchEnd, param = args:find("([^#]*)#?", offset)
+		if not matchStart or matchEnd < matchStart then
+			break
+		end
+		offset = matchEnd + 1
 		local val
 		if param == "nil" then
 			val = nil
@@ -84,7 +91,7 @@ function roleGuesser:HandleCombatLog(line)
 			i = i + 1
 		end
 	end
-	local event, srcGuid, srcName, dstGuid, dstName, spellId, spellName, amount, overkill = table.unpack(params, 1, i)
+	local event, srcGuid, srcName, dstGuid, dstName, spellId, spellName, amount, overkill = unpack(params, 1, i)
 	srcName = srcName and srcName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
 	dstName = type(dstName) == "string" and dstName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
 	if event == "SWING_DAMAGE" then
