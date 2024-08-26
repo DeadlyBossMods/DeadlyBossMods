@@ -655,3 +655,6 @@ L.DBM_INSTALL_PACKAGE_VANILLA = "Paquet Vanilla et La saison de la découverte"
 L.DBM_INSTALL_PACKAGE_WRATH = "Paquet Wrath"
 L.DBM_INSTALL_PACKAGE_CATA = "Paquet Cataclysm"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet Donjons, Gouffres et Événements"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"
