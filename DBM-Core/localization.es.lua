@@ -9,9 +9,10 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "HMM"
 end
 
-L.HOW_TO_USE_MOD			= "Bienvenido a "..L.DBM..". Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
-L.SILENT_REMINDER			= "Recordatorio: "..L.DBM.." sigue en modo silencioso."
+L.HOW_TO_USE_MOD			= "Bienvenido a " .. L.DBM .. ". Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
+L.SILENT_REMINDER			= "Recordatorio: " .. L.DBM .. " sigue en modo silencioso."
 L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: Esta actualización cambia la estructura del módulo para que ahora el clásico y el juego principal utilizan módulos unificados (iguales). Esto significa que los módulos de Vanilla, TBC, Wrath y Cata ahora se instalan por separado utilizando los mismos paquetes que el juego original. Lee más al respecto |Hgarrmission:DBM:news|h|cff3588ff[aquí]|r|h"
+L.NEWS_UPDATE_REPEAT 		= "|h|c11ff1111Noticias|r|h: Esta actualización cambia la estructura del módulo para que ahora el clásico y el juego principal utilizan módulos unificados (iguales). Esto significa que los módulos de Vanilla, TBC, Wrath y Cata ahora se instalan por separado utilizando los mismos paquetes que el juego original. Actualmente estás en una banda que tiene un módulo faltante. Este mensaje seguirá apareciendo (y no tendrás avisos funcionales para esta zona) hasta que hayas instalado el módulo de banda faltante."
 
 L.COPY_URL_DIALOG_NEWS		= "Para leer las últimas noticias, visita el enlace a continuación"
 
@@ -20,7 +21,7 @@ L.LOAD_MOD_SUCCESS			= "Módulo de '%s' cargado. Para más opciones, como alerta
 L.LOAD_MOD_COMBAT			= "Carga del módulo de '%s' aplazada hasta salir de combate."
 L.LOAD_GUI_ERROR			= "No se ha podido cargar la interfaz: %s"
 L.LOAD_GUI_COMBAT			= "La interfaz no se puede cargar en combate. Se cargará la interfaz al salir de combate. Una vez cargada, podrás iniciar la interfaz en combate."
-L.BAD_LOAD					= ""..L.DBM.." ha detectado que no se ha podido cargar el módulo de esta estancia porque estás en combate. Por favor, escribe '/console reloadui' nada más salir de combate."
+L.BAD_LOAD					= L.DBM .. " ha detectado que no se ha podido cargar el módulo de esta estancia porque estás en combate. Por favor, escribe '/console reloadui' nada más salir de combate."
 L.LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porque tu módulo de DBM-Core no cumple los requisitos necesarios. Se necesita una versión más reciente."
 L.LOAD_MOD_EXP_MISMATCH		= "No se ha podido cargar el módulo de %s porque está diseñado para una expansión que aún no se encuentra disponible. Este módulo se habilitará automáticamente cuando salga la nueva expansión."
 L.LOAD_MOD_TOC_MISMATCH		= "No se ha podido cargar el módulo de %s porque está diseñado para un parche de WoW que aún no se encuentra disponible. Este módulo se habilitará automáticamente cuando salga dicho parche."
@@ -36,13 +37,13 @@ L.NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se proced
 L.NO_ARROW					= "No se puede usar la flecha en estancias."
 L.NO_HUD					= "No se puede usar el indicador en pantalla en estancias."
 
-L.DYNAMIC_DIFFICULTY_CLUMP	= ""..L.DBM.." ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
-L.DYNAMIC_ADD_COUNT			= ""..L.DBM.." ha desactivado los avisos de esbirros para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
-L.DYNAMIC_MULTIPLE			= ""..L.DBM.." ha desactivado varias funciones para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
+L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
+L.DYNAMIC_ADD_COUNT			= L.DBM .. " ha desactivado los avisos de esbirros para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
+L.DYNAMIC_MULTIPLE			= L.DBM .. " ha desactivado varias funciones para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 
 L.LOOT_SPEC_REMINDER		= "Tu especialización es %s. Tu especialización de botín es %s."
 
-L.BIGWIGS_ICON_CONFLICT		= ""..L.DBM.." ha detectado que tienes habilitados los iconos de banda en BigWigs y "..L.DBM..". Por favor, desactívalos en uno de los dos addons para evitar conflictos con la configuración de tu líder de banda."
+L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " ha detectado que tienes habilitados los iconos de banda en BigWigs y " .. L.DBM .. ". Por favor, desactívalos en uno de los dos addons para evitar conflictos con la configuración de tu líder de banda."
 
 L.MOD_AVAILABLE				= "El módulo de %s está disponible para este contenido. Puedes descargarlo a través de Curse, Wago, Github o WoWInterface."
 L.MOD_MISSING				= "Sin módulo de banda"
@@ -75,33 +76,33 @@ L.TRANSCRIPTOR_LOG_END			= "Registro de Transcriptor finalizado."
 
 L.MOVIE_SKIPPED				= "Cinemática saltada automáticamente."
 L.MOVIE_NOTSKIPPED			= L.DBM .. " ha detectado una escena de corte que se puede omitir pero NO la ha omitido debido a un error de Blizzard. Cuando se solucione este error, se volverá a habilitar la omisión"
-L.BONUS_SKIPPED				= ""..L.DBM.." ha cerrado automáticamente la ventana de bonus de botín. Si quieres abrirla, escribe /dbmbonusroll antes de que pasen 3 minutos."
+L.BONUS_SKIPPED				= L.DBM .. " ha cerrado automáticamente la ventana de bonus de botín. Si quieres abrirla, escribe /dbmbonusroll antes de que pasen 3 minutos."
 
 L.AFK_WARNING				= "Estás ausente y en combate (%d por cierto de salud restante); se procederá a reproducir un sonido de alerta. Sino estás ausente, quítate el estado o desactiva esta opción en 'Funciones adicionales'."
 
 L.COMBAT_STARTED_AI_TIMER	= "Mi unidad central es un procesador de red neuronal: una máquina capaz de aprender. (Este encuentro usará la nueva IA de temporizadores para generar temporizadores aproximados.)"
 
-L.PROFILE_NOT_FOUND			= "<"..L.DBM.."> Tu perfil actual está corrupto. "..L.DBM.." cargará el perfil 'Default'."
-L.PROFILE_CREATED			= "Se ha creado el perfil '%s'."
-L.PROFILE_CREATE_ERROR		= "No se ha podido crear el perfil. El nombre del perfil no es válido."
-L.PROFILE_CREATE_ERROR_D	= "No se ha podido crear el perfil. Ya existe un perfil llamado '%s'."
-L.PROFILE_APPLIED			= "Se ha cambiado el perfil actual a '%s'."
-L.PROFILE_APPLY_ERROR		= "No se ha podido cambiar de perfil. El perfil '%s' no existe."
-L.PROFILE_COPIED			= "Se ha copiado el perfil '%s'."
-L.PROFILE_COPY_ERROR		= "No se ha podido copiar el perfil. El perfil '%s' no existe."
-L.PROFILE_COPY_ERROR_SELF	= "No se puede copiar un perfil a sí mismo."
-L.PROFILE_DELETED			= "Se ha borrado el perfil '%s'. "..L.DBM.." cambiará ahora al perfil 'Default'."
-L.PROFILE_DELETE_ERROR		= "No se ha podido borrar el perfil. El perfil '%s' no existe."
-L.PROFILE_CANNOT_DELETE		= "No se puede borrar el perfil 'Default'."
-L.MPROFILE_COPY_SUCCESS		= "Se ha copiado la configuración de módulo de %s (especialización %d)."
-L.MPROFILE_COPY_SELF_ERROR	= "No se puede copiar una configuración de personaje a sí misma."
-L.MPROFILE_COPY_S_ERROR		= "La configuración de origen está corrupta. Es posible que la configuración se haya copiado a medias o haya fallado por completo."
-L.MPROFILE_COPYS_SUCCESS	= "Se ha copiado la configuración de notas o sonido de módulo de %s (especialización %d)."
-L.MPROFILE_COPYS_SELF_ERROR	= "No se puede copiar una configuración de notas o sonido a sí misma."
-L.MPROFILE_COPYS_S_ERROR	= "La configuración de origen está corrupta. Es posible que la configuración de notas o sonido se haya copiado a medias o haya fallado por completo."
-L.MPROFILE_DELETE_SUCCESS	= "Se ha borrado la configuración de módulo de %s (especialización %d)."
+L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Tu perfil actual está corrupto. " .. L.DBM .. " cargará el perfil 'Predeterminado'."
+L.PROFILE_CREATED				= "Se ha creado el perfil '%s'."
+L.PROFILE_CREATE_ERROR			= "No se ha podido crear el perfil. El nombre del perfil no es válido."
+L.PROFILE_CREATE_ERROR_D		= "No se ha podido crear el perfil. Ya existe un perfil llamado '%s'."
+L.PROFILE_APPLIED				= "Se ha cambiado el perfil actual a '%s'."
+L.PROFILE_APPLY_ERROR			= "No se ha podido cambiar de perfil. El perfil '%s' no existe."
+L.PROFILE_COPIED				= "Se ha copiado el perfil '%s'."
+L.PROFILE_COPY_ERROR			= "No se ha podido copiar el perfil. El perfil '%s' no existe."
+L.PROFILE_COPY_ERROR_SELF		= "No se puede copiar un perfil a sí mismo."
+L.PROFILE_DELETED				= "Se ha borrado el perfil '%s'. " .. L.DBM .. " cambiará ahora al perfil 'Predeterminado'."
+L.PROFILE_DELETE_ERROR			= "No se ha podido borrar el perfil. El perfil '%s' no existe."
+L.PROFILE_CANNOT_DELETE			= "No se puede borrar el perfil 'Predeterminado'."
+L.MPROFILE_COPY_SUCCESS			= "Se ha copiado la configuración de módulo de %s (especialización %d)."
+L.MPROFILE_COPY_SELF_ERROR		= "No se puede copiar una configuración de personaje a sí misma."
+L.MPROFILE_COPY_S_ERROR			= "La configuración de origen está corrupta. Es posible que la configuración se haya copiado a medias o haya fallado por completo."
+L.MPROFILE_COPYS_SUCCESS		= "Se ha copiado la configuración de notas o sonido de módulo de %s (especialización %d)."
+L.MPROFILE_COPYS_SELF_ERROR		= "No se puede copiar una configuración de notas o sonido a sí misma."
+L.MPROFILE_COPYS_S_ERROR		= "La configuración de origen está corrupta. Es posible que la configuración de notas o sonido se haya copiado a medias o haya fallado por completo."
+L.MPROFILE_DELETE_SUCCESS		= "Se ha borrado la configuración de módulo de %s (especialización %d)."
 L.MPROFILE_DELETE_SELF_ERROR	= "No se puede borrar una configuración que está actualmente en uso."
-L.MPROFILE_DELETE_S_ERROR	= "La configuración de origen está corrupta. Es posible que la configuración se haya borrado a medias o haya fallado por completo."
+L.MPROFILE_DELETE_S_ERROR		= "La configuración de origen está corrupta. Es posible que la configuración se haya borrado a medias o haya fallado por completo."
 
 L.NOTE_SHARE_SUCCESS		= "%s está compartiendo su nota para %s."
 L.NOTE_SHARE_LINK			= "Haz clic aquí para abrir la nota"
@@ -156,8 +157,8 @@ L.OPTION_CATEGORY_NAMEPLATES		= "Placas de nombres"
 L.OPTION_CATEGORY_ICONS				= "Iconos"
 L.OPTION_CATEGORY_PAURAS			= "Auras privadas"
 
-L.AUTO_RESPONDED				= "Respondido automáticamente."
-L.STATUS_WHISPER				= "%s: %s, %d/%d jugadores vivos."
+L.AUTO_RESPONDED					= "Respondido automáticamente."
+L.STATUS_WHISPER					= "%s: %s, %d/%d jugadores vivos."
 --Bosses
 L.AUTO_RESPOND_WHISPER				= "%s está ocupado con el encuentro de %s (%s, %d/%d jugadores vivos)."
 L.WHISPER_COMBAT_END_KILL			= "¡%s ha derrotado a %s!"
@@ -171,75 +172,75 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "¡%s ha completado %s! Tiene %d victorias e
 L.WHISPER_SCENARIO_END_WIPE			= "%s no ha completado %s."
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s no ha completado %s. Lo ha intentado sin éxito %d veces en total en esta dificultad."
 
-L.VERSIONCHECK_HEADER		= ""..L.DEADLY_BOSS_MODS.." - Versiones"
+L.VERSIONCHECK_HEADER		= "Módulos de jefe - Versiones"
 L.VERSIONCHECK_ENTRY		= "%s: %s (r%d)"--One Boss mod
 L.VERSIONCHECK_ENTRY_TWO	= "%s: %s (r%d) y %s (r%d)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: Sin instalar"
-L.VERSIONCHECK_FOOTER		= "Se ha encontrado %d jugador(es) con "..L.DBM.." y %d jugador(es) con BigWigs."
-L.VERSIONCHECK_OUTDATED		= "Los siguientes %d jugadores tienen una versión desactualizada de "..L.DBM..": %s"
-L.YOUR_VERSION_OUTDATED		= "Tu versión de "..L.DEADLY_BOSS_MODS.." está desactualizada. Por favor, visita www.deadlybossmods.com para descargar la última versión."
-L.VOICE_PACK_OUTDATED		= "A este paquete de voces le faltan sonidos compatibles con esta versión de "..L.DBM..". No se sustituirán los sonidos de avisos especiales que no tengan sustituto. Por favor, descarga una versión más reciente del paquete de voces o contacta con el autor para informarle de los archivos de sonido que faltan."
+L.VERSIONCHECK_FOOTER		= "Se ha encontrado %d jugador(es) con " .. L.DBM .. " y %d jugador(es) con BigWigs."
+L.VERSIONCHECK_OUTDATED		= "Los siguientes %d jugadores tienen una versión desactualizada de " .. L.DBM .. ": %s"
+L.YOUR_VERSION_OUTDATED		= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está desactualizada. Por favor, descarga la última versión a través de Curse, Wago, Github o WoWInterface."
+L.VOICE_PACK_OUTDATED		= "A este paquete de voces le faltan sonidos compatibles con esta versión de " .. L.DBM .. ". No se sustituirán los sonidos de avisos especiales que no tengan sustituto. Por favor, descarga una versión más reciente del paquete de voces o contacta con el autor para informarle de los archivos de sonido que faltan."
 L.VOICE_MISSING				= "Tenías seleccionado un paquete de voces que no se ha podido encontrar. Se ha restaurado tu selección a 'Ninguno'. Si crees que se trata de un error, asegúrate de que el paquete de voces se haya instalado correctamente y esté habilitado en la lista de Addons."
-L.VOICE_DISABLED			= "Tienes al menos un paquete de voces de "..L.DBM.." instalado, pero ninguno está activado. Si quieres usar un paquete de voces, asegúrate de que lo has asignado en 'Alertas de voz'. Desinstala los paquetes de voces que tengas sin usar para ocultar este mensaje."
-L.VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar. Se ha restaurado a la configuración por defecto."
+L.VOICE_DISABLED			= "Tienes al menos un paquete de voces de " .. L.DBM .. " instalado, pero ninguno está activado. Si quieres usar un paquete de voces, asegúrate de que lo has asignado en 'Alertas de voz'. Desinstala los paquetes de voces que tengas sin usar para ocultar este mensaje."
+L.VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar. Se ha restaurado a la configuración predeterminada."
 L.BIG_WIGS					= "BigWigs"
 L.WEAKAURA_KEY				= " (|cff308530Clave WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Tu versión de "..L.DEADLY_BOSS_MODS.." está desactualizada.\nPuedes descargar la versión %s (%s) a través de Curse, Wago, Github o WoWInterface."
+L.UPDATEREMINDER_HEADER				= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está desactualizada.\nPuedes descargar la versión %s (%s) a través de Curse, Wago, Github o WoWInterface."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Tu módulo de %s está desactualizada.\nPuedes descargar la versión %s a través de Curse, Wago, Github o WoWInterface."
 L.UPDATEREMINDER_FOOTER				= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de descarga en tu portapapeles."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace en tu portapapeles."
-L.UPDATEREMINDER_DISABLE			= "AVISO: Se ha desactivado "..L.DEADLY_BOSS_MODS.." porque tu versión está demasiado desactualizada. Con tal de prevenir conflictos con las versiones de otros jugadores, no se podrá volver a activar "..L.DBM.." hasta que lo actualices."
-L.UPDATEREMINDER_DISABLETEST		= "AVISO: Se ha desactivado " .. L.DEADLY_BOSS_MODS.. " porque tu versión está demasiado desactualizada y este es un reino de prueba/beta. no se podrá volver a activar "..L.DBM.." hasta que lo actualices. Esto es para garantizar que no se utilicen modificaciones obsoletas para generar comentarios de prueba."
-L.UPDATEREMINDER_HOTFIX				= "Tu versión de "..L.DBM.." actual tiene errores conocidos en este encuentro. Por favor, actualiza a la última versión."
-L.UPDATEREMINDER_HOTFIX_ALPHA		= "Tu versión de "..L.DBM.." actual tiene errores conocidos en este encuentro. Estos errores serán corregidos en la próxima versión (o ya están corregidos en la última versión alfa)."
-L.UPDATEREMINDER_MAJORPATCH			= "AVISO: Se ha desactivado "..L.DEADLY_BOSS_MODS.." porque tu versión está demasiado desactualizada. Como se trata de un parche de contenido importante, y con tal de prevenir conflictos con las versiones de otros jugadores, no se podrá volver a activar "..L.DBM.." hasta que lo actualices."
-L.VEM								= "AVISO: Estás ejecutando "..L.DEADLY_BOSS_MODS.." y Voice Encounter Mods a la vez. "..L.DBM.." no funciona correctamente con esta configuración, y por tanto no se ejecutará."
-L.OUTDATEDPROFILES					= "AVISO: DBM-Profiles no es compatible con esta versión de "..L.DBM..". Con tal de evitar conflictos, "..L.DBM.." no se ejecutará hasta que desactives o desinstales DBM-Profiles."
-L.OUTDATEDSPELLTIMERS				= "AVISO: DBM-SpellTimers provoca que "..L.DBM.." deje de funcionar. Desactívalo para que "..L.DBM.." funcione correctamente."
-L.OUTDATEDRLT						= "AVISO: DBM-RaidLeadTools provoca que "..L.DBM.." deje de funcionar. DBM-RaidLeadTools ya no es compatible con "..L.DBM.." y debe desactivarse para que este funcione correctamente."
-L.VICTORYSOUND						= "AVISO: DBM-VictorySound no es compatible con esta versión de "..L.DBM..". Con tal de evitar conflictos, "..L.DBM.." no se ejecutará hasta que desactives o desinstales DBM-VictorySound."
-L.DPMCORE							= "AVISO: Deadly PvP Mods ya no está en desarrollo y no es compatible con esta versión de "..L.DBM..". Con tal de evitar conflictos, "..L.DBM.." no se ejecutará hasta que borres Deadly PvP Mods."
+L.UPDATEREMINDER_DISABLE			= "AVISO: Se ha desactivado " .. L.DEADLY_BOSS_MODS.. " porque tu versión está demasiado desactualizada. Con tal de prevenir conflictos con las versiones de otros jugadores, no se podrá volver a activar " .. L.DBM .. " hasta que lo actualices."
+L.UPDATEREMINDER_DISABLETEST		= "AVISO: Se ha desactivado " .. L.DEADLY_BOSS_MODS.. " porque tu versión está demasiado desactualizada y este es un reino de prueba/beta. no se podrá volver a activar " .. L.DBM .. " hasta que lo actualices. Esto es para garantizar que no se utilicen modificaciones obsoletas para generar comentarios de prueba."
+L.UPDATEREMINDER_HOTFIX				= "Tu versión de " .. L.DBM .. " actual tiene errores conocidos en este encuentro. Por favor, actualiza a la última versión."
+L.UPDATEREMINDER_HOTFIX_ALPHA		= "Tu versión de " .. L.DBM .. " actual tiene errores conocidos en este encuentro. Estos errores serán corregidos en la próxima versión (o ya están corregidos en la última versión alfa)."
+L.UPDATEREMINDER_MAJORPATCH			= "AVISO: Se ha desactivado " .. L.DEADLY_BOSS_MODS.. " porque tu versión está demasiado desactualizada. Como se trata de un parche de contenido importante, y con tal de prevenir conflictos con las versiones de otros jugadores, no se podrá volver a activar " .. L.DBM .. " hasta que lo actualices."
+L.VEM								= "AVISO: Estás ejecutando " .. L.DEADLY_BOSS_MODS.. " y Voice Encounter Mods a la vez. " .. L.DBM .. " no funciona correctamente con esta configuración, y por tanto no se ejecutará."
+L.OUTDATEDPROFILES					= "AVISO: DBM-Profiles no es compatible con esta versión de " .. L.DBM .. ". Con tal de evitar conflictos, " .. L.DBM .. " no se ejecutará hasta que desactives o desinstales DBM-Profiles."
+L.OUTDATEDSPELLTIMERS				= "AVISO: DBM-SpellTimers provoca que " .. L.DBM .. " deje de funcionar. Desactívalo para que " .. L.DBM .. " funcione correctamente."
+L.OUTDATEDRLT						= "AVISO: DBM-RaidLeadTools provoca que " .. L.DBM .. " deje de funcionar. DBM-RaidLeadTools ya no es compatible con " .. L.DBM .. " y debe desactivarse para que este funcione correctamente."
+L.VICTORYSOUND						= "AVISO: DBM-VictorySound no es compatible con esta versión de " .. L.DBM .. ". Con tal de evitar conflictos, " .. L.DBM .. " no se ejecutará hasta que desactives o desinstales DBM-VictorySound."
+L.DPMCORE							= "AVISO: Deadly PvP Mods ya no está en desarrollo y no es compatible con esta versión de " .. L.DBM .. ". Con tal de evitar conflictos, " .. L.DBM .. " no se ejecutará hasta que borres Deadly PvP Mods."
 L.DBMLDB							= "AVISO: DBM-LDB está ahora incluido en DBM-Core. Es recomendable que borres la carpeta 'DBM-LDB' de tu carpeta de addons."
-L.DBMLOOTREMINDER					= "AVISO: tienes instalado el módulo de terceros DBM-LootReminder. Este addon ya no es compatible con el cliente de WoW y causa conflictos con los temporizadores de "..L.DBM..". Es recomendable que lo desinstales."
-L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta actualización de "..L.DBM.." no funcionará correctamente hasta que reinicies el juego. Esta versión contiene nuevos archivos o cambios a los archivos .toc que no pueden recargarse mediante /reload. Es muy probable que "..L.DBM.." no funcione correctamente hasta que reinicies el juego."
-L.OUT_OF_DATE_NAG					= "Tu versión de "..L.DEADLY_BOSS_MODS.." está desactualizada para este encuentro. Se recomienda que actualices "..L.DBM.." para no perderte ningún aviso, temporizador o indicador crucial para tu grupo de banda."
+L.DBMLOOTREMINDER					= "AVISO: tienes instalado el módulo de terceros DBM-LootReminder. Este addon ya no es compatible con el cliente de WoW y causa conflictos con los temporizadores de " .. L.DBM .. ". Es recomendable que lo desinstales."
+L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta actualización de " .. L.DBM .. " no funcionará correctamente hasta que reinicies el juego. Esta versión contiene nuevos archivos o cambios a los archivos .toc que no pueden recargarse mediante /reload. Es muy probable que " .. L.DBM .. " no funcione correctamente hasta que reinicies el juego."
+L.OUT_OF_DATE_NAG					= "Tu versión de " .. L.DEADLY_BOSS_MODS.. " está desactualizada para este encuentro. Se recomienda que actualices " .. L.DBM .. " para no perderte ningún aviso, temporizador o indicador crucial para tu grupo de banda."
 L.PLATER_NP_AURAS_MSG				= L.DBM .. " incluye una función avanzada para mostrar los temporizadores de reutilización del enemigo usando iconos en las placas de nombre. Esto está activado de forma predeterminada para la mayoría de los usuarios, pero para los usuarios de Plater está desactivado de forma predeterminada en las opciones de Plater a menos que lo active. Para aprovechar al máximo DBM (y Plater), se recomienda activar esta función en Plater en la sección 'Beneficio especial'. Si no deseas volver a ver este mensaje, también puedes desactivar por completo la opción 'Iconos de reutilización en las placas de nombre' en los paneles de opciones de placa de nombre o desactivación global de DBM."
 
 L.MOVABLE_BAR					= "¡Muéveme!"
 
-L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de "..L.DBM..": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
+L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "¿Seguro que quieres ignorar los temporizadores de %s para esta sesión?"
 L.PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <seg> <texto>. <seg> debe ser mayor que 1."
 
 L.MINIMAP_TOOLTIP_HEADER		= L.DEADLY_BOSS_MODS
 L.MINIMAP_TOOLTIP_FOOTER		= "Mayús-Clic izquierdo o Clic derecho para mover este botón.\nAlt-Mayús-Clic izquierdo para moverlo libremente."
 
-L.RANGECHECK_HEADER			= "Comprobación de distancia (%d m)"
-L.RANGECHECK_HEADERT		= "Comprobación de distancia (%dm-%dP)"
-L.RANGECHECK_RHEADER		= "Comprobación inversa de distancia (%dm)"
-L.RANGECHECK_RHEADERT		= "Comprobación inversa de distancia (%dm-%dP)"
-L.RANGECHECK_SETRANGE		= "Ajustar distancia"
-L.RANGECHECK_SETTHRESHOLD	= "Ajustar límite de jugadores"
-L.RANGECHECK_SOUNDS			= "Sonidos"
-L.RANGECHECK_SOUND_OPTION_1	= "Sonido si un jugador está a distancia"
-L.RANGECHECK_SOUND_OPTION_2	= "Sonido si más de un jugador está a distancia"
-L.RANGECHECK_SOUND_0		= "Sin sonido"
-L.RANGECHECK_SOUND_1		= "Sonido por defecto"
-L.RANGECHECK_SOUND_2		= "Pitido"
-L.RANGECHECK_SETRANGE_TO	= "%d m"
-L.RANGECHECK_OPTION_FRAMES	= "Marcos"
-L.RANGECHECK_OPTION_RADAR	= "Mostrar marco de radar"
-L.RANGECHECK_OPTION_TEXT	= "Mostrar marco de texto"
-L.RANGECHECK_OPTION_BOTH	= "Mostrar ambos"
-L.RANGERADAR_HEADER			= "Distancia: %d / Jugadores: %d"
-L.RANGERADAR_RHEADER		= "Distancia inversa: %d / Jugadores: %d"
-L.RANGERADAR_IN_RANGE_TEXT	= "%d a distancia (%0.1fm)"--Multi
-L.RANGECHECK_IN_RANGE_TEXT	= "%d a distancia"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
-L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
+L.RANGECHECK_HEADER				= "Comprobación de distancia (%d m)"
+L.RANGECHECK_HEADERT			= "Comprobación de distancia (%dm-%dP)"
+L.RANGECHECK_RHEADER			= "Comprobación inversa de distancia (%dm)"
+L.RANGECHECK_RHEADERT			= "Comprobación inversa de distancia (%dm-%dP)"
+L.RANGECHECK_SETRANGE			= "Ajustar distancia"
+L.RANGECHECK_SETTHRESHOLD		= "Ajustar límite de jugadores"
+L.RANGECHECK_SOUNDS				= "Sonidos"
+L.RANGECHECK_SOUND_OPTION_1		= "Sonido si un jugador está a distancia"
+L.RANGECHECK_SOUND_OPTION_2		= "Sonido si más de un jugador está a distancia"
+L.RANGECHECK_SOUND_0			= "Sin sonido"
+L.RANGECHECK_SOUND_1			= "Sonido predeterminado"
+L.RANGECHECK_SOUND_2			= "Pitido"
+L.RANGECHECK_SETRANGE_TO		= "%d m"
+L.RANGECHECK_OPTION_FRAMES		= "Marcos"
+L.RANGECHECK_OPTION_RADAR		= "Mostrar marco de radar"
+L.RANGECHECK_OPTION_TEXT		= "Mostrar marco de texto"
+L.RANGECHECK_OPTION_BOTH		= "Mostrar ambos"
+L.RANGERADAR_HEADER				= "Distancia: %d / Jugadores: %d"
+L.RANGERADAR_RHEADER			= "Distancia inversa: %d / Jugadores: %d"
+L.RANGERADAR_IN_RANGE_TEXT		= "%d a distancia (%0.1fm)"--Multi
+L.RANGECHECK_IN_RANGE_TEXT		= "%d a distancia"	--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
+L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"		--One target
 
 L.INFOFRAME_TITLE			= "Marco de info."
-L.INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"		-- Always show your own power value even if you are below the threshold
+L.INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"	-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Líneas máximas"
 L.INFOFRAME_SETCOLS			= "Columnas máximas"
 L.INFOFRAME_LINESDEFAULT	= "Establecido por módulo"
@@ -247,8 +248,8 @@ L.INFOFRAME_LINES_TO		= "%d líneas"
 L.INFOFRAME_COLS_TO			= "%d columnas"
 L.INFOFRAME_POWER			= "Recurso"
 L.INFOFRAME_AGGRO			= "Amenaza"
-L.INFOFRAME_MAIN			= "Principal:"--Main power
-L.INFOFRAME_ALT				= "Secundario:"--Alternate Power
+L.INFOFRAME_MAIN			= "Principal:"	--Main power
+L.INFOFRAME_ALT				= "Secundario:"	--Alternate Power
 
 L.LFG_INVITE				= "Invitación del buscador"
 
@@ -258,8 +259,8 @@ L.SLASHCMD_HELP				= {
 	"/dbm unlock: Muestra un temporizador de ejemplo desplazable (alias: move).",
 	"/range <número> o /distance <número>: Muestra el marco de distancia. /rrange y /rdistance invierten el color.",
 	"/hudar <número>: Muestra el indicador de distancia en pantalla.",
-	"/dbm timer: Inicia un temporizador personalizado de DBM. Consulta '/dbm timer' para más detalles.",
-	"/dbm arrow: Muestra la flecha de DBM. Consulta '/dbm arrow help' para más detalles.",
+	"/dbm timer: Inicia un temporizador personalizado de DBM. Escribe '/dbm timer' para más detalles.",
+	"/dbm arrow: Muestra la flecha de DBM. Escribe '/dbm arrow help' para más detalles.",
 	"/dbm hud: Muestra el indicador en pantalla de DBM. Escribe '/dbm hud' para más detalles.",
 	"/dbm help2: Lista los comandos de banda de DBM."
 }
@@ -274,7 +275,7 @@ L.SLASHCMD_HELP2				= {
 	"/dbm durability: Realiza una comprobación de durabilidad a toda la banda."
 }
 L.TIMER_USAGE	= {
-	""..L.DBM.." Comandos de temporizador:",
+	L.DBM .. " Comandos de temporizador:",
 	"-----------------",
 	"/dbm timer <seg> <texto>: Inicia un temporizador con texto.",
 	"/dbm ltimer <seg> <texto>: Inicia un temporizador que se repite hasta que se cancele.",
@@ -282,9 +283,10 @@ L.TIMER_USAGE	= {
 	"/dbm timer endloop: Cancela todos los temporizadores que se están repitiendo."
 }
 
-L.ERROR_NO_PERMISSION		= "No tienes permiso para hacer eso."
-L.PULL_TIME_TOO_SHORT			= "El temporizador de llamada debe durar más de 3 segundos."
-L.PULL_TIME_TOO_LONG							= "Pull timer cannot be longer than 60 seconds"
+L.ERROR_NO_PERMISSION			= "No tienes permiso para hacer eso."
+L.ERROR_NO_PERMISSION_COMBAT 	= "El temporizador de inicio/descanso no puede ser enviado mientras el encuentro esté en progreso."
+L.PULL_TIME_TOO_SHORT			= "El temporizador de inicio debe durar más de 3 segundos."
+L.PULL_TIME_TOO_LONG			= "El temporizador de inicio no puede durar más de 60 segundos."
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
 L.BREAK_START				= "El descanso inicia ahora. ¡Tienes %s! (Enviado por %s)"
@@ -294,10 +296,10 @@ L.TIMER_BREAK				= "¡Toca descanso!"
 L.ANNOUNCE_BREAK_OVER		= "El descanso ha terminado."
 
 L.TIMER_PULL				= "Iniciando en"
-L.ANNOUNCE_PULL				= "Iniciando en %d s (iniciado por %s)"
+L.ANNOUNCE_PULL				= "Iniciando en %d seg. (enviado por %s)"
 L.ANNOUNCE_PULL_NOW			= "¡Inicia ahora!"
-L.ANNOUNCE_PULL_TARGET		= "Llamando a %s en %d s (iniciado por %s)"
-L.ANNOUNCE_PULL_NOW_TARGET	= "¡Llamando a %s!"
+L.ANNOUNCE_PULL_TARGET		= "Iniciando a %s en %d seg. (enviado por %s)"
+L.ANNOUNCE_PULL_NOW_TARGET	= "¡Iniciando a %s!"
 L.GEAR_WARNING				= "Aviso: Comprobación de equipo. Tu nivel de objeto equipado es %d menor que tu nivel de objeto de inventario."
 L.GEAR_WARNING_WEAPON		= "Aviso: Comprueba que tu arma esté equipada."
 L.GEAR_FISHING_POLE			= "Caña de pescar"
@@ -477,48 +479,48 @@ L.AUTO_TIMER_TEXTS.stagecontext			= "%s"
 L.AUTO_TIMER_TEXTS.stagecontextcount	= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.intermission			= "Intermedio"
 L.AUTO_TIMER_TEXTS.intermissioncount	= "Intermedio %%s"
-L.AUTO_TIMER_TEXTS.adds			= "Esbirros"
-L.AUTO_TIMER_TEXTS.addscustom	= "Esbirros (%%s)"
-L.AUTO_TIMER_TEXTS.roleplay		= "Diálogo"
-L.AUTO_TIMER_TEXTS.combat		= "Inicia el encuentro"
+L.AUTO_TIMER_TEXTS.adds					= "Esbirros"
+L.AUTO_TIMER_TEXTS.addscustom			= "Esbirros (%%s)"
+L.AUTO_TIMER_TEXTS.roleplay				= "Diálogo"
+L.AUTO_TIMER_TEXTS.combat				= "Inicia el encuentro"
 --This basically clones np only bar option and display text from regular counterparts
 L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
 L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
 L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
 L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
 
-L.AUTO_TIMER_OPTIONS.target			= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount	= "Mostrar temporizador (con contador) para la duración del perjuicio de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cast			= "Mostrar temporizador para el lanzamiento de $spell:%s"
-L.AUTO_TIMER_OPTIONS.castcount		= "Mostrar temporizador (con contador) para el lanzamiento de $spell:%s"
-L.AUTO_TIMER_OPTIONS.castsource		= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
-L.AUTO_TIMER_OPTIONS.active			= "Mostrar temporizador para la duración de $spell:%s"
-L.AUTO_TIMER_OPTIONS.fades			= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
-L.AUTO_TIMER_OPTIONS.ai				= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cd				= "Mostrar temporizador para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdcount		= "Mostrar temporizador (con contador) para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnp			= "Mostrar el temporizador de placa de nombre para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnpcount		= "Mostrar el temporizador de placa de nombre (con contador) para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdsource		= "Mostrar temporizador (y quién lo lanza) para el tiempo de reutilización de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdspecial		= "Mostrar temporizador para el tiempo de reutilización de 'Facultad especial'."
-L.AUTO_TIMER_OPTIONS.next			= "Mostrar temporizador para el siguiente $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextcount		= "Mostrar temporizador (con contador) para el siguiente $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnp			= "Mostrar temporizador de placa de nombre para el siguiente $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnpcount	= "Mostrar temporizador de placa de nombre (con contador) para el siguiente $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextsource		= "Mostrar temporizador (y quién lo lanza) para el siguiente $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextspecial	= "Mostrar temporizador para la siguiente 'Facultad especial'."
-L.AUTO_TIMER_OPTIONS.achievement	= "Mostrar temporizador para el logro %s"
-L.AUTO_TIMER_OPTIONS.stage			= "Mostrar temporizador para la siguiente fase"
-L.AUTO_TIMER_OPTIONS.stagecount		= "Mostrar temporizador (con contador) para la siguiente fase"
+L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración del perjuicio de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cast				= "Mostrar temporizador para el lanzamiento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castcount			= "Mostrar temporizador (con contador) para el lanzamiento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castsource			= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.active				= "Mostrar temporizador para la duración de $spell:%s"
+L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
+L.AUTO_TIMER_OPTIONS.ai					= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cd					= "Mostrar temporizador para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdcount			= "Mostrar temporizador (con contador) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnp				= "Mostrar temporizador de placa de nombre para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnpcount			= "Mostrar temporizador de placa de nombre (con contador) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdsource			= "Mostrar temporizador (y quién lo lanza) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdspecial			= "Mostrar temporizador para el tiempo de reutilización de 'Facultad especial'."
+L.AUTO_TIMER_OPTIONS.next				= "Mostrar temporizador para el siguiente $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextcount			= "Mostrar temporizador (con contador) para el siguiente $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextnp				= "Mostrar temporizador de placa de nombre para el siguiente $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextnpcount		= "Mostrar temporizador de placa de nombre (con contador) para el siguiente $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextsource			= "Mostrar temporizador (y quién lo lanza) para el siguiente $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextspecial		= "Mostrar temporizador para la siguiente 'Facultad especial'."
+L.AUTO_TIMER_OPTIONS.achievement		= "Mostrar temporizador para el logro %s"
+L.AUTO_TIMER_OPTIONS.stage				= "Mostrar temporizador para la siguiente fase"
+L.AUTO_TIMER_OPTIONS.stagecount			= "Mostrar temporizador (con contador) para la siguiente fase"
 L.AUTO_TIMER_OPTIONS.stagecountcycle	= "Mostrar temporizador (con contador de fases y ciclos) para la siguiente fase"
 L.AUTO_TIMER_OPTIONS.stagecontext		= "Mostrar temporizador para la siguiente fase de $spell:%s"
 L.AUTO_TIMER_OPTIONS.stagecontextcount	= "Mostrar temporizador (con contador) para la siguiente fase de $spell:%s"
 L.AUTO_TIMER_OPTIONS.intermission		= "Mostrar temporizador para el siguiente intermedio"
 L.AUTO_TIMER_OPTIONS.intermissioncount	= "Mostrar temporizador (con contador) para el siguiente intermedio"
-L.AUTO_TIMER_OPTIONS.adds			= "Mostrar temporizador para la siguiente aparición de esbirros"
-L.AUTO_TIMER_OPTIONS.addscustom		= "Mostrar temporizador para la siguiente aparición de esbirros"
-L.AUTO_TIMER_OPTIONS.roleplay		= "Mostrar temporizador para la duración del diálogo"
-L.AUTO_TIMER_OPTIONS.combat			= "Mostrar temporizador para el inicio del encuentro"
+L.AUTO_TIMER_OPTIONS.adds				= "Mostrar temporizador para la siguiente aparición de esbirros"
+L.AUTO_TIMER_OPTIONS.addscustom			= "Mostrar temporizador para la siguiente aparición de esbirros"
+L.AUTO_TIMER_OPTIONS.roleplay			= "Mostrar temporizador para la duración del diálogo"
+L.AUTO_TIMER_OPTIONS.combat				= "Mostrar temporizador para el inicio del encuentro"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "Establecer iconos en los objetivos de $spell:%s"
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "Establecer iconos en objetivos de $spell:%s con tanque sobre cuerpo a cuerpo sobre prioridad a distancia y alternativa alfabética"
@@ -560,26 +562,26 @@ L.AUTO_YELL_ANNOUNCE_TEXT.combo			= "%s y %%s"--Spell name (from option, plus sp
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer	= UnitName("player")--Doesn't need translation, it's just player name spam
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 
-L.AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
-L.AUTO_YELL_CUSTOM_FADE			= "%s ha expirado"
-L.AUTO_HUD_OPTION_TEXT			= "Mostrar indicador en pantalla para $spell:%s"
-L.AUTO_HUD_OPTION_TEXT_MULTI	= "Mostrar indicadores en pantalla para varias mecánicas"
-L.AUTO_NAMEPLATE_OPTION_TEXT	= "Mostrar auras en placas de nombres para $spell:%s"
+L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
+L.AUTO_YELL_CUSTOM_FADE				= "%s ha expirado"
+L.AUTO_HUD_OPTION_TEXT				= "Mostrar indicador en pantalla para $spell:%s"
+L.AUTO_HUD_OPTION_TEXT_MULTI		= "Mostrar indicadores en pantalla para varias mecánicas"
+L.AUTO_NAMEPLATE_OPTION_TEXT		= "Mostrar auras en placas de nombres para $spell:%s"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED	= "Mostrar auras en placas de nombres para $spell:%s solamente usando "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT			= "Mostrar marco de distancia (%s m) para $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
-L.AUTO_RANGE_OPTION_TEXT_SHORT	= "Mostrar marco de distancia (%s m)"--For when a range frame is just used for more than one thing
-L.AUTO_RRANGE_OPTION_TEXT		= "Mostrar marco de distancia inverso (%s m) para $spell:%s"--Reverse range frame (green when players in range, red when not)
-L.AUTO_RRANGE_OPTION_TEXT_SHORT	= "Mostrar marco de distancia inverso (%s m)"
-L.AUTO_INFO_FRAME_OPTION_TEXT	= "Mostrar marco de información para $spell:%s"
-L.AUTO_INFO_FRAME_OPTION_TEXT2	= "Mostrar marco de información con una vista general del encuentro"
-L.AUTO_INFO_FRAME_OPTION_TEXT3	= "Mostrar marco de información para $spell:%s (cuando se alcanza el umbral de %%s)"
-L.AUTO_READY_CHECK_OPTION_TEXT	= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
-L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Mostrar temporizador para el récord actual de completar %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT	= "Reproduce avisos de sonido de DBM para auras privadas de $spell:%s en este encuentro."
+L.AUTO_RANGE_OPTION_TEXT_SHORT		= "Mostrar marco de distancia (%s m)"--For when a range frame is just used for more than one thing
+L.AUTO_RRANGE_OPTION_TEXT			= "Mostrar marco de distancia inverso (%s m) para $spell:%s"--Reverse range frame (green when players in range, red when not)
+L.AUTO_RRANGE_OPTION_TEXT_SHORT		= "Mostrar marco de distancia inverso (%s m)"
+L.AUTO_INFO_FRAME_OPTION_TEXT		= "Mostrar marco de información para $spell:%s"
+L.AUTO_INFO_FRAME_OPTION_TEXT2		= "Mostrar marco de información con una vista general del encuentro"
+L.AUTO_INFO_FRAME_OPTION_TEXT3		= "Mostrar marco de información para $spell:%s (cuando se alcanza el umbral de %%s)"
+L.AUTO_READY_CHECK_OPTION_TEXT		= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
+L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Mostrar temporizador para el récord actual de completar %s"
+L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Reproduce avisos de sonido de DBM para auras privadas de $spell:%s en este encuentro."
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Aviso desplazable"
-L.MOVE_WARNING_MESSAGE		= "Gracias por usar Deadly Boss Mods"
+L.MOVE_WARNING_MESSAGE		= "Gracias por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 
@@ -589,11 +591,11 @@ L.HUD_INVALID_SELF			= "No puedes usarte a ti mismo como objetivo."
 L.HUD_INVALID_ICON			= "No se puede usar el tipo icono en un objetivo sin icono."
 L.HUD_SUCCESS				= "Indicador en pantalla realizado con éxito. Expirará en %s o al escribir '/dbm hud hide'."
 L.HUD_USAGE	= {
-	"Uso de "..L.DBM.."-HudMap:",
+	"Uso de " .. L.DBM .. "-HudMap:",
 	"-----------------",
-	"/dbm hud <tipo> <objetivo> <seg>: Crea un indicador en pantalla que apunta al jugador objetivo durante el tiempo designado.",
+	"/dbm hud <tipo> <objetivo> <duración>: Crea un indicador en pantalla que apunta al jugador objetivo durante el tiempo designado.",
 	"Tipos válidos: arrow, dot, red, blue, green, yellow, icon (requiere un objetivo con icono de banda)",
-	"Objetivos válidos: target, focus, <jugador>",
+	"Objetivos válidos: objetivo, enfoque, <nombre de jugador>",
 	"Duraciones válidas: cualquier número (en segundos). Si se deja en blanco, durará 20 minutos.",
 	"/dbm hud hide: cancela y oculta el indicador en pantalla."
 }
@@ -602,9 +604,9 @@ L.ARROW_MOVABLE					= "Flecha desplazable"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: Crea una flecha que apunta a una ubicación designada mediante coordenadas locales."
 L.ARROW_WAY_SUCCESS				= "Para ocultar la flecha, escribe '/dbm arrow hide' o alcanza la ubicación designada."
 L.ARROW_ERROR_USAGE	= {
-	"Uso de "..L.DBM.."-Arrow:",
+	"Uso de " .. L.DBM .. "-Arrow:",
 	"-----------------",
-	"/dbm arrow <x> <y>: Crea una flecha que apunta a una ubicación específica (merdiante coordenadas de mundo).",
+	"/dbm arrow <x> <y>: Crea una flecha que apunta a una ubicación específica (mediante coordenadas de mundo).",
 	"/dbm arrow map <x> <y>: Crea una flecha que apunta a una ubicación específica (mediante coordenadas de zona).",
 	"/dbm arrow <jugador>: Crea una flecha que apunta al jugador específico de tu grupo o banda.",
 	"/dbm arrow hide: Oculta la flecha.",
@@ -617,19 +619,19 @@ L.COMBAT_RES_TIMER_TEXT		= "Siguiente resurrección"
 L.TIMER_RESPAWN				= "%s reaparece"
 
 L.LAG_CHECKING				= "Comprobando latencia de la banda..."
-L.LAG_HEADER				= "Deadly Boss Mods - Resultados de latencia"
+L.LAG_HEADER				= L.DEADLY_BOSS_MODS.. " - Resultados de latencia"
 L.LAG_ENTRY					= "%s: Latencia de mundo [%d ms] / Latencia de hogar [%d ms]"
 L.LAG_FOOTER				= "Sin respuesta: %s"
 
 L.DUR_CHECKING				= "Comprobando durabilidad de la banda..."
-L.DUR_HEADER				= "Deadly Boss Mods - Resultados de durabilidad"
+L.DUR_HEADER				= L.DEADLY_BOSS_MODS.. " - Resultados de durabilidad"
 L.DUR_ENTRY					= "%s: Durabilidad [%d%%] / Piezas rotas [%s]"
 
 L.OVERRIDE_ACTIVATED		= "Líder de banda ha activado las anulaciones de configuración para este encuentro"
 
 --LDB
-L.LDB_TOOLTIP_HELP1	= "Clic izquierdo para abrir "..L.DBM..""
-L.LDB_TOOLTIP_HELP2	= "Clic derecho para el menú de configuración"
+L.LDB_TOOLTIP_HELP1	= "Haz clic para abrir " .. L.DBM
+L.LDB_TOOLTIP_HELP2	= "Alt-Clic derecho para activar/desactivar modo silencioso"
 L.SILENTMODE_IS	= "El modo silencioso es "
 
 L.WORLD_BUFFS.hordeOny			= "Miembros de la Horda, ciudadanos de Orgrimmar, vengan y reúnanse para homenajear un hecho heroico"
@@ -649,8 +651,10 @@ L.DBM_INSTALL_REMINDER_DISABLE = "Desactiva todos los avisos y temporizadores de
 L.DBM_INSTALL_REMINDER_DISABLE2 = "No mostrar este mensaje nuevamente para este paquete." -- Used for unimportant mods, i.e., dungeons
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Wago.io en tu portapapeles."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Curseforge en tu portapapeles."
---"Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "
 L.DBM_INSTALL_PACKAGE_VANILLA = "Paquete de Era y Temporada de descubrimiento"
 L.DBM_INSTALL_PACKAGE_WRATH = "Paquete de Wrath"
 L.DBM_INSTALL_PACKAGE_CATA = "Paquete de Cataclysm"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquete de Mazmorras, Abismos y Eventos"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS = "DBM se utilizó en modo de prueba con distorsión temporal en la sesión actual, se recomienda recargar tu interfaz antes de usar DBM en un combate de jefe real. Todo debería funcionar como se espera, ¡pero no hay garantías!"
