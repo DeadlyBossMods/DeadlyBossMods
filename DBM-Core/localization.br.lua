@@ -658,3 +658,6 @@ L.DBM_INSTALL_PACKAGE_VANILLA = "Pacote Vanilla e Temporada da Descoberta"
 L.DBM_INSTALL_PACKAGE_WRATH = "Pacote Wrath"
 L.DBM_INSTALL_PACKAGE_CATA = "Pacote Cataclysm"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote Masmorras, Imersões e Eventos"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS = "O DBM foi usado em modo de teste com distorção temporal na sessão atual, é recomendável recarregar sua interface antes de usar o DBM em uma luta de chefe real. Tudo deve funcionar como esperado, mas sem garantias!"
