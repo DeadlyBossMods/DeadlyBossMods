@@ -256,8 +256,8 @@ L.SLASHCMD_HELP				= {
 	"Commandes slash disponibles :",
 	"----------------",
 	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
-	"/range <number> ou /distance <number>: Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
-	"/hudar <number>: Affiche le radar de portée HUD.",
+	"/range <numéro> ou /distance <numéro>: Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
+	"/hudar <numéro>: Affiche le radar de portée HUD.",
 	"/dbm timer: Lance un chronomètre DBM perso, voir '/dbm timer' pour plus de détails.",
 	"/dbm arrow : Affiche la flèche DBM, voir /dbm arrow help pour les détails.",
 	"/dbm hud: Affiche le HUD de DBM, voir '/dbm hud' pour plus de détails.",
@@ -276,8 +276,8 @@ L.SLASHCMD_HELP2				= {
 L.TIMER_USAGE	= {
 	"Commandes " .. L.DBM .. " des chronomètres:",
 	"-----------------",
-	"/dbm timer <sec> <text>: Commence un chronomètre de <sec> secondes avec votre <text>.",
-	"/dbm ltimer <sec> <text>: Commence un chronomètre qui tourne en boucle jusqu'à annulation.",
+	"/dbm timer <sec> <texte>: Commence un chronomètre de <sec> secondes avec votre <texte>.",
+	"/dbm ltimer <sec> <texte>: Commence un chronomètre qui tourne en boucle jusqu'à annulation.",
 	"('Broadcast' devant n'importe quel chronomètre et partage avec le raid si vous êtes chef ou assistant)",
 	"/dbm timer endloop: Annule les boucles de chronomètre."
 }
