@@ -12,12 +12,8 @@ scrubbers["Cast"] = function(self, guid)
 	return guid:gsub("Cast%-(%d*)%-%d*%-(%d*)%-%d*%-(%d*)%-(%x*)", "Cast-%1-1-%2-2-%3-" .. ("%010X"):format(spawnId))
 end
 
-local function playerGuidString(id)
-	return ("Player-1-%08d"):format(id) -- Using %d instead of %X on purpose to make it more human readable
-end
-
 scrubbers["Player"] = function(self, guid)
-	return playerGuidString(self.playerGuids[guid])
+	return self.playerGuids[guid]
 end
 
 scrubbers["Pet"] = function(self, guid)
@@ -98,13 +94,19 @@ function anonymizer:ScrubChatMessage(msg, name)
 end
 
 -- Technically this is a pseudonymizer, not an anonymizer, but that's what we want
-function anonymizer:New(logEntries, first, last, recordingPlayer, keepNames)
+function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerNamesAndGuids)
 	local playerGuids, playerNames, playerNamesByGuid, playerServers, realPlayerNames = {}, {}, {}, {}, {}
 	local petGuids, petNames = {}, {}
 	local spawnIds = {}
 	local nonPlayerNames = {}
 	local roles = roleGuesser:New(recordingPlayer)
-	for i = first, last do -- do we want to use the entire log or just the segment we are looking at? probably saver to restrict to the segment
+	local offset = 1
+	while logEntries[offset]:match("%[PLAYER_INFO%]") do -- PLAYER_INFO is only at the start of the log
+		local class, realGuid = logEntries[offset]:match("%[PLAYER_INFO%] [^#]*#([^#]*)#([^#]*)")
+		roles:SetPlayerClass(realGuid, class)
+		offset = offset + 1
+	end
+	for i = first, last do -- do we want to use the entire log or just the segment we are looking at? probably safer to restrict to the segment
 		local line = logEntries[i]
 		if line:match("%[CLEU%]") then
 			roles:HandleCombatLog(line)
@@ -165,14 +167,15 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepNames)
 	local perRoleIds = {
 		Healer = 1, Tank = 1, Dps = 1, Unknown = 1
 	}
-	for i, v in ipairs(sortedIds(playerGuids)) do
-		local roleInfo = playerInfo[v] or error("failed to get role info for " .. v)
-		local name = keepNames and realPlayerNames[v] or roleInfo.role .. perRoleIds[roleInfo.role]
-		playerNames[playerGuids[v]] = name
-		playerNamesByGuid[v] = name
-		roleInfo:Anonymize(name, playerGuidString(i))
+	for i, realGuid in ipairs(sortedIds(playerGuids)) do
+		local roleInfo = playerInfo[realGuid] or error("failed to get role info for " .. realGuid)
+		local name = keepPlayerNamesAndGuids and realPlayerNames[realGuid] or roleInfo.role .. perRoleIds[roleInfo.role]
+		playerNames[playerGuids[realGuid]] = name
+		playerNamesByGuid[realGuid] = name
+		local anonGuid = keepPlayerNamesAndGuids and realGuid or ("Player-1-%08d"):format(i) -- Using %d instead of %X on purpose to make it more human readable
+		roleInfo:Anonymize(name, anonGuid)
 		perRoleIds[roleInfo.role] = perRoleIds[roleInfo.role] + 1
-		playerGuids[v] = i
+		playerGuids[realGuid] = anonGuid
 	end
 	for i, v in ipairs(sortedIds(petGuids)) do
 		petNames[petGuids[v]] = "Pet" .. i

@@ -25,20 +25,8 @@ end
 local playerName = args.player
 
 local function loadTranscriptorLuaString(code)
-	local env = {}
-	if _VERSION == "Lua 5.1" then
-		print("Lua 5.1 can choke on huge Transcriptor logs, try using a newer version of Lua if you get errors about the constant limit")
-		local f, err = loadstring(code)
-		if not f then error(err) end
-		setfenv(f, env)
-		f()
-	else
-		---@diagnostic disable-next-line: redundant-parameter -- project setup as Lua 5.1 because I want to stay 5.1 compatible
-		local f, err = load(code, nil, nil, env)
-		if not f then error(err) end
-		f()
-	end
-	return env.TranscriptDB
+	local stupidParser = require "StupidParser"
+	return stupidParser:ParseLua(code)
 end
 
 local function jsonToLua(json)
@@ -49,7 +37,8 @@ local function jsonToLua(json)
 		line = line:gsub("^(%s*)\"(.-)\": [%[{]%s*$", "%1[\"%2\"] = {")
 		line = line:gsub("^(%s*)\"([^\"]+)\":", "%1[\"%2\"] = ")
 		line = line:gsub("^(%s*)],?(%s*)$", "%1},%2")
-		-- FIXME: properly support \u escapes, but what is this even? UTF-16?
+		-- TODO: properly support \u escapes, but what is this even? UTF-16?
+		-- But it doesn't matter if the log gets anonymized, and these weird json exports we get all end up being anonymized anyways
 		line = line:gsub("\\u(%x%x%x)", "U%1")
 		lines[#lines + 1] = line
 	end
@@ -237,6 +226,20 @@ local function hex(num)
 	return setmetatable({value = num}, hexMetatable)
 end
 
+local formatMetatables = {}
+local function format(fmt, data)
+	local metatable = formatMetatables[fmt]
+	if not metatable then
+		formatMetatables[fmt] = {
+			__tostring = function(self)
+				return fmt:format(self.value)
+			end
+		}
+		return format(fmt, data)
+	end
+	return setmetatable({value = data}, metatable)
+end
+
 local function literal(lit)
 	if type(lit) == "string" then
 		return ("%q"):format(lit)
@@ -282,7 +285,8 @@ local function transcribeUnitSpellEvent(event, params, anon)
 	unitTarget = anon:ScrubTarget(unitTarget)
 	unitHp = tonumber(unitHp) or 0
 	unitPower = tonumber(unitPower) or 0
-	return literalsTable(event, unit, guid, tonumber(spellId), unitName, unitHp, unitPower, unitTarget)
+	-- Fun Lua 5.1/5.4 diff: tostring(tonumber("100.0")) yields 100 on Lua 5.1 and 100.0 on Lua 5.4 because of int vs. number type
+	return literalsTable(event, unit, guid, tonumber(spellId), unitName, format("%.1f", unitHp), format("%.1f", unitPower), unitTarget)
 end
 
 -- Rough attempt at flag reconstruction, not 100% correct, we could be a bit more smart here about REACTION by tracking a GUID across multiple events
@@ -314,7 +318,13 @@ local seenFriendlyCids = {}
 local function transcribeCleu(rawParams, anon)
 	local params = {}
 	local i = 1 -- to handle nil
-	for param in rawParams:gmatch("([^#]*)") do
+	local offset = 1
+	while true do -- This looks like gmatch could do the job, but it's subtly different between Lua 5.1 and 5.4 when it comes to handling empty matches at the end of the string
+		local matchStart, matchEnd, param = rawParams:find("([^#]*)#?", offset)
+		if not matchStart or matchEnd < matchStart then
+			break
+		end
+		offset = matchEnd + 1
 		params[i] = guessType(param)
 		i = i + 1
 	end
@@ -510,7 +520,13 @@ local function transcribeEvent(event, params, anon)
 	-- TODO: UNIT_AURA?
 	-- Generic event
 	local result = {literal(event)}
-	for param in params:gmatch("([^#]*)") do
+	local offset = 1
+	while true do -- This looks like gmatch could do the job, but it's subtly different between Lua 5.1 and 5.4 when it comes to handling empty matches at the end of the string
+		local matchStart, matchEnd, param = params:find("([^#]*)#?", offset)
+		if not matchStart or matchEnd < matchStart then
+			break
+		end
+		offset = matchEnd + 1
 		result[#result + 1] = literal(guessType(param))
 	end
 	return result

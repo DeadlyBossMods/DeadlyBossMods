@@ -9,7 +9,8 @@ function roleGuesser:New(recordingPlayer)
 		players = {},
 		recordingPlayer = recordingPlayer,
 		numPlayers = 0,
-		playersAlive = 0
+		playersAlive = 0,
+		classes = {}
 	}
 	return setmetatable(obj, mt)
 end
@@ -26,6 +27,7 @@ function roleGuesser:initPlayerStats(name)
 		tanking = 0,
 		healed = 0,
 		role = "Unknown", ---@type "Unknown"|"Healer"|"Tank"|"Dps"
+		class = nil, ---@type string? Class in filename format, e.g., "SHAMAN". Not present in logs generated from older transcriptor versions
 		realName = name or "Unknown",
 		anonName = nil, ---@type string
 		anonGuid = nil, ---@type string
@@ -44,6 +46,9 @@ function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries
 	if self.realName == self.anonName then
 		extraInfo = (", role = %q"):format(self.role)
 	end
+	if self.class then
+		extraInfo = (", class = %q"):format(self.class)
+	end
 	if self.heal > 0.3 and self.role ~= "Healer"
 	or self.damage > 0.2 and self.role ~= "Dps" and (self.role ~= "Tank" or self.damage > 0.4)
 	or (self.tanking > 0.3 or self.healed > 0.3) and self.role ~= "Tank"
@@ -59,12 +64,24 @@ function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries
 	return ("{%q,%s %q%s}"):format(self.anonName, (" "):rep((maxNameLen or 0) - #self.anonName), self.anonGuid, extraInfo)
 end
 
+function roleGuesser:SetPlayerClass(realGuid, class)
+	self.classes[realGuid] = class
+end
+
+local unpack = unpack or table.unpack -- Lua 5.1 compat
+
 function roleGuesser:HandleCombatLog(line)
 	-- TODO: why is parsing not handled in one central place?
 	local args = line:match("%[CLEU%] (.*)")
 	local params = {}
 	local i = 1
-	for param in args:gmatch("([^#]*)") do
+	local offset = 1
+	while true do -- This looks like gmatch could do the job, but it's subtly different between Lua 5.1 and 5.4 when it comes to handling empty matches at the end of the string
+		local matchStart, matchEnd, param = args:find("([^#]*)#?", offset)
+		if not matchStart or matchEnd < matchStart then
+			break
+		end
+		offset = matchEnd + 1
 		local val
 		if param == "nil" then
 			val = nil
@@ -84,7 +101,7 @@ function roleGuesser:HandleCombatLog(line)
 			i = i + 1
 		end
 	end
-	local event, srcGuid, srcName, dstGuid, dstName, spellId, spellName, amount, overkill = table.unpack(params, 1, i)
+	local event, srcGuid, srcName, dstGuid, dstName, spellId, spellName, amount, overkill = unpack(params, 1, i)
 	srcName = srcName and srcName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
 	dstName = type(dstName) == "string" and dstName:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
 	if event == "SWING_DAMAGE" then
@@ -143,11 +160,12 @@ function roleGuesser:GetPlayerInfo()
 		maxVals.tanking = math.max(maxVals.tanking, v.tanking)
 		maxVals.healed = math.max(maxVals.healed, v.healed)
 	end
-	for _, v in pairs(self.players) do
+	for realGuid, v in pairs(self.players) do
 		v.heal = v.heal / maxVals.heal
 		v.damage = v.damage / maxVals.damage
 		v.tanking = v.tanking / maxVals.tanking
 		v.healed = v.healed / maxVals.healed
+		v.class = self.classes[realGuid]
 		-- Some heuristics based on wild guesses, this doesn't need to be 100% accurate, just make a somewhat reasonable guess
 		if v.heal >= 0.5 or v.heal >= 0.1 and v.damage < v.heal and v.tanking < 0.2 then
 			v.role = "Healer"
