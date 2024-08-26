@@ -25,20 +25,8 @@ end
 local playerName = args.player
 
 local function loadTranscriptorLuaString(code)
-	local env = {}
-	if _VERSION == "Lua 5.1" then
-		print("Lua 5.1 can choke on huge Transcriptor logs, try using a newer version of Lua if you get errors about the constant limit")
-		local f, err = loadstring(code)
-		if not f then error(err) end
-		setfenv(f, env)
-		f()
-	else
-		---@diagnostic disable-next-line: redundant-parameter -- project setup as Lua 5.1 because I want to stay 5.1 compatible
-		local f, err = load(code, nil, nil, env)
-		if not f then error(err) end
-		f()
-	end
-	return env.TranscriptDB
+	local stupidParser = require "StupidParser"
+	return stupidParser:ParseLua(code)
 end
 
 local function jsonToLua(json)
