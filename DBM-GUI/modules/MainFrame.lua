@@ -248,7 +248,9 @@ function frame:LoadAndShowFrame(subFrame)
 			end
 		end
 	end
-	subFrame.selectButton:LockHighlight()
+	if subFrame.selectButton then
+		subFrame.selectButton:LockHighlight()
+	end
 	frame:DisplayFrame(subFrame)
 end
 

@@ -1588,6 +1588,8 @@ do
 			onLoadCallbacks = nil
 			loadOptions(self)
 			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
+			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
+			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
 			self.AddOns = {}
 			private:OnModuleLoad()
@@ -3148,7 +3150,7 @@ do
 	end
 end
 
-function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
+function DBM:LoadModOptions(modId, inCombat, first)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
 	local savedStatsName = modId:gsub("-", "") .. "_SavedStats"
@@ -3167,7 +3169,7 @@ function DBM:LoadModOptions(modId, inCombat, first, enableTestUi)
 		if not savedOptions[id] then savedOptions[id] = {} end
 		---@class DBMMod
 		local mod = self:GetModByName(id)
-		mod.showTestUI = enableTestUi
+		mod.showTestUI = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests[id]
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
@@ -4142,7 +4144,7 @@ function DBM:ScenarioCheck(delay)
 end
 
 function DBM:LoadMod(mod, force, enableTestSupport)
-	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport and DBM_ModsToLoadWithFullTestSupport[mod.modId]
+	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport.addonsWithTests[mod.modId]
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
@@ -4196,7 +4198,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if self.NewerVersion and showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
-		self:LoadModOptions(mod.modId, InCombatLockdown(), true, enableTestSupport) -- Show the test UI immediately to make it clear that the mod is loaded with test support
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true) -- Show the test UI immediately to make it clear that the mod is loaded with test support
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 			DBM_GUI:CreateBossModTab(mod, mod.panel)
@@ -5535,8 +5537,8 @@ end
 --  Kill/Wipe Detection  --
 ---------------------------
 
+local lastValidCombat = 0
 do
-	local lastValidCombat = 0
 	---@param self DBM
 	---@param confirm boolean?
 	---@param confirmTime number?
@@ -5701,6 +5703,9 @@ do
 		cSyncSender = {}
 		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
+			if DBM.TaintedByTests then
+				self:AddMsg(L.DBM_TAINTED_BY_TESTS) -- Shows this early in case tests messed with some filters below
+			end
 			if not mod.Options.Enabled then return end
 			if not mod.combatInfo then return end
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
@@ -7232,6 +7237,38 @@ end
 --  Enable/Disable DBM  --
 --------------------------
 do
+	-- Clear all stored timers for antispam, sync spam, combat re-detection etc.
+	-- This is run after tests with time warping because these may refer to a time in the future
+	function DBM:ClearSpamTimers()
+		-- TODO: many of these timers follow the same anti-spam pattern, it would be useful to move those to a shared function to clean up this mess
+		local time = _G.GetTime() -- to not accidentally pull in time-warped time, but it should be called after timewarping is disabled
+		table.wipe(private.modSyncSpam)
+		table.wipe(lastBossEngage)
+		table.wipe(lastBossDefeat)
+		lastCombatStarted = time
+		lastValidCombat = time
+		--lastLFGAlert = time -- local to the event handler, but doesn't really matter
+		local function clearAntiSpam(obj)
+			for k, v in pairs(obj) do -- TODO: consider moving lastAntiSpam to its own table, it'd be much cleaner
+				if type(k) == "string" and k:match("^lastAntiSpam") and type(v) == "number" then
+					obj[k] = nil
+				end
+			end
+		end
+		for _, mod in ipairs(DBM.Mods) do
+			---@diagnostic disable-next-line: inject-field
+			mod.lastKillTime = nil
+			---@diagnostic disable-next-line: inject-field
+			mod.lastWipeTime = nil
+			---@diagnostic disable-next-line: inject-field
+			if mod.combatInfo then
+				mod.combatInfo.pull = nil
+			end
+			clearAntiSpam(mod)
+		end
+		clearAntiSpam(DBM)
+	end
+
 	local forceDisabled = false
 	function DBM:Disable(forceDisable)
 		for _, mod in ipairs(inCombat) do
@@ -7241,6 +7278,8 @@ do
 		DBMScheduler:Unschedule()
 		dbmIsEnabled = false
 		forceDisabled = forceDisable
+		DBT:CancelAllBars()
+		DBM:ClearSpamTimers()
 	end
 
 	function DBM:Enable()

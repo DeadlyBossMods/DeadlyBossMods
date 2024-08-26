@@ -14,9 +14,9 @@ infoArea:CreateText(L.DevPanelExplanation, nil, true)
 
 local testPanel = DBM_GUI.Cat_Development:CreateNewPanel(L.Tests, "option")
 
-function DBM_GUI:CreateTimewarpSlider(panel)
+function DBM_GUI:CreateTimewarpSlider(parent)
 	---@class TimeWarpSlider: DBMPanelSlider
-	local timeWarpSlider = panel:CreateSlider("", 1, 500, 1, 400)
+	local timeWarpSlider = parent:CreateSlider("", 1, 500, 1, 400)
 	timeWarpSlider:SetScript("OnValueChanged", function(self, value)
 		local sliderMax = select(2, self:GetMinMaxValues())
 		if value >= sliderMax then -- slider at max == dynamic fastest speed

@@ -155,6 +155,9 @@ function test.TimeWarper:SetSpeed(factor)
 		self:DisableSound()
 	end
 	self.factor = factor <= 0 and 1e9 or factor
+	if self.factor > 1 then
+		DBM.TaintedByTests = true
+	end
 	---@type DBMTestCallbackTimewarp
 	local testStopCallbackArgs = {
 		Speed = factor,

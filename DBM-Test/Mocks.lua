@@ -426,6 +426,18 @@ function mocks:SetModEnvironment(stackDepth)
 	setfenv(stackDepth + 1, self.modEnv)
 end
 
+function mocks:IsModLoadedWithMocks(mod)
+	local mockEnv = self:GetMockEnvironment()
+	for _, v in pairs(mod) do
+		if type(v) == "function" then
+			if getfenv(v) == mockEnv then -- any function having that environment is good enough, this is just for showing a warning in the UI
+				return true
+			end
+		end
+	end
+	return false
+end
+
 function test:TeardownHooks()
 	self:UnhookPrivates()
 	for _, mod in ipairs(DBM.Mods) do
