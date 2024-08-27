@@ -597,3 +597,5 @@ L.FontStyle				= "글꼴 속성"
 L.FontColor			= "글꼴 색상"
 L.FontShadow				= "그림자"
 L.FontType				= "글꼴 선택"
+
+L.FontHeight	= 16
