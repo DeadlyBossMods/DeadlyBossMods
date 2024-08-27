@@ -9,9 +9,10 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "HMM"
 end
 
-L.HOW_TO_USE_MOD					= "Bienvenue sur "..L.DBM..". Tapez /dbm help pour une liste des commandes supportées. Pour accédez aux options, tapez /dbm dans la fenêtre de discussion pour commencer la configuration. Chargez des zones spécifiques manuellement pour configurer tous les paramètres spécifiques aux boss selon vos envies. "..L.DBM.." essaie de le faire pour vous en analysant votre spécialisation au premier lancement, mais nous savons que de toute façon certaines personnes souhaitant activer d'autres options."
+L.HOW_TO_USE_MOD					= "Bienvenue sur " .. L.DBM .. ". Tapez /dbm help pour une liste des commandes supportées. Pour accédez aux options, tapez /dbm dans la fenêtre de discussion pour commencer la configuration. Chargez des zones spécifiques manuellement pour configurer tous les paramètres spécifiques aux boss selon vos envies. " .. L.DBM .. " essaie de le faire pour vous en analysant votre spécialisation au premier lancement, mais nous savons que de toute façon certaines personnes souhaitant activer d'autres options."
 L.SILENT_REMINDER 					= "Rappel : " .. L.DBM .. " est toujours en mode silencieux."
 L.NEWS_UPDATE						= "|h|c11ff1111Nouvelles|r|h: Cette mise à jour modifie la structure des mods pour que le classique et le principal utilisent désormais des modules unifiés (identiques). Cela signifie que les modules Vanilla, TBC, Wrath et Cata sont maintenant installés séparément en utilisant les mêmes packages que le jeu de base. En savoir plus à ce sujet |Hgarrmission:DBM:news|h|cff3588ff[ici]|r|h"
+L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111Nouvelles|r|h: Cette mise à jour modifie la structure des mods pour que le classique et le principal utilisent désormais des modules unifiés (identiques). Cela signifie que les modules Vanilla, TBC, Wrath et Cata sont maintenant installés séparément en utilisant les mêmes packages que le jeu de base. Vous êtes actuellement dans un raid qui a un module manquant. Ce message continuera de s'afficher (et vous n'aurez pas d'alertes fonctionnelles pour cette zone) jusqu'à ce que vous ayez installé le module de raid manquant."
 
 L.COPY_URL_DIALOG_NEWS 				= "Pour lire les dernières nouvelles, visitez le lien ci-dessous"
 
@@ -20,7 +21,7 @@ L.LOAD_MOD_SUCCESS			= "Modules '%s' chargés. Pour plus d'options, tapez /dbm o
 L.LOAD_MOD_COMBAT			= "Chargement de '%s' reporté jusqu'à la fin du combat"
 L.LOAD_GUI_ERROR			= "Impossible de charger l'interface: %s"
 L.LOAD_GUI_COMBAT			= "GUI ne peut pas se charger initialement en combat. GUI sera chargé après le combat. Une fois le GUI chargé, vous pourrez le charger en combat." --load?reload?change?
-L.BAD_LOAD					= ""..L.DBM.." a détecté une erreur de chargement du mod de l'instance car vous êtes en combat. Dès que vous sortez de combat veuillez entrer /console reloadui le plus vite possible."
+L.BAD_LOAD					= "" .. L.DBM .. " a détecté une erreur de chargement du mod de l'instance car vous êtes en combat. Dès que vous sortez de combat veuillez entrer /console reloadui le plus vite possible."
 L.LOAD_MOD_VER_MISMATCH		= "%s n'a pas pu être chargé car votre DBM-Core ne remplit pas les conditions. Il vous faut une version plus récente."
 L.LOAD_MOD_EXP_MISMATCH 	= "%s n'a pas pu être chargé car il est conçu pour une extension de WoW qui n'est pas actuellement disponible. Lorsque l'extension sera disponible, ce mod fonctionnera automatiquement."
 L.LOAD_MOD_TOC_MISMATCH 	= "%s n'a pas pu être chargé car il est conçu pour un patch WoW (%s) qui n'est pas actuellement disponible. Lorsque le patch sera disponible, ce mod fonctionnera automatiquement."
@@ -36,13 +37,13 @@ L.NO_RANGE 					= "La fenêtre de portée ne peut pas être utilisée en raison 
 L.NO_ARROW 					= "La flèche ne peut pas être utilisée dans les instances."
 L.NO_HUD 					= "HUDMap ne peut pas être utilisé dans les instances."
 
-L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM.." a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
-L.DYNAMIC_ADD_COUNT			= L.DBM.." a désactivé les alertes de décompte d'adds en vie sur ce combat pour cause de manque d'information du nombre d'adds apparaissant pour votre taille de raid."
-L.DYNAMIC_MULTIPLE			= L.DBM.." a désactivé plusieurs fonctionnalités sur ce combat pour cause de manque d'informations sur certains mécanismes pour votre taille de raid."
+L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
+L.DYNAMIC_ADD_COUNT			= L.DBM .. " a désactivé les alertes de décompte d'adds en vie sur ce combat pour cause de manque d'information du nombre d'adds apparaissant pour votre taille de raid."
+L.DYNAMIC_MULTIPLE			= L.DBM .. " a désactivé plusieurs fonctionnalités sur ce combat pour cause de manque d'informations sur certains mécanismes pour votre taille de raid."
 
-L.LOOT_SPEC_REMINDER		= "Votre spécialisation actuelle est %s. Votre choix de loot actuel est %s."
+L.LOOT_SPEC_REMINDER		= "Votre spécialisation actuelle est %s. Votre choix de butin actuel est %s."
 
-L.BIGWIGS_ICON_CONFLICT		= L.DBM.." a détecté que vous avez activé vos icônes de raid sur "..L.DBM.." et Bigwigs simultanément. Désactivez les icônes de l'un d'entre-eux pour éviter tout conflit avec votre raid leader"
+L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " a détecté que vous avez activé vos icônes de raid sur " .. L.DBM .. " et Bigwigs simultanément. Désactivez les icônes de l'un d'entre-eux pour éviter tout conflit avec votre raid leader"
 
 L.MOD_AVAILABLE				= "%s est disponible pour ce contenu. Vous pouvez trouver sur Curse, Wago, WowInterface, ou Github."
 L.MOD_MISSING				= "Pas de module de raid"
@@ -81,7 +82,7 @@ L.AFK_WARNING = "Vous êtes ABS et en combat (%d pour cent de santé restante), 
 
 L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la nouvelle fonctionnalité d'IA de chronomètre pour générer des approximations de chronomètre)"
 
-L.PROFILE_NOT_FOUND				= "<"..L.DBM.."> Votre profile actuel est corrompu. "..L.DBM.." va charger le profil par défaut."
+L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Votre profile actuel est corrompu. " .. L.DBM .. " va charger le profil par défaut."
 L.PROFILE_CREATED				= "'%s' profil créé."
 L.PROFILE_CREATE_ERROR			= "Echec de la création de profil. Nom du profil invalide."
 L.PROFILE_CREATE_ERROR_D		= "Echec de la création de profil. Le profil '%s' existe déjà."
@@ -111,7 +112,7 @@ L.NOTEHEADER					= "Entrez votre texte de note ici pour %s. Entourer le nom d'un
 L.NOTEFOOTER					= "Appuyez sur 'Ok' pour accepter les changements et 'annuler' pour refuser."
 L.NOTESHAREDHEADER				= "%s a partagé la note ci-dessous pour %s. Si vous acceptez, elle effacera votre note actuelle."
 L.NOTESHARED					= "Votre noet a été envoyée au groupe."
-L.NOTESHAREERRORSOLO			= "Vous vous sentez seul? Vous ne devriez pas vous envoyer eds notes à vous-même."
+L.NOTESHAREERRORSOLO			= "Vous vous sentez seul ? Vous ne devriez pas vous envoyer eds notes à vous-même."
 L.NOTESHAREERRORBLANK			= "Impossible de partager des notes vides."
 L.NOTESHAREERRORGROUPFINDER		= "Les notes ne peuvent pas être partagées en BGs, LFR, or LFG"
 L.NOTESHAREERRORALREADYOPEN		= "Vous ne pouvez pas ouvrir le lien de partage d'une note toujours ouverte dans l'éditeur, pour vous empêcher de perdre la note que vous êtes toujours en train de modifier."
@@ -171,45 +172,45 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "%s vient de terminer %s ! Ils ont un total 
 L.WHISPER_SCENARIO_END_WIPE		 	= "%s a échoué dans %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s a échoué dans %s. Ils ont un total de %d échecs dans cette difficulté."
 
-L.VERSIONCHECK_HEADER		= ""..L.DEADLY_BOSS_MODS.." - Versions"
+L.VERSIONCHECK_HEADER		= "Module de boss - Versions"
 L.VERSIONCHECK_ENTRY		= "%s: %s (%s)"
 L.VERSIONCHECK_ENTRY_TWO	= "%s: %s (%s) & %s (%s)"--Two Boss mods
-L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: "..L.DBM.." non installé"--Two Boss mods
-L.VERSIONCHECK_FOOTER		= "%d joueurs trouvés avec "..L.DEADLY_BOSS_MODS.." & %d joueurs avec BigWigs"
+L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: " .. L.DBM .. " non installé"--Two Boss mods
+L.VERSIONCHECK_FOOTER		= "%d joueurs trouvés avec " .. L.DEADLY_BOSS_MODS .. " & %d joueurs avec BigWigs"
 L.VERSIONCHECK_OUTDATED		= "Les joueurs suivants %d ont une version périmée du bossmod: %s"
-L.YOUR_VERSION_OUTDATED	  	= "Votre version de "..L.DEADLY_BOSS_MODS.." est périmée. Veuillez vous rendre sur www.deadlybossmods.com pour obtenir la dernière version."
-L.VOICE_PACK_OUTDATED		= "Il semble que votre pack de voix "..L.DBM.." manquent de sons supportés sur cette version de "..L.DBM..". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du pack devoix ou contactez l'auteur pour une mise à jour qui la contient."
-L.VOICE_MISSING				= "Vous aviez un pack de voix séléctionné qui ne pouvait pas être trouvé. Votre séléction a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez vous que votre pack est correctement installé et activé."
-L.VOICE_DISABLED			= "Vous avez actuellement au moins un pack de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pack de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les packs de voix inutilisés pour masquer ce message."
-L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un pack qui ne pouvait pas être trouvé. Il a été reinitilisé à l'option par défaut."
+L.YOUR_VERSION_OUTDATED	  	= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée. Veuillez vous rendre sur Curse, Wago, WoWInterface ou Github pour obtenir la dernière version."
+L.VOICE_PACK_OUTDATED		= "Il semble que votre pacquet de voix " .. L.DBM .. " manquent de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du pacquet devoix ou contactez l'auteur pour une mise à jour qui la contient."
+L.VOICE_MISSING				= "Vous aviez un pacquet de voix séléctionné qui ne pouvait pas être trouvé. Votre séléction a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez vous que votre pacquet est correctement installé et activé."
+L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour masquer ce message."
+L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un pacquet qui ne pouvait pas être trouvé. Il a été reinitilisé à l'option par défaut."
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Votre version de "..L.DEADLY_BOSS_MODS.." est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
+L.UPDATEREMINDER_HEADER				= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Votre module de %s est périmé.\n La version %s est disponible au Curse, Wago, WoWInterface ou Github."
 L.UPDATEREMINDER_FOOTER				= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papier."
 L.UPDATEREMINDER_FOOTER_GENERIC 	= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papier."
-L.UPDATEREMINDER_DISABLE			= "ATTENTION : Compte tenu que votre version de "..L.DEADLY_BOSS_MODS.." est périmée et incompatible avec les nouvelles versions, "..L.DBM.." a été désactivé jusqu'à ce que vous le mettiez à jour. Ceci, pour éviter de mauvaises expériences de jeu pour vous et les membres du raid."
+L.UPDATEREMINDER_DISABLE			= "ATTENTION : Compte tenu que votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée et incompatible avec les nouvelles versions, " .. L.DBM .. " a été désactivé jusqu'à ce que vous le mettiez à jour. Ceci, pour éviter de mauvaises expériences de jeu pour vous et les membres du raid."
 L.UPDATEREMINDER_DISABLETEST		= "ATTENTION : En raison de la version obsolète de votre " .. L.DEADLY_BOSS_MODS .. " et du fait qu'il s'agit d'un royaume de test/bêta, il a été désactivé de force et ne peut pas être utilisé avant d'être mis à jour. Ceci est pour garantir que des mods obsolètes ne sont pas utilisés pour générer des retours d'expérience sur les tests."
-L.UPDATEREMINDER_HOTFIX		  		= "Votre version de "..L.DBM.." contient des chronomètres et alertes incorrects sur ce boss. Ceci a été corrigé dans la dernière version (ou alpha si la prochaine version n'est pas encore disponible)."
-L.UPDATEREMINDER_HOTFIX_ALPHA		= "La version de "..L.DBM.." sur laquelle vous êtes a des problèmes connus sur ce combat qui sont corrigées dans une future version (ou au moins une version alpha)"
-L.UPDATEREMINDER_MAJORPATCH			= "ATTENTION : Du au fait que votre "..L.DBM.." n'est pas à jour, celui-ci a été désactivé, puisqu'il y a eu une mise à jour majeure du jeu. Ceci pour être sûr que du code incompatible ou trop vieux ne réduise l'expérience de jeu pour vous ou des membres de votre groupe. Téléchargez une nouvelle version sur deadlybossmods.com ou curse dès que possible."
-L.VEM								= "ATTENTION : Vous utilisez et "..L.DBM.." et Voice Encounter Mods. DBM ne tournera pas dans cette configuration et ne sera donc pas chargé."
-L.OUTDATEDPROFILES					= "ATTENTION : DBM-Profiles n'est pas compatible avec cette version de "..L.DBM..". Il faut qu'il soit désactivé pour que "..L.DBM.." puisse tourner sans soucis."
+L.UPDATEREMINDER_HOTFIX		  		= "Votre version de " .. L.DBM .. " contient des chronomètres et alertes incorrects sur ce boss. Ceci a été corrigé dans la dernière version (ou alpha si la prochaine version n'est pas encore disponible)."
+L.UPDATEREMINDER_HOTFIX_ALPHA		= "La version de " .. L.DBM .. " sur laquelle vous êtes a des problèmes connus sur ce combat qui sont corrigées dans une future version (ou au moins une version alpha)"
+L.UPDATEREMINDER_MAJORPATCH			= "ATTENTION : Du au fait que votre " .. L.DBM .. " n'est pas à jour, celui-ci a été désactivé, puisqu'il y a eu une mise à jour majeure du jeu. Ceci pour être sûr que du code incompatible ou trop vieux ne réduise l'expérience de jeu pour vous ou des membres de votre groupe. Téléchargez une nouvelle version sur deadlybossmods.com ou curse dès que possible."
+L.VEM								= "ATTENTION : Vous utilisez et " .. L.DBM .. " et Voice Encounter Mods. DBM ne tournera pas dans cette configuration et ne sera donc pas chargé."
+L.OUTDATEDPROFILES					= "ATTENTION : DBM-Profiles n'est pas compatible avec cette version de " .. L.DBM .. ". Il faut qu'il soit désactivé pour que " .. L.DBM .. " puisse tourner sans soucis."
 L.OUTDATEDSPELLTIMERS 				= "ATTENTION : DBM-SpellTimers interfère avec " .. L.DBM .. " et doit être désactivé pour que " .. L.DBM .. " fonctionne correctement."
 L.OUTDATEDRLT 						= "ATTENTION : DBM-RaidLeadTools interfère avec " .. L.DBM .. ". DBM-RaidLeadTools n'est plus pris en charge et doit être supprimé pour que " .. L.DBM .. " fonctionne correctement."
 L.VICTORYSOUND 						= "ATTENTION : DBM-VictorySound n'est pas compatible avec cette version de " .. L.DBM .. ". Il doit être supprimé avant que " .. L.DBM .. " puisse continuer, pour éviter les conflits."
 L.DPMCORE 							= "ATTENTION : Les mods JcJ mortels sont abandonnés et non compatibles avec cette version de " .. L.DBM .. ". Ils doivent être supprimés avant que " .. L.DBM .. " puisse continuer, pour éviter les conflits."
 L.DBMLDB 							= "ATTENTION : DBM-LDB est maintenant intégré dans DBM-Core. Bien qu'il ne causera aucun problème, il est recommandé de supprimer 'DBM-LDB' de votre dossier d'add-ons."
 L.DBMLOOTREMINDER 					= "ATTENTION : Le mod tiers DBM-LootReminder est installé. Cet add-on n'est plus compatible avec le client WoW Retail et causera des problèmes avec " .. L.DBM .. " et ne pourra pas envoyer de chronomètres de pull. Désinstallation de cet add-on recommandée."
-L.UPDATE_REQUIRES_RELAUNCH			= "ATTENTION: Cette mise à jour de "..L.DBM.." ne fonctionnera pas correctement si vous ne relancez pas totalement le client de jeu. Cette mise à jour contient de nouveaux fichiers ou des modifications de fichers .toc qui ne peuvent pas être chargés par un reloadUI. Vous pouvez rencontrer des erreurs tant que vous ne relancez pas le client."
-L.OUT_OF_DATE_NAG					= "Votre version de "..L.DBM.." est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un chronomètre ou un cri important que votre raid prévoit que vous ayez."
+L.UPDATE_REQUIRES_RELAUNCH			= "ATTENTION: Cette mise à jour de " .. L.DBM .. " ne fonctionnera pas correctement si vous ne relancez pas totalement le client de jeu. Cette mise à jour contient de nouveaux fichiers ou des modifications de fichers .toc qui ne peuvent pas être chargés par un reloadUI. Vous pouvez rencontrer des erreurs tant que vous ne relancez pas le client."
+L.OUT_OF_DATE_NAG					= "Votre version de " .. L.DBM .. " est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un chronomètre ou un cri important que votre raid prévoit que vous ayez."
 L.PLATER_NP_AURAS_MSG				= L.DBM .. " inclut une fonctionnalité avancée pour afficher les chronomètres de recharge ennemies à l'aide d'icônes sur les barres d'info. Cela est activé par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, il est désactivé par défaut dans les options de Plater, à moins que vous ne l'activiez. Pour tirer le meilleur parti de DBM (et de Plater), il est recommandé d'activer cette fonctionnalité dans Plater sous la section 'Buff Special'. Si vous ne voulez pas voir ce message à nouveau, vous pouvez également simplement désactiver complètement l'option 'Icônes de recharge sur les barres d'info' dans les options de désactivation globales de DBM ou dans les panneaux d'options des barres d'info."
 
 L.MOVABLE_BAR					= "Bougez-moi !"
 
-L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai "..L.DBM..": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Annuler ce délais]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorer les délais de %1$s]|r|h"
-L.PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais "..L.DBM.." de %s durant cette session ?"
+L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Annuler ce délais]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorer les délais de %1$s]|r|h"
+L.PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais " .. L.DBM .. " de %s durant cette session ?"
 L.PIZZA_ERROR_USAGE				= "Utilisation: /dbm [broadcast] timer <durée> <texte>"
 
 L.MINIMAP_TOOLTIP_FOOTER		= "Maj+clic ou clic-droit pour déplacer\nAlt+Maj+clic pour une saisie libre"
@@ -255,35 +256,36 @@ L.SLASHCMD_HELP				= {
 	"Commandes slash disponibles :",
 	"----------------",
 	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
-	"/range <number> or /distance <number>: Affiche la fenêtre de portée. /rrange or /rdistance pour inverser les couleurs.",
-	"/hudar <number>: Affiche le radar de portée HUD.",
+	"/range <numéro> ou /distance <numéro>: Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
+	"/hudar <numéro>: Affiche le radar de portée HUD.",
 	"/dbm timer: Lance un chronomètre DBM perso, voir '/dbm timer' pour plus de détails.",
-	"/dbm arrow : affiche la flèche DBM, voir /dbm arrow help pour les détails.",
+	"/dbm arrow : Affiche la flèche DBM, voir /dbm arrow help pour les détails.",
 	"/dbm hud: Affiche le HUD de DBM, voir '/dbm hud' pour plus de détails.",
 	"/dbm help2: Affiche les commandes slash de gestion de raid."
 }
 L.SLASHCMD_HELP2				= {
 	"Commandes slash disponibles:",
 	"-----------------",
-	"/dbm pull <sec> : lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant "..L.DBM.." ce délai de pull (nécessite d'être chef du raid ou assistant).",
+	"/dbm pull <sec> : Lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant " .. L.DBM .. " ce délai de pull (nécessite d'être chef du raid ou assistant).",
 	"/dbm break <min>: Envoire un chronomètre de pause de <min> minutes au raid (nécessite d'être chef du raid ou assistant).",
-	"/dbm version: Effectue une vérification de version de "..L.DBM.." (alias: ver).",
-	"/dbm version2: Effectue une vérification de version de "..L.DBM.." qui chuchote aux membres pas à jour (alias: ver2).",
+	"/dbm version: Effectue une vérification de version de " .. L.DBM .. " (alias : ver).",
+	"/dbm version2: Effectue une vérification de version de " .. L.DBM .. " qui chuchote aux membres pas à jour (alias : ver2).",
 	"/dbm lag: Effectue une vérification de latence du raid.",
 	"/dbm durability: Effectue une vérification de durabilité du raid."
 }
 L.TIMER_USAGE	= {
-	"Commandes "..L.DBM.." des chronomètres:",
+	"Commandes " .. L.DBM .. " des chronomètres:",
 	"-----------------",
-	"/dbm timer <sec> <text>: Commence un chronomètre de <sec> secondes avec votre <text>.",
-	"/dbm ltimer <sec> <text>: Commence un chronomètre qui tourne en boucle jusqu'à annulation.",
-	"('Broadcast' devant n'importe quel chronomètre et partage avec le raid si leader ou assistant)",
+	"/dbm timer <sec> <texte>: Commence un chronomètre de <sec> secondes avec votre <texte>.",
+	"/dbm ltimer <sec> <texte>: Commence un chronomètre qui tourne en boucle jusqu'à annulation.",
+	"('Broadcast' devant n'importe quel chronomètre et partage avec le raid si vous êtes chef ou assistant)",
 	"/dbm timer endloop: Annule les boucles de chronomètre."
 }
 
-L.ERROR_NO_PERMISSION		= "Vous n'avez pas la permission requise pour faire cela."
-L.PULL_TIME_TOO_SHORT		= "Le chronomètre de pull doit être supérieur à 3 secondes."
-L.PULL_TIME_TOO_LONG		= "Le chronomètre de pull ne peut pas dépasser 60 secondes."
+L.ERROR_NO_PERMISSION			= "Vous n'avez pas la permission requise pour faire cela."
+L.ERROR_NO_PERMISSION_COMBAT	= "Le chronomètre de pull/pause ne peut pas être envoyé pendant que le combat est en cours."
+L.PULL_TIME_TOO_SHORT			= "Le chronomètre de pull doit durer plus de 3 secondes."
+L.PULL_TIME_TOO_LONG			= "Le chronomètre de pull ne peut pas dépasser 60 secondes."
 
 L.BREAK_USAGE				= "Les chronomètres de pause ne peuvent pas durer plus de 60 minutes. Assurez vous de mettre le temps en minutes et pas secondes."
 L.BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s) !"
@@ -293,7 +295,7 @@ L.TIMER_BREAK				= "Pause !"
 L.ANNOUNCE_BREAK_OVER		= "La pause est terminée"
 
 L.TIMER_PULL					= "Pull dans"
-L.ANNOUNCE_PULL					= "Pull dans %d sec"
+L.ANNOUNCE_PULL					= "Pull dans %d sec. (Envoyé par %s)"
 L.ANNOUNCE_PULL_NOW				= "Pull maintenant !"
 L.ANNOUNCE_PULL_TARGET			= "Pull %s dans %d sec. (Envoyé par %s)"
 L.ANNOUNCE_PULL_NOW_TARGET		= "Pull %s maintenant !"
@@ -533,9 +535,9 @@ L.AUTO_ICONS_OPTION_TARGETS_ROSTER 		= "Définir des icônes sur les cibles de $
 L.AUTO_ICONS_OPTION_NPCS				= "Définir des icônes sur $spell:%s"
 L.AUTO_ICONS_OPTION_CONFLICT			= " (Peut entrer en conflit avec d'autres options)"
 
-L.AUTO_ARROW_OPTION_TEXT		= "Afficher la flèche "..L.DBM.." en direction de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT2		= "Afficher la flèche "..L.DBM.." pour s'éloigner de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT3		= "Afficher la flèche "..L.DBM.." pour s'éloigner vers un emplacement spécifique pour $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT		= "Afficher la flèche " .. L.DBM .. " en direction de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT2		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT3		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
 
 L.AUTO_YELL_OPTION_TEXT.shortyell		= "Crie lorsque vous êtes affecté par $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.yell			= "Crie lorsque vous êtes affecté par $spell:%s"
@@ -580,7 +582,7 @@ L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Jouer des alertes sonores DBM pour les auras 
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Alerte mobile"
-L.MOVE_WARNING_MESSAGE		= "Merci d'utiliser "..L.DEADLY_BOSS_MODS..""
+L.MOVE_WARNING_MESSAGE		= "Merci d'utiliser " .. L.DEADLY_BOSS_MODS .. ""
 L.MOVE_SPECIAL_WARNING_BAR	= "Alertes spéciales mobiles"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
@@ -590,25 +592,25 @@ L.HUD_INVALID_SELF			= "Impossible de s'utiliser soi-même comme cible pour le H
 L.HUD_INVALID_ICON			= "Impossible d'utiliser la méthode par icône pour le HUD sans cible avec l'icône"
 L.HUD_SUCCESS				= "Le HUD a démarré correctement avec vos paramètres. Ceci va s'arrêter dans %s, ou en tapant '/dbm hud hide'."
 L.HUD_USAGE	= {
-	"Utilisation de "..L.DBM.."-HudMap:",
+	"Utilisation de " .. L.DBM .. "-HudMap:",
 	"-----------------",
-	"/dbm hud <type> <target> <duration>: Crée un HUD qui indique un joueur pour la durée choisie",
-	"Valid types: flèche, rouge, bleu, vert, jaune, icône (requiert une cible avec une icône de raid)",
-	"Valid targets: cible, focus, <nom du joueur>",
-	"Valid durations: n'importe quel nombre (en secondes). Si laissé vide, il sera affiché pendant 20min.",
+	"/dbm hud <type> <cible> <durée>: Crée un HUD qui indique un joueur pour la durée choisie",
+	"Types valides : flèche, rouge, bleu, vert, jaune, icône (requiert une cible avec une icône de raid)",
+	"Cibles valides : cible, focus, <nom du joueur>",
+	"Durées valides : n'importe quel nombre (en secondes). Si laissé vide, il sera affiché pendant 20 min.",
 	"/dbm hud hide:  désactive et cache le HUD"
 }
 
-L.ARROW_MOVABLE					= "Flèche mobile"
-L.ARROW_WAY_USAGE				= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"
+L.ARROW_MOVABLE				= "Flèche mobile"
+L.ARROW_WAY_USAGE			= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"
 L.ARROW_WAY_SUCCESS			= "Pour masquer la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
 L.ARROW_ERROR_USAGE	= {
-	"Utilisation de "..L.DBM.."-Arrow:",
+	"Utilisation de " .. L.DBM .. "-Arrow:",
 	"-----------------",
 	"/dbm arrow <x> <y>: Crée une flèche qui pointe vers une position spécifique (0 < x/y < 100)",
 	"/dbm arrow map <x> <y>: Crée une flèche qui pointe vers une position spécifique (en utilisant les coordonnées sur la carte)",
-	"/dbm arrow <player>: Crée une flèche qui pointe vers un joueur spécifique de votre groupe ou raid",
-	"/dbm arrow hide: Masque la flèche",
+	"/dbm arrow <joueur>: Crée une flèche qui pointe vers un joueur spécifique de votre groupe ou raid",
+	"/dbm arrow hide: Cache la flèche",
 	"/dbm arrow move: Rend la flèche mobile"
 }
 
@@ -618,7 +620,7 @@ L.COMBAT_RES_TIMER_TEXT		= "Prochaine charge de résurrection en combat"
 L.TIMER_RESPAWN				= "%s Réapparition"
 
 L.LAG_CHECKING			   	= "Vérification de la latence du raid..."
-L.LAG_HEADER				= ""..L.DEADLY_BOSS_MODS.." - Résultats sur la latence"
+L.LAG_HEADER				= L.DEADLY_BOSS_MODS .. " - Résultats sur la latence"
 L.LAG_ENTRY				  	= "%s: délai monde [%d ms] / délai domicile [%d ms]"
 L.LAG_FOOTER				= "Pas de réponse: %s"
 
@@ -655,3 +657,6 @@ L.DBM_INSTALL_PACKAGE_VANILLA = "Paquet Vanilla et La saison de la découverte"
 L.DBM_INSTALL_PACKAGE_WRATH = "Paquet Wrath"
 L.DBM_INSTALL_PACKAGE_CATA = "Paquet Cataclysm"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet Donjons, Gouffres et Événements"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"
