@@ -243,12 +243,12 @@ local specInstructionalRemapTable = {
 	["reflect"] = "target",
 }
 
-local function setText(announceType, spellId, stacks, customName)
+local function setText(announceType, spellId, stacks, customName, alternateSpellId)
 	local text, spellName
 	if customName then
 		spellName = customName
 	else
-		spellName = DBM:ParseSpellName(spellId, announceType) or CL.UNKNOWN
+		spellName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
 	end
 	if announceType == "prewarn" then
 		if type(stacks) == "string" then
@@ -268,6 +268,10 @@ local function setText(announceType, spellId, stacks, customName)
 		else
 			text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 		end
+	end
+	--Automatically register alternate spellnames when detecting their use here
+	if customName or alternateSpellId then
+		DBM:RegisterAltSpellName(spellId, customName or spellName)
 	end
 	return text, spellName
 end
@@ -759,7 +763,7 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		end
 		optionName = nil
 	end
-	local text, spellName = setText(announceType, alternateSpellId or spellId, stacks)
+	local text, spellName = setText(announceType, spellId, stacks, nil, alternateSpellId)
 	local icon = DBM:ParseSpellIcon(spellId)
 	---@class SpecialWarning
 	local obj = setmetatable( -- todo: fix duplicate code

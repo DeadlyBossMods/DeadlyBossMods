@@ -910,9 +910,16 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			if type(timerText) == "number" then
 				timerTextValue = timerText
 				spellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
+				--Automatically register alternate spellnames when detecting their use here
+				if spellName and type(spellName) == "string" then
+					DBM:RegisterAltSpellName(spellId, spellName)
+				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
 				timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
+				--TODO, figure out clean way to detect
+				--A. whether we're using hard coded timerText or got a successful table lookup above
+				--B. if the custom timer text has " %s" or " %d" in it, and if so, strip it before calling RegisterAltSpellName
 			end
 		else--Short text is off, we want to be more aggressive in NOT setting short text if we can help it
 			--Short text is off, and spellId does exist, only accept timerText if it's in mods localization tables, cause then it's not short text, it's hard localization
