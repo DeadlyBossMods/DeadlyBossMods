@@ -871,12 +871,12 @@ function DBM:ParseSpellName(spellId, objectType)
 	if objectType and objectType == "achievement" then
 		spellName = select(2, GetAchievementInfo(spellId))
 	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Old Journal Format
-		spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
+		spellName = self:EJ_GetSectionInfo(string.sub(spellId, 3))
 	elseif type(spellId) == "number" then
 		if spellId < 0 then--New Journal Format
-			spellName = DBM:EJ_GetSectionInfo(-spellId)
+			spellName = self:EJ_GetSectionInfo(-spellId)
 		else
-			spellName = DBM:GetSpellName(spellId)
+			spellName = self:GetSpellName(spellId)
 		end
 	end
 	return spellName
