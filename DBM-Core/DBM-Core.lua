@@ -889,9 +889,6 @@ do
 	---@param AltName string Custom name used for the spell and not alternateID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		if not customSpellNamesByspellId[spellId] then
-			if AltName:find("%s") then
-
-			end
 			customSpellNamesByspellId[spellId] = AltName
 		end
 	end
