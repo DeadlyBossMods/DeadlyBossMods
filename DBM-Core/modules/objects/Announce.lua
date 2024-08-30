@@ -297,7 +297,7 @@ local function setText(announceType, spellId, castTime, preWarnTime, customName,
 		text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
 	end
 	--Automatically register alternate spellnames when detecting their use here
-	if customName or alternateSpellId then
+	if spellId and (customName or alternateSpellId) then
 		DBM:RegisterAltSpellName(spellId, customName or spellName)
 	end
 	return text, spellName

@@ -911,14 +911,14 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 				timerTextValue = timerText
 				spellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
 				--Automatically register alternate spellnames when detecting their use here
-				if spellName and type(spellName) == "string" then
+				if spellId and spellName and type(spellName) == "string" then
 					DBM:RegisterAltSpellName(spellId, spellName)
 				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
 				timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
 				--Automatically register alternate spellnames when detecting their use here
-				if not rawget(self.localization.timers, timerText) then
+				if spellId and not rawget(self.localization.timers, timerText) then
 					--if timerText exists in self.localization.timers table, it's not custom shorttext spell name
 					local trimmedText = timerText:gsub("%s*%(%%s%)", "")
 					DBM:RegisterAltSpellName(spellId, trimmedText)
