@@ -129,7 +129,7 @@ local popupData = {
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-bc-vanilla-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/dbm-vanilla",
 	},
-	Wrath = {
+	WoTLK = {
 		package = L.DBM_INSTALL_PACKAGE_WRATH,
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-wrath-of-the-lich-king-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-wotlk",
