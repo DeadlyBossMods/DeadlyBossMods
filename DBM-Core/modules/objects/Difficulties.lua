@@ -115,6 +115,11 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[2784] = {60, 2} -- Demon Fall Canyon dungeon
 		instanceDifficultyBylevel[2789] = {60, 3} -- Lord kazzak
 		instanceDifficultyBylevel[2791] = {60, 3} -- Azuregos
+		instanceDifficultyBylevel[2784] = {60, 3} -- Azgaloth
+		instanceDifficultyBylevel[2804] = {60, 3} -- Prince Thunderaan
+		instanceDifficultyBylevel[2806] = {60, 2} -- Shadow Hold
+		instanceDifficultyBylevel[2807] = {60, 2} -- Burning of Andorhal
+		instanceDifficultyBylevel[2817] = {60, 2} -- Starfall Barrow Den
 	end
 end
 
@@ -303,7 +308,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = private.GetInstanceInfo()
 	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid
+	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid.
 		return "normal5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 2 or difficulty == 174 then--5 man Heroic Dungeon
 		return "heroic5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -386,6 +391,8 @@ function DBM:GetCurrentInstanceDifficulty()
 --		return "delve1", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 205 then--Follower (Party Dungeon - Dragonflight 10.2.5+)
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 207 then--SoD 1 player dungeon? Assigning as follower for now but will sort it out later
+		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
 		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
 		local delveTier = 0
@@ -394,6 +401,8 @@ function DBM:GetCurrentInstanceDifficulty()
 			delveTier = tonumber(delveInfo.tierText)
 		end
 		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
+	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
+		return "timewalker", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
 		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
