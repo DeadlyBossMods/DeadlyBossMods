@@ -72,7 +72,7 @@
 ---|"cleave" 12
 ---|"cntnuemove"
 ---|"com_go"
----|"crowdcontrol"
+---|"crowdcontrol" 3
 ---|"crusher" 12
 ---|"debuffyou" 17
 ---|"defensive"
