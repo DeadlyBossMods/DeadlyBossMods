@@ -69,13 +69,11 @@ L.General 					= "Opções gerais do DBM"
 L.EnableMiniMapIcon			= "Exibir botão no mini-mapa"
 L.EnableCompartmentIcon		= "Exibir botão do compartimento"
 L.UseSoundChannel			= "Defina o canal de áudio usado pelo DBM para reproduzir sons de alerta"
-L.UseMasterVolume			= "Utilizar canal principal de áudio para reproduzir arquivos de som."--Update
 L.UseDialogChannel			= "Canal de áudio de diálogo."
 L.UseSFXChannel				= "Canal de áudio de efeitos sonoros (SFX)."
 L.Latency_Text				= "Definir latência máxima de sincronização: %d"
 
 L.Button_RangeFrame			= "Exibir/esconder quadro de distância"
-L.Button_RangeRadar			= "Exibir/esconder radar de distância" -- Não existe no en.lua
 L.Button_InfoFrame			= "Exibir/esconder quadro de informações"
 L.Button_TestBars			= "Iniciar barras de teste"
 L.Button_MoveBars			= "Mover barras"
@@ -97,16 +95,13 @@ L.UIGroupingOptions			= "Opções de agrupamento de IU (alterá-las requer recar
 L.GroupOptionsExcludeIcon	= "Exclua as opções de 'Ativar ícone' de serem agrupadas por feitiço (elas serão agrupadas em sua própria categoria de 'Ícones')"
 L.AutoExpandSpellGroups		= "Expanda automaticamente as opções agrupadas por feitiço"
 L.ShowWAKeys				= "Mostre as teclas WeakAuras ao lado dos nomes dos feitiços para ajudar a escrever WeakAuras usando os gatilhos do Boss Mod."
-L.ShowSpellDescWhenExpanded	= "Continuar mostrando a descrição do feitiço quando os grupos forem expandidos"--Might not be used
+--L.ShowSpellDescWhenExpanded	= "Continuar mostrando a descrição do feitiço quando os grupos forem expandidos"--Might not be used
 L.NoDescription				= "Esta habilidade não tem descrição"
 L.CustomOptions				= "Esta categoria contém opções personalizadas para uma habilidade ou evento que não possui ID de feitiço ou diário próprio. Essas opções foram agrupadas usando um ID manual personalizado para facilitar a criação de WeakAuras"
 
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opções gerais do temporizador do DBM"
 L.SKT_Enabled				= "Sempre mostrar um temporizador de sua vitória recorde (Sobrepõe a opção do chefe específico)"
-L.ChallengeTimerOptions		= "Colocar opção para temporizador de melhor tempo em modo desafio"
-L.ChallengeTimerPersonal	= "Pessoal"
-L.ChallengeTimerRealm		= "Reino"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Avisos de raide"
@@ -201,11 +196,6 @@ L.CountdownVoice2			= "Definir voz secundaria para sons de contagem"
 L.CountdownVoice3			= "Definir voz terciária para sons de contagem"
 L.VoicePackChoice			= "Definir pacote de vozes para avisos falados"
 L.Area_CountdownOptions		= "opções de contagens"
-L.Area_VoicePackOptions		= "Opções de pacotes de vozes (Pacotes de vozes de terceiros)"
-L.SpecWarn_NoSoundsWVoice	= "Filtrar avisos sonoros especiais para avisos que contem avisos falados ..."
-L.SWFNever					= "Nunca"
-L.SWFDefaultOnly			= "Quando avisos especiais usarem som padrão ( permitir que sons customizados ainda toquem)."
-L.SWFAll					= "Quando sons especiais usarem qualquer som"
 L.SpecWarn_AlwaysVoice		= "Sempre tocar todos os avisos falados (Substitui opções especificas dos chefes. Útil para lideres de raides)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs? talvez ...
 
@@ -231,7 +221,6 @@ L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 
 L.Area_SpecFilter			= "Opções de especialização"
 L.FilterTankSpec			= "Filtrar mensagens designadas para tank role quando não for tank. (Nota: Desabilitar esta função não é recomendado para a maioria dos usuários já que avisos de 'taunt' ( insultos ) estão habilitados por definição.)"
-L.FilterInterrupts			= "Filtrar avisos para habilidades passivas de cortes ( interrupts ) se o alvo não for o seu target ou focus ( Não se aplica para magias criticas que resultaram em derrota caso não seja interrompida)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
@@ -248,8 +237,8 @@ L.Panel_HideBlizzard				= "Bloquear funcionalidades da Blizzard"
 L.Area_HideToast					= "Desativar avisos da Blizzard (pop-ups)"
 L.HideGarrisonUpdates				= "Ocultar avisos de seguidores durante combate contra chefes"
 L.HideGuildChallengeUpdates			= "Ocultar avisos de desafios de guilda durante combate contra chefes"
-L.HideBossKill						= "Ocultar avisos de morte de chefes"--NYI
-L.HideVaultUnlock					= "Ocultar avisos de desbloqueio do cofre"--NYI
+--L.HideBossKill						= "Ocultar avisos de morte de chefes"--NYI
+--L.HideVaultUnlock					= "Ocultar avisos de desbloqueio do cofre"--NYI
 --Cut Scenes
 L.Area_Cinematics					= "Bloquear cenas cinemáticas no jogo"
 L.DuringFight						= "Bloquear cenas de combate durante encontros com chefes"--uses explicite IsEncounterInProgress check
@@ -269,8 +258,6 @@ L.HideQuestTooltips					= "Ocultar objetivos de missões dos tooltips durante co
 L.HideTooltips						= "Ocultar completamente os tooltips durante lutas contra chefes"
 
 L.DisableSFX				= "Desativa o canal de efeitos sonoros durante lutas contra chefes"
-L.DisableCinematics			= "Esconder as cinematics in-game"
-L.AfterFirst				= "Depois que o vídeo for assistido uma vez"
 
 L.Panel_ExtraFeatures		= "Funcionalidades extra"
 L.Area_ChatAlerts			= "Opções de alerta do Chat"
@@ -284,7 +271,6 @@ L.AFKHealthWarning			= "Tocar som de alerta quando você estiver perdendo vida e
 L.Area_AutoLogging			= "Opções de relatórios automáticos"
 L.AutologBosses				= "Gravar automaticamente o relatório de encontro com os chefes utilizando o relatório de combate da Blizzard(Requer que seja usado /dbm pull antes do chefe <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a> compatibilidade)"
 L.AdvancedAutologBosses		= "Gravar automaticamente o encontro com o chefe utilizando o Transcritor"
-L.LogOnlyNonTrivial			= "Só gravar encontros com chefes de raide (exclui Localizador de Raides/Grupos/Cenários)"
 L.Area_3rdParty				= "Opções de addons de terceiros"
 L.oRA3AnnounceConsumables	= "Anunciar a verificação dos consumíveis oRA3 no início do combate"
 L.Area_Invite				= "Opções de convite"

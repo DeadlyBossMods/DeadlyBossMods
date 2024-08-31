@@ -89,7 +89,7 @@ L.Editbox_WindowHeight		= "Hauteur de la fenêtre"
 L.UIGroupingOptions			= "Options d'interface partagées (requiet de recharger l'interface pour tout module qui serait déjà chargé)"
 L.GroupOptionsExcludeIcon	= "Exclure l'option \"Définir l'icône sur\" du regroupement par capacité (elles seront regroupées dans la catégorie \"Icônes\" comme avant)"
 L.AutoExpandSpellGroups		= "Déplier automatiquement les options liées à la même capacité"
-L.ShowSpellDescWhenExpanded	= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
+--L.ShowSpellDescWhenExpanded	= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
 L.NoDescription				= "Cette capacité n'a aucune description"
 
 -- Panel: Extra Features
@@ -111,7 +111,6 @@ L.Area_AutoLogging			= "Options d'enregistrement auto"
 L.AutologBosses				= "Enregistrement auto du combat contre un boss en utilisant le journal de combat de Blizzard"
 L.AdvancedAutologBosses		= "Enregistrement auto du combat contre un boss en utilisant Transcriptor"
 L.RecordOnlyBosses			= "N'enregistrer que les boss et exclure tous les trash. Utilisez '/dbm pull' avant les boss pour prendre en compte les potions (pre pot) &amp; ENCOUNTER_START"
-L.LogOnlyNonTrivial			= "N'enregistrer que les combats importants (difficulté normale ou supérieure du contenu actuel de raid &amp; donjons Mythique+)"
 --
 L.Area_3rdParty				= "Options des Addons tiers"
 L.oRA3AnnounceConsumables	= "Annoncer la vérification des consommables oRA3 au début du combat"
@@ -121,7 +120,6 @@ L.AutoAcceptGuildInvite		= "Acceptation auto des invitations venant d'un membre 
 L.Area_Advanced				= "Options Avancées"
 L.FakeBW					= "Prétendre utiliser BigWigs lors des vérifications de versions au lieu de DBM (utile pour les guildes qui forcent l'utilisation de BigWigs)"
 L.AITimer					= "Utiliser un générateur automatique de décomptes pour les nouveaux combats en utilisant l'IA intégrée de DBM (utile pout engager les boss jamais vus sur la béta). Note: ceci ne fonctionnera pas correctement s'il y a plusieurs adds avec la même capacité"
-L.ExtendIcons				= "Étendre l'API des icônes de cible de raid pour utiliser jusqu'à 16 icônes (au lieu de 8). IMPORTANT : Ces icônes ne seront visibles QUE pour ceux ont installé la texture personnalisée 'UI-RaidTargetingIcons.blp' afin de supporter 16 icônes. Requiert de recharger l'interface après avoir modifié ce paramètre"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Profils"
@@ -383,7 +381,6 @@ L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'alerte spéciale (autorise
 
 
 L.Area_SpamFilter_Timers	= "Optionns Désactivation globale & Filtres des décomptes"
-L.SpamBlockNoShowTimers		= "Ne pas afficher les décomptes de module (Boss Mod/CM/LFG/Respawn)"
 L.SpamBlockNoShowUTimers	= "Ne pas afficher au joueur les décomptes envoyés (Personnalisés/Pull/Pause)"
 L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
 
@@ -407,11 +404,6 @@ L.FilterVoidFormSay2			= "Ne pas envoyer de message d'icône ou de décompte sou
 
 L.Area_SpecFilter			= "Options de filtre par rôle"
 L.FilterTankSpec			= "Filtrer les alertes réservées aux tanks si vous n'êtes pas en spé tank. (Note: Désactivation non recommandée car les alertes de taunt sont activées en permanence par défaut.)"
-L.FilterInterruptsHeader	= "Filtrer les alertes de sorts interruptibles en fonction des préférences paramétrées."
-L.SWFNever					= "Jamais"
-L.FilterInterrupts			= "Si le lanceur n'est pas la cible/focus actuelle (Toujours)."
-L.FilterInterrupts2			= "Si le lanceur n'est pas la cible/focus actuelle (Toujours) ou interruption en recharge (Boss seulement)"
-L.FilterInterrupts3			= "Si le lanceur n'est pas la cible/focus actuelle (Toujours) ou interruption en recharge (Boss &amp; Trash)"
 L.FilterInterruptNoteName	= "Filtrer les alertes des sorts interruptibles (avec compte) si l'alerte ne contient pas votre nom dans la note personnalisée"
 L.FilterDispels				= "Filtrer les alertes de dissipations si votre sort de dissipation est en recharge"
 L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."
@@ -430,8 +422,8 @@ L.Panel_HideBlizzard				= "Bloquer les fonctionnalités de Blizzard."
 L.Area_HideToast 					= "Désactiver les notifications Blizzard"
 L.HideGarrisonUpdates 				= "Cacher les notifications de suivi pendant les combats de boss"
 L.HideGuildChallengeUpdates 		= "Cacher les notifications de défi de guilde pendant les combats de boss"
-L.HideBossKill 						= "Cacher les notifications de mort de boss" --NYI
-L.HideVaultUnlock					= "Cacher les notifications de déblocage du coffre" --NYI
+--L.HideBossKill 						= "Cacher les notifications de mort de boss" --NYI
+--L.HideVaultUnlock					= "Cacher les notifications de déblocage du coffre" --NYI
 --Cut Scenes
 L.Area_Cinematics 					= "Bloquer les cinématiques en jeu"
 L.DuringFight 						= "Bloquer les cinématiques en combat pendant les rencontres de boss" -- utilise une vérification explicite de IsEncounterInProgress
@@ -471,7 +463,6 @@ L.Panel_Range				= "Cadre de portée"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Barres de vie"
-L.UseNameplateHandoff		= "Hand off nameplate aura requests to supported nameplate addons (KuiNameplates, Threat Plates, Plater) instead of handling internally. This is recommended option as it allows more advanted features and configuration to be done via nameplate addon"
 L.Area_NPStyle				= "Style (Note: Only configures style when DBM is handling nameplates.)"
 L.NPAuraSize				= "Aura Pixel size (squared): %d"
 
