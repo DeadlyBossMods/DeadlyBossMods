@@ -508,8 +508,8 @@ L.Panel_HideBlizzard				= "隐藏游戏自带内容"
 L.Area_HideBlizzard					= "隐藏游戏自带提示选项"
 L.HideGarrisonUpdates				= "Boss 战斗中隐藏要塞队列完成提示"
 L.HideGuildChallengeUpdates			= "Boss 战斗中隐藏公会挑战成功信息"
-L.HideBossKill						= "隐藏 Boss 击杀剧情"
-L.HideVaultUnlock					= "隐藏宝箱开启剧情"
+--L.HideBossKill						= "隐藏 Boss 击杀剧情"
+--L.HideVaultUnlock					= "隐藏宝箱开启剧情"
 --Cut Scenes
 L.Area_Cinematics					= "隐藏游戏过场动画"
 L.DuringFight						= "自动跳过Boss战斗时的过场动画"--uses explicite IsEncounterInProgress check
@@ -535,10 +535,10 @@ L.OverrideIcons 					= "禁用团队中所有玩家的团队标记，包括我�
 L.OverrideSay						= "禁用团队中所有玩家的聊天泡泡/说话功能，包含我自己"
 L.DisableStatusWhisperShort			= "禁用整个团队的私聊状态回复"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "禁用整个团队的公会进度消息同步"--Duplicated from privacy but makes sense to include option in both panels
-L.DisabledForDropdown				= "选中的模块禁用已经发送给"--NYI
-L.DiabledForBoth					= "向DBM和BW用户发送以上禁用选项"--NYI
-L.DiabledForDBM						= "向DBM用户发送以上禁用选项"--NYI
-L.DiabledForBW						= "向BW用户发送以上禁用选项"--NYI
+--L.DisabledForDropdown				= "选中的模块禁用已经发送给"--NYI
+--L.DiabledForBoth					= "向DBM和BW用户发送以上禁用选项"--NYI
+--L.DiabledForDBM						= "向DBM用户发送以上禁用选项"--NYI
+--L.DiabledForBW						= "向BW用户发送以上禁用选项"--NYI
 
 L.Area_ConfigOverrides				= "设定覆盖选项 (施工中)"--NYI
 L.OverrideBossAnnounceOptions		= "使用我的配置覆盖全团的通告配置"--NYI

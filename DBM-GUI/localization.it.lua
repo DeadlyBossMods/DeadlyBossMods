@@ -206,11 +206,6 @@ L.CountdownVoice2			= "Seconda Voce conto alla rovescia"
 L.CountdownVoice3			= "Terza Voce conto alla rovescia"
 L.VoicePackChoice			= "Pacchetto vocale avvisi parlati"
 L.Area_CountdownOptions		= "Opzioni Conto alla Rovescia"
-L.Area_VoicePackOptions		= "Opzioni Pacchetto Vocale (pacchetti di terze parti)"
-L.SpecWarn_NoSoundsWVoice	= "Filtra suoni avvisi speciali che hanno anche avvisi con avvisi parlati..." -- TODO: Ricontrollare
-L.SWFNever					= "Mai"
-L.SWFDefaultOnly			= "quando gli avvisi speciali usano suono pred. (Permetti esecuzione di suoni personali)"
-L.SWFAll					= "quando gli avvisi speciali usano qualunque suono"
 L.SpecWarn_AlwaysVoice		= "Riproduci sempre tutti gli avvisi parlati (Anche se Avvisi Speciali disabilitati. Utili per Capo Incursione, sconsigliati altrimenti)"
 -- TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "Altri pacchetti vocali su curse"
@@ -240,7 +235,6 @@ L.SpamBlockNoShowTgtAnnounce= "Niente testo o suoni per annuncio generale BERSAG
 L.SpamBlockNoSpecWarnText	= "Niente annunci speciali, ma permetti pacchetti vocali (filtro sopra sovrascrive questo)"
 
 L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
-L.SpamBlockNoShowTimers		= "Niente temporizzatori mod (Boss Mod/CM/LFG/Respawn)"
 L.SpamBlockNoShowUTimers	= "Niente temporizzatori utente (Personalizzato/Pull/Pausa)"
 L.SpamBlockNoCountdowns		= "Niente suoni conto alla rovescia"
 
@@ -250,7 +244,6 @@ L.SpamBlockNoRangeFrame		= "Non mostrare distanziometro"
 L.SpamBlockNoInfoFrame		= "Non mostrare riquadro info"
 L.SpamBlockNoHudMap			= "Non mostrare HudMap"
 L.SpamBlockNoNameplate		= "Non mostrare Auree Barre Vitali (disabilita completamente)"
-L.SpamBlockNoNameplateLines	= "Non mostrare linee Aura Barre Vitali (icone aura visibili)"
 L.SpamBlockNoYells			= "Non urlare in chat"
 L.SpamBlockNoNoteSync		= "Non accettare note condivise"
 
@@ -266,10 +259,6 @@ L.FilterVoidFormSay2			= "Niente posizioni/conteggi in chat in Forma del Vuoto"
 
 L.Area_SpecFilter			= "Opzioni Filtro Ruolo"
 L.FilterTankSpec			= "Filtra avvisi per i Tank quando senza spec da Tank. (Nota: E' sconsigliato disabilitarlo a tutti gli utenti in quanto gli avvisi 'taunt' sono tutti attivi di base.)"
-L.FilterInterruptsHeader	= "Filtra avvisi per abilità interrompibili basate sulle preferenze comportamento."
-L.FilterInterrupts			= "Se il caster non è obiettivo/focus attuale (Sempre)."
-L.FilterInterrupts2			= "Se il caster non è obiettivo/focus attuale (Sempre), CD interrompibili (Solo Boss)"
-L.FilterInterrupts3			= "Se il caster non è obiettivo/focus attuale (Sempre), CD interrompibili (Boss/Scartini)"
 L.FilterInterruptNoteName	= "Filtra avvisi solo per abilità interrompibili (con conteggio) se l'avviso non contiene il tuo nome in nota personalizzata"
 L.FilterDispels				= "Filtra avvisi per abilità dispellabili se i tuoi dispel sono in ricarica"
 --L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
@@ -330,7 +319,6 @@ L.ShowQueuePop				= "Mostra tempo rimanente per accettare la coda (LFG, CdB, ecc
 L.Area_AutoLogging			= "Opzioni Registro Automatico"
 L.AutologBosses				= "Registra automaticamente gli incontri log con il registro di combattimento blizzard (Usa /dbm pull prima dei boss per registrare prepozze e altri eventi precedenti.)"
 L.AdvancedAutologBosses		= "Regostra automaticamente gli scontri boss con Transcriptor"
-L.LogOnlyNonTrivial			= "Registra gli scontri boss incursione solo dell'espansione attuale (esclude Ricerca Incursioni/gruppo/scenari/vecchi contenuti)"
 --
 L.Area_3rdParty				= "Opzioni di Terze Parti"
 --L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"

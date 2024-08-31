@@ -96,7 +96,7 @@ L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere re
 L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
 L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe."
-L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
+--L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
 L.NoDescription						= "Esta facultad no tiene descripción."
 L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una facultad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
 
@@ -501,8 +501,8 @@ L.Panel_HideBlizzard				= "Bloquear funciones de Blizzard"
 L.Area_HideToast					= "Desactivar notificaciones emergentes de Blizzard"
 L.HideGarrisonUpdates				= "Ocultar notificaciones de seguidores durante encuentros contra jefes"
 L.HideGuildChallengeUpdates			= "Ocultar notificaciones de desafíos de hermandad durante encuentros contra jefes"
-L.HideBossKill						= "Ocultar notificaciones de muerte de jefes"--NYI
-L.HideVaultUnlock					= "Ocultar notificaciones de desbloqueo de la cámara"--NYI
+--L.HideBossKill						= "Ocultar notificaciones de muerte de jefes"--NYI
+--L.HideVaultUnlock					= "Ocultar notificaciones de desbloqueo de la cámara"--NYI
 --Cut Scenes
 L.Area_Cinematics 					= "Bloquear cinemáticas del juego"
 L.DuringFight 						= "Bloquear escenas de corte durante encuentros de jefes" --uses explicite IsEncounterInProgress check
@@ -528,10 +528,10 @@ L.OverrideIcons 					= "Desactivar el marcado de iconos para todos los usuarios 
 L.OverrideSay						= "Desactivar la burbuja de chat/mensajes DECIR para todos los usuarios en la banda, incluido el tuyo"
 L.DisableStatusWhisperShort			= "Desactivar estado/susurros de respuesta para todo el grupo"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "Desactivar la sincronización de mensajes de progresión con la hermandad para todo el grupo."--Duplicated from privacy but makes sense to include option in both panels
-L.DisabledForDropdown				= "Elige la desactivación del mod(s) del jefe y se envía a"--NYI
-L.DiabledForBoth					= "Desactiva las funciones anteriores tanto para DBM como para BW"--NYI
-L.DiabledForDBM						= "Desactiva las funciones anteriores solo para usuarios de DBM"--NYI
-L.DiabledForBW						= "Desactiva las funciones anteriores solo para usuarios de BW"--NYI
+--L.DisabledForDropdown				= "Elige la desactivación del mod(s) del jefe y se envía a"--NYI
+--L.DiabledForBoth					= "Desactiva las funciones anteriores tanto para DBM como para BW"--NYI
+--L.DiabledForDBM						= "Desactiva las funciones anteriores solo para usuarios de DBM"--NYI
+--L.DiabledForBW						= "Desactiva las funciones anteriores solo para usuarios de BW"--NYI
 
 L.Area_ConfigOverrides				= "Opciones de anulación de configuración"--NYI
 L.OverrideBossAnnounceOptions		= "Establecer la configuración de anuncio de todos los usuarios de DBM en mi configuración"--NYI
