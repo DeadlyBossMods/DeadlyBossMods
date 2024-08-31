@@ -918,8 +918,9 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			else
 				timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
 				--Automatically register alternate spellnames when detecting their use here
-				if spellId and not rawget(self.localization.timers, timerText) then
+				if spellId and not rawget(self.localization.timers, timerText) and type(timerText) == "string" then
 					--if timerText exists in self.localization.timers table, it's not custom shorttext spell name
+					--It's also not short text if it's hacky paul stuff, but that should be filtered by the spellID check in RegisterAltSpellName which ignores when he uses spellid of 0
 					local trimmedText = timerText:gsub("%s*%(%%s%)", "")
 					DBM:RegisterAltSpellName(spellId, trimmedText)
 				end
