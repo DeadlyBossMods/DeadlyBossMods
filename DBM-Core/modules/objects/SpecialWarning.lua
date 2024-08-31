@@ -270,7 +270,7 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 		end
 	end
 	--Automatically register alternate spellnames when detecting their use here
-	if customName or alternateSpellId then
+	if spellId and (customName or alternateSpellId) then
 		DBM:RegisterAltSpellName(spellId, customName or spellName)
 	end
 	return text, spellName
