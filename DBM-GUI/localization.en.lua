@@ -1,4 +1,4 @@
----@class DBMGUILocalization -- FIXME: this triggers 69 warnings due to localizations in other languages that do not exist
+---@class DBMGUILocalization
 local L = {}
 
 DBM_GUI_L = L
