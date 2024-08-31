@@ -11,6 +11,9 @@ function mod:Parse(...)
 			end
 			currentKey = arg:match("^%-%-(.*)")
 		elseif currentKey then
+			if currentKey == "start" or currentKey == "end" then -- FIXME: should use some kind of API to define the type of a given parameter
+				arg = tonumber(arg)
+			end
 			args[currentKey] = arg
 			currentKey = nil
 		else

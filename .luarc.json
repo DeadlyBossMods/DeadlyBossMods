@@ -90,6 +90,7 @@
 		"PanelTemplates_SetTab",
 		"SlashCmdList",
 		"DBMExtraGlobal",
-		"OptionsList_OnLoad"
+		"OptionsList_OnLoad",
+		"TranscriptDB"
 	]
 }
