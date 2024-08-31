@@ -1,4 +1,4 @@
-local filter = {}
+local filter = DBM.Test.CreateSharedModule("Transcriptor-Filter")
 
 local function set(tbl)
 	local r = {}

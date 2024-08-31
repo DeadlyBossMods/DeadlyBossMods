@@ -1,133 +1,45 @@
-local filter = require "Transcriptor-Filter"
-local cliArgs = require "ArgParser"
+---@class DBMTestTranscriptorParser
+local transcriptorParser = DBM.Test.CreateSharedModule("ParseTranscriptor")
+
 local anonymizer = require "Anonymizer"
+local parser     = require "StupidParser"
+local filter     = require "Transcriptor-Filter"
 
-local unpack = unpack or table.unpack -- Lua 5.1 compat
+---@class DBMTest
+local test = DBM.Test
+test.TranscriptorParser = transcriptorParser
 
-local function logInfo(str, ...)
-	if select("#", ...) > 0 then
-		str = str:format(...)
-	end
-	io.stderr:write(str, "\n")
-end
+local time = time or os.time
+local unpack = unpack or table.unpack
 
-local function usage()
-	logInfo("Usage: lua ParseTranscriptor.lua --transcriptor <path to SavedVariables/Transcriptor.lua> [--entry \"[YYYY-MM-DD]@[HH:MM:SS]\" --start <log offset> --end <log offset> --player <player who logged this> --noheader]")
-	os.exit(1)
-end
-
-local args = cliArgs:Parse(...)
-
-if not args.transcriptor then
-	usage()
-end
-
-local playerName = args.player
-
-local function loadTranscriptorLuaString(code)
-	local stupidParser = require "StupidParser"
-	return stupidParser:ParseLua(code)
-end
-
-local function jsonToLua(json)
-	-- The secret TWW logs are split with some weird tool that outputs json
-	-- So far this code doesn't have any dependencies, I don't feel like pulling in one just to read json, so this hack is the best I can do
-	local lines = {}
-	for line in json:gmatch("([^\n]*)\n?") do
-		line = line:gsub("^(%s*)\"(.-)\": [%[{]%s*$", "%1[\"%2\"] = {")
-		line = line:gsub("^(%s*)\"([^\"]+)\":", "%1[\"%2\"] = ")
-		line = line:gsub("^(%s*)],?(%s*)$", "%1},%2")
-		-- TODO: properly support \u escapes, but what is this even? UTF-16?
-		-- But it doesn't matter if the log gets anonymized, and these weird json exports we get all end up being anonymized anyways
-		line = line:gsub("\\u(%x%x%x)", "U%1")
-		lines[#lines + 1] = line
-	end
-	return "TranscriptDB = {jsonLog = " .. table.concat(lines, "\n") .. "}"
-end
-
-local function loadTranscriptorDB(fileName)
-	local file, err = io.open(fileName, "rb")
-	if not file then error(err) end
-	local code = file:read("*a")
-	if fileName:match(".json$") then
-		code = jsonToLua(code)
-	end
-	return loadTranscriptorLuaString(code)
-end
-
-local transcriptorDB = loadTranscriptorDB(args.transcriptor)
-local logName = nil
-local log = nil
-
-for k, v in pairs(transcriptorDB) do
-	if not args.entry or k:sub(1, #args.entry) == args.entry then
-		if log then
-			print("Multiple logs found in file, use --entry to select one of the following. A unique prefix is sufficient. ")
-			for entry in pairs(transcriptorDB) do
-				print(entry)
-			end
-			os.exit(1)
-		end
-		log = v
-		logName = k
+local function yield()
+	local cr, main = coroutine.running()
+	if cr and not main then
+		coroutine.yield()
 	end
 end
 
-if not log or not logName then
-	print("Could not find specified log")
-	os.exit(1)
-end
-
-local firstLog = tonumber(args.start)
-local lastLog = tonumber(args["end"])
-
-local function parseEncounterEvent(line)
-	local id, name, difficulty, groupSize, success = line:match("%[ENCOUNTER_[SE][TN][AD]%w*%] (%d+)#([^#]+)#(%d+)#(%d+)#?(%d*)")
-	if not id then return end
-	id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
-	success = success == "1"
-	return id, name, difficulty, groupSize, success, line:match("%[ENCOUNTER_START%]")
-end
-
-local encounterStarts = {}
-local encounterEnds = {}
-local bossKills = {}
-local lastEncounterIsInProgressEnd
-for i, v in ipairs(log.total) do
-	local id, name, difficulty, groupSize, success, isStart = parseEncounterEvent(v)
-	if id then
-		local entry = {offset = i, id = id, name = name, difficulty = difficulty, groupSize = groupSize, success = success}
-		if isStart then
-			encounterStarts[#encounterStarts + 1] = entry
-		else
-			encounterEnds[#encounterEnds + 1] = entry
-		end
+local mt = {__index = transcriptorParser}
+function transcriptorParser:New(data)
+	---@class DBMTestTranscriptorParser
+	local obj = {
+		data = data and parser:ParseLua(data) or TranscriptDB
+	}
+	if type(obj.data) ~= "table" then
+		error("could not find Transcriptor entry, check that the imported log is a valid Transcriptor log including the `TranscriptDB =` statement at the beginning")
 	end
-	if v:find("%[IsEncounterInProgress%(%)%] false") then
-		lastEncounterIsInProgressEnd = i
-	end
-	if v:find("%[BOSS_KILL%]") then
-		bossKills[#bossKills + 1] = {offset = i, name = v:match("%d#([^#]+)#")}
-	end
+	return setmetatable(obj, mt)
 end
 
-logInfo("ENCOUNTER_START events:")
-for _, v in ipairs(encounterStarts) do
-	logInfo("%d: %s (%d), difficulty = %d, groupSize = %d", v.offset, v.name, v.id, v.difficulty, v.groupSize)
-end
-logInfo("ENCOUNTER_END events:")
-for _, v in ipairs(encounterEnds) do
-	logInfo("%d: %s (%d) (%s), difficulty = %d, groupSize = %d", v.offset, v.name, v.id, v.success and "Kill" or "Wipe", v.difficulty, v.groupSize)
-end
-
-local function findFrameBoundaries(offset)
+local function findFrameBoundaries(lines, offset)
 	-- There is sometimes relevant stuff that is triggered by ENCOUNTER_START which is not guaranteed to be after this log entry
 	-- So we include the whole frame, note that timestamps across a frame are guaranteed to be identical
-	local frameTimestamp = log.total[offset]:match("^(<[%d*.]*) ")
+	local frameTimestamp = lines[offset]:match("^(<[%d*.]*) ")
 	local firstEntry, lastEntry
-	for i = 1, #log.total do
+	-- TODO: this is O(n^2) and adds ~0.5 seconds on a full MC log that is in a single Transcriptor entry
+	for i = 1, #lines do
 		local prevLastEntry = lastEntry
-		if log.total[i]:sub(1, #frameTimestamp) == frameTimestamp then
+		if lines[i]:sub(1, #frameTimestamp) == frameTimestamp then
 			if not firstEntry then
 				firstEntry = i
 			end
@@ -137,60 +49,116 @@ local function findFrameBoundaries(offset)
 			return firstEntry, lastEntry
 		end
 	end
+	return offset
 end
 
-if not firstLog then
-	if #encounterStarts == 1 then
-		-- There is sometimes relevant stuff that is triggered by ENCOUNTER_START which may be logged before the actual event
-		-- So we just include the whole frame
-		firstLog = findFrameBoundaries(encounterStarts[1].offset)
-	elseif #encounterStarts == 0 then
-		logInfo("Log has no ENCOUNTER_START, starting at offset 1, use --start to override")
-		firstLog = 1
-	else
-		logInfo("Log contains more than one ENCOUNTER_START")
-		local encounterStartHelp = {}
-		for i, v in ipairs(encounterStarts) do
-			encounterStartHelp[i] = v.offset .. " (" .. v.name .. ")"
-		end
-		print("ENCOUNTER_START at: " .. table.concat(encounterStartHelp, ", "))
-		print("Use --start to select offset explicitly")
-		os.exit(1)
+local function parseEncounterEvent(line)
+	local id, name, difficulty, groupSize, success = line:match("%[ENCOUNTER_[SE][TN][AD]%w*%] (%d+)#([^#]+)#(%d+)#(%d+)#?(%d*)")
+	if not id then
+		return
 	end
+	id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
+	success = success == "1"
+	return id, name, difficulty, groupSize, success, line:match("%[ENCOUNTER_START%]")
 end
 
-if not lastLog then
-	if #encounterEnds == 1 then
-		lastLog = encounterEnds[1].offset
-		-- BOSS_KILL often triggers after ENCOUNTER_END, we want to include both to test that we don't trigger end multiple times
-		local lastBossKill = #bossKills > 0 and bossKills[#bossKills].offset
-		if lastBossKill and lastBossKill < lastLog + 100 then
-			lastLog = math.max(lastLog, lastBossKill)
+---@return DBMTranscriptorParserEncounterInfo[]
+local function getEncounters(lines)
+	local encounters = {} ---@type DBMTranscriptorParserEncounterInfo[]
+	local lastEncounterStarts = {}
+	local lastEncounterEndEvent = 0
+	local lastEncounterIsInProgressEnd
+	for i, v in ipairs(lines) do
+		local id, name, difficulty, groupSize, success, isStart = parseEncounterEvent(v)
+		if id then
+			---@class DBMTranscriptorParserEncounterInfo
+			local entry = {
+				startOffset = i, id = id, name = name, difficulty = difficulty, groupSize = groupSize, success = success,
+				endOffset = nil, ---@type number
+				startTime = nil, ---@type number
+				endTime = nil ---@type number
+			}
+			if isStart then
+				encounters[#encounters + 1] = entry
+				lastEncounterStarts[id] = entry
+			else
+				local startEntry = lastEncounterStarts[id]
+				if not startEntry then
+					-- Just use whole log or last ENCOUNTER_END event if we don't have a start event, the common case is that the start is just missing, so whole log is what we want
+					entry.startOffset = lastEncounterEndEvent + 1
+					encounters[#encounters + 1] = entry
+				end
+				startEntry.endOffset = i
+				startEntry.success = success
+				lastEncounterEndEvent = i
+			end
 		end
-		-- Same as above, include the whole frame
-		lastLog = select(2, findFrameBoundaries(lastLog))
-	elseif #encounterEnds == 0 then
-		if lastEncounterIsInProgressEnd then
-			logInfo("Log has no ENCOUNTER_END, using last IsEncounterInProgress() = false which is at %d (%d entries after this)", lastEncounterIsInProgressEnd, #log.total - lastEncounterIsInProgressEnd)
-			lastLog = select(2, findFrameBoundaries(lastEncounterIsInProgressEnd))
-		else
-			logInfo("Log has no ENCOUNTER_END and no IsEncounterInProgress() = false, using entire log file, use --end to override")
-			lastLog = #log.total
+		if v:find("%[IsEncounterInProgress%(%)%] false") then
+			lastEncounterIsInProgressEnd = i
 		end
-	else
-		logInfo("Log contains more than one ENCOUNTER_END")
-		local encounterEndHelp = {}
-		for i, v in ipairs(encounterEnds) do
-			encounterEndHelp[i] = v.offset .. " (" .. v.name .. ")"
-		end
-		logInfo("ENCOUNTER_END at: " .. table.concat(encounterEndHelp, ", "))
-		logInfo("Use --end to select offset explicitly")
-		os.exit(1)
 	end
+	for _, v in ipairs(encounters) do
+		yield()
+		if not v.endOffset then
+			v.endOffset = lastEncounterIsInProgressEnd or #lines
+		end
+		v.startOffset = findFrameBoundaries(lines, v.startOffset)
+		v.endOffset = select(2, findFrameBoundaries(lines, v.endOffset))
+		v.startTime = lines[v.startOffset]:match("<([%d.]*)")
+		v.endTime = lines[v.endOffset]:match("<([%d.]*)")
+	end
+	return encounters
 end
-if lastLog > #log.total then
-	logInfo("Specified last log entry %d, but log only has %d lines", lastLog, #log.total)
-	os.exit(1)
+
+---@return DBMTranscriptorParserLogInfo
+local function getLogInfo(name, log)
+	local year, month, day, hour, min, sec = name:match("%[(%d*)%-(%d*)%-(%d*)%]@%[(%d*):(%d*):(%d*)%]")
+	local timestamp = year and time({
+		year = year, month = month, day = day, hour = hour, min = min, sec = sec
+	}) or 0 -- json logs have the name only in the file name which (at least in WoW) isn't available
+	---@class DBMTranscriptorParserLogInfo
+	local obj = {
+		name = name,
+		timestamp = timestamp,
+		encounters = getEncounters(log.total),
+		lines = log.total
+	}
+	return obj
+end
+
+---@return DBMTranscriptorParserLogInfo[]
+function transcriptorParser:GetLogs()
+	local logs = {}
+	for k, v in pairs(self.data) do
+		logs[#logs + 1] = getLogInfo(k, v)
+	end
+	table.sort(logs, function(e1, e2) return e1.timestamp < e2.timestamp end)
+	return logs
+end
+
+---@class DBMTranscriptorParserTestGenerator
+local testGenerator = {}
+local testGeneratorMt = {__index = testGenerator}
+
+---@return DBMTranscriptorParserTestGenerator
+function transcriptorParser:NewTestGenerator(log, firstLine, lastLine, prefix, noAnonymize, noAnonValidation, verboseRoles)
+	---@class DBMTranscriptorParserTestGenerator
+	local obj = setmetatable({
+		log = log, ---@type DBMTranscriptorParserLogInfo
+		firstLine = firstLine,
+		lastLine = lastLine,
+		prefix = prefix,
+		stats = {
+			parsedLines = 0, outputLines = 0, logTime = 0
+		},
+		testDefinition = nil, ---@type TestDefinition?
+		anonymize = not noAnonymize,
+		validateAnonymizer = not noAnonValidation,
+		verboseRoles = verboseRoles,
+		cache = {}
+	}, testGeneratorMt)
+	obj:parseMetadata()
+	return obj
 end
 
 local function guessType(str)
@@ -265,7 +233,7 @@ local function literalsTable(...)
 end
 
 ---@param info DBMInstanceInfo
-local function getInstanceInfo(info)
+local function instanceInfoLiteral(info)
 	return ("{name = %s, instanceType = %s, difficultyID = %s, difficultyName = %s, difficultyModifier = %s, maxPlayers = %s, dynamicDifficulty = %s, isDynamic = %s, instanceID = %s, instanceGroupSize = %s, lfgDungeonID = %s}"):format(
 		literals(info.name, info.instanceType, info.difficultyID, info.difficultyName, info.difficultyModifier, info.maxPlayers, info.dynamicDifficulty, info.isDynamic, info.instanceID, info.instanceGroupSize, info.lfgDungeonID)
 	)
@@ -312,6 +280,7 @@ local function reconstructFlags(isPlayer, isPet, isNpc)
 	return flags
 end
 
+-- FIXME: these two vars should be moved inside an object
 local flagWarningShown
 local seenFriendlyCids = {}
 
@@ -356,7 +325,8 @@ local function transcribeCleu(rawParams, anon)
 			end
 		else
 			if not flagWarningShown and params[1] == "SPELL_CAST_START" then -- not all entries are logged with flags
-				logInfo("Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate, but usually this is not a problem.")
+				-- TODO: this warning is not particularly useful because I have exactly 0 examples where this matters and the option keeps disabling itself anyways
+				--logInfo("Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate, but usually this is not a problem.")
 				flagWarningShown = true
 			end
 			event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2 = unpack(params, 1, i - 1)
@@ -514,7 +484,8 @@ local function transcribeEvent(event, params, anon)
 			-- Name will always contain the server here, even if there is no cross-server stuff otherwise; this is annoying because the anonymizer might not have learned the name with the server suffix
 			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, anon:ScrubName(name) or anon:ScrubName(name:match("([^-]*)")), 0, false)
 		else
-			logInfo("Unhandled CHAT_MSG_ADDON log message " .. params)
+			-- FIXME: do we care about this warning?
+			--logInfo("Unhandled CHAT_MSG_ADDON log message " .. params)
 		end
 	end
 	-- TODO: UNIT_AURA?
@@ -532,14 +503,14 @@ local function transcribeEvent(event, params, anon)
 	return result
 end
 
--- TODO: this relies a lot on DBM debug logs -- we could try to make some educated guesses if we don't have these
-local function getMetadataFromLog()
+-- TODO: this relies a lot on DBM debug logs -- we could try to make some more educated guesses if we don't have these
+function testGenerator:parseMetadata()
 	local player
 	local instanceInfo = {} ---@type DBMInstanceInfo
 	local encounterInfo = {}
-	for i, line in ipairs(log.total) do
+	for i, line in ipairs(self.log.lines) do
 		-- Only grab instance and encounter info from within relevant log area
-		if i >= firstLog and i <= lastLog then
+		if i >= self.firstLine and i <= self.lastLine then
 			if line:match("GetInstanceInfo%(%) =") then
 				---@diagnostic disable-next-line: assign-type-mismatch
 				instanceInfo.name, instanceInfo.instanceType, instanceInfo.difficultyID, instanceInfo.difficultyName, instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty, instanceInfo.isDynamic, instanceInfo.instanceID, instanceInfo.instanceGroupSize, instanceInfo.lfgDungeonID
@@ -551,7 +522,7 @@ local function getMetadataFromLog()
 				instanceInfo.difficultyModifier = tonumber(modifier) or 0
 			elseif line:match("%[ENCOUNTER_[SE][TN][AD]") then
 				local id, name, difficulty, _, success, isStart = parseEncounterEvent(line)
-				if not encounterInfo.id or id == encounterInfo.id then -- multiple different encounters in one log? you'll have to do something by hand
+				if not encounterInfo.id or id == encounterInfo.id then -- multiple different encounters in one log? you'll have to edit this field by hand
 					encounterInfo.id = id
 					encounterInfo.name = name
 					encounterInfo.difficulty = difficulty
@@ -561,24 +532,113 @@ local function getMetadataFromLog()
 				end
 			end
 		end
-		-- But we can grab the player id from anywhere
+		-- But we can grab the recording player id from anywhere
 		if not player then
 			player = line:match("%[UNIT_SPELLCAST_SUCCEEDED%] PLAYER_SPELL{([^}]+)} %-.*%- %[%[player:Cast%-")
 		end
+		if player and i > self.lastLine then break end
+		if i % 10000 == 0 then
+			yield()
+		end
 	end
-	return player, instanceInfo, encounterInfo, logName:match("Version: 1%.") and "SeasonOfDiscovery" or "Retail" -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+	self.metadata = {
+		player = player,
+		instanceInfo = instanceInfo,
+		encounterInfo = encounterInfo,
+		gameVersion = self.log.name:match("Version: 1%.") and "SeasonOfDiscovery" or "Retail" -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+	}
 end
 
-local deducedPlayer, instanceInfo, encounterInfo, gameVersion = getMetadataFromLog()
-playerName = playerName or deducedPlayer
+function testGenerator:guessMod()
+	if not self.metadata.encounterInfo.name then return "" end
+	return self.metadata.encounterInfo.name:gsub("%s*", ""):gsub("'", "")
+end
 
-local function getLog()
-	local resultLog, resultPlayers = {}, {}
+-- TODO: all of these guessing functions could be much smarter, but I'm adding stuff as I go
+function testGenerator:guessTestName()
+	if not self.metadata.encounterInfo.name then return "" end
+	local difficulty = ""
+	if self.metadata.instanceInfo.instanceID == 409 and self.metadata.instanceInfo.difficultyModifier then -- MC heat levels
+		difficulty = "Heat-" .. self.metadata.instanceInfo.difficultyModifier .. "/"
+	end
+	local name = self:guessMod() .. "/" .. difficulty .. (self.metadata.encounterInfo.kill and "Kill" or "Wipe")
+	if self.prefix then
+		return self.prefix:gsub("/$", "") .. "/" .. name
+	else
+		return name
+	end
+end
+
+function testGenerator:guessAddon()
+	if self.metadata.gameVersion == "SeasonOfDiscovery" then
+		local instanceInfo = self.metadata.instanceInfo
+		if instanceInfo.instanceType == "raid" then
+			-- Onyxia and the outdoor bosses are for 40 players, but luckily Onyxia uses a different difficulty ID
+			return instanceInfo.maxPlayers == 40 and instanceInfo.difficultyID == 9 and "DBM-Azeroth"
+				or "DBM-Raids-Vanilla"
+		elseif instanceInfo.instanceType == "party" then -- UBRS & co also return party here
+			return "DBM-Party-Vanilla"
+		end
+	end
+	return ""
+end
+
+
+local headerTemplate = [[
+DBM.Test:DefineTest{
+	name = %s,
+	gameVersion = %s,
+	addon = %s,
+	mod = %s,
+	instanceInfo = %s,]]
+
+function testGenerator:GetHeaderString()
+	local def = self:GetTestDefinition()
+	return headerTemplate:format(
+		literal(def.name), literal(def.gameVersion), literal(def.addon), literal(def.mod),
+		instanceInfoLiteral(def.instanceInfo)
+	)
+end
+
+function testGenerator:GetPlayersString()
+	local _, players = self:GetLogAndPlayers()
+	return players
+end
+
+function testGenerator:GetLogString()
+	local log = self:GetLogAndPlayers()
+	return log
+end
+
+function testGenerator:GetTestDefinition()
+	if self.cache.testDefinition then
+		return self.cache.testDefinition
+	end
+	local _, _, resultLog, resultPlayers = self:GetLogAndPlayers()
+	 ---@type TestDefinition
+	 self.cache.testDefinition = {
+		name = self:guessTestName(),
+		gameVersion = self.metadata.gameVersion,
+		addon = self:guessAddon(),
+		mod = self:guessMod(),
+		instanceInfo = self.metadata.instanceInfo,
+		perspective = self.metadata.player,
+		players = resultPlayers,
+		log = resultLog,
+	}
+	return self:GetTestDefinition()
+end
+
+function testGenerator:GetLogAndPlayers()
+	if self.cache.combinedLog then
+		return self.cache.combinedLog, self.cache.combinedPlayers, self.cache.resultLog, self.cache.resultPlayers
+	end
+	local resultLog, resultLogStr, resultPlayers, resultPlayersStr = {}, {}, {}, {}
 	local timeOffset
 	local totalTime = 0
-	local anon = anonymizer:New(log.total, firstLog, lastLog, playerName, args["keep-names"])
-	for i = firstLog, lastLog do
-		local line = log.total[i]
+	local anon = anonymizer:New(self.log.lines, self.firstLine, self.lastLine, self.metadata.player, not self.anonymize)
+	for i = self.firstLine, self.lastLine do
+		local line = self.log.lines[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
 		time = tonumber(time) or error("unparseable timestamp in " .. line)
 		totalTime = time
@@ -589,14 +649,18 @@ local function getLog()
 		time = time - timeOffset
 		local testEvent = transcribeEvent(event, params, anon)
 		if testEvent then
-			resultLog[#resultLog + 1] = ("{%.2f, %s}"):format(time, table.concat(testEvent, ", "))
+			resultLog[#resultLog + 1] = {time, unpack(testEvent)}
+			resultLogStr[#resultLogStr + 1] = ("{%.2f, %s}"):format(time, table.concat(testEvent, ", "))
+		end
+		if i % 10000 == 0 then
+			yield()
 		end
 	end
 	local sortedRoles = {}
 	local maxNameLen = 0
 	for _, v in pairs(anon.roles) do
 		sortedRoles[#sortedRoles + 1] = v
-		-- FIXME: doesn't handle UTF-8 for the non-anon case
+		-- FIXME: doesn't handle UTF-8 for the non-anon case, but doesn't really matter, it's just for nice formatting of the plyaer table
 		maxNameLen = math.max(maxNameLen, #v.anonName)
 	end
 	table.sort(sortedRoles, function(e1, e2)
@@ -613,88 +677,31 @@ local function getLog()
 		end
 	end)
 	for _, roleInfo in ipairs(sortedRoles) do
-		resultPlayers[#resultPlayers + 1] = roleInfo:PrettyTableString(maxNameLen, args["verbose-roles"])
+		resultPlayers[#resultPlayers + 1] = roleInfo:GetTestDefinition(self.verboseRoles)
+		resultPlayersStr[#resultPlayersStr + 1] = roleInfo:PrettyTableString(maxNameLen, self.verboseRoles)
 	end
-	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", lastLog - firstLog + 1, #resultLog, (1 - #resultLog / (lastLog - firstLog + 1)) * 100)
-	logInfo("%.1f seconds total, %.0f entries/second", totalTime, #resultLog / totalTime)
-	local resultStr = ""
-	resultStr = resultStr .. "players = {\n\t\t"
-	resultStr = resultStr ..  table.concat(resultPlayers, ",\n\t\t")
-	resultStr = resultStr .. "\n\t},\n"
-	resultStr = resultStr .. "\tperspective = \"" .. anon:ScrubName(playerName) .. "\",\n"
-	resultStr = resultStr .. "\tlog = {\n\t\t"
-	resultStr = resultStr ..  table.concat(resultLog, ",\n\t\t")
-	resultStr = resultStr ..  "\n\t}"
-	anon:CheckForLeaks(resultStr, args["ignore-leaks"])
-	return resultStr
-end
-
-local template = [[
-DBM.Test:DefineTest{
-	name = %s,
-	gameVersion = %s,
-	addon = %s,
-	mod = %s,
-	instanceInfo = %s,
-	%s,
-}]]
-
-local function guessMod()
-	if not encounterInfo.name then return "" end
-	return encounterInfo.name:gsub("%s*", ""):gsub("'", "")
-end
-
--- TODO: all of these guessing functions could be much smarter, but I'm adding stuff as I go
-local function guessTestName()
-	if not encounterInfo.name then return "" end
-	local difficulty = ""
-	if instanceInfo.instanceID == 409 and instanceInfo.difficultyModifier then -- MC heat levels
-		difficulty = "Heat-" .. instanceInfo.difficultyModifier .. "/"
+	self.stats.parsedLines = self.lastLine - self.firstLine + 1
+	self.stats.outputLines = #resultLog
+	self.stats.logTime = totalTime
+	self.metadata.player = anon:ScrubName(self.metadata.player)
+	local combinedPlayers = ""
+	combinedPlayers = combinedPlayers .. "\tplayers = {\n\t\t"
+	combinedPlayers = combinedPlayers ..  table.concat(resultPlayersStr, ",\n\t\t")
+	combinedPlayers = combinedPlayers .. "\n\t},\n"
+	combinedPlayers = combinedPlayers .. "\tperspective = \"" .. self.metadata.player .. "\","
+	local combinedLog = ""
+	combinedLog = combinedLog .. "\tlog = {\n\t\t"
+	combinedLog = combinedLog ..  table.concat(resultLogStr, ",\n\t\t")
+	combinedLog = combinedLog ..  "\n\t},"
+	if self.validateAnonymizer and self.anonymize then
+		anon:CheckForLeaks(combinedLog)
 	end
-	local name = guessMod() .. "/" .. difficulty .. (encounterInfo.kill and "Kill" or "Wipe")
-	if args.prefix then
-		return args.prefix:gsub("/$", "") .. "/" .. name
-	else
-		logInfo("Use --prefix to provide a prefix for test name")
-		return name
-	end
+	self.cache.combinedLog, self.cache.combinedPlayers, self.cache.resultLog, self.cache.resultPlayers = combinedLog, combinedPlayers, resultLog, resultPlayers
+	return self:GetLogAndPlayers()
 end
 
-local function guessAddon()
-	if gameVersion == "SeasonOfDiscovery" then
-		if instanceInfo.instanceType == "raid" then
-			-- Onyxia and the outdoor bosses are for 40 players, but luckily Onyxia uses a different difficulty ID
-			return instanceInfo.maxPlayers == 40 and instanceInfo.difficultyID == 9 and "DBM-Azeroth"
-				or "DBM-Raids-Vanilla"
-		elseif instanceInfo.instanceType == "party" then -- UBRS & co also return party here
-			return "DBM-Party-Vanilla"
-		end
-	end
-	return ""
+function testGenerator:GetIgnoreCandidates()
+	return seenFriendlyCids
 end
 
-local function generateTest()
-	local str = template:format(
-		literal(guessTestName()), literal(gameVersion), literal(guessAddon()), literal(guessMod()),
-		getInstanceInfo(instanceInfo),
-		getLog()
-	)
-	return str
-end
-
-local function generateLogOnly()
-	return ("\t%s\n}\n"):format(getLog())
-end
-
-if args.noheader or args["no-header"] then
-	print(generateLogOnly())
-else
-	print(generateTest())
-end
-
-if next(seenFriendlyCids) then
-	logInfo("Potentially ignoreable creature IDs (healed by players):")
-	for cid, name in pairs(seenFriendlyCids) do
-		logInfo(cid .. ", -- " .. name)
-	end
-end
+return transcriptorParser

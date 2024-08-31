@@ -1,4 +1,6 @@
-local lfs = require "lfs"
+require "CLI.Environment"
+
+local lfs     = require "lfs"
 local cliArgs = require "ArgParser"
 
 local function usage()

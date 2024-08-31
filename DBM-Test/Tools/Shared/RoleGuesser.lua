@@ -1,5 +1,5 @@
 ---@class RoleGuesser
-local roleGuesser = {}
+local roleGuesser = DBM.Test.CreateSharedModule("RoleGuesser")
 local mt = {__index = roleGuesser}
 
 function roleGuesser:New(recordingPlayer)
@@ -41,6 +41,7 @@ function roleGuesserPlayerStats:Anonymize(name, guid)
 	self.anonGuid = guid
 end
 
+-- FIXME: logis is duplicate vs. GetTestDefinition below
 function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries)
 	local extraInfo = ""
 	if self.realName == self.anonName then
@@ -62,6 +63,29 @@ function roleGuesserPlayerStats:PrettyTableString(maxNameLen, verboseSecondaries
 		extraInfo = extraInfo .. ", logRecorder = true"
 	end
 	return ("{%q,%s %q%s}"):format(self.anonName, (" "):rep((maxNameLen or 0) - #self.anonName), self.anonGuid, extraInfo)
+end
+
+function roleGuesserPlayerStats:GetTestDefinition(verboseSecondaries)
+	local res = {self.anonName, self.anonGuid}
+	if self.realName == self.anonName then
+		res.role = self.role
+	end
+	res.class = self.class
+	if self.heal > 0.3 and self.role ~= "Healer"
+	or self.damage > 0.2 and self.role ~= "Dps" and (self.role ~= "Tank" or self.damage > 0.4)
+	or (self.tanking > 0.3 or self.healed > 0.3) and self.role ~= "Tank"
+	or verboseSecondaries then
+		res.healer = self.heal
+		res.tank = math.max(self.tanking, self.healed)
+		res.dps = self.damage
+		if verboseSecondaries then
+			res.healed = self.healed
+		end
+	end
+	if self.originalLogRecorder then
+		self.logRecorder = true
+	end
+	return res
 end
 
 function roleGuesser:SetPlayerClass(realGuid, class)
