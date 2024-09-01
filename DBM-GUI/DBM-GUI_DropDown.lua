@@ -250,9 +250,8 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	dropdownText:SetPoint("LEFT", dropdown:GetName() .. "Left", 30, 2)
 	_G[dropdown:GetName() .. "Middle"]:SetWidth(width + 30)
 	local dropdownButton = _G[dropdown:GetName() .. "Button"]
-	dropdownButton:SetScript("OnMouseDown", nil)
+	dropdownButton:SetScript("OnMouseDown", function() DBM:PlaySoundFile(567407) end)
 	dropdownButton:SetScript("OnClick", function(self)
-		DBM:PlaySoundFile(567407)
 		if tabFrame1:IsShown() then
 			tabFrame1:Hide()
 			tabFrame1.dropdown = nil
