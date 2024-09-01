@@ -87,7 +87,7 @@ if args["log"] then
 	end
 end
 
-local testData = ts:NewTestGenerator(log, firstLine, lastLine, args["prefix"], args["keep-names"], args["ignore-leaks"], args["verbose-roles"])
+local testData = parser:NewTestGenerator(log, firstLine, lastLine, args["prefix"], args["keep-names"], args["ignore-leaks"], args["verbose-roles"])
 
 if not args["noheader"] and not args["no-header"] then
 	io.stdout:write(testData:GetHeaderString())
