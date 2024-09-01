@@ -10,6 +10,7 @@ local instanceInfoGuesser	= require "InstanceInfoGuesser"
 local test = DBM.Test
 test.TranscriptorParser = transcriptorParser
 
+local select = select -- Usually I'm not a fan of these local caches, but this one is literally called millions of times
 local time = time or os.time
 local unpack = unpack or table.unpack
 
@@ -63,6 +64,10 @@ local function parseEncounterEvent(line)
 	return id, name, difficulty, groupSize, success, line:match("%[ENCOUNTER_START%]")
 end
 
+local function timeFromLine(line)
+	return tonumber(line:match("<([%d.]*)")) or 0
+end
+
 ---@return DBMTranscriptorParserEncounterInfo[]
 local function getEncounters(lines)
 	local encounters = {} ---@type DBMTranscriptorParserEncounterInfo[]
@@ -105,8 +110,8 @@ local function getEncounters(lines)
 		end
 		v.startOffset = findFrameBoundaries(lines, v.startOffset)
 		v.endOffset = select(2, findFrameBoundaries(lines, v.endOffset))
-		v.startTime = lines[v.startOffset]:match("<([%d.]*)")
-		v.endTime = lines[v.endOffset]:match("<([%d.]*)")
+		v.startTime = timeFromLine(lines[v.startOffset])
+		v.endTime = timeFromLine(lines[v.endOffset])
 	end
 	return encounters
 end
@@ -122,7 +127,9 @@ local function getLogInfo(name, log)
 		name = name,
 		timestamp = timestamp,
 		encounters = getEncounters(log.total),
-		lines = log.total
+		lines = log.total,
+		startTime = timeFromLine(log.total[1]),
+		endTime = timeFromLine(log.total[#log.total]),
 	}
 	return obj
 end
@@ -131,7 +138,9 @@ end
 function transcriptorParser:GetLogs()
 	local logs = {}
 	for k, v in pairs(self.data) do
-		logs[#logs + 1] = getLogInfo(k, v)
+		if #v.total > 0 then
+			logs[#logs + 1] = getLogInfo(k, v)
+		end
 	end
 	table.sort(logs, function(e1, e2) return e1.timestamp < e2.timestamp end)
 	return logs
@@ -655,6 +664,21 @@ function testGenerator:GetTestDefinition()
 	return self:GetTestDefinition()
 end
 
+local function unstringify(arg, ...)
+	if select("#", ...) == 0 then
+		if type(arg) == "string" then
+			return arg:sub(
+				arg:sub(1, 1) == "\"" and 2 or 1,
+				arg:sub(-1, -1) == "\"" and -2 or nil
+			)
+		else
+			return arg
+		end
+	else
+		return unstringify(arg), unstringify(...)
+	end
+end
+
 function testGenerator:GetLogAndPlayers()
 	if self.cache.combinedLog then
 		return self.cache.combinedLog, self.cache.combinedPlayers, self.cache.resultLog, self.cache.resultPlayers
@@ -675,7 +699,12 @@ function testGenerator:GetLogAndPlayers()
 		time = time - timeOffset
 		local testEvent = transcribeEvent(event, params, anon)
 		if testEvent then
-			resultLog[#resultLog + 1] = {time, unpack(testEvent)}
+			-- Unfortunately transcribeEvent already stringifies everything because everything was written with generating code in mind
+			-- But for live imports we obviously want non-stringified versions
+			-- TODO: Clean this up. we properly might want to transcibe imports into strings first and then parse them again,
+			--       that may sound stupid but would be encessary for persistently saved logs anyways. We probably want a real
+			--       parser for Lua table expressions to do this (just loadstring() risks constant table size limits)
+			resultLog[#resultLog + 1] = {time, unstringify(guessTypes(unpack(testEvent)))}
 			resultLogStr[#resultLogStr + 1] = ("{%.2f, %s}"):format(time, table.concat(testEvent, ", "))
 		end
 		if i % 10000 == 0 then

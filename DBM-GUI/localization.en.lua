@@ -627,11 +627,25 @@ L.TestSelectArea					= "Test data" -- Title of the UI area
 L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
 L.SelectPerspective					= "Log perspective (simulated player)"
 L.ImportTranscriptor				= "Import Transcriptor log"
+L.ImportTranscriptorHeader			= [[
+Import a Transcriptor log by pasting it anywhere in the edit box below. Pasting speed is roughly 2 MiB/s, this means your game will freeze for several seconds when pasting very large log files.
+You can also import the current Transcriptor session from Transcriptor's saved variables with the import button to the right.]]
+L.PasteLogHere						= "Press " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " to paste a log here."
+L.LogPasted							= "Pasted %.2f MiB in %.1f seconds (%.2f MiB/s)."
+L.ImportLocalTranscriptor			= "Import current\nTranscriptor session"
+L.NoLocalTranscriptor				= "Could not find local Transcriptor data."
+L.LocalImportDone					= "Imported %d logs with %d encounters from Transcriptor."
+L.Parsing							= "Parsing..."
+L.SelectLogDropdown					= "Select encounter"
+L.CreateTest						= "Create Test"
+L.CreatedTest						= "Created test with %d events in %.1f seconds."
+L.NoLogsFound						= "Transcriptor import contains no log data."
 L.NoTestDataAvailable				= "No test data available"
+L.NoLogSelected						= "Test creation failed: No log selected."
+L.LogAlreadyImported				= "Test creation failed: Test already imported."
+
 L.RewriteAllToYou					= "All players at the same time"
-
 L.RealModOptionsBelow				= "Mod options below are synced between playground mode and your real settings."
-
 L.Test								= "Test"
 L.Tests								= "Tests"
 L.AllTests							= "All tests"

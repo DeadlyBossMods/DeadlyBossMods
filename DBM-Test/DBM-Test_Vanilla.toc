@@ -14,3 +14,13 @@ Runner.lua
 TimeWarper.lua
 Mocks.lua
 ReportFrame.lua
+
+Tools/WoW/Environment.lua
+Tools/Shared/Data/Difficulties.lua
+Tools/Shared/Data/Instances.lua
+Tools/Shared/Data/Transcriptor-Filter.lua
+Tools/Shared/InstanceInfoGuesser.lua
+Tools/Shared/Anonymizer.lua
+Tools/Shared/ParseTranscriptor.lua
+Tools/Shared/RoleGuesser.lua
+Tools/Shared/StupidParser.lua
