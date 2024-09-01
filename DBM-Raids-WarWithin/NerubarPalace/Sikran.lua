@@ -30,11 +30,11 @@ mod:RegisterEventsInCombat(
  or ability.id = 433517 and type = "applydebuff"
 --]]
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
-local warnPhaseBlades							= mod:NewIncomingCountAnnounce(433517, 3)
+local warnPhaseBlades							= mod:NewIncomingCountAnnounce(433517, 3, nil, nil, 100)
 local warnRainofArrows							= mod:NewCountAnnounce(439559, 3)
 local warnDecimate								= mod:NewTargetNoFilterAnnounce(442428, 3)
 
-local specWarnShatteringSweep					= mod:NewSpecialWarningRunCount(456420, nil, nil, nil, 4, 2)
+local specWarnShatteringSweep					= mod:NewSpecialWarningRunCount(456420, nil, 394017, nil, 4, 2)
 local specWarnExpose							= mod:NewSpecialWarningDefensive(435401, nil, nil, nil, 1, 2)
 local specWarnPhaseLunge						= mod:NewSpecialWarningDefensive(435403, nil, nil, nil, 1, 2)
 local specWarnExposedWeakness					= mod:NewSpecialWarningTaunt(438845, nil, nil, nil, 1, 2)
@@ -47,10 +47,10 @@ local yellDecimate								= mod:NewShortYell(442428)
 local yellDecimateFades							= mod:NewShortFadesYell(442428)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
-local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, nil, nil, nil, 2)
+local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, 394017, nil, nil, 2)--Shortname "Sweep"
 local timerCosmicShards							= mod:NewBuffFadesTimer(6, 459273, nil, nil, nil, 5)
 local timerCaptainsFlourishCD					= mod:NewCDCountTimer(22, 439511, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerPhaseBladesCD						= mod:NewCDCountTimer(42.6, 433517, nil, nil, nil, 3)
+local timerPhaseBladesCD						= mod:NewCDCountTimer(42.6, 433517, 100, nil, nil, 3)--Shortname "Charge"
 local timerRainofArrowsCD						= mod:NewCDCountTimer(52.3, 439559, nil, nil, nil, 3)
 local timerDecimateCD							= mod:NewCDCountTimer(38.1, 442428, nil, nil, nil, 3)
 

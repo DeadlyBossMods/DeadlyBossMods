@@ -52,16 +52,16 @@ local specWarnBloodcurdle						= mod:NewSpecialWarningMoveAway(452237, nil, nil,
 local yellBloodcurdle							= mod:NewShortYell(452237)
 local yellBloodcurdleFades						= mod:NewShortFadesYell(452237)
 local specWarnSpewingHemorrhage					= mod:NewSpecialWarningRunCount(445936, nil, nil, nil, 4, 2)
-local specWarnGoresplatter						= mod:NewSpecialWarningDodgeCount(442530, nil, nil, nil, 2, 2)
+local specWarnGoresplatter						= mod:NewSpecialWarningDodgeCount(442530, nil, 301902, nil, 2, 2)
 local specWarnGraspFromBeyond					= mod:NewSpecialWarningMoveAway(443042, nil, 367465, nil, 1, 2)
 local yellGraspFromBeyond						= mod:NewShortYell(443042, 285205)--ShortYell "Tentacle"
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(445518, nil, nil, nil, 1, 8)
 
-local timerGruesomeDigorgeCD					= mod:NewNextCountTimer(49, 444363, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGruesomeDigorgeCD					= mod:NewNextCountTimer(49, 444363, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBanefulShift							= mod:NewBuffFadesTimer(40, 443612, nil, nil, nil, 5)
 local timerBloodcurdleCD						= mod:NewNextCountTimer(40, 452237, DBM_COMMON_L.SPREADS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerSpewingHemorrhageCD					= mod:NewNextCountTimer(40, 445936, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.DEADLY_ICON)
+local timerSpewingHemorrhageCD					= mod:NewNextCountTimer(40, 445936, 207544, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Beams"
+local timerGoresplatterCD						= mod:NewNextCountTimer(128, 442530, 301902, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.DEADLY_ICON)--Shortname "Run Away!"
 local timerCrimsonRainCD						= mod:NewNextCountTimer(128, 443203, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerGraspFromBeyondCD					= mod:NewNextCountTimer(40, 443042, 367465, nil, nil, 3)--ShortYell "Tentacles"
 --The Unseeming
@@ -69,11 +69,11 @@ mod:AddTimerLine(DBM:GetSpellName(462306))
 local warnManifestHorror						= mod:NewCastAnnounce(445174, 4, nil, nil, false, 2)--Spammy, opt in
 local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 
-local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", nil, nil, 1, 2)
-local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, nil, nil, 1, 2)
+local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", 151702, nil, 1, 2)
+local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, 182557, nil, 1, 2)
 
-local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer
-local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation
+local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, 151702, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer Shortname "Shield"
+local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, 182557, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation. Shortname "Slam"
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnWatchers", 444830, true, 5, {8})
