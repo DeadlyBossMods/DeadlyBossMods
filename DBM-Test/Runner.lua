@@ -796,6 +796,7 @@ end)
 ---@field perspective string? Player name from whose perspective the log gets replayed
 ---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
 ---@field log TestLogEntry[] Log to replay
+---@field ephemeral boolean? Set to true for tests imported from Transcriptor via the test UI
 
 
 --[[
@@ -819,7 +820,7 @@ Maybe a better solution would be to support some kind of comment in the report?
 
 -- TODO: this isn't checked or used yet, also, we probably only need to distinguish the 3 main versions because SoD should be able to run all era mods
 -- TODO: this also depends on how we load/not load mods for era vs. sod, will probably be relevant once MC releases
----@alias GameVersion "Retail"|"Classic"|"ClassicEra"|"SeasonOfDiscovery"
+---@alias GameVersion "Any"|"Retail"|"Classic"|"ClassicEra"|"SeasonOfDiscovery"
 
 ---@alias TestCallbackEvent "TestStart"|"TestFinish"
 
@@ -847,12 +848,19 @@ end
 
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
 ---@param testOptions? DBMTestOptions
-function test:RunTest(testName, timeWarp, testOptions, callback)
+function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 	testOptions = testOptions or {}
 	timeWarp = timeWarp or DBM_Test_DefaultTimeWarp or 0
-	local testData = self.Registry.tests[testName]
-	if not testData then
-		error("test " .. testName .. " not found", 2)
+	local testData
+	if type(testNameOrdata) == "string" then
+		testData = self.Registry.tests[testNameOrdata]
+		if not testData then
+			error("test " .. testNameOrdata .. " not found", 2)
+		end
+	elseif type(testNameOrdata) == "table" then
+		testData = testNameOrdata
+	else
+		error("RunTest(): expected test name or definition as first parameter, got " .. type(testNameOrdata))
 	end
 	if self.testRunning then
 		error("only a single test can run at a time")
@@ -870,7 +878,6 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 	local loadingEvents = loadingTrace[modUnderTest]
 	if not loadingEvents then
 		self.reporter:Taint("ModEnv")
-		--error("could not observe mod loading events -- make sure that the addon is not yet loaded when starting the test")
 	else
 		local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
 		currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])

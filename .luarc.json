@@ -10,6 +10,9 @@
 	"diagnostics.neededFileStatus": {
 		"global-element": "Any"
 	},
+	"runtime.special": {
+		"DBM.Test.GetSharedModule": "require"
+	},
 	"diagnostics.globalsRegex": [
 		"SLASH_DEADLYBOSSMODS.*",
 		"SLASH_DBM.*",
