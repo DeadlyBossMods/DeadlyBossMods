@@ -1,9 +1,9 @@
 ---@class DBMTestTranscriptorParser
 local transcriptorParser = DBM.Test.CreateSharedModule("ParseTranscriptor")
 
-local anonymizer = require "Anonymizer"
-local parser     = require "StupidParser"
-local filter     = require "Transcriptor-Filter"
+local anonymizer			= require "Anonymizer"
+local parser				= require "StupidParser"
+local instanceInfoGuesser	= require "InstanceInfoGuesser"
 
 ---@class DBMTest
 local test = DBM.Test
@@ -508,10 +508,13 @@ function testGenerator:parseMetadata()
 	local player
 	local instanceInfo = {} ---@type DBMInstanceInfo
 	local encounterInfo = {}
+	local zoneId
 	for i, line in ipairs(self.log.lines) do
 		-- Only grab instance and encounter info from within relevant log area
 		if i >= self.firstLine and i <= self.lastLine then
-			if line:match("GetInstanceInfo%(%) =") then
+			if not zoneId and (line:match("Creature%-%d%-%d*%-(%d*)") or line:match("Vehicle%-%d%-%d*%-(%d*)")) then
+				zoneId = tonumber(line:match("Creature%-%d%-%d*%-(%d*)") or line:match("Vehicle%-%d%-%d*%-(%d*)"))
+			elseif line:match("GetInstanceInfo%(%) =") then
 				---@diagnostic disable-next-line: assign-type-mismatch
 				instanceInfo.name, instanceInfo.instanceType, instanceInfo.difficultyID, instanceInfo.difficultyName, instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty, instanceInfo.isDynamic, instanceInfo.instanceID, instanceInfo.instanceGroupSize, instanceInfo.lfgDungeonID
 				= guessTypes(line:match(
@@ -521,11 +524,12 @@ function testGenerator:parseMetadata()
 				local modifier = line:match("%((%d)%)")
 				instanceInfo.difficultyModifier = tonumber(modifier) or 0
 			elseif line:match("%[ENCOUNTER_[SE][TN][AD]") then
-				local id, name, difficulty, _, success, isStart = parseEncounterEvent(line)
+				local id, name, difficulty, groupSize, success, isStart = parseEncounterEvent(line)
 				if not encounterInfo.id or id == encounterInfo.id then -- multiple different encounters in one log? you'll have to edit this field by hand
 					encounterInfo.id = id
 					encounterInfo.name = name
 					encounterInfo.difficulty = difficulty
+					encounterInfo.groupSize = groupSize
 					if not isStart then
 						encounterInfo.kill = success
 					end
@@ -541,11 +545,32 @@ function testGenerator:parseMetadata()
 			yield()
 		end
 	end
+	 -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+	local majorVersion = tonumber(self.log.name:match("Version: (%d*)."))
+	local gameVersion = not majorVersion and "Any"
+		or majorVersion <= 2 and "SeasonOfDiscovery"
+		or majorVersion >= 3 and majorVersion < 11 and "Classic"
+		or "Retail"
+	if not instanceInfo.name and zoneId then
+		local oldModifier = instanceInfo.difficultyModifier
+		instanceInfo = instanceInfoGuesser:GuessFromZoneId(zoneId, gameVersion) or instanceInfo
+		if encounterInfo then
+			instanceInfoGuesser:SetDifficulty(instanceInfo, encounterInfo.difficulty, encounterInfo.groupSize)
+		end
+		encounterInfo.difficultyModifier = encounterInfo.difficultyModifier or oldModifier
+	end
+	if not player then
+		if UnitName then
+			player = UnitName("player")
+		else
+			error("could not deduce who created the log, please cast at least one spell while logging")
+		end
+	end
 	self.metadata = {
 		player = player,
 		instanceInfo = instanceInfo,
 		encounterInfo = encounterInfo,
-		gameVersion = self.log.name:match("Version: 1%.") and "SeasonOfDiscovery" or "Retail" -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+		gameVersion = gameVersion
 	}
 end
 
