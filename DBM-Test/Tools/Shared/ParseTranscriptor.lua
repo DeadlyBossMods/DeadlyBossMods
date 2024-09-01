@@ -3,6 +3,7 @@ local transcriptorParser = DBM.Test.CreateSharedModule("ParseTranscriptor")
 
 local anonymizer			= require "Anonymizer"
 local parser				= require "StupidParser"
+local filter    			= require "Data.Transcriptor-Filter"
 local instanceInfoGuesser	= require "InstanceInfoGuesser"
 
 ---@class DBMTest
