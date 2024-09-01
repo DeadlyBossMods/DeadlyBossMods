@@ -5,6 +5,7 @@ exclude_files = {
 	"**/Libs/**/*.lua",
 	".luacheckrc",
 	"DBM-Test/Public/Callbacks.lua", -- @meta LuaLS file triggers false positives
+	"DBM-Test/Tools/Shared/Data/*.lua", -- Yes, I know, there are duplicate entries, but that's fine, see comment in file
 }
 ignore = {
 	"1..", -- Everything related to globals, the LuaLS check is better because it doesn't require us to define every single API functions

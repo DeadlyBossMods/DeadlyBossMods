@@ -51,7 +51,7 @@ function instanceInfo:GuessFromZoneId(zoneId, gameVersion)
 			obj, gotData = tryGetDungeonInfo(zoneId, "ClassicEra")
 		end
 		if not gotData then
-			obj, gotData = tryGetDungeonInfo(zoneId, "Classic")
+			obj = tryGetDungeonInfo(zoneId, "Classic")
 		end
 	end
 	return obj
