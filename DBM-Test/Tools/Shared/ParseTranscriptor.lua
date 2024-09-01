@@ -51,7 +51,7 @@ local function findFrameBoundaries(lines, offset)
 			return firstEntry, lastEntry
 		end
 	end
-	return offset
+	return offset, offset
 end
 
 local function parseEncounterEvent(line)
