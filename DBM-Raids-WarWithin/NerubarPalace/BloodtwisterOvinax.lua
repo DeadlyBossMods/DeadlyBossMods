@@ -86,7 +86,7 @@ function mod:OnCombatStart(delay)
 	self.vb.webCount = 0
 	self.vb.tankCount = 0
 	timerVolatileConcoctionCD:Start(1.9, 1)
-	timerIngestBlackBloodCD:Start(17, 1)--19 now?
+	timerIngestBlackBloodCD:Start(15.6, 1)--Time til USCS event, cast event is 19.6
 --	timerExperimentalDosageCD:Start(33, 1)--Started by Injest black Blood
 	if self:IsHard() then
 		timerUnstableWebCD:Start(15, 1)
@@ -108,14 +108,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.dosageIcon = 0
 		self.vb.dosageCount = self.vb.dosageCount + 1
 		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)--50
-	elseif spellId == 442432 and self:AntiSpam(5, 1) then
-		self.vb.ingestCount = self.vb.ingestCount + 1
-		specWarnIngestBlackBlood:Show(self.vb.ingestCount)
-		specWarnIngestBlackBlood:Play("specialsoon")
-		timerIngestBlackBloodCD:Start(nil, self.vb.ingestCount+1)
-		timerUnstableWebCD:Stop()
-		timerVolatileConcoctionCD:Stop()
-		timerExperimentalDosageCD:Stop()
+	elseif spellId == 442432 and self:AntiSpam(5, 1) then--Ingest Black Blood
 		--Timers that restart here
 		timerExperimentalDosageCD:Start(16, self.vb.dosageCount+1)
 		timerVolatileConcoctionCD:Start(18, self.vb.tankCount+1)
@@ -253,9 +246,21 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--"<17.52 03:58:20> [UNIT_SPELLCAST_SUCCEEDED] Broodtwister Ovi'nax(97.9%-0.0%){Target:Threetuandk} -Ingest Black Blood- [[boss1:Cast-3-2085-2657-8295-442430-00130EE7DC:442430]]",
+-- "<21.20 03:58:23> [CLEU] SPELL_CAST_START#Creature-0-2085-2657-8295-214506-00000EE7C2#Broodtwister Ovi'nax(97.1%-0.0%)##nil#442432#Ingest Black Blood#nil#nil"
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 446344 then--Unstable Web
 		self.vb.webCount = self.vb.webCount + 1
 		timerUnstableWebCD:Start(nil, self.vb.webCount+1)
+	elseif spellId == 442430 then
+		self.vb.ingestCount = self.vb.ingestCount + 1
+		specWarnIngestBlackBlood:Show(self.vb.ingestCount)
+		specWarnIngestBlackBlood:Play("specialsoon")
+		timerIngestBlackBloodCD:Start(nil, self.vb.ingestCount+1)
+		timerUnstableWebCD:Stop()
+		timerVolatileConcoctionCD:Stop()
+		timerExperimentalDosageCD:Stop()
+		--Timers restarted by CLEU event since that's easier to verify on WCLs
+		--This just warns earlier than CLEU events and stops timers at earliest point
 	end
 end

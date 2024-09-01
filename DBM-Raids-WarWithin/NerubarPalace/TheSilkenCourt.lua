@@ -72,7 +72,7 @@ mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {6, 7, 8})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")
-local warnVenomousRain						= mod:NewCountAnnounce(438343, 2, nil, nil, 44933)
+local warnVenomousRain						= mod:NewCountAnnounce(438656, 2, nil, nil, 44933)
 local warnWebBomb							= mod:NewCountAnnounce(439838, 3)--General announce for everyone, personal special announce to target
 local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2, nil, nil, 47482)
 local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
@@ -81,9 +81,9 @@ local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
 --local yellWebBomb							= mod:NewShortYell(439838)
 --local yellWebBombFades					= mod:NewShortFadesYell(439838)
 local specWarnBindingWebs					= mod:NewSpecialWarningYou(440001, nil, nil, nil, 1, 2)
-local specWarnVenomousRain					= mod:NewSpecialWarningYou(438343, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
+local specWarnVenomousRain					= mod:NewSpecialWarningYou(438656, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
 
-local timerVenomousRainCD					= mod:NewCDCountTimer(49, 438343, 44933, nil, nil, 3)--Shortname "Rain"
+local timerVenomousRainCD					= mod:NewCDCountTimer(49, 438656, 44933, nil, nil, 3)--Shortname "Rain"
 local timerWebBombCD						= mod:NewCDCountTimer(49, 439838, nil, nil, nil, 3)
 local timerSkitteringLeapCD					= mod:NewCDCountTimer(49, 450045, 47482, nil, nil, 3)--Shortname "Leap"
 local timerVoidAscensionCD					= mod:NewIntermissionCountTimer(100, 450483, nil, nil, nil, 6)
@@ -155,7 +155,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {30, 32.9, 31.0},
 			-- Venomous Rain
-			[438343] = {7.7, 31.7, 30.2, 31.8},
+			[438656] = {7.7, 31.7, 30.2, 31.8},
 			-- Web Bomb
 			[439838] = {24.3, 33.2, 33.3},
 			-- Skittering Leap
@@ -219,7 +219,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {21.1, 35.9, 30.0, 31.0},
 			-- Venomous Rain
-			[438343] = {7.7, 31.2, 31.7, 28.6},
+			[438656] = {7.7, 31.2, 31.7, 28.6},
 			-- Web Bomb
 			[439838] = {25.0, 36.2},
 			-- Skittering Leap
@@ -283,7 +283,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {8.0, 24.0, 25.0, 23.0},
 			-- Venomous Rain
-			[438343] = {15.2, 41.9, 33.2},
+			[438656] = {15.2, 41.9, 33.2},
 			-- Web Bomb
 			[439838] = {31.4, 32.9, 28.1},
 			-- Skittering Leap
@@ -396,7 +396,7 @@ function mod:OnCombatStart(delay)
 	timerRecklessChargeCD:Start(allTimers[savedDifficulty][1][440246][1]-delay, 1)--43.3
 	--timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
 	--Takazj
-	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
+	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438656][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
 	timerVoidAscensionCD:Start(self:IsHeroic() and 126.6 or 131, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
@@ -468,7 +468,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 438343 then
 		self.vb.rainCount = self.vb.rainCount + 1
 		warnVenomousRain:Show(self.vb.rainCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438343, self.vb.rainCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438656, self.vb.rainCount+1)
 		if timer then
 			timerVenomousRainCD:Start(timer, self.vb.rainCount+1)
 		end
