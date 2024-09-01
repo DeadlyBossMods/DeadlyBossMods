@@ -152,6 +152,11 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 		for id in line:gmatch("Item%-%d*%-%d*%-(%x*)") do spawnIds[id] = true end
 		for id in line:gmatch("Vignette%-%d*%-%d*%-%d*%-%d*%-%d*%-(%x*)") do spawnIds[id] = true end
 	end
+	 -- Handle weird local logs where you are not part of the log that are imported in the game (these fail earlier in metadata guessing for the CLI case)
+	if UnitName and UnitGUID and (not playerGuids[UnitGUID("player")] or playerGuids[UnitGUID("player")] == "nil") then
+		playerGuids[UnitGUID("player")] = UnitName("player")
+		realPlayerNames[UnitGUID("player")] = UnitName("player")
+	end
 	local playerInfo = roles:GetPlayerInfo()
 	local function sortedIds(ids)
 		local sorted = {}
@@ -170,7 +175,7 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 		Healer = 1, Tank = 1, Dps = 1, Unknown = 1
 	}
 	for i, realGuid in ipairs(sortedIds(playerGuids)) do
-		local roleInfo = playerInfo[realGuid] or error("failed to get role info for " .. realGuid)
+		local roleInfo = playerInfo[realGuid] or roleGuesser:NewUnknownPlayer(realGuid)
 		local name = keepPlayerNamesAndGuids and realPlayerNames[realGuid] or roleInfo.role .. perRoleIds[roleInfo.role]
 		playerNames[playerGuids[realGuid]] = name
 		playerNamesByGuid[realGuid] = name
