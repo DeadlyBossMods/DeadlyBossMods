@@ -1,7 +1,9 @@
+---@class Anonymizer
+local anonymizer = DBM.Test.CreateSharedModule("Anonymizer")
+
 local roleGuesser = require "RoleGuesser"
 
----@class Anonymizer
-local anonymizer = {}
+
 anonymizer.__index = anonymizer
 
 local scrubbers = {}
@@ -194,6 +196,7 @@ end
 
 
 local function failOnLeakedString(badString, ignoreErrors)
+	-- (not called from WoW, so these functions are fine to use here)
 	io.stderr:write(("Detected leak in anonymizer, string %q looks non-anonymized\n"):format(badString))
 	if not ignoreErrors then
 		io.stderr:write("use --ignore-leaks to ignore this\n")
