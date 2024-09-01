@@ -881,6 +881,9 @@ function test:RunTest(testName, timeWarp, testOptions, callback)
 	if not GetLocale():match("^en") then
 		self.reporter:Taint("Lang", GetLocale())
 	end
+	if testOptions.playground then
+		self.reporter:Taint("Playground")
+	end
 	currentEventKey = nil
 	currentRawEvent = nil
 	self.testCallback = callback
