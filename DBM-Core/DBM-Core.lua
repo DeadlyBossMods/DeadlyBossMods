@@ -7301,6 +7301,7 @@ do
 		forceDisabled = forceDisable
 		DBT:CancelAllBars()
 		DBM:ClearSpamTimers()
+		DBM.InfoFrame:Hide()
 	end
 
 	function DBM:Enable()
