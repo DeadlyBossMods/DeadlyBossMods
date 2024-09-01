@@ -153,7 +153,6 @@ local function showImportTranscriptorFrame()
 		local f = function()
 			local ts = parser:New(text)
 			logs = ts:GetLogs()
-			_G.foo = ts
 			if #logs >= 1 then
 				logSelect:SetSelectedValue(dropdownEntryFromLog(logs[1], #logs[1].encounters == 1 and 1 or nil))
 				createTestButton:Enable()
