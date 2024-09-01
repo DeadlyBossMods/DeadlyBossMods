@@ -14,7 +14,9 @@
 		"SLASH_DEADLYBOSSMODS.*",
 		"SLASH_DBM.*",
 		"DBM_.*",
-		"DBT_.*"
+		"DBT_.*",
+		"GameFont.*",
+		"ChatFont.*"
 	],
 	"diagnostics.globals": [
 		"ALL",
@@ -74,17 +76,7 @@
 		"CooldownFrame_Set",
 		"Plater",
 
-		"ChatFontHighlightSmall",
-		"ChatFontNormalSmall",
-		"GameFontHighlight",
-		"GameFontNormalSmall",
-		"GameFontWhite",
-		"ChatFontNormal",
-		"GameFontHighlightSmall",
-		"GameFontNormal",
-		"GameFontNormalSmall",
 		"PanelTemplates_SetNumTabs",
-
 		"NineSliceUtil",
 		"CreateRadioButtonGroup",
 		"PanelTemplates_SetTab",
