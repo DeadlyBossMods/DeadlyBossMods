@@ -1,4 +1,4 @@
-local filter = DBM.Test.CreateSharedModule("Transcriptor-Filter")
+local filter = DBM.Test.CreateSharedModule("Data.Transcriptor-Filter")
 
 local function set(tbl)
 	local r = {}
@@ -86,8 +86,5 @@ filter.ignoredCreatureIds = set{
 	54983, -- Treant
 	212489, 219986 -- Spirit Wolf
 }
-
-
-
 
 return filter
