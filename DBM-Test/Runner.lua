@@ -724,7 +724,7 @@ function test:Playback(testData, timeWarp, testOptions)
 		currentRawEvent = nil
 		currentEventKey = nil
 	end
-	if timeWarp <= 5 then
+	if timeWarper.factor <= 5 then
 		DBM:AddMsg("Test playback finished, waiting for delayed cleanup events (3 seconds)")
 	end
 	timeWarper:WaitFor(3.1) -- Events like AURA_REMOVED are only unregistered after 3 seconds for icon cleanup
@@ -735,6 +735,7 @@ function test:Playback(testData, timeWarp, testOptions)
 		DBM:AddMsg("DBM is still reporting in combat, waiting for " .. math.floor(extraTime) .. " more seconds")
 		timeWarper:WaitFor(extraTime)
 	end
+	DBM:AddMsg("Test playback for test " .. testData.name .. " finished.")
 	local reporter = self.reporter
 	if DBM:InCombat() then
 		reporter:FlagCombat(extraTime + 3.1)
