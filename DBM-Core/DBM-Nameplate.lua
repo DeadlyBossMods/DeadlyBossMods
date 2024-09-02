@@ -387,8 +387,8 @@ do
 				self.cooldown.timer:SetText ("")
 			end
 
-			local canGlow = (DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 3
-			if canGlow and not self.isGlowing then -- glow below 3sec if importatn
+			local canGlow = (DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4
+			if canGlow and not self.isGlowing then -- glow below 4sec if important
 				self.parent:StartGlow(self)
 				self.isGlowing = true
 			elseif not canGlow and self.isGlowing then
