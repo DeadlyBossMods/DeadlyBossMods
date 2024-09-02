@@ -94,6 +94,7 @@ end
 
 -- TODO: mocking the whole "raid" local in DBM would increase coverage a bit
 function mocks.DBMGetRaidUnitId(_, name)
+	if not name then return end
 	return "fakeunitid-name-" .. name
 end
 

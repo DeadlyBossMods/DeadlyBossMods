@@ -353,6 +353,7 @@ DBM.DefaultOptions = {
 	NPIconTextFontStyle = "None",
 	NPIconTextFontSize = 10,
 	NPIconTextMaxLen = 7,
+	NPIconGlowBehavior = 1,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
@@ -7301,6 +7302,7 @@ do
 		forceDisabled = forceDisable
 		DBT:CancelAllBars()
 		DBM:ClearSpamTimers()
+		DBM.InfoFrame:Hide()
 	end
 
 	function DBM:Enable()

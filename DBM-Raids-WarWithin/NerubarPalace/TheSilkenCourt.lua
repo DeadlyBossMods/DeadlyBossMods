@@ -50,21 +50,21 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(29011))
 mod:AddTimerLine(anubarash)
 local warnPiercingStrike						= mod:NewStackAnnounce(438218, 2, nil, "Tank|Healer", 2)
 local warnCalloftheSwarm						= mod:NewCountAnnounce(438801, 2)
-local warnBurrowedEruption						= mod:NewCountAnnounce(441791, 2)
+local warnBurrowedEruption						= mod:NewCountAnnounce(441791, 2, nil, nil, 118563)
 local warnImpaled								= mod:NewTargetNoFilterAnnounce(449857, 4)
 local warnEntangled								= mod:NewTargetNoFilterAnnounce(440179, 1)
 
 local specWarnPiercingStrike					= mod:NewSpecialWarningDefensive(438218, nil, nil, nil, 1, 2)
-local specWarnRecklessCharge					= mod:NewSpecialWarningCount(440246, nil, nil, nil, 1, 2)--If we can get target, make dodge warning for non target and "move to web" for target
+local specWarnRecklessCharge					= mod:NewSpecialWarningCount(440246, nil, 100, nil, 1, 2)--If we can get target, make dodge warning for non target and "move to web" for target
 local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, nil, 2, 2)
 local yellImpaled								= mod:NewShortYell(449857, nil, false)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerPiercingStrikeCD						= mod:NewCDCountTimer(49, 438218, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, nil, nil, nil, 1)
-local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, nil, nil, nil, 3)
-local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, nil, nil, nil, 3)
+local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, 100, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
+local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, 118563, nil, nil, 3)--Shortname "Burrow"
+local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL.."[A] (%s)", nil, nil, 3)--Frontal + boss initial
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
@@ -72,20 +72,20 @@ mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {6, 7, 8})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")
-local warnVenomousRain						= mod:NewCountAnnounce(438343, 2)
+local warnVenomousRain						= mod:NewCountAnnounce(438656, 2, nil, nil, 44933)
 local warnWebBomb							= mod:NewCountAnnounce(439838, 3)--General announce for everyone, personal special announce to target
-local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2)
+local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2, nil, nil, 47482)
 local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
 
 --local specWarnWebBomb						= mod:NewSpecialWarningYou(439838, nil, nil, nil, 1, 2)--Not exposed
 --local yellWebBomb							= mod:NewShortYell(439838)
---local yellWebBombFades						= mod:NewShortFadesYell(439838)
+--local yellWebBombFades					= mod:NewShortFadesYell(439838)
 local specWarnBindingWebs					= mod:NewSpecialWarningYou(440001, nil, nil, nil, 1, 2)
-local specWarnVenomousRain					= mod:NewSpecialWarningYou(438343, nil, nil, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
+local specWarnVenomousRain					= mod:NewSpecialWarningYou(438656, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
 
-local timerVenomousRainCD					= mod:NewCDCountTimer(49, 438343, nil, nil, nil, 3)
+local timerVenomousRainCD					= mod:NewCDCountTimer(49, 438656, 44933, nil, nil, 3)--Shortname "Rain"
 local timerWebBombCD						= mod:NewCDCountTimer(49, 439838, nil, nil, nil, 3)
-local timerSkitteringLeapCD					= mod:NewCDCountTimer(49, 450045, nil, nil, nil, 3)
+local timerSkitteringLeapCD					= mod:NewCDCountTimer(49, 450045, 47482, nil, nil, 3)--Shortname "Leap"
 local timerVoidAscensionCD					= mod:NewIntermissionCountTimer(100, 450483, nil, nil, nil, 6)
 --Stage Two: Grasp of the Void
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29021))
@@ -97,12 +97,12 @@ local warnStingingDelirium					= mod:NewTargetNoFilterAnnounce(456245, 2)--Playe
 local specWarnStingingSwarm					= mod:NewSpecialWarningMoveTo(438677, nil, nil, nil, 1, 2)--438708
 local yellStingingSwarm						= mod:NewShortYell(438677)
 
-local timerStingingSwarmCD					= mod:NewCDCountTimer(49, 438677, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerStingingSwarmCD					= mod:NewCDCountTimer(49, 438677, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerRagingFuryIntermissionCD			= mod:NewIntermissionCountTimer(100, 451327, nil, nil, nil, 6)
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
-local warnVoidStep							= mod:NewCountAnnounce(450483, 2)
-local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4)
+local warnVoidStep							= mod:NewCountAnnounce(450483, 2, nil, nil, 4801)
+local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4, nil, nil, nil, 301902)
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
 --local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
@@ -110,20 +110,20 @@ local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil,
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
 local timerWebVortexCD						= mod:NewCDCountTimer(49, 441626, nil, nil, nil, 2)
-local timerEntropicDesolationCD				= mod:NewCDCountTimer(49, 450129, nil, nil, nil, 2)
-local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, nil, nil, nil, 3)
-local timerVoidStepCD						= mod:NewCDCountTimer(49, 450483, nil, nil, nil, 3)
-local timerCataclysmicEntropyCD				= mod:NewCDCountTimer(49, 438355, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerEntropicDesolationCD				= mod:NewCDCountTimer(49, 450129, 301902, nil, nil, 2)--Shortname "Run Away!"
+local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, DBM_COMMON_L.FRONTAL.."[S] (%s)", nil, nil, 3)--Frontal + boss initial
+local timerVoidStepCD						= mod:NewCDCountTimer(49, 450483, 4801, nil, nil, 3)--Shortname "Teleport"
+local timerCataclysmicEntropyCD				= mod:NewCDCountTimer(49, 438355, 108132, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Massive Explosion"
 --Stage Three: Unleashed Rage
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29022))
 local specWarnEnragedFerocity				= mod:NewSpecialWarningDispel(443598, "RemoveEnrage", nil, nil, 1, 2)
 ----Anub'arash
 mod:AddTimerLine(anubarash)
-local specWarnUnleashedSwarm				= mod:NewSpecialWarningCount(442994, nil, nil, nil, 2, 2)
-local specWarnSpikeEruption					= mod:NewSpecialWarningDodgeCount(443068, nil, nil, nil, 2, 2)
+local specWarnUnleashedSwarm				= mod:NewSpecialWarningCount(442994, nil, 310414, nil, 2, 2)
+local specWarnSpikeEruption					= mod:NewSpecialWarningDodgeCount(443068, nil, 14104, nil, 2, 2)
 
-local timerSpikeEruptionCD					= mod:NewCDCountTimer(49, 443068, nil, nil, nil, 3)
-local timerUnleashedSwarmCD					= mod:NewCDCountTimer(49, 442994, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerSpikeEruptionCD					= mod:NewCDCountTimer(49, 443068, 14104, nil, nil, 3)--Shortname "Spikes"
+local timerUnleashedSwarmCD					= mod:NewCDCountTimer(49, 442994, 310414, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Swarm"
 --local timerRagingFuryCD					= mod:NewCDCountTimer(49, 451327, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
 
 mod.vb.burrowedEruptionCount = 0
@@ -155,7 +155,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {30, 32.9, 31.0},
 			-- Venomous Rain
-			[438343] = {7.7, 31.7, 30.2, 31.8},
+			[438656] = {7.7, 31.7, 30.2, 31.8},
 			-- Web Bomb
 			[439838] = {24.3, 33.2, 33.3},
 			-- Skittering Leap
@@ -219,7 +219,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {21.1, 35.9, 30.0, 31.0},
 			-- Venomous Rain
-			[438343] = {7.7, 31.2, 31.7, 28.6},
+			[438656] = {7.7, 31.2, 31.7, 28.6},
 			-- Web Bomb
 			[439838] = {25.0, 36.2},
 			-- Skittering Leap
@@ -283,7 +283,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {8.0, 24.0, 25.0, 23.0},
 			-- Venomous Rain
-			[438343] = {15.2, 41.9, 33.2},
+			[438656] = {15.2, 41.9, 33.2},
 			-- Web Bomb
 			[439838] = {31.4, 32.9, 28.1},
 			-- Skittering Leap
@@ -336,6 +336,8 @@ local allTimers = {
 	},
 }
 
+--The boss has a mechanic where a stun can be used to interrupt bosses casts
+--Intent of the stun is to stop Cataclysmic Entropy, but it can also stop other casts
 local function checkSkippedWebVortex(self)
 	self.vb.webBombCount = self.vb.webBombCount + 1
 	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441626, self.vb.webBombCount+1)
@@ -354,6 +356,16 @@ local function checkSkippedEntropicDesolation(self)
 		self:Schedule(timer, checkSkippedEntropicDesolation, self)
 	end
 	DBM:Debug("checkSkippedEntropicDesolation fired", 2)
+end
+
+local function checkSkippedCatalysmicEntropy(self)
+	self.vb.cataCount = self.vb.cataCount + 1
+	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438355, self.vb.cataCount+1)
+	if timer then
+		timerCataclysmicEntropyCD:Start(timer-8, self.vb.cataCount+1)
+		self:Schedule(timer, checkSkippedCatalysmicEntropy, self)
+	end
+	DBM:Debug("checkSkippedCatalysmicEntropy fired", 2)
 end
 
 function mod:OnCombatStart(delay)
@@ -384,7 +396,7 @@ function mod:OnCombatStart(delay)
 	timerRecklessChargeCD:Start(allTimers[savedDifficulty][1][440246][1]-delay, 1)--43.3
 	--timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
 	--Takazj
-	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
+	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438656][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
 	timerVoidAscensionCD:Start(self:IsHeroic() and 126.6 or 131, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
@@ -456,7 +468,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 438343 then
 		self.vb.rainCount = self.vb.rainCount + 1
 		warnVenomousRain:Show(self.vb.rainCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438343, self.vb.rainCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438656, self.vb.rainCount+1)
 		if timer then
 			timerVenomousRainCD:Start(timer, self.vb.rainCount+1)
 		end
@@ -478,6 +490,7 @@ function mod:SPELL_CAST_START(args)
 		self:SetStage(1.5)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
+		self:Unschedule(checkSkippedCatalysmicEntropy)
 		--We manually stop timers Mostly in case phases can push early with higher dps checks in future
 		--Anub
 		timerRecklessChargeCD:Stop()
@@ -531,6 +544,7 @@ function mod:SPELL_CAST_START(args)
 			self:SetStage(1.5)
 			self:Unschedule(checkSkippedWebVortex)
 			self:Unschedule(checkSkippedEntropicDesolation)
+			self:Unschedule(checkSkippedCatalysmicEntropy)
 			--We manually stop timers Mostly in case phases can push early with higher dps checks in future
 			--Anub
 			timerRecklessChargeCD:Stop()
@@ -550,12 +564,14 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 438355 then
+		self:Unschedule(checkSkippedCatalysmicEntropy)
 		self.vb.cataCount = self.vb.cataCount + 1
 		specWarnCataclysmicEntropy:Show(self.vb.cataCount)
 		specWarnCataclysmicEntropy:Play("specialsoon")--Maybe custom sound?
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438355, self.vb.cataCount+1)
 		if timer then
 			timerCataclysmicEntropyCD:Start(timer, self.vb.cataCount+1)
+			self:Schedule(timer+8, checkSkippedCatalysmicEntropy, self)
 		end
 	elseif spellId == 443068 then
 		self.vb.eruptionCount = self.vb.eruptionCount + 1

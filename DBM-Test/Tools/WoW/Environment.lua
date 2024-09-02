@@ -9,11 +9,18 @@ end
 ---@class DBMTest
 local test = DBM.Test
 
--- Create a shared module that can be `require`d in both a CLI and WoW environment. Must be before any `require` calls in the current file.
-function test.CreateSharedModule(name)
-	---@diagnostic disable-next-line: param-type-mismatch --no clue why it's complaining here, this is obviously correct
+-- Create a shared module that can be accessed with `require' in both a CLI and WoW environment. Must be before any `require` calls in the current file.
+-- Must not be used as a tail call. Name must match the file name with "."" as a path separator (like require expects).
+---@return table
+function test.CreateSharedModule(name, obj)
+	---@diagnostic disable-next-line: param-type-mismatch -- https://github.com/LuaLS/lua-language-server/pull/2835
 	setfenv(2, env)
-	modules[name] = modules[name] or {}
+	if modules[name] and obj then -- Object was already implicitly created by require, add data we are adding
+		for k, v in pairs(obj) do
+			modules[name][k] = v
+		end
+	end
+	modules[name] = modules[name] or obj or {}
 	return modules[name]
 end
 

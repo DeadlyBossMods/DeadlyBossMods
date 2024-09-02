@@ -44,6 +44,7 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe or more for https://www.wowhead.com/beta/spell=445013/dark-barrier ? depends on mob count
 --TODO, add auto marking?
 --TODO, https://www.wowhead.com/beta/spell=441865/royal-shackles alert too?
+--TODO, figure out shortnames later. Right now mod is a bit of chaos til boss is actually pulled
 --General Stuff
 local warnPhase									= mod:NewPhaseChangeAnnounce(0, nil, nil, nil, nil, nil, 2)
 

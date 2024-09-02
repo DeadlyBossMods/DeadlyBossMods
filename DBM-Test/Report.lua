@@ -832,7 +832,7 @@ function reporter:FlagCombat(waitedFor)
 	self.inCombatAfterTest = waitedFor
 end
 
----@alias DBMTestTaintType "Lang"|"ModEnv"|"DBMOptions"|"ModOptions"|"Perspective"|"StrayObjects"
+---@alias DBMTestTaintType "Lang"|"ModEnv"|"DBMOptions"|"ModOptions"|"Perspective"|"StrayObjects"|"Playground"
 
 ---@type table<DBMTestTaintType, string>
 local taintDescriptions = {
@@ -841,7 +841,8 @@ local taintDescriptions = {
 	DBMOptions = "Running with DBM options set to something other than the test defaults",
 	ModOptions = "Running with mod options set to something other than the test defaults",
 	Perspective = "Test specifies player %s, but running as player %s",
-	StrayObjects = "Encountered stray warning objects during test run, an unexpected mod might have been triggered or mod was loaded without full test support"
+	StrayObjects = "Encountered stray warning objects during test run, an unexpected mod might have been triggered or mod was loaded without full test support",
+	Playground = "Test was started in playground mode"
 }
 
 ---@param taintType DBMTestTaintType

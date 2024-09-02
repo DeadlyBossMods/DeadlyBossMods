@@ -1,14 +1,16 @@
 ---@class DBMTestTranscriptorParser
 local transcriptorParser = DBM.Test.CreateSharedModule("ParseTranscriptor")
 
-local anonymizer = require "Anonymizer"
-local parser     = require "StupidParser"
-local filter     = require "Transcriptor-Filter"
+local anonymizer			= require "Anonymizer"
+local parser				= require "StupidParser"
+local filter    			= require "Data.Transcriptor-Filter"
+local instanceInfoGuesser	= require "InstanceInfoGuesser"
 
 ---@class DBMTest
 local test = DBM.Test
 test.TranscriptorParser = transcriptorParser
 
+local select = select -- Usually I'm not a fan of these local caches, but this one is literally called millions of times
 local time = time or os.time
 local unpack = unpack or table.unpack
 
@@ -49,7 +51,7 @@ local function findFrameBoundaries(lines, offset)
 			return firstEntry, lastEntry
 		end
 	end
-	return offset
+	return offset, offset
 end
 
 local function parseEncounterEvent(line)
@@ -60,6 +62,10 @@ local function parseEncounterEvent(line)
 	id, difficulty, groupSize = tonumber(id), tonumber(difficulty), tonumber(groupSize)
 	success = success == "1"
 	return id, name, difficulty, groupSize, success, line:match("%[ENCOUNTER_START%]")
+end
+
+local function timeFromLine(line)
+	return tonumber(line:match("<([%d.]*)")) or 0
 end
 
 ---@return DBMTranscriptorParserEncounterInfo[]
@@ -104,8 +110,8 @@ local function getEncounters(lines)
 		end
 		v.startOffset = findFrameBoundaries(lines, v.startOffset)
 		v.endOffset = select(2, findFrameBoundaries(lines, v.endOffset))
-		v.startTime = lines[v.startOffset]:match("<([%d.]*)")
-		v.endTime = lines[v.endOffset]:match("<([%d.]*)")
+		v.startTime = timeFromLine(lines[v.startOffset])
+		v.endTime = timeFromLine(lines[v.endOffset])
 	end
 	return encounters
 end
@@ -121,7 +127,9 @@ local function getLogInfo(name, log)
 		name = name,
 		timestamp = timestamp,
 		encounters = getEncounters(log.total),
-		lines = log.total
+		lines = log.total,
+		startTime = timeFromLine(log.total[1]),
+		endTime = timeFromLine(log.total[#log.total]),
 	}
 	return obj
 end
@@ -130,7 +138,9 @@ end
 function transcriptorParser:GetLogs()
 	local logs = {}
 	for k, v in pairs(self.data) do
-		logs[#logs + 1] = getLogInfo(k, v)
+		if #v.total > 0 then
+			logs[#logs + 1] = getLogInfo(k, v)
+		end
 	end
 	table.sort(logs, function(e1, e2) return e1.timestamp < e2.timestamp end)
 	return logs
@@ -508,10 +518,13 @@ function testGenerator:parseMetadata()
 	local player
 	local instanceInfo = {} ---@type DBMInstanceInfo
 	local encounterInfo = {}
+	local zoneId
 	for i, line in ipairs(self.log.lines) do
 		-- Only grab instance and encounter info from within relevant log area
 		if i >= self.firstLine and i <= self.lastLine then
-			if line:match("GetInstanceInfo%(%) =") then
+			if not zoneId and (line:match("Creature%-%d%-%d*%-(%d*)") or line:match("Vehicle%-%d%-%d*%-(%d*)")) then
+				zoneId = tonumber(line:match("Creature%-%d%-%d*%-(%d*)") or line:match("Vehicle%-%d%-%d*%-(%d*)"))
+			elseif line:match("GetInstanceInfo%(%) =") then
 				---@diagnostic disable-next-line: assign-type-mismatch
 				instanceInfo.name, instanceInfo.instanceType, instanceInfo.difficultyID, instanceInfo.difficultyName, instanceInfo.maxPlayers, instanceInfo.dynamicDifficulty, instanceInfo.isDynamic, instanceInfo.instanceID, instanceInfo.instanceGroupSize, instanceInfo.lfgDungeonID
 				= guessTypes(line:match(
@@ -521,11 +534,12 @@ function testGenerator:parseMetadata()
 				local modifier = line:match("%((%d)%)")
 				instanceInfo.difficultyModifier = tonumber(modifier) or 0
 			elseif line:match("%[ENCOUNTER_[SE][TN][AD]") then
-				local id, name, difficulty, _, success, isStart = parseEncounterEvent(line)
+				local id, name, difficulty, groupSize, success, isStart = parseEncounterEvent(line)
 				if not encounterInfo.id or id == encounterInfo.id then -- multiple different encounters in one log? you'll have to edit this field by hand
 					encounterInfo.id = id
 					encounterInfo.name = name
 					encounterInfo.difficulty = difficulty
+					encounterInfo.groupSize = groupSize
 					if not isStart then
 						encounterInfo.kill = success
 					end
@@ -541,11 +555,32 @@ function testGenerator:parseMetadata()
 			yield()
 		end
 	end
+	 -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+	local majorVersion = tonumber(self.log.name:match("Version: (%d*)."))
+	local gameVersion = not majorVersion and "Any"
+		or majorVersion <= 2 and "SeasonOfDiscovery"
+		or majorVersion >= 3 and majorVersion < 11 and "Classic"
+		or "Retail"
+	if not instanceInfo.name and zoneId then
+		local oldModifier = instanceInfo.difficultyModifier
+		instanceInfo = instanceInfoGuesser:GuessFromZoneId(zoneId, gameVersion) or instanceInfo
+		if encounterInfo then
+			instanceInfoGuesser:SetDifficulty(instanceInfo, encounterInfo.difficulty, encounterInfo.groupSize)
+		end
+		encounterInfo.difficultyModifier = encounterInfo.difficultyModifier or oldModifier
+	end
+	if not player then
+		if UnitName then
+			player = UnitName("player")
+		else
+			error("could not deduce who created the log, please cast at least one spell while logging")
+		end
+	end
 	self.metadata = {
 		player = player,
 		instanceInfo = instanceInfo,
 		encounterInfo = encounterInfo,
-		gameVersion = self.log.name:match("Version: 1%.") and "SeasonOfDiscovery" or "Retail" -- FIXME: distinguish SoD and Era somehow (but the field is unused right now anyways)
+		gameVersion = gameVersion
 	}
 end
 
@@ -629,6 +664,21 @@ function testGenerator:GetTestDefinition()
 	return self:GetTestDefinition()
 end
 
+local function unstringify(arg, ...)
+	if select("#", ...) == 0 then
+		if type(arg) == "string" then
+			return arg:sub(
+				arg:sub(1, 1) == "\"" and 2 or 1,
+				arg:sub(-1, -1) == "\"" and -2 or nil
+			)
+		else
+			return arg
+		end
+	else
+		return unstringify(arg), unstringify(...)
+	end
+end
+
 function testGenerator:GetLogAndPlayers()
 	if self.cache.combinedLog then
 		return self.cache.combinedLog, self.cache.combinedPlayers, self.cache.resultLog, self.cache.resultPlayers
@@ -649,7 +699,12 @@ function testGenerator:GetLogAndPlayers()
 		time = time - timeOffset
 		local testEvent = transcribeEvent(event, params, anon)
 		if testEvent then
-			resultLog[#resultLog + 1] = {time, unpack(testEvent)}
+			-- Unfortunately transcribeEvent already stringifies everything because everything was written with generating code in mind
+			-- But for live imports we obviously want non-stringified versions
+			-- TODO: Clean this up. we properly might want to transcibe imports into strings first and then parse them again,
+			--       that may sound stupid but would be encessary for persistently saved logs anyways. We probably want a real
+			--       parser for Lua table expressions to do this (just loadstring() risks constant table size limits)
+			resultLog[#resultLog + 1] = {time, unstringify(guessTypes(unpack(testEvent)))}
 			resultLogStr[#resultLogStr + 1] = ("{%.2f, %s}"):format(time, table.concat(testEvent, ", "))
 		end
 		if i % 10000 == 0 then

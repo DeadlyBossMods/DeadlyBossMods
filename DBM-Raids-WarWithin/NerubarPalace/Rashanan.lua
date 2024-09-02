@@ -30,10 +30,10 @@ mod:RegisterEventsInCombat(
  or stoppedability.id = 452806
 --]]
 local warnSavageWound							= mod:NewStackAnnounce(458067, 2, nil, "Tank|Healer")
-local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2)--General announce, private aura sound will be personal emphasis
+local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2, nil, nil, 437704)--General announce, private aura sound will be personal emphasis
 local warnInfestedSpawn							= mod:NewIncomingCountAnnounce(455373, 2)
 local warnSpinneretsStrands						= mod:NewIncomingCountAnnounce(439784, 3)--General announce, private aura sound will be personal emphasis
-local warnErosiveSpray							= mod:NewCountAnnounce(439811, 2)
+local warnErosiveSpray							= mod:NewCountAnnounce(439811, 2, nil, nil, 123121)--Shortname "Spray"
 local warnEnvelopingWebs						= mod:NewCountAnnounce(454989, 4, nil, nil, 157317)--Shortname "Webs"
 local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 
@@ -46,11 +46,11 @@ local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInt
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerSavageAssaultCD						= mod:NewCDCountTimer(49, 444687, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerRollingAcidCD						= mod:NewCDCountTimer(21.3, 439789, nil, nil, nil, 3)
-local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, nil, nil, nil, 1)
+local timerRollingAcidCD						= mod:NewCDCountTimer(21.3, 439789, 437704, nil, nil, 3)--Shortname "Toxic Waves"
+local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil, nil, 3)
-local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, 123121, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Spray"
 local timerEnvelopingWebsCD						= mod:NewCDCountTimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Webs"
 local timerMovementCD							= mod:NewStageContextCountTimer(49, 334371, nil, nil, nil, 6, 178717)
 

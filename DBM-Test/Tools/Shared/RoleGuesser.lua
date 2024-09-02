@@ -203,5 +203,10 @@ function roleGuesser:GetPlayerInfo()
 	return self.processedRoles
 end
 
+-- Happens if you get completely unrelated people who aren't in your party and didn't participate in fights in your logs
+function roleGuesser:NewUnknownPlayer(guid)
+	return self:initPlayerStats()
+end
+
 return roleGuesser
 
