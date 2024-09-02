@@ -674,7 +674,14 @@ function bossModPrototype:NewYouAnnounce(spellId, color, ...)
 	return newAnnounce(self, "you", spellId, color or 1, ...)
 end
 
+---@param spellId number|string
+---@param color number?
+---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
+---@param optionName string|number|boolean?
+---@param castTime number?
+---@param preWarnTime number?
+---@param soundOption number|boolean?
 function bossModPrototype:NewTargetNoFilterAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
 	---@type Announce1
 	return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)

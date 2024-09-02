@@ -487,8 +487,9 @@ L.AUTO_TIMER_TEXTS.combat				= "Combate começa"
 --This basically clones np only bar option and display text from regular counterparts
 L.AUTO_TIMER_TEXTS.cdnp 				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextnp 				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
-L.AUTO_TIMER_TEXTS.cdcountnp 			= L.AUTO_TIMER_TEXTS.cdcount -- OPTIONAL
-L.AUTO_TIMER_TEXTS.nextcountnp 			= L.AUTO_TIMER_TEXTS.nextcount -- OPTIONAL
+L.AUTO_TIMER_TEXTS.cdcnp 				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
+L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
 L.AUTO_TIMER_OPTIONS.target				= "Mostrar cronômetro para a debuff $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar cronômetro (com contagem) para a debuff $spell:%s"
@@ -501,14 +502,12 @@ L.AUTO_TIMER_OPTIONS.ai					= "Mostrar cronômetro IA para recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cd					= "Mostrar cronômetro para recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Mostrar cronômetro para recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdnp 				= "Mostrar cronômetro apenas na placa de identificação para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnpcount 			= "Mostrar cronômetro apenas na placa de identificação (com contagem) para recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Mostrar cronômetro para recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdspecial 			= "Mostrar cronômetro para recarga de habilidade especial"
 L.AUTO_TIMER_OPTIONS.cdcombo 			= "Mostrar cronômetro para recarga de combo de habilidade"--Used for combining 2 abilities into a single timer
 L.AUTO_TIMER_OPTIONS.next				= "Mostrar cronômetro para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Mostrar cronômetro para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnp 			= "Mostrar cronômetro apenas na placa de identificação para o próximo $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnpcount 		= "Mostrar cronômetro apenas na placa de identificação (com contagem) para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "Mostrar cronômetro para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextspecial 		= "Mostrar cronômetro para a próxima habilidade especial"
 L.AUTO_TIMER_OPTIONS.nextcombo 			= "Mostrar cronômetro para o próximo combo de habilidade"--Used for combining 2 abilities into a single timer
