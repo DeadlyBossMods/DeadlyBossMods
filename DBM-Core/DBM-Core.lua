@@ -7365,10 +7365,10 @@ do
 			testWarning3 = testMod:NewAnnounce("%s", 3, "135826")
 			testTimer1 = testMod:NewTimer(20, "%s", "136116", nil, nil)
 			testTimer2 = testMod:NewTimer(20, "%s ", "134170", nil, nil, 1)
-			testTimer3 = testMod:NewTimer(20, "%s  ", private.isRetail and "136194" or "136221", nil, nil, 3, CL.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-			testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, CL.INTERRUPT_ICON)
-			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, CL.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
+			testTimer3 = testMod:NewTimer(20, "%s  ", private.isRetail and "136194" or "136221", nil, nil, 3, CL.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")
+			testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, CL.INTERRUPT_ICON, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)--Flagged Priority for test mode
+			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, CL.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")
+			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")
 			testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
 			testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)

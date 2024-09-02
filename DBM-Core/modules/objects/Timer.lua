@@ -815,7 +815,8 @@ end
 ---@param requiresCombat boolean? Disables audio countdowns when not in combat
 ---@param waCustomName any? Used to show custom name/text for Spell header (usually used when a made up SpellID is used)
 ---@param customType string? Used to define alternate timer type for WeakAura callbacks via the timerTypeSimplification table
-function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType)
+---@param isPriority boolean? Used to flag a timer as extra important. Can be used for weak auras or nameplate addons to add extra emphasis onto specific timer like a glow
+function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType, isPriority)
 	if r and type(r) == "string" then
 		DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r" .. name .. r)
 		r = nil--Fix it for users
@@ -854,6 +855,7 @@ function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName,
 			startedTimers = {},
 			mod = self,
 			startLarge = nil,
+			isPriority = isPriority,
 		},
 		mt
 	)
