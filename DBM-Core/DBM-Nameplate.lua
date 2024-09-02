@@ -949,7 +949,7 @@ function nameplateFrame:UpdateIconOptions()
 	for _, frame in pairs(GetNamePlates()) do
 		local dbmAuraFrame = frame.DBMAuraFrame
 		if dbmAuraFrame then
-			for i, iconFrame in pairs(dbmAuraFrame.icons or {}) do
+			for _, iconFrame in pairs(dbmAuraFrame.icons or {}) do
 				dbmAuraFrame:ApplyOptions(iconFrame)
 			end
 		end
