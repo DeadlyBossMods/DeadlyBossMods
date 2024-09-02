@@ -15,6 +15,7 @@ auraSizeSlider:SetPoint("TOPLEFT", style.frame, "TOPLEFT", 20, -25)
 auraSizeSlider:SetValue(DBM.Options.NPIconSize)
 auraSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconSize = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 
 local iconOffsetXSlider = style:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
@@ -22,6 +23,7 @@ iconOffsetXSlider:SetPoint("TOPLEFT", auraSizeSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetXSlider:SetValue(DBM.Options.NPIconXOffset)
 iconOffsetXSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconXOffset = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconOffsetXSlider.myheight = 0
 
@@ -30,6 +32,7 @@ iconOffsetYSlider:SetPoint("TOPLEFT", iconOffsetXSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetYSlider:SetValue(DBM.Options.NPIconYOffset)
 iconOffsetYSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconYOffset = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconOffsetYSlider.myheight = 0
 
@@ -38,6 +41,7 @@ iconSpacingSlider:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", 0, -10)
 iconSpacingSlider:SetValue(DBM.Options.NPIconSpacing)
 iconSpacingSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconSpacing = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconSpacingSlider.myheight = 0
 
@@ -70,6 +74,7 @@ local dirs = {
 
 local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs, "DBM", "NPIconGrowthDirection", function(value)
 	DBM.Options.NPIconGrowthDirection = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconGrowthDirection:SetPoint("TOPLEFT", iconSpacingSlider, "BOTTOMLEFT", -20, -35)
 iconGrowthDirection.myheight = 0
@@ -99,6 +104,7 @@ local anchors = {
 
 local iconAnchorPoint = style:CreateDropdown(L.NPIconAnchorPoint, anchors, "DBM", "NPIconAnchorPoint", function(value)
 	DBM.Options.NPIconAnchorPoint = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 115, 0)
 iconAnchorPoint.myheight = 0
@@ -145,6 +151,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 
 local FontDropDownTimer = style:CreateDropdown(L.FontTypeTimer, Fonts, "DBM", "NPIconTimerFont", function(value)
 	DBM.Options.NPIconTimerFont = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 FontDropDownTimer:SetPoint("TOPLEFT", iconGrowthDirection, "TOPLEFT", 0, -70)
 FontDropDownTimer.myheight = 0
@@ -178,6 +185,7 @@ local FontStyles = {
 
 local TimerFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTimerFontStyle", function(value)
 	DBM.Options.NPIconTimerFontStyle = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 TimerFontStyleDropDown:SetPoint("LEFT", FontDropDownTimer, "RIGHT", 25, 0)
 TimerFontStyleDropDown.myheight = 0
@@ -187,6 +195,7 @@ timerFontSizeSlider:SetPoint("TOPLEFT", FontDropDownTimer, "TOPLEFT", 20, -40)
 timerFontSizeSlider:SetValue(DBM.Options.NPIconTimerFontSize)
 timerFontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconTimerFontSize = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 timerFontSizeSlider.myheight = 0
 
@@ -195,12 +204,14 @@ timerEnable:SetPoint("TOPLEFT", TimerFontStyleDropDown, "TOPLEFT", 20, -35)
 
 local FontDropDownText = style:CreateDropdown(L.FontTypeText, Fonts, "DBM", "NPIconTextFont", function(value)
 	DBM.Options.NPIconTextFont = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 FontDropDownText:SetPoint("TOPLEFT", timerFontSizeSlider, "TOPLEFT", -20, -70)
 FontDropDownText.myheight = 0
 
 local TextFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTextFontStyle", function(value)
 	DBM.Options.NPIconTextFontStyle = value
+	DBM.Nameplate:UpdateIconOptions()
 end)
 TextFontStyleDropDown:SetPoint("LEFT", FontDropDownText, "RIGHT", 25, 0)
 TextFontStyleDropDown.myheight = 0
@@ -210,6 +221,7 @@ textFontSizeSlider:SetPoint("TOPLEFT", FontDropDownText, "TOPLEFT", 20, -40)
 textFontSizeSlider:SetValue(DBM.Options.NPIconTextFontSize)
 textFontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconTextFontSize = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 textFontSizeSlider.myheight = 0
 
@@ -222,6 +234,7 @@ iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -2
 iconTextMaxLenSlider:SetValue(DBM.Options.NPIconTextMaxLen)
 iconTextMaxLenSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconTextMaxLen = self:GetValue()
+	DBM.Nameplate:UpdateIconOptions()
 end)
 iconTextMaxLenSlider.myheight = 0
 
@@ -271,5 +284,7 @@ resetbutton:SetScript("OnClick", function()
 	textFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTextFontSize)
 	textEnable:SetChecked(DBM.DefaultOptions.NPIconTextEnabled)
 	iconTextMaxLenSlider:SetValue(DBM.DefaultOptions.NPIconTextMaxLen)
+
+	DBM.Nameplate:UpdateIconOptions()
 end)
 resetbutton.myheight = 0

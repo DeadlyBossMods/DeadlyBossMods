@@ -11,6 +11,7 @@ DBM.Nameplate = nameplateFrame
 local units = {}
 local nameplateTimerBars = {}
 local num_units = 0
+local lastOptionsUpdateTime = GetTime()
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 ---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
@@ -74,18 +75,35 @@ end
 -- Aura frame functions --
 --------------------------
 do
-	local function AuraFrame_CreateIcon(frame)
+	local function AuraFrame_ApplyOptions(self, iconFrame)
+		if lastOptionsUpdateTime < iconFrame.lastOptionsUpdateTime then return end
+
+		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
+
+		iconFrame.icon:SetSize(DBM.Options.NPIconSize, DBM.Options.NPIconSize)
+
+		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
+		local timerFontSize = DBM.Options.NPIconTimerFontSize
+		local timerStyle = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
+		iconFrame.cooldown.timer:SetFont(timerFont, timerFontSize, timerStyle)
+
+		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
+		local textFontSize = DBM.Options.NPIconTextFontSize
+		local textStyle = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
+		iconFrame.text:SetFont(textFont, textFontSize, textStyle)
+
+		iconFrame.lastOptionsUpdateTime = GetTime()
+	end
+	local function AuraFrame_CreateIcon()
 		-- base frame
 		---@class DBMNamePlateIconFrame: Button, BackdropTemplate
 		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, "BackdropTemplate")
 		iconFrame:EnableMouse(false)
 		iconFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
-		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
 		iconFrame:Hide()
 
 		-- texture icon
 		iconFrame.icon = iconFrame:CreateTexture(nil, 'BORDER')
-		iconFrame.icon:SetSize(DBM.Options.NPIconSize, DBM.Options.NPIconSize)
 		iconFrame.icon:SetPoint("CENTER")
 
 		-- CD swipe
@@ -103,25 +121,20 @@ do
 		-- CD text
 		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "OVERLAY", "NumberFontNormal")
 		iconFrame.cooldown.timer:SetPoint ("CENTER")
-		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
-		local timerFontSize = DBM.Options.NPIconTimerFontSize
-		local timerStyle = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
-		iconFrame.cooldown.timer:SetFont(timerFont, timerFontSize, timerStyle)
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
 
 		iconFrame.text = iconFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 		iconFrame.text:SetPoint("BOTTOM", iconFrame, "TOP", 0, 2)
-		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
-		local textFontSize = DBM.Options.NPIconTextFontSize
-		local textStyle = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
-		iconFrame.text:SetFont(textFont, textFontSize, textStyle)
 		iconFrame.text:Hide()
 
 		iconFrame:SetScript ("OnUpdate", frame.UpdateTimerText)
 
 		tinsert(frame.icons,iconFrame)
 		iconFrame.parent = frame
+
+
+		AuraFrame_ApplyOptions(iconFrame)
 
 		return iconFrame
 	end
@@ -282,6 +295,7 @@ do
 		end
 
 		local iconFrame = frame:GetIcon(aura_tbl.index)
+		frame:ApplyOptions(iconFrame)
 		iconFrame.aura_tbl = aura_tbl
 		iconFrame.icon:SetTexture(aura_tbl.texture)
 		iconFrame.icon:SetDesaturated(aura_tbl.desaturate)
@@ -361,6 +375,7 @@ do
 	local auraframe_proto = {
 		CreateIcon = AuraFrame_CreateIcon,
 		GetIcon = AuraFrame_GetIcon,
+		ApplyOptions = AuraFrame_ApplyOptions,
 		ArrangeIcons = AuraFrame_ArrangeIcons,
 		AddAura = AuraFrame_AddAura,
 		RemoveAura = AuraFrame_RemoveAura,
@@ -887,4 +902,16 @@ end
 
 function nameplateFrame:IsShown()
 	return DBMNameplateFrame and DBMNameplateFrame:IsShown()
+end
+
+function nameplateFrame:UpdateIconOptions()
+	lastOptionsUpdateTime = GetTime()
+	for _, frame in pairs(GetNamePlates()) do
+		local dbmAuraFrame = frame.DBMAuraFrame
+		if dbmAuraFrame then
+			for i, iconFrame in pairs(dbmAuraFrame.icons or {}) do
+				dbmAuraFrame:ApplyOptions(iconFrame)
+			end
+		end
+	end
 end
