@@ -103,6 +103,27 @@ end)
 iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 115, 0)
 iconAnchorPoint.myheight = 0
 
+local glowOptions = {
+	{
+		text	= L.NPIcon_GlowNone,
+		value	= 0,
+	},
+	{
+		text	= L.NPIcon_GlowImportant,
+		value	= 1,
+	},
+	{
+		text	= L.NPIcon_GlowAll,
+		value	= 2,
+	},
+}
+
+local iconGlowBehavior = style:CreateDropdown(L.NPIcon_GlowBehavior, glowOptions, "DBM", "NPIconGlowBehavior", function(value)
+	DBM.Options.NPIconGlowBehavior = value
+end, 90)
+iconGlowBehavior:SetPoint("TOPLEFT", iconAnchorPoint, "TOPLEFT", 0, 75)
+iconGlowBehavior.myheight = 0
+
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= DEFAULT,

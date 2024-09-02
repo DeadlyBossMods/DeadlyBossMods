@@ -813,8 +813,9 @@ end
 ---@param texture number|string? accepts texture ID or spell ID
 ---@param duration number? adds countdown duration to icon
 ---@param desaturate boolean?
+---@param useGlow number? 0/nil = false, 1 = use glow only on most notable CD/Casts about to expire, 2 = use glow on all expiring CD or cast timers
 ---@param forceDBM boolean? makes it use internal handler even when 3rd party nameplate mod exists
-function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, forceDBM)
+function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, useGlow, forceDBM)
 
 	-- nameplate icons are disabled;
 	if DBM.Options.DontShowNameplateIcons then return end
@@ -832,15 +833,16 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 		spellId = spellId,
 		duration = duration or 0,
 		desaturate = desaturate or false,
+		useGlow = useGlow or 0,
 		startTime = curTime,
-		auraType = 1, -- 1 = nameplate aura; 2 = nameplate CD timers
+		auraType = 1, -- 1 = nameplate aura; 2 = nameplate CD/Cast timers
 		index = currentTexture,
 	}
 
 	-- Supported by nameplate mod, passing to their handler
 	if SupportedNPModIcons() and not forceDBM then
 		DBM:FireEvent("BossMod_EnableHostileNameplates") --TODO: is this needed?
-		DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, aura_tbl.texture, aura_tbl.duration, aura_tbl.desaturate)
+		DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, aura_tbl.texture, aura_tbl.duration, aura_tbl.desaturate, aura_tbl.useGlow)
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
 		return
 	end

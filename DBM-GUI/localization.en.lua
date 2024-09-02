@@ -592,6 +592,10 @@ L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo							= "Test (Be near nameplates)"
 L.FontTypeTimer						= "Select timer font"
 L.FontTypeText						= "Select text font"
+L.NPIcon_GlowBehavior 		    	= "Icon Glow Behavior"
+L.NPIcon_GlowNone			    	= "Never Glow Icons"
+L.NPIcon_GlowImportant			   	= "Glow important expiring CD/Cast Icons"
+L.NPIcon_GlowAll			    	= "Glow all expiring CD/Cast Icons"
 
 -- Misc
 L.Area_General						= "General"
