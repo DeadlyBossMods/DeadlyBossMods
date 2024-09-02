@@ -114,10 +114,14 @@ local timerTypeSimplification = {
 	["ai"] = "cd",
 	["adds"] = "cd",
 	["addscustom"] = "cd",
-	["cdnp"] = "cd",
-	["cdpnp"] = "cd",
-	["nextnp"] = "cd",
-	["nextpnp"] = "cd",
+
+	--All nameplate only timers, be they approx or exact or ai cooldowns, or nameplate only cast timers
+	--CDs all map to cdnp but cast maps to castnp
+	["cdnp"] = "cdnp",
+	["cdpnp"] = "cdnp",
+	["nextnp"] = "cdnp",
+	["nextpnp"] = "cdnp",
+	["castpnp"] = "castnp",
 
 	--RPs all map to "warmup"
 	["roleplay"] = "warmup",
@@ -140,7 +144,6 @@ local timerTypeSimplification = {
 	["active"] = "cast",--Active bars are usually things like Whirlwind is active on the boss, or a channeled cast is being done. so effectively it's for channeled casts, as upposed to regular casts
 	["castsource"] = "cast",
 	["castcount"] = "cast",
-	["castpnp"] = "cast",
 }
 
 --Very similar to above but more specific to key replacement and not type replacement, to match BW behavior for unification of WAs
@@ -283,7 +286,7 @@ function timerPrototype:Start(timer, ...)
 				playCountdown(id, timer, countVoice, countVoiceMax, self.requiresCombat)--timerId, timer, voice, count
 			end
 		end
-		local bar = DBT:CreateBar(timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd")
+		local bar = DBT:CreateBar(timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd" or self.simpType == "cdnp")
 		if not bar then
 			return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 		end
