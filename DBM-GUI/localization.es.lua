@@ -423,20 +423,20 @@ L.SpamBlockNoSpecWarnVibrate		= "No vibrar el controlador en un aviso especial"
 L.SpamBlockNoSpecWarnSound			= "Desactivar sonidos de avisos especiales (no afecta a los paquetes de voz)"
 L.SpamBlockNoPrivateAuraSound		= "No registrar sonidos de auras privados"
 
-L.Area_SpamFilter_Timers			= "Opciones de filtros globales de temporizadores"
+L.Area_SpamFilter_Timers			= "Opciones de temporizadores"
 L.SpamBlockNoShowBossTimers			= "No mostrar temporizadores para jefes de mazmorras/bandas"
 L.SpamBlockNoShowTrashTimers		= "No mostrar temporizadores para bichos (Nota: esto también desactiva los TdR con placa de nombre.)"
 L.SpamBlockNoShowEventTimers		= "No mostrar temporizadores para eventos o avisos (cola, campo de batalla, etc.)"
 L.SpamBlockNoShowUTimers			= "Ocultar temporizadores de usuario"
 L.SpamBlockNoCountdowns				= "Desactivar sonidos de cuenta atrás"
 
-L.Area_SpamFilter_Nameplates	= "Opciones de filtro y desactivación global de placa de nombre"
+L.Area_SpamFilter_Nameplates	= "Opciones de placas de nombre"
 L.SpamBlockNoNameplate			= "Ocultar auras de placas de nombres (las desactiva por completo)"
 L.SpamBlockNoNameplateCD		= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades"
 L.SpamBlockNoBossGUIDs			= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activado.)"
 
 
-L.Area_SpamFilter_Misc		= "Opciones de filtros globales varios"
+L.Area_SpamFilter_Misc		= "Opciones varias"
 L.SpamBlockNoSetIcon		= "Desactivar asignación automática de iconos"
 L.SpamBlockNoRangeFrame		= "Ocultar marcos de distancia"
 L.SpamBlockNoInfoFrame		= "Ocultar marcos de información"
@@ -584,6 +584,10 @@ L.NPIconAnchorPoint			= "Punto de anclaje del icono"
 L.NPDemo					= "Probar (Acercase de placas de nombre)"
 L.FontTypeTimer				= "Seleccionar fuente del temporizador"
 L.FontTypeText				= "Seleccionar fuente de texto"
+L.NPIcon_GlowBehavior 		= "Comportamiento de resplandor del icono"
+L.NPIcon_GlowNone			= "Nunca resplandecer los iconos"
+L.NPIcon_GlowImportant		= "Resplandecer iconos importantes de reutilizaciones/lanzamientos a punto de expirar"
+L.NPIcon_GlowAll			= "Resplandecer todos los iconos de reutilizaciones/lanzamientos a punto de expirar"
 
 -- Misc
 L.Area_General				= "General"
@@ -597,3 +601,58 @@ L.FontShadow				= "Sombra"
 L.FontType					= "Fuente"
 
 L.FontHeight	= 16
+
+-- Testing
+L.DevPanel							= "Desarrollo y pruebas"
+L.DevPanelArea						= "Interfaz de desarrollo y pruebas"
+L.DevPanelExplanation				= "Esta es una interfaz de desarrollo y pruebas que valida que DBM funcione como se espera reproduciendo registros de combate." -- Test UI panel under options
+L.DevModPanelExplanation			= [[Bienvenido al área de desarrollo y pruebas de este módulo.
+Aquí puedes reproducir registros de peleas contra jefes para ver cómo se comporta el mod y probar las integraciones con los callbacks de DBM. Consulta DBM-Test/README.md para obtener más detalles sobre integraciones y callbacks. DBM incluye registros de ejemplo para muchas incursiones, pero también puedes importar tus propios registros desde Transcriptor.
+]] -- Playground mode in mods
+
+L.TimewarpSetting					= "Distorsión temporal: %dx"
+L.TimewarpDynamic					= "Distorsión temporal: dinámica (más rápida)"
+L.TestSupportArea					= "Opciones de carga de módulos"
+L.ModNotLoadedWithTests				= "Aviso: Este módulo no está cargado con soporte completo para pruebas. Si el módulo llama directamente a funciones de la API, como UnitHealth() o UnitName(), estas no funcionarán correctamente. Esto suele ser el caso para funciones relacionadas con la salud, poder o objetivos de unidades."
+L.ModLoadedWithTests				= "El módulo está cargado con soporte para pruebas porque al menos un módulo en el addon tiene las pruebas activadas."
+L.AlwaysLoadModWithTests			= "Cargar siempre este módulo con soporte completo para pruebas (ralentiza ligeramente la carga)"
+L.ModLoadRequiresReload				= ", requiere recargar la interfaz para que surta efecto" -- Appended to L.AlwaysLoadModWithTests
+L.TestSelectArea					= "Datos de prueba" -- Title of the UI area
+L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
+L.SelectPerspective					= "Perspectiva del registro (jugador simulado)"
+L.ImportTranscriptor				= "Importar registro de Transcriptor"
+L.ImportTranscriptorHeader			= [[
+Importa un registro de Transcriptor pegándolo en cualquier parte del cuadro de edición a continuación. La velocidad de pegado es aproximadamente de 2 MiB/s, lo que significa que tu juego se congelará durante varios segundos al pegar archivos de registro muy grandes.
+También puedes importar la sesión actual de Transcriptor desde las variables guardadas de Transcriptor con el botón de importación a la derecha.]]
+L.PasteLogHere						= "Presiona " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " para pegar un registro aquí."
+L.LogPasted							= "Pegado %.2f MiB en %.1f segundos (%.2f MiB/s)."
+L.ImportLocalTranscriptor			= "Importar sesión actual\nde Transcriptor"
+L.NoLocalTranscriptor				= "No se pudieron encontrar datos locales de Transcriptor."
+L.LocalImportDone					= "Importados %d registros con %d encuentros desde Transcriptor."
+L.Parsing							= "Analizando..."
+L.SelectLogDropdown					= "Seleccionar encuentro"
+L.CreateTest						= "Crear prueba"
+L.CreatedTest						= "Prueba creada con %d eventos en %.1f segundos."
+L.NoLogsFound						= "La importación de Transcriptor no contiene datos de registro."
+L.NoTestDataAvailable				= "No hay datos de prueba disponibles"
+L.NoLogSelected						= "Fallo en la creación de la prueba: No se seleccionó ningún registro."
+L.LogAlreadyImported				= "Fallo en la creación de la prueba: Prueba ya importada."
+
+L.RewriteAllToYou					= "Todos los jugadores al mismo tiempo"
+L.RealModOptionsBelow				= "Las opciones del mod a continuación se sincronizan entre el modo de pruebas y tus configuraciones reales."
+L.Test								= "Prueba"
+L.Tests								= "Pruebas"
+L.AllTests							= "Todas las pruebas"
+L.RunTest							= "Ejecutar prueba"
+L.RunTestShort						= "Ejecutar" -- Same intend as RunTest, but a smaller button
+L.StopTest							= "Detener prueba"
+L.StopTests							= "Detener pruebas"
+L.RunAllTests						= "Ejecutar todas las pruebas"
+L.Queued							= "En cola"
+L.Running							= "En ejecución"
+L.Failed							= "Fallido"
+L.ShowReport						= "Mostrar informe"
+L.ShowDiff							= "Mostrar diferencias"
+L.ShowErrors						= "Mostrar errores"
+L.TestModEntry						= "[Área de pruebas] %s"
+L.EnterTestMode						= "Modo de pruebas"
