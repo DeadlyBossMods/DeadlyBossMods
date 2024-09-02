@@ -485,10 +485,11 @@ L.AUTO_TIMER_TEXTS.roleplay					= GUILD_INTEREST_RP
 L.AUTO_TIMER_TEXTS.combat					= "戰鬥開始"
 
 --This basically clones np only bar option and display text from regular counterparts
---L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
---L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
---L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
---L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
+--L.AUTO_TIMER_TEXTS.cdnp					= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+--L.AUTO_TIMER_TEXTS.nextnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
+--L.AUTO_TIMER_TEXTS.cdcnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+--L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
+--L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
 L.AUTO_TIMER_OPTIONS.target					= "計時條：$spell:%s減益效果持續時間"
 L.AUTO_TIMER_OPTIONS.targetcount			= "計時條：$spell:%s減益效果持續時間(包含計數)"
@@ -501,14 +502,12 @@ L.AUTO_TIMER_OPTIONS.ai						= "計時條：$spell:%s冷卻的AI計時條"
 L.AUTO_TIMER_OPTIONS.cd						= "計時條：$spell:%s冷卻時間"
 L.AUTO_TIMER_OPTIONS.cdcount				= "計時條：$spell:%s冷卻時間"
 L.AUTO_TIMER_OPTIONS.cdnp					= "計時條：只顯示名條的 $spell:%s 冷卻時間"
-L.AUTO_TIMER_OPTIONS.cdnpcount				= "計時條：只顯示名條的 $spell:%s 冷卻時間(包含計數)"
 L.AUTO_TIMER_OPTIONS.cdsource				= "計時條：$spell:%s冷卻時間以及來源"
 L.AUTO_TIMER_OPTIONS.cdspecial				= "計時條：特殊技能冷卻"
 L.AUTO_TIMER_OPTIONS.cdcombo				= "計時條：技能組合冷卻"--Used for combining 2 abilities into a single timer
 L.AUTO_TIMER_OPTIONS.next					= "計時條：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount				= "計時條：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnp					= "計時條：只顯示名條的下一次$spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnpcount			= "計時條：只顯示名條的下一次$spell:%s(包含計數)"
 L.AUTO_TIMER_OPTIONS.nextsource				= "計時條：下一次$spell:%s以及來源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "計時條：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.nextcombo				= "計時條：下一次技能組合"--Used for combining 2 abilities into a single timer

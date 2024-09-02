@@ -492,10 +492,11 @@ L.AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP or "Ролевая игра"
 L.AUTO_TIMER_TEXTS.combat			= "Бой начинается"
 
 --This basically clones np only bar option and display text from regular counterparts
-L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
-L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
-L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
-L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
+L.AUTO_TIMER_TEXTS.cdnp					= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+L.AUTO_TIMER_TEXTS.nextnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
+L.AUTO_TIMER_TEXTS.cdcnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
+L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
 L.AUTO_TIMER_OPTIONS.target 		= "Отсчёт времени действия дебаффа $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount 	= "Отсчёт времени действия дебаффа (со счётчиком) $spell:%s"
@@ -508,14 +509,12 @@ L.AUTO_TIMER_OPTIONS.ai				= "Отсчёт времени до восстано�
 L.AUTO_TIMER_OPTIONS.cd 			= "Отсчёт времени до восстановления $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount 		= "Отсчёт времени до восстановления $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdnp 			= "Отсчёт времени до восстановления $spell:%s (только индикатор)"
-L.AUTO_TIMER_OPTIONS.cdnpcount 		= "Отсчёт времени до восстановления $spell:%s (только индикатор, со счётчиком)"
 L.AUTO_TIMER_OPTIONS.cdsource		= "Отсчёт времени до восстановления $spell:%s (с источником)"
 L.AUTO_TIMER_OPTIONS.cdspecial		= "Отсчёт времени до восстановления спецспособности"
 L.AUTO_TIMER_OPTIONS.cdcombo		= "Отсчёт времени до восстановления комбо способности"--Используется для объединения двух способностей в один таймер
 L.AUTO_TIMER_OPTIONS.next 			= "Отсчёт времени до следующего $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount 		= "Отсчёт времени до следующего $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnp 		= "Отсчёт времени до следующего $spell:%s (только индикатор)"
-L.AUTO_TIMER_OPTIONS.nextnpcount 	= "Отсчёт времени до следующего $spell:%s (только индикатор, со счётчиком)"
 L.AUTO_TIMER_OPTIONS.nextsource		= "Отсчёт времени до следующего $spell:%s (с источником)"
 L.AUTO_TIMER_OPTIONS.nextspecial	= "Отсчёт времени до следующей спецспособности"
 L.AUTO_TIMER_OPTIONS.nextcombo		= "Отсчёт времени до следующей комбо способности"--Используется для объединения двух способностей в один таймер
