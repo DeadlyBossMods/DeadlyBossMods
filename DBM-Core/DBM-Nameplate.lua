@@ -868,7 +868,7 @@ end
 ---@param texture number|string? accepts texture ID or spell ID
 ---@param duration number? adds countdown duration to icon
 ---@param desaturate boolean?
----@param isImportant boolean? true for high priority/important cooldowns or casts. false or nil otherwise
+---@param isPriority boolean? true for high priority/important cooldowns or casts. false or nil otherwise
 ---@param forceDBM boolean? makes it use internal handler even when 3rd party nameplate mod exists
 function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, isPriority, forceDBM)
 
