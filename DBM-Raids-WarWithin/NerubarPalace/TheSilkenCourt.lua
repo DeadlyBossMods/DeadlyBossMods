@@ -64,7 +64,7 @@ local timerPiercingStrikeCD						= mod:NewCDCountTimer(49, 438218, nil, "Tank|He
 local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, 100, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
 local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, 118563, nil, nil, 3)--Shortname "Burrow"
-local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL.."[A] (%s)", nil, nil, 3)--Frontal + boss initial
+local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL.." [A] (%s)", nil, nil, 3)--Frontal + boss initial
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
@@ -111,7 +111,7 @@ local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil
 
 local timerWebVortexCD						= mod:NewCDCountTimer(49, 441626, nil, nil, nil, 2)
 local timerEntropicDesolationCD				= mod:NewCDCountTimer(49, 450129, 301902, nil, nil, 2)--Shortname "Run Away!"
-local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, DBM_COMMON_L.FRONTAL.."[S] (%s)", nil, nil, 3)--Frontal + boss initial
+local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, DBM_COMMON_L.FRONTAL.." [S] (%s)", nil, nil, 3)--Frontal + boss initial
 local timerVoidStepCD						= mod:NewCDCountTimer(49, 450483, 4801, nil, nil, 3)--Shortname "Teleport"
 local timerCataclysmicEntropyCD				= mod:NewCDCountTimer(49, 438355, 108132, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Massive Explosion"
 --Stage Three: Unleashed Rage
