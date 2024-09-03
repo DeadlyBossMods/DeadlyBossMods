@@ -149,13 +149,13 @@ L.ButtonImportProfile		= "Importer profil"
 L.ButtonExportProfile		= "Exporter profil"
 
 L.ImportErrorOn				= "Son personnalisé manquant pour : %s"
-L.ImportVoiceMissing		= "Pack de voix manquant : %s"
+L.ImportVoiceMissing		= "Paquet de voix manquant : %s"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alertes"
 L.Area_SpecAnnounceConfig	= "Guide des effets visuels et sonores des Alertes spéciales"
 L.Area_SpecAnnounceNotes	= "Guide des Notes des Alertes spéciales"
-L.Area_VoicePackInfo		= "Information sur les Packs de voix DBM"
+L.Area_VoicePackInfo		= "Information sur les paquets de voix DBM"
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Alertes"
 L.RaidWarning_Header		= "Options des alertes"
@@ -237,25 +237,25 @@ L.Area_VoiceSelection		= "Sélection des voix"
 L.CountdownVoice			= "Voix principale"
 L.CountdownVoice2			= "Voix secondaire"
 L.CountdownVoice3			= "Voix tertiaire"
-L.VoicePackChoice			= "Pack de voix des Alertes vocales"
-L.MissingVoicePack			= "Pack de voix manquant (%s)"
+L.VoicePackChoice			= "Paquet de voix des Alertes vocales"
+L.MissingVoicePack			= "Paquet de voix manquant (%s)"
 L.Area_CountdownOptions		= "Options des décomptes"
-L.Area_VoicePackReplace		= "Options de remplacement par le Pack de voix (quels sons seront remplacés par le Pack de voix)"
-L.VPReplaceNote				= "Note: Les Packs de voix ne modifient ou suppriment jamais vos sons d'alertes.\nIls sont simplement mis en sourdine lorsqu'un Pack de voix les remplace."
-L.ReplacesAnnounce			= "Remplacer les sons d'alerte (Note : Très peu d'utilisation pour les packs de voix, sauf pour les changements de phases et les adds)"
+L.Area_VoicePackReplace		= "Options de remplacement par le paquet de voix (quels sons seront remplacés par le paquet de voix)"
+L.VPReplaceNote				= "Note: Les paquets de voix ne modifient ou suppriment jamais vos sons d'alertes.\nIls sont simplement mis en sourdine lorsqu'un paquet de voix les remplace."
+L.ReplacesAnnounce			= "Remplacer les sons d'alerte (Note : Très peu d'utilisation pour les paquets de voix, sauf pour les changements de phases et les adds)"
 L.ReplacesSA1				= "Remplacer les sons d'alerte spéciale 1 (personnelle, ou 'pvpflag')"
 L.ReplacesSA2				= "Remplacer les sons d'alerte spéciale 2 (tout le monde, ou 'beware')"
 L.ReplacesSA3				= "Remplacer les sons d'alerte spéciale 3 (priorité haute, ou 'airhorn')"
 L.ReplacesSA4				= "Remplacer les sons d'alerte spéciale 4 (priorité haute, ou 'run away')"
 L.ReplacesCustom			= "Remplacer les sons d'alerte spéciale des réglages utilisateur personnalisés (par évênement) (non recommandé)"
-L.Area_VoicePackAdvOptions	= "Options avancées Packs de voix"
+L.Area_VoicePackAdvOptions	= "Options avancées paquets de voix"
 L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales même si l'Alerte spéciale est désactivée (peut être putile aux chefs de raid dans certaines situations, non recommandé autrement)"
-L.VPDontMuteSounds			= "Désactiver la mise en sourdine des alertes standards lors de l'utilisation d'un pack de voix (à utilier seulement si vous souhaitez entendre les DEUX types d'alertes sonores simultanément)"
-L.Area_VPLearnMore			= "Apprenez-en plus sur les packs de voix et comment utiliser ces options"
+L.VPDontMuteSounds			= "Désactiver la mise en sourdine des alertes standards lors de l'utilisation d'un paquet de voix (à utilier seulement si vous souhaitez entendre les DEUX types d'alertes sonores simultanément)"
+L.Area_VPLearnMore			= "Apprenez-en plus sur les paquets de voix et comment utiliser ces options"
 L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
-L.Area_BrowseOtherVP		= "Trouvez d'autres packs de voix sur Curse"
+L.Area_BrowseOtherVP		= "Trouvez d'autres paquets de voix sur Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
-L.Area_BrowseOtherCT		= "Trouvez d'autres packs de décompte sur Curse"
+L.Area_BrowseOtherCT		= "Trouvez d'autres paquets de décompte sur Curse"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Panel: Event Sounds
@@ -367,24 +367,24 @@ L.Area_SpamFilter_SpecRoleFilters	= "Filtres des annonces spéciales (contrôle 
 L.SpamSpecRoleDispel				= "Filtrer les alertes 'dissipation'"
 L.SpamSpecRoleInterrupt				= "Filtrer les alertes 'interruption'"
 L.SpamSpecRoleDefensive				= "Filtrer les alertes 'défensive'"
-L.SpamSpecRoleTaunt					= "Filtrer les alertes 'taunt'"
+L.SpamSpecRoleTaunt					= "Filtrer les alertes 'provocation'"
 L.SpamSpecRoleSoak					= "Filtrer les alertes 'soak'"
 L.SpamSpecRoleStack					= "Filtrer les alertes 'high stack'"
 L.SpamSpecRoleSwitch				= "Filtrer les alertes 'changement de cible' &amp; 'adds'"
 L.SpamSpecRoleGTFO					= "Filtrer les alertes 'sauvez-vous'"
 
-L.Area_SpamFilter_SpecFeatures		= "Options des fonctionnalités liées aux alertes spéciales"
+L.Area_SpamFilter_SpecFeatures		= "Options des annonces"
 L.SpamBlockNoSpecWarnText			= "Ne pas afficher de texte pour les alertes spéciales"
 L.SpamBlockNoSpecWarnFlash			= "Ne pas faire clignoter l'écran pour les alertes spéciales"
 L.SpamBlockNoSpecWarnVibrate		= "Ne pas faire vibrer la manette pour les alertes spéciales"
-L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'alerte spéciale (autorise les packs de voix, si l'un d'eux est sélectionné dans les options d'alertes vocales)"
+L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'alerte spéciale (autorise les paquets de voix, si l'un d'eux est sélectionné dans les options d'alertes vocales)"
 
 
-L.Area_SpamFilter_Timers	= "Optionns Désactivation globale & Filtres des décomptes"
+L.Area_SpamFilter_Timers	= "Options du chronomètre"
 L.SpamBlockNoShowUTimers	= "Ne pas afficher au joueur les décomptes envoyés (Personnalisés/Pull/Pause)"
 L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
 
-L.Area_SpamFilter_Misc		= "Options Désactivations globales & Filtres divers"
+L.Area_SpamFilter_Misc		= "Options divers"
 L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
 L.SpamBlockNoRangeFrame		= "Ne pas afficher le cadre des portées"
 L.SpamBlockNoInfoFrame		= "Ne pas afficher le cadre d'information"
@@ -422,7 +422,7 @@ L.Panel_HideBlizzard				= "Bloquer les fonctionnalités de Blizzard."
 L.Area_HideToast 					= "Désactiver les notifications Blizzard"
 L.HideGarrisonUpdates 				= "Cacher les notifications de suivi pendant les combats de boss"
 L.HideGuildChallengeUpdates 		= "Cacher les notifications de défi de guilde pendant les combats de boss"
---L.HideBossKill 						= "Cacher les notifications de mort de boss" --NYI
+--L.HideBossKill 					= "Cacher les notifications de mort de boss" --NYI
 --L.HideVaultUnlock					= "Cacher les notifications de déblocage du coffre" --NYI
 --Cut Scenes
 L.Area_Cinematics 					= "Bloquer les cinématiques en jeu"
@@ -453,8 +453,8 @@ L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchronis
 L.EnableWBSharing 			= "Partager quand vous engagez/battez un world boss avec votre guilde et vos amis battle.net qui sont sur le même royaume"
 
 -- Tab: Frames & Integrations
-L.TabCategory_Frames		= "Cadres & Intégrations"
-L.Area_NamelateInfo			= "DBM Nameplate Auras Info"
+L.TabCategory_Frames		= "Cadres et Intégrations"
+L.Area_NamelateInfo			= "Informations sur les auras des plaques de nom de DBM"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "Cadre d'infos"
 
@@ -463,8 +463,22 @@ L.Panel_Range				= "Cadre de portée"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Barres de vie"
-L.Area_NPStyle				= "Style (Note: Only configures style when DBM is handling nameplates.)"
-L.NPAuraSize				= "Aura Pixel size (squared): %d"
+L.Area_NPStyle				= "Style (Remarque : Configure uniquement le style lorsque DBM gère les plaques de nom.)"
+L.NPAuraText				= "Afficher le texte du chronomètre sur les icônes des plaques de nom"
+L.NPAuraSize				= "Taille des pixels de l'aura (carré) : %d"
+L.NPIcon_BarOffSetX 		= "Décalage X de l'icône : %d"
+L.NPIcon_BarOffSetY 		= "Décalage Y de l'icône : %d"
+L.NPIcon_GrowthDirection 	= "Direction de croissance de l'icône"
+L.NPIcon_Spacing		 	= "Espacement de l'icône : %d"
+L.NPIcon_MaxTextLen		 	= "Longueur max. du texte : %d"
+L.NPIconAnchorPoint		 	= "Point d'ancrage de l'icône"
+L.NPDemo					= "Test (Soyez près des plaques de nom)"
+L.FontTypeTimer				= "Sélectionner la police du chronomètre"
+L.FontTypeText				= "Sélectionner la police du texte"
+L.NPIcon_GlowBehavior 		= "Comportement de l'illumination de l'icône"
+L.NPIcon_GlowNone			= "Ne jamais illuminer les icônes"
+L.NPIcon_GlowImportant		= "Illuminer les icônes importants de recharge/incantation expirant"
+L.NPIcon_GlowAll			= "Illuminer tous les icônes de recharge/incantation expirant"
 
 -- Misc
 L.Area_General				= "Général"
@@ -478,3 +492,58 @@ L.FontShadow				= "Ombre"
 L.FontType					= "Choisir une police"
 
 L.FontHeight	= 16
+
+-- Testing
+L.DevPanel							= "Développement et Tests"
+L.DevPanelArea						= "Interface de développement et de tests"
+L.DevPanelExplanation				= "Ceci est une interface de développement et de tests qui valide que DBM fonctionne comme prévu en rejouant des journaux de combat." -- Test UI panel under options
+L.DevModPanelExplanation			= [[Bienvenue dans l'aire de développement et de tests pour ce mod.
+Vous pouvez rejouer des journaux de combats de boss ici pour voir comment le mod se comporte et tester les intégrations avec les callbacks de DBM. Voir DBM-Test/README.md pour plus de détails sur les intégrations et callbacks. DBM est fourni avec des journaux d'exemple pour de nombreux raids, mais vous pouvez également importer vos propres journaux depuis Transcriptor.
+]]  -- Playground mode in mods
+
+L.TimewarpSetting					= "Distorsion temporelle : %dx"
+L.TimewarpDynamic					= "Distorsion temporelle : dynamique (la plus rapide)"
+L.TestSupportArea					= "Options de chargement du mod"
+L.ModNotLoadedWithTests				= "Avertissement : Ce mod n'est actuellement pas chargé avec un support complet pour les tests. Si le mod appelle directement des fonctions API telles que UnitHealth() ou UnitName(), celles-ci ne fonctionneront pas correctement. C'est souvent le cas pour les fonctions liées à la santé, au pouvoir ou aux cibles des unités."
+L.ModLoadedWithTests				= "Le mod est actuellement chargé avec un support pour les tests car au moins un mod dans l'addon a des tests activés."
+L.AlwaysLoadModWithTests			= "Charger toujours ce mod avec un support complet pour les tests (ralentit légèrement le chargement)"
+L.ModLoadRequiresReload				= ", nécessite un rechargement de l'interface pour prendre effet" -- Appended to L.AlwaysLoadModWithTests
+L.TestSelectArea					= "Données de test" -- Title of the UI area
+L.SelectTestLog						= L.TestSelectArea  -- Title for the dropdown to select a  specific test
+L.SelectPerspective					= "Perspective du journal (joueur simulé)"
+L.ImportTranscriptor				= "Importer le journal Transcriptor"
+L.ImportTranscriptorHeader			= [[
+Importez un journal Transcriptor en le collant dans n'importe quelle partie du champ d'édition ci-dessous. La vitesse de collage est d'environ 2 MiB/s, ce qui signifie que votre jeu se figera pendant plusieurs secondes lors du collage de fichiers de journal très volumineux.
+Vous pouvez également importer la session actuelle de Transcriptor depuis les variables sauvegardées de Transcriptor avec le bouton d'importation à droite.]]
+L.PasteLogHere						= "Appuyez sur " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " pour coller un journal ici."
+L.LogPasted							= "Collé %.2f MiB en %.1f secondes (%.2f MiB/s)."
+L.ImportLocalTranscriptor			= "Importer la session\nactuelle de Transcriptor"
+L.NoLocalTranscriptor				= "Impossible de trouver les données locales de Transcriptor."
+L.LocalImportDone					= "Importé %d journaux avec %d rencontres depuis Transcriptor."
+L.Parsing							= "Analyse en cours..."
+L.SelectLogDropdown					= "Sélectionner une rencontre"
+L.CreateTest						= "Créer un test"
+L.CreatedTest						= "Test créé avec %d événements en %.1f secondes."
+L.NoLogsFound						= "L'importation de Transcriptor ne contient pas de données de journal."
+L.NoTestDataAvailable				= "Aucune donnée de test disponible"
+L.NoLogSelected						= "Échec de la création du test : Aucun journal sélectionné."
+L.LogAlreadyImported				= "Échec de la création du test : Test déjà importé."
+
+L.RewriteAllToYou					= "Tous les joueurs en même temps"
+L.RealModOptionsBelow				= "Les options du mod ci-dessous sont synchronisées entre le mode de test et vos paramètres réels."
+L.Test								= "Test"
+L.Tests								= "Tests"
+L.AllTests							= "Tous les tests"
+L.RunTest							= "Exécuter le test"
+L.RunTestShort						= "Exécuter" -- Same intend as RunTest, but a smaller button
+L.StopTest							= "Arrêter le test"
+L.StopTests							= "Arrêter les tests"
+L.RunAllTests						= "Exécuter tous les tests"
+L.Queued							= "En attente"
+L.Running							= "En cours"
+L.Failed							= "Échoué"
+L.ShowReport						= "Afficher le rapport"
+L.ShowDiff							= "Afficher les différences"
+L.ShowErrors						= "Afficher les erreurs"
+L.TestModEntry						= "[Aire de tests] %s"
+L.EnterTestMode						= "Mode de test"
