@@ -486,7 +486,7 @@ L.AUTO_TIMER_TEXTS.combat				= "Inicia el encuentro"
 --This basically clones np only bar option and display text from regular counterparts
 L.AUTO_TIMER_TEXTS.cdnp					= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
-L.AUTO_TIMER_TEXTS.cdcnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
+L.AUTO_TIMER_TEXTS.cdpnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
