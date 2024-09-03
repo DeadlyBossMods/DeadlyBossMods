@@ -94,7 +94,7 @@ L.Editbox_WindowWidth		= "Largeur de la fenêtre"
 L.Editbox_WindowHeight		= "Hauteur de la fenêtre"
 
 L.UIGroupingOptions			= "Options d'interface partagées (requiet de recharger l'interface pour tout module qui serait déjà chargé)"
-L.GroupOptionsExcludeIcon	= "Exclure l'option 'Définir l'icône sur' du regroupement par capacité (elles seront regroupées dans la catégorie \"Icônes\" comme avant)"
+L.GroupOptionsExcludeIcon	= "Exclure l'option 'Définir l'icône sur' du regroupement par capacité (elles seront regroupées dans la catégorie 'Icônes' comme avant)"
 L.ShowWAKeys				= "Afficher les clés WeakAuras à côté des noms de sorts pour aider à écrire des WeakAuras en utilisant les déclencheurs du Boss Mod."
 L.AutoExpandSpellGroups		= "Déplier automatiquement les options liées à la même capacité"
 --L.ShowSpellDescWhenExpanded	= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
