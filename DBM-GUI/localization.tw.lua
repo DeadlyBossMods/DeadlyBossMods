@@ -37,7 +37,7 @@ L.MoveMe 					= "移動"
 L.Button_OK 				= "確定"
 L.Button_Cancel 			= "取消"
 L.Button_LoadMod 			= "載入模組"
-L.Mod_Enabled				= "啟用首領模組"
+L.Mod_Enabled				= "啟用模組：%s"
 L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"
 L.Import					= "匯入"
@@ -260,7 +260,7 @@ L.Area_BugAlerts			= "錯誤回報警報選項"
 L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有1秒不正確時顯示聊天訊息"
 
 -- Panel: Spoken Alerts Frame
-L.Panel_SpokenAlerts		= "語音警告"
+L.Panel_SpokenAlerts		= "倒數 & 語音包"
 L.Area_VoiceSelection		= "語音選擇"
 L.CountdownVoice			= "設置主要倒數計時語音"
 L.CountdownVoice2			= "設置次要倒數計時語音"
@@ -423,7 +423,7 @@ L.SpamBlockNoSpecWarnVibrate		= "特別提示時不震動控制器"
 L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (在倒數與語音包面板中啟用的語音仍會播放)"
 L.SpamBlockNoPrivateAuraSound		= "不登記私人光環音效"
 
-L.Area_SpamFilter_Timers			= "全局計時禁用及過濾選項"
+L.Area_SpamFilter_Timers			= "計時功能選項"
 L.SpamBlockNoShowBossTimers			= "不顯示地城/團隊首領的計時器"
 L.SpamBlockNoShowTrashTimers		= "不顯示地城/團隊小怪的計時器(注意: 這也會停用名條的技能冷卻)"
 L.SpamBlockNoShowEventTimers		= "不顯示事件與提示計時器(佇列提示/首領重生..等)"
@@ -433,9 +433,10 @@ L.SpamBlockNoCountdowns				= "不播放倒數音效"
 L.Area_SpamFilter_Nameplates		= "名條通用禁止 & 過濾選項"
 L.SpamBlockNoNameplate				= "不要顯示名條光環"
 L.SpamBlockNoNameplateCD			= "不要顯示技能冷卻計時的名條圖示"
+L.SpamBlockNoNameplateCasts			= "不要顯示技能施放計時的名條圖示"
 L.SpamBlockNoBossGUIDs				= "不要在plater名條上顯示主要首領(首領1)計時器作為名條光環\n(如果在Plater中啟用了功能，您仍然會看到小怪/首領計時器）"
 
-L.Area_SpamFilter_Misc				= "全局其他禁用及過濾選項"
+L.Area_SpamFilter_Misc				= "其他功能選項"
 L.SpamBlockNoSetIcon				= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame				= "不顯示距離框架"
 L.SpamBlockNoInfoFrame				= "不顯示訊息框架"
@@ -458,7 +459,7 @@ L.PT_Threshold						= "不要播放高於%d秒以上的休息/開戰/自訂倒�
 -- Panel: Reduce Information
 L.Panel_ReducedInformation			= "減少訊息"
 
-L.Area_SpamFilter_Anounces			= "全局警告禁用及過濾選項"
+L.Area_SpamFilter_Anounces			= "警告禁用及過濾選項"
 L.SpamBlockNoShowTgtAnnounce		= "不顯示目標的提示文字或播放警告音效 (上列選項會覆蓋此選項)"
 L.SpamBlockNoTrivialSpecWarnSound	= "如果相對你等級是不重要的內容則不要播放特別提示音效 (播放使用者選擇的標準提示音效替代)"
 
@@ -551,7 +552,7 @@ L.ReceivingFooter3					= "如果您啟用了 '替換我的配置' 您的原始�
 L.TabFooter							= "本面板中的所有選項僅在您是非地下城/隨機隊伍中的隊伍領隊的情況下運作"
 
 -- Panel: Privacy
-L.Tab_Privacy 				= "隱私控制"
+L.Tab_Privacy 				= "自動回覆 & 隱私"
 L.Area_WhisperMessages		= "密語訊息選項"
 L.AutoRespond 				= "啟用戰鬥中自動密語回覆"
 L.WhisperStats 				= "在密語回應中加入戰勝/滅團狀態"
@@ -570,19 +571,30 @@ L.Panel_InfoFrame			= "訊息框架"
 L.Panel_Range				= "距離框架"
 
 -- Panel: Nameplate
-L.Panel_Nameplates			= "名條"
-L.Area_NPStyle				= "風格 (注意：僅在DBM處理名條時配置風格。)"
-L.NPAuraText				= "在名條圖示上顯示計時文字"
-L.NPAuraSize				= "光環像素大小 (平方): %d"
-L.NPIcon_BarOffSetX 		= "圖示水平偏移：%d"
-L.NPIcon_BarOffSetY 		= "圖示垂直偏移：%d"
-L.NPIcon_GrowthDirection 	= "圖示增長方向"
-L.NPIcon_Spacing		 	= "圖示間距: %d"
-L.NPIcon_MaxTextLen		 	= "最大文字長度: %d"
-L.NPIconAnchorPoint		 	= "圖示定位點"
-L.NPDemo					= "測試 (靠近名條)"
-L.FontTypeTimer				= "選擇計時器字體"
-L.FontTypeText				= "選擇文字字體"
+L.Panel_Nameplates				= "名條"
+L.Area_NPStyle					= "風格 (注意：僅在DBM處理名條時配置風格。)"
+L.NPAuraText					= "在名條圖示上顯示計時文字"
+L.NPAuraSize					= "光環像素大小 (平方): %d"
+L.NPIcon_BarOffSetX 			= "圖示水平偏移：%d"
+L.NPIcon_BarOffSetY 			= "圖示垂直偏移：%d"
+L.NPIcon_GrowthDirection 		= "圖示增長方向"
+L.NPIcon_Spacing		 		= "圖示間距: %d"
+L.NPIcon_MaxTextLen		 		= "最大文字長度: %d"
+L.NPIconAnchorPoint		 		= "圖示定位點"
+L.NPDemo						= "測試 (靠近名條)"
+L.FontTypeTimer					= "選擇計時器字體"
+L.FontTypeText					= "選擇文字字體"
+
+L.Area_NPGlow					= "發光 (注意：僅當DBM控制名條時，才能設定發光)"
+L.NPIcon_GlowBehavior 			= "冷卻圖示發光行為"
+L.NPIcon_CastGlowBehavior   	= "施法圖示發光行為"
+L.NPIcon_GlowNone				= "永不發光圖示"
+L.NPIcon_GlowImportant	   	 	= "發光重要過期 CD/施法 圖示"
+L.NPIcon_GlowAll				= "發光全部過期 CD/施法 圖示"
+L.NPIcon_GlowTypeCD		        = "冷卻圖示發光類型"
+L.NPIcon_GlowTypeCast		    = "施法圖示發光類型"
+L.NPIcon_Pixel  			    = "像素"
+L.NPIcon_Proc  			        = "觸發"
 
 -- Misc
 L.Area_General				= "一般"
@@ -602,11 +614,39 @@ L.FontHeight	= 16
 L.DevPanel							= "開發 & 測試"
 L.DevPanelArea						= "開發以及測試UI"
 L.DevPanelExplanation				= "這是一個開發和測試UI，它透由播放戰鬥日誌來驗證DBM是否按預期工作。"
+L.DevModPanelExplanation			= [[歡迎來到此模組的開發和測試操練場。
+您可以在此處回放首領戰鬥的日誌，以查看模組的行為以及與DBM回調的整合測試。有關整合和回調的更多詳細訊息，請參見dbm-test/readme.md。 DBM帶有許多團隊副本的範例日誌，但您也可以從紀錄器中匯入自己的日誌。
+]] -- Playground mode in mods
 
 L.TimewarpSetting					= "時間扭曲: %dx"
 L.TimewarpDynamic					= "時間扭曲: 動態 (最快)"
+L.TestSupportArea					= "模組載入選項"
+L.ModNotLoadedWithTests				= "警告：此模組當前尚未載入完整的測試支持。如果模組直接調用 UnitHealth() 或 UnitName() 等API函數，則這些功能將無法正常運作。與單位生命值、能量或目標有關的功能通常是這種情況。"
+L.ModLoadedWithTests				= "模組當前載入了測試支援，因為插件中至少有一個模組啟用了測試。"
+L.AlwaysLoadModWithTests			= "總是載入此模組的完整測試支援 (稍微減慢載入)"
+L.ModLoadRequiresReload				= "，需要UI重載以取得效果" -- Appended to L.AlwaysLoadModWithTests
+L.TestSelectArea					= "測試數據" -- Title of the UI area
+L.SelectPerspective					= "日誌觀點 (模擬玩家)"
+L.ImportTranscriptor				= "匯入紀錄器日誌"
+L.ImportTranscriptorHeader			= [[
+通過將其貼上到下面的編輯框中的任何位置，匯入紀錄器日誌。貼上速度約為2 MIB/秒，這意味著您的遊戲在貼上非常大的日誌文件時會凍結幾秒鐘。
+您還可以從右側的匯入按鈕中從紀錄器的保存紀錄檔匯入當前的紀錄器階段。]]
+L.PasteLogHere						= "按下 " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " 來在此貼上日誌。"
+L.LogPasted							= "貼上 %.2f MiB 於 %.1f 秒 (%.2f MiB/秒)。"
+L.ImportLocalTranscriptor			= "匯入當前\n紀錄器階段"
+L.NoLocalTranscriptor				= "無法找到本地紀錄器數據。"
+L.LocalImportDone					= "匯入 %d 日誌包含 %d 遭遇戰自紀錄器。"
+L.Parsing							= "分析..."
+L.SelectLogDropdown					= "選擇遭遇戰"
+L.CreateTest						= "建立測試"
+L.CreatedTest						= "建立測試包含 %d 事件於 %.1f 秒。"
+L.NoLogsFound						= "紀錄器匯入不包含日誌數據。"
+L.NoTestDataAvailable				= "無可用測試數據"
+L.NoLogSelected						= "測試建立失敗：未選擇日誌。"
+L.LogAlreadyImported				= "測試建立失敗：測試已經匯入。"
 
-
+L.RewriteAllToYou					= "同時間的全部玩家"
+L.RealModOptionsBelow				= "下面的模組選項在操練場模式和您的真實設置之間同步。"
 L.Test								= "測試"
 L.Tests								= "測試"
 L.AllTests							= "全部測試"
