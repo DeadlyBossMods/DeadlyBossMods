@@ -200,7 +200,7 @@ end)
 local textEnable = style:CreateCheckButton(L.Enable, true, nil, "NPIconTextEnabled")
 textEnable:SetPoint("TOPLEFT", TextFontStyleDropDown, "TOPLEFT", 20, -35)
 
-local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 25, 1, 150)
+local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 40, 1, 150)
 iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -30)
 iconTextMaxLenSlider:SetValue(DBM.Options.NPIconTextMaxLen)
 iconTextMaxLenSlider:HookScript("OnValueChanged", function(self)
