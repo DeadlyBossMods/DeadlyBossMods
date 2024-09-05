@@ -320,11 +320,11 @@ end, 100)
 cooldownIconGlowType:SetPoint("TOPLEFT", cooldownIconGlowBehavior, "BOTTOMLEFT", 0, -20)
 cooldownIconGlowType.myheight = 0
 
-local castIconGlowType = glow:CreateDropdown(L.NPIcon_CastGlowBehavior, castGlowOptions, "DBM", "CastNPIconGlowBehavior", function(value)
+local castIconGlowBehavior = glow:CreateDropdown(L.NPIcon_CastGlowBehavior, castGlowOptions, "DBM", "CastNPIconGlowBehavior", function(value)
 	DBM.Options.CastNPIconGlowBehavior = value
 end, 100)
-castIconGlowType:SetPoint("TOPLEFT", cooldownIconGlowType, "BOTTOMLEFT", 0, -20)
-castIconGlowType.myheight = 0
+castIconGlowBehavior:SetPoint("TOPLEFT", cooldownIconGlowType, "BOTTOMLEFT", 0, -20)
+castIconGlowBehavior.myheight = 0
 
 local castIconGlowType = glow:CreateDropdown(L.NPIcon_GlowTypeCast, cooldownGlowOptions, "DBM", "CastNPIconGlowType", function(value)
 	DBM.Options.CastNPIconGlowType = value
