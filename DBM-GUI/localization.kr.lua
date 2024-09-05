@@ -586,10 +586,17 @@ L.NPIconAnchorPoint		 			= "아이콘 기준점"
 L.NPDemo							= "테스트 (이름표 보이는데서만 작동)"
 L.FontTypeTimer						= "타이머 글꼴 선택"
 L.FontTypeText						= "텍스트 글꼴 선택"
+
+--L.Area_NPGlow				= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
 L.NPIcon_GlowBehavior 		    	= "아이콘 반짝임 설정"
+--L.NPIcon_CastGlowBehavior = "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone			    	= "반짝임 사용 안함"
 L.NPIcon_GlowImportant			   	= "중요한 주문의 쿨타임/시전 시간 만료시 반짝임"
 L.NPIcon_GlowAll			    	= "모든 주문의 쿨타임/시전 시간 만료시 반짝임"
+--L.NPIcon_GlowTypeCD		= "Cooldown Icon Glow Type"
+--L.NPIcon_GlowTypeCast		= "Cast Icon Glow Type"
+--L.NPIcon_Pixel  			= "Pixel"
+--L.NPIcon_Proc  			= "Proc"
 
 -- Misc
 L.Area_General				= "일반"

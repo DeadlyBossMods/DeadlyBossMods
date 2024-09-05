@@ -538,10 +538,17 @@ L.NPIconAnchorPoint		 	= "Point d'ancrage de l'icône"
 L.NPDemo					= "Test (Soyez près des plaques de nom)"
 L.FontTypeTimer				= "Sélectionner la police du chronomètre"
 L.FontTypeText				= "Sélectionner la police du texte"
+
+--L.Area_NPGlow				= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
 L.NPIcon_GlowBehavior 		= "Comportement de l'illumination de l'icône"
+--L.NPIcon_CastGlowBehavior = "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone			= "Ne jamais illuminer les icônes"
 L.NPIcon_GlowImportant		= "Illuminer les icônes importants de recharge/incantation expirant"
 L.NPIcon_GlowAll			= "Illuminer tous les icônes de recharge/incantation expirant"
+--L.NPIcon_GlowTypeCD		= "Cooldown Icon Glow Type"
+--L.NPIcon_GlowTypeCast		= "Cast Icon Glow Type"
+--L.NPIcon_Pixel  			= "Pixel"
+--L.NPIcon_Proc  			= "Proc"
 
 -- Misc
 L.Area_General				= "Général"

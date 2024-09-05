@@ -655,7 +655,12 @@ do
 		if event ~= "DBM_TimerStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
+		--Disable cooldown icons for any timer designated as a nameplate only cooldown timer
+		--NOTE, bosses that send GUID send "cd" and not "cdnp" so if DontSendBossGUIDs isn't enabled, they will still be passed even if DontShowNameplateIconsCD is
+		--This is intended behavior as I want the option to toggle separately.
+		if DBM.Options.DontShowNameplateIconsCD and barType == "cdnp" then return end
+		--Disable cast icons for any timer designated as a nameplate only cast timer
+		if DBM.Options.DontShowNameplateIconsCast and barType == "castnp" then return end--Globally disabled
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
