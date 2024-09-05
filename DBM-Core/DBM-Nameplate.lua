@@ -392,6 +392,9 @@ do
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		elseif glowType == 2 then
 			LCG.ProcGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+		else--In event of failure of glowtype, cleanup all
+			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+			LCG.ProcGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		end
 	end
 	local function AuraFrame_UpdateTimerText (self) --has deltaTime as second parameter, not needed here.
