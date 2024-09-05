@@ -247,6 +247,7 @@
 ---|"range5"
 ---|"readyrescue"
 ---|"redyou" 17
+---|"riftdispel" 17
 ---|"right"
 ---|"runaway" 2
 ---|"runin" 2
