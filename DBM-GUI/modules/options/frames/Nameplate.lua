@@ -6,6 +6,7 @@ local general = panel:CreateArea(L.Area_General)
 
 general:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
 general:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
+general:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
 general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
 
 local style = panel:CreateArea(L.Area_Style)
@@ -108,27 +109,6 @@ local iconAnchorPoint = style:CreateDropdown(L.NPIconAnchorPoint, anchors, "DBM"
 end)
 iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 115, 0)
 iconAnchorPoint.myheight = 0
-
-local glowOptions = {
-	{
-		text	= L.NPIcon_GlowNone,
-		value	= 0,
-	},
-	{
-		text	= L.NPIcon_GlowImportant,
-		value	= 1,
-	},
-	{
-		text	= L.NPIcon_GlowAll,
-		value	= 2,
-	},
-}
-
-local iconGlowBehavior = style:CreateDropdown(L.NPIcon_GlowBehavior, glowOptions, "DBM", "NPIconGlowBehavior", function(value)
-	DBM.Options.NPIconGlowBehavior = value
-end, 90)
-iconGlowBehavior:SetPoint("TOPLEFT", iconAnchorPoint, "TOPLEFT", 0, 75)
-iconGlowBehavior.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
@@ -247,11 +227,11 @@ testbutton:SetScript("OnClick", function()
 end)
 testbutton.myheight = 0
 
-local resetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
-resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
-resetbutton:SetNormalFontObject(GameFontNormalSmall)
-resetbutton:SetHighlightFontObject(GameFontNormalSmall)
-resetbutton:SetScript("OnClick", function()
+local styleResetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+styleResetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
+styleResetbutton:SetNormalFontObject(GameFontNormalSmall)
+styleResetbutton:SetHighlightFontObject(GameFontNormalSmall)
+styleResetbutton:SetScript("OnClick", function()
 	-- Set Options
 	DBM.Options.NPIconSize = DBM.DefaultOptions.NPIconSize
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
@@ -287,4 +267,87 @@ resetbutton:SetScript("OnClick", function()
 
 	DBM.Nameplate:UpdateIconOptions()
 end)
-resetbutton.myheight = 0
+styleResetbutton.myheight = 0
+
+local glow = panel:CreateArea(L.Area_NPGlow)
+
+local cooldownGlowOptions = {
+	{
+		text	= L.NPIcon_GlowNone,
+		value	= 0,
+	},
+	{
+		text	= L.NPIcon_GlowImportant,
+		value	= 1,
+	},
+	{
+		text	= L.NPIcon_GlowAll,
+		value	= 2,
+	},
+}
+
+local castGlowOptions = {
+	{
+		text	= L.NPIcon_GlowNone,
+		value	= 0,
+	},
+	{
+		text	= L.NPIcon_GlowImportant,
+		value	= 1,
+	},
+}
+
+local cooldownGlowType = {
+	{
+		text	= L.NPIcon_Pixel,
+		value	= 1,
+	},
+	{
+		text	= L.NPIcon_Proc,
+		value	= 2,
+	},
+}
+
+local cooldownIconGlowBehavior = glow:CreateDropdown(L.NPIcon_GlowBehavior, cooldownGlowOptions, "DBM", "NPIconGlowBehavior", function(value)
+	DBM.Options.NPIconGlowBehavior = value
+end, 100)
+cooldownIconGlowBehavior:SetPoint("TOPLEFT", glow.frame, "TOPLEFT", 20, -25)
+cooldownIconGlowBehavior.myheight = 0
+
+local cooldownIconGlowType = glow:CreateDropdown(L.NPIcon_GlowTypeCD, cooldownGlowOptions, "DBM", "CDNPIconGlowType", function(value)
+	DBM.Options.CDNPIconGlowType = value
+end, 100)
+cooldownIconGlowType:SetPoint("TOPLEFT", cooldownIconGlowBehavior, "BOTTOMLEFT", 0, -20)
+cooldownIconGlowType.myheight = 0
+
+local castIconGlowBehavior = glow:CreateDropdown(L.NPIcon_CastGlowBehavior, castGlowOptions, "DBM", "CastNPIconGlowBehavior", function(value)
+	DBM.Options.CastNPIconGlowBehavior = value
+end, 100)
+castIconGlowBehavior:SetPoint("TOPLEFT", cooldownIconGlowType, "BOTTOMLEFT", 0, -20)
+castIconGlowBehavior.myheight = 0
+
+local castIconGlowType = glow:CreateDropdown(L.NPIcon_GlowTypeCast, cooldownGlowOptions, "DBM", "CastNPIconGlowType", function(value)
+	DBM.Options.CastNPIconGlowType = value
+end, 100)
+castIconGlowType:SetPoint("TOPLEFT", cooldownIconGlowBehavior, "BOTTOMLEFT", 0, -20)
+castIconGlowType.myheight = 0
+
+local glowResetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+glowResetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
+glowResetbutton:SetNormalFontObject(GameFontNormalSmall)
+glowResetbutton:SetHighlightFontObject(GameFontNormalSmall)
+glowResetbutton:SetScript("OnClick", function()
+	-- Set Options
+	DBM.Options.NPIconGlowBehavior = DBM.DefaultOptions.NPIconGlowBehavior
+	DBM.Options.CDNPIconGlowType = DBM.DefaultOptions.CDNPIconGlowType
+	DBM.Options.CastNPIconGlowBehavior = DBM.DefaultOptions.CastNPIconGlowBehavior
+	DBM.Options.CastNPIconGlowType = DBM.DefaultOptions.CastNPIconGlowType
+	-- Set UI visuals
+	cooldownIconGlowBehavior:SetSelectedValue(DBM.DefaultOptions.NPIconGlowBehavior)
+	cooldownIconGlowType:SetSelectedValue(DBM.DefaultOptions.CDNPIconGlowType)
+	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowBehavior)
+	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowType)
+
+	DBM.Nameplate:UpdateIconOptions()
+end)
+glowResetbutton.myheight = 0

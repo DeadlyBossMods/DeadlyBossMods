@@ -82,9 +82,9 @@ local fakeBWVersion, fakeBWHash = 351, "186d70b"--351.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.5 alpha"--Core version
+DBM.DisplayVersion = "11.0.6 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 9, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 9, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 14--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -336,7 +336,8 @@ DBM.DefaultOptions = {
 	UseNameplateHandoff = true,--Power user setting, no longer shown in GUI
 	DontShowNameplateIcons = false,
 	DontShowNameplateIconsCD = false,
-	DontSendBossGUIDs = false,
+	DontShowNameplateIconsCast = false,
+	SendDungeonBossGUIDs = true,
 	NPAuraText = true,
 	NPIconSize = 30,
 	NPIconXOffset = 0,
@@ -354,6 +355,9 @@ DBM.DefaultOptions = {
 	NPIconTextFontSize = 10,
 	NPIconTextMaxLen = 7,
 	NPIconGlowBehavior = 1,
+	CDNPIconGlowType = 1,--Pixel Default
+	CastNPIconGlowBehavior = 1,
+	CastNPIconGlowType = 2,--Proc Default
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,

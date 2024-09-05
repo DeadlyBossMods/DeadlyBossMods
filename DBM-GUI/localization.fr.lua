@@ -6,19 +6,25 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traduit par "
 L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leybola@EU-Sargeras/Noleen@EU-Hyjal" -- your name here, localizers!
-L.Website					= "Visitez notre discord sur |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Suivez-nous sur twitter @deadlybossmods ou @MysticalOS"
+L.Website					= "Visitez notre discord sur |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Suivez-nous sur Twitter @deadlybossmods ou @MysticalOS"
 L.WebsiteButton				= "Site web"
 
-L.OTabBosses	= "Bosses"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids		= "Raid"--Raids & PVP
-L.OTabDungeons	= "Groupe/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins	= "Core Plugins"
-L.OTabOptions	= GAMEOPTIONS_MENU
-L.OTabAbout		= "À propos"
+L.OTabBosses						= "Options de Boss"--Deprecated and will be deleted once tabs no longer use this
+L.OTabRaids							= "Raids"--Just pve raids
+L.OTabDungeons						= "Donjons"--Just dungeons
+L.OTabWorld							= "Bosses du monde"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins						= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
+L.OTabOptions						= "Options de Core"
+L.OTabAbout							= "À propos"
 
-L.FOLLOWER				= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.FOLLOWER							= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    		= "Histoire"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+
+L.TabCategory_CURRENT_SEASON		= "Saison en cours"
 
 L.TabCategory_OTHER			= "Autres modules"
+L.TabCategory_AFFIXES		= "Affixes"
 
 L.BossModLoaded 			= "Statistiques %s"
 L.BossModLoad_now 			= [[Ce boss mod n'est pas chargé.
@@ -57,11 +63,12 @@ L.TabCategory_Options	 	= "Options générales"
 L.Area_BasicSetup			= "Aide à la configuration initiale de DBM"
 L.Area_ModulesForYou		= "Quels modules DBM sont bons pour vous ?"
 L.Area_ProfilesSetup		= "Guide d'utilisation des profiles DBM"
+
 -- Panel: Core & GUI
-L.Core_GUI 					= "Core & Interface"
-L.General 					= "Options générales de DBM core"
+L.Core_GUI 					= "Core et Interface"
+L.General 					= "Options générales de DBM Core"
 L.EnableMiniMapIcon			= "Afficher l'icône de la minicarte"
-L.EnableCompartmentIcon		= "Afficher le bouton de compartiment"
+L.EnableCompartmentIcon		= "Afficher l'icône de compartiment"
 L.UseSoundChannel			= "Configurer le canal audio utilisé par DBM pour jouer les sons d'alerte"
 L.UseMasterChannel			= "Canal audio Principal"
 L.UseDialogChannel			= "Canal audio Discussion"
@@ -87,10 +94,34 @@ L.Editbox_WindowWidth		= "Largeur de la fenêtre"
 L.Editbox_WindowHeight		= "Hauteur de la fenêtre"
 
 L.UIGroupingOptions			= "Options d'interface partagées (requiet de recharger l'interface pour tout module qui serait déjà chargé)"
-L.GroupOptionsExcludeIcon	= "Exclure l'option \"Définir l'icône sur\" du regroupement par capacité (elles seront regroupées dans la catégorie \"Icônes\" comme avant)"
+L.GroupOptionsExcludeIcon	= "Exclure l'option 'Définir l'icône sur' du regroupement par capacité (elles seront regroupées dans la catégorie 'Icônes' comme avant)"
+L.ShowWAKeys				= "Afficher les clés WeakAuras à côté des noms de sorts pour aider à écrire des WeakAuras en utilisant les déclencheurs du Boss Mod."
 L.AutoExpandSpellGroups		= "Déplier automatiquement les options liées à la même capacité"
 --L.ShowSpellDescWhenExpanded	= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
 L.NoDescription				= "Cette capacité n'a aucune description"
+L.CustomOptions				= "Cette catégorie contient des options personnalisées pour une capacité ou un événement qui n'a pas son propre ID de sort ou de journal. Ces options ont été regroupées ensemble en utilisant un ID manuel personnalisé pour faciliter la création de WeakAuras."
+
+-- Panel: Auto Logging
+L.Panel_AutoLogging					= "Enregistrement automatique"
+
+--Auto Logging: Logging toggles/types
+L.Area_AutoLogging					= "Bascules d'enregistrement automatique"
+L.AutologBosses						= "Enregistrer automatiquement le contenu sélectionné en utilisant le journal de combat de Blizzard"
+L.AdvancedAutologBosses				= "Enregistrer automatiquement le contenu sélectionné avec Transcriptor"
+--Auto Logging: Global filter Options
+L.Area_AutoLoggingFilters			= "Filtres d'enregistrement automatique"
+L.RecordOnlyBosses					= "Ne pas enregistrer les trashs (Enregistre uniquement les Boss. Utilisez '/dbm pull' avant les boss pour capturer les potions pré-combat et ENCOUNTER_START)"
+L.DoNotLogLFG						= "Ne pas enregistrer les contenus en file d'attente (LFG ou LFR)"
+--Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
+L.LogCurrentMythicRaids				= "Raids mythiques du niveau actuel (ou remix)" --Retail Only
+L.LogCurrentRaids					= "Raids non mythiques du niveau actuel (ou remix) (Héroïque, Normal, et LFR si le filtre LFG/LFR est désactivé)"
+L.LogTWRaids						= "Raids de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
+L.LogTrivialRaids					= "Raids triviaux (au-dessous du niveau du personnage)"
+L.LogCurrentMPlus					= "Donjons M+ du niveau actuel (ou remix)" --Retail Only
+L.LogCurrentMythicZero				= "Donjons Mythique 0 du niveau actuel (ou remix)" --Retail Only
+L.LogTWDungeons						= "Donjons de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
+L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vous faites de l'héroïque via la file d'attente et souhaitez l'enregistrer, désactivez le filtre LFG)"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
@@ -107,7 +138,7 @@ L.SKT_Enabled				= "Décompte du record pour le combat actuel s'il est disponibl
 L.ShowRespawn				= "Décompte de la réapparition du boss après un wipe"
 L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (LFG,BG,etc)"
 --
-L.Area_AutoLogging			= "Options d'enregistrement auto"
+L.Area_AutoLogging			= "Options d'enregistrement automatique"
 L.AutologBosses				= "Enregistrement auto du combat contre un boss en utilisant le journal de combat de Blizzard"
 L.AdvancedAutologBosses		= "Enregistrement auto du combat contre un boss en utilisant Transcriptor"
 L.RecordOnlyBosses			= "N'enregistrer que les boss et exclure tous les trash. Utilisez '/dbm pull' avant les boss pour prendre en compte les potions (pre pot) &amp; ENCOUNTER_START"
@@ -154,12 +185,13 @@ L.ImportVoiceMissing		= "Paquet de voix manquant : %s"
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alertes"
 L.Area_SpecAnnounceConfig	= "Guide des effets visuels et sonores des Alertes spéciales"
-L.Area_SpecAnnounceNotes	= "Guide des Notes des Alertes spéciales"
+L.Area_SpecAnnounceNotes	= "Guide des notes des alertes spéciales"
 L.Area_VoicePackInfo		= "Information sur les paquets de voix DBM"
+
 -- Tab: Raidwarning
-L.Tab_RaidWarning 			= "Alertes"
-L.RaidWarning_Header		= "Options des alertes"
-L.RaidWarnColors 			= "Couleurs des alertes"
+L.Tab_RaidWarning 			= "Announces"
+L.RaidWarning_Header		= "Options des annonces"
+L.RaidWarnColors 			= "Couleurs des annonces"
 L.RaidWarnColor_1 			= "Couleur 1"
 L.RaidWarnColor_2 			= "Couleur 2"
 L.RaidWarnColor_3		 	= "Couleur 3"
@@ -241,7 +273,7 @@ L.VoicePackChoice			= "Paquet de voix des Alertes vocales"
 L.MissingVoicePack			= "Paquet de voix manquant (%s)"
 L.Area_CountdownOptions		= "Options des décomptes"
 L.Area_VoicePackReplace		= "Options de remplacement par le paquet de voix (quels sons seront remplacés par le paquet de voix)"
-L.VPReplaceNote				= "Note: Les paquets de voix ne modifient ou suppriment jamais vos sons d'alertes.\nIls sont simplement mis en sourdine lorsqu'un paquet de voix les remplace."
+L.VPReplaceNote				= "Remarque : Les paquets de voix ne modifient ou suppriment jamais vos sons d'alertes.\nIls sont simplement mis en sourdine lorsqu'un paquet de voix les remplace."
 L.ReplacesAnnounce			= "Remplacer les sons d'alerte (Note : Très peu d'utilisation pour les paquets de voix, sauf pour les changements de phases et les adds)"
 L.ReplacesSA1				= "Remplacer les sons d'alerte spéciale 1 (personnelle, ou 'pvpflag')"
 L.ReplacesSA2				= "Remplacer les sons d'alerte spéciale 2 (tout le monde, ou 'beware')"
@@ -277,8 +309,9 @@ L.EventFilterMythicMusic	= "Ne pas jouer de musique de rencontre en difficulté 
 L.TabCategory_Timers		= "Décomptes"
 L.Area_ColorBytype			= "Guide de coloration par type des barres"
 -- Panel: Color by Type
-L.Panel_ColorByType	 		= "Couleur par type"
+L.Panel_ColorByType	 		= "Couleurs des barres"
 L.AreaTitle_BarColors		= "Couleurs de barre par type de décompte"
+L.AreaTitle_ImpBarColors	= "Couleurs des barres importantes (Ces barres sont définies comme importantes par l'utilisateur)"
 L.BarTexture				= "Texture des barres"
 L.BarStyle					= "Comportement des barres"
 L.BarDBM					= "Classique (les petites barres existantes glissent vers l'ancrage Enlargi)"
@@ -430,7 +463,7 @@ L.DuringFight 						= "Bloquer les cinématiques en combat pendant les rencontre
 L.InstanceAnywhere 					= "Bloquer les cinématiques non liées au combat n'importe où à l'intérieur d'une instance de donjon ou de raid"
 L.NonInstanceAnywhere 				= "DANGER : Bloquer les cinématiques en extérieur dans le monde ouvert (NON recommandé)"
 L.OnlyAfterSeen 					= "Ne bloquer les cinématiques qu'après les avoir vues au moins une fois (Vivement recommandé pour vivre l'histoire telle qu'elle a été conçue au moins une fois)"
--- Son
+-- Sound
 L.Area_Sound 						= "Bloquer les sons en jeu"
 L.DisableSFX 						= "Désactiver le canal des effets sonores pendant les combats de boss"
 L.DisableAmbiance 					= "Désactiver le canal de l'ambiance sonore pendant les combats de boss"
@@ -441,6 +474,36 @@ L.HideBossEmoteFrame 				= "Cacher le cadre des émotes de boss de raid pendant 
 L.HideWatchFrame 					= "Cacher le cadre de suivi (objectifs) pendant les combats de boss s'il n'y a pas d'exploits en cours de suivi et si ce n'est pas dans une Mythique +"
 L.HideQuestTooltips 				= "Cacher les objectifs de quête des info-bulles pendant les combats de boss" --Currently hidden (NYI)
 L.HideTooltips 						= "Cacher complètement les info-bulles pendant les combats de boss"
+
+-- Panel: Raid Leader Controls
+L.Tab_RLControls					= "Contrôles du chef de raid"
+L.Area_FeatureOverrides				= "Options de dérogation des fonctionnalités"
+L.OverrideIcons 					= "Désactiver le marquage des icônes pour tous les utilisateurs du raid, y compris vous-même"-- (Use override instead of disable if you want DBM to do marking under your terms)
+L.OverrideSay						= "Désactiver les messages de bulle de chat/DIRE pour tous les utilisateurs du raid, y compris vous-même"
+L.DisableStatusWhisperShort			= "Désactiver les chuchotements de statut/réponse pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "Désactiver la synchronisation des messages de progression avec la guilde pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choisir le(s) mod(s) de boss désactivé(s) pour"--NYI
+--L.DiabledForBoth					= "Désactiver les fonctionnalités ci-dessus pour DBM et BW"---NYI
+--L.DiabledForDBM					= "Désactiver les fonctionnalités ci-dessus uniquement pour les utilisateurs de DBM"--NYI
+--L.DiabledForBW					= "Désactiver les fonctionnalités ci-dessus uniquement pour les utilisateurs de BW"--NYI
+
+L.Area_ConfigOverrides				= "Options de dérogation de configuration (PAS ENCORE IMPLEMENTÉ, à venir)"--NYI
+L.OverrideBossAnnounceOptions		= "Définir la configuration des annonces des mods de boss de tous les utilisateurs de DBM sur ma configuration"--NYI
+L.OverrideBossTimerOptions			= "Définir la configuration des chronomètres des mods de boss de tous les utilisateurs de DBM sur ma configuration"--NYI
+L.OverrideBossIconOptions			= "Définir la configuration des icônes des mods de boss de tous les utilisateurs de DBM sur ma configuration (si le paramètre d'icône est désactivé dans les options ci-dessus, cette option est ignorée)"--NYI
+L.OverrideBossSayOptions			= "Définir la configuration des bulles de chat des mods de boss de tous les utilisateurs de DBM sur ma configuration (si le paramètre de bulle de chat est désactivé dans les options ci-dessus, cette option est ignorée)"--NYI
+L.ConfigAreaFooter					= "Les options de cette zone ne modifient temporairement la configuration des utilisateurs lors de l'engagement sans altérer leur configuration sauvegardée."
+L.ConfigAreaFooter2					= "Il est recommandé de prendre en compte tous les rôles et de ne pas exclure les chronomètres/alertes qu'un tank, etc. pourrait avoir besoin"
+
+L.Area_receivingOptions				= "Options de réception (PAS ENCORE IMPLEMENTÉ, à venir)"--NYI
+L.NoAnnounceOverride				= "Ne pas accepter les dérogations d'annonces des chefs de raid."--NYI
+L.NoTimerOverridee					= "Ne pas accepter les dérogations de chronomètre des chefs de raid."--NYI
+L.ReplaceMyConfigOnOverride			= "AVERTISSEMENT : Remplacer de manière permanente mes configurations de mod par celles du chef de raid lors de la dérogation"--NYI
+L.ReceivingFooter					= "Les dérogations des options d'icônes et de bulles de chat ne peuvent pas être refusées car ces paramètres affectent les autres joueurs autour de vous"--NYI
+L.ReceivingFooter2					= "Si vous activez ces options, c'est entre vous et le chef de raid si votre configuration entre en conflit avec leur intention"--NYI
+L.ReceivingFooter3					= "Si vous activez l'option 'remplacer ma configuration de mod', vos paramètres d'origine seront perdus lors de la dérogation"--NYI
+
+L.TabFooter							= "Toutes les options de ce panneau ne fonctionnent que si vous êtes chef de groupe dans un groupe hors donjon/LFR"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Messages privés"
@@ -475,10 +538,17 @@ L.NPIconAnchorPoint		 	= "Point d'ancrage de l'icône"
 L.NPDemo					= "Test (Soyez près des plaques de nom)"
 L.FontTypeTimer				= "Sélectionner la police du chronomètre"
 L.FontTypeText				= "Sélectionner la police du texte"
+
+--L.Area_NPGlow				= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
 L.NPIcon_GlowBehavior 		= "Comportement de l'illumination de l'icône"
+--L.NPIcon_CastGlowBehavior = "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone			= "Ne jamais illuminer les icônes"
 L.NPIcon_GlowImportant		= "Illuminer les icônes importants de recharge/incantation expirant"
 L.NPIcon_GlowAll			= "Illuminer tous les icônes de recharge/incantation expirant"
+--L.NPIcon_GlowTypeCD		= "Cooldown Icon Glow Type"
+--L.NPIcon_GlowTypeCast		= "Cast Icon Glow Type"
+--L.NPIcon_Pixel  			= "Pixel"
+--L.NPIcon_Proc  			= "Proc"
 
 -- Misc
 L.Area_General				= "Général"

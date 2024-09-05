@@ -585,10 +585,17 @@ L.NPIconAnchorPoint		 	= "Место крепления значка"
 L.NPDemo					= "Тест (примечание: Вы должны находиться рядом с индикаторами)"
 L.FontTypeTimer				= "Шрифт таймера"
 L.FontTypeText				= "Шрифт текста"
+
+--L.Area_NPGlow				= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
 L.NPIcon_GlowBehavior 		= "Режим свечения значка"
+--L.NPIcon_CastGlowBehavior = "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone			= "Никогда не подсвечивать значки"
 L.NPIcon_GlowImportant		= "Подсвечивать важные значки Восстановления/каста, которые заканчиваются"
 L.NPIcon_GlowAll			= "Подсвечивать все значки Восстановления/каста, которые заканчиваются"
+--L.NPIcon_GlowTypeCD		= "Cooldown Icon Glow Type"
+--L.NPIcon_GlowTypeCast		= "Cast Icon Glow Type"
+--L.NPIcon_Pixel  			= "Pixel"
+--L.NPIcon_Proc  			= "Proc"
 
 -- Misc
 L.Area_General				= "Общие"

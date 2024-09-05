@@ -969,7 +969,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			g = g,
 			b = b,
 			requiresCombat = requiresCombat,
-			isPriority = isPriority,
+			isPriority = isPriority or false,
 			allowdouble = allowdouble,
 			startedTimers = {},
 			mod = self,

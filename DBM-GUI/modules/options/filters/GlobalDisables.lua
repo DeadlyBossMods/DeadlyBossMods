@@ -22,6 +22,7 @@ spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountd
 local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
 spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
 spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
+spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
 spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)

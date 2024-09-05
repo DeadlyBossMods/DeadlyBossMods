@@ -584,10 +584,17 @@ L.NPIconAnchorPoint			= "Punto de anclaje del icono"
 L.NPDemo					= "Probar (Acercase de placas de nombre)"
 L.FontTypeTimer				= "Seleccionar fuente del temporizador"
 L.FontTypeText				= "Seleccionar fuente de texto"
+
+--L.Area_NPGlow				= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
 L.NPIcon_GlowBehavior 		= "Comportamiento de resplandor del icono"
+--L.NPIcon_CastGlowBehavior = "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone			= "Nunca resplandecer los iconos"
 L.NPIcon_GlowImportant		= "Resplandecer iconos importantes de reutilizaciones/lanzamientos a punto de expirar"
 L.NPIcon_GlowAll			= "Resplandecer todos los iconos de reutilizaciones/lanzamientos a punto de expirar"
+--L.NPIcon_GlowTypeCD		= "Cooldown Icon Glow Type"
+--L.NPIcon_GlowTypeCast		= "Cast Icon Glow Type"
+--L.NPIcon_Pixel  			= "Pixel"
+--L.NPIcon_Proc  			= "Proc"
 
 -- Misc
 L.Area_General				= "General"
