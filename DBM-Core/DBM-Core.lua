@@ -5737,6 +5737,14 @@ do
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 				return
 			end
+			--Hack to disable modules from activating in timewalking difficulty that have duplicate non timewalking difficulty mods
+			--ie Cookie
+			if mod.combatInfo.DisableInTimewalking and difficulties.savedDifficulty == 24 then
+				return
+			end
+			if mod.combatInfo.RequiresTimewalking and difficulties.savedDifficulty ~= 24 then
+				return
+			end
 			--HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
 			if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (event == "ENCOUNTER_START" and 3 or mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
@@ -8846,6 +8854,12 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noRegenDetection then
 		info.noRegenDetection = self.noRegenDetection
 	end
+	if self.DisableInTimewalking then
+		info.DisableInTimewalking = self.DisableInTimewalking
+	end
+	if self.RequiresTimewalking then
+		info.RequiresTimewalking = self.RequiresTimewalking
+	end
 	if self.noMultiBoss then
 		info.noMultiBoss = self.noMultiBoss
 	end
@@ -8990,6 +9004,22 @@ function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
 	if self.combatInfo then
 		self.combatInfo.noRegenDetection = true
+	end
+end
+
+---Used to disable timewalking bosses in non timewalking dungeons that have different variants of same with same ID, in same instance
+function bossModPrototype:DisableInTimeWalking()
+	self.DisableInTimewalking = true
+	if self.combatInfo then
+		self.combatInfo.DisableInTimewalking = true
+	end
+end
+
+---Used to disable non timewalking bosses in timewalking dungeons that have different variants of same with same ID, in same instance
+function bossModPrototype:RequiresTimeWalking()
+	self.RequiresTimewalking = true
+	if self.combatInfo then
+		self.combatInfo.RequiresTimewalking = true
 	end
 end
 
