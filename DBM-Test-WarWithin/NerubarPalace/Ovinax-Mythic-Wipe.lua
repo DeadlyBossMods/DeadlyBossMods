@@ -1,5 +1,5 @@
 DBM.Test:DefineTest{
-	name = "TWW/NerubarPalace/Ovinax/Mythic/Wipe1",
+	name = "TWW/NerubarPalace/Ovinax/Mythic/Wipe",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2612,
