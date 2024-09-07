@@ -60,3 +60,44 @@ L = DBM:GetModLocalization("NerubarPalaceTrash")
 L:SetGeneralLocalization({
 	name =	"Nerub-ar Palace Trash"
 })
+
+---------------------------
+--  Lord Roccor (3042) --
+---------------------------
+--L= DBM:GetModLocalization(2663)
+
+---------------------------
+--  Bael'Gar (3044) --
+---------------------------
+--L= DBM:GetModLocalization(2664)
+
+---------------------------
+--  Lord Incendius (3043) --
+---------------------------
+--L= DBM:GetModLocalization(2665)
+
+---------------------------
+--  Golem Lord Argelmach (3046) --
+---------------------------
+--L= DBM:GetModLocalization(2666)
+
+---------------------------
+--  The Seven (3048) --
+---------------------------
+--L= DBM:GetModLocalization(2667)
+
+---------------------------
+--  General Angerforge (3045) --
+---------------------------
+--L= DBM:GetModLocalization(2668)
+
+---------------------------
+--  Ambassador Flamelash (3047) --
+---------------------------
+--L= DBM:GetModLocalization(2669)
+
+---------------------------
+--  Emperor Dagran Thaurissan (3049) --
+---------------------------
+--L= DBM:GetModLocalization(2670)
+
