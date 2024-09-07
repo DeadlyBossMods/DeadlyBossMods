@@ -511,9 +511,12 @@ function test:InjectEvent(event, ...)
 		if unitTarget == self.logPlayerName or self.allOnYou and self.players[unitTarget] then
 			unitTarget = UnitName("player")
 		end
-		self.Mocks:UpdateTarget(uId, unitName, unitTarget)
-		self.Mocks:UpdateUnitHealth(uId, unitName, unitHealth)
-		self.Mocks:UpdateUnitPower(uId, unitName, unitPower)
+		-- For some reason UNIT_SPELLCAST events from units where UnitName() is nil exist and for some reason those come from arena unit IDs in raids...?
+		if unitName then
+			self.Mocks:UpdateTarget(uId, unitName, unitTarget)
+			self.Mocks:UpdateUnitHealth(uId, unitName, unitHealth)
+			self.Mocks:UpdateUnitPower(uId, unitName, unitPower)
+		end
 		-- UNIT_HEALTH is usually used like this: UnitGUID(uId), check cid, then call UnitHealth(uId)
 		if uId:match("^boss") then
 			self:InjectExtraEvent("UNIT_HEALTH", uId)

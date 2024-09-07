@@ -1,5 +1,5 @@
 DBM.Test:Report[[
-Test: TWW/NerubarPalace/Rashanan/Mythic/Wipe1
+Test: TWW/NerubarPalace/Rashanan/Mythic/Wipe
 Mod:  DBM-Raids-WarWithin/2609
 
 Findings:
@@ -57,7 +57,7 @@ Timers:
 		[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 		[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 			 Triggered 2x, delta times: 483.30, 122.83
-	Rolling Acid (%s), time=21.30, type=cdcount, spellId=439789, triggerDeltas = 0.01, 16.11, 83.90, 94.11, 16.76, 29.75, 55.33, 93.40, 22.32, 71.61, 122.83
+	Toxic Waves (%s), time=21.30, type=cdcount, spellId=439789, triggerDeltas = 0.01, 16.11, 83.90, 94.11, 16.76, 29.75, 55.33, 93.40, 22.32, 71.61, 122.83
 		[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		[ 16.12] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
 			 Triggered 4x, delta times: 16.12, 194.77, 29.75, 171.05
@@ -67,7 +67,7 @@ Timers:
 		[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 		[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 			 Triggered 2x, delta times: 483.30, 122.83
-	Web Reave (%s), time=49.00, type=cdcount, spellId=439795, triggerDeltas = 0.01, 100.01, 94.11, 101.84, 93.40, 93.93, 122.83
+	Soak (%s), time=49.00, type=cdcount, spellId=439795, triggerDeltas = 0.01, 100.01, 94.11, 101.84, 93.40, 93.93, 122.83
 		[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		[100.02] SPELL_INTERRUPT: [Tank2->Rasha'nan: Mind Freeze] Player-1-00000012, Tank2, 0x511, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 47528, Mind Freeze, 0, 452806, Acidic Eruption, 0
 		[194.13] SPELL_INTERRUPT: [Dps13->Rasha'nan: Quell] Player-1-00000018, Dps13, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 351338, Quell, 0, 452806, Acidic Eruption, 0
@@ -75,7 +75,7 @@ Timers:
 		[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 		[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 			 Triggered 2x, delta times: 483.30, 122.83
-	Erosive Spray (%s), time=49.00, type=cdcount, spellId=439811, triggerDeltas = 0.01, 2.98, 29.61, 67.42, 33.30, 60.81, 33.28, 68.56, 33.27, 60.13, 33.25, 60.68, 33.26, 89.57, 33.26
+	Spray (%s), time=49.00, type=cdcount, spellId=439811, triggerDeltas = 0.01, 2.98, 29.61, 67.42, 33.30, 60.81, 33.28, 68.56, 33.27, 60.13, 33.25, 60.68, 33.26, 89.57, 33.26
 		[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		[  2.99] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
 			 Triggered 8x, delta times: 2.99, 29.61, 100.72, 94.09, 101.83, 93.38, 93.94, 122.83
@@ -95,7 +95,7 @@ Timers:
 		[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 		[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 			 Triggered 2x, delta times: 483.30, 122.83
-	157317, time=49.00, type=cdcount, spellId=454989, triggerDeltas = 0.01, 100.01, 14.74, 79.37, 101.84, 45.04, 48.36, 93.93, 44.51, 78.32
+	Webs (%s), time=49.00, type=cdcount, spellId=454989, triggerDeltas = 0.01, 100.01, 14.74, 79.37, 101.84, 45.04, 48.36, 93.93, 44.51, 78.32
 		[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		[100.02] SPELL_INTERRUPT: [Tank2->Rasha'nan: Mind Freeze] Player-1-00000012, Tank2, 0x511, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 47528, Mind Freeze, 0, 452806, Acidic Eruption, 0
 		[114.76] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
@@ -105,7 +105,7 @@ Timers:
 		[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 		[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
 			 Triggered 2x, delta times: 483.30, 122.83
-	Infested Spawn (%s), time=21.30, type=cdcount, spellId=455373, triggerDeltas = 0.01, 100.01, 20.81, 73.30, 101.84, 15.28, 78.12, 15.24, 78.69, 122.83
+	Adds (%s), time=21.30, type=cdcount, spellId=455373, triggerDeltas = 0.01, 100.01, 20.81, 73.30, 101.84, 15.28, 78.12, 15.24, 78.69, 122.83
 		[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		[100.02] SPELL_INTERRUPT: [Tank2->Rasha'nan: Mind Freeze] Player-1-00000012, Tank2, 0x511, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 47528, Mind Freeze, 0, 452806, Acidic Eruption, 0
 		[120.83] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
@@ -120,10 +120,10 @@ Announces:
 	Spinneret's Strands incoming debuff (%s), type=incomingcount, spellId=439784, triggerDeltas = 19.64, 45.05, 75.33, 94.11, 82.17, 38.87, 93.39, 49.46, 25.27, 97.59
 		[ 19.64] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 			 Triggered 10x, delta times: 19.64, 45.05, 75.33, 94.11, 82.17, 38.87, 93.39, 49.46, 25.27, 97.59
-	Rolling Acid incoming debuff (%s), type=incomingcount, spellId=439789, triggerDeltas = 16.12, 30.29, 114.83, 49.65, 29.75, 14.71, 156.34, 44.43, 93.92, 78.40
+	Toxic Waves incoming debuff (%s), type=incomingcount, spellId=439789, triggerDeltas = 16.12, 30.29, 114.83, 49.65, 29.75, 14.71, 156.34, 44.43, 93.92, 78.40
 		[ 16.12] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
 			 Triggered 10x, delta times: 16.12, 30.29, 114.83, 49.65, 29.75, 14.71, 156.34, 44.43, 93.92, 78.40
-	Erosive Spray (%s), type=count, spellId=439811, triggerDeltas = 2.99, 29.61, 44.47, 56.25, 44.40, 49.69, 44.44, 57.39, 44.44, 48.94, 44.45, 49.49, 44.44, 78.39
+	Spray (%s), type=count, spellId=439811, triggerDeltas = 2.99, 29.61, 44.47, 56.25, 44.40, 49.69, 44.44, 57.39, 44.44, 48.94, 44.45, 49.49, 44.44, 78.39
 		[  2.99] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
 			 Triggered 14x, delta times: 2.99, 29.61, 44.47, 56.25, 44.40, 49.69, 44.44, 57.39, 44.44, 48.94, 44.45, 49.49, 44.44, 78.39
 	Casting Acidic Eruption: 2.5 sec, type=cast, spellId=452806, triggerDeltas = 92.53, 6.03, 93.65, 96.03, 6.03, 93.75, 93.59, 122.76
@@ -156,34 +156,34 @@ Event trace:
 	[  0.01] INSTANCE_ENCOUNTER_ENGAGE_UNIT: Fake Args:, boss1, true, true, true, Rasha'nan, Creature-0-1-2657-1-214504-0000000001, elite, 3497273999, boss2, false, false, false, ??, nil, normal, 0, boss3, false, false, false, ??, nil, normal, 0, boss4, false, false, false, ??, nil, normal, 0, boss5, false, false, false, ??, nil, normal, 0, Real Args:, 0
 		StartCombat: IEEU
 		RegisterEvents: Regular, SPELL_CAST_START 444687 439789 455373 439784 439795 439811 454989 452806 456853 456762, SPELL_AURA_APPLIED 458067, SPELL_AURA_APPLIED_DOSE 458067, SPELL_INTERRUPT
-		StartTimer: 51.1, Web Reave (1)
+		StartTimer: 51.1, Soak (1)
 		StartTimer: 60.1, Webs (1)
 		StartTimer: 10.3, Tank Debuff (1)
-		StartTimer: 16.0, Rolling Acid (1)
-		StartTimer: 39.8, Infested Spawn (1)
+		StartTimer: 16.0, Toxic Waves (1)
+		StartTimer: 39.8, Adds (1)
 		StartTimer: 19.6, Spinneret's Strands (1)
-		StartTimer: 2.9, Erosive Spray (1)
+		StartTimer: 2.9, Spray (1)
 		StartTimer: 86.3, Movement (1)
 	[  2.99] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (1)
-		StartTimer: 29.6, Erosive Spray (2)
+		ShowAnnounce: Spray (1)
+		StartTimer: 29.6, Spray (2)
 	[ 10.42] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 14.8, Tank Debuff (2)
 	[ 16.12] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (1)
-		StartTimer: 30.3, Rolling Acid (2)
+		ShowAnnounce: Toxic Waves incoming debuff (1)
+		StartTimer: 30.3, Toxic Waves (2)
 	[ 19.64] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (1)
 		StartTimer: 45.0, Spinneret's Strands (2)
 	[ 25.22] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.8, Tank Debuff (3)
 	[ 32.60] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (2)
-		StartTimer: 44.4, Erosive Spray (3)
+		ShowAnnounce: Spray (2)
+		StartTimer: 44.4, Spray (3)
 	[ 39.83] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (1)
 	[ 46.41] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (2)
+		ShowAnnounce: Toxic Waves incoming debuff (2)
 	[ 48.91] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 9.0, Tank Debuff (4)
 	[ 51.19] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
@@ -196,19 +196,19 @@ Event trace:
 	[ 64.69] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (2)
 	[ 77.07] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (3)
+		ShowAnnounce: Spray (3)
 	[ 92.53] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[ 98.56] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[100.02] SPELL_INTERRUPT: [Tank2->Rasha'nan: Mind Freeze] Player-1-00000012, Tank2, 0x511, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 47528, Mind Freeze, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (2)
+		StartTimer: 3.6, Soak (2)
 		StartTimer: 14.7, Webs (2)
 		StartTimer: 11.0, Tank Debuff (6)
-		StartTimer: 61.2, Rolling Acid (3)
-		StartTimer: 20.8, Infested Spawn (2)
+		StartTimer: 61.2, Toxic Waves (3)
+		StartTimer: 20.8, Adds (2)
 		StartTimer: 40.0, Spinneret's Strands (3)
-		StartTimer: 33.2, Erosive Spray (4)
+		StartTimer: 33.2, Spray (4)
 		StartTimer: 86.3, Movement (2)
 	[103.67] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (2)
@@ -220,12 +220,12 @@ Event trace:
 		StartTimer: 50.0, Webs (3)
 	[120.83] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (2)
-		StartTimer: 24.2, Infested Spawn (3)
+		StartTimer: 24.2, Adds (3)
 	[125.89] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.7, Tank Debuff (8)
 	[133.32] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (4)
-		StartTimer: 44.4, Erosive Spray (5)
+		ShowAnnounce: Spray (4)
+		StartTimer: 44.4, Spray (5)
 	[140.02] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (3)
 	[145.03] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
@@ -235,23 +235,23 @@ Event trace:
 	[155.51] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 14.8, Tank Debuff (10)
 	[161.24] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (3)
+		ShowAnnounce: Toxic Waves incoming debuff (3)
 	[164.80] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
 		ShowAnnounce: Webs (3)
 	[170.32] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 3.7, Tank Debuff (11)
 	[177.72] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (5)
+		ShowAnnounce: Spray (5)
 	[192.21] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[194.13] SPELL_INTERRUPT: [Dps13->Rasha'nan: Quell] Player-1-00000018, Dps13, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 351338, Quell, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (3)
+		StartTimer: 3.6, Soak (3)
 		StartTimer: 64.7, Webs (4)
 		StartTimer: 11.0, Tank Debuff (12)
-		StartTimer: 16.7, Rolling Acid (4)
-		StartTimer: 20.8, Infested Spawn (4)
+		StartTimer: 16.7, Toxic Waves (4)
+		StartTimer: 20.8, Adds (4)
 		StartTimer: 40.0, Spinneret's Strands (4)
-		StartTimer: 33.2, Erosive Spray (6)
+		StartTimer: 33.2, Spray (6)
 		StartTimer: 86.3, Movement (3)
 	[197.75] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (3)
@@ -259,44 +259,44 @@ Event trace:
 	[205.19] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 14.8, Tank Debuff (13)
 	[210.89] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (4)
-		StartTimer: 29.7, Rolling Acid (5)
+		ShowAnnounce: Toxic Waves incoming debuff (4)
+		StartTimer: 29.7, Toxic Waves (5)
 	[214.96] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (4)
 	[220.02] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.1, Tank Debuff (14)
 	[227.41] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (6)
-		StartTimer: 44.4, Erosive Spray (7)
+		ShowAnnounce: Spray (6)
+		StartTimer: 44.4, Spray (7)
 	[234.13] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (4)
 	[240.64] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (5)
-		StartTimer: 14.7, Rolling Acid (6)
+		ShowAnnounce: Toxic Waves incoming debuff (5)
+		StartTimer: 14.7, Toxic Waves (6)
 	[243.15] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 6.4, Tank Debuff (15)
 	[249.63] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 14.8, Tank Debuff (16)
 	[255.35] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (6)
+		ShowAnnounce: Toxic Waves incoming debuff (6)
 	[258.88] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
 		ShowAnnounce: Webs (4)
 	[264.45] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 3.7, Tank Debuff (17)
 	[271.85] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (7)
+		ShowAnnounce: Spray (7)
 	[288.24] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[294.27] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[295.97] SPELL_INTERRUPT: [Dps13->Rasha'nan: Quell] Player-1-00000018, Dps13, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 351338, Quell, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (4)
+		StartTimer: 3.6, Soak (4)
 		StartTimer: 45.0, Webs (5)
 		StartTimer: 11.0, Tank Debuff (18)
-		StartTimer: 21.3, Rolling Acid (7)
-		StartTimer: 15.2, Infested Spawn (5)
+		StartTimer: 21.3, Toxic Waves (7)
+		StartTimer: 15.2, Adds (5)
 		StartTimer: 20.3, Spinneret's Strands (5)
-		StartTimer: 33.2, Erosive Spray (8)
+		StartTimer: 33.2, Spray (8)
 		StartTimer: 86.3, Movement (4)
 	[299.60] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (4)
@@ -305,15 +305,15 @@ Event trace:
 		StartTimer: 14.8, Tank Debuff (19)
 	[311.25] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (5)
-		StartTimer: 25.2, Infested Spawn (6)
+		StartTimer: 25.2, Adds (6)
 	[316.30] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (5)
 		StartTimer: 38.9, Spinneret's Strands (6)
 	[321.85] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.6, Tank Debuff (20)
 	[329.24] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (8)
-		StartTimer: 44.4, Erosive Spray (9)
+		ShowAnnounce: Spray (8)
+		StartTimer: 44.4, Spray (9)
 	[336.47] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (6)
 	[341.01] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
@@ -330,17 +330,17 @@ Event trace:
 	[366.29] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 3.7, Tank Debuff (23)
 	[373.68] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (9)
+		ShowAnnounce: Spray (9)
 	[388.02] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[389.37] SPELL_INTERRUPT: [Dps8->Rasha'nan: Disrupt] Player-1-00000011, Dps8, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (5)
+		StartTimer: 3.6, Soak (5)
 		StartTimer: 40.0, Webs (7)
 		StartTimer: 11.0, Tank Debuff (24)
-		StartTimer: 22.3, Rolling Acid (7)
-		StartTimer: 15.2, Infested Spawn (7)
+		StartTimer: 22.3, Toxic Waves (7)
+		StartTimer: 15.2, Adds (7)
 		StartTimer: 59.1, Spinneret's Strands (7)
-		StartTimer: 33.2, Erosive Spray (10)
+		StartTimer: 33.2, Spray (10)
 		StartTimer: 86.3, Movement (5)
 	[393.01] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (5)
@@ -349,15 +349,15 @@ Event trace:
 		StartTimer: 14.8, Tank Debuff (25)
 	[404.61] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
 		ShowAnnounce: Infested Spawn incoming debuff (7)
-		StartTimer: 29.7, Infested Spawn (8)
+		StartTimer: 29.7, Adds (8)
 	[411.69] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (7)
-		StartTimer: 44.4, Rolling Acid (8)
+		ShowAnnounce: Toxic Waves incoming debuff (7)
+		StartTimer: 44.4, Toxic Waves (8)
 	[415.23] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.7, Tank Debuff (26)
 	[422.62] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (10)
-		StartTimer: 44.4, Erosive Spray (11)
+		ShowAnnounce: Spray (10)
+		StartTimer: 44.4, Spray (11)
 	[429.36] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
 		ShowAnnounce: Webs (7)
 	[434.35] SPELL_CAST_START: [Rasha'nan: Infested Spawn] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 455373, Infested Spawn, 0, 0
@@ -369,21 +369,21 @@ Event trace:
 	[448.56] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (7)
 	[456.12] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (8)
+		ShowAnnounce: Toxic Waves incoming debuff (8)
 	[459.66] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 3.7, Tank Debuff (29)
 	[467.07] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (11)
+		ShowAnnounce: Spray (11)
 	[481.61] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[483.30] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (6)
+		StartTimer: 3.6, Soak (6)
 		StartTimer: 44.5, Webs (8)
 		StartTimer: 11.0, Tank Debuff (30)
-		StartTimer: 66.7, Rolling Acid (9)
-		StartTimer: 20.7, Infested Spawn (9)
+		StartTimer: 66.7, Toxic Waves (9)
+		StartTimer: 20.7, Adds (9)
 		StartTimer: 14.7, Spinneret's Strands (8)
-		StartTimer: 33.2, Erosive Spray (12)
+		StartTimer: 33.2, Spray (12)
 		StartTimer: 115.0, Movement (6)
 	[486.91] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (6)
@@ -398,8 +398,8 @@ Event trace:
 	[509.15] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.1, Tank Debuff (32)
 	[516.56] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (12)
-		StartTimer: 44.4, Erosive Spray (13)
+		ShowAnnounce: Spray (12)
+		StartTimer: 44.4, Spray (13)
 	[523.29] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (9)
 	[527.81] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
@@ -412,21 +412,21 @@ Event trace:
 	[542.47] SPELL_CAST_START: [Rasha'nan: Enveloping Webs] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 454989, Enveloping Webs, 0, 0
 		ShowAnnounce: Webs (9)
 	[550.04] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (9)
+		ShowAnnounce: Toxic Waves incoming debuff (9)
 	[553.57] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 3.7, Tank Debuff (35)
 	[561.00] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (13)
+		ShowAnnounce: Spray (13)
 	[604.37] SPELL_CAST_START: [Rasha'nan: Acidic Eruption] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 452806, Acidic Eruption, 0, 0
 		ShowAnnounce: Casting Acidic Eruption: 2.5 sec
 	[606.13] SPELL_INTERRUPT: [Tank3->Rasha'nan: Disrupt] Player-1-00000020, Tank3, 0x512, Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, 183752, Disrupt, 0, 452806, Acidic Eruption, 0
-		StartTimer: 3.6, Web Reave (7)
+		StartTimer: 3.6, Soak (7)
 		StartTimer: 49.0, Webs (10)
 		StartTimer: 11.0, Tank Debuff (36)
-		StartTimer: 22.3, Rolling Acid (10)
-		StartTimer: 21.3, Infested Spawn (10)
+		StartTimer: 22.3, Toxic Waves (10)
+		StartTimer: 21.3, Adds (10)
 		StartTimer: 14.7, Spinneret's Strands (10)
-		StartTimer: 33.2, Erosive Spray (14)
+		StartTimer: 33.2, Spray (14)
 		StartTimer: 86.3, Movement (7)
 	[609.76] SPELL_CAST_START: [Rasha'nan: Web Reave] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439795, Web Reave, 0, 0
 		ShowSpecialWarning: Web Reave! (7)
@@ -436,12 +436,12 @@ Event trace:
 	[620.88] SPELL_CAST_START: [Rasha'nan: Spinneret's Strands] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439784, Spinneret's Strands, 0, 0
 		ShowAnnounce: Spinneret's Strands incoming debuff (10)
 	[628.44] SPELL_CAST_START: [Rasha'nan: Rolling Acid] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439789, Rolling Acid, 0, 0
-		ShowAnnounce: Rolling Acid incoming debuff (10)
+		ShowAnnounce: Toxic Waves incoming debuff (10)
 	[631.96] SPELL_CAST_START: [Rasha'nan: Savage Assault] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 444687, Savage Assault, 0, 0
 		StartTimer: 23.1, Tank Debuff (38)
 	[639.39] SPELL_CAST_START: [Rasha'nan: Erosive Spray] Creature-0-1-2657-1-214504-0000000001, Rasha'nan, 0xa48, "", nil, 0x0, 439811, Erosive Spray, 0, 0
-		ShowAnnounce: Erosive Spray (14)
-		StartTimer: 44.4, Erosive Spray (15)
+		ShowAnnounce: Spray (14)
+		StartTimer: 44.4, Spray (15)
 	[660.06] ENCOUNTER_END: 2918, Rasha'nan, 16, 20, 0, 0
 		EndCombat: ENCOUNTER_END
 ]]
