@@ -1,5 +1,8 @@
+if DBM:GetTOC() < 110005 then return end
 local mod	= DBM:NewMod(2664, "DBM-Raids-WarWithin", 2, 1301)
 local L		= mod:GetLocalizedStrings()
+
+mod.statTypes = "lfr,normal,heroic"
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(226303)

@@ -1,4 +1,4 @@
-## Interface: 110002
+## Interface: 110002, 110005
 ## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Tests for The War Within mods|r
 ## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## Dependencies: DBM-Test
