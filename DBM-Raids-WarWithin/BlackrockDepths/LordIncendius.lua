@@ -38,7 +38,7 @@ local specWarnSummonFlameGeyser				= mod:NewSpecialWarningSwitchCount(463486, "D
 local specWarnScorchingWind					= mod:NewSpecialWarningCount(463495, nil, nil, nil, 2, 13)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(463492, nil, nil, nil, 1, 8)
 
-local timerFirewallCD						= mod:NewAITimer(10, 438025, nil, nil, nil, 3)
+local timerFirewallCD						= mod:NewAITimer(10, 463487, nil, nil, nil, 3)
 local timerConsumptiveFlamesCD				= mod:NewAITimer(10, 463503, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerSummonFlameGeyserCD				= mod:NewAITimer(10, 463486, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerDyingFlare						= mod:NewCastNPTimer(10, 463472, nil, nil, nil, 3)--Nameplate only prio cast timer with glow feature
