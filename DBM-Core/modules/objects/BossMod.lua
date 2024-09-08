@@ -538,7 +538,7 @@ do
 	if private.isClassic then
 		interruptSpells[8042] = true -- Shaman Earth Shock
 	end
-	---@param sourceGUID string
+	---@param sourceGUID string source GUID of the caster
 	---@param checkOnlyTandF boolean? is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
 	---@param checkCooldown boolean? should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
 	---@param ignoreTandF boolean? is usually used when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
