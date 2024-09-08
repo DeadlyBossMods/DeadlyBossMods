@@ -1063,30 +1063,35 @@ function bossModPrototype:NewSpecialWarningSwitch(spellId, optionDefault, ...)
 	return newSpecialWarning(self, "switch", spellId, nil, optionDefault, ...)
 end
 
+---Switch object that has string for count
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1num
 function bossModPrototype:NewSpecialWarningSwitchCount(spellId, optionDefault, ...)
 	---@type SpecAnnounce1num
 	return newSpecialWarning(self, "switchcount", spellId, nil, optionDefault, ...)
 end
 
+---Switch object that has string for extra info (like target)
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1str
 function bossModPrototype:NewSpecialWarningSwitchCustom(spellId, optionDefault, ...)
 	---@type SpecAnnounce1str
 	return newSpecialWarning(self, "switchcustom", spellId, nil, optionDefault, ...)
 end
 
+---Generic alert for incoming adds without context
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce0
 function bossModPrototype:NewSpecialWarningAdds(spellId, optionDefault, ...)
 	---@type SpecAnnounce0
 	return newSpecialWarning(self, "adds", spellId, nil, optionDefault, ...)
 end
 
+---Generic alert for incoming adds without context, but with count
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1num
 function bossModPrototype:NewSpecialWarningAddsCount(spellId, optionDefault, ...)
 	---@type SpecAnnounce1num
 	return newSpecialWarning(self, "addscount", spellId, nil, optionDefault, ...)
 end
 
+---Generic alert for incoming adds, but with custom text
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1str
 function bossModPrototype:NewSpecialWarningAddsCustom(spellId, optionDefault, ...)
 	---@type SpecAnnounce1str
