@@ -599,8 +599,8 @@ L.NPIcon_GlowTypeCD		        	= "쿨타임 아이콘 반짝임 종류"
 L.NPIcon_GlowTypeCast		        = "시전 아이콘 반짝임 종류"
 L.NPIcon_Pixel  			    	= "픽셀"
 L.NPIcon_Proc  			        	= "스킬 발동"
---L.NPIcon_AutoCast  			    = "Auto Cast"
---L.NPIcon_Button       			= "Button"
+L.NPIcon_AutoCast					= "자동 시전"
+L.NPIcon_Button						= "버튼"
 
 -- Misc
 L.Area_General				= "일반"
