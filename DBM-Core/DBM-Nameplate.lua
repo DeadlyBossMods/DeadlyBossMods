@@ -402,9 +402,9 @@ do
 				iconFrame.__DBM_NPIconGlowFrame:SetSize(iconFrame:GetSize());
 			end
 			LCG.AutoCastGlow_Start(iconFrame.__DBM_NPIconGlowFrame, options.color, options.N, options.frequency, options.scale, options.xOffset, options.yOffset, "DBM_ImportantMinDurationGlow")
-		elseif glowType == 4 then--Button Glow
+		elseif glowType == 4 then--Button Glow (similar to proc but different enough to give users the option) Proc is basically successor with more options and this is the OG
 			local options = {
-				color = aura_tbl.color,
+				color = {aura_tbl.color[1], aura_tbl.color[2], aura_tbl.color[3], 1},--This one also expects alpha
 				frequency = 0.125,--Default value is 0.125
 			}
 			if (not iconFrame.__DBM_NPIconGlowFrame) then

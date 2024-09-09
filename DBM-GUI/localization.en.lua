@@ -98,7 +98,7 @@ L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon' options from getting grouped b
 L.GroupOptionsExcludePrivateAura	= "Exclude 'Private Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
 L.AutoExpandSpellGroups				= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
---L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
+--L.ShowSpellDescWhenExpanded		= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
 L.CustomOptions						= "This category contains custom options for an ability or event that has no spell or journal ID of it's own. These options have been grouped together using a custom manual ID for the ease of creating WeakAuras"
 
@@ -596,17 +596,17 @@ L.FontTypeTimer						= "Select timer font"
 L.FontTypeText						= "Select text font"
 
 L.Area_NPGlow						= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
-L.NPIcon_GlowBehavior 		    	= "Cooldown Icon Glow Behavior"
-L.NPIcon_CastGlowBehavior 		   	= "Cast Icon Glow Behavior"
-L.NPIcon_GlowNone			    	= "Never Glow Icons"
-L.NPIcon_GlowImportant			   	= "Glow important expiring CD/Cast Icons"
-L.NPIcon_GlowAll			    	= "Glow all expiring CD/Cast Icons"
-L.NPIcon_GlowTypeCD		        	= "Cooldown Icon Glow Type"
-L.NPIcon_GlowTypeCast		        = "Cast Icon Glow Type"
-L.NPIcon_Pixel  			    	= "Pixel"
-L.NPIcon_Proc  			        	= "Proc"
-L.NPIcon_AutoCast  			        = "Auto Cast"
-L.NPIcon_Button       			    = "Button"
+L.NPIcon_GlowBehavior				= "Cooldown Icon Glow Behavior"
+L.NPIcon_CastGlowBehavior			= "Cast Icon Glow Behavior"
+L.NPIcon_GlowNone					= "Never Glow Icons"
+L.NPIcon_GlowImportant				= "Glow important expiring CD/Cast Icons"
+L.NPIcon_GlowAll					= "Glow all expiring CD/Cast Icons"
+L.NPIcon_GlowTypeCD					= "Cooldown Icon Glow Type"
+L.NPIcon_GlowTypeCast				= "Cast Icon Glow Type"
+L.NPIcon_Pixel						= "Pixel"
+L.NPIcon_Proc						= "Proc"
+L.NPIcon_AutoCast					= "Auto Cast"
+L.NPIcon_Button						= "Button"
 
 -- Misc
 L.Area_General						= "General"
