@@ -459,7 +459,7 @@ do
 			self.lastUpdateCooldown = now
 
 			if (aura_tbl.duration or 0) > 0 and aura_tbl.remaining < 0 and not aura_tbl.keep then
-				self.parent:StopGlow(self)--Clear all glow states on nameplate destroy so it doesn't get in a stuck state
+				self.parent:StopGlow(self, 0)--Clear all glow states on nameplate destroy so it doesn't get in a stuck state
 				self.parent:RemoveAura(aura_tbl.index)
 				if aura_tbl.id then
 					nameplateTimerBars[aura_tbl.id] = nil --ensure CDs cleanup
