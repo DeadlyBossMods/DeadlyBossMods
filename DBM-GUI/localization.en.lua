@@ -605,6 +605,8 @@ L.NPIcon_GlowTypeCD		        	= "Cooldown Icon Glow Type"
 L.NPIcon_GlowTypeCast		        = "Cast Icon Glow Type"
 L.NPIcon_Pixel  			    	= "Pixel"
 L.NPIcon_Proc  			        	= "Proc"
+L.NPIcon_AutoCast  			        = "Auto Cast"
+L.NPIcon_Button       			    = "Button"
 
 -- Misc
 L.Area_General						= "General"

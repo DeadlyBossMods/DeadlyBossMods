@@ -603,6 +603,8 @@ L.NPIcon_GlowTypeCD		        	= "冷却图标发光类型"
 L.NPIcon_GlowTypeCast		        = "施法图标发光类型"
 L.NPIcon_Pixel  			    	= "像素"
 L.NPIcon_Proc  			        	= "触发"
+--L.NPIcon_AutoCast  			        = "Auto Cast"
+--L.NPIcon_Button       			    = "Button"
 
 -- Misc
 L.Area_General				= "一般"

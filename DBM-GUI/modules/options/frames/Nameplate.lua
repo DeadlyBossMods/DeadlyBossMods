@@ -296,6 +296,14 @@ local cooldownGlowType = {
 		text	= L.NPIcon_Proc,
 		value	= 2,
 	},
+	{
+		text	= L.NPIcon_AutoCast,
+		value	= 3,
+	},
+	{
+		text	= L.NPIcon_Button,
+		value	= 4,
+	},
 }
 
 local cooldownIconGlowBehavior = glow:CreateDropdown(L.NPIcon_GlowBehavior, cooldownGlowOptions, "DBM", "NPIconGlowBehavior", function(value)
