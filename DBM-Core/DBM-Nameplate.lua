@@ -416,6 +416,7 @@ do
 		end
 	end
 	local function AuraFrame_StopGlow(self, iconFrame, glowType)
+		if not iconFrame.__DBM_NPIconGlowFrame then return end
 		if glowType == 1 then
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		elseif glowType == 2 then
@@ -459,7 +460,10 @@ do
 			self.lastUpdateCooldown = now
 
 			if (aura_tbl.duration or 0) > 0 and aura_tbl.remaining < 0 and not aura_tbl.keep then
-				self.parent:StopGlow(self, 0)--Clear all glow states on nameplate destroy so it doesn't get in a stuck state
+				if self.isGlowing then
+					self.isGlowing = false
+					self.parent:StopGlow(self, 0)
+				end
 				self.parent:RemoveAura(aura_tbl.index)
 				if aura_tbl.id then
 					nameplateTimerBars[aura_tbl.id] = nil --ensure CDs cleanup
