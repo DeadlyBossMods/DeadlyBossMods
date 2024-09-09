@@ -385,6 +385,34 @@ do
 				iconFrame.__DBM_NPIconGlowFrame:SetSize(iconFrame:GetSize());
 			end
 			LCG.ProcGlow_Start(iconFrame.__DBM_NPIconGlowFrame, options)
+		elseif glowType == 3 then--Auto Cast Glow
+			local options = {
+				color = aura_tbl.color,
+				N = 4, -- number of particle groups. Default value is 4
+				frequency = 0.125, -- frequency, set to negative to inverse direction of rotation. Default value is 0.125
+				scale = 1,-- scale of particles.
+				xOffset = 0,
+				yOffset = 0,
+				duration = 1,
+				key = "DBM_ImportantMinDurationGlow",
+			}
+			if (not iconFrame.__DBM_NPIconGlowFrame) then
+				iconFrame.__DBM_NPIconGlowFrame = CreateFrame("Frame", nil, iconFrame, BackdropTemplateMixin and "BackdropTemplate");
+				iconFrame.__DBM_NPIconGlowFrame:SetAllPoints(iconFrame);
+				iconFrame.__DBM_NPIconGlowFrame:SetSize(iconFrame:GetSize());
+			end
+			LCG.AutoCastGlow_Start(iconFrame.__DBM_NPIconGlowFrame, options.color, options.N, options.frequency, options.scale, options.xOffset, options.yOffset, "DBM_ImportantMinDurationGlow")
+		elseif glowType == 4 then--Button Glow (similar to proc but different enough to give users the option) Proc is basically successor with more options and this is the OG
+			local options = {
+				color = {aura_tbl.color[1], aura_tbl.color[2], aura_tbl.color[3], 1},--This one also expects alpha
+				frequency = 0.125,--Default value is 0.125
+			}
+			if (not iconFrame.__DBM_NPIconGlowFrame) then
+				iconFrame.__DBM_NPIconGlowFrame = CreateFrame("Frame", nil, iconFrame, BackdropTemplateMixin and "BackdropTemplate");
+				iconFrame.__DBM_NPIconGlowFrame:SetAllPoints(iconFrame);
+				iconFrame.__DBM_NPIconGlowFrame:SetSize(iconFrame:GetSize());
+			end
+			LCG.ButtonGlow_Start(iconFrame.__DBM_NPIconGlowFrame, options.color, options.frequency)--This one doesn't use a key
 		end
 	end
 	local function AuraFrame_StopGlow(self, iconFrame, glowType)
@@ -392,9 +420,15 @@ do
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		elseif glowType == 2 then
 			LCG.ProcGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+		elseif glowType == 3 then
+			LCG.AutoCastGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+		elseif glowType == 4 then
+			LCG.ButtonGlow_Stop(iconFrame.__DBM_NPIconGlowFrame)
 		else--In event of failure of glowtype, cleanup all
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 			LCG.ProcGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+			LCG.AutoCastGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
+			LCG.ButtonGlow_Stop(iconFrame.__DBM_NPIconGlowFrame)
 		end
 	end
 	local function AuraFrame_UpdateTimerText (self) --has deltaTime as second parameter, not needed here.
@@ -425,6 +459,7 @@ do
 			self.lastUpdateCooldown = now
 
 			if (aura_tbl.duration or 0) > 0 and aura_tbl.remaining < 0 and not aura_tbl.keep then
+				self.parent:StopGlow(self, 0)--Clear all glow states on nameplate destroy so it doesn't get in a stuck state
 				self.parent:RemoveAura(aura_tbl.index)
 				if aura_tbl.id then
 					nameplateTimerBars[aura_tbl.id] = nil --ensure CDs cleanup

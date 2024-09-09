@@ -597,6 +597,8 @@ L.NPIcon_GlowAll			= "Подсвечивать все значки Восста�
 --L.NPIcon_GlowTypeCast		= "Тип свечения значка произнесения заклинания"
 --L.NPIcon_Pixel  			= "Пиксель"
 --L.NPIcon_Proc  			= "Прок"
+--L.NPIcon_AutoCast  		= "Auto Cast"
+--L.NPIcon_Button       	= "Button"
 
 -- Misc
 L.Area_General				= "Общие"
