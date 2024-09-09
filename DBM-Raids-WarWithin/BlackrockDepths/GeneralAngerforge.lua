@@ -55,7 +55,7 @@ local timerFireburstGrenadeCD				= mod:NewAITimer(33, 467415, nil, nil, nil, 3)
 mod:AddNamePlateOption("NPOnCommandingAura", 464426)
 --Harbinger of Flames
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30835))
-local warnWorldinFlames						= mod:NewAddsLeftAnnounce(464413, 2)
+--local warnWorldinFlames						= mod:NewAddsLeftAnnounce(464413, 2)
 --Shadowforge Flame Keeper
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30836))
 local warnTorchDropped						= mod:NewCountAnnounce(467607, 1)
