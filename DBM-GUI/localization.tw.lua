@@ -91,13 +91,14 @@ L.Button_ResetWindowSize	= "重設GUI視窗大小"
 L.Editbox_WindowWidth		= "GUI視窗寬度"
 L.Editbox_WindowHeight		= "GUI視窗高度"
 
-L.UIGroupingOptions			= "界面分組選項 (更改這些需要輸入 /reload 來重載界面)"
-L.GroupOptionsExcludeIcon	= "按照技能分組排除“設置標記圖示”選項 (它們將一起分類為為自己的“圖示”類別)"
-L.AutoExpandSpellGroups		= "按照技能分組自動擴展選項"
-L.ShowWAKeys				= "在法術名稱旁顯示WeakAuras鍵來使用首領模組觸發器協助編寫WeakAuras。"
---L.ShowSpellDescWhenExpanded	= "分組擴展時繼續顯示技能描述"
-L.NoDescription				= "此技能無描述說明"
-L.CustomOptions				= "此類別包含一個技能或事件本身不具有法術或冒險指南ID的自定義選項。 這些選項已使用自定義手動ID組合在一起，以便於創建WA。"
+L.UIGroupingOptions					= "界面分組選項 (更改這些需要輸入 /reload 來重載界面)"
+L.GroupOptionsExcludeIcon			= "按照技能分組排除“設置標記圖示”選項 (它們將一起分類為自己的“圖示”類別)"
+L.GroupOptionsExcludePrivateAura	= "按照技能分組排除“私人光環”選項 (它們將一起分類為自己的“私人光環”類別)"
+L.AutoExpandSpellGroups				= "按照技能分組自動擴展選項"
+L.ShowWAKeys						= "在法術名稱旁顯示WeakAuras鍵來使用首領模組觸發器協助編寫WeakAuras。"
+--L.ShowSpellDescWhenExpanded		= "分組擴展時繼續顯示技能描述"
+L.NoDescription						= "此技能無描述說明"
+L.CustomOptions						= "此類別包含一個技能或事件本身不具有法術或冒險指南ID的自定義選項。 這些選項已使用自定義手動ID組合在一起，以便於創建WA。"
 
 -- Panel: Auto Logging
 L.Panel_AutoLogging					= "自動記錄"
@@ -112,14 +113,14 @@ L.RecordOnlyBosses					= "不記錄小怪的戰鬥 (只記錄首領。請於首�
 L.DoNotLogLFG						= "不記錄地城搜尋器或團隊搜尋器 (佇列的內容)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent			= "自動記錄內容"
-L.LogCurrentMythicRaids		= "當前等級傳奇團隊副本"--Retail Only
-L.LogCurrentRaids			= "當前等級團隊"
-L.LogTWRaids				= "時光漫遊 或 克羅米時光團隊副本"--Retail Only
-L.LogTrivialRaids			= "低等團隊副本 (低於角色等級)"
-L.LogCurrentMPlus			= "當前等級傳奇+地下城"--Retail Only
-L.LogCurrentMythicZero		= "當前等級傳奇0層地下城"--Retail Only
-L.LogTWDungeons				= "時光漫遊 或 克羅米時光地下城"--Retail Only
-L.LogCurrentHeroic			= "當前等級英雄地下城 (注意：如果您通過地城搜尋器佇列英雄並想要記錄，請關閉地城搜尋器過濾)"
+L.LogCurrentMythicRaids				= "當前等級傳奇團隊副本"--Retail Only
+L.LogCurrentRaids					= "當前等級團隊"
+L.LogTWRaids						= "時光漫遊 或 克羅米時光團隊副本"--Retail Only
+L.LogTrivialRaids					= "低等團隊副本 (低於角色等級)"
+L.LogCurrentMPlus					= "當前等級傳奇+地下城"--Retail Only
+L.LogCurrentMythicZero				= "當前等級傳奇0層地下城"--Retail Only
+L.LogTWDungeons						= "時光漫遊 或 克羅米時光地下城"--Retail Only
+L.LogCurrentHeroic					= "當前等級英雄地下城 (注意：如果您通過地城搜尋器佇列英雄並想要記錄，請關閉地城搜尋器過濾)"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "額外功能"
@@ -595,8 +596,8 @@ L.NPIcon_GlowTypeCD		        = "冷卻圖示發光類型"
 L.NPIcon_GlowTypeCast		    = "施法圖示發光類型"
 L.NPIcon_Pixel  			    = "像素"
 L.NPIcon_Proc  			        = "觸發"
---L.NPIcon_AutoCast  		    = "Auto Cast"
---L.NPIcon_Button       	    = "Button"
+L.NPIcon_AutoCast  		    	= "自動施放"
+L.NPIcon_Button       	    	= "按鈕"
 
 -- Misc
 L.Area_General				= "一般"
