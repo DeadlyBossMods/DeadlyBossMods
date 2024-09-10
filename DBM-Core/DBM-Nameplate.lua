@@ -416,6 +416,7 @@ do
 		end
 	end
 	local function AuraFrame_StopGlow(self, iconFrame, glowType)
+		if not iconFrame.__DBM_NPIconGlowFrame then return end
 		if glowType == 1 then
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		elseif glowType == 2 then
@@ -446,7 +447,14 @@ do
 				self.cooldown.timer:SetText ("")
 			end
 
-			local canGlow = (DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4
+			local canGlow = false
+			--cooldown nameplate icon. 1 = priority only, 2 = always
+			if aura_tbl.barType ~= "castnp" and ((DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority) or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4 then
+				canGlow = true
+			--cast nameplate icon. 1 = priority only. There is no "always" for cast timers at this time
+			elseif aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowBehavior == 1 and aura_tbl.isPriority and aura_tbl.remaining < 4 then
+				canGlow = true
+			end
 			local glowType = aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowType or DBM.Options.CDNPIconGlowType
 			if canGlow and not self.isGlowing then -- glow below 4sec if important
 				self.parent:StartGlow(self, glowType)
@@ -459,7 +467,10 @@ do
 			self.lastUpdateCooldown = now
 
 			if (aura_tbl.duration or 0) > 0 and aura_tbl.remaining < 0 and not aura_tbl.keep then
-				self.parent:StopGlow(self, 0)--Clear all glow states on nameplate destroy so it doesn't get in a stuck state
+				if self.isGlowing then
+					self.isGlowing = false
+					self.parent:StopGlow(self, 0)
+				end
 				self.parent:RemoveAura(aura_tbl.index)
 				if aura_tbl.id then
 					nameplateTimerBars[aura_tbl.id] = nil --ensure CDs cleanup
@@ -788,6 +799,8 @@ do
 					keep = keep,
 					name = name,
 					guid = curGuid,
+					timerCount = timerCount,
+					isPriority = isPriority,
 					paused = false,
 					auraType = 2, -- 1 = nameplate aura; 2 = nameplate CD timers
 					index = tmpId,
