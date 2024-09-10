@@ -7,8 +7,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(227323)
 mod:SetEncounterID(2922)
 mod:SetUsedIcons(1, 2)
---mod:SetHotfixNoticeRev(20231115000000)
---mod:SetMinSyncRevision(20230929000000)
+mod:SetHotfixNoticeRev(20240910000000)
+mod:SetMinSyncRevision(20240910000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -16,24 +16,20 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336",
 	"SPELL_CAST_SUCCESS 439299 449986",
-	"SPELL_AURA_APPLIED 451320 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 455404",
+	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 455404",
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
-	"SPELL_AURA_REMOVED 451320 447207 453990 462558 451278 443903 455387 445152 443656",
+	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656",
 	"SPELL_PERIODIC_DAMAGE 443403",
 	"SPELL_PERIODIC_MISSED 443403",
---	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, verify reactive toxin spellids/events
+--NOTE, 451320 wasn't used
 --TODO, figure out how reactive toxin works and make mod less crappy
 --TODO, figure out Silken Tomb targetting and make mod less crappy
 --TODO, figure out Liquefy targetting and make mod less crappy
---TODO, get right web blades event
---TODO, fix Wrest spellIds
 --TODO, Phase 2 Entropic Conduit mythic mechanics
---TODO, add https://www.wowhead.com/beta/spell=448660/acid-bolt to stage 2 if it is not spammed
---TODO, add shadowblast nameplate timer
 --TODO, add Gloom Orb nameplate timer?
 --TODO, figure out a proper way to warn for Ousting Fragments. how far are they cast from Chamber guardian. maybe scoped alert for players within x yards of caster?
 --TODO, Dark Detonation nameplate cast bar?
@@ -45,6 +41,13 @@ mod:RegisterEventsInCombat(
 --TODO, add auto marking?
 --TODO, https://www.wowhead.com/beta/spell=441865/royal-shackles alert too?
 --TODO, figure out shortnames later. Right now mod is a bit of chaos til boss is actually pulled
+--[[
+(ability.id = 437592 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 445021 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
+or (ability.id = 439299) and type = "cast"
+or (ability.id = 447076 or ability.id = 449940 or ability.id = 449986) and type = "begincast"
+or ability. id = 447207 and type = "removebuff"
+ or stoppedAbility.id = 449940 or stoppedAbility.id = 455374
+--]]
 --General Stuff
 local warnPhase									= mod:NewPhaseChangeAnnounce(0, nil, nil, nil, nil, nil, 2)
 
@@ -72,12 +75,12 @@ local specWarnFeast								= mod:NewSpecialWarningDefensive(437093, nil, nil, ni
 local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, nil, nil, nil, 1, 2)
 local specWarnWebBlades							= mod:NewSpecialWarningDodgeCount(439299, nil, nil, nil, 2, 2)
 
-local timerReactiveToxinCD						= mod:NewAITimer(49, 437592, nil, nil, nil, 3)
-local timerVenomNovaCD							= mod:NewAITimer(49, 437417, nil, nil, nil, 3)
-local timerSilkenTombCD							= mod:NewAITimer(49, 439814, nil, nil, nil, 3)
-local timerLiquefyCD							= mod:NewAITimer(49, 440899, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--DBM_COMMON_L.TANKCOMBO.." (%s)"
-local timerFeastCD								= mod:NewAITimer(49, 437093, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Combine with liquefy if it is a combo
-local timerWebBladesCD							= mod:NewAITimer(49, 439299, nil, nil, nil, 3)
+local timerReactiveToxinCD						= mod:NewCDCountTimer(49, 437592, nil, nil, nil, 3)
+local timerVenomNovaCD							= mod:NewCDCountTimer(49, 437417, nil, nil, nil, 3)
+local timerSilkenTombCD							= mod:NewCDCountTimer(49, 439814, nil, nil, nil, 3)
+local timerLiquefyCD							= mod:NewCDCountTimer(49, 440899, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--local timerFeastCD							= mod:NewCDCountTimer(49, 437093, nil, false, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Combine with liquefy if it is a combo
+local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, nil, nil, nil, 3)
 
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
@@ -85,7 +88,7 @@ local timerWebBladesCD							= mod:NewAITimer(49, 439299, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
 local specWarnWrest							= mod:NewSpecialWarningCount(447411, nil, nil, nil, 2, 12)
 
-local timerWrestCD							= mod:NewAITimer(49, 447411, nil, nil, nil, 3)
+local timerWrestCD							= mod:NewCDCountTimer(49, 447411, nil, nil, nil, 3)
 
 mod:AddInfoFrameOption(447076, true)
 
@@ -96,18 +99,18 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(28756))
 mod:AddNamePlateOption("NPAuraOnEchoingConnection", 453990)
 ----Queen Ansurek
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29628))
-local timerAcidicApocalypse					= mod:NewCastTimer(105, 449940, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerAcidicApocalypse					= mod:NewCastTimer(35, 449940, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 ----Ascended Voidspeaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29633))
-local specWarnShadowblast					= mod:NewSpecialWarningInterruptCount(447950, nil, nil, nil, 1, 2)
+local specWarnShadowblast					= mod:NewSpecialWarningInterruptCount(447950, nil, nil, nil, 1, 2)--No Cooldown, only spell lockout
 
---local timerShadowblastCD					= mod:NewCDNPTimer(49, 447950, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 ----Devoted Worshipper
-local specWarnGloomTouch					= mod:NewSpecialWarningMoveAway(464056, nil, nil, nil, 1, 2)
-local yellGloomTouch						= mod:NewShortYell(464056)
-local specWarnCosmicRupture					= mod:NewSpecialWarningYou(447967, nil, nil, nil, 1, 2, 4)--Mythic
-local yellCosmicRupture						= mod:NewShortFadesYell(447967)
-local specWarnCosmicApocalypse				= mod:NewSpecialWarningSpell(448458, nil, nil, nil, 3, 2)
+local warnCosmicApocalypse					= mod:NewCastAnnounce(448458, 3)
+local specWarnGloomTouch					= mod:NewSpecialWarningMoveAway(447967, nil, nil, nil, 1, 2)
+local yellGloomTouch						= mod:NewShortYell(447967)
+local specWarnCosmicRupture					= mod:NewSpecialWarningYou(462558, nil, nil, nil, 1, 2, 4)--Mythic
+local yellCosmicRupture						= mod:NewShortFadesYell(462558)
+--local specWarnCosmicApocalypse				= mod:NewSpecialWarningSpell(448458, nil, nil, nil, 3, 2)
 
 --local timerGloomTouchCD					= mod:NewCDNPTimer(49, 464056, nil, nil, nil, 3)
 ---Chamber Guardian
@@ -117,12 +120,12 @@ local specWarnOust							= mod:NewSpecialWarningDefensive(448147, nil, nil, nil,
 --local timerOustCD							= mod:NewCDNPTimer(49, 448147, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Chamber Expeller
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29744))
-local specWarnExpulsionBeam					= mod:NewSpecialWarningDodge(448660, nil, nil, nil, 2, 2)--Change to target warning if it can be scanned?
+local specWarnExpulsionBeam					= mod:NewSpecialWarningDodge(451600, nil, nil, nil, 2, 2)--Change to target warning if it can be scanned?
 
---local timerExpulsionBeamCD				= mod:NewCDNPTimer(49, 448660, nil, nil, nil, 3)
+local timerExpulsionBeamCD					= mod:NewCDNPTimer(10, 451600, nil, nil, nil, 3)
 --Chamber Acolyte
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29945))
-local specWarnDarkDetonation					= mod:NewSpecialWarningInterruptCount(455374, nil, nil, nil, 1, 2)
+local specWarnDarkDetonation				= mod:NewSpecialWarningInterruptCount(455374, nil, nil, nil, 1, 2)
 --Caustic Skitterer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29645))
 local warnCausticFangs						= mod:NewStackAnnounce(449236, 2, nil, "Tank")
@@ -132,7 +135,7 @@ local specWarnCausticFangs					= mod:NewSpecialWarningStack(449236, nil, 30, nil
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28757))
 local warnAbyssalInfusion					= mod:NewTargetNoFilterAnnounce(443888, 3)
 local warnFrothVapor						= mod:NewStackAnnounce(445880, 4)--Version on boss
-local warnQueenSummon						= mod:NewCountAnnounce(444829, 2)
+local warnQueenSummon						= mod:NewCountAnnounce(444829, 2)--NOT LOGGED, FIX ME WITH TRANSCRIPTOR
 local warnRoyalCondemnation					= mod:NewTargetNoFilterAnnounce(438976, 3)
 local warnGloomHatchlings					= mod:NewStackAnnounce(443726, 2)--Version on boss
 local warnGorge								= mod:NewStackAnnounce(443342, 3, nil, "Tank")
@@ -157,19 +160,20 @@ local specWarnInfestOther					= mod:NewSpecialWarningTaunt(443325, nil, nil, nil
 local specWarnGorge							= mod:NewSpecialWarningDefensive(443336, nil, nil, nil, 1, 2)
 local specWarnCataclysmicEvolution			= mod:NewSpecialWarningTarget(451832, nil, nil, nil, 3, 2)
 
-local timerAbyssalInfusionCD				= mod:NewAITimer(49, 443888, nil, nil, nil, 3)
-local timerFrothingGluttonyCD				= mod:NewAITimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerQueensSummonsCD					= mod:NewAITimer(49, 444829, nil, nil, nil, 1)
+local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, nil, nil, nil, 3)
+local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, nil, nil, nil, 1)
 --local timerNullDetonationCD				= mod:NewCDNPTimer(49, 455374, nil, nil, nil, 4)
-local timerRoyalCondemnationCD				= mod:NewAITimer(49, 438976, nil, nil, nil, 3)
-local timerInfestCD							= mod:NewAITimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerGorgeCD							= mod:NewAITimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, nil, nil, nil, 3)
+local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnAbyssalInfusion", 443888, true, 0, {1, 2})
 mod:AddSetIconOption("SetIconOnRoyalCondemnation", 438976, true, 0, {3, 4, 5})--3 on Mythic
 
 local castsPerGUID = {}
 --P1
+mod.vb.reactiveCount = 0
 mod.vb.novaCount = 0
 mod.vb.tombCount = 0
 mod.vb.tankComboCount = 0--Liquefy for now
@@ -188,9 +192,50 @@ mod.vb.infestCount = 0
 mod.vb.gorgeCount = 0
 mod.vb.cataEvoActivated = false
 
+local savedDifficulty = "heroic"
+local allTimers = {
+	["normal"] = {
+		[1] = {
+			--Reactive Toxin
+			[437592] = {18.4, 56, 56},--56 repeating?
+			--Venom Nova
+			[437417] = {49.4, 56, 56},--56 repeating?
+			--Silken Tomb
+			[439814] = {57.4, 54},
+			--Liquefy
+			[440899] = {8.4, 40, 55},
+			--Web Blades
+			[439299] = {76.4, 48}
+		},
+		[1.5] = {
+			--Wrest
+			[450191] = {6, 19}--Technically diff spellid here, but table uses same one
+		},
+		[2] = {
+			--Wrest
+			[450191] = {35.8}
+		},
+		[3] = {
+			--Abyssal Infusion
+			[443888] = {57.4},
+			--Frothing Gluttony
+			[445422] = {68.4},
+			--Queen's Summons
+			[444829] = {114.5},
+			--Royal Condemnation
+			[438976] = {48},
+			--Infest
+			[443325] = {29.4, 66},
+			--Gorge
+			[443336] = {35.5, 66}
+		},
+	},
+}
+
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	self:SetStage(1)
+	self.vb.reactiveCount = 0
 	self.vb.novaCount = 0
 	self.vb.tombCount = 0
 	self.vb.tankComboCount = 0
@@ -204,16 +249,23 @@ function mod:OnCombatStart(delay)
 	self.vb.infestCount = 0
 	self.vb.gorgeCount = 0
 	self.vb.cataEvoActivated = false
-	timerReactiveToxinCD:Start(1-delay)
-	timerVenomNovaCD:Start(1-delay)
-	timerSilkenTombCD:Start(1-delay)
-	timerLiquefyCD:Start(1-delay)
-	timerFeastCD:Start(1-delay)
-	timerWebBladesCD:Start(1-delay)
+	if self:IsMythic() then
+		savedDifficulty = "mythic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
+	timerReactiveToxinCD:Start(allTimers[savedDifficulty][1][437592][1]-delay, 1)
+	timerVenomNovaCD:Start(allTimers[savedDifficulty][1][437417][1]-delay, 1)
+	timerSilkenTombCD:Start(allTimers[savedDifficulty][1][439814][1]-delay, 1)
+	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
+--	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
+	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("this mod is a drycode. Some warnings may be wrong or missing, especially tank stuff")
+	DBM:AddMsg("this mod is a WIP. Some warnings may be wrong or missing until fight seen on all difficulties")
 end
 
 function mod:OnCombatEnd()
@@ -222,10 +274,24 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		savedDifficulty = "mythic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 437592 or spellId == 456623 then
-		timerReactiveToxinCD:Start()
+	if spellId == 437592 or spellId == 456623 then--437592 confirmed, 456623 unknown
+		self.vb.reactiveCount = self.vb.reactiveCount + 1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437592, self.vb.reactiveCount+1)
+		if timer then
+			timerReactiveToxinCD:Start(timer, self.vb.reactiveCount+1)
+		end
 	elseif spellId == 437417 then
 		self.vb.novaCount = self.vb.novaCount + 1
 		specWarnVenomNova:Show(self.vb.novaCount)
@@ -234,32 +300,48 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnVenomNova:Play("watchwave")
 		end
-		timerVenomNovaCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437417, self.vb.novaCount+1)
+		if timer then
+			timerVenomNovaCD:Start(timer, self.vb.novaCount+1)
+		end
 	elseif spellId == 439814 then
 		self.vb.tombCount = self.vb.tombCount + 1
 		warnSilkenTomb:Show(self.vb.tombCount)
-		timerSilkenTombCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439814, self.vb.tombCount+1)
+		if timer then
+			timerSilkenTombCD:Start(timer, self.vb.tombCount+1)
+		end
 	elseif spellId == 440899 or spellId == 440883 then--Non Mythic / Mythic (assumed)
 		self.vb.tankComboCount = self.vb.tankComboCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnLiquefy:Show()
 			specWarnLiquefy:Play("defensive")
 		end
-		timerLiquefyCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440899, self.vb.tankComboCount+1)
+		if timer then
+			timerLiquefyCD:Start(timer, self.vb.tankComboCount+1)
+		end
 	elseif spellId == 437093 then
 		self.vb.feastCount = self.vb.feastCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnFeast:Show()
 			specWarnFeast:Play("defensive")
 		end
-		timerFeastCD:Start()
+		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437093, self.vb.feastCount+1)
+		--if timer then
+		--	timerFeastCD:Start(timer, self.vb.feastCount+1)
+		--end
 	elseif spellId == 447411 or spellId == 450191 then--Intermission Left / Phase 2 right
 		self.vb.wrestCount = self.vb.wrestCount + 1
 		specWarnWrest:Show(self.vb.wrestCount)
 		specWarnWrest:Play("pullin")
-		timerWrestCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1)
+		if timer then
+			timerWrestCD:Start(timer, self.vb.wrestCount+1)
+		end
 	elseif spellId == 449940 then
-		timerAcidicApocalypse:Start()
+		timerWrestCD:Stop()
+		timerAcidicApocalypse:Start()--Basically phase 2.5 or transition to phase 3
 	elseif spellId == 447950 then
 		if not castsPerGUID[args.sourceGUID] then castsPerGUID[args.sourceGUID] = 0 end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -296,9 +378,8 @@ function mod:SPELL_CAST_START(args)
 				specWarnNullDetonation:Play("kickcast")
 			end
 		end
-	elseif spellId == 448458 then
-		specWarnCosmicApocalypse:Show()
-		specWarnCosmicApocalypse:Play("stilldanger")
+	elseif spellId == 448458 and self:AntiSpam(5, 1) then
+		warnCosmicApocalypse:Show()
 	elseif spellId == 448147 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnOust:Show()
@@ -310,58 +391,77 @@ function mod:SPELL_CAST_START(args)
 			specWarnExpulsionBeam:Show()
 			specWarnExpulsionBeam:Play("farfromline")
 		end
-		--timerExpulsionBeamCD:Start(nil, args.sourceGUID)
+		timerExpulsionBeamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 443888 then
 		self.vb.abyssalInfusionCount = self.vb.abyssalInfusionCount + 1
 		self.vb.infusionIcon = 1
-		timerAbyssalInfusionCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443888, self.vb.abyssalInfusionCount+1)
+		if timer then
+			timerAbyssalInfusionCD:Start(timer, self.vb.abyssalInfusionCount+1)
+		end
 	elseif spellId == 445422 and not self.vb.cataEvoActivated then
 		self.vb.frothingGluttonyCount = self.vb.frothingGluttonyCount + 1
 		specWarnFrothingGluttony:Show(self.vb.frothingGluttonyCount)
 		specWarnFrothingGluttony:Play("pullin")
-		timerFrothingGluttonyCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 445422, self.vb.frothingGluttonyCount+1)
+		if timer then
+			timerFrothingGluttonyCD:Start(timer, self.vb.frothingGluttonyCount+1)
+		end
 	elseif spellId == 444829 then
 		self.vb.queensSummonsCount = self.vb.queensSummonsCount + 1
 		warnQueenSummon:Show(self.vb.queensSummonsCount)
-		timerQueensSummonsCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 444829, self.vb.queensSummonsCount+1)
+		if timer then
+			timerQueensSummonsCD:Start(timer, self.vb.queensSummonsCount+1)
+		end
 	elseif spellId == 438976 then
 		self.vb.royalCondom = self.vb.royalCondom + 1
-		timerRoyalCondemnationCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438976, self.vb.royalCondom+1)
+		if timer then
+			timerRoyalCondemnationCD:Start(timer, self.vb.royalCondom+1)
+		end
 	elseif spellId == 443325 then
 		self.vb.infestCount = self.vb.infestCount + 1
-		timerInfestCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443325, self.vb.infestCount+1)
+		if timer then
+			timerInfestCD:Start(timer, self.vb.infestCount+1)
+		end
 	elseif spellId == 443336 then
 		self.vb.gorgeCount = self.vb.gorgeCount + 1
-		timerGorgeCD:Start()
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnGorge:Show()
 			specWarnGorge:Play("defensive")
 		end
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443336, self.vb.gorgeCount+1)
+		if timer then
+			timerGorgeCD:Start(timer, self.vb.gorgeCount+1)
+		end
 	elseif spellId == 447076 then--Predation
 		self:SetStage(1.5)
+		self.vb.wrestCount = 0
 		timerReactiveToxinCD:Stop()
 		timerVenomNovaCD:Stop()
 		timerSilkenTombCD:Stop()
 		timerLiquefyCD:Stop()
-		timerFeastCD:Stop()
+	--	timerFeastCD:Stop()
 		timerWebBladesCD:Stop()
 		warnPhase:Show(1.5)
 		warnPhase:Play("phasechange")
 
-		timerWrestCD:Start(1)
+		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
+		self.vb.webBladesCount = 0--Only repeat ability from earlier stage
 		warnPhase:Show(3)
 		warnPhase:Play("pthree")
-		timerAcidicApocalypse:Stop()
 		--Possibly move to cast finish later
-		timerAbyssalInfusionCD:Start(3)
-		timerFrothingGluttonyCD:Start(3)
-		timerQueensSummonsCD:Start(3)
-		timerRoyalCondemnationCD:Start(3)
-		timerInfestCD:Start(3)
-
-		timerWebBladesCD:Start(3)
+		timerAbyssalInfusionCD:Start(allTimers[savedDifficulty][3][443888][1], 1)
+		timerFrothingGluttonyCD:Start(allTimers[savedDifficulty][3][445422][1], 1)
+		timerQueensSummonsCD:Start(allTimers[savedDifficulty][3][444829][1], 1)
+		timerRoyalCondemnationCD:Start(allTimers[savedDifficulty][3][438976][1], 1)
+		timerInfestCD:Start(allTimers[savedDifficulty][3][443325][1], 1)
+		timerGorgeCD:Start(allTimers[savedDifficulty][3][443336][1], 1)
+		timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1], 1)
 	end
 end
 
@@ -371,7 +471,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.webBladesCount = self.vb.webBladesCount + 1
 		specWarnWebBlades:Show(self.vb.webBladesCount)
 		specWarnWebBlades:Play("watchstep")
-		timerWebBladesCD:Start()
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439299, self.vb.webBladesCount+1)
+		if timer then
+			timerWebBladesCD:Start(timer, self.vb.webBladesCount+1)
+		end
 	--elseif spellId == 449986 then--Aphotic Communion Finishing
 	--	timerAbyssalInfusionCD:Start(3)
 	end
@@ -379,7 +482,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 451320 then
+	if spellId == 437586 then
 		warnReactiveToxin:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnReactiveToxin:Show()
@@ -387,7 +490,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellReactiveToxin:Yell()
 			yellReactiveToxinFades:Countdown(spellId)
 		end
-	elseif spellId == 441958 and args:IsPlayer() and self:AntiSpam(3, 1) then--Grasping Silk
+	elseif spellId == 441958 and args:IsPlayer() and self:AntiSpam(3, 4) then--Grasping Silk
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 436800 and not args:IsPlayer() then
@@ -405,7 +508,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnEchoingConnection then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 464056 or spellId == 447967 then
+	elseif spellId == 464056 or spellId == 447967 then--Left Mythic Gateway version, Right Mob version on all difficulties
 		if args:IsPlayer() then
 			specWarnGloomTouch:Show()
 			specWarnGloomTouch:Play("runout")
@@ -438,7 +541,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAbyssalInfusion:CombinedShow(1, args.destName)
 		self.vb.infusionIcon = self.vb.infusionIcon + 1
 	elseif spellId == 438974 then
-		if self:AntiSpam(5, 4) then
+		if self:AntiSpam(5, 5) then
 			--In case targeting goes out before cast start, we want to make sure icons reset on first target
 			self.vb.royalCondomIcon = 3
 		end
@@ -492,7 +595,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 441556 and args:IsPlayer() then
 		warnReactionVapor:Show(1)
 	elseif spellId == 455404 then
-		if not args:IsPlayer() then
+		if not args:IsPlayer() and not self:IsEasy() then
 			specWarnFeastTaunt:Show(args.destName)
 			specWarnFeastTaunt:Play("tauntboss")
 		end
@@ -543,17 +646,18 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 451320 then
+	if spellId == 437586 then
 		if args:IsPlayer() then
 			yellReactiveToxinFades:Cancel()
 		end
 	elseif spellId == 447207 then--Predation Shield
 		self:SetStage(2)
+		self.vb.wrestCount = 0
 		warnPhase:Show(2)
 		warnPhase:Play("ptwo")
 		self.vb.wrestCount = 0
 		timerWrestCD:Stop()
-		timerWrestCD:Start(2)
+		timerWrestCD:Start(allTimers[savedDifficulty][2][450191][1], 1)
 		if self.Options.Infoframe then
 			DBM.InfoFrame:Hide()
 		end
@@ -588,35 +692,32 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 443403 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
+	if spellId == 443403 and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 223150 then--Ascended Voidspeaker
+		timerExpulsionBeamCD:Stop(nil, args.destGUID)
+	--elseif cid == 223318 then--Devoted Worshipper
 
-	elseif cid == 223318 then--Devoted Worshipper
+	--elseif cid == 223204 then--Chamber Guardian
 
-	elseif cid == 223204 then--Chamber Guardian
+	--elseif cid == 224368 then--Chamber Expeller
 
-	elseif cid == 224368 then--Chamber Expeller
+	--elseif cid == 221863 then--cycle-warden--Summoned Acolyte
 
-	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
+	end
+end
+
+--[[
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 439299 and self:AntiSpam(5, 3) then
 
 	end
 end
 --]]
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 439299 and self:AntiSpam(5, 3) then
-		self.vb.webBladesCount = self.vb.webBladesCount + 1
-		specWarnWebBlades:Show(self.vb.webBladesCount)
-		specWarnWebBlades:Play("watchstep")
-		timerWebBladesCD:Start()
-	end
-end
