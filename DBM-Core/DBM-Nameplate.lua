@@ -447,7 +447,14 @@ do
 				self.cooldown.timer:SetText ("")
 			end
 
-			local canGlow = (DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4
+			local canGlow = false
+			--cooldown nameplate icon. 1 = priority only, 2 = always
+			if aura_tbl.barType ~= "castnp" and ((DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority) or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4 then
+				canGlow = true
+			--cast nameplate icon. 1 = priority only. There is no "always" for cast timers at this time
+			elseif aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowBehavior == 1 and aura_tbl.isPriority and aura_tbl.remaining < 4 then
+				canGlow = true
+			end
 			local glowType = aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowType or DBM.Options.CDNPIconGlowType
 			if canGlow and not self.isGlowing then -- glow below 4sec if important
 				self.parent:StartGlow(self, glowType)
@@ -792,6 +799,8 @@ do
 					keep = keep,
 					name = name,
 					guid = curGuid,
+					timerCount = timerCount,
+					isPriority = isPriority,
 					paused = false,
 					auraType = 2, -- 1 = nameplate aura; 2 = nameplate CD timers
 					index = tmpId,
