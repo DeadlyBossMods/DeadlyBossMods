@@ -192,7 +192,7 @@ mod.vb.infestCount = 0
 mod.vb.gorgeCount = 0
 mod.vb.cataEvoActivated = false
 
-local savedDifficulty = "heroic"
+local savedDifficulty = "normal"
 local allTimers = {
 	["normal"] = {
 		[1] = {
@@ -249,13 +249,13 @@ function mod:OnCombatStart(delay)
 	self.vb.infestCount = 0
 	self.vb.gorgeCount = 0
 	self.vb.cataEvoActivated = false
-	if self:IsMythic() then
-		savedDifficulty = "mythic"
-	elseif self:IsHeroic() then
-		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	--if self:IsMythic() then
+	--	savedDifficulty = "mythic"
+	--elseif self:IsHeroic() then
+	--	savedDifficulty = "heroic"
+	--else--Combine LFR and Normal
 		savedDifficulty = "normal"
-	end
+	--end
 	timerReactiveToxinCD:Start(allTimers[savedDifficulty][1][437592][1]-delay, 1)
 	timerVenomNovaCD:Start(allTimers[savedDifficulty][1][437417][1]-delay, 1)
 	timerSilkenTombCD:Start(allTimers[savedDifficulty][1][439814][1]-delay, 1)
@@ -275,13 +275,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	if self:IsMythic() then
-		savedDifficulty = "mythic"
-	elseif self:IsHeroic() then
-		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	--if self:IsMythic() then
+	--	savedDifficulty = "mythic"
+	--elseif self:IsHeroic() then
+	--	savedDifficulty = "heroic"
+	--else--Combine LFR and Normal
 		savedDifficulty = "normal"
-	end
+	--end
 end
 
 function mod:SPELL_CAST_START(args)
