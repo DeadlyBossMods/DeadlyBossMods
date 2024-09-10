@@ -117,7 +117,7 @@ local yellCosmicRupture						= mod:NewShortFadesYell(462558)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29642))
 local specWarnOust							= mod:NewSpecialWarningDefensive(448147, nil, nil, nil, 1, 2)
 
---local timerOustCD							= mod:NewCDNPTimer(49, 448147, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerOustCD							= mod:NewCDNPTimer(10, 448147, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Chamber Expeller
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29744))
 local specWarnExpulsionBeam					= mod:NewSpecialWarningDodge(451600, nil, nil, nil, 2, 2)--Change to target warning if it can be scanned?
@@ -385,7 +385,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnOust:Show()
 			specWarnOust:Play("carefly")
 		end
-		--timerOustCD:Start(nil, args.sourceGUID)
+		timerOustCD:Start(nil, args.sourceGUID)
 	elseif spellId == 451600 then
 		if self:AntiSpam(5, 2) then--Just in case multiple do it at once
 			specWarnExpulsionBeam:Show()
@@ -705,8 +705,8 @@ function mod:UNIT_DIED(args)
 		timerExpulsionBeamCD:Stop(nil, args.destGUID)
 	--elseif cid == 223318 then--Devoted Worshipper
 
-	--elseif cid == 223204 then--Chamber Guardian
-
+	elseif cid == 223204 then--Chamber Guardian
+		timerOustCD:Stop(args.destGUID)
 	--elseif cid == 224368 then--Chamber Expeller
 
 	--elseif cid == 221863 then--cycle-warden--Summoned Acolyte
