@@ -751,9 +751,10 @@ function test:Playback(testData, timeWarp, testOptions)
 	}
 	DBM:FireEvent("DBMTest_Stop", testStopCallbackArgs) -- Must fire before stopping the time warper otherwise Public/Example.lua breaks
 	timeWarper:Stop()
-	local report = reporter:ReportWithHeader()
-	DBM_TestResults_Export = DBM_TestResults_Export or {}
-	DBM_TestResults_Export[testData.name] = report
+	if not reporter:IsTainted() then
+		DBM_TestResults_Export = DBM_TestResults_Export or {}
+		DBM_TestResults_Export[testData.name] = reporter:ReportWithHeader()
+	end
 	local cb = self.testCallback
 	if cb then
 		self.testCallback = nil -- coroutine scheduler also attempts to call this on failure, prevent calling it twice if this throws
