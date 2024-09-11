@@ -1,5 +1,5 @@
 DBM.Test:Report[[
-Test: TWW/NerubarPalace/Kyveza/Mythic/Wipe-1
+Test: TWW/NerubarPalace/Kyveza/Mythic/Wipe
 Mod:  DBM-Raids-WarWithin/2601
 
 Findings:
@@ -19,10 +19,10 @@ Findings:
 	Timer for spell ID 440377 (Void Shredders) is triggered by event SPELL_AURA_REMOVED 435405 (Starless Night)
 
 Unused objects:
-	[Announce] Chasmal Gash on >%s< (%d), type=stack, spellId=440576
+	[Announce] Gash on >%s< (%d), type=stack, spellId=440576
 	[Special Warning] Void Shredders - defensive, type=defensive, spellId=440377
-	[Special Warning] %d stacks of Chasmal Gash on you, type=stack, spellId=440576
-	[Special Warning] Chasmal Gash on >%s< - taunt now, type=taunt, spellId=440576
+	[Special Warning] %d stacks of Gash on you, type=stack, spellId=440576
+	[Special Warning] Gash on >%s< - taunt now, type=taunt, spellId=440576
 	[Special Warning] Death Cloak!, type=spell, spellId=447174
 	[Timer] Death Masks AI, time=49.00, type=ai, spellId=448364
 
@@ -44,13 +44,13 @@ Timers:
 			 Triggered 6x, delta times: 21.97, 30.01, 100.00, 29.98, 100.00, 30.01
 		[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
 			 Triggered 2x, delta times: 125.09, 130.01
-	281001, time=30.00, type=cdcount, spellId=438245, triggerDeltas = 0.00, 33.98, 91.11, 38.88, 91.13, 38.88
+	Massacre (%s), time=30.00, type=cdcount, spellId=438245, triggerDeltas = 0.00, 33.98, 91.11, 38.88, 91.13, 38.88
 		[  0.00] ENCOUNTER_START: 2920, Nexus-Princess Ky'veza, 16, 20, 0
 		[ 33.98] SPELL_CAST_START: [Nexus-Princess Ky'veza: Twilight Massacre] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 438245, Twilight Massacre, 0, 0
 			 Triggered 3x, delta times: 33.98, 129.99, 130.01
 		[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
 			 Triggered 2x, delta times: 125.09, 130.01
-	Nexus Daggers (%s), time=30.00, type=cdcount, spellId=439576, triggerDeltas = 0.00, 45.25, 79.84, 50.14, 79.87, 50.11
+	Daggers (%s), time=30.00, type=cdcount, spellId=439576, triggerDeltas = 0.00, 45.25, 79.84, 50.14, 79.87, 50.11
 		[  0.00] ENCOUNTER_START: 2920, Nexus-Princess Ky'veza, 16, 20, 0
 		[ 45.25] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 			 Triggered 3x, delta times: 45.25, 129.98, 129.98
@@ -83,7 +83,7 @@ Special warnings:
 	Nether Rift (%s) - dodge attack, type=dodgecount, spellId=437620, triggerDeltas = 21.97, 30.01, 29.97, 70.03, 29.98, 30.00, 70.00, 30.01, 30.00
 		[ 21.97] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 			 Triggered 9x, delta times: 21.97, 30.01, 29.97, 70.03, 29.98, 30.00, 70.00, 30.01, 30.00
-	Nexus Daggers (%s) - dodge attack, type=dodgecount, spellId=439576, triggerDeltas = 45.25, 29.98, 100.00, 30.01, 99.97, 30.03
+	Daggers (%s) - dodge attack, type=dodgecount, spellId=439576, triggerDeltas = 45.25, 29.98, 100.00, 30.01, 99.97, 30.03
 		[ 45.25] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 			 Triggered 6x, delta times: 45.25, 29.98, 100.00, 30.01, 99.97, 30.03
 
@@ -105,14 +105,14 @@ Event trace:
 	[  0.00] ENCOUNTER_START: 2920, Nexus-Princess Ky'veza, 16, 20, 0
 		StartCombat: ENCOUNTER_START
 		RegisterEvents: Regular, SPELL_CAST_START 436971 437620 448364 438245 439576 440377 453683 442277 435405, SPELL_AURA_APPLIED 447169 447174 440576, SPELL_AURA_APPLIED_DOSE 447174 440576, SPELL_AURA_REMOVED 447169 435405
-		StartTimer: 6.0, Tank Debuff (1)
-		StartTimer: 11.3, Assassination (1)
+		StartTimer: 10.0, Tank Debuff (1)
+		StartTimer: 13.2, Assassination (1)
 		StartTimer: 22.0, Rift (1)
 		StartTimer: 34.0, Massacre (1)
-		StartTimer: 45.2, Nexus Daggers (1)
+		StartTimer: 45.2, Daggers (1)
 		StartTimer: 96.0, Starless Night (1)
 	[  5.96] SPELL_CAST_START: [Nexus-Princess Ky'veza: Void Shredders] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 440377, Void Shredders, 0, 0
-		StartTimer: 34.0, Tank Debuff (2)
+		StartTimer: 30.0, Tank Debuff (2)
 	[ 13.26] SPELL_CAST_START: [Nexus-Princess Ky'veza: Assassination] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 436971, Assassination, 0, 0
 		ShowAnnounce: Assassination incoming debuff (1)
 	[ 18.98] SPELL_CAST_START: [Nexus-Princess Ky'veza: Death Masks] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 448364, Death Masks, 0, 0
@@ -130,8 +130,8 @@ Event trace:
 	[ 45.25] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 46.03, 46.76, 47.5, 48.26, 49
-		StartTimer: 30.0, Nexus Daggers (2)
-		ShowSpecialWarning: Nexus Daggers (1) - dodge attack
+		StartTimer: 30.0, Daggers (2)
+		ShowSpecialWarning: Daggers (1) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[ 51.98] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1
@@ -143,7 +143,7 @@ Event trace:
 	[ 75.23] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 75.99, 76.74, 77.49, 78.25, 78.99
-		ShowSpecialWarning: Nexus Daggers (2) - dodge attack
+		ShowSpecialWarning: Daggers (2) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[ 81.95] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1
@@ -153,14 +153,14 @@ Event trace:
 		ShowAnnounce: Starless Night (1)
 		StartTimer: 29.0, Starless Night ends
 	[125.09] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
-		StartTimer: 10.8, Tank Debuff (4)
-		StartTimer: 16.0, Assassination (2)
+		StartTimer: 6.8, Tank Debuff (4)
+		StartTimer: 18.1, Assassination (2)
 		StartTimer: 26.8, Rift (4)
 		StartTimer: 38.8, Massacre (3)
-		StartTimer: 50.0, Nexus Daggers (3)
+		StartTimer: 50.0, Daggers (3)
 		StartTimer: 100.0, Starless Night (2)
 	[135.99] SPELL_CAST_START: [Nexus-Princess Ky'veza: Void Shredders] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 440377, Void Shredders, 0, 0
-		StartTimer: 34.0, Tank Debuff (2)
+		StartTimer: 30.0, Tank Debuff (5)
 	[143.22] SPELL_CAST_START: [Nexus-Princess Ky'veza: Assassination] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 436971, Assassination, 0, 0
 		ShowAnnounce: Assassination incoming debuff (2)
 	[148.96] SPELL_CAST_START: [Nexus-Princess Ky'veza: Death Masks] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 448364, Death Masks, 0, 0
@@ -174,12 +174,12 @@ Event trace:
 		ShowAnnounce: Massacre (3)
 		StartTimer: 30.0, Massacre (2)
 	[169.97] SPELL_CAST_START: [Nexus-Princess Ky'veza: Void Shredders] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 440377, Void Shredders, 0, 0
-		StartTimer: 30.0, Tank Debuff (3)
+		StartTimer: 30.0, Tank Debuff (6)
 	[175.23] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 176.01, 176.75, 177.5, 178.24, 178.98
-		StartTimer: 30.0, Nexus Daggers (2)
-		ShowSpecialWarning: Nexus Daggers (3) - dodge attack
+		StartTimer: 30.0, Daggers (2)
+		ShowSpecialWarning: Daggers (3) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[181.96] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1
@@ -191,7 +191,7 @@ Event trace:
 	[205.24] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 206, 206.75, 207.48, 208.25, 208.99
-		ShowSpecialWarning: Nexus Daggers (4) - dodge attack
+		ShowSpecialWarning: Daggers (4) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[211.96] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1
@@ -201,14 +201,14 @@ Event trace:
 		ShowAnnounce: Starless Night (2)
 		StartTimer: 29.0, Starless Night ends
 	[255.10] SPELL_AURA_REMOVED: [Nexus-Princess Ky'veza->Nexus-Princess Ky'veza: Starless Night] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, 435405, Starless Night, 0, BUFF, 0
-		StartTimer: 10.8, Tank Debuff (7)
-		StartTimer: 16.0, Assassination (3)
+		StartTimer: 6.8, Tank Debuff (7)
+		StartTimer: 18.1, Assassination (3)
 		StartTimer: 26.8, Rift (7)
 		StartTimer: 38.8, Massacre (5)
-		StartTimer: 50.0, Nexus Daggers (5)
+		StartTimer: 50.0, Daggers (5)
 		StartTimer: 100.0, Starless Night (3)
 	[265.97] SPELL_CAST_START: [Nexus-Princess Ky'veza: Void Shredders] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 440377, Void Shredders, 0, 0
-		StartTimer: 34.0, Tank Debuff (2)
+		StartTimer: 30.0, Tank Debuff (8)
 	[273.22] SPELL_CAST_START: [Nexus-Princess Ky'veza: Assassination] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 436971, Assassination, 0, 0
 		ShowAnnounce: Assassination incoming debuff (3)
 	[278.95] SPELL_CAST_START: [Nexus-Princess Ky'veza: Death Masks] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 448364, Death Masks, 0, 0
@@ -222,12 +222,12 @@ Event trace:
 		ShowAnnounce: Massacre (5)
 		StartTimer: 30.0, Massacre (2)
 	[299.95] SPELL_CAST_START: [Nexus-Princess Ky'veza: Void Shredders] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 440377, Void Shredders, 0, 0
-		StartTimer: 30.0, Tank Debuff (3)
+		StartTimer: 30.0, Tank Debuff (9)
 	[305.21] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 305.97, 306.72, 307.47, 308.22, 308.97
-		StartTimer: 30.0, Nexus Daggers (2)
-		ShowSpecialWarning: Nexus Daggers (5) - dodge attack
+		StartTimer: 30.0, Daggers (2)
+		ShowSpecialWarning: Daggers (5) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[311.97] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1
@@ -239,7 +239,7 @@ Event trace:
 	[335.24] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nexus Daggers] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 439576, Nexus Daggers, 0, 0
 		AntiSpam: 2
 			Filtered: 5x SPELL_CAST_START at 335.98, 336.74, 337.48, 338.24, 338.99
-		ShowSpecialWarning: Nexus Daggers (6) - dodge attack
+		ShowSpecialWarning: Daggers (6) - dodge attack
 		PlaySound: VoicePack/farfromline
 	[341.97] SPELL_CAST_START: [Nexus-Princess Ky'veza: Nether Rift] Creature-0-1-2657-1-217748-0000000001, Nexus-Princess Ky'veza, 0xa48, "", nil, 0x0, 437620, Nether Rift, 0, 0
 		AntiSpam: 1

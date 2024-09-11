@@ -77,6 +77,7 @@ local EncounterInfo = {
 ---@field [1] string Anonymized or real name
 ---@field [2] string Anonymized GUID
 ---@field role ("Tank"|"Healer"|"Dps"|"Unknown")? Detected role, nil if it can be derived from the anonymized name
+---@field class string? Class in "filename" format, missing in older Transcriptor versions
 ---@field logRecorder boolean? True if this player recorded the log, this is not necessarily the same as the simulated player
 ---@field healer number? Set if a secondary role was detected, value between 0 and 1
 ---@field tank number? Set if a secondary role was detected, value between 0 and 1

@@ -31,7 +31,7 @@ function DBM_GUI:CreateTimewarpSlider(parent)
 		DBM_Test_DefaultTimeWarp = value
 		timeWarpSlider.textFrame:SetFormattedText(L.TimewarpSetting, value)
 		if DBM.Test.timeWarper then
-			DBM.Test.timeWarper:SetSpeed(value)
+			DBM.Test.timeWarper:SetSpeed(math.floor(value))
 		end
 	end)
 
