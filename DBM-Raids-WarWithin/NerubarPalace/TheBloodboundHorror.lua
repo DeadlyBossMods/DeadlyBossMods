@@ -31,15 +31,15 @@ mod:RegisterEventsInCombat(
 --TODO, also announce add spawns if they aren't automatically spawn with another boss ability (like disgorge)
 --TODO, can blood horrors be killed? should they be auto marked with https://www.wowhead.com/beta/spell=445197/manifest-horror ?
 --TODO, Manifest Horror nameplate timer? i kinda assume it's just sort of spam cast til dead
---TODO, change option keys to match BW for weak aura compatability before live
 --TODO, possibly rework timers to restart on Goresplatter so they can be more accurate and not rely in hacky fixes
 --TODO, add spawn nameplate timer
 --TODO, track personal https://www.wowhead.com/beta/spell=445570/unseeming-blight ?
 --[[
-(ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530 or ability.id = 451288 or ability.id = 445016 or ability.id = 445174) and type = "begincast"
+(ability.id = 444363 or ability.id = 452237 or ability.id = 445936 or ability.id = 442530) and type = "begincast"
  or ability.id = 443203 and type = "cast"
  or ability.id = 443042 and type = "applydebuff"
  or (ability.id = 444830 or ability.id = 444835) and type = "summon"
+ or (ability.id = 445174 or ability.id = 451288 or ability.id = 445016) and type = "begincast"
 --]]
 local warnBanefulShift							= mod:NewYouAnnounce(443612, 2)
 local warnBanefulShiftFades						= mod:NewFadesAnnounce(443612, 2)
@@ -72,6 +72,7 @@ local warnBloodPact								= mod:NewStackAnnounce(445272, 2)
 local specWarnBlackBulwark						= mod:NewSpecialWarningInterruptCount(451288, "HasInterrupt", 151702, nil, 1, 2)
 local specWarnSpectralSlam						= mod:NewSpecialWarningDefensive(445016, nil, 182557, nil, 1, 2)
 
+--These timers have large variations, especially when tanks outrange them or when they live through multiple groups phasing in
 local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, 151702, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--Nameplate only timer Shortname "Shield"
 local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, 182557, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation. Shortname "Slam"
 
@@ -269,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				else
 					timerGraspFromBeyondCD:Start(28, self.vb.graspCount+1)
 				end
-			else--Normal confirmed, LFR unknown
+			else--Normal confirmed, LFR also confirmed
 				--Just start 15 here and we'll fix timer on goresplatter cast
 				if timerGruesomeDigorgeCD:GetRemaining(self.vb.disgorgeCount+1) > 15 then
 					timerGraspFromBeyondCD:Start(15, self.vb.graspCount+1)
