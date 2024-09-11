@@ -582,7 +582,7 @@ L.Panel_Range						= "Rangeframe"
 
 -- Panel: Nameplate
 L.Panel_Nameplates					= "Nameplates"
-L.Area_NPStyle						= "Style (Note: Only configures style when DBM is handling nameplates.)"
+L.Area_NPStyle						= "Style (Note: Only configures style when not using Plater.)"
 L.NPAuraText						= "Show timer text on nameplate icons"
 L.NPAuraSize						= "Icon Pixel size (squared): %d"
 L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
@@ -595,7 +595,7 @@ L.NPDemo							= "Test (Be near nameplates)"
 L.FontTypeTimer						= "Select timer font"
 L.FontTypeText						= "Select text font"
 
-L.Area_NPGlow						= "Glow (Note: Only configures glow when DBM is handling nameplates.)"
+L.Area_NPGlow						= "Glow (Note: Only configures glow when not using Plater.)"
 L.NPIcon_GlowBehavior				= "Cooldown Icon Glow Behavior"
 L.NPIcon_CastGlowBehavior			= "Cast Icon Glow Behavior"
 L.NPIcon_GlowNone					= "Never Glow Icons"

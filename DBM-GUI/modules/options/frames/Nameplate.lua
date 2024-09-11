@@ -9,7 +9,7 @@ general:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplat
 general:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
 general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
 
-local style = panel:CreateArea(L.Area_Style)
+local style = panel:CreateArea(L.Area_NPStyle)
 
 local auraSizeSlider = style:CreateSlider(L.NPAuraSize, 20, 80, 1, 200)
 auraSizeSlider:SetPoint("TOPLEFT", style.frame, "TOPLEFT", 20, -25)
