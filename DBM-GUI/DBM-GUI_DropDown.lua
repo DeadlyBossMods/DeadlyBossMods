@@ -187,6 +187,8 @@ function tabFrame1:Refresh()
 	for _, button in pairs(self.buttons) do
 		button:SetWidth(bwidth)
 	end
+	bwidth = math.max(bwidth, tabFrame1.largestWidth or 0)
+	tabFrame1.largestWidth = bwidth
 	self:SetWidth(bwidth + 16)
 	ClickFrame:Show()
 end
@@ -259,6 +261,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			if dropdown.valueGetter then
 				dropdown.values = dropdown.valueGetter(dropdown)
 			end
+			tabFrame1.largestWidth = 0
 			tabFrame1:ClearAllPoints()
 			tabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 			tabFrame1.dropdown = dropdown
