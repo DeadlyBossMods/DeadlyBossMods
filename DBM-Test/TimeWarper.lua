@@ -147,12 +147,19 @@ function test.TimeWarper:DisableSound()
 	end
 end
 
+function test.TimeWarper:EnableSound()
+	test:RestoreCVar("Sound_EnableAllSound")
+	self.soundDisabled = false
+end
+
 -- Sets fake time to a fixed multiplier of real time.
 -- Simulated FPS will stay consistent at 30 fps no matter how much your real FPS drop.
 -- Set to 0 to simulate as fast as possible.
 function test.TimeWarper:SetSpeed(factor)
 	if factor >= 10 or factor <= 0 then
 		self:DisableSound()
+	else
+		self:EnableSound()
 	end
 	self.factor = factor <= 0 and 1e9 or factor
 	if self.factor > 1 then
@@ -164,6 +171,25 @@ function test.TimeWarper:SetSpeed(factor)
 		Timewarper = self --[[@as DBMTestTimewarperPublic]]
 	}
 	DBM:FireEvent("DBMTest_Timewarp", testStopCallbackArgs)
+end
+
+-- Skip to a stage/phase (default: the next stage)
+function test.TimeWarper:SkipToStage(stage)
+	self.skipToStage = stage or true
+	self.skipOldFactor = self.factor
+	-- FIXME: there is some internal mess in the time keeping logic above that makes jumping back from a very large to a very small value unreliable
+	-- Somehow this either manifests as the time freezing for 1-2 seconds or as stopping too late, for now just using some value that is reasonably fast and reliable
+	self:SetSpeed(100)
+end
+
+function test.TimeWarper:OnStageChanged(stage)
+	if active ~= self then
+		return
+	end
+	if stage == self.skipToStage or self.skipToStage == true then
+		self.skipToStage = nil
+		self:SetSpeed(self.skipOldFactor)
+	end
 end
 
 function test.TimeWarper:New()
