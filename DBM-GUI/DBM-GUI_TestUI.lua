@@ -129,7 +129,7 @@ local function showImportTranscriptorFrame()
 	local function dropdownEntryFromLog(log, encounterOffset)
 		if encounterOffset then
 			local encounter = log.encounters[encounterOffset]
-			local timestamp = date("%Y-%m-%d %H:%M:%d", log.timestamp + (encounter.startTime or 0))
+			local timestamp = date("%Y-%m-%d %H:%M:%S", log.timestamp + (encounter.startTime or 0))
 			local name = ("%s: %s (%d) %s, %.0f seconds, %d log entries"):format(
 				timestamp, encounter.name, encounter.id, encounter.success and "Kill" or "Wipe", encounter.endTime - encounter.startTime, encounter.endOffset - encounter.startOffset)
 			return {
@@ -137,7 +137,7 @@ local function showImportTranscriptorFrame()
 				text = name
 			}
 		else
-			local timestamp = date("%Y-%m-%d %H:%M:%d", log.timestamp)
+			local timestamp = date("%Y-%m-%d %H:%M:%S", log.timestamp)
 			local name = ("%s: no encounters detected, %.0f seconds, %d log entries"):format(
 				timestamp, log.endTime - log.startTime, #log.lines
 			)
