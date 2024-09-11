@@ -197,13 +197,13 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			--Reactive Toxin
-			[437592] = {18.4, 56, 56},--56 repeating?
+			[437592] = {18.3, 56, 56},--56 repeating?
 			--Venom Nova
-			[437417] = {49.4, 56, 56},--56 repeating?
+			[437417] = {29.4, 56, 56},--56 repeating?
 			--Silken Tomb
 			[439814] = {57.4, 54},
 			--Liquefy
-			[440899] = {8.4, 40, 55},
+			[440899] = {8.3, 40, 55},
 			--Web Blades
 			[439299] = {76.4, 48}
 		},
@@ -213,21 +213,23 @@ local allTimers = {
 		},
 		[2] = {
 			--Wrest
-			[450191] = {35.8}
+			[450191] = {32.2}--Then 8 repeating
 		},
 		[3] = {
 			--Abyssal Infusion
-			[443888] = {57.4},
+			[443888] = {57.4, 80, 80},
 			--Frothing Gluttony
-			[445422] = {68.4},
+			[445422] = {68.4, 80, 80},
 			--Queen's Summons
-			[444829] = {114.5},
+			[444829] = {114.5, 82},
 			--Royal Condemnation
-			[438976] = {48},
+			[438976] = {48, 141.5},
 			--Infest
-			[443325] = {29.4, 66},
+			[443325] = {29.4, 66, 80},
 			--Gorge
-			[443336] = {35.5, 66}
+			[443336] = {35.5, 66, 80},
+			--Web Blades
+			[439299] = {201.5}--Yes this is true
 		},
 	},
 }
@@ -335,7 +337,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wrestCount = self.vb.wrestCount + 1
 		specWarnWrest:Show(self.vb.wrestCount)
 		specWarnWrest:Play("pullin")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1) or self:GetStage(2) and 8
 		if timer then
 			timerWrestCD:Start(timer, self.vb.wrestCount+1)
 		end
