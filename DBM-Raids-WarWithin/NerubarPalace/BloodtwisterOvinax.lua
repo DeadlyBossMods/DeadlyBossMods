@@ -14,12 +14,12 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 442526 442432 443003 443005 446700",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 446349 446694 446690 442263 442250 442250 440421",--443274
+	"SPELL_AURA_APPLIED 446349 446694 446690 442263 442250 442250 440421 441362",--443274
 --	"SPELL_AURA_APPLIED_DOSE 443274",
 	"SPELL_AURA_REMOVED 446349 446694 446690 442263 442250 440421",
 	"SPELL_PERIODIC_DAMAGE 442799",
 	"SPELL_PERIODIC_MISSED 442799",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -44,6 +44,7 @@ local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442432, nil, 325
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, 389280, nil, 1, 2)--Shortname "Web"
 local yellUnstableWeb							= mod:NewShortYell(446349, 389280)
 local specWarnVolatileConcoction				= mod:NewSpecialWarningDefensive(441362, nil, nil, nil, 1, 2)
+local specWarnVolatileConcoctionTaunt			= mod:NewSpecialWarningTaunt(441362, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
 local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, 143340, nil, nil, 3)--Shortname "Injection"
@@ -55,8 +56,6 @@ mod:AddSetIconOption("SetIconOnEggBreaker", 442526, false, 0, {1, 2, 3, 4, 5, 6,
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
-
-local timerPoisonBurstCD						= mod:NewCDNPTimer(16.7, 446700, nil, nil, nil, 4)--16.7-23.4
 
 mod:AddNamePlateOption("NPAuraOnNecrotic", 446694, true)
 --Voracious Worm
@@ -133,9 +132,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerVolatileConcoctionCD:Start(nil, self.vb.tankCount+1)--20
 	elseif spellId == 446700 then
-		if not self:IsMythic() then--On mythic, they're basically change cast after spell lockout
-			timerPoisonBurstCD:Start(16.7, args.sourceGUID)
-		end
 		if self:CheckInterruptFilter(args.sourceGUID, nil, true) then
 			specWarnPoisonBurst:Show(args.sourceName)
 			specWarnPoisonBurst:Play("kickcast")
@@ -195,6 +191,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnEggBreaker then
 			self:SetIcon(args.destName, self.vb.dosageIcon)
 		end
+	elseif spellId == 441362 and not args:IsPlayer() then
+		specWarnVolatileConcoctionTaunt:Show(args.destName)
+		specWarnVolatileConcoctionTaunt:Play("tauntboss")
 	end
 end
 
@@ -235,16 +234,18 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 219045 then--Colossal Spider
-		timerPoisonBurstCD:Stop(args.destGUID)
+
 	--elseif cid == 219046 then--Voracious WOrm
 
 	--elseif cid == 220626 then--Blood Parasite
 
 	end
 end
+--]]
 
 --"<17.52 03:58:20> [UNIT_SPELLCAST_SUCCEEDED] Broodtwister Ovi'nax(97.9%-0.0%){Target:Threetuandk} -Ingest Black Blood- [[boss1:Cast-3-2085-2657-8295-442430-00130EE7DC:442430]]",
 -- "<21.20 03:58:23> [CLEU] SPELL_CAST_START#Creature-0-2085-2657-8295-214506-00000EE7C2#Broodtwister Ovi'nax(97.1%-0.0%)##nil#442432#Ingest Black Blood#nil#nil"

@@ -81,6 +81,7 @@ local timerSilkenTombCD							= mod:NewCDCountTimer(49, 439814, nil, nil, nil, 3
 local timerLiquefyCD							= mod:NewCDCountTimer(49, 440899, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerFeastCD							= mod:NewCDCountTimer(49, 437093, nil, false, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Combine with liquefy if it is a combo
 local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, nil, nil, nil, 3)
+local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, nil, nil, 6)
 
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
@@ -163,7 +164,7 @@ local specWarnCataclysmicEvolution			= mod:NewSpecialWarningTarget(451832, nil, 
 local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, nil, nil, nil, 3)
 local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, nil, nil, nil, 1)
---local timerNullDetonationCD				= mod:NewCDNPTimer(49, 455374, nil, nil, nil, 4)
+local timerNullDetonationCD					= mod:NewCDNPTimer(8.2, 455374, nil, nil, nil, 4)
 local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, nil, nil, nil, 3)
 local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -197,13 +198,13 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			--Reactive Toxin
-			[437592] = {18.4, 56, 56},--56 repeating?
+			[437592] = {18.3, 56, 56},--56 repeating?
 			--Venom Nova
-			[437417] = {49.4, 56, 56},--56 repeating?
+			[437417] = {29.4, 56, 56},--56 repeating?
 			--Silken Tomb
 			[439814] = {57.4, 54},
 			--Liquefy
-			[440899] = {8.4, 40, 55},
+			[440899] = {8.3, 40, 55},
 			--Web Blades
 			[439299] = {76.4, 48}
 		},
@@ -213,21 +214,23 @@ local allTimers = {
 		},
 		[2] = {
 			--Wrest
-			[450191] = {35.8}
+			[450191] = {32.2}--Then 8 repeating
 		},
 		[3] = {
 			--Abyssal Infusion
-			[443888] = {57.4},
+			[443888] = {57.4, 80, 80},
 			--Frothing Gluttony
-			[445422] = {68.4},
+			[445422] = {68.4, 80, 80},
 			--Queen's Summons
-			[444829] = {114.5},
+			[444829] = {114.5, 82},
 			--Royal Condemnation
-			[438976] = {48},
+			[438976] = {48, 141.5},
 			--Infest
-			[443325] = {29.4, 66},
+			[443325] = {29.4, 66, 80},
 			--Gorge
-			[443336] = {35.5, 66}
+			[443336] = {35.5, 66, 80},
+			--Web Blades
+			[439299] = {201.5}--Yes this is true
 		},
 	},
 }
@@ -262,6 +265,7 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
 --	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
 	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
+	timerPredationCD:Start(153-delay)--Max time, will happen sooner if boss hits 35%
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -335,7 +339,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wrestCount = self.vb.wrestCount + 1
 		specWarnWrest:Show(self.vb.wrestCount)
 		specWarnWrest:Play("pullin")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1) or self:GetStage(2) and 8
 		if timer then
 			timerWrestCD:Start(timer, self.vb.wrestCount+1)
 		end
@@ -378,6 +382,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnNullDetonation:Play("kickcast")
 			end
 		end
+		timerNullDetonationCD:Start(nil, args.sourceGUID)
 	elseif spellId == 448458 and self:AntiSpam(5, 1) then
 		warnCosmicApocalypse:Show()
 	elseif spellId == 448147 then
@@ -443,6 +448,7 @@ function mod:SPELL_CAST_START(args)
 		timerVenomNovaCD:Stop()
 		timerSilkenTombCD:Stop()
 		timerLiquefyCD:Stop()
+		timerPredationCD:Stop()
 	--	timerFeastCD:Stop()
 		timerWebBladesCD:Stop()
 		warnPhase:Show(1.5)
@@ -709,8 +715,8 @@ function mod:UNIT_DIED(args)
 		timerOustCD:Stop(args.destGUID)
 	--elseif cid == 224368 then--Chamber Expeller
 
-	--elseif cid == 221863 then--cycle-warden--Summoned Acolyte
-
+	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
+		timerNullDetonationCD:Stop(nil, args.destGUID)
 	end
 end
 

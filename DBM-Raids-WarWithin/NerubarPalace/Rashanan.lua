@@ -26,8 +26,9 @@ mod:RegisterEventsInCombat(
 --TODO, emphasize Enveloping webs cast itself? will probably only have a soon warning for it that's emphasized with a precise timer
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
-(ability.id = 444687 or ability.id = 439789 or ability.id = 455373 or ability.id = 439784 or ability.id = 439795 or ability.id = 439811 or ability.id = 454989 or ability.id = 452806 or ability.id = 456853 or ability.id = 456841 or ability.id = 456762) and type = "begincast"
- or stoppedability.id = 452806
+(ability.id = 444687 or ability.id = 439789 or ability.id = 455373 or ability.id = 439784 or ability.id = 439795 or ability.id = 439811 or ability.id = 454989 or ability.id = 452806 or ability.id = 456853 or ability.id = 456841) and type = "begincast"
+or ability.id = 456762 and type = "begincast"
+or stoppedability.id = 452806
 --]]
 local warnSavageWound							= mod:NewStackAnnounce(458067, 2, nil, "Tank|Healer")
 local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2, nil, nil, 437704)--General announce, private aura sound will be personal emphasis
@@ -79,7 +80,7 @@ mod.vb.movementCount = 0
 
 local savedDifficulty = "heroic"
 local allTimers = {
-	["normal"] = {--Complete up to 6:44
+	["normal"] = {--Complete up to 9:54
 		[1] = {
 			--Erosive Spray
 			[439811] = {3.0, 31.4, 47.0},
@@ -112,13 +113,13 @@ local allTimers = {
 			--Rolling Acid
 			[439789] = {65.4},
 			--Savage Assault
-			[444687] = {3.6, 7.9, 15.7, 23.5, 7.8, 15.7},
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},
 			--Spinneret's Strands
 			[439784] = {40.9},
 		},
 		[4] = {
 			--Erosive Spray
-			[439811] = {35.0},
+			[439811] = {35.0, 47},
 			--Infested Spawn
 			[455373] = {41.4},
 			--Rolling Acid
@@ -130,25 +131,25 @@ local allTimers = {
 		},
 		[5] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {35, 47},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {62.9},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {18.4, 52.9},
 			--Savage Assault
-			[444687] = {0},
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {40},
 		},
 		[6] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {35},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {15.9},
 			--Rolling Acid
 			[439789] = {0},
 			--Savage Assault
-			[444687] = {0},
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--, 7.8, 15.7, 23.5, 7.8, 15.7 assumed but pretty safe bet
 			--Spinneret's Strands
 			[439784] = {0},
 		},
@@ -180,7 +181,7 @@ local allTimers = {
 		},
 		[2] = {
 			--Erosive Spray
-			[439811] = {33.3, 44.4},
+			[439811] = {33.2, 44.4},
 			--Infested Spawn
 			[455373] = {40.5},
 			--Rolling Acid
@@ -192,7 +193,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Erosive Spray
-			[439811] = {33.3, 44.4},
+			[439811] = {33.2, 44.4},
 			--Infested Spawn
 			[455373] = {15.2, 29.7, 20.2},
 			--Rolling Acid
