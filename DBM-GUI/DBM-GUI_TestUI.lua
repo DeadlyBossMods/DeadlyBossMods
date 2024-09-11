@@ -154,7 +154,7 @@ local function showImportTranscriptorFrame()
 			local ts = parser:New(text)
 			logs = ts:GetLogs()
 			if #logs >= 1 then
-				logSelect:SetSelectedValue(dropdownEntryFromLog(logs[1], #logs[1].encounters == 1 and 1 or nil))
+				logSelect:SetSelectedValue(dropdownEntryFromLog(logs[1], #logs[1].encounters >= 1 and 1 or nil))
 				createTestButton:Enable()
 			else
 				logSelect:SetSelectedValue({value = {}, text = L.NoLogsFound})
@@ -356,9 +356,22 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		end
 		local values = {}
 		values[#values + 1] = {text = L.RewriteAllToYou, value = "EverythingOnYou"}
-		values[#values + 1] = {value = DEFAULT, text = DEFAULT}
+		values[#values + 1] = {value = DEFAULT, text = DEFAULT .. (testData.perspective and (" (%s)"):format(testData.perspective) or "")}
 		for _, v in ipairs(testData.players) do
-			values[#values + 1] = {text = v[1], value = v[1]} -- TODO: add extra info
+			local player = v[1]
+			if RAID_CLASS_COLORS[v.class] then
+				player = RAID_CLASS_COLORS[v.class]:WrapTextInColorCode(player)
+			end
+			if v.role then
+				player = player .. (" (%s)"):format(v.role)
+			end
+			if v.logRecorder then
+				player = player .. (" (log recorder)")
+			end
+			values[#values + 1] = {
+				text = player,
+				value = v[1]
+			}
 		end
 		return values
 	end
