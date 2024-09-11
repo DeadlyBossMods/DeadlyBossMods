@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(217748)--Needs confirmation, could also use 218510
 mod:SetEncounterID(2920)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
-mod:SetHotfixNoticeRev(20240711000000)
+mod:SetHotfixNoticeRev(20240911000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -85,12 +85,12 @@ function mod:OnCombatStart(delay)
 	self.vb.shredderCount = 0
 	self.vb.starlessCount = 0
 	self:SetStage(1)
-	timerVoidShreddersCD:Start(6, 1)
-	timerAssCD:Start(11.3, 1)--13.2 mythic
+	timerVoidShreddersCD:Start(10, 1)
+	timerAssCD:Start(13.2, 1)
 	timerNetherRiftCD:Start(22, 1)
 	timerTwilightMassacreCD:Start(34, 1)
 	timerNexusDaggersCD:Start(45.2, 1)
-	timerStarlessNightCD:Start(self:IsMythic() and 96 or 86, 1)
+	timerStarlessNightCD:Start(96, 1)
 	self:EnablePrivateAuraSound(438141, "runout", 2)--Twilight Massacre
 	self:EnablePrivateAuraSound(436671, "lineyou", 17)--Regicide
 	self:EnablePrivateAuraSound(436664, "lineyou", 17, 436671)--Regicide
@@ -123,14 +123,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 437620 then
 		if self:AntiSpam(5, 1) then
 			self.vb.riftCount = self.vb.riftCount + 1
-			if self:IsMythic() then
-				if self.vb.riftCount % 3 ~= 0 then--Sets of 3 between each night
-					timerNetherRiftCD:Start(30, self.vb.riftCount+1)
-				end
-			else
-				if self.vb.riftCount % 2 == 1 then--Sets of 2 between each night
-					timerNetherRiftCD:Start(30, 2)
-				end
+			if self.vb.riftCount % 3 ~= 0 then--Sets of 3 between each night
+				timerNetherRiftCD:Start(30, self.vb.riftCount+1)
 			end
 			specWarnNetherRift:Show(self.vb.riftCount)
 			specWarnNetherRift:Play("watchstep")
@@ -160,10 +154,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidShredders:Show()
 			specWarnVoidShredders:Play("defensive")
 		end
-		if self.vb.shredderCount % 3 == 1 then
-			timerVoidShreddersCD:Start(34, 2)
-		elseif self.vb.shredderCount % 3 == 2 then
-			timerVoidShreddersCD:Start(30, 3)
+		if self.vb.shredderCount % 3 ~= 0 then--Sets of 3 between each night
+			timerVoidShreddersCD:Start(30, self.vb.shredderCount+1)
 		end
 	elseif spellId == 442277 then
 		warnEternalNight:Show()
@@ -252,12 +244,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 435405 then
 		self:SetStage(1)
 		timerStarlessNight:Stop()
-		timerVoidShreddersCD:Start(10.8, self.vb.shredderCount+1)
-		timerAssCD:Start(16, self.vb.assCount+1)--18.1 on mythic?
+		timerVoidShreddersCD:Start(6.8, self.vb.shredderCount+1)
+		timerAssCD:Start(18.1, self.vb.assCount+1)
 		timerNetherRiftCD:Start(26.8, self.vb.riftCount+1)
 		timerTwilightMassacreCD:Start(38.8, self.vb.massacreCount+1)
 		timerNexusDaggersCD:Start(50, self.vb.daggersCount+1)
-		timerStarlessNightCD:Start(self:IsMythic() and 100 or 90, self.vb.starlessCount+1)
+		timerStarlessNightCD:Start(100, self.vb.starlessCount+1)
 		if self:IsMythic() then
 			timerDeathMasksCD:Start(23.8, self.vb.maskCount+1)
 		end

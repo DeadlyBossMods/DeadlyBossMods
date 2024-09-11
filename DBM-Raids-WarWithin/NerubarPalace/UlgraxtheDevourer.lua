@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(215657)--VERIFY
 mod:SetEncounterID(2902)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20240628000000)
+mod:SetHotfixNoticeRev(20240911000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
 
@@ -127,7 +127,7 @@ function mod:SPELL_CAST_START(args)
 		--This code below will break if boss is kited around.
 		--None the less, for most users, it provides a nicer experience then on fly timer correction
 		if self.vb.brutalHungeringCount < 5 then
-			timerBrutalCrushCD:Start(self.vb.brutalHungeringCount == 3 and 22 or 13, self.vb.brutalHungeringCount+1)
+			timerBrutalCrushCD:Start(self.vb.brutalHungeringCount == 3 and 19 or 15, self.vb.brutalHungeringCount+1)
 		end
 	elseif spellId == 445052 then--Chittering Swarm
 		specWarnChitteringSwarm:Show()
@@ -153,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.brutalHungeringCount % 4 == 0 then
 			timerHungeringBellowsCD:Start(6, self.vb.brutalHungeringCount+1)
 		else
-			timerHungeringBellowsCD:Start(9, self.vb.brutalHungeringCount+1)
+			timerHungeringBellowsCD:Start(7, self.vb.brutalHungeringCount+1)
 		end
 	elseif spellId == 435138 then
 		self.vb.digestiveCount = self.vb.digestiveCount + 1
@@ -217,7 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 458129 then
 		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnCarnivorousContestTarget:Show()
-			specWarnCarnivorousContestTarget:Play("gathershare")
+			specWarnCarnivorousContestTarget:ScheduleVoice(1.5, "gathershare")
 			yellCarnivorousContest:Yell()
 			yellCarnivorousContestFades:Countdown(spellId)
 		elseif self:AntiSpam(3, 2) then
@@ -252,7 +252,8 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:434776") and self:AntiSpam(3, 1) then
 		specWarnCarnivorousContestTarget:Show()
-		specWarnCarnivorousContestTarget:Play("gathershare")
+		specWarnCarnivorousContestTarget:Play("runout")
+		specWarnCarnivorousContestTarget:ScheduleVoice(1.5, "gathershare")
 		yellCarnivorousContest:Yell()
 		yellCarnivorousContestFades:Countdown(8)
 	end
@@ -260,9 +261,10 @@ end
 
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
+		specWarnCarnivorousContestTarget:Play("runout")
 		if targetName ~= UnitName("player") then
 			specWarnCarnivorousContestTarget:Show()
-			specWarnCarnivorousContestTarget:Play("helpsoak")
+			specWarnCarnivorousContestTarget:ScheduleVoice(1.5, "helpsoak")
 		end
 	end
 end

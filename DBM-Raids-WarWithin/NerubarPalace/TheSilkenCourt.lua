@@ -35,8 +35,9 @@ mod:RegisterEventsInCombat(
 --TODO, change option keys to match BW for weak aura compatability before live
 --NOTE, https://www.wowhead.com/beta/spell=440503/impaling-eruption was not exposed, re-add of that changes
 --[[
-(ability.id = 438218 or ability.id = 438801 or ability.id = 440246 or ability.id = 440504 or ability.id = 438343 or ability.id = 439838 or ability.id = 450045 or ability.id = 451016 or ability.id = 438677 or ability.id = 452231 or ability.id = 441626 or ability.id = 450129 or ability.id = 441782 or ability.id = 450483 or ability.id = 438355 or ability.id = 443068 or ability.id = 451327 or ability.id = 442994) and type = "begincast"
- or (ability.id = 451277 or ability.id = 450980) and (type = "applybuff" or type = "removebuff")
+(ability.id = 438218 or ability.id = 438801 or ability.id = 440246 or ability.id = 440504 or ability.id = 438343 or ability.id = 439838 or ability.id = 450045 or ability.id = 438677 or ability.id = 452231 or ability.id = 441626 or ability.id = 450129 or ability.id = 441782 or ability.id = 450483 or ability.id = 438355 or ability.id = 443068 or ability.id = 442994) and type = "begincast"
+or (ability.id = 451016 or ability.id = 451327) and type = "begincast"
+or (ability.id = 451277 or ability.id = 450980) and (type = "applybuff" or type = "removebuff")
 --]]
 local anubarash, takazj = DBM:EJ_GetSectionInfo(29012), DBM:EJ_GetSectionInfo(29017)
 --General Stuff
@@ -142,135 +143,135 @@ mod.vb.scarabIcon = 8
 
 local savedDifficulty = "heroic"
 local allTimers = {
-	["normal"] = {
+	["normal"] = {--Updated Sept 11
 		[1] = {
 			-- Piercing Strike
-			[438218] = {18, 19.9, 20, 22.9, 38.0},
+			[438218] = {10.1, 20.0, 28.0, 20.0, 39.0},--Updated Sept 11
 			-- Call of the Swarm
-			[438801] = {13.1, 64.8},
+			[438801] = {12.1, 54.0},--Updated Sept 11
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {40.1, 59.9},
+			[441791] = {32.1, 58.0},--Updated Sept 11
 			-- Reckless Charge
-			[440246] = {43.9, 59.9},
+			[440246] = {35.9, 58.0},--Updated Sept 11
 			-- Impaling Eruption
-			[440504] = {30, 32.9, 31.0},
+			[440504] = {22.1, 38.0, 25.0},--Updated Sept 11
 			-- Venomous Rain
-			[438656] = {7.7, 31.7, 30.2, 31.8},
+			[438343] = {6.2, 38.0, 36.3, 37.6},--Updated Sept 11
 			-- Web Bomb
-			[439838] = {24.3, 33.2, 33.3},
+			[439838] = {16.4, 57.9},--Updated Sept 11
 			-- Skittering Leap
-			[450045] = {17, 31.5, 28.7, 30.3},
+			[450045] = {39.5, 60.1},--Updated Sept 11
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {26.0, 51},
+			[438801] = {12, 54},--Updated Sept 11
 			-- Piercing Strike
-			[438218] = {14.0, 20, 20, 20, 20, 20},
+			[438218] = {16, 20, 26, 20, 20, 20},--Updated Sept 11
 			-- Impaling Eruption
-			[440504] = {9, 39.9, 40.0},
+			[440504] = {18, 39, 39},--Updated Sept 11
 			-- Stinging Swarm
-			[438677] = {46.0, 49.9},
+			[438677] = {33, 58},--Updated Sept 11
 			-- Web Vortex
-			[441626] = {32.2, 49.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[441626] = {31.7, 43.1},--Updated Sept 11
 			-- Entropic Desolation
-			[450129] = {35.0, 49.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[450129] = {34.5, 43.1},--Updated Sept 11
 			-- Strands of Reality
-			[441782] = {18.1, 75.3},
+			[441782] = {24.2, 65.7},--Updated Sept 11
 			-- Void Step
-			[450483] = {27.1, 26.7, 25.2, 23.4},
+			[450483] = {42.7, 29.1, 25.5},--Updated Sept 11
 			-- Cataclysmic Entropy
-			[438355] = {56.9, 48.6},
+			[438355] = {45.8, 54.7},--Updated Sept 11
 		},
 		[3] = {
 			-- Piercing Strike
-			[438218] = {25.0, 23.0, 40, 22.9, 56.0, 20},
+			[438218] = {25, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20},--Updated Sept 11
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {55.0, 75},
+			[441791] = {55.0, 75, 127.5, 75},--Updated Sept 11
 			-- Reckless Charge
-			[440246] = {58.8, 75},
+			[440246] = {58.8, 75, 127.5, 75},--Updated Sept 11
 			-- Stinging Swarm
-			[438677] = {75.0, 100.0},
+			[438677] = {75.0, 100.0, 102.5, 100},--Updated Sept 11
 			-- Web Vortex
-			[441626] = {42.3, 73.8},
+			[441626] = {42, 75.8, 126.4, 75.8},--Updated Sept 11
 			-- Entropic Desolation
-			[450129] = {45.1, 73.8},
+			[450129] = {44.8, 75.8, 126.4, 75.8},--Updated Sept 11
 			-- Strands of Reality
-			[441782] = {26.3, 153.8},
+			[441782] = {26.4, 153.9, 48.4, 153.8},--Updated Sept 11
 			-- Void Step
-			[450483] = {37.3, 26.6, 23.3, 25.9, 24.6, 25.2, 24.0},
+			[450483] = {63, 25.1, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8},--Updated Sept 11
 			-- Cataclysmic Entropy
-			[438355] = {90.1, 100.1},
+			[438355] = {91.2, 99.5, 102.9, 99.5},--Updated Sept 11
 			-- Spike Eruption
-			[443068] = {45.0, 62.9, 63.0},
+			[443068] = {45.0, 62.9, 62.9, 76.6, 62.9, 62.9},--Updated Sept 11
 			-- Unleashed Swarm
-			[442994] = {30.0, 118.9},
+			[442994] = {30.0, 118.9, 83.5},--Updated Sept 11
 		}
 	},
 	["heroic"] = {
 		[1] = {
 			-- Piercing Strike
-			[438218] = {15.1, 19.9, 27.0, 19.0},
+			[438218] = {10, 20, 27, 21, 38},--Updated Sept 11
 			-- Call of the Swarm
-			[438801] = {18.0, 65.0},
+			[438801] = {12.1, 54},--Updated Sept 11
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {40, 59.5},
+			[441791] = {32.1, 58},--Updated Sept 11
 			-- Reckless Charge
-			[440246] = {43.3, 59.5},
+			[440246] = {35.4, 58},--Updated Sept 11
 			-- Impaling Eruption
-			[440504] = {21.1, 35.9, 30.0, 31.0},
+			[440504] = {19.1, 40, 26, 33},--Updated Sept 11
 			-- Venomous Rain
-			[438656] = {7.7, 31.2, 31.7, 28.6},
+			[438343] = {6.2, 38.2, 26.1, 37.8},--Updated Sept 11
 			-- Web Bomb
-			[439838] = {25.0, 36.2},
+			[439838] = {16.7, 56.3},--Updated Sept 11
 			-- Skittering Leap
-			[450045] = {15.6, 30.9, 30.1, 15.0, 15.0},
+			[450045] = {40, 58.3},--Updated Sept 11
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {31.0, 37.0},
+			[438801] = {20, 54},--Updated Sept 11
 			-- Piercing Strike
-			[438218] = {14.1, 20.0, 20.0, 20.0, 20.0},
+			[438218] = {18, 20, 20, 20, 20, 20},--Updated Sept 11
 			-- Impaling Eruption
-			[440504] = {9.0, 40.0, 40.0},
+			[440504] = {13, 40, 27, 30},--Updated Sept 11
 			-- Stinging Swarm
-			[438677] = {39.0, 37.0},
+			[438677] = {29, 58},--Updated Sept 11
 			-- Web Vortex
-			[441626] = {32.2, 37.2, 36.2},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[441626] = {20.3, 55.2},--Updated Sept 11
 			-- Entropic Desolation
-			[450129] = {35.0, 37.2, 36.2},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[450129] = {23.1, 55.2},--Updated Sept 11
 			-- Strands of Reality
-			[441782] = {14.2, 33.2, 34.1},
+			[441782] = {31.6, 35.8, 25.5},--Updated Sept 11
 			-- Void Step
-			[450483] = {27.2, 25.2, 26.1, 24.2},
+			[450483] = {38.4, 34, 25.2, 29.1},--Updated Sept 11
 			-- Cataclysmic Entropy
-			[438355] = {55.4, 59.4},
+			[438355] = {41.2, 59.2},--Updated Sept 11
 		},
 		[3] = {
 			-- Piercing Strike
-			[438218] = {25.0, 20.0, 30.0, 21.0, 20.0, 20.0, 20.0},
+			[438218] = {20, 48, 20, 23, 20, 35},--Updated Sept 11
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {55.2, 108.8},
+			[441791] = {43, 98},--Updated Sept 11
 			-- Reckless Charge
-			[440246] = {59.0, 108.8},
+			[440246] = {46.2, 98},--Updated Sept 11
 			-- Stinging Swarm
-			[438677] = {93.0, 69.0},
+			[438677] = {81, 57},--Updated Sept 11
 			-- Web Vortex
-			[441626] = {42.4, 99.8},
+			[441626] = {33.5, 97.5},--Updated Sept 11
 			-- Entropic Desolation
-			[450129] = {45.2, 99.8},
+			[450129] = {36.3, 97.4},--Updated Sept 11
 			-- Strands of Reality
-			[441782] = {28.4, 64.5, 56.4},
+			[441782] = {22.3, 33.1, 21.3, 47.1},--Updated Sept 11
 			-- Void Step
-			[450483] = {37.4, 50.4, 24.3, 25.1, 25.2, 9.1, 13.1, 3.0},
+			[450483] = {50.8, 38.5, 29.1, 29.4, 2.5},--Updated Sept 11
 			-- Cataclysmic Entropy
-			[438355] = {115.1, 75.5},
+			[438355] = {92.6, 61.2},--Updated Sept 11
 			-- Spike Eruption
-			[443068] = {20.0, 111.0},
+			[443068] = {40, 31, 64},--Updated Sept 11
 			-- Unleashed Swarm
-			[442994] = {30.0, 89.0},
+			[442994] = {23, 75, 70},--Updated Sept 11
 		}
 	},
-	["mythic"] = {
+	["mythic"] = {--OLD beta timers, probably changed
 		[1] = {
 			-- Piercing Strike
 			[438218] = {15.0, 23.0, 25.0, 24.0},
@@ -283,7 +284,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {8.0, 24.0, 25.0, 23.0},
 			-- Venomous Rain
-			[438656] = {15.2, 41.9, 33.2},
+			[438343] = {15.2, 41.9, 33.2},
 			-- Web Bomb
 			[439838] = {31.4, 32.9, 28.1},
 			-- Skittering Leap
@@ -396,10 +397,10 @@ function mod:OnCombatStart(delay)
 	timerRecklessChargeCD:Start(allTimers[savedDifficulty][1][440246][1]-delay, 1)--43.3
 	--timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
 	--Takazj
-	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438656][1]-delay, 1)--7.7
+	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
-	timerVoidAscensionCD:Start(self:IsHeroic() and 126.6 or 131, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
+	timerVoidAscensionCD:Start(self:IsHeroic() and 126.1, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
 	if self.Options.NPAuraOnPerseverance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -468,7 +469,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 438343 then
 		self.vb.rainCount = self.vb.rainCount + 1
 		warnVenomousRain:Show(self.vb.rainCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438656, self.vb.rainCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438343, self.vb.rainCount+1)
 		if timer then
 			timerVenomousRainCD:Start(timer, self.vb.rainCount+1)
 		end
@@ -486,7 +487,7 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerSkitteringLeapCD:Start(timer, self.vb.leapCount+1)
 		end
-	elseif spellId == 451016 and self:GetStage(1) then--Shatter Existence
+	elseif spellId == 451016 and self:GetStage(1) then--Shatter Existence (not cast anymore?)
 		self:SetStage(1.5)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
@@ -588,11 +589,12 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerBurrowedEruptionCD:Start(timer, self.vb.burrowedEruptionCount+1)
 		end
-	elseif spellId == 451327 and self:GetStage(3) then--Raging Fury
+	elseif spellId == 451327 and self:GetStage(3) then--Raging Fury (Not always cast, don't start timers here)
 		if self:GetStage(2) then
 			self:SetStage(2.5)
 			self:Unschedule(checkSkippedWebVortex)
 			self:Unschedule(checkSkippedEntropicDesolation)
+			self:Unschedule(checkSkippedCatalysmicEntropy)
 			--We manually stop timers Mostly in case phases can push early with higher dps checks in future
 			--Anub
 			timerPiercingStrikeCD:Stop()
@@ -685,6 +687,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:SetStage(2.5)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
+		self:Unschedule(checkSkippedCatalysmicEntropy)
 		--Anub
 		timerPiercingStrikeCD:Stop()
 		timerCalloftheSwarmCD:Stop()
@@ -728,6 +731,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetStage(2)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
+		self:Unschedule(checkSkippedCatalysmicEntropy)
 		self.vb.piercingCount = 0
 		self.vb.swarmCount = 0
 		self.vb.eruptionCount = 0
@@ -756,6 +760,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetStage(3)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
+		self:Unschedule(checkSkippedCatalysmicEntropy)
 		self.vb.piercingCount = 0
 		self.vb.swarmCount = 0
 		self.vb.chargeCount = 0
