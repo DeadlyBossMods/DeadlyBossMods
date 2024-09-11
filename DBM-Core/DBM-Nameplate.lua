@@ -734,7 +734,7 @@ do
 		--Disable cast icons for any timer designated as a nameplate only cast timer
 		if DBM.Options.DontShowNameplateIconsCast and barType == "castnp" then return end--Globally disabled
 		--Disables cooldown icons for hybrid timers (ie timers that are both regular timer and nameplate timer)
-		if DBM.Options.SendDungeonBossGUIDs and barType ~= "cdnp" and barType ~= "castnp" then return end--Basically all other bar types
+		if DBM.Options.DontSendBossGUIDs and barType ~= "cdnp" and barType ~= "castnp" then return end--Basically all other bar types
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
