@@ -81,6 +81,7 @@ local timerSilkenTombCD							= mod:NewCDCountTimer(49, 439814, nil, nil, nil, 3
 local timerLiquefyCD							= mod:NewCDCountTimer(49, 440899, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerFeastCD							= mod:NewCDCountTimer(49, 437093, nil, false, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Combine with liquefy if it is a combo
 local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, nil, nil, nil, 3)
+local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, nil, nil, 6)
 
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
@@ -163,7 +164,7 @@ local specWarnCataclysmicEvolution			= mod:NewSpecialWarningTarget(451832, nil, 
 local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, nil, nil, nil, 3)
 local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, nil, nil, nil, 1)
---local timerNullDetonationCD				= mod:NewCDNPTimer(49, 455374, nil, nil, nil, 4)
+local timerNullDetonationCD					= mod:NewCDNPTimer(8.2, 455374, nil, nil, nil, 4)
 local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, nil, nil, nil, 3)
 local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -264,6 +265,7 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
 --	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
 	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
+	--timerPredationCD:Start(140-delay)--140-147 (possibly even larger variance) Need to find out what causes variance first
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -380,6 +382,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnNullDetonation:Play("kickcast")
 			end
 		end
+		timerNullDetonationCD:Start(nil, args.sourceGUID)
 	elseif spellId == 448458 and self:AntiSpam(5, 1) then
 		warnCosmicApocalypse:Show()
 	elseif spellId == 448147 then
@@ -711,8 +714,8 @@ function mod:UNIT_DIED(args)
 		timerOustCD:Stop(args.destGUID)
 	--elseif cid == 224368 then--Chamber Expeller
 
-	--elseif cid == 221863 then--cycle-warden--Summoned Acolyte
-
+	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
+		timerNullDetonationCD:Stop(nil, args.destGUID)
 	end
 end
 
