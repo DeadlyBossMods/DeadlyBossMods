@@ -255,10 +255,12 @@ end
 
 local function transcribeUnitSpellEvent(event, params, anon)
 	if params:match("^PLAYER_SPELL") then
-		return -- Note: don't forget to scrub player name if you want to support this event
+		return
 	end
 	-- Transcriptor has some useful extra data that we can use to reconstruct unit targets, health and power
 	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.]*)%%%-([%d.]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
+	-- This should not be necessary because PLAYER_SPELLS are filtered above, yet I've got a log where this shows up with the player somehow on an arena unit ID in a raid (???)
+	unitName = anon:ScrubName(unitName)
 	guid = anon:ScrubGUID(guid)
 	unitTarget = anon:ScrubTarget(unitTarget)
 	unitHp = tonumber(unitHp) or 0
@@ -585,8 +587,12 @@ function testGenerator:parseMetadata()
 end
 
 function testGenerator:guessMod()
-	if not self.metadata.encounterInfo.name then return "" end
-	return self.metadata.encounterInfo.name:gsub("%s*", ""):gsub("'", "")
+	local encounterName = self.metadata.encounterInfo.name
+	if not encounterName then return "" end
+	encounterName = encounterName:gsub(" the .*", "")
+	encounterName = encounterName:gsub(", .*", "")
+	encounterName = encounterName:gsub("^The", "")
+	return encounterName:gsub("%s*", ""):gsub("'", "")
 end
 
 -- TODO: all of these guessing functions could be much smarter, but I'm adding stuff as I go
@@ -595,6 +601,8 @@ function testGenerator:guessTestName()
 	local difficulty = ""
 	if self.metadata.instanceInfo.instanceID == 409 and self.metadata.instanceInfo.difficultyModifier then -- MC heat levels
 		difficulty = "Heat-" .. self.metadata.instanceInfo.difficultyModifier .. "/"
+	elseif self.metadata.instanceInfo.difficultyName then
+		difficulty = self.metadata.instanceInfo.difficultyName .. "/"
 	end
 	local name = self:guessMod() .. "/" .. difficulty .. (self.metadata.encounterInfo.kill and "Kill" or "Wipe")
 	if self.prefix then

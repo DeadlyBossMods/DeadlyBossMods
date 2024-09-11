@@ -4,7 +4,7 @@ local lfs     = require "lfs"
 local cliArgs = require "ArgParser"
 
 local function usage()
-	print("Usage: lua ImportSavedVariables.lua <path to SavedVariables/DBM-Test.lua> <path to folder containing reports> [--prefix <prefix>] [--create-files]")
+	print("Usage: lua ImportTestResults.lua <path to SavedVariables/DBM-Test.lua> <path to folder containing reports> [--prefix <prefix>] [--create-files]")
 	os.exit(1)
 end
 
