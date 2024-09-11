@@ -231,6 +231,12 @@ function test:Trace(mod, event, ...)
 		obj.testUsedWithPreciseShowSucess[maxTotal] = true
 		return
 	end
+	if event == "SetStage" then
+		if self.timeWarper then
+			self.timeWarper:OnStageChanged(...)
+		end
+		return
+	end
 	local key = currentEventKey or "Unknown trigger" -- TODO: can we somehow include the timestamp here without messing up determinism?
 	-- FIXME: this logic will get real messy real fast as we add more events -- come up with a way to define per-event behavior somehow
 	if key == "InternalLoading" then
@@ -436,6 +442,14 @@ function test:ForceCVar(cvar, value)
 		self.restoreCVars[cvar] = GetCVar(cvar)
 	end
 	SetCVar(cvar, value)
+end
+
+function test:RestoreCVar(cvar)
+	self.restoreCVars = self.restoreCVars or {}
+	if self.restoreCVars[cvar] then
+		SetCVar(cvar, self.restoreCVars[cvar])
+		self.restoreCVars[cvar] = nil
+	end
 end
 
 function test:Teardown()

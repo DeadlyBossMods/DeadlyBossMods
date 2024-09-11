@@ -384,7 +384,7 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	playerSelect:SetSelectedValue({value = DEFAULT, text = DEFAULT})
 	playerSelect:SetPoint("TOPLEFT", testSelect, "BOTTOMLEFT", 0, -10)
 
-	runOrStopTest = panel:CreateButton(L.RunTest, 120, 30)
+	runOrStopTest = panel:CreateButton(L.RunTest, 130, 30)
 	runOrStopTest.myheight = 40
 	runOrStopTest:SetPoint("TOPLEFT", testSelectArea.frame, "BOTTOMLEFT", 0, -10)
 	if #tests == 0 then
@@ -412,13 +412,20 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		end
 	end)
 	local lastResults ---@type DBMTestReporterPublic?
-	local showReport = panel:CreateButton(L.ShowReport, 120, 30)
+	local showReport = panel:CreateButton(L.ShowReport, 130, 30)
 	showReport.myheight = 40
 	showReport:SetPoint("TOPLEFT", runOrStopTest, "BOTTOMLEFT", 0, -5)
 	showReport:Disable()
 	showReport:SetScript("OnClick", function()
 		if lastResults then
 			lastResults:ShowReport()
+		end
+	end)
+	local skipStage = panel:CreateButton(L.SkipPhase, 130, 30)
+	skipStage:SetPoint("LEFT", showReport, "RIGHT", 5, 0)
+	skipStage:SetScript("OnClick", function()
+		if DBM.Test.timeWarper then
+			DBM.Test.timeWarper:SkipToStage()
 		end
 	end)
 	-- FIXME: callbacks are not ideal to use here as we would need to filter them to our test
