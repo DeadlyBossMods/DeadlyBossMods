@@ -84,7 +84,17 @@ filter.ignoredCreatureIds = set{
 	221635, -- King Thoras Trollbane
 	217228, -- Blood Beast
 	54983, -- Treant
-	212489, 219986 -- Spirit Wolf
+	212489, 219986, -- Spirit Wolf
+	61029, -- Primal Fire Elemental
+	61056, -- Primal Earth Elemental
+	226268, -- Gloomhound
+	229799, -- Lesser Primal Fire Elemental
+	62982, -- Mindbender
+	73967, -- Niuzao
+	95061, -- Greater Fire Elemental
+	180743, -- Niuzao
+	229800, -- Lesser Fire Elemental
+	225493, -- Doomguard
 }
 
 return filter
