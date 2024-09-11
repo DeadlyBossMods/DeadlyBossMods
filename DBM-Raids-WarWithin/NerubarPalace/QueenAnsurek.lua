@@ -265,7 +265,7 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
 --	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
 	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
-	--timerPredationCD:Start(140-delay)--140-147 (possibly even larger variance) Need to find out what causes variance first
+	timerPredationCD:Start(153-delay)--Max time, will happen sooner if boss hits 35%
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -448,6 +448,7 @@ function mod:SPELL_CAST_START(args)
 		timerVenomNovaCD:Stop()
 		timerSilkenTombCD:Stop()
 		timerLiquefyCD:Stop()
+		timerPredationCD:Stop()
 	--	timerFeastCD:Stop()
 		timerWebBladesCD:Stop()
 		warnPhase:Show(1.5)
