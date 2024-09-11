@@ -397,8 +397,15 @@ function DBM:GetCurrentInstanceDifficulty()
 		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
 		local delveTier = 0
 		if delveInfo and delveInfo and delveInfo.tierText then
-			---@diagnostic disable-next-line: cast-local-type
-			delveTier = tonumber(delveInfo.tierText)
+			if delveInfo.tierText == "?" then
+				delveTier = 12
+			elseif delveInfo.tierText == "??" then
+				delveTier = 13
+			end
+			if delveTier == 0 then
+				---@diagnostic disable-next-line: cast-local-type
+				delveTier = tonumber(delveInfo.tierText)
+			end
 		end
 		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
