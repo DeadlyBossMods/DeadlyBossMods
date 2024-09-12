@@ -195,6 +195,44 @@ mod.vb.cataEvoActivated = false
 
 local savedDifficulty = "normal"
 local allTimers = {
+	["heroic"] = {
+		[1] = {
+			--Reactive Toxin
+			[437592] = {18.3, 55.8, 55.9},--56 repeating? (Same as normal)
+			--Venom Nova
+			[437417] = {29.4, 56, 56},--56 repeating? (Same as normal)
+			--Silken Tomb
+			[439814] = {57.4, 54, 15.9},--(different from normal)
+			--Liquefy
+			[440899] = {8.3, 39.7, 51},--(different from normal)
+			--Web Blades
+			[439299] = {20.4, 47, 47, 25}--(different from normal)
+		},
+		[1.5] = {
+			--Wrest
+			[450191] = {6, 19, 19}--Technically diff spellid here, but table uses same one (different from normal)
+		},
+		[2] = {
+			--Wrest
+			[450191] = {34.2}--Then 8 repeating (first might not be 34 minimum)
+		},
+		[3] = {
+			--Abyssal Infusion
+			[443888] = {57.4, 80, 80},--Only first confirmed
+			--Frothing Gluttony
+			[445422] = {68.4, 80, 80},--Only first confirmed
+			--Queen's Summons
+			[444829] = {114.5, 82},
+			--Royal Condemnation
+			[438976] = {48, 141.5},--Only first confirmed
+			--Infest
+			[443325] = {29.4, 66, 80},--Only first confirmed
+			--Gorge
+			[443336] = {33.1, 66, 80},--Only first confirmed
+			--Web Blades
+			[439299] = {86.1}--Only first confirmed
+		},
+	},
 	["normal"] = {
 		[1] = {
 			--Reactive Toxin
@@ -252,13 +290,13 @@ function mod:OnCombatStart(delay)
 	self.vb.infestCount = 0
 	self.vb.gorgeCount = 0
 	self.vb.cataEvoActivated = false
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
-	--	savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
+	if self:IsMythic() then
+		savedDifficulty = "heroic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
 		savedDifficulty = "normal"
-	--end
+	end
 	timerReactiveToxinCD:Start(allTimers[savedDifficulty][1][437592][1]-delay, 1)
 	timerVenomNovaCD:Start(allTimers[savedDifficulty][1][437417][1]-delay, 1)
 	timerSilkenTombCD:Start(allTimers[savedDifficulty][1][439814][1]-delay, 1)
@@ -279,13 +317,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	--if self:IsMythic() then
-	--	savedDifficulty = "mythic"
-	--elseif self:IsHeroic() then
-	--	savedDifficulty = "heroic"
-	--else--Combine LFR and Normal
+	if self:IsMythic() then
+		savedDifficulty = "heroic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
 		savedDifficulty = "normal"
-	--end
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -299,7 +337,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 437417 then
 		self.vb.novaCount = self.vb.novaCount + 1
 		specWarnVenomNova:Show(self.vb.novaCount)
-		if not DBM:UnitDebuff("player", 441692) then--Reaction Trauma (can't soak)
+		if not DBM:UnitDebuff("player", 464628, 441692) then--Reaction Trauma (can't soak)
 			specWarnVenomNova:Play("helpsoak")--Maybe something more specific like movetopool?
 		else
 			specWarnVenomNova:Play("watchwave")
@@ -597,7 +635,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnCataclysmicEvolution:Show(args.destName)
 		specWarnCataclysmicEvolution:Play("stilldanger")
 	elseif spellId == 464638 and args:IsPlayer() then
-		warnFrothyToxin:Show(1)
+		warnFrothyToxin:Cancel()
+		warnFrothyToxin:Schedule(1.5, 1)
 	elseif spellId == 441556 and args:IsPlayer() then
 		warnReactionVapor:Show(1)
 	elseif spellId == 455404 then
@@ -614,8 +653,8 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 5 == 0 then
-				if args:IsPlayer() and args.amount >= 30 then--Placeholder
+			if amount % 10 == 0 then
+				if args:IsPlayer() and args.amount >= 30 then
 					specWarnCausticFangs:Show(args.amount)
 					specWarnCausticFangs:Play("stackhigh")
 				else
@@ -633,7 +672,8 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		warnGorge:Show(args.destName, args.amount)
 	elseif spellId == 464638 and args:IsPlayer() then
 		--if amount % 5 == 0 then
-			warnFrothyToxin:Show(args.amount)
+			warnFrothyToxin:Cancel()
+			warnFrothyToxin:Schedule(1.5, args.amount)
 		--end
 		--if args.amount >= 30 then--Placeholder
 		--	specWarnFrothyToxin:Show(args.amount)

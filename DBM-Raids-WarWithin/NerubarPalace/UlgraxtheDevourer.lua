@@ -35,7 +35,7 @@ local warnVenomLash								= mod:NewCountAnnounce(435136, 3)
 local warnDigestiveAcid							= mod:NewTargetAnnounce(435138, 3)
 local warnHungeringBelows						= mod:NewCountAnnounce(438012, 3)
 
-local specWarnCarnivorousContest				= mod:NewSpecialWarningSoakCount(434803, nil, nil, nil, 2, 2)
+local specWarnCarnivorousContest				= mod:NewSpecialWarningMoveTo(434803, nil, nil, nil, 2, 2)
 local specWarnCarnivorousContestTarget			= mod:NewSpecialWarningYou(434803, nil, nil, nil, 1, 2)
 local yellCarnivorousContest					= mod:NewShortYell(434803, nil, nil, nil, "YELL")
 local yellCarnivorousContestFades				= mod:NewShortFadesYell(434803, nil, nil, nil, "YELL")
@@ -208,10 +208,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			local uID = DBM:GetUnitIdFromGUID(args.destGUID)
 			---@diagnostic disable-next-line: param-type-mismatch
 			if self:IsTanking(uID, "boss1") then--Filter non tank spec numpties in front of boss for some reason
-				if not DBM:UnitDebuff("player", spellId) then--Double check player didn't also get hit
-					specWarnTenderized:Show(args.destName)
-					specWarnTenderized:Play("tauntboss")
-				end
+				specWarnTenderized:Show(args.destName)
+				specWarnTenderized:Play("tauntboss")
 			end
 		end
 	elseif spellId == 458129 then
@@ -261,10 +259,10 @@ end
 
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
-		specWarnCarnivorousContestTarget:Play("runout")
+		specWarnCarnivorousContest:Play("runout")
 		if targetName ~= UnitName("player") then
-			specWarnCarnivorousContestTarget:Show()
-			specWarnCarnivorousContestTarget:ScheduleVoice(1.5, "helpsoak")
+			specWarnCarnivorousContest:Show(targetName)
+			specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
 		end
 	end
 end
