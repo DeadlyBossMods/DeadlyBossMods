@@ -246,29 +246,29 @@ local allTimers = {
 			-- Cataclysmic Entropy
 			[438355] = {41.2, 59.2},--Updated Sept 11
 		},
-		[3] = {
+		[3] = {--12:14 (all tables doubled for now, will code actual clean coded loops once make sure they don't change after RWF)
 			-- Piercing Strike
-			[438218] = {20, 48, 20, 23, 20, 35},--Updated Sept 11
+			[438218] = {20, 48, 20, 23, 20, 35, 34, 48, 20, 23, 20, 35, 34, 48, 20, 23, 20, 35, 34, 48, 20, 23, 20, 35},--Updated Sept 12 (34, 48, 20, 23, 20, 35 looping)
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {43, 98},--Updated Sept 11
+			[441791] = {43, 98, 82, 98, 82, 98, 82, 98},--Updated Sept 12 (82, 98 looping)
 			-- Reckless Charge
-			[440246] = {46.2, 98},--Updated Sept 11
+			[440246] = {46.2, 98, 82, 98, 82, 98, 82, 98},--Updated Sept 12 (82, 98 looping)
 			-- Stinging Swarm
-			[438677] = {81, 57},--Updated Sept 11
+			[438677] = {81, 57, 123, 57, 123, 57, 123, 57},--Updated Sept 12 (123, 57 looping)
 			-- Web Vortex
-			[441626] = {33.5, 97.5},--Updated Sept 11
+			[441626] = {33.5, 97.5, 82.3, 97.5, 82.3, 97.5, 82.3, 97.5},--Updated Sept 12 (82.3, 97.5 looping)
 			-- Entropic Desolation
-			[450129] = {36.3, 97.4},--Updated Sept 11
+			[450129] = {36.3, 97.4, 82.3, 97.5, 82.3, 97.5, 82.3, 97.5},--Updated Sept 12 (82.3, 97.5 looping)
 			-- Strands of Reality
-			[441782] = {22.3, 33.1, 21.3, 47.1},--Updated Sept 11
+			[441782] = {22.3, 32.7, 21.3, 47.1, 78.7, 32.7, 21.1, 47.1},--Updated Sept 12 (78.7, 32.7, 21.1, 47.1 looping)
 			-- Void Step
-			[450483] = {50.8, 38.5, 29.1, 29.4, 2.5},--Updated Sept 11
+			[450483] = {50.8, 38.5, 29.1, 29.4, 2.5, 79.6, 38.9, 29.1, 29.5, 2.5, 79.6, 38.9, 29.1, 29.5, 2.5, 79.6, 38.9, 29.1, 29.5, 2.5},--Updated Sept 12 (79.6, 38.9, 29.1, 29.5, 2.5 looping)
 			-- Cataclysmic Entropy
-			[438355] = {92.6, 61.2},--Updated Sept 11
+			[438355] = {92.6, 61.2, 118.5, 61.3, 118.5, 61.3, 118.5, 61.3},--Updated Sept 12 (118.5, 61.3 looping)
 			-- Spike Eruption
-			[443068] = {40, 31, 64},--Updated Sept 11
+			[443068] = {40, 31, 64, 85, 31, 64, 85, 31, 64, 85, 31, 64},--Updated Sept 12 (85, 31, 64 looping)
 			-- Unleashed Swarm
-			[442994] = {23, 75, 70},--Updated Sept 11
+			[442994] = {23, 75, 70, 35, 75, 70, 35, 75, 70, 35, 75, 70},--Updated Sept 12 (35, 75, 70 looping)
 		}
 	},
 	["mythic"] = {--OLD beta timers, probably changed
