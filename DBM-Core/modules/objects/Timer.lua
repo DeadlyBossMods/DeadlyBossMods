@@ -502,7 +502,7 @@ function timerPrototype:Stop(...)
 				end
 				--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 				--This check is performed secondary to args scan so that no adds guids are overwritten
-				if not guid and self.mod.sendMainBossGUID and DBM.Options.SendDungeonBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
+				if not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 					guid = UnitGUID("boss1")
 				end
 				DBM:FireEvent("DBM_TimerStop", id, guid)
