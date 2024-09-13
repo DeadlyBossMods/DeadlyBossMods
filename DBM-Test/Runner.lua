@@ -688,6 +688,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	end
 	adjustFlagsForPerspective(testData, self.logPlayerName, self.allOnYou)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
+	DBM:ScenarioCheck(0)
 	if testData.instanceInfo.difficultyModifier then
 		-- Only MC is supported right now
 	   if testData.instanceInfo.instanceID == 409 then
