@@ -431,7 +431,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerOustCD:Start(nil, args.sourceGUID)
 	elseif spellId == 451600 then
-		if self:AntiSpam(5, 2) then--Just in case multiple do it at once
+		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) and self:AntiSpam(5, 2) then--Just in case multiple do it at once
 			specWarnExpulsionBeam:Show()
 			specWarnExpulsionBeam:Play("farfromline")
 		end
@@ -496,6 +496,7 @@ function mod:SPELL_CAST_START(args)
 		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
+		timerAcidicApocalypse:Stop()
 		self.vb.webBladesCount = 0--Only repeat ability from earlier stage
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
