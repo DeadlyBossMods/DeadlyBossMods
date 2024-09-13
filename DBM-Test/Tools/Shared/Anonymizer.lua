@@ -69,6 +69,10 @@ function anonymizer:ScrubTarget(name)
 	if name == "??" then
 		return name
 	end
+	local strippedName = name:match("([^-]*)%-")
+	if not self.nonPlayerNames[name] and strippedName and self.playerNames[strippedName] then
+		name = strippedName
+	end
 	-- Some fights have dummy targets/controllers that only show up in this event, so we haven't seen them. Best guess: something that contains at least 3 spaces is probably not to be anonymized
 	return self.nonPlayerNames[name] or self.playerNames[name] or self.petNames[name] or name:match(" .* .* ") and name
 end
