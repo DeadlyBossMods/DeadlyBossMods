@@ -304,7 +304,7 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
 --	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
 	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
-	timerPredationCD:Start(153-delay)--Max time, will happen sooner if boss hits 35%
+	timerPredationCD:Start(153-delay, 1)--Max time, will happen sooner if boss hits 35%
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -490,14 +490,14 @@ function mod:SPELL_CAST_START(args)
 		timerPredationCD:Stop()
 	--	timerFeastCD:Stop()
 		timerWebBladesCD:Stop()
-		warnPhase:Show(1.5)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 
 		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
 		self.vb.webBladesCount = 0--Only repeat ability from earlier stage
-		warnPhase:Show(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--Possibly move to cast finish later
 		timerAbyssalInfusionCD:Start(allTimers[savedDifficulty][3][443888][1], 1)
@@ -629,8 +629,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnInfestOther:Show(args.destName)
 			specWarnInfestOther:Play("tauntboss")
 		end
-	elseif spellId == 443342 then
-		warnGorge:Show(args.destName, 1)
 	elseif spellId == 451832 then
 		self.vb.cataEvoActivated = true
 		specWarnCataclysmicEvolution:Show(args.destName)
@@ -670,7 +668,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	elseif spellId == 443726 then
 		warnGloomHatchlings:Show(args.destName, args.amount)
 	elseif spellId == 443342 then
-		warnGorge:Show(args.destName, args.amount)
+		local amount = args.amount or 1
+		if amount % 6 == 0 then
+			warnGorge:Show(args.destName, args.amount)
+		end
 	elseif spellId == 464638 and args:IsPlayer() then
 		--if amount % 5 == 0 then
 			warnFrothyToxin:Cancel()
@@ -700,7 +701,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 447207 then--Predation Shield
 		self:SetStage(2)
 		self.vb.wrestCount = 0
-		warnPhase:Show(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		self.vb.wrestCount = 0
 		timerWrestCD:Stop()
