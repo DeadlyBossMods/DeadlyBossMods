@@ -7,7 +7,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176",
-	"SPELL_AURA_APPLIED 445553",
+	"SPELL_AURA_APPLIED 445553 436784",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
 	"UNIT_DIED"
@@ -21,7 +21,8 @@ local specWarnFixate						= mod:NewSpecialWarningYou(445553, nil, nil, nil, 1, 2
 local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 2)
 local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 2)
 local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 2)
---local yellShadowflameBomb					= mod:NewYell(425300)
+local specwarnInfestingSwarm				= mod:NewSpecialWarningMoveAway(436784, nil, nil, nil, 1, 2)
+local yellInfestingSwarm					= mod:NewYell(436784)
 --local yellShadowflameBombFades			= mod:NewShortFadesYell(425300)
 local specWarnDeafeningRoar					= mod:NewSpecialWarningCast(436679, "SpellCaster", nil, nil, 1, 2)
 local specWarnPsychicScream					= mod:NewSpecialWarningInterrupt(439873, "HasInterrupt", nil, nil, 1, 2)
@@ -82,6 +83,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 445553 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnFixate:Show()
 		specWarnFixate:Play("targetyou")
+	elseif spellId == 436784 then
+		if args:IsPlayer() then
+			specwarnInfestingSwarm:Show()
+			specwarnInfestingSwarm:Play("scatter")
+			yellInfestingSwarm:Yell()
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

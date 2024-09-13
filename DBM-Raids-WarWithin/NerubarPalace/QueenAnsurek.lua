@@ -253,7 +253,7 @@ local allTimers = {
 		},
 		[2] = {
 			--Wrest
-			[450191] = {32.2}--Then 8 repeating
+			[450191] = {31.5}--Then 8 repeating
 		},
 		[3] = {
 			--Abyssal Infusion
@@ -263,11 +263,11 @@ local allTimers = {
 			--Queen's Summons
 			[444829] = {114.5, 82},
 			--Royal Condemnation
-			[438976] = {48, 141.5},
+			[438976] = {47.8, 141.5},
 			--Infest
 			[443325] = {29.4, 66, 80},
 			--Gorge
-			[443336] = {35.5, 66, 80},
+			[443336] = {35.3, 66, 80},
 			--Web Blades
 			[439299] = {201.2}--Yes this is true
 		},

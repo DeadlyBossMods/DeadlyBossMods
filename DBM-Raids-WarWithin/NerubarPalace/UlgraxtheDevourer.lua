@@ -180,7 +180,7 @@ function mod:SPELL_CAST_START(args)
 			timerBrutalCrushCD:Stop()
 			timerDigestiveAcidCD:Stop()
 			timerChitteringSwarmCD:Start(6.8)--Cast only once
-			timerJuggernautChargeCD:Start(12.1, 1)--Cast only once (but multi hit so still count timer)
+			timerJuggernautChargeCD:Start(11.8, 1)--Cast only once (but multi hit so still count timer)
 			timerSwallowingDarknessCD:Start(48.1)--Cast only once
 			--Technically these can also be started below by 441445
 			timerHungeringBellowsCD:Start(59, 1)
@@ -285,7 +285,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerBrutalCrushCD:Start(7, 1)
 		timerVenomLashCD:Start(9, 1)
 		timerStalkersWebbingCD:Start(13, 1)
-		timerDigestiveAcidCD:Start(19.6, 1)
+		timerDigestiveAcidCD:Start(19.2, 1)
 		timerCarnivorousContestCD:Start(37, 1)
 		timerPhaseChange:Start(94.9, 2)--Approx based oncomparison to stalker webbingg first cast, since no transcriptor logs this long
 	--441425 with a stage 2 only check is primary, but has one fatal flaw, it lacks disconnect protection
