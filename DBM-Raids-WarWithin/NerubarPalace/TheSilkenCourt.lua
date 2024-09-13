@@ -92,7 +92,7 @@ local timerVoidAscensionCD					= mod:NewIntermissionCountTimer(100, 450483, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29021))
 ----Anub'arash
 mod:AddTimerLine(anubarash)
-local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(450045, 2)--No Filter because this is a raid wiping mechanic if the 3 players don't get to boss
+local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(438677, 2)--No Filter because this is a raid wiping mechanic if the 3 players don't get to boss
 local warnStingingDelirium					= mod:NewTargetNoFilterAnnounce(456245, 2)--Player or Boss
 
 local specWarnStingingSwarm					= mod:NewSpecialWarningMoveTo(438677, nil, nil, nil, 1, 2)--438708
