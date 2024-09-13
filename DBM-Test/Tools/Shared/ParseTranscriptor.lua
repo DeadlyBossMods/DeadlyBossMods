@@ -260,9 +260,9 @@ local function transcribeUnitSpellEvent(event, params, anon)
 	-- Transcriptor has some useful extra data that we can use to reconstruct unit targets, health and power
 	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.]*)%%%-([%d.]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
 	-- This should not be necessary because PLAYER_SPELLS are filtered above, yet I've got a log where this shows up with the player somehow on an arena unit ID in a raid (???)
-	unitName = unitName and anon:ScrubName(unitName)
-	guid = guid and anon:ScrubGUID(guid)
-	unitTarget = unitTarget and anon:ScrubTarget(unitTarget)
+	unitName = anon:ScrubName(unitName)
+	guid = anon:ScrubGUID(guid)
+	unitTarget = anon:ScrubTarget(unitTarget)
 	unitHp = tonumber(unitHp) or 0
 	unitPower = tonumber(unitPower) or 0
 	-- Fun Lua 5.1/5.4 diff: tostring(tonumber("100.0")) yields 100 on Lua 5.1 and 100.0 on Lua 5.4 because of int vs. number type
@@ -450,7 +450,7 @@ local function transcribeEvent(event, params, anon)
 	-- FIXME: it kinda sucks that we only parse after this, but since type guessing may depend on the event it's ugly both ways :/
 	if event == "UNIT_TARGET" then
 		params = params:gsub("([^#]*#)([^#]*)(#Target: )([^#]*)(#TargetOfTarget: )([^#]*)", function(arg1, arg2, arg3, arg4, arg5, arg6)
-			return arg1 .. (arg2 and anon:ScrubTarget(arg2) or "nil") .. arg3 .. (arg4 and anon:ScrubTarget(arg4) or "nil") .. arg5 .. ( arg6 and anon:ScrubTarget(arg6) or "nil")
+			return arg1 .. anon:ScrubTarget(arg2) .. arg3 .. anon:ScrubTarget(arg4) .. arg5 .. anon:ScrubTarget(arg6)
 		end)
 	end
 	if event:match("^CHAT_MSG_MONSTER") or event:match("^CHAT_MSG_RAID_BOSS") then
