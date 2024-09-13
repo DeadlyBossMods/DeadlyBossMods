@@ -434,7 +434,7 @@ local function transcribeCleu(rawParams, anon)
 end
 
 local function transcribeEvent(event, params, anon)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" or event == "PLAYER_INFO" then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
