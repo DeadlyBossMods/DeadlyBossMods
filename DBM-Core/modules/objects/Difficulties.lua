@@ -398,14 +398,12 @@ function DBM:GetCurrentInstanceDifficulty()
 		local delveTier = 0
 		if delveInfo and delveInfo and delveInfo.tierText then
 			if delveInfo.tierText == "?" then
-				delveTier = 12
+				return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize
 			elseif delveInfo.tierText == "??" then
-				delveTier = 13
+				return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize
 			end
-			if delveTier == 0 then
-				---@diagnostic disable-next-line: cast-local-type
-				delveTier = tonumber(delveInfo.tierText)
-			end
+			---@diagnostic disable-next-line: cast-local-type
+			delveTier = tonumber(delveInfo.tierText)
 		end
 		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
