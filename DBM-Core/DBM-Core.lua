@@ -7749,8 +7749,7 @@ do
 	---@param self DBMModOrDBM
 	---@param uId playerUUIDs?
 	---@param mechanical boolean? Check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
-	---@param disallowHealer boolean? Use for a Melee check that doesn't include healers
-	function DBM:IsMelee(uId, mechanical, disallowHealer)
+	function DBM:IsMelee(uId, mechanical)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			--Class checks performed first due to mechanical check needing to be broader than a specID check
 			local _, class = UnitClass(uId)
@@ -7762,9 +7761,6 @@ do
 			local name = GetUnitName(uId, true)
 			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
-				if disallowHealer and private.specRoleTable[specID]["Healer"] then
-					return false
-				end
 				return private.specRoleTable[specID]["Melee"]
 			else
 				--Now we do the ugly checks thanks to Inspect throttle
@@ -7796,15 +7792,11 @@ do
 
 	---@param self DBMModOrDBM
 	---@param uId playerUUIDs?
-	---@param disallowHealer boolean? Use for a Melee check that doesn't include healers
-	function DBM:IsRanged(uId, disallowHealer)
+	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
 			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
-				if disallowHealer and private.specRoleTable[specID]["Healer"] then
-					return false
-				end
 				return private.specRoleTable[specID]["Ranged"]
 			else
 				print("bossModPrototype:IsRanged should not be called on external units if specID is unavailable, report this message")
