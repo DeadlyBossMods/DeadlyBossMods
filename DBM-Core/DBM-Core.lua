@@ -7860,77 +7860,62 @@ do
 	function DBM.SortByGroup(v1, v2)
 		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 	end
-	---Probably every sort function here is broken.
 	function DBM.SortByTankAlpha(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, alphabetical names are preferred
-		if (DBM:IsTanking(v1) or 1) == (DBM:IsTanking(v2) or 2) then
-			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
-		--if one is tank and one isn't, they are not equal so it goes to the below elseifs that prio melee
-		elseif DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
+		if DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
 			return true
 		elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
 			return false
-		elseif (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
-			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
 		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
+		else
+			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		end
 	end
 	function DBM.SortByTankRoster(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, roster index as secondary
-		if (DBM:IsTanking(v1) or 1) == (DBM:IsTanking(v2) or 2) then
-			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
-		elseif DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
+		if DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
 			return true
 		elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
 			return false
-		elseif (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
-			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
 		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
+		else
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		end
 	end
 	function DBM.SortByMeleeAlpha(v1, v2)
-		--if both are melee, the return values are equal and we use alpha sort
-		--if both are ranged, the return values are equal and we use alpha sort
-		if (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
-			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
-		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
+		--Pro melee over non melee, and if two of any of types, alphabetical names are preferred
+		if DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
 		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
+		else
+			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		end
 	end
 	function DBM.SortByMeleeRoster(v1, v2)
-		--if both are melee, the return values are equal and we use raid roster index sort
-		--if both are ranged, the return values are equal and we use raid roster index sort
-		if (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
-			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
-		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
+		--Prio melee over ranged, and if two of any of types, roster index as secondary
+		if DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
 		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
+		else
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		end
 	end
 	function DBM.SortByRangedAlpha(v1, v2)
-		--if both are melee, the return values are equal and we use alpha sort
-		--if both are ranged, the return values are equal and we use alpha sort
-		if (DBM:IsRanged(v1) or 1) == (DBM:IsRanged(v2) or 2) then
-			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
-		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
-		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
+		--Prio ranged over melee, and if two of any of types, alphabetical names are preferred
+		if DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
 			return true
 		elseif DBM:IsRanged(v2) and not DBM:IsRanged(v1) then
 			return false
+		else
+			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		end
 	end
 	function DBM.SortByRangedRoster(v1, v2)
@@ -7952,10 +7937,10 @@ do
 			return false
 		elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
 			return true
-		--Non healer melee vs ANY non melee prio the non healer melee
-		elseif DBM:IsMelee(v1, nil, true) and not DBM:IsMelee(v2) then
+		--melee vs non melee prio the melee
+		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
-		elseif DBM:IsMelee(v2, nil, true) and not DBM:IsMelee(v1) then
+		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
 		--If check got this far, it's not a healers vs non healer or melee vs non melee, so at this point we're at
 		--melee vs melee, ranged vs ranged, or healer vs healer. In this case, we just use roster index
