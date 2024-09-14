@@ -7942,16 +7942,22 @@ do
 	end
 	--This function probably still has some errors. Compounded inverse upon inverse checks are really difficult to follow.
 	function DBM.SortByMeleeRangedHealer(v1, v2)
-		--melee (excluding healers) > ranged > healer with no roster or alpha sorting (BW etnds to not use secondary sorting so we aim to
+		--melee (excluding healers) > ranged > healer and if two of any of types, roster index as secondary
 		--True arg on melee check tells api to return false if unit is a healer
-		if DBM:IsMelee(v1, nil, true) and not DBM:IsMelee(v2) then
+		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then--Pass true if BW changes it's mind and wants to exclude healers from melee check
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
+		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
-		elseif DBM:IsMelee(v2, nil, true) and not DBM:IsMelee(v1) then
+		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
+		elseif not DBM:IsMelee(v1) == not DBM:IsMelee(v2) then--Better than BM:IsRanged(v1) == DBM:IsRanged(v2)?? depends U guess which has better parity
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
 			return false
 		elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
 			return true
+		elseif DBM:IsHealer(v1) == DBM:IsHealer(v2) then
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		end
 	end
 end
