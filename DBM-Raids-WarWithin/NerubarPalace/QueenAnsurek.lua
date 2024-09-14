@@ -73,7 +73,7 @@ local specWarnLiquefy							= mod:NewSpecialWarningDefensive(440899, nil, nil, n
 local specWarnLiquefyTaunt						= mod:NewSpecialWarningTaunt(440899, nil, nil, nil, 1, 2)
 --local specWarnLiquefyNonTank					= mod:NewSpecialWarningYou(440885, nil, nil, nil, 1, 2)--No idea, wording changed since adding it. does liquify tank just get both debuffs?
 local specWarnFeast								= mod:NewSpecialWarningDefensive(437093, nil, nil, nil, 1, 2)
-local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, nil, nil, nil, 1, 2)
+local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, false, nil, 2, 1, 2)
 local specWarnWebBlades							= mod:NewSpecialWarningDodgeCount(439299, nil, nil, nil, 2, 2)
 
 local timerReactiveToxinCD						= mod:NewCDCountTimer(49, 437592, nil, nil, nil, 3)
@@ -308,7 +308,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("this mod is a WIP. Some warnings may be wrong or missing until fight seen on all difficulties")
 end
 
 function mod:OnCombatEnd()
@@ -640,7 +639,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 441556 and args:IsPlayer() then
 		warnReactionVapor:Show(1)
 	elseif spellId == 455404 then
-		if not args:IsPlayer() and not self:IsEasy() then
+		if not args:IsPlayer() then
 			specWarnFeastTaunt:Show(args.destName)
 			specWarnFeastTaunt:Play("tauntboss")
 		end

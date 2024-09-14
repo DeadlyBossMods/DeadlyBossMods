@@ -7748,7 +7748,9 @@ do
 
 	---@param self DBMModOrDBM
 	---@param uId playerUUIDs?
-	function DBM:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
+	---@param mechanical boolean? Check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
+	---@param disallowHealer boolean? Use for a Melee check that doesn't include healers
+	function DBM:IsMelee(uId, mechanical, disallowHealer)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			--Class checks performed first due to mechanical check needing to be broader than a specID check
 			local _, class = UnitClass(uId)
@@ -7760,6 +7762,9 @@ do
 			local name = GetUnitName(uId, true)
 			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
+				if disallowHealer and private.specRoleTable[specID]["Healer"] then
+					return false
+				end
 				return private.specRoleTable[specID]["Melee"]
 			else
 				--Now we do the ugly checks thanks to Inspect throttle
@@ -7933,6 +7938,20 @@ do
 			return true
 		elseif DBM:IsRanged(v2) and not DBM:IsRanged(v1) then
 			return false
+		end
+	end
+	--This function probably still has some errors. Compounded inverse upon inverse checks are really difficult to follow.
+	function DBM.SortByMeleeRangedHealer(v1, v2)
+		--melee (excluding healers) > ranged > healer with no roster or alpha sorting (BW etnds to not use secondary sorting so we aim to
+		--True arg on melee check tells api to return false if unit is a healer
+		if DBM:IsMelee(v1, nil, true) and not DBM:IsMelee(v2) then
+			return true
+		elseif DBM:IsMelee(v2, nil, true) and not DBM:IsMelee(v1) then
+			return false
+		elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
+			return false
+		elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
+			return true
 		end
 	end
 end
@@ -8372,6 +8391,7 @@ end
 ---|7: Player icon using only raid roster index sorting
 ---|8: Player icon using tank > non tank with alphabetical sorting on multiple melee
 ---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
+---|10: Player icon using melee > ranged > healer
 ---@param default SpecFlags|boolean?
 ---@param iconType iconTypes|number?
 ---@param iconsUsed table? table defining used icons such as {1, 2, 3}
@@ -8415,6 +8435,8 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_TANK_A:format(spellId) or self.localization.options[name]
 	elseif iconType == 9 then
 		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_TANK_R:format(spellId) or self.localization.options[name]
+	elseif iconType == 10 then
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_MRH:format(spellId) or self.localization.options[name]
 	else--Type 0 (Generic for targets)
 		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS:format(spellId) or self.localization.options[name]
 	end

@@ -207,6 +207,8 @@ do
 			tsort(iconUnitTable[scanId], DBM.SortByRangedAlpha)
 		elseif sortType == "rangedroster" then
 			tsort(iconUnitTable[scanId], DBM.SortByRangedRoster)
+		elseif sortType == "meleerangedhealer" then
+			tsort(iconUnitTable[scanId], DBM.SortByMeleeRangedHealer)
 		elseif sortType == "roster" then
 			tsort(iconUnitTable[scanId], DBM.SortByGroup)
 		else--Just generic "alpha" sort
@@ -245,7 +247,7 @@ do
 	end
 
 	---Icon method with many auto sorting options
-	---@param sortType string tankalpha, tankroster, meleealpha, meleeroster, rangedalpha, rangedroster, roster, alpha
+	---@param sortType string tankalpha, tankroster, meleealpha, meleeroster, rangedalpha, rangedroster, meleerangedhealer, roster, alpha
 	---@param delay number? amount of time that must pass since last target before method finishes
 	---@param target string accepts unitID or unitname
 	---@param startIcon number|table? icon method starts on. If passed as table, then it defines completely custom icon order

@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214506)
 mod:SetEncounterID(2919)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(6, 4, 3, 7)
 mod:SetHotfixNoticeRev(20240614000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
@@ -40,6 +40,8 @@ or ability.id = 446700 and type = "begincast"
 local warnExperimentalDosage					= mod:NewTargetCountAnnounce(442526, 3, nil, nil, 143340)--Shortname "Injection"
 
 local specWarnExperimentalDosage				= mod:NewSpecialWarningMoveTo(442526, nil, 143340, nil, 1, 2)--Shortname "Injection"
+local yellxperimentalDosage						= mod:NewShortPosYell(442526, 19873, false)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
+local yellxperimentalDosageFades				= mod:NewIconFadesYell(442526, 19873, false)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442432, nil, 325225, nil, 2, 2)--Shortname "Container Breach"
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, 389280, nil, 1, 2)--Shortname "Web"
 local yellUnstableWeb							= mod:NewShortYell(446349, 389280)
@@ -52,7 +54,7 @@ local timerIngestBlackBloodCD					= mod:NewCDCountTimer(170, 442432, 325225, nil
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnEggBreaker", 442526, false, 0, {1, 2, 3, 4, 5, 6, 7, 8})--Egg Breaker auto assign strat
+mod:AddSetIconOption("SetIconOnEggBreaker", 442526, false, 10, {6, 4, 3, 7})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
@@ -74,10 +76,11 @@ mod:AddNamePlateOption("NPFixate", 442250, true)
 
 mod.vb.dosageCount = 0
 mod.vb.ingestCount = 0
-mod.vb.dosageIcon = 0
 mod.vb.webCount = 0
 mod.vb.tankCount = 0
 local eggBreak = DBM:GetSpellName(177853)
+local eggIcons = {}
+local markOrder = { 6, 6, 4, 4, 3, 3, 7, 7 } -- blue, green, purple, red (wm 1-4)
 
 function mod:OnCombatStart(delay)
 	self.vb.dosageCount = 0
@@ -104,7 +107,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 442526 then
-		self.vb.dosageIcon = 0
+		table.wipe(eggIcons)
 		self.vb.dosageCount = self.vb.dosageCount + 1
 		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)--50
 	elseif spellId == 442432 and self:AntiSpam(5, 1) then--Ingest Black Blood
@@ -182,15 +185,34 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 440421 then
-		self.vb.dosageIcon = self.vb.dosageIcon + 1
-		warnExperimentalDosage:CombinedShow(0.5, self.vb.dosageCount+1, args.destName)
-		if args:IsPlayer() then
-			specWarnExperimentalDosage:Show(eggBreak)
-			specWarnExperimentalDosage:Play("movetoegg")
+		eggIcons[#eggIcons+1] = args.destName
+		local expectedTotal = self:IsMythic() and 8 or 4
+		if #eggIcons == (expectedTotal or DBM:NumRealAlivePlayers()) then
+			table.sort(eggIcons, DBM.SortByMeleeRangedHealer)
+			for i = 1, #eggIcons do
+				local name = eggIcons[i]
+				local icon = (self:IsMythic() and markOrder[i] or markOrder[(i * 2) - 1])
+				if self.Options.SetIconOnEggBreaker and not self:IsMythic() then
+					self:SetIcon(name, icon)
+				end
+				if name == DBM:GetMyPlayerInfo() then
+					specWarnExperimentalDosage:Show(eggBreak)
+					specWarnExperimentalDosage:Play("movetoegg")
+					yellxperimentalDosage:Yell(icon)
+					yellxperimentalDosageFades:Countdown(spellId, nil, icon)
+				end
+			end
+			warnExperimentalDosage:Show(self.vb.dosageCount+1, table.concat(eggIcons, "<, >"))
 		end
-		if self.Options.SetIconOnEggBreaker then
-			self:SetIcon(args.destName, self.vb.dosageIcon)
-		end
+
+		--warnExperimentalDosage:CombinedShow(0.5, self.vb.dosageCount+1, args.destName)
+		--if args:IsPlayer() then
+		--	specWarnExperimentalDosage:Show(eggBreak)
+		--	specWarnExperimentalDosage:Play("movetoegg")
+		--end
+		--if self.Options.SetIconOnEggBreaker then
+		--	self:SetIcon(args.destName, self.vb.dosageIcon)
+		--end
 	elseif spellId == 441362 and not args:IsPlayer() then
 		specWarnVolatileConcoctionTaunt:Show(args.destName)
 		specWarnVolatileConcoctionTaunt:Play("tauntboss")
@@ -220,6 +242,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 440421 then
 		if self.Options.SetIconOnEggBreaker then
 			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellxperimentalDosageFades:Cancel()
 		end
 --	elseif spellId == 446349 then
 
