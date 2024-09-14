@@ -7957,12 +7957,9 @@ do
 			return true
 		elseif DBM:IsMelee(v2, nil, true) and not DBM:IsMelee(v1) then
 			return false
-		--Non healer ranged vs any non ranged
-		elseif DBM:IsRanged(v1, true) and not DBM:IsRanged(v2) then
-			return false
-		elseif DBM:IsRanged(v2, true) and not DBM:IsRanged(v1) then
-			return true
-		else--Raid roster fallback
+		--If check got this far, it's not a healers vs non healer or melee vs non melee, so at this point we're at
+		--melee vs melee, ranged vs ranged, or healer vs healer. In this case, we just use roster index
+		else
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		end
 	end
