@@ -258,7 +258,7 @@ local function transcribeUnitSpellEvent(event, params, anon)
 		return
 	end
 	-- Transcriptor has some useful extra data that we can use to reconstruct unit targets, health and power
-	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.]*)%%%-([%d.]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
+	local unitName, unitHp, unitPower, unitTarget, unit, guid, spellId = params:match("(.*)%(([%d.-]*)%%%-([%d.-]*)%%%){Target:([^}]*)} .* %[%[([^:]+):([^:]+):([^%]]+)%]%]")
 	-- This should not be necessary because PLAYER_SPELLS are filtered above, yet I've got a log where this shows up with the player somehow on an arena unit ID in a raid (???)
 	unitName = anon:ScrubName(unitName)
 	guid = anon:ScrubGUID(guid)
@@ -434,7 +434,7 @@ local function transcribeCleu(rawParams, anon)
 end
 
 local function transcribeEvent(event, params, anon)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" or event == "PLAYER_INFO" then
 		return
 	end
 	if event:match("^UNIT_SPELL") then

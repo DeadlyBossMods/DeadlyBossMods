@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(227323)
 mod:SetEncounterID(2922)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20240910000000)
+mod:SetHotfixNoticeRev(20240912000000)
 mod:SetMinSyncRevision(20240910000000)
 mod.respawnTime = 29
 
@@ -42,11 +42,12 @@ mod:RegisterEventsInCombat(
 --TODO, https://www.wowhead.com/beta/spell=441865/royal-shackles alert too?
 --TODO, figure out shortnames later. Right now mod is a bit of chaos til boss is actually pulled
 --[[
-(ability.id = 437592 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 445021 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
+(ability.id = 437592 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
 or (ability.id = 439299) and type = "cast"
 or (ability.id = 447076 or ability.id = 449940 or ability.id = 449986) and type = "begincast"
 or ability. id = 447207 and type = "removebuff"
  or stoppedAbility.id = 449940 or stoppedAbility.id = 455374
+ or ability.id = 445021 and type = "begincast"
 --]]
 --General Stuff
 local warnPhase									= mod:NewPhaseChangeAnnounce(0, nil, nil, nil, nil, nil, 2)
@@ -150,7 +151,7 @@ local yellAbyssalReverbFades				= mod:NewShortFadesYell(455387)
 local specWarnFrothingGluttony				= mod:NewSpecialWarningRunCount(445422, nil, nil, nil, 4, 12)
 local specWarnAcolytesEssence				= mod:NewSpecialWarningMoveAway(445152, nil, nil, nil, 1, 2)
 local yellAcolytesEssenceFades				= mod:NewShortFadesYell(445152)
-local specWarnNullDetonation				= mod:NewSpecialWarningInterruptCount(455374, nil, nil, nil, 1, 2)
+local specWarnNullDetonation				= mod:NewSpecialWarningInterruptCount(445021, nil, nil, nil, 1, 2)
 local specWarnRoyalCondemnation				= mod:NewSpecialWarningYouPos(438976, nil, nil, nil, 1, 2)
 local yellRoyalCondemnation					= mod:NewShortPosYell(438976)
 --local yellRoyalCondemnationFades			= mod:NewIconFadesYell(438976)--No Duration on debuff
@@ -164,7 +165,7 @@ local specWarnCataclysmicEvolution			= mod:NewSpecialWarningTarget(451832, nil, 
 local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, nil, nil, nil, 3)
 local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, nil, nil, nil, 1)
-local timerNullDetonationCD					= mod:NewCDNPTimer(8.2, 455374, nil, nil, nil, 4)
+local timerNullDetonationCD					= mod:NewCDNPTimer(8.2, 445021, nil, nil, nil, 4)
 local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, nil, nil, nil, 3)
 local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -220,17 +221,17 @@ local allTimers = {
 			--Abyssal Infusion
 			[443888] = {57.4, 80, 80},--Only first confirmed
 			--Frothing Gluttony
-			[445422] = {68.4, 80, 80},--Only first confirmed
+			[445422] = {68.4, 80, 80},
 			--Queen's Summons
-			[444829] = {114.5, 82},
+			[444829] = {119.8, 75},
 			--Royal Condemnation
-			[438976] = {48, 141.5},--Only first confirmed
+			[438976] = {48, 58.5, 99.4},
 			--Infest
-			[443325] = {29.4, 66, 80},--Only first confirmed
+			[443325] = {29.4, 66, 81.9},
 			--Gorge
-			[443336] = {33.1, 66, 80},--Only first confirmed
+			[443336] = {32.8, 66, 81.9},
 			--Web Blades
-			[439299] = {86.1}--Only first confirmed
+			[439299] = {85.8, 39, 41, 18.6, 49.4}
 		},
 	},
 	["normal"] = {
@@ -252,7 +253,7 @@ local allTimers = {
 		},
 		[2] = {
 			--Wrest
-			[450191] = {32.2}--Then 8 repeating
+			[450191] = {31.5}--Then 8 repeating
 		},
 		[3] = {
 			--Abyssal Infusion
@@ -262,13 +263,13 @@ local allTimers = {
 			--Queen's Summons
 			[444829] = {114.5, 82},
 			--Royal Condemnation
-			[438976] = {48, 141.5},
+			[438976] = {47.8, 141.5},
 			--Infest
 			[443325] = {29.4, 66, 80},
 			--Gorge
-			[443336] = {35.5, 66, 80},
+			[443336] = {35.3, 66, 80},
 			--Web Blades
-			[439299] = {201.5}--Yes this is true
+			[439299] = {201.2}--Yes this is true
 		},
 	},
 }
@@ -303,7 +304,7 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(allTimers[savedDifficulty][1][440899][1]-delay, 1)
 --	timerFeastCD:Start(allTimers[savedDifficulty][1][437093][1]-delay, 1)
 	timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1]-delay, 1)
-	timerPredationCD:Start(153-delay)--Max time, will happen sooner if boss hits 35%
+	timerPredationCD:Start(153-delay, 1)--Max time, will happen sooner if boss hits 35%
 	if self.Options.NPAuraOnEchoingConnection then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -430,7 +431,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerOustCD:Start(nil, args.sourceGUID)
 	elseif spellId == 451600 then
-		if self:AntiSpam(5, 2) then--Just in case multiple do it at once
+		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) and self:AntiSpam(5, 2) then--Just in case multiple do it at once
 			specWarnExpulsionBeam:Show()
 			specWarnExpulsionBeam:Play("farfromline")
 		end
@@ -489,14 +490,15 @@ function mod:SPELL_CAST_START(args)
 		timerPredationCD:Stop()
 	--	timerFeastCD:Stop()
 		timerWebBladesCD:Stop()
-		warnPhase:Show(1.5)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 
 		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
+		timerAcidicApocalypse:Stop()
 		self.vb.webBladesCount = 0--Only repeat ability from earlier stage
-		warnPhase:Show(3)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--Possibly move to cast finish later
 		timerAbyssalInfusionCD:Start(allTimers[savedDifficulty][3][443888][1], 1)
@@ -628,8 +630,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnInfestOther:Show(args.destName)
 			specWarnInfestOther:Play("tauntboss")
 		end
-	elseif spellId == 443342 then
-		warnGorge:Show(args.destName, 1)
 	elseif spellId == 451832 then
 		self.vb.cataEvoActivated = true
 		specWarnCataclysmicEvolution:Show(args.destName)
@@ -669,7 +669,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	elseif spellId == 443726 then
 		warnGloomHatchlings:Show(args.destName, args.amount)
 	elseif spellId == 443342 then
-		warnGorge:Show(args.destName, args.amount)
+		local amount = args.amount or 1
+		if amount % 6 == 0 then
+			warnGorge:Show(args.destName, args.amount)
+		end
 	elseif spellId == 464638 and args:IsPlayer() then
 		--if amount % 5 == 0 then
 			warnFrothyToxin:Cancel()
@@ -699,7 +702,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 447207 then--Predation Shield
 		self:SetStage(2)
 		self.vb.wrestCount = 0
-		warnPhase:Show(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		self.vb.wrestCount = 0
 		timerWrestCD:Stop()

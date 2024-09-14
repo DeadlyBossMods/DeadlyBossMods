@@ -59,18 +59,23 @@ function anonymizer:ScrubName(name, guid)
 		-- playerServers will be set if this is indeed someone frome another server, checking it avoids bugs with non-players with dashes in the name
 		or strippedName and self.playerServers[strippedName] and self.playerNames[strippedName]
 		or self.petNames[name]
+		or name
 end
 
 function anonymizer:ScrubPetName(name)
-	return not self.nonPlayerNames[name] and self.petNames[name]
+	return not self.nonPlayerNames[name] and self.petNames[name] or name
 end
 
 function anonymizer:ScrubTarget(name)
 	if name == "??" then
 		return name
 	end
+	local strippedName = name:match("([^-]*)%-")
+	if not self.nonPlayerNames[name] and strippedName and self.playerNames[strippedName] then
+		name = strippedName
+	end
 	-- Some fights have dummy targets/controllers that only show up in this event, so we haven't seen them. Best guess: something that contains at least 3 spaces is probably not to be anonymized
-	return self.nonPlayerNames[name] or self.playerNames[name] or self.petNames[name] or name:match(" .* .* ") and name
+	return self.nonPlayerNames[name] or self.playerNames[name] or self.petNames[name] or name
 end
 
 local seenChatMsgTranslations = {}

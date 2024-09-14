@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 451016 438677 452231 441626 450129 441782 450483 438355 443068 451327 442994 441791",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 438249",
-	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 438656 440179 456245 438200 456235",--451611, 440503
+	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 440179 456245 438200 456235",--451611, 440503, 438656
 	"SPELL_AURA_APPLIED_DOSE 438218 438200",
 	"SPELL_AURA_REMOVED 455080 450980 451277 440001"--451611, 440503, 438656
 --	"SPELL_PERIODIC_DAMAGE",
@@ -73,7 +73,7 @@ mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {6, 7, 8})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")
-local warnVenomousRain						= mod:NewCountAnnounce(438656, 2, nil, nil, 44933)
+--local warnVenomousRain					= mod:NewCountAnnounce(438656, 2, nil, nil, 44933)
 local warnWebBomb							= mod:NewCountAnnounce(439838, 3)--General announce for everyone, personal special announce to target
 local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2, nil, nil, 47482)
 local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
@@ -82,7 +82,7 @@ local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
 --local yellWebBomb							= mod:NewShortYell(439838)
 --local yellWebBombFades					= mod:NewShortFadesYell(439838)
 local specWarnBindingWebs					= mod:NewSpecialWarningYou(440001, nil, nil, nil, 1, 2)
-local specWarnVenomousRain					= mod:NewSpecialWarningYou(438656, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
+local specWarnVenomousRain					= mod:NewSpecialWarningMoveAwayCount(438656, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
 
 local timerVenomousRainCD					= mod:NewCDCountTimer(49, 438656, 44933, nil, nil, 3)--Shortname "Rain"
 local timerWebBombCD						= mod:NewCDCountTimer(49, 439838, nil, nil, nil, 3)
@@ -92,7 +92,7 @@ local timerVoidAscensionCD					= mod:NewIntermissionCountTimer(100, 450483, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29021))
 ----Anub'arash
 mod:AddTimerLine(anubarash)
-local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(450045, 2)--No Filter because this is a raid wiping mechanic if the 3 players don't get to boss
+local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(438677, 2)--No Filter because this is a raid wiping mechanic if the 3 players don't get to boss
 local warnStingingDelirium					= mod:NewTargetNoFilterAnnounce(456245, 2)--Player or Boss
 
 local specWarnStingingSwarm					= mod:NewSpecialWarningMoveTo(438677, nil, nil, nil, 1, 2)--438708
@@ -468,7 +468,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 438343 then
 		self.vb.rainCount = self.vb.rainCount + 1
-		warnVenomousRain:Show(self.vb.rainCount)
+		specWarnVenomousRain:Show(self.vb.rainCount)
+		specWarnVenomousRain:Play("scatter")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438343, self.vb.rainCount+1)
 		if timer then
 			timerVenomousRainCD:Start(timer, self.vb.rainCount+1)
@@ -674,11 +675,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			local uId = DBM:GetUnitIdFromGUID(args.destGUID, true)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, uId)
 		end
-	elseif spellId == 438656 then
-		if args:IsPlayer() then
-			specWarnVenomousRain:Show()
-			specWarnVenomousRain:Play("targetyou")
-		end
+	--elseif spellId == 438656 then
+	--	if args:IsPlayer() then
+	--		specWarnVenomousRain:Show()
+	--		specWarnVenomousRain:Play("targetyou")
+	--	end
 	elseif spellId == 440179 then
 		warnEntangled:Show(args.destName)
 	elseif spellId == 456245 or spellId == 456235 then
