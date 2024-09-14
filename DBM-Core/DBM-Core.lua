@@ -7796,11 +7796,15 @@ do
 
 	---@param self DBMModOrDBM
 	---@param uId playerUUIDs?
-	function DBM:IsRanged(uId)
+	---@param disallowHealer boolean? Use for a Melee check that doesn't include healers
+	function DBM:IsRanged(uId, disallowHealer)
 		if uId then
 			local name = GetUnitName(uId, true)
 			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
+				if disallowHealer and private.specRoleTable[specID]["Healer"] then
+					return false
+				end
 				return private.specRoleTable[specID]["Ranged"]
 			else
 				print("bossModPrototype:IsRanged should not be called on external units if specID is unavailable, report this message")
@@ -7856,16 +7860,17 @@ do
 	function DBM.SortByGroup(v1, v2)
 		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 	end
+	---Probably every sort function here is broken.
 	function DBM.SortByTankAlpha(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, alphabetical names are preferred
-		if DBM:IsTanking(v1) == DBM:IsTanking(v2) then
+		if (DBM:IsTanking(v1) or 1) == (DBM:IsTanking(v2) or 2) then
 			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		--if one is tank and one isn't, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
 			return true
 		elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
 			return false
-		elseif DBM:IsMelee(v1) == DBM:IsMelee(v2) then
+		elseif (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
 			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
@@ -7876,14 +7881,14 @@ do
 	end
 	function DBM.SortByTankRoster(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, roster index as secondary
-		if DBM:IsTanking(v1) == DBM:IsTanking(v2) then
+		if (DBM:IsTanking(v1) or 1) == (DBM:IsTanking(v2) or 2) then
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
 			return true
 		elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
 			return false
-		elseif DBM:IsMelee(v1) == DBM:IsMelee(v2) then
+		elseif (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
@@ -7895,7 +7900,7 @@ do
 	function DBM.SortByMeleeAlpha(v1, v2)
 		--if both are melee, the return values are equal and we use alpha sort
 		--if both are ranged, the return values are equal and we use alpha sort
-		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
+		if (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
 			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
@@ -7907,7 +7912,7 @@ do
 	function DBM.SortByMeleeRoster(v1, v2)
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
-		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
+		if (DBM:IsMelee(v1) or 1) == (DBM:IsMelee(v2) or 2) then
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
@@ -7919,7 +7924,7 @@ do
 	function DBM.SortByRangedAlpha(v1, v2)
 		--if both are melee, the return values are equal and we use alpha sort
 		--if both are ranged, the return values are equal and we use alpha sort
-		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
+		if (DBM:IsRanged(v1) or 1) == (DBM:IsRanged(v2) or 2) then
 			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
@@ -7931,7 +7936,7 @@ do
 	function DBM.SortByRangedRoster(v1, v2)
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
-		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
+		if (DBM:IsRanged(v1) or 1) == (DBM:IsRanged(v2) or 2) then
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
@@ -7940,23 +7945,24 @@ do
 			return false
 		end
 	end
-	--This function probably still has some errors. Compounded inverse upon inverse checks are really difficult to follow.
 	function DBM.SortByMeleeRangedHealer(v1, v2)
-		--melee (excluding healers) > ranged > healer and if two of any of types, roster index as secondary
-		--True arg on melee check tells api to return false if unit is a healer
-		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then--Pass true if BW changes it's mind and wants to exclude healers from melee check
-			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
-		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
-			return true
-		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
-			return false
-		elseif not DBM:IsMelee(v1) == not DBM:IsMelee(v2) then--Better than BM:IsRanged(v1) == DBM:IsRanged(v2)?? depends U guess which has better parity
-			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
-		elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
+		--melee non healer > ranged non healer > melee healer, ranged healer and if two of any of types, roster index as secondary
+		--Healer vs non healer prio the NON healer (inverse the usual checks)
+		if DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
 			return false
 		elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
 			return true
-		elseif DBM:IsHealer(v1) == DBM:IsHealer(v2) then
+		--Non healer melee vs ANY non melee prio the non healer melee
+		elseif DBM:IsMelee(v1, nil, true) and not DBM:IsMelee(v2) then
+			return true
+		elseif DBM:IsMelee(v2, nil, true) and not DBM:IsMelee(v1) then
+			return false
+		--Non healer ranged vs any non ranged
+		elseif DBM:IsRanged(v1, true) and not DBM:IsRanged(v2) then
+			return false
+		elseif DBM:IsRanged(v2, true) and not DBM:IsRanged(v1) then
+			return true
+		else--Raid roster fallback
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		end
 	end
