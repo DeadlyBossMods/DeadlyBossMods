@@ -7748,13 +7748,11 @@ do
 
 	---@param self DBMModOrDBM
 	---@param uId playerUUIDs?
-	---@param mechanical boolean? Check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
-	function DBM:IsMelee(uId, mechanical)
+	function DBM:IsMelee(uId)
 		if uId then--This version includes monk healers as melee and tanks as melee
-			--Class checks performed first due to mechanical check needing to be broader than a specID check
+			--Class checks performed first on classes that are absolutely definitive (cause they'll work even if user doesn't have DBM or BW)
 			local _, class = UnitClass(uId)
-			--In mechanical check, ALL paladins are melee so don't need anything fancy, as for rest of classes here, same deal
-			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" or class == "DEMONHUNTER" or (mechanical and class == "PALADIN") then
+			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" or class == "DEMONHUNTER" or class == "PALADIN" then
 				return true
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
@@ -7764,7 +7762,7 @@ do
 				return private.specRoleTable[specID]["Melee"]
 			else
 				--Now we do the ugly checks thanks to Inspect throttle
-				if (class == "DRUID" or class == "SHAMAN" or class == "PALADIN") then
+				if (class == "DRUID" or class == "SHAMAN") then
 					local unitMaxPower = UnitPowerMax(uId)
 					if not private.isRetail and unitMaxPower < 7500 then
 						return true
@@ -7799,7 +7797,7 @@ do
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
-				print("bossModPrototype:IsRanged should not be called on external units if specID is unavailable, report this message")
+				self:AddMsg("IsRanged is being called on a player" .. name .. " that doesn't have an available specID. This likely means they are not using DBM or Bigwigs and can hamper functionality of this encounter module")
 			end
 		end
 		--Personal check Only
@@ -7818,7 +7816,7 @@ do
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
-				print("bossModPrototype:IsSpellCaster should not be called on external units if specID is unavailable, report this message")
+				self:AddMsg("IsSpellCaster is being called on a player" .. name .. " that doesn't have an available specID. This likely means they are not using DBM or Bigwigs and can hamper functionality of this encounter module")
 			end
 		end
 		--Personal check Only
@@ -7836,7 +7834,7 @@ do
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
-				print("bossModPrototype:IsMagicDispeller should not be called on external units if specID is unavailable, report this message")
+				self:AddMsg("IsMagicDispeller is being called on a player" .. name .. " that doesn't have an available specID. This likely means they are not using DBM or Bigwigs and can hamper functionality of this encounter module")
 			end
 		end
 		--Personal check Only
