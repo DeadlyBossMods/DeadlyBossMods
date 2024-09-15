@@ -40,8 +40,8 @@ or ability.id = 446700 and type = "begincast"
 local warnExperimentalDosage					= mod:NewTargetCountAnnounce(442526, 3, nil, nil, 143340)--Shortname "Injection"
 
 local specWarnExperimentalDosage				= mod:NewSpecialWarningMoveTo(442526, nil, 143340, nil, 1, 2)--Shortname "Injection"
-local yellxperimentalDosage						= mod:NewShortPosYell(442526, 19873, false)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
-local yellxperimentalDosageFades				= mod:NewIconFadesYell(442526, 19873, false)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
+local yellxperimentalDosage						= mod:NewShortPosYell(442526, 19873)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
+local yellxperimentalDosageFades				= mod:NewIconFadesYell(442526, 19873)--Shortname "Destroy Egg" (This name is NOT injected into shortnames api)
 local specWarnIngestBlackBlood					= mod:NewSpecialWarningCount(442432, nil, 325225, nil, 2, 2)--Shortname "Container Breach"
 local specWarnUnstableWeb						= mod:NewSpecialWarningMoveAway(446349, nil, 389280, nil, 1, 2)--Shortname "Web"
 local yellUnstableWeb							= mod:NewShortYell(446349, 389280)
@@ -54,7 +54,7 @@ local timerIngestBlackBloodCD					= mod:NewCDCountTimer(170, 442432, 325225, nil
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnEggBreaker", 442526, false, 10, {6, 4, 3, 7})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
+mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
@@ -192,7 +192,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			for i = 1, #eggIcons do
 				local name = eggIcons[i]
 				local icon = (self:IsMythic() and markOrder[i] or markOrder[(i * 2) - 1])
-				if self.Options.SetIconOnEggBreaker and not self:IsMythic() then
+				if self.Options.SetIconOnEggBreaker and (not self:IsMythic() or (self:IsMythic() and i % 2 == 1)) then
+					--Mythic uses same icons in pairs, so people are paired up with same mark, can't mark both so only marks 1 of them
 					self:SetIcon(name, icon)
 				end
 				if name == DBM:GetMyPlayerInfo() then
