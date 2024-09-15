@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214502)
 mod:SetEncounterID(2917)
-mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20240628000000)
 --mod:SetMinSyncRevision(20230929000000)
 mod.respawnTime = 29
@@ -77,8 +77,8 @@ local timerBlackBulwarkCD						= mod:NewCDNPTimer(15.5, 451288, 151702, nil, nil
 local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, 182557, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Nameplate only, larger variation. Shortname "Slam"
 
 --mod:AddInfoFrameOption(407919, true)
-mod:AddSetIconOption("SetIconOnWatchers", 444830, true, 5, {8})
-mod:AddSetIconOption("SetIconOnHarb", 444835, true, 5, {3, 4, 5, 6, 7})--Harbingers spawn with watchers in following sequence: 1 1 2 2 3 3 4 4 (not seen further than this)
+mod:AddSetIconOption("SetIconOnWatchers", 444830, true, 5, {4})
+mod:AddSetIconOption("SetIconOnHarb", 444835, true, 5, {5, 6, 7, 8})--Support up to 2 sets of adds
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.disgorgeCount = 0
@@ -216,7 +216,7 @@ function mod:SPELL_SUMMON(args)
 				--Boss always spawns 3 adds on normal and 4 on mythic (heroic unknown, it worked diff during that test)
 				--We reserve skull for watcher, and 7 6 5 for harbingers. We also allow 2 extra in case there is a left over add or two on a bad pull
 				--We do not touch icon 1 or 2 because some strats were marking tanks so we're leaving 1 and 2 free
-				for i = 7, 3, -1 do
+				for i = 8, 5, -1 do
 					if not addUsedMarks[i] then
 						addUsedMarks[i] = args.destGUID
 						self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnHarb", nil, nil, true)
@@ -324,7 +324,7 @@ function mod:UNIT_DIED(args)
 		timerBlackBulwarkCD:Stop(args.destGUID)
 		timerSpectralSlamCD:Stop(args.destGUID)
 	elseif cid == 221945 then--forgotten-harbinger
-		for i = 7, 3, -1 do
+		for i = 8, 5, -1 do
 			if addUsedMarks[i] == args.destGUID then
 				addUsedMarks[i] = nil
 				return
