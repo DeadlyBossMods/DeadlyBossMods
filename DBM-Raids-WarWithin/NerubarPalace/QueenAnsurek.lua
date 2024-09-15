@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 439299 449986",
 	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 455404",
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
-	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656",
+	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656 445013",
 	"SPELL_PERIODIC_DAMAGE 443403",
 	"SPELL_PERIODIC_MISSED 443403",
 	"UNIT_DIED"
@@ -56,41 +56,40 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(441958, nil, nil, nil, 1, 
 --Stage One: A Queen's Venom
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
 local warnReactiveToxin							= mod:NewTargetAnnounce(437592, 3)
-local warnSilkenTomb							= mod:NewCountAnnounce(439814, 2)
+local warnSilkenTomb							= mod:NewCountAnnounce(439814, 2, nil, nil, nil, nil, DBM_COMMON_L.ROOTS)--Shortname Roots
 local warnFrothyToxin							= mod:NewCountAnnounce(464638, 3, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(464638))--Player
 local warnReactionVapor							= mod:NewCountAnnounce(441556, 3, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(441556))--Player
 
 local specWarnReactiveToxin						= mod:NewSpecialWarningMoveAway(437592, nil, nil, nil, 1, 2)
 local yellReactiveToxin							= mod:NewShortYell(437592)
 local yellReactiveToxinFades					= mod:NewShortFadesYell(437592)
-local specWarnConcentratedToxin					= mod:NewSpecialWarningYou(451278, nil, nil, nil, 1, 2)
-local yellConcentratedToxin						= mod:NewShortYell(451278)
-local yellConcentratedToxinFades				= mod:NewShortFadesYell(451278)
-local specWarnVenomNova							= mod:NewSpecialWarningCount(437417, nil, nil, nil, 2, 2)--not soak warning because it's used for both soak and avoid
+local specWarnConcentratedToxin					= mod:NewSpecialWarningMoveAway(451278, nil, 37859, nil, 1, 2)
+local yellConcentratedToxin						= mod:NewShortYell(451278, 37859)--Shortname "Bomb"
+local yellConcentratedToxinFades				= mod:NewShortFadesYell(451278, 37859)--Shortname "Bomb"
+local specWarnVenomNova							= mod:NewSpecialWarningCount(437417, nil, 242396, nil, 2, 15)
 --local specWarnSilkenTomb						= mod:NewSpecialWarningYou(439814, nil, nil, nil, 1, 2)
---local yellSilkenTomb							= mod:NewShortYell(439814)
 local specWarnLiquefy							= mod:NewSpecialWarningDefensive(440899, nil, nil, nil, 1, 2)
 local specWarnLiquefyTaunt						= mod:NewSpecialWarningTaunt(440899, nil, nil, nil, 1, 2)
 --local specWarnLiquefyNonTank					= mod:NewSpecialWarningYou(440885, nil, nil, nil, 1, 2)--No idea, wording changed since adding it. does liquify tank just get both debuffs?
 local specWarnFeast								= mod:NewSpecialWarningDefensive(437093, nil, nil, nil, 1, 2)
 local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, false, nil, 2, 1, 2)
-local specWarnWebBlades							= mod:NewSpecialWarningDodgeCount(439299, nil, nil, nil, 2, 2)
+local specWarnWebBlades							= mod:NewSpecialWarningDodgeCount(439299, nil, 138737, nil, 2, 2)
 
 local timerReactiveToxinCD						= mod:NewCDCountTimer(49, 437592, nil, nil, nil, 3)
-local timerVenomNovaCD							= mod:NewCDCountTimer(49, 437417, nil, nil, nil, 3)
-local timerSilkenTombCD							= mod:NewCDCountTimer(49, 439814, nil, nil, nil, 3)
+local timerVenomNovaCD							= mod:NewCDCountTimer(49, 437417, 242396, nil, nil, 3)--Shortname "Nova"
+local timerSilkenTombCD							= mod:NewCDCountTimer(49, 439814, DBM_COMMON_L.ROOTS.." (%s)", nil, nil, 3)
 local timerLiquefyCD							= mod:NewCDCountTimer(49, 440899, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerFeastCD							= mod:NewCDCountTimer(49, 437093, nil, false, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Combine with liquefy if it is a combo
-local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, nil, nil, nil, 3)
+local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, 138737, nil, nil, 3)--Shortname "Blades"
 local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, nil, nil, 6)
 
 --mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
-local specWarnWrest							= mod:NewSpecialWarningCount(447411, nil, nil, nil, 2, 12)
+local specWarnWrest							= mod:NewSpecialWarningCount(447411, nil, 193997, nil, 2, 12)--Shortname "Pull"
 
-local timerWrestCD							= mod:NewCDCountTimer(49, 447411, nil, nil, nil, 3)
+local timerWrestCD							= mod:NewCDCountTimer(49, 447411, 193997, nil, nil, 3)--Shortname "Pull"
 
 mod:AddInfoFrameOption(447076, true)
 
@@ -127,7 +126,11 @@ local specWarnExpulsionBeam					= mod:NewSpecialWarningDodge(451600, nil, nil, n
 local timerExpulsionBeamCD					= mod:NewCDNPTimer(10, 451600, nil, nil, nil, 3)
 --Chamber Acolyte
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29945))
+local warnGloomEruption						= mod:NewSpellAnnounce(448046, 2, nil, nil, 406073, nil, nil, 15)--Shortname "Knock Up"
+
 local specWarnDarkDetonation				= mod:NewSpecialWarningInterruptCount(455374, nil, nil, nil, 1, 2)
+
+local timerGloomEruption					= mod:NewCastTimer(5, 448046, 406073, nil, nil, 5)--Shortname "Knock Up"
 --Caustic Skitterer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29645))
 local warnCausticFangs						= mod:NewStackAnnounce(449236, 2, nil, "Tank")
@@ -135,25 +138,25 @@ local warnCausticFangs						= mod:NewStackAnnounce(449236, 2, nil, "Tank")
 local specWarnCausticFangs					= mod:NewSpecialWarningStack(449236, nil, 30, nil, nil, 1, 6, 3)
 --Stage Three: Paranoia's Feast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28757))
-local warnAbyssalInfusion					= mod:NewTargetNoFilterAnnounce(443888, 3)
+local warnAbyssalInfusion					= mod:NewTargetNoFilterAnnounce(443888, 3, nil, nil, 109400)--Shortname "Portals"
 local warnFrothVapor						= mod:NewStackAnnounce(445880, 4)--Version on boss
-local warnQueenSummon						= mod:NewCountAnnounce(444829, 2)--NOT LOGGED, FIX ME WITH TRANSCRIPTOR
-local warnRoyalCondemnation					= mod:NewTargetNoFilterAnnounce(438976, 3)
+local warnQueenSummon						= mod:NewCountAnnounce(444829, 2, nil, nil, nil, nil, DBM_COMMON_L.BIG_ADDS)--Shortname "Big Adds"
+local warnRoyalCondemnation					= mod:NewTargetNoFilterAnnounce(438976, 3, nil, nil, 292910)--Shortname "Shackles"
 local warnGloomHatchlings					= mod:NewStackAnnounce(443726, 2)--Version on boss
 local warnGorge								= mod:NewStackAnnounce(443342, 3, nil, "Tank")
 
-local specWarnAbyssalInfusion				= mod:NewSpecialWarningYouPos(443888, nil, nil, nil, 1, 2)
-local yellAbyssalInfusion					= mod:NewShortPosYell(443888)
-local yellAbyssalInfusionFades				= mod:NewIconFadesYell(443888)
-local specWarnAbyssalReverb					= mod:NewSpecialWarningMoveAway(455387, nil, nil, nil, 1, 2, 3)--Heroic+ secondary effect of Abyssal Infusion
-local yellAbyssalReverb						= mod:NewShortYell(455387)
-local yellAbyssalReverbFades				= mod:NewShortFadesYell(455387)
-local specWarnFrothingGluttony				= mod:NewSpecialWarningRunCount(445422, nil, nil, nil, 4, 12)
+local specWarnAbyssalInfusion				= mod:NewSpecialWarningYouPos(443888, nil, 161722, nil, 1, 2)--Shortname "Portal" (will not override portals in api)
+local yellAbyssalInfusion					= mod:NewShortPosYell(443888, 161722)--Shortname "Portal"
+local yellAbyssalInfusionFades				= mod:NewIconFadesYell(443888, 161722)--Shortname "Portal"
+local specWarnAbyssalReverb					= mod:NewSpecialWarningMoveAway(455387, nil, 37859, nil, 1, 2, 3)--Heroic+ secondary effect of Abyssal Infusion
+local yellAbyssalReverb						= mod:NewShortYell(455387, 37859)
+local yellAbyssalReverbFades				= mod:NewShortFadesYell(455387, 37859)
+local specWarnFrothingGluttony				= mod:NewSpecialWarningRunCount(445422, nil, nil, DBM_COMMON_L.RING, 4, 12)
 local specWarnAcolytesEssence				= mod:NewSpecialWarningMoveAway(445152, nil, nil, nil, 1, 2)
 local yellAcolytesEssenceFades				= mod:NewShortFadesYell(445152)
 local specWarnNullDetonation				= mod:NewSpecialWarningInterruptCount(445021, nil, nil, nil, 1, 2)
-local specWarnRoyalCondemnation				= mod:NewSpecialWarningYouPos(438976, nil, nil, nil, 1, 2)
-local yellRoyalCondemnation					= mod:NewShortPosYell(438976)
+local specWarnRoyalCondemnation				= mod:NewSpecialWarningYouPos(438976, nil, 292910, nil, 1, 2)
+local yellRoyalCondemnation					= mod:NewShortPosYell(438976, 292910)
 --local yellRoyalCondemnationFades			= mod:NewIconFadesYell(438976)--No Duration on debuff
 local specWarnInfest						= mod:NewSpecialWarningMoveAway(443325, nil, nil, nil, 1, 2)
 local yellInfest							= mod:NewShortYell(443325)
@@ -162,13 +165,13 @@ local specWarnInfestOther					= mod:NewSpecialWarningTaunt(443325, nil, nil, nil
 local specWarnGorge							= mod:NewSpecialWarningDefensive(443336, nil, nil, nil, 1, 2)
 local specWarnCataclysmicEvolution			= mod:NewSpecialWarningTarget(451832, nil, nil, nil, 3, 2)
 
-local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, nil, nil, nil, 3)
-local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, nil, nil, nil, 1)
+local timerAbyssalInfusionCD				= mod:NewCDCountTimer(49, 443888, 109400, nil, nil, 3)--Shortname "Portals"
+local timerFrothingGluttonyCD				= mod:NewCDCountTimer(49, 445422, DBM_COMMON_L.RING.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerQueensSummonsCD					= mod:NewCDCountTimer(49, 444829, DBM_COMMON_L.BIG_ADDS.." (%s)", nil, nil, 1)
 local timerNullDetonationCD					= mod:NewCDNPTimer(8.2, 445021, nil, nil, nil, 4)
-local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, nil, nil, nil, 3)
-local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, 292910, nil, nil, 3)--Shortname "Shackles"
+local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--I don't nessesarily agree with calling this Small adds, since timer syncs up to tank debuff, and small adds come from tank several seconds after. Plus "infest" is kinda clear anyways it's mechanic that spawns adds later
+local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnAbyssalInfusion", 443888, true, 0, {1, 2})
 mod:AddSetIconOption("SetIconOnRoyalCondemnation", 438976, true, 0, {3, 4, 5})--3 on Mythic
@@ -337,11 +340,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 437417 then
 		self.vb.novaCount = self.vb.novaCount + 1
 		specWarnVenomNova:Show(self.vb.novaCount)
-		if not DBM:UnitDebuff("player", 464628, 441692) then--Reaction Trauma (can't soak)
-			specWarnVenomNova:Play("helpsoak")--Maybe something more specific like movetopool?
-		else
-			specWarnVenomNova:Play("watchwave")
-		end
+		specWarnVenomNova:Play("getknockedup")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437417, self.vb.novaCount+1)
 		if timer then
 			timerVenomNovaCD:Start(timer, self.vb.novaCount+1)
@@ -412,7 +411,8 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then castsPerGUID[args.sourceGUID] = 0 end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
-		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+		local uId = DBM:GetUnitIdFromGUID(args.sourceGUID)
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) and not DBM:UnitBuff(uId, 445013) then--Count interrupt, so cooldown is not checked
 			specWarnNullDetonation:Show(args.sourceName, count)
 			if count < 6 then
 				specWarnNullDetonation:Play("kick"..count.."r")
@@ -568,7 +568,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 451278 then
 		if args:IsPlayer() then
 			specWarnConcentratedToxin:Show()
-			specWarnConcentratedToxin:Play("targetyou")
+			specWarnConcentratedToxin:Play("runout")
 			yellConcentratedToxin:Yell()
 			yellConcentratedToxinFades:Countdown(spellId)
 		end
@@ -736,6 +736,20 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellAcolytesEssenceFades:Cancel()
 		end
+	elseif spellId == 445013 then--Dark Barrier Removed
+		local uId = DBM:GetUnitIdFromGUID(args.destGUID)
+		local _, _, _, _, _, _, _, _, castingSpellID = UnitCastingInfo(uId)
+		if castingSpellID and castingSpellID == 445021 then
+			if self:CheckInterruptFilter(args.destGUID, false, false) then--Count interrupt, so cooldown is not checked
+				local count = castsPerGUID[args.destGUID] or 1
+				specWarnNullDetonation:Show(args.sourceName, count)
+				if count < 6 then
+					specWarnNullDetonation:Play("kick"..count.."r")
+				else
+					specWarnNullDetonation:Play("kickcast")
+				end
+			end
+		end
 	end
 end
 
@@ -759,6 +773,12 @@ function mod:UNIT_DIED(args)
 
 	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
 		timerNullDetonationCD:Stop(nil, args.destGUID)
+		--TODO scope this
+		if self:AntiSpam(3, 6) then
+			warnGloomEruption:Show()
+			warnGloomEruption:Play("getknockedup")
+			timerGloomEruption:Start(self:IsEasy() and 7 or 6)
+		end
 	end
 end
 

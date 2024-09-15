@@ -51,8 +51,8 @@ local specWarnBanefulShift						= mod:NewSpecialWarningTaunt(443612, nil, nil, n
 local specWarnBloodcurdle						= mod:NewSpecialWarningMoveAway(452237, nil, nil, nil, 1, 2, 4)
 local yellBloodcurdle							= mod:NewShortYell(452237)
 local yellBloodcurdleFades						= mod:NewShortFadesYell(452237)
-local specWarnSpewingHemorrhage					= mod:NewSpecialWarningRunCount(445936, nil, nil, nil, 4, 2)
-local specWarnGoresplatter						= mod:NewSpecialWarningDodgeCount(442530, nil, 301902, nil, 2, 2)
+local specWarnSpewingHemorrhage					= mod:NewSpecialWarningDodgeCount(445936, nil, nil, nil, 4, 2)
+local specWarnGoresplatter						= mod:NewSpecialWarningRunCount(442530, nil, 301902, nil, 4, 2)
 local specWarnGraspFromBeyond					= mod:NewSpecialWarningMoveAway(443042, nil, 367465, nil, 1, 2)
 local yellGraspFromBeyond						= mod:NewShortYell(443042, 285205)--ShortYell "Tentacle"
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(445518, nil, nil, nil, 1, 8)
@@ -142,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 		--32.0, 59.0, 69.1, 59.0, 69.0, 59.0, 69.0 (Mythic)
 		self.vb.hemorrhageCount = self.vb.hemorrhageCount + 1
 		specWarnSpewingHemorrhage:Show(self.vb.hemorrhageCount)
-		specWarnSpewingHemorrhage:Play("justrun")
+		specWarnSpewingHemorrhage:Play("farfromline")
 		if self.vb.hemorrhageCount % 2 == 0 then
 			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 79, self.vb.hemorrhageCount+1)
 		else
@@ -151,7 +151,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 442530 then
 		self.vb.goresplatterCount = self.vb.goresplatterCount + 1
 		specWarnGoresplatter:Show(self.vb.goresplatterCount)
-		specWarnGoresplatter:Play("watchstep")
+		specWarnGoresplatter:Play("justrun")
 		timerGoresplatterCD:Start(nil, self.vb.goresplatterCount+1)
 		if self:IsEasy() then
 			--Dirty fix just for normal for now. It's likely all timers should be restarted here in stead of sequenced though
