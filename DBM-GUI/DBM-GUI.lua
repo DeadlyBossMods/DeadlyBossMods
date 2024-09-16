@@ -424,12 +424,13 @@ local function addOptions(mod, catpanel, v)
 					value	= val
 				})
 			end
+			--title, values, vartype, var, callfunc, width, height, parent
 			catbutton = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value)
 				mod.Options[v] = value
 				if mod.optionFuncs and mod.optionFuncs[v] then
 					mod.optionFuncs[v]()
 				end
-			end, nil, 32)
+			end, nil, 40)
 			if not addSpacer then
 				if lastButton then
 					catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -12)
