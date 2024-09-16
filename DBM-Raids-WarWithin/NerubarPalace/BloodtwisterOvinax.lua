@@ -65,6 +65,7 @@ mod:AddNamePlateOption("NPAuraOnNecrotic", 446694, true)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28999))
 
 mod:AddNamePlateOption("NPAuraOnRavenous", 446690, true)
+mod:AddSetIconOption("SetIconOnWorm", -28999, false, 5, {8, 7, 6, 5})
 --Blood Parasite
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29003))
 local specWarnFixate							= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 2)
@@ -127,6 +128,9 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(eggIcons)
 		self.vb.dosageCount = self.vb.dosageCount + 1
 		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)--50
+		if self.Options.SetIconOnWorm then
+			self:ScanForMobs(219046, 0, 8, 4, nil, 10, "SetIconOnWorm")
+		end
 	elseif spellId == 442432 and self:AntiSpam(5, 1) then--Ingest Black Blood
 		--Timers that restart here
 		timerExperimentalDosageCD:Start(16, self.vb.dosageCount+1)
@@ -237,7 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #eggIcons == (expectedTotal or DBM:NumRealAlivePlayers()) then
 			sortEggBreaker(self)
 		end
-		self:Schedule(1, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
+		self:Schedule(0.5, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
 	elseif spellId == 441362 and not args:IsPlayer() then
 		specWarnVolatileConcoctionTaunt:Show(args.destName)
 		specWarnVolatileConcoctionTaunt:Play("tauntboss")

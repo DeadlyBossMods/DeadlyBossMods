@@ -316,7 +316,7 @@ function timerPrototype:Start(timer, ...)
 		--msg: Timer Text (Do not use msg has an event trigger, it varies language to language or based on user timer options. Use this to DISPLAY only (such as timer replacement UI). use spellId field 99% of time
 		--timer: Raw timer value (number).
 		--Icon: Texture Path for Icon
-		--type: Timer type, which is one of only 7 possible types: "cd" for coolodwns, "target" for target bars such as debuff on a player, "stage" for any kind of stage timer (stage ends, next stage, or even just a warmup timer like "fight begins"), and then "cast" timer which is used for both a regular cast and a channeled cast (ie boss is casting frostbolt, or boss is channeling whirlwind). Lastly, break, pull, and berserk timers are "breaK", "pull", and "berserk" respectively
+		--simpleType: Timer type, which is one of only 7 possible types: "cd" for coolodwns, "target" for target bars such as debuff on a player, "stage" for any kind of stage timer (stage ends, next stage, or even just a warmup timer like "fight begins"), and then "cast" timer which is used for both a regular cast and a channeled cast (ie boss is casting frostbolt, or boss is channeling whirlwind). Lastly, break, pull, and berserk timers are "breaK", "pull", and "berserk" respectively
 		--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
 		--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
 		--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
@@ -326,6 +326,7 @@ function timerPrototype:Start(timer, ...)
 		--MobGUID if it could be parsed out of args
 		--timerCount if current timer is a count timer. Returns number (count value) needed to have weak auras that trigger off a specific timer count without using localized message text
 		--isPriority: If true, this ability has been flagged as extra important. Can be used for weak auras or nameplate addons to add extra emphasis onto specific timer like a glow
+		--fullType (the true type of timer, for those who really want to filter timer down by adds or interrupt DBM classifications)
 		local guid, timerCount
 		if select("#", ...) > 0 then--If timer has args
 			for i = 1, select("#", ...) do
@@ -344,7 +345,7 @@ function timerPrototype:Start(timer, ...)
 		if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 			guid = UnitGUID("boss1")
 		end
-		DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority)
+		DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
 		--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 		--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 		if guid and (self.type == "cdnp" or self.type == "nextnp" or self.type == "cdpnp" or self.type == "nextpnp" or self.type == "castpnp") and not (DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then

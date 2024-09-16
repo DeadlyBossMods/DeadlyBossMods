@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214503)
 mod:SetEncounterID(2898)
-mod:SetUsedIcons(1, 2, 3)
+--mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20240911000000)
 mod:SetMinSyncRevision(20240911000000)
 mod.respawnTime = 29
@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 459273 439191",--433517
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_WHISPER",
+--	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
 local warnPhaseBlades							= mod:NewIncomingCountAnnounce(433517, 3, nil, nil, 100)
-local warnDecimate								= mod:NewTargetNoFilterAnnounce(442428, 3)
+local warnDecimate								= mod:NewIncomingCountAnnounce(442428, 3)
 
 local specWarnRainofArrows						= mod:NewSpecialWarningDodgeCount(439559, nil, nil, nil, 2, 2)
 local specWarnShatteringSweep					= mod:NewSpecialWarningRunCount(456420, nil, 394017, nil, 4, 2)
@@ -45,9 +45,9 @@ local specWarnPiercedDefenses					= mod:NewSpecialWarningTaunt(435410, nil, nil,
 --local specWarnPhaseBlades						= mod:NewSpecialWarningYou(433517, nil, nil, nil, 1, 2)
 --local yellPhaseBlades							= mod:NewPosYell(433517)
 --local yellPhaseBladesFades					= mod:NewIconFadesYell(433517)
-local specWarnDecimate							= mod:NewSpecialWarningYou(442428, nil, nil, nil, 1, 2)
-local yellDecimate								= mod:NewShortYell(442428)
-local yellDecimateFades							= mod:NewShortFadesYell(442428)
+--local specWarnDecimate							= mod:NewSpecialWarningYou(442428, nil, nil, nil, 1, 2)
+--local yellDecimate								= mod:NewShortYell(442428)
+--local yellDecimateFades							= mod:NewShortFadesYell(442428)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, 394017, nil, nil, 2)--Shortname "Sweep"
@@ -59,8 +59,9 @@ local timerDecimateCD							= mod:NewCDCountTimer(38.1, 442428, nil, nil, nil, 3
 
 --mod:AddInfoFrameOption(407919, true)
 --mod:AddSetIconOption("SetIconOnPhaseBlades", 433517, true, 0, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnDecimate", 442428, true, 0, {1, 2, 3})
+--mod:AddSetIconOption("SetIconOnDecimate", 442428, true, 0, {1, 2, 3})
 mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)--Phase Blades
+mod:AddPrivateAuraSoundOption(439191, true, 442428, 1)--Decimate
 
 mod.vb.sweepCount = 0
 mod.vb.tankCombo = 0
@@ -69,7 +70,7 @@ mod.vb.bladesCount = 0
 mod.vb.arrowsCount = 0
 mod.vb.decimateCount = 0
 --mod.vb.bladesIcon = 1
-mod.vb.decimateIcon = 1
+--mod.vb.decimateIcon = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.sweepCount = 0
@@ -90,6 +91,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerShatteringSweepCD:Start(89.9, 1)
 	self:EnablePrivateAuraSound(433517, "runout", 2)--Phase Blades
+	self:EnablePrivateAuraSound(439191, "lineyou", 17)--Decimate
 end
 
 function mod:SPELL_CAST_START(args)
@@ -159,7 +161,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 442428 then
 		self.vb.decimateCount = self.vb.decimateCount + 1
-		self.vb.decimateIcon = 1
+		warnDecimate:Show(self.vb.decimateCount)
+		--self.vb.decimateIcon = 1
 		if self.vb.decimateCount == 1 then
 			--26.1 before sweep, 28 after? (mythic). need more data, it's just an assumption atm
 			--Normal might be 39.8 instead of 38.1, need more data
@@ -245,6 +248,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:459349") then
 		specWarnDecimate:Show()
@@ -265,6 +269,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		self.vb.decimateIcon = self.vb.decimateIcon + 1
 	end
 end
+--]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
