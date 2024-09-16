@@ -78,7 +78,7 @@ local timerSpectralSlamCD						= mod:NewCDNPTimer(13.4, 445016, 182557, nil, nil
 
 --mod:AddInfoFrameOption(407919, true)
 mod:AddSetIconOption("SetIconOnWatchers", 444830, true, 5, {4})
-mod:AddSetIconOption("SetIconOnHarb", 444835, true, 5, {5, 6, 7, 8})--Support up to 2 sets of adds
+mod:AddSetIconOption("SetIconOnHarb", 444835, true, 5, {8, 7, 6, 5})--Support up to 2 sets of adds
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.disgorgeCount = 0

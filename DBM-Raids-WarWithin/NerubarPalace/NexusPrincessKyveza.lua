@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 436971 437620 448364 438245 439576 440377 453683 442277 435405",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 447169 447174 440576",--436870 437343
+	"SPELL_AURA_APPLIED 447169 447174 440576 437343",--436870
 	"SPELL_AURA_APPLIED_DOSE 447174 440576",
-	"SPELL_AURA_REMOVED 447169 435405"--436870 437343
+	"SPELL_AURA_REMOVED 447169 435405 437343"--436870
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -41,7 +41,7 @@ local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 --local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
 --local yellAss									= mod:NewShortYell(436867)
 --local yellAssFades							= mod:NewShortFadesYell(436867)
---local yellQueensBane							= mod:NewShortFadesYell(437343)
+local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
 local specWarnNexusDaggers						= mod:NewSpecialWarningDodgeCount(439576, nil, 1180, nil, 2, 2)
@@ -65,6 +65,7 @@ mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
 mod:AddPrivateAuraSoundOption(436870, true, 436867, 1)--Assassination Targets
+mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.assCount = 0
@@ -100,6 +101,11 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(436666, "lineyou", 17, 436671)--Regicide
 	self:EnablePrivateAuraSound(435534, "lineyou", 17, 436671)--Regicide
 	self:EnablePrivateAuraSound(436870, "runout", 2)--Assassination
+	if self:IsHard() then--Only has spread on heroic and mythic
+		self:EnablePrivateAuraSound(437343, "runout", 2)--Queen's bane
+		self:EnablePrivateAuraSound(463273, "runout", 2, 437343)--Queen's bane
+		self:EnablePrivateAuraSound(463276, "runout", 2, 437343)--Queen's bane
+	end
 	if self:IsMythic() then
 		timerDeathMasksCD:Start(18.9, 1)
 		if self.Options.NPOnMask then
@@ -179,10 +185,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPOnMask then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	--elseif spellId == 437343 then
-	--	if args:IsPlayer() and not self:IsEasy() then
-	--		yellQueensBane:Countdown(spellId)
-	--	end
+	elseif spellId == 437343 then
+		if args:IsPlayer() and not self:IsEasy() then
+			yellQueensBane:Countdown(spellId)
+		end
 	--elseif spellId == 436870 then
 	--	warnAss:CombinedShow(0.5, args.destName)
 	--	if args:IsPlayer() then
@@ -206,12 +212,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
+			--Applies 4 stacks at a time (then just refreshes after that)
+			--so this should effectively warn once per cast
 			if amount % 4 == 0 then
-				if args:IsPlayer() then
-					specWarnChasmalGashStack:Show(amount)
-					specWarnChasmalGashStack:Play("stackhigh")
+				if args:IsPlayer() then--This basically can swap every 1-2 stacks based on it's cooldown.
+					if amount >= 8 then
+						specWarnChasmalGashStack:Show(amount)
+						specWarnChasmalGashStack:Play("stackhigh")
+					else
+						warnChasmalGash:Show(args.destName, amount)
+					end
 				else
-					if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if (not remaining or remaining and remaining < 30) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 						specWarnChasmalGashSwap:Show(args.destName)
 						specWarnChasmalGashSwap:Play("tauntboss")
 					else
@@ -230,10 +247,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPOnMask then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	--elseif spellId == 437343 then
-	--	if args:IsPlayer() then
-	--		yellQueensBane:Cancel()
-	--	end
+	elseif spellId == 437343 then
+		if args:IsPlayer() then
+			yellQueensBane:Cancel()
+		end
 	--elseif spellId == 436870 then
 	--	if args:IsPlayer() then
 	--		yellAssFades:Cancel()

@@ -29,10 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, binding webs multi target alerts to alert who you are bound to once it's clear how it's presented in combat log (if it's presented)
 --TODO, stinging swarm seems to have two versions, complex one that reequires dispeling near other boss to interrupt it, and one that's just ordinary debuff (probably LFR version)
 --TODO, if stringing swarm doesn't go private aura, add icons and icon based yells for dispel assignments. Not gonna waste time doing it now though when this fight hasn't had PA flagging done yet
---TODO, add https://www.wowhead.com/beta/spell=441775/void-blast if it's not spammed, similar boat to poison bolt
 --TODO, maybe Entropic should be a run away warning instead for melee?
---TODO, lots of cleanup of boss mechanics that interrupt other boss mechanics with better clarity and voices
---TODO, change option keys to match BW for weak aura compatability before live
 --NOTE, https://www.wowhead.com/beta/spell=440503/impaling-eruption was not exposed, re-add of that changes
 --[[
 (ability.id = 438218 or ability.id = 438801 or ability.id = 440246 or ability.id = 440504 or ability.id = 438343 or ability.id = 439838 or ability.id = 450045 or ability.id = 438677 or ability.id = 452231 or ability.id = 441626 or ability.id = 450129 or ability.id = 441782 or ability.id = 450483 or ability.id = 438355 or ability.id = 443068 or ability.id = 442994) and type = "begincast"
@@ -69,7 +66,7 @@ local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
-mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {6, 7, 8})
+mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {8, 7, 6})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")

@@ -65,6 +65,7 @@ mod:AddNamePlateOption("NPAuraOnNecrotic", 446694, true)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28999))
 
 mod:AddNamePlateOption("NPAuraOnRavenous", 446690, true)
+mod:AddSetIconOption("SetIconOnWorm", -28999, false, 5, {8, 7, 6, 5})
 --Blood Parasite
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29003))
 local specWarnFixate							= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 2)
@@ -81,6 +82,7 @@ mod.vb.webCount = 0
 mod.vb.tankCount = 0
 mod.vb.EggBreakerBehavior = "MatchBW"
 mod.vb.eggIcon = 1
+mod.vb.workIcon = 8
 local eggBreak = DBM:GetSpellName(177853)
 local eggIcons = {}
 local markOrder = { 6, 6, 4, 4, 3, 3, 7, 7 } -- blue, green, purple, red (wm 1-4)
@@ -237,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #eggIcons == (expectedTotal or DBM:NumRealAlivePlayers()) then
 			sortEggBreaker(self)
 		end
-		self:Schedule(1, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
+		self:Schedule(0.5, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
 	elseif spellId == 441362 and not args:IsPlayer() then
 		specWarnVolatileConcoctionTaunt:Show(args.destName)
 		specWarnVolatileConcoctionTaunt:Play("tauntboss")

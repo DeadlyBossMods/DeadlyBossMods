@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336",
 	"SPELL_CAST_SUCCESS 439299 449986",
-	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 455404",
+	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556",--455404
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
 	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656 445013 445021",
 	"SPELL_PERIODIC_DAMAGE 443403",
@@ -26,21 +26,15 @@ mod:RegisterEventsInCombat(
 )
 
 --NOTE, 451320 wasn't used
---TODO, figure out how reactive toxin works and make mod less crappy
---TODO, figure out Silken Tomb targetting and make mod less crappy
---TODO, figure out Liquefy targetting and make mod less crappy
 --TODO, Phase 2 Entropic Conduit mythic mechanics
 --TODO, add Gloom Orb nameplate timer?
 --TODO, figure out a proper way to warn for Ousting Fragments. how far are they cast from Chamber guardian. maybe scoped alert for players within x yards of caster?
---TODO, Dark Detonation nameplate cast bar?
 --TODO, appropriate stack high warning for https://www.wowhead.com/beta/spell=449236/caustic-fangs
 --TODO, correct detection for https://www.wowhead.com/beta/spell=444502/conduit-collapse
---TODO, use https://www.wowhead.com/beta/spell=445818/frothing-gluttony for anything?
 --TODO, track player version of https://www.wowhead.com/beta/spell=445877/froth-vapor ?
 --TODO, infoframe or more for https://www.wowhead.com/beta/spell=445013/dark-barrier ? depends on mob count
 --TODO, add auto marking?
 --TODO, https://www.wowhead.com/beta/spell=441865/royal-shackles alert too?
---TODO, figure out shortnames later. Right now mod is a bit of chaos til boss is actually pulled
 --[[
 (ability.id = 437592 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
 or (ability.id = 439299) and type = "cast"
@@ -72,7 +66,7 @@ local specWarnLiquefy							= mod:NewSpecialWarningDefensive(440899, nil, nil, n
 local specWarnLiquefyTaunt						= mod:NewSpecialWarningTaunt(440899, nil, nil, nil, 1, 2)
 --local specWarnLiquefyNonTank					= mod:NewSpecialWarningYou(440885, nil, nil, nil, 1, 2)--No idea, wording changed since adding it. does liquify tank just get both debuffs?
 local specWarnFeast								= mod:NewSpecialWarningDefensive(437093, nil, nil, nil, 1, 2)
-local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, false, nil, 2, 1, 2)
+--local specWarnFeastTaunt						= mod:NewSpecialWarningTaunt(437093, false, nil, 2, 1, 2)
 local specWarnWebBlades							= mod:NewSpecialWarningDodgeCount(439299, nil, 138737, nil, 2, 2)
 
 local timerReactiveToxinCD						= mod:NewCDCountTimer(49, 437592, nil, nil, nil, 3)
@@ -83,7 +77,6 @@ local timerLiquefyCD							= mod:NewCDCountTimer(49, 440899, DBM_COMMON_L.TANKCO
 local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, 138737, nil, nil, 3)--Shortname "Blades"
 local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, nil, nil, 6)
 
---mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, 0, {1, 2, 3})
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
@@ -130,7 +123,7 @@ local warnGloomEruption						= mod:NewSpellAnnounce(448046, 2, nil, nil, 406073,
 
 local specWarnDarkDetonation				= mod:NewSpecialWarningInterruptCount(455374, nil, nil, nil, 1, 2)
 
-local timerGloomEruption					= mod:NewCastTimer(5, 448046, 406073, nil, nil, 5)--Shortname "Knock Up"
+local timerGloomEruption					= mod:NewCastTimer(5, 448046, 406073, nil, nil, 5, nil, nil, nil, 1)--Shortname "Knock Up"
 --Caustic Skitterer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29645))
 local warnCausticFangs						= mod:NewStackAnnounce(449236, 2, nil, "Tank")
@@ -638,11 +631,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrothyToxin:Schedule(1.5, 1)
 	elseif spellId == 441556 and args:IsPlayer() then
 		warnReactionVapor:Show(1)
-	elseif spellId == 455404 then
-		if not args:IsPlayer() then
-			specWarnFeastTaunt:Show(args.destName)
-			specWarnFeastTaunt:Play("tauntboss")
-		end
+	--elseif spellId == 455404 then
+	--	if not args:IsPlayer() then
+	--		specWarnFeastTaunt:Show(args.destName)
+	--		specWarnFeastTaunt:Play("tauntboss")
+	--	end
 	end
 end
 
