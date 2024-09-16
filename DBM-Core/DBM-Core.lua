@@ -8503,6 +8503,7 @@ function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self:SetOptionCategory("ReadyCheck", "misc")
 end
 
+---@param name string Option Name
 ---@param default SpecFlags|boolean?
 function bossModPrototype:AddSpeedClearOption(name, default)
 	self.DefaultOptions["SpeedClearTimer"] = (default == nil) or default
@@ -8516,6 +8517,12 @@ end
 
 -- FIXME: this function does not reset any settings to default if you remove an option in a later revision and a user has selected this option in an earlier revision were it still was available
 -- this will be fixed as soon as it is necessary due to removed options ;-)
+---@param name string Option Name
+---@param options table Options table
+---@param default any Which table entry is default
+---@param cat string? Option Category. If left blank, defaults to "misc"
+---@param func any?
+---@param spellId number? spellId used for option category grouping
 function bossModPrototype:AddDropdownOption(name, options, default, cat, func, spellId)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = {type = "dropdown", value = default}
