@@ -191,7 +191,7 @@ local function sortEggBreaker(self)
 		if name == DBM:GetMyPlayerInfo() then
 			specWarnExperimentalDosage:Show(eggBreak)
 			specWarnExperimentalDosage:Play("movetoegg")
-			if not self.vb.interruptBehavior == "DisableAllForRaid" then
+			if self.vb.interruptBehavior ~= "DisableAllForRaid" then
 				yellxperimentalDosage:Yell(icon)
 				yellxperimentalDosageFades:Countdown(440421, nil, icon)
 			end
