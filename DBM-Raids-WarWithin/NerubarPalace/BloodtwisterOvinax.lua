@@ -82,7 +82,6 @@ mod.vb.webCount = 0
 mod.vb.tankCount = 0
 mod.vb.EggBreakerBehavior = "MatchBW"
 mod.vb.eggIcon = 1
-mod.vb.workIcon = 8
 local eggBreak = DBM:GetSpellName(177853)
 local eggIcons = {}
 local markOrder = { 6, 6, 4, 4, 3, 3, 7, 7 } -- blue, green, purple, red (wm 1-4)
@@ -129,6 +128,9 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(eggIcons)
 		self.vb.dosageCount = self.vb.dosageCount + 1
 		timerExperimentalDosageCD:Start(nil, self.vb.dosageCount+1)--50
+		if self.Options.SetIconOnWorm then
+			self:ScanForMobs(219046, 0, 8, 4, nil, 10, "SetIconOnWorm")
+		end
 	elseif spellId == 442432 and self:AntiSpam(5, 1) then--Ingest Black Blood
 		--Timers that restart here
 		timerExperimentalDosageCD:Start(16, self.vb.dosageCount+1)
