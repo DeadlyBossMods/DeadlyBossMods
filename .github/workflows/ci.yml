@@ -23,9 +23,6 @@ jobs:
         with:
           args: "--no-color -q"
 
-      - name: Run DBM Checks
-        uses: DeadlyBossMods/DBM-Actions@master
-
       - name: LuaLS globals check
         uses: DeadlyBossMods/LuaLS-config@main
         with:

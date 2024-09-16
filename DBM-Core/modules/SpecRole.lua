@@ -358,7 +358,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 			[270] = {	--Mistweaver Monk
 				["Healer"] = true,
 				["Melee"] = true,
-				["Ranged"] = true,
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
 				["RaidCooldown"] = true,--Revival

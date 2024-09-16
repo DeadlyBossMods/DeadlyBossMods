@@ -104,3 +104,4 @@ modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\NilWarning.lua
+modules\objects\Sorting.lua

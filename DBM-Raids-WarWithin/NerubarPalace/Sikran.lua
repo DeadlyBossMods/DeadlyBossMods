@@ -15,6 +15,7 @@ mod.disableHealthCombat = true--^^
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 456420 435401 432965 435403 439559 453258 442428",
+	"SPELL_CAST_SUCCESS 439559 453258",
 	"SPELL_AURA_APPLIED 459273 438845 435410 439191",--433517
 	"SPELL_AURA_APPLIED_DOSE 459273 438845",
 	"SPELL_AURA_REMOVED 459273 439191",--433517
@@ -33,9 +34,9 @@ mod:RegisterEventsInCombat(
 --]]
 local warnCosmicShards							= mod:NewCountAnnounce(459273, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(459273))--Player
 local warnPhaseBlades							= mod:NewIncomingCountAnnounce(433517, 3, nil, nil, 100)
-local warnRainofArrows							= mod:NewCountAnnounce(439559, 3)
 local warnDecimate								= mod:NewTargetNoFilterAnnounce(442428, 3)
 
+local specWarnRainofArrows						= mod:NewSpecialWarningDodgeCount(439559, nil, nil, nil, 2, 2)
 local specWarnShatteringSweep					= mod:NewSpecialWarningRunCount(456420, nil, 394017, nil, 4, 2)
 local specWarnExpose							= mod:NewSpecialWarningDefensive(435401, nil, nil, nil, 1, 2)
 local specWarnPhaseLunge						= mod:NewSpecialWarningDefensive(435403, nil, nil, nil, 1, 2)
@@ -144,7 +145,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 439559 or spellId == 453258 then
 		self.vb.arrowsCount = self.vb.arrowsCount + 1
-		warnRainofArrows:Show(self.vb.arrowsCount)
 		if self:IsMythic() then
 			--Behavior changes fairly radically after first sweep on mythic
 			if self.vb.arrowsCount == 1 then
@@ -165,6 +165,15 @@ function mod:SPELL_CAST_START(args)
 			--Normal might be 39.8 instead of 38.1, need more data
 			timerDecimateCD:Start(self:IsMythic() and (self.vb.sweepCount == 0 and 26.1 or 28) or 38.1, self.vb.decimateCount+1)
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 439559 or spellId == 453258 then
+		--Alert on success instead of start since that's when swirls actually appear
+		specWarnRainofArrows:Show(self.vb.arrowsCount)
+		specWarnRainofArrows:Play("watchstep")
 	end
 end
 

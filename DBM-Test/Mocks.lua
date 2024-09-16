@@ -334,6 +334,11 @@ function mocks.UnitGUID(uId)
 	return bosses[uId] and bosses[uId].guid or fromFakeId or UnitGUID(uId)
 end
 
+function mocks.IsInScenario()
+	return fakeInstanceInfo and fakeInstanceInfo.instanceType == "scenario"
+end
+mocks.IsInScenarioGroup = mocks.IsInScenario
+
 test.restoreModVariables = {}
 function test:HookModVar(mod, key, val)
 	self.restoreModVariables[mod] = self.restoreModVariables[mod] or {}

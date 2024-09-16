@@ -285,7 +285,7 @@ local function setText(announceType, spellId, castTime, preWarnTime, customName,
 		text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, castTime or (timer / 1000))
 	elseif announceType == "prewarn" then
 		if type(preWarnTime) == "string" then
-			text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, preWarnTime)
+			error("preWarnTime is string. Notify DBM Authors")
 		else
 			text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, L.SEC_FMT:format(tostring(preWarnTime or 5)))
 		end
@@ -614,7 +614,7 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 	if not spellId then
 		error("newAnnounce: you must provide spellId", 2)
 	end
-	local optionVersion, alternateSpellId
+	local optionVersion, alternateSpellId, alternateSpellName
 	if type(optionName) == "number" then
 		if optionName > 10 then--Being used as spell name shortening
 			if DBM.Options.WarningShortText then
@@ -625,10 +625,18 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 		end
 		optionName = nil
 	end
+	--Ugly that only saves having to use 3 extra nils for Custom Name
+	--Eventually all these hacks will go away if these objects ever get rewritten
+	if type(preWarnTime) == "string" then
+		if DBM.Options.WarningShortText then
+			alternateSpellName = preWarnTime
+		end
+		preWarnTime = nil
+	end
 	if soundOption and type(soundOption) == "boolean" then
 		soundOption = 0--No Sound
 	end
-	local text, spellName = setText(announceType, spellId, castTime, preWarnTime, nil, alternateSpellId)
+	local text, spellName = setText(announceType, spellId, castTime, preWarnTime, alternateSpellName, alternateSpellId)
 	icon = DBM:ParseSpellIcon(icon or spellId)
 	---@class Announce
 	local obj = setmetatable( -- todo: fix duplicate code
@@ -668,7 +676,7 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 	return obj
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewYouAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "you", spellId, color or 1, ...)
@@ -680,86 +688,86 @@ end
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
 ---@param castTime number?
----@param preWarnTime number?
+---@param preWarnTime number|string?
 ---@param soundOption number|boolean?
 function bossModPrototype:NewTargetNoFilterAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
 	---@type Announce1
 	return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
 	---@type Announce1
 	return newAnnounce(self, "target", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce2
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce2
 function bossModPrototype:NewTargetSourceAnnounce(spellId, color, ...)
 	---@type Announce2
 	return newAnnounce(self, "targetsource", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce2NumStr
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce2NumStr
 function bossModPrototype:NewTargetCountAnnounce(spellId, color, ...)
 	---@type Announce2NumStr
 	return newAnnounce(self, "targetcount", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "spell", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewSpellSourceAnnounce(spellId, color, ...)
 	---@type Announce1
 	return newAnnounce(self, "spellsource", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewIncomingAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "incoming", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
 function bossModPrototype:NewIncomingCountAnnounce(spellId, color, ...)
 	---@type Announce1Num
 	return newAnnounce(self, "incomingcount", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewEndAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "ends", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewEndTargetAnnounce(spellId, color, ...)
 	---@type Announce1
 	return newAnnounce(self, "endtarget", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "fades", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
 function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
 	---@type Announce1Num
 	return newAnnounce(self, "addsleft", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
 function bossModPrototype:NewCountAnnounce(spellId, color, ...)
 	---@type Announce1Num
 	return newAnnounce(self, "count", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce2StrNum
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce2StrNum
 function bossModPrototype:NewStackAnnounce(spellId, color, ...)
 	---@type Announce2StrNum
 	return newAnnounce(self, "stack", spellId, color or 2, ...)
@@ -777,13 +785,13 @@ function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, option
 	return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "soon", spellId, color or 2, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
 function bossModPrototype:NewSoonCountAnnounce(spellId, color, ...)
 	---@type Announce1Num
 	return newAnnounce(self, "sooncount", spellId, color or 2, ...)
@@ -792,7 +800,7 @@ end
 ---This object disables sounds, it's almost always used in combation with a countdown timer. Even if not a countdown, its a text only spam not a sound spam
 ---@param spellId number|string
 ---@param castTime number?
----@param preWarnTime number?
+---@param preWarnTime number|string?
 ---@param color number?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
@@ -815,31 +823,31 @@ function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionD
 	return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewBaitAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "bait", spellId, color or 3, ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewPhaseAnnounce(stage, color, icon, ...)
 	---@type Announce0
 	return newAnnounce(self, "stage", stage, color or 2, icon or "136116", ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewPhaseChangeAnnounce(color, icon, ...)
 	---@type Announce1
 	return newAnnounce(self, "stagechange", 0, color or 2, icon or "136116", ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce0
 function bossModPrototype:NewPrePhaseAnnounce(stage, color, icon, ...)
 	---@type Announce0
 	return newAnnounce(self, "prestage", stage, color or 2, icon or "136116", ...)
 end
 
----@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce1
 function bossModPrototype:NewMoveToAnnounce(spellId, color, ...)
 	---@type Announce1
 	return newAnnounce(self, "moveto", spellId, color or 3, ...)
