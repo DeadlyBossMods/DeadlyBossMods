@@ -34,9 +34,17 @@ local L
 --L= DBM:GetModLocalization(2609)
 
 ---------------------------
---  Eggtender Ovi'nax (2919) --
+--  Bloodtwister Ovi'nax (2919) --
 ---------------------------
---L= DBM:GetModLocalization(2612)
+L= DBM:GetModLocalization(2612)
+
+L:SetOptionLocalization({
+	EggBreakerBehavior	= "알 깨기 작동 방식 설정 (공대장이면 이 설정을 다른 사람의 설정보다 우선 적용)",
+	MatchBW				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t 징표를 근딜 > 원거리 > 힐러순으로 (Bigwigs 작동 방식에 맞춤)",--Default
+	UseAllAscending		= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t, 기타 징표를 근딜 > 원거리 > 힐러순으로",
+	DisableIconsForRaid	= "대상에 징표를 설정하지 않고 징표 없는 말풍선 알림만 표시",
+	DisableAllForRaid	= "대상에 징표 설정과 말풍선 알림 모두 끄기"
+})
 
 ---------------------------
 --  Nexus-Princess Ky'veza(2920) --
