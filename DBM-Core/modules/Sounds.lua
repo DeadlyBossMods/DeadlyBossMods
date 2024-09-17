@@ -144,7 +144,7 @@ do
 	-- Filtered list of media assigned to dungeon/raid background music catagory
 	local dungeonMusic
 
-	if private.isRetail and not DBM.Options.EventMusicNoBuiltIn then
+	if private.isRetail then
 		dungeonMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
@@ -152,14 +152,14 @@ do
 			{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 			{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 		}
-	elseif private.isCata and not DBM.Options.EventMusicNoBuiltIn then
+	elseif private.isCata then
 		dungeonMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
 			{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
 			{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
 		}
-	elseif private.isWrath and not DBM.Options.EventMusicNoBuiltIn then
+	elseif private.isWrath then
 		dungeonMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
