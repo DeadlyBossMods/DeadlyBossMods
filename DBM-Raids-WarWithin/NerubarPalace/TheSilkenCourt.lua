@@ -47,14 +47,14 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(29011))
 ----Anub'arash
 mod:AddTimerLine(anubarash)
 local warnPiercingStrike						= mod:NewStackAnnounce(438218, 2, nil, "Tank|Healer", 2)
-local warnCalloftheSwarm						= mod:NewCountAnnounce(438801, 2)
+local warnCalloftheSwarm						= mod:NewCountAnnounce(438801, 2, nil, nil, nil, nil, DBM_COMMON_L.ADDS)
 local warnBurrowedEruption						= mod:NewCountAnnounce(441791, 2, nil, nil, 118563)
 local warnImpaled								= mod:NewTargetNoFilterAnnounce(449857, 4)
 local warnEntangled								= mod:NewTargetNoFilterAnnounce(440179, 1)
 
 local specWarnPiercingStrike					= mod:NewSpecialWarningDefensive(438218, nil, nil, nil, 1, 2)
 local specWarnRecklessCharge					= mod:NewSpecialWarningCount(440246, nil, 100, nil, 1, 2)--If we can get target, make dodge warning for non target and "move to web" for target
-local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, nil, 2, 2)
+local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, DBM_COMMON_L.FRONTAL.." [A]", 2, 2)
 local yellImpaled								= mod:NewShortYell(449857, nil, false)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
@@ -104,7 +104,7 @@ local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4, nil, nil, nil, 
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
 --local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
-local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, nil, 2, 2)
+local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL.." [S]", 2, 2)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
 local timerWebVortexCD						= mod:NewCDCountTimer(49, 441626, nil, nil, nil, 2)

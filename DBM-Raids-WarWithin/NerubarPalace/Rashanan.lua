@@ -40,7 +40,7 @@ local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
 local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
-local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, nil, 2, 2)
+local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
 --local yellWebReave							= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)

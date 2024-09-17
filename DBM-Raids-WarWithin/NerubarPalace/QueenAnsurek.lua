@@ -846,7 +846,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 224368 then--Chamber Expeller
 		self.vb.killedExpeller = self.vb.killedExpeller + 1
 		if self.vb.killedExpeller == 2 then
-			--First set died, restart Wrest timer (preliminary, will be updated on next expeller engage)
+			--First set died, restart Wrest timer
 			--This still isn't perfect. I doubt we can see true event cause I already compared previous set death to new set engage and have same variations of ~2 seconds
 			timerWrestCD:Stop()
 			timerWrestCD:Start(self:IsEasy() and 13 or 9.3, self.vb.wrestCount+1)
