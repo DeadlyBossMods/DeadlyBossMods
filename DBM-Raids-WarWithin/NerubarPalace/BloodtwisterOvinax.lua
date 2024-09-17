@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214506)
 mod:SetEncounterID(2919)
 mod:SetUsedIcons(6, 4, 3, 7)
-mod:SetHotfixNoticeRev(20240614000000)
---mod:SetMinSyncRevision(20230929000000)
+mod:SetHotfixNoticeRev(20240917000000)
+--mod:SetMinSyncRevision(20240917000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -55,7 +55,7 @@ local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
-mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 442526)
+mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "icon", nil, 442526)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
@@ -181,9 +181,9 @@ local function sortEggBreaker(self)
 	for i = 1, #eggIcons do
 		local name = eggIcons[i]
 		local icon
-		if self.vb.interruptBehavior == "MatchBW" then
+		if self.vb.EggBreakerBehavior == "MatchBW" then
 			icon = (self:IsMythic() and markOrder[i] or markOrder[(i * 2) - 1])
-		elseif self.vb.interruptBehavior == "UseAllAscending" then
+		elseif self.vb.EggBreakerBehavior == "UseAllAscending" then
 			icon = i
 		else--Disable Icons and Disable all for raid
 			icon = 0
@@ -194,8 +194,12 @@ local function sortEggBreaker(self)
 		end
 		if name == DBM:GetMyPlayerInfo() then
 			specWarnExperimentalDosage:Show(eggBreak)
-			specWarnExperimentalDosage:Play("movetoegg")
-			if self.vb.interruptBehavior ~= "DisableAllForRaid" then
+			--if icon > 0 then
+			--	specWarnExperimentalDosage:Play("mm"..icon)
+			--else
+				specWarnExperimentalDosage:Play("movetoegg")
+			--end
+			if self.vb.EggBreakerBehavior ~= "DisableAllForRaid" then
 				yellxperimentalDosage:Yell(icon)
 				yellxperimentalDosageFades:Countdown(440421, nil, icon)
 			end
@@ -237,8 +241,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 440421 then
 		eggIcons[#eggIcons+1] = args.destName
 		local expectedTotal = self:IsMythic() and 8 or 4
+		local alivePlayers = DBM:NumRealAlivePlayers()
+		--Auto scale expected if there aren't enough living players to meet it
+		if expectedTotal > alivePlayers then
+			expectedTotal = alivePlayers
+		end
 		self:Unschedule(sortEggBreaker)
-		if #eggIcons == (expectedTotal or DBM:NumRealAlivePlayers()) then
+		if #eggIcons == expectedTotal then
 			sortEggBreaker(self)
 		end
 		self:Schedule(0.5, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
@@ -269,7 +278,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 440421 then
-		if self.Options.SetIconOnEggBreaker then
+		if self.Options.SetIconOnEggBreaker and self.vb.EggBreakerBehavior ~= "DisableAllForRaid" then
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
