@@ -163,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnWatchers then
-				self:ScanForMobs(args.sourceGUID, 2, 8, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
+				self:ScanForMobs(args.sourceGUID, 2, 4, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
 			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -206,7 +206,7 @@ function mod:SPELL_SUMMON(args)
 			--timerBlackBulwarkCD:Start(nil, args.destGUID)
 			--timerSpectralSlamCD:Start(nil, args.destGUID)
 			if self.Options.SetIconOnWatchers then
-				self:ScanForMobs(args.destGUID, 2, 8, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
+				self:ScanForMobs(args.destGUID, 2, 4, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
 			end
 		end
 	elseif spellId == 444835 then--Forgotten Harbinger
