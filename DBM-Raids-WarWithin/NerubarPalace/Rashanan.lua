@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(214504)
 mod:SetEncounterID(2918)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20240720000000)
+mod:SetHotfixNoticeRev(20240818000000)
 mod:SetMinSyncRevision(20240720000000)
 mod.respawnTime = 29
 
@@ -79,7 +79,94 @@ mod.vb.reaveCount = 0
 mod.vb.movementCount = 0
 
 local savedDifficulty = "heroic"
+--LFR and normal are MOSTLY the same, but there are minor differences in some timers, so they are separated
 local allTimers = {
+	["lfr"] = {--Complete up to 7:03
+		[1] = {
+			--Erosive Spray
+			[439811] = {3.0, 31.4, 47.0},
+			--Infested Spawn
+			[455373] = {62.4},
+			--Rolling Acid
+			[439789] = {43.3},
+			--Savage Assault
+			[444687] = {10.9, 15.6, 23.5, 7.8, 15.7},
+			--Spinneret's Strands
+			[439784] = {14.9},--, 52.9 removed in LFR
+		},
+		[2] = {
+			--Erosive Spray
+			[439811] = {35.0, 47.0},
+			--Infested Spawn
+			[455373] = {41.4},
+			--Rolling Acid
+			[439789] = {18.3},--, 52.9 is removed in LFR
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},
+			--Spinneret's Strands
+			[439784] = {62.4},
+		},
+		[3] = {
+			--Erosive Spray
+			[439811] = {35.0, 47.0},
+			--Infested Spawn
+			[455373] = {15.9},--, 52.9 is removed in LFR
+			--Rolling Acid
+			[439789] = {65.4},
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},
+			--Spinneret's Strands
+			[439784] = {40.9},
+		},
+		[4] = {
+			--Erosive Spray
+			[439811] = {35.0, 47},
+			--Infested Spawn
+			[455373] = {41.4},
+			--Rolling Acid
+			[439789] = {65.4},
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},
+			--Spinneret's Strands
+			[439784] = {15.3},--, 52.9 removed in LFR
+		},
+		[5] = {
+			--Erosive Spray
+			[439811] = {35, 47},
+			--Infested Spawn
+			[455373] = {62.9},
+			--Rolling Acid
+			[439789] = {18.4},--Assumed it's same as normal minus 52.9
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
+			--Spinneret's Strands
+			[439784] = {40},
+		},
+		[6] = {
+			--Erosive Spray
+			[439811] = {35},
+			--Infested Spawn
+			[455373] = {15.9},
+			--Rolling Acid
+			[439789] = {0},
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
+			--Spinneret's Strands
+			[439784] = {0},
+		},
+		[7] = {
+			--Erosive Spray
+			[439811] = {0},
+			--Infested Spawn
+			[455373] = {0},
+			--Rolling Acid
+			[439789] = {0},
+			--Savage Assault
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
+			--Spinneret's Strands
+			[439784] = {0},
+		},
+	},
 	["normal"] = {--Complete up to 9:54
 		[1] = {
 			--Erosive Spray
@@ -161,7 +248,7 @@ local allTimers = {
 			--Rolling Acid
 			[439789] = {0},
 			--Savage Assault
-			[444687] = {0},
+			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
 			--Spinneret's Strands
 			[439784] = {0},
 		},
@@ -252,102 +339,102 @@ local allTimers = {
 			[439784] = {0},
 		},
 	},
-	["mythic"] = {--11:00
+	["mythic"] = {--6:23
 		[1] = {
 			--Erosive Spray
-			[439811] = {2.9, 29.6, 44.4},
+			[439811] = {8.1, 40},
 			--Infested Spawn
-			[455373] = {39.8},
+			[455373] = {18.8},
 			--Rolling Acid
-			[439789] = {16.0, 30.3},
+			[439789] = {35},
 			--Savage Assault
-			[444687] = {10.3, 14.8, 23.8, 9.0, 11.7},
+			[444687] = {5.5, 22.5, 2, 12.9, 2.5},
 			--Spinneret's Strands
-			[439784] = {19.6, 45.0},
+			[439784] = {14.2},
 			--Enveloping Webs
-			[454989] = {60.1},
+			[454989] = {38},
 		},
 		[2] = {
 			--Erosive Spray
-			[439811] = {33.2, 44.4},
+			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {20.8, 24.2},
+			[455373] = {14.3},
 			--Rolling Acid
-			[439789] = {61.2},
+			[439789] = {40},
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.7, 5.9, 14.8, 3.7},
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {40.0},
+			[439784] = {33.8},
 			--Enveloping Webs
-			[454989] = {14.7, 50.0},
+			[454989] = {18.6},
 		},
 		[3] = {
 			--Erosive Spray
-			[439811] = {33.2, 44.4},
+			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {20.8},
+			[455373] = {14.3, 20},
 			--Rolling Acid
-			[439789] = {16.7, 29.7, 14.7},
+			[439789] = {15.8},
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.1, 6.4, 14.8, 3.7},
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {40.0},
+			[439784] = {18.6, 15.1},
 			--Enveloping Webs
-			[454989] = {64.7},
+			[454989] = {38.6},
 		},
 		[4] = {
 			--Erosive Spray
-			[439811] = {33.2, 44.4},
+			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {15.2, 25.2},
+			[455373] = {14.4, 24.7},
 			--Rolling Acid
-			[439789] = {0},--Not cast on 4th area, bug?
+			[439789] = {0},--Not cast on 4th area
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.6, 6.0, 14.8, 3.7},
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {20.3, 38.9},
+			[439784] = {18.6},
 			--Enveloping Webs
-			[454989] = {45.0, 19.7},
+			[454989] = {38.6},
 		},
 		[5] = {
 			--Erosive Spray
-			[439811] = {33.2, 44.4},
+			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {15.2, 29.7},
+			[455373] = {19.1},
 			--Rolling Acid
-			[439789] = {22.3, 44.4},
+			[439789] = {20.6},
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.7, 5.9, 14.8, 3.7},
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {59.1},
+			[439784] = {0},--Not cast on this movement
 			--Enveloping Webs
-			[454989] = {40.0},
+			[454989] = {33.8},
 		},
 		[6] = {
 			--Erosive Spray
-			[439811] = {33.2, 44.4},
+			[439811] = {0},
 			--Infested Spawn
-			[455373] = {20.7},
+			[455373] = {0},
 			--Rolling Acid
-			[439789] = {66.7},
+			[439789] = {0},
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.1, 6.5, 14.8, 3.7},
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {14.7, 25.3},
+			[439784] = {13.8, 20},
 			--Enveloping Webs
-			[454989] = {44.5, 14.6},
+			[454989] = {38.6},
 		},
 		[7] = {--Not complete
 			--Erosive Spray
-			[439811] = {33.2, 44.4},--44.4 is assumed
+			[439811] = {0},
 			--Infested Spawn
 			[455373] = {0},--Not enough data
 			--Rolling Acid
 			[439789] = {22.3},--Not enough data
 			--Savage Assault
-			[444687] = {11.0, 14.8, 23.1, 5.9, 14.8, 3.7},--23 + is assumed
+			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},--Assumed since it's been same in rest
 			--Spinneret's Strands
-			[439784] = {14.7},--Not enough data
+			[439784] = {0},--Not enough data
 			--Enveloping Webs
 			[454989] = {0},--Not enough data
 		},
@@ -373,19 +460,20 @@ function mod:OnCombatStart(delay)
 	self.vb.movementCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
-		timerWebReaveCD:Start(51.1-delay, 1)--Only mythic gets one before first movement, but heroic might now too, need to recheck heroic
-		timerEnvelopingWebsCD:Start(60.1-delay, 1)
+		timerEnvelopingWebsCD:Start(38-delay, 1)
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+	else--LFR
+		savedDifficulty = "lfr"
 	end
 	timerSavageAssaultCD:Start(allTimers[savedDifficulty][1][444687][1]-delay, 1)
 	timerRollingAcidCD:Start(allTimers[savedDifficulty][1][439789][1]-delay, 1)
 	timerInfestedSpawnCD:Start(allTimers[savedDifficulty][1][455373][1]-delay, 1)
 	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][1][439784][1]-delay, 1)
 	timerErosiveSprayCD:Start(allTimers[savedDifficulty][1][439811][1]-delay, 1)
-	timerMovementCD:Start(self:IsMythic() and 86.3 or 90, 1)
+	timerMovementCD:Start(self:IsMythic() and 56.3 or 90, 1)
 	self:EnablePrivateAuraSound(439790, "targetyou", 2)--Raid version, (434406 is in dungeon)
 	self:EnablePrivateAuraSound(434406, "targetyou", 2, 439790)--Likely dungeon version of Rolling Acid
 	self:EnablePrivateAuraSound(455284, "mobout", 2)--Maybe better sound later, but this one does say "mob out" as in "mob on you, get out and spread" which is the mechanic
@@ -399,8 +487,10 @@ function mod:OnTimerRecovery()
 		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+	else--LFR
+		savedDifficulty = "lfr"
 	end
 end
 
@@ -516,7 +606,7 @@ function mod:SPELL_INTERRUPT(args)
 		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][self.vb.phase][455373][1], self.vb.spawnCountTotal+1)
 		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][self.vb.phase][439784][1], self.vb.strandsCountTotal+1)
 		timerErosiveSprayCD:Start(allTimers[savedDifficulty][self.vb.phase][439811][1], self.vb.sprayCountTotal+1)
-		timerMovementCD:Start(self:IsHard() and (self.vb.movementCount == 5 and 115 or 86.3) or 90.5, self.vb.movementCount+1)--5th movement rule is confirmed on mythic but not on heroic
+		timerMovementCD:Start(self:IsMythic() and 57.2 or self:IsHeroic() and 87 or 90.5, self.vb.movementCount+1)--5th movement rule is confirmed on mythic but not on heroic
 	end
 end
 
