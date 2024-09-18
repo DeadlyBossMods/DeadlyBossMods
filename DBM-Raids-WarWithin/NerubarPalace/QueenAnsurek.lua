@@ -310,7 +310,7 @@ local function sortToxin(self)
 			end
 		end
 	end
-	warnReactiveToxin:Show(self.vb.dosageCount+1, table.concat(reactiveIcons, "<, >"))
+	warnReactiveToxin:Show(self.vb.reactiveCount+1, table.concat(reactiveIcons, "<, >"))
 end
 
 function mod:OnCombatStart(delay)
@@ -543,8 +543,6 @@ function mod:SPELL_CAST_START(args)
 		timerWebBladesCD:Stop()
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
-
-		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
 		timerAcidicApocalypse:Stop()
@@ -637,7 +635,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnAbyssalInfusion:Show(self:IconNumToTexture(icon))
 			specWarnAbyssalInfusion:Play("mm"..icon)
-			yellAbyssalInfusion:Yell(icon, icon)
+			yellAbyssalInfusion:Yell(icon)
 			yellAbyssalInfusionFades:Countdown(spellId, nil, icon)
 		end
 		warnAbyssalInfusion:CombinedShow(1, args.destName)
