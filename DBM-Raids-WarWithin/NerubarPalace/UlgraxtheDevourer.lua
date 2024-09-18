@@ -134,13 +134,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnChitteringSwarm:Play("killmob")
 	elseif spellId == 436200 or spellId == 436203 then--First charge, subsiquent ones
 		if spellId == 436200 then
-			self.vb.webbingChargeCount = 1
-			timerJuggernautChargeCD:Start(4.6, 2)
+			self.vb.webbingChargeCount = 0
+			timerJuggernautChargeCD:Start(4.6, 1)
 		else
 			self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
 			warnJuggernautCharge:Show(self.vb.webbingChargeCount)
 			warnJuggernautCharge:Play("chargemove")
-			if self.vb.webbingChargeCount < 5 then
+			if self.vb.webbingChargeCount < 4 then
 				timerJuggernautChargeCD:Start(7.1, self.vb.webbingChargeCount+1)
 			end
 		end

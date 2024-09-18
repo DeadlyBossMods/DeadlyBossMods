@@ -835,6 +835,7 @@ function mod:UNIT_DIED(args)
 		end
 		--Better place to start Stage 2 wrest timer
 		if self.vb.wrestCount == 0 then
+			timerWrestCD:Stop()
 			timerWrestCD:Start(self:IsEasy() and 12.9 or 11.9, 1)
 		end
 	--elseif cid == 223318 then--Devoted Worshipper

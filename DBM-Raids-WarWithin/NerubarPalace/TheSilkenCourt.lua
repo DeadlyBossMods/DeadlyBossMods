@@ -153,7 +153,7 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {22.1, 38.0, 25.0},--Updated Sept 11
 			-- Venomous Rain
-			[438343] = {6.2, 38.0, 36.3, 37.6},--Updated Sept 11
+			[438343] = {6.2, 37.8, 36.3, 37.6},--Updated Sept 11
 			-- Web Bomb
 			[439838] = {16.4, 57.9},--Updated Sept 11
 			-- Skittering Leap
