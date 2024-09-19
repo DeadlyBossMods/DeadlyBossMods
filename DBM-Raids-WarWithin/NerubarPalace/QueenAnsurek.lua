@@ -373,6 +373,8 @@ function mod:OnCombatStart(delay)
 		savedDifficulty = "heroic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
+	elseif self:IsStory() then
+		savedDifficulty = "story"
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
@@ -411,6 +413,8 @@ function mod:OnTimerRecovery()
 		savedDifficulty = "heroic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
+	elseif self:IsStory() then
+		savedDifficulty = "story"
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
