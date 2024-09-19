@@ -50,7 +50,7 @@ local specWarnVolatileConcoctionTaunt			= mod:NewSpecialWarningTaunt(441362, nil
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
 local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, 143340, nil, nil, 3)--Shortname "Injection"
-local timerIngestBlackBloodCD					= mod:NewCDCountTimer(170, 442432, 325225, nil, nil, 3)--Shortname "Container Breach"
+local timerIngestBlackBloodCD					= mod:NewCDCountTimer(168.8, 442432, 325225, nil, nil, 3)--Shortname "Container Breach"
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 	self.vb.EggBreakerBehavior = self.Options.EggBreakerBehavior--Default it to whatever user has it set to, until group leader overrides it
 	self.vb.eggIcon = 1
 	timerVolatileConcoctionCD:Start(1.9, 1)
-	timerIngestBlackBloodCD:Start(15.6, 1)--Time til USCS event, cast event is 19.6
+	timerIngestBlackBloodCD:Start(15.4, 1)--Time til USCS event, cast event is 19.6
 --	timerExperimentalDosageCD:Start(33, 1)--Started by Injest black Blood
 	if self:IsHard() then
 		timerUnstableWebCD:Start(15, 1)

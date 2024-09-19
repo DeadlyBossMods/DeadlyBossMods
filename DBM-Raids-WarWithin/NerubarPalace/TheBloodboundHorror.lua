@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 444363 452237 445936 442530 451288 445016 445174",
-	"SPELL_CAST_SUCCESS 443203",
+	"SPELL_CAST_SUCCESS 443203 445016",
 	"SPELL_SUMMON 444830 444835",
 	"SPELL_AURA_APPLIED 443612 452245 443042 445272",
 	"SPELL_AURA_APPLIED_DOSE 445272",
@@ -178,7 +178,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerBlackBulwarkCD:Start(nil, args.sourceGUID)
 	elseif spellId == 445016 then
-		timerSpectralSlamCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSpectralSlam:Show()
 			specWarnSpectralSlam:Play("defensive")
@@ -195,6 +194,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.membraneCount = self.vb.membraneCount +1
 		warnCrimsonRain:Show(self.vb.membraneCount)
 		timerCrimsonRainCD:Start(nil, self.vb.membraneCount+1)--128
+	elseif spellId == 445016 then
+		timerSpectralSlamCD:Start(10.4, args.sourceGUID)
 	end
 end
 
