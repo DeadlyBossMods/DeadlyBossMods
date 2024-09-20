@@ -573,6 +573,7 @@ L.Panel_Range				= "Marco de distancia"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Placas de nombres"
+L.Plater_Config				= "Abrir configuración de Plater"
 L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombres)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"
@@ -582,7 +583,7 @@ L.NPIcon_GrowthDirection 	= "Dirección de crecimiento del icono"
 L.NPIcon_Spacing		 	= "Espaciado del icono: %d"
 L.NPIcon_MaxTextLen		 	= "Longitud del texto máx.: %d"
 L.NPIconAnchorPoint			= "Punto de anclaje del icono"
-L.NPDemo					= "Probar (Acercase de placas de nombre)"
+L.NPDemo					= "Probar (Acercarse de placas de nombre)"
 L.FontTypeTimer				= "Seleccionar fuente del temporizador"
 L.FontTypeText				= "Seleccionar fuente de texto"
 
