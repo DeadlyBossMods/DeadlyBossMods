@@ -261,7 +261,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 435405 then
 		self:SetStage(1)
 		timerStarlessNight:Stop()
-		timerVoidShreddersCD:Start(6.8, self.vb.shredderCount+1)
+		timerVoidShreddersCD:Start(14.8, self.vb.shredderCount+1)--FIXME
 		timerAssCD:Start(18.1, self.vb.assCount+1)
 		timerNetherRiftCD:Start(26.8, self.vb.riftCount+1)
 		timerTwilightMassacreCD:Start(38.8, self.vb.massacreCount+1)
