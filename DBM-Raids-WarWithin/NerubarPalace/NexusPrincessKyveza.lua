@@ -41,6 +41,7 @@ local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 --local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
 --local yellAss									= mod:NewShortYell(436867)
 --local yellAssFades							= mod:NewShortFadesYell(436867)
+local specWarnQueensBane						= mod:NewSpecialWarningMoveAway(437343, nil, nil, nil, 1, 2, 3)
 local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
@@ -51,7 +52,8 @@ local specWarnChasmalGashSwap					= mod:NewSpecialWarningTaunt(440576, nil, 3200
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerAssCD								= mod:NewCDCountTimer(120, 436867, nil, nil, nil, 3)
-local timerDeathMasksCD							= mod:NewAITimer(49, 448364, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerOrbsCD								= mod:NewCastTimer(10, 439409, DBM_COMMON_L.ORBS, nil, nil, 3)
+local timerDeathMasksCD							= mod:NewCDCountTimer(49, 448364, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerTwilightMassacreCD					= mod:NewCDCountTimer(30, 438245, 281001, nil, nil, 3)--Shortname "Massacre"
 local timerNetherRiftCD							= mod:NewCDCountTimer(30, 437620, DBM_COMMON_L.RIFT.." (%s)", nil, nil, 3)--shortname Rift
 local timerNexusDaggersCD						= mod:NewCDCountTimer(30, 439576, 1180, nil, nil, 3)--Shortname "Daggers"
@@ -65,7 +67,7 @@ mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
 mod:AddPrivateAuraSoundOption(436870, true, 436867, 1)--Assassination Targets
-mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
+--mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.assCount = 0
@@ -76,6 +78,7 @@ mod.vb.riftCount = 0
 mod.vb.daggersCount = 0
 mod.vb.shredderCount = 0
 mod.vb.starlessCount = 0
+mod.vb.expectedOrbs = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.assCount = 0
@@ -85,6 +88,7 @@ function mod:OnCombatStart(delay)
 	self.vb.daggersCount = 0
 	self.vb.shredderCount = 0
 	self.vb.starlessCount = 0
+	self.vb.expectedOrbs = 0
 	self:SetStage(1)
 	timerVoidShreddersCD:Start(10, 1)
 	timerAssCD:Start(13.2, 1)
@@ -186,7 +190,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 437343 then
+		if self:IsHard() and self:AntiSpam() then
+			timerOrbsCD:Start()
+		end
 		if args:IsPlayer() and not self:IsEasy() then
+			specWarnQueensBane:Show()
+			specWarnQueensBane:Play("runout")
 			yellQueensBane:Countdown(spellId)
 		end
 	--elseif spellId == 436870 then
