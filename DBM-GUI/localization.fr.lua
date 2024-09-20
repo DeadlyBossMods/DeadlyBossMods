@@ -424,7 +424,7 @@ L.SpamBlockNoRangeFrame		= "Ne pas afficher le cadre des portées"
 L.SpamBlockNoInfoFrame		= "Ne pas afficher le cadre d'information"
 L.SpamBlockNoHudMap			= "Ne pas afficher la HudMap"
 L.SpamBlockNoNameplate		= "Ne pas afficher les auras des plaques de nom"
-L.SpamBlockNoYells			= "Ne pas envoyer de cris dans le chat"
+L.SpamBlockNoYells			= "Ne pas envoyer de cris dans la discussion"
 L.SpamBlockNoNoteSync		= "Ne pas accepter les notes partagées"
 
 L.Area_Restore				= "Options de restauration DBM (Restaure la dernière utilisation de DBM ou non lors de la fin d'un module)"
@@ -434,7 +434,7 @@ L.SpamBlockNoRangeRestore	= "Ne pas restaurer le radar de portée quand les addo
 L.Area_SpamFilter			= "Options des filtres de spam"
 L.DontShowFarWarnings		= "Ne pas afficher les annonces/décomptes pour les événements lointains"
 L.StripServerName			= "Ne pas afficher le royaume sur les alertes et les décomptes"
-L.FilterVoidFormSay2			= "Ne pas envoyer de message d'icône ou de décompte sous Forme du Vide (les messages normaux seront toujours envoyés)"
+L.FilterVoidFormSay2		= "Ne pas envoyer de message d'icône ou de décompte sous Forme du Vide (les messages normaux seront toujours envoyés)"
 
 L.Area_SpecFilter			= "Options de filtre par rôle"
 L.FilterTankSpec			= "Filtrer les alertes réservées aux tanks si vous n'êtes pas en spé tank. (Remarque : Désactivation non recommandée car les alertes de taunt sont activées en permanence par défaut.)"
