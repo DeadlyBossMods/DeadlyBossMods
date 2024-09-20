@@ -8283,7 +8283,7 @@ end
 ---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
 ---|10: Player icon using melee > ranged > healer
 ---@param default SpecFlags|boolean?
----@param iconType iconTypes|number?is
+---@param iconType iconTypes|number?
 ---@param iconsUsed table? table defining used icons such as {1, 2, 3}
 ---@param conflictWarning boolean? set to true if this mod has 2 or more icon options that use the same icons
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
