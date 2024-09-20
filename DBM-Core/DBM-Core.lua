@@ -82,9 +82,9 @@ local fakeBWVersion, fakeBWHash = 359, "3aa6ef3"--359.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.14 alpha"--Core version
+DBM.DisplayVersion = "11.0.14"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 9, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 9, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 15 or 14--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -7707,7 +7707,7 @@ do
 		if uId then--This version includes ONLY melee dps
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -7758,7 +7758,7 @@ do
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -7794,7 +7794,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -7813,7 +7813,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -7831,7 +7831,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
@@ -8283,7 +8283,7 @@ end
 ---|9: Player icon using tank > non tank with raid roster index sorting on multiple melee
 ---|10: Player icon using melee > ranged > healer
 ---@param default SpecFlags|boolean?
----@param iconType iconTypes|number?
+---@param iconType iconTypes|number?is
 ---@param iconsUsed table? table defining used icons such as {1, 2, 3}
 ---@param conflictWarning boolean? set to true if this mod has 2 or more icon options that use the same icons
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
