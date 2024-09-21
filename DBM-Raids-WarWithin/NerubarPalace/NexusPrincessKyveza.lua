@@ -12,8 +12,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 436971 437620 448364 438245 439576 440377 453683 442277 435405",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 436971 437620 438245 439576 440377 453683 442277 435405",
+	"SPELL_CAST_SUCCESS 448364",
 	"SPELL_AURA_APPLIED 447169 447174 440576 437343",--436870
 	"SPELL_AURA_APPLIED_DOSE 447174 440576",
 	"SPELL_AURA_REMOVED 447169 435405 437343"--436870
@@ -28,8 +28,9 @@ mod:RegisterEventsInCombat(
 --TODO, recheck option keys to match BW for weak aura compatability before live
 --TODO, verify queensbane is actually hidden, cause they flagged wrong spellids.
 --[[
-(ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 448364 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
- or ability.id = 435405 and type = "removebuff"
+(ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
+or ability.id = 448364 and type = "cast"
+or ability.id = 435405 and type = "removebuff"
 --]]
 local warnAss									= mod:NewIncomingCountAnnounce(436867, 3)
 local warnDeathMasks							= mod:NewCountAnnounce(448364, 4)
@@ -139,10 +140,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnNetherRift:Show(self.vb.riftCount)
 			specWarnNetherRift:Play("watchstep")
 		end
-	elseif spellId == 448364 then
-		self.vb.maskCount = self.vb.maskCount + 1
-		warnDeathMasks:Show(self.vb.maskCount)
---		timerDeathMasksCD:Start(30, self.vb.maskCount+1)--Only once per rotation, so timer started at starless night end
 	elseif spellId == 438245 then
 		self.vb.massacreCount = self.vb.massacreCount + 1
 		warnTwilightMassacre:Show(self.vb.massacreCount)
@@ -180,6 +177,15 @@ function mod:SPELL_CAST_START(args)
 		self.vb.starlessCount = self.vb.starlessCount + 1
 		warnStarlessNight:Show(self.vb.starlessCount)
 		timerStarlessNight:Start(29)-- 24 + 5
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 448364 then
+		self.vb.maskCount = self.vb.maskCount + 1
+		warnDeathMasks:Show(self.vb.maskCount)
+--		timerDeathMasksCD:Start(30, self.vb.maskCount+1)--Only once per rotation, so timer started at starless night end
 	end
 end
 

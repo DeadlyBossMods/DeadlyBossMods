@@ -64,6 +64,7 @@ CL.ADD						= "Esbirro"--A fight Add as in "boss spawned extra adds" - must chec
 CL.ADDS						= "Esbirros"
 CL.ADDCOUNT					= "Esbirro %s"
 CL.BIG_ADD					= "Esbirro grande"
+CL.BIG_ADDS					= "Esbirros grandes"
 CL.BOSS						= "Jefe"
 CL.ENEMIES					= "Enemigos"
 CL.BREAK_LOS				= "Romper la línea de mira"

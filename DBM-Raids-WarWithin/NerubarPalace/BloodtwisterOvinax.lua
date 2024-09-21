@@ -50,7 +50,7 @@ local specWarnVolatileConcoctionTaunt			= mod:NewSpecialWarningTaunt(441362, nil
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
 local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, 143340, nil, nil, 3)--Shortname "Injection"
-local timerIngestBlackBloodCD					= mod:NewCDCountTimer(168.8, 442432, 325225, nil, nil, 3)--Shortname "Container Breach"
+local timerIngestBlackBloodCD					= mod:NewCDCountTimer(167.7, 442432, 325225, nil, nil, 3)--Shortname "Container Breach"
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
@@ -60,17 +60,17 @@ mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "UseAllAscending", "Disa
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
 
-mod:AddNamePlateOption("NPAuraOnNecrotic", 446694, true)
+mod:AddNamePlateOption("NPAuraOnNecrotic2", 446694, false)
 --Voracious Worm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28999))
 
-mod:AddNamePlateOption("NPAuraOnRavenous", 446690, true)
+mod:AddNamePlateOption("NPAuraOnRavenous2", 446690, false)
 mod:AddSetIconOption("SetIconOnWorm", -28999, false, 5, {8, 7, 6, 5})
 --Blood Parasite
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29003))
 local specWarnFixate							= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 2)
 
-mod:AddNamePlateOption("NPAuraOnAccelerated", 442263, true)
+mod:AddNamePlateOption("NPAuraOnAccelerated2", 442263, false)
 mod:AddNamePlateOption("NPFixate", 442250, true)
 
 --mod:AddInfoFrameOption(407919, true)
@@ -84,7 +84,8 @@ mod.vb.EggBreakerBehavior = "MatchBW"
 mod.vb.eggIcon = 1
 local eggBreak = DBM:GetSpellName(177853)
 local eggIcons = {}
-local markOrder = { 6, 6, 4, 4, 3, 3, 7, 7 } -- blue, green, purple, red (wm 1-4)
+local markOrder = { 6, 4, 3, 7 } -- blue, green, purple, red (wm 1-4)
+local mythicMarkOrder = { 6, 6, 4, 4, 1, 1, 2, 2 } -- blue, green, star, circle
 
 function mod:OnCombatStart(delay)
 	self.vb.dosageCount = 0
@@ -99,7 +100,7 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerUnstableWebCD:Start(15, 1)
 	end
-	if self.Options.NPAuraOnNecrotic or self.Options.NPAuraOnRavenous or self.Options.NPAuraOnAccelerated or self.Options.NPFixate then
+	if self.Options.NPAuraOnNecrotic2 or self.Options.NPAuraOnRavenous2 or self.Options.NPAuraOnAccelerated2 or self.Options.NPFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	--Group leader decides interrupt behavior
@@ -117,7 +118,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.NPAuraOnNecrotic or self.Options.NPAuraOnRavenous or self.Options.NPAuraOnAccelerated or self.Options.NPFixate then
+	if self.Options.NPAuraOnNecrotic2 or self.Options.NPAuraOnRavenous2 or self.Options.NPAuraOnAccelerated2 or self.Options.NPFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -182,7 +183,7 @@ local function sortEggBreaker(self)
 		local name = eggIcons[i]
 		local icon
 		if self.vb.EggBreakerBehavior == "MatchBW" then
-			icon = (self:IsMythic() and markOrder[i] or markOrder[(i * 2) - 1])
+			icon = (self:IsMythic() and mythicMarkOrder[i] or markOrder[i])
 		elseif self.vb.EggBreakerBehavior == "UseAllAscending" then
 			icon = i
 		else--Disable Icons and Disable all for raid
@@ -217,15 +218,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellUnstableWeb:Yell()
 		end
 	elseif spellId == 446694 then
-		if self.Options.NPAuraOnNecrotic then
+		if self.Options.NPAuraOnNecrotic2 then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 446690 then
-		if self.Options.NPAuraOnRavenous then
+		if self.Options.NPAuraOnRavenous2 then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 442263 then
-		if self.Options.NPAuraOnAccelerated then
+		if self.Options.NPAuraOnAccelerated2 then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 442250 then
@@ -235,7 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFixate:Play("targetyou")
 			end
 			if self.Options.NPFixate then
-				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true)
 			end
 		end
 	elseif spellId == 440421 then
@@ -260,15 +261,15 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 446694 then
-		if self.Options.NPAuraOnNecrotic then
+		if self.Options.NPAuraOnNecrotic2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 446690 then
-		if self.Options.NPAuraOnRavenous then
+		if self.Options.NPAuraOnRavenous2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 442263 then
-		if self.Options.NPAuraOnAccelerated then
+		if self.Options.NPAuraOnAccelerated2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 442250 then
