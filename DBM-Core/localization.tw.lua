@@ -648,7 +648,7 @@ L.WORLD_BUFFS = {
 	zgHeartBooty						= "靈魂掠奪者血神已經被打敗了！我們不再有危險了！",
 	zgHeartYojamba						= "開始儀式，我的僕從們。我們必須把哈卡完全打回扭曲虛空中！",
 	rendHead							= "那個假的酋長，雷德·黑手，已經倒下了！",
-	--blackfathomBoon						= "boon of Blackfathom"
+	blackfathomBoon						= "黑澗深淵的恩賜"
 }
 
 -- Annoying popup, especially for classic players
