@@ -2,7 +2,7 @@
 local transcriptorParser = DBM.Test.CreateSharedModule("ParseTranscriptor")
 
 local anonymizer			= require "Anonymizer"
-local parser				= require "StupidParser"
+local parser				= require "Parser"
 local filter    			= require "Data.Transcriptor-Filter"
 local instanceInfoGuesser	= require "InstanceInfoGuesser"
 
@@ -29,6 +29,9 @@ function transcriptorParser:New(data)
 	}
 	if type(obj.data) ~= "table" then
 		error("could not find Transcriptor entry, check that the imported log is a valid Transcriptor log including the `TranscriptDB =` statement at the beginning")
+	end
+	if obj.data.TranscriptDB then
+		obj.data = obj.data.TranscriptDB
 	end
 	return setmetatable(obj, mt)
 end
