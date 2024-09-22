@@ -23,4 +23,4 @@ Tools/Shared/InstanceInfoGuesser.lua
 Tools/Shared/Anonymizer.lua
 Tools/Shared/ParseTranscriptor.lua
 Tools/Shared/RoleGuesser.lua
-Tools/Shared/StupidParser.lua
+Tools/Shared/Parser.lua
