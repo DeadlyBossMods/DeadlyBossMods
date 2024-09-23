@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod.statTypes = "story,lfr,normal,heroic,mythic"
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(227323)
+mod:SetCreatureID(218370)
 mod:SetEncounterID(2922)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20240917000000)
@@ -187,7 +187,6 @@ mod.vb.feastCount = 0
 mod.vb.webBladesCount = 0
 --Intermission 1
 mod.vb.wrestCount = 0
-mod.vb.killedExpeller = 0
 --P3
 mod.vb.abyssalInfusionCount = 0
 mod.vb.infusionIcon = 1
@@ -575,7 +574,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 447076 then--Predation
 		self:SetStage(1.5)
 		self.vb.wrestCount = 0
-		self.vb.killedExpeller = 0
 		timerReactiveToxinCD:Stop()
 		timerVenomNovaCD:Stop()
 		timerSilkenTombCD:Stop()
@@ -884,14 +882,6 @@ function mod:UNIT_DIED(args)
 
 	elseif cid == 223204 then--Chamber Guardian
 		timerOustCD:Stop(args.destGUID)
-	elseif cid == 224368 then--Chamber Expeller
-		self.vb.killedExpeller = self.vb.killedExpeller + 1
-		if self.vb.killedExpeller == 2 then
-			--First set died, restart Wrest timer
-			--This still isn't perfect. I doubt we can see true event cause I already compared previous set death to new set engage and have same variations of ~2 seconds
-			timerWrestCD:Stop()
-			timerWrestCD:Start(self:IsEasy() and 13 or 9.3, self.vb.wrestCount+1)
-		end
 	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
 		timerNullDetonationCD:Stop(nil, args.destGUID)
 	end
@@ -903,7 +893,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			--In story she skips 1.5 and goes into stage 2, but stage 2 in story is adds teleporting down and not players going up
 			self:SetStage(2)
 			self.vb.wrestCount = 0
-			self.vb.killedExpeller = 0
 			timerReactiveToxinCD:Stop()
 			timerVenomNovaCD:Stop()
 			timerSilkenTombCD:Stop()
