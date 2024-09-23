@@ -143,8 +143,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hemorrhageCount = self.vb.hemorrhageCount + 1
 		specWarnSpewingHemorrhage:Show(self.vb.hemorrhageCount)
 		specWarnSpewingHemorrhage:Play("farfromline")
+		--32.3, 49.0, 78.9, 49.1, 79.0, 49.1, 79.0, 49.0
+		--34.7, 46.4, 79.1, 49.0, 79.0, 49.0, 79.0, 49.0", (broken example if no tank in range)
 		if self.vb.hemorrhageCount % 2 == 0 then
-			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 79, self.vb.hemorrhageCount+1)
+			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 78.9, self.vb.hemorrhageCount+1)
 		else
 			timerSpewingHemorrhageCD:Start(self:IsMythic() and 59 or 49, self.vb.hemorrhageCount+1)
 		end
