@@ -54,7 +54,7 @@ local timerIngestBlackBloodCD					= mod:NewCDCountTimer(167.7, 442432, 325225, n
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
+mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7, 1, 2})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
 mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "icon", nil, 442526)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))

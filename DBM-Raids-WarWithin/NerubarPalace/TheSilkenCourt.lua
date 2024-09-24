@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 451016 438677 452231 441626 450129 441782 450483 438355 443068 451327 442994 441791",
+	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 438677 452231 441626 450129 441782 450483 438355 443068 456174 442994 441791",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 438249",
 	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 440179 456245 438200 456235",--451611, 440503, 438656
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --NOTE, https://www.wowhead.com/beta/spell=440503/impaling-eruption was not exposed, re-add of that changes
 --[[
 (ability.id = 438218 or ability.id = 438801 or ability.id = 440246 or ability.id = 440504 or ability.id = 438343 or ability.id = 439838 or ability.id = 450045 or ability.id = 438677 or ability.id = 452231 or ability.id = 441626 or ability.id = 450129 or ability.id = 441782 or ability.id = 450483 or ability.id = 438355 or ability.id = 443068 or ability.id = 442994) and type = "begincast"
-or (ability.id = 451016 or ability.id = 451327) and type = "begincast"
+or (ability.id = 451016 or ability.id = 456174) and type = "begincast"
 or (ability.id = 451277 or ability.id = 450980) and (type = "applybuff" or type = "removebuff")
 --]]
 local anubarash, takazj = DBM:EJ_GetSectionInfo(29012), DBM:EJ_GetSectionInfo(29017)
@@ -54,13 +54,14 @@ local warnEntangled								= mod:NewTargetNoFilterAnnounce(440179, 1)
 
 local specWarnPiercingStrike					= mod:NewSpecialWarningDefensive(438218, nil, nil, nil, 1, 2)
 local specWarnRecklessCharge					= mod:NewSpecialWarningCount(440246, nil, 100, nil, 1, 2)--If we can get target, make dodge warning for non target and "move to web" for target
-local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, DBM_COMMON_L.FRONTAL.." [A]", 2, 2)
+local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, DBM_COMMON_L.FRONTAL.." [A]", 2, 15)
 local yellImpaled								= mod:NewShortYell(449857, nil, false)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerPiercingStrikeCD						= mod:NewCDCountTimer(49, 438218, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, 100, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
+local timerRecklessCharge						= mod:NewCastTimer(49, 440246, 100, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
 local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, 118563, nil, nil, 3)--Shortname "Burrow"
 local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL.." [A] (%s)", nil, nil, 3)--Frontal + boss initial
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
@@ -96,7 +97,7 @@ local specWarnStingingSwarm					= mod:NewSpecialWarningMoveTo(438677, nil, nil, 
 local yellStingingSwarm						= mod:NewShortYell(438677)
 
 local timerStingingSwarmCD					= mod:NewCDCountTimer(49, 438677, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerRagingFuryIntermissionCD			= mod:NewIntermissionCountTimer(100, 451327, nil, nil, nil, 6)
+local timerRagingFuryIntermissionCD			= mod:NewIntermissionCountTimer(100, 451277, nil, nil, nil, 6)
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnVoidStep							= mod:NewCountAnnounce(450483, 2, nil, nil, 4801)
@@ -104,7 +105,7 @@ local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4, nil, nil, nil, 
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
 --local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
-local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL.." [S]", 2, 2)
+local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL.." [S]", 2, 15)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
 local timerWebVortexCD						= mod:NewCDCountTimer(49, 441626, nil, nil, nil, 2)
@@ -268,72 +269,73 @@ local allTimers = {
 			[442994] = {23, 75, 70, 35, 75, 70, 35, 75, 70, 35, 75, 70},--Updated Sept 12 (35, 75, 70 looping)
 		}
 	},
-	["mythic"] = {--OLD beta timers, probably changed
+	["mythic"] = {
 		[1] = {
 			-- Piercing Strike
-			[438218] = {15.0, 23.0, 25.0, 24.0},
+			[438218] = {12.8, 20.0, 27.0, 20.0, 40.0},
 			-- Call of the Swarm
-			[438801] = {23.0, 50.0},
+			[438801] = {22.8, 53.0},
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {40.0, 59.9},
+			[441791] = {34.8, 60.0},
 			-- Reckless Charge
-			[440246] = {43.0, 59.9},
+			[440246] = {38.2, 59.8},
 			-- Impaling Eruption
-			[440504] = {8.0, 24.0, 25.0, 23.0},
+			[440504] = {7.8, 20.0, 34.0, 20.0},
 			-- Venomous Rain
-			[438343] = {15.2, 41.9, 33.2},
+			[438343] = {18.0, 33.5, 26.8},
 			-- Web Bomb
-			[439838] = {31.4, 32.9, 28.1},
+			[439838] = {15.0, 70.3},
 			-- Skittering Leap
-			[450045] = {19.3, 27.3, 61.1},
+			[450045] = {42.0, 60.1},
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {20.0, 48.0},
+			[438801] = {28.0, 61.0},
 			-- Piercing Strike
-			[438218] = {15.0, 19.0, 20.0, 23.0, 19.0, 24.0},
+			[438218] = {16.0, 20.0, 25.0, 15.0, 20.0, 25.0},
 			-- Impaling Eruption
-			[440504] = {9.0, 35.0, 35.0, 35.0},
+			[440504] = {11.0, 30.0, 30.0, 30.0},
 			-- Stinging Swarm
-			[438677] = {36.0, 37.0},
+			[438677] = {25.0, 58.0},
 			-- Web Vortex
-			[441626] = {32.7, 2.5, 34.6, 2.5, 33.7},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[441626] = {20.2, 2.5, 53.3, 2.5},
 			-- Entropic Desolation
-			[450129] = {38.0, 37.1},--Sometimes boss skips 2nd cast then 3rd cast 73.4 after 1st cast
+			[450129] = {25.5, 55.8},
 			-- Strands of Reality
-			[441782] = {14.1, 32.2, 36.1},
+			[441782] = {32.1, 35.9, 23.9},
 			-- Void Step
-			[450483] = {52.8, 26.6, 23.7},
+			[450483] = {38.7, 34.3, 23.6, 29.2},
 			-- Cataclysmic Entropy
-			[438355] = {55.8, 61.3},
+			[438355] = {41.8, 57.9},
 		},
 		[3] = {
 			-- Piercing Strike
-			[438218] = {26.0, 20.0, 20.0, 34.0, 22.0, 21.0, 20.0},
+			[438218] = {20.0, 49.0, 20.0, 21.0, 20.0, 36.0},
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {81.0, 97.0},
+			[441791] = {43.0, 98.0},
 			-- Reckless Charge
-			[440246] = {84.4, 96.6},
+			[440246] = {46.1, 98.0},
 			-- Stinging Swarm
-			[438677] = {63.0, 77.0},
+			[438677] = {81.0, 57.0},
 			-- Web Vortex
-			[441626] = {20.2, 2.5, 68.5, 2.5, 73.9, 2.5},
+			[441626] = {33.4, 2.5, 31.1, 2.5, 61.4, 2.5},
 			-- Entropic Desolation
-			[450129] = {25.5, 71.0, 76.4},
+			[450129] = {38.6, 33.6, 63.9},
 			-- Strands of Reality
-			[441782] = {42.8, 38.8, 48.2, 47.2},
+			[441782] = {22.3, 33.6, 24.9, 43.0},
 			-- Void Step
-			[450483] = {37.8, 50.4, 24.6, 49.7, 23.1, 3.0},
+			[450483] = {51.2, 38.4, 29.3, 29.9, 2.6},
 			-- Cataclysmic Entropy
-			[438355] = {115.8, 75.8},
+			[438355] = {92.6, 61.8},
 			-- Spike Eruption
-			[443068] = {23.0, 37.0, 37.0, 37.0, 37.0},
+			[443068] = {40.0, 31.0, 64.0},
 			-- Unleashed Swarm
-			[442994] = {30.0, 80.0},
+			[442994] = {23.0, 75.0, 70.0},
 		}
 	},
 }
 
+--NOTE< below part might not be true anymore. They changed timers so boss has natural pause in casts after cataclysmic entropy, whether interrupted or not, his next casts aren't queued up/skipped
 --The boss has a mechanic where a stun can be used to interrupt bosses casts
 --Intent of the stun is to stop Cataclysmic Entropy, but it can also stop other casts
 local function checkSkippedWebVortex(self)
@@ -392,12 +394,12 @@ function mod:OnCombatStart(delay)
 	timerCalloftheSwarmCD:Start(allTimers[savedDifficulty][1][438801][1]-delay, 1)--18.0
 	timerImpalingEruptionCD:Start(allTimers[savedDifficulty][1][440504][1]-delay, 1)--21.1
 	timerRecklessChargeCD:Start(allTimers[savedDifficulty][1][440246][1]-delay, 1)--43.3
-	--timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
+	timerBurrowedEruptionCD:Start(allTimers[savedDifficulty][1][441791][1]-delay, 1)
 	--Takazj
 	timerVenomousRainCD:Start(allTimers[savedDifficulty][1][438343][1]-delay, 1)--7.7
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
-	timerVoidAscensionCD:Start(self:IsHeroic() and 126.1, 1.5)--131 confirmed on mythic and normal, maybe heroic changed?
+	timerVoidAscensionCD:Start(126.1, 1.5)
 	if self.Options.NPAuraOnPerseverance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -451,6 +453,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnRecklessCharge:Play("chargemove")
 		end
 		specWarnRecklessCharge:Play("chargemove")
+		timerRecklessCharge:Start()
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440246, self.vb.chargeCount+1)
 		if timer then
 			timerRecklessChargeCD:Start(timer, self.vb.chargeCount+1)
@@ -458,7 +461,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 440504 then
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		specWarnImpalingEruption:Show(self.vb.eruptionCount)
-		specWarnImpalingEruption:Play("shockwave")
+		specWarnImpalingEruption:Play("frontal")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440504, self.vb.eruptionCount+1)
 		if timer then
 			timerImpalingEruptionCD:Start(timer, self.vb.eruptionCount+1)
@@ -485,21 +488,6 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerSkitteringLeapCD:Start(timer, self.vb.leapCount+1)
 		end
-	elseif spellId == 451016 and self:GetStage(1) then--Shatter Existence (not cast anymore?)
-		self:SetStage(1.5)
-		self:Unschedule(checkSkippedWebVortex)
-		self:Unschedule(checkSkippedEntropicDesolation)
-		self:Unschedule(checkSkippedCatalysmicEntropy)
-		--We manually stop timers Mostly in case phases can push early with higher dps checks in future
-		--Anub
-		timerRecklessChargeCD:Stop()
-		timerPiercingStrikeCD:Stop()
-		timerCalloftheSwarmCD:Stop()
-		timerImpalingEruptionCD:Stop()
-		--Takazj
-		timerVenomousRainCD:Stop()
-		timerWebBombCD:Stop()
-		timerSkitteringLeapCD:Stop()
 	elseif spellId == 438677 or spellId == 452231 then--Hard difficulty, and second ID LFR assumed
 		self.vb.stingingCount = self.vb.stingingCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438677, self.vb.stingingCount+1)
@@ -530,7 +518,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 441782 then
 		self.vb.strandsCount = self.vb.strandsCount + 1
 		specWarnStrandsofReality:Show(self.vb.strandsCount)
-		specWarnStrandsofReality:Play("shockwave")
+		specWarnStrandsofReality:Play("frontal")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441782, self.vb.strandsCount+1)
 		if timer then
 			timerStrandsofRealityCD:Start(timer, self.vb.strandsCount+1)
@@ -547,6 +535,7 @@ function mod:SPELL_CAST_START(args)
 			--We manually stop timers Mostly in case phases can push early with higher dps checks in future
 			--Anub
 			timerRecklessChargeCD:Stop()
+			timerRecklessCharge:Stop()
 			timerPiercingStrikeCD:Stop()
 			timerCalloftheSwarmCD:Stop()
 			timerImpalingEruptionCD:Stop()
@@ -587,28 +576,23 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerBurrowedEruptionCD:Start(timer, self.vb.burrowedEruptionCount+1)
 		end
-	elseif spellId == 451327 and self:GetStage(3) then--Raging Fury (Not always cast, don't start timers here)
-		if self:GetStage(2) then
-			self:SetStage(2.5)
-			self:Unschedule(checkSkippedWebVortex)
-			self:Unschedule(checkSkippedEntropicDesolation)
-			self:Unschedule(checkSkippedCatalysmicEntropy)
-			--We manually stop timers Mostly in case phases can push early with higher dps checks in future
-			--Anub
-			timerPiercingStrikeCD:Stop()
-			timerCalloftheSwarmCD:Stop()
-			timerImpalingEruptionCD:Stop()
-			timerStingingSwarmCD:Stop()
-			--Takazj
-			timerWebVortexCD:Stop()
-			timerEntropicDesolationCD:Stop()
-			timerStrandsofRealityCD:Stop()
-			timerVoidStepCD:Stop()
-			timerCataclysmicEntropyCD:Stop()
-		--else
-			--self.vb.rageCount = self.vb.rageCount + 1
-			--timerRagingFuryCD:Start()
-		end
+	elseif spellId == 456174 and self:GetStage(2) then--Burrow Transition 2 (451160 is transition 1 but we use earlier event)
+		self:SetStage(2.5)
+		self:Unschedule(checkSkippedWebVortex)
+		self:Unschedule(checkSkippedEntropicDesolation)
+		self:Unschedule(checkSkippedCatalysmicEntropy)
+		--We manually stop timers Mostly in case phases can push early with higher dps checks in future
+		--Anub
+		timerPiercingStrikeCD:Stop()
+		timerCalloftheSwarmCD:Stop()
+		timerImpalingEruptionCD:Stop()
+		timerStingingSwarmCD:Stop()
+		--Takazj
+		timerWebVortexCD:Stop()
+		timerEntropicDesolationCD:Stop()
+		timerStrandsofRealityCD:Stop()
+		timerVoidStepCD:Stop()
+		timerCataclysmicEntropyCD:Stop()
 	elseif spellId == 442994 then
 		self.vb.swarmCount = self.vb.swarmCount + 1
 		specWarnUnleashedSwarm:Show(self.vb.swarmCount)
@@ -681,7 +665,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEntangled:Show(args.destName)
 	elseif spellId == 456245 or spellId == 456235 then
 		warnStingingDelirium:Show(args.destName)
-	elseif spellId == 451277 and self:GetStage(2) then--Spike Storm Absorb
+	elseif spellId == 451277 and self:GetStage(2) then--Spike Storm Absorb (backup phase change if Burrow fails)
 		self:SetStage(2.5)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
@@ -725,7 +709,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnBindingWeb:Show()
 		end
-	elseif spellId == 450980 then--Shatter Existence Absorb
+	elseif spellId == 450980 then--Shatter Existence Absorb Removed
 		self:SetStage(2)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
@@ -754,7 +738,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 451277 then--Spike Storm Absorb
+	elseif spellId == 451277 then--Spike Storm Absorb Removed
 		self:SetStage(3)
 		self:Unschedule(checkSkippedWebVortex)
 		self:Unschedule(checkSkippedEntropicDesolation)
