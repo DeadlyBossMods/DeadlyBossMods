@@ -2746,14 +2746,16 @@ do
 	end
 
 	---This is primarily used for cached player unitIds by name lookup
-	---<br>I'm not even sure why a boss check is in it, since GetBossUnitId existed (and is now deprecated)
-	---<br>I'll leave the boss checking for now since I don't know if any mods (or core) are using this function this way
-	function DBM:GetRaidUnitId(name)
-		for i = 1, 10 do
-			local unitId = "boss" .. i
-			local bossName = UnitName(unitId)
-			if bossName and bossName == name then
-				return unitId
+	---<br>Rarely, it's also used for boss checks by name since it simplifies code in mod.
+	---@param skipBoss boolean?
+	function DBM:GetRaidUnitId(name, skipBoss)
+		if not skipBoss then
+			for i = 1, 10 do
+				local unitId = "boss" .. i
+				local bossName = UnitName(unitId)
+				if bossName and bossName == name then
+					return unitId
+				end
 			end
 		end
 		return raid[name] and raid[name].id
@@ -3041,7 +3043,7 @@ end
 function DBM:CheckNearby(range, targetname)
 	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
 		return true--No target name means check if anyone is near self, period
-	else
+	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
 		if uId and not UnitIsUnit("player", uId) then
 			local restrictionsActive = private.isRetail and DBM:HasMapRestrictions()
@@ -7938,6 +7940,7 @@ bossModPrototype.IsHealer = DBM.IsHealer
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
+		---@diagnostic disable-next-line: param-type-mismatch
 		playerUnitID = DBM:GetRaidUnitId(playerUnitID)
 	end
 	if not playerUnitID then

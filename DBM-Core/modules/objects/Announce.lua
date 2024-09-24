@@ -325,6 +325,12 @@ function announcePrototype:UpdateKey(altSpellId)
 	end
 end
 
+---Function used for changing warning color on fly when used for multiple warning priorities
+---@param color number 1 = Positive Message, 2 = Normal Message, 3 - Higher Priority, 4 - Highest Priority
+function announcePrototype:UpdateColor(color)
+	self.color = DBM.Options.WarningColors[color or 1]
+end
+
 ---@class Announce0: Announce
 ---@field Show fun(self: Announce0)
 ---@class Announce1: Announce

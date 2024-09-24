@@ -16,19 +16,17 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 438677 452231 441626 450129 441782 450483 438355 443068 456174 442994 441791",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 438249",
-	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 456252 450728 451277 443598 440179 456245 438200 456235",--451611, 440503, 438656
-	"SPELL_AURA_APPLIED_DOSE 438218 438200",
-	"SPELL_AURA_REMOVED 455080 450980 451277 440001"--451611, 440503, 438656
+	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 451277 443598 440179 456245 438200 456235 456252",--451611, 440503, 438656
+	"SPELL_AURA_APPLIED_DOSE 438218 438200 456252",
+	"SPELL_AURA_REMOVED 455080 450980 451277 440001 456252"--451611, 440503, 438656
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, target scan charge? ALsos tooltip unclear, should a player soak it to avoid him hitting a wall or is that purely about aiming charge nots soaking?
 --TODO, binding webs multi target alerts to alert who you are bound to once it's clear how it's presented in combat log (if it's presented)
 --TODO, stinging swarm seems to have two versions, complex one that reequires dispeling near other boss to interrupt it, and one that's just ordinary debuff (probably LFR version)
---TODO, if stringing swarm doesn't go private aura, add icons and icon based yells for dispel assignments. Not gonna waste time doing it now though when this fight hasn't had PA flagging done yet
 --TODO, maybe Entropic should be a run away warning instead for melee?
 --NOTE, https://www.wowhead.com/beta/spell=440503/impaling-eruption was not exposed, re-add of that changes
 --[[
@@ -91,7 +89,8 @@ local timerVoidAscensionCD					= mod:NewIntermissionCountTimer(100, 450483, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29021))
 ----Anub'arash
 mod:AddTimerLine(anubarash)
-local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(438677, 2)--No Filter because this is a raid wiping mechanic if the 3 players don't get to boss
+local warnStingingSwarm						= mod:NewTargetNoFilterAnnounce(438677, 2)--PLAYER. No Filter because this is a raid wiping mechanic if the 3/5 players don't get to boss
+local warnStingingSwarmBossStack			= mod:NewStackAnnounce(456252, 1)
 local warnStingingDelirium					= mod:NewTargetNoFilterAnnounce(456245, 2)--Player or Boss
 
 local specWarnStingingSwarm					= mod:NewSpecialWarningMoveTo(438677, nil, nil, nil, 1, 2)--438708
@@ -99,6 +98,8 @@ local yellStingingSwarm						= mod:NewShortYell(438677)
 
 local timerStingingSwarmCD					= mod:NewCDCountTimer(49, 438677, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerRagingFuryIntermissionCD			= mod:NewIntermissionCountTimer(100, 451277, nil, nil, nil, 6)
+
+mod:AddNamePlateOption("NPAuraOnStingingBoss", 456252, true)
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnVoidStep							= mod:NewCountAnnounce(450483, 2, nil, nil, 4801)
@@ -311,7 +312,7 @@ local allTimers = {
 		},
 		[3] = {
 			-- Piercing Strike
-			[438218] = {20.0, 49.0, 20.0, 21.0, 20.0, 36.0},
+			[438218] = {20.0, 17.0, 32.0, 20.0, 21.0, 20.0, 36.0},
 			-- Burrowed Eruption (precursor to Reckless Charge)
 			[441791] = {43.0, 98.0},
 			-- Reckless Charge
@@ -319,7 +320,7 @@ local allTimers = {
 			-- Stinging Swarm
 			[438677] = {81.0, 57.0},
 			-- Web Vortex
-			[441626] = {33.4, 2.5, 31.1, 2.5, 61.4, 2.5},
+			[441626] = {33.4, 2.5, 31.1, 2.5, 61.4, 2.5},--33.4, 33.6, 63.9
 			-- Entropic Desolation
 			[450129] = {38.6, 33.6, 63.9},
 			-- Strands of Reality
@@ -331,7 +332,7 @@ local allTimers = {
 			-- Spike Eruption
 			[443068] = {40.0, 31.0, 64.0},
 			-- Unleashed Swarm
-			[442994] = {23.0, 75.0, 70.0},
+			[442994] = {23.0, 75.0, 70.0, 37.0},
 		}
 	},
 }
@@ -401,13 +402,13 @@ function mod:OnCombatStart(delay)
 	timerSkitteringLeapCD:Start(allTimers[savedDifficulty][1][450045][1]-delay, 1)--15.6
 	timerWebBombCD:Start(allTimers[savedDifficulty][1][439838][1]-delay, 1)--25.0
 	timerVoidAscensionCD:Start(126.1, 1.5)
-	if self.Options.NPAuraOnPerseverance then
+	if self.Options.NPAuraOnPerseverance or self.Options.NPAuraOnStingingBoss then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.NPAuraOnPerseverance then
+	if self.Options.NPAuraOnPerseverance or self.Options.NPAuraOnStingingBoss then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if self.Options.InfoFrame then
@@ -680,6 +681,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 440179 then
 		warnEntangled:Show(args.destName)
 	elseif spellId == 456245 or spellId == 456235 then
+		if args:GetDestCreatureID() == 217491 then
+			warnStingingDelirium:UpdateColor(1)--Set green positive
+		else
+			warnStingingDelirium:UpdateColor(4)--Set red very bad
+		end
 		warnStingingDelirium:Show(args.destName)
 	elseif spellId == 451277 and self:GetStage(2) then--Spike Storm Absorb (backup phase change if Burrow fails)
 		self:SetStage(2.5)
@@ -697,12 +703,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStrandsofRealityCD:Stop()
 		timerVoidStepCD:Stop()
 		timerCataclysmicEntropyCD:Stop()
-	elseif spellId == 438708 or spellId == 456252 or spellId == 450728 then--One is unlimited version one is 9 second. I suspect one is initial version and one is jump?
+	elseif spellId == 438708 then--Stinging Sawrm on Players
 		warnStingingSwarm:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnStingingSwarm:Show(takazj)
 			specWarnStingingSwarm:Play("movetoboss")
 			yellStingingSwarm:Yell()
+		end
+	elseif spellId == 456252 then--Stinging Swarm on boss
+		local amount = args.amount or 1
+		--Counts based on https://www.wowhead.com/spell=438677/stinging-swarm
+		local maxStacks = self:IsMythic() and 5 or self:IsHeroic() and 3 or 2
+		if amount < maxStacks then
+			warnStingingSwarmBossStack:Show(args.destName, amount)
+		end
+		if self.Options.NPAuraOnStingingBoss then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 10, nil, true)
 		end
 	elseif spellId == 443598 then
 		specWarnEnragedFerocity:Show(args.destName)
@@ -715,6 +732,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 455080 then
 		if self.Options.NPAuraOnPerseverance then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 456252 then--Stinging Swarm on boss
+		if self.Options.NPAuraOnStingingBoss then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 --	elseif spellId == 451611 then
