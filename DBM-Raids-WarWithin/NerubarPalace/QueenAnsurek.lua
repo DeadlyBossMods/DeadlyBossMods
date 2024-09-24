@@ -201,6 +201,44 @@ mod.vb.cataEvoActivated = false
 
 local savedDifficulty = "normal"
 local allTimers = {
+	["mythic"] = {
+		[1] = {
+			--Reactive Toxin
+			[437592] = {0},
+			--Venom Nova
+			[437417] = {0},
+			--Silken Tomb
+			[439814] = {0},
+			--Liquefy
+			[440899] = {0},
+			--Web Blades
+			[439299] = {0}
+		},
+		[1.5] = {
+			--Wrest
+			[450191] = {0}--Technically diff spellid here, but table uses same one (different from normal)
+		},
+		[2] = {
+			--Wrest
+			[450191] = {0}--Then 8 repeating with exception of timer resetting when first platform adds die
+		},
+		[3] = {
+			--Abyssal Infusion
+			[443888] = {0},
+			--Frothing Gluttony
+			[445422] = {0},
+			--Queen's Summons
+			[444829] = {0},
+			--Royal Condemnation
+			[438976] = {0},
+			--Infest
+			[443325] = {0},
+			--Gorge
+			[443336] = {0},
+			--Web Blades
+			[439299] = {0}
+		},
+	},
 	["heroic"] = {
 		[1] = {
 			--Reactive Toxin
@@ -224,7 +262,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Abyssal Infusion
-			[443888] = {57.4, 80, 80},--Only first confirmed
+			[443888] = {57.4, 80, 80},
 			--Frothing Gluttony
 			[445422] = {68.4, 80, 80},
 			--Queen's Summons
@@ -369,7 +407,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cataEvoActivated = false
 	self.vb.ToxinBehavior = self.Options.ToxinBehavior--Default it to whatever user has it set to, until group leader overrides it
 	if self:IsMythic() then
-		savedDifficulty = "heroic"
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	elseif self:IsStory() then
@@ -409,7 +447,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		savedDifficulty = "heroic"
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	elseif self:IsStory() then
