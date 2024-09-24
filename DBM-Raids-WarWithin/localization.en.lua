@@ -53,7 +53,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  The Silken Court (2921) --
 ---------------------------
---L= DBM:GetModLocalization(2608)
+L= DBM:GetModLocalization(2608)
+
+L:SetMiscLocalization({
+	Red		= " [Red]",--Skeinspinner Takazj
+	Blue	= " [Blue]"--Anub'arash
+})
 
 ---------------------------
 --  Queen Ansurek (2922) --
