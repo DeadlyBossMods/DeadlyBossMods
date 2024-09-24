@@ -53,8 +53,9 @@ local warnImpaled								= mod:NewTargetNoFilterAnnounce(449857, 4)
 local warnEntangled								= mod:NewTargetNoFilterAnnounce(440179, 1)
 
 local specWarnPiercingStrike					= mod:NewSpecialWarningDefensive(438218, nil, nil, nil, 1, 2)
+local specWarnPiercingStrikeTaunt				= mod:NewSpecialWarningTaunt(438218, nil, nil, nil, 1, 2)
 local specWarnRecklessCharge					= mod:NewSpecialWarningCount(440246, nil, 100, nil, 1, 2)--If we can get target, make dodge warning for non target and "move to web" for target
-local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, DBM_COMMON_L.FRONTAL.." [A]", 2, 15)
+local specWarnImpalingEruption					= mod:NewSpecialWarningDodgeCount(440504, nil, nil, DBM_COMMON_L.FRONTAL .. L.Blue, 2, 15)
 local yellImpaled								= mod:NewShortYell(449857, nil, false)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
@@ -63,7 +64,7 @@ local timerCalloftheSwarmCD						= mod:NewCDCountTimer(49, 438801, DBM_COMMON_L.
 local timerRecklessChargeCD						= mod:NewCDCountTimer(49, 440246, 100, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
 local timerRecklessCharge						= mod:NewCastTimer(49, 440246, 100, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Charge"
 local timerBurrowedEruptionCD					= mod:NewCDCountTimer(49, 441791, 118563, nil, nil, 3)--Shortname "Burrow"
-local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL.." [A] (%s)", nil, nil, 3)--Frontal + boss initial
+local timerImpalingEruptionCD					= mod:NewCDCountTimer(49, 440504, DBM_COMMON_L.FRONTAL .. L.Blue .. " (%s)", nil, nil, 3)--Frontal + boss initial
 --local timerEntangledCD						= mod:NewTargetTimer(6, 440179, nil, false, nil, 5)--Too many timers on fight already, this is opt in
 
 mod:AddNamePlateOption("NPAuraOnPerseverance", 455080, true)
@@ -105,12 +106,12 @@ local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4, nil, nil, nil, 
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
 --local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
-local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL.." [S]", 2, 15)
+local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL .. L.Red, 2, 15)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
 local timerWebVortexCD						= mod:NewCDCountTimer(49, 441626, nil, nil, nil, 2)
 local timerEntropicDesolationCD				= mod:NewCDCountTimer(49, 450129, 301902, nil, nil, 2)--Shortname "Run Away!"
-local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, DBM_COMMON_L.FRONTAL.." [S] (%s)", nil, nil, 3)--Frontal + boss initial
+local timerStrandsofRealityCD				= mod:NewCDCountTimer(49, 441782, DBM_COMMON_L.FRONTAL .. L.Red .. " (%s)", nil, nil, 3)--Frontal + boss initial
 local timerVoidStepCD						= mod:NewCDCountTimer(49, 450483, 4801, nil, nil, 3)--Shortname "Teleport"
 local timerCataclysmicEntropyCD				= mod:NewCDCountTimer(49, 438355, 108132, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Massive Explosion"
 --Stage Three: Unleashed Rage
@@ -623,7 +624,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMarkofRage:Show()
 		specWarnMarkofRage:Play("rageyou")
 	elseif spellId == 438218 then
-		warnPiercingStrike:Show(args.destName, args.amount or 1)
+		if not args:IsPlayer() then
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438218, self.vb.piercingCount+1)
+			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") then
+				specWarnPiercingStrikeTaunt:Show(args.destName)
+				specWarnPiercingStrikeTaunt:Play("tauntboss")
+			else
+				warnPiercingStrike:Show(args.destName, args.amount or 1)
+			end
+		else
+			warnPiercingStrike:Show(args.destName, args.amount or 1)
+		end
 	elseif spellId == 438200 then
 		local amount = args.amount or 1
 		if amount % 6 == 0 then

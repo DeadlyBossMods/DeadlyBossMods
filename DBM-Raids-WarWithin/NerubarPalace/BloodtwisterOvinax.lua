@@ -55,7 +55,7 @@ local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7, 1, 2})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
-mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "icon", nil, 442526)
+mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "MatchEW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 442526)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
@@ -85,7 +85,8 @@ mod.vb.eggIcon = 1
 local eggBreak = DBM:GetSpellName(177853)
 local eggIcons = {}
 local markOrder = { 6, 4, 3, 7 } -- blue, green, purple, red (wm 1-4)
-local mythicMarkOrder = { 6, 6, 4, 4, 1, 1, 2, 2 } -- blue, green, star, circle
+local mythicMarkOrder = { 6, 6, 4, 4, 3, 3, 7, 7 } -- blue, green, purple, red (wm 1-4)
+local echoMythicMarkOrder = { 6, 6, 4, 4, 1, 1, 2, 2 } -- blue, green, star, circle
 
 function mod:OnCombatStart(delay)
 	self.vb.dosageCount = 0
@@ -107,6 +108,8 @@ function mod:OnCombatStart(delay)
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.EggBreakerBehavior == "MatchBW" then
 			self:SendSync("MatchBW")
+		elseif self.Options.EggBreakerBehavior == "MatchEW" then
+			self:SendSync("MatchEW")
 		elseif self.Options.EggBreakerBehavior == "UseAllAscending" then
 			self:SendSync("UseAllAscending")
 		elseif self.Options.EggBreakerBehavior == "DisableIconsForRaid" then
@@ -184,6 +187,8 @@ local function sortEggBreaker(self)
 		local icon
 		if self.vb.EggBreakerBehavior == "MatchBW" then
 			icon = (self:IsMythic() and mythicMarkOrder[i] or markOrder[i])
+		elseif self.vb.EggBreakerBehavior == "MatchEW" then
+			icon = (self:IsMythic() and echoMythicMarkOrder[i] or markOrder[i])
 		elseif self.vb.EggBreakerBehavior == "UseAllAscending" then
 			icon = i
 		else--Disable Icons and Disable all for raid
@@ -334,6 +339,8 @@ function mod:OnSync(msg)
 	if self:IsLFR() then return end
 	if msg == "MatchBW" then
 		self.vb.EggBreakerBehavior = "MatchBW"
+	elseif msg == "MatchEW" then
+		self.vb.EggBreakerBehavior = "MatchEW"
 	elseif msg == "UseAllAscending" then
 		self.vb.EggBreakerBehavior = "UseAllAscending"
 	elseif msg == "DisableIconsForRaid" then

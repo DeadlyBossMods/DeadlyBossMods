@@ -135,3 +135,21 @@ CL.POISON_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:
 CL.DISEASE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
 CL.ENRAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
 CL.BLEED_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
+
+CL.STAR_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:0:16:0:16|t" -- NO TRANSLATE
+CL.CIRCLE_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:16:32:0:16|t" -- NO TRANSLATE
+CL.DIAMOND_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:32:48:0:16|t" -- NO TRANSLATE
+CL.TRIANGLE_ICON					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:48:64:0:16|t" -- NO TRANSLATE
+CL.MOON_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:0:16:16:32|t" -- NO TRANSLATE
+CL.SQUARE_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:16:32:16:32|t" -- NO TRANSLATE
+CL.CROSS_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:32:48:16:32|t" -- NO TRANSLATE
+CL.SKULL_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:48:64:16:32|t" -- NO TRANSLATE
+
+CL.STAR_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t" -- NO TRANSLATE
+CL.CIRCLE_ICON_SMALL				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t" -- NO TRANSLATE
+CL.DIAMOND_ICON_SMALL				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t" -- NO TRANSLATE
+CL.TRIANGLE_ICON_SMALL				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t" -- NO TRANSLATE
+CL.MOON_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t" -- NO TRANSLATE
+CL.SQUARE_ICON_SMALL				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t" -- NO TRANSLATE
+CL.CROSS_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t" -- NO TRANSLATE
+CL.SKULL_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t" -- NO TRANSLATE

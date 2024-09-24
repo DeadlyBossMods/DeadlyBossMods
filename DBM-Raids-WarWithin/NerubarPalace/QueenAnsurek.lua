@@ -79,7 +79,7 @@ local timerWebBladesCD							= mod:NewCDCountTimer(49, 439299, 138737, nil, nil,
 local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, nil, nil, 6)
 
 mod:AddSetIconOption("SetIconOnToxin", 437592, true, 10, {6, 3, 7, 1, 2})--(Priority for melee > ranged > healer)
-mod:AddDropdownOption("ToxinBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "icon", nil, 437592)
+mod:AddDropdownOption("ToxinBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 437592)
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
