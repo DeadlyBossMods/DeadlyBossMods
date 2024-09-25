@@ -713,7 +713,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 456252 then--Stinging Swarm on boss
 		local amount = args.amount or 1
 		--Counts based on https://www.wowhead.com/spell=438677/stinging-swarm
-		local maxStacks = self:IsMythic() and 5 or self:IsHeroic() and 3 or 2
+		local maxStacks = self:IsMythic() and 5 or self:IsLFR() and 2 or 3
 		if amount < maxStacks then
 			warnStingingSwarmBossStack:Show(args.destName, amount)
 		end
