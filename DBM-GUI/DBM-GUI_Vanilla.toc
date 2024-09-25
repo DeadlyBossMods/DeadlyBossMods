@@ -1,4 +1,4 @@
-## Interface: 11503
+## Interface: 11504
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0GUI für Einstellungen|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0设置界面|r
