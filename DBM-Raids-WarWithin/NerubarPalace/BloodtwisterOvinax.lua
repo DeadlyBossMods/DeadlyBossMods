@@ -255,8 +255,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(sortEggBreaker)
 		if #eggIcons == expectedTotal then
 			sortEggBreaker(self)
+		else
+			self:Schedule(0.5, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
 		end
-		self:Schedule(0.5, sortEggBreaker, self)--Fallback in case scaling targets for normal/heroic
 	elseif spellId == 441362 and not args:IsPlayer() then
 		specWarnVolatileConcoctionTaunt:Show(args.destName)
 		specWarnVolatileConcoctionTaunt:Play("tauntboss")

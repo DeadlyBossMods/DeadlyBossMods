@@ -666,8 +666,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(sortToxin)
 		if #reactiveIcons == expectedTotal then
 			sortToxin(self)
+		else
+			self:Schedule(0.5, sortToxin, self)--Fallback in case scaling targets for normal/heroic
 		end
-		self:Schedule(0.5, sortToxin, self)--Fallback in case scaling targets for normal/heroic
 	elseif spellId == 441958 and args:IsPlayer() and self:AntiSpam(3, 4) then--Grasping Silk
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
