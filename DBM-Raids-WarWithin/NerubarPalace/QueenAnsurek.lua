@@ -55,7 +55,8 @@ local warnSilkenTomb							= mod:NewCountAnnounce(439814, 2, nil, nil, nil, nil,
 local warnFrothyToxin							= mod:NewCountAnnounce(464638, 3, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(464638))--Player
 local warnReactionVapor							= mod:NewCountAnnounce(441556, 3, nil, false, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(441556))--Player
 
-local specWarnReactiveToxin						= mod:NewSpecialWarningMoveAway(437592, nil, nil, nil, 1, 2)
+local specWarnReactiveToxin						= mod:NewSpecialWarningMoveTo(437592, nil, nil, nil, 1, 2)
+local specWarnReactiveToxinGeneric				= mod:NewSpecialWarningMoveAway(437592, nil, nil, nil, 1, 2)
 local yellReactiveToxin							= mod:NewShortPosYell(437592)
 local yellReactiveToxinFades					= mod:NewIconFadesYell(437592)
 local specWarnConcentratedToxin					= mod:NewSpecialWarningMoveAway(451278, nil, 37859, nil, 1, 2)
@@ -373,11 +374,17 @@ local function sortToxin(self)
 			self:SetIcon(name, icon)
 		end
 		if name == DBM:GetMyPlayerInfo() then
-			specWarnReactiveToxin:Show()
 			if icon > 0 then
-				specWarnReactiveToxin:Play("mm"..icon)
+				if self.Options.SpecWarn437592moveto then
+					specWarnReactiveToxin:Show(icon)
+					specWarnReactiveToxin:Play("mm"..icon)
+				else--Even if icon > 0, if user disables moveto alert, show generic one
+					specWarnReactiveToxinGeneric:Show()
+					specWarnReactiveToxinGeneric:Play("runout")
+				end
 			else
-				specWarnReactiveToxin:Play("runout")
+				specWarnReactiveToxinGeneric:Show()
+				specWarnReactiveToxinGeneric:Play("runout")
 			end
 			if self.vb.ToxinBehavior ~= "DisableAllForRaid" then
 				yellReactiveToxin:Yell(icon)

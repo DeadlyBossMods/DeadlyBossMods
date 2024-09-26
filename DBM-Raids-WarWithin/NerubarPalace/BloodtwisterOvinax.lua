@@ -199,12 +199,13 @@ local function sortEggBreaker(self)
 			self:SetIcon(name, icon)
 		end
 		if name == DBM:GetMyPlayerInfo() then
-			specWarnExperimentalDosage:Show(eggBreak)
-			--if icon > 0 then
-			--	specWarnExperimentalDosage:Play("mm"..icon)
-			--else
+			if icon > 0 then
+				specWarnExperimentalDosage:Show(self:IconNumToTexture(icon))
+				specWarnExperimentalDosage:Play("mm"..icon)
+			else
+				specWarnExperimentalDosage:Show(eggBreak)
 				specWarnExperimentalDosage:Play("movetoegg")
-			--end
+			end
 			if self.vb.EggBreakerBehavior ~= "DisableAllForRaid" then
 				yellxperimentalDosage:Yell(icon)
 				yellxperimentalDosageFades:Countdown(440421, nil, icon)

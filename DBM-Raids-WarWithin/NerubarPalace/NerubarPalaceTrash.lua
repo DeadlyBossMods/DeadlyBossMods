@@ -18,9 +18,9 @@ mod:RegisterEvents(
 
 local specWarnStagFlip						= mod:NewSpecialWarningDefensive(463176, nil, nil, nil, 3, 2)
 local specWarnFixate						= mod:NewSpecialWarningYou(445553, nil, nil, nil, 1, 2)
-local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 2)
-local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 2)
-local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 2)
+local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 15)
+local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 15)
+local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 15)
 local specwarnInfestingSwarm				= mod:NewSpecialWarningMoveAway(436784, nil, nil, nil, 1, 2)
 local yellInfestingSwarm					= mod:NewYell(436784)
 --local yellShadowflameBombFades			= mod:NewShortFadesYell(425300)
@@ -44,18 +44,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 459952 then
 		if self:AntiSpam(3, 2) then
 			specWarnImpale:Show()
-			specWarnImpale:Play("shockwave")
+			specWarnImpale:Play("frontal")
 		end
 		timerImpaleCD:Start(nil, args.sourceGUID)
 	elseif spellId == 440184 then
 		if self:AntiSpam(3, 2) then
 			specWarnBlackCleave:Show()
-			specWarnBlackCleave:Play("shockwave")
+			specWarnBlackCleave:Play("frontal")
 		end
 	elseif spellId == 441097 then
 		if self:AntiSpam(3, 2) then
 			specWarnHeavingRetch:Show()
-			specWarnHeavingRetch:Play("shockwave")
+			specWarnHeavingRetch:Play("frontal")
 		end
 	elseif spellId == 463104 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnVoidBoltVolley:Show(args.sourceName)
