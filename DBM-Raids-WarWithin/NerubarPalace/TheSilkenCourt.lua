@@ -143,66 +143,130 @@ mod.vb.scarabIcon = 8
 
 local savedDifficulty = "heroic"
 local allTimers = {
-	["normal"] = {--Updated Sept 11
+	["lfr"] = {--8:20
+	[1] = {
+		-- Piercing Strike
+		[438218] = {13.3, 26.6, 38.6, 26.6, 52.0},
+		-- Call of the Swarm
+		[438801] = {16.0},
+		-- Burrowed Eruption (precursor to Reckless Charge)
+		[441791] = {42.7, 77.2},
+		-- Reckless Charge
+		[440246] = {47.5, 77.2},
+		-- Impaling Eruption
+		[440504] = {29.3, 52.0, 30.6},
+		-- Venomous Rain
+		[438343] = {8.1, 68.5, 70.5},
+		-- Web Bomb
+		[439838] = {21.5, 78.6},
+		-- Skittering Leap
+		[450045] = {51.7, 76.6},
+	},
+	[2] = {
+		-- Call of the Swarm
+		[438801] = {79.3},
+		-- Piercing Strike
+		[438218] = {19.3, 33.3, 32.0, 26.6, 34.6},
+		-- Impaling Eruption
+		[440504] = {44.7, 93.3},
+		-- Stinging Swarm
+		[438677] = {36.6, 81.3},
+		-- Web Vortex
+		[441626] = {106.5},
+		-- Entropic Desolation
+		[450129] = {109.2},
+		-- Strands of Reality
+		[441782] = {27.4, 66.3},
+		-- Void Step
+		[450483] = {37.5, 49.5, 30.1},
+		-- Cataclysmic Entropy
+		[438355] = {41.5, 79.6},
+	},
+	[3] = {
+		-- Piercing Strike
+		[438218] = {36.0, 29.3},
+		-- Burrowed Eruption (precursor to Reckless Charge)
+		[441791] = {0},
+		-- Reckless Charge
+		[440246] = {0},
+		-- Stinging Swarm
+		[438677] = {0},
+		-- Web Vortex
+		[441626] = {77.1},
+		-- Entropic Desolation
+		[450129] = {79.9},
+		-- Strands of Reality
+		[441782] = {40.2},
+		-- Void Step
+		[450483] = {0},
+		-- Cataclysmic Entropy
+		[438355] = {0},
+		-- Spike Eruption
+		[443068] = {61.3},
+		-- Unleashed Swarm
+		[442994] = {45.3},
+	}
+},
+	["normal"] = {
 		[1] = {
 			-- Piercing Strike
-			[438218] = {10.1, 20.0, 28.0, 20.0, 39.0},--Updated Sept 11
+			[438218] = {10.1, 20.0, 28.0, 20.0, 39.0},
 			-- Call of the Swarm
-			[438801] = {12.1, 54.0},--Updated Sept 11
+			[438801] = {12.1, 54.0},
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {32.1, 58.0},--Updated Sept 11
+			[441791] = {32.1, 58.0},
 			-- Reckless Charge
-			[440246] = {35.9, 58.0},--Updated Sept 11
+			[440246] = {35.9, 58.0},
 			-- Impaling Eruption
-			[440504] = {22.1, 38.0, 25.0},--Updated Sept 11
+			[440504] = {22.1, 38.0, 25.0},
 			-- Venomous Rain
-			[438343] = {6.2, 37.8, 36.3, 37.6},--Updated Sept 11
+			[438343] = {6.2, 37.8, 36.3, 37.6},
 			-- Web Bomb
-			[439838] = {16.4, 57.9},--Updated Sept 11
+			[439838] = {16.4, 57.9},
 			-- Skittering Leap
-			[450045] = {39.5, 60.1},--Updated Sept 11
+			[450045] = {39.5, 60.1},
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {12, 54},--Updated Sept 11
+			[438801] = {12, 54},
 			-- Piercing Strike
-			[438218] = {16, 20, 26, 20, 20, 20},--Updated Sept 11
+			[438218] = {16, 20, 26, 20, 20, 20},
 			-- Impaling Eruption
-			[440504] = {18, 39, 39},--Updated Sept 11
+			[440504] = {18, 39, 39},
 			-- Stinging Swarm
-			[438677] = {33, 58},--Updated Sept 11
+			[438677] = {33, 58},
 			-- Web Vortex
-			[441626] = {31.7, 43.1},--Updated Sept 11
+			[441626] = {31.7, 43.1},
 			-- Entropic Desolation
-			[450129] = {34.5, 43.1},--Updated Sept 11
+			[450129] = {34.5, 43.1},
 			-- Strands of Reality
-			[441782] = {24.2, 65.7},--Updated Sept 11
+			[441782] = {24.2, 65.7},
 			-- Void Step
-			[450483] = {42.7, 29.1, 25.5},--Updated Sept 11
+			[450483] = {42.7, 29.1, 25.5},
 			-- Cataclysmic Entropy
-			[438355] = {45.8, 54.7},--Updated Sept 11
+			[438355] = {45.8, 54.7},
 		},
 		[3] = {--Data looped 2nd time for now, will clean up once make sure it doesn't change after RWF
 			-- Piercing Strike
-			[438218] = {25, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20},--Updated Sept 11 (40.4, 23, 40, 23, 36, 20, 20 looping)
+			[438218] = {25, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20, 40.4, 23, 40, 23, 36, 20, 20},--(40.4, 23, 40, 23, 36, 20, 20 looping)
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {55.0, 75, 127.5, 75, 127.5, 75, 127.5, 75},--Updated Sept 11 (127.5, 75 looping)
+			[441791] = {55.0, 75, 127.5, 75, 127.5, 75, 127.5, 75},--(127.5, 75 looping)
 			-- Reckless Charge
-			[440246] = {58.8, 75, 127.5, 75, 127.5, 75, 127.5, 75},--Updated Sept 11 (127.5, 75 looping)
+			[440246] = {58.8, 75, 127.5, 75, 127.5, 75, 127.5, 75},--(127.5, 75 looping)
 			-- Stinging Swarm
-			[438677] = {75.0, 100.0, 102.5, 100, 102.5, 100, 102.5, 100},--Updated Sept 11 (102.5, 100 looping)
+			[438677] = {75.0, 100.0, 102.5, 100, 102.5, 100, 102.5, 100},--(102.5, 100 looping)
 			-- Web Vortex
-			[441626] = {42, 75.8, 126.4, 75.8, 126.4, 75.8, 126.4, 75.8},--Updated Sept 11 (126.4, 75.8 looping)
+			[441626] = {42, 75.8, 126.4, 75.8, 126.4, 75.8, 126.4, 75.8},--(126.4, 75.8 looping)
 			-- Entropic Desolation
-			[450129] = {44.8, 75.8, 126.4, 75.8, 126.4, 75.8, 126.4, 75.8},--Updated Sept 11 (126.4, 75.8 looping)
+			[450129] = {44.8, 75.8, 126.4, 75.8, 126.4, 75.8, 126.4, 75.8},--(126.4, 75.8 looping)
 			-- Strands of Reality
-			[441782] = {26.4, 153.9, 48.4, 153.8, 48.4, 153.8, 48.4, 153.8},--Updated Sept 11 (48.4, 153.8 looping)
+			[441782] = {26.4, 153.9, 48.4, 153.8, 48.4, 153.8, 48.4, 153.8},--(48.4, 153.8 looping)
 			-- Void Step
-			[450483] = {63, 25.1, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8},--Updated Sept 11 (77.6, 25.2, 24.5, 26.1, 48.8 looping)
+			[450483] = {63, 25.1, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8, 77.6, 25.2, 24.5, 26.1, 48.8},--(77.6, 25.2, 24.5, 26.1, 48.8 looping)
 			-- Cataclysmic Entropy
-			[438355] = {91.2, 99.5, 102.9, 99.5, 102.9, 99.5, 102.9, 99.5},--Updated Sept 11 (102.9, 99.5 looping)
+			[438355] = {91.2, 99.5, 102.9, 99.5, 102.9, 99.5, 102.9, 99.5},--(102.9, 99.5 looping)
 			-- Spike Eruption
-			[443068] = {45.0, 62.9, 62.9, 76.6, 62.9, 62.9, 76.6, 62.9, 62.9, 76.6, 62.9, 62.9},--Updated Sept 11 (76.6, 62.9, 62.9 looping)
+			[443068] = {45.0, 62.9, 62.9, 76.6, 62.9, 62.9, 76.6, 62.9, 62.9, 76.6, 62.9, 62.9},--(76.6, 62.9, 62.9 looping)
 			-- Unleashed Swarm
 			[442994] = {30.0, 118.9, 83.5, 119, 83.5, 119, 83.5, 119},--Updated Sept 12 (83.5, 119 looping)
 		}
@@ -210,41 +274,41 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			-- Piercing Strike
-			[438218] = {10, 20, 27, 21, 38},--Updated Sept 11
+			[438218] = {10, 20, 27, 21, 38},
 			-- Call of the Swarm
-			[438801] = {12.1, 54},--Updated Sept 11
+			[438801] = {12.1, 54},
 			-- Burrowed Eruption (precursor to Reckless Charge)
-			[441791] = {32.1, 58},--Updated Sept 11
+			[441791] = {32.1, 58},
 			-- Reckless Charge
-			[440246] = {35.4, 58},--Updated Sept 11
+			[440246] = {35.4, 58},
 			-- Impaling Eruption
-			[440504] = {19.1, 40, 26, 33},--Updated Sept 11
+			[440504] = {19.1, 40, 26, 33},
 			-- Venomous Rain
-			[438343] = {6.2, 38.2, 26.1, 37.8},--Updated Sept 11
+			[438343] = {6.2, 37.8, 26.1, 37.8},
 			-- Web Bomb
-			[439838] = {16.7, 56.3},--Updated Sept 11
+			[439838] = {16.2, 56.3},
 			-- Skittering Leap
-			[450045] = {40, 58.3},--Updated Sept 11
+			[450045] = {39, 58.3},
 		},
 		[2] = {
 			-- Call of the Swarm
-			[438801] = {20, 54},--Updated Sept 11
+			[438801] = {20, 54},
 			-- Piercing Strike
-			[438218] = {18, 20, 20, 20, 20, 20},--Updated Sept 11
+			[438218] = {18, 20, 20, 20, 20, 20},
 			-- Impaling Eruption
-			[440504] = {13, 40, 27, 30},--Updated Sept 11
+			[440504] = {13, 40, 27, 30},
 			-- Stinging Swarm
-			[438677] = {29, 58},--Updated Sept 11
+			[438677] = {29, 58},
 			-- Web Vortex
-			[441626] = {20.3, 55.2},--Updated Sept 11
+			[441626] = {20.3, 55.2},
 			-- Entropic Desolation
-			[450129] = {23.1, 55.2},--Updated Sept 11
+			[450129] = {23.1, 55.2},
 			-- Strands of Reality
-			[441782] = {31.6, 35.8, 25.5},--Updated Sept 11
+			[441782] = {31.6, 35.8, 25.5},
 			-- Void Step
-			[450483] = {38.4, 34, 25.2, 29.1},--Updated Sept 11
+			[450483] = {38.4, 34, 25.2, 29.1},
 			-- Cataclysmic Entropy
-			[438355] = {41.2, 59.2},--Updated Sept 11
+			[438355] = {41.2, 59.2},
 		},
 		[3] = {--12:14 (all tables doubled for now, will code actual clean coded loops once make sure they don't change after RWF)
 			-- Piercing Strike
