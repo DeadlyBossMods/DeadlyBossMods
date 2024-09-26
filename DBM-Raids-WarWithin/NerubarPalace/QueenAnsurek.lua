@@ -14,7 +14,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336",
+	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336 447456",
 	"SPELL_CAST_SUCCESS 439299 449986",
 	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 445013 462693",--455404
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
@@ -36,13 +36,14 @@ mod:RegisterEventsInCombat(
 --TODO, add auto marking?
 --TODO, https://www.wowhead.com/beta/spell=441865/royal-shackles alert too?
 --[[
-(ability.id = 437592 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
+(ability.id = 437592 or ability.id = 447456 or ability.id = 456623 or ability.id = 437417 or ability.id = 439814 or ability.id = 440899 or ability.id = 440883 or ability.id = 437093 or ability.id = 447411 or ability.id = 450191 or ability.id = 448458 or ability.id = 448147 or ability.id = 451600 or ability.id = 455374 or ability.id = 443888 or ability.id = 445422 or ability.id = 444829 or ability.id = 438976 or ability.id = 443325 or ability.id = 443336) and type = "begincast"
 or (ability.id = 439299) and type = "cast"
 or (ability.id = 447076 or ability.id = 449940 or ability.id = 449986) and type = "begincast"
 or ability. id = 447207 and type = "removebuff"
  or stoppedAbility.id = 449940 or stoppedAbility.id = 455374
  or ability.id = 445021 and type = "begincast"
  or (target.id = 223150 or target.id = 223318) and type = "death"
+ or (target.id = 223204 or target.id = 224368) and type = "death"
 --]]
 --General Stuff
 local warnPhase									= mod:NewPhaseChangeAnnounce(0, nil, nil, nil, nil, nil, 2)
@@ -84,14 +85,18 @@ mod:AddDropdownOption("ToxinBehavior", {"MatchBW", "UseAllAscending", "DisableIc
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
+local warnParalyzingVenom					= mod:NewCountAnnounce(447456, 2, nil, nil, 441740)--Shortname "toxic waves"
+
 local specWarnWrest							= mod:NewSpecialWarningCount(447411, nil, 193997, nil, 2, 12)--Shortname "Pull"
 
+local timerParalyzingVenomCD				= mod:NewCDCountTimer(4, 447456, 441740, nil, nil, 2)--Shortname "toxic waves"
 local timerWrestCD							= mod:NewCDCountTimer(49, 447411, 193997, nil, nil, 3)--Shortname "Pull"
 
 mod:AddInfoFrameOption(447076, true)
 
 --Stage Two: Royal Ascension
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28756))
+local warnBridge								= mod:NewSpellAnnounce(268876, 2)
 --Mythic Stuff here
 
 mod:AddNamePlateOption("NPAuraOnEchoingConnection", 453990)
@@ -103,14 +108,17 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(29633))
 local specWarnShadowblast					= mod:NewSpecialWarningInterruptCount(447950, nil, nil, nil, 1, 2)--No Cooldown, only spell lockout
 
 ----Devoted Worshipper
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(29639))
+local warnWorshippersRemaining				= mod:NewAddsLeftAnnounce(-29639, 2, 448494)
 local warnCosmicApocalypse					= mod:NewCastAnnounce(448458, 3)
+
 local specWarnGloomTouch					= mod:NewSpecialWarningMoveAway(447967, nil, nil, nil, 1, 2)
 local yellGloomTouch						= mod:NewShortYell(447967)
 local specWarnCosmicRupture					= mod:NewSpecialWarningYou(462558, nil, nil, nil, 1, 2, 4)--Mythic
 local yellCosmicRupture						= mod:NewShortFadesYell(462558)
---local specWarnCosmicApocalypse				= mod:NewSpecialWarningSpell(448458, nil, nil, nil, 3, 2)
+--local specWarnCosmicApocalypse			= mod:NewSpecialWarningSpell(448458, nil, nil, nil, 3, 2)
 
---local timerGloomTouchCD					= mod:NewCDNPTimer(49, 464056, nil, nil, nil, 3)
+local timerCosmicApocalypse					= mod:NewCastTimer(85, 448458, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 ---Chamber Guardian
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29642))
 local specWarnOust							= mod:NewSpecialWarningDefensive(448147, nil, nil, nil, 1, 2)
@@ -118,9 +126,9 @@ local specWarnOust							= mod:NewSpecialWarningDefensive(448147, nil, nil, nil,
 local timerOustCD							= mod:NewCDNPTimer(10, 448147, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Chamber Expeller
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29744))
-local specWarnExpulsionBeam					= mod:NewSpecialWarningDodge(451600, nil, nil, nil, 2, 2)--Change to target warning if it can be scanned?
+local specWarnExpulsionBeam					= mod:NewSpecialWarningDodgeCount(451600, nil, nil, nil, 2, 2)--Change to target warning if it can be scanned?
 
-local timerExpulsionBeamCD					= mod:NewCDNPTimer(10, 451600, nil, nil, nil, 3)
+local timerExpulsionBeamCD					= mod:NewCDCountTimer(10, 451600, nil, nil, nil, 3)
 --Chamber Acolyte
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29945))
 local warnGloomEruption						= mod:NewSpellAnnounce(448046, 2, nil, nil, 406073, nil, nil, 15)--Shortname "Knock Up"
@@ -180,14 +188,19 @@ local addMarks = {8, 5, 4}
 --P1
 local reactiveIcons = {}
 mod.vb.ToxinBehavior = "MatchBW"
-mod.vb.reactiveCount = 0
-mod.vb.novaCount = 0
+mod.vb.reactiveCount = 0--Reused for Paralyzing Venom
+mod.vb.novaCount = 0--Reused for beams
 mod.vb.tombCount = 0
 mod.vb.tankComboCount = 0--Liquefy for now
 mod.vb.feastCount = 0
 mod.vb.webBladesCount = 0
 --Intermission 1
 mod.vb.wrestCount = 0
+--P2
+mod.vb.platformCount = 0
+mod.vb.worshipersKilled = 0
+mod.vb.expellerKilled = 0
+mod.vb.guardiansKilled = 0
 --P3
 mod.vb.abyssalInfusionCount = 0
 mod.vb.infusionIcon = 1
@@ -559,18 +572,18 @@ function mod:SPELL_CAST_START(args)
 		timerNullDetonationCD:Start(nil, args.sourceGUID)
 	elseif spellId == 448458 and self:AntiSpam(5, 1) then
 		warnCosmicApocalypse:Show()
+		timerCosmicApocalypse:Start()
 	elseif spellId == 448147 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnOust:Show()
 			specWarnOust:Play("carefly")
 		end
 		timerOustCD:Start(nil, args.sourceGUID)
-	elseif spellId == 451600 then
-		if self:CheckBossDistance(args.sourceGUID, true, 32698, 48) and self:AntiSpam(5, 2) then--Just in case multiple do it at once
-			specWarnExpulsionBeam:Show()
-			specWarnExpulsionBeam:Play("farfromline")
-		end
-		timerExpulsionBeamCD:Start(nil, args.sourceGUID)
+	elseif spellId == 451600 and self:AntiSpam(5, 2) then
+		self.vb.novaCount = self.vb.novaCount + 1
+		specWarnExpulsionBeam:Show(self.vb.novaCount)
+		specWarnExpulsionBeam:Play("farfromline")
+		timerExpulsionBeamCD:Start(nil, self.vb.novaCount+1)
 	elseif spellId == 443888 then
 		self.vb.abyssalInfusionCount = self.vb.abyssalInfusionCount + 1
 		self.vb.infusionIcon = 1
@@ -616,9 +629,18 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerGorgeCD:Start(timer, self.vb.gorgeCount+1)
 		end
+	elseif spellId == 447456 then
+		self.vb.reactiveCount = self.vb.reactiveCount + 1
+		warnParalyzingVenom:Show(self.vb.reactiveCount)
+		if self.vb.reactiveCount % 3 == 0 then
+			timerParalyzingVenomCD:Start(11, self.vb.reactiveCount+1)
+		else
+			timerParalyzingVenomCD:Start(4, self.vb.reactiveCount+1)
+		end
 	elseif spellId == 447076 then--Predation
 		self:SetStage(1.5)
 		self.vb.wrestCount = 0
+		self.vb.reactiveCount = 0
 		timerReactiveToxinCD:Stop()
 		timerVenomNovaCD:Stop()
 		timerSilkenTombCD:Stop()
@@ -628,6 +650,8 @@ function mod:SPELL_CAST_START(args)
 		timerWebBladesCD:Stop()
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
+		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)--6
+		timerParalyzingVenomCD:Start(13, 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
 		timerAcidicApocalypse:Stop()
@@ -847,12 +871,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnToxin and self.vb.ToxinBehavior ~= "DisableAllForRaid" then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 447207 then--Predation Shield
+	elseif spellId == 447207 then--Predation Shield Removed
 		self:SetStage(2)
 		self.vb.wrestCount = 0
+		self.vb.platformCount = 0
+		self.vb.worshipersKilled = 0
+		self.vb.expellerKilled = 0
+		self.vb.guardiansKilled = 0
+		self.vb.novaCount = 0--Used for beams in stage 2
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerWrestCD:Stop()
+		timerParalyzingVenomCD:Stop()
 		--timerWrestCD:Start(allTimers[savedDifficulty][2][450191][1], 1)
 		if self.Options.Infoframe then
 			DBM.InfoFrame:Hide()
@@ -912,7 +942,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 223150 then--Ascended Voidspeaker
-		timerExpulsionBeamCD:Stop(nil, args.destGUID)
 		--TODO scope this
 		if self:AntiSpam(3, 6) then
 			warnGloomEruption:Show()
@@ -923,13 +952,23 @@ function mod:UNIT_DIED(args)
 		if self.vb.wrestCount == 0 then
 			timerWrestCD:Stop()
 			timerWrestCD:Start(self:IsEasy() and 12.9 or 11.9, 1)
+			timerExpulsionBeamCD:Start(12.5, 1)
 		end
-	--elseif cid == 223318 then--Devoted Worshipper
-
+	elseif cid == 223318 then--Devoted Worshipper
+		self.vb.worshipersKilled = self.vb.worshipersKilled + 1
+		if self.vb.worshipersKilled == 2 then
+			timerCosmicApocalypse:Stop()
+		end
 	elseif cid == 223204 then--Chamber Guardian
+		self.vb.guardiansKilled = self.vb.guardiansKilled + 1
 		timerOustCD:Stop(args.destGUID)
 	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
 		timerNullDetonationCD:Stop(nil, args.destGUID)
+	elseif cid == 224368 then--Chamber Expeller
+		self.vb.expellerKilled = self.vb.expellerKilled + 1
+		if self.vb.expellerKilled == 2 then
+			timerExpulsionBeamCD:Stop()
+		end
 	end
 end
 
