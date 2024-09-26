@@ -220,11 +220,11 @@ local allTimers = {
 			-- Impaling Eruption
 			[440504] = {19.1, 40, 26, 33},--Updated Sept 11
 			-- Venomous Rain
-			[438343] = {6.2, 38.2, 26.1, 37.8},--Updated Sept 11
+			[438343] = {6.2, 37.8, 26.1, 37.8},--Updated Sept 11
 			-- Web Bomb
-			[439838] = {16.7, 56.3},--Updated Sept 11
+			[439838] = {16.2, 56.3},--Updated Sept 11
 			-- Skittering Leap
-			[450045] = {40, 58.3},--Updated Sept 11
+			[450045] = {39, 58.3},--Updated Sept 11
 		},
 		[2] = {
 			-- Call of the Swarm
