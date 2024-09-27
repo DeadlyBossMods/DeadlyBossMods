@@ -342,6 +342,18 @@ function DBM:GetCurrentInstanceDifficulty()
 			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
 		end
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
+		if difficulty == 186 and Enum.SeasonID and private.currentSeason == Enum.SeasonID.SeasonOfDiscovery then--Molten Core SoD
+			local modifierLevel = 0
+			if self:UnitDebuff("player", 458841) then--Sweltering Heat
+				modifierLevel = 1
+			elseif self:UnitDebuff("player", 458842) then--Blistering Heat
+				modifierLevel = 2
+			elseif self:UnitDebuff("player", 458843) then--Molten Heat
+				modifierLevel = 3
+			end
+			--Return 20 man so user stats are retained from previous patch
+			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
+		end
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
 		return "heroicscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
