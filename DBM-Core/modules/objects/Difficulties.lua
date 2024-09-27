@@ -404,8 +404,6 @@ function DBM:GetCurrentInstanceDifficulty()
 			modifierName = modifierName == "" and tostring(modifierLevel) or modifierName
 			return difficultyId, difficultyName .. " (" .. modifierName .. ") - ", difficulty, instanceGroupSize, modifierLevel
 		end
-		--Just return normal 20 man raid that's not SoD mess
-		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
