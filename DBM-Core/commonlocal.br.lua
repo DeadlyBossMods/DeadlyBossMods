@@ -43,7 +43,8 @@ CL.NORTHEAST      				= "Nordeste"
 CL.SOUTHEAST      				= "Sudeste"
 CL.SOUTHWEST      				= "Sudoeste"
 CL.NORTHWEST      				= "Noroeste"
-
+CL.INSIDE 						= "Dentro"
+CL.OUTSIDE 						= "Fora"
 CL.SHIELD						= "Escudo"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.PILLAR						= "Pilar"
 CL.SHELTER						= "Abrigar"
@@ -90,7 +91,6 @@ CL.PUSHBACK          			= "Repulsão"
 CL.FRONTAL           			= "Frontal"
 CL.LASER            			= "Laser"
 CL.LASERS            			= "Lasers"
-
 CL.RIFT							= "Fenda"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS						= "Fendas"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS						= "Armadilhas"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
@@ -102,3 +102,9 @@ CL.CURSES						= "Maldições"
 CL.SWIRLS						= "Redemoinhos"--Plural of Swirl
 CL.CHARGES						= "Cargas"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES						= "Círculos"--As in circles on ground that players need to move out of or need to drop off
+-- Colors
+CL.BLACK 						= "Preto"
+CL.BLUE 						= "Azul"
+CL.GREEN 						= "Verde"
+CL.RED 							= "Vermelho"
+CL.BRONZE 						= "Bronze"
