@@ -210,7 +210,7 @@ end
 
 function PanelPrototype:CreateSlider(text, low, high, step, width)
 	---@class DBMPanelSlider: Slider
-	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsSliderTemplate")
+	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "DBMPolyfill_OptionsSliderTemplate")
 	slider.mytype = "slider"
 	slider.myheight = 50
 	slider:SetMinMaxValues(low, high)
