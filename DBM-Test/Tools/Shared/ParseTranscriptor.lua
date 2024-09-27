@@ -116,6 +116,13 @@ local function getEncounters(lines)
 		v.startTime = timeFromLine(lines[v.startOffset])
 		v.endTime = timeFromLine(lines[v.endOffset])
 	end
+	for i = #encounters, 1, -1 do
+		local v = encounters[i]
+		-- Filter out obviously buggy or empty encounters, e.g., SoD Vaelastrasz triggering ENCOUNTER_START for every single raid member
+		if v.endTime - v.startTime < 1 then
+			table.remove(encounters, i)
+		end
+	end
 	return encounters
 end
 
