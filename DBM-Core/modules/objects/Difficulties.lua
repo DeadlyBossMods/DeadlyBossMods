@@ -305,7 +305,7 @@ end
 
 --TODO C_IslandsQueue.GetIslandDifficultyInfo(), if 38-40 don't work
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = private.GetInstanceInfo()
+	local _, instanceType, difficulty, difficultyName, _, _, _, instanceID, instanceGroupSize = private.GetInstanceInfo()
 	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid.
@@ -326,8 +326,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		local keystoneLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() or 0
 		return "challenge5", PLAYER_DIFFICULTY6 .. "+ (" .. keystoneLevel .. ") - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 148 or difficulty == 185 or difficulty == 215 or difficulty == 226 then--20 man classic raid / 226 is SoD 20
-		local modifierLevel = 0
-		if difficulty == 226 then--Molten Core SoD
+		if instanceID == 409 then--Molten Core (currently now returning diff ID 186, but keeping this in case it changes back)
+			local modifierLevel = 0
 			if self:UnitDebuff("player", 458841) then--Sweltering Heat
 				modifierLevel = 1
 			elseif self:UnitDebuff("player", 458842) then--Blistering Heat
@@ -335,13 +335,25 @@ function DBM:GetCurrentInstanceDifficulty()
 			elseif self:UnitDebuff("player", 458843) then--Molten Heat
 				modifierLevel = 3
 			end
+			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
+		elseif instanceID == 309 then--ZG, force return 10 man
+			return "normal10", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 		end
-		if modifierLevel == 0 then
-			return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-		else
+		--Just return normal 20 man raid that's not SoD mess
+		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
+		if difficulty == 186 and Enum.SeasonID and private.currentSeason == Enum.SeasonID.SeasonOfDiscovery then--Molten Core SoD
+			local modifierLevel = 0
+			if self:UnitDebuff("player", 458841) then--Sweltering Heat
+				modifierLevel = 1
+			elseif self:UnitDebuff("player", 458842) then--Blistering Heat
+				modifierLevel = 2
+			elseif self:UnitDebuff("player", 458843) then--Molten Heat
+				modifierLevel = 3
+			end
+			--Return 20 man so user stats are retained from previous patch
 			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
 		end
-	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
 		return "heroicscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -412,6 +424,18 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
 		return "story", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 231 then--SoD BWL (and other raids?)
+		--Do fancy stuff here, TODO for paul :D
+		--if Enum.SeasonID and private.currentSeason == Enum.SeasonID.SeasonOfDiscovery then--Molten Core SoD
+		--	if self:UnitDebuff("player", 458841) then--Sweltering Heat
+		--		return "normal", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		--	elseif self:UnitDebuff("player", 458842) then--Blistering Heat
+		--		return "heroic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		--	elseif self:UnitDebuff("player", 458843) then--Molten Heat
+		--		return "mythic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		--	end
+		--end
+		return "normal", "", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
