@@ -690,13 +690,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMarkofRage:Play("rageyou")
 	elseif spellId == 438218 then
 		if not args:IsPlayer() then
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			local remaining
-			if expireTime then
-				remaining = expireTime-GetTime()
-			end
-			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438218, self.vb.piercingCount+1)
-			if (not remaining or remaining and remaining < timer) and not UnitIsDeadOrGhost("player") then
+			if not UnitIsDeadOrGhost("player") then
 				specWarnPiercingStrikeTaunt:Show(args.destName)
 				specWarnPiercingStrikeTaunt:Play("tauntboss")
 			else
@@ -751,22 +745,29 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnStingingDelirium:UpdateColor(4)--Set red very bad
 		end
 		warnStingingDelirium:Show(args.destName)
-	elseif spellId == 451277 and self:GetStage(2) then--Spike Storm Absorb (backup phase change if Burrow fails)
-		self:SetStage(2.5)
-		self:Unschedule(checkSkippedWebVortex)
-		self:Unschedule(checkSkippedEntropicDesolation)
-		self:Unschedule(checkSkippedCatalysmicEntropy)
-		--Anub
-		timerPiercingStrikeCD:Stop()
-		timerCalloftheSwarmCD:Stop()
-		timerImpalingEruptionCD:Stop()
-		timerStingingSwarmCD:Stop()
-		--Takazj
-		timerWebVortexCD:Stop()
-		timerEntropicDesolationCD:Stop()
-		timerStrandsofRealityCD:Stop()
-		timerVoidStepCD:Stop()
-		timerCataclysmicEntropyCD:Stop()
+	elseif spellId == 451277 then--Spike Storm Absorb
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			local uId = DBM:GetUnitIdFromGUID(args.destGUID, true)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, uId)
+		end
+		if self:GetStage(2) then--backup phase change if Burrow fails
+			self:SetStage(2.5)
+			self:Unschedule(checkSkippedWebVortex)
+			self:Unschedule(checkSkippedEntropicDesolation)
+			self:Unschedule(checkSkippedCatalysmicEntropy)
+			--Anub
+			timerPiercingStrikeCD:Stop()
+			timerCalloftheSwarmCD:Stop()
+			timerImpalingEruptionCD:Stop()
+			timerStingingSwarmCD:Stop()
+			--Takazj
+			timerWebVortexCD:Stop()
+			timerEntropicDesolationCD:Stop()
+			timerStrandsofRealityCD:Stop()
+			timerVoidStepCD:Stop()
+			timerCataclysmicEntropyCD:Stop()
+		end
 	elseif spellId == 438708 then--Stinging Sawrm on Players
 		warnStingingSwarm:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
