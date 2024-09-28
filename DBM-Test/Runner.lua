@@ -690,8 +690,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	DBM:ScenarioCheck(0)
 	if testData.instanceInfo.difficultyModifier then
-		-- Only MC is supported right now
-	   if testData.instanceInfo.instanceID == 409 then
+	   if testData.instanceInfo.instanceID == 409 then -- Molten Core
 			local heatLevel = testData.instanceInfo.difficultyModifier
 			if heatLevel == 1 then
 				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 458841, "Sweltering Heat", "DEBUFF")
@@ -700,7 +699,24 @@ function test:Playback(testData, timeWarp, testOptions)
 			elseif heatLevel == 3 then
 				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 458843, "Molten Heat", "DEBUFF")
 			end
-	   end
+		elseif testData.instanceInfo.instanceID == 469 then -- BWL
+			local trials = testData.instanceInfo.difficultyModifier or 0
+			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BLACK) ~= 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 467047, "Black Essence", "DEBUFF")
+			end
+			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_GREEN) ~= 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466416, "Green Trial", "DEBUFF")
+			end
+			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BLUE) ~= 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466277, "Blue Trial", "DEBUFF")
+			end
+			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BRONZE) ~= 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466071, "Bronze Trial", "DEBUFF")
+			end
+			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_RED) ~= 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466261, "Red Trial", "DEBUFF")
+			end
+		end
    end
 	local maxTimestamp = testData.log[#testData.log][1]
 	local timeWarper = test.TimeWarper:New()

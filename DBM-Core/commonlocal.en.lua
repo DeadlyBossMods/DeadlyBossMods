@@ -155,3 +155,10 @@ CL.MOON_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp
 CL.SQUARE_ICON_SMALL				= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t" -- NO TRANSLATE
 CL.CROSS_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t" -- NO TRANSLATE
 CL.SKULL_ICON_SMALL					= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t" -- NO TRANSLATE
+
+-- Colors
+CL.BLACK	= "Black"
+CL.BLUE		= "Blue"
+CL.GREEN	= "Green"
+CL.RED		= "Red"
+CL.BRONZE	= "Bronze"
