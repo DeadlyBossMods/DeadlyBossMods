@@ -82,7 +82,7 @@ local fakeBWVersion, fakeBWHash = 359, "3aa6ef3"--359.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.18 alpha"--Core version
+DBM.DisplayVersion = "11.0.20 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 9, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 15 or 14--When this is incremented, trigger force disable regardless of major patch
@@ -6686,10 +6686,18 @@ end
 do
 	--Handle new spell name requesting with wrapper, to make api changes easier to handle
 	local GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName
-	local newPath
+	local newPath, halfAssedClassicPath
 	if C_Spell and C_Spell.GetSpellInfo then
 		newPath = true
-		GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellCooldown, C_Spell.GetSpellName
+		GetSpellInfo, GetSpellTexture, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellName
+		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in 1.15.4
+		--This is what happens when you do half assed syncs that can't even maintain parity properly during rebases
+		if not C_Spell.GetSpellCooldown then
+			GetSpellCooldown = _G.GetSpellCooldown
+			halfAssedClassicPath = true--Need to set variable so the wrapper knows it's arg return and not table return
+		else
+			GetSpellCooldown = C_Spell.GetSpellCooldown
+		end
 	else
 		newPath = false
 		---@diagnostic disable-next-line: undefined-field
@@ -6761,7 +6769,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
-		if newPath then
+		if newPath and not halfAssedClassicPath then
 			local spellTable = GetSpellCooldown(spellId)
 			if spellTable then
 				---@diagnostic disable-next-line: undefined-field
