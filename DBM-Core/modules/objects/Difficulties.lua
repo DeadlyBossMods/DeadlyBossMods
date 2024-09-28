@@ -457,16 +457,25 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 207 then--SoD 1 player dungeon? Assigning as follower for now but will sort it out later
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
-		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
+		local delveInfo, delveInfo2, delveInfo3 = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6184), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6185)
+		local usedDelveInfo
+		if delveInfo and delveInfo.shownState and delveInfo.shownState == 1 then
+			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
+		elseif delveInfo2 and delveInfo2.shownState and delveInfo2.shownState == 1 then
+			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6184)
+		elseif delveInfo3 and delveInfo3.shownState and delveInfo3.shownState == 1 then
+			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6185)
+		end
 		local delveTier = 0
-		if delveInfo and delveInfo and delveInfo.tierText then
-			if delveInfo.tierText == "?" then
-				return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize
-			elseif delveInfo.tierText == "??" then
-				return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize
+		if usedDelveInfo and usedDelveInfo.tierText then
+			--Zekvir Hack to normal/mythic since his tiers aren't numbers
+			if usedDelveInfo.tierText == "?" then
+				return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize, 0
+			elseif usedDelveInfo.tierText == "??" then
+				return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize, 0
 			end
 			---@diagnostic disable-next-line: cast-local-type
-			delveTier = tonumber(delveInfo.tierText)
+			delveTier = tonumber(usedDelveInfo.tierText)
 		end
 		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
 	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
