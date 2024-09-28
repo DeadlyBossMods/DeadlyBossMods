@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 439299 449986",
 	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 445013 462693",--455404
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
-	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656 445013 445021",
+	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656 445013 445021 464056 447967",
 	"SPELL_PERIODIC_DAMAGE 443403",
 	"SPELL_PERIODIC_MISSED 443403",
 	"UNIT_DIED",
@@ -96,7 +96,7 @@ mod:AddInfoFrameOption(447076, true)
 
 --Stage Two: Royal Ascension
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28756))
-local warnBridge								= mod:NewSpellAnnounce(268876, 2)
+local warnPlatform								= mod:NewCountAnnounce(232537, 2)--Spellname "Platform"
 --Mythic Stuff here
 
 mod:AddNamePlateOption("NPAuraOnEchoingConnection", 453990)
@@ -109,16 +109,18 @@ local specWarnShadowblast					= mod:NewSpecialWarningInterruptCount(447950, nil,
 
 ----Devoted Worshipper
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29639))
-local warnWorshippersRemaining				= mod:NewAddsLeftAnnounce(-29639, 2, 448494)
+--local warnWorshippersRemaining				= mod:NewAddsLeftAnnounce(-29639, 2, 448494)
 local warnCosmicApocalypse					= mod:NewCastAnnounce(448458, 3)
 
 local specWarnGloomTouch					= mod:NewSpecialWarningMoveAway(447967, nil, nil, nil, 1, 2)
 local yellGloomTouch						= mod:NewShortYell(447967)
+local yellGloomTouchFades					= mod:NewShortFadesYell(447967)
 local specWarnCosmicRupture					= mod:NewSpecialWarningYou(462558, nil, nil, nil, 1, 2, 4)--Mythic
 local yellCosmicRupture						= mod:NewShortFadesYell(462558)
 --local specWarnCosmicApocalypse			= mod:NewSpecialWarningSpell(448458, nil, nil, nil, 3, 2)
 
 local timerCosmicApocalypse					= mod:NewCastTimer(85, 448458, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerGloomTouchCD						= mod:NewCDTimer(10, 464056, nil, nil, nil, 3)
 ---Chamber Guardian
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(29642))
 local specWarnOust							= mod:NewSpecialWarningDefensive(448147, nil, nil, nil, 1, 2)
@@ -143,7 +145,7 @@ local warnCausticFangs						= mod:NewStackAnnounce(449236, 2, nil, "Tank")
 local specWarnCausticFangs					= mod:NewSpecialWarningStack(449236, nil, 30, nil, nil, 1, 6, 3)
 --Stage Three: Paranoia's Feast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28757))
-local warnAbyssalInfusion					= mod:NewTargetNoFilterAnnounce(443888, 3, nil, nil, 109400)--Shortname "Portals"
+local warnAbyssalInfusion					= mod:NewTargetCountAnnounce(443888, 3, nil, nil, 109400, nil, nil, nil, true)--Shortname "Portals"
 local warnFrothVapor						= mod:NewStackAnnounce(445880, 4)--Version on boss
 local warnQueenSummon						= mod:NewCountAnnounce(444829, 2, nil, nil, nil, nil, DBM_COMMON_L.BIG_ADDS)--Shortname "Big Adds"
 local warnRoyalCondemnation					= mod:NewTargetNoFilterAnnounce(438976, 3, nil, nil, 292910)--Shortname "Shackles"
@@ -178,15 +180,16 @@ local timerRoyalCondemnationCD				= mod:NewCDCountTimer(49, 438976, 292910, nil,
 local timerInfestCD							= mod:NewCDCountTimer(49, 443325, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--I don't nessesarily agree with calling this Small adds, since timer syncs up to tank debuff, and small adds come from tank several seconds after. Plus "infest" is kinda clear anyways it's mechanic that spawns adds later
 local timerGorgeCD							= mod:NewCDCountTimer(49, 443336, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddSetIconOption("SetIconOnAbyssalInfusion", 443888, true, 0, {1, 2})
+mod:AddSetIconOption("SetIconOnAbyssalInfusion", 443888, true, 2, {1, 2})--Melee > Ranged
 mod:AddSetIconOption("SetIconOnRoyalCondemnation", 438976, true, 0, {6, 3, 7})--3 on Mythic
-mod:AddSetIconOption("SetIconOnQueensSummon", 444829, true, 5, {8, 5, 4})
+mod:AddSetIconOption("SetIconOnQueensSummon", 444829, true, 5, {8, 5, 4, 1, 2})
 
 local castsPerGUID = {}
 local marksOrder = {6, 3, 7, 1, 2}--Icon order based on raid flares and not using green after much discussion on it with JW
-local addMarks = {8, 5, 4}
+local addMarks = {8, 5, 4, 1, 2}
 --P1
 local reactiveIcons = {}
+local infusionIcons = {}
 mod.vb.ToxinBehavior = "MatchBW"
 mod.vb.reactiveCount = 0--Reused for Paralyzing Venom
 mod.vb.novaCount = 0--Reused for beams
@@ -200,10 +203,8 @@ mod.vb.wrestCount = 0
 mod.vb.platformCount = 0
 mod.vb.worshipersKilled = 0
 mod.vb.expellerKilled = 0
-mod.vb.guardiansKilled = 0
 --P3
 mod.vb.abyssalInfusionCount = 0
-mod.vb.infusionIcon = 1
 mod.vb.frothingGluttonyCount = 0
 mod.vb.queensSummonsCount = 0
 mod.vb.queensSummonIcon = 1
@@ -389,7 +390,7 @@ local function sortToxin(self)
 		if name == DBM:GetMyPlayerInfo() then
 			if icon > 0 then
 				if self.Options.SpecWarn437592moveto then
-					specWarnReactiveToxin:Show(icon)
+					specWarnReactiveToxin:Show(self:IconNumToTexture(icon))
 					specWarnReactiveToxin:Play("mm"..icon)
 				else--Even if icon > 0, if user disables moveto alert, show generic one
 					specWarnReactiveToxinGeneric:Show()
@@ -406,6 +407,25 @@ local function sortToxin(self)
 		end
 	end
 	warnReactiveToxin:Show(self.vb.reactiveCount+1, table.concat(reactiveIcons, "<, >"))
+end
+
+---@param self DBMMod
+local function SortRifts(self)
+	table.sort(infusionIcons, DBM.SortByMeleeRoster)
+	for i = 1, #infusionIcons do
+		local name = infusionIcons[i]
+		local icon = i
+		if self.Options.SetIconOnAbyssalInfusion then
+			self:SetIcon(name, icon)
+		end
+		if name == DBM:GetMyPlayerInfo() then
+			specWarnAbyssalInfusion:Show(self:IconNumToTexture(icon))
+			specWarnAbyssalInfusion:Play("mm"..icon)
+			yellAbyssalInfusion:Yell(icon)
+			yellAbyssalInfusionFades:Countdown(443903, nil, icon)
+		end
+	end
+	warnAbyssalInfusion:Show(self.vb.abyssalInfusionCount+1, table.concat(infusionIcons, "<, >"))
 end
 
 function mod:OnCombatStart(delay)
@@ -586,7 +606,7 @@ function mod:SPELL_CAST_START(args)
 		timerExpulsionBeamCD:Start(nil, self.vb.novaCount+1)
 	elseif spellId == 443888 then
 		self.vb.abyssalInfusionCount = self.vb.abyssalInfusionCount + 1
-		self.vb.infusionIcon = 1
+		table.wipe(infusionIcons)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443888, self.vb.abyssalInfusionCount+1)
 		if timer then
 			timerAbyssalInfusionCD:Start(timer, self.vb.abyssalInfusionCount+1)
@@ -655,6 +675,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
 		timerAcidicApocalypse:Stop()
+		timerGloomTouchCD:Stop()
 		self.vb.webBladesCount = 0--Only repeat ability from earlier stage
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
@@ -723,6 +744,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGloomTouch:Show()
 			specWarnGloomTouch:Play("runout")
 			yellGloomTouch:Yell()
+			yellGloomTouchFades:Countdown(spellId)
 		end
 	elseif spellId == 462558 then
 		if args:IsPlayer() then
@@ -738,18 +760,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellConcentratedToxinFades:Countdown(spellId)
 		end
 	elseif spellId == 443903 then
-		local icon = self.vb.infusionIcon
-		if self.Options.SetIconOnAbyssalInfusion then
-			self:SetIcon(args.destName, icon)
+		infusionIcons[#infusionIcons+1] = args.destName
+		self:Unschedule(sortToxin)
+		if #infusionIcons == 2 then
+			SortRifts(self)
+		else
+			self:Schedule(0.5, SortRifts, self)--Fallback in case scaling targets for normal/heroic
 		end
-		if args:IsPlayer() then
-			specWarnAbyssalInfusion:Show(self:IconNumToTexture(icon))
-			specWarnAbyssalInfusion:Play("mm"..icon)
-			yellAbyssalInfusion:Yell(icon)
-			yellAbyssalInfusionFades:Countdown(spellId, nil, icon)
-		end
-		warnAbyssalInfusion:CombinedShow(1, args.destName)
-		self.vb.infusionIcon = self.vb.infusionIcon + 1
 	elseif spellId == 438974 then
 		if self:AntiSpam(5, 5) then
 			--In case targeting goes out before cast start, we want to make sure icons reset on first target
@@ -877,7 +894,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.platformCount = 0
 		self.vb.worshipersKilled = 0
 		self.vb.expellerKilled = 0
-		self.vb.guardiansKilled = 0
 		self.vb.novaCount = 0--Used for beams in stage 2
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
@@ -914,6 +930,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellAcolytesEssenceFades:Cancel()
 		end
+	elseif spellId == 464056 or spellId == 447967 then--Left Mythic Gateway version, Right Mob version on all difficulties
+		if args:IsPlayer() then
+			yellGloomTouchFades:Cancel()
+		end
 	elseif spellId == 445013 then--Dark Barrier Removed
 		local uId = DBM:GetUnitIdFromGUID(args.destGUID)
 		local _, _, _, _, _, _, _, _, castingSpellID = UnitCastingInfo(uId)
@@ -947,20 +967,20 @@ function mod:UNIT_DIED(args)
 			warnGloomEruption:Show()
 			warnGloomEruption:Play("getknockedup")
 			timerGloomEruption:Start(self:IsEasy() and 7 or 6)
-		end
-		--Better place to start Stage 2 wrest timer
-		if self.vb.wrestCount == 0 then
-			timerWrestCD:Stop()
-			timerWrestCD:Start(self:IsEasy() and 12.9 or 11.9, 1)
-			timerExpulsionBeamCD:Start(12.5, 1)
+			--Better place to start Stage 2 wrest timer
+			if self.vb.wrestCount == 0 then
+				timerWrestCD:Stop()
+				timerWrestCD:Start(self:IsEasy() and 12.9 or 11.9, 1)
+				timerExpulsionBeamCD:Start(12.5, 1)
+			end
 		end
 	elseif cid == 223318 then--Devoted Worshipper
 		self.vb.worshipersKilled = self.vb.worshipersKilled + 1
+		--warnWorshippersRemaining:Show(self.vb.worshipersKilled)
 		if self.vb.worshipersKilled == 2 then
 			timerCosmicApocalypse:Stop()
 		end
 	elseif cid == 223204 then--Chamber Guardian
-		self.vb.guardiansKilled = self.vb.guardiansKilled + 1
 		timerOustCD:Stop(args.destGUID)
 	elseif cid == 221863 then--cycle-warden--Summoned Acolyte
 		timerNullDetonationCD:Stop(nil, args.destGUID)
@@ -987,6 +1007,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerWebBladesCD:Stop()
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
+		end
+	elseif spellId == 447208 and self:GetStage(2) then--Predation
+		self.vb.platformCount = self.vb.platformCount + 1
+		warnPlatform:Show(self.vb.platformCount)
+		if self.vb.platformCount == 1 then
+			timerWrestCD:Stop()
+			timerWrestCD:Start(6, self.vb.wrestCount+1)--6-6.6
+			timerGloomTouchCD:Start(6)
+		elseif self.vb.platformCount == 2 then
+			timerWrestCD:Stop()
+			timerGloomTouchCD:Stop()
 		end
 	end
 end
