@@ -6693,7 +6693,7 @@ do
 		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in 1.15.4
 		--This is what happens when you do half assed syncs that can't even maintain parity properly during rebases
 		if not C_Spell.GetSpellCooldown then
-			GetSpellCooldown = GetSpellCooldown
+			GetSpellCooldown = _G.GetSpellCooldown
 			halfAssedClassicPath = true--Need to set variable so the wrapper knows it's arg return and not table return
 		else
 			GetSpellCooldown = C_Spell.GetSpellCooldown
