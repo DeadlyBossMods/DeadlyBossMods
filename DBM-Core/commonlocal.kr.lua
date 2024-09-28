@@ -105,3 +105,10 @@ CL.CURSES							= "저주"
 CL.SWIRLS							= "회오리"--Plural of Swirl
 CL.CHARGES							= "돌진"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES							= "동그라미"--As in circles on ground that players need to move out of or need to drop off
+
+-- Colors
+CL.BLACK	= "검은용"
+CL.BLUE		= "푸른용"
+CL.GREEN	= "녹색용"
+CL.RED		= "붉은용"
+CL.BRONZE	= "청동용"
