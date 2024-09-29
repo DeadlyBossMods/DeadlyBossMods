@@ -531,6 +531,7 @@ function testGenerator:parseMetadata()
 	local instanceInfo = {} ---@type DBMInstanceInfo
 	local encounterInfo = {}
 	local zoneId
+	local startsInCombat = false
 	for i, line in ipairs(self.log.lines) do
 		-- Only grab instance and encounter info from within relevant log area
 		if i >= self.firstLine and i <= self.lastLine then
@@ -557,6 +558,12 @@ function testGenerator:parseMetadata()
 					end
 				end
 			end
+		end
+		-- Track current combat state prior to pull to correctly restore it when generating a log from an encounter that starts while you are already in combat
+		if not encounterInfo.id and line:find("[PLAYER_REGEN_DISABLED]", nil, true) then
+			startsInCombat = true
+		elseif not encounterInfo.id and line:find("[PLAYER_REGEN_ENABLED]", nil, true) then
+			startsInCombat = false
 		end
 		-- But we can grab the recording player id from anywhere
 		if not player then
@@ -592,7 +599,8 @@ function testGenerator:parseMetadata()
 		player = player,
 		instanceInfo = instanceInfo,
 		encounterInfo = encounterInfo,
-		gameVersion = gameVersion
+		gameVersion = gameVersion,
+		startsInCombat = startsInCombat
 	}
 end
 
@@ -705,6 +713,10 @@ function testGenerator:GetLogAndPlayers()
 	local timeOffset
 	local totalTime = 0
 	local anon = anonymizer:New(self.log.lines, self.firstLine, self.lastLine, self.metadata.player, not self.anonymize)
+	if self.metadata.startsInCombat then
+		resultLog[#resultLog + 1] = {0, "PLAYER_REGEN_DISABLED", "+Entering combat!"}
+		resultLogStr[#resultLogStr + 1] = '{0.00, "PLAYER_REGEN_DISABLED", "+Entering combat!"}'
+	end
 	for i = self.firstLine, self.lastLine do
 		local line = self.log.lines[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
