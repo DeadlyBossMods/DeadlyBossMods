@@ -110,6 +110,9 @@ for i = 1, 10 do
 		if self:GetParent().dropdown.callfunc then
 			self:GetParent().dropdown.callfunc(self.entry.value)
 		end
+		if self:GetParent().dropdown.onSelectionChangedCallback then
+			self:GetParent().dropdown:onSelectionChangedCallback(self.entry.value)
+		end
 		_G[self:GetParent().dropdown:GetName() .. "Text"]:SetText(self.entry.text)
 	end)
 	function button:Reset()
@@ -193,9 +196,7 @@ function tabFrame1:Refresh()
 	ClickFrame:Show()
 end
 
----@class DBMDropdownTemplate: Frame
----@field values table
----@field myheight number
+---@class DBMDropDown: Frame
 local dropdownPrototype = CreateFrame("Frame")
 
 -- For lazily loaded dropdowns: pass a single dropdown entry, for normal dropdowns pass a single value or name
@@ -207,13 +208,31 @@ function dropdownPrototype:SetSelectedValue(selected)
 				text:SetText(v.text)
 				self.value = v.value
 				self.text = v.text
+				if self.onSelectionChangedCallback then
+					self:onSelectionChangedCallback(v)
+				end
 			end
 		end
 	elseif type(self.values) ~= "table" then -- lazily loaded dropdown, set to whatever was given no matter if it exists
 		text:SetText(selected.text)
 		self.value = selected.value
 		self.text = selected.text
+		if self.onSelectionChangedCallback then
+			self:onSelectionChangedCallback(selected)
+		end
 	end
+end
+
+-- Called if the selection changes by either the user or by calling SetSelectedValue
+function dropdownPrototype:OnSelectionChanged(callback)
+	self.onSelectionChangedCallback = callback
+end
+
+function dropdownPrototype:RefreshLazyValues()
+	if not self.valueGetter then
+		error("called RefreshLazyValues() on a static dropdown", 2)
+	end
+	self.values = self:valueGetter()
 end
 
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
@@ -224,7 +243,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			entry.value = entry.value or entry.text
 		end
 	end
-	---@class DBMDropDown: Frame, DBMDropdownTemplate
+	---@class DBMDropDown
 	---@diagnostic disable-next-line: undefined-field -- frame comes from a subclass of DBM_GUI
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
 	dropdown.mytype = "dropdown"
@@ -259,7 +278,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			tabFrame1.dropdown = nil
 		else
 			if dropdown.valueGetter then
-				dropdown.values = dropdown.valueGetter(dropdown)
+				dropdown:RefreshLazyValues()
 			end
 			tabFrame1.largestWidth = 0
 			tabFrame1:ClearAllPoints()
