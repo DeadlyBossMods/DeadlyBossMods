@@ -59,9 +59,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2608)
 
 L:SetMiscLocalization({
-	Red		= " [紅]",--Skeinspinner Takazj
-	Blue	= " [藍]"--Anub'arash
-})
+	Red		= " [紅-塔卡茲j]",--Skeinspinner Takazj
+	Blue	= " [藍-阿努]"--Anub'arash
+
 
 ---------------------------
 --  Queen Ansurek (2922) --
