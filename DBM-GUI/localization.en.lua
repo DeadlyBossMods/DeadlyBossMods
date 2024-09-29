@@ -680,3 +680,5 @@ L.ShowErrors						= "Show errors"
 L.TestModEntry						= "[Playground] %s"
 L.EnterTestMode						= "Playground mode"
 L.SkipPhase							= "Skip to next phase"
+
+L.AnonymizeTest						= "Anonymize player names and GUIDs"
