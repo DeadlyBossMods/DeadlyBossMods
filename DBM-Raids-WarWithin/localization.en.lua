@@ -57,8 +57,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2608)
 
 L:SetMiscLocalization({
-	Red		= " [Red]",--Skeinspinner Takazj
-	Blue	= " [Blue]"--Anub'arash
+	Red		= " [R-Takazj]",--Skeinspinner Takazj
+	Blue	= " [B-Anub]"--Anub'arash
 })
 
 ---------------------------
