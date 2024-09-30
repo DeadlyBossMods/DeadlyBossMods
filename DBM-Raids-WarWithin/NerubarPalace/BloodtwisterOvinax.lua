@@ -50,7 +50,7 @@ local specWarnVolatileConcoctionTaunt			= mod:NewSpecialWarningTaunt(441362, nil
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(442799, nil, nil, nil, 1, 8)
 
 local timerExperimentalDosageCD					= mod:NewCDCountTimer(50, 442526, 143340, nil, nil, 3)--Shortname "Injection"
-local timerIngestBlackBloodCD					= mod:NewCDCountTimer(167.4, 442432, 325225, nil, nil, 3)--Shortname "Container Breach" (167-171 based on delaying boss casts by position)
+local timerIngestBlackBloodCD					= mod:NewCDCountTimer(166.4, 442432, 325225, nil, nil, 3)--Shortname "Container Breach" (167-171 based on delaying boss casts by position)
 local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON..DBM_COMMON_L.MAGIC_ICON)--Shortname "Webs"
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 

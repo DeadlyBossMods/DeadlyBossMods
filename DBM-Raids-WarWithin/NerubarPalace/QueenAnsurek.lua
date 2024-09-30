@@ -219,39 +219,32 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Reactive Toxin
-			[437592] = {0},
+			[437592] = {19.1, 55.8, 55.8},
 			--Venom Nova
-			[437417] = {0},
+			[437417] = {29.3, 56, 56},
 			--Silken Tomb
-			[439814] = {0},
+			[439814] = {12.4, 40.0, 54.0, 26.0},
 			--Liquefy
-			[440899] = {0},
+			[440899] = {6.4, 40.0, 54.0},
 			--Web Blades
-			[439299] = {0}
-		},
-		[1.5] = {
-			--Wrest
-			[450191] = {0}--Technically diff spellid here, but table uses same one (different from normal)
-		},
-		[2] = {
-			--Wrest
-			[450191] = {0}--Then 8 repeating with exception of timer resetting when first platform adds die
+			[439299] = {20.4, 40.0, 13.0, 25.0, 16.0, 26.0}
 		},
 		[3] = {
 			--Abyssal Infusion
-			[443888] = {0},
+			[443888] = {57.8, 80, 80},
 			--Frothing Gluttony
-			[445422] = {0},
+			[445422] = {68.8, 80, 88},
 			--Queen's Summons
-			[444829] = {0},
+			[444829] = {43.8, 64, 83},
 			--Royal Condemnation
-			[438976] = {0},
+			[438976] = {116.3, 52, 34},
 			--Infest
-			[443325] = {0},
+			[443325] = {29.8, 66, 82},
 			--Gorge
-			[443336] = {0},
+			[443336] = {31.8, 66, 82},
 			--Web Blades
-			[439299] = {0}
+			[439299] = {48.5, 11.0, 26.0, 21.0, 17.0, 16.0, 47.0, 19.0, 14.0, 22.0}
+
 		},
 	},
 	["heroic"] = {
@@ -259,21 +252,13 @@ local allTimers = {
 			--Reactive Toxin
 			[437592] = {18.3, 55.8, 55.9},--56 repeating? (Same as normal)
 			--Venom Nova
-			[437417] = {29.4, 56, 56},--56 repeating? (Same as normal)
+			[437417] = {29.3, 56, 56},--56 repeating? (Same as normal)
 			--Silken Tomb
 			[439814] = {57.4, 54, 15.9},--(different from normal)
 			--Liquefy
 			[440899] = {8.3, 39.7, 51},--(different from normal)
 			--Web Blades
 			[439299] = {20.4, 47, 47, 25}--(different from normal)
-		},
-		[1.5] = {
-			--Wrest
-			[450191] = {6, 19, 19}--Technically diff spellid here, but table uses same one (different from normal)
-		},
-		[2] = {
-			--Wrest
-			[450191] = {34.2}--Then 8 repeating with exception of timer resetting when first platform adds die
 		},
 		[3] = {
 			--Abyssal Infusion
@@ -297,21 +282,13 @@ local allTimers = {
 			--Reactive Toxin
 			[437592] = {18.3, 56, 56},--56 repeating?
 			--Venom Nova
-			[437417] = {29.4, 56, 56},--56 repeating?
+			[437417] = {29.3, 56, 56},--56 repeating?
 			--Silken Tomb
 			[439814] = {57.4, 54},
 			--Liquefy
 			[440899] = {8.3, 40, 55},
 			--Web Blades
 			[439299] = {76.4, 48}
-		},
-		[1.5] = {
-			--Wrest
-			[450191] = {6, 19}--Technically diff spellid here, but table uses same one
-		},
-		[2] = {
-			--Wrest
-			[450191] = {31.5}--Then 8 repeating
 		},
 		[3] = {
 			--Abyssal Infusion
@@ -342,14 +319,6 @@ local allTimers = {
 			[440899] = {0},--Not used in Story
 			--Web Blades
 			[439299] = {7.5, 38.0}
-		},
-		[1.5] = {
-			--Wrest
-			[450191] = {0}--Not used in story
-		},
-		[2] = {
-			--Wrest
-			[450191] = {0}--Not used in story
 		},
 		[3] = {
 			--Abyssal Infusion
@@ -545,10 +514,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wrestCount = self.vb.wrestCount + 1
 		specWarnWrest:Show(self.vb.wrestCount)
 		specWarnWrest:Play("pullin")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450191, self.vb.wrestCount+1) or self:GetStage(2) and 8
-		if timer then
-			timerWrestCD:Start(timer, self.vb.wrestCount+1)
-		end
+		timerWrestCD:Start(spellId == 447411 and 19 or 8, self.vb.wrestCount+1)
 	elseif spellId == 449940 then
 		timerWrestCD:Stop()
 		timerAcidicApocalypse:Start()--Basically phase 2.5 or transition to phase 3
@@ -670,7 +636,7 @@ function mod:SPELL_CAST_START(args)
 		timerWebBladesCD:Stop()
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
-		timerWrestCD:Start(allTimers[savedDifficulty][1.5][450191][1], 1)--6
+		timerWrestCD:Start(6, 1)
 		timerParalyzingVenomCD:Start(13, 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
