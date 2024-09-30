@@ -857,9 +857,9 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				follower	= L.FOLLOWER,--no PLAYER_DIFFICULTY entry yet
 				story		= L.STORY,--no PLAYER_DIFFICULTY entry yet
 				lfr25		= PLAYER_DIFFICULTY3,
-				normal		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
+				normal		= mod.addon.minExpansion < 5 and not DBM:IsSeasonal("SeasonOfDiscovery") and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 				normal25	= RAID_DIFFICULTY2,
-				heroic		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
+				heroic		= mod.addon.minExpansion < 5 and not DBM:IsSeasonal("SeasonOfDiscovery") and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
 				heroic25	= RAID_DIFFICULTY4,
 				mythic		= PLAYER_DIFFICULTY6,
 				challenge	= (mod.addon.minExpansion < 6 and not mod.upgradedMPlus) and CHALLENGE_MODE or PLAYER_DIFFICULTY6 .. "+",

@@ -220,9 +220,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCarnivorousContestTarget:ScheduleVoice(1.5, "gathershare")
 			yellCarnivorousContest:Yell()
 			yellCarnivorousContestFades:Countdown(spellId)
-		elseif self:AntiSpam(3, 2) then
+		elseif self:AntiSpam(3, 2) and not DBM:UnitDebuff("player", 455847) then
 			specWarnCarnivorousContest:Show(self.vb.lashingsCount)
-			specWarnCarnivorousContest:Play("helpsoak")
+			if self:IsMythic() then
+				if self.vb.lashingsCount == 1 then
+					specWarnCarnivorousContest:ScheduleVoice(1.5, "shareone")
+				else
+					specWarnCarnivorousContest:ScheduleVoice(1.5, "sharetwo")
+				end
+			else
+				specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
+			end
 		end
 	end
 end
@@ -260,11 +268,20 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
+	if msg:find("spell:434776") and self:AntiSpam(3, 2) and not DBM:UnitDebuff("player", 455847) then
 		specWarnCarnivorousContest:Play("runout")
 		if targetName ~= UnitName("player") then
 			specWarnCarnivorousContest:Show(targetName)
 			specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
+			if self:IsMythic() then
+				if self.vb.lashingsCount == 1 then
+					specWarnCarnivorousContest:ScheduleVoice(1.5, "shareone")
+				else
+					specWarnCarnivorousContest:ScheduleVoice(1.5, "sharetwo")
+				end
+			else
+				specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
+			end
 		end
 	end
 end
