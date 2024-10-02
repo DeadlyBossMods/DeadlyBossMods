@@ -362,27 +362,27 @@ function DBM:GetCurrentInstanceDifficulty()
 			-- So mods will need to check explicitly for this modifier instead of relying on :IsHeroic()/:IsMythic() :()
 			-- Trials are stored by using difficultyModifier as bit field, see definitions of SOD_BWL_TRIAL_* above
 			local trialCount = 0 -- bit.popcount() would be great to have
-			if self:UnitDebuff("player", 467047) then
+			if self:UnitBuff("player", 467047) then
 				modifierLevel = modifierLevel + difficulties.SOD_BWL_TRIAL_BLACK
 				modifierName = modifierName .. CL.BLACK .. " + "
 				trialCount = trialCount + 1
 			end
-			if self:UnitDebuff("player", 466416) then -- Green
+			if self:UnitBuff("player", 466416) then -- Green
 				modifierLevel = modifierLevel + difficulties.SOD_BWL_TRIAL_GREEN
 				modifierName = modifierName .. CL.GREEN .. " + "
 				trialCount = trialCount + 1
 			end
-			if self:UnitDebuff("player", 466277) then
+			if self:UnitBuff("player", 466277) then
 				modifierLevel = modifierLevel + difficulties.SOD_BWL_TRIAL_BLUE
 				modifierName = modifierName .. CL.BLUE .. " + "
 				trialCount = trialCount + 1
 			end
-			if self:UnitDebuff("player", 466071) then
+			if self:UnitBuff("player", 466071) then
 				modifierLevel = modifierLevel + difficulties.SOD_BWL_TRIAL_BRONZE
 				modifierName = modifierName .. CL.BRONZE .. " + "
 				trialCount = trialCount + 1
 			end
-			if self:UnitDebuff("player", 466261) then
+			if self:UnitBuff("player", 466261) then
 				modifierLevel = modifierLevel + difficulties.SOD_BWL_TRIAL_RED
 				modifierName = modifierName .. CL.RED .. " + "
 				trialCount = trialCount + 1

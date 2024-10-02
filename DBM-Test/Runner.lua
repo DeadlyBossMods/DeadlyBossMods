@@ -702,19 +702,19 @@ function test:Playback(testData, timeWarp, testOptions)
 		elseif testData.instanceInfo.instanceID == 469 then -- BWL
 			local trials = testData.instanceInfo.difficultyModifier or 0
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BLACK) ~= 0 then
-				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 467047, "Black Essence", "DEBUFF")
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 467047, "Black Essence", "BUFF")
 			end
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_GREEN) ~= 0 then
-				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466416, "Green Trial", "DEBUFF")
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466416, "Green Trial", "BUFF")
 			end
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BLUE) ~= 0 then
-				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466277, "Blue Trial", "DEBUFF")
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466277, "Blue Trial", "BUFF")
 			end
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_BRONZE) ~= 0 then
-				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466071, "Bronze Trial", "DEBUFF")
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466071, "Bronze Trial", "BUFF")
 			end
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_RED) ~= 0 then
-				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466261, "Red Trial", "DEBUFF")
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466261, "Red Trial", "BUFF")
 			end
 		end
    end
