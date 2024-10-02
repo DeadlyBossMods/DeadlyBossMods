@@ -277,7 +277,7 @@ local allTimers = {
 			[439299] = {85.8, 39, 41, 18.6, 49.4}
 		},
 	},
-	["normal"] = {
+	["normal"] = {--LFR confirmed same
 		[1] = {
 			--Reactive Toxin
 			[437592] = {18.3, 56, 56},--56 repeating?
