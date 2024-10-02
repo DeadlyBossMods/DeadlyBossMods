@@ -669,3 +669,5 @@ L.ShowErrors						= "Mostrar errores"
 L.TestModEntry						= "[Área de pruebas] %s"
 L.EnterTestMode						= "Modo de pruebas"
 L.SkipPhase							= "Saltar a la siguiente fase"
+
+L.AnonymizeTest 					= "Anonimizar nombres de jugadores y GUIDs"

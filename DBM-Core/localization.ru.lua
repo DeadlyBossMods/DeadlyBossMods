@@ -540,6 +540,7 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_A		= "Устанавливать метки н
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "Устанавливать метки на цели $spell:%s с приоритетом ближнего боя и рейдового состава"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "Устанавливать метки на цели $spell:%s с приоритетом дальнего боя и в алфавитном порядке"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "Устанавливать метки на цели $spell:%s с приоритетом дальнего боя и рейдового состава"
+L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Устанавливать метки на цели $spell:%s с приоритетом ближнего боя над дальним, превышающим приоритет целителя и рейдового состава"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "Устанавливать метки на цели $spell:%s в алфавитном порядке"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER		= "Устанавливать метки на цели $spell:%s с приоритетом рейдового состава"
 L.AUTO_ICONS_OPTION_NPCS			= "Устанавливать метки на $spell:%s"

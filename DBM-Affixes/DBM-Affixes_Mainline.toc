@@ -4,6 +4,10 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010М+ Аффиксы|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010傳奇+詞綴|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010副本词缀|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Afijos|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Afijos|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Afixos|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Affixes|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +20,10 @@
 ## X-DBM-Mod-Name: M+ Affixes
 ## X-DBM-Mod-Name-koKR: 신화+ 어픽스
 ## X-DBM-Mod-Name-ruRU: М+ Аффиксы
+## X-DBM-Mod-Name-esES: М+ Afijos
+## X-DBM-Mod-Name-esMX: М+ Afijos
+## X-DBM-Mod-Name-ptBR: М+ Afixos
+## X-DBM-Mod-Name-frFR: М+ Affixes
 ## X-DBM-Mod-MapID: 2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520, 2652, 2662, 2660, 2669, 670, 1822, 2286, 2290
 ## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
@@ -25,5 +33,8 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.es.lua
+localization.br.lua
+localization.fr.lua
 
 MPlusAffixes.lua

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2637, "DBM-KhazAlgar", nil, 1278)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(229334)
+mod:SetCreatureID(221084)
 mod:SetEncounterID(2997)
 --mod:SetReCombatTime(30)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors

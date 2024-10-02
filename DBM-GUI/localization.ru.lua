@@ -671,3 +671,5 @@ L.ShowErrors						= "Показать ошибки"
 L.TestModEntry						= "[Игровая площадка] %s"
 L.EnterTestMode						= "Режим игровой площадки"
 L.SkipPhase							= "Перейти к следующему этапу"
+
+L.AnonymizeTest						= "Анонимизировать имена игроков и GUID"
