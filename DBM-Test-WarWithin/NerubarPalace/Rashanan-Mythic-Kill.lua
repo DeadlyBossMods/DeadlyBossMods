@@ -1,5 +1,5 @@
 DBM.Test:DefineTest{
-	name = "TWW/NerubarPalace/Rashanan/Mythic/Wipe",
+	name = "TWW/NerubarPalace/Rashanan/Mythic/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2609,
