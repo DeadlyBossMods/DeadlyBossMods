@@ -92,7 +92,7 @@ function anonymizer:ScrubChatMessage(msg, name)
 	end
 	local strippedName = name:match("([^-]*)%-") or name
 	local anonName = self:ScrubName(name)
-	if not anonName then -- target is sometimes a random dummy unit/controller
+	if not anonName or anonName == name then -- target is sometimes a random dummy unit/controller
 		return msg
 	end
 	local result = msg:gsub(name:gsub("%-", "%%-"), anonName):gsub(strippedName, name)
