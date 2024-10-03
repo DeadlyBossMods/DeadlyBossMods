@@ -499,6 +499,9 @@ function test:InjectEvent(event, ...)
 		self.Mocks:SetEncounterInProgress(...)
 		return
 	end
+	if event == "DBM_MOCK_UPDATE_INSTANCE_INFO" then
+		self.Mocks:SetInstanceInfo(...)
+	end
 	if event == "PLAYER_REGEN_DISABLED" then
 		self.Mocks:SetUnitAffectingCombat("player", UnitName("player"), UnitGUID("player"), true)
 	elseif event == "PLAYER_REGEN_ENABLED" then
