@@ -501,10 +501,12 @@ local function transcribeEvent(event, params, anon)
 		params = anon:ScrubGUID(guid) .. "#" .. suffix
 	end
 	if event == "CHAT_MSG_ADDON" then
+		-- RAID_BOSS_WHISPER_SYNC#|TInterface\\\\ICONS\\\\Misc_Legionfall_Warlock.BLP:20|t %s begins to cast |cFFFF0000|Hspell:447411|h[Wrest]|h|r!#Miniaug-TarrenMill",
 		local subEvent, msg, name = params:match("([^#]*)#([^#]*)#([^#]*)")
 		if subEvent == "RAID_BOSS_WHISPER_SYNC" then
 			-- Name will always contain the server here, even if there is no cross-server stuff otherwise; this is annoying because the anonymizer might not have learned the name with the server suffix
-			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, anon:ScrubName(name) or anon:ScrubName(name:match("([^-]*)")), 0, false)
+			local scrubbed = anon:ScrubName(name)
+			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, scrubbed ~= name and scrubbed or anon:ScrubName(name:match("([^-]*)")), 0, false)
 		else
 			-- FIXME: do we care about this warning?
 			--logInfo("Unhandled CHAT_MSG_ADDON log message " .. params)
