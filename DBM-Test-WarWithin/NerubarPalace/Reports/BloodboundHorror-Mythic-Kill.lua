@@ -17,603 +17,680 @@ Unused objects:
 	[Announce] Blood Pact on >%s< (%d), type=stack, spellId=445272
 	[Special Warning] Grasp - move away from others, type=moveaway, spellId=443042
 	[Special Warning] Gruesome Disgorge on >%s< - taunt now, type=taunt, spellId=443612
-	[Special Warning] Slam - defensive, type=defensive, spellId=445016
 	[Yell] Tentacle, type=shortyell, spellId=443042
 	[Yell] %d, type=shortfade, spellId=452237
 
 Timers:
-	Run away! (%s), time=128.00, type=nextcount, spellId=442530, triggerDeltas = 0.00, 120.03, 128.01
+	Run away! (%s), time=128.00, type=nextcount, spellId=442530, triggerDeltas = 0.00, 119.99, 128.02
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[120.03] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
-			 Triggered 2x, delta times: 120.03, 128.01
-	Grasp (%s), time=40.00, type=nextcount, spellId=443042, triggerDeltas = 0.00, 19.15, 27.84, 31.15, 27.90, 41.12, 27.91, 31.06, 27.95, 41.07, 27.93, 31.20
+		[119.99] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
+			 Triggered 2x, delta times: 119.99, 128.02
+	Grasp (%s), time=40.00, type=nextcount, spellId=443042, triggerDeltas = 0.00, 19.08, 27.87, 31.16, 27.86, 41.17, 27.87, 31.12, 27.89, 41.14, 27.87
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[ 19.15] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps6: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000011, Dps6, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		[ 46.99] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000003, Dps3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-			 Triggered 2x, delta times: 46.99, 256.09
-		[ 78.14] SPELL_AURA_APPLIED: [The Bloodbound Horror->Healer3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000013, Healer3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-			 Triggered 2x, delta times: 78.14, 155.94
-		[106.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000006, Tank3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		[147.16] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps7: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000014, Dps7, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		[175.07] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps2: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000002, Dps2, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		[206.13] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank1: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000004, Tank1, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-			 Triggered 2x, delta times: 206.13, 128.15
-		[275.15] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps9: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000017, Dps9, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-	Crimson Rain (%s), time=128.00, type=nextcount, spellId=443203, triggerDeltas = 0.00, 11.05, 128.09, 127.96
+		[ 19.08] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps10: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000010, Dps10, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+			 Triggered 2x, delta times: 19.08, 128.06
+		[ 46.95] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps6: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000006, Dps6, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+			 Triggered 2x, delta times: 46.95, 256.08
+		[ 78.11] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps13: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000013, Dps13, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		[105.97] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps4: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000004, Dps4, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		[175.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps14: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000014, Dps14, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		[206.13] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps8: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000008, Dps8, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		[234.02] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps2: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000002, Dps2, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		[275.16] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps12: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Dps12, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	Crimson Rain (%s), time=128.00, type=nextcount, spellId=443203, triggerDeltas = 0.00, 11.04, 128.09, 127.92
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[ 11.05] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
-			 Triggered 3x, delta times: 11.05, 128.09, 127.96
-	Gruesome Disgorge fades, time=40.00, type=fades, spellId=443612, triggerDeltas = 19.01, 128.04, 128.04
-		[ 19.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
-			 Triggered 3x, delta times: 19.01, 128.04, 128.04
-	Frontal (%s), time=49.00, type=nextcount, spellId=444363, triggerDeltas = 0.00, 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
+		[ 11.04] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
+			 Triggered 3x, delta times: 11.04, 128.09, 127.92
+	Gruesome Disgorge fades, time=40.00, type=fades, spellId=443612, triggerDeltas = 19.03, 127.99, 128.03
+		[ 19.03] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
+			 Triggered 3x, delta times: 19.03, 127.99, 128.03
+	Frontal (%s), time=49.00, type=nextcount, spellId=444363, triggerDeltas = 0.00, 13.99, 58.99, 69.04, 59.01, 69.02, 59.00
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[ 14.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-			 Triggered 6x, delta times: 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
-	Slam, time=13.40, type=cdnp, spellId=445016, triggerDeltas = 27.80, 59.80, 68.24, 58.44, 20.69, 48.76, 56.17, 17.02
-		[ 27.80] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-			 Triggered 8x, delta times: 27.80, 59.80, 68.24, 58.44, 20.69, 48.76, 56.17, 17.02
-	Beams (%s), time=40.00, type=nextcount, spellId=445936, triggerDeltas = 0.00, 31.99, 58.99, 69.08, 59.00, 69.00, 59.01
+		[ 13.99] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+			 Triggered 6x, delta times: 13.99, 58.99, 69.04, 59.01, 69.02, 59.00
+	Slam, time=13.40, type=cdnp, spellId=445016, triggerDeltas = 30.70, 57.05, 18.26, 53.45, 58.30, 21.87, 46.06, 3.64, 13.38
+		[ 30.70] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+			 Triggered 5x, delta times: 30.70, 128.76, 126.23, 3.64, 13.38
+		[ 87.75] SPELL_CAST_SUCCESS: [Lost Watcher->Tank1: Spectral Slam] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, Player-1-00000020, Tank1, 0x512, 445016, Spectral Slam, 0, 0
+			 Triggered 4x, delta times: 87.75, 18.26, 111.75, 21.87
+	Beams (%s), time=40.00, type=nextcount, spellId=445936, triggerDeltas = 0.00, 31.95, 59.03, 69.02, 59.03, 69.00
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[ 31.99] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-			 Triggered 6x, delta times: 31.99, 58.99, 69.08, 59.00, 69.00, 59.01
-	Shield, time=15.50, type=cdnp, spellId=451288, triggerDeltas = 21.57, 58.95, 69.03, 17.24, 41.76, 16.71, 52.35, 58.95, 15.50
-		[ 21.57] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
-			 Triggered 9x, delta times: 21.57, 58.95, 69.03, 17.24, 41.76, 16.71, 52.35, 58.95, 15.50
-	Spreads (%s), time=40.00, type=nextcount, spellId=452237, triggerDeltas = 0.00, 9.01, 32.02, 26.96, 32.02, 37.06, 31.96, 27.03, 32.00, 37.01, 32.01, 26.98, 32.01
+		[ 31.95] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+			 Triggered 5x, delta times: 31.95, 59.03, 69.02, 59.03, 69.00
+	Shield, time=15.50, type=cdnp, spellId=451288, triggerDeltas = 21.48, 58.99, 16.43, 52.62, 16.66, 42.37, 17.13, 16.99, 34.89, 0.28, 17.02, 2.42, 14.55
+		[ 21.48] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+			 Triggered 13x, delta times: 21.48, 58.99, 16.43, 52.62, 16.66, 42.37, 17.13, 16.99, 34.89, 0.28, 17.02, 2.42, 14.55
+	Spreads (%s), time=40.00, type=nextcount, spellId=452237, triggerDeltas = 0.00, 8.97, 32.01, 26.98, 32.02, 37.02, 31.99, 27.03, 32.00, 37.02, 31.98, 27.01
 		[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
-		[  9.01] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-			 Triggered 12x, delta times: 9.01, 32.02, 26.96, 32.02, 37.06, 31.96, 27.03, 32.00, 37.01, 32.01, 26.98, 32.01
+		[  8.97] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+			 Triggered 11x, delta times: 8.97, 32.01, 26.98, 32.02, 37.02, 31.99, 27.03, 32.00, 37.02, 31.98, 27.01
 
 Announces:
-	Crimson Rain (%s), type=count, spellId=443203, triggerDeltas = 11.05, 128.09, 127.96
-		[ 11.05] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
-			 Triggered 3x, delta times: 11.05, 128.09, 127.96
-	Gruesome Disgorge faded, type=fades, spellId=443612, triggerDeltas = 59.01, 128.06, 128.03
-		[ 59.01] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
-			 Triggered 3x, delta times: 59.01, 128.06, 128.03
-	Gruesome Disgorge on YOU, type=you, spellId=443612, triggerDeltas = 19.01, 128.04, 128.04
-		[ 19.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
-			 Triggered 3x, delta times: 19.01, 128.04, 128.04
-	Casting Manifest Horror: 4.0 sec, type=cast, spellId=445174, triggerDeltas = 21.69, 4.01, 4.01, 50.59, 4.00, 4.01, 3.99, 4.02, 53.45, 4.01, 4.01, 4.02, 3.99, 4.02, 38.38, 4.00, 4.01, 4.01, 4.00, 4.00, 49.41, 4.00, 4.00, 4.03, 46.55, 4.00, 4.01, 4.01, 4.00, 4.00
-		[ 21.69] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000FF, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-			 Triggered 30x, delta times: 21.69, 4.01, 4.01, 50.59, 4.00, 4.01, 3.99, 4.02, 53.45, 4.01, 4.01, 4.02, 3.99, 4.02, 38.38, 4.00, 4.01, 4.01, 4.00, 4.00, 49.41, 4.00, 4.00, 4.03, 46.55, 4.00, 4.01, 4.01, 4.00, 4.00
+	Crimson Rain (%s), type=count, spellId=443203, triggerDeltas = 11.04, 128.09, 127.92
+		[ 11.04] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
+			 Triggered 3x, delta times: 11.04, 128.09, 127.92
+	Gruesome Disgorge faded, type=fades, spellId=443612, triggerDeltas = 59.02, 128.02, 128.02
+		[ 59.02] SPELL_AURA_REMOVED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
+			 Triggered 3x, delta times: 59.02, 128.02, 128.02
+	Gruesome Disgorge on YOU, type=you, spellId=443612, triggerDeltas = 19.03, 127.99, 128.03
+		[ 19.03] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
+			 Triggered 3x, delta times: 19.03, 127.99, 128.03
+	Casting Manifest Horror: 4.0 sec, type=cast, spellId=445174, triggerDeltas = 21.62, 3.99, 4.00, 4.01, 4.01, 43.46, 4.01, 4.00, 4.01, 4.00, 4.00, 4.01, 4.00, 40.06, 4.01, 4.00, 4.00, 4.01, 4.01, 3.99, 4.02, 3.99, 4.01, 4.00, 4.01, 4.03, 3.97, 4.02, 3.42, 4.01, 4.02, 3.99, 3.99, 4.02, 49.14, 4.00, 4.00, 4.02, 3.99, 4.01, 4.01, 4.01, 4.01, 4.00, 3.99, 4.00, 4.01, 4.01
+		[ 21.62] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000C6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+			 Triggered 48x, delta times: 21.62, 3.99, 4.00, 4.01, 4.01, 43.46, 4.01, 4.00, 4.01, 4.00, 4.00, 4.01, 4.00, 40.06, 4.01, 4.00, 4.00, 4.01, 4.01, 3.99, 4.02, 3.99, 4.01, 4.00, 4.01, 4.03, 3.97, 4.02, 3.42, 4.01, 4.02, 3.99, 3.99, 4.02, 49.14, 4.00, 4.00, 4.02, 3.99, 4.01, 4.01, 4.01, 4.01, 4.00, 3.99, 4.00, 4.01, 4.01
 
 Special warnings:
-	Run away! (%s) - dodge attack, type=dodgecount, spellId=442530, triggerDeltas = 120.03, 128.01
-		[120.03] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
-			 Triggered 2x, delta times: 120.03, 128.01
-	Gruesome Disgorge! (%s), type=count, spellId=444363, triggerDeltas = 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
-		[ 14.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-			 Triggered 6x, delta times: 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
-	%s damage - move away, type=gtfo, spellId=445518, triggerDeltas = 176.53, 56.61, 19.61, 5.06
-		[176.53] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
-			 Triggered 4x, delta times: 176.53, 56.61, 19.61, 5.06
-	Spewing Hemorrhage - run away (%s), type=runcount, spellId=445936, triggerDeltas = 31.99, 58.99, 69.08, 59.00, 69.00, 59.01
-		[ 31.99] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-			 Triggered 6x, delta times: 31.99, 58.99, 69.08, 59.00, 69.00, 59.01
-	Shield - interrupt >%s<! (%d), type=interruptcount, spellId=451288, triggerDeltas = 21.57, 58.95, 69.03, 17.24, 41.76, 16.71, 52.35, 58.95, 15.50
-		[ 21.57] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
-			 Triggered 9x, delta times: 21.57, 58.95, 69.03, 17.24, 41.76, 16.71, 52.35, 58.95, 15.50
-	Bloodcurdle - move away from others, type=moveaway, spellId=452237, triggerDeltas = 11.04, 32.03, 26.94, 32.01, 37.06, 31.96, 27.05, 31.98, 37.03, 32.00, 26.97, 32.04
-		[ 11.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-			 Triggered 12x, delta times: 11.04, 32.03, 26.94, 32.01, 37.06, 31.96, 27.05, 31.98, 37.03, 32.00, 26.97, 32.04
+	Run away! - run away (%s), type=runcount, spellId=442530, triggerDeltas = 119.99, 128.02
+		[119.99] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
+			 Triggered 2x, delta times: 119.99, 128.02
+	Frontal! (%s), type=count, spellId=444363, triggerDeltas = 13.99, 58.99, 69.04, 59.01, 69.02, 59.00
+		[ 13.99] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+			 Triggered 6x, delta times: 13.99, 58.99, 69.04, 59.01, 69.02, 59.00
+	Slam - defensive, type=defensive, spellId=445016, triggerDeltas = 282.69
+		[282.69] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
+	%s damage - move away, type=gtfo, spellId=445518, triggerDeltas = 30.42, 36.70, 59.14, 88.65, 7.17, 30.43, 47.98, 10.32
+		[ 30.42] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+			 Triggered 8x, delta times: 30.42, 36.70, 59.14, 88.65, 7.17, 30.43, 47.98, 10.32
+	Beams (%s) - dodge attack, type=dodgecount, spellId=445936, triggerDeltas = 31.95, 59.03, 69.02, 59.03, 69.00
+		[ 31.95] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+			 Triggered 5x, delta times: 31.95, 59.03, 69.02, 59.03, 69.00
+	Shield - interrupt >%s<! (%d), type=interruptcount, spellId=451288, triggerDeltas = 21.48, 58.99, 16.43, 52.62, 16.66, 42.37, 17.13, 16.99, 34.89, 0.28, 17.02, 2.42, 14.55
+		[ 21.48] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+			 Triggered 13x, delta times: 21.48, 58.99, 16.43, 52.62, 16.66, 42.37, 17.13, 16.99, 34.89, 0.28, 17.02, 2.42, 14.55
+	Spreads - move away from others, type=moveaway, spellId=452237, triggerDeltas = 10.98, 32.02, 26.98, 32.01, 37.05, 31.98, 27.03, 32.00, 37.01, 32.00, 26.97
+		[ 10.98] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+			 Triggered 11x, delta times: 10.98, 32.02, 26.98, 32.01, 37.05, 31.98, 27.03, 32.00, 37.01, 32.00, 26.97
 
 Yells:
 	Bloodcurdle, type=shortyell, spellId=452237
-		[ 11.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-			 Triggered 12x, delta times: 11.04, 32.03, 26.94, 32.01, 37.06, 31.96, 27.05, 31.98, 37.03, 32.00, 26.97, 32.04
+		[ 10.98] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+			 Triggered 11x, delta times: 10.98, 32.02, 26.98, 32.01, 37.05, 31.98, 27.03, 32.00, 37.01, 32.00, 26.97
 
 Voice pack sounds:
+	VoicePack/defensive
+		[282.69] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
+	VoicePack/farfromline
+		[ 31.95] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+			 Triggered 5x, delta times: 31.95, 59.03, 69.02, 59.03, 69.00
+	VoicePack/frontal
+		[ 13.99] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+			 Triggered 6x, delta times: 13.99, 58.99, 69.04, 59.01, 69.02, 59.00
 	VoicePack/justrun
-		[ 31.99] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-			 Triggered 6x, delta times: 31.99, 58.99, 69.08, 59.00, 69.00, 59.01
+		[119.99] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
+			 Triggered 2x, delta times: 119.99, 128.02
 	VoicePack/kick1r
-		[ 21.57] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
-			 Triggered 6x, delta times: 21.57, 58.95, 69.03, 59.00, 69.06, 58.95
+		[ 21.48] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+			 Triggered 5x, delta times: 21.48, 58.99, 69.05, 59.03, 69.01
 	VoicePack/kick2r
-		[166.79] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
-			 Triggered 3x, delta times: 166.79, 58.47, 126.80
+		[ 96.90] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+			 Triggered 4x, delta times: 96.90, 69.28, 59.50, 69.18
+	VoicePack/kick3r
+		[242.67] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+			 Triggered 2x, delta times: 242.67, 69.16
+	VoicePack/kick4r
+		[277.84] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	VoicePack/kick5r
+		[297.28] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 	VoicePack/scatter
-		[ 11.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-			 Triggered 12x, delta times: 11.04, 32.03, 26.94, 32.01, 37.06, 31.96, 27.05, 31.98, 37.03, 32.00, 26.97, 32.04
-	VoicePack/shockwave
-		[ 14.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-			 Triggered 6x, delta times: 14.01, 59.00, 69.03, 59.05, 68.99, 59.00
+		[ 10.98] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+			 Triggered 11x, delta times: 10.98, 32.02, 26.98, 32.01, 37.05, 31.98, 27.03, 32.00, 37.01, 32.00, 26.97
 	VoicePack/watchfeet
-		[176.53] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
-			 Triggered 4x, delta times: 176.53, 56.61, 19.61, 5.06
-	VoicePack/watchstep
-		[120.03] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
-			 Triggered 2x, delta times: 120.03, 128.01
+		[ 30.42] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+			 Triggered 8x, delta times: 30.42, 36.70, 59.14, 88.65, 7.17, 30.43, 47.98, 10.32
 
 Icons:
-	Icon 5, target=Creature-0-1-2657-1-221945-00000000FF, scanMethod=nil
-		[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000FF, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 5, target=Creature-0-1-2657-1-221945-0000000103, scanMethod=nil
-		[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000103, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 5, target=Creature-0-1-2657-1-221945-0000000107, scanMethod=nil
-		[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000107, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 5, target=Creature-0-1-2657-1-221945-000000010A, scanMethod=nil
-		[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000010A, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 5, target=Creature-0-1-2657-1-221945-000000010F, scanMethod=nil
-		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000010F, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 5, target=Creature-0-1-2657-1-221945-0000000112, scanMethod=nil
-		[334.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000112, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000D0, scanMethod=nil
-		[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D0, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000D8, scanMethod=nil
-		[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D8, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000E2, scanMethod=nil
-		[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000EC, scanMethod=nil
-		[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000EC, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000F1, scanMethod=nil
-		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000F1, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 6, target=Creature-0-1-2657-1-221945-00000000F8, scanMethod=nil
-		[334.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000F8, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-0000000012, scanMethod=nil
-		[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000012, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-0000000031, scanMethod=nil
-		[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000031, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-0000000051, scanMethod=nil
-		[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000051, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-0000000077, scanMethod=nil
-		[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000077, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-0000000097, scanMethod=nil
-		[275.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000097, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 7, target=Creature-0-1-2657-1-221945-00000000BC, scanMethod=nil
-		[334.06] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000BC, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-0000000012, scanMethod=nil
-		[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-0000000031, scanMethod=nil
-		[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000031, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-0000000051, scanMethod=nil
-		[147.05] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-0000000077, scanMethod=nil
-		[206.04] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-0000000097, scanMethod=nil
-		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000097, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-	Icon 8, target=Creature-0-1-2657-1-221667-00000000BC, scanMethod=nil
-		[334.07] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 4, target=Creature-0-1-2657-1-221667-0000000008, scanMethod=nil
+		[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 4, target=Creature-0-1-2657-1-221667-000000001F, scanMethod=nil
+		[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 4, target=Creature-0-1-2657-1-221667-000000003E, scanMethod=nil
+		[147.02] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000003E, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 4, target=Creature-0-1-2657-1-221667-000000005B, scanMethod=nil
+		[206.06] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 4, target=Creature-0-1-2657-1-221667-0000000075, scanMethod=nil
+		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+	Icon 5, target=Creature-0-1-2657-1-221945-00000000DA, scanMethod=nil
+		[206.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000DA, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 6, target=Creature-0-1-2657-1-221945-00000000AD, scanMethod=nil
+		[206.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000AD, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 6, target=Creature-0-1-2657-1-221945-00000000C6, scanMethod=nil
+		[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000C6, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 6, target=Creature-0-1-2657-1-221945-00000000CB, scanMethod=nil
+		[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000CB, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 6, target=Creature-0-1-2657-1-221945-00000000D4, scanMethod=nil
+		[147.02] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D4, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 6, target=Creature-0-1-2657-1-221945-00000000E1, scanMethod=nil
+		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 7, target=Creature-0-1-2657-1-221945-0000000092, scanMethod=nil
+		[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 7, target=Creature-0-1-2657-1-221945-0000000098, scanMethod=nil
+		[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 7, target=Creature-0-1-2657-1-221945-00000000A6, scanMethod=nil
+		[147.02] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 7, target=Creature-0-1-2657-1-221945-00000000B4, scanMethod=nil
+		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 8, target=Creature-0-1-2657-1-221945-0000000008, scanMethod=nil
+		[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000008, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 8, target=Creature-0-1-2657-1-221945-000000001F, scanMethod=nil
+		[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000001F, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 8, target=Creature-0-1-2657-1-221945-000000003E, scanMethod=nil
+		[147.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000003E, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 8, target=Creature-0-1-2657-1-221945-000000005B, scanMethod=nil
+		[206.06] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000005B, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+	Icon 8, target=Creature-0-1-2657-1-221945-0000000075, scanMethod=nil
+		[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
 
 Event trace:
 	[  0.00] ENCOUNTER_START: 2917, The Bloodbound Horror, 16, 20, 0
 		StartCombat: ENCOUNTER_START
-		RegisterEvents: Regular, SPELL_CAST_START 444363 452237 445936 442530 451288 445016 445174, SPELL_CAST_SUCCESS 443203, SPELL_SUMMON 444830 444835, SPELL_AURA_APPLIED 443612 452245 443042 445272, SPELL_AURA_APPLIED_DOSE 445272, SPELL_AURA_REMOVED 443612 452245 443042, SPELL_PERIODIC_DAMAGE 445518, SPELL_PERIODIC_MISSED 445518, UNIT_DIED
+		RegisterEvents: Regular, SPELL_CAST_START 444363 452237 445936 442530 451288 445016 445174, SPELL_CAST_SUCCESS 443203 445016, SPELL_SUMMON 444830 444835, SPELL_AURA_APPLIED 443612 452245 443042 445272, SPELL_AURA_APPLIED_DOSE 445272, SPELL_AURA_REMOVED 443612 452245 443042, SPELL_PERIODIC_DAMAGE 445518, SPELL_PERIODIC_MISSED 445518, UNIT_DIED
 		StartTimer: 11.0, Crimson Rain (1)
 		StartTimer: 14.0, Frontal (1)
 		StartTimer: 19.1, Grasp (1)
 		StartTimer: 32.0, Beams (1)
 		StartTimer: 9.0, Spreads (1)
 		StartTimer: 120.0, Run away! (1)
-	[  9.01] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[  8.97] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (2)
-	[ 11.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[ 10.98] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[ 11.05] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
+	[ 11.04] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
 		ShowAnnounce: Crimson Rain (1)
 		StartTimer: 128.0, Crimson Rain (2)
-	[ 14.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (1)
-		PlaySound: VoicePack/shockwave
+	[ 13.99] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (1)
+		PlaySound: VoicePack/frontal
 		StartTimer: 59.0, Frontal (2)
-	[ 19.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
+	[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000008, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-0000000008, 2, 8, 1
+	[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221667-0000000008, 2, 4, 1
+	[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-0000000092, 2, 7, 1
+	[ 18.97] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000C6, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000C6, 2, 6, 1
+	[ 19.03] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
 		ShowAnnounce: Gruesome Disgorge on YOU
 		StartTimer: 40.0, Gruesome Disgorge fades
-	[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000012, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000012, 2, 7, 1
-	[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-0000000012, 2, 8, 1
-	[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D0, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000D0, 2, 6, 1
-	[ 19.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000FF, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000FF, 2, 5, 1
-	[ 19.15] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps6: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000011, Dps6, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[ 19.08] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps10: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000010, Dps10, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 19.15, 19.15
+			Filtered: 3x SPELL_AURA_APPLIED at 19.08, 19.08, 19.08
 		StartTimer: 27.8, Grasp (2)
-	[ 21.57] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[ 21.48] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
 		PlaySound: VoicePack/kick1r
 		StartTimer: 15.5, Shield
-	[ 21.69] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000FF, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 21.62] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000C6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 21.7, 21.7
+			Filtered: 2x SPELL_CAST_START at 21.62, 21.62
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 25.70] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000012, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 25.61] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 25.7, 25.7
+			Filtered: 2x SPELL_CAST_START at 25.61, 25.61
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 27.80] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000012, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[ 29.71] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000FF, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 29.61] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 29.71, 29.71
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 31.99] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (1)
-		PlaySound: VoicePack/justrun
+	[ 30.42] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[ 30.70] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-0000000008, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[ 31.95] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+		ShowSpecialWarning: Beams (1) - dodge attack
+		PlaySound: VoicePack/farfromline
 		StartTimer: 59.0, Beams (2)
-	[ 41.03] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-		StartTimer: 27.0, Spreads (3)
-	[ 43.07] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
-		PlaySound: VoicePack/scatter
-		ShowYell: Bloodcurdle
-	[ 46.99] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000003, Dps3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 46.99, 46.99
-		StartTimer: 31.1, Grasp (3)
-	[ 59.01] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
-		ShowAnnounce: Gruesome Disgorge faded
-	[ 67.99] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-		StartTimer: 32.0, Spreads (4)
-	[ 70.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
-		PlaySound: VoicePack/scatter
-		ShowYell: Bloodcurdle
-	[ 73.01] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (2)
-		PlaySound: VoicePack/shockwave
-		StartTimer: 69.1, Frontal (3)
-	[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000031, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000031, 2, 7, 1
-	[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D8, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000D8, 2, 6, 1
-	[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000031, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-0000000031, 2, 8, 1
-	[ 78.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000103, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000103, 2, 5, 1
-	[ 78.14] SPELL_AURA_APPLIED: [The Bloodbound Horror->Healer3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000013, Healer3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 78.14, 78.14
-		StartTimer: 27.8, Grasp (4)
-	[ 80.30] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000103, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 33.62] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 80.3, 80.3
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 80.52] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000031, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[ 37.63] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000092, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[ 40.98] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+		StartTimer: 27.0, Spreads (3)
+	[ 43.00] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
+		PlaySound: VoicePack/scatter
+		ShowYell: Bloodcurdle
+	[ 46.95] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps6: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000006, Dps6, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		AntiSpam: 2
+			Filtered: 3x SPELL_AURA_APPLIED at 46.95, 46.95, 46.95
+		StartTimer: 31.1, Grasp (3)
+	[ 59.02] SPELL_AURA_REMOVED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
+		ShowAnnounce: Gruesome Disgorge faded
+	[ 67.12] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[ 67.96] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+		StartTimer: 32.0, Spreads (4)
+	[ 69.98] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
+		PlaySound: VoicePack/scatter
+		ShowYell: Bloodcurdle
+	[ 72.98] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (2)
+		PlaySound: VoicePack/frontal
+		StartTimer: 69.1, Frontal (3)
+	[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000001F, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-000000001F, 2, 8, 1
+	[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221667-000000001F, 2, 4, 1
+	[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-0000000098, 2, 7, 1
+	[ 77.99] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000CB, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000CB, 2, 6, 1
+	[ 78.11] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps13: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000013, Dps13, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		AntiSpam: 2
+			Filtered: 3x SPELL_AURA_APPLIED at 78.12, 78.12, 78.12
+		StartTimer: 27.8, Grasp (4)
+	[ 80.47] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
 		PlaySound: VoicePack/kick1r
 		StartTimer: 15.5, Shield
-	[ 84.30] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000031, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 81.09] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000CB, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 84.3, 84.3
+			Filtered: 2x SPELL_CAST_START at 81.09, 81.09
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 87.60] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000031, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[ 88.31] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000031, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 85.10] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000CB, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 88.31, 88.31
+			Filtered: 2x SPELL_CAST_START at 85.1, 85.1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[ 87.75] SPELL_CAST_SUCCESS: [Lost Watcher->Tank1: Spectral Slam] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, Player-1-00000020, Tank1, 0x512, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[ 89.10] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 89.1, 89.1
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
 	[ 90.98] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (2)
-		PlaySound: VoicePack/justrun
+		ShowSpecialWarning: Beams (2) - dodge attack
+		PlaySound: VoicePack/farfromline
 		StartTimer: 69.1, Beams (3)
-	[ 92.30] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000D8, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 93.11] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 92.3
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[ 96.32] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000D8, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[ 96.90] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+		ShowSpecialWarning: Shield - interrupt Lost Watcher! (2)
+		PlaySound: VoicePack/kick2r
+		StartTimer: 15.5, Shield
+	[ 97.11] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 96.32
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[100.01] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[ 99.98] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (5)
-	[102.02] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[101.11] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[101.99] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[106.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000006, Tank3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[105.12] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[105.97] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps4: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000004, Dps4, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 106.04, 106.04
+			Filtered: 3x SPELL_AURA_APPLIED at 105.97, 105.97, 105.97
 		StartTimer: 41.1, Grasp (5)
-	[120.03] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
-		ShowSpecialWarning: Run away! (1) - dodge attack
-		PlaySound: VoicePack/watchstep
+	[106.01] SPELL_CAST_SUCCESS: [Lost Watcher->Tank1: Spectral Slam] Creature-0-1-2657-1-221667-000000001F, Lost Watcher, 0xa48, Player-1-00000020, Tank1, 0x512, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[109.12] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000098, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[119.99] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
+		ShowSpecialWarning: Run away! - run away (1)
+		PlaySound: VoicePack/justrun
 		StartTimer: 128.0, Run away! (2)
-	[137.07] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[126.26] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[137.00] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (6)
-	[139.08] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[139.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[139.14] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
+	[139.13] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
 		ShowAnnounce: Crimson Rain (2)
 		StartTimer: 128.0, Crimson Rain (3)
-	[142.04] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (3)
-		PlaySound: VoicePack/shockwave
+	[142.02] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (3)
+		PlaySound: VoicePack/frontal
 		StartTimer: 59.0, Frontal (4)
-	[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000051, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000051, 2, 7, 1
-	[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000E2, 2, 6, 1
-	[147.05] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-0000000051, 2, 8, 1
-	[147.05] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000107, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000107, 2, 5, 1
-	[147.05] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
+	[147.01] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000003E, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-000000003E, 2, 8, 1
+	[147.02] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
 		ShowAnnounce: Gruesome Disgorge on YOU
 		StartTimer: 40.0, Gruesome Disgorge fades
-	[147.16] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps7: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000014, Dps7, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[147.02] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000A6, 2, 7, 1
+	[147.02] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000D4, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000D4, 2, 6, 1
+	[147.02] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000003E, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221667-000000003E, 2, 4, 1
+	[147.14] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps10: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000010, Dps10, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 147.16, 147.16
+			Filtered: 3x SPELL_AURA_APPLIED at 147.14, 147.14, 147.14
 		StartTimer: 27.8, Grasp (6)
-	[149.55] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[149.18] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000D4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 149.18, 149.18
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[149.52] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000003E, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
 		PlaySound: VoicePack/kick1r
 		StartTimer: 15.5, Shield
-	[149.77] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000107, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[153.19] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000003E, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 149.77, 149.77
+			Filtered: 2x SPELL_CAST_START at 153.19, 153.19
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[153.78] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[157.19] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000003E, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 153.78, 153.78
+			Filtered: 1x SPELL_CAST_START at 157.19
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[155.84] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[157.79] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000107, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 157.79
-		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[160.06] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (3)
-		PlaySound: VoicePack/justrun
+	[159.46] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-000000003E, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[160.00] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+		ShowSpecialWarning: Beams (3) - dodge attack
+		PlaySound: VoicePack/farfromline
 		StartTimer: 59.0, Beams (4)
-	[161.81] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[161.19] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000003E, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 161.81
+			Filtered: 1x SPELL_CAST_START at 161.19
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[165.80] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[165.20] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[166.79] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000051, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[166.18] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000003E, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (2)
 		PlaySound: VoicePack/kick2r
 		StartTimer: 15.5, Shield
-	[169.03] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[168.99] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 27.0, Spreads (7)
-	[169.82] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E2, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[169.21] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[171.04] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[171.02] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[175.07] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps2: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000002, Dps2, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[173.20] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[175.01] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps14: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000014, Dps14, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 175.07, 175.07
+			Filtered: 3x SPELL_AURA_APPLIED at 175.01, 175.01, 175.01
 		StartTimer: 31.1, Grasp (7)
-	[176.53] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
-		AntiSpam: 3
-		ShowSpecialWarning: Black Blood damage - move away
-		PlaySound: VoicePack/watchfeet
-	[187.07] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
+	[177.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[181.21] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[185.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[187.04] SPELL_AURA_REMOVED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
 		ShowAnnounce: Gruesome Disgorge faded
-	[196.06] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[189.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[193.23] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[196.02] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (8)
-	[198.09] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[197.26] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[198.05] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[201.09] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (4)
-		PlaySound: VoicePack/shockwave
+	[201.03] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (4)
+		PlaySound: VoicePack/frontal
 		StartTimer: 69.1, Frontal (5)
-	[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000077, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000077, 2, 7, 1
-	[206.04] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-0000000077, 2, 8, 1
-	[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000EC, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000EC, 2, 6, 1
-	[206.04] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000010A, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-000000010A, 2, 5, 1
-	[206.13] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank1: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000004, Tank1, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 206.13, 206.13
-		StartTimer: 27.8, Grasp (8)
-	[208.20] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000010A, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[201.23] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 208.2, 208.2
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[208.55] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[205.25] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000A6, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[206.06] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000005B, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-000000005B, 2, 8, 1
+	[206.06] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221667-000000005B, 2, 4, 1
+	[206.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000AD, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000AD, 2, 6, 1
+	[206.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000DA, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000DA, 2, 5, 1
+	[206.13] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps8: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000008, Dps8, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		AntiSpam: 2
+			Filtered: 3x SPELL_AURA_APPLIED at 206.13, 206.13, 206.13
+		StartTimer: 27.8, Grasp (8)
+	[208.55] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
 		PlaySound: VoicePack/kick1r
 		StartTimer: 15.5, Shield
-	[212.20] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000010A, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[208.67] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000DA, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 212.2, 212.2
+			Filtered: 3x SPELL_CAST_START at 208.68, 208.68, 209.25
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[214.28] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[216.21] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000010A, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[212.68] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000DA, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 216.21, 216.21
+			Filtered: 3x SPELL_CAST_START at 212.68, 212.68, 213.24
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[219.06] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (4)
-		PlaySound: VoicePack/justrun
+	[214.91] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[216.70] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000AD, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 3x SPELL_CAST_START at 216.7, 216.7, 217.24
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[217.76] SPELL_CAST_SUCCESS: [Lost Watcher->Tank1: Spectral Slam] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, Player-1-00000020, Tank1, 0x512, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[219.03] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+		ShowSpecialWarning: Beams (4) - dodge attack
+		PlaySound: VoicePack/farfromline
 		StartTimer: 69.1, Beams (5)
-	[220.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000EC, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[220.69] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000DA, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 220.22
+			Filtered: 3x SPELL_CAST_START at 220.69, 220.71, 221.26
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[224.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000EC, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[222.08] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+			Filtered: 1x SPELL_PERIODIC_DAMAGE at 223.07
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[224.68] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000005B, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 224.7, 225.27
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[225.26] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[225.68] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (2)
 		PlaySound: VoicePack/kick2r
 		StartTimer: 15.5, Shield
-	[228.06] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[228.02] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (9)
-	[228.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000EC, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[228.70] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000AD, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[230.07] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[230.05] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[233.14] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
-		AntiSpam: 3
-		ShowSpecialWarning: Black Blood damage - move away
-		PlaySound: VoicePack/watchfeet
-	[234.08] SPELL_AURA_APPLIED: [The Bloodbound Horror->Healer3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000013, Healer3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[234.02] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps2: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000002, Dps2, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 234.08, 234.08
+			Filtered: 3x SPELL_AURA_APPLIED at 234.02, 234.02, 234.02
 		StartTimer: 41.1, Grasp (9)
-	[234.97] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000077, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[248.04] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
-		ShowSpecialWarning: Run away! (2) - dodge attack
-		PlaySound: VoicePack/watchstep
+	[239.63] SPELL_CAST_SUCCESS: [Lost Watcher->Tank1: Spectral Slam] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, Player-1-00000020, Tank1, 0x512, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[242.67] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+		ShowSpecialWarning: Shield - interrupt Lost Watcher! (3)
+		PlaySound: VoicePack/kick3r
+		StartTimer: 15.5, Shield
+	[248.01] SPELL_CAST_START: [The Bloodbound Horror: Goresplatter] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 442530, Goresplatter, 0, 0
+		ShowSpecialWarning: Run away! - run away (2)
+		PlaySound: VoicePack/justrun
 		StartTimer: 128.0, Run away! (3)
-	[252.75] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
+	[252.51] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
 		AntiSpam: 3
 		ShowSpecialWarning: Black Blood damage - move away
 		PlaySound: VoicePack/watchfeet
-	[257.81] SPELL_PERIODIC_DAMAGE: [->Tank4: Black Blood] "", nil, 0x0, Player-1-00000012, Tank4, 0x511, 445518, Black Blood, 0, 0
-		AntiSpam: 3
-		ShowSpecialWarning: Black Blood damage - move away
-		PlaySound: VoicePack/watchfeet
-	[265.07] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+	[265.04] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
 		StartTimer: 32.0, Spreads (10)
-	[267.10] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
-		PlaySound: VoicePack/scatter
-		ShowYell: Bloodcurdle
-	[267.10] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
+	[267.05] SPELL_CAST_SUCCESS: [The Bloodbound Horror: Crimson Rain] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 443203, Crimson Rain, 0, 0
 		ShowAnnounce: Crimson Rain (3)
 		StartTimer: 128.0, Crimson Rain (4)
-	[270.08] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (5)
-		PlaySound: VoicePack/shockwave
+	[267.06] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
+		PlaySound: VoicePack/scatter
+		ShowYell: Bloodcurdle
+	[270.05] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (5)
+		PlaySound: VoicePack/frontal
 		StartTimer: 59.0, Frontal (6)
-	[275.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000097, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000097, 2, 7, 1
-	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000097, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-0000000097, 2, 8, 1
-	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000F1, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000F1, 2, 6, 1
-	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-000000010F, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-000000010F, 2, 5, 1
-	[275.09] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
+	[275.05] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
 		ShowAnnounce: Gruesome Disgorge on YOU
 		StartTimer: 40.0, Gruesome Disgorge fades
-	[275.15] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps9: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000017, Dps9, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-0000000075, 2, 8, 1
+	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000B4, 2, 7, 1
+	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221667-0000000075, 2, 4, 1
+	[275.08] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
+		ScanForMobs: Creature-0-1-2657-1-221945-00000000E1, 2, 6, 1
+	[275.16] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps12: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Dps12, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
 		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 275.15, 275.15
+			Filtered: 3x SPELL_AURA_APPLIED at 275.16, 275.16, 275.16
 		StartTimer: 27.8, Grasp (10)
-	[277.61] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000097, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[277.56] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
 		PlaySound: VoicePack/kick1r
 		StartTimer: 15.5, Shield
-	[277.63] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-000000010F, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[277.84] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+		ShowSpecialWarning: Shield - interrupt Lost Watcher! (4)
+		PlaySound: VoicePack/kick4r
+		StartTimer: 15.5, Shield
+	[277.84] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 277.63, 277.63
+			Filtered: 2x SPELL_CAST_START at 277.85, 277.85
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[281.63] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000F1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[281.84] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 281.63, 281.63
+			Filtered: 2x SPELL_CAST_START at 281.84, 281.84
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[283.73] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000097, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[285.63] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000F1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[282.69] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
+		ShowSpecialWarning: Slam - defensive
+		PlaySound: VoicePack/defensive
+	[285.69] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[285.84] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 285.64, 285.64
+			Filtered: 2x SPELL_CAST_START at 285.84, 285.84
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[288.06] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (5)
-		PlaySound: VoicePack/justrun
+	[288.03] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
+		ShowSpecialWarning: Beams (5) - dodge attack
+		PlaySound: VoicePack/farfromline
 		StartTimer: 59.0, Beams (6)
-	[289.66] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000F1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[289.33] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[289.86] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 289.86, 289.86
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[297.08] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-		StartTimer: 27.0, Spreads (11)
-	[299.10] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
-		PlaySound: VoicePack/scatter
-		ShowYell: Bloodcurdle
-	[303.08] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps3: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000003, Dps3, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 303.08, 303.08
-		StartTimer: 31.1, Grasp (11)
-	[315.10] SPELL_AURA_REMOVED: [The Bloodbound Horror->Tank4: Baneful Shift] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 443612, Baneful Shift, 0, DEBUFF, 0
-		ShowAnnounce: Gruesome Disgorge faded
-	[324.06] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-		StartTimer: 32.0, Spreads (12)
-	[326.07] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
-		PlaySound: VoicePack/scatter
-		ShowYell: Bloodcurdle
-	[329.08] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
-		ShowSpecialWarning: Gruesome Disgorge! (6)
-		PlaySound: VoicePack/shockwave
-		StartTimer: 69.1, Frontal (7)
-	[334.06] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000BC, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000BC, 2, 7, 1
-	[334.07] SPELL_SUMMON: [The Bloodbound Horror->Lost Watcher: Summon Lost Watcher] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, 444830, Summon Lost Watcher, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221667-00000000BC, 2, 8, 1
-	[334.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-00000000F8, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-00000000F8, 2, 6, 1
-	[334.07] SPELL_SUMMON: [The Bloodbound Horror->Forgotten Harbinger: Summon Forgotten Harbinger] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Creature-0-1-2657-1-221945-0000000112, Forgotten Harbinger, 0xa48, 444835, Summon Forgotten Harbinger, 0, 0
-		ScanForMobs: Creature-0-1-2657-1-221945-0000000112, 2, 5, 1
-	[334.28] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank1: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000004, Tank1, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
-		AntiSpam: 2
-			Filtered: 2x SPELL_AURA_APPLIED at 334.28, 334.28
-		StartTimer: 27.8, Grasp (12)
-	[336.21] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000112, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[293.85] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 336.21, 336.21
+			Filtered: 2x SPELL_CAST_START at 293.85, 293.85
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[336.56] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
-		ShowSpecialWarning: Shield - interrupt Lost Watcher! (1)
-		PlaySound: VoicePack/kick1r
-		StartTimer: 15.5, Shield
-	[339.90] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[340.21] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000BC, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 340.21, 340.21
-		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[344.22] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000112, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 344.22, 344.22
-		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[347.07] SPELL_CAST_START: [The Bloodbound Horror: Spewing Hemorrhage] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 445936, Spewing Hemorrhage, 0, 0
-		ShowSpecialWarning: Spewing Hemorrhage - run away (6)
-		PlaySound: VoicePack/justrun
-		StartTimer: 69.1, Beams (7)
-	[348.23] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000F8, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-		AntiSpam: 1
-			Filtered: 2x SPELL_CAST_START at 348.23, 348.23
-		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[352.06] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+	[294.86] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
 		ShowSpecialWarning: Shield - interrupt Lost Watcher! (2)
 		PlaySound: VoicePack/kick2r
 		StartTimer: 15.5, Shield
-	[352.23] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000F8, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+	[297.02] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+		StartTimer: 27.0, Spreads (11)
+	[297.28] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-000000005B, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+		ShowSpecialWarning: Shield - interrupt Lost Watcher! (5)
+		PlaySound: VoicePack/kick5r
+		StartTimer: 15.5, Shield
+	[297.86] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
 		AntiSpam: 1
-			Filtered: 1x SPELL_CAST_START at 352.23
+			Filtered: 2x SPELL_CAST_START at 297.87, 297.87
 		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[356.07] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
-		StartTimer: 32.0, Spreads (13)
-	[356.23] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000112, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
-		AntiSpam: 1
-		ShowAnnounce: Casting Manifest Horror: 4.0 sec
-	[356.92] SPELL_CAST_START: [Lost Watcher: Spectral Slam] Creature-0-1-2657-1-221667-00000000BC, Lost Watcher, 0xa48, "", nil, 0x0, 445016, Spectral Slam, 0, 0
-		StartTimer: 13.4, Slam
-	[358.11] SPELL_AURA_APPLIED: [The Bloodbound Horror->Tank4: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000012, Tank4, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
-		ShowSpecialWarning: Bloodcurdle - move away from others
+	[299.06] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
 		PlaySound: VoicePack/scatter
 		ShowYell: Bloodcurdle
-	[359.02] ENCOUNTER_END: 2917, The Bloodbound Horror, 16, 20, 1, 0
+	[300.49] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[301.87] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 301.87, 301.87
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[302.71] SPELL_CAST_SUCCESS: [Lost Watcher->Dps19: Spectral Slam] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, Player-1-00000019, Dps19, 0x511, 445016, Spectral Slam, 0, 0
+		StartTimer: 10.4, Slam
+	[303.03] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps6: Grasp From Beyond] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000006, Dps6, 0x512, 443042, Grasp From Beyond, 0, DEBUFF, 0
+		AntiSpam: 2
+			Filtered: 3x SPELL_AURA_APPLIED at 303.03, 303.03, 303.03
+		StartTimer: 31.1, Grasp (11)
+	[305.88] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-0000000075, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 305.89, 305.89
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[309.89] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 309.89, 309.89
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[310.81] SPELL_PERIODIC_DAMAGE: [->Dps19: Black Blood] "", nil, 0x0, Player-1-00000019, Dps19, 0x511, 445518, Black Blood, 0, 0
+		AntiSpam: 3
+		ShowSpecialWarning: Black Blood damage - move away
+		PlaySound: VoicePack/watchfeet
+	[311.83] SPELL_CAST_START: [Lost Watcher: Black Bulwark] Creature-0-1-2657-1-221667-0000000075, Lost Watcher, 0xa48, "", nil, 0x0, 451288, Black Bulwark, 0, 0
+		ShowSpecialWarning: Shield - interrupt Lost Watcher! (3)
+		PlaySound: VoicePack/kick3r
+		StartTimer: 15.5, Shield
+	[313.89] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 313.89, 313.89
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[315.06] SPELL_AURA_REMOVED: [The Bloodbound Horror->Dps19: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 443612, Gruesome Disgorge, 0, DEBUFF, 0
+		ShowAnnounce: Gruesome Disgorge faded
+	[317.88] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000E1, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 317.88, 317.88
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[321.88] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 321.88, 321.89
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[324.03] SPELL_CAST_START: [The Bloodbound Horror: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 452237, Bloodcurdle, 0, 0
+		StartTimer: 32.0, Spreads (12)
+	[325.89] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 325.89, 325.89
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[326.03] SPELL_AURA_APPLIED: [The Bloodbound Horror->Dps19: Bloodcurdle] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, Player-1-00000019, Dps19, 0x511, 452245, Bloodcurdle, 0, DEBUFF, 0
+		ShowSpecialWarning: Spreads - move away from others
+		PlaySound: VoicePack/scatter
+		ShowYell: Bloodcurdle
+	[329.05] SPELL_CAST_START: [The Bloodbound Horror: Gruesome Disgorge] Creature-0-1-2657-1-214502-0000000001, The Bloodbound Horror, 0xa48, "", nil, 0x0, 444363, Gruesome Disgorge, 0, 0
+		ShowSpecialWarning: Frontal! (6)
+		PlaySound: VoicePack/frontal
+		StartTimer: 69.1, Frontal (7)
+	[329.90] SPELL_CAST_START: [Forgotten Harbinger: Manifest Horror] Creature-0-1-2657-1-221945-00000000B4, Forgotten Harbinger, 0xa48, "", nil, 0x0, 445174, Manifest Horror, 0, 0
+		AntiSpam: 1
+			Filtered: 2x SPELL_CAST_START at 329.9, 329.91
+		ShowAnnounce: Casting Manifest Horror: 4.0 sec
+	[330.34] ENCOUNTER_END: 2917, The Bloodbound Horror, 16, 20, 1, 0
 		EndCombat: ENCOUNTER_END
 	Unknown trigger
 		UnregisterEvents: Regular, SPELL_AURA_REMOVED 443612 452245 443042

@@ -555,7 +555,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnNullDetonation:Play("kickcast")
 			end
 		end
-		timerNullDetonationCD:Start(nil, args.sourceGUID)
+		timerNullDetonationCD:Start(self:IsMythic() and 4.3 or 8.2, args.sourceGUID)
 	elseif spellId == 448458 and self:AntiSpam(5, 1) then
 		warnCosmicApocalypse:Show()
 		timerCosmicApocalypse:Start()
@@ -936,7 +936,7 @@ function mod:UNIT_DIED(args)
 			--Better place to start Stage 2 wrest timer
 			if self.vb.wrestCount == 0 then
 				timerWrestCD:Stop()
-				timerWrestCD:Start(self:IsEasy() and 12.9 or 11.9, 1)
+				timerWrestCD:Start(self:IsEasy() and 12.9 or 11.7, 1)
 				timerExpulsionBeamCD:Start(12.5, 1)
 			end
 		end
@@ -979,7 +979,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnPlatform:Show(self.vb.platformCount)
 		if self.vb.platformCount == 1 then
 			timerWrestCD:Stop()
-			timerWrestCD:Start(6, self.vb.wrestCount+1)--6-6.6
+			timerWrestCD:Start(5.4, self.vb.wrestCount+1)--6-6.6
 			timerGloomTouchCD:Start(6)
 		elseif self.vb.platformCount == 2 then
 			timerWrestCD:Stop()

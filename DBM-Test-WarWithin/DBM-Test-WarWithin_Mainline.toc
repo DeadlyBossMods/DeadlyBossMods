@@ -6,18 +6,20 @@
 ## LoadOnDemand: 1
 ## X-DBM-Test: true
 
-NerubarPalace/Ulgrax-Mythic-Wipe.lua
+NerubarPalace/Ulgrax-Mythic-Kill.lua
 NerubarPalace/BloodboundHorror-Mythic-Kill.lua
-NerubarPalace/Sikran-Mythic-Wipe.lua
-NerubarPalace/Rashanan-Mythic-Wipe.lua
-NerubarPalace/Ovinax-Mythic-Wipe.lua
-NerubarPalace/Kyveza-Mythic-Wipe.lua
-NerubarPalace/SilkenCourt-Mythic-Wipe.lua
+NerubarPalace/Sikran-Mythic-Kill.lua
+NerubarPalace/Rashanan-Mythic-Kill.lua
+NerubarPalace/Ovinax-Mythic-Kill.lua
+NerubarPalace/Kyveza-Mythic-Kill.lua
+NerubarPalace/SilkenCourt-Mythic-Kill.lua
+NerubarPalace/QueenAnsurek-Mythic-Wipe.lua
 
-NerubarPalace/Reports/Ulgrax-Mythic-Wipe.lua
+NerubarPalace/Reports/Ulgrax-Mythic-Kill.lua
 NerubarPalace/Reports/BloodboundHorror-Mythic-Kill.lua
-NerubarPalace/Reports/Sikran-Mythic-Wipe.lua
-NerubarPalace/Reports/Rashanan-Mythic-Wipe.lua
-NerubarPalace/Reports/Ovinax-Mythic-Wipe.lua
-NerubarPalace/Reports/Kyveza-Mythic-Wipe.lua
-NerubarPalace/Reports/SilkenCourt-Mythic-Wipe.lua
+NerubarPalace/Reports/Sikran-Mythic-Kill.lua
+NerubarPalace/Reports/Rashanan-Mythic-Kill.lua
+NerubarPalace/Reports/Ovinax-Mythic-Kill.lua
+NerubarPalace/Reports/Kyveza-Mythic-Kill.lua
+NerubarPalace/Reports/SilkenCourt-Mythic-Kill.lua
+NerubarPalace/Reports/QueenAnsurek-Mythic-Wipe.lua
