@@ -112,3 +112,7 @@ CL.BLUE		= "푸른용"
 CL.GREEN	= "녹색용"
 CL.RED		= "붉은용"
 CL.BRONZE	= "청동용"
+
+-- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
+CL.AND		= "하고"
+CL.OR		= "또는"
