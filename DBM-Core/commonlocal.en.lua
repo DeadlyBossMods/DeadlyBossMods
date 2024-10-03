@@ -162,3 +162,7 @@ CL.BLUE		= "Blue"
 CL.GREEN	= "Green"
 CL.RED		= "Red"
 CL.BRONZE	= "Bronze"
+
+-- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
+CL.AND		= "and"
+CL.OR		= "or"
