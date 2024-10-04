@@ -87,7 +87,7 @@ CL.POOLS					= "Лужи"
 CL.DEBUFFS					= "Дебаффы"
 CL.DISPELS					= "Рассеивания"
 CL.PUSHBACK					= "Отталкивание"
-CL.FRONTAL					= "Фронталка"
+CL.FRONTAL					= "Фронтальный удар"
 CL.RUNAWAY					= "Убегать"
 CL.SPREAD					= "Разойтись"--По идее так правильно
 CL.SPREADS					= "Разойтись"--По идее так правильно
@@ -102,3 +102,16 @@ CL.MARKS					= "Метки"
 CL.CURSE					= "Проклятие"
 CL.CURSES					= "Проклятия"
 CL.SWIRLS					= "Вихри"
+CL.CHARGES					= "Charges"--Context, this is plural of boss "charging to players" and NOT bomb charges
+CL.CIRCLES					= "Круги"
+
+-- Colors
+CL.BLACK	= "Черный"
+CL.BLUE		= "Синий"
+CL.GREEN	= "Зеленый"
+CL.RED		= "Красный"
+CL.BRONZE	= "Бронзовый"
+
+-- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
+CL.AND		= "и"
+CL.OR		= "или"
