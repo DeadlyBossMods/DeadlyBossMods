@@ -14,8 +14,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336 447456",
-	"SPELL_CAST_SUCCESS 439299 449986",
+	"SPELL_CAST_START 437592 456623 437417 439814 440899 440883 437093 447076 447411 450191 449940 449986 447950 448458 448147 451600 455374 443888 445422 444829 445021 438976 443325 443336",
+	"SPELL_CAST_SUCCESS 439299 449986 447456",
 	"SPELL_AURA_APPLIED 437586 441958 436800 440885 447207 453990 464056 447967 462558 451278 443903 455387 445880 445152 438974 443656 443726 443342 451832 464638 441556 445013 462693",--455404
 	"SPELL_AURA_APPLIED_DOSE 449236 445880 443726 443342 464638 441556",
 	"SPELL_AURA_REMOVED 437586 447207 453990 462558 451278 443903 455387 445152 443656 445013 445021 464056 447967",
@@ -615,14 +615,6 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerGorgeCD:Start(timer, self.vb.gorgeCount+1)
 		end
-	elseif spellId == 447456 then
-		self.vb.reactiveCount = self.vb.reactiveCount + 1
-		warnParalyzingVenom:Show(self.vb.reactiveCount)
-		if self.vb.reactiveCount % 3 == 0 then
-			timerParalyzingVenomCD:Start(11, self.vb.reactiveCount+1)
-		else
-			timerParalyzingVenomCD:Start(4, self.vb.reactiveCount+1)
-		end
 	elseif spellId == 447076 then--Predation
 		self:SetStage(1.5)
 		self.vb.wrestCount = 0
@@ -637,7 +629,7 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 		timerWrestCD:Start(6, 1)
-		timerParalyzingVenomCD:Start(13, 1)
+		timerParalyzingVenomCD:Start(15.5, 1)
 	elseif spellId == 449986 then--Aphotic Communion Starting
 		self:SetStage(3)
 		timerAcidicApocalypse:Stop()
@@ -665,6 +657,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439299, self.vb.webBladesCount+1)
 		if timer then
 			timerWebBladesCD:Start(timer, self.vb.webBladesCount+1)
+		end
+	elseif spellId == 447456 then
+		self.vb.reactiveCount = self.vb.reactiveCount + 1
+		warnParalyzingVenom:Show(self.vb.reactiveCount)
+		if self.vb.reactiveCount % 3 == 0 then
+			timerParalyzingVenomCD:Start(11, self.vb.reactiveCount+1)
+		else
+			timerParalyzingVenomCD:Start(4, self.vb.reactiveCount+1)
 		end
 	--elseif spellId == 449986 then--Aphotic Communion Finishing
 	--	timerAbyssalInfusionCD:Start(3)
