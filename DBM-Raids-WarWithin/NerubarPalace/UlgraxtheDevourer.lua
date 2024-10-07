@@ -2,17 +2,18 @@ local mod	= DBM:NewMod(2607, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(215657)--VERIFY
+mod:SetCreatureID(215657)
 mod:SetEncounterID(2902)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20240911000000)
---mod:SetMinSyncRevision(20230929000000)
+mod:SetHotfixNoticeRev(20241007000000)
+mod:SetMinSyncRevision(20241007000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 434803 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123 435138",
+	"SPELL_CAST_START 441451 441452 435136 434697 445052 436203 436200 451412 443842 438012 445290 445123 435138",
+	"SPELL_CAST_SUCCESS 434803",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705 458129",
 	"SPELL_AURA_REMOVED 458129 435138",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -26,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, change option keys to match BW for weak aura compatability before live
 --[[
 (ability.id = 434803 or ability.id = 441451 or ability.id = 441452 or ability.id = 435136 or ability.id = 434697 or ability.id = 445052 or ability.id = 436203 or ability.id = 436200 or ability.id = 451412 or ability.id = 443842 or ability.id = 438012 or ability.id = 445290 or ability.id = 445123 or ability.id = 435138) and type = "begincast"
+ or ability.id = 434803 and type = "cast"
 --]]
 --Gleeful Brutality
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30011))
@@ -98,14 +100,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 434803 then
-		self.vb.lashingsCount = self.vb.lashingsCount + 1
-		if self.vb.lashingsCount == 1 then
-			timerCarnivorousContestCD:Start(nil, self.vb.lashingsCount+1)
-		end
---		timerBrutalCrushCD:Stop()
---		timerBrutalCrushCD:Start(18, self.vb.brutalHungeringCount+1)
-	elseif spellId == 441451 or spellId == 441452 then
+	if spellId == 441451 or spellId == 441452 then
 		self.vb.webbingChargeCount = self.vb.webbingChargeCount + 1
 		specWarnStalkersWebbing:Show(self.vb.webbingChargeCount)
 		specWarnStalkersWebbing:Play("watchstep")
@@ -188,6 +183,18 @@ function mod:SPELL_CAST_START(args)
 			timerHungeringBellowsCD:Start(59, 1)
 --			timerHulkingCrashCD:Start(69, 1)
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 434803 then
+		self.vb.lashingsCount = self.vb.lashingsCount + 1
+		if self.vb.lashingsCount == 1 then
+			timerCarnivorousContestCD:Start(nil, self.vb.lashingsCount+1)
+		end
+	--	timerBrutalCrushCD:Stop()
+	--	timerBrutalCrushCD:Start(18, self.vb.brutalHungeringCount+1)
 	end
 end
 
