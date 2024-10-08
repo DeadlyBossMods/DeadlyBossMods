@@ -126,7 +126,7 @@ L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vo
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
 
-L.Area_SoundAlerts			= "Options des alertes sonores/flash"
+L.Area_SoundAlerts			= "Options des alertes sonores/clignotement"
 L.LFDEnhance				= "Faire clignoter le bouton de l'application et jouer le son d'Appel lors des vérif. de rôle &amp; des invitations (LFG,BG,etc) dans les canaux audio Principal ou Discussion (canaux généralement plus forts, fonctionnent même si le SFX est désactivé)"
 L.WorldBossNearAlert		= "Faire clignoter le bouton de l'application et jouer le son d'Appel quand un World Boss proche de vous est engagé"
 L.RLReadyCheckSound			= "Quand le chef de raid lance un Appel, jouer le son via les canaux audio Principal ou Discussion et faire clignoter le bouton de l'application"
