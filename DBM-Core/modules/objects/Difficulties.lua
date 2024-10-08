@@ -461,19 +461,14 @@ function DBM:GetCurrentInstanceDifficulty()
 		local usedDelveInfo
 		if delveInfo and delveInfo.shownState and delveInfo.shownState == 1 then
 			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
+		--Zekvir Hack to normal/mythic since his tiers aren't numbers
 		elseif delveInfo2 and delveInfo2.shownState and delveInfo2.shownState == 1 then
-			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6184)
+			return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize, 0
 		elseif delveInfo3 and delveInfo3.shownState and delveInfo3.shownState == 1 then
-			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6185)
+			return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize, 0
 		end
 		local delveTier = 0
 		if usedDelveInfo and usedDelveInfo.tierText then
-			--Zekvir Hack to normal/mythic since his tiers aren't numbers
-			if usedDelveInfo.tierText == "?" then
-				return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize, 0
-			elseif usedDelveInfo.tierText == "??" then
-				return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize, 0
-			end
 			---@diagnostic disable-next-line: cast-local-type
 			delveTier = tonumber(usedDelveInfo.tierText)
 		end
