@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20240801
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20241010
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -603,8 +603,8 @@ L.NPIcon_GlowTypeCD		        	= "冷却图标发光类型"
 L.NPIcon_GlowTypeCast		        = "施法图标发光类型"
 L.NPIcon_Pixel  			    	= "像素"
 L.NPIcon_Proc  			        	= "触发"
---L.NPIcon_AutoCast  			        = "Auto Cast"
---L.NPIcon_Button       			    = "Button"
+L.NPIcon_AutoCast  			        = "自动施放"
+L.NPIcon_Button       			    = "按键"
 
 -- Misc
 L.Area_General				= "一般"
@@ -673,3 +673,6 @@ L.ShowDiff							= "显示区别"
 L.ShowErrors						= "显示错误"
 L.TestModEntry						= "[测试环境] %s"
 L.EnterTestMode						= "测试模式"
+L.SkipPhase							= "转跳至下一阶段"
+
+L.AnonymizeTest						= "将玩家姓名和GUID匿名"
