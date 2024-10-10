@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20240924
+--Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20241010
 --Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
@@ -62,8 +62,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2608)
 
 L:SetMiscLocalization({
-	Red		= " [红]",--Skeinspinner Takazj
-	Blue	= " [蓝]"--Anub'arash
+	Red		= " [红-塔]",--Skeinspinner Takazj 纺束者塔卡兹基
+	Blue	= " [蓝-阿]"--Anub'arash 阿努巴拉什
 })
 
 ---------------------------

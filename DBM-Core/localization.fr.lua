@@ -255,7 +255,7 @@ L.LFG_INVITE					= "Invitation RdG"
 L.SLASHCMD_HELP				= {
 	"Commandes slash disponibles :",
 	"----------------",
-	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
+	"/dbm unlock : Affiche une barre de délai déplaçable (alias : move).",
 	"/range <numéro> ou /distance <numéro>: Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
 	"/hudar <numéro>: Affiche le radar de portée HUD.",
 	"/dbm timer: Lance un chronomètre DBM perso, voir '/dbm timer' pour plus de détails.",
