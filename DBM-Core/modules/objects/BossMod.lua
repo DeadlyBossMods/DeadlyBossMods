@@ -307,11 +307,23 @@ end
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
 	test:Trace(self, "RegisterEvents", "InCombat", ...)
-	if self.inCombatOnlyEvents then
+	if self.inCombatOnlyEvents and select("#", ...) > 1 then
 		geterrorhandler()("combat events already set")
 	end
-	self.inCombatOnlyEvents = {...}
-	for k, v in pairs(self.inCombatOnlyEvents) do
+	if self.inCombatOnlyEvents then
+		-- Special case: allow registrating additional events if you do it one-by-one (check in the abort above)
+		-- FIXME: allow this in general if we end up keeping the new event handlers
+		local event = ...
+		for _, v in ipairs(self.inCombatOnlyEvents) do
+			if v == event then
+				return
+			end
+		end
+		self.inCombatOnlyEvents[#self.inCombatOnlyEvents + 1] = event
+	else
+		self.inCombatOnlyEvents = {...}
+	end
+	for k, v in ipairs(self.inCombatOnlyEvents) do
 		if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
 			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
