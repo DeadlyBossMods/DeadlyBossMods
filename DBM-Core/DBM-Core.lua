@@ -5232,7 +5232,9 @@ do
 	local function buildTargetList()
 		for _, unitId in ipairs(fullEnemyUids) do
 			local guid = UnitGUID(unitId)
-			targetList[DBM:GetCIDFromGUID(guid)] = unitId
+			if guid and DBM:IsCreatureGUID(guid) then
+				targetList[DBM:GetCIDFromGUID(guid)] = unitId
+			end
 		end
 	end
 

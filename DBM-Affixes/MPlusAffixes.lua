@@ -239,7 +239,6 @@ function mod:SPELL_CAST_START(args)
 		warnDestabalize:Show()
 	elseif spellId == 465051 then
 		warnXalatathsBargainDevour:Show()
-		--Timer function limited to debugging for now until we know more about it
 		if not devourDetected then
 			devourDetected = true
 		end
@@ -256,7 +255,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 461895 and self:AntiSpam(5, "aff8") then--Takes a good 3-4 seconds for them all to spawn, so 5 second antispam is safe
 		warnXalatathsBargainUnstablePower:Show()
 		warnXalatathsBargainUnstablePower:Play("targetchange")--If this affix actually lasts til live, i'll give it a unique voice
-		--Timer function limited to debugging for now until we know more about it
 		if not unstableDetected then
 			unstableDetected = true
 		end
