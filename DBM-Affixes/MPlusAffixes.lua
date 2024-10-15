@@ -40,7 +40,7 @@ local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 39634
 --local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, 2, DBM_COMMON_L.HEALER_ICON, nil, mod:IsHealer() and 3 or nil, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
 local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)--Not active ingame
 local timerXalatathsBargainUnstablePowerCD	= mod:NewCDTimer(59.9, 461895, nil, nil, nil, 1)
-local timerXalatathsBargainDevourCD			= mod:NewCDTimer(59.9, 465051, nil, nil, nil, 2)
+local timerXalatathsBargainDevourCD			= mod:NewCDTimer(59.9, 465051, nil, nil, nil, 2)--60-67 even incombat
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
 
@@ -240,15 +240,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465051 then
 		warnXalatathsBargainDevour:Show()
 		--Timer function limited to debugging for now until we know more about it
-		if DBM.Options.DebugMode then
-			if not devourDetected then
-				devourDetected = true
-			end
-			devourCounting = true
-			timerXalatathsBargainDevourCD:Start()
-			self:Unschedule(checkForCombat)
-			checkForCombat(self)
+		if not devourDetected then
+			devourDetected = true
 		end
+		devourCounting = true
+		timerXalatathsBargainDevourCD:Start()
+		self:Unschedule(checkForCombat)
+		checkForCombat(self)
 	end
 end
 
@@ -259,15 +257,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnXalatathsBargainUnstablePower:Show()
 		warnXalatathsBargainUnstablePower:Play("targetchange")--If this affix actually lasts til live, i'll give it a unique voice
 		--Timer function limited to debugging for now until we know more about it
-		if DBM.Options.DebugMode then
-			if not unstableDetected then
-				unstableDetected = true
-			end
-			unstableCounting = true
-			timerXalatathsBargainUnstablePowerCD:Start()
-			self:Unschedule(checkForCombat)
-			checkForCombat(self)
+		if not unstableDetected then
+			unstableDetected = true
 		end
+		unstableCounting = true
+		timerXalatathsBargainUnstablePowerCD:Start()
+		self:Unschedule(checkForCombat)
+		checkForCombat(self)
 	end
 end
 

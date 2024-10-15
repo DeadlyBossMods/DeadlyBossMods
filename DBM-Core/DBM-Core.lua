@@ -439,6 +439,7 @@ local dbmIsEnabled = true
 local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 local inCombat = {} ---@type DBMMod[]
 local combatInfo = {} ---@type table<integer, CombatInfo[]>
+local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
@@ -5213,15 +5214,25 @@ end
 --  Pull Detection  --
 ----------------------
 do
+	--TODO maybe move these frequently used tables to their own module
+	local fullEnemyUids = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
+		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
+		"party1target", "party2target", "party3target", "party4target",
+		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
+		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
+		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
+		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
+		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
+		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
+		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
+		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
+	}
 	local targetList = {}
 	local function buildTargetList()
-		local uId = (IsInRaid() and "raid") or "party"
-		for i = 0, GetNumGroupMembers() do
-			local id = (i == 0 and "target") or uId .. i .. "target"
-			local guid = UnitGUID(id)
-			if guid and DBM:IsCreatureGUID(guid) then
-				targetList[DBM:GetCIDFromGUID(guid)] = id
-			end
+		for _, unitId in ipairs(fullEnemyUids) do
+			local guid = UnitGUID(unitId)
+			targetList[DBM:GetCIDFromGUID(guid)] = unitId
 		end
 	end
 
@@ -5230,31 +5241,45 @@ do
 	end
 
 	---@param mod DBMMod
-	local function scanForCombat(mod, mob, delay)
+	---@param mob number Mob CreatureId
+	---@param delay number
+	local function scanForCombat(mod, mob, delay, combatType)
 		if not checkEntry(inCombat, mob) then
 			buildTargetList()
 			if targetList[mob] then
-				if mod.noFriendlyEngagement and UnitIsFriend("player", targetList[mob]) then return end
-				if delay > 0 and UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
-					DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
-				elseif (delay == 0) then
-					DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
+				if combatType == "trashpull" then
+					if UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
+						--This type of mod doesn't actually start combat for entire mod, just calls OnTrashPull method
+						local GUID = UnitGUID(targetList[mob])
+						if mod.OnTrashStart and GUID and not inCombatTrash[GUID] then
+							inCombatTrash[GUID] = true
+							mod:OnTrashStart(delay or 0, mob, GUID)
+						end
+					end
+				else
+					if mod.noFriendlyEngagement and UnitIsFriend("player", targetList[mob]) then return end
+					if delay > 0 and UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
+						DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
+					elseif (delay == 0) then
+						DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
+					end
 				end
 			end
 			clearTargetList()
 		end
 	end
 
+	---@param mob number Mob CreatureId
 	---@param combatInfo CombatInfo
-	local function checkForPull(mob, combatInfo)
+	local function checkForPull(mob, combatInfo, combatType)
 		healthCombatInitialized = false
-		--This just can't be avoided, tryig to save cpu by using C_TimerAfter broke this
+		--This just can't be avoided, trying to save cpu by using C_TimerAfter broke this
 		--This needs the redundancy and ability to pass args.
-		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
+		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5, combatType)
 		if not private.isRetail then
-			DBM:Schedule(1.25, scanForCombat, combatInfo.mod, mob, 1.25)
+			DBM:Schedule(1.25, scanForCombat, combatInfo.mod, mob, 1.25, combatType)
 		end
-		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2)
+		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2, combatType)
 		C_TimerAfter(2.1, function()
 			healthCombatInitialized = true
 		end)
@@ -5271,12 +5296,18 @@ do
 				if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
 					if v.multiMobPullDetection then
 						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v) then
+							if checkForPull(mob, v, v.type) then
 								break
 							end
 						end
 					else
 						checkForPull(v.mob, v)
+					end
+				elseif v.type:find("trashpull") then
+					for _, mob in ipairs(v.multiMobPullDetection) do
+						if checkForPull(mob, v, v.type) then
+							break
+						end
 					end
 				end
 			end
@@ -6029,6 +6060,7 @@ do
 		end
 		if not health or health < 2 then return end -- no worthy of combat start if health is below 2%
 		if dbmIsEnabled and InCombatLockdown() then
+
 			if cId ~= 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and not (UnitPlayerOrPetInRaid(uId) or UnitPlayerOrPetInParty(uId)) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
 				if combatInfo[LastInstanceMapID] then
 					for _, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -6915,6 +6947,9 @@ function DBM:UNIT_DIED(args)
 	local GUID = args.destGUID
 	if self:IsCreatureGUID(GUID) then
 		self:OnMobKill(self:GetCIDFromGUID(GUID))
+	end
+	if inCombatTrash[GUID] then
+		inCombatTrash[GUID] = nil
 	end
 	----GUIDIsPlayer
 	--no point in playing alert on death itself on hardcore. if you're dead it's over, no reason to salt the wound
@@ -8808,6 +8843,25 @@ function bossModPrototype:RegisterCombat(cType, ...)
 			info.killMobs = info.killMobs or {}
 			info.killMobs[v] = true
 		end
+	end
+	self.combatInfo = info
+	if not self.zones then return end
+	for v in pairs(self.zones) do
+		combatInfo[v] = combatInfo[v] or {}
+		tinsert(combatInfo[v], info)
+	end
+end
+
+---Used for registering combat with trash units for purpose of enabling initial nameplate timers
+---@param cidTable table
+function bossModPrototype:RegisterTrashCombat(cidTable)
+	local info = {
+		type = "trashpull",
+		mod = self
+	}
+	for _, v in ipairs(cidTable) do
+		info.multiMobPullDetection = info.multiMobPullDetection or {}
+		info.multiMobPullDetection[v] = true
 	end
 	self.combatInfo = info
 	if not self.zones then return end
