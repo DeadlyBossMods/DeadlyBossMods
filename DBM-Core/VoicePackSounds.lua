@@ -99,6 +99,7 @@
 ---|"farfromline"
 ---|"fearsoon"
 ---|"felinfusion"
+---|"findclearvent" 17
 ---|"findcrab" 12
 ---|"finddragon" 12
 ---|"findflamejet" 12
