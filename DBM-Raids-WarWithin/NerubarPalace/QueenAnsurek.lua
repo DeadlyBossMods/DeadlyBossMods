@@ -555,7 +555,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnNullDetonation:Play("kickcast")
 			end
 		end
-		timerNullDetonationCD:Start(self:IsMythic() and 4.3 or 8.2, args.sourceGUID)
+		timerNullDetonationCD:Start(4.3, args.sourceGUID)
 	elseif spellId == 448458 and self:AntiSpam(5, 1) then
 		warnCosmicApocalypse:Show()
 		timerCosmicApocalypse:Start()
