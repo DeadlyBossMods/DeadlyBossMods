@@ -10,8 +10,8 @@ local DBM = private:GetPrototype("DBM")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local registeredZones = {}--Global table for tracking registered zones
-local registeredCombat = {}--Tracks when modules should use return callback for just detecting combat
-local registeredCIDs = {}
+local registeredCombat = {}--Tracks which modules should be processed in registered zones (can be more than one module in same zone, IE affixes and then that modules trash module
+local registeredCIDs = {}--Tracks which CIDs should be processed and returned in ScanEngagedUnits
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
 
@@ -95,6 +95,7 @@ do
 			DBM:Debug("Registering Dungeon Trash Tracking Events")
 		elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
+			inCombat = false
 			table.wipe(ActiveGUIDs)
 			DBM:Unschedule(checkForCombat)
 			DBM:Unschedule(ScanEngagedUnits)
