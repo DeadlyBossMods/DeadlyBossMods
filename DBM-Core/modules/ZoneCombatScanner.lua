@@ -115,7 +115,7 @@ local function DelayedZoneCheck(force)
 	local currentZone = DBM:GetCurrentArea() or 0
 	if not force and registeredZones[currentZone] and not eventsRegistered then
 		eventsRegistered = true
-		module:RegisterShortTermEvents("UNIT_FLAGS")
+		module:RegisterShortTermEvents("UNIT_FLAGS player party1 party2 party3 party4")
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Dungeon Trash Tracking Events")
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
