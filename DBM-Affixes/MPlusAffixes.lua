@@ -150,17 +150,14 @@ end
 
 do
 	local validZones
-	--Upcoming Seasons
-	if (C_MythicPlus.GetCurrentSeason() or 0) == 13 then--War Within Season 1
-		--2652, 2662, 2660, 2669, 670, 1822, 2286, 2290
-		validZones = {[2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}
-	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 14 then--War Within Season 2
+	--Upcoming Season
+	if (C_MythicPlus.GetCurrentSeason() or 0) == 14 then--War Within Season 2
 		--2651, 2649, 2648, 2661, ?, ?, ?, ?
 		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true}
 	--Current Season (latest LIVE season put in else so if api fails, it just always returns latest)
-	else--DF Season 4 (12)
+	else--War Within Season 1 (13)
 		--2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520
-		validZones = {[2516]=true, [2526]=true, [2515]=true, [2521]=true, [2527]=true, [2519]=true, [2451]=true, [2520]=true}
+		validZones = {[2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}
 	end
 	local eventsRegistered = false
 	function mod:DelayedZoneCheck(force)
