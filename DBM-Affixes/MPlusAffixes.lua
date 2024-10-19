@@ -88,6 +88,7 @@ end
 --UGLY function to detect this because there isn't a good API for this.
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
+--TODO, switch to ZoneCombatScanner when it's tested and complete
 ---@param self DBMMod
 local function checkForCombat(self)
 	local combatFound = self:GroupInCombat()

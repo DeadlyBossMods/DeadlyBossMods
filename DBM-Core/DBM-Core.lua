@@ -400,6 +400,7 @@ DBM.DefaultOptions = {
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
+	NoCombatScanningFeatures = false,
 }
 
 ---@type DBMMod[]
@@ -8827,25 +8828,6 @@ function bossModPrototype:RegisterCombat(cType, ...)
 			info.killMobs = info.killMobs or {}
 			info.killMobs[v] = true
 		end
-	end
-	self.combatInfo = info
-	if not self.zones then return end
-	for v in pairs(self.zones) do
-		combatInfo[v] = combatInfo[v] or {}
-		tinsert(combatInfo[v], info)
-	end
-end
-
----Used for registering combat with trash units for purpose of enabling initial nameplate timers
----@param cidTable table
-function bossModPrototype:RegisterTrashCombat(cidTable)
-	local info = {
-		type = "trashpull",
-		mod = self
-	}
-	for _, v in ipairs(cidTable) do
-		info.multiMobPullDetection = info.multiMobPullDetection or {}
-		info.multiMobPullDetection[v] = true
 	end
 	self.combatInfo = info
 	if not self.zones then return end
