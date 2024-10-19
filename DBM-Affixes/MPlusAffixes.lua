@@ -186,7 +186,7 @@ do
 		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
 			combatCheckerRunning = false
-			self:UnregisterTrashCombat(currentZone, self.modId)
+			self:UnregisterZoneCombat(currentZone, self.modId)
 			--afflictedDetected = false
 			--afflictedCounting = false
 			incorporealCounting = false
@@ -246,7 +246,7 @@ function mod:SPELL_CAST_START(args)
 		devourCounting = true
 		timerXalatathsBargainDevourCD:Start()
 		if not combatCheckerRunning then
-			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
+			self:RegisterZoneCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
 	end
 end
@@ -263,7 +263,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		unstableCounting = true
 		timerXalatathsBargainUnstablePowerCD:Start()
 		if not combatCheckerRunning then
-			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
+			self:RegisterZoneCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
 	end
 end
@@ -315,7 +315,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerIncorporealCD:Start()
 		self:Unschedule(checkIncorp)
 		if not combatCheckerRunning then
-			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
+			self:RegisterZoneCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
 	end
 end

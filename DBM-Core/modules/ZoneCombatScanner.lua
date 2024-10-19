@@ -110,53 +110,50 @@ local function checkForCombat()
 	end
 end
 
-do
-	local eventsRegistered = false
-	local function DelayedZoneCheck(force)
-		local currentZone = DBM:GetCurrentArea() or 0
-		if not force and registeredZones[currentZone] and not eventsRegistered then
-			eventsRegistered = true
-			module:RegisterShortTermEvents("UNIT_FLAGS")
-			checkForCombat()--Still run an initial check
-			DBM:Debug("Registering Dungeon Trash Tracking Events")
-		elseif force or (not registeredZones[currentZone] and eventsRegistered) then
-			eventsRegistered = false
-			inCombat = false
-			table.wipe(ActiveGUIDs)
-			module:UnregisterShortTermEvents()
-			DBM:Unschedule(checkForCombat)
-			DBM:Unschedule(ScanEngagedUnits)
-			DBM:Debug("Unregistering Dungeon Trash Tracking Events")
-		end
-	end
-	--Monitor bitflag of players, which should change with combat stats
-	function module:UNIT_FLAGS()
+local eventsRegistered = false
+local function DelayedZoneCheck(force)
+	local currentZone = DBM:GetCurrentArea() or 0
+	if not force and registeredZones[currentZone] and not eventsRegistered then
+		eventsRegistered = true
+		module:RegisterShortTermEvents("UNIT_FLAGS")
+		checkForCombat()--Still run an initial check
+		DBM:Debug("Registering Dungeon Trash Tracking Events")
+	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
+		eventsRegistered = false
+		inCombat = false
+		table.wipe(ActiveGUIDs)
+		module:UnregisterShortTermEvents()
 		DBM:Unschedule(checkForCombat)
-		--Use throttled delay to avoid checks running too often when multiple flags change at once
-		if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			checkForCombat()
-		end
+		DBM:Unschedule(ScanEngagedUnits)
+		DBM:Debug("Unregistering Dungeon Trash Tracking Events")
 	end
-	function module:LOADING_SCREEN_DISABLED()
-		DBM:Unschedule(DelayedZoneCheck)
-		--Checks Delayed 3 second after core checks to prevent race condition of checking before core did and updated cached ID
-		--Delayed 2 seconds longer than Affixes mod so there is no race condition. Affixes needs to register events first
-		DBM:Schedule(4, DelayedZoneCheck)
-		DBM:Schedule(8, DelayedZoneCheck)
+end
+--Monitor bitflag of players, which should change with combat stats
+function module:UNIT_FLAGS()
+	DBM:Unschedule(checkForCombat)
+	--Use throttled delay to avoid checks running too often when multiple flags change at once
+	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+		checkForCombat()
 	end
-	module.OnModuleLoad = module.LOADING_SCREEN_DISABLED
-	module.ZONE_CHANGED_NEW_AREA	= module.LOADING_SCREEN_DISABLED
-
-	function module:CHALLENGE_MODE_COMPLETED()
-		--This basically force unloads things even when in a dungeon, so it's not scanning trash that doesn't fight back
-		DelayedZoneCheck(true)
-	end
+end
+function module:LOADING_SCREEN_DISABLED()
+	DBM:Unschedule(DelayedZoneCheck)
+	--Checks Delayed 3 second after core checks to prevent race condition of checking before core did and updated cached ID
+	--Delayed 2 seconds longer than Affixes mod so there is no race condition. Affixes needs to register events first
+	DBM:Schedule(4, DelayedZoneCheck)
+	DBM:Schedule(8, DelayedZoneCheck)
+end
+module.OnModuleLoad = module.LOADING_SCREEN_DISABLED
+module.ZONE_CHANGED_NEW_AREA	= module.LOADING_SCREEN_DISABLED
+function module:CHALLENGE_MODE_COMPLETED()
+	--This basically force unloads things even when in a dungeon, so it's not scanning trash that doesn't fight back
+	DelayedZoneCheck(true)
 end
 
 ---Used for registering combat with trash in general for use of notifying affixes mod that party is in combat
 ---@param zone number Instance ID of the zone
 ---@param modId string|number The mod id to register for combat scanning
-function bossModPrototype:RegisterTrashCombat(zone, modId)
+function bossModPrototype:RegisterZoneCombat(zone, modId)
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
@@ -173,11 +170,12 @@ end
 
 ---@param zone number Instance ID of the zone
 ---@param modId string|number The mod id to register for combat scanning
-function bossModPrototype:UnregisterTrashCombat(zone, modId)
+function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = nil
 	end
+	DelayedZoneCheck()--trigger unregister
 	local mod = DBM:GetModByName(modId)
 	if cachedModOne == mod then
 		cachedModOne = nil
