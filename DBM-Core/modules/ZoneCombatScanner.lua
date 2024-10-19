@@ -10,29 +10,45 @@ local DBM = private:GetPrototype("DBM")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local registeredZones = {}--Global table for tracking registered zones
-local registeredCombat = {}--Tracks which modules should be processed in registered zones (can be more than one module in same zone, IE affixes and then that modules trash module
 local registeredCIDs = {}--Tracks which CIDs should be processed and returned in ScanEngagedUnits
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
+--Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
+local cachedModOne = nil
+local cachedModTwo = nil
 
 --This will not be used in raids, so no raid targets checked
 --TODO, maybe optimize nameplates to only scan active nameplates instead of all of them
 local scannedUids = {
 	"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
-	"party1target", "party2target", "party3target", "party4target",
-	"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
-	"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
-	"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25"
+	"party1target", "party2target", "party3target", "party4target"
 }
 
 ---Scan for new Unit Engages
 ---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time
 ---@param self DBMMod
 local function ScanEngagedUnits(self)
-	--Scan for new Unit Engages
+	--Scan non namplates first
 	for _, unitId in ipairs(scannedUids) do
 		if UnitAffectingCombat(unitId) then
 			local guid = UnitGUID(unitId)
+			if guid and DBM:IsCreatureGUID(guid) then
+				if not ActiveGUIDs[guid] then
+					ActiveGUIDs[guid] = true
+					local cid = DBM:GetCIDFromGUID(guid)
+					if self.StartNameplateTimers and registeredCIDs[cid] then
+						self:StartNameplateTimers(guid, cid)
+						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
+					end
+				end
+			end
+		end
+	end
+	--Now scan nameplates
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		local foundUnit = frame.namePlateUnitToken
+		if foundUnit  then
+			local guid = UnitGUID(foundUnit)
 			if guid and DBM:IsCreatureGUID(guid) then
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
@@ -57,27 +73,33 @@ local function checkForCombat()
 	if combatFound and not inCombat then
 		inCombat = true
 		DBM:Debug("Zone Combat Detected", 2)
-		for modId, _ in pairs(registeredCombat) do
-			local mod = DBM:GetModByName(modId)
-			if mod then
-				if mod.EnteringZoneCombat then
-					mod:EnteringZoneCombat()
-				end
-				if mod.StartNameplateTimers then
-					ScanEngagedUnits(mod)
-					DBM:Debug("Starting Engaged Unit Scans", 2)
-				end
+		if cachedModOne then
+			if cachedModOne.EnteringZoneCombat then
+				cachedModOne:EnteringZoneCombat()
+			end
+			if cachedModOne.StartNameplateTimers then
+				ScanEngagedUnits(cachedModOne)
+				DBM:Debug("Starting Engaged Unit Scans", 2)
+			end
+		end
+		if cachedModTwo then
+			if cachedModTwo.EnteringZoneCombat then
+				cachedModTwo:EnteringZoneCombat()
+			end
+			if cachedModTwo.StartNameplateTimers then
+				ScanEngagedUnits(cachedModTwo)
+				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
 	elseif not combatFound and inCombat then
 		inCombat = false
 		table.wipe(ActiveGUIDs)--if no one is in combat, save to assume all engaged units gone
 		DBM:Debug("Zone Combat Ended", 2)
-		for modId, _ in pairs(registeredCombat) do
-			local mod = DBM:GetModByName(modId)
-			if mod and mod.LeavingZoneCombat then
-				mod:LeavingZoneCombat()
-			end
+		if cachedModOne and cachedModOne.LeavingZoneCombat then
+			cachedModOne:LeavingZoneCombat()
+		end
+		if cachedModTwo and cachedModTwo.LeavingZoneCombat then
+			cachedModTwo:LeavingZoneCombat()
 		end
 		DBM:Unschedule(ScanEngagedUnits)
 	end
@@ -133,9 +155,12 @@ function bossModPrototype:RegisterTrashCombat(zone, CIDTable)
 			registeredZones[zone] = true
 		end
 	end
-	if not registeredCombat[self.modId] then
-		registeredCombat[self.modId] = true
-		DBM:Debug("Registered Trash Combat for modID: "..self.modId, 2)
+	if not cachedModOne then
+		cachedModOne = self
+		DBM:Debug("Registered cachedModOne for modID: "..self.modId, 2)
+	elseif not cachedModTwo then
+		cachedModTwo = self
+		DBM:Debug("Registered cachedModTwo for modID: "..self.modId, 2)
 	end
 	if CIDTable then
 		for i = 1, #CIDTable do
