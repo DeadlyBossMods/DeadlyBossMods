@@ -220,10 +220,11 @@ do
 	--Upcoming Season
 	if (C_MythicPlus.GetCurrentSeason() or 0) == 14 then--War Within Season 2
 		--2651, 2649, 2648, 2661, ?, ?, ?, ?
+		--Darkflame Cleft, Priory of the Sacred Flame, The Rookery, Cinderbrew Meadery
 		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true}
 	--Current Season (latest LIVE season put in else so if api fails, it just always returns latest)
 	else--War Within Season 1 (13)
-		--2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520
+		--Stonevault, The Dawnbreaker, Ara-Kara, City of Echos, City of Threads, Grim Batol, Siege of Boralus, The Necrotic Wake, Mists of Tirna Scithe
 		validZones = {[2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}
 	end
 	local eventsRegistered = false
@@ -231,6 +232,7 @@ do
 		local currentZone = DBM:GetCurrentArea() or 0
 		if not force and validZones[currentZone] and not eventsRegistered then
 			eventsRegistered = true
+			self:RegisterTrashCombat(currentZone, self.modId)--This mod will dynamically only register the current zone it needs
 			self:RegisterShortTermEvents(
 				"SPELL_CAST_START 240446 408805 465051",--409492
 				"SPELL_CAST_SUCCESS 461895",
@@ -247,6 +249,7 @@ do
 			DBM:Debug("Registering M+ events")
 		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
+			self:UnregisterTrashCombat(currentZone, self.modId)
 			--afflictedDetected = false
 			--afflictedCounting = false
 			incorporealCounting = false
@@ -309,9 +312,7 @@ function mod:SPELL_CAST_START(args)
 		devourCounting = true
 		timerXalatathsBargainDevourCD:Start()
 		self:Unschedule(checkForCombat)
-		if DBM.Options.DebugMode then
-			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
-		else
+		if not DBM.Options.DebugMode then
 			checkForCombat(self)
 		end
 	end
@@ -329,9 +330,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		unstableCounting = true
 		timerXalatathsBargainUnstablePowerCD:Start()
 		self:Unschedule(checkForCombat)
-		if DBM.Options.DebugMode then
-			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
-		else
+		if not DBM.Options.DebugMode then
 			checkForCombat(self)
 		end
 	end
@@ -384,9 +383,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerIncorporealCD:Start()
 		self:Unschedule(checkForCombat)
 		self:Unschedule(checkIncorp)
-		if DBM.Options.DebugMode then
-			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
-		else
+		if not DBM.Options.DebugMode then
 			checkForCombat(self)
 		end
 		self:Schedule(50, checkIncorp, self)
