@@ -46,6 +46,7 @@ mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc, 7 gtfo, 8 personal aggregated alert
 
+local combatCheckerRunning = false
 local incorporealCounting = false
 local incorpDetected = false
 --local afflictedCounting = false
@@ -151,70 +152,6 @@ function mod:LeavingZoneCombat()
 	--	end
 end
 
---UGLY function to detect this because there isn't a good API for this.
---player regen was very unreliable due to fact it only fires for self
---This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
---TODO, switch to ZoneCombatScanner when it's tested and complete
----@param self DBMMod
-local function checkForCombat(self)
-	local combatFound = self:GroupInCombat()
-	if incorpDetected then
-		if combatFound and not incorporealCounting then
-			incorporealCounting = true
-			timerIncorporealCD:Resume()
-			local incorpRemaining = timerIncorporealCD:GetRemaining()
-			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-				self:Unschedule(checkIncorp)
-				self:Schedule(incorpRemaining+10, checkIncorp, self)
-				DBM:Debug("Experimental reschedule of checkIncorp running")
-			end
-		elseif not combatFound and incorporealCounting then
-			incorporealCounting = false
-			timerIncorporealCD:Pause()
-			self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
-		end
-	end
-	--if afflictedDetected then
-	--	if combatFound and not afflictedCounting then
-	--		afflictedCounting = true
-	--		timerAfflictedCD:Resume()
-	--		local afflictRemaining = timerAfflictedCD:GetRemaining()
-	--		if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-	--			self:Unschedule(checkAfflicted)
-	--			self:Schedule(afflictRemaining+10, checkAfflicted, self)
-	--			DBM:Debug("Experimental reschedule of checkAfflicted running")
-	--		end
-	--	elseif not combatFound and afflictedCounting then
-	--		afflictedCounting = false
-	--		timerAfflictedCD:Pause()
-	--		self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
-	--	end
-	--end
-	--Without transcriptor don't know if it works same as afflicted and incorp do, or same as thundering, so coding like thundering for now
-	--ie pauses out of combat, doesn't skip casts and reloop
-	if unstableDetected then
-		if combatFound and not unstableCounting then
-			unstableCounting = true
-			timerXalatathsBargainUnstablePowerCD:Resume()
-		elseif not combatFound and unstableCounting then
-			unstableCounting = false
-			timerXalatathsBargainUnstablePowerCD:Pause()
-		end
-	end
-	--Without transcriptor don't know if it works same as afflicted and incorp do, or same as thundering, so coding like thundering for now
-	--ie pauses out of combat, doesn't skip casts and reloop
-	if devourDetected then
-		if combatFound and not devourCounting then
-			devourCounting = true
-			timerXalatathsBargainDevourCD:Resume()
-		elseif not combatFound and devourCounting then
-			devourCounting = false
-			timerXalatathsBargainDevourCD:Pause()
-		end
-	end
-	self:Schedule(0.25, checkForCombat, self)
-end
-
 do
 	local validZones
 	--Upcoming Season
@@ -232,7 +169,6 @@ do
 		local currentZone = DBM:GetCurrentArea() or 0
 		if not force and validZones[currentZone] and not eventsRegistered then
 			eventsRegistered = true
-			self:RegisterTrashCombat(currentZone, self.modId)--This mod will dynamically only register the current zone it needs
 			self:RegisterShortTermEvents(
 				"SPELL_CAST_START 240446 408805 465051",--409492
 				"SPELL_CAST_SUCCESS 461895",
@@ -249,6 +185,7 @@ do
 			DBM:Debug("Registering M+ events")
 		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
+			combatCheckerRunning = false
 			self:UnregisterTrashCombat(currentZone, self.modId)
 			--afflictedDetected = false
 			--afflictedCounting = false
@@ -259,7 +196,6 @@ do
 			devourDetected = false
 			devourCounting = false
 			self:UnregisterShortTermEvents()
-			self:Unschedule(checkForCombat)
 			self:Unschedule(checkEntangled)
 			--self:Unschedule(checkAfflicted)
 			self:Stop()
@@ -298,9 +234,7 @@ function mod:SPELL_CAST_START(args)
 	--	--This one is interesting cause it runs every 30 seconds, sometimes skips a cast and goes 60, but also pauses out of combat
 	--	afflictedCounting = true
 	--	timerAfflictedCD:Start()
-	--	self:Unschedule(checkForCombat)
 	--	self:Unschedule(checkAfflicted)
-	--	checkForCombat(self)
 	--	self:Schedule(40, checkAfflicted, self)
 	elseif spellId == 408805 and self:AntiSpam(3, "aff3") then
 		warnDestabalize:Show()
@@ -311,9 +245,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		devourCounting = true
 		timerXalatathsBargainDevourCD:Start()
-		self:Unschedule(checkForCombat)
-		if not DBM.Options.DebugMode then
-			checkForCombat(self)
+		if not combatCheckerRunning then
+			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
 	end
 end
@@ -329,9 +262,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		unstableCounting = true
 		timerXalatathsBargainUnstablePowerCD:Start()
-		self:Unschedule(checkForCombat)
-		if not DBM.Options.DebugMode then
-			checkForCombat(self)
+		if not combatCheckerRunning then
+			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
 	end
 end
@@ -381,12 +313,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		--This one is interesting cause it runs every 45 seconds, sometimes skips a cast and goes 90, but also pauses out of combat
 		incorporealCounting = true
 		timerIncorporealCD:Start()
-		self:Unschedule(checkForCombat)
 		self:Unschedule(checkIncorp)
-		if not DBM.Options.DebugMode then
-			checkForCombat(self)
+		if not combatCheckerRunning then
+			self:RegisterTrashCombat(DBM:GetCurrentArea(), self.modId)--This mod will dynamically only register the current zone it needs
 		end
-		self:Schedule(50, checkIncorp, self)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
