@@ -16,17 +16,17 @@ local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
 
 --This will not be used in raids, so no raid targets checked
+--TODO, maybe optimize nameplates to only scan active nameplates instead of all of them
 local scannedUids = {
 	"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
 	"party1target", "party2target", "party3target", "party4target",
 	"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
 	"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
-	"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
-	"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
+	"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25"
 }
 
 ---Scan for new Unit Engages
----<br>This will break if more than one mod is scanning nameplates at once, which shouldn't happen since you can't be in more than one dungeon at same time
+---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time
 ---@param self DBMMod
 local function ScanEngagedUnits(self)
 	--Scan for new Unit Engages
@@ -118,12 +118,20 @@ do
 end
 
 ---Used for registering combat with trash in general for use of notifying affixes mod that party is in combat
----@param zone number Instance ID of the zone
+---@param zone number|table Instance ID of the zone
 ---@param CIDTable table? A table of CIDs to register for engaged unit scanning
 function bossModPrototype:RegisterTrashCombat(zone, CIDTable)
 	if DBM.Options.NoCombatScanningFeatures then return end
-	if not registeredZones[zone] then
-		registeredZones[zone] = true
+	if type(zone) == "table" then
+		for i = 1, #zone do
+			if not registeredZones[zone[i]] then
+				registeredZones[zone[i]] = true
+			end
+		end
+	else
+		if not registeredZones[zone] then
+			registeredZones[zone] = true
+		end
 	end
 	if not registeredCombat[self.modId] then
 		registeredCombat[self.modId] = true

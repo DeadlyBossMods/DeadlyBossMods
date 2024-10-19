@@ -85,6 +85,72 @@ local function checkIncorp(self)
 	self:Schedule(45, checkIncorp, self)
 end
 
+function mod:EnteringZoneCombat()
+	if incorpDetected then
+		if not incorporealCounting then
+			incorporealCounting = true
+			timerIncorporealCD:Resume()
+			local incorpRemaining = timerIncorporealCD:GetRemaining()
+			if incorpRemaining and incorpRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+				self:Unschedule(checkIncorp)
+				self:Schedule(incorpRemaining+10, checkIncorp, self)
+				DBM:Debug("Experimental reschedule of checkIncorp running")
+			end
+		end
+	end
+	if unstableDetected then
+		if not unstableCounting then
+			unstableCounting = true
+			timerXalatathsBargainUnstablePowerCD:Resume()
+		end
+	end
+	if devourDetected then
+		if not devourCounting then
+			devourCounting = true
+			timerXalatathsBargainDevourCD:Resume()
+		end
+	end
+	--if afflictedDetected then
+	--	if combatFound and not afflictedCounting then
+	--		afflictedCounting = true
+	--		timerAfflictedCD:Resume()
+	--		local afflictRemaining = timerAfflictedCD:GetRemaining()
+	--		if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+	--			self:Unschedule(checkAfflicted)
+	--			self:Schedule(afflictRemaining+10, checkAfflicted, self)
+	--			DBM:Debug("Experimental reschedule of checkAfflicted running")
+	--		end
+	--	end
+end
+
+function mod:LeavingZoneCombat()
+	if incorpDetected then
+		if incorporealCounting then
+			incorporealCounting = false
+			timerIncorporealCD:Pause()
+			self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
+		end
+	end
+	if unstableDetected then
+		if unstableCounting then
+			unstableCounting = false
+			timerXalatathsBargainUnstablePowerCD:Pause()
+		end
+	end
+	if devourDetected then
+		if devourCounting then
+			devourCounting = false
+			timerXalatathsBargainDevourCD:Pause()
+		end
+	end
+	--if afflictedDetected then
+	--	if afflictedCounting then
+	--		afflictedCounting = false
+	--		timerAfflictedCD:Pause()
+	--		self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
+	--	end
+end
+
 --UGLY function to detect this because there isn't a good API for this.
 --player regen was very unreliable due to fact it only fires for self
 --This wastes cpu time being an infinite loop though but probably no more so than any WA doing this
@@ -243,7 +309,11 @@ function mod:SPELL_CAST_START(args)
 		devourCounting = true
 		timerXalatathsBargainDevourCD:Start()
 		self:Unschedule(checkForCombat)
-		checkForCombat(self)
+		if DBM.Options.DebugMode then
+			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
+		else
+			checkForCombat(self)
+		end
 	end
 end
 
@@ -259,7 +329,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		unstableCounting = true
 		timerXalatathsBargainUnstablePowerCD:Start()
 		self:Unschedule(checkForCombat)
-		checkForCombat(self)
+		if DBM.Options.DebugMode then
+			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
+		else
+			checkForCombat(self)
+		end
 	end
 end
 
@@ -310,7 +384,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerIncorporealCD:Start()
 		self:Unschedule(checkForCombat)
 		self:Unschedule(checkIncorp)
-		checkForCombat(self)
+		if DBM.Options.DebugMode then
+			self:RegisterTrashCombat({2652, 2662, 2660, 2669, 670, 1822, 2286, 2290})
+		else
+			checkForCombat(self)
+		end
 		self:Schedule(50, checkIncorp, self)
 	end
 end
