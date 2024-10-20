@@ -22,8 +22,7 @@ local inCombat = false
 local cachedModOne = nil
 local cachedModTwo = nil
 
---This will not be used in raids, so no raid targets checked
---TODO, maybe optimize nameplates to only scan active nameplates instead of all of them
+--This will not be used in raids, so no raid targets checked for now
 local scannedUids = {
 	"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
 	"party1target", "party2target", "party3target", "party4target"
