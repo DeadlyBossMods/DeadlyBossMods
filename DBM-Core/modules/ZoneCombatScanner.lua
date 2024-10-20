@@ -41,10 +41,8 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					if self.StartNameplateTimers then--and registeredCIDs[cid]
-						self:StartNameplateTimers(guid, cid)
-						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
-					end
+					self:StartNameplateTimers(guid, cid)
+					DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 				end
 			end
 		end
@@ -52,16 +50,14 @@ local function ScanEngagedUnits(self)
 	--Now scan nameplates
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
-		if foundUnit  then
+		if foundUnit and UnitAffectingCombat(foundUnit) then
 			local guid = UnitGUID(foundUnit)
 			if guid and DBM:IsCreatureGUID(guid) then
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					if self.StartNameplateTimers then--and registeredCIDs[cid]
-						self:StartNameplateTimers(guid, cid)
-						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
-					end
+					self:StartNameplateTimers(guid, cid)
+					DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 				end
 			end
 		end
