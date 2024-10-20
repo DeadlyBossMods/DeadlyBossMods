@@ -269,7 +269,7 @@ do
 				if not prev then
 					total_width = 0
 					first_icon = iconFrame
-					iconFrame:SetPoint(mainAnchor,frame.parent,mainAnchorRel, DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
+					iconFrame:SetPoint(mainAnchor,frame.parent,mainAnchorRel, DBM.Options.NPIconOffsetX, DBM.Options.NPIconOffsetY)
 				else
 					local spacing = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0 + iconSpacing
 					total_width = total_width + iconFrame:GetWidth() + spacing --width equals height, so we're fine
@@ -283,8 +283,8 @@ do
 		if first_icon and total_width and total_width > 0 then
 			-- shift first icon to match anchor point
 			first_icon:SetPoint(mainAnchor,frame.parent,mainAnchorRel,
-				-floor((centered and not vertical and total_width or 0)/2) + DBM.Options.NPIconXOffset,
-				-floor((centered and vertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
+				-floor((centered and not vertical and total_width or 0)/2) + DBM.Options.NPIconOffsetX,
+				-floor((centered and vertical and total_width or 0)/2) + DBM.Options.NPIconOffsetY) -- icons are squares. tracking one total size is ok.
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)
