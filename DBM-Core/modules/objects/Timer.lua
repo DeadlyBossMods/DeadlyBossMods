@@ -172,6 +172,19 @@ function timerPrototype:Start(timer, ...)
 		if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
 			isCountTimer = true
 		end
+		local guid, timerCount
+		if select("#", ...) > 0 then--If timer has args
+			for i = 1, select("#", ...) do
+				local v = select(i, ...)
+				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+					guid = v--If found, guid will be passed in DBM_TimerStart callback
+				end
+				--Not most efficient way to do it, but since it's already being done for guid, it's best not to repeat the work
+				if isCountTimer and type(v) == "number" then
+					timerCount = v
+				end
+			end
+		end
 		if isCountTimer and not self.allowdouble then--remove previous timer.
 			for i = #self.startedTimers, 1, -1 do
 				if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
@@ -194,7 +207,9 @@ function timerPrototype:Start(timer, ...)
 				DBT:CancelBar(self.startedTimers[i])
 				DBM:Unschedule(playCountSound, self.startedTimers[i])
 				DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
-				DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i])--Too much effort to scan if it has a guid, just stop it regardless
+				if guid then
+					DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i])
+				end
 				tremove(self.startedTimers, i)
 			end
 		end
@@ -329,19 +344,7 @@ function timerPrototype:Start(timer, ...)
 		--isPriority: If true, this ability has been flagged as extra important. Can be used for weak auras or nameplate addons to add extra emphasis onto specific timer like a glow
 		--fullType (the true type of timer, for those who really want to filter timers by DBM classifications such as "adds" or "interrupt")
 		--NOTE, nameplate variant has same args as timer variant, but is sent to a different event (DBM_NameplateStart)
-		local guid, timerCount
-		if select("#", ...) > 0 then--If timer has args
-			for i = 1, select("#", ...) do
-				local v = select(i, ...)
-				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-					guid = v--If found, guid will be passed in DBM_TimerStart callback
-				end
-				--Not most efficient way to do it, but since it's already being done for guid, it's best not to repeat the work
-				if isCountTimer and type(v) == "number" then
-					timerCount = v
-				end
-			end
-		end
+
 		--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 		--This check is performed secondary to args scan so that no adds guids are overwritten
 		if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then

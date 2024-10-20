@@ -21,7 +21,8 @@ local inCombat = false
 local currentZone = DBM:GetCurrentArea() or 0
 --Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
 local affixesMod
-local cachedMods = {}--Large memory size, since it ends up caching all mods that register for combat scanning
+local lastUsedMod
+local cachedMods = {}
 
 --This will not be used in raids, so no raid targets checked for now
 local scannedUids = {
@@ -74,14 +75,13 @@ local function checkForCombat()
 		if affixesMod then
 			affixesMod:EnteringZoneCombat()
 		end
-		if cachedMods[currentZone] then
-			local mod = cachedMods[currentZone]
-			if mod and mod.EnteringZoneCombat then
-				mod:EnteringZoneCombat()
+		if lastUsedMod then
+			if lastUsedMod.EnteringZoneCombat then
+				lastUsedMod:EnteringZoneCombat()
 			end
-			if mod and mod.StartNameplateTimers then
-				ScanEngagedUnits(mod)
-				DBM:Debug("Starting Engaged Unit Scans", 3, nil, true)
+			if lastUsedMod.StartNameplateTimers then
+				ScanEngagedUnits(lastUsedMod)
+				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
 	elseif not combatFound and inCombat then
@@ -91,10 +91,9 @@ local function checkForCombat()
 		if affixesMod then
 			affixesMod:LeavingZoneCombat()
 		end
-		if cachedMods[currentZone] then
-			local mod = cachedMods[currentZone]
-			if mod and mod.LeavingZoneCombat then
-				mod:LeavingZoneCombat()
+		if lastUsedMod then
+			if lastUsedMod.LeavingZoneCombat then
+				lastUsedMod:LeavingZoneCombat()
 			end
 		end
 		DBM:Unschedule(ScanEngagedUnits)
@@ -109,10 +108,12 @@ local function DelayedZoneCheck(force)
 		module:RegisterShortTermEvents("UNIT_FLAGS player party1 party2 party3 party4")
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Dungeon Trash Tracking Events", 2)
+		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 		eventsRegistered = false
 		inCombat = false
 		table.wipe(ActiveGUIDs)
+		lastUsedMod = nil
 		module:UnregisterShortTermEvents()
 		DBM:Unschedule(checkForCombat)
 		DBM:Unschedule(ScanEngagedUnits)
@@ -149,12 +150,11 @@ function bossModPrototype:RegisterZoneCombat(zone, modId)
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
 	end
-	local mod = DBM:GetModByName(modId)
 	if modId == "MPlusAffixes" then
-		affixesMod = mod
+		affixesMod = DBM:GetModByName(modId)--Just cache mod outright, it'll never change
 		DBM:Debug("|cffff0000Registered affixesMod for modID: |r"..modId, 2, nil, true)
 	elseif not cachedMods[zone] then
-		cachedMods[zone] = mod
+		cachedMods[zone] = modId
 		DBM:Debug("|cffff0000Registered cachedMods for modID: |r"..modId, 2, nil, true)
 	end
 end
@@ -171,7 +171,7 @@ function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	if affixesMod == mod then
 		affixesMod = nil
 		DBM:Debug("Unregistered affixesMod for modID: "..modId, 2, nil, true)
-	elseif cachedMods[zone] == mod then
+	elseif cachedMods[zone] == modId then
 		cachedMods[zone] = nil
 		DBM:Debug("Unregistered cachedMods for modID: "..modId, 2, nil, true)
 	end
