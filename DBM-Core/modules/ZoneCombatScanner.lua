@@ -68,7 +68,7 @@ local function ScanEngagedUnits(self)
 	end
 	--Only run once per second, and then just subtract 1 from all initial timers
 	--Don't want to waste too much cpu and a timer being up to 1 second off isn't a big deal
-	DBM:Schedule(1, ScanEngagedUnits)
+	DBM:Schedule(0.5, ScanEngagedUnits)
 end
 
 --Still a stupid waste of CPU because blizzard can't bother to give us an event for the GROUP entering combat
