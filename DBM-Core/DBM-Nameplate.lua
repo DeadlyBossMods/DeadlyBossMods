@@ -724,7 +724,7 @@ do
 
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
-		if event ~= "DBM_TimerStart" then return end
+		if event ~= "DBM_NameplateStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
 		--Disable cooldown icons for any timer designated as a nameplate only cooldown timer
@@ -812,10 +812,10 @@ do
 			end
 		end
 	end
-	DBM:RegisterCallback("DBM_TimerStart", timerStartCallback)
+	DBM:RegisterCallback("DBM_NameplateStart", timerStartCallback)
 
 	local timerUpdateCallback = function(event, id, elapsed, totalTime)
-		if event ~= "DBM_TimerUpdate" then return end
+		if event ~= "DBM_NameplateUpdate" then return end
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -835,10 +835,10 @@ do
 			NameplateIcon_UpdateUnitAuras(true,guid)
 		end
 	end
-	DBM:RegisterCallback("DBM_TimerUpdate", timerUpdateCallback)
+	DBM:RegisterCallback("DBM_NameplateUpdate", timerUpdateCallback)
 
 	local timerPauseCallback = function(event, id)
-		if event ~= "DBM_TimerPause" then return end
+		if event ~= "DBM_NameplatePause" then return end
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -855,10 +855,10 @@ do
 			NameplateIcon_UpdateUnitAuras(true,guid)
 		end
 	end
-	DBM:RegisterCallback("DBM_TimerPause", timerPauseCallback)
+	DBM:RegisterCallback("DBM_NameplatePause", timerPauseCallback)
 
 	local timerResumeCallback = function(event, id)
-		if event ~= "DBM_TimerResume" then return end
+		if event ~= "DBM_NameplateResume" then return end
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -875,11 +875,11 @@ do
 			NameplateIcon_UpdateUnitAuras(true,guid)
 		end
 	end
-	DBM:RegisterCallback("DBM_TimerResume", timerResumeCallback)
+	DBM:RegisterCallback("DBM_NameplateResume", timerResumeCallback)
 
 	--timer stop
 	local timerEndCallback = function (event, id)
-		if event ~= "DBM_TimerStop" then return end
+		if event ~= "DBM_NameplateStop" then return end
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -907,7 +907,7 @@ do
 		end
 		nameplateTimerBars[id] = nil
 	end
-	DBM:RegisterCallback("DBM_TimerStop", timerEndCallback)
+	DBM:RegisterCallback("DBM_NameplateStop", timerEndCallback)
 end
 
 function DBM.PauseTestTimer(text)

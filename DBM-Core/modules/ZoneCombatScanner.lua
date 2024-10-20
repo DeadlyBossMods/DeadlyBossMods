@@ -66,8 +66,6 @@ local function ScanEngagedUnits(self)
 	DBM:Schedule(0.5, ScanEngagedUnits, self)
 end
 
---Still a stupid waste of CPU because blizzard can't bother to give us an event for the GROUP entering combat
---PLAYER_REGEN is useless for tracking group combat, as it's only player combat
 local function checkForCombat()
 	local combatFound = DBM:GroupInCombat()
 	if combatFound and not inCombat then
@@ -121,7 +119,7 @@ local function DelayedZoneCheck(force)
 		DBM:Debug("Unregistering Dungeon Trash Tracking Events", 2)
 	end
 end
---Monitor bitflag of players, which should change with combat stats
+--Monitor bitflag of players, which should change with combat states
 function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once

@@ -194,6 +194,7 @@ function timerPrototype:Start(timer, ...)
 				DBT:CancelBar(self.startedTimers[i])
 				DBM:Unschedule(playCountSound, self.startedTimers[i])
 				DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
+				DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i])--Too much effort to scan if it has a guid, just stop it regardless
 				tremove(self.startedTimers, i)
 			end
 		end
@@ -326,7 +327,8 @@ function timerPrototype:Start(timer, ...)
 		--MobGUID if it could be parsed out of args
 		--timerCount if current timer is a count timer. Returns number (count value) needed to have weak auras that trigger off a specific timer count without using localized message text
 		--isPriority: If true, this ability has been flagged as extra important. Can be used for weak auras or nameplate addons to add extra emphasis onto specific timer like a glow
-		--fullType (the true type of timer, for those who really want to filter timer down by adds or interrupt DBM classifications)
+		--fullType (the true type of timer, for those who really want to filter timers by DBM classifications such as "adds" or "interrupt")
+		--NOTE, nameplate variant has same args as timer variant, but is sent to a different event (DBM_NameplateStart)
 		local guid, timerCount
 		if select("#", ...) > 0 then--If timer has args
 			for i = 1, select("#", ...) do
@@ -345,7 +347,14 @@ function timerPrototype:Start(timer, ...)
 		if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 			guid = UnitGUID("boss1")
 		end
-		DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+		if self.simpType and (self.simpType == "cdnp" or self.simpType == "castnp") then--Only send nampelate callback
+			DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+		else--Send both callbacks
+			DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+			if guid then--But nameplate is only sent if actual GUID
+				DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+			end
+		end
 		--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 		--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 		if guid and (self.type == "cdnp" or self.type == "nextnp" or self.type == "cdpnp" or self.type == "nextpnp" or self.type == "castpnp") and not (DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then
@@ -484,7 +493,12 @@ end
 function timerPrototype:Stop(...)
 	if select("#", ...) == 0 then
 		for i = #self.startedTimers, 1, -1 do
-			DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
+			if self.simpType and (self.simpType == "cdnp" or self.simpType == "castnp") then
+				--Technically i don't think this should happen, because a nameplate timer would never have 0 args, but just in case
+				DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i])
+			else
+				DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
+			end
 			test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 			DBT:CancelBar(self.startedTimers[i])
 			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
@@ -505,6 +519,9 @@ function timerPrototype:Stop(...)
 				--This check is performed secondary to args scan so that no adds guids are overwritten
 				if not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 					guid = UnitGUID("boss1")
+				end
+				if guid then--if guid, there is also a nameplate timer, so stop that too
+					DBM:FireEvent("DBM_NameplateStop", id, guid)
 				end
 				DBM:FireEvent("DBM_TimerStop", id, guid)
 				test:Trace(self.mod, "StopTimer", self, id)
@@ -538,6 +555,7 @@ function timerPrototype:HardStop(guid)
 	end
 	for i = #self.startedTimers, 1, -1 do
 		DBM:FireEvent("DBM_TimerStop", self.startedTimers[i], guid)
+		DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i], guid)
 		test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 		DBT:CancelBar(self.startedTimers[i])
 		DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
@@ -582,6 +600,18 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 		bar = self:Start(totalTime, ...)
 	end
 	if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
+		local guid
+		if select("#", ...) > 0 then--If timer has args
+			for i = 1, select("#", ...) do
+				local v = select(i, ...)
+				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+					guid = v--If found, guid will be passed in callback
+				end
+			end
+		end
+		if guid then
+			DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, totalTime)
+		end
 		DBM:FireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 		local newRemaining = totalTime - elapsed
 		if not bar.keep and newRemaining > 0 then
@@ -635,6 +665,18 @@ function timerPrototype:AddTime(extendAmount, ...)
 					end
 				end
 			end
+			local guid
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in callback
+					end
+				end
+			end
+			if guid then
+				DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, total + extendAmount)
+			end
 			DBM:FireEvent("DBM_TimerUpdate", id, elapsed, total + extendAmount)
 			local updated = DBT:UpdateBar(id, elapsed, total + extendAmount)
 			test:Trace(self.mod, "UpdateTimer", self, id, elapsed, total + extendAmount)
@@ -658,6 +700,15 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 		local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 		if elapsed and total then
 			local newRemaining = (total - reduceAmount) - elapsed
+			local guid
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in callback
+					end
+				end
+			end
 			if newRemaining > 0 then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
 				if not bar.keep then
@@ -674,12 +725,18 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 						end
 					end
 				end
+				if guid then
+					DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, total - reduceAmount)
+				end
 				DBM:FireEvent("DBM_TimerUpdate", id, elapsed, total - reduceAmount)
 				local updated = DBT:UpdateBar(id, elapsed, total - reduceAmount)
 				test:Trace(self.mod, "UpdateTimer", self, id, elapsed, total - reduceAmount)
 				return updated
 			else--New remaining less than 0
 				DBM:FireEvent("DBM_TimerStop", id)
+				if guid then
+					DBM:FireEvent("DBM_NameplateStop", id)
+				end
 				removeEntry(self.startedTimers, id)
 				test:Trace(self.mod, "StopTimer", self, id)
 				return DBT:CancelBar(id)
@@ -696,7 +753,19 @@ function timerPrototype:Pause(...)
 		if not bar.keep then
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 		end
+		local guid
+		if select("#", ...) > 0 then--If timer has args
+			for i = 1, select("#", ...) do
+				local v = select(i, ...)
+				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+					guid = v--If found, guid will be passed in callback
+				end
+			end
+		end
 		DBM:FireEvent("DBM_TimerPause", id)
+		if guid then
+			DBM:FireEvent("DBM_NameplatePause", id)
+		end
 		bar:Pause()
 		test:Trace(self.mod, "PauseTimer", self, id)
 	end
@@ -721,7 +790,19 @@ function timerPrototype:Resume(...)
 				end
 			end
 		end
+		local guid
+		if select("#", ...) > 0 then--If timer has args
+			for i = 1, select("#", ...) do
+				local v = select(i, ...)
+				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+					guid = v--If found, guid will be passed in callback
+				end
+			end
+		end
 		DBM:FireEvent("DBM_TimerResume", id)
+		if guid then
+			DBM:FireEvent("DBM_NameplateResume", id)
+		end
 		bar:Resume()
 		test:Trace(self.mod, "ResumeTimer", self, id)
 	end
