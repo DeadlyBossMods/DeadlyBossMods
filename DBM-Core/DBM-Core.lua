@@ -400,6 +400,7 @@ DBM.DefaultOptions = {
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
+	NoCombatScanningFeatures = false,
 }
 
 ---@type DBMMod[]
@@ -3843,12 +3844,11 @@ do
 	--local dragonflightZones = {[2522] = true, [2569] = true, [2549] = true}
 	local challengeScenarios = {[1148] = true, [1698] = true, [1710] = true, [1703] = true, [1702] = true, [1684] = true, [1673] = true, [1616] = true, [2215] = true}
 	local pvpZones = {[30] = true, [489] = true, [529] = true, [559] = true, [562] = true, [566] = true, [572] = true, [617] = true, [618] = true, [628] = true, [726] = true, [727] = true, [761] = true, [968] = true, [980] = true, [998] = true, [1105] = true, [1134] = true, [1170] = true, [1504] = true, [1505] = true, [1552] = true, [1681] = true, [1672] = true, [1803] = true, [1825] = true, [1911] = true, [2106] = true, [2107] = true, [2118] = true, [2167] = true, [2177] = true, [2197] = true, [2245] = true, [2373] = true, [2509] = true, [2511] = true, [2547] = true, [2563] = true}
-	local seasonalZones = {[2516] = true, [2526] = true, [2515] = true, [2521] = true, [2527] = true, [2519] = true, [2451] = true, [2520] = true, [2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}--DF Season 4 / TWW Season 1
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
 	function DBM:CheckAvailableMods()
 		if _G["BigWigs"] then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
-		if not self:IsTrivial() or seasonalZones[LastInstanceMapID] then
+		if not self:IsTrivial() or difficulties:IsSeasonalDungeon(LastInstanceMapID) then
 			--TODO, bump checkedDungeon to WarWithin dungeon mods on retail in prepatch
 			local checkedDungeon = private.isRetail and "DBM-Party-Dragonflight" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if (difficulties:InstanceType(LastInstanceMapID) == 2) then
@@ -3858,7 +3858,7 @@ do
 				end
 				if self:IsSeasonal("SeasonOfDiscovery") then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Vanilla")
-				elseif seasonalZones[LastInstanceMapID] and private.isRetail then--M+ Dungeons Only
+				elseif private.isRetail and difficulties:IsSeasonalDungeon(LastInstanceMapID) then--M+ Dungeons Only
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
 				end
 			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID] or (LastInstanceMapID == 249 and private.isClassic)) then
@@ -5249,22 +5249,11 @@ do
 		if not checkEntry(inCombat, mob) then
 			buildTargetList()
 			if targetList[mob] then
-				if combatType == "trashpull" then
-					if UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
-						--This type of mod doesn't actually start combat for entire mod, just calls OnTrashPull method
-						local GUID = UnitGUID(targetList[mob])
-						if mod.OnTrashStart and GUID and not inCombatTrash[GUID] then
-							inCombatTrash[GUID] = true
-							mod:OnTrashStart(delay or 0, mob, GUID)
-						end
-					end
-				else
-					if mod.noFriendlyEngagement and UnitIsFriend("player", targetList[mob]) then return end
-					if delay > 0 and UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
-						DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
-					elseif (delay == 0) then
-						DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
-					end
+				if mod.noFriendlyEngagement and UnitIsFriend("player", targetList[mob]) then return end
+				if delay > 0 and UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
+					DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
+				elseif (delay == 0) then
+					DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
 				end
 			end
 			clearTargetList()
@@ -5304,12 +5293,6 @@ do
 						end
 					else
 						checkForPull(v.mob, v)
-					end
-				elseif v.type:find("trashpull") then
-					for _, mob in ipairs(v.multiMobPullDetection) do
-						if checkForPull(mob, v, v.type) then
-							break
-						end
 					end
 				end
 			end
@@ -8845,25 +8828,6 @@ function bossModPrototype:RegisterCombat(cType, ...)
 			info.killMobs = info.killMobs or {}
 			info.killMobs[v] = true
 		end
-	end
-	self.combatInfo = info
-	if not self.zones then return end
-	for v in pairs(self.zones) do
-		combatInfo[v] = combatInfo[v] or {}
-		tinsert(combatInfo[v], info)
-	end
-end
-
----Used for registering combat with trash units for purpose of enabling initial nameplate timers
----@param cidTable table
-function bossModPrototype:RegisterTrashCombat(cidTable)
-	local info = {
-		type = "trashpull",
-		mod = self
-	}
-	for _, v in ipairs(cidTable) do
-		info.multiMobPullDetection = info.multiMobPullDetection or {}
-		info.multiMobPullDetection[v] = true
 	end
 	self.combatInfo = info
 	if not self.zones then return end
