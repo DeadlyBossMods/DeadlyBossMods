@@ -722,6 +722,86 @@ do
 	end
 	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
 
+	--test start
+	local testStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
+		if event ~= "DBM_TimerStart" then return end
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
+		--Disable cooldown icons for any timer designated as a nameplate only cooldown timer
+		--NOTE, bosses that send GUID send "cd" and not "cdnp" so if DontSendBossGUIDs isn't enabled, they will still be passed even if DontShowNameplateIconsCD is
+		--This is intended behavior as I want the option to toggle separately.
+		if DBM.Options.DontShowNameplateIconsCD and barType == "cdnp" then return end
+		--Disable cast icons for any timer designated as a nameplate only cast timer
+		if DBM.Options.DontShowNameplateIconsCast and barType == "castnp" then return end--Globally disabled
+		--Disables cooldown icons for hybrid timers (ie timers that are both regular timer and nameplate timer)
+		if DBM.Options.DontSendBossGUIDs and barType ~= "cdnp" and barType ~= "castnp" then return end--Basically all other bar types
+
+		if id and not guid and barsTestMode then
+			for _, curGuid in pairs(getAllShownGUIDs()) do
+				local tmpId = id .. curGuid
+				local color = {DBT:GetColorForType(colorType)}
+				local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
+				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
+				local curTime =  GetTime()
+
+				if not units[curGuid] then
+					units[curGuid] = {}
+					num_units = num_units + 1
+				end
+
+				local aura_tbl = {
+					msg = msg or "",
+					display = display or name or msg or "",
+					id = id,
+					texture = icon or DBM:GetSpellTexture(spellId),
+					spellId = spellId,
+					duration = timer or 0,
+					desaturate = fade or false,
+					startTime = curTime,
+					barType = barType,
+					color = color,
+					colorType = colorType,
+					modId = modId,
+					keep = keep,
+					name = name,
+					guid = curGuid,
+					timerCount = timerCount,
+					isPriority = isPriority,
+					paused = false,
+					auraType = 2, -- 1 = nameplate aura; 2 = nameplate CD timers
+					index = tmpId,
+				}
+				nameplateTimerBars[id] = aura_tbl
+				NameplateIcon_Show(true, curGuid, aura_tbl)
+			end
+		end
+	end
+	DBM:RegisterCallback("DBM_TimerStart", testStartCallback)
+
+	--test stop
+	local testEndCallback = function (event, id)
+		if event ~= "DBM_TimerStop" then return end
+
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
+
+		if not id then return end
+		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
+		if not guid and barsTestMode then
+			for _, curGuid in pairs(getAllShownGUIDs()) do
+				for _,aura_tbl in ipairs(units[curGuid] or {}) do
+					if aura_tbl.id == id then
+						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
+						break
+					end
+				end
+			end
+		end
+		nameplateTimerBars[id] = nil
+	end
+	DBM:RegisterCallback("DBM_TimerStop", testEndCallback)
+
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
 		if event ~= "DBM_NameplateStart" then return end
@@ -771,45 +851,6 @@ do
 			}
 			nameplateTimerBars[id] = aura_tbl
 			NameplateIcon_Show(true, guid, aura_tbl)
-
-		elseif id and not guid and barsTestMode then
-			for _, curGuid in pairs(getAllShownGUIDs()) do
-				local tmpId = id .. curGuid
-				local color = {DBT:GetColorForType(colorType)}
-				local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
-				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
-				local curTime =  GetTime()
-
-				if not units[curGuid] then
-					units[curGuid] = {}
-					num_units = num_units + 1
-				end
-
-				local aura_tbl = {
-					msg = msg or "",
-					display = display or name or msg or "",
-					id = id,
-					texture = icon or DBM:GetSpellTexture(spellId),
-					spellId = spellId,
-					duration = timer or 0,
-					desaturate = fade or false,
-					startTime = curTime,
-					barType = barType,
-					color = color,
-					colorType = colorType,
-					modId = modId,
-					keep = keep,
-					name = name,
-					guid = curGuid,
-					timerCount = timerCount,
-					isPriority = isPriority,
-					paused = false,
-					auraType = 2, -- 1 = nameplate aura; 2 = nameplate CD timers
-					index = tmpId,
-				}
-				nameplateTimerBars[id] = aura_tbl
-				NameplateIcon_Show(true, curGuid, aura_tbl)
-			end
 		end
 	end
 	DBM:RegisterCallback("DBM_NameplateStart", timerStartCallback)
@@ -892,16 +933,6 @@ do
 				if aura_tbl.id == id then
 					NameplateIcon_Hide(true, guid, aura_tbl.index, false)
 					break
-				end
-			end
-
-		elseif not guid and barsTestMode then
-			for _, curGuid in pairs(getAllShownGUIDs()) do
-				for _,aura_tbl in ipairs(units[curGuid] or {}) do
-					if aura_tbl.id == id then
-						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
-						break
-					end
 				end
 			end
 		end
