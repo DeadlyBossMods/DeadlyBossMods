@@ -66,9 +66,8 @@ local function ScanEngagedUnits(self)
 			end
 		end
 	end
-	--Only run once per second, and then just subtract 1 from all initial timers
-	--Don't want to waste too much cpu and a timer being up to 1 second off isn't a big deal
-	DBM:Schedule(0.5, ScanEngagedUnits)
+	--Only run twice per second.
+	DBM:Schedule(0.5, ScanEngagedUnits, self)
 end
 
 --Still a stupid waste of CPU because blizzard can't bother to give us an event for the GROUP entering combat
@@ -154,6 +153,7 @@ end
 ---@param zone number Instance ID of the zone
 ---@param modId string|number The mod id to register for combat scanning
 function bossModPrototype:RegisterZoneCombat(zone, modId)
+	DBM:Debug("RegisterZoneCombat fired for modID: "..modId, 2)
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
@@ -161,16 +161,17 @@ function bossModPrototype:RegisterZoneCombat(zone, modId)
 	local mod = DBM:GetModByName(modId)
 	if not cachedModOne then
 		cachedModOne = mod
-		DBM:Debug("Registered cachedModOne for modID: "..modId, 2)
+		DBM:Debug("|cffff0000Registered cachedModOne for modID: |r"..modId, 2, nil, true)
 	elseif not cachedModTwo then
 		cachedModTwo = mod
-		DBM:Debug("Registered cachedModTwo for modID: "..modId, 2)
+		DBM:Debug("|cffff0000Registered cachedModTwo for modID: |r"..modId, 2, nil, true)
 	end
 end
 
 ---@param zone number Instance ID of the zone
 ---@param modId string|number The mod id to register for combat scanning
 function bossModPrototype:UnregisterZoneCombat(zone, modId)
+	DBM:Debug("UnregisterZoneCombat fired for modID: "..modId, 2)
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = nil
@@ -179,10 +180,10 @@ function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	local mod = DBM:GetModByName(modId)
 	if cachedModOne == mod then
 		cachedModOne = nil
-		DBM:Debug("Unregistered cachedModOne for modID: "..modId, 2)
+		DBM:Debug("Unregistered cachedModOne for modID: "..modId, 2, nil, true)
 	elseif cachedModTwo == mod then
 		cachedModTwo = nil
-		DBM:Debug("Unregistered cachedModTwo for modID: "..modId, 2)
+		DBM:Debug("Unregistered cachedModTwo for modID: "..modId, 2, nil, true)
 	end
 end
 
