@@ -710,18 +710,6 @@ end
 --register callbacks for aura icon CDs
 local barsTestMode = false --this is to handle the "non-guid" test bars. just turn on for testing.
 do
-	--test mode start
-	local testModeStartCallback = function(event, timer)
-		if event ~= "DBM_TestModStarted" then return end
-		-- Supported by nameplate mod, passing to their handler
-		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
-
-		barsTestMode = true
-		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
-	end
-	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
-
 	--test start
 	local testStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
 		if event ~= "DBM_TimerStart" then return end
@@ -776,7 +764,6 @@ do
 			end
 		end
 	end
-	DBM:RegisterCallback("DBM_TimerStart", testStartCallback)
 
 	--test stop
 	local testEndCallback = function (event, id)
@@ -800,7 +787,24 @@ do
 		end
 		nameplateTimerBars[id] = nil
 	end
-	DBM:RegisterCallback("DBM_TimerStop", testEndCallback)
+
+	--test mode start
+	local testModeStartCallback = function(event, timer)
+		if event ~= "DBM_TestModStarted" then return end
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
+
+		barsTestMode = true
+		C_Timer.After (tonumber(timer) or 10, function()
+			barsTestMode = false
+			DBM:UnregisterCallback("DBM_TimerStart", testStartCallback)
+			DBM:UnregisterCallback("DBM_TimerStop", testEndCallback)
+		end)
+		DBM:RegisterCallback("DBM_TimerStart", testStartCallback)
+		DBM:RegisterCallback("DBM_TimerStop", testEndCallback)
+	end
+	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
 
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
