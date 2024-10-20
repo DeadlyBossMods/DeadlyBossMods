@@ -18,9 +18,9 @@ local registeredZones = {}--Global table for tracking registered zones
 --local registeredCIDs = {}--Tracks which CIDs should be processed and returned in ScanEngagedUnits
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
+local currentZone = DBM:GetCurrentArea() or 0
 --Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
-local cachedModOne = nil
-local cachedModTwo = nil
+local cachedMods = {}--Large memory size, since it ends up caching all mods that register for combat scanning
 
 --This will not be used in raids, so no raid targets checked for now
 local scannedUids = {
@@ -72,21 +72,13 @@ local function checkForCombat()
 	if combatFound and not inCombat then
 		inCombat = true
 		DBM:Debug("Zone Combat Detected", 2)
-		if cachedModOne then
-			if cachedModOne.EnteringZoneCombat then
-				cachedModOne:EnteringZoneCombat()
+		if cachedMods[currentZone] then
+			local mod = cachedMods[currentZone]
+			if mod and mod.EnteringZoneCombat then
+				mod:EnteringZoneCombat()
 			end
-			if cachedModOne.StartNameplateTimers then
-				ScanEngagedUnits(cachedModOne)
-				DBM:Debug("Starting Engaged Unit Scans", 2)
-			end
-		end
-		if cachedModTwo then
-			if cachedModTwo.EnteringZoneCombat then
-				cachedModTwo:EnteringZoneCombat()
-			end
-			if cachedModTwo.StartNameplateTimers then
-				ScanEngagedUnits(cachedModTwo)
+			if mod and mod.StartNameplateTimers then
+				ScanEngagedUnits(mod)
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
@@ -94,11 +86,11 @@ local function checkForCombat()
 		inCombat = false
 		table.wipe(ActiveGUIDs)--if no one is in combat, save to assume all engaged units gone
 		DBM:Debug("Zone Combat Ended", 2)
-		if cachedModOne and cachedModOne.LeavingZoneCombat then
-			cachedModOne:LeavingZoneCombat()
-		end
-		if cachedModTwo and cachedModTwo.LeavingZoneCombat then
-			cachedModTwo:LeavingZoneCombat()
+		if cachedMods[currentZone] then
+			local mod = cachedMods[currentZone]
+			if mod and mod.LeavingZoneCombat then
+				mod:LeavingZoneCombat()
+			end
 		end
 		DBM:Unschedule(ScanEngagedUnits)
 	end
@@ -106,7 +98,7 @@ end
 
 local eventsRegistered = false
 local function DelayedZoneCheck(force)
-	local currentZone = DBM:GetCurrentArea() or 0
+	currentZone = DBM:GetCurrentArea() or 0
 	if not force and registeredZones[currentZone] and not eventsRegistered then
 		eventsRegistered = true
 		module:RegisterShortTermEvents("UNIT_FLAGS player party1 party2 party3 party4")
@@ -154,12 +146,9 @@ function bossModPrototype:RegisterZoneCombat(zone, modId)
 		registeredZones[zone] = true
 	end
 	local mod = DBM:GetModByName(modId)
-	if not cachedModOne then
-		cachedModOne = mod
-		DBM:Debug("|cffff0000Registered cachedModOne for modID: |r"..modId, 2, nil, true)
-	elseif not cachedModTwo then
-		cachedModTwo = mod
-		DBM:Debug("|cffff0000Registered cachedModTwo for modID: |r"..modId, 2, nil, true)
+	if not cachedMods[zone] then
+		cachedMods[zone] = mod
+		DBM:Debug("|cffff0000Registered cachedMods for modID: |r"..modId, 2, nil, true)
 	end
 end
 
@@ -173,12 +162,9 @@ function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	end
 	DelayedZoneCheck()--trigger unregister
 	local mod = DBM:GetModByName(modId)
-	if cachedModOne == mod then
-		cachedModOne = nil
-		DBM:Debug("Unregistered cachedModOne for modID: "..modId, 2, nil, true)
-	elseif cachedModTwo == mod then
-		cachedModTwo = nil
-		DBM:Debug("Unregistered cachedModTwo for modID: "..modId, 2, nil, true)
+	if cachedMods[zone] == mod then
+		cachedMods[zone] = nil
+		DBM:Debug("Unregistered cachedMods for modID: "..modId, 2, nil, true)
 	end
 end
 

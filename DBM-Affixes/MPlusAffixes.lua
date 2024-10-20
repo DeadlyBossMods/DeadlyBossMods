@@ -161,7 +161,7 @@ do
 		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true}
 	--Current Season (latest LIVE season put in else so if api fails, it just always returns latest)
 	else--War Within Season 1 (13)
-		--Stonevault, The Dawnbreaker, Ara-Kara, City of Echos, City of Threads, Grim Batol, Siege of Boralus, The Necrotic Wake, Mists of Tirna Scithe
+		--Stonevault, The Dawnbreaker, Ara-Kara City of Echos, City of Threads, Grim Batol, Siege of Boralus, The Necrotic Wake, Mists of Tirna Scithe
 		validZones = {[2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}
 	end
 	local eventsRegistered = false
