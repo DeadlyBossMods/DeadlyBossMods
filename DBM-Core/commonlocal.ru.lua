@@ -103,7 +103,7 @@ CL.MARKS					= "Метки"
 CL.CURSE					= "Проклятие"
 CL.CURSES					= "Проклятия"
 CL.SWIRLS					= "Вихри"
-CL.CHARGES					= "Charges"--Context, this is plural of boss "charging to players" and NOT bomb charges
+CL.CHARGES					= "Атака босса"--По идее так правильно
 CL.CIRCLES					= "Круги"
 
 -- Colors

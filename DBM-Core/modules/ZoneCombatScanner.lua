@@ -21,7 +21,8 @@ local inCombat = false
 local currentZone = DBM:GetCurrentArea() or 0
 --Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
 local affixesMod
-local cachedMods = {}--Large memory size, since it ends up caching all mods that register for combat scanning
+local lastUsedMod
+local cachedMods = {}
 
 --This will not be used in raids, so no raid targets checked for now
 local scannedUids = {
@@ -66,8 +67,6 @@ local function ScanEngagedUnits(self)
 	DBM:Schedule(0.5, ScanEngagedUnits, self)
 end
 
---Still a stupid waste of CPU because blizzard can't bother to give us an event for the GROUP entering combat
---PLAYER_REGEN is useless for tracking group combat, as it's only player combat
 local function checkForCombat()
 	local combatFound = DBM:GroupInCombat()
 	if combatFound and not inCombat then
@@ -76,14 +75,13 @@ local function checkForCombat()
 		if affixesMod then
 			affixesMod:EnteringZoneCombat()
 		end
-		if cachedMods[currentZone] then
-			local mod = cachedMods[currentZone]
-			if mod and mod.EnteringZoneCombat then
-				mod:EnteringZoneCombat()
+		if lastUsedMod then
+			if lastUsedMod.EnteringZoneCombat then
+				lastUsedMod:EnteringZoneCombat()
 			end
-			if mod and mod.StartNameplateTimers then
-				ScanEngagedUnits(mod)
-				DBM:Debug("Starting Engaged Unit Scans", 3, nil, true)
+			if lastUsedMod.StartNameplateTimers then
+				ScanEngagedUnits(lastUsedMod)
+				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
 	elseif not combatFound and inCombat then
@@ -93,10 +91,9 @@ local function checkForCombat()
 		if affixesMod then
 			affixesMod:LeavingZoneCombat()
 		end
-		if cachedMods[currentZone] then
-			local mod = cachedMods[currentZone]
-			if mod and mod.LeavingZoneCombat then
-				mod:LeavingZoneCombat()
+		if lastUsedMod then
+			if lastUsedMod.LeavingZoneCombat then
+				lastUsedMod:LeavingZoneCombat()
 			end
 		end
 		DBM:Unschedule(ScanEngagedUnits)
@@ -111,17 +108,19 @@ local function DelayedZoneCheck(force)
 		module:RegisterShortTermEvents("UNIT_FLAGS player party1 party2 party3 party4")
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Dungeon Trash Tracking Events", 2)
+		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 		eventsRegistered = false
 		inCombat = false
 		table.wipe(ActiveGUIDs)
+		lastUsedMod = nil
 		module:UnregisterShortTermEvents()
 		DBM:Unschedule(checkForCombat)
 		DBM:Unschedule(ScanEngagedUnits)
 		DBM:Debug("Unregistering Dungeon Trash Tracking Events", 2)
 	end
 end
---Monitor bitflag of players, which should change with combat stats
+--Monitor bitflag of players, which should change with combat states
 function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
@@ -145,25 +144,26 @@ end
 
 ---Used for registering combat with trash in general for use of notifying affixes mod that party is in combat
 ---@param zone number Instance ID of the zone
----@param modId string|number The mod id to register for combat scanning
+---@param modId? string|number The mod id to register for combat scanning
 function bossModPrototype:RegisterZoneCombat(zone, modId)
+	modId = modId or self.id
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
 	end
-	local mod = DBM:GetModByName(modId)
 	if modId == "MPlusAffixes" then
-		affixesMod = mod
+		affixesMod = DBM:GetModByName(modId)--Just cache mod outright, it'll never change
 		DBM:Debug("|cffff0000Registered affixesMod for modID: |r"..modId, 2, nil, true)
 	elseif not cachedMods[zone] then
-		cachedMods[zone] = mod
+		cachedMods[zone] = modId
 		DBM:Debug("|cffff0000Registered cachedMods for modID: |r"..modId, 2, nil, true)
 	end
 end
 
 ---@param zone number Instance ID of the zone
----@param modId string|number The mod id to register for combat scanning
+---@param modId? string|number The mod id to register for combat scanning
 function bossModPrototype:UnregisterZoneCombat(zone, modId)
+	modId = modId or self.id
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = nil
@@ -173,7 +173,7 @@ function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	if affixesMod == mod then
 		affixesMod = nil
 		DBM:Debug("Unregistered affixesMod for modID: "..modId, 2, nil, true)
-	elseif cachedMods[zone] == mod then
+	elseif cachedMods[zone] == modId then
 		cachedMods[zone] = nil
 		DBM:Debug("Unregistered cachedMods for modID: "..modId, 2, nil, true)
 	end

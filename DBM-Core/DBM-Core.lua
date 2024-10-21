@@ -82,9 +82,9 @@ local fakeBWVersion, fakeBWHash = 359, "3aa6ef3"--359.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.22 alpha"--Core version
+DBM.DisplayVersion = "11.0.23 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 10, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 10, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 15 or 14--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -342,8 +342,8 @@ DBM.DefaultOptions = {
 	DontSendBossGUIDs = false,
 	NPAuraText = true,
 	NPIconSize = 30,
-	NPIconXOffset = 0,
-	NPIconYOffset = 0,
+	NPIconOffsetX = 0,
+	NPIconOffsetY = 20,--20 used to default offset is no longer covering buff/debuff icons on blizzard nameplates
 	NPIconSpacing = 0,
 	NPIconGrowthDirection = "CENTER",
 	NPIconAnchorPoint = "TOP",
@@ -2010,6 +2010,11 @@ do
 	--- |"DBM_TimerPause"
 	--- |"DBM_TimerResume"
 	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_NameplateStart"
+	--- |"DBM_NameplateStop"
+	--- |"DBM_NameplatePause"
+	--- |"DBM_NameplateResume"
+	--- |"DBM_NameplateUpdate"
 	--- |"DBM_Announce"
 	--- |"DBM_raidJoin"
 	--- |"DBM_raidLeave"
