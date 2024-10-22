@@ -242,7 +242,7 @@ local allTimers = {
 			-- Strands of Reality
 			[441782] = {22.2, 65.7},
 			-- Void Step
-			[450483] = {38.5, 32.9, 25},
+			[450483] = {37.5, 32.9, 25},
 			-- Cataclysmic Entropy
 			[438355] = {41.2, 58.2},
 		},
