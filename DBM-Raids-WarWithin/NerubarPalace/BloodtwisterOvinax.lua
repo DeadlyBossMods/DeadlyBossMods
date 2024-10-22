@@ -55,7 +55,7 @@ local timerUnstableWebCD						= mod:NewCDCountTimer(30, 446349, 157317, nil, nil
 local timerVolatileConcoctionCD					= mod:NewCDCountTimer(20, 441362, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddSetIconOption("SetIconOnEggBreaker", 442526, true, 10, {6, 4, 3, 7, 1, 2})--Egg Breaker auto assign strat (Priority for melee > ranged > healer)
-mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "MatchEW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 442526)
+mod:AddDropdownOption("EggBreakerBehavior", {"MatchBW", "MatchEW", "UseAllAscending", "AvoidRedNPurple", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 442526)
 --Colossal Spider
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28996))
 local specWarnPoisonBurst						= mod:NewSpecialWarningInterrupt(446700, "HasInterrupt", nil, nil, 1, 2)
@@ -112,6 +112,8 @@ function mod:OnCombatStart(delay)
 			self:SendSync("MatchEW")
 		elseif self.Options.EggBreakerBehavior == "UseAllAscending" then
 			self:SendSync("UseAllAscending")
+		elseif self.Options.EggBreakerBehavior == "AvoidRedNPurple" then
+			self:SendSync("AvoidRedNPurple")
 		elseif self.Options.EggBreakerBehavior == "DisableIconsForRaid" then
 			self:SendSync("DisableIconsForRaid")
 		elseif self.Options.EggBreakerBehavior == "DisableAllForRaid" then
@@ -189,6 +191,8 @@ local function sortEggBreaker(self)
 			icon = (self:IsMythic() and mythicMarkOrder[i] or markOrder[i])
 		elseif self.vb.EggBreakerBehavior == "MatchEW" then
 			icon = (self:IsMythic() and echoMythicMarkOrder[i] or markOrder[i])
+		elseif self.vb.EggBreakerBehavior == "AvoidRedNPurple" then
+			icon = echoMythicMarkOrder[i]
 		elseif self.vb.EggBreakerBehavior == "UseAllAscending" then
 			icon = i
 		else--Disable Icons and Disable all for raid
@@ -345,6 +349,8 @@ function mod:OnSync(msg)
 		self.vb.EggBreakerBehavior = "MatchEW"
 	elseif msg == "UseAllAscending" then
 		self.vb.EggBreakerBehavior = "UseAllAscending"
+	elseif msg == "AvoidRedNPurple" then
+		self.vb.EggBreakerBehavior = "AvoidRedNPurple"
 	elseif msg == "DisableIconsForRaid" then
 		self.vb.EggBreakerBehavior = "DisableIconsForRaid"
 	elseif msg == "DisableAllForRaid" then
