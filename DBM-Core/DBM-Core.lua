@@ -675,12 +675,14 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 		--TODO, test UnitIsInMyGuild in both classics, and retail, especially for cross faction guild members. That can save a lot of cpu by removing iterating over literally entire guild roster
 		local totalMembers, _, numOnlineAndMobileMembers = GetNumGuildMembers()
 		local scanTotal = GetGuildRosterShowOffline() and totalMembers or numOnlineAndMobileMembers--Attempt CPU saving, if "show offline" is unchecked, we can reliably scan only online members instead of whole roster
-		for i = 1, scanTotal do
-			local name = GetGuildRosterInfo(i)
-			if not name then break end
-			name = Ambiguate(name, "none")
-			if name == sender then
-				return not (filterRaid and DBM:GetRaidUnitId(name))
+		if scanTotal and type(scanTotal) == "number" and scanTotal > 0 then
+			for i = 1, scanTotal do
+				local name = GetGuildRosterInfo(i)
+				if not name then break end
+				name = Ambiguate(name, "none")
+				if name == sender then
+					return not (filterRaid and DBM:GetRaidUnitId(name))
+				end
 			end
 		end
 	end
