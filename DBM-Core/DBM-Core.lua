@@ -671,7 +671,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 		end
 	end
 	--Check Guildies (not used by whisper syncs, but used by status whispers)
-	if checkGuild then
+	if checkGuild and IsInGuild() then
 		--TODO, test UnitIsInMyGuild in both classics, and retail, especially for cross faction guild members. That can save a lot of cpu by removing iterating over literally entire guild roster
 		local totalMembers, _, numOnlineAndMobileMembers = GetNumGuildMembers()
 		local scanTotal = GetGuildRosterShowOffline() and totalMembers or numOnlineAndMobileMembers--Attempt CPU saving, if "show offline" is unchecked, we can reliably scan only online members instead of whole roster
