@@ -5221,26 +5221,25 @@ end
 --  Pull Detection  --
 ----------------------
 do
-	--TODO maybe move these frequently used tables to their own module
-	local fullEnemyUids = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
-		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
-		"party1target", "party2target", "party3target", "party4target",
-		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
-		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
-		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
-		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
-		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
-		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
-		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
-		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
-	}
 	local targetList = {}
 	local function buildTargetList()
-		for _, unitId in ipairs(fullEnemyUids) do
-			local guid = UnitGUID(unitId)
+		--Iterate over all raid/party members and their targets
+		local uId = (IsInRaid() and "raid") or "party"
+		for i = 0, GetNumGroupMembers() do
+			local id = (i == 0 and "target") or uId .. i .. "target"
+			local guid = UnitGUID(id)
 			if guid and DBM:IsCreatureGUID(guid) then
-				targetList[DBM:GetCIDFromGUID(guid)] = unitId
+				targetList[DBM:GetCIDFromGUID(guid)] = id
+			end
+		end
+		--Iterate over active nameplates
+		for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+			local foundUnit = frame.namePlateUnitToken
+			if foundUnit and UnitAffectingCombat(foundUnit) then
+				local guid = UnitGUID(foundUnit)
+				if guid and DBM:IsCreatureGUID(guid) then
+					targetList[DBM:GetCIDFromGUID(guid)] = foundUnit
+				end
 			end
 		end
 	end

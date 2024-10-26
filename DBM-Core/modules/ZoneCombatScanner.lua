@@ -15,7 +15,6 @@ local DBM = private:GetPrototype("DBM")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local registeredZones = {}--Global table for tracking registered zones
---local registeredCIDs = {}--Tracks which CIDs should be processed and returned in ScanEngagedUnits
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
 local currentZone = DBM:GetCurrentArea() or 0
@@ -24,27 +23,21 @@ local affixesMod
 local lastUsedMod
 local cachedMods = {}
 
---This will not be used in raids, so no raid targets checked for now
-local scannedUids = {
-	"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
-	"party1target", "party2target", "party3target", "party4target"
-}
-
 ---Scan for new Unit Engages
 ---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time (and affixes doesn't monitor this)
 ---@param self DBMMod
 local function ScanEngagedUnits(self)
-	--Scan non namplates first
-	for _, unitId in ipairs(scannedUids) do
-		if UnitAffectingCombat(unitId) then
-			local guid = UnitGUID(unitId)
-			if guid and DBM:IsCreatureGUID(guid) then
-				if not ActiveGUIDs[guid] then
-					ActiveGUIDs[guid] = true
-					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid)
-					DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
-				end
+	--Iterate over all raid/party members and their targets
+	local uId = (IsInRaid() and "raid") or "party"
+	for i = 0, GetNumGroupMembers() do
+		local id = (i == 0 and "target") or uId .. i .. "target"
+		local guid = UnitGUID(id)
+		if guid and DBM:IsCreatureGUID(guid) then
+			if not ActiveGUIDs[guid] then
+				ActiveGUIDs[guid] = true
+				local cid = DBM:GetCIDFromGUID(guid)
+				self:StartNameplateTimers(guid, cid)
+				DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 			end
 		end
 	end
@@ -107,7 +100,9 @@ local function DelayedZoneCheck(force)
 		eventsRegistered = true
 		module:RegisterShortTermEvents(
 			"UNIT_FLAGS player party1 party2 party3 party4",
-			"CHALLENGE_MODE_DEATH_COUNT_UPDATED"
+			"CHALLENGE_MODE_DEATH_COUNT_UPDATED",
+			"PLAYER_REGEN_DISABLED",
+			"PLAYER_REGEN_ENABLED"
 		)
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Dungeon Trash Tracking Events", 2)
@@ -131,8 +126,10 @@ function module:UNIT_FLAGS()
 		checkForCombat()
 	end
 end
---Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track death counter for checking combat state
+--Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track backup events that can indicate combat status changed
 module.CHALLENGE_MODE_DEATH_COUNT_UPDATED	= module.UNIT_FLAGS
+module.PLAYER_REGEN_DISABLED				= module.UNIT_FLAGS
+module.PLAYER_REGEN_ENABLED					= module.UNIT_FLAGS
 
 function module:LOADING_SCREEN_DISABLED()
 	DBM:Unschedule(DelayedZoneCheck)
@@ -185,12 +182,36 @@ function bossModPrototype:UnregisterZoneCombat(zone, modId)
 	end
 end
 
----Not sure this micro optimization is worth coding annoyance, so scrapping for now
-----@param CIDTable table? A table of CIDs to register for engaged unit scanning
---function bossModPrototype:RegisterTrackedCIDs(CIDTable)
---	if CIDTable then
---		for i = 1, #CIDTable do
---			registeredCIDs[CIDTable[i]] = true
---		end
---	end
---end
+do
+	local bossUids = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
+	}
+
+	---@param self DBMMod
+	---@param scanTime number amount of time to subtrack from timers
+	---@param maxScanTime number Max Scan time before giving up
+	local function ScanEngagedBossUnits(self, scanTime, maxScanTime)
+		--Scan Common Boss Units and mouseovers
+		for _, unitId in ipairs(bossUids) do
+			if UnitAffectingCombat(unitId) then
+				local guid = UnitGUID(unitId)
+				if guid and DBM:IsCreatureGUID(guid) then
+					if not ActiveGUIDs[guid] then
+						ActiveGUIDs[guid] = true
+						local cid = DBM:GetCIDFromGUID(guid)
+						self:StartNameplateTimers(guid, cid, scanTime)
+						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
+					end
+				end
+			end
+		end
+		if maxScanTime == scanTime then return end
+		DBM:Schedule(0.5, ScanEngagedBossUnits, self, scanTime+0.5, maxScanTime)
+	end
+	---Used to scan for boss Units on engage for starging nameplate timers on council type boss encounters
+	---<br>Uses mod:StartNameplateTimers(guid, cid, scanTime) as return function to start timers
+	---@param maxScanTime number?
+	function bossModPrototype:RegisterBossUnitScan(maxScanTime)
+		ScanEngagedBossUnits(self, 0, maxScanTime or 3)
+	end
+end
