@@ -24,26 +24,25 @@ local mt = {__index = bossModPrototype}
 
 ---@class DBMMod
 ---@field OnCombatStart fun(self: DBMMod, delay: number, startedByCastOrRegenDisabledOrMessage: boolean, startedByEncounter: boolean)
----@field OnTrashStart fun(self: DBMMod, delay: number, mob: number,  guid: string)
 ---@field OnCombatEnd fun(self: DBMMod, wipe: boolean, delayedSecondCall: boolean?)
----@field StartNameplateTimers fun(self: DBMMod, guid: string, cid: number, delay: number?)
+---@field StartNameplateTimers fun(self: DBMMod, guid: string, cid: number, delay: number)
 ---@field OnLeavingCombat fun()
 ---@field EnteringZoneCombat fun(self: DBMMod)
 ---@field LeavingZoneCombat fun(self: DBMMod)
 ---@field OnSync fun(self: DBMMod, event: string, ...: string)
----@field OnBWSync fun(self: DBMMod, msg: string, extra: string, sender: string)
----@field OnTranscriptorSync fun(self: DBMMod, msg: string, sender: string)
+---@field OnBWSync fun(self: DBMMod, msg: string, extra: string, sender: string) Used to Snoop Bigwigs comms when maintaining compat between DBM and BW on boss fights
+---@field OnTranscriptorSync fun(self: DBMMod, msg: string, sender: string) Used to snoop RAID_BOSS_WHISPER event syncs sent by both DBM and BigWigs
 ---@field OnInitialize fun(self: DBMMod, mod: DBMMod)
 ---@field OnTimerRecovery fun(self: DBMMod)
 ---@field CustomHealthUpdate fun(self: DBMMod): string
 ---@field stats ModStats
 ---@field registeredUnitEvents table<string, boolean>?
 ---@field bossHealthUpdateTime number?
----@field isTrashModBossFightAllowed boolean?
----@field respawnTime number?
----@field noStatistics boolean?
+---@field isTrashModBossFightAllowed boolean? Used to flag a trash mod that is continue firing events during a boss fight (should be true in all M+ mods)
+---@field respawnTime number? Time until the boss respawns after ENCOUNTER_END event
+---@field noStatistics boolean? Used in modules that should not have stats panels such as trash mods
 ---@field statTypes string?
----@field upgradedMPlus boolean?
+---@field upgradedMPlus boolean? Used to flag a dungeon that used to be a challenge mode in MoP or WoD but has since upgraded to M+
 ---@field onlyHighest boolean?
 ---@field soloChallenge boolean?
 ---@field disableHealthCombat boolean?
