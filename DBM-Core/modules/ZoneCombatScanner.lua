@@ -36,7 +36,7 @@ local function ScanEngagedUnits(self)
 			if not ActiveGUIDs[guid] then
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartNameplateTimers(guid, cid)
+				self:StartNameplateTimers(guid, cid, 0)
 				DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 			end
 		end
@@ -50,7 +50,7 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid)
+					self:StartNameplateTimers(guid, cid, 0.5)
 					DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 				end
 			end
