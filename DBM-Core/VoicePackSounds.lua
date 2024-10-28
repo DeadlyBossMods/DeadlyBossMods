@@ -271,6 +271,7 @@
 ---|"shockwave" 2
 ---|"silencesoon"
 ---|"slagelementalcoming" 12
+---|"soakbeam" 17
 ---|"soulcleave" 12
 ---|"south"
 ---|"southeast"
