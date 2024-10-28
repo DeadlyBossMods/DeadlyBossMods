@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20240801
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20241028
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -104,3 +104,16 @@ CL.MARKS							= "标记"
 CL.CURSE							= "诅咒"
 CL.CURSES							= "诅咒"
 CL.SWIRLS							= "漩涡"
+CL.CHARGES							= "充能"
+CL.CIRCLES							= "圈"
+
+-- Colors
+CL.BLACK	= "黑"
+CL.BLUE		= "蓝"
+CL.GREEN	= "绿"
+CL.RED		= "红"
+CL.BRONZE	= "黄"
+
+-- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
+CL.AND		= "以及"
+CL.OR		= "或"
