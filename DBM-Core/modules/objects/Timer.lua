@@ -185,6 +185,7 @@ function timerPrototype:Start(timer, ...)
 				end
 			end
 		end
+		timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 		if isCountTimer and not self.allowdouble then--remove previous timer.
 			for i = #self.startedTimers, 1, -1 do
 				if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
@@ -192,7 +193,7 @@ function timerPrototype:Start(timer, ...)
 					if bar then
 						local remaining = ("%.1f"):format(bar.timer)
 						local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
-						ttext = ttext .. "(" .. self.id .. ")"
+						ttext = ttext .. "(" .. self.id .. "-" .. (timer or 0) .. ")"
 						if bar.timer > 0.2 then
 							local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 							if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
@@ -213,7 +214,6 @@ function timerPrototype:Start(timer, ...)
 				tremove(self.startedTimers, i)
 			end
 		end
-		timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 		local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 		--AI timer api:
 		--Starting ai timer with (1) indicates it's a first timer after pull

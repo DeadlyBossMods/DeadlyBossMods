@@ -103,3 +103,6 @@ CL.MARKS					= "標記"--Plural of above
 CL.CURSE					= "詛咒"
 CL.CURSES					= "詛咒"
 CL.SWIRLS					= "迴旋"--Plural of Swirl
+-- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
+CL.AND						= "以及"
+CL.OR						= "或"

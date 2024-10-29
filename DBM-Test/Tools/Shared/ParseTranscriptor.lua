@@ -97,8 +97,10 @@ local function getEncounters(lines)
 					entry.startOffset = lastEncounterEndEvent + 1
 					encounters[#encounters + 1] = entry
 				end
-				startEntry.endOffset = i
-				startEntry.success = success
+				if startEntry then
+					startEntry.endOffset = i
+					startEntry.success = success
+				end
 				lastEncounterEndEvent = i
 			end
 		end
