@@ -185,6 +185,7 @@ function timerPrototype:Start(timer, ...)
 				end
 			end
 		end
+		timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 		if isCountTimer and not self.allowdouble then--remove previous timer.
 			for i = #self.startedTimers, 1, -1 do
 				if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
@@ -213,7 +214,6 @@ function timerPrototype:Start(timer, ...)
 				tremove(self.startedTimers, i)
 			end
 		end
-		timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 		local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 		--AI timer api:
 		--Starting ai timer with (1) indicates it's a first timer after pull
