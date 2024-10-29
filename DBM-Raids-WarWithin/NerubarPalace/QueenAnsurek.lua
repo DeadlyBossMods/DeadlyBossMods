@@ -580,7 +580,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 445422 and not self.vb.cataEvoActivated then
 		self.vb.frothingGluttonyCount = self.vb.frothingGluttonyCount + 1
 		specWarnFrothingGluttony:Show(self.vb.frothingGluttonyCount)
-		specWarnFrothingGluttony:Play("pullin")
+		specWarnFrothingGluttony:Play("pullin")--TODO, FIX ME with new audio
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 445422, self.vb.frothingGluttonyCount+1)
 		if timer then
 			timerFrothingGluttonyCD:Start(timer, self.vb.frothingGluttonyCount+1)
