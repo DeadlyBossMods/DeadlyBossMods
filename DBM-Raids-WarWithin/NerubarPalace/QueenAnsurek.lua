@@ -254,11 +254,11 @@ local allTimers = {
 			--Venom Nova
 			[437417] = {29.3, 56, 56},--56 repeating? (Same as normal)
 			--Silken Tomb
-			[439814] = {57.4, 48, 15.9},--(different from normal)
+			[439814] = {57.4, 64},--(different from normal)
 			--Liquefy
 			[440899] = {8.3, 39.7, 51},--(different from normal)
 			--Web Blades
-			[439299] = {20.4, 47, 47, 25}--(different from normal)
+			[439299] = {22, 45, 43, 29}--(different from normal)
 		},
 		[3] = {
 			--Abyssal Infusion
