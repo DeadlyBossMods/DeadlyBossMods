@@ -258,7 +258,7 @@ local allTimers = {
 			--Liquefy
 			[440899] = {8.3, 39.7, 51},--(different from normal)
 			--Web Blades
-			[439299] = {22, 45, 43, 29}--(different from normal)
+			[439299] = {20.4, 45, 43, 29}--(different from normal)
 		},
 		[3] = {
 			--Abyssal Infusion
