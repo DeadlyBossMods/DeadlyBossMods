@@ -64,7 +64,7 @@ local function checkForCombat()
 	local combatFound = DBM:GroupInCombat()
 	if combatFound and not inCombat then
 		inCombat = true
-		DBM:Debug("Zone Combat Detected", 2)
+		DBM:Debug("Zone Combat Detected", 2, nil, true)
 		if affixesMod then
 			affixesMod:EnteringZoneCombat()
 		end
@@ -80,7 +80,7 @@ local function checkForCombat()
 	elseif not combatFound and inCombat then
 		inCombat = false
 		table.wipe(ActiveGUIDs)--if no one is in combat, save to assume all engaged units gone
-		DBM:Debug("Zone Combat Ended", 2)
+		DBM:Debug("Zone Combat Ended", 2, nil, true)
 		if affixesMod then
 			affixesMod:LeavingZoneCombat()
 		end
