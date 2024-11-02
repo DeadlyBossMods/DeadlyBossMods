@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
 mod.isTrashMod = true
+mod:SetZone(2657)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176",
