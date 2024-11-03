@@ -151,7 +151,7 @@ end
 
 -- Used by target scanner
 function mocks.DBMGetUnitFullName(_, uId)
-	if not uId then return end
+	if type(uId) ~= "string" then return end -- Some code relies on GetUnitName (which the original is a wrapper for) returning nil for invalid arguments
 	local base = uId:match("(.-)target$")
 	if base then -- target scanner use
 		-- In retail this is likely to be a boss unit id from DBMGetUnitIdFromGUID above, very convenient because we get UNIT_TARGET events for these
