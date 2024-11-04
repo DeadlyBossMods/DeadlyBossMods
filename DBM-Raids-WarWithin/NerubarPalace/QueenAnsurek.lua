@@ -7,8 +7,9 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(218370)
 mod:SetEncounterID(2922)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20240917000000)
+mod:SetHotfixNoticeRev(20241029000000)
 mod:SetMinSyncRevision(20240910000000)
+mod:SetZone(2657)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -254,11 +255,11 @@ local allTimers = {
 			--Venom Nova
 			[437417] = {29.3, 56, 56},--56 repeating? (Same as normal)
 			--Silken Tomb
-			[439814] = {57.4, 48, 15.9},--(different from normal)
+			[439814] = {57.2, 64},--(different from normal)
 			--Liquefy
 			[440899] = {8.3, 39.7, 51},--(different from normal)
 			--Web Blades
-			[439299] = {20.4, 47, 47, 25}--(different from normal)
+			[439299] = {20.2, 47.0, 43.0, 29.0}--(different from normal)
 		},
 		[3] = {
 			--Abyssal Infusion

@@ -37,7 +37,7 @@ local function ScanEngagedUnits(self)
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
 				self:StartNameplateTimers(guid, cid, 0)
-				DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
+				DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 			end
 		end
 	end
@@ -51,7 +51,7 @@ local function ScanEngagedUnits(self)
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
 					self:StartNameplateTimers(guid, cid, 0.5)
-					DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
+					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 				end
 			end
 		end
@@ -64,7 +64,7 @@ local function checkForCombat()
 	local combatFound = DBM:GroupInCombat()
 	if combatFound and not inCombat then
 		inCombat = true
-		DBM:Debug("Zone Combat Detected", 2)
+		DBM:Debug("Zone Combat Detected", 2, nil, true)
 		if affixesMod then
 			affixesMod:EnteringZoneCombat()
 		end
@@ -80,7 +80,7 @@ local function checkForCombat()
 	elseif not combatFound and inCombat then
 		inCombat = false
 		table.wipe(ActiveGUIDs)--if no one is in combat, save to assume all engaged units gone
-		DBM:Debug("Zone Combat Ended", 2)
+		DBM:Debug("Zone Combat Ended", 2, nil, true)
 		if affixesMod then
 			affixesMod:LeavingZoneCombat()
 		end
