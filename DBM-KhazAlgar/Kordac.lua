@@ -10,19 +10,20 @@ mod:EnableWBEngageSync()--Enable syncing engage in outdoors
 --mod:SetMinSyncRevision(20240119000000)
 
 mod:RegisterCombat("combat")
---mod:RegisterKill("yell", L.Win)
+mod:RegisterKill("yell", L.Win)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 458423 458329 458845",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 458220 458838 458844",
+	"SPELL_AURA_APPLIED 458838 458844",
 	"SPELL_PERIODIC_DAMAGE 458799",
-	"SPELL_PERIODIC_MISSED 458799"
+	"SPELL_PERIODIC_MISSED 458799",
+	"UNIT_AURA player",
+	"UNIT_SPELLCAST_SUCCEEDED_UNFILTERED"
 )
 
 --TODO, personal rupturing runes warning, with right debuff ID (https://www.wowhead.com/beta/spell=450863/rupturing-runes or https://www.wowhead.com/beta/spell=450677/rupturing-runes
 --TODO, what kind of warning for Discoard weaklings or grasp?
-local warnOverchargedLasers				= mod:NewTargetNoFilterAnnounce(458209, 3)
 local warnSupressionBurst				= mod:NewTargetNoFilterAnnounce(458845, 3)
 
 local specWarnArcaneBombardment			= mod:NewSpecialWarningDodge(458423, nil, nil, nil, 2, 2)
@@ -63,16 +64,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 458220 then
-		warnOverchargedLasers:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnOverchargedLasers:Show()
-			specWarnOverchargedLasers:Play("runout")
-		end
-		if self:AntiSpam(5, 1) then
-			timerOverchargedLasersCD:Start()
-		end
-	elseif spellId == 458838 then
+	if spellId == 458838 then
 		warnSupressionBurst:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSupressionBurst:Show()
@@ -93,3 +85,35 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+do
+	local laserWarned = false
+	function mod:UNIT_AURA(uId)
+		local hasLaser = DBM:UnitDebuff("player", 458695)
+		if hasLaser and not laserWarned then
+			specWarnOverchargedLasers:Show()
+			specWarnOverchargedLasers:Play("laserrun")
+			laserWarned = true
+		elseif not hasLaser and laserWarned then
+			laserWarned = false
+		end
+	end
+end
+
+--"<47.68 23:06:32> [UNIT_SPELLCAST_SUCCEEDED] Kordac(9.2%-87.0%){Target:Laroc-Thrall} -Critical Condition- [[target:Cast-3-3886-2552-13381-459404-004AA999C8:459404]]",
+--"<47.73 23:06:32> [CHAT_MSG_MONSTER_YELL] Critic-... Condi-... Emergen-...#Kordac#####0#0##0#67#nil#0#false#false#false#false",
+function mod:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(_, _, spellId)
+	if spellId == 459404 then--Overcharged Lasers
+		self:SendSync("Kill")
+	elseif spellId == 458217 and self:AntiSpam(5, 1) then
+		self:SendSync("LaserCast")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Kill" then
+		DBM:EndCombat(self)
+	elseif msg == "LaserCast" and self:AntiSpam(5, 1) then
+		timerOverchargedLasersCD:Start()
+	end
+end
