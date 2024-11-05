@@ -106,12 +106,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(_, _, spellId)
 	if spellId == 459404 then--Overcharged Lasers
 		self:SendSync("Kill")
 	elseif spellId == 458217 then
-		timerOverchargedLasersCD:Start()
+		self:SendSync("LaserCast")
 	end
 end
 
 function mod:OnSync(msg)
 	if msg == "Kill" then
 		DBM:EndCombat(self)
+	elseif msg == "LaserCast" then
+		timerOverchargedLasersCD:Start()
 	end
 end
