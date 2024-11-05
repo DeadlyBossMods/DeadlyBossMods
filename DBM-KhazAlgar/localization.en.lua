@@ -3,12 +3,11 @@ local L
 -----------------------
 -- Kordac, the Dormant Protector --
 -----------------------
---L= DBM:GetModLocalization(2637)
+L= DBM:GetModLocalization(2637)
 
---L:SetMiscLocalization({
---	Pull	= ""
---})
-
+L:SetMiscLocalization({
+	Win	= "Critic-... Condi-... Emergen-..."
+})
 
 -----------------------
 -- Aggregation of Horrors --
