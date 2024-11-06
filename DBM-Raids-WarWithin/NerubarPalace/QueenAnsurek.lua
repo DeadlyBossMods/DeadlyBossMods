@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 443403",
 	"SPELL_PERIODIC_MISSED 443403",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -86,11 +87,12 @@ mod:AddDropdownOption("ToxinBehavior", {"MatchBW", "UseAllAscending", "DisableIc
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
-local warnParalyzingVenom					= mod:NewCountAnnounce(447456, 2, nil, nil, 441740)--Shortname "toxic waves"
+local warnParalyzingVenom					= mod:NewCountAnnounce(447456, 2, nil, nil, 441740)--Shortname "Toxic waves"
+local warnWrest							= mod:NewCountAnnounce(447411, 2, nil, nil, 193997)--Shortname "Pull"
 
 local specWarnWrest							= mod:NewSpecialWarningCount(447411, nil, 193997, nil, 2, 12)--Shortname "Pull"
 
-local timerParalyzingVenomCD				= mod:NewCDCountTimer(4, 447456, 441740, nil, nil, 2)--Shortname "toxic waves"
+local timerParalyzingVenomCD				= mod:NewCDCountTimer(4, 447456, 441740, nil, nil, 2)--Shortname "Toxic waves"
 local timerWrestCD							= mod:NewCDCountTimer(49, 447411, 193997, nil, nil, 3)--Shortname "Pull"
 
 mod:AddInfoFrameOption(447076, true)
@@ -467,6 +469,20 @@ function mod:OnTimerRecovery()
 	end
 end
 
+---@param self DBMMod
+local function showWrest(self, myPlatform)
+	if myPlatform then
+		specWarnWrest:Show(self.vb.wrestCount)
+		specWarnWrest:Play("pullin")
+		--if stage is 2 and you got emote, next wrest is on other side so set it faded
+		if self:GetStage(2) then
+			timerWrestCD:SetSTFade(true, self.vb.wrestCount+1)--If it's on this platform this time, next one isn't so we fade timer for next one
+		end
+	else--No emote, on other platform
+		warnWrest:Show(self.vb.wrestCount)
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 437592 or spellId == 456623 then--437592 confirmed, 456623 unknown
@@ -513,8 +529,8 @@ function mod:SPELL_CAST_START(args)
 		--end
 	elseif spellId == 447411 or spellId == 450191 then--Intermission Left / Phase 2 right
 		self.vb.wrestCount = self.vb.wrestCount + 1
-		specWarnWrest:Show(self.vb.wrestCount)
-		specWarnWrest:Play("pullin")
+		self:Unschedule(showWrest)
+		self:Schedule(0.5, showWrest, self, false)
 		timerWrestCD:Start(spellId == 447411 and 19 or 8, self.vb.wrestCount+1)
 	elseif spellId == 449940 then
 		timerWrestCD:Stop()
@@ -956,6 +972,15 @@ function mod:UNIT_DIED(args)
 		if self.vb.expellerKilled == 2 then
 			timerExpulsionBeamCD:Stop()
 		end
+	end
+end
+
+--"<160.27 08:47:52> [CLEU] SPELL_CAST_START#Creature-0-3061-2657-14564-218370-000063DD7C#Queen Ansurek(60.6%-100.0%)##nil#447411#Wrest#nil#nil",
+--"<160.42 08:47:52> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\\\ICONS\\\\Misc_Legionfall_Warlock.BLP:20|t %s begins to cast |cFFFF0000|Hspell:447411|h[Wrest]|h|r!#Queen Ansurek
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:447411") then
+		self:Unschedule(showWrest)
+		showWrest(self, true)
 	end
 end
 

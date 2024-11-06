@@ -78,6 +78,7 @@ mod.vb.envelopingCount = 0
 --Totals that don't need phase counts
 mod.vb.reaveCount = 0
 mod.vb.movementCount = 0
+mod.vb.acidAdjust = 2
 
 local savedDifficulty = "heroic"
 --LFR and normal are MOSTLY the same, but there are minor differences in some timers, so they are separated
@@ -462,15 +463,19 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerEnvelopingWebsCD:Start(38-delay, 1)
+		self.vb.acidAdjust = 2
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
+		self.vb.acidAdjust = 2
 	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+		self.vb.acidAdjust = 3
 	else--LFR
 		savedDifficulty = "lfr"
+		self.vb.acidAdjust = 3
 	end
 	timerSavageAssaultCD:Start(allTimers[savedDifficulty][1][444687][1]-delay, 1)
-	timerRollingAcidCD:Start(allTimers[savedDifficulty][1][439789][1]-delay, 1)
+	timerRollingAcidCD:Start(allTimers[savedDifficulty][1][439789][1] - self.vb.acidAdjust, 1)
 	timerInfestedSpawnCD:Start(allTimers[savedDifficulty][1][455373][1]-delay, 1)
 	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][1][439784][1]-delay, 1)
 	timerErosiveSprayCD:Start(allTimers[savedDifficulty][1][439811][1]-delay, 1)
@@ -514,7 +519,7 @@ function mod:SPELL_CAST_START(args)
 		warnRollingAcid:Show(self.vb.rollingCountTotal)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.rollingCount+1)
 		if timer then
-			timerRollingAcidCD:Start(timer, self.vb.rollingCountTotal+1)
+			timerRollingAcidCD:Start(timer - self.vb.acidAdjust, self.vb.rollingCountTotal+1)
 		end
 	elseif spellId == 455373 then
 		self.vb.spawnCountTotal = self.vb.spawnCountTotal + 1
@@ -603,7 +608,7 @@ function mod:SPELL_INTERRUPT(args)
 			timerEnvelopingWebsCD:Start(allTimers[savedDifficulty][self.vb.phase][454989][1], self.vb.envelopingCountTotal+1)
 		end
 		timerSavageAssaultCD:Start(allTimers[savedDifficulty][self.vb.phase][444687][1], self.vb.assaultCountTotal+1)
-		timerRollingAcidCD:Start(allTimers[savedDifficulty][self.vb.phase][439789][1], self.vb.rollingCountTotal+1)
+		timerRollingAcidCD:Start(allTimers[savedDifficulty][self.vb.phase][439789][1] - self.vb.acidAdjust, self.vb.rollingCountTotal+1)
 		timerInfestedSpawnCD:Start(allTimers[savedDifficulty][self.vb.phase][455373][1], self.vb.spawnCountTotal+1)
 		timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][self.vb.phase][439784][1], self.vb.strandsCountTotal+1)
 		timerErosiveSprayCD:Start(allTimers[savedDifficulty][self.vb.phase][439811][1], self.vb.sprayCountTotal+1)
