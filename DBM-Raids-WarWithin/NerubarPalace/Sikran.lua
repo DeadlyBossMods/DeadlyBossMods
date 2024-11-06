@@ -84,7 +84,7 @@ function mod:OnCombatStart(delay)
 	self.vb.decimateCount = 0
 	timerCaptainsFlourishCD:Start(6-delay, 1)
 	if self:IsMythic() then
-		timerPhaseBladesCD:Start(12.4-delay, 1)
+		timerPhaseBladesCD:Start(12.1-delay, 1)
 		timerRainofArrowsCD:Start(22.2-delay, 1)
 		timerDecimateCD:Start(50.8-delay, 1)
 	else--Confirmed heroic and normal
@@ -157,7 +157,7 @@ function mod:SPELL_CAST_START(args)
 			--prior to first sweep only 2 casts and 2nd delayed
 			--After it's always 3 casts
 			if self.vb.arrowsTrackedCount == 1 then
-				timerRainofArrowsCD:Start(self.vb.sweepCount == 0 and 40.2 or 27.9, self.vb.arrowsCount+1)
+				timerRainofArrowsCD:Start(self.vb.sweepCount == 0 and 40.1 or 27.9, self.vb.arrowsCount+1)
 			elseif self.vb.arrowsTrackedCount == 2 and self.vb.sweepCount > 0 then
 				timerRainofArrowsCD:Start(27.9, self.vb.arrowsCount+1)
 			end

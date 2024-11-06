@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(218370)
 mod:SetEncounterID(2922)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20241029000000)
+mod:SetHotfixNoticeRev(20241106000000)
 mod:SetMinSyncRevision(20240910000000)
 mod:SetZone(2657)
 mod.respawnTime = 29
@@ -661,7 +661,7 @@ function mod:SPELL_CAST_START(args)
 		timerRoyalCondemnationCD:Start(allTimers[savedDifficulty][3][438976][1], 1)
 		timerInfestCD:Start(allTimers[savedDifficulty][3][443325][1], 1)
 		timerGorgeCD:Start(allTimers[savedDifficulty][3][443336][1], 1)
-		timerWebBladesCD:Start(allTimers[savedDifficulty][1][439299][1], 1)
+		timerWebBladesCD:Start(allTimers[savedDifficulty][3][439299][1], 1)
 	end
 end
 
