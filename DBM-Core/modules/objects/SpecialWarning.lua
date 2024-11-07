@@ -911,6 +911,12 @@ function bossModPrototype:NewSpecialWarningTarget(spellId, optionDefault, ...)
 	return newSpecialWarning(self, "target", spellId, nil, optionDefault, ...)
 end
 
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1str
+function bossModPrototype:NewSpecialWarningLink(spellId, optionDefault, ...)
+	---@type SpecAnnounce1str
+	return newSpecialWarning(self, "link", spellId, nil, optionDefault, ...)
+end
+
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: number|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce2numstr
 function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, ...)
 	---@type SpecAnnounce2numstr
