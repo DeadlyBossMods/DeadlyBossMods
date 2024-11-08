@@ -205,7 +205,7 @@ L.DBMLDB 							= "AVISO: O DBM-LDB agora está incorporado ao DBM-Core. Embora 
 L.DBMLOOTREMINDER 					= "AVISO: O módulo de terceiros DBM-LootReminder está instalado. Este addon não é mais compatível com o cliente do WoW Retail e causará problemas no " .. L.DBM .. ", impedindo-o de enviar cronômetros de puxada. Recomenda-se desinstalar este addon."
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de " .. L.DBM .. " não funcionara corretamente até que você recomece o jogo por completo. Esta atualização contem novos arquivos ou mudanças no .toc que não podem ser carregadas via ReloadUI. Você pode encontrar funcionalidades quebradas ou erros caso continue sem recomeçar o jogo por completo."
 L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM.. " está desatualizada e este módulo de luta específico possui recursos mais recentes ou correções de bugs. É recomendado que você atualize para esta luta para melhorar sua experiência."
-L.PLATER_NP_AURAS_MSG 				= L.DBM .. " inclui um recurso avançado para Exibir os cronômetros de recarga do inimigo usando ícones nas placas de identificação. Isso está ativado por padrão para a maioria dos usuários, mas para os usuários do Plater está desativado por padrão nas opções do Plater, a menos que você o habilite. Para aproveitar ao máximo o DBM (e o Plater), é recomendável que você habilite este recurso no Plater na seção 'Buff Special'. Se você não deseja ver esta mensagem novamente, também pode simplesmente desativar completamente a opção 'Ícones de recarga nas placas de identificação' nas opções de desativação global ou de placas de identificação do DBM."
+L.PLATER_NP_AURAS_MSG 				= L.DBM .. " inclui um recurso avançado para exibir os cronômetros de recarga do inimigo usando ícones nas placas de identificação. Isso está ativado por padrão para a maioria dos usuários, mas para os usuários do Plater está desativado por padrão nas opções do Plater, a menos que você o habilite. Para aproveitar ao máximo o DBM (e o Plater), é recomendável que você habilite este recurso no Plater na seção 'Buff Special'. Se você não deseja ver esta mensagem novamente, também pode simplesmente desativar completamente a opção 'Ícones de recarga nas placas de identificação' nas opções de desativação global ou de placas de identificação do DBM."
 
 L.MOVABLE_BAR						= "Arraste-me!"
 
@@ -654,7 +654,7 @@ L.WORLD_BUFFS.blackfathomBoon		= "Bênção das Profundezas Negras"
 L.DBM_INSTALL_REMINDER_HEADER = "Instalação incompleta do DBM detectada!"
 L.DBM_INSTALL_REMINDER_EXPLAIN = "Bem-vindo(a) a %s. Os mods do DBM para chefes aqui estão no %s que você não tem instalado. O DBM não exibirá cronômetros ou anúncios nesta zona, a menos que você instale o %s!"
 L.DBM_INSTALL_REMINDER_DISABLE = "Desativar todos os anúncios e cronômetros do DBM nesta zona." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
-L.DBM_INSTALL_REMINDER_DISABLE2 = "Não Exibir esta mensagem novamente para este pacote." -- Used for unimportant mods, i.e., dungeons
+L.DBM_INSTALL_REMINDER_DISABLE2 = "Não exibir esta mensagem novamente para este pacote." -- Used for unimportant mods, i.e., dungeons
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Pressione " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar o link do Wago.io para sua área de transferência."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Pressione " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar o link do Curseforge para sua área de transferência."
 --"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
