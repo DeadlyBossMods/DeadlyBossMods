@@ -39,7 +39,7 @@ local warnErosiveSpray							= mod:NewCountAnnounce(439811, 2, nil, nil, 123121)
 local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
-local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
+local specWarnSavageAssaultTaunt				= mod:NewSpecialWarningTaunt(444687, nil, nil, nil, 1, 2)
 local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
 local specWarnEvellpingWebs						= mod:NewSpecialWarningDodgeCount(454989, nil, 157317, nil, 2, 2)
 --local yellWebReave							= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
@@ -508,10 +508,10 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
-		else
+		elseif not DBM:UnitDebuff("player", 458067) then
 			local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
-			specWarnSavageWoundSwap:Show(bossTarget)
-			specWarnSavageWoundSwap:Play("tauntboss")
+			specWarnSavageAssaultTaunt:Show(bossTarget)
+			specWarnSavageAssaultTaunt:Play("tauntboss")
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
 		if timer then
