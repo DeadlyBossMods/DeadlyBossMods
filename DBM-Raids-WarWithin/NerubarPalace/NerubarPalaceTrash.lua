@@ -116,8 +116,7 @@ end
 function mod:GOSSIP_SHOW()
 	local gossipOptionID = self:GetGossipID()
 	if gossipOptionID then
-		--Potion at entrance
-		if self.Options.AutoGossipBuff and gossipOptionID == 229208 then -- Buffs
+		if self.Options.AutoGossipBuff and gossipOptionID == 123878 then--Potion at entrance
 			self:SelectGossip(gossipOptionID)
 		end
 	end
