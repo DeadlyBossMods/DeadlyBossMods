@@ -508,6 +508,10 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
+		else
+			local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
+			specWarnSavageWoundSwap:Show(bossTarget)
+			specWarnSavageWoundSwap:Play("tauntboss")
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
 		if timer then
@@ -580,15 +584,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 458067 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
-			if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
-				specWarnSavageWoundSwap:Show(args.destName)
-				specWarnSavageWoundSwap:Play("tauntboss")
-			else
-				warnSavageWound:Show(args.destName, args.amount or 1)
-			end
-		end
+		warnSavageWound:Show(args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
