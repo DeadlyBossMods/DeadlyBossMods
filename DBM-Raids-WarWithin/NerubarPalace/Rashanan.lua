@@ -53,7 +53,7 @@ local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, DBM_COMMON_L
 local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil, nil, 3)
 local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, 123121, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Spray"
-local timerEnvelopingWebsCD						= mod:NewCDCountTimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Webs"
+local timerEnvelopingWebsCD						= mod:NewCDCountTimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON, nil, 1)--Shortname "Webs"
 local timerMovementCD							= mod:NewStageContextCountTimer(49, 334371, nil, nil, nil, 6, 178717)
 
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
