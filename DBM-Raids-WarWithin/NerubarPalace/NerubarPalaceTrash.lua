@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 445553 436784",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"GOSSIP_SHOW"
 )
 
 --TODO, add https://www.wowhead.com/spell=446760/slobbering-grasp in some capacity?
@@ -32,6 +33,8 @@ local specWarnDarkMending					= mod:NewSpecialWarningInterrupt(441747, "HasInter
 local specWarnEnshroudingPulse				= mod:NewSpecialWarningInterrupt(443138, "HasInterrupt", nil, nil, 1, 2)
 
 local timerImpaleCD							= mod:NewCDNPTimer(17, 459952, nil, nil, nil, 3)--17-20
+
+mod:AddGossipOption(true, "Buff")
 
 --local playerName = UnitName("player")
 
@@ -107,5 +110,15 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 222305 then--Palace Guardian
 		timerImpaleCD:Stop(args.destGUID)
+	end
+end
+
+function mod:GOSSIP_SHOW()
+	local gossipOptionID = self:GetGossipID()
+	if gossipOptionID then
+		--Potion at entrance
+		if self.Options.AutoGossipBuff and gossipOptionID == 229208 then -- Buffs
+			self:SelectGossip(gossipOptionID)
+		end
 	end
 end
