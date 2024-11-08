@@ -36,12 +36,12 @@ local warnRollingAcid							= mod:NewIncomingCountAnnounce(439789, 2, nil, nil, 
 local warnInfestedSpawn							= mod:NewIncomingCountAnnounce(455373, 2)
 local warnSpinneretsStrands						= mod:NewIncomingCountAnnounce(439784, 3)--General announce, private aura sound will be personal emphasis
 local warnErosiveSpray							= mod:NewCountAnnounce(439811, 2, nil, nil, 123121)--Shortname "Spray"
-local warnEnvelopingWebs						= mod:NewCountAnnounce(454989, 4, nil, nil, 157317)--Shortname "Webs"
 local warnAcidEruption							= mod:NewCastAnnounce(452806, 4)
 
 local specWarnSavageAssault						= mod:NewSpecialWarningDefensive(444687, nil, nil, nil, 1, 2)
-local specWarnSavageWoundSwap					= mod:NewSpecialWarningTaunt(458067, nil, nil, nil, 1, 2)
+local specWarnSavageAssaultTaunt				= mod:NewSpecialWarningTaunt(444687, nil, nil, nil, 1, 2)
 local specWarnWebReave							= mod:NewSpecialWarningCount(439795, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
+local specWarnEvellpingWebs						= mod:NewSpecialWarningDodgeCount(454989, nil, 157317, nil, 2, 2)
 --local yellWebReave							= mod:NewShortYell(439795, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 --local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
 local specWarnAcidEruption						= mod:NewSpecialWarningInterrupt(452806, "HasInterrupt", nil, nil, 1, 2)
@@ -53,7 +53,7 @@ local timerInfestedSpawnCD						= mod:NewCDCountTimer(21.3, 455373, DBM_COMMON_L
 local timerSpinneretsStrandsCD					= mod:NewCDCountTimer(33.9, 439784, nil, nil, nil, 3)
 local timerWebReaveCD							= mod:NewCDCountTimer(49, 439795, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerErosiveSprayCD						= mod:NewCDCountTimer(49, 439811, 123121, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Spray"
-local timerEnvelopingWebsCD						= mod:NewCDCountTimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Webs"
+local timerEnvelopingWebsCD						= mod:NewCDCountTimer(49, 454989, 157317, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON, nil, 1)--Shortname "Webs"
 local timerMovementCD							= mod:NewStageContextCountTimer(49, 334371, nil, nil, nil, 6, 178717)
 
 mod:AddPrivateAuraSoundOption(439790, true, 439789, 1)--Rolling Acid target
@@ -508,6 +508,10 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
+		elseif not DBM:UnitDebuff("player", 458067) then
+			local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
+			specWarnSavageAssaultTaunt:Show(bossTarget)
+			specWarnSavageAssaultTaunt:Play("tauntboss")
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
 		if timer then
@@ -556,7 +560,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 454989 then--Mythic
 		self.vb.envelopingCountTotal = self.vb.envelopingCountTotal + 1
 		self.vb.envelopingCount = self.vb.envelopingCount + 1
-		warnEnvelopingWebs:Show(self.vb.envelopingCountTotal)
+		specWarnEvellpingWebs:Show(self.vb.envelopingCountTotal)
+		specWarnEvellpingWebs:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.envelopingCount+1)
 		if timer then
 			timerEnvelopingWebsCD:Start(timer, self.vb.envelopingCountTotal+1)
@@ -579,15 +584,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 458067 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
-			if not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
-				specWarnSavageWoundSwap:Show(args.destName)
-				specWarnSavageWoundSwap:Play("tauntboss")
-			else
-				warnSavageWound:Show(args.destName, args.amount or 1)
-			end
-		end
+		warnSavageWound:Show(args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
