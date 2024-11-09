@@ -19,8 +19,8 @@ local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
 local currentZone = DBM:GetCurrentArea() or 0
 --Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
-local affixesMod
-local lastUsedMod
+local affixesMod--Mythic+ or Raid affixes module
+local lastUsedMod--Trash module for given zone
 local cachedMods = {}
 
 ---Scan for new Unit Engages
@@ -119,6 +119,8 @@ local function DelayedZoneCheck(force)
 	end
 end
 --Monitor bitflag of players, which should change with combat states
+--Only party is monitored because main use case is dungeons and delves.
+--And we don't want to waste performance in registered raids. 5 players should be enough to determine raid combat
 function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
