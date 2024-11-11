@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 443403",
 	"SPELL_PERIODIC_MISSED 443403",
 	"UNIT_DIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -161,7 +161,7 @@ local yellAbyssalInfusionFades				= mod:NewIconFadesYell(443888, 161722)--Shortn
 local specWarnAbyssalReverb					= mod:NewSpecialWarningMoveAway(455387, nil, 37859, nil, 1, 2, 3)--Heroic+ secondary effect of Abyssal Infusion
 local yellAbyssalReverb						= mod:NewShortYell(455387, 37859)
 local yellAbyssalReverbFades				= mod:NewShortFadesYell(455387, 37859)
-local specWarnFrothingGluttony				= mod:NewSpecialWarningRunCount(445422, nil, nil, DBM_COMMON_L.RING, 4, 12)
+local specWarnFrothingGluttony				= mod:NewSpecialWarningCount(445422, nil, nil, DBM_COMMON_L.RING, 3, 2)
 local specWarnAcolytesEssence				= mod:NewSpecialWarningMoveAway(445152, nil, nil, nil, 1, 2)
 local yellAcolytesEssenceFades				= mod:NewShortFadesYell(445152)
 local specWarnNullDetonation				= mod:NewSpecialWarningInterruptCount(445021, nil, nil, nil, 1, 2)
@@ -530,7 +530,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 447411 or spellId == 450191 then--Intermission Left / Phase 2 right
 		self.vb.wrestCount = self.vb.wrestCount + 1
 		self:Unschedule(showWrest)
-		self:Schedule(0.5, showWrest, self, false)
+		if spellId == 450191 then
+			self:Schedule(0.5, showWrest, self, false)
+		else--Intermission, just trigger immediately
+			showWrest(self, true)
+		end
 		timerWrestCD:Start(spellId == 447411 and 19 or 8, self.vb.wrestCount+1)
 	elseif spellId == 449940 then
 		timerWrestCD:Stop()
@@ -597,7 +601,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 445422 and not self.vb.cataEvoActivated then
 		self.vb.frothingGluttonyCount = self.vb.frothingGluttonyCount + 1
 		specWarnFrothingGluttony:Show(self.vb.frothingGluttonyCount)
-		specWarnFrothingGluttony:Play("pullin")--TODO, FIX ME with new audio
+		specWarnFrothingGluttony:Play("specialsoon")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 445422, self.vb.frothingGluttonyCount+1)
 		if timer then
 			timerFrothingGluttonyCD:Start(timer, self.vb.frothingGluttonyCount+1)
@@ -975,9 +979,9 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---"<160.27 08:47:52> [CLEU] SPELL_CAST_START#Creature-0-3061-2657-14564-218370-000063DD7C#Queen Ansurek(60.6%-100.0%)##nil#447411#Wrest#nil#nil",
---"<160.42 08:47:52> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\\\ICONS\\\\Misc_Legionfall_Warlock.BLP:20|t %s begins to cast |cFFFF0000|Hspell:447411|h[Wrest]|h|r!#Queen Ansurek
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+--"<3.13 00:08:13> [CLEU] SPELL_CAST_START#Creature-0-4214-2657-21126-218370-0000318FF8#Queen Ansurek(38.0%-0.0%)##nil#450191#Wrest#nil#nil#nil#nil#nil#nil",
+--"<3.23 00:08:13> [RAID_BOSS_WHISPER] |TInterface\\ICONS\\Misc_Legionfall_Warlock.BLP:20|t %s begins to cast |cFFFF0000|Hspell:447411|h[Wrest]|h|r!#Queen Ansurek#5#true",
+function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:447411") then
 		self:Unschedule(showWrest)
 		showWrest(self, true)
