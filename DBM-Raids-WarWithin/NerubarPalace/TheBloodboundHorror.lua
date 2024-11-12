@@ -293,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if timerGruesomeDigorgeCD:GetRemaining(self.vb.disgorgeCount+1) > 15 then
 					timerGraspFromBeyondCD:Start(15, self.vb.graspCount+1)
 				else
-					timerGraspFromBeyondCD:Start(21, self.vb.graspCount+1)
+					timerGraspFromBeyondCD:Start(17.3, self.vb.graspCount+1)
 				end
 			end
 		end
