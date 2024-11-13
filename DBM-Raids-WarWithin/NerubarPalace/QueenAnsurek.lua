@@ -220,19 +220,19 @@ mod.vb.cataEvoActivated = false
 local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
-		[1] = {
+		[1] = {--Nov 12th Hotfixes Current
 			--Reactive Toxin
 			[437592] = {19.1, 55.8, 55.8},
 			--Venom Nova
 			[437417] = {29.3, 56, 56},
 			--Silken Tomb
-			[439814] = {12.4, 40.0, 54.0, 26.0},
+			[439814] = {12.4, 40.0, 57.0},
 			--Liquefy
 			[440899] = {6.4, 40.0, 54.0},
 			--Web Blades
-			[439299] = {20.4, 40.0, 13.0, 25.0, 16.0, 26.0}
+			[439299] = {20.4, 40.0, 13.0, 25.0, 19.0, 23.0}
 		},
-		[3] = {
+		[3] = {--Nov 12th Hotfixes Current (Missing some longer pull data)
 			--Abyssal Infusion
 			[443888] = {57.8, 80, 80},
 			--Frothing Gluttony
@@ -240,13 +240,13 @@ local allTimers = {
 			--Queen's Summons
 			[444829] = {43.8, 64, 83},
 			--Royal Condemnation
-			[438976] = {116.3, 52, 34},
+			[438976] = {116.3, 86},
 			--Infest
-			[443325] = {29.8, 66, 82},
+			[443325] = {29.8, 66, 80},
 			--Gorge
-			[443336] = {31.8, 66, 82},
+			[443336] = {31.8, 66, 80},
 			--Web Blades
-			[439299] = {48.5, 11.0, 26.0, 21.0, 17.0, 16.0, 47.0, 19.0, 14.0, 22.0}
+			[439299] = {48.5, 37.0, 21.0, 17.0, 42.0, 21.0, 19.0, 36.1}
 
 		},
 	},
