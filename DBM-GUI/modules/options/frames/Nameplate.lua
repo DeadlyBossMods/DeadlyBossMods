@@ -16,7 +16,7 @@ testbutton.myheight = 0
 --When using plater, most options are configured in plater
 --so we generate a button to open plater options instead of showing a bunch of options that are ignored
 local Plater = _G["Plater"]
-if Plater then
+if 1 + 1 == 2 then--Plater button disabled for now
 	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")--Only option we control that plater doesn't
 
 	local platerButton = general:CreateButton(L.Plater_Config, 100, 25)
