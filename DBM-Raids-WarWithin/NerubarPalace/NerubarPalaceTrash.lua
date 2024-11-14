@@ -7,7 +7,7 @@ mod.isTrashMod = true
 mod:SetZone(2657)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176",
+	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000",
 	"SPELL_AURA_APPLIED 445553 436784",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
@@ -20,6 +20,7 @@ mod:RegisterEvents(
 
 local specWarnStagFlip						= mod:NewSpecialWarningDefensive(463176, nil, nil, nil, 3, 2)
 local specWarnFixate						= mod:NewSpecialWarningYou(445553, nil, nil, nil, 1, 2)
+local specWarnGossemerWeave					= mod:NewSpecialWarningDodge(444000, nil, nil, nil, 2, 15)
 local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 15)
 local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 15)
 local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 15)
@@ -60,6 +61,11 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 2) then
 			specWarnHeavingRetch:Show()
 			specWarnHeavingRetch:Play("frontal")
+		end
+	elseif spellId == 444000 then
+		if self:AntiSpam(3, 2) then
+			specWarnGossemerWeave:Show()
+			specWarnGossemerWeave:Play("frontal")
 		end
 	elseif spellId == 463104 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnVoidBoltVolley:Show(args.sourceName)
