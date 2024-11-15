@@ -346,7 +346,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {8.1, 40},
 			--Infested Spawn
-			[455373] = {18.8},
+			[455373] = {18.7},
 			--Rolling Acid
 			[439789] = {35},
 			--Savage Assault
@@ -374,7 +374,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {14.3, 20},
+			[455373] = {0},--Not cast on this movement
 			--Rolling Acid
 			[439789] = {15.8},
 			--Savage Assault
@@ -388,7 +388,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {14.4, 24.7},
+			[455373] = {14.3, 20},
 			--Rolling Acid
 			[439789] = {0},--Not cast on 4th area
 			--Savage Assault
@@ -402,7 +402,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {19.1},
+			[455373] = {14.4, 24.7},
 			--Rolling Acid
 			[439789] = {20.6},
 			--Savage Assault
@@ -416,7 +416,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {0},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {19.1},
 			--Rolling Acid
 			[439789] = {0},
 			--Savage Assault
