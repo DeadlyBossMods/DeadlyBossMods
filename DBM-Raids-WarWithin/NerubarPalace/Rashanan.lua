@@ -493,6 +493,7 @@ function mod:OnTimerRecovery()
 	end
 end
 
+---@param self DBMMod
 local function delayedTankCheck(self)
 	local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
 	specWarnSavageAssaultTaunt:Show(bossTarget)
