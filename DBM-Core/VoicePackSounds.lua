@@ -218,6 +218,7 @@
 ---|"movetotank"
 ---|"movetoweb" 17
 ---|"movetoflamethrower" 17
+---|"movetotendrils" 17
 ---|"mpurple"
 ---|"myellow"
 ---|"negative" 13
