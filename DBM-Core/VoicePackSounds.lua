@@ -252,6 +252,7 @@
 ---|"redyou" 17
 ---|"riftdispel" 17
 ---|"right"
+---|"rollincoming" 17
 ---|"runaway" 2
 ---|"runin" 2
 ---|"runintofire" 12
