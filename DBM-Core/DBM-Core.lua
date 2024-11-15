@@ -6934,6 +6934,38 @@ do
 			end
 		end
 	end
+
+	---Function for returning if ANYONE in raid has a buff
+	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
+	---@param spellInput2 number|string|nil|unknown? --optional 2nd spell, accepts spellname or spellid
+	---@param spellInput3 number|string|nil|unknown? --optional 3rd spell, accepts spellname or spellid
+	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
+	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
+	function DBM:RaidUnitBuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+		for uId in DBM:GetGroupMembers() do
+			local buff = DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+			if buff then
+				return true
+			end
+		end
+		return false
+	end
+
+	---Function for returning if ANYONE in raid has a debuff
+	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
+	---@param spellInput2 number|string|nil|unknown? --optional 2nd spell, accepts spellname or spellid
+	---@param spellInput3 number|string|nil|unknown? --optional 3rd spell, accepts spellname or spellid
+	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
+	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
+	function DBM:RaidUnitDebuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+		for uId in DBM:GetGroupMembers() do
+			local debuff = DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+			if debuff then
+				return true
+			end
+		end
+		return false
+	end
 end
 
 function DBM:UNIT_DIED(args)
