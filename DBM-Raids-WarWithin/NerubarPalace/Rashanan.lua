@@ -508,7 +508,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
-		elseif not DBM:UnitDebuff("player", 458067) then
+		else
 			local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
 			specWarnSavageAssaultTaunt:Show(bossTarget)
 			specWarnSavageAssaultTaunt:Play("tauntboss")
