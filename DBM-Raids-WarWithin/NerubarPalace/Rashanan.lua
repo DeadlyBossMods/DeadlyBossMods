@@ -500,6 +500,12 @@ function mod:OnTimerRecovery()
 	end
 end
 
+local function delayedTankCheck(self)
+	local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
+	specWarnSavageAssaultTaunt:Show(bossTarget)
+	specWarnSavageAssaultTaunt:Play("tauntboss")
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 444687 then
@@ -509,9 +515,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnSavageAssault:Show()
 			specWarnSavageAssault:Play("defensive")
 		else
-			local bossTarget = self:GetBossTarget(214504) or DBM_COMMON_L.UNKNOWN
-			specWarnSavageAssaultTaunt:Show(bossTarget)
-			specWarnSavageAssaultTaunt:Play("tauntboss")
+			--Delayed so it doesn't grab invalid target since boss might be looking at previous target on first frame
+			self:Schedule(0.3, delayedTankCheck, self)
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
 		if timer then
