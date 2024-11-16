@@ -31,20 +31,22 @@ local function ScanEngagedUnits(self)
 	local uId = (IsInRaid() and "raid") or "party"
 	for i = 0, GetNumGroupMembers() do
 		local id = (i == 0 and "target") or uId .. i .. "target"
-		local guid = UnitGUID(id)
-		if guid and DBM:IsCreatureGUID(guid) then
-			if not ActiveGUIDs[guid] then
-				ActiveGUIDs[guid] = true
-				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartNameplateTimers(guid, cid, 0)
-				DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+		if UnitAffectingCombat(id) and not UnitIsFriend(id, "player") then
+			local guid = UnitGUID(id)
+			if guid and DBM:IsCreatureGUID(guid) then
+				if not ActiveGUIDs[guid] then
+					ActiveGUIDs[guid] = true
+					local cid = DBM:GetCIDFromGUID(guid)
+					self:StartNameplateTimers(guid, cid, 0)
+					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+				end
 			end
 		end
 	end
 	--Now scan nameplates
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
-		if foundUnit and UnitAffectingCombat(foundUnit) then
+		if foundUnit and UnitAffectingCombat(foundUnit) and not UnitIsFriend(foundUnit, "player") then
 			local guid = UnitGUID(foundUnit)
 			if guid and DBM:IsCreatureGUID(guid) then
 				if not ActiveGUIDs[guid] then
