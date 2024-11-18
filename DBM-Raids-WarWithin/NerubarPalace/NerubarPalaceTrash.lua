@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
 mod.isTrashMod = true
 mod:SetZone(2657)
+mod:RegisterZoneCombat(2657)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000",
@@ -126,4 +127,15 @@ function mod:GOSSIP_SHOW()
 			self:SelectGossip(gossipOptionID)
 		end
 	end
+end
+
+--All timers subject to a ~0.5 second clipping due to ScanEngagedUnits
+function mod:StartNameplateTimers(guid, cid)
+
+end
+
+--Abort timers when all players out of combat, so NP timers clear on a wipe
+--Caveat, it won't calls top with GUIDs, so while it might terminate bar objects, it may leave lingering nameplate icons
+function mod:LeavingZoneCombat()
+	self:Stop()
 end

@@ -6,7 +6,9 @@ local module = private:NewModule("TrashCombatScanningModule")
 module:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
-	"CHALLENGE_MODE_COMPLETED"
+	"CHALLENGE_MODE_COMPLETED",
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 ---@class DBM
@@ -147,6 +149,30 @@ module.ZONE_CHANGED_NEW_AREA	= module.LOADING_SCREEN_DISABLED
 function module:CHALLENGE_MODE_COMPLETED()
 	--This basically force unloads things even when in a dungeon, so it's not scanning trash that doesn't fight back
 	DelayedZoneCheck(true)
+end
+
+function module:ENCOUNTER_START()
+	--This basically force unloads things in a raid, since we're not typically fighting trash during a raid boss
+	if IsInRaid() then
+		DelayedZoneCheck(true)
+	else
+		--If we're in a dungeon, we use it as yet another redundant combat check
+		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			checkForCombat()
+		end
+	end
+end
+
+function module:ENCOUNTER_END()
+	--Restore trash registered zone combat events if there are any
+	if IsInRaid() then
+		DelayedZoneCheck()
+	else
+		--If we're in a dungeon, we use it as yet another redundant combat check
+		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			checkForCombat()
+		end
+	end
 end
 
 ---Used for registering combat with enemies that don't support conventional means (such as dungeon trash)
