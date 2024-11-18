@@ -163,7 +163,7 @@ function mod:GOSSIP_SHOW()
 end
 
 --All timers subject to a ~0.5 second clipping due to ScanEngagedUnits
-function mod:StartNameplateTimers(guid, cid)
+function mod:StartEngageTimers(guid, cid)
 	if cid == 222305 then
 --		timerImpaleCD:Start(17, guid)
 	elseif cid == 222145 then

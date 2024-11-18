@@ -39,7 +39,7 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid, 0)
+					self:StartEngageTimers(guid, cid, 0)
 					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 				end
 			end
@@ -54,7 +54,7 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid, 0.5)
+					self:StartEngageTimers(guid, cid, 0.5)
 					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 				end
 			end
@@ -76,7 +76,7 @@ local function checkForCombat()
 			if lastUsedMod.EnteringZoneCombat then
 				lastUsedMod:EnteringZoneCombat()
 			end
-			if lastUsedMod.StartNameplateTimers then
+			if lastUsedMod.StartEngageTimers then
 				ScanEngagedUnits(lastUsedMod)
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
@@ -229,7 +229,7 @@ do
 					if not ActiveGUIDs[guid] then
 						ActiveGUIDs[guid] = true
 						local cid = DBM:GetCIDFromGUID(guid)
-						self:StartNameplateTimers(guid, cid, scanTime)
+						self:StartEngageTimers(guid, cid, scanTime)
 						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 					end
 				end
@@ -239,7 +239,7 @@ do
 		DBM:Schedule(0.5, ScanEngagedBossUnits, self, scanTime+0.5, maxScanTime)
 	end
 	---Used to scan for boss Units on engage for starging nameplate timers on council type boss encounters
-	---<br>Uses mod:StartNameplateTimers(guid, cid, scanTime) as return function to start timers
+	---<br>Uses mod:StartEngageTimers(guid, cid, scanTime) as return function to start timers
 	---@param maxScanTime number?
 	function bossModPrototype:RegisterBossUnitScan(maxScanTime)
 		ScanEngagedBossUnits(self, 0, maxScanTime or 3)
