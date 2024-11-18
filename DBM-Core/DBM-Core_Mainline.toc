@@ -11,7 +11,7 @@
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Núcleo|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Noyau|r
 ## Notes: Deadly Boss Mods
-## Dependencies: DBM-StatusBarTimers, DBM-Test
+## Dependencies: DBM-StatusBarTimers
 ## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims, LibDBIcon-1.0, LibDeflate, LibSerialize, LibSpecialization, CustomNames, Masque
 ## SavedVariables: DBM_AllSavedOptions, DBM_MinimapIcon, DBM_AnnoyingPopupDisables, DBM_ModsToLoadWithFullTestSupport
 ## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
