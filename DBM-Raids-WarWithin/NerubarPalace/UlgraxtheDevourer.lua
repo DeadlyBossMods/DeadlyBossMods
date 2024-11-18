@@ -277,18 +277,16 @@ end
 
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:434776") and self:AntiSpam(3, 2) and not DBM:UnitDebuff("player", 455847) then
-		specWarnCarnivorousContest:Play("runout")
 		if targetName ~= UnitName("player") then
 			specWarnCarnivorousContest:Show(targetName)
-			specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
 			if self:IsMythic() then
 				if self.vb.lashingsCount == 1 then
-					specWarnCarnivorousContest:ScheduleVoice(1.5, "shareone")
+					specWarnCarnivorousContest:Play("shareone")
 				else
-					specWarnCarnivorousContest:ScheduleVoice(1.5, "sharetwo")
+					specWarnCarnivorousContest:Play("sharetwo")
 				end
 			else
-				specWarnCarnivorousContest:ScheduleVoice(1.5, "helpsoak")
+				specWarnCarnivorousContest:Play("helpsoak")
 			end
 		end
 	end
