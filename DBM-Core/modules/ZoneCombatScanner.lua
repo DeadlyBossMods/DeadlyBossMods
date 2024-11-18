@@ -109,7 +109,7 @@ local function DelayedZoneCheck(force)
 			"PLAYER_REGEN_ENABLED"
 		)
 		checkForCombat()--Still run an initial check
-		DBM:Debug("Registering Dungeon Trash Tracking Events", 2)
+		DBM:Debug("Registering Trash Tracking Events", 2)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 		eventsRegistered = false
@@ -119,7 +119,7 @@ local function DelayedZoneCheck(force)
 		module:UnregisterShortTermEvents()
 		DBM:Unschedule(checkForCombat)
 		DBM:Unschedule(ScanEngagedUnits)
-		DBM:Debug("Unregistering Dungeon Trash Tracking Events", 2)
+		DBM:Debug("Unregistering Trash Tracking Events", 2)
 	end
 end
 --Monitor bitflag of players, which should change with combat states
