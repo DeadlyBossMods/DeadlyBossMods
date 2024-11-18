@@ -6,7 +6,9 @@ local module = private:NewModule("TrashCombatScanningModule")
 module:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
-	"CHALLENGE_MODE_COMPLETED"
+	"CHALLENGE_MODE_COMPLETED",
+	"ENCOUNTER_START",
+	"ENCOUNTER_END"
 )
 
 ---@class DBM
@@ -37,7 +39,7 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid, 0)
+					self:StartEngageTimers(guid, cid, 0)
 					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 				end
 			end
@@ -52,7 +54,7 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartNameplateTimers(guid, cid, 0.5)
+					self:StartEngageTimers(guid, cid, 0.5)
 					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
 				end
 			end
@@ -74,7 +76,7 @@ local function checkForCombat()
 			if lastUsedMod.EnteringZoneCombat then
 				lastUsedMod:EnteringZoneCombat()
 			end
-			if lastUsedMod.StartNameplateTimers then
+			if lastUsedMod.StartEngageTimers then
 				ScanEngagedUnits(lastUsedMod)
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
@@ -107,7 +109,7 @@ local function DelayedZoneCheck(force)
 			"PLAYER_REGEN_ENABLED"
 		)
 		checkForCombat()--Still run an initial check
-		DBM:Debug("Registering Dungeon Trash Tracking Events", 2)
+		DBM:Debug("Registering Trash Tracking Events", 2)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 		eventsRegistered = false
@@ -117,7 +119,7 @@ local function DelayedZoneCheck(force)
 		module:UnregisterShortTermEvents()
 		DBM:Unschedule(checkForCombat)
 		DBM:Unschedule(ScanEngagedUnits)
-		DBM:Debug("Unregistering Dungeon Trash Tracking Events", 2)
+		DBM:Debug("Unregistering Trash Tracking Events", 2)
 	end
 end
 --Monitor bitflag of players, which should change with combat states
@@ -147,6 +149,30 @@ module.ZONE_CHANGED_NEW_AREA	= module.LOADING_SCREEN_DISABLED
 function module:CHALLENGE_MODE_COMPLETED()
 	--This basically force unloads things even when in a dungeon, so it's not scanning trash that doesn't fight back
 	DelayedZoneCheck(true)
+end
+
+function module:ENCOUNTER_START()
+	--This basically force unloads things in a raid, since we're not typically fighting trash during a raid boss
+	if IsInRaid() then
+		DelayedZoneCheck(true)
+	else
+		--If we're in a dungeon, we use it as yet another redundant combat check
+		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			checkForCombat()
+		end
+	end
+end
+
+function module:ENCOUNTER_END()
+	--Restore trash registered zone combat events if there are any
+	if IsInRaid() then
+		DelayedZoneCheck()
+	else
+		--If we're in a dungeon, we use it as yet another redundant combat check
+		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			checkForCombat()
+		end
+	end
 end
 
 ---Used for registering combat with enemies that don't support conventional means (such as dungeon trash)
@@ -203,7 +229,7 @@ do
 					if not ActiveGUIDs[guid] then
 						ActiveGUIDs[guid] = true
 						local cid = DBM:GetCIDFromGUID(guid)
-						self:StartNameplateTimers(guid, cid, scanTime)
+						self:StartEngageTimers(guid, cid, scanTime)
 						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
 					end
 				end
@@ -213,7 +239,7 @@ do
 		DBM:Schedule(0.5, ScanEngagedBossUnits, self, scanTime+0.5, maxScanTime)
 	end
 	---Used to scan for boss Units on engage for starging nameplate timers on council type boss encounters
-	---<br>Uses mod:StartNameplateTimers(guid, cid, scanTime) as return function to start timers
+	---<br>Uses mod:StartEngageTimers(guid, cid, scanTime) as return function to start timers
 	---@param maxScanTime number?
 	function bossModPrototype:RegisterBossUnitScan(maxScanTime)
 		ScanEngagedBossUnits(self, 0, maxScanTime or 3)
