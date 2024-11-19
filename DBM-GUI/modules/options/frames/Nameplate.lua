@@ -18,6 +18,7 @@ testbutton.myheight = 0
 local Plater = _G["Plater"]
 if Plater then--Plater button disabled for now
 	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")--Only option we control that plater doesn't
+	general:CreateCheckButton(L.AlwaysKeepNPs, true, nil, "AlwaysKeepNPs")
 
 	local platerButton = general:CreateButton(L.Plater_Config, 100, 25)
 	platerButton:SetPoint("CENTER", general.frame, "CENTER", 0, -20)
@@ -35,6 +36,7 @@ else
 	general:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
 	general:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
 	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+	general:CreateCheckButton(L.AlwaysKeepNPs, true, nil, "AlwaysKeepNPs")
 end
 
 

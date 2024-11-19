@@ -445,6 +445,7 @@ L.SpamBlockNoNameplate				= "Do not show nameplate only icons for special boss m
 L.SpamBlockNoNameplateCD			= "Do not show nameplate only cooldown timer icons for abilities"
 L.SpamBlockNoNameplateCasts			= "Do not show nameplate only cast timer icons for abilities"
 L.SpamBlockNoBossGUIDs				= "Do not show nameplate cooldown timer icons for abilities that also have timers\n(Usually applies to dungeon bosses)"
+L.AlwaysKeepNPs						= "Keep expired nameplate cooldown timer icons visible until ability is recast"
 
 L.Area_SpamFilter_Misc				= "Misc Features"
 L.SpamBlockNoSetIcon				= "Do not automatically set icons on targets"
