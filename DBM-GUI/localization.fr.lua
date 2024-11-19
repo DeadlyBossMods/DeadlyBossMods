@@ -65,7 +65,7 @@ L.Area_ModulesForYou		= "Quels modules DBM sont bons pour vous ?"
 L.Area_ProfilesSetup		= "Guide d'utilisation des profiles DBM"
 
 -- Panel: Core & GUI
-L.Core_GUI 					= "Core et Interface"
+L.Core_GUI 					= "Core et interface"
 L.General 					= "Options générales de DBM Core"
 L.EnableMiniMapIcon			= "Afficher l'icône de la minicarte"
 L.EnableCompartmentIcon		= "Afficher l'icône de compartiment"
@@ -75,11 +75,11 @@ L.UseDialogChannel			= "Canal audio Discussion"
 L.UseSFXChannel				= "Canal audio Son (SFX)"
 L.Latency_Text				= "Seuil de latence max. pour synchro: %d"
 
-L.Button_RangeFrame			= "Afficher/cacher Cadre de portée"
-L.Button_InfoFrame			= "Afficher/cacher Cadre d'infos"
+L.Button_RangeFrame			= "Afficher/cacher cadre de portée"
+L.Button_InfoFrame			= "Afficher/cacher cadre d'info"
 L.Button_TestBars			= "Barres de test"
 L.Button_MoveBars			= "Déplacer les barres"
-L.Button_ResetInfoRange		= "Réinit. les cadres de portée et d'infos"
+L.Button_ResetInfoRange		= "Réinit. les cadres de portée et d'info"
 
 L.ModelOptions				= "Options du visualiseur de modèle 3D"
 L.EnableModels				= "Activer les modèles 3D dans les options des boss"
@@ -387,12 +387,13 @@ L.FadeBar					= "Disparition des barres pour les capacités hors de portée"
 L.BarSkin					= "Apparence des barres"
 
 -- Tab: Global Disables & Filters
-L.TabCategory_Filters	 	= "Désactivations globales & Filtres"
+L.TabCategory_Filters	 	= "Désactivations globales et filtres"
 L.Area_DBMFiltersSetup		= "Guide des filtres DBM"
 L.Area_BlizzFiltersSetup	= "Guide des filtres Blizzard"
+
 -- Panel: DBM Features
 L.Panel_SpamFilter					= "Désactivation DBM"
-L.Area_SpamFilter_Anounces			= "Options des alertes Désactivations globales & Filtres"
+L.Area_SpamFilter_Anounces			= "Options des alertes Désactivations globales et filtres"
 L.SpamBlockNoShowAnnounce			= "Ne pas afficher de texte ou jouer de son pour AUCUNE alerte générale"
 L.SpamBlockNoShowTgtAnnounce		= "Ne pas afficher de texte ou jouer de son pour les alertes générales CIBLE qui ne vous affecte pas, certaines alertes signalées ignoreront ce filtre (le filtre ci-dessus écrase celui-ci)"
 L.SpamBlockNoTrivialSpecWarnSound	= "Ne pas jouer de son d'annonce spéciale ni faire clignoter l'écran pour le contenu bas-niveau (joue le son d'annonce par défaut sélectionné par l'utilisateur à la place)"
@@ -413,10 +414,19 @@ L.SpamBlockNoSpecWarnFlash			= "Ne pas faire clignoter l'écran pour les alertes
 L.SpamBlockNoSpecWarnVibrate		= "Ne pas faire vibrer la manette pour les alertes spéciales"
 L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'alerte spéciale (autorise les paquets de voix, si l'un d'eux est sélectionné dans les options d'alertes vocales)"
 
+L.Area_SpamFilter_Timers			= "Options des chronomètres"
+L.SpamBlockNoShowBossTimers			= "Ne pas afficher les chronomètres pour les boss de donjon/raid"
+L.SpamBlockNoShowTrashTimers		= "Ne pas afficher les chronomètres pour les trash de donjon/raid (Remarque : cela désactive également les CD des plaques de nom)"
+L.SpamBlockNoShowEventTimers		= "Ne pas afficher les chronomètres pour les événements ou alertes (Apparition de file d'attente, réapparition de boss, etc.)"
+L.SpamBlockNoShowUTimers			= "Ne pas afficher les chronomètres envoyés par les utilisateurs (Personnalisé/pull/pause)"
+L.SpamBlockNoCountdowns				= "Ne pas jouer les sons de compte à rebours"
 
-L.Area_SpamFilter_Timers	= "Options du chronomètre"
-L.SpamBlockNoShowUTimers	= "Ne pas afficher au joueur les décomptes envoyés (Personnalisés/Pull/Pause)"
-L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
+L.Area_SpamFilter_Nameplates		= "Options des plaques de nom"
+L.SpamBlockNoNameplate				= "Ne pas afficher uniquement les icônes des plaques de nom pour les mécaniques spéciales des boss (ex. buffs ou affaiblissements sur les ennemis)"
+L.SpamBlockNoNameplateCD			= "Ne pas afficher uniquement les icônes des chronomètres de recharge des plaques de nom pour les capacités"
+L.SpamBlockNoNameplateCasts			= "Ne pas afficher uniquement les icônes des chronomètres d'incantation des plaques de nom pour les capacités"
+L.SpamBlockNoBossGUIDs				= "Ne pas afficher les icônes des chronomètres de recharge des plaques de nom pour les capacités qui ont également des chronomètres\n(S'applique généralement aux boss de donjons)"
+L.AlwaysKeepNPs						= "Maintenir visibles les icônes des chronomètres de recharge des plaques de nom expirées jusqu'à ce que la capacité soit réincantée"
 
 L.Area_SpamFilter_Misc		= "Options divers"
 L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
@@ -443,7 +453,7 @@ L.FilterDispels				= "Filtrer les alertes de dissipations si votre sort de dissi
 L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."
 L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux trash dans les donjons normaux &amp; héroïques"
 
-L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, & personnalisé"
+L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, et personnalisé"
 L.DontShowPTNoID			= "Bloquer les décomptes de pull envoyés depuis une zone différente de la vôtre"
 L.DontShowPT				= "Ne pas afficher la barre de pull/pause"
 L.DontShowPTText			= "Ne pas afficher le texte d'alerte du décompte de pull/pause"
@@ -517,7 +527,7 @@ L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchronis
 L.EnableWBSharing 			= "Partager quand vous engagez/battez un world boss avec votre guilde et vos amis battle.net qui sont sur le même royaume"
 
 -- Tab: Frames & Integrations
-L.TabCategory_Frames		= "Cadres et Intégrations"
+L.TabCategory_Frames		= "Cadres et intégrations"
 L.Area_NamelateInfo			= "Informations sur les auras des plaques de nom de DBM"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "Cadre d'infos"
