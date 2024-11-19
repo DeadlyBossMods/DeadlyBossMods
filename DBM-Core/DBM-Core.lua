@@ -340,6 +340,7 @@ DBM.DefaultOptions = {
 	DontShowNameplateIconsCD = false,
 	DontShowNameplateIconsCast = false,
 	DontSendBossGUIDs = false,
+	AlwaysKeepNPs = true,
 	NPAuraText = true,
 	NPIconSize = 30,
 	NPIconOffsetX = 0,
