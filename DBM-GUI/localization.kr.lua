@@ -439,6 +439,7 @@ L.SpamBlockNoNameplate				= "특수한 보스 패턴의 스킬 아이콘을 이�
 L.SpamBlockNoNameplateCD			= "스킬 쿨타임 타이머 아이콘을 이름표에 표시 안함"
 L.SpamBlockNoNameplateCasts			= "스킬 시전시 아이콘을 이름표에 표시 안함"
 L.SpamBlockNoBossGUIDs				= "타이머도 있는 스킬의 쿨타임 타이머 아이콘을 이름표에 표시 안함\n(보통 던전 보스에 적용)"
+L.AlwaysKeepNPs						= "쿨타임 타이머 아이콘을 만료됐어도 스킬 재시전까지 유지"
 
 L.Area_SpamFilter_Misc		= "기타"
 L.SpamBlockNoSetIcon		= "대상에 공격대 징표를 자동으로 설정하지 않음"
