@@ -436,6 +436,7 @@ L.SpamBlockNoNameplate				= "不要顯示名條光環"
 L.SpamBlockNoNameplateCD			= "不要顯示技能冷卻計時的名條圖示"
 L.SpamBlockNoNameplateCasts			= "不要顯示技能施放計時的名條圖示"
 L.SpamBlockNoBossGUIDs				= "不要在plater名條上顯示主要首領(首領1)計時器作為名條光環\n(如果在Plater中啟用了功能，您仍然會看到小怪/首領計時器）"
+L.AlwaysKeepNPs						= "保持過期的名條冷卻時間計時器圖示可見直到技能重新施放"
 
 L.Area_SpamFilter_Misc				= "其他功能選項"
 L.SpamBlockNoSetIcon				= "不設置標記在目標上"
@@ -666,3 +667,5 @@ L.ShowDiff							= "顯示不同"
 L.ShowErrors						= "顯示錯誤"
 L.TestModEntry						= "[操練場] %s"
 L.EnterTestMode						= "操練場模式"
+
+L.AnonymizeTest						= "匿名玩家名字以及標誌"
