@@ -65,7 +65,7 @@ L.Area_ModulesForYou		= "Quels modules DBM sont bons pour vous ?"
 L.Area_ProfilesSetup		= "Guide d'utilisation des profiles DBM"
 
 -- Panel: Core & GUI
-L.Core_GUI 					= "Core et Interface"
+L.Core_GUI 					= "Core et interface"
 L.General 					= "Options générales de DBM Core"
 L.EnableMiniMapIcon			= "Afficher l'icône de la minicarte"
 L.EnableCompartmentIcon		= "Afficher l'icône de compartiment"
@@ -387,13 +387,13 @@ L.FadeBar					= "Disparition des barres pour les capacités hors de portée"
 L.BarSkin					= "Apparence des barres"
 
 -- Tab: Global Disables & Filters
-L.TabCategory_Filters	 	= "Désactivations globales & Filtres"
+L.TabCategory_Filters	 	= "Désactivations globales et filtres"
 L.Area_DBMFiltersSetup		= "Guide des filtres DBM"
 L.Area_BlizzFiltersSetup	= "Guide des filtres Blizzard"
 
 -- Panel: DBM Features
 L.Panel_SpamFilter					= "Désactivation DBM"
-L.Area_SpamFilter_Anounces			= "Options des alertes Désactivations globales & Filtres"
+L.Area_SpamFilter_Anounces			= "Options des alertes Désactivations globales et filtres"
 L.SpamBlockNoShowAnnounce			= "Ne pas afficher de texte ou jouer de son pour AUCUNE alerte générale"
 L.SpamBlockNoShowTgtAnnounce		= "Ne pas afficher de texte ou jouer de son pour les alertes générales CIBLE qui ne vous affecte pas, certaines alertes signalées ignoreront ce filtre (le filtre ci-dessus écrase celui-ci)"
 L.SpamBlockNoTrivialSpecWarnSound	= "Ne pas jouer de son d'annonce spéciale ni faire clignoter l'écran pour le contenu bas-niveau (joue le son d'annonce par défaut sélectionné par l'utilisateur à la place)"
@@ -453,7 +453,7 @@ L.FilterDispels				= "Filtrer les alertes de dissipations si votre sort de dissi
 L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."
 L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux trash dans les donjons normaux &amp; héroïques"
 
-L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, & personnalisé"
+L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, et personnalisé"
 L.DontShowPTNoID			= "Bloquer les décomptes de pull envoyés depuis une zone différente de la vôtre"
 L.DontShowPT				= "Ne pas afficher la barre de pull/pause"
 L.DontShowPTText			= "Ne pas afficher le texte d'alerte du décompte de pull/pause"
