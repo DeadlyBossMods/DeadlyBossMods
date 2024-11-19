@@ -12,7 +12,7 @@ L.WebsiteButton				= "Site web"
 L.OTabBosses						= "Options de Boss"--Deprecated and will be deleted once tabs no longer use this
 L.OTabRaids							= "Raids"--Just pve raids
 L.OTabDungeons						= "Donjons"--Just dungeons
-L.OTabWorld							= "Bosses du monde"--Since there are so many world mods, enough to get their own tab
+L.OTabWorld							= "Boss du monde"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Options de Core"
@@ -110,7 +110,7 @@ L.AutologBosses						= "Enregistrer automatiquement le contenu sélectionné en 
 L.AdvancedAutologBosses				= "Enregistrer automatiquement le contenu sélectionné avec Transcriptor"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters			= "Filtres d'enregistrement automatique"
-L.RecordOnlyBosses					= "Ne pas enregistrer les trashs (Enregistre uniquement les Boss. Utilisez '/dbm pull' avant les boss pour capturer les potions pré-combat et ENCOUNTER_START)"
+L.RecordOnlyBosses					= "Ne pas enregistrer les trash (Enregistre uniquement les boss. Utilisez '/dbm pull' avant les boss pour capturer les potions pré-combat et ENCOUNTER_START)"
 L.DoNotLogLFG						= "Ne pas enregistrer les contenus en file d'attente (LFG ou LFR)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
@@ -127,23 +127,23 @@ L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vo
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
 
 L.Area_SoundAlerts			= "Options des alertes sonores/clignotement"
-L.LFDEnhance				= "Faire clignoter le bouton de l'application et jouer le son d'Appel lors des vérif. de rôle &amp; des invitations (LFG,BG,etc) dans les canaux audio Principal ou Discussion (canaux généralement plus forts, fonctionnent même si le SFX est désactivé)"
-L.WorldBossNearAlert		= "Faire clignoter le bouton de l'application et jouer le son d'Appel quand un World Boss proche de vous est engagé"
-L.RLReadyCheckSound			= "Quand le chef de raid lance un Appel, jouer le son via les canaux audio Principal ou Discussion et faire clignoter le bouton de l'application"
+L.LFDEnhance				= "Faire clignoter le bouton de l'application et jouer le son d'appel lors des vérif. de rôle &amp; des invitations (LFG,BG,etc) dans les canaux audio Principal ou Discussion (canaux généralement plus forts, fonctionnent même si le SFX est désactivé)"
+L.WorldBossNearAlert		= "Faire clignoter le bouton de l'application et jouer le son d'appel quand un boss du monde proche de vous est engagé"
+L.RLReadyCheckSound			= "Quand le chef de raid lance un appel, jouer le son via les canaux audio principal ou discussion et faire clignoter le bouton de l'application"
 L.AFKHealthWarning			= "Faire clignoter le bouton de l'application et jouer un son d'alerte si vous perdez de la vie alors que vous absent"
 L.AutoReplySound			= "Faire clignoter le bouton de l'application et jouer un son d'alerte quand vous recevez une réponse DBM automatique par chuchotement"
 --
 L.TimerGeneral 				= "Options des décompte"
 L.SKT_Enabled				= "Décompte du record pour le combat actuel s'il est disponible"
 L.ShowRespawn				= "Décompte de la réapparition du boss après un wipe"
-L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (LFG,BG,etc)"
+L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (LFG, BG, etc)"
 --
 L.Area_AutoLogging			= "Options d'enregistrement automatique"
 L.AutologBosses				= "Enregistrement auto du combat contre un boss en utilisant le journal de combat de Blizzard"
 L.AdvancedAutologBosses		= "Enregistrement auto du combat contre un boss en utilisant Transcriptor"
 L.RecordOnlyBosses			= "N'enregistrer que les boss et exclure tous les trash. Utilisez '/dbm pull' avant les boss pour prendre en compte les potions (pre pot) &amp; ENCOUNTER_START"
 --
-L.Area_3rdParty				= "Options des Addons tiers"
+L.Area_3rdParty				= "Options des add-ons tiers"
 L.oRA3AnnounceConsumables	= "Annoncer la vérification des consommables oRA3 au début du combat"
 L.Area_Invite				= "Options des invitations"
 L.AutoAcceptFriendInvite	= "Acceptation auto des invitations venant d'un ami"
@@ -157,13 +157,13 @@ L.Panel_Profile				= "Profils"
 L.Area_CreateProfile		= "Créer un profil"
 L.EnterProfileName			= "Entrer un nom pour le nouveau profil :"
 L.CreateProfile				= "Créer un profil DBM Core"
-L.Area_ApplyProfile			= "Définir le profil DBM Core actif"
-L.SelectProfileToApply		= "Sélection du profil à utiliser :"
+L.Area_ApplyProfile			= "Définir un profil DBM Core actif"
+L.SelectProfileToApply		= "Sélectionner un profil à utiliser :"
 L.Area_CopyProfile			= "Copier un profil DBM Core"
-L.SelectProfileToCopy		= "Sélection du profil à copier :"
+L.SelectProfileToCopy		= "Sélectionner un profil à copier :"
 L.Area_DeleteProfile		= "Supprimer un profil"
-L.SelectProfileToDelete		= "Sélection du profil à supprimer :"
-L.Area_DualProfile			= "Options de Profil"
+L.SelectProfileToDelete		= "Sélectionner un profil à supprimer :"
+L.Area_DualProfile			= "Options de profil"
 L.DualProfile				= "Activer la gestion des options en fonction de la spécialisation (la gestion des profiles boss mod est faite à partir de la fenêtre des statistiques des boss mod chargés)"
 
 L.Area_ModProfile			= "Copier les réglages depuis un autre perso/spé ou supprimer des réglages"
@@ -174,7 +174,7 @@ L.SelectModProfileCopySound	= "Copier uniquement les réglages sonores depuis"
 L.SelectModProfileCopyNote	= "Copier uniquement les réglages des notes depuis"
 L.SelectModProfileDelete	= "Supprimer les réglages pour"
 
-L.Area_ImportExportProfile	= "Importer/Exporter profils"
+L.Area_ImportExportProfile	= "Importer/exporter profils"
 L.ImportExportInfo			= "Attention ! Importer un profil écrasera votre profil actuel"
 L.ButtonImportProfile		= "Importer profil"
 L.ButtonExportProfile		= "Exporter profil"
@@ -184,7 +184,7 @@ L.ImportVoiceMissing		= "Paquet de voix manquant : %s"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alertes"
-L.Area_SpecAnnounceConfig	= "Guide des effets visuels et sonores des Alertes spéciales"
+L.Area_SpecAnnounceConfig	= "Guide des effets visuels et sonores des alertes spéciales"
 L.Area_SpecAnnounceNotes	= "Guide des notes des alertes spéciales"
 L.Area_VoicePackInfo		= "Information sur les paquets de voix DBM"
 
@@ -204,7 +204,7 @@ L.WarningIconLeft 			= "Afficher l'icône du côté gauche"
 L.WarningIconRight 			= "Afficher l'icône du côté droit"
 L.WarningIconChat 			= "Afficher les icônes dans la fenêtre de discussion"
 L.WarningAlphabetical		= "Arranger les noms de manière alphabétique"
-L.Warn_Duration				= "Durée de l'alerte: %0.1f sec"
+L.Warn_Duration				= "Durée de l'alerte : %0.1f sec"
 L.None						= "Aucun"
 L.Random					= "Aléatoire"
 L.Outline					= "Simple"
@@ -226,26 +226,26 @@ L.SWarnNameInNote			= "Utiliser les options de type 5 si une note d'alerte spéc
 L.SpecialWarningIcon		= "Afficher les icônes sur les alertes spéciales"
 L.ShortTextSpellname		= "Abréger le texte des noms des sorts (si possible)"
 L.SpecWarn_FlashFrameRepeat	= "Clignoter %d fois"
-L.SpecWarn_Flash			= "Clignotement écran"
-L.SpecWarn_Vibrate			= "Vibrations manette"
-L.SpecWarn_FlashRepeat		= "Répéter Clignotement"
-L.SpecWarn_FlashColor		= "Couleur Clignotement"
-L.SpecWarn_FlashDur			= "Durée Clignotement : %0.1f"
-L.SpecWarn_FlashAlpha		= "Alpha Clignotement : %0.1f"
+L.SpecWarn_Flash			= "Clignoter l'écran"
+L.SpecWarn_Vibrate			= "Manette vibrante"
+L.SpecWarn_FlashRepeat		= "Répéter le clignotement"
+L.SpecWarn_FlashColor		= "Couleur du clignotement"
+L.SpecWarn_FlashDur			= "Durée du clignotement : %0.1f"
+L.SpecWarn_FlashAlpha		= "Alpha du clignotement : %0.1f"
 L.SpecWarn_DemoButton		= "Aff. un exemple"
 L.SpecWarn_ResetMe			= "Réinit. les valeurs"
 L.SpecialWarnSoundOption	= "Définir son par défaut"
 L.SpecialWarnHeader1		= "Type 1: Alertes à priorité moyenne affectant vous ou vos actions"
 L.SpecialWarnHeader2		= "Type 2: Alertes à priorité moyenne affectant tout le monde"
 L.SpecialWarnHeader3		= "Type 3: Alertes à priorité HAUTE"
-L.SpecialWarnHeader4		= "Type 4: Alertes à priorité HAUTE / Alertes spéciales COUREZ"
+L.SpecialWarnHeader4		= "Type 4: Alertes à priorité HAUTE/Alertes spéciales COUREZ"
 L.SpecialWarnHeader5		= "Type 5: Alertes dont la note contient votre nom"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Messages dans la fenêtre de discussion"
 L.CoreMessages				= "Options des messages de DBM"
 L.ShowPizzaMessage 			= "Afficher les messages d'annonce de décomptes dans la fenêtre de discussion"
-L.ShowAllVersions	 		= "Afficher les versions boss mod de tous les membres du groupe dans la fenêtre de discussion lors d'une vérification des versions. (Si désactivé, continu d'effectuer un résumé obsolète/à jour)"
+L.ShowAllVersions	 		= "Afficher les versions des boss mods de tous les membres du groupe dans la fenêtre de discussion lors d'une vérification des versions. (Si désactivé, continu d'effectuer un résumé obsolète/à jour)"
 L.ShowReminders				= "Afficher des messages de rappel pour les sous-modules manquants, désactivés, hotfixes, obsolètes, et mode silencieux étant toujours activé"
 
 L.CombatMessages			= "Options des messages liés au combat"
@@ -257,7 +257,7 @@ L.ShowGuildMessagesPlus		= "Afficher aussi les messages pull/victoire/défaite p
 L.Area_ChatAlerts			= "Options des alertes supplémentaires"
 L.RoleSpecAlert				= "Afficher une alerte lorsque vous rejoignez un raid et que votre préférence de butin ne correspond pas à votre spécialisation actuelle"
 L.CheckGear					= "Afficher une alerte d'équipement pendant le pull (quand votre ilvl équipé est beaucoup plus bas que votre ilvl global (40+) ou que votre arme principale n'est pas équipée)"
-L.WorldBossAlert			= "Afficher une alerte lorsqu'un world boss pourrait avoir été engagé sur votre royaume par votre guilde ou des amis (incorrect si l'info est reçue par inter-serveur)"
+L.WorldBossAlert			= "Afficher une alerte lorsqu'un boss pourrait avoir été engagé sur votre royaume par votre guilde ou des amis (incorrect si l'info est reçue par inter-serveur)"
 L.WorldBuffAlert			= "Afficher une alerte et un décompte lorsqu'un évênement annonçant un world buff est détecté sur votre royaume"
 
 L.Area_BugAlerts			= "Options des rapports de bugs"
@@ -493,7 +493,7 @@ L.OverrideIcons 					= "Désactiver le marquage des icônes pour tous les utilis
 L.OverrideSay						= "Désactiver les messages de bulle de chat/DIRE pour tous les utilisateurs du raid, y compris vous-même"
 L.DisableStatusWhisperShort			= "Désactiver les chuchotements de statut/réponse pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "Désactiver la synchronisation des messages de progression avec la guilde pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
---L.DisabledForDropdown				= "Choisir le(s) mod(s) de boss désactivé(s) pour"--NYI
+--L.DisabledForDropdown				= "Sélectionner le(s) mod(s) de boss désactivé(s) pour"--NYI
 --L.DiabledForBoth					= "Désactiver les fonctionnalités ci-dessus pour DBM et BW"---NYI
 --L.DiabledForDBM					= "Désactiver les fonctionnalités ci-dessus uniquement pour les utilisateurs de DBM"--NYI
 --L.DiabledForBW					= "Désactiver les fonctionnalités ci-dessus uniquement pour les utilisateurs de BW"--NYI
@@ -524,7 +524,7 @@ L.WhisperStats 				= "Inclure les victoires/défaites dans les réponses"
 L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert Chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques."
 L.Area_SyncMessages			= "Options de synchronisation des addons"
 L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchroniser avec la guilde, si vous êtes chef de groupe, cela affectera tous les utilisateurs de DBM dans votre groupe"
-L.EnableWBSharing 			= "Partager quand vous engagez/battez un world boss avec votre guilde et vos amis battle.net qui sont sur le même royaume"
+L.EnableWBSharing 			= "Partager quand vous engagez/battez un boss du monde avec votre guilde et vos amis battle.net qui sont sur le même royaume"
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "Cadres et intégrations"
@@ -573,12 +573,12 @@ L.FontSize					= "Taille de la police: %d"
 L.FontStyle					= "Contours de la police"
 L.FontColor					= "Couleur texte"
 L.FontShadow				= "Ombre"
-L.FontType					= "Choisir une police"
+L.FontType					= "Sélectionner une police"
 
 L.FontHeight	= 16
 
 -- Testing
-L.DevPanel							= "Développement et Tests"
+L.DevPanel							= "Développement et tests"
 L.DevPanelArea						= "Interface de développement et de tests"
 L.DevPanelExplanation				= "Ceci est une interface de développement et de tests qui valide que DBM fonctionne comme prévu en rejouant des journaux de combat." -- Test UI panel under options
 L.DevModPanelExplanation			= [[Bienvenue dans l'aire de développement et de tests pour ce mod.
