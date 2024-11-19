@@ -390,6 +390,7 @@ L.BarSkin					= "Apparence des barres"
 L.TabCategory_Filters	 	= "Désactivations globales & Filtres"
 L.Area_DBMFiltersSetup		= "Guide des filtres DBM"
 L.Area_BlizzFiltersSetup	= "Guide des filtres Blizzard"
+
 -- Panel: DBM Features
 L.Panel_SpamFilter					= "Désactivation DBM"
 L.Area_SpamFilter_Anounces			= "Options des alertes Désactivations globales & Filtres"
@@ -413,10 +414,19 @@ L.SpamBlockNoSpecWarnFlash			= "Ne pas faire clignoter l'écran pour les alertes
 L.SpamBlockNoSpecWarnVibrate		= "Ne pas faire vibrer la manette pour les alertes spéciales"
 L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'alerte spéciale (autorise les paquets de voix, si l'un d'eux est sélectionné dans les options d'alertes vocales)"
 
+L.Area_SpamFilter_Timers			= "Options des chronomètres"
+L.SpamBlockNoShowBossTimers			= "Ne pas afficher les chronomètres pour les boss de donjon/raid"
+L.SpamBlockNoShowTrashTimers		= "Ne pas afficher les chronomètres pour les trash de donjon/raid (Remarque : cela désactive également les CD des plaques de nom)"
+L.SpamBlockNoShowEventTimers		= "Ne pas afficher les chronomètres pour les événements ou alertes (Apparition de file d'attente, réapparition de boss, etc.)"
+L.SpamBlockNoShowUTimers			= "Ne pas afficher les chronomètres envoyés par les utilisateurs (Personnalisé/pull/pause)"
+L.SpamBlockNoCountdowns				= "Ne pas jouer les sons de compte à rebours"
 
-L.Area_SpamFilter_Timers	= "Options du chronomètre"
-L.SpamBlockNoShowUTimers	= "Ne pas afficher au joueur les décomptes envoyés (Personnalisés/Pull/Pause)"
-L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
+L.Area_SpamFilter_Nameplates		= "Options des plaques de nom"
+L.SpamBlockNoNameplate				= "Ne pas afficher uniquement les icônes des plaques de nom pour les mécaniques spéciales des boss (ex. buffs ou affaiblissements sur les ennemis)"
+L.SpamBlockNoNameplateCD			= "Ne pas afficher uniquement les icônes des chronomètres de récupération des plaques de nom pour les capacités"
+L.SpamBlockNoNameplateCasts			= "Ne pas afficher uniquement les icônes des chronomètres d'incantation des plaques de nom pour les capacités"
+L.SpamBlockNoBossGUIDs				= "Ne pas afficher les icônes des chronomètres de récupération des plaques de nom pour les capacités qui ont également des chronomètres\n(S'applique généralement aux boss de donjons)"
+L.AlwaysKeepNPs						= "Maintener visibles les icônes des chronomètres de récupération des plaques de nom expirées jusqu'à ce que la capacité soit réincantée"
 
 L.Area_SpamFilter_Misc		= "Options divers"
 L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
@@ -517,7 +527,7 @@ L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchronis
 L.EnableWBSharing 			= "Partager quand vous engagez/battez un world boss avec votre guilde et vos amis battle.net qui sont sur le même royaume"
 
 -- Tab: Frames & Integrations
-L.TabCategory_Frames		= "Cadres et Intégrations"
+L.TabCategory_Frames		= "Cadres et intégrations"
 L.Area_NamelateInfo			= "Informations sur les auras des plaques de nom de DBM"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "Cadre d'infos"
