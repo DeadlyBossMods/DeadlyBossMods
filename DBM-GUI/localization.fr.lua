@@ -75,11 +75,11 @@ L.UseDialogChannel			= "Canal audio Discussion"
 L.UseSFXChannel				= "Canal audio Son (SFX)"
 L.Latency_Text				= "Seuil de latence max. pour synchro: %d"
 
-L.Button_RangeFrame			= "Afficher/cacher Cadre de portée"
-L.Button_InfoFrame			= "Afficher/cacher Cadre d'infos"
+L.Button_RangeFrame			= "Afficher/cacher cadre de portée"
+L.Button_InfoFrame			= "Afficher/cacher cadre d'info"
 L.Button_TestBars			= "Barres de test"
 L.Button_MoveBars			= "Déplacer les barres"
-L.Button_ResetInfoRange		= "Réinit. les cadres de portée et d'infos"
+L.Button_ResetInfoRange		= "Réinit. les cadres de portée et d'info"
 
 L.ModelOptions				= "Options du visualiseur de modèle 3D"
 L.EnableModels				= "Activer les modèles 3D dans les options des boss"
@@ -426,7 +426,7 @@ L.SpamBlockNoNameplate				= "Ne pas afficher uniquement les icônes des plaques 
 L.SpamBlockNoNameplateCD			= "Ne pas afficher uniquement les icônes des chronomètres de récupération des plaques de nom pour les capacités"
 L.SpamBlockNoNameplateCasts			= "Ne pas afficher uniquement les icônes des chronomètres d'incantation des plaques de nom pour les capacités"
 L.SpamBlockNoBossGUIDs				= "Ne pas afficher les icônes des chronomètres de récupération des plaques de nom pour les capacités qui ont également des chronomètres\n(S'applique généralement aux boss de donjons)"
-L.AlwaysKeepNPs						= "Maintener visibles les icônes des chronomètres de récupération des plaques de nom expirées jusqu'à ce que la capacité soit réincantée"
+L.AlwaysKeepNPs						= "Maintenir visibles les icônes des chronomètres de récupération des plaques de nom expirées jusqu'à ce que la capacité soit réincantée"
 
 L.Area_SpamFilter_Misc		= "Options divers"
 L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
