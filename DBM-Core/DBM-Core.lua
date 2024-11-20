@@ -82,7 +82,7 @@ local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.31"--Core version
+DBM.DisplayVersion = "11.0.32 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2024, 11, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 15 or 14--When this is incremented, trigger force disable regardless of major patch
