@@ -94,8 +94,9 @@ L.Editbox_WindowHeight		= "Vertical"
 
 L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU para cualquier módulo que ya esté cargado)"
 L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
+L.GroupOptionsExcludePrivateAura	= "Excluir que las opciones de sonido de 'Aura privada' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
-L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe."
+L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe"
 --L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
 L.NoDescription						= "Esta facultad no tiene descripción."
 L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una facultad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
@@ -432,9 +433,10 @@ L.SpamBlockNoShowUTimers			= "Ocultar temporizadores de usuario"
 L.SpamBlockNoCountdowns				= "Desactivar sonidos de cuenta atrás"
 
 L.Area_SpamFilter_Nameplates	= "Opciones de placas de nombre"
-L.SpamBlockNoNameplate			= "Ocultar auras de placas de nombres (las desactiva por completo)"
-L.SpamBlockNoNameplateCD		= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades"
-L.SpamBlockNoBossGUIDs			= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activado.)"
+L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánicas especiales de jefes (es decir, beneficios o perjuicios en enemigos)"
+L.SpamBlockNoNameplateCD		= "No mostrar iconos de placas de nombre para tiempos de reutilización de facultades"
+L.SpamBlockNoNameplateCasts 	= "No mostrar iconos de placas de nombre para temporizadores de lanzamiento de facultades"
+L.SpamBlockNoBossGUIDs			= "No mostrar iconos de placas de nombre para tiempos de reutilización para facultades que también tienen temporizadores\n(Generalmente se aplica a los jefes de mazmorras)"
 L.AlwaysKeepNPs					= "Mantener visibles los iconos del temporizador de reutilización de la placa de nombre caducada hasta que la facultad sea lanzado de nuevo."
 
 L.Area_SpamFilter_Misc		= "Opciones varias"
@@ -461,7 +463,7 @@ L.PT_Threshold				= "Ocultar temporizadores por encima de: %d s"
 L.Panel_ReducedInformation			= "Reducir la información"
 
 L.Area_SpamFilter_Anounces			= "Anunciar filtros/desescalada"
-L.SpamBlockNoShowTgtAnnounce		= "Ocultar texto ni reproduce sonido para anuncios generales de OBJETIVO que no le afectan; espera, cuando se indique, que un aviso específico ignore este filtro (la desactivación global en las funciones de DBM anula este)"
+L.SpamBlockNoShowTgtAnnounce		= "No mostrar texto ni reproducir sonido para anuncios generales de OBJETIVO que no le afectan; espera, cuando se indique, que un aviso específico ignore este filtro (la desactivación global en las funciones de DBM anula este)"
 L.SpamBlockNoTrivialSpecWarnSound	= "No reproducir sonidos de anuncio especiales ni muestra destello en la pantalla para contenido que sea trivial para tu nivel (en su lugar, reproduce un sonido de anuncio no enfatizado seleccionado por el usuario)"
 
 L.Area_SpamFilter			= "Opciones de filtros de avisos"
