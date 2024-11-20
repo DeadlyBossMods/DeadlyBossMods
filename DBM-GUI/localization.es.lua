@@ -435,7 +435,7 @@ L.Area_SpamFilter_Nameplates	= "Opciones de placas de nombre"
 L.SpamBlockNoNameplate			= "Ocultar auras de placas de nombres (las desactiva por completo)"
 L.SpamBlockNoNameplateCD		= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades"
 L.SpamBlockNoBossGUIDs			= "Ocultar iconos de placas de nombre para tiempos de reutilización de facultades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activado.)"
-
+L.AlwaysKeepNPs					= "Mantener visibles los iconos del temporizador de reutilización de la placa de nombre caducada hasta que la facultad sea lanzado de nuevo."
 
 L.Area_SpamFilter_Misc		= "Opciones varias"
 L.SpamBlockNoSetIcon		= "Desactivar asignación automática de iconos"
