@@ -351,11 +351,11 @@ function timerPrototype:Start(timer, ...)
 			guid = UnitGUID("boss1")
 		end
 		if self.simpType and (self.simpType == "cdnp" or self.simpType == "castnp") then--Only send nampelate callback
-			DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, DBM.Options.AlwaysKeepNPs and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+			DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, (self.simpType == "cdnp" and DBM.Options.AlwaysKeepNPs) and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
 		else--Send both callbacks
 			DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
 			if guid then--But nameplate is only sent if actual GUID
-				DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, DBM.Options.AlwaysKeepNPs and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+				DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
 			end
 		end
 		--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
