@@ -594,7 +594,7 @@ L.SelectProfileToApply		= "Selecionar o perfil a aplicar"
 L.Area_CopyProfile			= "Copiar o perfil para o núcleo do DBM"
 L.SelectProfileToCopy		= "Selecionar o perfil a ser copiado"
 L.Area_DeleteProfile		= "Remover o perfil para o núcleo do DBM"
-L.SelectProfileToDelete		= "Selecionar o perfil à ser removido"
+L.SelectProfileToDelete		= "Selecionar o perfil a ser removido"
 L.Area_DualProfile			= "Opções de perfil da mod de chefes"
 L.DualProfile				= "Ativar suporte para outros mods de chefes de acordo com a especialização. (O gerenciamento de perfis de mods de chefes é feito da tela de mods de chefes carregados)"
 
