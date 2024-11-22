@@ -486,7 +486,7 @@ L.Area_BInterruptFilterFooter		= "Si no se selecciona ningún filtro, se muestra
 L.Area_TInterruptFilter				= "Opciones de filtro de interrupción de bichos"--Reuses above 3 strings
 
 -- Panel: DBM Handholding
-L.Panel_HandFilter					= "Reducir la sujeción de DBM"
+L.Panel_HandFilter					= "Reducir la asistencia de DBM"
 L.Area_SpamFilter_SpecRoleFilters	= "Filtros de tipo de anuncio especial (controla cuánta comunicación realiza DBM)"
 L.SpamSpecInformationalOnly			= "Remover todo el texto instructivo/alertas de los anuncios especiales (requiere recarga de la interfaz de usuario). Las alertas seguirán mostrando y reproduciendo audio, pero serán genéricas y no directivas."
 L.SpamSpecRoleDispel				= "Filtrar las alertas 'disipar' por completo (sin texto ni sonido)"
