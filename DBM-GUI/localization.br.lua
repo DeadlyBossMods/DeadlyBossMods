@@ -404,7 +404,7 @@ L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que 
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 
 L.Area_SpecFilter			= "Opções de especialização"
-L.FilterTankSpec			= "Filtrar mensagens designadas para tank role quando não for tank. (Nota: Desativar esta função não é recomendado para a maioria dos usuários já que avisos de 'taunt' ( insultos ) estão Ativados por definição.)"
+L.FilterTankSpec			= "Filtrar mensagens designadas para função tanque quando não for tanque. (Nota: Desativar esta função não é recomendado para a maioria dos usuários já que avisos de 'taunt' (insultos) estão ativados por definição.)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
