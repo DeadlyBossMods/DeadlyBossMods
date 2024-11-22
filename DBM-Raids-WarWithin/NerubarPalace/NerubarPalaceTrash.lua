@@ -8,7 +8,7 @@ mod:SetZone(2657)
 mod:RegisterZoneCombat(2657)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000 454831",
+	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000 454831 439012 448269",
 	"SPELL_AURA_APPLIED 445553 436784",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
@@ -27,6 +27,8 @@ local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2,
 local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 15)
 local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 15)
 local specWarnPoisonBreath					= mod:NewSpecialWarningDodge(454831, nil, nil, nil, 2, 15)
+local specWarnToxicBlast					= mod:NewSpecialWarningDodge(439012, nil, nil, nil, 2, 15)
+local specWarnBorrowingCharge				= mod:NewSpecialWarningDodge(448269, nil, nil, nil, 2, 2)
 local specwarnInfestingSwarm				= mod:NewSpecialWarningMoveAway(436784, nil, nil, nil, 1, 2)
 local yellInfestingSwarm					= mod:NewYell(436784)
 --local yellShadowflameBombFades			= mod:NewShortFadesYell(425300)
@@ -39,7 +41,7 @@ local specWarnEnshroudingPulse				= mod:NewSpecialWarningInterrupt(443138, "HasI
 local timerGossemereWeaveCD					= mod:NewCDNPTimer(17, 444000, nil, nil, nil, 3)
 local timerImpaleCD							= mod:NewCDNPTimer(17, 459952, nil, nil, nil, 3)--17-20
 local timerStagFlipCD						= mod:NewCDNPTimer(17, 463176, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerDarkMendingCD					= mod:NewCDNPTimer(15.8, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerDarkMendingCD					= mod:NewCDNPTimer(15.3, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerPoisonBreathCD					= mod:NewCDNPTimer(13.4, 454831, nil, nil, nil, 3)
 local timerDeafeningRoarCD					= mod:NewCDNPTimer(20.6, 436679, nil, nil, nil, 2)
 local timerBlackCleaveCD					= mod:NewCDNPTimer(16.2, 440184, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -106,6 +108,16 @@ function mod:SPELL_CAST_START(args)
 			specWarnPoisonBreath:Show()
 			specWarnPoisonBreath:Play("frontal")
 		end
+	elseif spellId == 439012 then
+		if self:AntiSpam(3, 2) then
+			specWarnToxicBlast:Show()
+			specWarnToxicBlast:Play("frontal")
+		end
+	elseif spellId == 448269 then
+		if self:AntiSpam(3, 2) then
+			specWarnBorrowingCharge:Show()
+			specWarnBorrowingCharge:Play("chargemove")
+		end
 	end
 end
 
@@ -165,17 +177,17 @@ end
 --All timers subject to a ~0.5 second clipping due to ScanEngagedUnits
 function mod:StartEngageTimers(guid, cid)
 	if cid == 222305 then
---		timerImpaleCD:Start(17, guid)
+		timerImpaleCD:Start(12.3, guid)
 	elseif cid == 222145 then
 		timerStagFlipCD:Start(2.8, guid)
---	elseif cid == 218320 then
---		timerDarkMendingCD:Start(15.8, guid)
+	elseif cid == 218320 then
+		timerDarkMendingCD:Start(3.3, guid)
 --	elseif cid == 218317 then
---		timerGossemereWeaveCD:Start(17, guid)
+--		timerGossemereWeaveCD:Start(17, guid)--Cast instantly on engage
 	elseif cid == 229918 then
 		timerPoisonBreathCD:Start(4, guid)
---	elseif cid == 218306 then
---		timerDeafeningRoarCD:Start(20.7, guid)
+	elseif cid == 218306 then
+		timerDeafeningRoarCD:Start(10, guid)
 	end
 end
 
