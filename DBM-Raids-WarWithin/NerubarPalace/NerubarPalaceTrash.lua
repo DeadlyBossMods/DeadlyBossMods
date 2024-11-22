@@ -177,7 +177,7 @@ end
 --All timers subject to a ~0.5 second clipping due to ScanEngagedUnits
 function mod:StartEngageTimers(guid, cid)
 	if cid == 222305 then
-		timerImpaleCD:Start(12.3, guid)
+		timerImpaleCD:Start(10.3, guid)
 	elseif cid == 222145 then
 		timerStagFlipCD:Start(2.8, guid)
 	elseif cid == 218320 then
