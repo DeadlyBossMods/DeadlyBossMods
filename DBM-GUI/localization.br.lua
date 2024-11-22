@@ -44,8 +44,8 @@ L.Mod_Reset					= "Carregar opções padrão"
 L.Reset 					= "Redefinir"
 L.Import					= "Importar"
 
-L.Enable					= ENABLE
-L.Disable					= DISABLE
+--L.Enable					= ENABLE
+--L.Disable					= DISABLE
 
 L.NoSound					= "Sem som"
 
