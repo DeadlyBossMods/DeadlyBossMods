@@ -6,7 +6,6 @@ local module = private:NewModule("TrashCombatScanningModule")
 module:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
-	"CHALLENGE_MODE_COMPLETED",
 	"ENCOUNTER_START",
 	"ENCOUNTER_END"
 )
@@ -15,6 +14,10 @@ module:RegisterEvents(
 local DBM = private:GetPrototype("DBM")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
+
+if DBM:IsPostMoP() then
+	module:RegisterEvents("CHALLENGE_MODE_COMPLETED")
+end
 
 local registeredZones = {}--Global table for tracking registered zones
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
@@ -104,10 +107,12 @@ local function DelayedZoneCheck(force)
 		eventsRegistered = true
 		module:RegisterShortTermEvents(
 			"UNIT_FLAGS player party1 party2 party3 party4",
-			"CHALLENGE_MODE_DEATH_COUNT_UPDATED",
 			"PLAYER_REGEN_DISABLED",
 			"PLAYER_REGEN_ENABLED"
 		)
+		if DBM:IsPostMoP() then
+			module:RegisterShortTermEvents("CHALLENGE_MODE_DEATH_COUNT_UPDATED")
+		end
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Trash Tracking Events", 2)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
