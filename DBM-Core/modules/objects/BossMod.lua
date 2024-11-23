@@ -304,6 +304,16 @@ function bossModPrototype:AffixEvent(eventType, stage, timeAdjust, spellDebit)
 	end
 end
 
+local function addIdsToExistingEvent(event, ...)
+	for i = 1, select("#", ...) do
+		local id = select(i, ...)
+		if not event:match(" " .. id .. " ") and not event:match(" " .. id .. "$") then
+			event = event .. " " .. id
+		end
+	end
+	return event
+end
+
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
 	test:Trace(self, "RegisterEvents", "InCombat", ...)
@@ -314,8 +324,12 @@ function bossModPrototype:RegisterEventsInCombat(...)
 		-- Special case: allow registrating additional events if you do it one-by-one (check in the abort above)
 		-- FIXME: allow this in general if we end up keeping the new event handlers
 		local event = ...
-		for _, v in ipairs(self.inCombatOnlyEvents) do
-			if v == event then
+		local prefix, ids = string.split(" ", event, 2)
+		for i, v in ipairs(self.inCombatOnlyEvents) do
+			if string.split(" ", v, 2) == prefix then
+				-- Warning: Registering an event twice with different spell IDs will not work -- it will trigger the handler twice for both IDs
+				-- This is kinda annoying to fix in the handler, so we instead modify the existing event definition here.
+				self.inCombatOnlyEvents[i] = addIdsToExistingEvent(v, string.split(" ", ids))
 				return
 			end
 		end
