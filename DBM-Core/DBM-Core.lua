@@ -4237,8 +4237,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 	end
 	self:Debug("LoadAddOn should have fired for " .. mod.name, 2)
 	local loaded, reason
-	if enableTestSupport then
-		test:Load()
+	if enableTestSupport and test:Load() then
 		test:OnBeforeLoadAddOn()
 		loaded, reason = C_AddOns.LoadAddOn(mod.modId)
 		test:OnAfterLoadAddOn()

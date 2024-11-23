@@ -317,7 +317,11 @@ end
 ---@param panel DBMPanel
 ---@param mod DBMMod
 function DBM_GUI:AddModTestOptionsAbove(panel, mod)
-	DBM.Test:LoadAllTests() -- Boss mod frames are created lazily so this is actually only run once the user clicks on a test frame
+	local ok = DBM.Test:LoadAllTests() -- Boss mod frames are created lazily so this is actually only run once the user clicks on a test frame
+	if not ok then
+		DBM:AddMsg("Failed not load testing support, make sure that DBM-Test is installed and enabled")
+		return 0
+	end
 	local tests = DBM.Test:GetTestsForMod(mod) or {}
 	local infoArea = panel:CreateArea(L.DevPanelArea)
 	infoArea:CreateText(L.DevModPanelExplanation, nil, true)
