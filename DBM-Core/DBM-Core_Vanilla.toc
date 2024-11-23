@@ -93,6 +93,7 @@ modules\Notes.lua
 modules\Sounds.lua
 modules\UpdateReminder.lua
 modules\AnnoyingPopup.lua
+modules\ZoneCombatScanner.lua
 
 modules\objects\Difficulties.lua
 modules\objects\BossMod.lua
