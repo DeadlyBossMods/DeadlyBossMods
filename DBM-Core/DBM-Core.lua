@@ -7751,6 +7751,10 @@ function DBM:IsPostCata()
 end
 bossModPrototype.IsPostCata = DBM.IsPostCata
 
+function DBM:IsPostMoP()
+	return private.isRetail
+end
+
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
 		return raid[name].bwversion
