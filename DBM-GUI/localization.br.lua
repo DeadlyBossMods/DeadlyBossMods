@@ -64,7 +64,7 @@ L.Area_BasicSetup			= "Dicas iniciais de configuração do DBM"
 L.Area_ModulesForYou		= "Quais módulos DBM são adequados para você?"
 L.Area_ProfilesSetup		= "Guia de uso de perfis DBM"
 -- Panel: Core & GUI
-L.Core_GUI 					= "Cor e GUI"
+L.Core_GUI 					= "Core e GUI"
 L.General 					= "Opções gerais do DBM"
 L.EnableMiniMapIcon			= "Exibir botão no minimapa"
 L.EnableCompartmentIcon		= "Exibir botão do compartimento"
