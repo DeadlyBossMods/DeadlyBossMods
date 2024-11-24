@@ -663,6 +663,34 @@ local function extractEncounterInfo(log)
 	return res
 end
 
+local function decompressLog(testData)
+	if testData.log then return end
+	local libSerialize = LibStub("LibSerialize")
+	local libDeflate = LibStub("LibDeflate")
+	local decodedLog = libDeflate:DecodeForPrint(testData.compressedLog)
+	coroutine.yield()
+	local serializedLog = libDeflate:DecompressDeflate(decodedLog)
+	local handler = libSerialize:DeserializeAsync(serializedLog)
+	local completed, success, deserialized
+	repeat
+		coroutine.yield()
+		completed, success, deserialized = handler()
+	until completed
+	if not success then
+		error("failed to decompress log")
+	end
+	testData.log = deserialized
+end
+
+local logStripper = CreateFrame("Frame")
+logStripper:RegisterEvent("PLAYER_LOGOUT")
+logStripper:SetScript("OnEvent", function()
+	if not DBM_Test_PersistentImports then return end
+	for _, v in pairs(DBM_Test_PersistentImports) do
+		v.log = nil
+	end
+end)
+
 ---@param testData TestDefinition
 ---@param testOptions DBMTestOptions
 function test:Playback(testData, timeWarp, testOptions)
@@ -673,6 +701,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	end
 	self.testData = testData
 	self.testOptions = testOptions
+	decompressLog(testData)
 	-- Currently only required to correctly handle UNIT_TARGET messages.
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
@@ -833,9 +862,12 @@ end)
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field perspective string? Player name from whose perspective the log gets replayed
 ---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
----@field log TestLogEntry[] Log to replay
+---@field log TestLogEntry[] Log to replay, automatically restored from compressedLog on playback
 ---@field ephemeral boolean? Set to true for tests imported from Transcriptor via the test UI
-
+---@field showInAllMods boolean? Ephemeral tests that show up in all playground UIs
+---@field persistent boolean? Ephemeral test that is stored to saved variables
+---@field compressedLog string? LibDeflate compressed log
+---@field duration number? Test duration, required if log is compressed
 
 --[[
 I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,
@@ -918,7 +950,7 @@ function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 		self.reporter:Taint("ModEnv")
 	else
 		local fakeLoadingEvent = {0, "ADDON_LOADED", testData.addon}
-		currentEventKey = eventToString(fakeLoadingEvent, testData.log[#testData.log][1])
+		currentEventKey = eventToString(fakeLoadingEvent, testData.duration or testData.log[#testData.log][1])
 		currentRawEvent = fakeLoadingEvent
 		for _, v in ipairs(loadingEvents) do
 			self:Trace(modUnderTest, unpack(v))
@@ -990,3 +1022,7 @@ stopOnUnload:RegisterEvent("ADDONS_UNLOADING")
 stopOnUnload:SetScript("OnEvent", function()
 	test:StopTests()
 end)
+
+-- Some parts of DBM.Test exist prior to loading the full test support, e.g., test:Trace() is defined as no-op function in DBM-Core
+-- Use this flag to determine whether the full test mod has been loaded or not
+test.loaded = true
