@@ -13,8 +13,8 @@ local function handleEvent(self, event, ...)
 	local handlers = self.directEvents[event]
 	if handlers then
 		-- TODO: support UNIT_ events with some kind of reasonable filtering (by creature IDs?)
-		local arg1, _, _, _, _, _, _, _, _, _, arg11 = ...
-		local spellId = type(arg1) == "table" and arg1.spellId or arg11
+		local arg1, _, _, _, _, _, _, _, arg9 = ...
+		local spellId = type(arg1) == "table" and arg1.spellId or arg9
 		for _, handler in ipairs(handlers) do
 			if handler.unfiltered or handler[spellId] then
 				handler.func(self, ...)
