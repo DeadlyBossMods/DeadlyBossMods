@@ -275,11 +275,13 @@ local function createImportTranscriptorFrame()
 			local gen = parser:NewTestGenerator(logSelect.value.log, logSelect.value.startOffset, logSelect.value.endOffset, nil, not DBM_Test_Settings.AnonymizeImports, true, true)
 			local def = gen:GetTestDefinition()
 			def.ephemeral = true
+			def.showInAllMods = false
+			def.mod = importTranscriptorFrame.mod.id
+			-- TODO: add option to rename it
 			def.name = "Imported/" .. logSelect.value.name
 			-- TODO: the name should be unique as it contains timestamp and encounter, so we could prevent double imports across multiple sessions here
 			-- but this is good enough, just want to prevent people from clicking the button twice
 			logSelect.value.imported = true
-			-- TODO: add option to store this persistently, but it's a bit messy because we need to serialize it to avoid size limits
 			ephemeralTests[#ephemeralTests + 1] = def
 			self:SetText(L.CreateTest)
 			input:SetText(L.CreatedTest:format(#def.log, GetTimePreciseSec() - start))
@@ -305,14 +307,33 @@ local function createImportTranscriptorFrame()
 	end)
 end
 
-local function showImportTranscriptorFrame(testSelect)
+local function showImportTranscriptorFrame(testSelect, mod)
 	if not importTranscriptorFrame then
 		createImportTranscriptorFrame()
 	end
 	importTranscriptorFrame.parentTestSelect = testSelect
+	importTranscriptorFrame.mod = mod
 	importTranscriptorFrame:Show()
 end
 
+local compressAsync = CreateFrame("Frame")
+---@param testData TestDefinition
+local function serializeLog(testData)
+	if testData.compressedLog then return end
+	local libSerialize = LibStub("LibSerialize")
+	local libDeflate = LibStub("LibDeflate")
+	local handler = libSerialize:SerializeAsync(testData.log)
+	compressAsync:SetScript("OnUpdate", function()
+		local completed, serialized = handler()
+		if completed then
+			compressAsync:Hide()
+			local s = GetTimePreciseSec()
+			testData.compressedLog = libDeflate:EncodeForPrint(libDeflate:CompressDeflate(serialized))
+		end
+	end)
+	testData.duration = testData.log[#testData.log][1]
+	compressAsync:Show()
+end
 
 ---@param panel DBMPanel
 ---@param mod DBMMod
@@ -326,6 +347,7 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	local infoArea = panel:CreateArea(L.DevPanelArea)
 	infoArea:CreateText(L.DevModPanelExplanation, nil, true)
 
+	-- Mod loading
 	local loadWithMocksArea = panel:CreateArea(L.TestSupportArea)
 	local isLoadedWithMocks = test.Mocks:IsModLoadedWithMocks(mod)
 	local loadedWithMocksText = loadWithMocksArea:CreateText(isLoadedWithMocks and L.ModLoadedWithTests or L.ModNotLoadedWithTests, nil, true)
@@ -348,13 +370,14 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		DBM_ModsToLoadWithFullTestSupport.addonsWithTests[mod.addon.modId] = atLeastOneModNeedsTests or nil
 	end)
 
+	-- Test/player selection
 	local testSelectArea = panel:CreateArea(L.TestSelectArea)
 	local testSelect
 	local importLog = testSelectArea:CreateButton(L.ImportTranscriptor)
 	importLog:SetScript("OnClick", function()
-		showImportTranscriptorFrame(testSelect)
+		showImportTranscriptorFrame(testSelect, mod)
 	end)
-	local runOrStopTest
+	local runOrStopTest, saveLogButton, alwaysShowButton
 	importLog:SetPoint("TOPLEFT", testSelectArea.frame, "TOPLEFT", 10, -10)
 	local function getTestEntries()
 		local values = {}
@@ -362,7 +385,12 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 			values[#values + 1] = {text = v.name, value = v} -- TODO: add extra info
 		end
 		for _, v in ipairs(ephemeralTests) do
-			values[#values + 1] = {text = v.name, value = v}
+			if v.showInAllMods or v.mod == mod.id then
+				values[#values + 1] = {text = v.name, value = v}
+			end
+		end
+		if #values == 0 then
+			values[#values + 1] = {value = {}, text = L.NoTestDataAvailable}
 		end
 		return values
 	end
@@ -372,15 +400,26 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	testSelect = testSelectArea:CreateDropdown(L.SelectTestLog, getTestEntries, nil, nil, onTestDropdownSelect, 300)
 	testSelect:OnSelectionChanged(function()
 		if runOrStopTest then runOrStopTest:Enable() end
+		if alwaysShowButton then alwaysShowButton:Hide() alwaysShowButton:Show() end
+		if saveLogButton then saveLogButton:Hide() saveLogButton:Show() end
 	end)
-	testSelect.myheight = 40
-	if #ephemeralTests >= 1 then -- TODO: only select this by default if this was imported from this mod
-		testSelect:SetSelectedValue({value = ephemeralTests[1], text = ephemeralTests[1].name})
-	elseif #tests >= 1 then
-		testSelect:SetSelectedValue({value = tests[1], text = tests[1].name})
-	else
-		testSelect:SetSelectedValue({value = {}, text = L.NoTestDataAvailable})
+	local function resetTestSelection()
+		local testEntries = getTestEntries()
+		testSelect:RefreshLazyValues()
+		if #testEntries >= 1 then
+			testSelect:SetSelectedValue(testEntries[1].text)
+		else
+			testSelect:SetSelectedValue(L.NoTestDataAvailable)
+		end
 	end
+	testSelect:SetScript("OnShow", function(self)
+		if self.value and self.value.ephemeral and not self.value.showInAllMods and self.value.mod ~= mod.id then
+			-- "Show in all mods" was deselected from a different mod, reset selection
+			resetTestSelection()
+		end
+	end)
+	resetTestSelection()
+	testSelect.myheight = 40
 	testSelect:SetPoint("TOPLEFT", importLog, "BOTTOMLEFT", -16, -15)
 	local function getPlayerEntries()
 		local testData = testSelect.value ---@type TestDefinition
@@ -417,10 +456,53 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	playerSelect:SetSelectedValue({value = DEFAULT, text = DEFAULT})
 	playerSelect:SetPoint("TOPLEFT", testSelect, "BOTTOMLEFT", 0, -10)
 
+	-- Saved logs
+	alwaysShowButton = testSelectArea:CreateCheckButton(L.ShowThisTestEverywhere, false)
+	alwaysShowButton:SetScript("OnShow", function(self)
+		if not testSelect.value or not testSelect.value.ephemeral then
+			self:Disable()
+			self.textObj:SetFontObject("p", GameFontDisable)
+			self:SetChecked(false)
+			return
+		end
+		self:Enable()
+		self.textObj:SetFontObject("p", GameFontNormal)
+		self:SetChecked(testSelect.value.showInAllMods)
+	end)
+	alwaysShowButton:SetScript("OnClick", function(self)
+		testSelect.value.showInAllMods = not testSelect.value.showInAllMods
+		if not testSelect.value.showInAllMods then
+			testSelect.value.mod = mod.id
+		end
+	end)
+	alwaysShowButton:SetPoint("LEFT", testSelect, "RIGHT", 35, 0)
+	saveLogButton = testSelectArea:CreateCheckButton(L.SaveThisTest, false)
+	saveLogButton:SetScript("OnShow", function(self)
+		if not testSelect.value or not testSelect.value.ephemeral then
+			self:Disable()
+			self.textObj:SetFontObject("p", GameFontDisable)
+			self:SetChecked(testSelect.value)
+			return
+		end
+		self:Enable()
+		self.textObj:SetFontObject("p", GameFontNormal)
+		self:SetChecked(testSelect.value.persistent)
+	end)
+	saveLogButton:SetScript("OnClick", function(self)
+		testSelect.value.persistent = not testSelect.value.persistent
+		if testSelect.value.persistent then
+			serializeLog(testSelect.value)
+			DBM_Test_PersistentImports = DBM_Test_PersistentImports or {}
+			DBM_Test_PersistentImports[testSelect.value.name] = testSelect.value
+		end
+	end)
+	saveLogButton:SetPoint("TOP", alwaysShowButton, "BOTTOM", 0, -10)
+
+	-- Test running
 	runOrStopTest = panel:CreateButton(L.RunTest, 130, 30)
 	runOrStopTest.myheight = 40
 	runOrStopTest:SetPoint("TOPLEFT", testSelectArea.frame, "BOTTOMLEFT", 0, -10)
-	if #tests == 0 then
+	if #tests == 0 and #ephemeralTests == 0 then
 		runOrStopTest:Disable()
 	end
 	runOrStopTest:SetScript("OnClick", function()
@@ -493,3 +575,18 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	if oldFrame then DBM_GUI_OptionsFrame:DisplayFrame(oldFrame) end -- nil if this is the very first frame you click on
 	return height
 end
+
+local savedVariablesLoaded = false
+local persistentTestLoader = CreateFrame("Frame")
+persistentTestLoader:RegisterEvent("ADDON_LOADED")
+persistentTestLoader:SetScript("OnEvent", function(self, _, addon)
+	if savedVariablesLoaded then return end
+	if addon == "DBM-Test" or addon == "DBM-GUI" and DBM.Test.loaded then
+		-- Loading order can vary between these two mods
+		DBM_Test_PersistentImports = DBM_Test_PersistentImports or {}
+		for _, v in pairs(DBM_Test_PersistentImports) do
+			ephemeralTests[#ephemeralTests + 1] = v
+		end
+		savedVariablesLoaded = true
+	end
+end)

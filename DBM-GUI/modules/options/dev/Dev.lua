@@ -73,7 +73,7 @@ local runButtons = {}
 local function getTestDurationString(tests)
 	local duration = 0
 	for _, test in ipairs(tests) do
-		duration = duration + test.log[#test.log][1] + 3.1 -- Tests wait 3.1 second for post-combat handlers (full event deregistration)
+		duration = duration + (test.duration or test.log[#test.log][1]) + 3.1 -- Tests wait 3.1 second for post-combat handlers (full event deregistration)
 	end
 	duration = math.floor(duration)
 	local sec = duration % 60
@@ -136,7 +136,7 @@ runAllOrStopButton = testPanel:CreateButton(L.RunAllTests, 120, 35, function()
 	elseif runButtons[1] then
 		runButtons[1]:GetScript("OnClick")(runButtons[1])
 	else
-		error("no tests installed")
+		DBM:AddMsg("No tests found.")
 	end
 end)
 runAllOrStopButton:SetPoint("TOPLEFT", testPanel.frame, "TOPLEFT", 10, -5)
