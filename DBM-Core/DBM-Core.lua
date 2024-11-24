@@ -3093,7 +3093,7 @@ end
 ---@param force boolean?
 ---@return number?
 function DBM:GetGossipID(force)
-	if self.Options.DontAutoGossip and not force then return nil end
+	if DBM.Options.DontAutoGossip and not force then return nil end
 	local table = C_GossipInfo.GetOptions()
 	local tempTable = {}
 	if table then
@@ -3116,7 +3116,7 @@ end
 ---@param self DBMModOrDBM
 ---@param confirm boolean?
 function DBM:SelectMatchingGossip(confirm, ...)
-	if self.Options.DontAutoGossip then return false end
+	if DBM.Options.DontAutoGossip then return false end
 	local requestedIds = {...}
 	local table = C_GossipInfo.GetOptions()
 	if not table then
@@ -3142,7 +3142,7 @@ end
 ---@param gossipOptionID number
 ---@param confirm boolean?
 function DBM:SelectGossip(gossipOptionID, confirm)
-	if gossipOptionID and not self.Options.DontAutoGossip then
+	if gossipOptionID and not DBM.Options.DontAutoGossip then
 		if gossipOptionID < 10 then--Using Index
 			if C_GossipInfo.SelectOptionByIndex then--10.0.7
 				C_GossipInfo.SelectOptionByIndex(gossipOptionID, "", confirm)
