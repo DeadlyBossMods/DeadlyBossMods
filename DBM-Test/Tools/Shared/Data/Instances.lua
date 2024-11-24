@@ -538,6 +538,8 @@ local data = DBM.Test.CreateSharedModule("Data.Instances", {
 		[2767] = {name = "The Sinkhole", instanceTypeId = 5},
 		[2768] = {name = "Tak-Rethan Abyss", instanceTypeId = 5},
 		[2774] = {name = "Khaz Algar", instanceTypeId = 2},
+		[2776] = {name = "Kalimdor", instanceTypeId = 5},
+		[2792] = {name = "Blackrock Depths", instanceTypeId = 2},
 	},
 	Classic = {
 		[30] = {name = "Alterac Valley", instanceTypeId = 0},
@@ -695,6 +697,13 @@ local data = DBM.Test.CreateSharedModule("Data.Instances", {
 		[2784] = {name = "Demon Fall Canyon", instanceTypeId = 1},
 		[2789] = {name = "The Tainted Scar", instanceTypeId = 2},
 		[2791] = {name = "Storm Cliffs", instanceTypeId = 2},
+		[2804] = {name = "The Crystal Vale", instanceTypeId = 2},
+		[2806] = {name = "Shadow Hold", instanceTypeId = 1},
+		[2807] = {name = "Burning of Andorhal", instanceTypeId = 1},
+		[2817] = {name = "Starfall Barrow Den", instanceTypeId = 1},
+		[2832] = {name = "Nightmare Grove", instanceTypeId = 2},
+		[2835] = {name = "Karazhan Crypts", instanceTypeId = 2},
+		[2853] = {name = "Deadwind Pass", instanceTypeId = 1},
 	},
 })
 

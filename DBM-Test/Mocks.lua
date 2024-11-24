@@ -295,17 +295,20 @@ end
 
 local unitPower = {}
 function mocks.UnitPower(uId, ...)
-	return unitPower[uId] or UnitPower(uId, ...)
+	return bosses[uId] and bosses[uId].power or unitPower[uId] or UnitPower(uId, ...)
 end
 
 function mocks.UnitPowerMax(uId)
-	return unitPower[uId] and 100 or UnitPowerMax(uId)
+	return bosses[uId] and bosses[uId].power or unitPower[uId] and 100 or UnitPowerMax(uId)
 end
 
 function mocks:UpdateUnitPower(uId, name, power)
 	unitPower[uId] = power
 	if name then
 		unitPower["fakeunitid-name-" .. name] = power
+	end
+	if bosses[uId] then
+		bosses[uId].power = power
 	end
 end
 
