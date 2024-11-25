@@ -167,7 +167,7 @@ end
 
 function mod:GOSSIP_SHOW()
 	local gossipOptionID = self:GetGossipID()
-	if gossipOptionID then
+	if gossipOptionID and not DBM:UnitDebuff("player", 461763, 461766) then
 		if self.Options.AutoGossipBuff and gossipOptionID == 123878 then--Potion at entrance
 			self:SelectGossip(gossipOptionID)
 		end
