@@ -519,7 +519,7 @@ L.Area_Cinematics					= "Block in-game cinematics"
 L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
 L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
 L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes, you selected to block, after they have been seen at least once. (To experience story as intended at least once, this option is strongly recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes, based on selections above, after they have been seen at least once. (To experience story as intended at least once, this option is strongly recommended)"
 --Sound
 L.Area_Sound						= "Block in-game sounds"
 L.DisableSFX						= "Disable sound effects channel during boss fights"
