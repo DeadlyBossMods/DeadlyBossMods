@@ -92,9 +92,9 @@ L.Button_ResetWindowSize	= "Restablecer tamaño"
 L.Editbox_WindowWidth		= "Horizontal"
 L.Editbox_WindowHeight		= "Vertical"
 
-L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU para cualquier módulo que ya esté cargado)"
+L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU)"
 L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
-L.GroupOptionsExcludePrivateAura	= "Excluir que las opciones de sonido de 'Aura privada' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
+L.GroupOptionsExcludePrivateAura	= "Excluir que las opciones de sonido 'Aura privada' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
 L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de jefe"
 --L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
@@ -107,11 +107,11 @@ L.CustomOptions						= "Esta categoría contiene opciones personalizadas para un
 L.Panel_AutoLogging			= "Registro automático"
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "Opciones del registro automático"
-L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard (escribe '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
+L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard"
 L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "Filtros del registro automático"
-L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; escribe '/dbm pull' antes de iniciar un encuentro para registrar el uso previo de pociones)"
+L.RecordOnlyBosses			= "Registrar solo encuentros contra jefes"
 L.DoNotLogLFG				= "No registrar grupos del buscador de mazmorras o buscador de bandas"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
@@ -234,7 +234,7 @@ L.SpecialWarnHeader4		= "Tipo 4: Opciones para avisos especiales de correr con a
 L.SpecialWarnHeader5		= "Tipo 5: Opciones para avisos con notas que contienen tu nombre"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 			= "Mensajes generales"
+L.Tab_GeneralMessages 			= "Mensajes de chat"
 L.SelectChatFrameArea			= "Opciones de marco de chat"
 L.SelectChatFrameButton			= "Seleccionar marco de chat"
 L.SelectChatFrameInfoIdle		= "Los mensajes se muestran en %s."
@@ -673,3 +673,5 @@ L.EnterTestMode						= "Modo de pruebas"
 L.SkipPhase							= "Saltar a la siguiente fase"
 
 L.AnonymizeTest 					= "Anonimizar nombres de jugadores y GUIDs"
+L.ShowThisTestEverywhere 			= "Mostrar esta prueba para todos los módulos"
+L.SaveThisTest 						= "Guardar este registro de prueba de forma persistente"
