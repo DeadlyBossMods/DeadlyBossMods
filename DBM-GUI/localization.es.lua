@@ -234,7 +234,7 @@ L.SpecialWarnHeader4		= "Tipo 4: Opciones para avisos especiales de correr con a
 L.SpecialWarnHeader5		= "Tipo 5: Opciones para avisos con notas que contienen tu nombre"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 			= "Mensajes generales"
+L.Tab_GeneralMessages 			= "Mensajes de chat"
 L.SelectChatFrameArea			= "Opciones de marco de chat"
 L.SelectChatFrameButton			= "Seleccionar marco de chat"
 L.SelectChatFrameInfoIdle		= "Los mensajes se muestran en %s."
