@@ -658,3 +658,5 @@ L.EnterTestMode						= "Mode de test"
 L.SkipPhase							= "Passer à la phase suivante"
 
 L.AnonymizeTest 					= "Anonymiser les noms des joueurs et les GUID"
+L.ShowThisTestEverywhere 			= "Afficher ce test pour tous les modules"
+L.SaveThisTest 						= "Enregistrer ce journal de test de manière persistante"
