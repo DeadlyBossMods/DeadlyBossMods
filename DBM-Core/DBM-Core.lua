@@ -533,7 +533,6 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 -----------------
 --  Libraries  --
 -----------------
-local ChatThrottleLib = LibStub("ChatThrottleLib", true)
 local LibSpec
 do
 	if (private.isRetail or private.isCata) and LibStub then
