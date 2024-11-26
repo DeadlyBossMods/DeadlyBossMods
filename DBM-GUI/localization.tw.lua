@@ -669,3 +669,5 @@ L.TestModEntry						= "[操練場] %s"
 L.EnterTestMode						= "操練場模式"
 
 L.AnonymizeTest						= "匿名玩家名字以及標誌"
+L.ShowThisTestEverywhere			= "顯示此測試在所有模組"
+L.SaveThisTest						= "永久儲存此測試紀錄"
