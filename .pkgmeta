@@ -19,18 +19,18 @@ externals:
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
-  - DBM-Core/Libs/ChatThrottleLib/ChatThrottleLib.toc
-  - DBM-Core/Libs/ChatThrottleLib/ChatThrottleLib.xml
-  - DBM-Core/Libs/ChatThrottleLib/README.txt
-  - DBM-Core/Libs/LibDeflate/docs
-  - DBM-Core/Libs/LibDeflate/examples
-  - DBM-Core/Libs/LibDeflate/LibDeflate.toc
-  - DBM-Core/Libs/LibDeflate/README.md
-  - DBM-Core/Libs/LibDeflate/CONTRIBUTING.md
-  - DBM-Core/Libs/LibDeflate/changelog.md
-  - DBM-Core/Libs/LibDropDownMenu/README.md
-  - DBM-Core/Libs/LibStub/tests
-  - DBM-Core/Libs/LibDataBroker-1.1/README.textile
+  - Libs/ChatThrottleLib/ChatThrottleLib.toc
+  - Libs/ChatThrottleLib/ChatThrottleLib.xml
+  - Libs/ChatThrottleLib/README.txt
+  - Libs/LibDeflate/docs
+  - Libs/LibDeflate/examples
+  - Libs/LibDeflate/LibDeflate.toc
+  - Libs/LibDeflate/README.md
+  - Libs/LibDeflate/CONTRIBUTING.md
+  - Libs/LibDeflate/changelog.md
+  - Libs/LibDropDownMenu/README.md
+  - Libs/LibStub/tests
+  - Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
   - DBM-Test/README.md
 
