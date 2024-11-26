@@ -19,6 +19,9 @@ externals:
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
+  - DBM-Core/Libs/ChatThrottleLib/ChatThrottleLib.toc
+  - DBM-Core/Libs/ChatThrottleLib/ChatThrottleLib.xml
+  - DBM-Core/Libs/ChatThrottleLib/README.txt
   - DBM-Core/Libs/LibDeflate/docs
   - DBM-Core/Libs/LibDeflate/examples
   - DBM-Core/Libs/LibDeflate/LibDeflate.toc
