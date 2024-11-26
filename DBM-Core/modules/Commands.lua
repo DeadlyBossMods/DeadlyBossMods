@@ -32,7 +32,7 @@ local function Pull(timer)
 		C_PartyInfo.DoCountdown(timer)
 		DBM:Debug("Sending Blizzard Countdown Timer")
 	else
-		private.sendSync(private.DBMSyncProtocol, "PT", timer .. "\t" .. DBM:GetCurrentArea())
+		private.sendSync(private.DBMSyncProtocol, "PT", timer .. "\t" .. DBM:GetCurrentArea(), "ALERT")
 		DBM:Debug("Sending DBM Pull Timer")
 	end
 end
@@ -60,7 +60,7 @@ local function Break(timer)
 	--	C_PartyInfo.DoCountdown(timer)
 	--	DBM:Debug("Sending Blizzard Countdown Timer")
 	--else
-		private.sendSync(private.DBMSyncProtocol, "BT", timer)
+		private.sendSync(private.DBMSyncProtocol, "BT", timer, "ALERT")
 		DBM:Debug("Sending DBM Break Timer")
 	--end
 end
