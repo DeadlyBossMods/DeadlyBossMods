@@ -3,7 +3,7 @@ changelog-title: DBM - Core
 
 externals:
   Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
-  Libs/ChatThrottleLib: https://repos.wowace.com/wow/chatthrottlelib/mainline/trunk
+  Libs/ChatThrottleLib: svn://svn.wowace.com/wow/chatthrottlelib/mainline/trunk
   Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
   Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
   Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
