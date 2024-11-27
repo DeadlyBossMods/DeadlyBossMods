@@ -169,6 +169,7 @@ local function createImportTranscriptorFrame()
 		CreateFrame("Frame"):SetScript("OnUpdate", function(self)
 			if coroutine.status(cr) == "suspended" then
 				local ok, err = coroutine.resume(cr)
+				---@diagnostic disable-next-line: param-type-mismatch
 				if not ok then error("error in async task: " .. tostring(err) .. "\nstack:\n" .. debugstack(cr)) end
 			else
 				self:Hide()
@@ -293,6 +294,7 @@ local function createImportTranscriptorFrame()
 		frame:SetScript("OnUpdate", function()
 			if coroutine.status(cr) == "suspended" then
 				local ok, err = coroutine.resume(cr)
+				---@diagnostic disable-next-line: param-type-mismatch
 				if not ok then error("error in async task: " .. tostring(err) .. "\nstack:\n" .. debugstack(cr)) end
 			end
 		end)
