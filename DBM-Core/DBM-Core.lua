@@ -6021,8 +6021,8 @@ do
 					if self.Options.EventSoundMusic == "Random" then
 						local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or mod.inScenario and self:GetDungeonMusic() or self:GetBattleMusic()
 						if #usedTable >= 3 then
-							---@diagnostic disable-next-line: cast-local-type
 							local random = fastrandom(3, #usedTable)
+							---@diagnostic disable-next-line: cast-local-type
 							path = usedTable[random].value
 						end
 					else

@@ -185,7 +185,7 @@ function timerPrototype:Start(timer, ...)
 				end
 			end
 		end
-		timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
+		timer = timer or self.timer--what the shit was "and ((timer > 0 and timer) or self.timer + timer)" even for? all that was doing was breaking mods that purposely start timers of 0
 		if isCountTimer and not self.allowdouble then--remove previous timer.
 			for i = #self.startedTimers, 1, -1 do
 				if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
