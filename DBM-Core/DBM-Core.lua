@@ -822,7 +822,7 @@ end
 local function sendBWSync(prefix, msg, channel, priority)
 	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		ChatThrottleLib:SendAddonMessage(priority, "Bigwigs", prefix .. "^" .. msg, channel)
+		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
 	end
 end
 private.sendBWSync = sendBWSync
