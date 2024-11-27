@@ -79,13 +79,11 @@ DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
 local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
---local bwVersionQueryString = "Q^%d^%s"
---local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.33 alpha"--Core version
+DBM.DisplayVersion = "11.0.33"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 11, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 11, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 15--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -2303,7 +2301,6 @@ do
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
-					--C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t0\t%s"):format(text), "WHISPER", whisperTarget)
 					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
 				else
 					sendSync(DBMSyncProtocol, "U", ("0\t%s"):format(text), "ALERT", true)
@@ -2324,7 +2321,6 @@ do
 			if whisperTarget then
 				--no dbm function uses whisper for pizza timers
 				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-				--C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t%s\t%s"):format(time, text), "WHISPER", whisperTarget)
 				sendWhisperSync(DBMSyncProtocol, "UW", ("%s\t%s"):format(time, text), whisperTarget, "ALERT", true)
 			else
 				sendSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text), "ALERT", true)
@@ -2464,7 +2460,6 @@ do
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					--SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata then
@@ -2554,7 +2549,6 @@ do
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					--SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata then
@@ -4668,7 +4662,6 @@ do
 			return
 		end
 		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
-			--SendAddonMessage("BigWigs", bwVersionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
 			sendBWSync("V", ("%d^%s"):format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
 			return
 		end
@@ -5564,7 +5557,6 @@ do
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
---			C_ChatInfo.SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Send any emote to transcriptor, even if no spellid
 			ChatThrottleLib:SendAddonMessage("ALERT", "Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Alert prio used since time accuracy is paramount for accurate logging
 		end
 	end
@@ -7038,7 +7030,6 @@ do
 		self:Debug("Requesting timer recovery to " .. selectedClient.name)
 		requestedFrom[selectedClient.name] = true
 		requestTime = GetTime()
-		--SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tRT", "WHISPER", selectedClient.name)
 		sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name, "ALERT")
 	end
 
@@ -7106,7 +7097,6 @@ do
 			--But only if we are not in combat with a boss
 			if DBT:GetBar(L.TIMER_BREAK) then
 				local remaining = DBT:GetBar(L.TIMER_BREAK).timer
-				--SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tBTR3\t" .. remaining, "WHISPER", target)
 				sendWhisperSync(DBMSyncProtocol, "BTR3", remaining, target, "NORMAL")
 			end
 			return
@@ -7145,7 +7135,6 @@ end
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
 	if not dbmIsEnabled or IsTrialAccount() then return end
-	--return SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tCI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 	return sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
 end
 
@@ -7164,7 +7153,6 @@ function DBM:SendTimerInfo(mod, target)
 				end
 				timeLeft = totalTime - elapsed
 				if timeLeft > 0 and totalTime > 0 then
-					--SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tTR\t%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), "WHISPER", target)
 					sendWhisperSync(DBMSyncProtocol, "TR", ("%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), target, "NORMAL")
 				end
 			end
@@ -7178,7 +7166,6 @@ function DBM:SendVariableInfo(mod, target)
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
-			--SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tVI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
 			sendWhisperSync(DBMSyncProtocol, "VI", ("%s\t%s\t%s"):format(mod.id, vname, v2), target, "NORMAL")
 		end
 	end
@@ -9166,7 +9153,6 @@ function bossModPrototype:SendBigWigsSync(msg, extra)
 	end
 	if IsInGroup() then
 		sendBWSync("B", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "ALERT")
-		--SendAddonMessage("BigWigs", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
 	end
 end
 
