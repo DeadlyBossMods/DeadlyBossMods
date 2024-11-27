@@ -79,13 +79,11 @@ DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
 local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
---local bwVersionQueryString = "Q^%d^%s"
---local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.33 alpha"--Core version
+DBM.DisplayVersion = "11.0.34 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 11, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 11, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 15--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -578,10 +576,8 @@ local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitIsGroupLeader, UnitIsGroupAssistant = UnitIsGroupLeader, UnitIsGroupAssistant
 local PlaySoundFile = PlaySoundFile
 local Ambiguate = Ambiguate
-local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
+local C_TimerAfter = C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
-local pformat = stringUtils.pformat
-local SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
@@ -695,8 +691,9 @@ end
 ---@param protocol number
 ---@param prefix string
 ---@param msg any
+---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
-local function sendSync(protocol, prefix, msg, isLogged)
+local function sendSync(protocol, prefix, msg, priority, isLogged)
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -715,17 +712,10 @@ local function sendSync(protocol, prefix, msg, isLogged)
 		if sendChannel == "SOLO" then
 			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 		else
-			--Per https://warcraft.wiki.gg/wiki/Patch_10.2.7/API_changes#Addon_messaging_changes
-			--We want to start watching for situations DBM exceeds it's 10 messages per 10 seconds limits
-			--While at it, catch other failure types too
-			local result
 			if isLogged then
-				result = select(-1, C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
+				ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 			else
-				result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
-			end
-			if type(result) == "number" and result ~= 0 then
-				DBM:Debug("|cffff0000sendSync failed with a result of " ..result.. " for prefix |r" .. prefix)
+				ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 			end
 		end
 	end
@@ -737,17 +727,14 @@ private.sendSync = sendSync
 ---@param prefix string
 ---@param msg any
 ---@param whisperTarget string
+---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
-local function sendWhisperSync(protocol, prefix, msg, whisperTarget, isLogged)
+local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
-	local result
 	if isLogged then
-		result = select(-1, C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget))
+		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	else
-		result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget))
-	end
-	if type(result) == "number" and result ~= 0 then
-		DBM:Debug("|cffff0000sendSync failed with a result of " ..result.. " for prefix |r" .. prefix)
+		ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	end
 end
 
@@ -759,10 +746,7 @@ local function sendGuildSync(protocol, prefix, msg)
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD"))--Even guild syncs send realm so we can keep antispam the same across realid as well.
-		if type(result) == "number" and result ~= 0 then
-			DBM:Debug("|cffff0000sendGuildSync failed with a result of " ..result.. " for prefix |r" .. prefix)
-		end
+		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 end
 private.sendGuildSync = sendGuildSync
@@ -792,13 +776,10 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if sendChannel == "SOLO" then
 		handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 	else
-		local result = select(-1, SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel))
-		if type(result) == "number" and result ~= 0 then
-			DBM:Debug("|cffff0000SendWorldSync failed with a result of " ..result.. " for prefix |r" .. prefix)
-		end
+		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 	end
 	if IsInGuild() and sendChannel ~= "SOLO" then
-		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 	if self.Options.EnableWBSharing and not noBNet then
 		local _, numBNetOnline = BNGetNumFriends()
@@ -824,7 +805,7 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 					end
 				end
 				if sameRealm then
-					BNSendGameData(gameAccountID, DBMPrefix, DBMSyncProtocol .. "\t" .. prefix .. "\t" .. msg)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
+					ChatThrottleLib:BNSendGameData("NORMAL", DBMPrefix, DBMSyncProtocol .. "\t" .. prefix .. "\t" .. msg, "WHISPER", gameAccountID)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
 				end
 			end
 		end
@@ -835,16 +816,11 @@ end
 ---@param prefix string
 ---@param msg any
 ---@param channel string
-local function sendBWSync(prefix, msg, channel)
+---@param priority string ChatThottleLib sync priority
+local function sendBWSync(prefix, msg, channel, priority)
 	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		--Per https://warcraft.wiki.gg/wiki/Patch_10.2.7/API_changes#Addon_messaging_changes
-		--We want to start watching for situations DBM exceeds it's 10 messages per 10 seconds limits
-		--While at it, catch other failure types too
-		local result = select(-1, SendAddonMessage("Bigwigs", prefix .. "^" .. msg, channel))
-		if type(result) == "number" and result ~= 0 then
-			DBM:Debug("|cffff0000sendBWSync failed with a result of " ..result.. " for prefix |r" .. prefix)
-		end
+		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
 	end
 end
 private.sendBWSync = sendBWSync
@@ -2325,10 +2301,9 @@ do
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
-					--C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t0\t%s"):format(text), "WHISPER", whisperTarget)
-					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, true)
+					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
 				else
-					sendSync(DBMSyncProtocol, "U", ("0\t%s"):format(text), true)
+					sendSync(DBMSyncProtocol, "U", ("0\t%s"):format(text), "ALERT", true)
 				end
 			end
 			return
@@ -2346,10 +2321,9 @@ do
 			if whisperTarget then
 				--no dbm function uses whisper for pizza timers
 				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-				--C_ChatInfo.SendAddonMessageLogged(DBMPrefix, (DBMSyncProtocol .. "\tUW\t%s\t%s"):format(time, text), "WHISPER", whisperTarget)
-				sendWhisperSync(DBMSyncProtocol, "UW", ("%s\t%s"):format(time, text), whisperTarget, true)
+				sendWhisperSync(DBMSyncProtocol, "UW", ("%s\t%s"):format(time, text), whisperTarget, "ALERT", true)
 			else
-				sendSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text), true)
+				sendSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text), "ALERT", true)
 			end
 		end
 		if sender then self:ShowPizzaInfo(text, sender) end
@@ -2484,10 +2458,9 @@ do
 				twipe(newersubVersionPerson)
 				twipe(forceDisablePerson)
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H")
+				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					--SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -2574,10 +2547,9 @@ do
 				twipe(newersubVersionPerson)
 				twipe(forceDisablePerson)
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H")
+				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					--SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -3991,6 +3963,7 @@ do
 				local usedTable = self.Options.EventSoundMusicCombined and DBM:GetMusic() or DBM:GetDungeonMusic()
 				if #usedTable >= 3 then
 					local random = fastrandom(3, #usedTable)
+					---@diagnostic disable-next-line: cast-local-type
 					path = usedTable[random].value
 				end
 			else
@@ -4689,8 +4662,7 @@ do
 			return
 		end
 		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
-			--SendAddonMessage("BigWigs", bwVersionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
-			sendBWSync("V", ("%d^%s"):format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
+			sendBWSync("V", ("%d^%s"):format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
 			return
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
@@ -4700,9 +4672,9 @@ do
 			VPVersion = "/ VP" .. VoicePack .. ": v" .. DBM.VoiceVersions[VoicePack]
 		end
 		if VPVersion then
-			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), VPVersion))
+			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), VPVersion), "NORMAL")
 		else
-			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0)))
+			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0)), "NORMAL")
 		end
 	end
 
@@ -5442,7 +5414,7 @@ do
 					if encounterID == eId then
 						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
 						return
 					end
@@ -5450,7 +5422,7 @@ do
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0))
+					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
 				return
 			end
@@ -5468,7 +5440,7 @@ do
 					if encounterID == eId then
 						self:EndCombat(v, nil, nil, "BOSS_KILL")
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
 						return
 					end
@@ -5476,7 +5448,7 @@ do
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, nil, nil, "BOSS_KILL")
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0))
+					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
 				return
 			end
@@ -5585,7 +5557,7 @@ do
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
-			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Send any emote to transcriptor, even if no spellid
+			ChatThrottleLib:SendAddonMessage("ALERT", "Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Alert prio used since time accuracy is paramount for accurate logging
 		end
 	end
 
@@ -5973,14 +5945,14 @@ do
 				end
 				--send "C" sync
 				if not synced and not mod.soloChallenge then
-					sendSync(DBMSyncProtocol, "C", (delay or 0) .. "\t" .. modId .. "\t" .. (mod.revision or 0) .. "\t" .. startHp .. "\t" .. tostring(self.Revision) .. "\t" .. (mod.hotfixNoticeRev or 0) .. "\t" .. event)
+					sendSync(DBMSyncProtocol, "C", (delay or 0) .. "\t" .. modId .. "\t" .. (mod.revision or 0) .. "\t" .. startHp .. "\t" .. tostring(self.Revision) .. "\t" .. (mod.hotfixNoticeRev or 0) .. "\t" .. event, "ALERT")
 				end
 				if UnitIsGroupLeader("player") then
 					--Global disables require normal, heroic, mythic raid on retail, or 10 man normal, 25 man normal, 40 man normal, 10 man heroic, or 25 man heroic on classic
 					if difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15 or difficulties.difficultyIndex == 16 or difficulties.difficultyIndex == 175 or difficulties.difficultyIndex == 176 or difficulties.difficultyIndex == 186 or difficulties.difficultyIndex == 193 or difficulties.difficultyIndex == 194 then
 						local statusWhisper, guildStatus, raidIcons, chatBubbles = self.Options.DisableStatusWhisper and 1 or 0, self.Options.DisableGuildStatus and 1 or 0, self.Options.DisableRaidIcons and 1 or 0, self.Options.DisableChatBubbles and 1 or 0
 						if statusWhisper ~= 0 or guildStatus ~= 0 or raidIcons ~= 0 or chatBubbles ~= 0 then
-							sendSync(2, "RLO", statusWhisper .. "\t" .. guildStatus .. "\t" .. raidIcons .. "\t" .. chatBubbles)
+							sendSync(2, "RLO", statusWhisper .. "\t" .. guildStatus .. "\t" .. raidIcons .. "\t" .. chatBubbles, "ALERT")
 						end
 					end
 				end
@@ -6042,6 +6014,7 @@ do
 						local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or mod.inScenario and self:GetDungeonMusic() or self:GetBattleMusic()
 						if #usedTable >= 3 then
 							local random = fastrandom(3, #usedTable)
+							---@diagnostic disable-next-line: cast-local-type
 							path = usedTable[random].value
 						end
 					else
@@ -6419,7 +6392,7 @@ function DBM:OnMobKill(cId, synced)
 		if v.combatInfo.noBossDeathKill then return end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId)
+				sendSync(DBMSyncProtocol, "K", cId, "ALERT")
 			end
 			v.combatInfo.killMobs[cId] = false
 			if v.numBoss and (v.vb.bossLeft or 0) > 0 then
@@ -6438,7 +6411,7 @@ function DBM:OnMobKill(cId, synced)
 			end
 		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId)
+				sendSync(DBMSyncProtocol, "K", cId, "ALERT")
 			end
 			self:EndCombat(v, nil, nil, "Main CID Down")
 		end
@@ -7057,8 +7030,7 @@ do
 		self:Debug("Requesting timer recovery to " .. selectedClient.name)
 		requestedFrom[selectedClient.name] = true
 		requestTime = GetTime()
-		--SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tRT", "WHISPER", selectedClient.name)
-		sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name)
+		sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name, "ALERT")
 	end
 
 	---@param mod DBMMod
@@ -7125,8 +7097,7 @@ do
 			--But only if we are not in combat with a boss
 			if DBT:GetBar(L.TIMER_BREAK) then
 				local remaining = DBT:GetBar(L.TIMER_BREAK).timer
-				--SendAddonMessage(DBMPrefix, DBMSyncProtocol .. "\tBTR3\t" .. remaining, "WHISPER", target)
-				sendWhisperSync(DBMSyncProtocol, "BTR3", remaining, target)
+				sendWhisperSync(DBMSyncProtocol, "BTR3", remaining, target, "NORMAL")
 			end
 			return
 		end
@@ -7164,8 +7135,7 @@ end
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
 	if not dbmIsEnabled or IsTrialAccount() then return end
-	--return SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tCI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
-	return sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target)
+	return sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
 end
 
 ---@param mod DBMMod
@@ -7183,8 +7153,7 @@ function DBM:SendTimerInfo(mod, target)
 				end
 				timeLeft = totalTime - elapsed
 				if timeLeft > 0 and totalTime > 0 then
-					--SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tTR\t%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), "WHISPER", target)
-					sendWhisperSync(DBMSyncProtocol, "TR", ("%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), target)
+					sendWhisperSync(DBMSyncProtocol, "TR", ("%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), target, "NORMAL")
 				end
 			end
 		end
@@ -7197,8 +7166,7 @@ function DBM:SendVariableInfo(mod, target)
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
-			--SendAddonMessage(DBMPrefix, (DBMSyncProtocol .. "\tVI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
-			sendWhisperSync(DBMSyncProtocol, "VI", ("%s\t%s\t%s"):format(mod.id, vname, v2), target)
+			sendWhisperSync(DBMSyncProtocol, "VI", ("%s\t%s\t%s"):format(mod.id, vname, v2), target, "NORMAL")
 		end
 	end
 end
@@ -9154,7 +9122,7 @@ do
 		--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
 		if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
 			self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
-			sendSync(DBMSyncProtocol, "M", str)
+			sendSync(DBMSyncProtocol, "M", str, "ALERT")
 		end
 	end
 
@@ -9184,8 +9152,7 @@ function bossModPrototype:SendBigWigsSync(msg, extra)
 		msg = msg .. "^" .. extra
 	end
 	if IsInGroup() then
-		sendBWSync("B", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
-		--SendAddonMessage("BigWigs", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
+		sendBWSync("B", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "ALERT")
 	end
 end
 
@@ -9242,7 +9209,7 @@ do
 				for i = 1, #mod.findFastestComputer do
 					local option = mod.findFastestComputer[i]
 					if mod.Options[option] then
-						sendSync(DBMSyncProtocol, "IS", UnitGUID("player") .. "\t" .. tostring(self.Revision) .. "\t" .. option)
+						sendSync(DBMSyncProtocol, "IS", UnitGUID("player") .. "\t" .. tostring(self.Revision) .. "\t" .. option, "NORMAL")
 					end
 				end
 			elseif not IsInGroup() then

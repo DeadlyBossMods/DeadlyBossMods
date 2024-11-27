@@ -3,6 +3,7 @@ changelog-title: DBM - Core
 
 externals:
   Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  Libs/ChatThrottleLib: svn://svn.wowace.com/wow/chatthrottlelib/mainline/trunk
   Libs/LibChatAnims: https://repos.wowace.com/wow/libchatanims/trunk/LibChatAnims
   Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
   Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
@@ -18,15 +19,18 @@ externals:
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
 
 ignore:
-  - DBM-Core/Libs/LibDeflate/docs
-  - DBM-Core/Libs/LibDeflate/examples
-  - DBM-Core/Libs/LibDeflate/LibDeflate.toc
-  - DBM-Core/Libs/LibDeflate/README.md
-  - DBM-Core/Libs/LibDeflate/CONTRIBUTING.md
-  - DBM-Core/Libs/LibDeflate/changelog.md
-  - DBM-Core/Libs/LibDropDownMenu/README.md
-  - DBM-Core/Libs/LibStub/tests
-  - DBM-Core/Libs/LibDataBroker-1.1/README.textile
+  - Libs/ChatThrottleLib/ChatThrottleLib.toc
+  - Libs/ChatThrottleLib/ChatThrottleLib.xml
+  - Libs/ChatThrottleLib/README.txt
+  - Libs/LibDeflate/docs
+  - Libs/LibDeflate/examples
+  - Libs/LibDeflate/LibDeflate.toc
+  - Libs/LibDeflate/README.md
+  - Libs/LibDeflate/CONTRIBUTING.md
+  - Libs/LibDeflate/changelog.md
+  - Libs/LibDropDownMenu/README.md
+  - Libs/LibStub/tests
+  - Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
   - DBM-Test/README.md
 

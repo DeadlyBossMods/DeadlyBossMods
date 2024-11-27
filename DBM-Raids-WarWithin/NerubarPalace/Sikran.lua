@@ -17,11 +17,11 @@ mod.disableHealthCombat = true--^^
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 456420 435401 432965 435403 439559 453258 442428",
 	"SPELL_CAST_SUCCESS 439559 453258 433475",
-	"SPELL_AURA_APPLIED 459273 438845 435410 439191",--433517
+	"SPELL_AURA_APPLIED 459273 438845 435410 439191 459785",--433517
 	"SPELL_AURA_APPLIED_DOSE 459273 438845",
-	"SPELL_AURA_REMOVED 459273 439191"--433517
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_AURA_REMOVED 459273 439191",--433517
+	"SPELL_PERIODIC_DAMAGE 459785",
+	"SPELL_PERIODIC_MISSED 459785"
 --	"CHAT_MSG_RAID_BOSS_WHISPER",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -49,7 +49,7 @@ local specWarnPiercedDefenses					= mod:NewSpecialWarningTaunt(435410, nil, nil,
 --local specWarnDecimate						= mod:NewSpecialWarningYou(442428, nil, nil, nil, 1, 2)
 --local yellDecimate							= mod:NewShortYell(442428)
 --local yellDecimateFades						= mod:NewShortFadesYell(442428)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerShatteringSweepCD					= mod:NewCDCountTimer(97.3, 456420, 394017, nil, nil, 2)--Shortname "Sweep"
 local timerCosmicShards							= mod:NewBuffFadesTimer(6, 459273, nil, nil, nil, 5)
@@ -216,6 +216,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnExposedWeakness:Show(args.destName)
 			specWarnExposedWeakness:Play("tauntboss")
 		end
+	elseif spellId == 459785 and args:IsPlayer() and self:AntiSpam(3, 3) then
+		specWarnGTFO:Show(args.spellName)
+		specWarnGTFO:Play("watchfeet")
 	--elseif spellId == 433517 then
 	--	if self:AntiSpam(10, 2) then--Backup
 	--		self.vb.bladesCount = self.vb.bladesCount + 1
@@ -294,15 +297,13 @@ function mod:OnTranscriptorSync(msg, targetName)
 end
 --]]
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 421532 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
