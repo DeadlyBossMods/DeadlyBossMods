@@ -580,7 +580,8 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 	end
 end
 
-
+---@param isGUID boolean? If true, unit is GUID, if false, unit is unitID
+---@param force boolean? If true, force hide all icons, if false, hide only one icon
 function NameplateIcon_Hide(isGUID, unit, index, force)
 
 	-- need to remove the entry
@@ -943,6 +944,18 @@ do
 		nameplateTimerBars[id] = nil
 	end
 	DBM:RegisterCallback("DBM_NameplateStop", timerEndCallback)
+
+	--timer stop all
+	local timerEndAllCallback = function (event, id)
+		if event ~= "DBM_NameplateStopAll" then return end
+
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
+
+		NameplateIcon_Hide(false, nil, nil, true)--Nil GUID force true basically triggers RemoveAll
+	end
+	DBM:RegisterCallback("DBM_NameplateStopAll", timerEndAllCallback)
 end
 
 function DBM.PauseTestTimer(text)
@@ -1053,7 +1066,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
 	end
 
 	--call internal hide function
-	NameplateIcon_Hide(isGUID, unit, currentTexture, force)
+	NameplateIcon_Hide(isGUID or false, unit, currentTexture, force)
 end
 
 function nameplateFrame:IsShown()

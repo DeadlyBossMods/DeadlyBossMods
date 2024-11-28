@@ -208,9 +208,13 @@ function bossModPrototype:DisableMod()
 	self.Options.Enabled = false
 end
 
-function bossModPrototype:Stop()
+---@param killNameplates boolean? Should only be called by trash mods. Bosses should never call this
+function bossModPrototype:Stop(killNameplates)
 	for _, v in ipairs(self.timers) do
 		v:Stop()
+	end
+	if killNameplates then
+		DBM:FireEvent("DBM_NameplateStopAll")
 	end
 	self:Unschedule()
 end

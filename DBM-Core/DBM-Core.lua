@@ -2009,6 +2009,7 @@ do
 	--- |"DBM_TimerUpdateIcon"
 	--- |"DBM_NameplateStart"
 	--- |"DBM_NameplateStop"
+	--- |"DBM_NameplateStopAll"
 	--- |"DBM_NameplatePause"
 	--- |"DBM_NameplateResume"
 	--- |"DBM_NameplateUpdate"
