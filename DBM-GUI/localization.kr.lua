@@ -513,14 +513,14 @@ L.Area_Cinematics					= "게임내 시네마틱 재생 차단"
 L.DuringFight						= "보스 전투중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
 L.InstanceAnywhere					= "던전이나 공격대 인스턴스에서 비전투 컷신 재생 차단"
 L.NonInstanceAnywhere				= "위험: 야외 컷신 재생 차단 (권장하지 않음)"
-L.OnlyAfterSeen						= "한번 봤던 컷신만 재생 차단 (컷신이 한번은 나오기 때문에 스토리를 이해하려면 이 설정을 강력히 추천합니다)"
+L.OnlyAfterSeen						= "위 선택 사항에 해당되는 것 중 1회 이상 본 컷신만 재생 차단 (스토리 이해를 위해 한번은 보도록 의도된 옵션이며 사용을 강력히 권장합니다)"
 --Sound
 L.Area_Sound						= "게임내 소리 차단"
 L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
 L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
 L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard			= "다른 블리자드 성가신 요소 비활성화 및 숨김"
+L.Area_HideBlizzard			= "그 외 블리자드 성가신 요소 비활성화 및 숨김"
 L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
 L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
