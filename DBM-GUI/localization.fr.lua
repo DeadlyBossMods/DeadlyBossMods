@@ -93,10 +93,10 @@ L.Button_ResetWindowSize	= "Réinit. la taille de la fenêtre"
 L.Editbox_WindowWidth		= "Largeur de la fenêtre"
 L.Editbox_WindowHeight		= "Hauteur de la fenêtre"
 
-L.UIGroupingOptions					= "Options d'interface partagées (requiet de recharger l'interface pour tout module qui serait déjà chargé)"
+L.UIGroupingOptions					= "Options d'interface partagées (requiert de recharger l'interface)"
 L.GroupOptionsExcludeIcon			= "Exclure l'option 'Définir l'icône sur' du regroupement par sort (elles seront regroupées dans la catégorie 'Icônes' à la place)"
 L.GroupOptionsExcludePrivateAura	= "Exclure les options sonores des 'Auras Privées' du regroupement par sort (elles seront regroupées dans la catégorie 'Auras Privées' à la place)"
-L.ShowWAKeys						= "Afficher les clés WeakAuras à côté des noms de sorts pour aider à écrire des WeakAuras en utilisant les déclencheurs du Boss Mod"
+L.ShowWAKeys						= "Afficher les clés WeakAuras à côté des noms de sorts pour aider à écrire des WeakAuras en utilisant les déclencheurs du boss mod"
 L.AutoExpandSpellGroups				= "Déplier automatiquement les options liées à la même capacité"
 --L.ShowSpellDescWhenExpanded		= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
 L.NoDescription						= "Cette capacité n'a aucune description"
@@ -106,7 +106,7 @@ L.CustomOptions						= "Cette catégorie contient des options personnalisées po
 L.Panel_AutoLogging					= "Enregistrement automatique"
 
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging					= "Bascules d'enregistrement automatique"
+L.Area_AutoLogging					= "Bascules pour l'enregistrement automatique"
 L.AutologBosses						= "Enregistrer automatiquement le contenu sélectionné en utilisant le journal de combat de Blizzard"
 L.AdvancedAutologBosses				= "Enregistrer automatiquement le contenu sélectionné avec Transcriptor"
 --Auto Logging: Global filter Options
@@ -134,7 +134,7 @@ L.RLReadyCheckSound			= "Faire clignoter le bouton de l'application et jouer le 
 L.AFKHealthWarning			= "Faire clignoter le bouton de l'application et jouer un son d'alerte si vous perdez de la vie alors que vous absent"
 L.AutoReplySound			= "Faire clignoter le bouton de l'application et jouer un son d'alerte quand vous recevez une réponse DBM automatique par chuchotement"
 --
-L.TimerGeneral 				= "Options des décompte"
+L.TimerGeneral 				= "Options de décompte"
 L.SKT_Enabled				= "Décompte du record pour le combat actuel s'il est disponible"
 L.ShowRespawn				= "Décompte de la réapparition du boss après une défaite"
 L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (LFG, BG, etc)"
@@ -150,7 +150,7 @@ L.oRA3AnnounceConsumables	= "Annoncer la vérification des consommables oRA3 au 
 L.Area_Invite				= "Options des invitations"
 L.AutoAcceptFriendInvite	= "Acceptation auto des invitations venant d'un ami"
 L.AutoAcceptGuildInvite		= "Acceptation auto des invitations venant d'un membre de la guilde"
-L.Area_Advanced				= "Options Avancées"
+L.Area_Advanced				= "Options avancées"
 L.FakeBW					= "Prétendre utiliser BigWigs lors des vérifications de versions au lieu de DBM (utile pour les guildes qui forcent l'utilisation de BigWigs)"
 L.AITimer					= "Utiliser un générateur automatique de décomptes pour les nouveaux combats en utilisant l'IA intégrée de DBM (utile pout engager les boss jamais vus sur la béta)"
 
@@ -220,12 +220,12 @@ L.SAThree 					= "Son global 3 (action de haute priorité)"
 L.SAFour 					= "Son global 4 (fuite de haute priorité)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Alertes spéciales"
-L.Area_SpecWarn				= "Options des spéciales"
-L.SpecWarn_ClassColor		= "Utiliser la couleur des classes pour les alertes spéciales"
-L.ShowSWarningsInChat 		= "Afficher les alertes spéciales dans la fenêtre de discussion"
-L.SWarnNameInNote			= "Utiliser les options de type 5 si une note d'alerte spéciale contient votre nom"
-L.SpecialWarningIcon		= "Afficher les icônes sur les alertes spéciales"
+L.Panel_SpecWarnFrame		= "Annonces spéciales"
+L.Area_SpecWarn				= "Options des annonces spéciales"
+L.SpecWarn_ClassColor		= "Utiliser la couleur des classes pour les annonces spéciales"
+L.ShowSWarningsInChat 		= "Afficher les annonces spéciales dans la fenêtre de discussion"
+L.SWarnNameInNote			= "Utiliser les options de type 5 si une note d'annonce spéciale contient votre nom"
+L.SpecialWarningIcon		= "Afficher les icônes sur les annonces spéciales"
 L.ShortTextSpellname		= "Abréger le texte des noms des sorts (si possible)"
 L.SpecWarn_FlashFrameRepeat	= "Clignoter %d fois"
 L.SpecWarn_Flash			= "Clignoter l'écran"
@@ -237,10 +237,10 @@ L.SpecWarn_FlashAlpha		= "Alpha du clignotement : %0.1f"
 L.SpecWarn_DemoButton		= "Aff. un exemple"
 L.SpecWarn_ResetMe			= "Réinit. les valeurs"
 L.SpecialWarnSoundOption	= "Définir son par défaut"
-L.SpecialWarnHeader1		= "Type 1 : Annonces à priorité moyenne affectant vous ou vos actions"
+L.SpecialWarnHeader1		= "Type 1 : Annonces à priorité moyenne affectant votre ou vos actions"
 L.SpecialWarnHeader2		= "Type 2 : Annonces à priorité moyenne affectant tout le monde"
 L.SpecialWarnHeader3		= "Type 3 : Annonces à priorité HAUTE"
-L.SpecialWarnHeader4		= "Type 4 : Annonces à priorité HAUTE/Alertes spéciales COUREZ"
+L.SpecialWarnHeader4		= "Type 4 : Annonces à priorité HAUTE de fuite"
 L.SpecialWarnHeader5		= "Type 5 : Annonces dont la note contient votre nom"
 
 -- Tab: Generalwarnings
@@ -285,14 +285,14 @@ L.Area_CountdownOptions		= "Options des décomptes"
 L.Area_VoicePackReplace		= "Options de remplacement de paquet de voix"
 L.VPReplaceNote				= "Remarque : Les paquets de voix ne modifient ou suppriment jamais vos sons d'alertes.\nIls sont simplement mis en sourdine lorsqu'un paquet de voix les remplace."
 L.ReplacesAnnounce			= "Remplacer les sons d'annonce (Remarque : Très peu d'utilisation pour les paquets de voix, sauf pour les changements de phases et les adds)"
-L.ReplacesSA1				= "Remplacer les sons d'annonce spéciale 1 'PvP Flag')"
+L.ReplacesSA1				= "Remplacer les sons d'annonce spéciale 1 ('PvP Flag')"
 L.ReplacesSA2				= "Remplacer les sons d'annonce spéciale 2 ('Beware!')"
 L.ReplacesSA3				= "Remplacer les sons d'annonce spéciale 3 ('Air Horn')"
 L.ReplacesSA4				= "Remplacer les sons d'annonce spéciale 4 ('Run Away')"
 L.ReplacesGTFO 				= "Remplacer les sons d'annonce spéciale GTFO"
 L.ReplacesCustom			= "Remplacer les sons d'annonce spéciale des réglages utilisateur personnalisés (non recommandé)"
 L.Area_VoicePackAdvOptions	= "Options avancées paquets de voix"
-L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales même si l'alerte spéciale est désactivée"
+L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales"
 L.VPDontMuteSounds			= "Désactiver la mise en sourdine des alertes standards lors de l'utilisation d'un paquet de voix (à utilier seulement si vous souhaitez entendre les DEUX types d'alertes sonores simultanément)"
 L.Area_VPLearnMore			= "Apprenez-en plus sur les paquets de voix et comment utiliser ces options"
 L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
@@ -512,22 +512,22 @@ L.InstanceAnywhere 					= "Bloquer les cinématiques non liées au combat n'impo
 L.NonInstanceAnywhere 				= "DANGER : Bloquer les cinématiques en extérieur dans le monde ouvert (NON recommandé)"
 L.OnlyAfterSeen 					= "Ne bloquer les cinématiques qu'après les avoir vues au moins une fois (Vivement recommandé pour vivre l'histoire telle qu'elle a été conçue au moins une fois)"
 -- Sound
-L.Area_Sound 						= "Bloquer les sons en jeu"
+L.Area_Sound 						= "Désactiver les sons en jeu"
 L.DisableSFX 						= "Désactiver le canal des effets sonores pendant les combats de boss"
 L.DisableAmbiance 					= "Désactiver le canal de l'ambiance sonore pendant les combats de boss"
 L.DisableMusic 						= "Désactiver le canal de la musique pendant les combats de boss (Remarque : Si activé, la musique de boss personnalisée ne sera pas jouée si elle est activée dans les sons d'événement)"
 -- Autres
 L.Area_HideBlizzard 				= "Désactiver et cacher d'autres irritants Blizzard"
 L.HideBossEmoteFrame 				= "Cacher le cadre des émotes de boss de raid pendant les combats de boss"
-L.HideWatchFrame 					= "Cacher le cadre de suivi (objectifs) pendant les combats de boss s'il n'y a pas d'exploits en cours de suivi et si ce n'est pas dans une Mythique +"
+L.HideWatchFrame 					= "Cacher le cadre de suivi (objectifs) pendant les combats de boss s'il n'y a pas d'exploits en cours de suivi et si ce n'est pas dans une Mythique+"
 L.HideQuestTooltips 				= "Cacher les objectifs de quête des info-bulles pendant les combats de boss" --Currently hidden (NYI)
 L.HideTooltips 						= "Cacher complètement les info-bulles pendant les combats de boss"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Contrôles du chef de raid"
 L.Area_FeatureOverrides				= "Options de dérogation des fonctionnalités"
-L.OverrideIcons 					= "Désactiver le marquage des icônes pour tous les utilisateurs du raid, y compris vous-même"-- (Use override instead of disable if you want DBM to do marking under your terms)
-L.OverrideSay						= "Désactiver les messages de bulle de chat/DIRE pour tous les utilisateurs du raid, y compris vous-même"
+L.OverrideIcons 					= "Désactiver le marquage des icônes pour tous les utilisateurs du raid"-- (Use override instead of disable if you want DBM to do marking under your terms)
+L.OverrideSay						= "Désactiver les messages de bulle de chat/DIRE pour tous les utilisateurs du raid"
 L.DisableStatusWhisperShort			= "Désactiver les chuchotements de statut/réponse pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "Désactiver la synchronisation des messages de progression avec la guilde pour tout le groupe"--Duplicated from privacy but makes sense to include option in both panels
 --L.DisabledForDropdown				= "Sélectionner le(s) mod(s) de boss désactivé(s) pour"--NYI
@@ -558,7 +558,7 @@ L.Tab_Privacy 				= "Messages privés"
 L.Area_WhisperMessages		= "Options des chuchotements"
 L.AutoRespond 				= "Répondre automatiquement aux chuchotements pendant les combats"
 L.WhisperStats 				= "Inclure les victoires/défaites dans les réponses"
-L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert Chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques."
+L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques."
 L.Area_SyncMessages			= "Options de synchronisation des addons"
 L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchroniser avec la guilde, si vous êtes chef de groupe, cela affectera tous les utilisateurs de DBM dans votre groupe"
 L.EnableWBSharing 			= "Partager quand vous engagez/battez un boss mondial avec votre guilde et vos amis battle.net qui sont sur le même royaume"
