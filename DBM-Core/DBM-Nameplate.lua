@@ -580,11 +580,8 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 	end
 end
 
----comment
----@param isGUID boolean?
----@param unit any
----@param index any
----@param force boolean?
+---@param isGUID boolean? If true, unit is GUID, if false, unit is unitID
+---@param force boolean? If true, force hide all icons, if false, hide only one icon
 function NameplateIcon_Hide(isGUID, unit, index, force)
 
 	-- need to remove the entry
