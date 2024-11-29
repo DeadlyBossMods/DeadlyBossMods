@@ -470,7 +470,6 @@ L.StripServerName					= "隱藏警告、計時器、距離檢測以及資訊框�
 L.FilterVoidFormSay2					= "在虛空型態時不要發送圖示/倒數計時聊天喊話(仍會發送標準聊天喊話)"
 
 L.Area_SpecFilter					= "角色職責過濾選項"
-L.FilterTankSpec					= "非坦克角色職責時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
 L.FilterDispels						= "如果你的驅散技能正在冷卻中，過濾可驅散技能"
 L.FilterCrowdControl				= "如果你的控場技能正在冷卻中，過濾基於打斷的控場通告"
 L.FilterTrashWarnings				= "過濾所有小怪警告在普通與英雄以及過往版本的地城"

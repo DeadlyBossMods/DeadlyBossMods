@@ -475,7 +475,6 @@ L.StripServerName			= "Ne pas afficher le royaume sur les alertes et les décomp
 L.FilterVoidFormSay2		= "Ne pas envoyer de message d'icône ou de décompte sous Forme du Vide"
 
 L.Area_SpecFilter			= "Options de filtre par rôle"
-L.FilterTankSpec			= "Filtrer les annonces désignées pour les tanks lorsque ce n'est pas votre rôle"
 L.FilterInterruptNoteName	= "Filtrer les alertes des sorts interruptibles (avec compte) si l'alerte ne contient pas votre nom dans la note personnalisée"
 L.FilterDispels				= "Filtrer les annonces de dissipations si votre sort de dissipation est en temps de recharge"
 L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."

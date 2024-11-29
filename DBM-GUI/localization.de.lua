@@ -238,7 +238,6 @@ L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ere
 L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
 
 L.Area_SpecFilter			= "Filtereinstellungen für Rollen"
-L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist (Hinweis: Diese Filterung sollte normalerweise nicht deaktiviert werden, da alle individuellen \"Spott\"-Warnungen nun standardmäßig aktiviert sind.)"
 L.FilterInterruptNoteName	= "Unterdrücke Warnungen für unterbrechbare Zauber (mit Zählung), falls die Warnung nicht deinen Namen in der nutzerdefinierten Notiz enthält"
 L.FilterDispels				= "Unterdrücke Warnungen für reinigbare Zauber, falls deine Reinigungen noch abklingen"
 --L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"

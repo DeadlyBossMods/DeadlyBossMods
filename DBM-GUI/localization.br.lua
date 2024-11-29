@@ -405,7 +405,6 @@ L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que 
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 
 L.Area_SpecFilter			= "Opções de especialização"
-L.FilterTankSpec			= "Filtrar mensagens designadas para função tanque quando não for tanque. (Nota: Desativar esta função não é recomendado para a maioria dos usuários já que avisos de 'provocar' (taunt) estão ativados por definição.)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
@@ -429,7 +428,6 @@ L.StripServerName 					= "Remover nome do reino de anúncios, temporizadores, ve
 L.FilterVoidFormSay2 				= "Não enviar ícone de bate-papo nem gritos de contagem regressiva no bate-papo quando estiver na forma do vazio (gritos regulares de bate-papo ainda são enviados)"
 
 L.Area_SpecFilter 					= "Opções de filtro de função"
-L.FilterTankSpec 					= "Filtrar anúncios designados para a função de tanque quando não estiver com a especialização de tanque. (Nota: desativar isso não é recomendado para a maioria dos usuários, pois os anúncios de 'provocar' agora estão todos ativados por padrão.)"
 L.FilterDispels 					= "Filtrar anúncios para feitiços dissipáveis se seu dissipar estiver em recarga"
 L.FilterCrowdControl 				= "Filtrar anúncios para interrupções baseadas em controle de multidão se seu CC estiver em recarga"
 L.FilterTrashWarnings 				= "Filtrar todos os anúncios de lixos em masmorras de seguidor, normais e triviais (fora de nível)"

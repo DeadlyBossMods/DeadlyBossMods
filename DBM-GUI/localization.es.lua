@@ -471,7 +471,6 @@ L.StripServerName			= "Omitir nombre del reino en anuncios y temporizadores"
 L.FilterVoidFormSay2		= "No enviar mensajes de posición y cuenta atrás en el chat durante Forma del Vacío"
 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
-L.FilterTankSpec			= "Filtrar anuncios designados para tanques cuando no sea tu rol"
 L.FilterDispels				= "Filtrar anuncios de facultades disipables si tu disipación no está disponible"
 L.FilterCrowdControl		= "Filtrar anuncios de interrupciones basadas en el control de multitudes si tu control de multitudes está en tiempo de reutilización."
 L.FilterTrashWarnings		= "Filtrar anuncios de enemigos menores en mazmorras normales y heroicas"

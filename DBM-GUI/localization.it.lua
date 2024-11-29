@@ -257,7 +257,6 @@ L.StripServerName			= "Togli nome reame negli avvisi e temporizzatori"
 L.FilterVoidFormSay2			= "Niente posizioni/conteggi in chat in Forma del Vuoto"
 
 L.Area_SpecFilter			= "Opzioni Filtro Ruolo"
-L.FilterTankSpec			= "Filtra avvisi per i Tank quando senza spec da Tank. (Nota: E' sconsigliato disabilitarlo a tutti gli utenti in quanto gli avvisi 'taunt' sono tutti attivi di base.)"
 L.FilterInterruptNoteName	= "Filtra avvisi solo per abilità interrompibili (con conteggio) se l'avviso non contiene il tuo nome in nota personalizzata"
 L.FilterDispels				= "Filtra avvisi per abilità dispellabili se i tuoi dispel sono in ricarica"
 --L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"

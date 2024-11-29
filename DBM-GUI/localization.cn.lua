@@ -476,7 +476,6 @@ L.StripServerName					= "警报和计时器中不显示服务器名"
 L.FilterVoidFormSay2				= "当在虚无状态下，不播发位置或报数喊叫（喊叫还是发送的）"
 
 L.Area_SpecFilter					= "角色过滤选项"
-L.FilterTankSpec					= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterDispels						= "当驱散技能在冷却时，过滤掉驱散提示"
 L.FilterCrowdControl				= "当打断技能在冷却时，过滤掉打断提示"
 L.FilterTrashWarnings				= "当进入低等级、普通副本时，过滤掉所有小怪警报"

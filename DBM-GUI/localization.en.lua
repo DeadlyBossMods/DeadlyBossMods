@@ -479,16 +479,15 @@ L.StripServerName					= "Strip realm name from announcements, timers, range chec
 L.FilterVoidFormSay2				= "Do not send chat icon or countdown chat yells when in Void Form (regular chat yells still sent)"
 
 L.Area_SpecFilter					= "Role Filter Options"
-L.FilterTankSpec					= "Filter announcements designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' announcements are now all on by default.)"
-L.FilterDispels						= "Filter announcements for dispelable spells if your dispel is on cooldown"
-L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
-L.FilterTrashWarnings				= "Filter all trash mob announcements in follower, normal, and trivial (outleveled) dungeons"
+L.FilterDispels						= "Do not show announcements for dispelable spells if your dispel is on cooldown"
+L.FilterCrowdControl				= "Do not show announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterTrashWarnings				= "Do not show any trash mob announcements in follower, normal, and trivial (outleveled) dungeons"
 
 L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
-L.FilterTargetFocus					= "Filter if caster is not current target/focus/softenemy"
-L.FilterInterruptCooldown			= "Filter if interrupt spell is on cooldown"
-L.FilterInterruptHealer				= "Filter if you're in a healer spec"
-L.FilterInterruptNoteName			= "Filter if alert has a count but your name isn't in the custom note"--Only used on bosses, trash mods don't assign counts
+L.FilterTargetFocus					= "Do not show if caster is not current target/focus/softenemy"
+L.FilterInterruptCooldown			= "Do not show if interrupt spell is on cooldown"
+L.FilterInterruptHealer				= "Do not show if you're in a healer spec"
+L.FilterInterruptNoteName			= "Do not show if alert has a count but your name isn't in the custom note"--Only used on bosses, trash mods don't assign counts
 L.Area_BInterruptFilterFooter		= "If no filters are selected, all interrupts are shown (May be spammy)\nSome mods may ignore these filters entirely if spell is critically important"
 L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 strings
 
