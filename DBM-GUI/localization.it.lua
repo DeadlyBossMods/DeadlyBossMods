@@ -325,7 +325,6 @@ L.AutoAcceptFriendInvite	= "Accetta automaticamente inviti gruppo da parte di am
 L.AutoAcceptGuildInvite		= "Accetta automaticamente inviti gruppo da parte di gildani"
 L.Area_Advanced				= "Opzioni Avanzate"
 L.FakeBW					= "Fingi di essere BigWigs nei controlli versioni anziché DBM (Utile per le gilde che forzano l'uso di BigWigs)"
-L.AITimer					= "Genera automaticamente temporizzatori per combattimenti vai visti utilizzando il Temporizzatore IA incluso in DBM (Utile per pullare un boss in prova per la prima volta come sulle beta o PTR). Nota: Non è garantito il funzionamento con add multipli con la stessa abilità."
 
 L.Panel_Profile				= "Profili"
 L.Area_CreateProfile		= "Creazione Profilo per Opzioni DBM Base"

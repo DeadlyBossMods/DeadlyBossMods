@@ -220,7 +220,6 @@ function timerPrototype:Start(timer, ...)
 		--Starting timer with (2) or (3) indicates it's a stage 2 or stage 3 first timer
 		--Starting AI timer with anything above 3 indicarets it's a regular timer and to use shortest time in between two regular casts
 		if self.type == "ai" then--A learning timer
-			if not DBM.Options.AITimer then return end
 			if timer > 5 then--Normal behavior.
 				local newPhase = false
 				for i = 1, 5 do
@@ -535,7 +534,6 @@ function timerPrototype:Stop(...)
 		end
 	end
 	if self.type == "ai" then--A learning timer
-		if not DBM.Options.AITimer then return end
 		self.lastCast = nil
 		for i = 1, 4 do
 			--Check for any phase timers that are strings and never got a chance to become AI timers, then wipe them

@@ -433,7 +433,7 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
 		DBM:FireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
 		if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
-			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= private.swFilterDisabled then return end
+			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and self.sound <= private.swFilterDisabled then return end
 			if not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None" then
 				DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 			end

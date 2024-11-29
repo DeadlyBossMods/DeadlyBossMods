@@ -147,7 +147,6 @@ L.AutoAcceptFriendInvite	= "Aceptar automáticamente invitaciones de grupos de a
 L.AutoAcceptGuildInvite		= "Aceptar automáticamente invitaciones de grupos de miembros de la hermandad"
 L.Area_Advanced				= "Opciones avanzadas"
 L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión (útil para hermandades que obligan a utilizar BigWigs)"
-L.AITimer					= "Generar temporizadores automáticamente para encuentros no vistos anteriormente mediante la IA de temporizadores interna de DBM (útil para probar jefes por primera vez en el PTR)"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Perfiles"
@@ -275,14 +274,8 @@ L.Area_CountdownOptions		= "Opciones de cuenta atrás"
 L.Area_VoicePackReplace		= "Opciones de reemplazo de paquetes de voz"
 L.VPReplaceNote				= "Nota: Los paquetes de voz nunca cambian ni eliminan los sonidos de avisos.\nSimplemente se silencian cuando el paquete de voz los reemplaza."
 L.ReplacesAnnounce			= "Reemplazar los sonidos de anuncio (Nota: muy pocos usan paquetes de voz, excepto para cambios de fase y bichos.)"
-L.ReplacesSA1				= "Reemplazar los sonidos de anuncio especial 1 ('PvP Flag')"
-L.ReplacesSA2				= "Reemplazar los sonidos de anuncio especial 2 ('Beware!')"
-L.ReplacesSA3				= "Reemplazar los sonidos de anuncio especial 3 ('Air Horn')"
-L.ReplacesSA4				= "Reemplazar los sonidos de anuncio especial 4 ('Run Away')"
-L.ReplacesGTFO				= "Reemplazar los sonidos de anuncio especial de GTFO"
-L.ReplacesCustom			= "Reemplazar los sonidos de anuncios especiales personalizados establecidos por el usuario (no recomendado)"
+--L.ReplacesSADefault		= "Replace Default Special Announce sounds (Custom user set sounds will never be replaced)"--Retranslate
 L.Area_VoicePackAdvOptions	= "Opciones avanzadas del paquete de voz"
-L.VPDontMuteSounds			= "Desactivar el silenciamiento de los sonidos de alerta habituales cuando utiliza el paquete de voz (utilízalo solo si deseas escuchar AMBOS durante las alertas)"
 L.Area_VPLearnMore			= "Obten más información sobre los paquetes de voz y cómo utilizar estas opciones"
 L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Explora otros paquetes de voz en Curse"

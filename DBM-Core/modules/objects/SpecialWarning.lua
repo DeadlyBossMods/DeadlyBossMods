@@ -311,12 +311,8 @@ local function canVoiceReplace(self, soundId, isNote)
 	end
 	soundId = soundId or self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 	local isVoicePackUsed
-	if self.announceType == "gtfo" then
-		isVoicePackUsed = DBM.Options.VPReplacesGTFO
-	elseif type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
-		isVoicePackUsed = DBM.Options["VPReplacesSA" .. soundId]
-	else
-		isVoicePackUsed = DBM.Options.VPReplacesCustom
+	if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
+		isVoicePackUsed = DBM.Options.VPReplacesSADefault
 	end
 	return isVoicePackUsed
 end
@@ -496,7 +492,7 @@ function specialWarningPrototype:Show(...)
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None") then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-			if self.hasVoice and not DBM.Options.VPDontMuteSounds and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
+			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
 			DBM:PlaySpecialWarningSound(soundId or 1)
 		end
 	else
