@@ -367,7 +367,7 @@ function specialWarningPrototype:Show(...)
 			if DBM.Options["SpamSpecRole" .. filterType] then return end
 		end
 		--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
-		if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
+		if self.announceType == "taunt" and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 		local argTable = {...}
 		-- add a default parameter for move away warnings
 		if self.announceType == "gtfo" then
@@ -638,7 +638,6 @@ local specInstructionalRemapVoiceTable = {
 ---@param name VPSound?
 ---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
-	local always = DBM.Options.AlwaysPlayVoice
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 	if not canVoiceReplace(self, soundId) then return end
@@ -654,10 +653,9 @@ function specialWarningPrototype:Play(name, customPath)
 			name = remapType
 		end
 	end
-	if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= private.swFilterDisabled then
+	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
-		--But still allow AlwaysPlayVoice to play as well.
-		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+		if (name == "changemt" or name == "tauntboss") and not self.mod:IsTank() then return end
 		--Mute VP if SW sound is set to None in the boss mod.
 		if soundId == "None" then return end
 		local path = customPath or ("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")

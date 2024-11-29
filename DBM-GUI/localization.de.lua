@@ -188,7 +188,6 @@ L.CountdownVoice2			= "Sekundäre Stimme für Zählungen"
 L.CountdownVoice3			= "Tertiäre Stimme für Zählungen"
 L.VoicePackChoice			= "Sprachpack für gesprochene Warnungen"
 L.Area_CountdownOptions		= "Countdown-Einstellungen"
-L.SpecWarn_AlwaysVoice		= "Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, nützlich für Schlachtzugsleiter)"
 
 L.Area_BrowseOtherVP		= "Suche andere Sprachpacks auf Curse"
 --L.BrowseOtherVPs
@@ -407,7 +406,6 @@ L.ReplacesSA3="Ersetze Töne für Spezialansagen 3 (hohe Priorität bzw. 'airhor
 L.ReplacesSA4="Ersetze Töne für Spezialansagen 4 ('Renn weg' ansagen mit hoher Priorität)"
 L.ReplacesCustom="Ersetze benutzerdefinierte Töne für Spezialwarnungen (nicht empfohlen)"
 L.Area_VoicePackAdvOptions="Erweiterte Optionen für Sprachpakete"
-L.SpecWarn_AlwaysVoice="Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, manchmal nützlich für Schlachtzugsleiter andernfalls nicht empfohlen)"
 L.VPDontMuteSounds="Deaktiviert das Stummschalten regulärer Warnungstönen bei Verwendung eines Sprachpakets (führt zum Abspielen von Tönen des Sprachpakets zusätzlich zu den Standardtönen)"
 L.Area_VPLearnMore="Weiteres zu Sprachpaketen und deren Optionen"
 L.EventEngagePT="Sound für Pull-Timer"

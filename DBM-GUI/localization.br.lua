@@ -331,7 +331,6 @@ L.ReplacesSA4 				= "Substituir os sons de anúncio especial 4 ('Run Away')"
 L.ReplacesGTFO 				= "Substituir os sons de anúncio especial GTFO"
 L.ReplacesCustom 			= "Substituir os sons de anúncio especial customizados definidos pelo usuário (não recomendado)"
 L.Area_VoicePackAdvOptions 	= "Opções avançadas de pacote de voz"
-L.SpecWarn_AlwaysVoice 		= "Sempre reproduzir todos os alertas falados"
 L.VPDontMuteSounds 			= "Desativar o silenciamento dos sons de alerta regulares ao usar pacote de voz (use isso apenas se desejar ouvir ambos durante os alertas)"
 L.Area_VPLearnMore 			= "Saiba mais sobre pacotes de voz e como usar essas opções"
 L.VPLearnMore 				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" -- OPTIONAL

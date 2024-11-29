@@ -206,7 +206,6 @@ L.CountdownVoice2			= "Seconda Voce conto alla rovescia"
 L.CountdownVoice3			= "Terza Voce conto alla rovescia"
 L.VoicePackChoice			= "Pacchetto vocale avvisi parlati"
 L.Area_CountdownOptions		= "Opzioni Conto alla Rovescia"
-L.SpecWarn_AlwaysVoice		= "Riproduci sempre tutti gli avvisi parlati (Anche se Avvisi Speciali disabilitati. Utili per Capo Incursione, sconsigliati altrimenti)"
 -- TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "Altri pacchetti vocali su curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"

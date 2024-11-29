@@ -80,7 +80,6 @@ end)
 --TODO, add note (L.VPReplaceNote) either above or below the replace checkboxes and within voiceReplaceArea
 
 local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
-voiceAdvancedArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
 voiceAdvancedArea:CreateCheckButton(L.VPDontMuteSounds, true, nil, "VPDontMuteSounds")
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_VPLearnMore)

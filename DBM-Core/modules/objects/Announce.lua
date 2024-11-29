@@ -525,12 +525,10 @@ end
 function announcePrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	if private.voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
-	local always = DBM.Options.AlwaysPlayVoice
-	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter and not always then return end--don't show announces that are generic target announces
-	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= private.swFilterDisabled then
+	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
+	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option])) and self.sound <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
-		--But still allow AlwaysPlayVoice to play as well.
-		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+		if (name == "changemt" or name == "tauntboss") and not self.mod:IsTank() then return end
 		local path = customPath or ("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")
 		DBM:PlaySoundFile(path)
 	end
