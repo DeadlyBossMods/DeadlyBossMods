@@ -272,7 +272,7 @@ L.Area_CountdownOptions		= "倒數選項"
 L.Area_VoicePackReplace		= "語音包替換選項 (選擇那些語音包要啟用、靜音以及替換)"
 L.VPReplaceNote				= "注意: 語音包永遠不會更改或刪除警告聲音。\n當替換語音包時，只是被簡單地靜音。"
 L.ReplacesAnnounce			= "替換提示聲音 (注意: 語音包除了階段轉換以及小怪外很少使用)"
---L.ReplacesSADefault		= "Replace Default Special Announce sounds (Custom user set sounds will never be replaced)"--Retranslate
+L.ReplacesSADefault			= "替換預設特別警告的音效 (自定義用戶設定的音效將永遠不會替換)"--Retranslate
 L.Area_VoicePackAdvOptions	= "語音包進階選項"
 L.Area_VPLearnMore          = "了解更多關於語音包以及如何使用這些選項的訊息"
 L.VPLearnMore               = "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
@@ -463,15 +463,15 @@ L.StripServerName					= "隱藏警告、計時器、距離檢測以及資訊框�
 L.FilterVoidFormSay2					= "在虛空型態時不要發送圖示/倒數計時聊天喊話(仍會發送標準聊天喊話)"
 
 L.Area_SpecFilter					= "角色職責過濾選項"
-L.FilterDispels						= "如果你的驅散技能正在冷卻中，過濾可驅散技能"
-L.FilterCrowdControl				= "如果你的控場技能正在冷卻中，過濾基於打斷的控場通告"
-L.FilterTrashWarnings				= "過濾所有小怪警告在普通與英雄以及過往版本的地城"
+L.FilterDispels						= "如果你的驅散技能正在冷卻中，不顯示可驅散技能通告"
+L.FilterCrowdControl				= "如果你的控場技能正在冷卻中，不顯示基於打斷的控場通告"
+L.FilterTrashWarnings				= "不顯示所有小怪警告在普通與英雄以及過往版本的地城"
 
 L.Area_BInterruptFilter				= "首領打斷過濾選項"
-L.FilterTargetFocus					= "過濾如果施法者不是你的目標/專注目標"
-L.FilterInterruptCooldown			= "過濾如果打斷技能正在冷卻中"
-L.FilterInterruptHealer				= "過濾如果你不是治療專精"
-L.FilterInterruptNoteName			= "過濾如果警告有計數，但自訂註記警告沒有包含你的名字"--Only used on bosses, trash mods don't assign counts
+L.FilterTargetFocus					= "不要顯示如果施法者不是你的目標/專注目標"
+L.FilterInterruptCooldown			= "不要顯示如果打斷技能正在冷卻中"
+L.FilterInterruptHealer				= "不要顯示如果你不是治療專精"
+L.FilterInterruptNoteName			= "不要顯示如果警告有計數，但自訂註記警告沒有包含你的名字"--Only used on bosses, trash mods don't assign counts
 L.Area_BInterruptFilterFooter		= "如果未勾選過濾選項，所有打斷都將顯示(可能會有點刷屏)\n如果法術至關重要，有些模組可能會完全忽略這些過濾器"
 L.Area_TInterruptFilter				= "小怪打斷過濾選項"--Reuses above 3 strings
 
@@ -479,14 +479,14 @@ L.Area_TInterruptFilter				= "小怪打斷過濾選項"--Reuses above 3 strings
 L.Panel_HandFilter					= "減少DBM的控制"
 L.Area_SpamFilter_SpecRoleFilters	= "特別警告類型過濾 (控制DBM要怎麼做)"
 L.SpamSpecInformationalOnly			= "更改所有特別警告的說明文字/語音警告 (需要UI重載)。警報仍顯示和播放聲音，但將是通用和非指示性"
-L.SpamSpecRoleDispel				= "徹底過濾'驅散'警告 (完全無文字或聲音)"
-L.SpamSpecRoleInterrupt				= "過濾'打斷'警告 (完全無文字或聲音)"
-L.SpamSpecRoleDefensive				= "過濾'減傷'警告 (完全無文字或聲音)"
-L.SpamSpecRoleTaunt					= "過濾'嘲諷'警告 (完全無文字或聲音)"
-L.SpamSpecRoleSoak					= "過濾'分擔'警告 (完全無文字或聲音)"
-L.SpamSpecRoleStack					= "過濾'高層數'警告 (完全無文字或聲音)"
-L.SpamSpecRoleSwitch				= "過濾'切換目標''小怪' 警報 (完全無文字或聲音)"
-L.SpamSpecRoleGTFO					= "過濾'地板技能'警告 (完全無文字或聲音)"
+L.SpamSpecRoleDispel				= "不要顯示'驅散'警告 (完全無文字或聲音)"
+L.SpamSpecRoleInterrupt				= "不要顯示'打斷'警告 (完全無文字或聲音)"
+L.SpamSpecRoleDefensive				= "不要顯示'減傷'警告 (完全無文字或聲音)"
+L.SpamSpecRoleTaunt					= "不要顯示'嘲諷'警告 (完全無文字或聲音)"
+L.SpamSpecRoleSoak					= "不要顯示'分擔'警告 (完全無文字或聲音)"
+L.SpamSpecRoleStack					= "不要顯示'高層數'警告 (完全無文字或聲音)"
+L.SpamSpecRoleSwitch				= "不要顯示'切換目標''小怪' 警報 (完全無文字或聲音)"
+L.SpamSpecRoleGTFO					= "不要顯示'地板技能'警告 (完全無文字或聲音)"
 
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard				= "阻擋暴雪功能"
