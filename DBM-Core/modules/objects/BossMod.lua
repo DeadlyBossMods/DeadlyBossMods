@@ -862,9 +862,7 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 			local isVoicePackUsed
 			--Vet if user has voice pack enabled by sound ID
 			if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
-				isVoicePackUsed = DBM.Options["VPReplacesSA" .. soundId]
-			else
-				isVoicePackUsed = DBM.Options.VPReplacesCustom
+				isVoicePackUsed = DBM.Options.VPReplacesSADefault
 			end
 			if isVoicePackUsed then
 				mediaPath = "Interface\\AddOns\\DBM-VP" .. chosenVoice .. "\\" .. voice .. ".ogg"

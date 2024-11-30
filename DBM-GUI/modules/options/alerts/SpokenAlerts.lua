@@ -47,12 +47,7 @@ VoiceDropDown.myheight = 20 -- TODO: +10 padding per dropdown text
 
 local voiceReplaceArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackReplace)
 local VPReplaceAnnounce		= voiceReplaceArea:CreateCheckButton(L.ReplacesAnnounce, true, nil, "VPReplacesAnnounce")
-local VPReplaceSA1			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA1, true, nil, "VPReplacesSA1")
-local VPReplaceSA2			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA2, true, nil, "VPReplacesSA2")
-local VPReplaceSA3			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA3, true, nil, "VPReplacesSA3")
-local VPReplaceSA4			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA4, true, nil, "VPReplacesSA4")
-local VPReplacesGTFO		= voiceReplaceArea:CreateCheckButton(L.ReplacesGTFO, true, nil, "VPReplacesGTFO")
-local VPReplaceCustom		= voiceReplaceArea:CreateCheckButton(L.ReplacesCustom, true, nil, "VPReplacesCustom")
+local VPReplaceSADefault	= voiceReplaceArea:CreateCheckButton(L.ReplacesSADefault, true, nil, "VPReplacesSADefault")
 
 local resetbutton = voiceReplaceArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", voiceReplaceArea.frame, "BOTTOMRIGHT", -2, 4)
@@ -61,27 +56,15 @@ resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
 	-- Set Options
 	DBM.Options.VPReplacesAnnounce = DBM.DefaultOptions.VPReplacesAnnounce
-	DBM.Options.VPReplacesSA1 = DBM.DefaultOptions.VPReplacesSA1
-	DBM.Options.VPReplacesSA2 = DBM.DefaultOptions.VPReplacesSA2
-	DBM.Options.VPReplacesSA3 = DBM.DefaultOptions.VPReplacesSA3
-	DBM.Options.VPReplacesSA4 = DBM.DefaultOptions.VPReplacesSA4
-	DBM.Options.VPReplacesGTFO = DBM.DefaultOptions.VPReplacesGTFO
-	DBM.Options.VPReplacesCustom = DBM.DefaultOptions.VPReplacesCustom
+	DBM.Options.VPReplacesSADefault = DBM.DefaultOptions.VPReplacesSADefault
 	-- Set UI visuals
 	VPReplaceAnnounce:SetChecked(DBM.Options.VPReplacesAnnounce)
-	VPReplaceSA1:SetChecked(DBM.Options.VPReplacesSA1)
-	VPReplaceSA2:SetChecked(DBM.Options.VPReplacesSA2)
-	VPReplaceSA3:SetChecked(DBM.Options.VPReplacesSA3)
-	VPReplaceSA4:SetChecked(DBM.Options.VPReplacesSA4)
-	VPReplacesGTFO:SetChecked(DBM.Options.VPReplacesGTFO)
-	VPReplaceCustom:SetChecked(DBM.Options.VPReplacesCustom)
+	VPReplaceSADefault:SetChecked(DBM.Options.VPReplacesSADefault)
 end)
 
 --TODO, add note (L.VPReplaceNote) either above or below the replace checkboxes and within voiceReplaceArea
 
-local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
-voiceAdvancedArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
-voiceAdvancedArea:CreateCheckButton(L.VPDontMuteSounds, true, nil, "VPDontMuteSounds")
+--local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_VPLearnMore)
 VPUrlArea1:CreateText(L.VPLearnMore, nil, true)

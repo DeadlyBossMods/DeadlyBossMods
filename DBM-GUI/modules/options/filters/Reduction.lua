@@ -12,7 +12,6 @@ spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
 spamArea:CreateCheckButton(L.FilterVoidFormSay2, true, nil, "FilterVoidFormSay2")
 
 local spamSpecArea = reducPanel:CreateArea(L.Area_SpecFilter)
-spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
 spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
 spamSpecArea:CreateCheckButton(L.FilterTrashWarnings, true, nil, "FilterTrashWarnings2")
 

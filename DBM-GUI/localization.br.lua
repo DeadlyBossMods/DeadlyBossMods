@@ -324,15 +324,8 @@ L.Area_CountdownOptions 	= "Opções de contagem regressiva"
 L.Area_VoicePackReplace 	= "Opções de substituição de pacote de voz"
 L.VPReplaceNote 			= "Nota: pacotes de voz nunca alteram ou removem seus sons de aviso.\nEles são simplesmente silenciados quando o pacote de voz os substitui."
 L.ReplacesAnnounce 			= "Substituir os sons de anúncio (nota: muito poucos pacotes de voz são usados, exceto para mudanças de fase e adições)"
-L.ReplacesSA1 				= "Substituir os sons de anúncio especial 1 ('PvP Flag')"
-L.ReplacesSA2 				= "Substituir os sons de anúncio especial 2 ('Beware!)"
-L.ReplacesSA3 				= "Substituir os sons de anúncio especial 3 ('Air Horn')"
-L.ReplacesSA4 				= "Substituir os sons de anúncio especial 4 ('Run Away')"
-L.ReplacesGTFO 				= "Substituir os sons de anúncio especial GTFO"
-L.ReplacesCustom 			= "Substituir os sons de anúncio especial customizados definidos pelo usuário (não recomendado)"
+--L.ReplacesSADefault		= "Replace Default Special Announce sounds (Custom user set sounds will never be replaced)"--Retranslate
 L.Area_VoicePackAdvOptions 	= "Opções avançadas de pacote de voz"
-L.SpecWarn_AlwaysVoice 		= "Sempre reproduzir todos os alertas falados"
-L.VPDontMuteSounds 			= "Desativar o silenciamento dos sons de alerta regulares ao usar pacote de voz (use isso apenas se desejar ouvir ambos durante os alertas)"
 L.Area_VPLearnMore 			= "Saiba mais sobre pacotes de voz e como usar essas opções"
 L.VPLearnMore 				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" -- OPTIONAL
 L.Area_BrowseOtherVP 		= "Navegar por outros pacotes de voz no curse"
@@ -406,7 +399,6 @@ L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que 
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 
 L.Area_SpecFilter			= "Opções de especialização"
-L.FilterTankSpec			= "Filtrar mensagens designadas para função tanque quando não for tanque. (Nota: Desativar esta função não é recomendado para a maioria dos usuários já que avisos de 'provocar' (taunt) estão ativados por definição.)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
@@ -430,7 +422,6 @@ L.StripServerName 					= "Remover nome do reino de anúncios, temporizadores, ve
 L.FilterVoidFormSay2 				= "Não enviar ícone de bate-papo nem gritos de contagem regressiva no bate-papo quando estiver na forma do vazio (gritos regulares de bate-papo ainda são enviados)"
 
 L.Area_SpecFilter 					= "Opções de filtro de função"
-L.FilterTankSpec 					= "Filtrar anúncios designados para a função de tanque quando não estiver com a especialização de tanque. (Nota: desativar isso não é recomendado para a maioria dos usuários, pois os anúncios de 'provocar' agora estão todos ativados por padrão.)"
 L.FilterDispels 					= "Filtrar anúncios para feitiços dissipáveis se seu dissipar estiver em recarga"
 L.FilterCrowdControl 				= "Filtrar anúncios para interrupções baseadas em controle de multidão se seu CC estiver em recarga"
 L.FilterTrashWarnings 				= "Filtrar todos os anúncios de lixos em masmorras de seguidor, normais e triviais (fora de nível)"
@@ -585,7 +576,6 @@ L.AutoAcceptFriendInvite	= "Aceitar convites de amigos automaticamente"
 L.AutoAcceptGuildInvite		= "Aceitar convites de membros da guilda automaticamente"
 L.Area_Advanced				= "Opções avançadas"
 L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM (útil para guildas que forçam o uso de BigWigs)"
-L.AITimer 					= "Gerar automaticamente temporizadores para lutas nunca antes vistas usando a IA de temporizador embutida de DBM (útil para testar um chefe pela primeira vez, como em beta ou PTR). Recomendado manter esta opção sempre ATIVADA"
 
 L.Panel_Profile				= "Perfil"
 L.Area_CreateProfile		= "Criação de perfil"

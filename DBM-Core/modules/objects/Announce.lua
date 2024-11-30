@@ -433,7 +433,7 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
 		DBM:FireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
 		if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
-			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= private.swFilterDisabled then return end
+			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and self.sound <= private.swFilterDisabled then return end
 			if not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None" then
 				DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 			end
@@ -525,12 +525,10 @@ end
 function announcePrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	if private.voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
-	local always = DBM.Options.AlwaysPlayVoice
-	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter and not always then return end--don't show announces that are generic target announces
-	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= private.swFilterDisabled then
+	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
+	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option])) and self.sound <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
-		--But still allow AlwaysPlayVoice to play as well.
-		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+		if (name == "changemt" or name == "tauntboss") and not self.mod:IsTank() then return end
 		local path = customPath or ("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")
 		DBM:PlaySoundFile(path)
 	end

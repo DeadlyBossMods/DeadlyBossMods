@@ -20,10 +20,24 @@ spamTimers:CreateCheckButton(L.SpamBlockNoShowUTimers, true, nil, "DontShowUserT
 spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 
 local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
-spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
-spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
-spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
-spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+local Plater = _G["Plater"]
+if Plater then--Plater button disabled for now
+	local platerButton = spamNameplates:CreateButton(L.Plater_Config, 100, 25)
+	platerButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
+	platerButton:SetNormalFontObject(GameFontNormal)
+	platerButton:SetHighlightFontObject(GameFontNormal)
+	platerButton:SetScript("OnClick", function()
+		Plater.OpenOptionsPanel(28)--Open Plater boss mod options
+		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
+	end)
+	platerButton.myheight = 25
+else
+	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
+	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
+	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
+	spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+end
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)
 spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")

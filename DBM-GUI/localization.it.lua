@@ -206,7 +206,6 @@ L.CountdownVoice2			= "Seconda Voce conto alla rovescia"
 L.CountdownVoice3			= "Terza Voce conto alla rovescia"
 L.VoicePackChoice			= "Pacchetto vocale avvisi parlati"
 L.Area_CountdownOptions		= "Opzioni Conto alla Rovescia"
-L.SpecWarn_AlwaysVoice		= "Riproduci sempre tutti gli avvisi parlati (Anche se Avvisi Speciali disabilitati. Utili per Capo Incursione, sconsigliati altrimenti)"
 -- TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "Altri pacchetti vocali su curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
@@ -258,7 +257,6 @@ L.StripServerName			= "Togli nome reame negli avvisi e temporizzatori"
 L.FilterVoidFormSay2			= "Niente posizioni/conteggi in chat in Forma del Vuoto"
 
 L.Area_SpecFilter			= "Opzioni Filtro Ruolo"
-L.FilterTankSpec			= "Filtra avvisi per i Tank quando senza spec da Tank. (Nota: E' sconsigliato disabilitarlo a tutti gli utenti in quanto gli avvisi 'taunt' sono tutti attivi di base.)"
 L.FilterInterruptNoteName	= "Filtra avvisi solo per abilità interrompibili (con conteggio) se l'avviso non contiene il tuo nome in nota personalizzata"
 L.FilterDispels				= "Filtra avvisi per abilità dispellabili se i tuoi dispel sono in ricarica"
 --L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
@@ -327,7 +325,6 @@ L.AutoAcceptFriendInvite	= "Accetta automaticamente inviti gruppo da parte di am
 L.AutoAcceptGuildInvite		= "Accetta automaticamente inviti gruppo da parte di gildani"
 L.Area_Advanced				= "Opzioni Avanzate"
 L.FakeBW					= "Fingi di essere BigWigs nei controlli versioni anziché DBM (Utile per le gilde che forzano l'uso di BigWigs)"
-L.AITimer					= "Genera automaticamente temporizzatori per combattimenti vai visti utilizzando il Temporizzatore IA incluso in DBM (Utile per pullare un boss in prova per la prima volta come sulle beta o PTR). Nota: Non è garantito il funzionamento con add multipli con la stessa abilità."
 
 L.Panel_Profile				= "Profili"
 L.Area_CreateProfile		= "Creazione Profilo per Opzioni DBM Base"

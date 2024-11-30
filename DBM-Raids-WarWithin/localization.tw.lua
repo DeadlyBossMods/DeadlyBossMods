@@ -42,7 +42,6 @@ L= DBM:GetModLocalization(2612)
 L:SetOptionLocalization({
 	EggBreakerBehavior	= "設定破蛋的行為 (如果您是團隊的領隊，將覆蓋每個人的設置)",
 	MatchBW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.CROSS_ICON_SMALL .. " (所有難度) 使用近戰 > 遠程 > 治療者 的優先級 (匹配 Bigwigs 的行為)",--Default
-	MatchEW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.CROSS_ICON_SMALL .. " (非傳奇) ".. DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL .. " (傳奇) 使用近戰 > 遠程 > 治療者 的優先級 (匹配 Echowigs 的行為)",
 	UseAllAscending		= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t, 其他使用近戰 > 遠程 > 治療者 的優先級",
 	DisableIconsForRaid	= "停用設置標記並顯示沒有標記的大喊",
 	DisableAllForRaid	= "完全停用設置標記和大喊"
