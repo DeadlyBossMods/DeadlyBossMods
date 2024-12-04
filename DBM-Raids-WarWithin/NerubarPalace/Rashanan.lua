@@ -357,7 +357,7 @@ local allTimers = {
 			--Rolling Acid
 			[439789] = {40},
 			--Savage Assault
-			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
+			[444687] = {9.7, 2, 18, 2, 11.4, 2.5},
 			--Spinneret's Strands
 			[439784] = {33.8},
 			--Enveloping Webs
