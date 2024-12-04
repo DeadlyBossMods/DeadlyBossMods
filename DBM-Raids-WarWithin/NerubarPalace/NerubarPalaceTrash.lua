@@ -39,12 +39,12 @@ local specWarnDarkMending					= mod:NewSpecialWarningInterrupt(441747, "HasInter
 local specWarnEnshroudingPulse				= mod:NewSpecialWarningInterrupt(443138, "HasInterrupt", nil, nil, 1, 2)
 
 local timerGossemereWeaveCD					= mod:NewCDNPTimer(17, 444000, nil, nil, nil, 3)
-local timerImpaleCD							= mod:NewCDNPTimer(17, 459952, nil, nil, nil, 3)--17-20
-local timerStagFlipCD						= mod:NewCDNPTimer(17, 463176, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerDarkMendingCD					= mod:NewCDNPTimer(15.3, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerImpaleCD							= mod:NewCDNPTimer(15, 459952, nil, nil, nil, 3)--17-20
+local timerStagFlipCD						= mod:NewCDNPTimer(17, 463176, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDarkMendingCD					= mod:NewCDNPTimer(15.0, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerPoisonBreathCD					= mod:NewCDNPTimer(13.4, 454831, nil, nil, nil, 3)
 local timerDeafeningRoarCD					= mod:NewCDNPTimer(20.6, 436679, nil, nil, nil, 2)
-local timerBlackCleaveCD					= mod:NewCDNPTimer(16.2, 440184, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBlackCleaveCD					= mod:NewCDNPTimer(16.2, 440184, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddGossipOption(true, "Buff")
 
