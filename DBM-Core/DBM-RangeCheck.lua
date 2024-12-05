@@ -867,6 +867,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
 		return
 	end
+	DBM:UpdateMapRestrictions()--Probably redundant but one place I feel good about a redundant call. this isn't something that spams like an update handler
 	local restrictionsActive = DBM:HasMapRestrictions()
 	if not isWrath and restrictionsActive then--Don't popup on retail or classic era at all if in an instance (it now only works in wrath)
 		return
@@ -940,6 +941,7 @@ function rangeCheck:IsRadarShown()
 end
 
 function rangeCheck:UpdateRestrictions(force)
+	DBM:UpdateMapRestrictions()
 	mainFrame.restrictions = force or DBM:HasMapRestrictions()
 	if mainFrame.restrictions and not isWrath then
 		rangeCheck:Hide(true)
@@ -977,6 +979,7 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
+		DBM:UpdateMapRestrictions()
 		if not isWrath and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
@@ -984,6 +987,7 @@ do
 		end
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
+		DBM:UpdateMapRestrictions()
 		if not isWrath and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else

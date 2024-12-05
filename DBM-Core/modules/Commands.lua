@@ -287,6 +287,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(L.DUR_CHECKING)
 		C_Timer.After(5, ShowDurability)
 	elseif cmd:sub(1, 3) == "hud" then
+		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_HUD)
 			return
@@ -375,6 +376,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			end
 		end
 	elseif cmd:sub(1, 5) == "arrow" then
+		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_ARROW)
 			return
@@ -435,6 +437,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
 		local mapID = C_Map.GetBestMapForUnit("player") or -1
+		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then
 			DBM:AddMsg(("Location Information\nYou are at zone %u (%s).\nLocal Map ID %u (%s)"):format(map, GetRealZoneText(map), mapID, GetZoneText()))
 		else
