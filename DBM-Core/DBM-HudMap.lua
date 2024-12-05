@@ -51,6 +51,7 @@ end
 
 local targetCanvasAlpha, supressCanvas
 
+---@enum (key) textureLookup
 local textureLookup = {
 	star		= 137001, -- [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]]
 	circle		= 137002, -- [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]]
@@ -95,6 +96,7 @@ local textureLookup = {
 local textureKeys, textureVals = {}, {}
 mod.textureKeys, mod.textureVals = textureKeys, textureVals
 
+---@enum (key) texBlending
 local texBlending = {
 	highlight	= "ADD",
 	targeting	= "ADD",
@@ -542,6 +544,20 @@ Edge = setmetatable({
 			mod:Disable()
 		end
 	end,
+	---@param r number? Red color 0-1
+	---@param g number? Green color 0-1
+	---@param b number? Blue color 0-1
+	---@param a number? alpha 0-1
+	---@param srcPlayer string? Source player
+	---@param dstPlayer string? Destination player
+	---@param sx number? Source x
+	---@param sy number? Source y
+	---@param dx number? Destination x
+	---@param dy number? Destination y
+	---@param lifetime number? Time in seconds before point is removed
+	---@param texfile textureLookup|string|nil Texture lookup in textureLookup or path to texture or nil to default to line texture
+	---@param w number? Width of line
+	---@param extend boolean? Extend line to edge of screen
 	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
 		local t = tremove(edgeCache)
 		if not t then
@@ -929,6 +945,8 @@ do
 			self.alert.a = a or 0.5
 			return self
 		end,
+		---@param texfile textureLookup|string|nil Texture lookup in textureLookup or path to texture or nil to default to glow texture
+		---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 		SetTexture = function(self, texfile, blend)
 			local tex = self.texture
 			texfile = texfile or "glow"
@@ -1065,6 +1083,18 @@ do
 			data.alertLabel = self.alertLabel
 			data.shouldUpdateRange = self.shouldUpdateRange
 		end,
+		---@param map number? MapID being tracked
+		---@param x number? X coordinate
+		---@param y number? Y coordinate
+		---@param follow string? UnitID being tracked
+		---@param lifetime number? Time in seconds before point is removed
+		---@param texfile textureLookup|string|nil Texture lookup in textureLookup or path to texture or nil to default to glow texture
+		---@param size number? Size of point. 20 if nil
+		---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
+		---@param r number? Red color 0-1
+		---@param g number? Green color 0-1
+		---@param b number? Blue color 0-1
+		---@param a number? alpha 0-1
 		New = function(self, map, x, y, follow, lifetime, texfile, size, blend, r, g, b, a)
 			local t = tremove(pointCache)
 			if not t then
@@ -1159,6 +1189,7 @@ function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend
 	return Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
+--Unused function?
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1173,6 +1204,7 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 	return Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
+--Unused function?
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1186,6 +1218,9 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 	return Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
 end
 
+---Used for registering marker to encounterMarkers table and incrementing activeMarkers
+---@param spellid string|number Key used for tracking the marker
+---@param name string|number Unique name for each tracked marker
 function mod:RegisterEncounterMarker(spellid, name, marker)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not HUDEnabled then
@@ -1196,6 +1231,21 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", spellid .. name)
 end
 
+---Used to to register a non moving position marker based on map coords
+---@param spellid string|number Key used for tracking the marker
+---@param name string|number Unique name for each tracked marker
+---@param texture textureLookup|string string for texture lookup in textureLookup table or texture path
+---@param x number X coordinate
+---@param y number Y coordinate
+---@param radius number? Defaults to 20 if nil
+---@param duration number?
+---@param r number? Red 0-1
+---@param g number? Green 0-1
+---@param b number? Blue 0-1
+---@param a number? Alpha 0-1
+---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
+---@param localMap boolean? If true, x and y are local map coords and need to be converted to instance map coords
+---@param AreaID number? Local mapid when local map coords need to be converted into instance map coords
 function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, localMap, AreaID)
 	if localMap then
 		if x >= 0 and x <= 100 and y >= 0 and y <= 100 then
@@ -1212,6 +1262,17 @@ function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, durati
 	return marker
 end
 
+---Used for tracking static player targets by unitid
+---@param spellid string|number Key used for tracking the marker.
+---@param texture textureLookup string for texture lookup in textureLookup table
+---@param person string UnitID of player to track
+---@param radius number? Defaults to 20 if nil
+---@param duration number?
+---@param r number? Red 0-1
+---@param g number? Green 0-1
+---@param b number? Blue 0-1
+---@param a number? Alpha 0-1
+---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1232,6 +1293,17 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 	return marker
 end
 
+---Used for tracking moving player targets by unitid
+---@param spellid string|number Key used for tracking the marker.
+---@param texture textureLookup string for texture lookup in textureLookup table
+---@param person string UnitID of player to track
+---@param radius number? Defaults to 20 if nil
+---@param duration number?
+---@param r number? Red 0-1
+---@param g number? Green 0-1
+---@param b number? Blue 0-1
+---@param a number? Alpha 0-1
+---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1251,6 +1323,7 @@ function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, 
 	return marker
 end
 
+---@param key string|number
 function mod:FreeEncounterMarker(key)
 	if not HUDEnabled or not encounterMarkers[key] then
 		return
@@ -1262,6 +1335,8 @@ function mod:FreeEncounterMarker(key)
 	end
 end
 
+---@param spellid string|number Key used for tracking the marker
+---@param name string|number Unique name for each tracked marker
 function mod:FreeEncounterMarkerByTarget(spellid, name)
 	if not HUDEnabled or not encounterMarkers[spellid .. name] then
 		return
