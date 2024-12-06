@@ -793,7 +793,8 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 	for _, mod in ipairs(DBM.Mods) do
 		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod and not mod.noStatistics then
 			if not mod.stats then
-				mod.stats = {}
+				local defaultStats = DBM:CreateDefaultModStats()
+				mod.stats = defaultStats or {}
 			end
 
 			--Create Frames
