@@ -278,6 +278,7 @@ end
 do
 	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check
 	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
+		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_ARROW)
 			return

@@ -4017,6 +4017,7 @@ do
 		-- LoadMod
 		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
+		self:UpdateMapRestrictions()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
@@ -4044,6 +4045,7 @@ do
 		end
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self, 5)
+		DBM:UpdateMapRestrictions()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
@@ -4092,6 +4094,7 @@ do
 			self:Unschedule(SecondaryLoadCheck)
 --			self:Schedule(1, SecondaryLoadCheck, self, 1)
 			self:Schedule(5, SecondaryLoadCheck, self, 5)
+			DBM:UpdateMapRestrictions()
 			if self:HasMapRestrictions() then
 				self.Arrow:Hide()
 				self.HudMap:Disable()
@@ -5900,6 +5903,7 @@ do
 			end
 			fireEvent("DBM_Pull", mod, delay, synced, startHp)
 			self:FlashClientIcon()
+			self:UpdateMapRestrictions()
 			--serperate timer recovery and normal start.
 			if event ~= "TIMER_RECOVERY" then
 				--add pull count
@@ -6559,12 +6563,24 @@ function DBM:GetStage(modId)
 	end
 end
 
----@param self DBMModOrDBM
-function DBM:HasMapRestrictions()
-	--Check playerX and playerY. if they are nil restrictions are active
-	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
-	local playerX, playerY = UnitPosition("player")
-	return not playerX or not playerY
+do
+	local hasRestrictions = false
+	---@param self DBMModOrDBM
+	function DBM:UpdateMapRestrictions()
+		--Check playerX and playerY. if they are nil restrictions are active
+		--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
+		local playerX, playerY = UnitPosition("player")
+		if playerX and playerY then
+			hasRestrictions = false
+		else
+			hasRestrictions = true
+		end
+	end
+
+	---@param self DBMModOrDBM
+	function DBM:HasMapRestrictions()
+		return hasRestrictions
+	end
 end
 
 do
