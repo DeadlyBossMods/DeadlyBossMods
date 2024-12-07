@@ -532,6 +532,7 @@ end
 -- TODO: this relies a lot on DBM debug logs -- we could try to make some more educated guesses if we don't have these
 function testGenerator:parseMetadata()
 	local player
+	---@diagnostic disable-next-line: missing-fields
 	local instanceInfo = {} ---@type DBMInstanceInfo
 	local encounterInfo = {}
 	local zoneId
@@ -681,6 +682,7 @@ function testGenerator:GetTestDefinition()
 	end
 	local _, _, resultLog, resultPlayers = self:GetLogAndPlayers()
 	 ---@type TestDefinition
+	 ---@diagnostic disable-next-line: missing-fields
 	 self.cache.testDefinition = {
 		name = self:guessTestName(),
 		gameVersion = self.metadata.gameVersion,
