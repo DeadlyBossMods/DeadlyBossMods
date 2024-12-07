@@ -82,3 +82,7 @@ L = DBM:GetModLocalization("NerubarPalaceTrash")
 L:SetGeneralLocalization({
 	name =	"Nerub-ar Palace Trash"
 })
+
+L:SetMiscLocalization({
+	AutoPotioned	= "Potion automatically used (Note DBM will not auto use potion if you already have debuff). You can disable this in settings if you don't want it to auto use potion."
+})
