@@ -71,6 +71,7 @@ local function exportTest(file, log, firstLine, lastLine)
 	file:write("\n")
 	file:write(testData:GetLogString())
 	file:write("\n")
+	file:write(testData:GetCompressedLogString())
 	file:write("}\n")
 
 	logInfo("Parsed %d lines into %d lines (%.1f%% filtered)", testData.stats.parsedLines, testData.stats.outputLines, (1 - testData.stats.outputLines / (testData.stats.parsedLines)) * 100)

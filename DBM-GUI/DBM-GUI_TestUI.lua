@@ -329,7 +329,6 @@ local function serializeLog(testData)
 		local completed, serialized = handler()
 		if completed then
 			compressAsync:Hide()
-			local s = GetTimePreciseSec()
 			testData.compressedLog = libDeflate:EncodeForPrint(libDeflate:CompressDeflate(serialized))
 		end
 	end)
