@@ -682,7 +682,6 @@ function testGenerator:GetTestDefinition()
 	end
 	local _, _, resultLog, resultPlayers = self:GetLogAndPlayers()
 	 ---@type TestDefinition
-	 ---@diagnostic disable-next-line: missing-fields
 	 self.cache.testDefinition = {
 		name = self:guessTestName(),
 		gameVersion = self.metadata.gameVersion,

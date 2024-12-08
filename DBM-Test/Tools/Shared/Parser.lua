@@ -221,7 +221,9 @@ local function parseTable(code, pos)
 			key = arrayIndex
 			arrayIndex = arrayIndex + 1
 		end
-		result[key] = value
+		if key then
+			result[key] = value
+		end
 	end
 	return pos, result
 end
