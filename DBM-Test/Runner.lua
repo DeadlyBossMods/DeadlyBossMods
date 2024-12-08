@@ -865,7 +865,7 @@ end)
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field perspective string? Player name from whose perspective the log gets replayed
 ---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
----@field log TestLogEntry[] Log to replay, automatically restored from compressedLog on playback
+---@field log TestLogEntry[] Log to replay, automatically restored from compressedLog on playback if this isn't set
 ---@field ephemeral boolean? Set to true for tests imported from Transcriptor via the test UI
 ---@field showInAllMods boolean? Ephemeral tests that show up in all playground UIs
 ---@field persistent boolean? Ephemeral test that is stored to saved variables
