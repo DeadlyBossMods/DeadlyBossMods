@@ -452,7 +452,7 @@ do
 			if aura_tbl.barType ~= "castnp" and ((DBM.Options.NPIconGlowBehavior == 1 and aura_tbl.isPriority) or DBM.Options.NPIconGlowBehavior == 2) and aura_tbl.remaining < 4 then
 				canGlow = true
 			--cast nameplate icon. 1 = priority only. There is no "always" for cast timers at this time
-			elseif aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowBehavior == 1 and aura_tbl.isPriority and aura_tbl.remaining < 4 then
+			elseif aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowBehavior == 1 and aura_tbl.isPriority and (aura_tbl.duration or 0) > 0 then
 				canGlow = true
 			end
 			local glowType = aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowType or DBM.Options.CDNPIconGlowType
@@ -466,7 +466,7 @@ do
 
 			self.lastUpdateCooldown = now
 
-			if (aura_tbl.duration or 0) > 0 and aura_tbl.remaining < 0 and not aura_tbl.keep then
+			if (aura_tbl.duration or 0) <= 0 and not aura_tbl.keep then
 				if self.isGlowing then
 					self.isGlowing = false
 					self.parent:StopGlow(self, 0)
