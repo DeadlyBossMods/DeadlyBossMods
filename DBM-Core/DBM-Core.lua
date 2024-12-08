@@ -1226,6 +1226,7 @@ do
 			end
 			for i = #registeredEvents[event], 1, -1 do
 				if registeredEvents[event][i] == mod then
+					---@diagnostic disable-next-line: missing-fields
 					registeredEvents[event][i] = {}
 					break
 				end
@@ -3602,10 +3603,8 @@ function DBM:ClearAllStats(modId)
 	for _, id in ipairs(self.ModLists[modId]) do
 		local mod = self:GetModByName(id)
 		local defaultStats = DBM:CreateDefaultModStats()
-		mod["stats"] = {}
-		mod["stats"] = defaultStats
-		_G[savedStatsName][id] = {}
-		_G[savedStatsName][id] = defaultStats
+		mod["stats"] = defaultStats or {}
+		_G[savedStatsName][id] = defaultStats or {}
 	end
 	self:AddMsg(L.ALLMOD_STATS_RESETED)
 	DBM_GUI:UpdateModList()
