@@ -695,18 +695,18 @@ function testGenerator:GetTestDefinition()
 	return self:GetTestDefinition()
 end
 
-local function unstringify(arg, ...)
+local function unstringify(param, ...)
 	if select("#", ...) == 0 then
-		if type(arg) == "string" then
-			return arg:sub(
-				arg:sub(1, 1) == "\"" and 2 or 1,
-				arg:sub(-1, -1) == "\"" and -2 or nil
+		if type(param) == "string" then
+			return param:sub(
+				param:sub(1, 1) == "\"" and 2 or 1,
+				param:sub(-1, -1) == "\"" and -2 or nil
 			)
 		else
-			return arg
+			return param
 		end
 	else
-		return unstringify(arg), unstringify(...)
+		return unstringify(param), unstringify(...)
 	end
 end
 
