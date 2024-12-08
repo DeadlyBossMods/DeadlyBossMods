@@ -1,5 +1,5 @@
 {
-	"wowAPI.autoAddGlobals": false,
+	"wowAPI.luals.defineKnownGlobals": false,
 	"Lua.completion.autoRequire": false,
 	"editorconfig.generateAuto": false
 }

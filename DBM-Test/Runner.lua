@@ -868,6 +868,7 @@ end)
 ---@field persistent boolean? Ephemeral test that is stored to saved variables
 ---@field compressedLog string? LibDeflate compressed log
 ---@field duration number? Test duration, required if log is compressed
+---@field uiInfo TestUiInfo? Internal field used by the UI, do not set manually
 
 --[[
 I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,

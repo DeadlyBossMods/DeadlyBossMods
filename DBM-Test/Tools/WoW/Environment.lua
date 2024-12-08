@@ -13,7 +13,6 @@ local test = DBM.Test
 -- Must not be used as a tail call. Name must match the file name with "."" as a path separator (like require expects).
 ---@return table
 function test.CreateSharedModule(name, obj)
-	---@diagnostic disable-next-line: param-type-mismatch -- https://github.com/LuaLS/lua-language-server/pull/2835
 	setfenv(2, env)
 	if modules[name] and obj then -- Object was already implicitly created by require, add data we are adding
 		for k, v in pairs(obj) do
