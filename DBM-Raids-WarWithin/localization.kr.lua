@@ -83,3 +83,7 @@ L = DBM:GetModLocalization("NerubarPalaceTrash")
 L:SetGeneralLocalization({
 	name =	"네룹아르 궁전 일반몹"
 })
+
+L:SetMiscLocalization({
+	AutoPotioned	= "물약을 자동으로 사용했습니다. (디버프가 있으면 DBM이 자동으로 물약을 사용하지 않습니다) 물약 자동 사용을 원하지 않으면 설정에서 끌 수 있습니다."
+})
