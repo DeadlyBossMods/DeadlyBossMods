@@ -686,8 +686,11 @@ local logStripper = CreateFrame("Frame")
 logStripper:RegisterEvent("PLAYER_LOGOUT")
 logStripper:SetScript("OnEvent", function()
 	if not DBM_Test_PersistentImports then return end
-	for _, v in pairs(DBM_Test_PersistentImports) do
+	for k, v in pairs(DBM_Test_PersistentImports) do
 		v.log = nil
+		if not v.persistent then
+			DBM_Test_PersistentImports[k] = nil
+		end
 	end
 end)
 
