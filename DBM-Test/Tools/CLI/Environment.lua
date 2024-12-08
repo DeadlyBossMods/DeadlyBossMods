@@ -13,6 +13,10 @@ require "LibStub"
 local libStubGetLib = LibStub.GetLibrary
 
 local libsLoading = {}
+---@generic T
+---@param major `T`
+---@param silent? boolean
+---@return table|T library
 local function libStubLoader(self, major, silent, ...)
 	-- Some libs will try to load itself to explicitly find previous versions, causing a recursion error in require
 	if libsLoading[major] and silent then
