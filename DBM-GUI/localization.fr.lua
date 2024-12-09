@@ -621,7 +621,7 @@ Vous pouvez rejouer des journaux de combats de boss ici pour voir comment le mod
 L.TimewarpSetting					= "Distorsion temporelle : %dx"
 L.TimewarpDynamic					= "Distorsion temporelle : dynamique (la plus rapide)"
 L.TestSupportArea					= "Options de chargement du mod"
-L.ModNotLoadedWithTests				= "Avertissement : Ce mod n'est actuellement pas chargé avec un support complet pour les tests. Si le mod appelle directement des fonctions API telles que UnitHealth() ou UnitName(), celles-ci ne fonctionneront pas correctement. C'est souvent le cas pour les fonctions liées à la santé, au pouvoir ou aux cibles des unités."
+L.ModNotLoadedWithTests				= "Avertissement : Ce mod n'est actuellement pas chargé avec un support complet pour les tests. Si le mod appelle directement des fonctions API telles que UnitHealth() ou UnitName(), celles-ci ne fonctionneront pas correctement. C'est souvent le cas pour les fonctions liées à la vie, au pouvoir ou aux cibles des unités."
 L.ModLoadedWithTests				= "Le mod est actuellement chargé avec un support pour les tests car au moins un mod dans l'addon a des tests activés."
 L.AlwaysLoadModWithTests			= "Charger toujours ce mod avec un support complet pour les tests (ralentit légèrement le chargement)"
 L.ModLoadRequiresReload				= ", nécessite un rechargement de l'interface pour prendre effet" -- Appended to L.AlwaysLoadModWithTests
