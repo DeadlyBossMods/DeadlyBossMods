@@ -131,9 +131,14 @@ L.Area_SoundAlerts			= "Opciones de alertas de sonido y destello del icono del j
 L.LFDEnhance				= "Reproducir sonido de comprobación de rol y destellar el icono del juego para comprobaciones de rol y avisos de CB/buscar grupo en el canal de audio principal o diálogo (es decir, los sonidos funcionan incluso si los efectos de sonido están desactivados y, en general, son más fuertes)."
 L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar el icono del juego cuando haya un jefe del mundo cerca"
 L.RLReadyCheckSound			= "Reproducir sonido por el canal de audio principal o de diálogo y destellar el icono del juego cuando se haga una comprobación de banda"
-L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce mientras estás ausente"
 L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego al recibir respuestas automáticas de DBM por susurro"
 --
+L.Area_CombatAlerts			= "Opciones de alerta de combate"
+L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (en cualquier porcentaje) mientras estás ausente"
+L.AFKHealthWarningLow		= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
+L.EnteringCombatAlert		= "Reproducir sonido de alerta y destellar el icono del juego al entrar en combate"
+L.LeavingCombatAlert		= "Reproducir sonido de alerta al salir de combate"
+
 L.TimerGeneral 				= "Opciones de temporizadores"
 L.SKT_Enabled				= "Mostrar temporizador para batir el récord de victoria del encuentro actual"
 L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada derrota"
