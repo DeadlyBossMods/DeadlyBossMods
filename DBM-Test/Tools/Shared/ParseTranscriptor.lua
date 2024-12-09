@@ -193,7 +193,9 @@ local function guessType(str)
 	if str == "false" then
 		return false
 	end
-	if tostring(tonumber(str)) == str then
+	local testNum = tostring(tonumber(str))
+	-- Very hacky, but much faster than always applying a regex
+	if testNum == str or str:sub(0, 2) == "0x" and str:match("^0x%x*$") or str:match("^%d*%.%d*$") then
 		return tonumber(str)
 	end
 	return str
@@ -673,7 +675,25 @@ end
 
 function testGenerator:GetLogString()
 	local log = self:GetLogAndPlayers()
-	return log
+	return [[
+	--@strip-from-release@
+	-- This file contains a compressed version of the log at the end that is used in release builds.
+	-- Avoid editing this log by hand, but if you must run <TODO> to keep the compressed log in sync.
+]] .. log .. "--@end-strip-from-release@"
+end
+
+local compressedLogTemplate = [[
+	-- LibSerialize/LibDeflate encoded and compressed list of TestLogEntry. If an uncompressed log is specified it is used instead of the compressed version.
+	compressedLog = "%s",
+	duration = %.2f,
+]]
+
+function testGenerator:GetCompressedLogString()
+	local libSerialize = LibStub("LibSerialize")
+	local libDeflate = LibStub("LibDeflate")
+	local log = select(3, self:GetLogAndPlayers())
+	local compressed = libDeflate:EncodeForPrint(libDeflate:CompressDeflate((libSerialize:Serialize(log))))
+	return compressedLogTemplate:format(compressed, log[#log][1])
 end
 
 function testGenerator:GetTestDefinition()
@@ -682,7 +702,6 @@ function testGenerator:GetTestDefinition()
 	end
 	local _, _, resultLog, resultPlayers = self:GetLogAndPlayers()
 	 ---@type TestDefinition
-	 ---@diagnostic disable-next-line: missing-fields
 	 self.cache.testDefinition = {
 		name = self:guessTestName(),
 		gameVersion = self.metadata.gameVersion,
@@ -696,18 +715,18 @@ function testGenerator:GetTestDefinition()
 	return self:GetTestDefinition()
 end
 
-local function unstringify(arg, ...)
+local function unstringify(param, ...)
 	if select("#", ...) == 0 then
-		if type(arg) == "string" then
-			return arg:sub(
-				arg:sub(1, 1) == "\"" and 2 or 1,
-				arg:sub(-1, -1) == "\"" and -2 or nil
+		if type(param) == "string" then
+			return param:sub(
+				param:sub(1, 1) == "\"" and 2 or 1,
+				param:sub(-1, -1) == "\"" and -2 or nil
 			)
 		else
-			return arg
+			return param
 		end
 	else
-		return unstringify(arg), unstringify(...)
+		return unstringify(param), unstringify(...)
 	end
 end
 

@@ -686,8 +686,11 @@ local logStripper = CreateFrame("Frame")
 logStripper:RegisterEvent("PLAYER_LOGOUT")
 logStripper:SetScript("OnEvent", function()
 	if not DBM_Test_PersistentImports then return end
-	for _, v in pairs(DBM_Test_PersistentImports) do
+	for k, v in pairs(DBM_Test_PersistentImports) do
 		v.log = nil
+		if not v.persistent then
+			DBM_Test_PersistentImports[k] = nil
+		end
 	end
 end)
 
@@ -862,12 +865,13 @@ end)
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
 ---@field perspective string? Player name from whose perspective the log gets replayed
 ---@field players DBMTestPlayerDefinition[]? Players participating in the fight (some players may have no log entries due to filtering)
----@field log TestLogEntry[] Log to replay, automatically restored from compressedLog on playback
+---@field log TestLogEntry[] Log to replay, automatically restored from compressedLog on playback if this isn't set
 ---@field ephemeral boolean? Set to true for tests imported from Transcriptor via the test UI
 ---@field showInAllMods boolean? Ephemeral tests that show up in all playground UIs
 ---@field persistent boolean? Ephemeral test that is stored to saved variables
 ---@field compressedLog string? LibDeflate compressed log
 ---@field duration number? Test duration, required if log is compressed
+---@field uiInfo TestUiInfo? Internal field used by the UI, do not set manually
 
 --[[
 I'm a bit torn on this ignore warning stuff: having the warnings in the report also serves as acknowledgement, however,
