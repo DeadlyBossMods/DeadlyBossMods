@@ -79,7 +79,7 @@ L.MOVIE_NOTSKIPPED			= L.DBM .. " ha detectado una escena de corte que se puede 
 L.BONUS_SKIPPED				= L.DBM .. " ha cerrado automáticamente la ventana de bonus de botín. Si quieres abrirla, escribe /dbmbonusroll antes de que pasen 3 minutos."
 
 L.AFK_WARNING				= "Estás ausente y en combate (%d por cierto de salud restante); se procederá a reproducir un sonido de alerta. Sino estás ausente, quítate el estado o desactiva esta opción en 'Funciones adicionales'."
-L.LOWHEALTH_WARNING			= "Salud baja (%d por ciento de salud restante), reproduciendo alerta sonora. Puedes desactivar esta opción en 'funciones adicionales'."
+L.LOWHEALTH_WARNING			= "Salud baja (%d por ciento de salud restante), reproduciendo alerta sonora. Puedes desactivar esta opción en 'Funciones adicionales'."
 L.ENTERING_COMBAT			= "Entrando en combate"
 L.LEAVING_COMBAT			= "Saliendo del combate"
 
