@@ -78,8 +78,8 @@ L.MOVIE_SKIPPED 					= L.DBM .. " tentou pular uma cena automaticamente."
 L.MOVIE_NOTSKIPPED 					= L.DBM .. " detectou uma cena cortável, mas não a pulou devido a um bug da Blizzard. Quando esse bug for corrigido, o pulo será reativado."
 L.BONUS_SKIPPED 					= L.DBM .. " fechou automaticamente o quadro de saque extra. Se precisar trazer esse quadro de volta, digite /dbmbonusroll dentro de 3 minutos."
 
-L.AFK_WARNING 				= "Você está LDT e em combate (%d por cento de vida restante), disparando alerta sonoro. Se não estiver LDT, limpe sua bandeira de LDT ou desative esta opção em 'funcionalidades extra'."
-L.LOWHEALTH_WARNING			= "Vida baixa (%d por cento de vida restante), reproduzindo alerta sonoro. Você pode desativar essa opção em 'funcionalidades extra'."
+L.AFK_WARNING 				= "Você está LDT e em combate (%d por cento de vida restante), disparando alerta sonoro. Se não estiver LDT, limpe sua bandeira de LDT ou desative esta opção em 'Funcionalidades extra'."
+L.LOWHEALTH_WARNING			= "Vida baixa (%d por cento de vida restante), reproduzindo alerta sonoro. Você pode desativar essa opção em 'Funcionalidades extra'."
 L.ENTERING_COMBAT			= "Entrando em combate"
 L.LEAVING_COMBAT			= "Saindo de combate"
 
