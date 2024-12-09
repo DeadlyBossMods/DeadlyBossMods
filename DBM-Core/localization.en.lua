@@ -8,7 +8,7 @@ L.DBM									= "DBM" -- NO TRANSLATE
 
 local guild = GetGuildInfo("player")
 local dateTable = date("*t")
-if DBM:IsSeasonal("Hardcore") and guild == "OnlyFangs" then
+if C_Seasons and C_Seasons.GetActiveSeason and C_Seasons.GetActiveSeason() == 12 and guild == "OnlyFangs" then
 	L.DEADLY_BOSS_MODS					= "Deadly Boss Lua"
 	L.DBM								= "Boss Loa"
 elseif dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
