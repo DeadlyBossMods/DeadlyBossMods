@@ -208,6 +208,9 @@ DBM.DefaultOptions = {
 	WorldBossNearAlert = false,
 	RLReadyCheckSound = true,
 	AFKHealthWarning2 = private.isHardcoreServer and true or false,
+	AFKHealthWarningLow = private.isHardcoreServer and true or false,
+	EnteringCombatAlert = false,
+	LeavingCombatAlert = false,
 	AutoReplySound = true,
 	HideObjectivesFrame = true,
 	HideGarrisonToasts = true,
@@ -5293,7 +5296,8 @@ do
 				end
 			end
 		end
-		if self.Options.AFKHealthWarning2 and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		--Prio the afk warning if afk
+		if self.Options.AFKHealthWarning2 and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(3, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
 			local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
@@ -5304,6 +5308,15 @@ do
 			if UnitHealthMax("player") ~= 0 then
 				local health = UnitHealth("player") / UnitHealthMax("player") * 100
 				self:AddMsg(L.AFK_WARNING:format(health))
+			end
+		elseif self.Options.EnteringCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "COMBAT") then
+			self:FlashClientIcon()
+			local voice = DBM.Options.ChosenVoicePack2
+			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\enteringcombat.ogg")
+				self:AddMsg(L.ENTERING_COMBAT)--Shown with no sound cause voice played
+			else
+				self:AddMsg(L.ENTERING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
 	end
@@ -5329,6 +5342,15 @@ do
 			if QuestieTracker and questieWatchRestore and QuestieTracker.Enable then
 				QuestieTracker:Enable()
 				questieWatchRestore = false
+			end
+		end
+		if self.Options.LeavingCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "LEAVINGCOMBAT") then
+			local voice = DBM.Options.ChosenVoicePack2
+			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\leavingcombat.ogg")
+				self:AddMsg(L.LEAVING_COMBAT)--Shown with no sound cause voice played
+			else
+				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
 	end
@@ -6055,14 +6077,26 @@ do
 					end
 				end
 			end
-			if self.Options.AFKHealthWarning2 and UnitIsUnit(uId, "player") and (health < (private.isHardcoreServer and 95 or 85)) and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-				local voice = DBM.Options.ChosenVoicePack2
-				local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
-				if not private.voiceSessionDisabled and voice ~= "None" then
-					path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
+			if UnitIsUnit(uId, "player") and health < 100 and not private.isHardcoreServer and not private.IsEncounterInProgress() then
+				--PRIO afk alert first
+				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
+					local voice = DBM.Options.ChosenVoicePack2
+					local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
+					if not private.voiceSessionDisabled and voice ~= "None" then
+						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
+					end
+					self:PlaySoundFile(path)
+					self:AddMsg(L.AFK_WARNING:format(health))
+				--Low health warning
+				elseif self.Options.LowHeal and health < 35 and self:AntiSpam(5, "LOWHEALTH") then
+					local voice = DBM.Options.ChosenVoicePack2
+					local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
+					if not private.voiceSessionDisabled and voice ~= "None" then
+						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
+					end
+					self:PlaySoundFile(path)
+					self:AddMsg(L.LOWHEALTH_WARNING:format(health))
 				end
-				self:PlaySoundFile(path)
-				self:AddMsg(L.AFK_WARNING:format(health))
 			end
 		end
 	end

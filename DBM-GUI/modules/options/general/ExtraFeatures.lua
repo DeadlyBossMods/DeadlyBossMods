@@ -9,6 +9,12 @@ soundAlertsArea:CreateCheckButton(L.RLReadyCheckSound, true, nil, "RLReadyCheckS
 soundAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning2")
 soundAlertsArea:CreateCheckButton(L.AutoReplySound, true, nil, "AutoReplySound")
 
+local combatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_CombatAlerts)
+combatAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning2")
+combatAlertsArea:CreateCheckButton(L.AFKHealthWarningLow, true, nil, "AFKHealthWarningLow")
+combatAlertsArea:CreateCheckButton(L.EnteringCombatAlert, true, nil, "EnteringCombatAlert")
+combatAlertsArea:CreateCheckButton(L.LeavingCombatAlert, true, nil, "LeavingCombatAlert")
+
 local generaltimeroptions	= extraFeaturesPanel:CreateArea(L.TimerGeneral)
 generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer2")
 generaltimeroptions:CreateCheckButton(L.ShowRespawn, true, nil, "ShowRespawn")

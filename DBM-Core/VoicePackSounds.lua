@@ -95,6 +95,7 @@
 ---|"enfeeblingroar" 12
 ---|"engineercoming" 12
 ---|"enrage"
+---|"enteringcombat" 17
 ---|"failed"
 ---|"farfromline"
 ---|"fearsoon"
@@ -175,6 +176,7 @@
 ---|"laserrun"
 ---|"leavecenter"
 ---|"leavemind"
+---|"leavingcombat" 17
 ---|"left"
 ---|"lightinfusion"
 ---|"lightstorm"
