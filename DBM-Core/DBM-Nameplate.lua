@@ -456,7 +456,7 @@ do
 				canGlow = true
 			end
 			local glowType = aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowType or DBM.Options.CDNPIconGlowType
-			if canGlow and not self.isGlowing and (aura_tbl.duration or 0) > 0 then -- glow below 4sec if important
+			if canGlow and not self.isGlowing then -- glow below 4sec if important
 				self.parent:StartGlow(self, glowType)
 				self.isGlowing = true
 			elseif not canGlow and self.isGlowing then
