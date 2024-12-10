@@ -135,7 +135,7 @@ L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego
 --
 L.Area_CombatAlerts			= "Opciones de alerta de combate"
 L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (en cualquier porcentaje) mientras estás ausente"
-L.AFKHealthWarningLow		= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
+L.HealthWarningLow		= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
 L.EnteringCombatAlert		= "Reproducir sonido de alerta y destellar el icono del juego al entrar en combate"
 L.LeavingCombatAlert		= "Reproducir sonido de alerta al salir de combate"
 

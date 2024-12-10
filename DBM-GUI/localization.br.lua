@@ -583,7 +583,7 @@ L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM 
 
 L.Area_CombatAlerts			= "Opções de alertas de combate"
 L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (em qualquer porcentagem) enquanto estiver LDT"
-L.AFKHealthWarningLow		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
+L.HealthWarningLow		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
 L.EnteringCombatAlert		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar ao entrar em combate"
 L.LeavingCombatAlert		= "Reproduzir som de alerta ao sair de combate"
 

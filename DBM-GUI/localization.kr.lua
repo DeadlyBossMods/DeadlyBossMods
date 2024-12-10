@@ -136,7 +136,7 @@ L.AutoReplySound			= "DBM 자동 응답 귓속말을 받을 때 경고음 재생
 
 L.Area_CombatAlerts					= "전투 경고 설정"
 L.AFKHealthWarning				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (생명력 기준 무제한)"
-L.AFKHealthWarningLow				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (35퍼센트 미만일 때)"
+L.HealthWarningLow				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (35퍼센트 미만일 때)"
 L.EnteringCombatAlert				= "전투에 돌입했을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
 L.LeavingCombatAlert				= "전투가 끝났을 때 경고음 재생"
 --
