@@ -16,7 +16,7 @@ L.OTabDungeons	= "Mazmorras"
 L.OTabWorld		= "Jefes del mundo"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios	= "Escenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins	= "Otros" --Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
-L.OTabOptions	= "Opciones de Core"
+L.OTabOptions	= "Opciones"
 L.OTabAbout		= "Acerca de"
 
 L.FOLLOWER	= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
