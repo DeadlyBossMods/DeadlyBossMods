@@ -112,25 +112,25 @@ L.AdvancedAutologBosses				= "Enregistrer automatiquement le contenu sélectionn
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters			= "Filtres d'enregistrement automatique"
 L.RecordOnlyBosses					= "Ne pas enregistrer les trash"
-L.DoNotLogLFG						= "Ne pas enregistrer les contenus en file d'attente (LFG ou LFR)"
+L.DoNotLogLFG						= "Ne pas enregistrer les contenus en file d'attente (Recherche de groupe)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
 L.LogCurrentMythicRaids				= "Raids mythiques du niveau actuel (ou remix)" --Retail Only
-L.LogCurrentRaids					= "Raids non mythiques du niveau actuel (ou remix) (Héroïque, Normal, et LFR si le filtre LFG/LFR est désactivé)"
+L.LogCurrentRaids					= "Raids non mythiques du niveau actuel (ou remix) (Héroïque, Normal, et LFR si le filtre Recherche de groupe est désactivé)"
 L.LogTWRaids						= "Raids de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
 L.LogTrivialRaids					= "Raids triviaux (au-dessous du niveau du personnage)"
 L.LogCurrentMPlus					= "Donjons M+ du niveau actuel (ou remix)" --Retail Only
 L.LogCurrentMythicZero				= "Donjons Mythique 0 du niveau actuel (ou remix)" --Retail Only
 L.LogTWDungeons						= "Donjons de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
-L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vous faites de l'héroïque via la file d'attente et souhaitez l'enregistrer, désactivez le filtre LFG)"
+L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vous faites de l'héroïque via la file d'attente et souhaitez l'enregistrer, désactivez le filtre Recherche de groupe)"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
 
 L.Area_SoundAlerts			= "Options des alertes sonores/clignotement"
-L.LFDEnhance				= "Faire clignoter le bouton de l'application et jouer le son d'appel lors des vérif. de rôle et des invitations (LFG, BG, etc) dans les canaux audio principal ou discussion (canaux généralement plus forts, fonctionnent même si le SFX est désactivé)"
+L.LFDEnhance				= "Faire clignoter le bouton de l'application et jouer le son d'appel lors des vérif. de rôle et des invitations (Recherche de groupe, CB, etc) dans les canaux audio principal ou discussion (canaux généralement plus forts, fonctionnent même si le SFX est désactivé)"
 L.WorldBossNearAlert		= "Faire clignoter le bouton de l'application et jouer le son d'appel quand un boss mondial proche de vous est engagé"
-L.RLReadyCheckSound			= "Faire clignoter le bouton de l'application et jouer le son via les canaux audio principal ou discussion quand un appel est lancé par le chef de raid."
+L.RLReadyCheckSound			= "Faire clignoter le bouton de l'application et jouer le son via les canaux audio principal ou discussion quand un appel est lancé par le chef de raid"
 L.AutoReplySound			= "Faire clignoter le bouton de l'application et jouer un son d'alerte quand vous recevez une réponse DBM automatique par chuchotement"
 --
 L.Area_CombatAlerts			= "Options d'alertes de combat"
@@ -142,13 +142,13 @@ L.LeavingCombatAlert		= "Jouer un son d'alerte lorsque vous quittez le combat"
 L.TimerGeneral 				= "Options de décompte"
 L.SKT_Enabled				= "Décompte du record pour le combat actuel s'il est disponible"
 L.ShowRespawn				= "Décompte de la réapparition du boss après une défaite"
-L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (LFG, BG, etc)"
+L.ShowQueuePop				= "Décompte du temps restant pour accepter une invitation (Recherche de groupe, CB, etc)"
 L.ShowBerserkWarnings 		= "Afficher les annonces à 10/5/3/1 minutes et à 30/10 secondes restantes pour le chronomètre de $spell:26662"
 --
 L.Area_AutoLogging			= "Options d'enregistrement automatique"
 L.AutologBosses				= "Enregistrement auto du combat contre un boss en utilisant le journal de combat de Blizzard"
 L.AdvancedAutologBosses		= "Enregistrement auto du combat contre un boss en utilisant Transcriptor"
-L.RecordOnlyBosses			= "N'enregistrer que les boss et exclure tous les trash. Utilisez '/dbm pull' avant les boss pour prendre en compte les potions (pre pot) et ENCOUNTER_START"
+L.RecordOnlyBosses			= "N'enregistrer que les boss et exclure tous les trash. Utilisez '/dbm pull' avant les boss pour prendre en compte les potions"
 --
 L.Area_3rdParty				= "Options des add-ons tiers"
 L.oRA3AnnounceConsumables	= "Annoncer la vérification des consommables oRA3 au début du combat"
@@ -554,7 +554,7 @@ L.Tab_Privacy 				= "Messages privés"
 L.Area_WhisperMessages		= "Options des chuchotements"
 L.AutoRespond 				= "Répondre automatiquement aux chuchotements pendant les combats"
 L.WhisperStats 				= "Inclure les victoires/défaites dans les réponses"
-L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques."
+L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques"
 L.Area_SyncMessages			= "Options de synchronisation des addons"
 L.DisableGuildStatus 		= "Empêcher les messages de progression de se synchroniser avec la guilde, si vous êtes chef de groupe, cela affectera tous les utilisateurs de DBM dans votre groupe"
 L.EnableWBSharing 			= "Partager quand vous engagez/battez un boss mondial avec votre guilde et vos amis battle.net qui sont sur le même royaume"
