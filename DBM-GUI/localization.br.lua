@@ -115,19 +115,19 @@ L.DoNotLogLFG 						= "Não registrar encontros de procurando grupo"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent 			= "Conteúdo de registro automático"
 L.LogCurrentMythicRaids 			= "Raides atuais de nível Mítico (ou remix)" -- Retail Only
-L.LogCurrentRaids 					= "Raides não mítica atuais (heróicos, normal e LFR se o filtro LFG/LFR estiver desativado)"
+L.LogCurrentRaids 					= "Raides não mítica atuais (heróicos e normal se o filtro Procurando grupo estiver desativado)"
 L.LogTWRaids 						= "Raides de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
 L.LogTrivialRaids 					= "Raides triviais (abaixo do nível do personagem)"
 L.LogCurrentMPlus 					= "Masmorras M+ atuais de nível (ou remix)" -- Retail Only
 L.LogCurrentMythicZero 				= "Masmorras Míticas 0 atuais de nível (ou remix)" -- Retail Only
 L.LogTWDungeons 					= "Masmorras de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
-L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro LFG)"
+L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro Procurando grupo)"
 
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opções de temporizador"
 L.SKT_Enabled				= "Sempre exibir um temporizador de sua vitória recorde (sobrepõe a opção do chefe específico)"
 L.ShowRespawn 				= "Exibir o temporizador de reaparência do chefe após uma derrota"
-L.ShowQueuePop 				= "Exibir o tempo restante para aceitar um pop de fila (LFG, CB, etc)"
+L.ShowQueuePop 				= "Exibir o tempo restante para aceitar um pop de fila (Procurando grupo, CB, etc)"
 L.ShowBerserkWarnings 		= "Exibir anúncios a 10/5/3/1 minutos e a 30/10 segundos restantes no temporizador de $spell:26662"
 
 -- Tab: Alerts
