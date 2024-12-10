@@ -15,7 +15,7 @@ L.OTabDungeons						= "Donjons"--Just dungeons
 L.OTabWorld							= "Boss mondiaux"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
-L.OTabOptions						= "Options de Core"
+L.OTabOptions						= "Options"
 L.OTabAbout							= "À propos"
 
 L.FOLLOWER							= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
