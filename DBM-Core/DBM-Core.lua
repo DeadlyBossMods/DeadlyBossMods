@@ -208,7 +208,7 @@ DBM.DefaultOptions = {
 	WorldBossNearAlert = false,
 	RLReadyCheckSound = true,
 	AFKHealthWarning2 = private.isHardcoreServer and true or false,
-	AFKHealthWarningLow = private.isHardcoreServer and true or false,
+	HealthWarningLow = private.isHardcoreServer and true or false,
 	EnteringCombatAlert = false,
 	LeavingCombatAlert = false,
 	AutoReplySound = true,
@@ -6077,7 +6077,7 @@ do
 					end
 				end
 			end
-			if UnitIsUnit(uId, "player") and health < 100 and not private.isHardcoreServer and not private.IsEncounterInProgress() then
+			if UnitIsUnit(uId, "player") and health < 100 and not private.IsEncounterInProgress() then
 				--PRIO afk alert first
 				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
@@ -6088,7 +6088,7 @@ do
 					self:PlaySoundFile(path)
 					self:AddMsg(L.AFK_WARNING:format(health))
 				--Low health warning
-				elseif self.Options.LowHeal and health < 35 and self:AntiSpam(5, "LOWHEALTH") then
+				elseif self.Options.HealthWarningLow and health < 35 and self:AntiSpam(5, "LOWHEALTH") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 546633--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
 					if not private.voiceSessionDisabled and voice ~= "None" then
