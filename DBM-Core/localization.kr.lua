@@ -79,6 +79,9 @@ L.MOVIE_NOTSKIPPED				= L.DBM .. "이 생략할 수 있는 동영상을 감지�
 L.BONUS_SKIPPED				= L.DBM .. "이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
 
 L.AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
+L.LOWHEALTH_WARNING						= "생명력 낮음 (%d퍼센트 남음), 경고음 재생중. '기타 기능' 메뉴에서 이 설정을 끌 수 있습니다."
+L.ENTERING_COMBAT						= "전투 시작"
+L.LEAVING_COMBAT						= "전투 종료"
 
 L.COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서. 기계학습형 컴퓨터 (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
 
