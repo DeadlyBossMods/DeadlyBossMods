@@ -597,7 +597,7 @@ L.NPIcon_GlowAll			    	= "모든 주문의 쿨타임/시전 시간 만료시 �
 L.NPIcon_GlowTypeCD		        	= "쿨타임 아이콘 반짝임 종류"
 L.NPIcon_GlowTypeCast		        = "시전 아이콘 반짝임 종류"
 L.NPIcon_Pixel  			    	= "픽셀"
-L.NPIcon_Proc  			        	= "스킬 발동"
+L.NPIcon_Proc  			        	= "스킬 발동 (첫 발동시 시각 효과 버그)"
 L.NPIcon_AutoCast					= "자동 시전"
 L.NPIcon_Button						= "버튼"
 
