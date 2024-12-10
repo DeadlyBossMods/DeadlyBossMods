@@ -603,7 +603,7 @@ L.NPIcon_GlowAll					= "Glow all expiring CD/Cast Icons"
 L.NPIcon_GlowTypeCD					= "Cooldown Icon Glow Type"
 L.NPIcon_GlowTypeCast				= "Cast Icon Glow Type"
 L.NPIcon_Pixel						= "Pixel"
-L.NPIcon_Proc						= "Proc"
+L.NPIcon_Proc						= "Proc (Visual Bug on first session Appearance)"
 L.NPIcon_AutoCast					= "Auto Cast"
 L.NPIcon_Button						= "Button"
 
