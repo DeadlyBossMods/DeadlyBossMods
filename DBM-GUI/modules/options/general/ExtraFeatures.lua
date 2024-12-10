@@ -6,7 +6,6 @@ local soundAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_SoundAlerts)
 soundAlertsArea:CreateCheckButton(L.LFDEnhance, true, nil, "LFDEnhance")
 soundAlertsArea:CreateCheckButton(L.WorldBossNearAlert, true, nil, "WorldBossNearAlert")
 soundAlertsArea:CreateCheckButton(L.RLReadyCheckSound, true, nil, "RLReadyCheckSound")
-soundAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning2")
 soundAlertsArea:CreateCheckButton(L.AutoReplySound, true, nil, "AutoReplySound")
 
 local combatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_CombatAlerts)
