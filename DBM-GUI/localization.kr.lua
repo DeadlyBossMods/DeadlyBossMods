@@ -132,8 +132,13 @@ L.Area_SoundAlerts			= "효과음/점멸 알림 설정"
 L.LFDEnhance				= "역할 확인 및 전장/공격대 찾기가 열릴 때 전투 준비 효과음 재생(주 오디오 또는 대화 채널) 및 작업 표시줄 아이콘 점멸 (참고: 소리 채널이 꺼져있어도 작동하며, 다른 때보다 더 크게 들립니다)"
 L.WorldBossNearAlert		= "근처에서 필드 보스 전투가 시작된 경우 전투 준비 효과음 재생 및 작업 표시줄 아이콘 점멸"
 L.RLReadyCheckSound			= "전투 준비 효과음을 주 오디오나 대화 채널을 통해 재생하고 작업 표시줄 아이콘 점멸"
-L.AFKHealthWarning			= "자리 비움 상태 도중 체력이 줄면 경고음 재생 및 작업 표시줄 아이콘 점멸"
 L.AutoReplySound			= "DBM 자동 응답 귓속말을 받을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
+
+L.Area_CombatAlerts					= "전투 경고 설정"
+L.AFKHealthWarning				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (생명력 기준 무제한)"
+L.AFKHealthWarningLow				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (35퍼센트 미만일 때)"
+L.EnteringCombatAlert				= "전투에 돌입했을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
+L.LeavingCombatAlert				= "전투가 끝났을 때 경고음 재생"
 --
 L.TimerGeneral 				= "타이머 설정"
 L.SKT_Enabled				= "가능할 경우 현재 전투의 최고 승리 기록 타이머 표시"
@@ -592,7 +597,7 @@ L.NPIcon_GlowAll			    	= "모든 주문의 쿨타임/시전 시간 만료시 �
 L.NPIcon_GlowTypeCD		        	= "쿨타임 아이콘 반짝임 종류"
 L.NPIcon_GlowTypeCast		        = "시전 아이콘 반짝임 종류"
 L.NPIcon_Pixel  			    	= "픽셀"
-L.NPIcon_Proc  			        	= "스킬 발동"
+L.NPIcon_Proc  			        	= "스킬 발동 (첫 발동시 시각 효과 버그)"
 L.NPIcon_AutoCast					= "자동 시전"
 L.NPIcon_Button						= "버튼"
 
