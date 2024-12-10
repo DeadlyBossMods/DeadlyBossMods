@@ -315,10 +315,10 @@ local cooldownGlowType = {
 		text	= L.NPIcon_Pixel,
 		value	= 1,
 	},
-	{
-		text	= L.NPIcon_Proc,
-		value	= 2,
-	},
+--	{
+--		text	= L.NPIcon_Proc,
+--		value	= 2,
+--	},
 	{
 		text	= L.NPIcon_AutoCast,
 		value	= 3,
