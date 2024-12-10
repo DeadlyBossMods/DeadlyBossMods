@@ -78,9 +78,12 @@ L.MOVIE_SKIPPED = L.DBM .. " a tenté de passer automatiquement une cinématique
 L.MOVIE_NOTSKIPPED = L.DBM .. " a détecté une cinématique pouvant être sautée mais ne l'a PAS sautée en raison d'un bug de Blizzard. Lorsque ce bug sera corrigé, le saut sera réactivé."
 L.BONUS_SKIPPED = L.DBM .. " a automatiquement fermé la fenêtre de butin bonus. Si vous avez besoin de récupérer ca fenêtre, tapez /dbmbonusroll dans les 3 minutes."
 
-L.AFK_WARNING = "Vous êtes ABS et en combat (%d pour cent de santé restante), déclenchement d'une alerte sonore. Si vous n'êtes pas ABS, effacez votre statut ABS ou désactivez cette option dans les 'fonctionnalités supplémentaires'."
+L.AFK_WARNING 				= "Vous êtes ABS et en combat (%d pour cent de vie restante), déclenchement d'une alerte sonore. Si vous n'êtes pas ABS, effacez votre statut ABS ou désactivez cette option dans les 'Fonctionnalités supplémentaires'."
+L.LOWHEALTH_WARNING			= "Vie faible (%d pour cent de vie restante), déclenchement de l'alerte sonore. Vous pouvez désactiver cette option dans 'Fonctionnalités supplémentaires'."
+L.ENTERING_COMBAT			= "Entrée en combat"
+L.LEAVING_COMBAT			= "Sortie du combat"
 
-L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la nouvelle fonctionnalité d'IA de chronomètre pour générer des approximations de chronomètre)"
+L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la fonctionnalité d'IA de chronomètre pour générer des approximations de chronomètre)"
 
 L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Votre profile actuel est corrompu. " .. L.DBM .. " va charger le profil par défaut."
 L.PROFILE_CREATED				= "'%s' profil créé."
