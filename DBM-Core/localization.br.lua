@@ -78,9 +78,12 @@ L.MOVIE_SKIPPED 					= L.DBM .. " tentou pular uma cena automaticamente."
 L.MOVIE_NOTSKIPPED 					= L.DBM .. " detectou uma cena cortável, mas não a pulou devido a um bug da Blizzard. Quando esse bug for corrigido, o pulo será reativado."
 L.BONUS_SKIPPED 					= L.DBM .. " fechou automaticamente o quadro de saque extra. Se precisar trazer esse quadro de volta, digite /dbmbonusroll dentro de 3 minutos."
 
-L.AFK_WARNING 						= "Você está AFK e em combate (%d por cento de vida restante), disparando alerta sonoro. Se não estiver AFK, limpe sua bandeira de AFK ou desative esta opção em 'recursos extras'."
+L.AFK_WARNING 				= "Você está LDT e em combate (%d por cento de vida restante), disparando alerta sonoro. Se não estiver LDT, limpe sua bandeira de LDT ou desative esta opção em 'Funcionalidades extra'."
+L.LOWHEALTH_WARNING			= "Vida baixa (%d por cento de vida restante), reproduzindo alerta sonoro. Você pode desativar essa opção em 'Funcionalidades extra'."
+L.ENTERING_COMBAT			= "Entrando em combate"
+L.LEAVING_COMBAT			= "Saindo de combate"
 
-L.COMBAT_STARTED_AI_TIMER 			= "Meu CPU é um processador neural; um computador de aprendizado. (Esta luta usará o novo recurso de IA de cronômetro para gerar aproximações de cronômetro)"
+L.COMBAT_STARTED_AI_TIMER 			= "Meu CPU é um processador neural; um computador de aprendizado. (Esta luta usará o recurso de IA de cronômetro para gerar aproximações de cronômetro)"
 
 L.PROFILE_NOT_FOUND					= "<" .. L.DBM .. "> Seu perfil atual está corrompido. " .. L.DBM .. " carregara o perfil 'Padrão'."
 L.PROFILE_CREATED					= "'%s' perfil criado."
