@@ -3,8 +3,15 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
+L.DEADLY_BOSS_MODS						= "Deadly Boss Mods"
+L.DBM									= "DBM"
+
+local guild = GetGuildInfo("player")
 local dateTable = date("*t")
-if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+if C_Seasons and C_Seasons.GetActiveSeason and C_Seasons.GetActiveSeason() == 12 and guild == "OnlyFangs" then
+	L.DEADLY_BOSS_MODS					= "Deadly Boss Lua"
+	L.DBM								= "Boss Loa"
+elseif dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
 	L.DEADLY_BOSS_MODS					= "Harmless Minion Mods"
 	L.DBM								= "HMM"
 end
@@ -78,9 +85,12 @@ L.MOVIE_SKIPPED						= L.DBM .. " автоматически попытался 
 L.MOVIE_NOTSKIPPED					= L.DBM .. " обнаружил ролик, который можно пропустить, но НЕ пропустил его из-за ошибки Blizzard. Когда эта ошибка будет исправлена, пропуск ролика будет снова включен."
 L.BONUS_SKIPPED						= L.DBM .. " автоматически закрыл окно бонусного броска. Если Вам нужно вернуть это окно, введите /dbmbonusroll в течение 3 минут."
 
-L.AFK_WARNING						= "Вы АФК и в бою (осталось %d процентов здоровья), запуск звукового сигнала. Если Вы не АФК, отключите АФК режим или эту опцию в 'Дополнительные возможности'."
+L.AFK_WARNING						= "Вы АФК и в бою (осталось %d процентов здоровья), срабатывает звуковой сигнал. Если Вы не АФК, отключите АФК режим или эту опцию в 'Дополнительные возможности'."
+L.LOWHEALTH_WARNING					= "Низкое здоровье (осталось %d процентов здоровья), срабатывает звуковой сигнал. Вы можете отключить эту опцию в 'Дополнительные возможности'."
+L.ENTERING_COMBAT					= "Вступление в бой"
+L.LEAVING_COMBAT					= "Выход из боя"
 
-L.COMBAT_STARTED_AI_TIMER			= "Мой ЦП - это процессор нейронной сети, обучающий компьютер. (Этот бой будет использовать новую функцию таймера AI для генерации приближений таймера)"
+L.COMBAT_STARTED_AI_TIMER			= "Мой ЦП - это процессор нейронной сети, обучающий компьютер. (В этом бою будет использоваться функция таймера AI для генерации приблизительных значений таймера)"
 
 L.PROFILE_NOT_FOUND					= "<" .. L.DBM .. "> Ваш текущий профиль повреждён. " .. L.DBM .. " загрузит профиль 'По умолчанию'."
 L.PROFILE_CREATED					= "Профиль '%s' создан."
@@ -678,3 +688,6 @@ L.DBM_INSTALL_PACKAGE_VANILLA	= "Пакет 'Классика и Сезон От
 L.DBM_INSTALL_PACKAGE_WRATH		= "Пакет 'Гнев Короля-лича'"
 L.DBM_INSTALL_PACKAGE_CATA		= "Пакет 'Катаклизм'"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Пакет 'Подземелья, вылазки и события'"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS			= "DBM использовался в тестовом режиме с временной деформацией в текущем сеансе, рекомендуется перезагрузить пользовательский интерфейс перед использованием DBM в реальном бою с боссом. Все должно работать так, как и ожидалось, но никаких гарантий!"
