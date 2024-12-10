@@ -315,10 +315,10 @@ local cooldownGlowType = {
 		text	= L.NPIcon_Pixel,
 		value	= 1,
 	},
-	{
-		text	= L.NPIcon_Proc,
-		value	= 2,
-	},
+--	{
+--		text	= L.NPIcon_Proc,
+--		value	= 2,
+--	},
 	{
 		text	= L.NPIcon_AutoCast,
 		value	= 3,
@@ -347,8 +347,8 @@ end, 200)
 castIconGlowBehavior:SetPoint("TOPLEFT", cooldownIconGlowBehavior, "BOTTOMLEFT", 0, -20)
 castIconGlowBehavior.myheight = 50
 
-local castIconGlowType = glow:CreateDropdown(L.NPIcon_GlowTypeCast, cooldownGlowType, "DBM", "CastNPIconGlowType", function(value)
-	DBM.Options.CastNPIconGlowType = value
+local castIconGlowType = glow:CreateDropdown(L.NPIcon_GlowTypeCast, cooldownGlowType, "DBM", "CastNPIconGlowType2", function(value)
+	DBM.Options.CastNPIconGlowType2 = value
 end, 100)
 castIconGlowType:SetPoint("LEFT", castIconGlowBehavior, "RIGHT", 45, 0)
 castIconGlowType.myheight = 0
@@ -362,12 +362,12 @@ glowResetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconGlowBehavior = DBM.DefaultOptions.NPIconGlowBehavior
 	DBM.Options.CDNPIconGlowType = DBM.DefaultOptions.CDNPIconGlowType
 	DBM.Options.CastNPIconGlowBehavior = DBM.DefaultOptions.CastNPIconGlowBehavior
-	DBM.Options.CastNPIconGlowType = DBM.DefaultOptions.CastNPIconGlowType
+	DBM.Options.CastNPIconGlowType2 = DBM.DefaultOptions.CastNPIconGlowType2
 	-- Set UI visuals
 	cooldownIconGlowBehavior:SetSelectedValue(DBM.DefaultOptions.NPIconGlowBehavior)
 	cooldownIconGlowType:SetSelectedValue(DBM.DefaultOptions.CDNPIconGlowType)
 	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowBehavior)
-	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowType)
+	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowType2)
 
 	DBM.Nameplate:UpdateIconOptions()
 end)
