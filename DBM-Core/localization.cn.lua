@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20240731
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 202401211
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -50,6 +50,7 @@ L.LOOT_SPEC_REMINDER			= "你当前的人物专精为 %s。你当前的拾取选
 L.BIGWIGS_ICON_CONFLICT		= L.DBM .. "检测到你同时开启了Bigwigs,请关闭自动标记以避免冲突。"
 
 L.MOD_AVAILABLE				= L.DBM .. "已经为%s制作了相关模块。你可以在Curse, Wago, WOWI或者到GitHub Releases页面上找到新版本。"
+L.MOD_MISSING				= "找不到团队模块"
 
 L.COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 L.COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
@@ -81,7 +82,10 @@ L.MOVIE_SKIPPED				= "该场景动画已被" .. L.DBM .. "跳过。"
 L.MOVIE_NOTSKIPPED 			= L.DBM .. "检测到一个可以跳过的场景动画，但因暴雪的bug失败了。当bug被修复时，该场景动画能被正常跳过。"
 L.BONUS_SKIPPED				= L.DBM .. "已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
 
-L.AFK_WARNING				= "你在战斗中暂离(百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
+L.AFK_WARNING				= "你在战斗中暂离(剩余百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
+L.LOWHEALTH_WARNING			= "生命值低 (剩余百分之%d生命值)启动声音报警. 你可以在'其他功能'中关闭本设置。"
+L.ENTERING_COMBAT			= "进入战斗"
+L.LEAVING_COMBAT			= "离开战斗"
 
 L.COMBAT_STARTED_AI_TIMER	= "我的CPU是类神经网络处理器，一种学习型电脑。(本场战斗" .. L.DBM .. "将会使用人工智能来估计时间轴)。" --Terminator
 
@@ -376,6 +380,7 @@ L.AUTO_SPEC_WARN_TEXTS.youposcount		= "你中了%s (%%s) (位置: %%s)"
 L.AUTO_SPEC_WARN_TEXTS.soakpos			= "%s - 快去%%s分担伤害"
 L.AUTO_SPEC_WARN_TEXTS.target			= ">%%s<中了%s"
 L.AUTO_SPEC_WARN_TEXTS.targetcount		= ">%%2$s<中了%s (%%1$s)"
+L.AUTO_SPEC_WARN_TEXTS.link				= "%s 与 >%%s< 连线"
 L.AUTO_SPEC_WARN_TEXTS.defensive		= "%s - 快开自保技能"
 L.AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<中了%s - 快嘲讽"
 L.AUTO_SPEC_WARN_TEXTS.close			= "你附近的>%%s<中了%s"
@@ -424,6 +429,7 @@ L.AUTO_SPEC_WARN_OPTIONS.youposcount	= "特殊警报：当你受到$spell:%s影�
 L.AUTO_SPEC_WARN_OPTIONS.soakpos			= "特殊警报：当你需要为受到$spell:%s的玩家分担伤害时(带位置)"
 L.AUTO_SPEC_WARN_OPTIONS.target			= "特殊警报：当他人受到$spell:%s影响时"
 L.AUTO_SPEC_WARN_OPTIONS.targetcount		= "特殊警报：当他人受到$spell:%s影响时(带计数)"
+L.AUTO_SPEC_WARN_OPTIONS.targetcount		= "特殊警报：当你中了$spell:%s并与其他玩家连线时"
 L.AUTO_SPEC_WARN_OPTIONS.defensive 		= "特殊警报：当你受到$spell:%s影响并需要开启自保技能时"
 L.AUTO_SPEC_WARN_OPTIONS.taunt 			= "特殊警报：当另外一个T中了$spell:%s并需要你嘲讽时"
 L.AUTO_SPEC_WARN_OPTIONS.close			= "特殊警报：当你附近有人受到$spell:%s影响时"
@@ -462,7 +468,7 @@ L.AUTO_TIMER_TEXTS.castcount				= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.castsource			= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active				= "%s结束"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades					= "%s消失"--Buff/Debuff on players
-L.AUTO_TIMER_TEXTS.ai					= "%s人工智能计时冷却"
+L.AUTO_TIMER_TEXTS.ai					= "%s AI"
 
 L.AUTO_TIMER_TEXTS.cd					= "%s冷却"
 L.AUTO_TIMER_TEXTS.cdcount				= "%s冷却（%%s）"
@@ -486,6 +492,7 @@ L.AUTO_TIMER_TEXTS.adds					= "下一波小怪"
 L.AUTO_TIMER_TEXTS.addscustom			= "小怪 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP or "剧情"
 L.AUTO_TIMER_TEXTS.combat				= "战斗开始"
+
 --This basically clones np only bar option and display text from regular counterparts
 L.AUTO_TIMER_TEXTS.cdnp					= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
@@ -524,7 +531,7 @@ L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段"
 L.AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
 L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪（自定义）"
 L.AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
-L.AUTO_TIMER_OPTIONS.combat				= "显示战斗开始倒计时"
+L.AUTO_TIMER_OPTIONS.combat				= "计时条：战斗开始倒计时"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "为$spell:%s的目标添加团队标记"
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "为$spell:%s的目标添加团队标记，以坦克高于近战再高于远程排序，并以字母顺序优先"
@@ -533,10 +540,12 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_A		= "为$spell:%s的目标添加团队标记�
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "为$spell:%s的目标添加团队标记，以近战和团队阵容优先"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "为$spell:%s的目标添加团队标记，以远程和字母顺序优先"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "为$spell:%s的目标添加团队标记，以远程和团队阵容优先"
+L.AUTO_ICONS_OPTION_TARGETS_MRH			= "为$spell:%s的目标添加团队标记，以近战高于远程再高于治疗排序，团队角色回退"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "为$spell:%s的目标添加团队标记，以字母顺序优先"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER 		= "为$spell:%s的目标添加团队标记，以团队阵容优先"
 L.AUTO_ICONS_OPTION_NPCS			= "为$spell:%s添加团队标记"
 L.AUTO_ICONS_OPTION_CONFLICT 			= " （可能与其他选项冲突）"
+
 L.AUTO_ARROW_OPTION_TEXT				= "为$spell:%s的目标添加箭头"
 L.AUTO_ARROW_OPTION_TEXT2			= "为$spell:%s的目标添加远离箭头"
 L.AUTO_ARROW_OPTION_TEXT3			= "为$spell:%s的目标添加前往指定位置的箭头"
@@ -652,13 +661,18 @@ L.WORLD_BUFFS.rendHead		 = "那个假的酋长，雷德·黑手，已经倒下�
 L.WORLD_BUFFS.blackfathomBoon = "黑暗深渊的祝福"
 
 L.DBM_INSTALL_REMINDER_HEADER	= "检测到不完整的DBM安装！"
-L.DBM_INSTALL_REMINDER_EXPLAIN	= "欢迎来到%s. 您尚未安装%s的DBM的首领模组。在安装%s之前DBM不会提供任何警告和计时器！"
+L.DBM_INSTALL_REMINDER_EXPLAIN	= "欢迎来到%s. 您尚未安装%s的DBM的首领模块。在安装%s之前DBM不会提供任何警告和计时器！"
 L.DBM_INSTALL_REMINDER_DISABLE	= "关闭在此区域的所有DBM警告和计时器。" -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
 L.DBM_INSTALL_REMINDER_DISABLE2 = "不为此模组再次显示此提示。" -- Used for unimportant mods, i.e., dungeons
 L.DBM_INSTALL_REMINDER_DL_WAGO	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制 Wago.io 地址至剪切板。"
 L.DBM_INSTALL_REMINDER_DL_CURSE	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制 Curseforge 地址至剪切板."
 ---"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
-L.DBM_INSTALL_PACKAGE_VANILLA	= "香草和探索赛季模组"
-L.DBM_INSTALL_PACKAGE_WRATH		= "巫妖王之怒模组"
-L.DBM_INSTALL_PACKAGE_CATA		= "大地的裂变模组"
-L.DBM_INSTALL_PACKAGE_DUNGEON	= "五人本与事件模组"
+L.DBM_INSTALL_PACKAGE_VANILLA	= "香草和探索赛季模块"
+L.DBM_INSTALL_PACKAGE_BCC		= "燃烧的远征模块"
+L.DBM_INSTALL_PACKAGE_WRATH		= "巫妖王之怒模块"
+L.DBM_INSTALL_PACKAGE_CATA		= "大地的裂变模块"
+L.DBM_INSTALL_PACKAGE_MOP		= "熊猫人之谜模块"
+L.DBM_INSTALL_PACKAGE_DUNGEON	= "五人本与事件模块"
+
+-- Tests
+L.DBM_TAINTED_BY_TESTS			= "DBM曾经在当前进程中使用过测试模式的时间卷曲功能，建议你在正式战斗前 /reload 界面以防止DBM出现奇怪的问题。"
