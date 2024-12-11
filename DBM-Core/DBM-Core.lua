@@ -3876,7 +3876,7 @@ do
 			--TBC raid Handling
 			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Burning Crusade mods"), nil, private.isBCC)--Play sound only in TBC
- 				--Show extra annoying popup in current content that's non trivial in classic TBC or Black Temple raid on retail
+				--Show extra annoying popup in current content that's non trivial in classic TBC or Black Temple raid on retail
 				if private.isBCC or LastInstanceMapID == 564 then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "BCC") -- Show extra annoying popup in current content that's non trivial in classic or BRD raild on retail
 				end
