@@ -178,17 +178,17 @@ resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
 	-- Set Options
 	DBM.Options.DontShowInfoFrame = DBM.DefaultOptions.DontShowInfoFrame
-	DBM.Options.InfoFrameLocked = true
+	DBM.Options.InfoFrameLocked = DBM.DefaultOptions.InfoFrameLocked
 	DBM.Options.InfoFrameShowSelf = DBM.DefaultOptions.InfoFrameShowSelf
 	DBM.Options.InfoFrameFont = DBM.DefaultOptions.InfoFrameFont
 	DBM.Options.InfoFrameFontStyle = DBM.DefaultOptions.InfoFrameFontStyle
 	DBM.Options.InfoFrameFontSize = DBM.DefaultOptions.InfoFrameFontSize
 	-- Set UI visuals
 	dontShow:SetChecked(DBM.Options.DontShowInfoFrame)
-	locked:SetChecked(true)
+	locked:SetChecked(DBM.Options.InfoFrameLocked)
 	showSelf:SetChecked(DBM.Options.InfoFrameShowSelf)
-	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
-	FontStyleDropDown:SetSelectedValue(DBM.Options.FontStyles)
-	fontSizeSlider:SetValue(DBM.DefaultOptions.WarningFontSize)
+	FontDropDown:SetSelectedValue(DBM.Options.InfoFrameFont)
+	FontStyleDropDown:SetSelectedValue(DBM.Options.InfoFrameFontStyle)
+	fontSizeSlider:SetValue(DBM.DefaultOptions.InfoFrameFontSize)
 	DBM.InfoFrame:UpdateStyle()
 end)
