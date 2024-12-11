@@ -252,7 +252,7 @@ function timerPrototype:Start(timer, ...)
 							if bar.hasVariance then
 								if DBM.Options.BadTimerAlert and bar.timer > correctWithVarianceDuration(1, bar) then--If greater than 1 seconds off, report this out of debug mode to all users
 									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
-									fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
+									DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
 								elseif bar.timer < -0.2 then -- Would be useful to implement a variance detector, and report outside the known variance, however this would need to happen on a timer after it was refreshed. For the moment, only "keep" arg can achieve this.
 									DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed after zero, outside known variance window. Remaining time is : " .. remaining, 2)
 								elseif bar.timer > correctWithVarianceDuration(0.2, bar) then
@@ -344,7 +344,7 @@ function timerPrototype:Start(timer, ...)
 						if bar.hasVariance then
 							if DBM.Options.BadTimerAlert and bar.timer > correctWithVarianceDuration(1, bar) then--If greater than 1 seconds off, report this out of debug mode to all users
 								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
-								fireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
+								DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
 							elseif bar.timer < -0.2 then -- Would be useful to implement a variance detector, and report outside the known variance, however this would need to happen on a timer after it was refreshed. For the moment, only "keep" arg can achieve this.
 								DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed after zero, outside known variance window. Remaining time is : " .. remaining, 2)
 							elseif bar.timer > correctWithVarianceDuration(0.2, bar) then
