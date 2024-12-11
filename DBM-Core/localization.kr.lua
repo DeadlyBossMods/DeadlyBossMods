@@ -646,8 +646,10 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "이 패키지를 설치하면 이 메시지�
 L.DBM_INSTALL_REMINDER_DL_WAGO	= (IsMacClient() and "Cmd+C" or "Ctrl+C")  ..  "를 누르면 Wago.io 링크를 클립보드로 복사합니다."
 L.DBM_INSTALL_REMINDER_DL_CURSE	= (IsMacClient() and "Cmd+C" or "Ctrl+C")  ..  "를 누르면 Curseforge 링크를 클립보드로 복사합니다."
 L.DBM_INSTALL_PACKAGE_VANILLA	= "오리지널 및 디스커버리 시즌 패키지"
+L.DBM_INSTALL_PACKAGE_BCC		= "불타는 성전 패키지"
 L.DBM_INSTALL_PACKAGE_WRATH		= "리분 패키지"
 L.DBM_INSTALL_PACKAGE_CATA		= "대격변 패키지"
+L.DBM_INSTALL_PACKAGE_MOP		= "판다리아의 안개 패키지"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 이벤트 패키지"
 
 -- Tests
