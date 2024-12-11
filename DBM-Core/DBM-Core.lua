@@ -81,9 +81,9 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.35 alpha"--Core version
+DBM.DisplayVersion = "11.0.35"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 12, 4) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 12, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 15--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -3826,9 +3826,8 @@ end
 do
 	local pvpShown = false
 	local dungeonShown = false
-	local sodRaids = {[48] = true, [90] = true, [109] = true}
 	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true, [2792] = true,}
-	local bcZones = {[564] = true, [534] = true, [532] = true, [565] = true, [544] = true, [548] = true, [580] = true, [550] = true}
+	local bcZones = {[534] = true, [532] = true, [544] = true, [548] = true, [550] = true, [564] = true, [565] = true, [580] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
 	local cataZones = {[757] = true, [671] = true, [669] = true, [967] = true, [720] = true, [951] = true, [754] = true}
 	local mopZones = {[1009] = true, [1008] = true, [1136] = true, [996] = true, [1098] = true}
@@ -3836,7 +3835,7 @@ do
 	local legionZones = {[1712] = true, [1520] = true, [1530] = true, [1676] = true, [1648] = true}
 	local bfaZones = {[1861] = true, [2070] = true, [2096] = true, [2164] = true, [2217] = true}
 	local shadowlandsZones = {[2296] = true, [2450] = true, [2481] = true}
-	--local dragonflightZones = {[2522] = true, [2569] = true, [2549] = true}
+	local dragonflightZones = {[2522] = true, [2569] = true, [2549] = true}
 	local challengeScenarios = {[1148] = true, [1698] = true, [1710] = true, [1703] = true, [1702] = true, [1684] = true, [1673] = true, [1616] = true, [2215] = true}
 	local pvpZones = {[30] = true, [489] = true, [529] = true, [559] = true, [562] = true, [566] = true, [572] = true, [617] = true, [618] = true, [628] = true, [726] = true, [727] = true, [761] = true, [968] = true, [980] = true, [998] = true, [1105] = true, [1134] = true, [1170] = true, [1504] = true, [1505] = true, [1552] = true, [1681] = true, [1672] = true, [1803] = true, [1825] = true, [1911] = true, [2106] = true, [2107] = true, [2118] = true, [2167] = true, [2177] = true, [2197] = true, [2245] = true, [2373] = true, [2509] = true, [2511] = true, [2547] = true, [2563] = true}
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
@@ -3846,55 +3845,81 @@ do
 		--If they've disabled reminders, don't nag
 		if _G["BigWigs"] or not self.Options.ShowReminders then return end
 		if not self:IsTrivial() or difficulties:IsSeasonalDungeon(LastInstanceMapID) then
-			--TODO, bump checkedDungeon to WarWithin dungeon mods on retail in prepatch
+			--Dungeon Handling
 			local checkedDungeon = private.isRetail and "DBM-Party-WarWithin" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if (difficulties:InstanceType(LastInstanceMapID) == 2) then
-				if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, private.isRetail or private.isCata)
-					dungeonShown = true
-				end
-				if self:IsSeasonal("SeasonOfDiscovery") then
+				--if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
+				--	AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, private.isRetail or private.isCata)
+				--	dungeonShown = true
+				--end
+				--Show popup for season of discovery and hardcore, both of whic have higher difficulty (or higher risk in terms of hardcore) dungeons
+				if self:IsSeasonal("SeasonOfDiscovery") or self:IsSeasonal("FreshHardcore") or self:IsSeasonal("Hardcore") then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Vanilla")
+				--Also show popup on retail seasonal dungeons since those are ones being run for M0 and M+
 				elseif private.isRetail and difficulties:IsSeasonalDungeon(LastInstanceMapID) then--M+ Dungeons Only
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
+				else--Show a general message not a popup (Basically tbc, wrath, cata dungeons
+					if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
+						AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, private.isRetail or private.isCata)
+						dungeonShown = true
+					end
 				end
-			elseif (self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] or classicZones[LastInstanceMapID] or (LastInstanceMapID == 249 and private.isClassic)) then
+			--Classic raid Handling
+			elseif classicZones[LastInstanceMapID] or ((LastInstanceMapID == 249 or LastInstanceMapID == 533) and private.isClassic) then
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-Vanilla") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Vanilla/SoD mods"), nil, private.isClassic)--Play sound only in Vanilla
 				end
-				--Reshow news message as well in classic flavors
-				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
-				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE_REPEAT, nil, true) end)
-				--end
-				self:AnnoyingPopupCheckZone(LastInstanceMapID, "Vanilla") -- Show extra annoying popup in current content that's non trivial in classic
+				--Show extra annoying popup in current content that's non trivial in classic or BRD raild on retail
+				if private.isClassic or LastInstanceMapID == 2792 then
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Vanilla")
+				end
+			--TBC raid Handling
 			elseif bcZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Burning Crusade mods"), nil, private.isBCC)--Play sound only in TBC
+ 				--Show extra annoying popup in current content that's non trivial in classic TBC or Black Temple raid on retail
+				if private.isBCC or LastInstanceMapID == 564 then
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "BCC") -- Show extra annoying popup in current content that's non trivial in classic or BRD raild on retail
+				end
+			--Wrath raid Handling
 			elseif wrathZones[LastInstanceMapID] and not private.isClassic then
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"), nil, private.isWrath)--Play sound only in wrath
 				end
-				--Reshow news message as well in classic flavors
-				--if not isRetail and (DBM.classicSubVersion or 0) < 1 then
-				--	C_TimerAfter(5, function() self:AddMsg(L.NEWS_UPDATE_REPEAT, nil, true) end)
-				--end
-				self:AnnoyingPopupCheckZone(LastInstanceMapID, "WoTLK") -- Show extra annoying popup in current content that's non trivial in classic
+				--Show extra annoying popup in current content that's non trivial in classic Wrath or ICC timewalking raid on retail
+				if private.isWrath or LastInstanceMapID == 631 then
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "WoTLK") -- Show extra annoying popup in current content that's non trivial in classic
+				end
+			--Cata raid Handling
 			elseif cataZones[LastInstanceMapID] then
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"), nil, private.isCata)--Play sound only in cata
 				end
-				self:AnnoyingPopupCheckZone(LastInstanceMapID, "Cata") -- Show extra annoying popup in current content that's non trivial in classic
+				--Show extra annoying popup in current content that's non trivial in classic Cata or Firelands timewalking raid on retail
+				if private.isCata or LastInstanceMapID == 720 then
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Cata") -- Show extra annoying popup in current content that's non trivial in classic
+				end
+			--MoP raid Handling
 			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
+				--PLACEHOLDER for MOP Classic or MOP timewalking raid, whichever happens first
+				--if private.isMoP or LastInstanceMapID == 0 then
+				--	self:AnnoyingPopupCheckZone(LastInstanceMapID, "MoP")
+				--end
+			--WoD raid Handling
 			elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
+			--Legion raid Handling
 			elseif legionZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Legion") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"), nil, LastInstanceMapID == 580)--Will play sound in tomb of sargeras since Kil Jaeden is still dangerous regardless of level
+			--BFA raid Handling
 			elseif bfaZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-BfA") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
+			--Shadowlands raid Handling
 			elseif shadowlandsZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Shadowlands") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
---			elseif dragonflightZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Dragonflight") then--Uncomment in War Within on mod split
---				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dragonflight mods"))
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"), nil, true)--Will use play sound for now, since it's not trivial enough to be silent yet
+			--Dragonflight raid Handling
+			elseif dragonflightZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Dragonflight") then--Uncomment in War Within on mod split
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dragonflight mods"), nil, true)--Will use play sound for now, since it's not trivial enough to be silent yet
 			end
 		end
 		if challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
@@ -4066,6 +4091,7 @@ do
 --		[2774] = true,--Khaz Algar (Underground)
 --		[2552] = true,--Khaz Algar (Surface)
 	}
+	local sodLevelUpRaids = {[48] = true, [90] = true, [109] = true}
 
 	-- Load based on MapIDs
 	function DBM:ZONE_CHANGED_NEW_AREA()
@@ -4144,7 +4170,7 @@ do
 			--self:Debug(v.modId .. " is " .. enabled, 2)
 			if not C_AddOns.IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
-					if self:IsSeasonal("SeasonOfDiscovery") and sodRaids[LastInstanceMapID] and v.modId == "DBM-Party-Vanilla" then
+					if self:IsSeasonal("SeasonOfDiscovery") and sodLevelUpRaids[LastInstanceMapID] and v.modId == "DBM-Party-Vanilla" then
 						--Don't load dungeon mods in SoD Raids
 						return
 					end
