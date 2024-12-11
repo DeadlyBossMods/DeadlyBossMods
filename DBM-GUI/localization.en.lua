@@ -137,7 +137,7 @@ L.AutoReplySound					= "Play alert sound and flash application icon when receivi
 
 L.Area_CombatAlerts					= "Combat Alert Options"
 L.AFKHealthWarning					= "Play alert sound and flash application icon if you are losing health (at any percent) while AFK flag present"
-L.AFKHealthWarningLow				= "Play alert sound and flash application icon if you are losing health (while below 35 percent)"
+L.HealthWarningLow					= "Play alert sound and flash application icon if you are losing health (while below 35 percent)"
 L.EnteringCombatAlert				= "Play alert sound and flash application icon when you enter combat"
 L.LeavingCombatAlert				= "Play alert sound when you leave combat"
 --

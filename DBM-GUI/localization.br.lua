@@ -115,19 +115,19 @@ L.DoNotLogLFG 						= "Não registrar encontros de procurando grupo"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent 			= "Conteúdo de registro automático"
 L.LogCurrentMythicRaids 			= "Raides atuais de nível Mítico (ou remix)" -- Retail Only
-L.LogCurrentRaids 					= "Raides não mítica atuais (heróicos, normal e LFR se o filtro LFG/LFR estiver desativado)"
+L.LogCurrentRaids 					= "Raides não mítica atuais (heróicos e normal se o filtro Procurando grupo estiver desativado)"
 L.LogTWRaids 						= "Raides de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
 L.LogTrivialRaids 					= "Raides triviais (abaixo do nível do personagem)"
 L.LogCurrentMPlus 					= "Masmorras M+ atuais de nível (ou remix)" -- Retail Only
 L.LogCurrentMythicZero 				= "Masmorras Míticas 0 atuais de nível (ou remix)" -- Retail Only
 L.LogTWDungeons 					= "Masmorras de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
-L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro LFG)"
+L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro Procurando grupo)"
 
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opções de temporizador"
 L.SKT_Enabled				= "Sempre exibir um temporizador de sua vitória recorde (sobrepõe a opção do chefe específico)"
 L.ShowRespawn 				= "Exibir o temporizador de reaparência do chefe após uma derrota"
-L.ShowQueuePop 				= "Exibir o tempo restante para aceitar um pop de fila (LFG, CB, etc)"
+L.ShowQueuePop 				= "Exibir o tempo restante para aceitar um pop de fila (Procurando grupo, CB, etc)"
 L.ShowBerserkWarnings 		= "Exibir anúncios a 10/5/3/1 minutos e a 30/10 segundos restantes no temporizador de $spell:26662"
 
 -- Tab: Alerts
@@ -555,27 +555,37 @@ L.NPIcon_AutoCast 			= "Lançamento automático"
 L.NPIcon_Button 			= "Botão"
 
 L.Panel_ExtraFeatures		= "Funcionalidades extra"
+
 L.Area_ChatAlerts			= "Opções de alerta do bate-papo"
 L.RoleSpecAlert				= "Exibir mensagem de alerta quando sua especialização de saque não corresponder à sua especialização atual ao entrar na raide"
 L.CheckGear					= "Envia um mensagem de alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas(40+)"
 L.WorldBossAlert			= "Exibir mensagem de alerta quando um chefe mundial possivelmente for atacado no seu reino por membros da sua guilda ou amigos"
 L.WorldBuffAlert 			= "Exibir mensagem de alerta e temporizador quando o RP de bônus mundial for iniciado no seu reino (Desativado em SoD)"
+
 L.Area_SoundAlerts			= "Opções de som de alerta"
 L.LFDEnhance				= "Reproduzir o som de TodosProntos para checagem de papéis e CB/LDG no canal de áudio principal (i.e. sons funcionam mesmo que os efeitos sonoros estejam desligados e são geralmente mais altos)"
 L.WorldBossNearAlert		= "Reproduzir o som de TodosProntos quando chefes do mundo perto de você que você precisa estiverem sendo atacados"
 L.RLReadyCheckSound 		= "Reproduzir o som através do canal de áudio principal ou de diálogo e faça o ícone do aplicativo piscar quando uma verificação de prontidão for realizada"
-L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida enquanto estiver LDT"
 L.AutoReplySound 			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar ao receber o sussurro de resposta automática de DBM"
+
 L.Area_AutoLogging			= "Opções de registro automático"
 L.AutologBosses 			= "Gravar automaticamente o registro dos encontros com chefes usando o registro de combate de Blizzard (requer o uso de /dbm pull antes do chefe para compatibilidade com <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>)"
 L.AdvancedAutologBosses		= "Gravar automaticamente o encontro com o chefe utilizando o Transcriptor"
+
 L.Area_3rdParty				= "Opções de addons de terceiros"
 L.oRA3AnnounceConsumables	= "Anunciar a verificação dos consumíveis oRA3 no início do combate"
+
 L.Area_Invite				= "Opções de convite"
 L.AutoAcceptFriendInvite	= "Aceitar convites de amigos automaticamente"
 L.AutoAcceptGuildInvite		= "Aceitar convites de membros da guilda automaticamente"
 L.Area_Advanced				= "Opções avançadas"
 L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM (útil para guildas que forçam o uso de BigWigs)"
+
+L.Area_CombatAlerts			= "Opções de alertas de combate"
+L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (em qualquer porcentagem) enquanto estiver LDT"
+L.HealthWarningLow		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
+L.EnteringCombatAlert		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar ao entrar em combate"
+L.LeavingCombatAlert		= "Reproduzir som de alerta ao sair de combate"
 
 L.Panel_Profile				= "Perfil"
 L.Area_CreateProfile		= "Criação de perfil"

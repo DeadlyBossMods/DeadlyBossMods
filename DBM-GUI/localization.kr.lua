@@ -134,17 +134,17 @@ L.WorldBossNearAlert		= "근처에서 필드 보스 전투가 시작된 경우 �
 L.RLReadyCheckSound			= "전투 준비 효과음을 주 오디오나 대화 채널을 통해 재생하고 작업 표시줄 아이콘 점멸"
 L.AutoReplySound			= "DBM 자동 응답 귓속말을 받을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
 
-L.Area_CombatAlerts					= "전투 경고 설정"
-L.AFKHealthWarning				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (생명력 기준 무제한)"
-L.AFKHealthWarningLow				= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (35퍼센트 미만일 때)"
-L.EnteringCombatAlert				= "전투에 돌입했을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
-L.LeavingCombatAlert				= "전투가 끝났을 때 경고음 재생"
+L.Area_CombatAlerts			= "전투 경고 설정"
+L.AFKHealthWarning			= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (생명력 기준 무제한)"
+L.HealthWarningLow			= "자리 비움 상태 도중 생명력이 깎이면 경고음 재생 및 작업 표시줄 아이콘 점멸 (35퍼센트 미만일 때)"
+L.EnteringCombatAlert		= "전투에 돌입했을 때 경고음 재생 및 작업 표시줄 아이콘 점멸"
+L.LeavingCombatAlert		= "전투가 끝났을 때 경고음 재생"
 --
 L.TimerGeneral 				= "타이머 설정"
 L.SKT_Enabled				= "가능할 경우 현재 전투의 최고 승리 기록 타이머 표시"
 L.ShowRespawn				= "전멸 후 보스 재생성 타이머 표시"
 L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾기,전장 등)"
-L.ShowBerserkWarnings				= "$spell:26662 타이머가 10/5/3/1분 30/10초 남았을 때 알림"
+L.ShowBerserkWarnings		= "$spell:26662 타이머가 10/5/3/1분 30/10초 남았을 때 알림"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
 L.oRA3AnnounceConsumables	= "전투 시작시 oRA3 버프 검사 알림"

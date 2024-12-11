@@ -16,7 +16,7 @@ L.OTabDungeons	= "Mazmorras"
 L.OTabWorld		= "Jefes del mundo"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios	= "Escenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins	= "Otros" --Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
-L.OTabOptions	= "Opciones de Core"
+L.OTabOptions	= "Opciones"
 L.OTabAbout		= "Acerca de"
 
 L.FOLLOWER	= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
@@ -128,12 +128,17 @@ L.LogCurrentHeroic					= "Mazmorras heroicas de nivel actual (Nota: si estás ha
 L.Panel_ExtraFeatures		= "Funciones adicionales"
 
 L.Area_SoundAlerts			= "Opciones de alertas de sonido y destello del icono del juego"
-L.LFDEnhance				= "Reproducir sonido de comprobación de rol y destellar el icono del juego para comprobaciones de rol y avisos de CB/buscar grupo en el canal de audio principal o diálogo (es decir, los sonidos funcionan incluso si los efectos de sonido están desactivados y, en general, son más fuertes)."
+L.LFDEnhance				= "Reproducir sonido de comprobación de rol y destellar el icono del juego para comprobaciones de rol y avisos de CB/buscar grupo en el canal de audio principal o diálogo (es decir, los sonidos funcionan incluso si los efectos de sonido están desactivados y, en general, son más fuertes)"
 L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar el icono del juego cuando haya un jefe del mundo cerca"
 L.RLReadyCheckSound			= "Reproducir sonido por el canal de audio principal o de diálogo y destellar el icono del juego cuando se haga una comprobación de banda"
-L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce mientras estás ausente"
 L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego al recibir respuestas automáticas de DBM por susurro"
 --
+L.Area_CombatAlerts			= "Opciones de alerta de combate"
+L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (en cualquier porcentaje) mientras estás ausente"
+L.HealthWarningLow		= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
+L.EnteringCombatAlert		= "Reproducir sonido de alerta y destellar el icono del juego al entrar en combate"
+L.LeavingCombatAlert		= "Reproducir sonido de alerta al salir de combate"
+
 L.TimerGeneral 				= "Opciones de temporizadores"
 L.SKT_Enabled				= "Mostrar temporizador para batir el récord de victoria del encuentro actual"
 L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada derrota"
@@ -273,7 +278,7 @@ L.MissingVoicePack			= "Paquete de voz faltante (%s)"
 L.Area_CountdownOptions		= "Opciones de cuenta atrás"
 L.Area_VoicePackReplace		= "Opciones de reemplazo de paquetes de voz"
 L.VPReplaceNote				= "Nota: Los paquetes de voz nunca cambian ni eliminan los sonidos de avisos.\nSimplemente se silencian cuando el paquete de voz los reemplaza."
-L.ReplacesAnnounce			= "Reemplazar los sonidos de anuncio (Nota: muy pocos usan paquetes de voz, excepto para cambios de fase y bichos.)"
+L.ReplacesAnnounce			= "Reemplazar los sonidos de anuncio (Nota: muy pocos usan paquetes de voz, excepto para cambios de fase y bichos)"
 L.ReplacesSADefault 		= "Reemplazar los sonidos predeterminados de anuncio especial (los sonidos personalizados definidos por el usuario nunca serán reemplazados)"
 L.Area_VoicePackAdvOptions	= "Opciones avanzadas del paquete de voz"
 L.Area_VPLearnMore			= "Obten más información sobre los paquetes de voz y cómo utilizar estas opciones"
@@ -429,7 +434,7 @@ L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánica
 L.SpamBlockNoNameplateCD		= "No mostrar iconos de placas de nombre para tiempos de reutilización de facultades"
 L.SpamBlockNoNameplateCasts 	= "No mostrar iconos de placas de nombre para temporizadores de lanzamiento de facultades"
 L.SpamBlockNoBossGUIDs			= "No mostrar iconos de placas de nombre para tiempos de reutilización para facultades que también tienen temporizadores"
-L.AlwaysKeepNPs					= "Mantener visibles los iconos del temporizador de reutilización de la placa de nombre caducada hasta que la facultad sea lanzado de nuevo."
+L.AlwaysKeepNPs					= "Mantener visibles los iconos del temporizador de reutilización de la placa de nombre caducada hasta que la facultad sea lanzado de nuevo"
 
 L.Area_SpamFilter_Misc		= "Opciones varias"
 L.SpamBlockNoSetIcon 		= "No establecer iconos automáticamente en los objetivos"
@@ -521,7 +526,7 @@ L.Area_FeatureOverrides				= "Opciones de anulación de funciones"
 L.OverrideIcons 					= "Desactivar el marcado de iconos para todos en la banda"
 L.OverrideSay						= "Desactivar la burbuja de chat/mensajes DECIR para todos en la banda"
 L.DisableStatusWhisperShort			= "Desactivar estado/susurros de respuesta para todo el grupo"--Duplicated from privacy but makes sense to include option in both panels
-L.DisableGuildStatusShort			= "Desactivar la sincronización de mensajes de progresión con la hermandad para todo el grupo."--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "Desactivar la sincronización de mensajes de progresión con la hermandad para todo el grupo"--Duplicated from privacy but makes sense to include option in both panels
 --L.DisabledForDropdown				= "Eligir la desactivación del módulos de jefe y se envía a"--NYI
 --L.DiabledForBoth					= "Desactivar las funciones anteriores tanto para DBM como para BW"--NYI
 --L.DiabledForDBM					= "Desactivar las funciones anteriores solo para usuarios de DBM"--NYI
@@ -550,9 +555,9 @@ L.Tab_Privacy 				= "Controles de privacidad"
 L.Area_WhisperMessages		= "Opciones de susurros"
 L.AutoRespond 				= "Responder automáticamente a susurros en encuentro"
 L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas a susurros"
-L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder). Solo se aplica a bandas en dificultad normal, heroica y mítica, y a mazmorras mítica+."
+L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder). Solo se aplica a bandas en dificultad normal, heroica y mítica, y a mazmorras mítica+"
 L.Area_SyncMessages			= "Opciones de sincronización de addons"
-L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder)."
+L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder)"
 L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefes del mundo con tu hermandad y amigos de Battle.net que están en el mismo reino que tú"
 
 -- Tab: Frames & Integrations

@@ -10,7 +10,7 @@ soundAlertsArea:CreateCheckButton(L.AutoReplySound, true, nil, "AutoReplySound")
 
 local combatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_CombatAlerts)
 combatAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning2")
-combatAlertsArea:CreateCheckButton(L.AFKHealthWarningLow, true, nil, "AFKHealthWarningLow")
+combatAlertsArea:CreateCheckButton(L.HealthWarningLow, true, nil, "HealthWarningLow")
 combatAlertsArea:CreateCheckButton(L.EnteringCombatAlert, true, nil, "EnteringCombatAlert")
 combatAlertsArea:CreateCheckButton(L.LeavingCombatAlert, true, nil, "LeavingCombatAlert")
 

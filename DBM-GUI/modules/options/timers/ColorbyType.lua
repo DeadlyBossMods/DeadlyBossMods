@@ -442,10 +442,10 @@ local color2Type8reset = ImpBarColors:CreateButton(L.Reset, 64, 10, nil, GameFon
 color1Type8reset:SetPoint("TOP", color1Type8, "BOTTOM", 5, -10)
 color2Type8reset:SetPoint("TOP", color2Type8, "BOTTOM", 5, -10)
 color1Type8reset:SetScript("OnClick", function()
-	color1Type8:SetColorRGB(DBT.DefaultOptions.StartColorAER, DBT.DefaultOptions.StartColorAEG, DBT.DefaultOptions.StartColorAEB)
+	color1Type8:SetColorRGB(DBT.DefaultOptions.StartColorI2R, DBT.DefaultOptions.StartColorI2G, DBT.DefaultOptions.StartColorI2B)
 end)
 color2Type8reset:SetScript("OnClick", function()
-	color2Type8:SetColorRGB(DBT.DefaultOptions.EndColorAER, DBT.DefaultOptions.EndColorAEG, DBT.DefaultOptions.EndColorAEB)
+	color2Type8:SetColorRGB(DBT.DefaultOptions.EndColorI2R, DBT.DefaultOptions.EndColorI2G, DBT.DefaultOptions.EndColorI2B)
 end)
 
 local color1Type8text = ImpBarColors:CreateText(L.BarStartColorI2, 80, nil, nil, "CENTER")
