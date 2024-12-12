@@ -159,35 +159,23 @@ local waKeyOverrides = {
 	["intermissioncount"] = "stages",
 }
 
-local function parseVarianceFromTimer(timer)
-	if not timer then
-		DBM:Debug("|cffff0000No timer passed to parseVarianceFromTimer function.|r")
-		return
-	end
+-- Parse variance from timer string (v30.5-40" or "dv30.5-40"), into minimum and maximum timer, and calculated variance duration
+---@param timer string
+---@return number maxTimer, number minTimer, number varianceDuration
+	local function parseVarianceFromTimer(timer)
+	-- ^(d?v) matches starting character d (optional) or v
+	-- (%d+%.?%d*) matches any number of digits with optional decimal
+	-- %- matches literal character "-"
+	-- (%d+%.?%d*)$ matches any number of digits with optional decimal, at the end of the string
+	local minTimer, maxTimer = timer:match("v(%d+%.?%d*)%-(%d+%.?%d*)")
+	minTimer, maxTimer = tonumber(minTimer), tonumber(maxTimer)
+	if type(minTimer) ~= "number" or type(maxTimer) ~= "number" then
+		DBM:Debug("|cffff0000No timers found in the string passed to parseVarianceFromTimer function: "..timer..". Returning zero.|r")
+		return 0, 0, 0
+		end
+	local varianceDuration = maxTimer - minTimer
 
-	if type(timer) == "number" then
-		if timer <= 0 then return end
-
-		return timer -- Normal number timer, no variance
-	end
-
-	-- Check for variance format like "v30.5-40" or "dv30.5-40"
-	if type(timer) == "string" then
-		-- ^(d?v) matches starting character d (optional) or v
-		-- (%d+%.?%d*) matches any number of digits with optional decimal
-		-- %- matches literal character "-"
-		-- (%d+%.?%d*)$ matches any number of digits with optional decimal, at the end of the string
-		if not timer:match("^(d?v)(%d+%.?%d*)%-(%d+%.?%d*)$") then return end
-
-		local minTimer, maxTimer = timer:match("v(%d+%.?%d*)%-(%d+%.?%d*)")
-		minTimer, maxTimer = tonumber(minTimer), tonumber(maxTimer)
-		local varianceDuration = maxTimer - minTimer
-
-		return maxTimer, minTimer, varianceDuration  -- maximum possible timer from the variance window, minimum..., variance duration
-	end
-
-	DBM:Debug("|cffff0000Invalid input to parseVarianceFromTimer function.|r")
-	return -- Invalid input
+	return maxTimer, minTimer, varianceDuration  -- maximum possible timer from the variance window, minimum..., variance duration
 end
 
 local function correctWithVarianceDuration(numberToCorrect, timerBar)
