@@ -1887,7 +1887,7 @@ do
 				"LOADING_SCREEN_DISABLED",
 				"ZONE_CHANGED_NEW_AREA"
 			)
-			if private.newShit then
+			if not private.isWrath then
 				self:RegisterEvents(
 					"START_PLAYER_COUNTDOWN",
 					"CANCEL_PLAYER_COUNTDOWN"
