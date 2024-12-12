@@ -4503,7 +4503,7 @@ do
 	---@param blizzardTimer boolean?
 	local function pullTimerStart(self, sender, timer, blizzardTimer)
 		if not timer then return end
-		if private.newShit and not blizzardTimer then return end--Ignore old DBM version comms
+		if not private.isWrath and not blizzardTimer then return end--Ignore old DBM version comms
 		local unitId
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
 			if blizzardTimer then
@@ -4586,14 +4586,14 @@ do
 		end
 	end
 	syncHandlers["PT"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers or private.newShit then return end
+		if DBM.Options.DontShowUserTimers or not private.isWrath then return end
 		pullTimerStart(DBM, sender, timer)
 	end
 
 	do
 		local dummyMod2 -- dummy mod for the break timer
 		function breakTimerStart(self, timer, sender)--, blizzardTimer, isRecovery
-	--		if private.newShit and not blizzardTimer and not isRecovery then return end
+	--		if not private.isWrath and not blizzardTimer and not isRecovery then return end
 			--if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
 			--	if blizzardTimer then
 			--		local unitId = self:GetUnitIdFromGUID(sender)
