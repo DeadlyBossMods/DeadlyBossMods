@@ -685,8 +685,10 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "Больше не показывать это
 L.DBM_INSTALL_REMINDER_DL_WAGO	= "Нажмите " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  ", чтобы скопировать ссылку Wago.io в буфер обмена."
 L.DBM_INSTALL_REMINDER_DL_CURSE	= "Нажмите " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  ", чтобы скопировать ссылку Curseforge в буфер обмена."
 L.DBM_INSTALL_PACKAGE_VANILLA	= "Пакет 'Классика и Сезон Открытий'"
+L.DBM_INSTALL_PACKAGE_BCC		= "Пакет 'Burning Crusade'"
 L.DBM_INSTALL_PACKAGE_WRATH		= "Пакет 'Гнев Короля-лича'"
 L.DBM_INSTALL_PACKAGE_CATA		= "Пакет 'Катаклизм'"
+L.DBM_INSTALL_PACKAGE_MOP		= "Пакет 'Пандария'"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Пакет 'Подземелья, вылазки и события'"
 
 -- Tests
