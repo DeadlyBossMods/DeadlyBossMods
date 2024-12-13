@@ -467,11 +467,19 @@ L.AUTO_TIMER_TEXTS.cd						= "%s"
 L.AUTO_TIMER_TEXTS.cdcount					= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource					= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial				= "特別技能"
+L.AUTO_TIMER_TEXTS.cdcombo					= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.next 					= "%s"
 L.AUTO_TIMER_TEXTS.nextcount 				= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource				= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial				= "特別技能"
+L.AUTO_TIMER_TEXTS.nextcombo				= "%%1$s + %%2$s"
+
+L.AUTO_TIMER_TEXTS.var						= "%s"
+L.AUTO_TIMER_TEXTS.varcount					= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource				= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.varspecial				= "特別技能"
+L.AUTO_TIMER_TEXTS.varcombo					= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.achievement				= "%s"
 L.AUTO_TIMER_TEXTS.stage					= "階段"
@@ -513,6 +521,15 @@ L.AUTO_TIMER_OPTIONS.nextnp					= "計時條：只顯示名條的下一次$spell
 L.AUTO_TIMER_OPTIONS.nextsource				= "計時條：下一次$spell:%s以及來源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "計時條：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.nextcombo				= "計時條：下一次技能組合"--Used for combining 2 abilities into a single timer
+
+L.AUTO_TIMER_OPTIONS.var					= "計時條：$spell:%s冷卻時間 (包含差額)"
+L.AUTO_TIMER_OPTIONS.varcount				= "計時條：$spell:%s冷卻時間 (包含計數與差額)"
+L.AUTO_TIMER_OPTIONS.varnp					= "計時條：只在名條顯示$spell:%s冷卻時間 (包含差額)"
+L.AUTO_TIMER_OPTIONS.varpnp					= "計時條：只在優先名條顯示$spell:%s冷卻時間 (包含差額)"
+L.AUTO_TIMER_OPTIONS.varsource				= "計時條：$spell:%s冷卻時間 (包含來源與差額)"
+L.AUTO_TIMER_OPTIONS.varspecial				= "計時條：特殊技能冷卻 (包含差額)"
+L.AUTO_TIMER_OPTIONS.varcombo				= "計時條：技能組合冷卻 (包含差額)"
+
 L.AUTO_TIMER_OPTIONS.achievement			= "計時條：成就%s"
 L.AUTO_TIMER_OPTIONS.stage					= "計時條：下一階段"
 L.AUTO_TIMER_OPTIONS.stagecount				= "計時條：下一階段(包含計數)"
