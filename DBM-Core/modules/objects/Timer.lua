@@ -231,11 +231,11 @@ function timerPrototype:Start(timer, ...)
 				if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
 					local bar = DBT:GetBar(self.startedTimers[i])
 					if bar then
-						local remaining = ("%.1f"):format(bar.timer)
-						local deltaFromVarianceMinTimer = ("%.2f"):format(bar.hasVariance and bar.timer - bar.varianceDuration or bar.timer)
-						local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
-						ttext = ttext .. "(" .. self.id .. "-" .. (timer or 0) .. ")"
 						if abs(bar.timer) > 0.2 then -- Positive and Negative ("keep") timers.
+							local remaining = ("%.1f"):format(bar.timer)
+							local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
+							ttext = ttext .. "(" .. self.id .. "-" .. (timer or 0) .. ")"
+							local deltaFromVarianceMinTimer = ("%.2f"):format(bar.hasVariance and bar.timer - bar.varianceDuration or bar.timer)
 							local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
 							if bar.hasVariance then
 								if DBM.Options.BadTimerAlert and bar.timer > correctWithVarianceDuration(1, bar) then--If greater than 1 seconds off, report this out of debug mode to all users
@@ -393,21 +393,23 @@ function timerPrototype:Start(timer, ...)
 		bar:SetText(msg, self.inlineIcon)
 		-- FIXME: i would prefer to trace this directly in DBT, but since I want to rewrite DBT... meh.
 		test:Trace(self.mod, "StartTimer", self, timer, msg)
-		--ID: Internal DBM timer ID
-		--msg: Timer Text (Do not use msg has an event trigger, it varies language to language or based on user timer options. Use this to DISPLAY only (such as timer replacement UI). use spellId field 99% of time
-		--timer: Raw timer value (number).
-		--Icon: Texture Path for Icon
-		--simpleType: Timer type, which is one of only 7 possible types: "cd" for coolodwns, "target" for target bars such as debuff on a player, "stage" for any kind of stage timer (stage ends, next stage, or even just a warmup timer like "fight begins"), and then "cast" timer which is used for both a regular cast and a channeled cast (ie boss is casting frostbolt, or boss is channeling whirlwind). Lastly, break, pull, and berserk timers are "breaK", "pull", and "berserk" respectively
-		--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
-		--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
-		--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-		--Keep: true or nil, whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens (in which case you replace bar with new one)
-		--fade: true or nil, whether or not to fade a bar (set alpha to usersetting/2)
-		--spellName: Sent so users can use a spell name instead of spellId, if they choose. Mostly to be more classic wow friendly, spellID is still preferred method (even for classic)
-		--MobGUID if it could be parsed out of args
-		--timerCount if current timer is a count timer. Returns number (count value) needed to have weak auras that trigger off a specific timer count without using localized message text
+		--ID (string) Internal DBM timer ID
+		--msg (string) Timer Text (Do not use msg has an event trigger, it varies language to language or based on user timer options. Use this to DISPLAY only (such as timer replacement UI). use spellId field 99% of time
+		--timer (number) Raw timer value. Will return lowest number in variance timers (like DBM has always done, earliest an ability comes off CD is expected behavior for weak auras)
+		--Icon (string or number): Texture Path for Icon
+		--simpleType (string): Timer type, which is one of only 7 possible types: "cd" for coolodwns, "target" for target bars such as debuff on a player, "stage" for any kind of stage timer (stage ends, next stage, or even just a warmup timer like "fight begins"), and then "cast" timer which is used for both a regular cast and a channeled cast (ie boss is casting frostbolt, or boss is channeling whirlwind). Lastly, break, pull, and berserk timers are "breaK", "pull", and "berserk" respectively
+		--spellId (string or number): Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
+		--colorID (number): Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
+		--Mod ID (string or number): Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
+		--Keep (true or nil), whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens (in which case you replace bar with new one)
+		--fade (true or nil), whether or not to fade a bar (set alpha to usersetting/2)
+		--spellName (string) Sent so users can use a spell name instead of spellId, if they choose. Mostly to be more classic wow friendly, spellID is still preferred method (even for classic)
+		--MobGUID (string) if it could be parsed out of args
+		--timerCount (number) if current timer is a count timer. Returns number (count value) needed to have weak auras that trigger off a specific timer count without using localized message text
 		--isPriority: If true, this ability has been flagged as extra important. Can be used for weak auras or nameplate addons to add extra emphasis onto specific timer like a glow
 		--fullType (the true type of timer, for those who really want to filter timers by DBM classifications such as "adds" or "interrupt")
+		--hasVariance (true or nil) if timer has variance.
+		--variancePeaktimer (number) if timer has variance, this is the peak timer in the variance window, otherwise nil
 		--NOTE, nameplate variant has same args as timer variant, but is sent to a different event (DBM_NameplateStart)
 
 		--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
@@ -416,11 +418,11 @@ function timerPrototype:Start(timer, ...)
 			guid = UnitGUID("boss1")
 		end
 		if self.simpType and (self.simpType == "cdnp" or self.simpType == "castnp") then--Only send nampelate callback
-			DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, (self.simpType == "cdnp" and DBM.Options.AlwaysKeepNPs) and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+			DBM:FireEvent("DBM_NameplateStart", id, msg, (hasVariance and self.minTimer), self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, (self.simpType == "cdnp" and DBM.Options.AlwaysKeepNPs) and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
 		else--Send both callbacks
-			DBM:FireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+			DBM:FireEvent("DBM_TimerStart", id, msg, (hasVariance and self.minTimer), self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
 			if guid then--But nameplate is only sent if actual GUID
-				DBM:FireEvent("DBM_NameplateStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type)
+				DBM:FireEvent("DBM_NameplateStart", id, msg, (hasVariance and self.minTimer), self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
 			end
 		end
 		--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
