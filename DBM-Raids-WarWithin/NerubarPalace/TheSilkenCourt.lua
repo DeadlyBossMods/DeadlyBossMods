@@ -7,7 +7,8 @@ mod:SetEncounterID(2921)
 mod:SetUsedIcons(6, 7, 8)
 mod:SetBossHPInfoToHighest()
 mod:SetHotfixNoticeRev(20240711000000)
-mod:SetMinSyncRevision(20240628000000)
+mod:SetMinSyncRevision(20241213000000)
+mod:DisableRegenDetection()--Try to fix false combat detection
 mod:SetZone(2657)
 mod.respawnTime = 29
 
