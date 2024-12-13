@@ -4650,7 +4650,7 @@ do
 	end
 
 	syncHandlers["BT"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers then return end--or private.newShit
+		if DBM.Options.DontShowUserTimers then return end--or not private.isWrath
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
