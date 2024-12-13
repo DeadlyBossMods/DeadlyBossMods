@@ -27,7 +27,7 @@ local function Pull(timer)
 	--if timer > 60 then
 	--	return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
 	--end
-	if private.newShit then
+	if not private.isWrath then
 		--Send blizzard countdown timer that all users see (including modless)
 		C_PartyInfo.DoCountdown(timer)
 		DBM:Debug("Sending Blizzard Countdown Timer")
@@ -55,7 +55,7 @@ local function Break(timer)
 	--if timer == 60 then
 	--	timer = 61
 	--end
-	--if private.newShit then
+	--if not private.isWrath then
 	--	--Send blizzard countdown timer that all users see (including modless)
 	--	C_PartyInfo.DoCountdown(timer)
 	--	DBM:Debug("Sending Blizzard Countdown Timer")

@@ -502,6 +502,12 @@ L.AUTO_TIMER_TEXTS = {
 	nextspecial							= "Special",
 	nextcombo							= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
+	var									= "%s",
+	varcount							= "%s (%%s)",
+	varsource							= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+	varspecial							= "Special",--Now same as next, as the ~ was moved to timer number
+	varcombo							= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+
 	achievement							= "%s", -- OPTIONAL
 	stage								= "Stage",
 	stagecount							= "Stage %%s",--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
@@ -516,6 +522,7 @@ L.AUTO_TIMER_TEXTS = {
 	combat								= "Combat starts"--Only used if the boss auto engages upon completion (ie ragnaros type situation)
 }
 --This basically clones np only bar option and display text from regular counterparts
+--TODO, cleanup lots of duplication here and above
 L.AUTO_TIMER_TEXTS.cdnp					= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.cdpnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
@@ -532,6 +539,7 @@ L.AUTO_TIMER_OPTIONS = {
 	active								= "Show timer for $spell:%s duration",
 	fades								= "Show timer for when $spell:%s fades from players",
 	ai									= "Show AI timer for $spell:%s cooldown",
+
 	cd									= "Show timer for $spell:%s cooldown",
 	cdcount								= "Show timer for $spell:%s cooldown",
 	cdnp								= "Show nameplate only timer for $spell:%s cooldown",
@@ -539,6 +547,7 @@ L.AUTO_TIMER_OPTIONS = {
 	cdsource							= "Show timer (with source) for $spell:%s cooldown",--Maybe better wording?
 	cdspecial							= "Show timer for special ability cooldown",
 	cdcombo								= "Show timer for ability combo cooldown",--Used for combining 2 abilities into a single timer
+
 	next								= "Show timer for next $spell:%s",
 	nextcount							= "Show timer for next $spell:%s",
 	nextnp								= "Show nameplate only timer for next $spell:%s",
@@ -546,6 +555,15 @@ L.AUTO_TIMER_OPTIONS = {
 	nextsource							= "Show timer (with source) for next $spell:%s",--Maybe better wording?
 	nextspecial							= "Show timer for next special ability",
 	nextcombo							= "Show timer for next ability combo",--Used for combining 2 abilities into a single timer
+
+	var									= "Show timer (with variance) for $spell:%s cooldown window",
+	varcount							= "Show timer (with count and variance) for $spell:%s cooldown window",
+	varnp								= "Show nameplate only timer (with variance) for $spell:%s cooldown window",
+	varpnp								= "Show priority nameplate only timer (with variance) for $spell:%s cooldown window",
+	varsource							= "Show timer (with source and variance) for $spell:%s cooldown window",
+	varspecial							= "Show timer (with variance) for special ability cooldown window",
+	varcombo							= "Show timer (with variance) for ability combo cooldown window",
+
 	achievement							= "Show timer for %s",
 	stage								= "Show timer for next stage",
 	stagecount							= "Show timer (with count) for next stage",

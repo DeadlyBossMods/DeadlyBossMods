@@ -424,7 +424,7 @@ L.AUTO_SPEC_WARN_OPTIONS.target				= "特別提示：當他人中了$spell:%s時
 L.AUTO_SPEC_WARN_OPTIONS.targetcount 		= "特別提示：當他人中了$spell:%s時 (包含計數)"
 L.AUTO_SPEC_WARN_OPTIONS.link				= "特別提示：當你中了$spell:%s與其他玩家連結時"
 L.AUTO_SPEC_WARN_OPTIONS.defensive 			= "特別提示：當需要使用$spell:%s技能來減傷時"
-L.AUTO_SPEC_WARN_OPTIONS.taunt 				= "特別提示：當另外一個坦中了$spell:%s並需要你嘲諷時"
+L.AUTO_SPEC_WARN_OPTIONS.taunt 				= "特別提示：當另外一個坦中了$spell:%s並需要你嘲諷時 (當為坦克專精)"
 L.AUTO_SPEC_WARN_OPTIONS.close				= "特別提示：當你附近有人中了$spell:%s時"
 L.AUTO_SPEC_WARN_OPTIONS.move				= "特別提示：當你中了$spell:%s時"
 L.AUTO_SPEC_WARN_OPTIONS.keepmove 			= "特別提示：當你中了$spell:%s需要保持移動時"
@@ -662,8 +662,10 @@ L.DBM_INSTALL_REMINDER_DL_WAGO	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctr
 L.DBM_INSTALL_REMINDER_DL_CURSE	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " 來複製Curseforge的連結到剪貼簿。"
 --"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
 L.DBM_INSTALL_PACKAGE_VANILLA	= "經典與探索賽季組件"
+L.DBM_INSTALL_PACKAGE_BCC		= "燃燒的遠征組件"
 L.DBM_INSTALL_PACKAGE_WRATH		= "巫妖王組件"
 L.DBM_INSTALL_PACKAGE_CATA		= "浩劫與重生組件"
+L.DBM_INSTALL_PACKAGE_MOP		= "潘達利亞的迷霧組件"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "地下城、探究以及事件組件"
 
 -- Tests

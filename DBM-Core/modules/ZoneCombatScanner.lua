@@ -113,6 +113,7 @@ local function DelayedZoneCheck(force)
 		if DBM:IsPostMoP() then
 			module:RegisterShortTermEvents("CHALLENGE_MODE_DEATH_COUNT_UPDATED")
 		end
+		DBM:Unschedule(checkForCombat)
 		checkForCombat()--Still run an initial check
 		DBM:Debug("Registering Trash Tracking Events", 2)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
@@ -134,7 +135,7 @@ function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
 	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-		checkForCombat()
+		DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
 	end
 end
 --Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track backup events that can indicate combat status changed
@@ -162,8 +163,9 @@ function module:ENCOUNTER_START()
 		DelayedZoneCheck(true)
 	else
 		--If we're in a dungeon, we use it as yet another redundant combat check
+		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			checkForCombat()
+			DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
 		end
 	end
 end
@@ -174,8 +176,9 @@ function module:ENCOUNTER_END()
 		DelayedZoneCheck()
 	else
 		--If we're in a dungeon, we use it as yet another redundant combat check
+		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			checkForCombat()
+			DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
 		end
 	end
 end
