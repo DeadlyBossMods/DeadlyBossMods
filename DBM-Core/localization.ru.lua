@@ -484,10 +484,16 @@ L.AUTO_TIMER_TEXTS.cdsource			= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial		= "Восст. спецспособности"
 L.AUTO_TIMER_TEXTS.cdcombo			= "%%1$s + %%2$s"
 
+L.AUTO_TIMER_TEXTS.var				= "%s"
+L.AUTO_TIMER_TEXTS.varcount			= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource		= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.varspecial		= "Спецспособность"
+L.AUTO_TIMER_TEXTS.varcombo			= "%%1$s + %%2$s"
+
 L.AUTO_TIMER_TEXTS.next 			= "%s"
 L.AUTO_TIMER_TEXTS.nextcount		= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource		= "%s: %%s"
-L.AUTO_TIMER_TEXTS.nextspecial		= "Спецспособность"
+L.AUTO_TIMER_TEXTS.nextspecial		= "След. спецспособность"
 L.AUTO_TIMER_TEXTS.nextcombo		= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.achievement		= "%s"
@@ -518,6 +524,7 @@ L.AUTO_TIMER_OPTIONS.castsource		= "Отсчёт времени применен
 L.AUTO_TIMER_OPTIONS.active 		= "Отсчёт времени действия $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades			= "Отсчёт времени до спадения $spell:%s с игроков"
 L.AUTO_TIMER_OPTIONS.ai				= "Отсчёт времени до восстановления $spell:%s (ИИ)"
+
 L.AUTO_TIMER_OPTIONS.cd 			= "Отсчёт времени до восстановления $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount 		= "Отсчёт времени до восстановления $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdnp 			= "Отсчёт времени до восстановления $spell:%s (только индикарторы здоровья)"
@@ -525,6 +532,7 @@ L.AUTO_TIMER_OPTIONS.cdpnp			= "Приоритетный отсчёт време
 L.AUTO_TIMER_OPTIONS.cdsource		= "Отсчёт времени до восстановления $spell:%s (с источником)"
 L.AUTO_TIMER_OPTIONS.cdspecial		= "Отсчёт времени до восстановления спецспособности"
 L.AUTO_TIMER_OPTIONS.cdcombo		= "Отсчёт времени до восстановления комбо способности"--Используется для объединения двух способностей в один таймер
+
 L.AUTO_TIMER_OPTIONS.next 			= "Отсчёт времени до следующего $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount 		= "Отсчёт времени до следующего $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnp 		= "Отсчёт времени до следующего $spell:%s (только индикарторы здоровья)"
@@ -532,17 +540,27 @@ L.AUTO_TIMER_OPTIONS.nextpnp 		= "Приоритетный отсчёт врем
 L.AUTO_TIMER_OPTIONS.nextsource		= "Отсчёт времени до следующего $spell:%s (с источником)"
 L.AUTO_TIMER_OPTIONS.nextspecial	= "Отсчёт времени до следующей спецспособности"
 L.AUTO_TIMER_OPTIONS.nextcombo		= "Отсчёт времени до следующей комбо способности"--Используется для объединения двух способностей в один таймер
+
+L.AUTO_TIMER_OPTIONS.var 			= "Отсчёт времени (с разбросом) до восстановления $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount 		= "Отсчёт времени (с количеством и разбросом) до восстановления $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp 			= "Показывать только таймер на индикаторах здоровья (с разбросом) до восстановления $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp 		= "Показывать только таймер приоритета на индикаторах здоровья (с разбросом) до восстановления $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource 		= "Отсчёт времени (с источником и разбросом) до восстановления $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial 	= "Отсчёт времени (с разницей) до восстановления спецспособности"
+L.AUTO_TIMER_OPTIONS.varcombo 		= "Отсчёт времени (с разбросом) до восстановления комбо способностей"
+
 L.AUTO_TIMER_OPTIONS.achievement 	= "Отсчёт времени для %s"
 L.AUTO_TIMER_OPTIONS.stage			= "Отсчёт времени до следующей фазы"
 L.AUTO_TIMER_OPTIONS.stagecount		= "Отсчёт времени (со счетчиком) до следующей фазы"
 L.AUTO_TIMER_OPTIONS.stagecountcycle	= "Отсчёт времени (со счетчиком фаз и циклов) до следующей фазы"
 L.AUTO_TIMER_OPTIONS.stagecontext		= "Отсчёт времени до следующего этапа $spell:%s"
 L.AUTO_TIMER_OPTIONS.stagecontextcount	= "Отсчёт времени (со счетчиком) до следующего этапа $spell:%s"
+
 L.AUTO_TIMER_OPTIONS.intermission	= "Отсчёт времени до следующей переходной фазы"
 L.AUTO_TIMER_OPTIONS.intermissioncount	= "Отсчёт времени (со счетчиком) до следующей переходной фазы"
 L.AUTO_TIMER_OPTIONS.adds			= "Отсчёт времени до прибытия аддов"
 L.AUTO_TIMER_OPTIONS.addscustom		= "Отсчёт времени до прибытия аддов"
-L.AUTO_TIMER_OPTIONS.roleplay		= "Отсчёт времени для ролевой игры"
+L.AUTO_TIMER_OPTIONS.roleplay		= "Показывать таймер для ролевой игры"
 L.AUTO_TIMER_OPTIONS.combat			= "Отсчёт времени до начала боя"
 
 L.AUTO_ICONS_OPTION_TARGETS			= "Устанавливать метки на цели $spell:%s"
