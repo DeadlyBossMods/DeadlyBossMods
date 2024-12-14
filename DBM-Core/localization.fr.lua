@@ -475,11 +475,11 @@ L.AUTO_TIMER_TEXTS.nextcount	= "Proch. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "Proch. %s: >%%s<"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Proch. capacité spéciale"
 
-L.AUTO_TIMER_TEXTS.var			= "%s",
-L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)",
-L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
-L.AUTO_TIMER_TEXTS.varspecial	= "Capacité spéciale",--Now same as next, as the ~ was moved to timer number
-L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.var			= "%s"
+L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial	= "Capacité spéciale"--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
 L.AUTO_TIMER_TEXTS.achievement			= "%s"
 L.AUTO_TIMER_TEXTS.stage				= "Phase"
@@ -507,13 +507,13 @@ L.AUTO_TIMER_OPTIONS.castcount			= "Afficher le chronomètre (avec compte) pour 
 L.AUTO_TIMER_OPTIONS.castsource			= "Afficher le chronomètre (avec source) pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Afficher le chronomètre pour la durée de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Afficher le chronomètre avant la dissipation de $spell:%s"
-L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le recharge de $spell:%s"
 
 L.AUTO_TIMER_OPTIONS.cd					= "Afficher le chronomètre pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Afficher le chronomètre (avec compte) pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la plaque de nom uniquement pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Afficher le chronomètre pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge du capacité spéciale"
+L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge de capacité spéciale"
 L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le recharge de la combinaison de capacités"--Used for combining 2 abilities into a single timer
 
 L.AUTO_TIMER_OPTIONS.next				= "Afficher le chronomètre avant le prochain $spell:%s"
