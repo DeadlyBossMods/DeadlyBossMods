@@ -476,11 +476,11 @@ L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Facultad especial"
 
-L.AUTO_TIMER_TEXTS.var			= "%s",
-L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)",
-L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
-L.AUTO_TIMER_TEXTS.varspecial	= "Facultad especial",--Now same as next, as the ~ was moved to timer number
-L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.var			= "%s"
+L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial	= "Facultad especial"--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
 L.AUTO_TIMER_TEXTS.achievement			= "Logro: %s"
 L.AUTO_TIMER_TEXTS.stage				= "Fase"
@@ -522,13 +522,13 @@ L.AUTO_TIMER_OPTIONS.nextnp				= "Mostrar temporizador de placa de nombre para e
 L.AUTO_TIMER_OPTIONS.nextsource			= "Mostrar temporizador (y quién lo lanza) para el siguiente $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextspecial		= "Mostrar temporizador para la siguiente 'Facultad especial'."
 
-L.AUTO_TIMER_OPTIONS.var				= "Mostrar temporizador (con variación) para el tiempo de reutilización de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varcount			= "Mostrar temporizador (con contador y variación) para el tiempo de reutilización de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varnp				= "Mostrar solo el temporizador en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varpnp				= "Mostrar solo el temporizador prioritario en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varsource			= "Mostrar temporizador (con variación y quién lo lanza) para el tiempo de reutilización de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varspecial			= "Mostrar temporizador (con variación) para el tiempo de reutilización de facultad especial",
-L.AUTO_TIMER_OPTIONS.varcombo			= "Mostrar temporizador (con variación) para el tiempo de reutilización de combo de facultades",
+L.AUTO_TIMER_OPTIONS.var				= "Mostrar temporizador (con variación) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount			= "Mostrar temporizador (con contador y variación) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Mostrar solo el temporizador en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Mostrar solo el temporizador prioritario en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource			= "Mostrar temporizador (con variación y quién lo lanza) para el tiempo de reutilización de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial			= "Mostrar temporizador (con variación) para el tiempo de reutilización de facultad especial"
+L.AUTO_TIMER_OPTIONS.varcombo			= "Mostrar temporizador (con variación) para el tiempo de reutilización de combo de facultades"
 
 L.AUTO_TIMER_OPTIONS.achievement		= "Mostrar temporizador para el logro %s"
 L.AUTO_TIMER_OPTIONS.stage				= "Mostrar temporizador para la siguiente fase"
