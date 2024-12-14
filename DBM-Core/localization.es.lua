@@ -476,6 +476,12 @@ L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Facultad especial"
 
+L.AUTO_TIMER_TEXTS.var			= "%s",
+L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)",
+L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial	= "Facultad especial",--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+
 L.AUTO_TIMER_TEXTS.achievement			= "Logro: %s"
 L.AUTO_TIMER_TEXTS.stage				= "Fase"
 L.AUTO_TIMER_TEXTS.stagecount			= "Fase %%s"
@@ -503,16 +509,27 @@ L.AUTO_TIMER_OPTIONS.castsource			= "Mostrar temporizador (y quién lo lanza) pa
 L.AUTO_TIMER_OPTIONS.active				= "Mostrar temporizador para la duración de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
 L.AUTO_TIMER_OPTIONS.ai					= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
+
 L.AUTO_TIMER_OPTIONS.cd					= "Mostrar temporizador para el tiempo de reutilización de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Mostrar temporizador (con contador) para el tiempo de reutilización de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdnp				= "Mostrar temporizador de placa de nombre para el tiempo de reutilización de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Mostrar temporizador (y quién lo lanza) para el tiempo de reutilización de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "Mostrar temporizador para el tiempo de reutilización de 'Facultad especial'."
+
 L.AUTO_TIMER_OPTIONS.next				= "Mostrar temporizador para el siguiente $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Mostrar temporizador (con contador) para el siguiente $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextnp				= "Mostrar temporizador de placa de nombre para el siguiente $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "Mostrar temporizador (y quién lo lanza) para el siguiente $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextspecial		= "Mostrar temporizador para la siguiente 'Facultad especial'."
+
+L.AUTO_TIMER_OPTIONS.var				= "Mostrar temporizador (con variación) para el tiempo de reutilización de $spell:%s",
+L.AUTO_TIMER_OPTIONS.varcount			= "Mostrar temporizador (con contador y variación) para el tiempo de reutilización de $spell:%s",
+L.AUTO_TIMER_OPTIONS.varnp				= "Mostrar solo el temporizador en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s",
+L.AUTO_TIMER_OPTIONS.varpnp				= "Mostrar solo el temporizador prioritario en la placa de nombre (con variación) para el tiempo de reutilización de $spell:%s",
+L.AUTO_TIMER_OPTIONS.varsource			= "Mostrar temporizador (con variación y quién lo lanza) para el tiempo de reutilización de $spell:%s",
+L.AUTO_TIMER_OPTIONS.varspecial			= "Mostrar temporizador (con variación) para el tiempo de reutilización de facultad especial",
+L.AUTO_TIMER_OPTIONS.varcombo			= "Mostrar temporizador (con variación) para el tiempo de reutilización de combo de facultades",
+
 L.AUTO_TIMER_OPTIONS.achievement		= "Mostrar temporizador para el logro %s"
 L.AUTO_TIMER_OPTIONS.stage				= "Mostrar temporizador para la siguiente fase"
 L.AUTO_TIMER_OPTIONS.stagecount			= "Mostrar temporizador (con contador) para la siguiente fase"
@@ -656,9 +673,12 @@ L.DBM_INSTALL_REMINDER_DISABLE = "Desactiva todos los avisos y temporizadores de
 L.DBM_INSTALL_REMINDER_DISABLE2 = "No mostrar este mensaje nuevamente para este paquete." -- Used for unimportant mods, i.e., dungeons
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Wago.io en tu portapapeles."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Curseforge en tu portapapeles."
+
 L.DBM_INSTALL_PACKAGE_VANILLA = "Paquete de Era y Temporada de descubrimiento"
+L.DBM_INSTALL_PACKAGE_BCC		= "Paquete de Burning Crusade"
 L.DBM_INSTALL_PACKAGE_WRATH = "Paquete de Wrath"
 L.DBM_INSTALL_PACKAGE_CATA = "Paquete de Cataclysm"
+L.DBM_INSTALL_PACKAGE_MOP		= "Paquete de Mist of Pandaria"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquete de Mazmorras, Abismos y Eventos"
 
 -- Tests
