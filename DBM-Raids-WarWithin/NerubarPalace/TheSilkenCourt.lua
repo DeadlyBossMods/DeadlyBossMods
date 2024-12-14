@@ -193,7 +193,7 @@ local allTimers = {
 		-- Reckless Charge
 		[440246] = {100.8},
 		-- Stinging Swarm
-		[438677] = {0},
+		[438677] = {0.000001},
 		-- Web Vortex
 		[441626] = {74.4},
 		-- Entropic Desolation
@@ -203,7 +203,7 @@ local allTimers = {
 		-- Void Step
 		[450483] = {106.5},
 		-- Cataclysmic Entropy
-		[438355] = {0},
+		[438355] = {0.000001},
 		-- Spike Eruption
 		[443068] = {61.3, 82.6},
 		-- Unleashed Swarm

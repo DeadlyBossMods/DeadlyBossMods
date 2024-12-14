@@ -143,23 +143,23 @@ local allTimers = {
 			--Infested Spawn
 			[455373] = {15.9},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
 			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {0.000001},
 		},
 		[7] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {0.000001},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {0.000001},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
 			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {0.000001},
 		},
 	},
 	["normal"] = {--Complete up to 9:54
@@ -229,23 +229,23 @@ local allTimers = {
 			--Infested Spawn
 			[455373] = {15.9},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
 			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--, 7.8, 15.7, 23.5, 7.8, 15.7 assumed but pretty safe bet
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {0.000001},
 		},
 		[7] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {0.000001},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {0.000001},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
 			[444687] = {3.6, 7.8, 15.7, 23.5, 7.8, 15.7},--Assumed unchanged
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {0.000001},
 		},
 	},
 	["heroic"] = {--Complete up to 10:07
@@ -323,15 +323,15 @@ local allTimers = {
 		},
 		[7] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {0.000001},
 			--Infested Spawn
-			[455373] = {0},
+			[455373] = {0.000001},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
-			[444687] = {0},
+			[444687] = {0.000001},
 			--Spinneret's Strands
-			[439784] = {0},
+			[439784] = {0.000001},
 		},
 	},
 	["mythic"] = {--6:23
@@ -367,7 +367,7 @@ local allTimers = {
 			--Erosive Spray
 			[439811] = {23.6, 25},
 			--Infested Spawn
-			[455373] = {0},--Not cast on this movement
+			[455373] = {0.000001},--Not cast on this movement
 			--Rolling Acid
 			[439789] = {15.8},
 			--Savage Assault
@@ -383,7 +383,7 @@ local allTimers = {
 			--Infested Spawn
 			[455373] = {14.3, 20},
 			--Rolling Acid
-			[439789] = {0},--Not cast on 4th area
+			[439789] = {0.000001},--Not cast on 4th area
 			--Savage Assault
 			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
@@ -401,17 +401,17 @@ local allTimers = {
 			--Savage Assault
 			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
-			[439784] = {0},--Not cast on this movement
+			[439784] = {0.000001},--Not cast on this movement
 			--Enveloping Webs
 			[454989] = {33.8},
 		},
 		[6] = {
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {0.000001},
 			--Infested Spawn
 			[455373] = {19.1},
 			--Rolling Acid
-			[439789] = {0},
+			[439789] = {0.000001},
 			--Savage Assault
 			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},
 			--Spinneret's Strands
@@ -421,17 +421,17 @@ local allTimers = {
 		},
 		[7] = {--Not complete
 			--Erosive Spray
-			[439811] = {0},
+			[439811] = {0.000001},
 			--Infested Spawn
-			[455373] = {0},--Not enough data
+			[455373] = {0.000001},--Not enough data
 			--Rolling Acid
 			[439789] = {22.3},--Not enough data
 			--Savage Assault
 			[444687] = {9.7, 2, 18, 2, 11.8, 2.5},--Assumed since it's been same in rest
 			--Spinneret's Strands
-			[439784] = {0},--Not enough data
+			[439784] = {0.000001},--Not enough data
 			--Enveloping Webs
-			[454989] = {0},--Not enough data
+			[454989] = {0.000001},--Not enough data
 		},
 	},
 }
