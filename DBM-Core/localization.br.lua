@@ -315,8 +315,8 @@ L.AUTO_ANNOUNCE_TEXTS.target			= "%s em >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource		= ">%%s< lança %s em >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) em >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.spell				= "%s"
-L.AUTO_ANNOUNCE_TEXTS.incoming 			= "Debuff %s se aproximando"
-L.AUTO_ANNOUNCE_TEXTS.incomingcount 	= "Debuff %s se aproximando (%%s)"
+L.AUTO_ANNOUNCE_TEXTS.incoming 			= "Penalidade %s se aproximando"
+L.AUTO_ANNOUNCE_TEXTS.incomingcount 	= "Penalidade %s se aproximando (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 				= "%s terminado"
 L.AUTO_ANNOUNCE_TEXTS.endtarget 		= "%s terminado: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades 			= "%s desapareceu"
@@ -342,8 +342,8 @@ L.AUTO_ANNOUNCE_OPTIONS.targetNF 		= "Anunciar alvos de $spell:%s (ignora filtro
 L.AUTO_ANNOUNCE_OPTIONS.targetsource 	= "Anunciar alvos de $spell:%s (com fonte)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "Anunciar alvos (com contagem) de $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "Anunciar para $spell:%s"
-L.AUTO_ANNOUNCE_OPTIONS.incoming 		= "Anunciar quando $spell:%s tiver debuffs se aproximando"
-L.AUTO_ANNOUNCE_OPTIONS.incomingcount 	= "Anunciar (com contagem) quando $spell:%s tiver debuffs se aproximando"
+L.AUTO_ANNOUNCE_OPTIONS.incoming 		= "Anunciar quando $spell:%s tiver penalidades se aproximando"
+L.AUTO_ANNOUNCE_OPTIONS.incomingcount 	= "Anunciar (com contagem) quando $spell:%s tiver penalidades se aproximando"
 L.AUTO_ANNOUNCE_OPTIONS.ends 			= "Anunciar quando $spell:%s tiver terminado"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget 		= "Anunciar quando $spell:%s tiver terminado (com alvo)"
 L.AUTO_ANNOUNCE_OPTIONS.fades 			= "Anunciar quando $spell:%s tiver desaparecido"
@@ -470,12 +470,18 @@ L.AUTO_TIMER_TEXTS.ai					= "%s IA"
 L.AUTO_TIMER_TEXTS.cd					= "%s recarrega"
 L.AUTO_TIMER_TEXTS.cdcount				= "%s recarrega (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource				= "%s recarrega: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial			= "Especial"
+L.AUTO_TIMER_TEXTS.cdspecial			= "Habilidade especial"
 
 L.AUTO_TIMER_TEXTS.next					= "Próx. %s"
 L.AUTO_TIMER_TEXTS.nextcount			= "Próx. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource			= "Próx. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.nextspecial			= "Especial"
+L.AUTO_TIMER_TEXTS.nextspecial			= "Habilidade especial"
+
+L.AUTO_TIMER_TEXTS.var					= "%s"
+L.AUTO_TIMER_TEXTS.varcount				= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource			= "%s: >%%s<"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial			= "Habilidade especial"--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo				= "%%1$s + %%2$s"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
 L.AUTO_TIMER_TEXTS.achievement			= "%s"
 L.AUTO_TIMER_TEXTS.stage				= "Fase"
@@ -496,26 +502,37 @@ L.AUTO_TIMER_TEXTS.cdpnp 				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a debuff $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a debuff $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a penalidade de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a penalidade de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Exibir cronômetro para lançar $spell:%s"
-L.AUTO_TIMER_OPTIONS.castcount 			= "Exibir cronômetro (com contagem) para a lançamento de $spell:%s"
-L.AUTO_TIMER_OPTIONS.castsource 		= "Exibir cronômetro (com fonte) para a lançamento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castcount 			= "Exibir cronômetro (com contagem) para o lançamento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castsource 		= "Exibir cronômetro (com fonte) para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Exibir cronômetro para a duração de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Exibir cronômetro para quando $spell:%s desvanecerá dos jogadores"
 L.AUTO_TIMER_OPTIONS.ai					= "Exibir cronômetro IA para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cd					= "Exibir cronômetro para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdcount			= "Exibir cronômetro para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnp 				= "Exibir cronômetro apenas na placa de identificação para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdsource			= "Exibir cronômetro para recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdspecial 			= "Exibir cronômetro para recarga de habilidade especial"
-L.AUTO_TIMER_OPTIONS.cdcombo 			= "Exibir cronômetro para recarga de combo de habilidade"--Used for combining 2 abilities into a single timer
+
+L.AUTO_TIMER_OPTIONS.cd					= "Exibir cronômetro para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdcount			= "Exibir cronômetro para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnp 				= "Exibir cronômetro apenas na placa de nome para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdsource			= "Exibir cronômetro para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdspecial 			= "Exibir cronômetro para a recarga de habilidade especial"
+L.AUTO_TIMER_OPTIONS.cdcombo 			= "Exibir cronômetro para a recarga de combinação de habilidades"--Used for combining 2 abilities into a single timer
+
 L.AUTO_TIMER_OPTIONS.next				= "Exibir cronômetro para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Exibir cronômetro para o próximo $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnp 			= "Exibir cronômetro apenas na placa de identificação para o próximo $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextnp 			= "Exibir cronômetro apenas na placa de nome para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "Exibir cronômetro para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextspecial 		= "Exibir cronômetro para a próxima habilidade especial"
-L.AUTO_TIMER_OPTIONS.nextcombo 			= "Exibir cronômetro para o próximo combo de habilidade"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.nextcombo 			= "Exibir cronômetro para o próximo combinação de habilidades"--Used for combining 2 abilities into a single timer
+
+L.AUTO_TIMER_OPTIONS.var				= "Exibir cronômetro (com variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount			= "Exibir cronômetro (com contagem e variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Exibir apenas o cronômetro na placa de nome (com variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Exibir apenas o cronômetro prioritário na placa de nome (com variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource			= "Exibir cronômetro (com fonte e variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial			= "Exibir cronômetro (com variação) para a recarga de habilidade especial"
+L.AUTO_TIMER_OPTIONS.varcombo			= "Exibir cronômetro (com variação) para a recarga de combinação de habilidades"
+
 L.AUTO_TIMER_OPTIONS.achievement		= "Exibir cronômetro para %s"
 L.AUTO_TIMER_OPTIONS.stage 				= "Exibir cronômetro para a próxima fase"
 L.AUTO_TIMER_OPTIONS.stagecount 		= "Exibir cronômetro (com contagem) para a próxima fase"
@@ -528,7 +545,6 @@ L.AUTO_TIMER_OPTIONS.adds 				= "Exibir cronômetro para a chegada de adds"
 L.AUTO_TIMER_OPTIONS.addscustom 		= "Exibir cronômetro para a chegada de adds"
 L.AUTO_TIMER_OPTIONS.roleplay 			= "Exibir cronômetro para a duração do roleplay"--This does need localizing though.
 L.AUTO_TIMER_OPTIONS.combat				= "Exibir cronômetro para começo do combate"
-
 
 L.AUTO_ICONS_OPTION_TARGETS				= "Colocar ícones nos alvos de $spell:%s"
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A 		= "Colocar ícones nos alvos de $spell:%s com prioridade para tanque sobre corpo a corpo sobre alcance e alfabético como substituto"
@@ -575,8 +591,8 @@ L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no str
 L.AUTO_YELL_CUSTOM_FADE 				= "%s desaparecido"
 L.AUTO_HUD_OPTION_TEXT 					= "Exibir HudMap para $spell:%s (Descontinuado)"
 L.AUTO_HUD_OPTION_TEXT_MULTI 			= "Exibir HudMap para vários mecanismos (Descontinuado)"
-L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Exibir auras na placa de identificação para $spell:%s usando um addon de placa de nome compatível ou "..L.DBM
-L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Exibir auras na placa de identificação apenas para $spell:%s usando apenas "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Exibir auras na placa de nome para $spell:%s usando um addon de placa de nome compatível ou "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Exibir auras na placa de nome apenas para $spell:%s usando apenas "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT 				= "Exibir quadro de alcance (%s) para $spell:%s" -- string usado para o alcance, para que possamos usar coisas como "5/2" como um valor para esse campo
 L.AUTO_RANGE_OPTION_TEXT_SHORT 			= "Exibir quadro de alcance (%s)" -- Quando um quadro de alcance é usado apenas para mais de uma coisa
 L.AUTO_RRANGE_OPTION_TEXT 				= "Exibir quadro de alcance reverso (%s) para $spell:%s" -- Quadro de alcance reverso (verde quando os jogadores estão dentro do alcance, vermelho quando não estão)
@@ -661,10 +677,13 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "Não exibir esta mensagem novamente para este
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Pressione " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar o link do Wago.io para sua área de transferência."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Pressione " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar o link do Curseforge para sua área de transferência."
 --"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
-L.DBM_INSTALL_PACKAGE_VANILLA = "Pacote Vanilla e Temporada da Descoberta"
-L.DBM_INSTALL_PACKAGE_WRATH = "Pacote Wrath"
-L.DBM_INSTALL_PACKAGE_CATA = "Pacote Cataclysm"
-L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote Masmorras, Imersões e Eventos"
+
+L.DBM_INSTALL_PACKAGE_VANILLA = "Pacote de Vanilla e Temporada da Descoberta"
+L.DBM_INSTALL_PACKAGE_BCC = "Pacote de Burning Crusade"
+L.DBM_INSTALL_PACKAGE_WRATH = "Pacote de Wrath"
+L.DBM_INSTALL_PACKAGE_CATA = "Pacote de Cataclysm"
+L.DBM_INSTALL_PACKAGE_MOP = "Pacote de Mists of Pandaria"
+L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote de Masmorras, Imersões e Eventos"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "O DBM foi usado em modo de teste com distorção temporal na sessão atual, é recomendável recarregar sua interface antes de usar o DBM em uma luta de chefe real. Tudo deve funcionar como esperado, mas sem garantias!"
