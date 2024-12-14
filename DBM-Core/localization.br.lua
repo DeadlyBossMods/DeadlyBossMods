@@ -527,8 +527,8 @@ L.AUTO_TIMER_OPTIONS.nextcombo 			= "Exibir cronômetro para o próximo combina�
 
 L.AUTO_TIMER_OPTIONS.var				= "Exibir cronômetro (com variação) para a recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.varcount			= "Exibir cronômetro (com contagem e variação) para a recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.varnp				= "Mostrar apenas o cronômetro na placa de nome (com variação) para a recarga de $spell:%s"
-L.AUTO_TIMER_OPTIONS.varpnp				= "Mostrar apenas o cronômetro prioritário na placa de nome (com variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Exibir apenas o cronômetro na placa de nome (com variação) para a recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Exibir apenas o cronômetro prioritário na placa de nome (com variação) para a recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.varsource			= "Exibir cronômetro (com fonte e variação) para a recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.varspecial			= "Exibir cronômetro (com variação) para a recarga de habilidade especial"
 L.AUTO_TIMER_OPTIONS.varcombo			= "Exibir cronômetro (com variação) para a recarga de combinação de habilidades"
