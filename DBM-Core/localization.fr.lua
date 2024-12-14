@@ -184,7 +184,7 @@ L.VERSIONCHECK_OUTDATED		= "Les joueurs suivants %d ont une version périmée du
 L.YOUR_VERSION_OUTDATED	  	= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée. Veuillez vous rendre sur Curse, Wago, WoWInterface ou Github pour obtenir la dernière version."
 L.VOICE_PACK_OUTDATED		= "Il semble que votre pacquet de voix " .. L.DBM .. " manquent de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du pacquet devoix ou contactez l'auteur pour une mise à jour qui la contient."
 L.VOICE_MISSING				= "Vous aviez un pacquet de voix séléctionné qui ne pouvait pas être trouvé. Votre séléction a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez vous que votre pacquet est correctement installé et activé."
-L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour masquer ce message."
+L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour cacher ce message."
 L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un pacquet qui ne pouvait pas être trouvé. Il a été reinitilisé à l'option par défaut."
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
@@ -468,15 +468,21 @@ L.AUTO_TIMER_TEXTS.ai			= "%s AI"
 L.AUTO_TIMER_TEXTS.cd			= "Rech. %s"
 L.AUTO_TIMER_TEXTS.cdcount		= "Rech. %s (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource		= "Rech. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial	= "CD d'abilité spéciale"
+L.AUTO_TIMER_TEXTS.cdspecial	= "Rech. de capacité spéciale"
 
 L.AUTO_TIMER_TEXTS.next			= "Proch. %s"
 L.AUTO_TIMER_TEXTS.nextcount	= "Proch. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "Proch. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.nextspecial	= "Abilité spéciale suivante"
+L.AUTO_TIMER_TEXTS.nextspecial	= "Proch. capacité spéciale"
+
+L.AUTO_TIMER_TEXTS.var			= "%s"
+L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial	= "Capacité spéciale"--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
 L.AUTO_TIMER_TEXTS.achievement			= "%s"
-L.AUTO_TIMER_TEXTS.stage				= "Phase suivante"
+L.AUTO_TIMER_TEXTS.stage				= "Phase"
 L.AUTO_TIMER_TEXTS.stagecount			= "Phase %%s"--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
 L.AUTO_TIMER_TEXTS.stagecountcycle		= "Phase %%s (%%s)"--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 L.AUTO_TIMER_TEXTS.stagecontext			= "%s" -- OPTIONAL
@@ -501,21 +507,32 @@ L.AUTO_TIMER_OPTIONS.castcount			= "Afficher le chronomètre (avec compte) pour 
 L.AUTO_TIMER_OPTIONS.castsource			= "Afficher le chronomètre (avec source) pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Afficher le chronomètre pour la durée de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Afficher le chronomètre avant la dissipation de $spell:%s"
-L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le recharge de $spell:%s"
+
 L.AUTO_TIMER_OPTIONS.cd					= "Afficher le chronomètre pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Afficher le chronomètre (avec compte) pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la barre d'info uniquement pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la plaque de nom uniquement pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Afficher le chronomètre pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge d'abilité spéciale"
-L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le temps de recharge de la combinaison de abilités"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge de capacité spéciale"
+L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le recharge de la combinaison de capacités"--Used for combining 2 abilities into a single timer
+
 L.AUTO_TIMER_OPTIONS.next				= "Afficher le chronomètre avant le prochain $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Afficher le chronomètre avant le prochain $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnp 			= "Afficher le chronomètre sur la barre d'info uniquement pour le prochain $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextnp 			= "Afficher le chronomètre sur la plaque de nom uniquement pour le prochain $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "Afficher le chronomètre avant le prochain $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextspecial		= "Afficher le chronomètre de l'abilité spéciale suivante"
-L.AUTO_TIMER_OPTIONS.nextcombo			= "Afficher le chronomètre pour la prochaine combinaison de abilités"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.nextspecial		= "Afficher le chronomètre avant la prochaine capacité spéciale"
+L.AUTO_TIMER_OPTIONS.nextcombo			= "Afficher le chronomètre pour la prochaine combinaison de capacités"--Used for combining 2 abilities into a single timer
+
+L.AUTO_TIMER_OPTIONS.var				= "Afficher le chronomètre (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount			= "Afficher le chronomètre (avec compte et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Afficher uniquement le chronomètre sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Afficher uniquement le chronomètre prioritaire sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource			= "Afficher le chronomètre (avec source et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial			= "Afficher le chronomètre (avec variation) pour le recharge de capacité spéciale"
+L.AUTO_TIMER_OPTIONS.varcombo			= "Afficher le chronomètre (avec variation) pour le recharge de combo de capacités"
+
 L.AUTO_TIMER_OPTIONS.achievement		= "Afficher le chronomètre pour réussir %s"
-L.AUTO_TIMER_OPTIONS.stage				= "Afficher le chronomètre de la phase suivante"
+L.AUTO_TIMER_OPTIONS.stage				= "Afficher le chronomètre de la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecount 		= "Afficher le chronomètre (avec compte) pour la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecountcycle 	= "Afficher le chronomètre (avec compte de phase et compte de cycle) pour la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecontext 		= "Afficher le chronomètre pour la prochaine phase de $spell:%s"
@@ -540,9 +557,9 @@ L.AUTO_ICONS_OPTION_TARGETS_ROSTER 		= "Définir des icônes sur les cibles de $
 L.AUTO_ICONS_OPTION_NPCS				= "Définir des icônes sur $spell:%s"
 L.AUTO_ICONS_OPTION_CONFLICT			= " (Peut entrer en conflit avec d'autres options)"
 
-L.AUTO_ARROW_OPTION_TEXT		= "Afficher la flèche " .. L.DBM .. " en direction de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT2		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT3		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT				= "Afficher la flèche " .. L.DBM .. " en direction de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT2				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT3				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
 
 L.AUTO_YELL_OPTION_TEXT.shortyell		= "Crie lorsque vous êtes affecté par $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.yell			= "Crie lorsque vous êtes affecté par $spell:%s"
@@ -572,8 +589,8 @@ L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no str
 L.AUTO_YELL_CUSTOM_FADE				= "%s disparaît"
 L.AUTO_HUD_OPTION_TEXT				= "Afficher HUD pour $spell:%s"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Afficher HUD pour diverses activités"
-L.AUTO_NAMEPLATE_OPTION_TEXT 		= "Afficher les auras de la barre d'info pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
-L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED = "Afficher les auras de la barre d'info pour $spell:%s en utilisant uniquement "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT 		= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED = "Afficher les auras de la plaque de nom pour $spell:%s en utilisant uniquement "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT		 	= "Afficher la fenêtre de portée (%s) pour $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 L.AUTO_RANGE_OPTION_TEXT_SHORT  	= "Afficher la fenêtre de portée (%s)"--For when a range frame is just used for more than one thing
 L.AUTO_RRANGE_OPTION_TEXT			= "Afficher la fenêtre de portée inversée (%s) pour $spell:%s"--Reverse range frame (green when players in range, red when not)
@@ -608,7 +625,7 @@ L.HUD_USAGE	= {
 
 L.ARROW_MOVABLE				= "Flèche mobile"
 L.ARROW_WAY_USAGE			= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"
-L.ARROW_WAY_SUCCESS			= "Pour masquer la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
+L.ARROW_WAY_SUCCESS			= "Pour cacher la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
 L.ARROW_ERROR_USAGE	= {
 	"Utilisation de " .. L.DBM .. "-Arrow:",
 	"-----------------",
@@ -658,10 +675,13 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "Ne plus afficher ce message pour ce paquet." 
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Wago.io dans votre presse-papiers."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Curseforge dans votre presse-papiers."
 --"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
-L.DBM_INSTALL_PACKAGE_VANILLA = "Paquet Vanilla et La saison de la découverte"
-L.DBM_INSTALL_PACKAGE_WRATH = "Paquet Wrath"
-L.DBM_INSTALL_PACKAGE_CATA = "Paquet Cataclysm"
-L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet Donjons, Gouffres et Événements"
+
+L.DBM_INSTALL_PACKAGE_VANILLA 	= "Paquet de Vanilla et La saison de la découverte"
+L.DBM_INSTALL_PACKAGE_BCC 		= "Paquet de Burning Crusade"
+L.DBM_INSTALL_PACKAGE_WRATH 	= "Paquet de Wrath"
+L.DBM_INSTALL_PACKAGE_CATA 		= "Paquet de Cataclysm"
+L.DBM_INSTALL_PACKAGE_MOP		= "Paquet de Mist of Pandaria"
+L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet de Donjons, Gouffres et Événements"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"
