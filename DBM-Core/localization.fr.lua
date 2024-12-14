@@ -511,10 +511,10 @@ L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le temps de rech
 
 L.AUTO_TIMER_OPTIONS.cd					= "Afficher le chronomètre pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Afficher le chronomètre (avec compte) pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la plaque de nom uniquement pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la plaque de nom uniquement pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Afficher le chronomètre pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge du capacité spéciale"
-L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le temps de recharge de la combinaison de capacités"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le recharge de la combinaison de capacités"--Used for combining 2 abilities into a single timer
 
 L.AUTO_TIMER_OPTIONS.next				= "Afficher le chronomètre avant le prochain $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Afficher le chronomètre avant le prochain $spell:%s"
@@ -523,13 +523,13 @@ L.AUTO_TIMER_OPTIONS.nextsource			= "Afficher le chronomètre avant le prochain 
 L.AUTO_TIMER_OPTIONS.nextspecial		= "Afficher le chronomètre avant la prochaine capacité spéciale"
 L.AUTO_TIMER_OPTIONS.nextcombo			= "Afficher le chronomètre pour la prochaine combinaison de capacités"--Used for combining 2 abilities into a single timer
 
-L.AUTO_TIMER_OPTIONS.var				= "Afficher le chronomètre (avec variation) pour le recharge de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varcount			= "Afficher le chronomètre (avec compte et variation) pour le recharge de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varnp				= "Afficher uniquement le chronomètre sur la plaque de nom (avec variation) pour le recharge de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varpnp				= "Afficher uniquement le chronomètre prioritaire sur la plaque de nom (avec variation) pour le recharge de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varsource			= "Afficher le chronomètre (avec source et variation) pour le recharge de $spell:%s",
-L.AUTO_TIMER_OPTIONS.varspecial			= "Afficher le chronomètre (avec variation) pour le recharge de capacité spéciale",
-L.AUTO_TIMER_OPTIONS.varcombo			= "Afficher le chronomètre (avec variation) pour le recharge de combo de capacités",
+L.AUTO_TIMER_OPTIONS.var				= "Afficher le chronomètre (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount			= "Afficher le chronomètre (avec compte et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Afficher uniquement le chronomètre sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Afficher uniquement le chronomètre prioritaire sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource			= "Afficher le chronomètre (avec source et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial			= "Afficher le chronomètre (avec variation) pour le recharge de capacité spéciale"
+L.AUTO_TIMER_OPTIONS.varcombo			= "Afficher le chronomètre (avec variation) pour le recharge de combo de capacités"
 
 L.AUTO_TIMER_OPTIONS.achievement		= "Afficher le chronomètre pour réussir %s"
 L.AUTO_TIMER_OPTIONS.stage				= "Afficher le chronomètre de la prochaine phase"
