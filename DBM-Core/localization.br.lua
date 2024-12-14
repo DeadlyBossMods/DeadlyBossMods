@@ -156,7 +156,7 @@ L.OPTION_CATEGORY_SOUNDS			= "Sons"
 --Misc object broken down into sub cats
 L.OPTION_CATEGORY_DROPDOWNS			= "Menus suspensos"--Still put in MISC sub grooup, just used for line separators since multiple of these on a fight (or even having on of these at all) is rare.
 L.OPTION_CATEGORY_YELLS 			= "Gritos"
-L.OPTION_CATEGORY_NAMEPLATES 		= "places de nome"
+L.OPTION_CATEGORY_NAMEPLATES 		= "Places de nome"
 L.OPTION_CATEGORY_ICONS 			= "Ícones"
 L.OPTION_CATEGORY_PAURAS 			= "Auras privadas"
 
