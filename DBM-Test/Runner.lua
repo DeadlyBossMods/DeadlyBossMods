@@ -288,7 +288,19 @@ function test:Trace(mod, event, ...)
 				geterrorhandler()("trace of type " .. event .. " without warning object ")
 			end
 			if not obj.testUseCount then
-				self.reporter:Taint("StrayObjects")
+				local allowedMods = self.testData.otherMods
+				local isAllowedStray = allowedMods == obj.mod.id
+				if type(allowedMods) == "table" then
+					for _, v in ipairs(allowedMods) do
+						if v == obj.mod.id then
+							isAllowedStray = true
+							break
+						end
+					end
+				end
+				if not isAllowedStray then
+					self.reporter:Taint("StrayObjects")
+				end
 				injectTestDataIntoWarningObject(obj)
 			end
 			obj.testUseCount = obj.testUseCount + 1
@@ -860,6 +872,7 @@ end)
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
 ---@field mod string|integer The boss mod being tested.
+---@field otherMods ((string|integer)[]|(string|integer))? List of other mods that are allowed to trigger warnings/timers during test execution, useful for trash mods that are active during bosses.
 ---@field ignoreWarnings? TestIgnoreWarnings Acknowledge findings to remove them from the report.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
