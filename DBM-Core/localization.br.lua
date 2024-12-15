@@ -9,7 +9,7 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "HMM"
 end
 
-L.HOW_TO_USE_MOD					= "Bem vindo ao " .. L.DBM .. " Digite /dbm help para obter uma lista dos comandos disponíveis. Para acessar as opções, digite /dbm no seu bate-papo para começar a configuração. Carregue zonas específicas manualmente para configurar opções específicas de cada chefe para o seu gosto pessoal. O " .. L.DBM .. " tenta fazer isso automaticamente para você, observando sua spec na primeira vez que é executado. De qualquer forma, você pode querer habilitar outras opções."
+L.HOW_TO_USE_MOD					= "Bem vindo ao " .. L.DBM .. " Digite /dbm help para obter uma lista dos comandos disponíveis. Para acessar as opções, digite /dbm no seu bate-papo para começar a configuração. Carregue zonas específicas manualmente para configurar opções específicas de cada chefe para o seu gosto pessoal. O " .. L.DBM .. " tenta fazer isso automaticamente para você, observando sua spec na primeira vez que é executado. De qualquer forma, você pode querer ativar outras opções."
 L.SILENT_REMINDER 					= "Lembrete: " .. L.DBM .. " ainda está em modo silencioso."
 L.NEWS_UPDATE						= "|h|c11ff1111Notícias|r|h: Esta atualização altera a estrutura do módulo para que o clássico e o principal agora usem módulos unificados (iguais). Isso significa que os módulos Vanilla, TBC, Wrath e Cata agora são instalados separadamente usando os mesmos pacotes que o jogo original. Leia mais sobre isso |Hgarrmission:DBM:news|h|cff3588ff[aqui]|r|h"
 L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111Notícias|r|h: Esta atualização altera a estrutura do módulo para que o clássico e o principal agora usem módulos unificados (iguais). Isso significa que os módulos Vanilla, TBC, Wrath e Cata agora são instalados separadamente usando os mesmos pacotes que o jogo original. Você está atualmente em um raide que está com um módulo ausente. Esta mensagem continuará aparecendo (e você não terá alertas funcionais para esta zona) até que você tenha instalado o módulo de raide ausente."
@@ -25,8 +25,8 @@ L.BAD_LOAD							= L.DBM .. " detectou que a sua mod desta área falhou ao tenta
 L.LOAD_MOD_VER_MISMATCH				= "%s não foi carregado por não cumprir os requerimentos. Uma atualização da mod é necessária. Obrigado."
 L.LOAD_MOD_EXP_MISMATCH 			= "%s não pôde ser carregado porque foi projetado para uma expansão do WoW que não está atualmente disponível. Quando a expansão estiver disponível, este módulo funcionará automaticamente."
 L.LOAD_MOD_TOC_MISMATCH 			= "%s não pôde ser carregado porque foi projetado para um patch do WoW (%s) que não está atualmente disponível. Quando o patch estiver disponível, este módulo funcionará automaticamente."
-L.LOAD_MOD_DISABLED 				= "%s está instalado, mas atualmente desativado. Este mod não será carregado a menos que você o habilite."
-L.LOAD_MOD_DISABLED_PLURAL 			= "%s estão instalados, mas atualmente desativados. Estes mods não serão carregados a menos que você os habilite."
+L.LOAD_MOD_DISABLED 				= "%s está instalado, mas atualmente desativado. Este mod não será carregado a menos que você o ative."
+L.LOAD_MOD_DISABLED_PLURAL 			= "%s estão instalados, mas atualmente desativados. Estes mods não serão carregados a menos que você os ative."
 
 L.COPY_URL_DIALOG 					= "Copiar URL"
 L.COPY_WA_DIALOG 					= "Copiar Chave WA"
@@ -37,13 +37,13 @@ L.NO_RANGE 							= "O quadro de distância não pode ser usado devido a restri�
 L.NO_ARROW 							= "A seta não pode ser usada em instâncias."
 L.NO_HUD 							= "O HUDMap não pode ser usado em instâncias."
 
-L.DYNAMIC_DIFFICULTY_CLUMP			= L.DBM .. " desabilitou o quadro de distância dinâmico nesta luta, por falta de informação sobre o número de jogadores à ficarem amontoados para um grupo desse tamanho."
-L.DYNAMIC_ADD_COUNT					= L.DBM .. " desabilitou aviso da contagem de adds nesta luta, por falta de informação da quantidade de adds para um grupo deste tamanho."
-L.DYNAMIC_MULTIPLE					= L.DBM .. " desabilitou varias funções desta luta por causa da falta de informação sobre certas mecânicas para um grupo deste tamanho."
+L.DYNAMIC_DIFFICULTY_CLUMP			= L.DBM .. " desativou o quadro de distância dinâmico nesta luta, por falta de informação sobre o número de jogadores à ficarem amontoados para um grupo desse tamanho."
+L.DYNAMIC_ADD_COUNT					= L.DBM .. " desativou aviso da contagem de adds nesta luta, por falta de informação da quantidade de adds para um grupo deste tamanho."
+L.DYNAMIC_MULTIPLE					= L.DBM .. " desativou varias funções desta luta por causa da falta de informação sobre certas mecânicas para um grupo deste tamanho."
 
 L.LOOT_SPEC_REMINDER				= "A sua especialização atual é %s. A sua escolha atual de saque é %s."
 
-L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " detectou que você tem ícones habilitados tanto no BigWigs quanto no " .. L.DBM .. ". Por favor desabilite um dos dois para evitar conflitos com o líder da raide"
+L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " detectou que você tem ícones ativados tanto no BigWigs quanto no " .. L.DBM .. ". Por favor desabilite um dos dois para evitar conflitos com o líder da raide"
 
 L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Você pode baixá-lo no Curse, Wago, WoWI ou Github."
 L.MOD_MISSING						= "Sem módulo de raide"
@@ -156,7 +156,7 @@ L.OPTION_CATEGORY_SOUNDS			= "Sons"
 --Misc object broken down into sub cats
 L.OPTION_CATEGORY_DROPDOWNS			= "Menus suspensos"--Still put in MISC sub grooup, just used for line separators since multiple of these on a fight (or even having on of these at all) is rare.
 L.OPTION_CATEGORY_YELLS 			= "Gritos"
-L.OPTION_CATEGORY_NAMEPLATES 		= "Places de nome"
+L.OPTION_CATEGORY_NAMEPLATES 		= "Placas de nome"
 L.OPTION_CATEGORY_ICONS 			= "Ícones"
 L.OPTION_CATEGORY_PAURAS 			= "Auras privadas"
 
@@ -183,8 +183,8 @@ L.VERSIONCHECK_FOOTER				= "Encontrados %d jogadores com " .. L.DBM .. " & %d jo
 L.VERSIONCHECK_OUTDATED				= "Os seguintes %d jogadores estão com versões desatualizadas de boss mods: %s"
 L.YOUR_VERSION_OUTDATED				= "Sua versão do " .. L.DEADLY_BOSS_MODS .. " está desatualizada. Por favor, acesse no Curse, Wago, WoWI ou Github para baixar a versão mais recente."
 L.VOICE_PACK_OUTDATED				= "O pacote de vozes do seu " .. L.DBM .. " pode estar sem alguns dos sons suportados por esta versão do " .. L.DBM .. ". Filtro de aviso especial sonoro foi desativado. Por favor baixe a versão mais recente do pacote de vozes ou contate o autor para um pacote que contenha os sons aqui referidos."
-L.VOICE_MISSING						= "Você tinha um pacote de vozes " .. L.DBM .. " selecionado que não pode ser encontrado. Sua seleção foi restaurada para 'Nenhum/None'. Caso seja um erro, certifique-se que o pacote esta instalado corretamente e habilitado em addons."
-L.VOICE_DISABLED					= "Você atualmente tem pelo menos um pacote de voz do " .. L.DBM .. " instalado, mas nenhum está ativado. Se pretende usar um pacote de voz, certifique-se de que está selecionado em 'Alertas Falados', caso contrário, desinstale os pacotes de voz não utilizados para ocultar esta mensagem."
+L.VOICE_MISSING						= "Você tinha um pacote de vozes " .. L.DBM .. " selecionado que não pode ser encontrado. Sua seleção foi restaurada para 'Nenhum/None'. Caso seja um erro, certifique-se que o pacote esta instalado corretamente e ativado em addons."
+L.VOICE_DISABLED					= "Você atualmente tem pelo menos um pacote de voz do " .. L.DBM .. " instalado, mas nenhum está ativado. Se pretende usar um pacote de voz, certifique-se de que está selecionado em 'Alertas falados', caso contrário, desinstale os pacotes de voz não utilizados para ocultar esta mensagem."
 L.VOICE_COUNT_MISSING				= "Voz de contagem regressiva %d esta selecionada para um pacote de voz que não pode ser encontrado. Foi restaurada a configuração padrão."
 L.BIG_WIGS							= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY						= " (|cff308530Chave WA:|r %s)"
@@ -203,12 +203,12 @@ L.OUTDATEDPROFILES					= "AVISO: " .. L.DBM .. "-Profiles não é compatível co
 L.OUTDATEDSPELLTIMERS 				= "AVISO: DBM-SpellTimers interfere no " .. L.DBM .. " e deve ser desativado para que ele funcione corretamente."
 L.OUTDATEDRLT 						= "AVISO: DBM-RaidLeadTools interfere no " .. L.DBM .. ". Este addon não é mais suportado e deve ser removido para evitar conflitos."
 L.VICTORYSOUND 						= "AVISO: DBM-VictorySound não é compatível com esta versão do " .. L.DBM .. ". Remova-o para evitar conflitos e garantir o funcionamento adequado."
-L.DPMCORE 							= "AVISO: Os mods Deadly PvP foram descontinuados e não são compatíveis com esta versão do " .. L.DBM .. ". Remova-os para evitar conflitos."
+L.DPMCORE 							= "AVISO: Os módulos Deadly PvP foram descontinuados e não são compatíveis com esta versão do " .. L.DBM .. ". Remova-os para evitar conflitos."
 L.DBMLDB 							= "AVISO: O DBM-LDB agora está incorporado ao DBM-Core. Embora não cause problemas, é recomendável remover 'DBM-LDB' da pasta de addons."
 L.DBMLOOTREMINDER 					= "AVISO: O módulo de terceiros DBM-LootReminder está instalado. Ele não é mais compatível com o cliente do WoW Retail e causa problemas no " .. L.DBM .. ", impedindo o envio de cronômetros de puxada. Recomenda-se desinstalá-lo."
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de " .. L.DBM .. " exige que o jogo seja reiniciado por completo para funcionar corretamente. A atualização inclui novos arquivos ou alterações no .toc que não podem ser carregadas via ReloadUI. Continuar sem reiniciar pode causar erros ou funcionalidades quebradas."
 L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM .. " está desatualizada, e este módulo de luta possui recursos mais recentes ou correções de bugs. Atualize para melhorar sua experiência neste encontro."
-L.PLATER_NP_AURAS_MSG 				= L.DBM .. " possui um recurso avançado que exibe cronômetros de recarga inimigos como ícones nas places de nome. Isso está ativado por padrão para a maioria dos usuários, mas desativado nas opções do Plater. Para aproveitar ao máximo o DBM e o Plater, ative essa função no Plater em 'Buff Special'. Para não ver esta mensagem novamente, desative a opção 'Ícones de recarga nas places de nome' nas configurações do DBM."
+L.PLATER_NP_AURAS_MSG 				= L.DBM .. " possui um recurso avançado que exibe cronômetros de recarga inimigos como ícones nas placas de nome. Isso está ativado por padrão para a maioria dos usuários, mas desativado nas opções do Plater. Para aproveitar ao máximo o DBM e o Plater, ative essa função no Plater em 'Buff Special'. Para não ver esta mensagem novamente, desative a opção 'Ícones de recarga nas placas de nome' nas configurações do DBM."
 
 L.MOVABLE_BAR						= "Arraste-me!"
 
@@ -219,15 +219,15 @@ L.PIZZA_ERROR_USAGE					= "Uso: /dbm [broadcast] timer <tempo> <texto>"
 L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS --Technically redundant -- OPTIONAL
 L.MINIMAP_TOOLTIP_FOOTER			= "Shift + clique ou clique com o botão direito para mover\nAlt + Shift + clique para arrastar livremente"
 
-L.RANGECHECK_HEADER					= "Verificação de alcance: (%d m)"
-L.RANGECHECK_HEADERT				= "Verificação de alcance (%dy-%dP)"
-L.RANGECHECK_RHEADER				= "R-Verificação de alcance (%dy)"
-L.RANGECHECK_RHEADERT				= "R-Verificação de alcance (%dy-%dP)"
-L.RANGECHECK_SETRANGE				= "Definir alcance"
+L.RANGECHECK_HEADER					= "Verificação de distância: (%d m)"
+L.RANGECHECK_HEADERT				= "Verificação de distância (%dy-%dP)"
+L.RANGECHECK_RHEADER				= "R-Verificação de distância (%dy)"
+L.RANGECHECK_RHEADERT				= "R-Verificação de distância (%dy-%dP)"
+L.RANGECHECK_SETRANGE				= "Definir distância"
 L.RANGECHECK_SETTHRESHOLD			= "Definir limite para jogador"
 L.RANGECHECK_SOUNDS					= "Sons"
-L.RANGECHECK_SOUND_OPTION_1			= "Soar quando um jogador entrar no alcance"
-L.RANGECHECK_SOUND_OPTION_2			= "Soar quando mais de um jogador entrar no alcance"
+L.RANGECHECK_SOUND_OPTION_1			= "Soar quando um jogador entrar na distância"
+L.RANGECHECK_SOUND_OPTION_2			= "Soar quando mais de um jogador entrar na distância"
 L.RANGECHECK_SOUND_0				= "Sem som"
 L.RANGECHECK_SOUND_1				= "Som padrão"
 L.RANGECHECK_SOUND_2				= "Bip irritante"
@@ -237,9 +237,9 @@ L.RANGECHECK_OPTION_RADAR			= "Exibir quadro do radar"
 L.RANGECHECK_OPTION_TEXT			= "Exibir quadro de texto"
 L.RANGECHECK_OPTION_BOTH			= "Exibir ambos"
 L.RANGERADAR_HEADER					= "Radar (%d m)"
-L.RANGERADAR_RHEADER				= "R-alcance:%d Jogadores:%d"
-L.RANGERADAR_IN_RANGE_TEXT			= "%d em alcance (%0.1fy)"--Multi
-L.RANGECHECK_IN_RANGE_TEXT			= "%d em alcance"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
+L.RANGERADAR_RHEADER				= "R-distância:%d Jogadores:%d"
+L.RANGERADAR_IN_RANGE_TEXT			= "%d em distância (%0.1fy)"--Multi
+L.RANGECHECK_IN_RANGE_TEXT			= "%d em distância"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE		= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE					= "Quadro de info"
@@ -260,7 +260,7 @@ L.SLASHCMD_HELP						= {
 	"Comandos disponíveis:",
 	"-----------------",
 	"/range <número> ou /distance <número>: Mostra o quadro de distância. /rrange ou /rdistance para inverter as cores.",
-	"/hudar <número>: Mostra o buscador de alcance baseado em HUD.",
+	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
 	"/dbm timer: Inicia um cronômetro personalizado do " .. L.DBM .. ", veja '/dbm timer' para detalhes.",
 	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
 	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
@@ -271,8 +271,8 @@ L.SLASHCMD_HELP2					= {
 	"-----------------",
 	"/dbm pull <seg>: Dispara um cronômetro para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronômetro para iniciar a luta (requer status de líder/assistente).",
 	"/dbm break <min>: Inicia um cronômetro de intervalo de <min> minutos. Dá a todos os integrantes da raide um cronômetro de intervalo (requer status de líder/assistente).",
-	"/dbm version: Realiza uma checagem de versão de toda a raide. (ou: ver).",
-	"/dbm version2: Realiza uma checagem de versão de toda a raide e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
+	"/dbm version: Realiza uma verificação de versão de toda a raide. (ou: ver).",
+	"/dbm version2: Realiza uma verificação de versão de toda a raide e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide."
 }
@@ -280,7 +280,7 @@ L.SLASHCMD_HELP2					= {
 L.TIMER_USAGE						= {
 	"Comandos de cronômetro do DBM:",
 	"-----------------",
-	"/dbm timer <tempo> <texto>: Inicia um Temporizador " .. L.DBM .. " de <x> segundos com o nome <texto>.",
+	"/dbm timer <tempo> <texto>: Inicia um cronômetro de " .. L.DBM .. " de <x> segundos com o nome <texto>.",
 	"/dbm ltimer <tempo> <texto>: Inicia um cronômetro que também é automaticamente repetido até ser cancelado.",
 	"('Broadcast' na frente de qualquer cronômetro também o compartilha com a raide se o líder/assistente)",
 	"/dbm timer endloop: Interrompe qualquer ltimer em loop."
@@ -547,13 +547,13 @@ L.AUTO_TIMER_OPTIONS.roleplay 			= "Exibir cronômetro para a duração do rolep
 L.AUTO_TIMER_OPTIONS.combat				= "Exibir cronômetro para começo do combate"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "Colocar ícones nos alvos de $spell:%s"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_A 		= "Colocar ícones nos alvos de $spell:%s com prioridade para tanque sobre corpo a corpo sobre alcance e alfabético como substituto"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_R 		= "Colocar ícones nos alvos de $spell:%s com prioridade para tanque sobre corpo a corpo sobre alcance e lista de raide como substituto"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_A 		= "Colocar ícones nos alvos de $spell:%s com prioridade para tanque sobre corpo a corpo sobre distância e alfabético como substituto"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_R 		= "Colocar ícones nos alvos de $spell:%s com prioridade para tanque sobre corpo a corpo sobre distância e lista de raide como substituto"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_A 	= "Colocar ícones nos alvos de $spell:%s com prioridade para corpo a corpo e alfabética"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R 	= "Colocar ícones nos alvos de $spell:%s com prioridade para corpo a corpo e lista de raide"
-L.AUTO_ICONS_OPTION_TARGETS_RANGED_A 	= "Colocar ícones nos alvos de $spell:%s com prioridade para alcance e alfabética"
-L.AUTO_ICONS_OPTION_TARGETS_RANGED_R 	= "Colocar ícones nos alvos de $spell:%s com prioridade para alcance e lista de raide"
-L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Colocar ícones nos alvos de $spell:%s com prioridade para corpo a corpo sobre alcance sobre curandeiro e lista de raide como substituto"
+L.AUTO_ICONS_OPTION_TARGETS_RANGED_A 	= "Colocar ícones nos alvos de $spell:%s com prioridade para distância e alfabética"
+L.AUTO_ICONS_OPTION_TARGETS_RANGED_R 	= "Colocar ícones nos alvos de $spell:%s com prioridade para distância e lista de raide"
+L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Colocar ícones nos alvos de $spell:%s com prioridade para corpo a corpo sobre distância sobre curandeiro e lista de raide como substituto"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA 		= "Colocar ícones nos alvos de $spell:%s com prioridade alfabética"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER 		= "Colocar ícones nos alvos de $spell:%s com prioridade da lista de raide"
 L.AUTO_ICONS_OPTION_NPCS				= "Colocar ícones no $spell:%s"
@@ -593,9 +593,9 @@ L.AUTO_HUD_OPTION_TEXT 					= "Exibir HudMap para $spell:%s (Descontinuado)"
 L.AUTO_HUD_OPTION_TEXT_MULTI 			= "Exibir HudMap para vários mecanismos (Descontinuado)"
 L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Exibir auras na placa de nome para $spell:%s usando um addon de placa de nome compatível ou "..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Exibir auras na placa de nome apenas para $spell:%s usando apenas "..L.DBM
-L.AUTO_RANGE_OPTION_TEXT 				= "Exibir quadro de distância (%s) para $spell:%s" -- string usado para o alcance, para que possamos usar coisas como "5/2" como um valor para esse campo
+L.AUTO_RANGE_OPTION_TEXT 				= "Exibir quadro de distância (%s) para $spell:%s" -- string usado para a distância, para que possamos usar coisas como "5/2" como um valor para esse campo
 L.AUTO_RANGE_OPTION_TEXT_SHORT 			= "Exibir quadro de distância (%s)" -- Quando um quadro de distância é usado apenas para mais de uma coisa
-L.AUTO_RRANGE_OPTION_TEXT 				= "Exibir quadro de distância reverso (%s) para $spell:%s" -- quadro de distância reverso (verde quando os jogadores estão dentro do alcance, vermelho quando não estão)
+L.AUTO_RRANGE_OPTION_TEXT 				= "Exibir quadro de distância reverso (%s) para $spell:%s" -- quadro de distância reverso (verde quando os jogadores estão dentro da distância, vermelho quando não estão)
 L.AUTO_RRANGE_OPTION_TEXT_SHORT 		= "Exibir quadro de distância reverso (%s)"
 L.AUTO_INFO_FRAME_OPTION_TEXT 			= "Exibir quadro de informações para $spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2 			= "Exibir quadro de informações para visão geral do encontro"
