@@ -450,8 +450,15 @@ local function transcribeCleu(rawParams, anon)
 	)
 end
 
+local ignoredEvents = {
+	["Echo_Log"] = true,
+	["ARENA_OPPONENT_UPDATE"] = true,
+	["PLAYER_INFO"] = true,
+	["CHAT_MSG_RAID_WARNING"] = true
+}
+
 local function transcribeEvent(event, params, anon)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" or event == "PLAYER_INFO" then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or ignoredEvents[event] then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
