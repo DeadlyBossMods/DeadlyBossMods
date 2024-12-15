@@ -184,31 +184,31 @@ L.VERSIONCHECK_OUTDATED		= "Les joueurs suivants %d ont une version périmée du
 L.YOUR_VERSION_OUTDATED	  	= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée. Veuillez vous rendre sur Curse, Wago, WoWInterface ou Github pour obtenir la dernière version."
 L.VOICE_PACK_OUTDATED		= "Il semble que votre pacquet de voix " .. L.DBM .. " manquent de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du pacquet devoix ou contactez l'auteur pour une mise à jour qui la contient."
 L.VOICE_MISSING				= "Vous aviez un pacquet de voix séléctionné qui ne pouvait pas être trouvé. Votre séléction a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez vous que votre pacquet est correctement installé et activé."
-L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour masquer ce message."
+L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour cacher ce message."
 L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un pacquet qui ne pouvait pas être trouvé. Il a été reinitilisé à l'option par défaut."
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
-L.UPDATEREMINDER_HEADER_SUBMODULE	= "Votre module de %s est périmé.\n La version %s est disponible au Curse, Wago, WoWInterface ou Github."
-L.UPDATEREMINDER_FOOTER				= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papier."
-L.UPDATEREMINDER_FOOTER_GENERIC 	= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papier."
-L.UPDATEREMINDER_DISABLE			= "ATTENTION : Compte tenu que votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée et incompatible avec les nouvelles versions, " .. L.DBM .. " a été désactivé jusqu'à ce que vous le mettiez à jour. Ceci, pour éviter de mauvaises expériences de jeu pour vous et les membres du raid."
-L.UPDATEREMINDER_DISABLETEST		= "ATTENTION : En raison de la version obsolète de votre " .. L.DEADLY_BOSS_MODS .. " et du fait qu'il s'agit d'un royaume de test/bêta, il a été désactivé de force et ne peut pas être utilisé avant d'être mis à jour. Ceci est pour garantir que des mods obsolètes ne sont pas utilisés pour générer des retours d'expérience sur les tests."
-L.UPDATEREMINDER_HOTFIX		  		= "Votre version de " .. L.DBM .. " contient des chronomètres et alertes incorrects sur ce boss. Ceci a été corrigé dans la dernière version (ou alpha si la prochaine version n'est pas encore disponible)."
-L.UPDATEREMINDER_HOTFIX_ALPHA		= "La version de " .. L.DBM .. " sur laquelle vous êtes a des problèmes connus sur ce combat qui sont corrigées dans une future version (ou au moins une version alpha)"
-L.UPDATEREMINDER_MAJORPATCH			= "ATTENTION : Du au fait que votre " .. L.DBM .. " n'est pas à jour, celui-ci a été désactivé, puisqu'il y a eu une mise à jour majeure du jeu. Ceci pour être sûr que du code incompatible ou trop vieux ne réduise l'expérience de jeu pour vous ou des membres de votre groupe. Téléchargez une nouvelle version sur deadlybossmods.com ou curse dès que possible."
-L.VEM								= "ATTENTION : Vous utilisez et " .. L.DBM .. " et Voice Encounter Mods. DBM ne tournera pas dans cette configuration et ne sera donc pas chargé."
-L.OUTDATEDPROFILES					= "ATTENTION : DBM-Profiles n'est pas compatible avec cette version de " .. L.DBM .. ". Il faut qu'il soit désactivé pour que " .. L.DBM .. " puisse tourner sans soucis."
-L.OUTDATEDSPELLTIMERS 				= "ATTENTION : DBM-SpellTimers interfère avec " .. L.DBM .. " et doit être désactivé pour que " .. L.DBM .. " fonctionne correctement."
-L.OUTDATEDRLT 						= "ATTENTION : DBM-RaidLeadTools interfère avec " .. L.DBM .. ". DBM-RaidLeadTools n'est plus pris en charge et doit être supprimé pour que " .. L.DBM .. " fonctionne correctement."
-L.VICTORYSOUND 						= "ATTENTION : DBM-VictorySound n'est pas compatible avec cette version de " .. L.DBM .. ". Il doit être supprimé avant que " .. L.DBM .. " puisse continuer, pour éviter les conflits."
-L.DPMCORE 							= "ATTENTION : Les mods JcJ mortels sont abandonnés et non compatibles avec cette version de " .. L.DBM .. ". Ils doivent être supprimés avant que " .. L.DBM .. " puisse continuer, pour éviter les conflits."
-L.DBMLDB 							= "ATTENTION : DBM-LDB est maintenant intégré dans DBM-Core. Bien qu'il ne causera aucun problème, il est recommandé de supprimer 'DBM-LDB' de votre dossier d'add-ons."
-L.DBMLOOTREMINDER 					= "ATTENTION : Le mod tiers DBM-LootReminder est installé. Cet add-on n'est plus compatible avec le client WoW Retail et causera des problèmes avec " .. L.DBM .. " et ne pourra pas envoyer de chronomètres de pull. Désinstallation de cet add-on recommandée."
-L.UPDATE_REQUIRES_RELAUNCH			= "ATTENTION: Cette mise à jour de " .. L.DBM .. " ne fonctionnera pas correctement si vous ne relancez pas totalement le client de jeu. Cette mise à jour contient de nouveaux fichiers ou des modifications de fichers .toc qui ne peuvent pas être chargés par un reloadUI. Vous pouvez rencontrer des erreurs tant que vous ne relancez pas le client."
-L.OUT_OF_DATE_NAG					= "Votre version de " .. L.DBM .. " est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un chronomètre ou un cri important que votre raid prévoit que vous ayez."
-L.PLATER_NP_AURAS_MSG				= L.DBM .. " inclut une fonctionnalité avancée pour afficher les chronomètres de recharge ennemies à l'aide d'icônes sur les barres d'info. Cela est activé par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, il est désactivé par défaut dans les options de Plater, à moins que vous ne l'activiez. Pour tirer le meilleur parti de DBM (et de Plater), il est recommandé d'activer cette fonctionnalité dans Plater sous la section 'Buff Special'. Si vous ne voulez pas voir ce message à nouveau, vous pouvez également simplement désactiver complètement l'option 'Icônes de recharge sur les barres d'info' dans les options de désactivation globales de DBM ou dans les panneaux d'options des barres d'info."
+L.UPDATEREMINDER_HEADER 			= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée.\nLa version %s (%s) est disponible sur Curse, Wago, WoWInterface ou Github."
+L.UPDATEREMINDER_HEADER_SUBMODULE 	= "Votre module %s est périmé.\nLa version %s est disponible sur Curse, Wago, WoWInterface ou Github."
+L.UPDATEREMINDER_FOOTER 			= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papiers."
+L.UPDATEREMINDER_FOOTER_GENERIC 	= "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papiers."
+L.UPDATEREMINDER_DISABLE 			= "ATTENTION : Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée et incompatible avec les nouvelles versions. " .. L.DBM .. " a été désactivé jusqu’à ce que vous le mettiez à jour. Ceci vise à éviter des problèmes pour vous et les membres de votre raid."
+L.UPDATEREMINDER_DISABLETEST 		= "ATTENTION : Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée, et comme il s'agit d'un royaume de test/bêta, elle a été désactivée de force. Vous devrez la mettre à jour pour pouvoir l'utiliser à nouveau. Ceci est essentiel pour éviter l'utilisation de mods périmées lors des retours sur les tests."
+L.UPDATEREMINDER_HOTFIX 			= "Votre version actuelle de " .. L.DBM .. " contient des erreurs de chronomètres ou d'alertes sur ce boss. Ces problèmes ont été corrigés dans la dernière version (ou dans une version alpha si elle est disponible)."
+L.UPDATEREMINDER_HOTFIX_ALPHA 		= "Votre version actuelle de " .. L.DBM .. " contient des erreurs connues pour ce combat, corrigées dans une prochaine version (ou dans une version alpha)."
+L.UPDATEREMINDER_MAJORPATCH 		= "ATTENTION : Une mise à jour majeure du jeu a eu lieu et votre " .. L.DBM .. " est périmée. Il a été désactivé pour éviter des problèmes causés par un code incompatible. Téléchargez la dernière version sur deadlybossmods.com ou Curse dès que possible."
+L.VEM 								= "ATTENTION : Vous utilisez " .. L.DBM .. " et Voice Encounter Mods simultanément. DBM ne fonctionnera pas dans cette configuration et ne sera pas chargé."
+L.OUTDATEDPROFILES 					= "ATTENTION : DBM-Profiles n'est pas compatible avec cette version de " .. L.DBM .. ". Il doit être désactivé pour que " .. L.DBM .. " fonctionne correctement."
+L.OUTDATEDSPELLTIMERS 				= "ATTENTION : DBM-SpellTimers interfère avec " .. L.DBM .. ". Veuillez le désactiver pour que " .. L.DBM .. " fonctionne correctement."
+L.OUTDATEDRLT 						= "ATTENTION : DBM-RaidLeadTools interfère avec " .. L.DBM .. ". DBM-RaidLeadTools n'est plus pris en charge et doit être désactivé pour que " .. L.DBM .. " fonctionne correctement."
+L.VICTORYSOUND 						= "ATTENTION : DBM-VictorySound n'est pas compatible avec cette version de " .. L.DBM .. ". Veuillez le supprimer pour éviter les conflits."
+L.DPMCORE 							= "ATTENTION : Deadly PvP Mods est périmée et incompatible avec cette version de " .. L.DBM .. ". Veuillez le supprimer pour éviter les conflits."
+L.DBMLDB 							= "ATTENTION : DBM-LDB est maintenant intégré dans DBM-Core. Bien qu'il ne provoque aucun problème, il est recommandé de supprimer 'DBM-LDB' de votre dossier d'add-ons."
+L.DBMLOOTREMINDER 					= "ATTENTION : Vous avez installé le module tiers DBM-LootReminder. Cet add-on n'est plus compatible avec le client WoW Retail et provoque des problèmes avec " .. L.DBM .. ", notamment sur les chronomètres de pull. Il est recommandé de le désinstaller."
+L.UPDATE_REQUIRES_RELAUNCH 			= "ATTENTION : Cette mise à jour de " .. L.DBM .. " ne fonctionnera pas correctement tant que vous n’aurez pas redémarré complètement le client du jeu. La mise à jour inclut des fichiers ou des modifications de fichiers .toc qui nécessitent un redémarrage pour être pris en compte."
+L.OUT_OF_DATE_NAG 					= "Votre version de " .. L.DBM .. " est périmée. Il est recommandé de la mettre à jour pour ne pas manquer des alertes, des chronomètres ou des notifications importantes pour votre raid."
+L.PLATER_NP_AURAS_MSG 				= L.DBM .. " offre une fonctionnalité avancée permettant d'afficher les temps de recharge des ennemis avec des icônes sur les plaques de nom. Cette option est activée par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, elle est désactivée par défaut. Pour tirer pleinement parti de DBM et Plater, il est recommandé de l'activer dans la section 'Buff Special' des options de Plater. Si vous ne souhaitez plus voir ce message, vous pouvez désactiver complètement l'option 'Icônes de recharge sur les plaques de nom' dans les options des plaques de nom ou dans les options globales de DBM."
 
 L.MOVABLE_BAR					= "Bougez-moi !"
 
@@ -223,7 +223,7 @@ L.RANGECHECK_HEADERT			= "Vérif. de portée  (%dy-%dP)"
 L.RANGECHECK_RHEADER			= "R-Vérif. de portée  (%dy)"
 L.RANGECHECK_RHEADERT			= "R-Vérif. de portée  (%dy-%dP)"
 L.RANGECHECK_SETRANGE			= "Définir la portée"
-L.RANGECHECK_SETTHRESHOLD		= "Régler le seuil du joueur."
+L.RANGECHECK_SETTHRESHOLD		= "Définir le seuil du joueur"
 L.RANGECHECK_SOUNDS				= "Sons"
 L.RANGECHECK_SOUND_OPTION_1		= "Son quand un joueur est à portée"
 L.RANGECHECK_SOUND_OPTION_2		= "Son quand plus d'un joueur est à portée"
@@ -468,15 +468,21 @@ L.AUTO_TIMER_TEXTS.ai			= "%s AI"
 L.AUTO_TIMER_TEXTS.cd			= "Rech. %s"
 L.AUTO_TIMER_TEXTS.cdcount		= "Rech. %s (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource		= "Rech. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial	= "CD d'abilité spéciale"
+L.AUTO_TIMER_TEXTS.cdspecial	= "Rech. de capacité spéciale"
 
 L.AUTO_TIMER_TEXTS.next			= "Proch. %s"
 L.AUTO_TIMER_TEXTS.nextcount	= "Proch. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "Proch. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.nextspecial	= "Abilité spéciale suivante"
+L.AUTO_TIMER_TEXTS.nextspecial	= "Proch. capacité spéciale"
+
+L.AUTO_TIMER_TEXTS.var			= "%s"
+L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.varsource	= "%s: >%%s<"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
+L.AUTO_TIMER_TEXTS.varspecial	= "Capacité spéciale"--Now same as next, as the ~ was moved to timer number
+L.AUTO_TIMER_TEXTS.varcombo		= "%%1$s + %%2$s"--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 
 L.AUTO_TIMER_TEXTS.achievement			= "%s"
-L.AUTO_TIMER_TEXTS.stage				= "Phase suivante"
+L.AUTO_TIMER_TEXTS.stage				= "Phase"
 L.AUTO_TIMER_TEXTS.stagecount			= "Phase %%s"--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
 L.AUTO_TIMER_TEXTS.stagecountcycle		= "Phase %%s (%%s)"--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 L.AUTO_TIMER_TEXTS.stagecontext			= "%s" -- OPTIONAL
@@ -501,21 +507,32 @@ L.AUTO_TIMER_OPTIONS.castcount			= "Afficher le chronomètre (avec compte) pour 
 L.AUTO_TIMER_OPTIONS.castsource			= "Afficher le chronomètre (avec source) pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Afficher le chronomètre pour la durée de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Afficher le chronomètre avant la dissipation de $spell:%s"
-L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.ai					= "Afficher le chronomètre IA pour le recharge de $spell:%s"
+
 L.AUTO_TIMER_OPTIONS.cd					= "Afficher le chronomètre pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Afficher le chronomètre (avec compte) pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la barre d'info uniquement pour le temps de recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.cdnp 				= "Afficher le chronomètre sur la plaque de nom uniquement pour le recharge de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdsource			= "Afficher le chronomètre pour le recharge de $spell:%s"
-L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge d'abilité spéciale"
-L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le temps de recharge de la combinaison de abilités"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.cdspecial			= "Afficher le chronomètre pour le recharge de capacité spéciale"
+L.AUTO_TIMER_OPTIONS.cdcombo			= "Afficher le chronomètre pour le recharge de la combinaison de capacités"--Used for combining 2 abilities into a single timer
+
 L.AUTO_TIMER_OPTIONS.next				= "Afficher le chronomètre avant le prochain $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "Afficher le chronomètre avant le prochain $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextnp 			= "Afficher le chronomètre sur la barre d'info uniquement pour le prochain $spell:%s"
+L.AUTO_TIMER_OPTIONS.nextnp 			= "Afficher le chronomètre sur la plaque de nom uniquement pour le prochain $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "Afficher le chronomètre avant le prochain $spell:%s"
-L.AUTO_TIMER_OPTIONS.nextspecial		= "Afficher le chronomètre de l'abilité spéciale suivante"
-L.AUTO_TIMER_OPTIONS.nextcombo			= "Afficher le chronomètre pour la prochaine combinaison de abilités"--Used for combining 2 abilities into a single timer
+L.AUTO_TIMER_OPTIONS.nextspecial		= "Afficher le chronomètre avant la prochaine capacité spéciale"
+L.AUTO_TIMER_OPTIONS.nextcombo			= "Afficher le chronomètre pour la prochaine combinaison de capacités"--Used for combining 2 abilities into a single timer
+
+L.AUTO_TIMER_OPTIONS.var				= "Afficher le chronomètre (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varcount			= "Afficher le chronomètre (avec compte et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varnp				= "Afficher uniquement le chronomètre sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varpnp				= "Afficher uniquement le chronomètre prioritaire sur la plaque de nom (avec variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varsource			= "Afficher le chronomètre (avec source et variation) pour le recharge de $spell:%s"
+L.AUTO_TIMER_OPTIONS.varspecial			= "Afficher le chronomètre (avec variation) pour le recharge de capacité spéciale"
+L.AUTO_TIMER_OPTIONS.varcombo			= "Afficher le chronomètre (avec variation) pour le recharge de combo de capacités"
+
 L.AUTO_TIMER_OPTIONS.achievement		= "Afficher le chronomètre pour réussir %s"
-L.AUTO_TIMER_OPTIONS.stage				= "Afficher le chronomètre de la phase suivante"
+L.AUTO_TIMER_OPTIONS.stage				= "Afficher le chronomètre de la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecount 		= "Afficher le chronomètre (avec compte) pour la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecountcycle 	= "Afficher le chronomètre (avec compte de phase et compte de cycle) pour la prochaine phase"
 L.AUTO_TIMER_OPTIONS.stagecontext 		= "Afficher le chronomètre pour la prochaine phase de $spell:%s"
@@ -540,9 +557,9 @@ L.AUTO_ICONS_OPTION_TARGETS_ROSTER 		= "Définir des icônes sur les cibles de $
 L.AUTO_ICONS_OPTION_NPCS				= "Définir des icônes sur $spell:%s"
 L.AUTO_ICONS_OPTION_CONFLICT			= " (Peut entrer en conflit avec d'autres options)"
 
-L.AUTO_ARROW_OPTION_TEXT		= "Afficher la flèche " .. L.DBM .. " en direction de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT2		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
-L.AUTO_ARROW_OPTION_TEXT3		= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT				= "Afficher la flèche " .. L.DBM .. " en direction de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT2				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
+L.AUTO_ARROW_OPTION_TEXT3				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
 
 L.AUTO_YELL_OPTION_TEXT.shortyell		= "Crie lorsque vous êtes affecté par $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.yell			= "Crie lorsque vous êtes affecté par $spell:%s"
@@ -572,8 +589,8 @@ L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no str
 L.AUTO_YELL_CUSTOM_FADE				= "%s disparaît"
 L.AUTO_HUD_OPTION_TEXT				= "Afficher HUD pour $spell:%s"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Afficher HUD pour diverses activités"
-L.AUTO_NAMEPLATE_OPTION_TEXT 		= "Afficher les auras de la barre d'info pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
-L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED = "Afficher les auras de la barre d'info pour $spell:%s en utilisant uniquement "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT 		= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
+L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED = "Afficher les auras de la plaque de nom pour $spell:%s en utilisant uniquement "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT		 	= "Afficher la fenêtre de portée (%s) pour $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 L.AUTO_RANGE_OPTION_TEXT_SHORT  	= "Afficher la fenêtre de portée (%s)"--For when a range frame is just used for more than one thing
 L.AUTO_RRANGE_OPTION_TEXT			= "Afficher la fenêtre de portée inversée (%s) pour $spell:%s"--Reverse range frame (green when players in range, red when not)
@@ -608,7 +625,7 @@ L.HUD_USAGE	= {
 
 L.ARROW_MOVABLE				= "Flèche mobile"
 L.ARROW_WAY_USAGE			= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"
-L.ARROW_WAY_SUCCESS			= "Pour masquer la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
+L.ARROW_WAY_SUCCESS			= "Pour cacher la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
 L.ARROW_ERROR_USAGE	= {
 	"Utilisation de " .. L.DBM .. "-Arrow:",
 	"-----------------",
@@ -658,10 +675,13 @@ L.DBM_INSTALL_REMINDER_DISABLE2 = "Ne plus afficher ce message pour ce paquet." 
 L.DBM_INSTALL_REMINDER_DL_WAGO = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Wago.io dans votre presse-papiers."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Appuyez sur " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien Curseforge dans votre presse-papiers."
 --"Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "
-L.DBM_INSTALL_PACKAGE_VANILLA = "Paquet Vanilla et La saison de la découverte"
-L.DBM_INSTALL_PACKAGE_WRATH = "Paquet Wrath"
-L.DBM_INSTALL_PACKAGE_CATA = "Paquet Cataclysm"
-L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet Donjons, Gouffres et Événements"
+
+L.DBM_INSTALL_PACKAGE_VANILLA 	= "Paquet de Vanilla et La saison de la découverte"
+L.DBM_INSTALL_PACKAGE_BCC 		= "Paquet de Burning Crusade"
+L.DBM_INSTALL_PACKAGE_WRATH 	= "Paquet de Wrath"
+L.DBM_INSTALL_PACKAGE_CATA 		= "Paquet de Cataclysm"
+L.DBM_INSTALL_PACKAGE_MOP		= "Paquet de Mist of Pandaria"
+L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet de Donjons, Gouffres et Événements"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"

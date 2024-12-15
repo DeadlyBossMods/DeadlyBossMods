@@ -81,9 +81,9 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.0.38 alpha"--Core version
+DBM.DisplayVersion = "11.0.39 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 12, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 12, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 15--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -5984,7 +5984,11 @@ do
 				--call OnCombatStart
 				if mod.OnCombatStart then
 					local startEvent = syncedEvent or event
-					mod:OnCombatStart(delay or 0, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+					local nonZeroDelay = delay or 0
+					if nonZeroDelay == 0 then
+						nonZeroDelay = 0.000001
+					end
+					mod:OnCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 				end
 				--send "C" sync
 				if not synced and not mod.soloChallenge then
