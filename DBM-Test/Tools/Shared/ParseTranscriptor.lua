@@ -184,6 +184,9 @@ function transcriptorParser:NewTestGenerator(log, firstLine, lastLine, prefix, n
 end
 
 local function guessType(str)
+	if type(str) ~= "string" then
+		return str
+	end
 	if str == "nil" then
 		return nil
 	end
