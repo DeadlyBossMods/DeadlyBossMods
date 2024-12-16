@@ -189,6 +189,7 @@ end
 do
 	local CreateFrame, IsShiftKeyDown = CreateFrame, IsShiftKeyDown
 
+
 	local function onUpdate(self)
 		if self.obj then
 			self.obj.curTime = GetTime()
@@ -294,6 +295,7 @@ do
 
 	local mt = {__index = barPrototype}
 
+	---@param timer string|number
 	local function parseTimer(timer)
 		if not timer then return end
 
@@ -584,6 +586,7 @@ do
 		end
 	end
 
+	---@param self DBT
 	local function moveEnd(self)
 		updateClickThrough(self, self.Options.ClickThrough)
 		self.movable = false
