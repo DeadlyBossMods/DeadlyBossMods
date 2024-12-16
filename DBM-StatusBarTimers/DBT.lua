@@ -231,6 +231,7 @@ do
 
 	local fCounter = 1
 
+	---@param self DBT
 	local function createBarFrame(self)
 		---@class DBTBarFrame: Frame
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
@@ -276,6 +277,7 @@ do
 		varianceTex:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 		varianceTex:SetWidth(20)
 		varianceTex:SetBlendMode("ADD")
+		varianceTex:SetAlpha(0.5)
 
 		local varianceTexBorder = bar:CreateTexture("$parentVarianceBorder", "OVERLAY")
 		varianceTexBorder:SetVertexColor(0, 0, 0, 1)
