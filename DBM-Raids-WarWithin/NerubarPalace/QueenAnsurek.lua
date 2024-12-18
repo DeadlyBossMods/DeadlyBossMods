@@ -748,7 +748,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 443903 then
 		infusionIcons[#infusionIcons+1] = args.destName
-		self:Unschedule(sortToxin)
+		self:Unschedule(SortRifts)
 		if #infusionIcons == 2 then
 			SortRifts(self)
 		else
