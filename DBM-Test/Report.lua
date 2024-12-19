@@ -550,6 +550,12 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 						elseif v:match(" on .*" .. UnitName("player")) then
 							v = v:gsub(UnitName("player"), "PlayerName")
 						end
+					elseif event.event == "ModTrace" then
+						if v == UnitName("player") then -- FIXME: we might need an explicit way to tag player names in custom traces
+							v = "PlayerName"
+						elseif v == UnitGUID("player") then
+							v = "FIXME: leaking player GUID: " .. v
+						end
 					end
 					result[#result + 1] = tostring(v)
 				end
