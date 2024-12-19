@@ -7446,6 +7446,9 @@ do
 			-- force combat end if anything is active because :Unschedule below breaks wipe detection leaving you in a weird state
 			DBM:EndCombat(mod, true, true, "DBM:Disable() called")
 		end
+		for _, mod in ipairs(DBM.Mods) do
+			mod:UnregisterShortTermEvents()
+		end
 		DBMScheduler:Unschedule()
 		dbmIsEnabled = false
 		forceDisabled = forceDisable
