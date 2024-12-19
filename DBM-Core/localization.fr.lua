@@ -605,7 +605,7 @@ L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Afficher un chronomètre pour le run plus rapi
 L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Jouer des alertes sonores DBM pour les auras privées de $spell:%s dans ce combat."
 
 -- New special warnings
-L.MOVE_WARNING_BAR			= "Alerte mobile"
+L.MOVE_WARNING_BAR			= "Annonce mobile"
 L.MOVE_WARNING_MESSAGE		= "Merci d'utiliser " .. L.DEADLY_BOSS_MODS .. ""
 L.MOVE_SPECIAL_WARNING_BAR	= "Alertes spéciales mobiles"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
