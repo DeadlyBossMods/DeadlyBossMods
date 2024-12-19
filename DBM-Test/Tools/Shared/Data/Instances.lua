@@ -704,6 +704,8 @@ local data = DBM.Test.CreateSharedModule("Data.Instances", {
 		[2832] = {name = "Nightmare Grove", instanceTypeId = 2},
 		[2835] = {name = "Karazhan Crypts", instanceTypeId = 2},
 		[2853] = {name = "Deadwind Pass", instanceTypeId = 1},
+		[2856] = {name = "Scarlet Enclave", instanceTypeId = 2},
+		[2875] = {name = "Karazhan Crypts", instanceTypeId = 1},
 	},
 })
 
