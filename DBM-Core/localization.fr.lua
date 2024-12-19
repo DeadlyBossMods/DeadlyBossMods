@@ -182,10 +182,10 @@ L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: " .. L.DBM .. " non installé"--Two Boss mods
 L.VERSIONCHECK_FOOTER		= "%d joueurs trouvés avec " .. L.DEADLY_BOSS_MODS .. " & %d joueurs avec BigWigs"
 L.VERSIONCHECK_OUTDATED		= "Les joueurs suivants %d ont une version périmée du bossmod: %s"
 L.YOUR_VERSION_OUTDATED	  	= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée. Veuillez vous rendre sur Curse, Wago, WoWInterface ou Github pour obtenir la dernière version."
-L.VOICE_PACK_OUTDATED		= "Il semble que votre pacquet de voix " .. L.DBM .. " manquent de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du pacquet devoix ou contactez l'auteur pour une mise à jour qui la contient."
-L.VOICE_MISSING				= "Vous aviez un pacquet de voix séléctionné qui ne pouvait pas être trouvé. Votre séléction a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez vous que votre pacquet est correctement installé et activé."
-L.VOICE_DISABLED			= "Vous avez actuellement au moins un pacquet de voix " .. L.DBM .. " installé mais aucun n'est activé. Si vous prévoyez d'utiliser un pacquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les pacquets de voix inutilisés pour cacher ce message."
-L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un pacquet qui ne pouvait pas être trouvé. Il a été reinitilisé à l'option par défaut."
+L.VOICE_PACK_OUTDATED		= "Il semble que votre paquet de voix " .. L.DBM .. " manque de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du paquet de voix ou contactez l'auteur pour une mise à jour qui l'inclut."
+L.VOICE_MISSING				= "Vous aviez un paquet de voix sélectionné qui ne pouvait pas être trouvé. Votre sélection a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez-vous que votre paquet est correctement installé et activé."
+L.VOICE_DISABLED			= "Vous avez actuellement au moins un paquet de voix " .. L.DBM .. " installé, mais aucun n'est activé. Si vous prévoyez d'utiliser un paquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les paquets de voix inutilisés pour cacher ce message."
+L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un paquet qui ne pouvait pas être trouvé. Il a été réinitialisé à l'option par défaut."
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
 
