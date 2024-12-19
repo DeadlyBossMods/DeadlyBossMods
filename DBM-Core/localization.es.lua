@@ -605,7 +605,7 @@ L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Mostrar temporizador para el récord actual de
 L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Reproduce anuncios de sonido de DBM para auras privadas de $spell:%s en este encuentro."
 
 -- New special warnings
-L.MOVE_WARNING_BAR			= "Aviso desplazable"
+L.MOVE_WARNING_BAR			= "Anuncio desplazable"
 L.MOVE_WARNING_MESSAGE		= "Gracias por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
