@@ -503,6 +503,7 @@ L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 L.AUTO_TIMER_OPTIONS.target				= "Afficher le chronomètre pour d'affaiblissement de $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount		= "Afficher le chronomètre (avec compte) pour d'affaiblissement de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Afficher le chronomètre pour d'incantation de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castpnp			= "Afficher le chronomètre sur la plaque de nom uniquement pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount			= "Afficher le chronomètre (avec compte) pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castsource			= "Afficher le chronomètre (avec source) pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Afficher le chronomètre pour la durée de $spell:%s"
