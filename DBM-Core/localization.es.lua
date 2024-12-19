@@ -505,6 +505,7 @@ L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración del perjuicio de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Mostrar temporizador para el lanzamiento de $spell:%s"
+L.AUTO_TIMER_OPTIONS.castpnp			= "Mostrar temporizador de placa de nombre para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount			= "Mostrar temporizador (con contador) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castsource			= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Mostrar temporizador para la duración de $spell:%s"
