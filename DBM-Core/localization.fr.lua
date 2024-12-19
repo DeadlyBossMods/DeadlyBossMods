@@ -339,6 +339,7 @@ L.AUTO_ANNOUNCE_OPTIONS.targetNF		= "Afficher une annonce pour les cibles de $sp
 L.AUTO_ANNOUNCE_OPTIONS.targetsource	= "Afficher une annonce pour les cibles de $spell:%s (avec la source)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "Afficher une annonce pour les cibles de $spell:%s (avec décompte)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "Afficher une annonce pour $spell:%s"
+L.AUTO_ANNOUNCE_OPTIONS.spellsource		= "Afficher une annonce pour $spell:%s (avec la source)"
 L.AUTO_ANNOUNCE_OPTIONS.incoming		= "Afficher une annonce lorsque $spell:%s a des affaiblissements imminents"
 L.AUTO_ANNOUNCE_OPTIONS.incomingcount 	= "Afficher une annonce lorsque $spell:%s a des affaiblissements imminents (avec décompte)"
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Afficher une annonce pour lorsque $spell:%s se termine"
