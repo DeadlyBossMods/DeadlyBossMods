@@ -182,7 +182,9 @@ local annoyingPopupZonesVanillaClassic = {
 	[533]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Naxxramas
 	[2791] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Azuregos (instanced in SoD), we literally wiped there to spell reflect because people didn't have this installed in my guild
 	[2784] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- Demon Fall Canyon in SoD, it's a bit harder than usual dungeons, so let's show a warning. Remove if too many people complain.
-	[2832] = {addon = "DBM-Azeroth",       package = "Vanilla"}, -- Dragons of nightmare
+	[2832] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Nightmare Grove (instanced outdoor dragons)
+	[2856] = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Scarlet Enclave
+	[2875] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- SoD Karazhan Cryptos, probably harder than the usual classic dungeon
 }
 
 local annoyingPopupZonesBCC = {
