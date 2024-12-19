@@ -1744,12 +1744,15 @@ do
 										local id = tonumber(subTabs[k])
 										if id then
 											--For handling zones like Warfront: Arathi - Alliance
-											local subTabName = GetRealZoneText(id):trim() or id
+											local subTabName = GetRealZoneText(id):trim()
 											for w in string.gmatch(subTabName, " - ") do
 												if w:trim() ~= "" then
 													subTabName = w
 													break
 												end
+											end
+											if subTabName == "" then -- GetRealZoneText() returns empty string on unknown zones, this happens for dungeons that don't yet exist
+												subTabName = UNKNOWN .. " (" .. id .. ")"
 											end
 											self.AddOns[#self.AddOns].subTabs[k] = subTabName
 										else
