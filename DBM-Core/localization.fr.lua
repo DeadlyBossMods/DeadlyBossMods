@@ -683,7 +683,7 @@ L.DBM_INSTALL_PACKAGE_BCC 		= "Paquet de Burning Crusade"
 L.DBM_INSTALL_PACKAGE_WRATH 	= "Paquet de Wrath"
 L.DBM_INSTALL_PACKAGE_CATA 		= "Paquet de Cataclysm"
 L.DBM_INSTALL_PACKAGE_MOP		= "Paquet de Mist of Pandaria"
-L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquet de Donjons, Gouffres et Événements"
+L.DBM_INSTALL_PACKAGE_DUNGEON 	= "Paquet de Donjons, Gouffres et Événements"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"
