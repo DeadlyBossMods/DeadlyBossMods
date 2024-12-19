@@ -511,7 +511,7 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 		local unscheduledTask = event.scheduleData.unscheduledTask
 		if unscheduledTask then
 			local funcName = unscheduledTask.scheduledBy.scheduleData.funcName or "(anonymous function)"
-			result[#result + 1] = ("%s scheduled by %s at %.2f"):format(funcName, unscheduledTask.scheduledBy.event, unscheduledTask.rawTrigger[1])
+			result[#result + 1] = ("%s scheduled by %s at %s"):format(funcName, unscheduledTask.scheduledBy.event, unscheduledTask.rawTrigger and ("%.02f"):format(unscheduledTask.rawTrigger[1]) or "<unknown>")
 		else
 			result[#result + 1] = "(unknown function)" -- can't happen
 		end
