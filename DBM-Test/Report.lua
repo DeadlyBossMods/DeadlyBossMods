@@ -511,7 +511,7 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 		local unscheduledTask = event.scheduleData.unscheduledTask
 		if unscheduledTask then
 			local funcName = unscheduledTask.scheduledBy.scheduleData.funcName or "(anonymous function)"
-			result[#result + 1] = ("%s scheduled by %s at %.2f"):format(funcName, unscheduledTask.scheduledBy.event, unscheduledTask.rawTrigger[1])
+			result[#result + 1] = ("%s scheduled by %s at %s"):format(funcName, unscheduledTask.scheduledBy.event, unscheduledTask.rawTrigger and ("%.02f"):format(unscheduledTask.rawTrigger[1]) or "<unknown>")
 		else
 			result[#result + 1] = "(unknown function)" -- can't happen
 		end
@@ -549,6 +549,12 @@ function reporter:EventToStringForReport(event, indent, subIndent)
 							v = "PlayerName"
 						elseif v:match(" on .*" .. UnitName("player")) then
 							v = v:gsub(UnitName("player"), "PlayerName")
+						end
+					elseif event.event == "ModTrace" then
+						if v == UnitName("player") then -- FIXME: we might need an explicit way to tag player names in custom traces
+							v = "PlayerName"
+						elseif v == UnitGUID("player") then
+							v = "FIXME: leaking player GUID: " .. v
 						end
 					end
 					result[#result + 1] = tostring(v)

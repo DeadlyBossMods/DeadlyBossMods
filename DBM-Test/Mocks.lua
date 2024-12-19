@@ -241,11 +241,15 @@ local function checkUnitAura(auraType, uId, spellInput1, spellInput2, spellInput
 	if not unitAuras[uId] then
 		return
 	end
-	return unitAuras[uId][spellInput1] and (unitAuras[uId][spellInput1].auraType == auraType or not auraType) and unitAuras[uId][spellInput1].spellName
-		or unitAuras[uId][spellInput2] and (unitAuras[uId][spellInput2].auraType == auraType or not auraType) and unitAuras[uId][spellInput2].spellName
-		or unitAuras[uId][spellInput3] and (unitAuras[uId][spellInput3].auraType == auraType or not auraType) and unitAuras[uId][spellInput3].spellName
-		or unitAuras[uId][spellInput4] and (unitAuras[uId][spellInput4].auraType == auraType or not auraType) and unitAuras[uId][spellInput4].spellName
-		or unitAuras[uId][spellInput5] and (unitAuras[uId][spellInput5].auraType == auraType or not auraType) and unitAuras[uId][spellInput5].spellName
+	local spellTable = unitAuras[uId][spellInput1] and (unitAuras[uId][spellInput1].auraType == auraType or not auraType) and unitAuras[uId][spellInput1]
+		or unitAuras[uId][spellInput2] and (unitAuras[uId][spellInput2].auraType == auraType or not auraType) and unitAuras[uId][spellInput2]
+		or unitAuras[uId][spellInput3] and (unitAuras[uId][spellInput3].auraType == auraType or not auraType) and unitAuras[uId][spellInput3]
+		or unitAuras[uId][spellInput4] and (unitAuras[uId][spellInput4].auraType == auraType or not auraType) and unitAuras[uId][spellInput4]
+		or unitAuras[uId][spellInput5] and (unitAuras[uId][spellInput5].auraType == auraType or not auraType) and unitAuras[uId][spellInput5]
+	if not spellTable then
+		return
+	end
+	return spellTable.spellName, 0, spellTable.amount, nil, 0, 0, nil, false, nil, spellTable.spellId, nil, nil, nil, nil, nil, spellTable.amount
 end
 
 function mocks.DBMUnitDebuff(_, ...)
@@ -277,7 +281,7 @@ function mocks:ApplyUnitAura(name, guid, spellId, spellName, auraType, amount)
 	auras[spellName] = entry
 	entry.time = self:GetTime()
 	entry.auraType = auraType
-	entry.amount = amount or entry.amount
+	entry.amount = amount or entry.amount or 1
 end
 
 function mocks:RemoveUnitAura(name, guid, spellId, spellName)

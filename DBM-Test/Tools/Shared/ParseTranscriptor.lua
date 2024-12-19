@@ -184,6 +184,9 @@ function transcriptorParser:NewTestGenerator(log, firstLine, lastLine, prefix, n
 end
 
 local function guessType(str)
+	if type(str) ~= "string" then
+		return str
+	end
 	if str == "nil" then
 		return nil
 	end
@@ -447,8 +450,15 @@ local function transcribeCleu(rawParams, anon)
 	)
 end
 
+local ignoredEvents = {
+	["Echo_Log"] = true,
+	["ARENA_OPPONENT_UPDATE"] = true,
+	["PLAYER_INFO"] = true,
+	["CHAT_MSG_RAID_WARNING"] = true
+}
+
 local function transcribeEvent(event, params, anon)
-	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or event == "Echo_Log" or event == "ARENA_OPPONENT_UPDATE" or event == "PLAYER_INFO" then
+	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or ignoredEvents[event] then
 		return
 	end
 	if event:match("^UNIT_SPELL") then
@@ -467,7 +477,7 @@ local function transcribeEvent(event, params, anon)
 			return arg1 .. anon:ScrubTarget(arg2) .. arg3 .. anon:ScrubTarget(arg4) .. arg5 .. anon:ScrubTarget(arg6)
 		end)
 	end
-	if event:match("^CHAT_MSG_MONSTER") or event:match("^CHAT_MSG_RAID_BOSS") then
+	if event:match("^CHAT_MSG_MONSTER") or event:match("^CHAT_MSG_RAID_BOSS") or event:match("^CHAT_MSG_BG_") then -- AQ40 uses CHAT_MSG_BG on SoD for some reason
 		params = params:gsub("^" .. ("([^#]*)#"):rep(12), function(msg, name, arg3, arg4, targetName, arg6, arg7, arg8, arg9, arg10, arg11, senderGuid)
 			-- Messages can *come from* pets
 			return ("%s#"):rep(12):format(anon:ScrubChatMessage(msg, targetName), anon:ScrubPetName(name) or name, arg3, arg4, anon:ScrubName(targetName) or targetName, arg6, arg7, arg8, arg9, arg10, arg11, senderGuid == "nil" and senderGuid or anon:ScrubGUID(senderGuid))

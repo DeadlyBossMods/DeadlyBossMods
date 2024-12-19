@@ -93,7 +93,7 @@ local function getFilename(log, encounter)
 	if not lfs.attributes(outDir) or lfs.attributes(outDir).mode ~= "directory" then
 		logFatal("Failed to create output directory at " .. outDir)
 	end
-	return outDir .. ("/%s %s (%d) %s %.0fs %d lines.lua"):format(timestamp, encounter.name, encounter.id, encounter.success and "Kill" or "Wipe", encounter.endTime - encounter.startTime, encounter.endOffset - encounter.startOffset)
+	return outDir .. ("/%s %s (%d) %s %.0fs %d lines.lua"):format(timestamp, encounter.name, encounter.id, encounter.success and "Kill" or "Wipe", encounter.endTime - encounter.startTime, encounter.endOffset - encounter.startOffset + 1)
 end
 
 local function createTest(log, encounter)
@@ -131,7 +131,7 @@ for logId, log in ipairs(logs) do
 			local fakeEncounter = {
 				startTime = 0,
 				endTime = tonumber(log.lines[#log.lines]:match("<([%d.]*)")) or 0,
-				startOffset = 0,
+				startOffset = 1,
 				endOffset = #log.lines,
 				name = "None",
 				id = 0,

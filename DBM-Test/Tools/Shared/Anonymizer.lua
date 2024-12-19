@@ -107,16 +107,14 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 	local spawnIds = {}
 	local nonPlayerNames = {}
 	local roles = roleGuesser:New(recordingPlayer)
-	local offset = 1
-	while logEntries[offset]:match("%[PLAYER_INFO%]") do -- PLAYER_INFO is only at the start of the log
-		local class, realGuid = logEntries[offset]:match("%[PLAYER_INFO%] [^#]*#([^#]*)#([^#]*)")
-		roles:SetPlayerClass(realGuid, class)
-		offset = offset + 1
-	end
 	for i = first, last do -- do we want to use the entire log or just the segment we are looking at? probably safer to restrict to the segment
 		local line = logEntries[i]
 		if line:match("%[CLEU%]") then
 			roles:HandleCombatLog(line)
+		end
+		if line:match("%[PLAYER_INFO%]") then
+			local class, realGuid = line:match("%[PLAYER_INFO%] [^#]*#([^#]*)#([^#]*)")
+			roles:SetPlayerClass(realGuid, class)
 		end
 		-- Collect all player GUIDs and names
 		for guid, name in line:gmatch("(Player%-%d*%-%x*)#([^#]*)") do
