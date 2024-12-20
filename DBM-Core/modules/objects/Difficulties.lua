@@ -127,6 +127,7 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[2817] = {60, 2} -- Starfall Barrow Den
 		instanceDifficultyBylevel[2832] = {60, 3} -- Nightmare Grove
 		instanceDifficultyBylevel[2856] = {60, 3} -- Scarlet Enclave
+		instanceDifficultyBylevel[2875] = {60, 2} -- Karazhan Crypts
 	end
 end
 
