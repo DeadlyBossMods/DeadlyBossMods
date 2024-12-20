@@ -1,4 +1,4 @@
-## Interface: 110005, 110007
+## Interface: 110007, 110100
 ## X-Min-Interface: 100206
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (WW)|r
@@ -35,6 +35,16 @@ localization.kr.lua
 localization.ru.lua
 localization.cn.lua
 localization.tw.lua
+
+Undermine\Vexie.lua
+Undermine\CauldronofCarnage.lua
+Undermine\RikReverb.lua
+Undermine\StixBunkjunker.lua
+Undermine\SprocketmongerLockenstock.lua
+Undermine\TheOneArmedBandit.lua
+Undermine\MugZeeHeadsofSecurity.lua
+Undermine\ChromeKingGallywix.lua
+Undermine\UndermineTrash.lua
 
 NerubarPalace\UlgraxtheDevourer.lua
 NerubarPalace\TheBloodboundHorror.lua

@@ -1,4 +1,4 @@
-## Interface: 110005, 110007
+## Interface: 110007, 110100
 ## Version: @project-version@
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (War Within)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10필드 보스 (내부 전쟁)|r
@@ -31,3 +31,4 @@ Kordac.lua
 AggregationofHorrors.lua
 Shurrai.lua
 Orta.lua
+TheGobfather.lua

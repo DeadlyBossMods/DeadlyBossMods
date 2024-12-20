@@ -126,6 +126,7 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[2807] = {60, 2} -- Burning of Andorhal
 		instanceDifficultyBylevel[2817] = {60, 2} -- Starfall Barrow Den
 		instanceDifficultyBylevel[2832] = {60, 3} -- Nightmare Grove
+		instanceDifficultyBylevel[2856] = {60, 3} -- Scarlet Enclave
 	end
 end
 
