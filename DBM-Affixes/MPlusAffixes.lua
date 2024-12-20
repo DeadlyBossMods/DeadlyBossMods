@@ -157,7 +157,7 @@ do
 	if (C_MythicPlus.GetCurrentSeason() or 0) == 14 then--War Within Season 2
 		--2651, 2649, 2648, 2661, 1594, 2097, 2293, ?
 		--Darkflame Cleft, Priory of the Sacred Flame, The Rookery, Cinderbrew Meadery, MOTHERLOAD, Mechagon, Theater of Pain, 11.1 Dungeon
-		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true, [1594]=true, [2097]=true, [2293]=true}
+		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true, [1594]=true, [2097]=true, [2293]=true, [2773]=true,}
 	--Current Season (latest LIVE season put in else so if api fails, it just always returns latest)
 	else--War Within Season 1 (13)
 		--Stonevault, The Dawnbreaker, Ara-Kara City of Echos, City of Threads, Grim Batol, Siege of Boralus, The Necrotic Wake, Mists of Tirna Scithe

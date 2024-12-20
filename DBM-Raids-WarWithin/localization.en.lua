@@ -86,3 +86,52 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	AutoPotioned	= "Potion automatically used (Note DBM will not auto use potion if you already have debuff). You can disable this in settings if you don't want it to auto use potion."
 })
+
+---------------------------
+--  Vexie and the Geargrinders) --
+---------------------------
+--L= DBM:GetModLocalization(2639)
+
+---------------------------
+--  Cauldron of Carnage --
+---------------------------
+--L= DBM:GetModLocalization(2640)
+
+---------------------------
+--  Rik Reverb --
+---------------------------
+--L= DBM:GetModLocalization(2641)
+
+---------------------------
+--  Stix Bunkjunker --
+---------------------------
+--L= DBM:GetModLocalization(2642)
+
+---------------------------
+--  Sprocketmonger Lockenstock --
+---------------------------
+--L= DBM:GetModLocalization(2653)
+
+---------------------------
+--  The One-Armed Bandit --
+---------------------------
+--L= DBM:GetModLocalization(2644)
+
+---------------------------
+--  Mug'Zee, Heads of Security --
+---------------------------
+--L= DBM:GetModLocalization(2645)
+
+---------------------------
+--  Chrome King Gallywix --
+---------------------------
+--L= DBM:GetModLocalization(2646)
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("UndermineTrash")
+
+L:SetGeneralLocalization({
+	name =	"Undermine Trash"
+})

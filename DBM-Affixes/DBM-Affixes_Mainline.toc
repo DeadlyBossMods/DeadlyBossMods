@@ -1,4 +1,4 @@
-## Interface: 110005, 110007
+## Interface: 110007, 110100
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Affixes|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010신화+ 어픽스|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010М+ Аффиксы|r
@@ -24,7 +24,7 @@
 ## X-DBM-Mod-Name-esMX: М+ Afijos
 ## X-DBM-Mod-Name-ptBR: М+ Afixos
 ## X-DBM-Mod-Name-frFR: М+ Affixes
-## X-DBM-Mod-MapID: 2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520, 2652, 2662, 2660, 2669, 670, 1822, 2286, 2290
+## X-DBM-Mod-MapID: 2516, 2526, 2515, 2521, 2527, 2519, 2451, 2520, 2652, 2662, 2660, 2669, 670, 1822, 2286, 2290, 2773
 ## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
 

@@ -36,3 +36,12 @@ L:SetMiscLocalization({
 --L:SetMiscLocalization({
 --	Pull	= ""
 --})
+
+-----------------------
+-- The Gobfather --
+-----------------------
+--L= DBM:GetModLocalization(2683)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})
