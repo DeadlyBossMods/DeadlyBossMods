@@ -16,14 +16,14 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: WARWITHIN
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-Mod-SubCategoriesID: 2657
+## X-DBM-Mod-SubCategoriesID: 2769, 2657
 ## X-DBM-Mod-Name: Raids (War Within)
 ## X-DBM-Mod-Name-koKR: 공격대 (내부 전쟁)
 ## X-DBM-Mod-Name-ruRU: Рейды (Война Внутри)
 ## X-DBM-Mod-Name-zhCN: 团队副本（地心之战）
 ## X-DBM-Mod-Name-zhTW: 團隊副本 (地心之戰)
 ## X-DBM-Mod-Sort: 101
-## X-DBM-Mod-MapID: 2657
+## X-DBM-Mod-MapID: 2657, 2769
 ## X-DBM-Mod-MinCoreRevision: 20230617000000
 ## X-DBM-Mod-MinExpansion: 10
 ## X-Curse-Project-ID: 3358
