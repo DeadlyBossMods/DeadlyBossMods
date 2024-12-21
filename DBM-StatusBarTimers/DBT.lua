@@ -1117,13 +1117,6 @@ function barPrototype:ApplyStyle()
 			spark:SetVertexColor(barStartRed, barStartGreen, barStartBlue)
 		end
 	end
-	if not bar.hasVariance then
-		_G[frame_name.."BarVariance"]:Hide()
-		_G[frame_name.."BarVarianceBorder"]:Hide()
-	else
-		_G[frame_name.."BarVariance"]:Show()
-		_G[frame_name.."BarVarianceBorder"]:Show()
-	end
 	local barTextColorRed, barTextColorGreen, barTextColorBlue = barOptions.TextColorR, barOptions.TextColorG, barOptions.TextColorB
 	local barHeight, barHugeHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.HugeHeight, barOptions.Width, barOptions.HugeWidth
 	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
