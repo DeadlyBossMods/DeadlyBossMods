@@ -242,9 +242,9 @@ function timerPrototype:Start(timer, ...)
 							local remaining = ("%.1f"):format(bar.timer)
 							local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
 							ttext = ttext .. "(" .. self.id .. "-" .. (timer or 0) .. ")"
-							local deltaFromVarianceMinTimer = ("%.2f"):format(bar.hasVariance and bar.timer - bar.varianceDuration or bar.timer)
+							local deltaFromVarianceMinTimer = ("%.2f"):format(hasVariance and bar.timer - bar.varianceDuration or bar.timer)
 							local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
-							if bar.hasVariance then
+							if hasVariance then
 								if DBM.Options.BadTimerAlert and bar.timer > correctWithVarianceDuration(1, bar) then--If greater than 1 seconds off, report this out of debug mode to all users
 									DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
 									DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
@@ -331,12 +331,12 @@ function timerPrototype:Start(timer, ...)
 				local bar = DBT:GetBar(id)
 				if bar then
 					local remaining = ("%.1f"):format(bar.timer)
-					local deltaFromVarianceMinTimer = ("%.2f"):format(bar.hasVariance and bar.timer - bar.varianceDuration or bar.timer)
+					local deltaFromVarianceMinTimer = ("%.2f"):format(hasVariance and bar.timer - bar.varianceDuration or bar.timer)
 					local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
 					ttext = ttext .. "(" .. self.id .. "-" .. (timer or 0) .. ")"
 					if abs(bar.timer) > 0.2 then -- Positive and Negative ("keep") timers.
 						local phaseText = self.mod.vb.phase and " (" .. SCENARIO_STAGE:format(self.mod.vb.phase) .. ")" or ""
-						if bar.hasVariance then
+						if hasVariance then
 							if DBM.Options.BadTimerAlert and bar.timer > correctWithVarianceDuration(1, bar) then--If greater than 1 seconds off, report this out of debug mode to all users
 								DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
 								DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
@@ -398,6 +398,7 @@ function timerPrototype:Start(timer, ...)
 		end
 		msg = msg:gsub(">.-<", stringUtils.stripServerName)
 		bar:SetText(msg, self.inlineIcon)
+		bar.hasVariance = hasVariance
 		-- FIXME: i would prefer to trace this directly in DBT, but since I want to rewrite DBT... meh.
 		test:Trace(self.mod, "StartTimer", self, timer, msg)
 		--ID (string) Internal DBM timer ID
