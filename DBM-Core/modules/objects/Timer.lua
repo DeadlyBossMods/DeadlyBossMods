@@ -207,9 +207,9 @@ function timerPrototype:Start(timer, ...)
 		hasVariance = true
 		timerStringWithVariance = timer -- cache timer string
 		timer, minTimer = parseVarianceFromTimer(timer) -- use highest possible value as the actual End timer
-		if DBM.Options.DebugMode and self.mod.id ~= "TestMod" then
-			self.keep = true -- keep variance timers for debug purposes
-		end
+	end
+	if DBM.Options.DebugMode and self.mod.id ~= "TestMod" then
+		self.keep = hasVariance -- keep variance timers for debug purposes
 	end
 	if timer and type(timer) ~= "number" then
 		return self:Start(nil, timer, ...) -- first argument is optional!

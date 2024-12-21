@@ -286,7 +286,6 @@ do
 		varianceTexBorder:SetPoint("BOTTOMLEFT", varianceTex, "BOTTOMLEFT", -1, 0)
 		varianceTexBorder:SetTexture("Interface\\Buttons\\WHITE8X8")
 		varianceTexBorder:SetWidth(1)
-
 		fCounter = fCounter + 1
 
 		frame:EnableMouse(not self.Options.ClickThrough or self.movable)
@@ -338,6 +337,8 @@ do
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
 			newBar.paused = nil
+			newBar.varianceDuration = varianceDuration or 0
+			newBar.hasVariance = varianceMinTimer and true or false
 			newBar:SetTimer(timer) -- This can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then
 				return
@@ -1115,6 +1116,13 @@ function barPrototype:ApplyStyle()
 		if sparkEnabled then
 			spark:SetVertexColor(barStartRed, barStartGreen, barStartBlue)
 		end
+	end
+	if not bar.hasVariance then
+		_G[frame_name.."BarVariance"]:Hide()
+		_G[frame_name.."BarVarianceBorder"]:Hide()
+	else
+		_G[frame_name.."BarVariance"]:Show()
+		_G[frame_name.."BarVarianceBorder"]:Show()
 	end
 	local barTextColorRed, barTextColorGreen, barTextColorBlue = barOptions.TextColorR, barOptions.TextColorG, barOptions.TextColorB
 	local barHeight, barHugeHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.HugeHeight, barOptions.Width, barOptions.HugeWidth
