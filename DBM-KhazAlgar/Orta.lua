@@ -26,10 +26,10 @@ local warnDiscardWeaklings			= mod:NewSpellAnnounce(451702, 3)
 local specWarnTectonicRoar			= mod:NewSpecialWarningSpell(450454, nil, nil, nil, 2, 2)
 local specWarnColossalSlam			= mod:NewSpecialWarningDodge(450407, nil, nil, nil, 2, 2)
 
-local timerTectonicRoarCD			= mod:NewAITimer(32.7, 450454, nil, nil, nil, 2)
-local timerColossalSlamCD			= mod:NewAITimer(32.7, 450407, nil, nil, nil, 3)
-local timerRupturingRunesCD			= mod:NewAITimer(32.7, 450677, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerMountainsGraspCD			= mod:NewAITimer(32.7, 450929, nil, nil, nil, 3)
+local timerTectonicRoarCD			= mod:NewCDTimer(31.8, 450454, nil, nil, nil, 2)
+local timerColossalSlamCD			= mod:NewCDTimer(31.8, 450407, nil, nil, nil, 3)
+local timerRupturingRunesCD			= mod:NewCDTimer(31.8, 450677, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerMountainsGraspCD			= mod:NewCDTimer(31.8, 450929, nil, nil, nil, 3)
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
