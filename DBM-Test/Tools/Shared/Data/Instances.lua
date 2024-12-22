@@ -1,8 +1,7 @@
 -- Run these to update
 -- for ver in wow_beta wowxptr wow; do curl https://wago.tools/db2/Map/csv\?product=$ver; done | grep -e "^[0-9]" | tr -d \" | awk -F, '{NF >= 28 ? typeId = $11 : typeId = $9; if (typeId != 0) printf "\t\t[%d] = {name = \"%s\", instanceTypeId = %d},\n",$1,$3,typeId}' |  sort -t ']' -k 1.4 -n | uniq | grep -v -e UNUSED -e unused -e DNT -e "NOT USED"
 -- for ver in wow_classic_beta wow_classic_ptr wow_classic; do curl https://wago.tools/db2/Map/csv\?product=$ver; done | grep -e "^[0-9]" | tr -d \" | awk -F, '{NF >= 28 ? typeId = $11 : typeId = $9; if (typeId != 0) printf "\t\t[%d] = {name = \"%s\", instanceTypeId = %d},\n",$1,$3,typeId}' |  sort -t ']' -k 1.4 -n | uniq | grep -v -e UNUSED -e unused -e DNT -e "NOT USED"
--- TODO: re-add wow_classic_era_ptr, but something is broken on Wago and it gives retail results?
--- for ver in wow_classic_era; do curl https://wago.tools/db2/Map/csv\?product=$ver; done | grep -e "^[0-9]" | tr -d \" | awk -F, '{NF >= 28 ? typeId = $11 : typeId = $9; if (typeId != 0) printf "\t\t[%d] = {name = \"%s\", instanceTypeId = %d},\n",$1,$3,typeId}' |  sort -t ']' -k 1.4 -n | uniq | grep -v -e UNUSED -e unused -e DNT -e "NOT USED"
+-- for ver in wow_classic_era wow_classic_era_ptr; do curl https://wago.tools/db2/Map/csv\?product=$ver; done | grep -e "^[0-9]" | tr -d \" | awk -F, '{NF >= 28 ? typeId = $11 : typeId = $9; if (typeId != 0) printf "\t\t[%d] = {name = \"%s\", instanceTypeId = %d},\n",$1,$3,typeId}' |  sort -t ']' -k 1.4 -n | uniq | grep -v -e UNUSED -e unused -e DNT -e "NOT USED"
 local data = DBM.Test.CreateSharedModule("Data.Instances", {
 	Retail = {
 		[30] = {name = "Alterac Valley", instanceTypeId = 0},
