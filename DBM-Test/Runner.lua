@@ -844,9 +844,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	end
 end
 
-local frame = CreateFrame("Frame")
-frame:Show()
-frame:SetScript("OnUpdate", function(self)
+function test:OnUpdate()
 	if currentThread then
 		if coroutine.status(currentThread) == "dead" then
 			currentThread = nil
@@ -866,10 +864,16 @@ frame:SetScript("OnUpdate", function(self)
 				if test.testCallback then
 					xpcall(test.testCallback, realErrorHandler, "TestFinish", test.testData, test.testOptions, test.reporter)
 				end
+			else
+				return true -- Important for DBM-Offline to know that it's still alive
 			end
 		end
 	end
-end)
+end
+
+local frame = CreateFrame("Frame")
+frame:Show()
+frame:SetScript("OnUpdate", function() test:OnUpdate() end)
 
 ---@class TestDefinition
 ---@field name string Unique test ID.
