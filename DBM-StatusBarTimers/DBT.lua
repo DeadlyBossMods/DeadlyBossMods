@@ -337,6 +337,7 @@ do
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
 			newBar.paused = nil
+			newBar.minTimer = varianceMinTimer or nil
 			newBar.varianceDuration = varianceDuration or 0
 			newBar.hasVariance = varianceMinTimer and true or false
 			newBar:SetTimer(timer) -- This can kill the timer and the timer methods don't like dead timers

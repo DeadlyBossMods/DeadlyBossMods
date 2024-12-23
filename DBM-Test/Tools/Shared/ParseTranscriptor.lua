@@ -313,7 +313,7 @@ end
 local flagWarningShown
 local seenFriendlyCids = {}
 
-local function transcribeCleu(rawParams, anon)
+local function transcribeCleu(rawParams, anon, flagState)
 	local params = {}
 	local i = 1 -- to handle nil
 	local offset = 1
@@ -374,12 +374,19 @@ local function transcribeCleu(rawParams, anon)
 	end
 	local destIsPlayer = destGUID and destGUID:match("^Player%-")
 	local srcIsPlayer = sourceGUID and sourceGUID:match("^Player%-")
-	local destIsPet = destGUID and destGUID:match("^Pet%-")
-	local srcIsPet = sourceGUID and sourceGUID:match("^Pet%-")
+	local destIsPet = destGUID and (destGUID:match("^Pet%-") or flagState.mindcontrol[destGUID])
+	local srcIsPet = sourceGUID and (sourceGUID:match("^Pet%-") or flagState.mindcontrol[sourceGUID])
 	local destIsPlayerOrPet = destIsPlayer or destIsPet
 	local srcIsPlayerOrPet = srcIsPlayer or srcIsPet
 	local destIsNpc = destGUID and (destGUID:match("^Creature-") or destGUID:match("^Vehicle-"))
 	local srcIsNpc = sourceGUID and (sourceGUID:match("^Creature-") or sourceGUID:match("^Vehicle-"))
+	if spellId == 10912 and srcIsPlayer and destIsNpc then
+		if event == "SPELL_AURA_APPLIED" then
+			flagState.mindcontrol[destGUID] = true
+		elseif event == "SPELL_AURA_REMOVED" then
+			flagState.mindcontrol[destGUID] = nil
+		end
+	end
 	if event == "SPELL_DAMAGE[CONDENSED]" then event = "SPELL_DAMAGE" end
 	if event == "SPELL_PERIODIC_DAMAGE[CONDENSED]" then event = "SPELL_PERIODIC_DAMAGE" end
 	if event == "SPELL_SUMMON" and srcIsPlayerOrPet then
@@ -396,7 +403,7 @@ local function transcribeCleu(rawParams, anon)
 		return
 	end
 
-	if (event:match("^SPELL_CAST") or event == "SPELL_EXTRA_ATTACKS") and srcIsPlayerOrPet then
+	if (event:match("^SPELL_CAST") or event == "SPELL_EXTRA_ATTACKS") and srcIsPlayerOrPet and not flagState.mindcontrol[sourceGUID] then
 		return
 	end
 	if (event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE" or event == "SPELL_PERIODIC_MISSED" or event == "SPELL_MISSED" or event == "DAMAGE_SHIELD" or event == "SWING_DAMAGE" or event == "DAMAGE_SHIELD_MISSED") and srcIsPlayerOrPet then
@@ -457,7 +464,7 @@ local ignoredEvents = {
 	["CHAT_MSG_RAID_WARNING"] = true
 }
 
-local function transcribeEvent(event, params, anon)
+local function transcribeEvent(event, params, anon, flagState)
 	if event:match("^DBM_") or event:match("^NAME_PLATE_UNIT_") or event:match("BigWigs_") or ignoredEvents[event] then
 		return
 	end
@@ -469,7 +476,7 @@ local function transcribeEvent(event, params, anon)
 		return
 	end
 	if event == "CLEU" then
-		return transcribeCleu(params, anon)
+		return transcribeCleu(params, anon, flagState)
 	end
 	-- FIXME: it kinda sucks that we only parse after this, but since type guessing may depend on the event it's ugly both ways :/
 	if event == "UNIT_TARGET" then
@@ -752,6 +759,7 @@ function testGenerator:GetLogAndPlayers()
 		resultLog[#resultLog + 1] = {0, "PLAYER_REGEN_DISABLED", "+Entering combat!"}
 		resultLogStr[#resultLogStr + 1] = '{0.00, "PLAYER_REGEN_DISABLED", "+Entering combat!"}'
 	end
+	local flagState = {mindcontrol = {}}
 	for i = self.firstLine, self.lastLine do
 		local line = self.log.lines[i]
 		local time, event, params = line:match("^<([%d.]+) [^>]+> %[([^%]]*)%] (.*)")
@@ -762,7 +770,7 @@ function testGenerator:GetLogAndPlayers()
 		end
 		timeOffset = timeOffset or time
 		time = time - timeOffset
-		local testEvent = transcribeEvent(event, params, anon)
+		local testEvent = transcribeEvent(event, params, anon, flagState)
 		if testEvent then
 			-- Unfortunately transcribeEvent already stringifies everything because everything was written with generating code in mind
 			-- But for live imports we obviously want non-stringified versions

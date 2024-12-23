@@ -763,6 +763,10 @@ function test:Playback(testData, timeWarp, testOptions)
 			if bit.band(trials, DBM.Difficulties.SOD_BWL_TRIAL_RED) ~= 0 then
 				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 466261, "Red Trial", "BUFF")
 			end
+		elseif testData.instanceInfo.instanceID == 186 then -- Naxx
+			if testData.instanceInfo.difficultyModifier and testData.instanceInfo.difficultyModifier > 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 1218278, DBM:GetSpellName(1218278), "DEBUFF", testData.instanceInfo.difficultyModifier)
+			end
 		end
    end
 	local maxTimestamp = testData.log[#testData.log][1]

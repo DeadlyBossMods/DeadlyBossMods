@@ -412,6 +412,19 @@ function DBM:GetCurrentInstanceDifficulty()
 				difficultyId = "mythic"
 				difficultyName = PLAYER_DIFFICULTY6
 			end
+			-- Naxxramas Hardmode
+			local naxxModifier = select(3, self:UnitDebuff("player", 1218278))
+			if naxxModifier then
+				-- TODO: Sync this with whatever Warcraft Logs ends up doing
+				if naxxModifier == 10 then -- Max level is unclear, on the PTR it was 10, but only up to 5 was supported
+					difficultyId = "mythic"
+					difficultyName = PLAYER_DIFFICULTY6
+				elseif naxxModifier >= 5 then
+					difficultyId = "heroic"
+					difficultyName = PLAYER_DIFFICULTY2
+				end
+				modifierLevel = naxxModifier
+			end
 		end
 		if modifierLevel == 0 then
 			return difficultyId, difficultyName .. " - ", difficulty, instanceGroupSize, 0
