@@ -308,6 +308,8 @@ function timerPrototype:Start(timer, ...)
 			else--AI timer passed with 5 or less is indicating phase change, with timer as phase number
 				if not private.isRetail then
 					timer = math.floor(timer)--Floor inprecise timers in classic because combat is mostly caused by PLAYER_REGEN in dungeons
+				else
+					timer = math.ceil(timer)--Ceil timer in retail to fix combat startt timers being 0.9999 instead of 1 (due to change in how delay works)
 				end
 				if self["phase" .. timer .. "CastTimer"] and type(self["phase" .. timer .. "CastTimer"]) == "number" then
 					--Check if timer is shorter than previous learned first timer by scanning remaining time on existing bar
