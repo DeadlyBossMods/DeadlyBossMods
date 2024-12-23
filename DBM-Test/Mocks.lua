@@ -399,8 +399,9 @@ function mocks:HookModGlobal(key, val)
 		error("tried to hook " .. key .. " twice in modEnv, this function must only be called once before all mods load")
 	end
 	local old = self.modEnv[key]
-	if type(old) ~= "function" then
+	if old and type(old) ~= "function" then
 		-- if we need this implement it by making __index a function instead of a direct reference to _G
+		-- (nil is supported because DBM-Offline doesn't bother adding fakes for everything as most things are mocked anyways)
 		error("tried to hook " .. key .. " of type " .. type(old) .. ", only functions are supported for now")
 	end
 	self.modEnv[key] = function(...)
