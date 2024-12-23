@@ -58,7 +58,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 	name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 	if name == "DBM-ProfilesDummy" then return {} end
 	if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
-	---@type table
+	---@type table?
 	local addon = nil
 	for _, v in ipairs(self.AddOns) do
 		if v.modId == modId then
