@@ -84,7 +84,7 @@ end
 local function addSpellNames(str)
 	str = tostring(str)
 	return str:gsub("(%d+)", function(spellId)
-		local name = spellId and spellId ~= "0" and DBM:GetSpellInfo(spellId) or "Unknown spell"
+		local name = spellId and spellId ~= "0" and DBM:GetSpellInfo(tonumber(spellId) or -1) or "Unknown spell"
 		return spellId .. " (" .. name .. ")"
 	end)
 end

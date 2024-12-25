@@ -5845,7 +5845,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				if mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
+				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
 			end
@@ -5923,7 +5923,7 @@ do
 			else
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
+			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
 				if private.isRetail then--Do nothing due to taint and breaking
 					--if ObjectiveTrackerFrame:IsVisible() then
 					--	ObjectiveTracker_Collapse()
@@ -6023,7 +6023,7 @@ do
 					elseif mod.ignoreBestkill and mod.inScenario then
 						self:AddMsg(L.SCENARIO_STARTED_IN_PROGRESS:format(difficulties.difficultyText .. name))
 					else
-						if mod.addon.type == "SCENARIO" then
+						if mod.addon and mod.addon.type == "SCENARIO" then
 							self:AddMsg(L.SCENARIO_STARTED:format(difficulties.difficultyText .. name))
 						else
 							self:AddMsg(L.COMBAT_STARTED:format(difficulties.difficultyText .. name))
@@ -6143,7 +6143,7 @@ do
 		mod = mod
 		if removeEntry(inCombat, mod) then
 			test:Trace(mod, "EndCombat", event)
-			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
+			local scenario = mod.addon and mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then
 					mod:UnregisterInCombatEvents(false, true)

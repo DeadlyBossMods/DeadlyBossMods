@@ -85,7 +85,7 @@ do
 	---@return string? name, string? uid, string? bossuid
 	function bossModPrototype:GetBossTarget(cidOrGuid, scanOnlyBoss)
 		local name, uid, bossuid
-		DBM:Debug("GetBossTarget firing for :"..tostring(self).." "..tostring(cidOrGuid).." "..tostring(scanOnlyBoss), 3)
+		DBM:Debug("GetBossTarget firing for: "..tostring(self.id).." "..tostring(cidOrGuid).." "..tostring(scanOnlyBoss), 3)
 		if type(cidOrGuid) == "number" then--CID passed, slower and slighty more hacky scan
 			cidOrGuid = cidOrGuid or self.creatureId
 			local cacheuid = bossuIdCache[cidOrGuid] or "boss1"
