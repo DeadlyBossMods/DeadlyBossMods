@@ -105,6 +105,7 @@ CL.CURSES					= "Проклятия"
 CL.SWIRLS					= "Вихри"
 CL.CHARGES					= "Атака босса"--По идее так правильно
 CL.CIRCLES					= "Круги"
+CL.KNOCKUP					= "Столкновение"
 
 -- Colors
 CL.BLACK	= "Черный"
