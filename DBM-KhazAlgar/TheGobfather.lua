@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2683, "DBM-KhazAlgar", nil, 1278)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(221067)
+--mod:SetCreatureID(221067)--Bombs use https://www.wowhead.com/ptr-2/npc=236733 . boss unknown
 mod:SetEncounterID(3128)
 --mod:SetReCombatTime(30)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
@@ -14,25 +14,41 @@ mod:RegisterCombat("combat")
 --mod:RegisterKill("yell", L.Win)
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START"
+	"SPELL_CAST_START 1216505 1216709 1216812 1216687"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED"
 )
 
---local warnMountainsGrasp			= mod:NewSpellAnnounce(450929, 3)
+local warnBombfield				= mod:NewSpellAnnounce(1216505, 3)
 
---local specWarnTectonicRoar			= mod:NewSpecialWarningSpell(450454, nil, nil, nil, 2, 2)
+local specWarnDeathFromAbove	= mod:NewSpecialWarningDodge(1216709, nil, nil, nil, 2, 2)
+local specWarnToxicMechanic		= mod:NewSpecialWarningSpell(1216812, nil, nil, nil, 2, 2)
+local specWarnFlamingFlames		= mod:NewSpecialWarningDodge(1216687, nil, nil, nil, 2, 2)
 
---local timerTectonicRoarCD			= mod:NewAITimer(32.7, 450454, nil, nil, nil, 2)
+local timerBombfieldCD			= mod:NewAITimer(32.7, 1216505, nil, nil, nil, 1)
+local timerDeathFromAboveCD		= mod:NewAITimer(32.7, 1216709, nil, nil, nil, 3)
+local timerSlamCD				= mod:NewAITimer(32.7, 1216812, nil, nil, nil, 2)
+local timerFlamingFlamesCD		= mod:NewAITimer(32.7, 1216687, nil, nil, nil, 2)
 
---[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 450454 then
-
+	if spellId == 1216505 then
+		warnBombfield:Show()
+		timerBombfieldCD:Start()
+	elseif spellId == 1216709 then
+		specWarnDeathFromAbove:Show()
+		specWarnDeathFromAbove:Play("watchstep")
+		timerDeathFromAboveCD:Start()
+	elseif spellId == 1216812 then
+		specWarnToxicMechanic:Show()
+		specWarnToxicMechanic:Play("carefly")
+		timerSlamCD:Start()
+	elseif spellId == 1216687 then
+		specWarnFlamingFlames:Show()
+		specWarnFlamingFlames:Play("frontal")
+		timerFlamingFlamesCD:Start()
 	end
 end
---]]
 
 --[[
 function mod:SPELL_CAST_SUCCESS(args)

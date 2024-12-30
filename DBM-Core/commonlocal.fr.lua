@@ -101,6 +101,7 @@ CL.CURSES							= "Malédictions"
 CL.SWIRLS							= "Tourbillon"--Plural of Swirl
 CL.CHARGES							= "Charges"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES							= "Cercles"--As in circles on ground that players need to move out of or need to drop off
+CL.KNOCKUP							= "Projeter dans les airs"
 -- Colors
 CL.BLACK 							= "Noir"
 CL.BLUE 							= "Bleu"
