@@ -64,7 +64,7 @@ mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30118))
 local warnBlazeofGlory								= mod:NewCastAnnounce(466040, 2)
 
-local specWarnOilCanisterSoaked						= mod:NewSpecialWarningSoakCount(1216731, nil, nil, nil, 2, 2)
+local specWarnOilCanisterSoak						= mod:NewSpecialWarningSoakCount(1216731, nil, nil, nil, 2, 2, 4)
 local specWarnCarryingOil							= mod:NewSpecialWarningYou(1216788, nil, nil, nil, 1, 2)
 local specWarnHotWheels								= mod:NewSpecialWarningYou(466368, nil, nil, nil, 1, 2)
 local yellHotWheels									= mod:NewShortYell(466368)
@@ -245,8 +245,8 @@ function mod:UNIT_DIED(args)
 		if self:IsMythic() then
 			self.vb.soakCount = self.vb.soakCount + 1
 			if not DBM:UnitDebuff("player", 473507) then
-				specWarnOilCanisterSoaked:Show(self.vb.soakCount)
-				specWarnOilCanisterSoaked:Play("helpsoak")
+				specWarnOilCanisterSoak:Show(self.vb.soakCount)
+				specWarnOilCanisterSoak:Play("helpsoak")
 			end
 		end
 	end
