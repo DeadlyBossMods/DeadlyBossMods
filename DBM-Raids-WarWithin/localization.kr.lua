@@ -96,7 +96,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Cauldron of Carnage --
 ---------------------------
---L= DBM:GetModLocalization(2640)
+L= DBM:GetModLocalization(2640)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "보스와의 거리를 능동적으로 감지하여 근처에 없는 보스의 경고와 타이머를 자동으로 숨김 (60미터 이상)"
+})
 
 ---------------------------
 --  Rik Reverb --
