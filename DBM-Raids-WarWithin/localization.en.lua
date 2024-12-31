@@ -95,7 +95,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  Cauldron of Carnage --
 ---------------------------
---L= DBM:GetModLocalization(2640)
+L= DBM:GetModLocalization(2640)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "Actively scan distance to each of bosses and automatically hide certain alerts and fade timers for the boss you are NOT near (more than 60 distance)"
+})
 
 ---------------------------
 --  Rik Reverb --
