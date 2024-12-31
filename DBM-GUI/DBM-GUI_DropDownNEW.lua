@@ -6,21 +6,6 @@ local L = DBM_GUI_L
 local DBM_GUI = DBM_GUI
 
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
---[[
-function tabFrame1:ShowMenu()
-	for i = 1, #self.buttons do
-		button:Reset()
-		if entry then
-			if entry.texture then
-				button.backdropInfo = {
-					bgFile	= entry.value
-				}
-				button:ApplyBackdrop()
-			end
-		end
-	end
-end
-]]--
 
 local dropdownPrototype = CreateFrame("DropdownButton")
 
