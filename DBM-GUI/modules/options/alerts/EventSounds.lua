@@ -25,8 +25,9 @@ local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictor
 		DBM:PlaySoundFile(value)
 	end
 end, 180)
-VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", 0, -20)
-VictorySoundDropdown.myheight = 0
+local isNewDropdown = VictorySoundDropdown.mytype == "dropdown2"
+VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", isNewDropdown and 20 or 0, -20)
+VictorySoundDropdown.myheight = isNewDropdown and 30 or 0
 
 local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM:GetDefeatSounds(), "DBM", "EventSoundWipe", function(value)
 	DBM.Options.EventSoundWipe = value
@@ -34,7 +35,7 @@ local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeS
 		DBM:PlaySoundFile(value)
 	end
 end, 180)
-VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", 45, 0)
+VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", isNewDropdown and 20 or 45, 0)
 
 local useCombined = DBM.Options.EventSoundMusicCombined
 local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM:GetMusic() or DBM:GetDungeonMusic(), "DBM", "EventSoundDungeonBGM", function(value)
@@ -100,7 +101,7 @@ local EngageSoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageS
 	DBM.Options.EventSoundEngage2 = value
 	DBM:PlaySoundFile(DBM.Options.EventSoundEngage2)
 end, 180)
-EngageSoundDropdown:SetPoint("LEFT", PullTimerSoundDropdown, "RIGHT", 45, 0)
+EngageSoundDropdown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
 
 local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras)
 eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")

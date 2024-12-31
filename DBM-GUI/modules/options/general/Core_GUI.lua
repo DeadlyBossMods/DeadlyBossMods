@@ -40,10 +40,11 @@ local soundChannelsList = {
 local SoundChannelDropdown = generaloptions:CreateDropdown(L.UseSoundChannel, soundChannelsList, "DBM", "UseSoundChannel", function(value)
 	DBM.Options.UseSoundChannel = value
 end)
-SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -55)
+local isNewDropdowns = SoundChannelDropdown.mytype == "dropdown2"
+SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", isNewDropdowns and 15 or 0, -55)
 
 local bmrange = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
-bmrange:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
+bmrange:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", isNewDropdowns and 0 or 15, -5)
 bmrange:SetScript("OnClick", function()
 	if DBM.RangeCheck:IsShown() then
 		DBM.RangeCheck:Hide(true)
@@ -122,7 +123,7 @@ local ModelSoundDropDown = modelarea:CreateDropdown(L.ModelSoundOptions, modelSo
 	DBM.Options.ModelSoundValue = value
 end)
 ModelSoundDropDown.myheight = 40
-ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
+ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", isNewDropdowns and 15 or 0, -50)
 
 local resizeOptions = coreoptions:CreateArea(L.ResizeOptions)
 
