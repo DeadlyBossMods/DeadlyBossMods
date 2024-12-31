@@ -367,19 +367,21 @@ function mod:UNIT_POWER_UPDATE(uId)
 		lastCharge = currentCharge
 		return
 	end
-	if currentCharge >= 90 and lastCharge < 90 then
-		lastCharge = 90
-		specWarnStaticChargeHigh:Show(lastCharge)
-		specWarnStaticChargeHigh:Play("stackhigh")
-		yellStaticChargeHigh:Yell(lastCharge)
-	elseif currentCharge >= 80 and lastCharge < 80 then
-		lastCharge = 80
-		yellStaticChargeHigh:Yell(lastCharge)
-	elseif currentCharge >= 70 and lastCharge < 70 then
-		lastCharge = 70
-		specWarnStaticChargeHigh:Show(lastCharge)
-		specWarnStaticChargeHigh:Play("stackhigh")
-		yellStaticChargeHigh:Yell(lastCharge)
+	if self:AntiSpam(2, 4) then
+		if currentCharge >= 90 and lastCharge < 90 then
+			lastCharge = 90
+			specWarnStaticChargeHigh:Show(lastCharge)
+			specWarnStaticChargeHigh:Play("stackhigh")
+			yellStaticChargeHigh:Yell(lastCharge)
+		elseif currentCharge >= 80 and lastCharge < 80 then
+			lastCharge = 80
+			yellStaticChargeHigh:Yell(lastCharge)
+		elseif currentCharge >= 70 and lastCharge < 70 then
+			lastCharge = 70
+			specWarnStaticChargeHigh:Show(lastCharge)
+			specWarnStaticChargeHigh:Play("stackhigh")
+			yellStaticChargeHigh:Yell(lastCharge)
+		end
 	end
 end
 
