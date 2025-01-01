@@ -84,3 +84,62 @@ L = DBM:GetModLocalization("NerubarPalaceTrash")
 L:SetGeneralLocalization({
 	name =	"奈幽巴宮殿小怪"
 })
+
+L:SetMiscLocalization({
+	AutoPotioned	= "藥水會自動使用（注意如果您已經有減益，DBM則不會自動使用藥水）。如果您不希望自動使用藥水，則可以在設置中禁用它。"
+})
+
+
+----<<<<解放幽坑城>>>>----
+---------------------------
+--  Vexie and the Geargrinders) --
+---------------------------
+--L= DBM:GetModLocalization(2639)
+
+---------------------------
+--  Cauldron of Carnage --
+---------------------------
+L= DBM:GetModLocalization(2640)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "積極掃描每個首領的距離，並自動隱藏您未接近的首領的某些警報和淡出計時器（超過60個距離）"
+})
+
+---------------------------
+--  Rik Reverb --
+---------------------------
+--L= DBM:GetModLocalization(2641)
+
+---------------------------
+--  Stix Bunkjunker --
+---------------------------
+--L= DBM:GetModLocalization(2642)
+
+---------------------------
+--  Sprocketmonger Lockenstock --
+---------------------------
+--L= DBM:GetModLocalization(2653)
+
+---------------------------
+--  The One-Armed Bandit --
+---------------------------
+--L= DBM:GetModLocalization(2644)
+
+---------------------------
+--  Mug'Zee, Heads of Security --
+---------------------------
+--L= DBM:GetModLocalization(2645)
+
+---------------------------
+--  Chrome King Gallywix --
+---------------------------
+--L= DBM:GetModLocalization(2646)
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("UndermineTrash")
+
+L:SetGeneralLocalization({
+	name =	"幽坑城小怪"
+})
