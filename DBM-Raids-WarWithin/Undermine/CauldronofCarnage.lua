@@ -48,6 +48,7 @@ local timerColossalClashCD							= mod:NewAITimer(97.3, 465833, nil, nil, nil, 6
 local timerTinyTussleCD								= mod:NewAITimer(97.3, 472039, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnRaisedGuard", 471660, true)
+mod:AddBoolOption("AdvancedBossFiltering", true, "misc")--May be default to off on live, but for testing purposes it needs to be forced
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Flarendo the Furious
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30339))

@@ -26,7 +26,7 @@ local warnDarkAwakening                 = mod:NewSpellAnnounce(453271, 4)--Toolt
 local warnCrystalStrike  		    	= mod:NewSpellAnnounce(453294, 3)
 local warnAnnihilationBarrage       	= mod:NewSpellAnnounce(455198, 3)--why does boss have two "not in melee range of boss" mechanics?
 
-local specWarnVoidquake				    = mod:NewSpecialWarningDodge(452980, nil, nil, nil, 2, 2)
+local specWarnVoidquake				    = mod:NewSpecialWarningSpell(452980, nil, nil, nil, 2, 2)
 
 local timerCrystallinebarrageCD		    = mod:NewAITimer(32.7, 452210, nil, nil, nil, 1)
 local timerVoidquakeCD	        	    = mod:NewAITimer(32.7, 452980, nil, nil, nil, 3)
@@ -41,7 +41,7 @@ function mod:SPELL_CAST_START(args)
         warnDarkAwakening:Show()
     elseif spellId == 452980 then
         specWarnVoidquake:Show()
-        specWarnVoidquake:Play("shockwave")
+        specWarnVoidquake:Play("aesoon")
         timerVoidquakeCD:Start()
     elseif spellId == 453294 then
         timerCrystalStrikeCD:Start()
