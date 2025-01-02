@@ -12,9 +12,15 @@ DBM.InfoFrame = infoFrame
 -- Local Globals --
 -------------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 
-local DDM = LibStub:GetLibrary("LibDropDownMenu")
-local UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu = DDM.UIDropDownMenu_AddButton, DDM.UIDropDownMenu_Initialize, DDM.ToggleDropDownMenu
+local DDM, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu
+if isWrath then
+	DDM = LibStub:GetLibrary("LibDropDownMenu")
+	UIDropDownMenu_AddButton = DDM.UIDropDownMenu_AddButton
+	UIDropDownMenu_Initialize = DDM.UIDropDownMenu_Initialize
+	ToggleDropDownMenu = DDM.ToggleDropDownMenu
+end
 
 local L = DBM_CORE_L
 local UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit = UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit
@@ -39,7 +45,7 @@ end
 --------------
 --  Locals  --
 --------------
-local frame, initializeDropdown, currentMapId, currentEvent, createFrame
+local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, currentEvent, createFrame
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
@@ -54,11 +60,20 @@ do
 		DBM.Options.InfoFrameLocked = not DBM.Options.InfoFrameLocked
 	end
 
+	local function isLocked()
+		return DBM.Options.InfoFrameLocked
+	end
+
 	local function toggleShowSelf()
 		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
 	end
 
-	local function setLines(_, line)
+	local function isShowSelf()
+		return DBM.Options.InfoFrameShowSelf
+	end
+
+	local function setLines(arg1, line)
+		if not isWrath then line = arg1 end -- New dropdown code
 		prevLines = 0
 		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
@@ -68,7 +83,12 @@ do
 		end
 	end
 
-	local function setCols(_, col)
+	local function isLinesSelected(line)
+		return DBM.Options.InfoFrameLines == line
+	end
+
+	local function setCols(arg1, col)
+		if not isWrath then col = arg1 end -- New dropdown code
 		prevLines = 0
 		DBM.Options.InfoFrameCols = col
 		if col ~= 0 then
@@ -78,155 +98,80 @@ do
 		end
 	end
 
-	function initializeDropdown(_, level, menu)
-		local info
+	local function isColsSelected(col)
+		return DBM.Options.InfoFrameCols == col
+	end
 
+	function initializeDropdown(owner, rootDescription)
+		rootDescription:CreateCheckbox(LOCK_FRAME, isLocked, toggleLocked)
+		rootDescription:CreateCheckbox(L.INFOFRAME_SHOW_SELF, isShowSelf, toggleShowSelf)
+
+		local lines = rootDescription:CreateButton(L.INFOFRAME_SETLINES)
+		for _, v in ipairs({ 0, 3, 5, 8, 10, 15, 20, isRetail and 30 or 40 }) do
+			lines:CreateRadio(v == 0 and L.INFOFRAME_LINESDEFAULT or L.INFOFRAME_LINES_TO:format(v), isLinesSelected, setLines, v)
+		end
+
+		local cols = rootDescription:CreateButton(L.INFOFRAME_SETCOLS)
+		for _, v in ipairs({ 0, 1, 2, 3, 4, 5, 6 }) do
+			cols:CreateRadio(v == 0 and L.INFOFRAME_LINESDEFAULT or L.INFOFRAME_COLS_TO:format(v), isColsSelected, setCols, v)
+		end
+
+		rootDescription:CreateButton(HIDE, infoFrame.Hide)
+	end
+
+	function initializeDropdownLegacy(_, level, menu)
 		if level == 1 then
-			info = {}
-			info.text = LOCK_FRAME
-			if DBM.Options.InfoFrameLocked then
-				info.checked = true
-			end
-			info.func = toggleLocked
-			UIDropDownMenu_AddButton(info, 1)
-
-			info = {}
-			info.keepShownOnClick = true
-			info.text = L.INFOFRAME_SHOW_SELF
-			if DBM.Options.InfoFrameShowSelf then
-				info.checked = true
-			end
-			info.func = toggleShowSelf
-			UIDropDownMenu_AddButton(info, 1)
-
-			info = {}
-			info.text = L.INFOFRAME_SETLINES
-			info.notCheckable = true
-			info.hasArrow = true
-			info.keepShownOnClick = true
-			info.menuList = "lines"
-			UIDropDownMenu_AddButton(info, 1)
-
-			info = {}
-			info.text = L.INFOFRAME_SETCOLS
-			info.notCheckable = true
-			info.hasArrow = true
-			info.keepShownOnClick = true
-			info.menuList = "cols"
-			UIDropDownMenu_AddButton(info, 1)
-
-			info = {}
-			info.text = HIDE
-			info.notCheckable = true
-			info.func = infoFrame.Hide
-			info.arg1 = infoFrame
-			UIDropDownMenu_AddButton(info, 1)
+			UIDropDownMenu_AddButton({
+				text = LOCK_FRAME,
+				keepShownOnClick = true,
+				checked = isLocked(),
+				func = toggleLocked
+			}, 1)
+			UIDropDownMenu_AddButton({
+				text = L.INFOFRAME_SHOW_SELF,
+				keepShownOnClick = true,
+				checked = isShowSelf(),
+				func = toggleShowSelf
+			}, 1)
+			UIDropDownMenu_AddButton({
+				text = L.INFOFRAME_SETLINES,
+				notCheckable = true,
+				hasArrow = true,
+				keepShownOnClick = true,
+				menuList = "lines",
+			}, 1)
+			UIDropDownMenu_AddButton({
+				text = L.INFOFRAME_SETCOLS,
+				notCheckable = true,
+				hasArrow = true,
+				keepShownOnClick = true,
+				menuList = "cols",
+			}, 1)
+			UIDropDownMenu_AddButton({
+				text = HIDE,
+				notCheckable = true,
+				func = infoFrame.Hide,
+				arg1 = infoFrame
+			}, 1)
 		elseif level == 2 then
 			if menu == "lines" then
-				info = {}
-				info.text = L.INFOFRAME_LINESDEFAULT
-				info.func = setLines
-				info.arg1 = 0
-				info.checked = (DBM.Options.InfoFrameLines == 0)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(3)
-				info.func = setLines
-				info.arg1 = 3
-				info.checked = (DBM.Options.InfoFrameLines == 3)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(5)
-				info.func = setLines
-				info.arg1 = 5
-				info.checked = (DBM.Options.InfoFrameLines == 5)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(8)
-				info.func = setLines
-				info.arg1 = 8
-				info.checked = (DBM.Options.InfoFrameLines == 8)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(10)
-				info.func = setLines
-				info.arg1 = 10
-				info.checked = (DBM.Options.InfoFrameLines == 10)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(15)
-				info.func = setLines
-				info.arg1 = 15
-				info.checked = (DBM.Options.InfoFrameLines == 15)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(20)
-				info.func = setLines
-				info.arg1 = 20
-				info.checked = (DBM.Options.InfoFrameLines == 20)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_LINES_TO:format(isRetail and 30 or 40)
-				info.func = setLines
-				info.arg1 = isRetail and 30 or 40 -- Use 40 in classic for full man raids
-				info.checked = (DBM.Options.InfoFrameLines == 30)
-				UIDropDownMenu_AddButton(info, 2)
+				for _, v in ipairs({ 0, 3, 5, 8, 10, 15, 20, isRetail and 30 or 40 }) do
+					UIDropDownMenu_AddButton({
+						text = v == 0 and L.INFOFRAME_LINESDEFAULT or L.INFOFRAME_LINES_TO:format(v),
+						func = setLines,
+						arg1 = v,
+						checked = isLinesSelected(v)
+					}, 2)
+				end
 			elseif menu == "cols" then
-				info = {}
-				info.text = L.INFOFRAME_LINESDEFAULT
-				info.func = setCols
-				info.arg1 = 0
-				info.checked = (DBM.Options.InfoFrameCols == 0)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(1)
-				info.func = setCols
-				info.arg1 = 1
-				info.checked = (DBM.Options.InfoFrameCols == 1)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(2)
-				info.func = setCols
-				info.arg1 = 2
-				info.checked = (DBM.Options.InfoFrameCols == 2)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(3)
-				info.func = setCols
-				info.arg1 = 3
-				info.checked = (DBM.Options.InfoFrameCols == 3)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(4)
-				info.func = setCols
-				info.arg1 = 4
-				info.checked = (DBM.Options.InfoFrameCols == 4)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(5)
-				info.func = setCols
-				info.arg1 = 5
-				info.checked = (DBM.Options.InfoFrameCols == 5)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = {}
-				info.text = L.INFOFRAME_COLS_TO:format(6)
-				info.func = setCols
-				info.arg1 = 6
-				info.checked = (DBM.Options.InfoFrameCols == 6)
-				UIDropDownMenu_AddButton(info, 2)
+				for _, v in ipairs({ 0, 1, 2, 3, 4, 5, 6 }) do
+					UIDropDownMenu_AddButton({
+						text = v == 0 and L.INFOFRAME_LINESDEFAULT or L.INFOFRAME_COLS_TO:format(v),
+						func = setCols,
+						arg1 = v,
+						checked = isColsSelected(v)
+					}, 2)
+				end
 			end
 		end
 	end
@@ -270,15 +215,19 @@ function createFrame()
 			infoFrame[event](self, ...)
 		end
 	end)
-	frame:SetScript("OnMouseDown", function(_, button)
+	frame:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
-			-- no clue what is going on with DDM here
-			---@diagnostic disable-next-line: param-type-mismatch
-			local dropdownFrame = DDM.Create_DropDownMenu("Frame", "DBMInfoFrameDropdown", frame)
-			---@diagnostic disable-next-line: param-type-mismatch
-			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
-			---@diagnostic disable-next-line: param-type-mismatch
-			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
+			if isWrath then
+				-- no clue what is going on with DDM here
+				---@diagnostic disable-next-line: param-type-mismatch
+				local dropdownFrame = DDM.Create_DropDownMenu("Frame", "DBMInfoFrameDropdown", frame)
+				---@diagnostic disable-next-line: param-type-mismatch
+				UIDropDownMenu_Initialize(dropdownFrame, initializeDropdownLegacy)
+				---@diagnostic disable-next-line: param-type-mismatch
+				ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
+			else
+				MenuUtil.CreateContextMenu(frame, initializeDropdown)
+			end
 		end
 	end)
 
