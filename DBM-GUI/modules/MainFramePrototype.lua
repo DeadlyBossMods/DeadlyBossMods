@@ -1,11 +1,15 @@
 local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
-local DDM = LibStub:GetLibrary("LibDropDownMenu")
+local DDM
+if isWrath then
+	DDM = LibStub:GetLibrary("LibDropDownMenu")
+end
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
 local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
