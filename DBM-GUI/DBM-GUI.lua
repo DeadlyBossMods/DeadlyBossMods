@@ -102,6 +102,7 @@ local challengeModeIds = {
 	[505] = 2662, -- The Dawnbreaker
 	[506] = 2661, -- Cinderbrew Meadery
 	[507] = 670, -- Grim Batol
+	[525] = 2773, -- Operation: Floodgate
 }
 
 do
