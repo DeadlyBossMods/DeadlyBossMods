@@ -55,6 +55,9 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@class DBMDropDown
 	---@diagnostic disable-next-line: undefined-field -- frame comes from a subclass of DBM_GUI
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
+	dropdown = setmetatable(dropdown, {
+		__index = dropdownPrototype
+	})
 	dropdown.mytype = "dropdown2"
 	dropdown.width = width or 120
 	if type(values) == "function" then
@@ -65,7 +68,6 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	dropdown.callfunc = callfunc
 	dropdown:SetWidth(dropdown.width + 30)
 
-	dropdown.overrideText = overrideText
 	if overrideText then
 		dropdown:OverrideText(overrideText)
 	end
@@ -159,7 +161,5 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		dropdown:GenerateMenu()
 	end
 
-	return setmetatable(dropdown, {
-		__index = dropdownPrototype
-	})
+	return dropdown
 end
