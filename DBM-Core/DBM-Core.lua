@@ -4441,7 +4441,7 @@ do
 	end
 
 	syncHandlers["ZC"] = function(sender, _, guid, cid)
-		DBMZoneCombatScanner:OnSync(sender, guid, cid)
+		DBMZoneCombatScanner:OnSync(sender, guid, tonumber(cid))
 	end
 
 	syncHandlers["RLO"] = function(sender, protocol, statusWhisper, guildStatus, raidIcons, chatBubbles)
