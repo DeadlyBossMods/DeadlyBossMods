@@ -1,3 +1,4 @@
+---@diagnostic disable: cast-local-type
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 

@@ -20,8 +20,10 @@ if DBM:IsPostMoP() then
 end
 
 local registeredZones = {}--Global table for tracking registered zones
+local registeredSyncZone = {}--Global table for tracking registered zones that use syncing
 local ActiveGUIDs = {}--GUIDS we're flagged in combat with
 local inCombat = false
+local syncingActive = false
 local currentZone = DBM:GetCurrentArea() or 0
 --Only up to two cached mods at a time, since it's unlikely more than 2 mods will be scanning units at once
 local affixesMod--Mythic+ or Raid affixes module
@@ -44,6 +46,10 @@ local function ScanEngagedUnits(self)
 					local cid = DBM:GetCIDFromGUID(guid)
 					self:StartEngageTimers(guid, cid, 0)
 					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
+					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
+						private.sendSync(private.DBMSyncProtocol, "ZC", guid .. "\t" .. cid, "ALERT")
+					end
 				end
 			end
 		end
@@ -105,6 +111,9 @@ local function DelayedZoneCheck(force)
 	currentZone = DBM:GetCurrentArea() or 0
 	if not force and registeredZones[currentZone] and not eventsRegistered then
 		eventsRegistered = true
+		if registeredSyncZone[currentZone] then
+			syncingActive = true
+		end
 		module:RegisterShortTermEvents(
 			"UNIT_FLAGS player party1 party2 party3 party4",
 			"PLAYER_REGEN_DISABLED",
@@ -119,6 +128,7 @@ local function DelayedZoneCheck(force)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
 		eventsRegistered = false
+		syncingActive = false
 		inCombat = false
 		table.wipe(ActiveGUIDs)
 		lastUsedMod = nil
@@ -159,6 +169,8 @@ end
 
 function module:ENCOUNTER_START()
 	--This basically force unloads things in a raid, since we're not typically fighting trash during a raid boss
+	--Also force disables zone syncing
+	syncingActive = false
 	if IsInRaid() then
 		DelayedZoneCheck(true)
 	else
@@ -172,6 +184,9 @@ end
 
 function module:ENCOUNTER_END()
 	--Restore trash registered zone combat events if there are any
+	if registeredSyncZone[currentZone] then
+		syncingActive = true
+	end
 	if IsInRaid() then
 		DelayedZoneCheck()
 	else
@@ -183,14 +198,26 @@ function module:ENCOUNTER_END()
 	end
 end
 
+function module:OnSync(sender, guid, cid)
+	if not ActiveGUIDs[guid] then
+		ActiveGUIDs[guid] = true
+		lastUsedMod:StartEngageTimers(guid, cid, 0)
+		DBM:Debug("Firing Synced Engaged Unit for "..guid, 3, nil, true)
+	end
+end
+
 ---Used for registering combat with enemies that don't support conventional means (such as dungeon trash)
 ---@param zone number Instance ID of the zone
 ---@param modId? string|number The mod id to register for combat scanning
-function bossModPrototype:RegisterZoneCombat(zone, modId)
+---@param useSyncing boolean? If true, this mod will use syncing for combat scanning to solve range issues
+function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
 	modId = modId or self.id
 	if DBM.Options.NoCombatScanningFeatures then return end
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
+	end
+	if not registeredSyncZone[zone] then
+		registeredSyncZone[zone] = useSyncing
 	end
 	if modId == "MPlusAffixes" then
 		affixesMod = DBM:GetModByName(modId)--Just cache mod outright, it'll never change

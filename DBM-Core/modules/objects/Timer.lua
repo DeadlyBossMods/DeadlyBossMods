@@ -216,7 +216,7 @@ function timerPrototype:Start(timer, ...)
 	end
 	if not self.option or self.mod.Options[self.option] then
 		local isCountTimer = false
-		if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
+		if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount" or self.type == "varcount") then
 			isCountTimer = true
 		end
 		local guid, timerCount

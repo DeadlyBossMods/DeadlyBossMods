@@ -1,3 +1,4 @@
+---@diagnostic disable: assign-type-mismatch, cast-local-type
 -- *********************************************************
 -- **               Deadly Boss Mods - Core               **
 -- **              https://deadlybossmods.com             **
@@ -395,6 +396,7 @@ DBM.DefaultOptions = {
 	CoreSavedRevision = 1,
 	SilentMode = false,
 	NoCombatScanningFeatures = false,
+	ZoneCombatSyncing = false,--HIDDEN power user feature to improve zone scanning accuracy in niche cases
 }
 
 ---@type DBMMod[]
@@ -4341,11 +4343,14 @@ do
 		end
 	end
 
+	local DBMZoneCombatScanner = private:GetModule("TrashCombatScanningModule")
+
 	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
 
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
 	-- C = Combat start
+	-- ZC = Zone Combat
 	-- GC = Guild Combat Start
 	-- IS = Icon set info
 	-- K = Kill
@@ -4433,6 +4438,10 @@ do
 				end
 			end
 		end
+	end
+
+	syncHandlers["ZC"] = function(sender, _, guid, cid)
+		DBMZoneCombatScanner:OnSync(sender, guid, tonumber(cid))
 	end
 
 	syncHandlers["RLO"] = function(sender, protocol, statusWhisper, guildStatus, raidIcons, chatBubbles)
