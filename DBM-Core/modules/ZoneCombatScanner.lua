@@ -34,6 +34,30 @@ local cachedMods = {}
 ---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time (and affixes doesn't monitor this)
 ---@param self DBMMod
 local function ScanEngagedUnits(self)
+	--Scan mouseover
+	if UnitAffectingCombat("mouseover") and not UnitIsFriend("mouseover", "player") then
+		local guid = UnitGUID("mouseover")
+		if guid and DBM:IsCreatureGUID(guid) then
+			if not ActiveGUIDs[guid] then
+				ActiveGUIDs[guid] = true
+				local cid = DBM:GetCIDFromGUID(guid)
+				self:StartEngageTimers(guid, cid, 0)
+				DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+			end
+		end
+	end
+	--Scan softenemy
+	if UnitAffectingCombat("softenemy") and not UnitIsFriend("softenemy", "player") then
+		local guid = UnitGUID("softenemy")
+		if guid and DBM:IsCreatureGUID(guid) then
+			if not ActiveGUIDs[guid] then
+				ActiveGUIDs[guid] = true
+				local cid = DBM:GetCIDFromGUID(guid)
+				self:StartEngageTimers(guid, cid, 0)
+				DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+			end
+		end
+	end
 	--Iterate over all raid/party members and their targets
 	local uId = (IsInRaid() and "raid") or "party"
 	for i = 0, GetNumGroupMembers() do
