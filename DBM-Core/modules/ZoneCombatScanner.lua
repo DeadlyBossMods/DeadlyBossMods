@@ -94,7 +94,7 @@ local function ScanEngagedUnits(self, delay)
 		end
 	end
 	--Only run twice per second.
-	DBM:Schedule(0.5, ScanEngagedUnits, self, delay+0.5)
+	DBM:Schedule(0.5, ScanEngagedUnits, self, delay)
 end
 
 ---@param delay number
