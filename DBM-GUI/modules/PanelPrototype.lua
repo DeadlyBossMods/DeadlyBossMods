@@ -496,11 +496,7 @@ do
 		button.text = desc or CL.UNKNOWN
 		buttonText:SetJustifyH("p", "LEFT")
 		buttonText:ClearAllPoints()
-		if modvar and istimer then -- Old dropdown hacks
-			buttonText:SetPoint("LEFT", frame2 or frame or button, "RIGHT", 37, 0)
-		else
-			buttonText:SetPoint("LEFT", frame2 or frame or button, "RIGHT", 2, 0)
-		end
+		buttonText:SetPoint("LEFT", frame2 or frame or button, "RIGHT", 2, 0)
 		buttonText:SetPoint("RIGHT", self.frame, -15, 0)
 		buttonText:SetText(button.text)
 		buttonText:SetSize(buttonText:GetWidth(), buttonText:GetContentHeight())

@@ -460,7 +460,7 @@ local function createTextFrame()
 				---@diagnostic disable-next-line: param-type-mismatch
 				ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 			else
-				MenuUtil.CreateContextMenu(frame, initializeDropdown)
+				MenuUtil.CreateContextMenu(textFrame, initializeDropdown)
 			end
 		end
 	end)
@@ -534,7 +534,7 @@ local function createRadarFrame()
 				---@diagnostic disable-next-line: param-type-mismatch
 				ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 			else
-				MenuUtil.CreateContextMenu(frame, initializeDropdown)
+				MenuUtil.CreateContextMenu(radarFrame, initializeDropdown)
 			end
 		end
 	end)
