@@ -176,19 +176,19 @@ function mod:GOSSIP_SHOW()
 end
 
 --All timers subject to a ~0.5 second clipping due to ScanEngagedUnits
-function mod:StartEngageTimers(guid, cid)
+function mod:StartEngageTimers(guid, cid, delay)
 	if cid == 222305 then
-		timerImpaleCD:Start(10.3, guid)
+		timerImpaleCD:Start(10.3-delay, guid)
 	elseif cid == 222145 then
-		timerStagFlipCD:Start(2.8, guid)
+		timerStagFlipCD:Start(2.8-delay, guid)
 	elseif cid == 218320 then
-		timerDarkMendingCD:Start(3.3, guid)
+		timerDarkMendingCD:Start(3.3-delay, guid)
 --	elseif cid == 218317 then
 --		timerGossemereWeaveCD:Start(17, guid)--Cast instantly on engage
 	elseif cid == 229918 then
-		timerPoisonBreathCD:Start(4, guid)
+		timerPoisonBreathCD:Start(4-delay, guid)
 	elseif cid == 218306 then
-		timerDeafeningRoarCD:Start(10, guid)
+		timerDeafeningRoarCD:Start(10-delay, guid)
 	end
 end
 
