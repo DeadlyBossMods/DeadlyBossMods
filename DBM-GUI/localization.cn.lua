@@ -672,3 +672,9 @@ L.EnterTestMode						= "测试模式"
 L.SkipPhase							= "转跳至下一阶段"
 
 L.AnonymizeTest						= "将玩家姓名和GUID匿名"
+L.ShowThisTestEverywhere			= "在每个MOD中显示此测试"
+L.SaveThisTest						= "保存此测试记录"
+
+L.BossModTColor						= "条颜色"
+L.BossModCVoice						= "倒数语音"
+L.BossModSWSound					= "警报声音"
