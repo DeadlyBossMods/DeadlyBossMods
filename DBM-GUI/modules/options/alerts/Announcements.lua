@@ -37,7 +37,8 @@ local FontDropDown = raidwarnoptions:CreateDropdown(L.FontType, Fonts, "DBM", "W
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
-FontDropDown:SetPoint("TOPLEFT", check6, "BOTTOMLEFT", 0, -10)
+local isNewDropdown = FontDropDown.mytype == "dropdown2"
+FontDropDown:SetPoint("TOPLEFT", check6, "BOTTOMLEFT", isNewDropdown and 5 or 0, isNewDropdown and -15 or -10)
 
 -- RaidWarn Font Style
 local FontStyles = {
@@ -72,7 +73,7 @@ local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.FontStyle, FontStyles
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
-FontStyleDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
+FontStyleDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 
 -- RaidWarn Font Shadow
 local FontShadow = raidwarnoptions:CreateCheckButton(L.FontShadow, nil, nil, "WarningFontShadow")
@@ -106,11 +107,11 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, "DBM", "RaidWarningSound", function(value)
 	DBM.Options.RaidWarningSound = value
 end)
-RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, -10)
+RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 
 -- RaidWarn Font Size
 local fontSizeSlider = raidwarnoptions:CreateSlider(L.FontSize, 8, 60, 1, 200)
-fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -130)
+fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", isNewDropdown and 5 or 20, -130)
 fontSizeSlider:SetValue(DBM.Options.WarningFontSize)
 fontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningFontSize = self:GetValue()
@@ -120,7 +121,7 @@ end)
 
 -- RaidWarn Duration
 local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 200)
-durationSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -170)
+durationSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", isNewDropdown and -15 or -10, -170)
 durationSlider:SetValue(DBM.Options.WarningDuration2)
 durationSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningDuration2 = self:GetValue()

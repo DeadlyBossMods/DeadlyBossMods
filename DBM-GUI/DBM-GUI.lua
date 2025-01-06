@@ -102,6 +102,7 @@ local challengeModeIds = {
 	[505] = 2662, -- The Dawnbreaker
 	[506] = 2661, -- Cinderbrew Meadery
 	[507] = 670, -- Grim Batol
+	[525] = 2773, -- Operation: Floodgate
 }
 
 do
@@ -499,7 +500,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	end)
 	if not isTestView then
 		local playground = panel:CreateButton(L.EnterTestMode, 155, 28, nil, GameFontNormalSmall)
-		playground.myheight = 40
+		playground.myheight = 0
 		playground:SetPoint("TOPLEFT", reset, "BOTTOMLEFT", 0, -2)
 		playground:SetScript("OnClick", function()
 			mod.showTestUI = true
@@ -513,8 +514,6 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
-	button.textObj:ClearAllPoints()
-	button.textObj:SetPoint("TOPLEFT", button, "TOPRIGHT", 0, 2)
 
 	if mod.addon then
 		for spellID, options in getmetatable(mod.groupOptions).__pairs(mod.groupOptions) do
@@ -660,11 +659,14 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			DBM:CopyAllModOption(addon.modId, name, tonumber(profile))
 			C_Timer.After(0.05, refresh)
 		end, 100)
-		copyModProfile:SetPoint("TOPLEFT", -7, -54)
+		local isNewDropdown = copyModProfile.mytype == "dropdown2"
+		copyModProfile:SetPoint("TOPLEFT", isNewDropdown and 15 or -7, -54)
 		copyModProfile:SetScript("OnShow", function()
 			copyModProfile.value = nil
 			copyModProfile.text = nil
-			_G[copyModProfile:GetName() .. "Text"]:SetText("")
+			if not isNewDropdown then
+				_G[copyModProfile:GetName() .. "Text"]:SetText("")
+			end
 		end)
 
 		local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, modProfileDropdown, nil, nil, function(value)
@@ -677,7 +679,9 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		copyModSoundProfile:SetScript("OnShow", function()
 			copyModSoundProfile.value = nil
 			copyModSoundProfile.text = nil
-			_G[copyModSoundProfile:GetName() .. "Text"]:SetText("")
+			if not isNewDropdown then
+				_G[copyModSoundProfile:GetName() .. "Text"]:SetText("")
+			end
 		end)
 
 		local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, modProfileDropdown, nil, nil, function(value)
@@ -690,7 +694,9 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		copyModNoteProfile:SetScript("OnShow", function()
 			copyModNoteProfile.value = nil
 			copyModNoteProfile.text = nil
-			_G[copyModNoteProfile:GetName() .. "Text"]:SetText("")
+			if not isNewDropdown then
+				_G[copyModNoteProfile:GetName() .. "Text"]:SetText("")
+			end
 		end)
 
 		local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, modProfileDropdown, nil, nil, function(value)
@@ -699,11 +705,13 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			C_Timer.After(0.05, refresh)
 		end, 100)
 		deleteModProfile.myheight = 60
-		deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, -10)
+		deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 		deleteModProfile:SetScript("OnShow", function()
 			deleteModProfile.value = nil
 			deleteModProfile.text = nil
-			_G[deleteModProfile:GetName() .. "Text"]:SetText("")
+			if not isNewDropdown then
+				_G[deleteModProfile:GetName() .. "Text"]:SetText("")
+			end
 		end)
 
 		function refresh()

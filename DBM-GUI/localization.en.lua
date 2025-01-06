@@ -681,3 +681,7 @@ L.SkipPhase							= "Skip to next phase"
 L.AnonymizeTest						= "Anonymize player names and GUIDs"
 L.ShowThisTestEverywhere			= "Show this test for all mods"
 L.SaveThisTest						= "Save this test log persistently"
+
+L.BossModTColor						= "Bar Color"
+L.BossModCVoice						= "Countdown Voice"
+L.BossModSWSound					= "Announce Sound"

@@ -24,7 +24,7 @@ movemebutton:SetScript("OnClick", function()
 end)
 
 local color0 = specArea:CreateColorSelect(64)
-color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -200)
+color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -220)
 local color0text = specArea:CreateText(L.FontColor, 80)
 color0text:SetPoint("BOTTOM", color0, "TOP", 5, 4)
 local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -70,7 +70,7 @@ local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialW
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 95, -198)
+FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 105, -220)
 FontDropDown.myheight = 0
 
 local FontStyles = {
@@ -221,7 +221,7 @@ color1.myheight = 104
 local SpecialWarnSoundDropDown = specWarnOne:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound", function(value)
 	DBM.Options.SpecialWarningSound = value
 end)
-SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 95, -28)
+SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 105, -28)
 SpecialWarnSoundDropDown.myheight = 0
 
 local flashCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash1")
@@ -289,7 +289,7 @@ color2.myheight = 104
 local SpecialWarnSoundDropDown2 = specWarnTwo:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound2", function(value)
 	DBM.Options.SpecialWarningSound2 = value
 end)
-SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 95, -28)
+SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 105, -28)
 SpecialWarnSoundDropDown2.myheight = 0
 
 local flashCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash2")
@@ -361,7 +361,7 @@ color3.myheight = 104
 local SpecialWarnSoundDropDown3 = specWarnThree:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound3", function(value)
 	DBM.Options.SpecialWarningSound3 = value
 end)
-SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 95, -28)
+SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 105, -28)
 SpecialWarnSoundDropDown3.myheight = 0
 
 local flashCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash3")
@@ -432,7 +432,7 @@ color4.myheight = 104
 local SpecialWarnSoundDropDown4 = specWarnFour:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound4", function(value)
 	DBM.Options.SpecialWarningSound4 = value
 end)
-SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 95, -28)
+SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 105, -28)
 SpecialWarnSoundDropDown4.myheight = 0
 
 local flashCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash4")
@@ -501,7 +501,7 @@ color5.myheight = 104
 local SpecialWarnSoundDropDown5 = specWarnFive:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound5", function(value)
 	DBM.Options.SpecialWarningSound5 = value
 end)
-SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 95, -28)
+SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 105, -28)
 SpecialWarnSoundDropDown5.myheight = 0
 
 local flashCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash5")

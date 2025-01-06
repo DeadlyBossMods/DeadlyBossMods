@@ -37,7 +37,6 @@ Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\LibDeflate.lua
 Libs\LibSerialize\lib.xml
 Libs\LibSpecialization\LibSpecialization.xml
-Libs\LibDropDownMenu\LibDropDownMenu.xml
 Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
 
 localization.en.lua

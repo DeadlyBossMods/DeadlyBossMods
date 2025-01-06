@@ -1,11 +1,15 @@
 local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
-local DDM = LibStub:GetLibrary("LibDropDownMenu")
+local DDM
+if isWrath then
+	DDM = LibStub:GetLibrary("LibDropDownMenu")
+end
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
 local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
@@ -93,40 +97,31 @@ local function resize(targetFrame, first)
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
 							child2:SetShown(child2.hasDesc and true or child.hidden)
-							_G[child:GetName() .. "Title"]:Show()
-							_G[child2:GetName() .. "Text"]:SetShown(child2.hasDesc and true or child.hidden)
+							child2:SetHeight(_G[child2:GetName() .. "Text"]:GetStringHeight())
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
-						if child2.mytype == "textblock" or child2.mytype == "spelldesc" then
-							local text = _G[child2:GetName() .. "Text"]
+						if child2.mytype == "textblock" then
 							if child2.autowidth then
-								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
+								local text = _G[child2:GetName() .. "Text"]
+								text:SetWidth(width - 30)
 								child2:SetSize(width, text:GetStringHeight())
 							end
 							lastObject = child2
+						elseif child2.mytype == "spelldesc" then
+							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = child2.textObj
-							buttonText:SetWidth(width - child2.widthPad - 57)
+							local height = buttonText:GetContentHeight()
+							buttonText:SetSize(buttonText:GetWidth(), height)
 							buttonText:SetText(child2.text)
 							if not child2.customPoint then
-								local height = buttonText:GetContentHeight()
-								if not isRetail then
-									-- Classic fix: SimpleHTML needs its height reset
-									local oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5 = buttonText:GetPoint()
-									buttonText:SetHeight(1)
-									buttonText:SetPoint("TOPLEFT", UIParent)
-									height = buttonText:GetContentHeight()
-									buttonText:SetPoint(oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5)
-									-- End classic fix
-								end
 								if lastObject then
-									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 0))
+									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 5))
 								else
 									child2:SetPointOld("TOPLEFT", 10, -12)
 								end
-								child2.myheight = mmax(height + 12, 25)
-								buttonText:SetHeight(child2.myheight)
+								child2.myheight = mmax(height + 12, 30)
 							end
 							lastObject = child2
 						elseif child2.mytype == "line" then
@@ -184,7 +179,9 @@ function frame:DisplayFrame(targetFrame)
 		DBM_GUI.currentViewing:Hide()
 	end
 	DBM_GUI.currentViewing = targetFrame
-	_G["DBM_GUI_DropDown"]:Hide()
+	if _G["DBM_GUI_DropDown"] then
+		_G["DBM_GUI_DropDown"]:Hide()
+	end
 	local FOV = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
 	FOV:SetScrollChild(targetFrame)
 	FOV:Show()

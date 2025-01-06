@@ -24,7 +24,8 @@ local PTCountSoundDropDown = pbcSoundsArea:CreateDropdown(L.PullVoice, DBM:GetCo
 	DBM:PlayCountSound(1, DBM.Options.PullVoice)
 	DBM:BuildVoiceCountdownCache()
 end, 180)
-PTCountSoundDropDown:SetPoint("TOPLEFT", pbcSoundsArea.frame, "TOPLEFT", 0, -20)
+local isNewDropdown = PTCountSoundDropDown.mytype == "dropdown2"
+PTCountSoundDropDown:SetPoint("TOPLEFT", pbcSoundsArea.frame, "TOPLEFT", isNewDropdown and 20 or 0, -20)
 PTCountSoundDropDown.myheight = 40
 
 local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
