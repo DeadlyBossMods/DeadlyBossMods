@@ -464,7 +464,7 @@ L.SpamBlockNoTrivialSpecWarnSound	= "如果相對你等級是不重要的內容�
 L.Area_SpamFilter					= "垃圾過濾選項"
 L.DontShowFarWarnings				= "不發送距離過遠的事件提示/計時器"
 L.StripServerName					= "隱藏警告、計時器、距離檢測以及資訊框架的玩家伺服器名稱"
-L.FilterVoidFormSay2					= "在虛空型態時不要發送圖示/倒數計時聊天喊話(仍會發送標準聊天喊話)"
+L.FilterVoidFormSay2				= "在虛空型態時不要發送圖示/倒數計時聊天喊話(仍會發送標準聊天喊話)"
 
 L.Area_SpecFilter					= "角色職責過濾選項"
 L.FilterDispels						= "如果你的驅散技能正在冷卻中，不顯示可驅散技能通告"
@@ -666,3 +666,7 @@ L.EnterTestMode						= "操練場模式"
 L.AnonymizeTest						= "匿名玩家名字以及標誌"
 L.ShowThisTestEverywhere			= "顯示此測試在所有模組"
 L.SaveThisTest						= "永久儲存此測試紀錄"
+
+L.BossModTColor						= "計時條顏色"
+L.BossModCVoice						= "倒數語音"
+L.BossModSWSound					= "警報聲音"
