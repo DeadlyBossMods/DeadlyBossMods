@@ -45,6 +45,7 @@ function dropdownPrototype:RefreshLazyValues()
 end
 
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
+---@diagnostic disable-next-line: duplicate-set-field
 function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText)
 	if type(values) == "table" then
 		for _, entry in next, values do
@@ -52,10 +53,10 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			entry.value = entry.value or entry.text
 		end
 	end
-	---@class DBMDropDown
-	---@diagnostic disable-next-line: undefined-field -- frame comes from a subclass of DBM_GUI
+	---@class DBMDropDown: Button
+	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
-	dropdown = setmetatable(dropdown, {
+	setmetatable(dropdown, {
 		__index = dropdownPrototype
 	})
 	dropdown.mytype = "dropdown2"
@@ -69,6 +70,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	dropdown:SetWidth(dropdown.width + 30)
 
 	if overrideText then
+		---@diagnostic disable-next-line: undefined-field
 		dropdown:OverrideText(overrideText)
 	end
 
@@ -92,6 +94,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		end
 	end
 
+	---@diagnostic disable-next-line: undefined-field
 	dropdown:SetupMenu(function(owner, rootDescription)
 		if not dropdown:IsVisible() then
 			return
@@ -127,6 +130,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			end
 		end
 		if dropdown.text then
+			---@diagnostic disable-next-line: undefined-field
 			dropdown:SetTooltip(function(tooltip)
 				GameTooltip_SetTitle(tooltip, dropdown.text)
 			end)
@@ -158,6 +162,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 				dropdown.text = v.text
 			end
 		end
+		---@diagnostic disable-next-line: undefined-field
 		dropdown:GenerateMenu()
 	end
 
