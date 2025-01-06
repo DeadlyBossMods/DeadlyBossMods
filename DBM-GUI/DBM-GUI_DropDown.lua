@@ -236,6 +236,7 @@ function dropdownPrototype:RefreshLazyValues()
 end
 
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
+---@diagnostic disable-next-line: duplicate-set-field
 function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent)
 	if type(values) == "table" then
 		for _, entry in next, values do
@@ -248,6 +249,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
 	dropdown.mytype = "dropdown"
 	dropdown.width = width
+	dropdown.myheight = nil
 	if type(values) == "function" then
 		dropdown.valueGetter = values
 	else

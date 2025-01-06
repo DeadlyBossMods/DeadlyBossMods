@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20241028
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20250106
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -46,6 +46,8 @@ CL.NORTHEAST						= "东北"
 CL.SOUTHEAST						= "东南"
 CL.SOUTHWEST						= "西南"
 CL.NORTHWEST						= "西北"
+CL.OUTSIDE							= "外面"
+CL.INSIDE							= "里面"
 CL.SHIELD							= "护盾"
 CL.PILLAR							= "柱子"
 CL.SHELTER							= "遮挡"
@@ -68,6 +70,7 @@ CL.ADD								= "小怪"
 CL.ADDS								= "小怪"
 CL.ADDCOUNT							= "小怪 %s"
 CL.BIG_ADD							= "大怪"
+CL.BIG_ADDS							= "大怪"
 CL.BOSS								= "Boss"
 CL.ENEMIES							= "敌人"
 CL.BREAK_LOS						= "视线遮挡物"
@@ -77,7 +80,7 @@ CL.BOSSAPART						= "拉开Boss"
 CL.MINDCONTROL						= "心控"
 CL.TANKCOMBO						= "坦克连击"
 CL.TANKDEBUFF						= "坦克Debuff"
-CL.AOEDAMAGE						= "AOE 伤害"
+CL.AOEDAMAGE						= "AOE伤害"
 CL.AVOID 							= "躲开"
 CL.GROUPSOAK						= "吸收"
 CL.GROUPSOAKS						= "吸收"
@@ -106,6 +109,7 @@ CL.CURSES							= "诅咒"
 CL.SWIRLS							= "漩涡"
 CL.CHARGES							= "充能"
 CL.CIRCLES							= "圈"
+CL.KNOCKUP							= "击倒"
 
 -- Colors
 CL.BLACK	= "黑"

@@ -50,35 +50,21 @@ local function createImportTranscriptorFrame()
 	header:SetText(L.ImportTranscriptorHeader)
 	header:SetJustifyH("LEFT")
 
-	---@class DBMPopupFrameBackdrop: Frame, BackdropTemplate
-	local backdrop = CreateFrame("Frame", nil, importTranscriptorFrame, "BackdropTemplate")
-	backdrop.backdropInfo = {
-		bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
-		edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border",
-		tile		= true,
-		tileSize	= 16,
-		edgeSize	= 16,
-		insets		= { left = 3, right = 3, top = 5, bottom = 3 }
-	}
-	backdrop:ApplyBackdrop()
-	backdrop:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
-	backdrop:SetBackdropBorderColor(0.4, 0.4, 0.4)
-	local input = CreateFrame("EditBox", nil, importTranscriptorFrame)
+	local input = CreateFrame("EditBox", nil, importTranscriptorFrame, "InputBoxTemplate")
 	input:SetTextInsets(7, 7, 3, 3)
 	input:SetFontObject(GameFontDisable)
 	input:SetMultiLine(true)
 	input:EnableMouse(true)
 	input:SetAutoFocus(true)
 	input:SetMaxBytes(100)
-	input:SetPoint("TOPLEFT", header, "BOTTOMLEFT", -13, -10)
+	input:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
 	input:SetWidth(360)
-	input:SetHeight(28)
+	input:SetHeight(32)
 	input:SetScript("OnShow", function(self) self:Enable() self:SetFocus() self:SetCursorPosition(0) end)
 	input:SetText(L.PasteLogHere)
 	input:SetScript("OnEscapePressed", function(self)
 		importTranscriptorFrame:Hide()
 	end)
-	backdrop:SetAllPoints(input)
 	local logSelect
 	local logs ---@type DBMTranscriptorParserLogInfo[]
 	local buf = {}
@@ -237,13 +223,14 @@ local function createImportTranscriptorFrame()
 		createTestButton:Enable()
 	end
 	logSelect = DBM_GUI:CreateDropdown(L.SelectLogDropdown, getLogEntries, nil, nil, onLogSelect, 300, nil, importTranscriptorFrame)
+	local isNewDropdown = logSelect.mytype == "dropdown2"
 	logSelect:SetSelectedValue({value = {}, text = L.SelectLogDropdown})
-	logSelect:SetPoint("TOPLEFT", input, "BOTTOMLEFT", -16, -15)
+	logSelect:SetPoint("TOPLEFT", input, "BOTTOMLEFT", isNewDropdown and -5 or -16, -15)
 
 	local anonCheckbox = CreateFrame("CheckButton", nil, importTranscriptorFrame, "OptionsBaseCheckButtonTemplate")
 	local anonCheckboxText = importTranscriptorFrame:CreateFontString(nil, nil, "GameFontNormal")
 	anonCheckboxText:SetText(L.AnonymizeTest)
-	anonCheckbox:SetPoint("TOPLEFT", logSelect, "BOTTOMLEFT", 16, -2)
+	anonCheckbox:SetPoint("TOPLEFT", logSelect, "BOTTOMLEFT", isNewDropdown and 0 or 16, -2)
 	anonCheckboxText:SetPoint("LEFT", anonCheckbox, "RIGHT", 0, 0)
 	anonCheckbox:SetScript("OnShow", function(self)
 		self:SetChecked(DBM_Test_Settings.AnonymizeImports)
@@ -399,6 +386,7 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		testSelect:SetSelectedValue({value = value, text = value.name})
 	end
 	testSelect = testSelectArea:CreateDropdown(L.SelectTestLog, getTestEntries, nil, nil, onTestDropdownSelect, 300)
+	local isNewDropdown = testSelect.mytype == "dropdown2"
 	testSelect:OnSelectionChanged(function()
 		if runOrStopTest then runOrStopTest:Enable() end
 		if alwaysShowButton then alwaysShowButton:Hide() alwaysShowButton:Show() end
@@ -417,11 +405,12 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		if self.value and self.value.ephemeral and not self.value.showInAllMods and self.value.mod ~= mod.id then
 			-- "Show in all mods" was deselected from a different mod, reset selection
 			resetTestSelection()
+		elseif not self.values then
+			resetTestSelection()
 		end
 	end)
-	resetTestSelection()
 	testSelect.myheight = 40
-	testSelect:SetPoint("TOPLEFT", importLog, "BOTTOMLEFT", -16, -15)
+	testSelect:SetPoint("TOPLEFT", importLog, "BOTTOMLEFT", isNewDropdown and 0 or -16, -15)
 	local function getPlayerEntries()
 		local testData = testSelect.value ---@type TestDefinition
 		if not testData or not testData.players then

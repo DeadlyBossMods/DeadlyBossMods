@@ -33,7 +33,31 @@ local cachedMods = {}
 ---Scan for new Unit Engages
 ---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time (and affixes doesn't monitor this)
 ---@param self DBMMod
-local function ScanEngagedUnits(self)
+local function ScanEngagedUnits(self, delay)
+	--Scan mouseover
+	if UnitAffectingCombat("mouseover") and not UnitIsFriend("mouseover", "player") then
+		local guid = UnitGUID("mouseover")
+		if guid and DBM:IsCreatureGUID(guid) then
+			if not ActiveGUIDs[guid] then
+				ActiveGUIDs[guid] = true
+				local cid = DBM:GetCIDFromGUID(guid)
+				self:StartEngageTimers(guid, cid, delay)
+				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+			end
+		end
+	end
+	--Scan softenemy
+	if UnitAffectingCombat("softenemy") and not UnitIsFriend("softenemy", "player") then
+		local guid = UnitGUID("softenemy")
+		if guid and DBM:IsCreatureGUID(guid) then
+			if not ActiveGUIDs[guid] then
+				ActiveGUIDs[guid] = true
+				local cid = DBM:GetCIDFromGUID(guid)
+				self:StartEngageTimers(guid, cid, delay)
+				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+			end
+		end
+	end
 	--Iterate over all raid/party members and their targets
 	local uId = (IsInRaid() and "raid") or "party"
 	for i = 0, GetNumGroupMembers() do
@@ -44,8 +68,8 @@ local function ScanEngagedUnits(self)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, 0)
-					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+					self:StartEngageTimers(guid, cid, delay)
+					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
 					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
 						private.sendSync(private.DBMSyncProtocol, "ZC", guid .. "\t" .. cid, "ALERT")
@@ -64,16 +88,17 @@ local function ScanEngagedUnits(self)
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
 					self:StartEngageTimers(guid, cid, 0.5)
-					DBM:Debug("Firing Engaged Unit for "..guid, 3, nil, true)
+					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 				end
 			end
 		end
 	end
 	--Only run twice per second.
-	DBM:Schedule(0.5, ScanEngagedUnits, self)
+	DBM:Schedule(0.5, ScanEngagedUnits, self, delay)
 end
 
-local function checkForCombat()
+---@param delay number
+local function checkForCombat(delay)
 	local combatFound = DBM:GroupInCombat()
 	if combatFound and not inCombat then
 		inCombat = true
@@ -86,7 +111,7 @@ local function checkForCombat()
 				lastUsedMod:EnteringZoneCombat()
 			end
 			if lastUsedMod.StartEngageTimers then
-				ScanEngagedUnits(lastUsedMod)
+				ScanEngagedUnits(lastUsedMod, delay)
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
@@ -123,7 +148,7 @@ local function DelayedZoneCheck(force)
 			module:RegisterShortTermEvents("CHALLENGE_MODE_DEATH_COUNT_UPDATED")
 		end
 		DBM:Unschedule(checkForCombat)
-		checkForCombat()--Still run an initial check
+		checkForCombat(0)--Still run an initial check
 		DBM:Debug("Registering Trash Tracking Events", 2)
 		lastUsedMod = DBM:GetModByName(cachedMods[currentZone])
 	elseif force or (not registeredZones[currentZone] and eventsRegistered) then
@@ -145,7 +170,8 @@ function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
 	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-		DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
+		DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+		DBM:Schedule(0.5, checkForCombat, 0.5)
 	end
 end
 --Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track backup events that can indicate combat status changed
@@ -177,7 +203,8 @@ function module:ENCOUNTER_START()
 		--If we're in a dungeon, we use it as yet another redundant combat check
 		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.5, checkForCombat, 0.5)
 		end
 	end
 end
@@ -193,7 +220,8 @@ function module:ENCOUNTER_END()
 		--If we're in a dungeon, we use it as yet another redundant combat check
 		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			DBM:Schedule(0.1, checkForCombat)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.5, checkForCombat, 0.5)
 		end
 	end
 end
@@ -265,7 +293,7 @@ do
 						ActiveGUIDs[guid] = true
 						local cid = DBM:GetCIDFromGUID(guid)
 						self:StartEngageTimers(guid, cid, scanTime)
-						DBM:Debug("Firing Engaged Unit for "..cid, 3, nil, true)
+						DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..scanTime, 3, nil, true)
 					end
 				end
 			end

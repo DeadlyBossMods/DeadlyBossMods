@@ -113,6 +113,7 @@ local Styles = {
 local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarStyle", function(value)
 	DBT:SetOption("BarStyle", value)
 end, 210)
+local isNewDropdown = StyleDropDown.mytype == "dropdown2"
 StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -25)
 StyleDropDown.myheight = 0
 
@@ -142,7 +143,7 @@ local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "Texture", function(value)
 	DBT:SetOption("Texture", value)
 end)
-TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, -10)
+TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 TextureDropDown.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
@@ -167,7 +168,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 local FontDropDown = BarSetup:CreateDropdown(L.FontType, Fonts, "DBT", "Font", function(value)
 	DBT:SetOption("Font", value)
 end)
-FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
+FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 FontDropDown.myheight = 0
 
 local FontFlags = {
@@ -200,11 +201,11 @@ local FontFlags = {
 local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag", function(value)
 	DBT:SetOption("FontFlag", value)
 end)
-FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
+FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 FontFlagDropDown.myheight = 0
 
 local iconleft = BarSetup:CreateCheckButton(L.BarIconLeft, nil, nil, nil, "IconLeft")
-iconleft:SetPoint("TOPLEFT", FontFlagDropDown, "BOTTOMLEFT", 10, 0)
+iconleft:SetPoint("TOPLEFT", FontFlagDropDown, "BOTTOMLEFT", isNewDropdown and 0 or 10, isNewDropdown and -5 or 0)
 
 local iconright = BarSetup:CreateCheckButton(L.BarIconRight, nil, nil, nil, "IconRight")
 iconright:SetPoint("LEFT", iconleft, "LEFT", 130, 0)
@@ -311,7 +312,7 @@ saturateSlider.myheight = 55
 local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
 	DBT:SetOption("Sort", value)
 end)
-SortDropDown:SetPoint("TOPLEFT", saturateSlider, "BOTTOMLEFT", -20, -25)
+SortDropDown:SetPoint("TOPLEFT", saturateSlider, "BOTTOMLEFT", isNewDropdown and 0 or -20, -25)
 SortDropDown.myheight = 70
 
 local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
@@ -383,7 +384,7 @@ HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("
 local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
 	DBT:SetOption("HugeSort", value)
 end)
-SortDropDownLarge:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", -20, -25)
+SortDropDownLarge:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", isNewDropdown and 0 or -20, -25)
 
 local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 350, -105)

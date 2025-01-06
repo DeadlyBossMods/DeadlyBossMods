@@ -29,7 +29,11 @@ local applyProfile			= applyProfileArea:CreateDropdown(L.SelectProfileToApply, p
 	DBM:ApplyProfile(value)
 	Refresh()
 end)
-applyProfile:SetPoint("TOPLEFT", 0, -20)
+local isNewDropdown = applyProfile.mytype == "dropdown2"
+applyProfile:SetPoint("TOPLEFT", isNewDropdown and 15 or 0, -20)
+if isNewDropdown then
+	applyProfile.myheight = 30
+end
 applyProfile:SetScript("OnShow", function()
 	applyProfile:SetSelectedValue(DBM_UsedProfile)
 end)
@@ -39,11 +43,16 @@ local copyProfile			= copyProfileArea:CreateDropdown(L.SelectProfileToCopy, prof
 	DBM:CopyProfile(value)
 	C_Timer.After(0.05, Refresh)
 end)
-copyProfile:SetPoint("TOPLEFT", 0, -20)
+copyProfile:SetPoint("TOPLEFT", isNewDropdown and 15 or 0, -20)
+if isNewDropdown then
+	copyProfile.myheight = 30
+end
 copyProfile:SetScript("OnShow", function()
 	copyProfile.value = nil
 	copyProfile.text = nil
-	_G[copyProfile:GetName() .. "Text"]:SetText("")
+	if copyProfile.mytype == "dropdown" then
+		_G[copyProfile:GetName() .. "Text"]:SetText("")
+	end
 end)
 
 local deleteProfileArea		= profilePanel:CreateArea(L.Area_DeleteProfile)
@@ -51,11 +60,16 @@ local deleteProfile			= deleteProfileArea:CreateDropdown(L.SelectProfileToDelete
 	DBM:DeleteProfile(value)
 	C_Timer.After(0.05, Refresh)
 end)
-deleteProfile:SetPoint("TOPLEFT", 0, -20)
+deleteProfile:SetPoint("TOPLEFT", isNewDropdown and 15 or 0, -20)
+if isNewDropdown then
+	deleteProfile.myheight = 30
+end
 deleteProfile:SetScript("OnShow", function()
 	deleteProfile.value = nil
 	deleteProfile.text = nil
-	_G[deleteProfile:GetName() .. "Text"]:SetText("")
+	if copyProfile.mytype == "dropdown" then
+		_G[deleteProfile:GetName() .. "Text"]:SetText("")
+	end
 end)
 
 local dualProfileArea		= profilePanel:CreateArea(L.Area_DualProfile)
