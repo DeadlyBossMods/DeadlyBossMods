@@ -671,3 +671,7 @@ L.SkipPhase							= "Saltar a la siguiente fase"
 L.AnonymizeTest 					= "Anonimizar nombres de jugadores y GUIDs"
 L.ShowThisTestEverywhere 			= "Mostrar esta prueba para todos los módulos"
 L.SaveThisTest 						= "Guardar este registro de prueba de forma persistente"
+
+L.BossModTColor						= "Color de la barra"
+L.BossModCVoice						= "Voz para cuentas atrás"
+L.BossModSWSound					= "Sonido de anuncio"
