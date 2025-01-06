@@ -674,3 +674,7 @@ L.SkipPhase							= "다음 단계로 넘어가기"
 L.AnonymizeTest						= "플레이어 이름과 GUID 익명 처리"
 L.ShowThisTestEverywhere			= "모든 모드에 이 테스트 표시"
 L.SaveThisTest						= "이 테스트 기록을 계속해서 저장"
+
+L.BossModTColor						= "바 색상"
+L.BossModCVoice						= "초읽기 음성"
+L.BossModSWSound					= "알림 소리"
