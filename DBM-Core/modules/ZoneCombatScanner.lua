@@ -87,14 +87,14 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, 0.5)
+					self:StartEngageTimers(guid, cid, 0)
 					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 				end
 			end
 		end
 	end
 	--Only run twice per second.
-	DBM:Schedule(0.5, ScanEngagedUnits, self, delay)
+	DBM:Schedule(0.5, ScanEngagedUnits, self, 0.5)--Apply 0.5 delay on repeat scans
 end
 
 ---@param delay number
@@ -111,7 +111,7 @@ local function checkForCombat(delay)
 				lastUsedMod:EnteringZoneCombat()
 			end
 			if lastUsedMod.StartEngageTimers then
-				ScanEngagedUnits(lastUsedMod, delay)
+				ScanEngagedUnits(lastUsedMod, delay)--Apply only the pre combat delay on initial instant scan
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
 		end
@@ -170,7 +170,8 @@ function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
 	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-		DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+		--Delay check til next frame to ensure flags are updated
+		DBM:Schedule(0.1, checkForCombat, 0.1)
 		DBM:Schedule(0.5, checkForCombat, 0.5)
 	end
 end
