@@ -170,7 +170,8 @@ function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
 	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-		DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+		--Delay check til next frame to ensure flags are updated
+		DBM:Schedule(0.1, checkForCombat, 0.1)
 		DBM:Schedule(0.5, checkForCombat, 0.5)
 	end
 end
