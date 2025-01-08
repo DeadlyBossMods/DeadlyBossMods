@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2653, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(214503)
+mod:SetCreatureID(230583)
 mod:SetEncounterID(3013)
 --mod:SetHotfixNoticeRev(20240921000000)
 --mod:SetMinSyncRevision(20240921000000)

@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2640, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(214503)
+mod:SetCreatureID(229181, 229177)
 mod:SetEncounterID(3010)
 --mod:SetHotfixNoticeRev(20240921000000)
 --mod:SetMinSyncRevision(20240921000000)
@@ -105,7 +105,7 @@ mod.vb.bashCount = 0
 local function updateBossDistance(self)
 	if not self.Options.AdvancedBossFiltering then return end
 	--Check if near or far from Torq
-	if self:CheckBossDistance(123456, true, 32825, 60) then
+	if self:CheckBossDistance(229177, true, 32825, 60) then
 		if not nearTorq then
 			nearTorq = true
 			timerScrapBombCD:SetFade(false)--, self.vb.scrapbombCount+1
@@ -121,7 +121,7 @@ local function updateBossDistance(self)
 		end
 	end
 	--Check if near or far from Flarendo
-	if self:CheckBossDistance(654321, true, 32825, 60) then
+	if self:CheckBossDistance(229181, true, 32825, 60) then
 		if not nearFlare then
 			nearFlare = true
 			timerStaticChargeCD:SetFade(false)--, self.vb.staticChargeCount+1

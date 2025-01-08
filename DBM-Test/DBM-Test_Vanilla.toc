@@ -1,4 +1,6 @@
 ## Interface: 11505
+## Category: DBM
+## Group: DBM Tests
 ## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Тесты|r|cffffe00a>|r |cff69ccf0Тесты для DBM Ядра|r
 ## Dependencies: DBM-Core

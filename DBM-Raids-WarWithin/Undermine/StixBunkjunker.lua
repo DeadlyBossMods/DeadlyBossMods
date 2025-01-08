@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2642, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(214503)
+mod:SetCreatureID(230322)
 mod:SetEncounterID(3012)
 --mod:SetHotfixNoticeRev(20240921000000)
 --mod:SetMinSyncRevision(20240921000000)
@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, Discarded Doomsplosive spawn and auto marking if possible
 --TODO, finish mod when npc database is available. Can't do much with bomb spawns without it
 --TODO, fancy infoframe that tracks active bombs, times remaining, as well as time remaining on https://www.wowhead.com/ptr-2/spell=1217975/doomsploded
---TODO, don't forget UNIT_DIED for CIDs
 --TODO, more with power coil
 --TODO, Target scan or something for dumpster dive. or upgrade emphasis and just make it aoe dodge alert
 --TODO, warn for high bite count? https://www.wowhead.com/ptr-2/spell=466748/infected-bite
@@ -303,11 +302,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 0 then--Discarded Doomsplosive
+	if cid == 230863 then--Discarded Doomsplosive
 		--NANI
-	elseif cid == 1 then--Small Bomb
+	elseif cid == 231531 then--Territorial Bombshell
 		timerShortFuseCast:Cancel(args.destGUID)
-	elseif cid == 2 then--Scrapmaster
+	elseif cid == 231839 then--Scrapmaster
 		timerRecyclerCast:Cancel(args.destGUID)
 	end
 end
