@@ -1,4 +1,4 @@
-## Interface: 40401
+## Interface: 40401, 40402
 ## X-Min-Interface: 40400
 
 ## Category: DBM
