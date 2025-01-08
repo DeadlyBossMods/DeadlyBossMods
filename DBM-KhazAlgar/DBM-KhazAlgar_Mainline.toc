@@ -1,7 +1,7 @@
 ## Interface: 110007, 110100
 ## Version: @project-version@
 ## Category: DBM
-## Group: DBM World Bosses
+
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (War Within)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10필드 보스 (내부 전쟁)|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff10ff10Мировые боссы (Война Внутри)|r
