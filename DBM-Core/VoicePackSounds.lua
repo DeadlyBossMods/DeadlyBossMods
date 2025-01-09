@@ -284,6 +284,7 @@
 ---|"south"
 ---|"southeast"
 ---|"southwest"
+---|"sparktowater" 18
 ---|"spear"
 ---|"specialsoon"
 ---|"speedup"
