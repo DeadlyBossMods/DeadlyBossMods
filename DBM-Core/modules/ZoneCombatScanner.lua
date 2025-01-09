@@ -172,8 +172,8 @@ function module:UNIT_FLAGS()
 	if DBM:AntiSpam(0.1, "UNIT_FLAGS") then
 		DBM:Debug("DBM is scheduling combat checks", 3)--Temporary debug, it will clutter transcriptor logs
 		--Delay check til next frame to ensure flags are updated
-		checkForCombat(0)
-		DBM:Schedule(0.2, checkForCombat, 0.2)
+		DBM:Schedule(0.1, checkForCombat, 0.1)
+		DBM:Schedule(0.25, checkForCombat, 0.25)
 		DBM:Schedule(0.5, checkForCombat, 0.5)
 	end
 end
@@ -206,7 +206,8 @@ function module:ENCOUNTER_START()
 		--If we're in a dungeon, we use it as yet another redundant combat check
 		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.1, checkForCombat, 0.1)
+			DBM:Schedule(0.25, checkForCombat, 0.25)
 			DBM:Schedule(0.5, checkForCombat, 0.5)
 		end
 	end
@@ -223,7 +224,8 @@ function module:ENCOUNTER_END()
 		--If we're in a dungeon, we use it as yet another redundant combat check
 		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
-			DBM:Schedule(0.1, checkForCombat, 0.1)--Delay check til next frame to ensure flags are updated
+			DBM:Schedule(0.1, checkForCombat, 0.1)
+			DBM:Schedule(0.25, checkForCombat, 0.25)
 			DBM:Schedule(0.5, checkForCombat, 0.5)
 		end
 	end
