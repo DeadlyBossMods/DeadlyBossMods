@@ -169,16 +169,18 @@ end
 function module:UNIT_FLAGS()
 	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
-	if DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+	if DBM:AntiSpam(0.2, "UNIT_FLAGS") then
+		DBM:Debug("DBM is scheduling combat checks", 3)--Temporary debug, it will clutter transcriptor logs
 		--Delay check til next frame to ensure flags are updated
 		DBM:Schedule(0.1, checkForCombat, 0.1)
+		DBM:Schedule(0.3, checkForCombat, 0.3)
 		DBM:Schedule(0.5, checkForCombat, 0.5)
 	end
 end
 --Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track backup events that can indicate combat status changed
 module.CHALLENGE_MODE_DEATH_COUNT_UPDATED	= module.UNIT_FLAGS
-module.PLAYER_REGEN_DISABLED				= module.UNIT_FLAGS
-module.PLAYER_REGEN_ENABLED					= module.UNIT_FLAGS
+module.PLAYER_REGEN_DISABLED	= module.UNIT_FLAGS
+module.PLAYER_REGEN_ENABLED	= module.UNIT_FLAGS
 
 function module:LOADING_SCREEN_DISABLED()
 	DBM:Unschedule(DelayedZoneCheck)
