@@ -158,7 +158,7 @@ L.Outline					= "Contorno"
 L.ThickOutline				= "Espessura do contorno"
 L.MonochromeOutline			= "Contorno monocromático"
 L.MonochromeThickOutline	= "Espessura do contorno monocromático"
-L.RaidWarnSound				= "Reproduzir som no aviso de raide"
+L.RaidWarnSound				= "Reproduzir som no anúncio de raide"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame 		= "Anúncios especiais"
@@ -299,7 +299,7 @@ L.CBTImportant = "Feitiço importante para o usuário"
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Anúncios especiais"
 L.Area_SpecWarn				= "Opções de anúncios especiais"
-L.ShowSWarningsInChat 		= "Exibir avisos especiais no quadro de bate-papo"
+L.ShowSWarningsInChat 		= "Exibir anúncios especiais no quadro de bate-papo"
 L.SpecWarn_FlashFrameRepeat	= "Repetir %d vezes (se ativado)"
 L.SpecWarn_FlashRepeat		= "Repetir piscada"
 L.SpecWarn_FlashColor		= "Cor da piscada"
@@ -322,7 +322,7 @@ L.VoicePackChoice 			= "Pacote de voz para alertas falados"
 L.MissingVoicePack 			= "Pacote de voz ausente (%s)"
 L.Area_CountdownOptions 	= "Opções de contagem regressiva"
 L.Area_VoicePackReplace 	= "Opções de substituição de pacote de voz"
-L.VPReplaceNote 			= "Nota: pacotes de voz nunca alteram ou removem seus sons de aviso.\nEles são simplesmente silenciados quando o pacote de voz os substitui."
+L.VPReplaceNote 			= "Nota: pacotes de voz nunca alteram ou removem seus sons de anúncio.\nEles são simplesmente silenciados quando o pacote de voz os substitui."
 L.ReplacesAnnounce 			= "Substituir os sons de anúncio (nota: muito poucos pacotes de voz são usados, exceto para mudanças de fase e adições)"
 L.ReplacesSADefault 		= "Substituir os sons padrão de anúncio especial (sons personalizados definidos pelo usuário nunca serão substituídos)"
 L.Area_VoicePackAdvOptions 	= "Opções avançadas de pacote de voz"
@@ -396,10 +396,10 @@ L.SpamBlockNoRangeRestore 		= "Não redefinir o quadro de distância ao estado a
 L.Panel_SpamFilter			= "Filtros global e de spam"
 L.Area_SpamFilter			= "Opções do filtro global"
 L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que estão longe"
-L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
+L.StripServerName			= "Tira com nome do reino em anúncios e temporizadores"
 
 L.Area_SpecFilter			= "Opções de especialização"
-L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
+L.FilterDispels				= "Filtrar anúncios para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
 L.Area_PullTimer			= "Opções de filtros de puxada, pausa, e temporizadores customizados"
@@ -413,7 +413,7 @@ L.PT_Threshold				= "Não reproduzir o áudio do temporizador acima de: %d"
 L.Panel_ReducedInformation 			= "Reduzir informações"
 
 L.Area_SpamFilter_Anounces 			= "Filtros de anúncios"
-L.SpamBlockNoShowTgtAnnounce 		= "Não exibir texto nem reproduzir som para anúncios gerais de ALVO que não afetam você, exceto onde indicado que um aviso específico ignora este filtro (desativação global nas funcionalidades de DBM substitui este)"
+L.SpamBlockNoShowTgtAnnounce 		= "Não exibir texto nem reproduzir som para anúncios gerais de ALVO que não afetam você, exceto onde indicado que um anúncio específico ignora este filtro (desativação global nas funcionalidades de DBM substitui este)"
 L.SpamBlockNoTrivialSpecWarnSound 	= "Não reproduzir sons de anúncio especial nem exibir piscada de tela para conteúdo trivial para o seu nível (em vez disso, toca som de anúncio não enfatizado selecionado pelo usuário)"
 
 L.Area_SpamFilter 					= "Opções de filtro de spam"
@@ -450,11 +450,11 @@ L.SpamSpecRoleGTFO 					= "Não exibir alertas de 'GTFO' (Sem texto ou som)"
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard				= "Bloquear funcionalidades de Blizzard"
 --Toast
-L.Area_HideToast					= "Desativar avisos de Blizzard (pop-ups)"
-L.HideGarrisonUpdates				= "Ocultar avisos de seguidores durante combate contra chefes"
-L.HideGuildChallengeUpdates			= "Ocultar avisos de desafios de guilda durante combate contra chefes"
---L.HideBossKill					= "Ocultar avisos de morte de chefes"--NYI
---L.HideVaultUnlock					= "Ocultar avisos de desbloqueio do cofre"--NYI
+L.Area_HideToast					= "Desativar anúncios de Blizzard (pop-ups)"
+L.HideGarrisonUpdates				= "Ocultar anúncios de seguidores durante combate contra chefes"
+L.HideGuildChallengeUpdates			= "Ocultar anúncios de desafios de guilda durante combate contra chefes"
+--L.HideBossKill					= "Ocultar anúncios de morte de chefes"--NYI
+--L.HideVaultUnlock					= "Ocultar anúncios de desbloqueio do cofre"--NYI
 --Cut Scenes
 L.Area_Cinematics					= "Bloquear cenas cinemáticas do jogo"
 L.DuringFight						= "Bloquear cenas de combate durante encontros com chefes"--uses explicite IsEncounterInProgress check
@@ -583,7 +583,7 @@ L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM 
 
 L.Area_CombatAlerts			= "Opções de alertas de combate"
 L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (em qualquer porcentagem) enquanto estiver LDT"
-L.HealthWarningLow		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
+L.HealthWarningLow			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
 L.EnteringCombatAlert		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar ao entrar em combate"
 L.LeavingCombatAlert		= "Reproduzir som de alerta ao sair de combate"
 
@@ -639,7 +639,7 @@ Você pode reproduzir registros de batalhas de chefes aqui para ver como o mod s
 L.TimewarpSetting 			= "Distorção temporal: %dx"
 L.TimewarpDynamic 			= "Distorção temporal: dinâmica (mais rápida)"
 L.TestSupportArea 			= "Opções de carregamento do mod"
-L.ModNotLoadedWithTests 	= "Aviso: Este mod não está carregado com suporte completo a testes. Se o mod chamar diretamente funções da API, como UnitHealth() ou UnitName(), elas não funcionarão corretamente. Isso é comum em funções relacionadas à saúde, energia ou alvos da unidade."
+L.ModNotLoadedWithTests 	= "AVISO: Este mod não está carregado com suporte completo a testes. Se o mod chamar diretamente funções da API, como UnitHealth() ou UnitName(), elas não funcionarão corretamente. Isso é comum em funções relacionadas à saúde, energia ou alvos da unidade."
 L.ModLoadedWithTests 		= "O mod está atualmente carregado com suporte a testes porque pelo menos um mod no addon tem testes ativados."
 L.AlwaysLoadModWithTests 	= "Sempre carregar este mod com suporte completo a testes (torna o carregamento ligeiramente mais lento)"
 L.ModLoadRequiresReload 	= ", requer recarregar a interface para aplicar"
@@ -687,3 +687,7 @@ L.SkipPhase 				= "Pular para próxima fase"
 L.AnonymizeTest 			= "Anonimizar nomes e GUIDs dos jogadores"
 L.ShowThisTestEverywhere 	= "Exibir este teste para todos os módulos"
 L.SaveThisTest 				= "Salvar este registro de teste de forma persistente"
+
+L.BossModTColor						= "Cor da barra"
+L.BossModCVoice						= "Voz para contagem regressiva"
+L.BossModSWSound					= "Som de anúncio"

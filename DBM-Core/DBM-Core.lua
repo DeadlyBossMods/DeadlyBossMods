@@ -2664,7 +2664,6 @@ do
 		difficulties:RefreshCache(true)
 	end
 
-	--C_Map.GetMapGroupMembersInfo
 	function DBM:GetNumRealPlayersInZone()
 		if not IsInGroup() then return 1 end
 		local total = 0
@@ -9148,7 +9147,7 @@ function DBM:GroupInCombat()
 	--Any Other group member in combat
 	if not combatFound then
 		for uId in DBM:GetGroupMembers() do
-			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
+			if UnitAffectingCombat(uId) then
 				combatFound = true
 				break
 			end
