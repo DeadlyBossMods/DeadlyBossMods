@@ -9033,6 +9033,9 @@ function bossModPrototype:SetEncounterID(...)
 			self.combatInfo.multiEncounterPullDetection = self.multiEncounterPullDetection
 		end
 	end
+	if self.localization.general.name == self.id then
+		self.localization.general.name = DBM:GetGeneratedLocales("encounter")[...] or self.localization.general.name
+	end
 end
 
 ---Used to disable ENCOUNTER_START from detecting boss combat
