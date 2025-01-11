@@ -147,8 +147,8 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 			t = string.split(",", t or obj.localization.general.name or name)
 		end
 		obj.localization.general.name = t or name
-	else
-		obj.localization.general.name = obj.localization.general.name or name
+	elseif not rawget(obj.localization.general, "name") then
+		obj.localization.general.name = name
 	end
 	tinsert(self.Mods, obj)
 	if modId then
