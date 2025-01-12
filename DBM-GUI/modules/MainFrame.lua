@@ -59,7 +59,7 @@ end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
 	if DBM_GUI.currentViewing then
-		self:DisplayFrame(DBM_GUI.currentViewing)
+		self:DisplayFrame(DBM_GUI.currentViewing, false)
 	end
 end)
 frame.tabs = {}
