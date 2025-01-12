@@ -142,6 +142,8 @@ local function functionArgsPretty(...)
 	return table.concat(res, ", ")
 end
 
+local objIds = {}
+
 local function injectTestDataIntoWarningObject(obj)
 	obj.testUseCount = 0
 	obj.testUsedWithPreciseShow = {}
@@ -150,6 +152,10 @@ local function injectTestDataIntoWarningObject(obj)
 		-- used to identify this table later to filter some schedule logic on it
 		obj.startedTimers._testObjClass = "Timer.startedTimers"
 	end
+	local mod = obj.mod or "unknown"
+	local id = objIds[mod] or 1
+	objIds[mod] = id + 1
+	obj.testCreationOrder = id
 end
 
 ---@param mod DBMModOrDBM
