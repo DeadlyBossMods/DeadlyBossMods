@@ -102,3 +102,53 @@ function DBM.SortByMeleeRangedHealer(v1, v2)
 		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 	end
 end
+
+function DBM.SortByTankDpsHealerRoster(v1, v2)
+	--Tank > DPS > Healer prio, and if two of any of types, roster index as secondary
+	if DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
+		return true
+	elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
+		return false
+	elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
+		return false
+	elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
+		return true
+	else
+		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
+	end
+end
+
+function DBM.SortByTankHealerDpsRoster(v1, v2)
+	--Tank > Healer > DPS prio, and if two of any of types, roster index as secondary
+	if DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
+		return true
+	elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
+		return false
+	elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
+		return true
+	elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
+		return false
+	else
+		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
+	end
+end
+
+function DBM.SortByTankHealerSplitDpsRoster(v1, v2)
+	--Tank > Healer > Melee DPS, Ranged DPS, and if two of any of types, roster index as secondary
+	if DBM:IsTanking(v1) and not DBM:IsTanking(v2) then
+		return true
+	elseif DBM:IsTanking(v2) and not DBM:IsTanking(v1) then
+		return false
+	elseif DBM:IsHealer(v1) and not DBM:IsHealer(v2) then
+		return true
+	elseif DBM:IsHealer(v2) and not DBM:IsHealer(v1) then
+		return false
+	--melee vs non melee prio the melee
+	elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
+		return true
+	elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
+		return false
+	else
+		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
+	end
+end

@@ -33,6 +33,7 @@ ignore:
   - Libs/LibDataBroker-1.1/README.textile
   - DBM-VPVEM/README.md
   - DBM-Test/README.md
+  - DBM-Core/Tools
 
 enable-nolib-creation: no
 
