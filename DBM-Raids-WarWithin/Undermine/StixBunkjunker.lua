@@ -64,7 +64,7 @@ mod:AddNamePlateOption("NPAuraOnTerritorial", 473066)
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Cleanup Crew
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30533))
-local warnDumpsterDive								= mod:NewCastAnnounce(466742, 3)
+local warnDumpsterDive								= mod:NewCastAnnounce(466742, 3, nil, nil, false, 2)--Spammy without way to scope it to specific target
 local warnMarkedForRecycling						= mod:NewTargetNoFilterAnnounce(1220648, 4)
 
 local specWarnScrapRockets							= mod:NewSpecialWarningInterruptCount(1219384, "HasInterrupt", nil, nil, 1, 2)
@@ -197,7 +197,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSortedTaunt:Play("tauntboss")
 			end
 		end
-		warnSorted:CombinedShow(0.5, args.destName)
+		warnSorted:CombinedShow(0.5, args.destName)--Up to 5 targets, but scalable so no precise show
 		self.vb.sortedIcon = self.vb.sortedIcon + 1
 	elseif spellId == 1217685 then
 		if self.Options.NPAuraOnMessedUp then
