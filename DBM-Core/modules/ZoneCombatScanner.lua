@@ -167,14 +167,15 @@ end
 --Only party is monitored because main use case is dungeons and delves.
 --And we don't want to waste performance in registered raids. 5 players should be enough to determine raid combat
 function module:UNIT_FLAGS()
-	DBM:Unschedule(checkForCombat)
 	--Use throttled delay to avoid checks running too often when multiple flags change at once
 	if DBM:AntiSpam(0.1, "UNIT_FLAGS") then
+		DBM:Unschedule(checkForCombat)
 		DBM:Debug("DBM is scheduling combat checks", 3)--Temporary debug, it will clutter transcriptor logs
 		--Delay check til next frame to ensure flags are updated
 		DBM:Schedule(0.1, checkForCombat, 0.1)
 		DBM:Schedule(0.25, checkForCombat, 0.25)
 		DBM:Schedule(0.5, checkForCombat, 0.5)
+		DBM:Schedule(0.75, checkForCombat, 0.75)
 	end
 end
 --Sometimes UNIT_FLAGS doesn't fire if group is spead out, so we track backup events that can indicate combat status changed
@@ -183,11 +184,13 @@ module.PLAYER_REGEN_DISABLED	= module.UNIT_FLAGS
 module.PLAYER_REGEN_ENABLED	= module.UNIT_FLAGS
 
 function module:LOADING_SCREEN_DISABLED()
-	DBM:Unschedule(DelayedZoneCheck)
-	--Checks Delayed 3 second after core checks to prevent race condition of checking before core did and updated cached ID
-	--Delayed 2 seconds longer than Affixes mod so there is no race condition. Affixes needs to register events first
-	DBM:Schedule(4, DelayedZoneCheck)
-	DBM:Schedule(8, DelayedZoneCheck)
+	if DBM:AntiSpam(0.1, "DelayedZoneCheck") then
+		DBM:Unschedule(DelayedZoneCheck)
+		--Checks Delayed 3 second after core checks to prevent race condition of checking before core did and updated cached ID
+		--Delayed 2 seconds longer than Affixes mod so there is no race condition. Affixes needs to register events first
+		DBM:Schedule(4, DelayedZoneCheck)
+		DBM:Schedule(8, DelayedZoneCheck)
+	end
 end
 module.OnModuleLoad = module.LOADING_SCREEN_DISABLED
 module.ZONE_CHANGED_NEW_AREA	= module.LOADING_SCREEN_DISABLED
@@ -204,11 +207,12 @@ function module:ENCOUNTER_START()
 		DelayedZoneCheck(true)
 	else
 		--If we're in a dungeon, we use it as yet another redundant combat check
-		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			DBM:Unschedule(checkForCombat)
 			DBM:Schedule(0.1, checkForCombat, 0.1)
 			DBM:Schedule(0.25, checkForCombat, 0.25)
 			DBM:Schedule(0.5, checkForCombat, 0.5)
+			DBM:Schedule(0.75, checkForCombat, 0.75)
 		end
 	end
 end
@@ -222,11 +226,12 @@ function module:ENCOUNTER_END()
 		DelayedZoneCheck()
 	else
 		--If we're in a dungeon, we use it as yet another redundant combat check
-		DBM:Unschedule(checkForCombat)
 		if registeredZones and DBM:AntiSpam(0.25, "UNIT_FLAGS") then
+			DBM:Unschedule(checkForCombat)
 			DBM:Schedule(0.1, checkForCombat, 0.1)
 			DBM:Schedule(0.25, checkForCombat, 0.25)
 			DBM:Schedule(0.5, checkForCombat, 0.5)
+			DBM:Schedule(0.75, checkForCombat, 0.75)
 		end
 	end
 end
@@ -259,6 +264,7 @@ function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
 		cachedMods[zone] = modId
 		DBM:Debug("|cffff0000Registered cachedMods for modID: |r"..modId, 2, nil, true)
 	end
+	module:LOADING_SCREEN_DISABLED()
 end
 
 ---@param zone number Instance ID of the zone
