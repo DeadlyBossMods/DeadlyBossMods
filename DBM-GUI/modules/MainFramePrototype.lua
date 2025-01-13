@@ -80,11 +80,11 @@ function frame:ClearSelection()
 	end
 end
 
-local function resize(targetFrame, first)
+local function resize(targetFrame, hasScroll)
 	local frameHeight = 20
 	for _, child in ipairs({ targetFrame:GetChildren() }) do
 		if child.mytype == "area" or child.mytype == "ability" then
-			if first then
+			if hasScroll then
 				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOVScrollBar", "TOPLEFT", -5, 0)
 			else
 				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOV", "TOPRIGHT", -5, 0)
@@ -167,7 +167,7 @@ local function resize(targetFrame, first)
 end
 
 local bossPreview
-function frame:DisplayFrame(targetFrame)
+function frame:DisplayFrame(targetFrame, secondResize)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
 	end
@@ -202,7 +202,10 @@ function frame:DisplayFrame(targetFrame)
 		scrollBar:Hide()
 		scrollBar:SetValue(0)
 		scrollBar:SetMinMaxValues(0, 0)
-		resize(targetFrame)
+		secondResize = true
+	end
+	if secondResize ~= false then
+		resize(targetFrame, scrollBar:IsVisible())
 	end
 	if DBM.Options.EnableModels then
 		if not bossPreview then
