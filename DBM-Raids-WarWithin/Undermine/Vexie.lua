@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 471403 459943 466040 466042 459671 468216 468487 459974 459627 460603 460173",
 	"SPELL_CAST_SUCCESS 459666 468207",
-	"SPELL_AURA_APPLIED 466615 471500 1216788 466368 465865 460116",
+	"SPELL_AURA_APPLIED 466615 471500 1216788 466368 465865 460116 468216",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 466615 471500 460116",
+	"SPELL_AURA_REMOVED 466615 471500 460116 468216",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED"
@@ -49,6 +49,7 @@ local specWarnCallbikers							= mod:NewSpecialWarningSwitchCount(459943, "Dps",
 local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459974, nil, nil, nil, 2, 2)
 local specWarnTankBuster							= mod:NewSpecialWarningDefensive(459627, nil, nil, nil, 1, 2)
 local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(459627, nil, nil, nil, 1, 2)
+local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For non private version
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerUnrelentingcarnageCD						= mod:NewAITimer(97.3, 471403, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -59,7 +60,7 @@ local timerBombVoyageCD								= mod:NewAITimer(97.3, 459974, nil, nil, nil, 3)
 local timerTankBusterCD								= mod:NewAITimer(97.3, 459627, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(459669, true, 459666, 1)--Spew Oil
-mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire
+mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire (Mythic only?)
 ----Geargrinder Biker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30118))
 local warnBlazeofGlory								= mod:NewCastAnnounce(466040, 2)
@@ -208,6 +209,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnTankBusterTaunt:Play("tauntboss")
 	elseif spellId == 460116 then
 		timerTuneUp:Start()
+	elseif spellId == 468216 and args:IsPlayer() then
+		specWarnIncendiaryFire:Show()
+		specWarnIncendiaryFire:Play("flameyou")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
