@@ -1,4 +1,4 @@
-## Interface: 11505
+## Interface: 11505, 11506
 ## X-Min-Interface: 11503
 
 ## Category: DBM
