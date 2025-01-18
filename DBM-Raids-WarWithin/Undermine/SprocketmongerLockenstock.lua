@@ -5,8 +5,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(230583)
 mod:SetEncounterID(3013)
---mod:SetHotfixNoticeRev(20240921000000)
---mod:SetMinSyncRevision(20240921000000)
+mod:SetHotfixNoticeRev(20250117000000)
+mod:SetMinSyncRevision(20250117000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -14,47 +14,39 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473276 1217231 1214872 1216508 465232 1218418 1216525 1216414 1215858 466765 1216674 1216699",
-	"SPELL_CAST_SUCCESS 1216802 1216887",
-	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 466860 1218344",
+	"SPELL_CAST_SUCCESS 1216802 1216887 466860",
+	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344",
 	"SPELL_AURA_APPLIED_DOSE 465917 1218344",
-	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860",
+	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
---	"CHAT_MSG_RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: figure out how staging actually works. it looks like siegecrafter blackfuse 2.0
 --TODO, actual cast event for Polarization
 --TODO, detect polarization of bombs and nameplate aura them if possible
 --TODO, verify tank logic should work like Volcoross
 --TOOD, GTFO for https://www.wowhead.com/ptr-2/spell=466235/wire-transfer ?
---TODO, detect when weapons activate and properly start timers in right place
---TODO, verify firecracker trap spawn trigger
---TODO, see if https://www.wowhead.com/ptr-2/spell=1215218/bleeding-edge still used
---TODO, maybe also add a repeating voidsplosion timer
+--TODO, find firecracker trap spawn trigger
+--TODO, see if https://www.wowhead.com/ptr-2/spell=1215218/bleeding-edge still used on other difficulties
+--[[
+(ability.id = 473276 or ability.id = 1217231 or ability.id = 1214872 or ability.id = 1216508 or ability.id = 465232 or ability.id = 1218418 or ability.id = 1216525 or ability.id = 1216414 or ability.id = 1215858 or ability.id = 466765 or ability.id = 1216674 or ability.id = 1216699) and type = "begincast"
+or ability.id = 466860 and type = "cast"
+or ability.id = 466860 and type = "removebuff"
+--]]
 --Stage One: Assembly Required
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30425))
 local warnActivateInventions						= mod:NewCountAnnounce(473276, 2)
 
-local timerActivateInventionsCD						= mod:NewAITimer(97.3, 473276, nil, nil, nil, 5)--Change to phase color if it's the phasing spell
+local timerActivateInventionsCD						= mod:NewNextCountTimer(30, 473276, nil, nil, nil, 5)--Change to phase color if it's the phasing spell
 --Goblin Inventions
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31725))
-
-local specWarnRocketBarrage							= mod:NewSpecialWarningDodgeCount(1216525, nil, nil, nil, 2, 2)
-local specWarnBlazingbeam							= mod:NewSpecialWarningDodgeCount(1216414, nil, nil, nil, 2, 2)
-local specWarnMegaMagnet							= mod:NewSpecialWarningDodgeCount(1215858, nil, nil, nil, 2, 12)
-
-local timerRocketBarrageCD								= mod:NewAITimer(97.3, 1216525, nil, nil, nil, 3)
-local timerBlazingbeamCD							= mod:NewAITimer(97.3, 1216414, nil, nil, nil, 3)
-local timerMegaMagnetCD								= mod:NewAITimer(97.3, 1215858, nil, nil, nil, 3)
+local specWarnRocketBarrage							= mod:NewSpecialWarningDodge(1216525, nil, nil, nil, 2, 2)
+local specWarnBlazingbeam							= mod:NewSpecialWarningDodge(1216414, nil, nil, nil, 2, 2)
+local specWarnMegaMagnet							= mod:NewSpecialWarningDodge(1215858, nil, nil, nil, 2, 12)
 --Empowered Inventions
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31726))
-local specWarnVoidLaser								= mod:NewSpecialWarningDodgeCount(1216674, nil, nil, nil, 2, 2)
-local specWarnVoidBarrage							= mod:NewSpecialWarningDodgeCount(1216699, nil, nil, nil, 2, 2)
-
-local timerVoidLaserCD								= mod:NewAITimer(97.3, 1216674, nil, nil, nil, 3)
-local timerVoidBarrageCD							= mod:NewAITimer(97.3, 1216699, nil, nil, nil, 3)
+local specWarnVoidLaser								= mod:NewSpecialWarningDodge(1216674, nil, nil, nil, 2, 2)
+local specWarnVoidBarrage							= mod:NewSpecialWarningDodge(1216699, nil, nil, nil, 2, 2)
 ----Polarization Generator
 mod:AddTimerLine(DBM:GetSpellName(1216802))
 local warnPolarizationGenerator						= mod:NewIncomingCountAnnounce(1216802, 3)
@@ -72,7 +64,7 @@ local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216508, 2)
 local warnScrewUpOver								= mod:NewFadesAnnounce(1216509, 1, nil, nil, nil, nil, nil, 2)
 local warnScrewedUp									= mod:NewTargetNoFilterAnnounce(1217261, 4, nil, false)
 local warnSonicBoom									= mod:NewCountAnnounce(465232, 2, nil, "Healer")
-local warnFirecrackerTrap							= mod:NewCountAnnounce(471308, 2)
+--local warnFirecrackerTrap							= mod:NewSpellAnnounce(471308, 2)
 local warnGunkStacks								= mod:NewStackAnnounce(465917, 2, nil, "Tank|Healer")
 
 local specWarnFootBlasters							= mod:NewSpecialWarningCount(1217231, nil, nil, nil, 2, 2)
@@ -90,56 +82,46 @@ local timerFootBlastersCD							= mod:NewAITimer(97.3, 1217231, nil, nil, nil, 5
 local timerWireTransferCD							= mod:NewAITimer(97.3, 1218418, nil, nil, nil, 3)
 local timerScrewUpCD								= mod:NewAITimer(97.3, 1216508, nil, nil, nil, 3)
 local timerSonicBoomCD								= mod:NewAITimer(97.3, 465232, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerFirecrackerTrapCD						= mod:NewAITimer(97.3, 471308, nil, nil, nil, 3)
+--local timerFirecrackerTrapCD						= mod:NewAITimer(97.3, 471308, nil, nil, nil, 3)
 local timerPyroPartyPackCD							= mod:NewAITimer(97.3, 1214872, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: Research and Destruction
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30427))
 local warnBetaLaunch								= mod:NewSpellAnnounce(466765, 2, nil, nil, nil, nil, nil, 2)
 local warnUpgradedBloodTech							= mod:NewStackAnnounce(1218344, 2)
 
+local timerBetaLaunchCD								= mod:NewNextCountTimer(97.3, 466765, nil, nil, nil, 6)
 local timerBleedingEdge								= mod:NewBuffActiveTimer(20, 1215218, nil, nil, nil, 6)
 
 --basic
-mod.vb.thadiusCount = 0
 mod.vb.ActivateInventionsCount = 0
-mod.vb.deploymentCount = 0
+mod.vb.thadiusCount = 0
+mod.vb.footBlasterCount = 0
 mod.vb.tankExplosionCount = 0
 mod.vb.screwUpCount = 0
 mod.vb.sonicBoomCount = 0
 mod.vb.wireTransferCount = 0
+mod.vb.betaCount = 0
 local playerStacks = 0
---Weapons
-mod.vb.RocketBarrageCount = 0--Also used for void variant
-mod.vb.BlazingbeamCount = 0--Also used for void variant
-mod.vb.megaMagnetCount = 0
-mod.vb.trapCount = 0
 
 function mod:OnCombatStart(delay)
-	self.vb.thadiusCount = 0
+	self:SetStage(1)
 	self.vb.ActivateInventionsCount = 0
-	self.vb.deploymentCount = 0
+	self.vb.thadiusCount = 0
+	self.vb.footBlasterCount = 0
 	self.vb.tankExplosionCount = 0
 	self.vb.screwUpCount = 0
 	self.vb.sonicBoomCount = 0
 	self.vb.wireTransferCount = 0
+	self.vb.betaCount = 0
 	playerStacks = 0
-	--Weapons
-	self.vb.RocketBarrageCount = 0
-	self.vb.BlazingbeamCount = 0
-	self.vb.megaMagnetCount = 0
-	self.vb.trapCount = 0
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
-	timerActivateInventionsCD:Start(1-delay)
-	timerFootBlastersCD:Start(1-delay)
-	timerPyroPartyPackCD:Start(1-delay)
-	timerScrewUpCD:Start(1-delay)
-	timerSonicBoomCD:Start(1-delay)
-	timerWireTransferCD:Start(1-delay)
-	--weapons (probably doesn't actually start here)
-	timerRocketBarrageCD:Start(1-delay)
-	timerBlazingbeamCD:Start(1-delay)
-	timerMegaMagnetCD:Start(1-delay)
-	timerFirecrackerTrapCD:Start(1-delay)
+--	timerWireTransferCD:Start(1-delay)--Used instantly on pull
+	timerSonicBoomCD:Start(6-delay, 1)
+	timerFootBlastersCD:Start(12-delay, 1)
+	timerPyroPartyPackCD:Start(20-delay, 1)
+	timerActivateInventionsCD:Start(30-delay, 1)
+	timerScrewUpCD:Start(47-delay, 1)
+	timerBetaLaunchCD:Start(120-delay, 1)
 	if self:IsMythic() then
 		timerPolarizationGeneratorCD:Start(1-delay)
 	end
@@ -150,15 +132,31 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 473276 then
 		self.vb.ActivateInventionsCount = self.vb.ActivateInventionsCount + 1
 		warnActivateInventions:Show(self.vb.ActivateInventionsCount)
-		timerActivateInventionsCD:Start()
+		--"Activate Inventions!-473276-npc:230583-00000AAAB2 = pull:30.0, 30.0, 30.0, 85.7, 30.0, 30.0, 84.7, 30.0, 30.0",
+		--85s are started at stage 1 restart
+		if self.vb.ActivateInventionsCount < 3 then
+			timerActivateInventionsCD:Start(nil, self.vb.ActivateInventionsCount+1)--Always 30
+		end
 	elseif spellId == 1217231 then
-		self.vb.deploymentCount = self.vb.deploymentCount + 1
-		specWarnFootBlasters:Show(self.vb.deploymentCount)
+		self.vb.footBlasterCount = self.vb.footBlasterCount + 1
+		specWarnFootBlasters:Show(self.vb.footBlasterCount)
 		specWarnFootBlasters:Play("bombsoon")
-		timerFootBlastersCD:Start()
+		--12.1, 62.0, 31.0, 52.7, 62.0, 31.0, 51.7, 62.0, 31.0
+		--52s are started at stage 1 restart
+		if self.vb.footBlasterCount == 1 then
+			timerFootBlastersCD:Start(62, 2)
+		elseif self.vb.footBlasterCount == 2 then
+			timerFootBlastersCD:Start(31, 3)
+		end
 	elseif spellId == 1214872 then
 		self.vb.tankExplosionCount = self.vb.tankExplosionCount + 1
-		timerPyroPartyPackCD:Start()
+		--"Pyro Party Pack-1214872-npc:230583-00000AAAB2 = pull:20.1, 34.0, 30.0, 81.7, 34.0, 30.0, 80.7, 34.0, 30.0",
+		--81s are started at stage 1 restart
+		if self.vb.tankExplosionCount == 1 then
+			timerPyroPartyPackCD:Start(34, 2)
+		elseif self.vb.tankExplosionCount == 2 then
+			timerPyroPartyPackCD:Start(30, 3)
+		end
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnPyroPartyPack:Show()
 			specWarnPyroPartyPack:Play("defensive")
@@ -169,56 +167,83 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1216508 then
 		self.vb.screwUpCount = self.vb.screwUpCount + 1
-		timerScrewUpCD:Start()
+		--"Screw Up-1216508-npc:230583-00000AAAB2 = pull:47.1, 33.0, 32.0, 80.7, 33.0, 32.0, 79.7, 33.0, 32.0",
+		--80s are started at stage 1 restart
+		if self.vb.screwUpCount == 1 then
+			timerScrewUpCD:Start(33, 2)
+		elseif self.vb.screwUpCount == 2 then
+			timerScrewUpCD:Start(32, 3)
+		end
 	elseif spellId == 465232 then
 		self.vb.sonicBoomCount = self.vb.sonicBoomCount + 1
 		warnSonicBoom:Show(self.vb.sonicBoomCount)
-		timerSonicBoomCD:Start()
+		--"Sonic Ba-Boom-465232-npc:230583-00000AAAB2 = pull:6.0, 28.0, 29.0, 30.0, 58.8, 28.0, 29.0, 30.0, 57.7, 28.0, 29.0, 30.0",
+		--58s are started at stage 1 restart
+		if self.vb.sonicBoomCount == 1 then
+			timerSonicBoomCD:Start(28, 2)
+		elseif self.vb.sonicBoomCount == 2 then
+			timerSonicBoomCD:Start(29, 3)
+		end
 	elseif spellId == 1218418 then
 		self.vb.wireTransferCount = self.vb.wireTransferCount + 1
 		specWarnWireTransfer:Show(self.vb.wireTransferCount)
 		specWarnWireTransfer:Play("watchstep")
-		timerWireTransferCD:Start()
-	elseif spellId == 1216525 then
-		self.vb.RocketBarrageCount = self.vb.RocketBarrageCount + 1
-		specWarnRocketBarrage:Show(self.vb.RocketBarrageCount)
+		--"Wire Transfer-1218418-npc:230583-00000AAAB2 = pull:0.1, 40.9, 28.0, 28.0, 48.8, 41.0, 28.0, 28.0, 47.8, 40.9, 28.0, 28.0",
+		--48s are started at stage 1 restart
+		if self.vb.wireTransferCount == 1 then
+			timerWireTransferCD:Start(40.9, 2)
+		elseif self.vb.wireTransferCount < 4 then--Both 2 and 3
+			timerWireTransferCD:Start(28, 3)
+		end
+		--Backup return to stage 1 if the other events vanish
+		if self:GetStage(2) then--Bleeding Edge ending (beta launch over) (will likely be removed as visible event, it's only showing on script bunnies
+			--can also use [DNT] Intermission Cleanup
+			self:SetStage(1)
+			timerBleedingEdge:Stop()
+			timerSonicBoomCD:Start(6, 1)
+			timerFootBlastersCD:Start(12, 1)
+			timerPyroPartyPackCD:Start(20, 1)
+			timerActivateInventionsCD:Start(30, 1)
+			timerScrewUpCD:Start(47, 1)
+			timerBetaLaunchCD:Start(120, self.vb.betaCount+1)
+	--		timerWireTransferCD:Start(1)--Used instantly
+		end
+	elseif spellId == 1216525 and self:AntiSpam(5, 1) then
+		specWarnRocketBarrage:Show()
 		specWarnRocketBarrage:Play("watchstep")
-		timerRocketBarrageCD:Start()
-	elseif spellId == 1216699 then
-		self.vb.RocketBarrageCount = self.vb.RocketBarrageCount + 1
-		specWarnVoidBarrage:Show(self.vb.RocketBarrageCount)
+	elseif spellId == 1216699 and self:AntiSpam(5, 1) then
+		specWarnVoidBarrage:Show()
 		specWarnVoidBarrage:Play("watchstep")
-		timerVoidBarrageCD:Start()
-	elseif spellId == 1216414 then
-		self.vb.BlazingbeamCount = self.vb.BlazingbeamCount + 1
-		specWarnBlazingbeam:Show(self.vb.BlazingbeamCount)
-		specWarnBlazingbeam:Play("watchstep")
-		timerBlazingbeamCD:Start()
-	elseif spellId == 1216674 then
-		self.vb.BlazingbeamCount = self.vb.BlazingbeamCount + 1
-		specWarnVoidLaser:Show(self.vb.BlazingbeamCount)
-		specWarnVoidLaser:Play("watchstep")
-		timerVoidLaserCD:Start()
-	elseif spellId == 1215858 then
-		self.vb.megaMagnetCount = self.vb.megaMagnetCount + 1
-		specWarnMegaMagnet:Show(self.vb.megaMagnetCount)
+	elseif spellId == 1216414 and self:AntiSpam(5, 2) then
+		specWarnBlazingbeam:Show()
+		specWarnBlazingbeam:Play("farfromline")
+	elseif spellId == 1216674 and self:AntiSpam(5, 2) then
+		specWarnVoidLaser:Show()
+		specWarnVoidLaser:Play("farfromline")
+	elseif spellId == 1215858 and self:AntiSpam(5, 3) then
+		specWarnMegaMagnet:Show()
 		specWarnMegaMagnet:Play("pullin")
-		timerMegaMagnetCD:Start()
-	elseif spellId == 466765 then
-		--Stop All timers?
+	elseif spellId == 466765 then--Beta Launch
+		self:SetStage(2)
+		self.vb.betaCount = self.vb.betaCount + 1
+		--Reset counts?
+		self.vb.ActivateInventionsCount = 0
+		self.vb.thadiusCount = 0
+		self.vb.footBlasterCount = 0
+		self.vb.tankExplosionCount = 0
+		self.vb.screwUpCount = 0
+		self.vb.sonicBoomCount = 0
+		self.vb.wireTransferCount = 0
 		timerActivateInventionsCD:Stop()
 		timerFootBlastersCD:Stop()
 		timerPyroPartyPackCD:Stop()
 		timerScrewUpCD:Stop()
 		timerSonicBoomCD:Stop()
 		timerWireTransferCD:Stop()
-		timerRocketBarrageCD:Stop()
-		timerBlazingbeamCD:Stop()
-		timerMegaMagnetCD:Stop()
-		timerFirecrackerTrapCD:Stop()
-		--Start new timers?
 		warnBetaLaunch:Show()
 		warnBetaLaunch:Play("phasechange")
+		--Start reset timers here instead?
+		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 
@@ -227,6 +252,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 1216802 or spellId == 1216887 then
 		self.vb.thadiusCount = self.vb.thadiusCount + 1
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
+	elseif spellId == 466860 then
+		timerBleedingEdge:Start()--20
 	end
 end
 
@@ -274,8 +301,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnScrewUp:Play("screwup")
 		end
-	elseif spellId == 466860 then
-		timerBleedingEdge:Start()
 	elseif spellId == 1218344 then
 		local amount = args.amount or 1
 		warnUpgradedBloodTech:Show(args.destName, amount)
@@ -306,20 +331,17 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnScrewUpOver:Show()
 			warnScrewUpOver:Play("safenow")
 		end
-	elseif spellId == 466860 then
+	elseif spellId == 466860 and self:GetStage(2) then--Bleeding Edge ending (beta launch over) (will likely be removed as visible event, it's only showing on script bunnies
+		--can also use [DNT] Intermission Cleanup
+		self:SetStage(1)
 		timerBleedingEdge:Stop()
-		--Restart P1 timers?
-		timerActivateInventionsCD:Start(1)
-		timerFootBlastersCD:Start(1)
-		timerPyroPartyPackCD:Start(1)
-		timerScrewUpCD:Start(1)
-		timerSonicBoomCD:Start(1)
-		timerWireTransferCD:Start(1)
-		--weapons (TODO, detect which ones got empowered and start empowered version timers)
-		timerRocketBarrageCD:Start(1)--Can empower
-		timerBlazingbeamCD:Start(1)--Can empower
-		timerMegaMagnetCD:Start(1)--No Empowerment
-		timerFirecrackerTrapCD:Start(1)--No Empowerment
+		timerSonicBoomCD:Start(6, 1)
+		timerFootBlastersCD:Start(12, 1)
+		timerPyroPartyPackCD:Start(20, 1)
+		timerActivateInventionsCD:Start(30, 1)
+		timerScrewUpCD:Start(47, 1)
+		timerBetaLaunchCD:Start(120, self.vb.betaCount+1)
+--		timerWireTransferCD:Start(1)--Used instantly
 	end
 end
 
@@ -332,11 +354,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 471299 then
-		self.vb.trapCount = self.vb.trapCount + 1
-		warnFirecrackerTrap:Show(self.vb.trapCount)
-		timerFirecrackerTrapCD:Start()
-	end
-end

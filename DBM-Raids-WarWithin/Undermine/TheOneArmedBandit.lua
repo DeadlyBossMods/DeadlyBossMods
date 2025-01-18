@@ -58,8 +58,8 @@ local specWarnExplosiveGaze							= mod:NewSpecialWarningRun(465009, nil, nil, n
 local specWarnBurningBlast							= mod:NewSpecialWarningDodge(472178, nil, nil, nil, 2, 2)
 local specWarnCoinMagnet							= mod:NewSpecialWarningSpell(474665, nil, nil, nil, 2, 12)
 
-local timerSpintoWinCD								= mod:NewAITimer(97.3, 456420, nil, nil, nil, 6)
-local timerSpintoWin								= mod:NewBuffActiveTimer(30, 456420, nil, nil, nil, 6)
+local timerSpintoWinCD								= mod:NewAITimer(97.3, 461060, nil, nil, nil, 6)
+local timerSpintoWin								= mod:NewBuffActiveTimer(30, 461060, nil, nil, nil, 6)
 
 mod:AddNamePlateOption("NPAuraOnGaze", 465009, true)
 --Reel Assistant
@@ -253,7 +253,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 461060 or spellId == 471720 then
+	if spellId == 461060 or spellId == 471720 then--CHECK for SPAM
 		timerSpintoWin:Start(spellId == 471720 and 20 or 30)
 	elseif spellId == 472832 then
 		warnTokenCoin:Show(args.destName)
