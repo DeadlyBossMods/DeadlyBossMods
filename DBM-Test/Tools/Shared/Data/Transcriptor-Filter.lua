@@ -97,6 +97,12 @@ filter.ignoredCreatureIds = set{
 	225493, -- Doomguard
 	204346, -- Treant
 	16506, -- Naxxramas Worshipper
+	110063, -- Beast
+	219161, -- Diabolic Imp
+	233039, -- Spirit Wolf
+	234018, -- Bear
+	62005, -- Beast
+	237409, -- Army of the Dead
 }
 
 -- SoD Naxx hard mode ignores to keep these logs reasonably sized

@@ -9,6 +9,9 @@
 ## X-DBM-Test: true
 
 Undermine/StixBunkjunker-Heroic-Wipe.lua
+Undermine/SprocketmongerLockenstock-Heroic-Wipe.lua
+Undermine/TheOneArmedBandit-Heroic-Wipe.lua
+Undermine/MugZeeHeadsofSecurity-Heroic-Wipe.lua
 
 NerubarPalace/Ulgrax-Mythic-Kill.lua
 NerubarPalace/BloodboundHorror-Mythic-Kill.lua
