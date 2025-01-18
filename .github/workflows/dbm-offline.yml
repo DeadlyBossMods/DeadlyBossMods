@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - "*"
   pull_request:
     branches:
       - master
@@ -19,12 +17,11 @@ jobs:
         continue-on-error: true
         uses: DeadlyBossMods/DBM-Offline@main
         with:
-          game-flavor: Retail
           dbm-main-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.event.after }}
           dbm-main-base-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
-          dbm-mod-repo: DeadlyBossMods/DeadlyBossMods
-          dbm-mod-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.event.after }}
-          dbm-mod-base-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
-          upload-repo: DeadlyBossMods/DBM-Test-Results
+          test-dbm-core-mods: true
+          test-dbm-vanilla-mods: true
+          test-dbm-dungeon-mods: true
+          upload-repo-branch: diff-core-${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.event.after }}-${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
           upload-token: ${{ secrets.TEST_RESULT_UPLOAD_TOKEN }}
           comment-token: ${{ secrets.GITHUB_TOKEN }}
