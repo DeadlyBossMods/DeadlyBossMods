@@ -184,6 +184,11 @@ function roleGuesser:GetPlayerInfo()
 		maxVals.tanking = math.max(maxVals.tanking, v.tanking)
 		maxVals.healed = math.max(maxVals.healed, v.healed)
 	end
+	-- Prevent NaN by 0/0 division below
+	maxVals.heal = maxVals.heal == 0 and 1 or maxVals.heal
+	maxVals.damage = maxVals.damage == 0 and 1 or maxVals.damage
+	maxVals.tanking = maxVals.tanking == 0 and 1 or maxVals.tanking
+	maxVals.healed = maxVals.healed == 0 and 1 or maxVals.healed
 	for realGuid, v in pairs(self.players) do
 		v.heal = v.heal / maxVals.heal
 		v.damage = v.damage / maxVals.damage
