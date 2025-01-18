@@ -393,7 +393,7 @@ local function transcribeCleu(rawParams, anon, flagState)
 		return
 	end
 	-- FIXME: use sourceFlags if available to filter healing and attacks of friendly totems
-	if (event:match("_ENERGIZE$") or event:match("_HEAL$")) and destIsPlayerOrPet then
+	if (event:match("_ENERGIZE$") or event:match("_HEAL$") or event:match("_HEAL_ABSORBED$")) and destIsPlayerOrPet then
 		return
 	end
 	if event:match("_HEAL$") and srcIsPlayer and destIsNpc then -- Likely healing summons, opportunity to learn summon creature IDs not yet ignored
