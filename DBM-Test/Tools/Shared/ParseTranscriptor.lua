@@ -259,6 +259,17 @@ local function literalsTable(...)
 	return tbl
 end
 
+local function stripTrailingNilLiterals(tbl)
+	for i = #tbl, 1, -1 do
+		if tbl[i] == "nil" then
+			tbl[i] = nil
+		else
+			break
+		end
+	end
+	return tbl
+end
+
 ---@param info DBMInstanceInfo
 local function instanceInfoLiteral(info)
 	return ("{name = %s, instanceType = %s, difficultyID = %s, difficultyName = %s, difficultyModifier = %s, maxPlayers = %s, dynamicDifficulty = %s, isDynamic = %s, instanceID = %s, instanceGroupSize = %s, lfgDungeonID = %s}"):format(
@@ -326,7 +337,7 @@ local function transcribeCleu(rawParams, anon, flagState)
 		params[i] = guessType(param)
 		i = i + 1
 	end
-	local event, sourceFlags, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2
+	local event, sourceFlags, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5
 	if params[1]:match("%[CONDENSED%]") then
 		local _
 		event, sourceGUID, sourceName, _, spellId, spellName = unpack(params, 1, i - 1)
@@ -358,7 +369,7 @@ local function transcribeCleu(rawParams, anon, flagState)
 				--logInfo("Note: log doesn't contain flags, /getspells logflags to log flags in Transcriptor. Results for mods relying heavily on flags may be inaccurate, but usually this is not a problem.")
 				flagWarningShown = true
 			end
-			event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2 = unpack(params, 1, i - 1)
+			event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5 = unpack(params, 1, i - 1)
 		end
 	end
 	if spellId and filter.ignoredSpellIds[spellId] then
@@ -448,13 +459,13 @@ local function transcribeCleu(rawParams, anon, flagState)
 		extraArg2 = anon:ScrubName(extraArg2, extraArg1)
 		extraArg1 = anon:ScrubGUID(extraArg1)
 	end
-	return literalsTable(
+	return stripTrailingNilLiterals(literalsTable(
 		"COMBAT_LOG_EVENT_UNFILTERED", event,				-- skipping timestamp and hideCaster
 		sourceGUID, sourceName, hex(sourceFlags), hex(0),	-- 0x0 == sourceRaidFlags, not logged
 		destGUID, destName, hex(destFlags), hex(0),			-- 0x0 == destRaidFlags, not logged
 		spellId, spellName, hex(0),							-- 0x0 == spellSchool, not logged
-		extraArg1, extraArg2
-	)
+		extraArg1, extraArg2, extraArg3, extraArg4, extraArg5
+	))
 end
 
 local ignoredEvents = {
