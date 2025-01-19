@@ -197,18 +197,18 @@ function mod:SPELL_CAST_START(args)
 		self.vb.paylineCount = self.vb.paylineCount + 1
 		specWarnPayline:Show(self.vb.paylineCount)
 		specWarnPayline:Play("specialsoon")
-		timerPaylineCD:Start(self:GetStage(2) and "v25.6-29.1" or "v31.6-36.5", self.vb.paylineCount+1)
+		timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.paylineCount+1)
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
-		timerFoulExhaustCD:Start(self:GetStage(2) and "v25.6-29.1" or "v31.6-36.5", self.vb.foulExhaustCount+1)
+		timerFoulExhaustCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.foulExhaustCount+1)
 	elseif spellId == 460472 then
 		self.vb.bigHitCount = self.vb.bigHitCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnBigHit:Show()
 			specWarnBigHit:Play("defensive")
 		end
-		timerTheBigHitCD:Start(nil, self.vb.bigHitCount+1)
+		timerTheBigHitCD:Start(self:GetStage(2) and "v14.5-20.6" or "v19.4-40.5", self.vb.bigHitCount+1)
 	elseif spellId == 465432 then
 		warnLinkedMachines:Show()
 	elseif spellId == 465322 then
