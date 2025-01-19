@@ -161,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnPyroPartyPack:Show()
 			specWarnPyroPartyPack:Play("defensive")
 		elseif playerStacks < 3 then
-			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			local bossTarget = self:GetBossTarget(args.sourceGUID, true) or DBM_COMMON_L.UNKNOWN
 			specWarnPyroPartyPackTaunt:Show(bossTarget)
 			specWarnPyroPartyPackTaunt:Play("tauntboss")
 		end
@@ -242,8 +242,6 @@ function mod:SPELL_CAST_START(args)
 		timerWireTransferCD:Stop()
 		warnBetaLaunch:Show()
 		warnBetaLaunch:Play("phasechange")
-		--Start reset timers here instead?
-		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 
@@ -254,6 +252,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
 	elseif spellId == 466860 then
 		timerBleedingEdge:Start()--20
+		--Start reset timers here instead?
+		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 
