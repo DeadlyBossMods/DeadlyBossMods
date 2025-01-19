@@ -46,6 +46,14 @@ function test:TestsLoaded()
 	return self.Registry ~= nil and #self.Registry.sortedTests > 0
 end
 
+local function checkTestRunning()
+	if not DBM.Test.testRunning or not DBM.Test.timeWarper then
+		DBM:AddMsg("No test is currently running")
+		return false
+	end
+	return true
+end
+
 function test:HandleCommand(testName, timeWarp)
 	timeWarp = timeWarp and tonumber(timeWarp:match("(%d+)"))
 	local numTestAddOnsFound = self:LoadAllTests()
@@ -61,6 +69,9 @@ function test:HandleCommand(testName, timeWarp)
 		if #self.Registry.sortedTests == 0 then
 			DBM:AddMsg("  (none)")
 		end
+		DBM:AddMsg("/dbm test freeze -- freeze a currently running test")
+		DBM:AddMsg("/dbm test resume -- resume a frozen test")
+		DBM:AddMsg("/dbm test toggle-freeze -- freeze or resume a running test")
 		DBM:AddMsg("/dbm test <name> <time warp factor> -- execute a test")
 		DBM:AddMsg("/dbm test * <time warp factor> -- run all tests")
 		DBM:AddMsg("<name> can be a prefix, e.g., /dbm test Dragonflight runs all tests for Dragonflight.")
@@ -71,6 +82,21 @@ function test:HandleCommand(testName, timeWarp)
 	elseif testName:lower() == "clear" then
 		DBM_TestResults_Export = {}
 		DBM:AddMsg("Cleared exported test results.")
+	elseif testName:lower() == "freeze" then
+		if not checkTestRunning() then
+			return
+		end
+		DBM.Test.timeWarper:Freeze()
+	elseif testName:lower() == "resume" then
+		if not checkTestRunning() then
+			return
+		end
+		DBM.Test.timeWarper:Resume()
+	elseif testName:lower() == "toggle-freeze" then
+		if not checkTestRunning() then
+			return
+		end
+		DBM.Test.timeWarper:ToggleFreeze()
 	else
 		local tests = {}
 		if testName == "*" then
