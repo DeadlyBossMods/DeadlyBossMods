@@ -61,7 +61,7 @@ local timerPolarizationGeneratorCD					= mod:NewAITimer(97.3, 1216802, nil, nil,
 --Main Boss
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216508, 2)
-local warnScrewUpOver								= mod:NewFadesAnnounce(1216509, 1, nil, nil, nil, nil, nil, 2)
+local warnScrewUpOver								= mod:NewFadesAnnounce(1216508, 1, nil, nil, nil, nil, nil, 2)
 local warnScrewedUp									= mod:NewTargetNoFilterAnnounce(1217261, 4, nil, false)
 local warnSonicBoom									= mod:NewCountAnnounce(465232, 2, nil, "Healer")
 --local warnFirecrackerTrap							= mod:NewSpellAnnounce(471308, 2)

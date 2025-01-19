@@ -100,7 +100,7 @@ local specWarnDoubleWhammy							= mod:NewSpecialWarningDefensive(469491, nil, n
 local specWarnDoubleWhammyVictim					= mod:NewSpecialWarningYou(469491, nil, nil, nil, 1, 17)
 local yellDoubleWhammy								= mod:NewYell(469491)
 local yellDoubleWhammyFades							= mod:NewShortFadesYell(469491)
-local specWarnDoubleWhammyTaunt						= mod:NewSpecialWarningTaunt(469490, nil, nil, nil, 1, 2)
+local specWarnDoubleWhammyTaunt						= mod:NewSpecialWarningTaunt(469491, nil, nil, nil, 1, 2)
 
 local timerUnstableCrawlerMinesCD					= mod:NewAITimer(20.5, 466539, nil, nil, nil, 1)
 local timerGoblinGuidedRocketCD						= mod:NewAITimer(20.5, 467380, nil, nil, nil, 3)
