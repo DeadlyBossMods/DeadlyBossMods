@@ -217,7 +217,7 @@ L.PIZZA_CONFIRM_IGNORE				= "Você tem certeza de que realmente deseja ignorar c
 L.PIZZA_ERROR_USAGE					= "Uso: /dbm [broadcast] timer <tempo> <texto>"
 
 L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS --Technically redundant -- OPTIONAL
-L.MINIMAP_TOOLTIP_FOOTER			= "Shift + clique ou clique com o botão direito para mover\nAlt + Shift + clique para arrastar livremente"
+L.MINIMAP_TOOLTIP_FOOTER			= "Mantenha Shift e arraste para mover"
 
 L.RANGECHECK_HEADER					= "Verificação de distância: (%d m)"
 L.RANGECHECK_HEADERT				= "Verificação de distância (%dy-%dP)"
