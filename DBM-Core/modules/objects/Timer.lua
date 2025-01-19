@@ -261,6 +261,10 @@ function timerPrototype:Start(timer, ...)
 									DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
 								end
 							end
+							-- Trace early refreshes for tests
+							if bar.timer > correctWithVarianceDuration(0.1, bar) then
+								test:Trace(self.mod, "EarlyTimerRefresh", self, bar.timer, bar.totalTime, bar.varianceDuration)
+							end
 						end
 					end
 				end
@@ -355,6 +359,9 @@ function timerPrototype:Start(timer, ...)
 								DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
 							end
 						end
+					end
+					if bar.timer > correctWithVarianceDuration(0.1, bar) then
+						test:Trace(self.mod, "EarlyTimerRefresh", self, bar.timer, bar.totalTime, bar.varianceDuration)
 					end
 				end
 			end
