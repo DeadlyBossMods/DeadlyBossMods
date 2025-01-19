@@ -96,7 +96,7 @@ local timerTheBigHitCD							= mod:NewVarCountTimer("v19.4-40.5", 460472, nil, n
 --Stage Two: This Game Is Rigged!
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30086))
 local warnPhase2								= mod:NewPhaseAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
-local warnLinkedMachines						= mod:NewCountAnnounce(465432, 2)
+local warnLinkedMachines						= mod:NewSpellAnnounce(465432, 2)
 local warnHotHotHeat							= mod:NewIncomingAnnounce(465322, 2)
 local warnExplosiveJackpot						= mod:NewCastAnnounce(465587, 4)--Berserk
 
@@ -210,8 +210,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerTheBigHitCD:Start(nil, self.vb.bigHitCount+1)
 	elseif spellId == 465432 then
-		self.vb.linkedCount = self.vb.linkedCount + 1
-		warnLinkedMachines:Show(self.vb.linkedCount)
+		warnLinkedMachines:Show()
 	elseif spellId == 465322 then
 		warnHotHotHeat:Show()
 	elseif spellId == 465580 then
