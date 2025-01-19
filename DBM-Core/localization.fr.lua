@@ -216,7 +216,7 @@ L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai " .. L.
 L.PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais " .. L.DBM .. " de %s durant cette session ?"
 L.PIZZA_ERROR_USAGE				= "Utilisation: /dbm [broadcast] timer <durée> <texte>"
 
-L.MINIMAP_TOOLTIP_FOOTER		= "Maj+clic ou clic-droit pour déplacer\nAlt+Maj+clic pour une saisie libre"
+L.MINIMAP_TOOLTIP_FOOTER		= "Maintenez Maj et glissez pour déplacer"
 
 L.RANGECHECK_HEADER				= "Vérif. de portée (%d m)"
 L.RANGECHECK_HEADERT			= "Vérif. de portée  (%dy-%dP)"
