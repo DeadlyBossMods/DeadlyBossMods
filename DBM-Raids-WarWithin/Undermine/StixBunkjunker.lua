@@ -156,7 +156,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1217954 then
 		warnMeltdown:Show()
-	elseif spellId == 467117 then
+	elseif spellId == 467117 then--Overdrive (P2 start)
 		--Stop Timers
 		timerElectroSortingCD:Stop()
 		timerIncineratorCD:Stop()
@@ -277,9 +277,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerShortFuseCast:Stop(args.destGUID)
 	elseif spellId == 467117 then
 		timerOverdrive:Stop()
-		timerIncineratorCD:Start(14.4, self.vb.IncinCount+1)
-		timerTankComboCD:Start(21, self.vb.tankComboCount+1)
-		timerElectroSortingCD:Start(25.5, self.vb.sortingCount+1)
+		timerIncineratorCD:Start(13.2, self.vb.IncinCount+1)
+		timerTankComboCD:Start(19.8, self.vb.tankComboCount+1)
+		timerElectroSortingCD:Start(24.2, self.vb.sortingCount+1)
 	end
 end
 

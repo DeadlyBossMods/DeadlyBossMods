@@ -61,7 +61,7 @@ local timerPolarizationGeneratorCD					= mod:NewAITimer(97.3, 1216802, nil, nil,
 --Main Boss
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216508, 2)
-local warnScrewUpOver								= mod:NewFadesAnnounce(1216509, 1, nil, nil, nil, nil, nil, 2)
+local warnScrewUpOver								= mod:NewFadesAnnounce(1216508, 1, nil, nil, nil, nil, nil, 2)
 local warnScrewedUp									= mod:NewTargetNoFilterAnnounce(1217261, 4, nil, false)
 local warnSonicBoom									= mod:NewCountAnnounce(465232, 2, nil, "Healer")
 --local warnFirecrackerTrap							= mod:NewSpellAnnounce(471308, 2)
@@ -161,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnPyroPartyPack:Show()
 			specWarnPyroPartyPack:Play("defensive")
 		elseif playerStacks < 3 then
-			local bossTarget = UnitName("boss1target") or DBM_COMMON_L.UNKNOWN
+			local bossTarget = self:GetBossTarget(args.sourceGUID, true) or DBM_COMMON_L.UNKNOWN
 			specWarnPyroPartyPackTaunt:Show(bossTarget)
 			specWarnPyroPartyPackTaunt:Play("tauntboss")
 		end
@@ -242,8 +242,6 @@ function mod:SPELL_CAST_START(args)
 		timerWireTransferCD:Stop()
 		warnBetaLaunch:Show()
 		warnBetaLaunch:Play("phasechange")
-		--Start reset timers here instead?
-		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 
@@ -254,6 +252,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
 	elseif spellId == 466860 then
 		timerBleedingEdge:Start()--20
+		--Start reset timers here instead?
+		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 

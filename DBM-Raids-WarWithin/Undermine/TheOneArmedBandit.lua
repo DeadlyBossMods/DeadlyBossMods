@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460847 460181 469993 460472 465432 465322 465580 465587",
+	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761",--460847
 	"SPELL_CAST_SUCCESS 465309",
 	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -58,7 +58,7 @@ local specWarnExplosiveGaze							= mod:NewSpecialWarningRun(465009, nil, nil, n
 local specWarnBurningBlast							= mod:NewSpecialWarningDodge(472178, nil, nil, nil, 2, 2)
 local specWarnCoinMagnet							= mod:NewSpecialWarningSpell(474665, nil, nil, nil, 2, 12)
 
-local timerSpintoWinCD								= mod:NewAITimer(97.3, 461060, nil, nil, nil, 6)
+local timerSpintoWinCD								= mod:NewCDCountTimer(60.9, 461060, nil, nil, nil, 6)
 local timerSpintoWin								= mod:NewBuffActiveTimer(30, 461060, nil, nil, nil, 6)
 
 mod:AddNamePlateOption("NPAuraOnGaze", 465009, true)
@@ -72,7 +72,7 @@ local yellWitheringFlames						= mod:NewShortYell(471930)
 local yellWitheringFlamesFades					= mod:NewShortFadesYell(471930)
 
 --local timerWitheringFlamesCD					= mod:NewCDNPTimer(97.3, 471930, nil, nil, nil, 3)
---local timerElectricBlastCD					= mod:NewCDNPTimer(20.5, 460847, nil, nil, nil, 3)
+--local timerElectricBlastCD					= mod:NewCDNPTimer(3.7, 460847, nil, nil, nil, 3)--3.7-5.2
 
 mod:AddNamePlateOption("NPAuraOnDLC", 460973, true)
 --Boss
@@ -95,6 +95,7 @@ local warnLinkedMachines						= mod:NewCountAnnounce(465432, 2)
 local warnHotHotHeat							= mod:NewIncomingCountAnnounce(465322, 2)
 local warnExplosiveJackpot						= mod:NewCastAnnounce(465587, 4)--Berserk
 
+local specWarnCheatToWin						= mod:NewSpecialWarningCount(465309, nil, nil, nil, 2, 2)
 local specWarnScatteredPayout					= mod:NewSpecialWarningSwitch(465580, "Dps", nil, nil, 1, 2)
 
 local timerCheatToWinCD							= mod:NewAITimer(97.3, 465309, nil, nil, nil, 6)
@@ -188,9 +189,9 @@ function mod:SPELL_CAST_START(args)
 				specWarnOverload:Play("kickcast")
 			end
 		end
-	elseif spellId == 471930 or spellId == 472197 then
+	elseif spellId == 471930 or spellId == 472197 then--471930 confirmed on heroic, 472197 unknown
 --		timerWitheringFlamesCD:Start(nil, args.sourceGUID)
-	elseif spellId == 460847 then
+--	elseif spellId == 460847 then
 --		timerElectricBlastCD:Start(nil, args.sourceGUID)
 	elseif spellId == 460181 then
 		self.vb.paylineCount = self.vb.paylineCount + 1
@@ -220,33 +221,34 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465587 then
 		warnExplosiveJackpot:Show()
 		timerExplosiveJackpot:Start()
+	elseif spellId == 465761 then--Rig the game (stage 2 trigger)
+		self.vb.spinCount = 0
+		self.vb.paylineCount = 0
+		self.vb.foulExhaustCount = 0
+		self.vb.bigHitCount = 0
+		self.vb.linkedCount = 0
+		self.vb.hotHotHeatCount = 0
+		self:SetStage(2)
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
+		--Timer reset?
+		timerSpintoWinCD:Stop()
+		timerPaylineCD:Stop()
+		timerFoulExhaustCD:Stop()
+		timerTheBigHitCD:Stop()
+		timerPaylineCD:Start(3)
+		timerFoulExhaustCD:Start(3)
+		timerTheBigHitCD:Start(3)
+		timerCheatToWinCD:Start(3)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 465309 then
-		if self:GetStage(1) then
-			self.vb.spinCount = 0
-			self.vb.paylineCount = 0
-			self.vb.foulExhaustCount = 0
-			self.vb.bigHitCount = 0
-			self.vb.linkedCount = 0
-			self.vb.hotHotHeatCount = 0
-			self:SetStage(2)
-			warnPhase2:Show()
-			warnPhase2:Play("ptwo")
-			--Timer reset?
-			timerSpintoWinCD:Stop()
-			timerPaylineCD:Stop()
-			timerFoulExhaustCD:Stop()
-			timerTheBigHitCD:Stop()
-			timerPaylineCD:Start(3)
-			timerFoulExhaustCD:Start(3)
-			timerTheBigHitCD:Start(3)
-			timerCheatToWinCD:Start(3)
-		end
 		self.vb.spinCount = self.vb.spinCount + 1
+		specWarnCheatToWin:Show(self.vb.spinCount)
+		specWarnCheatToWin:Play("phasechange")
 		timerCheatToWinCD:Start()--nil, self.vb.spinCount+1
 	end
 end

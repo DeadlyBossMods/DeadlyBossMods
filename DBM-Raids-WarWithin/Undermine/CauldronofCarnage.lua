@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473650 472233 1214190 473994 463840 466178",
-	"SPELL_CAST_SUCCESS 465833 472039 1213994",
+	"SPELL_CAST_SUCCESS 465833 1213994",
 	"SPELL_AURA_APPLIED 465872 465863 472222 472225 471660 471557 1213690 472231 1214009",
 	"SPELL_AURA_APPLIED_DOSE 472222 472225 471557",
 	"SPELL_AURA_REMOVED 465872 465863 471660 1213690 472231 1214009",
@@ -37,15 +37,16 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe for static charge alt power? figure out accuracy of how it works then also create personal alert if stacks too high
 --TODO, any kind of marking for https://www.wowhead.com/ptr-2/spell=1213992/voltaic-image ?
 --TODO, do timers rest when bosses fued in the middle?
+--TODO, possible auto marking using spell summon event for toys using https://www.wowhead.com/ptr-2/spell=1215869/tiny-tussle https://www.wowhead.com/ptr-2/spell=471219/tiny-tussle and https://www.wowhead.com/ptr-2/spell=471218/tiny-tussle
 --General
-local warnTinyTussle								= mod:NewCountAnnounce(472039, 3)
+local warnTinyTussle								= mod:NewCountAnnounce(1221826, 3)
 local warnKingofCarnage								= mod:NewCountAnnounce(471557, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(471557))--Boss
 
 local specWarnColossalClash							= mod:NewSpecialWarningDodgeCount(465833, nil, nil, nil, 2, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1214039, nil, nil, nil, 1, 8)
 
 local timerColossalClashCD							= mod:NewAITimer(97.3, 465833, nil, nil, nil, 6)
-local timerTinyTussleCD								= mod:NewAITimer(97.3, 472039, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerTinyTussleCD								= mod:NewAITimer(97.3, 1221826, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnRaisedGuard", 471660, true)
 mod:AddBoolOption("AdvancedBossFiltering", true, "misc")--May be default to off on live, but for testing purposes it needs to be forced
@@ -249,10 +250,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerThunderdrumSalvoCD:Stop()
 		timerVoltaicImageCD:Stop()
 		timerLightningBashCD:Stop()
-	elseif spellId == 472039 and self:AntiSpam(5, 2) then
-		self.vb.tussleCount = self.vb.tussleCount + 1
-		warnTinyTussle:Show(self.vb.tussleCount)
-		timerTinyTussleCD:Start()--97.3, self.vb.tussleCount+1
+--	elseif spellId == 472039 and self:AntiSpam(5, 2) then
+--		self.vb.tussleCount = self.vb.tussleCount + 1
+--		warnTinyTussle:Show(self.vb.tussleCount)
+--		timerTinyTussleCD:Start()--97.3, self.vb.tussleCount+1
 	elseif spellId == 1213994 then
 		self.vb.imagesCount = self.vb.imagesCount + 1
 		timerVoltaicImageCD:Start()--97.3, self.vb.imagesCount+1
