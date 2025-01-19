@@ -361,6 +361,8 @@ function test:Trace(mod, event, ...)
 			-- Note: this is not guaranteed to trigger if the scheduled task throws an error, but that doesn't actually matter
 			currentEventKey = nil
 			currentRawEvent = nil
+		elseif event == "EarlyTimerRefresh" then
+			entry.hidden = true
 		end
 	end
 end
@@ -423,6 +425,8 @@ function test:SetupDBMOptions(defaults, disableFilters, deterministicSorting)
 	-- Don't show intro messages
 	DBM.Options.SettingsMessageShown = true
 	DBM.Options.NewsMessageShown2 = 3
+	-- Be verbose about early timer refreshes
+	DBM.Options.BadTimerAlert = true
 end
 
 ---@param testOptions DBMTestOptions
