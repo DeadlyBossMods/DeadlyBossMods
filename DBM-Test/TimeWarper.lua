@@ -117,7 +117,9 @@ function test.TimeWarper:WaitUntil(time)
 			self.lastFrameTime = GetTimePreciseSec() - self.currentFrameStart
 			self.currentFrameStart = GetTimePreciseSec()
 			-- this goes negative if we hit the fps limit, so it effectively speeds up later to catch up
-			self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame - self.lastFrameTime * self.factor
+			if not self.frozen then
+				self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame - self.lastFrameTime * self.factor
+			end
 		end
 		self.fakeTime = self.fakeTime + timeStep
 		self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame + timeStep
@@ -168,9 +170,44 @@ function test.TimeWarper:SetSpeed(factor)
 	---@type DBMTestCallbackTimewarp
 	local testStopCallbackArgs = {
 		Speed = factor,
+		Frozen = self.frozen,
 		Timewarper = self --[[@as DBMTestTimewarperPublic]]
 	}
 	DBM:FireEvent("DBMTest_Timewarp", testStopCallbackArgs)
+end
+
+local frozenWarningSpamScheduled = false
+local function spamFrozenWarning(self)
+	if not self.frozen then
+		frozenWarningSpamScheduled = false
+		return
+	end
+	if frozenWarningSpamScheduled then
+		return
+	end
+	frozenWarningSpamScheduled = true
+	C_Timer.After(60, function() -- Do not use DBM:Schedule() here, it's also frozen
+		frozenWarningSpamScheduled = false
+		if not self.frozen then
+			return
+		end
+		DBM:AddMsg("DBM is in test mode and frozen, it will not react to any event (including real events). Run /dbm test resume to unfreeze.")
+		spamFrozenWarning(self)
+	end)
+end
+
+function test.TimeWarper:Freeze()
+	self.frozen = true
+	spamFrozenWarning(self)
+end
+
+function test.TimeWarper:Resume()
+	self.frozen = false
+end
+
+function test.TimeWarper:ToggleFreeze()
+	self.frozen = not self.frozen
+	spamFrozenWarning(self)
 end
 
 -- Skip to a stage/phase (default: the next stage)

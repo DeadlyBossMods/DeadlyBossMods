@@ -218,7 +218,7 @@ L.PIZZA_CONFIRM_IGNORE			= "¿Seguro que quieres ignorar los temporizadores de %
 L.PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <seg> <texto>. <seg> debe ser mayor que 1."
 
 L.MINIMAP_TOOLTIP_HEADER		= L.DEADLY_BOSS_MODS
-L.MINIMAP_TOOLTIP_FOOTER		= "Mayús-Clic izquierdo o Clic derecho para mover este botón.\nAlt-Mayús-Clic izquierdo para moverlo libremente."
+L.MINIMAP_TOOLTIP_FOOTER		= "Mantén Mayús y arrastra para mover"
 
 L.RANGECHECK_HEADER				= "Comprobación de distancia (%d m)"
 L.RANGECHECK_HEADERT			= "Comprobación de distancia (%dm-%dP)"

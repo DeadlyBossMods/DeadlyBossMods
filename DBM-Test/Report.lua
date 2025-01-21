@@ -260,12 +260,27 @@ function reporter:FindWipeDetectionFailure(findings)
 	end
 end
 
+function reporter:FindEarlyTimerRefreshes(findings)
+	for _, trigger in ipairs(self.trace) do
+		for _, trace in ipairs(trigger.traces) do
+			if trace.event == "EarlyTimerRefresh" then
+				local timer, remaining, totalTime, variance = unpack(trace)
+				findings[#findings + 1] = {
+					type = "early-timer-refresh", sortKey = 5,
+					text = ("Timer %s (time=%.2f, variance=%.2f) got refreshed early with %.2fs remaining\n\t\tRefreshed by: %s"):format(self:ObjectToString(timer, true), totalTime, variance or 0, remaining, trigger.trigger)
+				}
+			end
+		end
+	end
+end
+
 function reporter:ReportFindings()
 	local findings = {}
 	self:FindUntriggeredEvents(findings)
 	self:FindSpellIdMismatches(findings)
 	self:FindPreciseShowsThatAlwaysFailed(findings)
 	self:FindWipeDetectionFailure(findings)
+	self:FindEarlyTimerRefreshes(findings)
 	local dedup = {}
 	for _, v in ipairs(findings) do
 		dedup[v.text] = v

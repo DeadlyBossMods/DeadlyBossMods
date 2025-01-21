@@ -57,6 +57,8 @@ local Stop = {
 local Timewarp = {
 	-- Timewarp factor, value <= 0 indicates dynamic speed that tries to play back the log as fast as possible.
 	Speed		= nil, ---@type number
+	-- Time is frozen, i.e., the test is temporarily paused
+	Frozen		= nil, ---@type boolean
 	Timewarper	= nil, ---@type DBMTestTimewarperPublic
 }
 
