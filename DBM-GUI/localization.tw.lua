@@ -380,10 +380,6 @@ L.EnableHugeBar 				= "開啟大型計時條(2號計時條)"
 L.EnableVarianceBar 				= "啟用差異條"
 L.VarianceTimerTextBehavior			= "設定差異計時器文字行為"
 L.ZeroatWindowEnds					= "計時器文字在冷卻視窗的末端達到0"--Not final, still a bit unclear
-L.ZeroatWindowStart					= "計時器文字在冷卻視窗的開始達到0"--Not final, still a bit unclear
-L.VarianceTimerSubZeroBehavior		= "設定差異計時器低於零的行為"--Not final, still a bit unclear
-L.ZeroGoesNegative					= "計時器文字在零後計數為負"--Not final, still a bit unclear
-L.ZeroGoesRestart					= "計時器文字在零之後重新啟動"--Not final, still a bit unclear
 
 L.BarIconLeft 				= "左側顯示圖示"
 L.BarIconRight 				= "右側顯示圖示"

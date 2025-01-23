@@ -126,7 +126,7 @@ local timerBulletstormCD							= mod:NewCDCountTimer(16, 471419, nil, nil, nil, 
 local timerIntermission								= mod:NewIntermissionTimer(20.5, 471419, nil, nil, nil, 6)
 --Stage Two: The Head Honcho
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30510))
-local warnPhase2									= mod:NewPhaseAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
+local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 
 mod.vb.gaolCount = 0
 mod.vb.frostShatterCount = 0
@@ -275,6 +275,8 @@ function mod:SPELL_CAST_START(args)
 		timerStaticChargeCD:Start(nil, self.vb.chargeCount+1)
 		if self:GetStage(1) then
 			self:SetStage(1.5)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
+			warnPhase:Play("phasechange")
 			timerBulletstormCD:Start(5.5, 1)
 			timerIntermission:Start(52.9)
 		end
@@ -317,8 +319,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 1222408 then--Head Honcho: Mug'Zee
 		self:SetStage(2)
 		self.vb.knucklesCount = 0
-		warnPhase2:Show()
-		warnPhase2:Play("ptwo")
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
 		warnHHMugZee:Show(args.destName)
 		timerEarthshakerGaolCD:Stop()
 		timerFrostshatterBootsCD:Stop()
