@@ -7,7 +7,8 @@ local active = nil
 test.TimeWarper = {
 	---@type table<Frame, boolean|function>
 	-- true if it needs to be hooked, function is the previous function or false if the handler was cleared while it was hooked
-	framesToHook = {}
+	framesToHook = {},
+	sortedFramesToHook = {} -- Frames sorted by name, resolves some determinism problems around ordering OnUpdate calls
 }
 local timeWarperMt = {__index = test.TimeWarper}
 
@@ -47,6 +48,9 @@ function test.TimeWarper:HookOnUpdateHandler(frame)
 			return oldSetScript(frame, scriptType, handler)
 		end
 	end
+	-- Invalidate cache, important to use an empty table and not null, since this is actually a static variable and re-setting it would make it a class variable
+	-- (Yes, the class setup for timewarper is a mess)
+	table.wipe(self.sortedFramesToHook)
 end
 
 function test.TimeWarper:Start()
@@ -123,12 +127,26 @@ function test.TimeWarper:WaitUntil(time)
 		end
 		self.fakeTime = self.fakeTime + timeStep
 		self.fakeTimeSinceLastFrame = self.fakeTimeSinceLastFrame + timeStep
-		-- FIXME: This calls handlers in a non-deterministic order, but it's a bit annoying to fix, because how would we order the frames?
-		-- Options to consider
-		--  * Frame creation/registration time: mod load order can differ and timers are created lazily
-		--  * By name: might be anonymous frames
-		--  * Hard-coded logic to run DBT, then DBM, then DBM scheduler, then everything else by some logic?
-		for frame, updateFunc in pairs(self.framesToHook) do
+		-- Enforce deterministic order for calling OnUpdate handlers, this resolves some annoying problems with code that gets timer info from DBT in a scheduled task
+		if #self.sortedFramesToHook == 0 then
+			for frame, updateFunc in pairs(self.framesToHook) do
+				self.sortedFramesToHook[#self.sortedFramesToHook + 1] = {frame = frame, updateFunc = updateFunc}
+			end
+			-- Reverse order by name, this runs DBT before the DBM scheduler to run DBT first and then the scheduler
+			-- That's the better order for determinism because it potentially expires DBT timers before running scheduled tasks that operate on them
+			table.sort(self.sortedFramesToHook, function(e1, e2)
+				local n1, n2 = e1.frame:GetName(), e2.frame:GetName()
+				if n1 and n2 then
+					return n1 > n2
+				elseif not n1 and not n2 then
+					return tostring(e1.frame) > tostring(e2.frame)
+				else
+					return not not n1
+				end
+			end)
+		end
+		for _, hookedFrame in ipairs(self.sortedFramesToHook) do
+			local frame, updateFunc = hookedFrame.frame, hookedFrame.updateFunc
 			if frame:IsVisible() and type(updateFunc) == "function" then
 				updateFunc(frame, timeStep)
 			end
