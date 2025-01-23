@@ -53,6 +53,7 @@ local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459974, nil, ni
 local specWarnTankBuster							= mod:NewSpecialWarningDefensive(459627, nil, nil, nil, 1, 2)
 local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(459627, nil, nil, nil, 1, 2)
 local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For non private version
+local yellIncendiaryFire							= mod:NewShortYell(468216)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerUnrelentingcarnageCD						= mod:NewAITimer(97.3, 471403, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -301,6 +302,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 468216 and args:IsPlayer() then
 		specWarnIncendiaryFire:Show()
 		specWarnIncendiaryFire:Play("flameyou")
+		yellIncendiaryFire:Yell()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
