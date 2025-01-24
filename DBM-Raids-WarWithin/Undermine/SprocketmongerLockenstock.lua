@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473276 1217231 1214872 1216508 465232 1218418 1216525 1216414 1215858 466765 1216674 1216699 468791",
-	"SPELL_CAST_SUCCESS 1216802 1216887 466860",
+	"SPELL_CAST_SUCCESS 1216887 466860",
 	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344",
 	"SPELL_AURA_APPLIED_DOSE 465917 1218344",
 	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860"
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, see if https://www.wowhead.com/ptr-2/spell=1215218/bleeding-edge still used on other difficulties
 --[[
 (ability.id = 473276 or ability.id = 1217231 or ability.id = 1214872 or ability.id = 1216508 or ability.id = 465232 or ability.id = 1218418 or ability.id = 1216525 or ability.id = 1216414 or ability.id = 1215858 or ability.id = 466765 or ability.id = 1216674 or ability.id = 1216699) and type = "begincast"
-or ability.id = 466860 and type = "cast"
+or (ability.id = 1217355 or ability.id = 466860) and type = "cast"
 or ability.id = 466860 and type = "removebuff"
 --]]
 --Stage One: Assembly Required
@@ -57,7 +57,7 @@ local specWarnNegative								= mod:NewSpecialWarningYou(1216934, nil, nil, nil,
 local specWarnPositive								= mod:NewSpecialWarningYou(1216911, nil, nil, nil, 1, 13)
 local yellPolarizationGenerator						= mod:NewIconTargetYell(1216802, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon)
 
-local timerPolarizationGeneratorCD					= mod:NewAITimer(97.3, 1216802, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerPolarizationGeneratorCD					= mod:NewNextCountTimer(97.3, 1216802, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Main Boss
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216508, 2)
@@ -107,19 +107,19 @@ mod.vb.betaCount = 0
 local playerStacks = 0
 local savedDifficulty = "normal"
 local allTimers = {
-	["mythic"] = {--Heroic timers placeholdered for now
+	["mythic"] = {
 		--Foot Blasters
-		[1217231] = {12.1, 62.0, 31.0},
+		[1217231] = {12.1, 33.0, 30.0, 30.0},
 		--Wire Transfer
-		[1218418] = {0, 40.9, 28.0, 28.0},
+		[1218418] = {0, 40.9, 69.9},
 		--Screw Up
-		[1216508] = {47.1, 33.0, 32.0},
+		[1216508] = {18.0, 30.0, 32.0, 27.0},
 		--Sonic Boom
-		[465232] = {6.0, 28.0, 29.0, 30.0},
+		[465232] = {8.9, 25.0, 27.0, 31.9, 17.9},
 		--Pyro Party Pack
-		[1214872] = {20.1, 34.0, 30.0},
+		[1214872] = {23.0, 33.0, 30.0},
 		--Polarization
-		[1216802] = {0},
+		[1217355] = {4, 66.9, 46.0},
 	},
 	["heroic"] = {
 		--Foot Blasters
@@ -158,7 +158,7 @@ function mod:OnCombatStart(delay)
 	playerStacks = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
-		timerPolarizationGeneratorCD:Start(1-delay)
+		timerPolarizationGeneratorCD:Start(4-delay)
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
@@ -299,9 +299,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 1216802 or spellId == 1216887 then
+	if spellId == 1216887 then
 		self.vb.thadiusCount = self.vb.thadiusCount + 1
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.thadiusCount+1)
+		if timer then
+			timerPolarizationGeneratorCD:Start(timer, self.vb.thadiusCount+1)
+		end
 	elseif spellId == 466860 then
 		timerBleedingEdge:Start()--20
 		--Start reset timers here instead?
@@ -399,6 +403,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1], 1)
 		if self:IsHard() then
 			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
+			if self:IsMythic() then
+				timerPolarizationGeneratorCD(allTimers[savedDifficulty][1217231][1], 1)
+			end
 		end
 		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
 		timerActivateInventionsCD:Start(30, 1)
