@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761",--460847
-	"SPELL_CAST_SUCCESS 465309",
+	"SPELL_CAST_SUCCESS 465309 465765",
 	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
@@ -143,7 +143,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spinCount = self.vb.spinCount + 1
 		specWarnSpintoWin:Show(self.vb.spinCount)
 		specWarnSpintoWin:Play("phasechange")
-		timerSpintoWinCD:Start(nil, self.vb.spinCount+1)
+		if self:IsHard() then
+			timerSpintoWinCD:Start("v60.9-62.1", self.vb.spinCount+1)
+		else
+			timerSpintoWinCD:Start("v80.4-85.1", self.vb.spinCount+1)
+		end
 		--Stop other timers?
 		--timerPaylineCD:Stop()
 		--timerFoulExhaustCD:Stop()
@@ -197,7 +201,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.paylineCount = self.vb.paylineCount + 1
 		specWarnPayline:Show(self.vb.paylineCount)
 		specWarnPayline:Play("specialsoon")
-		timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.paylineCount+1)
+		if self:IsHard() then
+			timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.paylineCount+1)
+		else
+			timerPaylineCD:Start(self:GetStage(2) and "v28.0-30.4" or "v80.3-85.2", self.vb.paylineCount+1)
+		end
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
@@ -219,11 +227,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465587 then
 		warnExplosiveJackpot:Show()
 		timerExplosiveJackpot:Start()
-	elseif spellId == 465761 then--Rig the game (stage 2 trigger)
-		self.vb.spinCount = 0
-		self.vb.paylineCount = 0
-		self.vb.foulExhaustCount = 0
-		self.vb.bigHitCount = 0
+	--"<393.42 21:30:17> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(35.1%-100.0%)##nil#465765#Maintenance Cycle#nil#nil#nil#nil#nil#nil",
+	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
+	elseif spellId == 465761 and self:GetStage(1) then--Rig the game (stage 2 trigger)
+		--Disabled resetting for now to match BW/Weak auras
+		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
+--		self.vb.paylineCount = 0
+--		self.vb.foulExhaustCount = 0
+--		self.vb.bigHitCount = 0
 		self:SetStage(2)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
@@ -232,11 +243,10 @@ function mod:SPELL_CAST_START(args)
 		timerPaylineCD:Stop()
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
-		timerFoulExhaustCD:Start(4.2, 1)--4.2-5
+		timerFoulExhaustCD:Start(4.2, self.vb.foulExhaustCount+1)--4.2-5
 		timerCheatToWinCD:Start(5.5, 1)
-		timerPaylineCD:Start(11, 1)
-		timerTheBigHitCD:Start(15.2, 1)
-
+		timerPaylineCD:Start(11, self.vb.paylineCount+1)
+		timerTheBigHitCD:Start(15.2, self.vb.bigHitCount+1)
 	end
 end
 
@@ -246,7 +256,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spinCount = self.vb.spinCount + 1
 		specWarnCheatToWin:Show(self.vb.spinCount)
 		specWarnCheatToWin:Play("phasechange")
-		timerCheatToWinCD:Start(nil, self.vb.spinCount+1)
+		if self:IsHard() then
+			timerCheatToWinCD:Start("v25.2-26.7", self.vb.spinCount+1)
+		else
+			timerCheatToWinCD:Start("v29.6-30", self.vb.spinCount+1)
+		end
+	elseif spellId == 465765 and self:GetStage(1) then--Rig the game (stage 2 trigger)
+		--Disabled resetting for now to match BW/Weak auras
+		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
+--		self.vb.paylineCount = 0
+--		self.vb.foulExhaustCount = 0
+--		self.vb.bigHitCount = 0
+		self:SetStage(2)
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
+		--Timer reset
+		timerSpintoWinCD:Stop()
+		timerPaylineCD:Stop()
+		timerFoulExhaustCD:Stop()
+		timerTheBigHitCD:Stop()
+		timerFoulExhaustCD:Start(10.2, self.vb.foulExhaustCount+1)--4.2-5
+		timerCheatToWinCD:Start(11.5, 1)
+		timerPaylineCD:Start(17, self.vb.paylineCount+1)
+		timerTheBigHitCD:Start(21.2, self.vb.bigHitCount+1)
 	end
 end
 
