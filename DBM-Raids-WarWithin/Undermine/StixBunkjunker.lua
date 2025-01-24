@@ -111,7 +111,7 @@ function mod:OnCombatStart(delay)
 	timerDemolishCD:Start(17.8-delay, 1)
 	timerElectroSortingCD:Start(22.3-delay, 1)
 	timerMeltdownCD:Start(44.5-delay, 1)
-	timerOverDriveCD:Start(111.1-delay)
+	timerOverDriveCD:Start(self:IsMythic() and 55.6 or 111.1-delay)
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 	if self.Options.NPAuraOnMessedUp or self.Options.NPAuraOnTerritorial then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
