@@ -36,7 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, clear bomb count using SPELL_DAMAGE 465747? of course first we have to find a way to increment bomb count
 --TODO, prevent starting new timers if overdrive soon. this is on hold til other difficulties seen
 --[[
- (ability.id = 464399 or ability.id = 464112) and type = "begincast"
+ (ability.id = 464399 or ability.id = 464112 or ability.id = 1217954) and type = "begincast"
   or ability.id = 464149 and type = "cast"
   or ability.id = 467117
 --]]
@@ -75,16 +75,16 @@ local timerDumpsterDiveCD							= mod:NewCDNPTimer(10.9, 466742, nil, nil, nil, 
 local timerRecyclerCast								= mod:NewCastNPTimer(12, 1220752, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Rest of Boss mechanics
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
-local warnMeltdown									= mod:NewSpellAnnounce(1217954, 3)
-
 local specWarnIncinerator							= mod:NewSpecialWarningMoveAwayCount(464149, nil, nil, nil, 2, 2)--Debuff is 472893 but we pre warn spread instead
 --local yellIncinerator								= mod:NewShortYell(464149)--Spammy
 local specWarnDemolish								= mod:NewSpecialWarningDefensive(464112, nil, nil, nil, 1, 2)
 local specWarnDemolishTaunt							= mod:NewSpecialWarningTaunt(464112, nil, nil, nil, 1, 2)
+local specWarnMeltdown								= mod:NewSpecialWarningDefensive(1217954, nil, nil, nil, 1, 2)
 local specWarnTrashCompactor						= mod:NewSpecialWarningDodge(467135, nil, nil, nil, 2, 2)
 
 local timerIncineratorCD							= mod:NewNextCountTimer(25.5, 464149, nil, nil, nil, 3)
-local timerTankComboCD								= mod:NewNextCountTimer(51.1, 464112, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDemolishCD								= mod:NewNextCountTimer(51.1, 464112, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerMeltdownCD								= mod:NewNextCountTimer(51.1, 1217954, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerOverDriveCD								= mod:NewNextTimer(111.1, 467117, nil, nil, nil, 6)
 local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 6)
 
@@ -93,7 +93,8 @@ mod.vb.sortedIcon = 1
 mod.vb.bigBombCount = 0
 mod.vb.smallBombIcon = 7
 mod.vb.IncinCount = 0
-mod.vb.tankComboCount = 0
+mod.vb.demolishCount = 0
+mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
@@ -104,10 +105,12 @@ function mod:OnCombatStart(delay)
 	self.vb.bigBombCount = 0
 	self.vb.smallBombIcon = 7
 	self.vb.IncinCount = 0
-	self.vb.tankComboCount = 0
+	self.vb.demolishCount = 0
+	self.vb.meltdownCount = 0
 	timerIncineratorCD:Start(11.1-delay, 1)
-	timerTankComboCD:Start(17.8-delay, 1)
+	timerDemolishCD:Start(17.8-delay, 1)
 	timerElectroSortingCD:Start(22.3-delay, 1)
+	timerMeltdownCD:Start(44.5-delay, 1)
 	timerOverDriveCD:Start(111.1-delay)
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 	if self.Options.NPAuraOnMessedUp or self.Options.NPAuraOnTerritorial then
@@ -145,8 +148,8 @@ function mod:SPELL_CAST_START(args)
 		timerRecyclerCast:Start(nil, args.sourceGUID)
 		--timerRecyclerCD:Start(nil, args.sourceGUID)
 	elseif spellId == 464112 then
-		self.vb.tankComboCount = self.vb.tankComboCount + 1
-		timerTankComboCD:Start(nil, self.vb.tankComboCount+1)
+		self.vb.demolishCount = self.vb.demolishCount + 1
+		timerDemolishCD:Start(nil, self.vb.demolishCount+1)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnDemolish:Show()
 			specWarnDemolish:Play("defensive")
@@ -155,13 +158,19 @@ function mod:SPELL_CAST_START(args)
 			self:Schedule(0.3, delayedTankCheck, self, args.sourceGUID)
 		end
 	elseif spellId == 1217954 then
-		warnMeltdown:Show()
+		self.vb.meltdownCount = self.vb.meltdownCount + 1
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnMeltdown:Show()
+			specWarnMeltdown:Play("defensive")
+		end
+		timerMeltdownCD:Start(nil, self.vb.meltdownCount+1)
 	elseif spellId == 467117 then--Overdrive (P2 start)
+		timerOverdrive:Start()
 		--Stop Timers
 		timerElectroSortingCD:Stop()
 		timerIncineratorCD:Stop()
-		timerTankComboCD:Stop()
-		timerOverdrive:Start()
+		timerDemolishCD:Stop()
+		timerMeltdownCD:Stop()
 	elseif spellId == 467109 then
 		specWarnTrashCompactor:Show()
 		specWarnTrashCompactor:Play("watchstep")
@@ -278,8 +287,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 467117 then
 		timerOverdrive:Stop()
 		timerIncineratorCD:Start(13.2, self.vb.IncinCount+1)
-		timerTankComboCD:Start(19.8, self.vb.tankComboCount+1)
+		timerDemolishCD:Start(19.8, self.vb.demolishCount+1)
 		timerElectroSortingCD:Start(24.2, self.vb.sortingCount+1)
+		timerMeltdownCD:Start(47.7, self.vb.meltdownCount+1)
 	end
 end
 
