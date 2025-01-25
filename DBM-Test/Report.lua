@@ -157,35 +157,7 @@ function reporter:FindUntriggeredEvents(findings)
 	end
 end
 
----@param ignores TestIgnoreWarnings
-local function ignoreSpellIdMismatch(ignores, triggerSpellId, warnSpellId)
-	if not ignores or not ignores.spellIdMismatches then
-		return false
-	end
-	local triggerSpellName = DBM:GetSpellInfo(triggerSpellId) or tostring(triggerSpellId)
-	local warnSpellName = DBM:GetSpellInfo(warnSpellId) or tostring(warnSpellId)
-	local ignoreKey = ignores.spellIdMismatches[triggerSpellId] and triggerSpellId or triggerSpellName
-	local ignoreList = ignores.spellIdMismatches[ignoreKey]
-	if not ignoreList then
-		return false
-	end
-	if ignoreList == true or ignoreList == warnSpellId or ignoreList == warnSpellName then
-		return ignoreKey
-	end
-	if type(ignoreList) == "table" then
-		for _, v in ipairs(ignoreList) do
-			if v == warnSpellId then
-				return ignoreKey, warnSpellId
-			elseif v == warnSpellName then
-				return ignoreKey, warnSpellName
-			end
-		end
-	end
-	return false
-end
-
 function reporter:FindSpellIdMismatches(findings)
-	local ignoredTriggerSpells = {}
 	for _, trigger in ipairs(self.trace) do
 		local triggerSpellId = extractSpellId(trigger.rawTrigger)
 		local triggerEvent = trigger.rawTrigger[3]
@@ -197,36 +169,9 @@ function reporter:FindSpellIdMismatches(findings)
 					local obj = v[1]
 					-- spellId field is sometimes used for non-spellId things like phases/stages
 					if type(obj.spellId) == "number" and obj.spellId > 50 and obj.spellId ~= triggerSpellId then
-						local ignoreKey, ignoreValue = ignoreSpellIdMismatch(self.testData.ignoreWarnings, triggerSpellId, obj.spellId)
-						if ignoreKey then
-							ignoredTriggerSpells[ignoreKey] = ignoredTriggerSpells[ignoreKey] or {}
-							if ignoreValue then
-								ignoredTriggerSpells[ignoreKey][ignoreValue] = true
-							end
-						else
-							findings[#findings + 1] = {
-								type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId, sortKey = 2,
-								text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
-							}
-						end
-					end
-				end
-			end
-		end
-	end
-	if self.testData.ignoreWarnings and self.testData.ignoreWarnings.spellIdMismatches then
-		for k, v in pairs(self.testData.ignoreWarnings.spellIdMismatches) do
-			if type(v) ~= "table" and not ignoredTriggerSpells[k] then
-				findings[#findings + 1] = {
-					type = "unused-spell-mismatch-ignore", spellId = k, sortKey = 2.1,
-					text = ("ignoreWarnings ignores spell mismatches between %s and %s, but no such mismatch was found"):format(tostring(k), tostring(v == true and "*" or v))
-				}
-			elseif type(v) == "table" then
-				for _, ignoreMismatch in ipairs(v) do
-					if not ignoredTriggerSpells[k] or not ignoredTriggerSpells[k][ignoreMismatch] then
 						findings[#findings + 1] = {
-							type = "unused-spell-mismatch-ignore", spellId = k, sortKey = 2.1,
-							text = ("ignoreWarnings ignores spell mismatches between %s and %s, but no such mismatch was found"):format(tostring(k), tostring(ignoreMismatch))
+							type = "spell-mismatch", spellId = obj.spellId, triggerSpellId = triggerSpellId, sortKey = 2,
+							text = ("%s for spell ID %s is triggered by event %s %s"):format(obj.objClass, addSpellNames(obj.spellId), triggerEvent, addSpellNames(triggerSpellId))
 						}
 					end
 				end
