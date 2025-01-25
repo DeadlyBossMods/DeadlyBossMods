@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761",--460847
-	"SPELL_CAST_SUCCESS 465309",
+	"SPELL_CAST_SUCCESS 465309 465765",--460181
 	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
@@ -33,11 +33,12 @@ mod:RegisterEventsInCombat(
 --TODO, more work on phase 2 with context
 --TODO, further investigate the causes of variance timers and make them more accurate. Using variance timers with this much variance shouldn't be needed on retail...
 --[[
-(ability.id = 472197 or ability.id = 460181 or ability.id = 469993 or ability.id = 460472 or ability.id = 465432 or ability.id = 465322 or ability.id = 465580 or ability.id = 465587) and type = "begincast"
-or (ability.id = 464810 or ability.id = 464809 or ability.id = 464772 or ability.id = 464804 or ability.id = 464801 or ability.id = 464806 or ability.id = 461060 or ability.id = 465761) and type = "begincast"
+(ability.id = 472197 or ability.id = 460181 or ability.id = 469993 or ability.id = 460472 or ability.id = 465432 or ability.id = 465322 or ability.id = 465580 or ability.id = 465587 ) and type = "begincast"
 or ability.id = 465309 and type = "cast"
+or ability.id = 465761 and type = "begincast" or ability.id = 465765 and type = "cast"
+or (ability.id = 464810 or ability.id = 464809 or ability.id = 464772 or ability.id = 464804 or ability.id = 464801 or ability.id = 464806 or ability.id = 461060 or ability.id = 465761) and type = "begincast"
 or ability.id = 461060 and (type = "applybuff" or type = "removebuff")
-or (ability.id = 460582 or ability.id = 472178 or ability.id = 471930) and type = "begincast"
+or (ability.id = 460582 or ability.id = 472178 or ability.id = 471930) and type = "begincast" or ability.id = 471720 and type = "applybuff"
 --]]
 --Stage One: That's RNG, Baby!
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30083))
@@ -121,10 +122,17 @@ function mod:OnCombatStart(delay)
 	self.vb.foulExhaustCount = 0
 	self.vb.bigHitCount = 0
 	table.wipe(castsPerGUID)
-	timerPaylineCD:Start(4.1-delay, 1)
+	timerPaylineCD:Start(string.format("v%s-%s", 3.7-delay, 4.1-delay), 1)
 	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.4-delay, 10-delay), 1)
-	timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.3-delay), 1)
-	timerSpintoWinCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
+
+	if self:IsMythic() then
+		--Seem flipped on mythic (but could also be because of boss kiting)
+		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 15.3-delay), 1)--15 placeholder
+		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
+	else
+		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.3-delay), 1)
+		timerSpintoWinCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
+	end
 	self:EnablePrivateAuraSound(465325, "flameyou", 15)
 	if self.Options.NPAuraOnGaze or self.Options.NPAuraOnDLC then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -143,7 +151,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spinCount = self.vb.spinCount + 1
 		specWarnSpintoWin:Show(self.vb.spinCount)
 		specWarnSpintoWin:Play("phasechange")
-		timerSpintoWinCD:Start(nil, self.vb.spinCount+1)
+		if self:IsMythic() then
+			timerSpintoWinCD:Start("v51-53.5", self.vb.spinCount+1)
+		elseif self:IsHeroic() then
+			timerSpintoWinCD:Start("v60.9-62.1", self.vb.spinCount+1)
+		else
+			timerSpintoWinCD:Start("v80.4-85.1", self.vb.spinCount+1)
+		end
 		--Stop other timers?
 		--timerPaylineCD:Stop()
 		--timerFoulExhaustCD:Stop()
@@ -197,18 +211,25 @@ function mod:SPELL_CAST_START(args)
 		self.vb.paylineCount = self.vb.paylineCount + 1
 		specWarnPayline:Show(self.vb.paylineCount)
 		specWarnPayline:Play("specialsoon")
-		timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.paylineCount+1)
+		--NOTE, timers break if boss is kited and prevented from finishing cast
+		if self:IsMythic() then
+			timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v26.4-37.6", self.vb.paylineCount+1)
+		elseif self:IsHeroic() then
+			timerPaylineCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.paylineCount+1)
+		else
+			timerPaylineCD:Start(self:GetStage(2) and "v28.0-30.4" or "v80.3-85.2", self.vb.paylineCount+1)
+		end
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
-		timerFoulExhaustCD:Start(self:GetStage(2) and "v25.5-32.8" or "v31.5-36.5", self.vb.foulExhaustCount+1)
+		timerFoulExhaustCD:Start(self:GetStage(2) and "v25.5-32.8" or "v30.7-38.2", self.vb.foulExhaustCount+1)
 	elseif spellId == 460472 then
 		self.vb.bigHitCount = self.vb.bigHitCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnBigHit:Show()
 			specWarnBigHit:Play("defensive")
 		end
-		timerTheBigHitCD:Start(self:GetStage(2) and "v14.5-20.6" or "v19.4-40.5", self.vb.bigHitCount+1)
+		timerTheBigHitCD:Start(self:GetStage(2) and "v14.5-20.6" or "v18.6-40.5", self.vb.bigHitCount+1)
 	elseif spellId == 465432 then
 		warnLinkedMachines:Show()
 	elseif spellId == 465322 then
@@ -219,11 +240,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465587 then
 		warnExplosiveJackpot:Show()
 		timerExplosiveJackpot:Start()
-	elseif spellId == 465761 then--Rig the game (stage 2 trigger)
-		self.vb.spinCount = 0
-		self.vb.paylineCount = 0
-		self.vb.foulExhaustCount = 0
-		self.vb.bigHitCount = 0
+	--"<393.42 21:30:17> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(35.1%-100.0%)##nil#465765#Maintenance Cycle#nil#nil#nil#nil#nil#nil",
+	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
+	elseif spellId == 465761 and self:GetStage(1) then--Rig the game (stage 2 trigger)
+		--Disabled resetting for now to match BW/Weak auras
+		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
+--		self.vb.paylineCount = 0
+--		self.vb.foulExhaustCount = 0
+--		self.vb.bigHitCount = 0
 		self:SetStage(2)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
@@ -232,11 +256,10 @@ function mod:SPELL_CAST_START(args)
 		timerPaylineCD:Stop()
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
-		timerFoulExhaustCD:Start(4.2, 1)--4.2-5
+		timerFoulExhaustCD:Start(4.2, self.vb.foulExhaustCount+1)--4.2-5
 		timerCheatToWinCD:Start(5.5, 1)
-		timerPaylineCD:Start(11, 1)
-		timerTheBigHitCD:Start(15.2, 1)
-
+		timerPaylineCD:Start(10.5, self.vb.paylineCount+1)
+		timerTheBigHitCD:Start(15.2, self.vb.bigHitCount+1)
 	end
 end
 
@@ -246,7 +269,31 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spinCount = self.vb.spinCount + 1
 		specWarnCheatToWin:Show(self.vb.spinCount)
 		specWarnCheatToWin:Play("phasechange")
-		timerCheatToWinCD:Start(nil, self.vb.spinCount+1)
+		if self:IsHard() then
+			timerCheatToWinCD:Start("v25.1-26.7", self.vb.spinCount+1)
+		else
+			timerCheatToWinCD:Start("v29.6-30", self.vb.spinCount+1)
+		end
+--	elseif spellId == 460181 then
+--		self.vb.paylineCount = self.vb.paylineCount + 1
+	elseif spellId == 465765 and self:GetStage(1) then--Rig the game (stage 2 trigger)
+		--Disabled resetting for now to match BW/Weak auras
+		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
+--		self.vb.paylineCount = 0
+--		self.vb.foulExhaustCount = 0
+--		self.vb.bigHitCount = 0
+		self:SetStage(2)
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
+		--Timer reset
+		timerSpintoWinCD:Stop()
+		timerPaylineCD:Stop()
+		timerFoulExhaustCD:Stop()
+		timerTheBigHitCD:Stop()
+		timerFoulExhaustCD:Start(10.2, self.vb.foulExhaustCount+1)--4.2-5
+		timerCheatToWinCD:Start(11.5, 1)
+		timerPaylineCD:Start(17, self.vb.paylineCount+1)
+		timerTheBigHitCD:Start(21.2, self.vb.bigHitCount+1)
 	end
 end
 
@@ -257,7 +304,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 471720 then--Spin to win on adds
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
-			timerWitheringFlamesCD:Start(13.8, args.destGUID)--If it's not cast before overload, gets delayed by several seconds
+			timerWitheringFlamesCD:Start(13.3, args.destGUID)--If it's not cast before overload, gets delayed by several seconds
 			timerOverloadCD:Start(15, args.destGUID)
 		end
 	elseif spellId == 472832 then
