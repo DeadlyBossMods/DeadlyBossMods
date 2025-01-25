@@ -2,6 +2,7 @@
 ## Category: DBM
 ## Group: DBM Tests
 ## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0DBM 테스트 러너|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Тесты|r|cffffe00a>|r |cff69ccf0Тесты для DBM Ядра|r
 ## Dependencies: DBM-Core
 ## SavedVariables: DBM_TestResults_Export, DBM_Test_DefaultTimeWarp, DBM_Test_Settings, DBM_Test_PersistentImports
