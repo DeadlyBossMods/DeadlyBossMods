@@ -653,6 +653,14 @@ function testGenerator:guessMod()
 	return encounterName:gsub("%s*", ""):gsub("'", "")
 end
 
+-- List of instance names to be used for guessed test names.
+-- This does not affect GetInstanceInfo() mocking, see Data/Instances.lua (generated) for that.
+local mappedInstanceNames = {
+	[533] = "Naxx",
+	[2769] = "Undermine",
+	[2657] = "NerubarPalace"
+}
+
 -- TODO: all of these guessing functions could be much smarter, but I'm adding stuff as I go
 function testGenerator:guessTestName()
 	if not self.metadata.encounterInfo.name then return "" end
@@ -663,6 +671,19 @@ function testGenerator:guessTestName()
 		difficulty = self.metadata.instanceInfo.difficultyName .. "/"
 	end
 	local name = self:guessMod() .. "/" .. difficulty .. (self.metadata.encounterInfo.kill and "Kill" or "Wipe")
+	if self.metadata.instanceInfo then
+		local instanceName = mappedInstanceNames[self.metadata.instanceInfo.instanceID] or self.metadata.instanceInfo.name
+		if instanceName then
+			name = instanceName .. "/" .. name
+		end
+	end
+	if self.metadata.gameVersion == "Retail" then
+		name = "TWW/" .. name
+	elseif self.metadata.gameVersion == "SeasonOfDiscovery" then
+		name = "SoD/" .. name
+	elseif self.metadata.gameVersion then
+		name = self.metadata.gameVersion .. "/" .. name
+	end
 	if self.prefix then
 		return self.prefix:gsub("/$", "") .. "/" .. name
 	else
@@ -679,6 +700,13 @@ function testGenerator:guessAddon()
 				or "DBM-Raids-Vanilla"
 		elseif instanceInfo.instanceType == "party" then -- UBRS & co also return party here
 			return "DBM-Party-Vanilla"
+		end
+	elseif self.metadata.gameVersion == "Retail" then
+		local instanceInfo = self.metadata.instanceInfo
+		if instanceInfo.instanceType == "raid" then
+			return "DBM-Raids-WarWithin"
+		elseif instanceInfo.instanceType == "party" then -- FIXME: detect delves by difficulty info
+			return "DBM-Party-WarWithin"
 		end
 	end
 	return ""
