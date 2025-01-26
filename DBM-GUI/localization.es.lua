@@ -67,7 +67,7 @@ L.Area_ProfilesSetup		= "Guía de uso de perfiles de DBM"
 L.Core_GUI 					= "Core e interfaz"
 L.General 					= "Opciones generales de DBM"
 L.EnableMiniMapIcon			= "Mostrar botón junto al minimapa"
-L.EnableCompartmentIcon	= "Mostrar botón de compartimento"
+L.EnableCompartmentIcon		= "Mostrar botón de compartimento"
 L.UseSoundChannel			= "Canal de audio para alertas"
 L.UseMasterChannel			= "Canal de audio principal"
 L.UseDialogChannel			= "Canal de audio de diálogo"
@@ -97,7 +97,7 @@ L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activa
 L.GroupOptionsExcludePrivateAura	= "Excluir que las opciones de sonido 'Aura privada' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
 L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de jefe"
---L.ShowSpellDescWhenExpanded	= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
+--L.ShowSpellDescWhenExpanded		= "Continuar mostrando la descripción del hechizo cuando se expanden los grupos."--Might not be used
 L.NoDescription						= "Esta facultad no tiene descripción."
 L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una facultad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
 
@@ -135,7 +135,7 @@ L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego
 --
 L.Area_CombatAlerts			= "Opciones de alerta de combate"
 L.AFKHealthWarning			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (en cualquier porcentaje) mientras estás ausente"
-L.HealthWarningLow		= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
+L.HealthWarningLow			= "Reproducir sonido de alerta y destellar el icono del juego si tu salud se reduce (cuando estás por debajo del 35 por ciento) mientras estás ausente"
 L.EnteringCombatAlert		= "Reproducir sonido de alerta y destellar el icono del juego al entrar en combate"
 L.LeavingCombatAlert		= "Reproducir sonido de alerta al salir de combate"
 
@@ -175,13 +175,13 @@ L.SelectModProfileCopySound	= "Copiar configuración de sonido de"
 L.SelectModProfileCopyNote	= "Copiar notas de"
 L.SelectModProfileDelete	= "Borrar configuración de"
 
-L.Area_ImportExportProfile			= "Importar/Exportar perfiles"
-L.ImportExportInfo					= "La importación sobrescribirá tu perfil actual, hazlo bajo tu propio riesgo."
-L.ButtonImportProfile				= "Importar perfil"
-L.ButtonExportProfile				= "Exportar perfil"
+L.Area_ImportExportProfile	= "Importar/Exportar perfiles"
+L.ImportExportInfo			= "La importación sobrescribirá tu perfil actual, hazlo bajo tu propio riesgo."
+L.ButtonImportProfile		= "Importar perfil"
+L.ButtonExportProfile		= "Exportar perfil"
 
-L.ImportErrorOn					= "Faltan sonidos personalizados para configurar: %s"
-L.ImportVoiceMissing			= "Paquete de voz faltante: %s"
+L.ImportErrorOn				= "Faltan sonidos personalizados para configurar: %s"
+L.ImportVoiceMissing		= "Paquete de voz faltante: %s"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alertas"
@@ -381,6 +381,10 @@ L.AreaTitle_BarSetupHuge	= "Opciones de barras grandes"
 L.EnableHugeBar 			= "Activar barras grandes (o 'Barra 2')"
 L.EnableVarianceBar 		= "Activar barras de variación"
 L.VarianceTransparency		= "Transparencia de las barras de variación: %0.1f"
+L.ZeroatWindowEnds 			= "El texto llega a cero al final de la ventana de reutilización"
+L.ZeroatWindowStartPause 	= "El texto llega a cero al inicio de la ventana de reutilización y se pausa"
+L.ZeroatWindowStartRestart 	= "El texto llega a cero al inicio de la ventana de reutilización y luego se reinicia"
+L.ZeroatWindowStartNeg 		= "El texto llega a cero al inicio de la ventana de reutilización y luego se vuelve negativo" --Default
 L.BarIconLeft 				= "Icono izquierdo"
 L.BarIconRight 				= "Icono derecho"
 L.ExpandUpwards				= "Expandir arriba"
