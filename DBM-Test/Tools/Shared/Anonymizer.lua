@@ -202,47 +202,37 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 	return setmetatable(obj, anonymizer)
 end
 
-
-local function failOnLeakedString(badString, ignoreErrors)
-	-- (not called from WoW, so these functions are fine to use here)
-	io.stderr:write(("Detected leak in anonymizer, string %q looks non-anonymized\n"):format(badString))
-	if not ignoreErrors then
-		io.stderr:write("use --ignore-leaks to ignore this\n")
-		os.exit(1)
-	end
-end
-
-local function checkLeakedString(output, str, ignoreErrors)
+local function checkLeakedString(output, str, errorCallback)
 	if output:find(str, 0, true) then
-		failOnLeakedString(str, ignoreErrors)
+		errorCallback(str)
 	end
 end
 
 -- Search for a GUID containing a server ID, these should be set to 1 by the anonymizer
-local function checkLeakedGuid(output, pattern, ignoreErrors)
+local function checkLeakedGuid(output, pattern, errorCallback)
 	local prefix, serverId = output:match(pattern)
 	if serverId and serverId ~= "1" then
-		failOnLeakedString(prefix .. serverId, ignoreErrors)
+		errorCallback(prefix .. serverId)
 	end
 end
 
-function anonymizer:CheckForLeaks(output, ignoreErrors)
+function anonymizer:CheckForLeaks(output, errorCallback)
 	for _, v in pairs(self.roles) do
 		if v.realName ~= v.anonName then
-			checkLeakedString(output, v.realName, ignoreErrors)
+			checkLeakedString(output, v.realName, errorCallback)
 		end
 	end
-	checkLeakedGuid(output, "(Creature%-%d*%-)(%d*)", ignoreErrors)
-	checkLeakedGuid(output, "(Pet%-%d*%-)(%d*)", ignoreErrors)
-	checkLeakedGuid(output, "(GameObject%-%d*%-)(%d*)", ignoreErrors)
-	checkLeakedGuid(output, "(Vehicle%-%d*%-)(%d*)", ignoreErrors)
-	checkLeakedGuid(output, "(Cast%-%d*%-)(%d*)", ignoreErrors)
+	checkLeakedGuid(output, "(Creature%-%d*%-)(%d*)", errorCallback)
+	checkLeakedGuid(output, "(Pet%-%d*%-)(%d*)", errorCallback)
+	checkLeakedGuid(output, "(GameObject%-%d*%-)(%d*)", errorCallback)
+	checkLeakedGuid(output, "(Vehicle%-%d*%-)(%d*)", errorCallback)
+	checkLeakedGuid(output, "(Cast%-%d*%-)(%d*)", errorCallback)
 	-- GUID types not yet supported, they should never show up in the output until we support them above
-	checkLeakedString(output, "BattlePet-", ignoreErrors)
-	checkLeakedString(output, "BNetAccount-", ignoreErrors)
-	checkLeakedString(output, "ClientActor-", ignoreErrors)
-	checkLeakedString(output, "Item-", ignoreErrors)
-	checkLeakedString(output, "Vignette-", ignoreErrors)
+	checkLeakedString(output, "BattlePet-", errorCallback)
+	checkLeakedString(output, "BNetAccount-", errorCallback)
+	checkLeakedString(output, "ClientActor-", errorCallback)
+	checkLeakedString(output, "Item-", errorCallback)
+	checkLeakedString(output, "Vignette-", errorCallback)
 end
 
 return anonymizer

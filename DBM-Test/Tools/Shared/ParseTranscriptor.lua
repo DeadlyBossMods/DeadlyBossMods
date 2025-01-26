@@ -771,6 +771,7 @@ function testGenerator:GetLogAndPlayers()
 	local timeOffset
 	local totalTime = 0
 	local anon = anonymizer:New(self.log.lines, self.firstLine, self.lastLine, self.metadata.player, not self.anonymize)
+	self.anonymizer = anon
 	if self.metadata.startsInCombat then
 		resultLog[#resultLog + 1] = {0, "PLAYER_REGEN_DISABLED", "+Entering combat!"}
 		resultLogStr[#resultLogStr + 1] = '{0.00, "PLAYER_REGEN_DISABLED", "+Entering combat!"}'
@@ -837,9 +838,6 @@ function testGenerator:GetLogAndPlayers()
 	combinedLog = combinedLog .. "\tlog = {\n\t\t"
 	combinedLog = combinedLog ..  table.concat(resultLogStr, ",\n\t\t")
 	combinedLog = combinedLog ..  "\n\t},"
-	if self.validateAnonymizer and self.anonymize then
-		anon:CheckForLeaks(combinedLog)
-	end
 	self.cache.combinedLog, self.cache.combinedPlayers, self.cache.resultLog, self.cache.resultPlayers = combinedLog, combinedPlayers, resultLog, resultPlayers
 	return self:GetLogAndPlayers()
 end
