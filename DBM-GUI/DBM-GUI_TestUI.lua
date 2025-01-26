@@ -276,6 +276,7 @@ local function createImportTranscriptorFrame()
 			self:Enable()
 			importTranscriptorFrame.parentTestSelect:RefreshLazyValues()
 			importTranscriptorFrame.parentTestSelect:SetSelectedValue(def.name)
+			importTranscriptorFrame.parentPlayerSelect:GenerateMenu()
 		end
 		local cr = coroutine.create(f)
 		frame:SetScript("OnUpdate", function()
@@ -296,11 +297,12 @@ local function createImportTranscriptorFrame()
 	end)
 end
 
-local function showImportTranscriptorFrame(testSelect, mod)
+local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	if not importTranscriptorFrame then
 		createImportTranscriptorFrame()
 	end
 	importTranscriptorFrame.parentTestSelect = testSelect
+	importTranscriptorFrame.parentPlayerSelect = playerSelect
 	importTranscriptorFrame.mod = mod
 	importTranscriptorFrame:Show()
 end
@@ -360,10 +362,10 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 
 	-- Test/player selection
 	local testSelectArea = panel:CreateArea(L.TestSelectArea)
-	local testSelect
+	local testSelect, playerSelect
 	local importLog = testSelectArea:CreateButton(L.ImportTranscriptor)
 	importLog:SetScript("OnClick", function()
-		showImportTranscriptorFrame(testSelect, mod)
+		showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	end)
 	local runOrStopTest, saveLogButton, alwaysShowButton
 	importLog:SetPoint("TOPLEFT", testSelectArea.frame, "TOPLEFT", 10, -10)
@@ -437,7 +439,6 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		end
 		return values
 	end
-	local playerSelect
 	local function onPlayerDropdownSelect(value)
 		playerSelect:SetSelectedValue({value = value, text = value.name})
 	end
