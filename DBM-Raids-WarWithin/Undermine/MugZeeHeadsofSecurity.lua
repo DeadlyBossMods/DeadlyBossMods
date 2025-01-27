@@ -26,13 +26,14 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, validate distance checks
---TODO, auto mark crawlers with https://www.wowhead.com/ptr-2/spell=466539/unstable-crawler-mines ?
+--TODO, auto mark crawlers with https://www.wowhead.com/ptr-2/spell=466539/unstable-crawler-mines
 --TODO, personal https://www.wowhead.com/ptr-2/spell=472061/unstable-crawler-mines tracking?
 --TODO, https://www.wowhead.com/ptr-2/spell=469043/searing-shrapnel tracker?
 --TODO, Volunteer Rocketeer spells? Rocket jump and Disintegration Beam
 --TODO, detect Mk II Electro Shocker spawn for initial timers and possible spawn alert
 --TODO, fastest event for double whammy
 --TODO, fine tune tank swaps
+--TODO, if blizzard doesn't fix being able to detect fixate targets using target scanning, create a nameplate iterator to track fixate targets
 --TODO, announce https://www.wowhead.com/ptr-2/spell=463967/bloodlust ? it's passive for p2
 --[[
 ability.id = 1215953 and type = "begincast"
