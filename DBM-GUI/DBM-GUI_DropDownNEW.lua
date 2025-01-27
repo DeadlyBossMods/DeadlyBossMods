@@ -11,7 +11,14 @@ local dropdownPrototype = CreateFrame("DropdownButton")
 
 -- For lazily loaded dropdowns: pass a single dropdown entry, for normal dropdowns pass a single value or name
 function dropdownPrototype:SetSelectedValue(selected)
-	if selected and self.values and type(self.values) == "table" then
+	if type(selected) == "table" then -- Force value to whatever was given no matter if it exists
+		self.value = selected.value
+		self.text = selected.text
+		self:GenerateMenu()
+		if self.onSelectionChangedCallback then
+			self:onSelectionChangedCallback(selected)
+		end
+	elseif selected and self.values and type(self.values) == "table" then
 		for _, v in next, self.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
 				self.value = v.value
@@ -21,13 +28,6 @@ function dropdownPrototype:SetSelectedValue(selected)
 					self:onSelectionChangedCallback(v)
 				end
 			end
-		end
-	elseif type(self.values) ~= "table" then -- lazily loaded dropdown, set to whatever was given no matter if it exists
-		self.value = selected.value
-		self.text = selected.text
-		self:GenerateMenu()
-		if self.onSelectionChangedCallback then
-			self:onSelectionChangedCallback(selected)
 		end
 	end
 end
@@ -75,7 +75,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end
 
 	local IsSelected = function(v)
-		return v.value == dropdown.value
+		return v.value == dropdown.value or v.text == dropdown.text
 	end
 	local SetSelected = function(v)
 		dropdown.value = v.value

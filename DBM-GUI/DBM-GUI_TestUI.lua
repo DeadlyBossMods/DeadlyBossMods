@@ -26,7 +26,7 @@ local function createImportTranscriptorFrame()
 	importTranscriptorFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	importTranscriptorFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 	importTranscriptorFrame:SetFrameLevel(importTranscriptorFrame:GetFrameLevel() + 10)
-	importTranscriptorFrame:SetSize(540, 214)
+	importTranscriptorFrame:SetSize(540, 207)
 	importTranscriptorFrame:SetPoint("CENTER")
 	importTranscriptorFrame.backdropInfo = {
 		bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
@@ -58,7 +58,7 @@ local function createImportTranscriptorFrame()
 	input:SetAutoFocus(true)
 	input:SetMaxBytes(100)
 	input:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
-	input:SetWidth(360)
+	input:SetWidth(350)
 	input:SetHeight(32)
 	input:SetScript("OnShow", function(self) self:Enable() self:SetFocus() self:SetCursorPosition(0) end)
 	input:SetText(L.PasteLogHere)
@@ -107,7 +107,7 @@ local function createImportTranscriptorFrame()
 			pasteOffset1 = pasteOffset1 + 1
 		end
 	end)
-	local importLocalButton, createTestButton
+	local importLocalButton, createTestButton, exportTestButton
 	local function dropdownEntryFromLog(log, encounterOffset)
 		if encounterOffset then
 			local encounter = log.encounters[encounterOffset]
@@ -145,6 +145,7 @@ local function createImportTranscriptorFrame()
 			if #logs >= 1 then
 				logSelect:SetSelectedValue(dropdownEntryFromLog(logs[firstLogWithEncounters], #logs[firstLogWithEncounters].encounters >= 1 and 1 or nil))
 				createTestButton:Enable()
+				exportTestButton:Enable()
 			else
 				logSelect:SetSelectedValue({value = {}, text = L.NoLogsFound})
 				importLocalButton:Enable()
@@ -183,8 +184,11 @@ local function createImportTranscriptorFrame()
 	end)
 
 	importLocalButton = CreateFrame("Button", nil, input, "UIPanelButtonTemplate")
+	importLocalButton:SetNormalFontObject(GameFontNormalSmall)
+	importLocalButton:SetHighlightFontObject(GameFontHighlightSmall)
+	importLocalButton:SetDisabledFontObject(GameFontDisableSmall)
 	importLocalButton:SetPoint("LEFT", input, "RIGHT", 3, 1)
-	importLocalButton:SetSize(140, 40)
+	importLocalButton:SetSize(130, 40)
 	importLocalButton:SetText(L.ImportLocalTranscriptor)
 	importLocalButton:SetScript("OnClick", function()
 		if TranscriptDB and next(TranscriptDB) then
@@ -221,6 +225,7 @@ local function createImportTranscriptorFrame()
 		if value == noLogsDropdownValue then return end
 		logSelect:SetSelectedValue({value = value, text = value.name})
 		createTestButton:Enable()
+		exportTestButton:Enable()
 	end
 	logSelect = DBM_GUI:CreateDropdown(L.SelectLogDropdown, getLogEntries, nil, nil, onLogSelect, 300, nil, importTranscriptorFrame)
 	local isNewDropdown = logSelect.mytype == "dropdown2"
@@ -240,52 +245,89 @@ local function createImportTranscriptorFrame()
 		DBM_Test_Settings.AnonymizeImports = not DBM_Test_Settings.AnonymizeImports
 	end)
 
+	---@param callback fun(self: Button, gen: DBMTranscriptorParserTestGenerator, startTimer: number)
+	local function testGenerator(callback)
+		return function(self)
+			if not logSelect.value then
+				input:SetText(L.NoLogSelected)
+				return
+			elseif logSelect.value.imported then
+				input:SetText(L.LogAlreadyImported)
+				return
+			end
+			importLocalButton:Enable()
+			self:SetText(L.Parsing)
+			self:Disable()
+			local parser = DBM.Test.GetSharedModule("ParseTranscriptor")
+			local frame = CreateFrame("Frame")
+			local f = function()
+				local start = GetTimePreciseSec()
+				local gen = parser:NewTestGenerator(logSelect.value.log, logSelect.value.startOffset, logSelect.value.endOffset, nil, not DBM_Test_Settings.AnonymizeImports, true, true)
+				callback(self, gen, start)
+			end
+			local cr = coroutine.create(f)
+			frame:SetScript("OnUpdate", function()
+				if coroutine.status(cr) == "suspended" then
+					local ok, err = coroutine.resume(cr)
+					---@diagnostic disable-next-line: param-type-mismatch
+					if not ok then error("error in async task: " .. tostring(err) .. "\nstack:\n" .. debugstack(cr)) end
+				end
+			end)
+		end
+	end
 	createTestButton = CreateFrame("Button", nil, importTranscriptorFrame, "UIPanelButtonTemplate")
 	createTestButton:SetPoint("TOPLEFT", anonCheckbox, "BOTTOMLEFT", 0, 0)
 	createTestButton:SetSize(100, 20)
 	createTestButton:SetText(L.CreateTest)
 	createTestButton:Disable()
-	createTestButton:SetScript("OnClick", function(self)
-		if not logSelect.value then
-			input:SetText(L.NoLogSelected)
-			return
-		elseif logSelect.value.imported then
-			input:SetText(L.LogAlreadyImported)
-			return
-		end
-		importLocalButton:Enable()
-		self:SetText(L.Parsing)
-		self:Disable()
-		local parser = DBM.Test.GetSharedModule("ParseTranscriptor")
-		local frame = CreateFrame("Frame")
-		local f = function()
-			local start = GetTimePreciseSec()
-			local gen = parser:NewTestGenerator(logSelect.value.log, logSelect.value.startOffset, logSelect.value.endOffset, nil, not DBM_Test_Settings.AnonymizeImports, true, true)
-			local def = gen:GetTestDefinition()
-			def.ephemeral = true
-			def.showInAllMods = false
-			def.mod = importTranscriptorFrame.mod.id
-			-- TODO: add option to rename it
-			def.name = "Imported/" .. logSelect.value.name
-			-- TODO: the name should be unique as it contains timestamp and encounter, so we could prevent double imports across multiple sessions here
-			-- but this is good enough, just want to prevent people from clicking the button twice
-			logSelect.value.imported = true
-			ephemeralTests[#ephemeralTests + 1] = def
-			self:SetText(L.CreateTest)
-			input:SetText(L.CreatedTest:format(#def.log, GetTimePreciseSec() - start))
-			self:Enable()
-			importTranscriptorFrame.parentTestSelect:RefreshLazyValues()
-			importTranscriptorFrame.parentTestSelect:SetSelectedValue(def.name)
-		end
-		local cr = coroutine.create(f)
-		frame:SetScript("OnUpdate", function()
-			if coroutine.status(cr) == "suspended" then
-				local ok, err = coroutine.resume(cr)
-				---@diagnostic disable-next-line: param-type-mismatch
-				if not ok then error("error in async task: " .. tostring(err) .. "\nstack:\n" .. debugstack(cr)) end
+	createTestButton:SetScript("OnClick", testGenerator(function(self, gen, startTime)
+		local def = gen:GetTestDefinition()
+		def.ephemeral = true
+		def.showInAllMods = false
+		def.mod = importTranscriptorFrame.mod.id
+		-- TODO: add option to rename it
+		def.name = "Imported/" .. logSelect.value.name
+		-- TODO: the name should be unique as it contains timestamp and encounter, so we could prevent double imports across multiple sessions here
+		-- but this is good enough, just want to prevent people from clicking the button twice
+		logSelect.value.imported = true
+		ephemeralTests[#ephemeralTests + 1] = def
+		self:SetText(L.CreateTest)
+		input:SetText(L.CreatedTest:format(#def.log, GetTimePreciseSec() - startTime))
+		self:Enable()
+		importTranscriptorFrame.parentTestSelect:RefreshLazyValues()
+		importTranscriptorFrame.parentTestSelect:SetSelectedValue(def.name)
+		importTranscriptorFrame.parentPlayerSelect:GenerateMenu()
+	end))
+	exportTestButton = CreateFrame("Button", nil, importTranscriptorFrame, "UIPanelButtonTemplate")
+	exportTestButton:SetPoint("LEFT", createTestButton, "RIGHT", 10, 0)
+	exportTestButton:SetSize(100, 20)
+	exportTestButton:SetText(L.ExportTest)
+	exportTestButton:Disable()
+	exportTestButton:SetScript("OnClick", testGenerator(function(self, gen, startTime)
+		local exportedTest =
+			gen:GetHeaderString() .. "\n" ..
+			gen:GetPlayersString() .. "\n" ..
+			gen:GetLogString() .. "\n" ..
+			gen:GetCompressedLogString() .. "\n" ..
+			"}\n"
+		self:SetText(L.ExportTest)
+		input:SetText(L.CreatedTest:format(gen.stats.outputLines, GetTimePreciseSec() - startTime))
+		self:Enable()
+		local infoText = L.ExportedTest:format(gen.stats.outputLines, (1 - gen.stats.outputLines / gen.stats.parsedLines) * 100)
+		if DBM_Test_Settings.AnonymizeImports then
+			local numFailedAnon = 0
+			gen.anonymizer:CheckForLeaks(exportedTest, function(str)
+				numFailedAnon = numFailedAnon + 1
+				DBM:AddMsg(L.ExportTestFailedNonAnonString:format(str))
+				exportedTest = "-- " .. L.ExportTestFailedNonAnonString:format(str) .. "\n" .. exportedTest
+			end)
+			if numFailedAnon > 0 then
+				infoText = L.ExportedTestFailedAnon:format(numFailedAnon)
 			end
-		end)
-	end)
+		end
+		DBM:ShowUpdateReminder(nil, nil, infoText, exportedTest)
+	end))
+
 
 	local close = CreateFrame("Button", nil, importTranscriptorFrame, "UIPanelButtonTemplate")
 	close:SetPoint("BOTTOMRIGHT", -15, 15)
@@ -296,11 +338,12 @@ local function createImportTranscriptorFrame()
 	end)
 end
 
-local function showImportTranscriptorFrame(testSelect, mod)
+local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	if not importTranscriptorFrame then
 		createImportTranscriptorFrame()
 	end
 	importTranscriptorFrame.parentTestSelect = testSelect
+	importTranscriptorFrame.parentPlayerSelect = playerSelect
 	importTranscriptorFrame.mod = mod
 	importTranscriptorFrame:Show()
 end
@@ -360,10 +403,10 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 
 	-- Test/player selection
 	local testSelectArea = panel:CreateArea(L.TestSelectArea)
-	local testSelect
+	local testSelect, playerSelect
 	local importLog = testSelectArea:CreateButton(L.ImportTranscriptor)
 	importLog:SetScript("OnClick", function()
-		showImportTranscriptorFrame(testSelect, mod)
+		showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	end)
 	local runOrStopTest, saveLogButton, alwaysShowButton
 	importLog:SetPoint("TOPLEFT", testSelectArea.frame, "TOPLEFT", 10, -10)
@@ -437,7 +480,6 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		end
 		return values
 	end
-	local playerSelect
 	local function onPlayerDropdownSelect(value)
 		playerSelect:SetSelectedValue({value = value, text = value.name})
 	end
