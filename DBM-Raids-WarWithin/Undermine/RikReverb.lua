@@ -165,6 +165,16 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		savedDifficulty = "mythic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
+	else--Combine LFR and Normal
+		savedDifficulty = "normal"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 473748 then
