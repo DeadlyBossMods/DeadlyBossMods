@@ -355,7 +355,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if unitGUID and UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
 			activeBossGUIDS[unitGUID] = true
 			local cid = self:GetUnitCreatureId(unitID)
-			if cid == 230197 then--Applifier
+			if cid == 230197 or cid == 233072 or cid == 236511 then--Applifier
 				if self.Options.SetIconOnAmp then
 					self:ScanForMobs(unitGUID, 2, self.vb.ampIcon, 1, nil, 12, "SetIconOnAmp")
 				end
