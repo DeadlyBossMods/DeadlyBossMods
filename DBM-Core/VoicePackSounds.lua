@@ -89,6 +89,7 @@
 ---|"dpsslow" 16
 ---|"dpsstop" 16
 ---|"dragonnow"
+---|"droptorch" 18
 ---|"dshigh"
 ---|"east"
 ---|"end"
