@@ -37,14 +37,14 @@ mod:RegisterEventsInCombat(
 --TODO, any kind of marking for https://www.wowhead.com/ptr-2/spell=1213992/voltaic-image ?
 --TODO, possible auto marking using spell summon event for toys using https://www.wowhead.com/ptr-2/spell=1215869/tiny-tussle https://www.wowhead.com/ptr-2/spell=471219/tiny-tussle and https://www.wowhead.com/ptr-2/spell=471218/tiny-tussle
 --General
-local warnTinyTussle								= mod:NewCountAnnounce(1221826, 3)
+--local warnTinyTussle								= mod:NewCountAnnounce(1221826, 3)
 local warnKingofCarnage								= mod:NewCountAnnounce(471557, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(471557))--Boss
 
 local specWarnColossalClash							= mod:NewSpecialWarningDodgeCount(465833, nil, nil, nil, 2, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1214039, nil, nil, nil, 1, 8)
 
 local timerColossalClashCD							= mod:NewCDCountTimer(95, 465833, nil, nil, nil, 6)
-local timerTinyTussleCD								= mod:NewAITimer(95, 1221826, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
+--local timerTinyTussleCD								= mod:NewAITimer(95, 1221826, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnRaisedGuard", 471660, true)
 mod:AddBoolOption("AdvancedBossFiltering", true, "misc")--May be default to off on live, but for testing purposes it needs to be forced
@@ -155,9 +155,9 @@ function mod:OnCombatStart(delay)
 	self.vb.bashCount = 0
 	self.vb.crashGone = false
 	timerColossalClashCD:Start(71.6-delay, 1)
-	if self:IsMythic() then
-		timerTinyTussleCD:Start(1-delay)
-	end
+	--if self:IsMythic() then
+	--	timerTinyTussleCD:Start(1-delay)
+	--end
 	--Flarendo the Furious
 	timerScrapBombCD:Start(9-delay, 1)
 	timerBlastburnRoarcannonCD:Start(15.1-delay, 1)
@@ -385,11 +385,7 @@ function mod:UNIT_POWER_UPDATE(uId)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 1215933 and self:AntiSpam(5, 2) then
-		self.vb.tussleCount = self.vb.tussleCount + 1
-		warnTinyTussle:Show(self.vb.tussleCount)
-		timerTinyTussleCD:Start()--97.3, self.vb.tussleCount+1
-	elseif spellId == 1213994 then
+	if spellId == 1213994 then
 		self.vb.imagesCount = self.vb.imagesCount + 1
 		--pull:29.0, 30.0, 65.0, 30.0, 65.0, 30.0, 65.1, 30.0, 65.0, 30.0, 65.0, 30.0, 65.0, 30.0",
 		if not self.vb.crashGone and self.vb.imagesCount % 2 == 0 then
@@ -404,6 +400,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnColossalClash:Show(self.vb.crashCount)
 		specWarnColossalClash:Play("watchstep")
 		timerColossalClashCD:Start(nil, self.vb.crashCount+1)
+	--elseif spellId == 1215933 and self:AntiSpam(5, 2) then
+	--	self.vb.tussleCount = self.vb.tussleCount + 1
+	--	warnTinyTussle:Show(self.vb.tussleCount)
+	--	timerTinyTussleCD:Start()--97.3, self.vb.tussleCount+1
 	end
 end
 

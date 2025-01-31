@@ -6,8 +6,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(228648)
 mod:SetEncounterID(3011)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
---mod:SetHotfixNoticeRev(20240921000000)
---mod:SetMinSyncRevision(20240921000000)
+mod:SetHotfixNoticeRev(20250130000000)
+mod:SetMinSyncRevision(20250130000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 1217122 468119 472298 1214598 467108 467044 466128 464518 466093 1213817",
 	"SPELL_AURA_APPLIED_DOSE 1217122 464518",
-	"SPELL_AURA_REMOVED 1217122 466128 1213817",
+	"SPELL_AURA_REMOVED 1217122 466128 1213817 467542",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 --	"UNIT_DIED"
@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, personal stack tracker forhttps://www.wowhead.com/ptr-2/spell=1214164/excitement ?
 --TODO, finetune tank stacks
 --TODO, perfect staging timers for weak aura compat
+--TODO, you can target scan Sound Cannon, which defeats point of being private aura. if this isn't fixed by live,
 --[[
 (ability.id = 473748 or ability.id = 466866 or ability.id = 467606 or ability.id = 466979 or ability.id = 473655 or ability.id = 473260) and type = "begincast"
  or ability.id = 1213817 and (type = "applybuff" or type = "removebuff")
@@ -52,6 +53,8 @@ local warnHaywire									= mod:NewSpellAnnounce(466093, 4)
 local specWarnAmplification							= mod:NewSpecialWarningDodgeCount(473748, nil, nil, nil, 2, 2)
 local specWarnEchoingChant							= mod:NewSpecialWarningDodgeCount(466866, nil, nil, nil, 2, 2)
 --local specWarnEntrancedByEchoes					= mod:NewSpecialWarningYou(472298, nil, nil, nil, 1, 2)
+local specWarnSoundCannonSoakBadQA					= mod:NewSpecialWarningYou(467606, nil, nil, nil, 1, 2, 4)
+local yellSoundCannonSoak							= mod:NewYell(467606, nil, nil, nil, "YELL")
 local specWarnSoundCannonSoak						= mod:NewSpecialWarningSoakCount(467606, nil, nil, nil, 2, 2, 4)
 local specWarnEntrancedByCannon						= mod:NewSpecialWarningSwitchCustom(1214598, "Dps", nil, nil, 1, 2, 4)--Could be spammy?
 local specWarnFaultyZap								= mod:NewSpecialWarningMoveAway(466979, nil, nil, nil, 1, 2)
@@ -86,21 +89,29 @@ mod.vb.zapCount = 0
 mod.vb.sparkCount = 0
 mod.vb.sparkIcon = 8
 mod.vb.hypeCount = 0
-mod.vb.dropCount = 0
+mod.vb.dropCount = 0--Does not reset
+--timer counts
+mod.vb.ampTimerCount = 0
+mod.vb.chantTimerCount = 0
+mod.vb.cannonTimerCount = 0
+mod.vb.zapTimerCount = 0
+mod.vb.sparkTimerCount = 0
 local activeBossGUIDS = {}
+local addUsedMarks = {}
 local savedDifficulty = "normal"
+
 local allTimers = {
 	["mythic"] = {
 		--Amplification
-		[473748] = {10.7, 40, 40},
+		[473748] = {10.7, 38.1, 41.0},
 		--Echoing Chant
-		[466866] = {22.0, 32.5, 53.5},
+		[466866] = {22.0, 57.5, 32.8},
 		--Sound Cannon
-		[467606] = {30.0, 37.2},
+		[467606] = {30.0, 37.0},
 		--Faulty Zap
-		[466979] = {40.5, 34.5, 26.0},
+		[466979] = {38.0, 37.0, 24.0},
 		--Spark Blast Ignition
-		[472293] = {15.0, 82.5},
+		[472293] = {17.0, 43.0, 41.2},
 	},
 	["heroic"] = {
 		--Amplification
@@ -126,9 +137,25 @@ local allTimers = {
 	},
 }
 
+function mod:CannonTarget(targetname)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnSoundCannonSoakBadQA:Show()
+		specWarnSoundCannonSoakBadQA:Play("targetyou")
+		if self:IsMythic() then
+			yellSoundCannonSoak:Yell()--Red Text
+		else
+			yellSoundCannonSoak:Say()--White Text
+		end
+--	else
+--		warnSurgingArc:Show(targetname)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(activeBossGUIDS)
+	table.wipe(addUsedMarks)
 	self.vb.ampIcon = 1
 	self.vb.ampCount = 0
 	self.vb.chantCount = 0
@@ -138,6 +165,11 @@ function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 8
 	self.vb.hypeCount = 0
 	self.vb.dropCount = 0
+	self.vb.ampTimerCount = 0
+	self.vb.chantTimerCount = 0
+	self.vb.cannonTimerCount = 0
+	self.vb.zapTimerCount = 0
+	self.vb.sparkTimerCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
@@ -152,8 +184,8 @@ function mod:OnCombatStart(delay)
 	timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1]-delay, 1)
 	timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1]-delay, 1)
 	timerFaultyZapCD:Start(allTimers[savedDifficulty][466979][1]-delay, 1)
-	timerPhaseTransition:Start(115.9, 2)
-	self:EnablePrivateAuraSound(469380, "lineyou", 17)
+	timerPhaseTransition:Start(savedDifficulty == "mythic" and 121 or 115.9, 2)
+	self:EnablePrivateAuraSound(469380, "lineyou", 17)--Register private aura even though it's unneeded right now since blizzard forgot about target scanning on two bosses
 	if self.Options.NPAuraOnResonance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -179,35 +211,40 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 473748 then
 		self.vb.ampCount = self.vb.ampCount + 1
+		self.vb.ampTimerCount = self.vb.ampTimerCount+1
 		specWarnAmplification:Show(self.vb.ampCount)
 		specWarnAmplification:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.ampCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.ampTimerCount+1)
 		if timer then
 			timerAmplificationCD:Start(timer, self.vb.ampCount+1)
 		end
 	elseif spellId == 466866 then
 		self.vb.chantCount = self.vb.chantCount + 1
+		self.vb.chantTimerCount = self.vb.chantTimerCount+1
 		specWarnEchoingChant:Show(self.vb.chantCount)
 		specWarnEchoingChant:Play("watchwave")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.chantCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.chantTimerCount+1)
 		if timer then
 			timerEchoingChantCD:Start(timer, self.vb.chantCount+1)
 		end
 	elseif spellId == 467606 then
 		self.vb.cannonCount = self.vb.cannonCount + 1
+		self.vb.cannonTimerCount = self.vb.cannonTimerCount+1
 		if self:IsMythic() then
 			specWarnSoundCannonSoak:Show(self.vb.cannonCount)
 			specWarnSoundCannonSoak:Play("helpsoak")
 		else
 			warnSoundCannon:Show(self.vb.cannonCount)
 		end
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.cannonCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.cannonTimerCount+1)
 		if timer then
 			timerSoundCannonCD:Start(timer, self.vb.cannonCount+1)
 		end
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "CannonTarget", 0.1, 8, nil, nil, nil, nil, true)--Filter tank, so if blizzard fixes being able to see target and instead have boss stare at tank, it's ignored
 	elseif spellId == 466979 then
 		self.vb.zapCount = self.vb.zapCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.zapCount+1)
+		self.vb.zapTimerCount = self.vb.zapTimerCount+1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.zapTimerCount+1)
 		if timer then
 			timerFaultyZapCD:Start(timer, self.vb.zapCount+1)
 		end
@@ -290,7 +327,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.hypeCount < 3 then
 			specWarnHypeHustle:Show(self.vb.hypeCount)
 			specWarnHypeHustle:Play("phasechange")
-			timerPhaseTransition:Start(36, 1)
+			timerPhaseTransition:Start(savedDifficulty == "mythic" and 32 or 36, 1)
 		else
 			specWarnHypeFever:Show(self.vb.hypeCount)
 			specWarnHypeFever:Play("stilldanger")
@@ -310,13 +347,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnResonance then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	elseif spellId == 467542 then--Haywire
+		for i = 1, 8, 1 do
+			if addUsedMarks[i] == args.destGUID then
+				addUsedMarks[i] = nil
+				return
+			end
+		end
 	elseif spellId == 1213817 then--Sound Cloud
 		self:SetStage(1)
-		self.vb.ampCount = 0
-		self.vb.chantCount = 0
-		self.vb.cannonCount = 0
-		self.vb.zapCount = 0
-		self.vb.sparkCount = 0
+		--Rest only timer counts
+		self.vb.ampTimerCount = 0
+		self.vb.chantTimerCount = 0
+		self.vb.cannonTimerCount = 0
+		self.vb.zapTimerCount = 0
+		self.vb.sparkTimerCount = 0
 		timerBlaringDropCD:Stop()
 		timerAmplificationCD:Start(allTimers[savedDifficulty][473748][1], self.vb.ampCount+1)
 		if self:IsHard() then
@@ -325,7 +370,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1], self.vb.chantCount+1)
 		timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1], self.vb.cannonCount+1)
 		timerFaultyZapCD:Start(allTimers[savedDifficulty][466979][1], self.vb.zapCount+1)
-		timerPhaseTransition:Start(115.9, 2)
+		timerPhaseTransition:Start(savedDifficulty == "mythic" and 121 or 115.9, 2)
 	end
 end
 
@@ -339,16 +384,8 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 230197 then--Amplifier
-
-	end
-end
---]]
-
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	--First check Boss Frames, currently they're still only going up to 5
 	for i = 1, 10 do
 		local unitID = "boss"..i
 		local unitGUID = UnitGUID(unitID)
@@ -357,11 +394,33 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetUnitCreatureId(unitID)
 			if cid == 230197 or cid == 233072 or cid == 236511 then--Applifier
 				if self.Options.SetIconOnAmp then
-					self:ScanForMobs(unitGUID, 2, self.vb.ampIcon, 1, nil, 12, "SetIconOnAmp")
+					for j = 1, 8, 1 do
+						if not addUsedMarks[j] then
+							addUsedMarks[j] = unitGUID
+							self:ScanForMobs(unitGUID, 2, j, 1, nil, 12, "SetIconOnAmp")
+							break
+						end
+					end
 				end
-				self.vb.ampIcon = self.vb.ampIcon + 1
-				if self.vb.ampIcon == 9 then
-					self.vb.ampIcon = 1
+			end
+		end
+	end
+	--Second check arena frames, which are still being used instead of boss 6-10
+	for i = 1, 10 do
+		local unitID = "arena"..i
+		local unitGUID = UnitGUID(unitID)
+		if unitGUID and UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
+			activeBossGUIDS[unitGUID] = true
+			local cid = self:GetUnitCreatureId(unitID)
+			if cid == 230197 or cid == 233072 or cid == 236511 then--Applifier
+				if self.Options.SetIconOnAmp then
+					for j = 1, 8, 1 do
+						if not addUsedMarks[j] then
+							addUsedMarks[j] = unitGUID
+							self:ScanForMobs(unitGUID, 2, j, 1, nil, 12, "SetIconOnAmp")
+							break
+						end
+					end
 				end
 			end
 		end
@@ -372,9 +431,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 472306 then
 		self.vb.sparkIcon = 8
 		self.vb.sparkCount = self.vb.sparkCount + 1
+		self.vb.sparkTimerCount = self.vb.sparkTimerCount+1
 		specWarnSparkBlastIngition:Show(self.vb.sparkCount)
 		specWarnSparkBlastIngition:Play("killmob")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 472293, self.vb.sparkCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 472293, self.vb.sparkTimerCount+1)
 		if timer then
 			timerSparkBlastIngitionCD:Start(timer, self.vb.sparkCount+1)
 		end
