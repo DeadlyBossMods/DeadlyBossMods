@@ -112,7 +112,6 @@ end
 
 -- It's kinda sad that this is needed, but I see way too many people running around in SoD without classic mods installed while at the same time complaining that DBM doesn't work.
 -- No one seems to be reading messages in ChatFrame :(
--- /run DBM:ShowAnnoyingPopup("Incomplete DBM installation detected.\nWelcome to Molten Core", "long checkbox text", "Copy this to download from Wago.io", "https://addons.wago.io/addons/7x61xpN1", "Copy this to download from Curse", "https://www.curseforge.com/wow/addons/dbm-vanilla")
 local function show(headerLarge, headerSmall, checkbox, url1Info, url1, url2Info, url2)
 	createFrame()
 	frame.header1:SetText(headerLarge)
@@ -179,12 +178,12 @@ local annoyingPopupZonesVanillaClassic = {
 	[469]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Blackwing Lair
 	[509]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Ruins of Ahn'Qiraj
 	[531]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Temple of Ahn'Qiraj
-	[533]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Naxxramas
+	[533]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla", trackPerInstance = true},  -- Naxxramas, tracking separetely as we may have returning players that clicked the warning away not really understanding it
 	[2791] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Azuregos (instanced in SoD), we literally wiped there to spell reflect because people didn't have this installed in my guild
 	[2784] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- Demon Fall Canyon in SoD, it's a bit harder than usual dungeons, so let's show a warning. Remove if too many people complain.
 	[2832] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Nightmare Grove (instanced outdoor dragons)
-	[2856] = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Scarlet Enclave
-	[2875] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- SoD Karazhan Cryptos, probably harder than the usual classic dungeon
+	[2856] = {addon = "DBM-Raids-Vanilla", package = "Vanilla", useFriendlyMessage = false, trackPerInstance = true},  -- Scarlet Enclave
+	[2875] = {addon = "DBM-Party-Vanilla", package = "Dungeons", useFriendlyMessage = false, trackPerInstance = true}, -- SoD Karazhan Cryptos, much harder than the usual classic dungeon
 }
 
 local annoyingPopupZonesBCC = {
@@ -233,19 +232,24 @@ local annoyingPopupZonesRetail = {
 	[2290]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
 }
 
-function DBM:ShowAnnoyingPopup(packageId, zone)
-	if DBM_AnnoyingPopupDisables and DBM_AnnoyingPopupDisables[packageId] then
+function DBM:ShowAnnoyingPopup(zoneInfo, zone)
+	local trackId = zoneInfo.trackPerInstance and zoneInfo.package .. tostring(zone) or zoneInfo.package
+	if DBM_AnnoyingPopupDisables and DBM_AnnoyingPopupDisables[trackId] then
 		return
 	end
-	local data = popupData[packageId]
+	local data = popupData[zoneInfo.package]
 	if not data or not zone then
 		if DBM.Options.DebugMode then error("bad arguments") end
 		return
 	end
+	local useFriendlyMessage = data.useFriendlyMessage
+	if zoneInfo.useFriendlyMessage ~= nil then
+		useFriendlyMessage = zoneInfo.useFriendlyMessage
+	end
 	show(
 		L.DBM_INSTALL_REMINDER_HEADER,
 		L.DBM_INSTALL_REMINDER_EXPLAIN:format(zone, data.package, data.package),
-		data.useFriendlyMessage and L.DBM_INSTALL_REMINDER_DISABLE2 or L.DBM_INSTALL_REMINDER_DISABLE,
+		useFriendlyMessage and L.DBM_INSTALL_REMINDER_DISABLE2 or L.DBM_INSTALL_REMINDER_DISABLE,
 		L.DBM_INSTALL_REMINDER_DL_WAGO,
 		data.wagoUrl,
 		L.DBM_INSTALL_REMINDER_DL_CURSE,
@@ -254,7 +258,7 @@ function DBM:ShowAnnoyingPopup(packageId, zone)
 	callback = function()
 		if frame.checkbox:GetChecked() then
 			DBM_AnnoyingPopupDisables = DBM_AnnoyingPopupDisables or {}
-			DBM_AnnoyingPopupDisables[packageId] = GetServerTime()
+			DBM_AnnoyingPopupDisables[trackId] = GetServerTime()
 		end
 	end
 end
@@ -273,6 +277,6 @@ function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 		zoneInfo = annoyingPopupZonesRetail[mapId]
 	end
 	if zoneInfo and not DBM:DoesAddOnExist(zoneInfo.addon) then
-		self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
+		self:ShowAnnoyingPopup(zoneInfo, (GetInstanceInfo()))
 	end
 end
