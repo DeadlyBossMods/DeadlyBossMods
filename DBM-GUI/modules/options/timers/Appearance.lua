@@ -273,6 +273,13 @@ local Sorts = {
 	}
 }
 
+local BarSetupVariance = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupVariance)
+local VarianceAlphaSlider = BarSetupVariance:CreateSlider(L.VarianceTransparency, 0, 1, 0.1, 150)
+VarianceAlphaSlider:SetPoint("TOPLEFT", BarSetupVariance.frame, 20, -35)
+VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)
+VarianceAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("VarianceAlpha"))
+--VarianceAlphaSlider.myheight = 0
+
 local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
 local smalldummybar = DBT:CreateDummyBar(nil, nil, SMALL)

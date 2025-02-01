@@ -84,6 +84,8 @@ DBT.DefaultOptions = {
 	--Important bars options
 	Bar7ForceLarge = true,
 	Bar7CustomInline = true,
+	-- Variance
+	VarianceAlpha = 0.5,
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,
@@ -884,6 +886,8 @@ function barPrototype:SetVariance()
 			varianceTexBorder:SetPoint("TOPRIGHT", varianceTex, "TOPRIGHT", 1, 0)
 			varianceTexBorder:SetPoint("BOTTOMRIGHT", varianceTex, "BOTTOMRIGHT", 1, 0)
 		end
+
+		varianceTex:SetAlpha(DBT.Options.VarianceAlpha)
 
 		varianceTex:Show()
 		varianceTexBorder:Show()
