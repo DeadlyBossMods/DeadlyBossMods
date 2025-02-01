@@ -274,8 +274,11 @@ local Sorts = {
 }
 
 local BarSetupVariance = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupVariance)
+
+local VarianceEnableCheckbox = BarSetupVariance:CreateCheckButton(L.EnableVarianceBar, true, nil, nil, "VarianceEnabled")
+
 local VarianceAlphaSlider = BarSetupVariance:CreateSlider(L.VarianceTransparency, 0, 1, 0.1, 150)
-VarianceAlphaSlider:SetPoint("TOPLEFT", BarSetupVariance.frame, 20, -35)
+VarianceAlphaSlider:SetPoint("TOPLEFT", VarianceEnableCheckbox, "BOTTOMLEFT", 5, -15)
 VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)
 VarianceAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("VarianceAlpha"))
 --VarianceAlphaSlider.myheight = 0

@@ -85,6 +85,7 @@ DBT.DefaultOptions = {
 	Bar7ForceLarge = true,
 	Bar7CustomInline = true,
 	-- Variance
+	VarianceEnabled = true,
 	VarianceAlpha = 0.5,
 	-- Small bar
 	BarXOffset = 0,
@@ -862,7 +863,7 @@ function barPrototype:SetVariance()
 	local frame_name = self.frame:GetName()
 	local varianceTex = _G[frame_name.."BarVariance"]
 	local varianceTexBorder = _G[frame_name.."BarVarianceBorder"]
-	if self.hasVariance then
+	if DBT.Options.VarianceEnabled and self.hasVariance then
 		local varianceWidth = self.frame:GetWidth() * (self.varianceDuration / self.totalTime)
 		varianceTex:SetWidth(varianceWidth)
 
