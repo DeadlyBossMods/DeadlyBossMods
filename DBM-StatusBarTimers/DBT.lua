@@ -702,9 +702,21 @@ function DBT:CancelAllBars()
 	end
 end
 
+function DBT:ResetBarVariance(bar)
+	if bar.hasVariance then
+		bar.minTimer = nil
+		bar.varianceDuration = 0
+		bar.hasVariance = false
+		bar:ApplyStyle() -- Running this here since this is skipped if bar was already enlarged. REVIEW! Will run twice otherwise
+	end
+end
+
 function DBT:UpdateBar(id, elapsed, totalTime)
 	for bar in self:GetBarIterator() do
 		if id == bar.id then
+			if type(totalTime) == "number" then
+				DBT:ResetBarVariance(bar)
+			end
 			bar:SetTimer(totalTime or bar.totalTime)
 			bar:SetElapsed(elapsed or bar.totalTime - bar.timer)
 			return true
