@@ -326,8 +326,13 @@ do
 	end
 
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown)
-		local varianceMinTimer, varianceDuration
-		timer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
+		local varianceMaxTimer, varianceMinTimer, varianceDuration
+		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
+		if self.Options.VarianceEnabled then
+			timer = varianceMaxTimer
+		else
+			timer = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
+		end
 		if not timer or (self.numBars >= 15 and not isDummy) then
 			return
 		end
@@ -1084,7 +1089,7 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 		DBT:UpdateBars(true)
 	end
-	if not paused and (timerLowestValueFromVariance <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled then
+	if not paused and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
