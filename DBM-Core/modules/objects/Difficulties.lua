@@ -413,17 +413,25 @@ function DBM:GetCurrentInstanceDifficulty()
 				difficultyName = PLAYER_DIFFICULTY6
 			end
 			-- Naxxramas Hardmode
-			local naxxModifier = select(3, self:UnitDebuff("player", 1218278))
+			-- The different levels use different buffs, 1218276 may be unused. The debuff still has the right number of stacks
+			local naxxModifier = select(3, self:UnitDebuff("player", 1218283, 1218271, 1218275, 1224428, 1218276))
+			if naxxModifier == 0 then naxxModifier = 1 end -- First level has no count
 			if naxxModifier then
+				modifierLevel = naxxModifier
+				local hasConstructAffix = DBM:UnitDebuff("player", 1219229)
+				local hasMilitaryAffix = DBM:UnitDebuff("player", 1219058)
+				local hasSpiderAffix = DBM:UnitDebuff("player", 1218198)
+				local hasPlagueAffix = DBM:UnitDebuff("player", 1219114)
 				-- TODO: Sync this with whatever Warcraft Logs ends up doing
-				if naxxModifier == 10 then -- Max level is unclear, on the PTR it was 10, but only up to 5 was supported
+				if naxxModifier == 4 then -- Max level is unclear, on the PTR it was 10 at first (with up to 5 working), but now it seems to be 4?
 					difficultyId = "mythic"
 					difficultyName = PLAYER_DIFFICULTY6
-				elseif naxxModifier >= 5 then
+				-- Only Heroic in the empowered wing the others count as normal despite the overall stack
+				-- Also to be synced with whatever Warcraft Logs will be doing, presumably there'll be some treshold at which non-empowered wings also count
+				elseif hasConstructAffix or hasMilitaryAffix or hasSpiderAffix or hasPlagueAffix then
 					difficultyId = "heroic"
 					difficultyName = PLAYER_DIFFICULTY2
 				end
-				modifierLevel = naxxModifier
 			end
 		end
 		if modifierLevel == 0 then
