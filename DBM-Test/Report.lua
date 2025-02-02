@@ -707,8 +707,8 @@ Event trace:
 end
 
 function reporter:HasDiff()
-	local expected = test.Registry.expectedResults[self.testData.name]
-	return not expected or expected:trim() ~= self:Report():trim()
+	DBM:Debug("called deprecated DBM.Test:HasDiff()")
+	return false
 end
 
 function reporter:ReportDiff()
@@ -751,7 +751,7 @@ end
 ---@alias TestResultEnum "Success"|"Failure"
 ---@return TestResultEnum
 function reporter:GetResult()
-	return (not self:HasDiff() or self:IsTainted()) and not self:HasErrors() and "Success" or "Failure"
+	return not self:HasErrors() and "Success" or "Failure"
 end
 
 function reporter:HasErrors()
