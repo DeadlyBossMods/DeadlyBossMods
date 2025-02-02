@@ -19,6 +19,6 @@ jobs:
           test-dbm-core-mods: true
           test-dbm-vanilla-mods: true
           test-dbm-dungeon-mods: true
-          upload-repo-commit-message: ${{ format('Core{0} {1}', ':', join(github.event.commits.*.message, '\n')) }}
+          upload-repo-commit-message: ${{ format('Core{0} {1}', ':', join(github.event.commits.*.message, ';')) }}
           upload-repo-branch: main
           upload-token: ${{ secrets.TEST_RESULT_UPLOAD_TOKEN }}
