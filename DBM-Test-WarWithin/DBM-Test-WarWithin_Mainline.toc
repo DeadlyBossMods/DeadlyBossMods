@@ -23,12 +23,3 @@ NerubarPalace/Ovinax-Mythic-Kill.lua
 NerubarPalace/Kyveza-Mythic-Kill.lua
 NerubarPalace/SilkenCourt-Mythic-Kill.lua
 NerubarPalace/QueenAnsurek-Mythic-Wipe.lua
-
-NerubarPalace/Reports/Ulgrax-Mythic-Kill.lua
-NerubarPalace/Reports/BloodboundHorror-Mythic-Kill.lua
-NerubarPalace/Reports/Sikran-Mythic-Kill.lua
-NerubarPalace/Reports/Rashanan-Mythic-Kill.lua
-NerubarPalace/Reports/Ovinax-Mythic-Kill.lua
-NerubarPalace/Reports/Kyveza-Mythic-Kill.lua
-NerubarPalace/Reports/SilkenCourt-Mythic-Kill.lua
-NerubarPalace/Reports/QueenAnsurek-Mythic-Wipe.lua

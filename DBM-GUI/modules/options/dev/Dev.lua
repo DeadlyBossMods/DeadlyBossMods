@@ -168,13 +168,7 @@ local function onTestFinish(test, testOptions, results, testCount, numTests)
 	end
 	setCombinedTestResults(test.uiInfo, test, result)
 	test.uiInfo.lastResults = results
-	if results:IsTainted() or not isDevBuild then
-		test.uiInfo.showDiffButton:SetText(L.ShowReport)
-		test.uiInfo.showDiffButton:Show()
-	elseif results:HasDiff() then
-		test.uiInfo.showDiffButton:SetText(L.ShowDiff)
-		test.uiInfo.showDiffButton:Show()
-	end
+	test.uiInfo.showDiffButton:Show()
 	if results:HasErrors() then
 		test.uiInfo.showErrorsButton:Show()
 	end
@@ -252,14 +246,10 @@ local function createTestEntry(testName, tests, parents, indentation)
 	if #tests == 1 then
 		---@class TestDefinition
 		local test = tests[1]
-		local showDiffButton = testPanel:CreateButton(L.ShowDiff, 90, 22, function(self)
+		local showDiffButton = testPanel:CreateButton(L.ShowReport, 90, 22, function(self)
 			local lastResults = test.uiInfo.lastResults
 			if lastResults then
-				if lastResults:IsTainted() or not isDevBuild then
-					lastResults:ShowReport()
-				else
-					lastResults:ReportDiff()
-				end
+				lastResults:ShowReport()
 			end
 		end)
 		uiInfo.showDiffButton = showDiffButton
