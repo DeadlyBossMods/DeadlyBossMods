@@ -283,6 +283,22 @@ VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)
 VarianceAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("VarianceAlpha"))
 --VarianceAlphaSlider.myheight = 0
 
+local VarianceBehaviors = {
+	{
+		text	= L.ZeroatWindowEnds,
+		value	= "ZeroAtMaxTimer"
+	},
+	{
+		text	= L.ZeroatWindowStartNeg,
+		value	= "ZeroAtMinTimerAndNeg",
+	},
+}
+
+local VarianceBehaviourDropDown = BarSetupVariance:CreateDropdown(L.VarianceTimerTextBehavior, VarianceBehaviors, "DBT", "VarianceBehavior", function(value)
+	DBT:SetOption("VarianceBehavior", value)
+end)
+VarianceBehaviourDropDown:SetPoint("TOPLEFT", VarianceAlphaSlider, "BOTTOMLEFT", 0, isNewDropdown and -25 or -10)
+
 local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
 local smalldummybar = DBT:CreateDummyBar(nil, nil, SMALL)
