@@ -87,6 +87,7 @@ DBT.DefaultOptions = {
 	-- Variance
 	VarianceEnabled = true,
 	VarianceAlpha = 0.5,
+	VarianceBehavior = "ZeroAtMaxTimer",
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,
@@ -956,6 +957,10 @@ function barPrototype:Update(elapsed)
 	local isEnlarged = self.enlarged and not paused
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
+	local varianceEnabled = barOptions.VarianceEnabled
+--	local varianceBehaviorZeroMax = varianceEnabled and barOptions.VarianceBehavior == "ZeroAtMaxTimer"
+	local varianceBehaviorNeg = varianceEnabled and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
+	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
 	if barOptions.DynamicColor and not self.color then
 		local colorVar = colorVariables[colorCount]
@@ -980,7 +985,7 @@ function barPrototype:Update(elapsed)
 		g = self.color.g
 		b = self.color.b
 	end
-	if timerValue <= 0 and not (barOptions.KeepBars and self.keep) then
+	if timerValue <= 0 and not (barOptions.KeepBars and self.keep) and not (varianceBehaviorNeg and self.varianceDuration and (timerValue < -self.varianceDuration)) then
 		return self:Cancel()
 	else
 		if fillUpBars then
@@ -999,9 +1004,9 @@ function barPrototype:Update(elapsed)
 			end
 		end
 		if self.isCooldown then--inprecise CD bar, signify it with ~ in timer
-			timer:SetText("~" .. stringFromTimer(timerValue))
+			timer:SetText("~" .. stringFromTimer(timerCorrectedNegative))
 		else
-			timer:SetText(stringFromTimer(timerValue))
+			timer:SetText(stringFromTimer(timerCorrectedNegative))
 		end
 	end
 	if isFadingIn and isFadingIn < 0.5 and currentStyle ~= "NoAnim" then
