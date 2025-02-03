@@ -118,9 +118,6 @@ function test:HandleCommand(testName, timeWarp)
 			if report:GetResult() == "Success" then
 				successes = successes + 1
 			end
-			if report:HasDiff() then
-				report:ReportDiff()
-			end
 			if report:HasErrors() then
 				report:ReportErrors()
 			end

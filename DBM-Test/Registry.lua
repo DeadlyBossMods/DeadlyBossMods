@@ -4,8 +4,6 @@ local test = DBM.Test
 test.Registry = {
 	---@type table<string, TestDefinition>
 	tests = {},
-	---@type table<string, string>
-	expectedResults = {},
 	---@type string[]
 	sortedTests = {}
 }
@@ -30,11 +28,7 @@ function test:DefineTest(def)
 	table.insert(testsByMod[def.mod], def)
 end
 
--- Set the expected result of a test
-function test:Report(report)
-	local testName = report:match("Test:%s+([^\n]*)\r?")
-	if self.Registry.expectedResults[testName] then
-		error("duplicate expected report for " .. testName, 2)
-	end
-	self.Registry.expectedResults[testName] = report
+-- Deprecated, test reports were deleted in favor of DBM-Offline
+function test:Report()
+	DBM:Debug("called deprecated DBM.Test:Report()")
 end
