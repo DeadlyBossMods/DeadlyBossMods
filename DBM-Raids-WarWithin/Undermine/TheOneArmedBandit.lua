@@ -245,9 +245,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465761 and self:GetStage(1) then--Rig the game (stage 2 trigger)
 		--Disabled resetting for now to match BW/Weak auras
 		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
---		self.vb.paylineCount = 0
---		self.vb.foulExhaustCount = 0
---		self.vb.bigHitCount = 0
+		self.vb.paylineCount = 0
+		self.vb.foulExhaustCount = 0
+		self.vb.bigHitCount = 0
 		self:SetStage(2)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
