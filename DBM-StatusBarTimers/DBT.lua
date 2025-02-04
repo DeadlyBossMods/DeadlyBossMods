@@ -943,7 +943,7 @@ function barPrototype:Update(elapsed)
 	local paused = self.paused
 	self.timer = self.timer - (paused and 0 or elapsed)
 	local timerValue = self.timer
-	local timerLowestValueFromVariance = self.varianceDuration and timerValue - self.varianceDuration or timerValue
+	local timerLowestValueFromVariance = self.hasVariance and self.varianceDuration and timerValue - self.varianceDuration or timerValue
 	local totaltimeValue = self.totalTime
 	local barOptions = DBT.Options
 	local currentStyle = barOptions.BarStyle
@@ -959,7 +959,7 @@ function barPrototype:Update(elapsed)
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
 	local varianceEnabled = barOptions.VarianceEnabled
 --	local varianceBehaviorZeroMax = varianceEnabled and barOptions.VarianceBehavior == "ZeroAtMaxTimer"
-	local varianceBehaviorNeg = varianceEnabled and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
+	local varianceBehaviorNeg = varianceEnabled and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
 	if barOptions.DynamicColor and not self.color then
