@@ -87,7 +87,7 @@ DBT.DefaultOptions = {
 	-- Variance
 	VarianceEnabled = true,
 	VarianceAlpha = 0.5,
-	VarianceBehavior = "ZeroAtMaxTimer",
+	VarianceBehavior = "ZeroAtMinTimerAndNeg",
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,

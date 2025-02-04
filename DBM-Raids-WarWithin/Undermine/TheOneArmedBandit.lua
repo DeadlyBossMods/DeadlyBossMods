@@ -244,7 +244,7 @@ function mod:SPELL_CAST_START(args)
 	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
 	elseif spellId == 465761 and self:GetStage(1) then--Rig the game (stage 2 trigger)
 		--Disabled resetting for now to match BW/Weak auras
-		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
+		self.vb.spinCount = 0
 		self.vb.paylineCount = 0
 		self.vb.foulExhaustCount = 0
 		self.vb.bigHitCount = 0
