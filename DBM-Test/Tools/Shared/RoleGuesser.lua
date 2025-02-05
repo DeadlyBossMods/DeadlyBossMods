@@ -156,6 +156,10 @@ function roleGuesser:HandleCombatLog(line)
 	elseif event == "UNIT_DIED" and dstPlayer then
 		self.playersAlive = self.playersAlive - 1
 	end
+	--Prevent Dividing by 0 when transcriptor logs are missing player info
+	if self.numPlayers == 0 then
+        self.numPlayers = 1
+    end
 	if self.playersAlive / self.numPlayers <= 0.75 then
 		return
 	end

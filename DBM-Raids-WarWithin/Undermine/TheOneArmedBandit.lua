@@ -300,7 +300,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 461060 then--Spin to win on main boss
-		timerSpintoWin:Start(30)
+		timerSpintoWin:Start(self:IsEasy() and 35 or 30)
 	elseif spellId == 471720 then--Spin to win on adds
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
