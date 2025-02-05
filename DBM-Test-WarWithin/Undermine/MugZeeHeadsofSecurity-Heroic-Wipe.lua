@@ -1,5 +1,5 @@
 DBM.Test:DefineTest{
-	name = "TWW/Undermine/MugZeeHeadsofSecurity/Heroic/Wipe",
+	name = "TWW/Undermine/MugZee/Heroic/Wipe",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2645,
