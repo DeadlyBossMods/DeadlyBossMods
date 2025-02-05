@@ -244,10 +244,10 @@ function mod:SPELL_CAST_START(args)
 	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
 	elseif spellId == 465761 and self:GetStage(1) then--Rig the game (stage 2 trigger)
 		--Disabled resetting for now to match BW/Weak auras
-		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
---		self.vb.paylineCount = 0
---		self.vb.foulExhaustCount = 0
---		self.vb.bigHitCount = 0
+		self.vb.spinCount = 0
+		self.vb.paylineCount = 0
+		self.vb.foulExhaustCount = 0
+		self.vb.bigHitCount = 0
 		self:SetStage(2)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
@@ -276,12 +276,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 --	elseif spellId == 460181 then
 --		self.vb.paylineCount = self.vb.paylineCount + 1
-	elseif spellId == 465765 and self:GetStage(1) then--Rig the game (stage 2 trigger)
+	elseif spellId == 465765 and self:GetStage(1) then--Maintenance Cycle (stage 2 pre-trigger)
 		--Disabled resetting for now to match BW/Weak auras
-		self.vb.spinCount = 0--Still reset this one since BW doesn't count it
---		self.vb.paylineCount = 0
---		self.vb.foulExhaustCount = 0
---		self.vb.bigHitCount = 0
+		self.vb.spinCount = 0
+		self.vb.paylineCount = 0
+		self.vb.foulExhaustCount = 0
+		self.vb.bigHitCount = 0
 		self:SetStage(2)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
@@ -300,7 +300,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 461060 then--Spin to win on main boss
-		timerSpintoWin:Start(30)
+		timerSpintoWin:Start(self:IsEasy() and 35 or 30)
 	elseif spellId == 471720 then--Spin to win on adds
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0

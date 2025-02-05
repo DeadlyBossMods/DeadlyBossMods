@@ -1,5 +1,5 @@
 DBM.Test:DefineTest{
-	name = "TWW/Undermine/TheOneArmedBandit/Heroic/Wipe",
+	name = "TWW/Undermine/One-ArmedBandit/Heroic/Wipe",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2644,

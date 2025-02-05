@@ -207,19 +207,19 @@ function timerPrototype:Start(timer, ...)
 	end
 	local isDelayed = type(timer) == "number" and (isNegativeZero(timer) or timer < 0)
 	local hasVariance = type(timer) == "number" and timer > 0 and false or not timer and self.hasVariance -- account for metavariant timers that were fired with a fixed timer start, like timer:Start(10). Does not account for timer:Start(-delay), which is parsed below after variance started timers	local timerStringWithVariance, minTimer
-	local timerStringWithVariance, minTimer
+	local timerStringWithVariance, maxTimer, minTimer
 	if type(timer) == "string" and timer:match("^v%d+%.?%d*-%d+%.?%d*$") then -- catch "timer variance" pattern, expressed like v10.5-20.5
 		hasVariance = true
 		timerStringWithVariance = timer -- cache timer string
-		timer, minTimer = parseVarianceFromTimer(timer) -- use highest possible value as the actual End timer
+		maxTimer, minTimer = parseVarianceFromTimer(timer) -- use highest possible value as the actual End timer
+		timer = DBT.Options.VarianceEnabled and maxTimer or minTimer
 	end
 	if isDelayed then -- catch metavariant timers with delay, expressed like timer:Start(-delay)
 		if self.hasVariance then
-			local maxTimer
 			hasVariance = self.hasVariance
 			maxTimer, minTimer = parseVarianceFromTimer(self.timerStringWithVariance) -- use highest possible value as the actual End timer
 			timerStringWithVariance = ("v%s-%s"):format(minTimer + timer, maxTimer + timer) -- rebuild timer string with delay applied
-			timer = maxTimer + timer
+			timer = (DBT.Options.VarianceEnabled and maxTimer or minTimer) + timer
 		end
 	end
 	if DBM.Options.DebugMode and self.mod.id ~= "TestMod" then
