@@ -15,7 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761",--460847
 	"SPELL_CAST_SUCCESS 465309 465765",--460181
-	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472",
+	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472 473195",
+	"SPELL_AURA_REFRESH 473195",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
 	"SPELL_PERIODIC_DAMAGE 460576",
@@ -105,6 +106,7 @@ local specWarnCheatToWin						= mod:NewSpecialWarningCount(465309, nil, nil, nil
 local specWarnScatteredPayout					= mod:NewSpecialWarningSwitch(465580, "Dps", nil, nil, 1, 2)
 
 local timerCheatToWinCD							= mod:NewVarCountTimer("v25.2-26.7", 465309, nil, nil, nil, 6)
+local timerLinkedMachinesCast					= mod:NewCastTimer(7.5, 465432, 28405, nil, nil, 5)--Shorttext knockback
 local timerExplosiveJackpot						= mod:NewCastTimer(30, 465587, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod:AddPrivateAuraSoundOption(465325, true, 465322, 1)
@@ -113,6 +115,7 @@ mod.vb.spinCount = 0
 mod.vb.paylineCount = 0
 mod.vb.foulExhaustCount = 0
 mod.vb.bigHitCount = 0
+mod.vb.linkedCount = 0
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
@@ -231,7 +234,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerTheBigHitCD:Start(self:GetStage(2) and "v14.5-20.6" or "v18.6-40.5", self.vb.bigHitCount+1)
 	elseif spellId == 465432 then
+		self.vb.linkedCount = 1
 		warnLinkedMachines:Show()
+		timerLinkedMachinesCast:Start(7.5, self.vb.linkedCount)
 	elseif spellId == 465322 then
 		warnHotHotHeat:Show()
 	elseif spellId == 465580 then
@@ -343,9 +348,20 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 460472 and not args:IsPlayer() then
 		specWarnBigHitTaunt:Show(args.destName)
 		specWarnBigHitTaunt:Play("tauntboss")
+	elseif spellId == 473195 then
+		self.vb.linkedCount = self.vb.linkedCount + 1
+		timerLinkedMachinesCast:Start(10, self.vb.linkedCount)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REFRESH(args)
+	local spellId = args.spellId
+	if spellId == 473195 then
+		self.vb.linkedCount = self.vb.linkedCount + 1
+		timerLinkedMachinesCast:Start(10, self.vb.linkedCount)
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
