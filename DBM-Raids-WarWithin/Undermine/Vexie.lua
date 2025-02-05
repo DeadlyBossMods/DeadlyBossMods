@@ -163,7 +163,7 @@ function mod:OnCombatStart(delay)
 	timerUnrelentingcarnageCD:Start(1-delay)--No Table
 	timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1]-delay, 1)
 	timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1]-delay, 1)
-	timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468216][1]-delay, 1)
+	timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1]-delay, 1)
 	timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1]-delay, 1)
 	timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1]-delay, 1)
 end

@@ -404,7 +404,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:IsHard() then
 			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
 			if self:IsMythic() then
-				timerPolarizationGeneratorCD(allTimers[savedDifficulty][1217231][1], 1)
+				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217231][1], 1)
 			end
 		end
 		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
