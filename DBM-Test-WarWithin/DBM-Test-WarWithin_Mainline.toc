@@ -29,8 +29,6 @@ Undermine/SprocketmongerLockenstock-LFR-Kill.lua
 Undermine/SprocketmongerLockenstock-Normal-Kill.lua
 Undermine/SprocketmongerLockenstock-Heroic-Wipe.lua
 Undermine/SprocketmongerLockenstock-Mythic-Wipe.lua
-Undermine/TheOneArmedBandit-Normal-Kill.lua
-Undermine/TheOneArmedBandit-Heroic-Wipe.lua
 Undermine/TheOneArmedBandit-Mythic-Wipe.lua
 Undermine/MugZeeHeadsofSecurity-LFR-Wipe.lua
 Undermine/MugZeeHeadsofSecurity-Normal-Wipe.lua
