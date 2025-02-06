@@ -62,6 +62,13 @@ function anonymizer:ScrubName(name, guid)
 		or name
 end
 
+function anonymizer:LearnPlayerServer(fullName)
+	local name, server = fullName:match("([^-]*)%-(.*)")
+	if name and server then
+		self.playerServers[name] = server
+	end
+end
+
 function anonymizer:ScrubPetName(name)
 	return not self.nonPlayerNames[name] and self.petNames[name] or name
 end
