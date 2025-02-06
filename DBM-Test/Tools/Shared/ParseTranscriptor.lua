@@ -542,6 +542,8 @@ local function transcribeEvent(event, params, anon, flagState)
 		local subEvent, msg, name = params:match("([^#]*)#([^#]*)#([^#]*)")
 		if subEvent == "RAID_BOSS_WHISPER_SYNC" then
 			-- Name will always contain the server here, even if there is no cross-server stuff otherwise; this is annoying because the anonymizer might not have learned the name with the server suffix
+			-- So we learn it here since we know that is definitely a player name
+			anon:LearnPlayerServer(name)
 			local scrubbed = anon:ScrubName(name)
 			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, scrubbed ~= name and scrubbed or anon:ScrubName(name:match("([^-]*)")), 0, false)
 		else
