@@ -594,6 +594,12 @@ function test:InjectEvent(event, ...)
 	if event == "CHAT_MSG_RAID_BOSS_WHISPER" and select(2, ...) ~= self.logPlayerName and not self.allOnYou then
 		return
 	end
+	if event == "CHAT_MSG_RAID_WARNING" then
+		if select(12, ...) == self.logPlayerGuid and self.logPlayerGuid ~= UnitGUID("player") then
+			local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11 = ...
+			return self:InjectEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, UnitGUID("player"), select(13, ...))
+		end
+	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
@@ -740,9 +746,10 @@ function test:Playback(testData, timeWarp, testOptions)
 	self.players = {}
 	if testData.players then
 		for _, v in ipairs(testData.players) do
-			self.players[v[1]] = true
+			self.players[v[1]] = v[2]
 		end
 	end
+	self.logPlayerGuid = self.players[self.logPlayerName]
 	adjustFlagsForPerspective(testData, self.logPlayerName, self.allOnYou)
 	self.Mocks:SetInstanceInfo(testData.instanceInfo)
 	DBM:ScenarioCheck(0)
