@@ -418,17 +418,11 @@ function DBM:GetCurrentInstanceDifficulty()
 			if naxxModifier == 0 then naxxModifier = 1 end -- First level has no count
 			if naxxModifier then
 				modifierLevel = naxxModifier
-				local hasConstructAffix = DBM:UnitDebuff("player", 1219229)
-				local hasMilitaryAffix = DBM:UnitDebuff("player", 1219058)
-				local hasSpiderAffix = DBM:UnitDebuff("player", 1218198)
-				local hasPlagueAffix = DBM:UnitDebuff("player", 1219114)
-				-- TODO: Sync this with whatever Warcraft Logs ends up doing
-				if naxxModifier == 4 then -- Max level is unclear, on the PTR it was 10 at first (with up to 5 working), but now it seems to be 4?
+				-- Warcraft Logs defines everything >= 1 as heroic and == 4 as Mythic, regardless of whether the current wing is empowered
+				if naxxModifier >= 4 then -- Max level is a bit unclear, on the PTR it was 10 at first (with up to 5 working), but now it seems to be 4?
 					difficultyId = "mythic"
 					difficultyName = PLAYER_DIFFICULTY6
-				-- Only Heroic in the empowered wing the others count as normal despite the overall stack
-				-- Also to be synced with whatever Warcraft Logs will be doing, presumably there'll be some treshold at which non-empowered wings also count
-				elseif hasConstructAffix or hasMilitaryAffix or hasSpiderAffix or hasPlagueAffix then
+				else
 					difficultyId = "heroic"
 					difficultyName = PLAYER_DIFFICULTY2
 				end
