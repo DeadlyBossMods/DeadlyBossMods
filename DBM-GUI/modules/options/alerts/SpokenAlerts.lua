@@ -42,6 +42,7 @@ end
 local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices, "DBM", "ChosenVoicePack2", function(value)
 	DBM.Options.ChosenVoicePack2 = value
 	DBM:CheckVoicePackVersion(value)
+	DBM:PlayCountSound(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack2.."\\count\\")
 end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown3, "TOPLEFT", 0, -45)
 VoiceDropDown.myheight = isNewDropdown and 25 or 20 -- TODO: +10 padding per dropdown text

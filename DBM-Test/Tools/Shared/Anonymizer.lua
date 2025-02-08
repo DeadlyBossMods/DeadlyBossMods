@@ -62,6 +62,13 @@ function anonymizer:ScrubName(name, guid)
 		or name
 end
 
+function anonymizer:LearnPlayerServer(fullName)
+	local name, server = fullName:match("([^-]*)%-(.*)")
+	if name and server then
+		self.playerServers[name] = server
+	end
+end
+
 function anonymizer:ScrubPetName(name)
 	return not self.nonPlayerNames[name] and self.petNames[name] or name
 end
@@ -112,13 +119,7 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 		if line:match("%[CLEU%]") then
 			roles:HandleCombatLog(line)
 		end
-		if line:match("%[PLAYER_INFO%]") then
-			local class, realGuid = line:match("%[PLAYER_INFO%] [^#]*#([^#]*)#([^#]*)")
-			roles:SetPlayerClass(realGuid, class)
-		end
-		-- Collect all player GUIDs and names
-		for guid, name in line:gmatch("(Player%-%d*%-%x*)#([^#]*)") do
-			name = name:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
+		local function learnPlayer(guid, name)
 			-- (Mostly) ignore server names as not every event will include it, if we ever get a log with conflicting names then maybe we can handle this
 			local strippedName, server = name:match("([^-]*)%-(.*)")
 			playerGuids[guid] = strippedName or name
@@ -129,6 +130,17 @@ function anonymizer:New(logEntries, first, last, recordingPlayer, keepPlayerName
 				end
 				playerServers[strippedName] = server
 			end
+		end
+		if line:match("%[PLAYER_INFO%]") then
+			local name, class, realGuid = line:match("%[PLAYER_INFO%] ([^#]*)#([^#]*)#([^#]*)")
+			learnPlayer(realGuid, name)
+			roles:SetPlayerClass(realGuid, class)
+		end
+		-- Collect all player GUIDs and names
+		for guid, name in line:gmatch("CLEU.*(Player%-%d*%-%x*)#([^#]*)") do
+			name = name:gsub("([^%(]*)(%([%d.%%-]*)%)", "%1") -- Strip health/power info
+			if name == "0" then error("fail in" .. line) end
+			learnPlayer(guid, name)
 		end
 		for guid, name in line:gmatch("(Pet%-%d*%-%d*-%d*-%d*-%d*-%x*)#([^#]*)") do
 			petGuids[guid] = name
