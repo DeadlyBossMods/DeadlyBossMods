@@ -654,7 +654,10 @@ L.NoLogsFound						= "La importación de Transcriptor no contiene datos de regis
 L.NoTestDataAvailable				= "No hay datos de prueba disponibles"
 L.NoLogSelected						= "Fallo en la creación de la prueba: No se seleccionó ningún registro."
 L.LogAlreadyImported				= "Fallo en la creación de la prueba: Prueba ya importada."
-
+L.ExportTest 						= "Exportar prueba"
+L.ExportedTest 						= "Caso de prueba exportado con %d líneas (%.1f%% filtradas)."
+L.ExportedTestFailedAnon 			= "AVISO: Falló la anonimización del registro, %d cadenas no anonimizadas encontradas (detalles en la ventana de chat y salida)."
+L.ExportTestFailedNonAnonString 	= "AVISO: La cadena %q parece no estar anonimizada."
 L.RewriteAllToYou					= "Todos los jugadores al mismo tiempo"
 L.RealModOptionsBelow				= "Las opciones del mod a continuación se sincronizan entre el modo de pruebas y tus configuraciones reales."
 L.Test								= "Prueba"
