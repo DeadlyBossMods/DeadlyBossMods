@@ -346,6 +346,7 @@ do
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
 			newBar.paused = nil
+			newBar.keep = keep
 			newBar.minTimer = varianceMinTimer or nil
 			newBar.varianceDuration = varianceDuration or 0
 			newBar.hasVariance = varianceMinTimer and true or false
