@@ -640,7 +640,7 @@ L.DevPanel 						= "Desenvolvimento e testes"
 L.DevPanelArea 					= "Interface de desenvolvimento e testes"
 L.DevPanelExplanation 			= "Esta é uma interface de desenvolvimento e teste que valida se o DBM está funcionando como esperado ao reproduzir registros de combate."
 L.DevModPanelExplanation 		= [[Bem-vindo ao ambiente de desenvolvimento e testes deste mod.
-Você pode reproduzir registros de batalhas de chefes aqui para ver como o mod se comporta e testar integrações com callbacks de DBM. Consulte DBM-Test/README.md para mais detalhes sobre integrações e callbacks. O DBM vem com registros de exemplo para muitas raides, mas você também pode importar seus próprios registros do Transcriptor.
+Você pode reproduzir registros de batalhas de chefes aqui para ver como o mod se comporta e testar integrações com callbacks de DBM. Consulte DBM-Test/README.md para mais detalhes sobre integrações e callbacks. O DBM vem com registros de exemplo para muitas raides, mas você também pode importar seus próprios registros de Transcriptor.
 ]]
 
 L.TimewarpSetting 				= "Distorção temporal: %dx"
@@ -653,15 +653,15 @@ L.ModLoadRequiresReload 		= ", requer recarregar a interface para aplicar"
 L.TestSelectArea 				= "Dados de teste"
 L.SelectTestLog 				= L.TestSelectArea
 L.SelectPerspective 			= "Perspectiva do registro (jogador simulado)"
-L.ImportTranscriptor 			= "Importar registro do Transcriptor"
+L.ImportTranscriptor 			= "Importar registro de Transcriptor"
 L.ImportTranscriptorHeader 		= [[
-Importe um registro do Transcriptor colando-o em qualquer lugar na caixa de edição abaixo. A velocidade de colagem é de aproximadamente 2 MiB/s, o que significa que o jogo ficará congelado por vários segundos ao colar arquivos de registro muito grandes.
-Você também pode importar a sessão atual do Transcriptor das variáveis salvas do Transcriptor com o botão de importação à direita.]]
+Importe um registro de Transcriptor colando-o em qualquer lugar na caixa de edição abaixo. A velocidade de colagem é de aproximadamente 2 MiB/s, o que significa que o jogo ficará congelado por vários segundos ao colar arquivos de registro muito grandes.
+Você também pode importar a sessão atual de Transcriptor das variáveis salvas de Transcriptor com o botão de importação à direita.]]
 L.PasteLogHere 					= "Pressione " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " para colar um registro aqui."
 L.LogPasted 					= "Colado %.2f MiB em %.1f segundos (%.2f MiB/s)."
-L.ImportLocalTranscriptor 		= "Importar sessão\natual do Transcriptor"
-L.NoLocalTranscriptor 			= "Não foi possível encontrar dados locais do Transcriptor."
-L.LocalImportDone 				= "Importados %d registros com %d encontros do Transcriptor."
+L.ImportLocalTranscriptor 		= "Importar sessão\natual de Transcriptor"
+L.NoLocalTranscriptor 			= "Não foi possível encontrar dados locais de Transcriptor."
+L.LocalImportDone 				= "Importados %d registros com %d encontros de Transcriptor."
 L.Parsing 						= "Analisando..."
 L.SelectLogDropdown 			= "Selecionar encontro"
 L.CreateTest 					= "Criar teste"
@@ -670,7 +670,7 @@ L.ExportedTest 					= "Caso de teste exportado com %d linhas (%.1f%% filtradas).
 L.ExportedTestFailedAnon 		= "AVISO: Falha na anonimização do registro, %d cadeias não anonimizadas encontradas (detalhes na janela de bate-papo e saída)."
 L.ExportTestFailedNonAnonString = "AVISO: A cadeia %q parece não estar anonimizada."
 L.CreatedTest 					= "Teste criado com %d eventos em %.1f segundos."
-L.NoLogsFound 					= "A importação do Transcriptor não contém dados de registro."
+L.NoLogsFound 					= "A importação de Transcriptor não contém dados de registro."
 L.NoTestDataAvailable 			= "Nenhum dado de teste disponível"
 L.NoLogSelected 				= "Criação de teste falhou: Nenhum registro selecionado."
 L.LogAlreadyImported 			= "Criação de teste falhou: Teste já importado."
