@@ -1,7 +1,7 @@
 ## Interface: 11505, 11506
 ## X-Min-Interface: 11503
-
 ## Category: DBM
+## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Ядро|r|cffffe00a>|r |cff69ccf0Основной модуль|r
