@@ -21,8 +21,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 459273 439191",--433517
 	"SPELL_PERIODIC_DAMAGE 459785",
 	"SPELL_PERIODIC_MISSED 459785"
---	"CHAT_MSG_RAID_BOSS_WHISPER",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, GTFO for rain of arrows with correct ID
@@ -218,26 +216,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 433475 then
-		if self:AntiSpam(10, 2) then
-			self.vb.bladesCount = self.vb.bladesCount + 1
-			warnPhaseBlades:Show(self.vb.bladesCount)
-			--self.vb.bladesIcon = 1
-			if self:IsMythic() then
-				if self.vb.bladesCount % 3 ~= 0 then
-					--Mythic consistently same before and after sweep, within the standard variation of ~28
-					timerPhaseBladesCD:Start(27.6, 1)
-				end
-			else
-				if self.vb.bladesCount % 2 == 1 then
-					--The 45 seems to be a consisted fluke only in first rotation (ie before first sweep)
-					timerPhaseBladesCD:Start(self.vb.sweepCount == 0 and 44.9 or 42.5, 1)
-				end
-			end
-		end
-	end
-end
---]]

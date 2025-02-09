@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 445518",
 	"SPELL_PERIODIC_MISSED 445518",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, maybe further warn when the aoe damage from Goresplatter starts for healers?
@@ -90,7 +89,6 @@ mod.vb.crimsonCount = 0
 mod.vb.graspCount = 0
 local castsPerGUID = {}
 local addUsedMarks = {}
---local playerPhased = false
 
 ---@param self DBMMod
 local function missingCLEURain(self)
@@ -110,7 +108,6 @@ function mod:OnCombatStart(delay)
 	self.vb.graspCount = 0
 	table.wipe(castsPerGUID)
 	table.wipe(addUsedMarks)
-	--playerPhased = false
 	timerCrimsonRainCD:Start(11, 1)
 	timerGruesomeDigorgeCD:Start(self:IsMythic() and 14 or 16, 1)
 	timerGraspFromBeyondCD:Start(self:IsMythic() and 19.1 or 22, 1)
@@ -250,7 +247,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 443612 then
 		if args:IsPlayer() then
-			--playerPhased = true
 			warnBanefulShift:Show()
 			timerBanefulShift:Start()
 		else
@@ -314,7 +310,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 443612 then
 		if args:IsPlayer() then
---			playerPhased = false
 			warnBanefulShiftFades:Show()
 			timerBanefulShift:Stop()
 		end

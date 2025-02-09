@@ -16,15 +16,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 438218 438801 440246 440504 438343 439838 450045 438677 452231 441626 450129 441782 450483 438355 443068 456174 442994 441791",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 438249",
 	"SPELL_AURA_APPLIED 455849 455850 438218 455080 449857 440001 450980 438708 451277 443598 440179 456245 438200 456235 456252",--451611, 440503, 438656
 	"SPELL_AURA_APPLIED_DOSE 438218 438200 456252",
 	"SPELL_AURA_REMOVED 455080 450980 451277 440001 456252"--451611, 440503, 438656
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, binding webs multi target alerts to alert who you are bound to once it's clear how it's presented in combat log (if it's presented)
@@ -72,14 +67,10 @@ mod:AddSetIconOption("SetIconOnScarab", 438801, true, 5, {8, 7, 6})
 ----Skeinspinner Takazj
 mod:AddTimerLine(takazj)
 local warnPoisonBolt						= mod:NewStackAnnounce(438200, 2, nil, "Tank|Healer")
---local warnVenomousRain					= mod:NewCountAnnounce(438656, 2, nil, nil, 44933)
 local warnWebBomb							= mod:NewCountAnnounce(439838, 3)--General announce for everyone, personal special announce to target
 local warnSkitteringLeap					= mod:NewCountAnnounce(450045, 2, nil, nil, 47482)
 local warnBindingWeb						= mod:NewFadesAnnounce(440001, 1)
 
---local specWarnWebBomb						= mod:NewSpecialWarningYou(439838, nil, nil, nil, 1, 2)--Not exposed
---local yellWebBomb							= mod:NewShortYell(439838)
---local yellWebBombFades					= mod:NewShortFadesYell(439838)
 local specWarnBindingWebs					= mod:NewSpecialWarningLink(440001, nil, nil, nil, 1, 2)
 local specWarnVenomousRain					= mod:NewSpecialWarningMoveAwayCount(438656, nil, 44933, nil, 1, 2)--Change to moveto if this is one that removes ground webs?
 
@@ -108,7 +99,6 @@ local warnVoidStep							= mod:NewCountAnnounce(450483, 2, nil, nil, 4801)
 local warnEntropicDesolation				= mod:NewCastAnnounce(450129, 4, nil, nil, nil, 301902)
 
 local specWarnWebVortex						= mod:NewSpecialWarningCount(441626, nil, nil, nil, 2, 12)
---local specWarnEntropicDesolation			= mod:NewSpecialWarningRun(450129, nil, nil, nil, 4, 2)
 local specWarnStrandsofReality				= mod:NewSpecialWarningDodgeCount(441782, nil, nil, DBM_COMMON_L.FRONTAL .. L.Red, 2, 15)
 local specWarnCataclysmicEntropy			= mod:NewSpecialWarningCount(438355, nil, nil, nil, 2, 2)
 
@@ -127,7 +117,6 @@ local specWarnSpikeEruption					= mod:NewSpecialWarningDodgeCount(443068, nil, 1
 
 local timerSpikeEruptionCD					= mod:NewCDCountTimer(49, 443068, 14104, nil, nil, 3)--Shortname "Spikes"
 local timerUnleashedSwarmCD					= mod:NewCDCountTimer(49, 442994, 310414, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Swarm"
---local timerRagingFuryCD					= mod:NewCDCountTimer(49, 451327, nil, nil, nil, 5, nil, DBM_COMMON_L.ENRAGE_ICON)
 
 mod.vb.burrowedEruptionCount = 0
 mod.vb.piercingCount = 0
@@ -141,7 +130,6 @@ mod.vb.stingingCount = 0
 mod.vb.strandsCount = 0
 mod.vb.cataCount = 0
 mod.vb.scarabIcon = 8
---mod.vb.rageCount = 0--Only cast once?
 local weblinkCount, playerFirst, lastPlayer = 0, false, nil
 
 local savedDifficulty = "heroic"
@@ -450,7 +438,6 @@ function mod:OnCombatStart(delay)
 	self.vb.stingingCount = 0
 	self.vb.strandsCount = 0
 	self.vb.cataCount = 0
-	--self.vb.rageCount = 0
 	playerFirst = false
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
@@ -578,8 +565,6 @@ function mod:SPELL_CAST_START(args)
 		self:Unschedule(checkSkippedEntropicDesolation)
 		self.vb.rainCount = self.vb.rainCount + 1
 		warnEntropicDesolation:Show()
---		specWarnEntropicDesolation:Show(self.vb.rainCount)
---		specWarnEntropicDesolation:Play("runout")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450129, self.vb.rainCount+1)
 		if timer then
 			timerEntropicDesolationCD:Start(timer, self.vb.rainCount+1)
@@ -717,13 +702,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellImpaled:Yell()
 		end
---	elseif spellId == 451611 then
---		if args:IsPlayer() then
---			specWarnWebBomb:Show()
---			specWarnWebBomb:Play("bombyou")
---			yellWebBomb:Yell()
---			yellWebBombFades:Countdown(spellId)
---		end
 	elseif spellId == 440001 then
 		if self:AntiSpam(4, 1) then
 			weblinkCount = 0
@@ -750,11 +728,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			local uId = DBM:GetUnitIdFromGUID(args.destGUID, true)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, uId)
 		end
-	--elseif spellId == 438656 then
-	--	if args:IsPlayer() then
-	--		specWarnVenomousRain:Show()
-	--		specWarnVenomousRain:Play("targetyou")
-	--	end
 	elseif spellId == 440179 then
 		warnEntangled:Show(args.destName)
 	elseif spellId == 456245 or spellId == 456235 then
@@ -822,10 +795,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnStingingBoss then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
---	elseif spellId == 451611 then
---		if args:IsPlayer() then
---			yellWebBombFades:Cancel()
---		end
 	elseif spellId == 440001 then
 		if args:IsPlayer() then
 			warnBindingWeb:Show()
@@ -891,21 +860,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 421532 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 426144 then
-
-	end
-end
---]]

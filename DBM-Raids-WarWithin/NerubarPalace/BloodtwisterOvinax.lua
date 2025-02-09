@@ -14,13 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 442526 442432 443003 443005 446700",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 446349 446694 446690 442263 442250 442250 440421 441362",--443274
---	"SPELL_AURA_APPLIED_DOSE 443274",
+	"SPELL_AURA_APPLIED 446349 446694 446690 442263 442250 442250 440421 441362",
 	"SPELL_AURA_REMOVED 446349 446694 446690 442263 442250 440421",
 	"SPELL_PERIODIC_DAMAGE 442799",
 	"SPELL_PERIODIC_MISSED 442799",
---	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -74,9 +71,6 @@ local specWarnFixate							= mod:NewSpecialWarningYou(442250, nil, nil, nil, 1, 
 mod:AddNamePlateOption("NPAuraOnAccelerated2", 442263, false)
 mod:AddNamePlateOption("NPFixate", 442250, true)
 
---mod:AddInfoFrameOption(407919, true)
---mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
-
 mod.vb.dosageCount = 0
 mod.vb.ingestCount = 0
 mod.vb.webCount = 0
@@ -98,7 +92,6 @@ function mod:OnCombatStart(delay)
 	self.vb.eggIcon = 1
 	timerVolatileConcoctionCD:Start(1.9, 1)
 	timerIngestBlackBloodCD:Start(15.4, 1)--Time til USCS event, cast event is 17.1
---	timerExperimentalDosageCD:Start(33, 1)--Started by Injest black Blood
 	if self:IsHard() then
 		timerUnstableWebCD:Start(15, 1)
 	end
@@ -145,9 +138,6 @@ function mod:SPELL_CAST_START(args)
 		if self:IsHard() then
 			timerUnstableWebCD:Start(31, self.vb.webCount+1)
 		end
---	elseif spellId == 446349 then
---		self.vb.webCount = self.vb.webCount + 1
---		timerUnstableWebCD:Start()
 	elseif spellId == 443003 then--Nature (confirmed ID)
 		self.vb.tankCount = self.vb.tankCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -170,18 +160,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 442430 and self:AntiSpam(5, 1) then
-		self.vb.ingestCount = self.vb.ingestCount + 1
-		specWarnIngestBlackBlood:Show()
-		specWarnIngestBlackBlood:Play("specialsoon")
-		timerIngestBlackBloodCD:Start()
-	end
-end
---]]
-
 ---@param self DBMMod
 local function sortEggBreaker(self)
 	table.sort(eggIcons, DBM.SortByMeleeRangedHealer)
@@ -190,8 +168,6 @@ local function sortEggBreaker(self)
 		local icon
 		if self.vb.EggBreakerBehavior == "MatchBW" then
 			icon = (self:IsMythic() and mythicMarkOrder[i] or markOrder[i])
---		elseif self.vb.EggBreakerBehavior == "MatchEW" then
---			icon = (self:IsMythic() and echoMythicMarkOrder[i] or markOrder[i])
 		elseif self.vb.EggBreakerBehavior == "AvoidRedNPurple" then
 			icon = echoMythicMarkOrder[i]
 		elseif self.vb.EggBreakerBehavior == "UseAllAscending" then
@@ -297,8 +273,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellxperimentalDosageFades:Cancel()
 		end
---	elseif spellId == 446349 then
-
 	end
 end
 
@@ -309,19 +283,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 219045 then--Colossal Spider
-
-	--elseif cid == 219046 then--Voracious WOrm
-
-	--elseif cid == 220626 then--Blood Parasite
-
-	end
-end
---]]
 
 --"<17.52 03:58:20> [UNIT_SPELLCAST_SUCCEEDED] Broodtwister Ovi'nax(97.9%-0.0%){Target:Threetuandk} -Ingest Black Blood- [[boss1:Cast-3-2085-2657-8295-442430-00130EE7DC:442430]]",
 -- "<21.20 03:58:23> [CLEU] SPELL_CAST_START#Creature-0-2085-2657-8295-214506-00000EE7C2#Broodtwister Ovi'nax(97.1%-0.0%)##nil#442432#Ingest Black Blood#nil#nil"
@@ -346,8 +307,6 @@ function mod:OnSync(msg)
 	if self:IsLFR() then return end
 	if msg == "MatchBW" then
 		self.vb.EggBreakerBehavior = "MatchBW"
---	elseif msg == "MatchEW" then
---		self.vb.EggBreakerBehavior = "MatchEW"
 	elseif msg == "UseAllAscending" then
 		self.vb.EggBreakerBehavior = "UseAllAscending"
 	elseif msg == "AvoidRedNPurple" then
