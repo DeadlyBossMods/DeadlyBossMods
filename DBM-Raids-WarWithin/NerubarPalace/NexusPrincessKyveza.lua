@@ -18,10 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 447169 447174 440576 437343",--436870
 	"SPELL_AURA_APPLIED_DOSE 447174 440576",
 	"SPELL_AURA_REMOVED 447169 435405 437343"--436870
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --NOTE: They made ass a private aura. Called it :D
@@ -40,9 +36,6 @@ local warnChasmalGash							= mod:NewStackAnnounce(440576, 2, nil, "Tank|Healer"
 local warnStarlessNight							= mod:NewCountAnnounce(435414, 3)
 local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 
---local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
---local yellAss									= mod:NewShortYell(436867)
---local yellAssFades							= mod:NewShortFadesYell(436867)
 local specWarnQueensBane						= mod:NewSpecialWarningMoveAway(437343, nil, nil, nil, 1, 2, 3)
 local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
@@ -63,14 +56,10 @@ local timerVoidShreddersCD						= mod:NewCDCountTimer(30, 440377, DBM_COMMON_L.T
 local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil, 6)--BW note. They localized it as "stage 2" but they don't use a "stages" bar. if they ever change it, object needs to be changed to NewStageCountCycleTimer for WA compat to remain
 local timerStarlessNight						= mod:NewBuffActiveTimer(24, 435405, nil, nil, nil, 5)
 
---mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnAss", 436867, true, 0, {1, 2, 3, 4, 5})--Applies to 3, 4 or 5 targets based on difficultiy or raid size
 mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
 mod:AddPrivateAuraSoundOption(436870, true, 436867, 1)--Assassination Targets
---mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
---mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.assCount = 0
 mod.vb.assIcon = 1
@@ -186,7 +175,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 448364 then
 		self.vb.maskCount = self.vb.maskCount + 1
 		warnDeathMasks:Show(self.vb.maskCount)
---		timerDeathMasksCD:Start(30, self.vb.maskCount+1)--Only once per rotation, so timer started at starless night end
 	end
 end
 
@@ -205,18 +193,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnQueensBane:Play("runout")
 			yellQueensBane:Countdown(spellId)
 		end
-	--elseif spellId == 436870 then
-	--	warnAss:CombinedShow(0.5, args.destName)
-	--	if args:IsPlayer() then
-	--		specWarnAss:Show()
-	--		specWarnAss:Play("targetyou")
-	--		yellAss:Yell()
-	--		yellAssFades:Countdown(spellId, 3)
-	--	end
-	--	if self.Options.SetIconOnAss then
-	--		self:SetIcon(args.destName, self.vb.assIcon)
-	--	end
-	--	self.vb.assIcon = self.vb.assIcon + 1
 	elseif spellId == 447174 then
 		local amount = args.amount or 1
 		--Only warn death cloak aoe if it's at least 1 million damage per second
@@ -267,13 +243,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellQueensBane:Cancel()
 		end
-	--elseif spellId == 436870 then
-	--	if args:IsPlayer() then
-	--		yellAssFades:Cancel()
-	--	end
-	--	if self.Options.SetIconOnAss then
-	--		self:SetIcon(args.destName, 0)
-	--	end
 	elseif spellId == 435405 then
 		self:SetStage(1)
 		timerStarlessNight:Stop()
@@ -288,13 +257,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 421532 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]

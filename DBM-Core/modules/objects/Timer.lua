@@ -421,7 +421,6 @@ function timerPrototype:Start(timer, ...)
 		end
 		msg = msg:gsub(">.-<", stringUtils.stripServerName)
 		bar:SetText(msg, self.inlineIcon)
-		bar.hasVariance = hasVariance
 		-- FIXME: i would prefer to trace this directly in DBT, but since I want to rewrite DBT... meh.
 		test:Trace(self.mod, "StartTimer", self, timer, msg)
 		--ID (string) Internal DBM timer ID

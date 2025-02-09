@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(215657)
 mod:SetEncounterID(2902)
---mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20241007000000)
 mod:SetMinSyncRevision(20241007000000)
 mod:SetZone(2657)
@@ -17,8 +16,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 434803",
 	"SPELL_AURA_APPLIED 439419 455831 435138 434705 458129",
 	"SPELL_AURA_REMOVED 458129 435138",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -48,8 +45,6 @@ local yellDigestiveAcid							= mod:NewShortYell(435138)
 local yellDigestiveAcidFades					= mod:NewShortFadesYell(435138)
 local specWarnBrutalCrush						= mod:NewSpecialWarningDefensive(434697, nil, nil, nil, 1, 2)
 local specWarnTenderized						= mod:NewSpecialWarningTaunt(434705, nil, nil, nil, 1, 2)
---local yellSearingAftermathFades				= mod:NewShortFadesYell(422577)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerCarnivorousContestCD					= mod:NewCDCountTimer(36.0, 434803, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3)
 local timerStalkersWebbingCD					= mod:NewCDCountTimer(49, 441452, 157317, nil, nil, 3)--Shortname "Webs"
@@ -70,11 +65,6 @@ local timerChitteringSwarmCD					= mod:NewCDTimer(49, 445052, 310414, nil, nil, 
 local timerJuggernautChargeCD					= mod:NewCDCountTimer(49, 436200, 100, nil, nil, 3)--Shortname "Charge"
 local timerSwallowingDarknessCD					= mod:NewCDTimer(49, 443842, nil, nil, nil, 3)--Unsure of shortname, Swirl? Run away?
 local timerHungeringBellowsCD					= mod:NewCDCountTimer(9, 438012, 143358, nil, nil, 2)--Shortname "Hunger"
---local timerHulkingCrashCD						= mod:NewCDCountTimer(18, 445123, nil, nil, nil, 3)
-
---mod:AddInfoFrameOption(407919, true)
---mod:AddSetIconOption("SetIconOnAdds", 335114, true, 0, {1, 2, 3})
---mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.lashingsCount = 0--Ability that's go smash and knock players around (Carnivorous Contest and Hulking Crash)
 mod.vb.webbingChargeCount = 0--Abilities that leave webbing/Netting (Stalkers Webbing and Juggernaut
@@ -182,7 +172,6 @@ function mod:SPELL_CAST_START(args)
 			timerSwallowingDarknessCD:Start(48.1)--Cast only once
 			--Technically these can also be started below by 441445
 			timerHungeringBellowsCD:Start(59, 1)
---			timerHulkingCrashCD:Start(69, 1)
 		end
 	end
 end
@@ -194,8 +183,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.lashingsCount == 1 then
 			timerCarnivorousContestCD:Start(nil, self.vb.lashingsCount+1)
 		end
-	--	timerBrutalCrushCD:Stop()
-	--	timerBrutalCrushCD:Start(18, self.vb.brutalHungeringCount+1)
 	end
 end
 
@@ -242,7 +229,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -254,16 +240,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 421532 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:434776") and self:AntiSpam(3, 1) then
@@ -331,7 +307,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerStalkersWebbingCD:Start(8, 1)
 		timerCarnivorousContestCD:Start(32, 1)
 		timerPhaseChange:Start(89.9, 2)--Approx based oncomparison to stalker webbingg first cast, since no transcriptor logs this long
---	elseif spellId == 441445 then---Phase Transition P1 -> P2
-		--We don't do much with this one. This is when boss switches to cycling Hungering Belows and Hulking Crash
 	end
 end

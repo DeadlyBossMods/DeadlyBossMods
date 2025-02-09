@@ -84,7 +84,6 @@ local timerPredationCD							= mod:NewIntermissionCountTimer(140, 447207, nil, n
 
 mod:AddSetIconOption("SetIconOnToxin", 437592, true, 10, {6, 3, 7, 1, 2})--(Priority for melee > ranged > healer)
 mod:AddDropdownOption("ToxinBehavior", {"MatchBW", "UseAllAscending", "DisableIconsForRaid", "DisableAllForRaid"}, "MatchBW", "misc", nil, 437592)
---mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 --Intermission: The Spider's Web
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(28755))
 local warnParalyzingVenom					= mod:NewCountAnnounce(447456, 2, nil, nil, 441740)--Shortname "Toxic waves"
@@ -687,8 +686,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerParalyzingVenomCD:Start(4, self.vb.reactiveCount+1)
 		end
-	--elseif spellId == 449986 then--Aphotic Communion Finishing
-	--	timerAbyssalInfusionCD:Start(3)
 	end
 end
 
@@ -714,9 +711,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 436800 and not args:IsPlayer() then
 		specWarnLiquefyTaunt:Show(args.destName)
 		specWarnLiquefyTaunt:Play("tauntboss")
-	--elseif spellId == 440885 and args:IsPlayer() then
-	--	specWarnLiquefyNonTank:Show()
-	--	specWarnLiquefyNonTank:Play("targetyou")
 	elseif spellId == 447207 then--Predation Shield
 		if self.Options.Infoframe then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -807,11 +801,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrothyToxin:Schedule(1.5, 1)
 	elseif spellId == 441556 and args:IsPlayer() then
 		warnReactionVapor:Show(1)
-	--elseif spellId == 455404 then
-	--	if not args:IsPlayer() then
-	--		specWarnFeastTaunt:Show(args.destName)
-	--		specWarnFeastTaunt:Play("tauntboss")
-	--	end
 	elseif spellId == 445013 then--Dark barrier (perfect GUID matching for acolyte spawns
 		if self.Options.SetIconOnQueensSummon then
 			self:ScanForMobs(args.destGUID, 2, addMarks[self.vb.queensSummonIcon], 1, nil, 12, "SetIconOnQueensSummon")
@@ -847,22 +836,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 			warnGorge:Show(args.destName, args.amount)
 		end
 	elseif spellId == 464638 and args:IsPlayer() then
-		--if amount % 5 == 0 then
-			warnFrothyToxin:Cancel()
-			warnFrothyToxin:Schedule(1.5, args.amount)
-		--end
-		--if args.amount >= 30 then--Placeholder
-		--	specWarnFrothyToxin:Show(args.amount)
-		--	specWarnFrothyToxin:Play("stackhigh")
-		--end
+		warnFrothyToxin:Cancel()
+		warnFrothyToxin:Schedule(1.5, args.amount)
 	elseif spellId == 441556 and args:IsPlayer() then
-		--if amount % 5 == 0 then
-			warnReactionVapor:Show(args.amount)
-		--end
-		--if args.amount >= 30 then--Placeholder
-		--	specWarnReactionVapor:Show(args.amount)
-		--	specWarnReactionVapor:Play("stackhigh")
-		--end
+		warnReactionVapor:Show(args.amount)
 	end
 end
 
