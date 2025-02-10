@@ -81,14 +81,13 @@ local specWarnPayRespects							= mod:NewSpecialWarningInterruptCount(472782, "H
 local specWarnGaolBreak								= mod:NewSpecialWarningSpell(470910, nil, nil, nil, 2, 2)
 
 local timerShakedownCD								= mod:NewCDNPTimer(3, 472659, nil, false, nil, 3)
-local timerPayRespectsCD							= mod:NewCDNPTimer(13.3, 472782, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerPayRespectsCD							= mod:NewCDNPTimer(9.8, 472782, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--9.8-13.3
 --Zee
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31693))
 local warnUnstableCrawlerMines						= mod:NewCountAnnounce(466539, 2)
 local warnSprayandPray								= mod:NewTargetNoFilterAnnounce(466545, 2)
-local warnSurgingArc								= mod:NewTargetAnnounce(1214991, 2)
+--local warnSurgingArc								= mod:NewTargetAnnounce(1214991, 2)
 local warnFaultyWiring								= mod:NewTargetNoFilterAnnounce(1215591, 1)
-local warnElectroChargedShield						= mod:NewTargetNoFilterAnnounce(1222948, 2)
 local warnDisintegrationBeam						= mod:NewTargetNoFilterAnnounce(1215481, 2)--Might be spammy
 
 local specWarnGoblinGuidedRocket					= mod:NewSpecialWarningMoveTo(467380, nil, nil, nil, 1, 2)
@@ -147,8 +146,8 @@ function mod:ArcTarget(targetname)
 		specWarnSurgingArc:Show()
 		specWarnSurgingArc:Play("targetyou")
 		yellSurgingArc:Yell()
-	else
-		warnSurgingArc:Show(targetname)
+--	else
+--		warnSurgingArc:Show(targetname)
 	end
 end
 
@@ -329,11 +328,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 468794 then--Zee Taking Charge
 		--Reset counts?
 		warnHHZee:Show(args.sourceName)
-		--Timers same on heroic and mythic
-		timerUnstableCrawlerMinesCD:Start(12.5, self.vb.crawlerMinesCount+1)
-		timerGoblinGuidedRocketCD:Start(27, self.vb.goblinGuidedRocketCount+1)--SUCCESS
-		timerSprayandPrayCD:Start(45, self.vb.sprayPrayCount+1)
-		timerDoubleWhammyCD:Start(38.5, self.vb.whammyCount+1)
+		if self:IsMythic() then
+			timerUnstableCrawlerMinesCD:Start(13.7, self.vb.crawlerMinesCount+1)
+			timerGoblinGuidedRocketCD:Start(29.8, self.vb.goblinGuidedRocketCount+1)--SUCCESS
+			timerDoubleWhammyCD:Start(42.4, self.vb.whammyCount+1)
+			timerSprayandPrayCD:Start(50, self.vb.sprayPrayCount+1)
+		else
+			timerUnstableCrawlerMinesCD:Start(12.5, self.vb.crawlerMinesCount+1)
+			timerGoblinGuidedRocketCD:Start(27, self.vb.goblinGuidedRocketCount+1)--SUCCESS
+			timerSprayandPrayCD:Start(45, self.vb.sprayPrayCount+1)
+			timerDoubleWhammyCD:Start(38.5, self.vb.whammyCount+1)
+		end
 	end
 end
 
@@ -436,7 +441,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1215595 then
 		warnFaultyWiring:Show(args.destName)
 	elseif spellId == 1222948 then
-		warnElectroChargedShield:Show(args.destName)
 		if self.Options.NPAuraOnChargedShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
