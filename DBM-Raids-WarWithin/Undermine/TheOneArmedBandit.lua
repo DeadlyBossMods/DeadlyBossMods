@@ -5,17 +5,17 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(228458)
 mod:SetEncounterID(3014)
-mod:SetHotfixNoticeRev(20250118000000)
-mod:SetMinSyncRevision(20250118000000)
+mod:SetHotfixNoticeRev(20250209000000)
+mod:SetMinSyncRevision(20250209000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761",--460847
+	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761 464776",--460847
 	"SPELL_CAST_SUCCESS 465765",--460181
-	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 461068 465009 460973 473278 471927 460430 460472 473195",
+	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 465009 460973 473278 471927 460430 460472 473195",
 	"SPELL_AURA_REFRESH 473195",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
@@ -49,7 +49,7 @@ local warnTokenBomb									= mod:NewTargetNoFilterAnnounce(472837, 1)
 local warnTokenFlame								= mod:NewTargetNoFilterAnnounce(472828, 1)
 local warnTokenShock								= mod:NewTargetNoFilterAnnounce(472783, 1)
 --Token activations
-local warnFraudDetected								= mod:NewTargetNoFilterAnnounce(461068, 4)
+local warnFraudDetected								= mod:NewCastAnnounce(464776, 4)
 local warnShockandFlame								= mod:NewCountAnnounce(464772, 2)
 local warnShockandBomb								= mod:NewCountAnnounce(464801, 3)
 local warnFlameandBomb								= mod:NewCountAnnounce(464804, 3)
@@ -127,12 +127,12 @@ function mod:OnCombatStart(delay)
 	self.vb.foulExhaustCount = 0
 	self.vb.bigHitCount = 0
 	table.wipe(castsPerGUID)
-	timerPaylineCD:Start(string.format("v%s-%s", 3.7-delay, 4.1-delay), 1)
-	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.4-delay, 10-delay), 1)
+	timerPaylineCD:Start(string.format("v%s-%s", 2.9-delay, 4.1-delay), 1)
+	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.1-delay, 10-delay), 1)
 
 	if self:IsMythic() then
 		--Seem flipped on mythic (but could also be because of boss kiting)
-		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 15.3-delay), 1)--15 placeholder
+		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)--15 placeholder
 		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
 	else
 		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.3-delay), 1)
@@ -157,7 +157,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSpintoWin:Show(self.vb.spinCount)
 		specWarnSpintoWin:Play("phasechange")
 		if self:IsMythic() then
-			timerSpintoWinCD:Start("v51-53.5", self.vb.spinCount+1)
+			timerSpintoWinCD:Start("v51-54.8", self.vb.spinCount+1)
 		elseif self:IsHeroic() then
 			timerSpintoWinCD:Start("v60.9-62.1", self.vb.spinCount+1)
 		else
@@ -188,14 +188,23 @@ function mod:SPELL_CAST_START(args)
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
 		if spellId == 464806 then--Flame and coin has custom timers
-			timerFoulExhaustCD:Start("v11.8-12.2", self.vb.foulExhaustCount+1)
-			timerPaylineCD:Start("v17.9-24", self.vb.paylineCount+1)
-			timerTheBigHitCD:Start("v24.3-28.9", self.vb.bigHitCount+1)
+			timerFoulExhaustCD:Start("v11.4-12.2", self.vb.foulExhaustCount+1)
+			timerPaylineCD:Start("v17.5-24", self.vb.paylineCount+1)
+			timerTheBigHitCD:Start("v23.6-28.9", self.vb.bigHitCount+1)
 		else
 			timerPaylineCD:Start("v4.4-5.2", self.vb.paylineCount+1)
-			timerFoulExhaustCD:Start("v9.5-9.7", self.vb.foulExhaustCount+1)
+			timerFoulExhaustCD:Start("v9.5-10.2", self.vb.foulExhaustCount+1)
 			timerTheBigHitCD:Start("v14.9-16.3", self.vb.bigHitCount+1)
 		end
+	elseif spellId == 464776 then--Fraud Detected
+		warnFraudDetected:Show()
+		--Timers reset
+		timerPaylineCD:Stop()
+		timerFoulExhaustCD:Stop()
+		timerTheBigHitCD:Stop()
+		timerPaylineCD:Start(5.7, self.vb.paylineCount+1)
+		timerFoulExhaustCD:Start(10.6, self.vb.foulExhaustCount+1)
+		timerTheBigHitCD:Start(16.6, self.vb.bigHitCount+1)
 	elseif spellId == 472178 then
 		if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
 			specWarnBurningBlast:Show()
@@ -240,7 +249,7 @@ function mod:SPELL_CAST_START(args)
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
 		if self:GetStage(1) then
 			--33.2 for all except flame and coin which makes it 36
-			timerFoulExhaustCD:Start("v32.8-36.1", self.vb.foulExhaustCount+1)
+			timerFoulExhaustCD:Start("v32.8-36.6", self.vb.foulExhaustCount+1)
 		end
 	elseif spellId == 460472 then
 		self.vb.bigHitCount = self.vb.bigHitCount + 1
@@ -328,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 471720 then--Spin to win on adds
 		if not castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = 0
-			timerWitheringFlamesCD:Start(13.3, args.destGUID)--If it's not cast before overload, gets delayed by several seconds
+			timerWitheringFlamesCD:Start(12.6, args.destGUID)--If it's not cast before overload, gets delayed by several seconds
 			timerOverloadCD:Start(15, args.destGUID)
 		end
 	elseif spellId == 472832 then
@@ -339,8 +348,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTokenFlame:Show(args.destName)
 	elseif spellId == 472783 then
 		warnTokenShock:Show(args.destName)
-	elseif spellId == 461068 then
-		warnFraudDetected:Show(args.destName)
 	elseif spellId == 465009 then
 		warnExplosiveGaze:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
