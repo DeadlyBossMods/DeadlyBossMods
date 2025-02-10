@@ -5,8 +5,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(230583)
 mod:SetEncounterID(3013)
-mod:SetHotfixNoticeRev(20250117000000)
-mod:SetMinSyncRevision(20250117000000)
+mod:SetHotfixNoticeRev(20250209000000)
+mod:SetMinSyncRevision(20250209000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -135,9 +135,9 @@ local allTimers = {
 	},
 	["normal"] = {
 		--Wire Transfer
-		[1218418] = {0, 41.0, 30.0, 30.0},
+		[1218418] = {0, 40.9, 30.0, 30.0},
 		--Screw Up
-		[1216508] = {47.0, 33.0, 32.0},
+		[1216508] = {16.0, 34.1, 30.9},
 		--Sonic Boom
 		[465232] = {6.1, 29.9, 30.0, 30.0},
 		--Pyro Party Pack
@@ -161,7 +161,7 @@ function mod:OnCombatStart(delay)
 		timerPolarizationGeneratorCD:Start(4-delay)
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	else
 		savedDifficulty = "normal"
 	end
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
@@ -173,7 +173,7 @@ function mod:OnCombatStart(delay)
 	timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1]-delay, 1)
 	timerActivateInventionsCD:Start(30-delay, 1)
 	timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1]-delay, 1)
-	timerBetaLaunchCD:Start(120-delay, 11)
+	timerBetaLaunchCD:Start(120-delay, 1)
 end
 
 function mod:OnTimerRecovery()
@@ -181,7 +181,7 @@ function mod:OnTimerRecovery()
 		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else--Combine LFR and Normal
+	else
 		savedDifficulty = "normal"
 	end
 end
