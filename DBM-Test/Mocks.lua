@@ -275,10 +275,12 @@ function mocks:ApplyUnitAura(name, guid, spellId, spellName, auraType, amount)
 	end
 	local entry = auras[spellId] or auras[spellName] or {
 		spellId = spellId,
-		spellName = spellName,
+		spellName = spellName or "Unknown Spell",
 	}
 	auras[spellId] = entry
-	auras[spellName] = entry
+	if spellName then
+		auras[spellName] = entry
+	end
 	entry.time = self:GetTime()
 	entry.auraType = auraType
 	entry.amount = amount or entry.amount or 1
