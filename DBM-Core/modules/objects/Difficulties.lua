@@ -413,8 +413,9 @@ function DBM:GetCurrentInstanceDifficulty()
 				difficultyName = PLAYER_DIFFICULTY6
 			end
 			-- Naxxramas Hardmode
-			-- The different levels use different buffs, 1218276 may be unused. The debuff still has the right number of stacks
-			local naxxModifier = select(3, self:UnitDebuff("player", 1218283, 1218271, 1218275, 1224428, 1218276))
+			-- The different levels (sometimes) use different buffs? The debuff still has the right number of stacks
+			-- Do not check for 1224428 here, it's active on normal (despite the description saying "The forces of the Scourge grow stronger.")
+			local naxxModifier = select(3, self:UnitDebuff("player", 1218283, 1218271, 1218275, 1218276))
 			if naxxModifier == 0 then naxxModifier = 1 end -- First level has no count
 			if naxxModifier then
 				modifierLevel = naxxModifier
