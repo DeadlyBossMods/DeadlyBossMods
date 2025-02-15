@@ -1093,6 +1093,8 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			hasVariance = true
 			timerStringWithVariance = timer
 			timer, minTimer, varianceDuration = parseVarianceFromTimer(timer)
+		else
+			error("bad string timer, expected number or string starting with d, v, or dv", 2)
 		end
 	end
 	local spellName, icon
