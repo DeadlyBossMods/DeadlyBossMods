@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 466340 465952 467182 466751 469286 469327 466341 466834 1216845 1216852 1214607 466342 466958 1214767 1219041 1219039",
+	"SPELL_CAST_START 466340 465952 467182 466751 469286 469327 466341 466834 1216845 1216852 1214607 466342 466958 1217987 1219041 1219039",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 1216846 1216852 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -110,15 +110,16 @@ local timerEgoCheckCD								= mod:NewAITimer(97.3, 466958, nil, nil, nil, 5, ni
 
 mod:AddPrivateAuraSoundOption(1226489, true, 1226489, 2)--Overloaded Rockets (sub mechanic to BBBBlast)
 --Mythic
+mod:AddTimerLine(PLAYER_DIFFICULTY6)
 local warnGigaBlastResidue							= mod:NewTargetNoFilterAnnounce(1218504, 2, nil, false)
 local warnDischargedGigaBomb						= mod:NewTargetNoFilterAnnounce(1218992, 2)
 local warnAutoLockingCuffBomb						= mod:NewTargetNoFilterAnnounce(1220784, 4)
 
-local specWarnCombinationCanisters					= mod:NewSpecialWarningSoakCount(1214767, nil, nil, nil, 2, 2, 4)
+local specWarnCombinationCanisters					= mod:NewSpecialWarningSoakCount(1217987, nil, nil, nil, 2, 2, 4)
 local specWarnStaticZap								= mod:NewSpecialWarningInterruptCount(1219041, "HasInterrupt", nil, nil, 1, 2)
 local specWarnIonizationDispel						= mod:NewSpecialWarningDispel(1219039, "RemoveMagic", nil, nil, 1, 2)
 
-local timerCombinationCanistersCD					= mod:NewAITimer(97.3, 1214767, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerCombinationCanistersCD					= mod:NewAITimer(97.3, 1217987, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local timerIonizationCD							= mod:NewCDNPTimer(97.3, 1219039, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 
 mod:AddSetIconOption("SetIconOnGigaJuiced", -31029, false, 5, {1, 2, 3, 4, 5, 6}, true)
@@ -323,7 +324,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnEgoCheck:Play("defensive")
 		end
 		timerEgoCheckCD:Start()--nil, self.vb.egoCheckCount+1
-	elseif spellId == 1214767 then
+	elseif spellId == 1217987 then
 		self.vb.canisterCount = self.vb.canisterCount + 1
 		specWarnCombinationCanisters:Show(self.vb.canisterCount)
 		specWarnCombinationCanisters:Play("helpsoak")
