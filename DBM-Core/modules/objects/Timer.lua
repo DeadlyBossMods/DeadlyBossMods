@@ -464,8 +464,8 @@ function timerPrototype:Start(timer, ...)
 		if not tContains(self.startedTimers, id) then--Make sure timer doesn't exist already before adding it
 			tinsert(self.startedTimers, id)
 		end
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)
 		if not self.keep then--Don't ever remove startedTimers on a schedule, if it's a keep timer
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
 		end
 		return bar
@@ -602,6 +602,7 @@ function timerPrototype:Stop(...)
 			test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 			DBT:CancelBar(self.startedTimers[i])
 			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
+			DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
 			tremove(self.startedTimers, i)
 		end
 	else
@@ -627,6 +628,7 @@ function timerPrototype:Stop(...)
 				test:Trace(self.mod, "StopTimer", self, id)
 				DBT:CancelBar(id)
 				DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
+				DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
 				tremove(self.startedTimers, i)
 			end
 		end
@@ -713,9 +715,9 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 		end
 		DBM:FireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 		local newRemaining = totalTime - elapsed
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)
 		if not bar.keep and newRemaining > 0 then
 			--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
 		end
 		if self.option then
@@ -750,9 +752,9 @@ function timerPrototype:AddTime(extendAmount, ...)
 		local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 		if elapsed and total then
 			local newRemaining = (total + extendAmount) - elapsed
+			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			if not bar.keep then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
-				self.mod:Unschedule(removeEntry, self.startedTimers, id)
 				self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
 			end
 			if self.option then
@@ -793,9 +795,7 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 	if not bar then
 		return--Do nothing
 	else
-		if not bar.keep then
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
-		end
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
 		local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 		if elapsed and total then
 			local newRemaining = (total - reduceAmount) - elapsed
@@ -849,9 +849,7 @@ function timerPrototype:Pause(...)
 	local bar = DBT:GetBar(id)
 	DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 	if bar then
-		if not bar.keep then
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
-		end
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 		local guid
 		if select("#", ...) > 0 then--If timer has args
 			for i = 1, select("#", ...) do
