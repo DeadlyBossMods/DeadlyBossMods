@@ -86,6 +86,9 @@ DBT.DefaultOptions = {
 	Bar7CustomInline = true,
 	-- Variance
 	VarianceEnabled = true,
+	VarColorR = 1,
+	VarColorG = 1,
+	VarColorB = 1,
 	VarianceAlpha = 0.5,
 	VarianceBehavior = "ZeroAtMinTimerAndNeg",
 	-- Small bar
@@ -282,7 +285,7 @@ do
 		varianceTex:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 		varianceTex:SetWidth(20)
 		varianceTex:SetBlendMode("ADD")
-		varianceTex:SetAlpha(0.5)
+		varianceTex:SetVertexColor(1, 1, 1, 0.5)
 
 		local varianceTexBorder = bar:CreateTexture("$parentVarianceBorder", "OVERLAY")
 		varianceTexBorder:SetVertexColor(0, 0, 0, 1)
@@ -895,7 +898,7 @@ function barPrototype:SetVariance()
 			varianceTexBorder:SetPoint("BOTTOMRIGHT", varianceTex, "BOTTOMRIGHT", 1, 0)
 		end
 
-		varianceTex:SetAlpha(DBT.Options.VarianceAlpha)
+		varianceTex:SetVertexColor(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB, DBT.Options.VarianceAlpha)
 
 		varianceTex:Show()
 		varianceTexBorder:Show()
