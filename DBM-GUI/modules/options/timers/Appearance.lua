@@ -277,6 +277,27 @@ local BarSetupVariance = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupVariance)
 
 local VarianceEnableCheckbox = BarSetupVariance:CreateCheckButton(L.EnableVarianceBar, true, nil, nil, "VarianceEnabled")
 
+local varcolor1 = BarSetup:CreateColorSelect(64)
+varcolor1:SetPoint("TOPLEFT", VarianceEnableCheckbox, "TOPLEFT", 200, -22)
+varcolor1.myheight = 0
+
+local varcolor1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+varcolor1reset:SetPoint("TOP", varcolor1, "BOTTOM", 5, -10)
+varcolor1reset:SetScript("OnClick", function()
+	varcolor1:SetColorRGB(DBT.DefaultOptions.VarColorR, DBT.DefaultOptions.VarColorG, DBT.DefaultOptions.VarColorB)
+end)
+
+local varcolor1text = BarSetup:CreateText(L.VarianceColor, 120, nil, nil, nil, 0)
+varcolor1text:SetPoint("BOTTOM", varcolor1, "TOP", 20, 4)
+varcolor1:SetColorRGB(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB)
+varcolor1text:SetTextColor(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB)
+varcolor1:SetScript("OnColorSelect", function(self)
+	DBT:SetOption("VarColorR", select(1, self:GetColorRGB()))
+	DBT:SetOption("VarColorG", select(2, self:GetColorRGB()))
+	DBT:SetOption("VarColorB", select(3, self:GetColorRGB()))
+	varcolor1text:SetTextColor(self:GetColorRGB())
+end)
+
 local VarianceAlphaSlider = BarSetupVariance:CreateSlider(L.VarianceTransparency, 0, 1, 0.1, 150)
 VarianceAlphaSlider:SetPoint("TOPLEFT", VarianceEnableCheckbox, "BOTTOMLEFT", 5, -15)
 VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)
