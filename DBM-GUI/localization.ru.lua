@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
 L.TranslationBy 			= "Hollicsh"
-L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на разные социальные сети - |cFF73C2FB@deadlybossmods|r или |cFF73C2FB@mysticalos|r"
+L.Website					= "DBM Discord - |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Социальные сети DBM - |cFF73C2FB@deadlybossmods|r или |cFF73C2FB@mysticalos|r"
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
