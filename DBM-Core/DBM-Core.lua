@@ -6058,7 +6058,7 @@ do
 				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
-				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
+				if not mod.inScenario and self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
 					fireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingCustomMusic then
 						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
@@ -6070,7 +6070,7 @@ do
 					end
 					local path = "MISSING"
 					if self.Options.EventSoundMusic == "Random" then
-						local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or mod.inScenario and self:GetDungeonMusic() or self:GetBattleMusic()
+						local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or self:GetBattleMusic()
 						if #usedTable >= 3 then
 							local random = fastrandom(3, #usedTable)
 							---@diagnostic disable-next-line: cast-local-type

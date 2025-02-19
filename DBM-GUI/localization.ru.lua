@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
 L.TranslationBy 			= "Hollicsh"
-L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на разные социальные сети - |cFF73C2FB@deadlybossmods|r или |cFF73C2FB@mysticalos|r"
+L.Website					= "DBM Discord - |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Социальные сети DBM - |cFF73C2FB@deadlybossmods|r или |cFF73C2FB@mysticalos|r"
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
@@ -381,7 +381,8 @@ L.AreaTitle_BarSetupSmall 	= "Параметры маленькой полосы
 L.AreaTitle_BarSetupHuge	= "Параметры большой полосы"
 L.AreaTitle_BarSetupVariance		= "Параметры изменения полосы"
 L.EnableHugeBar 			= "Включить увеличенный индикатор (Полоса 2)"
-L.EnableVarianceBar 				= "Включить изменение полосы"
+L.EnableVarianceBar 				= "Включить дисперсию полосы"
+L.VarianceColor						= "Цвет дисперсии"
 L.VarianceTransparency				= "Прозрачность полосы: %0.1f"
 L.VarianceTimerTextBehavior			= "Установить режим текста изменения таймера"
 L.ZeroatWindowEnds					= "Текст становится равным нулю в конце перезарядки"
