@@ -20,49 +20,32 @@ testmebutton:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
-local color1 = BarSetup:CreateColorSelect(64)
-local color2 = BarSetup:CreateColorSelect(64)
-color1:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 30, -80)
+local color1 = BarSetup:CreateColorSelect(L.BarStartColor, function(_, r, g, b)
+	DBT:SetOption("StartColorR", r)
+	DBT:SetOption("StartColorG", g)
+	DBT:SetOption("StartColorB", b)
+end, function(self)
+	self:SetColorRGB(DBT.DefaultOptions.StartColorR, DBT.DefaultOptions.StartColorG, DBT.DefaultOptions.StartColorB)
+end)
+local color2 = BarSetup:CreateColorSelect(L.BarEndColor, function(_, r, g, b)
+	DBT:SetOption("EndColorR", r)
+	DBT:SetOption("EndColorG", g)
+	DBT:SetOption("EndColorB", b)
+end, function(self)
+	self:SetColorRGB(DBT.DefaultOptions.EndColorR, DBT.DefaultOptions.EndColorG, DBT.DefaultOptions.EndColorB)
+end)
+color1:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -80)
 color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
 color1.myheight = 130
 color2.myheight = 0
 
-local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-local color2reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color1reset:SetPoint("TOP", color1, "BOTTOM", 5, -10)
-color2reset:SetPoint("TOP", color2, "BOTTOM", 5, -10)
-color1reset:SetScript("OnClick", function()
-	color1:SetColorRGB(DBT.DefaultOptions.StartColorR, DBT.DefaultOptions.StartColorG, DBT.DefaultOptions.StartColorB)
-end)
-color2reset:SetScript("OnClick", function()
-	color2:SetColorRGB(DBT.DefaultOptions.EndColorR, DBT.DefaultOptions.EndColorG, DBT.DefaultOptions.EndColorB)
-end)
-
-local color1text = BarSetup:CreateText(L.BarStartColor, 80, nil, nil, nil, 0)
-local color2text = BarSetup:CreateText(L.BarEndColor, 80, nil, nil, nil, 0)
-color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
-color2text:SetPoint("BOTTOM", color2, "TOP", 0, 4)
 color1:SetColorRGB(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Options.StartColorB)
-color1text:SetTextColor(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Options.StartColorB)
 color2:SetColorRGB(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)
-color2text:SetTextColor(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)
-color1:SetScript("OnColorSelect", function(self)
-	DBT:SetOption("StartColorR", select(1, self:GetColorRGB()))
-	DBT:SetOption("StartColorG", select(2, self:GetColorRGB()))
-	DBT:SetOption("StartColorB", select(3, self:GetColorRGB()))
-	color1text:SetTextColor(self:GetColorRGB())
-end)
-color2:SetScript("OnColorSelect", function(self)
-	DBT:SetOption("EndColorR", select(1, self:GetColorRGB()))
-	DBT:SetOption("EndColorG", select(2, self:GetColorRGB()))
-	DBT:SetOption("EndColorB", select(3, self:GetColorRGB()))
-	color2text:SetTextColor(self:GetColorRGB())
-end)
 
 ---@class MainDummyBar: DBTBar
 local maindummybar = DBT:CreateDummyBar(nil, nil, SMALL)
 maindummybar.frame:SetParent(BarSetup.frame)
-maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 60)
+maindummybar.frame:SetPoint("BOTTOMLEFT", color1, "TOPLEFT", 20, 40)
 maindummybar.frame:SetScript("OnUpdate", function(_, elapsed)
 	maindummybar:Update(elapsed)
 end)
@@ -81,7 +64,7 @@ maindummybar:ApplyStyle()
 ---@class MainDummyBarHuge: DBTBar
 local maindummybarHuge = DBT:CreateDummyBar(nil, nil, LARGE)
 maindummybarHuge.frame:SetParent(BarSetup.frame)
-maindummybarHuge.frame:SetPoint("TOP", color2text, "LEFT", 10, 35)
+maindummybarHuge.frame:SetPoint("BOTTOMLEFT", color1, "TOPLEFT", 20, 15)
 maindummybarHuge.frame:SetScript("OnUpdate", function(_, elapsed)
 	maindummybarHuge:Update(elapsed)
 end)
@@ -114,7 +97,7 @@ local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarSty
 	DBT:SetOption("BarStyle", value)
 end, 210)
 local isNewDropdown = StyleDropDown.mytype == "dropdown2"
-StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -25)
+StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 230, -25)
 StyleDropDown.myheight = 0
 
 local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
@@ -236,12 +219,12 @@ local function resetDBTValueToDefault(slider, option)
 end
 
 local FontSizeSlider = BarSetup:CreateSlider(L.FontSize, 7, 18, 1)
-FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -180)
+FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -140)
 FontSizeSlider:SetValue(DBT.Options.FontSize)
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
-DisableBarFade:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", 0, -85)
+DisableBarFade:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", 0, -115)
 
 local skins = {}
 for id, skin in pairs(DBT:GetSkins()) do
@@ -254,7 +237,7 @@ if #skins > 1 then
 	local BarSkin = BarSetup:CreateDropdown(L.BarSkin, skins, "DBT", "Skin", function(value)
 		DBT:SetSkin(value)
 	end, 210)
-	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", -20, -10)
+	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", isNewDropdown and 0 or -20, -10)
 	BarSkin.myheight = 45
 end
 
@@ -277,32 +260,23 @@ local BarSetupVariance = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupVariance)
 
 local VarianceEnableCheckbox = BarSetupVariance:CreateCheckButton(L.EnableVarianceBar, true, nil, nil, "VarianceEnabled")
 
-local varcolor1 = BarSetup:CreateColorSelect(64)
+local varcolor1 = BarSetup:CreateColorSelect(L.VarianceColor, function(_, r, g, b)
+	DBT:SetOption("VarColorR", r)
+	DBT:SetOption("VarColorG", g)
+	DBT:SetOption("VarColorB", b)
+end, function(self)
+	self:SetColorRGB(DBT.DefaultOptions.VarColorR, DBT.DefaultOptions.VarColorG, DBT.DefaultOptions.VarColorB)
+end)
+varcolor1:SetWidth(150)
 varcolor1:SetPoint("TOPLEFT", VarianceEnableCheckbox, "TOPLEFT", 200, -22)
 varcolor1.myheight = 0
 
-local varcolor1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-varcolor1reset:SetPoint("TOP", varcolor1, "BOTTOM", 5, -10)
-varcolor1reset:SetScript("OnClick", function()
-	varcolor1:SetColorRGB(DBT.DefaultOptions.VarColorR, DBT.DefaultOptions.VarColorG, DBT.DefaultOptions.VarColorB)
-end)
-
-local varcolor1text = BarSetup:CreateText(L.VarianceColor, 120, nil, nil, nil, 0)
-varcolor1text:SetPoint("BOTTOM", varcolor1, "TOP", 20, 4)
 varcolor1:SetColorRGB(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB)
-varcolor1text:SetTextColor(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB)
-varcolor1:SetScript("OnColorSelect", function(self)
-	DBT:SetOption("VarColorR", select(1, self:GetColorRGB()))
-	DBT:SetOption("VarColorG", select(2, self:GetColorRGB()))
-	DBT:SetOption("VarColorB", select(3, self:GetColorRGB()))
-	varcolor1text:SetTextColor(self:GetColorRGB())
-end)
 
 local VarianceAlphaSlider = BarSetupVariance:CreateSlider(L.VarianceTransparency, 0, 1, 0.1, 150)
 VarianceAlphaSlider:SetPoint("TOPLEFT", VarianceEnableCheckbox, "BOTTOMLEFT", 5, -15)
 VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)
 VarianceAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("VarianceAlpha"))
---VarianceAlphaSlider.myheight = 0
 
 local VarianceBehaviors = {
 	{

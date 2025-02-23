@@ -111,7 +111,7 @@ RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, is
 
 -- RaidWarn Font Size
 local fontSizeSlider = raidwarnoptions:CreateSlider(L.FontSize, 8, 60, 1, 200)
-fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", isNewDropdown and 5 or 20, -130)
+fontSizeSlider:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
 fontSizeSlider:SetValue(DBM.Options.WarningFontSize)
 fontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningFontSize = self:GetValue()
@@ -121,7 +121,7 @@ end)
 
 -- RaidWarn Duration
 local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 200)
-durationSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", isNewDropdown and -15 or -10, -170)
+durationSlider:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -30)
 durationSlider:SetValue(DBM.Options.WarningDuration2)
 durationSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningDuration2 = self:GetValue()
@@ -177,58 +177,48 @@ end)
 --Raid Warning Colors
 local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors)
 
-local color1 = raidwarncolors:CreateColorSelect(64)
-local color2 = raidwarncolors:CreateColorSelect(64)
-local color3 = raidwarncolors:CreateColorSelect(64)
-local color4 = raidwarncolors:CreateColorSelect(64)
-local color1text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64, nil, nil, "CENTER", 0)
-local color2text = raidwarncolors:CreateText(L.RaidWarnColor_2, 64, nil, nil, "CENTER", 0)
-local color3text = raidwarncolors:CreateText(L.RaidWarnColor_3, 64, nil, nil, "CENTER", 0)
-local color4text = raidwarncolors:CreateText(L.RaidWarnColor_4, 64, nil, nil, "CENTER", 0)
-local color1reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
-local color2reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
-local color3reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
-local color4reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
+local color1 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_1, function(_, r, g, b)
+	DBM.Options.WarningColors[1].r = r
+	DBM.Options.WarningColors[1].g = g
+	DBM.Options.WarningColors[1].b = b
+end, function(self)
+	self:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+end)
+local color2 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_2, function(_, r, g, b)
+	DBM.Options.WarningColors[2].r = r
+	DBM.Options.WarningColors[2].g = g
+	DBM.Options.WarningColors[2].b = b
+end, function(self)
+	self:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+end)
+local color3 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_3, function(_, r, g, b)
+	DBM.Options.WarningColors[3].r = r
+	DBM.Options.WarningColors[3].g = g
+	DBM.Options.WarningColors[3].b = b
+end, function(self)
+	self:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+end)
+local color4 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_4, function(_, r, g, b)
+	DBM.Options.WarningColors[4].r = r
+	DBM.Options.WarningColors[4].g = g
+	DBM.Options.WarningColors[4].b = b
+end, function(self)
+	self:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
+end)
 
-color1.myheight = 80
 color2.myheight = 0
 color3.myheight = 0
 color4.myheight = 0
 
-color1:SetPoint("TOPLEFT", 30, -10)
-color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 30, 0)
-color3:SetPoint("TOPLEFT", color2, "TOPRIGHT", 30, 0)
-color4:SetPoint("TOPLEFT", color3, "TOPRIGHT", 30, 0)
+color1:SetPoint("TOPLEFT", 20, -10)
+color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
+color3:SetPoint("TOPLEFT", color2, "TOPRIGHT", 20, 0)
+color4:SetPoint("TOPLEFT", color3, "TOPRIGHT", 20, 0)
 
-local function UpdateColor(self)
-	local r, g, b = self:GetColorRGB()
-	self.textid:SetTextColor(r, g, b)
-	DBM.Options.WarningColors[self.myid].r = r
-	DBM.Options.WarningColors[self.myid].g = g
-	DBM.Options.WarningColors[self.myid].b = b
-end
-local function ResetColor(id, frame)
-	return function()
-		DBM.Options.WarningColors[id].r = DBM.DefaultOptions.WarningColors[id].r
-		DBM.Options.WarningColors[id].g = DBM.DefaultOptions.WarningColors[id].g
-		DBM.Options.WarningColors[id].b = DBM.DefaultOptions.WarningColors[id].b
-		frame:SetColorRGB(DBM.Options.WarningColors[id].r, DBM.Options.WarningColors[id].g, DBM.Options.WarningColors[id].b)
-	end
-end
-local function UpdateColorFrames(color, text, rset, id)
-	color.textid = text
-	color.myid = id
-	color:SetScript("OnColorSelect", UpdateColor)
-	color:SetColorRGB(DBM.Options.WarningColors[id].r, DBM.Options.WarningColors[id].g, DBM.Options.WarningColors[id].b)
-	text:SetPoint("TOPLEFT", color, "BOTTOMLEFT", 3, -10)
-	text.myheight = 0
-	rset:SetPoint("TOP", text, "BOTTOM", 0, -5)
-	rset:SetScript("OnClick", ResetColor(id, color))
-end
-UpdateColorFrames(color1, color1text, color1reset, 1)
-UpdateColorFrames(color2, color2text, color2reset, 2)
-UpdateColorFrames(color3, color3text, color3reset, 3)
-UpdateColorFrames(color4, color4text, color4reset, 4)
+color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
 
 local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, nil, false, GameFontNormalSmall)
 infotext:SetPoint("BOTTOMLEFT", raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
