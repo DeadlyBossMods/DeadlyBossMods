@@ -23,27 +23,16 @@ movemebutton:SetScript("OnClick", function()
 	DBM:MoveSpecialWarning()
 end)
 
-local color0 = specArea:CreateColorSelect(64)
+local color0 = specArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	DBM.Options.SpecialWarningFontCol[1] = r
+	DBM.Options.SpecialWarningFontCol[2] = g
+	DBM.Options.SpecialWarningFontCol[3] = b
+	DBM:UpdateSpecialWarningOptions()
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
+end)
 color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -220)
-local color0text = specArea:CreateText(L.FontColor, 80)
-color0text:SetPoint("BOTTOM", color0, "TOP", 5, 4)
-local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color0reset:SetPoint("TOP", color0, "BOTTOM", 5, -10)
-color0reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFontCol[1] = DBM.DefaultOptions.SpecialWarningFontCol[1]
-	DBM.Options.SpecialWarningFontCol[2] = DBM.DefaultOptions.SpecialWarningFontCol[2]
-	DBM.Options.SpecialWarningFontCol[3] = DBM.DefaultOptions.SpecialWarningFontCol[3]
-	color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
-	DBM:UpdateSpecialWarningOptions()
-end)
 color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
-color0:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFontCol[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFontCol[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFontCol[3] = select(3, self:GetColorRGB())
-	color0text:SetTextColor(self:GetColorRGB())
-	DBM:UpdateSpecialWarningOptions()
-end)
 color0.myheight = 74
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
@@ -70,7 +59,7 @@ local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialW
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 105, -220)
+FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, -220)
 FontDropDown.myheight = 0
 
 local FontStyles = {
@@ -195,33 +184,23 @@ showbuttonOne:SetScript("OnClick", function()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
 
-local color1 = specWarnOne:CreateColorSelect(64)
+local color1 = specWarnOne:CreateColorSelect(L.SpecWarn_FlashColor:format(1), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol1[1] = r
+	DBM.Options.SpecialWarningFlashCol1[2] = g
+	DBM.Options.SpecialWarningFlashCol1[3] = b
+	DBM:UpdateSpecialWarningOptions()
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFlashCol1[1], DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3])
+end)
+color1:SetWidth(110)
 color1:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 20, -30)
-local color1text = specWarnOne:CreateText(L.SpecWarn_FlashColor:format(1), 85)
-color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
-local color1reset = specWarnOne:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color1reset:SetPoint("TOP", color1, "BOTTOM", 5, -10)
-color1reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFlashCol1[1] = DBM.DefaultOptions.SpecialWarningFlashCol1[1]
-	DBM.Options.SpecialWarningFlashCol1[2] = DBM.DefaultOptions.SpecialWarningFlashCol1[2]
-	DBM.Options.SpecialWarningFlashCol1[3] = DBM.DefaultOptions.SpecialWarningFlashCol1[3]
-	color1:SetColorRGB(DBM.Options.SpecialWarningFlashCol1[1], DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3])
-	DBM:UpdateSpecialWarningOptions()
-end)
 color1:SetColorRGB(DBM.Options.SpecialWarningFlashCol1[1], DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3])
-color1:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFlashCol1[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol1[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol1[3] = select(3, self:GetColorRGB())
-	color1text:SetTextColor(self:GetColorRGB())
-	DBM:UpdateSpecialWarningOptions()
-end)
 color1.myheight = 104
 
 local SpecialWarnSoundDropDown = specWarnOne:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound", function(value)
 	DBM.Options.SpecialWarningSound = value
 end)
-SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 105, -28)
+SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 125, -28)
 SpecialWarnSoundDropDown.myheight = 0
 
 local flashCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash1")
@@ -264,32 +243,23 @@ showbuttonTwo:SetScript("OnClick", function()
 	DBM:ShowTestSpecialWarning(nil, 2, nil, true)
 end)
 
-local color2 = specWarnTwo:CreateColorSelect(64)
-color2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 20, -30)
-local color2text = specWarnTwo:CreateText(L.SpecWarn_FlashColor:format(2), 85)
-color2text:SetPoint("BOTTOM", color2, "TOP", 5, 4)
-local color2reset = specWarnTwo:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color2reset:SetPoint("TOP", color2, "BOTTOM", 5, -10)
-color2reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFlashCol2[1] = DBM.DefaultOptions.SpecialWarningFlashCol2[1]
-	DBM.Options.SpecialWarningFlashCol2[2] = DBM.DefaultOptions.SpecialWarningFlashCol2[2]
-	DBM.Options.SpecialWarningFlashCol2[3] = DBM.DefaultOptions.SpecialWarningFlashCol2[3]
-	color2:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
-end)
-color2:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
-color2:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFlashCol2[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol2[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol2[3] = select(3, self:GetColorRGB())
-	color2text:SetTextColor(self:GetColorRGB())
+local color2 = specWarnTwo:CreateColorSelect(L.SpecWarn_FlashColor:format(2), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol2[1] = r
+	DBM.Options.SpecialWarningFlashCol2[2] = g
+	DBM.Options.SpecialWarningFlashCol2[3] = b
 	DBM:UpdateSpecialWarningOptions()
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
 end)
+color2:SetWidth(110)
+color2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 20, -30)
+color2:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
 color2.myheight = 104
 
 local SpecialWarnSoundDropDown2 = specWarnTwo:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound2", function(value)
 	DBM.Options.SpecialWarningSound2 = value
 end)
-SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 105, -28)
+SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 125, -28)
 SpecialWarnSoundDropDown2.myheight = 0
 
 local flashCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash2")
@@ -333,35 +303,24 @@ showbuttonThree:SetScript("OnClick", function()
 	DBM:ShowTestSpecialWarning(nil, 3, nil, true)
 end)
 
-local color3 = specWarnThree:CreateColorSelect(64)
+local color3 = specWarnThree:CreateColorSelect(L.SpecWarn_FlashColor:format(3), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol3[1] = r
+	DBM.Options.SpecialWarningFlashCol3[2] = g
+	DBM.Options.SpecialWarningFlashCol3[3] = b
+	DBM:UpdateSpecialWarningOptions()
+	DBM:ShowTestSpecialWarning("", 3, true, true)
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFlashCol3[1], DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3])
+end)
+color3:SetWidth(110)
 color3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 20, -30)
-local color3text = specWarnThree:CreateText(L.SpecWarn_FlashColor:format(3), 85)
-color3text:SetPoint("BOTTOM", color3, "TOP", 5, 4)
-local color3reset = specWarnThree:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color3reset:SetPoint("TOP", color3, "BOTTOM", 5, -10)
-color3reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFlashCol3[1] = DBM.DefaultOptions.SpecialWarningFlashCol3[1]
-	DBM.Options.SpecialWarningFlashCol3[2] = DBM.DefaultOptions.SpecialWarningFlashCol3[2]
-	DBM.Options.SpecialWarningFlashCol3[3] = DBM.DefaultOptions.SpecialWarningFlashCol3[3]
-	color3:SetColorRGB(DBM.Options.SpecialWarningFlashCol3[1], DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3])
-	DBM:UpdateSpecialWarningOptions()
-	DBM:ShowTestSpecialWarning(nil, 3, nil, true)
-end)
 color3:SetColorRGB(DBM.Options.SpecialWarningFlashCol3[1], DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3])
-color3:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFlashCol3[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol3[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol3[3] = select(3, self:GetColorRGB())
-	color3text:SetTextColor(self:GetColorRGB())
-	DBM:UpdateSpecialWarningOptions()
-	DBM:ShowTestSpecialWarning(nil, 3, nil, true)
-end)
 color3.myheight = 104
 
 local SpecialWarnSoundDropDown3 = specWarnThree:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound3", function(value)
 	DBM.Options.SpecialWarningSound3 = value
 end)
-SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 105, -28)
+SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 125, -28)
 SpecialWarnSoundDropDown3.myheight = 0
 
 local flashCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash3")
@@ -404,35 +363,24 @@ showbuttonFour:SetScript("OnClick", function()
 	DBM:ShowTestSpecialWarning(nil, 4, nil, true)
 end)
 
-local color4 = specWarnFour:CreateColorSelect(64)
+local color4 = specWarnFour:CreateColorSelect(L.SpecWarn_FlashColor:format(4), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol4[1] = r
+	DBM.Options.SpecialWarningFlashCol4[2] = g
+	DBM.Options.SpecialWarningFlashCol4[3] = b
+	DBM:UpdateSpecialWarningOptions()
+	DBM:ShowTestSpecialWarning("", 4, true, true)
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFlashCol4[1], DBM.Options.SpecialWarningFlashCol4[2], DBM.Options.SpecialWarningFlashCol4[3])
+end)
+color4:SetWidth(110)
 color4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 20, -30)
-local color4text = specWarnFour:CreateText(L.SpecWarn_FlashColor:format(4), 85)
-color4text:SetPoint("BOTTOM", color4, "TOP", 5, 4)
-local color4reset = specWarnFour:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color4reset:SetPoint("TOP", color4, "BOTTOM", 5, -10)
-color4reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFlashCol4[1] = DBM.DefaultOptions.SpecialWarningFlashCol4[1]
-	DBM.Options.SpecialWarningFlashCol4[2] = DBM.DefaultOptions.SpecialWarningFlashCol4[2]
-	DBM.Options.SpecialWarningFlashCol4[3] = DBM.DefaultOptions.SpecialWarningFlashCol4[3]
-	color4:SetColorRGB(DBM.Options.SpecialWarningFlashCol4[1], DBM.Options.SpecialWarningFlashCol4[2], DBM.Options.SpecialWarningFlashCol4[3])
-	DBM:UpdateSpecialWarningOptions()
-	DBM:ShowTestSpecialWarning(nil, 4, nil, true)
-end)
 color4:SetColorRGB(DBM.Options.SpecialWarningFlashCol4[1], DBM.Options.SpecialWarningFlashCol4[2], DBM.Options.SpecialWarningFlashCol4[3])
-color4:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFlashCol4[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol4[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol4[3] = select(3, self:GetColorRGB())
-	color4text:SetTextColor(self:GetColorRGB())
-	DBM:UpdateSpecialWarningOptions()
-	DBM:ShowTestSpecialWarning(nil, 4, nil, true)
-end)
 color4.myheight = 104
 
 local SpecialWarnSoundDropDown4 = specWarnFour:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound4", function(value)
 	DBM.Options.SpecialWarningSound4 = value
 end)
-SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 105, -28)
+SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 125, -28)
 SpecialWarnSoundDropDown4.myheight = 0
 
 local flashCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash4")
@@ -475,33 +423,23 @@ showbuttonFive:SetScript("OnClick", function()
 	DBM:ShowTestSpecialWarning(nil, 5, nil, true)
 end)
 
-local color5 = specWarnFive:CreateColorSelect(64)
+local color5 = specWarnFive:CreateColorSelect(L.SpecWarn_FlashColor:format(5), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol5[1] = r
+	DBM.Options.SpecialWarningFlashCol5[2] = g
+	DBM.Options.SpecialWarningFlashCol5[3] = b
+	DBM:UpdateSpecialWarningOptions()
+end, function(self)
+	self:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
+end)
+color5:SetWidth(110)
 color5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 20, -30)
-local color5text = specWarnFive:CreateText(L.SpecWarn_FlashColor:format(5), 85)
-color5text:SetPoint("BOTTOM", color5, "TOP", 5, 4)
-local color5reset = specWarnFive:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
-color5reset:SetPoint("TOP", color5, "BOTTOM", 5, -10)
-color5reset:SetScript("OnClick", function()
-	DBM.Options.SpecialWarningFlashCol5[1] = DBM.DefaultOptions.SpecialWarningFlashCol5[1]
-	DBM.Options.SpecialWarningFlashCol5[2] = DBM.DefaultOptions.SpecialWarningFlashCol5[2]
-	DBM.Options.SpecialWarningFlashCol5[3] = DBM.DefaultOptions.SpecialWarningFlashCol5[3]
-	color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
-	DBM:UpdateSpecialWarningOptions()
-end)
 color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
-color5:SetScript("OnColorSelect", function(self)
-	DBM.Options.SpecialWarningFlashCol5[1] = select(1, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol5[2] = select(2, self:GetColorRGB())
-	DBM.Options.SpecialWarningFlashCol5[3] = select(3, self:GetColorRGB())
-	color5text:SetTextColor(self:GetColorRGB())
-	DBM:UpdateSpecialWarningOptions()
-end)
 color5.myheight = 104
 
 local SpecialWarnSoundDropDown5 = specWarnFive:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound5", function(value)
 	DBM.Options.SpecialWarningSound5 = value
 end)
-SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 105, -28)
+SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 125, -28)
 SpecialWarnSoundDropDown5.myheight = 0
 
 local flashCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash5")
