@@ -191,7 +191,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	swatch:SetPoint("LEFT")
 
 	local swatchBg = colorSelect:CreateTexture(nil, "BACKGROUND")
-	swatch.background = swatchBg
 	swatchBg:SetSize(16, 16)
 	swatchBg:SetColorTexture(1, 1, 1)
 	swatchBg:SetPoint("CENTER", swatch)
