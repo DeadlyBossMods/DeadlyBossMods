@@ -12,7 +12,7 @@ local DBM_GUI = DBM_GUI
 local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatable, select, type, tonumber, strsplit, math.max, table.insert
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM = DBM
-local CreateTextureMarkup = CreateTextureMarkup
+local CreateTextureMarkup, ColorPickerFrame = CreateTextureMarkup, ColorPickerFrame
 
 local GetSpellDescription = C_Spell.GetSpellDescription or GetSpellDescription
 
@@ -177,7 +177,99 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font, highli
 	return button
 end
 
-function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
+function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
+	local colorSelect = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
+	colorSelect:SetSize(100, 24)
+	colorSelect.myheight = ResetFn and 40 or 24
+	colorSelect.r = 0
+	colorSelect.g = 0
+	colorSelect.b = 0
+
+	local swatch = colorSelect:CreateTexture(nil, "OVERLAY")
+	swatch:SetSize(18, 18)
+	swatch:SetTexture(130939) -- "Interface\\ChatFrame\\ChatFrameColorSwatch"
+	swatch:SetPoint("LEFT")
+
+	local swatchBg = colorSelect:CreateTexture(nil, "BACKGROUND")
+	swatch.background = swatchBg
+	swatchBg:SetSize(16, 16)
+	swatchBg:SetColorTexture(1, 1, 1)
+	swatchBg:SetPoint("CENTER", swatch)
+
+	local text = colorSelect:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	text:SetText(title)
+	text:SetJustifyH("LEFT")
+	text:SetHeight(24)
+	text:SetTextColor(1, 1, 1)
+	text:SetPoint("LEFT", swatch, "RIGHT", 2, 0)
+	text:SetPoint("RIGHT")
+
+	if ResetFn then
+		local resetBtn = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), colorSelect, "UIPanelButtonTemplate")
+		resetBtn:SetPoint("TOPLEFT", swatch, "BOTTOMLEFT", 0, -5)
+		resetBtn:SetSize(64, 12)
+		resetBtn:SetText(L.Reset)
+		resetBtn:SetNormalFontObject(GameFontNormalSmall)
+		resetBtn:SetHighlightFontObject(GameFontNormalSmall)
+		resetBtn:SetScript("OnClick", function()
+			ResetFn(colorSelect)
+		end)
+	end
+
+	colorSelect.SetColorRGB = function(self, r, g, b)
+		colorSelect.r = r
+		colorSelect.g = g
+		colorSelect.b = b
+		swatch:SetVertexColor(r, g, b)
+		text:SetTextColor(r, g, b)
+		if self.CallbackFn then
+			CallbackFn(colorSelect, r, g, b)
+		end
+	end
+	colorSelect.GetColorRGB = function()
+		return ColorPickerFrame:GetColorRGB()
+	end
+	local colorCallback = function(self, r, g, b)
+		if r == self.r and g == self.g and b == self.b then
+			return
+		end
+		self:SetColorRGB(r, g, b)
+		CallbackFn(self, r, g, b)
+		text:SetTextColor(r, g, b)
+	end
+	colorSelect:SetScript("OnClick", function(self)
+		local r1, g1, b1 = self.r, self.g, self.b
+		ColorPickerFrame:Hide()
+		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+		ColorPickerFrame:SetFrameLevel(self:GetFrameLevel() + 10)
+		ColorPickerFrame:SetClampedToScreen(true)
+		if ColorPickerFrame.SetupColorPickerAndShow then -- 10.2.5+
+			ColorPickerFrame:SetupColorPickerAndShow({
+				swatchFunc = function()
+					local r, g, b = ColorPickerFrame:GetColorRGB()
+					colorCallback(self, r, g, b)
+				end,
+				cancelFunc = function()
+					colorCallback(self, r1, g1, b1)
+				end,
+				r = self.r,
+				g = self.g,
+				b = self.b
+			})
+		else
+			ColorPickerFrame.func = function()
+				local r, g, b = ColorPickerFrame:GetColorRGB()
+				colorCallback(self, r, g, b)
+			end
+			ColorPickerFrame.cancelFunc = function()
+				colorCallback(self, r1, g1, b1)
+			end
+			ColorPickerFrame:SetColorRGB(r1, g1, b1)
+			ColorPickerFrame:Show()
+		end
+	end)
+
+	--[[
 	---@class DBMPanelColorSelect: ColorSelect
 	---@field myheight number
 	local colorSelect = CreateFrame("ColorSelect", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
@@ -204,6 +296,7 @@ function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
 		colorTexture2:SetTexCoord(0.25, 1, 0.875, 0)
 		colorSelect:SetColorValueThumbTexture(colorTexture2)
 	end
+	--]]
 	self:SetLastObj(colorSelect)
 	return colorSelect
 end
@@ -365,7 +458,7 @@ do
 		{ text = L.CVoiceThree, value = 3 }
 	})
 
-	function PanelPrototype:CreateCheckButton(name, autoplace, _textLeft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
+	function PanelPrototype:CreateCheckButton(name, autoplace, _, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
 			error("CreateCheckButton: name must not be nil")
 		end
