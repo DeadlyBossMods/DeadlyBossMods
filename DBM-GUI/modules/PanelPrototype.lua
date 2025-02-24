@@ -215,13 +215,13 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		end)
 	end
 
-	colorSelect.SetColorRGB = function(self, r, g, b)
+	colorSelect.SetColorRGB = function(self, r, g, b, save)
 		colorSelect.r = r
 		colorSelect.g = g
 		colorSelect.b = b
 		swatch:SetVertexColor(r, g, b)
 		text:SetTextColor(r, g, b)
-		if self.CallbackFn then
+		if save then
 			CallbackFn(colorSelect, r, g, b)
 		end
 	end
