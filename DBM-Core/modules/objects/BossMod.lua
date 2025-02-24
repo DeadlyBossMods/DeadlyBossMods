@@ -25,7 +25,7 @@ local mt = {__index = bossModPrototype}
 ---@class DBMMod
 ---@field OnCombatStart fun(self: DBMMod, delay: number, startedByCastOrRegenDisabledOrMessage: boolean, startedByEncounter: boolean)
 ---@field OnCombatEnd fun(self: DBMMod, wipe: boolean, delayedSecondCall: boolean?)
----@field StartEngageTimers fun(self: DBMMod, guid: string, cid: number, delay: number)
+---@field StartEngageTimers fun(self: DBMMod, guid: string, cid: number, delay: number, uID: string)
 ---@field OnLeavingCombat fun()
 ---@field EnteringZoneCombat fun(self: DBMMod)
 ---@field LeavingZoneCombat fun(self: DBMMod)

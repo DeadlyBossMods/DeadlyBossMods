@@ -41,7 +41,7 @@ local function ScanEngagedUnits(self, delay)
 			if not ActiveGUIDs[guid] then
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartEngageTimers(guid, cid, delay)
+				self:StartEngageTimers(guid, cid, delay, "mouseover")
 				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 			end
 		end
@@ -53,7 +53,7 @@ local function ScanEngagedUnits(self, delay)
 			if not ActiveGUIDs[guid] then
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartEngageTimers(guid, cid, delay)
+				self:StartEngageTimers(guid, cid, delay, "softenemy")
 				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 			end
 		end
@@ -68,7 +68,7 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, delay)
+					self:StartEngageTimers(guid, cid, delay, id)
 					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
 					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
@@ -87,7 +87,7 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, 0)
+					self:StartEngageTimers(guid, cid, 0, foundUnit)
 					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 				end
 			end
@@ -110,7 +110,7 @@ local function checkForCombat(delay)
 			if lastUsedMod.EnteringZoneCombat then
 				lastUsedMod:EnteringZoneCombat()
 			end
-			if lastUsedMod.StartEngageTimers then
+			if lastUsedMod.StartEngageTimers or private.testBuild then
 				ScanEngagedUnits(lastUsedMod, delay)--Apply only the pre combat delay on initial instant scan
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
@@ -303,7 +303,7 @@ do
 					if not ActiveGUIDs[guid] then
 						ActiveGUIDs[guid] = true
 						local cid = DBM:GetCIDFromGUID(guid)
-						self:StartEngageTimers(guid, cid, scanTime)
+						self:StartEngageTimers(guid, cid, scanTime, unitId)
 						DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..scanTime, 3, nil, true)
 					end
 				end
