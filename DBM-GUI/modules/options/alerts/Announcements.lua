@@ -182,28 +182,28 @@ local color1 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_1, function(_, r
 	DBM.Options.WarningColors[1].g = g
 	DBM.Options.WarningColors[1].b = b
 end, function(self)
-	self:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+	self:SetColorRGB(DBM.DefaultOptions.WarningColors[1].r, DBM.DefaultOptions.WarningColors[1].g, DBM.DefaultOptions.WarningColors[1].b, true)
 end)
 local color2 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_2, function(_, r, g, b)
 	DBM.Options.WarningColors[2].r = r
 	DBM.Options.WarningColors[2].g = g
 	DBM.Options.WarningColors[2].b = b
 end, function(self)
-	self:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+	self:SetColorRGB(DBM.DefaultOptions.WarningColors[2].r, DBM.DefaultOptions.WarningColors[2].g, DBM.DefaultOptions.WarningColors[2].b, true)
 end)
 local color3 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_3, function(_, r, g, b)
 	DBM.Options.WarningColors[3].r = r
 	DBM.Options.WarningColors[3].g = g
 	DBM.Options.WarningColors[3].b = b
 end, function(self)
-	self:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+	self:SetColorRGB(DBM.DefaultOptions.WarningColors[3].r, DBM.DefaultOptions.WarningColors[3].g, DBM.DefaultOptions.WarningColors[3].b, true)
 end)
 local color4 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_4, function(_, r, g, b)
 	DBM.Options.WarningColors[4].r = r
 	DBM.Options.WarningColors[4].g = g
 	DBM.Options.WarningColors[4].b = b
 end, function(self)
-	self:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
+	self:SetColorRGB(DBM.DefaultOptions.WarningColors[4].r, DBM.DefaultOptions.WarningColors[4].g, DBM.DefaultOptions.WarningColors[4].b, true)
 end)
 
 color2.myheight = 0
