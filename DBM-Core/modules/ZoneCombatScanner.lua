@@ -110,7 +110,7 @@ local function checkForCombat(delay)
 			if lastUsedMod.EnteringZoneCombat then
 				lastUsedMod:EnteringZoneCombat()
 			end
-			if lastUsedMod.StartEngageTimers or private.testBuild then
+			if lastUsedMod.StartEngageTimers then
 				ScanEngagedUnits(lastUsedMod, delay)--Apply only the pre combat delay on initial instant scan
 				DBM:Debug("Starting Engaged Unit Scans", 2)
 			end
