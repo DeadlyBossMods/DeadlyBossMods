@@ -585,7 +585,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnOust:Play("carefly")
 		end
 		timerOustCD:Start(nil, args.sourceGUID)
-	elseif spellId == 451600 and self:AntiSpam(5, 2) then
+	elseif spellId == 451600 and self:CheckBossDistance(args.sourceGUID, true, 32825, 60) then
 		self.vb.novaCount = self.vb.novaCount + 1
 		specWarnExpulsionBeam:Show(self.vb.novaCount)
 		specWarnExpulsionBeam:Play("farfromline")
