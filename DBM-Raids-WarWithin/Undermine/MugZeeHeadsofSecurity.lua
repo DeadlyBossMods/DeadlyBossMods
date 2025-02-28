@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1216142 474461 472659 472782 470910 466470 466509 1221302 466518 472458 466545 1221299 1214991 469491 1217791 1215953 1216142 1215481 1223085 463967",
-	"SPELL_CAST_SUCCESS 468658 468694 467380 468728 468794 467379",
+	"SPELL_CAST_SUCCESS 467380 468728 468794 467379",
 	"SPELL_AURA_APPLIED 472631 466476 467202 467225 467380 469369 1215595 1222948 469490 469391 1215898 471419",--1222408
 	"SPELL_AURA_APPLIED_DOSE 466385 469391",
 	"SPELL_AURA_REMOVED 466459 466460 467202 467380 469369 1222948 469490 1215898",--472631
@@ -48,8 +48,6 @@ local warnHHZee										= mod:NewTargetNoFilterAnnounce(466460, 3)
 local warnHHMugZee									= mod:NewTargetNoFilterAnnounce(1222408, 2)
 local warnMoxie										= mod:NewStackAnnounce(466385, 2)
 
-local specWarnElementalCarnage						= mod:NewSpecialWarningSpell(468658, nil, nil, nil, 2, 2)
-local specWarnUncontrolledDestruction				= mod:NewSpecialWarningSpell(468694, nil, nil, nil, 2, 2)
 local specWarnDoubleMindedFury						= mod:NewSpecialWarningSpell(1216142, nil, nil, nil, 3, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(474554, nil, nil, nil, 1, 8)
 
@@ -69,6 +67,7 @@ local specWarnGoldenDripMove						= mod:NewSpecialWarningKeepMove(467202, nil, n
 
 local timerEarthshakerGaolCD						= mod:NewCDCountTimer(35, 474461, nil, nil, nil, 3)
 local timerFrostshatterBootsCD						= mod:NewCDCountTimer(30, 466476, nil, nil, nil, 3)
+local timerSpearCast								= mod:NewCastTimer(8, 466480, nil, nil, nil, 5)
 local timerStormfuryFingerGunCD						= mod:NewCDCountTimer(29, 466509, nil, nil, nil, 3)
 local timerMoltenGoldKnucklesCD						= mod:NewVarCountTimer(40, 466518, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
@@ -102,7 +101,7 @@ local specWarnDoubleWhammy							= mod:NewSpecialWarningDefensive(469491, nil, n
 local specWarnDoubleWhammyVictim					= mod:NewSpecialWarningYou(469491, nil, nil, nil, 1, 17)
 local yellDoubleWhammy								= mod:NewYell(469491)
 local yellDoubleWhammyFades							= mod:NewShortFadesYell(469491)
-local specWarnDoubleWhammyTaunt						= mod:NewSpecialWarningTaunt(469491, nil, nil, nil, 1, 2)
+local specWarnDoubleWhammyTaunt						= mod:NewSpecialWarningTaunt(469391, nil, nil, nil, 1, 2)--Perforating wound is debuff name
 
 local timerUnstableCrawlerMinesCD					= mod:NewCDCountTimer(44.0, 466539, nil, nil, nil, 1)
 local timerGoblinGuidedRocketCD						= mod:NewCDCountTimer(41.9, 467380, nil, nil, nil, 3)
@@ -187,10 +186,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnDoubleMindedFury:Play("stilldanger")
 	elseif spellId == 474461 then
 		self.vb.gaolCount = self.vb.gaolCount + 1
-		if self:IsMythic() then
-			timerEarthshakerGaolCD:Start(self:GetStage(3, 1) and 43.7 or 90, self.vb.gaolCount+1)--Stage 2 guessed
+		if self:GetStage(3, 1) then
+			if not self:IsMythic() and self.vb.gaolCount == 1 then
+				timerEarthshakerGaolCD:Start(35, self.vb.gaolCount+1)
+			end
 		else
-			timerEarthshakerGaolCD:Start(self:GetStage(3, 1) and 35 or 72.1, self.vb.gaolCount+1)
+			if self.vb.gaolCount == 1 then
+				timerEarthshakerGaolCD:Start(self:IsMythic() and 90 or 72.1, self.vb.gaolCount+1)--Stage 2 guessed
+			end
 		end
 	elseif spellId == 472659 then
 		--timerShakedownCD:Start(nil, args.sourceGUID)
@@ -228,27 +231,25 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 466470 then
 		self.vb.frostShatterCount = self.vb.frostShatterCount + 1
-		if self:IsMythic() then
-			timerFrostshatterBootsCD:Start(self:GetStage(3, 1) and 37.4 or 999, self.vb.frostShatterCount+1)--TODO, fix both timers (stage 1 guessed via 1.24857143)
-		else
-			timerFrostshatterBootsCD:Start(self:GetStage(3, 1) and 30 or 999, self.vb.frostShatterCount+1)--TODO, fix stage 2 timer
+		if self:GetStage(3, 1) and not self:IsMythic() and self.vb.frostShatterCount == 1 then
+			timerFrostshatterBootsCD:Start(30, self.vb.frostShatterCount+1)
 		end
 	elseif spellId == 466509 or spellId == 1221302 then
 		self.vb.fingerGunCount = self.vb.fingerGunCount + 1
 		specWarnStormfuryFingerGun:Show(self.vb.fingerGunCount)
 		specWarnStormfuryFingerGun:Play("frontal")
-		if self:IsMythic() then
-			timerStormfuryFingerGunCD:Start(self:GetStage(3, 1) and 36.2 or 999, self.vb.fingerGunCount+1)--TODO, fix both timers (stage 1 guessed via 1.24857143)
-		else
-			timerStormfuryFingerGunCD:Start(self:GetStage(3, 1) and 29 or 999, self.vb.fingerGunCount+1)--TODO, fix stage 2 timer
+		if self:GetStage(3, 1) and not self:IsMythic() and self.vb.fingerGunCount == 1 then
+			timerStormfuryFingerGunCD:Start(29, self.vb.fingerGunCount+1)
 		end
 	elseif spellId == 466518 then
 		self.vb.knucklesCount = self.vb.knucklesCount + 1
-		if self:GetStage(3, 1) then
-			timerMoltenGoldKnucklesCD:Start(self:IsMythic() and 50 or 40, self.vb.knucklesCount+1)
+		if self:GetStage(3, 1) then--Stage less than 3
+			if not self:IsMythic() and self.vb.knucklesCount == 1 then
+				timerMoltenGoldKnucklesCD:Start(40, self.vb.knucklesCount+1)
+			end
 		else
-			--Yes, in stage 2 the cd can be anywhere between 4 and 68 seconds
-			--TODO, More stage 2 data
+			--Yes, in stage 2 (3 internally) the cd can be anywhere between 4 and 68 seconds
+			--TODO, REWORK me with Mythic stage 2 data
 			if self.vb.knucklesCount % 2 == 1 then
 				--Mythic timers guessed/drycoded
 				timerMoltenGoldKnucklesCD:Start(self:IsMythic() and "v5-18.7" or "v4-15", self.vb.knucklesCount+1)
@@ -270,7 +271,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 466545 or spellId == 1221299 then
 		self.vb.sprayPrayCount = self.vb.sprayPrayCount + 1
 		if self:GetStage(3) then
-			timerSprayandPrayCD:Start("v62-68.1", self.vb.sprayPrayCount+1)--Stage 1 timer unknown
+			timerSprayandPrayCD:Start("v62-68.1", self.vb.sprayPrayCount+1)--Not recast in stage 1 after initial
 		end
 	elseif spellId == 1214991 then
 		--timerSurgingArcCD:Start(nil, args.sourceGUID)
@@ -350,13 +351,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 468658 then
-		specWarnElementalCarnage:Show()
-		specWarnElementalCarnage:Play("aesoon")
-	elseif spellId == 468694 then
-		specWarnUncontrolledDestruction:Show()
-		specWarnUncontrolledDestruction:Play("aesoon")
-	elseif spellId == 467380 or spellId == 467379 then
+	if spellId == 467380 or spellId == 467379 then
 		self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
 	--	timerGoblinGuidedRocketCD:Start(nil, self.vb.goblinGuidedRocketCount+1)--Recast time unknown
 	elseif spellId == 468728 then--Mug Taking Charge
@@ -418,6 +413,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFrostshatterBoots:Show()
 			specWarnFrostshatterBoots:Play("targetyou")
+		end
+		if self:AntiSpam(3, 1) then
+			timerSpearCast:Start()
 		end
 	elseif spellId == 467202 then
 		if args:IsPlayer() then
@@ -537,7 +535,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 470089 or spellId == 474554 or spellId == 472057) and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if (spellId == 470089 or spellId == 474554 or spellId == 472057) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -549,9 +547,9 @@ function mod:UNIT_DIED(args)
 	if cid == 233474 then--gallagio goon
 		timerShakedownCD:Stop(args.destGUID)
 		timerPayRespectsCD:Stop(args.destGUID)
-	elseif cid == 231788 then--unstable-cluster-mine
+--	elseif cid == 231788 then--unstable-cluster-mine
 
-	elseif cid == 230316 then--mk-ii-electro-shocker
+--	elseif cid == 230316 then--mk-ii-electro-shocker
 		--timerSurgingArcCD:Stop(args.destGUID)
 --	elseif cid == 230312 then--Volunteer Rocketeer
 

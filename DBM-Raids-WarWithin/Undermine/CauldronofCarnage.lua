@@ -64,25 +64,25 @@ local yellMoltenPhlegmFades							= mod:NewShortFadesYell(1213690)
 local specWarnBlastburnRoarcannon					= mod:NewSpecialWarningMoveAway(472233, nil, 173303, nil, 3, 2)
 local yellBlastburnRoarcannon						= mod:NewShortYell(472233, 173303)
 local yellBlastburnRoarcannonFades					= mod:NewShortFadesYell(472233)
-local specWarnEruptionStomp							= mod:NewSpecialWarningDodgeCount(1214190, nil, nil, nil, 1, 2)
+local specWarnEruptionStomp							= mod:NewSpecialWarningDodgeCount(1214190, nil, 247733, nil, 1, 2)
 
 local timerScrapBombCD								= mod:NewCDCountTimer(97.3, 473650, 37859, nil, nil, 3)--"Bomb" shortname
 local timerMoltenPhlegmCD							= mod:NewCDCountTimer(97.3, 1213690, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerBlastburnRoarcannonCD					= mod:NewCDCountTimer(97.3, 472233, 173303, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Beam" shortname
-local timerEruptionStompCD							= mod:NewCDCountTimer(97.3, 1214190, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerEruptionStompCD							= mod:NewCDCountTimer(97.3, 1214190, 247733, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--"Stomp" shortname
 --Torq the Tempest
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30344))
 local warnGalvanizedSpite							= mod:NewCountAnnounce(472225, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(472225))--Player
 local warnVoltaicImage								= mod:NewTargetNoFilterAnnounce(1213994, 3)
 
-local specWarnStaticChargeHigh						= mod:NewSpecialWarningStack(473994, nil, 75, nil, nil, 1, 6)
-local yellStaticChargeHigh							= mod:NewIconRepeatYell(473994, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
-local specWarnThundderdrumSalvo						= mod:NewSpecialWarningDodgeCount(463840, nil, nil, nil, 2, 2)
+local specWarnStaticChargeHigh						= mod:NewSpecialWarningStack(474159, nil, 75, nil, nil, 1, 6)
+local yellStaticChargeHigh							= mod:NewIconRepeatYell(474159, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
+local specWarnThundderdrumSalvo						= mod:NewSpecialWarningDodgeCount(463900, nil, nil, nil, 2, 2)
 local specWarnVoltaicImage							= mod:NewSpecialWarningRun(1213994, nil, nil, nil, 4, 2, 3)
 local specWarnLightningBash							= mod:NewSpecialWarningDefensive(466178, nil, nil, nil, 1, 2)
 
-local timerStaticChargeCD							= mod:NewCDCountTimer(97.3, 473994, nil, nil, nil, 3)
-local timerThunderdrumSalvoCD						= mod:NewCDCountTimer(97.3, 463840, nil, nil, nil, 3)
+local timerStaticChargeCD							= mod:NewCDCountTimer(97.3, 474159, nil, nil, nil, 3)
+local timerThunderdrumSalvoCD						= mod:NewCDCountTimer(97.3, 463900, nil, nil, nil, 3)
 local timerVoltaicImageCD							= mod:NewCDCountTimer(97.3, 1213994, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerLightningBashCD							= mod:NewCDCountTimer(97.3, 466178, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 

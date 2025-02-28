@@ -43,6 +43,7 @@ mod:RegisterEventsInCombat(
 --TODO, ego swapping? it'll need fancy checked ego amount checks https://www.wowhead.com/ptr-2/spell=467064/checked-ego
 --TODO, if bomb blast can switch targets MID cast, change taunt warning to only fire during cast not after, then rework ego swap mechanics
 --TODO, announce https://www.wowhead.com/ptr-2/spell=469363/fling-giga-bomb flings?
+--TODO, track trick shots? (1220290)
 mod:AddInfoFrameOption(nil, true)
 --Stage One: The House of Chrome
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30490))

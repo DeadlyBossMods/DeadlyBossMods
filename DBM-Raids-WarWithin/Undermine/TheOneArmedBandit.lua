@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 461060 464806 464801 464804 472178 464772 464809 464810 460582 471930 472197 460181 469993 460472 465432 465322 465580 465587 465761 464776",--460847
 	"SPELL_CAST_SUCCESS 465765",--460181
-	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 465009 460973 473278 471927 460430 460472 473195",
+	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 465009 460973 473278 471927 460430 460472 473195 460444 461068",
 	"SPELL_AURA_REFRESH 473195",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 or ability.id = 465761 and type = "begincast" or ability.id = 465765 and type = "cast"
 or (ability.id = 464810 or ability.id = 464809 or ability.id = 464772 or ability.id = 464804 or ability.id = 464801 or ability.id = 464806 or ability.id = 465761 or ability.id = 465432 or ability.id = 465322 or ability.id = 465580) and type = "begincast"
 or ability.id = 461060 and (type = "removebuff")
+or ability.id = 473195 and (type = "applybuff" or type = "refreshbuff")
 or (ability.id = 460582 or ability.id = 472178 or ability.id = 471930) and type = "begincast" or ability.id = 471720 and type = "applybuff"
 or ability.id = 465309 and type = "cast"
 --]]
@@ -49,7 +50,7 @@ local warnTokenBomb									= mod:NewTargetNoFilterAnnounce(472837, 1)
 local warnTokenFlame								= mod:NewTargetNoFilterAnnounce(472828, 1)
 local warnTokenShock								= mod:NewTargetNoFilterAnnounce(472783, 1)
 --Token activations
-local warnFraudDetected								= mod:NewCastAnnounce(464776, 4)
+local warnFraudDetected								= mod:NewCastAnnounce(461068, 4)
 local warnShockandFlame								= mod:NewCountAnnounce(464772, 2)
 local warnShockandBomb								= mod:NewCountAnnounce(464801, 3)
 local warnFlameandBomb								= mod:NewCountAnnounce(464804, 3)
@@ -70,15 +71,15 @@ local timerSpintoWin								= mod:NewBuffActiveTimer(30, 461060, nil, nil, nil, 
 mod:AddNamePlateOption("NPAuraOnGaze", 465009, true)
 --Reel Assistant
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30085))
-local warnWitheringFlames						= mod:NewTargetNoFilterAnnounce(471930, 2)
+local warnWitheringFlames						= mod:NewTargetNoFilterAnnounce(471927, 2)
 
 local specWarnOverload							= mod:NewSpecialWarningInterruptCount(460582, "HasInterrupt", nil, nil, 1, 2)
-local specWarnWitheringFlames					= mod:NewSpecialWarningMoveAway(471930, nil, nil, nil, 1, 2)
-local yellWitheringFlames						= mod:NewShortYell(471930)
-local yellWitheringFlamesFades					= mod:NewShortFadesYell(471930)
+local specWarnWitheringFlames					= mod:NewSpecialWarningMoveAway(471927, nil, nil, nil, 1, 2)
+local yellWitheringFlames						= mod:NewShortYell(471927)
+local yellWitheringFlamesFades					= mod:NewShortFadesYell(471927)
 
 local timerOverloadCD							= mod:NewCDNPTimer(18.2, 460582, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerWitheringFlamesCD					= mod:NewCDNPTimer(18.2, 471930, nil, nil, nil, 3)
+local timerWitheringFlamesCD					= mod:NewCDNPTimer(18.2, 471927, nil, nil, nil, 3)
 --local timerElectricBlastCD					= mod:NewCDNPTimer(3.7, 460847, nil, nil, nil, 3)--3.7-5.2
 
 mod:AddNamePlateOption("NPAuraOnDLC", 460973, true)
@@ -86,6 +87,7 @@ mod:AddNamePlateOption("NPAuraOnDLC", 460973, true)
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local warnCrushed								= mod:NewTargetNoFilterAnnounce(460430, 4)
 local warnFoulExhaust							= mod:NewCountAnnounce(469993, 2)
+local warnHighRoller							= mod:NewYouAnnounce(460444, 1)
 
 local specWarnPayline							= mod:NewSpecialWarningCount(460181, nil, nil, nil, 2, 2)
 local specWarnBigHit							= mod:NewSpecialWarningDefensive(460472, nil, nil, nil, 1, 2)
@@ -98,13 +100,14 @@ local timerTheBigHitCD							= mod:NewVarCountTimer("v17.8-40.5", 460472, nil, n
 --Stage Two: This Game Is Rigged!
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30086))
 local warnPhase2								= mod:NewPhaseAnnounce(2, nil, nil, nil, nil, nil, nil, 2)
-local warnLinkedMachines						= mod:NewCountAnnounce(465432, 2)--Forst cast
-local warnExplosiveJackpot						= mod:NewCountAnnounce(465587, 4)--Berserk (Final cast)
+local warnCheatToWin							= mod:NewCountAnnounce(465309, 4)
+--local warnLinkedMachines						= mod:NewCountAnnounce(465432, 2)--Forst cast
+--local warnExplosiveJackpot					= mod:NewCountAnnounce(465587, 4)--Berserk (Final cast)
 
-local specWarnHotHotHot							= mod:NewSpecialWarningDodgeCount(465322, nil, nil, nil, 2, 2)--Second Cast
-local specWarnScatteredPayout					= mod:NewSpecialWarningSwitchCount(465580, "Dps", nil, nil, 1, 2)--Third Cast
+local specWarnHotHotHot							= mod:NewSpecialWarningDodge(465322, nil, nil, nil, 2, 2)--Second Cast
+local specWarnScatteredPayout					= mod:NewSpecialWarningSwitch(465580, "Dps", nil, nil, 1, 2)--Third Cast
 
-local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 465432, nil, nil, nil, 6)
+local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 473195, L.BaitCoil.." %s)", nil, nil, 6)
 local timerLinkedMachinesCast					= mod:NewCastTimer(7.5, 465432, 28405, nil, nil, 5)--Shorttext knockback
 local timerHotHotHotCD							= mod:NewCDCountTimer(25.2, 465322, nil, nil, nil, 6)
 local timerScatteredPayoutCD					= mod:NewCDCountTimer(25.2, 465580, nil, nil, nil, 6)
@@ -119,6 +122,7 @@ mod.vb.foulExhaustCount = 0
 mod.vb.bigHitCount = 0
 mod.vb.linkedCount = 0
 local castsPerGUID = {}
+local knockback = DBM:GetSpellName(28405)
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -263,8 +267,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 465432 then
 		self.vb.linkedCount = 1
 		---@diagnostic disable-next-line: param-type-mismatch
-		warnLinkedMachines:Show("1/4")
-		timerLinkedMachinesCast:Start(7.5, self.vb.linkedCount)
+		warnCheatToWin:Show("1/4".." "..knockback)
+		timerLinkedMachinesCD:Start(4.5, self.vb.linkedCount)--Bait
+		timerLinkedMachinesCast:Start(7.5, self.vb.linkedCount)--Knockback
 		--new Phase Timers
 		timerFoulExhaustCD:Start("v4.1-4.6", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start("v10.2-10.7", self.vb.paylineCount+1)
@@ -272,7 +277,8 @@ function mod:SPELL_CAST_START(args)
 		timerHotHotHotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465322 then
 		---@diagnostic disable-next-line: param-type-mismatch
-		specWarnHotHotHot:Show("2/4")
+		warnCheatToWin:Show("2/4".." "..DBM_COMMON_L.DEBUFFS)
+		specWarnHotHotHot:Show()
 		specWarnHotHotHot:Play("farfromline")
 		--new Phase Timers
 		timerFoulExhaustCD:Start(4.5, self.vb.foulExhaustCount+1)
@@ -281,7 +287,8 @@ function mod:SPELL_CAST_START(args)
 		timerScatteredPayoutCD:Start(self:IsEasy() and 29.9 or 25.2, 3)
 	elseif spellId == 465580 then
 		---@diagnostic disable-next-line: param-type-mismatch
-		specWarnScatteredPayout:Show("3/4")
+		warnCheatToWin:Show("3/4".." "..DBM_COMMON_L.AOEDAMAGE)
+		specWarnScatteredPayout:Show()
 		specWarnScatteredPayout:Play("targetchange")
 		--new Phase Timers
 		timerTheBigHitCD:Start(3.4, self.vb.bigHitCount+1)
@@ -290,7 +297,7 @@ function mod:SPELL_CAST_START(args)
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465587 then
 		---@diagnostic disable-next-line: param-type-mismatch
-		warnExplosiveJackpot:Show("4/4")
+		warnCheatToWin:Show("4/4")
 		timerExplosiveJackpot:Start()
 	--"<393.42 21:30:17> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(35.1%-100.0%)##nil#465765#Maintenance Cycle#nil#nil#nil#nil#nil#nil",
 	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
@@ -376,7 +383,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBigHitTaunt:Play("tauntboss")
 	elseif spellId == 473195 then
 		self.vb.linkedCount = self.vb.linkedCount + 1
-		timerLinkedMachinesCast:Start(10, self.vb.linkedCount)
+		timerLinkedMachinesCD:Start(15, self.vb.linkedCount+1)--Bait timer
+		timerLinkedMachinesCast:Start(18, self.vb.linkedCount+1)--Knockback timer
+	elseif spellId == 460444 and args:IsPlayer() then
+		warnHighRoller:Show()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -385,7 +395,8 @@ function mod:SPELL_AURA_REFRESH(args)
 	local spellId = args.spellId
 	if spellId == 473195 then
 		self.vb.linkedCount = self.vb.linkedCount + 1
-		timerLinkedMachinesCast:Start(10, self.vb.linkedCount)
+		timerLinkedMachinesCD:Start(15, self.vb.linkedCount+1)--Bait timer
+		timerLinkedMachinesCast:Start(18, self.vb.linkedCount+1)--Knockback timer
 	end
 end
 

@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 466615 471500 1216788 466368 465865 460116 468216",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 466615 471500 460116 468216",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
+	"SPELL_PERIODIC_DAMAGE 459683",
+	"SPELL_PERIODIC_MISSED 459683",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -44,26 +44,26 @@ or ability.id = 460603 and tyep = "begincast" or ability.id = 466615 and type = 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30093))
 ----The Geargrinder (main boss)
 --local warnProtectivePlating						= mod:NewCountAnnounce(466615, 2)--Stacks of plating Remaining
-local warnSpewOil									= mod:NewIncomingCountAnnounce(459666, 2)
+local warnSpewOil									= mod:NewIncomingCountAnnounce(459678, 2)
 local warnIncendiaryFire							= mod:NewIncomingCountAnnounce(468207, 2)
 
 local specWarnUnrelentingcarnage					= mod:NewSpecialWarningSpell(471403, nil, nil, nil, 2, 2)
 local specWarnCallbikers							= mod:NewSpecialWarningSwitchCount(459943, "Dps", nil, nil, 1, 2)
-local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459974, nil, nil, nil, 2, 2)
-local specWarnTankBuster							= mod:NewSpecialWarningDefensive(459627, nil, nil, nil, 1, 2)
-local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(459627, nil, nil, nil, 1, 2)
+local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459978, nil, nil, nil, 2, 2)
+local specWarnTankBuster							= mod:NewSpecialWarningDefensive(465865, nil, nil, nil, 1, 2)
+local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(465865, nil, nil, nil, 1, 2)
 local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For non private version
 local yellIncendiaryFire							= mod:NewShortYell(468216)
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
+local specWarnGTFO									= mod:NewSpecialWarningGTFO(459683, nil, nil, nil, 1, 8)
 
-local timerUnrelentingcarnageCD						= mod:NewAITimer(97.3, 471403, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerUnrelentingcarnageCD						= mod:NewCDCountTimer(97.3, 471403, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerCallbikersCD								= mod:NewCDCountTimer(28.1, 459943, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerSpewOilCD								= mod:NewCDCountTimer(97.3, 459666, nil, nil, nil, 3)
+local timerSpewOilCD								= mod:NewCDCountTimer(97.3, 459678, nil, nil, nil, 3)
 local timerIncendiaryFireCD							= mod:NewCDCountTimer(35.3, 468207, nil, nil, nil, 3)
-local timerBombVoyageCD								= mod:NewCDCountTimer(97.3, 459974, nil, nil, nil, 3)
-local timerTankBusterCD								= mod:NewCDCountTimer(97.3, 459627, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerBombVoyageCD								= mod:NewCDCountTimer(97.3, 459978, nil, nil, nil, 3)
+local timerTankBusterCD								= mod:NewCDCountTimer(97.3, 465865, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddPrivateAuraSoundOption(459669, true, 459666, 1)--Spew Oil
+mod:AddPrivateAuraSoundOption(459669, true, 459678, 1)--Spew Oil
 mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire (Mythic only?)
 ----Geargrinder Biker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30118))
@@ -102,6 +102,8 @@ local allTimers = {
 		[459974] = {5.0, 8.1, 7.9, 8.0, 8.1, 8.0, 7.9, 8.0, 8.0, 8.0},
 		--Tank Buster
 		[459627] = {6.4, 16.7, 17.1, 21.1, 20.3},
+		--Unrelenting Carnage
+		[471403] = {121.6},
 	},
 	["heroic"] = {
 		--Call Bikers
@@ -114,6 +116,8 @@ local allTimers = {
 		[459974] = {5.0, 8.1, 7.9, 8.0, 8.1, 8.0, 7.9, 8.0, 8.0, 8.0},
 		--Tank Buster
 		[459627] = {6.4, 16.7, 17.1, 21.1, 20.3},
+		--Unrelenting Carnage
+		[471403] = {0},
 	},
 	["normal"] = {
 		--Call Bikers
@@ -126,6 +130,8 @@ local allTimers = {
 		[459974] = {7.6, 7.9, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0},
 		--Tank Buster
 		[459627] = {11.2, 17.1, 17.1, 20.7, 20.7},
+		--Unrelenting Carnage
+		[471403] = {0},
 	},
 	--["lfr"] = {
 	--	--Call Bikers
@@ -160,12 +166,12 @@ function mod:OnCombatStart(delay)
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
-	timerUnrelentingcarnageCD:Start(1-delay)--No Table
 	timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1]-delay, 1)
 	timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1]-delay, 1)
 	timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1]-delay, 1)
 	timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1]-delay, 1)
 	timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1]-delay, 1)
+	timerUnrelentingcarnageCD:Start(allTimers[savedDifficulty][471403][1]-delay, 1)
 end
 
 function mod:OnTimerRecovery()
@@ -277,12 +283,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.bombCount = 0
 			self.vb.tankBusterCount = 0
 			--Restart stage 1 timers and end stage 2 timers
-			timerUnrelentingcarnageCD:Start(2)--??
-			timerBombVoyageCD:Start(5, 1)
-			timerTankBusterCD:Start(6.3, 1)
-			timerSpewOilCD:Start(12.4, 1)
-			timerCallbikersCD:Start(20.5, 1)--20.5
-			timerIncendiaryFireCD:Start(30.2, 1)
+			timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1], 1)
+			timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1], 1)
+			timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1], 1)
+			timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1], 1)
+			timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1], 1)
+			timerUnrelentingcarnageCD:Start(allTimers[savedDifficulty][471403][1], 1)
 		end
 	elseif spellId == 1216788 and args:IsPlayer() then
 		specWarnCarryingOil:Show()
@@ -324,15 +330,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 459683 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
