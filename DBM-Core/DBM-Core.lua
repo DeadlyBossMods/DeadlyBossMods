@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.1.5"--Core version
+DBM.DisplayVersion = "11.1.6 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 16--When this is incremented, trigger force disable regardless of major patch
