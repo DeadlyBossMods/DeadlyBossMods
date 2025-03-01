@@ -57,6 +57,7 @@ CL.VERTICAL							= "세로"
 --Mechanics
 CL.BOMB								= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.BOMBS							= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
+CL.BALLS							= "공"
 CL.ORB								= "구슬"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.ORBS								= "구슬"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.RING						= "고리"
@@ -92,6 +93,8 @@ CL.FRONTAL							= "전방 시전"
 CL.RUNAWAY							= "도망가기"
 CL.SPREAD							= "산개"
 CL.SPREADS							= "산개"
+CL.SPREADDEBUFF						= "광역 디버프"
+CL.SPREADDEBUFFS					= "광역 디버프"
 CL.LASER							= "레이저"
 CL.LASERS							= "레이저"
 CL.RIFT								= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
