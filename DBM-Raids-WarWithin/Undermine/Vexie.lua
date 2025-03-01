@@ -28,9 +28,8 @@ mod:RegisterEventsInCombat(
 --TODO, possible infoframe for https://www.wowhead.com/ptr-2/spell=473507/soaked-in-oil on mythic difficulty
 --TODO, find a way to auto mark bikes?
 --TODO, nameplate timer for hotwheels using https://www.wowhead.com/ptr-2/spell=1217853/hot-wheels ? (15)
---TODO, see if the fire spell is NOT private on easier difficulties using https://www.wowhead.com/ptr-2/spell=468216/incendiary-fire
+--TODO, see if the fire spell is still not private on mythic difficulty
 --TODO, detect bomb targets with target scan of 459974?
---TODO, oil slick GTFO?
 --TODO, nameplate aura for passive https://www.wowhead.com/ptr-2/spell=473636/high-maintenance trait?
 --TODO, timer correction for missed interrupts for Tune-Up
 --TODO, nameplate timer for repair CD?
@@ -49,7 +48,7 @@ local warnIncendiaryFire							= mod:NewIncomingCountAnnounce(468207, 2)
 
 local specWarnUnrelentingcarnage					= mod:NewSpecialWarningSpell(471403, nil, nil, nil, 2, 2)
 local specWarnCallbikers							= mod:NewSpecialWarningSwitchCount(459943, "Dps", nil, nil, 1, 2)
-local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459978, nil, nil, nil, 2, 2)
+local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459978, false, nil, 2, 2, 2)--evert 8 seconds (4 on mythic) so off by default
 local specWarnTankBuster							= mod:NewSpecialWarningDefensive(465865, nil, nil, nil, 1, 2)
 local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(465865, nil, nil, nil, 1, 2)
 local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For non private version
@@ -60,7 +59,7 @@ local timerUnrelentingcarnageCD						= mod:NewCDCountTimer(97.3, 471403, nil, ni
 local timerCallbikersCD								= mod:NewCDCountTimer(28.1, 459943, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerSpewOilCD								= mod:NewCDCountTimer(97.3, 459678, nil, nil, nil, 3)
 local timerIncendiaryFireCD							= mod:NewCDCountTimer(35.3, 468207, nil, nil, nil, 3)
-local timerBombVoyageCD								= mod:NewCDCountTimer(97.3, 459978, nil, nil, nil, 3)
+local timerBombVoyageCD								= mod:NewCDCountTimer(8, 459978, nil, nil, nil, 3)
 local timerTankBusterCD								= mod:NewCDCountTimer(97.3, 465865, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(459669, true, 459678, 1)--Spew Oil
@@ -89,6 +88,7 @@ mod.vb.bombCount = 0
 mod.vb.tankBusterCount = 0
 mod.vb.breakdownCount = 0
 local castsPerGUID = {}
+--[[
 local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
@@ -99,7 +99,7 @@ local allTimers = {
 		--Incendiary Fire
 		[468487] = {25.7, 31.0, 25.3},
 		--Bomb Voyage
-		[459974] = {5.0, 8.1, 7.9, 8.0, 8.1, 8.0, 7.9, 8.0, 8.0, 8.0},
+		[459974] = {5.0},--then 8 repeating
 		--Tank Buster
 		[459627] = {6.4, 16.7, 17.1, 21.1, 20.3},
 		--Unrelenting Carnage
@@ -107,13 +107,15 @@ local allTimers = {
 	},
 	["heroic"] = {
 		--Call Bikers
-		[459943] = {20.7, 28.0, 35.4},
+		[459943] = {20.7, 28.0, 28.2},
+		[4599432] = {20.7, 28.0, 33.0},--Variant that occurs after first, in variant it can be 33-35
+		--if self.vb.stageTotality == 3 then
 		--Spew Oil
 		[459671] = {12.2, 21.9, 21.1, 20.3},
 		--Incendiary Fire
 		[468487] = {25.7, 31.0, 25.3},
 		--Bomb Voyage
-		[459974] = {5.0, 8.1, 7.9, 8.0, 8.1, 8.0, 7.9, 8.0, 8.0, 8.0},
+		[459974] = {5.0},--then 8 repeating
 		--Tank Buster
 		[459627] = {6.4, 16.7, 17.1, 21.1, 20.3},
 		--Unrelenting Carnage
@@ -121,15 +123,16 @@ local allTimers = {
 	},
 	["normal"] = {
 		--Call Bikers
-		[459943] = {9.6, 17.2, 17.0, 20.7, 20.7},
+		[459943] = {24.3, 28.1, 34.1},
+		[4599432] = {20.7, 28.0, 35.5},--Variant that occurs after first
 		--Spew Oil
 		[459671] = {15.8, 21.9, 20.6, 20.7, 20.7},
 		--Incendiary Fire
 		[468487] = {34.1, 35.3, 36.5},
 		--Bomb Voyage
-		[459974] = {7.6, 7.9, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0},
+		[459974] = {7.6},--then 8 repeating
 		--Tank Buster
-		[459627] = {11.2, 17.1, 17.1, 20.7, 20.7},
+		[459627] = {9.6, 17.2, 17.0, 20.7, 20.7},
 		--Unrelenting Carnage
 		[471403] = {0},
 	},
@@ -146,6 +149,7 @@ local allTimers = {
 	--	[459627] = {},
 	--},
 }
+--]]
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -159,21 +163,28 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	self:EnablePrivateAuraSound(459669, "poolyou", 18)
 	self:EnablePrivateAuraSound(468486, "flameyou", 12)
-	if self:IsMythic() then
-		savedDifficulty = "mythic"
-	elseif self:IsHeroic() then
-		savedDifficulty = "heroic"
+	if self:IsHard() then--mythic and heroic open up the same
+--		savedDifficulty = "mythic"
+		timerBombVoyageCD:Start(self:IsMythic() and 1.7 or 5-delay, 1)
+		timerTankBusterCD:Start(6-delay, 1)
+		timerSpewOilCD:Start(12.2-delay, 1)
+		timerCallbikersCD:Start(20.7-delay, 1)
+		timerIncendiaryFireCD:Start(25.7-delay, 1)
+
 	else--Combine LFR and Normal
-		savedDifficulty = "normal"
+--		savedDifficulty = "normal"
+		timerBombVoyageCD:Start(7.6-delay, 1)
+		timerTankBusterCD:Start(9.6-delay, 1)
+		timerSpewOilCD:Start(15.8-delay, 1)
+		timerCallbikersCD:Start(24.3-delay, 1)
+		timerIncendiaryFireCD:Start(34.1-delay, 1)
 	end
-	timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1]-delay, 1)
-	timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1]-delay, 1)
-	timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1]-delay, 1)
-	timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1]-delay, 1)
-	timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1]-delay, 1)
-	timerUnrelentingcarnageCD:Start(allTimers[savedDifficulty][471403][1]-delay, 1)
+	if self:IsMythic() then
+		timerUnrelentingcarnageCD:Start(121.6, 1)--Only difficulty observed on
+	end
 end
 
+--[[
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
@@ -183,6 +194,7 @@ function mod:OnTimerRecovery()
 		savedDifficulty = "normal"
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -193,26 +205,22 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bikersCount = self.vb.bikersCount + 1
 		specWarnCallbikers:Show(self.vb.bikersCount)
 		specWarnCallbikers:Play("killmob")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.bikersCount+1)
-		if timer then
-			timerCallbikersCD:Start(timer, self.vb.bikersCount+1)
-		end
+		timerCallbikersCD:Start("v28-36.4", self.vb.bikersCount+1)
 	elseif spellId == 466040 or spellId == 466042 then
 		warnBlazeofGlory:Show()
 	elseif spellId == 459671 then
 		self.vb.spewOilCount = self.vb.spewOilCount + 1
 		warnSpewOil:Show(self.vb.spewOilCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.spewOilCount+1)
-		if timer then
-			timerSpewOilCD:Start(timer, self.vb.spewOilCount+1)
-		end
+		--Mythic and Heroic need special handling for very first stage
+		--Other difficulties don't seem to have that special case
+		--"Spew Oil-459671-npc:225821-0000129545 = pull:12.1, 37.8, 37.7, Stage 2/36.7, Stage 1/49.7, 15.8/65.5/102.2, 21.8, 20.7, 20.7, 20.6, Stage 2/19.5, Stage 1/49.8, 15.7/65.5/85.0, 21.9, 20.6, 20.7, 20.7, 20.6",
+		local timer = self:IsHard() and self.vb.stageTotality == 1 and "v37.1-38.6" or "v20.6-23.2"
+		timerSpewOilCD:Start(timer, self.vb.spewOilCount+1)
 	elseif (spellId == 468216 or spellId == 468487) then--468487 confirmed
 		self.vb.fireCount = self.vb.fireCount + 1
 		warnIncendiaryFire:Show(self.vb.fireCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 468487, self.vb.fireCount+1)
-		if timer then
-			timerIncendiaryFireCD:Start(timer, self.vb.fireCount+1)
-		end
+		local timer = self.vb.stageTotality == 1 and "v25.3-36.5" or "v35.3-36.7"
+		timerIncendiaryFireCD:Start(timer, self.vb.fireCount+1)
 	--elseif spellId == 459974 then
 	--	self.vb.bombCount = self.vb.bombCount + 1
 	--	specWarnBombVoyage:Show(self.vb.bombCount)
@@ -227,10 +235,15 @@ function mod:SPELL_CAST_START(args)
 			specWarnTankBuster:Show()
 			specWarnTankBuster:Play("defensive")
 		end
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.tankBusterCount+1)
-		if timer then
-			timerTankBusterCD:Start(timer, self.vb.tankBusterCount+1)
+		--"Tank Buster-459627-npc:225821-0000129545 = pull:6.0, 23.2, 30.4, 25.5, 22.0, Stage 2/17.2, Stage 1/49.7, 9.8/59.4/76.6, 17.0, 17.0, 20.8, 21.7, 23.1, Stage 2/9.8, Stage 1/49.8, 9.6/59.4/69.2, 17.0, 17.0, 20.7, 20.6, 24.3",
+		local timer
+		--Seems to get spell queued more often on heroic and mythic
+		if self:IsHard() then
+			timer = self.vb.stageTotality == 1 and "v22.6-30.4" or "v16.7-24.4"
+		else
+			timer = self.vb.stageTotality == 1 and "v16.7-21.1" or "v17.0-20.7"
 		end
+		timerTankBusterCD:Start(timer, self.vb.tankBusterCount+1)
 	elseif spellId == 460173 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -273,23 +286,24 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 466615 or spellId == 471500 then--Plating (remove the invalid ID later) (466615 confirmed valid)
-		if self:GetStage(2) then
-			self:SetStage(1)
-			--Reset Counts
-			self.vb.bikersCount = 0
-			self.vb.soakCount = 0
-			self.vb.spewOilCount = 0
-			self.vb.fireCount = 0
-			self.vb.bombCount = 0
-			self.vb.tankBusterCount = 0
-			--Restart stage 1 timers and end stage 2 timers
-			timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1], 1)
-			timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1], 1)
-			timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1], 1)
-			timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1], 1)
-			timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1], 1)
-			timerUnrelentingcarnageCD:Start(allTimers[savedDifficulty][471403][1], 1)
-		end
+		--if self:GetStage(2) then--backup trigger that's slower
+		--	self:SetStage(1)
+		--	--Reset Counts
+		--	self.vb.bikersCount = 0
+		--	self.vb.soakCount = 0
+		--	self.vb.spewOilCount = 0
+		--	self.vb.fireCount = 0
+		--	self.vb.bombCount = 0
+		--	self.vb.tankBusterCount = 0
+		--	--Restart stage 1 timers and end stage 2 timers
+		--	--Same timers as initial stage, minus 3.5
+		--	timerCallbikersCD:Start(allTimers[savedDifficulty][459943][1] - 3.5, 1)
+		--	timerSpewOilCD:Start(allTimers[savedDifficulty][459671][1] - 3.5, 1)
+		--	timerIncendiaryFireCD:Start(allTimers[savedDifficulty][468487][1] - 3.5, 1)
+		--	timerBombVoyageCD:Start(allTimers[savedDifficulty][459974][1] - 3.5, 1)
+		--	timerTankBusterCD:Start(allTimers[savedDifficulty][459627][1] - 3.5, 1)
+		--	timerUnrelentingcarnageCD:Start(allTimers[savedDifficulty][471403][1] - 3.5, 1)
+		--end
 	elseif spellId == 1216788 and args:IsPlayer() then
 		specWarnCarryingOil:Show()
 		specWarnCarryingOil:Play("targetyou")
@@ -327,6 +341,34 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 460116 then
 		timerTuneUp:Stop()
+		if self:GetStage(2) then
+			self:SetStage(1)
+			--Reset Counts
+			self.vb.bikersCount = 0
+			self.vb.soakCount = 0
+			self.vb.spewOilCount = 0
+			self.vb.fireCount = 0
+			self.vb.bombCount = 0
+			self.vb.tankBusterCount = 0
+			--Restart stage 1 timers and end stage 2 timers
+			--Same timers as initial stage, minus 3.5
+			if self:IsHard() then--mythic and heroic open up the same
+				timerBombVoyageCD:Start(5, 1)
+				timerTankBusterCD:Start(6.4, 1)
+				timerSpewOilCD:Start(12.2, 1)
+				timerCallbikersCD:Start(20.7, 1)
+				timerIncendiaryFireCD:Start(25.7, 1)
+			else--Combine LFR and Normal
+				timerBombVoyageCD:Start(7.6, 1)
+				timerTankBusterCD:Start(9.6, 1)
+				timerSpewOilCD:Start(15.8, 1)
+				timerCallbikersCD:Start(24.3, 1)
+				timerIncendiaryFireCD:Start(34.1, 1)
+			end
+			if self:IsMythic() then
+				timerUnrelentingcarnageCD:Start(121.6, 1)--Only difficulty observed on
+			end
+		end
 	end
 end
 
@@ -356,9 +398,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.bombCount = self.vb.bombCount + 1
 		specWarnBombVoyage:Show(self.vb.bombCount)
 		specWarnBombVoyage:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 459974, self.vb.bombCount+1)
-		if timer then
-			timerBombVoyageCD:Start(timer, self.vb.bombCount+1)
-		end
+		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 459974, self.vb.bombCount+1)
+		--if timer then
+			timerBombVoyageCD:Start(self:IsMythic() and 3.8 or 7.8, self.vb.bombCount+1)
+		--end
 	end
 end
