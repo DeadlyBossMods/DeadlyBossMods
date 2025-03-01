@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473276 1217231 1214872 1216508 465232 1218418 1216525 1216414 1215858 466765 1216674 1216699 468791",
 	"SPELL_CAST_SUCCESS 1216887 466860",
-	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344",
-	"SPELL_AURA_APPLIED_DOSE 465917 1218344",
+	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344 1218342 1218319",
+	"SPELL_AURA_APPLIED_DOSE 465917 1218344 1218319",
 	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
@@ -60,40 +60,43 @@ local yellPolarizationGenerator						= mod:NewIconTargetYell(1216802, DBM_CORE_L
 local timerPolarizationGeneratorCD					= mod:NewNextCountTimer(97.3, 1216802, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Main Boss
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
-local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216508, 2)
-local warnScrewUpOver								= mod:NewFadesAnnounce(1216508, 1, nil, nil, nil, nil, nil, 2)
+local warnScrewUp									= mod:NewTargetNoFilterAnnounce(1216509, 2)
+local warnScrewUpOver								= mod:NewFadesAnnounce(1216509, 1, nil, nil, nil, nil, nil, 2)
 local warnScrewedUp									= mod:NewTargetNoFilterAnnounce(1217261, 4, nil, false)
 local warnSonicBoom									= mod:NewCountAnnounce(465232, 2, nil, "Healer")
 --local warnFirecrackerTrap							= mod:NewSpellAnnounce(471308, 2)
 local warnGunkStacks								= mod:NewStackAnnounce(465917, 2, nil, "Tank|Healer")
 
 local specWarnFootBlasters							= mod:NewSpecialWarningCount(1217231, nil, nil, nil, 2, 2)
+local specWarnUnstableShrapnel						= mod:NewSpecialWarningYou(1218342, nil, nil, nil, 1, 17)
 local specWarnWireTransfer							= mod:NewSpecialWarningDodgeCount(1218418, nil, nil, nil, 2, 2)
-local specWarnScrewUp								= mod:NewSpecialWarningRun(1216508, nil, nil, nil, 4, 2)
-local yellScrewUp									= mod:NewYell(1216508)
-local specWarnPyroPartyPack							= mod:NewSpecialWarningDefensive(1214872, nil, nil, nil, 1, 2)--Possibly cull or disable by default
-local specWarnPyroPartyPackTaunt					= mod:NewSpecialWarningTaunt(1214872, nil, nil, nil, 1, 2)
-local specWarnPyroPartyPackRunOut					= mod:NewSpecialWarningMoveAway(1214872, nil, nil, nil, 3, 2)
-local yellPyroPartyPack								= mod:NewYell(1214872)
-local yellPyroPartyPackFades						= mod:NewShortFadesYell(1214872)
+local specWarnScrewUp								= mod:NewSpecialWarningRun(1216509, nil, nil, nil, 4, 2)
+local yellScrewUp									= mod:NewYell(1216509)
+local specWarnPyroPartyPack							= mod:NewSpecialWarningDefensive(1214878, nil, nil, nil, 1, 2)--Possibly cull or disable by default
+local specWarnPyroPartyPackTaunt					= mod:NewSpecialWarningTaunt(1214878, nil, nil, nil, 1, 2)
+local specWarnPyroPartyPackRunOut					= mod:NewSpecialWarningMoveAway(1214878, nil, nil, nil, 3, 2)
+local yellPyroPartyPack								= mod:NewYell(1214878)
+local yellPyroPartyPackFades						= mod:NewShortFadesYell(1214878)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerFootBlastersCD							= mod:NewNextCountTimer(97.3, 1217231, nil, nil, nil, 5, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerWireTransferCD							= mod:NewNextCountTimer(97.3, 1218418, nil, nil, nil, 3)
-local timerScrewUpCD								= mod:NewNextCountTimer(97.3, 1216508, nil, nil, nil, 3)
+local timerScrewUpCD								= mod:NewNextCountTimer(97.3, 1216509, nil, nil, nil, 3)
 local timerSonicBoomCD								= mod:NewNextCountTimer(97.3, 465232, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 --local timerFirecrackerTrapCD						= mod:NewAITimer(97.3, 471308, nil, nil, nil, 3)
-local timerPyroPartyPackCD							= mod:NewNextCountTimer(97.3, 1214872, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerPyroPartyPackCD							= mod:NewNextCountTimer(97.3, 1214878, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Stage Two: Research and Destruction
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30427))
 local warnBetaLaunch								= mod:NewSpellAnnounce(466765, 2, nil, nil, nil, nil, nil, 2)
 local warnUpgradedBloodTech							= mod:NewStackAnnounce(1218344, 2)
+local warnVoidSplotion								= mod:NewCountAnnounce(1218319, 2)
 
 local specWarnGigaDeath								= mod:NewSpecialWarningSpell(468791, nil, nil, nil, 3, 2)--Berserk
 
 local timerBetaLaunchCD								= mod:NewNextCountTimer(97.3, 466765, nil, nil, nil, 6)
 local timerGigaDeathCD								= mod:NewNextTimer(97.3, 468791, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--Berserk
-local timerBleedingEdge								= mod:NewBuffActiveTimer(20, 1215218, nil, nil, nil, 6)
+local timerBleedingEdge								= mod:NewBuffActiveTimer(20, 466860, nil, nil, nil, 6)
+local timerVoidSplotionCD							= mod:NewNextCountTimer(5, 1218319, nil, nil, nil, 3)
 
 --basic
 mod.vb.ActivateInventionsCount = 0
@@ -104,6 +107,7 @@ mod.vb.screwUpCount = 0
 mod.vb.sonicBoomCount = 0
 mod.vb.wireTransferCount = 0
 mod.vb.betaCount = 0
+mod.vb.voidsplotionCount = 0
 local playerStacks = 0
 local savedDifficulty = "normal"
 local allTimers = {
@@ -286,6 +290,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 466765 then--Beta Launch
 		self:SetStage(2)
 		self.vb.betaCount = self.vb.betaCount + 1
+		self.vb.voidsplotionCount = 0
 		timerActivateInventionsCD:Stop()
 		timerFootBlastersCD:Stop()
 		timerPyroPartyPackCD:Stop()
@@ -294,6 +299,7 @@ function mod:SPELL_CAST_START(args)
 		timerWireTransferCD:Stop()
 		warnBetaLaunch:Show()
 		warnBetaLaunch:Play("phasechange")
+		timerVoidSplotionCD:Start(4.9, 1)
 	end
 end
 
@@ -360,6 +366,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1218344 then
 		local amount = args.amount or 1
 		warnUpgradedBloodTech:Show(args.destName, amount)
+	elseif spellId == 1218342 and args:IsPlayer() then
+		specWarnUnstableShrapnel:Show()
+		specWarnUnstableShrapnel:Play("debuffyou")
+	elseif spellId == 1218319 and self:AntiSpam(3, 2) then
+		self.vb.voidsplotionCount = self.vb.voidsplotionCount + 1
+		warnVoidSplotion:Show(self.vb.voidsplotionCount)
+		if self.vb.voidsplotionCount < 4 then
+			timerVoidSplotionCD:Start(5, self.vb.voidsplotionCount+1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

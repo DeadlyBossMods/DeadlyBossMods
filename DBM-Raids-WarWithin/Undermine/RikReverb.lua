@@ -59,7 +59,7 @@ local specWarnSoundCannonSoak						= mod:NewSpecialWarningSoakCount(467606, nil,
 local specWarnEntrancedByCannon						= mod:NewSpecialWarningSwitchCustom(1214598, "Dps", nil, nil, 1, 2, 4)--Could be spammy?
 local specWarnFaultyZap								= mod:NewSpecialWarningMoveAway(466979, nil, nil, nil, 1, 2)
 local yellFaultyZap									= mod:NewYell(466979)
-local specWarnSparkBlastIngition					= mod:NewSpecialWarningSwitchCount(472293, nil, nil, nil, 1, 2)
+local specWarnSparkBlastIngition					= mod:NewSpecialWarningSwitchCount(472306, nil, nil, nil, 1, 2)
 local specWarnTinnitusTaunt							= mod:NewSpecialWarningTaunt(464518, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
@@ -67,7 +67,7 @@ local timerAmplificationCD							= mod:NewCDCountTimer(40, 473748, nil, nil, nil
 local timerEchoingChantCD							= mod:NewCDCountTimer(97.3, 466866, nil, nil, nil, 3)
 local timerSoundCannonCD							= mod:NewCDCountTimer(97.3, 467606, nil, nil, nil, 3)
 local timerFaultyZapCD								= mod:NewCDCountTimer(97.3, 466979, nil, nil, nil, 3)
-local timerSparkBlastIngitionCD						= mod:NewCDCountTimer(97.3, 472293, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerSparkBlastIngitionCD						= mod:NewCDCountTimer(97.3, 472306, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
 
 mod:AddSetIconOption("SetIconOnAmp", 473748, false, 5, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddPrivateAuraSoundOption(469380, true, 467606, 1)
@@ -111,7 +111,7 @@ local allTimers = {
 		--Faulty Zap
 		[466979] = {38.0, 37.0, 24.0},
 		--Spark Blast Ignition
-		[472293] = {17.0, 43.0, 41.2},
+		[472306] = {17.0, 43.0, 41.2},
 	},
 	["heroic"] = {
 		--Amplification
@@ -179,7 +179,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerAmplificationCD:Start(allTimers[savedDifficulty][473748][1]-delay, 1)
 	if self:IsHard() then
-		timerSparkBlastIngitionCD:Start(allTimers[savedDifficulty][472293][1]-delay, 1)
+		timerSparkBlastIngitionCD:Start(allTimers[savedDifficulty][472306][1]-delay, 1)
 	end
 	timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1]-delay, 1)
 	timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1]-delay, 1)
@@ -365,7 +365,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBlaringDropCD:Stop()
 		timerAmplificationCD:Start(allTimers[savedDifficulty][473748][1], self.vb.ampCount+1)
 		if self:IsHard() then
-			timerSparkBlastIngitionCD:Start(allTimers[savedDifficulty][472293][1], self.vb.sparkCount+1)
+			timerSparkBlastIngitionCD:Start(allTimers[savedDifficulty][472306][1], self.vb.sparkCount+1)
 		end
 		timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1], self.vb.chantCount+1)
 		timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1], self.vb.cannonCount+1)
@@ -434,7 +434,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		self.vb.sparkTimerCount = self.vb.sparkTimerCount+1
 		specWarnSparkBlastIngition:Show(self.vb.sparkCount)
 		specWarnSparkBlastIngition:Play("killmob")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 472293, self.vb.sparkTimerCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 472306, self.vb.sparkTimerCount+1)
 		if timer then
 			timerSparkBlastIngitionCD:Start(timer, self.vb.sparkCount+1)
 		end

@@ -119,7 +119,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  The One-Armed Bandit --
 ---------------------------
---L= DBM:GetModLocalization(2644)
+L= DBM:GetModLocalization(2644)
+
+L:SetMiscLocalization({
+	BaitCoil	= "Bait Coil"
+})
 
 ---------------------------
 --  Mug'Zee, Heads of Security --
