@@ -155,7 +155,7 @@ local allTimers = {
 		--Scrap Bomb
 		[473650] = {10.0, 30.0},
 		--Blastburn Roarcannon
-		[472233] = {20.0, 30.0},
+		[472233] = {16.0, 30.0},
 		--Eruption Stomp
 		[1214190] = {30.0, 30.0},
 		--Static Charge
@@ -448,7 +448,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
 		end
-	elseif spellId == 465863 or spellId == 465872 then--Clash Ending
+	elseif (spellId == 465863 or spellId == 465872) and self:AntiSpam(3, 1) then--Clash Ending
 		--Reset timer counts
 		self.vb.scrapBombTimerCount = 0
 		self.vb.moltenPhlegmTimerCount = 0
@@ -526,12 +526,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 1213994 then
 		self.vb.imagesCount = self.vb.imagesCount + 1
-		--pull:29.0, 30.0, 65.0, 30.0, 65.0, 30.0, 65.1, 30.0, 65.0, 30.0, 65.0, 30.0, 65.0, 30.0",
-		if not self.vb.crashGone and self.vb.imagesCount % 2 == 0 then
-			timerVoltaicImageCD:Start(65, self.vb.imagesCount+1)
-		else
-			timerVoltaicImageCD:Start(30, self.vb.imagesCount+1)
-		end
 	elseif spellId == 1213688 then
 		self.vb.moltenPhlegmCount = self.vb.moltenPhlegmCount + 1
 		self.vb.moltenPhlegmTimerCount = self.vb.moltenPhlegmTimerCount + 1
