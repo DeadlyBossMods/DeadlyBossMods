@@ -44,7 +44,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31656))
 local warnLingeringVoltage							= mod:NewCountAnnounce(1217122, 2, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(1217122))--Player
 local warnLingeringVoltageFaded						= mod:NewFadesAnnounce(1217122, 1)--Player
 local warnResonantEchoes							= mod:NewYouAnnounce(468119, 3)
-local warnEntrancedByEchoes							= mod:NewTargetNoFilterAnnounce(1214598, 4)
+local warnEntranced									= mod:NewTargetNoFilterAnnounce(1214598, 4)
 local warnSoundCannon								= mod:NewIncomingCountAnnounce(467606, 2)
 local warnFaultyZap									= mod:NewTargetNoFilterAnnounce(466979, 3)
 local warnTinnitus									= mod:NewStackAnnounce(464518, 2, nil, "Tank|Healer")
@@ -52,11 +52,10 @@ local warnHaywire									= mod:NewSpellAnnounce(466093, 4)
 
 local specWarnAmplification							= mod:NewSpecialWarningDodgeCount(473748, nil, nil, nil, 2, 2)
 local specWarnEchoingChant							= mod:NewSpecialWarningDodgeCount(466866, nil, nil, nil, 2, 2)
---local specWarnEntrancedByEchoes					= mod:NewSpecialWarningYou(472298, nil, nil, nil, 1, 2)
 local specWarnSoundCannonSoakBadQA					= mod:NewSpecialWarningYou(467606, nil, nil, nil, 1, 2, 4)
 local yellSoundCannonSoak							= mod:NewYell(467606, nil, nil, nil, "YELL")
 local specWarnSoundCannonSoak						= mod:NewSpecialWarningSoakCount(467606, nil, nil, nil, 2, 2, 4)
-local specWarnEntrancedByCannon						= mod:NewSpecialWarningSwitchCustom(1214598, "Dps", nil, nil, 1, 2, 4)--Could be spammy?
+local specWarnEntranced								= mod:NewSpecialWarningSwitchCustom(1214598, "Dps", nil, nil, 1, 2, 4)--Could be spammy?
 local specWarnFaultyZap								= mod:NewSpecialWarningMoveAway(466979, nil, nil, nil, 1, 2)
 local yellFaultyZap									= mod:NewYell(466979)
 local specWarnSparkBlastIngition					= mod:NewSpecialWarningSwitchCount(472306, nil, nil, nil, 1, 2)
@@ -67,7 +66,7 @@ local timerAmplificationCD							= mod:NewCDCountTimer(40, 473748, nil, nil, nil
 local timerEchoingChantCD							= mod:NewCDCountTimer(97.3, 466866, nil, nil, nil, 3)
 local timerSoundCannonCD							= mod:NewCDCountTimer(97.3, 467606, nil, nil, nil, 3)
 local timerFaultyZapCD								= mod:NewCDCountTimer(97.3, 466979, nil, nil, nil, 3)
-local timerSparkBlastIngitionCD						= mod:NewCDCountTimer(97.3, 472306, nil, nil, nil, 1, nil, DBM_COMMON_L.HEROIC_ICON)
+local timerSparkBlastIngitionCD						= mod:NewCDCountTimer(97.3, 472306, nil, false, 2, 1, nil, DBM_COMMON_L.HEROIC_ICON)
 
 mod:AddSetIconOption("SetIconOnAmp", 473748, false, 5, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddPrivateAuraSoundOption(469380, true, 467606, 1)
@@ -80,6 +79,7 @@ local specWarnBlaringDrop							= mod:NewSpecialWarningDodgeCount(473260, nil, n
 
 local timerPhaseTransition							= mod:NewStageCountTimer(33, 66911)--Synced spell key with BW for WA compat
 local timerBlaringDropCD							= mod:NewNextCountTimer(8, 473260, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerBlaringDrop								= mod:NewCastTimer(5, 473260, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)
 
 mod.vb.ampCount = 0
 mod.vb.ampIcon = 1
@@ -89,7 +89,7 @@ mod.vb.zapCount = 0
 mod.vb.sparkCount = 0
 mod.vb.sparkIcon = 8
 mod.vb.hypeCount = 0
-mod.vb.dropCount = 0--Does not reset
+mod.vb.dropCount = 0
 --timer counts
 mod.vb.ampTimerCount = 0
 mod.vb.chantTimerCount = 0
@@ -103,7 +103,7 @@ local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
 		--Amplification
-		[473748] = {10.7, 38.1, 41.0},
+		[473748] = {10.5, 38.1, 41.0},
 		--Echoing Chant
 		[466866] = {22.0, 57.5, 32.8},
 		--Sound Cannon
@@ -123,7 +123,7 @@ local allTimers = {
 		--Faulty Zap
 		[466979] = {39.5, 35.5, 26.0},
 		--Spark Blast Ignition
-		[472293] = {15.0, 43.5, 44.7},
+		[472306] = {15.0, 43.5, 44.7},
 	},
 	["normal"] = {
 		--Amplification
@@ -252,8 +252,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.dropCount = self.vb.dropCount + 1
 		specWarnBlaringDrop:Show(self.vb.dropCount)
 		specWarnBlaringDrop:Play("getknockedup")
-		if self.vb.blaringDropCount < 4 then
-			timerBlaringDropCD:Start(nil, self.vb.dropCount+1)
+		timerBlaringDrop:Start()
+		if self.vb.dropCount < 4 then
+			timerBlaringDropCD:Start(self:IsMythic() and 6.6 or 8, self.vb.dropCount+1)
 		end
 	end
 end
@@ -282,13 +283,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnResonantEchoes:Show()
 		end
 	elseif spellId == 472298 or spellId == 1214598 then
-		warnEntrancedByEchoes:CombinedShow(1, args.destName)
+		warnEntranced:CombinedShow(1, args.destName)
 		if not args:IsPlayer() and self:AntiSpam(4, 1) then
-			specWarnEntrancedByCannon:Show(args.destName)
-			specWarnEntrancedByCannon:Play("findmc")
+			specWarnEntranced:Show(args.destName)
+			specWarnEntranced:Play("findmc")
 		end
 	elseif (spellId == 467108 or spellId == 467044) and self:AntiSpam(5, 2, args.destName) then--Pre target debuff / target debuff
-		warnFaultyZap:PreciseShow(4, args.destName)
+		warnFaultyZap:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnFaultyZap:Show()
 			specWarnFaultyZap:Play("scatter")
@@ -299,17 +300,20 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 464518 then
-		local amount = args.amount or 1
-		if amount % 5 == 0 then--Fine tune
-			if not args:IsPlayer() then
-				if amount >= 10 and not DBM:UnitDebuff("player", spellId) then
-					specWarnTinnitusTaunt:Show(args.destName)
-					specWarnTinnitusTaunt:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount % 5 == 0 then--Fine tune
+				if not args:IsPlayer() then
+					if amount >= 10 and not DBM:UnitDebuff("player", spellId) then
+						specWarnTinnitusTaunt:Show(args.destName)
+						specWarnTinnitusTaunt:Play("tauntboss")
+					else
+						warnTinnitus:Show(args.destName, amount)
+					end
 				else
 					warnTinnitus:Show(args.destName, amount)
 				end
-			else
-				warnTinnitus:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 466093 and self:AntiSpam(3, 3) then
@@ -317,17 +321,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1213817 then--Hype Hystle / Hype Fever (final hustle)
 		self:SetStage(2)
 		self.vb.hypeCount = self.vb.hypeCount + 1
-		self.vb.blaringDropCount = 0
+		self.vb.dropCount = 0
 		timerAmplificationCD:Stop()
 		timerEchoingChantCD:Stop()
 		timerSoundCannonCD:Stop()
 		timerFaultyZapCD:Stop()
 		timerSparkBlastIngitionCD:Stop()
-		timerBlaringDropCD:Start(5.2, 1)
+		--timerBlaringDropCD:Start(5.2, 1)--Used after 0.3 seconds first time
 		if self.vb.hypeCount < 3 then
 			specWarnHypeHustle:Show(self.vb.hypeCount)
 			specWarnHypeHustle:Play("phasechange")
-			timerPhaseTransition:Start(savedDifficulty == "mythic" and 32 or 36, 1)
+			timerPhaseTransition:Start(savedDifficulty == "mythic" and 28 or 32, 1)
 		else
 			specWarnHypeFever:Show(self.vb.hypeCount)
 			specWarnHypeFever:Play("stilldanger")
@@ -370,7 +374,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1], self.vb.chantCount+1)
 		timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1], self.vb.cannonCount+1)
 		timerFaultyZapCD:Start(allTimers[savedDifficulty][466979][1], self.vb.zapCount+1)
-		timerPhaseTransition:Start(savedDifficulty == "mythic" and 121 or 115.9, 2)
+		timerPhaseTransition:Start(savedDifficulty == "mythic" and 120 or 115.9, 2)
 	end
 end
 
