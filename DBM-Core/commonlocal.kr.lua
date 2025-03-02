@@ -109,6 +109,8 @@ CL.SWIRLS							= "회오리"--Plural of Swirl
 CL.CHARGES							= "돌진"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES							= "원형 바닥"--As in circles on ground that players need to move out of or need to drop off
 CL.KNOCKUP							= "띄우기"
+CL.NEGATIVE							= "음극"
+CL.POSITIVE							= "양극"
 
 -- Colors
 CL.BLACK	= "검은용"
