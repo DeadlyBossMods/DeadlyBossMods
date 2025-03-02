@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473650 472233 1214190 473994 466178",
 	"SPELL_CAST_SUCCESS 463900",
-	"SPELL_AURA_APPLIED 472222 472225 471660 471557 1213690 472231 1214009",
-	"SPELL_AURA_APPLIED_DOSE 472222 472225 471557",
+	"SPELL_AURA_APPLIED 472222 472225 471660 471557 1213690 472231 1214009 1221826",
+	"SPELL_AURA_APPLIED_DOSE 472222 472225 471557 1221826",
 	"SPELL_AURA_REMOVED 471660 1213690 472231 1214009 465863 465872",
 	"SPELL_PERIODIC_DAMAGE 1214039 463925",
 	"SPELL_PERIODIC_MISSED 1214039 463925",
@@ -41,7 +41,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 465863 or ability.id = 465872) and type = "removebuff"
 --]]
 --General
---local warnTinyTussle								= mod:NewCountAnnounce(1221826, 3)
+local warnTinyTussle								= mod:NewCountAnnounce(1221826, 3, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(471557))--Player Stacks
 local warnKingofCarnage								= mod:NewCountAnnounce(471557, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(471557))--Boss
 
 local specWarnColossalClash							= mod:NewSpecialWarningDodgeCount(465833, nil, nil, nil, 2, 2)
@@ -403,6 +403,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 471557 then
 		warnKingofCarnage:Show(args.amount or 1)
+	elseif spellId == 1221826 and args:IsPlayer() then
+		warnTinyTussle:Show(args.amount or 1)
 	elseif spellId == 1213690 and args:IsPlayer() then
 		specWarnMoltenPhlegm:Schedule(25)
 		specWarnMoltenPhlegm:ScheduleVoice(25, "runout")

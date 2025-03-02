@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 --TODO, possible infoframe for https://www.wowhead.com/ptr-2/spell=473507/soaked-in-oil on mythic difficulty
 --TODO, find a way to auto mark bikes?
 --TODO, nameplate timer for hotwheels using https://www.wowhead.com/ptr-2/spell=1217853/hot-wheels ? (15)
---TODO, see if the fire spell is still not private on mythic difficulty
 --TODO, detect bomb targets with target scan of 459974?
 --TODO, nameplate aura for passive https://www.wowhead.com/ptr-2/spell=473636/high-maintenance trait?
 --TODO, timer correction for missed interrupts for Tune-Up
@@ -51,7 +50,7 @@ local specWarnCallbikers							= mod:NewSpecialWarningSwitchCount(459943, "Dps",
 local specWarnBombVoyage							= mod:NewSpecialWarningDodgeCount(459978, false, nil, 2, 2, 2)--evert 8 seconds (4 on mythic) so off by default
 local specWarnTankBuster							= mod:NewSpecialWarningDefensive(465865, nil, nil, nil, 1, 2)
 local specWarnTankBusterTaunt						= mod:NewSpecialWarningTaunt(465865, nil, nil, nil, 1, 2)
-local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For non private version
+local specWarnIncendiaryFire						= mod:NewSpecialWarningYou(468216, nil, nil, nil, 1, 12)--For some reason, blizzard gave a spell that has a 6 second pre debuff, an additional 4 second pre pre debuff private aura
 local yellIncendiaryFire							= mod:NewShortYell(468216)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(459683, nil, nil, nil, 1, 8)
 
@@ -63,7 +62,7 @@ local timerBombVoyageCD								= mod:NewCDCountTimer(8, 459978, nil, nil, nil, 3
 local timerTankBusterCD								= mod:NewCDCountTimer(97.3, 465865, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(459669, true, 459678, 1)--Spew Oil
-mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire (Mythic only?)
+mod:AddPrivateAuraSoundOption(468486, true, 468207, 2)--Incendiary Fire--For some reason, blizzard gave a spell that has a 6 second pre debuff, an additional 4 second pre pre debuff private aura
 ----Geargrinder Biker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30118))
 local warnBlazeofGlory								= mod:NewCastAnnounce(466040, 2)

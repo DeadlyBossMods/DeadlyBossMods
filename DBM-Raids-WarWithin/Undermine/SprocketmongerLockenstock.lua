@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473276 1217231 1214872 1216508 465232 1218418 1216525 1216414 1215858 466765 1216674 1216699 468791",
-	"SPELL_CAST_SUCCESS 1216887 466860",
-	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344 1218342 1218319",
+	"SPELL_CAST_SUCCESS 1217355 466860",
+	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344 1218342 1218319 1217357 1217358",
 	"SPELL_AURA_APPLIED_DOSE 465917 1218344 1218319",
 	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -53,9 +53,10 @@ local warnPolarizationGenerator						= mod:NewIncomingCountAnnounce(1216802, 3)
 local warnNegativeRemoved							= mod:NewFadesAnnounce(1216934, 1)
 local warnPositiveRemoved							= mod:NewFadesAnnounce(1216911, 1)
 
-local specWarnNegative								= mod:NewSpecialWarningYou(1216934, nil, nil, nil, 1, 13)
-local specWarnPositive								= mod:NewSpecialWarningYou(1216911, nil, nil, nil, 1, 13)
-local yellPolarizationGenerator						= mod:NewIconTargetYell(1216802, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon)
+local specWarnNegative								= mod:NewSpecialWarningYou(1216934, nil, nil, nil, 1, 13, 4)
+local specWarnPositive								= mod:NewSpecialWarningYou(1216911, nil, nil, nil, 1, 13, 4)
+local specWarnPolGen								= mod:NewSpecialWarning("specWarnPolGen", nil, nil, nil, 1, 13, 4, nil, 1216802)
+local yellPolarizationGenerator						= mod:NewIconTargetYell(1216802, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon, false, 2)
 
 local timerPolarizationGeneratorCD					= mod:NewNextCountTimer(97.3, 1216802, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Main Boss
@@ -109,6 +110,7 @@ mod.vb.wireTransferCount = 0
 mod.vb.betaCount = 0
 mod.vb.voidsplotionCount = 0
 local playerStacks = 0
+local lastPlayerCharge = 0--1 pos 2 neg
 local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
@@ -160,6 +162,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wireTransferCount = 0
 	self.vb.betaCount = 0
 	playerStacks = 0
+	lastPlayerCharge = 0--1 pos 2 neg
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerPolarizationGeneratorCD:Start(4-delay)
@@ -183,6 +186,11 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
+		if DBM:UnitDebuff("player", 1216934) then
+			lastPlayerCharge = 2
+		elseif DBM:UnitDebuff("player", 1216911) then
+			lastPlayerCharge = 1
+		end
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else
@@ -305,7 +313,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 1216887 then
+	if spellId == 1217355 then
 		self.vb.thadiusCount = self.vb.thadiusCount + 1
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.thadiusCount+1)
@@ -326,12 +334,28 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNegative:Show()
 			specWarnNegative:Play("negative")
 			yellPolarizationGenerator:Yell(7, "")--Red X
+			lastPlayerCharge = 2
 		end
 	elseif spellId == 1216911 then
 		if args:IsPlayer() then
 			specWarnPositive:Show()
 			specWarnPositive:Play("positive")
 			yellPolarizationGenerator:Yell(6, "")--Blue Square
+			lastPlayerCharge = 1
+		end
+	elseif spellId == 1217357 then--Changing to posi
+		if args:IsPlayer() and lastPlayerCharge == 2 then
+			specWarnPolGen:Show(BLUE_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.POSITIVE))
+			specWarnPolGen:Play("positive")
+			yellPolarizationGenerator:Yell(6, "")--Blue Square
+			lastPlayerCharge = 1
+		end
+	elseif spellId == 1217358 then--Changing to neg
+		if args:IsPlayer() and lastPlayerCharge == 1 then
+			specWarnPolGen:Show(RED_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.NEGATIVE))
+			specWarnPolGen:Play("negative")
+			yellPolarizationGenerator:Yell(7, "")--Red X
+			lastPlayerCharge = 2
 		end
 	elseif spellId == 465917 then
 		local amount = args.amount or 1
@@ -426,7 +450,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerActivateInventionsCD:Start(30, 1)
 		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
 
-		timerBetaLaunchCD:Start(120, self.vb.betaCount+1)
+		if self.vb.betaCount == 2 then
+			timerGigaDeathCD:Start(120)
+		else
+			timerBetaLaunchCD:Start(120, self.vb.betaCount+1)
+		end
 --		timerWireTransferCD:Start(1)--Used instantly
 	end
 end
