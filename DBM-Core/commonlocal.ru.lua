@@ -109,6 +109,8 @@ CL.SWIRLS					= "Вихри"
 CL.CHARGES					= "Атака босса"--По идее так правильно
 CL.CIRCLES					= "Круги"
 CL.KNOCKUP					= "Столкновение"
+CL.NEGATIVE					= "Отрицательно"
+CL.POSITIVE					= "Положительно"
 
 -- Colors
 CL.BLACK	= "Черный"
