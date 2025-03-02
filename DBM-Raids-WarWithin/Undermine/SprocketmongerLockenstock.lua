@@ -266,6 +266,9 @@ function mod:SPELL_CAST_START(args)
 			timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1], 1)
 			if self:IsHard() then
 				timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
+				if self:IsMythic() then
+					timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1], 1)
+				end
 			end
 			timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
 			timerActivateInventionsCD:Start(30, 1)
@@ -443,7 +446,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:IsHard() then
 			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
 			if self:IsMythic() then
-				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217231][1], 1)
+				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1], 1)
 			end
 		end
 		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
