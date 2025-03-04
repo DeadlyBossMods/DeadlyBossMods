@@ -303,9 +303,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 5 == 0 then--Fine tune
+			if amount % 4 == 0 then--Fine tune
 				if not args:IsPlayer() then
-					if amount >= 10 and not DBM:UnitDebuff("player", spellId) then
+					if amount >= 8 and not DBM:UnitDebuff("player", spellId) then
 						specWarnTinnitusTaunt:Show(args.destName)
 						specWarnTinnitusTaunt:Play("tauntboss")
 					else
