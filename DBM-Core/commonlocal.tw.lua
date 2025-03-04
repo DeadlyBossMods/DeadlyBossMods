@@ -57,6 +57,7 @@ CL.VERTICAL					= "垂直"
 --Mechanics
 CL.BOMB						= "炸彈"
 CL.BOMBS					= "炸彈"
+CL.BALLS					= "球"
 CL.ORB						= "球"
 CL.ORBS						= "球"
 CL.RING						= "環"
@@ -92,6 +93,8 @@ CL.FRONTAL					= "正面攻擊"
 CL.RUNAWAY					= "快躲開"
 CL.SPREAD					= "分散"
 CL.SPREADS					= "分散"
+CL.SPREADDEBUFF				= "傳播減益"
+CL.SPREADDEBUFFS			= "傳播減益"
 CL.LASER					= "雷射"
 CL.LASERS					= "雷射"
 CL.RIFT						= "裂隙"--Often has auto localized alternatives, but still translated for BW aura matching when needed
@@ -106,6 +109,8 @@ CL.SWIRLS					= "迴旋"--Plural of Swirl
 CL.CHARGES					= "衝鋒"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES					= "圓圈"--As in circles on ground that players need to move out of or need to drop off
 CL.KNOCKUP					= "敲擊"
+CL.NEGATIVE					= "負極"
+CL.POSITIVE					= "正極"
 
 -- Colors
 CL.BLACK	= "黑"
