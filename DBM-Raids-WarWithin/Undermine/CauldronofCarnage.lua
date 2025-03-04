@@ -277,6 +277,9 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnRaisedGuard or self.Options.NPFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	if self.Options.Infoframe then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:OnTimerRecovery()
@@ -299,7 +302,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnScrapBomb:Play("helpsoak")
 		end
 		if self.vb.crashGone then
-			timerScrapBombCD:Start(65, self.vb.scrapbombCount+1)
+			timerScrapBombCD:Start(30, self.vb.scrapbombCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.scrapBombTimerCount+1)
 			if timer then
@@ -310,7 +313,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.cannonCount = self.vb.cannonCount + 1
 		self.vb.cannonTimerCount = self.vb.cannonTimerCount + 1
 		if self.vb.crashGone then
-			timerBlastburnRoarcannonCD:Start(65, self.vb.cannonCount+1)
+			timerBlastburnRoarcannonCD:Start(30, self.vb.cannonCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.cannonTimerCount+1)
 			if timer then
@@ -325,7 +328,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnEruptionStomp:Play("watchstep")
 		end
 		if self.vb.crashGone then
-			timerEruptionStompCD:Start(65, self.vb.stompCount+1)
+			timerEruptionStompCD:Start(30, self.vb.stompCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.stompTimerCount+1)
 			if timer then

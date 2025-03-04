@@ -125,15 +125,15 @@ local allTimers = {
 		--Spark Blast Ignition
 		[472306] = {15.0, 43.5, 44.7},
 	},
-	["normal"] = {
+	["normal"] = {--LFR confirmed
 		--Amplification
-		[473748] = {10.6, 40.2},
+		[473748] = {9.7, 40.2, 40.0},
 		--Echoing Chant
-		[466866] = {23.0, 48.0, 31.5},
+		[466866] = {23.0, 58.5, 28.5},
 		--Sound Cannon
-		[467606] = {30.1, 49.5},
+		[467606] = {32.0, 35.0},
 		--Faulty Zap
-		[466979] = {40.5, 34.5},
+		[466979] = {43.5, 31.5, 26.5},
 	},
 }
 
@@ -184,7 +184,7 @@ function mod:OnCombatStart(delay)
 	timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1]-delay, 1)
 	timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1]-delay, 1)
 	timerFaultyZapCD:Start(allTimers[savedDifficulty][466979][1]-delay, 1)
-	timerPhaseTransition:Start(savedDifficulty == "mythic" and 121 or 115.9, 2)
+	timerPhaseTransition:Start(121, 2)
 	self:EnablePrivateAuraSound(469380, "lineyou", 17)--Register private aura even though it's unneeded right now since blizzard forgot about target scanning on two bosses
 	if self.Options.NPAuraOnResonance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -374,7 +374,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEchoingChantCD:Start(allTimers[savedDifficulty][466866][1], self.vb.chantCount+1)
 		timerSoundCannonCD:Start(allTimers[savedDifficulty][467606][1], self.vb.cannonCount+1)
 		timerFaultyZapCD:Start(allTimers[savedDifficulty][466979][1], self.vb.zapCount+1)
-		timerPhaseTransition:Start(savedDifficulty == "mythic" and 120 or 115.9, 2)
+		timerPhaseTransition:Start(120, 2)
 	end
 end
 
