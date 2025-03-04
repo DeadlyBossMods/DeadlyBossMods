@@ -6196,7 +6196,7 @@ do
 			local usedDifficulty = mod.engagedDiff or difficulties.savedDifficulty
 			local usedDifficultyText = mod.engagedDiffText or difficulties.difficultyText
 			local usedDifficultyIndex = mod.engagedDiffIndex or difficulties.difficultyIndex
-			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier
+			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier or 0
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if wipe and mod.stats and not mod.noStatistics then
