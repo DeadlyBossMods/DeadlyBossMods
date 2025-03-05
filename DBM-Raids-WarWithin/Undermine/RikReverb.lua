@@ -125,11 +125,11 @@ local allTimers = {
 		--Spark Blast Ignition
 		[472306] = {15.0, 43.5, 44.7},
 	},
-	["normal"] = {--LFR confirmed
+	["normal"] = {--LFR and normal confirmed
 		--Amplification
-		[473748] = {9.7, 40.2, 40.0},
+		[473748] = {9.7, 40.2, 49.0},
 		--Echoing Chant
-		[466866] = {23.0, 58.5, 28.5},
+		[466866] = {21.0, 58.5, 28.5},
 		--Sound Cannon
 		[467606] = {32.0, 35.0},
 		--Faulty Zap

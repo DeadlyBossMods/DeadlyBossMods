@@ -127,7 +127,7 @@ local allTimers = {
 		--Static Charge
 		[473994] = {6.0},
 		--Thunderdrum Salvo
-		[463840] = {10.0, 30.1},
+		[463900] = {10.0, 30.1},
 		--Voltaic Image
 		[1213994] = {29.1},--Mythic removed 2nd cast that heroic had
 		--Lightning Bash
@@ -135,23 +135,23 @@ local allTimers = {
 	},
 	["heroic"] = {
 		--Scrap Bomb
-		[473650] = {9.0, 24.0, 24.0},
+		[473650] = {9.0, 23.0, 24.0},
 		--Molten Phlegm
 		[1213688] = {47.6},
 		--Blastburn Roarcannon
-		[472233] = {15.1, 24.0, 24.0},
+		[472233] = {15.0, 24.0, 21.0},
 		--Eruption Stomp
-		[1214190] = {27.0, 24.0},
+		[1214190] = {26.0, 25.0},
 		--Static Charge
 		[473994] = {6.0},
 		--Thunderdrum Salvo
-		[463840] = {10.0, 30.0},
+		[463900] = {10.0, 30.0},
 		--Voltaic Image
 		[1213994] = {29.0, 30.0},
 		--Lightning Bash
-		[466178] = {21.1, 30.0},
+		[466178] = {21.0, 30.0},
 	},
-	["normal"] = {--Normal has slower pacing
+	["normal"] = {--Normal and LFR same slower pacing
 		--Scrap Bomb
 		[473650] = {10.0, 30.0},
 		--Blastburn Roarcannon
@@ -247,7 +247,7 @@ function mod:OnCombatStart(delay)
 	timerEruptionStompCD:Start(allTimers[savedDifficulty][1214190][1]-delay, 1)
 	--Torq the Tempest
 	timerStaticChargeCD:Start(allTimers[savedDifficulty][473994][1]-delay, 1)
-	timerThunderdrumSalvoCD:Start(allTimers[savedDifficulty][463840][1]-delay, 1)
+	timerThunderdrumSalvoCD:Start(allTimers[savedDifficulty][463900][1]-delay, 1)
 	if self:IsHard() then
 		timerVoltaicImageCD:Start(allTimers[savedDifficulty][1213994][1]-delay, 1)
 		timerMoltenPhlegmCD:Start(allTimers[savedDifficulty][1213688][1]-delay, 1)
@@ -470,7 +470,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEruptionStompCD:Start(allTimers[savedDifficulty][1214190][1], self.vb.stompCount+1)
 		--Torq the Tempest
 		timerStaticChargeCD:Start(allTimers[savedDifficulty][473994][1], self.vb.staticChargeCount+1)
-		timerThunderdrumSalvoCD:Start(allTimers[savedDifficulty][463840][1], self.vb.salvoCount+1)
+		timerThunderdrumSalvoCD:Start(allTimers[savedDifficulty][463900][1], self.vb.salvoCount+1)
 		if self:IsHard() then
 			timerVoltaicImageCD:Start(allTimers[savedDifficulty][1213994][1], self.vb.imagesCount+1)
 			timerMoltenPhlegmCD:Start(allTimers[savedDifficulty][1213688][1], self.vb.moltenPhlegmCount+1)
