@@ -133,14 +133,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	timerPaylineCD:Start(string.format("v%s-%s", 2.9-delay, 4.1-delay), 1)
 	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.1-delay, 10-delay), 1)
-
 	if self:IsMythic() then
 		--Seem flipped on mythic (but could also be because of boss kiting)
 		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)--15 placeholder
 		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
 	else
 		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.3-delay), 1)
-		timerSpintoWinCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
+		timerSpintoWinCD:Start(string.format("v%s-%s", 18.0-delay, 20.6-delay), 1)
 	end
 	self:EnablePrivateAuraSound(465325, "lineyou", 17)
 	if self.Options.NPAuraOnGaze or self.Options.NPAuraOnDLC then
@@ -191,14 +190,14 @@ function mod:SPELL_CAST_START(args)
 		timerPaylineCD:Stop()
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
-		if spellId == 464806 then--Flame and coin has custom timers
-			timerFoulExhaustCD:Start("v11.4-12.2", self.vb.foulExhaustCount+1)
-			timerPaylineCD:Start("v17.5-24", self.vb.paylineCount+1)
-			timerTheBigHitCD:Start("v23.6-28.9", self.vb.bigHitCount+1)
+		if spellId == 464806 then--Flame and Coin has unique sequence
+			timerTheBigHitCD:Start("v11.9-12.7", self.vb.bigHitCount+1)
+			timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
+			timerPaylineCD:Start("v24-25", self.vb.paylineCount+1)
 		else
-			timerPaylineCD:Start("v4.4-5.2", self.vb.paylineCount+1)
-			timerFoulExhaustCD:Start("v9.5-10.2", self.vb.foulExhaustCount+1)
-			timerTheBigHitCD:Start("v14.9-16.3", self.vb.bigHitCount+1)
+			timerFoulExhaustCD:Start("v9.5-10.7", self.vb.foulExhaustCount+1)
+			timerTheBigHitCD:Start("v15.5-16.7", self.vb.bigHitCount+1)
+			timerPaylineCD:Start("v21.6-22.6", self.vb.paylineCount+1)
 		end
 	elseif spellId == 464776 then--Fraud Detected
 		warnFraudDetected:Show()
@@ -206,6 +205,7 @@ function mod:SPELL_CAST_START(args)
 		timerPaylineCD:Stop()
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
+		--TODO, FIX ME. these are old PTR values
 		timerPaylineCD:Start(5.7, self.vb.paylineCount+1)
 		timerFoulExhaustCD:Start(10.6, self.vb.foulExhaustCount+1)
 		timerTheBigHitCD:Start(16.6, self.vb.bigHitCount+1)
@@ -246,14 +246,16 @@ function mod:SPELL_CAST_START(args)
 		--NOTE, Mythic reworked how timers work, so we have no idea what heroic and normal look like now
 		--For now, we assume others are same
 		if self:IsHard() and self:GetStage(1) then
-			timerPaylineCD:Start("v26.0-27.1", self.vb.paylineCount+1)
+			timerPaylineCD:Start("v41.1-42.8", self.vb.paylineCount+1)
 		end
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
 		if self:GetStage(1) then
-			--33.2 for all except flame and coin which makes it 36
-			timerFoulExhaustCD:Start("v32.8-36.6", self.vb.foulExhaustCount+1)
+			timerFoulExhaustCD:Start("v30.6-31.8", self.vb.foulExhaustCount+1)
+		--Custom condition where it gets a 2nd cast due to CD of cheat to win being 30 instead of 25
+		elseif self:GetStage(2) and self:IsEasy() and self.vb.spinCount == 2 then
+			timerFoulExhaustCD:Start("v25.5", self.vb.foulExhaustCount+1)
 		end
 	elseif spellId == 460472 then
 		self.vb.bigHitCount = self.vb.bigHitCount + 1
@@ -262,10 +264,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnBigHit:Play("defensive")
 		end
 		if self:GetStage(1) then
-			timerTheBigHitCD:Start("v18.2-21.5", self.vb.bigHitCount+1)
+			timerTheBigHitCD:Start("v18.7-24.4", self.vb.bigHitCount+1)
+		elseif self:GetStage(2) and self.vb.spinCount == 3 then
+			timerTheBigHitCD:Start(18.2, self.vb.bigHitCount+1)
 		end
 	elseif spellId == 465432 then
 		self.vb.linkedCount = 1
+		self.vb.spinCount = 1
 		---@diagnostic disable-next-line: param-type-mismatch
 		warnCheatToWin:Show("1/4".." "..knockback)
 		timerLinkedMachinesCD:Start(4.5, self.vb.linkedCount)--Bait
@@ -273,19 +278,22 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers
 		timerFoulExhaustCD:Start("v4.1-4.6", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start("v10.2-10.7", self.vb.paylineCount+1)
-		timerTheBigHitCD:Start(15.1, self.vb.bigHitCount+1)
+		timerTheBigHitCD:Start("v15.1-15.5", self.vb.bigHitCount+1)
 		timerHotHotHotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465322 then
+		self.vb.spinCount = 2
 		---@diagnostic disable-next-line: param-type-mismatch
 		warnCheatToWin:Show("2/4".." "..DBM_COMMON_L.DEBUFFS)
 		specWarnHotHotHot:Show()
 		specWarnHotHotHot:Play("farfromline")
 		--new Phase Timers
-		timerFoulExhaustCD:Start(4.5, self.vb.foulExhaustCount+1)
-		timerTheBigHitCD:Start(10.7, self.vb.bigHitCount+1)
-		timerPaylineCD:Start(16.7, self.vb.paylineCount+1)
+		timerFoulExhaustCD:Stop()--Just to cancel run over from the custom 2nd cast between linked and hot
+		timerFoulExhaustCD:Start(self:IsEasy() and 28.9 or 3.3, self.vb.foulExhaustCount+1)
+		timerTheBigHitCD:Start("v4.6-10.3", self.vb.bigHitCount+1)--This one gets a little screwed up
+		timerPaylineCD:Start("v15.5-18", self.vb.paylineCount+1)
 		timerScatteredPayoutCD:Start(self:IsEasy() and 29.9 or 25.2, 3)
 	elseif spellId == 465580 then
+		self.vb.spinCount = 3
 		---@diagnostic disable-next-line: param-type-mismatch
 		warnCheatToWin:Show("3/4".." "..DBM_COMMON_L.AOEDAMAGE)
 		specWarnScatteredPayout:Show()
@@ -296,8 +304,12 @@ function mod:SPELL_CAST_START(args)
 		timerPaylineCD:Start(17.9, self.vb.paylineCount+1)
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465587 then
+		self.vb.spinCount = 4
 		---@diagnostic disable-next-line: param-type-mismatch
 		warnCheatToWin:Show("4/4")
+		timerTheBigHitCD:Stop()
+		timerFoulExhaustCD:Stop()
+		timerPaylineCD:Stop()
 		timerExplosiveJackpot:Start()
 	--"<393.42 21:30:17> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(35.1%-100.0%)##nil#465765#Maintenance Cycle#nil#nil#nil#nil#nil#nil",
 	--"<400.42 21:30:24> [CLEU] SPELL_CAST_START#Vehicle-0-5769-2769-2058-228458-00000ABC32#One-Armed Bandit(34.7%-0.0%)##nil#465761#Rig the Game!#nil#nil#nil#nil#nil#nil",
