@@ -223,10 +223,6 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnPyroPartyPack:Show()
 			specWarnPyroPartyPack:Play("defensive")
-		elseif playerStacks < 3 then
-			local bossTarget = self:GetBossTarget(args.sourceGUID, true) or DBM_COMMON_L.UNKNOWN
-			specWarnPyroPartyPackTaunt:Show(bossTarget)
-			specWarnPyroPartyPackTaunt:Play("tauntboss")
 		end
 	elseif spellId == 1216508 then
 		self.vb.screwUpCount = self.vb.screwUpCount + 1
@@ -374,6 +370,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPyroPartyPackRunOut:Play("runout")
 			yellPyroPartyPack:Yell()
 			yellPyroPartyPackFades:Countdown(spellId)
+		else
+			specWarnPyroPartyPackTaunt:Show(args.destName)
+			specWarnPyroPartyPackTaunt:Play("tauntboss")
 		end
 	elseif spellId == 1216509 then
 		if args:IsPlayer() then
