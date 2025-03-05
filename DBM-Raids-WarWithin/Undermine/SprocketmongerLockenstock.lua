@@ -128,11 +128,11 @@ local allTimers = {
 	},
 	["heroic"] = {
 		--Foot Blasters
-		[1217231] = {12.1, 62.0, 31.0},
+		[1217231] = {12.0, 62.0},
 		--Wire Transfer
-		[1218418] = {0, 40.9, 28.0, 28.0},
+		[1218418] = {0, 40.9, 56.0},
 		--Screw Up
-		[1216508] = {47.1, 33.0, 32.0},
+		[1216508] = {47.0, 33.0, 32.0},
 		--Sonic Boom
 		[465232] = {6.0, 28.0, 29.0, 30.0},
 		--Pyro Party Pack
@@ -140,13 +140,13 @@ local allTimers = {
 	},
 	["normal"] = {
 		--Wire Transfer
-		[1218418] = {0, 40.9, 30.0, 30.0},
+		[1218418] = {2.0, 39.0, 60.0},
 		--Screw Up
-		[1216508] = {16.0, 34.1, 30.9},
+		[1216508] = {47.0, 31.0, 31.0},
 		--Sonic Boom
-		[465232] = {6.1, 29.9, 30.0, 30.0},
+		[465232] = {8.0, 28.0, 27.0, 32.0},
 		--Pyro Party Pack
-		[1214872] = {23.1, 32.0, 30.0, 23.0},
+		[1214872] = {20.0, 34.0, 30.0},
 	},
 }
 
@@ -174,6 +174,8 @@ function mod:OnCombatStart(delay)
 	timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1]-delay, 1)
 	if self:IsHard() then
 		timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1]-delay, 1)
+	else
+		timerWireTransferCD:Start(2-delay, 1)--delayed by 2 seconds on normal/LFR
 	end
 	timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1]-delay, 1)
 	timerActivateInventionsCD:Start(30-delay, 1)
@@ -318,7 +320,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerPolarizationGeneratorCD:Start(timer, self.vb.thadiusCount+1)
 		end
 	elseif spellId == 466860 then
-		timerBleedingEdge:Start()--20
+		timerBleedingEdge:Start(self:IsEasy() and 10 or 20)
 		--Start reset timers here instead?
 		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
 	end

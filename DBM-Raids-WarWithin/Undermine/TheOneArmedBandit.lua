@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		elseif self:IsHeroic() then
 			timerSpintoWinCD:Start("v60.9-62.1", self.vb.spinCount+1)
 		else
-			timerSpintoWinCD:Start("v80.4-85.1", self.vb.spinCount+1)
+			timerSpintoWinCD:Start("v80.4-86.7", self.vb.spinCount+1)
 		end
 		--Stop other timers?
 		--timerPaylineCD:Stop()
@@ -273,8 +273,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spinCount = 1
 		---@diagnostic disable-next-line: param-type-mismatch
 		warnCheatToWin:Show("1/4".." "..knockback)
-		timerLinkedMachinesCD:Start(4.5, self.vb.linkedCount)--Bait
-		timerLinkedMachinesCast:Start(7.5, self.vb.linkedCount)--Knockback
+		timerLinkedMachinesCD:Start(3.8, self.vb.linkedCount)--Bait
+		timerLinkedMachinesCast:Start(6.8, self.vb.linkedCount)--Knockback
 		--new Phase Timers
 		timerFoulExhaustCD:Start("v4.1-4.6", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start("v10.2-10.7", self.vb.paylineCount+1)
