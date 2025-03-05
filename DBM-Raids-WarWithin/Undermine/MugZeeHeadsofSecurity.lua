@@ -36,16 +36,16 @@ mod:RegisterEventsInCombat(
 --TODO, if blizzard doesn't fix being able to detect fixate targets using target scanning, create a nameplate iterator to track fixate targets
 --TODO, a lot more data needed, tons of WCL crawling required
 --[[
-(ability.id = 463967 or ability.id = 1215953) and type = "begincast"
+(ability.id = 463967 or ability.id = 1215953 or ability.id = 1216142) and type = "begincast"
 or (ability.id = 468728 or ability.id = 468794) and type = "cast"
 or ability.id = 1222408 and type = "applybuff"
 or (ability.id = 466459 or ability.id = 466460) and type = "removebuff"
 --]]
 --Stage One: The Heads of Security
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31662))
-local warnHHMug										= mod:NewTargetNoFilterAnnounce(466459, 3)
-local warnHHZee										= mod:NewTargetNoFilterAnnounce(466460, 3)
-local warnHHMugZee									= mod:NewTargetNoFilterAnnounce(1222408, 2)
+local warnHHMug										= mod:NewSpellAnnounce(466459, 3)
+local warnHHZee										= mod:NewSpellAnnounce(466460, 3)
+local warnHHMugZee									= mod:NewSpellAnnounce(1222408, 2)
 local warnMoxie										= mod:NewStackAnnounce(466385, 2)
 
 local specWarnDoubleMindedFury						= mod:NewSpecialWarningSpell(1216142, nil, nil, nil, 3, 2)
@@ -186,14 +186,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnDoubleMindedFury:Play("stilldanger")
 	elseif spellId == 474461 then
 		self.vb.gaolCount = self.vb.gaolCount + 1
-		if self:GetStage(3, 1) then
-			if not self:IsMythic() and self.vb.gaolCount == 1 then
-				timerEarthshakerGaolCD:Start(35, self.vb.gaolCount+1)
-			end
-		else
-			if self.vb.gaolCount == 1 then
-				timerEarthshakerGaolCD:Start(self:IsMythic() and 90 or 72.1, self.vb.gaolCount+1)--Stage 2 guessed
-			end
+		--Not even sure if this is still true but normal and heroic no longer ever get double casts
+		if self:GetStage(3) and self:IsMythic() and self.vb.gaolCount == 1 then
+			timerEarthshakerGaolCD:Start(90, self.vb.gaolCount+1)
 		end
 	elseif spellId == 472659 then
 		--timerShakedownCD:Start(nil, args.sourceGUID)
@@ -231,32 +226,31 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 466470 then
 		self.vb.frostShatterCount = self.vb.frostShatterCount + 1
-		if self:GetStage(3, 1) and not self:IsMythic() and self.vb.frostShatterCount == 1 then
-			timerFrostshatterBootsCD:Start(30, self.vb.frostShatterCount+1)
+		if self:GetStage(3) and self.vb.frostShatterCount == 1 then
+			--Two casts on heroic and normal
+			timerFrostshatterBootsCD:Start(86.2, self.vb.frostShatterCount+1)
 		end
 	elseif spellId == 466509 or spellId == 1221302 then
 		self.vb.fingerGunCount = self.vb.fingerGunCount + 1
 		specWarnStormfuryFingerGun:Show(self.vb.fingerGunCount)
 		specWarnStormfuryFingerGun:Play("frontal")
-		if self:GetStage(3, 1) and not self:IsMythic() and self.vb.fingerGunCount == 1 then
-			timerStormfuryFingerGunCD:Start(29, self.vb.fingerGunCount+1)
-		end
+		--Not cast twice on any difficulty anymore (unless changed on mythic
+		--if self:GetStage(3, 1) and not self:IsMythic() and self.vb.fingerGunCount == 1 then
+		--	timerStormfuryFingerGunCD:Start(29, self.vb.fingerGunCount+1)
+		--end
 	elseif spellId == 466518 then
 		self.vb.knucklesCount = self.vb.knucklesCount + 1
-		if self:GetStage(3, 1) then--Stage less than 3
-			if not self:IsMythic() and self.vb.knucklesCount == 1 then
-				timerMoltenGoldKnucklesCD:Start(40, self.vb.knucklesCount+1)
-			end
-		else
-			--Yes, in stage 2 (3 internally) the cd can be anywhere between 4 and 68 seconds
-			--TODO, REWORK me with Mythic stage 2 data
-			if self.vb.knucklesCount % 2 == 1 then
-				--Mythic timers guessed/drycoded
-				timerMoltenGoldKnucklesCD:Start(self:IsMythic() and "v5-18.7" or "v4-15", self.vb.knucklesCount+1)
-			else
-				timerMoltenGoldKnucklesCD:Start(self:IsMythic() and "v82.75-95.1" or "v66.2-76.1", self.vb.knucklesCount+1)
-			end
-		end
+		--below no longer true on normal or heroic, assuming mythic also scrapped it but we'll see
+		--if self:GetStage(3) then--Stage less than 3
+		--	--Yes, in stage 2 (3 internally) the cd can be anywhere between 4 and 68 seconds
+		--	--TODO, REWORK me with Mythic stage 2 data
+		--	if self.vb.knucklesCount % 2 == 1 then
+		--		--Mythic timers guessed/drycoded
+		--		timerMoltenGoldKnucklesCD:Start(self:IsMythic() and "v5-18.7" or "v4-15", self.vb.knucklesCount+1)
+		--	else
+		--		timerMoltenGoldKnucklesCD:Start(self:IsMythic() and "v82.75-95.1" or "v66.2-76.1", self.vb.knucklesCount+1)
+		--	end
+		--end
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnMoltenGoldKnuckles:Show()
 			specWarnMoltenGoldKnuckles:Play("carefly")
@@ -264,19 +258,19 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 472458 then
 		self.vb.crawlerMinesCount = self.vb.crawlerMinesCount + 1
 		warnUnstableCrawlerMines:Show(self.vb.crawlerMinesCount)
-		--This seems same as heroic, unlike other boss changing by 1.25
-		if self:GetStage(3, 1) and self.vb.crawlerMinesCount == 1 then
-			timerUnstableCrawlerMinesCD:Start(43.7, self.vb.crawlerMinesCount+1)
+		--Mythic unknown but this happens on normal and heroic
+		if self:GetStage(3) and self.vb.crawlerMinesCount == 1 then
+			timerUnstableCrawlerMinesCD:Start(88.7, self.vb.crawlerMinesCount+1)
 		end
 	elseif spellId == 466545 or spellId == 1221299 then
 		self.vb.sprayPrayCount = self.vb.sprayPrayCount + 1
-		if self:GetStage(3) then
-			timerSprayandPrayCD:Start("v62-68.1", self.vb.sprayPrayCount+1)--Not recast in stage 1 after initial
-		end
+		--if self:GetStage(3) then
+		--	timerSprayandPrayCD:Start("v62-68.1", self.vb.sprayPrayCount+1)--Not recast in stage 1 after initial
+		--end
 	elseif spellId == 1214991 then
 		--timerSurgingArcCD:Start(nil, args.sourceGUID)
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ArcTarget", 0.1, 8)
-	elseif spellId == 469491 or spellId == 1223085 then--non mythic, Mythic
+	elseif spellId == 469491 or spellId == 1223085 then--Early PTR, late PTR/Live
 		self.vb.whammyCount = self.vb.whammyCount + 1
 		if self:IsTank() then
 			specWarnDoubleWhammy:Show()
@@ -312,7 +306,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whammyCount = 0
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("ptwo")
-		warnHHMugZee:Show(args.destName)
+		warnHHMugZee:Show()
 		timerEarthshakerGaolCD:Stop()
 		timerFrostshatterBootsCD:Stop()
 		timerStormfuryFingerGunCD:Stop()
@@ -336,15 +330,15 @@ function mod:SPELL_CAST_START(args)
 			timerFrostshatterBootsCD:Start(97.3, 1)
 			timerDoubleMindedFuryCD:Start(127)
 		else
-			timerUnstableCrawlerMinesCD:Start(17, 1)
-			timerEarthshakerGaolCD:Start(26.1, 1)
-			timerMoltenGoldKnucklesCD:Start(30.1, 1)
-			timerSprayandPrayCD:Start(35.1, 1)
-			timerDoubleWhammyCD:Start(55.2, 1)
-			timerStormfuryFingerGunCD:Start(61.1, 1)
-			timerGoblinGuidedRocketCD:Start(70.7, 1)
-			timerFrostshatterBootsCD:Start(79.1, 1)
-			--timerDoubleMindedFuryCD:Start(127)
+			timerUnstableCrawlerMinesCD:Start(3.7, 1)
+			timerFrostshatterBootsCD:Start(16.2, 1)
+			timerEarthshakerGaolCD:Start(32.8, 1)
+			timerMoltenGoldKnucklesCD:Start(self:IsHeroic() and 30.1 or 33.3, 1)
+			timerGoblinGuidedRocketCD:Start(40, 1)
+			timerStormfuryFingerGunCD:Start(62.4, 1)
+			timerDoubleWhammyCD:Start(75, 1)
+			timerSprayandPrayCD:Start(81.2, 1)
+			timerDoubleMindedFuryCD:Start(118)
 		end
 	end
 end
@@ -361,17 +355,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.frostShatterCount = 0
 		self.vb.fingerGunCount = 0
 		self.vb.knucklesCount = 0
-		warnHHMug:Show(args.sourceName)
+		warnHHMug:Show()
 		if self:IsMythic() then
 			timerEarthshakerGaolCD:Start(16, 1)
 			timerMoltenGoldKnucklesCD:Start(25, 1)
 			timerFrostshatterBootsCD:Start(31.2, 1)
 			timerStormfuryFingerGunCD:Start(45, 1)
 		else
-			timerEarthshakerGaolCD:Start(13.5, 1)
-			timerMoltenGoldKnucklesCD:Start(20, 1)
-			timerFrostshatterBootsCD:Start(25, 1)
-			timerStormfuryFingerGunCD:Start(36, 1)
+			timerEarthshakerGaolCD:Start(17.4, 1)
+			timerFrostshatterBootsCD:Start(46.6, 1)
+			timerMoltenGoldKnucklesCD:Start(50, 1)
+			timerStormfuryFingerGunCD:Start(60, 1)
 		end
 	elseif spellId == 468794 then--Zee Taking Charge
 		self:SetStage(2)
@@ -380,17 +374,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.goblinGuidedRocketCount = 0
 		self.vb.sprayPrayCount = 0
 		self.vb.whammyCount = 0
-		warnHHZee:Show(args.sourceName)
+		warnHHZee:Show()
 		if self:IsMythic() then
 			timerUnstableCrawlerMinesCD:Start(13.7, 1)
 			timerGoblinGuidedRocketCD:Start(29.8, 1)--SUCCESS
 			timerDoubleWhammyCD:Start(42.4, 1)
 			timerSprayandPrayCD:Start(50, 1)
 		else
-			timerUnstableCrawlerMinesCD:Start(12.5, 1)
-			timerGoblinGuidedRocketCD:Start(27, 1)--SUCCESS
-			timerSprayandPrayCD:Start(45, 1)
-			timerDoubleWhammyCD:Start(38.5, 1)
+			timerUnstableCrawlerMinesCD:Start(13.9, 1)
+			timerGoblinGuidedRocketCD:Start(35, 1)--SUCCESS
+			timerDoubleWhammyCD:Start(self:IsEasy() and 50 or 46.3, 1)
+			timerSprayandPrayCD:Start(self:IsEasy() and 60 or 55, 1)
 		end
 	end
 end
