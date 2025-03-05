@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 1217355 466860",
 	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344 1218342 1218319 1217357 1217358",
 	"SPELL_AURA_APPLIED_DOSE 465917 1218344 1218319",
-	"SPELL_AURA_REMOVED 1216934 1216911 465917 1214878 1216509 466860"
+	"SPELL_AURA_REMOVED 1216934 1216911 1214878 1216509 466860"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 )
@@ -109,7 +109,6 @@ mod.vb.sonicBoomCount = 0
 mod.vb.wireTransferCount = 0
 mod.vb.betaCount = 0
 mod.vb.voidsplotionCount = 0
-local playerStacks = 0
 local lastPlayerCharge = 0--1 pos 2 neg
 local savedDifficulty = "normal"
 local allTimers = {
@@ -161,7 +160,6 @@ function mod:OnCombatStart(delay)
 	self.vb.sonicBoomCount = 0
 	self.vb.wireTransferCount = 0
 	self.vb.betaCount = 0
-	playerStacks = 0
 	lastPlayerCharge = 0--1 pos 2 neg
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
@@ -358,9 +356,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 465917 then
 		local amount = args.amount or 1
-		if args:IsPlayer() then
-			playerStacks = amount
-		end
 		if amount % 2 == 0 then--TODO, fine tune
 			warnGunkStacks:Show(args.destName, amount)
 		end
@@ -414,10 +409,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 1216911 then
 		if args:IsPlayer() then
 			warnPositiveRemoved:Show()
-		end
-	elseif spellId == 465917 then
-		if args:IsPlayer() then
-			playerStacks = 0
 		end
 	elseif spellId == 1214878 then
 		if args:IsPlayer() then
