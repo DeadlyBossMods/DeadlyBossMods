@@ -79,12 +79,12 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 368, "fc06f51"--368.0
+local fakeBWVersion, fakeBWHash = 373, "9b49b21"--373.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.1.6 alpha"--Core version
+DBM.DisplayVersion = "11.1.7 alpha"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 3, 4) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 16--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -6196,7 +6196,7 @@ do
 			local usedDifficulty = mod.engagedDiff or difficulties.savedDifficulty
 			local usedDifficultyText = mod.engagedDiffText or difficulties.difficultyText
 			local usedDifficultyIndex = mod.engagedDiffIndex or difficulties.difficultyIndex
-			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier
+			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier or 0
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if wipe and mod.stats and not mod.noStatistics then
