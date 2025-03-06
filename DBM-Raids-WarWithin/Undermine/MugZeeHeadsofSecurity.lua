@@ -120,8 +120,8 @@ local yellStaticChargeFades							= mod:NewShortFadesYell(1215953)
 local specWarnStaticChargeOther						= mod:NewSpecialWarningMoveTo(1215953, nil, nil, nil, 1, 2)
 local specWarnBulletstorm							= mod:NewSpecialWarningDodgeCount(471419, nil, nil, nil, 2, 2)
 
-local timerStaticChargeCD							= mod:NewCDCountTimer(16, 1215953, nil, nil, nil, 3)
-local timerBulletstormCD							= mod:NewCDCountTimer(16, 471419, nil, nil, nil, 3)
+local timerStaticChargeCD							= mod:NewCDCountTimer(14, 1215953, nil, nil, nil, 3)
+local timerBulletstormCD							= mod:NewCDCountTimer(14, 471419, nil, nil, nil, 3)
 local timerIntermission								= mod:NewIntermissionTimer(20.5, 471419, nil, nil, nil, 6)
 --Stage Two: The Head Honcho
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30510))
@@ -288,7 +288,7 @@ function mod:SPELL_CAST_START(args)
 			self:SetStage(2.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 			warnPhase:Play("phasechange")
-			timerBulletstormCD:Start(5.5, 1)
+			timerBulletstormCD:Start(3.4, 1)
 			timerIntermission:Start(52.9)
 		end
 	elseif spellId == 1215481 then
