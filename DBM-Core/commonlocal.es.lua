@@ -102,6 +102,8 @@ CL.SWIRLS					= "Remolinos"--Plural of Swirl
 CL.CHARGES					= "Cargas"--Context, this is plural of boss "charging to players" and NOT bomb charges
 CL.CIRCLES					= "Círculos"--As in circles on ground that players need to move out of or need to drop off
 CL.KNOCKUP					= "Agotar"
+CL.NEGATIVE					= "Negativo"
+CL.POSITIVE					= "Positivo"
 -- Colors
 CL.BLACK    				= "Negro"
 CL.BLUE       				= "Azul"
