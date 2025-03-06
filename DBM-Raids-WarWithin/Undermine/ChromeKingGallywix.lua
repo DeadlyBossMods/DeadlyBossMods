@@ -171,27 +171,27 @@ local allTimers = {
 		},
 		[2.1] = {
 			[469286] = {54.3},--Giga Coils
---			[469327] = {},--Giga Blast
-			[466341] = {},--Fused Canisters
+--			[469327] = {0},--Giga Blast
+			[466341] = {0},--Fused Canisters
 			[465952] = {36.6},--BBBBombs
 			[467182] = {24},--Suppression
 			[466751] = {20.5},--Venting Heat
 		},
 		[2.2] = {
 			[469286] = {54.3},--Giga Coils
---			[469327] = {},--Giga Blast
-			[466341] = {},--Fused Canisters
-			[465952] = {},--BBBBombs
-			[467182] = {},--Suppression
+--			[469327] = {0},--Giga Blast
+			[466341] = {0},--Fused Canisters
+			[465952] = {0},--BBBBombs
+			[467182] = {0},--Suppression
 			[466751] = {17.2},--Venting Heat
 		},
 		[3] = {
-			[469286] = {},--Giga Coils
---			[469327] = {},--Giga Blast
-			[467182] = {},--Suppression
-			[466751] = {},--Venting Heat
-			[1214607] = {},--BBBBlast
-			[466342] = {},--Tick Tock Canisters
+			[469286] = {0},--Giga Coils
+--			[469327] = {0},--Giga Blast
+			[467182] = {0},--Suppression
+			[466751] = {0},--Venting Heat
+			[1214607] = {0},--BBBBlast
+			[466342] = {0},--Tick Tock Canisters
 		},
 	},
 	["normal"] = {
@@ -203,26 +203,26 @@ local allTimers = {
 		},
 		[2.1] = {
 			[469286] = {70},--Giga Coils
---			[469327] = {},--Giga Blast
-			[466341] = {},--Fused Canisters
+--			[469327] = {0},--Giga Blast
+			[466341] = {0},--Fused Canisters
 			[465952] = {44},--BBBBombs
 			[467182] = {30},--Suppression
 			[466751] = {25.5},--Venting Heat
 		},
 		[2.2] = {
 			[469286] = {70},--Giga Coils
---			[469327] = {},--Giga Blast
-			[466341] = {},--Fused Canisters
-			[465952] = {},--BBBBombs
-			[467182] = {},--Suppression
-			[466751] = {},--Venting Heat
+--			[469327] = {0},--Giga Blast
+			[466341] = {0},--Fused Canisters
+			[465952] = {0},--BBBBombs
+			[467182] = {0},--Suppression
+			[466751] = {0},--Venting Heat
 		},
 		[3] = {
-			[469286] = {},--Giga Coils
-			[467182] = {},--Suppression
-			[466751] = {},--Venting Heat
-			[1214607] = {},--BBBBlast
-			[466342] = {},--Tick Tock Canisters
+			[469286] = {0},--Giga Coils
+			[467182] = {0},--Suppression
+			[466751] = {0},--Venting Heat
+			[1214607] = {0},--BBBBlast
+			[466342] = {0},--Tick Tock Canisters
 		},
 	},
 }
