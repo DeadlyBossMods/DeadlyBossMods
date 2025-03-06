@@ -100,8 +100,8 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(468486, "flameyou", 12)
 	timerTankBusterCD:Start(6-delay, 1)
 	timerSpewOilCD:Start(12.2-delay, 1)
-	timerCallbikersCD:Start(20.7-delay, 1)
-	timerIncendiaryFireCD:Start((self:IsHard() and 25.5 or 30.6)-delay, 1)
+	timerCallbikersCD:Start(20.2-delay, 1)
+	timerIncendiaryFireCD:Start((self:IsHard() and 25.1 or 30.6)-delay, 1)
 	if self:IsMythic() then
 		timerUnrelentingcarnageCD:Start(121.6, 1)--Only difficulty observed on
 	end
@@ -125,13 +125,19 @@ function mod:SPELL_CAST_START(args)
 		--Mythic and Heroic need special handling for very first stage
 		--Other difficulties don't seem to have that special case
 		--"Spew Oil-459671-npc:225821-0000129545 = pull:12.1, 37.8, 37.7, Stage 2/36.7, Stage 1/49.7, 15.8/65.5/102.2, 21.8, 20.7, 20.7, 20.6, Stage 2/19.5, Stage 1/49.8, 15.7/65.5/85.0, 21.9, 20.6, 20.7, 20.7, 20.6",
-		local timer = self:IsHard() and self.vb.stageTotality == 1 and "v37.1-38.6" or "v20.6-23.2"
-		timerSpewOilCD:Start(timer, self.vb.spewOilCount+1)
+		if self.vb.stageTotality == 1 then
+			timerSpewOilCD:Start("v37.1-38.6", self.vb.spewOilCount+1)
+		else
+			timerSpewOilCD:Start("v20.6-23.2", self.vb.spewOilCount+1)
+		end
 	elseif (spellId == 468216 or spellId == 468487) then--468487 confirmed
 		self.vb.fireCount = self.vb.fireCount + 1
 		warnIncendiaryFire:Show(self.vb.fireCount)
-		local timer = self.vb.stageTotality == 1 and "v25.3-36.5" or "v35.3-36.7"
-		timerIncendiaryFireCD:Start(timer, self.vb.fireCount+1)
+		if self.vb.stageTotality == 1 then
+			timerIncendiaryFireCD:Start("v25.3-36.5", self.vb.fireCount+1)
+		else
+			timerIncendiaryFireCD:Start("v35.3-36.7", self.vb.fireCount+1)
+		end
 	--elseif spellId == 459974 then
 	--	self.vb.bombCount = self.vb.bombCount + 1
 	--	specWarnBombVoyage:Show(self.vb.bombCount)
