@@ -161,7 +161,7 @@ local allTimers = {
 		--Static Charge
 		[473994] = {6.0},
 		--Thunderdrum Salvo
-		[463840] = {20.0, 25.0},
+		[463900] = {20.0, 25.0},
 		--Lightning Bash
 		[466178] = {35.0, 25.0},
 	},
