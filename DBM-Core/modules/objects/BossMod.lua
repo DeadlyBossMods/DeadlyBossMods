@@ -841,7 +841,7 @@ function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spell
 		prev = prev[count]
 	end
 
-	if subcount then
+	if subcount and count then
 		prev = prev[subcount]
 	end
 

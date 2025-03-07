@@ -159,26 +159,79 @@ mod.vb.egoCheckCount = 0
 --it seems, based on initial data, each coil has a different sequence
 local savedDifficulty = "normal"
 local allTimers = {
-	["mythic"] = {
+	["mythic"] = {--No idea how many coils mythic is gonna need or if it repeats at a point
 		[1] = {--TODO, verify this is right way
-			[1217987] = {0},--Combination Canisters
-			[1214607] = {0},--BBBBlast
 			[469286] = {0},--Giga Coils
-			[467182] = {0},--Suppression
-			[466751] = {0},--Venting Heat
+			[1217987] = {--Combination Canisters
+				[0] = {0},
+				[1] = {0},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+				[9] = {0},
+				[10] = {0},
+				[11] = {0},
+			},
+			[1214607] = {--BBB Blast
+				[0] = {0},
+				[1] = {0},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+				[9] = {0},
+				[10] = {0},
+				[11] = {0},
+			},
+
+			[467182] = {--Supression
+				[0] = {0},
+				[1] = {0},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+				[9] = {0},
+				[10] = {0},
+				[11] = {0},
+			},
+			[466751] = {--Venting Heat
+				[0] = {0},
+				[1] = {0},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+				[9] = {0},
+				[10] = {0},
+				[11] = {0},
+			},
 		},
 	},
 	["heroic"] = {
 		[1] = {
 			[466340] = {6.5, 17.0, 18.3, 18.9, 16.5, 20.5},--Scatterblast Canisters
-			[465952] = {20.1, 35.4, 35.4},--BBBBombs
+			[465952] = {17.9, 35.4, 35.4},--BBBBombs
 			[467182] = {31.4, 39.0, 33.6},--Suppression
 			[466751] = {12.5, 25.8, 28.4, 27.5},--Venting Heat
 		},
 		[2] = {
-			[469286] = {54.3},--Giga Coils (always same so no subcounts needed)
+			[469286] = {6, 54.3, 54.3, 54.3, 54.3, 54.3, 54.3},--Giga Coils (always same so no subcounts needed)
 			[466341] = {--Fused Canisters
-				[0] = {0},
+				[0] = {0},--No casts before first coil
 				[1] = {0},
 				[2] = {0},
 				[3] = {0},
@@ -186,25 +239,25 @@ local allTimers = {
 				[5] = {0},
 			},
 			[465952] = {--BBBBombs
-				[0] = {36.6},
-				[1] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {34.4},
 				[2] = {0},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[467182] = {--Suppression
-				[0] = {24},
-				[1] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {24},
 				[2] = {0},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[466751] = {--Venting Heat
-				[0] = {20.5},
-				[1] = {17.2},
-				[2] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {20.5},
+				[2] = {17.2},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
@@ -283,39 +336,39 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			[466340] = {7.3, 19, 20.3, 20.9, 18.4, 22.9},--Scatterblast Canisters
-			[465952] = {22.4, 39.4, 39.3},--BBBBombs
+			[465952] = {20.2, 39.4, 39.3},--BBBBombs
 			[467182] = {34.8, 43.3, 37.4},--Suppression
 			[466751] = {13.9, 28.7, 31.5, 30.6},--Venting Heat
 		},
 		[2] = {
-			[469286] = {70.6},--Giga Coils
+			[469286] = {6, 70.6, 70.6, 70.6, 70.6, 70.6, 70.6},--Giga Coils
 			[466341] = {--Fused Canisters
-				[0] = {12.7, 41.1},
-				[1] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {12.7, 41.1},
 				[2] = {0},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[465952] = {--BBBBombs
-				[0] = {44},
-				[1] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {41.8},
 				[2] = {0},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[467182] = {--Suppression
-				[0] = {30},
-				[1] = {9.4},
-				[2] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {30},
+				[2] = {9.4},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[466751] = {--Venting Heat
-				[0] = {25.5},
-				[1] = {0},
+				[0] = {0},--No casts before first coil
+				[1] = {25.5},
 				[2] = {0},
 				[3] = {0},
 				[4] = {0},
@@ -451,9 +504,11 @@ function mod:SPELL_CAST_START(args)
 		end
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.canistersSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerScatterblastCanistersCD:Start(timer, self.vb.canisterCount+1)
@@ -469,9 +524,11 @@ function mod:SPELL_CAST_START(args)
 		warnSuppression:Show(self.vb.suppressionCount)
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.suppressionSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.suppressionSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.suppressionSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.suppressionSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerSuppressionCD:Start(timer, self.vb.suppressionCount+1)
@@ -482,9 +539,11 @@ function mod:SPELL_CAST_START(args)
 		warnVentingHeat:Show(self.vb.heatCount)
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.heatSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.heatSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.heatSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.heatSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.heatSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.heatSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerVentingHeatCD:Start(timer, self.vb.heatCount+1)
@@ -501,9 +560,11 @@ function mod:SPELL_CAST_START(args)
 		warnFusedCanisters:Show(self.vb.canisterCount)
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.canistersSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerFusedCanistersCD:Start(timer, self.vb.canisterCount+1)
@@ -590,9 +651,11 @@ function mod:SPELL_CAST_START(args)
 		end
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.bombsSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.bombsSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.bombsSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.bombsSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.bombsSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.bombsSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerBBBBlastCD:Start(timer, self.vb.bombsCount+1)
@@ -604,9 +667,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnTickTockCanisters:Play("helpsoak")
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.canistersSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerTickTockCanistersCD:Start(timer, self.vb.canisterCount+1)
@@ -627,7 +692,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.canistersSubCount = self.vb.canistersSubCount + 1
 		specWarnCombinationCanisters:Show(self.vb.canisterCount)
 		specWarnCombinationCanisters:Play("helpsoak")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
+		local timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		if timer and timer > 0 then
 			timerCombinationCanistersCD:Start(timer, self.vb.canistersSubCount+1)
 		end
@@ -752,7 +818,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerSuppressionCD:Stop()
 			timerVentingHeatCD:Stop()
 			--Start all timers as stage 2 count 1 subcount 1
-			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][0], 1)
+			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1], 1)--coils don't have subcounts
 			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][0][1], 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][0][1], 1)
 			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1], 1)
@@ -765,22 +831,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.bombsSubCount = 0
 		self.vb.suppressionSubCount = 0
 		self.vb.heatSubCount = 0
-		self.vb.coilsSubCount = 0
 		self.vb.meltdownSubCount = 0
 		if self:IsMythic() then
 
 		elseif self:GetStage(2) then
-			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][0], 1)
-			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][0][1], 1)
-			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][0][1], 1)
-			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1], 1)
-			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][0][1], 1)
+			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1], self.vb.coilsCount+1)
+			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][self.vb.coilsCount][1], self.vb.bombsCount+1)
+			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][self.vb.coilsCount][1], self.vb.suppressionCount+1)
+			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
 		else--Stage 3
-			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][0], 1)
-			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][0][1], 1)
-			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
-			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
-			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
+			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], self.vb.coilsCount+1)
+			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][self.vb.coilsCount][1], self.vb.suppressionCount+1)
+			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][self.vb.coilsCount][1], self.vb.bombsCount+1)
+			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
 		end
 	end
 end
@@ -860,9 +925,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnBBBBombs:Play("bombsoon")
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 465952, self.vb.bombsSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 465952, self.vb.bombsSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][465952][self.vb.bombsSubCount+1]
 		else
-			timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 465952, self.vb.coilsCount, self.vb.bombsSubCount+1)
+			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 465952, self.vb.coilsCount, self.vb.bombsSubCount+1)
+			timer = allTimers[savedDifficulty][self.vb.phase][465952][self.vb.coilsCount][self.vb.bombsSubCount+1]
 		end
 		if timer and timer > 0 then
 			timerBBBBombsCD:Start(timer, self.vb.bombsCount+1)
