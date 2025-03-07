@@ -512,7 +512,7 @@ function mod:SPELL_CAST_START(args)
 			self:Schedule(0.3, delayedTankCheck, self)
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.assaultCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSavageAssaultCD:Start(timer, self.vb.assaultCountTotal+1)
 		end
 	elseif spellId == 439789 then
@@ -520,7 +520,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rollingCount = self.vb.rollingCount + 1
 		warnRollingAcid:Show(self.vb.rollingCountTotal)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.rollingCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerRollingAcidCD:Start(timer - self.vb.acidAdjust, self.vb.rollingCountTotal+1)
 		end
 	elseif spellId == 455373 then
@@ -528,7 +528,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spawnCount = self.vb.spawnCount + 1
 		warnInfestedSpawn:Show(self.vb.spawnCountTotal)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.spawnCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerInfestedSpawnCD:Start(timer, self.vb.spawnCountTotal+1)
 		end
 	elseif spellId == 439784 then
@@ -536,7 +536,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.strandsCount = self.vb.strandsCount + 1
 		warnSpinneretsStrands:Show(self.vb.strandsCountTotal)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.strandsCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSpinneretsStrandsCD:Start(timer, self.vb.strandsCountTotal+1)
 		end
 	elseif spellId == 439795 then
@@ -544,7 +544,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWebReave:Show(self.vb.reaveCount)
 		specWarnWebReave:Play("gathershare")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reaveCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerWebReaveCD:Start(timer, self.vb.reaveCount+1)
 		end
 	elseif spellId == 439811 then
@@ -552,7 +552,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sprayCount = self.vb.sprayCount + 1
 		warnErosiveSpray:Show(self.vb.sprayCountTotal)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.sprayCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerErosiveSprayCD:Start(timer, self.vb.sprayCountTotal+1)
 		end
 	elseif spellId == 454989 then--Mythic
@@ -561,7 +561,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEvellpingWebs:Show(self.vb.envelopingCountTotal)
 		specWarnEvellpingWebs:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.envelopingCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerEnvelopingWebsCD:Start(timer, self.vb.envelopingCountTotal+1)
 		end
 	elseif spellId == 452806 then

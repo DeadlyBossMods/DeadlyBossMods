@@ -79,7 +79,7 @@ function bossModPrototype:SetIcon(target, icon, timer, ignoreOld)
 			SetRaidTarget(uId, self.iconRestore[uId] and icon == 0 and self.iconRestore[uId] or icon)
 		end
 		--schedule restoring old icon if timer enabled.
-		if timer then
+		if timer and timer > 0 then
 			self:ScheduleMethod(timer, "SetIcon", target, 0)
 		end
 	end

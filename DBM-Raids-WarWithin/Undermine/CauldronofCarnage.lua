@@ -277,7 +277,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnRaisedGuard or self.Options.NPFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	if self.Options.Infoframe then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
 end
@@ -305,7 +305,7 @@ function mod:SPELL_CAST_START(args)
 			timerScrapBombCD:Start(30, self.vb.scrapbombCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.scrapBombTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerScrapBombCD:Start(timer, self.vb.scrapbombCount+1)
 			end
 		end
@@ -316,7 +316,7 @@ function mod:SPELL_CAST_START(args)
 			timerBlastburnRoarcannonCD:Start(30, self.vb.cannonCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.cannonTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerBlastburnRoarcannonCD:Start(timer, self.vb.cannonCount+1)
 			end
 		end
@@ -331,7 +331,7 @@ function mod:SPELL_CAST_START(args)
 			timerEruptionStompCD:Start(30, self.vb.stompCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.stompTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerEruptionStompCD:Start(timer, self.vb.stompCount+1)
 			end
 		end
@@ -342,7 +342,7 @@ function mod:SPELL_CAST_START(args)
 			timerStaticChargeCD:Start(95, self.vb.staticChargeCount+1)
 		--else
 		--	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.staticChargeTimerCount+1)
-		--	if timer then
+		--	if timer and timer > 0 then
 		--		timerStaticChargeCD:Start(timer, self.vb.staticChargeCount+1)
 		--	end
 		end
@@ -353,7 +353,7 @@ function mod:SPELL_CAST_START(args)
 			timerLightningBashCD:Start(65, self.vb.bashCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.bashTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerLightningBashCD:Start(timer, self.vb.bashCount+1)
 			end
 		end
@@ -377,7 +377,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerThunderdrumSalvoCD:Start(70, self.vb.salvoCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.salvoTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerThunderdrumSalvoCD:Start(timer, self.vb.salvoCount+1)
 			end
 		end
@@ -538,7 +538,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerMoltenPhlegmCD:Start(self:IsMythic() and 65 or 95, self.vb.moltenPhlegmCount+1)
 		else
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.moltenPhlegmTimerCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerMoltenPhlegmCD:Start(timer, self.vb.moltenPhlegmCount+1)
 			end
 		end
