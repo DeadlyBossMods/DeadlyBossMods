@@ -488,7 +488,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.reactiveCount = self.vb.reactiveCount + 1
 		table.wipe(reactiveIcons)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437592, self.vb.reactiveCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerReactiveToxinCD:Start(timer, self.vb.reactiveCount+1)
 		end
 	elseif spellId == 437417 then
@@ -496,14 +496,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnVenomNova:Show(self.vb.novaCount)
 		specWarnVenomNova:Play("getknockedup")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437417, self.vb.novaCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerVenomNovaCD:Start(timer, self.vb.novaCount+1)
 		end
 	elseif spellId == 439814 then
 		self.vb.tombCount = self.vb.tombCount + 1
 		warnSilkenTomb:Show(self.vb.tombCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439814, self.vb.tombCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSilkenTombCD:Start(timer, self.vb.tombCount+1)
 		end
 	elseif spellId == 440899 or spellId == 440883 then--Non Mythic / Mythic (assumed)
@@ -513,7 +513,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnLiquefy:Play("defensive")
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440899, self.vb.tankComboCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerLiquefyCD:Start(timer, self.vb.tankComboCount+1)
 		end
 	elseif spellId == 437093 then
@@ -523,7 +523,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFeast:Play("defensive")
 		end
 		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 437093, self.vb.feastCount+1)
-		--if timer then
+		--if timer and timer > 0 then
 		--	timerFeastCD:Start(timer, self.vb.feastCount+1)
 		--end
 	elseif spellId == 447411 or spellId == 450191 then--Intermission Left / Phase 2 right
@@ -594,7 +594,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.abyssalInfusionCount = self.vb.abyssalInfusionCount + 1
 		table.wipe(infusionIcons)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443888, self.vb.abyssalInfusionCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerAbyssalInfusionCD:Start(timer, self.vb.abyssalInfusionCount+1)
 		end
 	elseif spellId == 445422 and not self.vb.cataEvoActivated then
@@ -602,7 +602,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFrothingGluttony:Show(self.vb.frothingGluttonyCount)
 		specWarnFrothingGluttony:Play("specialsoon")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 445422, self.vb.frothingGluttonyCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerFrothingGluttonyCD:Start(timer, self.vb.frothingGluttonyCount+1)
 		end
 	elseif spellId == 444829 then
@@ -610,19 +610,19 @@ function mod:SPELL_CAST_START(args)
 		self.vb.queensSummonIcon = 1
 		warnQueenSummon:Show(self.vb.queensSummonsCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 444829, self.vb.queensSummonsCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerQueensSummonsCD:Start(timer, self.vb.queensSummonsCount+1)
 		end
 	elseif spellId == 438976 then
 		self.vb.royalCondom = self.vb.royalCondom + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438976, self.vb.royalCondom+1)
-		if timer then
+		if timer and timer > 0 then
 			timerRoyalCondemnationCD:Start(timer, self.vb.royalCondom+1)
 		end
 	elseif spellId == 443325 then
 		self.vb.infestCount = self.vb.infestCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443325, self.vb.infestCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerInfestCD:Start(timer, self.vb.infestCount+1)
 		end
 	elseif spellId == 443336 then
@@ -632,7 +632,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnGorge:Play("defensive")
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443336, self.vb.gorgeCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerGorgeCD:Start(timer, self.vb.gorgeCount+1)
 		end
 	elseif spellId == 447076 then--Predation
@@ -675,7 +675,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnWebBlades:Show(self.vb.webBladesCount)
 		specWarnWebBlades:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439299, self.vb.webBladesCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerWebBladesCD:Start(timer, self.vb.webBladesCount+1)
 		end
 	elseif spellId == 447456 then

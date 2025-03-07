@@ -215,7 +215,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAmplification:Show(self.vb.ampCount)
 		specWarnAmplification:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.ampTimerCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerAmplificationCD:Start(timer, self.vb.ampCount+1)
 		end
 	elseif spellId == 466866 then
@@ -224,7 +224,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEchoingChant:Show(self.vb.chantCount)
 		specWarnEchoingChant:Play("watchwave")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.chantTimerCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerEchoingChantCD:Start(timer, self.vb.chantCount+1)
 		end
 	elseif spellId == 467606 then
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 			warnSoundCannon:Show(self.vb.cannonCount)
 		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.cannonTimerCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSoundCannonCD:Start(timer, self.vb.cannonCount+1)
 		end
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "CannonTarget", 0.1, 8, nil, nil, nil, nil, true)--Filter tank, so if blizzard fixes being able to see target and instead have boss stare at tank, it's ignored
@@ -245,7 +245,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.zapCount = self.vb.zapCount + 1
 		self.vb.zapTimerCount = self.vb.zapTimerCount+1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.zapTimerCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerFaultyZapCD:Start(timer, self.vb.zapCount+1)
 		end
 	elseif spellId == 473260 then
@@ -439,7 +439,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		specWarnSparkBlastIngition:Show(self.vb.sparkCount)
 		specWarnSparkBlastIngition:Play("killmob")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, 472306, self.vb.sparkTimerCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSparkBlastIngitionCD:Start(timer, self.vb.sparkCount+1)
 		end
 	end

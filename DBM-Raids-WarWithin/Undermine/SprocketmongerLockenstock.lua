@@ -211,13 +211,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnFootBlasters:Show(self.vb.footBlasterCount)
 		specWarnFootBlasters:Play("bombsoon")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.footBlasterCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerFootBlastersCD:Start(timer, self.vb.footBlasterCount+1)
 		end
 	elseif spellId == 1214872 then
 		self.vb.tankExplosionCount = self.vb.tankExplosionCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.tankExplosionCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerPyroPartyPackCD:Start(timer, self.vb.tankExplosionCount+1)
 		end
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -227,14 +227,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1216508 then
 		self.vb.screwUpCount = self.vb.screwUpCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.screwUpCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerScrewUpCD:Start(timer, self.vb.screwUpCount+1)
 		end
 	elseif spellId == 465232 then
 		self.vb.sonicBoomCount = self.vb.sonicBoomCount + 1
 		warnSonicBoom:Show(self.vb.sonicBoomCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.sonicBoomCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSonicBoomCD:Start(timer, self.vb.sonicBoomCount+1)
 		end
 	elseif spellId == 1218418 then
@@ -242,7 +242,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWireTransfer:Show(self.vb.wireTransferCount)
 		specWarnWireTransfer:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.wireTransferCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerWireTransferCD:Start(timer, self.vb.wireTransferCount+1)
 		end
 		--Backup return to stage 1 if the other events vanish
@@ -316,7 +316,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.thadiusCount = self.vb.thadiusCount + 1
 		warnPolarizationGenerator:Show(self.vb.thadiusCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, false, spellId, self.vb.thadiusCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerPolarizationGeneratorCD:Start(timer, self.vb.thadiusCount+1)
 		end
 	elseif spellId == 466860 then

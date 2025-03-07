@@ -398,7 +398,7 @@ local allTimers = {
 local function checkSkippedWebVortex(self)
 	self.vb.webBombCount = self.vb.webBombCount + 1
 	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441626, self.vb.webBombCount+1)
-	if timer then
+	if timer and timer > 0 then
 		timerWebVortexCD:Start(timer-8, self.vb.webBombCount+1)
 		self:Schedule(timer, checkSkippedWebVortex, self)
 	end
@@ -408,7 +408,7 @@ end
 local function checkSkippedEntropicDesolation(self)
 	self.vb.rainCount = self.vb.rainCount + 1
 	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450129, self.vb.rainCount+1)
-	if timer then
+	if timer and timer > 0 then
 		timerEntropicDesolationCD:Start(timer-8, self.vb.rainCount+1)
 		self:Schedule(timer, checkSkippedEntropicDesolation, self)
 	end
@@ -418,7 +418,7 @@ end
 local function checkSkippedCatalysmicEntropy(self)
 	self.vb.cataCount = self.vb.cataCount + 1
 	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438355, self.vb.cataCount+1)
-	if timer then
+	if timer and timer > 0 then
 		timerCataclysmicEntropyCD:Start(timer-8, self.vb.cataCount+1)
 		self:Schedule(timer, checkSkippedCatalysmicEntropy, self)
 	end
@@ -486,7 +486,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 438218 then
 		self.vb.piercingCount = self.vb.piercingCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438218, self.vb.piercingCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerPiercingStrikeCD:Start(timer, self.vb.piercingCount+1)
 		end
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -498,7 +498,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.swarmCount = self.vb.swarmCount + 1
 		warnCalloftheSwarm:Show(self.vb.swarmCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438801, self.vb.swarmCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerCalloftheSwarmCD:Start(timer, self.vb.swarmCount+1)
 		end
 	elseif spellId == 440246 then
@@ -512,7 +512,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRecklessCharge:Play("chargemove")
 		timerRecklessCharge:Start()
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440246, self.vb.chargeCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerRecklessChargeCD:Start(timer, self.vb.chargeCount+1)
 		end
 	elseif spellId == 440504 then
@@ -520,7 +520,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnImpalingEruption:Show(self.vb.eruptionCount)
 		specWarnImpalingEruption:Play("frontal")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 440504, self.vb.eruptionCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerImpalingEruptionCD:Start(timer, self.vb.eruptionCount+1)
 		end
 	elseif spellId == 438343 then
@@ -528,27 +528,27 @@ function mod:SPELL_CAST_START(args)
 		specWarnVenomousRain:Show(self.vb.rainCount)
 		specWarnVenomousRain:Play("scatter")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438343, self.vb.rainCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerVenomousRainCD:Start(timer, self.vb.rainCount+1)
 		end
 	elseif spellId == 439838 then
 		self.vb.webBombCount = self.vb.webBombCount + 1
 		warnWebBomb:Show(self.vb.webBombCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 439838, self.vb.webBombCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerWebBombCD:Start(timer, self.vb.webBombCount+1)
 		end
 	elseif spellId == 450045 then
 		self.vb.leapCount = self.vb.leapCount + 1
 		warnSkitteringLeap:Show(self.vb.leapCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450045, self.vb.leapCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSkitteringLeapCD:Start(timer, self.vb.leapCount+1)
 		end
 	elseif spellId == 438677 or spellId == 452231 then--Hard difficulty, and second ID LFR assumed
 		self.vb.stingingCount = self.vb.stingingCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438677, self.vb.stingingCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerStingingSwarmCD:Start(timer, self.vb.stingingCount+1)
 		end
 	elseif spellId == 441626 then
@@ -557,7 +557,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWebVortex:Show(self.vb.webBombCount)
 		specWarnWebVortex:Play("pullin")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441626, self.vb.webBombCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerWebVortexCD:Start(timer, self.vb.webBombCount+1)
 			self:Schedule(timer+8, checkSkippedWebVortex, self)
 		end
@@ -566,7 +566,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rainCount = self.vb.rainCount + 1
 		warnEntropicDesolation:Show()
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450129, self.vb.rainCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerEntropicDesolationCD:Start(timer, self.vb.rainCount+1)
 			self:Schedule(timer+8, checkSkippedEntropicDesolation, self)
 		end
@@ -575,7 +575,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnStrandsofReality:Show(self.vb.strandsCount)
 		specWarnStrandsofReality:Play("frontal")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441782, self.vb.strandsCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerStrandsofRealityCD:Start(timer, self.vb.strandsCount+1)
 		end
 	elseif spellId == 450483 then
@@ -602,7 +602,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.leapCount = self.vb.leapCount + 1
 			warnVoidStep:Show(self.vb.leapCount)
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 450483, self.vb.leapCount+1)
-			if timer then
+			if timer and timer > 0 then
 				timerVoidStepCD:Start(timer, self.vb.leapCount+1)
 			end
 		end
@@ -612,7 +612,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCataclysmicEntropy:Show(self.vb.cataCount)
 		specWarnCataclysmicEntropy:Play("specialsoon")--Maybe custom sound?
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 438355, self.vb.cataCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerCataclysmicEntropyCD:Start(timer, self.vb.cataCount+1)
 			self:Schedule(timer+8, checkSkippedCatalysmicEntropy, self)
 		end
@@ -621,14 +621,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnSpikeEruption:Show(self.vb.eruptionCount)
 		specWarnSpikeEruption:Play("watchstep")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 443068, self.vb.eruptionCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerSpikeEruptionCD:Start(timer, self.vb.eruptionCount+1)
 		end
 	elseif spellId == 441791 then
 		self.vb.burrowedEruptionCount = self.vb.burrowedEruptionCount + 1
 		warnBurrowedEruption:Show(self.vb.burrowedEruptionCount)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 441791, self.vb.burrowedEruptionCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerBurrowedEruptionCD:Start(timer, self.vb.burrowedEruptionCount+1)
 		end
 	elseif spellId == 456174 and self:GetStage(2) then--Burrow Transition 2 (451160 is transition 1 but we use earlier event)
@@ -653,7 +653,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnUnleashedSwarm:Show(self.vb.swarmCount)
 		specWarnUnleashedSwarm:Play("aesoon")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 442994, self.vb.swarmCount+1)
-		if timer then
+		if timer and timer > 0 then
 			timerUnleashedSwarmCD:Start(timer, self.vb.swarmCount+1)
 		end
 	end
