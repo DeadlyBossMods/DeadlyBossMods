@@ -520,19 +520,19 @@ local function transcribeEvent(event, params, anon, flagState)
 			return prefix .. anon:ScrubName(name, guid) .. separator .. anon:ScrubGUID(guid)
 		end)
 	end
-	if event == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" then
-		-- capture limits prevents us from doing this a single glorious regex
-		local prefix, suffix
-		prefix, params = params:match("([^#]*#)(.*)")
-		params, suffix = params:match("(" .. ("[^#]*#"):rep(8 * 5) .. ")(.*)")
-		local newParams = ""
-		for boss in params:gmatch("(" .. ("[^#]*#"):rep(8) .. ")") do
-			newParams = newParams .. boss:gsub("^" .. ("([^#]*)#"):rep(8), function(arg1, arg2, arg3, arg4, arg5, guid, arg7, arg8)
-				return ("%s#"):rep(8):format(arg1, arg2, arg3, arg4, arg5, guid == "nil" and guid or anon:ScrubGUID(guid), arg7, arg8)
-			end)
-		end
-		params = prefix .. newParams .. suffix
-	end
+	--if event == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" then
+	--	-- capture limits prevents us from doing this a single glorious regex
+	--	local prefix, suffix
+	--	prefix, params = params:match("([^#]*#)(.*)")
+	--	params, suffix = params:match("(" .. ("[^#]*#"):rep(8 * 5) .. ")(.*)")
+	--	local newParams = ""
+	--	for boss in params:gmatch("(" .. ("[^#]*#"):rep(8) .. ")") do
+	--		newParams = newParams .. boss:gsub("^" .. ("([^#]*)#"):rep(8), function(arg1, arg2, arg3, arg4, arg5, guid, arg7, arg8)
+	--			return ("%s#"):rep(8):format(arg1, arg2, arg3, arg4, arg5, guid == "nil" and guid or anon:ScrubGUID(guid), arg7, arg8)
+	--		end)
+	--	end
+	--	params = prefix .. newParams .. suffix
+	--end
 	if event == "GOSSIP_SHOW" then
 		local guid, suffix = params:match("([^#]*)#(.*)")
 		params = anon:ScrubGUID(guid) .. "#" .. suffix

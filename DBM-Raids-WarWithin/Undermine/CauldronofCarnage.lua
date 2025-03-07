@@ -277,7 +277,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnRaisedGuard or self.Options.NPFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	if self.Options.Infoframe then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
 end
