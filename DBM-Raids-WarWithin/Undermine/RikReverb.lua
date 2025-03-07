@@ -115,15 +115,15 @@ local allTimers = {
 	},
 	["heroic"] = {
 		--Amplification
-		[473748] = {10.7, 40, 40},
+		[473748] = {10.7, 38.9, 38.9},--both 2nd and 3rd cast have a 1-2 sec variation
 		--Echoing Chant
-		[466866] = {21.5, 58.0, 28.6},
+		[466866] = {21.0, 58.5, 33.5},
 		--Sound Cannon
-		[467606] = {27.5, 34.5},
+		[467606] = {32.0, 35.0},
 		--Faulty Zap
-		[466979] = {39.5, 35.5, 26.0},
+		[466979] = {43.5, 31.5, 26.0},
 		--Spark Blast Ignition
-		[472306] = {15.0, 43.5, 44.7},
+		[472306] = {20.5, 39.5, 43.2},
 	},
 	["normal"] = {--LFR and normal confirmed
 		--Amplification
@@ -303,15 +303,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 3 == 0 then--Fine tune
-				if not args:IsPlayer() then
-					if amount >= 6 and not DBM:UnitDebuff("player", spellId) then
-						specWarnTinnitusTaunt:Show(args.destName)
-						specWarnTinnitusTaunt:Play("tauntboss")
-					else
-						warnTinnitus:Show(args.destName, amount)
-					end
-				else
+			if not args:IsPlayer() and amount >= 3 then
+				if amount >= 6 and not DBM:UnitDebuff("player", spellId) then
+					specWarnTinnitusTaunt:Show(args.destName)
+					specWarnTinnitusTaunt:Play("tauntboss")
+				elseif amount % 3 == 0 then
 					warnTinnitus:Show(args.destName, amount)
 				end
 			end
