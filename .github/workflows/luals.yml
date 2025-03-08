@@ -1,0 +1,26 @@
+name: luals-checker
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - master
+
+run-name: LuaLS Check
+jobs:
+  LuaLS-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: ./workspace
+      - name: LuaLS check
+        uses: DeadlyBossMods/LuaLS-config@main
+        with:
+          luals-check-dir: ${{ github.workspace }}/workspace
+          extra-args: "--num_threads 4"
