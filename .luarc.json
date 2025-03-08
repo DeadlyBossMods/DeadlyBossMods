@@ -87,6 +87,7 @@
 		"SlashCmdList",
 		"DBMExtraGlobal",
 		"OptionsList_OnLoad",
-		"TranscriptDB"
+		"TranscriptDB",
+		"ColorPickerFrame"
 	]
 }

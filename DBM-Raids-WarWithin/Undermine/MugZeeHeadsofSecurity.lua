@@ -5,6 +5,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(229953)
 mod:SetEncounterID(3015)
+mod:SetUsedIcons(6, 4, 3, 2)
 mod:SetHotfixNoticeRev(20250209000000)
 mod:SetMinSyncRevision(20250209000000)
 mod:SetZone(2769)
@@ -17,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 467380 468728 468794 467379",
 	"SPELL_AURA_APPLIED 472631 466476 467202 467225 467380 469369 1215595 1222948 469490 469391 1215898 471419",--1222408
 	"SPELL_AURA_APPLIED_DOSE 466385 469391",
-	"SPELL_AURA_REMOVED 466459 466460 467202 467380 469369 1222948 469490 1215898",--472631
+	"SPELL_AURA_REMOVED 466459 466460 467202 467380 469369 1222948 469490 1215898 472631",
 	"SPELL_PERIODIC_DAMAGE 474554 470089 472057",
 	"SPELL_PERIODIC_MISSED 474554 470089 472057",
 	"UNIT_DIED"
@@ -25,7 +26,6 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, validate distance checks
 --TODO, auto mark crawlers with https://www.wowhead.com/ptr-2/spell=466539/unstable-crawler-mines
 --TODO, personal https://www.wowhead.com/ptr-2/spell=472061/unstable-crawler-mines tracking?
 --TODO, https://www.wowhead.com/ptr-2/spell=469043/searing-shrapnel tracker?
@@ -55,10 +55,11 @@ local timerDoubleMindedFuryCD						= mod:NewNextTimer(97.3, 1216142, nil, nil, n
 --Mug
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31677))
 local warnSolidGold									= mod:NewTargetNoFilterAnnounce(467225, 2)
+local warnEarthshakerGaol							= mod:NewTargetCountAnnounce(474461, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnEarthshakerGaol						= mod:NewSpecialWarningYou(474461, nil, nil, nil, 1, 2)
---local yellEarthshakerGaol							= mod:NewYell(474461)
---local yellEarthshakerGaolFades					= mod:NewShortFadesYell(474461)
+local yellEarthshakerGaol							= mod:NewYell(474461)
+local yellEarthshakerGaolFades						= mod:NewIconFadesYell(474461)
 local specWarnFrostshatterBoots						= mod:NewSpecialWarningYou(466476, nil, nil, nil, 1, 2)
 local specWarnStormfuryFingerGun					= mod:NewSpecialWarningDodgeCount(466509, nil, nil, nil, 2, 15)
 local specWarnMoltenGoldKnuckles					= mod:NewSpecialWarningDefensive(466518, nil, nil, nil, 1, 2)
@@ -71,6 +72,7 @@ local timerSpearCast								= mod:NewCastTimer(8, 466480, nil, nil, nil, 5)
 local timerStormfuryFingerGunCD						= mod:NewCDCountTimer(29, 466509, nil, nil, nil, 3)
 local timerMoltenGoldKnucklesCD						= mod:NewVarCountTimer(40, 466518, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
+mod:AddSetIconOption("SetIconOnGaol", 474461, true, 4, {6, 4, 3, 2})
 --Gallagio Goon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31679))
 --local warnEnraged									= mod:NewTargetNoFilterAnnounce(1214623, 2)--Requires unfiltered unit events, so not doing unless required/requested
@@ -138,6 +140,7 @@ mod.vb.whammyCount = 0
 mod.vb.chargeCount = 0
 mod.vb.bulletCount = 0
 local castsPerGUID = {}
+local GaolIcons = {}
 
 function mod:ArcTarget(targetname)
 	if not targetname then return end
@@ -185,6 +188,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDoubleMindedFury:Show()
 		specWarnDoubleMindedFury:Play("stilldanger")
 	elseif spellId == 474461 then
+		table.wipe(GaolIcons)
 		self.vb.gaolCount = self.vb.gaolCount + 1
 		--Not even sure if this is still true but normal and heroic no longer ever get double casts
 		if self:GetStage(3) and self:IsMythic() and self.vb.gaolCount == 1 then
@@ -192,12 +196,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 472659 then
 		--timerShakedownCD:Start(nil, args.sourceGUID)
-		if self:CheckBossDistance(args.sourceGUID, false, 17626, 13) then
+		if self:CheckBossDistance(args.sourceGUID, false, 8149, 8) and self:AntiSpam(3, 3) then
 			specWarnShakedown:Show()
 			specWarnShakedown:Play("frontal")
 		end
 	elseif spellId == 470910 then
-		if self:CheckBossDistance(args.sourceGUID, false, 17626, 13) then
+		if self:CheckBossDistance(args.sourceGUID, false, 8149, 8) and self:AntiSpam(3, 4) then
 			specWarnGaolBreak:Show()
 			specWarnGaolBreak:Play("carefly")
 		end
@@ -389,6 +393,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+local useIcons = {4, 6, 3, 2} -- 4 in mythic?
+---@param self DBMMod
+local function sortGaol(self)
+	table.sort(GaolIcons, DBM.SortByRangedRoster)
+	for i = 1, #GaolIcons do
+		local name = GaolIcons[i]
+		local icon = useIcons[i]
+		if self.Options.SetIconOnGaol then
+			--Mythic uses same icons in pairs, so people are paired up with same mark, can't mark both so only marks 1 of them
+			self:SetIcon(name, icon)
+		end
+		if name == DBM:GetMyPlayerInfo() then
+			specWarnEarthshakerGaol:Show()
+			specWarnEarthshakerGaol:Play("targetyou")
+			yellEarthshakerGaol:Yell(icon)
+			yellEarthshakerGaolFades:Countdown(472631, nil, icon)
+		end
+	end
+	warnEarthshakerGaol:Show(self.vb.gaolCount+1, table.concat(GaolIcons, "<, >"))
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 466385 then
@@ -397,11 +422,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMoxie:Show(args.destName, amount)
 		end
 	elseif spellId == 472631 then
-		if args:IsPlayer() then
-			specWarnEarthshakerGaol:Show()
-			specWarnEarthshakerGaol:Play("targetyou")
-			--yellEarthshakerGaol:Yell()
-			--yellEarthshakerGaolFades:Countdown(spellId)
+		GaolIcons[#GaolIcons+1] = args.destName
+		local expectedTotal = self:IsMythic() and 4 or 2--Mythic assumed to be 4, but not confirmed yet
+		local alivePlayers = DBM:NumRealAlivePlayers()
+		--Auto scale expected if there aren't enough living players to meet it
+		if expectedTotal > alivePlayers then
+			expectedTotal = alivePlayers
+		end
+		self:Unschedule(sortGaol)
+		if #GaolIcons == expectedTotal then
+			sortGaol(self)
+		else
+			self:Schedule(0.5, sortGaol, self)--Fallback in case scaling targets for normal/heroic
 		end
 	elseif spellId == 466476 then
 		if args:IsPlayer() then
@@ -501,10 +533,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGoblinGuidedRocketCD:Stop()
 		timerSprayandPrayCD:Stop()
 		timerDoubleWhammyCD:Stop()
-	--elseif spellId == 472631 then
-	--	if args:IsPlayer() then
-	--		yellEarthshakerGaolFades:Cancel()
-	--	end
+	elseif spellId == 472631 then
+		if args:IsPlayer() then
+			yellEarthshakerGaolFades:Cancel()
+		end
+		if self.Options.SetIconOnGaol then
+			--Mythic uses same icons in pairs, so people are paired up with same mark, can't mark both so only marks 1 of them
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 467380 then
 		if args:IsPlayer() then
 			yellGoblinGuidedRocketFades:Cancel()

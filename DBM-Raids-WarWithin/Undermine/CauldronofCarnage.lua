@@ -37,7 +37,8 @@ mod:RegisterEventsInCombat(
 --TODO, any kind of marking for https://www.wowhead.com/ptr-2/spell=1213992/voltaic-image ?
 --[[
 (ability.id = 473650 or ability.id = 472233 or ability.id = 1214190 or ability.id = 473994 or ability.id = 466178) and type = "begincast"
- or (ability.id = 463900 or ability.id = 473201 or ability.id = 473202 or ability.id = 465863 or ability.id = 465872) and type = "cast"
+ or ability.id = 463900 and type = "cast"
+ or (ability.id = 473201 or ability.id = 473202 or ability.id = 465863 or ability.id = 465872) and type = "cast"
  or (ability.id = 465863 or ability.id = 465872) and type = "removebuff"
 --]]
 --General
@@ -117,13 +118,13 @@ local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
 		--Scrap Bomb
-		[473650] = {9.0, 24.0, 23.0},--Scrap consistently is 23 second cast on mythic (on heroic it's 24)
+		[473650] = {9.0, 23.0, 24.0},--Scrap consistently is 23 second cast on mythic (on heroic it's 24)
 		--Molten Phlegm
 		[1213688] = {23.7, 24.3},--Cast twice on mythic
 		--Blastburn Roarcannon
-		[472233] = {15.0, 24.0, 23.0},--Roarcannon consistently is 23 second cast on mythic (on heroic it's 24)
+		[472233] = {15.0, 24.0, 21.0},--Roarcannon consistently is 23 second cast on mythic (on heroic it's 24)
 		--Eruption Stomp
-		[1214190] = {27.0, 24.0},
+		[1214190] = {26.0, 25.0},
 		--Static Charge
 		[473994] = {6.0},
 		--Thunderdrum Salvo

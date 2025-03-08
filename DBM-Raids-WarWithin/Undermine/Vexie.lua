@@ -34,8 +34,8 @@ mod:RegisterEventsInCombat(
 --TODO, add https://www.wowhead.com/ptr-2/spell=467776/jobs-done ?
 --[[
 (ability.id = 459943 or ability.id = 459671 or ability.id = 468487 or ability.id = 459627) and type = "begincast"
-or ability.id = 459978 and type = "applydebuff"
 or ability.id = 460603 and tyep = "begincast" or ability.id = 466615 and type = "applybuff"
+or ability.id = 459978 and type = "applydebuff"
 --]]
 --Stage One: Fury Road
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30093))

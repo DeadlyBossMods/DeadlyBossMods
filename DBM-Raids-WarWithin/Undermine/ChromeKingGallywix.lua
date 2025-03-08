@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 466340 467182 466751 469286 469327 466341 466834 1216845 1214607 466342 466958 1217987 1219041 1219039",--465952 1216852
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293",--1216852
+	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603",--1216852
 	"SPELL_AURA_APPLIED_DOSE 466246",
 	"SPELL_AURA_REMOVED 1214229 1214369 466165 466246 1220290 469293",
 	"SPELL_INTERRUPT",
@@ -29,12 +29,8 @@ mod:RegisterEventsInCombat(
 --TODO: Possibly add a bombs remaining infoframe similar to hellfire citadel 2nd boss
 --TODO, possible infoframe for the heal absorb mechanic from soaking (https://www.wowhead.com/ptr-2/spell=1220761/mechengineers-canisters)
 --TODO, more context for suppression (personal alerts?)
---TODO, maybe nameplate timers for https://www.wowhead.com/ptr-2/spell=466751/venting-heat that apply directly to the machines applying it
---TODO, assumed tanks will just tank swap on canisters and nothing else but we'll see
 --TODO, stuff with Greedy Goblin's Armaments ?
---TODO, figure out phase change detection
 --TODO, target scan giga blast?
---TODO, basically all the things for Giga Coils
 --TODO, VERIFY when a player is carrying a Gigabomb, use https://www.wowhead.com/ptr-2/spell=469361/giga-bomb too?
 --TODO, add stack announce for https://www.wowhead.com/ptr-2/spell=471352/juice-it when frequency of stacks is known
 --TODO, detect darkfuse cronies spawn, maybe https://www.wowhead.com/ptr-2/spell=462416/signal-flare ?
@@ -43,7 +39,6 @@ mod:RegisterEventsInCombat(
 --TODO, ego swapping? it'll need fancy checked ego amount checks https://www.wowhead.com/ptr-2/spell=467064/checked-ego
 --TODO, if bomb blast can switch targets MID cast, change taunt warning to only fire during cast not after, then rework ego swap mechanics
 --TODO, announce https://www.wowhead.com/ptr-2/spell=469363/fling-giga-bomb flings?
---TODO, track trick shots? (1220290)
 --[[
 stoppedAbility.id = 1214369 or ability.id = 1214229 and (type = "applydebuff" or type = "removedebuff") or ability.id = 1220290 and type = "removebuff" or ability.id = 469293 and (type = "applybuff" or type = "removebuff")
 --]]
@@ -57,6 +52,7 @@ local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, false)
 local warnFocusedDetonation							= mod:NewCountAnnounce(466246, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466246))
 
 local specWarnScatterblastCanisters					= mod:NewSpecialWarningCount(466340, nil, nil, nil, 2, 2)
+local specWarnScatterblastCanistersTaunt			= mod:NewSpecialWarningTaunt(466340, nil, nil, nil, 1, 2)
 local specWarnBBBBombs								= mod:NewSpecialWarningCount(465952, nil, nil, nil, 2, 2)
 
 local timerScatterblastCanistersCD					= mod:NewCDCountTimer(97.3, 466340, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -232,16 +228,16 @@ local allTimers = {
 			[469286] = {6, 54.3, 54.3, 54.3, 54.3, 54.3, 54.3},--Giga Coils (always same so no subcounts needed)
 			[466341] = {--Fused Canisters
 				[0] = {0},--No casts before first coil
-				[1] = {0},
-				[2] = {0},
+				[1] = {10, 32.8},
+				[2] = {27.2},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 			[465952] = {--BBBBombs
 				[0] = {0},--No casts before first coil
-				[1] = {34.4},
-				[2] = {0},
+				[1] = {34.3},
+				[2] = {35.5},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
@@ -249,7 +245,7 @@ local allTimers = {
 			[467182] = {--Suppression
 				[0] = {0},--No casts before first coil
 				[1] = {24},
-				[2] = {0},
+				[2] = {8.8},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
@@ -257,40 +253,18 @@ local allTimers = {
 			[466751] = {--Venting Heat
 				[0] = {0},--No casts before first coil
 				[1] = {20.5},
-				[2] = {17.2},
+				[2] = {16.7},
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
 			},
 		},
 		[3] = {
-			[469286] = {},--Giga Coils
-			[466341] = {--Fused Canisters
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
-				[4] = {0},
-				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
-			},
-			[465952] = {--BBBBombs
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
-				[4] = {0},
-				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
-			},
+			[469286] = {60, 59.8, 68},--Giga Coils
 			[467182] = {--Suppression
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
+				[0] = {33},
+				[1] = {20.4},
+				[2] = {7.5, "v37-43"},--37 can shift to 43 due to collision with another spell
 				[3] = {0},
 				[4] = {0},
 				[5] = {0},
@@ -299,21 +273,21 @@ local allTimers = {
 				[8] = {0},
 			},
 			[466751] = {--Venting Heat
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
+				[0] = {18},
+				[1] = {11.6, 37},
+				[2] = {37.4},
+				[3] = {"v19.9-26"},--19-26
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
-			[1214607] = {--BBBBlast
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
+			[1214607] = {--BBB Blast
+				[0] = {8, 36},
+				[1] = {30.7},
+				[2] = {18.5, "v26-35"},--26-35
+				[3] = {19.7},
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -321,10 +295,10 @@ local allTimers = {
 				[8] = {0},
 			},
 			[466342] = {--Tick Tock Canisters
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
+				[0] = {22},
+				[1] = {6.6, 35},
+				[2] = {26.4},
+				[3] = {3.7},
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -389,33 +363,33 @@ local allTimers = {
 				[8] = {0},
 			},
 			[466751] = {--Venting Heat
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
-				[4] = {0},
+				[0] = {18},
+				[1] = {11.8, 36},
+				[2] = {37.6},
+				[3] = {"v22.5-27.7"},--or 27.7 (collision with BBB Blast. Either one can be cast at 22 and it bumps other to 27)
+				[4] = {17},
 				[5] = {0},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
 			[1214607] = {--BBBBlast
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
-				[4] = {0},
+				[0] = {8, 34},
+				[1] = {28.8},
+				[2] = {15.6, 37},
+				[3] = {"v21.7-26"},--21-26 (collision with Venting Heat. Either one can be cast at 22 and it bumps other to 27)
+				[4] = {11.4, 34},
 				[5] = {0},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
 			[466342] = {--Tick Tock Canisters
-				[0] = {0},
-				[1] = {0},
-				[2] = {0},
-				[3] = {0},
-				[4] = {0},
+				[0] = {22},
+				[1] = {6.8, 35},
+				[2] = {26.6},
+				[3] = {5.6, 35},
+				[4] = {31.4},
 				[5] = {0},
 				[6] = {0},
 				[7] = {0},
@@ -645,9 +619,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnBBBBlast:Show(self.vb.bombsCount)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnBBBBlast:Play("defensive")
-			specWarnBBBBlast:ScheduleVoice(1.5, "bombsoon")
+			specWarnBBBBlast:ScheduleVoice(1.5, "runout")
 		else
-			specWarnBBBBlast:Play("bombsoon")
+			if self:IsTank() then
+				specWarnBBBBlast:Play("tauntboss")
+			else
+				specWarnBBBBlast:Play("bombsoon")
+			end
 		end
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
@@ -785,8 +763,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGigaBoomer:Show()
 			specWarnGigaBoomer:Play("bombyou")
 		end
+	elseif spellId == 471603 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			specWarnScatterblastCanistersTaunt:Show(args.destName)
+			specWarnScatterblastCanistersTaunt:Play("tauntboss")
+		end
 	elseif spellId == 469293 then--Giga Coils Starting
-		timerGigaBlastCD:Start(2, self.vb.gigaBlastCount+1)
+		self.vb.gigaBlastCount = 0
+		timerGigaBlastCD:Start(2, 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
