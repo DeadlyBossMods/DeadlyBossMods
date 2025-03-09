@@ -66,7 +66,7 @@ L.Area_ProfilesSetup		= "Guía de uso de perfiles de DBM"
 -- Panel: Core & GUI
 L.Core_GUI 					= "Core e interfaz"
 L.General 					= "Opciones generales de DBM"
-L.EnableMiniMapIcon			= "Mostrar botón junto al minimapa"
+L.EnableMiniMapIcon			= "Mostrar botón del minimapa"
 L.EnableCompartmentIcon		= "Mostrar botón de compartimento"
 L.UseSoundChannel			= "Canal de audio para alertas"
 L.UseMasterChannel			= "Canal de audio principal"
