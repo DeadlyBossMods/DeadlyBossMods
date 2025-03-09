@@ -8093,8 +8093,7 @@ bossModPrototype.IsHealer = DBM.IsHealer
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
-		---@diagnostic disable-next-line: param-type-mismatch
-		playerUnitID = DBM:GetRaidUnitId(playerUnitID)
+		playerUnitID = DBM:GetRaidUnitId(isName)
 	end
 	if not playerUnitID then
 		DBM:Debug("IsTanking passed with invalid unit", 2)
