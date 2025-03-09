@@ -124,11 +124,11 @@ L.LogTWDungeons 					= "Masmorras de Caminhada Temporal ou Tempo de Crona (não 
 L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro Procurando grupo)"
 
 -- Tab: General Timer Options
-L.TimerGeneral 				= "Opções de temporizador"
-L.SKT_Enabled				= "Sempre exibir um temporizador de sua vitória recorde (sobrepõe a opção do chefe específico)"
-L.ShowRespawn 				= "Exibir o temporizador de reaparência do chefe após uma derrota"
+L.TimerGeneral 				= "Opções de cronômetro"
+L.SKT_Enabled				= "Sempre exibir um cronômetro de sua vitória recorde (sobrepõe a opção do chefe específico)"
+L.ShowRespawn 				= "Exibir o cronômetro de reaparência do chefe após uma derrota"
 L.ShowQueuePop 				= "Exibir o tempo restante para aceitar um pop de fila (Procurando grupo, CB, etc)"
-L.ShowBerserkWarnings 		= "Exibir anúncios a 10/5/3/1 minutos e a 30/10 segundos restantes no temporizador de $spell:26662"
+L.ShowBerserkWarnings 		= "Exibir anúncios a 10/5/3/1 minutos e a 30/10 segundos restantes no cronômetro de $spell:26662"
 
 -- Tab: Alerts
 L.TabCategory_Alerts 		= "Alertas"
@@ -216,7 +216,7 @@ L.Panel_Behavior 			= "Comportamento da barra"
 L.AreaTitle_BarSetup 		= "Opções da barra"
 L.AreaTitle_Behavior		= "Opções do comportamento da barra"
 -- Panel: Color by Type
-L.TabCategory_Timers		= "Temporizadores da barra"
+L.TabCategory_Timers		= "Cronômetros da barra"
 L.Area_ColorBytype			= "Guia para colorir barras por tipo"
 -- Panel: Color by Type
 L.Panel_ColorByType 		= "Cores da barra"
@@ -233,7 +233,7 @@ L.Slider_BarOffSetX 		= "Deslocamento X: %d"
 L.Slider_BarOffSetY 		= "Deslocamento Y: %d"
 L.Slider_BarWidth 			= "Largura da barra: %d"
 L.Slider_BarScale 			= "Escala da barra: %0.2f"
-L.BarSaturation				= "Saturação da barra para temporizadores pequenos: %0.2f"
+L.BarSaturation				= "Saturação da barra para cronômetros pequenos: %0.2f"
 L.AreaTitle_BarSetupSmall 	= "Opções da barra pequena"
 L.AreaTitle_BarSetupHuge	= "Opções da barra grande"
 L.AreaTitle_BarSetupVariance = "Opções da barra de variação"
@@ -241,6 +241,7 @@ L.EnableHugeBar 			= "Ativar barra grande"
 L.EnableVarianceBar 		= "Ativar barras de variação"
 L.VarianceColor				= "Cor de variação"
 L.VarianceTransparency		= "Transparência das barras: %0.1f"
+L.VarianceTimerTextBehavior = "Comportamento do texto do cronômetro de variação"
 L.ZeroatWindowEnds 			= "O texto atinge zero no final da janela de recarga"
 L.ZeroatWindowStartPause 	= "O texto atinge zero no início da janela de recarga e pausa"
 L.ZeroatWindowStartRestart 	= "O texto atinge zero no início da janela de recarga e depois reinicia"
@@ -261,11 +262,11 @@ L.Highest 					= "Maior no topo"
 L.Lowest 					= "Menor no topo"
 L.NoBarFade 				= "Usar cores inicial/final como cores pequena/grande em vez de mudança gradual de cor"
 L.BarInlineIcons 			= "Exibir ícones inline"
-L.DisableRightClickBar		= "Desativar clique direito para cancelar temporizadores"
-L.ShortTimerText 			= "Usar texto curto de temporizador (quando disponível)"
-L.KeepBar 					= "Manter temporizador ativo até o lançamento da habilidade"
+L.DisableRightClickBar		= "Desativar clique direito para cancelar cronômetros"
+L.ShortTimerText 			= "Usar texto curto de cronômetro (quando disponível)"
+L.KeepBar 					= "Manter cronômetro ativo até o lançamento da habilidade"
 L.KeepBar2 					= "(quando suportado pelo mod)"
-L.FadeBar 					= "Desaparecer temporizadores para habilidades fora do alcance"
+L.FadeBar 					= "Desaparecer cronômetros para habilidades fora do alcance"
 L.BarSkin 					= "Estilo da barra"
 
 -- Panel: Pull, Break, Combat
@@ -317,7 +318,7 @@ L.SpecWarn_DemoButton		= "Exibir exemplo"
 L.SpecWarn_ResetMe			= "Redefinir padrões"
 
 L.Area_BugAlerts 			= "Opções de alerta de relatório de bugs"
-L.BadTimerAlert 			= "Exibir mensagem no bate-papo quando o DBM detectar um temporizador incorreto com pelo menos 1 segundo de erro"
+L.BadTimerAlert 			= "Exibir mensagem no bate-papo quando o DBM detectar um cronômetro incorreto com pelo menos 1 segundo de erro"
 
 -- Panel: Spoken Alerts Frame
 L.Panel_SpokenAlerts 		= "Alertas de voz"
@@ -325,7 +326,7 @@ L.Area_VoiceSelection 		= "Seleções de voz"
 L.CountdownVoice 			= "Voz principal para sons de contagem"
 L.CountdownVoice2 			= "Voz secundária para sons de contagem"
 L.CountdownVoice3 			= "Voz terciária para sons de contagem"
-L.PullVoice 				= "Voz para temporizadores de puxada"
+L.PullVoice 				= "Voz para cronômetros de puxada"
 L.VoicePackChoice 			= "Pacote de voz para alertas falados"
 L.MissingVoicePack 			= "Pacote de voz ausente (%s)"
 L.Area_CountdownOptions 	= "Opções de contagem regressiva"
@@ -346,7 +347,7 @@ L.Panel_EventSounds 			= "Sons de eventos"
 L.Area_SoundSelection 			= "Seleções de sons"
 L.EventVictorySound 			= "Som para vitória no encontro"
 L.EventWipeSound 				= "Som para derrota no encontro"
-L.EventEngagePT 				= "Som para o início do temporizador de puxada"
+L.EventEngagePT 				= "Som para o início do cronômetro de puxada"
 L.EventEngageSound 				= "Som para o início do encontro"
 L.EventDungeonMusic 			= "Música dentro de masmorras/raides"
 L.EventEngageMusic 				= "Música durante os encontros"
@@ -373,19 +374,19 @@ L.SpamBlockNoSpecWarnVibrate 	= "Não vibrar controle no anúncio especial"
 L.SpamBlockNoSpecWarnSound 		= "Não reproduzir sons de anúncio especial (os sons de pacotes de voz ativados no painel de contagens et pacotes de voz ainda serão reproduzidos)"
 L.SpamBlockNoPrivateAuraSound 	= "Não registrar sons de auras privadas"
 
-L.Area_SpamFilter_Timers 		= "Funcionalidades de temporizador"
-L.SpamBlockNoShowBossTimers 	= "Não exibir temporizadores para chefes de masmorras/raides"
-L.SpamBlockNoShowTrashTimers 	= "Não exibir temporizadores para lixos de masmorras/raides"
-L.SpamBlockNoShowEventTimers 	= "Não exibir temporizadores para eventos"
-L.SpamBlockNoShowUTimers 		= "Não exibir temporizadores enviados pelo usuário"
+L.Area_SpamFilter_Timers 		= "Funcionalidades de cronômetro"
+L.SpamBlockNoShowBossTimers 	= "Não exibir cronômetros para chefes de masmorras/raides"
+L.SpamBlockNoShowTrashTimers 	= "Não exibir cronômetros para lixos de masmorras/raides"
+L.SpamBlockNoShowEventTimers 	= "Não exibir cronômetros para eventos"
+L.SpamBlockNoShowUTimers 		= "Não exibir cronômetros enviados pelo usuário"
 L.SpamBlockNoCountdowns 		= "Não reproduzir sons de contagem regressiva"
 
 L.Area_SpamFilter_Nameplates 	= "Funcionalidades de placa de nome"
 L.SpamBlockNoNameplate 			= "Não exibir ícones de placa de nome apenas para mecânicas especiais de chefe (ex: bônus o penalidade em inimigos)"
-L.SpamBlockNoNameplateCD 		= "Não exibir ícones de temporizador de recarga de placa de nome apenas para habilidades"
-L.SpamBlockNoNameplateCasts 	= "Não exibir ícones de temporizador de lançamento de placa de nome apenas para habilidades"
-L.SpamBlockNoBossGUIDs 			= "Não exibir ícones de temporizador de recarga de placa de nome para habilidades que também têm temporizadores"
-L.AlwaysKeepNPs 				= "Manter ícones de temporizador de recarga de placa de nome expirados visíveis até que a habilidade seja re-lançada"
+L.SpamBlockNoNameplateCD 		= "Não exibir ícones de cronômetro de recarga de placa de nome apenas para habilidades"
+L.SpamBlockNoNameplateCasts 	= "Não exibir ícones de cronômetro de lançamento de placa de nome apenas para habilidades"
+L.SpamBlockNoBossGUIDs 			= "Não exibir ícones de cronômetro de recarga de placa de nome para habilidades que também têm cronômetros"
+L.AlwaysKeepNPs 				= "Manter ícones de cronômetro de recarga de placa de nome expirados visíveis até que a habilidade seja re-lançada"
 
 L.Area_SpamFilter_Misc 			= "Funcionalidades diversas"
 L.SpamBlockNoSetIcon 			= "Não definir ícones automaticamente em alvos"
@@ -403,19 +404,19 @@ L.SpamBlockNoRangeRestore 		= "Não redefinir o quadro de distância ao estado a
 -- Tab: Spam Filter
 L.Panel_SpamFilter			= "Filtros global e de spam"
 L.Area_SpamFilter			= "Opções do filtro global"
-L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que estão longe"
-L.StripServerName			= "Tira com nome do reino em anúncios e temporizadores"
+L.DontShowFarWarnings		= "Não exibir anúncios/cronômetros para eventos que estão longe"
+L.StripServerName			= "Tira com nome do reino em anúncios e cronômetros"
 
 L.Area_SpecFilter			= "Opções de especialização"
 L.FilterDispels				= "Filtrar anúncios para magias dissipáveis se a seu dissipar estiver em recarga."
 L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
-L.Area_PullTimer			= "Opções de filtros de puxada, pausa, e temporizadores customizados"
-L.DontShowPTNoID			= "Bloquear o temporizador de puxada se não foi enviado na mesma zona que você"
+L.Area_PullTimer			= "Opções de filtros de puxada, pausa, e cronômetros customizados"
+L.DontShowPTNoID			= "Bloquear o cronômetro de puxada se não foi enviado na mesma zona que você"
 L.DontShowPT				= "Não exibir a barra de puxada"
-L.DontShowPTText			= "Não exibir texto de anúncio do temporizador de puxada"
+L.DontShowPTText			= "Não exibir texto de anúncio do cronômetro de puxada"
 L.DontPlayPTCountdown		= "Não reproduzir o áudio da contagem regressiva de puxada/customizado"
-L.PT_Threshold				= "Não reproduzir o áudio do temporizador acima de: %d"
+L.PT_Threshold				= "Não reproduzir o áudio do cronômetro acima de: %d"
 
 -- Panel: Reduce Information
 L.Panel_ReducedInformation 			= "Reduzir informações"
@@ -425,8 +426,8 @@ L.SpamBlockNoShowTgtAnnounce 		= "Não exibir texto nem reproduzir som para anú
 L.SpamBlockNoTrivialSpecWarnSound 	= "Não reproduzir sons de anúncio especial nem exibir piscada de tela para conteúdo trivial para o seu nível (em vez disso, toca som de anúncio não enfatizado selecionado pelo usuário)"
 
 L.Area_SpamFilter 					= "Opções de filtro de spam"
-L.DontShowFarWarnings 				= "Não exibir anúncios/temporizadores para eventos distantes"
-L.StripServerName 					= "Remover nome do reino de anúncios, temporizadores, verificação de alcance e quadro de informações"
+L.DontShowFarWarnings 				= "Não exibir anúncios/cronômetros para eventos distantes"
+L.StripServerName 					= "Remover nome do reino de anúncios, cronômetros, verificação de alcance e quadro de informações"
 L.FilterVoidFormSay2 				= "Não enviar ícone de bate-papo nem gritos de contagem regressiva no bate-papo quando estiver na forma do vazio (gritos regulares de bate-papo ainda são enviados)"
 
 L.Area_SpecFilter 					= "Opções de filtro de função"
@@ -497,15 +498,15 @@ L.DisableGuildStatusShort 			= "Desativar mensagens de progresso sincronizadas c
 
 L.Area_ConfigOverrides 				= "Opções de substituição de configuração" -- NYI
 L.OverrideBossAnnounceOptions 		= "Definir a configuração de anúncios de mods de chefe para todos os usuários de DBM igual à minha configuração" -- NYI
-L.OverrideBossTimerOptions 			= "Definir a configuração de temporizadores de mods de chefe para todos os usuários de DBM igual à minha configuração" -- NYI
+L.OverrideBossTimerOptions 			= "Definir a configuração de cronômetros de mods de chefe para todos os usuários de DBM igual à minha configuração" -- NYI
 L.OverrideBossIconOptions 			= "Definir a configuração de ícones de mods de chefe para todos os usuários de DBM igual à minha configuração (se a configuração de ícones estiver desativada nas opções acima, esta opção será ignorada)" -- NYI
 L.OverrideBossSayOptions 			= "Definir a configuração de bolhas de chat de mods de chefe para todos os usuários de DBM igual à minha configuração (se a configuração de bolhas de bate-papo estiver desativada nas opções acima, esta opção será ignorada)" -- NYI
 L.ConfigAreaFooter 					= "As opções nesta área apenas substituem temporariamente a configuração dos usuários ao iniciar o combate sem alterar sua configuração salva."
-L.ConfigAreaFooter2 				= "Recomenda-se considerar todas as funções e não excluir temporizadores/alertas necessários para tanques, etc."
+L.ConfigAreaFooter2 				= "Recomenda-se considerar todas as funções e não excluir cronômetros/alertas necessários para tanques, etc."
 
 L.Area_receivingOptions 			= "Opções de recebimento" -- NYI
 L.NoAnnounceOverride 				= "Não aceitar substituições de anúncios dos líderes de raide." -- NYI
-L.NoTimerOverridee 					= "Não aceitar substituições de temporizadores dos líderes de raide." -- NYI
+L.NoTimerOverridee 					= "Não aceitar substituições de cronômetros dos líderes de raide." -- NYI
 L.ReplaceMyConfigOnOverride 		= "AVISO: Substituir permanentemente minhas configurações de mods pelas do líder de raide ao aceitar substituições" -- NYI
 L.ReceivingFooter 					= "As substituições de opções de ícones e bolhas de bate-papo não podem ser recusadas, pois essas configurações afetam outros jogadores ao seu redor" -- NYI
 L.ReceivingFooter2 					= "Se você ativar essas opções, é entre você e o líder de raide se sua configuração causar conflitos com a intenção deles" -- NYI
@@ -537,7 +538,7 @@ L.Panel_Range				= "Quadro de distância"
 L.Panel_Nameplates 			= "Placas de nome"
 L.Plater_Config 			= "Abrir configuração de Plater"
 L.Area_NPStyle 				= "Estilo (Nota: configura o estilo apenas quando não está usando Plater.)"
-L.NPAuraText 				= "Exibir texto do temporizador nos ícones das placas de nome"
+L.NPAuraText 				= "Exibir texto do cronômetro nos ícones das placas de nome"
 L.NPAuraSize 				= "Tamanho em pixels do ícone: %d"
 L.NPIcon_BarOffSetX 		= "Deslocamento do ícone X: %d"
 L.NPIcon_BarOffSetY 		= "Deslocamento do ícone Y: %d"
@@ -546,7 +547,7 @@ L.NPIcon_Spacing 			= "Espaçamento dos ícones: %d"
 L.NPIcon_MaxTextLen 		= "Comprimento máx. do texto: %d"
 L.NPIconAnchorPoint 		= "Ponto de ancoragem do ícone"
 L.NPDemo 					= "Teste (esteja próximo às placas de nome)"
-L.FontTypeTimer 			= "Selecionar fonte do temporizador"
+L.FontTypeTimer 			= "Selecionar fonte do cronômetro"
 L.FontTypeText 				= "Selecionar fonte do texto"
 
 L.Area_NPGlow 				= "Iluminação (Nota: configura a iluminação apenas quando não está usando o Plater.)"
@@ -568,7 +569,7 @@ L.Area_ChatAlerts			= "Opções de alerta do bate-papo"
 L.RoleSpecAlert				= "Exibir mensagem de alerta quando sua especialização de saque não corresponder à sua especialização atual ao entrar na raide"
 L.CheckGear					= "Envia um mensagem de alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas(40+)"
 L.WorldBossAlert			= "Exibir mensagem de alerta quando um chefe mundial possivelmente for atacado no seu reino por membros da sua guilda ou amigos"
-L.WorldBuffAlert 			= "Exibir mensagem de alerta e temporizador quando o RP de bônus mundial for iniciado no seu reino (Desativado em SoD)"
+L.WorldBuffAlert 			= "Exibir mensagem de alerta e cronômetro quando o RP de bônus mundial for iniciado no seu reino (Desativado em SoD)"
 
 L.Area_SoundAlerts			= "Opções de som de alerta"
 L.LFDEnhance				= "Reproduzir o som de TodosProntos para checagem de papéis e CB/LDG no canal de áudio principal (i.e. sons funcionam mesmo que os efeitos sonoros estejam desligados e são geralmente mais altos)"
