@@ -91,6 +91,7 @@ local timerDemolishCD								= mod:NewNextCountTimer(51.1, 464112, nil, "Tank|He
 local timerMeltdownCD								= mod:NewNextCountTimer(51.1, 1217954, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerOverDriveCD								= mod:NewNextTimer(111.1, 467117, nil, nil, nil, 6)
 local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 6)
+local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod.vb.sortingCount = 0
 mod.vb.sortedIcon = 1
@@ -119,6 +120,7 @@ function mod:OnCombatStart(delay)
 		timerElectroSortingCD:Start(22.2-delay, 1)
 		timerMeltdownCD:Start(44.4-delay, 1)
 		timerOverDriveCD:Start((self:IsMythic() and 55.6 or 111.1)-delay)
+		berserkTimer:Start(self:IsMythic() and 385 or 480)
 	else
 		timerIncineratorCD:Start(10-delay, 1)
 		timerDemolishCD:Start(16-delay, 1)
