@@ -5,7 +5,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(230322)
 mod:SetEncounterID(3012)
-mod:SetUsedIcons(7, 6, 5, 4, 3, 2, 1)
+mod:SetUsedIcons(7, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20250111000000)
 mod:SetMinSyncRevision(20250111000000)
 mod:SetZone(2769)
@@ -59,9 +59,10 @@ local timerElectroSortingCD							= mod:NewNextCountTimer(51.1, 464399, DBM_COMM
 --local timerBigBomb								= mod:NewCastTimer(20, 464865, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShortFuseCast							= mod:NewCastNPTimer(30, 473115, nil, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnSorted", 465346, true, 0, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnBalls", 465346, false, 0, {1, 2, 3, 4, 5}, true)
+mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {2, 4, 5, 7}, true)
 --mod:AddSetIconOption("SetIconOnBigBomb", 464865, true, 5, {8})
-mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
+--mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
 mod:AddNamePlateOption("NPAuraOnMessedUp", 1217685)
 mod:AddNamePlateOption("NPAuraOnTerritorial", 473066)
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
@@ -73,7 +74,7 @@ local warnMarkedForRecycling						= mod:NewTargetNoFilterAnnounce(1220648, 4)
 local specWarnScrapRockets							= mod:NewSpecialWarningInterruptCount(1219384, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMarkedForRecycling					= mod:NewSpecialWarningYou(1220648, nil, nil, nil, 3, 2)
 
-local timerDumpsterDiveCD							= mod:NewCDNPTimer(10.9, 466742, nil, nil, nil, 3)--10.9-24.4
+--local timerDumpsterDiveCD							= mod:NewCDNPTimer(10.9, 466742, nil, nil, nil, 3)--10.9-24.4
 --local timerRecyclerCD								= mod:NewCDNPTimer(97.3, 1220752, nil, nil, nil, 3)
 local timerRecyclerCast								= mod:NewCastNPTimer(12, 1220752, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Rest of Boss mechanics
@@ -94,19 +95,21 @@ local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 
 mod.vb.sortingCount = 0
 mod.vb.sortedIcon = 1
 mod.vb.bigBombCount = 0
-mod.vb.smallBombIcon = 7
 mod.vb.IncinCount = 0
 mod.vb.demolishCount = 0
 mod.vb.meltdownCount = 0
 local castsPerGUID = {}
+local JWIconOrder = {2, 4, 5, 7} -- Circle, Triangle, Moon, Cross
+local usedMarks, seenGUIDs = {}, {}
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(castsPerGUID)
+	table.wipe(usedMarks)
+	table.wipe(seenGUIDs)
 	self.vb.sortingCount = 0
 	self.vb.sortedIcon = 1
 	self.vb.bigBombCount = 0
-	self.vb.smallBombIcon = 7
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
 	self.vb.meltdownCount = 0
@@ -140,15 +143,17 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 464399 then
 		self.vb.sortingCount = self.vb.sortingCount + 1
 		self.vb.sortedIcon = 1
-		self.vb.smallBombIcon = 7
 		specWarnElectroSorting:Show(self.vb.sortingCount)
 		specWarnElectroSorting:Play("specialsoon")
 		timerElectroSortingCD:Start(self:IsHard() and 51.1 or 46.0, self.vb.sortingCount+1)
+		--Hard reset icons, even if last adds are up, because new adds need prio marking
+		table.wipe(usedMarks)
+		table.wipe(seenGUIDs)
 	elseif spellId == 466742 then
 		if self:AntiSpam(4, 1) then
 			warnDumpsterDive:Show()
 		end
-		timerDumpsterDiveCD:Start(self:IsHard() and 10.9 or 15.8, args.sourceGUID)
+		--timerDumpsterDiveCD:Start(self:IsHard() and 10.9 or 15.8, args.sourceGUID)--Just not reliable
 	elseif spellId == 1220752 then
 		timerRecyclerCast:Start(nil, args.sourceGUID)
 		--timerRecyclerCD:Start(nil, args.sourceGUID)
@@ -193,7 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 465346 then
 		local icon = self.vb.sortedIcon
-		if self.Options.SetIconOnSorted then
+		if self.Options.SetIconOnBalls then
 			self:SetIcon(args.destName, icon, 24)--Autoclear after 24 seconds in case player dies before getting 461536
 		end
 		if args:IsPlayer() then
@@ -214,6 +219,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnMessedUp then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+		if args:GetDestCreatureID() == 231839 then -- Scrapmaster
+			for i = 1, 4 do
+				if not usedMarks[i] and not seenGUIDs[args.destGUID] then
+					seenGUIDs[args.destGUID] = i
+					usedMarks[i] = args.destGUID
+					if self.Options.SetIconOnScrapmasters then
+						self:ScanForMobs(args.destGUID, 2, JWIconOrder[i], 1, nil, 12, "SetIconOnScrapmasters")
+					end
+					return
+				end
+			end
+		end
 	elseif spellId == 473066 then
 		if self.Options.NPAuraOnTerritorial then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -223,10 +240,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 473115 then
 		timerShortFuseCast:Start(30, args.destGUID)
-		if self.Options.SetIconOnSmallBomb and self.vb.smallBombIcon >= 5 then--Set only icons 5-7, 1-4 are used for sorting
-			self:ScanForMobs(args.destGUID, 2, self.vb.smallBombIcon, 1, nil, 12, "SetIconOnSmallBomb")
-		end
-		self.vb.smallBombIcon = self.vb.smallBombIcon - 1
 	elseif spellId == 1218704 and args:IsPlayer() then
 		specWarnPowercoil:Show()
 		specWarnPowercoil:Play("targetyou")
@@ -275,14 +288,14 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 465346 then
-		--if self.Options.SetIconOnSorted then
+		--if self.Options.SetIconOnBalls then
 		--	self:SetIcon(args.destName, 0)
 		--end
 		if args:IsPlayer() then
 			yellSortedFades:Cancel()
 		end
 	elseif spellId == 461536 then--Rolling Rubbish ending
-		if self.Options.SetIconOnSorted then
+		if self.Options.SetIconOnBalls then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 1217685 then
@@ -325,7 +338,7 @@ function mod:UNIT_DIED(args)
 		timerShortFuseCast:Cancel(args.destGUID)
 	elseif cid == 231839 then--Scrapmaster
 		timerRecyclerCast:Cancel(args.destGUID)
-		timerDumpsterDiveCD:Stop(args.destGUID)
+		--timerDumpsterDiveCD:Stop(args.destGUID)
 --	elseif cid == 230863 then--Discarded Doomsplosive
 
 	end
