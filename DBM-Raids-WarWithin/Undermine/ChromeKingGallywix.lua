@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2646, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(237194)--TODO, verify ID
+mod:SetCreatureID(231075)
 mod:SetEncounterID(3016)
 mod:SetHotfixNoticeRev(20250215000000)
 --mod:SetMinSyncRevision(20250215000000)
@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 466340 467182 466751 469286 469327 466341 466834 1216845 1214607 466342 466958 1217987 1219041 1219039",--465952 1216852
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603",--1216852
+	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603 469387",--1216852
 	"SPELL_AURA_APPLIED_DOSE 466246",
 	"SPELL_AURA_REMOVED 1214229 1214369 466165 466246 1220290 469293",
 	"SPELL_INTERRUPT",
@@ -47,10 +47,10 @@ local timerPhaseTransition							= mod:NewStageCountTimer(33, 66911)
 mod:AddInfoFrameOption(nil, true)
 --Stage One: The House of Chrome
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30490))
-local warnSuppression								= mod:NewCountAnnounce(467182, 3)
 local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, false)
 local warnFocusedDetonation							= mod:NewCountAnnounce(466246, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466246))
 
+local specWarnSupression							= mod:NewSpecialWarningDodgeCount(467182, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanisters					= mod:NewSpecialWarningCount(466340, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanistersTaunt			= mod:NewSpecialWarningTaunt(466340, nil, nil, nil, 1, 2)
 local specWarnBBBBombs								= mod:NewSpecialWarningCount(465952, nil, nil, nil, 2, 2)
@@ -93,7 +93,7 @@ local timerShockBarrageCast							= mod:NewCastNPTimer(10, 466834, nil, nil, nil
 local timerWrenchCD									= mod:NewCDNPTimer(7.3, 1216845, nil, nil, nil, 5)
 --local timerEnrageCD								= mod:NewCDNPTimer(97.3, 1216852, nil, nil, nil, 5)--Not in combat log
 
-mod:AddSetIconOption("SetIconOnSentry", -31487, false, 5, {8, 7, 6}, true)
+mod:AddSetIconOption("SetIconOnTechnician", -31482, true, 5, {8, 7, 6})
 --mod:AddSetIconOption("SetIconOnHobb", -31489, false, 5, {7, 8}, true)
 --Intermission: Docked and Loaded
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31558))
@@ -129,8 +129,6 @@ local specWarnIonizationDispel						= mod:NewSpecialWarningDispel(1219039, "Remo
 
 local timerCombinationCanistersCD					= mod:NewAITimer(97.3, 1217987, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local timerIonizationCD							= mod:NewCDNPTimer(97.3, 1219039, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-
-mod:AddSetIconOption("SetIconOnTech", -31482, false, 5, {8, 7, 6}, true)
 
 --S1
 mod.vb.canisterCount = 0
@@ -495,7 +493,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 467182 then
 		self.vb.suppressionCount = self.vb.suppressionCount + 1
 		self.vb.suppressionSubCount = self.vb.suppressionSubCount + 1
-		warnSuppression:Show(self.vb.suppressionCount)
+		specWarnSupression:Show(self.vb.suppressionCount)
+		specWarnSupression:Play("watchstep")
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
@@ -546,15 +545,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 466834 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnSentry then--Set only icons 8-6
-				for i = 8, 6, -1 do
-					if not addUsedMarks[i] then
-						addUsedMarks[i] = args.sourceGUID
-						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnSentry")
-						break
-					end
-				end
-			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -577,15 +567,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1219041 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnTech then--Set only icons 8-6
-				for i = 8, 6, -1 do
-					if not addUsedMarks[i] then
-						addUsedMarks[i] = args.sourceGUID
-						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnTech")
-						break
-					end
-				end
-			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -694,15 +675,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 1216846 then
 		--timerWrenchCD:Start(nil, args.destGUID)
 		--timerEnrageCD:Start(nil, args.destGUID)
-		--if self.Options.SetIconOnHobb then
-		--	for i = 7, 8, 1 do
-		--		if not addUsedMarks[i] then
-		--			addUsedMarks[i] = args.destGUID
-		--			self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnHobb")
-		--			break
-		--		end
-		--	end
-		--end
 	--elseif spellId == 1216852 then
 	--	warnEnrage:Show(args.destName)
 	elseif spellId == 1214229 then--Armageddon-class Plating
@@ -772,6 +744,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 469293 then--Giga Coils Starting
 		self.vb.gigaBlastCount = 0
 		timerGigaBlastCD:Start(2, 1)
+	elseif spellId == 469387 then--Carrying Bomb
+		if self.Options.SetIconOnTechnician then--Set only icons 8-6
+			for i = 8, 6, -1 do
+				if not addUsedMarks[i] then
+					addUsedMarks[i] = args.sourceGUID
+					self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
+					break
+				end
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -879,21 +861,9 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 231978 then--Sharpshot Sentry
 		timerShockBarrageCast:Stop(args.destGUID)
-		--for i = 1, 6, 1 do
-		--	if addUsedMarks[i] == args.destGUID then
-		--		addUsedMarks[i] = nil
-		--		return
-		--	end
-		--end
 	elseif cid == 231939 then --Darkfuse Wrenchmonger
 		timerWrenchCD:Stop(args.destGUID)
 		--timerEnrageCD:Stop(args.destGUID)
-		--for i = 7, 8, 1 do
-		--	if addUsedMarks[i] == args.destGUID then
-		--		addUsedMarks[i] = nil
-		--		return
-		--	end
-		--end
 	end
 end
 
