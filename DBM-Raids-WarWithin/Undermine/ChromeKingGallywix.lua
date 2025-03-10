@@ -748,8 +748,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnTechnician then--Set only icons 8-6
 			for i = 8, 6, -1 do
 				if not addUsedMarks[i] then
-					addUsedMarks[i] = args.sourceGUID
-					self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
+					addUsedMarks[i] = args.destGUID
+					self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
 					break
 				end
 			end
