@@ -308,7 +308,7 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			[466340] = {7.3, 19, 20.3, 20.9, 18.4, 22.9},--Scatterblast Canisters
-			[465952] = {20.2, 39.4, 39.3},--BBBBombs
+			[465952] = {20.2, 39.1, 39.3},--BBBBombs
 			[467182] = {34.8, 43.3, 37.4},--Suppression
 			[466751] = {13.9, 28.7, 31.5, 30.6},--Venting Heat
 		},
@@ -409,6 +409,12 @@ function mod:OnCombatStart(delay)
 	self.vb.gigaBlastCount = 0
 	self.vb.meltdownCount = 0
 	self.vb.egoCheckCount = 0
+	--Reset all Subcounts
+	self.vb.canisterSubCount = 0
+	self.vb.bombsSubCount = 0
+	self.vb.suppressionSubCount = 0
+	self.vb.heatSubCount = 0
+	self.vb.meltdownSubCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerCombinationCanistersCD(allTimers[savedDifficulty][1][1217987][1]-delay, 1)
