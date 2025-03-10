@@ -2,9 +2,9 @@
 -- WARNING: String "Creature-0-3770" looks non-anonymized.
 DBM.Test:DefineTest{
 	name = "Any/Undermine/One-ArmedBandit/Heroic/Kill",
-	gameVersion = "Any",
-	addon = "",
-	mod = "One-ArmedBandit",
+	gameVersion = "Retail",
+	addon = "DBM-Raids-WarWithin",
+	mod = 2644,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 30, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000004", class = "MONK", healer = 0.06, tank = 0.94, dps = 0.17, healed = 0.94},

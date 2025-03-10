@@ -1,9 +1,9 @@
 -- WARNING: String "Vehicle-0-3892" looks non-anonymized.
 DBM.Test:DefineTest{
 	name = "Any/Undermine/ChromeKingGallywix/Heroic/Kill",
-	gameVersion = "Any",
-	addon = "",
-	mod = "ChromeKingGallywix",
+	gameVersion = "Retail",
+	addon = "DBM-Raids-WarWithin",
+	mod = 2646,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 30, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000001", class = "ROGUE", healer = 0.02, tank = 0.90, dps = 0.13, healed = 0.90},

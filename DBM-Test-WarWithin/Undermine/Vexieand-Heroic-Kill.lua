@@ -3,7 +3,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/Vexieand/Heroic/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "Vexieand",
+	mod = 2639,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 29, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000009", class = "DEMONHUNTER", healer = 0.00, tank = 0.88, dps = 0.74, healed = 0.88},

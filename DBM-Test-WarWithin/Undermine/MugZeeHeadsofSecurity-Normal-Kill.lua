@@ -2,7 +2,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/MugZee/Normal/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "MugZee",
+	mod = 2645,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 14, difficultyName = "Normal", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 26, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000014", class = "HUNTER", healer = 0.11, tank = 0.95, dps = 0.53, healed = 0.95},

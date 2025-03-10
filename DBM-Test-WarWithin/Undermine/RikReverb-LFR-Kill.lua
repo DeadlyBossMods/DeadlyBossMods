@@ -2,7 +2,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/RikReverb/Looking For Raid/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "RikReverb",
+	mod = 2641,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 17, difficultyName = "Looking For Raid", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 25, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000018", class = "WARRIOR", healer = 0.04, tank = 1.00, dps = 0.82, healed = 1.00, logRecorder = true},

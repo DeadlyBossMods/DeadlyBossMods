@@ -3,7 +3,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/SprocketmongerLockenstock/Normal/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "SprocketmongerLockenstock",
+	mod = 2653,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 14, difficultyName = "Normal", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 30, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000001", class = "DRUID", healer = 0.07, tank = 0.91, dps = 0.08, healed = 0.91},

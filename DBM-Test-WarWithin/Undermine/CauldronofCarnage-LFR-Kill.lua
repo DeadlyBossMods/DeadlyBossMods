@@ -2,7 +2,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/CauldronofCarnage/Looking For Raid/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "CauldronofCarnage",
+	mod = 2640,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 17, difficultyName = "Looking For Raid", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 25, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000005", class = "DRUID", healer = 0.00, tank = 1.00, dps = 0.00, healed = 0.28},

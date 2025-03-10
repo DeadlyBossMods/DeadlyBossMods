@@ -1,9 +1,9 @@
 -- WARNING: String "Creature-0-1463" looks non-anonymized.
 DBM.Test:DefineTest{
 	name = "Any/Undermine/SprocketmongerLockenstock/Mythic/Wipe",
-	gameVersion = "Any",
-	addon = "",
-	mod = "SprocketmongerLockenstock",
+	gameVersion = "Retail",
+	addon = "DBM-Raids-WarWithin",
+	mod = 2653,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 16, difficultyName = "Mythic", difficultyModifier = nil, maxPlayers = 20, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 20, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000006", class = "DEATHKNIGHT", healer = 0.00, tank = 1.00, dps = 0.00, healed = 1.00, logRecorder = true},

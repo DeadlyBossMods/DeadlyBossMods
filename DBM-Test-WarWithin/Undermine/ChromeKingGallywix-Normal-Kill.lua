@@ -2,7 +2,7 @@ DBM.Test:DefineTest{
 	name = "TWW/Undermine/ChromeKingGallywix/Normal/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
-	mod = "ChromeKingGallywix",
+	mod = 2646,
 	instanceInfo = {name = "Liberation of Undermine", instanceType = "raid", difficultyID = 14, difficultyName = "Normal", difficultyModifier = 0, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2769, instanceGroupSize = 25, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000010", class = "EVOKER", healer = 0.08, tank = 1.00, dps = 0.08, healed = 1.00},
