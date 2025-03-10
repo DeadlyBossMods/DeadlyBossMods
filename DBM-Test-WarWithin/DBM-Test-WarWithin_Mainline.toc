@@ -11,29 +11,24 @@
 ## X-DBM-Test: true
 
 Undermine/Vexieand-Normal-Kill.lua
-Undermine/Vexieand-Heroic-Wipe.lua
-Undermine/Vexieand-Mythic-Wipe.lua
+Undermine/Vexieand-Heroic-Kill.lua
 Undermine/CauldronofCarnage-LFR-Kill.lua
-Undermine/CauldronofCarnage-Normal-Wipe.lua
-Undermine/CauldronofCarnage-Heroic-Wipe.lua
-Undermine/CauldronofCarnage-Mythic-Wipe.lua
-Undermine/RikReverb-LFR-Wipe.lua
-Undermine/RikReverb-Normal-Wipe.lua
-Undermine/RikReverb-Heroic-Wipe.lua
-Undermine/RikReverb-Mythic-Wipe.lua
-Undermine/StixBunkjunker-LFR-Kill.lua
-Undermine/StixBunkjunker-Normal-Kill.lua
-Undermine/StixBunkjunker-Heroic-Wipe.lua
-Undermine/StixBunkjunker-Mythic-Wipe.lua
-Undermine/SprocketmongerLockenstock-LFR-Kill.lua
+Undermine/CauldronofCarnage-Normal-Kill.lua
+Undermine/CauldronofCarnage-Heroic-Kill.lua
+Undermine/RikReverb-LFR-Kill.lua
+Undermine/RikReverb-Normal-Kill.lua
+Undermine/RikReverb-Heroic-Kill.lua
 Undermine/SprocketmongerLockenstock-Normal-Kill.lua
-Undermine/SprocketmongerLockenstock-Heroic-Wipe.lua
+Undermine/SprocketmongerLockenstock-Heroic-Kill.lua
 Undermine/SprocketmongerLockenstock-Mythic-Wipe.lua
-Undermine/TheOneArmedBandit-Mythic-Wipe.lua
-Undermine/MugZeeHeadsofSecurity-LFR-Wipe.lua
-Undermine/MugZeeHeadsofSecurity-Normal-Wipe.lua
-Undermine/MugZeeHeadsofSecurity-Heroic-Wipe.lua
-Undermine/MugZeeHeadsofSecurity-Mythic-Wipe.lua
+Undermine/StixBunkjunker-Normal-Kill.lua
+Undermine/StixBunkjunker-Heroic-Kill.lua
+Undermine/StixBunkjunker-Mythic-Wipe.lua
+Undermine/TheOneArmedBandit-Normal-Kill.lua
+Undermine/TheOneArmedBandit-Heroic-Kill.lua
+Undermine/MugZeeHeadsofSecurity-Normal-Kill.lua
+Undermine/ChromeKingGallywix-Normal-Kill.lua
+Undermine/ChromeKingGallywix-Heroic-Kill.lua
 
 NerubarPalace/Ulgrax-Mythic-Kill.lua
 NerubarPalace/BloodboundHorror-Mythic-Kill.lua
