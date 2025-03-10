@@ -490,13 +490,13 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
 		local delveInfo, delveInfo2, delveInfo3 = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6184), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6185)
 		local usedDelveInfo
-		if delveInfo and delveInfo.shownState and delveInfo.shownState == 1 then
-			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
 		--Zekvir Hack to normal/mythic since his tiers aren't numbers
-		elseif delveInfo2 and delveInfo2.shownState and delveInfo2.shownState == 1 then
+		if delveInfo2 and delveInfo2.shownState and delveInfo2.shownState == 1 then
 			return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize, 0
 		elseif delveInfo3 and delveInfo3.shownState and delveInfo3.shownState == 1 then
 			return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize, 0
+		elseif delveInfo and delveInfo.shownState and delveInfo.shownState == 1 then
+			usedDelveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
 		end
 		local delveTier = 0
 		if usedDelveInfo and usedDelveInfo.tierText then

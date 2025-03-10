@@ -113,8 +113,8 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerIncineratorCD:Start(11.1-delay, 1)
 		timerDemolishCD:Start(17.8-delay, 1)
-		timerElectroSortingCD:Start(22.3-delay, 1)
-		timerMeltdownCD:Start(44.5-delay, 1)
+		timerElectroSortingCD:Start(22.2-delay, 1)
+		timerMeltdownCD:Start(44.4-delay, 1)
 		timerOverDriveCD:Start((self:IsMythic() and 55.6 or 111.1)-delay)
 	else
 		timerIncineratorCD:Start(10-delay, 1)
