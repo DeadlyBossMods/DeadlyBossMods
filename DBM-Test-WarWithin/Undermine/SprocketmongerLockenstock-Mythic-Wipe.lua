@@ -1,6 +1,6 @@
 -- WARNING: String "Creature-0-1463" looks non-anonymized.
 DBM.Test:DefineTest{
-	name = "Any/Undermine/SprocketmongerLockenstock/Mythic/Wipe",
+	name = "TWW/Undermine/SprocketmongerLockenstock/Mythic/Wipe",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2653,
