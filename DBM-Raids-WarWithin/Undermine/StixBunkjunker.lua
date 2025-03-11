@@ -310,7 +310,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 473115 then
 		timerShortFuseCast:Stop(args.destGUID)
-	elseif spellId == 467117 then
+	elseif spellId == 467117 and self:IsInCombat() then
 		timerOverdrive:Stop()
 		if self:IsHard() then
 			timerIncineratorCD:Start(13.2, self.vb.IncinCount+1)
