@@ -1,5 +1,5 @@
 DBM.Test:DefineTest{
-	name = "Any/Undermine/RikReverb/Heroic/Kill",
+	name = "TWW/Undermine/RikReverb/Heroic/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2641,

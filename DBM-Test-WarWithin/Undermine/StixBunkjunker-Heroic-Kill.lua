@@ -1,6 +1,6 @@
 -- WARNING: String "Vehicle-0-3770" looks non-anonymized.
 DBM.Test:DefineTest{
-	name = "Any/Undermine/StixBunkjunker/Heroic/Kill",
+	name = "TWW/Undermine/StixBunkjunker/Heroic/Kill",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	mod = 2642,
