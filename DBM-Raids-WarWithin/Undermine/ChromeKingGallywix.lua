@@ -3,10 +3,10 @@ local mod	= DBM:NewMod(2646, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(237194)--TODO, verify ID
+mod:SetCreatureID(231075)
 mod:SetEncounterID(3016)
-mod:SetHotfixNoticeRev(20250215000000)
---mod:SetMinSyncRevision(20250215000000)
+mod:SetHotfixNoticeRev(20250310000000)
+mod:SetMinSyncRevision(20250310000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 466340 467182 466751 469286 469327 466341 466834 1216845 1214607 466342 466958 1217987 1219041 1219039",--465952 1216852
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603",--1216852
+	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603 469387",--1216852
 	"SPELL_AURA_APPLIED_DOSE 466246",
 	"SPELL_AURA_REMOVED 1214229 1214369 466165 466246 1220290 469293",
 	"SPELL_INTERRUPT",
@@ -47,10 +47,10 @@ local timerPhaseTransition							= mod:NewStageCountTimer(33, 66911)
 mod:AddInfoFrameOption(nil, true)
 --Stage One: The House of Chrome
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30490))
-local warnSuppression								= mod:NewCountAnnounce(467182, 3)
 local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, false)
 local warnFocusedDetonation							= mod:NewCountAnnounce(466246, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466246))
 
+local specWarnSupression							= mod:NewSpecialWarningDodgeCount(467182, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanisters					= mod:NewSpecialWarningCount(466340, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanistersTaunt			= mod:NewSpecialWarningTaunt(466340, nil, nil, nil, 1, 2)
 local specWarnBBBBombs								= mod:NewSpecialWarningCount(465952, nil, nil, nil, 2, 2)
@@ -93,7 +93,7 @@ local timerShockBarrageCast							= mod:NewCastNPTimer(10, 466834, nil, nil, nil
 local timerWrenchCD									= mod:NewCDNPTimer(7.3, 1216845, nil, nil, nil, 5)
 --local timerEnrageCD								= mod:NewCDNPTimer(97.3, 1216852, nil, nil, nil, 5)--Not in combat log
 
-mod:AddSetIconOption("SetIconOnSentry", -31487, false, 5, {8, 7, 6}, true)
+mod:AddSetIconOption("SetIconOnTechnician", -31482, true, 5, {8, 7, 6})
 --mod:AddSetIconOption("SetIconOnHobb", -31489, false, 5, {7, 8}, true)
 --Intermission: Docked and Loaded
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31558))
@@ -114,7 +114,7 @@ local specWarnEgoCheck								= mod:NewSpecialWarningDefensive(466958, nil, nil,
 
 local timerBBBBlastCD								= mod:NewCDCountTimer(97.3, 1214607, nil, nil, nil, 5)
 local timerTickTockCanistersCD						= mod:NewCDCountTimer(97.3, 466342, nil, nil, nil, 3)
---local timerEgoCheckCD								= mod:NewCDCountTimer(97.3, 466958, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerEgoCheckCD								= mod:NewCDCountTimer(97.3, 466958, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddPrivateAuraSoundOption(1226489, true, 1226489, 2)--Overloaded Rockets (sub mechanic to BBBBlast)
 --Mythic
@@ -129,8 +129,6 @@ local specWarnIonizationDispel						= mod:NewSpecialWarningDispel(1219039, "Remo
 
 local timerCombinationCanistersCD					= mod:NewAITimer(97.3, 1217987, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 --local timerIonizationCD							= mod:NewCDNPTimer(97.3, 1219039, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-
-mod:AddSetIconOption("SetIconOnTech", -31482, false, 5, {8, 7, 6}, true)
 
 --S1
 mod.vb.canisterCount = 0
@@ -215,6 +213,20 @@ local allTimers = {
 				[10] = {0},
 				[11] = {0},
 			},
+			[466958] = {--Ego Check
+				[0] = {0},
+				[1] = {0},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+				[9] = {0},
+				[10] = {0},
+				[11] = {0},
+			},
 		},
 	},
 	["heroic"] = {
@@ -263,9 +275,9 @@ local allTimers = {
 			[469286] = {60, 59.8, 68},--Giga Coils
 			[467182] = {--Suppression
 				[0] = {33},
-				[1] = {20.4},
+				[1] = {20.3},
 				[2] = {7.5, "v37-43"},--37 can shift to 43 due to collision with another spell
-				[3] = {0},
+				[3] = {31.1},
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -276,7 +288,7 @@ local allTimers = {
 				[0] = {18},
 				[1] = {11.6, 37},
 				[2] = {37.4},
-				[3] = {"v19.9-26"},--19-26
+				[3] = {"v19.9-26"},--19-26 (Collision with BBB Blast)
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -287,7 +299,7 @@ local allTimers = {
 				[0] = {8, 36},
 				[1] = {30.7},
 				[2] = {18.5, "v26-35"},--26-35
-				[3] = {19.7},
+				[3] = {"v19.7-23.1"},--(Collision with Venting Heat)
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -298,7 +310,18 @@ local allTimers = {
 				[0] = {22},
 				[1] = {6.6, 35},
 				[2] = {26.4},
-				[3] = {3.7},
+				[3] = {3.6},
+				[4] = {0},
+				[5] = {0},
+				[6] = {0},
+				[7] = {0},
+				[8] = {0},
+			},
+			[466958] = {--Ego Check
+				[0] = {14, 13, 15, 8},
+				[1] = {15.3, 13.4, 8, 10},
+				[2] = {16.4, 8, 9, 26},
+				[3] = {10.6, 18.5, 11},
 				[4] = {0},
 				[5] = {0},
 				[6] = {0},
@@ -310,7 +333,7 @@ local allTimers = {
 	["normal"] = {
 		[1] = {
 			[466340] = {7.3, 19, 20.3, 20.9, 18.4, 22.9},--Scatterblast Canisters
-			[465952] = {20.2, 39.4, 39.3},--BBBBombs
+			[465952] = {20.2, 39.1, 39.3},--BBBBombs
 			[467182] = {34.8, 43.3, 37.4},--Suppression
 			[466751] = {13.9, 28.7, 31.5, 30.6},--Venting Heat
 		},
@@ -353,44 +376,44 @@ local allTimers = {
 			[469286] = {60, 59.9, 65.7, 53.7, 59.5},--Giga Coils
 			[467182] = {--Suppression
 				[0] = {33},
-				[1] = {19.8},
-				[2] = {6.6, 37},
+				[1] = {19.4},
+				[2] = {6.5, 37},
 				[3] = {31.2},
-				[4] = {20.9},
-				[5] = {0},
+				[4] = {"v18.7-20.9"},--Collision wth Venting Heat
+				[5] = {5.1, 37},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
 			[466751] = {--Venting Heat
 				[0] = {18},
-				[1] = {11.8, 36},
+				[1] = {11.5, 36},
 				[2] = {37.6},
 				[3] = {"v22.5-27.7"},--or 27.7 (collision with BBB Blast. Either one can be cast at 22 and it bumps other to 27)
-				[4] = {17},
-				[5] = {0},
+				[4] = {"v17-26.5"},--Collision with supression
+				[5] = {14.1, 37},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
 			[1214607] = {--BBBBlast
 				[0] = {8, 34},
-				[1] = {28.8},
+				[1] = {28.5},
 				[2] = {15.6, 37},
 				[3] = {"v21.7-26"},--21-26 (collision with Venting Heat. Either one can be cast at 22 and it bumps other to 27)
 				[4] = {11.4, 34},
-				[5] = {0},
+				[5] = {30.1},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
 			},
 			[466342] = {--Tick Tock Canisters
 				[0] = {22},
-				[1] = {6.8, 35},
+				[1] = {6.5, 35},
 				[2] = {26.6},
 				[3] = {5.6, 35},
 				[4] = {31.4},
-				[5] = {0},
+				[5] = {17.6, 37},
 				[6] = {0},
 				[7] = {0},
 				[8] = {0},
@@ -411,13 +434,20 @@ function mod:OnCombatStart(delay)
 	self.vb.gigaBlastCount = 0
 	self.vb.meltdownCount = 0
 	self.vb.egoCheckCount = 0
+	--Reset all Subcounts
+	self.vb.canisterSubCount = 0
+	self.vb.bombsSubCount = 0
+	self.vb.suppressionSubCount = 0
+	self.vb.heatSubCount = 0
+	self.vb.meltdownSubCount = 0
+	self.vb.egoCheckSubCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerCombinationCanistersCD(allTimers[savedDifficulty][1][1217987][1]-delay, 1)
 		timerBBBBlastCD:Start(allTimers[savedDifficulty][1][1214607][1]-delay, 1)
 		timerSuppressionCD:Start(allTimers[savedDifficulty][1][467182][1]-delay, 1)
 		timerGigaCoilsCD:Start(allTimers[savedDifficulty][1][469286][1]-delay, 1)
-		--timerEgoCheckCD:Start(allTimers[savedDifficulty][1][466958][1]-delay, 1)
+		timerEgoCheckCD:Start(allTimers[savedDifficulty][1][466958][1]-delay, 1)
 	else
 		if self:IsHeroic() then
 			savedDifficulty = "heroic"
@@ -484,8 +514,10 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerScatterblastCanistersCD:Start(timer, self.vb.canisterCount+1)
+		else
+			DBM:AddMsg("Scatterblast Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	--elseif spellId == 465952 then
 	--	self.vb.bombsCount = self.vb.bombsCount + 1
@@ -495,7 +527,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 467182 then
 		self.vb.suppressionCount = self.vb.suppressionCount + 1
 		self.vb.suppressionSubCount = self.vb.suppressionSubCount + 1
-		warnSuppression:Show(self.vb.suppressionCount)
+		specWarnSupression:Show(self.vb.suppressionCount)
+		specWarnSupression:Play("watchstep")
 		local timer
 		if self:GetStage(1) and not self:IsMythic() then--No coils yet so diff table references)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
@@ -504,8 +537,10 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.suppressionSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.suppressionSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerSuppressionCD:Start(timer, self.vb.suppressionCount+1)
+		else
+			DBM:AddMsg("Suppression timer not found for coil count "..self.vb.coilsCount.." "..self.vb.suppressionSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466751 then
 		self.vb.heatCount = self.vb.heatCount + 1
@@ -519,8 +554,10 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.heatSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.heatSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerVentingHeatCD:Start(timer, self.vb.heatCount+1)
+		else
+			DBM:AddMsg("Venting Heat timer not found for coil count "..self.vb.coilsCount.." "..self.vb.heatSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 469286 then
 		DBM:AddMsg("Giga Coils added to combat log, please report to DBM authors")
@@ -540,21 +577,14 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerFusedCanistersCD:Start(timer, self.vb.canisterCount+1)
+		else
+			DBM:AddMsg("Fused Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466834 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnSentry then--Set only icons 8-6
-				for i = 8, 6, -1 do
-					if not addUsedMarks[i] then
-						addUsedMarks[i] = args.sourceGUID
-						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnSentry")
-						break
-					end
-				end
-			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -577,15 +607,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1219041 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnTech then--Set only icons 8-6
-				for i = 8, 6, -1 do
-					if not addUsedMarks[i] then
-						addUsedMarks[i] = args.sourceGUID
-						self:ScanForMobs(args.sourceGUID, 2, i, 1, nil, 12, "SetIconOnTech")
-						break
-					end
-				end
-			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -635,8 +656,10 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.bombsSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.bombsSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerBBBBlastCD:Start(timer, self.vb.bombsCount+1)
+		else
+			DBM:AddMsg("BBB Blast timer not found for coil count "..self.vb.coilsCount.." "..self.vb.bombsSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466342 then
 		self.vb.canisterCount = self.vb.canisterCount + 1
@@ -651,20 +674,25 @@ function mod:SPELL_CAST_START(args)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerTickTockCanistersCD:Start(timer, self.vb.canisterCount+1)
+		else
+			DBM:AddMsg("Tick Tock Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466958 then
 		self.vb.egoCheckCount = self.vb.egoCheckCount + 1
+		self.vb.egoCheckSubCount = self.vb.egoCheckSubCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEgoCheck:Show()
 			specWarnEgoCheck:Play("defensive")
 		end
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.egoCheckCount+1)
-		--if timer and timer > 0 then
-		--	timerEgoCheckCD:Start(timer, self.vb.egoCheckCount+1)
-		--end
-		--timerEgoCheckCD:Start()--nil, self.vb.egoCheckCount+1
+		--Only cast in stage 3 (or stage 1 mythic) so doesn't need stage check
+		local timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount+1]
+		if timer and timer ~= 0 then
+			timerEgoCheckCD:Start(timer, self.vb.egoCheckCount+1)
+		else
+			DBM:AddMsg("Ego Check timer not found for coil count "..self.vb.coilsCount.." "..self.vb.egocheckSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		end
 	elseif spellId == 1217987 then
 		self.vb.canisterCount = self.vb.canisterCount + 1
 		self.vb.canistersSubCount = self.vb.canistersSubCount + 1
@@ -672,8 +700,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnCombinationCanisters:Play("helpsoak")
 		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.canistersSubCount+1)
 		local timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
-		if timer and timer > 0 then
-			timerCombinationCanistersCD:Start(timer, self.vb.canistersSubCount+1)
+		if timer and timer ~= 0 then
+			timerCombinationCanistersCD:Start(timer, self.vb.canisterCount+1)
+		else
+			DBM:AddMsg("Combined Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 1219039 then
 		--timerIonizationCD:Start(nil, args.sourceGUID)
@@ -694,15 +724,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 1216846 then
 		--timerWrenchCD:Start(nil, args.destGUID)
 		--timerEnrageCD:Start(nil, args.destGUID)
-		--if self.Options.SetIconOnHobb then
-		--	for i = 7, 8, 1 do
-		--		if not addUsedMarks[i] then
-		--			addUsedMarks[i] = args.destGUID
-		--			self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnHobb")
-		--			break
-		--		end
-		--	end
-		--end
 	--elseif spellId == 1216852 then
 	--	warnEnrage:Show(args.destName)
 	elseif spellId == 1214229 then--Armageddon-class Plating
@@ -772,6 +793,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 469293 then--Giga Coils Starting
 		self.vb.gigaBlastCount = 0
 		timerGigaBlastCD:Start(2, 1)
+	elseif spellId == 469387 then--Carrying Bomb
+		if self.Options.SetIconOnTechnician then--Set only icons 8-6
+			for i = 8, 6, -1 do
+				if not addUsedMarks[i] then
+					addUsedMarks[i] = args.destGUID
+					self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
+					break
+				end
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -817,6 +848,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.suppressionSubCount = 0
 		self.vb.heatSubCount = 0
 		self.vb.meltdownSubCount = 0
+		self.vb.egocheckSubCount = 0
 		if self:IsMythic() then
 
 		elseif self:GetStage(2) then
@@ -831,6 +863,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][self.vb.coilsCount][1], self.vb.bombsCount+1)
 			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][self.vb.coilsCount][1], self.vb.canisterCount+1)
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
+			if self:IsHard() then
+				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckSubCount+1)
+			end
 		end
 	end
 end
@@ -854,6 +889,9 @@ function mod:SPELL_INTERRUPT(args)
 		timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
 		timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
 		timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
+		if self:IsHard() then
+			timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][0][1], 1)
+		end
 	end
 end
 
@@ -879,21 +917,9 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 231978 then--Sharpshot Sentry
 		timerShockBarrageCast:Stop(args.destGUID)
-		--for i = 1, 6, 1 do
-		--	if addUsedMarks[i] == args.destGUID then
-		--		addUsedMarks[i] = nil
-		--		return
-		--	end
-		--end
 	elseif cid == 231939 then --Darkfuse Wrenchmonger
 		timerWrenchCD:Stop(args.destGUID)
 		--timerEnrageCD:Stop(args.destGUID)
-		--for i = 7, 8, 1 do
-		--	if addUsedMarks[i] == args.destGUID then
-		--		addUsedMarks[i] = nil
-		--		return
-		--	end
-		--end
 	end
 end
 
@@ -916,7 +942,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 465952, self.vb.coilsCount, self.vb.bombsSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][465952][self.vb.coilsCount][self.vb.bombsSubCount+1]
 		end
-		if timer and timer > 0 then
+		if timer and timer ~= 0 then
 			timerBBBBombsCD:Start(timer, self.vb.bombsCount+1)
 		end
 	end

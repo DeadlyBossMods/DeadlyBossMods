@@ -1,0 +1,22 @@
+name: DBM-Offline PR results
+run-name: DBM-Offline PR results
+
+on:
+  workflow_run:
+    workflows: ["DBM-Offline test diff"]
+    types:
+      - completed
+
+jobs:
+  upload-diff-results:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Upload DBM-Offline results
+        continue-on-error: true
+        uses: DeadlyBossMods/DBM-Offline@uploader
+        with:
+          upload-token: ${{ secrets.TEST_RESULT_UPLOAD_TOKEN }}
+          comment-token: ${{ secrets.GITHUB_TOKEN }}
