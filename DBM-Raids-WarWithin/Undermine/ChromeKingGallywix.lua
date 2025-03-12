@@ -650,11 +650,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnBBBBlast:Play("defensive")
 			specWarnBBBBlast:ScheduleVoice(1.5, "runout")
 		else
-			if self:IsTank() then
-				specWarnBBBBlast:Play("tauntboss")
-			else
-				specWarnBBBBlast:Play("bombsoon")
-			end
+			specWarnBBBBlast:Play("bombsoon")
 		end
 		if self:IsStory() then return end--hard disable timers in story mode
 		local timer
@@ -796,7 +792,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGigaBoomer:Show()
 			specWarnGigaBoomer:Play("bombyou")
 		end
-	elseif spellId == 471603 then
+	elseif spellId == 471603 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			specWarnScatterblastCanistersTaunt:Show(args.destName)
