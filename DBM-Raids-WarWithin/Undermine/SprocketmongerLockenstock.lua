@@ -434,16 +434,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.sonicBoomCount = 0
 		self.vb.wireTransferCount = 0
 		--Restart timers
-		timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1], 1)
+		timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1] - 2, 1)
 		if self:IsHard() then
-			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
+			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1] - 2, 1)
 			if self:IsMythic() then
-				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1], 1)
+				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1] - 2, 1)
 			end
 		end
-		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
+		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1] - 2, 1)
 		timerActivateInventionsCD:Start(30, 1)
-		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
+		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1] - 2, 1)
 
 		if self.vb.betaCount == 2 then
 			timerGigaDeathCD:Start(120)
