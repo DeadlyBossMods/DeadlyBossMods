@@ -99,9 +99,9 @@ function mod:OnCombatStart(delay)
 	self:EnablePrivateAuraSound(459669, "poolyou", 18)
 	self:EnablePrivateAuraSound(468486, "flameyou", 12)
 	timerTankBusterCD:Start(6-delay, 1)
-	timerSpewOilCD:Start(12.2-delay, 1)
+	timerSpewOilCD:Start(12.0-delay, 1)
 	timerCallbikersCD:Start(20.2-delay, 1)
-	timerIncendiaryFireCD:Start((self:IsHard() and 25.1 or 30.6)-delay, 1)
+	timerIncendiaryFireCD:Start((self:IsHard() and 25.1 or 30.2)-delay, 1)
 	if self:IsMythic() then
 		timerUnrelentingcarnageCD:Start(121.6, 1)--Only difficulty observed on
 	end
@@ -122,14 +122,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 459671 then
 		self.vb.spewOilCount = self.vb.spewOilCount + 1
 		warnSpewOil:Show(self.vb.spewOilCount)
-		--Mythic and Heroic need special handling for very first stage
-		--Other difficulties don't seem to have that special case
-		--"Spew Oil-459671-npc:225821-0000129545 = pull:12.1, 37.8, 37.7, Stage 2/36.7, Stage 1/49.7, 15.8/65.5/102.2, 21.8, 20.7, 20.7, 20.6, Stage 2/19.5, Stage 1/49.8, 15.7/65.5/85.0, 21.9, 20.6, 20.7, 20.7, 20.6",
-		if self.vb.stageTotality == 1 then
-			timerSpewOilCD:Start("v37.1-38.6", self.vb.spewOilCount+1)
-		else
-			timerSpewOilCD:Start("v20.6-23.2", self.vb.spewOilCount+1)
-		end
+		--As of March 11, they hotfixed fight to no longer have longer Cd first stage
+		timerSpewOilCD:Start("v20.6-23.2", self.vb.spewOilCount+1)
 	elseif (spellId == 468216 or spellId == 468487) then--468487 confirmed
 		self.vb.fireCount = self.vb.fireCount + 1
 		warnIncendiaryFire:Show(self.vb.fireCount)
