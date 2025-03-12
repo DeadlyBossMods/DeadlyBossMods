@@ -87,7 +87,7 @@ local timerThunderdrumSalvoCD						= mod:NewCDCountTimer(97.3, 463900, nil, nil,
 local timerVoltaicImageCD							= mod:NewCDCountTimer(97.3, 1213994, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerLightningBashCD							= mod:NewCDCountTimer(97.3, 466178, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
-mod:AddInfoFrameOption(473994, true)
+mod:AddInfoFrameOption(473994, false, 2)
 mod:AddNamePlateOption("NPFixate", 1213994, true)
 
 local nearTorq, nearFlare = true, true
