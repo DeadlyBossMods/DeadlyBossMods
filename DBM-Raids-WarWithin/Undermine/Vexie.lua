@@ -122,8 +122,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 459671 then
 		self.vb.spewOilCount = self.vb.spewOilCount + 1
 		warnSpewOil:Show(self.vb.spewOilCount)
-		--As of March 11, they hotfixed fight to no longer have longer Cd first stage
-		timerSpewOilCD:Start("v20.6-23.2", self.vb.spewOilCount+1)
+
+		if self:IsHard() and self.vb.stageTotality == 1 then
+			timerSpewOilCD:Start("v37.1-44.1", self.vb.spewOilCount+1)
+		else
+			--As of March 11, they hotfixed fight to no longer have longer Cd first stage on normal/LFR
+			timerSpewOilCD:Start("v20.6-23.2", self.vb.spewOilCount+1)
+		end
 	elseif (spellId == 468216 or spellId == 468487) then--468487 confirmed
 		self.vb.fireCount = self.vb.fireCount + 1
 		warnIncendiaryFire:Show(self.vb.fireCount)
