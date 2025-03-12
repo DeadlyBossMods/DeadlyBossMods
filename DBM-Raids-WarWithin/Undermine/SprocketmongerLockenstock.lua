@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 1217355 466860",
 	"SPELL_AURA_APPLIED 1216934 1216911 465917 1214878 1216509 1217261 1218344 1218342 1218319 1217357 1217358",
 	"SPELL_AURA_APPLIED_DOSE 465917 1218344 1218319",
-	"SPELL_AURA_REMOVED 1216934 1216911 1214878 1216509 466860"
+	"SPELL_AURA_REMOVED 1216934 1216911 1214878 1216509 466860 1218318"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 )
@@ -258,17 +258,17 @@ function mod:SPELL_CAST_START(args)
 			self.vb.screwUpCount = 0
 			self.vb.sonicBoomCount = 0
 			self.vb.wireTransferCount = 0
-			--Restart timers
-			timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1], 1)
+			--Restart timers (with a - 2 cause it's 2 seconds slower than other stage trigger)
+			timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1] - 2, 1)
 			if self:IsHard() then
-				timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
+				timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1] - 2, 1)
 				if self:IsMythic() then
-					timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1], 1)
+					timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1] - 2, 1)
 				end
 			end
-			timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
+			timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1] - 2, 1)
 			timerActivateInventionsCD:Start(30, 1)
-			timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
+			timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1] - 2, 1)
 			if self.vb.betaCount == 2 then
 				timerGigaDeathCD:Start(120)
 			else
@@ -421,7 +421,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnScrewUpOver:Show()
 			warnScrewUpOver:Play("safenow")
 		end
-	elseif spellId == 466860 and self:GetStage(2) then--Bleeding Edge ending (beta launch over) (will likely be removed as visible event, it's only showing on script bunnies
+	elseif (spellId == 1218318 or spellId == 466860) and self:GetStage(2) then--Bleeding Edge ending (beta launch over) (will likely be removed as visible event, it's only showing on script bunnies
 		--can also use [DNT] Intermission Cleanup
 		self:SetStage(1)
 		timerBleedingEdge:Stop()
@@ -434,16 +434,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.sonicBoomCount = 0
 		self.vb.wireTransferCount = 0
 		--Restart timers
-		timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1] - 2, 1)
+		timerSonicBoomCD:Start(allTimers[savedDifficulty][465232][1], 1)
 		if self:IsHard() then
-			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1] - 2, 1)
+			timerFootBlastersCD:Start(allTimers[savedDifficulty][1217231][1], 1)
 			if self:IsMythic() then
-				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1] - 2, 1)
+				timerPolarizationGeneratorCD:Start(allTimers[savedDifficulty][1217355][1], 1)
 			end
 		end
-		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1] - 2, 1)
+		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
 		timerActivateInventionsCD:Start(30, 1)
-		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1] - 2, 1)
+		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
 
 		if self.vb.betaCount == 2 then
 			timerGigaDeathCD:Start(120)
