@@ -48,7 +48,7 @@ local timerPhaseTransition							= mod:NewStageCountTimer(33, 66911)
 mod:AddInfoFrameOption(nil, true)
 --Stage One: The House of Chrome
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30490))
-local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, false)
+local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, nil, 2)
 local warnFocusedDetonation							= mod:NewCountAnnounce(466246, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466246))
 
 local specWarnSupression							= mod:NewSpecialWarningDodgeCount(467182, nil, nil, nil, 2, 2)
@@ -144,11 +144,11 @@ mod.vb.heatSubCount = 0
 mod.vb.coilsCount = 0
 mod.vb.gigaBlastCount = 0
 mod.vb.meltdownCount = 0
-mod.vb.meltdownSubcount = 0
 local castsPerGUID = {}
 local addUsedMarks = {}
 --S3
 mod.vb.egoCheckCount = 0
+mod.vb.egocheckSubCount = 0
 
 --For stages, stage 2 and 3 have to be broken down by coils count
 --it seems, based on initial data, each coil has a different sequence
@@ -436,11 +436,10 @@ function mod:OnCombatStart(delay)
 	self.vb.meltdownCount = 0
 	self.vb.egoCheckCount = 0
 	--Reset all Subcounts
-	self.vb.canisterSubCount = 0
+	self.vb.canistersSubCount = 0
 	self.vb.bombsSubCount = 0
 	self.vb.suppressionSubCount = 0
 	self.vb.heatSubCount = 0
-	self.vb.meltdownSubCount = 0
 	self.vb.egoCheckSubCount = 0
 	if not self:IsStory() then
 		if self:IsMythic() then
@@ -520,8 +519,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerScatterblastCanistersCD:Start(timer, self.vb.canisterCount+1)
-		else
-			DBM:AddMsg("Scatterblast Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount] then
+			DBM:AddMsg("Scatterblast Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	--elseif spellId == 465952 then
 	--	self.vb.bombsCount = self.vb.bombsCount + 1
@@ -544,8 +543,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerSuppressionCD:Start(timer, self.vb.suppressionCount+1)
-		else
-			DBM:AddMsg("Suppression timer not found for coil count "..self.vb.coilsCount.." "..self.vb.suppressionSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.suppressionSubCount] then
+			DBM:AddMsg("Suppression timer not found for coil count "..self.vb.coilsCount.." "..self.vb.suppressionSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466751 then
 		self.vb.heatCount = self.vb.heatCount + 1
@@ -562,8 +561,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerVentingHeatCD:Start(timer, self.vb.heatCount+1)
-		else
-			DBM:AddMsg("Venting Heat timer not found for coil count "..self.vb.coilsCount.." "..self.vb.heatSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.heatSubCount] then
+			DBM:AddMsg("Venting Heat timer not found for coil count "..self.vb.coilsCount.." "..self.vb.heatSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 469286 then
 		DBM:AddMsg("Giga Coils added to combat log, please report to DBM authors")
@@ -587,8 +586,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerFusedCanistersCD:Start(timer, self.vb.canisterCount+1)
-		else
-			DBM:AddMsg("Fused Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount] then
+			DBM:AddMsg("Fused Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466834 then
 		if not castsPerGUID[args.sourceGUID] then
@@ -663,8 +662,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerBBBBlastCD:Start(timer, self.vb.bombsCount+1)
-		else
-			DBM:AddMsg("BBB Blast timer not found for coil count "..self.vb.coilsCount.." "..self.vb.bombsSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.bombsSubCount] then
+			DBM:AddMsg("BBB Blast timer not found for coil count "..self.vb.coilsCount.." "..self.vb.bombsSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466342 then
 		self.vb.canisterCount = self.vb.canisterCount + 1
@@ -682,8 +681,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timer and timer ~= 0 then
 			timerTickTockCanistersCD:Start(timer, self.vb.canisterCount+1)
-		else
-			DBM:AddMsg("Tick Tock Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount] then
+			DBM:AddMsg("Tick Tock Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466958 then
 		self.vb.egoCheckCount = self.vb.egoCheckCount + 1
@@ -697,8 +696,8 @@ function mod:SPELL_CAST_START(args)
 		local timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount+1]
 		if timer and timer ~= 0 then
 			timerEgoCheckCD:Start(timer, self.vb.egoCheckCount+1)
-		else
-			DBM:AddMsg("Ego Check timer not found for coil count "..self.vb.coilsCount.." "..self.vb.egocheckSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount] then
+			DBM:AddMsg("Ego Check timer not found for coil count "..self.vb.coilsCount.." "..self.vb.egocheckSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 1217987 then
 		self.vb.canisterCount = self.vb.canisterCount + 1
@@ -710,8 +709,8 @@ function mod:SPELL_CAST_START(args)
 		local timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount+1]
 		if timer and timer ~= 0 then
 			timerCombinationCanistersCD:Start(timer, self.vb.canisterCount+1)
-		else
-			DBM:AddMsg("Combined Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount+1 .. " Please report to DBM authors with a lot of this pull")
+		elseif self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.canistersSubCount] then
+			DBM:AddMsg("Combined Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 1219039 then
 		--timerIonizationCD:Start(nil, args.sourceGUID)
@@ -837,6 +836,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.bombsCount = 0
 			self.vb.suppressionCount = 0
 			self.vb.heatCount = 0
+			--Reset all Subcounts
+			self.vb.canistersSubCount = 0
+			self.vb.bombsSubCount = 0
+			self.vb.suppressionSubCount = 0
+			self.vb.heatSubCount = 0
+			self.vb.egocheckSubCount = 0
 			timerScatterblastCanistersCD:Stop()
 			timerBBBBombsCD:Stop()
 			timerSuppressionCD:Stop()
@@ -851,11 +856,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 469293 then--Giga Coils Ending
 		timerGigaBlastCD:Stop()
 		--Reset all Subcounts
-		self.vb.canisterSubCount = 0
+		self.vb.canistersSubCount = 0
 		self.vb.bombsSubCount = 0
 		self.vb.suppressionSubCount = 0
 		self.vb.heatSubCount = 0
-		self.vb.meltdownSubCount = 0
 		self.vb.egocheckSubCount = 0
 		if self:IsMythic() then
 
