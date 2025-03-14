@@ -17,13 +17,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 465765",--460181
 	"SPELL_AURA_APPLIED 461060 471720 472832 472837 472828 472783 465009 460973 473278 471927 460430 460472 473195 460444 461068",
 	"SPELL_AURA_REFRESH 473195",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 461060 471720 465009 460973 473278 471927",
 	"SPELL_PERIODIC_DAMAGE 460576",
 	"SPELL_PERIODIC_MISSED 460576",
 	"UNIT_DIED"
---	"CHAT_MSG_RAID_BOSS_WHISPER",
---	"UNIT_SPELLCAST_SUCCEEDED_UNFILTERED"
 )
 
 --TODO, mark token holders with red, blue, orange, and skull?
@@ -121,6 +118,7 @@ mod.vb.paylineCount = 0
 mod.vb.foulExhaustCount = 0
 mod.vb.bigHitCount = 0
 mod.vb.linkedCount = 0
+mod.vb.secondExhaustOccurred = 0
 local castsPerGUID = {}
 local knockback = DBM:GetSpellName(28405)
 
@@ -130,15 +128,16 @@ function mod:OnCombatStart(delay)
 	self.vb.paylineCount = 0
 	self.vb.foulExhaustCount = 0
 	self.vb.bigHitCount = 0
+	self.vb.secondExhaustOccurred = 0
 	table.wipe(castsPerGUID)
 	timerPaylineCD:Start(string.format("v%s-%s", 2.9-delay, 4.1-delay), 1)
 	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.1-delay, 10-delay), 1)
 	if self:IsMythic() then
 		--Seem flipped on mythic (but could also be because of boss kiting)
-		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)--15 placeholder
+		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)
 		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
 	else
-		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.3-delay), 1)
+		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.6-delay), 1)
 		timerSpintoWinCD:Start(string.format("v%s-%s", 18.0-delay, 20.6-delay), 1)
 	end
 	self:EnablePrivateAuraSound(465325, "lineyou", 17)
@@ -191,13 +190,33 @@ function mod:SPELL_CAST_START(args)
 		timerFoulExhaustCD:Stop()
 		timerTheBigHitCD:Stop()
 		if spellId == 464806 then--Flame and Coin has unique sequence
-			timerTheBigHitCD:Start("v11.9-12.7", self.vb.bigHitCount+1)
-			timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
-			timerPaylineCD:Start("v24-25", self.vb.paylineCount+1)
+			if self:IsMythic() then
+				timerPaylineCD:Start(16.4, self.vb.paylineCount+1)
+				timerTheBigHitCD:Start("v22.7-23.1", self.vb.bigHitCount+1)
+				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
+			elseif self:IsHeroic() then--Heroic swaps payline and bighit compared to normal
+				timerPaylineCD:Start("v11.1-11.2", self.vb.paylineCount+1)
+				timerFoulExhaustCD:Start("v16.0-16.7", self.vb.foulExhaustCount+1)
+				timerTheBigHitCD:Start("v22.1-22.8", self.vb.bigHitCount+1)
+			else--Normal and LFR
+				timerTheBigHitCD:Start("v11.9-13.1", self.vb.bigHitCount+1)
+				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
+				timerPaylineCD:Start("v24-25.2", self.vb.paylineCount+1)
+			end
 		else
-			timerFoulExhaustCD:Start("v9.5-10.7", self.vb.foulExhaustCount+1)
-			timerTheBigHitCD:Start("v15.5-16.7", self.vb.bigHitCount+1)
-			timerPaylineCD:Start("v21.6-22.6", self.vb.paylineCount+1)
+			if self:IsMythic() then
+				timerPaylineCD:Start(5, self.vb.paylineCount+1)
+				timerFoulExhaustCD:Start("v9.5-9.9", self.vb.foulExhaustCount+1)
+				timerTheBigHitCD:Start("v16.0-16.7", self.vb.bigHitCount+1)
+			elseif self:IsHeroic() then
+				timerPaylineCD:Start("v5.9-7", self.vb.paylineCount+1)
+				timerFoulExhaustCD:Start("v10.7-11.8", self.vb.foulExhaustCount+1)
+				timerTheBigHitCD:Start("v16.8-18", self.vb.bigHitCount+1)
+			else
+				timerFoulExhaustCD:Start("v9.5-10.7", self.vb.foulExhaustCount+1)
+				timerTheBigHitCD:Start("v15.5-16.7", self.vb.bigHitCount+1)
+				timerPaylineCD:Start("v21.6-22.6", self.vb.paylineCount+1)
+			end
 		end
 	elseif spellId == 464776 then--Fraud Detected
 		warnFraudDetected:Show()
@@ -243,19 +262,19 @@ function mod:SPELL_CAST_START(args)
 		self.vb.paylineCount = self.vb.paylineCount + 1
 		specWarnPayline:Show(self.vb.paylineCount)
 		specWarnPayline:Play("specialsoon")
-		--NOTE, Mythic reworked how timers work, so we have no idea what heroic and normal look like now
-		--For now, we assume others are same
+		--Heroic sees massive variation
 		if self:IsHard() and self:GetStage(1) then
-			timerPaylineCD:Start("v41.1-42.8", self.vb.paylineCount+1)
+			timerPaylineCD:Start(self:IsMythic() and 26.7 or "v32.9-42.8", self.vb.paylineCount+1)
 		end
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
 		warnFoulExhaust:Show(self.vb.foulExhaustCount)
 		if self:GetStage(1) then
-			timerFoulExhaustCD:Start("v30.6-31.8", self.vb.foulExhaustCount+1)
+			timerFoulExhaustCD:Start(self:IsMythic() and "v32.9-34" or "v30.6-32.9", self.vb.foulExhaustCount+1)
 		--Custom condition where it gets a 2nd cast due to CD of cheat to win being 30 instead of 25
 		elseif self:GetStage(2) and self:IsEasy() and self.vb.spinCount == 2 then
 			timerFoulExhaustCD:Start("v25.5", self.vb.foulExhaustCount+1)
+			self.vb.secondExhaustOccurred = self.vb.secondExhaustOccurred + 1
 		end
 	elseif spellId == 460472 then
 		self.vb.bigHitCount = self.vb.bigHitCount + 1
@@ -264,7 +283,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnBigHit:Play("defensive")
 		end
 		if self:GetStage(1) then
-			timerTheBigHitCD:Start("v18.7-24.4", self.vb.bigHitCount+1)
+			--Subject to long skips on heroic especially if boss is kited about (which is the normal strat)
+			timerTheBigHitCD:Start(self:IsMythic() and 20.6 or "v18.6-32.9", self.vb.bigHitCount+1)
 		elseif self:GetStage(2) and self.vb.spinCount == 3 then
 			timerTheBigHitCD:Start(18.2, self.vb.bigHitCount+1)
 		end
@@ -278,8 +298,8 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers
 		timerFoulExhaustCD:Start("v4.1-4.6", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start("v10.2-10.7", self.vb.paylineCount+1)
-		timerTheBigHitCD:Start("v15.1-15.5", self.vb.bigHitCount+1)
-		timerHotHotHotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
+		timerTheBigHitCD:Start("v15.1-15.6", self.vb.bigHitCount+1)
+		timerHotHotHotCD:Start(self:IsEasy() and 29.9 or "v24.3-25.2", 2)
 	elseif spellId == 465322 then
 		self.vb.spinCount = 2
 		---@diagnostic disable-next-line: param-type-mismatch
@@ -288,9 +308,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnHotHotHot:Play("farfromline")
 		--new Phase Timers
 		timerFoulExhaustCD:Stop()--Just to cancel run over from the custom 2nd cast between linked and hot
-		timerFoulExhaustCD:Start(self:IsEasy() and 4.4 or 3.3, self.vb.foulExhaustCount+1)
-		timerTheBigHitCD:Start("v4.6-10.3", self.vb.bigHitCount+1)--This one gets a little screwed up
-		timerPaylineCD:Start("v15.5-18", self.vb.paylineCount+1)
+		--On normal and LFR, it's possible to get two exhausts between linked and hot, if so, we'll get a long timer, else it'll be short one
+		timerFoulExhaustCD:Start((self.vb.secondExhaustOccurred == 2) and 28.8 or self:IsHard() and "v4.6-5.8" or "V3.3-4.4", self.vb.foulExhaustCount+1)
+		timerTheBigHitCD:Start(self:IsMythic() and 11.9 or "v4.6-10.7", self.vb.bigHitCount+1)--This one gets a little screwed up
+		timerPaylineCD:Start(self:IsHard() and "v21.6-22.9" or "v15.5-18", self.vb.paylineCount+1)
 		timerScatteredPayoutCD:Start(self:IsEasy() and 29.9 or 25.2, 3)
 	elseif spellId == 465580 then
 		self.vb.spinCount = 3
@@ -298,10 +319,11 @@ function mod:SPELL_CAST_START(args)
 		warnCheatToWin:Show("3/4".." "..DBM_COMMON_L.AOEDAMAGE)
 		specWarnScatteredPayout:Show()
 		specWarnScatteredPayout:Play("targetchange")
-		--new Phase Timers
-		timerTheBigHitCD:Start(3.4, self.vb.bigHitCount+1)
-		timerFoulExhaustCD:Start(9.4, self.vb.foulExhaustCount+1)
-		timerPaylineCD:Start(17.9, self.vb.paylineCount+1)
+		--new Phase Timers 10.7-14.3
+		timerTheBigHitCD:Start(self:IsHard() and "v3.3-5.8" or "v10.7-14.3", self.vb.bigHitCount+1)
+		--again, on normal if 2 exhausts occured before hot, the it's a longer timer here too, else very short. Heroic and mythic more consistent in their 9-11 sec range
+		timerFoulExhaustCD:Start(self:IsMythic() and "v10.7-11.9" or self:IsHeroic() and "v9.4-10.6" or (self.vb.secondExhaustOccurred == 2) and 26.4 or "V3.3-4.4", self.vb.foulExhaustCount+1)
+		timerPaylineCD:Start(21.6, self.vb.paylineCount+1)--Mythic and heroic Unknown
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465587 then
 		self.vb.spinCount = 4
