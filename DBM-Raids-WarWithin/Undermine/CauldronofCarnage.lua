@@ -15,13 +15,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 473650 472233 1214190 473994 466178",
 	"SPELL_CAST_SUCCESS 463900",
-	"SPELL_AURA_APPLIED 472222 472225 471660 471557 1213690 472231 1214009 1221826",
+	"SPELL_AURA_APPLIED 472222 472225 471660 471557 1213690 1214009 1221826",
 	"SPELL_AURA_APPLIED_DOSE 472222 472225 471557 1221826",
-	"SPELL_AURA_REMOVED 471660 1213690 472231 1214009 465863 465872",
+	"SPELL_AURA_REMOVED 471660 1213690 1214009 465863 465872",
 	"SPELL_PERIODIC_DAMAGE 1214039 463925",
 	"SPELL_PERIODIC_MISSED 1214039 463925",
 	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"RAID_BOSS_WHISPER",
 	"UNIT_POWER_UPDATE player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -413,14 +413,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMoltenPhlegm:Schedule(25)
 		specWarnMoltenPhlegm:ScheduleVoice(25, "runout")
 		yellMoltenPhlegmFades:Countdown(spellId)
-	elseif spellId == 472231 then
-		warnBlastburnRoarcannon:PreciseShow(self:IsMythic() and 3 or 1, args.destName)
-		if args:IsPlayer() then
-			specWarnBlastburnRoarcannon:Show()
-			specWarnBlastburnRoarcannon:Play("runout")
-			yellBlastburnRoarcannon:Yell()
-			yellBlastburnRoarcannonFades:Countdown(spellId)
-		end
 	elseif spellId == 1214009 then
 		warnVoltaicImage:PreciseShow(3, args.destName)
 		if args:IsPlayer() then
@@ -444,10 +436,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnMoltenPhlegm:Cancel()
 		specWarnMoltenPhlegm:CancelVoice()
 		yellMoltenPhlegmFades:Cancel()
-	elseif spellId == 472231 then
-		if args:IsPlayer() then
-			yellBlastburnRoarcannonFades:Cancel()
-		end
 	elseif spellId == 1214009 then
 		if args:IsPlayer() then
 			if self.Options.NPFixate then
@@ -525,6 +513,23 @@ function mod:UNIT_POWER_UPDATE(uId)
 			specWarnStaticChargeHigh:Show(lastCharge)
 			specWarnStaticChargeHigh:Play("stackhigh")
 			yellStaticChargeHigh:Yell(lastCharge)
+		end
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:472233") then
+		specWarnBlastburnRoarcannon:Show()
+		specWarnBlastburnRoarcannon:Play("laserrun")
+		yellBlastburnRoarcannon:Yell()
+		yellBlastburnRoarcannonFades:Countdown(3)
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("spell:472233") then
+		if targetName ~= UnitName("player") then
+			warnBlastburnRoarcannon:Show(targetName)
 		end
 	end
 end
