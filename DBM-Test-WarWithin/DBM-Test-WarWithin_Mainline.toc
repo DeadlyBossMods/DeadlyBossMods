@@ -29,6 +29,7 @@ Undermine/TheOneArmedBandit-Heroic-Kill.lua
 Undermine/MugZeeHeadsofSecurity-Normal-Kill.lua
 Undermine/ChromeKingGallywix-Normal-Kill.lua
 Undermine/ChromeKingGallywix-Heroic-Kill.lua
+Undermine/ChromeKingGallywix-Mythic-Kill.lua
 
 NerubarPalace/Ulgrax-Mythic-Kill.lua
 NerubarPalace/BloodboundHorror-Mythic-Kill.lua
