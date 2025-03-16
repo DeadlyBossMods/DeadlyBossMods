@@ -6,8 +6,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(231075)
 mod:SetEncounterID(3016)
 mod:SetUsedIcons(8, 7, 6)
-mod:SetHotfixNoticeRev(20250310000000)
-mod:SetMinSyncRevision(20250310000000)
+mod:SetHotfixNoticeRev(20250316000000)
+mod:SetMinSyncRevision(20250316000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -170,7 +170,7 @@ local allTimers = {
 			[1214607] = {8.0, 58.0, 57.5, 55.5},--BBB Blast
 			[467182] = {43.1, 60.4, 64.5},--Supression
 			[466751] = {39.6, 16.4, 23.6, 18.3, 22.0, 29.6, 12.0, 23.3, 23.6},--Venting Heat
-			[466958] = {16.0, 21.6, 14.6, 19.9, 17.0, 12.4, 16.5, "v23.7-29.6", "v5.5-11.5", 23.8, "v17.1-23.6", 11.6, 12.3},--Ego Check
+			[466958] = {16.0, 21.6, 14.6, 19.9, 17.0, 12.4, 16.5, "v23.7-29.6", "v5.5-11.5", 23.8, "v17.1-23.6", 11.6, 12.3},--Ego Check (can exceed 208)
 		},
 		[2] = {
 			[469286] = {157.2},--Giga Coils
