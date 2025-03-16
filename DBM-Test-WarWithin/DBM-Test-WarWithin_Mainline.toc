@@ -27,7 +27,7 @@ Undermine/StixBunkjunker-Mythic-Wipe.lua
 Undermine/TheOneArmedBandit-Normal-Kill.lua
 Undermine/TheOneArmedBandit-Heroic-Kill.lua
 Undermine/MugZeeHeadsofSecurity-Normal-Kill.lua
-Undermine/MugZeeHeadsofSecurity-Mythic-Wipe
+Undermine/MugZeeHeadsofSecurity-Mythic-Wipe.lua
 Undermine/ChromeKingGallywix-Normal-Kill.lua
 Undermine/ChromeKingGallywix-Heroic-Kill.lua
 Undermine/ChromeKingGallywix-Mythic-Kill.lua
