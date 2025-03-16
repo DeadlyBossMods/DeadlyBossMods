@@ -420,6 +420,7 @@ do
 				}, mt)
 				newFrame.obj = newBar
 			end
+			newBar.callback = nil
 			self.numBars = self.numBars + 1
 			-- Bars that start huge by config (important color type or huge flag)
 			-- These are never resized to small
@@ -1103,6 +1104,9 @@ function barPrototype:Update(elapsed)
 		self:Enlarge()
 	end
 	DBT:UpdateBars()
+	if self.callback then
+		self:callback("OnUpdate", elapsed, timerValue, totaltimeValue)
+	end
 end
 
 function barPrototype:RemoveFromList()
@@ -1112,6 +1116,9 @@ function barPrototype:RemoveFromList()
 end
 
 function barPrototype:Cancel()
+	if self.callback then
+		self:callback("Cancel")
+	end
 	self.frame:Hide()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
@@ -1292,6 +1299,10 @@ function barPrototype:AnimateEnlarge(elapsed)
 		DBT:UpdateBars(true)
 		self:ApplyStyle()
 	end
+end
+
+function barPrototype:SetCallback(f)
+	self.callback = f
 end
 
 do
