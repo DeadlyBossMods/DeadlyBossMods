@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 464399 466742 1220752 464112 1217954 467117 467109",
 	"SPELL_CAST_SUCCESS 464149",
-	"SPELL_AURA_APPLIED 465346 1217685 464854 473115 473066 1218704 1219384 1220648 466748 472893",
+	"SPELL_AURA_APPLIED 465346 1217685 464854 473115 473066 1218704 1219384 1220648 466748 472893 461536",
 	"SPELL_AURA_APPLIED_DOSE 466748",
 	"SPELL_AURA_REMOVED 465346 461536 1217685 473115 473066 467117",
 	"SPELL_PERIODIC_DAMAGE 464854 464248",
@@ -55,6 +55,7 @@ local specWarnPowercoil								= mod:NewSpecialWarningYou(1218704, nil, nil, nil
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(464854, nil, nil, nil, 1, 8)
 
 local timerElectroSortingCD							= mod:NewNextCountTimer(51.1, 464399, DBM_COMMON_L.BALLS.. "+" ..DBM_COMMON_L.ADDS.." (%s)", nil, nil, 2)
+local timerRollingPlayer							= mod:NewBuffFadesTimer(20, 461536, nil, nil, nil, 5, nil, nil, nil, 1, 5)
 --local timerBigBomb								= mod:NewCastTimer(20, 464865, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShortFuseCast							= mod:NewCastNPTimer(30, 473115, nil, nil, nil, 2)
 
@@ -282,6 +283,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnIncineratorVictim:Show()
 		specWarnIncineratorVictim:Play("debuffyou")
 		--yellIncinerator:Yell()
+	elseif spellId == 461536 and args:IsPlayer() then
+		timerRollingPlayer:Start(20)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -298,6 +301,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 461536 then--Rolling Rubbish ending
 		if self.Options.SetIconOnBalls then
 			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			timerRollingPlayer:Stop()
 		end
 	elseif spellId == 1217685 then
 		if self.Options.NPAuraOnMessedUp then
