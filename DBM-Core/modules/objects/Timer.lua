@@ -17,6 +17,7 @@ local test = private:GetPrototype("DBMTest")
 
 local pformat = stringUtils.pformat
 local removeEntry = tableUtils.removeEntry
+local floor = math.floor
 
 ---@class Timer
 local timerPrototype = private:GetPrototype("Timer")
@@ -47,57 +48,6 @@ function DBM:BuildVoiceCountdownCache()
 		if count.value == countvoice4 then
 			countpath4 = count.path
 			countvoice4max = count.max
-		end
-	end
-end
-
-local function playCountSound(_, path, requiresCombat) -- timerId, path
-	if requiresCombat and not (InCombatLockdown() or UnitAffectingCombat("player")) then return end
-	DBM:PlaySoundFile(path)
-end
-
-local function playCountdown(timerId, timer, voice, count, requiresCombat)
-	if DBM.Options.DontPlayCountdowns then return end
-	timer = timer or 10
-	count = count or 4
-	voice = voice or 1
-	if timer <= count then count = math.floor(timer) end
-	if not countpath1 or not countpath2 or not countpath3 then
-		DBM:Debug("Voice cache not built at time of playCountdown. On fly caching.", 3)
-		DBM:BuildVoiceCountdownCache()
-	end
-	local maxCount, path
-	if type(voice) == "string" then
-		maxCount = 5--Safe to assume if it's not one of the built ins, it's likely heroes/OW, which has a max of 5
-		path = voice
-	elseif voice == 2 then
-		maxCount = countvoice2max or 10
-		path = countpath2 or "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"
-	elseif voice == 3 then
-		maxCount = countvoice3max or 5
-		path = countpath3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\"
-	elseif voice == 4 then
-		maxCount = countvoice4max or 10
-		path = countpath4 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
-	else
-		maxCount = countvoice1max or 10
-		path = countpath1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
-	end
-	if not path then--Should not happen but apparently it does somehow
-		DBM:Debug("Voice path failed in countdownProtoType:Start.")
-		return
-	end
-	if count == 0 then--If a count of 0 is passed,then it's a "Countout" timer, not "Countdown"
-		for i = 1, timer do
-			if i < maxCount then
-				DBM:Schedule(i, playCountSound, timerId, path .. i .. ".ogg", requiresCombat)
-			end
-		end
-	else
-		for i = count, 1, -1 do
-			if i <= maxCount then
-				DBM:Schedule(timer - i, playCountSound, timerId, path .. i .. ".ogg", requiresCombat)
-			end
 		end
 	end
 end
@@ -284,7 +234,6 @@ function timerPrototype:Start(timer, ...)
 				end
 			end
 			DBT:CancelBar(self.startedTimers[i])
-			DBM:Unschedule(playCountSound, self.startedTimers[i])
 			DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
 			if guid then
 				DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i])
@@ -393,19 +342,18 @@ function timerPrototype:Start(timer, ...)
 	local bar
 	--Bar and countdown construction should only actually occur if enabled
 	if isBarEnabled then
-		local countVoice, countVoiceMax = 0, self.countdownMax or 4
-		if self.option then
-			countVoice = self.mod.Options[self.option .. "CVoice"]
-			if not self.fade and (type(countVoice) == "string" or countVoice > 0) then--Started without faded and has count voice assigned
-				-- minTimer checks for the minimum possible timer in the variance timer string sent from Start method, self.minTimer is from newTimer constructor. Else, use timer value
-				playCountdown(id, minTimer or (hasVariance and self.minTimer) or timer, countVoice, countVoiceMax, self.requiresCombat)--timerId, timer, voice, count
-			end
-		end
+		local countVoice = self.option and self.mod.Options[self.option .. "CVoice"] or 0
+		local countVoiceMax = self.countdownMax or 4
 		-- timerStringWithVariance checks for timer string sent from Start method, self.timerStringWithVariance is from newTimer constructor. Else, use timer value
 		bar = DBT:CreateBar(timerStringWithVariance or (hasVariance and self.timerStringWithVariance) or timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd" or self.simpType == "cdnp")
 		if not bar then
 			return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 		end
+		bar:SetCallback(function(b, event, ...)
+			if event == "OnUpdate" then
+				self:BarOnUpdate(b, ...)
+			end
+		end)
 	end
 	local msg
 	if self.type and not self.text then
@@ -498,6 +446,52 @@ function timerPrototype:Start(timer, ...)
 end
 timerPrototype.Show = timerPrototype.Start
 
+function timerPrototype:BarOnUpdate(bar, elapsed, remaining)
+	if floor(remaining) ~= floor(remaining + elapsed) and bar.countdown and bar.countdownMax and not bar.fade and not DBM.Options.DontPlayCountdowns then
+		if self.requiresCombat and not (InCombatLockdown() or UnitAffectingCombat("player")) then
+			return
+		end
+		local secondsRemaining = floor(remaining + elapsed)
+		if secondsRemaining > 0 and secondsRemaining <= bar.countdownMax then
+			local countVoice = bar.countdown
+			if type(countVoice) == "string" or countVoice > 0 then
+				if not countpath1 or not countpath2 or not countpath3 then
+					DBM:Debug("Voice cache not built at time of playCountdown. On fly caching.", 3)
+					DBM:BuildVoiceCountdownCache()
+				end
+				local maxCount, path
+				if type(countVoice) == "string" then
+					maxCount = 5 -- Safe to assume if it's not one of the built ins, it's likely heroes/OW, which has a max of 5
+					path = countVoice
+				elseif countVoice == 2 then
+					maxCount = countvoice2max or 10
+					path = countpath2 or "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"
+				elseif countVoice == 3 then
+					maxCount = countvoice3max or 5
+					path = countpath3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\"
+				elseif countVoice == 4 then
+					maxCount = countvoice4max or 10
+					path = countpath4 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
+				else
+					maxCount = countvoice1max or 10
+					path = countpath1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
+				end
+				if secondsRemaining <= maxCount then
+					DBM:PlaySoundFile(path .. secondsRemaining .. ".ogg")
+				end
+				-- FIXME: countout timers
+				--if count == 0 then--If a count of 0 is passed,then it's a "Countout" timer, not "Countdown"
+				--	for i = 1, timer do
+				--		if i < maxCount then
+				--			DBM:Schedule(i, playCountSound, timerId, path .. i .. ".ogg", requiresCombat)
+				--		end
+				--	end
+				--DBM:Schedule(timer - i, playCountSound, timerId, , requiresCombat)
+			end
+		end
+	end
+end
+
 --A way to set the fade to yes or no, overriding hardcoded value in NewTimer object with temporary one
 --If this method is used, it WILL persist until reload or changing it back
 function timerPrototype:SetFade(fadeOn, ...)
@@ -512,7 +506,6 @@ function timerPrototype:SetFade(fadeOn, ...)
 			bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
 			test:Trace(self.mod, "SetTimerProperty", self, id, "Fade", true)
-			DBM:Unschedule(playCountSound, id)--Don't even need to check option, it's faster cpu wise to just unschedule countdown either way
 		end
 	elseif not fadeOn and self.fade then
 		self.fade = nil--set timer object metatable, which will make sure next bar started does NOT use fade
@@ -524,14 +517,6 @@ function timerPrototype:SetFade(fadeOn, ...)
 			bar.fade = nil--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
 			test:Trace(self.mod, "SetTimerProperty", self, id, "Fade", false)
-			if self.option then
-				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-				if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
-					DBM:Unschedule(playCountSound, id)
-					playCountdown(id, bar.timer, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-					DBM:Debug("Re-enabling a countdown on bar ID: " .. id .. " after a SetFade disable call")
-				end
-			end
 		end
 	end
 end
@@ -548,20 +533,11 @@ function timerPrototype:SetSTFade(fadeOn, ...)
 			bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
 			test:Trace(self.mod, "SetTimerProperty", self, id, "STFade", true)
-			DBM:Unschedule(playCountSound, id)
 		elseif not fadeOn and bar.fade then
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil, self.name)
 			bar.fade = false
 			bar:ApplyStyle()
 			test:Trace(self.mod, "SetTimerProperty", self, id, "STFade", false)
-			if self.option then
-				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-				if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
-					DBM:Unschedule(playCountSound, id)
-					playCountdown(id, bar.timer, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-					DBM:Debug("Re-enabling a countdown on bar ID: " .. id .. " after a SetSTFade disable call")
-				end
-			end
 		end
 	end
 end
@@ -624,7 +600,6 @@ function timerPrototype:Stop(...)
 			end
 			test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 			DBT:CancelBar(self.startedTimers[i])
-			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 			DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
 			tremove(self.startedTimers, i)
 		end
@@ -650,7 +625,6 @@ function timerPrototype:Stop(...)
 				DBM:FireEvent("DBM_TimerStop", id, guid)
 				test:Trace(self.mod, "StopTimer", self, id)
 				DBT:CancelBar(id)
-				DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 				DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
 				tremove(self.startedTimers, i)
 			end
@@ -682,7 +656,6 @@ function timerPrototype:HardStop(guid)
 		DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i], guid)
 		test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 		DBT:CancelBar(self.startedTimers[i])
-		DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 		tremove(self.startedTimers, i)
 	end
 end
@@ -743,20 +716,6 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 			--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
 			self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
 		end
-		if self.option then
-			local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-			if (type(countVoice) == "string" or countVoice > 0) then
-				if not bar.fade then--Don't start countdown voice if it's faded bar
-					if newRemaining > 2 then
-						--Can't be called early beacuse then it won't unschedule countdown triggered by :Start if it was called
-						--Also doesn't need to be called early like it does in AddTime and RemoveTime since those early return
-						DBM:Unschedule(playCountSound, id)
-						playCountdown(id, newRemaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-						DBM:Debug("Updating a countdown after a timer Update call for timer ID:" .. id)
-					end
-				end
-			end
-		end
 		local updated = DBT:UpdateBar(id, elapsed, totalTime)
 		test:Trace(self.mod, "UpdateTimer", self, id, elapsed, totalTime)
 		return updated
@@ -767,7 +726,6 @@ function timerPrototype:AddTime(extendAmount, ...)
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
-	DBM:Unschedule(playCountSound, id)--Needs to be unscheduled early in case Start is called instead of Update
 	local bar = DBT:GetBar(id)
 	if not bar then
 		return self:Start(extendAmount, ...)
@@ -779,15 +737,6 @@ function timerPrototype:AddTime(extendAmount, ...)
 			if not bar.keep then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
 				self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
-			end
-			if self.option then
-				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-				if (type(countVoice) == "string" or countVoice > 0) then
-					if not bar.fade then--Don't start countdown voice if it's faded bar
-						playCountdown(id, newRemaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-						DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:" .. id)
-					end
-				end
 			end
 			local guid
 			if select("#", ...) > 0 then--If timer has args
@@ -813,7 +762,6 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
-	DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here, or countdown might not be canceled if removing time made it cease to have a > 0 value
 	local bar = DBT:GetBar(id)
 	if not bar then
 		return--Do nothing
@@ -835,17 +783,6 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
 				if not bar.keep then
 					self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
-				end
-				if self.option and newRemaining > 2 then
-					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-					if (type(countVoice) == "string" or countVoice > 0) then
-						if not bar.fade then--Don't start countdown voice if it's faded bar
-							if newRemaining > 2 then
-								playCountdown(id, newRemaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-								DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:" .. id)
-							end
-						end
-					end
 				end
 				if guid then
 					DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, total - reduceAmount)
@@ -870,7 +807,6 @@ end
 function timerPrototype:Pause(...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
-	DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 	if bar then
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 		local guid
@@ -900,14 +836,6 @@ function timerPrototype:Resume(...)
 			local remaining = total - elapsed
 			if not bar.keep then
 				self.mod:Schedule(remaining, removeEntry, self.startedTimers, id)--Re-schedule the auto remove entry stuff
-			end
-			--Have to check if paused bar had a countdown on resume so we can restore it
-			if self.option and not bar.fade then
-				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-				if (type(countVoice) == "string" or countVoice > 0) then
-					playCountdown(id, remaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
-					DBM:Debug("Updating a countdown after a timer Resume call for timer ID:" .. id)
-				end
 			end
 		end
 		local guid
@@ -954,7 +882,6 @@ function timerPrototype:UpdateKey(altSpellId, ...)
 		local remaining = bar.timer
 		self:Stop(...)
 		self:Unschedule(...)
-		DBM:Unschedule(playCountSound, id)
 		self:Start(remaining, ...)--Restart it
 	end
 end
