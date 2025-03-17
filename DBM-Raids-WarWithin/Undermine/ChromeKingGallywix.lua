@@ -402,6 +402,7 @@ function mod:OnCombatStart(delay)
 	self.vb.egoCheckSubCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
+		self.vb.phase = 0
 		self:SetStage(0.5)
 	else
 		self:SetStage(1)
