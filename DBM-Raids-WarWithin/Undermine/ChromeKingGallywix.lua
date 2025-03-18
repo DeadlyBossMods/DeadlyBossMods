@@ -384,7 +384,6 @@ local allTimers = {
 }
 
 function mod:OnCombatStart(delay)
-	self:SetStage(1)
 	table.wipe(castsPerGUID)
 	table.wipe(addUsedMarks)
 	self.vb.canisterCount = 0
@@ -403,7 +402,10 @@ function mod:OnCombatStart(delay)
 	self.vb.egoCheckSubCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
+		self.vb.phase = 0
 		self:SetStage(0.5)
+	else
+		self:SetStage(1)
 	end
 	if not self:IsStory() and not self:IsMythic() then
 		if self:IsHeroic() then

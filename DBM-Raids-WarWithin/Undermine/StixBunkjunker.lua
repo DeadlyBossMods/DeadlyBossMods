@@ -5,7 +5,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(230322)
 mod:SetEncounterID(3012)
-mod:SetUsedIcons(7, 5, 4, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20250111000000)
 mod:SetMinSyncRevision(20250111000000)
 mod:SetZone(2769)
@@ -59,8 +59,8 @@ local timerRollingPlayer							= mod:NewBuffFadesTimer(20, 461536, nil, nil, nil
 --local timerBigBomb								= mod:NewCastTimer(20, 464865, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShortFuseCast							= mod:NewCastNPTimer(30, 473115, nil, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnBalls", 465346, false, 0, {1, 2, 3, 4, 5}, true)
-mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {2, 4, 5, 7}, true)
+mod:AddSetIconOption("SetIconOnBalls", 465346, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {8, 7, 6, 5})
 --mod:AddSetIconOption("SetIconOnBigBomb", 464865, true, 5, {8})
 --mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
 mod:AddNamePlateOption("NPAuraOnMessedUp", 1217685)
@@ -100,7 +100,6 @@ mod.vb.IncinCount = 0
 mod.vb.demolishCount = 0
 mod.vb.meltdownCount = 0
 local castsPerGUID = {}
-local JWIconOrder = {2, 4, 5, 7} -- Circle, Triangle, Moon, Cross
 local usedMarks, seenGUIDs = {}, {}
 
 function mod:OnCombatStart(delay)
@@ -222,12 +221,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 		if args:GetDestCreatureID() == 231839 then -- Scrapmaster
-			for i = 1, 4 do
+			for i = 8, 4, -1 do
 				if not usedMarks[i] and not seenGUIDs[args.destGUID] then
 					seenGUIDs[args.destGUID] = i
 					usedMarks[i] = args.destGUID
 					if self.Options.SetIconOnScrapmasters then
-						self:ScanForMobs(args.destGUID, 2, JWIconOrder[i], 1, nil, 12, "SetIconOnScrapmasters")
+						self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnScrapmasters")
 					end
 					return
 				end
