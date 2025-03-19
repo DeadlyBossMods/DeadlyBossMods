@@ -76,7 +76,7 @@ local specWarnMarkedForRecycling					= mod:NewSpecialWarningYou(1220648, nil, ni
 
 --local timerDumpsterDiveCD							= mod:NewCDNPTimer(10.9, 466742, nil, nil, nil, 3)--10.9-24.4
 --local timerRecyclerCD								= mod:NewCDNPTimer(97.3, 1220752, nil, nil, nil, 3)
-local timerRecyclerCast								= mod:NewCastNPTimer(12, 1220752, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerRecyclerCast								= mod:NewCastNPTimer(14, 1220752, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 --Rest of Boss mechanics
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
 local specWarnIncinerator							= mod:NewSpecialWarningMoveAwayCount(464149, nil, nil, nil, 2, 2)--Debuff is 472893 but we pre warn first
@@ -283,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnIncineratorVictim:Play("debuffyou")
 		--yellIncinerator:Yell()
 	elseif spellId == 461536 and args:IsPlayer() then
-		timerRollingPlayer:Start(20)
+		timerRollingPlayer:Start(24)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
