@@ -923,18 +923,6 @@ end
 do
 	local subTabId = 0
 
-	local cachedAddOns = {}
-	local C_AddOns = {
-		DoesAddOnExist = C_AddOns.DoesAddOnExist or function(addon)
-			if not cachedAddOns then
-				for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
-				cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
-				end
-			end
-			return cachedAddOns[addon]
-		end,
-	}
-
 	local currentSeasons = {}
 	function UpdateCurrentSeason()
 		if not C_ChallengeMode or not C_ChallengeMode.GetMapTable then

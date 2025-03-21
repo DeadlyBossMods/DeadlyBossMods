@@ -276,7 +276,7 @@ function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 	elseif zoneLookup == "Retail" then
 		zoneInfo = annoyingPopupZonesRetail[mapId]
 	end
-	if zoneInfo and not DBM:DoesAddOnExist(zoneInfo.addon) then
+	if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
 		self:ShowAnnoyingPopup(zoneInfo, (GetInstanceInfo()))
 	end
 end
