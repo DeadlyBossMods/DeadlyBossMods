@@ -597,7 +597,7 @@ local function GetSpecializationGroup()
 		if MAX_TALENT_TABS then
 			for i=1, MAX_TALENT_TABS do
 				if ( i <= numTabs ) then
-					local _, _, pointsSpent = GetTalentTabInfo(i)
+					local _, _, _, _, pointsSpent = GetTalentTabInfo(i)
 					if pointsSpent > highestPointsSpent then
 						highestPointsSpent = pointsSpent
 						currentSpecGroup = i
@@ -922,18 +922,6 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 end
 do
 	local subTabId = 0
-
-	local cachedAddOns = {}
-	local C_AddOns = {
-		DoesAddOnExist = C_AddOns.DoesAddOnExist or function(addon)
-			if not cachedAddOns then
-				for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
-				cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
-				end
-			end
-			return cachedAddOns[addon]
-		end,
-	}
 
 	local currentSeasons = {}
 	function UpdateCurrentSeason()

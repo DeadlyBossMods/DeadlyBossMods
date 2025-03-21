@@ -56,6 +56,10 @@ local warnFlameandCoin								= mod:NewCountAnnounce(464806, 2)
 local warnCoinandShock								= mod:NewCountAnnounce(464809, 2)
 local warnCoinandBomb								= mod:NewCountAnnounce(464810, 3)
 
+local specWarnTokenCoin								= mod:NewSpecialWarningYou(472832, nil, nil, nil, 1, 18)
+local specWarnTokenBomb								= mod:NewSpecialWarningYou(472837, nil, nil, nil, 1, 12)
+local specWarnTokenFlame							= mod:NewSpecialWarningYou(472828, nil, nil, nil, 1, 15)
+local specWarnTokenShock							= mod:NewSpecialWarningYou(472783, nil, nil, nil, 1, 18)
 local specWarnSpintoWin								= mod:NewSpecialWarningCount(461060, nil, nil, nil, 2, 2)
 --local specWarnTravelingFlames 					= mod:NewSpecialWarningCount(474731, nil, nil, nil, 2, 2)--No usabe events
 local specWarnExplosiveGaze							= mod:NewSpecialWarningRun(465009, nil, nil, nil, 1, 2)
@@ -75,7 +79,7 @@ local specWarnWitheringFlames					= mod:NewSpecialWarningMoveAway(471927, nil, n
 local yellWitheringFlames						= mod:NewShortYell(471927)
 local yellWitheringFlamesFades					= mod:NewShortFadesYell(471927)
 
-local timerOverloadCD							= mod:NewCDNPTimer(18.2, 460582, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerOverloadCD							= mod:NewCDNPTimer(17, 460582, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerWitheringFlamesCD					= mod:NewCDNPTimer(18.2, 471927, nil, nil, nil, 3)
 --local timerElectricBlastCD					= mod:NewCDNPTimer(3.7, 460847, nil, nil, nil, 3)--3.7-5.2
 
@@ -88,6 +92,7 @@ local warnHighRoller							= mod:NewYouAnnounce(460444, 1)
 
 local specWarnPayline							= mod:NewSpecialWarningCount(460181, nil, nil, nil, 2, 2)
 local specWarnBigHit							= mod:NewSpecialWarningDefensive(460472, nil, nil, nil, 1, 2)
+local specWarnBigHitRunOut						= mod:NewSpecialWarningMoveTo(460472, nil, nil, nil, 1, 2)
 local specWarnBigHitTaunt						= mod:NewSpecialWarningTaunt(460472, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(460576, nil, nil, nil, 1, 8)
 
@@ -130,14 +135,14 @@ function mod:OnCombatStart(delay)
 	self.vb.bigHitCount = 0
 	self.vb.secondExhaustOccurred = 0
 	table.wipe(castsPerGUID)
-	timerPaylineCD:Start(string.format("v%s-%s", 2.9-delay, 4.1-delay), 1)
+	timerPaylineCD:Start(string.format("v%s-%s", 2.9-delay, 4.8-delay), 1)
 	timerFoulExhaustCD:Start(string.format("v%s-%s", 8.1-delay, 10-delay), 1)
 	if self:IsMythic() then
 		--Seem flipped on mythic (but could also be because of boss kiting)
 		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)
 		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
 	else
-		timerTheBigHitCD:Start(string.format("v%s-%s", 14.1-delay, 15.6-delay), 1)
+		timerTheBigHitCD:Start(string.format("v%s-%s", 13.8-delay, 15.6-delay), 1)
 		timerSpintoWinCD:Start(string.format("v%s-%s", 18.0-delay, 20.6-delay), 1)
 	end
 	self:EnablePrivateAuraSound(465325, "lineyou", 17)
@@ -161,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			timerSpintoWinCD:Start("v51-54.8", self.vb.spinCount+1)
 		elseif self:IsHeroic() then
-			timerSpintoWinCD:Start("v60.9-62.1", self.vb.spinCount+1)
+			timerSpintoWinCD:Start("v60.9-63.4", self.vb.spinCount+1)
 		else
 			timerSpintoWinCD:Start("v80.4-86.7", self.vb.spinCount+1)
 		end
@@ -195,7 +200,7 @@ function mod:SPELL_CAST_START(args)
 				timerTheBigHitCD:Start("v22.7-23.1", self.vb.bigHitCount+1)
 				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
 			elseif self:IsHeroic() then--Heroic swaps payline and bighit compared to normal
-				timerPaylineCD:Start("v11.1-11.2", self.vb.paylineCount+1)
+				timerPaylineCD:Start("v11.1-11.8", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v16.0-16.7", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v22.1-22.8", self.vb.bigHitCount+1)
 			else--Normal and LFR
@@ -382,13 +387,33 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerOverloadCD:Start(15, args.destGUID)
 		end
 	elseif spellId == 472832 then
-		warnTokenCoin:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnTokenCoin:Show()
+			specWarnTokenCoin:Play("coinyou")
+		else
+			warnTokenCoin:Show(args.destName)
+		end
 	elseif spellId == 472837 then
-		warnTokenBomb:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnTokenBomb:Show()
+			specWarnTokenBomb:Play("bombyou")
+		else
+			warnTokenBomb:Show(args.destName)
+		end
 	elseif spellId == 472828 then
-		warnTokenFlame:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnTokenFlame:Show()
+			specWarnTokenFlame:Play("flameyou")
+		else
+			warnTokenFlame:Show(args.destName)
+		end
 	elseif spellId == 472783 then
-		warnTokenShock:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnTokenShock:Show()
+			specWarnTokenShock:Play("shockyou")
+		else
+			warnTokenShock:Show(args.destName)
+		end
 	elseif spellId == 465009 then
 		warnExplosiveGaze:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -412,9 +437,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 460430 then
 		warnCrushed:CombinedShow(1, args.destName)
-	elseif spellId == 460472 and not args:IsPlayer() then
-		specWarnBigHitTaunt:Show(args.destName)
-		specWarnBigHitTaunt:Play("tauntboss")
+	elseif spellId == 460472 then
+		if args:IsPlayer() then
+			specWarnBigHitRunOut:Show(DBM_COMMON_L.EDGE)
+			specWarnBigHitRunOut:Play("runtoedge")
+		else
+			specWarnBigHitTaunt:Show(args.destName)
+			specWarnBigHitTaunt:Play("tauntboss")
+		end
 	elseif spellId == 473195 then
 		self.vb.linkedCount = self.vb.linkedCount + 1
 		timerLinkedMachinesCD:Start(15, self.vb.linkedCount+1)--Bait timer
