@@ -72,6 +72,7 @@
 ---|"checkhp"
 ---|"cleave" 12
 ---|"cntnuemove"
+---|"coinyou" 18
 ---|"com_go"
 ---|"crowdcontrol" 3
 ---|"crusher" 12
@@ -278,6 +279,7 @@
 ---|"shieldcharge" 12
 ---|"shieldover"
 ---|"shockwave" 2
+---|"shockyou" 18
 ---|"silencesoon"
 ---|"slagelementalcoming" 12
 ---|"soakbeam" 17
