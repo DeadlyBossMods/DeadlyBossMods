@@ -56,8 +56,8 @@ local warnSolidGold									= mod:NewTargetNoFilterAnnounce(467225, 2)
 local warnEarthshakerGaol							= mod:NewTargetCountAnnounce(474461, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnEarthshakerGaol						= mod:NewSpecialWarningYou(474461, nil, nil, nil, 1, 2)
-local yellEarthshakerGaol							= mod:NewShortPosYell(474461)
-local yellEarthshakerGaolFades						= mod:NewIconFadesYell(474461)
+local yellEarthshakerGaol							= mod:NewShortPosYell(474461, nil, nil, nil, "YELL")
+local yellEarthshakerGaolFades						= mod:NewIconFadesYell(474461, nil, nil, nil, "YELL")
 local specWarnFrostshatterBoots						= mod:NewSpecialWarningYou(466476, nil, nil, nil, 1, 2)
 local specWarnStormfuryFingerGunYou					= mod:NewSpecialWarningYouCount(466509, nil, nil, nil, 2, 15)
 local specWarnStormfuryFingerGun					= mod:NewSpecialWarningDodgeCount(466509, nil, nil, nil, 2, 15)
@@ -87,7 +87,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31693))
 local warnUnstableCrawlerMines						= mod:NewCountAnnounce(466539, 2)
 local warnSprayandPray								= mod:NewTargetNoFilterAnnounce(466545, 2)
 --local warnSurgingArc								= mod:NewTargetAnnounce(1214991, 2)
-local warnElectroShocker								= mod:NewCountAnnounce(-31766, 1, 1215591)
+local warnElectroShocker							= mod:NewCountAnnounce(-31766, 1, 1215591)
 local warnDisintegrationBeam						= mod:NewTargetNoFilterAnnounce(1215481, 2)--Might be spammy
 local warnDoubleWhammy								= mod:NewTargetNoFilterAnnounce(469491, 2, nil, "Tank")
 
@@ -253,8 +253,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 466470 then
 		self.vb.frostShatterCount = self.vb.frostShatterCount + 1
-		if self:GetStage(3) and self.vb.frostShatterCount == 1 then
-			--Two casts on heroic and normal
+		if self:IsHeroic() and self:GetStage(3) and self.vb.frostShatterCount == 1 then
+			--Two casts on heroic and normal (not anymore on normal?)
 			timerFrostshatterBootsCD:Start(86.2, self.vb.frostShatterCount+1)
 		end
 	elseif spellId == 466509 or spellId == 1221302 then
@@ -344,19 +344,14 @@ function mod:SPELL_CAST_START(args)
 		--Timers same in all
 		timerUnstableCrawlerMinesCD:Start(3.7, 1)
 		timerFrostshatterBootsCD:Start(16.2, 1)
+		timerEarthshakerGaolCD:Start(self:IsMythic() and 32.2 or 32.8, 1)
 		timerGoblinGuidedRocketCD:Start(40, 1)
 		timerElectroShockerCD:Start(47.5, 1)--Only place it has timer, otherwise they just spawn when mug loses control
+		timerMoltenGoldKnucklesCD:Start(50, 1)
 		timerStormfuryFingerGunCD:Start(62.4, 1)
-		timerDoubleWhammyCD:Start(74.7, 1)
+		timerDoubleWhammyCD:Start(self:IsMythic() and 74.7 or 75.3, 1)
 		timerSprayandPrayCD:Start(81.2, 1)
 		timerDoubleMindedFuryCD:Start(118)
-		if self:IsMythic() then
-			timerEarthshakerGaolCD:Start(32.2, 1)
-			timerMoltenGoldKnucklesCD:Start(50, 1)
-		else
-			timerEarthshakerGaolCD:Start(32.8, 1)
-			timerMoltenGoldKnucklesCD:Start(self:IsHeroic() and 30.1 or 33.3, 1)
-		end
 	end
 end
 
@@ -369,12 +364,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHHMug:Show()
 		timerEarthshakerGaolCD:Start(17.4, self.vb.gaolCount+1)
 		if self:IsMythic() then
-			timerMoltenGoldKnucklesCD:Start(25, self.vb.knucklesCount+1)
+			timerMoltenGoldKnucklesCD:Start(27.8, self.vb.knucklesCount+1)
 			timerFrostshatterBootsCD:Start(34.7, self.vb.frostShatterCount+1)
 			timerStormfuryFingerGunCD:Start(50, self.vb.fingerGunCount+1)
+		elseif self:IsHeroic() then
+			timerMoltenGoldKnucklesCD:Start(30.5, self.vb.knucklesCount+1)
+			timerFrostshatterBootsCD:Start(42.8, self.vb.frostShatterCount+1)
+			timerStormfuryFingerGunCD:Start(55, self.vb.fingerGunCount+1)
 		else
+			timerMoltenGoldKnucklesCD:Start(34.7, self.vb.knucklesCount+1)
 			timerFrostshatterBootsCD:Start(46.6, self.vb.frostShatterCount+1)
-			timerMoltenGoldKnucklesCD:Start(50, self.vb.knucklesCount+1)
 			timerStormfuryFingerGunCD:Start(60, self.vb.fingerGunCount+1)
 		end
 	elseif spellId == 468794 then--Zee Taking Charge
@@ -386,10 +385,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerGoblinGuidedRocketCD:Start(29.8, self.vb.goblinGuidedRocketCount+1)--SUCCESS
 			timerDoubleWhammyCD:Start(42.4, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(50, self.vb.sprayPrayCount+1)
+		elseif self:IsHeroic() then
+			timerGoblinGuidedRocketCD:Start(32.6, self.vb.goblinGuidedRocketCount+1)--SUCCESS
+			timerDoubleWhammyCD:Start(46.3, self.vb.whammyCount+1)
+			timerSprayandPrayCD:Start(55, self.vb.sprayPrayCount+1)
 		else
 			timerGoblinGuidedRocketCD:Start(35, self.vb.goblinGuidedRocketCount+1)--SUCCESS
-			timerDoubleWhammyCD:Start(self:IsEasy() and 50 or 46.3, self.vb.whammyCount+1)
-			timerSprayandPrayCD:Start(self:IsEasy() and 60 or 55, self.vb.sprayPrayCount+1)
+			timerDoubleWhammyCD:Start(50, self.vb.whammyCount+1)
+			timerSprayandPrayCD:Start(60, self.vb.sprayPrayCount+1)
 		end
 	end
 end
