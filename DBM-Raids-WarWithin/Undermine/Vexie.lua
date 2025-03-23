@@ -3,10 +3,10 @@ local mod	= DBM:NewMod(2639, "DBM-Raids-WarWithin", 1, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(225821)--Gear Grinder, 225822 Vexie
+mod:SetCreatureID(225821, 225822)--Gear Grinder, 225822 Vexie
 mod:SetEncounterID(3009)
-mod:SetHotfixNoticeRev(20250122000000)
-mod:SetMinSyncRevision(20250122000000)
+mod:SetHotfixNoticeRev(20250323000000)
+mod:SetMinSyncRevision(20250323000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -289,6 +289,13 @@ function mod:UNIT_DIED(args)
 				specWarnOilCanisterSoak:Play("helpsoak")
 			end
 		end
+	elseif cid == 225821 then----Geargrinder
+		--Stop all timers
+		timerUnrelentingcarnageCD:Stop()
+		timerCallbikersCD:Stop()
+		timerSpewOilCD:Stop()
+		timerIncendiaryFireCD:Stop()
+		timerTankBusterCD:Stop()
 	end
 end
 

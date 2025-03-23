@@ -248,6 +248,7 @@ do
 			DBM:Debug("All target scans complete, unregistering events", 2)
 		end
 	end
+	module.UNIT_TARGET = module.UNIT_TARGET_UNFILTERED
 
 	---Used to abort BossUnitTargetScanner on specified unit
 	---@param uId string?
@@ -277,14 +278,18 @@ do
 	---@param returnFunc string
 	---@param scanTime number?
 	---@param allowTank boolean? If allowTank is passed, it basically tells this scanner to return current target of unitId at time of failure/abort when scanTime is complete
-	function bossModPrototype:BossUnitTargetScanner(uId, returnFunc, scanTime, allowTank)
+	function bossModPrototype:BossUnitTargetScanner(uId, returnFunc, scanTime, allowTank, bossOnly)
 		unitMonitor[uId] = {}
 		unitScanCount = unitScanCount + 1
 		unitMonitor[uId].modid, unitMonitor[uId].returnFunc, unitMonitor[uId].allowTank = self.id, returnFunc, allowTank
 		self:ScheduleMethod(scanTime or 1.5, "BossUnitTargetScannerAbort", uId)--In case of BossUnitTargetScanner firing too late, and boss already having changed target before monitor started, it needs to abort after x seconds
 		if not eventsRegistered then
 			eventsRegistered = true
-			module:RegisterShortTermEvents("UNIT_TARGET_UNFILTERED")
+			if bossOnly then
+				self:RegisterShortTermEvents("UNIT_TARGET boss1 boss2 boss3 boss4 boss5")
+			else
+				self:RegisterShortTermEvents("UNIT_TARGET_UNFILTERED")
+			end
 			DBM:Debug("Registering UNIT_TARGET event for BossUnitTargetScanner", 2)
 		end
 	end
