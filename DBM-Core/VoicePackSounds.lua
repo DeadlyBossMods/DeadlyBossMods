@@ -1,377 +1,379 @@
 ---@meta
 
----@alias VPSound
----|"1695gorak"
----|"1695uktar"
----|"1695ukurogg"
----|"aesoon" 2
----|"artillery" 12
----|"attackblood" 12
----|"attackbloodthirster" 12
----|"attackcannon" 12
----|"attackdeathcaller" 12
----|"attackdoomfire" 12
----|"attackfelblood" 12
----|"attackflesheater" 12
----|"attackhulkingterror" 12
----|"attackmindfungus" 12
----|"attackshield"
----|"attacksporeshooter" 12
----|"attacktank" 12
----|"attacktotem"
----|"attackturret" 12
----|"attbomb"
----|"attleft"
----|"attmid"
----|"attright"
----|"backcenter"
----|"backleft"
----|"backright"
----|"backtowhereyouwere" 12
----|"backward"
----|"bait"
----|"banishment"
----|"barrageonway" 12
----|"behindboss"
----|"behindmob"
----|"bigmob"
----|"bigmobsoon"
----|"bitenow" 12
----|"bloodfeast"
----|"bluemushroomcoming" 12
----|"blueyou" 17
----|"bombnow"
----|"bombrun"
----|"bombsoon"
----|"bombyou" 12
----|"bossout"
----|"bosstobeam"
----|"boundingcleave" 12
----|"breakchain" 12
----|"breakcoral"
----|"breaklos" 12
----|"breaktormentfirst" 12
----|"breaktormentsecond" 12
----|"breaktormentthird" 12
----|"breakvine" 14
----|"breathsoon" 2
----|"bringlighttomob" 12
----|"bringlighttoshadow" 12
----|"carefly" 2
----|"catchballs" 12
----|"center"
----|"centerleft"
----|"centerright"
----|"chainboss" 13
----|"changecolor" 14
----|"changemoon"
----|"changemt" 2
----|"changetarget" 2
----|"chargemove" 2
----|"chargethroughbomb" 18
----|"checkhp"
----|"cleave" 12
----|"cntnuemove"
----|"coinyou" 18
----|"com_go"
----|"crowdcontrol" 3
----|"crusher" 12
----|"debuffyou" 17
----|"defensive"
----|"demolisher" 12
----|"di"
----|"didi"
----|"dispelboss"
----|"dispelnow"
----|"dontmove"
----|"doubleat"
----|"dpshard" 16
----|"dpsmore" 16
----|"dpsslow" 16
----|"dpsstop" 16
----|"dragonnow"
----|"droptorch" 18
----|"dshigh"
----|"east"
----|"end"
----|"energyhigh"
----|"enfeeblingroar" 12
----|"engineercoming" 12
----|"enrage"
----|"enteringcombat" 17
----|"failed"
----|"farfromline"
----|"fearsoon"
----|"felinfusion"
----|"findclearvent" 17
----|"findcrab" 12
----|"finddragon" 12
----|"findflamejet" 12
----|"findhunter" 12
----|"findmc"
----|"findshadow"
----|"findshelter"
----|"findshield"
----|"findwolf" 12
----|"firecallercoming" 12
----|"firecircle"
----|"firerun"
----|"firewall"
----|"flamebelcher" 12
----|"flamejet" 12
----|"flameyou" 15
----|"focusedchaosyou" 12
----|"forcenovacoming" 12
----|"frenzy"
----|"frontal" 15
----|"frontcenter"
----|"frontleft"
----|"frontright"
----|"frost"
----|"gather"
----|"gatheritem"
----|"gathershare"
----|"getboned"
----|"getinyellowrunes" 12
----|"getknockedup" 15
----|"getupwind" 14
----|"ghostsoon"
----|"giftofearth" 12
----|"greenmushroomcoming" 12
----|"greenyou" 17
----|"group1"
----|"group2"
----|"group3"
----|"group4"
----|"group5"
----|"harmonic" 12
----|"healall"
----|"healfull"
----|"helpdispel"
----|"helpkick"
----|"helpme"
----|"helpme2"
----|"helpsoak"
----|"helpspirit" 14
----|"holdit"
----|"iceorbmove" 12
----|"incomingdebuff" 15
----|"inhalegetinpuddle" 12
----|"inktoshark"
----|"interruptbyeye" 12
----|"interruptingshout" 12
----|"interruptsoon"
----|"jumpinpit"
----|"jumpnow"
----|"justrun"
----|"keepjump"
----|"keepmove"
----|"kick1r"
----|"kick2r"
----|"kick3r"
----|"kick4r"
----|"kick5r"
----|"kickcast"
----|"killbigmob"
----|"killmine"
----|"killmob"
----|"killspirit"
----|"laserrun"
----|"leavecenter"
----|"leavemind"
----|"leavingcombat" 17
----|"left"
----|"lightinfusion"
----|"lightstorm"
----|"lineapart"
----|"linegather"
----|"linesoon"
----|"lineyou" 17
----|"lowsanity"
----|"markedfordeath" 12
----|"mblue"
----|"melodic" 12
----|"meteorrun" 12
----|"mgreen"
----|"mm1"
----|"mm2"
----|"mm3"
----|"mm4"
----|"mm5"
----|"mm6"
----|"mm7"
----|"mm8"
----|"mobenough"
----|"mobkill"
----|"mobout"
----|"mobsoon"
----|"morange"
----|"moveboss"
----|"movecenter"
----|"moveleft"
----|"movemelee" 12
----|"moveright"
----|"movesoon"
----|"movetimebubble"
----|"movetoboss" 14
----|"movetoegg" 17
----|"movetojelly"
----|"movetomobs" 14
----|"movetopillar" 13
----|"movetopool" 15
----|"movetostatue" 17
----|"movetotank"
----|"movetoweb" 17
----|"movetoflamethrower" 17
----|"movetotendrils" 17
----|"mpurple"
----|"myellow"
----|"negative" 13
----|"newmatrix"
----|"newportal"
----|"north"
----|"northeast"
----|"northwest"
----|"orangeyou" 17
----|"orbrun"
----|"otherin"
----|"otherout"
----|"paranoiayou" 17
----|"pfive"
----|"pfour"
----|"phasechange"
----|"polarityshift"
----|"pone" 12
----|"poolyou" 18
----|"positive" 13
----|"pthree"
----|"ptran"
----|"ptwo"
----|"pullin" 12
----|"pulverize" 12
----|"purpleyou" 17
----|"pushbackincoming" 13
----|"quake" 12
----|"rageyou" 17
----|"range5"
----|"readyrescue"
----|"redyou" 17
----|"riftdispel" 17
----|"right"
----|"rollincoming" 17
----|"runaway" 2
----|"runin" 2
----|"runintofire" 12
----|"runout" 2
----|"runoverflowers" 12
----|"runovermobs" 17
----|"runtoedge"
----|"safenow"
----|"scatter"
----|"scattersoon"
----|"screwup" 18
----|"securityguardcoming" 12
----|"seedyou" 15
----|"shadowrun"
----|"shadowyou" 15
----|"shareone"
----|"sharetwo"
----|"shieldcharge" 12
----|"shieldover"
----|"shockwave" 2
----|"shockyou" 18
----|"silencesoon"
----|"slagelementalcoming" 12
----|"soakbeam" 17
----|"soulcleave" 12
----|"south"
----|"southeast"
----|"southwest"
----|"sparktowater" 18
----|"spear"
----|"specialsoon"
----|"speedup"
----|"stackhigh" 6
----|"stepring"
----|"stilldanger" 2
----|"stompsoon"
----|"stompstart"
----|"stopatk" 2
----|"stopattack" 2
----|"stopcast" 2
----|"stopchargewithline" 17
----|"stopmove"
----|"stunsoon"
----|"sunderhigh"
----|"swapsoon"
----|"switchphase"
----|"takedamage"
----|"tankheal"
----|"targetchange"
----|"targetyou" 2
----|"tauntboss" 2
----|"telesoon" 5
----|"teleyou" 5
----|"thanks"
----|"throweyedebuff" 12
----|"throweyehealer" 12
----|"throweyetank" 12
----|"tosscoming" 12
----|"tossonyou" 12
----|"touchwhiteshrooms" 12
----|"toxic"
----|"trannow"
----|"transplague"
----|"transporter" 12
----|"turnaway"
----|"useextraaction"
----|"useitem"
----|"uu"
----|"watchfeet" 8
----|"watchimpale"
----|"watchorb"
----|"watchstep" 2
----|"watchwave" 2
----|"west"
----|"whirlwind"
----|"wroughtchaosyou" 12
----|"wwsoon"
----|"yellowyou" 17
----|"Thogar/A1"
----|"Thogar/A14"
----|"Thogar/A2"
----|"Thogar/A23"
----|"Thogar/A3"
----|"Thogar/A4"
----|"Thogar/AX"
----|"Thogar/B1"
----|"Thogar/B1E4"
----|"Thogar/B2"
----|"Thogar/B23"
----|"Thogar/B2A4"
----|"Thogar/B2D3"
----|"Thogar/B3"
----|"Thogar/B4"
----|"Thogar/BX"
----|"Thogar/C1"
----|"Thogar/C14"
----|"Thogar/C1D4"
----|"Thogar/C2"
----|"Thogar/C3"
----|"Thogar/C4"
----|"Thogar/CX"
----|"Thogar/D1"
----|"Thogar/D1C4"
----|"Thogar/D2"
----|"Thogar/D2B3"
----|"Thogar/D2C4"
----|"Thogar/D3"
----|"Thogar/D4"
----|"Thogar/DX"
----|"Thogar/E1"
----|"Thogar/E1A23"
----|"Thogar/E2"
----|"Thogar/E23"
----|"Thogar/E3"
----|"Thogar/E4"
----|"Thogar/F"
+---@enum (key) VPSound
+local VPSound = {
+	["1695gorak"] = 0,
+	["1695uktar"] = 0,
+	["1695ukurogg"] = 0,
+	["aesoon"] = 2,
+	["artillery"] = 12,
+	["attackblood"] = 12,
+	["attackbloodthirster"] = 12,
+	["attackcannon"] = 12,
+	["attackdeathcaller"] = 12,
+	["attackdoomfire"] = 12,
+	["attackfelblood"] = 12,
+	["attackflesheater"] = 12,
+	["attackhulkingterror"] = 12,
+	["attackmindfungus"] = 12,
+	["attackshield"] = 0,
+	["attacksporeshooter"] = 12,
+	["attacktank"] = 12,
+	["attacktotem"] = 0,
+	["attackturret"] = 12,
+	["attbomb"] = 0,
+	["attleft"] = 0,
+	["attmid"] = 0,
+	["attright"] = 0,
+	["backcenter"] = 0,
+	["backleft"] = 0,
+	["backright"] = 0,
+	["backtowhereyouwere"] = 12,
+	["backward"] = 0,
+	["bait"] = 0,
+	["banishment"] = 0,
+	["barrageonway"] = 12,
+	["behindboss"] = 0,
+	["behindmob"] = 0,
+	["bigmob"] = 0,
+	["bigmobsoon"] = 0,
+	["bitenow"] = 12,
+	["bloodfeast"] = 0,
+	["bluemushroomcoming"] = 12,
+	["blueyou"] = 17,
+	["bombnow"] = 0,
+	["bombrun"] = 0,
+	["bombsoon"] = 0,
+	["bombyou"] = 12,
+	["bossout"] = 0,
+	["bosstobeam"] = 0,
+	["boundingcleave"] = 12,
+	["breakchain"] = 12,
+	["breakcoral"] = 0,
+	["breaklos"] = 12,
+	["breaktormentfirst"] = 12,
+	["breaktormentsecond"] = 12,
+	["breaktormentthird"] = 12,
+	["breakvine"] = 14,
+	["breathsoon"] = 2,
+	["bringlighttomob"] = 12,
+	["bringlighttoshadow"] = 12,
+	["carefly"] = 2,
+	["catchballs"] = 12,
+	["center"] = 0,
+	["centerleft"] = 0,
+	["centerright"] = 0,
+	["chainboss"] = 13,
+	["changecolor"] = 14,
+	["changemoon"] = 0,
+	["changemt"] = 2,
+	["changetarget"] = 2,
+	["chargemove"] = 2,
+	["chargethroughbomb"] = 18,
+	["checkhp"] = 0,
+	["cleave"] = 12,
+	["cntnuemove"] = 0,
+	["coinyou"] = 18,
+	["com_go"] = 0,
+	["crowdcontrol"] = 3,
+	["crusher"] = 12,
+	["debuffyou"] = 17,
+	["defensive"] = 0,
+	["demolisher"] = 12,
+	["di"] = 0,
+	["didi"] = 0,
+	["dispelboss"] = 0,
+	["dispelnow"] = 0,
+	["dontmove"] = 0,
+	["doubleat"] = 0,
+	["dpshard"] = 16,
+	["dpsmore"] = 16,
+	["dpsslow"] = 16,
+	["dpsstop"] = 16,
+	["dragonnow"] = 0,
+	["droptorch"] = 18,
+	["dshigh"] = 0,
+	["east"] = 0,
+	["end"] = 0,
+	["energyhigh"] = 0,
+	["enfeeblingroar"] = 12,
+	["engineercoming"] = 12,
+	["enrage"] = 0,
+	["enteringcombat"] = 17,
+	["failed"] = 0,
+	["farfromline"] = 0,
+	["fearsoon"] = 0,
+	["felinfusion"] = 0,
+	["findclearvent"] = 17,
+	["findcrab"] = 12,
+	["finddragon"] = 12,
+	["findflamejet"] = 12,
+	["findhunter"] = 12,
+	["findmc"] = 0,
+	["findshadow"] = 0,
+	["findshelter"] = 0,
+	["findshield"] = 0,
+	["findwolf"] = 12,
+	["firecallercoming"] = 12,
+	["firecircle"] = 0,
+	["firerun"] = 0,
+	["firewall"] = 0,
+	["flamebelcher"] = 12,
+	["flamejet"] = 12,
+	["flameyou"] = 15,
+	["focusedchaosyou"] = 12,
+	["forcenovacoming"] = 12,
+	["frenzy"] = 0,
+	["frontal"] = 15,
+	["frontcenter"] = 0,
+	["frontleft"] = 0,
+	["frontright"] = 0,
+	["frost"] = 0,
+	["gather"] = 0,
+	["gatheritem"] = 0,
+	["gathershare"] = 0,
+	["getboned"] = 0,
+	["getinyellowrunes"] = 12,
+	["getknockedup"] = 15,
+	["getupwind"] = 14,
+	["ghostsoon"] = 0,
+	["giftofearth"] = 12,
+	["greenmushroomcoming"] = 12,
+	["greenyou"] = 17,
+	["group1"] = 0,
+	["group2"] = 0,
+	["group3"] = 0,
+	["group4"] = 0,
+	["group5"] = 0,
+	["harmonic"] = 12,
+	["healall"] = 0,
+	["healfull"] = 0,
+	["helpdispel"] = 0,
+	["helpkick"] = 0,
+	["helpme"] = 0,
+	["helpme2"] = 0,
+	["helpsoak"] = 0,
+	["helpspirit"] = 14,
+	["holdit"] = 0,
+	["iceorbmove"] = 12,
+	["incomingdebuff"] = 15,
+	["inhalegetinpuddle"] = 12,
+	["inktoshark"] = 0,
+	["interruptbyeye"] = 12,
+	["interruptingshout"] = 12,
+	["interruptsoon"] = 0,
+	["jumpinpit"] = 0,
+	["jumpnow"] = 0,
+	["justrun"] = 0,
+	["keepjump"] = 0,
+	["keepmove"] = 0,
+	["kick1r"] = 0,
+	["kick2r"] = 0,
+	["kick3r"] = 0,
+	["kick4r"] = 0,
+	["kick5r"] = 0,
+	["kickcast"] = 0,
+	["killbigmob"] = 0,
+	["killmine"] = 0,
+	["killmob"] = 0,
+	["killspirit"] = 0,
+	["laserrun"] = 0,
+	["leavecenter"] = 0,
+	["leavemind"] = 0,
+	["leavingcombat"] = 17,
+	["left"] = 0,
+	["lightinfusion"] = 0,
+	["lightstorm"] = 0,
+	["lineapart"] = 0,
+	["linegather"] = 0,
+	["linesoon"] = 0,
+	["lineyou"] = 17,
+	["lowsanity"] = 0,
+	["markedfordeath"] = 12,
+	["mblue"] = 0,
+	["melodic"] = 12,
+	["meteorrun"] = 12,
+	["mgreen"] = 0,
+	["mm1"] = 0,
+	["mm2"] = 0,
+	["mm3"] = 0,
+	["mm4"] = 0,
+	["mm5"] = 0,
+	["mm6"] = 0,
+	["mm7"] = 0,
+	["mm8"] = 0,
+	["mobenough"] = 0,
+	["mobkill"] = 0,
+	["mobout"] = 0,
+	["mobsoon"] = 0,
+	["morange"] = 0,
+	["moveboss"] = 0,
+	["movecenter"] = 0,
+	["moveleft"] = 0,
+	["movemelee"] = 12,
+	["moveright"] = 0,
+	["movesoon"] = 0,
+	["movetimebubble"] = 0,
+	["movetoboss"] = 14,
+	["movetoegg"] = 17,
+	["movetojelly"] = 0,
+	["movetomobs"] = 14,
+	["movetopillar"] = 13,
+	["movetopool"] = 15,
+	["movetostatue"] = 17,
+	["movetotank"] = 0,
+	["movetoweb"] = 17,
+	["movetoflamethrower"] = 17,
+	["movetotendrils"] = 17,
+	["mpurple"] = 0,
+	["myellow"] = 0,
+	["negative"] = 13,
+	["newmatrix"] = 0,
+	["newportal"] = 0,
+	["north"] = 0,
+	["northeast"] = 0,
+	["northwest"] = 0,
+	["orangeyou"] = 17,
+	["orbrun"] = 0,
+	["otherin"] = 0,
+	["otherout"] = 0,
+	["paranoiayou"] = 17,
+	["pfive"] = 0,
+	["pfour"] = 0,
+	["phasechange"] = 0,
+	["polarityshift"] = 0,
+	["pone"] = 12,
+	["poolyou"] = 18,
+	["positive"] = 13,
+	["pthree"] = 0,
+	["ptran"] = 0,
+	["ptwo"] = 0,
+	["pullin"] = 12,
+	["pulverize"] = 12,
+	["purpleyou"] = 17,
+	["pushbackincoming"] = 13,
+	["quake"] = 12,
+	["rageyou"] = 17,
+	["range5"] = 0,
+	["readyrescue"] = 0,
+	["redyou"] = 17,
+	["riftdispel"] = 17,
+	["right"] = 0,
+	["rollincoming"] = 17,
+	["runaway"] = 2,
+	["runin"] = 2,
+	["runintofire"] = 12,
+	["runout"] = 2,
+	["runoverflowers"] = 12,
+	["runovermobs"] = 17,
+	["runtoedge"] = 0,
+	["safenow"] = 0,
+	["scatter"] = 0,
+	["scattersoon"] = 0,
+	["screwup"] = 18,
+	["securityguardcoming"] = 12,
+	["seedyou"] = 15,
+	["shadowrun"] = 0,
+	["shadowyou"] = 15,
+	["shareone"] = 0,
+	["sharetwo"] = 0,
+	["shieldcharge"] = 12,
+	["shieldover"] = 0,
+	["shockwave"] = 2,
+	["shockyou"] = 18,
+	["silencesoon"] = 0,
+	["slagelementalcoming"] = 12,
+	["soakbeam"] = 17,
+	["soulcleave"] = 12,
+	["south"] = 0,
+	["southeast"] = 0,
+	["southwest"] = 0,
+	["sparktowater"] = 18,
+	["spear"] = 0,
+	["specialsoon"] = 0,
+	["speedup"] = 0,
+	["stackhigh"] = 6,
+	["stepring"] = 0,
+	["stilldanger"] = 2,
+	["stompsoon"] = 0,
+	["stompstart"] = 0,
+	["stopatk"] = 2,
+	["stopattack"] = 2,
+	["stopcast"] = 2,
+	["stopchargewithline"] = 17,
+	["stopmove"] = 0,
+	["stunsoon"] = 0,
+	["sunderhigh"] = 0,
+	["swapsoon"] = 0,
+	["switchphase"] = 0,
+	["takedamage"] = 0,
+	["tankheal"] = 0,
+	["targetchange"] = 0,
+	["targetyou"] = 2,
+	["tauntboss"] = 2,
+	["telesoon"] = 5,
+	["teleyou"] = 5,
+	["thanks"] = 0,
+	["throweyedebuff"] = 12,
+	["throweyehealer"] = 12,
+	["throweyetank"] = 12,
+	["tosscoming"] = 12,
+	["tossonyou"] = 12,
+	["touchwhiteshrooms	"] = 12,
+	["toxic"] = 0,
+	["trannow"] = 0,
+	["transplague"] = 0,
+	["transporter	"] = 12,
+	["turnaway"] = 0,
+	["useextraaction"] = 0,
+	["useitem"] = 0,
+	["uu"] = 0,
+	["watchfeet"] = 8,
+	["watchimpale"] = 0,
+	["watchorb"] = 0,
+	["watchstep"] = 2,
+	["watchwave"] = 2,
+	["west"] = 0,
+	["whirlwind"] = 0,
+	["wroughtchaosyou"] = 12,
+	["wwsoon"] = 0,
+	["yellowyou"] = 17,
+	["Thogar/A1"] = 0,
+	["Thogar/A14"] = 0,
+	["Thogar/A2"] = 0,
+	["Thogar/A23"] = 0,
+	["Thogar/A3"] = 0,
+	["Thogar/A4"] = 0,
+	["Thogar/AX"] = 0,
+	["Thogar/B1"] = 0,
+	["Thogar/B1E4"] = 0,
+	["Thogar/B2"] = 0,
+	["Thogar/B23"] = 0,
+	["Thogar/B2A4"] = 0,
+	["Thogar/B2D3"] = 0,
+	["Thogar/B3"] = 0,
+	["Thogar/B4"] = 0,
+	["Thogar/BX"] = 0,
+	["Thogar/C1"] = 0,
+	["Thogar/C14"] = 0,
+	["Thogar/C1D4"] = 0,
+	["Thogar/C2"] = 0,
+	["Thogar/C3"] = 0,
+	["Thogar/C4"] = 0,
+	["Thogar/CX"] = 0,
+	["Thogar/D1"] = 0,
+	["Thogar/D1C4"] = 0,
+	["Thogar/D2"] = 0,
+	["Thogar/D2B3"] = 0,
+	["Thogar/D2C4"] = 0,
+	["Thogar/D3"] = 0,
+	["Thogar/D4"] = 0,
+	["Thogar/DX"] = 0,
+	["Thogar/E1"] = 0,
+	["Thogar/E1A23"] = 0,
+	["Thogar/E2"] = 0,
+	["Thogar/E23"] = 0,
+	["Thogar/E3"] = 0,
+	["Thogar/E4"] = 0,
+	["Thogar/F"] = 0,
+}
