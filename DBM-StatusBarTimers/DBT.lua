@@ -1192,6 +1192,7 @@ function barPrototype:ApplyStyle()
 	end
 	local r, g, b = bar:GetStatusBarColor()
 	bar:SetStatusBarColor(r, g, b, 1)
+	bar:SetStatusBarTexture(barOptions.Texture)
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
