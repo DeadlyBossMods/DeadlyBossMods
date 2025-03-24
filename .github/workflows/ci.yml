@@ -16,12 +16,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: ./workspace
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
           args: "--no-color -q"
+          path:  ${{ github.workspace }}/workspace
 
       - name: LuaLS globals check
         uses: DeadlyBossMods/LuaLS-config@main
