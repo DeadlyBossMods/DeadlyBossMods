@@ -3987,7 +3987,7 @@ do
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
-				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET_UNFILTERED")
+				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET player")
 				targetEventsRegistered = true
 			end
 		else
@@ -4288,7 +4288,7 @@ do
 		loadModByUnit(uId)
 	end
 
-	function DBM:UNIT_TARGET_UNFILTERED(uId)
+	function DBM:UNIT_TARGET(uId)
 		loadModByUnit(uId .. "target")
 	end
 end

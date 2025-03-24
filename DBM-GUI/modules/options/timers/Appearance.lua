@@ -273,6 +273,12 @@ varcolor1.myheight = 0
 
 varcolor1:SetColorRGB(DBT.Options.VarColorR, DBT.Options.VarColorG, DBT.Options.VarColorB)
 
+local VarianceTextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "VarianceTexture", function(value)
+	DBT:SetOption("VarianceTexture", value)
+end)
+VarianceTextureDropDown:SetPoint("TOPLEFT", varcolor1, "BOTTOMLEFT", 0, isNewDropdown and -35 or -30)
+VarianceTextureDropDown.myheight = 0
+
 local VarianceAlphaSlider = BarSetupVariance:CreateSlider(L.VarianceTransparency, 0, 1, 0.1, 150)
 VarianceAlphaSlider:SetPoint("TOPLEFT", VarianceEnableCheckbox, "BOTTOMLEFT", 5, -15)
 VarianceAlphaSlider:SetValue(DBT.Options.VarianceAlpha)

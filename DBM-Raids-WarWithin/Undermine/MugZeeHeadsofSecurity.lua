@@ -101,8 +101,8 @@ local specWarnSurgingArc							= mod:NewSpecialWarningYou(1214991, nil, nil, nil
 local yellSurgingArc								= mod:NewYell(1214991, nil, false, 2)
 local specWarnDoubleWhammy							= mod:NewSpecialWarningDefensive(469491, nil, nil, nil, 1, 2)
 local specWarnDoubleWhammyVictim					= mod:NewSpecialWarningYou(469491, nil, nil, nil, 1, 17)
-local yellDoubleWhammy								= mod:NewYell(469491)
-local yellDoubleWhammyFades							= mod:NewShortFadesYell(469491)
+local yellDoubleWhammy								= mod:NewYell(469491, DBM_COMMON_L.TANK.." "..DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
+local yellDoubleWhammyFades							= mod:NewShortFadesYell(469491, nil, nil, nil, "YELL")
 local specWarnDoubleWhammyTaunt						= mod:NewSpecialWarningTaunt(469391, nil, nil, nil, 1, 2)--Perforating wound is debuff name
 
 local timerUnstableCrawlerMinesCD					= mod:NewCDCountTimer(44.0, 466539, nil, nil, nil, 1)

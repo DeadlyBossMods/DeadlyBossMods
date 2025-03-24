@@ -322,7 +322,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 466860 then
 		timerBleedingEdge:Start(self:IsEasy() and 10 or 20)
 		--Start reset timers here instead?
-		timerWireTransferCD:Start(20, 1)--Starte here because it's used instantly on stage end
+		timerWireTransferCD:Start(self:IsEasy() and 12 or 20, 1)--Starte here because it's used instantly on stage end
 	end
 end
 
