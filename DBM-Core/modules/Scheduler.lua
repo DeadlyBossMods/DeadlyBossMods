@@ -188,7 +188,7 @@ local function onUpdate(self, elapsed)
 		-- we now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
 		-- note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
 		local k, v = next(private.modSyncSpam, nil)
-		if v and (time - v > 8) then
+		if k and v and (time - v > 8) then
 			private.modSyncSpam[k] = nil
 		end
 	end
