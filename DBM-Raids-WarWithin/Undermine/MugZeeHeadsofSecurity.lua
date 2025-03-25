@@ -304,7 +304,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnElectrocutionMatrix:Play("watchstep")
 	elseif spellId == 1215953 then
 		self.vb.chargeCount = self.vb.chargeCount + 1
-		timerStaticChargeCD:Start(nil, self.vb.chargeCount+1)
+		if self.vb.chargeCount < 3 then
+			timerStaticChargeCD:Start(nil, self.vb.chargeCount+1)
+		end
 		if self:GetStage(2.5, 1) then
 			self:SetStage(2.5)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
