@@ -14,7 +14,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1216142 474461 472659 472782 470910 466470 466509 1221302 466518 472458 466545 1221299 469491 1217791 1215953 1216142 1215481 1223085 463967",--1214991
+	"SPELL_CAST_START 1216142 474461 472659 472782 470910 466470 466509 1221302 466518 472458 466545 1221299 469491 1217791 1215953 1216142 1215481 463967",--1214991
 	"SPELL_CAST_SUCCESS 467380 468728 468794 467379",
 	"SPELL_AURA_APPLIED 472631 466476 467202 467225 467380 469369 1215591 1222948 469490 469601 1215898 471419",--1222408
 	"SPELL_AURA_APPLIED_DOSE 466385 1219283",--469391
@@ -22,8 +22,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 474554 470089 472057",
 	"SPELL_PERIODIC_MISSED 474554 470089 472057",
 	"RAID_BOSS_WHISPER",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, auto mark crawlers with https://www.wowhead.com/ptr-2/spell=466539/unstable-crawler-mines
@@ -99,7 +99,7 @@ local yellSprayandPray								= mod:NewYell(466545)
 local yellSprayandPrayFades							= mod:NewShortFadesYell(466545)
 --local specWarnSurgingArc							= mod:NewSpecialWarningYou(1214991, nil, nil, nil, 1, 2)
 --local yellSurgingArc								= mod:NewYell(1214991, nil, false, 2)
-local specWarnDoubleWhammy							= mod:NewSpecialWarningDefensive(469491, nil, nil, nil, 1, 2)
+local specWarnDoubleWhammy							= mod:NewSpecialWarningSoak(469491, nil, nil, nil, 1, 2)
 local specWarnDoubleWhammyVictim					= mod:NewSpecialWarningYou(469491, nil, nil, nil, 1, 17)
 local yellDoubleWhammy								= mod:NewYell(469491, DBM_COMMON_L.TANK.." "..DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellDoubleWhammyFades							= mod:NewShortFadesYell(469491, nil, nil, nil, "YELL")
@@ -294,13 +294,8 @@ function mod:SPELL_CAST_START(args)
 --	elseif spellId == 1214991 then
 		--timerSurgingArcCD:Start(nil, args.sourceGUID)
 		--self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ArcTarget", 0.1, 8)
-	elseif spellId == 469491 or spellId == 1223085 then--Early PTR, late PTR/Live
-		self.vb.whammyCount = self.vb.whammyCount + 1
-		if self:IsTank() then
-			specWarnDoubleWhammy:Show()
-			specWarnDoubleWhammy:Play("helpsoak")
-			specWarnDoubleWhammy:ScheduleVoice(1, "defensive")
-		end
+--	elseif spellId == 469491 or spellId == 1223085 then--Early PTR, late PTR/Live
+--		self.vb.whammyCount = self.vb.whammyCount + 1
 	elseif spellId == 1217791 then
 		specWarnElectrocutionMatrix:Show()
 		specWarnElectrocutionMatrix:Play("watchstep")
@@ -353,7 +348,7 @@ function mod:SPELL_CAST_START(args)
 		timerElectroShockerCD:Start(47.5, 1)--Only place it has timer, otherwise they just spawn when mug loses control
 		timerMoltenGoldKnucklesCD:Start(50, 1)
 		timerStormfuryFingerGunCD:Start(62.4, 1)
-		timerDoubleWhammyCD:Start(self:IsMythic() and 74.7 or 75.3, 1)
+		timerDoubleWhammyCD:Start(self:IsMythic() and 71.2 or 71.8, 1)
 		timerSprayandPrayCD:Start(81.2, 1)
 		timerDoubleMindedFuryCD:Start(118)
 	end
@@ -387,15 +382,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerUnstableCrawlerMinesCD:Start(13.9, self.vb.crawlerMinesCount+1)
 		if self:IsMythic() then
 			timerGoblinGuidedRocketCD:Start(29.8, self.vb.goblinGuidedRocketCount+1)--SUCCESS
-			timerDoubleWhammyCD:Start(42.4, self.vb.whammyCount+1)
+			timerDoubleWhammyCD:Start(38.9, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(50, self.vb.sprayPrayCount+1)
 		elseif self:IsHeroic() then
 			timerGoblinGuidedRocketCD:Start(32.6, self.vb.goblinGuidedRocketCount+1)--SUCCESS
-			timerDoubleWhammyCD:Start(46.3, self.vb.whammyCount+1)
+			timerDoubleWhammyCD:Start(42.8, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(55, self.vb.sprayPrayCount+1)
 		else
 			timerGoblinGuidedRocketCD:Start(35, self.vb.goblinGuidedRocketCount+1)--SUCCESS
-			timerDoubleWhammyCD:Start(50, self.vb.whammyCount+1)
+			timerDoubleWhammyCD:Start(46.5, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(60, self.vb.sprayPrayCount+1)
 		end
 	end
@@ -502,7 +497,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	--	end
 	elseif spellId == 469601 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) and not DBM:UnitDebuff("player", spellId) then--Fine tune
+		if self:IsTanking(uId) and not DBM:UnitDebuff("player", spellId) then
 			specWarnDoubleWhammyTaunt:Show(args.destName)
 			specWarnDoubleWhammyTaunt:Play("tauntboss")
 		end
@@ -615,10 +610,13 @@ function mod:OnTranscriptorSync(msg, targetName)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 1214623 then--1214630
-		warnEnraged:Show(UnitName(uId))
+	if spellId == 469490 then
+		self.vb.whammyCount = self.vb.whammyCount + 1
+		if self:IsTanking("player", uId, nil, true) then
+			specWarnDoubleWhammy:Show()
+			specWarnDoubleWhammy:Play("helpsoak")
+			specWarnDoubleWhammy:ScheduleVoice(2.5, "defensive")
+		end
 	end
 end
---]]
