@@ -86,7 +86,7 @@ local timerWitheringFlamesCD					= mod:NewCDNPTimer(18.2, 471927, nil, nil, nil,
 mod:AddNamePlateOption("NPAuraOnDLC", 460973, true)
 --Boss
 mod:AddTimerLine(DBM_COMMON_L.BOSS)
-local warnCrushed								= mod:NewTargetNoFilterAnnounce(460430, 4)
+local warnCrushed								= mod:NewTargetNoFilterAnnounce(460430, 4, nil, false, 2)
 local warnFoulExhaust							= mod:NewCountAnnounce(469993, 2)
 local warnHighRoller							= mod:NewYouAnnounce(460444, 1)
 
@@ -142,8 +142,8 @@ function mod:OnCombatStart(delay)
 		timerSpintoWinCD:Start(string.format("v%s-%s", 14.8-delay, 16.7-delay), 1)
 		timerTheBigHitCD:Start(string.format("v%s-%s", 18.1-delay, 20.6-delay), 1)
 	else
-		timerTheBigHitCD:Start(string.format("v%s-%s", 13.8-delay, 15.6-delay), 1)
-		timerSpintoWinCD:Start(string.format("v%s-%s", 18.0-delay, 20.6-delay), 1)
+		timerTheBigHitCD:Start(string.format("v%s-%s", 10.8-delay, 15.6-delay), 1)
+		timerSpintoWinCD:Start(string.format("v%s-%s", 17.3-delay, 20.6-delay), 1)
 	end
 	self:EnablePrivateAuraSound(465325, "lineyou", 17)
 	if self.Options.NPAuraOnGaze or self.Options.NPAuraOnDLC then
@@ -168,7 +168,7 @@ function mod:SPELL_CAST_START(args)
 		elseif self:IsHeroic() then
 			timerSpintoWinCD:Start("v60.9-63.4", self.vb.spinCount+1)
 		else
-			timerSpintoWinCD:Start("v80.4-86.7", self.vb.spinCount+1)
+			timerSpintoWinCD:Start("v78.6-86.7", self.vb.spinCount+1)
 		end
 		--Stop other timers?
 		--timerPaylineCD:Stop()
@@ -234,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 		timerFoulExhaustCD:Start(10.6, self.vb.foulExhaustCount+1)
 		timerTheBigHitCD:Start(16.6, self.vb.bigHitCount+1)
 	elseif spellId == 472178 then
-		if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
+		if self:AntiSpam(8, 1) then
 			specWarnBurningBlast:Show()
 			specWarnBurningBlast:Play("watchstep")
 		end
@@ -269,7 +269,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnPayline:Play("specialsoon")
 		--Heroic sees massive variation
 		if self:IsHard() and self:GetStage(1) then
-			timerPaylineCD:Start(self:IsMythic() and 26.7 or "v32.9-42.8", self.vb.paylineCount+1)
+			timerPaylineCD:Start(self:IsMythic() and 26.7 or "v31.6-42.8", self.vb.paylineCount+1)
 		end
 	elseif spellId == 469993 then
 		self.vb.foulExhaustCount = self.vb.foulExhaustCount + 1
