@@ -234,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 		timerFoulExhaustCD:Start(10.6, self.vb.foulExhaustCount+1)
 		timerTheBigHitCD:Start(16.6, self.vb.bigHitCount+1)
 	elseif spellId == 472178 then
-		if self:CheckBossDistance(args.sourceGUID, false, 6450, 18) then
+		if self:AntiSpam(8, 1) then
 			specWarnBurningBlast:Show()
 			specWarnBurningBlast:Play("watchstep")
 		end
