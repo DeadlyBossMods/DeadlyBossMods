@@ -788,7 +788,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 1226891 then--Circuit Reboot Applied
+	elseif spellId == 1226891 and self:AntiSpam(2.5, 1) then--Circuit Reboot Applied
 		self:SetStage(0.5)--Increment stage by 0.5
 		self.vb.mayhemRocketsCount = 0
 		--Stop all timers
@@ -885,7 +885,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckSubCount+1)
 			end
 		end
-	elseif spellId == 1226891 and self:IsInCombat() then--Circuit Reboot Removed
+	elseif spellId == 1226891 and self:IsInCombat() and self:AntiSpam(2.5, 2) then--Circuit Reboot Removed
 		self:SetStage(0.5)--Increment stage by 0.5
 		--Reset Counts
 		self.vb.canisterCount = 0
@@ -928,7 +928,7 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if args.extraSpellId == 466834 then
 		timerShockBarrageCast:Stop(args.destGUID)
-	elseif args.extraSpellId == 1214369 then
+	elseif args.extraSpellId == 1214369 and self:AntiSpam(5, 3) then
 		timerTotalDestruction:Stop()
 		if self:IsMythic() then
 			self:SetStage(1)
@@ -967,7 +967,7 @@ function mod:SPELL_INTERRUPT(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 1215209 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 1215209 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
