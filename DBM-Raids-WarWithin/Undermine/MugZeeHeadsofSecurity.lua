@@ -356,9 +356,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 467380 or spellId == 467379 then
-		self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
-	elseif spellId == 468728 then--Mug Taking Charge
+	if spellId == 468728 then--Mug Taking Charge
 		self:SetStage(1)--Match BW odd behavior
 		warnHHMug:Show()
 		timerEarthshakerGaolCD:Start(17.4, self.vb.gaolCount+1)
@@ -393,6 +391,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDoubleWhammyCD:Start(46.5, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(60, self.vb.sprayPrayCount+1)
 		end
+	--elseif spellId == 467380 or spellId == 467379 then
+	--	self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
 	end
 end
 
@@ -460,6 +460,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 467225 then
 		warnSolidGold:Show(args.destName)
 	elseif spellId == 467380 then
+		self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
 		if args:IsPlayer() then
 			specWarnGoblinGuidedRocket:Show(DBM_COMMON_L.ALLIES)
 			specWarnGoblinGuidedRocket:Play("gathershare")
