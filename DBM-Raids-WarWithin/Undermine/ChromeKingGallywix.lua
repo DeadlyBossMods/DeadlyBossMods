@@ -467,7 +467,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self:IsStory() then return end--hard disable timers in story mode
 		local timer
-		if self:GetStage(1) or self:IsMythic() then--No coils yet or is mythic
+		if self:GetStage(1) then--No coils yet, NOT used on mythic
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.canistersSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.canistersSubCount+1]
 		else
@@ -489,8 +489,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.suppressionSubCount = self.vb.suppressionSubCount + 1
 		specWarnSupression:Show(self.vb.suppressionCount)
 		specWarnSupression:Play("watchstep")
-		timerFinalBlast:Start(6, self.vb.suppressionCount)
 		if self:IsStory() then return end--hard disable timers in story mode
+		timerFinalBlast:Start(6, self.vb.suppressionCount)
 		local timer
 		if self:GetStage(1) or self:IsMythic() then--No coils yet or is mythic
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
@@ -788,7 +788,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 1226891 then--Circuit Reboot Applied
+	elseif spellId == 1226891 and self:AntiSpam(2.5, 1) then--Circuit Reboot Applied
 		self:SetStage(0.5)--Increment stage by 0.5
 		self.vb.mayhemRocketsCount = 0
 		--Stop all timers
@@ -885,7 +885,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckSubCount+1)
 			end
 		end
-	elseif spellId == 1226891 and self:IsInCombat() then--Circuit Reboot Removed
+	elseif spellId == 1226891 and self:IsInCombat() and self:AntiSpam(2.5, 2) then--Circuit Reboot Removed
 		self:SetStage(0.5)--Increment stage by 0.5
 		--Reset Counts
 		self.vb.canisterCount = 0
@@ -928,10 +928,10 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if args.extraSpellId == 466834 then
 		timerShockBarrageCast:Stop(args.destGUID)
-	elseif args.extraSpellId == 1214369 then
+	elseif args.extraSpellId == 1214369 and self:AntiSpam(5, 3) then
 		timerTotalDestruction:Stop()
 		if self:IsMythic() then
-			self:SetStage(1)
+			self:SetStage(0.5)--Stage should be 0.5 at this point, but this also future proofs race condition when overgearing where you might push boss to stage 2 at same time
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
 			warnPhase:Play("pone")
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][1][469286][1], 1)
@@ -967,7 +967,7 @@ function mod:SPELL_INTERRUPT(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 1215209 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 1215209 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

@@ -16,8 +16,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1216142 474461 472659 472782 470910 466470 466509 1221302 466518 472458 466545 1221299 469491 1217791 1215953 1216142 1215481 463967",--1214991
 	"SPELL_CAST_SUCCESS 467380 468728 468794 467379",
-	"SPELL_AURA_APPLIED 472631 466476 467202 467225 467380 469369 1215591 1222948 469490 469601 1215898 471419",--1222408
-	"SPELL_AURA_APPLIED_DOSE 466385 1219283",--469391
+	"SPELL_AURA_APPLIED 472631 466476 467202 467225 467380 469369 1215591 1222948 469490 469601 1215898 471419 1219283",--1222408
+	"SPELL_AURA_APPLIED_DOSE 466385",--469391
 	"SPELL_AURA_REMOVED 466459 466460 467202 467380 469369 1222948 469490 1215898 472631",
 	"SPELL_PERIODIC_DAMAGE 474554 470089 472057",
 	"SPELL_PERIODIC_MISSED 474554 470089 472057",
@@ -356,9 +356,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 467380 or spellId == 467379 then
-		self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
-	elseif spellId == 468728 then--Mug Taking Charge
+	if spellId == 468728 then--Mug Taking Charge
 		self:SetStage(1)--Match BW odd behavior
 		warnHHMug:Show()
 		timerEarthshakerGaolCD:Start(17.4, self.vb.gaolCount+1)
@@ -393,6 +391,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDoubleWhammyCD:Start(46.5, self.vb.whammyCount+1)
 			timerSprayandPrayCD:Start(60, self.vb.sprayPrayCount+1)
 		end
+	--elseif spellId == 467380 or spellId == 467379 then
+	--	self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
 	end
 end
 
@@ -460,6 +460,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 467225 then
 		warnSolidGold:Show(args.destName)
 	elseif spellId == 467380 then
+		self.vb.goblinGuidedRocketCount = self.vb.goblinGuidedRocketCount + 1
 		if args:IsPlayer() then
 			specWarnGoblinGuidedRocket:Show(DBM_COMMON_L.ALLIES)
 			specWarnGoblinGuidedRocket:Play("gathershare")
