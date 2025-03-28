@@ -124,7 +124,9 @@ function mod:OnCombatStart(delay)
 		timerIncineratorCD:Start(10-delay, 1)
 		timerDemolishCD:Start(16-delay, 1)
 		timerElectroSortingCD:Start(20.0-delay, 1)
-		timerMeltdownCD:Start(40-delay, 1)
+		if not self:IsLFR() then
+			timerMeltdownCD:Start(40-delay, 1)
+		end
 		timerOverDriveCD:Start(100-delay)
 	end
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
