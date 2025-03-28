@@ -828,8 +828,41 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then--Armageddon-class Plating
 			DBM.InfoFrame:Hide()
 		end
---	elseif spellId == 1214369 then
-
+	elseif spellId == 1214369 and self:AntiSpam(5, 3) then--Backup stage 3/1 mythic trigger
+		timerTotalDestruction:Stop()
+		if self:IsMythic() then
+			self:SetStage(0.5)--Stage should be 0.5 at this point, but this also future proofs race condition when overgearing where you might push boss to stage 2 at same time
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
+			warnPhase:Play("pone")
+			timerGigaCoilsCD:Start(allTimers[savedDifficulty][1][469286][1], 1)
+			timerGigaBlastCD:Start(allTimers[savedDifficulty][1][469327][1], 1)
+			timerCombinationCanistersCD:Start(allTimers[savedDifficulty][1][1217987][1], 1)
+			timerBBBBlastCD:Start(allTimers[savedDifficulty][1][1214607][1], 1)
+			timerSuppressionCD:Start(allTimers[savedDifficulty][1][467182][1], 1)
+			timerEgoCheckCD:Start(allTimers[savedDifficulty][1][466958][1], 1)
+			timerVentingHeatCD:Start(allTimers[savedDifficulty][1][466751][1], 1)
+			timerPhaseTransition:Start(208.7, 1.5)
+		else
+			self:SetStage(3)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			--Reset Counts
+			self.vb.canisterCount = 0
+			self.vb.bombsCount = 0
+			self.vb.suppressionCount = 0
+			self.vb.coilsCount = 0
+			self.vb.heatCount = 0
+			self.vb.gigaBlastCount = 0
+			--Stage 3 timers
+			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], 1)
+			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][0][1], 1)
+			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
+			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
+			if self:IsHard() then
+				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][0][1], 1)
+			end
+		end
 	elseif spellId == 466165 then
 		timer1500PoundDudCast:Stop(args.destGUID)
 	elseif spellId == 466246 then
