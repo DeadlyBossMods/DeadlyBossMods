@@ -148,6 +148,16 @@ local allTimers = {
 		--Pyro Party Pack
 		[1214872] = {20.0, 34.0, 30.0},
 	},
+	["lfr"] = {
+		--Wire Transfer
+		[1218418] = {2.0, 46.0, 53.0},
+		--Screw Up
+		[1216508] = {0},--not used in LFR
+		--Sonic Boom
+		[465232] = {8.0, 33.0, 35.0, 35.0},
+		--Pyro Party Pack
+		[1214872] = {20.0, 34.0, 30.0},
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -166,8 +176,10 @@ function mod:OnCombatStart(delay)
 		timerPolarizationGeneratorCD:Start(4-delay)
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else
+	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+	else
+		savedDifficulty = "lfr"
 	end
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 --	timerWireTransferCD:Start(1-delay)--Used instantly on pull
@@ -179,7 +191,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1]-delay, 1)
 	timerActivateInventionsCD:Start(30-delay, 1)
-	timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1]-delay, 1)
+	if not self:IsLFR() then
+		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1]-delay, 1)
+	end
 	timerBetaLaunchCD:Start(120-delay, 1)
 end
 
@@ -193,8 +207,10 @@ function mod:OnTimerRecovery()
 		end
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else
+	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+	else
+		savedDifficulty = "lfr"
 	end
 end
 
@@ -268,7 +284,9 @@ function mod:SPELL_CAST_START(args)
 			end
 			timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1] - 2, 1)
 			timerActivateInventionsCD:Start(30, 1)
-			timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1] - 2, 1)
+			if not self:IsLFR() then
+				timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1] - 2, 1)
+			end
 			if self.vb.betaCount == 2 then
 				timerGigaDeathCD:Start(120)
 			else
@@ -443,7 +461,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerPyroPartyPackCD:Start(allTimers[savedDifficulty][1214872][1], 1)
 		timerActivateInventionsCD:Start(30, 1)
-		timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
+		if not self:IsLFR() then
+			timerScrewUpCD:Start(allTimers[savedDifficulty][1216508][1], 1)
+		end
 
 		if self.vb.betaCount == 2 then
 			timerGigaDeathCD:Start(120)
