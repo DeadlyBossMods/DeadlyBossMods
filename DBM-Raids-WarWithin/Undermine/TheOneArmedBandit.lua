@@ -199,11 +199,11 @@ function mod:SPELL_CAST_START(args)
 				timerPaylineCD:Start(16.4, self.vb.paylineCount+1)
 				timerTheBigHitCD:Start("v22.7-23.1", self.vb.bigHitCount+1)
 				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
-			elseif self:IsHeroic() then--Heroic swaps payline and bighit compared to normal
+			elseif self:IsHeroic() or self:IsLFR() then--Heroic/LFR swaps payline and bighit compared to normal
 				timerPaylineCD:Start("v11.1-11.8", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v16.0-16.7", self.vb.foulExhaustCount+1)
-				timerTheBigHitCD:Start("v22.1-22.8", self.vb.bigHitCount+1)
-			else--Normal and LFR
+				timerTheBigHitCD:Start("v22.1-23", self.vb.bigHitCount+1)
+			else
 				timerTheBigHitCD:Start("v11.9-13.1", self.vb.bigHitCount+1)
 				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
 				timerPaylineCD:Start("v24-25.2", self.vb.paylineCount+1)
@@ -213,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 				timerPaylineCD:Start(5, self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v9.5-9.9", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v16.0-16.7", self.vb.bigHitCount+1)
-			elseif self:IsHeroic() then
+			elseif self:IsHeroic() or self:IsLFR() then
 				timerPaylineCD:Start("v5.9-7", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v10.7-11.8", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v16.8-18", self.vb.bigHitCount+1)
@@ -304,7 +304,7 @@ function mod:SPELL_CAST_START(args)
 		timerFoulExhaustCD:Start("v4.1-4.6", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start("v10.2-10.7", self.vb.paylineCount+1)
 		timerTheBigHitCD:Start("v15.1-15.6", self.vb.bigHitCount+1)
-		timerHotHotHotCD:Start(self:IsEasy() and 29.9 or "v24.3-25.2", 2)
+		timerHotHotHotCD:Start(self:IsEasy() and "v29.9-31.6" or "v24.3-25.2", 2)
 	elseif spellId == 465322 then
 		self.vb.spinCount = 2
 		---@diagnostic disable-next-line: param-type-mismatch

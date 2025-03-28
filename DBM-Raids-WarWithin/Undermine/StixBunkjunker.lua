@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerIncineratorCD:Start(10-delay, 1)
 		timerDemolishCD:Start(16-delay, 1)
-		timerElectroSortingCD:Start(20.1-delay, 1)
+		timerElectroSortingCD:Start(20.0-delay, 1)
 		timerMeltdownCD:Start(40-delay, 1)
 		timerOverDriveCD:Start(100-delay)
 	end
@@ -146,7 +146,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sortedIcon = 1
 		specWarnElectroSorting:Show(self.vb.sortingCount)
 		specWarnElectroSorting:Play("specialsoon")
-		timerElectroSortingCD:Start(self:IsHard() and 51.1 or 46.0, self.vb.sortingCount+1)
+		timerElectroSortingCD:Start(self:IsHard() and 51.1 or 45.9, self.vb.sortingCount+1)
 		--Hard reset icons, even if last adds are up, because new adds need prio marking
 		table.wipe(usedMarks)
 		table.wipe(seenGUIDs)
@@ -317,15 +317,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 467117 and self:IsInCombat() then
 		timerOverdrive:Stop()
 		if self:IsHard() then
-			timerIncineratorCD:Start(13.2, self.vb.IncinCount+1)
-			timerDemolishCD:Start(19.8, self.vb.demolishCount+1)
-			timerElectroSortingCD:Start(24.2, self.vb.sortingCount+1)
-			timerMeltdownCD:Start(46.5, self.vb.meltdownCount+1)
+			timerIncineratorCD:Start("v13.0-14.5", self.vb.IncinCount+1)
+			timerDemolishCD:Start("v19.8-21.2", self.vb.demolishCount+1)
+			timerElectroSortingCD:Start("v24.2-25.6", self.vb.sortingCount+1)
+			timerMeltdownCD:Start("v46.5-47.8", self.vb.meltdownCount+1)
 		else
-			timerIncineratorCD:Start(12.2, self.vb.IncinCount+1)
-			timerDemolishCD:Start(18.2, self.vb.demolishCount+1)
-			timerElectroSortingCD:Start(22.3, self.vb.sortingCount+1)
-			timerMeltdownCD:Start(42.2, self.vb.meltdownCount+1)
+			timerIncineratorCD:Start("v12.2-13.4", self.vb.IncinCount+1)
+			timerDemolishCD:Start("v18.2-19.4", self.vb.demolishCount+1)
+			timerElectroSortingCD:Start("v22.3-23.4", self.vb.sortingCount+1)
+			if not self:IsLFR() then
+				timerMeltdownCD:Start(42.2, self.vb.meltdownCount+1)
+			end
 		end
 	end
 end
