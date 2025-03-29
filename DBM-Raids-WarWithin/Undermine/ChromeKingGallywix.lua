@@ -1065,6 +1065,32 @@ end
 
 function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 469286 then
+		if self:GetStage(1) then--LFR backup
+			self:SetStage(2)
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+			--Reset Counts
+			self.vb.canisterCount = 0
+			self.vb.bombsCount = 0
+			self.vb.suppressionCount = 0
+			self.vb.heatCount = 0
+			--Reset all Subcounts
+			self.vb.canistersSubCount = 0
+			self.vb.bombsSubCount = 0
+			self.vb.suppressionSubCount = 0
+			self.vb.heatSubCount = 0
+			self.vb.egocheckSubCount = 0
+			timerScatterblastCanistersCD:Stop()
+			timerBBBBombsCD:Stop()
+			timerSuppressionCD:Stop()
+			timerVentingHeatCD:Stop()
+			--Start all timers as stage 2 count 1 subcount 1, all timers subtracking 4 since this triggers 4 seconds after non LFR phase trigger
+			--timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1] - 4, 1)--coils don't have subcounts
+			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][0][1] - 4, 1)
+			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][0][1] - 4, 1)
+			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1] - 4, 1)
+			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][0][1] - 4, 1)
+		end
 		self.vb.coilsCount = self.vb.coilsCount + 1
 		warnGigaCoils:Show(self.vb.coilsCount)
 		if self:IsMythic() then
