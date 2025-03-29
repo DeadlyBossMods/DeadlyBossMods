@@ -21,7 +21,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 465346 461536 1217685 473115 473066 467117",
 	"SPELL_PERIODIC_DAMAGE 464854 464248",
 	"SPELL_PERIODIC_MISSED 464854 464248",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_POWER_UPDATE player"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -45,6 +46,7 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:GetSpellName(464399))
 local warnSorted									= mod:NewTargetNoFilterAnnounce(465346, 3)
 local warnInfectedbite								= mod:NewCountAnnounce(466748, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466748))--Player
+local warnRollingRubbish							= mod:NewCountAnnounce(461536, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(461536), nil, nil, 2)--Player
 
 local specWarnElectroSorting						= mod:NewSpecialWarningCount(464399, nil, nil, DBM_COMMON_L.BALLS.. "+" ..DBM_COMMON_L.ADDS, 2, 2)
 local specWarnSorted								= mod:NewSpecialWarningYouPos(461536, nil, nil, nil, 1, 2)--Pre target debuff for Rolling Rubbish
@@ -65,7 +67,6 @@ mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {8, 7, 6, 5})
 --mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
 mod:AddNamePlateOption("NPAuraOnMessedUp", 1217685)
 mod:AddNamePlateOption("NPAuraOnTerritorial", 473066)
---mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Cleanup Crew
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30533))
 local warnDumpsterDive								= mod:NewCastAnnounce(466742, 4)--Spammy without way to scope it to specific target
@@ -101,6 +102,7 @@ mod.vb.demolishCount = 0
 mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
+local bigballs = 0
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -205,6 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon, 24)--Autoclear after 24 seconds in case player dies before getting 461536
 		end
 		if args:IsPlayer() then
+			bigballs = 0
 			specWarnSorted:Show(self:IconNumToTexture(icon))
 			specWarnSorted:Play("mm"..icon)
 			yellSorted:Yell(icon, icon)
@@ -351,6 +354,22 @@ function mod:UNIT_DIED(args)
 		--timerDumpsterDiveCD:Stop(args.destGUID)
 --	elseif cid == 230863 then--Discarded Doomsplosive
 
+	end
+end
+
+function mod:UNIT_POWER_UPDATE(_, powerType)
+	if powerType == "ALTERNATE" then
+		local power = UnitPower("player", 10)
+		if power >= 200 and bigballs < 200 then
+			---@diagnostic disable-next-line: param-type-mismatch
+			warnRollingRubbish:Show("2/3")
+			warnRollingRubbish:Play("mediumball")
+		elseif power >= 100 and bigballs < 100 then
+			---@diagnostic disable-next-line: param-type-mismatch
+			warnRollingRubbish:Show("3/3")
+			warnRollingRubbish:Play("bigball")
+		end
+		bigballs = power
 	end
 end
 
