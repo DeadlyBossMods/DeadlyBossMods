@@ -691,25 +691,6 @@ local function extractEncounterInfo(log)
 	return res
 end
 
-local function decompressLog(testData)
-	if testData.log then return end
-	local libSerialize = LibStub("LibSerialize")
-	local libDeflate = LibStub("LibDeflate")
-	local decodedLog = libDeflate:DecodeForPrint(testData.compressedLog)
-	coroutine.yield()
-	local serializedLog = libDeflate:DecompressDeflate(decodedLog)
-	local handler = libSerialize:DeserializeAsync(serializedLog)
-	local completed, success, deserialized
-	repeat
-		coroutine.yield()
-		completed, success, deserialized = handler()
-	until completed
-	if not success then
-		error("failed to decompress log")
-	end
-	testData.log = deserialized
-end
-
 local logStripper = CreateFrame("Frame")
 logStripper:RegisterEvent("PLAYER_LOGOUT")
 logStripper:SetScript("OnEvent", function()
@@ -732,7 +713,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	end
 	self.testData = testData
 	self.testOptions = testOptions
-	decompressLog(testData)
+	self:DecompressLog(testData)
 	-- Currently only required to correctly handle UNIT_TARGET messages.
 	-- An alternative to this pre-parsing would be to use a special name/flag in UNIT_TARGET at test generation time for the recording player.
 	-- However, this would mean we'd need to update all old tests, so preparsing it is for now. It should fine the player within the first few
@@ -906,7 +887,7 @@ frame:SetScript("OnUpdate", function() test:OnUpdate() end)
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
----@field mod string|integer The boss mod being tested.
+---@field mod (string|integer)? The boss mod under test, optional, by default this is derived from the first ENCOUNTER_START or ENCOUNTER_END event in the log
 ---@field otherMods ((string|integer)[]|(string|integer))? List of other mods that are allowed to trigger warnings/timers during test execution, useful for trash mods that are active during bosses.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
@@ -952,6 +933,50 @@ function test:OnAfterLoadAddOn()
 	end
 end
 
+
+local encounterIdCache = {}
+local function cachedEncounterId(testData)
+	if encounterIdCache[testData] then
+		return encounterIdCache[testData]
+	end
+	local encounterId
+	for _, v in ipairs(testData.log) do
+		if v[2] == "ENCOUNTER_START" or v[2] == "ENCOUNTER_END" then
+			encounterId = v[3]
+		end
+	end
+	encounterIdCache[testData] = encounterId or false
+	return encounterId
+end
+
+---@param testData TestDefinition
+function test:GuessMod(testData)
+	if testData.mod then return end
+	local encounterId = cachedEncounterId(testData)
+	if not encounterId then
+		return
+	end
+	local mod, modInOtherAddon
+	for _, v in ipairs(DBM.Mods) do
+		if v.encounterId == encounterId or type(v.encounterId) == "table" and tContains(v.encounterId, encounterId) then
+			if v.modId == testData.addon then
+				mod = v
+				break
+			else
+				modInOtherAddon = v
+			end
+		end
+	end
+	if not mod then
+		if modInOtherAddon then
+			error("found mod for test " .. testData.name .. " in addon " .. modInOtherAddon.modId .. " but test specifies addon " .. testData.addon)
+		else
+			error("could not determine which mod is being tested by test " .. testData.name .. ", ensure the log contains ENCOUNTER_START/END events matching a mod's encounter id or set the field mod in the test definition")
+		end
+	end
+	testData.mod = tostring(mod.id)
+end
+
 ---@param callback? fun(event: TestCallbackEvent, testData: TestDefinition, testOptions: DBMTestOptions, reporter: TestReporter?)
 ---@param testOptions? DBMTestOptions
 function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
@@ -974,6 +999,7 @@ function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 	if not DBM:GetModByName(testData.mod) then
 		DBM:LoadModByName(testData.addon, true, true) -- calls the OnBefore/OnAfter handlers above
 	end
+	test:GuessMod(testData)
 	local modUnderTest = DBM:GetModByName(testData.mod)
 	if not modUnderTest then
 		error("could not find mod " .. testData.mod .. " after loading " .. testData.addon, 2)
