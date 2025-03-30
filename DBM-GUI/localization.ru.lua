@@ -660,6 +660,7 @@ L.ExportTestFailedNonAnonString		= "ВНИМАНИЕ: Строка %q выгля
 L.CreatedTest						= "Создан тест с %d событиями за %.1f секунд."
 L.NoLogsFound						= "Импорт Transcriptor не содержит данных журнала."
 L.NoTestDataAvailable				= "Нет доступных тестовых данных"
+L.TestDataLoading					= "Загрузка тестов..."
 L.NoLogSelected						= "Создание теста не удалось: журнал не выбран."
 L.LogAlreadyImported				= "Создание теста не удалось: тест уже импортирован."
 
