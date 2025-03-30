@@ -1065,7 +1065,7 @@ end
 
 function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 469286 then
-		if self:GetStage(1) and not self:IsMythic() then--LFR backup
+		if self:GetStage(1) and not self:IsMythic() and not self:IsStory() then--LFR backup
 			self:SetStage(2)
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
