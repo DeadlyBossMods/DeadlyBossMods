@@ -48,6 +48,7 @@ L.BIGWIGS_ICON_CONFLICT			= L.DBM.."偵測到你同時開啟BigWigs和"..L.DBM..
 
 L.MOD_AVAILABLE					= "%s在此區域有模組可用但未安裝。你可以在Curse、Wago、WoWI或從GitHub正式版頁面下載。"
 L.MOD_MISSING					= "無團隊模組"
+L.NOT_INSTALLED					= "未安裝"
 
 L.COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 L.COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"
@@ -173,6 +174,7 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "%s已經完成%s!他們總共有%d次勝利
 L.WHISPER_SCENARIO_END_WIPE			= "%s未完成%s。"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s未完成%s。他們在這個難度總共未完成%d次。"
 
+L.DUNGEONS						= "地下城: "--prefix for dungeons version check
 L.VERSIONCHECK_HEADER			= "Boss Mods - 版本檢測"
 L.VERSIONCHECK_ENTRY			= "%s: %s (%s) %s"--One Boss mod
 L.VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
