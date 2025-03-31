@@ -55,6 +55,7 @@ L.BIGWIGS_ICON_CONFLICT					= L.DBM .. " has detected that you have raid icons t
 
 L.MOD_AVAILABLE							= "%s is available for this zone but not installed. You can download it on Curse, Wago, WoWI, or from the GitHub Releases page."
 L.MOD_MISSING							= "No Raid Module"
+L.NOT_INSTALLED							= "Not Installed"
 
 L.COMBAT_STARTED						= "%s engaged. Good luck and have fun! :)"
 L.COMBAT_STARTED_IN_PROGRESS			= "Engaged an in progress fight against %s. Good luck and have fun! :)"
@@ -183,6 +184,7 @@ L.WHISPER_SCENARIO_END_KILL_STATS		= "%s has completed %s! They have %d total vi
 L.WHISPER_SCENARIO_END_WIPE				= "%s did not complete %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS		= "%s did not complete %s. They have %d total incompletes on this difficulty."
 
+L.DUNGEONS								= "Dungeons: "--prefix for dungeons version check
 L.VERSIONCHECK_HEADER					= "Boss Mod - Versions"
 L.VERSIONCHECK_ENTRY					= "%s: %s (%s) %s"--One Boss mod -- OPTIONAL
 L.VERSIONCHECK_ENTRY_TWO				= "%s: %s (%s) & %s (%s)"--Two Boss mods -- OPTIONAL

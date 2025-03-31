@@ -84,6 +84,7 @@ local PForceDisable
 -- The string that is shown as version
 DBM.DisplayVersion = "11.1.14 alpha"--Core version
 DBM.classicSubVersion = 0
+DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 16--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -1569,11 +1570,16 @@ do
 		if modname == "DBM-Core" and not isLoaded then
 			--Establish a classic sub mod version for version checks and out of date notification/checking
 			if not private.isRetail then
-				local checkedSubmodule = private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or private.isClassic and "DBM-Raids-Vanilla"
-				if checkedSubmodule and C_AddOns.DoesAddOnExist(checkedSubmodule) then
-					local version = C_AddOns.GetAddOnMetadata(checkedSubmodule, "Version") or "r0"
+				local checkedRaidmodule = private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or private.isClassic and "DBM-Raids-Vanilla"
+				if checkedRaidmodule and C_AddOns.DoesAddOnExist(checkedRaidmodule) then
+					local version = C_AddOns.GetAddOnMetadata(checkedRaidmodule, "Version") or "r0"
 					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 				end
+			end
+			local checkedDungeonmodule = private.isRetail and "DBM-Party-WarWithin" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
+			if checkedDungeonmodule and C_AddOns.DoesAddOnExist(checkedDungeonmodule) then
+				local version = C_AddOns.GetAddOnMetadata(checkedDungeonmodule, "Version") or "r0"
+				DBM.dungeonSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 			end
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
@@ -2193,9 +2199,9 @@ do
 			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
 					if v.classicSubVers then
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), v.VPVersion or ""), false)--Only display VP version if not running two mods
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					else
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), v.VPVersion or ""), false)--Only display VP version if not running two mods
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					end
 				end
 				if notify and v.revision < self.ReleaseRevision then
@@ -2409,6 +2415,7 @@ do
 				if not private.isRetail then
 					raid[playerName].classicSubVers = DBM.classicSubVersion
 				end
+				raid[playerName].dungeonSubVers = DBM.dungeonSubVersion
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
 				raidGuids[UnitGUID("player") or ""] = playerName
@@ -2610,6 +2617,7 @@ do
 			if not private.isRetail then
 				raid[playerName].classicSubVers = DBM.classicSubVersion
 			end
+			raid[playerName].dungeonSubVers = DBM.dungeonSubVersion
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
@@ -4661,16 +4669,7 @@ do
 			return
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
-		local VPVersion
-		local VoicePack = DBM.Options.ChosenVoicePack2
-		if not private.voiceSessionDisabled and VoicePack ~= "None" and DBM.VoiceVersions[VoicePack] then
-			VPVersion = "/ VP" .. VoicePack .. ": v" .. DBM.VoiceVersions[VoicePack]
-		end
-		if VPVersion then
-			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), VPVersion), "NORMAL")
-		else
-			sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0)), "NORMAL")
-		end
+		sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), tostring(DBM.dungeonSubVersion or 0)), "NORMAL")
 	end
 
 	local function HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
@@ -4789,32 +4788,26 @@ do
 		end
 	end
 
-	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, VPVersion)
-		revision, version, classicSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers)
-		if protocol >= 3 then
-			--Nil it out on retail, replace with string on classic versions
-			if classicSubVers and classicSubVers == 0 then
-				if private.isRetail then
-					classicSubVers = nil
-				else
-					classicSubVers = L.MOD_MISSING
-				end
+	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, dungeonSubVers)
+		revision, version, classicSubVers, dungeonSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers), tonumber(dungeonSubVers)
+		if protocol < 3 then return end
+		--Nil it out on retail, replace with string on classic versions
+		if classicSubVers and classicSubVers == 0 then
+			if private.isRetail then
+				classicSubVers = nil
+			else
+				classicSubVers = L.MOD_MISSING
 			end
-			forceDisable = tonumber(forceDisable) or 0
-		elseif protocol >= 2 then
-			--Protocol 2 did not send classicSubVers
-			VPVersion = classicSubVers
-			forceDisable = tonumber(forceDisable) or 0
-		else
-			-- Protocol 1 did not send forceDisable, VPVersion was in that position
-			VPVersion = forceDisable
-			forceDisable = 0
 		end
+		if dungeonSubVers and classicSubVers == 0 then
+			dungeonSubVers = L.NOT_INSTALLED
+		end
+		forceDisable = tonumber(forceDisable) or 0
 		if revision and version and displayVersion and raid[sender] then
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
-			raid[sender].VPVersion = VPVersion
+			raid[sender].dungeonSubVers = dungeonSubVers
 			if not private.isRetail then
 				raid[sender].classicSubVers = classicSubVers
 			end
