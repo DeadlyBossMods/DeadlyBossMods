@@ -4819,8 +4819,8 @@ do
 		DBM:GROUP_ROSTER_UPDATE()
 	end
 
-	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable, classicSubVers)
-		revision, version, forceDisable, classicSubVers = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0, tonumber(classicSubVers)
+	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable, classicSubVers, dungeonSubVers)
+		revision, version, forceDisable, classicSubVers, dungeonSubVers = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0, tonumber(classicSubVers), tonumber(dungeonSubVers)
 		--Nil it out on retail, replace with string on classic versions
 		if classicSubVers and classicSubVers == 0 then
 			if private.isRetail then
@@ -4828,6 +4828,9 @@ do
 			else
 				classicSubVers = L.MOD_MISSING
 			end
+		end
+		if dungeonSubVers and classicSubVers == 0 then
+			dungeonSubVers = L.NOT_INSTALLED
 		end
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
