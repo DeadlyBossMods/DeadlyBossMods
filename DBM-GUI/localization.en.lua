@@ -668,6 +668,7 @@ L.ExportTestFailedNonAnonString		= "WARNING: String %q looks non-anonymized."
 L.CreatedTest						= "Created test with %d events in %.1f seconds."
 L.NoLogsFound						= "Transcriptor import contains no log data."
 L.NoTestDataAvailable				= "No test data available"
+L.TestDataLoading					= "Loading tests..."
 L.NoLogSelected						= "Test creation failed: No log selected."
 L.LogAlreadyImported				= "Test creation failed: Test already imported."
 

@@ -374,7 +374,6 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 		DBM:AddMsg("Failed not load testing support, make sure that DBM-Test is installed and enabled")
 		return 0
 	end
-	local tests = DBM.Test:GetTestsForMod(mod) or {}
 	local infoArea = panel:CreateArea(L.DevPanelArea)
 	infoArea:CreateText(L.DevModPanelExplanation, nil, true)
 
@@ -410,8 +409,11 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	end)
 	local runOrStopTest, saveLogButton, alwaysShowButton
 	importLog:SetPoint("TOPLEFT", testSelectArea.frame, "TOPLEFT", 10, -10)
+	local frameCreationTime = GetTime()
+	local foundTest
 	local function getTestEntries()
 		local values = {}
+		local tests = DBM.Test:GetTestsForMod(mod) or {}
 		for _, v in ipairs(tests) do
 			values[#values + 1] = {text = v.name, value = v} -- TODO: add extra info
 		end
@@ -421,7 +423,13 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 			end
 		end
 		if #values == 0 then
-			values[#values + 1] = {value = {}, text = L.NoTestDataAvailable}
+			if GetTime() - frameCreationTime < 3 then
+				values[#values + 1] = {value = {}, text = L.TestDataLoading}
+			else
+				values[#values + 1] = {value = {}, text = L.NoTestDataAvailable}
+			end
+		else
+			foundTest = true
 		end
 		return values
 	end
@@ -438,11 +446,11 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	local function resetTestSelection()
 		local testEntries = getTestEntries()
 		testSelect:RefreshLazyValues()
-		if #testEntries >= 1 then
-			testSelect:SetSelectedValue(testEntries[1].text)
-		else
-			testSelect:SetSelectedValue(L.NoTestDataAvailable)
-		end
+		testSelect:SetSelectedValue(testEntries[1].text)
+	end
+	-- a bit hacky, make sure lazily decompressed logs show up correctly
+	for i = 1, 20 do
+		DBM:Schedule(5 / i, function() if not foundTest then resetTestSelection() end end)
 	end
 	testSelect:SetScript("OnShow", function(self)
 		if self.value and self.value.ephemeral and not self.value.showInAllMods and self.value.mod ~= mod.id then
@@ -534,9 +542,6 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	runOrStopTest = panel:CreateButton(L.RunTest, 130, 30)
 	runOrStopTest.myheight = 40
 	runOrStopTest:SetPoint("TOPLEFT", testSelectArea.frame, "BOTTOMLEFT", 0, -10)
-	if #tests == 0 and #ephemeralTests == 0 then
-		runOrStopTest:Disable()
-	end
 	runOrStopTest:SetScript("OnClick", function()
 		if DBM.Test.testRunning then
 			DBM.Test:StopTests()

@@ -215,8 +215,8 @@ function mod:SPELL_CAST_START(args)
 				timerTheBigHitCD:Start("v16.0-16.7", self.vb.bigHitCount+1)
 			elseif self:IsHeroic() or self:IsLFR() then
 				timerPaylineCD:Start("v5.9-7", self.vb.paylineCount+1)
-				timerFoulExhaustCD:Start("v10.7-11.8", self.vb.foulExhaustCount+1)
-				timerTheBigHitCD:Start("v16.8-18", self.vb.bigHitCount+1)
+				timerFoulExhaustCD:Start("v10.4-11.8", self.vb.foulExhaustCount+1)
+				timerTheBigHitCD:Start("v16.4-18", self.vb.bigHitCount+1)
 			else
 				timerFoulExhaustCD:Start("v9.5-10.7", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v15.5-16.7", self.vb.bigHitCount+1)
@@ -314,7 +314,7 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers
 		timerFoulExhaustCD:Stop()--Just to cancel run over from the custom 2nd cast between linked and hot
 		--On normal and LFR, it's possible to get two exhausts between linked and hot, if so, we'll get a long timer, else it'll be short one
-		timerFoulExhaustCD:Start((self.vb.secondExhaustOccurred == 2) and 28.8 or self:IsHard() and "v4.6-5.8" or "V3.3-4.4", self.vb.foulExhaustCount+1)
+		timerFoulExhaustCD:Start((self.vb.secondExhaustOccurred == 2) and 28.8 or self:IsHard() and "v4.6-5.8" or "v3.3-4.4", self.vb.foulExhaustCount+1)
 		timerTheBigHitCD:Start(self:IsMythic() and 11.9 or "v4.6-10.7", self.vb.bigHitCount+1)--This one gets a little screwed up
 		timerPaylineCD:Start(self:IsHard() and "v21.6-22.9" or "v15.5-18", self.vb.paylineCount+1)
 		timerScatteredPayoutCD:Start(self:IsEasy() and 29.9 or 25.2, 3)
@@ -327,7 +327,7 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers 10.7-14.3
 		timerTheBigHitCD:Start(self:IsHard() and "v3.3-5.8" or "v10.7-14.3", self.vb.bigHitCount+1)
 		--again, on normal if 2 exhausts occured before hot, the it's a longer timer here too, else very short. Heroic and mythic more consistent in their 9-11 sec range
-		timerFoulExhaustCD:Start(self:IsMythic() and "v10.7-11.9" or self:IsHeroic() and "v9.4-10.6" or (self.vb.secondExhaustOccurred == 2) and 26.4 or "V3.3-4.4", self.vb.foulExhaustCount+1)
+		timerFoulExhaustCD:Start(self:IsMythic() and "v10.7-11.9" or self:IsHeroic() and "v9.4-10.6" or (self.vb.secondExhaustOccurred == 2) and 26.4 or "v3.3-4.4", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start(21.6, self.vb.paylineCount+1)--Mythic and heroic Unknown
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
 	elseif spellId == 465587 then

@@ -920,7 +920,7 @@ do
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
-		if guid then
+		if guid and units[guid] then
 			for _,aura_tbl in ipairs(units[guid]) do
 				if aura_tbl.id == id then
 					NameplateIcon_Hide(true, guid, aura_tbl.index, false)
