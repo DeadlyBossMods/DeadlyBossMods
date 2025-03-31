@@ -2199,9 +2199,9 @@ do
 			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
 					if v.classicSubVers then
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), L.DUNGEONS .. L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					else
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					end
 				end
 				if notify and v.revision < self.ReleaseRevision then
