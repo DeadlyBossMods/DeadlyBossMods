@@ -4789,7 +4789,7 @@ do
 	end
 
 	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, dungeonSubVers)
-		revision, version, classicSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers)
+		revision, version, classicSubVers, dungeonSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers), tonumber(dungeonSubVers)
 		if protocol < 3 then return end
 		--Nil it out on retail, replace with string on classic versions
 		if classicSubVers and classicSubVers == 0 then
