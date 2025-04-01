@@ -47,6 +47,7 @@ L.BIGWIGS_ICON_CONFLICT		= L.DBM .. "이 BigWigs와" .. L.DBM .. " 모두 공격
 
 L.MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있지만 설치가 되어있질 않습니다. Curse, Wago, WoWI 또는 GitHub 릴리즈 페이지에서 다운로드 받으실 수 있습니다."
 L.MOD_MISSING					= "레이드 모듈 없음"
+L.NOT_INSTALLED							= "설치 안 돼있음"
 
 L.COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 L.COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
