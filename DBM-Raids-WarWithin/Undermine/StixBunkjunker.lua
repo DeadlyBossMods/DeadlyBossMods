@@ -362,12 +362,12 @@ function mod:UNIT_POWER_UPDATE(_, powerType)
 		local power = UnitPower("player", 10)
 		if power >= 200 and bigballs < 200 then
 			---@diagnostic disable-next-line: param-type-mismatch
-			warnRollingRubbish:Show("2/3")
-			warnRollingRubbish:Play("mediumball")
-		elseif power >= 100 and bigballs < 100 then
-			---@diagnostic disable-next-line: param-type-mismatch
 			warnRollingRubbish:Show("3/3")
 			warnRollingRubbish:Play("bigball")
+		elseif power >= 100 and bigballs < 100 then
+			---@diagnostic disable-next-line: param-type-mismatch
+			warnRollingRubbish:Show("2/3")
+			warnRollingRubbish:Play("mediumball")
 		end
 		bigballs = power
 	end
