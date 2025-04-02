@@ -1546,7 +1546,7 @@ do
 			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				breakTimerStart(self, remaining, playerName, nil, true)
+				breakTimerStart(self, remaining, playerName, true)
 			else--It must have ended while we were offline, kill variable.
 				self.Options.RestoreSettingBreakTimer = nil
 			end
@@ -4572,18 +4572,15 @@ do
 
 	do
 		local dummyMod2 -- dummy mod for the break timer
-		function breakTimerStart(self, timer, sender)--, blizzardTimer, isRecovery
-	--		if not private.isWrath and not blizzardTimer and not isRecovery then return end
-			--if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
-			--	if blizzardTimer then
-			--		local unitId = self:GetUnitIdFromGUID(sender)
-			--		sender = self:GetUnitFullName(unitId) or sender
-			--	end
-				local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-				if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
-					return
-				end
-			--end
+		---@param self DBM
+		---@param timer number
+		---@param sender string
+		---@param isRecovery boolean?
+		function breakTimerStart(self, timer, sender, isRecovery)
+			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+			if not isRecovery and ((self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress()) then
+				return
+			end
 			if not dummyMod2 then
 				local threshold = self.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -4637,6 +4634,9 @@ do
 			return
 		end
 		if timer == 0 or DBM:AntiSpam(1, "BT" .. sender) then
+			--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
+			--It expects an extra number check for no reason at all
+			---@diagnostic disable-next-line: param-type-mismatch
 			breakTimerStart(DBM, timer, sender)
 		end
 	end
@@ -4648,7 +4648,10 @@ do
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		breakTimerStart(DBM, timer, sender)--, nil, true
+		--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
+		--It expects an extra number check for no reason at all
+		---@diagnostic disable-next-line: param-type-mismatch
+		breakTimerStart(DBM, timer, sender, true)--, nil, true
 	end
 
 	local function SendVersion(guild)
