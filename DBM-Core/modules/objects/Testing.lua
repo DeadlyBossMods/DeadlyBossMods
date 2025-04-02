@@ -17,10 +17,8 @@ test.testRunning = false
 local traceField = "Trace"
 test[traceField] = function() end
 
-local LoadAddOn = _G.C_AddOns.LoadAddOn or LoadAddOn ---@diagnostic disable-line:deprecated
-
 function test:Load()
-	local loaded, err = LoadAddOn("DBM-Test")
+	local loaded, err = C_AddOns.LoadAddOn("DBM-Test")
 	if not loaded then
 		DBM:AddMsg("Failed to load DBM-Test: " .. (_G["ADDON_" .. err] or CL.UNKNOWN))
 		return loaded, err

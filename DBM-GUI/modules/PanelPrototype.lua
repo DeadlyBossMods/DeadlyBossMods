@@ -14,7 +14,7 @@ local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, 
 local DBM = DBM
 local CreateTextureMarkup, ColorPickerFrame = CreateTextureMarkup, ColorPickerFrame
 
-local GetSpellDescription = C_Spell.GetSpellDescription or GetSpellDescription
+local GetSpellDescription = C_Spell.GetSpellDescription
 
 --TODO, not 100% sure which ones use html and which don't so some might need true added or removed for 2nd arg
 local function parseDescription(name, usesHTML)

@@ -174,7 +174,7 @@ local allTimers = {
 local function updateBossDistance(self)
 	if not self.Options.AdvancedBossFiltering then return end
 	--Check if near or far from Torq
-	if self:CheckBossDistance(229177, true, 32825, 60) then
+	if self:CheckBossDistance(229181, true, 32825, 60) then
 		if not nearTorq then
 			nearTorq = true
 			timerScrapBombCD:SetFade(false, self.vb.scrapbombCount+1)
@@ -190,7 +190,7 @@ local function updateBossDistance(self)
 		end
 	end
 	--Check if near or far from Flarendo
-	if self:CheckBossDistance(229181, true, 32825, 60) then
+	if self:CheckBossDistance(229177, true, 32825, 60) then
 		if not nearFlare then
 			nearFlare = true
 			timerStaticChargeCD:SetFade(false, self.vb.staticChargeCount+1)
@@ -478,13 +478,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 229181 then--Flarendo the Furious
+	if cid == 229177 then--Flarendo the Furious
 		self.vb.crashGone = true
 		timerStaticChargeCD:Stop()
 		timerThunderdrumSalvoCD:Stop()
 		timerVoltaicImageCD:Stop()
 		timerLightningBashCD:Stop()
-	elseif cid == 229177 then--Torq the Tempest
+	elseif cid == 229181 then--Torq the Tempest
 		self.vb.crashGone = true
 		timerScrapBombCD:Stop()
 		timerBlastburnRoarcannonCD:Stop()

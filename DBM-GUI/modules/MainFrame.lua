@@ -8,7 +8,6 @@ local DBM_GUI = DBM_GUI
 
 local DBM = DBM
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded
 local frame = _G["DBM_GUI_OptionsFrame"]
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
@@ -230,7 +229,7 @@ function frame:LoadAndShowFrame(subFrame)
 	if not subFrame.isLoaded then
 		if subFrame.isSeason then
 			---@diagnostic disable-next-line: deprecated
-			if not IsAddOnLoaded(subFrame.addonId) then
+			if not C_AddOns.IsAddOnLoaded(subFrame.addonId) then
 				for _, addon in ipairs(DBM.AddOns) do
 					if addon.modId == subFrame.addonId then
 						DBM:LoadMod(addon, true)
@@ -287,7 +286,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	buttonToggle:SetScript("OnClick", function()
 		if not button.element.isLoaded and button.element.addonId then
 			---@diagnostic disable-next-line: deprecated
-			if not IsAddOnLoaded(button.element.addonId) then
+			if not C_AddOns.IsAddOnLoaded(button.element.addonId) then
 				for _, addon in ipairs(DBM.AddOns) do
 					if addon.modId == button.element.addonId then
 						DBM:LoadMod(addon, true)
