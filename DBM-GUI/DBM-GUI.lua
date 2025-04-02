@@ -980,8 +980,6 @@ do
 
     local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN"}
 
-	-- WotLK compat, search for "local C_AddOns" in DBM-Core.lua for more details
-	local IsAddOnLoaded = _G.C_AddOns.IsAddOnLoaded or IsAddOnLoaded ---@diagnostic disable-line:deprecated
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
@@ -996,7 +994,7 @@ do
 					DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons].hidden = true
 				end
 
-				if not IsAddOnLoaded(addon.modId) then
+				if not C_AddOns.IsAddOnLoaded(addon.modId) then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
 					autoLoadFrame:SetScript("OnShow", function()
 						if not addon.attemptedAutoLoad then
@@ -1021,7 +1019,7 @@ do
 				end
 			end
 
-			if addon.panel and addon.subTabs and IsAddOnLoaded(addon.modId) then
+			if addon.panel and addon.subTabs and C_AddOns.IsAddOnLoaded(addon.modId) then
 				if not addon.subPanels then
 					addon.subPanels = {}
 				end

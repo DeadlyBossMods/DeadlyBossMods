@@ -6743,22 +6743,18 @@ end
 do
 	--Handle new spell name requesting with wrapper, to make api changes easier to handle
 	local GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName
-	local newPath, halfAssedClassicPath
+	local halfAssedClassicPath
 	if C_Spell and C_Spell.GetSpellInfo then
-		newPath = true
 		GetSpellInfo, GetSpellTexture, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellName
-		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in 1.15.4
+		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in all classic versions (cata and vanilla and wrath alike)
 		--This is what happens when you do half assed syncs that can't even maintain parity properly during rebases
 		if not C_Spell.GetSpellCooldown then
+			---@diagnostic disable-next-line: undefined-field
 			GetSpellCooldown = _G.GetSpellCooldown
 			halfAssedClassicPath = true--Need to set variable so the wrapper knows it's arg return and not table return
 		else
 			GetSpellCooldown = C_Spell.GetSpellCooldown
 		end
-	else
-		newPath = false
-		---@diagnostic disable-next-line: undefined-field
-		GetSpellInfo, GetSpellTexture, GetSpellCooldown = _G.GetSpellInfo, _G.GetSpellTexture, _G.GetSpellCooldown
 	end
 	---Wrapper for Blizzard GetSpellInfo global that converts new table returns to old arg returns
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
@@ -6769,25 +6765,9 @@ do
 			error("|cffff0000Invalid call to GetSpellInfo for spellId. spellId is missing! |r")
 		end
 		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
-		if newPath then
-			local spellTable = GetSpellInfo(spellId)
-			if spellTable then
-				---@diagnostic disable-next-line: undefined-field
-				name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = spellTable.name, nil, spellTable.iconID, spellTable.castTime, spellTable.minRange, spellTable.maxRange, spellTable.spellID
-			end
-		else
-			name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
-			--I want this for debug purposes to catch spellids that are removed from game/changed, but quietly to end user
-			if not returnedSpellId then--Bad request all together
-				if type(spellId) == "string" then
-					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId .. " as a string!")
-				else
-					if spellId > 4 then
-						self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r" .. spellId)
-					end
-				end
-				return
-			end--Good request, return now
+		local spellTable = GetSpellInfo(spellId)
+		if spellTable then
+			name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = spellTable.name, nil, spellTable.iconID, spellTable.castTime, spellTable.minRange, spellTable.maxRange, spellTable.spellID
 		end
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
@@ -6812,12 +6792,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellName(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
-		local spellName
-		if newPath then--Use spellname only function, avoid pulling entire spellinfo table if not needed
-			spellName = GetSpellName(spellId)
-		else
-			spellName = self:GetSpellInfo(spellId)
-		end
+		local spellName = GetSpellName(spellId)
 		return spellName
 	end
 
@@ -6826,7 +6801,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable
-		if newPath and not halfAssedClassicPath then
+		if not halfAssedClassicPath then
 			local spellTable = GetSpellCooldown(spellId)
 			if spellTable then
 				---@diagnostic disable-next-line: undefined-field
