@@ -4802,7 +4802,7 @@ do
 				classicSubVers = L.MOD_MISSING
 			end
 		end
-		if dungeonSubVers and classicSubVers == 0 then
+		if dungeonSubVers and dungeonSubVers == 0 then
 			dungeonSubVers = L.NOT_INSTALLED
 		end
 		forceDisable = tonumber(forceDisable) or 0
