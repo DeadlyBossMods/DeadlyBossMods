@@ -137,10 +137,11 @@ function mod:OnCombatStart(delay)
 	end
 end
 
-function mod:OnCombatEnd()
+function mod:OnCombatEnd(_, _, secondRun)
 	if self.Options.NPAuraOnMessedUp or self.Options.NPAuraOnTerritorial then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	if secondRun then self:Stop() end--Stop all timers in a second run of combat end to try and fix bugged timers
 end
 
 function mod:SPELL_CAST_START(args)
