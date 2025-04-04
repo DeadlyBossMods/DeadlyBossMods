@@ -6,8 +6,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(231075)
 mod:SetEncounterID(3016)
 mod:SetUsedIcons(8, 7, 6)
-mod:SetHotfixNoticeRev(20250330000000)
-mod:SetMinSyncRevision(20250330000000)
+mod:SetHotfixNoticeRev(20250404000000)
+mod:SetMinSyncRevision(20250403000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 466340 467182 466751 469286 469327 466341 466834 1216845 1214607 466342 466958 1217987 1219041 1218488 1218546 1218696",--465952 1216852 1219039
-	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469404 469293 471603 469387 1226891",--1216852
+	"SPELL_AURA_APPLIED 1216846 1214229 1214369 466165 1216444 1218504 1219039 1220784 469362 1218992 1218991 1220846 1220761 466246 469293 471603 469387 1226891",--1216852
 	"SPELL_AURA_APPLIED_DOSE 466246",
 	"SPELL_AURA_REMOVED 1214229 1214369 466165 466246 1220290 469293 1226891",
 	"SPELL_INTERRUPT",
@@ -36,6 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, detect cratering cast start
 --TODO, ego swapping? it'll need fancy checked ego amount checks https://www.wowhead.com/ptr-2/spell=467064/checked-ego
 --TODO, announce https://www.wowhead.com/ptr-2/spell=469363/fling-giga-bomb flings?
+--TODO, possibly readd 469404 as a stack warning instead
 --NOTE, it's possible to detect phase changes in story mode with anchor casts, but it's a mess and not worth dev time investment since the timers don't actually matter. As such timers just hard disabled in story mode
 --[[
 stoppedAbility.id = 1214369 or ability.id = 1214229 and (type = "applydebuff" or type = "removedebuff") or ability.id = 1220290 and type = "removebuff" or (ability.id = 1226891 or ability.id = 469293) and (type = "applybuff" or type = "removebuff")
@@ -74,7 +75,6 @@ local warnGigaBlast									= mod:NewCountAnnounce(469327, 3, nil, nil, 2)
 local warnFusedCanisters							= mod:NewIncomingCountAnnounce(466341, 3)
 
 local specChargedGigaBomb							= mod:NewSpecialWarningYou(469362, false, nil, nil, 1, 12)
-local specWarnGigaBoomer							= mod:NewSpecialWarningYou(469404, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1215209, nil, nil, nil, 1, 8)
 
 local timerGigaCoilsCD								= mod:NewCDCountTimer(97.3, 469286, nil, nil, nil, 5)
@@ -241,9 +241,6 @@ local allTimers = {
 				[3] = {31.1},
 				[4] = {0},
 				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[466751] = {--Venting Heat
 				[0] = {18},
@@ -252,9 +249,6 @@ local allTimers = {
 				[3] = {"v19.9-26"},--19-26 (Collision with BBB Blast)
 				[4] = {0},
 				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[1214607] = {--BBB Blast
 				[0] = {8, 36},
@@ -263,9 +257,6 @@ local allTimers = {
 				[3] = {"v19.7-23.1"},--(Collision with Venting Heat)
 				[4] = {0},
 				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[466342] = {--Tick Tock Canisters
 				[0] = {22},
@@ -274,9 +265,6 @@ local allTimers = {
 				[3] = {3.6},
 				[4] = {0},
 				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[466958] = {--Ego Check
 				[0] = {14, 13, 15, 8},
@@ -285,9 +273,6 @@ local allTimers = {
 				[3] = {10.6, 18.5, 11},
 				[4] = {0},
 				[5] = {0},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 		},
 	},
@@ -342,9 +327,6 @@ local allTimers = {
 				[3] = {31.2},
 				[4] = {"v18.7-20.9"},--Collision wth Venting Heat
 				[5] = {5.1, 37},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[466751] = {--Venting Heat
 				[0] = {18},
@@ -353,9 +335,6 @@ local allTimers = {
 				[3] = {"v22.5-27.7"},--or 27.7 (collision with BBB Blast. Either one can be cast at 22 and it bumps other to 27)
 				[4] = {"v17-26.5"},--Collision with supression
 				[5] = {14.1, 37},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[1214607] = {--BBBBlast
 				[0] = {8, 34},
@@ -364,9 +343,6 @@ local allTimers = {
 				[3] = {"v21.7-26"},--21-26 (collision with Venting Heat. Either one can be cast at 22 and it bumps other to 27)
 				[4] = {11.4, 34},
 				[5] = {30.1},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
 			},
 			[466342] = {--Tick Tock Canisters
 				[0] = {22},
@@ -375,9 +351,67 @@ local allTimers = {
 				[3] = {5.6, 35},
 				[4] = {31.4},
 				[5] = {17.6, 37},
-				[6] = {0},
-				[7] = {0},
-				[8] = {0},
+			},
+		},
+	},
+	["lfr"] = {
+		[1] = {
+			[465952] = {17.3, 31.3},--BBBBombs
+			[467182] = {33.3, 31.3},--Suppression
+			[466751] = {22.1, 31.3},--Venting Heat
+		},
+		[2] = {
+			[469286] = {0, "v72.7-75.1"},--Giga Coils
+			[465952] = {--BBBBombs
+				[0] = {0},--No casts before first coil
+				[1] = {"v42.9-45"},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+			},
+			[467182] = {--Suppression
+				[0] = {0},--No casts before first coil
+				[1] = {"v23.7-25.8", 31.9},
+				[2] = {0},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+			},
+			[466751] = {--Venting Heat
+				[0] = {0},--No casts before first coil
+				[1] = {"v10.6-12.6", 40.7},
+				[2] = {"v9.4-10.1"},
+				[3] = {0},
+				[4] = {0},
+				[5] = {0},
+			},
+		},
+		[3] = {
+			[469286] = {"v74.9-83", "v63.4-81.5", "v63.4-81.5", "v63.4-81.5"},--Giga Coils (LFR is a mess, coils are allowed to run overtime, and then it shortens next CD)
+			[467182] = {--Suppression
+				[0] = {34.2, 32.5},
+				[1] = {"v25.2-32.4"},
+				[2] = {34, 31.2},--Second one doesn't always happen
+				[3] = {"v25.7-35.1", 32.5},
+				[4] = {0},
+				[5] = {0},
+			},
+			[466751] = {--Venting Heat
+				[0] = {21.7, 31.2},
+				[1] = {"v12.7-21.1", 31.2},--All of these have same variance on first cast
+				[2] = {"v13.2-21.5", 32.5},--^
+				[3] = {"v13.2-22.9", 31.2},--^
+				[4] = {0},
+				[5] = {0},
+			},
+			[1214607] = {--BBBBlast
+				[0] = {26.1, 33},
+				[1] = {"v24.9-33.6"},
+				[2] = {"v9-38.2", 37.5},--Boss sometimes skips first cast and just goes right into second. we just handle it with variance
+				[3] = {"v17.6-27.2", 33.1},
+				[4] = {0},
+				[5] = {0},
 			},
 		},
 	},
@@ -411,11 +445,16 @@ function mod:OnCombatStart(delay)
 		if self:IsHeroic() then
 			savedDifficulty = "heroic"
 			timerPhaseTransition:Start(111, 2)
-		else
+		elseif self:IsNormal() then
 			savedDifficulty = "normal"
 			timerPhaseTransition:Start(123, 2)
+		else
+			savedDifficulty = "lfr"
+			--timerPhaseTransition:Start(71, 2)--Seems LFR often triggers health threshold, so don't know timed one
 		end
-		timerScatterblastCanistersCD:Start(allTimers[savedDifficulty][1][466340][1]-delay, 1)
+		if not self:IsLFR() then
+			timerScatterblastCanistersCD:Start(allTimers[savedDifficulty][1][466340][1]-delay, 1)
+		end
 		timerBBBBombsCD:Start(allTimers[savedDifficulty][1][465952][1]-delay, 1)
 		timerSuppressionCD:Start(allTimers[savedDifficulty][1][467182][1]-delay, 1)
 		timerVentingHeatCD:Start(allTimers[savedDifficulty][1][466751][1]-delay, 1)
@@ -449,8 +488,10 @@ function mod:OnTimerRecovery()
 		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
-	else
+	elseif self:IsNormal() then
 		savedDifficulty = "normal"
+	else
+		savedDifficulty = "lfr"
 	end
 end
 
@@ -490,7 +531,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnSupression:Show(self.vb.suppressionCount)
 		specWarnSupression:Play("watchstep")
 		if self:IsStory() then return end--hard disable timers in story mode
-		timerFinalBlast:Start(6, self.vb.suppressionCount)
+		if self:GetStage(3) or self:IsMythic() then
+			timerFinalBlast:Start(6, self.vb.suppressionCount)
+		end
 		local timer
 		if self:GetStage(1) or self:IsMythic() then--No coils yet or is mythic
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.suppressionSubCount+1)
@@ -764,11 +807,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerTimeReleasedCackler:Stop(args.destName)
 		timerTimeReleasedCackler:Start(10, args.destName)
-	elseif spellId == 469404 then
-		if args:IsPlayer() then
-			specWarnGigaBoomer:Show()
-			specWarnGigaBoomer:Play("bombyou")
-		end
 	elseif spellId == 471603 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
@@ -891,7 +929,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1], 1)--coils don't have subcounts
 			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][0][1], 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][0][1], 1)
-			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1], 1)
+			if not self:IsLFR() then
+				timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1], 1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][0][1], 1)
 		end
 	elseif spellId == 469293 and not self:IsMythic() then--Giga Coils Ending
@@ -906,13 +946,17 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1], self.vb.coilsCount+1)
 			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][self.vb.coilsCount][1], self.vb.bombsCount+1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][self.vb.coilsCount][1], self.vb.suppressionCount+1)
-			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			if not self:IsLFR() then
+				timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
 		else--Stage 3
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], self.vb.coilsCount+1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][self.vb.coilsCount][1], self.vb.suppressionCount+1)
 			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][self.vb.coilsCount][1], self.vb.bombsCount+1)
-			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			if not self:IsLFR() then
+				timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][self.vb.coilsCount][1], self.vb.canisterCount+1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
 			if self:IsHard() then
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckCount+1)
@@ -990,7 +1034,9 @@ function mod:SPELL_INTERRUPT(args)
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][0][1], 1)
 			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
-			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			if not self:IsLFR() then
+				timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
 			if self:IsHard() then
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][0][1], 1)
@@ -1088,7 +1134,9 @@ function mod:UNIT_SPELLCAST_START(_, _, spellId)
 			--timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1] - 4, 1)--coils don't have subcounts
 			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][0][1] - 4, 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][2][467182][0][1] - 4, 1)
-			timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1] - 4, 1)
+			if not self:IsLFR() then
+				timerFusedCanistersCD:Start(allTimers[savedDifficulty][2][466341][0][1] - 4, 1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][2][466751][0][1] - 4, 1)
 		end
 		self.vb.coilsCount = self.vb.coilsCount + 1
