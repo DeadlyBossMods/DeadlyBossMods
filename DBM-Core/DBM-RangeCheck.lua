@@ -39,10 +39,6 @@ local function setCompatibleRestrictedRange(range)
 		return 4
 	elseif range <= 8 then
 		return 8
-	elseif range <= 10 then
-		return 10
-	elseif range <= 11 then
-		return 11
 	elseif range <= 13 then
 		return 13
 	elseif range <= 18 then
@@ -76,7 +72,7 @@ local itsBCAgain--Needs to be called outside of below scope, itsDFBaby does not
 do
 	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected
 
-	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, C_Item and C_Item.IsItemInRange or IsItemInRange, UnitInRange
+	local IsItemInRange, UnitInRange = C_Item and C_Item.IsItemInRange or IsItemInRange, UnitInRange
 	-- All ranges are tested and compared against UnitDistanceSquared.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
@@ -96,11 +92,6 @@ do
 		itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
 	end
 
-	local apiRanges = {
-		[10] = 3, -- CheckInteractDistance (Duel)
-		[11] = 2, -- CheckInteractDistance (Trade)
-	}
-
 	local function itsDFBaby(uId)
 		local inRange, checkedRange = UnitInRange(uId)
 		if inRange and checkedRange then--Range checked and api was successful
@@ -116,8 +107,6 @@ do
 				return UnitInRange(uId) and checkrange or 1000
 			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
 				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
-			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
-				return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
 			else
 				return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 			end
@@ -125,9 +114,7 @@ do
 			if isRetail and IsItemInRange(90175, uId) then return 4
 			elseif not isClassic and IsItemInRange(16114, uId) then return 6
 			elseif IsItemInRange(8149, uId) then return 8
-			elseif CheckInteractDistance(uId, 3) then return 10
-			elseif CheckInteractDistance(uId, 2) then return 11
-			elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
+			elseif IsItemInRange(isClassic and 17626 or 32321, uId) then return 13
 			elseif IsItemInRange(6450, uId) then return 18
 			elseif IsItemInRange(21519, uId) then return 23
 			elseif IsItemInRange(13289, uId) then return 28
@@ -255,7 +242,7 @@ do
 		rootDescription:CreateCheckbox(LOCK_FRAME, isLocked, toggleLocked)
 
 		local range = rootDescription:CreateButton(L.RANGECHECK_SETRANGE)
-		local ranges = not isClassic and { 6, 8, 10, 13, 18, 23, 33, 43 } or { 8, 10, 13, 18, 23, 33 }
+		local ranges = not isClassic and { 6, 8, 13, 18, 23, 33, 43 } or { 8, 13, 18, 23, 33 }
 		for _, v in ipairs(ranges) do
 			range:CreateRadio(L.RANGECHECK_SETRANGE_TO:format(v), isRangeSelected, setRange, v)
 		end
@@ -332,7 +319,7 @@ do
 			}, 1)
 		elseif level == 2 then
 			if menu == "range" then
-				local ranges = not isClassic and { 6, 8, 10, 13, 18, 23, 33, 43 } or { 8, 10, 13, 18, 23, 33 }
+				local ranges = not isClassic and { 6, 8, 13, 18, 23, 33, 43 } or { 8, 13, 18, 23, 33 }
 				for _, v in ipairs(ranges) do
 					UIDropDownMenu_AddButton({
 						text = L.RANGECHECK_SETRANGE_TO:format(v),
