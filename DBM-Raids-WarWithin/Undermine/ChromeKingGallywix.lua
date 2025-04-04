@@ -399,7 +399,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bombsSubCount = 0
 	self.vb.suppressionSubCount = 0
 	self.vb.heatSubCount = 0
-	self.vb.egoCheckSubCount = 0
+	self.vb.egocheckSubCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		self.vb.phase = 0
@@ -652,7 +652,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 466958 then
 		self.vb.egoCheckCount = self.vb.egoCheckCount + 1
-		self.vb.egoCheckSubCount = self.vb.egoCheckSubCount + 1
+		self.vb.egocheckSubCount = self.vb.egocheckSubCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEgoCheck:Show()
 			specWarnEgoCheck:Play("defensive")
@@ -662,7 +662,7 @@ function mod:SPELL_CAST_START(args)
 		local timer
 		if self:IsMythic() then
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.egoCheckSubCount+1)
-			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.egoCheckSubCount+1]
+			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.egocheckSubCount+1]
 		else
 			--timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.coilsCount, self.vb.egoCheckSubCount+1)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount+1]
@@ -915,7 +915,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][self.vb.coilsCount][1], self.vb.canisterCount+1)
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][self.vb.coilsCount][1], self.vb.heatCount+1)
 			if self:IsHard() then
-				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckSubCount+1)
+				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1], self.vb.egocheckCount+1)
 			end
 		end
 	elseif spellId == 1226891 and self:IsInCombat() and self:AntiSpam(2.5, 2) then--Circuit Reboot Removed

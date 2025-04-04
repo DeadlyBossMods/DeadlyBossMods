@@ -282,7 +282,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 225804 then--Geargrinder Biker
-		if self:IsMythic() then
+		if self:IsMythic() and self:AntiSpam(4, 1) and not self:IsTank() then
 			self.vb.soakCount = self.vb.soakCount + 1
 			if not DBM:UnitDebuff("player", 473507) then
 				specWarnOilCanisterSoak:Show(self.vb.soakCount)
