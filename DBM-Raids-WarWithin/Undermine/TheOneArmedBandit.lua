@@ -211,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 				timerFoulExhaustCD:Start("v9.5-9.9", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v16.0-16.7", self.vb.bigHitCount+1)
 			elseif self:IsHeroic() or self:IsLFR() then
-				timerPaylineCD:Start("v5.9-7", self.vb.paylineCount+1)
+				timerPaylineCD:Start("v4.6-7", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v10.4-11.8", self.vb.foulExhaustCount+1)
 				timerTheBigHitCD:Start("v16.4-18", self.vb.bigHitCount+1)
 			else
