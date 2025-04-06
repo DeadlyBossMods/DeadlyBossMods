@@ -47,6 +47,7 @@ L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " a détecté que vous avez activé vos icô
 
 L.MOD_AVAILABLE				= "%s est disponible pour ce contenu. Vous pouvez trouver sur Curse, Wago, WowInterface, ou Github."
 L.MOD_MISSING				= "Pas de module de raid"
+L.NOT_INSTALLED				= "Non installé"
 
 L.COMBAT_STARTED				= "%s engagé. Bonne chance et amusez-vous bien ! :)";
 L.COMBAT_STARTED_IN_PROGRESS 	= "Vous êtes engagé dans un combat en cours contre %s. Bonne chance et amusez-vous bien ! :)"
@@ -175,6 +176,7 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "%s vient de terminer %s ! Ils ont un total 
 L.WHISPER_SCENARIO_END_WIPE		 	= "%s a subi une défaite dans %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s a subi une défaite dans %s. Ils ont un total de %d défaites dans cette difficulté."
 
+L.DUNGEONS					= "Donjons : "--prefix for dungeons version check
 L.VERSIONCHECK_HEADER		= "Module de boss - Versions"
 L.VERSIONCHECK_ENTRY		= "%s: %s (%s)"
 L.VERSIONCHECK_ENTRY_TWO	= "%s: %s (%s) & %s (%s)"--Two Boss mods

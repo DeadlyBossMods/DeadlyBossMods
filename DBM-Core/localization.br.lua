@@ -47,6 +47,7 @@ L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " detectou que você tem ícones ativados 
 
 L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Você pode baixá-lo no Curse, Wago, WoWI ou Github."
 L.MOD_MISSING						= "Sem módulo de raide"
+L.NOT_INSTALLED						= "Não instalado"
 
 L.COMBAT_STARTED					= "%s na mira. Boa sorte e divirta-se! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "Entrando em uma luta em progresso contra %s. Boa sorte e divirta-se! :)"
@@ -175,6 +176,7 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "%s foi completado %s! Eles tem um total de 
 L.WHISPER_SCENARIO_END_WIPE			= "%s não foi completado %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s não foi completado %s. Eles tem um total de %d vitórias parciais nesta dificuldade."
 
+L.DUNGEONS							= "Masmorras: "--prefix for dungeons version check
 L.VERSIONCHECK_HEADER				= "Módulo de chefe - Versões"
 L.VERSIONCHECK_ENTRY				= "%s: %s (%s)"
 L.VERSIONCHECK_ENTRY_TWO			= "%s: %s (%s) & %s (%s)"--Two Boss mods
