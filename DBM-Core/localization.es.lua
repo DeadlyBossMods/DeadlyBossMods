@@ -47,6 +47,7 @@ L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " ha detectado que tienes activados los icon
 
 L.MOD_AVAILABLE				= "El módulo de %s está disponible para este contenido. Puedes descargarlo a través de Curse, Wago, Github o WoWInterface."
 L.MOD_MISSING				= "Sin módulo de banda"
+L.NOT_INSTALLED				= "No instalado"
 
 L.COMBAT_STARTED				= "Encuentro de %s iniciado. ¡Buena suerte!"
 L.COMBAT_STARTED_IN_PROGRESS	= "Te has unido al encuentro de %s mientras estaba en curso. ¡Buena suerte!"
@@ -175,6 +176,7 @@ L.WHISPER_SCENARIO_END_KILL_STATS	= "¡%s ha completado %s! Tiene %d victorias e
 L.WHISPER_SCENARIO_END_WIPE			= "%s no ha completado %s."
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s no ha completado %s. Lo ha intentado sin éxito %d veces en total en esta dificultad."
 
+L.DUNGEONS					= "Mazmorras: "--prefix for dungeons version check
 L.VERSIONCHECK_HEADER		= "Módulos de jefe - Versiones"
 L.VERSIONCHECK_ENTRY		= "%s: %s (r%d)"--One Boss mod
 L.VERSIONCHECK_ENTRY_TWO	= "%s: %s (r%d) y %s (r%d)"--Two Boss mods

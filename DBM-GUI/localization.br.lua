@@ -674,6 +674,7 @@ L.ExportTestFailedNonAnonString = "AVISO: A cadeia %q parece não estar anonimiz
 L.CreatedTest 					= "Teste criado com %d eventos em %.1f segundos."
 L.NoLogsFound 					= "A importação de Transcriptor não contém dados de registro."
 L.NoTestDataAvailable 			= "Nenhum dado de teste disponível"
+L.TestDataLoading				= "Carregando testes..."
 L.NoLogSelected 				= "Criação de teste falhou: Nenhum registro selecionado."
 L.LogAlreadyImported 			= "Criação de teste falhou: Teste já importado."
 
