@@ -153,7 +153,7 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local addUsedMarks = {}
 --S3
-mod.vb.egoCheckCount = 0
+mod.vb.egocheckCount = 0
 mod.vb.egocheckSubCount = 0
 --Mythic
 mod.vb.mayhemRocketsCount = 0
@@ -427,7 +427,7 @@ function mod:OnCombatStart(delay)
 	self.vb.coilsCount = 0
 	self.vb.gigaBlastCount = 0
 	self.vb.meltdownCount = 0
-	self.vb.egoCheckCount = 0
+	self.vb.egocheckCount = 0
 	--Reset all Subcounts
 	self.vb.canistersSubCount = 0
 	self.vb.bombsSubCount = 0
@@ -694,7 +694,7 @@ function mod:SPELL_CAST_START(args)
 			DBM:AddMsg("Tick Tock Canister timer not found for coil count "..self.vb.coilsCount.." "..self.vb.canistersSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
 	elseif spellId == 466958 then
-		self.vb.egoCheckCount = self.vb.egoCheckCount + 1
+		self.vb.egocheckCount = self.vb.egocheckCount + 1
 		self.vb.egocheckSubCount = self.vb.egocheckSubCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEgoCheck:Show()
@@ -711,7 +711,7 @@ function mod:SPELL_CAST_START(args)
 			timer = allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount+1]
 		end
 		if timer and timer ~= 0 then
-			timerEgoCheckCD:Start(timer, self.vb.egoCheckCount+1)
+			timerEgoCheckCD:Start(timer, self.vb.egocheckCount+1)
 		elseif not self:IsMythic() and self.vb.coilsCount > 0 and not allTimers[savedDifficulty][self.vb.phase][spellId][self.vb.coilsCount][self.vb.egocheckSubCount] then
 			DBM:AddMsg("Ego Check timer not found for coil count "..self.vb.coilsCount.." "..self.vb.egocheckSubCount .. " Please report to DBM authors with a lot of this pull")
 		end
@@ -971,7 +971,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.heatCount = 0
 		self.vb.coilsCount = 0
 		self.vb.gigaBlastCount = 0
-		self.vb.egoCheckCount = 0
+		self.vb.egocheckCount = 0
 		--Reset all Subcounts
 		self.vb.canistersSubCount = 0
 		self.vb.bombsSubCount = 0
