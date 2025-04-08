@@ -26,12 +26,11 @@ jobs:
           args: "--no-color -q"
           path:  ${{ github.workspace }}/workspace
 
-      - name: LuaLS globals check
+      - name: LuaLS check
         uses: DeadlyBossMods/LuaLS-config@main
         with:
           luals-check-dir: ${{ github.workspace }}/workspace
-          # Do not use --num_threads here, multi-processing is slower when only a few checks are enabled
-          extra-args: "--only_check_globals"
+          extra-args: "--num_threads 4"
 
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
