@@ -125,6 +125,8 @@ L.LogCurrentMPlus					= "Current level (or remix) M+ dungeons"--Retail Only
 L.LogCurrentMythicZero				= "Current level (or remix) Mythic 0 dungeons"--Retail Only
 L.LogTWDungeons						= "Timewalking or Chromie Time dungeons (does NOT include remix)"--Retail Only
 L.LogCurrentHeroic					= "Current level Heroic dungeons (Note: if you are doing heroic via queuing and want it logged, turn off LFG filter)"
+L.LogDelves							= "Current level Delves"--Retail Only
+L.LogChallenges						= "Current level special challenges (such as Torghast, Visions, and Mage Tower)"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures				= "Extra Features"

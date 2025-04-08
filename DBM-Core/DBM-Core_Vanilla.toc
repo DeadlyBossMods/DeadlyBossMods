@@ -1,4 +1,4 @@
-## Interface: 11505, 11506
+## Interface: 11507
 ## X-Min-Interface: 11503
 ## Category: DBM
 ## Group: DBM-Core
