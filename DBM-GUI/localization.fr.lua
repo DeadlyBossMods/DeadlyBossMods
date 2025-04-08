@@ -656,6 +656,7 @@ L.ExportTestFailedNonAnonString 	= "AVERTISSEMENT : La chaîne %q semble ne pas 
 L.CreatedTest						= "Test créé avec %d événements en %.1f secondes."
 L.NoLogsFound						= "L'importation de Transcriptor ne contient pas de données de journal."
 L.NoTestDataAvailable				= "Aucune donnée de test disponible"
+L.TestDataLoading					= "Chargement des tests..."
 L.NoLogSelected						= "Échec de la création du test : Aucun journal sélectionné."
 L.LogAlreadyImported				= "Échec de la création du test : Test déjà importé."
 
