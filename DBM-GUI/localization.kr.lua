@@ -124,6 +124,8 @@ L.LogCurrentMPlus			= "현재 확장팩 (또는 리믹스) 신화+ 던전"--Reta
 L.LogCurrentMythicZero		= "현재 확장팩 (또는 리믹스) 신화 0단 던전"--Retail Only
 L.LogTWDungeons				= "시간여행 또는 크로미의 시간 던전 (리믹스 제외)"--Retail Only
 L.LogCurrentHeroic			= "현재 확장팩 영웅 던전 (알림: 던전 찾기를 통해 영던을 돌면서 로그를 기록하고 싶다면 던전 찾기 기록 안함 옵션을 끄세요)"
+L.LogDelves					= "현재 레벨 구렁"--Retail Only
+L.LogChallenges					= "현재 레벨 특수한 도전 (토르가스트, 환영, 마법사 탑 등)"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "기타 기능"
