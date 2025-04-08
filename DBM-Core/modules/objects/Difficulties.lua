@@ -25,7 +25,7 @@ local groupSize = 0
 
 
 --[InstanceID] = {level,zoneType}
---zoneType: 1 = outdoor, 2 = dungeon, 3 = raid
+--zoneType: 1 = outdoor, 2 = dungeon, 3 = raid, 4 = delves, 5 = player challenges
 local instanceDifficultyBylevel, seasonalDungeons
 if private.isRetail then
 	instanceDifficultyBylevel = {
@@ -65,6 +65,8 @@ if private.isRetail then
 		[2652] = {80, 2}, [2662] = {80, 2}, [2660] = {80, 2}, [2669] = {80, 2}, [2651] = {80, 2}, [2649] = {80, 2}, [2648] = {80, 2}, [2661] = {80, 2}, [2773] = {80, 2},--War Within Dungeons
 		--Delves
 		[2664] = {80, 4}, [2679] = {80, 4}, [2680] = {80, 4}, [2681] = {80, 4}, [2682] = {80, 4}, [2683] = {80, 4}, [2684] = {80, 4}, [2685] = {80, 4}, [2686] = {80, 4}, [2687] = {80, 4}, [2688] = {80, 4}, [2689] = {80, 4}, [2690] = {80, 4}, [2767] = {80, 4}, [2768] = {80, 4}, [2831] = {80, 4}, [2815] = {80, 4}, [2826] = {80, 4}, --War Within Delves
+		--Challenges (Mage tower, visions, torghast, proving grounds)
+		[2212] = {50, 5}, [2213] = {50, 5}, [2827] = {80, 5}, [2828] = {80, 5}, [2162]= {80, 5}, [1148] = {80, 5}, [1698] = {80, 5}, [1710] = {80, 5}, [1703] = {80, 5}, [1702] = {80, 5}, [1684] = {80, 5}, [1673] = {80, 5}, [1616] = {80, 5},
 	}
 	seasonalDungeons = {[2652]={80, 2}, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}--TWW Season 1
 elseif private.isCata then--Since 2 dungeons were changed from vanilla to cata dungeons, it has it's own table and it's NOT using retail table cause the dungeons reworked in Mop are still vanilla dungeons in classic (plus diff level caps)
@@ -571,6 +573,16 @@ function DBM:IsLogableContent(force)
 	end
 	--Current level Heroic dungeon
 	if self.Options.LogCurrentHeroic and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 2) and (difficulties.difficultyIndex == 2 or difficulties.difficultyIndex == 174) then
+		return true
+	end
+
+	--Current level delve
+	if self.Options.LogDelves and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 4) then
+		return true
+	end
+
+	--Current level Challenges
+	if self.Options.LogChallenges and instanceDifficultyBylevel[lastInstanceMapId] and not self:IsTrivial() and (instanceDifficultyBylevel[lastInstanceMapId][2] == 5) then
 		return true
 	end
 

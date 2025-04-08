@@ -26,5 +26,7 @@ if isRetail then
 	bossLoggingContent:CreateCheckButton(L.LogCurrentMPlus, true, nil, "LogCurrentMPlus")
 	bossLoggingContent:CreateCheckButton(L.LogCurrentMythicZero, true, nil, "LogCurrentMythicZero")
 	bossLoggingContent:CreateCheckButton(L.LogTWDungeons, true, nil, "LogTWDungeons")
+	bossLoggingContent:CreateCheckButton(L.LogDelves, true, nil, "LogDelves")
+	bossLoggingContent:CreateCheckButton(L.LogChallenges, true, nil, "LogChallenges")
 end
 bossLoggingContent:CreateCheckButton(L.LogCurrentHeroic, true, nil, "LogCurrentHeroic")
