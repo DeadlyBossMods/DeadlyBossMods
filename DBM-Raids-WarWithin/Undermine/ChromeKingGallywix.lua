@@ -892,7 +892,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][0][1], 1)
 			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
-			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			if not self:IsLFR() then
+				timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
 			if self:IsHard() then
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][0][1], 1)
