@@ -239,7 +239,7 @@ function timerPrototype:Start(timer, ...)
 		for i = 1, select("#", ...) do
 			local v = select(i, ...)
 			if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-				guid = v--If found, guid will be passed in DBM_TimerStart callback
+				guid = v--If found, guid will be passed in DBM_TimerBegin callback
 			end
 			--Not most efficient way to do it, but since it's already being done for guid, it's best not to repeat the work
 			if isCountTimer and type(v) == "number" then
@@ -439,7 +439,7 @@ function timerPrototype:Start(timer, ...)
 	--spellId (string or number): Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
 	--colorID (number): Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
 	--Mod ID (string or number): Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-	--Keep (true or nil), whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens (in which case you replace bar with new one)
+	--Keep (true or nil), whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerBegin with same barId happens (in which case you replace bar with new one)
 	--fade (true or nil), whether or not to fade a bar (set alpha to usersetting/2)
 	--spellName (string) Sent so users can use a spell name instead of spellId, if they choose. Mostly to be more classic wow friendly, spellID is still preferred method (even for classic)
 	--MobGUID (string) if it could be parsed out of args
@@ -463,7 +463,7 @@ function timerPrototype:Start(timer, ...)
 		end
 	else--Send both callbacks
 		DBM:FireEvent("DBM_TimerBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
-		if isBarEnabled then
+		if isBarEnabled then--Deprecated. Remove in 11.2
 			DBM:FireEvent("DBM_TimerStart", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
 		end
 		if guid then--But nameplate is only sent if actual GUID
@@ -636,7 +636,7 @@ function timerPrototype:Stop(...)
 				for j = 1, select("#", ...) do
 					local v = select(j, ...)
 					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-						guid = v--If found, guid will be passed in DBM_TimerStart callback
+						guid = v--If found, guid will be passed in DBM_TimerBegin callback
 					end
 				end
 				--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1

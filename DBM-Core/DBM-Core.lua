@@ -1973,7 +1973,7 @@ do
 	--- |"DBM_SetStage"
 	--- |"DBM_AffixEvent"
 	--- |"DBM_TimerBegin"
-	--- |"DBM_TimerStart"
+	--- |"DBM_TimerStart" Deprecated
 	--- |"DBM_TimerStop"
 	--- |"DBM_TimerFadeUpdate"
 	--- |"DBM_TimerUpdate"
