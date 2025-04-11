@@ -430,6 +430,11 @@ function DBM:GetCurrentInstanceDifficulty()
 					difficultyName = PLAYER_DIFFICULTY2
 				end
 			end
+			local scarletEnclaveModifier = select(3, self:UnitDebuff("player", 1232014))
+			if scarletEnclaveModifier == 0 then scarletEnclaveModifier = 1 end
+			if scarletEnclaveModifier then
+				modifierLevel = scarletEnclaveModifier
+			end
 		end
 		if modifierLevel == 0 then
 			return difficultyId, difficultyName .. " - ", difficulty, instanceGroupSize, 0

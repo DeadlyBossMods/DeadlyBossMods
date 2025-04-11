@@ -775,6 +775,11 @@ function test:Playback(testData, timeWarp, testOptions)
 					self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 1218283, DBM:GetSpellName(1218283), "DEBUFF", modifier)
 				end
 			end
+		elseif testData.instanceInfo.instanceID == 2856 then -- Scarlet Enclave
+			local modifier = testData.instanceInfo.difficultyModifier
+			if modifier and modifier > 0 then
+				self.Mocks:ApplyUnitAura(UnitName("player"), UnitGUID("player"), 1232014, DBM:GetSpellName(1218275), "DEBUFF", modifier)
+			end
 		end
    end
 	local maxTimestamp = testData.log[#testData.log][1]
