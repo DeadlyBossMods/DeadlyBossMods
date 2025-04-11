@@ -219,7 +219,7 @@ local allTimers = {
 				[1] = {24},
 				[2] = {8.8},
 				[3] = {0},
-				[4] = {0},
+				[4] = {7.6, 35.0},
 				[5] = {0},
 			},
 			[466751] = {--Venting Heat
@@ -250,7 +250,7 @@ local allTimers = {
 				[5] = {0},
 			},
 			[1214607] = {--BBB Blast
-				[0] = {8, 36},
+				[0] = {"v5-8", 36},
 				[1] = {30.7},
 				[2] = {18.5, "v26-35"},--26-35
 				[3] = {"v19.7-23.1"},--(Collision with Venting Heat)
@@ -892,7 +892,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][3][469286][1], 1)
 			timerSuppressionCD:Start(allTimers[savedDifficulty][3][467182][0][1], 1)
 			timerBBBBlastCD:Start(allTimers[savedDifficulty][3][1214607][0][1], 1)
-			timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			if not self:IsLFR() then
+				timerTickTockCanistersCD:Start(allTimers[savedDifficulty][3][466342][0][1], 1)
+			end
 			timerVentingHeatCD:Start(allTimers[savedDifficulty][3][466751][0][1], 1)
 			if self:IsHard() then
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][0][1], 1)

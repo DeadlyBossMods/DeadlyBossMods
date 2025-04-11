@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
 	"UNIT_POWER_UPDATE player",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, finetune crash audio to match watch wave instead of it's more prominant than the lightning bolts
@@ -49,6 +49,7 @@ local specWarnColossalClash							= mod:NewSpecialWarningDodgeCount(465833, nil,
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1214039, nil, nil, nil, 1, 8)
 
 local timerColossalClashCD							= mod:NewNextCountTimer(95, 465833, nil, nil, nil, 6)
+local timerClashDuration							= mod:NewBuffActiveTimer(20, 465833, nil, nil, nil, 6)
 --local timerTinyTussleCD								= mod:NewAITimer(95, 1221826, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnRaisedGuard", 471660, true)
@@ -65,7 +66,7 @@ local yellMoltenPhlegmFades							= mod:NewShortFadesYell(1213690)
 local specWarnBlastburnRoarcannon					= mod:NewSpecialWarningMoveAway(472233, nil, 173303, nil, 3, 2)
 local yellBlastburnRoarcannon						= mod:NewShortYell(472233, 173303)
 local yellBlastburnRoarcannonFades					= mod:NewShortFadesYell(472233)
-local specWarnEruptionStomp							= mod:NewSpecialWarningDodgeCount(1214190, nil, 247733, nil, 1, 2)
+local specWarnEruptionStomp							= mod:NewSpecialWarningDefensive(1214190, nil, 247733, nil, 1, 2)
 
 local timerScrapBombCD								= mod:NewCDCountTimer(97.3, 473650, 37859, nil, nil, 3)--"Bomb" shortname
 local timerMoltenPhlegmCD							= mod:NewCDCountTimer(97.3, 1213690, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
@@ -177,34 +178,34 @@ local function updateBossDistance(self)
 	if self:CheckBossDistance(229177, true, 32825, 60) then
 		if not nearTorq then
 			nearTorq = true
-			timerScrapBombCD:SetFade(true, self.vb.scrapbombCount+1)
-			timerBlastburnRoarcannonCD:SetFade(true, self.vb.cannonCount+1)
-			timerEruptionStompCD:SetFade(true, self.vb.stompCount+1)
+			timerStaticChargeCD:SetFade(false, self.vb.staticChargeCount+1)
+			timerThunderdrumSalvoCD:SetFade(false, self.vb.salvoCount+1)
+			timerVoltaicImageCD:SetFade(false, self.vb.imagesCount+1)
+			timerLightningBashCD:SetFade(false, self.vb.bashCount+1)
 		end
 	else
 		if nearTorq then
 			nearTorq = false
-			timerScrapBombCD:SetFade(false, self.vb.scrapbombCount+1)
-			timerBlastburnRoarcannonCD:SetFade(false, self.vb.cannonCount+1)
-			timerEruptionStompCD:SetFade(false, self.vb.stompCount+1)
+			timerStaticChargeCD:SetFade(true, self.vb.staticChargeCount+1)
+			timerThunderdrumSalvoCD:SetFade(true, self.vb.salvoCount+1)
+			timerVoltaicImageCD:SetFade(true, self.vb.imagesCount+1)
+			timerLightningBashCD:SetFade(true, self.vb.bashCount+1)
 		end
 	end
 	--Check if near or far from Flarendo
 	if self:CheckBossDistance(229181, true, 32825, 60) then
 		if not nearFlare then
 			nearFlare = true
-			timerStaticChargeCD:SetFade(true, self.vb.staticChargeCount+1)
-			timerThunderdrumSalvoCD:SetFade(true, self.vb.salvoCount+1)
-			timerVoltaicImageCD:SetFade(true, self.vb.imagesCount+1)
-			timerLightningBashCD:SetFade(true, self.vb.bashCount+1)
+			timerScrapBombCD:SetFade(false, self.vb.scrapbombCount+1)
+			timerBlastburnRoarcannonCD:SetFade(false, self.vb.cannonCount+1)
+			timerEruptionStompCD:SetFade(false, self.vb.stompCount+1)
 		end
 	else
 		if nearFlare then
 			nearFlare = false
-			timerStaticChargeCD:SetFade(false, self.vb.staticChargeCount+1)
-			timerThunderdrumSalvoCD:SetFade(false, self.vb.salvoCount+1)
-			timerVoltaicImageCD:SetFade(false, self.vb.imagesCount+1)
-			timerLightningBashCD:SetFade(false, self.vb.bashCount+1)
+			timerScrapBombCD:SetFade(true, self.vb.scrapbombCount+1)
+			timerBlastburnRoarcannonCD:SetFade(true, self.vb.cannonCount+1)
+			timerEruptionStompCD:SetFade(true, self.vb.stompCount+1)
 		end
 	end
 	self:Schedule(2, updateBossDistance, self)
@@ -238,7 +239,7 @@ function mod:OnCombatStart(delay)
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
-	timerColossalClashCD:Start(71.6-delay, 1)--Not tabled
+	timerColossalClashCD:Start(71.6-delay, 1)
 	--if self:IsMythic() then
 	--	timerTinyTussleCD:Start(1-delay)
 	--end
@@ -259,7 +260,6 @@ function mod:OnCombatStart(delay)
 	end
 	DBM:AddMsg("The Amalgamation Chamber was merely a setback")
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
-	self:Schedule(2, updateBossDistance, self)
 	--Reset Fades
 	timerScrapBombCD:SetFade(false, 1)
 	timerBlastburnRoarcannonCD:SetFade(false, 1)
@@ -272,6 +272,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellName(473994))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 1)--Sorting highest to lowest
 	end
+	self:Schedule(2, updateBossDistance, self)
 end
 
 function mod:OnCombatEnd()
@@ -325,8 +326,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stompCount = self.vb.stompCount + 1
 		self.vb.stompTimerCount = self.vb.stompTimerCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
-			specWarnEruptionStomp:Show(self.vb.stompCount)
-			specWarnEruptionStomp:Play("watchstep")
+			specWarnEruptionStomp:Show()
+			specWarnEruptionStomp:Play("defensive")
 		end
 		if self.vb.crashGone then
 			timerEruptionStompCD:Start(30, self.vb.stompCount+1)
@@ -452,6 +453,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.salvoTimerCount = 0
 		self.vb.imagesTimerCount = 0
 		self.vb.bashTimerCount = 0
+		timerClashDuration:Stop()
 		--Restart timers
 		--Flarendo the Furious
 		timerScrapBombCD:Start(allTimers[savedDifficulty][473650][1], self.vb.scrapbombCount+1)
@@ -563,6 +565,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerThunderdrumSalvoCD:Stop()
 		timerVoltaicImageCD:Stop()
 		timerLightningBashCD:Stop()
+		timerClashDuration:Start(24)
 	--elseif spellId == 1215933 and self:AntiSpam(5, 2) then
 	--	self.vb.tussleCount = self.vb.tussleCount + 1
 	--	warnTinyTussle:Show(self.vb.tussleCount)
