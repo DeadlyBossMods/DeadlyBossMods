@@ -156,6 +156,12 @@ local popupData = {
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-old-dungeon-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-dungeons",
 		useFriendlyMessage = true
+	},
+	Challenges = {
+		package = L.DBM_INSTALL_PACKAGE_CHALLENGES,
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-challenges",
+		curseUrl = "https://www.curseforge.com/wow/addons/dbm-challenges",
+		useFriendlyMessage = true
 	}
 }
 
@@ -221,15 +227,20 @@ local annoyingPopupZonesCata = {
 }
 
 local annoyingPopupZonesRetail = {
-	--TWW Season 1 M+ Dungeons
-	[2652]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2662]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2660]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2669]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[670]   = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[1822]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2286]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2290]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
+	--TWW Season 2 M+ Dungeons
+	[2651]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2649]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2648]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2661]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[1594]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2097]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2293]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	[2773]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
+	--Visions Revisited (TWW)
+	[2828]  = {addon = "DBM-Challenges", package = "Challenges"},  -- Vision of Orgrimmar Revisited
+	[2827]  = {addon = "DBM-Challenges", package = "Challenges"},  -- Vision of Stormwind Revisited
+	--Mage Tower
+
 }
 
 function DBM:ShowAnnoyingPopup(zoneInfo, zone)

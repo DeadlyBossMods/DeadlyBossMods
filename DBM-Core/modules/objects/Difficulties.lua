@@ -68,7 +68,7 @@ if private.isRetail then
 		--Challenges (Mage tower, visions, torghast, proving grounds)
 		[2212] = {50, 5}, [2213] = {50, 5}, [2827] = {80, 5}, [2828] = {80, 5}, [2162]= {80, 5}, [1148] = {80, 5}, [1698] = {80, 5}, [1710] = {80, 5}, [1703] = {80, 5}, [1702] = {80, 5}, [1684] = {80, 5}, [1673] = {80, 5}, [1616] = {80, 5},
 	}
-	seasonalDungeons = {[2652]={80, 2}, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}--TWW Season 1
+	seasonalDungeons = {[2651]=true, [2649]=true, [2648]=true, [2661]=true, [1594]=true, [2097]=true, [2293]=true, [2773]=true,}--TWW Season 2
 elseif private.isCata then--Since 2 dungeons were changed from vanilla to cata dungeons, it has it's own table and it's NOT using retail table cause the dungeons reworked in Mop are still vanilla dungeons in classic (plus diff level caps)
 	instanceDifficultyBylevel = {
 		--World
@@ -156,7 +156,7 @@ function DBM:GetModifierLevel()
 end
 
 function difficulties:InstanceType(instanceId)
-	return instanceDifficultyBylevel[instanceId] and instanceDifficultyBylevel[instanceId][2]
+	return instanceDifficultyBylevel[instanceId] and instanceDifficultyBylevel[instanceId][2] or 0
 end
 
 function difficulties:IsSeasonalDungeon(instanceId)
