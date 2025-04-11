@@ -84,7 +84,7 @@ local function eventToString(event, includeTimestamp)
 		else
 			summary = sourceName
 		end
-		if eventName:match("^SPELL_") and spellName and summary then
+		if (eventName:match("^SPELL_") or eventName == "DAMAGE_SHIELD" or event == "DAMAGE_SHIELD_MISSED") and spellName and summary then
 			summary = summary .. ": " .. spellName
 		end
 	elseif event[2] == "ExecuteScheduledTask" then
