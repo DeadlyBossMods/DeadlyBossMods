@@ -7581,7 +7581,7 @@ function DBM:AntiSpam(time, id, targetName)
 		-- The actual point of this is tests: targetName may refer to the real player replaying the log due to combat log rewriting and hence needs to be filtered in the report.
 		id = id .. " on " .. targetName
 	end
-	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or 0) > (time or 2.5) then
+	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or -math.huge) > (time or 2.5) then
 		self["lastAntiSpam" .. tostring(id)] = GetTime()
 		test:Trace(self, "AntiSpam", id, targetName or false, true)
 		return true
