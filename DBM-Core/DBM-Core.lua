@@ -79,13 +79,13 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 378, "fc82835"--378.7
+local fakeBWVersion, fakeBWHash = 381, "a9af3b7"--381.2
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.1.16 alpha"--Core version
+DBM.DisplayVersion = "11.1.17 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 4, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 4, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 17--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1222,7 +1222,7 @@ do
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" then
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
 				registerCLEUEvent(self, event)
 			else
 				local eventWithArgs = event
@@ -1297,7 +1297,7 @@ do
 					end
 					i = i + 1
 				end
-			elseif (event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_") then
+			elseif (event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED") then
 				local i = 1
 				while mods[i] do
 					if mods[i] == self and (srmIncluded or event ~= "SPELL_AURA_REMOVED") then
@@ -1358,7 +1358,7 @@ do
 		if self.shortTermRegisterEvents then
 			DBM:Debug("UnregisterShortTermEvents found registered shortTermRegisterEvents", 2)
 			for event, mods in pairs(registeredEvents) do
-				if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+				if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
 					local i = 1
 					while mods[i] do
 						if mods[i] == self then
@@ -1417,13 +1417,15 @@ do
 		SPELL_PERIODIC_LEECH = true,
 		SPELL_DRAIN = true,
 		SPELL_LEECH = true,
-		SPELL_CAST_FAILED = true
+		SPELL_CAST_FAILED = true,
+		DAMAGE_SHIELD = true,
+		DAMAGE_SHIELD_MISSED = true
 	}
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED()
 		local timestamp, event, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10 = CombatLogGetCurrentEventInfo()
 		if not event or not registeredEvents[event] then return end
 		local eventSub6 = event:sub(0, 6)
-		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] and registeredSpellIds[event] then
+		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_" or event == "DAMAGE_SHIELD" or event == "DAMAGE_SHIELD_MISSED") and not unfilteredCLEUEvents[event] and registeredSpellIds[event] then
 			if not registeredSpellIds[event][extraArg1] then return end
 		end
 		-- process some high volume events without building the whole table which is somewhat faster
@@ -3808,7 +3810,7 @@ end
 do
 	local pvpShown = false
 	local dungeonShown = false
-	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true, [2791] = true, [2792] = true, [2832] = true,}
+	local classicZones = {[509] = true, [531] = true, [469] = true, [409] = true, [2791] = true, [2792] = true, [2832] = true, [2856] = true,}
 	local bcZones = {[534] = true, [532] = true, [544] = true, [548] = true, [550] = true, [564] = true, [565] = true, [580] = true}
 	local wrathZones = {[615] = true, [724] = true, [649] = true, [616] = true, [631] = true, [533] = true, [249] = true, [603] = true, [624] = true}
 	local cataZones = {[757] = true, [671] = true, [669] = true, [967] = true, [720] = true, [951] = true, [754] = true}
@@ -3818,7 +3820,7 @@ do
 	local bfaZones = {[1861] = true, [2070] = true, [2096] = true, [2164] = true, [2217] = true}
 	local shadowlandsZones = {[2296] = true, [2450] = true, [2481] = true}
 	local dragonflightZones = {[2522] = true, [2569] = true, [2549] = true}
-	local challengeScenarios = {[1148] = true, [1698] = true, [1710] = true, [1703] = true, [1702] = true, [1684] = true, [1673] = true, [1616] = true, [2215] = true}
+	local importantChallenges = {2827, 2828}--TWW visions revsited
 	local pvpZones = {[30] = true, [489] = true, [529] = true, [559] = true, [562] = true, [566] = true, [572] = true, [617] = true, [618] = true, [628] = true, [726] = true, [727] = true, [761] = true, [968] = true, [980] = true, [998] = true, [1105] = true, [1134] = true, [1170] = true, [1504] = true, [1505] = true, [1552] = true, [1681] = true, [1672] = true, [1803] = true, [1825] = true, [1911] = true, [2106] = true, [2107] = true, [2118] = true, [2167] = true, [2177] = true, [2197] = true, [2245] = true, [2373] = true, [2509] = true, [2511] = true, [2547] = true, [2563] = true}
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
@@ -3827,9 +3829,9 @@ do
 		--If they've disabled reminders, don't nag
 		if _G["BigWigs"] or not self.Options.ShowReminders then return end
 		if not self:IsTrivial() or difficulties:IsSeasonalDungeon(LastInstanceMapID) then
-			--Dungeon Handling
 			local checkedDungeon = private.isRetail and "DBM-Party-WarWithin" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
-			if (difficulties:InstanceType(LastInstanceMapID) == 2) then
+			--Dungeon Handling
+			if (difficulties:InstanceType(LastInstanceMapID) == 2) or (difficulties:InstanceType(LastInstanceMapID) == 4) then--Dungeon or Delve
 				--if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
 				--	AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, private.isRetail or private.isCata)
 				--	dungeonShown = true
@@ -3842,7 +3844,7 @@ do
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
 				else--Show a general message not a popup (Basically tbc, wrath, cata dungeons
 					if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-						AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"), nil, private.isRetail or private.isCata)
+						AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeons, Delves, & Events mods"), nil, private.isRetail or private.isCata)
 						dungeonShown = true
 					end
 				end
@@ -3904,8 +3906,12 @@ do
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dragonflight mods"), nil, true)--Will use play sound for now, since it's not trivial enough to be silent yet
 			end
 		end
-		if challengeScenarios[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
-			AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"), nil, true)
+		if (difficulties:InstanceType(LastInstanceMapID) == 5) and not C_AddOns.DoesAddOnExist("DBM-Challenges") then--No trivial check on challenge scenarios
+			if importantChallenges[LastInstanceMapID] then
+				self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
+			else
+				AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"), nil, true)
+			end
 		end
 		if pvpZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-PvP") and not pvpShown then
 			AddMsg(self, L.MOD_AVAILABLE:format("DBM-PvP"), nil, true)
@@ -7579,7 +7585,7 @@ function DBM:AntiSpam(time, id, targetName)
 		-- The actual point of this is tests: targetName may refer to the real player replaying the log due to combat log rewriting and hence needs to be filtered in the report.
 		id = id .. " on " .. targetName
 	end
-	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or 0) > (time or 2.5) then
+	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or -math.huge) > (time or 2.5) then
 		self["lastAntiSpam" .. tostring(id)] = GetTime()
 		test:Trace(self, "AntiSpam", id, targetName or false, true)
 		return true
