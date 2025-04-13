@@ -115,14 +115,16 @@ L.RecordOnlyBosses					= "Ne pas enregistrer les trash"
 L.DoNotLogLFG						= "Ne pas enregistrer les contenus en file d'attente (Recherche de groupe)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
-L.LogCurrentMythicRaids				= "Raids mythiques du niveau actuel (ou remix)" --Retail Only
-L.LogCurrentRaids					= "Raids non mythiques du niveau actuel (ou remix) (Héroïque, Normal, et LFR si le filtre Recherche de groupe est désactivé)"
-L.LogTWRaids						= "Raids de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
+L.LogCurrentMythicRaids				= "Raids mythiques du niveau actuel" --Retail Only
+L.LogCurrentRaids					= "Raids non mythiques du niveau actuel (Héroïque, Normal, et LFR si le filtre Recherche de groupe est désactivé)"
+L.LogTWRaids						= "Raids de Marcheurs du temps ou de Temps de Chromie" --Retail Only
 L.LogTrivialRaids					= "Raids triviaux (au-dessous du niveau du personnage)"
-L.LogCurrentMPlus					= "Donjons M+ du niveau actuel (ou remix)" --Retail Only
-L.LogCurrentMythicZero				= "Donjons Mythique 0 du niveau actuel (ou remix)" --Retail Only
-L.LogTWDungeons						= "Donjons de Marcheurs du temps ou de Temps de Chromie (n'inclut PAS le remix)" --Retail Only
+L.LogCurrentMPlus					= "Donjons M+ du niveau actuel" --Retail Only
+L.LogCurrentMythicZero				= "Donjons Mythique 0 du niveau actuel" --Retail Only
+L.LogTWDungeons						= "Donjons de Marcheurs du temps ou de Temps de Chromie" --Retail Only
 L.LogCurrentHeroic					= "Donjons héroïques du niveau actuel (Remarque : si vous faites de l'héroïque via la file d'attente et souhaitez l'enregistrer, désactivez le filtre Recherche de groupe)"
+L.LogDelves							= "Expéditions du niveau actuel"--Retail Only
+L.LogChallenges						= "Défis spéciaux du niveau actuel"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
