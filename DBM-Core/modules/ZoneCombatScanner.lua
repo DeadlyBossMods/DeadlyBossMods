@@ -90,7 +90,7 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, 0, foundUnit)
+					self:StartEngageTimers(guid, cid, delay, foundUnit)
 					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
 					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, foundUnit)
 				end
@@ -240,7 +240,7 @@ function module:ENCOUNTER_END()
 	end
 end
 
-function module:OnSync(sender, guid, cid)
+function module:OnSync(_, guid, cid)
 	if not ActiveGUIDs[guid] then
 		ActiveGUIDs[guid] = true
 		lastUsedMod:StartEngageTimers(guid, cid, 0)
