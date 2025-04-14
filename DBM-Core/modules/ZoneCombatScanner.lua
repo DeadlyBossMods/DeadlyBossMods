@@ -42,7 +42,7 @@ local function ScanEngagedUnits(self, delay)
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
 				self:StartEngageTimers(guid, cid, delay, "mouseover")
-				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "mouseover")
 			end
 		end
 	end
@@ -54,7 +54,7 @@ local function ScanEngagedUnits(self, delay)
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
 				self:StartEngageTimers(guid, cid, delay, "softenemy")
-				DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "softenemy")
 			end
 		end
 	end
@@ -69,7 +69,7 @@ local function ScanEngagedUnits(self, delay)
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
 					self:StartEngageTimers(guid, cid, delay, id)
-					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, uId)
 					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
 					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
 						private.sendSync(private.DBMSyncProtocol, "ZC", guid .. "\t" .. cid, "ALERT")
@@ -87,8 +87,8 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, 0, foundUnit)
-					DBM:Debug("Firing Engaged Unit for "..guid..". Scantime: "..delay, 3, nil, true)
+					self:StartEngageTimers(guid, cid, delay, foundUnit)
+					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, foundUnit)
 				end
 			end
 		end
@@ -236,7 +236,7 @@ function module:ENCOUNTER_END()
 	end
 end
 
-function module:OnSync(sender, guid, cid)
+function module:OnSync(_, guid, cid)
 	if not ActiveGUIDs[guid] then
 		ActiveGUIDs[guid] = true
 		lastUsedMod:StartEngageTimers(guid, cid, 0)

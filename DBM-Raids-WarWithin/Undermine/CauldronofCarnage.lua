@@ -239,7 +239,7 @@ function mod:OnCombatStart(delay)
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
-	timerColossalClashCD:Start(71.6-delay, 1)
+	timerColossalClashCD:Start("v70-71.6", 1)
 	--if self:IsMythic() then
 	--	timerTinyTussleCD:Start(1-delay)
 	--end

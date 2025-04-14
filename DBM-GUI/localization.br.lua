@@ -114,14 +114,16 @@ L.RecordOnlyBosses 					= "Registrar apenas encontros contra chefes"
 L.DoNotLogLFG 						= "Não registrar encontros de procurando grupo"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent 			= "Conteúdo de registro automático"
-L.LogCurrentMythicRaids 			= "Raides atuais de nível Mítico (ou remix)" -- Retail Only
-L.LogCurrentRaids 					= "Raides não mítica atuais (heróicos e normal se o filtro Procurando grupo estiver desativado)"
-L.LogTWRaids 						= "Raides de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
+L.LogCurrentMythicRaids 			= "Raides míticas do nível atual" -- Retail Only
+L.LogCurrentRaids 					= "Raides não míticas do nível atual (heróicos e normal se o filtro Procurando grupo estiver desativado)"
+L.LogTWRaids 						= "Raides de Caminhada Temporal ou Tempo de Crona" -- Retail Only
 L.LogTrivialRaids 					= "Raides triviais (abaixo do nível do personagem)"
-L.LogCurrentMPlus 					= "Masmorras M+ atuais de nível (ou remix)" -- Retail Only
-L.LogCurrentMythicZero 				= "Masmorras Míticas 0 atuais de nível (ou remix)" -- Retail Only
-L.LogTWDungeons 					= "Masmorras de Caminhada Temporal ou Tempo de Crona (não inclui remix)" -- Retail Only
-L.LogCurrentHeroic 					= "Masmorras heroicas atuais de nível (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro Procurando grupo)"
+L.LogCurrentMPlus 					= "Masmorras M+ do nível atual" -- Retail Only
+L.LogCurrentMythicZero 				= "Masmorras Míticas 0 do nível atual" -- Retail Only
+L.LogTWDungeons 					= "Masmorras de Caminhada Temporal ou Tempo de Crona" -- Retail Only
+L.LogCurrentHeroic 					= "Masmorras heroicas do nível atual (Nota: se você estiver fazendo heroico via fila e quiser que seja registrado, desative o filtro Procurando grupo)"
+L.LogDelves							= "Imersões do nível atual"--Retail Only
+L.LogChallenges						= "Desafios especiais do nível atual"--Retail Only
 
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opções de cronômetro"

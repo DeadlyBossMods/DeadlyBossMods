@@ -1974,6 +1974,7 @@ do
 	--- |"DBM_Debug"
 	--- |"DBM_SetStage"
 	--- |"DBM_AffixEvent"
+	--- |"DBM_EnemyEngaged"
 	--- |"DBM_TimerBegin"
 	--- |"DBM_TimerStart" Deprecated
 	--- |"DBM_TimerStop"

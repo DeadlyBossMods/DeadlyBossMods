@@ -892,7 +892,8 @@ frame:SetScript("OnUpdate", function() test:OnUpdate() end)
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
----@field mod (string|integer)? The boss mod under test, optional, by default this is derived from the first ENCOUNTER_START or ENCOUNTER_END event in the log
+---@field mod (string|integer)? The boss mod under test, optional, either this or encounterId must be provided
+---@field encounterId integer? Encounter ID to derive the mod under test from, either this or mod must be provided
 ---@field otherMods ((string|integer)[]|(string|integer))? List of other mods that are allowed to trigger warnings/timers during test execution, useful for trash mods that are active during bosses.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
@@ -938,28 +939,12 @@ function test:OnAfterLoadAddOn()
 	end
 end
 
-
-local encounterIdCache = {}
-local function cachedEncounterId(testData)
-	if encounterIdCache[testData] then
-		return encounterIdCache[testData]
-	end
-	local encounterId
-	for _, v in ipairs(testData.log) do
-		if v[2] == "ENCOUNTER_START" or v[2] == "ENCOUNTER_END" then
-			encounterId = v[3]
-		end
-	end
-	encounterIdCache[testData] = encounterId or false
-	return encounterId
-end
-
 ---@param testData TestDefinition
 function test:GuessMod(testData)
 	if testData.mod then return end
-	local encounterId = cachedEncounterId(testData)
+	local encounterId = testData.encounterId
 	if not encounterId then
-		return
+		error("tests must set define a mod under test or an encounterId from which the mod can be derived")
 	end
 	local mod, modInOtherAddon
 	for _, v in ipairs(DBM.Mods) do
@@ -976,7 +961,7 @@ function test:GuessMod(testData)
 		if modInOtherAddon then
 			error("found mod for test " .. testData.name .. " in addon " .. modInOtherAddon.modId .. " but test specifies addon " .. testData.addon)
 		else
-			error("could not determine which mod is being tested by test " .. testData.name .. ", ensure the log contains ENCOUNTER_START/END events matching a mod's encounter id or set the field mod in the test definition")
+			error("could not determine which mod is being tested by test " .. testData.name .. ", make sure encounterId is set to an ID used by the mod under test or set the field mod explicitly")
 		end
 	end
 	testData.mod = tostring(mod.id)

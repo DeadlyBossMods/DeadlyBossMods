@@ -7,6 +7,7 @@ local CL = DBM_COMMON_L
 local DBMScheduler = private:GetModule("DBMScheduler")
 local stringUtils = private:GetPrototype("StringUtils")
 local checkEntry = private:GetPrototype("TableUtils").checkEntry
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")

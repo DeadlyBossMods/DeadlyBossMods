@@ -720,13 +720,15 @@ DBM.Test:DefineTest{
 	name = %s,
 	gameVersion = %s,
 	addon = %s,
-	mod = %s,
+	%s = %s,
 	instanceInfo = %s,]]
 
 function testGenerator:GetHeaderString()
 	local def = self:GetTestDefinition()
 	return headerTemplate:format(
-		literal(def.name), literal(def.gameVersion), literal(def.addon), literal(def.mod),
+		literal(def.name), literal(def.gameVersion), literal(def.addon),
+		def.encounterId and "encounterId" or "mod",
+		def.encounterId and literal(def.encounterId) or literal(def.mod),
 		instanceInfoLiteral(def.instanceInfo)
 	)
 end
@@ -770,6 +772,7 @@ function testGenerator:GetTestDefinition()
 		gameVersion = self.metadata.gameVersion,
 		addon = self:guessAddon(),
 		mod = self:guessMod(),
+		encounterId = self.metadata.encounterInfo.id,
 		instanceInfo = self.metadata.instanceInfo,
 		perspective = self.metadata.player,
 		players = resultPlayers,

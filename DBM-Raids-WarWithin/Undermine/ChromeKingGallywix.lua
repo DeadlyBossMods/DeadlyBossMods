@@ -355,7 +355,7 @@ local allTimers = {
 	},
 	["lfr"] = {
 		[1] = {
-			[465952] = {17.3, 31.3},--BBBBombs
+			[465952] = {15.3, 31.3},--BBBBombs
 			[467182] = {33.3, 31.3},--Suppression
 			[466751] = {22.1, 31.3},--Venting Heat
 		},
@@ -941,6 +941,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.suppressionSubCount = 0
 		self.vb.heatSubCount = 0
 		self.vb.egocheckSubCount = 0
+		--Stop all timers
+		timerGigaCoilsCD:Stop()
+		timerFusedCanistersCD:Stop()
+		timerBBBBombsCD:Stop()
+		timerSuppressionCD:Stop()
+		timerTickTockCanistersCD:Stop()
+		timerVentingHeatCD:Stop()
+		timerEgoCheckCD:Stop()
 		if self:GetStage(2) then
 			timerGigaCoilsCD:Start(allTimers[savedDifficulty][2][469286][1], self.vb.coilsCount+1)
 			timerBBBBombsCD:Start(allTimers[savedDifficulty][2][465952][self.vb.coilsCount][1], self.vb.bombsCount+1)
