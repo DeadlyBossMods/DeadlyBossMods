@@ -131,7 +131,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2644)
 
 L:SetMiscLocalization({
-	BaitCoil	= "Bait Coil"--Переведу чуть позже
+	BaitCoil	= "Байт катушки"
 })
 
 ---------------------------
