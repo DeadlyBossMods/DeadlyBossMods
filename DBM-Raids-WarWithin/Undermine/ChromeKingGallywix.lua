@@ -823,12 +823,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.gigaBlastCount = 0
 		timerGigaBlastCD:Start(2, 1)
 	elseif spellId == 469387 then--Carrying Bomb
-		if self.Options.SetIconOnTechnician then--Set only icons 8-6
-			for i = 8, 3, -1 do
-				if not addUsedMarks[i] then
-					addUsedMarks[i] = args.destGUID
-					self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
-					break
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+			if self.Options.SetIconOnTechnician then--Set only icons 8-6
+				for i = 8, 3, -1 do
+					if not addUsedMarks[i] then
+						addUsedMarks[i] = args.destGUID
+						self:ScanForMobs(args.destGUID, 2, i, 1, nil, 12, "SetIconOnTechnician")
+						break
+					end
 				end
 			end
 		end

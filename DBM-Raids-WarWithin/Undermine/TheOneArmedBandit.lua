@@ -320,6 +320,7 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers 10.7-14.3
 		timerTheBigHitCD:Start(self:IsHard() and "v3.3-5.8" or "v10.7-14.3", self.vb.bigHitCount+1)
 		--again, on normal if 2 exhausts occured before hot, the it's a longer timer here too, else very short. Heroic and mythic more consistent in their 9-11 sec range
+		timerFoulExhaustCD:Stop()
 		timerFoulExhaustCD:Start(self:IsMythic() and "v10.7-11.9" or self:IsHeroic() and "v9.4-10.6" or (self.vb.secondExhaustOccurred == 2) and 26.4 or "v3.3-4.4", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start(21.6, self.vb.paylineCount+1)--Mythic and heroic Unknown
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)
