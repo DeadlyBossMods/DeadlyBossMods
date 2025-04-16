@@ -62,11 +62,12 @@ local warnBlastburnRoarcannon						= mod:NewTargetNoFilterAnnounce(472233, 4, ni
 
 local specWarnScrapBomb								= mod:NewSpecialWarningSoakCount(473650, nil, 37859, nil, 2, 2)
 local specWarnMoltenPhlegm							= mod:NewSpecialWarningMoveAway(1213690, nil, nil, nil, 1, 2, 3)
-local yellMoltenPhlegmFades							= mod:NewShortFadesYell(1213690)
+local yellMoltenPhlegmFades							= mod:NewShortFadesYell(1213690, nil, false, 2)
 local specWarnBlastburnRoarcannon					= mod:NewSpecialWarningMoveAway(472233, nil, 173303, nil, 3, 2)
 local yellBlastburnRoarcannon						= mod:NewShortYell(472233, 173303)
 local yellBlastburnRoarcannonFades					= mod:NewShortFadesYell(472233)
 local specWarnEruptionStomp							= mod:NewSpecialWarningDefensive(1214190, nil, 247733, nil, 1, 2)
+local yellEruptionStompFades						= mod:NewShortFadesYell(1214190)
 
 local timerScrapBombCD								= mod:NewCDCountTimer(97.3, 473650, 37859, nil, nil, 3)--"Bomb" shortname
 local timerMoltenPhlegmCD							= mod:NewCDCountTimer(97.3, 1213690, nil, nil, nil, 3, nil, DBM_COMMON_L.HEROIC_ICON)
@@ -328,6 +329,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEruptionStomp:Show()
 			specWarnEruptionStomp:Play("defensive")
+			yellEruptionStompFades:Countdown(4)
 		end
 		if self.vb.crashGone then
 			timerEruptionStompCD:Start(30, self.vb.stompCount+1)
