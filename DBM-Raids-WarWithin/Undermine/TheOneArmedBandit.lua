@@ -109,7 +109,7 @@ local warnCheatToWin							= mod:NewCountAnnounce(465309, 4)
 local specWarnHotHotHot							= mod:NewSpecialWarningDodge(465322, nil, nil, nil, 2, 2)--Second Cast
 local specWarnScatteredPayout					= mod:NewSpecialWarningSwitch(465580, "Dps", nil, nil, 1, 2)--Third Cast
 
-local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 473195, L.BaitCoil.." %s)", nil, nil, 6)
+local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 473195, L.BaitCoil.." %s", nil, nil, 6)
 local timerLinkedMachinesCast					= mod:NewCastTimer(7.5, 465432, 28405, nil, nil, 5)--Shorttext knockback
 local timerHotHotHotCD							= mod:NewCDCountTimer(25.2, 465322, nil, nil, nil, 6)
 local timerScatteredPayoutCD					= mod:NewCDCountTimer(25.2, 465580, nil, nil, nil, 6)
