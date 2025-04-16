@@ -116,7 +116,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCallbikers:Show(self.vb.bikersCount)
 		specWarnCallbikers:Play("killmob")
 		timerCallbikersCD:Start("v28-36.4", self.vb.bikersCount+1)
-	elseif spellId == 466040 or spellId == 466042 then
+	elseif (spellId == 466040 or spellId == 466042) and self:AntiSpam(3, 1) then
 		warnBlazeofGlory:Show()
 	elseif spellId == 459671 then
 		self.vb.spewOilCount = self.vb.spewOilCount + 1
@@ -272,7 +272,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459683 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 459683 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -282,7 +282,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 225804 then--Geargrinder Biker
-		if self:IsMythic() and self:AntiSpam(4, 1) and not self:IsTank() then
+		if self:IsMythic() and self:AntiSpam(4, 3) and not self:IsTank() then
 			self.vb.soakCount = self.vb.soakCount + 1
 			if not DBM:UnitDebuff("player", 473507) then
 				specWarnOilCanisterSoak:Show(self.vb.soakCount)
