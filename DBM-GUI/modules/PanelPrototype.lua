@@ -256,6 +256,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 				b = self.b
 			})
 		else
+			---@diagnostic disable-next-line: inject-field
 			ColorPickerFrame.func = function()
 				local r, g, b = ColorPickerFrame:GetColorRGB()
 				colorCallback(self, r, g, b)
@@ -263,6 +264,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 			ColorPickerFrame.cancelFunc = function()
 				colorCallback(self, r1, g1, b1)
 			end
+			---@diagnostic disable-next-line: undefined-field
 			ColorPickerFrame:SetColorRGB(r1, g1, b1)
 			ColorPickerFrame:Show()
 		end
