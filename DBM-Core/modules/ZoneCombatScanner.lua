@@ -41,8 +41,8 @@ local function ScanEngagedUnits(self, delay)
 			if not ActiveGUIDs[guid] then
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartEngageTimers(guid, cid, delay, "mouseover")
 				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "mouseover")
+				self:StartEngageTimers(guid, cid, delay, "mouseover")
 			end
 		end
 	end
@@ -53,8 +53,8 @@ local function ScanEngagedUnits(self, delay)
 			if not ActiveGUIDs[guid] then
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
-				self:StartEngageTimers(guid, cid, delay, "softenemy")
 				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "softenemy")
+				self:StartEngageTimers(guid, cid, delay, "softenemy")
 			end
 		end
 	end
@@ -68,8 +68,8 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, delay, id)
 					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, uId)
+					self:StartEngageTimers(guid, cid, delay, id)
 					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
 					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
 						private.sendSync(private.DBMSyncProtocol, "ZC", guid .. "\t" .. cid, "ALERT")
@@ -87,8 +87,8 @@ local function ScanEngagedUnits(self, delay)
 				if not ActiveGUIDs[guid] then
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
-					self:StartEngageTimers(guid, cid, delay, foundUnit)
 					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, foundUnit)
+					self:StartEngageTimers(guid, cid, delay, foundUnit)
 				end
 			end
 		end
