@@ -37,6 +37,26 @@ local function stripMarkup(text)
 	return text:trim()
 end
 
+-- Perfy integration
+local function hasPerfy()
+	return Perfy_Start and C_AddOns.GetAddOnMetadata("DBM-Core", "X-Perfy-Instrumented")
+end
+
+local function perfyStart(testName)
+	if not hasPerfy() then return end
+	Perfy_Start(nil, testName:gsub("/", "-"))
+end
+
+local function perfyStop()
+	if not hasPerfy() then return end
+	Perfy_Stop()
+end
+
+local function perfyPause()
+	if not hasPerfy() then return end
+	Perfy_Pause()
+end
+
 local function eventArgsToStringPretty(event, offset, isCleu)
 	local result = ""
 	for i = offset, #event do
@@ -476,6 +496,11 @@ function test:RestoreCVar(cvar)
 end
 
 function test:Teardown()
+	if self.hasQueuedTests then
+		perfyPause()
+	else
+		perfyStop()
+	end
 	self.testRunning = false
 	self.modUnderTest = nil
 	if self.reporter then self.reporter:UnsetErrorHandler() end
@@ -1030,6 +1055,7 @@ function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 	currentEventKey = nil
 	currentRawEvent = nil
 	self.testCallback = callback
+	perfyStart(testData.name)
 	currentThread = coroutine.create(self.Playback)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, testOptions)
 	if not ok then realErrorHandler(err) end
@@ -1054,6 +1080,7 @@ function test:RunTests(testsOrNames, timeWarp, testOptions, callback)
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
 			local testName = type(testOrName) == "string" and testOrName or testOrName.name
+			self.hasQueuedTests = i ~= #testsOrNames
 			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, testOptions, function(event, testDef, testOptions, reporter)
 				if callback then
 					xpcall(callback, realErrorHandler, event, testDef, testOptions, reporter, i, #testsOrNames)
