@@ -48,6 +48,7 @@ end
 enragePrototype.Stop = enragePrototype.Cancel
 
 function bossModPrototype:NewBerserkTimer(timer, text, barText, barIcon)
+	self.enrageTimer = timer
 	timer = timer or 600
 	local warning1 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 1, nil, nil, false)
 	local warning2 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 4, nil, nil, false)

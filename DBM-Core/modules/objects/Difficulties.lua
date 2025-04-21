@@ -23,6 +23,50 @@ difficulties.difficultyModifier = nil
 
 local groupSize = 0
 
+difficulties.statVarTable = {
+	--Current
+	["event5"] = "normal",
+	["event20"] = "lfr25",
+	["event40"] = "lfr25",
+	["quest"] = "follower",--For now, unless a conflict arises
+	["follower"] = "follower",
+	["story"] = "story",
+	["normal5"] = "normal",
+	["heroic5"] = "heroic",
+	["challenge5"] = "challenge",
+	["lfr"] = "lfr25",
+	["normal"] = "normal",
+	["heroic"] = "heroic",
+	["mythic"] = "mythic",
+	["mythic5"] = "mythic",
+	["worldboss"] = "normal",
+	["timewalker"] = "timewalker",
+	["progressivechallenges"] = "normal",
+	["delves"] = "normal",
+	--BFA
+	["normalwarfront"] = "normal",
+	["heroicwarfront"] = "heroic",
+	["normalisland"] = "normal",
+	["heroicisland"] = "heroic",
+	["mythicisland"] = "mythic",
+	["teamingisland"] = "mythic",--Blizz uses mythic as fallback, so I will too
+	--Shadowlands
+	["couragescenario"] = "normal",--Map PoA scenaris to different stats for each difficulty
+	["loyaltyscenario"] = "heroic",
+	["wisdomscenario"] = "mythic",
+	["humilityscenario"] = "challenge",
+	--Legacy
+	["lfr25"] = "lfr25",
+	["normal10"] = "normal",
+	["normal20"] = "normal",
+	["normal25"] = "normal25",--Legacy raids that have two normal difficulties still (10/25)
+	["normal40"] = "normal",
+	["heroic10"] = "heroic",
+	["heroic25"] = "heroic25",--Legacy raids that have two heroic difficulties still (10/25)
+	["normalscenario"] = "normal",
+	["heroicscenario"] = "heroic",
+}
+
 
 --[InstanceID] = {level,zoneType}
 --zoneType: 1 = outdoor, 2 = dungeon, 3 = raid, 4 = delves, 5 = player challenges

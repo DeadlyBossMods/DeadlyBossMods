@@ -734,3 +734,10 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES= "Challenges package"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM was used in test mode with time warping in the current session, it is recommended to reload your UI prior to using DBM in a real boss fight. Everything should still work as expected, but no gurantees!"
+
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " info"
+L.TOOLTIP_ENRAGE_TIMER			= "Enrage timer"
+L.TOOLTIP_KILLS					= "Kills (%s)"
+L.TOOLTIP_WIPES					= "Wipes (%s)"
+L.TOOLTIP_FASTEST				= "Fastest kill (%s)"
