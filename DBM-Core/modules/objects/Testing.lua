@@ -12,6 +12,8 @@ DBM.Test = test
 -- Indicates whether a test is currently running.
 test.testRunning = false
 
+test.environment = "WoW" -- Overriden by DBM-Offline
+
 -- Overriden by DBM-Test once loaded.
 -- This field is intentionally set in an odd way to prevent LuaLS from suggesting this function.
 local traceField = "Trace"
