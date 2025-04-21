@@ -5,6 +5,7 @@ local test = DBM.Test
 local dbmPrivate = test:GetPrivate()
 
 local bband = bit.band
+local GetTimePreciseSec = GetTimePreciseSec
 local realErrorHandler = geterrorhandler()
 
 -- FIXME: i don't like this "global" state
@@ -34,6 +35,26 @@ local function stripMarkup(text)
 	text = text:gsub("\n", "\\n")
 	text = text:gsub("\r", "\\r")
 	return text:trim()
+end
+
+-- Perfy integration
+local function hasPerfy()
+	return Perfy_Start and C_AddOns.GetAddOnMetadata("DBM-Core", "X-Perfy-Instrumented")
+end
+
+local function perfyStart(testName)
+	if not hasPerfy() then return end
+	Perfy_Start(nil, testName:gsub("/", "-"))
+end
+
+local function perfyStop()
+	if not hasPerfy() then return end
+	Perfy_Stop()
+end
+
+local function perfyPause()
+	if not hasPerfy() then return end
+	Perfy_Pause()
 end
 
 local function eventArgsToStringPretty(event, offset, isCleu)
@@ -475,6 +496,11 @@ function test:RestoreCVar(cvar)
 end
 
 function test:Teardown()
+	if self.hasQueuedTests then
+		perfyPause()
+	else
+		perfyStop()
+	end
 	self.testRunning = false
 	self.modUnderTest = nil
 	if self.reporter then self.reporter:UnsetErrorHandler() end
@@ -603,16 +629,25 @@ function test:InjectEvent(event, ...)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 		DBM:FireEvent("DBMTest_CombatLogEvent", event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
 	else
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 		DBM:FireEvent("DBMTest_Event", event, ...)
 	end
 	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
 	if event:match("^UNIT_") then
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 	end
 end
 
@@ -803,6 +838,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	local startTime = timeWarper.fakeTime
 	local ts = 0
 	local i = 1
+	self.Perf:Start()
 	while i <= #testData.log do
 		local v
 		-- Events may trigger additional events, e.g., UNIT_HEALTH from logs that contain health info about units
@@ -834,6 +870,8 @@ function test:Playback(testData, timeWarp, testOptions)
 		timeWarper:WaitFor(extraTime)
 	end
 	DBM:AddMsg("Test playback for test " .. testData.name .. " finished.")
+	self.Perf:Stop()
+	self.Perf:Report()
 	local reporter = self.reporter
 	if DBM:InCombat() then
 		reporter:FlagCombat(extraTime + 3.1)
@@ -1017,6 +1055,7 @@ function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 	currentEventKey = nil
 	currentRawEvent = nil
 	self.testCallback = callback
+	perfyStart(testData.name)
 	currentThread = coroutine.create(self.Playback)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, testOptions)
 	if not ok then realErrorHandler(err) end
@@ -1041,6 +1080,7 @@ function test:RunTests(testsOrNames, timeWarp, testOptions, callback)
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
 			local testName = type(testOrName) == "string" and testOrName or testOrName.name
+			self.hasQueuedTests = i ~= #testsOrNames
 			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, testOptions, function(event, testDef, testOptions, reporter)
 				if callback then
 					xpcall(callback, realErrorHandler, event, testDef, testOptions, reporter, i, #testsOrNames)

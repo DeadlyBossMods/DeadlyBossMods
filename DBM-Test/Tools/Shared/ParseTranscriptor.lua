@@ -674,7 +674,7 @@ function testGenerator:guessTestName()
 	end
 	local name = self:guessMod() .. "/" .. difficulty .. (self.metadata.encounterInfo.kill and "Kill" or "Wipe")
 	if self.metadata.instanceInfo then
-		local instanceName = mappedInstanceNames[self.metadata.instanceInfo.instanceID] or self.metadata.instanceInfo.name
+		local instanceName = mappedInstanceNames[self.metadata.instanceInfo.instanceID] or self.metadata.instanceInfo.name:gsub(" ", "")
 		if instanceName then
 			name = instanceName .. "/" .. name
 		end
@@ -697,8 +697,8 @@ function testGenerator:guessAddon()
 	if self.metadata.gameVersion == "SeasonOfDiscovery" then
 		local instanceInfo = self.metadata.instanceInfo
 		if instanceInfo.instanceType == "raid" then
-			-- Onyxia and the outdoor bosses are for 40 players, but luckily Onyxia uses a different difficulty ID
-			return instanceInfo.maxPlayers == 40 and instanceInfo.difficultyID == 9 and "DBM-Azeroth"
+			-- Onyxia and the outdoor bosses are for 40 players, but luckily they use a different difficulty ID (except Scarlet Enclave...)
+			return instanceInfo.maxPlayers == 40 and instanceInfo.difficultyID == 9 and instanceInfo.instanceID ~= 2856 and "DBM-Azeroth"
 				or "DBM-Raids-Vanilla"
 		elseif instanceInfo.instanceType == "party" then -- UBRS & co also return party here
 			return "DBM-Party-Vanilla"
