@@ -2991,6 +2991,10 @@ function DBM:GetUnitCreatureId(uId)
 	return self:GetCIDFromGUID(UnitGUID(uId))
 end
 
+function DBM:GetModByCreatureId(cId)
+	return bossIds[cId]
+end
+
 --Creature/Vehicle/Pet
 ----<type>:<subtype>:<realmID>:<mapID>:<serverID>:<dbID>:<creationbits>
 --Player/Item
@@ -5720,50 +5724,6 @@ do
 		end
 	end
 
-	local statVarTable = {
-		--Current
-		["event5"] = "normal",
-		["event20"] = "lfr25",
-		["event40"] = "lfr25",
-		["quest"] = "follower",--For now, unless a conflict arises
-		["follower"] = "follower",
-		["story"] = "story",
-		["normal5"] = "normal",
-		["heroic5"] = "heroic",
-		["challenge5"] = "challenge",
-		["lfr"] = "lfr25",
-		["normal"] = "normal",
-		["heroic"] = "heroic",
-		["mythic"] = "mythic",
-		["mythic5"] = "mythic",
-		["worldboss"] = "normal",
-		["timewalker"] = "timewalker",
-		["progressivechallenges"] = "normal",
-		["delves"] = "normal",
-		--BFA
-		["normalwarfront"] = "normal",
-		["heroicwarfront"] = "heroic",
-		["normalisland"] = "normal",
-		["heroicisland"] = "heroic",
-		["mythicisland"] = "mythic",
-		["teamingisland"] = "mythic",--Blizz uses mythic as fallback, so I will too
-		--Shadowlands
-		["couragescenario"] = "normal",--Map PoA scenaris to different stats for each difficulty
-		["loyaltyscenario"] = "heroic",
-		["wisdomscenario"] = "mythic",
-		["humilityscenario"] = "challenge",
-		--Legacy
-		["lfr25"] = "lfr25",
-		["normal10"] = "normal",
-		["normal20"] = "normal",
-		["normal25"] = "normal25",--Legacy raids that have two normal difficulties still (10/25)
-		["normal40"] = "normal",
-		["heroic10"] = "heroic",
-		["heroic25"] = "heroic25",--Legacy raids that have two heroic difficulties still (10/25)
-		["normalscenario"] = "normal",
-		["heroicscenario"] = "heroic",
-	}
-
 	---@param mod DBMMod
 	---@param delay number
 	---@param event string?
@@ -5938,20 +5898,20 @@ do
 			if event ~= "TIMER_RECOVERY" then
 				--add pull count
 				if mod.stats and not mod.noStatistics then
-					if not mod.stats[statVarTable[difficulties.savedDifficulty] .. "Pulls"] then mod.stats[statVarTable[difficulties.savedDifficulty] .. "Pulls"] = 0 end
-					mod.stats[statVarTable[difficulties.savedDifficulty] .. "Pulls"] = mod.stats[statVarTable[difficulties.savedDifficulty] .. "Pulls"] + 1
+					if not mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "Pulls"] then mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "Pulls"] = 0 end
+					mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "Pulls"] = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "Pulls"] + 1
 				end
 				--show speed timer
 				if self.Options.AlwaysShowSpeedKillTimer2 and mod.stats and not mod.ignoreBestkill and not mod.noStatistics then
 					local bestTime
 					if difficulties.difficultyIndex == 8 or difficulties.difficultyIndex == 208 or difficulties.difficultyIndex == 226 then--Mythic+/Challenge Mode, Delves, and sod Molten Core
-						local bestRank = mod.stats[statVarTable[difficulties.savedDifficulty] .. "BestRank"] or 0
+						local bestRank = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "BestRank"] or 0
 						if bestRank == difficulties.difficultyModifier then
 							--Don't show speed kill timer if not our highest rank. DBM only stores highest rank
-							bestTime = mod.stats[statVarTable[difficulties.savedDifficulty] .. "BestTime"]
+							bestTime = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "BestTime"]
 						end
 					else
-						bestTime = mod.stats[statVarTable[difficulties.savedDifficulty] .. "BestTime"]
+						bestTime = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "BestTime"]
 					end
 					if bestTime and bestTime > 0 then
 						local speedTimer = mod:NewTimer(bestTime, L.SPEED_KILL_TIMER_TEXT, private.isRetail and "237538" or "136106", nil, false)
@@ -6182,11 +6142,11 @@ do
 					local bossesKilled = mod.numBoss - mod.vb.bossLeft
 					wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 				end
-				local totalPulls = mod.stats[statVarTable[usedDifficulty] .. "Pulls"]
-				local totalKills = mod.stats[statVarTable[usedDifficulty] .. "Kills"]
+				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
+				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
 					totalPulls = totalPulls - 1
-					mod.stats[statVarTable[usedDifficulty] .. "Pulls"] = totalPulls
+					mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"] = totalPulls
 					if self.Options.ShowDefeatMessage then
 						if scenario then
 							self:AddMsg(L.SCENARIO_ENDED_AT:format(usedDifficultyText .. name, stringUtils.strFromTime(thisTime)))
@@ -6248,33 +6208,33 @@ do
 			elseif not wipe and mod.stats and not mod.noStatistics then
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
-				local lastTime = mod.stats[statVarTable[usedDifficulty] .. "LastTime"]
-				local bestTime = mod.stats[statVarTable[usedDifficulty] .. "BestTime"]
-				if not mod.stats[statVarTable[usedDifficulty] .. "Kills"] or mod.stats[statVarTable[usedDifficulty] .. "Kills"] < 0 then mod.stats[statVarTable[usedDifficulty] .. "Kills"] = 0 end
+				local lastTime = mod.stats[difficulties.statVarTable[usedDifficulty] .. "LastTime"]
+				local bestTime = mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestTime"]
+				if not mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] or mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] < 0 then mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] = 0 end
 				--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
-				mod.stats[statVarTable[usedDifficulty] .. "Kills"] = mod.stats[statVarTable[usedDifficulty] .. "Kills"] + 1
-				if mod.stats[statVarTable[usedDifficulty] .. "Kills"] > mod.stats[statVarTable[usedDifficulty] .. "Pulls"] then mod.stats[statVarTable[usedDifficulty] .. "Kills"] = mod.stats[statVarTable[usedDifficulty] .. "Pulls"] end
+				mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] + 1
+				if mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] > mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"] then mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"] = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"] end
 				if not mod.ignoreBestkill and mod.combatInfo.pull then
-					mod.stats[statVarTable[usedDifficulty] .. "LastTime"] = thisTime
+					mod.stats[difficulties.statVarTable[usedDifficulty] .. "LastTime"] = thisTime
 					--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
 					if bestTime and bestTime > 0 and bestTime < 1.5 then
-						mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime
+						mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestTime"] = thisTime
 					else
 						if usedDifficultyIndex == 8 or usedDifficultyIndex == 208 or usedDifficultyIndex == 226 then--Mythic+/Challenge Mode, Delves, and sod Molten Core
-							if mod.stats[statVarTable[usedDifficulty] .. "BestRank"] > usedDifficultyModifier then--Don't save time stats at all
+							if mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestRank"] > usedDifficultyModifier then--Don't save time stats at all
 								--DO nothing
-							elseif mod.stats[statVarTable[usedDifficulty] .. "BestRank"] < usedDifficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
-								mod.stats[statVarTable[usedDifficulty] .. "BestRank"] = usedDifficultyModifier--Update best rank
-								mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime--Write this time no matter what.
+							elseif mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestRank"] < usedDifficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
+								mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestRank"] = usedDifficultyModifier--Update best rank
+								mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestTime"] = thisTime--Write this time no matter what.
 							else--Best rank must match current rank, so update time normally
-								mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = mmin(bestTime or mhuge, thisTime)
+								mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestTime"] = mmin(bestTime or mhuge, thisTime)
 							end
 						else
-							mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = mmin(bestTime or mhuge, thisTime)
+							mod.stats[difficulties.statVarTable[usedDifficulty] .. "BestTime"] = mmin(bestTime or mhuge, thisTime)
 						end
 					end
 				end
-				local totalKills = mod.stats[statVarTable[usedDifficulty] .. "Kills"]
+				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
 				if self.Options.ShowDefeatMessage then
 					local msg
 					local thisTimeString = thisTime and stringUtils.strFromTime(thisTime)
@@ -8973,14 +8933,15 @@ function bossModPrototype:SetCreatureID(...)
 				self.numBoss = 1
 			end
 		end
-		for i = 1, select("#", ...) do
-			local cId = select(i, ...)
-			bossIds[cId] = true
-		end
 	else
-		local cId = ...
-		bossIds[cId] = true
 		self.numBoss = 1
+	end
+	for i = 1, select("#", ...) do
+		local cId = select(i, ...)
+		if bossIds[cId] then
+			DBM:Debug("Duplicate mods for cId " .. cId .. ": " .. self.id .. ", " .. bossIds[cId].id)
+		end
+		bossIds[cId] = self
 	end
 end
 
