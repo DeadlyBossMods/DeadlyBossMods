@@ -102,6 +102,19 @@ local function checkActive()
 	end
 end
 
+local function frameCategory(frame)
+	local name = frame:GetName() or tostring(frame)
+	if name == "DBMScheduler" then
+		return "Scheduler"
+	elseif name == "DBMInfoFrame" then
+		return "InfoFrame"
+	elseif name:match("^DBT") then
+		return "DBT"
+	else
+		return name
+	end
+end
+
 local GetTimePreciseSec = GetTimePreciseSec
 
 -- Call coroutine.yield() until a given point in (fake) time has been reached.
@@ -130,7 +143,7 @@ function test.TimeWarper:WaitUntil(time)
 		-- Enforce deterministic order for calling OnUpdate handlers, this resolves some annoying problems with code that gets timer info from DBT in a scheduled task
 		if #self.sortedFramesToHook == 0 then
 			for frame, updateFunc in pairs(self.framesToHook) do
-				self.sortedFramesToHook[#self.sortedFramesToHook + 1] = {frame = frame, updateFunc = updateFunc}
+				self.sortedFramesToHook[#self.sortedFramesToHook + 1] = {frame = frame, updateFunc = updateFunc, perfSubevent = frameCategory(frame)}
 			end
 			-- Reverse order by name, this runs DBT before the DBM scheduler to run DBT first and then the scheduler
 			-- That's the better order for determinism because it potentially expires DBT timers before running scheduled tasks that operate on them
@@ -145,10 +158,14 @@ function test.TimeWarper:WaitUntil(time)
 				end
 			end)
 		end
+		test.Perf:Frame()
 		for _, hookedFrame in ipairs(self.sortedFramesToHook) do
 			local frame, updateFunc = hookedFrame.frame, hookedFrame.updateFunc
 			if frame:IsVisible() and type(updateFunc) == "function" then
+				local start = GetTimePreciseSec()
 				updateFunc(frame, timeStep)
+				local delta = GetTimePreciseSec() - start
+				test.Perf:Track("OnUpdate", hookedFrame.perfSubevent, delta)
 			end
 		end
 		DBM:FireEvent("DBMTest_Tick", timeStep)

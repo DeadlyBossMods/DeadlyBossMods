@@ -18,6 +18,7 @@ Runner.lua
 TimeWarper.lua
 Mocks.lua
 ReportFrame.lua
+Perf.lua
 
 Tools/WoW/Environment.lua
 Tools/Shared/Data/Difficulties.lua
