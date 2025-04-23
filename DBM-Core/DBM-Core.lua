@@ -400,6 +400,8 @@ DBM.DefaultOptions = {
 	SilentMode = false,
 	NoCombatScanningFeatures = false,
 	ZoneCombatSyncing = false,--HIDDEN power user feature to improve zone scanning accuracy in niche cases
+	EnableTooltip = true,
+	EnableTooltipHeader = true,
 }
 
 ---@type DBMMod[]

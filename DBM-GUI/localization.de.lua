@@ -306,6 +306,11 @@ L.AutoAcceptFriendInvite	= "Automatisch Gruppeneinladungen von Freunden akzeptie
 L.AutoAcceptGuildInvite		= "Automatisch Gruppeneinladungen von Gildenmitgliedern akzeptieren"
 L.Area_Advanced				= "Erweiterte Einstellungen"
 L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (nützlich für Gilden, die die Nutzung von \"BigWigs\" erzwingen)"
+--
+L.Area_Tooltip				= "Tooltip-Integration"
+L.EnableTooltip				= "DBM Statistiken zu Tooltips von Bossen hinzufügen"
+L.EnableTooltipHeader		= "Zeige DBM Kopfzeile in Tooltip"
+
 
 L.Panel_Profile				= "Profile"
 L.Area_CreateProfile		= "Profilerzeugung für DBM Core Einstellungen"
