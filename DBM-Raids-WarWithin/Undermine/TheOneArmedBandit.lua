@@ -199,7 +199,7 @@ function mod:SPELL_CAST_START(args)
 			elseif self:IsHeroic() or self:IsLFR() then--Heroic/LFR swaps payline and bighit compared to normal
 				timerPaylineCD:Start("v11.1-11.8", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v16.0-16.7", self.vb.foulExhaustCount+1)
-				timerTheBigHitCD:Start("v22.1-23", self.vb.bigHitCount+1)
+				timerTheBigHitCD:Start("v15.3-23", self.vb.bigHitCount+1)
 			else
 				timerTheBigHitCD:Start("v11.9-13.1", self.vb.bigHitCount+1)
 				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
