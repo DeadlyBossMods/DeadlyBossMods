@@ -716,3 +716,7 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES= "Модуль 'Испытания'"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM использовался в тестовом режиме с временной деформацией в текущем сеансе, рекомендуется перезагрузить пользовательский интерфейс перед использованием DBM в реальном бою с боссом. Все должно работать так, как и ожидалось, но никаких гарантий!"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER					= "Союзник"
+L.STORY					    = PLAYER_DIFFICULTY_STORY_RAID or "Сюжет"

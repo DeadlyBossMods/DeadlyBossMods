@@ -690,3 +690,6 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES	= "挑戰組件"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM在當前階段使用了包含時間扭曲的測試模式，建議使用DBM在真正的首領戰鬥中之前重新載入UI。一切都應該按預期工作但並不保證！"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet

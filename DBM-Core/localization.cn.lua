@@ -676,3 +676,7 @@ L.DBM_INSTALL_PACKAGE_DUNGEON	= "五人本与事件模块"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM曾经在当前进程中使用过测试模式的时间卷曲功能，建议你在正式战斗前 /reload 界面以防止DBM出现奇怪的问题。"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER	= "追随者"
+L.STORY 	= "故事模式"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
