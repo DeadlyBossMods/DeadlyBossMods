@@ -19,9 +19,6 @@ L.OTabPlugins				= "Другое"
 L.OTabOptions				= "Настройки"
 L.OTabAbout					= "About"--I need to check it, then I’ll translate it
 
-L.FOLLOWER					= "Союзник"
-L.STORY					    = PLAYER_DIFFICULTY_STORY_RAID or "Сюжет"
-
 L.TabCategory_CURRENT_SEASON		= "Текущий сезон"
 
 L.TabCategory_OTHER 		= "Другие моды"

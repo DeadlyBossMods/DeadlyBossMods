@@ -659,3 +659,5 @@ L.TOOLTIP_ENRAGE_TIMER			= "Enrage Timer"
 L.TOOLTIP_KILLS					= "Kills (%s)"
 L.TOOLTIP_WIPES					= "Wipes (%s)"
 L.TOOLTIP_FASTEST				= "Schnellster Kill (%s)"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip

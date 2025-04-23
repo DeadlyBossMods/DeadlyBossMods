@@ -17,9 +17,6 @@ L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge con
 L.OTabOptions					= "핵심 설정"
 L.OTabAbout						= "소개"
 
-L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
-L.STORY					    		= "이야기"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
-
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
 L.TabCategory_OTHER			= "기타 모드"

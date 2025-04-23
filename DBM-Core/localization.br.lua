@@ -691,3 +691,6 @@ L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote de Masmorras, Imersões e Eventos"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "O DBM foi usado em modo de teste com distorção temporal na sessão atual, é recomendável recarregar sua interface antes de usar o DBM em uma luta de chefe real. Tudo deve funcionar como esperado, mas sem garantias!"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER					= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet

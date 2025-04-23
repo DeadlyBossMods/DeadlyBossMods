@@ -21,8 +21,8 @@ local function addStats(tooltip, mod)
 		statCount = statCount + 1
 	end
 	local statTypes = {
-		follower	= DBM_GUI_L.FOLLOWER,
-		story		= DBM_GUI_L.STORY,
+		follower	= DBM_CORE_L.FOLLOWER,
+		story		= DBM_CORE_L.STORY,
 		lfr25		= PLAYER_DIFFICULTY3,
 		normal		= mod.addon.minExpansion < 5 and not DBM:IsSeasonal("SeasonOfDiscovery") and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 		normal25	= RAID_DIFFICULTY2,
