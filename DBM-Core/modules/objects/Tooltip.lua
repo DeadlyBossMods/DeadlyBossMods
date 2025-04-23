@@ -63,11 +63,14 @@ local function addStats(tooltip, mod)
 end
 
 GameTooltip:HookScript("OnTooltipSetUnit", function(self)
+	if not DBM.Options.EnableTooltip then return end
     local _, unit = self:GetUnit()
 	if not unit then return end
 	local mod = DBM:GetModByCreatureId(DBM:GetUnitCreatureId(unit))
 	if not mod then return end
-	self:AddLine(L.TOOLTIP_DBM)
+	if DBM.Options.EnableTooltipHeader then
+		self:AddLine(L.TOOLTIP_DBM)
+	end
 	if mod.enrageTimer then
 		self:AddDoubleLine(L.TOOLTIP_ENRAGE_TIMER, ("%d:%02d"):format(math.floor(mod.enrageTimer / 60), mod.enrageTimer % 60))
 	end

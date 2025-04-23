@@ -156,6 +156,11 @@ L.AutoAcceptFriendInvite			= "Automatically accept group invites from friends"
 L.AutoAcceptGuildInvite				= "Automatically accept group invites from guild members"
 L.Area_Advanced						= "Advanced Options"
 L.FakeBW							= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
+--
+L.Area_Tooltip						= "Tooltip integration"
+L.EnableTooltip						= "Add DBM stats to tooltips for bosses supported by DBM"
+L.EnableTooltipHeader				= "Include DBM header in tooltip"
+
 
 -- Panel: Profiles
 L.Panel_Profile						= "Profiles"
