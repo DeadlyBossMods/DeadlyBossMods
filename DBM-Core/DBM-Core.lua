@@ -6547,6 +6547,15 @@ do
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isMop then
+			currentSpecGroup = C_SpecializationInfo.GetSpecialization()
+			if currentSpecGroup and C_SpecializationInfo.GetSpecializationInfo(currentSpecGroup) then
+				currentSpecID, currentSpecName = C_SpecializationInfo.GetSpecializationInfo(currentSpecGroup)
+				currentSpecID = tonumber(currentSpecID)
+			else
+				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			end
+			DBM:Debug("Current specID set to: "..currentSpecID, 2)
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -7741,6 +7750,12 @@ function DBM:IsCata()
 	return private.isCata
 end
 bossModPrototype.IsCata = DBM.IsCata
+
+---@param self DBMModOrDBM
+function DBM:IsMop()
+	return private.isMop
+end
+bossModPrototype.IsMop = DBM.IsMop
 
 ---@param self DBMModOrDBM
 function DBM:IsPostCata()
