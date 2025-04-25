@@ -3830,7 +3830,7 @@ do
 		--If they've disabled reminders, don't nag
 		if _G["BigWigs"] or not self.Options.ShowReminders then return end
 		if not self:IsTrivial() or difficulties:IsSeasonalDungeon(LastInstanceMapID) then
-			local checkedDungeon = private.isRetail and "DBM-Party-WarWithin" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
+			local checkedDungeon = private.isRetail and "DBM-Party-WarWithin" or private.isMop and "DBM-Party-MoP" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			--Dungeon Handling
 			if (difficulties:InstanceType(LastInstanceMapID) == 2) or (difficulties:InstanceType(LastInstanceMapID) == 4) then--Dungeon or Delve
 				--if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
@@ -3843,9 +3843,11 @@ do
 				--Also show popup on retail seasonal dungeons since those are ones being run for M0 and M+
 				elseif private.isRetail and difficulties:IsSeasonalDungeon(LastInstanceMapID) then--M+ Dungeons Only
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Retail")
+				elseif private.isMop then--Mop dungeons only
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "MoP")
 				else--Show a general message not a popup (Basically tbc, wrath, cata dungeons
 					if not C_AddOns.DoesAddOnExist(checkedDungeon) and not dungeonShown then
-						AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeons, Delves, & Events mods"), nil, private.isRetail or private.isCata)
+						AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeons, Delves, & Events mods"), nil, private.isRetail or private.isCata or private.isMop)
 						dungeonShown = true
 					end
 				end
@@ -3870,7 +3872,7 @@ do
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"), nil, private.isWrath)--Play sound only in wrath
 				end
-				--Show extra annoying popup in current content that's non trivial in classic Wrath or ICC timewalking raid on retail
+				--Show extra annoying popup in current content if it's classic
 				if private.isWrath or LastInstanceMapID == 631 then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "WoTLK") -- Show extra annoying popup in current content that's non trivial in classic
 				end
@@ -3879,17 +3881,19 @@ do
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"), nil, private.isCata)--Play sound only in cata
 				end
-				--Show extra annoying popup in current content that's non trivial in classic Cata or Firelands timewalking raid on retail
+				--Show extra annoying popup in current content if it's classic
 				if private.isCata or LastInstanceMapID == 720 then
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "Cata") -- Show extra annoying popup in current content that's non trivial in classic
 				end
 			--MoP raid Handling
-			elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
-				AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-				--PLACEHOLDER for MOP Classic or MOP timewalking raid, whichever happens first
-				--if private.isMoP or LastInstanceMapID == 0 then
-				--	self:AnnoyingPopupCheckZone(LastInstanceMapID, "MoP")
-				--end
+			elseif mopZones[LastInstanceMapID] then
+				if not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
+					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
+				end
+				--Show extra annoying popup in current content if it's classic
+				if private.isMop or LastInstanceMapID == 0 then
+					self:AnnoyingPopupCheckZone(LastInstanceMapID, "MoP")
+				end
 			--WoD raid Handling
 			elseif wodZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoD") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
