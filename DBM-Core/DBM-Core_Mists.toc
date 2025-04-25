@@ -1,0 +1,109 @@
+## Interface: 50500
+## X-Min-Interface: 50500
+## Category: DBM
+## Group: DBM-Core
+## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Ядро|r|cffffe00a>|r |cff69ccf0Основной модуль|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Base|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0核心|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0핵심 모듈|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Núcleo|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Núcleo|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Noyau|r
+## Notes: Deadly Boss Mods
+## Dependencies: DBM-StatusBarTimers
+## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims, LibDBIcon-1.0, LibDeflate, LibSerialize, LibSpecialization, CustomNames, Masque, ChatThrottleLib
+## SavedVariables: DBM_AllSavedOptions, DBM_MinimapIcon, DBM_AnnoyingPopupDisables, DBM_ModsToLoadWithFullTestSupport
+## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: MysticalOS, QartemisT
+## Version: @project-version@
+## X-Curse-Project-ID: 3358
+## X-WoWI-ID: 8814
+## X-Wago-ID: qv633o6b
+## X-Website: https://deadlybossmods.com
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\ChatThrottleLib\ChatThrottleLib.lua
+Libs\LibChatAnims\LibChatAnims.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibLatency\LibLatency.xml
+Libs\LibDurability\LibDurability.xml
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\lib.xml
+Libs\LibDeflate\LibDeflate.lua
+Libs\LibSerialize\lib.xml
+Libs\LibSpecialization\LibSpecialization.xml
+Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
+
+localization.en.lua
+localization.br.lua
+localization.cn.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.it.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+
+commonlocal.en.lua
+commonlocal.tw.lua
+commonlocal.br.lua
+commonlocal.cn.lua
+commonlocal.de.lua
+commonlocal.es.lua
+commonlocal.fr.lua
+commonlocal.it.lua
+commonlocal.kr.lua
+commonlocal.ru.lua
+
+# Pre-core modules
+modules\objects\PrototypeRegistry.lua
+modules\objects\Testing.lua
+modules\objects\GameVersion.lua
+modules\objects\StringUtils.lua
+modules\objects\TableUtils.lua
+modules\objects\StandardFont.lua
+modules\Modules.lua
+
+modules\SpecRole.lua
+modules\Scheduler.lua
+modules\DevTools.lua
+modules\Icons.lua
+modules\TargetScanning.lua
+
+# Core
+DBM-Core.lua
+DBM-Arrow.lua
+DBM-Flash.lua
+DBM-RangeCheck.lua
+DBM-InfoFrame.lua
+DBM-HudMap.lua
+DBM-Nameplate.lua
+
+# Modules
+modules\Commands.lua
+modules\Hyperlinks.lua
+modules\MinimapButton.lua
+modules\Notes.lua
+modules\Sounds.lua
+modules\UpdateReminder.lua
+modules\AnnoyingPopup.lua
+modules\ZoneCombatScanner.lua
+
+modules\objects\Difficulties.lua
+modules\objects\BossMod.lua
+modules\objects\BossModEventDispatcher.lua
+modules\objects\Localization.lua
+modules\objects\VoicePacks.lua
+modules\objects\Timer.lua
+modules\objects\EnrageTimer.lua
+modules\objects\Announce.lua
+modules\objects\SpecialWarning.lua
+modules\objects\Yell.lua
+modules\objects\Sorting.lua
