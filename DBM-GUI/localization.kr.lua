@@ -152,6 +152,12 @@ L.AutoAcceptFriendInvite	= "친구의 파티/공격대 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원의 파티/공격대 초대 자동 수락"
 L.Area_Advanced				= "고급 설정"
 L.FakeBW					= "DBM 대신 BigWigs 사용자로 위장하기 (BigWigs 사용을 강제하는 공격대에서 유용)"
+--
+L.Area_Tooltip						= "툴팁 통합"
+L.EnableTooltip						= "DBM이 지원하는 보스의 툴팁에 DBM 통계 추가"
+L.EnableTooltipInCombat				= "전투 중에 툴탑 정보를 표시"
+L.EnableTooltipHeader				= "툴팁에 DBM 헤더 포함"
+
 
 -- Panel: Profiles
 L.Panel_Profile				= "프로필"
