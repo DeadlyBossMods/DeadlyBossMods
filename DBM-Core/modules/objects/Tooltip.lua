@@ -62,7 +62,7 @@ local function addStats(tooltip, mod)
 	end
 end
 
-GameTooltip:HookScript("OnTooltipSetUnit", function(self)
+local function hook(self)
 	if not DBM.Options.EnableTooltip then return end
 	if not DBM.Options.EnableTooltipInCombat and (InCombatLockdown() or IsEncounterInProgress() or DBM:InCombat()) then
 		return
@@ -78,7 +78,14 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		self:AddDoubleLine(L.TOOLTIP_ENRAGE_TIMER, ("%d:%02d"):format(math.floor(mod.enrageTimer / 60), mod.enrageTimer % 60))
 	end
 	addStats(self, mod)
-end)
+end
+
+if TooltipDataProcessor then
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, hook)
+else
+	GameTooltip:HookScript("OnTooltipSetUnit", hook)
+end
+
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("MODIFIER_STATE_CHANGED")
