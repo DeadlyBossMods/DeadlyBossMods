@@ -89,6 +89,7 @@
 		"OptionsList_OnLoad",
 		"TranscriptDB",
 		"ColorPickerFrame",
+		"TooltipDataProcessor",
 
 		"Perfy_Start",
 		"Perfy_Stop",
