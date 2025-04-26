@@ -64,6 +64,9 @@ end
 
 GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	if not DBM.Options.EnableTooltip then return end
+	if not DBM.Options.EnableTooltipInCombat and (InCombatLockdown() or IsEncounterInProgress() or DBM:InCombat()) then
+		return
+	end
     local _, unit = self:GetUnit()
 	if not unit then return end
 	local mod = DBM:GetModByCreatureId(DBM:GetUnitCreatureId(unit))

@@ -307,6 +307,7 @@ L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (
 --
 L.Area_Tooltip				= "Tooltip-Integration"
 L.EnableTooltip				= "DBM Statistiken zu Tooltips von Bossen hinzufügen"
+L.EnableTooltipInCombat		= "Zeige Tooltip-Informationen während Kämpfen"
 L.EnableTooltipHeader		= "Zeige DBM Kopfzeile in Tooltip"
 
 
