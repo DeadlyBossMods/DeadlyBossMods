@@ -99,7 +99,7 @@ mod.vb.sparkTimerCount = 0
 local activeBossGUIDS = {}
 local addUsedMarks = {}
 local savedDifficulty = "normal"
-local resonanceActive = false
+local resonanceActive = 0
 
 local allTimers = {
 	["mythic"] = {
@@ -154,6 +154,7 @@ function mod:CannonTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
+	resonanceActive = 0
 	self:SetStage(1)
 	table.wipe(activeBossGUIDS)
 	table.wipe(addUsedMarks)
