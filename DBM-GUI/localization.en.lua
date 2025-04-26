@@ -156,6 +156,7 @@ L.FakeBW							= "Pretend to be BigWigs in version checks instead of DBM (Useful
 --
 L.Area_Tooltip						= "Tooltip integration"
 L.EnableTooltip						= "Add DBM stats to tooltips for bosses supported by DBM"
+L.EnableTooltipInCombat				= "Show tooltip information while in combat"
 L.EnableTooltipHeader				= "Include DBM header in tooltip"
 
 
