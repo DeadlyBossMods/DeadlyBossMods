@@ -720,3 +720,10 @@ L.DBM_TAINTED_BY_TESTS			= "DBM использовался в тестовом �
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER					= "Союзник"
 L.STORY					    = PLAYER_DIFFICULTY_STORY_RAID or "Сюжет"
+
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " информация"
+L.TOOLTIP_ENRAGE_TIMER			= "Таймер берсерка"
+L.TOOLTIP_KILLS					= "Убийства (%s)"
+L.TOOLTIP_WIPES					= "Вайпы (%s)"
+L.TOOLTIP_FASTEST				= "Быстрое убийство (%s)"
