@@ -12,8 +12,6 @@ L.WebsiteButton				= "Sito Web"
 L.OTabBosses	= "Boss"
 L.OTabOptions	= "Opzioni"
 
---L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
-
 L.TabCategory_Options	 	= "Opzioni Generali"
 L.TabCategory_OTHER			= "Altre Mod"
 

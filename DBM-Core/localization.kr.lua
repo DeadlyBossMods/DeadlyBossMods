@@ -668,3 +668,7 @@ L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 이벤트 패키지"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM이 이번 접속에서 시간을 왜곡한 테스트 모드로 사용되고 있습니다. 보스 전투에서 DBM을 사용하기에 앞서 UI 재시작을 권장합니다. 모든 기능이 여전히 의도대로 작동해야 하나, 장담할 순 없습니다!"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    	= "이야기"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet

@@ -19,9 +19,6 @@ L.OTabPlugins				= "Другое"
 L.OTabOptions				= "Настройки"
 L.OTabAbout					= "About"--I need to check it, then I’ll translate it
 
-L.FOLLOWER					= "Союзник"
-L.STORY					    = PLAYER_DIFFICULTY_STORY_RAID or "Сюжет"
-
 L.TabCategory_CURRENT_SEASON		= "Текущий сезон"
 
 L.TabCategory_OTHER 		= "Другие моды"
@@ -137,7 +134,7 @@ L.AutoReplySound			= "Воспроизводить звуковое оповещ
 --
 L.Area_CombatAlerts			= "Параметры боевых оповещений"
 L.AFKHealthWarning			= "Воспроизводить звуковое оповещение и мигать иконкой приложения, если Вы теряете здоровье (на любой процент) во время АФК"
-L.HealthWarningLow		= "Воспроизводить звуковое оповещение и мигать иконкой приложения, если Вы теряете здоровье (при уровне ниже 35 процентов)"
+L.HealthWarningLow			= "Воспроизводить звуковое оповещение и мигать иконкой приложения, если Вы теряете здоровье (при уровне ниже 35 процентов)"
 L.EnteringCombatAlert		= "Воспроизводить звуковое оповещение и мигать иконкой приложения при вступлении в бой"
 L.LeavingCombatAlert		= "Воспроизводить звуковое оповещение при выходе из боя"
 --
@@ -154,6 +151,11 @@ L.AutoAcceptFriendInvite	= "Автоматически принимать при
 L.AutoAcceptGuildInvite		= "Автоматически принимать приглашения в группу от согильдийцев"
 L.Area_Advanced				= "Дополнительные настройки"
 L.FakeBW					= "Притворяться BigWigs вместо DBM при проверке версий (полезно для гильдий, которые заставляют использовать BigWigs)"
+--
+L.Area_Tooltip						= "Интеграция с подсказками"
+L.EnableTooltip						= "Добавить статистику DBM в подсказки для боссов, поддерживаемых DBM"
+L.EnableTooltipInCombat				= "Показывать подсказку во время боя"
+L.EnableTooltipHeader				= "Показывать в подсказке заголовок DBM"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Профили"
