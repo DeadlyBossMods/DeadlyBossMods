@@ -1067,8 +1067,11 @@ do
 				if not frame then
 					frame = CreateFrame("Frame")
 					if uId == "mouseover" then
-						-- work-around for mouse-over events (broken!)
-						frame:SetScript("OnEvent", function(self, event, _, ...)
+						-- work-around for mouse-over events (triggers for other unit ids)
+						frame:SetScript("OnEvent", function(self, event, uId, ...)
+							if not UnitIsUnit(uId, "mouseover") then
+								DBM:Debug("unexpected mouseover UNIT event for uId" .. uId .. " which is not mouseover", 3, false, true)
+							end
 							-- we registered mouseover events, so we only want mouseover events, thanks.
 							handleEvent(self, event, "mouseover", ...)
 						end)
@@ -1235,9 +1238,10 @@ do
 					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 					if not arg1 and event:sub(-11) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
-						eventWithArgs = event .. " target"
-						if not private.isClassic then
-							eventWithArgs = eventWithArgs .. " focus boss1 boss2 boss3 boss4 boss5"
+						if private.isClassic then
+							eventWithArgs = event .. " target mouseover targettarget mouseovertarget nameplate1 nameplate2 nameplate3 nameplate4"
+						else
+							eventWithArgs = event .. "target focus boss1 boss2 boss3 boss4 boss5"
 						end
 						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
 					end
@@ -1449,15 +1453,8 @@ do
 			args.destRaidFlags = destRaidFlags
 			if eventSub6 == "SPELL_" then
 				args.spellId, args.spellName = extraArg1, extraArg2
-				if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" then
-					args.amount = extraArg5
-					if not args.sourceName then
-						args.sourceName = args.destName
-						args.sourceGUID = args.destGUID
-						args.sourceFlags = args.destFlags
-					end
-				elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-					args.amount = extraArg5
+				if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
+					args.amount = extraArg5 or 1
 					if not args.sourceName then
 						args.sourceName = args.destName
 						args.sourceGUID = args.destGUID
@@ -1896,14 +1893,19 @@ do
 					"GOSSIP_SHOW",
 					"PLAYER_MAP_CHANGED"
 				)
-			elseif private.isBCC or private.isClassic then
+			elseif private.isClassic then
 				self:RegisterEvents(
-					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
+					"UNIT_HEALTH_FREQUENT mouseover target player targettarget",--Still exists in classic and non frequent is slow and less reliable
+					"CHARACTER_POINTS_CHANGED"
+				)
+			elseif private.isBCC then
+				self:RegisterEvents(
+					"UNIT_HEALTH_FREQUENT mouseover target focus player targettarget",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED"
 				)
 			else -- Wrath and Cata
 				self:RegisterEvents(
-					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
+					"UNIT_HEALTH_FREQUENT mouseover target focus player targettarget",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED",
 					"PLAYER_TALENT_UPDATE"
 				)
@@ -6046,7 +6048,7 @@ do
 					for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 						if v.mod.Options.Enabled and not v.mod.disableHealthCombat and v.type:find("combat") and (v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) and not (#inCombat > 0 and v.noMultiBoss) then
 							if v.mod.noFriendlyEngagement and UnitIsFriend("player", uId) then return end
-							-- Delay set, > 97% = 0.5 (consider as normal pulling), max dealy limited to 20s.
+							-- Delay set, > 97% = 0.5 (consider as normal pulling), max delay limited to 20s.
 							self:StartCombat(v.mod, health > 97 and 0.5 or mmin(GetTime() - lastCombatStarted, 20), "UNIT_HEALTH", nil, health)
 						end
 					end
