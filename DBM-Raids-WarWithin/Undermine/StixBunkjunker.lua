@@ -178,6 +178,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerMeltdownCD:Start(self:IsHard() and 51.1 or 46.0, self.vb.meltdownCount+1)
 	elseif spellId == 467117 then--Overdrive (P2 start)
+		self:SetStage(2)
 		timerOverdrive:Start()
 		--Stop Timers
 		timerElectroSortingCD:Stop()
