@@ -1241,7 +1241,7 @@ do
 						if private.isClassic then
 							eventWithArgs = event .. " target mouseover targettarget mouseovertarget nameplate1 nameplate2 nameplate3 nameplate4"
 						else
-							eventWithArgs = event .. "target focus boss1 boss2 boss3 boss4 boss5"
+							eventWithArgs = event .. " target focus boss1 boss2 boss3 boss4 boss5"
 						end
 						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
 					end
