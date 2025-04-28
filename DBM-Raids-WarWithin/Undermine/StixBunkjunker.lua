@@ -106,7 +106,6 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
-local Phase2 = nil
 
 local updateInfoFrame
 do
@@ -137,7 +136,6 @@ function mod:OnCombatStart(delay)
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
 	self.vb.meltdownCount = 0
-	Phase2 = false
 	if self:IsHard() then
 		timerIncineratorCD:Start(11.1-delay, 1)
 		timerDemolishCD:Start(17.8-delay, 1)
@@ -208,9 +206,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerMeltdownCD:Start(self:IsHard() and 51.1 or 46.0, self.vb.meltdownCount+1)
 	elseif spellId == 467117 then--Overdrive (P2 start)
-		if not Phase2 then
-			Phase2 = true
-		end
+		self:SetStage(2)
 		timerOverdrive:Start()
 		--Stop Timers
 		timerElectroSortingCD:Stop()
@@ -234,7 +230,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsLFR() then
 			self.vb.bigBombCount = 1
 		else
-			if Phase2 then
+			if self:GetStage(2) then
 				self.vb.bigBombCount = 2
 			else
 				self.vb.bigBombCount = 1
