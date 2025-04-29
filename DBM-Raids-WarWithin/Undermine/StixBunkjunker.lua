@@ -45,7 +45,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Sorting
 mod:AddTimerLine(DBM:GetSpellName(464399))
-local warnSorted									= mod:NewTargetNoFilterAnnounce(465346, 3)
+local warnSorted									= mod:NewTargetCountAnnounce(465346, 3, nil, nil, nil, nil, nil, nil, true)
 local warnInfectedbite								= mod:NewCountAnnounce(466748, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466748))--Player
 local warnRollingRubbish							= mod:NewCountAnnounce(461536, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(461536), nil, nil, 2)--Player
 
@@ -62,7 +62,7 @@ local timerRollingPlayer							= mod:NewBuffFadesTimer(20, 461536, nil, nil, nil
 --local timerBigBomb								= mod:NewCastTimer(20, 464865, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShortFuseCast							= mod:NewCastNPTimer(30, 473115, nil, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnBalls", 465346, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnBalls", 465346, true, 11, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {8, 7, 6, 5})
 --mod:AddSetIconOption("SetIconOnBigBomb", 464865, true, 5, {8})
 --mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
@@ -98,7 +98,6 @@ local berserkTimer									= mod:NewBerserkTimer(600)
 mod:AddInfoFrameOption(464865, false)
 
 mod.vb.sortingCount = 0
-mod.vb.sortedIcon = 1
 mod.vb.bigBombCount = 0
 mod.vb.IncinCount = 0
 mod.vb.demolishCount = 0
@@ -106,6 +105,7 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
+local SortedIcons = {}
 
 local updateInfoFrame
 do
@@ -125,13 +125,32 @@ do
 	end
 end
 
+---@param self DBMMod
+local function SortBalls(self)
+	table.sort(SortedIcons, DBM.SortByTankDpsHealerRoster)
+	for i = 1, #SortedIcons do
+		local name = SortedIcons[i]
+		local icon = i
+		if self.Options.SetIconOnBalls then
+			self:SetIcon(name, icon)
+		end
+		if name == DBM:GetMyPlayerInfo() then
+			specWarnSorted:Show(self:IconNumToTexture(icon))
+			specWarnSorted:Play("mm"..icon)
+			yellSorted:Yell(icon)
+			yellSorted:Countdown(465346, nil, icon)
+		end
+	end
+	warnSorted:Show(self.vb.sortingCount, table.concat(SortedIcons, "<, >"))
+end
+
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(castsPerGUID)
 	table.wipe(usedMarks)
 	table.wipe(seenGUIDs)
+	table.wipe(SortedIcons)
 	self.vb.sortingCount = 0
-	self.vb.sortedIcon = 1
 	self.vb.bigBombCount = 0
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
@@ -176,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 464399 then
 		self.vb.sortingCount = self.vb.sortingCount + 1
-		self.vb.sortedIcon = 1
+		table.wipe(SortedIcons)
 		specWarnElectroSorting:Show(self.vb.sortingCount)
 		specWarnElectroSorting:Play("specialsoon")
 		timerElectroSortingCD:Start(self:IsHard() and 51.1 or 45.9, self.vb.sortingCount+1)
@@ -242,16 +261,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 465346 then
-		local icon = self.vb.sortedIcon
-		if self.Options.SetIconOnBalls then
-			self:SetIcon(args.destName, icon, 24)--Autoclear after 24 seconds in case player dies before getting 461536
-		end
+		SortedIcons[#SortedIcons+1] = args.destName
+		self:Unschedule(SortBalls)
+		self:Schedule(0.5, SortBalls, self)--Fallback in case scaling targets for normal/heroic
 		if args:IsPlayer() then
 			bigballs = 0
-			specWarnSorted:Show(self:IconNumToTexture(icon))
-			specWarnSorted:Play("mm"..icon)
-			yellSorted:Yell(icon, icon)
-			yellSortedFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then--One of ball is always the tank, so it's also a tank swap
@@ -259,8 +273,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSortedTaunt:Play("tauntboss")
 			end
 		end
-		warnSorted:CombinedShow(0.5, args.destName)--Up to 5 targets, but scalable so no precise show
-		self.vb.sortedIcon = self.vb.sortedIcon + 1
 	elseif spellId == 1217685 then
 		if self.Options.NPAuraOnMessedUp then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)

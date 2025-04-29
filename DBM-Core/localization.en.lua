@@ -588,6 +588,7 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "Set icons on $spell:%s targets with mele
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "Set icons on $spell:%s targets with ranged and alphabetical priority"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "Set icons on $spell:%s targets with ranged and raid roster priority"
 L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Set icons on $spell:%s targets with melee over ranged over healer priority and raid roster fallback"
+L.AUTO_ICONS_OPTION_TARGETS_TOH			= "Set icons on $spell:%s targets with tank over dps over healer priority and raid roster fallback"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "Set icons on $spell:%s targets with alphabetical priority"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER		= "Set icons on $spell:%s targets with raid roster priority"
 L.AUTO_ICONS_OPTION_NPCS				= "Set icons on $spell:%s"--usually used for npcs/mobs
