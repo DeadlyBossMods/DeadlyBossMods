@@ -1066,18 +1066,7 @@ do
 				local frame = frames[uId]
 				if not frame then
 					frame = CreateFrame("Frame")
-					if uId == "mouseover" then
-						-- work-around for mouse-over events (triggers for other unit ids)
-						frame:SetScript("OnEvent", function(self, event, uId, ...)
-							if not UnitIsUnit(uId, "mouseover") then
-								DBM:Debug("unexpected mouseover UNIT event for uId" .. uId .. " which is not mouseover", 3, false, true)
-							end
-							-- we registered mouseover events, so we only want mouseover events, thanks.
-							handleEvent(self, event, "mouseover", ...)
-						end)
-					else
-						frame:SetScript("OnEvent", handleEvent)
-					end
+					frame:SetScript("OnEvent", handleEvent)
 					frames[uId] = frame
 				end
 				registeredUnitEventIds[event .. uId] = (registeredUnitEventIds[event .. uId] or 0) + 1
