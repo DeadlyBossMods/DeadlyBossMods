@@ -15,14 +15,15 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 464399 466742 1220752 464112 1217954 467117 467109",
-	"SPELL_CAST_SUCCESS 464149",
+	"SPELL_CAST_SUCCESS 464399 464149",
 	"SPELL_AURA_APPLIED 465346 1217685 464854 473115 473066 1218704 1219384 1220648 466748 472893 461536",
 	"SPELL_AURA_APPLIED_DOSE 466748",
 	"SPELL_AURA_REMOVED 465346 461536 1217685 473115 473066 467117",
 	"SPELL_PERIODIC_DAMAGE 464854 464248",
 	"SPELL_PERIODIC_MISSED 464854 464248",
 	"UNIT_DIED",
-	"UNIT_POWER_UPDATE player"
+	"UNIT_POWER_UPDATE player",
+	"CHAT_MSG_MONSTER_EMOTE"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -94,6 +95,8 @@ local timerOverDriveCD								= mod:NewNextTimer(111.1, 467117, nil, nil, nil, 6
 local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 6)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
+mod:AddInfoFrameOption(464865, true)
+
 mod.vb.sortingCount = 0
 mod.vb.sortedIcon = 1
 mod.vb.bigBombCount = 0
@@ -103,6 +106,24 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
+
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		if mod.vb.bigBombCount > 0 then
+			addLine(L.BombsLeft, mod.vb.bigBombCount)
+		end
+		return lines, sortedLines
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
@@ -135,6 +156,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnMessedUp or self.Options.NPAuraOnTerritorial then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(464865))
+		DBM.InfoFrame:Show(2, "function", updateInfoFrame, false, false)
+	end
 end
 
 function mod:OnCombatEnd(_, _, secondRun)
@@ -142,6 +167,9 @@ function mod:OnCombatEnd(_, _, secondRun)
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if secondRun then self:Stop() end--Stop all timers in a second run of combat end to try and fix bugged timers
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -198,6 +226,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnIncinerator:Show(self.vb.IncinCount)
 		specWarnIncinerator:Play("scatter")
 		timerIncineratorCD:Start(self:IsHard() and 25.5 or 22.9, self.vb.IncinCount+1)
+	elseif spellId == 464399 then
+		if self:IsLFR() then
+			self.vb.bigBombCount = 1
+		else
+			if self:GetStage(2) then
+				self.vb.bigBombCount = 2
+			else
+				self.vb.bigBombCount = 1
+			end
+		end
 	end
 end
 
@@ -372,6 +410,12 @@ function mod:UNIT_POWER_UPDATE(_, powerType)
 			warnRollingRubbish:Play("mediumball")
 		end
 		bigballs = power
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_EMOTE(msg)
+	if msg:find(L.Bomb) then
+		self.vb.bigBombCount = self.vb.bigBombCount - 1
 	end
 end
 
