@@ -109,7 +109,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stix Bunkjunker --
 ---------------------------
---L= DBM:GetModLocalization(2642)
+L= DBM:GetModLocalization(2642)
+
+L:SetMiscLocalization({
+	BombsLeft		= "Bombs left"
+})
 
 ---------------------------
 --  Sprocketmonger Lockenstock --
