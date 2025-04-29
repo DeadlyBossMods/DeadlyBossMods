@@ -113,8 +113,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2642)
 
 L:SetMiscLocalization({
-	BombsLeft		= "Бомб осталось",
-	Bomb			= "смертебомбу"
+	BombsLeft		= "Бомб осталось"
 })
 
 ---------------------------
