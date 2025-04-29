@@ -40,9 +40,9 @@ L= DBM:GetModLocalization(2612)
 
 L:SetOptionLocalization({
 	EggBreakerBehavior	= "Установить режим разбивания яиц (перезапишет настройки всех остальных, если Вы являетесь лидером рейда)",
-	MatchBW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.CROSS_ICON_SMALL .. " приоритет ближнего боя > дальнего боя > целителя (соответствует режиму BigWigs)",--По умолчанию
-	UseAllAscending		= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t и т.д. с приоритетом ближнего боя > дальнего боя > целителя",
-	AvoidRedNPurple		= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL .. " приоритет ближнего боя > дальнего боя > целителя",
+	MatchBW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.CROSS_ICON_SMALL .. " приоритет ближнего боя > дальнего боя > целителей (соответствует режиму BigWigs)",--По умолчанию
+	UseAllAscending		= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t, |TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t и т.д. с приоритетом ближнего боя > дальнего боя > целителей",
+	AvoidRedNPurple		= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL .. " приоритет ближнего боя > дальнего боя > целителей",
 	DisableIconsForRaid	= "Отключить иконки и показывать крики без иконок",
 	DisableAllForRaid	= "Полностью отключить иконки и крики"
 })
@@ -69,8 +69,8 @@ L= DBM:GetModLocalization(2602)
 
 L:SetOptionLocalization({
 	ToxinBehavior		= "Установить режим Реактивного токсина (перезапишет настройки всех остальных, если Вы лидер рейда)",
-	MatchBW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL .. " (все сложности) с приоритетом ближнего боя > дальнего боя > целителя (соответствует режиму Bigwigs)",--По умолчанию
-	UseAllAscending		= DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.MOON_ICON_SMALL .. " (все сложности) с приоритетом ближнего боя > дальнего боя > целителя",
+	MatchBW				= DBM_COMMON_L.SQUARE_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL .. " (все сложности) с приоритетом ближнего боя > дальнего боя > целителей (соответствует режиму Bigwigs)",--По умолчанию
+	UseAllAscending		= DBM_COMMON_L.STAR_ICON_SMALL ..", ".. DBM_COMMON_L.CIRCLE_ICON_SMALL ..", ".. DBM_COMMON_L.DIAMOND_ICON_SMALL ..", ".. DBM_COMMON_L.TRIANGLE_ICON_SMALL ..", ".. DBM_COMMON_L.MOON_ICON_SMALL .. " (все сложности) с приоритетом ближнего боя > дальнего боя > целителей",
 	DisableIconsForRaid	= "Отключить иконки и показывать крики без иконок",
 	DisableAllForRaid	= "Полностью отключить иконки и крики"
 })
@@ -113,7 +113,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2642)
 
 L:SetMiscLocalization({
-	BombsLeft		= "Бомб осталось"
+	BombsLeft		= "Бомб осталось:"
 })
 
 ---------------------------
