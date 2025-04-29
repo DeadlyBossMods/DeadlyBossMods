@@ -95,7 +95,7 @@ local timerOverDriveCD								= mod:NewNextTimer(111.1, 467117, nil, nil, nil, 6
 local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 6)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
-mod:AddInfoFrameOption(464865, true)
+mod:AddInfoFrameOption(464865, false)
 
 mod.vb.sortingCount = 0
 mod.vb.sortedIcon = 1
@@ -413,8 +413,9 @@ function mod:UNIT_POWER_UPDATE(_, powerType)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_EMOTE(msg)
-	if msg:find(L.Bomb) then
+--"<182.28 23:04:55> [CHAT_MSG_MONSTER_EMOTE] %s's Rolling Rubbish crashes into a Discarded Doomsplosive.#Possecutor###[DNT] Discarded Doomsplosive##0#0##0#6775#Player-77-0F82F3AB#0#false#false#false#false",
+function mod:CHAT_MSG_MONSTER_EMOTE(_, _, _, _, target)
+	if target == "[DNT] Discarded Doomsplosive" then
 		self.vb.bigBombCount = self.vb.bigBombCount - 1
 	end
 end
