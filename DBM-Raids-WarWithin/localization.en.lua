@@ -121,7 +121,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2653)
 
 L:SetWarningLocalization{
-	specWarnPolGen	= "Changing to %s - 3 sec",
+	specWarnPolGen	= "Changing to %s - 3 sec"
 }
 
 L:SetOptionLocalization({
