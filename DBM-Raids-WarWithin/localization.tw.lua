@@ -59,8 +59,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2608)
 
 L:SetMiscLocalization({
-	Red		= " [紅-塔卡茲]",--Skeinspinner Takazj
-	Blue	= " [藍-阿努]"--Anub'arash
+	Red		= RED_FONT_COLOR:WrapTextInColorCode(" [紅-塔卡]"),--Skeinspinner Takazj
+	Blue	= BLUE_FONT_COLOR:WrapTextInColorCode(" [藍-阿努]")--Anub'arash
 })
 
 ---------------------------
@@ -113,17 +113,34 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stix Bunkjunker --
 ---------------------------
---L= DBM:GetModLocalization(2642)
+L= DBM:GetModLocalization(2642)
+
+L:SetMiscLocalization({
+	BombsLeft		= "炸彈剩餘"
+})
+
 
 ---------------------------
 --  Sprocketmonger Lockenstock --
 ---------------------------
---L= DBM:GetModLocalization(2653)
+L= DBM:GetModLocalization(2653)
+
+L:SetWarningLocalization{
+	specWarnPolGen	= "3秒後轉化極性為 %s"
+}
+
+L:SetOptionLocalization({
+	specWarnPolGen	= "為極化產生器轉化你的極性顯示特別警報"
+})
 
 ---------------------------
 --  The One-Armed Bandit --
 ---------------------------
---L= DBM:GetModLocalization(2644)
+L= DBM:GetModLocalization(2644)
+
+L:SetMiscLocalization({
+	BaitCoil	= "引誘線圈至小怪"
+})
 
 ---------------------------
 --  Mug'Zee, Heads of Security --
