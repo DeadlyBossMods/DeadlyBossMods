@@ -99,7 +99,7 @@ mod.vb.sparkTimerCount = 0
 local activeBossGUIDS = {}
 local addUsedMarks = {}
 local savedDifficulty = "normal"
-local resonanceActive = 0
+local resonanceActive = {}
 
 local allTimers = {
 	["mythic"] = {
@@ -154,7 +154,7 @@ function mod:CannonTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
-	resonanceActive = 0
+	table.wipe(resonanceActive)
 	self:SetStage(1)
 	table.wipe(activeBossGUIDS)
 	table.wipe(addUsedMarks)
@@ -298,8 +298,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFaultyZap:Yell()
 		end
 	elseif spellId == 466128 then
-		resonanceActive = resonanceActive + 1
-		if resonanceActive == 1 then
+		if not resonanceActive[args.destGUID] then
+			resonanceActive[args.destGUID] = true
+		end
+		if #resonanceActive == 1 and self:AntiSpam(3, 3) then
 			if self:IsTank() then
 				specwarnResonance:Show()
 				specwarnResonance:Play("moveboss")
@@ -321,7 +323,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 466093 and self:AntiSpam(3, 3) then
+	elseif spellId == 466093 and self:AntiSpam(3, 4) then
 		warnHaywire:Show()
 	elseif spellId == 1213817 then--Hype Hystle / Hype Fever (final hustle)
 		self:SetStage(2)
@@ -353,8 +355,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnLingeringVoltageFaded:Show()
 		end
 	elseif spellId == 466128 then
-		resonanceActive = resonanceActive - 1
-		if resonanceActive == 0 then
+		resonanceActive[args.destGUID] = nil
+		if #resonanceActive == 0 then
 			if self.Options.NPAuraOnResonance then
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
