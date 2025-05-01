@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20250106
+--Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20250430
 --Blizzard Entertainment
 
 if GetLocale() ~= "zhCN" then return end
@@ -62,8 +62,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2608)
 
 L:SetMiscLocalization({
-	Red		= " [红-塔]",--Skeinspinner Takazj 纺束者塔卡兹基
-	Blue	= " [蓝-阿]"--Anub'arash 阿努巴拉什
+	Red		= RED_FONT_COLOR:WrapTextInColorCode( " [红-塔]"),--Skeinspinner Takazj 纺束者塔卡兹基
+	Blue	=  BLUE_FONT_COLOR:WrapTextInColorCode( " [蓝-阿]")--Anub'arash 阿努巴拉什
 })
 
 ---------------------------
@@ -117,15 +117,31 @@ L:SetOptionLocalization({
 ---------------------------
 --L= DBM:GetModLocalization(2642)
 
+L:SetMiscLocalization({
+	BombsLeft		= "炸弹剩余"
+})
+
 ---------------------------
 --  Sprocketmonger Lockenstock --链齿狂人洛肯斯多
 ---------------------------
 --L= DBM:GetModLocalization(2653)
 
+L:SetWarningLocalization{
+	specWarnPolGen	= "3秒后转化极性为 %s"
+}
+
+L:SetOptionLocalization({
+	specWarnPolGen	= "为极性发生器转化你的极性显示特殊警报"
+})
+
 ---------------------------
 --  The One-Armed Bandit --独臂盗匪
 ---------------------------
 --L= DBM:GetModLocalization(2644)
+
+L:SetMiscLocalization({
+	BaitCoil	= "引诱线圈至小怪"
+})
 
 ---------------------------
 --  Mug'Zee, Heads of Security --穆格·兹伊，安保头子
