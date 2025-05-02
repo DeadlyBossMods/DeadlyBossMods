@@ -346,7 +346,7 @@ function timerPrototype:Start(timer, ...)
 		end
 	end
 	--This should only run if bar is actually enabled, else we don't have a previous bar to compare it to anyways
-	if isBarEnabled and DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
+	if isBarEnabled and (DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then
 		if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades" and self.type ~= "ai") and not self.allowdouble then
 			local bar = DBT:GetBar(id)
 			if bar then
