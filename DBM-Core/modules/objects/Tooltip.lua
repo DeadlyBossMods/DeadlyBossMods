@@ -62,14 +62,26 @@ local function addStats(tooltip, mod)
 	end
 end
 
+local newTooltipApi = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
+
 local function hook(self)
+	if self:IsForbidden() or self ~= GameTooltip then
+		return
+	end
 	if not DBM.Options.EnableTooltip then return end
 	if not DBM.Options.EnableTooltipInCombat and (InCombatLockdown() or IsEncounterInProgress() or DBM:InCombat()) then
 		return
 	end
-    local _, unit = self:GetUnit()
-	if not unit then return end
-	local mod = DBM:GetModByCreatureId(DBM:GetUnitCreatureId(unit))
+	local guid
+	if newTooltipApi then
+		local data = self:GetTooltipData()
+		guid = data and data.guid
+	else
+		local _, unit = self:GetUnit()
+		guid = unit and UnitGUID(unit)
+	end
+	if not guid then return end
+	local mod = DBM:GetModByCreatureId(DBM:GetCIDFromGUID(guid))
 	if not mod then return end
 	if DBM.Options.EnableTooltipHeader then
 		self:AddLine(L.TOOLTIP_DBM)
@@ -80,7 +92,7 @@ local function hook(self)
 	addStats(self, mod)
 end
 
-if TooltipDataProcessor then
+if newTooltipApi then
 	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, hook)
 else
 	GameTooltip:HookScript("OnTooltipSetUnit", hook)
