@@ -104,7 +104,7 @@ local resonanceActive = false
 local allTimers = {
 	["mythic"] = {
 		--Amplification
-		[473748] = {10.5, 38.8, 37.7},
+		[473748] = {10.3, 38.5, 37.7},
 		--Echoing Chant
 		[466866] = {21.0, 39, 53},
 		--Sound Cannon
