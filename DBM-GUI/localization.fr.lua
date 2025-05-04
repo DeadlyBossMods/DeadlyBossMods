@@ -156,6 +156,11 @@ L.AutoAcceptFriendInvite	= "Acceptation auto des invitations venant d'un ami"
 L.AutoAcceptGuildInvite		= "Acceptation auto des invitations venant d'un membre de la guilde"
 L.Area_Advanced				= "Options avancées"
 L.FakeBW					= "Prétendre utiliser BigWigs lors des vérifications de versions au lieu de DBM (utile pour les guildes qui forcent l'utilisation de BigWigs)"
+--
+L.Area_Tooltip              = "Intégration à l'infobulle"
+L.EnableTooltip             = "Ajouter les statistiques de DBM aux infobulles des boss pris en charge"
+L.EnableTooltipInCombat     = "Afficher les informations de l'infobulle en combat"
+L.EnableTooltipHeader       = "Inclure l’en-tête DBM dans l’infobulle"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Profils"
