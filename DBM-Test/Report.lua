@@ -25,14 +25,14 @@ end
 -- Sorts warning objects by class/text/type
 local function compareObjects(obj1, obj2)
 	local class1, class2 = obj1.objClass, obj2.objClass
-	local key1, key2 = obj1.spellId or obj1.text or obj1, obj2.spellId or obj2.text or obj2
+	local key1, key2 = obj1.spellId or obj1.text, obj2.spellId or obj2.text
 	local type1, type2 = obj1.type or obj1.announceType or obj1.yellType or "unknown", obj2.type or obj2.announceType or obj2.yellType or "unknown"
 	local creationOrder1, creationOrder2 = obj1.testCreationOrder or math.huge, obj2.testCreationOrder or math.huge
 	if class1 ~= class2 then
 		return class1 < class2
-	elseif type(key1) ~= type(key2) then
+	elseif key1 and key2 and type(key1) ~= type(key2) then
 		return type(key1) == "string"
-	elseif key1 ~= key2 then
+	elseif key1 and key2 and key1 ~= key2 then
 		return key1 < key2
 	elseif type1 ~= type2 then
 		return type1 < type2

@@ -88,6 +88,11 @@
 		"DBMExtraGlobal",
 		"OptionsList_OnLoad",
 		"TranscriptDB",
-		"ColorPickerFrame"
+		"ColorPickerFrame",
+		"TooltipDataProcessor",
+
+		"Perfy_Start",
+		"Perfy_Stop",
+		"Perfy_Pause"
 	]
 }

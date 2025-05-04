@@ -469,7 +469,7 @@ do
 	---@param cidOrGuid number|string
 	---@param onlyBoss boolean? Used when you only need to check "boss" unitids
 	---@param itemId number? Used to define which item (range) is used. 32698 (48) is used if empty
-	---@param distance number? Used for tank distance fallback if item api is restricted
+	---@param distance number? Used for tank distance fallback if item api is restricted (Deprecated)
 	---@param defaultReturn boolean? Fallback return if all checks fail (whether a failure returns true or false)
 	---@return boolean
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)

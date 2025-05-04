@@ -652,3 +652,12 @@ L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla und Season of Discovery Paket"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves und Events Paket"
 
 L.DBM_TAINTED_BY_TESTS			= "DBM wurde in der aktuellen Session im Test-Modus mit Time Warping benutzt. Es wird empfohlen das UI neu zu laden bevor DBM in einem echten Boss-Kampf benutzt wird. Normalerweise sollte das keine Probleme machen, aber wir können nichts garantieren!"
+
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " Info"
+L.TOOLTIP_ENRAGE_TIMER			= "Enrage Timer"
+L.TOOLTIP_KILLS					= "Kills (%s)"
+L.TOOLTIP_WIPES					= "Wipes (%s)"
+L.TOOLTIP_FASTEST				= "Schnellster Kill (%s)"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip

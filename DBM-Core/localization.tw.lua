@@ -546,12 +546,14 @@ L.AUTO_TIMER_OPTIONS.roleplay				= "計時條：劇情持續時間"
 L.AUTO_TIMER_OPTIONS.combat					= "為戰鬥開始顯示計時器"
 
 L.AUTO_ICONS_OPTION_TARGETS					= "為$spell:%s的目標設置標記"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_A			= "為$spell:%s的目標設置標記，優先等級為坦克高於近戰高於遠程，並以字母順序優先"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_R			= "為$spell:%s的目標設置標記，優先等級為坦克高於近戰高於遠程，並以團隊陣容優先"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_A			= "為$spell:%s的目標設置標記，優先等級為坦克高於近戰高於遠程，並以字母順序後備"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_R			= "為$spell:%s的目標設置標記，優先等級為坦克高於近戰高於遠程，並以團隊陣容後備"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_A			= "為$spell:%s的目標設置標記，以近戰和字母順序優先"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R			= "為$spell:%s的目標設置標記，以近戰和團隊陣容優先"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A		= "為$spell:%s的目標設置標記，以遠程和字母順序優先"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R		= "為$spell:%s的目標設置標記，以遠程和團隊陣容優先"
+L.AUTO_ICONS_OPTION_TARGETS_MRH				= "為$spell:%s的目標設置標記，優先等級為近戰高於遠程高於治療，並以團隊陣容後備"
+L.AUTO_ICONS_OPTION_TARGETS_TOH				= "為$spell:%s的目標設置標記，優先等級為坦克高於輸出高於治療，並以團隊陣容後備"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA			= "為$spell:%s的目標設置標記，以字母順序優先"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER			= "為$spell:%s的目標設置標記，以團隊陣容優先"
 L.AUTO_ICONS_OPTION_NPCS					= "為$spell:%s設置標記"
@@ -690,3 +692,6 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES	= "挑戰組件"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM在當前階段使用了包含時間扭曲的測試模式，建議使用DBM在真正的首領戰鬥中之前重新載入UI。一切都應該按預期工作但並不保證！"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet

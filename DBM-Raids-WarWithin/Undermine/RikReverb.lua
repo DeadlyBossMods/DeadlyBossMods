@@ -59,6 +59,7 @@ local specWarnFaultyZap								= mod:NewSpecialWarningMoveAway(466979, nil, nil,
 local yellFaultyZap									= mod:NewYell(466979)
 local specWarnSparkBlastIngition					= mod:NewSpecialWarningSwitchCount(472306, nil, nil, nil, 1, 2)
 local specWarnTinnitusTaunt							= mod:NewSpecialWarningTaunt(464518, nil, nil, nil, 1, 2)
+local specwarnResonance								= mod:NewSpecialWarningMove(466128, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerAmplificationCD							= mod:NewCDCountTimer(40, 473748, nil, nil, nil, 3)
@@ -98,11 +99,12 @@ mod.vb.sparkTimerCount = 0
 local activeBossGUIDS = {}
 local addUsedMarks = {}
 local savedDifficulty = "normal"
+local resonanceActive = false
 
 local allTimers = {
 	["mythic"] = {
 		--Amplification
-		[473748] = {10.5, 40, 37.7},
+		[473748] = {10.3, 38.5, 37.7},
 		--Echoing Chant
 		[466866] = {21.0, 39, 53},
 		--Sound Cannon
@@ -152,6 +154,7 @@ function mod:CannonTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
+	resonanceActive = false
 	self:SetStage(1)
 	table.wipe(activeBossGUIDS)
 	table.wipe(addUsedMarks)
@@ -295,15 +298,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFaultyZap:Yell()
 		end
 	elseif spellId == 466128 then
-		if self.Options.NPAuraOnResonance then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		if self:AntiSpam(3, 3) then
+			if self:IsTank() then
+				specwarnResonance:Show()
+				specwarnResonance:Play("moveboss")
+			end
+			if self.Options.NPAuraOnResonance and not resonanceActive then
+				resonanceActive = true
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+			end
 		end
 	elseif spellId == 464518 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if not args:IsPlayer() and amount >= 3 then
-				if amount >= 6 and not DBM:UnitDebuff("player", spellId) then
+				if amount >= 6 and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then
 					specWarnTinnitusTaunt:Show(args.destName)
 					specWarnTinnitusTaunt:Play("tauntboss")
 				elseif amount % 3 == 0 then
@@ -311,7 +321,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 466093 and self:AntiSpam(3, 3) then
+	elseif spellId == 466093 and self:AntiSpam(3, 4) then
 		warnHaywire:Show()
 	elseif spellId == 1213817 then--Hype Hystle / Hype Fever (final hustle)
 		self:SetStage(2)
@@ -344,7 +354,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 466128 then
 		if self.Options.NPAuraOnResonance then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 467542 then--Haywire
 		for i = 1, 8, 1 do

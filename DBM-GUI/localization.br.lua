@@ -20,8 +20,6 @@ L.OTabPlugins				= "Outro"--Scenarios, PVP, Delves (11.x), Solo/Challenge conten
 L.OTabOptions				= "Opções"
 L.OTabAbout					= "Sobre"
 
-L.FOLLOWER					= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
-
 L.TabCategory_CURRENT_SEASON	= "Temporada atual"
 
 L.TabCategory_OTHER			= "Outros módulos"

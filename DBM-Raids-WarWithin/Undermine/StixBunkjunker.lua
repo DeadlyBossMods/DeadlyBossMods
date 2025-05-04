@@ -15,14 +15,15 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 464399 466742 1220752 464112 1217954 467117 467109",
-	"SPELL_CAST_SUCCESS 464149",
+	"SPELL_CAST_SUCCESS 464399 464149",
 	"SPELL_AURA_APPLIED 465346 1217685 464854 473115 473066 1218704 1219384 1220648 466748 472893 461536",
 	"SPELL_AURA_APPLIED_DOSE 466748",
 	"SPELL_AURA_REMOVED 465346 461536 1217685 473115 473066 467117",
 	"SPELL_PERIODIC_DAMAGE 464854 464248",
 	"SPELL_PERIODIC_MISSED 464854 464248",
 	"UNIT_DIED",
-	"UNIT_POWER_UPDATE player"
+	"UNIT_POWER_UPDATE player",
+	"CHAT_MSG_MONSTER_EMOTE"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -44,7 +45,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Sorting
 mod:AddTimerLine(DBM:GetSpellName(464399))
-local warnSorted									= mod:NewTargetNoFilterAnnounce(465346, 3)
+local warnSorted									= mod:NewTargetCountAnnounce(465346, 3, nil, nil, nil, nil, nil, nil, true)
 local warnInfectedbite								= mod:NewCountAnnounce(466748, 4, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466748))--Player
 local warnRollingRubbish							= mod:NewCountAnnounce(461536, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(461536), nil, nil, 2)--Player
 
@@ -61,7 +62,7 @@ local timerRollingPlayer							= mod:NewBuffFadesTimer(20, 461536, nil, nil, nil
 --local timerBigBomb								= mod:NewCastTimer(20, 464865, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerShortFuseCast							= mod:NewCastNPTimer(30, 473115, nil, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnBalls", 465346, true, 0, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnBalls", 465346, true, 11, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnScrapmasters", -31645, true, 5, {8, 7, 6, 5})
 --mod:AddSetIconOption("SetIconOnBigBomb", 464865, true, 5, {8})
 --mod:AddSetIconOption("SetIconOnSmallBomb", -30451, false, 5, {5, 6, 7}, true)
@@ -94,8 +95,9 @@ local timerOverDriveCD								= mod:NewNextTimer(111.1, 467117, nil, nil, nil, 6
 local timerOverdrive								= mod:NewBuffActiveTimer(10, 467117, nil, nil, nil, 6)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
+mod:AddInfoFrameOption(464865, false)
+
 mod.vb.sortingCount = 0
-mod.vb.sortedIcon = 1
 mod.vb.bigBombCount = 0
 mod.vb.IncinCount = 0
 mod.vb.demolishCount = 0
@@ -103,14 +105,52 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
+local SortedIcons = {}
+
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		if mod.vb.bigBombCount > 0 then
+			addLine(L.BombsLeft, mod.vb.bigBombCount)
+		end
+		return lines, sortedLines
+	end
+end
+
+---@param self DBMMod
+local function SortBalls(self)
+	table.sort(SortedIcons, DBM.SortByTankDpsHealerRoster)
+	for i = 1, #SortedIcons do
+		local name = SortedIcons[i]
+		local icon = i
+		if self.Options.SetIconOnBalls then
+			self:SetIcon(name, icon)
+		end
+		if name == DBM:GetMyPlayerInfo() then
+			specWarnSorted:Show(self:IconNumToTexture(icon))
+			specWarnSorted:Play("mm"..icon)
+			yellSorted:Yell(icon)
+			yellSorted:Countdown(465346, nil, icon)
+		end
+	end
+	warnSorted:Show(self.vb.sortingCount, table.concat(SortedIcons, "<, >"))
+end
 
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	table.wipe(castsPerGUID)
 	table.wipe(usedMarks)
 	table.wipe(seenGUIDs)
+	table.wipe(SortedIcons)
 	self.vb.sortingCount = 0
-	self.vb.sortedIcon = 1
 	self.vb.bigBombCount = 0
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
@@ -135,6 +175,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnMessedUp or self.Options.NPAuraOnTerritorial then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellName(464865))
+		DBM.InfoFrame:Show(2, "function", updateInfoFrame, false, false)
+	end
 end
 
 function mod:OnCombatEnd(_, _, secondRun)
@@ -142,13 +186,16 @@ function mod:OnCombatEnd(_, _, secondRun)
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if secondRun then self:Stop() end--Stop all timers in a second run of combat end to try and fix bugged timers
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 464399 then
 		self.vb.sortingCount = self.vb.sortingCount + 1
-		self.vb.sortedIcon = 1
+		table.wipe(SortedIcons)
 		specWarnElectroSorting:Show(self.vb.sortingCount)
 		specWarnElectroSorting:Play("specialsoon")
 		timerElectroSortingCD:Start(self:IsHard() and 51.1 or 45.9, self.vb.sortingCount+1)
@@ -178,6 +225,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerMeltdownCD:Start(self:IsHard() and 51.1 or 46.0, self.vb.meltdownCount+1)
 	elseif spellId == 467117 then--Overdrive (P2 start)
+		self:SetStage(2)
 		timerOverdrive:Start()
 		--Stop Timers
 		timerElectroSortingCD:Stop()
@@ -197,22 +245,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnIncinerator:Show(self.vb.IncinCount)
 		specWarnIncinerator:Play("scatter")
 		timerIncineratorCD:Start(self:IsHard() and 25.5 or 22.9, self.vb.IncinCount+1)
+	elseif spellId == 464399 then
+		if self:IsLFR() then
+			self.vb.bigBombCount = 1
+		else
+			if self:GetStage(2) then
+				self.vb.bigBombCount = 2
+			else
+				self.vb.bigBombCount = 1
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 465346 then
-		local icon = self.vb.sortedIcon
-		if self.Options.SetIconOnBalls then
-			self:SetIcon(args.destName, icon, 24)--Autoclear after 24 seconds in case player dies before getting 461536
-		end
+		SortedIcons[#SortedIcons+1] = args.destName
+		self:Unschedule(SortBalls)
+		self:Schedule(0.5, SortBalls, self)--Fallback in case scaling targets for normal/heroic
 		if args:IsPlayer() then
 			bigballs = 0
-			specWarnSorted:Show(self:IconNumToTexture(icon))
-			specWarnSorted:Play("mm"..icon)
-			yellSorted:Yell(icon, icon)
-			yellSortedFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then--One of ball is always the tank, so it's also a tank swap
@@ -220,8 +273,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSortedTaunt:Play("tauntboss")
 			end
 		end
-		warnSorted:CombinedShow(0.5, args.destName)--Up to 5 targets, but scalable so no precise show
-		self.vb.sortedIcon = self.vb.sortedIcon + 1
 	elseif spellId == 1217685 then
 		if self.Options.NPAuraOnMessedUp then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -371,6 +422,13 @@ function mod:UNIT_POWER_UPDATE(_, powerType)
 			warnRollingRubbish:Play("mediumball")
 		end
 		bigballs = power
+	end
+end
+
+--"<182.28 23:04:55> [CHAT_MSG_MONSTER_EMOTE] %s's Rolling Rubbish crashes into a Discarded Doomsplosive.#Possecutor###[DNT] Discarded Doomsplosive##0#0##0#6775#Player-77-0F82F3AB#0#false#false#false#false",
+function mod:CHAT_MSG_MONSTER_EMOTE(_, _, _, _, target)
+	if target == "[DNT] Discarded Doomsplosive" then
+		self.vb.bigBombCount = self.vb.bigBombCount - 1
 	end
 end
 

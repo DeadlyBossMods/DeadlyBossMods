@@ -641,3 +641,5 @@ L.LDB_TOOLTIP_HELP2	= "Clicca col tasto destro per aprire la configurazione"
 --L.WORLD_BUFFS.zgHeartYojamba						= "Begin the ritual, my servants.  We must banish the heart of Hakkar back into the void!",
 --L.WORLD_BUFFS.rendHead							= "The false Warchief, Rend Blackhand, has fallen!",
 --L.WORLD_BUFFS.blackfathomBoon						= "boon of Blackfathom"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip

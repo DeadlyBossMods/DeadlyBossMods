@@ -1,4 +1,4 @@
-## Interface: 110100, 110105
+## Interface: 50500
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r

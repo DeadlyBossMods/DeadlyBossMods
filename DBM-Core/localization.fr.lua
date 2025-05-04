@@ -689,3 +689,7 @@ L.DBM_INSTALL_PACKAGE_DUNGEON 	= "Paquet de Donjons, Gouffres et Événements"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "DBM a été utilisé en mode test avec distorsion temporelle lors de la session actuelle, il est recommandé de recharger votre interface avant d'utiliser DBM dans un combat de boss réel. Tout devrait fonctionner comme prévu, mais aucune garantie !"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER							= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    		= "Histoire"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet

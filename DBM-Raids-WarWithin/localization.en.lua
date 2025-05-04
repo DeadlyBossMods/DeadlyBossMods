@@ -109,7 +109,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stix Bunkjunker --
 ---------------------------
---L= DBM:GetModLocalization(2642)
+L= DBM:GetModLocalization(2642)
+
+L:SetMiscLocalization({
+	BombsLeft		= "Bombs left"
+})
 
 ---------------------------
 --  Sprocketmonger Lockenstock --
@@ -117,7 +121,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2653)
 
 L:SetWarningLocalization{
-	specWarnPolGen	= "Changing to %s - 3 sec",
+	specWarnPolGen	= "Changing to %s - 3 sec"
 }
 
 L:SetOptionLocalization({

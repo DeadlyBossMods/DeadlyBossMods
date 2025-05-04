@@ -588,6 +588,7 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "Set icons on $spell:%s targets with mele
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "Set icons on $spell:%s targets with ranged and alphabetical priority"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "Set icons on $spell:%s targets with ranged and raid roster priority"
 L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Set icons on $spell:%s targets with melee over ranged over healer priority and raid roster fallback"
+L.AUTO_ICONS_OPTION_TARGETS_TOH			= "Set icons on $spell:%s targets with tank over dps over healer priority and raid roster fallback"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "Set icons on $spell:%s targets with alphabetical priority"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER		= "Set icons on $spell:%s targets with raid roster priority"
 L.AUTO_ICONS_OPTION_NPCS				= "Set icons on $spell:%s"--usually used for npcs/mobs
@@ -734,3 +735,14 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES= "Challenges package"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM was used in test mode with time warping in the current session, it is recommended to reload your UI prior to using DBM in a real boss fight. Everything should still work as expected, but no gurantees!"
+
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " info"
+L.TOOLTIP_ENRAGE_TIMER			= "Enrage timer"
+L.TOOLTIP_KILLS					= "Kills (%s)"
+L.TOOLTIP_WIPES					= "Wipes (%s)"
+L.TOOLTIP_FASTEST				= "Fastest kill (%s)"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER						= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "Story"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet

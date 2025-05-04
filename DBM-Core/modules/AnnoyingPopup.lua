@@ -226,6 +226,25 @@ local annoyingPopupZonesCata = {
 	[754]  = {addon = "DBM-Raids-Cata", package = "Cata"},  -- ???
 }
 
+local annoyingPopupZonesMoP = {
+	--Raids
+	[1009]  = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
+	[1008]  = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
+	[1136]  = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
+	[996]   = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
+	[1098]  = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
+	--Dungeons
+	[960]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[961]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[959]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[962]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[994]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[1011]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[1007]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[1001]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[1004]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+}
+
 local annoyingPopupZonesRetail = {
 	--TWW Season 2 M+ Dungeons
 	[2651]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- ???
@@ -284,6 +303,8 @@ function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 		zoneInfo = annoyingPopupZonesWrath[mapId]
 	elseif zoneLookup == "Cata" then
 		zoneInfo = annoyingPopupZonesCata[mapId]
+	elseif zoneLookup == "MoP" then
+		zoneInfo = annoyingPopupZonesMoP[mapId]
 	elseif zoneLookup == "Retail" then
 		zoneInfo = annoyingPopupZonesRetail[mapId]
 	end

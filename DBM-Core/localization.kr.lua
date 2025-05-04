@@ -430,7 +430,7 @@ L.AUTO_SPEC_WARN_OPTIONS.keepmove 		= "$spell:%s에 계속 이동 특수 알림 
 L.AUTO_SPEC_WARN_OPTIONS.stopmove 		= "$spell:%s에 이동 금지 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.dodge			= "$spell:%s 피하기 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.dodgecount		= "$spell:%s 피하기 특수 알림 보기 (횟수 포함)"
-L.AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "$spell:%s 피하기 특수 알림 보기 (피해야하는 장소 포함)"
+L.AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "$spell:%s 피하기 특수 알림 보기 (피할 장소 포함)"
 L.AUTO_SPEC_WARN_OPTIONS.moveaway		= "$spell:%s에 본진에서 멀리 빠지기 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.moveawaycount		= "$spell:%s에 본진에서 멀리 빠지기 특수 알림 보기 (횟수 포함)"
 L.AUTO_SPEC_WARN_OPTIONS.moveawaytarget		= "$spell:%s에 본진에서 멀리 빠지기 특수 알림 보기 (대상 포함)"
@@ -485,7 +485,7 @@ L.AUTO_TIMER_TEXTS.combat				= "전투 시작"
 L.AUTO_TIMER_OPTIONS.target				= "$spell:%s 디버프 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.targetcount		= "$spell:%s 디버프 타이머 바 보기 (횟수 포함)"
 L.AUTO_TIMER_OPTIONS.cast				= "$spell:%s 시전 타이머 바 보기"
-L.AUTO_TIMER_OPTIONS.castpnp				= "$spell:%s 시전 타이머를 상위 이름표에만 표시"
+L.AUTO_TIMER_OPTIONS.castpnp				= "$spell:%s 시전 타이머를 주요 이름표에만 표시"
 L.AUTO_TIMER_OPTIONS.castcount			= "$spell:%s 시전 타이머 바 보기 (횟수 포함)"
 L.AUTO_TIMER_OPTIONS.castsource			= "$spell:%s 시전 타이머 바 보기 (시전자 이름 포함)"
 L.AUTO_TIMER_OPTIONS.active				= "$spell:%s 지속 시간 타이머 바 보기"
@@ -495,7 +495,7 @@ L.AUTO_TIMER_OPTIONS.ai					= "$spell:%s 쿨타임의 인공지능 예상 타이
 L.AUTO_TIMER_OPTIONS.cd					= "$spell:%s 쿨타임 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.cdcount			= "$spell:%s 쿨타임 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.cdnp				= "$spell:%s 쿨타임 타이머를 이름표에만 표시"
-L.AUTO_TIMER_OPTIONS.cdpnp				= "$spell:%s 쿨타임 타이머를 상위 이름표에만 표시"
+L.AUTO_TIMER_OPTIONS.cdpnp				= "$spell:%s 쿨타임 타이머를 주요 이름표에만 표시"
 L.AUTO_TIMER_OPTIONS.cdsource			= "$spell:%s 쿨타임 타이머 바 보기 (시전자 이름 포함)"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "특수 스킬 쿨타임 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.cdcombo				= "연계 스킬 쿨타임 타이머 바 보기"--Used for combining 2 abilities into a single timer
@@ -503,15 +503,15 @@ L.AUTO_TIMER_OPTIONS.cdcombo				= "연계 스킬 쿨타임 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.next				= "다음 $spell:%s 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.nextcount			= "다음 $spell:%s 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.nextnp				= "다음 $spell:%s 타이머를 이름표에만 표시"
-L.AUTO_TIMER_OPTIONS.nextpnp				= "다음 $spell:%s 타이머를 상위 이름표에만 표시"
+L.AUTO_TIMER_OPTIONS.nextpnp				= "다음 $spell:%s 타이머를 주요 이름표에만 표시"
 L.AUTO_TIMER_OPTIONS.nextsource			= "다음 $spell:%s 타이머 바 보기 (시전자 이름 포함)"
 L.AUTO_TIMER_OPTIONS.nextspecial		= "다음 특수 스킬 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.nextcombo			= "다음 연계 스킬 타이머 바 보기"--Used for combining 2 abilities into a single timer
 
 L.AUTO_TIMER_OPTIONS.var				= "$spell:%s 쿨타임 타이머 바 보기 (가변적 쿨타임 포함)"
 L.AUTO_TIMER_OPTIONS.varcount			= "$spell:%s 쿨타임 타이머 바 보기 (횟수 및 가변적 쿨타임 포함)"
-L.AUTO_TIMER_OPTIONS.varnp			= "$spell:%s 쿨타임을 이름표 전용 타이머로 보기 (가변적 쿨타임 포함)"
-L.AUTO_TIMER_OPTIONS.varpnp			= "$spell:%s 쿨타임을 이름표 전용 타이머로 가장 우선해서 보기 (가변적 쿨타임 포함)"
+L.AUTO_TIMER_OPTIONS.varnp			= "$spell:%s 쿨타임 타이머를 이름표에만 표시 (가변적 쿨타임 포함)"
+L.AUTO_TIMER_OPTIONS.varpnp			= "$spell:%s 쿨타임 타이머를 주요 이름표에만 표시 (가변적 쿨타임 포함)"
 L.AUTO_TIMER_OPTIONS.varsource			= "$spell:%s 쿨타임 타이머 바 보기 (시전자 및 가변적 쿨타임 포함)"
 L.AUTO_TIMER_OPTIONS.varspecial			= "특수 스킬 쿨타임 타이머 바 보기 (가변적 쿨타임 포함)"
 L.AUTO_TIMER_OPTIONS.varcombo			= "연계 스킬 쿨타임 타이머 바 보기 (가변적 쿨타임 포함)"
@@ -537,6 +537,7 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "$spell:%s 대상에 공격대 징표 설
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "$spell:%s 대상에 공격대 징표 설정 (원거리 캐릭터와 이름 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "$spell:%s 대상에 공격대 징표 설정 (원거리 캐릭터와 공격대 배치 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_MRH			= "$spell:%s 대상에 공격대 징표 설정 (근접 원거리 힐러 순서 및 미작동시 공격대 배치 순서 우선)"
+L.AUTO_ICONS_OPTION_TARGETS_TOH			= "$spell:%s 대상에 공격대 징표 설정 (탱커 딜러 힐러 순서 및 공격대 배치 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "$spell:%s 대상에 공격대 징표 설정 (이름순)"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER		= "$spell:%s 대상에 공격대 징표 설정 (공격대 배치 순서 우선)"
 L.AUTO_ICONS_OPTION_NPCS				= "$spell:%s에 공격대 징표 설정"--usually used for npcs/mobs
@@ -668,3 +669,14 @@ L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 이벤트 패키지"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM이 이번 접속에서 시간을 왜곡한 테스트 모드로 사용되고 있습니다. 보스 전투에서 DBM을 사용하기에 앞서 UI 재시작을 권장합니다. 모든 기능이 여전히 의도대로 작동해야 하나, 장담할 순 없습니다!"
+
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " 정보"
+L.TOOLTIP_ENRAGE_TIMER			= "광폭화 타이머"
+L.TOOLTIP_KILLS					= "처치 (%s)"
+L.TOOLTIP_WIPES					= "전멸 (%s)"
+L.TOOLTIP_FASTEST				= "최단 처치 시간 (%s)"
+
+-- Difficulty info not found in normal globals, used by both GUI and tooltip
+L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "이야기"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet

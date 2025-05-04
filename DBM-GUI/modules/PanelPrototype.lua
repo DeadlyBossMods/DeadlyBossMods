@@ -242,30 +242,18 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(self:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
-		if ColorPickerFrame.SetupColorPickerAndShow then -- 10.2.5+
-			ColorPickerFrame:SetupColorPickerAndShow({
-				swatchFunc = function()
-					local r, g, b = ColorPickerFrame:GetColorRGB()
-					colorCallback(self, r, g, b)
-				end,
-				cancelFunc = function()
-					colorCallback(self, r1, g1, b1)
-				end,
-				r = self.r,
-				g = self.g,
-				b = self.b
-			})
-		else
-			ColorPickerFrame.func = function()
+		ColorPickerFrame:SetupColorPickerAndShow({
+			swatchFunc = function()
 				local r, g, b = ColorPickerFrame:GetColorRGB()
 				colorCallback(self, r, g, b)
-			end
-			ColorPickerFrame.cancelFunc = function()
+			end,
+			cancelFunc = function()
 				colorCallback(self, r1, g1, b1)
-			end
-			ColorPickerFrame:SetColorRGB(r1, g1, b1)
-			ColorPickerFrame:Show()
-		end
+			end,
+			r = self.r,
+			g = self.g,
+			b = self.b
+		})
 	end)
 
 	--[[

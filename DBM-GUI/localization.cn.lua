@@ -24,9 +24,6 @@ L.OTabPlugins	= "其他"
 L.OTabOptions	= "核心选项"
 L.OTabAbout		= "关于"
 
-L.FOLLOWER	= "追随者"
-L.STORY 	= "故事模式"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
-
 L.TabCategory_CURRENT_SEASON		= "当前赛季"
 
 L.TabCategory_OTHER			= "其它模块"

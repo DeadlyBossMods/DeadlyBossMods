@@ -17,9 +17,6 @@ L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge con
 L.OTabOptions					= "핵심 설정"
 L.OTabAbout						= "소개"
 
-L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
-L.STORY					    		= "이야기"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
-
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
 L.TabCategory_OTHER			= "기타 모드"
@@ -155,6 +152,12 @@ L.AutoAcceptFriendInvite	= "친구의 파티/공격대 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원의 파티/공격대 초대 자동 수락"
 L.Area_Advanced				= "고급 설정"
 L.FakeBW					= "DBM 대신 BigWigs 사용자로 위장하기 (BigWigs 사용을 강제하는 공격대에서 유용)"
+--
+L.Area_Tooltip						= "툴팁 통합"
+L.EnableTooltip						= "DBM이 지원하는 보스의 툴팁에 DBM 통계 추가"
+L.EnableTooltipInCombat				= "전투 중에 툴탑 정보를 표시"
+L.EnableTooltipHeader				= "툴팁에 DBM 헤더 포함"
+
 
 -- Panel: Profiles
 L.Panel_Profile				= "프로필"

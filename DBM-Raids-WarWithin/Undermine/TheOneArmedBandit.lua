@@ -109,7 +109,7 @@ local warnCheatToWin							= mod:NewCountAnnounce(465309, 4)
 local specWarnHotHotHot							= mod:NewSpecialWarningDodge(465322, nil, nil, nil, 2, 2)--Second Cast
 local specWarnScatteredPayout					= mod:NewSpecialWarningSwitch(465580, "Dps", nil, nil, 1, 2)--Third Cast
 
-local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 473195, L.BaitCoil.." %s)", nil, nil, 6)
+local timerLinkedMachinesCD						= mod:NewCDCountTimer(25.2, 473195, L.BaitCoil.." %s", nil, nil, 6)
 local timerLinkedMachinesCast					= mod:NewCastTimer(7.5, 465432, 28405, nil, nil, 5)--Shorttext knockback
 local timerHotHotHotCD							= mod:NewCDCountTimer(25.2, 465322, nil, nil, nil, 6)
 local timerScatteredPayoutCD					= mod:NewCDCountTimer(25.2, 465580, nil, nil, nil, 6)
@@ -199,7 +199,7 @@ function mod:SPELL_CAST_START(args)
 			elseif self:IsHeroic() or self:IsLFR() then--Heroic/LFR swaps payline and bighit compared to normal
 				timerPaylineCD:Start("v11.1-11.8", self.vb.paylineCount+1)
 				timerFoulExhaustCD:Start("v16.0-16.7", self.vb.foulExhaustCount+1)
-				timerTheBigHitCD:Start("v22.1-23", self.vb.bigHitCount+1)
+				timerTheBigHitCD:Start("v15.3-23", self.vb.bigHitCount+1)
 			else
 				timerTheBigHitCD:Start("v11.9-13.1", self.vb.bigHitCount+1)
 				timerFoulExhaustCD:Start("v16.6-18.9", self.vb.foulExhaustCount+1)
@@ -320,6 +320,7 @@ function mod:SPELL_CAST_START(args)
 		--new Phase Timers 10.7-14.3
 		timerTheBigHitCD:Start(self:IsHard() and "v3.3-5.8" or "v10.7-14.3", self.vb.bigHitCount+1)
 		--again, on normal if 2 exhausts occured before hot, the it's a longer timer here too, else very short. Heroic and mythic more consistent in their 9-11 sec range
+		timerFoulExhaustCD:Stop()
 		timerFoulExhaustCD:Start(self:IsMythic() and "v10.7-11.9" or self:IsHeroic() and "v9.4-10.6" or (self.vb.secondExhaustOccurred == 2) and 26.4 or "v3.3-4.4", self.vb.foulExhaustCount+1)
 		timerPaylineCD:Start(21.6, self.vb.paylineCount+1)--Mythic and heroic Unknown
 		timerExplosiveJackpotCD:Start(self:IsEasy() and 29.9 or 25.2, 2)

@@ -38,7 +38,7 @@ local IsSpellKnown = IsSpellKnown
 
 function DBMExtraGlobal:rebuildSpecTable()
 	-- Retail
-	if private.isRetail then
+	if private.isRetail or private.isMop then
 		specRoleTable = {
 			[62] = {	--Arcane Mage
 				["Dps"] = true,

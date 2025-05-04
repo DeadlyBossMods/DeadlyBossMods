@@ -5,6 +5,7 @@ local test = DBM.Test
 local dbmPrivate = test:GetPrivate()
 
 local bband = bit.band
+local GetTimePreciseSec = GetTimePreciseSec
 local realErrorHandler = geterrorhandler()
 
 -- FIXME: i don't like this "global" state
@@ -34,6 +35,26 @@ local function stripMarkup(text)
 	text = text:gsub("\n", "\\n")
 	text = text:gsub("\r", "\\r")
 	return text:trim()
+end
+
+-- Perfy integration
+local function hasPerfy()
+	return Perfy_Start and C_AddOns.GetAddOnMetadata("DBM-Core", "X-Perfy-Instrumented")
+end
+
+local function perfyStart(testName)
+	if not hasPerfy() then return end
+	Perfy_Start(nil, testName:gsub("/", "-"))
+end
+
+local function perfyStop()
+	if not hasPerfy() then return end
+	Perfy_Stop()
+end
+
+local function perfyPause()
+	if not hasPerfy() then return end
+	Perfy_Pause()
 end
 
 local function eventArgsToStringPretty(event, offset, isCleu)
@@ -475,6 +496,11 @@ function test:RestoreCVar(cvar)
 end
 
 function test:Teardown()
+	if self.hasQueuedTests then
+		perfyPause()
+	else
+		perfyStop()
+	end
 	self.testRunning = false
 	self.modUnderTest = nil
 	if self.reporter then self.reporter:UnsetErrorHandler() end
@@ -603,16 +629,25 @@ function test:InjectEvent(event, ...)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 		DBM:FireEvent("DBMTest_CombatLogEvent", event, self.Mocks.CombatLogGetCurrentEventInfo())
 		self.Mocks:SetFakeCLEUArgs()
 	else
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 		DBM:FireEvent("DBMTest_Event", event, ...)
 	end
 	-- UNIT_* events will be mapped to _UNFILTERED if we fake them on the main frame, so we trigger them twice with just a random fake frame
 	if event:match("^UNIT_") then
+		local start = GetTimePreciseSec()
 		dbmPrivate.mainEventHandler(fakeUnitEventFrame, event, ...)
+		local delta = GetTimePreciseSec() - start
+		self.Perf:Track("Event", event, delta)
 	end
 end
 
@@ -803,6 +838,7 @@ function test:Playback(testData, timeWarp, testOptions)
 	local startTime = timeWarper.fakeTime
 	local ts = 0
 	local i = 1
+	self.Perf:Start()
 	while i <= #testData.log do
 		local v
 		-- Events may trigger additional events, e.g., UNIT_HEALTH from logs that contain health info about units
@@ -834,6 +870,8 @@ function test:Playback(testData, timeWarp, testOptions)
 		timeWarper:WaitFor(extraTime)
 	end
 	DBM:AddMsg("Test playback for test " .. testData.name .. " finished.")
+	self.Perf:Stop()
+	self.Perf:Report()
 	local reporter = self.reporter
 	if DBM:InCombat() then
 		reporter:FlagCombat(extraTime + 3.1)
@@ -892,7 +930,8 @@ frame:SetScript("OnUpdate", function() test:OnUpdate() end)
 ---@field name string Unique test ID.
 ---@field gameVersion GameVersion Required version of the game to run the test.
 ---@field addon string AddOn in which the mod under test is located.
----@field mod (string|integer)? The boss mod under test, optional, by default this is derived from the first ENCOUNTER_START or ENCOUNTER_END event in the log
+---@field mod (string|integer)? The boss mod under test, optional, either this or encounterId must be provided
+---@field encounterId integer? Encounter ID to derive the mod under test from, either this or mod must be provided
 ---@field otherMods ((string|integer)[]|(string|integer))? List of other mods that are allowed to trigger warnings/timers during test execution, useful for trash mods that are active during bosses.
 ---@field instanceInfo DBMInstanceInfo Fake GetInstanceInfo() data for the test.
 ---@field playerName string? (Deprecated, no longer required) Name of the player who recorded the log.
@@ -938,28 +977,12 @@ function test:OnAfterLoadAddOn()
 	end
 end
 
-
-local encounterIdCache = {}
-local function cachedEncounterId(testData)
-	if encounterIdCache[testData] then
-		return encounterIdCache[testData]
-	end
-	local encounterId
-	for _, v in ipairs(testData.log) do
-		if v[2] == "ENCOUNTER_START" or v[2] == "ENCOUNTER_END" then
-			encounterId = v[3]
-		end
-	end
-	encounterIdCache[testData] = encounterId or false
-	return encounterId
-end
-
 ---@param testData TestDefinition
 function test:GuessMod(testData)
 	if testData.mod then return end
-	local encounterId = cachedEncounterId(testData)
+	local encounterId = testData.encounterId
 	if not encounterId then
-		return
+		error("tests must set define a mod under test or an encounterId from which the mod can be derived")
 	end
 	local mod, modInOtherAddon
 	for _, v in ipairs(DBM.Mods) do
@@ -976,7 +999,7 @@ function test:GuessMod(testData)
 		if modInOtherAddon then
 			error("found mod for test " .. testData.name .. " in addon " .. modInOtherAddon.modId .. " but test specifies addon " .. testData.addon)
 		else
-			error("could not determine which mod is being tested by test " .. testData.name .. ", ensure the log contains ENCOUNTER_START/END events matching a mod's encounter id or set the field mod in the test definition")
+			error("could not determine which mod is being tested by test " .. testData.name .. ", make sure encounterId is set to an ID used by the mod under test or set the field mod explicitly")
 		end
 	end
 	testData.mod = tostring(mod.id)
@@ -1032,6 +1055,7 @@ function test:RunTest(testNameOrdata, timeWarp, testOptions, callback)
 	currentEventKey = nil
 	currentRawEvent = nil
 	self.testCallback = callback
+	perfyStart(testData.name)
 	currentThread = coroutine.create(self.Playback)
 	local ok, err = coroutine.resume(currentThread, self, testData, timeWarp, testOptions)
 	if not ok then realErrorHandler(err) end
@@ -1056,6 +1080,7 @@ function test:RunTests(testsOrNames, timeWarp, testOptions, callback)
 	local cr = coroutine.create(function()
 		for i, testOrName in ipairs(testsOrNames) do
 			local testName = type(testOrName) == "string" and testOrName or testOrName.name
+			self.hasQueuedTests = i ~= #testsOrNames
 			xpcall(self.RunTest, errorHandlerWithStack, self, testName, timeWarp, testOptions, function(event, testDef, testOptions, reporter)
 				if callback then
 					xpcall(callback, realErrorHandler, event, testDef, testOptions, reporter, i, #testsOrNames)
