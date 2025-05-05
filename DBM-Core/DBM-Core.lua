@@ -4215,7 +4215,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		self:SetCurrentSpecInfo()
 	end
 	difficulties:RefreshCache()
-	if private.isRetail then
+	if private.isRetail or private.isMop then
 		EJ_SetDifficulty(difficulties.difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
 	end
 	self:Debug("LoadAddOn should have fired for " .. mod.name, 2)
