@@ -560,7 +560,7 @@ function DBM:GetCurrentInstanceDifficulty()
 			---@diagnostic disable-next-line: cast-local-type
 			delveTier = tonumber(usedDelveInfo.tierText)
 		end
-		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
+		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier or 0
 	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
 		return "timewalker", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
