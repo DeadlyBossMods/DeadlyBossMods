@@ -152,6 +152,11 @@ L.AutoAcceptFriendInvite	= "Aceptar automáticamente invitaciones de grupos de a
 L.AutoAcceptGuildInvite		= "Aceptar automáticamente invitaciones de grupos de miembros de la hermandad"
 L.Area_Advanced				= "Opciones avanzadas"
 L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión (útil para hermandades que obligan a utilizar BigWigs)"
+--
+L.Area_Tooltip              = "Integración con tooltip"
+L.EnableTooltip             = "Añadir estadísticas de DBM a los tooltips de los jefes compatibles"
+L.EnableTooltipInCombat     = "Mostrar información del tooltip durante el combate"
+L.EnableTooltipHeader       = "Incluir encabezado de DBM en el tooltip"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Perfiles"
