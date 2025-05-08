@@ -26,13 +26,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, auto mark crawlers with https://www.wowhead.com/ptr-2/spell=466539/unstable-crawler-mines
---TODO, personal https://www.wowhead.com/ptr-2/spell=472061/unstable-crawler-mines tracking?
---TODO, https://www.wowhead.com/ptr-2/spell=469043/searing-shrapnel tracker?
---TODO, Volunteer Rocketeer spells? Rocket jump and Disintegration Beam
---TODO, detect Mk II Electro Shocker spawn for initial timers and possible spawn alert
 --TODO, if blizzard doesn't fix being able to detect fixate targets using target scanning, create a nameplate iterator to track fixate targets
---TODO, a lot more data needed, tons of WCL crawling required
 --[[
 (ability.id = 463967 or ability.id = 1215953 or ability.id = 1216142) and type = "begincast"
 or (ability.id = 468728 or ability.id = 468794) and type = "cast"

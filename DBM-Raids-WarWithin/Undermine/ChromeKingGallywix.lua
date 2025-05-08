@@ -26,17 +26,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_START boss1"
 )
 
---TODO: Possibly add a bombs remaining infoframe similar to hellfire citadel 2nd boss
---TODO, stuff with Greedy Goblin's Armaments ?
---TODO, target scan giga blast?
 --TODO, VERIFY when a player is carrying a Gigabomb, use https://www.wowhead.com/ptr-2/spell=469361/giga-bomb too?
 --TODO, add stack announce for https://www.wowhead.com/ptr-2/spell=471352/juice-it when frequency of stacks is known
 --TODO, detect darkfuse cronies spawn, maybe https://www.wowhead.com/ptr-2/spell=462416/signal-flare ?
 --TODO, auto mark hob goblins? https://www.wowhead.com/ptr-2/spell=1216846/holding-a-wrench
---TODO, detect cratering cast start
---TODO, ego swapping? it'll need fancy checked ego amount checks https://www.wowhead.com/ptr-2/spell=467064/checked-ego
---TODO, announce https://www.wowhead.com/ptr-2/spell=469363/fling-giga-bomb flings?
 --TODO, possibly readd 469404 as a stack warning instead
+--TODO, LFR phase detection fails and counts don't reset and timers break at a point in fight, unclear why without some detailed trancsriptor logs of LFR
 --NOTE, it's possible to detect phase changes in story mode with anchor casts, but it's a mess and not worth dev time investment since the timers don't actually matter. As such timers just hard disabled in story mode
 --[[
 stoppedAbility.id = 1214369 or ability.id = 1214229 and (type = "applydebuff" or type = "removedebuff") or ability.id = 1220290 and type = "removebuff" or (ability.id = 1226891 or ability.id = 469293) and (type = "applybuff" or type = "removebuff")

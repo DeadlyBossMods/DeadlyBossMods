@@ -27,17 +27,9 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, maybe use https://www.wowhead.com/spell=263753/spawn-trash as shortext for sorting
---TODO, see how others handle icons for sorting. Right now I keep them persent until full Rolling Rubish mechanic ends
---TODO, Discarded Doomsplosive spawn and auto marking if possible?
---TODO, fancy infoframe that tracks active bombs, times remaining, as well as time remaining on https://www.wowhead.com/ptr-2/spell=1217975/doomsploded
---TODO, more with power coil
 --TODO, dumpster dive upgrade emphasis and just make it aoe dodge alert
 --TODO, taunt DURING demolish cast, or immediately on completion of cast
---TODO, clear bomb count using SPELL_DAMAGE 465747? of course first we have to find a way to increment bomb count
 --TODO, prevent starting new timers if overdrive soon. this is on hold til other difficulties seen
---TODO, add rolled? 465611. I feel it's pretty obvious you're stunned...by the stun
---TODO, verify which variant of timers is final version, the slower fight pacing harder tests saw or faster pacing normal and LFR saw, or are both pacings still used
 --[[
  (ability.id = 464399 or ability.id = 464112 or ability.id = 1217954) and type = "begincast"
   or ability.id = 464149 and type = "cast"
