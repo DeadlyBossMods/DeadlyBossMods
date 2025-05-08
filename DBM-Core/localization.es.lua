@@ -556,6 +556,7 @@ L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "Establecer iconos en objetivos de $spell
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "Establecer iconos en objetivos de $spell:%s con prioridad a distancia y alfabética"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_R	= "Establecer iconos en objetivos de $spell:%s con prioridad a distancia y lista de banda"
 L.AUTO_ICONS_OPTION_TARGETS_MRH			= "Establecer iconos en objetivos de $spell:%s con prioridad cuerpo a cuerpo sobre a distancia sobre sanador y la lista de banda como alternativa"
+L.AUTO_ICONS_OPTION_TARGETS_TOH 		= "Establecer iconos en objetivos de $spell:%s con prioridad tanque sobre DPS sobre sanador y la lista de banda como alternativa"
 L.AUTO_ICONS_OPTION_TARGETS_ALPHA		= "Establecer iconos en objetivos de $spell:%s con prioridad alfabética"
 L.AUTO_ICONS_OPTION_TARGETS_ROSTER		= "Establecer iconos en objetivos de $spell:%s con prioridad lista de banda"
 L.AUTO_ICONS_OPTION_NPCS				= "Establecer iconos en $spell:%s"
@@ -689,5 +690,13 @@ L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquete de Mazmorras, Abismos y Eventos"
 -- Tests
 L.DBM_TAINTED_BY_TESTS = "DBM se utilizó en modo de prueba con distorsión temporal en la sesión actual, se recomienda recargar tu interfaz antes de usar DBM en un combate de jefe real. Todo debería funcionar como se espera, ¡pero no hay garantías!"
 
+-- Boss tooltip
+L.TOOLTIP_DBM                 = L.DBM .. " información"
+L.TOOLTIP_ENRAGE_TIMER        = "Temporizador de enfurecer"
+L.TOOLTIP_KILLS               = "Victorias (%s)"
+L.TOOLTIP_WIPES               = "Derrotas (%s)"
+L.TOOLTIP_FASTEST             = "Victoria más rápida (%s)"
+
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER	= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "Historia"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet

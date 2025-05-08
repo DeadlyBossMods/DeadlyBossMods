@@ -589,7 +589,12 @@ L.AutoAcceptFriendInvite	= "Aceitar convites de amigos automaticamente"
 L.AutoAcceptGuildInvite		= "Aceitar convites de membros da guilda automaticamente"
 L.Area_Advanced				= "Opções avançadas"
 L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM (útil para guildas que forçam o uso de BigWigs)"
-
+--
+L.Area_Tooltip              = "Integração com dicas"
+L.EnableTooltip             = "Adicionar estatísticas do DBM às dicas dos chefes compatíveis"
+L.EnableTooltipInCombat     = "Exibir informações da dica durante o combate"
+L.EnableTooltipHeader       = "Incluir cabeçalho do DBM na dica"
+--
 L.Area_CombatAlerts			= "Opções de alertas de combate"
 L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (em qualquer porcentagem) enquanto estiver LDT"
 L.HealthWarningLow			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
