@@ -97,6 +97,7 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
+local expectedBalls = 0
 local SortedIcons = {}
 
 local updateInfoFrame
@@ -147,6 +148,7 @@ function mod:OnCombatStart(delay)
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
 	self.vb.meltdownCount = 0
+	expectedBalls = 5--Just set to max initially
 	if self:IsHard() then
 		timerIncineratorCD:Start(11.1-delay, 1)
 		timerDemolishCD:Start(17.8-delay, 1)
@@ -154,6 +156,9 @@ function mod:OnCombatStart(delay)
 		timerMeltdownCD:Start(44.4-delay, 1)
 		timerOverDriveCD:Start((self:IsMythic() and 55.6 or 111.1)-delay)
 		berserkTimer:Start(self:IsMythic() and 385 or 480)
+		if self:IsMythic() then
+			expectedBalls = 4
+		end
 	else
 		timerIncineratorCD:Start(10-delay, 1)
 		timerDemolishCD:Start(16-delay, 1)
@@ -255,7 +260,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 465346 then
 		SortedIcons[#SortedIcons+1] = args.destName
 		self:Unschedule(SortBalls)
-		self:Schedule(0.5, SortBalls, self)--Fallback in case scaling targets for normal/heroic
+		if #SortedIcons == expectedBalls then--5 is max on 30 man, 4 is max on mythic
+			SortBalls(self)
+		else
+			self:Schedule(1, SortBalls, self)--Fallback in case scaling targets for normal/heroic
+		end
 		if args:IsPlayer() then
 			bigballs = 0
 		else
