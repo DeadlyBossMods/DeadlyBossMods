@@ -120,6 +120,7 @@ end
 
 ---@param self DBMMod
 local function SortBalls(self)
+	DBM:Debug("Sorting Balls")
 	table.sort(SortedIcons, DBM.SortByTankDpsHealerRoster)
 	for i = 1, #SortedIcons do
 		local name = SortedIcons[i]
@@ -128,6 +129,7 @@ local function SortBalls(self)
 			self:SetIcon(name, icon)
 		end
 		if name == DBM:GetMyPlayerInfo() then
+			DBM:Debug("Player is Ball " .. i)
 			specWarnSorted:Show(self:IconNumToTexture(icon))
 			specWarnSorted:Play("mm"..icon)
 			yellSorted:Yell(icon)
