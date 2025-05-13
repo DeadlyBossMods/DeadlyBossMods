@@ -1,4 +1,3 @@
-if DBM:GetTOC() < 110100 then return end
 local mod	= DBM:NewMod(2683, "DBM-KhazAlgar", nil, 1278)
 local L		= mod:GetLocalizedStrings()
 
@@ -9,6 +8,7 @@ mod:SetEncounterID(3128)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
 --mod:SetHotfixNoticeRev(20240119000000)
 --mod:SetMinSyncRevision(20240119000000)
+mod:SetZone(2708)
 
 mod:RegisterCombat("combat")
 --mod:RegisterKill("yell", L.Win)
