@@ -26,15 +26,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, finetune crash audio to match watch wave instead of it's more prominant than the lightning bolts
---TODO, do more with spite when we know swap stacks and other factors
---TODO, possible automarking for scrapbomb using https://www.wowhead.com/ptr-2/spell=1217753/scrapbomb if automarking is still possible in 11.1
---TODO, see if https://www.wowhead.com/ptr-2/spell=1213688/molten-phlegm still exists or if only the 30 second non dispelable version remains
---TODO, auto set icons on blastburn if possible
---TODO, see if you can sidestep https://www.wowhead.com/ptr-2/spell=1214190/eruption-stomp if you are the target of it
---TODO, see if https://www.wowhead.com/ptr-2/spell=1218088/tempest-unleashed can be detected for timer purposes?
---TODO, infoframe for static charge alt power? figure out accuracy of how it works then also create personal alert if stacks too high
---TODO, any kind of marking for https://www.wowhead.com/ptr-2/spell=1213992/voltaic-image ?
 --[[
 (ability.id = 473650 or ability.id = 472233 or ability.id = 1214190 or ability.id = 473994 or ability.id = 466178) and type = "begincast"
  or ability.id = 463900 and type = "cast"

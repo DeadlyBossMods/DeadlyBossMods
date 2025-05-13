@@ -22,11 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED"
 )
 
---TODO, actual cast event for Polarization
---TODO, detect polarization of bombs and nameplate aura them if possible
---TODO, verify tank logic should work like Volcoross
 --TOOD, GTFO for https://www.wowhead.com/ptr-2/spell=466235/wire-transfer ?
---TODO, find firecracker trap spawn trigger
 --TODO, see if https://www.wowhead.com/ptr-2/spell=1215218/bleeding-edge still used on other difficulties
 --[[
 (ability.id = 473276 or ability.id = 1217231 or ability.id = 1214872 or ability.id = 1216508 or ability.id = 465232 or ability.id = 1218418 or ability.id = 1216525 or ability.id = 1216414 or ability.id = 1215858 or ability.id = 466765 or ability.id = 1216674 or ability.id = 1216699) and type = "begincast"

@@ -23,13 +23,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---TODO, mark token holders with red, blue, orange, and skull?
---TODO, revise audio as needed
---TODO, auto mark bombs with https://www.wowhead.com/ptr-2/spell=461176/reward-flame-and-bomb ?
---TODO, add https://www.wowhead.com/ptr-2/spell=464705/golden-ticket stack tracker? probably not really needed
---TODO, record new payline audio (based on if we can detect it or not)
 --TODO, bait timers and short texts
 --TODO, figure out the lineyou and farfromline overlap since we can't detect debuff and filter farfromline on private aura...
+--TODO, figure out why LFR has some serious timer queue issues where abilities go as much as -30 before being cast.
 --[[
 (ability.id = 472197 or ability.id = 460181 or ability.id = 469993 or ability.id = 460472 or ability.id = 465587 or ability.id = 461060) and type = "begincast"
 or ability.id = 465761 and type = "begincast" or ability.id = 465765 and type = "cast"
