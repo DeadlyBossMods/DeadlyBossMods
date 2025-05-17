@@ -510,7 +510,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356)),--Shield Slam
+				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
 			},
 			[752] = {	--Balance Druid
 				["Healer"] = false,
@@ -525,7 +525,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			[750] = { --Feral Druid
 				["Healer"] = false,
 				["Dps"] = true,
-				["Tank"] = IsPlayerSpell(23922) and true or false,--Only sets true if Nuturing Instinct is learned for non vanilla
+				["Tank"] = IsPlayerSpell(57880) and true or false,--uses same assumption as libspec, if Natural Reaction is rank 2 you're a tank
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
@@ -724,7 +724,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356)),--Shield Slam
+				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
 			},
 			["DRUID1"] = {	--Balance Druid
 				["Healer"] = private.isClassic and true or false,
