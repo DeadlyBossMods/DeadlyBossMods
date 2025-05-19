@@ -227,6 +227,7 @@ local VPSound = {
 	["movetoweb"] = 17,
 	["movetoflamethrower"] = 17,
 	["movetotendrils"] = 17,
+	["movetoyelloworb"] = 18,
 	["mpurple"] = 0,
 	["myellow"] = 0,
 	["negative"] = 13,
