@@ -400,7 +400,7 @@ local allTimers = {
 				[5] = {0},
 			},
 			[1214607] = {--BBBBlast
-				[0] = {26.1, 33},
+				[0] = {"v21.7-26.1", 33},
 				[1] = {"v24.9-33.6"},
 				[2] = {"v9-38.2", 37.5},--Boss sometimes skips first cast and just goes right into second. we just handle it with variance
 				[3] = {"v17.6-27.2", 33.1},
@@ -832,7 +832,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 1226891 and self:AntiSpam(2.5, 1) then--Circuit Reboot Applied
+	elseif spellId == 1226891 and self:AntiSpam(3, 1) then--Circuit Reboot Applied (1219062 is lfr id)
 		self:SetStage(0.5)--Increment stage by 0.5
 		self.vb.mayhemRocketsCount = 0
 		--Stop all timers
@@ -872,7 +872,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then--Armageddon-class Plating
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 1214369 and self:AntiSpam(5, 3) then--Backup stage 3/1 mythic trigger
+	elseif spellId == 1214369 and self:AntiSpam(8, 3) then--Backup stage 3/1 mythic trigger
 		timerTotalDestruction:Stop()
 		if self:IsMythic() then
 			self:SetStage(0.5)--Stage should be 0.5 at this point, but this also future proofs race condition when overgearing where you might push boss to stage 2 at same time
@@ -984,7 +984,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerEgoCheckCD:Start(allTimers[savedDifficulty][3][466958][self.vb.coilsCount][1])
 			end
 		end
-	elseif spellId == 1226891 and self:IsInCombat() and self:AntiSpam(2.5, 2) then--Circuit Reboot Removed
+	elseif spellId == 1226891 and self:IsInCombat() and self:AntiSpam(3, 2) then--Circuit Reboot Removed (1219062 is lfr id)
 		self:SetStage(0.5)--Increment stage by 0.5
 		--Reset Counts
 		self.vb.canisterCount = 0
@@ -1026,7 +1026,7 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if args.extraSpellId == 466834 then
 		timerShockBarrageCast:Stop(args.destGUID)
-	elseif args.extraSpellId == 1214369 and self:AntiSpam(5, 3) then
+	elseif args.extraSpellId == 1214369 and self:AntiSpam(8, 3) then
 		timerTotalDestruction:Stop()
 		if self:IsMythic() then
 			self:SetStage(0.5)--Stage should be 0.5 at this point, but this also future proofs race condition when overgearing where you might push boss to stage 2 at same time

@@ -8550,7 +8550,7 @@ function bossModPrototype:AddGossipOption(default, gossipType, optionVersion)
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	self.Options["AutoGossipAction" .. gossipType .. oVersion] = (default == nil) or default
+	self.Options["AutoGossip" .. gossipType .. oVersion] = (default == nil) or default
 	if gossipType == "Action" then
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_PERFORM_ACTION
 	elseif gossipType == "Encounter" then
