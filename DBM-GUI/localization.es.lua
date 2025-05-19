@@ -87,8 +87,8 @@ L.ModelSoundLong			= TOAST_DURATION_LONG
 L.ResizeOptions			 	= "Tamaño de la ventana"
 L.ResizeInfo				= "Cambia el tamaño de la GUI arrastrando desde la esquina inferior derecha"
 L.Button_ResetWindowSize	= "Restablecer tamaño"
-L.Editbox_WindowWidth		= "Horizontal"
-L.Editbox_WindowHeight		= "Vertical"
+L.Editbox_WindowWidth		= "Anchura"
+L.Editbox_WindowHeight		= "Altura"
 
 L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU)"
 L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupan por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
@@ -153,7 +153,7 @@ L.AutoAcceptGuildInvite		= "Aceptar automáticamente invitaciones de grupos de m
 L.Area_Advanced				= "Opciones avanzadas"
 L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión (útil para hermandades que obligan a utilizar BigWigs)"
 --
-L.Area_Tooltip              = "Integración con tooltip"
+L.Area_Tooltip              = "Integración con tooltips"
 L.EnableTooltip             = "Añadir estadísticas de DBM a los tooltips de los jefes compatibles"
 L.EnableTooltipInCombat     = "Mostrar información del tooltip durante el combate"
 L.EnableTooltipHeader       = "Incluir encabezado de DBM en el tooltip"
@@ -576,7 +576,7 @@ L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefe
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "Marcos e integración"
-L.Area_NamelateInfo			= "Información de auras de placas de nombres de DBM"
+L.Area_NamelateInfo			= "Información de auras de placas de nombre de DBM"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "Marco de información"
 
@@ -584,9 +584,9 @@ L.Panel_InfoFrame			= "Marco de información"
 L.Panel_Range				= "Marco de distancia"
 
 -- Panel: Nameplate
-L.Panel_Nameplates			= "Placas de nombres"
+L.Panel_Nameplates			= "Placas de nombre"
 L.Plater_Config				= "Abrir configuración de Plater"
-L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombres)"
+L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombre)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"
 L.NPIcon_BarOffSetX 		= "Desplazamiento del icono X: %d"
