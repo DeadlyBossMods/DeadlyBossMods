@@ -41,7 +41,7 @@ local warnInfectedbite								= mod:NewCountAnnounce(466748, 4, nil, nil, DBM_CO
 local warnRollingRubbish							= mod:NewCountAnnounce(461536, 1, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(461536), nil, nil, 2)--Player
 
 local specWarnElectroSorting						= mod:NewSpecialWarningCount(464399, nil, nil, DBM_COMMON_L.BALLS.. "+" ..DBM_COMMON_L.ADDS, 2, 2)
-local specWarnSorted								= mod:NewSpecialWarningYouPos(461536, nil, nil, nil, 1, 2)--Pre target debuff for Rolling Rubbish
+local specWarnSorted								= mod:NewSpecialWarningYou(461536, nil, nil, nil, 1, 2)--Pre target debuff for Rolling Rubbish
 local yellSorted									= mod:NewShortPosYell(461536)
 local yellSortedFades								= mod:NewIconFadesYell(461536)
 local specWarnSortedTaunt							= mod:NewSpecialWarningTaunt(461536, nil, nil, nil, 1, 2)
@@ -62,7 +62,7 @@ mod:AddNamePlateOption("NPAuraOnTerritorial", 473066)
 --Cleanup Crew
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(30533))
 local warnDumpsterDive								= mod:NewCastAnnounce(466742, 4)--Spammy without way to scope it to specific target
-local warnMarkedForRecycling						= mod:NewTargetNoFilterAnnounce(1220648, 4)
+local warnMarkedForRecycling						= mod:NewTargetNoFilterAnnounce(1220648, 4, nil, false, 2)
 
 local specWarnScrapRockets							= mod:NewSpecialWarningInterruptCount(1219384, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMarkedForRecycling					= mod:NewSpecialWarningYou(1220648, nil, nil, nil, 3, 2)
@@ -129,8 +129,8 @@ local function SortBalls(self)
 		end
 		if name == DBM:GetMyPlayerInfo() then
 			DBM:Debug("Player is Ball " .. i)
-			specWarnSorted:Show(self:IconNumToTexture(icon))
-			specWarnSorted:Play("mm"..icon)
+			specWarnSorted:Show()--self:IconNumToTexture(icon)
+			specWarnSorted:Play("targetyou")
 			yellSorted:Yell(icon)
 			yellSorted:Countdown(465346, nil, icon)
 		end
@@ -326,11 +326,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 1220648 then
+		warnMarkedForRecycling:CombinedShow(2, args.destName)
 		if args:IsPlayer() then
 			specWarnMarkedForRecycling:Show()
 			specWarnMarkedForRecycling:Play("targetyou")
-		else
-			warnMarkedForRecycling:Show(args.destName)
 		end
 	elseif spellId == 466748 and args:IsPlayer() then
 		local amount = args.amount or 1
