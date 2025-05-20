@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(230322)
 mod:SetEncounterID(3012)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20250111000000)
-mod:SetMinSyncRevision(20250111000000)
+mod:SetHotfixNoticeRev(20250519000000)
+mod:SetMinSyncRevision(20250511000000)
 mod:SetZone(2769)
 mod.respawnTime = 29
 
@@ -96,7 +96,7 @@ mod.vb.meltdownCount = 0
 local castsPerGUID = {}
 local usedMarks, seenGUIDs = {}, {}
 local bigballs = 0
-local expectedBalls = 0
+mod.vb.expectedBalls = 0
 local SortedIcons = {}
 
 local updateInfoFrame
@@ -132,7 +132,7 @@ local function SortBalls(self)
 			specWarnSorted:Show()--self:IconNumToTexture(icon)
 			specWarnSorted:Play("targetyou")
 			yellSorted:Yell(icon)
-			yellSorted:Countdown(465346, nil, icon)
+			yellSortedFades:Countdown(465346, nil, icon)
 		end
 	end
 	warnSorted:Show(self.vb.sortingCount, table.concat(SortedIcons, "<, >"))
@@ -149,7 +149,7 @@ function mod:OnCombatStart(delay)
 	self.vb.IncinCount = 0
 	self.vb.demolishCount = 0
 	self.vb.meltdownCount = 0
-	expectedBalls = 5--Just set to max initially
+	self.vb.expectedBalls = 5--Just set to max initially
 	if self:IsHard() then
 		timerIncineratorCD:Start(11.1-delay, 1)
 		timerDemolishCD:Start(17.8-delay, 1)
@@ -158,7 +158,7 @@ function mod:OnCombatStart(delay)
 		timerOverDriveCD:Start((self:IsMythic() and 55.6 or 111.1)-delay)
 		berserkTimer:Start(self:IsMythic() and 385 or 480)
 		if self:IsMythic() then
-			expectedBalls = 4
+			self.vb.expectedBalls = 4
 		end
 	else
 		timerIncineratorCD:Start(10-delay, 1)
@@ -261,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 465346 then
 		SortedIcons[#SortedIcons+1] = args.destName
 		self:Unschedule(SortBalls)
-		if #SortedIcons == expectedBalls then--5 is max on 30 man, 4 is max on mythic
+		if #SortedIcons == self.vb.expectedBalls then--5 is max on 30 man, 4 is max on mythic
 			SortBalls(self)
 		else
 			self:Schedule(1, SortBalls, self)--Fallback in case scaling targets for normal/heroic
