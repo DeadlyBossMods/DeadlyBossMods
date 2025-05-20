@@ -132,7 +132,7 @@ local function SortBalls(self)
 			specWarnSorted:Show()--self:IconNumToTexture(icon)
 			specWarnSorted:Play("targetyou")
 			yellSorted:Yell(icon)
-			yellSorted:Countdown(465346, nil, icon)
+			yellSortedFades:Countdown(465346, nil, icon)
 		end
 	end
 	warnSorted:Show(self.vb.sortingCount, table.concat(SortedIcons, "<, >"))
