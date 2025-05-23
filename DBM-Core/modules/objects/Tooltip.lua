@@ -98,12 +98,13 @@ else
 	GameTooltip:HookScript("OnTooltipSetUnit", hook)
 end
 
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("MODIFIER_STATE_CHANGED")
-f:SetScript("OnEvent", function()
-	local _, unit = GameTooltip:GetUnit()
-	if unit then
-		GameTooltip:SetUnit(unit)
-	end
-end)
+if not newTooltipApi then
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("MODIFIER_STATE_CHANGED")
+	f:SetScript("OnEvent", function()
+		local _, unit = GameTooltip:GetUnit()
+		if unit then
+			GameTooltip:SetUnit(unit)
+		end
+	end)
+end
