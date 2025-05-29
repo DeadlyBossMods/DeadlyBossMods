@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 386, "0d07b1a"--386.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.1.20"--Core version
+DBM.DisplayVersion = "11.1.21 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 5, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
