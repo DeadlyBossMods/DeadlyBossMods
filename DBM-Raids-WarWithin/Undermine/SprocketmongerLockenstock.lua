@@ -195,9 +195,9 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
-		if DBM:UnitDebuff("player", 1216934) then
+		if DBM:UnitDebuff("player", 1216934, 1217358) then
 			lastPlayerCharge = 2
-		elseif DBM:UnitDebuff("player", 1216911) then
+		elseif DBM:UnitDebuff("player", 1216911, 1217357) then
 			lastPlayerCharge = 1
 		end
 	elseif self:IsHeroic() then
