@@ -195,9 +195,9 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
-		if DBM:UnitDebuff("player", 1216934) then
+		if DBM:UnitDebuff("player", 1216934, 1217358) then
 			lastPlayerCharge = 2
-		elseif DBM:UnitDebuff("player", 1216911) then
+		elseif DBM:UnitDebuff("player", 1216911, 1217357) then
 			lastPlayerCharge = 1
 		end
 	elseif self:IsHeroic() then
@@ -342,28 +342,28 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 1216934 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and lastPlayerCharge ~= 2 then
 			specWarnNegative:Show()
 			specWarnNegative:Play("negative")
 			yellPolarizationGenerator:Yell(7, "")--Red X
 			lastPlayerCharge = 2
 		end
 	elseif spellId == 1216911 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and lastPlayerCharge ~= 1 then
 			specWarnPositive:Show()
 			specWarnPositive:Play("positive")
 			yellPolarizationGenerator:Yell(6, "")--Blue Square
 			lastPlayerCharge = 1
 		end
 	elseif spellId == 1217357 then--Changing to posi
-		if args:IsPlayer() and lastPlayerCharge == 2 then
+		if args:IsPlayer() and lastPlayerCharge ~= 1 then
 			specWarnPolGen:Show(BLUE_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.POSITIVE))
 			specWarnPolGen:Play("positive")
 			yellPolarizationGenerator:Yell(6, "")--Blue Square
 			lastPlayerCharge = 1
 		end
 	elseif spellId == 1217358 then--Changing to neg
-		if args:IsPlayer() and lastPlayerCharge == 1 then
+		if args:IsPlayer() and lastPlayerCharge ~= 2 then
 			specWarnPolGen:Show(RED_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.NEGATIVE))
 			specWarnPolGen:Play("negative")
 			yellPolarizationGenerator:Yell(7, "")--Red X

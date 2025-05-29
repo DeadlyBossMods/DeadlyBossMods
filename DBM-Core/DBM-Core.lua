@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 386, "0d07b1a"--386.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.1.20 alpha"--Core version
+DBM.DisplayVersion = "11.1.21 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 5, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 5, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 18--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -8555,7 +8555,7 @@ function bossModPrototype:AddGossipOption(default, gossipType, optionVersion)
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_PERFORM_ACTION
 	elseif gossipType == "Encounter" then
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_START_ENCOUNTER
-	else--Type 1 most common so the default fallback if left blank
+	else--Buff
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_BUFFS
 	end
 	self:SetOptionCategory("AutoGossip" .. gossipType .. oVersion, "misc")
