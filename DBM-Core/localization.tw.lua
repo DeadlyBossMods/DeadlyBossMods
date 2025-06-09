@@ -693,5 +693,14 @@ L.DBM_INSTALL_PACKAGE_CHALLENGES	= "挑戰組件"
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM在當前階段使用了包含時間扭曲的測試模式，建議使用DBM在真正的首領戰鬥中之前重新載入UI。一切都應該按預期工作但並不保證！"
 
+-- Boss tooltip
+L.TOOLTIP_DBM					= L.DBM .. " 資訊"
+L.TOOLTIP_ENRAGE_TIMER			= "激怒計時器"
+L.TOOLTIP_KILLS					= "擊殺 (%s)"
+L.TOOLTIP_WIPES					= "清除 (%s)"
+L.TOOLTIP_FASTEST				= "最快擊殺 (%s)"
+
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
-L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.FOLLOWER						= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "故事"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+L.DUOS							= "雙煞"
