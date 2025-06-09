@@ -503,7 +503,7 @@ local function SupportedNPModIcons()
 end
 local function SupportedNPModBars()
 	if not DBM.Options.UseNameplateHandoff then return false end
-	if _G["Plater"] then return true end--Plater support disabled for time being due to bugs in plater that prevent using glow types correctly
+	if _G["Plater"]  or _G["TidyPlatesThreatDBM"] then return true end--Plater support disabled for time being due to bugs in plater that prevent using glow types correctly
 	return false
 end
 
