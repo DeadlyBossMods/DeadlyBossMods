@@ -43,6 +43,7 @@ difficulties.statVarTable = {
 	["timewalker"] = "timewalker",
 	["progressivechallenges"] = "normal",
 	["delves"] = "normal",
+	["duos"] = "duos",
 	--BFA
 	["normalwarfront"] = "normal",
 	["heroicwarfront"] = "heroic",
@@ -376,6 +377,11 @@ function bossModPrototype:IsDelve()
 	return diff == "delves"
 end
 
+function bossModPrototype:IsDuo()
+	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "duos"
+end
+
 difficulties.SOD_BWL_TRIAL_BLACK  = 1
 difficulties.SOD_BWL_TRIAL_GREEN  = 2
 difficulties.SOD_BWL_TRIAL_BLUE	  = 4
@@ -579,8 +585,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		--	end
 		--end
 		return "normal", "", difficulty, instanceGroupSize, 0
-	elseif difficulty == 232 then--Likely Boss duos, but we'll probably store it as normal, so technically COULD leave it in else rule, but better to classify it for notation
-		return "normal", "", difficulty, instanceGroupSize, 0
+	elseif difficulty == 232 then--Duos
+		return "duos", "", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
