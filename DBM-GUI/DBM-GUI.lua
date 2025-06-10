@@ -795,7 +795,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 	area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -270 or -25)
 
 	local statOrder = {
-		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
+		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker", "duos"
 	}
 
 	for _, mod in ipairs(DBM.Mods) do
@@ -872,7 +872,8 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				heroic25	= RAID_DIFFICULTY4,
 				mythic		= PLAYER_DIFFICULTY6,
 				challenge	= (mod.addon.minExpansion < 6 and not mod.upgradedMPlus) and CHALLENGE_MODE or PLAYER_DIFFICULTY6 .. "+",
-				timewalker	= PLAYER_DIFFICULTY_TIMEWALKER
+				timewalker	= PLAYER_DIFFICULTY_TIMEWALKER,
+				duos		= DBM_CORE_L.DUOS
 			}
 			if (mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO") or -- Fixes dungeons being labled incorrectly
 				(mod.addon.type == "RAID" and statSplit["timewalker"]) or -- Fixes raids with timewalker being labled incorrectly
