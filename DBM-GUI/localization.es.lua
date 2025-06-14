@@ -286,7 +286,7 @@ L.VPReplaceNote				= "Nota: Los paquetes de voz nunca cambian ni eliminan los so
 L.ReplacesAnnounce			= "Reemplazar los sonidos de anuncio (Nota: muy pocos usan paquetes de voz, excepto para cambios de fase y bichos)"
 L.ReplacesSADefault 		= "Reemplazar los sonidos predeterminados de anuncio especial (los sonidos personalizados definidos por el usuario nunca serán reemplazados)"
 L.Area_VoicePackAdvOptions	= "Opciones avanzadas del paquete de voz"
-L.Area_VPLearnMore			= "Obten más información sobre los paquetes de voz y cómo utilizar estas opciones"
+L.Area_VPLearnMore			= "Obtén más información sobre los paquetes de voz y cómo utilizar estas opciones"
 L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Explora otros paquetes de voz en Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
