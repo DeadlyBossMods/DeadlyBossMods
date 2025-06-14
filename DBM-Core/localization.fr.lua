@@ -701,3 +701,4 @@ L.TOOLTIP_FASTEST             = "Victoire la plus rapide (%s)"
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER							= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 L.STORY					    		= PLAYER_DIFFICULTY_STORY_RAID or "Histoire"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+L.DUOS								= "Duos"
