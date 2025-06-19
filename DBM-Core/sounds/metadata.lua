@@ -89,7 +89,7 @@ DBM.fileBrowserData["Interface\\AddOns\\DBM-Core\\sounds\\Mosh"] = {
 DBM.fileBrowserData["Interface\\AddOns\\DBM-Core\\sounds\\Music"] = {
     count = 6,
     files = {
-        --"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" 
+        --"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3"
         { type = "soundData", text = "Anduin Part 1 B", value = 1417242, length=140, category = "dungeonMusic", version = "retail"},
         --"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
         { type = "soundData", text = "Nightsong", value = 441705, length=160, category = "dungeonMusic", version = "cata"},

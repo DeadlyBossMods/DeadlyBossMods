@@ -124,7 +124,7 @@ end)
 durationSlider.myheight = 0
 
 --TODO: Load sounds dynamically
-local sounds 
+local sounds
 sounds = DBM_GUI:MixinSharedMedia3("sound", DBM:GetSpecialAnnouncements())
 
 local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1)

@@ -138,7 +138,7 @@ do
     }
 
     local musicFiles = DBM:getFilesWithMetadata("category", "dungeonMusic")
-    
+
     if private.isRetail then
       AddSoundData(dungeonMusic, DBM:filterFilesByField(musicFiles, "version", "retail"))
     end
@@ -179,14 +179,14 @@ do
       {text = CL.RANDOM, value  = "Random"}
     }
     local musicFiles = DBM:getFilesWithMetadata("category", "battleMusic")
-    
+
     if private.isRetail then
       AddSoundData(battleMusic, DBM:filterFilesByField(musicFiles, "version", "retail"))
     end
     if private.isWrath or private.isCata or private.isRetail then
       AddSoundData(battleMusic, DBM:filterFilesByField(musicFiles, "version", "wrath"))
     end
-    
+
     AddSoundData(battleMusic, DBM:filterFilesByField(musicFiles, "version", "custom"))
 
     ---@deprecated Use new utility functions

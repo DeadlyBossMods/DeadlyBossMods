@@ -55,7 +55,7 @@ function DBM:getFilesWithMetadata(key, value)
       table.insert(files, file)
     end
   end
-  
+
   files = DBM:filterFilesByField(files, key, value)
 
   categoryCache[key][value] = files
