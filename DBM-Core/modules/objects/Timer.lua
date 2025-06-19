@@ -34,19 +34,19 @@ function DBM:BuildVoiceCountdownCache()
 	for _, count in pairs(DBM:GetCountSounds()) do
 		if count.value == countvoice1 then
 			countpath1 = count.path
-			countvoice1max = count.max
+			countvoice1max = count.length
 		end
 		if count.value == countvoice2 then
 			countpath2 = count.path
-			countvoice2max = count.max
+			countvoice2max = count.length
 		end
 		if count.value == countvoice3 then
 			countpath3 = count.path
-			countvoice3max = count.max
+			countvoice3max = count.length
 		end
 		if count.value == countvoice4 then
 			countpath4 = count.path
-			countvoice4max = count.max
+			countvoice4max = count.length
 		end
 	end
 end
