@@ -680,3 +680,4 @@ L.TOOLTIP_FASTEST				= "최단 처치 시간 (%s)"
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "이야기"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+L.DUOS							= "짝패"
