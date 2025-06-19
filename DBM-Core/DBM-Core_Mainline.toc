@@ -1,5 +1,5 @@
-## Interface: 110105, 110107
-## X-Min-Interface: 100207
+## Interface: 110107, 110200
+## X-Min-Interface: 110107
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r

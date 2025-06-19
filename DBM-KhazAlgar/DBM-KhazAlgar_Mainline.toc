@@ -1,4 +1,4 @@
-## Interface: 110105, 110107
+## Interface: 110107, 110200
 ## Version: @project-version@
 ## Category: DBM
 
@@ -34,3 +34,4 @@ AggregationofHorrors.lua
 Shurrai.lua
 Orta.lua
 TheGobfather.lua
+Reshanor.lua
