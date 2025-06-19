@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(2646, "DBM-Raids-WarWithin", 1, 1296)
+local mod	= DBM:NewMod(2646, "DBM-Raids-WarWithin", 2, 1296)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
