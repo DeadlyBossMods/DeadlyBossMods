@@ -45,3 +45,12 @@ L:SetMiscLocalization({
 --L:SetMiscLocalization({
 --	Pull	= ""
 --})
+
+-----------------------
+-- Reshanor, The Untethered --
+-----------------------
+--L= DBM:GetModLocalization(2762)
+
+--L:SetMiscLocalization({
+--	Pull	= ""
+--})
