@@ -103,6 +103,8 @@ local challengeModeIds = {
 	[506] = 2661, -- Cinderbrew Meadery
 	[507] = 670, -- Grim Batol
 	[525] = 2773, -- Operation: Floodgate
+	[541] = 725, -- The Stonecore
+	[542] = 2830, -- Eco-Dome Al'dani
 }
 
 do
