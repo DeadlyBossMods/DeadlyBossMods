@@ -3,9 +3,10 @@ local mod	= DBM:NewMod(2685, "DBM-Raids-WarWithin", 1, 1302)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(214503)
+mod:SetCreatureID(233816)
 mod:SetEncounterID(3130)
---mod:SetHotfixNoticeRev(20240921000000)
+mod:SetUsedIcons(1, 2)
+mod:SetHotfixNoticeRev(20250621000000)
 --mod:SetMinSyncRevision(20240921000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -13,67 +14,212 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 1225582 1227052 1241100 1223859 1242088 1225616",
+	"SPELL_CAST_SUCCESS 1227848 1227276 1240756",
+	"SPELL_AURA_APPLIED 1227049 1227049 1227276 1237607 1225626",
+	"SPELL_AURA_APPLIED_DOSE 1237607",
+	"SPELL_AURA_REMOVED 1227049 1227276 1225626",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
+	"UNIT_DIED"
 --	"CHAT_MSG_RAID_BOSS_WHISPER",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
---local warnDecimate								= mod:NewIncomingCountAnnounce(442428, 3)
-
---local specWarnRainofArrows						= mod:NewSpecialWarningDodgeCount(439559, nil, nil, nil, 2, 2)
+--TODO, track Soulweave Chrysalis casts on nameplates? right now 3 cast spellids but only 2 summon ids
+--TODO, detect adds evolving for initial nameplate timers
+--TODO, void volley CD?
+--TODO, add silk shield infoframe tracking all shield remaining?
+--TODO, tanks wap stacks
+--TODO, convergence icons when we know number of targets and what others are doing
+--TODO, possible orb warnings for expiring convergence?
+--General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
+--Soul Calling
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(1225582))
+local warnSoulCalling								= mod:NewCountAnnounce(1225582, 2)
 
---local timerShatteringSweepCD						= mod:NewAITimer(97.3, 456420, nil, nil, nil, 2)
+local timerSoulCallingCD							= mod:NewAITimer(97.3, 1225582, nil, nil, nil, 1)
+----Assassins
+local specWarnVoidbladeAmbush						= mod:NewSpecialWarningMoveAway(1227048, nil, nil, nil, 1, 2)
+local yellVoidbladeAmbush							= mod:NewShortYell(1227048)
+local yellVoidbladeAmbushFades						= mod:NewShortFadesYell(1227048)
+----Mages
+local specWarnVoidVolley							= mod:NewSpecialWarningInterruptCount(1227052, "HasInterrupt", nil, nil, 1, 2)
+----Phaseblade (do stuff with em?)
+--Boss
+local warnEssenceImplosion							= mod:NewCountAnnounce(1227848, 2)
+local warnSoulfrayAnnihilation						= mod:NewTargetNoFilterAnnounce(1227276, 2)
+local warnMysticLash								= mod:NewStackAnnounce(1241100, 2, nil, "Tank|Healer")
+local warnSoulfireConvergence						= mod:NewTargetNoFilterAnnounce(1225616, 2)
+local warnDeathspindle								= mod:NewCountAnnounce(1240756, 2)
 
---mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
+local specWarnSoulfrayAnnihilation					= mod:NewSpecialWarningYouCount(1227276, nil, nil, nil, 1, 2)
+local yellSoulfrayAnnihilation						= mod:NewShortPosYell(1227276)
+local yellSoulfrayAnnihilationFades					= mod:NewIconFadesYell(1227276)
+local specWarnMysticLash							= mod:NewSpecialWarningStack(1241100, nil, 10, nil, nil, 1, 6)
+local specWarnMysticLashTaunt						= mod:NewSpecialWarningTaunt(1241100, nil, nil, nil, 1, 2)
+local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1223859, nil, nil, nil, 2, 2)--Is it a dodge or an aoe?
+local specWarnSoulfireConvergence					= mod:NewSpecialWarningYou(1225616, nil, nil, nil, 1, 2)
+local yellSoulfireConvergence						= mod:NewShortYell(1225616)
+local yellSoulfireConvergenceFades					= mod:NewShortFadesYell(1225616)
+
+local timerEssenceImplosionCD						= mod:NewAITimer(97.3, 1227848, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerSoulfrayAnnihilationCD					= mod:NewAITimer(97.3, 1227276, nil, nil, nil, 3)
+local timerMysticLashCD								= mod:NewAITimer(97.3, 1241100, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerArcaneExpulsionCD						= mod:NewAITimer(97.3, 1223859, nil, nil, nil, 2)
+local timerSoulfireConvergenceCD					= mod:NewAITimer(97.3, 1225616, nil, nil, nil, 3)
+local timerDeathspindleCD							= mod:NewAITimer(97.3, 1240756, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+
+mod:AddSetIconOption("SetIconOnSoulfrayAnnihilation", 1227276, true, 0, {1, 2})
+
+local castsPerGUID = {}
+mod.vb.callingCount = 0
+mod.vb.implosionCount = 0
+mod.vb.soulfrayCount = 0
+mod.vb.soulfrayIcon = 1
+mod.vb.mysticLashCount = 0
+mod.vb.arcaneExpulsionCount = 0
+mod.vb.convergenceCount = 0
+mod.vb.deathspindleCount = 0
 
 function mod:OnCombatStart(delay)
-	--self:EnablePrivateAuraSound(433517, "runout", 2)
+	table.wipe(castsPerGUID)
+	self.vb.callingCount = 0
+	self.vb.implosionCount = 0
+	self.vb.soulfrayCount = 0
+	self.vb.soulfrayIcon = 1
+	self.vb.mysticLashCount = 0
+	self.vb.arcaneExpulsionCount = 0
+	self.vb.convergenceCount = 0
+	self.vb.deathspindleCount = 0
+	timerSoulCallingCD:Start(1-delay)
+	timerEssenceImplosionCD:Start(1-delay)
+	timerSoulfrayAnnihilationCD:Start(1-delay)
+	timerMysticLashCD:Start(1-delay)
+	timerArcaneExpulsionCD:Start(1-delay)
+	timerSoulfireConvergenceCD:Start(1-delay)
+	timerDeathspindleCD:Start(1-delay)
 end
 
---[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 456420 then
-
+	if spellId == 1225582 then
+		self.vb.callingCount = self.vb.callingCount + 1
+		warnSoulCalling:Show(self.vb.callingCount)
+		warnSoulCalling:Play("mobsoon")
+		timerSoulCallingCD:Start(1, self.vb.callingCount+1)
+	elseif spellId == 1227052 then
+		if not castsPerGUID[args.sourceGUID] then castsPerGUID[args.sourceGUID] = 0 end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+			specWarnVoidVolley:Show(args.sourceName, count)
+			if count < 6 then
+				specWarnVoidVolley:Play("kick"..count.."r")
+			else
+				specWarnVoidVolley:Play("kickcast")
+			end
+		end
+	elseif spellId == 1241100 then
+		self.vb.mysticLashCount = self.vb.mysticLashCount + 1
+		timerMysticLashCD:Start()--nil, self.vb.mysticLashCount+1
+	elseif spellId == 1223859 or spellId == 1242088 then--Regular, Mythic
+		self.vb.arcaneExpulsionCount = self.vb.arcaneExpulsionCount + 1
+		specWarnArcaneExpulsion:Show(self.vb.arcaneExpulsionCount)
+		specWarnArcaneExpulsion:Play("carefly")
+		timerArcaneExpulsionCD:Start()--nil, self.vb.arcaneExpulsionCount+1
+	elseif spellId == 1225616 then
+		self.vb.convergenceCount = self.vb.convergenceCount + 1
+		timerSoulfireConvergenceCD:Start()--nil, self.vb.convergenceCount+1
 	end
 end
---]]
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 439559 then
-
+	if spellId == 1227848 then
+		self.vb.implosionCount = self.vb.implosionCount + 1
+		warnEssenceImplosion:Show(self.vb.implosionCount)
+		timerEssenceImplosionCD:Start()--1, self.vb.implosionCount+1
+	elseif spellId == 1227276 then
+		self.vb.soulfrayCount = self.vb.soulfrayCount + 1
+		self.vb.soulfrayIcon = 1
+		timerSoulfrayAnnihilationCD:Start()--1, self.vb.soulfrayCount+1
+	elseif spellId == 1240756 then
+		self.vb.deathspindleCount = self.vb.deathspindleCount + 1
+		warnDeathspindle:Show(self.vb.deathspindleCount)
+		timerDeathspindleCD:Start()--1, self.vb.deathspindleCount+1
 	end
 end
---]]
 
---[[
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 459273 then
-
+	if spellId == 1227049 then
+		if args:IsPlayer() then
+			specWarnVoidbladeAmbush:Show()
+			specWarnVoidbladeAmbush:Play("runout")
+			yellVoidbladeAmbush:Yell()
+			yellVoidbladeAmbushFades:Countdown(spellId)
+		end
+	elseif spellId == 1227276 then
+		local icon = self.vb.soulfrayIcon
+		if self.Options.SetIconOnSoulfrayAnnihilation then
+			self:SetIcon(args.destName, icon)
+		end
+		if args:IsPlayer() then
+			specWarnSoulfrayAnnihilation:Show(self.vb.soulfrayCount)--self:IconNumToTexture(icon)
+			specWarnSoulfrayAnnihilation:Play("targetyou")
+			yellSoulfrayAnnihilation:Yell(icon, icon)
+			yellSoulfrayAnnihilationFades:Countdown(spellId, nil, icon)
+		end
+		warnSoulfrayAnnihilation:CombinedShow(0.3, self.vb.soulfrayCount, args.destName)
+		self.vb.soulfrayIcon = self.vb.soulfrayIcon + 1
+	elseif spellId == 1225626 then
+		warnSoulfireConvergence:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSoulfireConvergence:Show()
+			specWarnSoulfireConvergence:Play("targetyou")
+			yellSoulfireConvergence:Yell()
+			yellSoulfireConvergenceFades:Countdown(spellId)
+		end
+	elseif spellId == 1237607 then
+		local amount = args.amount or 1
+		if amount >= 10 then--placeholder
+			if args:IsPlayer() then
+				specWarnMysticLash:Show(amount)
+				specWarnMysticLash:Play("stackhigh")
+			else
+				if not UnitIsDeadOrGhost("player") then
+					specWarnMysticLashTaunt:Show(args.destName)
+					specWarnMysticLashTaunt:Play("tauntboss")
+				end
+			end
+		else
+			warnMysticLash:Show(args.destName, amount)
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
---]]
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 459273 then
-
+	if spellId == 1227049 then
+		if args:IsPlayer() then
+			yellVoidbladeAmbushFades:Cancel()
+		end
+	elseif spellId == 1227276 then
+		if self.Options.SetIconOnSoulfrayAnnihilation then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			yellSoulfrayAnnihilationFades:Cancel()
+		end
+	elseif spellId == 1225626 then
+		if args:IsPlayer() then
+			yellSoulfireConvergenceFades:Cancel()
+		end
 	end
 end
---]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
@@ -84,6 +230,22 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+--https://www.wowhead.com/ptr-2/npc=237871/unbound-assassin
+--https://www.wowhead.com/ptr-2/npc=237897/shadowguard-assassin
+
+--https://www.wowhead.com/ptr-2/npc=237872/unbound-mage
+--https://www.wowhead.com/ptr-2/npc=237981/shadowguard-mage
+
+--https://www.wowhead.com/ptr-2/npc=245008/unbound-phaseblade
+--https://www.wowhead.com/ptr-2/npc=235808/shadowguard-phaseblade
+--https://www.wowhead.com/ptr-2/npc=244922/shadowguard-phaseblade
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 229181 then
+
+	end
+end
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
