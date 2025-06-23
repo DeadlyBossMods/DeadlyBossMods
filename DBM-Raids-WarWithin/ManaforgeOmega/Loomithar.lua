@@ -162,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnArcaneOutrage:Show()
 			specWarnArcaneOutrage:Play("pushbackincoming")
 			if self:IsMythic() then
-				specWarnArcaneOutrage:scheduleVoice(1.5, "scatter")
+				specWarnArcaneOutrage:ScheduleVoice(1.5, "scatter")
 			end
 		end
 	elseif spellId == 1227163 and not args:IsPlayer() then
