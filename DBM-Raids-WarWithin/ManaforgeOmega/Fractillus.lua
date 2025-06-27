@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1233416 1230610 1225938 1220394 1227367 1231871",
+	"SPELL_CAST_START 1233416 1230610 1225938 1220394 1227367 1231871 1225673",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 1227378 1227373 1231871"
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -36,6 +36,7 @@ local specWarnNetherCrystallization					= mod:NewSpecialWarningMoveTo(1227373, n
 --local specWartnCrystallized						= mod:NewSpecialWarningYou(1220394, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
 local specWarnShockwaveSlam							= mod:NewSpecialWarningDefensive(1231871, nil, nil, nil, 1, 2)
 local specWarnShockwaveSlamTaunt					= mod:NewSpecialWarningTaunt(1231871, nil, nil, nil, 1, 2)
+local specWarnEnragedTantrum						= mod:NewSpecialWarningSpell(1225673, nil, nil, nil, 3, 2)--Fight failure, you're dead when cast finishes
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerEntropicConjunctionCD					= mod:NewAITimer(97.3, 1233416, nil, nil, nil, 2)
@@ -81,10 +82,13 @@ function mod:SPELL_CAST_START(args)
 		timerNetherCrystallizationCD:Start()--nil, self.vb.crystallizationCount
 	elseif spellId == 1231871 then
 		self.vb.shockwaveSlamCount = self.vb.shockwaveSlamCount + 1
-		if self:IsTanking("player", nil, nil, true) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnShockwaveSlam:Show()
 			specWarnShockwaveSlam:Play("defensive")
 		end
+	elseif spellId == 1225673 then
+		specWarnEnragedTantrum:Show()
+		specWarnEnragedTantrum:Play("stilldanger")
 	end
 end
 

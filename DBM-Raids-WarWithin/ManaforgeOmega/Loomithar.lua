@@ -99,7 +99,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1227263 then
 		self.vb.piercingStrandsCount = self.vb.piercingStrandsCount + 1
-		if self:IsTanking("player", nil, nil, true) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnPiercingStrands:Show()
 			specWarnPiercingStrands:Play("defensive")
 		end
