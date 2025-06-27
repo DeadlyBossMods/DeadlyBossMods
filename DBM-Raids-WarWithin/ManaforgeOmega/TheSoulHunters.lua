@@ -6,7 +6,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(237660, 237661, 237662)
 mod:SetEncounterID(3122)
 mod:SetBossHPInfoToHighest()
---mod:SetHotfixNoticeRev(20240921000000)
+mod:SetHotfixNoticeRev(20250627000000)
 --mod:SetMinSyncRevision(20240921000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -14,11 +14,11 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1234565 1222244 1227355 1227809 1218103 1241833 1222337 1242259",
-	"SPELL_CAST_SUCCESS 1227058 1245384 1225154",
-	"SPELL_AURA_APPLIED 1226493",
+	"SPELL_CAST_START 1234565 1222244 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117",
+	"SPELL_CAST_SUCCESS 1227058 1245384 1225154 1227113",
+	"SPELL_AURA_APPLIED 1226493 1233093 1233863",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 1233093 1233863 1242133",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED"
@@ -59,12 +59,26 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31791))
 local warnImmolationAura							= mod:NewCountAnnounce(1225154, 2)
 
 local specWarnFractured								= mod:NewSpecialWarningDefensive(1241833, nil, nil, nil, 1, 2)
-local specWarnShatteredSoul							= mod:NewSpecialWarningTaunt(1226493, nil, nil, nil, 1, 2)
+local specWarnShatteredSoul							= mod:NewSpecialWarningTaunt(1226493, false, nil, nil, 1, 2)
 local specWarnSpiritBombs							= mod:NewSpecialWarningCount(1242259, nil, nil, nil, 2, 2)
 
 local timerFracturedCD								= mod:NewAITimer(97.3, 1241833, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerSpiritBombsCD							= mod:NewAITimer(97.3, 1242259, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerImmolationAuraCD							= mod:NewAITimer(97.3, 1225154, nil, nil, nil, 2)
+--Intermission: The Ceaseless Hunger
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(32566))
+local warnCollapsingStarOver						= mod:NewEndAnnounce(1233093, 1)
+
+local specWarnCollapsingStar						= mod:NewSpecialWarningSpell(1233093, nil, nil, nil, 2, 2)
+--Intermission: The Demon Within
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(32552))
+local warnFelRushOver								= mod:NewEndAnnounce(1233863, 1)
+
+local specWarnFelRush								= mod:NewSpecialWarningDodge(1233863, nil, nil, nil, 2, 2)
+--Intermission: The Unrelenting Pain
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(32545))
+local warnInfernalStrike							= mod:NewSpellAnnounce(1227113, 2)
+local warnFelDevastation							= mod:NewSpellAnnounce(1227117, 3)
 
 mod.vb.consumeCount = 0
 mod.vb.voidstepCount = 0
@@ -130,6 +144,19 @@ function mod:SPELL_CAST_START(args)
 		specWarnSpiritBombs:Show(self.vb.spiritBombsCount)
 		specWarnSpiritBombs:Play("aesoon")
 		timerSpiritBombsCD:Start()--nil, self.vb.spiritBombsCount+1
+	elseif spellId == 1227117 then
+		warnFelDevastation:Show()
+	elseif (spellId == 1231501 or spellId == 1232568 or spellId == 1232569) and self:AntiSpam(3, 1) then--Intermissions (Metamorphosis)
+		--Stop all timers
+		timerConsumeCD:Stop()
+		timerVoidstepCD:Stop()
+		timerTheHuntCD:Stop()
+		timerBladeDanceCD:Stop()
+		timerEyeBeamCD:Stop()
+		timerFelInfernoCD:Stop()
+		timerFracturedCD:Stop()
+		timerSpiritBombsCD:Stop()
+		timerImmolationAuraCD:Stop()
 	end
 end
 
@@ -148,6 +175,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.immolationAuraCount = self.vb.immolationAuraCount + 1
 		warnImmolationAura:Show(self.vb.immolationAuraCount)
 		timerImmolationAuraCD:Start()--nil, self.vb.immolationAura
+	elseif spellId == 1227113 then
+		warnInfernalStrike:Show()
 	end
 end
 
@@ -160,18 +189,42 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShatteredSoul:Show(args.destName)
 			specWarnShatteredSoul:Play("tauntboss")
 		end
+	elseif spellId == 1233093 then--Ultimate
+		specWarnCollapsingStar:Show()
+		specWarnCollapsingStar:Play("runtoedge")
+		specWarnCollapsingStar:ScheduleVoice(2, "helpsoak")
+	elseif spellId == 1233863 then--Ultimate
+		specWarnFelRush:Show()
+		specWarnFelRush:Play("watchstep")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 459273 then
-
+	if spellId == 1233093 then--Ultimate
+		warnCollapsingStarOver:Show()
+	elseif spellId == 1233863 then--Ultimate
+		warnFelRushOver:Show()
+	elseif spellId == 1242133 then--Soul Engorgement
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		local cid2 = self:GetCIDFromGUID(args.sourceGUID)
+		if (cid == 237661 or cid2 == 237661) and self:AntiSpam(3, 2) then--Adarus Duskblaze
+			timerConsumeCD:Start(2)
+			timerVoidstepCD:Start(2)
+		elseif (cid == 237660 or cid2 == 237660) and self:AntiSpam(3, 3) then--Velaryn Bloodwrath
+			timerTheHuntCD:Start(2)
+			timerBladeDanceCD:Start(2)
+			timerEyeBeamCD:Start(2)
+			timerFelInfernoCD:Start(2)
+		elseif (cid == 237662 or cid2 == 237662) and self:AntiSpam(3, 4) then--Ilyssa Darksorrow
+			timerFracturedCD:Start(2)
+			timerSpiritBombsCD:Start(2)
+			timerImmolationAuraCD:Start(2)
+		end
 	end
 end
---]]
+
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
