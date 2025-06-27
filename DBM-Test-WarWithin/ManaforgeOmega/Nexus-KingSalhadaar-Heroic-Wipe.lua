@@ -2,6 +2,7 @@ DBM.Test:DefineTest{
 	name = "TWW/ManaforgeOmega/Nexus-KingSalhadaar/Heroic/Wipe",
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
+	mod = 2690,
 	encounterId = 3134,
 	instanceInfo = {name = "Manaforge Omega", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2810, instanceGroupSize = 20, lfgDungeonID = nil},
 	players = {
