@@ -79,7 +79,7 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 386, "0d07b1a"--386.0
+local fakeBWVersion, fakeBWHash = 390, "f0a5680"--390.3
 local PForceDisable
 -- The string that is shown as version
 DBM.DisplayVersion = "11.2.1 alpha"--Core version
