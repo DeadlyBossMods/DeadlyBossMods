@@ -14,7 +14,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1234565 1222244 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117",
+	"SPELL_CAST_START 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117",--1234565 1222244
 	"SPELL_CAST_SUCCESS 1227058 1245384 1225154 1227113",
 	"SPELL_AURA_APPLIED 1226493 1233093 1233863",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -36,12 +36,12 @@ mod:RegisterEventsInCombat(
 --TODO, warn https://www.wowhead.com/ptr-2/spell=1249198/unstable-soul ?
 --Adarus Duskblaze
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32500))
-local warnConsume									= mod:NewCountAnnounce(1234565, 3)
+--local warnConsume									= mod:NewCountAnnounce(1234565, 3)
 
 local specWarnVoidstep								= mod:NewSpecialWarningDodgeCount(1227355, nil, nil, nil, 2, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
-local timerConsumeCD								= mod:NewAITimer(97.3, 1234565, nil, nil, nil, 2)
+--local timerConsumeCD								= mod:NewAITimer(97.3, 1234565, nil, nil, nil, 2)
 local timerVoidstepCD								= mod:NewAITimer(97.3, 1227355, nil, nil, nil, 3)
 --Velaryn Bloodwrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31792))
@@ -100,7 +100,7 @@ function mod:OnCombatStart(delay)
 	self.vb.fracturedCount = 0
 	self.vb.spiritBombsCount = 0
 	self.vb.immolationAuraCount = 0
-	timerConsumeCD:Start(1-delay)
+--	timerConsumeCD:Start(1-delay)
 	timerVoidstepCD:Start(1-delay)
 	timerTheHuntCD:Start(1-delay)
 	timerBladeDanceCD:Start(1-delay)
@@ -113,15 +113,15 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 1234565 or spellId == 1222244 then
-		self.vb.consumeCount = self.vb.consumeCount + 1
-		warnConsume:Show(self.vb.consumeCount)
-		timerConsumeCD:Start()--, self.vb.consumeCount+1)
-	elseif spellId == 1227355 then
+	if spellId == 1227355 then
 		self.vb.voidstepCount = self.vb.voidstepCount + 1
 		specWarnVoidstep:Show(self.vb.voidstepCount)
 		specWarnVoidstep:Play("watchstep")
 		timerVoidstepCD:Start()--nil, self.vb.voidstepCount+1
+	--elseif spellId == 1234565 or spellId == 1222244 then
+	--	self.vb.consumeCount = self.vb.consumeCount + 1
+	--	warnConsume:Show(self.vb.consumeCount)
+	--	timerConsumeCD:Start()--, self.vb.consumeCount+1)
 	elseif spellId == 1227809 then
 		self.vb.huntCount = self.vb.huntCount + 1
 		timerTheHuntCD:Start()--nil, self.vb.huntCount+1
@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		warnFelDevastation:Show()
 	elseif (spellId == 1231501 or spellId == 1232568 or spellId == 1232569) and self:AntiSpam(3, 1) then--Intermissions (Metamorphosis)
 		--Stop all timers
-		timerConsumeCD:Stop()
+		--timerConsumeCD:Stop()
 		timerVoidstepCD:Stop()
 		timerTheHuntCD:Stop()
 		timerBladeDanceCD:Stop()
@@ -210,7 +210,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		local cid2 = self:GetCIDFromGUID(args.sourceGUID)
 		if (cid == 237661 or cid2 == 237661) and self:AntiSpam(3, 2) then--Adarus Duskblaze
-			timerConsumeCD:Start(2)
+			--timerConsumeCD:Start(2)
 			timerVoidstepCD:Start(2)
 		elseif (cid == 237660 or cid2 == 237660) and self:AntiSpam(3, 3) then--Velaryn Bloodwrath
 			timerTheHuntCD:Start(2)
@@ -239,7 +239,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 237661 then--Adarus Duskblaze
-		timerConsumeCD:Stop()
+		--timerConsumeCD:Stop()
 		timerVoidstepCD:Stop()
 	elseif cid == 237660 then--Velaryn Bloodwrath
 		timerTheHuntCD:Stop()
