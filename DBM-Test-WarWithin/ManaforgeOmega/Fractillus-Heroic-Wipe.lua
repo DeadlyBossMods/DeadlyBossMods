@@ -3,7 +3,7 @@ DBM.Test:DefineTest{
 	gameVersion = "Retail",
 	addon = "DBM-Raids-WarWithin",
 	encounterId = 3133,
-	instanceInfo = {name = "", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2810, instanceGroupSize = 20, lfgDungeonID = nil},
+	instanceInfo = {name = "Manaforge Omega", instanceType = "raid", difficultyID = 15, difficultyName = "Heroic", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2810, instanceGroupSize = 20, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000009", class = "PRIEST", healer = 0.00, tank = 0.88, dps = 0.98, healed = 0.88},
 		{"Tank2",   "Player-1-00000011", class = "MONK", healer = 0.00, tank = 1.00, dps = 0.28, healed = 1.00},
