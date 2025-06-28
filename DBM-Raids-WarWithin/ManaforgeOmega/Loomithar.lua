@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1227263 1227782 1227226",
-	"SPELL_CAST_SUCCESS 1226867 1230115 1226315",
-	"SPELL_AURA_APPLIED 1237272 1226395 1226311 1238502 1237212 1228059 1227784 1227163",
+	"SPELL_CAST_SUCCESS 1226867 1230115 1226315 1226395",
+	"SPELL_AURA_APPLIED 1237272 1226311 1238502 1237212 1228059 1227784 1227163",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 1226311 1238502 1228059"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -128,6 +128,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 1226315 then
 		self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
 		timerInfusionTetherCD:Start()--nil, self.vb.infusionTetherCount+1
+	elseif spellId == 1226395 then
+		self.vb.overinfusionBurstCount = self.vb.overinfusionBurstCount + 1
+		specWarnOverinfusionBurst:Show()
+		specWarnOverinfusionBurst:Play("watchstep")
+		timerOverinfusionBurstCD:Start()--nil, self.vb.overinfusionBurstCount+1
 	end
 end
 
@@ -138,11 +143,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnLairWeaving:Show(self.vb.weavingCount)
 		specWarnLairWeaving:Play("specialsoon")--Generic for now
 		timerLairWeavingCD:Start()--nil, self.vb.weavingCount+1
-	elseif spellId == 1226395 then
-		self.vb.overinfusionBurstCount = self.vb.overinfusionBurstCount + 1
-		specWarnOverinfusionBurst:Show()
-		specWarnOverinfusionBurst:Play("watchstep")
-		timerOverinfusionBurstCD:Start()--nil, self.vb.overinfusionBurstCount+1
 	elseif spellId == 1226311 then
 		warnInfusionTether:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
