@@ -57,6 +57,7 @@ local timerArcaneObliterationCD						= mod:NewAITimer(97.3, 1228216, nil, nil, n
 local timerSilencingTempestCD						= mod:NewAITimer(97.3, 1228161, nil, nil, nil, 3)
 local timerArcaneExpulsionCD						= mod:NewAITimer(97.3, 1227631, nil, nil, nil, 2)
 local timerInvokeCollectorCD						= mod:NewAITimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
 --Intermission: Priming the Forge
@@ -116,6 +117,7 @@ function mod:OnCombatStart(delay)
 	timerSilencingTempestCD:Start(1-delay)
 	timerArcaneExpulsionCD:Start(1-delay)
 	timerInvokeCollectorCD:Start(1-delay)
+	berserkTimer:Start(600-delay)
 	if self.Options.NPAuraOnMarkofPower then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end

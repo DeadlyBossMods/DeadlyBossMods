@@ -40,3 +40,8 @@ NerubarPalace/Ovinax-Mythic-Kill.lua
 NerubarPalace/Kyveza-Mythic-Kill.lua
 NerubarPalace/SilkenCourt-Mythic-Kill.lua
 NerubarPalace/QueenAnsurek-Mythic-Wipe.lua
+
+ManaforgeOmega/ForgeweaverAraz-Heroic-Wipe.lua
+ManaforgeOmega/SoulHunters-Heroic-Wipe.lua
+ManaforgeOmega/Fractillus-Heroic-Wipe.lua
+ManaforgeOmega/Nexus-KingSalhadaar-Heroic-Wipe.lua
