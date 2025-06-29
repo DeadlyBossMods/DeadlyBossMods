@@ -8,8 +8,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariables: DBMWarWithin_AllSavedVars
-## SavedVariablesPerCharacter: DBMWarWithin_SavedStats
+## SavedVariables: DBMKhazAlgar_AllSavedVars
+## SavedVariablesPerCharacter: DBMKhazAlgar_SavedStats
 ## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: WORLDBOSS
