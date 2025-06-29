@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1219450 then
 		self.vb.matricesCount = self.vb.matricesCount + 1
-		local timer = self.vb.purgeCount == 1 and 33.1 or self.vb.purgeCount == 4 and "v35.2-38.9" or 35.2
+		local timer = self.vb.purgeCount == 0 and 33.1 or self.vb.purgeCount == 4 and "v35.2-38.9" or 35.2
 		timerManifestMatricesCD:Start(timer, self.vb.matricesCount+1)
 	elseif spellId == 1219263 then
 		self.vb.arcanocannonCount = self.vb.arcanocannonCount + 1
