@@ -98,7 +98,6 @@ function mod:OnCombatStart(delay)
 	self.vb.eyeBeamCount = 0
 	self.vb.fracturedCount = 0
 	self.vb.spiritBombsCount = 0
---	timerConsumeCD:Start(1-delay)
 	timerVoidstepCD:Start(31.4-delay, 1)
 	timerTheHuntCD:Start(40.7-delay, 1)
 	timerBladeDanceCD:Start(30.2-delay, 1)
@@ -155,7 +154,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.fracturedCount = 0
 		self.vb.spiritBombsCount = 0
 		--Stop all timers
-		--timerConsumeCD:Stop()
 		timerVoidstepCD:Stop()
 		timerTheHuntCD:Stop()
 		timerBladeDanceCD:Stop()
@@ -210,15 +208,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		local cid2 = self:GetCIDFromGUID(args.sourceGUID)
 		if (cid == 237661 or cid2 == 237661) and self:AntiSpam(3, 2) then--Adarus Duskblaze
-			--timerConsumeCD:Start(2)
-			timerVoidstepCD:Start(20, 1)
+			timerVoidstepCD:Start(self.vb.intermissionCount == 3 and 9 or 20, 1)
 		elseif (cid == 237660 or cid2 == 237660) and self:AntiSpam(3, 3) then--Velaryn Bloodwrath
-			timerTheHuntCD:Start(29.3, 1)
-			timerBladeDanceCD:Start(6, 1)--Estimated, not in combat log
-			timerEyeBeamCD:Start(7.9, 1)
+			if self.vb.intermissionCount == 3 then
+				timerTheHuntCD:Start(7.5, 1)
+--				timerBladeDanceCD:Start(6, 1)--UNKNOWN
+--				timerEyeBeamCD:Start(7.9, 1)--Not cast after 3rd intermission
+			else
+				timerBladeDanceCD:Start(6, 1)--Estimated, not in combat log
+				timerEyeBeamCD:Start(7.9, 1)
+				timerTheHuntCD:Start(29.3, 1)
+			end
 		elseif (cid == 237662 or cid2 == 237662) and self:AntiSpam(3, 4) then--Ilyssa Darksorrow
-			timerFracturedCD:Start(3.5, 1)
-			timerSpiritBombsCD:Start(19.8, 1)
+			if self.vb.intermissionCount == 3 then
+				timerFracturedCD:Start(4.6, 1)
+				timerSpiritBombsCD:Start(14.4, 1)
+			else
+				timerFracturedCD:Start(3.5, 1)
+				timerSpiritBombsCD:Start(19.8, 1)
+			end
 		end
 	end
 end
@@ -237,7 +245,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 237661 then--Adarus Duskblaze
-		--timerConsumeCD:Stop()
 		timerVoidstepCD:Stop()
 	elseif cid == 237660 then--Velaryn Bloodwrath
 		timerTheHuntCD:Stop()
