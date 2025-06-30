@@ -238,8 +238,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnUnboundRage:Play("carefly")
 		timerUnboundrageCast:Start()
 		--timerPrimalSpellstormCD:Start(2)
-		timerArcaneOutrageCD:Start(16, 1)
-		timerWrithingWaveCD:Start(23, 1)
+		timerWrithingWaveCD:Start(13, 1)
+		timerArcaneOutrageCD:Start(23, 1)
 	elseif spellId == 1227775 then--Energy Controller 2 [DNT]
 		self:SetStage(2)
 		self.vb.weavingCount = 0
@@ -247,7 +247,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
 		self.vb.piercingStrandsCount = 0--Also used for Writhing Wave (mechanic that replaces it)
 		--timerPrimalSpellstormCD:Start(2)
-		timerArcaneOutrageCD:Update(13, 16, 1)
-		timerWrithingWaveCD:Update(13, 23, 1)
+		timerWrithingWaveCD:Update(13, 16, 1)
+		timerArcaneOutrageCD:Update(13, 23, 1)
 	end
 end
