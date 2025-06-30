@@ -1139,7 +1139,7 @@ function DBM:PlayCountSound(number, forceVoice, forcePath)
 		for _, count in pairs(DBM:GetCountSounds()) do
 			if count.value == voice then
 				path = count.path
-				maxCount = count.max
+				maxCount = count.length
 				break
 			end
 		end

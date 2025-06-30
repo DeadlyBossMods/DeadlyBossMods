@@ -123,54 +123,9 @@ durationSlider:HookScript("OnValueChanged", function(self)
 end)
 durationSlider.myheight = 0
 
+--TODO: Load sounds dynamically
 local sounds
-if isRetail then
-	sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
-		{ text = "BB Wolf: Run Away", value = not isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
-		{ text = "Blizzard Raid Emote", value = 876098 },
-		{ text = "Headless Horseman: Laugh", value = 551703 },
-		{ text = "Illidan: Not Prepared", value = not isClassic and 552503 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
-		{ text = "Illidan: Not Prepared2", value = isRetail and 1412178 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
-		{ text = "Kaz'rogal: Marked", value = 553050 },
-		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 553193 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
-		{ text = "Lady Malande: Flee", value = 553566 },
-		{ text = "Loatheb: I see you", value = 554236 },
-		{ text = "Milhouse: Light You Up", value = 555337 },
-		{ text = "Night Elf Bell", value = 566558 },
-		{ text = "PvP Flag", value = 569200 },
-		{ text = "Void Reaver: Marked", value = 563787 },
-		{ text = "Yogg Saron: Laugh", value = 564859 },
-	})
-elseif isWrath then--Basically all but Blizzard Raid Emote which was added in MoP
-	sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
-		{ text = "BB Wolf: Run Away", value = not isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
-		{ text = "Headless Horseman: Laugh", value = 551703 },
-		{ text = "Illidan: Not Prepared", value = not isClassic and 552503 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
-		{ text = "Illidan: Not Prepared2", value = isRetail and 1412178 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
-		{ text = "Kaz'rogal: Marked", value = 553050 },
-		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 553193 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
-		{ text = "Lady Malande: Flee", value = 553566 },
-		{ text = "Loatheb: I see you", value = 554236 },
-		{ text = "Milhouse: Light You Up", value = 555337 },
-		{ text = "Night Elf Bell", value = 566558 },
-		{ text = "PvP Flag", value = 569200 },
-		{ text = "Void Reaver: Marked", value = 563787 },
-		{ text = "Yogg Saron: Laugh", value = 564859 },
-	})
-else--Vanilla
-	sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
-		{ text = "BB Wolf: Run Away", value = not isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
-		{ text = "Illidan: Not Prepared", value = not isClassic and 552503 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
-		{ text = "Illidan: Not Prepared2", value = isRetail and 1412178 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
-		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 553193 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
-		{ text = "Loatheb: I see you", value = 554236 },
-		{ text = "Night Elf Bell", value = 566558 },
-		{ text = "PvP Flag", value = 569200 },
-	})
-end
+sounds = DBM_GUI:MixinSharedMedia3("sound", DBM:GetSpecialAnnouncements())
 
 local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1)
 
