@@ -109,7 +109,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then castsPerGUID[args.sourceGUID] = 0 end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
-		if self:CheckInterruptFilter(args.sourceGUID, false, false) then--Count interrupt, so cooldown is not checked
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then--CD still checked since spell is spammed
 			specWarnVoidVolley:Show(args.sourceName, count)
 			if count < 6 then
 				specWarnVoidVolley:Play("kick"..count.."r")
@@ -246,6 +246,10 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 237897 then--Assasssin
 		timerVoidbladeAmbushCD:Stop(args.destGUID)
+	elseif cid == 237981 then--Mage
+		if castsPerGUID[args.destGUID] then
+			castsPerGUID[args.destGUID] = nil
+		end
 	end
 end
 
