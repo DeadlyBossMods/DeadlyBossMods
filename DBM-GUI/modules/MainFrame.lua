@@ -157,7 +157,7 @@ frameWebsite:SetText(L.Website)
 local frameWebsiteButtonA = CreateFrame("Frame", nil, frame)
 frameWebsiteButtonA:SetAllPoints(frameWebsite)
 frameWebsiteButtonA:SetScript("OnMouseUp", function()
-	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
+	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://allmylinks.com/mysticalos")
 end)
 
 ---@class DBM_GUI_OptionsFrameDBMOptions: Frame
