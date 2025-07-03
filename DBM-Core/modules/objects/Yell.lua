@@ -62,6 +62,7 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 			spellName = spellName,
 			spellId = spellId,
 			text = displayText or yellText,
+			customText = yellText and true or false,
 			mod = self,
 			chatType = chatType,
 			yellType = yellType
@@ -89,7 +90,7 @@ function yellPrototype:Yell(...)
 	end
 	--If type is icon yell but no icon exists, strip icon from text
 	local alteredText--We don't want to alter the objects real text, just temp alter it for this call
-	if not ... and (self.yellType == "position" or self.yellType == "shortposition" or self.yellType == "iconfade") then
+	if not ... and (self.yellType == "position" or self.yellType == "shortposition" or self.yellType == "iconfade") and not self.customText then
 		alteredText = L.AUTO_YELL_ANNOUNCE_TEXT[self.yellType.."noicon"]:format(self.spellName)
 	end
 	local text = stringUtils.pformat(alteredText or self.text, ...)
