@@ -157,12 +157,6 @@ local popupData = {
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-dungeons",
 		useFriendlyMessage = true
 	},
-	Challenges = {
-		package = L.DBM_INSTALL_PACKAGE_CHALLENGES,
-		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-challenges",
-		curseUrl = "https://www.curseforge.com/wow/addons/dbm-challenges",
-		useFriendlyMessage = true
-	}
 }
 
 --Basically no naxx
@@ -264,8 +258,8 @@ local annoyingPopupZonesRetail = {
 	[2293]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- Theater of Pain
 	[2773]  = {addon = "DBM-Party-WarWithin", package = "Dungeons"},  -- Floodgate
 	--Visions Revisited (TWW)
-	[2828]  = {addon = "DBM-Challenges", package = "Challenges"},  -- Vision of Orgrimmar Revisited
-	[2827]  = {addon = "DBM-Challenges", package = "Challenges"},  -- Vision of Stormwind Revisited
+	[2828]  = {addon = "DBM-Challenges", package = "Dungeons"},  -- Vision of Orgrimmar Revisited
+	[2827]  = {addon = "DBM-Challenges", package = "Dungeons"},  -- Vision of Stormwind Revisited
 	--Mage Tower
 
 }
