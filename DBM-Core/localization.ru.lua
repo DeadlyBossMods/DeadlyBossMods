@@ -712,8 +712,7 @@ L.DBM_INSTALL_PACKAGE_BCC		= "Модуль 'Burning Crusade'"
 L.DBM_INSTALL_PACKAGE_WRATH		= "Модуль 'Гнев Короля-лича'"
 L.DBM_INSTALL_PACKAGE_CATA		= "Модуль 'Катаклизм'"
 L.DBM_INSTALL_PACKAGE_MOP		= "Модуль 'Пандария'"
-L.DBM_INSTALL_PACKAGE_DUNGEON	= "Модуль 'Подземелья, вылазки и события'"
-L.DBM_INSTALL_PACKAGE_CHALLENGES= "Модуль 'Испытания'"
+L.DBM_INSTALL_PACKAGE_DUNGEON	= "Модуль 'Подземелья, вылазки, испытания и события'"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM использовался в тестовом режиме с временной деформацией в текущем сеансе, рекомендуется перезагрузить интерфейс перед использованием DBM в реальном бою с боссом. Все должно работать так, как и ожидалось, но никаких гарантий!"
