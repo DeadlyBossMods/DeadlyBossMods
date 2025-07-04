@@ -665,7 +665,7 @@ L.DBM_INSTALL_PACKAGE_BCC		= "불타는 성전 패키지"
 L.DBM_INSTALL_PACKAGE_WRATH		= "리분 패키지"
 L.DBM_INSTALL_PACKAGE_CATA		= "대격변 패키지"
 L.DBM_INSTALL_PACKAGE_MOP		= "판다리아의 안개 패키지"
-L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 이벤트 패키지"
+L.DBM_INSTALL_PACKAGE_DUNGEON	= "던전, 구렁, 도전 및 이벤트 패키지"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM이 이번 접속에서 시간을 왜곡한 테스트 모드로 사용되고 있습니다. 보스 전투에서 DBM을 사용하기에 앞서 UI 재시작을 권장합니다. 모든 기능이 여전히 의도대로 작동해야 하나, 장담할 순 없습니다!"
