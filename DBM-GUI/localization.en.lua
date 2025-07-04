@@ -20,6 +20,11 @@ L.OTabOptions						= "Core Options"
 L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout							= "About"
 
+--Main Tab, Tools checks
+L.Tools_LatencyCheck				= "Latency Check"
+L.Tools_DurabilityCheck				= "Durability Check"
+L.Tools_KeystoneCheck				= "Keystone Check"
+
 L.TabCategory_CURRENT_SEASON		= "Current Season"
 
 L.TabCategory_OTHER					= "Other Mods"
