@@ -180,9 +180,11 @@ end
 --  Dropdown Menu  --
 ---------------------
 do
+
+  --TODO, make the dropdown dynamically, DBM:GetFilesWithMetadata("category", "rangeSound")
 	local sound0 = "none"
-	local sound1 = "Interface\\AddOns\\DBM-Core\\Sounds\\blip_8.ogg"
-	local sound2 = "Interface\\AddOns\\DBM-Core\\Sounds\\alarmclockbeeps.ogg"
+	local sound1 = "Interface\\AddOns\\DBM-Core\\Sounds\\SoundClips\\blip_8.ogg"
+	local sound2 = "Interface\\AddOns\\DBM-Core\\Sounds\\SoundClips\\alarmclockbeeps.ogg"
 
 	local function toggleLocked()
 		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
