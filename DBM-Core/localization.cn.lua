@@ -676,7 +676,6 @@ L.DBM_INSTALL_PACKAGE_WRATH		= "巫妖王之怒模块"
 L.DBM_INSTALL_PACKAGE_CATA		= "大地的裂变模块"
 L.DBM_INSTALL_PACKAGE_MOP		= "熊猫人之谜模块"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "五人本与事件模块"
-L.DBM_INSTALL_PACKAGE_CHALLENGES= "挑战模块"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM曾经在当前进程中使用过测试模式的时间卷曲功能，建议你在正式战斗前 /reload 界面以防止DBM出现奇怪的问题。"

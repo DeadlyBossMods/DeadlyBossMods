@@ -688,7 +688,6 @@ L.DBM_INSTALL_PACKAGE_WRATH			= "巫妖王組件"
 L.DBM_INSTALL_PACKAGE_CATA			= "浩劫與重生組件"
 L.DBM_INSTALL_PACKAGE_MOP			= "潘達利亞的迷霧組件"
 L.DBM_INSTALL_PACKAGE_DUNGEON		= "地下城、探究以及事件組件"
-L.DBM_INSTALL_PACKAGE_CHALLENGES	= "挑戰組件"
 
 -- Tests
 L.DBM_TAINTED_BY_TESTS			= "DBM在當前階段使用了包含時間扭曲的測試模式，建議使用DBM在真正的首領戰鬥中之前重新載入UI。一切都應該按預期工作但並不保證！"
