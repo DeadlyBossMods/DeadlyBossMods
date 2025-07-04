@@ -17,7 +17,13 @@ L.OTabWorld					= "Мировые боссы"
 L.OTabScenarios				= "Сценарии"
 L.OTabPlugins				= "Другое"
 L.OTabOptions				= "Настройки"
+L.OTabTools					= "Инструменты"--Например, кнопка таймера перерыва, проверки прочности, проверки задержки, проверки ключей М+ (в будущем)
 L.OTabAbout					= "About"--I need to check it, then I’ll translate it
+
+--Main Tab, Tools checks
+L.Tools_LatencyCheck				= "Проверка задержки"
+L.Tools_DurabilityCheck				= "Проверка прочности"
+L.Tools_KeystoneCheck				= "Проверка ключа М+"
 
 L.TabCategory_CURRENT_SEASON		= "Текущий сезон"
 
