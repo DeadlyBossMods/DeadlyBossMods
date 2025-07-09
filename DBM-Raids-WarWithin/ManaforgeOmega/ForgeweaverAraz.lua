@@ -230,7 +230,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1228502 then
 		self.vb.overwhelmingPowerCount = self.vb.overwhelmingPowerCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.obliterationCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.overwhelmingPowerCount+1)
 		if timer then
 			timerOverwhelmingPowerCD:Start(timer, self.vb.overwhelmingPowerCount+1)
 		end
