@@ -111,7 +111,7 @@ local allTimers = {
 			--Arcane Obliteration
 			[1228216] = {68.7},--Only 1 in second set
 			--Silencing Tempest
-			[1228161] = {63, 44, 33},
+			[1228161] = {57.6, 44, 21},
 			--Arcane Expulsion
 			[1227631] = {149.9},
 			--Invoke Collector
