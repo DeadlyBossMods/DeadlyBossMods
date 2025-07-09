@@ -5,7 +5,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(237861)
 mod:SetEncounterID(3133)
-mod:SetHotfixNoticeRev(20250622000000)
+mod:SetHotfixNoticeRev(20250708000000)
 --mod:SetMinSyncRevision(20240921000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -13,36 +13,46 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1233416 1230610 1225938 1220394 1227367 1231871 1225673",
+	"SPELL_CAST_START 1220394 1231871 1225673",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 1227378 1227373 1231871"
+	"SPELL_AURA_APPLIED 1227378 1227373 1231871 1247424",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 1247424",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
---	"CHAT_MSG_RAID_BOSS_WHISPER",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"RAID_BOSS_WHISPER",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, what do with https://www.wowhead.com/ptr-2/spell=1236784/brittle-nexus
 --TODO, what do with https://www.wowhead.com/ptr-2/spell=1236785/void-infused-nexus
---TODO, use https://www.wowhead.com/ptr-2/spell=1246806/entropic-conjunction or https://www.wowhead.com/ptr-2/spell=1233411/entropic-conjunction ?
+--NOTE: Conjunction debuff not in combat log, have to use UNIT_AURA or RBW, using RBW for now
+--[[
+(ability.id = 1220394 or ability.id = 1227367 or ability.id = 1231871 or ability.id = 1225673) and type = "begincast"
+or ability.id = 1227367 and type = "cast"
+or ability.id = 1233416 and type = "begincast"
+--]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
---local warnDecimate								= mod:NewIncomingCountAnnounce(442428, 3)
+local warnEntropicConjunction						= mod:NewTargetNoFilterAnnounce(1233416, 3)
 
-local specWarnEntropicConjunction					= mod:NewSpecialWarningCount(1233416, nil, nil, nil, 2, 2)
+local specWarnEntropicConjunction					= mod:NewSpecialWarningYou(1233416, nil, nil, nil, 1, 17)
+--local yellEntropicConjunction						= mod:NewShortYell(1233416)
+--local yellEntropicConjunctionFades				= mod:NewShortFadesYell(1233416)
+local specWarnNullConsumption						= mod:NewSpecialWarningMoveAway(1247424, nil, nil, nil, 1, 2, 3)
+local yellNullConsumption							= mod:NewShortYell(1247424)
+local yellNullConsumptionFades						= mod:NewShortFadesYell(1247424)
 local specWarnCrystallineBackhand					= mod:NewSpecialWarningCount(1220394, nil, nil, nil, 2, 2)
 local specWarnNetherCrystallization					= mod:NewSpecialWarningMoveTo(1227373, nil, nil, nil, 1, 13)
---local specWartnCrystallized						= mod:NewSpecialWarningYou(1220394, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
+local specWartnCrystallized							= mod:NewSpecialWarningYou(1220394, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
 local specWarnShockwaveSlam							= mod:NewSpecialWarningDefensive(1231871, nil, nil, nil, 1, 2)
 local specWarnShockwaveSlamTaunt					= mod:NewSpecialWarningTaunt(1231871, nil, nil, nil, 1, 2)
 local specWarnEnragedTantrum						= mod:NewSpecialWarningSpell(1225673, nil, nil, nil, 3, 2)--Fight failure, you're dead when cast finishes
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
-local timerEntropicConjunctionCD					= mod:NewAITimer(97.3, 1233416, nil, nil, nil, 2)
-local timerCrystallineBackhandCD					= mod:NewAITimer(97.3, 1220394, nil, nil, nil, 2)
-local timerNetherCrystallizationCD					= mod:NewAITimer(97.3, 1227373, nil, nil, nil, 3)
-local timerShockwaveSlamCD							= mod:NewAITimer(97.3, 1231871, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerEntropicConjunctionCD					= mod:NewVarCountTimer("v6.1-23.1", 1233416, nil, nil, nil, 2)--Can't be cast during other spells so it gets radically spell queued (hopefully blizzard fixes this)
+local timerCrystallineBackhandCD					= mod:NewCDCountTimer(39.3, 1220394, nil, nil, nil, 2)
+local timerNetherCrystallizationCD					= mod:NewVarCountTimer("v38.5-40.5", 1227373, nil, nil, nil, 3)
+local timerShockwaveSlamCD							= mod:NewVarCountTimer("v38.9-41.3", 1231871, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod.vb.conunctionCount = 0
 mod.vb.backhandCount = 0
@@ -55,20 +65,15 @@ function mod:OnCombatStart(delay)
 	self.vb.backhandCount = 0
 	self.vb.crystallizationCount = 0
 	self.vb.shockwaveSlamCount = 0
-	timerEntropicConjunctionCD:Start(1-delay)
-	timerCrystallineBackhandCD:Start(1-delay)
-	timerNetherCrystallizationCD:Start(1-delay)
-	timerShockwaveSlamCD:Start(1-delay)
+	timerEntropicConjunctionCD:Start(3.7-delay, 1)
+	timerCrystallineBackhandCD:Start(37.8-delay, 1)
+	timerNetherCrystallizationCD:Start(31.5-delay, 1)
+	timerShockwaveSlamCD:Start(15.9-delay, 1)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if (spellId == 1233416 or spellId == 1230610 or spellId == 1225938) and self:AntiSpam(5, 1) then
-		self.vb.conunctionCount = self.vb.conunctionCount + 1
-		specWarnEntropicConjunction:Show(self.vb.conunctionCount)
-		specWarnEntropicConjunction:Play("specialsoon")
-		timerEntropicConjunctionCD:Start()--nil, self.vb.conunctionCount+1
-	elseif spellId == 1220394 then
+	if spellId == 1220394 then
 		self.vb.backhandCount = self.vb.backhandCount + 1
 		specWarnCrystallineBackhand:Show(self.vb.backhandCount)
 		if DBM:UnitDebuff("player", 1227378) then
@@ -77,9 +82,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnCrystallineBackhand:Play("aesoon")
 		end
 		timerCrystallineBackhandCD:Start()--nil, self.vb.backhandCount
-	elseif spellId == 1227367 then
-		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
-		timerNetherCrystallizationCD:Start()--nil, self.vb.crystallizationCount
 	elseif spellId == 1231871 then
 		self.vb.shockwaveSlamCount = self.vb.shockwaveSlamCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -95,8 +97,9 @@ end
 --[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 439559 then
-
+	if spellId == 1227367 then
+		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
+		timerNetherCrystallizationCD:Start(nil, self.vb.crystallizationCount)
 	end
 end
 --]]
@@ -111,21 +114,28 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1231871 and not args:IsPlayer() then
 		specWarnShockwaveSlamTaunt:Show(args.destName)
 		specWarnShockwaveSlamTaunt:Play("tauntboss")
---	elseif spellId == 1227378 and args:IsPlayer() then
---		specWartnCrystallized:Show()
---		specWartnCrystallized:Play("targetyou")
+	elseif spellId == 1247424 then
+		if args:IsPlayer() then
+			specWarnNullConsumption:Show()
+			specWarnNullConsumption:Play("runout")
+			yellNullConsumption:Yell()
+			yellNullConsumptionFades:Countdown(1247424)
+		end
+	elseif spellId == 1227378 and args:IsPlayer() then
+		specWartnCrystallized:Show()
+		specWartnCrystallized:Play("targetyou")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 459273 then
-
+	if spellId == 1247424 then
+		if args:IsPlayer() then
+			yellNullConsumptionFades:Cancel()
+		end
 	end
 end
---]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
@@ -137,10 +147,30 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 433475 then
-
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:1233416") then
+		specWarnEntropicConjunction:Show()
+		specWarnEntropicConjunction:Play("lineyou")
+--		yellEntropicConjunction:Yell()
+--		yellEntropicConjunctionFades:Countdown(3)
 	end
 end
---]]
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("spell:1233416") then
+		warnEntropicConjunction:CombinedShow(1, targetName)--Long aggregation since we collect targets via syncs
+	end
+end
+
+--"<5.73 22:49:09> [UNIT_SPELLCAST_SUCCEEDED] Fractillus(99.1%-9.0%){Target:Tiefpal-Fyrakk} -Entropic Conjunction- [[boss1:Cast-3-5770-2810-337-1233411-001EDF03C6:1233411]]",
+--"<12.74 22:49:16> [CLEU] SPELL_CAST_START#Creature-0-5770-2810-337-237861-00005F0369#Fractillus(94.4%-30.0%)##nil#1233416#Entropic Conjunction#nil#nil#nil#nil#nil#nil",
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
+	if spellId == 1233411 then--Much sooner than spell cast start event (when pre target debuffs go out)
+		self.vb.conunctionCount = self.vb.conunctionCount + 1
+		--"Entropic Conjunction-1233411-npc:237861-00005F0369 = pull:3.7, 17.0, 23.1, 17.1, 22.3, 17.1, 16.5, 6.1, 17.0, 23.1, 17.0, 21.9, 17.0, 23.1, 17.0, 22.8, 16.2, 17.0, 8.5",
+		timerEntropicConjunctionCD:Start(nil, self.vb.conunctionCount+1)
+	elseif spellId == 1227367 then--Cast not in combat log (debuff is though)
+		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
+		timerNetherCrystallizationCD:Start(nil, self.vb.crystallizationCount+1)
+	end
+end

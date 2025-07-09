@@ -18,6 +18,11 @@ L.OTabPlugins				= "其他"
 L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
 
+--Main Tab, Tools checks
+L.Tools_LatencyCheck				= "延遲檢查"
+L.Tools_DurabilityCheck				= "耐久度檢查"
+L.Tools_KeystoneCheck				= "鑰石檢查"
+
 L.TabCategory_CURRENT_SEASON	= "當前賽季"
 
 L.TabCategory_OTHER			= "其它模組"
