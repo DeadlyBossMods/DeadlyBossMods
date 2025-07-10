@@ -42,8 +42,14 @@ NerubarPalace/SilkenCourt-Mythic-Kill.lua
 NerubarPalace/QueenAnsurek-Mythic-Wipe.lua
 
 ManaforgeOmega/PlexusSentinel-Normal-Kill.lua
+ManaforgeOmega/PlexusSentinel-Heroic-Kill.lua
+ManaforgeOmega/PlexusSentinel-Mythic-Wipe.lua
 ManaforgeOmega/Loomithar-Normal-Kill.lua
+ManaforgeOmega/Loomithar-Heroic-Wipe.lua
+ManaforgeOmega/Loomithar-Mythic-Wipe.lua
 ManaforgeOmega/SoulbinderNaazindhri-Normal-Kill.lua
+ManaforgeOmega/SoulbinderNaazindhri-Heroic-Wipe.lua
+ManaforgeOmega/SoulbinderNaazindhri-Mythic-Wipe.lua
 ManaforgeOmega/ForgeweaverAraz-Normal-Kill.lua
 ManaforgeOmega/ForgeweaverAraz-Heroic-Wipe.lua
 ManaforgeOmega/SoulHunters-Normal-Wipe.lua
