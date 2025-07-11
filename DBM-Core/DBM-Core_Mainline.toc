@@ -70,7 +70,6 @@ modules\objects\StringUtils.lua
 modules\objects\TableUtils.lua
 modules\objects\StandardFont.lua
 modules\Modules.lua
-
 modules\SpecRole.lua
 modules\Scheduler.lua
 modules\DevTools.lua
@@ -91,10 +90,12 @@ modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
 modules\Notes.lua
-modules\Sounds.lua
 modules\UpdateReminder.lua
 modules\AnnoyingPopup.lua
 modules\ZoneCombatScanner.lua
+modules\FileBrowser.lua
+sounds\metadata.lua
+modules\Sounds.lua
 
 modules\objects\Difficulties.lua
 modules\objects\BossMod.lua
@@ -108,3 +109,4 @@ modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
 modules\objects\Tooltip.lua
+
