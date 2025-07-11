@@ -59,7 +59,7 @@ local timerOverwhelmingPowerCD						= mod:NewCDCountTimer(44, 1228502, nil, nil,
 local timerArcaneObliterationCD						= mod:NewCDCountTimer(45, 1228216, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerSilencingTempestCD						= mod:NewCDCountTimer(97.3, 1228161, nil, nil, nil, 3)
 local timerArcaneExpulsionCD						= mod:NewCDCountTimer(97.3, 1227631, nil, nil, nil, 2)
-local timerInvokeCollectorCD						= mod:NewAITimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerInvokeCollectorCD						= mod:NewCDCountTimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
@@ -74,12 +74,12 @@ local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32384))
 local warnPhase2									= mod:NewPhaseAnnounce(1248009, 2, nil, nil, nil, nil, nil, 2)
 
-local specWarnVoidHarvest						= mod:NewSpecialWarningYou(1243873, nil, nil, nil, 1, 2)
-local yellVoidHarvestFades						= mod:NewShortFadesYell(1243873)
+local specWarnVoidHarvest							= mod:NewSpecialWarningYou(1243873, nil, nil, nil, 1, 2)
+local yellVoidHarvestFades							= mod:NewShortFadesYell(1243873)
 local specWarnDeaththroes							= mod:NewSpecialWarningCount(1232221, nil, nil, nil, 2, 2, 4)
 
-local timerVoidHarvestCD							= mod:NewAITimer(97.3, 1243873, nil, nil, nil, 3)
-local timerDeaththroesCD							= mod:NewAITimer(97.3, 1232221, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerVoidHarvestCD							= mod:NewCDCountTimer(97.3, 1243873, nil, nil, nil, 3)
+local timerDeaththroesCD							= mod:NewCDCountTimer(97.3, 1232221, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod.vb.overwhelmingPowerCount = 0--Returns in stage 2
 mod.vb.obliterationCount = 0
@@ -336,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][3][1228161][1], 1)
 			timerVoidHarvestCD:Start(allTimers[savedDifficulty][3][1243887][1], 1)
 			if self:IsMythic() then
-				timerDeaththroesCD:Start(2)
+				timerDeaththroesCD:Start(allTimers[savedDifficulty][3][1232221][1], 1)
 			end
 		end
 	end
