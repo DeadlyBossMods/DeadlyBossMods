@@ -92,6 +92,42 @@ mod.vb.deaththroesCount = 0
 
 local savedDifficulty = "normal"
 local allTimers = {
+	["mythic"] = {
+		[1] = {
+			--Overwhelming Power
+			[1228502] = {4, 22, 22, 22, 22, 22},
+			--Arcane Obliteration
+			[1228216] = {30.9, 45},
+			--Silencing Tempest
+			[1228161] = {63, 44, 23},--23 is diff from heroic
+			--Arcane Expulsion
+			[1227631] = {155},--diff from heroic
+			--Invoke Collector
+			[1231720] = {9, 44, 44},
+		},
+		[2] = {
+			--Overwhelming Power
+			[1228502] = {18.6, 22, 22, 22, 22, 22},
+			--Arcane Obliteration
+			[1228216] = {68.7},--Only 1 in second set
+			--Silencing Tempest
+			[1228161] = {57.6, 44, 21},
+			--Arcane Expulsion
+			[1227631] = {149.9},
+			--Invoke Collector
+			[1231720] = {23.6, 22, 44},
+		},
+		[3] = {
+			--Hungering Gloom
+			[1243887] = {39, 8, 80, 8, 46, 8},
+			--Deaththroes (mythic only)
+			[1232221] = {},
+			--Overwhelming Power
+			[1228502] = {31, 44, 44, 44, 10, 44},
+			--Silencing Tempest
+			[1228161] = {89, 46, 96},
+		},
+	},
 	["heroic"] = {
 		[1] = {
 			--Overwhelming Power
@@ -193,7 +229,7 @@ function mod:OnCombatStart(delay)
 	self.vb.hungeringGloomCount = 0
 	self.vb.deaththroesCount = 0
 	if self:IsMythic() then
-		savedDifficulty = "heroic"--Temp
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
@@ -218,7 +254,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		savedDifficulty = "heroic"
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
