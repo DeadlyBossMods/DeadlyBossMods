@@ -81,13 +81,14 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnCrystallineBackhand:Play("aesoon")
 		end
-		timerCrystallineBackhandCD:Start()--nil, self.vb.backhandCount
+		timerCrystallineBackhandCD:Start(nil, self.vb.backhandCount+1)
 	elseif spellId == 1231871 then
 		self.vb.shockwaveSlamCount = self.vb.shockwaveSlamCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnShockwaveSlam:Show()
 			specWarnShockwaveSlam:Play("defensive")
 		end
+		timerShockwaveSlamCD:Start(nil, self.vb.shockwaveSlamCount+1)
 	elseif spellId == 1225673 then
 		specWarnEnragedTantrum:Show()
 		specWarnEnragedTantrum:Play("stilldanger")
