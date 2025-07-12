@@ -60,12 +60,12 @@ mod:AddNamePlateOption("NPAuraOnWovenWard", 1238502)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32303))
 local specWarnUnboundRage							= mod:NewSpecialWarningSpell(1228059, nil, nil, nil, 2, 2)
 
-local specWarnArcaneOutrage							= mod:NewSpecialWarningYou(1237307, nil, nil, nil, 1, 13)
+local specWarnArcaneOutrage							= mod:NewSpecialWarningYou(1227782, nil, nil, nil, 1, 13)
 local specWarnWrithingWave							= mod:NewSpecialWarningCount(1227226, nil, nil, nil, 2, 2)
 local specWarnWrithingWaveTaunt						= mod:NewSpecialWarningTaunt(1227226, nil, nil, nil, 1, 2)
 
 local timerUnboundrageCast							= mod:NewCastTimer(5.8, 1228059, nil, nil, nil, 2)
-local timerArcaneOutrageCD							= mod:NewNextCountTimer(20, 1237307, nil, nil, nil, 3)
+local timerArcaneOutrageCD							= mod:NewNextCountTimer(20, 1227782, nil, nil, nil, 3)
 local timerWrithingWaveCD							= mod:NewNextCountTimer(20, 1227226, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod.vb.weavingCount = 0

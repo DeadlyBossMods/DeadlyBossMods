@@ -4,7 +4,7 @@ DBM.Test:DefineTest{
 	addon = "DBM-Raids-WarWithin",
 	mod = 2684,
 	encounterId = 3129,
-	instanceInfo = {name = "", instanceType = "raid", difficultyID = 14, difficultyName = "Normal", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2810, instanceGroupSize = 27, lfgDungeonID = nil},
+	instanceInfo = {name = "Manaforge Omega", instanceType = "raid", difficultyID = 14, difficultyName = "Normal", difficultyModifier = nil, maxPlayers = 30, dynamicDifficulty = 0, isDynamic = false, instanceID = 2810, instanceGroupSize = 27, lfgDungeonID = nil},
 	players = {
 		{"Tank1",   "Player-1-00000006", class = "DEMONHUNTER", healer = 0.00, tank = 1.00, dps = 0.00, healed = 0.56},
 		{"Tank2",   "Player-1-00000017", class = "EVOKER", healer = 0.00, tank = 1.00, dps = 0.15, healed = 1.00},
