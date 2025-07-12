@@ -52,9 +52,13 @@ ManaforgeOmega/SoulbinderNaazindhri-Heroic-Wipe.lua
 ManaforgeOmega/SoulbinderNaazindhri-Mythic-Wipe.lua
 ManaforgeOmega/ForgeweaverAraz-Normal-Kill.lua
 ManaforgeOmega/ForgeweaverAraz-Heroic-Wipe.lua
+ManaforgeOmega/ForgeweaverAraz-Mythic-Wipe.lua
 ManaforgeOmega/SoulHunters-Normal-Wipe.lua
 ManaforgeOmega/SoulHunters-Heroic-Wipe.lua
-ManaforgeOmega/Fractillus-Heroic-Wipe.lua
+ManaforgeOmega/SoulHunters-Mythic-Wipe.lua
 ManaforgeOmega/Fractillus-Normal-Kill.lua
+ManaforgeOmega/Fractillus-Heroic-Wipe.lua
+ManaforgeOmega/Fractillus-Mythic-Wipe.lua
 ManaforgeOmega/Nexus-KingSalhadaar-Normal-Wipe.lua
 ManaforgeOmega/Nexus-KingSalhadaar-Heroic-Wipe.lua
+ManaforgeOmega/Nexus-KingSalhadaar-Mythic-Wipe.lua
