@@ -535,7 +535,7 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 -----------------
 local LibSpec
 do
-	if (private.isRetail or private.isCata) and LibStub then
+	if (private.isRetail or private.isCata or private.isMop) and LibStub then
 		LibSpec = LibStub("LibSpecialization", true)
 		if LibSpec then
 			local function update(specID, _, _, playerName)
@@ -1563,13 +1563,13 @@ do
 		if modname == "DBM-Core" and not isLoaded then
 			--Establish a classic sub mod version for version checks and out of date notification/checking
 			if not private.isRetail then
-				local checkedRaidmodule = private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or private.isClassic and "DBM-Raids-Vanilla"
+				local checkedRaidmodule = private.isMop and "DBM-Raids-MoP" or private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or private.isClassic and "DBM-Raids-Vanilla"
 				if checkedRaidmodule and C_AddOns.DoesAddOnExist(checkedRaidmodule) then
 					local version = C_AddOns.GetAddOnMetadata(checkedRaidmodule, "Version") or "r0"
 					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 				end
 			end
-			local checkedDungeonmodule = private.isRetail and "DBM-Party-WarWithin" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
+			local checkedDungeonmodule = private.isRetail and "DBM-Party-WarWithin" or private.isMop and "DBM-Party-MoP" or private.isCata and "DBM-Party-Cataclysm" or private.isWrath and "DBM-Party-WotLK" or private.isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if checkedDungeonmodule and C_AddOns.DoesAddOnExist(checkedDungeonmodule) then
 				local version = C_AddOns.GetAddOnMetadata(checkedDungeonmodule, "Version") or "r0"
 				DBM.dungeonSubVersion = tonumber(string.sub(version, 2, 4)) or 0
@@ -2435,7 +2435,7 @@ do
 				if dbmIsEnabled and not IsTrialAccount() then
 					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
-				if private.isRetail or private.isCata then
+				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
@@ -2520,7 +2520,7 @@ do
 				if dbmIsEnabled and not IsTrialAccount() then
 					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
-				if private.isRetail or private.isCata then
+				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
@@ -3717,7 +3717,7 @@ do
 		end
 		if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
 			self:SpecChanged()
-			if (private.isRetail or private.isCata) and IsInGroup() then
+			if (private.isRetail or private.isCata or private.isMop) and IsInGroup() then
 				self:RoleCheck(false)
 			end
 		end
@@ -3878,10 +3878,10 @@ do
 			--MoP raid Handling
 			elseif mopZones[LastInstanceMapID] then
 				if not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
-					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
+					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"), nil, private.isMop)
 				end
 				--Show extra annoying popup in current content if it's classic
-				if private.isMop or LastInstanceMapID == 0 then
+				if private.isMop then--or LastInstanceMapID == 1098 (throne of thunder next timewalking raid?)
 					self:AnnoyingPopupCheckZone(LastInstanceMapID, "MoP")
 				end
 			--WoD raid Handling
@@ -4758,7 +4758,7 @@ do
 				end
 				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
 					updateSubNotificationDisplayed = 2
-					local checkedSubmodule = private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
+					local checkedSubmodule = private.isMop and "DBM-Raids-MoP" or private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
 					showConstantReminder = 1
 				end
@@ -5327,9 +5327,9 @@ do
 			delayedFunction = nil
 		end
 		if watchFrameRestore then
-			if private.isRetail then
+			if private.isRetail or private.isCata or private.isMop then
 				ObjectiveTracker_Expand()
-			elseif private.isCata or private.isWrath then
+			elseif private.isWrath then
 				WatchFrame:Show()
 			else -- Classic Era / BCC
 				QuestWatchFrame:Show()
@@ -5846,6 +5846,7 @@ do
 				self:StartLogging(0)
 			end
 			local trackedAchievements
+			--TODO, is MoP classic still using the old path? will TBC when it launches on aniversary
 			if private.isClassic or private.isBCC then
 				trackedAchievements = false
 			elseif private.isWrath or private.isCata then
@@ -5854,7 +5855,7 @@ do
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
 			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
-				if private.isRetail or private.isCata then--Do nothing due to taint and breaking
+				if private.isRetail or private.isCata or private.isMop then--Do nothing due to taint and breaking
 					--if ObjectiveTrackerFrame:IsVisible() then
 					--	ObjectiveTracker_Collapse()
 					--	watchFrameRestore = true
@@ -6314,9 +6315,9 @@ do
 				self.Arrow:Hide()
 				if not InCombatLockdown() then
 					if watchFrameRestore then
-						if private.isRetail then
+						if private.isRetail or private.isCata or private.isMop then
 							--ObjectiveTracker_Expand()
-						elseif private.isCata or private.isWrath then
+						elseif private.isWrath then
 							WatchFrame:Show()
 						else -- Classic Era / BCC
 							QuestWatchFrame:Show()
@@ -7767,7 +7768,7 @@ do
 		if uId then--This version includes ONLY melee dps
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -7818,7 +7819,7 @@ do
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -7854,7 +7855,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -7873,7 +7874,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -7891,7 +7892,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
