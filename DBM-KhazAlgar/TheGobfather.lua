@@ -8,7 +8,7 @@ mod:SetEncounterID(3128)
 mod:EnableWBEngageSync()--Enable syncing engage in outdoors
 --mod:SetHotfixNoticeRev(20240119000000)
 --mod:SetMinSyncRevision(20240119000000)
-mod:SetZone(2708)
+mod:SetZone(2706)
 
 mod:RegisterCombat("combat")
 --mod:RegisterKill("yell", L.Win)

@@ -51,7 +51,6 @@ local warnPositiveRemoved							= mod:NewFadesAnnounce(1216911, 1)
 local specWarnNegative								= mod:NewSpecialWarningYou(1216934, nil, nil, nil, 1, 13, 4)
 local specWarnPositive								= mod:NewSpecialWarningYou(1216911, nil, nil, nil, 1, 13, 4)
 local specWarnPolGen								= mod:NewSpecialWarning("specWarnPolGen", nil, nil, nil, 1, 13, 4, nil, 1216802)
-local yellPolarizationGenerator						= mod:NewIconTargetYell(1216802, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon, false, 2)
 
 local timerPolarizationGeneratorCD					= mod:NewNextCountTimer(97.3, 1216802, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --Main Boss
@@ -345,28 +344,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and lastPlayerCharge ~= 2 then
 			specWarnNegative:Show()
 			specWarnNegative:Play("negative")
-			yellPolarizationGenerator:Yell(7, "")--Red X
 			lastPlayerCharge = 2
 		end
 	elseif spellId == 1216911 then
 		if args:IsPlayer() and lastPlayerCharge ~= 1 then
 			specWarnPositive:Show()
 			specWarnPositive:Play("positive")
-			yellPolarizationGenerator:Yell(6, "")--Blue Square
 			lastPlayerCharge = 1
 		end
 	elseif spellId == 1217357 then--Changing to posi
 		if args:IsPlayer() and lastPlayerCharge ~= 1 then
 			specWarnPolGen:Show(BLUE_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.POSITIVE))
 			specWarnPolGen:Play("positive")
-			yellPolarizationGenerator:Yell(6, "")--Blue Square
 			lastPlayerCharge = 1
 		end
 	elseif spellId == 1217358 then--Changing to neg
 		if args:IsPlayer() and lastPlayerCharge ~= 2 then
 			specWarnPolGen:Show(RED_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.NEGATIVE))
 			specWarnPolGen:Play("negative")
-			yellPolarizationGenerator:Yell(7, "")--Red X
 			lastPlayerCharge = 2
 		end
 	elseif spellId == 465917 then
