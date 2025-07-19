@@ -391,33 +391,16 @@ do
 		return result
 	end
 
-	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		-- Inject basically dummy values for ordering special warnings to just use default SW sound assignments
-		{ text = L.None, value = "None" },
+  local soundfiles = {{ text = L.None, value = "None" },
 		{ text = L.SAOne, value = 1 },
 		{ text = L.SATwo, value = 2 },
 		{ text = L.SAThree, value = 3 },
-		{ text = L.SAFour, value = 4 },
-		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
-		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
-		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
-		{ text = "BB Wolf: Run Away", value = not isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
-		{ text = "Illidan: Not Prepared", value = not isClassic and 552503 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
-		{ text = "Illidan: Not Prepared2", value = isRetail and 1412178 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
-		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 553193 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
-		{ text = "Loatheb: I see you", value = 554236 },
-		{ text = "Night Elf Bell", value = 566558 },
-		{ text = "PvP Flag", value = 569200 },
-	})
-	if isRetail then
-		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })
-		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703 })
-		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050 })
-		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566 })
-		tinsert(sounds, { text = "Milhouse: Light You Up", value = 555337 })
-		tinsert(sounds, { text = "Void Reaver: Marked", value = 563787 })
-		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 564859 })
-	end
+		{ text = L.SAFour, value = 4 }}
+  local announcements = DBM:GetSpecialAnnouncements()
+  for i = 1, #announcements do
+    tinsert(soundfiles, { text = announcements[i].text, value = announcements[i].value })
+  end
+	local sounds = DBM_GUI:MixinSharedMedia3("sound", soundfiles)
 
 	local function RGBPercToHex(r, g, b)
 		r = r <= 1 and r >= 0 and r or 0
