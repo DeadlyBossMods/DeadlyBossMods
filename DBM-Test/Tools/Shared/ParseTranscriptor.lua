@@ -545,7 +545,7 @@ local function transcribeEvent(event, params, anon, flagState)
 			-- So we learn it here since we know that is definitely a player name
 			anon:LearnPlayerServer(name)
 			local scrubbed = anon:ScrubName(name)
-			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", msg, scrubbed ~= name and scrubbed or anon:ScrubName(name:match("([^-]*)")), 0, false)
+			return literalsTable("CHAT_MSG_RAID_BOSS_WHISPER", anon:ScrubChatMessage(msg, name), scrubbed ~= name and scrubbed or anon:ScrubName(name:match("([^-]*)")), 0, false)
 		else
 			-- FIXME: do we care about this warning?
 			--logInfo("Unhandled CHAT_MSG_ADDON log message " .. params)

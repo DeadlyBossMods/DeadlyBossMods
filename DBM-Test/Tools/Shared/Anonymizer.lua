@@ -102,7 +102,7 @@ function anonymizer:ScrubChatMessage(msg, name)
 	if not anonName or anonName == name then -- target is sometimes a random dummy unit/controller
 		return msg
 	end
-	local result = msg:gsub(name:gsub("%-", "%%-"), anonName):gsub(strippedName, name)
+	local result = msg:gsub(name:gsub("%-", "%%-"), anonName):gsub(strippedName, anonName)
 	seenChatMsgTranslations[msg] = result
 	return result
 end
