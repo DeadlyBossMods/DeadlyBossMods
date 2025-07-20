@@ -34,7 +34,6 @@ local specRoleTable
 -- Caution: the keys used below are not validated by LuaLS at the moment due to https://github.com/LuaLS/lua-language-server/issues/2610
 
 --Upvalued because it's called frequently each time rebuildSpecTable is called
-local IsSpellKnown = IsSpellKnown
 
 function DBMExtraGlobal:rebuildSpecTable()
 	-- Retail
@@ -109,7 +108,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RaidCooldown"] = true,--Rallying Cry
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["ImmunityDispeller"] = IsSpellKnown(64382),
+				["ImmunityDispeller"] = DBM:IsSpellKnown(64382),
 			},
 			[73] = {	--Protection Warrior
 				["Tank"] = true,
@@ -117,7 +116,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["RaidCooldown"] = true,--Rallying Cry
-				["ImmunityDispeller"] = IsSpellKnown(64382),
+				["ImmunityDispeller"] = DBM:IsSpellKnown(64382),
 			},
 			[1446] = {	--Initial Warrior (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
 				["Tank"] = true,
@@ -345,7 +344,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBM:IsSpellKnown(116705),
 			},
 			[269] = {	--Windwalker Monk
 				["Dps"] = true,
@@ -354,7 +353,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBM:IsSpellKnown(116705),
 			},
 			[270] = {	--Mistweaver Monk
 				["Healer"] = true,
@@ -365,7 +364,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
 				["RemoveMagic"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBM:IsSpellKnown(116705),
 			},
 			[1450] = {	--Initial Monk (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
 				["Tank"] = true,
@@ -406,12 +405,12 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RangedDps"] = true,
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
-				["HasInterrupt"] = IsSpellKnown(351338),--Quell
-				["RemovePoison"] = IsSpellKnown(365585),--Expunge. Must be specced
-				["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveBleed"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
+				["HasInterrupt"] = DBM:IsSpellKnown(351338),--Quell
+				["RemovePoison"] = DBM:IsSpellKnown(365585),--Expunge. Must be specced
+				["RemoveCurse"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveDisease"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveBleed"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveEnrage"] = DBM:IsSpellKnown(374346),--Overawe
 			},
 			[1468] = {	--Evoker Preservation
 				["Healer"] = true,
@@ -420,12 +419,12 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["RemoveMagic"] = true,
 				["RemovePoison"] = true,--Auto known
-				["HasInterrupt"] = IsSpellKnown(351338),--Quell
-				["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
-				["RemoveBleed"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RaidCooldown"] = IsSpellKnown(363534),--Rewind
+				["HasInterrupt"] = DBM:IsSpellKnown(351338),--Quell
+				["RemoveCurse"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveDisease"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveEnrage"] = DBM:IsSpellKnown(374346),--Overawe
+				["RemoveBleed"] = DBM:IsSpellKnown(374251),--Cauterizing Flame
+				["RaidCooldown"] = DBM:IsSpellKnown(363534),--Rewind
 			},
 			[1465] = {	--Evoker Initial (treated as both healer and dps for basic leveling purposes)
 				["Dps"] = true,
@@ -458,7 +457,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["HasInterrupt"] = true,
 				["HasImmunity"] = true,
 				["RemoveCurse"] = true,
-				["MagicDispeller"] = IsSpellKnown(30449),--Spellsteal in TBC+
+				["MagicDispeller"] = DBM:IsSpellKnown(30449),--Spellsteal in TBC+
 			},
 			[831] = {	--Holy Paladin
 				["Healer"] = true,
@@ -510,7 +509,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
+				["MagicDispeller"] = (DBM:IsSpellKnown(23922) or DBM:IsSpellKnown(23923) or DBM:IsSpellKnown(23924) or DBM:IsSpellKnown(23925) or DBM:IsSpellKnown(25258) or DBM:IsSpellKnown(30356) or DBM:IsSpellKnown(47487) or DBM:IsSpellKnown(47488)),--Shield Slam
 			},
 			[752] = {	--Balance Druid
 				["Healer"] = false,
@@ -672,7 +671,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["HasInterrupt"] = true,
 				["HasImmunity"] = true,
 				["RemoveCurse"] = true,
-				["MagicDispeller"] = IsSpellKnown(30449),--Spellsteal in TBC+
+				["MagicDispeller"] = DBM:IsSpellKnown(30449),--Spellsteal in TBC+
 			},
 			["PALADIN1"] = {	--Holy Paladin
 				["Healer"] = true,
@@ -724,7 +723,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
+				["MagicDispeller"] = (DBM:IsSpellKnown(23922) or DBM:IsSpellKnown(23923) or DBM:IsSpellKnown(23924) or DBM:IsSpellKnown(23925) or DBM:IsSpellKnown(25258) or DBM:IsSpellKnown(30356) or DBM:IsSpellKnown(47487) or DBM:IsSpellKnown(47488)),--Shield Slam
 			},
 			["DRUID1"] = {	--Balance Druid
 				["Healer"] = private.isClassic and true or false,
