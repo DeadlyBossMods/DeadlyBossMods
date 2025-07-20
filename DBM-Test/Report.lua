@@ -30,10 +30,8 @@ local function compareObjects(obj1, obj2)
 	local creationOrder1, creationOrder2 = obj1.testCreationOrder or math.huge, obj2.testCreationOrder or math.huge
 	if class1 ~= class2 then
 		return class1 < class2
-	elseif key1 and key2 and type(key1) ~= type(key2) then
-		return type(key1) == "string"
-	elseif key1 and key2 and key1 ~= key2 then
-		return key1 < key2
+	elseif tostring(key1) ~= tostring(key2) then
+		return tostring(key1) < tostring(key2)
 	elseif type1 ~= type2 then
 		return type1 < type2
 	else
