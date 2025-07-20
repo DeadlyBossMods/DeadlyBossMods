@@ -6783,25 +6783,6 @@ do
 		end
 		return start, duration, enable
 	end
-
-	---Checks if a spell is known
-	---@param spellId number
-	---@param isPet boolean?
-	---@param includeOverrides boolean?
-	---@return boolean
-	function DBM:IsSpellKnown(spellId, isPet, includeOverrides)
-		--11.2+ API
-		if C_SpellBook and C_SpellBook.IsSpellInSpellBook then
-			local spellBank = isPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player;
-			return C_SpellBook.IsSpellInSpellBook(spellId, spellBank, includeOverrides)
-		else
-			if includeOverrides then
-				return IsSpellKnownOrOverridesKnown(spellId, isPet) or false
-			else
-				return IsSpellKnown(spellId, isPet)
-			end
-		end
-	end
 end
 
 do
