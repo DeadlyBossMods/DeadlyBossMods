@@ -1205,8 +1205,7 @@ end
 
 do
 	local tostring, mfloor = tostring, math.floor
-	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid
-
+	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
 	function barPrototype:Announce()
 		local msg
 		if DBT.announceHook then
