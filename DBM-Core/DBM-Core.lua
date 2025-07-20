@@ -544,7 +544,7 @@ do
 				end
 			end
 			---@diagnostic disable-next-line: undefined-field
-			LibSpec:Register(DBM, update)
+			LibSpec.RegisterGroup(DBM, update)
 		end
 	end
 end

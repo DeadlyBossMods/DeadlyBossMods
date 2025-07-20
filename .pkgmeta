@@ -13,7 +13,7 @@ externals:
   Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
   Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
   Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
-  Libs/LibSpecialization: https://repos.wowace.com/wow/libspecialization/trunk/LibSpecialization
+  Libs/LibSpecialization: https://github.com/BigWigsMods/LibSpecialization.git/LibSpecialization
   Libs/LibDropDownMenu: https://github.com/HizurosWoWAddOns/LibDropDownMenu
   Libs/LibCustomGlow-1.0: https://github.com/Stanzilla/LibCustomGlow
   DBM-VPVEM: https://github.com/DeadlyBossMods/DBM-Voicepack-VEM
