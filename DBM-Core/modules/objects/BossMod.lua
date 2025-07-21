@@ -699,7 +699,7 @@ do
 			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 			--As such, we have to check if a spell is known in addition to it not being on cooldown
 			for spellID, _ in pairs(typeCheck[dispelType]) do
-				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+				if typeCheck[dispelType][spellID] and DBMExtraGlobal:IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					if (spellID == 4987 or spellID == 88423) and not DBM:IsHealer() then--These spellIds can only dispel if healer specced
 						lastReturn = false
@@ -793,7 +793,7 @@ do
 		--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 		--As such, we have to check if a spell is known in addition to it not being on cooldown
 		for spellID, _ in pairs(typeCheck[ccType]) do
-			if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+			if typeCheck[ccType][spellID] and DBMExtraGlobal:IsSpellKnown(spellID) and (DBM:GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 				lastCheck = GetTime()
 				lastReturn = true
 				return lastReturn

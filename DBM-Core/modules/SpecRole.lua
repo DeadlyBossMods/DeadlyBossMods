@@ -34,7 +34,26 @@ local specRoleTable
 -- Caution: the keys used below are not validated by LuaLS at the moment due to https://github.com/LuaLS/lua-language-server/issues/2610
 
 --Upvalued because it's called frequently each time rebuildSpecTable is called
-local IsSpellKnown = IsSpellKnown
+
+---Checks if a spell is known
+---Must be located here since specrole loads before core and "DBM" global exist
+---@param spellId number
+---@param isPet boolean?
+---@param includeOverrides boolean?
+---@return boolean
+function DBMExtraGlobal:IsSpellKnown(spellId, isPet, includeOverrides)
+	--11.2+ API
+	if C_SpellBook and C_SpellBook.IsSpellInSpellBook then
+		local spellBank = isPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player;
+		return C_SpellBook.IsSpellInSpellBook(spellId, spellBank, includeOverrides)
+	else
+		if includeOverrides then
+			return IsSpellKnownOrOverridesKnown(spellId, isPet) or false
+		else
+			return IsSpellKnown(spellId, isPet)
+		end
+	end
+end
 
 function DBMExtraGlobal:rebuildSpecTable()
 	-- Retail
@@ -109,7 +128,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RaidCooldown"] = true,--Rallying Cry
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["ImmunityDispeller"] = IsSpellKnown(64382),
+				["ImmunityDispeller"] = DBMExtraGlobal:IsSpellKnown(64382),
 			},
 			[73] = {	--Protection Warrior
 				["Tank"] = true,
@@ -117,7 +136,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["RaidCooldown"] = true,--Rallying Cry
-				["ImmunityDispeller"] = IsSpellKnown(64382),
+				["ImmunityDispeller"] = DBMExtraGlobal:IsSpellKnown(64382),
 			},
 			[1446] = {	--Initial Warrior (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
 				["Tank"] = true,
@@ -345,7 +364,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBMExtraGlobal:IsSpellKnown(116705),
 			},
 			[269] = {	--Windwalker Monk
 				["Dps"] = true,
@@ -354,7 +373,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBMExtraGlobal:IsSpellKnown(116705),
 			},
 			[270] = {	--Mistweaver Monk
 				["Healer"] = true,
@@ -365,7 +384,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RemovePoison"] = true,
 				["RemoveDisease"] = true,
 				["RemoveMagic"] = true,
-				["HasInterrupt"] = IsSpellKnown(116705),
+				["HasInterrupt"] = DBMExtraGlobal:IsSpellKnown(116705),
 			},
 			[1450] = {	--Initial Monk (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
 				["Tank"] = true,
@@ -406,12 +425,12 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["RangedDps"] = true,
 				["ManaUser"] = true,
 				["SpellCaster"] = true,
-				["HasInterrupt"] = IsSpellKnown(351338),--Quell
-				["RemovePoison"] = IsSpellKnown(365585),--Expunge. Must be specced
-				["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveBleed"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
+				["HasInterrupt"] = DBMExtraGlobal:IsSpellKnown(351338),--Quell
+				["RemovePoison"] = DBMExtraGlobal:IsSpellKnown(365585),--Expunge. Must be specced
+				["RemoveCurse"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveDisease"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveBleed"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveEnrage"] = DBMExtraGlobal:IsSpellKnown(374346),--Overawe
 			},
 			[1468] = {	--Evoker Preservation
 				["Healer"] = true,
@@ -420,12 +439,12 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["RemoveMagic"] = true,
 				["RemovePoison"] = true,--Auto known
-				["HasInterrupt"] = IsSpellKnown(351338),--Quell
-				["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
-				["RemoveBleed"] = IsSpellKnown(374251),--Cauterizing Flame
-				["RaidCooldown"] = IsSpellKnown(363534),--Rewind
+				["HasInterrupt"] = DBMExtraGlobal:IsSpellKnown(351338),--Quell
+				["RemoveCurse"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveDisease"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RemoveEnrage"] = DBMExtraGlobal:IsSpellKnown(374346),--Overawe
+				["RemoveBleed"] = DBMExtraGlobal:IsSpellKnown(374251),--Cauterizing Flame
+				["RaidCooldown"] = DBMExtraGlobal:IsSpellKnown(363534),--Rewind
 			},
 			[1465] = {	--Evoker Initial (treated as both healer and dps for basic leveling purposes)
 				["Dps"] = true,
@@ -458,7 +477,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["HasInterrupt"] = true,
 				["HasImmunity"] = true,
 				["RemoveCurse"] = true,
-				["MagicDispeller"] = IsSpellKnown(30449),--Spellsteal in TBC+
+				["MagicDispeller"] = DBMExtraGlobal:IsSpellKnown(30449),--Spellsteal in TBC+
 			},
 			[831] = {	--Holy Paladin
 				["Healer"] = true,
@@ -510,7 +529,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
+				["MagicDispeller"] = (DBMExtraGlobal:IsSpellKnown(23922) or DBMExtraGlobal:IsSpellKnown(23923) or DBMExtraGlobal:IsSpellKnown(23924) or DBMExtraGlobal:IsSpellKnown(23925) or DBMExtraGlobal:IsSpellKnown(25258) or DBMExtraGlobal:IsSpellKnown(30356) or DBMExtraGlobal:IsSpellKnown(47487) or DBMExtraGlobal:IsSpellKnown(47488)),--Shield Slam
 			},
 			[752] = {	--Balance Druid
 				["Healer"] = false,
@@ -525,7 +544,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			[750] = { --Feral Druid
 				["Healer"] = false,
 				["Dps"] = true,
-				["Tank"] = IsPlayerSpell(57880) and true or false,--uses same assumption as libspec, if Natural Reaction is rank 2 you're a tank
+				["Tank"] = DBMExtraGlobal:IsSpellKnown(57880) and true or false,--uses same assumption as libspec, if Natural Reaction is rank 2 you're a tank
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
@@ -672,7 +691,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["HasInterrupt"] = true,
 				["HasImmunity"] = true,
 				["RemoveCurse"] = true,
-				["MagicDispeller"] = IsSpellKnown(30449),--Spellsteal in TBC+
+				["MagicDispeller"] = DBMExtraGlobal:IsSpellKnown(30449),--Spellsteal in TBC+
 			},
 			["PALADIN1"] = {	--Holy Paladin
 				["Healer"] = true,
@@ -724,7 +743,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Melee"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
-				["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356) or IsSpellKnown(47487) or IsSpellKnown(47488)),--Shield Slam
+				["MagicDispeller"] = (DBMExtraGlobal:IsSpellKnown(23922) or DBMExtraGlobal:IsSpellKnown(23923) or DBMExtraGlobal:IsSpellKnown(23924) or DBMExtraGlobal:IsSpellKnown(23925) or DBMExtraGlobal:IsSpellKnown(25258) or DBMExtraGlobal:IsSpellKnown(30356) or DBMExtraGlobal:IsSpellKnown(47487) or DBMExtraGlobal:IsSpellKnown(47488)),--Shield Slam
 			},
 			["DRUID1"] = {	--Balance Druid
 				["Healer"] = private.isClassic and true or false,
@@ -739,7 +758,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			["DRUID2"] = { --Feral Druid
 				["Healer"] = private.isClassic and true or false,
 				["Dps"] = true,
-				["Tank"] = IsPlayerSpell(23922) and true or private.isClassic and true or false,--Only sets true if Nuturing Instinct is learned for non vanilla
+				["Tank"] = DBMExtraGlobal:IsSpellKnown(23922) and true or private.isClassic and true or false,--Only sets true if Nuturing Instinct is learned for non vanilla
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,

@@ -20,6 +20,7 @@ local test = private:GetPrototype("DBMTest")
 local yellPrototype = private:GetPrototype("Yell")
 local mt = {__index = yellPrototype}
 local voidForm = DBM:GetSpellName(194249)
+local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
 
 ---@param self DBMMod
 local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
