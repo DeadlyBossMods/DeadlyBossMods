@@ -228,15 +228,15 @@ local annoyingPopupZonesMoP = {
 	[996]   = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
 	[1098]  = {addon = "DBM-Raids-MoP", package = "MoP"},  -- ???
 	--Dungeons
-	[960]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[961]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[959]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[962]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[994]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[1011]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[1007]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[1001]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
-	[1004]  = {addon = "DBM-Raids-MoP", package = "Dungeons"},  -- ???
+	[960]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[961]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[959]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[962]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[994]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[1011]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[1007]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[1001]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
+	[1004]  = {addon = "DBM-Party-MoP", package = "Dungeons"},  -- ???
 }
 
 local annoyingPopupZonesRetail = {
