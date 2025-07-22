@@ -155,16 +155,13 @@ do
 	local validZones
 	--Upcoming Season
 	if (C_MythicPlus.GetCurrentSeason() or 0) == 15 then--War Within Season 3
-		--2651, 2649, 2648, 2661, 1594, 2097, 2293, ?
+		--2651, 2649, 2648, 2661, 1594, 2097, 2293, 2441
 		--DawnBreaker, Ara-Kara, Operation: Floodgate, Priory of the Sacred Flame, Echo-Dome, Halls of Atonement, Tazavesh
 		validZones = {[2662]=true, [2660]=true, [2773]=true, [2649]=true, [2830]=true, [2287]=true, [2441]=true}
-	elseif (C_MythicPlus.GetCurrentSeason() or 0) == 14 then--War Within Season 2
-		--2651, 2649, 2648, 2661, 1594, 2097, 2293, ?
+	else--War Within Season 2 (14)
+		--2651, 2649, 2648, 2661, 1594, 2097, 2293, 2773
 		--Darkflame Cleft, Priory of the Sacred Flame, The Rookery, Cinderbrew Meadery, MOTHERLOAD, Mechagon, Theater of Pain, 11.1 Dungeon
 		validZones = {[2651]=true, [2649]=true, [2648]=true, [2661]=true, [1594]=true, [2097]=true, [2293]=true, [2773]=true,}
-	else--War Within Season 1 (13)
-		--Stonevault, The Dawnbreaker, Ara-Kara City of Echos, City of Threads, Grim Batol, Siege of Boralus, The Necrotic Wake, Mists of Tirna Scithe
-		validZones = {[2652]=true, [2662]=true, [2660]=true, [2669]=true, [670]=true, [1822]=true, [2286]=true, [2290]=true}
 	end
 	local eventsRegistered = false
 	function mod:DelayedZoneCheck(force)
