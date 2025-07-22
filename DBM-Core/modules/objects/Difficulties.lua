@@ -339,12 +339,12 @@ end
 ---Pretty much ANYTHING that has mythic mode, with mythic+ included
 function bossModPrototype:IsMythic()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "mythic" or diff == "challenge5" or diff == "mythicisland" or diff == "mythic5"
+	return (diff == "mythic" or diff == "challenge5" or diff == "mythicisland" or diff == "mythic5") and not self:IsMop()
 end
 
 function bossModPrototype:IsMythicPlus()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "challenge5"
+	return diff == "challenge5" and not self:IsMop()
 end
 
 -- Check if the SoD "Black Essence" buff in BWL is enabled. Do not use outside of SoD BWL.
