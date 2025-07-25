@@ -271,9 +271,9 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 		self.vb.pylonCount = self.vb.pylonCount + 1
 		warnInfusionPylon:Show(self.vb.pylonCount)
 		if self.vb.pylonCount % 2 == 0 then
-			timerInfusionPylonCD:Start(55, self.vb.pylonCount+1)
+			timerInfusionPylonCD:Start(54.9, self.vb.pylonCount+1)
 		else
-			timerInfusionPylonCD:Start(30, self.vb.pylonCount+1)
+			timerInfusionPylonCD:Start(29.7, self.vb.pylonCount+1)
 		end
 	end
 end
