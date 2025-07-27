@@ -79,7 +79,7 @@ local specWarnVoidHarvest							= mod:NewSpecialWarningYou(1243873, nil, nil, ni
 local yellVoidHarvestFades							= mod:NewShortFadesYell(1243873)
 local specWarnDeaththroes							= mod:NewSpecialWarningCount(1232221, nil, nil, nil, 2, 2, 4)
 
-local timerVoidHarvestCD							= mod:NewCDCountTimer(97.3, 1243873, nil, nil, nil, 3)
+local timerVoidHarvestCD							= mod:NewCDCountTimer(8, 1243873, nil, nil, nil, 3)
 local timerDeaththroesCD							= mod:NewCDCountTimer(97.3, 1232221, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod.vb.overwhelmingPowerCount = 0--Returns in stage 2
@@ -322,7 +322,10 @@ function mod:SPELL_CAST_START(args)
 		timerDeaththroesCD:Start()--TEMP til mythic table created
 	elseif spellId == 1243887 then
 		self.vb.voidHarvestCount = self.vb.voidHarvestCount + 1
-		timerVoidHarvestCD:Start(nil, self.vb.voidHarvestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.voidHarvestCount+1)
+		if timer then
+			timerVoidHarvestCD:Start(timer, self.vb.voidHarvestCount+1)
+		end
 	elseif spellId == 1248133 then
 		self.vb.voidTearCount = self.vb.voidTearCount + 1
 		warnVoidTear:Show(self.vb.voidTearCount)
