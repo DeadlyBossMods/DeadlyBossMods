@@ -22,10 +22,10 @@ L:SetOptionLocalization({
 	warnQueuePosition2	= "Показывать Вашу текущую позицию в очереди",
 	specWarnYourNext	= "Спецпредупреждение, когда подходит Ваша очередь сражаться",
 	specWarnYourTurn	= "Спецпредупреждение о начале Вашего боя",
+	specWarnRumble		= "Показывать спецпредупреждение, когда кто-то начинает разборку",
 	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев<br/>Персональные 'спецпредупреждения' зрителям не отображаются",
 	SpeakOutQueue		= "Объявлять голосом Вашу текущую позицию в очереди",
-	specWarnRumble		= "Показывать специальное предупреждение, когда кто-то начинает разборку",
-	NormalizeVolume		= "Автоматически нормализуйте громкость звукового канала DIALOG в соответствии с громкостью звукового канала SFX в зоне Бойцовской гильдии, чтобы приветствия были не такими громкими."
+	NormalizeVolume		= "Автоматически нормализовать громкость звукового канала DIALOG в соответствии с громкостью звукового канала SFX в зоне Бойцовской гильдии, чтобы крики были не такими громкими."
 })
 
 L:SetMiscLocalization({
@@ -56,8 +56,8 @@ L:SetMiscLocalization({
 	Rank6			= "6-го ранга",
 	Rank7			= "7-го ранга",
 	Rank8			= "8-го ранга",
-	Rank9			= "9-го ранга",
-	Rank10			= "10-го ранга",
+--	Rank9			= "9-го ранга",
+--	Rank10			= "10-го ранга",
 	Rumbler			= "Разборка",
 	Proboskus		= "Ух ты!... Мне тебя жаль, но, похоже, тебе придется сразиться с Носатиком.",--Альянс
 	Proboskus2		= "Ха-ха-ха! Какая у вас плохая удача! Это Носатик! Аххх ха-ха-ха! У меня есть двадцать пять золотых, в которых написано, что ты умрешь в огне!"--Орда
@@ -86,7 +86,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Sand			= "Sand"
+	Sand			= "Песок"
 })
 
 ------------
@@ -105,10 +105,6 @@ L= DBM:GetModLocalization("BrawlRank4")
 
 L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: 4 ранг"
-})
-
-L:SetOptionLocalization({
-	SetIconOnDominika	= "Устанавливать метку (череп) на настоящую Доминику Иллюзионистку"
 })
 
 ------------
@@ -138,13 +134,14 @@ L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: 7 ранг"
 })
 
+--[[
 ------------
 -- Rank 8 --
 ------------
 L= DBM:GetModLocalization("BrawlRank8")
 
 L:SetGeneralLocalization({
-	name = "Бойцовская гильдия: 8 ранг"
+	name = "Brawlers: Rank 8"
 })
 
 ------------
@@ -153,8 +150,9 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank9")
 
 L:SetGeneralLocalization({
-	name = "Бойцовская гильдия: 9 ранг"
+	name = "Brawlers: Rank 9"
 })
+--]]
 
 -------------
 -- Brawlers: Rumble --
@@ -166,7 +164,7 @@ L:SetGeneralLocalization({
 })
 
 -------------
--- Rares 1 --
+-- Brawlers: Legacy --
 -------------
 L= DBM:GetModLocalization("BrawlLegacy")
 
@@ -179,7 +177,7 @@ L:SetOptionLocalization({
 })
 
 -------------
--- Rares 2 --
+-- Brawlers: Challenges --
 -------------
 L= DBM:GetModLocalization("BrawlChallenges")
 
