@@ -319,7 +319,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.deaththroesCount = self.vb.deaththroesCount + 1
 		specWarnDeaththroes:Show(self.vb.deaththroesCount)
 		specWarnDeaththroes:Play("specialsoon")
-		timerDeaththroesCD:Start()--TEMP til mythic table created
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.deaththroesCount+1)
+		if timer then
+			timerDeaththroesCD:Start(timer, self.vb.deaththroesCount+1)
+		end
 	elseif spellId == 1243887 then
 		self.vb.voidHarvestCount = self.vb.voidHarvestCount + 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.voidHarvestCount+1)
