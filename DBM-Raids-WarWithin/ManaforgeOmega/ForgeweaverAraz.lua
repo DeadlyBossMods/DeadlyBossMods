@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1234328 1232221 1230529 1243887",
+	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1234328 1232221 1230529 1243887 1248133",
 	"SPELL_CAST_SUCCESS 1230231",
 	"SPELL_AURA_APPLIED 1228506 1228454 1228188 1233979 1233415 1243873",
 	"SPELL_AURA_APPLIED_DOSE 1228506",
@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
 local warnOverwhelmingPower							= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
+local warnVoidTear									= mod:NewCountAnnounce(1248133, 3)
 
 local specWarnOverwhelmingPower						= mod:NewSpecialWarningStack(1228502, nil, 10, nil, nil, 1, 6)
 local specWarnOverwhelmingPowerTaunt				= mod:NewSpecialWarningTaunt(1228502, nil, nil, nil, 1, 2)
@@ -59,6 +60,7 @@ local timerArcaneObliterationCD						= mod:NewCDCountTimer(45, 1228216, nil, nil
 local timerSilencingTempestCD						= mod:NewCDCountTimer(97.3, 1228161, nil, nil, nil, 3)
 local timerArcaneExpulsionCD						= mod:NewCDCountTimer(97.3, 1227631, nil, nil, nil, 2)
 local timerInvokeCollectorCD						= mod:NewCDCountTimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerVoidTearCD								= mod:NewCDCountTimer(97.3, 1248133, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
@@ -85,6 +87,7 @@ mod.vb.obliterationCount = 0
 mod.vb.silencingTempestCount = 0--Returns in stage 2
 mod.vb.arcaneExpulsionCount = 0
 mod.vb.invokeCollectorCount = 0
+mod.vb.voidTearCount = 0
 --Stage 2
 mod.vb.voidHarvestCount = 0
 mod.vb.deaththroesCount = 0
@@ -103,6 +106,8 @@ local allTimers = {
 			[1227631] = {155},--5 second longer than heroic
 			--Invoke Collector
 			[1231720] = {9, 44, 44},
+			--Void Tear
+			[1248133] = {22, 46, 15, 28.5, 15.5, 15},
 		},
 		[2] = {
 			--Overwhelming Power
@@ -115,6 +120,8 @@ local allTimers = {
 			[1227631] = {139.9},--10 seconds shorter than heroic
 			--Invoke Collector
 			[1231720] = {23.6, 22, 44},
+			--Void Tear
+			[1248133] = {36.9, 21.5, 15.5, 29, 15, 14.5},
 		},
 		[3] = {
 			--Void Harvest
@@ -125,6 +132,8 @@ local allTimers = {
 			[1228502] = {27.3, 22, 22, 22, 22},
 			--Silencing Tempest
 			[1228161] = {35.3, 44},
+			--Void Tear
+			[1248133] = {},--Non seen
 		},
 	},
 	["heroic"] = {
@@ -227,8 +236,10 @@ function mod:OnCombatStart(delay)
 	self.vb.invokeCollectorCount = 0
 	self.vb.voidHarvestCount = 0
 	self.vb.deaththroesCount = 0
+	self.vb.voidTearCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
+		timerVoidTearCD:Start(allTimers[savedDifficulty][1][1248133][1]-delay, 1)
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
@@ -312,6 +323,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1243887 then
 		self.vb.voidHarvestCount = self.vb.voidHarvestCount + 1
 		timerVoidHarvestCD:Start(nil, self.vb.voidHarvestCount+1)
+	elseif spellId == 1248133 then
+		self.vb.voidTearCount = self.vb.voidTearCount + 1
+		warnVoidTear:Show(self.vb.voidTearCount)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.voidTearCount+1)
+		if timer then
+			timerVoidTearCD:Start(timer, self.vb.voidTearCount+1)
+		end
 	elseif spellId == 1230529 then--Mana Sacrifice
 		self:SetStage(0.5)--Increases to stage 2 and stage 3
 		--Reset Counts
@@ -319,6 +337,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.obliterationCount = 0
 		self.vb.silencingTempestCount = 0
 		self.vb.invokeCollectorCount = 0
+		self.vb.voidTearCount = 0
 		self.vb.voidHarvestCount = 0
 		self.vb.deaththroesCount = 0
 		--Start all timers
@@ -328,6 +347,9 @@ function mod:SPELL_CAST_START(args)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][2][1228161][1], 1)
 			timerArcaneExpulsionCD:Start(allTimers[savedDifficulty][2][1227631][1], 2)--Only count not resetting since it's timer for actual phase changes
 			timerInvokeCollectorCD:Start(allTimers[savedDifficulty][2][1231720][1], 1)
+			if self:IsMythic() then
+				timerVoidTearCD:Start(allTimers[savedDifficulty][2][1248133][1], 1)
+			end
 		else--Stage 3
 			warnPhase2:Show()
 			warnPhase2:Play("ptwo")
@@ -351,6 +373,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSilencingTempestCD:Stop()
 		timerArcaneExpulsionCD:Stop()
 		timerInvokeCollectorCD:Stop()
+		timerVoidTearCD:Stop()
 	end
 end
 
