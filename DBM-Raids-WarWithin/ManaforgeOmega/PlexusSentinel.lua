@@ -20,13 +20,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 1219459 1219439 1219607 1220618 1220981 1220982",
 	"SPELL_PERIODIC_DAMAGE 1219354",
 	"SPELL_PERIODIC_MISSED 1219354"
---	"CHAT_MSG_RAID_BOSS_WHISPER",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, properly detect intake cast
 --TODO do anything with https://www.wowhead.com/ptr-2/spell=1223364/powered-automaton ?
---TODO verify purge IDs
+--TODO verify all purge IDs used
+--TODO, change to tables or counted casts to stop timers when no further casts expected. right now it's starting all timers as variance until we see live/final version of fight
 --[[
 (ability.id = 1220489 or ability.id = 1220553 or ability.id = 1220555 or ability.id = 1234733) and type = "begincast"
  or (ability.id = 1220618 or ability.id = 1220981 or ability.id = 1220982) and type = "removebuff"
