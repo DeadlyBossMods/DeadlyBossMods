@@ -46,7 +46,6 @@ local warnVentingHeat								= mod:NewCountAnnounce(466751, 2, nil, nil, 2)
 local warnFocusedDetonation							= mod:NewCountAnnounce(466246, nil, nil, DBM_CORE_L.AUTO_ANNOUNCE_OPTIONS.stack:format(466246))
 
 local specWarnSupression							= mod:NewSpecialWarningDodgeCount(467182, nil, nil, nil, 2, 2)
-local specWarnFinalBlast							= mod:NewSpecialWarningDodge(1219333, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanisters					= mod:NewSpecialWarningCount(466340, nil, nil, nil, 2, 2)
 local specWarnScatterblastCanistersTaunt			= mod:NewSpecialWarningTaunt(466340, nil, nil, nil, 1, 2)
 local specWarnBBBBombs								= mod:NewSpecialWarningCount(465952, nil, nil, nil, 2, 2)
@@ -526,8 +525,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnSupression:Play("watchstep")
 		if self:IsStory() then return end--hard disable timers in story mode
 		if self:GetStage(3) or self:IsMythic() then
-			specWarnFinalBlast:Show()
-			specWarnFinalBlast:Play("justrun")
 			timerFinalBlast:Start(6, self.vb.suppressionCount)
 		end
 		local timer
