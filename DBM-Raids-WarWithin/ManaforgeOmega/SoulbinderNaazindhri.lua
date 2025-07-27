@@ -160,7 +160,7 @@ function mod:SPELL_CAST_START(args)
 		local timer
 		if self:IsMythic() then
 			--75.1, 37.0, 38.0 repeating
-			timer = self.vb.convergenceCount % 3 == 0 and 75 or self.vb.convergenceCount % 3 == 2 and 38 or 37
+			timer = self.vb.convergenceCount % 3 == 0 and 75 or self.vb.convergenceCount % 3 == 2 and 38 or 36.6
 		elseif self:IsHeroic() then
 			--44.9, 24.0, 16.0, 24.0, 41.0 repeating (first 45 is 30 on pull)
 			timer = self.vb.convergenceCount % 5 == 0 and 45 or self.vb.convergenceCount % 5 == 2 and 16 or self.vb.convergenceCount % 5 == 4 and 41 or 24
