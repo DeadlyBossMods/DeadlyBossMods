@@ -117,47 +117,12 @@ do
 		if not soundsRegistered then
 			local LSM = LibStub("LibSharedMedia-3.0")
 			soundsRegistered = true
-			-- Embedded Sound Clip media
-			LSM:Register("sound", "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]])
-			LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]])
-			LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]])
-			LSM:Register("sound", "Thrall: That's Incredible!", [[Interface\AddOns\DBM-Core\sounds\SoundClips\incredible.ogg]])
-			LSM:Register("sound", "Saurfang: Don't Die", [[Interface\AddOns\DBM-Core\sounds\SoundClips\dontdie.ogg]])
-			-- Blakbyrd
-			LSM:Register("sound", "Blakbyrd Alert 1", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert1.ogg]])
-			LSM:Register("sound", "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]])
-			LSM:Register("sound", "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]])
-			-- User Media
-			if DBM.Options.CustomSounds >= 1 then
-				LSM:Register("sound", "DBM: Custom 1", [[Interface\AddOns\DBM-CustomSounds\Custom1.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 2 then
-				LSM:Register("sound", "DBM: Custom 2", [[Interface\AddOns\DBM-CustomSounds\Custom2.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 3 then
-				LSM:Register("sound", "DBM: Custom 3", [[Interface\AddOns\DBM-CustomSounds\Custom3.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 4 then
-				LSM:Register("sound", "DBM: Custom 4", [[Interface\AddOns\DBM-CustomSounds\Custom4.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 5 then
-				LSM:Register("sound", "DBM: Custom 5", [[Interface\AddOns\DBM-CustomSounds\Custom5.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 6 then
-				LSM:Register("sound", "DBM: Custom 6", [[Interface\AddOns\DBM-CustomSounds\Custom6.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 7 then
-				LSM:Register("sound", "DBM: Custom 7", [[Interface\AddOns\DBM-CustomSounds\Custom7.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 8 then
-				LSM:Register("sound", "DBM: Custom 8", [[Interface\AddOns\DBM-CustomSounds\Custom8.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 9 then
-				LSM:Register("sound", "DBM: Custom 9", [[Interface\AddOns\DBM-CustomSounds\Custom9.ogg]])
-				if DBM.Options.CustomSounds > 9 then
-					DBM.Options.CustomSounds = 9
-				end
-			end
+      local sounds = DBM:GetSounds()
+      for i = 1, #sounds do
+        local sound = sounds[i]
+        DBM:Debug("Registering sound: " .. sound.text .. " with value: " .. sound.value, 2)
+        LSM:Register("sound", sound.text, sound.value)
+      end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
 		local hashtable = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)
