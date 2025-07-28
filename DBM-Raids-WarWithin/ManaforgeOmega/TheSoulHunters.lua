@@ -201,7 +201,7 @@ function mod:SPELL_CAST_START(args)
 			--end
 			if not self.vb.VelarnDead then
 				timerEyeBeamCD:Start(39.7, 1)
-				timerBladeDanceCD:Start(50.7, 1)
+				timerBladeDanceCD:Start(50.4, 1)
 				timerTheHuntCD:Start(60.7, 1)
 			end
 			if not self.vb.IlyssaDead then
@@ -218,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			end
 			if not self.vb.VelarnDead then
 				timerEyeBeamCD:Start(39.7, 1)
-				timerBladeDanceCD:Start(50.7, 1)
+				timerBladeDanceCD:Start(50.4, 1)
 				timerTheHuntCD:Start(60.7, 1)
 			end
 			if not self.vb.IlyssaDead then
