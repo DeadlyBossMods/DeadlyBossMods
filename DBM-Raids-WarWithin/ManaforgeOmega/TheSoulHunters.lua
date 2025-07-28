@@ -143,13 +143,11 @@ function mod:SPELL_CAST_START(args)
 				timerVoidstepCD:Start(self:IsHeroic() and 26.2 or 27.4, self.vb.voidstepCount+1)
 			end
 		end
-	elseif spellId == 1227809 then
-		if args:GetSrcCreatureID() == 237660 then--Only show casts by Velaryn Bloodwrath
-			self.vb.huntCount = self.vb.huntCount + 1
-			self.vb.huntSubCount = 0
-			if self.vb.huntCount == 1 then
-				timerTheHuntCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 32.6 or 34, self.vb.huntCount+1)
-			end
+	elseif spellId == 1227809 and args:GetSrcCreatureID() == 237660 then--Only show casts by Velaryn Bloodwrath
+		self.vb.huntCount = self.vb.huntCount + 1
+		self.vb.huntSubCount = 0
+		if self.vb.huntCount == 1 then
+			timerTheHuntCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 32.6 or 34, self.vb.huntCount+1)
 		end
 	elseif spellId == 1218103 then
 		self.vb.eyeBeamCount = self.vb.eyeBeamCount + 1
@@ -203,7 +201,7 @@ function mod:SPELL_CAST_START(args)
 			--end
 			if not self.vb.VelarnDead then
 				timerEyeBeamCD:Start(39.7, 1)
-				timerBladeDanceCD:Start(51.2, 1)
+				timerBladeDanceCD:Start(50.7, 1)
 				timerTheHuntCD:Start(60.7, 1)
 			end
 			if not self.vb.IlyssaDead then
@@ -220,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			end
 			if not self.vb.VelarnDead then
 				timerEyeBeamCD:Start(39.7, 1)
-				timerBladeDanceCD:Start(51.2, 1)
+				timerBladeDanceCD:Start(50.7, 1)
 				timerTheHuntCD:Start(60.7, 1)
 			end
 			if not self.vb.IlyssaDead then
