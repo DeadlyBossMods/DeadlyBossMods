@@ -156,12 +156,12 @@ function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.swingCount = 0
 	--Boss
-	timerSubjugationRuleCD:Start(14.5-delay, 1)
+	timerSubjugationRuleCD:Start(self:IsEasy() and 12.5 or 14.5-delay, 1)
 	timerBanishmentCD:Start(30-delay, 1)
 	timerInvokeTheOathCD:Start(117-delay)--Until cast finish (not cast start)
 	--Voidwing
 	timerBeheadCD:Start(32.4-delay, 1)
-	timerBesiegeCD:Start(49-delay, 1)
+	timerBesiegeCD:Start(self:IsMythic() and 9 or self:IsEasy() and 46 or 49-delay, 1)
 	self:EnablePrivateAuraSound(1224855, "lineyou", 17)--Behead
 	self:EnablePrivateAuraSound(1224857, "lineyou", 17, 1224855)--Behead
 	self:EnablePrivateAuraSound(1224858, "lineyou", 17, 1224855)--Behead
@@ -430,7 +430,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 1228265 then
 		self:SetStage(3)
 		timerKingsHunger:Stop()
-		timerGalacticSmashCD:Start(9, 1)
+		timerGalacticSmashCD:Start(self:IsEasy() and 6.2 or 9, 1)
 		timerStarkillerSwingCD:Start(self:IsEasy() and 46.8 or 36.8, 1)
 		timerWorldInTwilightCD:Start(185)
 	end
