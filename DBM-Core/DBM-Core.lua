@@ -3744,7 +3744,7 @@ end
 do
 	local function AcceptPartyInvite()
 		AcceptGroup()
-		for i = 1, STATICPOPUP_NUMDIALOGS do
+		for i = 1, 4 do
 			local whichDialog = _G["StaticPopup" .. i].which
 			if whichDialog == "PARTY_INVITE" or whichDialog == "PARTY_INVITE_XREALM" then
 				_G["StaticPopup" .. i].inviteAccepted = 1
