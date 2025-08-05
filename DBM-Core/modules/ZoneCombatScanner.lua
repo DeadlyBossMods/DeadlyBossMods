@@ -36,8 +36,7 @@ local cachedBossMods = {}
 
 ---Scan for new Unit Engages
 ---<br>This will break if more than one mod is scanning units at once, which shouldn't happen since you can't be in more than one dungeon at same time (and affixes doesn't monitor this)
----@param self DBMMod
-local function ScanEngagedUnits(self, delay)
+local function ScanEngagedUnits(delay)
 	--Scan mouseover
 	if UnitAffectingCombat("mouseover") and not UnitIsFriend("mouseover", "player") then
 		local guid = UnitGUID("mouseover")
@@ -46,7 +45,12 @@ local function ScanEngagedUnits(self, delay)
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
 				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "mouseover")
-				self:StartEngageTimers(guid, cid, delay, "mouseover")
+				if activeTrashMod and activeTrashMod.StartEngageTimers then
+					activeTrashMod:StartEngageTimers(guid, cid, delay, "mouseover")
+				end
+				if activeBossMod and activeBossMod.StartEngageTimers then
+					activeBossMod:StartEngageTimers(guid, cid, delay, "mouseover")
+				end
 			end
 		end
 	end
@@ -58,7 +62,12 @@ local function ScanEngagedUnits(self, delay)
 				ActiveGUIDs[guid] = true
 				local cid = DBM:GetCIDFromGUID(guid)
 				DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, "softenemy")
-				self:StartEngageTimers(guid, cid, delay, "softenemy")
+				if activeTrashMod and activeTrashMod.StartEngageTimers then
+					activeTrashMod:StartEngageTimers(guid, cid, delay, "softenemy")
+				end
+				if activeBossMod and activeBossMod.StartEngageTimers then
+					activeBossMod:StartEngageTimers(guid, cid, delay, "softenemy")
+				end
 			end
 		end
 	end
@@ -73,7 +82,12 @@ local function ScanEngagedUnits(self, delay)
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
 					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, uId)
-					self:StartEngageTimers(guid, cid, delay, id)
+					if activeTrashMod and activeTrashMod.StartEngageTimers then
+						activeTrashMod:StartEngageTimers(guid, cid, delay, uId)
+					end
+					if activeBossMod and activeBossMod.StartEngageTimers then
+						activeBossMod:StartEngageTimers(guid, cid, delay, uId)
+					end
 					--WARNING. this is a REALLY shitty work around that will hit sync throttling quite rapidly
 					if syncingActive and DBM.Options.ZoneCombatSyncing then--ZoneCombatSyncing is off by default due to above comment and can't be turned on via GUI
 						private.sendSync(private.DBMSyncProtocol, "ZC", guid .. "\t" .. cid, "ALERT")
@@ -92,13 +106,18 @@ local function ScanEngagedUnits(self, delay)
 					ActiveGUIDs[guid] = true
 					local cid = DBM:GetCIDFromGUID(guid)
 					DBM:FireEvent("DBM_EnemyEngaged", guid, cid, delay, foundUnit)
-					self:StartEngageTimers(guid, cid, delay, foundUnit)
+					if activeTrashMod and activeTrashMod.StartEngageTimers then
+						activeTrashMod:StartEngageTimers(guid, cid, delay, foundUnit)
+					end
+					if activeBossMod and activeBossMod.StartEngageTimers then
+						activeBossMod:StartEngageTimers(guid, cid, delay, foundUnit)
+					end
 				end
 			end
 		end
 	end
 	--Only run twice per second.
-	DBM:Schedule(0.5, ScanEngagedUnits, self, 0.5)--Apply 0.5 delay on repeat scans
+	DBM:Schedule(0.5, ScanEngagedUnits, 0.5)--Apply 0.5 delay on repeat scans
 end
 
 ---@param delay number
@@ -107,26 +126,17 @@ local function checkForCombat(delay)
 	if combatFound and not inCombat then
 		inCombat = true
 		DBM:Debug("Zone Combat Detected", 2, nil, true)
+		--Only trash and affix mods should look for zone combat
 		if affixesMod then
 			affixesMod:EnteringZoneCombat()
 		end
-		if activeTrashMod then
-			if activeTrashMod.EnteringZoneCombat then
-				activeTrashMod:EnteringZoneCombat()
-			end
-			if activeTrashMod.StartEngageTimers then
-				ScanEngagedUnits(activeTrashMod, delay)--Apply only the pre combat delay on initial instant scan
-				DBM:Debug("Starting Engaged Unit Scans", 2)
-			end
+		if activeTrashMod and activeTrashMod.EnteringZoneCombat then
+			activeTrashMod:EnteringZoneCombat()
 		end
-		if activeBossMod then
-			if activeBossMod.EnteringZoneCombat then
-				activeBossMod:EnteringZoneCombat()
-			end
-			if activeBossMod.StartEngageTimers then
-				ScanEngagedUnits(activeBossMod, delay)--Apply only the pre combat delay on initial instant scan
-				DBM:Debug("Starting Engaged Unit Scans", 2)
-			end
+		--Only trash and boss mods should start scanning engaged units
+		if (activeTrashMod and activeTrashMod.StartEngageTimers) or (activeBossMod and activeBossMod.StartEngageTimers) then
+			ScanEngagedUnits(delay)--Apply only the pre combat delay on initial instant scan
+			DBM:Debug("Starting Engaged Unit Scans", 2)
 		end
 	elseif not combatFound and inCombat then
 		inCombat = false
@@ -135,15 +145,8 @@ local function checkForCombat(delay)
 		if affixesMod then
 			affixesMod:LeavingZoneCombat()
 		end
-		if activeTrashMod then
-			if activeTrashMod.LeavingZoneCombat then
-				activeTrashMod:LeavingZoneCombat()
-			end
-		end
-		if activeBossMod then
-			if activeBossMod.LeavingZoneCombat then
-				activeBossMod:LeavingZoneCombat()
-			end
+		if activeTrashMod and activeTrashMod.LeavingZoneCombat then
+			activeTrashMod:LeavingZoneCombat()
 		end
 		DBM:Unschedule(ScanEngagedUnits)
 	end
