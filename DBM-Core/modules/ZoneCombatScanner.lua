@@ -285,7 +285,7 @@ function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
 	if modId == "MPlusAffixes" then
 		affixesMod = DBM:GetModByName(modId)--Just cache mod outright, it'll never change
 		DBM:Debug("|cffff0000Registered affixesMod for modID: |r"..modId, 2, nil, true)
-	elseif modId:find("Trash") then
+	elseif type(modId) == "string" and modId:find("Trash") then
 		if not cachedTrashMods[zone] then
 			cachedTrashMods[zone] = modId
 			DBM:Debug("|cffff0000Registered cachedTrashMods for modID: |r"..modId, 2, nil, true)
