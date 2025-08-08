@@ -7291,7 +7291,8 @@ do
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
 				DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
-				SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING = 999999--Since blizzard can still play the sound via RaidBossEmoteFrame_OnEvent (line 148) via encounter scripts in certain cases despite the frame having no registered events
+				MuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
+				MuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
 			if self.Options.HideGarrisonToasts or custom then
 				DisableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
@@ -7305,7 +7306,8 @@ do
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
 				EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
-				SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING = 37666--restore it
+				UnmuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
+				UnmuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
 			if self.Options.HideGarrisonToasts then
 				EnableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
