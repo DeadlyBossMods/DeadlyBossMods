@@ -8,6 +8,7 @@ externals:
   Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
   Libs/LibDurability: https://repos.wowace.com/wow/libdurability/trunk/LibDurability
   Libs/LibLatency: https://repos.wowace.com/wow/liblatency/trunk/LibLatency
+  Libs/LibKeystone: https://github.com/BigWigsMods/LibKeystone.git/LibKeystone
   Libs/LibSharedMedia-3.0: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
   Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1

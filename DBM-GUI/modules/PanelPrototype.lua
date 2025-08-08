@@ -410,7 +410,7 @@ do
 		{ text = "PvP Flag", value = 569200 },
 	})
 	if isRetail then
-		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })
+--		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })--TEMP, can't register media we're specifically muting
 		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703 })
 		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050 })
 		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566 })
