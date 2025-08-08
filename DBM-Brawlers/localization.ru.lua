@@ -20,8 +20,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnQueuePosition2	= "Показывать Вашу текущую позицию в очереди",
-	specWarnYourNext	= "Спецпредупреждение, когда подходит Ваша очередь сражаться",
-	specWarnYourTurn	= "Спецпредупреждение о начале Вашего боя",
+	specWarnYourNext	= "Показывать спецпредупреждение, когда подходит Ваша очередь сражаться",
+	specWarnYourTurn	= "Показывать спецпредупреждение о начале Вашего боя",
 	specWarnRumble		= "Показывать спецпредупреждение, когда кто-то начинает разборку",
 	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев<br/>Персональные 'спецпредупреждения' зрителям не отображаются",
 	SpeakOutQueue		= "Объявлять голосом Вашу текущую позицию в очереди",
@@ -191,7 +191,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886",
-	specWarnRPS		= "Спецпредупреждение, что использовать для $spell:141206"
+	specWarnRPS		= "Показывать спецпредупреждение, что использовать для $spell:141206"
 })
 
 L:SetMiscLocalization({
