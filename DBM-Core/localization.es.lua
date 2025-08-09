@@ -646,9 +646,7 @@ L.SPEED_CLEAR_TIMER_TEXT	= "Récord actual"
 L.COMBAT_RES_TIMER_TEXT		= "Siguiente resurrección"
 L.TIMER_RESPAWN				= "%s reaparece"
 
-L.LAG_CHECKING				= "Comprobando latencia de la banda..."
-L.LAG_HEADER				= L.DEADLY_BOSS_MODS.. " - Resultados de latencia"
-L.LAG_ENTRY					= "%s: Latencia de mundo [%d ms] / Latencia de hogar [%d ms]"
+L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"
 L.LAG_FOOTER				= "Sin respuesta: %s"
 
 L.DUR_CHECKING				= "Comprobando durabilidad de la banda..."

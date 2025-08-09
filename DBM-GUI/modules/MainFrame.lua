@@ -63,8 +63,9 @@ frame:SetScript("OnSizeChanged", function(self)
 end)
 frame.tabs = {}
 
+CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
+
 if not isRetail then
-	CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
 	local titleBg = frame:CreateTexture("$parentTitleBga", "BACKGROUND", "_UI-Frame-TitleTileBg")
 	titleBg:ClearAllPoints()
 	titleBg:SetPoint("TOPLEFT", 8, -3)
@@ -184,6 +185,11 @@ frame:CreateTab(worldBossOptions)
 local otherTab = CreateFrame("Frame", "$parentOtherOptions", frame)
 otherTab.name = L.OTabPlugins
 frame:CreateTab(otherTab)
+
+---@class DBM_GUI_OptionsFrameToolsOptions: Frame
+local toolsTab = CreateFrame("Frame", "$parentToolsOptions", frame)
+toolsTab.name = L.OTabTools
+frame:CreateTab(toolsTab)
 
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
 local frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")

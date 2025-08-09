@@ -87,3 +87,5 @@ modules\options\frames\Range.lua
 modules\options\frames\Nameplate.lua
 
 modules\options\dev\Dev.lua
+
+modules\options\tools.lua

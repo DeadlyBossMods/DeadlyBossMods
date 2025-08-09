@@ -637,9 +637,7 @@ L.SPEED_CLEAR_TIMER_TEXT	= "最速清除"
 L.COMBAT_RES_TIMER_TEXT	= "下一次可用战复"
 L.TIMER_RESPAWN		= "%s 刷新"
 
-L.LAG_CHECKING				= "延时检测请稍后... "
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS .. " - 延时检测"
-L.LAG_ENTRY					= "%s：世界延时[%d毫秒] / 本地延时[%d毫秒]"
+L.LAG_HEADER					= L.DBM .. " - 延时检测"
 L.LAG_FOOTER					= "未反馈此次检测的团员:%s"
 
 L.DUR_CHECKING				= "全团装备耐久度检测请稍后... "

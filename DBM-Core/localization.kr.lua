@@ -626,9 +626,7 @@ L.SPEED_CLEAR_TIMER_TEXT	= "최고 완료 기록"
 L.COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
 L.TIMER_RESPAWN		= "%s 재생성"
 
-L.LAG_CHECKING				= "공격대의 지연시간 확인중..."
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS .. " - 지연시간 확인 결과"
-L.LAG_ENTRY					= "%s: 서버 지연시간 [%d ms] / 개인 지연시간 [%d ms]"
+L.LAG_HEADER					= L.DBM .. " - 지연시간 확인 결과"
 L.LAG_FOOTER					= "응답없음: %s"
 
 L.DUR_CHECKING				= "공격대 내구도 검사중..."

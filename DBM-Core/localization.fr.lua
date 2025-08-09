@@ -646,9 +646,7 @@ L.SPEED_CLEAR_TIMER_TEXT  	= "Meilleur clear"
 L.COMBAT_RES_TIMER_TEXT		= "Prochaine charge de résurrection en combat"
 L.TIMER_RESPAWN				= "%s Réapparition"
 
-L.LAG_CHECKING			   	= "Vérification de la latence du raid..."
-L.LAG_HEADER				= L.DEADLY_BOSS_MODS .. " - Résultats sur la latence"
-L.LAG_ENTRY				  	= "%s: délai monde [%d ms] / délai domicile [%d ms]"
+L.LAG_HEADER				= L.DBM .. " - Résultats sur la latence"
 L.LAG_FOOTER				= "Pas de réponse: %s"
 
 L.DUR_CHECKING 				= "Vérification de la durabilité du raid... "

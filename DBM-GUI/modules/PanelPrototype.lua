@@ -733,6 +733,8 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 		frameType = 3
 	elseif frameType == "WORLDBOSS" then
 		frameType = 4
+	elseif frameType == "tools" then
+		frameType = 6
 	else
 		frameType = 5
 	end

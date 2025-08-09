@@ -689,9 +689,7 @@ L.SPEED_CLEAR_TIMER_TEXT				= "Best Clear"
 L.COMBAT_RES_TIMER_TEXT					= "Next CR Charge"
 L.TIMER_RESPAWN							= "%s Respawn"
 
-L.LAG_CHECKING							= "Checking raid Latency... "
-L.LAG_HEADER							= L.DEADLY_BOSS_MODS.. " - Latency Results"
-L.LAG_ENTRY								= "%s: World delay [%d ms] / Home delay [%d ms]"
+L.LAG_HEADER							= L.DBM.. " - Latency Results"
 L.LAG_FOOTER							= "No Response: %s"
 
 L.DUR_CHECKING							= "Checking raid Durability... "
