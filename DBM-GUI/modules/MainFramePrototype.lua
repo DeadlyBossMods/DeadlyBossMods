@@ -284,4 +284,9 @@ function frame:ShowTab(tab)
 		DBM_GUI.currentViewing:Hide()
 		DBM_GUI.currentViewing = nil
 	end
+	if not selectedPagePerTab[tab] and tab == 1 then -- Core Options, default show "Core & GUI" frame
+		self:LoadAndShowFrame(DBM_GUI.tabs[self.tab].buttons[2].frame)
+	elseif not selectedPagePerTab[tab] and tab == 6 then -- Tools
+		self:LoadAndShowFrame(DBM_GUI.tabs[self.tab].buttons[1].frame)
+	end
 end

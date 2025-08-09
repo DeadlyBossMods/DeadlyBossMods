@@ -615,9 +615,7 @@ L.SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
 L.COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 
-L.LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS.." - Latenzergebnisse"
-L.LAG_ENTRY					= "%s: %dms (Welt) / %dms (Standort)"
+L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
 L.LAG_FOOTER					= "Keine Antwort: %s"
 
 L.DUR_CHECKING				= "Prüfe Schlachtzughaltbarkeit..."

@@ -7,9 +7,9 @@ local L = DBM_CORE_L
 local test = private:GetPrototype("DBMTest")
 
 local LibStub = _G["LibStub"]
-local LibLatency, LibDurability
+local LibDurability
 if LibStub then
-	LibLatency, LibDurability = LibStub("LibLatency", true), LibStub("LibDurability", true)
+	LibDurability = LibStub("LibDurability", true)
 end
 
 local function Pull(timer)
@@ -61,51 +61,9 @@ local function Break(timer)
 	--end
 end
 
-local ShowLag, ShowDurability
+local ShowDurability
 do
 	local tconcat, tinsert, tsort = table.concat, table.insert, table.sort
-
-	local function SortLag(v1, v2)
-		return (v1.worldlag or 0) < (v2.worldlag or 0)
-	end
-
-	function ShowLag()
-		local sortLag, noLagResponse = {}, {}
-		for _, v in pairs(DBM:GetRaidRoster()) do
-			tinsert(sortLag, v)
-		end
-		tsort(sortLag, SortLag)
-		DBM:AddMsg(L.LAG_HEADER)
-		for _, v in ipairs(sortLag) do
-			local name = v.name
-			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-			if playerColor then
-				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-			end
-			if v.worldlag then
-				DBM:AddMsg(L.LAG_ENTRY:format(name, v.worldlag, v.homelag), false)
-			else
-				tinsert(noLagResponse, v.name)
-			end
-		end
-		if #noLagResponse > 0 then
-			DBM:AddMsg(L.LAG_FOOTER:format(tconcat(noLagResponse, ", ")), false)
-		end
-	end
-
-	if LibLatency then
-		LibLatency:Register("DBM", function(homelag, worldlag, sender)
-			if not sender then
-				return
-			end
-			local player = DBM:GetRaidRoster()[sender]
-			if player then
-				player.homelag = homelag
-				player.worldlag = worldlag
-			end
-		end)
-	end
-
 	local function SortDurability(v1, v2)
 		return (v1.durpercent or 0) < (v2.durpercent or 0)
 	end
@@ -267,13 +225,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 5) == "rpull" then
 		Pull(30)
 	elseif cmd:sub(1, 3) == "lag" then
-		if not LibLatency then
-			DBM:AddMsg(L.UPDATE_REQUIRES_RELAUNCH)
-			return
-		end
-		LibLatency:RequestLatency()
-		DBM:AddMsg(L.LAG_CHECKING)
-		C_Timer.After(5, ShowLag)
+		DBM.Latency:Show()
 	elseif cmd:sub(1, 10) == "durability" then
 		if not LibDurability then
 			DBM:AddMsg(L.UPDATE_REQUIRES_RELAUNCH)

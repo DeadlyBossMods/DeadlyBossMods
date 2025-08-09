@@ -616,9 +616,7 @@ L.SPEED_CLEAR_TIMER_TEXT	= "Migliore Clear"
 L.COMBAT_RES_TIMER_TEXT	= "Prossima Carica CR"
 L.TIMER_RESPAWN		= "Respawn %s"
 
-L.LAG_CHECKING				= "Analisi Latenza incursione..."
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS.." - Risultati Latenza"
-L.LAG_ENTRY					= "%s: Reame [%d ms] / Locale [%d ms]"
+L.LAG_HEADER					= L.DBM.." - Risultati Latenza"
 L.LAG_FOOTER					= "Nessuna Risposta: %s"
 
 L.DUR_CHECKING				= "Analisi Stato Equipaggiamento Incursione..."

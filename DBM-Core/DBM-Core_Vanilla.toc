@@ -86,6 +86,9 @@ DBM-InfoFrame.lua
 DBM-HudMap.lua
 DBM-Nameplate.lua
 
+# GUI Features
+modules\gui\Latency.lua
+
 # Modules
 modules\Commands.lua
 modules\Hyperlinks.lua
