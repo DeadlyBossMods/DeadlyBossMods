@@ -1,3 +1,4 @@
+---@class DBMLatency
 DBM.Latency = {}
 
 local tsort, mmax = table.sort, math.max
@@ -67,6 +68,8 @@ local function WipeTextFrames()
 	end
 end
 local function GetTextFrame()
+	---@class DBMLatencyTextFrame: FontString
+	---@field Keep boolean?
 	local _frame = spareTextFrames[#spareTextFrames]
 	if _frame then
 		spareTextFrames[#spareTextFrames] = nil
