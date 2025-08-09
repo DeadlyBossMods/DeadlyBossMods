@@ -1,5 +1,9 @@
+---@class DBM
+local DBM = private:GetPrototype("DBM")
+
 ---@class DBMLatency
-DBM.Latency = {}
+local Latency = {}
+DBM.Latency = Latency
 
 local tinsert, tsort, mmax = table.insert, table.sort, math.max
 
@@ -76,6 +80,7 @@ local function GetTextFrame()
 		_frame:Show()
 		return _frame
 	end
+	---@class DBMLatencyTextFrame
 	_frame = child:CreateFontString(nil, nil, "GameFontNormal")
 	_frame:SetJustifyH("LEFT")
 	usedTextFrames[_frame] = true
@@ -155,7 +160,7 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 	Update()
 end)
 
-function DBM.Latency:Show()
+function Latency:Show()
 	LibLatency:RequestLatency()
 	frame:Show()
 end

@@ -17,7 +17,7 @@ local DBM = DBM
 
 ---@class DBMOptionsFrame: Frame
 ---@field tabs table
----@field LoadAndShowFrame fun(subFrame: Frame)
+---@field LoadAndShowFrame fun(self: DBMOptionsFrame, subFrame: Frame)
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
 
 local selectedPagePerTab = {}
