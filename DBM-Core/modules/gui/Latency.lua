@@ -1,7 +1,7 @@
 ---@class DBMLatency
 DBM.Latency = {}
 
-local tsort, mmax = table.sort, math.max
+local tinsert, tsort, mmax = table.insert, table.sort, math.max
 
 local L = DBM_CORE_L
 
