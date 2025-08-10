@@ -84,9 +84,9 @@ local allTimers = {
 			[1219531] = {"v20.0-21.4", 31.5, "v33.8-35"},--Eradicating Salvo
 		},
 		[3] = {--Need more data to get soft enrage repeater
-			[1219450] = {5.6, 23.1, 23.1, "v31.6-33.1", "v31.6-33.1"},--Manifest Matrices
-			[1219263] = {13.5, 29.1, 29.2, "29.2-32.8", "30.4-32.8"},--Obliteration Arcanocannon
-			[1219531] = {21.5, 33.7, "v36.9-38.2", 31.6},--Eradicating Salvo
+			[1219450] = {5.4, 23.1, 23.1, "v31.6-33.1", "v31.6-33.1"},--Manifest Matrices
+			[1219263] = {13.3, 29.1, 29.2, "29.2-32.8", "30.4-32.8"},--Obliteration Arcanocannon
+			[1219531] = {21.2, 33.7, "v36.9-38.2", 31.6},--Eradicating Salvo
 		},
 	},
 	["heroic"] = {
