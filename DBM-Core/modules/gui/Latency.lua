@@ -23,7 +23,7 @@ if not LibLatency then
 	return
 end
 
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate")
+local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetPoint("RIGHT", -150, 0)
