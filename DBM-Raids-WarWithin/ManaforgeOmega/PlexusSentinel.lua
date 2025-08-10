@@ -75,17 +75,17 @@ local allTimers = {
 		},
 		[1] = {--1 and 2 should be identical
 			[1219450] = {"v4.7-5.6", "v26.5-28.1", "v26.9-29.2", 23.2},--Manifest Matrices
-			[1219263] = {"v12.6-14.1", "v28.2-29.1", 28.0},--Obliteration Arcanocannon
+			[1219263] = {"v12.6-14.1", "v28.0-29.2", "v28.0-29.2"},--Obliteration Arcanocannon
 			[1219531] = {"v20.0-21.4", 31.5, "v33.8-35"},--Eradicating Salvo
 		},
 		[2] = {--1 and 2 should be identical
 			[1219450] = {"v4.7-5.6", "v26.5-28.1", "v26.9-29.2", 23.2},--Manifest Matrices
-			[1219263] = {"v12.6-14.1", "v28.2-29.1", 28.0},--Obliteration Arcanocannon
+			[1219263] = {"v12.6-14.1", "v28.0-29.2", "v28.0-29.2"},--Obliteration Arcanocannon
 			[1219531] = {"v20.0-21.4", 31.5, "v33.8-35"},--Eradicating Salvo
 		},
 		[3] = {--Need more data to get soft enrage repeater
 			[1219450] = {5.6, 23.1, 23.1, "v31.6-33.1", "v31.6-33.1"},--Manifest Matrices
-			[1219263] = {13.5, 29.1, 29.2, "30.4-32.8", "30.4-32.8"},--Obliteration Arcanocannon
+			[1219263] = {13.5, 29.1, 29.2, "29.2-32.8", "30.4-32.8"},--Obliteration Arcanocannon
 			[1219531] = {21.5, 33.7, "v36.9-38.2", 31.6},--Eradicating Salvo
 		},
 	},
@@ -97,7 +97,7 @@ local allTimers = {
 		},
 		[1] = {
 			[1219450] = {6.2, 35.2, 35.2},--Manifest Matrices
-			[1219263] = {"v18.2-20.2", 34.0, 34.0},--Obliteration Arcanocannon
+			[1219263] = {"v17.9-20.2", 34.0, 34.0},--Obliteration Arcanocannon
 			[1219531] = {"v27.9-28.7", "v34.1-35.2"},--Eradicating Salvo
 		},
 		[2] = {
@@ -272,7 +272,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.radicatingIcon = 1
 		timerManifestMatricesCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219450][1], 1)
 		timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219263][1], 1)
-		timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219607][1], 1)
+		timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219531][1], 1)
 		if self.vb.purgeCount < 3 then
 			timerProtocolPurgeCD:Start(94, self.vb.purgeCount+1)
 		else
