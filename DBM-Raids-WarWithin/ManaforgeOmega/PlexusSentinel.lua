@@ -71,10 +71,10 @@ function mod:OnCombatStart(delay)
 	self.vb.eradicatingSalvoCount = 0
 	self.vb.radicatingIcon = 1
 	self.vb.purgeCount = 0
-	timerManifestMatricesCD:Start(11.1-delay, 1)
+	timerManifestMatricesCD:Start(10.4-delay, 1)
 	timerObliterationArcanocannonCD:Start(20.9-delay, 1)
 	timerEradicatingSalvoCD:Start(30.7-delay, 1)
-	timerProtocolPurgeCD:Start(61.2-delay, 1)
+	timerProtocolPurgeCD:Start(61.2-delay, 1)--Was 69 on heroic but not likely still 69
 end
 
 function mod:SPELL_CAST_START(args)
@@ -85,12 +85,12 @@ function mod:SPELL_CAST_START(args)
 		timerManifestMatricesCD:Start(timer, self.vb.matricesCount+1)
 	elseif spellId == 1219263 then
 		self.vb.arcanocannonCount = self.vb.arcanocannonCount + 1
-		local timer = self.vb.purgeCount == 4 and "v34.0-36.5" or 34
+		local timer = self.vb.purgeCount == 4 and "v34.0-36.5" or 33
 		timerObliterationArcanocannonCD:Start(timer, self.vb.arcanocannonCount+1)
 	elseif spellId == 1219531 then
 		self.vb.eradicatingSalvoCount = self.vb.eradicatingSalvoCount + 1
 		self.vb.radicatingIcon = 1
-		local timer = self.vb.purgeCount == 4 and "v34.0-36.5" or 34
+		local timer = self.vb.purgeCount == 4 and "v34.0-36.5" or self.vb.purgeCount == 0 and 31.7 or 34--This rule exception probably no longer needs to exist
 		timerEradicatingSalvoCD:Start(timer, self.vb.eradicatingSalvoCount+1)
 	elseif spellId == 1220489 or spellId == 1220553 or spellId == 1220555 then
 		self:SetStage(2)
@@ -177,7 +177,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.eradicatingSalvoCount = 0
 		self.vb.radicatingIcon = 1
 		timerManifestMatricesCD:Start("v5.9-6.8", 1)
-		timerObliterationArcanocannonCD:Start(2)
+		timerObliterationArcanocannonCD:Start("v18.7-19.4", 1)
 		timerEradicatingSalvoCD:Start("v27.7-28.8", 1)
 		if self.vb.purgeCount < 3 then
 			timerProtocolPurgeCD:Start(94, self.vb.purgeCount+1)
