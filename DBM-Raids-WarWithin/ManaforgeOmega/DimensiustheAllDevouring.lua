@@ -51,12 +51,12 @@ local specWarnAirborn								= mod:NewSpecialWarningYou(1243609, nil, nil, nil, 
 --local specWarnReverseGravityDispel				= mod:NewSpecialWarningDispel(1243577, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1231002, nil, nil, nil, 1, 8)
 
---local timerMassiveSmashCD							= mod:NewCDCountTimer(97.3, 1230087, nil, nil, nil, 2)
+local timerMassiveSmashCD							= mod:NewCDCountTimer(97.3, 1230087, nil, nil, nil, 2)
 local timerInfinitePossibilities					= mod:NewCastNPTimer(8, 1248240, nil, nil, nil, 5)
---local timerDevourCD								= mod:NewCDCountTimer(97.3, 1229038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
---local timerDarkMatterCD							= mod:NewCDCountTimer(97.3, 1230979, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
---local timerShatteredSpaceCD						= mod:NewCDCountTimer(97.3, 1243690, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
---local timerReverseGravityCD						= mod:NewCDCountTimer(97.3, 1243577, nil, nil, nil, 3)
+local timerDevourCD									= mod:NewCDCountTimer(97.3, 1229038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerDarkMatterCD								= mod:NewCDCountTimer(97.3, 1230979, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerShatteredSpaceCD							= mod:NewCDCountTimer(97.3, 1243690, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerReverseGravityCD							= mod:NewCDCountTimer(97.3, 1243577, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnLivingMass", -33474, true, 5, {6, 1, 2, 4, 7})
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
@@ -143,38 +143,38 @@ function mod:SPELL_CAST_START(args)
 		self.vb.massiveSmashCount = self.vb.massiveSmashCount + 1
 		specWarnMassiveSmash:Show(self.vb.massiveSmashCount)
 		specWarnMassiveSmash:Play("carefly")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.massiveSmashCount+1)
-		--if timer then
-		--	timerMassiveSmashCD:Start(timer, self.vb.massiveSmashCount+1)
-		--end
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.massiveSmashCount+1)
+		if timer then
+			timerMassiveSmashCD:Start(timer, self.vb.massiveSmashCount+1)
+		end
 	elseif spellId == 1248240 then
 		timerInfinitePossibilities:Start(nil, args.sourceGUID)
 	elseif spellId == 1229038 then
 		self.vb.devourCount = self.vb.devourCount + 1
 		specWarnDevour:Show(self.vb.devourCount)
 		specWarnDevour:Play("gather")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.devourCount+1)
-		--if timer then
-		--	timerDevourCD:Start(timer, self.vb.devourCount+1)
-		--end
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.devourCount+1)
+		if timer then
+			timerDevourCD:Start(timer, self.vb.devourCount+1)
+		end
 		self:Schedule(2.5, extraWarnDevour, self)
 	elseif spellId == 1230979 then
 		self.vb.darkMatterCount = self.vb.darkMatterCount + 1
 		specWarnDarkMatter:Show(self.vb.darkMatterCount)
 		specWarnDarkMatter:Play("aesoon")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkMatterCount+1)
-		--if timer then
-		--	timerDarkMatterCD:Start(timer, self.vb.darkMatterCount+1)
-		--end
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkMatterCount+1)
+		if timer then
+			timerDarkMatterCD:Start(timer, self.vb.darkMatterCount+1)
+		end
 	elseif spellId == 1243690 then
 		self.vb.shatteredSpaceCount = self.vb.shatteredSpaceCount + 1
 		specWarnShatteredSpace:Show(self.vb.shatteredSpaceCount)
 		specWarnShatteredSpace:Play("aesoon")
 		specWarnShatteredSpace:ScheduleVoice(4, "helpsoak")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.shatteredSpaceCount+1)
-		--if timer then
-		--	timerShatteredSpaceCD:Start(timer, self.vb.shatteredSpaceCount+1)
-		--end
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.shatteredSpaceCount+1)
+		if timer then
+			timerShatteredSpaceCD:Start(timer, self.vb.shatteredSpaceCount+1)
+		end
 	end
 end
 
@@ -219,10 +219,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1243577 then
 		if self:AntiSpam(5, 1) then
 			self.vb.reverseGravityCount = self.vb.reverseGravityCount + 1
-			--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reverseGravityCount)
-			--if timer then
-			--	timerReverseGravityCD:Start(timer, self.vb.reverseGravityCount)
-			--end
+			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reverseGravityCount)
+			if timer then
+				timerReverseGravityCD:Start(timer, self.vb.reverseGravityCount)
+			end
 			if DBM:UnitDebuff("player", 1228206) then--Excess Mass
 
 			end
@@ -241,11 +241,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1235114 then
 		if self:AntiSpam(5, 2) then
 			self:SetStage(1.5)
-			--timerMassiveSmashCD:Stop()
-			--timerSoaringReshiiCD:Stop()
-			--timerInfinitePossibilitiesCD:Stop()
-			--timerDevourCD:Stop()
-			--timerDarkMatterCD:Stop()
+			timerMassiveSmashCD:Stop()
+			timerDevourCD:Stop()
+			timerDarkMatterCD:Stop()
+			timerShatteredSpaceCD:Stop()
+			timerReverseGravityCD:Stop()
 		end
 		if args:IsPlayer() then
 			warnSoaringReshii:Show()
