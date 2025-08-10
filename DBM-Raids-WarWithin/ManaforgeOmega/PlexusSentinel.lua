@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555 1234733",
+	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555",--1234733
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 1219459 1219439 1219607",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -38,7 +38,7 @@ local warnEradicatingSalvo							= mod:NewTargetCountAnnounce(1219531, 3, nil, n
 local specWarnManifestMatrices						= mod:NewSpecialWarningMoveAway(1219450, nil, nil, nil, 1, 2)
 local yellManifestMatrices							= mod:NewShortYell(1219450)
 local yellManifestMatricesFades						= mod:NewShortFadesYell(1219450)
-local specWarnObliterationArcanocannon				= mod:NewSpecialWarningYou(1219263, nil, nil, nil, 1, 2)
+local specWarnObliterationArcanocannon				= mod:NewSpecialWarningYouCount(1219263, nil, nil, nil, 1, 2)
 local yellObliterationArcanocannon					= mod:NewShortYell(1219263)
 local yellObliterationArcanocannonFades				= mod:NewShortFadesYell(1219263)
 local specWarnObliterationArcanocannonOther			= mod:NewSpecialWarningTaunt(1219263, nil, nil, nil, 1, 2)
@@ -91,8 +91,8 @@ local allTimers = {
 	},
 	["heroic"] = {
 		[0] = {
-			[1219450] = {10.7, 34.0},--Manifest Matrices
-			[1219263] = {21.6, 32.9},--Obliteration Arcanocannon
+			[1219450] = {10.4, 34.0},--Manifest Matrices
+			[1219263] = {21.2, 32.9},--Obliteration Arcanocannon
 			[1219531] = {30.1, 31.6},--Eradicating Salvo
 		},
 		[1] = {
@@ -114,7 +114,7 @@ local allTimers = {
 	["normal"] = {
 		[0] = {
 			[1219450] = {10.6, 34.0},--Manifest Matrices
-			[1219263] = {21.5, 32.8},--Obliteration Arcanocannon
+			[1219263] = {20.9, 32.8},--Obliteration Arcanocannon
 			[1219531] = {30.0},--Eradicating Salvo
 		},
 		[1] = {
@@ -195,8 +195,8 @@ function mod:SPELL_CAST_START(args)
 		timerManifestMatricesCD:Stop()
 		timerObliterationArcanocannonCD:Stop()
 		timerEradicatingSalvoCD:Stop()
-	elseif spellId == 1234733 and self.vb.purgeCount < 4 then
-		self.vb.purgeCount = 4
+--	elseif spellId == 1234733 and self.vb.purgeCount < 4 then
+--		self.vb.purgeCount = 4
 	end
 end
 
@@ -221,7 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 1219439 then
 		if args:IsPlayer() then
-			specWarnObliterationArcanocannon:Show()
+			specWarnObliterationArcanocannon:Show(self.vb.arcanocannonCount)
 			specWarnObliterationArcanocannon:Play("runout")
 			yellObliterationArcanocannon:Yell()
 			yellObliterationArcanocannonFades:Countdown(spellId)
@@ -271,7 +271,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.eradicatingSalvoCount = 0
 		self.vb.radicatingIcon = 1
 		timerManifestMatricesCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219450][1], 1)
-		timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219439][1], 1)
+		timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219263][1], 1)
 		timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][self.vb.purgeCount][1219607][1], 1)
 		if self.vb.purgeCount < 3 then
 			timerProtocolPurgeCD:Start(94, self.vb.purgeCount+1)
