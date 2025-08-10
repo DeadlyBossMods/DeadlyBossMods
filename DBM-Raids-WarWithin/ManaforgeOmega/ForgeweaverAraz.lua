@@ -16,10 +16,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 1230231",
 	"SPELL_AURA_APPLIED 1228506 1228454 1228188 1233979 1233415 1243873",
 	"SPELL_AURA_APPLIED_DOSE 1228506",
-	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
+	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
-	"UNIT_DIED"
+--	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -444,6 +444,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 241923 then--Arcane Echo
@@ -452,6 +453,7 @@ function mod:UNIT_DIED(args)
 
 	end
 end
+--]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
