@@ -690,11 +690,7 @@ L.COMBAT_RES_TIMER_TEXT					= "Next CR Charge"
 L.TIMER_RESPAWN							= "%s Respawn"
 
 L.LAG_HEADER							= L.DBM.. " - Latency Results"
-L.LAG_FOOTER							= "No Response: %s"
-
-L.DUR_CHECKING							= "Checking raid Durability... "
-L.DUR_HEADER							= L.DEADLY_BOSS_MODS.. " - Durability Results"
-L.DUR_ENTRY								= "%s: Durability [%d percent] / Gear broken [%s]"
+L.DUR_HEADER							= L.DBM.. " - Durability Results"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 

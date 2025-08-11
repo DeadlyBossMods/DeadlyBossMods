@@ -647,11 +647,7 @@ L.COMBAT_RES_TIMER_TEXT		= "Siguiente resurrección"
 L.TIMER_RESPAWN				= "%s reaparece"
 
 L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"
-L.LAG_FOOTER				= "Sin respuesta: %s"
-
-L.DUR_CHECKING				= "Comprobando durabilidad de la banda..."
-L.DUR_HEADER				= L.DEADLY_BOSS_MODS.. " - Resultados de durabilidad"
-L.DUR_ENTRY					= "%s: Durabilidad [%d%%] / Piezas rotas [%s]"
+L.DUR_HEADER				= L.DBM.. " - Resultados de durabilidad"
 
 L.OVERRIDE_ACTIVATED		= "Líder de banda ha activado las anulaciones de configuración para este encuentro"
 

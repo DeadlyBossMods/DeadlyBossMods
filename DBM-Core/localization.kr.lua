@@ -627,12 +627,7 @@ L.COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
 L.TIMER_RESPAWN		= "%s 재생성"
 
 L.LAG_HEADER					= L.DBM .. " - 지연시간 확인 결과"
-L.LAG_FOOTER					= "응답없음: %s"
-
-L.DUR_CHECKING				= "공격대 내구도 검사중..."
-L.DUR_HEADER					= L.DEADLY_BOSS_MODS .. " - 내구도 검사 결과"
-L.DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
-L.LAG_FOOTER					= "응답 없음: %s"
+L.DUR_HEADER					= L.DBM .. " - 내구도 검사 결과"
 
 L.OVERRIDE_ACTIVATED					= "이 전투에서 공대장에 의해 설정 강제 적용이 활성화되었습니다"
 

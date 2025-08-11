@@ -4,21 +4,21 @@ local private = select(2, ...)
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
----@class DBMLatency
-local Latency = {}
-DBM.Latency = Latency
+---@class DBMDurability
+local Durability = {}
+DBM.Durability = Durability
 
 local tinsert, tsort, mmax = table.insert, table.sort, math.max
 
 local L = DBM_CORE_L
 
 local LibStub = _G["LibStub"]
-local LibLatency
+local LibDurability
 if LibStub then
-	LibLatency = LibStub("LibLatency", true)
+	LibDurability = LibStub("LibDurability", true)
 end
 
-if not LibLatency then
+if not LibDurability then
 	DBM:AddMsg(L.UPDATE_REQUIRES_RELAUNCH)
 	return
 end
@@ -31,7 +31,7 @@ frame:SetFrameStrata("DIALOG")
 frame:SetMovable(true)
 frame:EnableMouse(true)
 frame:RegisterForDrag("LeftButton")
-frame:SetTitle(L.LAG_HEADER)
+frame:SetTitle(L.DUR_HEADER)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
 
@@ -58,7 +58,7 @@ refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
 refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
 refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
 refresh:SetScript("OnClick", function()
-	LibLatency:RequestLatency()
+	LibDurability:RequestDurability()
 end)
 
 -- Frames handler
@@ -97,42 +97,40 @@ titlePlayer:SetText(PLAYER)
 titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
 titlePlayer:SetWidth(200)
 
-local titleWorld = GetTextFrame()
-titleWorld.Keep = true
-titleWorld:SetFontObject(GameFontNormalLarge)
-titleWorld:SetText(WORLD)
-titleWorld:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
-titleWorld:SetWidth(75)
+local titlePercent = GetTextFrame()
+titlePercent.Keep = true
+titlePercent:SetFontObject(GameFontNormalLarge)
+titlePercent:SetText("%")
+titlePercent:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
 
-local titleHome = GetTextFrame()
-titleHome.Keep = true
-titleHome:SetFontObject(GameFontNormalLarge)
-titleHome:SetText(HOME)
-titleHome:SetPoint("LEFT", titleWorld, "RIGHT")
-titleHome:SetWidth(75)
+local titleBroken = GetTextFrame()
+titleBroken.Keep = true
+titleBroken:SetFontObject(GameFontNormalLarge)
+titleBroken:SetText(TUTORIAL_TITLE37)
+titleBroken:SetPoint("LEFT", titlePercent, "RIGHT")
 
-local worldWidth, homeWidth = mmax(75, titleWorld:GetStringWidth() + 10), mmax(75, titleHome:GetStringWidth() + 10)
-titleWorld:SetWidth(worldWidth)
-titleHome:SetWidth(homeWidth)
+local percentWidth, brokenWidth = mmax(75, titlePercent:GetStringWidth() + 10), mmax(75, titleBroken:GetStringWidth() + 10)
+titlePercent:SetWidth(percentWidth)
+titleBroken:SetWidth(brokenWidth)
 
 -- Update main frame width
-frame:SetWidth(200 + worldWidth + homeWidth + 40)
-child:SetWidth(200 + worldWidth + homeWidth + 8)
+frame:SetWidth(200 + percentWidth + brokenWidth + 40)
+child:SetWidth(200 + percentWidth + brokenWidth + 8)
 
-local function SortLag(v1, v2)
-	return (v1.worldlag or 9999) < (v2.worldlag or 9999)
+local function SortDurability(v1, v2)
+	return (v1.durpercent or 9999) < (v2.durpercent or 9999)
 end
 
 local function Update()
-	local sortLag = {}
+	local sortDur = {}
 	for _, v in pairs(DBM:GetRaidRoster()) do
-		tinsert(sortLag, v)
+		tinsert(sortDur, v)
 	end
-	tsort(sortLag, SortLag)
+	tsort(sortDur, SortDurability)
 
 	WipeTextFrames()
 
-	for i, v in ipairs(sortLag) do
+	for i, v in ipairs(sortDur) do
 		local name = v.name
 		local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
 		if playerColor then
@@ -140,38 +138,38 @@ local function Update()
 		end
 
 		local offset = -((i - 1) * 14) - 4
-		local textPlayer, textWorld, textHome = GetTextFrame(), GetTextFrame(), GetTextFrame()
+		local textPlayer, textPercent, textBroken = GetTextFrame(), GetTextFrame(), GetTextFrame()
 
 		textPlayer:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
 		textPlayer:SetWidth(200)
 
-		textWorld:SetText(v.worldlag or '?')
-		textWorld:SetPoint("TOP", titleWorld, "BOTTOM", 0, offset)
-		textWorld:SetWidth(worldWidth)
+		textPercent:SetText(v.durpercent or '?')
+		textPercent:SetPoint("TOP", titlePercent, "BOTTOM", 0, offset)
+		textPercent:SetWidth(percentWidth)
 
-		textHome:SetText(v.homelag or '?')
-		textHome:SetPoint("TOP", titleHome, "BOTTOM", 0, offset)
-		textHome:SetWidth(homeWidth)
+		textBroken:SetText(v.durbroken or '?')
+		textBroken:SetPoint("TOP", titleBroken, "BOTTOM", 0, offset)
+		textBroken:SetWidth(brokenWidth)
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 20 + #sortLag * 20))
+	child:SetHeight(mmax(child:GetHeight(), 20 + #sortDur * 20))
 end
 
-LibLatency:Register("DBM", function(homelag, worldlag, sender)
+LibDurability:Register("DBM", function(percent, broken, sender)
 	if not sender then
 		return
 	end
 	local player = DBM:GetRaidRoster()[sender]
 	if player then
-		player.homelag = homelag
-		player.worldlag = worldlag
+		player.durpercent = percent
+		player.durbroken = broken
 	end
 
 	Update()
 end)
 
-function Latency:Show()
-	LibLatency:RequestLatency()
+function Durability:Show()
+	LibDurability:RequestDurability()
 	frame:Show()
 end

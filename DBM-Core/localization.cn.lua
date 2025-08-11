@@ -638,11 +638,7 @@ L.COMBAT_RES_TIMER_TEXT	= "下一次可用战复"
 L.TIMER_RESPAWN		= "%s 刷新"
 
 L.LAG_HEADER					= L.DBM .. " - 延时检测"
-L.LAG_FOOTER					= "未反馈此次检测的团员:%s"
-
-L.DUR_CHECKING				= "全团装备耐久度检测请稍后... "
-L.DUR_HEADER					= L.DEADLY_BOSS_MODS .. "- 装备耐久度检测结果"
-L.DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
+L.DUR_HEADER					= L.DBM .. "- 装备耐久度检测结果"
 
 L.OVERRIDE_ACTIVATED			= "本次战斗的配置已经被队长的配置覆盖"
 
