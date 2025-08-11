@@ -33,7 +33,7 @@ local startBtn = area2:CreateButton(L.Tools_BreakTimer)
 startBtn.myheight = 0
 startBtn:SetPoint("LEFT", duration, "RIGHT", 10, 0)
 startBtn:SetScript("OnClick", function()
-	DBM:CreateBreakTimer(tonumber(duration:GetText()))
+	DBM:CreateBreakTimer(tonumber(duration:GetText()) or 10)
 end)
 
 local area3 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_PizzaTimer)
@@ -61,34 +61,12 @@ startBtn2:SetScript("OnClick", function()
 		DBM:AddMsg(CL.PIZZA_ERROR_USAGE)
 		return
 	end
-	local min, sec = string.split(":", time)
-	min = tonumber(min or "") or 0
-	sec = tonumber(sec or "")
+	local _min, _sec = string.split(":", time)
+	local min = tonumber(_min or "") or 0
+	local sec = tonumber(_sec or "")
 	if min and not sec then
 		sec = min
 		min = 0
 	end
 	DBM:CreatePizzaTimer(min * 60 + sec, text, permission)
 end)
-
---[[
-		local difficultyIndex = DBM:GetCurrentDifficulty()
-		local permission = true
-		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
-			DBM:AddMsg(L.ERROR_NO_PERMISSION)
-			permission = false
-		end
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if not time and not text then
-			DBM:AddMsg(L.PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		DBM:CreatePizzaTimer(min * 60 + sec, text, permission)
-]]--
