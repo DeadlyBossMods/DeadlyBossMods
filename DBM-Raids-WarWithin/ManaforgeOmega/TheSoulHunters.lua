@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, warn https://www.wowhead.com/ptr-2/spell=1249198/unstable-soul ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1233381/withering-flames tracker?
 --[[
-(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or ability.id = 1242133
+(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or ability.id = 1242133 or ability.id = 1245978
 --]]
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
