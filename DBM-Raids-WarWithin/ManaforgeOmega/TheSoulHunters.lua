@@ -49,7 +49,7 @@ local timerCollapsingStarCD							= mod:NewNextTimer(97.3, 1233093, nil, nil, ni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31792))
 local warnTheHunt									= mod:NewTargetCountAnnounce(1227809, 2, nil, nil, nil, nil, nil, nil, true)
 
-local specWarnBladeDance							= mod:NewSpecialWarningDodgeCount(1227058, nil, nil, nil, 2, 2)
+local specWarnBladeDance							= mod:NewSpecialWarningDodgeCount(1241306, nil, nil, nil, 2, 2)
 local specWarnEyebeam								= mod:NewSpecialWarningDefensive(1218103, nil, nil, nil, 1, 13)
 
 local specWarnTheHunt								= mod:NewSpecialWarningYou(1227809, nil, nil, nil, 1, 17)
@@ -57,7 +57,7 @@ local yellTheHunt									= mod:NewShortYell(1227809, DBM_COMMON_L.GROUPSOAK, ni
 local yellTheHuntFades								= mod:NewShortFadesYell(1227809, nil, nil, nil, "YELL")
 
 local timerTheHuntCD								= mod:NewNextCountTimer(31.9, 1227809, nil, nil, nil, 3)
-local timerBladeDanceCD								= mod:NewNextCountTimer(31.9, 1227058, nil, nil, nil, 3)
+local timerBladeDanceCD								= mod:NewNextCountTimer(31.9, 1241306, nil, nil, nil, 3)
 local timerEyeBeamCD								= mod:NewNextCountTimer(31.9, 1218103, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFelRushCD								= mod:NewNextTimer(97.3, 1233863, nil, nil, nil, 6)
 --Ilyssa Darksorrow

@@ -37,23 +37,23 @@ ability.id = 1228070 and type = "applybuff"
 --Phase 1: The Silkbound Beast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32296))
 --local warnPrimalSpellstorm						= mod:NewCountAnnounce(1226867, 3)
-local warnInfusionTether							= mod:NewTargetAnnounce(1226315, 2)
-local warnInfusionTetherOver						= mod:NewFadesAnnounce(1226315, 1)
+local warnInfusionTether							= mod:NewTargetAnnounce(1226311, 2)
+local warnInfusionTetherOver						= mod:NewFadesAnnounce(1226311, 1)
 local warnInfusionPylon								= mod:NewCountAnnounce(1246921, 3)
 
 local specWarnLairWeaving							= mod:NewSpecialWarningDodgeCount(1237272, nil, nil, nil, 2, 2)
 local specWarnOverinfusionBurst						= mod:NewSpecialWarningDodge(1226395, nil, nil, nil, 3, 2)
-local specWarnInfusionTether						= mod:NewSpecialWarningYou(1226315, nil, nil, nil, 1, 2)
-local yellInfusionTether							= mod:NewShortYell(1226315, nil, false)
-local specWarnPiercingStrands						= mod:NewSpecialWarningDefensive(1227263, nil, nil, nil, 1, 2)
-local specWarnPiercingStrandsOther					= mod:NewSpecialWarningTaunt(1227263, nil, nil, nil, 1, 2)
+local specWarnInfusionTether						= mod:NewSpecialWarningYou(1226311, nil, nil, nil, 1, 2)
+local yellInfusionTether							= mod:NewShortYell(1226311, nil, false)
+local specWarnPiercingStrands						= mod:NewSpecialWarningDefensive(1237212, nil, nil, nil, 1, 2)
+local specWarnPiercingStrandsOther					= mod:NewSpecialWarningTaunt(1237212, nil, nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerLairWeavingCD							= mod:NewNextCountTimer(85, 1237272, nil, nil, nil, 2)
 --local timerPrimalSpellstormCD						= mod:NewAITimer(97.3, 1226867, nil, nil, nil, 3)
-local timerOverinfusionBurstCD						= mod:NewNextCountTimer(85, 1226395, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerInfusionTetherCD							= mod:NewCDCountTimer(97.3, 1226315, nil, nil, nil, 3)
-local timerPiercingStrandsCD						= mod:NewCDCountTimer(97.3, 1227263, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerOverinfusionBurstCD						= mod:NewNextCountTimer(85, 1226395, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--???
+local timerInfusionTetherCD							= mod:NewCDCountTimer(97.3, 1226311, nil, nil, nil, 3)
+local timerPiercingStrandsCD						= mod:NewCDCountTimer(97.3, 1237212, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerInfusionPylonCD							= mod:NewCDCountTimer(97.3, 1246921, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddNamePlateOption("NPAuraOnWovenWard", 1238502)
