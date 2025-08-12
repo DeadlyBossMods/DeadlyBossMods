@@ -103,7 +103,7 @@ FontShadow:SetScript("OnClick", function()
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", -35, 25)
+FontShadow:SetPoint("TOPLEFT", color0, "BOTTOMLEFT", -10, -20)
 
 local fontSizeSlider = specArea:CreateSlider(L.FontSize, 8, 60, 1, 150)
 fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -45)
