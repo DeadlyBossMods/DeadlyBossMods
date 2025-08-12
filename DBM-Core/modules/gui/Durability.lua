@@ -172,6 +172,9 @@ end)
 function Durability:Show()
 	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
+	if _G["DBM_GUI_OptionsFrame"] then
+		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+	end
 	frame:Show()
 end
 
