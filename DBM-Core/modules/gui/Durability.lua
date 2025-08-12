@@ -75,7 +75,7 @@ local function WipeTextFrames()
 	end
 end
 local function GetTextFrame()
-	---@class DBMLatencyTextFrame: FontString
+	---@class DBMDurabilityTextFrame: FontString
 	---@field Keep boolean?
 	local _frame = spareTextFrames[#spareTextFrames]
 	if _frame then
@@ -83,7 +83,7 @@ local function GetTextFrame()
 		_frame:Show()
 		return _frame
 	end
-	---@class DBMLatencyTextFrame
+	---@class DBMDurabilityTextFrame
 	_frame = child:CreateFontString(nil, nil, "GameFontNormal")
 	_frame:SetJustifyH("LEFT")
 	usedTextFrames[_frame] = true
