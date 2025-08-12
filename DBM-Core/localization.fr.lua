@@ -646,14 +646,8 @@ L.SPEED_CLEAR_TIMER_TEXT  	= "Meilleur clear"
 L.COMBAT_RES_TIMER_TEXT		= "Prochaine charge de résurrection en combat"
 L.TIMER_RESPAWN				= "%s Réapparition"
 
-L.LAG_CHECKING			   	= "Vérification de la latence du raid..."
-L.LAG_HEADER				= L.DEADLY_BOSS_MODS .. " - Résultats sur la latence"
-L.LAG_ENTRY				  	= "%s: délai monde [%d ms] / délai domicile [%d ms]"
-L.LAG_FOOTER				= "Pas de réponse: %s"
-
-L.DUR_CHECKING 				= "Vérification de la durabilité du raid... "
-L.DUR_HEADER 				= L.DEADLY_BOSS_MODS.. " - Résultats de durabilité"
-L.DUR_ENTRY 				= "%s: Durabilité [%d pour cent] / Équipement endommagé [%s]"
+L.LAG_HEADER				= L.DBM .. " - Résultats sur la latence"
+L.DUR_HEADER 				= L.DBM.. " - Résultats de durabilité"
 
 L.OVERRIDE_ACTIVATED 		= "Les remplacements de configuration ont été activés pour cette rencontre par le responsable de raid"
 

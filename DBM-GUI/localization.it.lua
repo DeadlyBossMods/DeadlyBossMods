@@ -11,6 +11,18 @@ L.WebsiteButton				= "Sito Web"
 
 L.OTabBosses	= "Boss"
 L.OTabOptions	= "Opzioni"
+--L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+
+--Main Tab, Tools checks
+--L.Tools_LatencyCheck				= "Latency Check"
+--L.Tools_DurabilityCheck				= "Durability Check"
+--L.Tools_KeystoneCheck				= "Keystone Check"
+
+--L.Tools_BreakTimer					= "Start Break Timer"
+--L.Tools_PizzaTimer					= "Start Generic Timer"
+
+--L.Tools_Duration					= "Duration"
+--L.Tools_Message						= "Timer Message"
 
 L.TabCategory_Options	 	= "Opzioni Generali"
 L.TabCategory_OTHER			= "Altre Mod"

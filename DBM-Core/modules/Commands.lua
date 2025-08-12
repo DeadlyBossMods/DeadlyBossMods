@@ -6,164 +6,22 @@ local L = DBM_CORE_L
 
 local test = private:GetPrototype("DBMTest")
 
-local LibStub = _G["LibStub"]
-local LibLatency, LibDurability
-if LibStub then
-	LibLatency, LibDurability = LibStub("LibLatency", true), LibStub("LibDurability", true)
-end
-
-local function Pull(timer)
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if IsEncounterInProgress() then
-		return DBM:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if timer > 0 and timer < 3 then
-		return DBM:AddMsg(L.PULL_TIME_TOO_SHORT)
-	end
-	--if timer > 60 then
-	--	return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
-	--end
-	--Send blizzard countdown timer that all users see (including modless)
-	C_PartyInfo.DoCountdown(timer)
-	DBM:Debug("Sending Blizzard Countdown Timer")
-end
-
-local function Break(timer)
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (DBM:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return DBM:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if IsEncounterInProgress() then
-		return DBM:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if timer > 60 then
-		return DBM:AddMsg(L.BREAK_USAGE)
-	end
-	timer = timer * 60
-	--Make sure 1 minute break timer is sent as a break timer and not a pull timer
-	--if timer == 60 then
-	--	timer = 61
-	--end
-	--if not private.isWrath then
-	--	--Send blizzard countdown timer that all users see (including modless)
-	--	C_PartyInfo.DoCountdown(timer)
-	--	DBM:Debug("Sending Blizzard Countdown Timer")
-	--else
-		private.sendSync(private.DBMSyncProtocol, "BT", timer, "ALERT")
-		DBM:Debug("Sending DBM Break Timer")
-	--end
-end
-
-local ShowLag, ShowDurability
-do
-	local tconcat, tinsert, tsort = table.concat, table.insert, table.sort
-
-	local function SortLag(v1, v2)
-		return (v1.worldlag or 0) < (v2.worldlag or 0)
-	end
-
-	function ShowLag()
-		local sortLag, noLagResponse = {}, {}
-		for _, v in pairs(DBM:GetRaidRoster()) do
-			tinsert(sortLag, v)
-		end
-		tsort(sortLag, SortLag)
-		DBM:AddMsg(L.LAG_HEADER)
-		for _, v in ipairs(sortLag) do
-			local name = v.name
-			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-			if playerColor then
-				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-			end
-			if v.worldlag then
-				DBM:AddMsg(L.LAG_ENTRY:format(name, v.worldlag, v.homelag), false)
-			else
-				tinsert(noLagResponse, v.name)
-			end
-		end
-		if #noLagResponse > 0 then
-			DBM:AddMsg(L.LAG_FOOTER:format(tconcat(noLagResponse, ", ")), false)
-		end
-	end
-
-	if LibLatency then
-		LibLatency:Register("DBM", function(homelag, worldlag, sender)
-			if not sender then
-				return
-			end
-			local player = DBM:GetRaidRoster()[sender]
-			if player then
-				player.homelag = homelag
-				player.worldlag = worldlag
-			end
-		end)
-	end
-
-	local function SortDurability(v1, v2)
-		return (v1.durpercent or 0) < (v2.durpercent or 0)
-	end
-
-	function ShowDurability()
-		local sortDur, noDurResponse = {}, {}
-		for _, v in pairs(DBM:GetRaidRoster()) do
-			tinsert(sortDur, v)
-		end
-		tsort(sortDur, SortDurability)
-		DBM:AddMsg(L.DUR_HEADER)
-		for _, v in ipairs(sortDur) do
-			local name = v.name
-			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-			if playerColor then
-				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-			end
-			if v.durpercent then
-				DBM:AddMsg(L.DUR_ENTRY:format(name, v.durpercent, v.durbroken), false)
-			else
-				tinsert(noDurResponse, v.name)
-			end
-		end
-		if #noDurResponse > 0 then
-			DBM:AddMsg(L.LAG_FOOTER:format(tconcat(noDurResponse, ", ")), false)
-		end
-	end
-
-	if LibDurability then
-		LibDurability:Register("DBM", function(percent, broken, sender)
-			if not sender then
-				return
-			end
-			local player = DBM:GetRaidRoster()[sender]
-			if player then
-				player.durpercent = percent
-				player.durbroken = broken
-			end
-		end)
-	end
-end
-
 if not _G["BigWigs"] then
 	--Register pull and break slash commands for BW converts, if BW isn't loaded
 	--This shouldn't raise an issue since BW SHOULD load before DBM in any case they are both present.
 	SLASH_DEADLYBOSSMODSPULL1 = "/pull"
 	SlashCmdList["DEADLYBOSSMODSPULL"] = function(msg)
-		Pull(tonumber(msg) or 10)
+		DBM:CreatePullTimer(tonumber(msg) or 10)
 	end
 	SLASH_DEADLYBOSSMODSBREAK1 = "/break"
 	SlashCmdList["DEADLYBOSSMODSBREAK"] = function(msg)
-		Break(tonumber(msg) or 10)
+		DBM:CreateBreakTimer(tonumber(msg) or 10)
 	end
 end
 
 SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"
 SlashCmdList["DEADLYBOSSMODSRPULL"] = function()
-	Pull(30)
+	DBM:CreatePullTimer(30)
 end
 
 local trackedHudMarkers = {}
@@ -261,27 +119,15 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		DBM:CreatePizzaTimer(min * 60 + sec, text, permission, nil, true)
 	elseif cmd:sub(0,5) == "break" then
-		Break(tonumber(cmd:sub(6)) or 5)
+		DBM:CreateBreakTimer(tonumber(cmd:sub(6)) or 5)
 	elseif cmd:sub(1, 4) == "pull" then
-		Pull(tonumber(cmd:sub(5)) or 10)
+		DBM:CreatePullTimer(tonumber(cmd:sub(5)) or 10)
 	elseif cmd:sub(1, 5) == "rpull" then
-		Pull(30)
+		DBM:CreatePullTimer(30)
 	elseif cmd:sub(1, 3) == "lag" then
-		if not LibLatency then
-			DBM:AddMsg(L.UPDATE_REQUIRES_RELAUNCH)
-			return
-		end
-		LibLatency:RequestLatency()
-		DBM:AddMsg(L.LAG_CHECKING)
-		C_Timer.After(5, ShowLag)
-	elseif cmd:sub(1, 10) == "durability" then
-		if not LibDurability then
-			DBM:AddMsg(L.UPDATE_REQUIRES_RELAUNCH)
-			return
-		end
-		LibDurability:RequestDurability()
-		DBM:AddMsg(L.DUR_CHECKING)
-		C_Timer.After(5, ShowDurability)
+		DBM.Latency:Show()
+	elseif cmd:sub(1, 10) == "durability" or cmd:sub(1, 3) == "dur" then
+		DBM.Durability:Show()
 	elseif cmd:sub(1, 3) == "hud" then
 		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then

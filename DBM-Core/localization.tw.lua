@@ -646,14 +646,8 @@ L.SPEED_CLEAR_TIMER_TEXT		= "最佳紀錄"
 L.COMBAT_RES_TIMER_TEXT			= "下一個戰復充能"
 L.TIMER_RESPAWN					= "%s 重生"
 
-L.LAG_CHECKING					= "檢測團隊成員的網路延遲中..."
-L.LAG_HEADER					= ""..L.DEADLY_BOSS_MODS.." - 網路延遲結果"
-L.LAG_ENTRY						= "%s:世界延遲[%d毫秒]/本地延遲[%d毫秒]"
-L.LAG_FOOTER					= "無回應:%s"
-
-L.DUR_CHECKING					= "檢測團隊裝備耐久度..."
-L.DUR_HEADER					= ""..L.DEADLY_BOSS_MODS.." - 裝備耐久度結果"
-L.DUR_ENTRY						= "%s:耐久度[%d百分比]/裝備損壞[%s]"
+L.LAG_HEADER					= ""..L.DBM.." - 網路延遲結果"
+L.DUR_HEADER					= ""..L.DBM.." - 裝備耐久度結果"
 
 L.OVERRIDE_ACTIVATED			= "領隊已啟用此首領的配置覆蓋"
 
