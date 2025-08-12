@@ -277,8 +277,8 @@ end
 ---@param modId? string|number The mod id to register for combat scanning
 ---@param useSyncing boolean? If true, this mod will use syncing for combat scanning to solve range issues
 function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
-	modId = modId or self.id
 	if DBM.Options.NoCombatScanningFeatures then return end
+	modId = modId or self.id
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
 	end
