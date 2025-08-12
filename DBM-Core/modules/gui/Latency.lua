@@ -172,6 +172,11 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 end)
 
 function Latency:Show()
+	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
 	frame:Show()
+end
+
+function Latency:Hide()
+	frame:Hide()
 end

@@ -170,6 +170,11 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 end)
 
 function Durability:Show()
+	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
 	frame:Show()
+end
+
+function Durability:Hide()
+	frame:Hide()
 end
