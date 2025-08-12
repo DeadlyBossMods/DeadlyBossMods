@@ -162,7 +162,7 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 	end
 	local player = DBM:GetRaidRoster()[sender]
 	if player then
-		player.durpercent = percent
+		player.durpercent = math.floor(percent)
 		player.durbroken = broken
 	end
 
