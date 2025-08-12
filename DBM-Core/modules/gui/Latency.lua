@@ -172,6 +172,14 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 end)
 
 function Latency:Show()
+	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
+	if _G["DBM_GUI_OptionsFrame"] then
+		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+	end
 	frame:Show()
+end
+
+function Latency:Hide()
+	frame:Hide()
 end

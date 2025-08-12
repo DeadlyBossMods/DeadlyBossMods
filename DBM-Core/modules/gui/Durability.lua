@@ -162,7 +162,7 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 	end
 	local player = DBM:GetRaidRoster()[sender]
 	if player then
-		player.durpercent = percent
+		player.durpercent = math.floor(percent)
 		player.durbroken = broken
 	end
 
@@ -170,6 +170,14 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 end)
 
 function Durability:Show()
+	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
+	if _G["DBM_GUI_OptionsFrame"] then
+		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+	end
 	frame:Show()
+end
+
+function Durability:Hide()
+	frame:Hide()
 end
