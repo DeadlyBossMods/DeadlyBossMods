@@ -42,10 +42,10 @@ local yellNullConsumption							= mod:NewShortYell(1247424, nil, false)
 local yellNullConsumptionFades						= mod:NewShortFadesYell(1247424, nil, false)
 local specWarnShatteringBackhand					= mod:NewSpecialWarningCount(1220394, nil, nil, nil, 2, 2)
 local specWarnShatterShell							= mod:NewSpecialWarningMoveTo(1227373, nil, nil, nil, 1, 13)
-local specWarnCrystallized							= mod:NewSpecialWarningYou(1220394, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
+local specWarnCrystallized							= mod:NewSpecialWarningYou(1227378, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
 local specWarnShockwaveSlam							= mod:NewSpecialWarningDefensive(1231871, nil, nil, nil, 1, 2)
 local specWarnShockwaveSlamTaunt					= mod:NewSpecialWarningTaunt(1231871, nil, nil, nil, 1, 2)
-local specWarnEnragedTantrum						= mod:NewSpecialWarningSpell(1225673, nil, nil, nil, 3, 2)--Fight failure, you're dead when cast finishes
+local specWarnEnragedShattering						= mod:NewSpecialWarningSpell(1225673, nil, nil, nil, 3, 2)--Fight failure, you're dead when cast finishes
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerCrystallineEruptionCD					= mod:NewVarCountTimer("v6.1-23.1", 1233416, nil, nil, nil, 2)--Can't be cast during other spells so it gets radically spell queued (hopefully blizzard fixes this)
@@ -96,8 +96,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerShockwaveSlamCD:Start(self:IsMythic() and 50 or "v38.9-41.3", self.vb.shockwaveSlamCount+1)
 	elseif spellId == 1225673 then
-		specWarnEnragedTantrum:Show()
-		specWarnEnragedTantrum:Play("stilldanger")
+		specWarnEnragedShattering:Show()
+		specWarnEnragedShattering:Play("stilldanger")
 	end
 end
 

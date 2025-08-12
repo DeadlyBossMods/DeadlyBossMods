@@ -42,22 +42,22 @@ local warnKingsThrall								= mod:NewTargetNoFilterAnnounce(1224767, 2)--Could 
 
 local specWarnConquer								= mod:NewSpecialWarningSoakCount(1224787, nil, nil, nil, 2, 2)
 local specWarnVanquish								= mod:NewSpecialWarningSpell(1224812, nil, nil, nil, 2, 15)
-local specWarnBanishment							= mod:NewSpecialWarningMoveAway(1227529, nil, nil, nil, 1, 2)
-local yellBanishmentFades							= mod:NewShortFadesYell(1227529)
+local specWarnBanishment							= mod:NewSpecialWarningMoveAway(1227549, nil, nil, nil, 1, 2)
+local yellBanishmentFades							= mod:NewShortFadesYell(1227549)
 local specWarnInvokeTheOath							= mod:NewSpecialWarningSpell(1224906, nil, nil, nil, 2, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1231097, nil, nil, nil, 1, 8)
 
 local timerSubjugationRuleCD						= mod:NewCDCountTimer(40, 1224776, DBM_COMMON_L.TANKCOMBO.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerBanishmentCD								= mod:NewCDCountTimer(97.3, 1227529, nil, nil, nil, 3)
+local timerBanishmentCD								= mod:NewCDCountTimer(97.3, 1227549, nil, nil, nil, 3)
 local timerInvokeTheOathCD							= mod:NewNextTimer(117, 1224906, nil, nil, nil, 2)
 
 mod:AddInfoFrameOption(1224731, true)
 ----Royal Voidwing
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32228))
-local specWarnBesiege								= mod:NewSpecialWarningDodgeCount(1225016, nil, nil, nil, 2, 2)
+local specWarnBesiege								= mod:NewSpecialWarningDodgeCount(1227470, nil, nil, nil, 2, 2)
 
 local timerBeheadCD									= mod:NewCDCountTimer(40, 1224827, nil, nil, nil, 3)
-local timerBesiegeCD								= mod:NewCDCountTimer(40, 1225016, nil, nil, nil, 3)
+local timerBesiegeCD								= mod:NewCDCountTimer(40, 1227470, nil, nil, nil, 3)
 
 mod:AddPrivateAuraSoundOption(1224855, true, 1224827, 1)--Behead
 --Intermission One: Nexus Descent
@@ -119,11 +119,11 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31575))
 local specWarnStarshattered						= mod:NewSpecialWarningYou(1226413, nil, nil, nil, 1, 6)
 local specWarnStarshatteredTaunt				= mod:NewSpecialWarningTaunt(1226413, nil, nil, nil, 1, 2)
 
-local timerGalacticSmashCD						= mod:NewCDCountTimer(55, 1225319, nil, nil, nil, 3)
+local timerGalacticSmashCD						= mod:NewCDCountTimer(55, 1226648, nil, nil, nil, 3)
 local timerStarkillerSwingCD					= mod:NewCDCountTimer(97.3, 1226442, nil, nil, nil, 3)
 local timerWorldInTwilightCD					= mod:NewNextTimer(185, 1225634, nil, nil, nil, 6)--172.5+12.5ish
 
-mod:AddPrivateAuraSoundOption(1225316, true, 1225319, 1)--Galactic Smash
+mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
 mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
 
 local castsPerGUID = {}

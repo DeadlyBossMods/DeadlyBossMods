@@ -615,14 +615,8 @@ L.SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
 L.COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 
-L.LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS.." - Latenzergebnisse"
-L.LAG_ENTRY					= "%s: %dms (Welt) / %dms (Standort)"
-L.LAG_FOOTER					= "Keine Antwort: %s"
-
-L.DUR_CHECKING				= "Prüfe Schlachtzughaltbarkeit..."
-L.DUR_HEADER					= L.DEADLY_BOSS_MODS.." - Haltbarkeitergebnisse"
-L.DUR_ENTRY					= "%s: Haltbarkeit [%d Prozent] / Ausrüstung defekt [%s]"
+L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
+L.DUR_HEADER					= L.DBM.." - Haltbarkeitergebnisse"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 

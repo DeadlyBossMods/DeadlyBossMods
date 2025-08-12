@@ -25,6 +25,12 @@ L.Tools_LatencyCheck				= "Latency Check"
 L.Tools_DurabilityCheck				= "Durability Check"
 L.Tools_KeystoneCheck				= "Keystone Check"
 
+L.Tools_BreakTimer					= "Start Break Timer"
+L.Tools_PizzaTimer					= "Start Generic Timer"
+
+L.Tools_Duration					= "Duration"
+L.Tools_Message						= "Timer Message"
+
 L.TabCategory_CURRENT_SEASON		= "Current Season"
 
 L.TabCategory_OTHER					= "Other Mods"

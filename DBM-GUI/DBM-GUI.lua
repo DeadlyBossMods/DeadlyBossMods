@@ -223,7 +223,7 @@ do
 		---@class DBMPopupFrame: Frame, BackdropTemplate
 		popupFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 		popupFrame:SetFrameStrata("DIALOG")
-		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
+		popupFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 		popupFrame:SetSize(512, 512)
 		popupFrame:SetPoint("CENTER")
 		popupFrame.backdropInfo = {

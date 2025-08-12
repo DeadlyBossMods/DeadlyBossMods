@@ -648,14 +648,8 @@ L.SPEED_CLEAR_TIMER_TEXT			= "Limpeza mais rápida"
 L.COMBAT_RES_TIMER_TEXT				= "Próxima recarga CR"
 L.TIMER_RESPAWN						= "%s Reaparecimento"
 
-L.LAG_CHECKING						= "Verificando a latência da raide..."
-L.LAG_HEADER						= L.DEADLY_BOSS_MODS .. " - Resultados de latência"
-L.LAG_ENTRY							= "%s: Latência mundial [%d ms] / Latência em casa [%d ms]"
-L.LAG_FOOTER						= "Sem resposta: %s"
-
-L.DUR_CHECKING						= "Verificando a durabilidade da raide..."
-L.DUR_HEADER						= L.DEADLY_BOSS_MODS .. " - Resultados de durabilidade"
-L.DUR_ENTRY							= "%s: Durabilidade [%d porcentagem] / quebrada [%s]"
+L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
+L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
 

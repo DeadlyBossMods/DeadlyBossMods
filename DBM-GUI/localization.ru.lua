@@ -21,6 +21,17 @@ L.OTabTools					= "Инструменты"--Например, кнопка та�
 L.OTabAbout					= "About"--I need to check it, then I’ll translate it
 
 --Main Tab, Tools checks
+--L.Tools_LatencyCheck				= "Latency Check"
+--L.Tools_DurabilityCheck				= "Durability Check"
+--L.Tools_KeystoneCheck				= "Keystone Check"
+
+--L.Tools_BreakTimer					= "Start Break Timer"
+--L.Tools_PizzaTimer					= "Start Generic Timer"
+
+--L.Tools_Duration					= "Duration"
+--L.Tools_Message						= "Timer Message"
+
+--Main Tab, Tools checks
 L.Tools_LatencyCheck				= "Проверка задержки"
 L.Tools_DurabilityCheck				= "Проверка прочности"
 L.Tools_KeystoneCheck				= "Проверка ключа М+"

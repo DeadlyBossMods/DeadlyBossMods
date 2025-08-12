@@ -16,12 +16,19 @@ L.OTabWorld					= "世界首領"
 L.OTabScenarios				= "事件"
 L.OTabPlugins				= "其他"
 L.OTabOptions				= "核心選項"
+--L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout					= "關於"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck				= "延遲檢查"
 L.Tools_DurabilityCheck				= "耐久度檢查"
 L.Tools_KeystoneCheck				= "鑰石檢查"
+
+--L.Tools_BreakTimer					= "Start Break Timer"
+--L.Tools_PizzaTimer					= "Start Generic Timer"
+
+--L.Tools_Duration					= "Duration"
+--L.Tools_Message						= "Timer Message"
 
 L.TabCategory_CURRENT_SEASON	= "當前賽季"
 

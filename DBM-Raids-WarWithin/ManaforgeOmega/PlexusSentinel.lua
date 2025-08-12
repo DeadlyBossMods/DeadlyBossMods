@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --Stage One: Purge The Intruders
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(31626))
 local warnManifestMatrices							= mod:NewTargetAnnounce(1219450, 3)
-local warnEradicatingSalvo							= mod:NewTargetCountAnnounce(1219531, 3, nil, nil, nil, nil, nil, nil, true)
+local warnEradicatingSalvo							= mod:NewTargetCountAnnounce(1219607, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnManifestMatrices						= mod:NewSpecialWarningMoveAway(1219450, nil, nil, nil, 1, 2)
 local yellManifestMatrices							= mod:NewShortYell(1219450)
@@ -43,15 +43,15 @@ local yellObliterationArcanocannon					= mod:NewShortYell(1219263)
 local yellObliterationArcanocannonFades				= mod:NewShortFadesYell(1219263)
 local specWarnObliterationArcanocannonOther			= mod:NewSpecialWarningTaunt(1219263, nil, nil, nil, 1, 2)
 local specWarnEradicatingSalvo						= mod:NewSpecialWarningYouPosCount(1219531, nil, nil, nil, 1, 2)
-local yellEradicatingSalvo							= mod:NewShortPosYell(1219531, nil, nil, nil, "YELL")
-local yellEradicatingSalvoFades						= mod:NewIconFadesYell(1219531, nil, nil, nil, "YELL")
-local specWarnGTFO									= mod:NewSpecialWarningGTFO(1219354, nil, nil, nil, 1, 8)
+local yellEradicatingSalvo							= mod:NewShortPosYell(1219607, nil, nil, nil, "YELL")
+local yellEradicatingSalvoFades						= mod:NewIconFadesYell(1219607, nil, nil, nil, "YELL")
+local specWarnGTFO									= mod:NewSpecialWarningGTFO(1219607, nil, nil, nil, 1, 8)
 
-mod:AddSetIconOption("SetIconOnEradicatingSalvo", 1219531, true, 0, {1, 2})
+mod:AddSetIconOption("SetIconOnEradicatingSalvo", 1219607, true, 0, {1, 2})
 
 local timerManifestMatricesCD						= mod:NewVarCountTimer("v33.1-38.9", 1219450, nil, nil, nil, 3)
 local timerObliterationArcanocannonCD				= mod:NewVarCountTimer("v34.0-36.5", 1219263, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerEradicatingSalvoCD						= mod:NewVarCountTimer("v34.0-36.5", 1219531, nil, nil, nil, 3)
+local timerEradicatingSalvoCD						= mod:NewVarCountTimer("v34.0-36.5", 1219607, nil, nil, nil, 3)
 --Stage Two: The Sieve Awakens
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(31634))
 local specWarnProtocolPurge							= mod:NewSpecialWarningCount(1220489, nil, nil, nil, 3, 2)

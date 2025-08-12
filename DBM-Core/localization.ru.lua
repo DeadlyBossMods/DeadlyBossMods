@@ -674,14 +674,8 @@ L.SPEED_CLEAR_TIMER_TEXT			= "Лучшее прохождение"
 L.COMBAT_RES_TIMER_TEXT				= "След. заряд БР"
 L.TIMER_RESPAWN						= "Появление %s"
 
-L.LAG_CHECKING						= "Проверка задержки у рейда..."
-L.LAG_HEADER						= L.DEADLY_BOSS_MODS.. " - результаты проверки задержки"
-L.LAG_ENTRY							= "%s: глобальная задержка [%d ms] / локальная задержка [%d ms]"
-L.LAG_FOOTER						= "Нет ответа: %s"
-
-L.DUR_CHECKING						= "Проверка прочности у рейда..."
-L.DUR_HEADER						= L.DEADLY_BOSS_MODS.. " - результаты проверки прочности"
-L.DUR_ENTRY							= "%s: прочность [%d процентов] / экипировка сломана [%s]"
+L.LAG_HEADER						= L.DBM.. " - результаты проверки задержки"
+L.DUR_HEADER						= L.DBM.. " - результаты проверки прочности"
 
 L.OVERRIDE_ACTIVATED					= "Для этого сражения лидер рейда активировал перезапись конфигурации."
 
