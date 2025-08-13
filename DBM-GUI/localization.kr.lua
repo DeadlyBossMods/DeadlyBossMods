@@ -15,19 +15,19 @@ L.OTabWorld						= "필드 보스"--Since there are so many world mods, enough t
 L.OTabScenarios						= "시나리오"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions					= "핵심 설정"
---L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabTools						= "도구"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout						= "소개"
 
 --Main Tab, Tools checks
---L.Tools_LatencyCheck				= "Latency Check"
---L.Tools_DurabilityCheck				= "Durability Check"
---L.Tools_KeystoneCheck				= "Keystone Check"
+L.Tools_LatencyCheck				= "지연시간 검사"
+L.Tools_DurabilityCheck				= "내구도 검사"
+L.Tools_KeystoneCheck				= "쐐기돌 확인"
 
---L.Tools_BreakTimer					= "Start Break Timer"
---L.Tools_PizzaTimer					= "Start Generic Timer"
+L.Tools_BreakTimer					= "휴식 타이머 시작"
+L.Tools_PizzaTimer					= "일반 타이머 시작"
 
---L.Tools_Duration					= "Duration"
---L.Tools_Message						= "Timer Message"
+L.Tools_Duration					= "내구도"
+L.Tools_Message						= "타이머 메시지"
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
