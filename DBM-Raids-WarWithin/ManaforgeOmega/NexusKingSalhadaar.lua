@@ -155,7 +155,7 @@ function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.swingCount = 0
 	--Boss
-	timerSubjugationRuleCD:Start(self:IsEasy() and 12.5 or 14.5-delay, 1)
+	timerSubjugationRuleCD:Start(self:IsEasy() and 12.5 or 13.4-delay, 1)
 	if not self:IsEasy() then
 		timerBanishmentCD:Start(30-delay, 1)
 	end
