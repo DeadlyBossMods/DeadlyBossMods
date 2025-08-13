@@ -156,11 +156,13 @@ function mod:OnCombatStart(delay)
 	self.vb.swingCount = 0
 	--Boss
 	timerSubjugationRuleCD:Start(self:IsEasy() and 12.5 or 14.5-delay, 1)
-	timerBanishmentCD:Start(30-delay, 1)
+	if not self:IsEasy() then
+		timerBanishmentCD:Start(30-delay, 1)
+	end
 	timerInvokeTheOathCD:Start(117-delay)--Until cast finish (not cast start)
 	--Voidwing
-	timerBeheadCD:Start(32.4-delay, 1)
-	timerBesiegeCD:Start(self:IsMythic() and 9 or self:IsEasy() and 46 or 49-delay, 1)
+	timerBeheadCD:Start((self:IsHard() and 32.5 or 35)-delay, 1)
+	timerBesiegeCD:Start((self:IsMythic() and 9 or self:IsEasy() and 46 or 49)-delay, 1)
 	self:EnablePrivateAuraSound(1224855, "lineyou", 17)--Behead
 	self:EnablePrivateAuraSound(1224857, "lineyou", 17, 1224855)--Behead
 	self:EnablePrivateAuraSound(1224858, "lineyou", 17, 1224855)--Behead
@@ -194,6 +196,9 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnTwilightBarrier then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -215,7 +220,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1227529 then
 		self.vb.banishmentCount = self.vb.banishmentCount + 1
 		if self.vb.banishmentCount < 4 then
-			local timer = self.vb.banishmentCount % 2 == 0 and 24.1 or 15.9
+			local timer = self.vb.banishmentCount % 2 == 0 and 23.6 or 16.4
 			timerBanishmentCD:Start(timer, self.vb.banishmentCount+1)
 		end
 	elseif spellId == 1224906 then
@@ -228,7 +233,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.besiegeCount = self.vb.besiegeCount + 1
 		specWarnBesiege:Show(self.vb.besiegeCount)
 		specWarnBesiege:Play("breathsoon")
-		timerBesiegeCD:Start(nil, self.vb.besiegeCount+1)
+		timerBesiegeCD:Start(40, self.vb.besiegeCount+1)
 	elseif spellId == 1228065 then
 		--Intermission One: Nexus Descent
 		--Timers for adds start on phase start, but their GUIDS aren't known until they spawn, so we can't start them here
@@ -337,7 +342,7 @@ function mod:SPELL_CAST_START(args)
 		timerBesiegeCD:Stop()
 	elseif spellId == 1225319 then
 		self.vb.smashCount = self.vb.smashCount + 1
-		timerGalacticSmashCD:Start(nil, self.vb.smashCount+1)
+		timerGalacticSmashCD:Start(55, self.vb.smashCount+1)
 	elseif spellId == 1228053 then
 		timerReapCD:Start(nil, args.sourceGUID)
 	elseif spellId == 1237106 then
