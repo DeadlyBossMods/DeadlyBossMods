@@ -1,4 +1,3 @@
--- WARNING: String "Creature-0-3777" looks non-anonymized.
 DBM.Test:DefineTest{
 	name = "TWW/ManaforgeOmega/PlexusSentinel/Heroic/Kill",
 	gameVersion = "Retail",

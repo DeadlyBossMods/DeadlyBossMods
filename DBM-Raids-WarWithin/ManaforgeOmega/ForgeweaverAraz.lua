@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(247989)
 mod:SetEncounterID(3132)
-mod:SetHotfixNoticeRev(20250708000000)
+mod:SetHotfixNoticeRev(20250813000000)
 mod:SetMinSyncRevision(20250708000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1234328 1232221 1230529 1243887 1248133",
+	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133",--1234328
 	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
 --	"SPELL_AURA_APPLIED_DOSE 1228506",
 	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
@@ -65,7 +65,7 @@ mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32397))
 local warnManaSplinter								= mod:NewTargetNoFilterAnnounce(1233415, 1)
 local warnManaSplinterFaded							= mod:NewFadesAnnounce(1233415, 2)
-local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)--10 sec NP timers?
+--local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)--10 sec NP timers?
 --Intermission: The Iris Opens
 --No new mechanics
 --Stage Two: Darkness Hungers
@@ -311,9 +311,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerInvokeCollectorCD:Start(timer, self.vb.invokeCollectorCount+1)
 		end
-	elseif spellId == 1234328 and self:AntiSpam(3, 1) then--antispam cause add count unknown
-		specWarnPhotonBlast:Show()
-		specWarnPhotonBlast:Play("frontal")
+--	elseif spellId == 1234328 and self:AntiSpam(3, 1) then--antispam cause add count unknown
+--		specWarnPhotonBlast:Show()
+--		specWarnPhotonBlast:Play("frontal")
 	elseif spellId == 1232221 then--Deaththroes
 		self.vb.deaththroesCount = self.vb.deaththroesCount + 1
 		specWarnDeaththroes:Show(self.vb.deaththroesCount)

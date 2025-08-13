@@ -1,3 +1,4 @@
+--OUTDATED TEST
 DBM.Test:DefineTest{
 	name = "TWW/ManaforgeOmega/ForgeweaverAraz/Mythic/Wipe",
 	gameVersion = "Retail",
