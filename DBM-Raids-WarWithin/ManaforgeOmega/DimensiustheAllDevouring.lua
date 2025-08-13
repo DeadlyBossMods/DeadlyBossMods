@@ -431,7 +431,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.extinguishTheStarsCount = self.vb.extinguishTheStarsCount + 1
 		specWarnExtinguishTheStars:Show(self.vb.extinguishTheStarsCount)
 		specWarnExtinguishTheStars:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.extinguishTheStarsCount)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.extinguishTheStarsCount+1)
 		if timer then
 			timerExtinguishTheStarsCD:Start(timer, self.vb.extinguishTheStarsCount)
 		end
@@ -470,7 +470,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1243577 then
 		if self:AntiSpam(8, 2) then
 			self.vb.reverseGravityCount = self.vb.reverseGravityCount + 1
-			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reverseGravityCount)
+			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reverseGravityCount+1)
 			if timer then
 				timerReverseGravityCD:Start(timer, self.vb.reverseGravityCount)
 			end
