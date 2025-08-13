@@ -13,14 +13,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1234328 1232221 1230529 1243887 1248133",
-	"SPELL_CAST_SUCCESS 1230231",
 	"SPELL_AURA_APPLIED 1228506 1228454 1228188 1233979 1233415 1243873",
 	"SPELL_AURA_APPLIED_DOSE 1228506",
-	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873"
+	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 --	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, tank stacks placeholder, or eliminate tank stacks if swaps just happen naturally with arcane obliteration
@@ -41,9 +40,10 @@ mod:RegisterEventsInCombat(
 local warnOverwhelmingPower							= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
 local warnVoidTear									= mod:NewCountAnnounce(1248133, 3)
 
-local specWarnOverwhelmingPower						= mod:NewSpecialWarningStack(1228502, nil, 10, nil, nil, 1, 6)
-local specWarnOverwhelmingPowerTaunt				= mod:NewSpecialWarningTaunt(1228502, nil, nil, nil, 1, 2)
+--local specWarnOverwhelmingPower					= mod:NewSpecialWarningStack(1228502, nil, 10, nil, nil, 1, 6)
+--local specWarnOverwhelmingPowerTaunt				= mod:NewSpecialWarningTaunt(1228502, false, nil, nil, 1, 2)
 local specWarnArcaneObliteration					= mod:NewSpecialWarningCount(1228216, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
+local specWarnArcaneObliterationTaunt				= mod:NewSpecialWarningTaunt(1228216, nil, nil, nil, 1, 2)
 local yellArcaneObliteration						= mod:NewShortYell(1228216, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellArcaneObliterationFades					= mod:NewShortFadesYell(1228216, nil, nil, nil, "YELL")
 local specWarnSilencingTempest						= mod:NewSpecialWarningDodgeCount(1228188, nil, nil, nil, 2, 2)
@@ -209,20 +209,24 @@ local allTimers = {
 
 ---@param self DBMMod
 local function delayedTankCheck(self)
-	local _, unitID = self:GetBossTarget(247989)
+	local targetName, unitID = self:GetBossTarget(247989)
 	if unitID and UnitIsUnit("player", unitID) then
 		yellArcaneObliteration:Yell()
 		yellArcaneObliterationFades:Countdown(4.7)
 	end
 	specWarnArcaneObliteration:Show(self.vb.obliterationCount)
-	if self:IsMythic() then
-		if self.vb.obliterationCount % 2 == 0 then
-			specWarnArcaneObliteration:Play("sharetwo")
-		else
-			specWarnArcaneObliteration:Play("shareone")
-		end
+	if self:IsTank() then
+		specWarnArcaneObliteration:Play("changemt")
 	else
-		specWarnArcaneObliteration:Play("helpsoak")
+		if self:IsMythic() then
+			if self.vb.obliterationCount % 2 == 0 then
+				specWarnArcaneObliteration:Play("sharetwo")
+			else
+				specWarnArcaneObliteration:Play("shareone")
+			end
+		else
+			specWarnArcaneObliteration:Play("helpsoak")
+		end
 	end
 end
 
@@ -368,36 +372,24 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 1230231 then--Phase Transition P1 -> P2
-		self:SetStage(0.5)--Increases to stage 1.5 and 2.5
-		--Stop all timers
-		timerOverwhelmingPowerCD:Stop()
-		timerArcaneObliterationCD:Stop()
-		timerSilencingTempestCD:Stop()
-		timerArcaneExpulsionCD:Stop()
-		timerInvokeCollectorCD:Stop()
-		timerVoidTearCD:Stop()
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 1228506 then
 		local amount = args.amount or 1
-		if amount >= 10 then--placeholder
-			if args:IsPlayer() then
-				specWarnOverwhelmingPower:Show(amount)
-				specWarnOverwhelmingPower:Play("stackhigh")
-			else
-				if not UnitIsDeadOrGhost("player") then
-					specWarnOverwhelmingPowerTaunt:Show(args.destName)
-					specWarnOverwhelmingPowerTaunt:Play("tauntboss")
-				end
-			end
-		else
+		if amount % 4 == 0 then
+		--if amount >= 10 then--placeholder
+		--	if args:IsPlayer() then
+		--		specWarnOverwhelmingPower:Show(amount)
+		--		specWarnOverwhelmingPower:Play("stackhigh")
+		--	else
+		--		if not UnitIsDeadOrGhost("player") then
+		--			specWarnOverwhelmingPowerTaunt:Show(args.destName)
+		--			specWarnOverwhelmingPowerTaunt:Play("tauntboss")
+		--		end
+		--	end
+		--else
 			warnOverwhelmingPower:Show(args.destName, amount)
+		--end
 		end
 	elseif spellId == 1228454 then
 		if self.Options.NPAuraOnMarkofPower then
@@ -465,24 +457,16 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---[[
 --Backup if using second sacrifice isn't accurate, but so far it seems to be
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
-	if spellId == 1233072 then--Phase Transition P2 -> P3
-		self:SetStage(3)
-		warnPhase2:Show()
-		warnPhase2:Play("ptwo")
-		self.vb.overwhelmingPowerCount = 0
-		self.vb.voidHarvestCount = 0
-		self.vb.silencingTempestCount = 0
-		self.vb.deaththroesCount = 0
-		--Start p2 timers
-		timerOverwhelmingPowerCD:Start(2)
-		timerSilencingTempestCD:Start(2)
-		timerVoidHarvestCD:Start(2)
-		if self:IsMythic() then
-			timerDeaththroesCD:Start(2)
-		end
+	if spellId == 1230231 then--Phase Transition P1 -> P2
+		self:SetStage(0.5)--Increases to stage 1.5 and 2.5
+		--Stop all timers
+		timerOverwhelmingPowerCD:Stop()
+		timerArcaneObliterationCD:Stop()
+		timerSilencingTempestCD:Stop()
+		timerArcaneExpulsionCD:Stop()
+		timerInvokeCollectorCD:Stop()
+		timerVoidTearCD:Stop()
 	end
 end
---]]
