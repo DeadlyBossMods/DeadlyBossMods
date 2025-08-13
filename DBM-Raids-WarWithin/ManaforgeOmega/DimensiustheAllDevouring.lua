@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1246541 1237695 1233539 1234044 1234263 1232973 1234898",--1243690
-	"SPELL_CAST_SUCCESS 1234242 1237690 1231716",
+	"SPELL_CAST_SUCCESS 1234242 1231716",--1237690
 	"SPELL_AURA_APPLIED 1231005 1228206 1228207 1230168 1229674 1243699 1243577 1243609 1235114 1246930 1234243 1234244 1246145 1245292 1232394 1234266 1250055",
 	"SPELL_AURA_APPLIED_DOSE 1228207 1230168 1229674 1246145 1234266",
 	"SPELL_AURA_REMOVED 1228207 1229038 1243577 1243609 1234243 1234244 1233539 1237690",
@@ -90,7 +90,7 @@ local timerGammaBurstCD								= mod:NewCDCountTimer(35, 1237319, nil, nil, nil,
 local timerGravitationalDistortionCD				= mod:NewCDCountTimer(97.3, 1234242, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --The Devoured Lords
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32738))
-local warnEclipseCast								= mod:NewCastAnnounce(1237690, 1, 32)
+--local warnEclipseCast								= mod:NewCastAnnounce(1237690, 1, 32)
 --Artoshion & Pargoth
 local warnTouchofOblivion							= mod:NewStackAnnounce(1246145, 2, nil, "Tank|Healer")
 
@@ -166,7 +166,7 @@ local allTimers = {
 			[1230087] = {25, 50, 50},--Massive Smash
 			[1229038] = {12.5, 100},--Devour P1
 			[1230979] = {37.5, 46.2},--Dark Matter
-			[1243690] = {47, 50},--Shattered Space
+			[1243690] = {43.7, 50},--Shattered Space
 			[1243577] = {56.2, 45},--Reverse Gravity
 		},
 		[3] = {
@@ -183,7 +183,7 @@ local allTimers = {
 			[1230087] = {25, 50, 50},--Massive Smash
 			[1229038] = {12.5, 100},--Devour P1
 			[1230979] = {37.5, 46.2},--Dark Matter
-			[1243690] = {47, 50},--Shattered Space
+			[1243690] = {43.7, 50},--Shattered Space
 			[1243577] = {56.2, 45},--Reverse Gravity
 		},
 		[3] = {
@@ -425,8 +425,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerGravitationalDistortionCD:Start(timer, self.vb.distortionCount+1)
 		end
-	elseif spellId == 1237690 then
-		warnEclipseCast:Show()
+--	elseif spellId == 1237690 then
+--		warnEclipseCast:Show()
 	elseif spellId == 1231716 then
 		self.vb.extinguishTheStarsCount = self.vb.extinguishTheStarsCount + 1
 		specWarnExtinguishTheStars:Show(self.vb.extinguishTheStarsCount)
@@ -468,7 +468,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1243699 then
 		warnSpatialFragment:CombinedShow(1, args.destName)
 	elseif spellId == 1243577 then
-		if self:AntiSpam(5, 2) then
+		if self:AntiSpam(8, 2) then
 			self.vb.reverseGravityCount = self.vb.reverseGravityCount + 1
 			local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.reverseGravityCount)
 			if timer then
@@ -531,7 +531,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnCosmicFragility:Show(args.destName)
 		specWarnCosmicFragility:Play("tauntboss")
 	elseif spellId == 1250055 then
-		if self:AntiSpam(5, 3) then
+		if self:AntiSpam(8, 3) then
 			self.vb.voidgraspCount = self.vb.voidgraspCount + 1
 			specWarnVoidgrasp:Show(self.vb.voidgraspCount)
 			specWarnVoidgrasp:Play("runout")
