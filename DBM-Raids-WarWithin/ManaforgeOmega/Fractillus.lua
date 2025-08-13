@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1220394 1231871 1225673",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 1233411",
 	"SPELL_AURA_APPLIED 1227378 1227373 1231871 1247424",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 1247424",
@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 	self.vb.backhandCount = 0
 	self.vb.crystallizationCount = 0
 	self.vb.shockwaveSlamCount = 0
-	timerCrystallineShockwaveCD:Start(14-delay, 1)--14-15.6
+	timerCrystallineShockwaveCD:Start(7-delay, 1)--14-15.6
 	timerShockwaveSlamCD:Start(18.1-delay, 1)
 	timerShatterShellCD:Start(42.2-delay, 1)
 	timerShatteringBackhandCD:Start(48.9-delay, 1)
@@ -94,15 +94,19 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 1227367 then
-		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
-		timerShatterShellCD:Start(nil, self.vb.crystallizationCount)
+	if spellId == 1233411 then--Much sooner than spell cast start event (when pre target debuffs go out)
+		self.vb.eruptionCount = self.vb.eruptionCount + 1
+		--"Entropic Conjunction-1233411-npc:237861-00005F0369 = pull:3.7, 17.0, 23.1, 17.1, 22.3, 17.1, 16.5, 6.1, 17.0, 23.1, 17.0, 21.9, 17.0, 23.1, 17.0, 22.8, 16.2, 17.0, 8.5",
+		--"Crystalline Eruption-1233416-npc:237861-0000717142 = pull:14.1, 20.3, 30.5, 20.7, 29.4, 21.1, 29.1, 20.9, 29.4, 21.1, 28.9, 20.7",
+		if self.vb.eruptionCount % 2 == 0 then
+			timerCrystallineShockwaveCD:Start("v28.9-30.5", self.vb.eruptionCount+1)
+		else
+			timerCrystallineShockwaveCD:Start("v20.3-21.4", self.vb.eruptionCount+1)
+		end
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -165,16 +169,7 @@ end
 --"<5.73 22:49:09> [UNIT_SPELLCAST_SUCCEEDED] Fractillus(99.1%-9.0%){Target:Tiefpal-Fyrakk} -Entropic Conjunction- [[boss1:Cast-3-5770-2810-337-1233411-001EDF03C6:1233411]]",
 --"<12.74 22:49:16> [CLEU] SPELL_CAST_START#Creature-0-5770-2810-337-237861-00005F0369#Fractillus(94.4%-30.0%)##nil#1233416#Entropic Conjunction#nil#nil#nil#nil#nil#nil",
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
-	if spellId == 1233411 then--Much sooner than spell cast start event (when pre target debuffs go out)
-		self.vb.eruptionCount = self.vb.eruptionCount + 1
-		--"Entropic Conjunction-1233411-npc:237861-00005F0369 = pull:3.7, 17.0, 23.1, 17.1, 22.3, 17.1, 16.5, 6.1, 17.0, 23.1, 17.0, 21.9, 17.0, 23.1, 17.0, 22.8, 16.2, 17.0, 8.5",
-		--"Crystalline Eruption-1233416-npc:237861-0000717142 = pull:14.1, 20.3, 30.5, 20.7, 29.4, 21.1, 29.1, 20.9, 29.4, 21.1, 28.9, 20.7",
-		if self.vb.eruptionCount % 2 == 0 then
-			timerCrystallineShockwaveCD:Start("v28.9-30.5", self.vb.eruptionCount+1)
-		else
-			timerCrystallineShockwaveCD:Start("v20.3-21.4", self.vb.eruptionCount+1)
-		end
-	elseif spellId == 1227367 then--Cast not in combat log (debuff is though)
+	if spellId == 1227367 then--Cast not in combat log (debuff is though)
 		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
 		timerShatterShellCD:Start("v49.9-51.5", self.vb.crystallizationCount+1)
 	end
