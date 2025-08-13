@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233815)
 mod:SetEncounterID(3131)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20250725000000)
+mod:SetHotfixNoticeRev(20250813000000)
 --mod:SetMinSyncRevision(20240921000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
