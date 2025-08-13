@@ -32,11 +32,11 @@ or ability.id = 1227367 and type = "cast"
 or ability.id = 1233416 and type = "begincast"
 --]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
-local warnCrystallineEruption						= mod:NewTargetNoFilterAnnounce(1233416, 3)
+local warnCrystallineShockwave						= mod:NewTargetNoFilterAnnounce(1233416, 3)
 
-local specWarnCrystallineEruption					= mod:NewSpecialWarningYou(1233416, nil, nil, nil, 1, 17)
---local yellCrystallineEruption						= mod:NewShortYell(1233416)
---local yellCrystallineEruptionFades				= mod:NewShortFadesYell(1233416)
+local specWarnCrystallineShockwave					= mod:NewSpecialWarningYou(1233416, nil, nil, nil, 1, 17)
+--local yellCrystallineShockwave					= mod:NewShortYell(1233416)
+--local yellCrystallineShockwaveFades				= mod:NewShortFadesYell(1233416)
 local specWarnNullConsumption						= mod:NewSpecialWarningMoveAway(1247424, nil, nil, nil, 1, 2, 3)
 local yellNullConsumption							= mod:NewShortYell(1247424, nil, false)
 local yellNullConsumptionFades						= mod:NewShortFadesYell(1247424, nil, false)
@@ -48,7 +48,7 @@ local specWarnShockwaveSlamTaunt					= mod:NewSpecialWarningTaunt(1231871, nil, 
 local specWarnEnragedShattering						= mod:NewSpecialWarningSpell(1225673, nil, nil, nil, 3, 2)--Fight failure, you're dead when cast finishes
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
-local timerCrystallineEruptionCD					= mod:NewVarCountTimer("v6.1-23.1", 1233416, nil, nil, nil, 2)--Can't be cast during other spells so it gets radically spell queued (hopefully blizzard fixes this)
+local timerCrystallineShockwaveCD					= mod:NewVarCountTimer("v6.1-23.1", 1233416, nil, nil, nil, 2)--Can't be cast during other spells so it gets radically spell queued (hopefully blizzard fixes this)
 local timerShatteringBackhandCD						= mod:NewCDCountTimer(39.3, 1220394, nil, nil, nil, 2)
 local timerShatterShellCD							= mod:NewVarCountTimer("v38.5-40.5", 1227373, nil, nil, nil, 3)
 local timerShockwaveSlamCD							= mod:NewVarCountTimer("v38.9-41.3", 1231871, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -64,17 +64,10 @@ function mod:OnCombatStart(delay)
 	self.vb.backhandCount = 0
 	self.vb.crystallizationCount = 0
 	self.vb.shockwaveSlamCount = 0
-	if self:IsMythic() then
-		timerCrystallineEruptionCD:Start(6.1-delay, 1)
-		timerShockwaveSlamCD:Start(19.5-delay, 1)
-		timerShatterShellCD:Start(40.8-delay, 1)
-		timerShatteringBackhandCD:Start(48.3-delay, 1)
-	else
-		timerCrystallineEruptionCD:Start(3.7-delay, 1)
-		timerShockwaveSlamCD:Start(15.9-delay, 1)
-		timerShatterShellCD:Start(31.5-delay, 1)
-		timerShatteringBackhandCD:Start(37.8-delay, 1)
-	end
+	timerCrystallineShockwaveCD:Start(14-delay, 1)--14-15.6
+	timerShockwaveSlamCD:Start(18.1-delay, 1)
+	timerShatterShellCD:Start(42.2-delay, 1)
+	timerShatteringBackhandCD:Start(48.9-delay, 1)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -87,14 +80,14 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnShatteringBackhand:Play("aesoon")
 		end
-		timerShatteringBackhandCD:Start(self:IsMythic() and 50 or 39.3, self.vb.backhandCount+1)
+		timerShatteringBackhandCD:Start("v49.9-51.5", self.vb.backhandCount+1)
 	elseif spellId == 1231871 then
 		self.vb.shockwaveSlamCount = self.vb.shockwaveSlamCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnShockwaveSlam:Show()
 			specWarnShockwaveSlam:Play("defensive")
 		end
-		timerShockwaveSlamCD:Start(self:IsMythic() and 50 or "v38.9-41.3", self.vb.shockwaveSlamCount+1)
+		timerShockwaveSlamCD:Start("v49.9-51.5", self.vb.shockwaveSlamCount+1)
 	elseif spellId == 1225673 then
 		specWarnEnragedShattering:Show()
 		specWarnEnragedShattering:Play("stilldanger")
@@ -156,16 +149,16 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:1233416") then
-		specWarnCrystallineEruption:Show()
-		specWarnCrystallineEruption:Play("lineyou")
---		yellCrystallineEruption:Yell()
---		yellCrystallineEruptionFades:Countdown(3)
+		specWarnCrystallineShockwave:Show()
+		specWarnCrystallineShockwave:Play("lineyou")
+--		yellCrystallineShockwave:Yell()
+--		yellCrystallineShockwaveFades:Countdown(3)
 	end
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:1233416") then
-		warnCrystallineEruption:CombinedShow(1, targetName)--Long aggregation since we collect targets via syncs
+		warnCrystallineShockwave:CombinedShow(1, targetName)--Long aggregation since we collect targets via syncs
 	end
 end
 
@@ -176,17 +169,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		--"Entropic Conjunction-1233411-npc:237861-00005F0369 = pull:3.7, 17.0, 23.1, 17.1, 22.3, 17.1, 16.5, 6.1, 17.0, 23.1, 17.0, 21.9, 17.0, 23.1, 17.0, 22.8, 16.2, 17.0, 8.5",
 		--"Crystalline Eruption-1233416-npc:237861-0000717142 = pull:14.1, 20.3, 30.5, 20.7, 29.4, 21.1, 29.1, 20.9, 29.4, 21.1, 28.9, 20.7",
-		if self:IsMythic() then
-			if self.vb.eruptionCount % 2 == 0 then
-				timerCrystallineEruptionCD:Start("v28.9-30.5", self.vb.eruptionCount+1)
-			else
-				timerCrystallineEruptionCD:Start(20.3, self.vb.eruptionCount+1)--20.3-20.7 (not big enough window for full variance timer
-			end
-		else--Likely also fixed but leaving until vetted
-			timerCrystallineEruptionCD:Start("v6.1-23.1", self.vb.eruptionCount+1)
+		if self.vb.eruptionCount % 2 == 0 then
+			timerCrystallineShockwaveCD:Start("v28.9-30.5", self.vb.eruptionCount+1)
+		else
+			timerCrystallineShockwaveCD:Start("v20.3-21.4", self.vb.eruptionCount+1)
 		end
 	elseif spellId == 1227367 then--Cast not in combat log (debuff is though)
 		self.vb.crystallizationCount = self.vb.crystallizationCount + 1
-		timerShatterShellCD:Start(self:IsMythic() and 50 or "v38.5-40.5", self.vb.crystallizationCount+1)
+		timerShatterShellCD:Start("v49.9-51.5", self.vb.crystallizationCount+1)
 	end
 end
