@@ -113,20 +113,23 @@ function mod:SPELL_CAST_START(args)
 			specWarnPiercingStrands:Show()
 			specWarnPiercingStrands:Play("defensive")
 		end
-		--Normal
-		--"Piercing Strand-1227263-npc:233815-00005FCA0D = pull:9.5, 6.0, 40.5, 4.0, 34.5, 6.0, 40.5, 4.0, 34.5, 6.0, 40.5, 4.0, 34.5, 6.0, 40.5, 4.0, 34.5, 6.0",
 		--Heroic
 		--"Piercing Strand-1227263-npc:233815-00006ECC7D = pull:9.5, 7.1, 39.4, 5.0, 33.5, 7.0, 39.5, 5.0",
 		--Mythic
 		--"Piercing Strand-1227263-npc:233815-00007025AA = pull:12.4, 4.0, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 3.9, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 4.0, 39.6, 5.0, 36.5, 4.0
-		if self.vb.piercingStrandsCount % 4 == 0 then
-			timerPiercingStrandsCD:Start(self:IsMythic() and 36.5 or self:IsHeroic() and 33.5 or 34.5, self.vb.piercingStrandsCount+1)
-		elseif self.vb.piercingStrandsCount % 4 == 2 then
-			timerPiercingStrandsCD:Start(self:IsHard() and 39.4 or 40.5, self.vb.piercingStrandsCount+1)
-		elseif self.vb.piercingStrandsCount % 4 == 1 then
-			timerPiercingStrandsCD:Start(self:IsMythic() and 4 or self:IsHeroic() and 7 or 6, self.vb.piercingStrandsCount+1)
+		if self:IsLFR() then
+			local timer = self.vb.piercingStrandsCount % 2 == 0 and 41.5 or 43.5
+			timerPiercingStrandsCD:Start(timer, self.vb.piercingStrandsCount+1)
 		else
-			timerPiercingStrandsCD:Start(self:IsHard() and 5 or 4, self.vb.piercingStrandsCount+1)
+			if self.vb.piercingStrandsCount % 4 == 0 then
+				timerPiercingStrandsCD:Start(self:IsMythic() and 36.5 or 33.5, self.vb.piercingStrandsCount+1)
+			elseif self.vb.piercingStrandsCount % 4 == 2 then
+				timerPiercingStrandsCD:Start(39.4, self.vb.piercingStrandsCount+1)
+			elseif self.vb.piercingStrandsCount % 4 == 1 then
+				timerPiercingStrandsCD:Start(self:IsMythic() and 4 or 7, self.vb.piercingStrandsCount+1)
+			else
+				timerPiercingStrandsCD:Start(5, self.vb.piercingStrandsCount+1)
+			end
 		end
 	elseif spellId == 1227782 then
 		self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
@@ -191,15 +194,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 1) then
 			self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
 			--Easy
-			--"Infusion Tether-1226311-npc:233815-00005FCA0D = pull:22.0[+3], 39.0[+3], 46.0[+3], 39.0[+3], 46.0[+3], 39.0[+3], 46.0[+3], 39.0[+3], 46.0[+3]",
+			--"Infusion Tether-1226311-npc:233815-00001BF638 = pull:22.0[+3], 44.0[+3], 41.0[+3], Stage 2/19.7",
 			--Heroic
 			--"Infusion Tether-1226311-npc:233815-00006ECC7D = pull:22.1[+3], 44.0[+3], 41.0[+3], 44.0[+3]",
-			local timer
-			if self:IsHard() then
-				timer = self.vb.infusionTetherCount % 2 == 0 and 41 or 44
-			else
-				timer = self.vb.infusionTetherCount % 2 == 0 and 46 or 39
-			end
+			local timer = self.vb.infusionTetherCount % 2 == 0 and 41 or 44
 			timerInfusionTetherCD:Start(timer, self.vb.infusionTetherCount+1)
 		end
 		warnInfusionTether:CombinedShow(0.3, args.destName)

@@ -113,18 +113,18 @@ local allTimers = {
 	},
 	["normal"] = {
 		[0] = {
-			[1219450] = {10.6, 34.0},--Manifest Matrices
+			[1219450] = {10.6, 33.9},--Manifest Matrices
 			[1219263] = {20.9, 32.8},--Obliteration Arcanocannon
 			[1219531] = {30.0},--Eradicating Salvo
 		},
 		[1] = {
-			[1219450] = {"v5.4-6.5", 35.2, 35.2},--Manifest Matrices
-			[1219263] = {18.2, 34.0, 34.0},--Obliteration Arcanocannon
+			[1219450] = {"v5.4-6.5", 35.2, "v35.2-37.0"},--Manifest Matrices
+			[1219263] = {18.2, 34.0, "v33.5-34.0"},--Obliteration Arcanocannon
 			[1219531] = {27.9, "v34.0-35.2"},--Eradicating Salvo
 		},
 		[2] = {
-			[1219450] = {"v5.4-6.5", 35.2, 35.2},--Manifest Matrices
-			[1219263] = {18.2, 34.0, 34.0},--Obliteration Arcanocannon
+			[1219450] = {"v5.4-6.5", 35.2, "v35.2-37.0"},--Manifest Matrices
+			[1219263] = {18.2, 34.0, "v33.5-34.0"},--Obliteration Arcanocannon
 			[1219531] = {27.9, "v34.0-35.2"},--Eradicating Salvo
 		},
 		[3] = {--Eventually normal becomes 36.4 repeating?
