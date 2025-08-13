@@ -69,19 +69,19 @@ local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
 		[0] = {
-			[1219450] = {9.5, 28.5},--Manifest Matrices
-			[1219263] = {20.9, 30.4},--Obliteration Arcanocannon
-			[1219531] = {41.3},--Eradicating Salvo
+			[1219450] = {9.5, 28.1},--Manifest Matrices
+			[1219263] = {21.7, 30.4},--Obliteration Arcanocannon
+			[1219531] = {41.0},--Eradicating Salvo
 		},
 		[1] = {--1 and 2 should be identical
-			[1219450] = {"v4.7-5.6", "v26.5-28.1", "v26.9-29.2", 23.2},--Manifest Matrices
+			[1219450] = {"v4.7-5.6", 23.2, 23.2, 24.4},--Manifest Matrices
 			[1219263] = {"v12.6-14.1", "v28.0-29.2", "v28.0-29.2"},--Obliteration Arcanocannon
-			[1219531] = {"v20.0-21.4", 31.5, "v33.8-35"},--Eradicating Salvo
+			[1219531] = {"v19.4-21.4", 35, 32.1},--Eradicating Salvo
 		},
 		[2] = {--1 and 2 should be identical
-			[1219450] = {"v4.7-5.6", "v26.5-28.1", "v26.9-29.2", 23.2},--Manifest Matrices
+			[1219450] = {"v4.7-5.6", 23.2, 23.2, 24.4},--Manifest Matrices
 			[1219263] = {"v12.6-14.1", "v28.0-29.2", "v28.0-29.2"},--Obliteration Arcanocannon
-			[1219531] = {"v20.0-21.4", 31.5, "v33.8-35"},--Eradicating Salvo
+			[1219531] = {"v19.4-21.4", 35, 32.1},--Eradicating Salvo
 		},
 		[3] = {--Need more data to get soft enrage repeater
 			[1219450] = {5.4, 23.1, 23.1, "v31.6-33.1", "v31.6-33.1"},--Manifest Matrices
@@ -93,17 +93,17 @@ local allTimers = {
 		[0] = {
 			[1219450] = {10.4, 34.0},--Manifest Matrices
 			[1219263] = {21.2, 32.9},--Obliteration Arcanocannon
-			[1219531] = {30.1, 31.6},--Eradicating Salvo
+			[1219531] = {30.1},--Eradicating Salvo
 		},
 		[1] = {
 			[1219450] = {6.2, 35.2, 35.2},--Manifest Matrices
-			[1219263] = {"v17.9-20.2", 34.0, 34.0},--Obliteration Arcanocannon
-			[1219531] = {"v27.9-28.7", "v34.1-35.2"},--Eradicating Salvo
+			[1219263] = {"v17.9-20.3", "v34.0-35.2", 34.0},--Obliteration Arcanocannon
+			[1219531] = {"v27.9-28.7", "v34.0-35.2"},--Eradicating Salvo
 		},
 		[2] = {
 			[1219450] = {6.2, 35.2, 35.2},--Manifest Matrices
-			[1219263] = {"v18.2-20.2", 34.0, 34.0},--Obliteration Arcanocannon
-			[1219531] = {"v27.9-28.7", "v34.1-35.2"},--Eradicating Salvo
+			[1219263] = {"v18.2-20.2", "v34.0-35.2", 34.0},--Obliteration Arcanocannon
+			[1219531] = {"v27.9-28.7", "v34.0-35.2"},--Eradicating Salvo
 		},
 		[3] = {--Need more data to get soft enrage repeater
 			[1219450] = {6.4, 35.2, 35.2, 35.2, 36.4},--Manifest Matrices
@@ -127,8 +127,8 @@ local allTimers = {
 			[1219263] = {18.2, 34.0, 34.0},--Obliteration Arcanocannon
 			[1219531] = {27.9, "v34.0-35.2"},--Eradicating Salvo
 		},
-		[3] = {--Eventually normal becomes 36.4 repeating
-			[1219450] = {6.1, 35.2, 35.2, 38.8, 36.4, 36.4, 36.4, 36.4},--Manifest Matrices
+		[3] = {--Eventually normal becomes 36.4 repeating?
+			[1219450] = {6.1, 35.2, 35.2, 38.8, 35.2, 36.4, 36.4, 36.4},--Manifest Matrices
 			[1219263] = {18.2, 34.0, 36.5, 34.0, 36.4, 36.4, 36.4, 36.4},--Obliteration Arcanocannon
 			[1219531] = {28.0, 34.0, 35.2, 36.4, 36.4, 36.4, 36.4},--Eradicating Salvo
 		},
@@ -152,7 +152,7 @@ function mod:OnCombatStart(delay)
 	timerManifestMatricesCD:Start(allTimers[savedDifficulty][0][1219450][1]-delay, 1)
 	timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][0][1219263][1]-delay, 1)
 	timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][0][1219531][1]-delay, 1)
-	timerProtocolPurgeCD:Start(61.2-delay, 1)--Was 69 on heroic but not likely still 69 since it was 61 on normal and mythic
+	timerProtocolPurgeCD:Start(60.8-delay, 1)--Was 69 on heroic but not likely still 69 since it was 61 on normal and mythic
 end
 
 function mod:OnTimerRecovery()
@@ -276,7 +276,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.purgeCount < 3 then
 			timerProtocolPurgeCD:Start(94, self.vb.purgeCount+1)
 		else
-			timerCleansetheChamberCD:Start(93.3, self.vb.purgeCount+1)
+			timerCleansetheChamberCD:Start(92.9, self.vb.purgeCount+1)
 		end
 	end
 end

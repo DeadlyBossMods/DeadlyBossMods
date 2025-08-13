@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1234328 1232221 1230529 1243887 1248133",
-	"SPELL_AURA_APPLIED 1228506 1228454 1228188 1233979 1233415 1243873",
-	"SPELL_AURA_APPLIED_DOSE 1228506",
+	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
+--	"SPELL_AURA_APPLIED_DOSE 1228506",
 	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
@@ -209,7 +209,7 @@ local allTimers = {
 
 ---@param self DBMMod
 local function delayedTankCheck(self)
-	local targetName, unitID = self:GetBossTarget(247989)
+	local _, unitID = self:GetBossTarget(247989)
 	if unitID and UnitIsUnit("player", unitID) then
 		yellArcaneObliteration:Yell()
 		yellArcaneObliterationFades:Countdown(4.7)
@@ -374,24 +374,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 1228506 then
-		local amount = args.amount or 1
-		if amount % 4 == 0 then
-		--if amount >= 10 then--placeholder
-		--	if args:IsPlayer() then
-		--		specWarnOverwhelmingPower:Show(amount)
-		--		specWarnOverwhelmingPower:Play("stackhigh")
-		--	else
-		--		if not UnitIsDeadOrGhost("player") then
-		--			specWarnOverwhelmingPowerTaunt:Show(args.destName)
-		--			specWarnOverwhelmingPowerTaunt:Play("tauntboss")
-		--		end
-		--	end
-		--else
-			warnOverwhelmingPower:Show(args.destName, amount)
-		--end
-		end
-	elseif spellId == 1228454 then
+	if spellId == 1228454 then
 		if self.Options.NPAuraOnMarkofPower then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
@@ -413,9 +396,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		--TODO, player stuffs
 	elseif spellId == 1233415 then
 		warnManaSplinter:Show(args.destName)
+--	elseif spellId == 1228506 then
+--		local amount = args.amount or 1
+--		if amount % 4 == 0 then
+		--if amount >= 10 then--placeholder
+		--	if args:IsPlayer() then
+		--		specWarnOverwhelmingPower:Show(amount)
+		--		specWarnOverwhelmingPower:Play("stackhigh")
+		--	else
+		--		if not UnitIsDeadOrGhost("player") then
+		--			specWarnOverwhelmingPowerTaunt:Show(args.destName)
+		--			specWarnOverwhelmingPowerTaunt:Play("tauntboss")
+		--		end
+		--	end
+		--else
+--			warnOverwhelmingPower:Show(args.destName, amount)
+		--end
+--		end
 	end
 end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
