@@ -64,9 +64,9 @@ function mod:OnCombatStart(delay)
 	self.vb.backhandCount = 0
 	self.vb.crystallizationCount = 0
 	self.vb.shockwaveSlamCount = 0
-	timerCrystallineShockwaveCD:Start(7-delay, 1)--14-15.6
+	timerCrystallineShockwaveCD:Start(6-delay, 1)--14-15.6
 	timerShockwaveSlamCD:Start(18.1-delay, 1)
-	timerShatterShellCD:Start(42.2-delay, 1)
+	timerShatterShellCD:Start(40.8-delay, 1)
 	timerShatteringBackhandCD:Start(48.9-delay, 1)
 end
 
