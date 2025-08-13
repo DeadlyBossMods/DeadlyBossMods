@@ -37,13 +37,12 @@ mod:RegisterEventsInCombat(
  or ability.id = 1233415
 --]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
-local warnOverwhelmingPower							= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
+--local warnOverwhelmingPower						= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
 local warnVoidTear									= mod:NewCountAnnounce(1248133, 3)
 
 --local specWarnOverwhelmingPower					= mod:NewSpecialWarningStack(1228502, nil, 10, nil, nil, 1, 6)
 --local specWarnOverwhelmingPowerTaunt				= mod:NewSpecialWarningTaunt(1228502, false, nil, nil, 1, 2)
 local specWarnArcaneObliteration					= mod:NewSpecialWarningCount(1228216, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
-local specWarnArcaneObliterationTaunt				= mod:NewSpecialWarningTaunt(1228216, nil, nil, nil, 1, 2)
 local yellArcaneObliteration						= mod:NewShortYell(1228216, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellArcaneObliterationFades					= mod:NewShortFadesYell(1228216, nil, nil, nil, "YELL")
 local specWarnSilencingTempest						= mod:NewSpecialWarningDodgeCount(1228188, nil, nil, nil, 2, 2)
@@ -142,33 +141,31 @@ local allTimers = {
 			--Arcane Obliteration
 			[1228216] = {30.9, 45},
 			--Silencing Tempest
-			[1228161] = {63, 44, 33},
+			[1228161] = {63, 44, 23},
 			--Arcane Expulsion
-			[1227631] = {149.9},
+			[1227631] = {145},
 			--Invoke Collector
 			[1231720] = {9, 44, 44},
 		},
 		[2] = {
 			--Overwhelming Power
-			[1228502] = {18.6, 22, 22, 22, 22, 22},
+			[1228502] = {18.6, 22, 22},
 			--Arcane Obliteration
-			[1228216] = {68.7},--Only 1 in second set
+			[1228216] = {45.7},--Only 1 in second set
 			--Silencing Tempest
-			[1228161] = {57.6, 44, 21},
+			[1228161] = {67.7},
 			--Arcane Expulsion
-			[1227631] = {149.9},
+			[1227631] = {79.7},
 			--Invoke Collector
-			[1231720] = {23.6, 22, 44},
+			[1231720] = {0},
 		},
 		[3] = {
 			--Void Harvest
 			[1243887] = {39, 8, 80, 8, 46, 8},
-			--Deaththroes (mythic only)
-			[1232221] = {},
 			--Overwhelming Power
-			[1228502] = {31, 44, 44, 44, 10, 44},
+			[1228502] = {27.3, 22, 22, 22, 22, 22},
 			--Silencing Tempest
-			[1228161] = {89, 46, 96},
+			[1228161] = {35.3, 21},
 		},
 	},
 	["normal"] = {--LFR confirmed same
@@ -180,29 +177,29 @@ local allTimers = {
 			--Silencing Tempest
 			[1228161] = {97.9},
 			--Arcane Expulsion
-			[1227631] = {129.9},
+			[1227631] = {125},
 			--Invoke Collector
 			[1231720] = {9, 44},
 		},
 		[2] = {
 			--Overwhelming Power
-			[1228502] = {18.6, 22, 22, 22, 22},--Only 5 second time
+			[1228502] = {18.6, 22, 22},--Only 3 second time
 			--Arcane Obliteration
-			[1228216] = {68.7},
+			[1228216] = {45.6},
 			--Silencing Tempest
-			[1228161] = {97.9},
+			[1228161] = {67.6},
 			--Arcane Expulsion
-			[1227631] = {129.9},
+			[1227631] = {79.6},
 			--Invoke Collector
-			[1231720] = {23.7, 22},
+			[1231720] = {0},
 		},
 		[3] = {
 			--Void Harvest
 			[1243887] = {39.2, 96, 46},
 			--Overwhelming Power
-			[1228502] = {31.2, 44, 44, 44, 10, 44},--Final 44 assumed by heroic
+			[1228502] = {27, 22, 22, 22, 22, 22},
 			--Silencing Tempest
-			[1228161] = {47.2, 54},
+			[1228161] = {56, 43.9},
 		},
 	},
 }

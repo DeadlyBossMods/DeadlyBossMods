@@ -194,6 +194,9 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnTwilightBarrier then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
