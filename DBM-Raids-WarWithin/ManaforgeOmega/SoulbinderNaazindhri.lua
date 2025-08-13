@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1225582 1227052 1241100 1223859 1242088 1225616",
 	"SPELL_CAST_SUCCESS 1227848 1227276 1227048",
-	"SPELL_AURA_APPLIED 1227049 1227049 1227276 1237607 1225626",
-	"SPELL_AURA_APPLIED_DOSE 1237607",
+	"SPELL_AURA_APPLIED 1227049 1227049 1227276 1237607 1225626 1248464",
+	"SPELL_AURA_APPLIED_DOSE 1237607 1248464",
 	"SPELL_AURA_REMOVED 1227049 1227276 1225626",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
@@ -49,13 +49,12 @@ local specWarnVoidVolley							= mod:NewSpecialWarningInterruptCount(1227052, "H
 --Boss
 --local warnEssenceImplosion						= mod:NewCountAnnounce(1227848, 2)
 local warnSoulfrayAnnihilation						= mod:NewTargetNoFilterAnnounce(1227276, 2)
-local warnMysticLash								= mod:NewStackAnnounce(1241100, 2, nil, "Tank|Healer")
+local warnMysticLash								= mod:NewStackAnnounce(1241100, 2)
 local warnSoulfireConvergence						= mod:NewTargetNoFilterAnnounce(1225616, 2)
 
 local specWarnSoulfrayAnnihilation					= mod:NewSpecialWarningYouCount(1227276, nil, nil, nil, 1, 2)
 local yellSoulfrayAnnihilation						= mod:NewShortPosYell(1227276)
 local yellSoulfrayAnnihilationFades					= mod:NewIconFadesYell(1227276)
-local specWarnMysticLash							= mod:NewSpecialWarningStack(1241100, nil, 10, nil, nil, 1, 6)
 local specWarnMysticLashTaunt						= mod:NewSpecialWarningTaunt(1241100, nil, nil, nil, 1, 2)
 local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1223859, nil, nil, nil, 2, 2)--Is it a dodge or an aoe?
 local specWarnSoulfireConvergence					= mod:NewSpecialWarningYou(1225616, nil, nil, nil, 1, 2)
@@ -225,20 +224,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSoulfireConvergence:Yell()
 			yellSoulfireConvergenceFades:Countdown(spellId)
 		end
-	elseif spellId == 1237607 then
+	elseif spellId == 1237607 or spellId == 1248464 then
 		local amount = args.amount or 1
-		if amount >= 10 then--placeholder
+		if amount % 6 == 0 then
 			if args:IsPlayer() then
-				specWarnMysticLash:Show(amount)
-				specWarnMysticLash:Play("stackhigh")
+				warnMysticLash:Show(args.destName, amount)
 			else
 				if not UnitIsDeadOrGhost("player") then
 					specWarnMysticLashTaunt:Show(args.destName)
 					specWarnMysticLashTaunt:Play("tauntboss")
 				end
 			end
-		else
-			warnMysticLash:Show(args.destName, amount)
 		end
 	end
 end
