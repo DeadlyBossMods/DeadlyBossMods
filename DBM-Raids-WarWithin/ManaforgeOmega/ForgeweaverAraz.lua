@@ -30,7 +30,6 @@ mod:RegisterEventsInCombat(
 --TODO, nameplate timer for https://www.wowhead.com/ptr-2/spell=1228213/astral-harvest ?
 --TODO, detect intermission arcane collector spawns and initial timers ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1232590/arcane-convergence ?
---TODO, tank swaps for https://www.wowhead.com/ptr-2/spell=1238266/ramping-power on Shielded Attendant?
 --[[
 (ability.id = 1230529) and type = "begincast"
  or ability.id = 1230231 and type = "cast"
@@ -71,7 +70,7 @@ local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, 
 --No new mechanics
 --Stage Two: Darkness Hungers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32384))
-local warnPhase2									= mod:NewPhaseAnnounce(1248009, 2, nil, nil, nil, nil, nil, 2)
+local warnPhase2									= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnVoidHarvest							= mod:NewSpecialWarningYou(1243901, nil, nil, nil, 1, 2)
 local yellVoidHarvestFades							= mod:NewShortFadesYell(1243901)
