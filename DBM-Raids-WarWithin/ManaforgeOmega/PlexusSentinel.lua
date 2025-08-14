@@ -155,10 +155,10 @@ function mod:OnCombatStart(delay)
 	else--Combine LFR and Normal
 		savedDifficulty = "normal"
 	end
-	timerManifestMatricesCD:Start(allTimers[savedDifficulty][0][1219450][1]-delay, 1)
-	timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][0][1219263][1]-delay, 1)
-	timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][0][1219531][1]-delay, 1)
-	timerProtocolPurgeCD:Start(60.8-delay, 1)--Was 69 on heroic but not likely still 69 since it was 61 on normal and mythic
+	timerManifestMatricesCD:Start(allTimers[savedDifficulty][0][1219450][1], 1)
+	timerObliterationArcanocannonCD:Start(allTimers[savedDifficulty][0][1219263][1], 1)
+	timerEradicatingSalvoCD:Start(allTimers[savedDifficulty][0][1219531][1], 1)
+	timerProtocolPurgeCD:Start(60.8, 1)--Was 69 on heroic but not likely still 69 since it was 61 on normal and mythic
 end
 
 function mod:OnTimerRecovery()
