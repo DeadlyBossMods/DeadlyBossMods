@@ -41,6 +41,7 @@ mod:RegisterEventsInCombat(
 --[[
 ability.id = 1234898 and type = "begincast" or ability.id = 1245292 and type = "applydebuff" or ability.id = 1237690 and type = "removebuff"
 --]]
+local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Critical Mass
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32292))
 local warnExcessMass								= mod:NewTargetNoFilterAnnounce(1228206, 1)
@@ -408,6 +409,8 @@ function mod:SPELL_CAST_START(args)
 			timerSuperNovaCD:Start(timer, self.vb.superNovaCount+1)
 		end
 	elseif spellId == 1234898 then--Event Horizon
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
+		warnPhase:Play("phasechange")
 		self:SetStage(1.5)
 		timerMassiveSmashCD:Stop()
 		timerDevourP1CD:Stop()
@@ -508,6 +511,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1245292 then
 		warnDestabalized:Show(args.destName)
 		if self:GetStage(3, 1) then
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
 			self:SetStage(3)
 			self.vb.devourCount = 0
 			timerExtinctionCD:Stop()
@@ -572,14 +577,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnDevourP3Over:Show()
 	elseif spellId == 1237690 then--Eclipse Removed
 		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
 		self.vb.conquerorsCrossCount = 0
 		self.vb.extinctionCount = 0
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 245255 then--Artoshion
-			timerConquerorsCrossCD:Start(8.6, 1)
-			timerMassEjectionCD:Start(14.9, 1)
-			timerExtinctionCD:Start(19.6, 1)
-			timerGammaBurstCD:Start(35.8, 1)
+			timerConquerorsCrossCD:Start("v4.4-8.6", 1)
+			timerMassEjectionCD:Start("v11.5-14.9", 1)
+			timerExtinctionCD:Start("v16.1-19.6", 1)
+			timerGammaBurstCD:Start("v34-35.8", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
