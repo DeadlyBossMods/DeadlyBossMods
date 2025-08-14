@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1227263 1227782 1227226",
 	"SPELL_CAST_SUCCESS 1226395 1237272",--1226315 1226867 1230115
-	"SPELL_AURA_APPLIED 1226311 1238502 1237212 1228070 1227784 1227163",
+	"SPELL_AURA_APPLIED 1226311 1238502 1237212 1228070 1227163",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 1226311 1238502",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -60,8 +60,8 @@ mod:AddNamePlateOption("NPAuraOnWovenWard", 1238502)
 --Phase 2: The Deathbound Beast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32303))
 local specWarnUnboundRage							= mod:NewSpecialWarningSpell(1228059, nil, nil, nil, 2, 2)
+local warnArcaneOutrage								= mod:NewCountAnnounce(1227782, 3)
 
-local specWarnArcaneOutrage							= mod:NewSpecialWarningYou(1227782, nil, nil, nil, 1, 13)
 local specWarnWrithingWave							= mod:NewSpecialWarningCount(1227226, nil, nil, nil, 2, 2)
 local specWarnWrithingWaveTaunt						= mod:NewSpecialWarningTaunt(1227226, nil, nil, nil, 1, 2)
 
@@ -133,6 +133,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1227782 then
 		self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
+		warnArcaneOutrage:Show(self.vb.infusionTetherCount)
 		timerArcaneOutrageCD:Start(nil, self.vb.infusionTetherCount+1)
 	elseif spellId == 1227226 then
 		self.vb.piercingStrandsCount = self.vb.piercingStrandsCount + 1
@@ -213,14 +214,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1237212 and not args:IsPlayer() then
 		specWarnPiercingStrandsOther:Show(args.destName)
 		specWarnPiercingStrandsOther:Play("tauntboss")
-	elseif spellId == 1227784 then
-		if args:IsPlayer() then
-			specWarnArcaneOutrage:Show()
-			specWarnArcaneOutrage:Play("pushbackincoming")
-			if self:IsMythic() then
-				specWarnArcaneOutrage:ScheduleVoice(1.5, "scatter")
-			end
-		end
 	elseif spellId == 1227163 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
