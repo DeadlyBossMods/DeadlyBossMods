@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555",--1234733
+	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555 1234733",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 1219459 1219439 1219607",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -55,6 +55,7 @@ local timerEradicatingSalvoCD						= mod:NewVarCountTimer("v34.0-36.5", 1219607,
 --Stage Two: The Sieve Awakens
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(31634))
 local specWarnProtocolPurge							= mod:NewSpecialWarningCount(1220489, nil, nil, nil, 3, 2)
+local warnCleansetheChamber							= mod:NewSpellAnnounce(1234733, 4)
 
 local timerProtocolPurgeCD							= mod:NewCDCountTimer(97.3, 1220489, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerCleansetheChamberCD						= mod:NewCDCountTimer(97.3, 1234733, nil, nil, nil, 6, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -69,7 +70,7 @@ local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
 		[0] = {
-			[1219450] = {9.5, 28.1},--Manifest Matrices
+			[1219450] = {"v8.4-9.5", 28.1},--Manifest Matrices
 			[1219263] = {21.7, 30.4},--Obliteration Arcanocannon
 			[1219531] = {41.0},--Eradicating Salvo
 		},
@@ -200,8 +201,8 @@ function mod:SPELL_CAST_START(args)
 		timerManifestMatricesCD:Stop()
 		timerObliterationArcanocannonCD:Stop()
 		timerEradicatingSalvoCD:Stop()
---	elseif spellId == 1234733 and self.vb.purgeCount < 4 then
---		self.vb.purgeCount = 4
+	elseif spellId == 1234733 then
+		warnCleansetheChamber:Show()
 	end
 end
 
