@@ -576,10 +576,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.extinctionCount = 0
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 245255 then--Artoshion
-			timerConquerorsCrossCD:Start(8.6, 1)
-			timerMassEjectionCD:Start(14.9, 1)
-			timerExtinctionCD:Start(19.6, 1)
-			timerGammaBurstCD:Start(35.8, 1)
+			timerConquerorsCrossCD:Start("v4.4-8.6", 1)
+			timerMassEjectionCD:Start("v11.5-14.9", 1)
+			timerExtinctionCD:Start("v16.1-19.6", 1)
+			timerGammaBurstCD:Start("v34-35.8", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
