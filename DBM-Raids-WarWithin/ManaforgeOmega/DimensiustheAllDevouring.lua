@@ -74,7 +74,7 @@ mod:AddSetIconOption("SetIconOnLivingMass", -33474, true, 5, {6, 1, 2, 4, 7})
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Intermission: Event Horizon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32735))
-local warnSoaringReshii								= mod:NewYouAnnounce(1235114, 1)
+local warnSoaringReshii								= mod:NewYouAnnounce(1235114, 1, nil, nil, 140013)--Short Text "Flight"
 local warnStellarCore								= mod:NewYouAnnounce(1246930, 1)
 --Stage Two: The Dark Heart
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
@@ -86,6 +86,7 @@ local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, nil, n
 local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 3, 2, 4)
 local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 3, 2, 4)
 
+local timerSoaringReshiiCD							= mod:NewNextTimer(35.2, 1235114, 140013, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short Text "Flight"
 local timerExtinctionCD								= mod:NewCDCountTimer(35.2, 1238765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerGammaBurstCD								= mod:NewCDCountTimer(35, 1237319, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerGravitationalDistortionCD				= mod:NewCDCountTimer(97.3, 1234242, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -417,6 +418,7 @@ function mod:SPELL_CAST_START(args)
 		timerDarkMatterCD:Stop()
 		timerShatteredSpaceCD:Stop()
 		timerReverseGravityCD:Stop()
+		timerSoaringReshiiCD:Start(13.8)
 	end
 end
 
@@ -591,10 +593,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
 		elseif cid == 245222 then--Pargoth
-			timerConquerorsCrossCD:Start(12.0, 1)
+			timerConquerorsCrossCD:Start("v11.3-12.0", 1)
 			timerStardustNovaCD:Start(18.2, 1)
 			timerExtinctionCD:Start(22.9, 1)
-			timerGammaBurstCD:Start(39.1, 1)
+			timerGammaBurstCD:Start("v37.2-39.1", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
