@@ -212,8 +212,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 1237212 and not args:IsPlayer() then
-		specWarnPiercingStrandsOther:Show(args.destName)
-		specWarnPiercingStrandsOther:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			specWarnPiercingStrandsOther:Show(args.destName)
+			specWarnPiercingStrandsOther:Play("tauntboss")
+		end
 	elseif spellId == 1227163 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
