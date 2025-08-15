@@ -12,8 +12,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1246541 1237695 1233539 1234044 1234263 1232973 1234898",--1243690
-	"SPELL_CAST_SUCCESS 1234242 1231716",--1237690
+	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234044 1234263 1232973 1234898",--1243690
+	"SPELL_CAST_SUCCESS 1234242 1231716 1246541",--1237690
 	"SPELL_AURA_APPLIED 1231005 1228206 1228207 1230168 1229674 1243699 1243577 1243609 1235114 1246930 1234243 1234244 1246145 1245292 1232394 1234266 1250055",
 	"SPELL_AURA_APPLIED_DOSE 1228207 1230168 1229674 1246145 1234266",
 	"SPELL_AURA_REMOVED 1228207 1229038 1243577 1243609 1234243 1234244 1233539 1237690",
@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 1231002 1237696",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_START boss1"
+	"UNIT_SPELLCAST_START boss1 boss2 boss3"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -50,7 +50,7 @@ local warnDevourP1Over								= mod:NewEndAnnounce(1229038, 1)
 local warnSpatialFragment							= mod:NewTargetNoFilterAnnounce(1243699, 1)
 local warnAirbornRemoved							= mod:NewFadesAnnounce(1243609, 1)
 
-local specWarnMassiveSmash							= mod:NewSpecialWarningCount(1230087, nil, nil, nil, 2, 2)
+local specWarnMassiveSmash							= mod:NewSpecialWarningCount(1230087, nil, 212336, nil, 2, 2)
 local specWarnExcessMass							= mod:NewSpecialWarningYou(1228206, nil, nil, nil, 1, 2)
 local specWarnMortalFragility						= mod:NewSpecialWarningTaunt(1230168, nil, nil, nil, 1, 2)
 local specWarnDevourP1								= mod:NewSpecialWarningMoveTo(1229038, nil, nil, nil, 3, 2)
@@ -63,7 +63,7 @@ local specWarnAirborn								= mod:NewSpecialWarningYou(1243609, nil, nil, nil, 
 --local specWarnReverseGravityDispel				= mod:NewSpecialWarningDispel(1243577, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1231002, nil, nil, nil, 1, 8)
 
-local timerMassiveSmashCD							= mod:NewCDCountTimer(97.3, 1230087, nil, nil, nil, 2)
+local timerMassiveSmashCD							= mod:NewCDCountTimer(97.3, 1230087, 212336, nil, nil, 2)--Shortname "Smash"
 local timerInfinitePossibilities					= mod:NewCastNPTimer(8, 1248240, nil, nil, nil, 5)
 local timerDevourP1CD								= mod:NewCDCountTimer(97.3, 1229038, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerDarkMatterCD								= mod:NewCDCountTimer(97.3, 1230979, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
@@ -74,7 +74,7 @@ mod:AddSetIconOption("SetIconOnLivingMass", -33474, true, 5, {6, 1, 2, 4, 7})
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Intermission: Event Horizon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32735))
-local warnSoaringReshii								= mod:NewYouAnnounce(1235114, 1)
+local warnSoaringReshii								= mod:NewYouAnnounce(1235114, 1, nil, nil, 140013)--Short Text "Flight"
 local warnStellarCore								= mod:NewYouAnnounce(1246930, 1)
 --Stage Two: The Dark Heart
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
@@ -82,12 +82,13 @@ local warnCrushingGravityFaded						= mod:NewFadesAnnounce(1234243, 1)
 local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 
 local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 2, 2)
-local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, nil, nil, 2, 2)
+local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 2)
 local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 3, 2, 4)
 local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 3, 2, 4)
 
+local timerSoaringReshiiCD							= mod:NewNextTimer(35.2, 1235114, 140013, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short Text "Flight"
 local timerExtinctionCD								= mod:NewCDCountTimer(35.2, 1238765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerGammaBurstCD								= mod:NewCDCountTimer(35, 1237319, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerGammaBurstCD								= mod:NewCDCountTimer(35, 1237319, DBM_COMMON_L.PUSHBACK.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerGravitationalDistortionCD				= mod:NewCDCountTimer(97.3, 1234242, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 --The Devoured Lords
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32738))
@@ -97,16 +98,16 @@ local warnTouchofOblivion							= mod:NewStackAnnounce(1246145, 2, nil, "Tank|He
 
 local specWarnMassEjection							= mod:NewSpecialWarningDodgeCount(1237694, nil, nil, nil, 2, 15)
 local specWarnMassDestruction						= mod:NewSpecialWarningDodgeCount(1249423, nil, nil, nil, 2, 15, 4)--Mythic version of above
-local specWarnConquerorsCross						= mod:NewSpecialWarningSwitchCount(1239262, "-Healer", nil, nil, 1, 2)
-local specWarnStardustNova							= mod:NewSpecialWarningDodgeCount(1237695, nil, nil, nil, 2, 2)
+local specWarnConquerorsCross						= mod:NewSpecialWarningSwitchCount(1239262, "-Healer", nil, DBM_COMMON_L.ADDS, 1, 2)
+local specWarnStardustNova							= mod:NewSpecialWarningDodgeCount(1237695, nil, 142775, nil, 2, 2)
 
 local timerMassEjectionCD							= mod:NewCDCountTimer(17.6, 1237694, nil, nil, nil, 3)
 --local timerMassDestructionCD						= mod:NewCDCountTimer(97.3, 1249423, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerConquerorsCrossCD						= mod:NewCDCountTimer(35, 1239262, nil, nil, nil, 1)
-local timerStardustNovaCD							= mod:NewCDCountTimer(35.2, 1237695, nil, nil, nil, 3)
+local timerConquerorsCrossCD						= mod:NewCDCountTimer(35, 1239262, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerStardustNovaCD							= mod:NewCDCountTimer(35.2, 1237695, 142775, nil, nil, 3)--Shortname "Nova"
 
 --Adds they both summon
-local specWarnNullBinding							= mod:NewSpecialWarningSpell(1246541, nil, nil, nil, 2, 2)
+local specWarnNullBinding							= mod:NewSpecialWarningYou(1246541, nil, nil, nil, 1, 2)
 
 --local timerNullBindingCD							= mod:NewCDNPTimer(97.3, 1246541, nil, nil, nil, 2)
 --Stage Three: Singularity
@@ -115,19 +116,19 @@ local warnDestabalized 								= mod:NewTargetNoFilterAnnounce(1245292, 1)
 local warnGravityWell								= mod:NewSpellAnnounce(1232394, 1)--Positive alert during devour
 local warnDevourP3Over								= mod:NewEndAnnounce(1233539, 1)
 
-local specWarnExtinguishTheStars					= mod:NewSpecialWarningDodgeCount(1231716, nil, nil, nil, 2, 2)
+local specWarnExtinguishTheStars					= mod:NewSpecialWarningDodgeCount(1231716, nil, 62134, nil, 2, 2)--shortname "Stars"
 local specWarnDevourP3								= mod:NewSpecialWarningMoveTo(1233539, nil, nil, nil, 3, 2)
-local specWarnDarkenedSky							= mod:NewSpecialWarningDodgeCount(1234044, nil, nil, nil, 2, 2)
-local specWarnCosmicCollapse						= mod:NewSpecialWarningDefensive(1234263, nil, nil, nil, 2, 2)
-local yellCosmicCollapse							= mod:NewShortYell(1234263)
+local specWarnDarkenedSky							= mod:NewSpecialWarningDodgeCount(1234044, nil, nil, DBM_COMMON_L.RINGS, 2, 2)
+local specWarnCosmicCollapse						= mod:NewSpecialWarningDefensive(1234263, nil, 298160, nil, 2, 2)
+local yellCosmicCollapse							= mod:NewShortYell(1234263, 298160)
 local specWarnCosmicFragility						= mod:NewSpecialWarningTaunt(1234266, nil, nil, nil, 2, 2)
 local specWarnSuperNova								= mod:NewSpecialWarningRunCount(1232973, nil, nil, nil, 4, 2)
 local specWarnVoidgrasp								= mod:NewSpecialWarningYouCount(1250055, nil, nil, nil, 1, 2)
 
-local timerExtinguishTheStarsCD						= mod:NewCDCountTimer(97.3, 1231716, nil, nil, nil, 3)
+local timerExtinguishTheStarsCD						= mod:NewCDCountTimer(97.3, 1231716, 62134, nil, nil, 3)--shortname "Stars"
 local timerDevourP3CD								= mod:NewCDCountTimer(97.3, 1233539, nil, nil, nil, 2)
-local timerDarkenedSkyCD							= mod:NewCDCountTimer(97.3, 1234044, nil, nil, nil, 3)
-local timerCosmicCollapseCD							= mod:NewCDCountTimer(97.3, 1234263, nil, nil, nil, 5)
+local timerDarkenedSkyCD							= mod:NewCDCountTimer(97.3, 1234044, DBM_COMMON_L.RINGS.." (%s)", nil, nil, 3)
+local timerCosmicCollapseCD							= mod:NewCDCountTimer(97.3, 1234263, 298160, nil, nil, 5)--Shortname "Collapse"
 local timerSuperNovaCD								= mod:NewCDCountTimer(97.3, 1232973, nil, nil, nil, 2)
 local timerVoidgraspCD								= mod:NewCDCountTimer(97.3, 1250055, nil, nil, nil, 3)
 
@@ -307,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1229038 then
 		devourCasting = true
 		self.vb.devourCount = self.vb.devourCount + 1
-		specWarnDevourP1:Show(self.vb.devourCount)
+		specWarnDevourP1:Show(collectiveGravityName)
 		specWarnDevourP1:Play("gather")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.devourCount+1)
 		if timer then
@@ -358,11 +359,6 @@ function mod:SPELL_CAST_START(args)
 		--if timer then
 			timerConquerorsCrossCD:Start(35, self.vb.conquerorsCrossCount+1)
 		--end
-	elseif spellId == 1246541 then
-		if self:AntiSpam(5, 1) then
-			specWarnNullBinding:Show()
-			specWarnNullBinding:Play("aesoon")--Probably wrong
-		end
 	elseif spellId == 1237695 then
 		self.vb.stardustCount = self.vb.stardustCount + 1
 		specWarnStardustNova:Show(self.vb.stardustCount)
@@ -417,6 +413,7 @@ function mod:SPELL_CAST_START(args)
 		timerDarkMatterCD:Stop()
 		timerShatteredSpaceCD:Stop()
 		timerReverseGravityCD:Stop()
+		timerSoaringReshiiCD:Start(13.8)
 	end
 end
 
@@ -437,6 +434,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.extinguishTheStarsCount+1)
 		if timer then
 			timerExtinguishTheStarsCD:Start(timer, self.vb.extinguishTheStarsCount)
+		end
+	elseif spellId == 1246541 then--Spell is constantly stutter cast so we moved to success to reduce spam
+		if self:AntiSpam(5, 1) and args:IsPlayer() then
+			specWarnNullBinding:Show()
+			specWarnNullBinding:Play("targetyou")
 		end
 	end
 end
@@ -591,10 +593,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
 		elseif cid == 245222 then--Pargoth
-			timerConquerorsCrossCD:Start(12.0, 1)
+			timerConquerorsCrossCD:Start("v11.3-12.0", 1)
 			timerStardustNovaCD:Start(18.2, 1)
 			timerExtinctionCD:Start(22.9, 1)
-			timerGammaBurstCD:Start(39.1, 1)
+			timerGammaBurstCD:Start("v37.2-39.1", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
@@ -631,7 +633,7 @@ function mod:UNIT_DIED(args)
 end
 
 --"<43.79 11:27:27> [UNIT_SPELLCAST_START] Dimensius(62.0%-24.0%){Target:??} -Shattered Space- 3.25s [[boss1:Cast-3-4241-2810-1727-1243690-00681C5A7F:1243690]]",
-function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 1243690 then
 		self.vb.shatteredSpaceCount = self.vb.shatteredSpaceCount + 1
 		specWarnShatteredSpace:Show(self.vb.shatteredSpaceCount)
