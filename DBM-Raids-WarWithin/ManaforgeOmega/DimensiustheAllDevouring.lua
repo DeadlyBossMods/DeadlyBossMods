@@ -308,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1229038 then
 		devourCasting = true
 		self.vb.devourCount = self.vb.devourCount + 1
-		specWarnDevourP1:Show(self.vb.devourCount)
+		specWarnDevourP1:Show(collectiveGravityName)
 		specWarnDevourP1:Play("gather")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.devourCount+1)
 		if timer then
