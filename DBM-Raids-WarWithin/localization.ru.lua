@@ -126,7 +126,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnPolGen	= "Показывать спецпредупреждение, когда генератор полярности меняет заряд"
+	specWarnPolGen	= "Показывать спецпредупреждение, когда $spell:1216802 меняет заряд на $spell:1216911 или $spell:1216934"
 })
 
 ---------------------------
