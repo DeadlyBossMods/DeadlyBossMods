@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 1226311 1238502 1237212 1228070 1227163",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 1226311 1238502",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
+	"SPELL_PERIODIC_DAMAGE 1243771",
+	"SPELL_PERIODIC_MISSED 1243771",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -47,7 +47,7 @@ local specWarnInfusionTether						= mod:NewSpecialWarningYou(1226311, nil, nil, 
 local yellInfusionTether							= mod:NewShortYell(1226311, nil, false)
 local specWarnPiercingStrands						= mod:NewSpecialWarningDefensive(1237212, nil, nil, nil, 1, 2)
 local specWarnPiercingStrandsOther					= mod:NewSpecialWarningTaunt(1237212, nil, nil, nil, 1, 2)
---local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
+local specWarnGTFO									= mod:NewSpecialWarningGTFO(1243771, nil, nil, nil, 1, 8)
 
 local timerLairWeavingCD							= mod:NewNextCountTimer(85, 1237272, nil, nil, nil, 2)
 --local timerPrimalSpellstormCD						= mod:NewAITimer(97.3, 1226867, nil, nil, nil, 3)
@@ -249,15 +249,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 1243771 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:1246921") then

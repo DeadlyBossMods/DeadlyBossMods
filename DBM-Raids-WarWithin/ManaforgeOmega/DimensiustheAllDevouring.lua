@@ -54,7 +54,7 @@ local specWarnMassiveSmash							= mod:NewSpecialWarningCount(1230087, nil, 2123
 local specWarnExcessMass							= mod:NewSpecialWarningYou(1228206, nil, nil, nil, 1, 2)
 local specWarnMortalFragility						= mod:NewSpecialWarningTaunt(1230168, nil, nil, nil, 1, 2)
 local specWarnDevourP1								= mod:NewSpecialWarningMoveTo(1229038, nil, nil, nil, 3, 2)
-local specWarnDarkMatter							= mod:NewSpecialWarningCount(1230979, nil, nil, nil, 1, 2)
+local specWarnDarkMatter							= mod:NewSpecialWarningMoveAwayCount(1230979, nil, nil, nil, 1, 2)
 local specWarnShatteredSpace						= mod:NewSpecialWarningDodgeCount(1243690, nil, nil, nil, 2, 2)
 local specWarnReverseGravity						= mod:NewSpecialWarningMoveAwayCount(1243577, nil, nil, nil, 1, 2)
 local yellReverseGravity							= mod:NewShortYell(1243577)
@@ -70,7 +70,7 @@ local timerDarkMatterCD								= mod:NewCDCountTimer(97.3, 1230979, nil, nil, ni
 local timerShatteredSpaceCD							= mod:NewCDCountTimer(97.3, 1243690, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerReverseGravityCD							= mod:NewCDCountTimer(97.3, 1243577, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnLivingMass", -33474, true, 5, {6, 1, 2, 4, 7})
+mod:AddSetIconOption("SetIconOnLivingMass", -33474, false, 5, {6, 1, 2, 4, 7})
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Intermission: Event Horizon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32735))
@@ -81,7 +81,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
 local warnCrushingGravityFaded						= mod:NewFadesAnnounce(1234243, 1)
 local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 
-local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 2, 2)
+local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
 local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 2)
 local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 3, 2, 4)
 local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 3, 2, 4)
@@ -318,7 +318,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1230979 then
 		self.vb.darkMatterCount = self.vb.darkMatterCount + 1
 		specWarnDarkMatter:Show(self.vb.darkMatterCount)
-		specWarnDarkMatter:Play("aesoon")
+		specWarnDarkMatter:Play("scatter")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkMatterCount+1)
 		if timer then
 			timerDarkMatterCD:Start(timer, self.vb.darkMatterCount+1)
@@ -451,11 +451,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScanForMobs(args.destGUID, 2, livingMassMarkerMapTable[self.vb.massSpawns], 1, nil, 12, "SetIconOnLivingMass")
 		end
 	elseif spellId == 1228206 then
+		warnExcessMass:CombinedShow(1.5, args.destName)
 		if args:IsPlayer() then
 			specWarnExcessMass:Show()
 			specWarnExcessMass:Play("runout")
-		else
-			warnExcessMass:Show(args.destName)
 		end
 	elseif spellId == 1228207 then
 		if args:IsPlayer() then
