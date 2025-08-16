@@ -198,7 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--"Infusion Tether-1226311-npc:233815-00001BF638 = pull:22.0[+3], 44.0[+3], 41.0[+3], Stage 2/19.7",
 			--Heroic
 			--"Infusion Tether-1226311-npc:233815-00006ECC7D = pull:22.1[+3], 44.0[+3], 41.0[+3], 44.0[+3]",
-			local timer = self.vb.infusionTetherCount % 2 == 0 and 41 or 44
+			local timer = self:IsMythic() and 44 or self.vb.infusionTetherCount % 2 == 0 and 41 or 44
 			timerInfusionTetherCD:Start(timer, self.vb.infusionTetherCount+1)
 		end
 		warnInfusionTether:CombinedShow(0.3, args.destName)
