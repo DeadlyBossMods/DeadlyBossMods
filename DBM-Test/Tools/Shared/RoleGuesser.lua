@@ -29,8 +29,8 @@ function roleGuesser:initPlayerStats(name)
 		role = "Unknown", ---@type "Unknown"|"Healer"|"Tank"|"Dps"
 		class = nil, ---@type string? Class in filename format, e.g., "SHAMAN". Not present in logs generated from older transcriptor versions
 		realName = name or "Unknown",
-		anonName = nil, ---@type string
-		anonGuid = nil, ---@type string
+		anonName = "Anonymous Failed", ---@type string
+		anonGuid = "Unknown Guid", ---@type string
 		originalLogRecorder = self.recordingPlayer == name
 	}
 	return setmetatable(obj, roleGuesserPlayerStatsMt)
