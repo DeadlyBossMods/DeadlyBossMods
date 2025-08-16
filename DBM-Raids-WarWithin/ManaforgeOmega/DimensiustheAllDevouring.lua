@@ -167,7 +167,7 @@ local allTimers = {
 		},
 		[3] = {
 			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {29.7, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
+			[1234044] = {29.5, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
@@ -183,7 +183,7 @@ local allTimers = {
 		},
 		[3] = {
 			[1233539] = {47.5, 100},--Devour P3
-			[1234044] = {29.7, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
+			[1234044] = {29.5, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
@@ -199,45 +199,13 @@ local allTimers = {
 		},
 		[3] = {
 			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {29.7, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
+			[1234044] = {29.5, 51.2, 33.3, 66.6, 33.3},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
 }
-
---[[
----@param self DBMMod
-local function updateBossDistance(self)
---	if not self.Options.AdvancedBossFiltering then return end
-	--Check if near or far from Torq
-	if self:CheckBossDistance(245255, true, 32825, 60) then
-		if not nearArtoshion then
-			nearArtoshion = true
---			timerStaticChargeCD:SetFade(false, self.vb.staticChargeCount+1)
-		end
-	else
-		if nearArtoshion then
-			nearArtoshion = false
---			timerStaticChargeCD:SetFade(true, self.vb.staticChargeCount+1)
-		end
-	end
-	--Check if near or far from Flarendo
-	if self:CheckBossDistance(245222, true, 32825, 60) then
-		if not nearPargoth then
-			nearPargoth = true
---			timerScrapBombCD:SetFade(false, self.vb.scrapbombCount+1)
-		end
-	else
-		if nearPargoth then
-			nearPargoth = false
---			timerScrapBombCD:SetFade(true, self.vb.scrapbombCount+1)
-		end
-	end
-	self:Schedule(2, updateBossDistance, self)
-end
---]]
 
 function mod:OnCombatStart(delay)
 	nearArtoshion, nearPargoth = true, true
@@ -257,6 +225,8 @@ function mod:OnCombatStart(delay)
 	self.vb.extinguishTheStarsCount = 0
 	self.vb.darkenedSkyCount = 0
 	self.vb.cosmicCollapseCount = 0
+	self.vb.superNovaCount = 0
+	self.vb.voidgraspCount = 0
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
