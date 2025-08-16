@@ -22,9 +22,10 @@ mod:RegisterEventsInCombat(
 local warnUntetheredRetreat			= mod:NewSpellAnnounce(1237261, 3)
 
 local specWarnTwilightBreath		= mod:NewSpecialWarningDodge(1237905, nil, nil, nil, 2, 2)
-local specWarnVeilshatterRoar		= mod:NewSpecialWarningCast(1237893, "SpellCaster", nil, nil, 2, 2)
+local specWarnVeilshatterRoar		= mod:NewSpecialWarningCast(1237893, "SpellCaster", nil, nil, 2, 2)--CD too messy, 54.9-114
 
-local timerTwilightBreathCD			= mod:NewAITimer(32.7, 1237905, nil, nil, nil, 3)
+local timerTwilightBreathCD			= mod:NewCDTimer(34.8, 1237905, nil, nil, nil, 3)
+local timerUntetheredRetreatCD		= mod:NewCDTimer(113, 1237261, nil, nil, nil, 6)
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -34,26 +35,9 @@ function mod:SPELL_CAST_START(args)
 		timerTwilightBreathCD:Start()
 	elseif spellId == 1237261 then
 		warnUntetheredRetreat:Show()
+		timerUntetheredRetreatCD:Start()
 	elseif spellId == 1237893 then
 		specWarnVeilshatterRoar:Show()
 		specWarnVeilshatterRoar:Play("stopcast")
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 421006 then
-
-	end
-end
---]]
-
---[[
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 421260 then
-
-	end
-end
---]]

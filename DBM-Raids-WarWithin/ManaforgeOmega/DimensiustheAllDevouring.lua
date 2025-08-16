@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233824, 241517, 234478)--Yes, they're all used
 mod:SetEncounterID(3135)
-mod:SetHotfixNoticeRev(20250813000000)
+mod:SetHotfixNoticeRev(20250816000000)
 mod:SetMinSyncRevision(20250813000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -26,14 +26,8 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, who should be warned about massive smash and what should it say?
 --TODO, add antimatter to GTFO if you soak too long
---TODO, get true spellcast for reverse gravity
 --TODO, Stellar Core counter for intermission 1?
---TODO, https://www.wowhead.com/ptr-2/spell=1232888/phenomenal-cosmic-power might be a phase change event
---TODO, how to handle Eclipse timers in stage 2
---TODO, distance filter alerts and timers for Artoshion and Pargoth?
---TODO, how to handle conquerors cross since both mini bosses use it
 --TODO, does https://www.wowhead.com/ptr-2/spell=1239270/voidwarding activate sometimes or is it always active (thus not needing warning)?
 --TODO, nullbinding nameplate timer and clarification on warning
 --TODO, probably don't need to do anything with https://www.wowhead.com/ptr-2/spell=1233292/accretion-disk but noting just in case
@@ -54,7 +48,7 @@ local specWarnMassiveSmash							= mod:NewSpecialWarningCount(1230087, nil, 2123
 local specWarnExcessMass							= mod:NewSpecialWarningYou(1228206, nil, nil, nil, 1, 2)
 local specWarnMortalFragility						= mod:NewSpecialWarningTaunt(1230168, nil, nil, nil, 1, 2)
 local specWarnDevourP1								= mod:NewSpecialWarningMoveTo(1229038, nil, nil, nil, 3, 2)
-local specWarnDarkMatter							= mod:NewSpecialWarningCount(1230979, nil, nil, nil, 1, 2)
+local specWarnDarkMatter							= mod:NewSpecialWarningMoveAwayCount(1230979, nil, nil, nil, 1, 2)
 local specWarnShatteredSpace						= mod:NewSpecialWarningDodgeCount(1243690, nil, nil, nil, 2, 2)
 local specWarnReverseGravity						= mod:NewSpecialWarningMoveAwayCount(1243577, nil, nil, nil, 1, 2)
 local yellReverseGravity							= mod:NewShortYell(1243577)
@@ -70,7 +64,7 @@ local timerDarkMatterCD								= mod:NewCDCountTimer(97.3, 1230979, nil, nil, ni
 local timerShatteredSpaceCD							= mod:NewCDCountTimer(97.3, 1243690, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerReverseGravityCD							= mod:NewCDCountTimer(97.3, 1243577, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnLivingMass", -33474, true, 5, {6, 1, 2, 4, 7})
+mod:AddSetIconOption("SetIconOnLivingMass", -33474, false, 5, {6, 1, 2, 4, 7})
 --mod:AddPrivateAuraSoundOption(433517, true, 433517, 1)
 --Intermission: Event Horizon
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32735))
@@ -81,7 +75,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
 local warnCrushingGravityFaded						= mod:NewFadesAnnounce(1234243, 1)
 local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 
-local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 2, 2)
+local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
 local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 2)
 local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 3, 2, 4)
 local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 3, 2, 4)
@@ -165,36 +159,53 @@ local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
 		[1] = {--Placeholder
-			[1230087] = {25, 50, 50},--Massive Smash
-			[1229038] = {12.5, 100},--Devour P1
-			[1230979] = {37.5, 46.2},--Dark Matter
-			[1243690] = {43.7, 50},--Shattered Space
-			[1243577] = {56.2, 45},--Reverse Gravity
+			[1230087] = {23.5, 47.0, 47.0, 47.0},--Massive Smash
+			[1229038] = {11.7, 94.1, 94.1},--Devour P1
+			[1230979] = {35.3, 43.5, 50.6, 43.5},--Dark Matter
+			[1243690] = {41.2, 47.0, 47.1, 47.0},--Shattered Space
+			[1243577] = {52.9, 42.4, 51.7, 42.4},--Reverse Gravity
 		},
 		[3] = {
 			[1231716] = {16.6},--Extinguish the Stars
 			[1233539] = {47.6, 100},--Devour P3
 			[1234044] = {80.5, 33.3, 66.3, 33.3},--Darkened Sky (alternating? need more data)
-			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
-			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3},--Super Nova
+			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
+			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
+		},
+	},
+	["heroic"] = {
+		[1] = {
+			[1230087] = {23.5, 47.0, 47.0, 47.0},--Massive Smash
+			[1229038] = {11.7, 94.1, 94.1},--Devour P1
+			[1230979] = {35.3, 43.5, 50.6, 43.5},--Dark Matter
+			[1243690] = {41.2, 47.0, 47.1, 47.0},--Shattered Space
+			[1243577] = {52.9, 42.4, 51.7, 42.4},--Reverse Gravity
+		},
+		[3] = {
+			[1231716] = {16.5},--Extinguish the Stars
+			[1233539] = {47.5, 100},--Devour P3
+			[1234044] = {80.5, 33.3, 66.6, 33.3},--Darkened Sky (alternating? need more data)
+			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
+			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
+			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
 	["other"] = {
 		[1] = {
-			[1230087] = {25, 50, 50},--Massive Smash
-			[1229038] = {12.5, 100},--Devour P1
-			[1230979] = {37.5, 46.2},--Dark Matter
-			[1243690] = {43.7, 50},--Shattered Space
-			[1243577] = {56.2, 45},--Reverse Gravity
+			[1230087] = {25, 50, 50, 50},--Massive Smash
+			[1229038] = {12.5, 100, 100},--Devour P1
+			[1230979] = {37.5, 46.2, 53.7, 46.2},--Dark Matter
+			[1243690] = {43.7, 50, 50, 50},--Shattered Space
+			[1243577] = {56.2, 45, 55, 45},--Reverse Gravity
 		},
 		[3] = {
 			[1231716] = {16.6},--Extinguish the Stars
 			[1233539] = {47.6, 100},--Devour P3
 			[1234044] = {80.5, 33.3, 66.3, 33.3},--Darkened Sky (alternating? need more data)
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
-			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3},--Super Nova
-			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
+			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
+			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
 }
@@ -252,8 +263,8 @@ function mod:OnCombatStart(delay)
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
---	elseif self:IsHeroic() then
---		savedDifficulty = "heroic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
 		savedDifficulty = "other"
 	end
@@ -267,8 +278,8 @@ end
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
---	elseif self:IsHeroic() then
---		savedDifficulty = "heroic"
+	elseif self:IsHeroic() then
+		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
 		savedDifficulty = "other"
 	end
@@ -318,7 +329,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1230979 then
 		self.vb.darkMatterCount = self.vb.darkMatterCount + 1
 		specWarnDarkMatter:Show(self.vb.darkMatterCount)
-		specWarnDarkMatter:Play("aesoon")
+		specWarnDarkMatter:Play("scatter")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkMatterCount+1)
 		if timer then
 			timerDarkMatterCD:Start(timer, self.vb.darkMatterCount+1)
@@ -451,11 +462,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScanForMobs(args.destGUID, 2, livingMassMarkerMapTable[self.vb.massSpawns], 1, nil, 12, "SetIconOnLivingMass")
 		end
 	elseif spellId == 1228206 then
+		warnExcessMass:CombinedShow(1.5, args.destName)
 		if args:IsPlayer() then
 			specWarnExcessMass:Show()
 			specWarnExcessMass:Play("runout")
-		else
-			warnExcessMass:Show(args.destName)
 		end
 	elseif spellId == 1228207 then
 		if args:IsPlayer() then
@@ -584,19 +594,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.conquerorsCrossCount = 0
 		self.vb.extinctionCount = 0
 		local cid = self:GetCIDFromGUID(args.destGUID)
+		--TODO, rework this to use zonecombatscanner or some other method of truly detecting combat engage times
+		--instead of using ugly variances
 		if cid == 245255 then--Artoshion
-			timerConquerorsCrossCD:Start("v4.4-8.6", 1)
-			timerMassEjectionCD:Start("v11.5-14.9", 1)
-			timerExtinctionCD:Start("v16.1-19.6", 1)
-			timerGammaBurstCD:Start("v34-35.8", 1)
+			timerConquerorsCrossCD:Start("v4.4-10", 1)
+			timerMassEjectionCD:Start("v11.5-17", 1)
+			timerExtinctionCD:Start("v16.1-21.8", 1)
+			timerGammaBurstCD:Start("v34-36", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
 		elseif cid == 245222 then--Pargoth
-			timerConquerorsCrossCD:Start("v11.3-12.0", 1)
-			timerStardustNovaCD:Start(18.2, 1)
-			timerExtinctionCD:Start(22.9, 1)
-			timerGammaBurstCD:Start("v37.2-39.1", 1)
+			timerConquerorsCrossCD:Start("v11.3-13.6", 1)
+			timerStardustNovaCD:Start("v18.2-20.7", 1)
+			timerExtinctionCD:Start("v22.9-25", 1)
+			timerGammaBurstCD:Start("v37.2-39.7", 1)
 			--if self:IsMythic() then
 			--	timerGravitationalDistortionCD:Start(50.5, 1)
 			--end
