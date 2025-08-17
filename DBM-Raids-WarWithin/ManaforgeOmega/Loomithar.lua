@@ -36,7 +36,7 @@ ability.id = 1228070 and type = "applybuff"
 --]]
 --Phase 1: The Silkbound Beast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32296))
---local warnPrimalSpellstorm						= mod:NewCountAnnounce(1226867, 3)
+local warnPrimalSpellstorm							= mod:NewCountAnnounce(1226867, 3)
 local warnInfusionTether							= mod:NewTargetAnnounce(1226311, 2)
 local warnInfusionTetherOver						= mod:NewFadesAnnounce(1226311, 1)
 local warnInfusionPylon								= mod:NewCountAnnounce(1246921, 3)
@@ -50,7 +50,7 @@ local specWarnPiercingStrandsOther					= mod:NewSpecialWarningTaunt(1237212, nil
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1243771, nil, nil, nil, 1, 8)
 
 local timerLairWeavingCD							= mod:NewNextCountTimer(85, 1237272, nil, nil, nil, 2)
---local timerPrimalSpellstormCD						= mod:NewAITimer(97.3, 1226867, nil, nil, nil, 3)
+local timerPrimalSpellstormCD						= mod:NewCDCountTimer(97.3, 1226867, nil, nil, nil, 3)
 local timerOverinfusionBurstCD						= mod:NewNextCountTimer(85, 1226395, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--???
 local timerInfusionTetherCD							= mod:NewCDCountTimer(97.3, 1226311, nil, nil, nil, 3)
 local timerPiercingStrandsCD						= mod:NewCDCountTimer(97.3, 1237212, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -76,15 +76,25 @@ mod.vb.pylonCount = 0
 mod.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
 mod.vb.piercingStrandsCount = 0--Also used for Writhing Wave (mechanic that replaces it)
 
+--Echo swirl timers, shared by justwait
+local stormP1TimersMythic = {12, 15, 13, 15, 16, 14}
+local function SwirlTimer(self)
+	warnPrimalSpellstorm:Show(self.vb.primalSpellstormCount)
+	self.vb.primalSpellstormCount = self.vb.primalSpellstormCount + 1
+	local cdCount = self.vb.primalSpellstormCount % 6 + 1
+	local timer = self:GetStage(2) and 8 or stormP1TimersMythic[cdCount]
+	timerPrimalSpellstormCD:Start(timer, self.vb.primalSpellstormCount)
+	self:Schedule(timer, SwirlTimer, self)
+end
+
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.weavingCount = 0
-	self.vb.primalSpellstormCount = 0
+	self.vb.primalSpellstormCount = 1
 	self.vb.overinfusionBurstCount = 0
 	self.vb.pylonCount = 0
 	self.vb.infusionTetherCount = 0
 	self.vb.piercingStrandsCount = 0
---	timerPrimalSpellstormCD:Start(1-delay)--Not logged, just damage
 	timerPiercingStrandsCD:Start((self:IsMythic() and 12.4 or 9.5)-delay, 1)
 	timerInfusionTetherCD:Start(22-delay, 1)
 	if self:IsEasy() then--Used instantly on pull for heroic and mythic
@@ -92,7 +102,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerOverinfusionBurstCD:Start(76-delay, 1)
 	if self:IsMythic() then
-		timerInfusionPylonCD:Start(10-delay, 1)
+		timerInfusionPylonCD:Start(5-delay, 1)
+		self:Schedule(14-delay, SwirlTimer, self)
+		timerPrimalSpellstormCD:Start(14-delay, 1)--Mythic only, can't be bothered with doing all 4 difficulties
 	end
 	if self.Options.NPAuraOnWovenWard then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -113,10 +125,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnPiercingStrands:Show()
 			specWarnPiercingStrands:Play("defensive")
 		end
-		--Heroic
-		--"Piercing Strand-1227263-npc:233815-00006ECC7D = pull:9.5, 7.1, 39.4, 5.0, 33.5, 7.0, 39.5, 5.0",
-		--Mythic
-		--"Piercing Strand-1227263-npc:233815-00007025AA = pull:12.4, 4.0, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 3.9, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 4.0, 39.5, 5.0, 36.5, 4.0, 39.6, 5.0, 36.5, 4.0
 		if self:IsLFR() then
 			local timer = self.vb.piercingStrandsCount % 2 == 0 and 41.5 or 43.5
 			timerPiercingStrandsCD:Start(timer, self.vb.piercingStrandsCount+1)
@@ -159,7 +167,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnLairWeaving:Show(self.vb.weavingCount)
 		specWarnLairWeaving:Play("specialsoon")--Generic for now
 		if self:IsMythic() then
-			--"Lair Weaving-1237272-npc:233815-00007025AA = pull:0.4, 7.0, 36.5, 7.0, 34.5, 7.0, 36.5, 7.0, 34.5, 7.0, 36.5, 7.0, 34.5, 7.0, 36.5, 7.0, 34.5, 7.0, 36.5, 7.0, 34.5, 7.0, 36.5, 7.0, 34.5, 7.0
 			if self.vb.weavingCount % 2 == 1 then
 				timerLairWeavingCD:Start(7, self.vb.weavingCount+1)
 			else
@@ -170,7 +177,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			end
 		elseif self:IsHeroic() then
-			--"Lair Weaving-1237272-npc:233815-00006ECC7D = pull:0.5, 43.5, 41.5, 43.5, 41.5",
 			if self.vb.weavingCount % 2 == 0 then
 				timerLairWeavingCD:Start(41.5, self.vb.weavingCount+1)
 			else
@@ -179,13 +185,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerLairWeavingCD:Start(85, self.vb.weavingCount+1)
 		end
-	--elseif spellId == 1226867 or spellId == 1230115 then
-	--	self.vb.primalSpellstormCount = self.vb.primalSpellstormCount + 1
-	--	warnPrimalSpellstorm:Show(self.vb.primalSpellstormCount)
-	--	timerPrimalSpellstormCD:Start()--nil, self.vb.primalSpellstormCount+1
-	--elseif spellId == 1226315 then
-	--	self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
-	--	timerInfusionTetherCD:Start()--nil, self.vb.infusionTetherCount+1
 	end
 end
 
@@ -194,11 +193,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 1226311 then
 		if self:AntiSpam(10, 1) then
 			self.vb.infusionTetherCount = self.vb.infusionTetherCount + 1
-			--Easy
-			--"Infusion Tether-1226311-npc:233815-00001BF638 = pull:22.0[+3], 44.0[+3], 41.0[+3], Stage 2/19.7",
-			--Heroic
-			--"Infusion Tether-1226311-npc:233815-00006ECC7D = pull:22.1[+3], 44.0[+3], 41.0[+3], 44.0[+3]",
-			local timer = self:IsMythic() and 44 or self.vb.infusionTetherCount % 2 == 0 and 41 or 44
+			--"Infusion Tether-1226311-npc:233815-000020CBF9 = pull:22.1[+3], 44.0[+3], 41.1[+3], 44.0[+3], 41.0[+3], 44.0[+3], 41.0[+3], Stage 2/7.6",
+			local timer = self.vb.infusionTetherCount % 2 == 0 and 41 or 44
 			timerInfusionTetherCD:Start(timer, self.vb.infusionTetherCount+1)
 		end
 		warnInfusionTether:CombinedShow(0.3, args.destName)
@@ -226,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1228070 and self:GetStage(1) then--Unbound Rage (backup)
 		self:SetStage(1.5)
 		timerLairWeavingCD:Stop()
-		--timerPrimalSpellstormCD:Stop()
+		timerPrimalSpellstormCD:Stop()
 		timerOverinfusionBurstCD:Stop()
 		timerInfusionTetherCD:Stop()
 		timerPiercingStrandsCD:Stop()
@@ -258,13 +254,13 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:1246921") then
+	if msg:find("spell:1246921") and self:AntiSpam(5, 5) then--Antispam isn't needed for real mod, but DBM offline needs it since it converts syncs from other players to this event
 		self.vb.pylonCount = self.vb.pylonCount + 1
 		warnInfusionPylon:Show(self.vb.pylonCount)
 		if self.vb.pylonCount % 2 == 0 then
-			timerInfusionPylonCD:Start(54.9, self.vb.pylonCount+1)
+			timerInfusionPylonCD:Start(49.9, self.vb.pylonCount+1)
 		else
-			timerInfusionPylonCD:Start(29.7, self.vb.pylonCount+1)
+			timerInfusionPylonCD:Start(34.7, self.vb.pylonCount+1)
 		end
 	end
 end
@@ -275,7 +271,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 1228059 and self:GetStage(1) then--Unbound Rage (comes 6 seconds sooner than CLEU
 		self:SetStage(1.5)
 		timerLairWeavingCD:Stop()
-		--timerPrimalSpellstormCD:Stop()
+		timerPrimalSpellstormCD:Stop()
 		timerOverinfusionBurstCD:Stop()
 		timerInfusionTetherCD:Stop()
 		timerPiercingStrandsCD:Stop()
@@ -283,7 +279,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnUnboundRage:Show()
 		specWarnUnboundRage:Play("carefly")
 		timerUnboundrageCast:Start()
-		--timerPrimalSpellstormCD:Start(2)
+		if self:IsMythic() then
+			timerPrimalSpellstormCD:Start(13, 1)
+			self:Schedule(13, SwirlTimer, self)
+		end
 		timerWrithingWaveCD:Start(16, 1)
 		timerArcaneOutrageCD:Start(23, 1)
 	elseif spellId == 1227775 then--Energy Controller 2 [DNT]
