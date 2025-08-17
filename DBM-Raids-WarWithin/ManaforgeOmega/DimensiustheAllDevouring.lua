@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234044 1234263 1232973 1234898",--1243690
+	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234263 1232973 1234898",--1243690 1234044
 	"SPELL_CAST_SUCCESS 1234242 1231716 1246541",--1237690
 	"SPELL_AURA_APPLIED 1231005 1228206 1228207 1230168 1229674 1243699 1243577 1243609 1235114 1246930 1234243 1234244 1246145 1245292 1232394 1234266 1250055",
 	"SPELL_AURA_APPLIED_DOSE 1228207 1230168 1229674 1246145 1234266",
@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 1231002 1237696",
 	"SPELL_PERIODIC_MISSED 1231002 1237696",
 	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_START boss1 boss2 boss3"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -119,7 +119,7 @@ local specWarnCosmicFragility						= mod:NewSpecialWarningTaunt(1234266, nil, ni
 local specWarnSuperNova								= mod:NewSpecialWarningRunCount(1232973, nil, nil, nil, 4, 2)
 local specWarnVoidgrasp								= mod:NewSpecialWarningYouCount(1250055, nil, nil, nil, 1, 2)
 
-local timerExtinguishTheStarsCD						= mod:NewCDCountTimer(97.3, 1231716, 62134, nil, nil, 3)--shortname "Stars"
+local timerExtinguishTheStarsCD						= mod:NewCDTimer(97.3, 1231716, 62134, nil, nil, 3)--shortname "Stars"
 local timerDevourP3CD								= mod:NewCDCountTimer(97.3, 1233539, nil, nil, nil, 2)
 local timerDarkenedSkyCD							= mod:NewCDCountTimer(97.3, 1234044, DBM_COMMON_L.RINGS.." (%s)", nil, nil, 3)
 local timerCosmicCollapseCD							= mod:NewCDCountTimer(97.3, 1234263, 298160, nil, nil, 5)--Shortname "Collapse"
@@ -166,9 +166,8 @@ local allTimers = {
 			[1243577] = {52.9, 42.4, 51.7, 42.4},--Reverse Gravity
 		},
 		[3] = {
-			[1231716] = {16.6},--Extinguish the Stars
 			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {80.5, 33.3, 66.3, 33.3},--Darkened Sky (alternating? need more data)
+			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
@@ -183,9 +182,8 @@ local allTimers = {
 			[1243577] = {52.9, 42.4, 51.7, 42.4},--Reverse Gravity
 		},
 		[3] = {
-			[1231716] = {16.5},--Extinguish the Stars
 			[1233539] = {47.5, 100},--Devour P3
-			[1234044] = {80.5, 33.3, 66.6, 33.3},--Darkened Sky (alternating? need more data)
+			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
@@ -200,47 +198,14 @@ local allTimers = {
 			[1243577] = {56.2, 45, 55, 45},--Reverse Gravity
 		},
 		[3] = {
-			[1231716] = {16.6},--Extinguish the Stars
 			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {80.5, 33.3, 66.3, 33.3},--Darkened Sky (alternating? need more data)
+			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},--Darkened Sky
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
 }
-
---[[
----@param self DBMMod
-local function updateBossDistance(self)
---	if not self.Options.AdvancedBossFiltering then return end
-	--Check if near or far from Torq
-	if self:CheckBossDistance(245255, true, 32825, 60) then
-		if not nearArtoshion then
-			nearArtoshion = true
---			timerStaticChargeCD:SetFade(false, self.vb.staticChargeCount+1)
-		end
-	else
-		if nearArtoshion then
-			nearArtoshion = false
---			timerStaticChargeCD:SetFade(true, self.vb.staticChargeCount+1)
-		end
-	end
-	--Check if near or far from Flarendo
-	if self:CheckBossDistance(245222, true, 32825, 60) then
-		if not nearPargoth then
-			nearPargoth = true
---			timerScrapBombCD:SetFade(false, self.vb.scrapbombCount+1)
-		end
-	else
-		if nearPargoth then
-			nearPargoth = false
---			timerScrapBombCD:SetFade(true, self.vb.scrapbombCount+1)
-		end
-	end
-	self:Schedule(2, updateBossDistance, self)
-end
---]]
 
 function mod:OnCombatStart(delay)
 	nearArtoshion, nearPargoth = true, true
@@ -260,6 +225,8 @@ function mod:OnCombatStart(delay)
 	self.vb.extinguishTheStarsCount = 0
 	self.vb.darkenedSkyCount = 0
 	self.vb.cosmicCollapseCount = 0
+	self.vb.superNovaCount = 0
+	self.vb.voidgraspCount = 0
 	--self:EnablePrivateAuraSound(433517, "runout", 2)
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
@@ -388,14 +355,14 @@ function mod:SPELL_CAST_START(args)
 			timerDevourP3CD:Start(timer, self.vb.devourCount+1)
 		end
 		self:Schedule(2.5, extraWarnDevour, self)
-	elseif spellId == 1234044 then
-		self.vb.darkenedSkyCount = self.vb.darkenedSkyCount + 1
-		specWarnDarkenedSky:Show(self.vb.darkenedSkyCount)
-		specWarnDarkenedSky:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkenedSkyCount+1)
-		if timer then
-			timerDarkenedSkyCD:Start(timer, self.vb.darkenedSkyCount+1)
-		end
+	--elseif spellId == 1234044 then
+	--	self.vb.darkenedSkyCount = self.vb.darkenedSkyCount + 1
+	--	specWarnDarkenedSky:Show(self.vb.darkenedSkyCount)
+	--	specWarnDarkenedSky:Play("watchstep")
+	--	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.darkenedSkyCount+1)
+	--	if timer then
+	--		timerDarkenedSkyCD:Start(timer, self.vb.darkenedSkyCount+1)
+	--	end
 	elseif spellId == 1234263 then
 		self.vb.cosmicCollapseCount = self.vb.cosmicCollapseCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
@@ -442,10 +409,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.extinguishTheStarsCount = self.vb.extinguishTheStarsCount + 1
 		specWarnExtinguishTheStars:Show(self.vb.extinguishTheStarsCount)
 		specWarnExtinguishTheStars:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.extinguishTheStarsCount+1)
-		if timer then
-			timerExtinguishTheStarsCD:Start(timer, self.vb.extinguishTheStarsCount)
-		end
 	elseif spellId == 1246541 then--Spell is constantly stutter cast so we moved to success to reduce spam
 		if self:AntiSpam(5, 1) and args:IsPlayer() then
 			specWarnNullBinding:Show()
@@ -531,7 +494,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerGammaBurstCD:Stop()
 			timerGravitationalDistortionCD:Stop()
 
-			timerExtinguishTheStarsCD:Start(allTimers[savedDifficulty][3][1231716][1], 1)
+			timerExtinguishTheStarsCD:Start(16.6)
 			timerDevourP3CD:Start(allTimers[savedDifficulty][3][1233539][1], 1)
 			timerDarkenedSkyCD:Start(allTimers[savedDifficulty][3][1234044][1], 1)
 			timerCosmicCollapseCD:Start(allTimers[savedDifficulty][3][1234263][1], 1)
@@ -641,6 +604,19 @@ function mod:UNIT_DIED(args)
 		timerStardustNovaCD:Stop()
 --	elseif cid == 245705 then--Voidwarden
 
+	end
+end
+
+--First cast is not in combat log (rest are)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("spell:1234052") then
+		self.vb.darkenedSkyCount = self.vb.darkenedSkyCount + 1
+		specWarnDarkenedSky:Show(self.vb.darkenedSkyCount)
+		specWarnDarkenedSky:Play("watchstep")
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 1234044, self.vb.darkenedSkyCount+1)
+		if timer then
+			timerDarkenedSkyCD:Start(timer, self.vb.darkenedSkyCount+1)
+		end
 	end
 end
 
