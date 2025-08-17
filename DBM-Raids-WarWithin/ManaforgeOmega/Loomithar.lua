@@ -280,6 +280,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnUnboundRage:Play("carefly")
 		timerUnboundrageCast:Start()
 		if self:IsMythic() then
+			timerPrimalSpellstormCD:Stop()
+			self:Unschedule(SwirlTimer)
 			timerPrimalSpellstormCD:Start(13, 1)
 			self:Schedule(13, SwirlTimer, self)
 		end
