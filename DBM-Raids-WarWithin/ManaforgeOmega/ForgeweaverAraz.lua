@@ -393,7 +393,6 @@ function mod:SPELL_CAST_START(args)
 			timerOverwhelmingPowerCD:Start(allTimers[savedDifficulty][3][1228502][1], 1)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][3][1228161][1], 1)
 			timerVoidHarvestCD:Start(allTimers[savedDifficulty][3][1243887][1], 1)
-			timerAstralHarvestCD:Start(allTimers[savedDifficulty][3][1228213][1], 1)
 			if self:IsMythic() then
 				timerDeaththroesCD:Start(allTimers[savedDifficulty][3][1232221][1], 1)
 			end
