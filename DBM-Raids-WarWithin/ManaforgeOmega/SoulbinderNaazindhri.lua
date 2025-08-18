@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 --Soul Calling
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(1225582))
+mod:AddTimerLine(DBM:GetSpellName(1225582))
 local warnSoulCalling								= mod:NewCountAnnounce(1225582, 2)
 
 local timerSoulCallingCD							= mod:NewNextCountTimer(150, 1225582, nil, nil, nil, 1)
@@ -50,7 +50,7 @@ local specWarnVoidVolley							= mod:NewSpecialWarningInterruptCount(1227052, "H
 --local warnEssenceImplosion						= mod:NewCountAnnounce(1227848, 2)
 local warnSoulfrayAnnihilation						= mod:NewTargetNoFilterAnnounce(1227276, 2)
 local warnMysticLash								= mod:NewStackAnnounce(1241100, 2)
-local warnSoulfireConvergence						= mod:NewTargetNoFilterAnnounce(1225616, 2)
+local warnSoulfireConvergence						= mod:NewTargetAnnounce(1225616, 2, nil, false, 2)
 
 local specWarnSoulfrayAnnihilation					= mod:NewSpecialWarningYouCount(1227276, nil, nil, nil, 1, 2)
 local yellSoulfrayAnnihilation						= mod:NewShortPosYell(1227276)
@@ -217,7 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulfrayAnnihilation:CombinedShow(0.3, self.vb.soulfrayCount, args.destName)
 		self.vb.soulfrayIcon = self.vb.soulfrayIcon + 2--effectively does 4 and 6 to match BW world marker behavior
 	elseif spellId == 1225626 then
-		warnSoulfireConvergence:CombinedShow(0.3, args.destName)
+		warnSoulfireConvergence:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnSoulfireConvergence:Show()
 			specWarnSoulfireConvergence:Play("targetyou")
