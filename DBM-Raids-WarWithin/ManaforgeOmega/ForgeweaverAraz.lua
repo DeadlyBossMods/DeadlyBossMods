@@ -153,7 +153,7 @@ local allTimers = {
 			--Invoke Collector
 			[1231720] = {9, 44, 44},
 			--Astral Harvest
-			[1228213] = {20.2, 46, 8, 36, 8, 8},
+			[1228213] = {20, 46, 8, 36, 8, 8},
 		},
 		[2] = {
 			--Overwhelming Power
@@ -330,12 +330,13 @@ function mod:SPELL_CAST_START(args)
 			timerInvokeCollectorCD:Start(timer, self.vb.invokeCollectorCount+1)
 		end
 	elseif spellId == 1234328 then--antispam cause add count unknown
-		if timerAstralHarvestCD:GetRemaining(self.vb.astralharvestCount+1) < 5 then--Might need fine tuning
+		local uId = self:GetUnitIdFromGUID(args.sourceGUID)
+		if UnitPower(uId) > 70 then--Might need fine tuning
 			timerPhotonBlastCD:Start(19, args.sourceGUID)
 		else
 			timerPhotonBlastCD:Start(4, args.sourceGUID)--3 seconds for first cast, then 4 seconds after that
 		end
-		if self:CheckBossDistance(args.sourceGUID, true, 21519, 23) then
+		if self:CheckBossDistance(args.sourceGUID, false, 10645, 23) then
 			specWarnPhotonBlast:Show()
 			specWarnPhotonBlast:Play("frontal")
 		end
