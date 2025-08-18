@@ -5,19 +5,19 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(237660, 237661, 237662)
 mod:SetEncounterID(3122)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20250813000000)
-mod:SetMinSyncRevision(20250727000000)
+mod:SetHotfixNoticeRev(20250818000000)
+mod:SetMinSyncRevision(20250818000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117 1240891",
+	"SPELL_CAST_START 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117 1240891 1245726",
 	"SPELL_CAST_SUCCESS 1233672 1241833",--1227058
 	"SPELL_AURA_APPLIED 1226493 1233093 1233863 1218103",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 1233093 1233863",
+	"SPELL_AURA_REMOVED 1233093 1233863 1245978",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED",
@@ -33,17 +33,19 @@ mod:RegisterEventsInCombat(
 --TODO, warn https://www.wowhead.com/ptr-2/spell=1249198/unstable-soul ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1233381/withering-flames tracker?
 --[[
-(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or ability.id = 1242133 or ability.id = 1245978
+(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or ability.id = 1242133 or ability.id = 1245978 and type = "removebuff"
 --]]
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
---local timerBerserkCD								= mod:NewBerserkTimer(600)--Need to learn it again
+local timerBerserkCD								= mod:NewBerserkTimer(600)
 --Adarus Duskblaze
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32500))
 local specWarnVoidstep								= mod:NewSpecialWarningDodgeCount(1227355, nil, nil, nil, 2, 2)
+local specWarnEradicate								= mod:NewSpecialWarningDodgeCount(1245726, nil, nil, nil, 2, 2)
 
 local timerVoidstepCD								= mod:NewNextCountTimer(97.3, 1227355, nil, nil, nil, 3)--29.0, 26.2
+local timerEradicateCD								= mod:NewNextCountTimer(97.3, 1245726, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerCollapsingStarCD							= mod:NewNextTimer(97.3, 1233093, nil, nil, nil, 6)
 --Velaryn Bloodwrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31792))
@@ -91,6 +93,8 @@ local warnFelDevastation							= mod:NewSpellAnnounce(1227117, 3)
 mod.vb.intermissionCount = 0
 mod.vb.consumeCount = 0
 mod.vb.voidstepCount = 0
+mod.vb.eradicateCount = 0
+mod.vb.eradicateSubCount = 0
 mod.vb.huntCount = 0
 mod.vb.huntSubCount = 0
 mod.vb.bladeDanceCount = 0
@@ -101,11 +105,14 @@ mod.vb.sigilsCount = 0
 mod.vb.VelarnDead = false
 mod.vb.IlyssaDead = false
 mod.vb.AdarusDead = false
+local seenShadow = {}--Eradicate antispam that's more accurate than using antispam object
 
 function mod:OnCombatStart(delay)
 	self.vb.intermissionCount = 0
 	self.vb.consumeCount = 0
 	self.vb.voidstepCount = 0
+	self.vb.eradicateCount = 0
+	self.vb.eradicateSubCount = 0
 	self.vb.huntCount = 0
 	self.vb.bladeDanceCount = 0
 	self.vb.eyeBeamCount = 0
@@ -117,13 +124,14 @@ function mod:OnCombatStart(delay)
 	self.vb.AdarusDead = false
 	timerFracturedCD:Start(15-delay, 1)
 	timerEyeBeamCD:Start(19.3-delay, 1)
-	timerVoidstepCD:Start(self:IsMythic() and 25.8 or 32.7-delay, 1)--The only timer different on mythic
-	timerBladeDanceCD:Start(30-delay, 1)
-	timerSpiritBombsCD:Start(32.5-delay, 1)
+	timerVoidstepCD:Start(self:IsMythic() and 26.4 or 32.7-delay, 1)--The only timer different on mythic
+	timerBladeDanceCD:Start(29.2-delay, 1)
+	timerSpiritBombsCD:Start(32-delay, 1)
 	timerTheHuntCD:Start(40.3-delay, 1)
 	timerCollapsingStarCD:Start(108-delay)--First special
 	if self:IsMythic() then
 		timerSigilofChainsCD:Start(37.9-delay, 1)
+		timerEradicateCD:Start(53.2-delay, "1-1")
 	end
 end
 
@@ -135,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnVoidstep:Play("watchstep")
 		if self:IsMythic() then
 			if self.vb.voidstepCount == 1 then--On mythic only 2 are cast before intermission instead of 3
-				timerVoidstepCD:Start(31.6, self.vb.voidstepCount+1)
+				timerVoidstepCD:Start(33.7, self.vb.voidstepCount+1)
 			end
 		else
 			if self.vb.voidstepCount == 1 then
@@ -148,11 +156,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.huntCount = self.vb.huntCount + 1
 		self.vb.huntSubCount = 0
 		if self.vb.huntCount == 1 then
-			timerTheHuntCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.huntCount+1)
+			timerTheHuntCD:Start(self:IsHard() and 34 or 35.7, self.vb.huntCount+1)
 		end
 	elseif spellId == 1218103 then
 		self.vb.eyeBeamCount = self.vb.eyeBeamCount + 1
-		timerEyeBeamCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.eyeBeamCount+1)
+		timerEyeBeamCD:Start(self:IsHard() and 34 or 35.7, self.vb.eyeBeamCount+1)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEyebeam:Show()
 			specWarnEyebeam:Play("pushbackincoming")
@@ -163,12 +171,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnFractured:Show()
 			specWarnFractured:Play("defensive")
 		end
-		timerFracturedCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.fracturedCount)
+		timerFracturedCD:Start(self:IsHard() and 34 or 35.7, self.vb.fracturedCount)
 	elseif spellId == 1242259 then
 		self.vb.spiritBombsCount = self.vb.spiritBombsCount + 1
 		specWarnSpiritBombs:Show(self.vb.spiritBombsCount)
 		specWarnSpiritBombs:Play("aesoon")
-		timerSpiritBombsCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.spiritBombsCount+1)
+		timerSpiritBombsCD:Start(self:IsHard() and 34 or 35.7, self.vb.spiritBombsCount+1)
 	elseif spellId == 1227117 then
 		warnFelDevastation:Show()
 	elseif spellId == 1240891 then
@@ -176,7 +184,27 @@ function mod:SPELL_CAST_START(args)
 		specWarnSigilofChains:Show(self.vb.sigilsCount)
 		specWarnSigilofChains:Play("pullin")
 		if self.vb.sigilsCount == 1 then
-			timerSigilofChainsCD:Start(31.9, self.vb.sigilsCount+1)
+			timerSigilofChainsCD:Start(34, self.vb.sigilsCount+1)
+		end
+	elseif spellId == 1245726 then
+		if not seenShadow[args.sourceGUID] then
+			seenShadow[args.sourceGUID] = true
+			self.vb.eradicateSubCount = 1
+			self.vb.eradicateCount = self.vb.eradicateCount + 1
+			---@diagnostic disable-next-line: param-type-mismatch
+			specWarnEradicate:Show(self.vb.eradicateCount .. "-" .. self.vb.eradicateSubCount)
+			specWarnEradicate:Play("watchstep")
+			if self.vb.eradicateCount == 1 then
+				timerEradicateCD:Start(5, self.vb.eradicateCount .. "-" .. 2)
+			end
+		else
+			self.vb.eradicateSubCount = self.vb.eradicateSubCount + 1
+			if self.vb.eradicateSubCount == 4 and self.vb.eradicateCount == 1 then
+				--This is the 4th shadow cast, so we can start the next set
+				timerEradicateCD:Start(20.7, self.vb.eradicateCount+1 .. "-" .. 1)
+			elseif self.vb.eradicateSubCount < 4 then
+				timerEradicateCD:Start(5, self.vb.eradicateCount .. "-" .. self.vb.eradicateSubCount+1)
+			end
 		end
 	elseif (spellId == 1231501 or spellId == 1232568 or spellId == 1232569) and self:AntiSpam(5, 1) then--Intermissions (Metamorphosis)
 		self.vb.intermissionCount = self.vb.intermissionCount + 1
@@ -196,29 +224,7 @@ function mod:SPELL_CAST_START(args)
 		timerFracturedCD:Stop()
 		timerSpiritBombsCD:Stop()
 		timerSigilofChainsCD:Stop()
-		if not self.vb.AdarusDead then
-			timerVoidstepCD:Start(52, 1)
-		end
-		if not self.vb.VelarnDead then
-			timerEyeBeamCD:Start(39.1, 1)
-			timerBladeDanceCD:Start(50.4, 1)
-			timerTheHuntCD:Start(61.9, 1)
-		end
-		if not self.vb.IlyssaDead then
-			timerFracturedCD:Start(34.5, 1)
-			timerSpiritBombsCD:Start(52, 1)
-			if self:IsMythic() then
-				timerSigilofChainsCD:Start(58.4, 1)
-			end
-		end
-		if self.vb.intermissionCount == 1 then
-			timerFelRushCD:Start(127)--Second Special (but what happens if Ilyssa dead?)
-		elseif self.vb.intermissionCount == 2 then
-			timerFelDevastationCD:Start(130)--Third Special
-		elseif self.vb.intermissionCount == 3 then
-			--timerBerserkCD:Start(52.5)
-		--4th one is berserk, all 3 special at once
-		end
+		timerEradicateCD:Stop()
 	end
 end
 
@@ -251,8 +257,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1218103 and not args:IsPlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			specWarnFracturedTaunt:Show(args.destName)
-			specWarnFracturedTaunt:Play("tauntboss")
+			specWarnEyeBeamTaunt:Show(args.destName)
+			specWarnEyeBeamTaunt:Play("tauntboss")
 		end
 	end
 end
@@ -264,6 +270,46 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnCollapsingStarOver:Show()
 	elseif spellId == 1233863 then--Ultimate
 		warnFelRushOver:Show()
+	elseif spellId == 1245978 and self:AntiSpam(10, 2) then--Soul Tether Ending
+		if self:IsMythic() and self.vb.intermissionCount == 3 then--Custom mythic only rule
+			if not self.vb.AdarusDead then
+				timerVoidstepCD:Start(9.2, 1)
+			end
+			if not self.vb.VelarnDead then
+				timerTheHuntCD:Start(7.6, 1)
+			end
+			if not self.vb.IlyssaDead then
+				timerFracturedCD:Start(4.6, 1)
+				timerSpiritBombsCD:Start(14.8, 1)
+			end
+		else
+			if not self.vb.AdarusDead then
+				timerVoidstepCD:Start(15, 1)
+				if self:IsMythic() then
+					timerEradicateCD:Start(41.8, "1-1")
+				end
+			end
+			if not self.vb.VelarnDead then
+				timerEyeBeamCD:Start(8, 1)
+				timerBladeDanceCD:Start(17.7, 1)
+				timerTheHuntCD:Start(30.4, 1)
+			end
+			if not self.vb.IlyssaDead then
+				timerFracturedCD:Start(3.5, 1)
+				timerSpiritBombsCD:Start(20.5, 1)
+				if self:IsMythic() then
+					timerSigilofChainsCD:Start(28, 1)
+				end
+			end
+			timerBerserkCD:Start(22.4)
+		end
+		if self.vb.intermissionCount == 1 then
+			timerFelRushCD:Start(96.7)--Second Special (but what happens if Ilyssa dead?)
+		elseif self.vb.intermissionCount == 2 then
+			timerFelDevastationCD:Start(96.7)--Third Special
+		elseif not self:IsMythic() and self.vb.intermissionCount == 3 then
+			timerBerserkCD:Start(96.7)
+		end
 	end
 end
 
@@ -336,19 +382,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		specWarnBladeDance:Show(self.vb.bladeDanceCount)
 		specWarnBladeDance:Play("whirlwind")
 		timerBladeDanceCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.bladeDanceCount+1)
-	--Below code avoids needlessly starting timers during the intermission chaos and causing screen to be covered in timers
-	--This will not start timers for abilities that occur during 3rd "endless" intermission so those will be started at meta start
-	--elseif spellId == 1233388 then--Meta Land (Velaryn Bloodwrath)
-	--	timerEyeBeamCD:Start(8.9, 1)
-	--	timerBladeDanceCD:Start(17.5, 1)
-	--	timerTheHuntCD:Start(30.3, 1)
-	--elseif spellId == 1234694 then--Meta Land (Ilyssa Darksorrow)
-	--	timerFracturedCD:Start(4.5, 1)
-	--	timerSpiritBombsCD:Start(20.8, 1)
-	--	if self:IsMythic() then
-	--		timerSigilofChainsCD:Start(26.4, 1)
-	--	end
-	--elseif spellId == 1234724 then--Meta Land (Adarus Duskblaze)
-	--	timerVoidstepCD:Start(21, 1)
 	end
 end
