@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 1233672 1241833",--1227058
 	"SPELL_AURA_APPLIED 1226493 1233093 1233863 1218103",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 1233093 1233863 1245978",
+	"SPELL_AURA_REMOVED 1233093 1233863 1245978 1242133",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, warn https://www.wowhead.com/ptr-2/spell=1249198/unstable-soul ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1233381/withering-flames tracker?
 --[[
-(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or ability.id = 1242133 or ability.id = 1245978 and type = "removebuff"
+(ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or (ability.id = 1242133 or ability.id = 1245978) and type = "removebuff"
 --]]
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
@@ -122,16 +122,30 @@ function mod:OnCombatStart(delay)
 	self.vb.VelarnDead = false
 	self.vb.IlyssaDead = false
 	self.vb.AdarusDead = false
-	timerFracturedCD:Start(15-delay, 1)
-	timerEyeBeamCD:Start(19.3-delay, 1)
-	timerVoidstepCD:Start(self:IsMythic() and 26.4 or 32.7-delay, 1)--The only timer different on mythic
-	timerBladeDanceCD:Start(29.2-delay, 1)
-	timerSpiritBombsCD:Start(32-delay, 1)
-	timerTheHuntCD:Start(40.3-delay, 1)
-	timerCollapsingStarCD:Start(108-delay)--First special
+	timerFracturedCD:Start(15-delay, 1)--Same in all
 	if self:IsMythic() then
+		timerEyeBeamCD:Start(19.5-delay, 1)
+		timerVoidstepCD:Start(26.4-delay, 1)
+		timerBladeDanceCD:Start(29.2-delay, 1)
+		timerSpiritBombsCD:Start(32-delay, 1)
 		timerSigilofChainsCD:Start(37.9-delay, 1)
+		timerTheHuntCD:Start(41.8-delay, 1)
 		timerEradicateCD:Start(53.2-delay, "1-1")
+		timerCollapsingStarCD:Start(108-delay)--First special
+	elseif self:IsHeroic() then
+		timerEyeBeamCD:Start(19.7-delay, 1)
+		timerVoidstepCD:Start(32.6-delay, 1)
+		timerBladeDanceCD:Start(29.6-delay, 1)
+		timerSpiritBombsCD:Start(32.4-delay, 1)
+		timerTheHuntCD:Start(42.5-delay, 1)
+		timerCollapsingStarCD:Start(110.3-delay)--First special
+	else--Easy
+		timerEyeBeamCD:Start(19.8-delay, 1)
+		timerVoidstepCD:Start(33-delay, 1)
+		timerBladeDanceCD:Start(29.9-delay, 1)
+		timerSpiritBombsCD:Start(32.9-delay, 1)
+		timerTheHuntCD:Start(43.1-delay, 1)
+		timerCollapsingStarCD:Start(110.3-delay)--First special
 	end
 end
 
@@ -147,20 +161,20 @@ function mod:SPELL_CAST_START(args)
 			end
 		else
 			if self.vb.voidstepCount == 1 then
-				timerVoidstepCD:Start(30.7, self.vb.voidstepCount+1)
+				timerVoidstepCD:Start(self:IsHeroic() and 30.7 or 31.7, self.vb.voidstepCount+1)
 			elseif self.vb.voidstepCount == 2 then
-				timerVoidstepCD:Start(28.1, self.vb.voidstepCount+1)
+				timerVoidstepCD:Start(self:IsHeroic() and 28.1 or 28.7, self.vb.voidstepCount+1)
 			end
 		end
 	elseif spellId == 1227809 and args:GetSrcCreatureID() == 237660 then--Only show casts by Velaryn Bloodwrath
 		self.vb.huntCount = self.vb.huntCount + 1
 		self.vb.huntSubCount = 0
 		if self.vb.huntCount == 1 then
-			timerTheHuntCD:Start(self:IsHard() and 34 or 35.7, self.vb.huntCount+1)
+			timerTheHuntCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.huntCount+1)
 		end
 	elseif spellId == 1218103 then
 		self.vb.eyeBeamCount = self.vb.eyeBeamCount + 1
-		timerEyeBeamCD:Start(self:IsHard() and 34 or 35.7, self.vb.eyeBeamCount+1)
+		timerEyeBeamCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.eyeBeamCount+1)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnEyebeam:Show()
 			specWarnEyebeam:Play("pushbackincoming")
@@ -171,12 +185,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnFractured:Show()
 			specWarnFractured:Play("defensive")
 		end
-		timerFracturedCD:Start(self:IsHard() and 34 or 35.7, self.vb.fracturedCount)
+		timerFracturedCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.fracturedCount)
 	elseif spellId == 1242259 then
 		self.vb.spiritBombsCount = self.vb.spiritBombsCount + 1
 		specWarnSpiritBombs:Show(self.vb.spiritBombsCount)
 		specWarnSpiritBombs:Play("aesoon")
-		timerSpiritBombsCD:Start(self:IsHard() and 34 or 35.7, self.vb.spiritBombsCount+1)
+		timerSpiritBombsCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.spiritBombsCount+1)
 	elseif spellId == 1227117 then
 		warnFelDevastation:Show()
 	elseif spellId == 1240891 then
@@ -270,7 +284,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnCollapsingStarOver:Show()
 	elseif spellId == 1233863 then--Ultimate
 		warnFelRushOver:Show()
-	elseif spellId == 1245978 and self:AntiSpam(10, 2) then--Soul Tether Ending
+	elseif (spellId == 1242133 or spellId == 1245978) and self:AntiSpam(10, 2) then--Soul Tether/Soul Engorgement Ending
 		if self:IsMythic() and self.vb.intermissionCount == 3 then--Custom mythic only rule
 			if not self.vb.AdarusDead then
 				timerVoidstepCD:Start(9.2, 1)
@@ -282,33 +296,33 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerFracturedCD:Start(4.6, 1)
 				timerSpiritBombsCD:Start(14.8, 1)
 			end
+			timerBerserkCD:Start(22.4)
 		else
 			if not self.vb.AdarusDead then
-				timerVoidstepCD:Start(15, 1)
+				timerVoidstepCD:Start(self:IsMythic() and 15 or self:IsHeroic() and 21 or 21.5, 1)
 				if self:IsMythic() then
 					timerEradicateCD:Start(41.8, "1-1")
 				end
 			end
 			if not self.vb.VelarnDead then
-				timerEyeBeamCD:Start(8, 1)
-				timerBladeDanceCD:Start(17.7, 1)
-				timerTheHuntCD:Start(30.4, 1)
+				timerEyeBeamCD:Start(8, 1)--difference between difficulties is only .1 each, so we ignore it
+				timerBladeDanceCD:Start(self:IsMythic() and 17.7 or self:IsHeroic() and 18.0 or 18.3, 1)
+				timerTheHuntCD:Start(self:IsHeroic() and 30.4 or 31.6, 1)
 			end
 			if not self.vb.IlyssaDead then
-				timerFracturedCD:Start(3.5, 1)
-				timerSpiritBombsCD:Start(20.5, 1)
+				timerFracturedCD:Start(3.5, 1)--Same in all
+				timerSpiritBombsCD:Start(self:IsMythic() and 20.4 or self:IsHeroic() and 20.9 or 21.4, 1)
 				if self:IsMythic() then
 					timerSigilofChainsCD:Start(28, 1)
 				end
 			end
-			timerBerserkCD:Start(22.4)
 		end
 		if self.vb.intermissionCount == 1 then
-			timerFelRushCD:Start(96.7)--Second Special (but what happens if Ilyssa dead?)
+			timerFelRushCD:Start(self:IsMythic() and 96.7 or self:IsHeroic() and 99.4 or 98.8)--98.8 on normal is some wierd kind of fluke, it's normally 101.7
 		elseif self.vb.intermissionCount == 2 then
-			timerFelDevastationCD:Start(96.7)--Third Special
+			timerFelDevastationCD:Start(self:IsMythic() and 96.7 or self:IsHeroic() and 99.4 or 101.7)--Third Special
 		elseif not self:IsMythic() and self.vb.intermissionCount == 3 then
-			timerBerserkCD:Start(96.7)
+			timerBerserkCD:Start(self:IsHeroic() and 62.6 or 101.7)
 		end
 	end
 end
@@ -381,6 +395,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		self.vb.bladeDanceCount = self.vb.bladeDanceCount + 1
 		specWarnBladeDance:Show(self.vb.bladeDanceCount)
 		specWarnBladeDance:Play("whirlwind")
-		timerBladeDanceCD:Start(self:IsMythic() and 31.9 or self:IsHeroic() and 34 or 35.7, self.vb.bladeDanceCount+1)
+		timerBladeDanceCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.bladeDanceCount+1)
 	end
 end
