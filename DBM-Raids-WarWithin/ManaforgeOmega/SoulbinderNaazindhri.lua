@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 --Soul Calling
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(1225582))
+mod:AddTimerLine(DBM:GetSpellName(1225582))
 local warnSoulCalling								= mod:NewCountAnnounce(1225582, 2)
 
 local timerSoulCallingCD							= mod:NewNextCountTimer(150, 1225582, nil, nil, nil, 1)
