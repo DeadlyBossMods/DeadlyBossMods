@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233815)
 mod:SetEncounterID(3131)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20250813000000)
+mod:SetHotfixNoticeRev(20250817000000)
 --mod:SetMinSyncRevision(20240921000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -24,13 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO add https://www.wowhead.com/ptr-2/spell=1247672/hyper-infusion stuff later for mythic
---TODO, alert rooted players? https://www.wowhead.com/ptr-2/spell=1237307/lair-weaving
---TODO, Infused Tangles spawns and auto marking?
---TODO, valid ID/event for primal spellstorm, current mod implimentedation is temporary
---TODO, do stuff with https://www.wowhead.com/ptr-2/spell=1226366/living-silk ?
---TODO, is https://www.wowhead.com/ptr-2/spell=1227689/silken-onslaught still used? it's not in journal
---TODO, does arcane outrage target everyone or just certain players? ladder is assumed for now
 --[[
 ability.id = 1228070 and type = "applybuff"
 --]]
@@ -269,7 +262,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--"<380.92 13:03:50> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(49.7%-51.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228059-0010DFCC16:1228059]]",
 	--"<386.71 13:03:56> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(46.0%-0.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228069-00C15FCC1B
 	if spellId == 1228059 and self:GetStage(1) then--Unbound Rage (comes 6 seconds sooner than CLEU
-		self:SetStage(1.5)
+		self:SetStage(2)
+		self.vb.weavingCount = 0
+		self.vb.primalSpellstormCount = 0
+		self.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
+		self.vb.piercingStrandsCount = 0--Also used for Writhing Wave (mechanic that replaces it)
 		timerLairWeavingCD:Stop()
 		timerPrimalSpellstormCD:Stop()
 		timerOverinfusionBurstCD:Stop()
@@ -288,12 +285,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerWrithingWaveCD:Start(16, 1)
 		timerArcaneOutrageCD:Start(23, 1)
 	elseif spellId == 1227775 then--Energy Controller 2 [DNT]
-		self:SetStage(2)
-		self.vb.weavingCount = 0
-		self.vb.primalSpellstormCount = 0
-		self.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
-		self.vb.piercingStrandsCount = 0--Also used for Writhing Wave (mechanic that replaces it)
-		--timerPrimalSpellstormCD:Start(2)
 		timerWrithingWaveCD:Update(13, 16, 1)
 		timerArcaneOutrageCD:Update(13, 23, 1)
 	end

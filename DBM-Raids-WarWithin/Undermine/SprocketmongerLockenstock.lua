@@ -146,7 +146,7 @@ local allTimers = {
 		--Wire Transfer
 		[1218418] = {2.0, 46.0, 53.0},
 		--Screw Up
-		[1216508] = {0},--not used in LFR
+		[1216508] = {0.000001},--not used in LFR
 		--Sonic Boom
 		[465232] = {8.0, 33.0, 35.0, 35.0},
 		--Pyro Party Pack

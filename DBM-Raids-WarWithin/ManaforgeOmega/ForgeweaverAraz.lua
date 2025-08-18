@@ -2,9 +2,9 @@ local mod	= DBM:NewMod(2687, "DBM-Raids-WarWithin", 1, 1302)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(247989)
+mod:SetCreatureID(233817)
 mod:SetEncounterID(3132)
-mod:SetHotfixNoticeRev(20250813000000)
+mod:SetHotfixNoticeRev(20250817000000)
 mod:SetMinSyncRevision(20250708000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -12,14 +12,15 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133",--1234328
+	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213",
 	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
 --	"SPELL_AURA_APPLIED_DOSE 1228506",
 	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
---	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_POWER_UPDATE boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, tank stacks placeholder, or eliminate tank stacks if swaps just happen naturally with arcane obliteration
@@ -27,7 +28,6 @@ mod:RegisterEventsInCombat(
 --TODO, need a better understanding how echos work before implimenting their timer and alert handling correctly
 --TODO, maybe announce people silenced by https://www.wowhead.com/ptr-2/spell=1228168/silencing-tempest
 --TODO, better handling of arcane collector stuff
---TODO, nameplate timer for https://www.wowhead.com/ptr-2/spell=1228213/astral-harvest ?
 --TODO, detect intermission arcane collector spawns and initial timers ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1232590/arcane-convergence ?
 --[[
@@ -58,6 +58,7 @@ local timerSilencingTempestCD						= mod:NewCDCountTimer(97.3, 1228188, nil, nil
 local timerArcaneExpulsionCD						= mod:NewCDCountTimer(97.3, 1227631, nil, nil, nil, 2)
 local timerInvokeCollectorCD						= mod:NewCDCountTimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerVoidTearCD								= mod:NewCDCountTimer(97.3, 1248171, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerAstralHarvestCD							= mod:NewCDCountTimer(97.3, 1228214, nil, nil, nil, 2)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
@@ -65,7 +66,9 @@ mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32397))
 local warnManaSplinter								= mod:NewTargetNoFilterAnnounce(1233415, 1)
 local warnManaSplinterFaded							= mod:NewFadesAnnounce(1233415, 2)
---local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)--10 sec NP timers?
+local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)
+
+local timerPhotonBlastCD							= mod:NewCDNPTimer(4, 1234328, nil, nil, nil, 3)--4 seconds except when delayed by astral harvest
 --Intermission: The Iris Opens
 --No new mechanics
 --Stage Two: Darkness Hungers
@@ -85,10 +88,12 @@ mod.vb.silencingTempestCount = 0--Returns in stage 2
 mod.vb.arcaneExpulsionCount = 0
 mod.vb.invokeCollectorCount = 0
 mod.vb.voidTearCount = 0
+mod.vb.astralharvestCount = 0
 --Stage 2
 mod.vb.voidHarvestCount = 0
 mod.vb.deaththroesCount = 0
 
+local seenGUID = {}
 local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
@@ -104,33 +109,35 @@ local allTimers = {
 			--Invoke Collector
 			[1231720] = {9, 44, 44},
 			--Void Tear
-			[1248133] = {21.5, 46, 14.4, 28.5, 14.4, 15},
+			[1248133] = {21.5, 46, 14.4, 28.5, 14.4, 15},--14.4s can sometimes be 15.5
+			--Astral Harvest
+			[1228213] = {23.4, 46, 15.5, 28.9, 14.5, 15.5},
 		},
 		[2] = {
 			--Overwhelming Power
-			[1228502] = {18.6, 22, 22, 22, 22, 22},
+			[1228502] = {18.6, 22, 22},
 			--Arcane Obliteration
-			[1228216] = {68.7},
+			[1228216] = {45.6},
 			--Silencing Tempest
-			[1228161] = {57.6, 44, 21},
+			[1228161] = {67.7},
 			--Arcane Expulsion
-			[1227631] = {139.9},--10 seconds shorter than heroic
+			[1227631] = {79.6},--MUCH shorter than heroic
 			--Invoke Collector
-			[1231720] = {23.6, 22, 44},
+			[1231720] = {0.000001},
 			--Void Tear
-			[1248133] = {36.2, 21.5, 14.4, 29, 14.4, 14.4},
+			[1248133] = {36.2, 15, 14.4},
+			--Astral Harvest
+			[1228213] = {38.7, 15, 14.4},
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {31.3, 8, 8, 28, 8, 8, 28},
+			[1243887] = {31.3, 8, 8, 28},
 			--Deaththroes (mythic only)
-			[1232221] = {62.3, 44},
+			[1232221] = {35.1},
 			--Overwhelming Power
-			[1228502] = {27.3, 22, 22, 22, 22},
+			[1228502] = {27.1, 22, 22},
 			--Silencing Tempest
-			[1228161] = {35.3, 44},
-			--Void Tear
-			[1248133] = {},--Non seen
+			[1228161] = {59.1},
 		},
 	},
 	["heroic"] = {
@@ -145,6 +152,8 @@ local allTimers = {
 			[1227631] = {145},
 			--Invoke Collector
 			[1231720] = {9, 44, 44},
+			--Astral Harvest
+			[1228213] = {20.2, 46, 8, 36, 8, 8},
 		},
 		[2] = {
 			--Overwhelming Power
@@ -156,7 +165,9 @@ local allTimers = {
 			--Arcane Expulsion
 			[1227631] = {79.7},
 			--Invoke Collector
-			[1231720] = {0},
+			[1231720] = {0.000001},
+			--Astral Harvest
+			[1228213] = {34.6, 8, 8},
 		},
 		[3] = {
 			--Void Harvest
@@ -179,6 +190,8 @@ local allTimers = {
 			[1227631] = {125},
 			--Invoke Collector
 			[1231720] = {9, 44},
+			--Astral Harvest
+			[1228213] = {20, 44, 8, 23, 8},
 		},
 		[2] = {
 			--Overwhelming Power
@@ -190,7 +203,9 @@ local allTimers = {
 			--Arcane Expulsion
 			[1227631] = {79.6},
 			--Invoke Collector
-			[1231720] = {0},
+			[1231720] = {0.000001},
+			--Astral Harvest
+			[1228213] = {34.5, 8},
 		},
 		[3] = {
 			--Void Harvest
@@ -236,6 +251,7 @@ function mod:OnCombatStart(delay)
 	self.vb.voidHarvestCount = 0
 	self.vb.deaththroesCount = 0
 	self.vb.voidTearCount = 0
+	self.vb.astralharvestCount = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerVoidTearCD:Start(allTimers[savedDifficulty][1][1248133][1]-delay, 1)
@@ -249,6 +265,7 @@ function mod:OnCombatStart(delay)
 	timerSilencingTempestCD:Start(allTimers[savedDifficulty][1][1228161][1]-delay, 1)
 	timerArcaneExpulsionCD:Start(allTimers[savedDifficulty][1][1227631][1]-delay, 1)
 	timerInvokeCollectorCD:Start(allTimers[savedDifficulty][1][1231720][1]-delay, 1)
+	timerAstralHarvestCD:Start(allTimers[savedDifficulty][1][1228213][1]-delay, 1)
 	berserkTimer:Start(600-delay)
 	if self.Options.NPAuraOnMarkofPower then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -256,6 +273,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(seenGUID)
 	if self.Options.NPAuraOnMarkofPower then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -311,9 +329,16 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerInvokeCollectorCD:Start(timer, self.vb.invokeCollectorCount+1)
 		end
---	elseif spellId == 1234328 and self:AntiSpam(3, 1) then--antispam cause add count unknown
---		specWarnPhotonBlast:Show()
---		specWarnPhotonBlast:Play("frontal")
+	elseif spellId == 1234328 then--antispam cause add count unknown
+		if timerAstralHarvestCD:GetRemaining(self.vb.astralharvestCount+1) < 5 then--Might need fine tuning
+			timerPhotonBlastCD:Start(19, args.sourceGUID)
+		else
+			timerPhotonBlastCD:Start(4, args.sourceGUID)--3 seconds for first cast, then 4 seconds after that
+		end
+		if self:CheckBossDistance(args.sourceGUID, true, 21519, 23) then
+			specWarnPhotonBlast:Show()
+			specWarnPhotonBlast:Play("frontal")
+		end
 	elseif spellId == 1232221 then--Deaththroes
 		self.vb.deaththroesCount = self.vb.deaththroesCount + 1
 		specWarnDeaththroes:Show(self.vb.deaththroesCount)
@@ -335,6 +360,12 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerVoidTearCD:Start(timer, self.vb.voidTearCount+1)
 		end
+	elseif spellId == 1228213 then
+		self.vb.astralharvestCount = self.vb.astralharvestCount + 1
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.astralharvestCount+1)
+		if timer then
+			timerAstralHarvestCD:Start(timer, self.vb.astralharvestCount+1)
+		end
 	elseif spellId == 1230529 then--Mana Sacrifice
 		self:SetStage(0.5)--Increases to stage 2 and stage 3
 		--Reset Counts
@@ -352,6 +383,7 @@ function mod:SPELL_CAST_START(args)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][2][1228161][1], 1)
 			timerArcaneExpulsionCD:Start(allTimers[savedDifficulty][2][1227631][1], 2)--Only count not resetting since it's timer for actual phase changes
 			timerInvokeCollectorCD:Start(allTimers[savedDifficulty][2][1231720][1], 1)
+			timerAstralHarvestCD:Start(allTimers[savedDifficulty][2][1228213][1], 1)
 			if self:IsMythic() then
 				timerVoidTearCD:Start(allTimers[savedDifficulty][2][1248133][1], 1)
 			end
@@ -361,6 +393,7 @@ function mod:SPELL_CAST_START(args)
 			timerOverwhelmingPowerCD:Start(allTimers[savedDifficulty][3][1228502][1], 1)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][3][1228161][1], 1)
 			timerVoidHarvestCD:Start(allTimers[savedDifficulty][3][1243887][1], 1)
+			timerAstralHarvestCD:Start(allTimers[savedDifficulty][3][1228213][1], 1)
 			if self:IsMythic() then
 				timerDeaththroesCD:Start(allTimers[savedDifficulty][3][1232221][1], 1)
 			end
@@ -432,16 +465,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 241923 then--Arcane Echo
-
-	elseif cid == 241832 then--Shielded Attendant
-
+	if cid == 240905 then--Arcane Collector
+		timerPhotonBlastCD:Stop(args.destGUID)
 	end
 end
---]]
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
@@ -464,5 +493,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		timerArcaneExpulsionCD:Stop()
 		timerInvokeCollectorCD:Stop()
 		timerVoidTearCD:Stop()
+		timerAstralHarvestCD:Stop()
+	end
+end
+
+--"<164.08 16:35:58> [UNIT_POWER_UPDATE] boss3#Arcane Collector#TYPE:ENERGY/3#MAIN:5/100#ALT:0/0",
+--"<167.06 16:36:01> [CLEU] SPELL_CAST_START#Creature-0-3893-2810-5344-240905-0000A1E7FD#Arcane Collector(95.3%-15.0%)##nil#1234328#Photon Blast#nil
+function mod:UNIT_POWER_UPDATE(uId)
+	local guid = UnitGUID(uId)
+	if not guid or seenGUID[guid] then return end
+	local cid = self:GetCIDFromGUID(guid)
+	if cid == 240905 then--Arcane Collector
+		seenGUID[guid] = true
+		timerPhotonBlastCD:Start(3, guid)
 	end
 end
