@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233824, 241517, 234478)--Yes, they're all used
 mod:SetEncounterID(3135)
+mod:SetBossHPInfoToHighest()--Boss Heals
 mod:SetHotfixNoticeRev(20250816000000)
 mod:SetMinSyncRevision(20250813000000)
 mod:SetZone(2810)
