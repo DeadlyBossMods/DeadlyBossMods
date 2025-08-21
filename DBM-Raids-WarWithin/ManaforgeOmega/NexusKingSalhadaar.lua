@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 1228065 or ability.id = 1227734 or ability.id = 1228265) and type = "begincast"
 or (ability.id = 1228265 or ability.id = 1228284) and type = "removebuff" and target.id = 233823
 --]]
+local royalVoidWing = DBM:EJ_GetSectionInfo(32228)
 --Stage One: Oath-Breakers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31573))
 ----Nexus-King Salhadaar
@@ -53,7 +54,7 @@ local timerVengefulOathCD							= mod:NewCDCountTimer(40, 1238975, nil, nil, nil
 
 mod:AddInfoFrameOption(1224731, true)
 ----Royal Voidwing
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(32228))
+mod:AddTimerLine(royalVoidWing)
 local specWarnBesiege								= mod:NewSpecialWarningDodgeCount(1227470, nil, 17088, nil, 2, 2)
 
 local timerBeheadCD									= mod:NewCDCountTimer(40, 1224827, 403360, nil, nil, 3)--Shorttext "Void Claws"
@@ -104,7 +105,7 @@ local timerNetherbreakerCD							= mod:NewCDCountTimer(10, 1228115, nil, nil, ni
 
 mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
 ----Royal Voidwing
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(32228))
+mod:AddTimerLine(royalVoidWing)
 local specWarnDimensionBreath						= mod:NewSpecialWarningCount(1228163, nil, nil, nil, 2, 2)
 local specWarnCosmicMaw								= mod:NewSpecialWarningDefensive(1234529, nil, nil, nil, 1, 2)
 local specWarnCosmicMawTaunt						= mod:NewSpecialWarningTaunt(1234529, nil, nil, nil, 1, 2)
@@ -350,7 +351,7 @@ function mod:SPELL_CAST_START(args)
 		timerBeheadCD:Stop()
 		timerBanishmentCD:Stop()
 		timerBesiegeCD:Stop()
-		specWarnKingsHunger:Show(args.destName)
+		specWarnKingsHunger:Show(royalVoidWing or "")
 		specWarnKingsHunger:Play("targetchange")
 		timerKingsHunger:Start()
 		if self:IsMythic() then
