@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213",
+	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213 1232590",
 	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
 --	"SPELL_AURA_APPLIED_DOSE 1228506",
 	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
@@ -67,6 +67,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32397))
 local warnManaSplinter								= mod:NewTargetNoFilterAnnounce(1233415, 1)
 local warnManaSplinterFaded							= mod:NewFadesAnnounce(1233415, 2)
 local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)
+local specWarnArcaneConvergence						= mod:NewSpecialWarningSpell(1232590, nil, nil, nil, 2, 2)
 
 local timerPhotonBlastCD							= mod:NewCDNPTimer(4, 1234328, nil, nil, nil, 3)--4 seconds except when delayed by astral harvest
 --Intermission: The Iris Opens
@@ -367,6 +368,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerAstralHarvestCD:Start(timer, self.vb.astralharvestCount+1)
 		end
+	elseif spellId == 1232590 then
+		specWarnArcaneConvergence:Show()
+		specWarnArcaneConvergence:Play("aesoon")
 	elseif spellId == 1230529 then--Mana Sacrifice
 		self:SetStage(0.5)--Increases to stage 2 and stage 3
 		--Reset Counts
