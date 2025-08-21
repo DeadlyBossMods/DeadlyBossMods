@@ -4,15 +4,15 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233817)
 mod:SetEncounterID(3132)
-mod:SetHotfixNoticeRev(20250817000000)
-mod:SetMinSyncRevision(20250708000000)
+mod:SetHotfixNoticeRev(20250821000000)
+mod:SetMinSyncRevision(20250821000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213 1232590",
+	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213 1232590 1248009",
 	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
 --	"SPELL_AURA_APPLIED_DOSE 1228506",
 	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, detect intermission arcane collector spawns and initial timers ?
 --TODO, https://www.wowhead.com/ptr-2/spell=1232590/arcane-convergence ?
 --[[
-(ability.id = 1230529) and type = "begincast"
+(ability.id = 1230529 or ability.id = 1227631 or ability.id = 1248009) and type = "begincast"
  or ability.id = 1230231 and type = "cast"
  or ability.id = 1233415
 --]]
@@ -90,6 +90,7 @@ mod.vb.arcaneExpulsionCount = 0
 mod.vb.invokeCollectorCount = 0
 mod.vb.voidTearCount = 0
 mod.vb.astralharvestCount = 0
+mod.vb.manaSacrificeCasts = 0
 --Stage 2
 mod.vb.voidHarvestCount = 0
 mod.vb.deaththroesCount = 0
@@ -132,13 +133,13 @@ local allTimers = {
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {31.3, 8, 8, 28},
+			[1243887] = {8, 8, 8, 28},
 			--Deaththroes (mythic only)
-			[1232221] = {35.1},
+			[1232221] = {12},
 			--Overwhelming Power
-			[1228502] = {27.1, 22, 22},
+			[1228502] = {4, 22, 22},
 			--Silencing Tempest
-			[1228161] = {59.1},
+			[1228161] = {36.4},
 		},
 	},
 	["heroic"] = {
@@ -172,11 +173,11 @@ local allTimers = {
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {39, 8, 80, 8, 46, 8},
+			[1243887] = {8, 8, 80, 8, 46, 8},
 			--Overwhelming Power
-			[1228502] = {27.3, 22, 22, 22, 22, 22},
+			[1228502] = {4, 22, 22, 22, 22, 22},
 			--Silencing Tempest
-			[1228161] = {35.3, 21},
+			[1228161] = {12, 21},
 		},
 	},
 	["normal"] = {--LFR confirmed same
@@ -210,11 +211,11 @@ local allTimers = {
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {39.2, 96, 46},
+			[1243887] = {8, 96, 46},
 			--Overwhelming Power
-			[1228502] = {27, 22, 22, 22, 22, 22},
+			[1228502] = {4, 22, 22, 22, 22, 22},
 			--Silencing Tempest
-			[1228161] = {56, 43.9},
+			[1228161] = {33, 43.9},
 		},
 	},
 }
@@ -253,6 +254,7 @@ function mod:OnCombatStart(delay)
 	self.vb.deaththroesCount = 0
 	self.vb.voidTearCount = 0
 	self.vb.astralharvestCount = 0
+	self.vb.manaSacrificeCasts = 0
 	if self:IsMythic() then
 		savedDifficulty = "mythic"
 		timerVoidTearCD:Start(allTimers[savedDifficulty][1][1248133][1]-delay, 1)
@@ -294,13 +296,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1228502 then
 		self.vb.overwhelmingPowerCount = self.vb.overwhelmingPowerCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.overwhelmingPowerCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.overwhelmingPowerCount+1)
 		if timer then
 			timerOverwhelmingPowerCD:Start(timer, self.vb.overwhelmingPowerCount+1)
 		end
 	elseif spellId == 1228216 then
 		self.vb.obliterationCount = self.vb.obliterationCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.obliterationCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.obliterationCount+1)
 		if timer then
 			timerArcaneObliterationCD:Start(timer, self.vb.obliterationCount+1)
 		end
@@ -310,23 +312,28 @@ function mod:SPELL_CAST_START(args)
 		self.vb.silencingTempestCount = self.vb.silencingTempestCount + 1
 		specWarnSilencingTempest:Show(self.vb.silencingTempestCount)
 		specWarnSilencingTempest:Play("watchstep")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.silencingTempestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.silencingTempestCount+1)
 		if timer then
 			timerSilencingTempestCD:Start(timer, self.vb.silencingTempestCount+1)
 		end
 	elseif spellId == 1227631 then
+		self:SetStage(1.5)
+		--Stop all timers
+		timerOverwhelmingPowerCD:Stop()
+		timerArcaneObliterationCD:Stop()
+		timerSilencingTempestCD:Stop()
+		timerArcaneExpulsionCD:Stop()
+		timerInvokeCollectorCD:Stop()
+		timerVoidTearCD:Stop()
+		timerAstralHarvestCD:Stop()
 		self.vb.arcaneExpulsionCount = self.vb.arcaneExpulsionCount + 1
 		specWarnArcaneExpulsion:Show(self.vb.arcaneExpulsionCount)
 		specWarnArcaneExpulsion:Play("carefly")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.arcaneExpulsionCount+1)
-		--if timer then
-		--	timerArcaneExpulsionCD:Start(timer, self.vb.arcaneExpulsionCount+1)
-		--end
 	elseif spellId == 1231720 then
 		self.vb.invokeCollectorCount = self.vb.invokeCollectorCount + 1
 		specWarnInvokeCollector:Show(self.vb.invokeCollectorCount)
 		specWarnInvokeCollector:Play("killmob")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.invokeCollectorCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.invokeCollectorCount+1)
 		if timer then
 			timerInvokeCollectorCD:Start(timer, self.vb.invokeCollectorCount+1)
 		end
@@ -345,26 +352,26 @@ function mod:SPELL_CAST_START(args)
 		self.vb.deaththroesCount = self.vb.deaththroesCount + 1
 		specWarnDeaththroes:Show(self.vb.deaththroesCount)
 		specWarnDeaththroes:Play("specialsoon")
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.deaththroesCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.deaththroesCount+1)
 		if timer then
 			timerDeaththroesCD:Start(timer, self.vb.deaththroesCount+1)
 		end
 	elseif spellId == 1243887 then
 		self.vb.voidHarvestCount = self.vb.voidHarvestCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.voidHarvestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.voidHarvestCount+1)
 		if timer then
 			timerVoidHarvestCD:Start(timer, self.vb.voidHarvestCount+1)
 		end
 	elseif spellId == 1248133 then
 		self.vb.voidTearCount = self.vb.voidTearCount + 1
 		warnVoidTear:Show(self.vb.voidTearCount)
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.voidTearCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.voidTearCount+1)
 		if timer then
 			timerVoidTearCD:Start(timer, self.vb.voidTearCount+1)
 		end
 	elseif spellId == 1228213 then
 		self.vb.astralharvestCount = self.vb.astralharvestCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.astralharvestCount+1)
+		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.astralharvestCount+1)
 		if timer then
 			timerAstralHarvestCD:Start(timer, self.vb.astralharvestCount+1)
 		end
@@ -372,7 +379,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnArcaneConvergence:Show()
 		specWarnArcaneConvergence:Play("aesoon")
 	elseif spellId == 1230529 then--Mana Sacrifice
-		self:SetStage(0.5)--Increases to stage 2 and stage 3
+		self.vb.manaSacrificeCasts = self.vb.manaSacrificeCasts + 1
+		self:SetStage(1)
 		--Reset Counts
 		self.vb.overwhelmingPowerCount = 0
 		self.vb.obliterationCount = 0
@@ -382,7 +390,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.voidHarvestCount = 0
 		self.vb.deaththroesCount = 0
 		--Start all timers
-		if self:GetStage(2) then
+		if self.vb.manaSacrificeCasts == 1 then
 			timerOverwhelmingPowerCD:Start(allTimers[savedDifficulty][2][1228502][1], 1)
 			timerArcaneObliterationCD:Start(allTimers[savedDifficulty][2][1228216][1], 1)
 			timerSilencingTempestCD:Start(allTimers[savedDifficulty][2][1228161][1], 1)
@@ -392,16 +400,17 @@ function mod:SPELL_CAST_START(args)
 			if self:IsMythic() then
 				timerVoidTearCD:Start(allTimers[savedDifficulty][2][1248133][1], 1)
 			end
-		else--Stage 3
-			warnPhase2:Show()
-			warnPhase2:Play("ptwo")
-			timerOverwhelmingPowerCD:Start(allTimers[savedDifficulty][3][1228502][1], 1)
-			timerSilencingTempestCD:Start(allTimers[savedDifficulty][3][1228161][1], 1)
-			timerVoidHarvestCD:Start(allTimers[savedDifficulty][3][1243887][1], 1)
-			if self:IsMythic() then
-				timerDeaththroesCD:Start(allTimers[savedDifficulty][3][1232221][1], 1)
-			end
 		end
+	elseif spellId == 1248009 then--Dark Terminus
+		self.vb.manaSacrificeCasts = 2--Force set to 2 so staging is all sorted
+		--Stop all timers
+		timerOverwhelmingPowerCD:Stop()
+		timerArcaneObliterationCD:Stop()
+		timerSilencingTempestCD:Stop()
+		timerArcaneExpulsionCD:Stop()
+		timerInvokeCollectorCD:Stop()
+		timerVoidTearCD:Stop()
+		timerAstralHarvestCD:Stop()
 	end
 end
 
@@ -486,18 +495,17 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---Backup if using second sacrifice isn't accurate, but so far it seems to be
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
-	if spellId == 1230231 then--Phase Transition P1 -> P2
-		self:SetStage(0.5)--Increases to stage 1.5 and 2.5
-		--Stop all timers
-		timerOverwhelmingPowerCD:Stop()
-		timerArcaneObliterationCD:Stop()
-		timerSilencingTempestCD:Stop()
-		timerArcaneExpulsionCD:Stop()
-		timerInvokeCollectorCD:Stop()
-		timerVoidTearCD:Stop()
-		timerAstralHarvestCD:Stop()
+	if spellId == 1233072 then -- -Phase Transition P2 -> P3-
+		self:SetStage(2)
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
+		timerOverwhelmingPowerCD:Start(allTimers[savedDifficulty][3][1228502][1], 1)
+		timerSilencingTempestCD:Start(allTimers[savedDifficulty][3][1228161][1], 1)
+		timerVoidHarvestCD:Start(allTimers[savedDifficulty][3][1243887][1], 1)
+		if self:IsMythic() then
+			timerDeaththroesCD:Start(allTimers[savedDifficulty][3][1232221][1], 1)
+		end
 	end
 end
 
