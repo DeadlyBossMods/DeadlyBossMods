@@ -173,7 +173,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {8, 8, 80, 8, 46, 8},
+			[1243887] = {8, 8, 36, 8, 36, 8},
 			--Overwhelming Power
 			[1228502] = {4, 22, 22, 22, 22, 22},
 			--Silencing Tempest
@@ -211,7 +211,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Void Harvest
-			[1243887] = {8, 96, 46},
+			[1243887] = {8, 8, 36, 8, 36, 8},
 			--Overwhelming Power
 			[1228502] = {4, 22, 22, 22, 22, 22},
 			--Silencing Tempest
