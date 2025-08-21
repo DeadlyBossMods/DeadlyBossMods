@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(237763)
 mod:SetEncounterID(3134)
 mod:SetBossHPInfoToHighest()--Boss Heals
-mod:SetHotfixNoticeRev(20250813000000)
+mod:SetHotfixNoticeRev(20250820000000)
 mod:SetMinSyncRevision(20250731000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
@@ -13,9 +13,9 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1224731 1224787 1224812 1227529 1224906 1225010 1225016 1228065 1230302 1232399 1228075 1230263 1227734 1228115 1228163 1234529 1228265 1225319 1234904 1228053 1237106",
+	"SPELL_CAST_START 1224787 1224812 1227529 1224906 1225010 1225016 1228065 1230302 1232399 1228075 1230263 1227734 1228115 1228163 1234529 1228265 1225319 1234904 1228053 1237106",
 	"SPELL_CAST_SUCCESS 1234904 1226442",
-	"SPELL_AURA_APPLIED 1224737 1224767 1224776 1227549 1237105 1234529 1228265 1226413",
+	"SPELL_AURA_APPLIED 1224737 1224767 1224776 1227549 1237105 1234529 1226413",
 	"SPELL_AURA_APPLIED_DOSE 1224737 1226413",
 	"SPELL_AURA_REMOVED 1224737 1227549 1237105 1228284 1228265",
 	"SPELL_AURA_REMOVED_DOSE 1224737",
@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, better netherbreaker private aura sound?
 --TODO, verify which dimension breath Id is cast
---TODO, correct event to start smash timer (and other timers for that matter)
 --TODO, better voice lines for starkiller swing and galactic smash?
 --[[
 (ability.id = 1228065 or ability.id = 1227734 or ability.id = 1228265) and type = "begincast"
@@ -37,8 +36,6 @@ or (ability.id = 1228265 or ability.id = 1228284) and type = "removebuff" and ta
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31573))
 ----Nexus-King Salhadaar
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32227))
-
-local warnDecreeOathBound							= mod:NewCastAnnounce(1224731, 2)
 local warnKingsThrall								= mod:NewTargetNoFilterAnnounce(1224767, 2)--Could be spammy
 
 local specWarnConquer								= mod:NewSpecialWarningSoakCount(1224787, nil, nil, nil, 2, 2)
@@ -46,19 +43,22 @@ local specWarnVanquish								= mod:NewSpecialWarningSpell(1224812, nil, nil, ni
 local specWarnBanishment							= mod:NewSpecialWarningMoveAway(1227549, nil, nil, nil, 1, 2)
 local yellBanishmentFades							= mod:NewShortFadesYell(1227549)
 local specWarnInvokeTheOath							= mod:NewSpecialWarningSpell(1224906, nil, nil, nil, 2, 2)
+local specWarnVengefulOath							= mod:NewSpecialWarningCount(1238975, nil, nil, nil, 1, 2)
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1231097, nil, nil, nil, 1, 8)
 
 local timerSubjugationRuleCD						= mod:NewCDCountTimer(40, 1224776, DBM_COMMON_L.TANKCOMBO.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBanishmentCD								= mod:NewCDCountTimer(97.3, 1227549, nil, nil, nil, 3)
 local timerInvokeTheOathCD							= mod:NewNextTimer(117, 1224906, nil, nil, nil, 2)
+local timerVengefulOathCD							= mod:NewCDCountTimer(40, 1238975, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddInfoFrameOption(1224731, true)
 ----Royal Voidwing
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32228))
-local specWarnBesiege								= mod:NewSpecialWarningDodgeCount(1227470, nil, nil, nil, 2, 2)
+local specWarnBesiege								= mod:NewSpecialWarningDodgeCount(1227470, nil, 17088, nil, 2, 2)
 
-local timerBeheadCD									= mod:NewCDCountTimer(40, 1224827, nil, nil, nil, 3)
-local timerBesiegeCD								= mod:NewCDCountTimer(40, 1227470, nil, nil, nil, 3)
+local timerBeheadCD									= mod:NewCDCountTimer(40, 1224827, 403360, nil, nil, 3)--Shorttext "Void Claws"
+local timerBesiegeCD								= mod:NewCDCountTimer(40, 1227470, 17088, nil, nil, 3)--Shorttext "Breath"
+local timerFractalImagesCD							= mod:NewCDCountTimer(40, 1225099, 13049, nil, nil, 3)--Shorttext "Dragon's Call"
 
 mod:AddPrivateAuraSoundOption(1224855, true, 1224827, 1)--Behead
 --Intermission One: Nexus Descent
@@ -79,15 +79,16 @@ local timerSelfDestruct								= mod:NewCastNPTimer(10, 1230302, nil, nil, nil, 
 local timerDreadMortarCD							= mod:NewCDNPTimer(24.3, 1232399, nil, nil, nil, 3)
 ----Nexus-Prince Ky'vor + Nexus-Prince Xevvos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(33469))
-local specWarnNexusBeam								= mod:NewSpecialWarningDodge(1228075, nil, nil, nil, 2, 2)
+local specWarnNexusBeam								= mod:NewSpecialWarningDodge(1228075, nil, 207544, nil, 2, 2)
 local specWarnNetherblast							= mod:NewSpecialWarningInterruptCount(1230263, nil, nil, nil, 1, 2)
 
-local timerNexusBeamCD								= mod:NewCDNPTimer(20.6, 1228075, nil, nil, nil, 3)
+local timerNexusBeamCD								= mod:NewCDNPTimer(20.6, 1228075, 207544, nil, nil, 3)--Shorttext "Beams"
 
 mod:AddNamePlateOption("NPAuraOnTwilightBarrier", 1237105)
 ----Shadowguard Reaper
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32645))
-local timerTwilightMassacreCD						= mod:NewCDNPTimer(99, 1237106, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timertimerTwilightMassacreCDInitial			= mod:NewCDTimer(99, 1237106, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerTwilightMassacreCD						= mod:NewCDPNPTimer(99, 1237106, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerReapCD									= mod:NewCDNPTimer(12.2, 1228053, nil, nil, nil, 3)
 
 mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1)--Twilight Massacre
@@ -95,34 +96,35 @@ mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1)--Twilight Massacre
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31574))
 ----Nexus-King Salhadaar
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32227))
-local specWarnCoalesceVoidwing					= mod:NewSpecialWarningDodge(1227734, nil, nil, nil, 3, 2)
+local specWarnCoalesceVoidwing						= mod:NewSpecialWarningDodge(1227734, nil, nil, nil, 3, 2)
+local specWarnNetherBreakerMythic					= mod:NewSpecialWarningDodgeCount(1228115, nil, nil, nil, 2, 2)--On mythic it also spawns ground circles
 
-local timerCoalesceVoidwing						= mod:NewCastTimer(6.2, 1227734, 28405, nil, nil, 2)--Shorttext Knockback
-local timerNetherbreakerCD						= mod:NewCDCountTimer(10, 1228115, nil, nil, nil, 3)
+local timerCoalesceVoidwing							= mod:NewCastTimer(6.2, 1227734, 28405, nil, nil, 2)--Shorttext Knockback
+local timerNetherbreakerCD							= mod:NewCDCountTimer(10, 1228115, nil, nil, nil, 3)
 
 mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
 ----Royal Voidwing
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32228))
-local specWarnDimensionBreath					= mod:NewSpecialWarningCount(1228163, nil, nil, nil, 2, 2)
-local specWarnCosmicMaw							= mod:NewSpecialWarningDefensive(1234529, nil, nil, nil, 1, 2)
-local specWarnCosmicMawTaunt					= mod:NewSpecialWarningTaunt(1234529, nil, nil, nil, 1, 2)
+local specWarnDimensionBreath						= mod:NewSpecialWarningCount(1228163, nil, nil, nil, 2, 2)
+local specWarnCosmicMaw								= mod:NewSpecialWarningDefensive(1234529, nil, nil, nil, 1, 2)
+local specWarnCosmicMawTaunt						= mod:NewSpecialWarningTaunt(1234529, nil, nil, nil, 1, 2)
 
-local timerDimensionBreathCD					= mod:NewCDCountTimer(97.3, 1228163, nil, nil, nil, 3, nil, DBM_COMMON_L.TANK_ICON)
-local timerCosmicMawCD							= mod:NewCDCountTimer(97.3, 1234529, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDimensionBreathCD						= mod:NewCDCountTimer(97.3, 1228163, nil, nil, nil, 3, nil, DBM_COMMON_L.TANK_ICON)
+local timerCosmicMawCD								= mod:NewCDCountTimer(97.3, 1234529, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Intermission Two: King's Hunger
-local specWarnKingsHunger						= mod:NewSpecialWarningSwitchCustom(1228265, "-Healer", nil, nil, 1, 2)
+local specWarnKingsHunger							= mod:NewSpecialWarningSwitchCustom(1228265, "-Healer", nil, nil, 1, 2)
 
-local timerKingsHunger							= mod:NewBuffActiveTimer(30, 1228265, nil, nil, nil, 3)
+local timerKingsHunger								= mod:NewBuffActiveTimer(36, 1228265, nil, nil, nil, 3)--30 plus 6 second cast
 --Stage Three: World in Twilight
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31575))
 --local warnStarshattered							= mod:NewStackAnnounce(1226413, 2, nil, "Tank|Healer")
 
-local specWarnStarshattered						= mod:NewSpecialWarningYou(1226413, nil, nil, nil, 1, 6)
-local specWarnStarshatteredTaunt				= mod:NewSpecialWarningTaunt(1226413, nil, nil, nil, 1, 2)
+local specWarnStarshattered							= mod:NewSpecialWarningYou(1226413, nil, nil, nil, 1, 6)
+local specWarnStarshatteredTaunt					= mod:NewSpecialWarningTaunt(1226413, nil, nil, nil, 1, 2)
 
-local timerGalacticSmashCD						= mod:NewCDCountTimer(55, 1226648, nil, nil, nil, 3)
-local timerStarkillerSwingCD					= mod:NewCDCountTimer(97.3, 1226442, nil, nil, nil, 3)
-local timerWorldInTwilightCD					= mod:NewNextTimer(185, 1225634, nil, nil, nil, 6)--172.5+12.5ish
+local timerGalacticSmashCD							= mod:NewCDCountTimer(55, 1226648, nil, nil, nil, 3)
+local timerStarkillerSwingCD						= mod:NewCDCountTimer(97.3, 1226442, nil, nil, nil, 3)
+local timerWorldInTwilightCD						= mod:NewNextTimer(185, 1225634, nil, nil, nil, 6)--172.5+12.5ish
 
 mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
 mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
@@ -160,9 +162,9 @@ function mod:OnCombatStart(delay)
 	if not self:IsEasy() then
 		timerBanishmentCD:Start(30-delay, 1)
 	end
-	timerInvokeTheOathCD:Start(117-delay)--Until cast finish (not cast start)
+	timerInvokeTheOathCD:Start(115-delay)
 	--Voidwing
-	timerBeheadCD:Start((self:IsHard() and 32.5 or 35)-delay, 1)
+	timerBeheadCD:Start((self:IsHard() and 32.4 or 35)-delay, 1)
 	timerBesiegeCD:Start((self:IsMythic() and 9 or self:IsEasy() and 46 or 49)-delay, 1)
 	self:EnablePrivateAuraSound(1224855, "lineyou", 17)--Behead
 	self:EnablePrivateAuraSound(1224857, "lineyou", 17, 1224855)--Behead
@@ -204,9 +206,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 1224731 then
-		warnDecreeOathBound:Show()
-	elseif spellId == 1224787 then
+	if spellId == 1224787 then
 		self.vb.conquerCount = self.vb.conquerCount + 1
 		if self.vb.conquerCount % 2 == 1 then
 			specWarnConquer:Show(self.vb.conquerCount)
@@ -221,7 +221,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1227529 then
 		self.vb.banishmentCount = self.vb.banishmentCount + 1
 		if self.vb.banishmentCount < 4 then
-			local timer = self.vb.banishmentCount % 2 == 0 and 23.6 or 16.4
+			local timer = self.vb.banishmentCount % 2 == 0 and 23.5 or 15.9
 			timerBanishmentCD:Start(timer, self.vb.banishmentCount+1)
 		end
 	elseif spellId == 1224906 then
@@ -229,20 +229,25 @@ function mod:SPELL_CAST_START(args)
 		specWarnInvokeTheOath:Play("findmc")
 	elseif spellId == 1225010 then--Stage 1
 		self.vb.beheadCount = self.vb.beheadCount + 1
-		timerBeheadCD:Start(40, self.vb.beheadCount+1)
+		if self.vb.beheadCount == 1 then--Can only ever be 2 casts
+			timerBeheadCD:Start(40, self.vb.beheadCount+1)
+		end
 	elseif spellId == 1225016 then
 		self.vb.besiegeCount = self.vb.besiegeCount + 1
 		specWarnBesiege:Show(self.vb.besiegeCount)
 		specWarnBesiege:Play("breathsoon")
-		timerBesiegeCD:Start(40, self.vb.besiegeCount+1)
+		--Because first comes early on mythic it gets a 3rd cast
+		if (self:IsMythic() and self.vb.besiegeCount < 3) or self.vb.besiegeCount < 2 then
+			timerBesiegeCD:Start(39.9, self.vb.besiegeCount+1)
+		end
+		if self:IsMythic() then
+			timerFractalImagesCD:Start(20)
+		end
 	elseif spellId == 1228065 then
 		--Intermission One: Nexus Descent
 		--Timers for adds start on phase start, but their GUIDS aren't known until they spawn, so we can't start them here
 		--intermissionOneStartTime = GetTime()
 		self.vb.manaRemaining = 2--manaforge titan
-		--self:RegisterShortTermEvents(
-		--	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
-		--)
 		specWarnRallytheShadowguard:Show()
 		specWarnRallytheShadowguard:Play("killmob")
 		self:SetStage(1.5)
@@ -253,6 +258,9 @@ function mod:SPELL_CAST_START(args)
 		--Stop intermission bar (when created)
 		timerSelfDestructCD:Start(64)--Basically the stage's "berserk" timer
 		self:RegisterZoneCombat(2810)
+		if self:IsMythic() then
+			timerTwilightMassacreCD:Start(18)
+		end
 	elseif spellId == 1230302 then
 		if self:AntiSpam(5, 1) then
 			warnSelfDestruct:Show()
@@ -263,13 +271,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnDreadMortar:Show()
 			specWarnDreadMortar:Play("watchstep")
 		end
-		timerDreadMortarCD:Start(nil, args.sourceGUID)
+		timerDreadMortarCD:Start(nil, args.sourceGUID)--24.3
 	elseif spellId == 1228075 then
 		if self:CheckBossDistance(args.sourceGUID, false, 32698, 48) then
 			specWarnNexusBeam:Show()
 			specWarnNexusBeam:Play("watchstep")
 		end
-		timerNexusBeamCD:Start(nil, args.sourceGUID)
+		timerNexusBeamCD:Start(nil, args.sourceGUID)--20.6
 	elseif spellId == 1230263 then
 		if not castsPerGUID[args.sourceGUID] then castsPerGUID[args.sourceGUID] = 0 end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -299,10 +307,10 @@ function mod:SPELL_CAST_START(args)
 		timerInvokeTheOathCD:Stop()
 		timerBeheadCD:Stop()
 		timerBesiegeCD:Stop()
+		timerFractalImagesCD:Stop()
 		--Start Stage 2 timers
 		if self:IsMythic() then
-			timerNetherbreakerCD:Start(7.1, 1)
-			--timerBeheadCD:Start(20.5, 1)--Unknown not seen yet
+			timerNetherbreakerCD:Start(7, 1)
 			timerCosmicMawCD:Start(15.5, 1)
 			timerDimensionBreathCD:Start(20.5, 1)
 		else
@@ -315,7 +323,10 @@ function mod:SPELL_CAST_START(args)
 		--Other stage 2 timers start here as well BUT we delay their start until after the random intermission in middle of stage 2
 	elseif spellId == 1228115 then
 		self.vb.netherbreakerCount = self.vb.netherbreakerCount + 1
-		--timerNetherbreakerCD:Start(nil, self.vb.netherbreakerCount+1)
+		if self:IsMythic() then
+			specWarnNetherBreakerMythic:Show(self.vb.netherbreakerCount)
+			specWarnNetherBreakerMythic:Play("watchstep")
+		end
 	elseif spellId == 1228163 then
 		self.vb.dimensionBreathCount = self.vb.dimensionBreathCount + 1
 		specWarnDimensionBreath:Show(self.vb.dimensionBreathCount)
@@ -324,14 +335,12 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnDimensionBreath:Play("breathsoon")
 		end
-		--timerDimensionBreathCD:Start(nil, self.vb.dimensionBreathCount+1)--Unknown recast
 	elseif spellId == 1234529 then
 		self.vb.tankComboCount = self.vb.tankComboCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnCosmicMaw:Show()
 			specWarnCosmicMaw:Play("defensive")
 		end
-		--timerCosmicMawCD:Start(nil, self.vb.tankComboCount+1)--Unknown recast
 	elseif spellId == 1228265 then
 		--Intermission Two: King's Hunger
 		self:SetStage(2.5)
@@ -341,6 +350,12 @@ function mod:SPELL_CAST_START(args)
 		timerBeheadCD:Stop()
 		timerBanishmentCD:Stop()
 		timerBesiegeCD:Stop()
+		specWarnKingsHunger:Show(args.destName)
+		specWarnKingsHunger:Play("targetchange")
+		timerKingsHunger:Start()
+		if self:IsMythic() then
+			timerBeheadCD:Start(33)--Damage at 36, private aura is 3 seconds, so this is approximation
+		end
 	elseif spellId == 1225319 then
 		self.vb.smashCount = self.vb.smashCount + 1
 		timerGalacticSmashCD:Start(55, self.vb.smashCount+1)
@@ -356,7 +371,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 1234904 then--Stage 2
 		self.vb.beheadCount = self.vb.beheadCount + 1
-		--timerBeheadCD:Start(100, self.vb.beheadCount+1)--Unknown recast time, if there is a recast time at all
 	elseif spellId == 1226442 then
 		self.vb.swingCount = self.vb.swingCount + 1
 		local timer = self.vb.swingCount % 2 == 0 and 40 or 15
@@ -387,10 +401,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 1234529 and not args:IsPlayer() then
 		specWarnCosmicMawTaunt:Show(args.destName)
 		specWarnCosmicMawTaunt:Play("tauntboss")
-	elseif spellId == 1228265 then
-		specWarnKingsHunger:Show(args.destName)
-		specWarnKingsHunger:Play("targetchange")
-		timerKingsHunger:Start()
 	elseif spellId == 1226413 then
 		if args:IsPlayer() then
 			specWarnStarshattered:Show()
@@ -420,19 +430,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnTwilightBarrier then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 1228284 and args:GetDestCreatureID() == 233823 then
-		--self:UnregisterShortTermEvents()
+	elseif spellId == 1228284 and args:GetDestCreatureID() == 233823 then--Royal Ward Fades
 		self:UnregisterZoneCombat(2810)
-		--intermissionOneStartTime = nil
-		--Main boss leaving intermission and returning back to stage 2
 		self:SetStage(2)
 		--Timers need auto correction from stage 2 true start
 		local timeSinceStage2Start = GetTime() - stage2StartTime
-		timerNetherbreakerCD:Start(113.4 - timeSinceStage2Start, self.vb.netherbreakerCount+1)
-		timerBeheadCD:Start(120.4 - timeSinceStage2Start, self.vb.beheadCount+1)
-		timerCosmicMawCD:Start(122.4 - timeSinceStage2Start, self.vb.tankComboCount+1)
-		timerDimensionBreathCD:Start(128.4 - timeSinceStage2Start, self.vb.dimensionBreathCount+1)
-	elseif spellId == 1228265 then
+		timerNetherbreakerCD:Start((self:IsMythic() and 108.5 or 113.4) - timeSinceStage2Start, self.vb.netherbreakerCount+1)
+		if not self:IsMythic() then
+			timerBeheadCD:Start(120.4 - timeSinceStage2Start, self.vb.beheadCount+1)
+		end
+		timerCosmicMawCD:Start((self:IsMythic() and 115.5 or 122.4) - timeSinceStage2Start, self.vb.tankComboCount+1)
+		timerDimensionBreathCD:Start((self:IsMythic() and 120.5 or 128.4) - timeSinceStage2Start, self.vb.dimensionBreathCount+1)
+	elseif spellId == 1228265 then--King's Hunger Fades
 		self:SetStage(3)
 		timerKingsHunger:Stop()
 		timerGalacticSmashCD:Start(self:IsEasy() and 6.2 or 9, 1)
@@ -478,7 +487,7 @@ function mod:UNIT_DIED(args)
 		timerCosmicMawCD:Stop()
 		timerBeheadCD:Stop()
 		timerBesiegeCD:Stop()
-		--timerFractalImagesCD:Stop()
+		timerFractalImagesCD:Stop()
 	end
 end
 
@@ -497,28 +506,23 @@ function mod:StartEngageTimers(guid, cid, delay)
 	end
 end
 
---[[
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		local GUID = UnitGUID(unitID)
-		if GUID and not castsPerGUID[GUID] then
-			castsPerGUID[GUID] = 0
-			local cid = self:GetCIDFromGUID(GUID)
-			if cid == 241800 then--Manaforged Titan
-				--local phaseAdjustment = GetTime() - intermissionOneStartTime
-				timerDreadMortarCD:Start(6.5, GUID)--15.6 - phaseAdjustment
-			elseif cid == 241798 or cid == 241803 then--Both Nexus Princes
-				timerNexusBeamCD:Start(16.5, GUID)
-			end
-		end
-	end
-end
---]]
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 1224776 then
 		self.vb.tankComboCount = self.vb.tankComboCount + 1
-		timerSubjugationRuleCD:Start(nil, self.vb.tankComboCount+1)
+		if self.vb.tankComboCount < 3 then
+			timerSubjugationRuleCD:Start(nil, self.vb.tankComboCount+1)
+		end
+		if self:IsMythic() then
+			--Timers adjusted down by 1 for ghost spawn vs seeing their cast above
+			if self.vb.tankComboCount == 3 then
+				specWarnVengefulOath:Schedule(16.5, self.vb.tankComboCount)
+				specWarnVengefulOath:ScheduleVoice(16.5, "ghostsoon")
+				timerVengefulOathCD:Start(16.5, 3)
+			else
+				specWarnVengefulOath:Schedule(32, self.vb.tankComboCount)
+				specWarnVengefulOath:ScheduleVoice(32, "ghostsoon")
+				timerVengefulOathCD:Start(32, self.vb.tankComboCount)
+			end
+		end
 	end
 end
