@@ -218,14 +218,16 @@ function mod:SPELL_CAST_START(args)
 			specWarnConquer:Play("sharetwo")
 		end
 		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
-			specWarnSubjugationRule:Schedule(1.5)
+			local targetName = self:GetBossTarget(237763)
+			specWarnSubjugationRule:Schedule(1.5, targetName)
 			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
 		end
 	elseif spellId == 1224812 then
 		specWarnVanquish:Show()
 		specWarnVanquish:Play("frontal")
 		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
-			specWarnSubjugationRule:Schedule(1.5)
+			local targetName = self:GetBossTarget(237763)
+			specWarnSubjugationRule:Schedule(1.5, targetName)
 			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
 		end
 	elseif spellId == 1227529 then
