@@ -39,6 +39,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31573))
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32227))
 local warnKingsThrall								= mod:NewTargetNoFilterAnnounce(1224767, 2)--Could be spammy
 
+local specWarnSubjugationRule						= mod:NewSpecialWarningTaunt(1224776, false, nil, nil, 1, 2)--Optional "taunt everything" feature for P1
 local specWarnConquer								= mod:NewSpecialWarningSoakCount(1224787, nil, nil, nil, 2, 2)
 local specWarnVanquish								= mod:NewSpecialWarningSpell(1224812, nil, nil, nil, 2, 15)
 local specWarnBanishment							= mod:NewSpecialWarningMoveAway(1227549, nil, nil, nil, 1, 2)
@@ -216,9 +217,17 @@ function mod:SPELL_CAST_START(args)
 			specWarnConquer:Show(self.vb.conquerCount)
 			specWarnConquer:Play("sharetwo")
 		end
+		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
+			specWarnSubjugationRule:Schedule(1.5)
+			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
+		end
 	elseif spellId == 1224812 then
 		specWarnVanquish:Show()
 		specWarnVanquish:Play("frontal")
+		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
+			specWarnSubjugationRule:Schedule(1.5)
+			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
+		end
 	elseif spellId == 1227529 then
 		self.vb.banishmentCount = self.vb.banishmentCount + 1
 		if self.vb.banishmentCount < 4 then
@@ -260,7 +269,7 @@ function mod:SPELL_CAST_START(args)
 		timerSelfDestructCD:Start(64)--Basically the stage's "berserk" timer
 		self:RegisterZoneCombat(2810)
 		if self:IsMythic() then
-			timerTwilightMassacreCD:Start(18)
+			timertimerTwilightMassacreCDInitial:Start(18)
 		end
 	elseif spellId == 1230302 then
 		if self:AntiSpam(5, 1) then

@@ -45,11 +45,11 @@ local specWarnArcaneObliteration					= mod:NewSpecialWarningCount(1228216, nil, 
 local yellArcaneObliteration						= mod:NewShortYell(1228216, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellArcaneObliterationFades					= mod:NewShortFadesYell(1228216, nil, nil, nil, "YELL")
 local specWarnSilencingTempest						= mod:NewSpecialWarningDodgeCount(1228188, nil, nil, nil, 2, 2)
-local yellSilencingTempest							= mod:NewShortYell(1228188)
+local yellSilencingTempest							= mod:NewShortYell(1228188, DBM_COMMON_L.POOLS)
 local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1227631, nil, nil, nil, 2, 2)
 local specWarnInvokeCollector						= mod:NewSpecialWarningSwitchCount(1231720, "-Tank", nil, nil, 1, 2)--Tank should stay away
 local specWarnAstralHarvest							= mod:NewSpecialWarningYou(1228214, nil, nil, nil, 1, 2)
-local yellAstralHarvestFades						= mod:NewShortFadesYell(1228214)
+local yellAstralHarvestFades						= mod:NewShortFadesYell(1228214, DBM_COMMON_L.ORBS)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerOverwhelmingPowerCD						= mod:NewCDCountTimer(44, 1228502, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -222,7 +222,7 @@ local allTimers = {
 
 ---@param self DBMMod
 local function delayedTankCheck(self)
-	local _, unitID = self:GetBossTarget(247989)
+	local _, unitID = self:GetBossTarget(233817)
 	if unitID and UnitIsUnit("player", unitID) then
 		yellArcaneObliteration:Yell()
 		yellArcaneObliterationFades:Countdown(4.7)
@@ -337,14 +337,14 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerInvokeCollectorCD:Start(timer, self.vb.invokeCollectorCount+1)
 		end
-	elseif spellId == 1234328 then--antispam cause add count unknown
+	elseif spellId == 1234328 then
 		local uId = self:GetUnitIdFromGUID(args.sourceGUID)
 		if UnitPower(uId) > 70 then--Might need fine tuning
 			timerPhotonBlastCD:Start(19, args.sourceGUID)
 		else
 			timerPhotonBlastCD:Start(4, args.sourceGUID)--3 seconds for first cast, then 4 seconds after that
 		end
-		if self:CheckBossDistance(args.sourceGUID, false, 10645, 23) then
+		if self:CheckBossDistance(args.sourceGUID, false, 10645, 23) and self:AntiSpam(3, 1) then
 			specWarnPhotonBlast:Show()
 			specWarnPhotonBlast:Play("frontal")
 		end
