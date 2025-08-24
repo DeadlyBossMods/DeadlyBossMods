@@ -62,3 +62,4 @@ ManaforgeOmega/Nexus-KingSalhadaar-Heroic-Kill.lua
 ManaforgeOmega/Nexus-KingSalhadaar-Mythic-Wipe.lua
 ManaforgeOmega/Dimensius-Normal-Kill.lua
 ManaforgeOmega/Dimensius-Heroic-Kill.lua
+ManaforgeOmega/Dimensius-Mythic-Wipe.lua
