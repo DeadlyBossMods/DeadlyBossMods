@@ -32,6 +32,17 @@ if Plater then--Plater button disabled for now
 		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
 	end)
 	platerButton.myheight = 25
+elseif ThreatPlates then--Threat Plates button disabled for now
+	local tpButton = spamNameplates:CreateButton(L.ThreatPlates_Config, 100, 25)
+	tpButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
+	tpButton:SetNormalFontObject(GameFontNormal)
+	tpButton:SetHighlightFontObject(GameFontNormal)
+	tpButton:SetScript("OnClick", function()
+		TidyPlatesThreat:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
+		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
+	end)
+	tpButton.myheight = 25
 else
 	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
 	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
