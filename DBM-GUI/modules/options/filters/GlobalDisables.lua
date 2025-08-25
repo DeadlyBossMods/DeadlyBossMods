@@ -21,6 +21,7 @@ spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountd
 
 local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
 local Plater = _G["Plater"]
+local ThreatPlates = _G["TidyPlatesThreatDBM"] and _G["TidyPlatesThreat"]
 if Plater then--Plater button disabled for now
 	local platerButton = spamNameplates:CreateButton(L.Plater_Config, 100, 25)
 	platerButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
@@ -38,7 +39,7 @@ elseif ThreatPlates then--Threat Plates button disabled for now
 	tpButton:SetNormalFontObject(GameFontNormal)
 	tpButton:SetHighlightFontObject(GameFontNormal)
 	tpButton:SetScript("OnClick", function()
-		TidyPlatesThreat:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
+		ThreatPlates:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
 		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
 	end)

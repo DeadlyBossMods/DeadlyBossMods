@@ -16,7 +16,7 @@ testbutton.myheight = 0
 --When using plater, most options are configured in plater
 --so we generate a button to open plater options instead of showing a bunch of options that are ignored
 local Plater = _G["Plater"]
-local ThreatPlates = _G["TidyPlatesThreatDBM"]
+local ThreatPlates = _G["TidyPlatesThreatDBM"] and _G["TidyPlatesThreat"]
 if Plater or ThreatPlates then--Plater or Threat Plates button disabled for now
 	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")--Only option we control that plater and Threat Plates don't
 	general:CreateCheckButton(L.AlwaysKeepNPs, true, nil, "AlwaysKeepNPs")
@@ -38,7 +38,7 @@ if Plater or ThreatPlates then--Plater or Threat Plates button disabled for now
 		tpButton:SetNormalFontObject(GameFontNormal)
 		tpButton:SetHighlightFontObject(GameFontNormal)
 		tpButton:SetScript("OnClick", function()
-			TidyPlatesThreat:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
+			ThreatPlates:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
 			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 			optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
 		end)
