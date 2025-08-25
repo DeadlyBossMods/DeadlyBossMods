@@ -97,6 +97,7 @@ CL.SPREADDEBUFF						= "광역 디버프"
 CL.SPREADDEBUFFS					= "광역 디버프"
 CL.LASER							= "레이저"
 CL.LASERS							= "레이저"
+CL.LINE								= "선"
 CL.RIFT								= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS							= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
