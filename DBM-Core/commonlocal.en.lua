@@ -97,6 +97,7 @@ CL.SPREADDEBUFF						= "Spread Debuff"
 CL.SPREADDEBUFFS					= "Spread Debuffs"
 CL.LASER							= "Laser"
 CL.LASERS							= "Lasers"
+CL.LINE								= "Line"
 CL.RIFT								= "Rift"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS							= "Rifts"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS							= "Traps"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version

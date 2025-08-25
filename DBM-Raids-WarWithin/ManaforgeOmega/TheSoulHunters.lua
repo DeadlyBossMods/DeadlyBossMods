@@ -128,7 +128,7 @@ function mod:OnCombatStart(delay)
 		timerVoidstepCD:Start(26.4-delay, 1)
 		timerBladeDanceCD:Start(29.2-delay, 1)
 		timerSpiritBombsCD:Start(32-delay, 1)
-		timerSigilofChainsCD:Start(37.9-delay, 1)
+		timerSigilofChainsCD:Start(39.4-delay, 1)
 		timerTheHuntCD:Start(41.8-delay, 1)
 		timerEradicateCD:Start(53.2-delay, "1-1")
 		timerCollapsingStarCD:Start(108-delay)--First special
@@ -313,7 +313,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerFracturedCD:Start(3.5, 1)--Same in all
 				timerSpiritBombsCD:Start(self:IsMythic() and 20.4 or self:IsHeroic() and 20.9 or 21.4, 1)
 				if self:IsMythic() then
-					timerSigilofChainsCD:Start(28, 1)
+					timerSigilofChainsCD:Start(27.9, 1)
 				end
 			end
 		end

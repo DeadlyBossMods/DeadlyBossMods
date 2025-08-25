@@ -5,26 +5,27 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(233824, 241517, 234478)--Yes, they're all used
 mod:SetEncounterID(3135)
 mod:SetBossHPInfoToHighest()--Boss Heals
-mod:SetHotfixNoticeRev(20250816000000)
-mod:SetMinSyncRevision(20250813000000)
+mod:SetHotfixNoticeRev(20250823000000)
+mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(2810)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234263 1232973 1234898",--1243690 1234044
-	"SPELL_CAST_SUCCESS 1234242 1231716 1246541",--1237690
-	"SPELL_AURA_APPLIED 1231005 1228206 1228207 1230168 1229674 1243699 1243577 1243609 1235114 1246930 1234243 1234244 1246145 1245292 1232394 1234266 1250055",
-	"SPELL_AURA_APPLIED_DOSE 1228207 1230168 1229674 1246145 1234266",
-	"SPELL_AURA_REMOVED 1228207 1229038 1243577 1243609 1234243 1234244 1233539 1237690",
-	"SPELL_AURA_REMOVED_DOSE 1228207",
+	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234263 1232973 1234898 1251619",--1243690 1234044
+	"SPELL_CAST_SUCCESS 1231716 1246541",--1237690 1234242
+	"SPELL_AURA_APPLIED 1231005 1228206 1230168 1243699 1243577 1243609 1235114 1246930 1234243 1234244 1246145 1245292 1232394 1234266 1250055 1237102 1249425",
+	"SPELL_AURA_APPLIED_DOSE 1230168 1246145 1234266",
+	"SPELL_AURA_REMOVED 1229038 1243577 1243609 1234243 1234244 1233539 1249425",--1237690
 	"SPELL_PERIODIC_DAMAGE 1231002 1237696",
 	"SPELL_PERIODIC_MISSED 1231002 1237696",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_START boss1 boss2 boss3"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_START boss1 boss2 boss3",
+	"UNIT_POWER_UPDATE boss1 boss2 boss3",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 )
 
 --TODO, add antimatter to GTFO if you soak too long
@@ -34,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, probably don't need to do anything with https://www.wowhead.com/ptr-2/spell=1233292/accretion-disk but noting just in case
 --TODO, stuff with https://www.wowhead.com/ptr-2/spell=1234054/shadowquake ?
 --[[
-ability.id = 1234898 and type = "begincast" or ability.id = 1245292 and type = "applydebuff" or ability.id = 1237690 and type = "removebuff"
+ability.id = 1234898 and type = "begincast" or ability.id = 1245292 and type = "applydebuff" or ability.id = 1237102 and type = "applybuff"
 --]]
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Critical Mass
@@ -75,6 +76,7 @@ local warnStellarCore								= mod:NewYouAnnounce(1246930, 1)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
 local warnCrushingGravityFaded						= mod:NewFadesAnnounce(1234243, 1)
 local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
+local warnGravitationalDistortion					= mod:NewCountAnnounce(1234242, 2)
 
 local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
 local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 2)
@@ -90,16 +92,22 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32738))
 --local warnEclipseCast								= mod:NewCastAnnounce(1237690, 1, 32)
 --Artoshion & Pargoth
 local warnTouchofOblivion							= mod:NewStackAnnounce(1246145, 2, nil, "Tank|Healer")
+local warnMassDestruction							= mod:NewTargetAnnounce(1249423, 3)
 
 local specWarnMassEjection							= mod:NewSpecialWarningDodgeCount(1237694, nil, nil, nil, 2, 15)
-local specWarnMassDestruction						= mod:NewSpecialWarningDodgeCount(1249423, nil, nil, nil, 2, 15, 4)--Mythic version of above
+local specWarnMassDestruction						= mod:NewSpecialWarningYouCount(1249423, nil, nil, nil, 2, 17, 4)--Mythic version of above
+local yellMassDestruction							= mod:NewShortYell(1249423, DBM_COMMON_L.LINE)
+local yellMassDestructionFades						= mod:NewShortFadesYell(1249423)
 local specWarnConquerorsCross						= mod:NewSpecialWarningSwitchCount(1239262, "-Healer", nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnStardustNova							= mod:NewSpecialWarningDodgeCount(1237695, nil, 142775, nil, 2, 2)
+local specWarnStarshardNova							= mod:NewSpecialWarningDodgeCount(1251619, nil, 142775, nil, 2, 2, 4)--Mythic version of above
 
 local timerMassEjectionCD							= mod:NewCDCountTimer(17.6, 1237694, nil, nil, nil, 3)
---local timerMassDestructionCD						= mod:NewCDCountTimer(97.3, 1249423, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerMassDestructionCD						= mod:NewCDCountTimer(97.3, 1249423, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Mythic version of above
 local timerConquerorsCrossCD						= mod:NewCDCountTimer(35, 1239262, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerStardustNovaCD							= mod:NewCDCountTimer(35.2, 1237695, 142775, nil, nil, 3)--Shortname "Nova"
+local timerStarshardNovaCD							= mod:NewCDCountTimer(31.6, 1251619, 142775, nil, nil, 3)--Mythic version of above
+local timerEclipseCD								= mod:NewNextTimer(35.2, 1237690, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 
 --Adds they both summon
 local specWarnNullBinding							= mod:NewSpecialWarningYou(1246541, nil, nil, nil, 1, 2)
@@ -130,11 +138,10 @@ local timerVoidgraspCD								= mod:NewCDCountTimer(97.3, 1250055, nil, nil, nil
 --BW Compatible Icon Marking
 local livingMassMarkerMapTable = {6, 1, 2, 4, 7}
 
-local playerStacks, bossStacks = 0, 0
-local nearArtoshion, nearPargoth = true, true
 local collectiveGravityName = DBM:GetSpellName(1228207)
 local gravityWellName = DBM:GetSpellName(1232394)
 local devourCasting = false
+local activeBossGUIDS = {}
 --Stage 1
 mod.vb.massiveSmashCount = 0
 mod.vb.massSpawns = 0
@@ -146,7 +153,7 @@ mod.vb.reverseGravityCount = 0
 mod.vb.extinctionCount = 0
 mod.vb.gammaBurstCount = 0
 mod.vb.distortionCount = 0
-mod.vb.massEjectionCount = 0
+mod.vb.massEjectionCount = 0--Also used for Mythic variant Mass destruction
 mod.vb.conquerorsCrossCount = 0
 mod.vb.stardustCount = 0
 --Stage 3
@@ -159,19 +166,18 @@ mod.vb.voidgraspCount = 0
 local savedDifficulty = "normal"
 local allTimers = {
 	["mythic"] = {
-		[1] = {--Placeholder
-			[1230087] = {23.5, 47.0, 47.0, 47.0},--Massive Smash
-			[1229038] = {11.7, 94.1, 94.1},--Devour P1
-			[1230979] = {35.3, 43.5, 50.6, 43.5},--Dark Matter
-			[1243690] = {41.2, 47.0, 47.1, 47.0},--Shattered Space
-			[1243577] = {52.9, 42.4, 51.7, 42.4},--Reverse Gravity
+		[1] = {
+			[1230087] = {21.0, 42.1, 42.1, 42.1},--Massive Smash
+			[1229038] = {10.5, 84.2, 84.2},--Devour P1
+			[1230979] = {31.6, 39.0, 45.2, 39.0},--Dark Matter
+			[1243690] = {36.8, 42.1, 42.1, 42.1},--Shattered Space
+			[1243577] = {43.1, 42.1, 42.1, 42.1},--Reverse Gravity
 		},
 		[3] = {
-			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},--Darkened Sky
-			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
-			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
-			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
+			[1233539] = {47.6, 80, 80},--Devour P3
+			[1234044] = {29.5, 43.0, 30.0, 50.0, 30.0},--Darkened Sky
+			[1234263] = {57.4, 30.0, 30.0, 30.0, 30.0},--Cosmic Collapse
+			[1234242] = {59.5, 26.0, 32.0, 26.0, 32.0},--Gravitational Distortion
 		},
 	},
 	["heroic"] = {
@@ -209,8 +215,8 @@ local allTimers = {
 }
 
 function mod:OnCombatStart(delay)
-	nearArtoshion, nearPargoth = true, true
 	devourCasting = false
+	table.wipe(activeBossGUIDS)
 	self:SetStage(1)
 	self.vb.massiveSmashCount = 0
 	self.vb.massSpawns = 0
@@ -251,16 +257,12 @@ function mod:OnTimerRecovery()
 	else--Combine LFR and Normal
 		savedDifficulty = "other"
 	end
-	if DBM:UnitDebuff("player", 1228207) then
-		local _, _, stack = DBM:UnitDebuff("player", 1228207)
-		playerStacks = stack or 0
-	end
 end
 
 local function extraWarnDevour(self)
 	if not devourCasting then return end
 	if self:GetStage(1) then
-		if playerStacks < bossStacks then
+		if not DBM:UnitDebuff("player", 1228207) then
 			specWarnDevourP1:Show(collectiveGravityName)
 			specWarnDevourP1:Play("gather")
 		end
@@ -275,6 +277,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1230087 then
+		self.vb.massSpawns = 0
 		self.vb.massiveSmashCount = self.vb.massiveSmashCount + 1
 		specWarnMassiveSmash:Show(self.vb.massiveSmashCount)
 		specWarnMassiveSmash:Play("carefly")
@@ -306,46 +309,34 @@ function mod:SPELL_CAST_START(args)
 		self.vb.extinctionCount = self.vb.extinctionCount + 1
 		specWarnExtinction:Show(self.vb.extinctionCount)
 		specWarnExtinction:Play("aesoon")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.extinctionCount+1)
-		--if timer then
-			timerExtinctionCD:Start(35.2, self.vb.extinctionCount+1)
-		--end
+		timerExtinctionCD:Start(self:IsMythic() and 31.5 or 35.2, self.vb.extinctionCount+1)
 	elseif spellId == 1237694 then
 		self.vb.massEjectionCount = self.vb.massEjectionCount + 1
-		if nearArtoshion then
-			specWarnMassEjection:Show(self.vb.massEjectionCount)
-			specWarnMassEjection:Play("frontal")
-		end
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.massEjectionCount+1)
-		--if timer then
-			timerMassEjectionCD:Start(17.6, self.vb.massEjectionCount+1)
-		--end
+		specWarnMassEjection:Show(self.vb.massEjectionCount)
+		specWarnMassEjection:Play("frontal")
+		timerMassEjectionCD:Start(17.6, self.vb.massEjectionCount+1)
 	elseif spellId == 1249423 then
-		self.vb.distortionCount = self.vb.distortionCount + 1
-		if nearPargoth then
-			specWarnMassDestruction:Show(self.vb.distortionCount)
-			specWarnMassDestruction:Play("frontal")
-		end
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.distortionCount+1)
-		--if timer then
-		--	timerMassDestructionCD:Start(timer, self.vb.distortionCount+1)
-		--end
+		self.vb.massEjectionCount = self.vb.massEjectionCount + 1
+		--timerMassDestructionCD:Start(35.2, self.vb.massEjectionCount+1)
 	elseif spellId == 1239262 then
+		--More consistent stage 2 setter for MRT and WAs and in sync with BW
+		if self:GetStage(2, 1) then
+			self:SetStage(2)
+		end
 		self.vb.conquerorsCrossCount = self.vb.conquerorsCrossCount + 1
 		specWarnConquerorsCross:Show(self.vb.conquerorsCrossCount)
 		specWarnConquerorsCross:Play("mobsoon")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.conquerorsCrossCount+1)
-		--if timer then
-			timerConquerorsCrossCD:Start(35, self.vb.conquerorsCrossCount+1)
-		--end
+		timerConquerorsCrossCD:Start(self:IsMythic() and 31.5 or 35, self.vb.conquerorsCrossCount+1)
 	elseif spellId == 1237695 then
 		self.vb.stardustCount = self.vb.stardustCount + 1
 		specWarnStardustNova:Show(self.vb.stardustCount)
 		specWarnStardustNova:Play("watchstep")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.stardustCount+1)
-		--if timer then
-			timerStardustNovaCD:Start(35.2, self.vb.stardustCount+1)
-		--end
+		timerStardustNovaCD:Start(35.2, self.vb.stardustCount+1)
+	elseif spellId == 1251619 then
+		self.vb.stardustCount = self.vb.stardustCount + 1
+		specWarnStarshardNova:Show(self.vb.stardustCount)
+		specWarnStarshardNova:Play("watchstep")
+		timerStarshardNovaCD:Start(31.5, self.vb.stardustCount+1)
 	elseif spellId == 1233539 then
 		devourCasting = true
 		self.vb.devourCount = self.vb.devourCount + 1
@@ -398,15 +389,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 1234242 then
-		self.vb.distortionCount = self.vb.distortionCount + 1
-		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.distortionCount+1)
-		if timer then
-			timerGravitationalDistortionCD:Start(timer, self.vb.distortionCount+1)
-		end
---	elseif spellId == 1237690 then
---		warnEclipseCast:Show()
-	elseif spellId == 1231716 then
+	if spellId == 1231716 then
 		self.vb.extinguishTheStarsCount = self.vb.extinguishTheStarsCount + 1
 		specWarnExtinguishTheStars:Show(self.vb.extinguishTheStarsCount)
 		specWarnExtinguishTheStars:Play("watchstep")
@@ -420,9 +403,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 1231005 then
+	if spellId == 1231005 and not activeBossGUIDS[args.destGUID] then
 		self.vb.massSpawns = self.vb.massSpawns + 1
-		if self.Options.SetIconOnLivingMass and self.vb.massSpawns < 6 then
+		if self.Options.SetIconOnLivingMass then
 			self:ScanForMobs(args.destGUID, 2, livingMassMarkerMapTable[self.vb.massSpawns], 1, nil, 12, "SetIconOnLivingMass")
 		end
 	elseif spellId == 1228206 then
@@ -431,10 +414,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnExcessMass:Show()
 			specWarnExcessMass:Play("runout")
 		end
-	elseif spellId == 1228207 then
-		if args:IsPlayer() then
-			playerStacks = args.amount or 1
-		end
 	elseif spellId == 1230168 then
 		if args:IsPlayer() then
 			warnMortalFragility:Show()
@@ -442,8 +421,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMortalFragility:Show(args.destName)
 			specWarnMortalFragility:Play("tauntboss")
 		end
-	elseif spellId == 1229674 then
-		bossStacks = args.amount or 1
 	elseif spellId == 1243699 then
 		warnSpatialFragment:CombinedShow(1, args.destName)
 	elseif spellId == 1243577 then
@@ -491,15 +468,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnPhase:Play("pthree")
 			self:SetStage(3)
 			self.vb.devourCount = 0
+			self.vb.distortionCount = 0
 			timerExtinctionCD:Stop()
 			timerGammaBurstCD:Stop()
 			timerGravitationalDistortionCD:Stop()
 
-			timerExtinguishTheStarsCD:Start(16.6)
+			timerExtinguishTheStarsCD:Start(16.5)
 			timerDevourP3CD:Start(allTimers[savedDifficulty][3][1233539][1], 1)
 			timerDarkenedSkyCD:Start(allTimers[savedDifficulty][3][1234044][1], 1)
 			timerCosmicCollapseCD:Start(allTimers[savedDifficulty][3][1234263][1], 1)
-			timerSuperNovaCD:Start(allTimers[savedDifficulty][3][1232973][1], 1)
+			if not self:IsMythic() then
+				timerVoidgraspCD:Start(allTimers[savedDifficulty][3][1250055][1], 1)
+				timerSuperNovaCD:Start(allTimers[savedDifficulty][3][1232973][1], 1)
+			else
+				timerGravitationalDistortionCD:Start(allTimers[savedDifficulty][3][1234242][1], 1)
+			end
 		end
 	elseif spellId == 1232394 and args:IsPlayer() then
 		if devourCasting then
@@ -525,17 +508,31 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidgrasp:Show(self.vb.voidgraspCount)
 			specWarnVoidgrasp:Play("runout")
 		end
+	elseif spellId == 1249425 then
+		warnMassDestruction:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			specWarnMassDestruction:Show(self.vb.massEjectionCount)
+			specWarnMassDestruction:Play("lineyou")
+			yellMassDestruction:Yell()
+			yellMassDestructionFades:Countdown(spellId)
+		end
+	elseif spellId == 1237102 then--Worldsoul Consumption
+		self.vb.extinctionCount = 0
+		self.vb.gammaBurstCount = 0
+		self.vb.distortionCount = 0
+		self.vb.massEjectionCount = 0
+		self.vb.conquerorsCrossCount = 0
+		self.vb.stardustCount = 0
+		self:SetStage(2)
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 1228207 then
-		if args:IsPlayer() then
-			playerStacks = args.amount or 0
-		end
-	elseif spellId == 1229038 then
+	if spellId == 1229038 then
 		devourCasting = false
 		warnDevourP1Over:Show()
 		self:Unschedule(extraWarnDevour)
@@ -551,35 +548,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnInverseGravityFaded:Show()
 	elseif spellId == 1233539 then
 		warnDevourP3Over:Show()
-	elseif spellId == 1237690 then--Eclipse Removed
-		self:SetStage(2)
-		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
-		warnPhase:Play("ptwo")
-		self.vb.conquerorsCrossCount = 0
-		self.vb.extinctionCount = 0
-		local cid = self:GetCIDFromGUID(args.destGUID)
-		--TODO, rework this to use zonecombatscanner or some other method of truly detecting combat engage times
-		--instead of using ugly variances
-		if cid == 245255 then--Artoshion
-			timerConquerorsCrossCD:Start("v4.4-10", 1)
-			timerMassEjectionCD:Start("v11.5-17", 1)
-			timerExtinctionCD:Start("v16.1-21.8", 1)
-			timerGammaBurstCD:Start("v34-36", 1)
-			--if self:IsMythic() then
-			--	timerGravitationalDistortionCD:Start(50.5, 1)
-			--end
-		elseif cid == 245222 then--Pargoth
-			timerConquerorsCrossCD:Start("v11.3-13.6", 1)
-			timerStardustNovaCD:Start("v18.2-20.7", 1)
-			timerExtinctionCD:Start("v22.9-25", 1)
-			timerGammaBurstCD:Start("v37.2-39.7", 1)
-			--if self:IsMythic() then
-			--	timerGravitationalDistortionCD:Start(50.5, 1)
-			--end
+	elseif spellId == 1249425 then
+		if args:IsPlayer() then
+			yellMassDestructionFades:Cancel()
 		end
 	end
 end
-mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 1237696 or spellId == 1231002) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
@@ -598,13 +572,17 @@ function mod:UNIT_DIED(args)
 		timerGammaBurstCD:Stop()
 		timerExtinctionCD:Stop()
 		timerMassEjectionCD:Stop()
+		timerMassDestructionCD:Stop()
+		timerEclipseCD:Stop()
+		timerGravitationalDistortionCD:Stop()
 	elseif cid == 245222 then--Pargoth
 		timerConquerorsCrossCD:Stop()
 		timerGammaBurstCD:Stop()
 		timerExtinctionCD:Stop()
 		timerStardustNovaCD:Stop()
---	elseif cid == 245705 then--Voidwarden
-
+		timerStarshardNovaCD:Stop()
+		timerEclipseCD:Stop()
+		timerGravitationalDistortionCD:Stop()
 	end
 end
 
@@ -636,9 +614,79 @@ function mod:UNIT_SPELLCAST_START(_, _, spellId)
 		self.vb.gammaBurstCount = self.vb.gammaBurstCount + 1
 		specWarnGammaBurst:Show(self.vb.gammaBurstCount)
 		specWarnGammaBurst:Play("aesoon")
-		--local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.gammaBurstCount+1)
-		--if timer then
-			timerGammaBurstCD:Start(35, self.vb.gammaBurstCount+1)
-		--end
+		timerGammaBurstCD:Start(self:IsMythic() and 31.5 or 35, self.vb.gammaBurstCount+1)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
+	if spellId == 1248483 and self:AntiSpam(5, 5) then
+		self.vb.distortionCount = self.vb.distortionCount + 1
+		warnGravitationalDistortion:Show(self.vb.distortionCount)
+		local timer = self:GetStage(2) and 31.5 or self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, spellId, self.vb.distortionCount+1)
+		if timer then
+			timerGravitationalDistortionCD:Start(timer, self.vb.distortionCount+1)
+		end
+	end
+end
+
+function mod:UNIT_POWER_UPDATE(uId)
+	local guid = UnitGUID(uId)
+	local cid = self:GetCIDFromGUID(guid)
+	if cid == 245255 or cid == 245222 then
+		local power = UnitPower(uId)
+		if power == 1 then
+			DBM:Debug("First Power")
+			if cid == 245255 then--Artoshion
+				if self:IsMythic() then
+					--Adds basically come immediately on mythic
+					--Could start a fake one sooner then update it at last second like BW does but I don't see point
+					--Since it's really just an estimated "engage" timer
+					timerConquerorsCrossCD:Start(2.1, 1)
+					timerExtinctionCD:Start(12.7, 1)
+					timerGammaBurstCD:Start(23.2, 1)
+					timerMassDestructionCD:Start(5.3, 1)
+					timerGravitationalDistortionCD:Start(14.9, 1)
+				else
+					timerConquerorsCrossCD:Start(6, 1)
+					timerMassEjectionCD:Start(13.1, 1)
+					timerExtinctionCD:Start(17.8, 1)
+					timerGammaBurstCD:Start(31.9, 1)
+				end
+			elseif cid == 245222 then--Pargoth
+				if self:IsMythic() then
+					--Adds basically come immediately on mythic
+					--Could start a fake one sooner then update it at last second like BW does but I don't see point
+					--Since it's really just an estimated "engage" timer
+					timerConquerorsCrossCD:Start(1, 1)
+					timerExtinctionCD:Start(11.6, 1)
+					timerGammaBurstCD:Start(22.1, 1)
+					timerStarshardNovaCD:Start(4.2, 1)
+					timerGravitationalDistortionCD:Start(13.8, 1)
+				else
+					timerConquerorsCrossCD:Start(6, 1)
+					timerStardustNovaCD:Start(13, 1)
+					timerExtinctionCD:Start(17.8, 1)
+					timerGammaBurstCD:Start(31.9, 1)
+				end
+			end
+			timerEclipseCD:Start(self:IsMythic() and 60 or 90)
+		end
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 8 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if unitGUID and UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
+			activeBossGUIDS[unitGUID] = true
+			local cid = self:GetUnitCreatureId(unitID)
+			if cid == 242587 then--Living Mass
+				self.vb.massSpawns = self.vb.massSpawns + 1
+				if self.Options.SetIconOnLivingMass then
+					self:ScanForMobs(unitGUID, 2, livingMassMarkerMapTable[self.vb.massSpawns], 1, nil, 12, "SetIconOnLivingMass")
+				end
+			end
+		end
 	end
 end
