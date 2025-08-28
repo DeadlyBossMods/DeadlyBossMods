@@ -385,8 +385,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.beheadCount = self.vb.beheadCount + 1
 	elseif spellId == 1226442 then
 		self.vb.swingCount = self.vb.swingCount + 1
-		local timer = self.vb.swingCount % 2 == 0 and 40 or 15
-		timerStarkillerSwingCD:Start(self:IsEasy() and 55 or timer, self.vb.swingCount+1)
+		local timer = self:IsEasy() and 55 or self.vb.swingCount % 2 == 0 and 40 or 15
+		timerStarkillerSwingCD:Start(timer - 2, self.vb.swingCount+1)--Minus 2 to be when images spawn
 	end
 end
 
