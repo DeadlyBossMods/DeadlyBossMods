@@ -43,7 +43,7 @@ local yellObliterationArcanocannon					= mod:NewShortYell(1219263)
 local yellObliterationArcanocannonFades				= mod:NewShortFadesYell(1219263)
 local specWarnObliterationArcanocannonOther			= mod:NewSpecialWarningTaunt(1219263, nil, nil, nil, 1, 2)
 local specWarnEradicatingSalvo						= mod:NewSpecialWarningYouPosCount(1219531, nil, nil, nil, 1, 2)
-local yellEradicatingSalvo							= mod:NewShortPosYell(1219607, nil, nil, nil, "YELL")
+local yellEradicatingSalvo							= mod:NewShortPosYell(1219607, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellEradicatingSalvoFades						= mod:NewIconFadesYell(1219607, nil, nil, nil, "YELL")
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1219607, nil, nil, nil, 1, 8)
 

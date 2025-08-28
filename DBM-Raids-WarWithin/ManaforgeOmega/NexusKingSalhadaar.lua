@@ -78,7 +78,7 @@ local specWarnDreadMortar							= mod:NewSpecialWarningDodge(1232399, nil, nil, 
 
 local timerSelfDestructCD							= mod:NewCDTimer(64, 1230302, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerSelfDestruct								= mod:NewCastNPTimer(10, 1230302, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerDreadMortarCD							= mod:NewCDNPTimer(24.3, 1232399, nil, nil, nil, 3)
+local timerDreadMortarCD							= mod:NewCDTimer(24.3, 1232399, nil, nil, nil, 3)
 ----Nexus-Prince Ky'vor + Nexus-Prince Xevvos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(33469))
 local specWarnNexusBeam								= mod:NewSpecialWarningDodge(1228075, nil, 207544, nil, 2, 2)
@@ -282,8 +282,8 @@ function mod:SPELL_CAST_START(args)
 		if self:CheckBossDistance(args.sourceGUID, false, 32698, 48) then
 			specWarnDreadMortar:Show()
 			specWarnDreadMortar:Play("watchstep")
+			timerDreadMortarCD:Start(nil, args.sourceGUID)--24.3
 		end
-		timerDreadMortarCD:Start(nil, args.sourceGUID)--24.3
 	elseif spellId == 1228075 then
 		if self:CheckBossDistance(args.sourceGUID, false, 32698, 48) then
 			specWarnNexusBeam:Show()
@@ -385,8 +385,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.beheadCount = self.vb.beheadCount + 1
 	elseif spellId == 1226442 then
 		self.vb.swingCount = self.vb.swingCount + 1
-		local timer = self.vb.swingCount % 2 == 0 and 40 or 15
-		timerStarkillerSwingCD:Start(self:IsEasy() and 55 or timer, self.vb.swingCount+1)
+		local timer = self:IsEasy() and 55 or self.vb.swingCount % 2 == 0 and 40 or 15
+		timerStarkillerSwingCD:Start(timer - 2, self.vb.swingCount+1)--Minus 2 to be when images spawn
 	end
 end
 
