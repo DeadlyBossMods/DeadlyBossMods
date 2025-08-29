@@ -79,9 +79,9 @@ local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 local warnGravitationalDistortion					= mod:NewCountAnnounce(1234242, 2)
 
 local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
-local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 2)
-local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 3, 2, 4)
-local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 3, 2, 4)
+local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 13)
+local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 1, 2, 4)
+local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 1, 2, 4)
 
 local timerSoaringReshiiCD							= mod:NewNextTimer(35.2, 1235114, 140013, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short Text "Flight"
 local timerExtinctionCD								= mod:NewCDCountTimer(35.2, 1238765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -613,7 +613,7 @@ function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	elseif spellId == 1237319 then
 		self.vb.gammaBurstCount = self.vb.gammaBurstCount + 1
 		specWarnGammaBurst:Show(self.vb.gammaBurstCount)
-		specWarnGammaBurst:Play("aesoon")
+		specWarnGammaBurst:Play("pushbackincoming")
 		timerGammaBurstCD:Start(self:IsMythic() and 31.5 or 35, self.vb.gammaBurstCount+1)
 	end
 end
