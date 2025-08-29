@@ -607,6 +607,7 @@ L.Panel_Range						= "Rangeframe"
 -- Panel: Nameplate
 L.Panel_Nameplates					= "Nameplates"
 L.Plater_Config						= "Open Plater Config"
+L.ThreatPlates_Config						= "Open Threat Plates Config"
 L.Area_NPStyle						= "Style (Note: Only configures style when not using Plater.)"
 L.NPAuraText						= "Show timer text on nameplate icons"
 L.NPAuraSize						= "Icon Pixel size (squared): %d"

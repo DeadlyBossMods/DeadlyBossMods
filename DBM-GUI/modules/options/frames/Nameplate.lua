@@ -16,20 +16,34 @@ testbutton.myheight = 0
 --When using plater, most options are configured in plater
 --so we generate a button to open plater options instead of showing a bunch of options that are ignored
 local Plater = _G["Plater"]
-if Plater then--Plater button disabled for now
-	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")--Only option we control that plater doesn't
+local ThreatPlates = _G["TidyPlatesThreatDBM"] and _G["TidyPlatesThreat"]
+if Plater or ThreatPlates then--Plater or Threat Plates button disabled for now
+	general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")--Only option we control that plater and Threat Plates don't
 	general:CreateCheckButton(L.AlwaysKeepNPs, true, nil, "AlwaysKeepNPs")
 
-	local platerButton = general:CreateButton(L.Plater_Config, 100, 25)
-	platerButton:SetPoint("CENTER", general.frame, "CENTER", 0, -20)
-	platerButton:SetNormalFontObject(GameFontNormal)
-	platerButton:SetHighlightFontObject(GameFontNormal)
-	platerButton:SetScript("OnClick", function()
-		Plater.OpenOptionsPanel(28)--Open Plater boss mod options
-		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
-		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
-	end)
-	platerButton.myheight = 25
+	if Plater then
+		local platerButton = general:CreateButton(L.Plater_Config, 100, 25)
+		platerButton:SetPoint("CENTER", general.frame, "CENTER", 0, -20)
+		platerButton:SetNormalFontObject(GameFontNormal)
+		platerButton:SetHighlightFontObject(GameFontNormal)
+		platerButton:SetScript("OnClick", function()
+			Plater.OpenOptionsPanel(28)--Open Plater boss mod options
+			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+			optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
+		end)
+		platerButton.myheight = 25
+	elseif ThreatPlates then
+		local tpButton = general:CreateButton(L.ThreatPlates_Config, 100, 25)
+		tpButton:SetPoint("CENTER", general.frame, "CENTER", 0, -20)
+		tpButton:SetNormalFontObject(GameFontNormal)
+		tpButton:SetHighlightFontObject(GameFontNormal)
+		tpButton:SetScript("OnClick", function()
+			ThreatPlates:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
+			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+			optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
+		end)
+		tpButton.myheight = 25
+	end
 	return--we return here, so no other categories are generated either
 else
 	general:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
