@@ -96,6 +96,7 @@ CL.SPREADDEBUFF 					= "Propage l'affaiblissement"
 CL.SPREADDEBUFFS 					= "Propage les affaiblissements"
 CL.LASER							= "Laser"
 CL.LASERS							= "Lasers"
+CL.LINE								= "Ligne"
 CL.RIFT								= "Faille"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS							= "Failles"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS							= "Pièges"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
