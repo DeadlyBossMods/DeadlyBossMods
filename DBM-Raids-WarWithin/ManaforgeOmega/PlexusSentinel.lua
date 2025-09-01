@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555 1234733",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 1219459 1219439 1219607",
+	"SPELL_AURA_APPLIED 1219459 1219439 1219607 1218625 1219531",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 1219459 1219439 1219607 1220618 1220981 1220982",
 	"SPELL_PERIODIC_DAMAGE 1219354",
@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --Stage One: Purge The Intruders
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(31626))
 local warnManifestMatrices							= mod:NewTargetAnnounce(1219450, 3)
+local warnDisplacementMatrix						= mod:NewTargetNoFilterAnnounce(1218625, 4)
 local warnEradicatingSalvo							= mod:NewTargetCountAnnounce(1219607, 3, nil, nil, nil, nil, nil, nil, true)
 
 local specWarnManifestMatrices						= mod:NewSpecialWarningMoveAway(1219450, nil, nil, nil, 1, 2)
@@ -42,12 +43,10 @@ local specWarnObliterationArcanocannon				= mod:NewSpecialWarningYouCount(121926
 local yellObliterationArcanocannon					= mod:NewShortYell(1219263)
 local yellObliterationArcanocannonFades				= mod:NewShortFadesYell(1219263)
 local specWarnObliterationArcanocannonOther			= mod:NewSpecialWarningTaunt(1219263, nil, nil, nil, 1, 2)
-local specWarnEradicatingSalvo						= mod:NewSpecialWarningYouPosCount(1219531, nil, nil, nil, 1, 2)
-local yellEradicatingSalvo							= mod:NewShortPosYell(1219607, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
-local yellEradicatingSalvoFades						= mod:NewIconFadesYell(1219607, nil, nil, nil, "YELL")
+local specWarnEradicatingSalvo						= mod:NewSpecialWarningYouCount(1219531, nil, nil, nil, 1, 2)
+local yellEradicatingSalvo							= mod:NewShortYell(1219607, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
+local yellEradicatingSalvoFades						= mod:NewShortFadesYell(1219607, nil, nil, nil, "YELL")
 local specWarnGTFO									= mod:NewSpecialWarningGTFO(1219607, nil, nil, nil, 1, 8)
-
-mod:AddSetIconOption("SetIconOnEradicatingSalvo", 1219607, true, 0, {1, 2})
 
 local timerManifestMatricesCD						= mod:NewVarCountTimer("v33.1-38.9", 1219450, nil, nil, nil, 3)
 local timerObliterationArcanocannonCD				= mod:NewVarCountTimer("v34.0-36.5", 1219263, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -187,7 +186,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1219531 then
 		self.vb.eradicatingSalvoCount = self.vb.eradicatingSalvoCount + 1
-		self.vb.radicatingIcon = 1
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.purgeCount, spellId, self.vb.eradicatingSalvoCount+1)
 		if timer then
 			timerEradicatingSalvoCD:Start(timer, self.vb.eradicatingSalvoCount+1)
@@ -235,19 +233,28 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnObliterationArcanocannonOther:Show(args.destName)
 			specWarnObliterationArcanocannonOther:Play("tauntboss")
 		end
+	--"<40.79 18:58:21> [CLEU] SPELL_AURA_APPLIED#Creature-0-4247-2810-5972-233814-000020B84E#Plexus Sentinel#Player-1084-0AF5B15C#Rycnpinkx#1219607#Eradicating Salvo#DEBUFF#nil#nil#nil#nil#nil"
+	--"<45.79 18:58:26> [CLEU] SPELL_AURA_APPLIED#Creature-0-4247-2810-5972-233814-000020B84E#Plexus Sentinel#Player-1084-0AF5B15C#Rycnpinkx#1219531#Eradicating Salvo#DEBUFF#nil#nil#nil#nil#nil",
+	--"<48.29 18:58:29> [CLEU] SPELL_AURA_REMOVED#Creature-0-4247-2810-5972-233814-000020B84E#Plexus Sentinel#Player-1084-0AF5B15C#Rycnpinkx#1219607#Eradicating Salvo#DEBUFF#nil#nil#ni
 	elseif spellId == 1219607 then
-		local icon = self.vb.radicatingIcon
-		if self.Options.SetIconOnEradicatingSalvo then
-			self:SetIcon(args.destName, icon)
-		end
 		if args:IsPlayer() then
-			specWarnEradicatingSalvo:Show(self.vb.eradicatingSalvoCount, self:IconNumToTexture(icon))
-			specWarnEradicatingSalvo:Play("targetyou")
-			yellEradicatingSalvo:Yell(icon, icon)
-			yellEradicatingSalvoFades:Countdown(spellId, nil, icon)
+			specWarnEradicatingSalvo:Show(self.vb.eradicatingSalvoCount)
+			specWarnEradicatingSalvo:Play("gathershare")
+			yellEradicatingSalvo:Yell()
+			if self:IsHard() then
+				yellEradicatingSalvoFades:Countdown(5)--We need to shorten it from 7.5 to 5 because first goes off at 5 and second at 7.5
+			else
+				yellEradicatingSalvoFades:Countdown(spellId)
+			end
 		end
-		warnEradicatingSalvo:CombinedShow(0.3, self.vb.eradicatingSalvoCount, args.destName)
-		self.vb.radicatingIcon = self.vb.radicatingIcon + 1
+		warnEradicatingSalvo:Show(self.vb.eradicatingSalvoCount, args.destName)
+	elseif spellId == 1219531 and self:IsHard() then--Ignore on normal in LFR, it doesnt have second missile.
+		if args:IsPlayer() then
+			yellEradicatingSalvo:Yell()
+			yellEradicatingSalvoFades:Countdown(spellId)
+		end
+	elseif spellId == 1218625 then
+		warnDisplacementMatrix:CombinedShow(0.3, args.destName)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
