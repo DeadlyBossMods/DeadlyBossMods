@@ -206,6 +206,12 @@ function mod:OnCombatEnd()
 	end
 end
 
+local function delayedTankCheck(self)
+	local targetName = self:GetBossTarget(237763)
+	specWarnSubjugationRule:Schedule(1.5, targetName)
+	specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 1224787 then
@@ -218,17 +224,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnConquer:Play("sharetwo")
 		end
 		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
-			local targetName = self:GetBossTarget(237763)
-			specWarnSubjugationRule:Schedule(1.5, targetName)
-			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
+			self:Schedule(1.5, delayedTankCheck, self)
 		end
 	elseif spellId == 1224812 then
 		specWarnVanquish:Show()
 		specWarnVanquish:Play("frontal")
 		if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
-			local targetName = self:GetBossTarget(237763)
-			specWarnSubjugationRule:Schedule(1.5, targetName)
-			specWarnSubjugationRule:ScheduleVoice(1.5, "tauntboss")
+			self:Schedule(1.5, delayedTankCheck, self)
 		end
 	elseif spellId == 1227529 then
 		self.vb.banishmentCount = self.vb.banishmentCount + 1
