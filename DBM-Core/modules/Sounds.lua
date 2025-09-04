@@ -198,7 +198,7 @@ do
 	-- Filtered list of media assigned to boss/encounter background music catagory
 	local battleMusic
 
-	if private.isRetail then
+	if private.isRetail and not DBM.Options.EventMusicNoBuiltIn then
 		battleMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
@@ -206,7 +206,7 @@ do
 			{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
 			{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
 		}
-	elseif private.isWrath then
+	elseif (private.isWrath or private.isCata or private.isMop) and not DBM.Options.EventMusicNoBuiltIn then
 		battleMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
@@ -244,16 +244,31 @@ end
 
 do
 	-- Contains all music media, period
-	local music = {
-		{text = CL.NONE,value  = "None"},
-		{text = CL.RANDOM,value  = "Random"},
-		{text = "Anduin Part 1 B",value = 1417242, length=140},--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
-		{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
-		{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
-		{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
-		{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
-		{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
-	}
+	local music
+	if private.isRetail and not DBM.Options.EventMusicNoBuiltIn then
+		music = {
+			{text = CL.NONE,value  = "None"},
+			{text = CL.RANDOM,value  = "Random"},
+			{text = "Anduin Part 1 B",value = 1417242, length=140},--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
+			{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
+			{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
+			{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
+			{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
+			{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
+		}
+	elseif (private.isWrath or private.isCata or private.isMop) and not DBM.Options.EventMusicNoBuiltIn then
+		music = {
+			{text = CL.NONE,value  = "None"},
+			{text = CL.RANDOM,value  = "Random"},
+			{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
+			{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
+		}
+	else
+		music = {
+			{text = CL.NONE,value  = "None"},
+			{text = CL.RANDOM,value  = "Random"},
+		}
+	end
 	local hasCached = false
 	local cachedTable
 	---@deprecated Use new utility functions

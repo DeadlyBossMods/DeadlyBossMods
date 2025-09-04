@@ -105,7 +105,7 @@ EngageSoundDropdown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
 
 local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras)
 eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")
---eventSoundsExtrasArea:CreateCheckButton(L.DisableBuiltInMusic, true, nil, "EventMusicNoBuiltIn")
+eventSoundsExtrasArea:CreateCheckButton(L.DisableBuiltInMusic, true, nil, "EventMusicNoBuiltIn")
 
 if isRetail then
 	local eventSoundsFiltersArea= eventSoundsPanel:CreateArea(L.Area_EventSoundsFilters)
