@@ -139,13 +139,13 @@ function mod:OnCombatStart(delay)
 		timerSpiritBombsCD:Start(32.4-delay, 1)
 		timerTheHuntCD:Start(42.5-delay, 1)
 		timerCollapsingStarCD:Start(110.3-delay)--First special
-	else--Easy
+	else
 		timerEyeBeamCD:Start(19.8-delay, 1)
 		timerVoidstepCD:Start(33-delay, 1)
 		timerBladeDanceCD:Start(29.9-delay, 1)
 		timerSpiritBombsCD:Start(32.9-delay, 1)
 		timerTheHuntCD:Start(43.1-delay, 1)
-		timerCollapsingStarCD:Start(110.3-delay)--First special
+		timerCollapsingStarCD:Start((self:IsLFR() and 113.3 or 110.3)-delay)--First special (maybe the LFR thing is a fluke?)
 	end
 end
 
@@ -255,9 +255,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 1226493 then
-		if args:IsPlayer() then
-			--Warn to taunt the other boss?
-		else
+		if not args:IsPlayer() then
 			specWarnShatteredSoul:Show(args.destName)
 			specWarnShatteredSoul:Play("tauntboss")
 		end
@@ -307,7 +305,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			if not self.vb.VelarnDead then
 				timerEyeBeamCD:Start(8, 1)--difference between difficulties is only .1 each, so we ignore it
 				timerBladeDanceCD:Start(self:IsMythic() and 17.7 or self:IsHeroic() and 18.0 or 18.3, 1)
-				timerTheHuntCD:Start(self:IsHeroic() and 30.4 or 31.6, 1)
+				timerTheHuntCD:Start(self:IsHeroic() and 30.4 or 31.5, 1)
 			end
 			if not self.vb.IlyssaDead then
 				timerFracturedCD:Start(3.5, 1)--Same in all

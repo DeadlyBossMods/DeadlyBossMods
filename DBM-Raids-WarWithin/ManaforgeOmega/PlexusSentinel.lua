@@ -74,7 +74,7 @@ local allTimers = {
 			[1219531] = {41.0},--Eradicating Salvo
 		},
 		[1] = {--1 and 2 should be identical
-			[1219450] = {"v4.7-5.8", "v23.1-26.8", "v23.1-28", "v24.4-26.8"},--Manifest Matrices
+			[1219450] = {"v4.5-5.8", "v23.1-26.8", "v23.1-28", "v24.4-26.8"},--Manifest Matrices
 			[1219263] = {"v12.6-14.3", "v28.0-29.2", "v28.0-29.3"},--Obliteration Arcanocannon
 			[1219531] = {"v19.4-21.6", "v31.6-35", "v32-35"},--Eradicating Salvo
 			[1234733] = {32.5},--Cleanse the Chamber

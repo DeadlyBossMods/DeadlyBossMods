@@ -88,7 +88,7 @@ function mod:OnCombatStart(delay)
 	self.vb.pylonCount = 0
 	self.vb.infusionTetherCount = 0
 	self.vb.piercingStrandsCount = 0
-	timerPiercingStrandsCD:Start((self:IsMythic() and 12.4 or 9.5)-delay, 1)
+	timerPiercingStrandsCD:Start((self:IsLFR() and 13 or self:IsMythic() and 12.4 or 9.5)-delay, 1)
 	timerInfusionTetherCD:Start(22-delay, 1)
 	if self:IsEasy() then--Used instantly on pull for heroic and mythic
 		timerLairWeavingCD:Start(44-delay, 1)

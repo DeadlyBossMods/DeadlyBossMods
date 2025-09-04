@@ -328,7 +328,7 @@ function mod:SPELL_CAST_START(args)
 			timerCosmicMawCD:Start(15.5, 1)
 			timerDimensionBreathCD:Start(20.5, 1)
 		else
-			timerNetherbreakerCD:Start(11.5, 1)
+			timerNetherbreakerCD:Start(11.4, 1)
 			timerBeheadCD:Start(20.5, 1)
 			timerCosmicMawCD:Start(22.5, 1)
 			timerDimensionBreathCD:Start(28.5, 1)
