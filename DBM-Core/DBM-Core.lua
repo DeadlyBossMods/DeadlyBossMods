@@ -3712,6 +3712,30 @@ do
 				self.Options[setting] = self:GetSoundMigration(self.Options[setting])
 			end
 		end
+		--Inject build in media after options have loaded
+		if not DBM.Options.EventMusicNoBuiltIn then
+			if private.isRetail then
+				DBM:AddDungeonMusic("Anduin Part 1 B", 1417242, 140)--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
+				DBM:AddBattleMusic("Anduin Part 2 B", 1417248, 111)--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
+				DBM:AddBattleMusic("Invincible", 1100052, 197)--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
+				--Duplicate entries to the all music Table
+				DBM:AddMusic("Anduin Part 1 B", 1417242, 140)--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
+				DBM:AddMusic("Anduin Part 2 B", 1417248, 111)--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
+				DBM:AddMusic("Invincible", 1100052, 197)--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
+			end
+			if private.isWrath or private.isCata or private.isMop or private.isRetail then
+				DBM:AddBattleMusic("Bronze Jam", 350021, 116)--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
+				DBM:AddDungeonMusic("Ulduar: Titan Orchestra", 298910, 102)--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
+				--Duplicate entries to the all music Table
+				DBM:AddMusic("Bronze Jam", 350021, 116)--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
+				DBM:AddMusic("Ulduar: Titan Orchestra", 298910, 102)--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
+				if not private.isWrath then
+					DBM:AddDungeonMusic("Nightsong", 441705, 160)--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
+					--Duplicate entries to the all music Table
+					DBM:AddMusic("Nightsong", 441705, 160)--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
+				end
+			end
+		end
 	end
 end
 
