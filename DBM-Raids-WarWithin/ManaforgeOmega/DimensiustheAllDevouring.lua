@@ -202,13 +202,13 @@ local allTimers = {
 			[1229038] = {12.5, 100, 100},--Devour P1
 			[1230979] = {37.5, 46.2, 53.7, 46.2},--Dark Matter
 			[1243690] = {43.7, 50, 50, 50},--Shattered Space
-			[1243577] = {56.2, 45, 55, 45},--Reverse Gravity
+			[1243577] = {56.2, 45, 55, 45},--Reverse Gravity (normal only, not used in LFR)
 		},
 		[3] = {
-			[1233539] = {47.6, 100},--Devour P3
-			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},--Darkened Sky
+			[1233539] = {47.4, 100},--Devour P3
+			[1234044] = {80.7, 33.1, 66.6, 33.1},--Darkened Sky (used to be 29.7, 51.2 but they removed a cast in normal and LFR?)
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
-			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.5, 33.3, 33.3},--Super Nova
+			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.4, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
@@ -246,7 +246,9 @@ function mod:OnCombatStart(delay)
 	timerDevourP1CD:Start(allTimers[savedDifficulty][1][1229038][1]-delay, 1)
 	timerDarkMatterCD:Start(allTimers[savedDifficulty][1][1230979][1]-delay, 1)
 	timerShatteredSpaceCD:Start(allTimers[savedDifficulty][1][1243690][1]-delay, 1)
-	timerReverseGravityCD:Start(allTimers[savedDifficulty][1][1243577][1]-delay, 1)
+	if not self:IsLFR() then
+		timerReverseGravityCD:Start(allTimers[savedDifficulty][1][1243577][1]-delay, 1)
+	end
 end
 
 function mod:OnTimerRecovery()
