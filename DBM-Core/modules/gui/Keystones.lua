@@ -37,7 +37,10 @@ end
 
 local partyKeystones, guildKeystones = {}, {}
 
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+---@class DBMOptionsFrame: DefaultPanelTemplate
+---@field CreateTab fun(self: DBMOptionsFrame, title: string, OnShowFn: function)
+---@field ShowTab fun(self: DBMOptionsFrame, tab: number)
+local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate")
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
@@ -112,6 +115,8 @@ local tabs, tabsBtn, selectedTab = {}, {}, 1
 function frame:CreateTab(title, OnShowFn)
 	local i = #tabs + 1
 	tabs[i] = OnShowFn
+	---@class DBMKeystonesTabButton: Button
+	---@field Text FontString
 	local _tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
 	tabsBtn[i] = _tab
 	PanelTemplates_SetNumTabs(self, i)
