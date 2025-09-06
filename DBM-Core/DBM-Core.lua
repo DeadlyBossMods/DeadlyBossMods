@@ -304,6 +304,9 @@ DBM.DefaultOptions = {
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
+	DurabilityPosition = {"RIGHT", -150, 0},
+	LatencyPosition = {"RIGHT", -150, 0},
+	KeystonesPosition = {"LEFT", 30, 0},
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,

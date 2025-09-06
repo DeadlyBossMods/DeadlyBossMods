@@ -90,6 +90,7 @@ DBM-Nameplate.lua
 # GUI Features
 modules\gui\Latency.lua
 modules\gui\Durability.lua
+modules\gui\Keystones.lua
 
 # Modules
 modules\Commands.lua
