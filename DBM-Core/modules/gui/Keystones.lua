@@ -37,7 +37,7 @@ end
 
 local partyKeystones, guildKeystones = {}, {}
 
----@class DBMOptionsFrame: DefaultPanelTemplate
+---@class DBMKeystonesFrame: DefaultPanelTemplate
 ---@field CreateTab fun(self: DBMOptionsFrame, title: string, OnShowFn: function)
 ---@field ShowTab fun(self: DBMOptionsFrame, tab: number)
 local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate")
