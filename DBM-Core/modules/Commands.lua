@@ -128,6 +128,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Latency:Show()
 	elseif cmd:sub(1, 10) == "durability" or cmd:sub(1, 3) == "dur" then
 		DBM.Durability:Show()
+	elseif DBM.Keystones and (cmd:sub(1, 3) == "key" or cmd:sub(1, 4) == "keys") then
+		DBM.Keystones:Show()
 	elseif cmd:sub(1, 3) == "hud" then
 		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then

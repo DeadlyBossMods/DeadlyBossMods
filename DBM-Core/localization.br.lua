@@ -650,6 +650,7 @@ L.TIMER_RESPAWN						= "%s Reaparecimento"
 
 L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
 L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
 

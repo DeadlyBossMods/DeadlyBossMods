@@ -11,6 +11,7 @@ DBM.Latency = Latency
 local tinsert, tsort, mmax = table.insert, table.sort, math.max
 
 local L = DBM_CORE_L
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 local LibStub = _G["LibStub"]
 local LibLatency
@@ -26,14 +27,19 @@ end
 local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
 frame:Hide()
 frame:SetSize(380, 300)
-frame:SetPoint("RIGHT", -150, 0)
+frame:SetClampedToScreen(true)
+frame:SetPoint("LEFT")
 frame:SetFrameStrata("DIALOG")
 frame:SetMovable(true)
 frame:EnableMouse(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetTitle(L.LAG_HEADER)
 frame:SetScript("OnDragStart", frame.StartMoving)
-frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+frame:SetScript("OnDragStop", function(self)
+	self:StopMovingOrSizing()
+	local point, _, _, x, y = self:GetPoint(1)
+	DBM.Options.LatencyPosition = {point, x, y}
+end)
 
 frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
 frame.Bg:SetColorTexture(0, 0, 0, 0.8)
@@ -65,7 +71,8 @@ end)
 local spareTextFrames, usedTextFrames = {}, {}
 local function WipeTextFrames()
 	for _frame in next, usedTextFrames do
-		if not _frame.Keep then
+		if not _frame.Keep and not _frame.IsSpare then
+			_frame.IsSpare = true
 			_frame:Hide()
 			_frame:SetText("")
 			_frame:SetFontObject(GameFontNormal)
@@ -77,14 +84,17 @@ end
 local function GetTextFrame()
 	---@class DBMLatencyTextFrame: FontString
 	---@field Keep boolean?
+	---@field IsSpare boolean
 	local _frame = spareTextFrames[#spareTextFrames]
 	if _frame then
 		spareTextFrames[#spareTextFrames] = nil
+		_frame.IsSpare = false
 		_frame:Show()
 		return _frame
 	end
 	---@class DBMLatencyTextFrame
 	_frame = child:CreateFontString(nil, nil, "GameFontNormal")
+	_frame.IsSpare = false
 	_frame:SetJustifyH("LEFT")
 	usedTextFrames[_frame] = true
 	return _frame
@@ -111,13 +121,13 @@ titleHome:SetText(HOME)
 titleHome:SetPoint("LEFT", titleWorld, "RIGHT")
 titleHome:SetWidth(75)
 
-local worldWidth, homeWidth = mmax(75, titleWorld:GetStringWidth() + 10), mmax(75, titleHome:GetStringWidth() + 10)
+local worldWidth, homeWidth = mmax(75, titleWorld:GetStringWidth() + 20), mmax(75, titleHome:GetStringWidth() + 20)
 titleWorld:SetWidth(worldWidth)
 titleHome:SetWidth(homeWidth)
 
 -- Update main frame width
-frame:SetWidth(200 + worldWidth + homeWidth + 40)
 child:SetWidth(200 + worldWidth + homeWidth + 8)
+frame:SetWidth(child:GetWidth() + 32)
 
 local function SortLag(v1, v2)
 	return (v1.worldlag or 9999) < (v2.worldlag or 9999)
@@ -172,11 +182,11 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 end)
 
 function Latency:Show()
-	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
+	frame:SetPoint(DBM.Options.LatencyPosition[1], DBM.Options.LatencyPosition[2], DBM.Options.LatencyPosition[3])
 	frame:Show()
 end
 
