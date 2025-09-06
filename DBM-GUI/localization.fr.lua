@@ -596,6 +596,7 @@ L.Panel_Range				= "Cadre de portée"
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Plaques de nom"
 L.Plater_Config				= "Ouvrir la configuration de Plater"
+L.ThreatPlates_Config		= "Ouvrir la configuration de Threat Plates"
 L.Area_NPStyle				= "Style (Remarque : Configure uniquement le style lorsque DBM gère les plaques de nom.)"
 L.NPAuraText				= "Afficher le texte du chronomètre sur les icônes des plaques de nom"
 L.NPAuraSize				= "Taille des pixels de l'aura (carré) : %d"
