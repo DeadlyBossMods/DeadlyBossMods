@@ -325,6 +325,8 @@ function Keystones:Hide()
 	frame:Hide()
 end
 
+--[[
 -- DEBUG
 frame:Show()
 frame:ShowTab(1)
+]]--
