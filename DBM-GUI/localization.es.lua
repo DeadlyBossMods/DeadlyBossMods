@@ -598,6 +598,7 @@ L.Panel_Range				= "Marco de distancia"
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Placas de nombre"
 L.Plater_Config				= "Abrir configuración de Plater"
+L.ThreatPlates_Config		= "Abrir configuración de Threat Plates"
 L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombre)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"
