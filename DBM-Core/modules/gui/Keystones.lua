@@ -267,7 +267,7 @@ function PartyGuildUpdate(table)
 		textRating:SetWidth(titleRating:GetWidth())
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 20 + #sortTable * 20))
+	child:SetHeight(mmax(child:GetHeight(), 40 + #sortTable * 14))
 
 	-- Update main frame width
 	child:SetWidth(200 + titleLevel:GetWidth() + titleDungeon:GetWidth() + titleRating:GetWidth() + 8)
@@ -316,6 +316,7 @@ function Keystones:Show()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
+	frame:ClearAllPoints()
 	frame:SetPoint(DBM.Options.KeystonesPosition[1], DBM.Options.KeystonesPosition[2], DBM.Options.KeystonesPosition[3])
 	frame:Show()
 	frame:ShowTab(selectedTab)

@@ -163,7 +163,7 @@ local function Update()
 		textBroken:SetWidth(brokenWidth)
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 20 + #sortDur * 20))
+	child:SetHeight(mmax(child:GetHeight(), 40 + #sortDur * 14))
 end
 
 LibDurability:Register("DBM", function(percent, broken, sender)
@@ -184,6 +184,7 @@ function Durability:Show()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
+	frame:ClearAllPoints()
 	frame:SetPoint(DBM.Options.DurabilityPosition[1], DBM.Options.DurabilityPosition[2], DBM.Options.DurabilityPosition[3])
 	frame:Show()
 end

@@ -165,7 +165,7 @@ local function Update()
 		textHome:SetWidth(homeWidth)
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 20 + #sortLag * 20))
+	child:SetHeight(mmax(child:GetHeight(), 40 + #sortLag * 14))
 end
 
 LibLatency:Register("DBM", function(homelag, worldlag, sender)
@@ -186,6 +186,7 @@ function Latency:Show()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
+	frame:ClearAllPoints()
 	frame:SetPoint(DBM.Options.LatencyPosition[1], DBM.Options.LatencyPosition[2], DBM.Options.LatencyPosition[3])
 	frame:Show()
 end
