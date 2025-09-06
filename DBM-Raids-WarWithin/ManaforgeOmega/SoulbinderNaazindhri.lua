@@ -36,7 +36,7 @@ mod:RegisterEventsInCombat(
 mod:AddTimerLine(DBM:GetSpellName(1225582))
 local warnSoulCalling								= mod:NewCountAnnounce(1225582, 2)
 
-local timerSoulCallingCD							= mod:NewNextCountTimer(150, 1225582, nil, nil, nil, 1)
+local timerSoulCallingCD							= mod:NewNextCountTimer(150, 1225582, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 ----Assassins
 local specWarnVoidbladeAmbush						= mod:NewSpecialWarningMoveAway(1227048, nil, nil, nil, 1, 2)
 local yellVoidbladeAmbush							= mod:NewShortYell(1227048)
@@ -48,24 +48,24 @@ local specWarnVoidVolley							= mod:NewSpecialWarningInterruptCount(1227052, "H
 ----Phaseblade (do stuff with em?)
 --Boss
 --local warnEssenceImplosion						= mod:NewCountAnnounce(1227848, 2)
-local warnSoulfrayAnnihilation						= mod:NewTargetNoFilterAnnounce(1227276, 2)
+local warnSoulfrayAnnihilation						= mod:NewTargetCountAnnounce(1227276, 2, nil, nil, nil, nil, DBM_COMMON_L.LINES, nil, true)
 local warnMysticLash								= mod:NewStackAnnounce(1241100, 2)
 local warnSoulfireConvergence						= mod:NewTargetAnnounce(1225616, 2, nil, false, 2)
 
-local specWarnSoulfrayAnnihilation					= mod:NewSpecialWarningYouCount(1227276, nil, nil, nil, 1, 2)
+local specWarnSoulfrayAnnihilation					= mod:NewSpecialWarningYouCount(1227276, nil, nil, DBM_COMMON_L.LINE, 1, 2)
 local yellSoulfrayAnnihilation						= mod:NewShortPosYell(1227276)
 local yellSoulfrayAnnihilationFades					= mod:NewIconFadesYell(1227276)
 local specWarnMysticLashTaunt						= mod:NewSpecialWarningTaunt(1241100, nil, nil, nil, 1, 2)
-local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1223859, nil, nil, nil, 2, 2)--Is it a dodge or an aoe?
-local specWarnSoulfireConvergence					= mod:NewSpecialWarningYou(1225616, nil, nil, nil, 1, 2)
+local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1223859, nil, 28405, nil, 2, 2)--Is it a dodge or an aoe?
+local specWarnSoulfireConvergence					= mod:NewSpecialWarningYou(1225616, nil, nil, DBM_COMMON_L.ORBS, 1, 2)
 local yellSoulfireConvergence						= mod:NewShortYell(1225616, DBM_COMMON_L.ORBS)
 local yellSoulfireConvergenceFades					= mod:NewShortFadesYell(1225616)
 
 --local timerEssenceImplosionCD						= mod:NewAITimer(97.3, 1227848, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerSoulfrayAnnihilationCD					= mod:NewNextCountTimer(97.3, 1227276, nil, nil, nil, 3)
+local timerSoulfrayAnnihilationCD					= mod:NewNextCountTimer(97.3, 1227276, DBM_COMMON_L.LINES.." (%s)", nil, nil, 3)
 local timerMysticLashCD								= mod:NewNextCountTimer(97.3, 1241100, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerArcaneExpulsionCD						= mod:NewNextCountTimer(97.3, 1223859, nil, nil, nil, 2)
-local timerSoulfireConvergenceCD					= mod:NewNextCountTimer(97.3, 1225616, nil, nil, nil, 3)
+local timerArcaneExpulsionCD						= mod:NewNextCountTimer(97.3, 1223859, 28405, nil, nil, 2)--Shortname "Knockback"
+local timerSoulfireConvergenceCD					= mod:NewNextCountTimer(97.3, 1225616, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnSoulfrayAnnihilation", 1227276, true, 0, {4, 6})
 
@@ -92,8 +92,8 @@ function mod:OnCombatStart(delay)
 		--Only mythic has diff initial timers
 		timerMysticLashCD:Start(5-delay, 1)
 		timerSoulCallingCD:Start(13-delay, 1)
+		timerSoulfireConvergenceCD:Start(16-delay, 1)
 		timerSoulfrayAnnihilationCD:Start(26-delay, 1)
-		timerSoulfireConvergenceCD:Start(16.3-delay, 1)
 		timerArcaneExpulsionCD:Start(41-delay, 1)
 	else
 		timerMysticLashCD:Start(6-delay, 1)
@@ -131,7 +131,7 @@ function mod:SPELL_CAST_START(args)
 		--"Mystic Lash-1241100-npc:233816-0000702ADC = pull:5.0, 41.0, 38.0, 40.1, 31.0, 41.0, 38.0, 40.0, 31.0, 41.0, 38.0, 40.0, 31.1, 41.0, 38.0, 40.0, 31.1",
 		local timer
 		if self:IsMythic() then
-			timer = self.vb.mysticLashCount % 4 == 0 and 31 or self.vb.mysticLashCount % 4 == 3 and 40 or self.vb.mysticLashCount % 4 == 2 and 38 or 41
+			timer = self.vb.mysticLashCount % 4 == 0 and 31 or self.vb.mysticLashCount % 4 == 3 and 40 or self.vb.mysticLashCount % 4 == 2 and 37.5 or 41
 		else
 			timer = self.vb.mysticLashCount % 4 == 0 and 32 or self.vb.mysticLashCount % 4 == 3 and 37.9 or 39.9
 		end
