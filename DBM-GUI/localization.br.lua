@@ -549,6 +549,7 @@ L.Panel_Range				= "Quadro de distância"
 -- Panel: Nameplate
 L.Panel_Nameplates 			= "Placas de nome"
 L.Plater_Config 			= "Abrir configuração de Plater"
+L.ThreatPlates_Config		= "Abrir configuração de Threat Plates"
 L.Area_NPStyle 				= "Estilo (Nota: configura o estilo apenas quando não está usando Plater.)"
 L.NPAuraText 				= "Exibir texto do cronômetro nos ícones das placas de nome"
 L.NPAuraSize 				= "Tamanho em pixels do ícone: %d"
