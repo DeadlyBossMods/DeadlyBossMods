@@ -628,6 +628,7 @@ L.TIMER_RESPAWN		= "%s 재생성"
 
 L.LAG_HEADER					= L.DBM .. " - 지연시간 확인 결과"
 L.DUR_HEADER					= L.DBM .. " - 내구도 검사 결과"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 L.OVERRIDE_ACTIVATED					= "이 전투에서 공대장에 의해 설정 강제 적용이 활성화되었습니다"
 

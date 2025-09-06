@@ -676,6 +676,7 @@ L.TIMER_RESPAWN						= "Появление %s"
 
 L.LAG_HEADER						= L.DBM.. " - результаты проверки задержки"
 L.DUR_HEADER						= L.DBM.. " - результаты проверки прочности"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 L.OVERRIDE_ACTIVATED					= "Для этого сражения лидер рейда активировал перезапись конфигурации."
 
