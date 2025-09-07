@@ -81,7 +81,9 @@ L.MOVIE_NOTSKIPPED				= L.DBM .. "已經發現了一個可跳過的過場動畫�
 L.BONUS_SKIPPED					= L.DBM.."已經自動關閉額外戰利品擲骰框架。如果你需要恢復此框架，在三分鐘內輸入/dbmbonusroll"
 
 L.AFK_WARNING					= "你正在暫離並戰鬥中(血量還剩餘%d百分比)所以發出警告。如果你並非暫離，請清除暫離的標籤或是在'額外功能'停用此選項。"
-
+L.LOWHEALTH_WARNING				= "低血量 (%d 百分比剩餘血量)，發送聲音警報。您可以在“額外功能”中禁用此選項。"
+L.ENTERING_COMBAT				= "進入戰鬥"
+L.LEAVING_COMBAT				= "離開戰鬥"
 L.COMBAT_STARTED_AI_TIMER		= "我的CPU是一個神經網路處理器;一個學習中的電腦 (這場戰鬥將使用新的計時器AI功能生成近似值的計時條)"
 
 L.PROFILE_NOT_FOUND				= "<"..L.DBM..">你目前的配置檔已經損毀。"..L.DBM.."會載入'Default'配置檔。"
@@ -208,7 +210,7 @@ L.DBMLDB							= "警告: DBM-LDB已內建在"..L.DBM.."-核心。雖然它不�
 L.DBMLOOTREMINDER					= "警告：已安裝第三方模組 DBM-LootReminder。 此附加插件不再與正式版WOW客戶端相容，並且將導致"..L.DBM.."中斷並且無法發送請求計時器。 建議卸載此插件。"
 L.UPDATE_REQUIRES_RELAUNCH			= "警告: 如果你沒有重啟你的遊戲，這次"..L.DBM.."更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
 L.OUT_OF_DATE_NAG					= "你的"..L.DEADLY_BOSS_MODS.."版本已經過期，新版本針對特定的首領戰鬥增加新的功能和錯誤的修復。建議您進行更新來改善您的遊戲體驗。"
-L.PLATER_NP_AURAS_MSG					= L.DBM .. "包含一個進階功能，用於使用名條上的圖示顯示敵人冷卻時間。 對於大多數用戶而言，預設情況下是這樣的，但是對於Plater用戶而言，除非您啟用它，否則預設情況下它會在Plater選項中關閉。 為了充分利用DBM（和Plater），建議您在“ Buff Special”部分的Plater中啟用此功能。 如果您不想再次看到此訊息，也可以在DBM全局禁用或名條選項面板中的“名條上的冷卻圖標”選項中禁用。"
+L.PLATER_NP_AURAS_MSG				= L.DBM .. "包含一個進階功能，用於使用名條上的圖示顯示敵人冷卻時間。 對於大多數用戶而言，預設情況下是這樣的，但是對於Plater用戶而言，除非您啟用它，否則預設情況下它會在Plater選項中關閉。 為了充分利用DBM（和Plater），建議您在“ Buff Special”部分的Plater中啟用此功能。 如果您不想再次看到此訊息，也可以在DBM全局禁用或名條選項面板中的“名條上的冷卻圖標”選項中禁用。"
 
 L.MOVABLE_BAR					= "拖動我!"
 
@@ -573,6 +575,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition		= "當你中了$spell:%s時大喊(包含�
 L.AUTO_YELL_OPTION_TEXT.combo				= "當你同時中了$spell:%s與其他法術時大喊(包含自訂文字)"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer		= "當你中了$spell:%s時重複大喊(玩家名字)"
 L.AUTO_YELL_OPTION_TEXT.repeaticon			= "當你中了$spell:%s時重複大喊(圖示)"
+L.AUTO_YELL_OPTION_TEXT.icontarget			= "Yell icons when you are targeted by $spell:%s to warn others"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "" .. UnitName("player") .. "中了%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.count				= "" .. UnitName("player") .. "中了%s(%%d)"
@@ -580,6 +583,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.fade				= "%s %%d秒後消退!"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortfade			= "%%d"
 L.AUTO_YELL_ANNOUNCE_TEXT.iconfade			= "{rt%%2$d}%%1$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.position 			= UnitName("player").." ({rt%%3$d})中了%1$s! (%%1$s - {rt%%2$d})"
+L.AUTO_YELL_ANNOUNCE_TEXT.positionnoIcon	= "%s %%s 在 " ..UnitName("player")
 L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s與%%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam
@@ -670,7 +674,7 @@ L.WORLD_BUFFS = {
 
 -- Annoying popup, especially for classic players
 L.DBM_INSTALL_REMINDER_HEADER		= "檢測到不完整的DBM安裝！"
---L.DBM_INSTALL_REMINDER_EXPLAIN	= "Welcome to %s. DBM mods for bosses here are in the %s which you do not have installed. DBM will not show timers or warnings in this zone unless you install the %s!"
+L.DBM_INSTALL_REMINDER_EXPLAIN		= "歡迎來到 %s。 DBM mods 關於首領這裡是您尚未安裝的 %s。除非您安裝％s，否則DBM不會在該區域顯示計時器或警告！"
 L.DBM_INSTALL_REMINDER_DISABLE		= "停用此區域的全部 DBM 警告與計時器。" -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
 L.DBM_INSTALL_REMINDER_DISABLE2 	= "不要再顯示此組件的訊息。" -- Used for unimportant mods, i.e., dungeons
 L.DBM_INSTALL_REMINDER_DL_WAGO		= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " 來複製Wago.io的連結到剪貼簿。"
