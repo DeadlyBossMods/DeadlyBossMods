@@ -267,7 +267,7 @@ function PartyGuildUpdate(table)
 		textRating:SetWidth(titleRating:GetWidth())
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 40 + #sortTable * 14))
+	child:SetHeight(mmax(300, 50 + #sortTable * 14))
 
 	-- Update main frame width
 	child:SetWidth(200 + titleLevel:GetWidth() + titleDungeon:GetWidth() + titleRating:GetWidth() + 8)

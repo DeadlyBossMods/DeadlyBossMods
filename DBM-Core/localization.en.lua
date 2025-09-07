@@ -752,5 +752,5 @@ L.KEYSTONE_NAMES = {
 	[503] = 'ARAK', -- Ara-Kara, City of Echoes
 	[505] = 'DAWN', -- The Dawnbreaker
 	[525] = 'FLOOD', -- Operation Floodgate
-	[542] = 'ALDANI' -- Eco-Dome Al'dani
+	[542] = 'DOME' -- Eco-Dome Al'dani
 }
