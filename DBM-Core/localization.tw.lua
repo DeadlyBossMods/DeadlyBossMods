@@ -652,7 +652,7 @@ L.TIMER_RESPAWN					= "%s 重生"
 
 L.LAG_HEADER					= ""..L.DBM.." - 網路延遲結果"
 L.DUR_HEADER					= ""..L.DBM.." - 裝備耐久度結果"
---L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
+L.KEYSTONES_HEADER				= L.DBM.. " - 鑰石"
 
 L.OVERRIDE_ACTIVATED			= "領隊已啟用此首領的配置覆蓋"
 
@@ -705,11 +705,11 @@ L.DUOS							= "雙煞"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
---L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
---L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
---L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
---L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
---L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
---L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
---L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
---L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
+L.KEYSTONE_NAMES[378] = '贖罪' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = '街道' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = '險招' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = '聖焰' -- Priority of the Sacred Flame
+L.KEYSTONE_NAMES[503] = '回音' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = '破曉' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = '水閘' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = '秘境' -- Eco-Dome Al'dani
