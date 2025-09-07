@@ -676,7 +676,7 @@ L.TIMER_RESPAWN						= "Появление %s"
 
 L.LAG_HEADER						= L.DBM.. " - результаты проверки задержки"
 L.DUR_HEADER						= L.DBM.. " - результаты проверки прочности"
---L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
+L.KEYSTONES_HEADER					= L.DBM.. " - ключи М+"
 
 L.OVERRIDE_ACTIVATED					= "Для этого сражения лидер рейда активировал перезапись конфигурации."
 
@@ -726,11 +726,11 @@ L.DUOS						= "Дуо"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
---L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
---L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
---L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
---L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
---L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
---L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
---L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
---L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
+L.KEYSTONE_NAMES[378] = 'ЧП' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = 'РТУЧ' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = 'РТГС' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = 'ПСП' -- Priory of the Sacred Flame
+L.KEYSTONE_NAMES[503] = 'АКГО' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = 'ЗА' -- Eco-Dome Al'dani
