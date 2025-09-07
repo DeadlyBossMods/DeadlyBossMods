@@ -165,7 +165,7 @@ local function Update()
 		textHome:SetWidth(homeWidth)
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 40 + #sortLag * 14))
+	child:SetHeight(mmax(300, 50 + #sortLag * 14))
 end
 
 LibLatency:Register("DBM", function(homelag, worldlag, sender)

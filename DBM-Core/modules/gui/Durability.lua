@@ -163,7 +163,7 @@ local function Update()
 		textBroken:SetWidth(brokenWidth)
 	end
 
-	child:SetHeight(mmax(child:GetHeight(), 40 + #sortDur * 14))
+	child:SetHeight(mmax(300, 50 + #sortDur * 14))
 end
 
 LibDurability:Register("DBM", function(percent, broken, sender)
