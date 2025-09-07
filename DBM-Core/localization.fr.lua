@@ -648,7 +648,7 @@ L.COMBAT_RES_TIMER_TEXT		= "Prochaine charge de résurrection en combat"
 L.TIMER_RESPAWN				= "%s Réapparition"
 
 L.LAG_HEADER				= L.DBM .. " - Résultats sur la latence"
-L.DUR_HEADER 				= L.DBM.. " - Résultats de durabilité"
+L.DUR_HEADER 				= L.DBM .. " - Résultats de durabilité"
 
 L.OVERRIDE_ACTIVATED 		= "Les remplacements de configuration ont été activés pour cette rencontre par le responsable de raid"
 
