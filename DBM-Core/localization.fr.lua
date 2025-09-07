@@ -649,7 +649,7 @@ L.TIMER_RESPAWN				= "%s Réapparition"
 
 L.LAG_HEADER				= L.DBM .. " - Résultats sur la latence"
 L.DUR_HEADER 				= L.DBM .. " - Résultats de durabilité"
---L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
+L.KEYSTONES_HEADER			= L.DBM .. " - Mythiques"
 
 L.OVERRIDE_ACTIVATED 		= "Les remplacements de configuration ont été activés pour cette rencontre par le responsable de raid"
 
@@ -701,11 +701,11 @@ L.DUOS								= "Duos"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
---L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
---L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
---L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
---L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
---L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
---L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
---L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
---L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
+L.KEYSTONE_NAMES[378] = 'SALLE' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = 'RUE' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = 'STRATA' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = 'PRIEUR' -- Priority of the Sacred Flame
+L.KEYSTONE_NAMES[503] = 'ARA' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = 'AUBE' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = 'VANNES' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = 'DÔME' -- Eco-Dome Al'dani
