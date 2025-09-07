@@ -97,6 +97,7 @@ CL.SPREADDEBUFFS 			= "Extiende los perjuicios"
 CL.LASER					= "Láser"
 CL.LASERS					= "Láseres"
 CL.LINE						= "Línea"
+CL.LINES					= "Líneas"
 CL.RIFT						= "Falla"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS					= "Fallas"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS					= "Trampas"

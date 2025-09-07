@@ -40,8 +40,8 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32227))
 local warnKingsThrall								= mod:NewTargetNoFilterAnnounce(1224767, 2)--Could be spammy
 
 local specWarnSubjugationRule						= mod:NewSpecialWarningTaunt(1224776, false, nil, nil, 1, 2)--Optional "taunt everything" feature for P1
-local specWarnConquer								= mod:NewSpecialWarningSoakCount(1224787, nil, nil, nil, 2, 2)
-local specWarnVanquish								= mod:NewSpecialWarningSpell(1224812, nil, nil, nil, 2, 15)
+local specWarnConquer								= mod:NewSpecialWarningSoakCount(1224787, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
+local specWarnVanquish								= mod:NewSpecialWarningSpell(1224812, nil, nil, DBM_COMMON_L.FRONTAL, 2, 15)
 local specWarnBanishment							= mod:NewSpecialWarningMoveAway(1227549, nil, nil, nil, 1, 2)
 local yellBanishmentFades							= mod:NewShortFadesYell(1227549)
 local specWarnInvokeTheOath							= mod:NewSpecialWarningSpell(1224906, nil, nil, nil, 2, 2)
@@ -98,20 +98,20 @@ mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1)--Twilight Massacre
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31574))
 ----Nexus-King Salhadaar
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32227))
-local specWarnCoalesceVoidwing						= mod:NewSpecialWarningDodge(1227734, nil, nil, nil, 3, 2)
+local specWarnCoalesceVoidwing						= mod:NewSpecialWarningDodge(1227734, nil, 28405, nil, 3, 2)
 local specWarnNetherBreakerMythic					= mod:NewSpecialWarningDodgeCount(1228115, nil, nil, nil, 2, 2)--On mythic it also spawns ground circles
 
 local timerCoalesceVoidwing							= mod:NewCastTimer(6.2, 1227734, 28405, nil, nil, 2)--Shorttext Knockback
-local timerNetherbreakerCD							= mod:NewCDCountTimer(10, 1228115, nil, nil, nil, 3)
+local timerNetherbreakerCD							= mod:NewCDCountTimer(10, 1228115, nil, nil, nil, 3)--DBM_COMMON_L.CIRCLES.." (%s)"
 
 mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
 ----Royal Voidwing
 mod:AddTimerLine(royalVoidWing)
-local specWarnDimensionBreath						= mod:NewSpecialWarningCount(1228163, nil, nil, nil, 2, 2)
+local specWarnDimensionBreath						= mod:NewSpecialWarningCount(1228163, nil, 207544, nil, 2, 2)
 local specWarnCosmicMaw								= mod:NewSpecialWarningDefensive(1234529, nil, nil, nil, 1, 2)
 local specWarnCosmicMawTaunt						= mod:NewSpecialWarningTaunt(1234529, nil, nil, nil, 1, 2)
 
-local timerDimensionBreathCD						= mod:NewCDCountTimer(97.3, 1228163, nil, nil, nil, 3, nil, DBM_COMMON_L.TANK_ICON)
+local timerDimensionBreathCD						= mod:NewCDCountTimer(97.3, 1228163, 207544, nil, nil, 3, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Beams"
 local timerCosmicMawCD								= mod:NewCDCountTimer(97.3, 1234529, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --Intermission Two: King's Hunger
 local specWarnKingsHunger							= mod:NewSpecialWarningSwitchCustom(1228265, "-Healer", nil, nil, 1, 2)

@@ -601,6 +601,7 @@ L.Panel_Range				= "거리 창"
 -- Panel: Nameplate
 L.Panel_Nameplates			= "이름표"
 L.Plater_Config						= "Plater 설정창 열기"
+L.ThreatPlates_Config						= "Threat Plates 설정창 열기"
 L.Area_NPStyle				= "외형 (알림: Plater를 사용하지 않을 때만 설정이 가능합니다)"
 L.NPAuraText					= "이름표 아이콘에 타이머 텍스트 표시"
 L.NPAuraSize				= "아이콘 픽셀 크기 (정사각형): %d"

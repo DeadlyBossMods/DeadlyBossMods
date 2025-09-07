@@ -602,6 +602,7 @@ L.Panel_Range				= "Дистанция"
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Индикаторы здоровья"
 L.Plater_Config				= "Открыть конфигурацию Plater"
+L.ThreatPlates_Config		= "Открыть конфигурацию Threat Plates"
 L.Area_NPStyle				= "Стиль (примечание: стиль настраивается только тогда, когда не используется Plater)."
 L.NPAuraText				= "Показывать текст таймера на значках индикаторов здоровья"
 L.NPAuraSize				= "Размер значка в пикселях (в квадрате): %d"

@@ -17,21 +17,21 @@ L.OTabWorld		= "Jefes del mundo"--Since there are so many world mods, enough to 
 L.OTabScenarios	= "Escenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins	= "Otros" --Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions	= "Opciones"
---L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabTools		= "Herramientas"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout		= "Acerca de"
 
 --Main Tab, Tools checks
---L.Tools_LatencyCheck				= "Latency Check"
---L.Tools_DurabilityCheck				= "Durability Check"
---L.Tools_KeystoneCheck				= "Keystone Check"
+L.Tools_LatencyCheck			= "Verificación de latencia"
+L.Tools_DurabilityCheck			= "Verificación de durabilidad"
+L.Tools_KeystoneCheck			= "Verificación de piedra angular"
 
---L.Tools_BreakTimer					= "Start Break Timer"
---L.Tools_PizzaTimer					= "Start Generic Timer"
+L.Tools_BreakTimer				= "Iniciar temporizador de descanso"
+L.Tools_PizzaTimer				= "Iniciar temporizador genérico"
 
---L.Tools_Duration					= "Duration"
---L.Tools_Message						= "Timer Message"
+L.Tools_Duration				= "Duración"
+L.Tools_Message					= "Mensaje del temporizador"
 
-L.TabCategory_CURRENT_SEASON		= "Temporada actual"
+L.TabCategory_CURRENT_SEASON	= "Temporada actual"
 
 L.TabCategory_OTHER    		= "Otros módulos"
 L.TabCategory_AFFIXES		= "Afijos"
@@ -598,6 +598,7 @@ L.Panel_Range				= "Marco de distancia"
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Placas de nombre"
 L.Plater_Config				= "Abrir configuración de Plater"
+L.ThreatPlates_Config		= "Abrir configuración de Threat Plates"
 L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombre)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"

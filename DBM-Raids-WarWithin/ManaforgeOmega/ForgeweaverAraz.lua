@@ -44,21 +44,21 @@ local warnVoidTear									= mod:NewCountAnnounce(1248133, 3)
 local specWarnArcaneObliteration					= mod:NewSpecialWarningCount(1228216, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
 local yellArcaneObliteration						= mod:NewShortYell(1228216, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellArcaneObliterationFades					= mod:NewShortFadesYell(1228216, nil, nil, nil, "YELL")
-local specWarnSilencingTempest						= mod:NewSpecialWarningDodgeCount(1228188, nil, nil, nil, 2, 2)
+local specWarnSilencingTempest						= mod:NewSpecialWarningDodgeCount(1228188, nil, nil, DBM_COMMON_L.POOLS, 2, 2)--Plural, player drops multiple Pools
 local yellSilencingTempest							= mod:NewShortYell(1228188, DBM_COMMON_L.POOLS)
-local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1227631, nil, nil, nil, 2, 2)
+local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1227631, nil, 28405, nil, 2, 2)
 local specWarnInvokeCollector						= mod:NewSpecialWarningSwitchCount(1231720, "-Tank", nil, nil, 1, 2)--Tank should stay away
 local specWarnAstralHarvest							= mod:NewSpecialWarningYou(1228214, nil, nil, nil, 1, 2)
 local yellAstralHarvestFades						= mod:NewShortFadesYell(1228214, DBM_COMMON_L.ORBS)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerOverwhelmingPowerCD						= mod:NewCDCountTimer(44, 1228502, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerArcaneObliterationCD						= mod:NewCDCountTimer(45, 1228216, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerSilencingTempestCD						= mod:NewCDCountTimer(97.3, 1228188, nil, nil, nil, 3)
-local timerArcaneExpulsionCD						= mod:NewCDCountTimer(97.3, 1227631, nil, nil, nil, 2)
+local timerArcaneObliterationCD						= mod:NewCDCountTimer(45, 1228216, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerSilencingTempestCD						= mod:NewCDCountTimer(97.3, 1228188, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3)
+local timerArcaneExpulsionCD						= mod:NewCDCountTimer(97.3, 1227631, 28405, nil, nil, 2)--Shortname "Knockback"
 local timerInvokeCollectorCD						= mod:NewCDCountTimer(97.3, 1231720, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerVoidTearCD								= mod:NewCDCountTimer(97.3, 1248171, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerAstralHarvestCD							= mod:NewCDCountTimer(97.3, 1228214, nil, nil, nil, 2)
+local timerAstralHarvestCD							= mod:NewCDCountTimer(97.3, 1228214, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 2)
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
@@ -67,7 +67,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32397))
 local warnManaSplinter								= mod:NewTargetNoFilterAnnounce(1233415, 1)
 local warnManaSplinterFaded							= mod:NewFadesAnnounce(1233415, 2)
 local specWarnPhotonBlast							= mod:NewSpecialWarningDodge(1234328, nil, nil, nil, 2, 15)
-local specWarnArcaneConvergence						= mod:NewSpecialWarningSpell(1232590, nil, nil, nil, 2, 2)
+local specWarnArcaneConvergence						= mod:NewSpecialWarningSpell(1232590, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 
 local timerPhotonBlastCD							= mod:NewCDNPTimer(4, 1234328, nil, nil, nil, 3)--4 seconds except when delayed by astral harvest
 --Intermission: The Iris Opens
@@ -77,11 +77,11 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32384))
 local warnPhase2									= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnVoidHarvest							= mod:NewSpecialWarningYou(1243901, nil, nil, nil, 1, 2)
-local yellVoidHarvestFades							= mod:NewShortFadesYell(1243901)
-local specWarnDeaththroes							= mod:NewSpecialWarningCount(1232221, nil, nil, nil, 2, 2, 4)
+local yellVoidHarvestFades							= mod:NewShortFadesYell(1243901, DBM_COMMON_L.ADD)
+local specWarnDeaththroes							= mod:NewSpecialWarningCount(1232221, nil, 28405, nil, 2, 2, 4)
 
-local timerVoidHarvestCD							= mod:NewCDCountTimer(8, 1243901, nil, nil, nil, 3)
-local timerDeaththroesCD							= mod:NewCDCountTimer(97.3, 1232221, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerVoidHarvestCD							= mod:NewCDCountTimer(8, 1243901, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 3)
+local timerDeaththroesCD							= mod:NewCDCountTimer(97.3, 1232221, 28405, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Shortname "Knockback"
 
 mod.vb.overwhelmingPowerCount = 0--Returns in stage 2
 mod.vb.obliterationCount = 0

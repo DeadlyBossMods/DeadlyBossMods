@@ -79,7 +79,7 @@ local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 local warnGravitationalDistortion					= mod:NewCountAnnounce(1234242, 2)
 
 local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
-local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, DBM_COMMON_L.PUSHBACK, nil, 2, 13)
+local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, nil, DBM_COMMON_L.PUSHBACK, 2, 13)
 local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 1, 2, 4)
 local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 1, 2, 4)
 

@@ -59,7 +59,7 @@ local specWarnTheHunt								= mod:NewSpecialWarningYou(1227809, nil, nil, nil, 
 local yellTheHunt									= mod:NewShortYell(1227809, DBM_COMMON_L.GROUPSOAK, nil, nil, "YELL")
 local yellTheHuntFades								= mod:NewShortFadesYell(1227809, nil, nil, nil, "YELL")
 
-local timerTheHuntCD								= mod:NewNextCountTimer(31.9, 1227809, nil, nil, nil, 3)
+local timerTheHuntCD								= mod:NewNextCountTimer(31.9, 1227809, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
 local timerBladeDanceCD								= mod:NewNextCountTimer(31.9, 1241306, nil, nil, nil, 3)
 local timerEyeBeamCD								= mod:NewNextCountTimer(31.9, 1218103, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFelRushCD								= mod:NewNextTimer(97.3, 1233863, nil, nil, nil, 6)
@@ -68,12 +68,12 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(31791))
 local specWarnFractured								= mod:NewSpecialWarningDefensive(1241833, nil, nil, nil, 1, 2)
 local specWarnFracturedTaunt						= mod:NewSpecialWarningTaunt(1241833, nil, nil, nil, 1, 2)
 local specWarnShatteredSoul							= mod:NewSpecialWarningTaunt(1226493, false, nil, nil, 1, 2)
-local specWarnSpiritBombs							= mod:NewSpecialWarningCount(1242259, nil, nil, nil, 2, 2)
-local specWarnSigilofChains							= mod:NewSpecialWarningCount(1240891, nil, nil, nil, 2, 12)
+local specWarnSpiritBombs							= mod:NewSpecialWarningCount(1242259, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
+local specWarnSigilofChains							= mod:NewSpecialWarningCount(1240891, nil, 395745, nil, 2, 12)
 
 local timerFracturedCD								= mod:NewNextCountTimer(31.9, 1241833, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerSpiritBombsCD							= mod:NewNextCountTimer(31.9, 1242259, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerSigilofChainsCD							= mod:NewNextCountTimer(31.9, 1240891, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only
+local timerSpiritBombsCD							= mod:NewNextCountTimer(31.9, 1242259, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerSigilofChainsCD							= mod:NewNextCountTimer(31.9, 1240891, 395745, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only
 local timerFelDevastationCD							= mod:NewNextTimer(97.3, 1227117, nil, nil, nil, 6)
 --Intermission: The Ceaseless Hunger
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32566))
@@ -87,7 +87,7 @@ local warnFelRushOver								= mod:NewEndAnnounce(1233863, 1)
 local specWarnFelRush								= mod:NewSpecialWarningDodge(1233863, nil, nil, nil, 2, 2)
 --Intermission: The Unrelenting Pain
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32545))
-local warnInfernalStrike							= mod:NewSpellAnnounce(1227113, 2)
+local warnInfernalStrike							= mod:NewSpellAnnounce(1227113, 2, nil, nil, nil, nil, 47482)--Shortname "Leap"
 local warnFelDevastation							= mod:NewSpellAnnounce(1227117, 3)
 
 mod.vb.intermissionCount = 0
