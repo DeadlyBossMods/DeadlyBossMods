@@ -281,11 +281,11 @@ function PartyGuildUpdate(table)
 		textPlayer:SetAttribute("type", "macro")
 		textPlayer:SetAttribute("macrotext", "/run ChatFrame_SendTell(\"" .. v.name .. "\")")
 
-		textLevel.Text:SetText(v.keyLevel or '?')
+		textLevel.Text:SetText(v.keyLevel == 0 and '-' or v.keyLevel or '?')
 		textLevel:SetPoint("TOP", titleLevel, "BOTTOM", 0, offset)
 		textLevel:SetWidth(titleLevel:GetWidth())
 
-		textDungeon.Text:SetText(L.KEYSTONE_NAMES[v.mapID] or v.mapID or '?')
+		textDungeon.Text:SetText(L.KEYSTONE_NAMES[v.mapID] or (v.mapID == 0 and '-') or v.mapID or '?')
 		textDungeon:SetPoint("TOP", titleDungeon, "BOTTOM", 0, offset)
 		textDungeon:SetWidth(titleDungeon:GetWidth())
 
@@ -354,6 +354,7 @@ do
 		GameTooltip:Show()
 	end
 
+	-- This will never be nil, but falling back just so it shuts up LuaLS
 	frame:CreateTab(DBM:GetSpellName(4801) or 'Teleport', function()
 		refresh:Hide()
 		WipeTextFrames()
