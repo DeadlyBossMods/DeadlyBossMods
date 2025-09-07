@@ -639,6 +639,7 @@ L.TIMER_RESPAWN		= "%s 刷新"
 
 L.LAG_HEADER					= L.DBM .. " - 延时检测"
 L.DUR_HEADER					= L.DBM .. "- 装备耐久度检测结果"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 L.OVERRIDE_ACTIVATED			= "本次战斗的配置已经被队长的配置覆盖"
 
@@ -684,3 +685,14 @@ L.TOOLTIP_FASTEST				= "最快击杀 (%s)"
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER	= "追随者"
 L.STORY 	= PLAYER_DIFFICULTY_STORY_RAID or "故事模式"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+
+-- Keystone dungeon names (keep to a max of 6 characters)
+-- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+--L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
+--L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
+--L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
+--L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
+--L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
+--L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
+--L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
+--L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
