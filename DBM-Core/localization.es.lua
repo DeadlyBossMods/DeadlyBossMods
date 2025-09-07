@@ -321,8 +321,8 @@ L.AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 L.AUTO_ANNOUNCE_TEXTS.incoming		= "%s perjuicio entrate"
 L.AUTO_ANNOUNCE_TEXTS.incomingcount	= "%s perjuicio entrante (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 			= "%s ha terminado"
-L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s ha terminado en >%%s<"
-L.AUTO_ANNOUNCE_TEXTS.fades			= "%s ha terminado"
+L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s ha terminado: >%%s<"
+L.AUTO_ANNOUNCE_TEXTS.fades			= "%s se ha desvanecido"
 L.AUTO_ANNOUNCE_TEXTS.addsleft		= "%s restantes: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast			= "Lanzando %s en %.1f s"
 L.AUTO_ANNOUNCE_TEXTS.soon			= "%s en breve"
@@ -379,7 +379,7 @@ L.AUTO_SPEC_WARN_TEXTS.youpos		= "%s (posición: %%s) en ti"
 L.AUTO_SPEC_WARN_TEXTS.youposcount	= "%s (%%s) (posición: %%s) en ti"
 L.AUTO_SPEC_WARN_TEXTS.soakpos		= "%s (posición: %%s)"
 L.AUTO_SPEC_WARN_TEXTS.target		= "%s en >%%s<"
-L.AUTO_SPEC_WARN_TEXTS.targetcount	= "%s (%%s) en >%%s< "
+L.AUTO_SPEC_WARN_TEXTS.targetcount	= "%s (%%s) en >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.link			= "%s vinculado con >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.defensive	= "%s - ¡Facultad defensiva ahora!"
 L.AUTO_SPEC_WARN_TEXTS.taunt		= "%s en >%%s< - ¡Provoca ahora!"
@@ -578,17 +578,18 @@ L.AUTO_YELL_OPTION_TEXT.combo			= "Gritar (con texto personalizado) cuando te af
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "Gritar repetidamente (con tu nombre) cuando te afecte $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.repeaticon		= "Gritar repetidamente (con icono) cuando te afecte $spell:%s"
 
-L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
-L.AUTO_YELL_ANNOUNCE_TEXT.yell		= "¡%s en " .. UnitName("player") .. "!"
-L.AUTO_YELL_ANNOUNCE_TEXT.count		= "¡%s en " .. UnitName("player") .. "! (%%d)"
-L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s expirando en %%d"
-L.AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
-L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
-L.AUTO_YELL_ANNOUNCE_TEXT.position 	= "%s %%s en {rt%%d}"..UnitName("player").."{rt%%d}"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "¡%s en " .. UnitName("player") .. "!"
+L.AUTO_YELL_ANNOUNCE_TEXT.count				= "¡%s en " .. UnitName("player") .. "! (%%d)"
+L.AUTO_YELL_ANNOUNCE_TEXT.fade				= "%s expirando en %%d"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortfade			= "%%d"
+L.AUTO_YELL_ANNOUNCE_TEXT.iconfade			= "{rt%%2$d}%%1$d"
+L.AUTO_YELL_ANNOUNCE_TEXT.position 			= "%s %%s en {rt%%d}"..UnitName("player").."{rt%%d}"
+L.AUTO_YELL_ANNOUNCE_TEXT.positionnoIcon	= "%s %%s en " ..UnitName("player")
 L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname
-L.AUTO_YELL_ANNOUNCE_TEXT.combo			= "%s y %%s"--Spell name (from option, plus spellname given in arg)
-L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer	= UnitName("player")--Doesn't need translation, it's just player name spam
-L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
+L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s y %%s"--Spell name (from option, plus spellname given in arg)
+L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam
+L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s ha expirado"
@@ -667,22 +668,22 @@ L.WORLD_BUFFS.rendHead			= "¡El falso Jefe de Guerra Rend Puño Negro ha caído
 L.WORLD_BUFFS.blackfathomBoon	= "Favor de Brazanegra"
 
 -- Annoying popup, especially for classic players
-L.DBM_INSTALL_REMINDER_HEADER = "¡Se ha detectado una instalación incompleta de DBM!"
-L.DBM_INSTALL_REMINDER_EXPLAIN = "Bienvenido a %s. Los módulos de DBM para los jefes aquí están en el %s que no tienes instalado. ¡DBM no mostrará temporizadores ni advertencias en esta zona a menos que instales el %s!"
-L.DBM_INSTALL_REMINDER_DISABLE = "Desactiva todos los anuncios y temporizadores de DBM en esta zona."  -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
+L.DBM_INSTALL_REMINDER_HEADER 	= "¡Se ha detectado una instalación incompleta de DBM!"
+L.DBM_INSTALL_REMINDER_EXPLAIN 	= "Bienvenido a %s. Los módulos de DBM para los jefes aquí están en el %s que no tienes instalado. ¡DBM no mostrará temporizadores ni advertencias en esta zona a menos que instales el %s!"
+L.DBM_INSTALL_REMINDER_DISABLE 	= "Desactiva todos los anuncios y temporizadores de DBM en esta zona."  -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
 L.DBM_INSTALL_REMINDER_DISABLE2 = "No mostrar este mensaje nuevamente para este paquete." -- Used for unimportant mods, i.e., dungeons
-L.DBM_INSTALL_REMINDER_DL_WAGO = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Wago.io en tu portapapeles."
+L.DBM_INSTALL_REMINDER_DL_WAGO 	= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Wago.io en tu portapapeles."
 L.DBM_INSTALL_REMINDER_DL_CURSE = "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " para copiar el enlace de Curseforge en tu portapapeles."
 
-L.DBM_INSTALL_PACKAGE_VANILLA = "Paquete de Era y Temporada de descubrimiento"
+L.DBM_INSTALL_PACKAGE_VANILLA 	= "Paquete de Era y Temporada de descubrimiento"
 L.DBM_INSTALL_PACKAGE_BCC		= "Paquete de Burning Crusade"
-L.DBM_INSTALL_PACKAGE_WRATH = "Paquete de Wrath"
-L.DBM_INSTALL_PACKAGE_CATA = "Paquete de Cataclysm"
+L.DBM_INSTALL_PACKAGE_WRATH 	= "Paquete de Wrath"
+L.DBM_INSTALL_PACKAGE_CATA 		= "Paquete de Cataclysm"
 L.DBM_INSTALL_PACKAGE_MOP		= "Paquete de Mist of Pandaria"
-L.DBM_INSTALL_PACKAGE_DUNGEON = "Paquete de Mazmorras, Abismos y Eventos"
+L.DBM_INSTALL_PACKAGE_DUNGEON 	= "Paquete de Mazmorras, Abismos y Eventos"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS = "DBM se utilizó en modo de prueba con distorsión temporal en la sesión actual, se recomienda recargar tu interfaz antes de usar DBM en un combate de jefe real. Todo debería funcionar como se espera, ¡pero no hay garantías!"
+L.DBM_TAINTED_BY_TESTS 			= "DBM se utilizó en modo de prueba con distorsión temporal en la sesión actual, se recomienda recargar tu interfaz antes de usar DBM en un combate de jefe real. Todo debería funcionar como se espera, ¡pero no hay garantías!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM                 = L.DBM .. " información"

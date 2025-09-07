@@ -98,6 +98,7 @@ CL.SPREADDEBUFFS 				= "Espalhe as penalidades"
 CL.LASER            			= "Laser"
 CL.LASERS            			= "Lasers"
 CL.LINE							= "Linha"
+CL.LINES						= "Linhas"
 CL.RIFT							= "Fenda"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS						= "Fendas"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS						= "Armadilhas"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
