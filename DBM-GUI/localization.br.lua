@@ -30,7 +30,7 @@ L.Tools_BreakTimer				= "Iniciar cronômetro de pausa"
 L.Tools_PizzaTimer				= "Iniciar cronômetro genérico"
 
 L.Tools_Duration				= "Duração"
-L.Tools_Message					= "Mensagem de mporizador"
+L.Tools_Message					= "Mensagem de cronômetro"
 
 L.TabCategory_CURRENT_SEASON	= "Temporada atual"
 
