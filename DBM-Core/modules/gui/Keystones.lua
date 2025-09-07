@@ -354,7 +354,7 @@ do
 		GameTooltip:Show()
 	end
 
-	frame:CreateTab(DBM:GetSpellName(4801), function()
+	frame:CreateTab(DBM:GetSpellName(4801) or 'Teleport', function()
 		refresh:Hide()
 		WipeTextFrames()
 
