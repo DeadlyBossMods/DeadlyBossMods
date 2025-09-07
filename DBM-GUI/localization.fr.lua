@@ -16,21 +16,21 @@ L.OTabWorld							= "Boss mondiaux"--Since there are so many world mods, enough 
 L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Options"
---L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabTools							= "Outils"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout							= "À propos"
 
 --Main Tab, Tools checks
---L.Tools_LatencyCheck				= "Latency Check"
---L.Tools_DurabilityCheck				= "Durability Check"
---L.Tools_KeystoneCheck				= "Keystone Check"
+L.Tools_LatencyCheck			= "Vérification de latence"
+L.Tools_DurabilityCheck			= "Vérification de durabilité"
+L.Tools_KeystoneCheck			= "Vérification de clé"
 
---L.Tools_BreakTimer					= "Start Break Timer"
---L.Tools_PizzaTimer					= "Start Generic Timer"
+L.Tools_BreakTimer				= "Démarrer le chronomètre de pause"
+L.Tools_PizzaTimer				= "Démarrer le chronomètre générique"
 
---L.Tools_Duration					= "Duration"
---L.Tools_Message						= "Timer Message"
+L.Tools_Duration				= "Durée"
+L.Tools_Message					= "Message du chronomètre"
 
-L.TabCategory_CURRENT_SEASON		= "Saison en cours"
+L.TabCategory_CURRENT_SEASON	= "Saison en cours"
 
 L.TabCategory_OTHER			= "Autres modules"
 L.TabCategory_AFFIXES		= "Affixes"
