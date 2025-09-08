@@ -26,7 +26,7 @@ L.Tools_KeystoneCheck				= "쐐기돌 확인"
 L.Tools_BreakTimer					= "휴식 타이머 시작"
 L.Tools_PizzaTimer					= "일반 타이머 시작"
 
-L.Tools_Duration					= "내구도"
+L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
