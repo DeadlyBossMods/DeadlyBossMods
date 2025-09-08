@@ -678,13 +678,11 @@ L.DUOS							= "짝패"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
-L.KEYSTONE_NAMES = {
-	[378] = '속죄', -- Halls of Atonement
-	[391] = '경거', -- Tazavesh: Streets of Wonder
-	[392] = '소레아', -- Tazavesh: So'leah's Gambit
-	[499] = '수도원', -- Priority of the Sacred Flame
-	[503] = '아라카라', -- Ara-Kara, City of Echoes
-	[505] = '새인호', -- The Dawnbreaker
-	[525] = '수문', -- Operation Floodgate
-	[542] = '알다니' -- Eco-Dome Al'dani
-}
+L.KEYSTONE_NAMES[378] = '속죄' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = '경거' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = '소레아' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = '수도원' -- Priority of the Sacred Flame
+L.KEYSTONE_NAMES[503] = '아라카라' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = '새인호' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = '수문' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = '알다니' -- Eco-Dome Al'dani
