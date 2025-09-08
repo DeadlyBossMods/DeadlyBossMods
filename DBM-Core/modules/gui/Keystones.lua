@@ -408,9 +408,9 @@ function Keystones:Hide()
 	frame:Hide()
 end
 
-frame:SetScript('OnEvent', function(_, event)
+frame:SetScript('OnEvent', function(_, event, _, arg2)
 	if event == 'UNIT_CONNECTION' then
-		if selectedTab == 1 then
+		if selectedTab == 1 and arg2 then -- isConnected
 			LibKeystone.Request("PARTY")
 		end
 	end
