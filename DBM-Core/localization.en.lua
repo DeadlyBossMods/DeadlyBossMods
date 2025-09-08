@@ -691,6 +691,7 @@ L.TIMER_RESPAWN							= "%s Respawn"
 
 L.LAG_HEADER							= L.DBM.. " - Latency Results"
 L.DUR_HEADER							= L.DBM.. " - Durability Results"
+L.KEYSTONES_HEADER						= L.DBM.. " - Keystones"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 
@@ -740,3 +741,16 @@ L.TOOLTIP_FASTEST				= "Fastest kill (%s)"
 L.FOLLOWER						= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "Story"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
 L.DUOS							= "Duos"
+
+-- Keystone dungeon names (keep to a max of 6 characters)
+-- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+L.KEYSTONE_NAMES = {
+	[378] = 'HOA', -- Halls of Atonement
+	[391] = 'STREET', -- Tazavesh: Streets of Wonder
+	[392] = 'GAMBIT', -- Tazavesh: So'leah's Gambit
+	[499] = 'PRIORY', -- Priority of the Sacred Flame
+	[503] = 'ARAK', -- Ara-Kara, City of Echoes
+	[505] = 'DAWN', -- The Dawnbreaker
+	[525] = 'FLOOD', -- Operation Floodgate
+	[542] = 'DOME' -- Eco-Dome Al'dani
+}

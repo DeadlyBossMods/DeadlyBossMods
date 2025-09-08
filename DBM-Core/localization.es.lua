@@ -649,6 +649,7 @@ L.TIMER_RESPAWN				= "%s reaparece"
 
 L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"
 L.DUR_HEADER				= L.DBM.. " - Resultados de durabilidad"
+--L.KEYSTONES_HEADER		= L.DBM.. " - Piedras angulares"
 
 L.OVERRIDE_ACTIVATED		= "Líder de banda ha activado las anulaciones de configuración para este encuentro"
 
@@ -696,3 +697,14 @@ L.TOOLTIP_FASTEST             = "Victoria más rápida (%s)"
 L.FOLLOWER						= "Seguidor"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 L.STORY					    	= PLAYER_DIFFICULTY_STORY_RAID or "Historia"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
 L.DUOS							= "Dúos"
+
+-- Keystone dungeon names (keep to a max of 6 characters)
+-- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+L.KEYSTONE_NAMES[378] = 'SALÓN' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = 'CALLE' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = 'PRIOR' -- Priority of the Sacred Flame
+L.KEYSTONE_NAMES[503] = 'ARA' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = 'ALBA' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = 'OPER' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = 'ECO' -- Eco-Dome Al'dani

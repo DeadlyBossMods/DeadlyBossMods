@@ -20,15 +20,15 @@ L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
 
 --Main Tab, Tools checks
-L.Tools_LatencyCheck				= "延遲檢查"
-L.Tools_DurabilityCheck				= "耐久度檢查"
-L.Tools_KeystoneCheck				= "鑰石檢查"
+L.Tools_LatencyCheck			= "延遲檢查"
+L.Tools_DurabilityCheck			= "耐久度檢查"
+L.Tools_KeystoneCheck			= "鑰石檢查"
 
---L.Tools_BreakTimer					= "Start Break Timer"
---L.Tools_PizzaTimer					= "Start Generic Timer"
+L.Tools_BreakTimer				= "開始休息計時"
+L.Tools_PizzaTimer				= "開始一般計時"
 
---L.Tools_Duration					= "Duration"
---L.Tools_Message						= "Timer Message"
+L.Tools_Duration				= "持續時間"
+L.Tools_Message					= "計時訊息"
 
 L.TabCategory_CURRENT_SEASON	= "當前賽季"
 
@@ -131,6 +131,8 @@ L.LogCurrentMPlus					= "當前等級傳奇+地下城"--Retail Only
 L.LogCurrentMythicZero				= "當前等級傳奇0層地下城"--Retail Only
 L.LogTWDungeons						= "時光漫遊 或 克羅米時光地下城"--Retail Only
 L.LogCurrentHeroic					= "當前等級英雄地下城 (注意：如果您通過地城搜尋器佇列英雄並想要記錄，請關閉地城搜尋器過濾)"
+L.LogDelves							= "當前探究層級"--Retail Only
+L.LogChallenges						= "當前層級特別挑戰 (像是托加斯特、幻象、法師塔)"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "額外功能"
@@ -160,6 +162,11 @@ L.AutoAcceptFriendInvite	= "自動接受來自朋友的隊伍邀請"
 L.AutoAcceptGuildInvite		= "自動接受來自公會成員的隊伍邀請"
 L.Area_Advanced				= "進階選項"
 L.FakeBW					= "假裝使用BigWigs版本檢查而不是用DBM版本(適合用在工會強制使用BigWigs時)"
+--
+L.Area_Tooltip						= "工具提示整合"
+L.EnableTooltip						= "將DBM統計數據加入到由DBM支援的首領工具提示中"
+L.EnableTooltipInCombat				= "在戰鬥中顯示工具提示訊息"
+L.EnableTooltipHeader				= "在工具提示中包括DBM標題"
 
 -- Panel: Profiles
 L.Panel_Profile				= "配置檔"
@@ -589,6 +596,8 @@ L.Panel_Range				= "距離框架"
 
 -- Panel: Nameplate
 L.Panel_Nameplates				= "名條"
+L.Plater_Config				    = "開啟 Plater 設置"
+L.ThreatPlates_Config			= "開啟 Threat Plates 設置"
 L.Area_NPStyle					= "風格 (注意：僅在DBM處理名條時配置風格。)"
 L.NPAuraText					= "在名條圖示上顯示計時文字"
 L.NPAuraSize					= "光環像素大小 (平方): %d"

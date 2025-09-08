@@ -618,6 +618,7 @@ L.TIMER_RESPAWN		= "Respawn %s"
 
 L.LAG_HEADER					= L.DBM.." - Risultati Latenza"
 L.DUR_HEADER					= L.DBM.." - Risultati Stato Equipaggiamento"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 
@@ -637,3 +638,14 @@ L.LDB_TOOLTIP_HELP2	= "Clicca col tasto destro per aprire la configurazione"
 --L.WORLD_BUFFS.blackfathomBoon						= "boon of Blackfathom"
 
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
+
+-- Keystone dungeon names (keep to a max of 6 characters)
+-- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+--L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
+--L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
+--L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
+--L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
+--L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
+--L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
+--L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
+--L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani

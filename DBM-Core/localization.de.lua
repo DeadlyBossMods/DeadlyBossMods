@@ -617,6 +617,7 @@ L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 
 L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
 L.DUR_HEADER					= L.DBM.." - Haltbarkeitergebnisse"
+--L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 
@@ -655,3 +656,15 @@ L.TOOLTIP_WIPES					= "Wipes (%s)"
 L.TOOLTIP_FASTEST				= "Schnellster Kill (%s)"
 
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
+
+
+-- Keystone dungeon names (keep to a max of 6 characters)
+-- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+--L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
+--L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
+--L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
+--L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
+--L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
+--L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
+--L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
+--L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
