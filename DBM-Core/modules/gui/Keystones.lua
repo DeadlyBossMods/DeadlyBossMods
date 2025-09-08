@@ -408,6 +408,15 @@ function Keystones:Hide()
 	frame:Hide()
 end
 
+frame:SetScript('OnEvent', function(_, event)
+	if event == 'UNIT_CONNECTION' then
+		if selectedTab == 1 then
+			LibKeystone.Request("PARTY")
+		end
+	end
+end)
+frame:RegisterEvent('UNIT_CONNECTION')
+
 --[[
 -- DEBUG
 frame:Show()
