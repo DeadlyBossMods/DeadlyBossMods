@@ -220,7 +220,7 @@ local function checkForSkippedRings(self)
 	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 1234044, self.vb.darkenedSkyCount+1)
 	if timer then
 		timerDarkenedSkyCD:Start(timer-10, self.vb.darkenedSkyCount+1)
-		checkForSkippedRings:Unschedule(checkForSkippedRings)
+		self:Unschedule(checkForSkippedRings)
 		self:Schedule(timer, checkForSkippedRings, self)
 	end
 end
@@ -610,7 +610,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 1234044, self.vb.darkenedSkyCount+1)
 		if timer then
 			timerDarkenedSkyCD:Start(timer, self.vb.darkenedSkyCount+1)
-			checkForSkippedRings:Unschedule(checkForSkippedRings)
+			self:Unschedule(checkForSkippedRings)
 			self:Schedule(timer+10, checkForSkippedRings, self)
 		end
 	end
