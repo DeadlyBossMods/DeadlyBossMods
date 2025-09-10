@@ -250,8 +250,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEradicatingSalvo:Show(self.vb.eradicatingSalvoCount, args.destName)
 	elseif spellId == 1219531 and self:IsHard() then--Ignore on normal in LFR, it doesnt have second missile.
 		if args:IsPlayer() then
-			yellEradicatingSalvo:Yell()
-			yellEradicatingSalvoFades:Countdown(spellId)
+	--		yellEradicatingSalvo:Yell()
+			yellEradicatingSalvoFades:Countdown(2.5)
 		end
 	elseif spellId == 1218625 then
 		warnDisplacementMatrix:CombinedShow(0.3, args.destName)
