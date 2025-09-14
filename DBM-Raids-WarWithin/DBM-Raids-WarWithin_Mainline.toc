@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110200, 110205
 ## X-Min-Interface: 100206
 ## Version: @project-version@
 ## Category: DBM
