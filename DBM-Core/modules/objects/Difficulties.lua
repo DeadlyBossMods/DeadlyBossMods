@@ -554,7 +554,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
 		local delveInfo, delveInfo2, delveInfo3 = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6184), C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6185)
 		local usedDelveInfo
-		--Zekvir Hack to normal/mythic since his tiers aren't numbers
+		--Nemesis Hack to normal/mythic since tiers aren't numbers
 		if delveInfo2 and delveInfo2.shownState and delveInfo2.shownState == 1 then
 			return "normal", difficultyName .. "(?) - ", 1, instanceGroupSize, 0--Returns 1 for normal 1-5man
 		elseif delveInfo3 and delveInfo3.shownState and delveInfo3.shownState == 1 then
@@ -575,16 +575,6 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
 		return "story", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 231 then--SoD BWL (and other raids?)
-		--Do fancy stuff here, TODO for paul :D
-		--if Enum.SeasonID and private.currentSeason == Enum.SeasonID.SeasonOfDiscovery then--Molten Core SoD
-		--	if self:UnitDebuff("player", 458841) then--Sweltering Heat
-		--		return "normal", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-		--	elseif self:UnitDebuff("player", 458842) then--Blistering Heat
-		--		return "heroic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-		--	elseif self:UnitDebuff("player", 458843) then--Molten Heat
-		--		return "mythic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-		--	end
-		--end
 		return "normal", "", difficulty, instanceGroupSize, 0
 	elseif difficulty == 232 then--Duos
 		return "duos", "", difficulty, instanceGroupSize, 0
