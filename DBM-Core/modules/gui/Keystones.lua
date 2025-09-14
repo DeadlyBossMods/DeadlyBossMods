@@ -182,6 +182,30 @@ refresh:SetScript("OnClick", function()
 		end)
 	end
 end)
+local function TeleportTooltipOnEnter(self)
+	GameTooltip:SetOwner(self, "ANCHOR_TOP")
+	if InCombatLockdown() then
+		GameTooltip:SetText(ERR_NOT_IN_COMBAT)
+	else
+		if not DBMExtraGlobal:IsSpellKnown(self:GetAttribute('spell')) then
+			GameTooltip:SetText(SPELL_FAILED_NOT_KNOWN)
+		else
+			local start, duration = DBM:GetSpellCooldown(self:GetAttribute('spell'))
+			if start > 0 and duration > 0 then
+				local remainingSec = (start + duration) - GetTime()
+				local hours, minutes = mfloor(remainingSec / 3600), mfloor(remainingSec / 60)
+				if hours > 0 then
+					GameTooltip:SetText(ITEM_COOLDOWN_TIME_HOURS:format(hours))
+				else
+					GameTooltip:SetText(ITEM_COOLDOWN_TIME_MIN:format(minutes))
+				end
+			else
+				GameTooltip:SetText(LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))))
+			end
+		end
+	end
+	GameTooltip:Show()
+end
 
 local function SortKeystones(v1, v2)
 	if v1.keyLevel ~= v2.keyLevel then
@@ -287,6 +311,12 @@ function PartyGuildUpdate(table)
 		textDungeon.Text:SetText(L.KEYSTONE_NAMES[v.mapID] or (v.mapID == 0 and '-') or v.mapID or '?')
 		textDungeon:SetPoint("TOP", titleDungeon, "BOTTOM", 0, offset)
 		textDungeon:SetWidth(titleDungeon:GetWidth())
+		if v.mapID and v.mapID ~= 0 and teleports[v.mapID] then
+			textDungeon:SetScript('OnEnter', TeleportTooltipOnEnter)
+			textDungeon:SetScript('OnLeave', GameTooltip_Hide)
+			textDungeon:SetAttribute('type', 'spell')
+			textDungeon:SetAttribute('spell', teleports[v.mapID][2])
+		end
 
 		textRating.Text:SetText(v.playerRating or '?')
 		textRating:SetPoint("TOP", titleRating, "BOTTOM", 0, offset)
@@ -354,31 +384,6 @@ end)
 
 -- Teleport
 do
-	local function TeleportTooltipOnEnter(self)
-		GameTooltip:SetOwner(self, "ANCHOR_TOP")
-		if InCombatLockdown() then
-			GameTooltip:SetText(ERR_NOT_IN_COMBAT)
-		else
-			if not self:GetAttribute('spell-learned') then
-				GameTooltip:SetText(SPELL_FAILED_NOT_KNOWN)
-			else
-				local start, duration = DBM:GetSpellCooldown(self:GetAttribute('spell'))
-				if start > 0 and duration > 0 then
-					local remainingSec = (start + duration) - GetTime()
-					local hours, minutes = mfloor(remainingSec / 3600), mfloor(remainingSec / 60)
-					if hours > 0 then
-						GameTooltip:SetText(ITEM_COOLDOWN_TIME_HOURS:format(hours))
-					else
-						GameTooltip:SetText(ITEM_COOLDOWN_TIME_MIN:format(minutes))
-					end
-				else
-					GameTooltip:SetText(LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))))
-				end
-			end
-		end
-		GameTooltip:Show()
-	end
-
 	-- This will never be nil, but falling back just so it shuts up LuaLS
 	frame:CreateTab(DBM:GetSpellName(4801) or 'Teleport', function()
 		refresh:Hide()
@@ -402,9 +407,7 @@ do
 			end
 			button.Text:SetJustifyH("CENTER")
 			button.Text:SetText(GetRealZoneText(teleport[1]))
-			local isLearned = DBMExtraGlobal:IsSpellKnown(teleport[2])
-			button:SetAttribute('spell-learned', isLearned)
-			if not isLearned then
+			if not DBMExtraGlobal:IsSpellKnown(teleport[2]) then
 				button.Text:SetTextColor(1, 0, 0)
 			end
 			-- Scale down text size if it's long single words
