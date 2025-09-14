@@ -35,16 +35,16 @@ do
 	LibSpec.RegisterGuild(playerSpecs, UpdateSpec)
 end
 
--- [ChallengeModeID] = {MapID, TeleportID}
+-- [ChallengeModeID] = {MapID, TeleportID, bgImage}
 local teleports = {
-	[378] = {2287, 354465}, -- Halls of Atonement
-	[391] = {2441, 367416}, -- Tazavesh: Streets of Wonder
-	[392] = {2441, 367416}, -- Tazavesh: So'leah's Gambit
-	[499] = {2649, 445444}, -- Priority of the Sacred Flame
-	[503] = {2660, 445417}, -- Ara-Kara, City of Echoes
-	[505] = {2662, 445414}, -- The Dawnbreaker
-	[525] = {2773, 1216786}, -- Operation Floodgate
-	[542] = {2830, 1237215} -- Eco-Dome Al'dani
+	[378] = {2287, 354465, 3759908}, -- Halls of Atonement
+	[391] = {2441, 367416, 4182022}, -- Tazavesh: Streets of Wonder
+	[392] = {2441, 367416, 4182022}, -- Tazavesh: So'leah's Gambit
+	[499] = {2649, 445444, 5912551}, -- Priority of the Sacred Flame
+	[503] = {2660, 445417, 5912546}, -- Ara-Kara, City of Echoes
+	[505] = {2662, 445414, 5912552}, -- The Dawnbreaker
+	[525] = {2773, 1216786, 6422412}, -- Operation Floodgate
+	[542] = {2830, 1237215,7074042} -- Eco-Dome Al'dani
 }
 
 local partyKeystones, guildKeystones = {}, {}
@@ -130,7 +130,6 @@ local function GetTextFrame()
 
 	local bg = _frame:CreateTexture()
 	bg:SetAllPoints(_frame)
-	bg:SetColorTexture(1, 1, 1, 0.1)
 	bg:Hide()
 	_frame.Background = bg
 
@@ -264,8 +263,8 @@ function PartyGuildUpdate(table)
 
 	for i, v in ipairs(sortTable) do
 		local name = v.name
-		if playerSpecs[name] then
-			local _, _, _, _, _, class = GetSpecializationInfoByID(playerSpecs[name])
+		if v.specID or playerSpecs[name] then
+			local _, _, _, _, _, class = GetSpecializationInfoByID(v.specID or playerSpecs[name])
 			local playerColor = RAID_CLASS_COLORS[class]
 			if playerColor then
 				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
@@ -299,6 +298,35 @@ function PartyGuildUpdate(table)
 	frame:SetWidth(child:GetWidth() + 32)
 end
 
+local function UpdateKeystones()
+	local resetTime = C_DateAndTime.GetWeeklyResetStartTime()
+	if not DBM_Keystones.resetTime or resetTime ~= DBM_Keystones.resetTime then
+		DBM_Keystones.resetTime = resetTime
+		DBM_Keystones.keys = {}
+	end
+
+	-- If not max level, don't store this character in the keys system
+	if UnitLevel('player') ~= GetMaxPlayerLevel() then
+		return
+	end
+
+	local name = UnitName('player')
+	local currentRating = C_PlayerInfo.GetPlayerMythicPlusRatingSummary('player')
+	DBM_Keystones.keys[UnitGUID('player')] = {
+		name = name,
+		specID = playerSpecs[name] or 0,
+		keyLevel = C_MythicPlus.GetOwnedKeystoneLevel() or 0,
+		mapID = C_MythicPlus.GetOwnedKeystoneChallengeMapID() or 0,
+		playerRating = currentRating and currentRating.currentSeasonScore or 0,
+	}
+
+	-- Update the character frame
+	if selectedTab == 3 then -- Characters tab
+		print('Updating frame')
+		PartyGuildUpdate(DBM_Keystones.keys)
+	end
+end
+
 frame:CreateTab(PARTY, function()
 	refresh:Show()
 	partyKeystones = {}
@@ -320,11 +348,8 @@ end)
 
 frame:CreateTab(CHARACTER, function()
 	refresh:Hide()
-	local title = GetTextFrame()
-	title.Text:SetFontObject(GameFont_Gigantic)
-	title.Text:SetText("Coming Soon")
-	title:SetPoint("TOPLEFT", child, 7, -20)
-	title:SetWidth(title.Text:GetStringWidth())
+	UpdateKeystones()
+	PartyGuildUpdate(DBM_Keystones.keys)
 end)
 
 -- Teleport
@@ -386,6 +411,10 @@ do
 			while button.Text:IsTruncated() do
 				button.Text:SetTextScale(button.Text:GetTextScale() - 0.01)
 			end
+			button.Background:SetTexCoord(0, 0.68359375, 0, 0.7421875)
+			button.Background:SetTexture(teleport[3])
+			button.Background:SetDesaturation(0.75)
+			button.Background:SetAlpha(0.75)
 			button.Background:Show()
 			i = i + 1
 		end
@@ -408,13 +437,36 @@ function Keystones:Hide()
 	frame:Hide()
 end
 
-frame:SetScript('OnEvent', function(_, event, _, arg2)
+frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 	if event == 'UNIT_CONNECTION' then
 		if selectedTab == 1 and arg2 then -- isConnected
 			LibKeystone.Request("PARTY")
 		end
+	elseif event == 'PLAYER_ENTERING_WORLD' then
+		if not DBM_Keystones then
+			DBM_Keystones = {
+				keys = {}
+			}
+		end
+		-- Once we're fully logged in, check if nobody has a keystone command, and then inject ours
+		-- We can't check SLASH_KEYSTONE3 because BigWigs murders it
+		if not SLASH_KEYSTONE1 and not SLASH_KEYSTONE2 then
+			SLASH_KEYSTONE1 = '/keystone'
+			SLASH_KEYSTONE2 = '/keys'
+			SLASH_KEYSTONE3 = '/key'
+			SlashCmdList["KEYSTONE"] = function()
+				Keystones:Show()
+			end
+		end
+		UpdateKeystones()
+	elseif event == 'PLAYER_INTERACTION_MANAGER_FRAME_HIDE' then
+		if arg1 == 3 or arg1 == 49 then
+			UpdateKeystones()
+		end
 	end
 end)
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+frame:RegisterEvent('PLAYER_INTERACTION_MANAGER_FRAME_HIDE')
 frame:RegisterEvent('UNIT_CONNECTION')
 
 --[[
