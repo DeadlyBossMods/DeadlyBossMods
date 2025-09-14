@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110200, 110205
 ## X-Min-Interface: 110200
 ## Category: DBM
 ## Group: DBM-Core

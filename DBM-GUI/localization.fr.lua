@@ -22,7 +22,7 @@ L.OTabAbout							= "À propos"
 --Main Tab, Tools checks
 L.Tools_LatencyCheck			= "Vérification de latence"
 L.Tools_DurabilityCheck			= "Vérification de durabilité"
-L.Tools_KeystoneCheck			= "Vérification de clé"
+L.Tools_KeystoneCheck			= "Vérification de mythique"
 
 L.Tools_BreakTimer				= "Démarrer le chronomètre de pause"
 L.Tools_PizzaTimer				= "Démarrer le chronomètre générique"

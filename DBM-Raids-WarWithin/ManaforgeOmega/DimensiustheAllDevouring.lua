@@ -206,13 +206,24 @@ local allTimers = {
 		},
 		[3] = {
 			[1233539] = {47.4, 100},--Devour P3
-			[1234044] = {80.7, 33.1, 66.6, 33.1},--Darkened Sky (used to be 29.7, 51.2 but they removed a cast in normal and LFR?)
+			[1234044] = {29.7, 51.2, 33.1, 66.6, 33.1},
 			[1234263] = {65, 33.3, 33.3, 33.3, 33.3, 33.3, 33.3},--Cosmic Collapse
 			[1232973] = {56.1, 14.4, 33.3, 33.3, 18.9, 14.4, 33.3, 33.3},--Super Nova
 			[1250055] = {60, 33.3, 33.3, 33.3, 33.3, 33.3},--Voidgrasp
 		},
 	},
 }
+
+--Works around annoying bug where sometimes rings cast and even emote are missing events (but still happen)
+local function checkForSkippedRings(self)
+	self.vb.darkenedSkyCount = self.vb.darkenedSkyCount + 1
+	local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 1234044, self.vb.darkenedSkyCount+1)
+	if timer then
+		timerDarkenedSkyCD:Start(timer-10, self.vb.darkenedSkyCount+1)
+		self:Unschedule(checkForSkippedRings)
+		self:Schedule(timer, checkForSkippedRings, self)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	devourCasting = false
@@ -589,6 +600,8 @@ function mod:UNIT_DIED(args)
 end
 
 --First cast is not in combat log (rest are)
+--First cast can also be missing emote too though so we also have to do backup scheduling
+--Because even emote doesn't COMPLETELY work around blizzard bug.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:1234052") then
 		self.vb.darkenedSkyCount = self.vb.darkenedSkyCount + 1
@@ -597,6 +610,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.phase, 1234044, self.vb.darkenedSkyCount+1)
 		if timer then
 			timerDarkenedSkyCD:Start(timer, self.vb.darkenedSkyCount+1)
+			self:Unschedule(checkForSkippedRings)
+			self:Schedule(timer+10, checkForSkippedRings, self)
 		end
 	end
 end

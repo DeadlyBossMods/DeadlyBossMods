@@ -86,9 +86,9 @@ local allTimers = {
 			[1234733] = {27.3},--Cleanse the Chamber
 		},
 		[3] = {--Need more data to get soft enrage repeater
-			[1219450] = {5.4, 23.1, 23.1, "v31.6-33.1", "v31.6-33.1"},--Manifest Matrices
-			[1219263] = {13.3, 29.1, 29.2, "29.2-32.8", "30.4-32.8"},--Obliteration Arcanocannon
-			[1219531] = {"v20-21.2", 33.7, "v36.9-38.2", 31.6},--Eradicating Salvo
+			[1219450] = {"v4.8-5.4", 23.1, 23.1, "v23.1-33.1", "v23.1-33.1"},--Manifest Matrices
+			[1219263] = {13.3, 29.1, 29.2, "25.6-32.8", "30.4-32.8"},--Obliteration Arcanocannon
+			[1219531] = {"v19.3-21.2", "v31.6-33.7", "v36.9-38.2", 31.6},--Eradicating Salvo
 			[1234733] = {65.3, 6, 9.7, 6.9, 11.3, 11, 7, 6.3, 11, 9.7, 7},--Cleanse the Chamber
 		},
 	},
@@ -250,8 +250,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEradicatingSalvo:Show(self.vb.eradicatingSalvoCount, args.destName)
 	elseif spellId == 1219531 and self:IsHard() then--Ignore on normal in LFR, it doesnt have second missile.
 		if args:IsPlayer() then
-			yellEradicatingSalvo:Yell()
-			yellEradicatingSalvoFades:Countdown(spellId)
+	--		yellEradicatingSalvo:Yell()
+			yellEradicatingSalvoFades:Countdown(2.5)
 		end
 	elseif spellId == 1218625 then
 		warnDisplacementMatrix:CombinedShow(0.3, args.destName)
