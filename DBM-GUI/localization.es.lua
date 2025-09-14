@@ -64,7 +64,7 @@ L.IconsInUse				= "Iconos usados por este módulo"
 L.BossStatistics			= "Estadísticas"
 L.Statistic_Kills			= "Victorias:"
 L.Statistic_Wipes			= "Derrotas:"
-L.Statistic_Incompletes		= "Inacabados:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
+L.Statistic_Incompletes		= "Incompletos:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill		= "Mejor victoria:"
 L.Statistic_BestRank		= "Mejor nivel:"--Maybe not get used, not sure yet, localize anyways
 
@@ -141,7 +141,7 @@ L.Panel_ExtraFeatures		= "Funciones adicionales"
 
 L.Area_SoundAlerts			= "Opciones de alertas de sonido y destello del icono del juego"
 L.LFDEnhance				= "Reproducir sonido de comprobación de rol y destellar el icono del juego para comprobaciones de rol y avisos de campo de batalla/buscar grupo en el canal de audio principal o diálogo"
-L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar el icono del juego cuando haya un jefe del mundo cerca"
+L.WorldBossNearAlert		= "Reproducir sonido de comprobación de banda y destellar el icono del juego cuando un jefe del mundo esté cerca"
 L.RLReadyCheckSound			= "Reproducir sonido por el canal de audio principal o de diálogo y destellar el icono del juego cuando se haga una comprobación de banda"
 L.AutoReplySound			= "Reproducir sonido de alerta y destellar el icono del juego al recibir respuestas automáticas de DBM por susurro"
 --
@@ -272,13 +272,13 @@ L.CombatMessages			= "Opciones de mensajes de combate"
 L.ShowEngageMessage 		= "Mostrar mensajes de inicio de encuentro en el chat"
 L.ShowDefeatMessage 		= "Mostrar mensajes de victoria y derrota en el chat"
 L.ShowGuildMessages 		= "Mostrar mensajes de inicio de encuentro, victoria y derrota de banda de hermandad en el chat"
-L.ShowGuildMessagesPlus		= "Mostrar mensajes de inicio de encuentro, victoria y derrota de Mítica+ de grupos de hermandad"
+L.ShowGuildMessagesPlus		= "Mostrar mensajes de inicio de encuentro, victoria y derrota de Mítica+ para grupos de hermandad"
 
 L.Area_ChatAlerts			= "Opciones de alertas adicionales"
 L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
 L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
 L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe del mundo"
-L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando un beneficio del mundo empieza en tu reino"
+L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando empiece un beneficio del mundo en tu reino"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
 L.BadTimerAlert				= "Mostrar mensaje en el chat cuando DBM detecte un temporizador erróneo"
