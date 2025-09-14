@@ -15,6 +15,7 @@
 	},
 	"diagnostics.globalsRegex": [
 		"SLASH_DEADLYBOSSMODS.*",
+		"SLASH_KEYSTONE.*",
 		"SLASH_DBM.*",
 		"DBM_.*",
 		"DBT_.*",

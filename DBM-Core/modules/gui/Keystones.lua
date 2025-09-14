@@ -468,9 +468,3 @@ end)
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:RegisterEvent('PLAYER_INTERACTION_MANAGER_FRAME_HIDE')
 frame:RegisterEvent('UNIT_CONNECTION')
-
---[[
--- DEBUG
-frame:Show()
-frame:ShowTab(1)
-]]--
