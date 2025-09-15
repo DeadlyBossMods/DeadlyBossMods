@@ -23,6 +23,13 @@ durability:SetScript("OnClick", function()
 	DBM.Durability:Show()
 end)
 
+local keystone = area:CreateButton(L.Tools_KeystoneCheck, 120, 30)
+keystone.myheight = 0
+keystone:SetPoint("LEFT", durability, "RIGHT", 10, 0)
+keystone:SetScript("OnClick", function()
+	DBM.Keystones:Show()
+end)
+
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)
 
 local duration = area2:CreateEditBox(L.Tools_Duration, "")
