@@ -267,26 +267,29 @@ L.INFOFRAME_ALT							= "Alt:"--Alternate Power
 
 L.LFG_INVITE							= "LFG Invite"
 
+--Common slash commands
 L.SLASHCMD_HELP							= {
 	"Available slash commands:",
 	"-----------------",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
-	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
-	"/hudar <number>: Shows HUD based range finder.",
+	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
+	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
 	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
-	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
-	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details.",
-	"/dbm help2: Shows raid management slash commands"
+	"/keys: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keystone)",
+	"/dbm lag: Performs a raid-wide latency check.",
+	"/dbm durability: Performs a raid-wide durability check.",
+	"/dbm help2: Shows additional slash commands"
 }
+--Less used slash commands
 L.SLASHCMD_HELP2						= {
 	"Available slash commands:",
 	"-----------------",
-	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
-	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
 	"/dbm version: Performs a boss mod version check (alias: ver).",
 	"/dbm version2: Performs a boss mod version check that also whispers out of date users (alias: ver2).",
-	"/dbm lag: Performs a raid-wide latency check.",
-	"/dbm durability: Performs a raid-wide durability check."
+	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
+	"/hudar <number>: Shows HUD based range finder.",
+	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
+	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details."
 }
 L.TIMER_USAGE							= {
 	L.DBM .. " timer commands:",

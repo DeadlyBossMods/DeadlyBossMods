@@ -261,22 +261,24 @@ L.LFG_INVITE						= "Aceitar convite"
 L.SLASHCMD_HELP						= {
 	"Comandos disponíveis:",
 	"-----------------",
-	"/range <número> ou /distance <número>: Mostra o quadro de distância. /rrange ou /rdistance para inverter as cores.",
-	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
+	"/dbm unlock: Mostra um cronômetro de barra de status movível (alias: move).",--AI translated (check me)
+	"/dbm pull <seg>: Dispara um cronômetro para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronômetro para iniciar a luta (requer status de líder/assistente).",
+	"/dbm break <min>: Inicia um cronômetro de intervalo de <min> minutos. Dá a todos os integrantes da raide um cronômetro de intervalo (requer status de líder/assistente).",
 	"/dbm timer: Inicia um cronômetro personalizado do " .. L.DBM .. ", veja '/dbm timer' para detalhes.",
-	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
-	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
-	"/dbm help2: Mostra comandos de gerenciamento de raide."
+	"/keys: Realiza verificações de keystone e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keystone)",--AI translated (check me)
+	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
+	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
+	"/dbm help2: Mostra comandos de gerenciamento de raide."--AI translated (check me)
 }
 L.SLASHCMD_HELP2					= {
 	"Comandos disponíveis:",
 	"-----------------",
-	"/dbm pull <seg>: Dispara um cronômetro para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronômetro para iniciar a luta (requer status de líder/assistente).",
-	"/dbm break <min>: Inicia um cronômetro de intervalo de <min> minutos. Dá a todos os integrantes da raide um cronômetro de intervalo (requer status de líder/assistente).",
 	"/dbm version: Realiza uma verificação de versão de toda a raide. (ou: ver).",
 	"/dbm version2: Realiza uma verificação de versão de toda a raide e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
-	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
-	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide."
+	"/range <número> ou /distance <número>: Mostra o quadro de distância. /rrange ou /rdistance para inverter as cores.",
+	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
+	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
+	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
 }
 --Translate all of these
 L.TIMER_USAGE						= {

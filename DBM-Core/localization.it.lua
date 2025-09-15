@@ -251,26 +251,29 @@ L.INFOFRAME_ALT				= "Alt:"--Alternate Power
 
 L.LFG_INVITE						= "Invito LFG"
 
-L.SLASHCMD_HELP				= {
-	"Comandi Disponibili:",
+--Common slash commands
+L.SLASHCMD_HELP							= {--AI translated (check me)
+	"Comandi slash disponibili:",
 	"-----------------",
-	"/dbm unlock: Mostra un temporizzatore mobile (alias: move).",
-	"/range <numero> o /distance <numero>: Mostra distanziometro. /rrange o /rdistance per colori invertiti.",
-	"/hudar <number>: Mostra Distanziometro a HUD.",
-	"/dbm timer: Avvia temporizzatore "..L.DBM.." personalizzato, vedi '/dbm timer' per dettagli.",
-	"/dbm arrow: Mostra la freccia "..L.DBM..", vedi '/dbm arrow help' per dettagli.",
-	"/dbm hud: Mostra l'HUD "..L.DBM..", vedi '/dbm hud' per dettagli.",
-	"/dbm help2: Mostra i comandi per gestione incursione."
+	"/dbm unlock: Mostra un timer della barra di stato mobile (alias: move).",
+	"/dbm pull <sec>: Invia un timer di ingaggio per <sec> secondi al raid (richiede promozione. alias: pull).",
+	"/dbm break <min>: Invia un timer di pausa per <min> minuti al raid (richiede promozione. alias: break).",
+	"/dbm timer: Avvia un timer personalizzato di " .. L.DBM .. ", vedere '/dbm timer' per dettagli.",
+	"/keys: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keystone)",
+	"/dbm lag: Esegue un controllo della latenza per tutto il raid.",
+	"/dbm durability: Esegue un controllo della durabilità per tutto il raid.",
+	"/dbm help2: Mostra comandi slash aggiuntivi"
 }
-L.SLASHCMD_HELP2				= {
-	"Comandi Disponibili:",
+--Less used slash commands
+L.SLASHCMD_HELP2						= {--AI translated (check me)
+	"Comandi slash disponibili:",
 	"-----------------",
-	"/dbm pull <sec>: Avvia un temporizzatore per pull di <sec> secondi all'incursione (richiede assist. alias: pull).",
-	"/dbm break <min>: Avvia un temporizzatore per pause di <min> minuti all'incursione (richiede assist. alias: break).",
-	"/dbm version: Verifica la versione delle boss mod (alias: ver).",
-	"/dbm version2: Verifica la versione delle boss mod e invia un messaggio a quelli con versioni obsolete (alias: ver2).",
-	"/dbm lag: Controlla la latenza di tutti i giocatori nell'incursione.",
-	"/dbm durability: Controlla l'integrità dell'equipaggiamento di tutti i giocatori nell'incursione."
+	"/dbm version: Controlla la versione del boss mod (alias: ver).",
+	"/dbm version2: Controlla la versione del boss mod e invia un messaggio agli utenti obsoleti (alias: ver2).",
+	"/range <numero> o /distance <numero>: Mostra il riquadro di distanza. /rrange o /rdistance per invertire i colori.",
+	"/hudar <numero>: Mostra il rilevatore di distanza HUD.",
+	"/dbm arrow: Mostra la freccia " .. L.DBM .. ", vedere '/dbm arrow help' per dettagli.",
+	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli."
 }
 L.TIMER_USAGE	= {
 	"Comandi Temporizzatore "..L.DBM..":",

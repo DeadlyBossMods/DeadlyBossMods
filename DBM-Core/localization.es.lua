@@ -259,26 +259,29 @@ L.INFOFRAME_ALT				= "Secundario:"	--Alternate Power
 
 L.LFG_INVITE				= "Invitación del buscador"
 
-L.SLASHCMD_HELP				= {
-	"Comandos disponibles:",
+--Common slash commands
+L.SLASHCMD_HELP							= {--AI translated (check me)
+	"Comandos de barra disponibles:",
 	"-----------------",
-	"/dbm unlock: Muestra un temporizador de ejemplo desplazable (alias: move).",
-	"/range <número> o /distance <número>: Muestra el marco de distancia. /rrange y /rdistance invierten el color.",
-	"/hudar <número>: Muestra el indicador de distancia en pantalla.",
-	"/dbm timer: Inicia un temporizador personalizado de DBM. Escribe '/dbm timer' para más detalles.",
-	"/dbm arrow: Muestra la flecha de DBM. Escribe '/dbm arrow help' para más detalles.",
-	"/dbm hud: Muestra el indicador en pantalla de DBM. Escribe '/dbm hud' para más detalles.",
-	"/dbm help2: Lista los comandos de banda de DBM."
+	"/dbm unlock: Muestra un temporizador de barra de estado movible (alias: move).",
+	"/dbm pull <sec>: Envía un temporizador de inicio por <sec> segundos a la banda (requiere ser promovido. alias: pull).",
+	"/dbm break <min>: Envía un temporizador de descanso por <min> minutos a la banda (requiere ser promovido. alias: break).",
+	"/dbm timer: Inicia un temporizador personalizado de " .. L.DBM .. ", consulta '/dbm timer' para más detalles.",
+	"/keys: Realiza comprobaciones de piedra angular y calificación de M+ en el grupo/gremio y accesos directos a teletransportes de mazmorras. (alias: key, keystone)",
+	"/dbm lag: Realiza una comprobación de latencia en toda la banda.",
+	"/dbm durability: Realiza una comprobación de durabilidad en toda la banda.",
+	"/dbm help2: Muestra comandos de barra adicionales"
 }
-L.SLASHCMD_HELP2				= {
-	"Comandos disponibles:",
+--Comandos de barra menos utilizados
+L.SLASHCMD_HELP2						= {--AI translated (check me)
+	"Comandos de barra disponibles:",
 	"-----------------",
-	"/dbm pull <seg>: Inicia un temporizador de inicio de encuentro para toda la banda (requiere líder o ayudante) (alias: pull).",
-	"/dbm break <min>: Inicia un temporizador de descanso para toda la banda (requiere líder o ayudante) (alias: break).",
-	"/dbm version: Realiza una comprobación de versión de DBM a toda la banda (alias: ver).",
-	"/dbm version2: Realiza una comprobación de versión de DBM que también susurra a los jugadores con versiones desactualizadas (alias: ver2).",
-	"/dbm lag: Realiza una comprobación de latencia a toda la banda.",
-	"/dbm durability: Realiza una comprobación de durabilidad a toda la banda."
+	"/dbm version: Realiza una comprobación de versión del mod de jefe (alias: ver).",
+	"/dbm version2: Realiza una comprobación de versión del mod de jefe que también susurra a los usuarios desactualizados (alias: ver2).",
+	"/range <número> o /distance <número>: Muestra el marco de rango. /rrange o /rdistance para invertir colores.",
+	"/hudar <número>: Muestra un buscador de rango basado en HUD.",
+	"/dbm arrow: Muestra la flecha de " .. L.DBM .. ", consulta '/dbm arrow help' para más detalles.",
+	"/dbm hud: Muestra el HUD de " .. L.DBM .. ", consulta '/dbm hud' para más detalles."
 }
 L.TIMER_USAGE	= {
 	L.DBM .. " Comandos de temporizador:",

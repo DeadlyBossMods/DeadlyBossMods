@@ -257,26 +257,29 @@ L.INFOFRAME_ALT					= "Alt:"--Alternate Power
 
 L.LFG_INVITE					= "Invitation RdG"
 
-L.SLASHCMD_HELP				= {
+--Common slash commands
+L.SLASHCMD_HELP							= {--AI translated (check me)
 	"Commandes slash disponibles :",
-	"----------------",
-	"/dbm unlock : Affiche une barre de délai déplaçable (alias : move).",
-	"/range <numéro> ou /distance <numéro>: Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
-	"/hudar <numéro>: Affiche le radar de portée HUD.",
-	"/dbm timer: Lance un chronomètre DBM perso, voir '/dbm timer' pour plus de détails.",
-	"/dbm arrow : Affiche la flèche DBM, voir /dbm arrow help pour les détails.",
-	"/dbm hud: Affiche le HUD de DBM, voir '/dbm hud' pour plus de détails.",
-	"/dbm help2: Affiche les commandes slash de gestion de raid."
-}
-L.SLASHCMD_HELP2				= {
-	"Commandes slash disponibles:",
 	"-----------------",
-	"/dbm pull <sec> : Lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant " .. L.DBM .. " ce délai de pull (nécessite d'être chef du raid ou assistant).",
-	"/dbm break <min>: Envoire un chronomètre de pause de <min> minutes au raid (nécessite d'être chef du raid ou assistant).",
-	"/dbm version: Effectue une vérification de version de " .. L.DBM .. " (alias : ver).",
-	"/dbm version2: Effectue une vérification de version de " .. L.DBM .. " qui chuchote aux membres pas à jour (alias : ver2).",
-	"/dbm lag: Effectue une vérification de latence du raid.",
-	"/dbm durability: Effectue une vérification de durabilité du raid."
+	"/dbm unlock: Affiche un chronomètre de barre d'état déplaçable (alias : move).",
+	"/dbm pull <sec>: Envoie un chronomètre de pull de <sec> secondes au raid (nécessite des permissions élevées. alias : pull).",
+	"/dbm break <min>: Envoie un chronomètre de pause de <min> minutes au raid (nécessite des permissions élevées. alias : break).",
+	"/dbm timer: Démarre un chronomètre personnalisé " .. L.DBM .. ", voir '/dbm timer' pour plus de détails.",
+	"/keys: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keystone)",
+	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
+	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
+	"/dbm help2: Affiche des commandes slash supplémentaires"
+}
+--Less used slash commands
+L.SLASHCMD_HELP2						= {--AI translated (check me)
+	"Commandes slash disponibles :",
+	"-----------------",
+	"/dbm version : Vérifie la version du mod de boss (alias : ver).",
+	"/dbm version2 : Vérifie la version du mod de boss et envoie un message aux utilisateurs obsolètes (alias : ver2).",
+	"/range <nombre> ou /distance <nombre> : Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
+	"/hudar <nombre> : Affiche le détecteur de portée HUD.",
+	"/dbm arrow : Affiche la flèche " .. L.DBM .. ", voir '/dbm arrow help' pour plus de détails.",
+	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails."
 }
 L.TIMER_USAGE	= {
 	"Commandes " .. L.DBM .. " des chronomètres:",
