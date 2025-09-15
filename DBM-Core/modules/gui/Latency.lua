@@ -182,6 +182,10 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 end)
 
 function Latency:Show()
+	if DBM.Keystones then
+		DBM.Keystones:Hide()
+	end
+	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)

@@ -180,6 +180,10 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 end)
 
 function Durability:Show()
+	if DBM.Keystones then
+		DBM.Keystones:Hide()
+	end
+	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
