@@ -339,7 +339,7 @@ end
 ---Pretty much ANYTHING that has mythic mode, with mythic+ included
 function bossModPrototype:IsMythic()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return (diff == "mythic" or diff == "challenge5" or diff == "mythicisland" or diff == "mythic5") and not self:IsMop()
+	return diff == "mythic" or (diff == "challenge5" and not self:IsMop()) or diff == "mythicisland" or diff == "mythic5"
 end
 
 function bossModPrototype:IsMythicPlus()
@@ -578,6 +578,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal", "", difficulty, instanceGroupSize, 0
 	elseif difficulty == 232 then--Duos
 		return "duos", "", difficulty, instanceGroupSize, 0
+	elseif difficulty == 237 then--5 man Celestial Dungeon (MoP classic). We'll store it in mythic5 stat since it's unused in MoP
+		return "mythic5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
