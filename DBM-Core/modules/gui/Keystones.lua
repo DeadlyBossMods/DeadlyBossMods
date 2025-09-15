@@ -352,7 +352,6 @@ local function UpdateKeystones()
 
 	-- Update the character frame
 	if selectedTab == 3 then -- Characters tab
-		print('Updating frame')
 		PartyGuildUpdate(DBM_Keystones.keys)
 	end
 end
