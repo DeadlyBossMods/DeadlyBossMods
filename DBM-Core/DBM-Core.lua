@@ -7791,12 +7791,12 @@ bossModPrototype.IsMop = DBM.IsMop
 
 ---@param self DBMModOrDBM
 function DBM:IsPostCata()
-	return private.isCata or private.isRetail
+	return private.isCata or private.isMop or private.isRetail
 end
 bossModPrototype.IsPostCata = DBM.IsPostCata
 
 function DBM:IsPostMoP()
-	return private.isRetail
+	return private.isRetail or private.isMop
 end
 
 function bossModPrototype:CheckBigWigs(name)
