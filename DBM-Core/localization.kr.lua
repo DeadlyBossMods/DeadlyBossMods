@@ -252,26 +252,29 @@ L.INFOFRAME_ALT				= "보조 자원:"--Alternate Power
 
 L.LFG_INVITE						= "파티찾기 입장"
 
-L.SLASHCMD_HELP				= {
-	"사용 가능 슬래시 명령어:",
-	"----------------",
-	"/dbm unlock: 움직일 수 있는 상태 바 타이머를 표시합니다. (단축 명령어: move)",
-	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance는 색상을 반대로 표시합니다.",
-	"/hudar <number>: HUD 기반 거리 탐지기를 표시합니다.",
-	"/dbm timer: 사용자 지정 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참고하세요.",
-	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참고하세요.",
-	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참고하세요.",
-	"/dbm help2: 공격대 관리와 관련된 슬래시 명령어를 표시합니다."
+--Common slash commands
+L.SLASHCMD_HELP							= {--AI translated (check me)
+	"사용 가능한 슬래시 명령어:",
+	"-----------------",
+	"/dbm unlock: 이동 가능한 상태 바 타이머를 표시합니다 (별칭: move).",
+	"/dbm pull <sec>: <sec> 초 동안의 풀링 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: pull).",
+	"/dbm break <min>: <min> 분 동안의 쉬는 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: break).",
+	"/dbm timer: 사용자 정의 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참조하세요.",
+	"/keys: 파티/길드의 M+ 키스톤 및 등급 확인과 던전 텔레포트 단축키를 수행합니다. (별칭: key, keystone)",
+	"/dbm lag: 공격대 전체의 지연 시간을 확인합니다.",
+	"/dbm durability: 공격대 전체의 내구도를 확인합니다.",
+	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
 }
-L.SLASHCMD_HELP2				= {
-	"사용 가능 슬래시 명령어:",
-	"----------------",
-	"/dbm pull <초>: 공격대에 <초> 만큼 풀링 타이머를 전송합니다. (승급 권한이 필요합니다. 단축 명령어: pull)",
-	"/dbm break <분>: 공격대에 <분> 만큼 지속되는 휴식 타이머를 전송합니다. (승급 권한이 필요합니다. 단축 명령어: break)",
-	"/dbm version: 공대원의 보스 모드 버전 검사를 실시합니다. (단축 명령어: ver)",
-	"/dbm version2: 공대원 보스 모드 버전 검사 및 구버전 사용자에게 귓속말을 보냅니다. (단축 명령어: ver2)",
-	"/dbm lag: 공격대 지연시간 검사 작업을 실행합니다.",
-	"/dbm durability: 공대원의 내구도 검사를 실시합니다."
+--덜 사용되는 슬래시 명령어
+L.SLASHCMD_HELP2						= {--AI translated (check me)
+	"사용 가능한 슬래시 명령어:",
+	"-----------------",
+	"/dbm version: 보스 모드 버전 확인을 수행합니다 (별칭: ver).",
+	"/dbm version2: 보스 모드 버전 확인을 수행하며 구버전 사용자에게 귓속말을 보냅니다 (별칭: ver2).",
+	"/range <number> 또는 /distance <number>: 범위 프레임을 표시합니다. /rrange 또는 /rdistance로 색상을 반전시킵니다.",
+	"/hudar <number>: HUD 기반 범위 탐지기를 표시합니다.",
+	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참조하세요.",
+	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참조하세요."
 }
 L.TIMER_USAGE	= {
 	L.DBM .. " 타이머 명령어:",

@@ -253,22 +253,24 @@ L.SLASHCMD_HELP				= {
 	"Verfügbare Slash-Kommandos:",
 	"-----------------",
 	"/dbm unlock: Zeigt einen bewegbaren Timer an (alias: move).",
-	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
-	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
+	"/dbm pull <sec>: Schickt einen Pull-Timer für <sec> Sekunden an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
+	"/dbm break <min>: Schickt einen Pause-Timer für <min> Minuten an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
 	"/dbm timer: Startet einen benutzerdefinierten DBM-Timer, siehe '/dbm timer' für Details.",
-	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
-	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
-	"/dbm help2: Zeige Slash-Kommandos für das Management von Schlachtzügen."
+	"/keys: Führt M+ Schlüsselstein- und Bewertungsprüfungen für Gruppe/Gilde durch und bietet Abkürzungen zu Dungeon-Transporten an. (alias: key, keystone)",--AI translated (check me)
+	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
+	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug.",
+	"/dbm help2: Zeigt zusätzliche Slash-Kommandos an."--AI translated (check me)
 }
 L.SLASHCMD_HELP2				= {
 	"Verfügbare Slash-Kommandos:",
 	"-----------------",
-	"/dbm pull <sec>: Schickt einen Pull-Timer für <sec> Sekunden an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
-	"/dbm break <min>: Schickt einen Pause-Timer für <min> Minuten an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
 	"/dbm version: Führt eine Boss Mod Versionsprüfung durch (Alias: ver).",
 	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
-	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
-	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug."
+	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
+	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
+	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
+	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details."
+
 }
 L.TIMER_USAGE	= {
 	L.DBM .. "-Timer Kommandos:",

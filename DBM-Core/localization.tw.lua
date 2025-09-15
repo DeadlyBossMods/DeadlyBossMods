@@ -259,26 +259,29 @@ L.INFOFRAME_ALT					= "次要："--Alternate Power
 
 L.LFG_INVITE					= "地城準備確認"
 
-L.SLASHCMD_HELP				= {
-	"可用指令：",
+--常用斜線命令
+L.SLASHCMD_HELP							= {--AI translated (check me)
+	"可用的斜線命令:",
 	"-----------------",
-	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
-	"/range <數字> or /distance <數字>: 顯示距離框架。/rrange 或 /rdistance 顯示相反色。",
-	"/hudar <數字>: 顯示基於距離查詢的HUD。",
-	"/dbm timer: 開始一個自訂的"..L.DBM.."計時器，輸入'/dbm timer'獲得更多訊息。",
-	"/dbm arrow: 顯示"..L.DBM.."箭頭，輸入'/dbm arrow help'獲得更多訊息。",
-	"/dbm hud: 顯示"..L.DBM.." hud，輸入'/dbm hud'獲得更多訊息。",
-	"/dbm help2: 顯示團隊管理指令",
+	"/dbm unlock: 顯示可移動的狀態條計時器（別名：move）。",
+	"/dbm pull <sec>: 向團隊發送 <sec> 秒的拉怪計時器（需要提升權限。別名：pull）。",
+	"/dbm break <min>: 向團隊發送 <min> 分鐘的休息計時器（需要提升權限。別名：break）。",
+	"/dbm timer: 開始一個自訂的 " .. L.DBM .. " 計時器，詳情請參見 '/dbm timer'。",
+	"/keys: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keystone）",
+	"/dbm lag: 執行全團延遲檢查。",
+	"/dbm durability: 執行全團耐久度檢查。",
+	"/dbm help2: 顯示其他斜線命令"
 }
-L.SLASHCMD_HELP2				= {
-	"可用指令：",
+--較少使用的斜線命令
+L.SLASHCMD_HELP2						= {--AI translated (check me)
+	"可用的斜線命令:",
 	"-----------------",
-	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個"..L.DBM.."備戰計時器（需要權限）。",
-	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個"..L.DBM.."休息計時器（需要權限）。",
-	"/dbm version: 進行首領插件的版本檢測（也可使用：ver）。",
-	"/dbm version2: 進行首領插件的版本檢測同時也密語提醒過期的使用者（也可使用：ver2）。",
-	"/dbm lag: 進行團隊範圍內的網路延遲檢測。",
-	"/dbm durability: 進行團隊範圍內的裝備耐久度檢測。"
+	"/dbm version: 執行首領模組版本檢查（別名：ver）。",
+	"/dbm version2: 執行首領模組版本檢查，並私聊過期用戶（別名：ver2）。",
+	"/range <number> 或 /distance <number>: 顯示範圍框架。/rrange 或 /rdistance 反轉顏色。",
+	"/hudar <number>: 顯示基於 HUD 的範圍查找器。",
+	"/dbm arrow: 顯示 " .. L.DBM .. " 箭頭，詳情請參見 '/dbm arrow help'。",
+	"/dbm hud: 顯示 " .. L.DBM .. " hud，詳情請參見 '/dbm hud'。"
 }
 L.TIMER_USAGE	= {
 	L.DBM .. "計時器指令：",

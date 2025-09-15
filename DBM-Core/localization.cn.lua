@@ -265,22 +265,24 @@ L.SLASHCMD_HELP				= {
 	"可用命令:",
 	"-----------------",
 	"/dbm unlock: 显示一个可移动的计时条，可通过对它来移动所有" .. L.DBM .. "计时条的位置(也可使用: move)。",
-	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
-	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
+	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
+	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
 	"/dbm timer: 启动一个" .. L.DBM .. "计时器，输入'/dbm timer'查询更多信息。",
-	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
-	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
-	"/dbm help2: 显示用于团队的命令"
+	"/keys: 执行M+钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (别名: key, keystone)",--AI translated (check me)
+	"/dbm lag: 检测全团网络延时",
+	"/dbm durability: 检测全团装备耐久度",
+	"/dbm help2: 显示额外的斜杠命令"--AI translated (check me)
 }
 L.SLASHCMD_HELP2				= {
 	"可用命令:",
 	"-----------------",
-	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
-	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
+
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
-	"/dbm lag: 检测全团网络延时",
-	"/dbm durability: 检测全团装备耐久度"
+	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
+	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
+	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
+	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。"
 }
 L.TIMER_USAGE	= {
 	L.DBM .. "计时器可用命令:",
