@@ -121,7 +121,7 @@ local function GetTextFrame()
 	_frame = CreateFrame("Button", nil, child, "InsecureActionButtonTemplate")
 	_frame.IsSpare = false
 	_frame:SetSize(20, 20)
-	_frame:RegisterForClicks("AnyDown")
+	_frame:RegisterForClicks("AnyDown", "AnyUp")
 
 	local text = _frame:CreateFontString(nil, nil, "GameFontNormal")
 	text:SetAllPoints(_frame)
