@@ -24,7 +24,8 @@ if not LibLatency then
 	return
 end
 
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+local frame = CreateFrame("Frame", "DBMLatencyFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)

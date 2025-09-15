@@ -52,7 +52,8 @@ local partyKeystones, guildKeystones = {}, {}
 ---@class DBMKeystonesFrame: DefaultPanelTemplate
 ---@field CreateTab fun(self: DBMKeystonesFrame, title: string, OnShowFn: function)
 ---@field ShowTab fun(self: DBMKeystonesFrame, tab: number)
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate")
+local frame = CreateFrame("Frame", "DBMKeystonesFrame", UIParent, "DefaultPanelTemplate")
+tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
@@ -68,8 +69,10 @@ end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)
 	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.KeystonesPosition = {point, x, y}
+	local x, y = self:GetLeft(), -(GetScreenHeight() - self:GetTop())
+	self:ClearAllPoints()
+	self:SetPoint("TOPLEFT", x, y)
+	DBM.Options.KeystonesPosition = {'TOPLEFT', x, y}
 end)
 
 frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
