@@ -24,7 +24,8 @@ if not LibDurability then
 	return
 end
 
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+local frame = CreateFrame("Frame", "DBMDurabilityFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
@@ -180,6 +181,10 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 end)
 
 function Durability:Show()
+	if DBM.Keystones then
+		DBM.Keystones:Hide()
+	end
+	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)

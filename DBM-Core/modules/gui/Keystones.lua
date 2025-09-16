@@ -52,7 +52,8 @@ local partyKeystones, guildKeystones = {}, {}
 ---@class DBMKeystonesFrame: DefaultPanelTemplate
 ---@field CreateTab fun(self: DBMKeystonesFrame, title: string, OnShowFn: function)
 ---@field ShowTab fun(self: DBMKeystonesFrame, tab: number)
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate")
+local frame = CreateFrame("Frame", "DBMKeystonesFrame", UIParent, "DefaultPanelTemplate")
+tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
@@ -68,8 +69,10 @@ end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)
 	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.KeystonesPosition = {point, x, y}
+	local x, y = self:GetLeft(), -(GetScreenHeight() - self:GetTop())
+	self:ClearAllPoints()
+	self:SetPoint("TOPLEFT", x, y)
+	DBM.Options.KeystonesPosition = {'TOPLEFT', x, y}
 end)
 
 frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
@@ -121,7 +124,7 @@ local function GetTextFrame()
 	_frame = CreateFrame("Button", nil, child, "InsecureActionButtonTemplate")
 	_frame.IsSpare = false
 	_frame:SetSize(20, 20)
-	_frame:RegisterForClicks("AnyDown")
+	_frame:RegisterForClicks("AnyDown", "AnyUp")
 
 	local text = _frame:CreateFontString(nil, nil, "GameFontNormal")
 	text:SetAllPoints(_frame)
@@ -352,7 +355,6 @@ local function UpdateKeystones()
 
 	-- Update the character frame
 	if selectedTab == 3 then -- Characters tab
-		print('Updating frame')
 		PartyGuildUpdate(DBM_Keystones.keys)
 	end
 end
@@ -427,6 +429,8 @@ do
 end
 
 function Keystones:Show()
+	DBM.Durability:Hide()
+	DBM.Latency:Hide()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end

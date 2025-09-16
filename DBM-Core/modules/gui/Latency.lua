@@ -24,7 +24,8 @@ if not LibLatency then
 	return
 end
 
-local frame = CreateFrame("Frame", nil, UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+local frame = CreateFrame("Frame", "DBMLatencyFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
@@ -182,6 +183,10 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 end)
 
 function Latency:Show()
+	if DBM.Keystones then
+		DBM.Keystones:Hide()
+	end
+	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
