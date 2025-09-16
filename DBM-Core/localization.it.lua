@@ -259,7 +259,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: Invia un timer di ingaggio per <sec> secondi al raid (richiede promozione. alias: pull).",
 	"/dbm break <min>: Invia un timer di pausa per <min> minuti al raid (richiede promozione. alias: break).",
 	"/dbm timer: Avvia un timer personalizzato di " .. L.DBM .. ", vedere '/dbm timer' per dettagli.",
-	"/keys: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keystone)",
+	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutto il raid.",
 	"/dbm durability: Esegue un controllo della durabilità per tutto il raid.",
 	"/dbm help2: Mostra comandi slash aggiuntivi"

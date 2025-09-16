@@ -275,7 +275,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
 	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
 	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
-	"/keys: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keystone)",
+	"/dbm key: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keys, keystone)",
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check.",
 	"/dbm help2: Shows additional slash commands"

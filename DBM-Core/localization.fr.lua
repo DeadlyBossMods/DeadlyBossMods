@@ -265,7 +265,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: Envoie un chronomètre de pull de <sec> secondes au raid (nécessite des permissions élevées. alias : pull).",
 	"/dbm break <min>: Envoie un chronomètre de pause de <min> minutes au raid (nécessite des permissions élevées. alias : break).",
 	"/dbm timer: Démarre un chronomètre personnalisé " .. L.DBM .. ", voir '/dbm timer' pour plus de détails.",
-	"/keys: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keystone)",
+	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
 	"/dbm help2: Affiche des commandes slash supplémentaires"

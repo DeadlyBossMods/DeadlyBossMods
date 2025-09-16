@@ -267,7 +267,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: 向團隊發送 <sec> 秒的拉怪計時器（需要提升權限。別名：pull）。",
 	"/dbm break <min>: 向團隊發送 <min> 分鐘的休息計時器（需要提升權限。別名：break）。",
 	"/dbm timer: 開始一個自訂的 " .. L.DBM .. " 計時器，詳情請參見 '/dbm timer'。",
-	"/keys: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keystone）",
+	"/dbm key: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keys，keystone）",
 	"/dbm lag: 執行全團延遲檢查。",
 	"/dbm durability: 執行全團耐久度檢查。",
 	"/dbm help2: 顯示其他斜線命令"
