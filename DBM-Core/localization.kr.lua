@@ -260,7 +260,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: <sec> 초 동안의 풀링 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: pull).",
 	"/dbm break <min>: <min> 분 동안의 쉬는 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: break).",
 	"/dbm timer: 사용자 정의 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참조하세요.",
-	"/dbm key: 파티/길드의 M+ 키스톤 및 등급 확인과 던전 텔레포트 단축키를 수행합니다. (별칭: key, keys, keystone)",
+	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음을 사용합니다. (별칭: key, keys, keystone)",
 	"/dbm lag: 공격대 전체의 지연 시간을 확인합니다.",
 	"/dbm durability: 공격대 전체의 내구도를 확인합니다.",
 	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
