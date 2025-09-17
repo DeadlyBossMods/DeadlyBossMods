@@ -268,7 +268,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
 	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
 	"/dbm timer: 启动一个" .. L.DBM .. "计时器，输入'/dbm timer'查询更多信息。",
-	"/keys: 执行M+钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (别名: key, keystone)",--AI translated (check me)
+	"/dbm key: 执行M+钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (别名: key, keys, keystone)",--AI translated (check me)
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
 	"/dbm help2: 显示额外的斜杠命令"--AI translated (check me)

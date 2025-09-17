@@ -265,7 +265,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: Envoie un chronomètre de pull de <sec> secondes au raid (nécessite des permissions élevées. alias : pull).",
 	"/dbm break <min>: Envoie un chronomètre de pause de <min> minutes au raid (nécessite des permissions élevées. alias : break).",
 	"/dbm timer: Démarre un chronomètre personnalisé " .. L.DBM .. ", voir '/dbm timer' pour plus de détails.",
-	"/keys: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keystone)",
+	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
 	"/dbm help2: Affiche des commandes slash supplémentaires"
@@ -296,9 +296,9 @@ L.PULL_TIME_TOO_SHORT			= "Le chronomètre de pull doit durer plus de 3 secondes
 L.PULL_TIME_TOO_LONG			= "Le chronomètre de pull ne peut pas dépasser 60 secondes."
 
 L.BREAK_USAGE				= "Les chronomètres de pause ne peuvent pas durer plus de 60 minutes. Assurez vous de mettre le temps en minutes et pas secondes."
-L.BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s) !"
-L.BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
-L.BREAK_SEC					= "Fin de la pause dans %s secondes !"
+L.BREAK_START				= "La pause commence maintenant -- vous avez %s !"
+L.BREAK_MIN					= "Fin de la pause dans %s |4minute:minutes !"
+L.BREAK_SEC					= "Fin de la pause dans %s |4seconde:secondes !"
 L.TIMER_BREAK				= "Pause !"
 L.ANNOUNCE_BREAK_OVER		= "La pause est terminée"
 

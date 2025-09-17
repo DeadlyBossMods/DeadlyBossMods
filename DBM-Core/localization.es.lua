@@ -267,7 +267,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm pull <sec>: Envía un temporizador de inicio por <sec> segundos a la banda (requiere ser promovido. alias: pull).",
 	"/dbm break <min>: Envía un temporizador de descanso por <min> minutos a la banda (requiere ser promovido. alias: break).",
 	"/dbm timer: Inicia un temporizador personalizado de " .. L.DBM .. ", consulta '/dbm timer' para más detalles.",
-	"/keys: Realiza comprobaciones de piedra angular y calificación de M+ en el grupo/gremio y accesos directos a teletransportes de mazmorras. (alias: key, keystone)",
+	"/dbm key: Realiza comprobaciones de piedra angular y calificación de M+ en el grupo/gremio y accesos directos a teletransportes de mazmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza una comprobación de latencia en toda la banda.",
 	"/dbm durability: Realiza una comprobación de durabilidad en toda la banda.",
 	"/dbm help2: Muestra comandos de barra adicionales"
@@ -299,8 +299,8 @@ L.PULL_TIME_TOO_LONG			= "El temporizador de inicio no puede durar más de 60 se
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
 L.BREAK_START				= "El descanso inicia ahora. ¡Tienes %s! (Enviado por %s)"
-L.BREAK_MIN					= "¡El descanso termina en %s minuto(s)!"
-L.BREAK_SEC					= "¡El descanso termina en %s segundo(s)!"
+L.BREAK_MIN					= "¡El descanso termina en %s |4minuto:minutos!"
+L.BREAK_SEC					= "¡El descanso termina en %s |4segundo:segundos!"
 L.TIMER_BREAK				= "¡Toca descanso!"
 L.ANNOUNCE_BREAK_OVER		= "El descanso ha terminado."
 
