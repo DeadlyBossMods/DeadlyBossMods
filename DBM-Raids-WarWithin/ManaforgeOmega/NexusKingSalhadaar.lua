@@ -13,8 +13,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 1224787 1224812 1227529 1224906 1225010 1225016 1228065 1230302 1232399 1228075 1230263 1227734 1228115 1228163 1234529 1228265 1225319 1234904 1228053 1237106",
-	"SPELL_CAST_SUCCESS 1234904 1226442",
+	"SPELL_CAST_START 1224787 1224812 1227529 1224906 1225010 1225016 1228065 1230302 1232399 1228075 1230263 1227734 1228115 1228163 1234529 1228265 1225319 1234904 1237106",
+	"SPELL_CAST_SUCCESS 1234904 1226442 1228053",
 	"SPELL_AURA_APPLIED 1224737 1224767 1224776 1227549 1237105 1234529 1226413",
 	"SPELL_AURA_APPLIED_DOSE 1224737 1226413",
 	"SPELL_AURA_REMOVED 1224737 1227549 1237105 1228284 1228265",
@@ -373,8 +373,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1225319 then
 		self.vb.smashCount = self.vb.smashCount + 1
 		timerGalacticSmashCD:Start(55, self.vb.smashCount+1)
-	elseif spellId == 1228053 then
-		timerReapCD:Start(nil, args.sourceGUID)
 	elseif spellId == 1237106 then
 		timerTwilightMassacreCD:Stop(args.sourceGUID)--Just to clear initial timer for now
 		--timerTwilightMassacreCD:Start(nil, args.sourceGUID)--repeat cast timer not known yet
@@ -389,6 +387,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.swingCount = self.vb.swingCount + 1
 		local timer = self:IsEasy() and 55 or self.vb.swingCount % 2 == 0 and 40 or 15
 		timerStarkillerSwingCD:Start(timer - 2, self.vb.swingCount+1)--Minus 2 to be when images spawn
+	elseif spellId == 1228053 then
+		timerReapCD:Start(nil, args.sourceGUID)
 	end
 end
 
