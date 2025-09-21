@@ -50,6 +50,7 @@ local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1227631, nil, 28
 local specWarnInvokeCollector						= mod:NewSpecialWarningSwitchCount(1231720, "-Tank", nil, nil, 1, 2)--Tank should stay away
 local specWarnAstralHarvest							= mod:NewSpecialWarningYou(1228214, nil, nil, nil, 1, 2)
 local yellAstralHarvestFades						= mod:NewShortFadesYell(1228214, DBM_COMMON_L.ORBS)
+local specWarnVoidTear								= mod:NewSpecialWarningCount(1248133, "Tank", nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerOverwhelmingPowerCD						= mod:NewCDCountTimer(44, 1228502, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -364,7 +365,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1248133 then
 		self.vb.voidTearCount = self.vb.voidTearCount + 1
-		warnVoidTear:Show(self.vb.voidTearCount)
+		if self.Options.SpecWarn1248133count then
+			specWarnVoidTear:Show(self.vb.voidTearCount)
+			specWarnVoidTear:Play("moveboss")
+		else
+			warnVoidTear:Show(self.vb.voidTearCount)
+		end
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.voidTearCount+1)
 		if timer then
 			timerVoidTearCD:Start(timer, self.vb.voidTearCount+1)
