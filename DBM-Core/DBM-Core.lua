@@ -6568,20 +6568,14 @@ do
 	}
 
 	function DBM:SetCurrentSpecInfo()
-		if private.isRetail then
+		if private.isRetail or private.isMop then
 			currentSpecGroup = GetSpecialization()
-			if currentSpecGroup and GetSpecializationInfo(currentSpecGroup) then
+			if currentSpecGroup then
 				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)
 				currentSpecID = tonumber(currentSpecID)
-			else
-				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
-			end
-			DBM:Debug("Current specID set to: "..currentSpecID, 2)
-		elseif private.isMop then
-			currentSpecGroup = C_SpecializationInfo.GetSpecialization()
-			if currentSpecGroup and C_SpecializationInfo.GetSpecializationInfo(currentSpecGroup) then
-				currentSpecID, currentSpecName = C_SpecializationInfo.GetSpecializationInfo(currentSpecGroup)
-				currentSpecID = tonumber(currentSpecID)
+				if not currentSpecID or currentSpecID == 0 then
+					currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+				end
 			else
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end

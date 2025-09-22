@@ -1,0 +1,32 @@
+## Interface: 50500, 50501
+## X-Min-Interface: 50500
+## Category: DBM
+## Group: DBM-Test
+## Title:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0Test runner for DBM|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Tests|r|cffffe00a>|r |cff69ccf0DBM 테스트 러너|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Тесты|r|cffffe00a>|r |cff69ccf0Тесты для DBM Ядра|r
+## Dependencies: DBM-Core
+## SavedVariables: DBM_TestResults_Export, DBM_Test_DefaultTimeWarp, DBM_Test_Settings, DBM_Test_PersistentImports
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## DefaultState: enabled
+## LoadOnDemand: 1
+## X-DBM-Test: true
+
+Options.lua
+Registry.lua
+Report.lua
+Runner.lua
+TimeWarper.lua
+Mocks.lua
+ReportFrame.lua
+Perf.lua
+
+Tools/WoW/Environment.lua
+Tools/Shared/Data/Difficulties.lua
+Tools/Shared/Data/Instances.lua
+Tools/Shared/Data/Transcriptor-Filter.lua
+Tools/Shared/InstanceInfoGuesser.lua
+Tools/Shared/Anonymizer.lua
+Tools/Shared/ParseTranscriptor.lua
+Tools/Shared/RoleGuesser.lua
+Tools/Shared/Parser.lua
