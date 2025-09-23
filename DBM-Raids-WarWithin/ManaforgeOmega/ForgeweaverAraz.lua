@@ -13,9 +13,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213 1232590 1248009",
-	"SPELL_AURA_APPLIED 1228454 1228188 1233979 1233415 1243873",--1228506
+	"SPELL_AURA_APPLIED 1228188 1233979 1233415 1243873",--1228506
 --	"SPELL_AURA_APPLIED_DOSE 1228506",
-	"SPELL_AURA_REMOVED 1228454 1233979 1233415 1243873",
+	"SPELL_AURA_REMOVED 1233979 1233415 1243873",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED",
@@ -61,8 +61,6 @@ local timerInvokeCollectorCD						= mod:NewCDCountTimer(97.3, 1231720, nil, nil,
 local timerVoidTearCD								= mod:NewCDCountTimer(97.3, 1248171, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerAstralHarvestCD							= mod:NewCDCountTimer(97.3, 1228214, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 2)
 local berserkTimer									= mod:NewBerserkTimer(600)
-
-mod:AddNamePlateOption("NPAuraOnMarkofPower", 1238502)
 --Intermission: Priming the Forge
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32397))
 local warnManaSplinter								= mod:NewTargetNoFilterAnnounce(1233415, 1)
@@ -271,16 +269,10 @@ function mod:OnCombatStart(delay)
 	timerInvokeCollectorCD:Start(allTimers[savedDifficulty][1][1231720][1]-delay, 1)
 	timerAstralHarvestCD:Start(allTimers[savedDifficulty][1][1228213][1]-delay, 1)
 	berserkTimer:Start(600-delay)
-	if self.Options.NPAuraOnMarkofPower then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
 	table.wipe(seenGUID)
-	if self.Options.NPAuraOnMarkofPower then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	end
 end
 
 function mod:OnTimerRecovery()
@@ -422,11 +414,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 1228454 then
-		if self.Options.NPAuraOnMarkofPower then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
-		end
-	elseif spellId == 1228188 and args:IsPlayer() then
+	if spellId == 1228188 and args:IsPlayer() then
 		yellSilencingTempest:Yell()
 	elseif spellId == 1233979 then
 		if args:IsPlayer() then
@@ -467,11 +455,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 1228454 then
-		if self.Options.NPAuraOnMarkofPower then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
-	elseif spellId == 1233979 then
+	if spellId == 1233979 then
 		if args:IsPlayer() then
 			yellAstralHarvestFades:Cancel()
 		end
