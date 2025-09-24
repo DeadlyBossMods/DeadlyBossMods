@@ -79,9 +79,9 @@ L.General 					= "Opciones generales de DBM"
 L.EnableMiniMapIcon			= "Mostrar botón del minimapa"
 L.EnableCompartmentIcon		= "Mostrar botón de compartimento"
 L.UseSoundChannel			= "Canal de audio para alertas"
-L.UseMasterChannel			= "Canal de audio principal"
-L.UseDialogChannel			= "Canal de audio de diálogo"
-L.UseSFXChannel				= "Canal de audio de efectos de sonido"
+L.UseMasterChannel			= "Canal principal"
+L.UseDialogChannel			= "Canal de diálogo"
+L.UseSFXChannel				= "Canal de efectos de sonido"
 L.Latency_Text				= "Latencia máx. para sincronización: %d"
 
 L.Button_RangeFrame			= "Mostrar/ocultar\nmarco de distancia"
@@ -125,22 +125,22 @@ L.RecordOnlyBosses			= "Registrar solo encuentros contra jefes"
 L.DoNotLogLFG				= "No registrar encuentros de buscar grupo"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
-L.LogCurrentMythicRaids				= "Bandas actuales míticas"--Retail Only
-L.LogCurrentRaids					= "Bandas actuales no míticas (heroico, normal y buscador si el filtro está desactivado)"
+L.LogCurrentMythicRaids				= "Bandas actuales Míticas"--Retail Only
+L.LogCurrentRaids					= "Bandas actuales"
 L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
 L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
-L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
-L.LogCurrentMythicZero				= "Mazmorras míticas 0 de nivel actual"--Retail Only
+L.LogCurrentMPlus					= "Mazmorras actuales M+"--Retail Only
+L.LogCurrentMythicZero				= "Mazmorras actuales Míticas 0"--Retail Only
 L.LogTWDungeons						= "Mazmorras de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
-L.LogCurrentHeroic					= "Mazmorras heroicas actuales (desactiva el filtro 'Buscar Grupo' si quieres registrar las de cola)"
-L.LogDelves							= "Profundidades de nivel actual"--Retail Only
-L.LogChallenges						= "Desafíos especiales de nivel actual"--Retail Only
+L.LogCurrentHeroic					= "Mazmorras heroicas actuales"
+L.LogDelves							= "Profundidades actuales"--Retail Only
+L.LogChallenges						= "Desafíos especiales actuales"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"
 
 L.Area_SoundAlerts			= "Opciones de sonido y destello"
-L.LFDEnhance				= "Reproducir sonido y destellar el icono del juego para comprobaciones de rol y avisos de campo de batalla/buscar grupo en el canal principal o de diálogo"
+L.LFDEnhance				= "Reproducir sonido y destellar el icono del juego para comprobaciones de rol y avisos de campo de batalla/buscar grupo"
 L.WorldBossNearAlert		= "Reproducir sonido y destellar el icono del juego al acercarse un jefe del mundo"
 L.RLReadyCheckSound			= "Reproducir sonido y destellar el icono del juego cuando se haga una comprobación de banda"
 L.AutoReplySound			= "Reproducir sonido y destellar el icono del juego al recibir respuestas automáticas de DBM por susurro"
@@ -264,14 +264,14 @@ L.SelectChatFrameInfoDone		= "Los mensajes se mostrarán en este marco de chat."
 L.SelectChatFrameInfoSelect		= "Haz clic en un marco de chat para seleccionarlo."
 L.SelectChatFrameInfoSelectNow	= "Haz clic para seleccionar %s."
 L.CoreMessages					= "Opciones de mensajes del módulo general"
-L.ShowPizzaMessage 				= "Mostrar mensajes de temporizadores en el chat"
-L.ShowAllVersions	 			= "Mostrar en el chat la versión de DBM de cada miembro al hacer comprobaciones"
+L.ShowPizzaMessage 				= "Mostrar mensajes de temporizadores"
+L.ShowAllVersions	 			= "Mostrar la versión de DBM de cada miembro al hacer comprobaciones"
 L.ShowReminders					= "Mostrar recordatorios de módulos faltantes, desactivados, modificados, desactualizados o silenciados"
 
 L.CombatMessages			= "Opciones de mensajes de combate"
-L.ShowEngageMessage 		= "Mostrar mensajes de inicio de encuentro en el chat"
-L.ShowDefeatMessage 		= "Mostrar mensajes de victoria y derrota en el chat"
-L.ShowGuildMessages 		= "Mostrar mensajes de inicio de encuentro, victoria y derrota para bandas de hermandad en el chat"
+L.ShowEngageMessage 		= "Mostrar mensajes de inicio de encuentro"
+L.ShowDefeatMessage 		= "Mostrar mensajes de victoria y derrota"
+L.ShowGuildMessages 		= "Mostrar mensajes de inicio de encuentro, victoria y derrota para bandas de hermandad"
 L.ShowGuildMessagesPlus		= "Mostrar mensajes de inicio de encuentro, victoria y derrota de Mítica+ para grupos de hermandad"
 
 L.Area_ChatAlerts			= "Opciones de alertas adicionales"
@@ -281,7 +281,7 @@ L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de her
 L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando empiece un beneficio del mundo en tu reino"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
-L.BadTimerAlert				= "Mostrar mensaje en el chat cuando DBM detecte un temporizador erróneo"
+L.BadTimerAlert				= "Mostrar mensaje cuando DBM detecte un temporizador erróneo"
 
 -- Panel: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Alertas de voz"
@@ -530,7 +530,7 @@ L.HideGuildChallengeUpdates			= "Ocultar notificaciones de desafíos de hermanda
 --L.HideVaultUnlock					= "Ocultar notificaciones de desbloqueo de la cámara"--NYI
 --Cut Scenes
 L.Area_Cinematics 					= "Bloquear cinemáticas del juego"
-L.DuringFight 						= "Bloquear escenas de corte durante encuentros de jefes" --uses explicite IsEncounterInProgress check
+L.DuringFight 						= "Bloquear escenas de corte durante encuentros de jefe" --uses explicite IsEncounterInProgress check
 L.InstanceAnywhere 					= "Bloquear escenas de corte no relacionadas con combate en mazmorras o bandas"
 L.NonInstanceAnywhere 				= "¡PELIGRO! Bloquear escenas de corte en el mundo abierto (NO recomendado)"
 L.OnlyAfterSeen 					= "Solo bloquear escenas de corte después de haberlas visto al menos una vez"
@@ -538,12 +538,12 @@ L.OnlyAfterSeen 					= "Solo bloquear escenas de corte después de haberlas vist
 L.Area_Sound 						= "Bloquear sonidos del juego"
 L.DisableSFX 						= "Desactivar canal de efectos de sonido durante encuentros de jefe"
 L.DisableAmbiance 					= "Desactivar canal de ambiente durante encuentros de jefe"
-L.DisableMusic 						= "Desactivar canal de música durante encuentros de jefes"
+L.DisableMusic 						= "Desactivar canal de música durante encuentros de jefe"
 --Other
 L.Area_HideBlizzard 				= "Desactivar y ocultar otras molestias de Blizzard"
 L.HideBossEmoteFrame 				= "Ocultar marco de emociones durante encuentros de jefe"
 L.HideWatchFrame 					= "Ocultar marco de seguimiento en jefes si no se siguen logros ni en Mítico+"
-L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefes" --Currently hidden (NYI)
+L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefe" --Currently hidden (NYI)
 L.HideTooltips 						= "Ocultar las descripciones emergentes durante encuentros de jefe"
 
 -- Panel: Raid Leader Controls
@@ -581,9 +581,9 @@ L.Tab_Privacy 				= "Controles de privacidad"
 L.Area_WhisperMessages		= "Opciones de susurros"
 L.AutoRespond 				= "Responder automáticamente a susurros en encuentro"
 L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas a susurros"
-L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuentro para todos (requiere ser líder)"
+L.DisableStatusWhisper 		= "Desactivar susurros automáticos de encuentro para todos (requiere ser líder)"
 L.Area_SyncMessages			= "Opciones de sincronización de addons"
-L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro para todos (requiere ser líder)"
+L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de encuentro para todos (requiere ser líder)"
 L.EnableWBSharing 			= "Compartir inicios y victorias de jefes del mundo con hermandad y amigos de Battle.net en tu mismo reino"
 
 -- Tab: Frames & Integrations
