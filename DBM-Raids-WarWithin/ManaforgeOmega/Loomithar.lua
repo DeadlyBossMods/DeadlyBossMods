@@ -63,7 +63,7 @@ local timerArcaneOutrageCD							= mod:NewNextCountTimer(20, 1227782, DBM_COMMON
 local timerWrithingWaveCD							= mod:NewNextCountTimer(20, 1227226, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod.vb.weavingCount = 0
-mod.vb.primalSpellstormCount = 0
+mod.vb.primalSpellstormCount = 1
 mod.vb.overinfusionBurstCount = 0--Stage 1 only
 mod.vb.pylonCount = 0
 mod.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
@@ -264,7 +264,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 1228059 and self:GetStage(1) then--Unbound Rage (comes 6 seconds sooner than CLEU
 		self:SetStage(2)
 		self.vb.weavingCount = 0
-		self.vb.primalSpellstormCount = 0
+		self.vb.primalSpellstormCount = 1
 		self.vb.infusionTetherCount = 0--Also used for Arcane Outrage (mechanic that replaces it)
 		self.vb.piercingStrandsCount = 0--Also used for Writhing Wave (mechanic that replaces it)
 		timerLairWeavingCD:Stop()

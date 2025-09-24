@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 --]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
 --local warnOverwhelmingPower						= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
-local warnVoidTear									= mod:NewCountAnnounce(1248133, 3)
+local warnVoidTear									= mod:NewCountAnnounce(1248171, 3)
 
 --local specWarnOverwhelmingPower					= mod:NewSpecialWarningStack(1228502, nil, 10, nil, nil, 1, 6)
 --local specWarnOverwhelmingPowerTaunt				= mod:NewSpecialWarningTaunt(1228502, false, nil, nil, 1, 2)
@@ -50,7 +50,7 @@ local specWarnArcaneExpulsion						= mod:NewSpecialWarningCount(1227631, nil, 28
 local specWarnInvokeCollector						= mod:NewSpecialWarningSwitchCount(1231720, "-Tank", nil, nil, 1, 2)--Tank should stay away
 local specWarnAstralHarvest							= mod:NewSpecialWarningYou(1228214, nil, nil, nil, 1, 2)
 local yellAstralHarvestFades						= mod:NewShortFadesYell(1228214, DBM_COMMON_L.ORBS)
-local specWarnVoidTear								= mod:NewSpecialWarningCount(1248133, "Tank", nil, nil, 1, 2)
+local specWarnVoidTear								= mod:NewSpecialWarningCount(1248171, "Tank", nil, nil, 1, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
 local timerOverwhelmingPowerCD						= mod:NewCDCountTimer(44, 1228502, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
