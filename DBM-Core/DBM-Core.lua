@@ -9004,6 +9004,10 @@ function bossModPrototype:SetCreatureID(...)
 		end
 	else
 		self.numBoss = 1
+		if self.combatInfo then
+			--Called mid combat, update combatinfo mob for boss health and win detection
+			self.combatInfo.mob = self.creatureId
+		end
 	end
 	for i = 1, select("#", ...) do
 		local cId = select(i, ...)
