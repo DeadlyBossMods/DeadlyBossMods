@@ -1953,6 +1953,12 @@ do
 				self.Options.RestoreSettingMusic = nil
 				self:Debug("Restoring Sound_EnableMusic CVAR")
 			end
+			--Custom brewfest stuff
+			if self.Options.RestoreBrewSoundVolume then
+				self:Debug("Restoring Dialog volume to saved value of: "..self.Options.RestoreBrewSoundVolume)
+				SetCVar("Sound_DialogVolume", self.Options.RestoreBrewSoundVolume)
+				self.Options.RestoreBrewSoundVolume = nil
+			end
 			--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 		end
 	end
@@ -9004,6 +9010,10 @@ function bossModPrototype:SetCreatureID(...)
 		end
 	else
 		self.numBoss = 1
+		if self.combatInfo then
+			--Called mid combat, update combatinfo mob for boss health and win detection
+			self.combatInfo.mob = self.creatureId
+		end
 	end
 	for i = 1, select("#", ...) do
 		local cId = select(i, ...)
