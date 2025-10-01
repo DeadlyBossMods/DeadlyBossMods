@@ -71,7 +71,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerShockwaveSlamCD:Start(18.1-delay, 1)
 		timerShatterShellCD:Start(40.2-delay, 1)
-		timerShatteringBackhandCD:Start(48.9-delay, 1)
+		timerShatteringBackhandCD:Start(48.4-delay, 1)
 	end
 end
 
