@@ -2790,7 +2790,11 @@ do
 
 	function DBM:GetRaidClass(name)
 		if raid[name] then
-			return raid[name].class or "UNKNOWN", raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+			local icon = 0
+			if not self:IsPostMidnight() then
+				icon = raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+			end
+			return raid[name].class or "UNKNOWN", icon
 		else
 			return "UNKNOWN", 0
 		end
