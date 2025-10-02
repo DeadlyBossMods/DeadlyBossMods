@@ -586,7 +586,7 @@ local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
-private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress() or IsEncounterInProgress
+private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress or IsEncounterInProgress
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -1886,7 +1886,7 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
-					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
+--					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
