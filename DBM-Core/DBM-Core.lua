@@ -460,7 +460,6 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
 	"DBM-ProvingGrounds",--Renamed to DBM-Challenges going forward to include proving grounds and any new single player challendges of similar design such as mage tower artifact quests
-	"DBM-VPKiwiBeta",--Renamed to DBM-VPKiwi in final version.
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-BfA
 	"DBM-Zandalar",--Merged to DBM-BfA
@@ -669,6 +668,7 @@ end
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendSync(protocol, prefix, msg, priority, isLogged)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -803,6 +803,7 @@ private.sendBWSync = sendBWSync
 -- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance chat messages in Midnight Alpha
 	if IsTrialAccount() then return end
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
@@ -1832,7 +1833,6 @@ do
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
-				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
 				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
@@ -1844,8 +1844,6 @@ do
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				"BOSS_KILL",
-				"UNIT_DIED",
-				"UNIT_DESTROYED",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -1863,12 +1861,17 @@ do
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"ZONE_CHANGED_NEW_AREA"
-			)
-			self:RegisterEvents(
+				"ZONE_CHANGED_NEW_AREA",
 				"START_PLAYER_COUNTDOWN",
 				"CANCEL_PLAYER_COUNTDOWN"
 			)
+			if not DBM:IsPostMidnight() then
+				self:RegisterEvent(
+					"COMBAT_LOG_EVENT_UNFILTERED",
+					"UNIT_DIED",
+					"UNIT_DESTROYED"
+				)
+			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
@@ -1879,12 +1882,19 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
-					"UNIT_HEALTH mouseover target focus player",--Is Frequent on retail, and _FREQUENT deleted
+					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW",
 					"PLAYER_MAP_CHANGED"
+				)
+			elseif private.isMop then
+				self:RegisterEvents(
+					"CHALLENGE_MODE_RESET",
+					"UNIT_HEALTH_FREQUENT mouseover target player targettarget",--Still exists in classic and non frequent is slow and less reliable
+					"CHARACTER_POINTS_CHANGED",
+					"PLAYER_TALENT_UPDATE"
 				)
 			elseif private.isClassic then
 				self:RegisterEvents(
@@ -2213,7 +2223,7 @@ do
 						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					end
 				end
-				if notify and v.revision < self.ReleaseRevision then
+				if not DBM:IsPostMidnight() and notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
@@ -4172,12 +4182,6 @@ do
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
-		--if a special zone, we need to force update LastInstanceMapID and run zone change functions without loading screen
-		--This hack and table can go away in TWW pre patch when we gain access to PLAYER_MAP_CHANGED
-		if private.wowTOC < 110002 and specialZoneIDs[LastInstanceMapID] then--or difficulties:InstanceType(LastInstanceMapID) == 4
-			DBM:Debug("Forcing LOADING_SCREEN_DISABLED", 2)
-			self:LOADING_SCREEN_DISABLED(true)
-		end
 	end
 
 	---Special event that fires when changing zones in TWW
@@ -7798,6 +7802,12 @@ bossModPrototype.IsPostCata = DBM.IsPostCata
 function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
+
+---@param self DBMModOrDBM
+function DBM:IsPostMidnight()
+	return private.wowTOC >= 120000
+end
+bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
