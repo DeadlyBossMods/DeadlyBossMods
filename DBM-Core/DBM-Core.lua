@@ -586,7 +586,7 @@ local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
-private.IsEncounterInProgress = IsEncounterInProgress
+private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress() or IsEncounterInProgress
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -1842,7 +1842,6 @@ do
 				"CHAT_MSG_ADDON",
 				"CHAT_MSG_ADDON_LOGGED",
 				"BN_CHAT_MSG_ADDON",
-				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"ENCOUNTER_START",
@@ -1872,6 +1871,7 @@ do
 			if not DBM:IsPostMidnight() then
 				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
+					"PLAYER_REGEN_DISABLED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
 				)
@@ -2281,7 +2281,7 @@ function DBM:CreateBreakTimer(timer)
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
 	end
-	if IsEncounterInProgress() then
+	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 60 then
@@ -2310,7 +2310,7 @@ function DBM:CreatePullTimer(timer)
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
 	end
-	if IsEncounterInProgress() then
+	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 0 and timer < 3 then
@@ -4396,14 +4396,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit(uId .. "target")
 	end
 end

@@ -69,7 +69,7 @@ local function hook(self)
 		return
 	end
 	if not DBM.Options.EnableTooltip then return end
-	if not DBM.Options.EnableTooltipInCombat and (InCombatLockdown() or IsEncounterInProgress() or DBM:InCombat()) then
+	if not DBM.Options.EnableTooltipInCombat and (InCombatLockdown() or private.IsEncounterInProgress() or DBM:InCombat()) then
 		return
 	end
 	local guid
