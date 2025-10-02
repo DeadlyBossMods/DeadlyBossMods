@@ -705,6 +705,7 @@ private.sendSync = sendSync
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
@@ -718,6 +719,7 @@ end
 ---@param prefix string
 ---@param msg any
 local function sendGuildSync(protocol, prefix, msg)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -734,6 +736,7 @@ private.sendGuildSync = sendGuildSync
 ---@param noBNet boolean?
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	local sendChannel = "SOLO"
@@ -793,6 +796,7 @@ end
 ---@param channel string
 ---@param priority string ChatThottleLib sync priority
 local function sendBWSync(prefix, msg, channel, priority)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
@@ -1866,7 +1870,7 @@ do
 				"CANCEL_PLAYER_COUNTDOWN"
 			)
 			if not DBM:IsPostMidnight() then
-				self:RegisterEvent(
+				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
@@ -5666,6 +5670,7 @@ do
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
+		if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
