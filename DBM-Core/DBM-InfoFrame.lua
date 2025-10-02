@@ -923,6 +923,21 @@ local events = {
 	["test3"] = updateTest3
 }
 
+local midnightRestrictedEvents = {
+	["enemyabsorb"] = true,
+	["multienemyabsorb"] = true,
+	["allabsorb"] = true,
+	["playerabsorb"] = true,
+	["playerbuff"] = true,
+	["playerbuffremaining"] = true,
+	["playerpower"] = true,
+	["playergooddebuff"] = true,
+	["playerbaddebuff"] = true,
+	["reverseplayerbaddebuff"] = true,
+	["playerdebuffstacks"] = true
+
+}
+
 ----------------
 --  OnUpdate  --
 ----------------
@@ -1096,6 +1111,9 @@ end
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
 function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
+		return
+	end
+	if midnightRestrictedEvents[event] and DBM:IsPostMidnight() then
 		return
 	end
 	prevLines = 0

@@ -1216,7 +1216,9 @@ do
 		if chatWindow then
 			chatWindow:Insert(msg)
 		else
-			SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
+			if not DBM:IsPostMidnight() then
+				SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
+			end
 		end
 	end
 end

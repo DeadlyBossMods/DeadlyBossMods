@@ -460,7 +460,6 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
 	"DBM-ProvingGrounds",--Renamed to DBM-Challenges going forward to include proving grounds and any new single player challendges of similar design such as mage tower artifact quests
-	"DBM-VPKiwiBeta",--Renamed to DBM-VPKiwi in final version.
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-BfA
 	"DBM-Zandalar",--Merged to DBM-BfA
@@ -669,6 +668,7 @@ end
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendSync(protocol, prefix, msg, priority, isLogged)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -705,6 +705,7 @@ private.sendSync = sendSync
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
@@ -718,6 +719,7 @@ end
 ---@param prefix string
 ---@param msg any
 local function sendGuildSync(protocol, prefix, msg)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -734,6 +736,7 @@ private.sendGuildSync = sendGuildSync
 ---@param noBNet boolean?
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	local sendChannel = "SOLO"
@@ -793,6 +796,7 @@ end
 ---@param channel string
 ---@param priority string ChatThottleLib sync priority
 local function sendBWSync(prefix, msg, channel, priority)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
@@ -803,6 +807,7 @@ private.sendBWSync = sendBWSync
 -- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
+	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance chat messages in Midnight Alpha
 	if IsTrialAccount() then return end
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
@@ -1832,7 +1837,6 @@ do
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
-				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
 				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
@@ -1844,8 +1848,6 @@ do
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				"BOSS_KILL",
-				"UNIT_DIED",
-				"UNIT_DESTROYED",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -1863,12 +1865,17 @@ do
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"ZONE_CHANGED_NEW_AREA"
-			)
-			self:RegisterEvents(
+				"ZONE_CHANGED_NEW_AREA",
 				"START_PLAYER_COUNTDOWN",
 				"CANCEL_PLAYER_COUNTDOWN"
 			)
+			if not DBM:IsPostMidnight() then
+				self:RegisterEvents(
+					"COMBAT_LOG_EVENT_UNFILTERED",
+					"UNIT_DIED",
+					"UNIT_DESTROYED"
+				)
+			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
@@ -1879,12 +1886,19 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
-					"UNIT_HEALTH mouseover target focus player",--Is Frequent on retail, and _FREQUENT deleted
+					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW",
 					"PLAYER_MAP_CHANGED"
+				)
+			elseif private.isMop then
+				self:RegisterEvents(
+					"CHALLENGE_MODE_RESET",
+					"UNIT_HEALTH_FREQUENT mouseover target player targettarget",--Still exists in classic and non frequent is slow and less reliable
+					"CHARACTER_POINTS_CHANGED",
+					"PLAYER_TALENT_UPDATE"
 				)
 			elseif private.isClassic then
 				self:RegisterEvents(
@@ -2213,7 +2227,7 @@ do
 						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					end
 				end
-				if notify and v.revision < self.ReleaseRevision then
+				if not DBM:IsPostMidnight() and notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
@@ -4172,12 +4186,6 @@ do
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
 		DBM:CheckAvailableModsByMap()
-		--if a special zone, we need to force update LastInstanceMapID and run zone change functions without loading screen
-		--This hack and table can go away in TWW pre patch when we gain access to PLAYER_MAP_CHANGED
-		if private.wowTOC < 110002 and specialZoneIDs[LastInstanceMapID] then--or difficulties:InstanceType(LastInstanceMapID) == 4
-			DBM:Debug("Forcing LOADING_SCREEN_DISABLED", 2)
-			self:LOADING_SCREEN_DISABLED(true)
-		end
 	end
 
 	---Special event that fires when changing zones in TWW
@@ -5662,6 +5670,7 @@ do
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
+		if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
@@ -6882,6 +6891,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
+		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -6923,6 +6933,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
+		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -6964,6 +6975,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
+		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -7798,6 +7810,12 @@ bossModPrototype.IsPostCata = DBM.IsPostCata
 function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
+
+---@param self DBMModOrDBM
+function DBM:IsPostMidnight()
+	return private.wowTOC >= 120000
+end
+bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
