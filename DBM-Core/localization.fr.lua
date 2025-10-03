@@ -36,6 +36,7 @@ L.TEXT_ONLY_RANGE 			= "La fenêtre de portée est limitée au texte uniquement 
 L.NO_RANGE 					= "La fenêtre de portée ne peut pas être utilisée en raison des restrictions de l'API dans cette zone."
 L.NO_ARROW 					= "La flèche ne peut pas être utilisée dans les instances."
 L.NO_HUD 					= "HUDMap ne peut pas être utilisé dans les instances."
+L.NO_COMMS					= "La communication des addons ne peut pas être utilisée pendant les rencontres ou les donjons M+ actifs. Utilisez cette commande à nouveau après la fin de la rencontre ou du donjon."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
 L.DYNAMIC_ADD_COUNT			= L.DBM .. " a désactivé les alertes de décompte d'adds en vie sur ce combat pour cause de manque d'information du nombre d'adds apparaissant pour votre taille de raid."

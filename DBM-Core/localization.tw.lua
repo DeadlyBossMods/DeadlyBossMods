@@ -37,6 +37,7 @@ L.TEXT_ONLY_RANGE				= "範圍框架受限於該區域的API限制，只限於�
 L.NO_RANGE						= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 L.NO_ARROW						= "箭頭不能在副本中使用"
 L.NO_HUD						= "HUDMap不能在副本中使用"
+L.NO_COMMS						= "在遭遇戰或活躍的M+地下城中無法使用附加元件通信。請在遭遇戰或地下城結束後再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP		= L.DBM.."已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 L.DYNAMIC_ADD_COUNT				= L.DBM.."已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"

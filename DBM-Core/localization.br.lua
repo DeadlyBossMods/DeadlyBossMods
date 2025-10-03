@@ -36,6 +36,7 @@ L.TEXT_ONLY_RANGE 					= "O quadro de distância está limitado apenas a texto d
 L.NO_RANGE 							= "O quadro de distância não pode ser usado devido a restrições de API nesta área."
 L.NO_ARROW 							= "A seta não pode ser usada em instâncias."
 L.NO_HUD 							= "O HUDMap não pode ser usado em instâncias."
+L.NO_COMMS							= "A comunicação do addon não pode ser usada durante encontros ou masmorras M+ ativas. Use este comando novamente após o término do encontro ou masmorra."
 
 L.DYNAMIC_DIFFICULTY_CLUMP			= L.DBM .. " desativou o quadro de distância dinâmico nesta luta, por falta de informação sobre o número de jogadores à ficarem amontoados para um grupo desse tamanho."
 L.DYNAMIC_ADD_COUNT					= L.DBM .. " desativou anúncio da contagem de adds nesta luta, por falta de informação da quantidade de adds para um grupo deste tamanho."
