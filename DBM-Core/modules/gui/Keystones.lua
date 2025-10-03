@@ -362,6 +362,14 @@ end
 frame:CreateTab(PARTY, function()
 	refresh:Show()
 	partyKeystones = {}
+	for _, v in pairs(DBM:GetRaidRoster()) do
+		partyKeystones[v.name] = {
+			name = v.name,
+			keyLevel = 0,
+			mapID = 0,
+			playerRating = '-',
+		}
+	end
 	PartyGuildUpdate(partyKeystones)
 	RegisterLibKeystone()
 	LibKeystone.Request("PARTY")
