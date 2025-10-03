@@ -405,6 +405,14 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
 			},
+			[1480] = {	--Devourer Demon Hunter
+				["Dps"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+				["MagicDispeller"] = true,
+			},
 			[581] = {	--Vengeance Demon Hunter
 				["Tank"] = true,
 				["Melee"] = true,
