@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 398, "3d79f92"--398.5
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "11.2.19 alpha"--Core version
+DBM.DisplayVersion = "12.0.0 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 9, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -586,7 +586,7 @@ local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
-private.IsEncounterInProgress = IsEncounterInProgress
+private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress or IsEncounterInProgress
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -1842,7 +1842,6 @@ do
 				"CHAT_MSG_ADDON",
 				"CHAT_MSG_ADDON_LOGGED",
 				"BN_CHAT_MSG_ADDON",
-				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"ENCOUNTER_START",
@@ -1872,6 +1871,7 @@ do
 			if not DBM:IsPostMidnight() then
 				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
+					"PLAYER_REGEN_DISABLED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
 				)
@@ -1886,7 +1886,7 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
-					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
+--					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
@@ -2281,7 +2281,7 @@ function DBM:CreateBreakTimer(timer)
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
 	end
-	if IsEncounterInProgress() then
+	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 60 then
@@ -2310,7 +2310,7 @@ function DBM:CreatePullTimer(timer)
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
 	end
-	if IsEncounterInProgress() then
+	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 0 and timer < 3 then
@@ -2790,7 +2790,11 @@ do
 
 	function DBM:GetRaidClass(name)
 		if raid[name] then
-			return raid[name].class or "UNKNOWN", raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+			local icon = 0
+			if not self:IsPostMidnight() then
+				icon = raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+			end
+			return raid[name].class or "UNKNOWN", icon
 		else
 			return "UNKNOWN", 0
 		end
@@ -4392,14 +4396,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
+		if self:IsPostMidnight() and InCombatLockdown() then return end
 		loadModByUnit(uId .. "target")
 	end
 end
@@ -5648,10 +5655,12 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		return onMonsterMessage(self, "emote", msg)
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		local id = msg:match("|Hspell:([^|]+)|h")
 		if id then
@@ -5665,12 +5674,13 @@ do
 	end
 
 	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
-		if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
@@ -5688,6 +5698,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		if not private.isRetail and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.zgHeart) then
 				-- 51.01 51.82 51.85 51.53
@@ -7350,13 +7361,15 @@ do
 	end
 
 	function DBM:CHAT_MSG_WHISPER(msg, name, _, _, _, status)
-		if status ~= "GM" then
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if name and type(name) == "string" and status ~= "GM" then
 			name = Ambiguate(name, "none")
 			return onWhisper(msg, name, false)
 		end
 	end
 
 	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		local presenceId = select(12, ...) -- srsly?
 		return onWhisper(msg, presenceId, true)
 	end

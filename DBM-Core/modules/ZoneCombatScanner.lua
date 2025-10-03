@@ -278,6 +278,7 @@ end
 ---@param useSyncing boolean? If true, this mod will use syncing for combat scanning to solve range issues
 function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
 	if DBM.Options.NoCombatScanningFeatures then return end
+	if DBM:IsPostMidnight() then return end
 	modId = modId or self.id
 	if not registeredZones[zone] then
 		registeredZones[zone] = true
@@ -354,6 +355,7 @@ do
 	---<br>Uses mod:StartEngageTimers(guid, cid, scanTime) as return function to start timers
 	---@param maxScanTime number?
 	function bossModPrototype:RegisterBossUnitScan(maxScanTime)
+		if DBM:IsPostMidnight() then return end
 		ScanEngagedBossUnits(self, 0, maxScanTime or 3)
 	end
 end

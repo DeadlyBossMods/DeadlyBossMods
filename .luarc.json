@@ -23,6 +23,11 @@
 		"ChatFont.*"
 	],
 	"diagnostics.globals": [
+		"---MIDNIGHT SHIT---",
+		"C_InstanceEncounter",
+		"C_InstanceEncounter.IsEncounterInProgress",
+
+
 		"ALL",
 		"ALWAYS",
 		"BINDING_HEADER_oRA3",
