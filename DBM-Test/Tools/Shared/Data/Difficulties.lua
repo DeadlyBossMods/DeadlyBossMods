@@ -79,6 +79,7 @@ local data = DBM.Test.CreateSharedModule("Data.Difficulties", {
 	[232] = {difficultyName = "Event", instanceTypeId = 1, minPlayers = 5, maxPlayers = 5},
 	[236] = {difficultyName = "Lorewalking", instanceTypeId = 1, minPlayers = 5, maxPlayers = 5},
 	[237] = {difficultyName = "Celestial", instanceTypeId = 1, minPlayers = 5, maxPlayers = 5},
+	[241] = {difficultyName = "Lorewalking", instanceTypeId = 2, minPlayers = 10, maxPlayers = 10},
 })
 
 return data
