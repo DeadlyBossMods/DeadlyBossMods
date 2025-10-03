@@ -5655,10 +5655,12 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		return onMonsterMessage(self, "emote", msg)
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		local id = msg:match("|Hspell:([^|]+)|h")
 		if id then
@@ -5672,12 +5674,13 @@ do
 	end
 
 	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
-		if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
@@ -5695,6 +5698,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		if not private.isRetail and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.zgHeart) then
 				-- 51.01 51.82 51.85 51.53
@@ -7357,6 +7361,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_WHISPER(msg, name, _, _, _, status)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		if name and type(name) == "string" and status ~= "GM" then
 			name = Ambiguate(name, "none")
 			return onWhisper(msg, name, false)
@@ -7364,6 +7369,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
+		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
 		local presenceId = select(12, ...) -- srsly?
 		return onWhisper(msg, presenceId, true)
 	end
