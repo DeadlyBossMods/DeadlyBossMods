@@ -105,6 +105,11 @@ local challengeModeIds = {
 	[525] = 2773, -- Operation: Floodgate
 	[541] = 725, -- The Stonecore
 	[542] = 2830, -- Eco-Dome Al'dani
+	[556] = 658, -- Pit of Saron
+	[557] = 2805, -- Windrunner Spire
+	[558] = 2811, -- Magisters' Terrace
+	[559] = 2915, -- Nexus-Point Xenas
+	[560] = 2874, -- Maisara Caverns
 }
 
 do
