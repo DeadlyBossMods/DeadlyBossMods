@@ -481,12 +481,12 @@ L.Area_Cinematics					= "Bloquear cenas cinemáticas do jogo"
 L.DuringFight						= "Bloquear cenas de combate durante encontros com chefes"--uses explicite IsEncounterInProgress check
 L.InstanceAnywhere					= "Bloquear cenas não relacionadas a combate em qualquer lugar dentro de uma masmorra ou raide"
 L.NonInstanceAnywhere				= "PERIGO: Bloquear cenas em áreas externas de mundo aberto (NÃO recomendado)"
-L.OnlyAfterSeen						= "Apenas bloquear cenas depois de terem sido vistas pelo menos uma vez (ALTAMENTE recomendado, para experiência de história como pretendido pelo menos uma vez)"
+L.OnlyAfterSeen						= "Apenas bloquear cenas depois de terem sido vistas pelo menos uma vez"
 --Sound
 L.Area_Sound						= "Desativar sons do jogo"
 L.DisableSFX						= "Desativar efeitos sonoros durante combate contra chefes"
 L.DisableAmbiance					= "Desativar ambiente sonoro durante combate contra chefes"
-L.DisableMusic						= "Desativar música durante combate contra chefes (Nota: Se ativado, a música personalizada do chefe não será reproduzida se estiver ativada nos sons de evento)"
+L.DisableMusic						= "Desativar música durante combate contra chefes"
 --Other
 L.Area_HideBlizzard					= "Desativar e ocultar outras inconveniências de Blizzard"
 L.HideBossEmoteFrame				= "Ocultar quadro de emotes de chefes de raide durante combate contra chefes"
