@@ -668,7 +668,7 @@ end
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendSync(protocol, prefix, msg, priority, isLogged)
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -705,7 +705,7 @@ private.sendSync = sendSync
 ---@param priority string ChatThottleLib sync priority
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
@@ -719,7 +719,7 @@ end
 ---@param prefix string
 ---@param msg any
 local function sendGuildSync(protocol, prefix, msg)
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -736,7 +736,7 @@ private.sendGuildSync = sendGuildSync
 ---@param noBNet boolean?
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	local sendChannel = "SOLO"
@@ -796,7 +796,7 @@ end
 ---@param channel string
 ---@param priority string ChatThottleLib sync priority
 local function sendBWSync(prefix, msg, channel, priority)
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
@@ -807,7 +807,7 @@ private.sendBWSync = sendBWSync
 -- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
-	if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance chat messages in Midnight Alpha
+	if DBM:MidRestrictionsActive() then return end--Block all in instance chat messages in Midnight Alpha
 	if IsTrialAccount() then return end
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
@@ -2227,7 +2227,7 @@ do
 						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
 					end
 				end
-				if not DBM:IsPostMidnight() and notify and v.revision < self.ReleaseRevision then
+				if not DBM:MidRestrictionsActive() and notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
@@ -4396,17 +4396,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
-		if self:IsPostMidnight() and InCombatLockdown() then return end
+		if DBM:MidRestrictionsActive(true) then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
-		if self:IsPostMidnight() and InCombatLockdown() then return end
+		if DBM:MidRestrictionsActive(true) then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
-		if self:IsPostMidnight() and InCombatLockdown() then return end
+		if DBM:MidRestrictionsActive(true) then return end
 		loadModByUnit(uId .. "target")
 	end
 end
@@ -5655,12 +5655,12 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		return onMonsterMessage(self, "emote", msg)
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		local id = msg:match("|Hspell:([^|]+)|h")
 		if id then
@@ -5674,13 +5674,13 @@ do
 	end
 
 	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		onMonsterMessage(self, "emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
@@ -5690,15 +5690,20 @@ do
 
 	function DBM:GOSSIP_SHOW()
 		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
-		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid)
+			if DBM:MidRestrictionsActive(true) then
+				--GUID is a secret in combat
+				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)))
+			else
+				local cid = self:GetUnitCreatureId("npc") or 0
+				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid)
+			end
 		end
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		if not private.isRetail and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.zgHeart) then
 				-- 51.01 51.82 51.85 51.53
@@ -6902,14 +6907,16 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
+		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
+				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput)
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -6944,14 +6951,16 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
+		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
+				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput, "HARMFUL")
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -6986,14 +6995,16 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if DBM:GroupInCombat() and DBM:IsPostMidnight() then return end--Block access to UnitAura in combat in midnight
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
+		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
+				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
+				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput, "HELPFUL")
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -7026,6 +7037,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitBuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local buff = DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if buff then
@@ -7042,6 +7054,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitDebuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
+		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local debuff = DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if debuff then
@@ -7052,6 +7065,7 @@ do
 	end
 end
 
+--Event not registered in midnight, no additional checks needed
 function DBM:UNIT_DIED(args)
 	local GUID = args.destGUID
 	if self:IsCreatureGUID(GUID) then
@@ -7361,7 +7375,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_WHISPER(msg, name, _, _, _, status)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		if name and type(name) == "string" and status ~= "GM" then
 			name = Ambiguate(name, "none")
 			return onWhisper(msg, name, false)
@@ -7369,7 +7383,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
-		if self:IsPostMidnight() and IsInInstance() then return end--Block all in instance chat parsing in Midnight Alpha
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		local presenceId = select(12, ...) -- srsly?
 		return onWhisper(msg, presenceId, true)
 	end
@@ -7829,6 +7843,29 @@ function DBM:IsPostMidnight()
 	return private.wowTOC >= 120000
 end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
+
+---@param self DBMModOrDBM
+---@param combatOnly boolean? Whether or not the restriction only applies to combat
+function DBM:MidRestrictionsActive(combatOnly)
+	--Not Midnight (or later), rest of checks don't apply
+	if private.wowTOC < 120000 then
+		return false
+	end
+	--Aggressive combat check to be safe, checks ALL forms of combat for ALL group members
+	if combatOnly and self:GroupInCombat() then
+		return true
+	end
+	--Broad rule that will be changed to commented rule in a later build
+	if not combatOnly and IsInInstance() then
+		return true
+	end
+	--In active encounter or active M+
+--	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
+--		return true
+--	end
+	return false
+end
+bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then

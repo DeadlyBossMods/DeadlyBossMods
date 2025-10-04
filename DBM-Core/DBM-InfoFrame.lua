@@ -924,6 +924,8 @@ local events = {
 }
 
 local midnightRestrictedEvents = {
+	["health"] = true,
+	["bosshealth"] = true,
 	["enemyabsorb"] = true,
 	["multienemyabsorb"] = true,
 	["allabsorb"] = true,
@@ -931,6 +933,7 @@ local midnightRestrictedEvents = {
 	["playerbuff"] = true,
 	["playerbuffremaining"] = true,
 	["playerpower"] = true,
+	["enemypower"] = true,
 	["playergooddebuff"] = true,
 	["playerbaddebuff"] = true,
 	["reverseplayerbaddebuff"] = true,
