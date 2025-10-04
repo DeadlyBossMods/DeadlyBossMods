@@ -818,6 +818,92 @@ local function sendWhisper(target, msg)
 	end
 end
 
+-----------------------
+--  Utility Methods  --
+-----------------------
+
+---@param season SeasonID?
+function DBM:IsSeasonal(season)
+	if season and Enum.SeasonID then
+		return Enum.SeasonID[season] == private.currentSeason
+	else
+		return not not private.currentSeason
+	end
+end
+
+
+--Catch alls to basically allow encounter mods to use pre retail changes within mods
+---@param self DBMModOrDBM
+function DBM:IsClassic()
+	return not private.isRetail
+end
+bossModPrototype.IsClassic = DBM.IsClassic
+
+---@param self DBMModOrDBM
+function DBM:IsRetail()
+	return private.isRetail
+end
+bossModPrototype.IsRetail = DBM.IsRetail
+
+---@param self DBMModOrDBM
+function DBM:IsCata()
+	return private.isCata
+end
+bossModPrototype.IsCata = DBM.IsCata
+
+---@param self DBMModOrDBM
+function DBM:IsMop()
+	return private.isMop
+end
+bossModPrototype.IsMop = DBM.IsMop
+
+---@param self DBMModOrDBM
+function DBM:IsPostCata()
+	return private.isCata or private.isMop or private.isRetail
+end
+bossModPrototype.IsPostCata = DBM.IsPostCata
+
+function DBM:IsPostMoP()
+	return private.isRetail or private.isMop
+end
+
+---@param self DBMModOrDBM
+function DBM:IsPostMidnight()
+	return private.wowTOC >= 120000
+end
+bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
+
+---@param self DBMModOrDBM
+---@param combatOnly boolean? Whether or not the restriction only applies to combat
+function DBM:MidRestrictionsActive(combatOnly)
+	--Not Midnight (or later), rest of checks don't apply
+	if private.wowTOC < 120000 then
+		return false
+	end
+	--Aggressive combat check to be safe, checks ALL forms of combat for ALL group members
+	if combatOnly and self:GroupInCombat() then
+		return true
+	end
+	--Broad rule that will be changed to commented rule in a later build
+	if not combatOnly and IsInInstance() then
+		return true
+	end
+	--In active encounter or active M+
+--	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
+--		return true
+--	end
+	return false
+end
+bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
+
+function bossModPrototype:CheckBigWigs(name)
+	if raid[name] and raid[name].bwversion then
+		return raid[name].bwversion
+	else
+		return false
+	end
+end
+
 ---Automatic spell icon parsing
 ---@param spellId any
 ---@param objectType string?
@@ -7802,93 +7888,6 @@ do
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
 		self.HudMap:UnSupressCanvas()
-	end
-end
-
-
------------------------
---  Utility Methods  --
------------------------
-
----@param season SeasonID?
-function DBM:IsSeasonal(season)
-	if season and Enum.SeasonID then
-		return Enum.SeasonID[season] == private.currentSeason
-	else
-		return not not private.currentSeason
-	end
-end
-
-
---Catch alls to basically allow encounter mods to use pre retail changes within mods
----@param self DBMModOrDBM
-function DBM:IsClassic()
-	return not private.isRetail
-end
-bossModPrototype.IsClassic = DBM.IsClassic
-
----@param self DBMModOrDBM
-function DBM:IsRetail()
-	return private.isRetail
-end
-bossModPrototype.IsRetail = DBM.IsRetail
-
----@param self DBMModOrDBM
-function DBM:IsCata()
-	return private.isCata
-end
-bossModPrototype.IsCata = DBM.IsCata
-
----@param self DBMModOrDBM
-function DBM:IsMop()
-	return private.isMop
-end
-bossModPrototype.IsMop = DBM.IsMop
-
----@param self DBMModOrDBM
-function DBM:IsPostCata()
-	return private.isCata or private.isMop or private.isRetail
-end
-bossModPrototype.IsPostCata = DBM.IsPostCata
-
-function DBM:IsPostMoP()
-	return private.isRetail or private.isMop
-end
-
----@param self DBMModOrDBM
-function DBM:IsPostMidnight()
-	return private.wowTOC >= 120000
-end
-bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
-
----@param self DBMModOrDBM
----@param combatOnly boolean? Whether or not the restriction only applies to combat
-function DBM:MidRestrictionsActive(combatOnly)
-	--Not Midnight (or later), rest of checks don't apply
-	if private.wowTOC < 120000 then
-		return false
-	end
-	--Aggressive combat check to be safe, checks ALL forms of combat for ALL group members
-	if combatOnly and self:GroupInCombat() then
-		return true
-	end
-	--Broad rule that will be changed to commented rule in a later build
-	if not combatOnly and IsInInstance() then
-		return true
-	end
-	--In active encounter or active M+
---	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
---		return true
---	end
-	return false
-end
-bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
-
-function bossModPrototype:CheckBigWigs(name)
-	if raid[name] and raid[name].bwversion then
-		return raid[name].bwversion
-	else
-		return false
 	end
 end
 

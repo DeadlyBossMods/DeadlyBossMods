@@ -70,6 +70,7 @@ L.SCENARIO_COMPLETE_NR				= "%s completado após %s! Esse é o seu novo recorde!
 L.COMBAT_ENDED_AT					= "Combate contra %s (%s) encerrado após %s."
 L.COMBAT_ENDED_AT_LONG				= "Combate contra %s (%s) encerrado após %s. Você tem um total de %d derrotas nessa dificuldade."
 L.GUILD_COMBAT_ENDED_AT				= "Guilda foi derrotada por %s (%s) após %s."--Uncomment when updated, args have changed
+L.GUILD_COMBAT_ENDED				= "Guilda foi derrotada por %s após %s."--Uncomment when updated, args have changed
 L.SCENARIO_ENDED_AT					= "%s finalizado após %s."
 L.SCENARIO_ENDED_AT_LONG			= "%s finalizado após %s. Você tem %d de vitórias parciais nessa dificuldade."
 L.COMBAT_STATE_RECOVERED			= "Luta contra %s começou %s atrás, reajustando cronômetros..."
