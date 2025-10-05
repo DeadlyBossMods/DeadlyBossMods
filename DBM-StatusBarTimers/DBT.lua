@@ -330,7 +330,7 @@ do
 		return -- Invalid input
 	end
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
 		if self.Options.VarianceEnabled then
@@ -363,7 +363,11 @@ do
 				return
 			end
 			newBar:ApplyStyle()
-			newBar:SetText(id)
+			if isSecret then
+				newBar:SetText(secretText, nil, true)
+			else
+				newBar:SetText(id)
+			end
 			newBar:SetIcon(icon)
 		else -- Create a new bar
 			newBar = next(unusedBarObjects)
@@ -437,7 +441,11 @@ do
 				newBar.huge = nil
 				tinsert(smallBars, newBar)
 			end
-			newBar:SetText(id)
+			if isSecret then
+				newBar:SetText(secretText, nil, true)
+			else
+				newBar:SetText(id)
+			end
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			self:UpdateBars(true)
@@ -842,12 +850,16 @@ function barPrototype:SetElapsed(elapsed)
 	DBT:UpdateBars(true)
 end
 
-function barPrototype:SetText(text, inlineIcon)
-	if not DBT.Options.InlineIcons then
-		inlineIcon = nil
+function barPrototype:SetText(text, inlineIcon, isSecret)
+	if isSecret then--We can't touch the text in ANY way
+		_G[self.frame:GetName().."BarName"]:SetText(text)
+	else
+		if not DBT.Options.InlineIcons then
+			inlineIcon = nil
+		end
+		-- Force change color type 7 to custom inlineIcon
+		_G[self.frame:GetName().."BarName"]:SetText(((self.colorType and self.colorType >= 7 and DBT.Options.Bar7CustomInline) and DBM_COMMON_L.IMPORTANT_ICON or inlineIcon or "") .. text)
 	end
-	-- Force change color type 7 to custom inlineIcon
-	_G[self.frame:GetName().."BarName"]:SetText(((self.colorType and self.colorType >= 7 and DBT.Options.Bar7CustomInline) and DBM_COMMON_L.IMPORTANT_ICON or inlineIcon or "") .. text)
 end
 
 function barPrototype:SetIcon(icon)

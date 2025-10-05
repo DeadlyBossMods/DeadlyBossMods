@@ -1978,6 +1978,12 @@ do
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
 				)
+			else
+				self:RegisterEvents(
+					"ENCOUNTER_TIMELINE_EVENT_ADDED",
+					"ENCOUNTER_TIMELINE_EVENT_REMOVED"
+--					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+				)
 			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(

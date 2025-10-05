@@ -1513,3 +1513,33 @@ function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 	end
 	return pformat(L.AUTO_TIMER_TEXTS[timerType], spellName)
 end
+
+--TODO, actually implement startedTimers tracking and removeEntry scheduling so DBM core is aware these timers even exist?
+--/run C_EncounterTimeline.AddEditModeEvents()
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+	local eventID = eventInfo.id
+	local duration = eventInfo.duration
+--	local source = eventInfo.source (Encounter, Script, EditMode)
+	--Secrets
+	local spellId = eventInfo.tooltipSpellID
+	local spellName = C_Spell.GetSpellName(spellId)--Must use blizzard fucntion, wrapper taints secret
+	local iconId = eventInfo.iconFileID
+--	local dispelType = eventInfo.dispelType ("None", "Poison", "Magic", "Curse", "Disease")
+--	local role = eventInfo.role ("None", "Tank", "Healer", "Damager")
+--	local priority = eventInfo.priority ("Normal", "Deadly")
+
+	--We want to store timer references for secret timers so we can stop them later
+	--if not tContains(self.startedTimers, eventID) then--Make sure timer doesn't exist already before adding it
+	--	tinsert(self.startedTimers, eventID)
+	--end
+	--self:Unschedule(removeEntry, self.startedTimers, eventID)
+	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
+	DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true)
+end
+
+function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
+	DBT:CancelBar(eventID)
+--	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
+--	self:Unschedule(removeEntry, self.startedTimers, eventID)
+--	tremove(self.startedTimers, eventID)
+end
