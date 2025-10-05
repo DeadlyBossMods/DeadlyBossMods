@@ -6982,15 +6982,17 @@ do
 	---<br>This avoids having to significantly update nearly 20 years of boss mods.
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
-		local start, duration, enable
-		if not halfAssedClassicPath then
-			local spellTable = GetSpellCooldown(spellId)
-			if spellTable then
-				---@diagnostic disable-next-line: undefined-field
-				start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
+		local start, duration, enable = 0, 0, true--return off CD values if API fails (ie midnight)
+		if not self:IsPostMidnight() then
+			if not halfAssedClassicPath then
+				local spellTable = GetSpellCooldown(spellId)
+				if spellTable then
+					---@diagnostic disable-next-line: undefined-field
+					start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
+				end
+			else
+				start, duration, enable = GetSpellCooldown(spellId)
 			end
-		else
-			start, duration, enable = GetSpellCooldown(spellId)
 		end
 		return start, duration, enable
 	end

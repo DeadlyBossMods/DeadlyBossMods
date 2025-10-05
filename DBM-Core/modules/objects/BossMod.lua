@@ -786,7 +786,7 @@ do
 	---Smart alert filtering based on cooldown check for cc type
 	---@param ccType CCType
 	function bossModPrototype:CheckCCFilter(ccType)
-		if not DBM.Options.FilterCrowdControl then return true end
+		if not DBM.Options.FilterCrowdControl or DBM:IsPostMidnight() then return true end
 		--start, duration, enable = GetSpellCooldown
 		--start & duration == 0 if spell not on cd
 		if UnitIsDeadOrGhost("player") then return false end--if dead, can't crowd control
