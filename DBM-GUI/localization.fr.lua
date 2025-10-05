@@ -496,7 +496,7 @@ L.Area_SpecFilter			= "Options de filtre par rôle"
 L.FilterInterruptNoteName	= "Filtrer les alertes des sorts interruptibles (avec compte) si l'alerte ne contient pas votre nom dans la note personnalisée"
 L.FilterDispels				= "Filtrer les annonces de dissipations si votre sort de dissipation est en temps de recharge"
 L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."
-L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux trash dans les donjons normaux et héroïques"
+L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux ennemis communs dans les donjons normaux et héroïques"
 
 L.Area_BInterruptFilter				= "Options de filtre d'interruption de boss"
 L.FilterTargetFocus					= "Filtrer si le lanceur n'est pas l'objectif/point focal actuel"
