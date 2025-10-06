@@ -986,7 +986,7 @@ do
 		end
 	end
 
-    local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN"}
+    local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN", "MIDNIGHT"}
 
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
