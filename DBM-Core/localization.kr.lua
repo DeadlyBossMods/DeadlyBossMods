@@ -32,11 +32,11 @@ L.COPY_URL_DIALOG					= "URL 복사"
 L.COPY_WA_DIALOG						= "WA 키 복사"
 
 --Post Patch 7.1
-L.TEXT_ONLY_RANGE			= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 텍스트 방식으로만 사용할 수 있습니다."
+L.TEXT_ONLY_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 텍스트 방식으로만 사용할 수 있습니다."
 L.NO_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 사용할 수 없습니다."
 L.NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
-L.NO_HUD					= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
-L.NO_COMMS					= "애드온 통신은 전투 중이나 활성 M+ 던전에서 사용할 수 없습니다. 전투나 던전이 끝난 후에 이 명령어를 다시 사용하세요."
+L.NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
+L.NO_COMMS								= "보스전 또는 신화+ 던전에선 애드온 통신을 사용할 수 없습니다. 보스전 또는 던전을 끝낸 후 다시 해당 명령어를 사용하세요."--Midnight+
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여" .. L.DBM .. "이 이 전투에서 동적 거리 창을 비활성화 했습니다."
 L.DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여" .. L.DBM .. "이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
@@ -69,7 +69,8 @@ L.SCENARIO_COMPLETE_L		= "%s|1을;를; %s만에 완료했습니다! 지난번 �
 L.SCENARIO_COMPLETE_NR		= "%s|1을;를; %s만에 완료했습니다! 신기록입니다! (이전 기록은 %s) 총 %d회 완료했습니다."
 L.COMBAT_ENDED_AT			= "%s (%s) 전투에서 %s만에 전멸했습니다."
 L.COMBAT_ENDED_AT_LONG		= "%s (%s) 전투에서 %s만에 전멸했습니다. 현재 난이도에서 총 %d회 전멸했습니다."
-L.GUILD_COMBAT_ENDED_AT		= "%s의 길드 그룹이 %s (%s)에서 %s만에 전멸했습니다."
+L.GUILD_COMBAT_ENDED_AT		= "%s의 길드 그룹이 %s (%s)에서 %s만에 전멸했습니다."--Health Included
+L.GUILD_COMBAT_ENDED					= "%s의 길드 그룹이 %s에서 %s만에 전멸했습니다."--No health (post midnight)
 L.SCENARIO_ENDED_AT			= "%s|1이;가; %s만에 끝났습니다."
 L.SCENARIO_ENDED_AT_LONG		= "%s|1이;가; %s만에 끝났습니다. 현재 난이도에서 총 %d회 실패했습니다."
 L.COMBAT_STATE_RECOVERED		= "%s 전투가 %s전에 시작됐습니다. 타이머 복구중..."
