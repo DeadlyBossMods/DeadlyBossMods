@@ -10,37 +10,6 @@
 ## LoadOnDemand: 1
 ## X-DBM-Test: true
 
-Undermine/Vexieand-Normal-Kill.lua
-Undermine/Vexieand-Heroic-Kill.lua
-Undermine/CauldronofCarnage-LFR-Kill.lua
-Undermine/CauldronofCarnage-Normal-Kill.lua
-Undermine/CauldronofCarnage-Heroic-Kill.lua
-Undermine/RikReverb-LFR-Kill.lua
-Undermine/RikReverb-Normal-Kill.lua
-Undermine/RikReverb-Heroic-Kill.lua
-Undermine/SprocketmongerLockenstock-Normal-Kill.lua
-Undermine/SprocketmongerLockenstock-Heroic-Kill.lua
-Undermine/SprocketmongerLockenstock-Mythic-Wipe.lua
-Undermine/StixBunkjunker-Normal-Kill.lua
-Undermine/StixBunkjunker-Heroic-Kill.lua
-Undermine/StixBunkjunker-Mythic-Wipe.lua
-Undermine/TheOneArmedBandit-Normal-Kill.lua
-Undermine/TheOneArmedBandit-Heroic-Kill.lua
-Undermine/MugZeeHeadsofSecurity-Normal-Kill.lua
-Undermine/MugZeeHeadsofSecurity-Mythic-Wipe.lua
-Undermine/ChromeKingGallywix-Normal-Kill.lua
-Undermine/ChromeKingGallywix-Heroic-Kill.lua
-Undermine/ChromeKingGallywix-Mythic-Kill.lua
-
-NerubarPalace/Ulgrax-Mythic-Kill.lua
-NerubarPalace/BloodboundHorror-Mythic-Kill.lua
-NerubarPalace/Sikran-Mythic-Kill.lua
-NerubarPalace/Rashanan-Mythic-Kill.lua
-NerubarPalace/Ovinax-Mythic-Kill.lua
-NerubarPalace/Kyveza-Mythic-Kill.lua
-NerubarPalace/SilkenCourt-Mythic-Kill.lua
-NerubarPalace/QueenAnsurek-Mythic-Wipe.lua
-
 ManaforgeOmega/PlexusSentinel-Normal-Kill.lua
 ManaforgeOmega/PlexusSentinel-Heroic-Kill.lua
 ManaforgeOmega/PlexusSentinel-Mythic-Kill.lua

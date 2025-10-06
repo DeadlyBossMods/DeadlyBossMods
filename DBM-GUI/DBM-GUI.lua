@@ -467,35 +467,37 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	if isTestView then
 		extraOffset = extraOffset + DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	end
-	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
-	iconstat:SetPoint("TOP", panel.frame, 0, -10 - extraOffset)
-	iconstat:SetFontObject(GameFontNormal)
-	iconstat:SetText(L.IconsInUse)
-	for i = 1, 8 do
-		local icon = panel.frame:CreateTexture()
-		icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
-		icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26 - extraOffset)
-		icon:SetSize(16, 16)
-		if not mod.usedIcons or not mod.usedIcons[i] then
-			icon:SetAlpha(0.25)
-			icon:SetDesaturated(true)
-		end
-		if		i == 1 then		icon:SetTexCoord(0,		0.25,	0,		0.25)
-		elseif	i == 2 then		icon:SetTexCoord(0.25,	0.5,	0,		0.25)
-		elseif	i == 3 then		icon:SetTexCoord(0.5,	0.75,	0,		0.25)
-		elseif	i == 4 then		icon:SetTexCoord(0.75,	1,		0,		0.25)
-		elseif	i == 5 then		icon:SetTexCoord(0,		0.25,	0.25,	0.5)
-		elseif	i == 6 then		icon:SetTexCoord(0.25,	0.5,	0.25,	0.5)
-		elseif	i == 7 then		icon:SetTexCoord(0.5,	0.75,	0.25,	0.5)
-		elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
---		elseif	i == 9 then		icon:SetTexCoord(0,		0.25,	0.5,	0.75)
---		elseif	i == 10 then	icon:SetTexCoord(0.25,	0.5,	0.5,	0.75)
---		elseif	i == 11 then	icon:SetTexCoord(0.5,	0.75,	0.5,	0.75)
---		elseif	i == 12 then	icon:SetTexCoord(0.75,	1,		0.5,	0.75)
---		elseif	i == 13 then	icon:SetTexCoord(0,		0.25,	0.75,	1)
---		elseif	i == 14 then	icon:SetTexCoord(0.25,	0.5,	0.75,	1)
---		elseif	i == 15 then	icon:SetTexCoord(0.5,	0.75,	0.75,	1)
---		elseif	i == 16 then	icon:SetTexCoord(0.75,	1,		0.75,	1)
+	if not DBM:IsPostMidnight() then
+		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
+		iconstat:SetPoint("TOP", panel.frame, 0, -10 - extraOffset)
+		iconstat:SetFontObject(GameFontNormal)
+		iconstat:SetText(L.IconsInUse)
+		for i = 1, 8 do
+			local icon = panel.frame:CreateTexture()
+			icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
+			icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26 - extraOffset)
+			icon:SetSize(16, 16)
+			if not mod.usedIcons or not mod.usedIcons[i] then
+				icon:SetAlpha(0.25)
+				icon:SetDesaturated(true)
+			end
+			if		i == 1 then		icon:SetTexCoord(0,		0.25,	0,		0.25)
+			elseif	i == 2 then		icon:SetTexCoord(0.25,	0.5,	0,		0.25)
+			elseif	i == 3 then		icon:SetTexCoord(0.5,	0.75,	0,		0.25)
+			elseif	i == 4 then		icon:SetTexCoord(0.75,	1,		0,		0.25)
+			elseif	i == 5 then		icon:SetTexCoord(0,		0.25,	0.25,	0.5)
+			elseif	i == 6 then		icon:SetTexCoord(0.25,	0.5,	0.25,	0.5)
+			elseif	i == 7 then		icon:SetTexCoord(0.5,	0.75,	0.25,	0.5)
+			elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
+--			elseif	i == 9 then		icon:SetTexCoord(0,		0.25,	0.5,	0.75)
+--			elseif	i == 10 then	icon:SetTexCoord(0.25,	0.5,	0.5,	0.75)
+--			elseif	i == 11 then	icon:SetTexCoord(0.5,	0.75,	0.5,	0.75)
+--			elseif	i == 12 then	icon:SetTexCoord(0.75,	1,		0.5,	0.75)
+--			elseif	i == 13 then	icon:SetTexCoord(0,		0.25,	0.75,	1)
+--			elseif	i == 14 then	icon:SetTexCoord(0.25,	0.5,	0.75,	1)
+--			elseif	i == 15 then	icon:SetTexCoord(0.5,	0.75,	0.75,	1)
+--			elseif	i == 16 then	icon:SetTexCoord(0.75,	1,		0.75,	1)
+			end
 		end
 	end
 
@@ -505,7 +507,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	reset:SetScript("OnClick", function()
 		DBM:LoadModDefaultOption(mod)
 	end)
-	if not isTestView then
+	if not isTestView and not DBM:IsPostMidnight() then
 		local playground = panel:CreateButton(L.EnterTestMode, 155, 28, nil, GameFontNormalSmall)
 		playground.myheight = 0
 		playground:SetPoint("TOPLEFT", reset, "BOTTOMLEFT", 0, -2)
