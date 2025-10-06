@@ -357,6 +357,7 @@ end
 ---@param strict boolean? Used for even more strict filtering that makes it also require player themselves are in combat (usually used in outdoor world such as timeless isle)
 ---@return boolean
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly, strict)
+	if self:MidRestrictionsActive(true) then return true end--GUID checks not allowed in Midnight+ during combat
 	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) and (allowFriendly or not UnitIsFriend("player", customunitID)) then return true end
@@ -374,7 +375,7 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowF
 end
 
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
-	if not private.isRetail then--Fixme if MoP classic becomes a thing
+	if not private.isRetail and not private.isMop then
 		print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
 		return false
 	end
@@ -426,6 +427,7 @@ do
 	---Returns current name and unitID of person tanking requested target if possible, false otherwise
 	---@param cidOrGuid number|string
 	function bossModPrototype:GetCurrentTank(cidOrGuid)
+		if self:MidRestrictionsActive(true) then return false end--GUID checks not allowed in Midnight+ during combat
 		if lastTank and GetTime() - (bossCache[cidOrGuid] or 0) < 2 then -- return last tank within 2 seconds of call
 			return lastTank
 		else
@@ -474,6 +476,7 @@ do
 	---@return boolean
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
+		if self:MidRestrictionsActive(true) then return true end--GUID checks not allowed in Midnight+ during combat
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
 		if type(cidOrGuid) == "number" then--CID passed
@@ -584,6 +587,7 @@ do
 	---@param ignoreTandF boolean? is usually used when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
 	---@return boolean
 	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
+		if self:IsPostMidnight() then return true end--No filtering during post midnight since CD checks and GUID checks not allowed
 		--Check healer spec filter
 		if not checkOnlyTandF and self:IsHealer() and (self.isTrashMod and DBM.Options.FilterTInterruptHealer or not self.isTrashMod and DBM.Options.FilterBInterruptHealer) then
 			return false
@@ -679,7 +683,7 @@ do
 	---Smart alert filtering based on cooldown check for dispel type
 	---@param dispelType DispelType
 	function bossModPrototype:CheckDispelFilter(dispelType)
-		if not DBM.Options.FilterDispel then return true end
+		if not DBM.Options.FilterDispel or self:IsPostMidnight() then return true end
 		-- Retail - Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450) Monk: Detox (218164), Priest: Purify (527) Priest: Purify Disease (213634), Paladin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475), Warlock: Singe Magic (89808)
 		-- Classic - Druid: Remove Curse (2782), Priest: Purify (527), Paladin: Cleanse (4987), Mage: Remove Curse (475)
 		--start, duration, enable = GetSpellCooldown
@@ -782,7 +786,7 @@ do
 	---Smart alert filtering based on cooldown check for cc type
 	---@param ccType CCType
 	function bossModPrototype:CheckCCFilter(ccType)
-		if not DBM.Options.FilterCrowdControl then return true end
+		if not DBM.Options.FilterCrowdControl or DBM:IsPostMidnight() then return true end
 		--start, duration, enable = GetSpellCooldown
 		--start & duration == 0 if spell not on cd
 		if UnitIsDeadOrGhost("player") then return false end--if dead, can't crowd control

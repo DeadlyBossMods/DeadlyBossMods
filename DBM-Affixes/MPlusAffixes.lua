@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end
 local mod	= DBM:NewMod("MPlusAffixes", "DBM-Affixes")
 local L		= mod:GetLocalizedStrings()
 

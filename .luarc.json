@@ -26,6 +26,10 @@
 		"---MIDNIGHT SHIT---",
 		"C_InstanceEncounter",
 		"C_InstanceEncounter.IsEncounterInProgress",
+		"issecretvalue",
+		"EncounterTimeline",
+		"EncounterTimeline.TimelineView",
+		"C_EncounterTimeline",
 
 
 		"ALL",

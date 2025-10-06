@@ -7,7 +7,6 @@ local L = DBM_CORE_L
 local DBM = private:GetPrototype("DBM")
 local difficulties = private:GetPrototype("Difficulties")
 
-
 local statOrder = {
 	"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
 }
@@ -92,19 +91,21 @@ local function hook(self)
 	addStats(self, mod)
 end
 
-if newTooltipApi then
-	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, hook)
-else
-	GameTooltip:HookScript("OnTooltipSetUnit", hook)
-end
+if not DBM:IsPostMidnight() then
+	if newTooltipApi then
+		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, hook)
+	else
+		GameTooltip:HookScript("OnTooltipSetUnit", hook)
+	end
 
-if not newTooltipApi then
-	local f = CreateFrame("Frame")
-	f:RegisterEvent("MODIFIER_STATE_CHANGED")
-	f:SetScript("OnEvent", function()
-		local _, unit = GameTooltip:GetUnit()
-		if unit then
-			GameTooltip:SetUnit(unit)
-		end
-	end)
+	if not newTooltipApi then
+		local f = CreateFrame("Frame")
+		f:RegisterEvent("MODIFIER_STATE_CHANGED")
+		f:SetScript("OnEvent", function()
+			local _, unit = GameTooltip:GetUnit()
+			if unit then
+				GameTooltip:SetUnit(unit)
+			end
+		end)
+	end
 end

@@ -285,6 +285,7 @@ L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
 L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.HideBlizzardTimeline				= "Blende die Blizzard-Schlachtzugszeitlinie während Bosskämpfen aus"
 
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
 --

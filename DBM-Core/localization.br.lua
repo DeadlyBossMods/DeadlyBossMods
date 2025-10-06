@@ -36,6 +36,7 @@ L.TEXT_ONLY_RANGE 					= "O quadro de distância está limitado apenas a texto d
 L.NO_RANGE 							= "O quadro de distância não pode ser usado devido a restrições de API nesta área."
 L.NO_ARROW 							= "A seta não pode ser usada em instâncias."
 L.NO_HUD 							= "O HUDMap não pode ser usado em instâncias."
+L.NO_COMMS							= "A comunicação do addon não pode ser usada durante encontros ou masmorras M+ ativas. Use este comando novamente após o término do encontro ou masmorra."
 
 L.DYNAMIC_DIFFICULTY_CLUMP			= L.DBM .. " desativou o quadro de distância dinâmico nesta luta, por falta de informação sobre o número de jogadores à ficarem amontoados para um grupo desse tamanho."
 L.DYNAMIC_ADD_COUNT					= L.DBM .. " desativou anúncio da contagem de adds nesta luta, por falta de informação da quantidade de adds para um grupo deste tamanho."
@@ -69,6 +70,7 @@ L.SCENARIO_COMPLETE_NR				= "%s completado após %s! Esse é o seu novo recorde!
 L.COMBAT_ENDED_AT					= "Combate contra %s (%s) encerrado após %s."
 L.COMBAT_ENDED_AT_LONG				= "Combate contra %s (%s) encerrado após %s. Você tem um total de %d derrotas nessa dificuldade."
 L.GUILD_COMBAT_ENDED_AT				= "Guilda foi derrotada por %s (%s) após %s."--Uncomment when updated, args have changed
+L.GUILD_COMBAT_ENDED				= "Guilda foi derrotada por %s após %s."--Uncomment when updated, args have changed
 L.SCENARIO_ENDED_AT					= "%s finalizado após %s."
 L.SCENARIO_ENDED_AT_LONG			= "%s finalizado após %s. Você tem %d de vitórias parciais nessa dificuldade."
 L.COMBAT_STATE_RECOVERED			= "Luta contra %s começou %s atrás, reajustando cronômetros..."

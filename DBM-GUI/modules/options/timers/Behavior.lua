@@ -42,6 +42,11 @@ local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, n
 ClickThrough:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -15)
 
 BarBehaviors:CreateCheckButton(L.DisableRightClickBar, true, nil, nil, "DisableRightClick")
-BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
-BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
-BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
+--Can't rename spells in midnight
+--Won't keep timers in midnight (they follow timeline
+--Can't distance check in midnight, so can't fade by distance
+if not DBM:IsPostMidnight() then
+	BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
+	BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
+	BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
+end

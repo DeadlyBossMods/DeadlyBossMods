@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end--Don't load nameplate options if it's past midnight, they can't be used
 local L = DBM_GUI_L
 local CL = DBM_COMMON_L
 local panel = DBM_GUI.Cat_Frames:CreateNewPanel(L.Panel_Nameplates, "option")

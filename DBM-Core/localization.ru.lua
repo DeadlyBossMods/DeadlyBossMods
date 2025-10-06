@@ -6,12 +6,8 @@ local L = DBM_CORE_L
 L.DEADLY_BOSS_MODS						= "Deadly Boss Mods"
 L.DBM									= "DBM"
 
-local guild = GetGuildInfo("player")
 local dateTable = date("*t")
-if C_Seasons and C_Seasons.GetActiveSeason and C_Seasons.GetActiveSeason() == 12 and guild == "OnlyFangs" then
-	L.DEADLY_BOSS_MODS					= "Deadly Boss Lua"
-	L.DBM								= "Boss Loa"
-elseif dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
 	L.DEADLY_BOSS_MODS					= "Harmless Minion Mods"
 	L.DBM								= "HMM"
 end

@@ -1,4 +1,4 @@
-## Interface: 110200, 110205
+## Interface: 110200, 110205, 120000
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffBrawlers|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff4565ffБойцовская гильдия|r

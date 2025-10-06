@@ -1,4 +1,4 @@
-## Interface: 110200, 110205
+## Interface: 110200, 110205, 120000
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
@@ -83,7 +83,6 @@ modules\options\filters\Privacy.lua
 
 modules\options\frames\Frames.lua
 modules\options\frames\InfoFrame.lua
-modules\options\frames\Range.lua
 modules\options\frames\Nameplate.lua
 
 modules\options\dev\Dev.lua

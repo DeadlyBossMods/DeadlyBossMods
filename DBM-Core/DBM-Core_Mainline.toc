@@ -1,4 +1,4 @@
-## Interface: 110200, 110205
+## Interface: 110200, 110205, 120000
 ## X-Min-Interface: 110200
 ## Category: DBM
 ## Group: DBM-Core
@@ -63,9 +63,9 @@ commonlocal.kr.lua
 commonlocal.ru.lua
 
 # Pre-core modules
+modules\objects\GameVersion.lua
 modules\objects\PrototypeRegistry.lua
 modules\objects\Testing.lua
-modules\objects\GameVersion.lua
 modules\objects\StringUtils.lua
 modules\objects\TableUtils.lua
 modules\objects\StandardFont.lua

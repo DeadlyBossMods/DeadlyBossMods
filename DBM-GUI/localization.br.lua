@@ -493,6 +493,7 @@ L.HideBossEmoteFrame				= "Ocultar quadro de emotes de chefes de raide durante c
 L.HideWatchFrame					= "Ocultar quadro de acompanhamento (objetivos) durante combate contra chefes se nenhum feito estiver sendo rastreado e se não estiver em um Mítico+"
 L.HideQuestTooltips					= "Ocultar objetivos de missões das dicas durante combate contra chefes"
 L.HideTooltips						= "Ocultar completamente as dicas durante lutas contra chefes"
+L.HideBlizzardTimeline				= "Ocultar a linha do tempo da raide da Blizzard durante lutas contra chefes"
 
 L.DisableSFX						= "Desativar o canal de efeitos sonoros durante lutas contra chefes"
 
