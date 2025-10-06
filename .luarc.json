@@ -29,6 +29,7 @@
 		"issecretvalue",
 		"EncounterTimeline",
 		"EncounterTimeline.TimelineView",
+		"C_EncounterTimeline",
 
 
 		"ALL",
