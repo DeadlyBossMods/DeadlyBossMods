@@ -27,10 +27,6 @@ Older content is split into multiple addons to reduce mod update size. These are
 * [DBM-Challenges](https://curseforge.com/wow/addons/dbm-challenges)
 * [DBM-TimelessIsle](https://curseforge.com/wow/addons/dbm-timeless-isle)
 * [DBM-PvP](https://curseforge.com/wow/addons/dbm-pvp)
-<!--
-* [SpellTimers](https://curseforge.com/wow/addons/dbm-spelltimers)
-* [RaidLeadTools](https://curseforge.com/wow/addons/dbm-raidleadtools)
--->
 
 ## Countdown Packs
 * [Countpack Overwatch](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-overwatch-countdown-pack)
