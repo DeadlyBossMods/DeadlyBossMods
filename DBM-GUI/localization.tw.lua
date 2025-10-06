@@ -544,7 +544,7 @@ L.HideBossEmoteFrame				= "首領戰鬥時隱藏團隊首領表情框架"
 L.HideWatchFrame					= "首領戰鬥時隱追蹤框架(任務目標)，如果沒有追踪成就，或不是在傳奇+中"
 L.HideQuestTooltips					= "首領戰鬥時隱藏任務目標提示"--Currently hidden (NYI)
 L.HideTooltips						= "首領戰鬥時隱藏完全隱藏提示"
-L.HideBlizzardTimeline				= "首領戰鬥時隱藏暴雪攻擊隊時間線"
+L.HideBlizzardTimeline				= "首領戰鬥時隱藏暴雪團隊時間線"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "團隊領隊控制項"
