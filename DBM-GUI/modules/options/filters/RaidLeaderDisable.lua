@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end--Don't load raid leader options if it's past midnight, they can't be used
 local L = DBM_GUI_L
 local rlControlsPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Tab_RLControls, "option")
 

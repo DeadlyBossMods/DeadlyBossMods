@@ -545,6 +545,7 @@ L.HideBossEmoteFrame 				= "Ocultar marco de emociones durante encuentros de jef
 L.HideWatchFrame 					= "Ocultar marco de seguimiento en jefes si no se siguen logros ni en Mítico+"
 L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefe" --Currently hidden (NYI)
 L.HideTooltips 						= "Ocultar las descripciones emergentes durante encuentros de jefe"
+L.HideBlizzardTimeline				= "Ocultar la línea de tiempo de la banda de Blizzard durante los encuentros de jefe"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Controles de líder de banda"

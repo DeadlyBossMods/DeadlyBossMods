@@ -1219,6 +1219,7 @@ do
 	local tostring, mfloor = tostring, math.floor
 	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
 	function barPrototype:Announce()
+		if DBM:IsPostMidnight() then return end--Don't announce if it's past midnight, secrets can't be shared
 		local msg
 		if DBT.announceHook then
 			msg = DBT.announceHook(self)

@@ -25,6 +25,10 @@ blockSoundArea:CreateCheckButton(L.DisableMusic, true, nil, "DisableMusic")
 
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
 hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
+if DBM:IsPostMidnight() then
+	hideBlizzArea:CreateCheckButton(L.HideBlizzardTimeline, true, nil, "HideBlizzardTimeline")
+	--TODO, when we know how to actually hide it, add script here that runs on click to hide or unhide it
+end
 if not private.isRetail then--Hiding it on retail causes taint, there are ways to work around it but involves modifying other addons like elvui first
 	hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 end
