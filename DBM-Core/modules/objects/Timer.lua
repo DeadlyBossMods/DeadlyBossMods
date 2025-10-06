@@ -1514,7 +1514,8 @@ function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 	return pformat(L.AUTO_TIMER_TEXTS[timerType], spellName)
 end
 
---TODO, actually implement startedTimers tracking and removeEntry scheduling so DBM core is aware these timers even exist?
+--TODO, Fire callbacks instead and then have modules with their own checkbox determine if timers should start or not per boss level
+--IE each boss will have a checkbox to enable/disable timers for that specific boss
 --/run C_EncounterTimeline.AddEditModeEvents()
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	local eventID = eventInfo.id
