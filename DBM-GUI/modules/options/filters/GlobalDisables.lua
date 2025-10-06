@@ -19,51 +19,56 @@ spamTimers:CreateCheckButton(L.SpamBlockNoShowEventTimers, true, nil, "DontShowE
 spamTimers:CreateCheckButton(L.SpamBlockNoShowUTimers, true, nil, "DontShowUserTimers")
 spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 
-local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
-local Plater = _G["Plater"]
-local ThreatPlates = _G["TidyPlatesThreatDBM"] and _G["TidyPlatesThreat"]
-if Plater then--Plater button disabled for now
-	local platerButton = spamNameplates:CreateButton(L.Plater_Config, 100, 25)
-	platerButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
-	platerButton:SetNormalFontObject(GameFontNormal)
-	platerButton:SetHighlightFontObject(GameFontNormal)
-	platerButton:SetScript("OnClick", function()
-		Plater.OpenOptionsPanel(28)--Open Plater boss mod options
-		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
-		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
-	end)
-	platerButton.myheight = 25
-elseif ThreatPlates then--Threat Plates button disabled for now
-	local tpButton = spamNameplates:CreateButton(L.ThreatPlates_Config, 100, 25)
-	tpButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
-	tpButton:SetNormalFontObject(GameFontNormal)
-	tpButton:SetHighlightFontObject(GameFontNormal)
-	tpButton:SetScript("OnClick", function()
-		ThreatPlates:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
-		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
-		optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
-	end)
-	tpButton.myheight = 25
-else
-	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
-	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
-	spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
-	spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+if not DBM:IsPostMidnight() then
+	local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
+	local Plater = _G["Plater"]
+	local ThreatPlates = _G["TidyPlatesThreatDBM"] and _G["TidyPlatesThreat"]
+	if Plater then--Plater button disabled for now
+		local platerButton = spamNameplates:CreateButton(L.Plater_Config, 100, 25)
+		platerButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
+		platerButton:SetNormalFontObject(GameFontNormal)
+		platerButton:SetHighlightFontObject(GameFontNormal)
+		platerButton:SetScript("OnClick", function()
+			Plater.OpenOptionsPanel(28)--Open Plater boss mod options
+			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+			optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than plater
+		end)
+		platerButton.myheight = 25
+	elseif ThreatPlates then--Threat Plates button disabled for now
+		local tpButton = spamNameplates:CreateButton(L.ThreatPlates_Config, 100, 25)
+		tpButton:SetPoint("CENTER", spamNameplates.frame, "CENTER", 0, 0)
+		tpButton:SetNormalFontObject(GameFontNormal)
+		tpButton:SetHighlightFontObject(GameFontNormal)
+		tpButton:SetScript("OnClick", function()
+			ThreatPlates:OpenOptionsDialog("BossMods")--Open Threat Plates boss mod options
+			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+			optionsFrame:Hide()--Close DBM GUI (cause it has higher strata than ThreatPlates
+		end)
+		tpButton.myheight = 25
+	else
+		spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
+		spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
+		spamNameplates:CreateCheckButton(L.SpamBlockNoNameplateCasts, true, nil, "DontShowNameplateIconsCast")
+		spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+	end
 end
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)
-spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
-spamMisc:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
-spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
+if not DBM:IsPostMidnight() then
+	spamMisc:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
+	spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
+	spamMisc:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
+	spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
+end
 spamMisc:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
-
-spamMisc:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 spamMisc:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
 spamMisc:CreateCheckButton(L.SpamBlockAutoGossip, true, nil, "DontAutoGossip")
 
-local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore)
-spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
-spamRestoreArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
+if not DBM:IsPostMidnight() then
+	local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore)
+	spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
+	spamRestoreArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
+end
 
 local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer)
 spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")

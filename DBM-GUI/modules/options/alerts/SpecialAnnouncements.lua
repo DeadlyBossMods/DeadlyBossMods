@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end--May be unhidden later if we get access to reskinning blizzard alerts
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
