@@ -537,7 +537,7 @@ L.Area_HideBlizzard 				= "Désactiver et cacher d'autres irritants Blizzard"
 L.HideBossEmoteFrame 				= "Cacher le cadre des émotes de boss de raid pendant les combats de boss"
 L.HideWatchFrame 					= "Cacher le cadre de suivi (objectifs) pendant les combats de boss s'il n'y a pas d'exploits en cours de suivi et si ce n'est pas dans une Mythique+"
 L.HideQuestTooltips 				= "Cacher les objectifs de quête des infobulles pendant les combats de boss" --Currently hidden (NYI)
-L.HideTooltips 						= "Cacher complètement les infobulles pendant les combats de boss"
+L.HideTooltips 						= "Cacher les infobulles pendant les combats de boss"
 L.HideBlizzardTimeline				= "Cacher la ligne du temps de la raid de Blizzard pendant les combats de boss"
 
 -- Panel: Raid Leader Controls
