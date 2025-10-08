@@ -547,7 +547,7 @@ L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기�
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
 L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
 L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
-L.HideBlizzardTimeline				= "보스 전투중 블리자드 기본 공격대 타임라인 숨기기
+L.HideBlizzardTimeline				= "보스 전투중 블리자드 기본 공격대 타임라인 숨기기"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
