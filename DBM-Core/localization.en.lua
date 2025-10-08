@@ -40,7 +40,7 @@ L.TEXT_ONLY_RANGE						= "Range frame is limited to text only due to Blizzard di
 L.NO_RANGE								= "Range frame can not be used due to Blizzard disabling that functionality in this area."
 L.NO_ARROW								= "Arrow can not be used in instances"
 L.NO_HUD								= "HUDMap can not be used in instances"
-L.NO_COMMS								= "Addon communication can not be used during encounters or active M+ dungeons. Use this command again after encounter or dungeon ends."
+L.NO_COMMS								= "Addon communication can not be used during encounters or active M+ dungeons. Use this command again after encounter or dungeon ends."--Midnight+
 
 L.DYNAMIC_DIFFICULTY_CLUMP				= L.DBM .. " has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
 L.DYNAMIC_ADD_COUNT						= L.DBM .. " has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."

@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 398, "3d79f92"--398.5
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.0 alpha"--Core version
+DBM.DisplayVersion = "12.0.1 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 9, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 10, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 19--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -178,6 +178,7 @@ DBM.DefaultOptions = {
 	NoTimerOverridee = true,
 	ReplaceMyConfigOnOverride = false,
 	HideBossEmoteFrame2 = true,
+	HideBlizzardTimeline = false,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
@@ -1753,10 +1754,19 @@ do
 					LibDBIcon:AddButtonToCompartment("DBM")
 				end
 			end
-			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
-			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
-			if soundChannels < 64 then
-				SetCVar("Sound_NumChannels", 64)
+			--Force show timeline or else we can't start timers because it won't fire events
+			if self:IsPostMidnight() then
+				C_CVar.SetCVar("encounterTimelineEnabled", "1")
+				if self.Options.HideBlizzardTimeline then
+					EncounterTimeline.TimelineView:SetScript("OnShow", function(self) self:Hide() end)
+				end
+			else
+				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
+				local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
+				--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
+				if soundChannels < 64 then
+					SetCVar("Sound_NumChannels", 64)
+				end
 			end
 			self.Voices = {{text = "None", value = "None"}}--Create voice table, with default "None" value
 			self.VoiceVersions = {}
@@ -2002,6 +2012,11 @@ do
 					"GOSSIP_SHOW",
 					"PLAYER_MAP_CHANGED"
 				)
+				if not DBM:IsPostMidnight() then
+					self:RegisterEvents(
+						"UNIT_HEALTH mouseover target focus player"--Base is Frequent on retail, and _FREQUENT deleted
+					)
+				end
 			elseif private.isMop then
 				self:RegisterEvents(
 					"CHALLENGE_MODE_RESET",
@@ -2038,6 +2053,7 @@ do
 			end)
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
+			playerName = UnitName("player")--In case it's unknown at login, we check it again
 		end
 	end
 
@@ -2384,14 +2400,17 @@ end
 
 ---@param timer number --time in seconds
 function DBM:CreateBreakTimer(timer)
+	if private.IsEncounterInProgress() then
+		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
+	end
+	if self:MidRestrictionsActive(true) then
+		return self:AddMsg(L.NO_COMMS)
+	end
 	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
 	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
 	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if private.IsEncounterInProgress() then
-		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 60 then
 		return self:AddMsg(L.BREAK_USAGE)
@@ -2457,7 +2476,7 @@ do
 			DBT:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
-			if broadcast and not IsTrialAccount() then
+			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive(true) then
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
@@ -3002,6 +3021,7 @@ do
 	---@param creatureID number
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
+		if DBM:MidRestrictionsActive(true) then return end
 		--Always prioritize a quick boss unit scan on retail first
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do
@@ -3009,7 +3029,7 @@ do
 				local bossGUID = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(bossGUID)
 				if cid == creatureID then
-					return unitId
+					return unitId, bossGUID
 				end
 			end
 		end
@@ -3018,7 +3038,7 @@ do
 				local guid2 = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(guid2)
 				if cid == creatureID then
-					return unitId
+					return unitId, guid2
 				end
 			end
 		end
@@ -3183,13 +3203,18 @@ end
 ----<type>:<realmID>:<dbID>
 ---@param self DBMModOrDBM
 function DBM:GetCIDFromGUID(guid)
+	if issecretvalue then
+		if issecretvalue(guid) then
+			return 0
+		end
+	end
 	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
 	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "Pet") then
 		return tonumber(cid)
 	elseif type and (guidType == "Player" or guidType == "Item") then
 		return tonumber(playerdbID)
 	end
-	return 0
+	return 0, guid
 end
 
 function DBM:IsNonPlayableGUID(guid)
@@ -3200,6 +3225,12 @@ end
 
 ---@param self DBMModOrDBM
 function DBM:IsCreatureGUID(guid)
+	if issecretvalue then
+		--Player guids aren't secrets, so if it's secret, it must be creature or npc
+		if issecretvalue(guid) then
+			return true
+		end
+	end
 	local guidType = strsplit("-", guid or "")
 	return guidType and (guidType == "Creature" or guidType == "Vehicle")--To determine, add pet or not?
 end
@@ -4461,9 +4492,11 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 				timerRequestInProgress = true
 				-- Request timer to 3 person to prevent failure.
 				self:Unschedule(self.RequestTimers)
-				self:Schedule(7, self.RequestTimers, self, 1)
-				self:Schedule(10, self.RequestTimers, self, 2)
-				self:Schedule(13, self.RequestTimers, self, 3)
+				if not DBM:MidRestrictionsActive() then
+					self:Schedule(7, self.RequestTimers, self, 1)
+					self:Schedule(10, self.RequestTimers, self, 2)
+					self:Schedule(13, self.RequestTimers, self, 3)
+				end
 				C_TimerAfter(15, function() timerRequestInProgress = false end)
 				self:GROUP_ROSTER_UPDATE(true)
 			end
@@ -7655,64 +7688,69 @@ do
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode()
-		fireEvent("DBM_TestModStarted")
-		if not testMod then
-			---@class DBMModTestMod: DBMMod
-			testMod = self:NewMod("TestMod")
-			self:GetModLocalization("TestMod"):SetGeneralLocalization{name = "Test Mod"}
-			testWarning1 = testMod:NewAnnounce("%s", 1, "136116")--Interface\\Icons\\Spell_Nature_WispSplode
-			testWarning2 = testMod:NewAnnounce("%s", 2, private.isRetail and "136194" or "136221")
-			testWarning3 = testMod:NewAnnounce("%s", 3, "135826")
-			testTimer1 = testMod:NewTimer(20, "%s", "136116", nil, nil)
-			testTimer2 = testMod:NewTimer(20, "%s ", "134170", nil, nil, 1)
-			testTimer3 = testMod:NewTimer(20, "%s  ", private.isRetail and "136194" or "136221", nil, nil, 3, CL.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")
-			testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, CL.INTERRUPT_ICON, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)--Flagged Priority for test mode
-			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, CL.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")
-			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")
-			testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
-			testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
-			testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)
-			testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, 2, 2)
-			testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3, 2) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
+		if self:IsPostMidnight() then
+			--Run the encounter timeline demo mode instead of DBM test Bars
+			C_EncounterTimeline.AddEditModeEvents()
+		else
+			fireEvent("DBM_TestModStarted")
+			if not testMod then
+				---@class DBMModTestMod: DBMMod
+				testMod = self:NewMod("TestMod")
+				self:GetModLocalization("TestMod"):SetGeneralLocalization{name = "Test Mod"}
+				testWarning1 = testMod:NewAnnounce("%s", 1, "136116")--Interface\\Icons\\Spell_Nature_WispSplode
+				testWarning2 = testMod:NewAnnounce("%s", 2, private.isRetail and "136194" or "136221")
+				testWarning3 = testMod:NewAnnounce("%s", 3, "135826")
+				testTimer1 = testMod:NewTimer(20, "%s", "136116", nil, nil)
+				testTimer2 = testMod:NewTimer(20, "%s ", "134170", nil, nil, 1)
+				testTimer3 = testMod:NewTimer(20, "%s  ", private.isRetail and "136194" or "136221", nil, nil, 3, CL.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")
+				testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, CL.INTERRUPT_ICON, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)--Flagged Priority for test mode
+				testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, CL.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")
+				testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")
+				testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
+				testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
+				testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)
+				testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, 2, 2)
+				testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3, 2) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
+			end
+			testTimer1:Stop("Test Bar showing 5s Variance")
+			testTimer2:Stop("Adds")
+			testTimer3:Stop("Evil Debuff")
+			testTimer4:Stop("Important Interrupt")
+			testTimer5:Stop("Boom!")
+			testTimer6:Stop("Handle your Role")
+			testTimer7:Stop("Next Stage")
+			testTimer8:Stop("Custom User Bar")
+			testTimer1:Start("v5-10", "Test Bar showing 5s Variance")
+			testTimer2:Start("v25-30", "Adds")
+			testTimer3:Start(43, "Evil Debuff")
+			testTimer4:Start(20, "Important Interrupt")
+			testTimer5:Start(60, "Boom!")
+			testTimer6:Start("v32-35", "Handle your Role")
+			testTimer7:Start(50, "Next Stage")
+			testTimer8:Start(55, "Custom User Bar")
+			testWarning1:Cancel()
+			testWarning2:Cancel()
+			testWarning3:Cancel()
+			testSpecialWarning1:Cancel()
+			testSpecialWarning1:CancelVoice()
+			testSpecialWarning2:Cancel()
+			testSpecialWarning2:CancelVoice()
+			testSpecialWarning3:Cancel()
+			testSpecialWarning3:CancelVoice()
+			testWarning1:Show("Test-mode started...")
+			testWarning1:Schedule(62, "Test-mode finished!")
+			testWarning3:Schedule(50, "Boom in 10 sec!")
+			testWarning3:Schedule(20, "Pew Pew Laser Owl!")
+			testWarning2:Schedule(38, "Evil Spell in 5 sec!")
+			testWarning2:Schedule(43, "Evil Spell!")
+			testWarning1:Schedule(10, "Test Bar expired!")
+			testSpecialWarning1:Schedule(20, "Pew Pew Laser Owl")
+			testSpecialWarning1:ScheduleVoice(20, "runaway")
+			testSpecialWarning2:Schedule(43, "Fear!")
+			testSpecialWarning2:ScheduleVoice(43, "fearsoon")
+			testSpecialWarning3:Schedule(60, "Boom!")
+			testSpecialWarning3:ScheduleVoice(60, "defensive")
 		end
-		testTimer1:Stop("Test Bar showing 5s Variance")
-		testTimer2:Stop("Adds")
-		testTimer3:Stop("Evil Debuff")
-		testTimer4:Stop("Important Interrupt")
-		testTimer5:Stop("Boom!")
-		testTimer6:Stop("Handle your Role")
-		testTimer7:Stop("Next Stage")
-		testTimer8:Stop("Custom User Bar")
-		testTimer1:Start("v5-10", "Test Bar showing 5s Variance")
-		testTimer2:Start("v25-30", "Adds")
-		testTimer3:Start(43, "Evil Debuff")
-		testTimer4:Start(20, "Important Interrupt")
-		testTimer5:Start(60, "Boom!")
-		testTimer6:Start("v32-35", "Handle your Role")
-		testTimer7:Start(50, "Next Stage")
-		testTimer8:Start(55, "Custom User Bar")
-		testWarning1:Cancel()
-		testWarning2:Cancel()
-		testWarning3:Cancel()
-		testSpecialWarning1:Cancel()
-		testSpecialWarning1:CancelVoice()
-		testSpecialWarning2:Cancel()
-		testSpecialWarning2:CancelVoice()
-		testSpecialWarning3:Cancel()
-		testSpecialWarning3:CancelVoice()
-		testWarning1:Show("Test-mode started...")
-		testWarning1:Schedule(62, "Test-mode finished!")
-		testWarning3:Schedule(50, "Boom in 10 sec!")
-		testWarning3:Schedule(20, "Pew Pew Laser Owl!")
-		testWarning2:Schedule(38, "Evil Spell in 5 sec!")
-		testWarning2:Schedule(43, "Evil Spell!")
-		testWarning1:Schedule(10, "Test Bar expired!")
-		testSpecialWarning1:Schedule(20, "Pew Pew Laser Owl")
-		testSpecialWarning1:ScheduleVoice(20, "runaway")
-		testSpecialWarning2:Schedule(43, "Fear!")
-		testSpecialWarning2:ScheduleVoice(43, "fearsoon")
-		testSpecialWarning3:Schedule(60, "Boom!")
-		testSpecialWarning3:ScheduleVoice(60, "defensive")
 	end
 end
 

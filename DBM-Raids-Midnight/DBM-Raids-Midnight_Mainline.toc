@@ -1,0 +1,38 @@
+## Interface: 120000
+## X-Min-Interface: 120000
+## Version: @project-version@
+## Category: DBM
+
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (Midnight)|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMRaidsMidnight_AllSavedVars
+## SavedVariablesPerCharacter: DBMRaidsMidnight_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: MIDNIGHT
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-SubCategoriesID: 2913, 2939, 2912
+## X-DBM-Mod-Name: Raids (Midnight)
+## X-DBM-Mod-Sort: 91
+## X-DBM-Mod-MapID: 2913, 2939, 2912
+## X-DBM-Mod-MinCoreRevision: 20230617000000
+## X-DBM-Mod-MinExpansion: 11
+## X-Curse-Project-ID: 3358
+## X-Wago-ID: qv633o6b
+
+# localization.en.lua
+
+VoidSpire\ImperatorAverzian.lua
+VoidSpire\Vorasius.lua
+VoidSpire\Fallen-KingShalhadaar.lua
+VoidSpire\Vaelgor_and_Ezzorak.lua
+VoidSpire\LightblindedVanguard.lua
+VoidSpire\CrownoftheCosmos.lua
+
+TheDreamrift\ChimaerustheUndreamtGod.lua
+
+MarchonQuelDanas\BelorenChildofAlar.lua
+MarchonQuelDanas\MidnightFalls.lua

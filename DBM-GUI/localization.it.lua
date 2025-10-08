@@ -279,31 +279,32 @@ L.DontShowPTText			= "Niente annunci testuali Temporizzatore Pull/Pausa"
 L.DontPlayPTCountdown		= "Niente audio conto alla rovescia Pull/Pausa/Temp. Personale"
 L.PT_Threshold				= "No audio conto alla rovescia Pull/Pausa/Temp. Personale sopra: %d"
 
--- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+-- Pannello: Funzionalità Blizzard
+L.Panel_HideBlizzard				= "Blocca Funzionalità Blizzard"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast					= "Disabilita toast Blizzard (popup)"
+L.HideGarrisonUpdates				= "Nascondi toast dei seguaci durante i combattimenti con i boss"
+L.HideGuildChallengeUpdates			= "Nascondi toast delle sfide di gilda durante i combattimenti con i boss"
+--L.HideBossKill					= "Nascondi toast di uccisione boss"--NYI
+--L.HideVaultUnlock					= "Nascondi toast di sblocco della cassaforte"--NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics					= "Blocca cinematics di gioco"
+L.DuringFight						= "Blocca le scene tagliate in combattimento durante gli incontri con i boss"--utilizza il controllo esplicito IsEncounterInProgress
+L.InstanceAnywhere					= "Blocca le scene tagliate non in combattimento ovunque all'interno di un'istanza di dungeon o raid"
+L.NonInstanceAnywhere				= "PERICOLO: Blocca le scene tagliate nel mondo aperto all'aperto (NON raccomandato)"
+L.OnlyAfterSeen						= "Blocca solo le scene tagliate dopo che sono state viste almeno una volta (FORTEMENTE raccomandato, per vivere la storia come previsto almeno una volta)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound						= "Blocca i suoni di gioco"
+L.DisableSFX						= "Disabilita il canale effetti sonori durante i combattimenti con i boss"
+L.DisableAmbiance					= "Disabilita il canale di atmosfera durante i combattimenti con i boss"
+L.DisableMusic						= "Disabilita il canale musicale durante i combattimenti con i boss (Nota: Se abilitato, la musica personalizzata del boss non verrà riprodotta se abilitata nei suoni degli eventi)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard					= "Disabilita e Nascondi altre Seccature Blizzard"
+L.HideBossEmoteFrame				= "Nascondi il riquadro delle emote del boss raid durante i combattimenti con i boss"
+L.HideWatchFrame					= "Nascondi il riquadro degli obiettivi durante i combattimenti con i boss se non vengono tracciati successi e se non sei in un Mythic+"
+L.HideQuestTooltips					= "Nascondi gli obiettivi delle missioni dai tooltip durante i combattimenti con i boss"--Attualmente nascosto (NYI)
+L.HideTooltips						= "Nascondi completamente i tooltip durante i combattimenti con i boss"
+L.HideBlizzardTimeline				= "Nascondi la Timeline Raid di Blizzard durante i combattimenti con i boss"
 
 L.Panel_ExtraFeatures		= "Funzionalità Aggiuntive"
 --

@@ -548,6 +548,7 @@ L.HideBossEmoteFrame				= "Boss 战斗中隐藏Boss表情框体"
 L.HideWatchFrame					= "在没有成就追踪的情况下，Boss战斗中隐藏任务追踪框体"
 L.HideQuestTooltips					= "Boss 战斗中隐藏鼠标提示窗体中的任务进度"
 L.HideTooltips						= "Boss 战斗中完全隐藏鼠标提示窗体"
+L.HideBlizzardTimeline				= "Boss 战斗中隐藏暴雪团队时间线"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "团队队长控制项"

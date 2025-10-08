@@ -10,7 +10,9 @@
 
 ## Old Content mods are split into multiple packages
 Older content is split into multiple addons to reduce mod update size. These are often far less updated as DBM Core packages and are better as optional extra packages. You can get them here:
-* [Battle for Azeroth Mods](https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-bfa)
+* [Dragonflight Raid Mods](https://www.curseforge.com/wow/addons/dbm-dragonflight-requires-deadly-boss-mods-dbm)
+* [Shadowlands Raid Mods](https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-shadowlands)
+* [Battle for Azeroth Raid Mods](https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-bfa)
 * [Legion Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-legion)
 * [Warlords of Draenor Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-wod)
 * [Mists of Pandaria Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-mop)
@@ -25,10 +27,6 @@ Older content is split into multiple addons to reduce mod update size. These are
 * [DBM-Challenges](https://curseforge.com/wow/addons/dbm-challenges)
 * [DBM-TimelessIsle](https://curseforge.com/wow/addons/dbm-timeless-isle)
 * [DBM-PvP](https://curseforge.com/wow/addons/dbm-pvp)
-<!--
-* [SpellTimers](https://curseforge.com/wow/addons/dbm-spelltimers)
-* [RaidLeadTools](https://curseforge.com/wow/addons/dbm-raidleadtools)
--->
 
 ## Countdown Packs
 * [Countpack Overwatch](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-overwatch-countdown-pack)

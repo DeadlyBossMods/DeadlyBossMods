@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end--May be unhidden later if we get access to registering sound files to blizzard alerts
 local L = DBM_GUI_L
 
 local spokenAlertsPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpokenAlerts, "option")

@@ -1,3 +1,4 @@
+if DBM:IsPostMidnight() then return end--All options here useless in midnight (but that could change if they give us access to registering media
 local L = DBM_GUI_L
 
 local handPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_HandFilter, "option")

@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traducido por "
 L.TranslationBy 			= "Saispai, Woopy"
-L.Website					= "Visita nuestro canal de Discord (|cFF73C2FBhttps://discord.gg/deadlybossmods|r) y síguenos en Twitter (@deadlybossmods)."
+L.Website					= "Visita nuestro canal de Discord (|cFF73C2FBhttps://discord.gg/deadlybossmods|r)"
 L.WebsiteButton				= "Página web"
 
 L.OTabBosses	= "Jefes"
@@ -75,7 +75,7 @@ L.Area_ModulesForYou		= "Guía de módulos"
 L.Area_ProfilesSetup		= "Guía de uso de perfiles de DBM"
 -- Panel: Core & GUI
 L.Core_GUI 					= "Core e interfaz"
-L.General 					= "Opciones generales de DBM"
+L.General 					= "Opciones generales"
 L.EnableMiniMapIcon			= "Mostrar botón del minimapa"
 L.EnableCompartmentIcon		= "Mostrar botón de compartimento"
 L.UseSoundChannel			= "Canal de audio para alertas"
@@ -545,6 +545,7 @@ L.HideBossEmoteFrame 				= "Ocultar marco de emociones durante encuentros de jef
 L.HideWatchFrame 					= "Ocultar marco de seguimiento en jefes si no se siguen logros ni en Mítico+"
 L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefe" --Currently hidden (NYI)
 L.HideTooltips 						= "Ocultar las descripciones emergentes durante encuentros de jefe"
+L.HideBlizzardTimeline				= "Ocultar la línea de tiempo de la banda de Blizzard durante los encuentros de jefe"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Controles de líder de banda"
@@ -599,7 +600,7 @@ L.Panel_Range				= "Marco de distancia"
 L.Panel_Nameplates			= "Placas de nombre"
 L.Plater_Config				= "Abrir configuración de Plater"
 L.ThreatPlates_Config		= "Abrir configuración de Threat Plates"
-L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombre)"
+L.Area_NPStyle				= "Estilo (solo cuando DBM controla las placas de nombre)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"
 L.NPIcon_BarOffSetX 		= "Desplazamiento del icono X: %d"
