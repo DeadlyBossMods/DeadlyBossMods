@@ -538,16 +538,16 @@ L.NonInstanceAnywhere				= "위험: 야외 컷신 재생 차단 (권장하지 �
 L.OnlyAfterSeen						= "위 선택 사항에 해당되는 것 중 1회 이상 본 컷신만 재생 차단 (스토리 이해를 위해 한번은 보도록 의도된 옵션이며 사용을 강력히 권장합니다)"
 --Sound
 L.Area_Sound						= "게임내 소리 차단"
-L.DisableSFX						= "보스 전투중 효과 음량 비활성화"
+L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
 L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
 L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard					= "그 외 블리자드 성가신 요소 비활성화 및 숨김"
-L.HideBossEmoteFrame				= "보스 전투중 보스 감정표현 프레임 숨기기"
-L.HideWatchFrame					= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
-L.HideQuestTooltips					= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
-L.HideTooltips						= "보스 전투중 툴팁 완전히 숨기기"
-L.HideBlizzardTimeline				= "보스 전투중 블리자드 공격대 타임라인 숨기기"
+L.Area_HideBlizzard			= "그 외 블리자드 성가신 요소 비활성화 및 숨김"
+L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
+L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
+L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
+L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
+L.HideBlizzardTimeline				= "보스 전투중 블리자드 기본 공격대 타임라인 숨기기"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
