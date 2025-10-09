@@ -330,7 +330,7 @@ do
 		return -- Invalid input
 	end
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
 		if self.Options.VarianceEnabled then
@@ -349,7 +349,7 @@ do
 		if newBar then -- Update an existing bar
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
-			newBar.paused = nil
+			newBar.paused = isPaused or nil
 			newBar.minTimer = varianceMinTimer or nil
 			newBar.varianceDuration = varianceDuration or 0
 			newBar.hasVariance = varianceMinTimer and true or false
@@ -392,6 +392,8 @@ do
 				newBar.countdownMax = countdownMax
 				newBar.isCooldown = isCooldown
 				newBar.alwaysHuge = nil
+				newBar.huge = huge or nil
+				newBar.paused = isPaused or nil
 				newBar.minTimer = varianceMinTimer or nil
 				newBar.varianceDuration = varianceDuration or 0
 				newBar.hasVariance = varianceMinTimer and true or false
