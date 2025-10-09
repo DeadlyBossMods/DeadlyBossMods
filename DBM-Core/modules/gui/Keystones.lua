@@ -321,7 +321,7 @@ function PartyGuildUpdate(table)
 			textDungeon:SetAttribute('spell', teleports[v.mapID][2])
 		end
 
-		textRating.Text:SetText(v.playerRating or '?')
+		textRating.Text:SetText(v.playerRating == 0 and '-' or v.playerRating or '?')
 		textRating:SetPoint("TOP", titleRating, "BOTTOM", 0, offset)
 		textRating:SetWidth(titleRating:GetWidth())
 	end
@@ -367,7 +367,7 @@ frame:CreateTab(PARTY, function()
 			name = v.name,
 			keyLevel = 0,
 			mapID = 0,
-			playerRating = '-',
+			playerRating = 0,
 		}
 	end
 	PartyGuildUpdate(partyKeystones)

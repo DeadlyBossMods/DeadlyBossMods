@@ -657,7 +657,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 	area:SetPoint("RIGHT", self.frame)
 	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
 	local key = ""
-	if DBM.Options.ShowWAKeys and spellID then
+	if DBM.Options.ShowWAKeys and spellID and not DBM:IsPostMidnight() then
 		key = DBM_CORE_L.WEAKAURA_KEY:format(spellID)
 	end
 	if icon then

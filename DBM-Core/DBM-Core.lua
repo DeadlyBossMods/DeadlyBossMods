@@ -1991,8 +1991,8 @@ do
 			else
 				self:RegisterEvents(
 					"ENCOUNTER_TIMELINE_EVENT_ADDED",
-					"ENCOUNTER_TIMELINE_EVENT_REMOVED"
---					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+					"ENCOUNTER_TIMELINE_EVENT_REMOVED",
+					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 				)
 			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
@@ -4490,9 +4490,13 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then
 				timerRequestInProgress = true
+				--if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
+				--	--Request timeline timers from API
+				--	self:RecoverBlizzardTimers()
+				--end
 				-- Request timer to 3 person to prevent failure.
 				self:Unschedule(self.RequestTimers)
-				if not DBM:MidRestrictionsActive() then
+				if not self:MidRestrictionsActive() then
 					self:Schedule(7, self.RequestTimers, self, 1)
 					self:Schedule(10, self.RequestTimers, self, 2)
 					self:Schedule(13, self.RequestTimers, self, 3)
