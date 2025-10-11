@@ -317,18 +317,6 @@ L.CBTRole = "Feitiço de função específica"
 L.CBTPhase = "Mudança de fase"
 L.CBTImportant = "Feitiço importante para o usuário"
 
--- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Anúncios especiais"
-L.Area_SpecWarn				= "Opções de anúncios especiais"
-L.ShowSWarningsInChat 		= "Exibir anúncios especiais no quadro de bate-papo"
-L.SpecWarn_FlashFrameRepeat	= "Repetir %d |4vez:vezes;"
-L.SpecWarn_FlashRepeat		= "Repetir piscada"
-L.SpecWarn_FlashColor		= "Cor da piscada"
-L.SpecWarn_FlashDur			= "Duração da piscada: %0.1f"
-L.SpecWarn_FlashAlpha		= "Transparência da piscada: %0.1f"
-L.SpecWarn_DemoButton		= "Exibir exemplo"
-L.SpecWarn_ResetMe			= "Redefinir padrões"
-
 L.Area_BugAlerts 			= "Opções de alerta de relatório de bugs"
 L.BadTimerAlert 			= "Exibir mensagem no bate-papo quando o DBM detectar um cronômetro incorreto com pelo menos 1 segundo de erro"
 
