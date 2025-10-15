@@ -727,11 +727,27 @@ L.DUOS						= "Дуо"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
-L.KEYSTONE_NAMES[378] = 'ЧП' -- Halls of Atonement
-L.KEYSTONE_NAMES[391] = 'РТУЧ' -- Tazavesh: Streets of Wonder
-L.KEYSTONE_NAMES[392] = 'РТГС' -- Tazavesh: So'leah's Gambit
-L.KEYSTONE_NAMES[499] = 'ПСП' -- Priory of the Sacred Flame
-L.KEYSTONE_NAMES[503] = 'АКГО' -- Ara-Kara, City of Echoes
-L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
-L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
-L.KEYSTONE_NAMES[542] = 'ЗА' -- Eco-Dome Al'dani
+L.KEYSTONE_NAMES = {
+	[197] = 'ОА', -- Eye of Azshara
+	[198] = 'ЧТС', -- Darkheart Thicket
+	[199] = 'КЧЛ', -- Black Rook Hold
+	[200] = 'ЧД', -- Halls of Valor
+	[206] = 'ЛН', -- Neltharion's Lair
+	[207] = 'КС', -- Vault of the Wardens
+	[208] = 'УАП', -- Maw of Souls
+	[209] = 'КС', -- The Arcway
+	[210] = 'КЗ', -- Court of Stars
+	[227] = 'ВКН', -- Return to Karazhan: Lower
+	[233] = 'СВН', -- Cathedral of Eternal Night
+	[234] = 'ВКВ', -- Return to Karazhan: Upper
+	[239] = 'ПТ', -- Seat of the Triumvirate
+
+	[378] = 'ЧП', -- Halls of Atonement
+	[391] = 'РТУЧ', -- Tazavesh: Streets of Wonder
+	[392] = 'РТГС', -- Tazavesh: So'leah's Gambit
+	[499] = 'ПСП', -- Priority of the Sacred Flame
+	[503] = 'АКГО', -- Ara-Kara, City of Echoes
+	[505] = 'СР', -- The Dawnbreaker
+	[525] = 'ШЛЮЗ', -- Operation Floodgate
+	[542] = 'ЗА' -- Eco-Dome Al'dani
+}
