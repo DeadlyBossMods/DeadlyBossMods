@@ -727,10 +727,24 @@ L.DUOS						= "Дуо"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+L.KEYSTONE_NAMES[197] = 'ОА' -- Eye of Azshara
+L.KEYSTONE_NAMES[198] = 'ЧТС' -- Darkheart Thicket
+L.KEYSTONE_NAMES[199] = 'КЧЛ' -- Black Rook Hold
+L.KEYSTONE_NAMES[200] = 'ЧД' -- Halls of Valor
+L.KEYSTONE_NAMES[206] = 'ЛН' -- Neltharion's Lair
+L.KEYSTONE_NAMES[207] = 'КС' -- Vault of the Wardens
+L.KEYSTONE_NAMES[208] = 'УАП' -- Maw of Souls
+L.KEYSTONE_NAMES[209] = 'КС' -- The Arcway
+L.KEYSTONE_NAMES[210] = 'КЗ' -- Court of Stars
+L.KEYSTONE_NAMES[227] = 'ВКН' -- Return to Karazhan: Lower
+L.KEYSTONE_NAMES[233] = 'СВН' -- Cathedral of Eternal Night
+L.KEYSTONE_NAMES[234] = 'ВКВ' -- Return to Karazhan: Upper
+L.KEYSTONE_NAMES[239] = 'ПТ' -- Seat of the Triumvirate
+
 L.KEYSTONE_NAMES[378] = 'ЧП' -- Halls of Atonement
 L.KEYSTONE_NAMES[391] = 'РТУЧ' -- Tazavesh: Streets of Wonder
 L.KEYSTONE_NAMES[392] = 'РТГС' -- Tazavesh: So'leah's Gambit
-L.KEYSTONE_NAMES[499] = 'ПСП' -- Priory of the Sacred Flame
+L.KEYSTONE_NAMES[499] = 'ПСП' -- Priority of the Sacred Flame
 L.KEYSTONE_NAMES[503] = 'АКГО' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
