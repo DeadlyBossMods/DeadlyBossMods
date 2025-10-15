@@ -746,6 +746,20 @@ L.DUOS							= "Duos"
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
 L.KEYSTONE_NAMES = {
+	[197] = 'EOA', -- Eye of Azshara
+	[198] = 'DHT', -- Darkheart Thicket
+	[199] = 'BRH', -- Black Rook Hold
+	[200] = 'HOV', -- Halls of Valor
+	[206] = 'NL', -- Neltharion's Lair
+	[207] = 'VOTW', -- Vault of the Wardens
+	[208] = 'MOS', -- Maw of Souls
+	[209] = 'ARC', -- The Arcway
+	[210] = 'COS', -- Court of Stars
+	[227] = 'LKARA', -- Return to Karazhan: Lower
+	[233] = 'COEN', -- Cathedral of Eternal Night
+	[234] = 'UKARA', -- Return to Karazhan: Upper
+	[239] = 'SOTT', -- Seat of the Triumvirate
+
 	[378] = 'HOA', -- Halls of Atonement
 	[391] = 'STREET', -- Tazavesh: Streets of Wonder
 	[392] = 'GAMBIT', -- Tazavesh: So'leah's Gambit
