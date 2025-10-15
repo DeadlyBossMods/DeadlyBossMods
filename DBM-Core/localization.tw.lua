@@ -709,6 +709,20 @@ L.DUOS							= "雙煞"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
+L.KEYSTONE_NAMES[197] = '艾眼' -- Eye of Azshara
+L.KEYSTONE_NAMES[198] = '暗心' -- Darkheart Thicket
+L.KEYSTONE_NAMES[199] = '玄鴉' -- Black Rook Hold
+L.KEYSTONE_NAMES[200] = '英靈' -- Halls of Valor
+L.KEYSTONE_NAMES[206] = '巢穴' -- Neltharion's Lair
+L.KEYSTONE_NAMES[207] = '看守' -- Vault of the Wardens
+L.KEYSTONE_NAMES[208] = '靈魂' -- Maw of Souls
+L.KEYSTONE_NAMES[209] = '地道' -- The Arcway
+L.KEYSTONE_NAMES[210] = '眾星' -- Court of Stars
+L.KEYSTONE_NAMES[227] = '卡拉贊下' -- Return to Karazhan: Lower
+L.KEYSTONE_NAMES[233] = '永夜' -- Cathedral of Eternal Night
+L.KEYSTONE_NAMES[234] = '卡拉贊上' -- Return to Karazhan: Upper
+L.KEYSTONE_NAMES[239] = '議會' -- Seat of the Triumvirate
+
 L.KEYSTONE_NAMES[378] = '贖罪' -- Halls of Atonement
 L.KEYSTONE_NAMES[391] = '街道' -- Tazavesh: Streets of Wonder
 L.KEYSTONE_NAMES[392] = '險招' -- Tazavesh: So'leah's Gambit
