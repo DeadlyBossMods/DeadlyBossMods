@@ -30,6 +30,7 @@
 		"EncounterTimeline",
 		"EncounterTimeline.TimelineView",
 		"C_EncounterTimeline",
+		"PlayerIsTimerunning",
 
 
 		"ALL",
