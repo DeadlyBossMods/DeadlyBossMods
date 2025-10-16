@@ -434,7 +434,7 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = UnitName("player") or error("failed to get player name")
+local playerName = UnitName("player")
 private.playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
@@ -876,16 +876,22 @@ end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 ---@param self DBMModOrDBM
-function DBM:MidRestrictionsActive()
+---@param includeAuras boolean?
+function DBM:MidRestrictionsActive(includeAuras)
 	--Not Midnight (or later), rest of checks don't apply
 	if private.wowTOC < 120000 then
 		return false
 	end
-	local isRestricted = GetRestrictedActionStatus()--Second arg is "reason"
-	if isRestricted then
+	if includeAuras and (GetRestrictedActionStatus(1) or GetRestrictedActionStatus(0)) then
 		return true
-	else
-		return false
+	end
+	--In active encounter or active M+
+	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
+		return true
+	end
+	--Comms and chat messages blocked. might be redundant to above but for good measure
+	if C_ChatInfo.InChatMessagingLockdown() then
+		return true
 	end
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
@@ -1949,7 +1955,6 @@ do
 				"CHAT_MSG_ADDON_LOGGED",
 				"BN_CHAT_MSG_ADDON",
 				"PLAYER_REGEN_ENABLED",
-				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				"BOSS_KILL",
@@ -1977,6 +1982,7 @@ do
 			if not DBM:IsPostMidnight() then
 				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
+					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 					"PLAYER_REGEN_DISABLED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
@@ -2475,7 +2481,10 @@ do
 			-- Fire cancelation of pizza timer
 			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
 				text = text:sub(1, 16)
-				text = text:gsub("%%t", UnitName("target") or "<no target>")
+				--No UnitName in instances at all in midnight
+				if not (self:IsPostMidnight() and IsInInstance()) then
+					text = text:gsub("%%t", UnitName("target") or "<no target>")
+				end
 				if whisperTarget then
 					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
 				else
@@ -2486,7 +2495,10 @@ do
 		end
 		if sender and ignore[sender] then return end
 		text = text:sub(1, 16)
-		text = text:gsub("%%t", UnitName("target") or "<no target>")
+		--No UnitName in instances at all in midnight
+		if not (self:IsPostMidnight() and IsInInstance()) then
+			text = text:gsub("%%t", UnitName("target") or "<no target>")
+		end
 		if time < 3 then
 			self:AddMsg(L.PIZZA_ERROR_USAGE)
 			return
@@ -2929,7 +2941,7 @@ do
 	---<br>Rarely, it's also used for boss checks by name since it simplifies code in mod.
 	---@param skipBoss boolean?
 	function DBM:GetRaidUnitId(name, skipBoss)
-		if not skipBoss then
+		if not skipBoss and not (self:IsPostMidnight() and IsInInstance()) then
 			for i = 1, 10 do
 				local unitId = "boss" .. i
 				local bossName = UnitName(unitId)
@@ -2993,6 +3005,7 @@ do
 	---@param enemyGUID string
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids. Bypasses UnitTokenFromGUID (which checks EVERYTHING)
 	function DBM:GetUnitIdFromGUID(enemyGUID, bossOnly)
+		if self:IsPostMidnight() and IsInInstance() then return end
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
 		--(because blizzard checks every token imaginable, even more than fullEnemyUids does and they have boss as the END in their order selection)
@@ -3018,7 +3031,7 @@ do
 	---@param creatureID number
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
-		if DBM:MidRestrictionsActive() then return end
+		if self:IsPostMidnight() and IsInInstance() then return end
 		--Always prioritize a quick boss unit scan on retail first
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do
@@ -3045,6 +3058,7 @@ do
 	---@param name string
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetBossUnitId(name, bossOnly)
+		if self:IsPostMidnight() and IsInInstance() then return end
 		local returnUnitID
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do
@@ -3187,6 +3201,7 @@ end
 
 ---@param self DBMModOrDBM
 function DBM:GetUnitCreatureId(uId)
+	if self:IsPostMidnight() and IsInInstance() then return end
 	return self:GetCIDFromGUID(UnitGUID(uId))
 end
 
@@ -4539,17 +4554,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
-		if DBM:MidRestrictionsActive() then return end
+		if self:IsPostMidnight() and IsInInstance() then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
-		if DBM:MidRestrictionsActive() then return end
+		if self:IsPostMidnight() and IsInInstance() then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
-		if DBM:MidRestrictionsActive() then return end
+		if self:IsPostMidnight() and IsInInstance() then return end
 		loadModByUnit(uId .. "target")
 	end
 end
@@ -7028,7 +7043,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable = 0, 0, true--return off CD values if API fails (ie midnight)
-		if not self:IsPostMidnight() then
+		if not self:MidRestrictionsActive(true) then
 			if not halfAssedClassicPath then
 				local spellTable = GetSpellCooldown(spellId)
 				if spellTable then
@@ -7057,7 +7072,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -7099,7 +7114,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -7141,7 +7156,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
 		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
@@ -7181,7 +7196,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitBuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
-		if self:MidRestrictionsActive() then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local buff = DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if buff then
@@ -7198,7 +7213,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitDebuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
-		if self:MidRestrictionsActive() then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local debuff = DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if debuff then
@@ -8382,10 +8397,16 @@ do
 	end
 
 	function DBM:GetBossHPByUnitID(uId)
-		if UnitHealthMax(uId) ~= 0 then
-			local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if self:MidRestrictionsActive() then
+			local hp = UnitHealthPercent(uId, nil, true)
 			bossHealth[uId] = hp
-			return hp, uId, UnitName(uId)
+			return hp, uId, DBM_COMMON_L.UNKNOWN
+		else
+			if UnitHealthMax(uId) ~= 0 then
+				local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+				bossHealth[uId] = hp
+				return hp, uId, UnitName(uId)
+			end
 		end
 	end
 
