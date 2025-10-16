@@ -266,7 +266,9 @@ end
 
 function mocks:ApplyUnitAura(name, guid, spellId, spellName, auraType, amount)
 	local uId = DBM:GetRaidUnitId(name)
+	if not uId then return end--Won't happen but satisfies LuaLS
 	local uIdbyGuid = DBM:GetUnitIdFromGUID(guid)
+	if not uIdbyGuid then return end--Won't happen but satisfies LuaLS
 	local auras = unitAuras[uId] or {}
 	unitAuras[uId] = auras
 	unitAuras[uIdbyGuid] = auras
@@ -288,9 +290,11 @@ end
 
 function mocks:RemoveUnitAura(name, guid, spellId, spellName)
 	local uId = DBM:GetRaidUnitId(name)
+	if not uId then return end--Won't happen but satisfies LuaLS
 	local uIdbyGuid = DBM:GetUnitIdFromGUID(guid)
 	local auras = unitAuras[uId] or {}
 	unitAuras[uId] = auras
+	if not uIdbyGuid then return end--Won't happen but satisfies LuaLS
 	unitAuras[uIdbyGuid] = auras
 	if guid == UnitGUID("player") then
 		unitAuras["player"] = auras

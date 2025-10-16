@@ -567,6 +567,7 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		local uId = DBM:GetUnitIdFromGUID(args.sourceGUID)
+		if not uId then return end--Won't happen but satisfies LuaLS
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) and not DBM:UnitBuff(uId, 445013) then--Count interrupt, so cooldown is not checked
 			specWarnNullDetonation:Show(args.sourceName, count)
 			if count < 6 then
@@ -900,6 +901,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 445013 then--Dark Barrier Removed
 		local uId = DBM:GetUnitIdFromGUID(args.destGUID)
+		if not uId then return end--Won't happen but satisfies LuaLS
 		local _, _, _, _, _, _, _, _, castingSpellID = UnitCastingInfo(uId)
 		if castingSpellID and castingSpellID == 445021 then
 			if self:CheckInterruptFilter(args.destGUID, false, false) then--Count interrupt, so cooldown is not checked
