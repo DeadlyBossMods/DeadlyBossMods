@@ -332,6 +332,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 1234328 then
 		local uId = self:GetUnitIdFromGUID(args.sourceGUID)
+		if not uId then return end--Won't happen but satisfies LuaLS
 		if UnitPower(uId) > 70 then--Might need fine tuning
 			timerPhotonBlastCD:Start(19, args.sourceGUID)
 		else

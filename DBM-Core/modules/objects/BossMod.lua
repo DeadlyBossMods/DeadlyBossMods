@@ -357,7 +357,7 @@ end
 ---@param strict boolean? Used for even more strict filtering that makes it also require player themselves are in combat (usually used in outdoor world such as timeless isle)
 ---@return boolean
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly, strict)
-	if self:MidRestrictionsActive(true) then return true end--GUID checks not allowed in Midnight+ during combat
+	if self:MidRestrictionsActive() then return true end--GUID checks not allowed in Midnight+ during combat
 	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) and (allowFriendly or not UnitIsFriend("player", customunitID)) then return true end
@@ -427,7 +427,7 @@ do
 	---Returns current name and unitID of person tanking requested target if possible, false otherwise
 	---@param cidOrGuid number|string
 	function bossModPrototype:GetCurrentTank(cidOrGuid)
-		if self:MidRestrictionsActive(true) then return false end--GUID checks not allowed in Midnight+ during combat
+		if self:MidRestrictionsActive() then return false end--GUID checks not allowed in Midnight+ during combat
 		if lastTank and GetTime() - (bossCache[cidOrGuid] or 0) < 2 then -- return last tank within 2 seconds of call
 			return lastTank
 		else
@@ -476,7 +476,7 @@ do
 	---@return boolean
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		if self:MidRestrictionsActive(true) then return true end--GUID checks not allowed in Midnight+ during combat
+		if self:MidRestrictionsActive() then return true end--GUID checks not allowed in Midnight+ during combat
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
 		if type(cidOrGuid) == "number" then--CID passed

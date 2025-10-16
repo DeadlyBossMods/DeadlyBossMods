@@ -31,6 +31,8 @@
 		"EncounterTimeline.TimelineView",
 		"C_EncounterTimeline",
 		"PlayerIsTimerunning",
+		"GetRestrictedActionStatus",
+		"UnitHealthPercent",
 
 
 		"ALL",
