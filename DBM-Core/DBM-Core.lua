@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 398, "3d79f92"--398.5
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.1"--Core version
+DBM.DisplayVersion = "12.0.2 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 10, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -882,11 +882,11 @@ function DBM:MidRestrictionsActive(includeAuras)
 	if private.wowTOC < 120000 then
 		return false
 	end
-	if includeAuras and (GetRestrictedActionStatus(1) or GetRestrictedActionStatus(0)) then
+	if includeAuras and (GetRestrictedActionStatus(1) or GetRestrictedActionStatus(0)) then--Checks cooldown and auras restrictions
 		return true
 	end
 	--In active encounter or active M+
-	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
+	if private.IsEncounterInProgress() or C_ChallengeMode.IsChallengeModeActive() then
 		return true
 	end
 	--Comms and chat messages blocked. might be redundant to above but for good measure
