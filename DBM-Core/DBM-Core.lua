@@ -876,25 +876,17 @@ end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 ---@param self DBMModOrDBM
----@param combatOnly boolean? Whether or not the restriction only applies to combat
-function DBM:MidRestrictionsActive(combatOnly)
+function DBM:MidRestrictionsActive()
 	--Not Midnight (or later), rest of checks don't apply
 	if private.wowTOC < 120000 then
 		return false
 	end
-	--Aggressive combat check to be safe, checks ALL forms of combat for ALL group members
-	if combatOnly and self:GroupInCombat() then
+	local isRestricted = GetRestrictedActionStatus()--Second arg is "reason"
+	if isRestricted then
 		return true
+	else
+		return false
 	end
-	--Broad rule that will be changed to commented rule in a later build
-	if not combatOnly and IsInInstance() then
-		return true
-	end
-	--In active encounter or active M+
---	if private.IsEncounterInProgress() or (C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()) then
---		return true
---	end
-	return false
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 
@@ -2017,6 +2009,10 @@ do
 					self:RegisterEvents(
 						"UNIT_HEALTH mouseover target focus player"--Base is Frequent on retail, and _FREQUENT deleted
 					)
+				else
+					self:RegisterEvents(
+						"UNIT_HEALTH boss1"--Base is Frequent on retail, and _FREQUENT deleted
+					)
 				end
 			elseif private.isMop then
 				self:RegisterEvents(
@@ -2404,7 +2400,7 @@ function DBM:CreateBreakTimer(timer)
 	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
-	if self:MidRestrictionsActive(true) then
+	if self:MidRestrictionsActive() then
 		return self:AddMsg(L.NO_COMMS)
 	end
 	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
@@ -2477,7 +2473,7 @@ do
 			DBT:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
-			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive(true) then
+			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
 				text = text:sub(1, 16)
 				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
@@ -3022,7 +3018,7 @@ do
 	---@param creatureID number
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
-		if DBM:MidRestrictionsActive(true) then return end
+		if DBM:MidRestrictionsActive() then return end
 		--Always prioritize a quick boss unit scan on retail first
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do
@@ -4543,17 +4539,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
-		if DBM:MidRestrictionsActive(true) then return end
+		if DBM:MidRestrictionsActive() then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
-		if DBM:MidRestrictionsActive(true) then return end
+		if DBM:MidRestrictionsActive() then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
-		if DBM:MidRestrictionsActive(true) then return end
+		if DBM:MidRestrictionsActive() then return end
 		loadModByUnit(uId .. "target")
 	end
 end
@@ -5839,7 +5835,7 @@ do
 		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
 		local gossipOptionID = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			if DBM:MidRestrictionsActive(true) then
+			if DBM:MidRestrictionsActive() then
 				--GUID is a secret in combat
 				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)))
 			else
@@ -6382,13 +6378,18 @@ do
 				--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 				local thisTime = GetTime() - mod.combatInfo.pull
 				local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
-				local wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or CL.UNKNOWN
-				if mod.vb.phase then
-					wipeHP = wipeHP .. " (" .. SCENARIO_STAGE:format(mod.vb.phase) .. ")"
-				end
-				if mod.numBoss and mod.vb.bossLeft and mod.numBoss > 1 then
-					local bossesKilled = mod.numBoss - mod.vb.bossLeft
-					wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
+				local wipeHP
+				if not DBM:IsPostMidnight() then
+					wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or CL.UNKNOWN
+					if mod.vb.phase then
+						wipeHP = wipeHP .. " (" .. SCENARIO_STAGE:format(mod.vb.phase) .. ")"
+					end
+					if mod.numBoss and mod.vb.bossLeft and mod.numBoss > 1 then
+						local bossesKilled = mod.numBoss - mod.vb.bossLeft
+						wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
+					end
+				else
+					wipeHP = hp--No formating in midnight for now
 				end
 				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
 				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
@@ -7056,16 +7057,14 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
-		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
+				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput)
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -7100,16 +7099,14 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
-		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
+				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput, "HARMFUL")
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -7144,16 +7141,14 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId then return end
-		if self:MidRestrictionsActive(true) then return end--Block access to UnitAura in combat in midnight
-		--Block access to GetPlayerAuraBySpellID in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") and not self:IsPostMidnight() then--A simple single spellId check should use more efficent direct blizzard method
+		if self:MidRestrictionsActive() then return end--Block access to UnitAura in combat in midnight
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
-				--Block access to GetAuraDataBySpellName in midnight because it's a protected function only available to blizzard, non blizzard addons must use UnitAura and only out of combat
-				if type(spellInput) == "string" and not spellInput2 and not self:IsPostMidnight() then--A simple single spellName check should use more efficent direct blizzard method
+				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
 					local spellTable = GetAuraDataBySpellName(uId, spellInput, "HELPFUL")
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -7186,7 +7181,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitBuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
-		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive() then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local buff = DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if buff then
@@ -7203,7 +7198,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitDebuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
-		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive() then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local debuff = DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if debuff then
@@ -8303,68 +8298,54 @@ do
 	---@param cIdOrGUID number|string
 	---@param onlyHighest boolean?
 	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
-		local uId = bossHealthuIdCache[cIdOrGUID] or "target"
-		local guid = UnitGUID(uId)
-		--Target or Cached (if already called with this cid or GUID before)
-		if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
-			if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
-			local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-			if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-				bossHealth[cIdOrGUID] = hp
-			end
-			bossNames[cIdOrGUID] = UnitName(uId)
-			bossIcons[cIdOrGUID] = GetRaidTargetIndex(uId)
-			return hp, uId, UnitName(uId)
-		--Focus, does not exist in classic
-		elseif private.isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
-			if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
-			local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
-			if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-				bossHealth[cIdOrGUID] = hp
-			end
-			bossNames[cIdOrGUID] = UnitName("focus")
-			bossIcons[cIdOrGUID] = GetRaidTargetIndex("focus")
-			return hp, "focus", UnitName("focus")
+		if self:MidRestrictionsActive() then
+			bossHealth[cIdOrGUID] = UnitHealthPercent("boss1", nil, true)
 		else
-			--Boss UnitIds
-			if private.isRetail then
-				for i = 1, 10 do
-					local unitID = "boss" .. i
-					local bossguid = UnitGUID(unitID)
-					if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
-						if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
-						local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
-						if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-							bossHealth[cIdOrGUID] = hp
+			local uId = bossHealthuIdCache[cIdOrGUID] or "target"
+			local guid = UnitGUID(uId)
+			--Target or Cached (if already called with this cid or GUID before)
+			if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
+				if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
+				local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+					bossHealth[cIdOrGUID] = hp
+				end
+				bossNames[cIdOrGUID] = UnitName(uId)
+				bossIcons[cIdOrGUID] = GetRaidTargetIndex(uId)
+				return hp, uId, UnitName(uId)
+			--Focus, does not exist in classic
+			elseif private.isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
+				if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
+				local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
+				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+					bossHealth[cIdOrGUID] = hp
+				end
+				bossNames[cIdOrGUID] = UnitName("focus")
+				bossIcons[cIdOrGUID] = GetRaidTargetIndex("focus")
+				return hp, "focus", UnitName("focus")
+			else
+				--Boss UnitIds
+				if private.isRetail then
+					for i = 1, 10 do
+						local unitID = "boss" .. i
+						local bossguid = UnitGUID(unitID)
+						if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
+							if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
+							local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
+							if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+								bossHealth[cIdOrGUID] = hp
+							end
+							bossHealthuIdCache[cIdOrGUID] = unitID
+							bossNames[cIdOrGUID] = UnitName(unitID)
+							bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitID)
+							return hp, unitID, UnitName(unitID)
 						end
-						bossHealthuIdCache[cIdOrGUID] = unitID
-						bossNames[cIdOrGUID] = UnitName(unitID)
-						bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitID)
-						return hp, unitID, UnitName(unitID)
 					end
 				end
-			end
-			--Scan raid/party target frames
-			local idType = (IsInRaid() and "raid") or "party"
-			for i = 0, GetNumGroupMembers() do
-				local unitId = ((i == 0) and "target") or idType .. i .. "target"
-				local bossguid = UnitGUID(unitId)
-				if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
-					if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
-					local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
-					if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-						bossHealth[cIdOrGUID] = hp
-					end
-					bossHealthuIdCache[cIdOrGUID] = unitId
-					bossNames[cIdOrGUID] = UnitName(unitId)
-					bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
-					return hp, unitId, UnitName(unitId)
-				end
-			end
-			if not private.isRetail then
-				--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
-				for i = 1, 20 do
-					local unitId = "nameplate" .. i
+				--Scan raid/party target frames
+				local idType = (IsInRaid() and "raid") or "party"
+				for i = 0, GetNumGroupMembers() do
+					local unitId = ((i == 0) and "target") or idType .. i .. "target"
 					local bossguid = UnitGUID(unitId)
 					if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
 						if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
@@ -8376,6 +8357,24 @@ do
 						bossNames[cIdOrGUID] = UnitName(unitId)
 						bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
 						return hp, unitId, UnitName(unitId)
+					end
+				end
+				if not private.isRetail then
+					--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
+					for i = 1, 20 do
+						local unitId = "nameplate" .. i
+						local bossguid = UnitGUID(unitId)
+						if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
+							if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
+							local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
+							if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+								bossHealth[cIdOrGUID] = hp
+							end
+							bossHealthuIdCache[cIdOrGUID] = unitId
+							bossNames[cIdOrGUID] = UnitName(unitId)
+							bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
+							return hp, unitId, UnitName(unitId)
+						end
 					end
 				end
 			end
@@ -8403,6 +8402,9 @@ do
 	end
 
 	function bossModPrototype:GetHighestBossHealth()
+		if self:MidRestrictionsActive() then
+			return bossHealth[self.combatInfo.mob or -1]
+		end
 		local hp
 		if not self.multiMobPullDetection or self.mainBoss then
 			hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
@@ -8420,6 +8422,9 @@ do
 	end
 
 	function bossModPrototype:GetLowestBossHealth()
+		if self:MidRestrictionsActive() then
+			return bossHealth[self.combatInfo.mob or -1]
+		end
 		local hp
 		if not self.multiMobPullDetection or self.mainBoss then
 			hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
