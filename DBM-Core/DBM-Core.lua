@@ -2015,10 +2015,6 @@ do
 					self:RegisterEvents(
 						"UNIT_HEALTH mouseover target focus player"--Base is Frequent on retail, and _FREQUENT deleted
 					)
-				else
-					self:RegisterEvents(
-						"UNIT_HEALTH boss1"--Base is Frequent on retail, and _FREQUENT deleted
-					)
 				end
 			elseif private.isMop then
 				self:RegisterEvents(
@@ -2057,6 +2053,7 @@ do
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
+			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
 		end
 	end
 
@@ -5780,12 +5777,13 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
 			local targetName = target or "nil"
 			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2)
 		end
 		if not private.isRetail and not IsInInstance() then
-			if DBM:IsSeasonal("SeasonOfDiscovery") then -- All World Buffs are spammy in SoD, disable
+			if self:IsSeasonal("SeasonOfDiscovery") then -- All World Buffs are spammy in SoD, disable
 				return
 			end
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
