@@ -198,7 +198,7 @@ L.BIG_WIGS								= "BigWigs"
 L.WEAKAURA_KEY							= " (|cff308530WA 代码:|r %s)"
 
 L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
-L.UPDATEREMINDER_HEADER_SUBMODULE = "您的 %s 模组版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s。如果您使用整合包，请使用更新器更新。
+L.UPDATEREMINDER_HEADER_SUBMODULE = "您的 %s 模组版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s。如果您使用整合包，请使用更新器更新。"
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
 L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
 L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期且与当前游戏版本或最新版本DBM不兼容，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
