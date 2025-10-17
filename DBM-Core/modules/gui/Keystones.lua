@@ -38,34 +38,39 @@ do
 end
 
 -- [ChallengeModeID] = {MapID, TeleportID, bgImage}
-local teleports = {
-	[378] = {2287, 354465, 3759908}, -- Halls of Atonement
-	[391] = {2441, 367416, 4182022}, -- Tazavesh: Streets of Wonder
-	[392] = {2441, 367416, 4182022}, -- Tazavesh: So'leah's Gambit
-	[499] = {2649, 445444, 5912551}, -- Priority of the Sacred Flame
-	[503] = {2660, 445417, 5912546}, -- Ara-Kara, City of Echoes
-	[505] = {2662, 445414, 5912552}, -- The Dawnbreaker
-	[525] = {2773, 1216786, 6422412}, -- Operation Floodgate
-	[542] = {2830, 1237215,7074042} -- Eco-Dome Al'dani
-}
-
-if isPlayerRemix then
-	teleports = {
-		--[197] = {1456, nil, 1498157}, -- Eye of Azshara
-		[198] = {1466, 424163, 1411855}, -- Darkheart Thicket
-		[199] = {1501, 424153, 1411853}, -- Black Rook Hold
-		[200] = {1477, 393764, 1498158}, -- Halls of Valor
-		[206] = {1458, 410078, 1450574}, -- Neltharion's Lair
-		--[207] = {1493, nil, 1411858}, -- Vault of the Wardens
-		--[208] = {1492, nil, 1411856}, -- Maw of Souls
-		--[209] = {1516, nil, 1411857}, -- The Arcway
-		[210] = {1571, 393766, 1498156}, -- Court of Stars
-		[227] = {1651, 373262, 1537283}, -- Return to Karazhan: Lower
-		--[233] = {1677, nil, 1616922}, -- Cathedral of Eternal Night
-		[234] = {1651, 373262, 1537283}, -- Return to Karazhan: Upper
-		--[239] = {1753, nil, 1718213}, -- Seat of the Triumvirate
-	}
+local teleports
+local function updateTeleports()
+	local isPlayerRemix = PlayerIsTimerunning and PlayerIsTimerunning()
+	if isPlayerRemix then
+		teleports = {
+			--[197] = {1456, nil, 1498157}, -- Eye of Azshara
+			[198] = {1466, 424163, 1411855}, -- Darkheart Thicket
+			[199] = {1501, 424153, 1411853}, -- Black Rook Hold
+			[200] = {1477, 393764, 1498158}, -- Halls of Valor
+			[206] = {1458, 410078, 1450574}, -- Neltharion's Lair
+			--[207] = {1493, nil, 1411858}, -- Vault of the Wardens
+			--[208] = {1492, nil, 1411856}, -- Maw of Souls
+			--[209] = {1516, nil, 1411857}, -- The Arcway
+			[210] = {1571, 393766, 1498156}, -- Court of Stars
+			[227] = {1651, 373262, 1537283}, -- Return to Karazhan: Lower
+			--[233] = {1677, nil, 1616922}, -- Cathedral of Eternal Night
+			[234] = {1651, 373262, 1537283}, -- Return to Karazhan: Upper
+			--[239] = {1753, nil, 1718213}, -- Seat of the Triumvirate
+		}
+	else
+		teleports = {
+			[378] = {2287, 354465, 3759908}, -- Halls of Atonement
+			[391] = {2441, 367416, 4182022}, -- Tazavesh: Streets of Wonder
+			[392] = {2441, 367416, 4182022}, -- Tazavesh: So'leah's Gambit
+			[499] = {2649, 445444, 5912551}, -- Priority of the Sacred Flame
+			[503] = {2660, 445417, 5912546}, -- Ara-Kara, City of Echoes
+			[505] = {2662, 445414, 5912552}, -- The Dawnbreaker
+			[525] = {2773, 1216786, 6422412}, -- Operation Floodgate
+			[542] = {2830, 1237215,7074042} -- Eco-Dome Al'dani
+		}
+	end
 end
+updateTeleports()
 
 local partyKeystones, guildKeystones = {}, {}
 
@@ -513,6 +518,7 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 			LibKeystone.Request("PARTY")
 		end
 	elseif event == 'PLAYER_ENTERING_WORLD' then
+		updateTeleports()
 		if not DBM_Keystones then
 			DBM_Keystones = {
 				keys = {}
