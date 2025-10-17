@@ -693,7 +693,7 @@ L.KEYSTONE_NAMES[208] = '아귀' -- Maw of Souls
 L.KEYSTONE_NAMES[209] = '비전로' -- The Arcway
 L.KEYSTONE_NAMES[210] = '별궁' -- Court of Stars
 L.KEYSTONE_NAMES[227] = '하층' -- Return to Karazhan: Lower
-L.KEYSTONE_NAMES[233] = '영궁' -- Cathedral of Eternal Night
+L.KEYSTONE_NAMES[233] = '대성당' -- Cathedral of Eternal Night
 L.KEYSTONE_NAMES[234] = '상층' -- Return to Karazhan: Upper
 L.KEYSTONE_NAMES[239] = '삼두정' -- Seat of the Triumvirate
 
