@@ -298,8 +298,8 @@ L.PULL_TIME_TOO_LONG			= "Le chronomètre de pull ne peut pas dépasser 60 secon
 
 L.BREAK_USAGE				= "Les chronomètres de pause ne peuvent pas durer plus de 60 minutes. Assurez vous de mettre le temps en minutes et pas secondes."
 L.BREAK_START				= "La pause commence maintenant -- vous avez %s !"
-L.BREAK_MIN					= "Fin de la pause dans %s |4minute:minutes !"
-L.BREAK_SEC					= "Fin de la pause dans %s |4seconde:secondes !"
+L.BREAK_MIN					= "Fin de la pause dans %s |4minute:minutes; !"
+L.BREAK_SEC					= "Fin de la pause dans %s |4seconde:secondes; !"
 L.TIMER_BREAK				= "Pause !"
 L.ANNOUNCE_BREAK_OVER		= "La pause est terminée"
 
