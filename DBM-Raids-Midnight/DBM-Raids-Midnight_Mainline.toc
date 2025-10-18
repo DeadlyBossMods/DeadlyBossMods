@@ -5,6 +5,7 @@
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Raids (Midnight)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010공격대 (한밤)|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010Рейды (Полночь)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-SubCategoriesID: 2913, 2939, 2912
 ## X-DBM-Mod-Name: Raids (Midnight)
 ## X-DBM-Mod-Name-koKR: 공격대 (한밤)
+## X-DBM-Mod-Name-ruRU: Рейды (Полночь)
 ## X-DBM-Mod-Sort: 91
 ## X-DBM-Mod-MapID: 2913, 2939, 2912
 ## X-DBM-Mod-MinCoreRevision: 20230617000000

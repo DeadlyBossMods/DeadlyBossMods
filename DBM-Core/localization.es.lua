@@ -300,8 +300,8 @@ L.PULL_TIME_TOO_LONG			= "El temporizador de inicio no puede durar más de 60 se
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
 L.BREAK_START				= "El descanso inicia ahora. ¡Tienes %s! (Enviado por %s)"
-L.BREAK_MIN					= "¡El descanso termina en %s |4minuto:minutos!"
-L.BREAK_SEC					= "¡El descanso termina en %s |4segundo:segundos!"
+L.BREAK_MIN					= "¡El descanso termina en %s |4minuto:minutos;!"
+L.BREAK_SEC					= "¡El descanso termina en %s |4segundo:segundos;!"
 L.TIMER_BREAK				= "¡Toca descanso!"
 L.ANNOUNCE_BREAK_OVER		= "El descanso ha terminado."
 
