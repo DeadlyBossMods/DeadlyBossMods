@@ -534,6 +534,7 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 				Keystones:Show()
 			end
 		end
+		isPlayerRemix = PlayerIsTimerunning and PlayerIsTimerunning()
 		UpdateKeystones()
 	elseif event == 'PLAYER_INTERACTION_MANAGER_FRAME_HIDE' then
 		if arg1 == 3 or arg1 == 49 then
