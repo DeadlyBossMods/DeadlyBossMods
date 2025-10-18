@@ -129,7 +129,7 @@ L.MOD_DEFAULT_LOADED				= "Foram carregadas opções padrão para esta luta."
 
 L.WORLDBOSS_ENGAGED					= "%s foi possivelmente puxado no seu reino %s por cento de vida. (Enviado por %s)"
 L.WORLDBOSS_DEFEATED				= "%s foi possivelmente derrotado no seu reino (Enviado por %s)."
-L.WORLDBUFF_STARTED					= "%s buff começou em seu reino para a facção da %s (Enviado por %s)."
+L.WORLDBUFF_STARTED					= "%s começou em seu reino para a facção da %s (Enviado por %s)."
 
 L.TIMER_FORMAT_SECS					= "%.2f |4segundo:segundos;"
 L.TIMER_FORMAT_MINS					= "%d |4minuto:minutos;"
