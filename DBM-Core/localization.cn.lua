@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20250510
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20251017
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -40,7 +40,7 @@ L.TEXT_ONLY_RANGE			= "因API限制，距离窗体只能显示绝对距离值。
 L.NO_RANGE					= "距离窗体已无法使用。本命令将会被移除。"
 L.NO_ARROW					= "箭头在副本中无法使用"
 L.NO_HUD					= "HUDMap 在副本中无法使用"
-L.NO_COMMS					= "插件通信在战斗或活跃的M+地下城中无法使用。战斗或地下城结束后，请再次使用此命令。"
+L.NO_COMMS					= "插件之间的通信在战斗或激活的大秘中无法使用。战斗或地下城结束后，请再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，" .. L.DBM .. " 无法开启动态距离检测。"
 L.DYNAMIC_ADD_COUNT			= "由于玩家数量不足，" .. L.DBM .. " 无法开启小怪计数。"
@@ -74,6 +74,7 @@ L.SCENARIO_COMPLETE_NR		= "场景战役-%s战斗胜利！用时%s！新的纪录
 L.COMBAT_ENDED_AT			= "%s （%s）作战结束，用时%s。"
 L.COMBAT_ENDED_AT_LONG		= "%s （%s）作战结束，用时%s。该难度下总计失败%d次。"
 L.GUILD_COMBAT_ENDED_AT		= "%s开组的公会版%s （%s）作战结束，用时%s。"
+L.GUILD_COMBAT_ENDED		= "%s开组的公会版%s 作战结束，用时%s。" --No health (post midnight)
 L.SCENARIO_ENDED_AT			= "场景战役-%s作战结束，用时%s。"
 L.SCENARIO_ENDED_AT_LONG		= "场景战役-%s作战结束，用时%s。该难度下总计失败%d次。"
 L.COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
@@ -197,6 +198,7 @@ L.BIG_WIGS								= "BigWigs"
 L.WEAKAURA_KEY							= " (|cff308530WA 代码:|r %s)"
 
 L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
+L.UPDATEREMINDER_HEADER_SUBMODULE = "您的 %s 模组版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s。如果您使用整合包，请使用更新器更新。"
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
 L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
 L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期且与当前游戏版本或最新版本DBM不兼容，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
@@ -219,6 +221,7 @@ L.PLATER_NP_AURAS_MSG					= L.DBM .. "现在提供可以在敌人姓名版提供
 L.MOVABLE_BAR				= "拖动我！"
 
 L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM .. " 计时条: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[取消此倒计时]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[忽略来自%1$s的计时条]|r|h"
+--L.PIZZA_SYNC_INFO
 L.PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 L.PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
@@ -262,17 +265,18 @@ L.INFOFRAME_ALT				= "次能量:"--Alternate Power
 
 L.LFG_INVITE						= "随机副本确认"
 
+--Common slash commands
 L.SLASHCMD_HELP				= {
-	"可用命令:",
+	"可用/命令:",
 	"-----------------",
 	"/dbm unlock: 显示一个可移动的计时条，可通过对它来移动所有" .. L.DBM .. "计时条的位置(也可使用: move)。",
 	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
 	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
 	"/dbm timer: 启动一个" .. L.DBM .. "计时器，输入'/dbm timer'查询更多信息。",
-	"/dbm key: 执行M+钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (别名: key, keys, keystone)",--AI translated (check me)
+	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
-	"/dbm help2: 显示额外的斜杠命令"--AI translated (check me)
+	"/dbm help2: 显示额外的/命令"
 }
 L.SLASHCMD_HELP2				= {
 	"可用命令:",
@@ -688,14 +692,31 @@ L.TOOLTIP_FASTEST				= "最快击杀 (%s)"
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
 L.FOLLOWER	= "追随者"
 L.STORY 	= PLAYER_DIFFICULTY_STORY_RAID or "故事模式"--i.e. the new dungeon type in 11.0.0. I haven't found a translated string yet
+L.DUOS		= "卑鄙双雄"
 
 -- Keystone dungeon names (keep to a max of 6 characters)
 -- See https://wago.tools/db2/MapChallengeMode for ID => Dungeon Names
---L.KEYSTONE_NAMES[378] = 'HOA' -- Halls of Atonement
---L.KEYSTONE_NAMES[391] = 'STREET' -- Tazavesh: Streets of Wonder
---L.KEYSTONE_NAMES[392] = 'GAMBIT' -- Tazavesh: So'leah's Gambit
---L.KEYSTONE_NAMES[499] = 'PRIORY' -- Priority of the Sacred Flame
---L.KEYSTONE_NAMES[503] = 'ARAK' -- Ara-Kara, City of Echoes
---L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
---L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
---L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
+-- 军团Remix大秘
+L.KEYSTONE_NAMES[197] = '艾萨' -- Eye of Azshara
+L.KEYSTONE_NAMES[198] = '黑心' -- Darkheart Thicket
+L.KEYSTONE_NAMES[199] = '黑鸦' -- Black Rook Hold
+L.KEYSTONE_NAMES[200] = '英灵' -- Halls of Valor
+L.KEYSTONE_NAMES[206] = '巢穴' -- Neltharion's Lair
+L.KEYSTONE_NAMES[207] = '守望' -- Vault of the Wardens
+L.KEYSTONE_NAMES[208] = '噬魂' -- Maw of Souls
+L.KEYSTONE_NAMES[209] = '回廊' -- The Arcway
+L.KEYSTONE_NAMES[210] = '群星' -- Court of Stars
+L.KEYSTONE_NAMES[227] = '卡下' -- Return to Karazhan: Lower
+L.KEYSTONE_NAMES[233] = '教堂' -- Cathedral of Eternal Night
+L.KEYSTONE_NAMES[234] = '卡上' -- Return to Karazhan: Upper
+L.KEYSTONE_NAMES[239] = '执政' -- Seat of the Triumvirate
+
+-- S3大秘
+L.KEYSTONE_NAMES[378] = '赎罪' -- Halls of Atonement
+L.KEYSTONE_NAMES[391] = '天街' -- Tazavesh: Streets of Wonder
+L.KEYSTONE_NAMES[392] = '宏图' -- Tazavesh: So'leah's Gambit
+L.KEYSTONE_NAMES[499] = '隐修' -- Priority of the Sacred Flame
+L.KEYSTONE_NAMES[503] = '回响' -- Ara-Kara, City of Echoes
+L.KEYSTONE_NAMES[505] = '破晨' -- The Dawnbreaker
+L.KEYSTONE_NAMES[525] = '水闸' -- Operation Floodgate
+L.KEYSTONE_NAMES[542] = '生态' -- Eco-Dome Al'dani

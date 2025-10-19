@@ -40,7 +40,7 @@ end
 -- [ChallengeModeID] = {MapID, TeleportID, bgImage}
 local teleports
 local function updateTeleports()
-	local isPlayerRemix = PlayerIsTimerunning and PlayerIsTimerunning()
+	isPlayerRemix = PlayerIsTimerunning and PlayerIsTimerunning()
 	if isPlayerRemix then
 		teleports = {
 			--[197] = {1456, nil, 1498157}, -- Eye of Azshara

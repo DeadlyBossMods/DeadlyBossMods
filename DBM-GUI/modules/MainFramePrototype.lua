@@ -268,9 +268,19 @@ function frame:CreateTab(tab)
 	end)
 end
 
+local _count = 0
 function frame:ShowTab(tab)
 	self.tab = tab
 	self:UpdateMenuFrame()
+	if (tab == 1 and _count % 2 == 0) or (tab == 2 and _count % 2 == 1) then
+		_count = _count + 1
+		if _count == 5 then
+			_count = 0
+			DBM:PlaySoundFile(1304911, true)
+		end
+	else
+		_count = 0
+	end
 	if isRetail then
 		PanelTemplates_SetTab(self, tab)
 	else
