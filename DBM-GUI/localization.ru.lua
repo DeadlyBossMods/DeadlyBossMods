@@ -229,6 +229,7 @@ L.ThickOutline				= "Толстый контур"
 L.MonochromeOutline			= "Монохромный контур"
 L.MonochromeThickOutline	= "Монохромный толстый контур"
 L.RaidWarnSound				= "Воспроизводить звук предупреждения для рейда"
+L.AnnouncementMidnightNotice	= "Параметры на этой панели предназначены для предупреждений, которые Blizzard классифицирует как 'незначительные'"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Спецпредупреждения"
@@ -248,11 +249,15 @@ L.SpecWarn_FlashAlpha		= "Прозрачность мигания: %0.1f"
 L.SpecWarn_DemoButton		= "Показать пример"
 L.SpecWarn_ResetMe			= "Восстановить умолчания"
 L.SpecialWarnSoundOption	= "Установить звук по умолчанию"
+--PreMidnight
 L.SpecialWarnHeader1		= "Тип 1: установить параметры для обычных приоритетных объявлений, влияющих на Вас или Ваши действия"
 L.SpecialWarnHeader2		= "Тип 2: установить параметры для объявлений с обычным приоритетом, влияющих на всех"
 L.SpecialWarnHeader3		= "Тип 3: установить параметры для объявлений с ВЫСОКИМ приоритетом"
 L.SpecialWarnHeader4		= "Тип 4: установить параметры для специальных объявлений 'Run away' (он же 'убегай') с ВЫСОКИМ приоритетом"
 L.SpecialWarnHeader5		= "Тип 5: установить параметры для объявлений с примечаниями, содержащими имя Вашего игрока"
+--Post Midnight
+L.SpecialWarnHeaderMedium		= "Анонсы для механик, которые Blizzard классифицирует как 'умеренные'"
+L.SpecialWarnHeaderCritical		= "Анонсы для механик, которые Blizzard классифицирует как 'критические'"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Сообщения чата"
