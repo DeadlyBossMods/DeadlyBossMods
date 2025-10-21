@@ -1,4 +1,5 @@
-if DBM:IsPostMidnight() then return end--May be unhidden later if we get access to reskinning blizzard alerts
+--TODO, hide checks 2, 3, 4, and 6 in midnight.
+--TODO, hide entire areas for type 2, 4, and 5 in midnight. midnight will only use 1 and 3 (it'll use new strings for medium and critical for these respectively)
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
