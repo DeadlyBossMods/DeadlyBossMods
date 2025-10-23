@@ -33,24 +33,26 @@ DBMExtraGlobal = {}
 local specRoleTable
 -- Caution: the keys used below are not validated by LuaLS at the moment due to https://github.com/LuaLS/lua-language-server/issues/2610
 
---Upvalued because it's called frequently each time rebuildSpecTable is called
+do
+	local IsSpellInSpellBook, IsSpellKnownOrOverridesKnown, IsSpellKnown = C_SpellBook and C_SpellBook.IsSpellInSpellBook, IsSpellKnownOrOverridesKnown, IsSpellKnown
+	local SpellBookSpellBankPet, SpellBookSpellBankPlayer = Enum.SpellBookSpellBank.Pet, Enum.SpellBookSpellBank.Player
 
----Checks if a spell is known
----Must be located here since specrole loads before core and "DBM" global exist
----@param spellId number
----@param isPet boolean?
----@param includeOverrides boolean?
----@return boolean
-function DBMExtraGlobal:IsSpellKnown(spellId, isPet, includeOverrides)
-	--11.2+ API
-	if C_SpellBook and C_SpellBook.IsSpellInSpellBook then
-		local spellBank = isPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player;
-		return C_SpellBook.IsSpellInSpellBook(spellId, spellBank, includeOverrides)
-	else
-		if includeOverrides then
-			return IsSpellKnownOrOverridesKnown(spellId, isPet) or false
+	---Checks if a spell is known
+	---Must be located here since specrole loads before core and "DBM" global exist
+	---@param spellId number
+	---@param isPet boolean?
+	---@param includeOverrides boolean?
+	---@return boolean
+	function DBMExtraGlobal:IsSpellKnown(spellId, isPet, includeOverrides)
+		--11.2+ API
+		if IsSpellInSpellBook then
+			return IsSpellInSpellBook(spellId, isPet and SpellBookSpellBankPet or SpellBookSpellBankPlayer, includeOverrides)
 		else
-			return IsSpellKnown(spellId, isPet)
+			if includeOverrides then
+				return IsSpellKnownOrOverridesKnown(spellId, isPet) or false
+			else
+				return IsSpellKnown(spellId, isPet)
+			end
 		end
 	end
 end

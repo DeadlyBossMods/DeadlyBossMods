@@ -574,8 +574,8 @@ do
 		[106839] = true,--Druid Skull Bash
 		[116705] = true,--Monk Spear Hand Strike
 		[147362] = true,--Hunter Countershot
-		[183752] = true,--Demon hunter Disrupt
---		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
+		[183752] = true,--Demon Hunter Disrupt
+		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
 		[351338] = true,--Evoker Quell
 	}
 	if private.isClassic then
@@ -588,19 +588,23 @@ do
 	---@return boolean
 	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
 		if self:IsPostMidnight() then return true end--No filtering during post midnight since CD checks and GUID checks not allowed
-		--Check healer spec filter
+		-- Check healer spec filter
 		if not checkOnlyTandF and self:IsHealer() and (self.isTrashMod and DBM.Options.FilterTInterruptHealer or not self.isTrashMod and DBM.Options.FilterBInterruptHealer) then
 			return false
 		end
 
-		--Check if cooldown check is required
+		-- Check if cooldown check is required
 		if checkCooldown and (self.isTrashMod and DBM.Options.FilterTInterruptCooldown or not self.isTrashMod and DBM.Options.FilterBInterruptCooldown) then
+			local hasInterrupt = false
 			for spellID, _ in pairs(interruptSpells) do
-				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
-				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
-				if (DBM:GetSpellCooldown(spellID)) ~= 0 then--Spell is on cooldown
-					return false
+				-- Spell isn't on cooldown, and is known
+				if (DBM:GetSpellCooldown(spellID)) == 0 and DBMExtraGlobal:IsSpellKnown(spellID) then
+					hasInterrupt = true
+					break
 				end
+			end
+			if not hasInterrupt then
+				return false
 			end
 		end
 

@@ -213,7 +213,7 @@ L.Tab_RaidWarning 					= "Announcements"
 L.RaidWarning_Header				= "Announce Options"
 L.RaidWarnColors 					= "Announce Colors"
 L.RaidWarnColor_1 					= "Color 1"
-L.RaidWarnColor_2 					= "Color 2"
+L.RaidWarnColor_2 					= "Color 2"--Only one used in midnight
 L.RaidWarnColor_3		 			= "Color 3"
 L.RaidWarnColor_4 					= "Color 4"
 L.InfoRaidWarning					= [[You can specify the position and colors of the raid warning frame.
@@ -232,6 +232,7 @@ L.ThickOutline						= "Thick outline"
 L.MonochromeOutline					= "Monochrome outline"
 L.MonochromeThickOutline			= "Monochrome thick outline"
 L.RaidWarnSound						= "Play sound on raid announcement"
+L.AnnouncementMidnightNotice		= "Options on this pannel are for warnings Blizzard classifies as 'minor'"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame				= "Special Announcements"
@@ -251,11 +252,15 @@ L.SpecWarn_FlashAlpha				= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton				= "Show example"
 L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
+--PreMidnight
 L.SpecialWarnHeader1				= "Type 1: Set options for normal priority announcements affecting you or your actions"
 L.SpecialWarnHeader2				= "Type 2: Set options for normal priority announcements affecting everyone"
 L.SpecialWarnHeader3				= "Type 3: Set options for HIGH priority announcements"
 L.SpecialWarnHeader4				= "Type 4: Set options for HIGH priority run away special announcements"
 L.SpecialWarnHeader5				= "Type 5: Set options for announcements with notes containing your player name"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "Announcements for mechanics that blizzard classifies as 'medium'"
+L.SpecialWarnHeaderCritical			= "Announcements for mechanics that blizzard classifies as 'critical'"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 				= "Chat Frame Messages"
