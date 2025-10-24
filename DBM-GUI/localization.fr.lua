@@ -436,7 +436,7 @@ L.Area_BlizzFiltersSetup	= "Guide des filtres Blizzard"
 L.Panel_ReducedInformation 	= "Réduire les informations"
 
 -- Panel: DBM Features
-L.Panel_SpamFilter					= "Fonctions de DBM"
+L.Panel_SpamFilter					= "Desactiver les fonctions de DBM"
 L.Area_SpamFilter_Anounces			= "Filtres d'annonces"
 L.SpamBlockNoShowAnnounce			= "Ne pas afficher de texte ni jouer de son pour AUCUNE annonce générale"
 L.SpamBlockNoShowTgtAnnounce		= "Ne pas afficher de texte ni jouer de son pour les annonces générales CIBLE qui ne vous affectent pas"
@@ -517,7 +517,7 @@ L.DontPlayPTCountdown		= "Ne jouer aucun son de décompte de pull/pause/personna
 L.PT_Threshold				= "Pas de son du décompte au-delà de : %d"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Bloquer les fonctionnalités de Blizzard"
+L.Panel_HideBlizzard				= "Bloquer les fonctions de Blizzard"
 --Toast
 L.Area_HideToast 					= "Désactiver les notifications Blizzard"
 L.HideGarrisonUpdates 				= "Cacher les notifications de suivi pendant les combats de boss"
