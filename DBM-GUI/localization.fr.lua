@@ -436,7 +436,7 @@ L.Area_BlizzFiltersSetup	= "Guide des filtres Blizzard"
 L.Panel_ReducedInformation 	= "Réduire les informations"
 
 -- Panel: DBM Features
-L.Panel_SpamFilter					= "Desactiver les fonctions de DBM"
+L.Panel_SpamFilter					= "Désactiver les fonctions de DBM"
 L.Area_SpamFilter_Anounces			= "Filtres d'annonces"
 L.SpamBlockNoShowAnnounce			= "Ne pas afficher de texte ni jouer de son pour AUCUNE annonce générale"
 L.SpamBlockNoShowTgtAnnounce		= "Ne pas afficher de texte ni jouer de son pour les annonces générales CIBLE qui ne vous affectent pas"
