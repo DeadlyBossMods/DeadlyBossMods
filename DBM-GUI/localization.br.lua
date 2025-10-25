@@ -362,7 +362,7 @@ L.EventFilterDungMythicMusic 	= "Não reproduzir música de masmorra na dificuld
 L.EventFilterMythicMusic 		= "Não reproduzir música de encontro na dificuldade Mítica/Mítica+"
 
 -- Tab: Global Disables & Filters
-L.TabCategory_Filters 		= "Desativações globais e filtros"
+L.TabCategory_Filters 		= "Filtros globais"
 L.Area_DBMFiltersSetup 		= "Guia de filtros DBM"
 L.Area_BlizzFiltersSetup 	= "Guia de filtros Blizzard"
 
