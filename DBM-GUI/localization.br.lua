@@ -405,7 +405,6 @@ L.SpamBlockNoIconRestore 		= "Não salvar os estados dos ícones e redefini-los 
 L.SpamBlockNoRangeRestore 		= "Não redefinir o quadro de distância ao estado anterior quando os mods chamam 'ocultar'"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter			= "Filtros global e de spam"
 L.Area_SpamFilter			= "Opções do filtro global"
 L.DontShowFarWarnings		= "Não exibir anúncios/cronômetros para eventos que estão longe"
 L.StripServerName			= "Tira com nome do reino em anúncios e cronômetros"
