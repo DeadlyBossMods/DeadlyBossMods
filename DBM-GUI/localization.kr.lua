@@ -212,7 +212,7 @@ L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
 L.RaidWarnColors 			= "알림 색상"
 L.RaidWarnColor_1 			= "색상 1"
-L.RaidWarnColor_2 			= "색상 2"
+L.RaidWarnColor_2 			= "색상 2"--Only one used in midnight
 L.RaidWarnColor_3 			= "색상 3"
 L.RaidWarnColor_4 			= "색상 4"
 L.InfoRaidWarning			= [[레이드 경고 프레임의 위치와 색상을 설정할 수 있습니다.
@@ -231,6 +231,7 @@ L.ThickOutline				= "두꺼운 외곽선"
 L.MonochromeOutline			= "단색 외곽선"
 L.MonochromeThickOutline	= "단색 두꺼운 외곽선"
 L.RaidWarnSound				= "레이드 알림에 효과음 재생"
+L.AnnouncementMidnightNotice		= "이 패널엔 블리자드에서 '하급'으로 분류한 경고들의 설정이 있습니다"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 알림"
@@ -250,11 +251,15 @@ L.SpecWarn_FlashAlpha		= "점멸 투명도: %0.1f"
 L.SpecWarn_DemoButton		= "예제 보기"
 L.SpecWarn_ResetMe			= "기본값으로 초기화"
 L.SpecialWarnSoundOption	= "기본 효과음 설정"
+--PreMidnight
 L.SpecialWarnHeader1		= "유형 1: 당신이 뭔가 걸렸거나 취해야 할 행동에 대한 보통 수준 알림 설정 세트"
 L.SpecialWarnHeader2		= "유형 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
 L.SpecialWarnHeader3		= "유형 3: 최우선 알림 설정 세트"
 L.SpecialWarnHeader4		= "유형 4: 최우선 도망 특수 알림 설정 세트"
 L.SpecialWarnHeader5		= "유형 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "블리자드에서 '중간' 등급으로 분류한 스킬 알림"
+L.SpecialWarnHeaderCritical			= "블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "대화창 메시지"
