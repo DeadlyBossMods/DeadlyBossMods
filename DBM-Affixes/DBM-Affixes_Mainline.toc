@@ -1,4 +1,4 @@
-## Interface: 110200, 110205, 120000
+## Interface: 110205, 120000
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Affixes|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010신화+ 어픽스|r
