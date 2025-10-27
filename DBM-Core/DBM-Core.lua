@@ -889,6 +889,9 @@ function DBM:MidRestrictionsActive(includeAuras)
 	if private.IsEncounterInProgress() or C_ChallengeMode.IsChallengeModeActive() then
 		return true
 	end
+	--if GetActiveMatchState() == 3 then--In active PVP match
+	--	return true
+	--end
 	--Comms and chat messages blocked. might be redundant to above but for good measure
 	if C_ChatInfo.InChatMessagingLockdown() then
 		return true
