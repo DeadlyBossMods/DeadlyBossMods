@@ -7060,6 +7060,7 @@ do
 end
 
 do
+	--TODO, use GetUnitAuraBySpellID and GetUnitAuraBySpellName when possible for better performance
 	local UnitAura = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex or UnitAura
 	local GetPlayerAuraBySpellID = C_UnitAuras and C_UnitAuras.GetPlayerAuraBySpellID
 	local GetAuraDataBySpellName = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName
