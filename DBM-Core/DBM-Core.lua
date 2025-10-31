@@ -4820,7 +4820,7 @@ do
 				self:PlaySoundFile(self.Options.EventSoundPullTimer, nil, true)
 			end
 			if self.Options.RecordOnlyBosses then
-				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+				self:StartLogging(timer + 5, checkForActualPull)--Start logging here to catch pre pots.
 			end
 			if private.isRetail and self.Options.CheckGear and not private.testBuild then
 				local bagilvl, equippedilvl = GetAverageItemLevel()
