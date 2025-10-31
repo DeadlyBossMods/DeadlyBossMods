@@ -4578,7 +4578,11 @@ end
 do
 	local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
 	local function checkForActualPull()
-		if (DBM.Options.RecordOnlyBosses and #inCombat == 0) or (not private.isRetail and difficulties.difficultyIndex ~= 8) then
+		-- We don't need to check `RecordOnlyBosses` as it's already checked in where this function is called
+		-- If you have more than 1 mob, keep logging
+		-- If you're in mythic+, keep logging
+		-- Otherwise, stop logging post-pull timer ended
+		if #inCombat == 0 and difficulties.difficultyIndex ~= 8 then
 			DBM:StopLogging()
 		end
 	end
