@@ -395,6 +395,7 @@ function timerPrototype:Start(timer, ...)
 		if self.option then
 			countVoice = self.mod.Options[self.option .. "CVoice"]
 			if not self.fade and (type(countVoice) == "string" or countVoice > 0) then--Started without faded and has count voice assigned
+				DBM:Unschedule(playCountSound, id) -- Prevents count sound if timer is started again before timer expires
 				-- minTimer checks for the minimum possible timer in the variance timer string sent from Start method, self.minTimer is from newTimer constructor. Else, use timer value
 				playCountdown(id, minTimer or (hasVariance and self.minTimer) or timer, countVoice, countVoiceMax, self.requiresCombat)--timerId, timer, voice, count
 			end
