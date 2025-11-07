@@ -568,7 +568,7 @@ L.OverrideBossTimerOptions			= "Establecer la configuración de temporizador de 
 L.OverrideBossIconOptions			= "Establecer la configuración de icono todos los usuarios de DBM en mi configuración (si la configuración del icono está desactivada en las opciones anteriores, esta opción se ignora)"--NYI
 L.OverrideBossSayOptions			= "Establecer la configuración de chat de todos los usuarios de DBM en mi configuración (Si la configuración de la burbuja de chat está desactivada en las opciones anteriores, esta opción se ignora)"--NYI
 L.ConfigAreaFooter					= "Las opciones en esta área solo anulan temporalmente la configuración de los usuarios al participar sin alterar su configuración guardada."
-L.ConfigAreaFooter2					= "Se recomienda considerar todos las funciones y no excluir los temporizadores/alertas que un tanque, etc. pueda necesitar."
+L.ConfigAreaFooter2					= "Se recomienda considerar todas las funciones y no excluir los temporizadores/alertas que un tanque, etc. pueda necesitar."
 
 L.Area_receivingOptions				= "Opciones de recepción"--NYI
 L.NoAnnounceOverride				= "No acepta anuncios anulados por parte de los líderes de la banda."--NYI
