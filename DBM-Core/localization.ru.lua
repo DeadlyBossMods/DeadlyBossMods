@@ -172,13 +172,13 @@ L.STATUS_WHISPER					= "%s: %s, %d/%d человек живые"
 --Bosses
 L.AUTO_RESPOND_WHISPER				= "Персонаж %s сейчас находится в бою против %s (%s, %d/%d человек живые)"
 L.WHISPER_COMBAT_END_KILL			= "Персонаж %s одержал победу над %s!"
-L.WHISPER_COMBAT_END_KILL_STATS		= "Персонаж %s одержал победу над %s! Это была %d победа."
+L.WHISPER_COMBAT_END_KILL_STATS		= "Персонаж %s одержал победу над %s! Общее количество побед - %d."
 L.WHISPER_COMBAT_END_WIPE_AT		= "Персонаж %s потерпел поражение от %s на %s"
 L.WHISPER_COMBAT_END_WIPE_STATS_AT	= "Персонаж %s потерпел поражение от %s на %s. Общее количество вайпов на этой сложности - %d."
 --Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
 L.AUTO_RESPOND_WHISPER_SCENARIO		= "Персонаж %s сейчас проходит сценарий %s (%d/%d человек живые)"
 L.WHISPER_SCENARIO_END_KILL			= "Персонаж %s завершил %s!"
-L.WHISPER_SCENARIO_END_KILL_STATS	= "Персонаж %s завершил %s! Это была %d победа."
+L.WHISPER_SCENARIO_END_KILL_STATS	= "Персонаж %s завершил %s! Общее количество побед - %d."
 L.WHISPER_SCENARIO_END_WIPE			= "Персонаж %s не завершил %s"
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "Персонаж %s не завершил %s. Общее количество незавершённых этапов на этой сложности - %d."
 
