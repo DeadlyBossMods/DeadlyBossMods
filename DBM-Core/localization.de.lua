@@ -78,7 +78,8 @@ L.BONUS_SKIPPED				= L.DBM.." hat das Beutefenster für den Bonuswurf automatisc
 
 L.AFK_WARNING				= "Du bist \"AFK\" und im Kampf (%d Prozent Gesundheit verbleibend), Alarmsound ausgelöst.  Entferne deine \"AFK\"-Markierung oder deaktiviere diese Alarmierung unter \"Sonstige Funktionen\", falls du nicht \"AFK\" bist."
 
-L.COMBAT_STARTED_AI_TIMER	= "Meine CPU ist ein neuronaler Prozessor, ein lernender Computer. (Dieser Kampf wird die neuen KI-Funktionen zur Erzeugung von Timernäherungen verwenden.)"
+L.RAID_DIFFICULTY_CHANGED	= "Der Schlachtzugschwierigkeitsgrad wurde auf %s gesetzt."
+L.DUNGEON_DIFFICULTY_CHANGED= "Der Dungeon-Schwierigkeitsgrad wurde auf %s gesetzt."
 
 L.PROFILE_NOT_FOUND			= "<"..L.DBM.."> Dein derzeitiges Profil ist korrupt. "..L.DBM.." wird das Profil 'Default' laden."
 L.PROFILE_CREATED			= "Profil '%s' erzeugt."

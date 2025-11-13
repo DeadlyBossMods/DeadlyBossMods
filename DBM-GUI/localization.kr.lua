@@ -286,6 +286,8 @@ L.RoleSpecAlert				= "공격대에 들어왔을 때 현재 전문화와 설정�
 L.CheckGear					= "풀링 타이머가 나오면 착용 장비 알림 메시지 표시 (착용 아이템 레벨이 소지한 아이템 레벨보다 40 이상 낮거나 주무기가 없을 경우)"
 L.WorldBossAlert			= "같은 서버의 길드원이나 친구가 필드 보스 전투를 시작하면 알림 메시지 표시 (전송자가 연합 서버에 있다면 부정확합니다)"
 L.WorldBuffAlert			= "내 서버에서 월드 버프가 시작되면 알림 메시지 표시 (디스커버리 시즌 제외)"
+L.RaidDiffChangedAlert		= "공격대 난이도가 바뀌면 알림 메시지 표시"
+L.DungeonDiffChangedAlert	= "던전 난이도가 바뀌면 알림 메시지 표시"
 
 L.Area_BugAlerts			= "버그 제보 알림 설정"
 L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머를 감지했을 때 대화창에 메시지 표시"

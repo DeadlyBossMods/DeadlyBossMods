@@ -85,7 +85,8 @@ L.LOWHEALTH_WARNING			= "Salud baja (%d por ciento de salud restante), reproduci
 L.ENTERING_COMBAT			= "Entrando en combate"
 L.LEAVING_COMBAT			= "Saliendo del combate"
 
-L.COMBAT_STARTED_AI_TIMER	= "Mi unidad central es un procesador de red neuronal: una máquina capaz de aprender. (Este encuentro usará la IA de temporizadores para generar temporizadores aproximados.)"
+L.RAID_DIFFICULTY_CHANGED		= "La dificultad de la banda se ha establecido en %s."
+L.DUNGEON_DIFFICULTY_CHANGED	= "La dificultad de la mazmorras se ha establecido en %s."
 
 L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Tu perfil actual está corrupto. " .. L.DBM .. " cargará el perfil 'Predeterminado'."
 L.PROFILE_CREATED				= "Se ha creado el perfil '%s'."

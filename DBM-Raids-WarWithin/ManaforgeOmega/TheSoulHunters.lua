@@ -41,6 +41,8 @@ mod:RegisterEventsInCombat(
 local timerBerserkCD								= mod:NewBerserkTimer(600)
 --Adarus Duskblaze
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32500))
+local warnEradicate									= mod:NewCountAnnounce(1245726, 3)
+
 local specWarnVoidstep								= mod:NewSpecialWarningDodgeCount(1227355, nil, nil, nil, 2, 2)
 local specWarnEradicate								= mod:NewSpecialWarningDodgeCount(1245726, nil, nil, nil, 2, 2)
 
@@ -213,6 +215,8 @@ function mod:SPELL_CAST_START(args)
 			end
 		else
 			self.vb.eradicateSubCount = self.vb.eradicateSubCount + 1
+			---@diagnostic disable-next-line: param-type-mismatch
+			warnEradicate:Show(self.vb.eradicateCount .. "-" .. self.vb.eradicateSubCount)
 			if self.vb.eradicateSubCount == 4 and self.vb.eradicateCount == 1 then
 				--This is the 4th shadow cast, so we can start the next set
 				timerEradicateCD:Start(20.7, self.vb.eradicateCount+1 .. "-" .. 1)
@@ -261,8 +265,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 1233093 then--Ultimate
 		specWarnCollapsingStar:Show()
-		specWarnCollapsingStar:Play("runtoedge")
-		specWarnCollapsingStar:ScheduleVoice(2, "helpsoak")
+		specWarnCollapsingStar:Play("helpsoak")
 	elseif spellId == 1233863 then--Ultimate
 		specWarnFelRush:Show()
 		specWarnFelRush:Play("watchstep")

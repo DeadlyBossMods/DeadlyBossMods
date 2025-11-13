@@ -79,7 +79,8 @@ L.BONUS_SKIPPED				= ""..L.DBM.." ha chiuso automaticamente il riquadro del bott
 
 L.AFK_WARNING				= "Sei AFK e in combattimento (%d percento di vita rimanente), esecuzione avviso sonoro. Se non sei AFK, togliti dallo stato AFK flag o disabilita questa opzione in 'funzionalità aggiuntive'."
 
-L.COMBAT_STARTED_AI_TIMER	= "Il mio processore fa parte di una rete neurale. (Questo combattimento utilizzerà la nuova funzione Temporizzatore IA per generare approssimazioni sulla temporizzazione)"
+L.RAID_DIFFICULTY_CHANGED				= "Il livello di difficoltà del raid è stato impostato su %s."
+L.DUNGEON_DIFFICULTY_CHANGED			= "Il livello di difficoltà del dungeon è stato impostato su %s."
 
 L.PROFILE_NOT_FOUND			= "<"..L.DBM.."> Il tuo profilo attuale è corrotto. "..L.DBM.." caricherà il profilo 'Predefinito'."
 L.PROFILE_CREATED			= "Profilo '%s' creato."

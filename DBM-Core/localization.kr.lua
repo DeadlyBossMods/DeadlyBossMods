@@ -86,7 +86,8 @@ L.LOWHEALTH_WARNING						= "생명력 낮음 (%d퍼센트 남음), 경고음 재
 L.ENTERING_COMBAT						= "전투 시작"
 L.LEAVING_COMBAT						= "전투 종료"
 
-L.COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서. 기계학습형 컴퓨터 (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
+L.RAID_DIFFICULTY_CHANGED				= "공격대 난이도가 %s로 설정되었습니다."
+L.DUNGEON_DIFFICULTY_CHANGED			= "던전 난이도가 %s로 설정되었습니다."
 
 L.PROFILE_NOT_FOUND			= "<" .. L.DBM .. "> 현재 설정된 프로필이 손상되었습니다. " .. L.DBM .. "이 'Default' 프로필을 로딩할 것입니다."
 L.PROFILE_CREATED			= "'%s' 프로필을 생성했습니다."

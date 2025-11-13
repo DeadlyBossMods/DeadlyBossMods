@@ -40,7 +40,7 @@ local specWarnNullConsumption						= mod:NewSpecialWarningMoveAway(1247424, nil,
 local yellNullConsumption							= mod:NewShortYell(1247424, 37859, false)
 local yellNullConsumptionFades						= mod:NewShortFadesYell(1247424, nil, false)
 local specWarnShatteringBackhand					= mod:NewSpecialWarningCount(1220394, nil, nil, nil, 2, 2)
-local specWarnShatterShell							= mod:NewSpecialWarningMoveTo(1227373, nil, nil, nil, 1, 13)
+local specWarnShatterShell							= mod:NewSpecialWarningMoveTo(1227373, nil, nil, nil, 1, 2)
 local specWarnCrystallized							= mod:NewSpecialWarningYou(1227378, nil, nil, nil, 1, 2)--Redundant to pre debuff already having warning
 local specWarnShockwaveSlam							= mod:NewSpecialWarningDefensive(1231871, nil, nil, nil, 1, 2)
 local specWarnShockwaveSlamTaunt					= mod:NewSpecialWarningTaunt(1231871, nil, nil, nil, 1, 2)
@@ -116,7 +116,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 1227373 then
 		if args:IsPlayer() then
 			specWarnShatterShell:Show(crystal)
-			specWarnShatterShell:Play("movetopillar")--Maybe customa audio for crystals
+			specWarnShatterShell:Play("targetyou")--Maybe customa audio for crystals
 		end
 	elseif spellId == 1231871 and not args:IsPlayer() then
 		specWarnShockwaveSlamTaunt:Show(args.destName)

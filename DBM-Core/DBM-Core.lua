@@ -216,6 +216,8 @@ DBM.DefaultOptions = {
 	HealthWarningLow = private.isHardcoreServer and true or false,
 	EnteringCombatAlert = false,
 	LeavingCombatAlert = false,
+	RaidDifficultyChangedAlert = true,
+	DungeonDifficultyChangedAlert = false,
 	AutoReplySound = true,
 	HideObjectivesFrame = true,
 	HideGarrisonToasts = true,
@@ -2009,6 +2011,7 @@ do
 				self:RegisterEvents(
 --					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
+					"PLAYER_DIFFICULTY_CHANGED",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW",
@@ -2655,6 +2658,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
+				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
@@ -2740,6 +2744,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
+				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -3549,6 +3554,42 @@ function DBM:PLAYER_LEVEL_CHANGED()
 	end
 end
 
+do
+	local difficutlyToText = {
+		[1] = PLAYER_DIFFICULTY1,--Normal (Dungeon)
+		[2] = PLAYER_DIFFICULTY2,--Heroic (Dungeon)
+		[14] = PLAYER_DIFFICULTY1,--Normal (Raid)
+		[15] = PLAYER_DIFFICULTY2,--Heroic (Raid)
+		[16] = PLAYER_DIFFICULTY6,--Mythic (Raid)
+		[23] = PLAYER_DIFFICULTY6,--Mythic (Dungeon)
+	}
+	local lastRaidDifficulty = GetRaidDifficultyID() or -1
+	local lastDungeonDifficulty = GetDungeonDifficultyID() or -1
+	function DBM:PLAYER_DIFFICULTY_CHANGED(force)
+		if not IsInGroup() then return end
+		--Filter queued or solo content sitations showing difficulty change alerts
+		if IsPartyLFG() or difficulties.difficultyIndex == 205 or difficulties:InstanceType(LastInstanceMapID) == 4 then return end--Follower dungeon and delves
+		--Also supress alerts if in any LFG queue state
+		if GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
+		local currentRaidDifficulty = GetRaidDifficultyID()
+		local currentDungeonDifficulty = GetDungeonDifficultyID()
+		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
+			lastRaidDifficulty = currentRaidDifficulty
+			if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
+				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+			end
+		end
+		if not IsInRaid() then--If we're in raid we definitely don't care about dungeons
+			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
+				lastDungeonDifficulty = currentDungeonDifficulty
+				if self.Options.DungeonDifficultyChangedAlert and self:AntiSpam(5, "dungeondiffchanged", currentDungeonDifficulty) then
+					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+				end
+			end
+		end
+	end
+end
+
 function DBM:LoadAllModDefaultOption(modId)
 	-- modId is string like "DBM-Highmaul"
 	if not modId or not self.ModLists[modId] then return end
@@ -4324,15 +4365,6 @@ do
 		end
 	end
 
-	--Zones that change without loading screen
-	local specialZoneIDs = {
-		[2454] = true,--Zaralek Caverns
-		[2574] = true,--Dragon Isles
-		[2444] = true,--Dragon Isles
---		[2601] = true,--Khaz Algar (Underground)
---		[2774] = true,--Khaz Algar (Underground)
---		[2552] = true,--Khaz Algar (Surface)
-	}
 	local sodLevelUpRaids = {[48] = true, [90] = true, [109] = true}
 
 	-- Load based on MapIDs
@@ -4730,7 +4762,11 @@ do
 		DBM:Debug(name .. " was elected icon setter for " .. optionName, 2)
 	end
 
-	syncHandlers["K"] = function(_, _, cId)
+	syncHandlers["K"] = function(_, _, cId, difficulty)
+		if not difficulty then return end
+		difficulty = tonumber(difficulty)
+		--Ignore kill events sent from wrong difficulty (such as a player doing same raid at same time in another difficulty)
+		if difficulty ~= difficulties.difficultyIndex then return end
 		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
 		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
@@ -6662,7 +6698,7 @@ function DBM:OnMobKill(cId, synced)
 		if v.combatInfo.noBossDeathKill then return end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId, "ALERT")
+				sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end
 			v.combatInfo.killMobs[cId] = false
 			if v.numBoss and (v.vb.bossLeft or 0) > 0 then
@@ -6681,7 +6717,7 @@ function DBM:OnMobKill(cId, synced)
 			end
 		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId, "ALERT")
+				sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end
 			self:EndCombat(v, nil, nil, "Main CID Down")
 		end

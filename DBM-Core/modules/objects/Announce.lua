@@ -163,8 +163,11 @@ function DBM:UpdateWarningOptions()
 	end
 end
 
-function DBM:AddWarning(text, force, announceObject)
+function DBM:AddWarning(text, force, announceObject, useSound, prefix)
 	local added = false
+	if prefix then
+		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
+	end
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
@@ -201,6 +204,9 @@ function DBM:AddWarning(text, force, announceObject)
 		self:AddWarning(text, true, announceObject)
 	else
 		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
+	end
+	if useSound then
+		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
 	end
 end
 

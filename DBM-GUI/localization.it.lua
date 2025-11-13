@@ -312,6 +312,8 @@ L.Area_ChatAlerts			= "Opzioni Avviso Testuale"
 L.RoleSpecAlert				= "Mostra avviso all'entrata dell'incursione quando spec del bottino e giocatore non coincidono"
 L.CheckGear					= "Mostra avviso equipaggiamento al pull (quando l'ilvl equipaggiato è almeno 40 livelli più basso di quello in borsa o in mancanze dell'arma principale)"
 L.WorldBossAlert			= "Mostra avviso quando boss mondiali sono stati ingaggiati sul tuo reame da gildani o amici (inaccurato se il mittente è in zona condivisa)"
+L.RaidDiffChangedAlert		= "Mostra messaggio di avviso quando la difficoltà del raid cambia"
+L.DungeonDiffChangedAlert	= "Mostra messaggio di avviso quando la difficoltà della mazmora cambia"
 --
 L.Area_SoundAlerts			= "Opzioni Avvisi Sonori/Flash"
 L.LFDEnhance				= "Esegui suono controllo gruppo e intermittenza icona applicazione per il controllo ruoli e proposte CdB/LFG nel canale audio Principale o Dialoghi (funzionano anche con effetti disattivati e generalmente sono più alti)"
