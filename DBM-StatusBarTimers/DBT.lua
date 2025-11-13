@@ -329,6 +329,7 @@ do
 
 		return -- Invalid input
 	end
+	DBT.parseTimer = parseTimer
 
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
@@ -741,6 +742,18 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 		if id == bar.id then
 			if type(totalTime) == "number" then
 				DBT:ResetBarVariance(bar)
+			elseif type(totalTime) == "string" then -- found string (variance)
+				local varianceMaxTimer, varianceMinTimer, varianceDuration
+				varianceMaxTimer, varianceMinTimer, varianceDuration = DBT.parseTimer(totalTime) -- either normal number or with variance
+				if self.Options.VarianceEnabled then
+					totalTime = varianceMaxTimer
+				else
+					totalTime = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
+				end
+				bar.minTimer = varianceMinTimer or nil
+				bar.varianceDuration = varianceDuration or 0
+				bar.hasVariance = varianceMinTimer and true or false
+				bar:ApplyStyle()
 			end
 			bar:SetTimer(totalTime or bar.totalTime)
 			bar:SetElapsed(elapsed or bar.totalTime - bar.timer)

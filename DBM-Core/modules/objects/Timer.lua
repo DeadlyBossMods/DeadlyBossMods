@@ -167,10 +167,10 @@ local function isNegativeZero(x)
 	return x == 0 and 1/x < 0  -- Only true for -0
 end
 
--- Parse variance from timer string (v30.5-40" or "dv30.5-40"), into minimum and maximum timer, and calculated variance duration
+-- Parse variance from timer string ("v30.5-40" or "dv30.5-40"), into minimum and maximum timer, and calculated variance duration
 ---@param timer string
 ---@return number maxTimer, number minTimer, number varianceDuration
-	local function parseVarianceFromTimer(timer)
+local function parseVarianceFromTimer(timer)
 	-- ^(d?v) matches starting character d (optional) or v
 	-- (%d+%.?%d*) matches any number of digits with optional decimal
 	-- %- matches literal character "-"
@@ -726,6 +726,12 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 	if not bar then
 		bar = self:Start(totalTime, ...)
 	end
+	-- parse variance from totalTime if necessary
+	local maxTimer, minTimer, correctedTimer
+	if type(totalTime) == "string" and totalTime:match("^v%d+%.?%d*-%d+%.?%d*$") then -- catch "timer variance" pattern, expressed like v10.5-20.5
+		maxTimer, minTimer = parseVarianceFromTimer(totalTime)
+		correctedTimer = DBT.Options.VarianceEnabled and maxTimer or minTimer
+	end
 	if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
 		local guid
 		if select("#", ...) > 0 then--If timer has args
@@ -737,10 +743,11 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 			end
 		end
 		if guid then
-			DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, totalTime)
+			DBM:FireEvent("DBM_NameplateUpdate", id, elapsed, (correctedTimer or totalTime))
 		end
-		DBM:FireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-		local newRemaining = totalTime - elapsed
+		DBM:FireEvent("DBM_TimerUpdate", id, elapsed, (correctedTimer or totalTime))
+		local newRemaining = (correctedTimer or totalTime) - elapsed
+		local newMinRemaining = (minTimer or totalTime) - elapsed
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)
 		if not bar.keep and newRemaining > 0 then
 			--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
@@ -750,18 +757,18 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 			local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 			if (type(countVoice) == "string" or countVoice > 0) then
 				if not bar.fade then--Don't start countdown voice if it's faded bar
-					if newRemaining > 2 then
+					if newMinRemaining > 2 then
 						--Can't be called early beacuse then it won't unschedule countdown triggered by :Start if it was called
 						--Also doesn't need to be called early like it does in AddTime and RemoveTime since those early return
 						DBM:Unschedule(playCountSound, id)
-						playCountdown(id, newRemaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
+						playCountdown(id, newMinRemaining, countVoice, self.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Updating a countdown after a timer Update call for timer ID:" .. id)
 					end
 				end
 			end
 		end
 		local updated = DBT:UpdateBar(id, elapsed, totalTime)
-		test:Trace(self.mod, "UpdateTimer", self, id, elapsed, totalTime)
+		test:Trace(self.mod, "UpdateTimer", self, id, elapsed, (correctedTimer or totalTime)) -- REVIEW!
 		return updated
 	end
 end
