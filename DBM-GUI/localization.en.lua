@@ -287,6 +287,8 @@ L.RoleSpecAlert						= "Show alert message on raid join when your loot spec does
 L.CheckGear							= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
 L.WorldBossAlert					= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 L.WorldBuffAlert					= "Show alert message and timer when world buff RP has been started on your realm (Disabled in SOD)"
+L.RaidDiffChangedAlert				= "Show alert message when raid difficulty is changed"
+L.DungeonDiffChangedAlert			= "Show alert message when dungeon difficulty is changed"
 
 L.Area_BugAlerts					= "Bug Reporting Alert Options"
 L.BadTimerAlert						= "Show chat message when DBM detects a bad timer with at least 1 second of incorrectness"

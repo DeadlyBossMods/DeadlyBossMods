@@ -574,6 +574,8 @@ L.RoleSpecAlert				= "Exibir mensagem de alerta quando sua especialização de s
 L.CheckGear					= "Envia um mensagem de alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas (40+)"
 L.WorldBossAlert			= "Exibir mensagem de alerta quando um chefe mundial possivelmente for atacado no seu reino por membros da sua guilda ou amigos"
 L.WorldBuffAlert 			= "Exibir mensagem de alerta e cronômetro quando o RP de bônus mundial for iniciado no seu reino"
+L.RaidDiffChangedAlert		= "Exibir mensagem de alerta quando a dificuldade da raide for alterada"
+L.DungeonDiffChangedAlert	= "Exibir mensagem de alerta quando a dificuldade da masmorra for alterada"
 
 L.Area_SoundAlerts			= "Opções de som de alerta"
 L.LFDEnhance				= "Reproduzir o som de TodosProntos para checagem de papéis e CB/LDG"

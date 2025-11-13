@@ -90,7 +90,8 @@ L.LOWHEALTH_WARNING						= "Low Health (%d percent health remaining), firing sou
 L.ENTERING_COMBAT						= "Entering combat"
 L.LEAVING_COMBAT						= "Leaving combat"
 
-L.COMBAT_STARTED_AI_TIMER				= "My CPU is a neural net processor; a learning computer. (This fight will use timer AI feature to generate timer approximations)"
+L.RAID_DIFFICULTY_CHANGED				= "Raid difficulty has been set to %s."
+L.DUNGEON_DIFFICULTY_CHANGED			= "Dungeon difficulty has been set to %s."
 
 L.PROFILE_NOT_FOUND						= "<" .. L.DBM .. "> Your current profile is corrupted. " .. L.DBM .. " will load 'Default' profile."
 L.PROFILE_CREATED						= "'%s' profile created."

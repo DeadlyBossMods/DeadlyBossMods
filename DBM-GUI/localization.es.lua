@@ -282,6 +282,8 @@ L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu 
 L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
 L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe del mundo"
 L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando empiece un beneficio del mundo en tu reino"
+L.RaidDiffChangedAlert		= "Mostrar mensaje de alerta cuando la dificultad de la banda cambie"
+L.DungeonDiffChangedAlert	= "Mostrar mensaje de alerta cuando la dificultad de la mazmora cambie"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
 L.BadTimerAlert				= "Mostrar mensaje cuando DBM detecte un temporizador erróneo"

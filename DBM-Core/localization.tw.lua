@@ -85,7 +85,9 @@ L.AFK_WARNING					= "你正在暫離並戰鬥中(血量還剩餘%d百分比)所�
 L.LOWHEALTH_WARNING				= "低血量 (%d 百分比剩餘血量)，發送聲音警報。您可以在“額外功能”中禁用此選項。"
 L.ENTERING_COMBAT				= "進入戰鬥"
 L.LEAVING_COMBAT				= "離開戰鬥"
-L.COMBAT_STARTED_AI_TIMER		= "我的CPU是一個神經網路處理器;一個學習中的電腦 (這場戰鬥將使用新的計時器AI功能生成近似值的計時條)"
+
+L.RAID_DIFFICULTY_CHANGED		= "團隊難度已設定為%s。"
+L.DUNGEON_DIFFICULTY_CHANGED	= "地下城難度已設定為%s。"
 
 L.PROFILE_NOT_FOUND				= "<"..L.DBM..">你目前的配置檔已經損毀。"..L.DBM.."會載入'Default'配置檔。"
 L.PROFILE_CREATED				= "配置檔'%s'已建立。"

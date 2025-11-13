@@ -90,7 +90,8 @@ L.LOWHEALTH_WARNING			= "生命值低 (剩余百分之%d生命值)启动声音�
 L.ENTERING_COMBAT			= "进入战斗"
 L.LEAVING_COMBAT			= "离开战斗"
 
-L.COMBAT_STARTED_AI_TIMER	= "我的CPU是类神经网络处理器，一种学习型电脑。(本场战斗" .. L.DBM .. "将会使用人工智能来估计时间轴)。" --Terminator
+L.RAID_DIFFICULTY_CHANGED	= "团队副本难度已设置为 %s."
+L.DUNGEON_DIFFICULTY_CHANGED= "地下城难度已设置为 %s."
 
 L.PROFILE_NOT_FOUND			= "<" .. L.DBM .. "> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
 L.PROFILE_CREATED			= "配置文件 '%s' 已经创建."

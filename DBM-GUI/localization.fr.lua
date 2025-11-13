@@ -286,6 +286,8 @@ L.RoleSpecAlert				= "Afficher une alerte lorsque vous rejoignez un raid et que 
 L.CheckGear					= "Afficher une alerte d'équipement pendant le pull (quand votre ilvl équipé est beaucoup plus bas que votre ilvl global (40+) ou que votre arme principale n'est pas équipée)"
 L.WorldBossAlert			= "Afficher une alerte lorsqu'un boss pourrait avoir été engagé sur votre royaume par votre guilde ou des amis"
 L.WorldBuffAlert			= "Afficher une alerte et un décompte lorsqu'un évênement annonçant un buff mondial est détecté sur votre royaume"
+L.RaidDiffChangedAlert		= "Afficher un message d'alerte lorsque la difficulté du raid change"
+L.DungeonDiffChangedAlert	= "Afficher un message d'alerte lorsque la difficulté de la donjon change"
 
 L.Area_BugAlerts			= "Options des rapports de bugs"
 L.BadTimerAlert				= "Afficher un message quand DBM détecte un décompte erroné avec au moins 1 seconde de différence"

@@ -85,7 +85,8 @@ L.LOWHEALTH_WARNING			= "Vie faible (%d pour cent de vie restante), déclencheme
 L.ENTERING_COMBAT			= "Entrée en combat"
 L.LEAVING_COMBAT			= "Sortie du combat"
 
-L.COMBAT_STARTED_AI_TIMER = "Mon CPU est un processeur neuronal ; un ordinateur d'apprentissage. (Ce combat utilisera la fonctionnalité d'IA de chronomètre pour générer des approximations de chronomètre)"
+L.RAID_DIFFICULTY_CHANGED		= "Le niveau de difficulté du raid a été défini sur %s."
+L.DUNGEON_DIFFICULTY_CHANGED	= "Le niveau de difficulté du donjon a été défini sur %s."
 
 L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Votre profile actuel est corrompu. " .. L.DBM .. " va charger le profil par défaut."
 L.PROFILE_CREATED				= "'%s' profil créé."
