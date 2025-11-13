@@ -2658,6 +2658,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
+				C_TimerAfter(3, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
@@ -2743,6 +2744,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
+				C_TimerAfter(3, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -3563,21 +3565,21 @@ do
 	}
 	local lastRaidDifficulty = -1
 	local lastDungeonDifficulty = -1
-	function DBM:PLAYER_DIFFICULTY_CHANGED()
+	function DBM:PLAYER_DIFFICULTY_CHANGED(force)
 		if not IsInGroup() then return end
 		local currentRaidDifficulty = GetRaidDifficultyID()
 		local currentDungeonDifficulty = GetDungeonDifficultyID()
-		if currentRaidDifficulty ~= lastRaidDifficulty then
+		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
 			lastRaidDifficulty = currentRaidDifficulty
 			if self.Options.RaidDifficultyChangedAlert then
-				self:AddMsg(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, true)
+				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true)
 			end
 		end
 		if not IsInRaid() then--If we're in raid we definitely don't care about dungeons
-			if currentDungeonDifficulty ~= lastDungeonDifficulty then
+			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
 				lastDungeonDifficulty = currentDungeonDifficulty
 				if self.Options.DungeonDifficultyChangedAlert then
-					self:AddMsg(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, true)
+					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true)
 				end
 			end
 		end
@@ -4359,15 +4361,6 @@ do
 		end
 	end
 
-	--Zones that change without loading screen
-	local specialZoneIDs = {
-		[2454] = true,--Zaralek Caverns
-		[2574] = true,--Dragon Isles
-		[2444] = true,--Dragon Isles
---		[2601] = true,--Khaz Algar (Underground)
---		[2774] = true,--Khaz Algar (Underground)
---		[2552] = true,--Khaz Algar (Surface)
-	}
 	local sodLevelUpRaids = {[48] = true, [90] = true, [109] = true}
 
 	-- Load based on MapIDs

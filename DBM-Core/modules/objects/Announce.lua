@@ -163,7 +163,7 @@ function DBM:UpdateWarningOptions()
 	end
 end
 
-function DBM:AddWarning(text, force, announceObject)
+function DBM:AddWarning(text, force, announceObject, useSound)
 	local added = false
 	if not frame.font1ticker then
 		font1elapsed = 0
@@ -201,6 +201,9 @@ function DBM:AddWarning(text, force, announceObject)
 		self:AddWarning(text, true, announceObject)
 	else
 		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
+	end
+	if useSound then
+		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
 	end
 end
 
