@@ -1665,7 +1665,6 @@ do
 			sendGuildSync(DBMSyncProtocol, "GH")
 		end
 		difficulties:RefreshCache()
-		C_TimerAfter(5, function() self:PLAYER_DIFFICULTY_CHANGED() end)--Backup for setting default state
 	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
