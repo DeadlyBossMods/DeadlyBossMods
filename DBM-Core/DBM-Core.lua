@@ -1665,6 +1665,7 @@ do
 			sendGuildSync(DBMSyncProtocol, "GH")
 		end
 		difficulties:RefreshCache()
+		C_TimerAfter(5, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
@@ -2658,7 +2659,6 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
-				C_TimerAfter(3, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
@@ -2744,7 +2744,6 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
-				C_TimerAfter(3, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
