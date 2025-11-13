@@ -166,8 +166,7 @@ end
 function DBM:AddWarning(text, force, announceObject, useSound, prefix)
 	local added = false
 	if prefix then
-		local tag = self.localization and self.localization.general.name or L.DBM
-		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text))
+		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
 	end
 	if not frame.font1ticker then
 		font1elapsed = 0
