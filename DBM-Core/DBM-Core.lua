@@ -3572,14 +3572,14 @@ do
 		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
 			lastRaidDifficulty = currentRaidDifficulty
 			if self.Options.RaidDifficultyChangedAlert then
-				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true)
+				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
 			end
 		end
 		if not IsInRaid() then--If we're in raid we definitely don't care about dungeons
 			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
 				lastDungeonDifficulty = currentDungeonDifficulty
 				if self.Options.DungeonDifficultyChangedAlert then
-					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true)
+					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true)
 				end
 			end
 		end
