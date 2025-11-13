@@ -86,8 +86,8 @@ L.LOWHEALTH_WARNING						= "생명력 낮음 (%d퍼센트 남음), 경고음 재
 L.ENTERING_COMBAT						= "전투 시작"
 L.LEAVING_COMBAT						= "전투 종료"
 
-L.RAID_DIFFICULTY_CHANGED				= "공격대 난이도가 %s로 설정되었습니다."
-L.DUNGEON_DIFFICULTY_CHANGED			= "던전 난이도가 %s로 설정되었습니다."
+L.RAID_DIFFICULTY_CHANGED				= "공격대 난이도가 %s|1으로;로; 설정되었습니다."
+L.DUNGEON_DIFFICULTY_CHANGED			= "던전 난이도가 %s|1으로;로; 설정되었습니다."
 
 L.PROFILE_NOT_FOUND			= "<" .. L.DBM .. "> 현재 설정된 프로필이 손상되었습니다. " .. L.DBM .. "이 'Default' 프로필을 로딩할 것입니다."
 L.PROFILE_CREATED			= "'%s' 프로필을 생성했습니다."
