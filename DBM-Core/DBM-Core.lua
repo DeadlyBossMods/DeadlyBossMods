@@ -1665,7 +1665,7 @@ do
 			sendGuildSync(DBMSyncProtocol, "GH")
 		end
 		difficulties:RefreshCache()
-		C_TimerAfter(5, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
+		C_TimerAfter(5, function() self:PLAYER_DIFFICULTY_CHANGED() end)--Backup for setting default state
 	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
@@ -2659,6 +2659,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
+				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
@@ -2744,6 +2745,7 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
+				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -3562,22 +3564,26 @@ do
 		[16] = PLAYER_DIFFICULTY6,--Mythic (Raid)
 		[23] = PLAYER_DIFFICULTY6,--Mythic (Dungeon)
 	}
-	local lastRaidDifficulty = -1
-	local lastDungeonDifficulty = -1
+	local lastRaidDifficulty = GetRaidDifficultyID() or -1
+	local lastDungeonDifficulty = GetDungeonDifficultyID() or -1
 	function DBM:PLAYER_DIFFICULTY_CHANGED(force)
 		if not IsInGroup() then return end
+		--Filter queued or solo content sitations showing difficulty change alerts
+		if IsPartyLFG() or difficulties.difficultyIndex == 205 or difficulties:InstanceType(LastInstanceMapID) == 4 then return end--Follower dungeon and delves
+		--Also supress alerts if in any LFG queue state
+		if GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
 		local currentRaidDifficulty = GetRaidDifficultyID()
 		local currentDungeonDifficulty = GetDungeonDifficultyID()
 		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
 			lastRaidDifficulty = currentRaidDifficulty
-			if self.Options.RaidDifficultyChangedAlert then
+			if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
 				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
 			end
 		end
 		if not IsInRaid() then--If we're in raid we definitely don't care about dungeons
 			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
 				lastDungeonDifficulty = currentDungeonDifficulty
-				if self.Options.DungeonDifficultyChangedAlert then
+				if self.Options.DungeonDifficultyChangedAlert and self:AntiSpam(5, "dungeondiffchanged", currentDungeonDifficulty) then
 					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true)
 				end
 			end
