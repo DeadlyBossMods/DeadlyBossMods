@@ -217,6 +217,7 @@ DBM.DefaultOptions = {
 	EnteringCombatAlert = false,
 	LeavingCombatAlert = false,
 	RaidDifficultyChangedAlert = true,
+	RaidDifficultyChangedAlertRaidOnly = true,
 	DungeonDifficultyChangedAlert = false,
 	AutoReplySound = true,
 	HideObjectivesFrame = true,
@@ -3574,6 +3575,7 @@ do
 		local currentDungeonDifficulty = GetDungeonDifficultyID()
 		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
 			lastRaidDifficulty = currentRaidDifficulty
+			if self.Options.RaidDifficultyChangedAlertRaidOnly and not IsInRaid() then return end
 			if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
 				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
 			end

@@ -101,6 +101,7 @@ end
 generalExtraAlerts:CreateCheckButton(L.WorldBossAlert, true, nil, "WorldBossAlert")
 if isRetail then
 	generalExtraAlerts:CreateCheckButton(L.RaidDiffChangedAlert, true, nil, "RaidDifficultyChangedAlert")
+	generalExtraAlerts:CreateCheckButton(L.RaidDiffChangedRaidOnly, true, nil, "RaidDifficultyChangedAlertRaidOnly")
 	generalExtraAlerts:CreateCheckButton(L.DungeonDiffChangedAlert, true, nil, "DungeonDifficultyChangedAlert")
 end
 
