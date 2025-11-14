@@ -105,5 +105,7 @@ if isRetail then
 	generalExtraAlerts:CreateCheckButton(L.DungeonDiffChangedAlert, true, nil, "DungeonDifficultyChangedAlert")
 end
 
-local generalBugsAlerts = generalWarningPanel:CreateArea(L.Area_BugAlerts)
-generalBugsAlerts:CreateCheckButton(L.BadTimerAlert, true, nil, "BadTimerAlert")
+if not DBM:IsPostMidnight() then
+	local generalBugsAlerts = generalWarningPanel:CreateArea(L.Area_BugAlerts)
+	generalBugsAlerts:CreateCheckButton(L.BadTimerAlert, true, nil, "BadTimerAlert")
+end

@@ -2010,7 +2010,6 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
---					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_DIFFICULTY_CHANGED",
 					"GROUP_JOINED",
