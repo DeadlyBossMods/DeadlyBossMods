@@ -1,4 +1,4 @@
-## Interface: 50501, 50502
+## Interface: 50502, 50503
 ## X-Min-Interface: 50500
 ## Category: DBM
 ## Group: DBM-Test
