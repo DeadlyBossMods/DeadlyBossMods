@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 398, "3d79f92"--398.5
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.4 alpha"--Core version
+DBM.DisplayVersion = "12.0.5 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 11, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 11, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 19--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -217,6 +217,7 @@ DBM.DefaultOptions = {
 	EnteringCombatAlert = false,
 	LeavingCombatAlert = false,
 	RaidDifficultyChangedAlert = true,
+	RaidDifficultyChangedAlertRaidOnly = true,
 	DungeonDifficultyChangedAlert = false,
 	AutoReplySound = true,
 	HideObjectivesFrame = true,
@@ -2009,9 +2010,9 @@ do
 			end
 			if private.isRetail then
 				self:RegisterEvents(
---					"UNIT_HEALTH mouseover target focus player",--Base is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_DIFFICULTY_CHANGED",
+					"GROUP_JOINED",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW",
@@ -2658,7 +2659,6 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_raidJoin", playerName)
-				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
@@ -2744,7 +2744,6 @@ do
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
 				fireEvent("DBM_partyJoin", playerName)
-				C_TimerAfter(2, function() self:PLAYER_DIFFICULTY_CHANGED(true) end)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -3575,8 +3574,10 @@ do
 		local currentDungeonDifficulty = GetDungeonDifficultyID()
 		if (currentRaidDifficulty ~= lastRaidDifficulty) or force then
 			lastRaidDifficulty = currentRaidDifficulty
-			if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
-				self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+			if not self.Options.RaidDifficultyChangedAlertRaidOnly or IsInRaid() then
+				if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
+					self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+				end
 			end
 		end
 		if not IsInRaid() then--If we're in raid we definitely don't care about dungeons
@@ -3587,6 +3588,10 @@ do
 				end
 			end
 		end
+	end
+
+	function DBM:GROUP_JOINED()
+		self:PLAYER_DIFFICULTY_CHANGED(true)
 	end
 end
 

@@ -186,9 +186,9 @@ optionsFrame:HookScript("OnSizeChanged", function(self)
 end)
 
 local UIGroupingOptions = coreoptions:CreateArea(L.UIGroupingOptions)
-UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludePrivateAura, true, nil, "GroupOptionsExcludePA")
 UIGroupingOptions:CreateCheckButton(L.AutoExpandSpellGroups, true, nil, "AutoExpandSpellGroups")
 if not DBM:IsPostMidnight() then
+	UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludePrivateAura, true, nil, "GroupOptionsExcludePA")
 	UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludeIcon, true, nil, "GroupOptionsExcludeIcon")
 	UIGroupingOptions:CreateCheckButton(L.ShowWAKeys, true, nil, "ShowWAKeys")
 end

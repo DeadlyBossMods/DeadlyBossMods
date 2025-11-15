@@ -11,11 +11,15 @@ local specPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpecWarnFrame, "opti
 local specArea = specPanel:CreateArea(L.Area_SpecWarn)
 
 local check1 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
-local check2 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
-local check3 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
-local check4 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
-local check5 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "SpecialWarningIcon")
-local check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
+local check2 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "SpecialWarningIcon")
+local check3, check4, check5, check6
+if not DBM:IsPostMidnight() then
+	check3 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
+	check4 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
+	check5 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
+	check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
+end
+
 
 local movemebutton = specArea:CreateButton(L.MoveMe, 120, 16)
 movemebutton:SetPoint("TOPRIGHT", specArea.frame, "TOPRIGHT", -2, -4)
@@ -526,10 +530,10 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
 	-- Set UI visuals
 	check1:SetChecked(DBM.Options.ShowSWarningsInChat)
-	check2:SetChecked(DBM.Options.SWarnClassColor)
-	check3:SetChecked(DBM.Options.SWarningAlphabetical)
-	check4:SetChecked(DBM.Options.SWarnNameInNote)
-	check5:SetChecked(DBM.Options.SpecialWarningIcon)
+	check2:SetChecked(DBM.Options.SpecialWarningIcon)
+	check3:SetChecked(DBM.Options.SWarnClassColor)
+	check4:SetChecked(DBM.Options.SWarningAlphabetical)
+	check5:SetChecked(DBM.Options.SWarnNameInNote)
 	check6:SetChecked(DBM.Options.SpecialWarningShortText)
 	FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
 	SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)

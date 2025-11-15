@@ -288,6 +288,7 @@ L.CheckGear							= "Show gear alert message during pull (when your equipped ilv
 L.WorldBossAlert					= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 L.WorldBuffAlert					= "Show alert message and timer when world buff RP has been started on your realm (Disabled in SOD)"
 L.RaidDiffChangedAlert				= "Show alert message when raid difficulty is changed"
+L.RaidDiffChangedRaidOnly			= "Only show raid difficulty change alert when in a raid group (Caveat: it won't report difficulty on join if not converted to raid yet)"
 L.DungeonDiffChangedAlert			= "Show alert message when dungeon difficulty is changed"
 
 L.Area_BugAlerts					= "Bug Reporting Alert Options"
