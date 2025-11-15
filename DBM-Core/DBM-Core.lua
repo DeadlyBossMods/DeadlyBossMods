@@ -3576,7 +3576,7 @@ do
 			lastRaidDifficulty = currentRaidDifficulty
 			if not self.Options.RaidDifficultyChangedAlertRaidOnly or IsInRaid() then
 				if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
-					self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+					self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true, 5)
 				end
 			end
 		end
@@ -3584,7 +3584,7 @@ do
 			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
 				lastDungeonDifficulty = currentDungeonDifficulty
 				if self.Options.DungeonDifficultyChangedAlert and self:AntiSpam(5, "dungeondiffchanged", currentDungeonDifficulty) then
-					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true, 5)
 				end
 			end
 		end

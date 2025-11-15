@@ -49,8 +49,8 @@ font3u:Hide()
 
 local font1elapsed, font2elapsed, font3elapsed
 
-local function fontHide1()
-	local duration = DBM.Options.WarningDuration2
+local function fontHide1(overrideDuration)
+	local duration = overrideDuration or DBM.Options.WarningDuration2
 	if font1elapsed > duration * 1.3 then
 		font1u:Hide()
 		font1:Hide()
@@ -68,8 +68,8 @@ local function fontHide1()
 	end
 end
 
-local function fontHide2()
-	local duration = DBM.Options.WarningDuration2
+local function fontHide2(overrideDuration)
+	local duration = overrideDuration or DBM.Options.WarningDuration2
 	if font2elapsed > duration * 1.3 then
 		font2u:Hide()
 		font2:Hide()
@@ -87,7 +87,7 @@ local function fontHide2()
 	end
 end
 
-local function fontHide3()
+local function fontHide3(overrideDuration)
 	local duration = DBM.Options.WarningDuration2
 	if font3elapsed > duration * 1.3 then
 		font3u:Hide()
@@ -163,7 +163,13 @@ function DBM:UpdateWarningOptions()
 	end
 end
 
-function DBM:AddWarning(text, force, announceObject, useSound, prefix)
+---@param text any
+---@param force boolean?
+---@param announceObject any
+---@param useSound boolean?
+---@param prefix boolean?
+---@param overrideDuration number?
+function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration)
 	local added = false
 	if prefix then
 		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
@@ -175,7 +181,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix)
 		font1:Show()
 		font1u:Show()
 		added = true
-		frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
+		frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, function() fontHide1(overrideDuration) end)
 	elseif not frame.font2ticker then
 		font2elapsed = 0
 		font2.lastUpdate = GetTime()
@@ -183,7 +189,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix)
 		font2:Show()
 		font2u:Show()
 		added = true
-		frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
+		frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, function() fontHide2(overrideDuration) end)
 	elseif not frame.font3ticker or force then
 		font3elapsed = 0
 		font3.lastUpdate = GetTime()
@@ -192,7 +198,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix)
 		font3u:Show()
 		fontHide3()
 		added = true
-		frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, fontHide3)
+		frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, function() fontHide3(overrideDuration) end)
 	end
 	if not added then
 		local prevText1 = font2:GetText()
