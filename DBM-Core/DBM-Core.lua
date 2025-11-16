@@ -1320,6 +1320,13 @@ do
 		UNIT_AURA						= true,
 		UNIT_AURA_UNFILTERED			= true,
 		COMBAT_LOG_EVENT_UNFILTERED		= true,
+		CHAT_MSG_MONSTER_YELL			= true,
+		CHAT_MSG_MONSTER_SAY			= true,
+		CHAT_MSG_MONSTER_EMOTE			= true,
+		CHAT_MSG_RAID_BOSS_EMOTE		= true,
+		CHAT_MSG_RAID_BOSS_WHISPER		= true,
+		RAID_BOSS_EMOTE					= true,
+		RAID_BOSS_WHISPER				= true,
 	}
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
@@ -3576,7 +3583,9 @@ do
 			lastRaidDifficulty = currentRaidDifficulty
 			if not self.Options.RaidDifficultyChangedAlertRaidOnly or IsInRaid() then
 				if self.Options.RaidDifficultyChangedAlert and self:AntiSpam(5, "raiddiffchanged", currentRaidDifficulty) then
-					self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+					if difficutlyToText[currentRaidDifficulty] then
+						self:AddWarning(L.RAID_DIFFICULTY_CHANGED:format(difficutlyToText[currentRaidDifficulty]), nil, nil, true, true, 5)
+					end
 				end
 			end
 		end
@@ -3584,7 +3593,9 @@ do
 			if (currentDungeonDifficulty ~= lastDungeonDifficulty) or force then
 				lastDungeonDifficulty = currentDungeonDifficulty
 				if self.Options.DungeonDifficultyChangedAlert and self:AntiSpam(5, "dungeondiffchanged", currentDungeonDifficulty) then
-					self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty] or CL.UNKNOWN), nil, nil, true, true)
+					if difficutlyToText[currentDungeonDifficulty] then
+						self:AddWarning(L.DUNGEON_DIFFICULTY_CHANGED:format(difficutlyToText[currentDungeonDifficulty]), nil, nil, true, true, 5)
+					end
 				end
 			end
 		end
@@ -8360,7 +8371,7 @@ do
 	---@param cIdOrGUID number|string
 	---@param onlyHighest boolean?
 	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
-		if self:MidRestrictionsActive() then
+		if self:IsPostMidnight() then
 			bossHealth[cIdOrGUID] = UnitHealthPercent("boss1", nil, true)
 		else
 			local uId = bossHealthuIdCache[cIdOrGUID] or "target"
@@ -8444,7 +8455,7 @@ do
 	end
 
 	function DBM:GetBossHPByUnitID(uId)
-		if self:MidRestrictionsActive() then
+		if self:IsPostMidnight() then
 			local hp = UnitHealthPercent(uId, nil, true)
 			bossHealth[uId] = hp
 			return hp, uId, DBM_COMMON_L.UNKNOWN
@@ -8470,7 +8481,7 @@ do
 	end
 
 	function bossModPrototype:GetHighestBossHealth()
-		if self:MidRestrictionsActive() then
+		if self:IsPostMidnight() then
 			return bossHealth[self.combatInfo.mob or -1]
 		end
 		local hp
@@ -8490,7 +8501,7 @@ do
 	end
 
 	function bossModPrototype:GetLowestBossHealth()
-		if self:MidRestrictionsActive() then
+		if self:IsPostMidnight() then
 			return bossHealth[self.combatInfo.mob or -1]
 		end
 		local hp
