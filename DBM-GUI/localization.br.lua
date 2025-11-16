@@ -519,6 +519,7 @@ L.TabFooter = "Todas as opções neste painel só funcionam se você for o líde
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidade"
+L.Tab_PrivacyMidnight 		= "Privacidade das comunicações"
 L.Area_WhisperMessages 		= "Opções de mensagens de sussurro"
 L.AutoRespond 				= "Responder automaticamente a sussurros durante o combate"
 L.WhisperStats 				= "Incluir estatísticas de vitórias/derrotas nas respostas de sussurro"
