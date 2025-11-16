@@ -970,17 +970,20 @@ do
 				end
 			end
 		end
-		if C_AddOns.DoesAddOnExist("DBM-Affixes") then
-			local affixAddon
-			for _, addon in ipairs(DBM.AddOns) do
-				if addon.modId == "DBM-Affixes" then
-					affixAddon = addon
-					break
+		if not DBM:IsPostMidnight() then
+			--Affixes mod basically retired in midnight since we can't detect when they were last cast
+			if C_AddOns.DoesAddOnExist("DBM-Affixes") then
+				local affixAddon
+				for _, addon in ipairs(DBM.AddOns) do
+					if addon.modId == "DBM-Affixes" then
+						affixAddon = addon
+						break
+					end
 				end
-			end
-			if affixAddon then
-				currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
-				hasAnyMod = true
+				if affixAddon then
+					currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
+					hasAnyMod = true
+				end
 			end
 		end
 		if not hasAnyMod then
