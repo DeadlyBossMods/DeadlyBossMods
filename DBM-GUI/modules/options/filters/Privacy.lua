@@ -1,6 +1,6 @@
 
 local L = DBM_GUI_L
-local privacyPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Tab_Privacy, "option")
+local privacyPanel = DBM_GUI.Cat_Filters:CreateNewPanel(DBM:IsPostMidnight() and L.Tab_PrivacyMidnight or L.Tab_Privacy, "option")
 
 --Can't send whispers in combat in midnight
 if not DBM:IsPostMidnight() then
