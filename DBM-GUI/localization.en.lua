@@ -596,6 +596,7 @@ L.TabFooter							= "All options in this panel only work if you are group leader
 
 -- Panel: Privacy
 L.Tab_Privacy 						= "Auto Reply & Privacy"
+L.Tab_PrivacyMidnight				= "Addon Comms Privacy"
 L.Area_WhisperMessages				= "Whisper Message Options"
 L.AutoRespond 						= "Auto-respond to whispers while fighting"
 L.WhisperStats 						= "Include kill/wipe stats in whisper responses"
