@@ -590,6 +590,7 @@ L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 �
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "자동 응답과 사생활 보호"
+L.Tab_PrivacyMidnight				= "애드온 통신과 사생활 보호"
 L.Area_WhisperMessages		= "귓속말 설정"
 L.AutoRespond 				= "전투중 자동 귓속말 답변"
 L.WhisperStats 				= "귓속말 답변에 처치/전멸 통계 포함"
