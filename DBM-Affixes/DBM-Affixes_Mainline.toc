@@ -1,4 +1,4 @@
-## Interface: 110205, 110207, 120000
+## Interface: 110205, 110207
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010M+ Affixes|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010신화+ 어픽스|r
@@ -25,7 +25,7 @@
 ## X-DBM-Mod-Name-esMX: М+ Afijos
 ## X-DBM-Mod-Name-ptBR: М+ Afixos
 ## X-DBM-Mod-Name-frFR: М+ Affixes
-## X-DBM-Mod-MapID: 2651, 2649, 2648, 2661, 1594, 2097, 2293, 2773, 2662, 2660, 2830, 2287, 2441
+## X-DBM-Mod-MapID: 2662, 2660, 2773, 2649, 2830, 2287, 2441
 ## X-DBM-Mod-Sort: 211
 ## X-DBM-Mod-MinCoreRevision: 12473
 

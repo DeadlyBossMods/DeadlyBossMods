@@ -25,11 +25,14 @@ blockSoundArea:CreateCheckButton(L.DisableMusic, true, nil, "DisableMusic")
 
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
 hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
+
 if DBM:IsPostMidnight() then
 	local hideTLButton = hideBlizzArea:CreateCheckButton(L.HideBlizzardTimeline, true, nil, "HideBlizzardTimeline")
 	hideTLButton:SetScript("OnClick", function()
+		DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 		if DBM.Options.HideBlizzardTimeline then
 			EncounterTimeline.TimelineView:SetScript("OnShow", function(self) self:Hide() end)
+			EncounterTimeline.TimelineView:Hide()
 		else
 			EncounterTimeline.TimelineView:SetScript("OnShow", nil)
 		end
