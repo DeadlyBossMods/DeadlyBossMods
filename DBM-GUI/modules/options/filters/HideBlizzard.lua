@@ -32,6 +32,7 @@ if DBM:IsPostMidnight() then
 		DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 		if DBM.Options.HideBlizzardTimeline then
 			EncounterTimeline.TimelineView:SetScript("OnShow", function(self) self:Hide() end)
+			EncounterTimeline.TimelineView:Hide()
 		else
 			EncounterTimeline.TimelineView:SetScript("OnShow", nil)
 		end
