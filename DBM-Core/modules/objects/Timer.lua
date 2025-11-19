@@ -1565,12 +1565,13 @@ end
 --/run C_EncounterTimeline.GetEventList()
 --/run C_EncounterTimeline.PauseScriptEvent()
 --/run C_EncounterTimeline.ResumeScriptEvent()
-function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID, barState)
+function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local newBar = DBT:GetBar(eventID)
 	if newBar then
-		if barState == 1 then
+		if eventState == 1 then
 			newBar:Pause()
-		elseif barState == 0 then
+		elseif eventState == 0 then
 			newBar:Resume()
 		end
 	end
@@ -1586,19 +1587,13 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 --	tremove(self.startedTimers, eventID)
 end
 
---[[
-function DBM:ENCOUNTER_TIMELINE_EVENT_HIGHLIGHT(eventID)
-	--TODO, audio countdown on highlight?
-end
---]]
-
 --/run DBM:RecoverBlizzardTimers()
 function DBM:RecoverBlizzardTimers()
 	if C_EncounterTimeline.HasActiveEvents() then
 		local eventList = C_EncounterTimeline.GetEventList()
 		for _, v in ipairs(eventList) do
-			local eventId = C_EncounterTimeline.GetEventInfo(v)
-			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventId)
+			local eventInfo = C_EncounterTimeline.GetEventInfo(v)
+			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		end
 	end
 end
