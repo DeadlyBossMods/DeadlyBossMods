@@ -1530,19 +1530,38 @@ end
 --TODO, re-enable icon when blizzard unfucks SetTexture
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --/run C_EncounterTimeline.AddEditModeEvents()
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	local duration = eventInfo.duration
+	local duration = remaining or eventInfo.duration
 	local maxQueueDuration = eventInfo.maxQueueDuration
 	--Secrets
 	--local spellId = eventInfo.tooltipSpellID
 	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
---	local icons = eventInfo.icons
+	local icons = eventInfo.icons
+	local inlineIcon, hasTankIcon, hasHealerIcon, hasDpsIcon, isDeadly = "", nil, nil, nil, nil
+	if icons and not issecretvalue(icons) then
+		hasTankIcon = bit.band(icons, 128) ~= 0
+		hasHealerIcon = bit.band(icons, 256) ~= 0
+		hasDpsIcon = bit.band(icons, 512) ~= 0
+		isDeadly = bit.band(icons, 1) ~= 0
+		if isDeadly then
+			inlineIcon = DBM_COMMON_L.DEADLY_ICON
+		end
+		if hasTankIcon then
+			inlineIcon = inlineIcon .. DBM_COMMON_L.TANK_ICON
+		end
+		if hasHealerIcon then
+			inlineIcon = inlineIcon .. DBM_COMMON_L.HEALER_ICON
+		end
+		if hasDpsIcon then
+			inlineIcon = inlineIcon .. DBM_COMMON_L.DAMAGE_ICON
+		end
+	end
 --	local severity = eventInfo.severity ("Normal", "Deadly")
 --	local isApproximate = eventInfo.isApproximate
 
@@ -1553,9 +1572,15 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
 	if DBM.Options.DebugMode and maxQueueDuration and maxQueueDuration > 0 then
-		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, (hasTankIcon or hasHealerIcon or hasDpsIcon) and 5 or isDeadly and 2 or 0, inlineIcon, nil, nil, isDeadly and 1 or nil, 5, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
-		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, (hasTankIcon or hasHealerIcon or hasDpsIcon) and 5 or isDeadly and 2 or 0, inlineIcon, nil, nil, isDeadly and 1 or nil, 5, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+	end
+	if isDeadly then
+		--Start countdown
+		self:Unschedule(playCountSound, eventID) -- Prevents count sound if timer is started again before timer expires
+		local duration = eventInfo.duration
+		playCountdown(eventID, duration, 1, 5)
 	end
 end
 
@@ -1566,13 +1591,20 @@ end
 --/run C_EncounterTimeline.PauseScriptEvent()
 --/run C_EncounterTimeline.ResumeScriptEvent()
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
-	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local newBar = DBT:GetBar(eventID)
 	if newBar then
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if eventState == 1 then
 			newBar:Pause()
+			self:Unschedule(playCountSound, eventID)
 		elseif eventState == 0 then
 			newBar:Resume()
+			if newBar.countdown then
+				local remaining = C_EncounterTimeline.GetEventTimeRemaining(eventID)
+				if remaining and remaining > 0 then
+					playCountdown(eventID, remaining, 1, 5)
+				end
+			end
 		end
 	end
 --	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
@@ -1582,7 +1614,7 @@ end
 
 function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 	DBT:CancelBar(eventID)
---	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
+	self:Unschedule(playCountSound, eventID)
 --	self:Unschedule(removeEntry, self.startedTimers, eventID)
 --	tremove(self.startedTimers, eventID)
 end
@@ -1593,7 +1625,8 @@ function DBM:RecoverBlizzardTimers()
 		local eventList = C_EncounterTimeline.GetEventList()
 		for _, v in ipairs(eventList) do
 			local eventInfo = C_EncounterTimeline.GetEventInfo(v)
-			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+			local remaining = C_EncounterTimeline.GetEventTimeRemaining(v)
+			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 		end
 	end
 end
