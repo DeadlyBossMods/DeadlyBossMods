@@ -1528,20 +1528,23 @@ end
 --IE each boss will have a checkbox to enable/disable timers for that specific boss
 --TODO, make sure DBM core can track timers in startedTimers table?
 --TODO, re-enable icon when blizzard unfucks SetTexture
+--TODO, use EncounterTimelineIconMasks to get icon mask from
 --/run C_EncounterTimeline.AddEditModeEvents()
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, barState)
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
 	local eventID = eventInfo.id
+	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = eventInfo.duration
+	local maxQueueDuration = eventInfo.maxQueueDuration
 	--Secrets
-	local spellId = eventInfo.tooltipSpellID
-	local spellName = C_Spell.GetSpellName(spellId)--Must use blizzard fucntion, wrapper taints secret
+	--local spellId = eventInfo.tooltipSpellID
+	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
---	local effectType = eventInfo.dispelType ("None", "Poison", "Magic", "Curse", "Disease", "Enrage", "Bleed")
---	local role = eventInfo.role ("None", "Tank", "Healer", "Damager")
---	local priority = eventInfo.priority ("Normal", "Deadly")
+--	local icons = eventInfo.icons
+--	local severity = eventInfo.severity ("Normal", "Deadly")
+--	local isApproximate = eventInfo.isApproximate
 
 	--We want to store timer references for secret timers so we can stop them later
 	--if not tContains(self.startedTimers, eventID) then--Make sure timer doesn't exist already before adding it
@@ -1549,7 +1552,11 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, barState)
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
-	DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, barState == 1)--barState 1 is "paused"
+	if DBM.Options.DebugMode and maxQueueDuration and maxQueueDuration > 0 then
+		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+	else
+		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+	end
 end
 
 
@@ -1579,14 +1586,19 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 --	tremove(self.startedTimers, eventID)
 end
 
+--[[
+function DBM:ENCOUNTER_TIMELINE_EVENT_HIGHLIGHT(eventID)
+	--TODO, audio countdown on highlight?
+end
+--]]
+
 --/run DBM:RecoverBlizzardTimers()
 function DBM:RecoverBlizzardTimers()
 	if C_EncounterTimeline.HasActiveEvents() then
 		local eventList = C_EncounterTimeline.GetEventList()
 		for _, v in ipairs(eventList) do
 			local eventId = C_EncounterTimeline.GetEventInfo(v)
-			local eventState = C_EncounterTimeline.GetEventState(v)
-			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventId, eventState)
+			self:ENCOUNTER_TIMELINE_EVENT_ADDED(eventId)
 		end
 	end
 end
