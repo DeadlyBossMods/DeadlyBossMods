@@ -86,8 +86,8 @@ L.LOWHEALTH_WARNING					= "Vida baixa (%d por cento de vida restante), reproduzi
 L.ENTERING_COMBAT					= "Entrando em combate"
 L.LEAVING_COMBAT					= "Saindo de combate"
 
-L.RAID_DIFFICULTY_CHANGED			= "Dificuldade de raid foi definida como %s."
-L.DUNGEON_DIFFICULTY_CHANGED		= "Dificuldade de masmorra foi definida como %s."
+L.RAID_DIFFICULTY_CHANGED			= "Dificuldade da raide foi definida como %s."
+L.DUNGEON_DIFFICULTY_CHANGED		= "Dificuldade da masmorra foi definida como %s."
 
 L.PROFILE_NOT_FOUND					= "<" .. L.DBM .. "> Seu perfil atual está corrompido. " .. L.DBM .. " carregara o perfil 'Padrão'."
 L.PROFILE_CREATED					= "'%s' perfil criado."
