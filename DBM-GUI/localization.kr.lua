@@ -288,6 +288,7 @@ L.WorldBossAlert			= "같은 서버의 길드원이나 친구가 필드 보스 �
 L.WorldBuffAlert			= "내 서버에서 월드 버프가 시작되면 알림 메시지 표시 (디스커버리 시즌 제외)"
 L.RaidDiffChangedAlert		= "공격대 난이도가 바뀌면 알림 메시지 표시"
 L.DungeonDiffChangedAlert	= "던전 난이도가 바뀌면 알림 메시지 표시"
+L.RaidDiffChangedRaidOnly			= "공격대 그룹일 때만 공격대 난이도 변경 알림 표시 (주의: 공격대로 전환되기 전 파티 상태에선 난이도 알림이 되지 않습니다)"
 
 L.Area_BugAlerts			= "버그 제보 알림 설정"
 L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머를 감지했을 때 대화창에 메시지 표시"
@@ -589,6 +590,7 @@ L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 �
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "자동 응답과 사생활 보호"
+L.Tab_PrivacyMidnight				= "애드온 통신과 사생활 보호"
 L.Area_WhisperMessages		= "귓속말 설정"
 L.AutoRespond 				= "전투중 자동 귓속말 답변"
 L.WhisperStats 				= "귓속말 답변에 처치/전멸 통계 포함"
