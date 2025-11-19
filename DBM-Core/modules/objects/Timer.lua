@@ -1543,14 +1543,14 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
 	local icons = eventInfo.icons
-	local inlineIcon, hasTankIcon, hasHealerIcon, hasDpsIcon, isDeadly = "", nil, nil, nil, nil
+	local inlineIcon = ""
 	--Currently icon mapping only possible outside of raids. It's basically useless otherwise when bitmap is secret
 	--Unlike iconId which is an actual secret texture we can still use, we can't actually decode what icons reside in icons to use them
 	if icons and not issecretvalue(icons) then
-		hasTankIcon = bit.band(icons, 128) ~= 0
-		hasHealerIcon = bit.band(icons, 256) ~= 0
-		hasDpsIcon = bit.band(icons, 512) ~= 0
-		isDeadly = bit.band(icons, 1) ~= 0
+		local hasTankIcon = bit.band(icons, 128) ~= 0
+		local hasHealerIcon = bit.band(icons, 256) ~= 0
+		local hasDpsIcon = bit.band(icons, 512) ~= 0
+		local isDeadly = bit.band(icons, 1) ~= 0
 		if isDeadly then
 			inlineIcon = DBM_COMMON_L.DEADLY_ICON
 		end
