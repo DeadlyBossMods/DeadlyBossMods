@@ -1770,7 +1770,7 @@ do
 			if self:IsPostMidnight() then
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				if self.Options.HideBlizzardTimeline then
-					EncounterTimeline.TimelineView:SetScript("OnShow", function(self) self:Hide() end)
+					EncounterTimeline.View:SetScript("OnShow", function(self) self:Hide() end)
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
