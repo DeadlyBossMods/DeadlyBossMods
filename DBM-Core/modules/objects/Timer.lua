@@ -1544,6 +1544,8 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local iconId = eventInfo.iconFileID
 	local icons = eventInfo.icons
 	local inlineIcon, hasTankIcon, hasHealerIcon, hasDpsIcon, isDeadly = "", nil, nil, nil, nil
+	--Currently icon mapping only possible outside of raids. It's basically useless otherwise when bitmap is secret
+	--Unlike iconId which is an actual secret texture we can still use, we can't actually decode what icons reside in icons to use them
 	if icons and not issecretvalue(icons) then
 		hasTankIcon = bit.band(icons, 128) ~= 0
 		hasHealerIcon = bit.band(icons, 256) ~= 0
@@ -1572,14 +1574,9 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
 	if DBM.Options.DebugMode and maxQueueDuration and maxQueueDuration > 0 then
-		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, (hasTankIcon or hasHealerIcon or hasDpsIcon) and 5 or isDeadly and 2 or 0, inlineIcon, nil, nil, isDeadly and 1 or nil, 5, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, inlineIcon, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
-		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, (hasTankIcon or hasHealerIcon or hasDpsIcon) and 5 or isDeadly and 2 or 0, inlineIcon, nil, nil, isDeadly and 1 or nil, 5, nil, spellName, true, eventState == 1)--barState 1 is "paused"
-	end
-	if isDeadly then
-		--Start countdown
-		self:Unschedule(playCountSound, eventID) -- Prevents count sound if timer is started again before timer expires
-		playCountdown(eventID, duration, 1, 5)
+		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, inlineIcon, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
 end
 
@@ -1595,15 +1592,8 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if eventState == 1 then
 			newBar:Pause()
-			self:Unschedule(playCountSound, eventID)
 		elseif eventState == 0 then
 			newBar:Resume()
-			if newBar.countdown then
-				local remaining = C_EncounterTimeline.GetEventTimeRemaining(eventID)
-				if remaining and remaining > 0 then
-					playCountdown(eventID, remaining, 1, 5)
-				end
-			end
 		end
 	end
 --	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
@@ -1613,7 +1603,6 @@ end
 
 function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 	DBT:CancelBar(eventID)
-	self:Unschedule(playCountSound, eventID)
 --	self:Unschedule(removeEntry, self.startedTimers, eventID)
 --	tremove(self.startedTimers, eventID)
 end
