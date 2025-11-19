@@ -1579,7 +1579,6 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	if isDeadly then
 		--Start countdown
 		self:Unschedule(playCountSound, eventID) -- Prevents count sound if timer is started again before timer expires
-		local duration = eventInfo.duration
 		playCountdown(eventID, duration, 1, 5)
 	end
 end
