@@ -365,7 +365,7 @@ do
 			end
 			newBar:ApplyStyle()
 			if isSecret then
-				newBar:SetText(secretText, nil, true)
+				newBar:SetText(secretText, inlineIcon, true)
 			else
 				newBar:SetText(id)
 			end
@@ -445,7 +445,7 @@ do
 				tinsert(smallBars, newBar)
 			end
 			if isSecret then
-				newBar:SetText(secretText, nil, true)
+				newBar:SetText(secretText, inlineIcon, true)
 			else
 				newBar:SetText(id)
 			end
@@ -866,12 +866,12 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text, inlineIcon, isSecret)
+	if not DBT.Options.InlineIcons then
+		inlineIcon = nil
+	end
 	if isSecret then--We can't touch the text in ANY way
-		_G[self.frame:GetName().."BarName"]:SetText(text)
+		_G[self.frame:GetName().."BarName"]:SetText((inlineIcon or "")..text)
 	else
-		if not DBT.Options.InlineIcons then
-			inlineIcon = nil
-		end
 		-- Force change color type 7 to custom inlineIcon
 		_G[self.frame:GetName().."BarName"]:SetText(((self.colorType and self.colorType >= 7 and DBT.Options.Bar7CustomInline) and DBM_COMMON_L.IMPORTANT_ICON or inlineIcon or "") .. text)
 	end

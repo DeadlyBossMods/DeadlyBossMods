@@ -278,12 +278,13 @@ L.ShowGuildMessages 		= "Mostrar mensajes de inicio de encuentro, victoria y der
 L.ShowGuildMessagesPlus		= "Mostrar mensajes de inicio de encuentro, victoria y derrota de Mítica+ para grupos de hermandad"
 
 L.Area_ChatAlerts			= "Opciones de alertas adicionales"
-L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
-L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
-L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe del mundo"
-L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando empiece un beneficio del mundo en tu reino"
-L.RaidDiffChangedAlert		= "Mostrar mensaje de alerta cuando la dificultad de la banda cambie"
-L.DungeonDiffChangedAlert	= "Mostrar mensaje de alerta cuando la dificultad de la mazmora cambie"
+L.RoleSpecAlert				= "Mostrar alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
+L.CheckGear					= "Mostrar alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
+L.WorldBossAlert			= "Mostrar alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe del mundo"
+L.WorldBuffAlert			= "Mostrar alerta y temporizador cuando empiece un beneficio del mundo en tu reino"
+L.RaidDiffChangedAlert		= "Mostrar alerta cuando la dificultad de la banda cambie"
+L.RaidDiffChangedRaidOnly	= "Mostrar alerta de cambio de dificultad solo cuando estés en un grupo de banda"
+L.DungeonDiffChangedAlert	= "Mostrar alerta cuando la dificultad de la mazmorra cambie"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
 L.BadTimerAlert				= "Mostrar mensaje cuando DBM detecte un temporizador erróneo"
@@ -584,6 +585,7 @@ L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres lí
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidad"
+L.Tab_PrivacyMidnight		= "Privacidad de comunicaciones"
 L.Area_WhisperMessages		= "Opciones de susurros"
 L.AutoRespond 				= "Responder automáticamente a susurros en encuentro"
 L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas a susurros"

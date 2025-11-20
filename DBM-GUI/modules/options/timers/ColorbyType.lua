@@ -1,4 +1,4 @@
-if DBM:IsPostMidnight() then return end--We cannot detect bar types in midnight, so we can't color by bar type
+if DBM:IsPostMidnight() then return end
 local L = DBM_GUI_L
 local DBT = DBT
 

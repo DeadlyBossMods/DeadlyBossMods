@@ -36,7 +36,7 @@ L.TEXT_ONLY_RANGE			= "El marco de distancia está limitado a texto únicamente 
 L.NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
 L.NO_ARROW					= "No se puede usar la flecha en estancias."
 L.NO_HUD					= "No se puede usar el indicador en pantalla en estancias."
-L.NO_COMMS					= "La comunicación de addons no se puede usar durante encuentros o mazmorras M+ activas. Usa este comando nuevamente después de que termine el encuentro o la mazmorras."
+L.NO_COMMS					= "La comunicación de addons no se puede usar durante encuentros o mazmorras M+ activas. Usa este comando nuevamente después de que termine el encuentro o la mazmorra."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 L.DYNAMIC_ADD_COUNT			= L.DBM .. " ha desactivado los anuncios de esbirros para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
@@ -86,7 +86,7 @@ L.ENTERING_COMBAT			= "Entrando en combate"
 L.LEAVING_COMBAT			= "Saliendo del combate"
 
 L.RAID_DIFFICULTY_CHANGED		= "La dificultad de la banda se ha establecido en %s."
-L.DUNGEON_DIFFICULTY_CHANGED	= "La dificultad de la mazmorras se ha establecido en %s."
+L.DUNGEON_DIFFICULTY_CHANGED	= "La dificultad de la mazmorra se ha establecido en %s."
 
 L.PROFILE_NOT_FOUND				= "<" .. L.DBM .. "> Tu perfil actual está corrupto. " .. L.DBM .. " cargará el perfil 'Predeterminado'."
 L.PROFILE_CREATED				= "Se ha creado el perfil '%s'."

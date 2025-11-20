@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 401, "34b582e"--401.4
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.6 alpha"--Core version
+DBM.DisplayVersion = "12.0.7 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 11, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 11, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 19--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1770,7 +1770,7 @@ do
 			if self:IsPostMidnight() then
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				if self.Options.HideBlizzardTimeline then
-					EncounterTimeline.TimelineView:SetScript("OnShow", function(self) self:Hide() end)
+					EncounterTimeline.View:SetScript("OnShow", function(self) self:Hide() end)
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
@@ -4859,10 +4859,15 @@ do
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
 			if not self.Options.DontShowPTText and timer then
-				local target = unitId and DBM:GetUnitFullName(unitId.."target")
-				if target and not raid[target] then
-					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+				if not self:IsPostMidnight() then
+					local target = unitId and DBM:GetUnitFullName(unitId.."target")
+					if target and not raid[target] then
+						dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
+						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+					else
+						dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
+						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+					end
 				else
 					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
@@ -5738,7 +5743,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
-			if v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if not self:IsPostMidnight() and v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				local timerEnabled = self.Options.ShowRespawn and not self.Options.DontShowEventTimers
 				name = string.split(",", name)
 				if timerEnabled then

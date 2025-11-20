@@ -519,6 +519,7 @@ L.TabFooter = "Todas as opções neste painel só funcionam se você for o líde
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidade"
+L.Tab_PrivacyMidnight 		= "Privacidade das comunicações"
 L.Area_WhisperMessages 		= "Opções de mensagens de sussurro"
 L.AutoRespond 				= "Responder automaticamente a sussurros durante o combate"
 L.WhisperStats 				= "Incluir estatísticas de vitórias/derrotas nas respostas de sussurro"
@@ -570,12 +571,13 @@ L.NPIcon_Button 			= "Botão"
 L.Panel_ExtraFeatures		= "Funcionalidades extra"
 
 L.Area_ChatAlerts			= "Opções de alerta do bate-papo"
-L.RoleSpecAlert				= "Exibir mensagem de alerta quando sua especialização de saque não corresponder à sua especialização atual ao entrar na raide"
-L.CheckGear					= "Envia um mensagem de alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas (40+)"
-L.WorldBossAlert			= "Exibir mensagem de alerta quando um chefe mundial possivelmente for atacado no seu reino por membros da sua guilda ou amigos"
-L.WorldBuffAlert 			= "Exibir mensagem de alerta e cronômetro quando o RP de bônus mundial for iniciado no seu reino"
-L.RaidDiffChangedAlert		= "Exibir mensagem de alerta quando a dificuldade da raide for alterada"
-L.DungeonDiffChangedAlert	= "Exibir mensagem de alerta quando a dificuldade da masmorra for alterada"
+L.RoleSpecAlert				= "Exibir alerta quando sua especialização de saque não corresponder à sua especialização atual ao entrar na raide"
+L.CheckGear					= "Exibir alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas (40+)"
+L.WorldBossAlert			= "Exibir alerta quando um chefe mundial possivelmente for atacado no seu reino por membros da sua guilda ou amigos"
+L.WorldBuffAlert 			= "Exibir alerta e cronômetro quando o RP de bônus mundial for iniciado no seu reino"
+L.RaidDiffChangedAlert		= "Exibir alerta quando a dificuldade da raide for alterada"
+L.RaidDiffChangedRaidOnly 	= "Exibir alerta de mudança de dificuldade apenas quando estiver em um grupo de raide"
+L.DungeonDiffChangedAlert	= "Exibir alerta quando a dificuldade da masmorra for alterada"
 
 L.Area_SoundAlerts			= "Opções de som de alerta"
 L.LFDEnhance				= "Reproduzir o som de TodosProntos para checagem de papéis e CB/LDG"
