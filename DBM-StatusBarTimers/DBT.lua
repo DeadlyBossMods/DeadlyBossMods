@@ -339,7 +339,7 @@ do
 		else
 			timer = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
 		end
-		if not timer or (self.numBars >= 15 and not isDummy) then
+		if not timer then
 			return
 		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
