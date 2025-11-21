@@ -169,7 +169,7 @@ local barPrototype = {}
 local unusedBarObjects, barIsAnimating = {}, false
 local smallBars, largeBars = {}, {}
 
-local smallBarsAnchor, largeBarsAnchor = CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent)
+local smallBarsAnchor, largeBarsAnchor, hiddenBarAnchor = CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent)
 smallBarsAnchor:SetSize(1, 1)
 smallBarsAnchor:SetPoint("TOPRIGHT", 223, -260)
 smallBarsAnchor:SetClampedToScreen(true)
@@ -180,6 +180,13 @@ largeBarsAnchor:SetPoint("CENTER", 0, -120)
 largeBarsAnchor:SetClampedToScreen(true)
 largeBarsAnchor:SetMovable(true)
 largeBarsAnchor:Show()
+--A bar anchor that's never actually shown.
+--it'll be fully clickthrough fully transparent and no cpu spent on animation, just tracking all the > x time timers that are hidden
+--hiddenBarAnchor:SetSize(1, 1)
+--hiddenBarAnchor:SetPoint("BOTTOMLEFT", 0, 0)
+--hiddenBarAnchor:SetClampedToScreen(true)
+--hiddenBarAnchor:SetMovable(true)
+--hiddenBarAnchor:Show()
 
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
