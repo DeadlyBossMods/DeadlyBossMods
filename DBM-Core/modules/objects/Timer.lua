@@ -1542,28 +1542,29 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--local spellId = eventInfo.tooltipSpellID
 	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
-	local icons = eventInfo.icons
-	local inlineIcon = ""
+	--local icons = eventInfo.icons
+	--C_EncounterTimeline.SetEventIconTextures(eventID, icons, {DBM_COMMON_L.DAMAGE_ICON})
+	--local inlineIcon = ""
 	--Currently icon mapping only possible outside of raids. It's basically useless otherwise when bitmap is secret
 	--Unlike iconId which is an actual secret texture we can still use, we can't actually decode what icons reside in icons to use them
-	if icons and not issecretvalue(icons) then
-		local hasTankIcon = bit.band(icons, 128) ~= 0
-		local hasHealerIcon = bit.band(icons, 256) ~= 0
-		local hasDpsIcon = bit.band(icons, 512) ~= 0
-		local isDeadly = bit.band(icons, 1) ~= 0
-		if isDeadly then
-			inlineIcon = DBM_COMMON_L.DEADLY_ICON
-		end
-		if hasTankIcon then
-			inlineIcon = inlineIcon .. DBM_COMMON_L.TANK_ICON
-		end
-		if hasHealerIcon then
-			inlineIcon = inlineIcon .. DBM_COMMON_L.HEALER_ICON
-		end
-		if hasDpsIcon then
-			inlineIcon = inlineIcon .. DBM_COMMON_L.DAMAGE_ICON
-		end
-	end
+	--if icons and not issecretvalue(icons) then
+	--	local hasTankIcon = bit.band(icons, 128) ~= 0
+	--	local hasHealerIcon = bit.band(icons, 256) ~= 0
+	--	local hasDpsIcon = bit.band(icons, 512) ~= 0
+	--	local isDeadly = bit.band(icons, 1) ~= 0
+	--	if isDeadly then
+	--		inlineIcon = DBM_COMMON_L.DEADLY_ICON
+	--	end
+	--	if hasTankIcon then
+	--		inlineIcon = inlineIcon .. DBM_COMMON_L.TANK_ICON
+	--	end
+	--	if hasHealerIcon then
+	--		inlineIcon = inlineIcon .. DBM_COMMON_L.HEALER_ICON
+	--	end
+	--	if hasDpsIcon then
+	--		inlineIcon = inlineIcon .. DBM_COMMON_L.DAMAGE_ICON
+	--	end
+	--end
 --	local severity = eventInfo.severity ("Normal", "Deadly")
 --	local isApproximate = eventInfo.isApproximate
 
@@ -1574,9 +1575,9 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
 	if DBM.Options.DebugMode and maxQueueDuration and maxQueueDuration > 0 then
-		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, inlineIcon, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
-		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, inlineIcon, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
 end
 
