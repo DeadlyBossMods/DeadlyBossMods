@@ -38,12 +38,18 @@ EnlargeTimeSlider:SetValue(DBT.Options.EnlargeBarTime)
 EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
 EnlargeTimeSlider.myheight = 0
 
-local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
-ClickThrough:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -15)
+local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 60, 600, 1)
+BarsHiddenSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -75)
+BarsHiddenSlider:SetValue(DBT.Options.HiddenBarTime)
+BarsHiddenSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HiddenBarTime"))
 
+local HiddenBarsToggle = BarBehaviors:CreateCheckButton(L.Bar_HideLongBars, true, nil, nil, "HideLongBars")
+HiddenBarsToggle:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -65)
+
+BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
 BarBehaviors:CreateCheckButton(L.DisableRightClickBar, true, nil, nil, "DisableRightClick")
 --Can't rename spells in midnight
---Won't keep timers in midnight (they follow timeline
+--Won't keep timers in midnight (they follow timeline)
 --Can't distance check in midnight, so can't fade by distance
 if not DBM:IsPostMidnight() then
 	BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
