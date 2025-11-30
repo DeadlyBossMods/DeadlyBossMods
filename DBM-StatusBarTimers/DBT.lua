@@ -814,7 +814,7 @@ function DBT:UpdateBars(sortBars)
 		bar.frame:ClearAllPoints()
 		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
 	end
-	for i, bar in ipairs(hiddenBars) do
+	for _, bar in ipairs(hiddenBars) do
 		bar.frame:ClearAllPoints()
 		--bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
 		bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", 9999, 0)
@@ -1173,17 +1173,12 @@ function barPrototype:Update(elapsed)
 		self:RemoveFromList()
 		self.isHidden = true
 		self.moving = nil
-		isMoving = nil
-		isEnlarged = nil
 		self.enlarged = false
 		self:ResetAnimations()
 	elseif isHidden and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = nil
 		self.moving = nil
-		isMoving = nil
-		isEnlarged = nil
-		isHidden = nil
 		self.enlarged = false
 		self:ResetAnimations()
 		DBT:UpdateBars(true)
