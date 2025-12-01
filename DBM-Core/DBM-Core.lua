@@ -4859,10 +4859,15 @@ do
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
 			if not self.Options.DontShowPTText and timer then
-				local target = unitId and DBM:GetUnitFullName(unitId.."target")
-				if target and not raid[target] then
-					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+				if not self:IsPostMidnight() then
+					local target = unitId and DBM:GetUnitFullName(unitId.."target")
+					if target and not raid[target] then
+						dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
+						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+					else
+						dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
+						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+					end
 				else
 					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
@@ -5738,7 +5743,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
-			if v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if not self:IsPostMidnight() and v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				local timerEnabled = self.Options.ShowRespawn and not self.Options.DontShowEventTimers
 				name = string.split(",", name)
 				if timerEnabled then

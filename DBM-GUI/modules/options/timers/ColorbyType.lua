@@ -1,5 +1,4 @@
---if DBM:IsPostMidnight() then return end--We can kinda do color by type based on roles, (for now)
---if role and deadly filtering remains well shrink panel down to just 3 colors. regular, role, and deadly
+if DBM:IsPostMidnight() then return end
 local L = DBM_GUI_L
 local DBT = DBT
 
