@@ -1,3 +1,4 @@
+local _, _, _, wowTOC = GetBuildInfo()
 ---@class DBT
 local DBT = {
 	bars = {},
@@ -121,6 +122,9 @@ DBT.DefaultOptions = {
 	HugeBarsEnabled = true,
 	HugeTimerPoint = "CENTER",
 	HugeSort = "Sort",
+	-- Hidden bar
+	HiddenBarTime = 60,
+	HideLongBars = wowTOC >= 120000 and true or false,
 	-- Misc
 	TextColorR = 1,
 	TextColorG = 1,
@@ -167,9 +171,9 @@ DBT.DefaultOptions = {
 ---@field hasVariance boolean
 local barPrototype = {}
 local unusedBarObjects, barIsAnimating = {}, false
-local smallBars, largeBars = {}, {}
+local smallBars, largeBars, hiddenBars = {}, {}, {}
 
-local smallBarsAnchor, largeBarsAnchor, hiddenBarAnchor = CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent)
+local smallBarsAnchor, largeBarsAnchor, hiddenBarsAnchor = CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent)
 smallBarsAnchor:SetSize(1, 1)
 smallBarsAnchor:SetPoint("TOPRIGHT", 223, -260)
 smallBarsAnchor:SetClampedToScreen(true)
@@ -182,11 +186,11 @@ largeBarsAnchor:SetMovable(true)
 largeBarsAnchor:Show()
 --A bar anchor that's never actually shown.
 --it'll be fully clickthrough fully transparent and no cpu spent on animation, just tracking all the > x time timers that are hidden
---hiddenBarAnchor:SetSize(1, 1)
---hiddenBarAnchor:SetPoint("BOTTOMLEFT", 0, 0)
---hiddenBarAnchor:SetClampedToScreen(true)
---hiddenBarAnchor:SetMovable(true)
---hiddenBarAnchor:Show()
+hiddenBarsAnchor:SetSize(1, 1)
+hiddenBarsAnchor:SetPoint("BOTTOMLEFT", 0, 0)
+hiddenBarsAnchor:SetClampedToScreen(true)
+hiddenBarsAnchor:SetMovable(true)
+hiddenBarsAnchor:Show()
 
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
@@ -355,6 +359,7 @@ do
 		end
 		local newBar = self:GetBar(id)
 		if newBar then -- Update an existing bar
+			newBar.isHidden = nil
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
 			newBar.paused = isPaused or nil
@@ -377,6 +382,9 @@ do
 				newBar:SetText(id)
 			end
 			newBar:SetIcon(icon)
+			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+				newBar:ResetAnimations()
+			end
 		else -- Create a new bar
 			newBar = next(unusedBarObjects)
 			if newBar then
@@ -388,6 +396,7 @@ do
 				newBar.totalTime = timer
 				newBar.moving = nil
 				newBar.enlarged = nil
+				newBar.isHidden = nil
 				newBar.fadingIn = 0
 				newBar.small = small
 				newBar.color = color
@@ -416,6 +425,7 @@ do
 					owner = self,
 					moving = nil,
 					enlarged = nil,
+					isHidden = nil,
 					alwaysHuge = nil,
 					fadingIn = 0,
 					small = small,
@@ -442,8 +452,13 @@ do
 			if ((colorType and colorType >= 7 and self.Options.Bar7ForceLarge) or huge) and self.Options.HugeBarsEnabled then
 				newBar.alwaysHuge = true
 			end
+			-- Hidden bars that shouldn't be animated or shown yet
+			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+				newBar.isHidden = true
+				newBar.enlarged = false
+				tinsert(hiddenBars, newBar)
 			-- Bars that start huge either by config (above) or because they happen to be short timers
-			if (newBar.alwaysHuge or (varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11)) and self.Options.HugeBarsEnabled then
+			elseif (newBar.alwaysHuge or (varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11)) and self.Options.HugeBarsEnabled then
 				newBar.enlarged = true
 				newBar.huge = true
 				tinsert(largeBars, newBar)
@@ -602,8 +617,10 @@ do
 	function DBT:Rearrange()
 		smallBarsAnchor:ClearAllPoints()
 		largeBarsAnchor:ClearAllPoints()
+		hiddenBarsAnchor:ClearAllPoints()
 		smallBarsAnchor:SetPoint(self.Options.TimerPoint, UIParent, self.Options.TimerPoint, self.Options.TimerX, self.Options.TimerY)
 		largeBarsAnchor:SetPoint(self.Options.HugeTimerPoint, UIParent, self.Options.HugeTimerPoint, self.Options.HugeTimerX, self.Options.HugeTimerY)
+		hiddenBarsAnchor:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", 9999, 0)
 		self:ApplyStyle()
 	end
 end
@@ -797,6 +814,11 @@ function DBT:UpdateBars(sortBars)
 		bar.frame:ClearAllPoints()
 		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
 	end
+	for _, bar in ipairs(hiddenBars) do
+		bar.frame:ClearAllPoints()
+		--bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
+		bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", 9999, 0)
+	end
 end
 
 function DBT:ApplyStyle()
@@ -832,7 +854,11 @@ end
 function barPrototype:ResetAnimations(makeBig)
 	self:RemoveFromList()
 	self.moving = nil
-	if DBT.Options.HugeBarsEnabled and (makeBig or self.alwaysHuge) then
+	-- Hidden bars that shouldn't be animated or shown yet
+	if self.isHidden then
+		self.enlarged = nil
+		tinsert(hiddenBars, self)
+	elseif DBT.Options.HugeBarsEnabled and (makeBig or self.alwaysHuge) then
 		self.enlarged = true
 		tinsert(largeBars, self)
 	else
@@ -858,15 +884,17 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
-	local enlargeTime = DBT.Options.EnlargeBarTime or 11
-	-- Bar was large, or moving (animating from the small to large bar anchor) at time this was called
-	-- Force reset animation and move it back to the small anchor since time was added to bar
-	if (self.enlarged or self.moving == "enlarge") and self.timer > enlargeTime then
-		self:ResetAnimations()
-	-- Bar was small, or moving from small to large when time was removed
-	-- Also force reset animation but this time move it from small anchor into large one
-	elseif not self.paused and (not self.enlarged or self.moving == "enlarge") and self.timer <= enlargeTime then
-		self:ResetAnimations(true)
+	if not self.isHidden then
+		local enlargeTime = DBT.Options.EnlargeBarTime or 11
+		-- Bar was large, or moving (animating from the small to large bar anchor) at time this was called
+		-- Force reset animation and move it back to the small anchor since time was added to bar
+		if (self.enlarged or self.moving == "enlarge") and self.timer > enlargeTime then
+			self:ResetAnimations()
+		-- Bar was small, or moving from small to large when time was removed
+		-- Also force reset animation but this time move it from small anchor into large one
+		elseif not self.paused and (not self.enlarged or self.moving == "enlarge") and self.timer <= enlargeTime then
+			self:ResetAnimations(true)
+		end
 	end
 	self:Update(0)
 	DBT:UpdateBars(true)
@@ -996,6 +1024,8 @@ function barPrototype:Update(elapsed)
 	local enlargeHack = self.dummyEnlarge or colorCount >= 7 and barOptions.Bar7ForceLarge and enlargeEnabled
 	local enlargeTime = barOptions.EnlargeBarTime or 11
 	local isEnlarged = self.enlarged and not paused
+	local isHidden = self.isHidden
+	local hiddenBarTime = barOptions.HiddenBarTime or 60
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
 	local varianceEnabled = barOptions.VarianceEnabled
@@ -1029,113 +1059,130 @@ function barPrototype:Update(elapsed)
 	if timerValue <= 0 and not (barOptions.KeepBars and self.keep) and not (varianceBehaviorNeg and self.varianceDuration and (timerValue < -self.varianceDuration)) then
 		return self:Cancel()
 	else
-		if fillUpBars then
-			if currentStyle == "NoAnim" and timerValue <= enlargeTime and not enlargeHack and not self.varianceDuration then
-				-- Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
-				bar:SetValue(1 - timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
+		if not isHidden then
+			if fillUpBars then
+				if currentStyle == "NoAnim" and timerValue <= enlargeTime and not enlargeHack and not self.varianceDuration then
+					-- Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
+					bar:SetValue(1 - timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
+				else
+					bar:SetValue(1 - timerValue/totaltimeValue)
+				end
 			else
-				bar:SetValue(1 - timerValue/totaltimeValue)
+				if currentStyle == "NoAnim" and timerValue <= enlargeTime and not enlargeHack and not self.varianceDuration then
+					-- Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
+					bar:SetValue(timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
+				else
+					bar:SetValue(timerValue/totaltimeValue)
+				end
 			end
-		else
-			if currentStyle == "NoAnim" and timerValue <= enlargeTime and not enlargeHack and not self.varianceDuration then
-				-- Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
-				bar:SetValue(timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
+			if self.isCooldown then--inprecise CD bar, signify it with ~ in timer
+				timer:SetText("~" .. stringFromTimer(timerCorrectedNegative))
 			else
-				bar:SetValue(timerValue/totaltimeValue)
+				timer:SetText(stringFromTimer(timerCorrectedNegative))
 			end
 		end
-		if self.isCooldown then--inprecise CD bar, signify it with ~ in timer
-			timer:SetText("~" .. stringFromTimer(timerCorrectedNegative))
-		else
-			timer:SetText(stringFromTimer(timerCorrectedNegative))
+	end
+	if not isHidden then
+		if isFadingIn and isFadingIn < 0.5 and currentStyle ~= "NoAnim" then
+			self.fadingIn = isFadingIn + elapsed
+			if (isEnlarged and barOptions.HugeAlpha == 1) or barOptions.Alpha == 1 then -- Only fade in if alpha is 1, otherwise we already have a faded bar
+				frame:SetAlpha((isFadingIn) / 0.5)
+			end
+		elseif isFadingIn then
+			self.fadingIn = nil
 		end
-	end
-	if isFadingIn and isFadingIn < 0.5 and currentStyle ~= "NoAnim" then
-		self.fadingIn = isFadingIn + elapsed
-		if (isEnlarged and barOptions.HugeAlpha == 1) or barOptions.Alpha == 1 then -- Only fade in if alpha is 1, otherwise we already have a faded bar
-			frame:SetAlpha((isFadingIn) / 0.5)
-		end
-	elseif isFadingIn then
-		self.fadingIn = nil
-	end
-	if timerValue <= 7.75 and not self.flashing and barOptions.FlashBar and not paused then
-		self.flashing = true
-		self.ftimer = 0
-	elseif self.flashing and timerValue > 7.75 then
-		self.flashing = nil
-		self.ftimer = nil
-		bar:SetStatusBarColor(r, g, b, 1)
-		if sparkEnabled then
-			spark:SetAlpha(1)
-		end
-	end
-	if sparkEnabled then
-		spark:ClearAllPoints()
-		spark:SetSize(12, barOptions[isEnlarged and 'HugeHeight' or 'Height'] * 3)
-		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
-	else
-		spark:SetAlpha(0)
-	end
-	if self.flashing then
-		local ftime = self.ftimer % 1.25
-		if ftime >= 0.5 then
+		if timerValue <= 7.75 and not self.flashing and barOptions.FlashBar and not paused then
+			self.flashing = true
+			self.ftimer = 0
+		elseif self.flashing and timerValue > 7.75 then
+			self.flashing = nil
+			self.ftimer = nil
 			bar:SetStatusBarColor(r, g, b, 1)
 			if sparkEnabled then
 				spark:SetAlpha(1)
 			end
-		elseif ftime >= 0.25 then
-			bar:SetStatusBarColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
-			if sparkEnabled then
-				spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
-			end
-		else
-			bar:SetStatusBarColor(r, g, b, 1 - (ftime / 0.25))
-			if sparkEnabled then
-				spark:SetAlpha(1 - (ftime / 0.25))
-			end
 		end
-		self.ftimer = self.ftimer + elapsed
-	end
-	local melapsed = self.moveElapsed
-	if isMoving == "move" and melapsed <= 0.5 then
-		barIsAnimating = true
-		self.moveElapsed = melapsed + elapsed
-		local newX = self.moveOffsetX + (barOptions[isEnlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
-		local newY
-		if ExpandUpwards then
-			newY = self.moveOffsetY + (barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+		if sparkEnabled then
+			spark:ClearAllPoints()
+			spark:SetSize(12, barOptions[isEnlarged and 'HugeHeight' or 'Height'] * 3)
+			spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		else
-			newY = self.moveOffsetY + (-barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+			spark:SetAlpha(0)
 		end
-		frame:ClearAllPoints()
-		frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
-	elseif isMoving == "move" then
-		barIsAnimating = false
-		self.moving = nil
-		isMoving = nil
-	elseif isMoving == "enlarge" and melapsed <= 1 then
-		barIsAnimating = true
-		self:AnimateEnlarge(elapsed)
-	elseif isMoving == "enlarge" then
-		barIsAnimating = false
-		self.moving = nil
-		isMoving = nil
-		self.enlarged = true
-		isEnlarged = true
-		tinsert(largeBars, self)
-		self:ApplyStyle()
-		DBT:UpdateBars(true)
-	elseif isMoving == "nextEnlarge" then
-		barIsAnimating = false
-		self.moving = nil
-		isMoving = nil
-		self.enlarged = true
-		isEnlarged = true
-		tinsert(largeBars, self)
-		self:ApplyStyle()
-		DBT:UpdateBars(true)
+		if self.flashing then
+			local ftime = self.ftimer % 1.25
+			if ftime >= 0.5 then
+				bar:SetStatusBarColor(r, g, b, 1)
+				if sparkEnabled then
+					spark:SetAlpha(1)
+				end
+			elseif ftime >= 0.25 then
+				bar:SetStatusBarColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
+				if sparkEnabled then
+					spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
+				end
+			else
+				bar:SetStatusBarColor(r, g, b, 1 - (ftime / 0.25))
+				if sparkEnabled then
+					spark:SetAlpha(1 - (ftime / 0.25))
+				end
+			end
+			self.ftimer = self.ftimer + elapsed
+		end
+		local melapsed = self.moveElapsed
+		if isMoving == "move" and melapsed <= 0.5 then
+			barIsAnimating = true
+			self.moveElapsed = melapsed + elapsed
+			local newX = self.moveOffsetX + (barOptions[isEnlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
+			local newY
+			if ExpandUpwards then
+				newY = self.moveOffsetY + (barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+			else
+				newY = self.moveOffsetY + (-barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+			end
+			frame:ClearAllPoints()
+			frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
+		elseif isMoving == "move" then
+			barIsAnimating = false
+			self.moving = nil
+			isMoving = nil
+		elseif isMoving == "enlarge" and melapsed <= 1 then
+			barIsAnimating = true
+			self:AnimateEnlarge(elapsed)
+		elseif isMoving == "enlarge" then
+			barIsAnimating = false
+			self.moving = nil
+			isMoving = nil
+			self.enlarged = true
+			isEnlarged = true
+			tinsert(largeBars, self)
+			self:ApplyStyle()
+			DBT:UpdateBars(true)
+		elseif isMoving == "nextEnlarge" then
+			barIsAnimating = false
+			self.moving = nil
+			isMoving = nil
+			self.enlarged = true
+			isEnlarged = true
+			tinsert(largeBars, self)
+			self:ApplyStyle()
+			DBT:UpdateBars(true)
+		end
 	end
-	if not paused and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled then
+	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
+		self:RemoveFromList()
+		self.isHidden = true
+		self.moving = nil
+		self.enlarged = false
+		self:ResetAnimations()
+	elseif isHidden and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
+		self:RemoveFromList()
+		self.isHidden = nil
+		self.moving = nil
+		self.enlarged = false
+		self:ResetAnimations()
+		DBT:UpdateBars(true)
+	elseif not paused and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
@@ -1146,8 +1193,8 @@ function barPrototype:Update(elapsed)
 end
 
 function barPrototype:RemoveFromList()
-	if self.moving ~= "enlarge" then
-		tDeleteItem(self.enlarged and largeBars or smallBars, self)
+	if self.moving ~= "enlarge" or self.isHidden then
+		tDeleteItem(self.isHidden and hiddenBars or self.enlarged and largeBars or smallBars, self)
 	end
 end
 
@@ -1258,11 +1305,12 @@ do
 	end
 end
 
+--Not used at all?
 function barPrototype:MoveToNextPosition()
 	if self.moving == "enlarge" or not self.frame then
 		return
 	end
-	local newAnchor = self.enlarged and largeBarsAnchor or smallBarsAnchor
+	local newAnchor = self.isHidden and hiddenBarsAnchor or self.enlarged and largeBarsAnchor or smallBarsAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	local Enlarged = self.enlarged
@@ -1293,11 +1341,10 @@ end
 function barPrototype:Enlarge()
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
-	local Enlarged = self.enlarged
-	local ExpandUpwards = Enlarged and DBT.Options.ExpandUpwardsLarge or not Enlarged and DBT.Options.ExpandUpwards
+	local ExpandUpwards = DBT.Options.ExpandUpwardsLarge
 	self.frame:ClearAllPoints()
-	local xOffset = Enlarged and DBT.Options.HugeBarXOffset or DBT.Options.BarXOffset
-	local yOffset = Enlarged and DBT.Options.HugeBarYOffset or DBT.Options.BarYOffset
+	local xOffset = DBT.Options.HugeBarXOffset
+	local yOffset = DBT.Options.HugeBarYOffset
 	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
 		self.frame:SetPoint("BOTTOM", largeBarsAnchor, "BOTTOM", xOffset, yOffset)

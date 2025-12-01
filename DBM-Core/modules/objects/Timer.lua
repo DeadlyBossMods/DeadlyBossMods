@@ -1621,8 +1621,10 @@ function DBM:RecoverBlizzardTimers()
 end
 
 --/run DBM:GigaTimerTest(true)
+--Doesn't currently work, apparently api changed again and it's annoying to look up to fix right now
 function DBM:GigaTimerTest(big)
 	for i = 1, big and 60 or 30 do
-		C_EncounterTimeline.AddScriptEvent({duration = 10 * i,tooltipSpellID = 12345,iconFileID = 237550,expirationTime= C_EncounterTimeline.GetCurrentTime() + 10 * i})
+		local duration = (10 * i)
+		C_EncounterTimeline.AddScriptEvent({duration = duration,tooltipSpellID = 12345,iconFileID = 237550,expirationTime= C_EncounterTimeline.GetCurrentTime() + duration})
 	end
 end

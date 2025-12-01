@@ -31,6 +31,7 @@ difficulties.statVarTable = {
 	["quest"] = "follower",--For now, unless a conflict arises
 	["follower"] = "follower",
 	["story"] = "story",
+	["lorewalking"] = "lorewalking",
 	["normal5"] = "normal",
 	["heroic5"] = "heroic",
 	["challenge5"] = "challenge",
@@ -56,7 +57,7 @@ difficulties.statVarTable = {
 	["loyaltyscenario"] = "heroic",
 	["wisdomscenario"] = "mythic",
 	["humilityscenario"] = "challenge",
-	--Legacy
+	--Legacy/Classic
 	["lfr25"] = "lfr25",
 	["normal10"] = "normal",
 	["normal20"] = "normal",
@@ -224,8 +225,8 @@ function DBM:IsTrivial(customLevel)
 		return false
 	end
 	local lastInstanceMapId = DBM:GetCurrentArea()
-	--if timewalking or chromie time or challenge modes. it's always non trivial content
-	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or self:IsRemix() or difficulties.difficultyIndex == 24 or difficulties.difficultyIndex == 33 or difficulties.difficultyIndex == 8 then
+	--if timewalking or chromie time or challenge modes or titanforged raid. it's always non trivial content
+	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or self:IsRemix() or difficulties.difficultyIndex == 24 or difficulties.difficultyIndex == 33 or difficulties.difficultyIndex == 8 or difficulties.difficultyIndex == 244 then
 		return false
 	end
 	--if current season dungeon (which blizzard auto scales up to current level on ALL difficulties now)
@@ -305,7 +306,7 @@ end
 ---Dungeons: follower, normal, heroic. Raids: LFR, normal (rescope this to exclude heroic now that heroic5 is the new mythic 0?)
 function bossModPrototype:IsEasy()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower" or diff == "quest"
+	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower" or diff == "quest" or diff == "lorewalking"
 end
 
 ---Dungeons: mythic, mythic+. Raids: heroic, mythic
@@ -331,6 +332,11 @@ end
 function bossModPrototype:IsStory()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "quest" or diff == "story"
+end
+
+function bossModPrototype:IsLorewalking()
+	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "lorewalking"
 end
 
 ---Pretty much ANYTHING that has a heroic mode
@@ -407,7 +413,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal25", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 5 or difficulty == 193 then--Legacy 10 man Heroic Raid
 		return "heroic10", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 6 or difficulty == 194 then--Legacy 25 man Heroic Raid
+	elseif difficulty == 6 or difficulty == 194 or difficulty == 244 then--Legacy 25 man Heroic Raid, Classic 25 man heroic raid, Titanforged 25 man heroic raid
 		return "heroic25", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 7 then--Legacy 25 man LFR (ie pre WoD zones)
 		return "lfr25", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -583,6 +589,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "duos", "", difficulty, instanceGroupSize, 0
 	elseif difficulty == 237 then--5 man Celestial Dungeon (MoP classic). We'll store it in mythic5 stat since it's unused in MoP
 		return "mythic5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 236 or difficulty == 241 then--Lorewalking dungeon, Lorewalking Raid
+		return "lorewalking", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
