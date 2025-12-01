@@ -16,7 +16,7 @@ L.OTabWorld					= "世界首領"
 L.OTabScenarios				= "事件"
 L.OTabPlugins				= "其他"
 L.OTabOptions				= "核心選項"
---L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabTools					= "工具"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout					= "關於"
 
 --Main Tab, Tools checks
@@ -585,6 +585,7 @@ L.TabFooter							= "本面板中的所有選項僅在您是非地下城/隨機�
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "自動回覆 & 隱私"
+L.Tab_PrivacyMidnight		= "插件通訊保密"
 L.Area_WhisperMessages		= "密語訊息選項"
 L.AutoRespond 				= "啟用戰鬥中自動密語回覆"
 L.WhisperStats 				= "在密語回應中加入戰勝/滅團狀態"
