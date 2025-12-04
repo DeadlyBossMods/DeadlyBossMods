@@ -1768,9 +1768,12 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
-				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				if self.Options.HideBlizzardTimeline then
-					EncounterTimeline.View:SetScript("OnShow", function(self) self:Hide() end)
+					C_CVar.SetCVar("encounterTimelineEnabled", "0")
+					EncounterTimeline.View:Hide()
+				end
+				if self.Options.HideBossEmoteFrame2 then
+					C_CVar.SetCVar("encounterWarningsEnabled", "0")
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
@@ -2004,7 +2007,8 @@ do
 				self:RegisterEvents(
 					"ENCOUNTER_TIMELINE_EVENT_ADDED",
 					"ENCOUNTER_TIMELINE_EVENT_REMOVED",
-					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+					"ENCOUNTER_WARNING"
 				)
 			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
