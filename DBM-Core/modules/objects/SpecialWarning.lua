@@ -1234,10 +1234,22 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local text = encounterWarningInfo.text
 	local casterName = encounterWarningInfo.casterName
 	local targetName = encounterWarningInfo.targetName
+	local targetGUID = encounterWarningInfo.targetGUID
+	local formattedTargetName = targetName
+	if self.Options.DebugMode then
+    	if targetGUID ~= nil then
+    	    local _, className = GetPlayerInfoByGUID(targetGUID);
+    	    local classColor = C_ClassColor.GetClassColor(className)
+
+    	    if classColor ~= nil then
+    	        formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
+    	    end
+    	end
+	end
 	local iconFileID = encounterWarningInfo.iconFileID
 	--Non secrets
 	local severity = encounterWarningInfo.severity--0 low, 1 medium, 2 critical
-	local formatedText = string.format(text, casterName, targetName)
+	local formatedText = string.format(text, casterName, formattedTargetName)
 	if severity == 0 then
 		--Use normal warning for low severity, but we call it here to avoid duplicate event registration
 		self:AddWarning(formatedText, nil, nil, true, nil, nil, iconFileID)
