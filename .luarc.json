@@ -33,6 +33,7 @@
 		"PlayerIsTimerunning",
 		"GetRestrictedActionStatus",
 		"UnitHealthPercent",
+		"C_StringUtil",
 
 
 		"ALL",
