@@ -44,7 +44,7 @@ if DBM:IsPostMidnight() then
 			C_CVar.SetCVar("encounterTimelineEnabled", "0")
 			EncounterTimeline.View:Hide()
 		else
-			C_CVar.SetCVar("encounterTimelineEnabled", "0")
+			C_CVar.SetCVar("encounterTimelineEnabled", "1")
 		end
 	end)
 end
