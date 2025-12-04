@@ -156,6 +156,7 @@ L.RaidWarnColor_1 			= "Cor 1"
 L.RaidWarnColor_2 			= "Cor 2"
 L.RaidWarnColor_3		 	= "Cor 3"
 L.RaidWarnColor_4 			= "Cor 4"
+L.RaidWarnColor				= "Cor"
 L.InfoRaidWarning			= [[Você pode especificar a cor e posição do quadro de anúncios de raide.
 Esse quadro é utilizado para mensagens como "Jogador X está sob efeito de Y".]]
 L.ColorResetted 			= "As opções de cor desse campo foram resetadas."
