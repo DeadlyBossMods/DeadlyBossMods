@@ -38,7 +38,7 @@ EnlargeTimeSlider:SetValue(DBT.Options.EnlargeBarTime)
 EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
 EnlargeTimeSlider.myheight = 0
 
-local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 60, 600, 1)
+local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 30, 300, 1)
 BarsHiddenSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -75)
 BarsHiddenSlider:SetValue(DBT.Options.HiddenBarTime)
 BarsHiddenSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HiddenBarTime"))

@@ -4550,10 +4550,10 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then
 				timerRequestInProgress = true
-				--if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
+				if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
 				--	--Request timeline timers from API
-				--	self:RecoverBlizzardTimers()
-				--end
+					self:RecoverBlizzardTimers()
+				end
 				-- Request timer to 3 person to prevent failure.
 				self:Unschedule(self.RequestTimers)
 				if not self:MidRestrictionsActive() then
