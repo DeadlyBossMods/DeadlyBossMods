@@ -1237,14 +1237,14 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local targetGUID = encounterWarningInfo.targetGUID
 	local formattedTargetName = targetName
 	if self.Options.DebugMode then
-    	if targetGUID ~= nil then
-    	    local _, className = GetPlayerInfoByGUID(targetGUID);
-    	    local classColor = C_ClassColor.GetClassColor(className)
+		if targetGUID ~= nil then
+			local _, className = GetPlayerInfoByGUID(targetGUID);
+			local classColor = C_ClassColor.GetClassColor(className)
 
-    	    if classColor ~= nil then
-    	        formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
-    	    end
-    	end
+			if classColor ~= nil then
+			    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
+			end
+		end
 	end
 	local iconFileID = encounterWarningInfo.iconFileID
 	--Non secrets
