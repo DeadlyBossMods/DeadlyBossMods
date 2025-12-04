@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 401, "34b582e"--401.4
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.7"--Core version
+DBM.DisplayVersion = "12.0.8 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2025, 12, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -1768,9 +1768,12 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
-				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				if self.Options.HideBlizzardTimeline then
-					EncounterTimeline.View:SetScript("OnShow", function(self) self:Hide() end)
+					C_CVar.SetCVar("encounterTimelineEnabled", "0")
+					EncounterTimeline.View:Hide()
+				end
+				if self.Options.HideBossEmoteFrame2 then
+					C_CVar.SetCVar("encounterWarningsEnabled", "0")
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
@@ -2004,7 +2007,8 @@ do
 				self:RegisterEvents(
 					"ENCOUNTER_TIMELINE_EVENT_ADDED",
 					"ENCOUNTER_TIMELINE_EVENT_REMOVED",
-					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+					"ENCOUNTER_WARNING"
 				)
 			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
@@ -4550,10 +4554,10 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then
 				timerRequestInProgress = true
-				--if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
+				if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
 				--	--Request timeline timers from API
-				--	self:RecoverBlizzardTimers()
-				--end
+					self:RecoverBlizzardTimers()
+				end
 				-- Request timer to 3 person to prevent failure.
 				self:Unschedule(self.RequestTimers)
 				if not self:MidRestrictionsActive() then

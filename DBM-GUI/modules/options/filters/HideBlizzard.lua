@@ -24,17 +24,27 @@ blockSoundArea:CreateCheckButton(L.DisableAmbiance, true, nil, "DisableAmbiance"
 blockSoundArea:CreateCheckButton(L.DisableMusic, true, nil, "DisableMusic")
 
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
-hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
+local hideBlizzRaidWarnings = hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
+if DBM:IsPostMidnight() then
+	hideBlizzRaidWarnings:SetScript("OnClick", function()
+		DBM.Options.HideBossEmoteFrame2 = not DBM.Options.HideBossEmoteFrame2
+		if DBM.Options.HideBossEmoteFrame2 then
+			C_CVar.SetCVar("encounterWarningsEnabled", "0")
+		else
+			C_CVar.SetCVar("encounterWarningsEnabled", "1")
+		end
+	end)
+end
 
 if DBM:IsPostMidnight() then
 	local hideTLButton = hideBlizzArea:CreateCheckButton(L.HideBlizzardTimeline, true, nil, "HideBlizzardTimeline")
 	hideTLButton:SetScript("OnClick", function()
 		DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 		if DBM.Options.HideBlizzardTimeline then
-			EncounterTimeline.View:SetScript("OnShow", function(self) self:Hide() end)
+			C_CVar.SetCVar("encounterTimelineEnabled", "0")
 			EncounterTimeline.View:Hide()
 		else
-			EncounterTimeline.View:SetScript("OnShow", nil)
+			C_CVar.SetCVar("encounterTimelineEnabled", "0")
 		end
 	end)
 end

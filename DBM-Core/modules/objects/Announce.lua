@@ -163,13 +163,16 @@ function DBM:UpdateWarningOptions()
 	end
 end
 
+local textureCode = " |T%s:12:12|t "
+local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
+
 ---@param text any
 ---@param force boolean?
 ---@param announceObject any
 ---@param useSound boolean?
 ---@param prefix boolean?
 ---@param overrideDuration number?
-function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration)
+function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration, customIcon)
 	local added = false
 	if prefix then
 		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
@@ -177,7 +180,13 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
-		font1:SetText(text)
+		local formatedText
+		if C_StringUtil and customIcon then
+			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
+		else
+			formatedText = text
+		end
+		font1:SetText(formatedText)
 		font1:Show()
 		font1u:Show()
 		added = true
@@ -185,7 +194,13 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	elseif not frame.font2ticker then
 		font2elapsed = 0
 		font2.lastUpdate = GetTime()
-		font2:SetText(text)
+		local formatedText
+		if C_StringUtil and customIcon then
+			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
+		else
+			formatedText = text
+		end
+		font2:SetText(formatedText)
 		font2:Show()
 		font2u:Show()
 		added = true
@@ -193,7 +208,13 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	elseif not frame.font3ticker or force then
 		font3elapsed = 0
 		font3.lastUpdate = GetTime()
-		font3:SetText(text)
+		local formatedText
+		if C_StringUtil and customIcon then
+			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
+		else
+			formatedText = text
+		end
+		font3:SetText(formatedText)
 		font3:Show()
 		font3u:Show()
 		fontHide3()
@@ -201,18 +222,25 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 		frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, function() fontHide3(overrideDuration) end)
 	end
 	if not added then
-		local prevText1 = font2:GetText()
-		local prevText2 = font3:GetText()
-		font1:SetText(prevText1)
-		font1elapsed = font2elapsed
-		font2:SetText(prevText2)
-		font2elapsed = font3elapsed
-		self:AddWarning(text, true, announceObject)
+		if not customIcon then
+			--GetText can't be called on secrets, so if customIcon exists this code path is skipped
+			local prevText1 = font2:GetText()
+			local prevText2 = font3:GetText()
+			font1:SetText(prevText1)
+			font1elapsed = font2elapsed
+			font2:SetText(prevText2)
+			font2elapsed = font3elapsed
+			self:AddWarning(text, true, announceObject, useSound, prefix, overrideDuration, customIcon)
+		end
 	else
 		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
 	end
 	if useSound then
 		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
+	end
+	--Only manually chat frame here for secrets api
+	if self.Options.ShowWarningsInChat and customIcon then
+		self:AddMsg(text)
 	end
 end
 
@@ -276,9 +304,6 @@ do
 		end
 	end
 end
-
-local textureCode = " |T%s:12:12|t "
-local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
 
 
 -- TODO: is there a good reason that this is a weak table?

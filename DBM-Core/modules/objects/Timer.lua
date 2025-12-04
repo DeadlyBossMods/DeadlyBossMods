@@ -1539,8 +1539,8 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local duration = remaining or eventInfo.duration
 	local maxQueueDuration = eventInfo.maxQueueDuration
 	--Secrets
-	--local spellId = eventInfo.tooltipSpellID
-	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
+	local spellId = eventInfo.spellID
+	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
 	--local icons = eventInfo.icons
 	--C_EncounterTimeline.SetEventIconTextures(eventID, icons, {DBM_COMMON_L.DAMAGE_ICON})
@@ -1574,7 +1574,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
-	if DBM.Options.DebugMode and maxQueueDuration and maxQueueDuration > 0 then
+	if maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
 		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
 		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
@@ -1582,7 +1582,6 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 end
 
 
---/run C_EncounterTimeline.AddScriptEvent({duration = 120,tooltipSpellID = 12345,iconFileID = 237550,expirationTime= C_EncounterTimeline.GetCurrentTime() + 120})
 --/run C_EncounterTimeline.HasActiveEvents()
 --/run C_EncounterTimeline.GetEventList()
 --/run C_EncounterTimeline.PauseScriptEvent()
@@ -1620,11 +1619,11 @@ function DBM:RecoverBlizzardTimers()
 	end
 end
 
---/run DBM:GigaTimerTest(true)
---Doesn't currently work, apparently api changed again and it's annoying to look up to fix right now
-function DBM:GigaTimerTest(big)
-	for i = 1, big and 60 or 30 do
+--/run DBM:GigaTimerTest(0, 5)
+--/run DBM:GigaTimerTest(1, 0)
+function DBM:GigaTimerTest(size, maxQueue)
+	for i = 1, size == 2 and 60 or size == 1 and 30 or 15 do
 		local duration = (10 * i)
-		C_EncounterTimeline.AddScriptEvent({duration = duration,tooltipSpellID = 12345,iconFileID = 237550,expirationTime= C_EncounterTimeline.GetCurrentTime() + duration})
+		C_EncounterTimeline.AddScriptEvent({duration = duration,spellID = 12345,overrideName = "Test Spell "..i,iconFileID = 237550,maxQueueDuration = maxQueue or 0})
 	end
 end
