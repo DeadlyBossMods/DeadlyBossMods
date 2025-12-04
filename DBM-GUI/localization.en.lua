@@ -213,9 +213,10 @@ L.Tab_RaidWarning 					= "Announcements"
 L.RaidWarning_Header				= "Announce Options"
 L.RaidWarnColors 					= "Announce Colors"
 L.RaidWarnColor_1 					= "Color 1"
-L.RaidWarnColor_2 					= "Color 2"--Only one used in midnight
+L.RaidWarnColor_2 					= "Color 2"
 L.RaidWarnColor_3		 			= "Color 3"
 L.RaidWarnColor_4 					= "Color 4"
+L.RaidWarnColor 					= "Color"--Only one used in midnight
 L.InfoRaidWarning					= [[You can specify the position and colors of the raid warning frame.
 This frame is used for messages like "Player X is affected by Y".]]
 L.ColorResetted 					= "The color settings of this field have been reset."
