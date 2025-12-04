@@ -213,6 +213,7 @@ L.RaidWarnColor_1 			= "Couleur 1"
 L.RaidWarnColor_2 			= "Couleur 2"
 L.RaidWarnColor_3		 	= "Couleur 3"
 L.RaidWarnColor_4 			= "Couleur 4"
+L.RaidWarnColor				= "Couleur"
 L.InfoRaidWarning			= [[Vous pouvez préciser la position et les couleurs de la fenêtre des alertes raid.
 Cette fenêtre est utilisée pour les messages de type "Joueur X est affecté par Y".]]
 L.ColorResetted 			= "Les paramètres de couleur de ce champ ont été réinitialisés"
