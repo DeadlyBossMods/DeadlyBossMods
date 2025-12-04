@@ -1539,7 +1539,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local duration = remaining or eventInfo.duration
 	local maxQueueDuration = eventInfo.maxQueueDuration
 	--Secrets
-	--local spellId = eventInfo.tooltipSpellID
+	--local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
 	--local icons = eventInfo.icons
@@ -1625,6 +1625,6 @@ end
 function DBM:GigaTimerTest(big)
 	for i = 1, big and 60 or 30 do
 		local duration = (10 * i)
-		C_EncounterTimeline.AddScriptEvent({duration = duration,tooltipSpellID = 12345,iconFileID = 237550,expirationTime= C_EncounterTimeline.GetCurrentTime() + duration})
+		C_EncounterTimeline.AddScriptEvent({duration = duration,spellID = 12345,spellName = ("Test Spell"..i),iconFileID = 237550,maxQueueDuration= C_EncounterTimeline.GetCurrentTime() + duration})
 	end
 end
