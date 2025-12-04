@@ -172,20 +172,21 @@ local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blan
 ---@param useSound boolean?
 ---@param prefix boolean?
 ---@param overrideDuration number?
+---@param customIcon string|number? Custom Icon, usually a "secret" icon path or texture id
 function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration, customIcon)
 	local added = false
 	if prefix then
 		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
 	end
+	local formatedText
+	if C_StringUtil and customIcon then
+		formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
+	else
+		formatedText = text
+	end
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
-		local formatedText
-		if C_StringUtil and customIcon then
-			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
-		else
-			formatedText = text
-		end
 		font1:SetText(formatedText)
 		font1:Show()
 		font1u:Show()
@@ -194,12 +195,6 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	elseif not frame.font2ticker then
 		font2elapsed = 0
 		font2.lastUpdate = GetTime()
-		local formatedText
-		if C_StringUtil and customIcon then
-			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
-		else
-			formatedText = text
-		end
 		font2:SetText(formatedText)
 		font2:Show()
 		font2u:Show()
@@ -208,12 +203,6 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	elseif not frame.font3ticker or force then
 		font3elapsed = 0
 		font3.lastUpdate = GetTime()
-		local formatedText
-		if C_StringUtil and customIcon then
-			formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
-		else
-			formatedText = text
-		end
 		font3:SetText(formatedText)
 		font3:Show()
 		font3u:Show()
@@ -240,7 +229,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	end
 	--Only manually chat frame here for secrets api
 	if self.Options.ShowWarningsInChat and customIcon then
-		self:AddMsg(text)
+		self:AddMsg(formatedText, nil, nil, nil, nil, 2)
 	end
 end
 

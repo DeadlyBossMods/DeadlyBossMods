@@ -7743,17 +7743,29 @@ end
 --  Misc. Functions  --
 -----------------------
 ---@param self DBMModOrDBM
-function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug)
+---@param text string
+---@param prefix string|boolean?
+---@param useSound boolean?
+---@param allowHiddenChatFrame boolean?
+---@param isDebug boolean? Used to play debug sounds on timer refresh warnings
+---@param customColor number? Custom color index from WarningColors table
+function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, customColor)
 	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
 	if not frame or not frame:IsShown() and not allowHiddenChatFrame then
 		frame = DEFAULT_CHAT_FRAME
 	end
-	if prefix ~= false then
-		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
+	local red, green, blue
+	if customColor then
+		red, green, blue = DBM.Options.WarningColors[customColor].r, DBM.Options.WarningColors[customColor].g, DBM.Options.WarningColors[customColor].b
 	else
-		frame:AddMessage(text, 0.41, 0.8, 0.94)
+		red, green, blue = 0.41, 0.8, 0.94
+	end
+	if prefix ~= false then
+		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+	else
+		frame:AddMessage(text, red, green, blue)
 	end
 	if DBM.Options.DebugSound and isDebug then
 		DBM:PlaySoundFile(567458)--"Ding"
