@@ -213,7 +213,7 @@ L.RaidWarnColor_1 			= "Color 1"
 L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
-RaidWarnColor				= "Color"
+L.RaidWarnColor				= "Color"
 L.InfoRaidWarning			= [[Puedes definir la posición y los colores del marco de avisos de banda.
 Este marco se usa para mensajes como "Jugador X afectado por Y".]]
 L.ColorResetted 			= "Se ha restablecido la configuración de colores de este campo."
