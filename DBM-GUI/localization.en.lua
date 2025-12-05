@@ -213,9 +213,10 @@ L.Tab_RaidWarning 					= "Announcements"
 L.RaidWarning_Header				= "Announce Options"
 L.RaidWarnColors 					= "Announce Colors"
 L.RaidWarnColor_1 					= "Color 1"
-L.RaidWarnColor_2 					= "Color 2"--Only one used in midnight
+L.RaidWarnColor_2 					= "Color 2"
 L.RaidWarnColor_3		 			= "Color 3"
 L.RaidWarnColor_4 					= "Color 4"
+L.RaidWarnColor 					= "Color"--Only one used in midnight
 L.InfoRaidWarning					= [[You can specify the position and colors of the raid warning frame.
 This frame is used for messages like "Player X is affected by Y".]]
 L.ColorResetted 					= "The color settings of this field have been reset."
@@ -559,11 +560,11 @@ L.DisableAmbiance					= "Disable ambiance channel during boss fights"
 L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
 --Other
 L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideBossEmoteFrame				= "Hide Blizzard Raid Warnings during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
 L.HideTooltips						= "Completely hide tooltips during boss fights"
-L.HideBlizzardTimeline				= "Hide Blizzard Raid Warnings during boss fights"
+L.HideBlizzardTimeline				= "Hide the Blizzard Raid Timeline during boss fights"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Raid Leader Controls"

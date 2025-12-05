@@ -181,49 +181,62 @@ end)
 
 --Raid Warning Colors
 local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors)
+local color1, color2, color3, color4
 
-local color1 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_1, function(_, r, g, b)
-	DBM.Options.WarningColors[1].r = r
-	DBM.Options.WarningColors[1].g = g
-	DBM.Options.WarningColors[1].b = b
-end, function(self)
-	self:SetColorRGB(DBM.DefaultOptions.WarningColors[1].r, DBM.DefaultOptions.WarningColors[1].g, DBM.DefaultOptions.WarningColors[1].b, true)
-end)
-local color2 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_2, function(_, r, g, b)
+if not DBM:IsPostMidnight() then
+	color1 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_1, function(_, r, g, b)
+		DBM.Options.WarningColors[1].r = r
+		DBM.Options.WarningColors[1].g = g
+		DBM.Options.WarningColors[1].b = b
+	end, function(self)
+		self:SetColorRGB(DBM.DefaultOptions.WarningColors[1].r, DBM.DefaultOptions.WarningColors[1].g, DBM.DefaultOptions.WarningColors[1].b, true)
+	end)
+end
+
+--Only Color 2 is used in Midnight for now
+color2 = raidwarncolors:CreateColorSelect(DBM:IsPostMidnight() and L.RaidWarnColor or L.RaidWarnColor_2, function(_, r, g, b)
 	DBM.Options.WarningColors[2].r = r
 	DBM.Options.WarningColors[2].g = g
 	DBM.Options.WarningColors[2].b = b
 end, function(self)
 	self:SetColorRGB(DBM.DefaultOptions.WarningColors[2].r, DBM.DefaultOptions.WarningColors[2].g, DBM.DefaultOptions.WarningColors[2].b, true)
 end)
-local color3 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_3, function(_, r, g, b)
-	DBM.Options.WarningColors[3].r = r
-	DBM.Options.WarningColors[3].g = g
-	DBM.Options.WarningColors[3].b = b
-end, function(self)
-	self:SetColorRGB(DBM.DefaultOptions.WarningColors[3].r, DBM.DefaultOptions.WarningColors[3].g, DBM.DefaultOptions.WarningColors[3].b, true)
-end)
-local color4 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_4, function(_, r, g, b)
-	DBM.Options.WarningColors[4].r = r
-	DBM.Options.WarningColors[4].g = g
-	DBM.Options.WarningColors[4].b = b
-end, function(self)
-	self:SetColorRGB(DBM.DefaultOptions.WarningColors[4].r, DBM.DefaultOptions.WarningColors[4].g, DBM.DefaultOptions.WarningColors[4].b, true)
-end)
 
-color2.myheight = 0
-color3.myheight = 0
-color4.myheight = 0
+if not DBM:IsPostMidnight() then
+	color3 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_3, function(_, r, g, b)
+		DBM.Options.WarningColors[3].r = r
+		DBM.Options.WarningColors[3].g = g
+		DBM.Options.WarningColors[3].b = b
+	end, function(self)
+		self:SetColorRGB(DBM.DefaultOptions.WarningColors[3].r, DBM.DefaultOptions.WarningColors[3].g, DBM.DefaultOptions.WarningColors[3].b, true)
+	end)
+	color4 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_4, function(_, r, g, b)
+		DBM.Options.WarningColors[4].r = r
+		DBM.Options.WarningColors[4].g = g
+		DBM.Options.WarningColors[4].b = b
+	end, function(self)
+		self:SetColorRGB(DBM.DefaultOptions.WarningColors[4].r, DBM.DefaultOptions.WarningColors[4].g, DBM.DefaultOptions.WarningColors[4].b, true)
+	end)
 
-color1:SetPoint("TOPLEFT", 20, -10)
-color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
-color3:SetPoint("TOPLEFT", color2, "TOPRIGHT", 20, 0)
-color4:SetPoint("TOPLEFT", color3, "TOPRIGHT", 20, 0)
+	color2.myheight = 0
+	color3.myheight = 0
+	color4.myheight = 0
+end
 
-color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
-color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
-color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
-color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
+if DBM:IsPostMidnight() then
+	color2:SetPoint("TOPLEFT", 20, -10)
+	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+else
+	color1:SetPoint("TOPLEFT", 20, -10)
+	color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
+	color3:SetPoint("TOPLEFT", color2, "TOPRIGHT", 20, 0)
+	color4:SetPoint("TOPLEFT", color3, "TOPRIGHT", 20, 0)
+
+	color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+	color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+	color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
+end
 
 local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, nil, false, GameFontNormalSmall)
 infotext:SetPoint("BOTTOMLEFT", raidwarncolors.frame, "BOTTOMLEFT", 10, 10)

@@ -93,17 +93,23 @@ function DBM:UpdateSpecialWarningOptions()
 	end
 end
 
+---@param text any
+---@param force boolean?
+---@param specWarnObject any
+---@param number number? Value for sound, colors, and vibration settings lookup
+---@param customIcon string|number? Custom Icon, Only used for secret textures so also used as a nil check
+---@param noSound boolean?
 function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, noSound)
 	local added = false
+	local formatedText
+	if C_StringUtil and customIcon then
+		formatedText = C_StringUtil.WrapString(text, self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
+	else
+		formatedText = text
+	end
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
-		local formatedText
-		if C_StringUtil and customIcon then
-			formatedText = C_StringUtil.WrapString(text, self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
-		else
-			formatedText = text
-		end
 		font1:SetText(formatedText)
 		font1:Show()
 		added = true
@@ -111,12 +117,6 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	elseif not frame.font2ticker or force then
 		font2elapsed = 0
 		font2.lastUpdate = GetTime()
-		local formatedText
-		if C_StringUtil and customIcon then
-			formatedText = C_StringUtil.WrapString(text, self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
-		else
-			formatedText = text
-		end
 		font2:SetText(formatedText)
 		font2:Show()
 		added = true
@@ -133,25 +133,29 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	else
 		test:Trace(specWarnObject and specWarnObject.mod or self, "ShowSpecialWarning", specWarnObject, text)
 	end
-	if number and not noSound then
-		self:PlaySpecialWarningSound(number, force)
-	end
-	if number then
-		if self.Options["SpecialWarningFlash" .. number] then
-			if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then return end--No flash if trivial
-			local flashColor = self.Options["SpecialWarningFlashCol" .. number]
-			local repeatCount = self.Options["SpecialWarningFlashCount" .. number] or 1
-			self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura" .. number], self.Options["SpecialWarningFlashAlph" .. number], repeatCount - 1)
+	--DUPLICATE CODE
+	--This code is for special warnings that bypass normal "show" method of hard coded objects (such as midnight secrets)
+	if customIcon then
+		if number and not noSound and not self.Options.DontPlaySpecialWarningSound then
+			self:PlaySpecialWarningSound(number, force)
 		end
-		if not self.Options.DontDoSpecialWarningVibrate and self.Options["SpecialWarningVibrate" .. number] then
-			self:VibrateController()
+		if number then
+			if self.Options["SpecialWarningFlash" .. number] and not self.Options.DontShowSpecialWarningFlash then
+				if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then return end--No flash if trivial
+				local flashColor = self.Options["SpecialWarningFlashCol" .. number]
+				local repeatCount = self.Options["SpecialWarningFlashCount" .. number] or 1
+				self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura" .. number], self.Options["SpecialWarningFlashAlph" .. number], repeatCount - 1)
+			end
+			if not self.Options.DontDoSpecialWarningVibrate and self.Options["SpecialWarningVibrate" .. number] then
+				self:VibrateController()
+			end
 		end
-	end
-	--Only manually chat frame here for secrets api
-	if self.Options.ShowSWarningsInChat and customIcon then
-		local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-		local combinedText = C_StringUtil.WrapString(text, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
-		self:AddMsg(combinedText)
+		if self.Options.ShowSWarningsInChat then
+			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+			local combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
+			self:AddMsg(combinedText)
+		end
+		--DUPLICATE CODE
 	end
 end
 
@@ -1230,10 +1234,22 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local text = encounterWarningInfo.text
 	local casterName = encounterWarningInfo.casterName
 	local targetName = encounterWarningInfo.targetName
+	local targetGUID = encounterWarningInfo.targetGUID
+	local formattedTargetName = targetName
+	if self.Options.DebugMode then
+		if targetGUID ~= nil then
+			local _, className = GetPlayerInfoByGUID(targetGUID);
+			local classColor = C_ClassColor.GetClassColor(className)
+
+			if classColor ~= nil then
+			    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
+			end
+		end
+	end
 	local iconFileID = encounterWarningInfo.iconFileID
 	--Non secrets
 	local severity = encounterWarningInfo.severity--0 low, 1 medium, 2 critical
-	local formatedText = string.format(text, casterName, targetName)
+	local formatedText = string.format(text, casterName, formattedTargetName)
 	if severity == 0 then
 		--Use normal warning for low severity, but we call it here to avoid duplicate event registration
 		self:AddWarning(formatedText, nil, nil, true, nil, nil, iconFileID)

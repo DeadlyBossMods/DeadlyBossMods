@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 401, "34b582e"--401.4
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.8 alpha"--Core version
+DBM.DisplayVersion = "12.0.9 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 12, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2025, 12, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -7743,17 +7743,29 @@ end
 --  Misc. Functions  --
 -----------------------
 ---@param self DBMModOrDBM
-function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug)
+---@param text string
+---@param prefix string|boolean?
+---@param useSound boolean?
+---@param allowHiddenChatFrame boolean?
+---@param isDebug boolean? Used to play debug sounds on timer refresh warnings
+---@param customColor number? Custom color index from WarningColors table
+function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, customColor)
 	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
 	if not frame or not frame:IsShown() and not allowHiddenChatFrame then
 		frame = DEFAULT_CHAT_FRAME
 	end
-	if prefix ~= false then
-		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
+	local red, green, blue
+	if customColor then
+		red, green, blue = DBM.Options.WarningColors[customColor].r, DBM.Options.WarningColors[customColor].g, DBM.Options.WarningColors[customColor].b
 	else
-		frame:AddMessage(text, 0.41, 0.8, 0.94)
+		red, green, blue = 0.41, 0.8, 0.94
+	end
+	if prefix ~= false then
+		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+	else
+		frame:AddMessage(text, red, green, blue)
 	end
 	if DBM.Options.DebugSound and isDebug then
 		DBM:PlaySoundFile(567458)--"Ding"
