@@ -125,12 +125,12 @@ L.RecordOnlyBosses			= "일반몹 기록 안함 (보스만 기록합니다. 보�
 L.DoNotLogLFG				= "던전 찾기와 공격대 찾기 기록 안함 (대기열 등록 콘텐트)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent	= "자동으로 기록할 콘텐트"
-L.LogCurrentMythicRaids		= "현재 확장팩 (또는 리믹스) 신화 레이드"--Retail Only
-L.LogCurrentRaids			= "현재 확장팩 (또는 리믹스) 비 신화 레이드 (영웅, 일반 그리고 던전 찾기와 공찾 기록 안함 옵션이 꺼져있을 경우엔 공찾까지)"
-L.LogTWRaids				= "시간여행 또는 크로미의 시간 레이드 (리믹스 제외)"--Retail Only
-L.LogTrivialRaids			= "구 레이드 (이전 확장팩)"
-L.LogCurrentMPlus			= "현재 확장팩 (또는 리믹스) 신화+ 던전"--Retail Only
-L.LogCurrentMythicZero		= "현재 확장팩 (또는 리믹스) 신화 0단 던전"--Retail Only
+L.LogCurrentMythicRaids		= "현재 확장팩 (리믹스 포함) 신화 공격대"--Retail Only
+L.LogCurrentRaids			= "현재 확장팩 (리믹스 포함) 비 신화 공격대 (영웅, 일반 그리고 던전 찾기와 공찾 기록 안함 옵션이 꺼져있을 경우엔 공찾까지)"
+L.LogTWRaids				= "시간여행 및 크로미의 시간 공격대 (리믹스 제외)"--Retail Only
+L.LogTrivialRaids			= "낭만 공격대 (이전 확장팩)"
+L.LogCurrentMPlus			= "현재 확장팩 (리믹스 포함) 신화+ 던전"--Retail Only
+L.LogCurrentMythicZero		= "현재 확장팩 (리믹스 포함) 신화 0단 던전"--Retail Only
 L.LogTWDungeons				= "시간여행 또는 크로미의 시간 던전 (리믹스 제외)"--Retail Only
 L.LogCurrentHeroic			= "현재 확장팩 영웅 던전 (알림: 던전 찾기를 통해 영던을 돌면서 로그를 기록하고 싶다면 던전 찾기 기록 안함 옵션을 끄세요)"
 L.LogDelves					= "현재 레벨 구렁"--Retail Only
@@ -472,7 +472,7 @@ L.Area_SpamFilter_Nameplates		= "이름표"
 L.SpamBlockNoNameplate				= "특수한 보스 패턴의 스킬 아이콘을 이름표에 표시 안함 (예: 적에게 버프나 디버프 거는 패턴)"
 L.SpamBlockNoNameplateCD			= "스킬 쿨타임 타이머 아이콘을 이름표에 표시 안함"
 L.SpamBlockNoNameplateCasts			= "스킬 시전시 아이콘을 이름표에 표시 안함"
-L.SpamBlockNoBossGUIDs				= "타이머도 있는 스킬의 쿨타임 타이머 아이콘을 이름표에 표시 안함\n(보통 던전 보스에 적용)"
+L.SpamBlockNoBossGUIDs				= "타이머를 보유한 스킬의 쿨타임 타이머 아이콘을 이름표에 표시 안함\n(보통 던전 보스에 적용)"
 L.AlwaysKeepNPs						= "쿨타임 타이머 아이콘을 만료됐어도 스킬 재시전까지 유지"
 
 L.Area_SpamFilter_Misc		= "기타"
