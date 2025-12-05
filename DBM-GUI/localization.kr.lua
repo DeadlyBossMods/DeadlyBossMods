@@ -212,9 +212,10 @@ L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
 L.RaidWarnColors 			= "알림 색상"
 L.RaidWarnColor_1 			= "색상 1"
-L.RaidWarnColor_2 			= "색상 2"--Only one used in midnight
+L.RaidWarnColor_2 			= "색상 2"
 L.RaidWarnColor_3 			= "색상 3"
 L.RaidWarnColor_4 			= "색상 4"
+L.RaidWarnColor 			= "색상"--Only one used in midnight
 L.InfoRaidWarning			= [[레이드 경고 프레임의 위치와 색상을 설정할 수 있습니다.
 본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 표시하는데 사용됩니다.]]
 L.ColorResetted 			= "이 영역의 색상 설정을 초기화 합니다."
@@ -536,28 +537,28 @@ L.SpamSpecRoleGTFO					= "'바닥 피하기' 경고 빼기 (텍스트와 효과�
 L.Panel_HideBlizzard				= "블리자드 기능 차단"
 --Toast
 L.Area_HideToast					= "블리자드 토스트 알림 비활성화 (팝업)"
-L.HideGarrisonUpdates				= "보스 전투중 추종자 토스트 알림 숨기기"
-L.HideGuildChallengeUpdates			= "보스 전투중 길드 도전 과제 토스트 알림 숨기기"
+L.HideGarrisonUpdates				= "보스 전투 중 추종자 토스트 알림 숨기기"
+L.HideGuildChallengeUpdates			= "보스 전투 중 길드 도전 과제 토스트 알림 숨기기"
 --L.HideBossKill				= "보스 처치 토스트 알림 숨기기"--NYI
 --L.HideVaultUnlock					= "금고 잠금 해제 토스트 알림 숨기기"--NYI
 --Cut Scenes
 L.Area_Cinematics					= "게임내 시네마틱 재생 차단"
-L.DuringFight						= "보스 전투중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
+L.DuringFight						= "보스 전투 중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
 L.InstanceAnywhere					= "던전이나 공격대 인스턴스에서 비전투 컷신 재생 차단"
 L.NonInstanceAnywhere				= "위험: 야외 컷신 재생 차단 (권장하지 않음)"
 L.OnlyAfterSeen						= "위 선택 사항에 해당되는 것 중 1회 이상 본 컷신만 재생 차단 (스토리 이해를 위해 한번은 보도록 의도된 옵션이며 사용을 강력히 권장합니다)"
 --Sound
 L.Area_Sound						= "게임내 소리 차단"
-L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
-L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
-L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
+L.DisableSFX					= "보스 전투 중 효과 음량 비활성화"
+L.DisableAmbiance					= "보스 전투 중 환경 음량 비활성화"
+L.DisableMusic						= "보스 전투 중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
 L.Area_HideBlizzard			= "그 외 블리자드 성가신 요소 비활성화 및 숨김"
-L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
+L.HideBossEmoteFrame		= "보스 전투 중 보스 경고 숨기기"
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
-L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
-L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
-L.HideBlizzardTimeline				= "보스 전투중 블리자드 기본 공격대 타임라인 숨기기"
+L.HideQuestTooltips			= "보스 전투 중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
+L.HideTooltips				= "보스 전투 중 툴팁 완전히 숨기기"
+L.HideBlizzardTimeline				= "보스 전투 중 블리자드 기본 공격대 타임라인 숨기기"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
@@ -594,7 +595,7 @@ L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 �
 L.Tab_Privacy 				= "자동 응답과 사생활 보호"
 L.Tab_PrivacyMidnight				= "애드온 통신과 사생활 보호"
 L.Area_WhisperMessages		= "귓속말 설정"
-L.AutoRespond 				= "전투중 자동 귓속말 답변"
+L.AutoRespond 				= "전투 중 자동 귓속말 답변"
 L.WhisperStats 				= "귓속말 답변에 처치/전멸 통계 포함"
 L.DisableStatusWhisper 		= "공격대 전반에 관한 상태 보고 귓속말을 끕니다. (공대장 권한 필요) 일반/영웅/신화 레이드와 신화+ 던전에만 적용됩니다"
 L.Area_SyncMessages			= "애드온 동기화 설정"
