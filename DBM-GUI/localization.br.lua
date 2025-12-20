@@ -115,9 +115,9 @@ L.CustomOptions						= "Esta categoria contém opções personalizadas para uma 
 L.Panel_AutoLogging 				= "Registro automático"
 
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging					= "Alternâncias de registro automático"
-L.AutologBosses 					= "Registrar automaticamente o conteúdo selecionado usando o registro de combate de Blizzard"
-L.AdvancedAutologBosses 			= "Registrar automaticamente o conteúdo selecionado com o Transcriptor"
+L.Area_AutoLogging					= "Opções de registro automático"
+L.AutologBosses 					= "Registrar automaticamente os encontros com o registro de combate de Blizzard"
+L.AdvancedAutologBosses 			= "Registrar automaticamente os encontros com o Transcriptor"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters 			= "Filtros de registro automático"
 L.RecordOnlyBosses 					= "Registrar apenas encontros contra chefes"
