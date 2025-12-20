@@ -117,11 +117,11 @@ L.Panel_AutoLogging					= "Enregistrement automatique"
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging					= "Options d'enregistrement automatique"
 L.AutologBosses						= "Enregistrer automatiquement les combats avec le journal de combat de Blizzard"
-L.AdvancedAutologBosses				= "Enregistrer automatiquement le contenu sélectionné avec Transcriptor"
+L.AdvancedAutologBosses				= "Enregistrer automatiquement les combats avec Transcriptor"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters			= "Filtres d'enregistrement automatique"
 L.RecordOnlyBosses					= "Enregistrer uniquement les combats contre les boss"
-L.DoNotLogLFG						= "Ne pas enregistrer les contenus de recherche de groupe"
+L.DoNotLogLFG						= "Ne pas enregistrer les combats de recherche de groupe"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
 L.LogCurrentMythicRaids				= "Raids mythiques actuels" --Retail Only
