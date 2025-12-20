@@ -116,15 +116,15 @@ L.CustomOptions						= "Esta categoría contiene opciones personalizadas para un
 -- Panel: Auto Logging
 L.Panel_AutoLogging			= "Registro automático"
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "Opciones del registro automático"
+L.Area_AutoLogging			= "Opciones de registro automático"
 L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard"
 L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
 --Auto Logging: Global filter Options
-L.Area_AutoLoggingFilters	= "Filtros del registro automático"
+L.Area_AutoLoggingFilters	= "Filtros de registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros contra jefes"
 L.DoNotLogLFG				= "No registrar encuentros de buscar grupo"
 --
-L.Area_AutoLoggingContent			= "Contenido del registro automático"
+L.Area_AutoLoggingContent			= "Contenido de registro automático"
 L.LogCurrentMythicRaids				= "Bandas actuales Míticas"--Retail Only
 L.LogCurrentRaids					= "Bandas actuales"
 L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
