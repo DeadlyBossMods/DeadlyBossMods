@@ -123,7 +123,7 @@ L.Area_AutoLoggingFilters			= "Filtres d'enregistrement automatique"
 L.RecordOnlyBosses					= "Enregistrer uniquement les combats contre les boss"
 L.DoNotLogLFG						= "Ne pas enregistrer les combats de recherche de groupe"
 --Auto Logging: Recorded Content types
-L.Area_AutoLoggingContent			= "Contenu de l'enregistrement automatique"
+L.Area_AutoLoggingContent			= "Contenu d'enregistrement automatique"
 L.LogCurrentMythicRaids				= "Raids mythiques actuels" --Retail Only
 L.LogCurrentRaids					= "Raids actueles"
 L.LogTWRaids						= "Raids de Marcheurs du temps ou de Temps de Chromie" --Retail Only
