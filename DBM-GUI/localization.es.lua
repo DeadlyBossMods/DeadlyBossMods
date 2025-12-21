@@ -463,7 +463,7 @@ L.SpamBlockNoShowUTimers			= "No mostrar temporizadores enviados por el usuario"
 L.SpamBlockNoCountdowns				= "No reproducir sonidos de cuenta atrás"
 
 L.Area_SpamFilter_Nameplates	= "Opciones de placas de nombre"
-L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánicas especiales de jefes (es decir, beneficios o perjuicios en enemigos)"
+L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánicas especiales de jefes"
 L.SpamBlockNoNameplateCD		= "No mostrar iconos de placas de nombre para tiempos de reutilización de facultades"
 L.SpamBlockNoNameplateCasts 	= "No mostrar iconos de placas de nombre para temporizadores de lanzamiento de facultades"
 L.SpamBlockNoBossGUIDs			= "No mostrar iconos en placas de nombre para facultades con temporizadores"
