@@ -116,15 +116,15 @@ L.CustomOptions						= "Esta categoría contiene opciones personalizadas para un
 -- Panel: Auto Logging
 L.Panel_AutoLogging			= "Registro automático"
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "Opciones del registro automático"
+L.Area_AutoLogging			= "Opciones de registro automático"
 L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard"
 L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
 --Auto Logging: Global filter Options
-L.Area_AutoLoggingFilters	= "Filtros del registro automático"
+L.Area_AutoLoggingFilters	= "Filtros de registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros contra jefes"
 L.DoNotLogLFG				= "No registrar encuentros de buscar grupo"
 --
-L.Area_AutoLoggingContent			= "Contenido del registro automático"
+L.Area_AutoLoggingContent			= "Contenido de registro automático"
 L.LogCurrentMythicRaids				= "Bandas actuales Míticas"--Retail Only
 L.LogCurrentRaids					= "Bandas actuales"
 L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
@@ -213,6 +213,7 @@ L.RaidWarnColor_1 			= "Color 1"
 L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
+L.RaidWarnColor				= "Color"
 L.InfoRaidWarning			= [[Puedes definir la posición y los colores del marco de avisos de banda.
 Este marco se usa para mensajes como "Jugador X afectado por Y".]]
 L.ColorResetted 			= "Se ha restablecido la configuración de colores de este campo."
@@ -462,7 +463,7 @@ L.SpamBlockNoShowUTimers			= "No mostrar temporizadores enviados por el usuario"
 L.SpamBlockNoCountdowns				= "No reproducir sonidos de cuenta atrás"
 
 L.Area_SpamFilter_Nameplates	= "Opciones de placas de nombre"
-L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánicas especiales de jefes (es decir, beneficios o perjuicios en enemigos)"
+L.SpamBlockNoNameplate			= "No mostrar iconos de placas de nombre para mecánicas especiales de jefes"
 L.SpamBlockNoNameplateCD		= "No mostrar iconos de placas de nombre para tiempos de reutilización de facultades"
 L.SpamBlockNoNameplateCasts 	= "No mostrar iconos de placas de nombre para temporizadores de lanzamiento de facultades"
 L.SpamBlockNoBossGUIDs			= "No mostrar iconos en placas de nombre para facultades con temporizadores"
