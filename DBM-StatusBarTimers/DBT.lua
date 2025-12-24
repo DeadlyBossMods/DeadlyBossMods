@@ -124,7 +124,7 @@ DBT.DefaultOptions = {
 	HugeSort = "Sort",
 	-- Hidden bar
 	HiddenBarTime = 60,
-	HideLongBars = wowTOC >= 120000 and true or false,
+	HideLongBars = false,
 	-- Misc
 	TextColorR = 1,
 	TextColorG = 1,

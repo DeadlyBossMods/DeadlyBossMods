@@ -115,9 +115,9 @@ L.CustomOptions						= "Esta categoria contém opções personalizadas para uma 
 L.Panel_AutoLogging 				= "Registro automático"
 
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging					= "Alternâncias de registro automático"
-L.AutologBosses 					= "Registrar automaticamente o conteúdo selecionado usando o registro de combate de Blizzard"
-L.AdvancedAutologBosses 			= "Registrar automaticamente o conteúdo selecionado com o Transcriptor"
+L.Area_AutoLogging					= "Opções de registro automático"
+L.AutologBosses 					= "Registrar automaticamente os encontros com o registro de combate de Blizzard"
+L.AdvancedAutologBosses 			= "Registrar automaticamente os encontros com o Transcriptor"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters 			= "Filtros de registro automático"
 L.RecordOnlyBosses 					= "Registrar apenas encontros contra chefes"
@@ -156,6 +156,7 @@ L.RaidWarnColor_1 			= "Cor 1"
 L.RaidWarnColor_2 			= "Cor 2"
 L.RaidWarnColor_3		 	= "Cor 3"
 L.RaidWarnColor_4 			= "Cor 4"
+L.RaidWarnColor				= "Cor"
 L.InfoRaidWarning			= [[Você pode especificar a cor e posição do quadro de anúncios de raide.
 Esse quadro é utilizado para mensagens como "Jogador X está sob efeito de Y".]]
 L.ColorResetted 			= "As opções de cor desse campo foram resetadas."
