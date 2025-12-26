@@ -75,8 +75,8 @@ L.GUILD_COMBAT_ENDED_AT			= "Le groupe de guilde de %s terminé sur %s (%s) apr�
 L.SCENARIO_ENDED_AT				= "%s terminé après %s."
 L.SCENARIO_ENDED_AT_LONG		= "%s terminé après %s. Vous avez un total de %d |4défaite:défaites; dans cette difficulté."
 L.COMBAT_STATE_RECOVERED		= "%s a été engagé il y a %s, récupération des délais..."
-L.TRANSCRIPTOR_LOG_START	 	= "Début du log de Transcriptor."
-L.TRANSCRIPTOR_LOG_END	   		= "Fin du log de Transcriptor."
+L.TRANSCRIPTOR_LOG_START	 	= "Début du journal de Transcriptor."
+L.TRANSCRIPTOR_LOG_END	   		= "Fin du journal de Transcriptor."
 
 L.MOVIE_SKIPPED = L.DBM .. " a tenté de passer automatiquement une cinématique."
 L.MOVIE_NOTSKIPPED = L.DBM .. " a détecté une cinématique pouvant être sautée mais ne l'a PAS sautée en raison d'un bug de Blizzard. Lorsque ce bug sera corrigé, le saut sera réactivé."
