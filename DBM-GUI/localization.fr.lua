@@ -478,7 +478,7 @@ L.SpamBlockNoCountdowns				= "Ne pas jouer les sons de compte à rebours"
 L.Area_SpamFilter_Nameplates		= "Options des plaques de nom"
 L.SpamBlockNoNameplate        		= "Ne pas afficher d’icônes d’améliorations ou d’affaiblissements"
 L.SpamBlockNoNameplateCD      		= "Ne pas afficher d’icônes de temps de recharge des capacités"
-L.SpamBlockNoNameplateCasts   		= "Ne pas afficher d’icônes de temporisateurs de lancement des capacités"
+L.SpamBlockNoNameplateCasts   		= "Ne pas afficher d’icônes de chronomètres de lancement des capacités"
 L.SpamBlockNoBossGUIDs       		= "Ne pas afficher d’icônes pour les techniques avec chronomètres"
 L.AlwaysKeepNPs						= "Maintenir visibles les icônes des chronomètres de recharge des plaques de nom expirées jusqu'à ce que la capacité soit réincantée"
 
