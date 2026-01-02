@@ -8,7 +8,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traduzido por "
 L.TranslationBy 			= "GlitterStorm @ Azralon" -- your name here, localizers!
-L.Website					= "Visite-nos no discord em |cFF73C2FBhttps://discord.gg/deadlybossmods|r"
+L.Website					= "Por favor, siga a MysticalOS para notícias e atualizações |cFF73C2FBhttps://allmylinks.com/mysticalos|r. Obrigado por anos de apoio!"
 L.WebsiteButton				= "Site"
 
 L.OTabBosses				= "Chefes"
