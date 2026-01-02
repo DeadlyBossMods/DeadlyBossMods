@@ -6,7 +6,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traduit par "
 L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leybola@EU-Sargeras/Noleen@EU-Hyjal" -- your name here, localizers!
-L.Website					= "Visitez notre discord sur |cFF73C2FBhttps://discord.gg/deadlybossmods|r"
+L.Website					= "Merci de suivre MysticalOS pour les actualités et les mises à jour |cFF73C2FBhttps://allmylinks.com/mysticalos|r. Merci pour ces années de soutien !"
 L.WebsiteButton				= "Site web"
 
 L.OTabBosses						= "Options de Boss"--Deprecated and will be deleted once tabs no longer use this
