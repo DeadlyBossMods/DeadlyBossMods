@@ -590,12 +590,12 @@ L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres lí
 L.Tab_Privacy 				= "Controles de privacidad"
 L.Tab_PrivacyMidnight		= "Privacidad de comunicaciones"
 L.Area_WhisperMessages		= "Opciones de susurros"
-L.AutoRespond 				= "Responder automáticamente a susurros en encuentro"
-L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas a susurros"
-L.DisableStatusWhisper 		= "Desactivar susurros automáticos de encuentro para todos (requiere ser líder)"
+L.AutoRespond 				= "Responder automáticamente a susurros durante el encuentro"
+L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas"
+L.DisableStatusWhisper 		= "Desactivar susurros automáticos para todos (requiere ser líder)"
 L.Area_SyncMessages			= "Opciones de sincronización de addons"
 L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de encuentro para todos (requiere ser líder)"
-L.EnableWBSharing 			= "Compartir inicios y victorias de jefes del mundo con hermandad y amigos de Battle.net en tu mismo reino"
+L.EnableWBSharing 			= "Compartir inicios y victorias de jefes del mundo con la hermandad y amigos de Battle.net en tu mismo reino"
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "Marcos e integración"
