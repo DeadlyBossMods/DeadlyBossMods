@@ -242,7 +242,15 @@ local function schedule(t, f, mod, ...)
 	return test.testRunning and scheduleTraceId or nil
 end
 
---Boss mod prototype usage methods (for announces countdowns and yell scheduling
+local function unschedule(f, mod, ...)
+	if not f and not mod then
+		--Dangerous to use, should only ever happen with a force disable
+		removeAllMatching()
+	end
+	return removeAllMatching(f, mod, ...)
+end
+
+--Boss mod prototype usage methods (for announces countdowns/loops and yell scheduling
 function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 	time = time or 5
 	numAnnounces = numAnnounces or 3
@@ -256,12 +264,30 @@ function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 	end
 end
 
-local function unschedule(f, mod, ...)
-	if not f and not mod then
-		--Dangerous to use, should only ever happen with a force disable
-		removeAllMatching()
+do
+	local function repeatScheduleLoop(time, func, mod, prototype, ...)
+		module:ScheduleLoop(time, func, mod, prototype, ...)
 	end
-	return removeAllMatching(f, mod, ...)
+
+	function module:ScheduleLoop(time, func, mod, prototype, count)
+--		unschedule(func, mod, prototype, ...)
+		--Auto increment count if provided (should start at 0 to function as expected)
+		if count then
+			count = count + 1
+		end
+		if type(time) == "table" then
+			--Just schedule what's in table and nothing more or less
+			--Note, it's up to mods to cancel this if a sequence ends early (ie phase change)
+			for _, t in ipairs(time) do
+				schedule(t, func, mod, prototype, count)
+			end
+		else
+			--Just schedule infinite loop with single loop time
+			--Note, it's up to mods to cancel this!
+			schedule(time, func, mod, prototype, count)
+			schedule(time, repeatScheduleLoop, time, func, mod, prototype, count)
+		end
+	end
 end
 
 function module:Schedule(t, f, mod, ...)

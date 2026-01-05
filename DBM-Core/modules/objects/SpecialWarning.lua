@@ -628,6 +628,12 @@ function specialWarningPrototype:Countdown(time, numAnnounces, ...)
 	DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 end
 
+---@param time number|table
+---@param count number?
+function specialWarningPrototype:Loop(time, count)
+	DBMScheduler:ScheduleLoop(time, self.Show, self.mod, self, count)
+end
+
 function specialWarningPrototype:Cancel(_, ...) -- t, ...
 	return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 end
