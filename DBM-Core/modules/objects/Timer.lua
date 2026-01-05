@@ -604,9 +604,17 @@ function timerPrototype:DelayedStart(delay, ...)
 end
 timerPrototype.DelayedShow = timerPrototype.DelayedStart
 
+---@param t number
+---@param ... any
 function timerPrototype:Schedule(t, ...)
 	local id = DBMScheduler:Schedule(t, self.Start, self.mod, self, ...)
 	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", testFixupScheduleMethodName(self, ...))
+end
+
+---@param t number
+---@param count number?
+function timerPrototype:Loop(t, count)
+	DBMScheduler:ScheduleLoop(t, self.Start, self.mod, self, count)
 end
 
 function timerPrototype:Unschedule(...)

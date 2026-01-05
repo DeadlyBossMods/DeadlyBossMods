@@ -543,6 +543,12 @@ function announcePrototype:Countdown(time, numAnnounces, ...)
 	DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 end
 
+---@param time number|table
+---@param count number?
+function announcePrototype:Loop(time, count)
+	DBMScheduler:ScheduleLoop(time, self.Show, self.mod, self, count)
+end
+
 function announcePrototype:Cancel(...)
 	return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 end
