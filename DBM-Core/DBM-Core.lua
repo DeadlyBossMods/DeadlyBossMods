@@ -6260,13 +6260,25 @@ do
 				--Update Elected Icon Setter
 				self:ElectIconSetter(mod)
 				--call OnCombatStart
-				if mod.OnCombatStart then
-					local startEvent = syncedEvent or event
-					local nonZeroDelay = delay or 0
-					if nonZeroDelay == 0 then
-						nonZeroDelay = 0.000001
+				if not self:IsPostMidnight() then
+					if mod.OnCombatStart then
+						local startEvent = syncedEvent or event
+						local nonZeroDelay = delay or 0
+						if nonZeroDelay == 0 then
+							nonZeroDelay = 0.000001
+						end
+						mod:OnCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
-					mod:OnCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+				else
+					--call OnLimitedCombatStart (for mods that need to start separate oncombat start rules for retail vs classic due to retail restrictions)
+					if mod.OnLimitedCombatStart then
+						local startEvent = syncedEvent or event
+						local nonZeroDelay = delay or 0
+						if nonZeroDelay == 0 then
+							nonZeroDelay = 0.000001
+						end
+						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+					end
 				end
 				--send "C" sync
 				if not synced and not mod.soloChallenge then
