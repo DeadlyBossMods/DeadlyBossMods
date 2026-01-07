@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 401, "34b582e"--401.4
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.10 alpha"--Core version
+DBM.DisplayVersion = "12.0.10"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2025, 12, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 1, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -6260,13 +6260,25 @@ do
 				--Update Elected Icon Setter
 				self:ElectIconSetter(mod)
 				--call OnCombatStart
-				if mod.OnCombatStart then
-					local startEvent = syncedEvent or event
-					local nonZeroDelay = delay or 0
-					if nonZeroDelay == 0 then
-						nonZeroDelay = 0.000001
+				if not self:IsPostMidnight() then
+					if mod.OnCombatStart then
+						local startEvent = syncedEvent or event
+						local nonZeroDelay = delay or 0
+						if nonZeroDelay == 0 then
+							nonZeroDelay = 0.000001
+						end
+						mod:OnCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
-					mod:OnCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+				else
+					--call OnLimitedCombatStart (for mods that need to start separate oncombat start rules for retail vs classic due to retail restrictions)
+					if mod.OnLimitedCombatStart then
+						local startEvent = syncedEvent or event
+						local nonZeroDelay = delay or 0
+						if nonZeroDelay == 0 then
+							nonZeroDelay = 0.000001
+						end
+						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+					end
 				end
 				--send "C" sync
 				if not synced and not mod.soloChallenge then
