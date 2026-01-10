@@ -2039,7 +2039,7 @@ do
 					"CHALLENGE_MODE_RESET",
 					"UNIT_HEALTH_FREQUENT mouseover target player targettarget",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED",
-					"PLAYER_TALENT_UPDATE"
+					"PLAYER_SPECIALIZATION_CHANGED"
 				)
 			elseif private.isClassic then
 				self:RegisterEvents(
