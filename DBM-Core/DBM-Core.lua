@@ -8278,7 +8278,7 @@ end
 function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-		return (private.isRetail or private.isMoP) and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
+		return (private.isRetail or private.isMop) and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
 	end
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
