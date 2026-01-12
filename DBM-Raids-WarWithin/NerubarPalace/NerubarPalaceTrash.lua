@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
 mod.isTrashMod = true
 mod:SetZone(2657)
-mod:RegisterZoneCombat(2657)
+--mod:RegisterZoneCombat(2657)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000 454831 439012 448269",
-	"SPELL_AURA_APPLIED 445553 436784",
+--	"SPELL_CAST_START 439873 459952 463104 441747 443138 436679 440184 441097 463176 444000 454831 439012 448269",
+--	"SPELL_AURA_APPLIED 445553 436784",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"GOSSIP_SHOW"
 )
 
@@ -20,31 +20,31 @@ mod:RegisterEvents(
 --TODO, add https://www.wowhead.com/spell=436698/ravaging-spikes (which also has a 20.6 second CD)
 --local warnShadowflameBomb					= mod:NewTargetAnnounce(425300, 3)
 
-local specWarnStagFlip						= mod:NewSpecialWarningDefensive(463176, nil, nil, nil, 3, 2)
-local specWarnFixate						= mod:NewSpecialWarningYou(445553, nil, nil, nil, 1, 2)
-local specWarnGossemerWeave					= mod:NewSpecialWarningDodge(444000, nil, nil, nil, 2, 15)
-local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 15)
-local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 15)
-local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 15)
-local specWarnPoisonBreath					= mod:NewSpecialWarningDodge(454831, nil, nil, nil, 2, 15)
-local specWarnToxicBlast					= mod:NewSpecialWarningDodge(439012, nil, nil, nil, 2, 15)
-local specWarnBorrowingCharge				= mod:NewSpecialWarningDodge(448269, nil, nil, nil, 2, 2)
-local specwarnInfestingSwarm				= mod:NewSpecialWarningMoveAway(436784, nil, nil, nil, 1, 2)
-local yellInfestingSwarm					= mod:NewYell(436784)
---local yellShadowflameBombFades			= mod:NewShortFadesYell(425300)
-local specWarnDeafeningRoar					= mod:NewSpecialWarningCast(436679, "SpellCaster", nil, nil, 1, 2)
-local specWarnPsychicScream					= mod:NewSpecialWarningInterrupt(439873, "HasInterrupt", nil, nil, 1, 2)
-local specWarnVoidBoltVolley				= mod:NewSpecialWarningInterrupt(463104, "HasInterrupt", nil, nil, 1, 2)--No real cd, even when kicked, just spammed
-local specWarnDarkMending					= mod:NewSpecialWarningInterrupt(441747, "HasInterrupt", nil, nil, 1, 2)--CD possibly 14-15 seconds, but not confirmed
-local specWarnEnshroudingPulse				= mod:NewSpecialWarningInterrupt(443138, "HasInterrupt", nil, nil, 1, 2)
-
-local timerGossemereWeaveCD					= mod:NewCDNPTimer(17, 444000, nil, nil, nil, 3)
-local timerImpaleCD							= mod:NewCDNPTimer(15, 459952, nil, nil, nil, 3)--17-20
-local timerStagFlipCD						= mod:NewCDNPTimer(17, 463176, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerDarkMendingCD					= mod:NewCDNPTimer(15.0, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerPoisonBreathCD					= mod:NewCDNPTimer(13.4, 454831, nil, nil, nil, 3)
-local timerDeafeningRoarCD					= mod:NewCDNPTimer(20.6, 436679, nil, nil, nil, 2)
-local timerBlackCleaveCD					= mod:NewCDNPTimer(16.2, 440184, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--local specWarnStagFlip						= mod:NewSpecialWarningDefensive(463176, nil, nil, nil, 3, 2)
+--local specWarnFixate						= mod:NewSpecialWarningYou(445553, nil, nil, nil, 1, 2)
+--local specWarnGossemerWeave					= mod:NewSpecialWarningDodge(444000, nil, nil, nil, 2, 15)
+--local specWarnImpale						= mod:NewSpecialWarningDodge(459952, nil, nil, nil, 2, 15)
+--local specWarnBlackCleave					= mod:NewSpecialWarningDodge(440184, nil, nil, nil, 2, 15)
+--local specWarnHeavingRetch					= mod:NewSpecialWarningDodge(441097, nil, nil, nil, 2, 15)
+--local specWarnPoisonBreath					= mod:NewSpecialWarningDodge(454831, nil, nil, nil, 2, 15)
+--local specWarnToxicBlast					= mod:NewSpecialWarningDodge(439012, nil, nil, nil, 2, 15)
+--local specWarnBorrowingCharge				= mod:NewSpecialWarningDodge(448269, nil, nil, nil, 2, 2)
+--local specwarnInfestingSwarm				= mod:NewSpecialWarningMoveAway(436784, nil, nil, nil, 1, 2)
+--local yellInfestingSwarm					= mod:NewYell(436784)
+----local yellShadowflameBombFades			= mod:NewShortFadesYell(425300)
+--local specWarnDeafeningRoar					= mod:NewSpecialWarningCast(436679, "SpellCaster", nil, nil, 1, 2)
+--local specWarnPsychicScream					= mod:NewSpecialWarningInterrupt(439873, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnVoidBoltVolley				= mod:NewSpecialWarningInterrupt(463104, "HasInterrupt", nil, nil, 1, 2)--No real cd, even when kicked, just spammed
+--local specWarnDarkMending					= mod:NewSpecialWarningInterrupt(441747, "HasInterrupt", nil, nil, 1, 2)--CD possibly 14-15 seconds, but not confirmed
+--local specWarnEnshroudingPulse				= mod:NewSpecialWarningInterrupt(443138, "HasInterrupt", nil, nil, 1, 2)
+--
+--local timerGossemereWeaveCD					= mod:NewCDNPTimer(17, 444000, nil, nil, nil, 3)
+--local timerImpaleCD							= mod:NewCDNPTimer(15, 459952, nil, nil, nil, 3)--17-20
+--local timerStagFlipCD						= mod:NewCDNPTimer(17, 463176, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--local timerDarkMendingCD					= mod:NewCDNPTimer(15.0, 441747, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+--local timerPoisonBreathCD					= mod:NewCDNPTimer(13.4, 454831, nil, nil, nil, 3)
+--local timerDeafeningRoarCD					= mod:NewCDNPTimer(20.6, 436679, nil, nil, nil, 2)
+--local timerBlackCleaveCD					= mod:NewCDNPTimer(16.2, 440184, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 
 mod:AddGossipOption(true, "Buff")
 
@@ -52,6 +52,7 @@ mod:AddGossipOption(true, "Buff")
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
+--[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 439873 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -136,6 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--]]
 
 --[[
 function mod:SPELL_AURA_REMOVED(args)
@@ -146,6 +148,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 --]]
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 222305 then--Palace Guardian
@@ -162,16 +165,6 @@ function mod:UNIT_DIED(args)
 		timerDeafeningRoarCD:Stop(args.destGUID)
 	elseif cid == 219725 then--Chitin Knight
 		timerBlackCleaveCD:Stop(args.destGUID)
-	end
-end
-
-function mod:GOSSIP_SHOW()
-	local gossipOptionID = self:GetGossipID()
-	if gossipOptionID and not DBM:UnitDebuff("player", 461763, 461766) then
-		if self.Options.AutoGossipBuff and gossipOptionID == 123878 then--Potion at entrance
-			self:SelectGossip(gossipOptionID)
-			DBM:AddMsg(L.AutoPotioned, nil, true)
-		end
 	end
 end
 
@@ -196,4 +189,15 @@ end
 --Caveat, it won't call stop with GUIDs, so while it might terminate bar objects, it may leave lingering nameplate icons
 function mod:LeavingZoneCombat()
 	self:Stop(true)
+end
+--]]
+
+function mod:GOSSIP_SHOW()
+	local gossipOptionID = self:GetGossipID()
+	if gossipOptionID and not DBM:UnitDebuff("player", 461763, 461766) then
+		if self.Options.AutoGossipBuff and gossipOptionID == 123878 then--Potion at entrance
+			self:SelectGossip(gossipOptionID)
+			DBM:AddMsg(L.AutoPotioned, nil, true)
+		end
+	end
 end

@@ -239,8 +239,10 @@ function DBMExtraGlobal:rebuildSpecTable()
 			},
 			[255] = {	--Survival Hunter (Legion+)
 				["Dps"] = true,
-				["Melee"] = true,
-				["MeleeDps"] = true,
+				["Melee"] = private.isMop and false or true,
+				["MeleeDps"] = private.isMop and false or true,
+				["Ranged"] = private.isMop and true or false,
+				["RangedDps"] = private.isMop and true or false,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,

@@ -2039,7 +2039,7 @@ do
 					"CHALLENGE_MODE_RESET",
 					"UNIT_HEALTH_FREQUENT mouseover target player targettarget",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED",
-					"PLAYER_TALENT_UPDATE"
+					"PLAYER_SPECIALIZATION_CHANGED"
 				)
 			elseif private.isClassic then
 				self:RegisterEvents(
@@ -5854,7 +5854,7 @@ do
 			local targetName = target or "nil"
 			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2)
 		end
-		if not private.isRetail and not IsInInstance() then
+		if private.isClassic and not IsInInstance() then
 			if self:IsSeasonal("SeasonOfDiscovery") then -- All World Buffs are spammy in SoD, disable
 				return
 			end
@@ -5932,7 +5932,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
 		if self:MidRestrictionsActive() then return end--Block all in instance chat parsing in Midnight Alpha
-		if not private.isRetail and not IsInInstance() then
+		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.zgHeart) then
 				-- 51.01 51.82 51.85 51.53
 				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t51\t4")
@@ -8258,7 +8258,7 @@ do
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
 		end
-		if not private.isRetail then
+		if not private.isRetail and not private.isMop then
 			if private.specRoleTable[currentSpecID]["Tank"] then
 				-- 17 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
 				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
@@ -8278,12 +8278,12 @@ end
 function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-		return private.isRetail and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
+		return (private.isRetail or private.isMop) and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
 	end
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail then
+	if not private.isRetail and not private.isMop then
 		return private.specRoleTable[currentSpecID]["Dps"]
 	end
 	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
@@ -8295,7 +8295,7 @@ end
 ---@return boolean
 function DBM:IsHealer(uId)
 	if uId then--External unit call.
-		if not private.isRetail then
+		if not private.isRetail and not private.isMop then
 			print("bossModPrototype:IsHealer should not be called in classic, report this message")
 			return false
 		end
@@ -8305,7 +8305,7 @@ function DBM:IsHealer(uId)
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail then
+	if not private.isRetail and not private.isMop then
 		if private.specRoleTable[currentSpecID]["Healer"] then
 			if playerClass == "DRUID" then
 				-- not in form (moonkin for balance, cat/bear for ferals)
