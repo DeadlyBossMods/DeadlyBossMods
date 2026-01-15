@@ -51,5 +51,3 @@ move-folders:
   DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Core/DBM-VPVEM/DBM-VPVEM: DBM-VPVEM
   DBM-Core/DBM-Test: DBM-Test
-  DBM-Core/DBM-Test-Dragonflight: DBM-Test-Dragonflight
-  DBM-Core/DBM-Test-WarWithin: DBM-Test-WarWithin

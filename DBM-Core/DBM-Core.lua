@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 401, "34b582e"--401.4
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.11 alpha"--Core version
+DBM.DisplayVersion = "12.0.12 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 1, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 1, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -4667,6 +4667,7 @@ do
 	-- NS = Note Share
 
 	syncHandlers["M"] = function(sender, _, mod, revision, event, ...)
+		---@diagnostic disable-next-line: param-type-mismatch
 		mod = DBM:GetModByName(mod or "")
 		if mod and event and revision then
 			revision = tonumber(revision) or 0
@@ -4710,6 +4711,7 @@ do
 			if cSyncReceived > 2 then -- need at least 3 sync to combat start. (for security)
 				local lag = select(4, GetNetStats()) / 1000
 				delay = tonumber(delay or 0) or 0
+				---@diagnostic disable-next-line: param-type-mismatch
 				mod = DBM:GetModByName(mod or "")
 				modRevision = tonumber(modRevision or 0) or 0
 				dbmRevision = tonumber(dbmRevision or 0) or 0
@@ -4796,6 +4798,7 @@ do
 		if select(2, IsInInstance()) == "pvp" then return end
 		eId = tonumber(eId or "")
 		success = tonumber(success)
+		---@diagnostic disable-next-line: param-type-mismatch
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
 		if mod and eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
@@ -9571,6 +9574,7 @@ end
 
 -- Expose some file-local data to private for testing purposes only.
 
+--[[
 test:RegisterLocalHook("LastInstanceMapID", function(val)
 	local old = LastInstanceMapID
 	LastInstanceMapID = val
@@ -9602,3 +9606,4 @@ test:RegisterLocalHook("UnitGUID", function(val)
 end)
 
 private.mainFrame = mainFrame
+--]]

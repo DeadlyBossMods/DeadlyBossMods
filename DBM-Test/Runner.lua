@@ -630,6 +630,7 @@ function test:InjectEvent(event, ...)
 		self.Mocks:SetFakeCLEUArgs(...)
 		self:OnInjectCombatLog(self.Mocks.CombatLogGetCurrentEventInfo())
 		local start = GetTimePreciseSec()
+		---@diagnostic disable-next-line: undefined-field
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, self.Mocks.CombatLogGetCurrentEventInfo())
 		local delta = GetTimePreciseSec() - start
 		self.Perf:Track("Event", event, delta)
@@ -637,6 +638,7 @@ function test:InjectEvent(event, ...)
 		self.Mocks:SetFakeCLEUArgs()
 	else
 		local start = GetTimePreciseSec()
+		---@diagnostic disable-next-line: undefined-field
 		dbmPrivate.mainEventHandler(dbmPrivate.mainFrame, event, ...)
 		local delta = GetTimePreciseSec() - start
 		self.Perf:Track("Event", event, delta)
