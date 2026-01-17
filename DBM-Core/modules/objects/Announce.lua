@@ -174,6 +174,7 @@ local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blan
 ---@param overrideDuration number?
 ---@param customIcon string|number? Custom Icon, usually a "secret" icon path or texture id
 function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration, customIcon)
+	if self.Options.DontShowBossAnnounces then return end
 	local added = false
 	if prefix then
 		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
