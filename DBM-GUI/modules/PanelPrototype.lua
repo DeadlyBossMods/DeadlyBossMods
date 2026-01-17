@@ -411,6 +411,11 @@ do
 	})
 	if isRetail then
 --		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })--TEMP, can't register media we're specifically muting
+		if DBM:IsPostMidnight() then
+			tinsert(sounds, { text = "Blizzard: Low", value = 7670699 })
+			tinsert(sounds, { text = "Blizzard: Medium", value = 7670701 })
+			tinsert(sounds, { text = "Blizzard: Critical", value = 7670697 })
+		end
 		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703 })
 		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050 })
 		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566 })

@@ -147,6 +147,11 @@ if isRetail then
 		{ text = "Void Reaver: Marked", value = 563787 },
 		{ text = "Yogg Saron: Laugh", value = 564859 },
 	})
+	if DBM:IsPostMidnight() then
+		tinsert(sounds, { text = "Blizzard: Low", value = 7670699 })
+		tinsert(sounds, { text = "Blizzard: Medium", value = 7670701 })
+		tinsert(sounds, { text = "Blizzard: Critical", value = 7670697 })
+	end
 elseif isWrath then--Basically all but Blizzard Raid Emote which was added in MoP
 	sounds = DBM_GUI:MixinSharedMedia3("sound", {
 		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
