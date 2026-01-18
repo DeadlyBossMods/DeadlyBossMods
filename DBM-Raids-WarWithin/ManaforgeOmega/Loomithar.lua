@@ -270,8 +270,8 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	--"<380.92 13:03:50> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(49.7%-51.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228059-0010DFCC16:1228059",
-	--"<386.71 13:03:56> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(46.0%-0.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228069-00C15FCC1B
+	--"<380.92 13:03:50> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(49.7%-51.0%){Target:??} -Unbound Rage- boss1:Cast-3-5770-2810-2807-1228059-0010DFCC16:1228059",
+	--"<386.71 13:03:56> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(46.0%-0.0%){Target:??} -Unbound Rage- boss1:Cast-3-5770-2810-2807-1228069-00C15FCC1B
 	if spellId == 1228059 and self:GetStage(1) then--Unbound Rage (comes 6 seconds sooner than CLEU
 		self:SetStage(2)
 		self.vb.weavingCount = 0

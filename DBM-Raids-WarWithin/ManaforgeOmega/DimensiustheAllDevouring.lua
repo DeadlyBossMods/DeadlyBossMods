@@ -631,7 +631,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
---"<43.79 11:27:27> [UNIT_SPELLCAST_START] Dimensius(62.0%-24.0%){Target:??} -Shattered Space- 3.25s [[boss1:Cast-3-4241-2810-1727-1243690-00681C5A7F:1243690",
+--"<43.79 11:27:27> [UNIT_SPELLCAST_START] Dimensius(62.0%-24.0%){Target:??} -Shattered Space- 3.25s boss1:Cast-3-4241-2810-1727-1243690-00681C5A7F:1243690",
 function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 1243690 then
 		self.vb.shatteredSpaceCount = self.vb.shatteredSpaceCount + 1
