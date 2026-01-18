@@ -12,6 +12,40 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Pre midnight private auras
+mod:AddPrivateAuraSoundOption(1224855, true, 1224827, 1)--Behead
+mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1)--Twilight Massacre
+mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
+mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
+mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
+--Post midnight private auras
+mod:AddPrivateAuraSoundOption(1227549, true, 1227549, 1)--Banishment
+
+function mod:OnLimitedCombatStart(delay)
+	self:EnablePrivateAuraSound(1224855, "lineyou", 17)--Behead
+	self:EnablePrivateAuraSound(1224857, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1224858, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1224859, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1224864, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225060, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1224860, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225055, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225056, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225057, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225059, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1224828, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1225058, "lineyou", 17, 1224855)--Behead
+	self:EnablePrivateAuraSound(1237108, "behindmob", 2)--Twilight Massacre
+	self:EnablePrivateAuraSound(1228114, "lineyou", 17)--Netherbreaker
+	self:EnablePrivateAuraSound(1225316, "runout", 2)--Galactic Smash
+	self:EnablePrivateAuraSound(1248128, "runout", 2, 1225316)--Galactic Smash
+	self:EnablePrivateAuraSound(1226601, "runout", 2, 1225316)--Galactic Smash
+	self:EnablePrivateAuraSound(1226602, "runout", 2, 1225316)--Galactic Smash
+	self:EnablePrivateAuraSound(1226018, "runout", 2)--Starkiller Swing
+	self:EnablePrivateAuraSound(1227549, "scatter", 2)--Banishment
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1224787 1224812 1227529 1224906 1225010 1225016 1228065 1230302 1232399 1228075 1230263 1227734 1228115 1228163 1234529 1228265 1225319 1234904 1237106",
 	"SPELL_CAST_SUCCESS 1234904 1226442 1228053",
@@ -24,14 +58,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
+--]]
 
---TODO, better netherbreaker private aura sound?
---TODO, verify which dimension breath Id is cast
---TODO, better voice lines for starkiller swing and galactic smash?
 --[[
 (ability.id = 1228065 or ability.id = 1227734 or ability.id = 1228265) and type = "begincast"
 or (ability.id = 1228265 or ability.id = 1228284) and type = "removebuff" and target.id = 233823
 --]]
+--[[
 local royalVoidWing = DBM:EJ_GetSectionInfo(32228)
 --Stage One: Oath-Breakers
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(31573))
@@ -540,3 +573,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 	end
 end
+--]]

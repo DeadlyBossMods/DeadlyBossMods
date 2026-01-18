@@ -12,6 +12,16 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--TODO, add https://www.wowhead.com/beta/spell=1221490/fel-singed ?
+mod:AddPrivateAuraSoundOption(1227847, true, 1227847, 1)
+mod:AddPrivateAuraSoundOption(1222232, true, 1222232, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1227847, "lineyou", 17)
+	self:EnablePrivateAuraSound(1222232, "debuffyou", 17)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1227355 1227809 1218103 1241833 1222337 1242259 1231501 1232568 1232569 1227117 1240891 1245726",
 	"SPELL_CAST_SUCCESS 1233672 1241833",--1227058
@@ -25,16 +35,12 @@ mod:RegisterEventsInCombat(
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
+--]]
 
---TODO, https://www.wowhead.com/ptr-2/spell=1222310/unending-hunger stack counter for personal?
---TODO, targetscan voidstep?
---TODO, warn https://www.wowhead.com/ptr-2/spell=1247415/weakened-prey ?
---TODO, tank swaps based on https://www.wowhead.com/ptr-2/spell=1221490/fel-singed or just after every eye beam pushback?
---TODO, warn https://www.wowhead.com/ptr-2/spell=1249198/unstable-soul ?
---TODO, https://www.wowhead.com/ptr-2/spell=1233381/withering-flames tracker?
 --[[
 (ability.id = 1231501 or ability.id = 1232568 or ability.id = 1232569) and type = "begincast" or (ability.id = 1242133 or ability.id = 1245978) and type = "removebuff"
 --]]
+--[[
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 
@@ -328,17 +334,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 237661 then--Adarus Duskblaze
@@ -399,3 +394,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		timerBladeDanceCD:Start(self:IsMythic() and 34 or self:IsHeroic() and 34.7 or 35.6, self.vb.bladeDanceCount+1)
 	end
 end
+--]]

@@ -11,6 +11,19 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+--Arcane Obliteration has private auras but none that are useful
+mod:AddPrivateAuraSoundOption(1228188, true, 1228188, 1)
+mod:AddPrivateAuraSoundOption(1233979, true, 1233979, 3)
+mod:AddPrivateAuraSoundOption(1243873, true, 1243873, 3)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1228188, "runout", 2)
+	self:EnablePrivateAuraSound(1233979, "orbrun", 2)
+	self:EnablePrivateAuraSound(1243873, "orbrun", 2)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1228502 1228216 1228161 1227631 1231720 1232221 1230529 1243887 1248133 1234328 1228213 1232590 1248009",
 	"SPELL_AURA_APPLIED 1228188 1233979 1233415 1243873",--1228506
@@ -22,20 +35,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_POWER_UPDATE boss1 boss2 boss3 boss4 boss5"
 )
+--]]
 
---TODO, tank stacks placeholder, or eliminate tank stacks if swaps just happen naturally with arcane obliteration
---TODO, see if https://www.wowhead.com/ptr-2/spell=1228220/arcane-echo spell summon logged?
---TODO, need a better understanding how echos work before implimenting their timer and alert handling correctly
---TODO, maybe announce people silenced by https://www.wowhead.com/ptr-2/spell=1228168/silencing-tempest
---TODO, better handling of arcane collector stuff
---TODO, detect intermission arcane collector spawns and initial timers ?
---TODO, https://www.wowhead.com/ptr-2/spell=1232590/arcane-convergence ?
 --[[
 (ability.id = 1230529 or ability.id = 1227631 or ability.id = 1248009) and type = "begincast"
  or ability.id = 1230231 and type = "cast"
  or ability.id = 1233415
 --]]
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(28754))
+--[[
 --local warnOverwhelmingPower						= mod:NewStackAnnounce(1228502, 2, nil, "Tank|Healer")
 local warnVoidTear									= mod:NewCountAnnounce(1248171, 3)
 
@@ -304,7 +312,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 1228161 then
 		self.vb.silencingTempestCount = self.vb.silencingTempestCount + 1
 		specWarnSilencingTempest:Show(self.vb.silencingTempestCount)
-		specWarnSilencingTempest:Play("watchstep")
+		specWarnSilencingTempest:Play("runout")
 		local timer = self:GetFromTimersTable(allTimers, savedDifficulty, self.vb.manaSacrificeCasts+1, spellId, self.vb.silencingTempestCount+1)
 		if timer then
 			timerSilencingTempestCD:Start(timer, self.vb.silencingTempestCount+1)
@@ -476,16 +484,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 1233072 then -- -Phase Transition P2 -> P3-
 		self:SetStage(2)
@@ -511,3 +509,4 @@ function mod:UNIT_POWER_UPDATE(uId)
 		timerPhotonBlastCD:Start(3, guid)
 	end
 end
+--]]

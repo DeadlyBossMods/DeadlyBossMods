@@ -12,6 +12,15 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+--Piercing strands also PA, but useless due to poor timing
+mod:AddPrivateAuraSoundOption(1219439, true, 1226311, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1226311, "lineyou", 17)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1227263 1227782 1227226",
 	"SPELL_CAST_SUCCESS 1226395 1237272",--1226315 1226867 1230115
@@ -23,11 +32,13 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
+--]]
 
 --[[
 ability.id = 1228070 and type = "applybuff"
 --]]
 --Phase 1: The Silkbound Beast
+--[[
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32296))
 local warnPrimalSpellstorm							= mod:NewCountAnnounce(1226867, 3, nil, nil, nil, nil, DBM_COMMON_L.SWIRLS)
 local warnInfusionTether							= mod:NewTargetAnnounce(1226311, 2)
@@ -36,7 +47,7 @@ local warnInfusionPylon								= mod:NewCountAnnounce(1246921, 3)
 
 local specWarnLairWeaving							= mod:NewSpecialWarningCount(1237272, nil, 157317, nil, 2, 2)
 local specWarnOverinfusionBurst						= mod:NewSpecialWarningRunCount(1226395, nil, nil, nil, 3, 2)
-local specWarnInfusionTether						= mod:NewSpecialWarningYou(1226311, nil, 395745, nil, 1, 2)
+local specWarnInfusionTether						= mod:NewSpecialWarningYou(1226311, nil, 395745, nil, 1, 17)
 local yellInfusionTether							= mod:NewShortYell(1226311, nil, false)
 local specWarnPiercingStrands						= mod:NewSpecialWarningDefensive(1237212, nil, nil, nil, 1, 2)
 local specWarnPiercingStrandsOther					= mod:NewSpecialWarningTaunt(1237212, nil, nil, nil, 1, 2)
@@ -259,7 +270,7 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	--"<380.92 13:03:50> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(49.7%-51.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228059-0010DFCC16:1228059]]",
+	--"<380.92 13:03:50> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(49.7%-51.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228059-0010DFCC16:1228059",
 	--"<386.71 13:03:56> [UNIT_SPELLCAST_SUCCEEDED] Loom'ithar(46.0%-0.0%){Target:??} -Unbound Rage- [[boss1:Cast-3-5770-2810-2807-1228069-00C15FCC1B
 	if spellId == 1228059 and self:GetStage(1) then--Unbound Rage (comes 6 seconds sooner than CLEU
 		self:SetStage(2)
@@ -289,3 +300,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerArcaneOutrageCD:Update(13, 23, 1)
 	end
 end
+--]]

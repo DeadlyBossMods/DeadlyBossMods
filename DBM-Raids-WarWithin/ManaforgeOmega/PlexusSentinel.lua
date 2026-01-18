@@ -11,6 +11,18 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+mod:AddPrivateAuraSoundOption(1219439, true, 1219439, 1)
+mod:AddPrivateAuraSoundOption(1219459, true, 1219459, 1)
+mod:AddPrivateAuraSoundOption(1219607, true, 1219607, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1219439, "runout", 2)
+	self:EnablePrivateAuraSound(1219459, "runout", 2)
+	self:EnablePrivateAuraSound(1219607, "gathershare", 2)
+	self:EnablePrivateAuraSound(1219531, "gathershare", 2, 1219607)
+end
+
 --[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555 1234733",

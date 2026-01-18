@@ -12,24 +12,28 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+mod:AddPrivateAuraSoundOption(1237607, true, 1237607, 1)--Mythic Lash
+mod:AddPrivateAuraSoundOption(1227276, true, 1227276, 1)
+mod:AddPrivateAuraSoundOption(1225626, true, 1225626, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1237607, "defensive", 2)
+	self:EnablePrivateAuraSound(1248464, "defensive", 2, 1237607)
+	self:EnablePrivateAuraSound(1227276, "lineyou", 17)
+	self:EnablePrivateAuraSound(1225626, "orbyou", 17)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1225582 1227052 1241100 1223859 1242088 1225616",
 	"SPELL_CAST_SUCCESS 1227848 1227276 1227048",
 	"SPELL_AURA_APPLIED 1227049 1227049 1227276 1237607 1225626 1248464",
 	"SPELL_AURA_APPLIED_DOSE 1237607 1248464",
 	"SPELL_AURA_REMOVED 1227049 1227276 1225626",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, track Soulweave Chrysalis casts on nameplates? right now 3 cast spellids but only 2 summon ids
---TODO, detect adds releasing for initial nameplate timers
---TODO, add silk shield infoframe tracking all shield remaining?
---TODO, tanks wap stacks
---TODO, convergence icons when we know number of targets and what others are doing
---TODO, possible orb warnings for expiring convergence?
 --General
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(459785, nil, nil, nil, 1, 8)
 --Soul Calling
@@ -260,16 +264,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 459785 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 --https://www.wowhead.com/ptr-2/npc=237871/unbound-assassin
 --https://www.wowhead.com/ptr-2/npc=237897/shadowguard-assassin
 
@@ -287,13 +281,6 @@ function mod:UNIT_DIED(args)
 		if castsPerGUID[args.destGUID] then
 			castsPerGUID[args.destGUID] = nil
 		end
-	end
-end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 433475 then
-
 	end
 end
 --]]
