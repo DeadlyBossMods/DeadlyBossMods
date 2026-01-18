@@ -12,6 +12,25 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+--TODO, add Null Binding? spam can't be controlled
+mod:AddPrivateAuraSoundOption(1228206, true, 1228206, 1)
+mod:AddPrivateAuraSoundOption(1243577, true, 1243577, 1)
+mod:AddPrivateAuraSoundOption(1232394, true, 1232394, 1)--P3 gravity Well
+mod:AddPrivateAuraSoundOption(1234243, true, 1234243, 1)
+mod:AddPrivateAuraSoundOption(1234244, true, 1234244, 1)--P2 Inverse gravity
+mod:AddPrivateAuraSoundOption(1249425, true, 1249425, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1228206, "targetyou", 2)
+	self:EnablePrivateAuraSound(1243577, "scatter", 2)
+	self:EnablePrivateAuraSound(1232394, "safenow", 2)
+	self:EnablePrivateAuraSound(1234243, "scatter", 2)
+	self:EnablePrivateAuraSound(1234244, "scatter", 2)
+	self:EnablePrivateAuraSound(1249425, "lineyou", 17)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1230087 1248240 1229038 1230979 1238765 1237319 1237694 1249423 1239262 1237695 1233539 1234263 1232973 1234898 1251619",--1243690 1234044
 	"SPELL_CAST_SUCCESS 1231716 1246541",--1237690 1234242
@@ -27,16 +46,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 )
+--]]
 
---TODO, add antimatter to GTFO if you soak too long
---TODO, Stellar Core counter for intermission 1?
---TODO, does https://www.wowhead.com/ptr-2/spell=1239270/voidwarding activate sometimes or is it always active (thus not needing warning)?
---TODO, nullbinding nameplate timer and clarification on warning
---TODO, probably don't need to do anything with https://www.wowhead.com/ptr-2/spell=1233292/accretion-disk but noting just in case
---TODO, stuff with https://www.wowhead.com/ptr-2/spell=1234054/shadowquake ?
 --[[
 ability.id = 1234898 and type = "begincast" or ability.id = 1245292 and type = "applydebuff" or ability.id = 1237102 and type = "applybuff"
 --]]
+--[[
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Critical Mass
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32292))
@@ -616,7 +631,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
---"<43.79 11:27:27> [UNIT_SPELLCAST_START] Dimensius(62.0%-24.0%){Target:??} -Shattered Space- 3.25s [[boss1:Cast-3-4241-2810-1727-1243690-00681C5A7F:1243690]]",
+--"<43.79 11:27:27> [UNIT_SPELLCAST_START] Dimensius(62.0%-24.0%){Target:??} -Shattered Space- 3.25s boss1:Cast-3-4241-2810-1727-1243690-00681C5A7F:1243690",
 function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 1243690 then
 		self.vb.shatteredSpaceCount = self.vb.shatteredSpaceCount + 1
@@ -707,3 +722,4 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		end
 	end
 end
+--]]

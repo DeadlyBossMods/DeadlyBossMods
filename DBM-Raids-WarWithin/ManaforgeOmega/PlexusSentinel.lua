@@ -11,6 +11,19 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Midnight private aura replacements
+mod:AddPrivateAuraSoundOption(1219439, true, 1219439, 1)
+mod:AddPrivateAuraSoundOption(1219459, true, 1219459, 1)
+mod:AddPrivateAuraSoundOption(1219607, true, 1219607, 1)
+
+function mod:OnLimitedCombatStart()
+	self:EnablePrivateAuraSound(1219439, "runout", 2)
+	self:EnablePrivateAuraSound(1219459, "runout", 2)
+	self:EnablePrivateAuraSound(1219607, "gathershare", 2)
+	self:EnablePrivateAuraSound(1219531, "gathershare", 2, 1219607)
+end
+
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 1219450 1219263 1219531 1220489 1220553 1220555 1234733",
 --	"SPELL_CAST_SUCCESS",
@@ -21,15 +34,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 1219354"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
+--]]
 
---TODO do anything with https://www.wowhead.com/ptr-2/spell=1223364/powered-automaton ?
---TODO verify all purge IDs used
---TODO, change to tables or counted casts to stop timers when no further casts expected. right now it's starting all timers as variance until we see live/final version of fight
 --[[
 (ability.id = 1220489 or ability.id = 1220553 or ability.id = 1220555) and type = "begincast"
  or (ability.id = 1220618 or ability.id = 1220981 or ability.id = 1220982) and type = "removebuff"
  or ability.id = 1234733 and type = "begincast"
 --]]
+--[[
 --Stage One: Purge The Intruders
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(31626))
 local warnManifestMatrices							= mod:NewTargetAnnounce(1219450, 3)
@@ -204,15 +216,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 439559 then
-
-	end
-end
---]]
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 1219459 then
@@ -306,11 +309,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 433475 then
-
-	end
-end
 --]]
