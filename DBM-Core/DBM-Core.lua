@@ -1788,7 +1788,6 @@ do
 					SetCVar("Sound_NumChannels", 64)
 				end
 			end
-			private:ShowMidnightPopup()
 			self.Voices = {{text = "None", value = "None"}}--Create voice table, with default "None" value
 			self.VoiceVersions = {}
 			for i = 1, C_AddOns.GetNumAddOns() do
