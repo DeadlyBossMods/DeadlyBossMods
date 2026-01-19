@@ -50,10 +50,14 @@ function private:ShowMidnightPopup()
 		end
 	end
 
+	---@class DBMMIDNIGHTDROPDOWN1: Button
+	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown1 = CreateFrame("DropdownButton", nil, frame, "WowStyle1DropdownTemplate")
 	dropdown1:SetWidth(250)
-	dropdown1:SetDefaultText(NONE)
 	dropdown1:SetPoint("TOPLEFT", dropdownText1, "BOTTOMLEFT", 0, -10)
+	---@diagnostic disable-next-line: undefined-field
+	dropdown1:SetDefaultText(NONE)
+	---@diagnostic disable-next-line: undefined-field
 	dropdown1:SetupMenu(function(_, rootDescription)
 		rootDescription:CreateCheckbox(L.MN_BLIZZARD_TIMELINE, IsSelected1, SetSelected1, 1)
 		rootDescription:CreateCheckbox(L.MN_DBM_TIMELINE, IsSelected1, SetSelected1, 2)
@@ -83,10 +87,14 @@ function private:ShowMidnightPopup()
 		end
 	end
 
+	---@class DBMMIDNIGHTDROPDOWN2: Button
+	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown2 = CreateFrame("DropdownButton", nil, frame, "WowStyle1DropdownTemplate")
 	dropdown2:SetWidth(250)
-	dropdown2:SetDefaultText(NONE)
 	dropdown2:SetPoint("TOPLEFT", dropdownText2, "BOTTOMLEFT", 0, -10)
+	---@diagnostic disable-next-line: undefined-field
+	dropdown2:SetDefaultText(NONE)
+	---@diagnostic disable-next-line: undefined-field
 	dropdown2:SetupMenu(function(_, rootDescription)
 		rootDescription:CreateCheckbox(L.MN_BLIZZARD_WARNINGS, IsSelected2, SetSelected2, 1)
 		rootDescription:CreateCheckbox(L.MN_DBM_WARNINGS, IsSelected2, SetSelected2, 2)
