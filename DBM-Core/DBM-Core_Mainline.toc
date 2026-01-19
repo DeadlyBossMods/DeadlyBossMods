@@ -95,6 +95,7 @@ modules\gui\Keystones.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
+modules\MidnightPopup.lua
 modules\Notes.lua
 modules\Sounds.lua
 modules\UpdateReminder.lua

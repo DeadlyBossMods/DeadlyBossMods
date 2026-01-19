@@ -772,3 +772,11 @@ L.KEYSTONE_NAMES = {
 	[525] = 'FLOOD', -- Operation Floodgate
 	[542] = 'DOME' -- Eco-Dome Al'dani
 }
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "Do you want to use the Blizzard Timeline or DBM Bars?"
+L.MN_BLIZZARD_TIMELINE	= "Blizzard Timeline"
+L.MN_DBM_TIMELINE		= "DBM Bars"
+L.MN_WARNIGS_HEADER		= "Do you want to use Blizzard Encounter Warnings, or DBM Encounter Warnings?"
+L.MN_BLIZZARD_WARNINGS	= "Blizzard Warnings"
+L.MN_DBM_WARNINGS		= "DBM Warnings"

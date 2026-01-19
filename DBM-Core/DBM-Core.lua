@@ -178,7 +178,8 @@ DBM.DefaultOptions = {
 	NoTimerOverridee = true,
 	ReplaceMyConfigOnOverride = false,
 	HideBossEmoteFrame2 = true,
-	HideBlizzardTimeline = false,
+	HideBlizzardTimeline = true,
+	HideDBMBars = false,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
@@ -410,6 +411,7 @@ DBM.DefaultOptions = {
 	EnableTooltip = not private.isRetail,
 	EnableTooltipInCombat = true,
 	EnableTooltipHeader = true,
+	HasShownMidnightPopup = false,
 }
 
 ---@type DBMMod[]
@@ -1775,6 +1777,9 @@ do
 				if self.Options.HideBossEmoteFrame2 then
 					C_CVar.SetCVar("encounterWarningsEnabled", "0")
 				end
+				if not self.Options.HasShownMidnightPopup then
+					private:ShowMidnightPopup()
+				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
 				local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
@@ -1783,6 +1788,7 @@ do
 					SetCVar("Sound_NumChannels", 64)
 				end
 			end
+			private:ShowMidnightPopup()
 			self.Voices = {{text = "None", value = "None"}}--Create voice table, with default "None" value
 			self.VoiceVersions = {}
 			for i = 1, C_AddOns.GetNumAddOns() do
