@@ -1246,12 +1246,11 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local targetName = encounterWarningInfo.targetName
 	local targetGUID = encounterWarningInfo.targetGUID
 	local formattedTargetName = targetName
-	if self.Options.DebugMode then
-		if targetGUID ~= nil then
-			local _, className = GetPlayerInfoByGUID(targetGUID);
+	if targetGUID then
+		local _, className = GetPlayerInfoByGUID(targetGUID)
+		if className then
 			local classColor = C_ClassColor.GetClassColor(className)
-
-			if classColor ~= nil then
+			if classColor then
 			    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
 			end
 		end
