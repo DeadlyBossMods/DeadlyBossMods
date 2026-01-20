@@ -178,7 +178,8 @@ DBM.DefaultOptions = {
 	NoTimerOverridee = true,
 	ReplaceMyConfigOnOverride = false,
 	HideBossEmoteFrame2 = true,
-	HideBlizzardTimeline = false,
+	HideBlizzardTimeline = true,
+	HideDBMBars = false,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
@@ -410,6 +411,7 @@ DBM.DefaultOptions = {
 	EnableTooltip = not private.isRetail,
 	EnableTooltipInCombat = true,
 	EnableTooltipHeader = true,
+	HasShownMidnightPopup = false,
 }
 
 ---@type DBMMod[]
@@ -1774,6 +1776,9 @@ do
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_CVar.SetCVar("encounterWarningsEnabled", "0")
+				end
+				if not self.Options.HasShownMidnightPopup then
+					private:ShowMidnightPopup()
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore

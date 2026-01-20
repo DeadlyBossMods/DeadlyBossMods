@@ -1540,6 +1540,7 @@ end
 --/run C_EncounterTimeline.AddEditModeEvents()
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
+	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
 	local eventID = eventInfo.id
