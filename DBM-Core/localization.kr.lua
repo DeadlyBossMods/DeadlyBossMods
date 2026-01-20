@@ -262,8 +262,9 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"사용 가능한 슬래시 명령어:",
 	"-----------------",
 	"/dbm unlock: 이동 가능한 상태 바 타이머를 표시합니다 (별칭: move).",
-	"/dbm pull <sec>: <sec> 초 동안의 풀링 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: pull).",
-	"/dbm break <min>: <min> 분 동안의 쉬는 타이머를 공격대에 전송합니다 (승급자 필요. 별칭: break).",
+	"/dbm pull <sec>: <sec> 초 동안의 풀링 타이머를 공격대에 전송합니다. (승급자 필요. 별칭: pull)",
+	"/dbm break <min>: <min> 분 동안의 쉬는 타이머를 공격대에 전송합니다. (승급자 필요. 별칭: break)",
+	"/dbm midwizard: 한밤용 설정 마법사를 다시 표시합니다. (본섭 전용)",
 	"/dbm timer: 사용자 정의 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참조하세요.",
 	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음을 사용합니다. (별칭: key, keys, keystone)",
 	"/dbm lag: 공격대 전체의 지연 시간을 확인합니다.",
@@ -708,3 +709,11 @@ L.KEYSTONE_NAMES[503] = '아라카라' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = '새인호' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = '수문' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = '알다니' -- Eco-Dome Al'dani
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "Blizzard 타임라인과 DBM 타이머 바 중에 어느 것을 사용할까요?"
+L.MN_BLIZZARD_TIMELINE	= "Blizzard 타임라인"
+L.MN_DBM_TIMELINE		= "DBM 타이머 바"
+L.MN_WARNIGS_HEADER		= "Blizzard 보스 경고와 DBM 보스 경고 중에 어느 것을 사용할까요?"
+L.MN_BLIZZARD_WARNINGS	= "Blizzard 경고"
+L.MN_DBM_WARNINGS		= "DBM 경고"
