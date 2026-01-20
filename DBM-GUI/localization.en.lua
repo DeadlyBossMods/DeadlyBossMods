@@ -89,6 +89,7 @@ L.Button_InfoFrame					= "Show/hide info frame"
 L.Button_TestBars					= "Start test bars"
 L.Button_MoveBars					= "Move bars"
 L.Button_ResetInfoRange				= "Reset Info/Range frames"
+L.Button_ShowMidnightWizard			= "Midnight Setup Wizard"
 
 L.ModelOptions						= "3D Model Viewer Options"
 L.EnableModels						= "Enable 3D models in boss options"
