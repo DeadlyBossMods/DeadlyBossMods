@@ -71,6 +71,18 @@ bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
+--[[
+local showMidnightWizard
+if DBM:IsPostMidnight() then
+	showMidnightWizard = generaloptions:CreateButton(L.Button_ShowMidnightWizard, 120, 30)
+	showMidnightWizard.myheight = 0
+	showMidnightWizard:SetPoint("LEFT", bmtestmode, "RIGHT", 6, 0)
+	showMidnightWizard:SetScript("OnClick", function()
+		private:ShowMidnightPopup()
+	end)
+end
+--]]
+
 local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
 moveme:SetPoint("TOPLEFT", bmtestmode, "BOTTOMLEFT", 0, -2)
 moveme:SetScript("OnClick", function()

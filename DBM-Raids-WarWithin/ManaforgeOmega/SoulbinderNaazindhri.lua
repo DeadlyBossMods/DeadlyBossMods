@@ -16,12 +16,14 @@ mod:RegisterCombat("combat")
 mod:AddPrivateAuraSoundOption(1237607, true, 1237607, 1)--Mythic Lash
 mod:AddPrivateAuraSoundOption(1227276, true, 1227276, 1)
 mod:AddPrivateAuraSoundOption(1225626, true, 1225626, 1)
+mod:AddPrivateAuraSoundOption(1242086, true, 1242086, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1237607, "defensive", 2)
 	self:EnablePrivateAuraSound(1248464, "defensive", 2, 1237607)
 	self:EnablePrivateAuraSound(1227276, "lineyou", 17)
 	self:EnablePrivateAuraSound(1225626, "orbyou", 17)
+	self:EnablePrivateAuraSound(1242086, "watchfeet", 8)
 end
 
 --[[

@@ -275,6 +275,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
 	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
+	"/dbm midwizard: Shows midnight setup wizard again (retail only).",
 	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
 	"/dbm key: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keys, keystone)",
 	"/dbm lag: Performs a raid-wide latency check.",
@@ -772,3 +773,11 @@ L.KEYSTONE_NAMES = {
 	[525] = 'FLOOD', -- Operation Floodgate
 	[542] = 'DOME' -- Eco-Dome Al'dani
 }
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "Do you want to use the Blizzard Timeline or DBM Bars?"
+L.MN_BLIZZARD_TIMELINE	= "Blizzard Timeline"
+L.MN_DBM_TIMELINE		= "DBM Bars"
+L.MN_WARNIGS_HEADER		= "Do you want to use Blizzard Encounter Warnings, or DBM Encounter Warnings?"
+L.MN_BLIZZARD_WARNINGS	= "Blizzard Warnings"
+L.MN_DBM_WARNINGS		= "DBM Warnings"

@@ -1,3 +1,4 @@
+---@class DBMCoreNamespace
 local private = select(2, ...)
 
 local L = DBM_GUI_L

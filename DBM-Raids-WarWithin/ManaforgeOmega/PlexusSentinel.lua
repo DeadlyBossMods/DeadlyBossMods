@@ -15,12 +15,14 @@ mod:RegisterCombat("combat")
 mod:AddPrivateAuraSoundOption(1219439, true, 1219439, 1)
 mod:AddPrivateAuraSoundOption(1219459, true, 1219459, 1)
 mod:AddPrivateAuraSoundOption(1219607, true, 1219607, 1)
+mod:AddPrivateAuraSoundOption(1219354, true, 1219354, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1219439, "runout", 2)
 	self:EnablePrivateAuraSound(1219459, "runout", 2)
 	self:EnablePrivateAuraSound(1219607, "gathershare", 2)
 	self:EnablePrivateAuraSound(1219531, "gathershare", 2, 1219607)
+	self:EnablePrivateAuraSound(1219354, "watchfeet", 8)
 end
 
 --[[

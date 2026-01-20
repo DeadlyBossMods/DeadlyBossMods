@@ -20,6 +20,7 @@ mod:AddPrivateAuraSoundOption(1232394, true, 1232394, 1)--P3 gravity Well
 mod:AddPrivateAuraSoundOption(1234243, true, 1234243, 1)
 mod:AddPrivateAuraSoundOption(1234244, true, 1234244, 1)--P2 Inverse gravity
 mod:AddPrivateAuraSoundOption(1249425, true, 1249425, 1)
+mod:AddPrivateAuraSoundOption(1237696, true, 1237696, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1228206, "targetyou", 2)
@@ -28,6 +29,7 @@ function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1234243, "scatter", 2)
 	self:EnablePrivateAuraSound(1234244, "scatter", 2)
 	self:EnablePrivateAuraSound(1249425, "lineyou", 17)
+	self:EnablePrivateAuraSound(1237696, "watchfeet", 8)
 end
 
 --[[

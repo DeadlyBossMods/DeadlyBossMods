@@ -411,8 +411,10 @@ function DBMExtraGlobal:rebuildSpecTable()
 			},
 			[1480] = {	--Devourer Demon Hunter
 				["Dps"] = true,
-				["Melee"] = true,
+				["Melee"] = true,--Hybrid spec that is both
 				["MeleeDps"] = true,
+				["Ranged"] = true,--Hybrid spec that is both
+				["RangedDps"] = true,
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
