@@ -28,7 +28,7 @@ L.LOAD_MOD_TOC_MISMATCH		= "No se ha podido cargar el módulo de %s porque está
 L.LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 L.LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
 
-L.COPY_URL_DIALOG			= "Copiar vínculo"
+L.COPY_URL_DIALOG			= "Copiar enlace"
 L.COPY_WA_DIALOG			= "Copiar clave WA"
 
 --Post Patch 7.1
