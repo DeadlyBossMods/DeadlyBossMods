@@ -202,6 +202,7 @@ end
 
 function timerPrototype:Start(timer, ...)
 	if not self.mod.isDummyMod then--Don't apply following rulesets to pull timers and such
+		if DBM.Options.HideDBMBars then return end
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	end
@@ -728,6 +729,7 @@ function timerPrototype:SetTimer(timer)
 end
 
 function timerPrototype:Update(elapsed, totalTime, ...)
+	if DBM.Options.HideDBMBars then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
@@ -784,6 +786,7 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 end
 
 function timerPrototype:AddTime(extendAmount, ...)
+	if DBM.Options.HideDBMBars then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
@@ -830,6 +833,7 @@ function timerPrototype:AddTime(extendAmount, ...)
 end
 
 function timerPrototype:RemoveTime(reduceAmount, ...)
+	if DBM.Options.HideDBMBars then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
