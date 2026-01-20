@@ -180,6 +180,7 @@ DBM.DefaultOptions = {
 	HideBossEmoteFrame2 = true,
 	HideBlizzardTimeline = true,
 	HideDBMBars = false,
+	HideDBMWarnings = false,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,

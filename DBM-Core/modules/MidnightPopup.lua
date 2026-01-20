@@ -71,7 +71,7 @@ function private:ShowMidnightPopup()
 		if index == 1 then
 			return not DBM.Options.HideBossEmoteFrame2
 		elseif index == 2 then
-			return not DBM.Options.DontShowBossAnnounces
+			return not DBM.Options.HideDBMWarnings
 		end
 	end
 	local function SetSelected2(index)
@@ -83,7 +83,7 @@ function private:ShowMidnightPopup()
 				C_CVar.SetCVar("encounterWarningsEnabled", "1")
 			end
 		elseif index == 2 then
-			DBM.Options.DontShowBossAnnounces = not DBM.Options.DontShowBossAnnounces
+			DBM.Options.HideDBMWarnings = not DBM.Options.HideDBMWarnings
 		end
 	end
 

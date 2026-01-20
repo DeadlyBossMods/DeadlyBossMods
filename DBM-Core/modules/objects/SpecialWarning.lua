@@ -101,7 +101,7 @@ end
 ---@param noSound boolean?
 function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, noSound)
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true and it comes from RAID_WARNING API
-	if customIcon and self.Options.DontPlaySpecialWarningSound and self.Options.DontShowSpecialWarningFlash and self.Options.DontShowSpecialWarningText then return end
+	if customIcon and self.Options.HideDBMWarnings or (self.Options.DontPlaySpecialWarningSound and self.Options.DontShowSpecialWarningFlash and self.Options.DontShowSpecialWarningText) then return end
 	local added = false
 	local formatedText
 	if C_StringUtil and customIcon then
@@ -397,7 +397,7 @@ function specialWarningPrototype:Show(...)
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
-		if DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText then return end
+		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 		if self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 and (self.mod:IsEasyDungeon() or DBM:IsTrivial()) then return end
 		--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
@@ -551,7 +551,7 @@ function specialWarningPrototype:CombinedShow(delay, ...)
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
-	if DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText then return end
+	if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 	--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	local argTable = {...}
@@ -580,7 +580,7 @@ function specialWarningPrototype:PreciseShow(maxTotal, ...)
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
-	if DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText then return end
+	if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 	--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	local argTable = {...}
@@ -1240,6 +1240,7 @@ end
 --{ Name = "shouldShowChatMessage", Type = "bool", Nilable = false },
 --{ Name = "shouldShowWarning", Type = "bool", Nilable = false },
 function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
+	if self.Options.HideDBMWarnings then return end
 	--Secrets
 	local text = encounterWarningInfo.text
 	local casterName = encounterWarningInfo.casterName

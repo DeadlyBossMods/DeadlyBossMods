@@ -174,7 +174,7 @@ local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blan
 ---@param overrideDuration number?
 ---@param customIcon string|number? Custom Icon, usually a "secret" icon path or texture id
 function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration, customIcon)
-	if self.Options.DontShowBossAnnounces then return end
+	if self.Options.DontShowBossAnnounces or self.Options.HideDBMWarnings then return end
 	local added = false
 	if prefix then
 		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
@@ -376,7 +376,7 @@ end
 -- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 	if not self.option or self.mod.Options[self.option] then
-		if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 		local argTable = {...}
 		local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
@@ -477,7 +477,7 @@ end
 ---@param ... any
 function announcePrototype:CombinedShow(delay, ...)
 	if self.option and not self.mod.Options[self.option] then return end
-	if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 	local argTable = {...}
 	for i = 1, #argTable do
@@ -503,7 +503,7 @@ end
 function announcePrototype:PreciseShow(maxTotal, ...)
 	test:Trace(self.mod, "CombinedWarningPreciseShow", self, maxTotal)
 	if self.option and not self.mod.Options[self.option] then return end
-	if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 	local argTable = {...}
 	for i = 1, #argTable do
@@ -558,6 +558,7 @@ end
 ---@param customPath? string|number
 function announcePrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
+	if DBM.Options.HideDBMWarnings then return end
 	if private.voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option])) and self.sound <= private.swFilterDisabled then
