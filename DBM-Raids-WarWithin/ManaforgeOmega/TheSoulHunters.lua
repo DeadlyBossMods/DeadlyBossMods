@@ -15,10 +15,12 @@ mod:RegisterCombat("combat")
 --TODO, add https://www.wowhead.com/beta/spell=1221490/fel-singed ?
 mod:AddPrivateAuraSoundOption(1227847, true, 1227847, 1)
 mod:AddPrivateAuraSoundOption(1222232, true, 1222232, 1)
+mod:AddPrivateAuraSoundOption(1235045, false, 1235045, 1)--GTFO for void step (LEAVE OFF BY DEFAULT)
 
 function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1227847, "lineyou", 17)
 	self:EnablePrivateAuraSound(1222232, "debuffyou", 17)
+	self:EnablePrivateAuraSound(1235045, "watchfeet", 8)
 end
 
 --[[

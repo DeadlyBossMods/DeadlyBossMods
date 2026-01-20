@@ -20,6 +20,7 @@ mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
 mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
 --Post midnight private auras
 mod:AddPrivateAuraSoundOption(1227549, true, 1227549, 1)--Banishment
+mod:AddPrivateAuraSoundOption(1231097, true, 1231097, 1)--GTFO
 
 function mod:OnLimitedCombatStart(delay)
 	self:EnablePrivateAuraSound(1224855, "lineyou", 17)--Behead
@@ -43,6 +44,7 @@ function mod:OnLimitedCombatStart(delay)
 	self:EnablePrivateAuraSound(1226602, "runout", 2, 1225316)--Galactic Smash
 	self:EnablePrivateAuraSound(1226018, "runout", 2)--Starkiller Swing
 	self:EnablePrivateAuraSound(1227549, "scatter", 2)--Banishment
+	self:EnablePrivateAuraSound(1231097, "watchfeet", 8)--GTFO
 end
 
 --[[

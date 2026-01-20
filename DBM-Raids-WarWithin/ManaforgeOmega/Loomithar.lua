@@ -15,9 +15,11 @@ mod:RegisterCombat("combat")
 --Midnight private aura replacements
 --Piercing strands also PA, but useless due to poor timing
 mod:AddPrivateAuraSoundOption(1219439, true, 1226311, 1)
+mod:AddPrivateAuraSoundOption(1243771, true, 1243771, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1226311, "lineyou", 17)
+	self:EnablePrivateAuraSound(1243771, "watchfeet", 8)
 end
 
 --[[
