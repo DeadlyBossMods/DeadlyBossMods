@@ -718,3 +718,11 @@ L.DUOS						= "Duetos"
 --L.KEYSTONE_NAMES[505] = 'DAWN' -- The Dawnbreaker
 --L.KEYSTONE_NAMES[525] = 'FLOOD' -- Operation Floodgate
 --L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
+
+-- Midnight
+L.MN_TIMELINE_HEADER   = "Deseja usar a linha do tempo da Blizzard ou as barras do DBM?"
+L.MN_BLIZZARD_TIMELINE = "Linha do tempo da Blizzard"
+L.MN_DBM_TIMELINE      = "Barras do DBM"
+L.MN_WARNIGS_HEADER   = "Deseja usar os avisos de encontro da Blizzard ou os avisos de encontro do DBM?"
+L.MN_BLIZZARD_WARNINGS= "Avisos da Blizzard"
+L.MN_DBM_WARNINGS     = "Avisos do DBM"
