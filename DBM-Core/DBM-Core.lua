@@ -1317,11 +1317,6 @@ do
 	--Because they check UnitHealth, UnitPower, UnitAura, UnitGUID, or CLEU
 	local restrictedEvents = {
 		INSTANCE_ENCOUNTER_ENGAGE_UNIT			= true,
-		UNIT_HEALTH								= true,
-		UNIT_HEALTH_UNFILTERED					= true,
-		UNIT_POWER_UPDATE						= true,
-		UNIT_AURA								= true,
-		UNIT_AURA_UNFILTERED					= true,
 		COMBAT_LOG_EVENT_UNFILTERED				= true,
 		CHAT_MSG_MONSTER_YELL					= true,
 		CHAT_MSG_MONSTER_SAY					= true,
@@ -1330,15 +1325,6 @@ do
 		CHAT_MSG_RAID_BOSS_WHISPER				= true,
 		RAID_BOSS_EMOTE							= true,
 		RAID_BOSS_WHISPER						= true,
-		UNIT_SPELLCAST_CHANNEL_START			= true,
-		UNIT_SPELLCAST_CHANNEL_STOP				= true,
-		UNIT_SPELLCAST_SUCCEEDED				= true,
-		UNIT_SPELLCAST_START					= true,
-		UNIT_SPELLCAST_STOP						= true,
-		UNIT_SPELLCAST_INTERRUPTED				= true,
-		UNIT_SPELLCAST_SUCCEEDED_UNFILTERED 	= true,
-		UNIT_SPELLCAST_INTERRUPTED_UNFILTERED	= true,
-		UNIT_SPELLCAST_START_UNFILTERED			= true,
 	}
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
@@ -1348,7 +1334,7 @@ do
 		test:Trace(self, "RegisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
-			if not self:IsPostMidnight() or self:IsPostMidnight() and not restrictedEvents[event] then
+			if not self:IsPostMidnight() or self:IsPostMidnight() and not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_") then
 				-- spell events with special care.
 				if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
 					--CLEU is completely gone in Midnight+
