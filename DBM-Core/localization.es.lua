@@ -720,6 +720,6 @@ L.KEYSTONE_NAMES[542] = 'ECO' -- Eco-Dome Al'dani
 L.MN_TIMELINE_HEADER   = "¿Quieres usar la línea de tiempo de Blizzard o las barras de DBM?"
 L.MN_BLIZZARD_TIMELINE = "Línea de tiempo de Blizzard"
 L.MN_DBM_TIMELINE      = "Barras de DBM"
-L.MN_WARNIGS_HEADER   = "¿Quieres usar las advertencias de encuentro de Blizzard o las advertencias de encuentro de DBM?"
+L.MN_WARNIGS_HEADER   = "¿Quieres usar los avisos de encuentro de Blizzard o los avisos de encuentro de DBM?"
 L.MN_BLIZZARD_WARNINGS= "Avisos de Blizzard"
 L.MN_DBM_WARNINGS     = "Avisos de DBM"
