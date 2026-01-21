@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20250510
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20260121
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -22,19 +22,19 @@ L.OTabWorld		= "世界Boss"
 L.OTabScenarios	= "场景"
 L.OTabPlugins	= "其他"
 L.OTabOptions	= "核心选项"
---L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabTools		= "小工具"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout		= "关于"
 
 --Main Tab, Tools checks
---L.Tools_LatencyCheck				= "Latency Check"
---L.Tools_DurabilityCheck				= "Durability Check"
---L.Tools_KeystoneCheck				= "Keystone Check"
+L.Tools_LatencyCheck		= "延迟检查"
+L.Tools_DurabilityCheck		= "持久检查"
+L.Tools_KeystoneCheck		= "大秘钥匙检查"
 
---L.Tools_BreakTimer					= "Start Break Timer"
---L.Tools_PizzaTimer					= "Start Generic Timer"
+L.Tools_BreakTimer					= "开始休息计时"
+L.Tools_PizzaTimer					= "开始通用计时"
 
---L.Tools_Duration					= "Duration"
---L.Tools_Message						= "Timer Message"
+L.Tools_Duration					= "持久"
+L.Tools_Message						= "计时器信息"
 
 L.TabCategory_CURRENT_SEASON		= "当前赛季"
 
@@ -94,6 +94,7 @@ L.Button_InfoFrame			= "显示/隐藏信息框体"
 L.Button_TestBars			= "测试计时条"
 L.Button_MoveBars			= "移动计时条"
 L.Button_ResetInfoRange		= "重置信息/距离雷达框体"
+L.Button_ShowMidnightWizard		= "至暗之夜设置向导"
 
 L.ModelOptions				= "3D模型选项"
 L.EnableModels				= "在首领选项中启用3D模型"
@@ -137,6 +138,8 @@ L.LogCurrentMPlus			= "当前等级（或Remix）M+ 5人本"--Retail Only
 L.LogCurrentMythicZero		= "当前等级（或Remix）M0 5人本"--Retail Only
 L.LogTWDungeons				= "时光5人本或通过克罗米进入的（非Remix）5人本"--Retail Only
 L.LogCurrentHeroic			= "当前等级的英雄5人本"
+L.LogDelves					= "当前等级地下堡"--Retail Only
+L.LogChallenges				= "当先等级特殊挑战 (例如爬塔、惊魂幻象、法师塔等)"--Retail Only
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "其他功能"
@@ -166,6 +169,11 @@ L.AutoAcceptFriendInvite	= "自动接受来自好友列表里的好友的组队�
 L.AutoAcceptGuildInvite		= "自动接受同公会成员的组队邀请"
 L.Area_Advanced				= "高级选项"
 L.FakeBW					= "当Bigwig启用检测时，假装DBM就是Bigwig"
+
+L.Area_Tooltip				= "鼠标信息提示集成"
+L.EnableTooltip				= "当DBM支持该Boss时，在信息提示窗加入DBM状态"
+L.EnableTooltipInCombat		= "战斗中也显示信息提示窗信息"
+L.EnableTooltipHeader		= "在信息提示窗加入DBM标题"
 
 -- Panel: Profiles
 L.Panel_Profile				= "配置文件"
@@ -211,6 +219,7 @@ L.RaidWarnColor_1 			= "颜色 1"
 L.RaidWarnColor_2 			= "颜色 2"
 L.RaidWarnColor_3		 	= "颜色 3"
 L.RaidWarnColor_4 			= "颜色 4"
+L.RaidWarnColors 			= "颜色"
 L.InfoRaidWarning			= [[你可以对团队警报的文本颜色及其位置进行设定。
 在这里会显示诸如“玩家X受到了Y效果的影响”之类的信息。]]
 L.ColorResetted 			= "该颜色设置已重置。"
@@ -227,6 +236,7 @@ L.ThickOutline				= "加粗描边"
 L.MonochromeOutline			= "单色描边"
 L.MonochromeThickOutline	= "单色加粗描边"
 L.RaidWarnSound				= "发出团队警报时播放声音"
+L.AnnouncementMidnightNotice	= "本页面的设置用于暴雪定义的“次要警告”"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊团队警报"
@@ -249,8 +259,11 @@ L.SpecialWarnSoundOption	= "设置默认声音"
 L.SpecialWarnHeader1		= "类型 1: 设置影响您或您的操作的普通优先级警报选项"
 L.SpecialWarnHeader2		= "类型 2: 设置影响每个人的正常优先级警报选项"
 L.SpecialWarnHeader3		= "类型 3: 设置高优先级警报的选项"
-L.SpecialWarnHeader4		= "类型 4: 设置“高优先级”选项会避免特殊警报"
+L.SpecialWarnHeader4		= "类型 4: 设置高优先级“快躲开”等特殊警报选项"
 L.SpecialWarnHeader5		= "类型 5: 设置警报选项，并包含玩家姓名"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "暴雪定义的“中等警告”机制"
+L.SpecialWarnHeaderCritical			= "暴雪定义的“重要警告”机制"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "聊天窗口消息"
@@ -278,6 +291,8 @@ L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示�
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同公会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 L.WorldBuffAlert			= "在您的位面启动世界增益释放时显示警报信息和计时器。(探索服不可用)"
 L.RaidDiffChangedAlert		= "当团队副本难度改变时显示警报信息"
+L.RaidDiffChangedRaidOnly		= "仅在团队模式下，当团队副本难度改变时显示警报信息 (注意: 不转换成团队不会显示)"
+
 L.DungeonDiffChangedAlert	= "当地下城难度改变时显示警报信息"
 
 L.Area_BugAlerts			= "错误报告选项"
@@ -293,12 +308,12 @@ L.PullVoice					= "设置开怪倒计时语音"
 L.VoicePackChoice			= "设置语音报警的语音包"
 L.MissingVoicePack			= "缺少语音包 (%s)"
 L.Area_CountdownOptions		= "倒计时选项"
-L.Area_VoicePackReplace		= "语音包替换选项 (当语音包启用、静音以及需要替换)"
+L.Area_VoicePackReplace		= "语音包替换选项 (启用语音包时，哪些音效会被静音并替换)"
 L.VPReplaceNote				= "注意: 语音包永远不会更改或删除您的警报声音\n当替换语音包时，它们只是在静音状态。"
 L.ReplacesAnnounce			= "替换提示声音 (注意: 语音包除了阶段转换及小怪外很少使用)"
 L.ReplacesSADefault			= "替换默认特殊警报声音（自定义声音不会被替换）"
 L.Area_VoicePackAdvOptions	= "语音包高级选项"
-L.Area_VPLearnMore          = "了解更多关于语音包以及如何使用这些选项的信息"
+L.Area_VPLearnMore          = "了解更多语音包及这些选项的使用方法"
 L.VPLearnMore               = "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "获取其他语音包"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://curseforge.com/wow/addons/search?search=dbm+voice|r"
@@ -327,9 +342,9 @@ L.Area_ColorBytype			= "计时条分类着色指南"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "计时条分类着色"
 L.AreaTitle_BarColors		= "计时条颜色"
-L.AreaTitle_ImpBarColors	= "导入计时条颜色 (其他用户配置的计时条颜色)"
+L.AreaTitle_ImpBarColors	= "导入计时条颜色(用户设置为重要的计时条)"
 L.BarTexture				= "计时条材质"
-L.BarStyle					= "计时条样式"
+L.BarStyle					= "计时条行为(动态表现)"
 L.BarDBM					= "DBM(有动画)"
 L.BarSimple					= "简易(没动画)"
 L.BarStartColor				= "初始颜色"
