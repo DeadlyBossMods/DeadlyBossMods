@@ -5469,6 +5469,11 @@ do
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, senderOne, senderTwo)
 		if prefix == DBMPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
+			if issecretvalue then
+				if issecretvalue(msg) then
+					return
+				end
+			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			if channel == "WHISPER" then
 				handleSync(channel, correctSender, nil, strsplit("\t", msg))
@@ -5476,6 +5481,11 @@ do
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
+			if issecretvalue then
+				if issecretvalue(msg) then
+					return
+				end
+			end
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
 				local correctSender = GetCorrectSender(senderOne, senderTwo)
@@ -5507,6 +5517,11 @@ do
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
+			if issecretvalue then
+				if issecretvalue(msg) then
+					return
+				end
+			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			for i = #inCombat, 1, -1 do
 				local mod = inCombat[i]
