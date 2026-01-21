@@ -274,6 +274,7 @@ L.SLASHCMD_HELP							= {--AI translated (it's fine)
 	"/dbm unlock: Показывает перемещаемый таймер в строке состояния (псевдоним: move).",
 	"/dbm pull <sec>: Отправляет таймер атаки на <sec> секунд в рейд (требуются права лидера. псевдоним: pull).",
 	"/dbm break <min>: Отправляет таймер перерыва на <min> минут в рейд (требуются права лидера. псевдоним: break).",
+	"/dbm midwizard: Снова отображает мастер настройки 'Полночи' (только для актуальной версии).",
 	"/dbm timer: Запускает пользовательский таймер " .. L.DBM .. ", подробности в разделе '/dbm timer'.",
 	"/dbm key: Выполняет проверки ключей M+ и рейтинга для группы/гильдии, а также предоставляет быстрые телепорты к подземельям. (псевдоним: key, keys, keystone)",
 	"/dbm lag: Выполняет проверку задержки для всего рейда.",
@@ -752,3 +753,11 @@ L.KEYSTONE_NAMES[503] = 'АКГО' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'ЗА' -- Eco-Dome Al'dani
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "Вы хотите использовать временную шкалу Blizzard или полосы DBM?"
+L.MN_BLIZZARD_TIMELINE	= "Временная шкала Blizzard"
+L.MN_DBM_TIMELINE		= "Полосы DBM"
+L.MN_WARNIGS_HEADER		= "Вы хотите использовать боевые предупреждения Blizzard или боевые предупреждения DBM?"
+L.MN_BLIZZARD_WARNINGS	= "Предупреждения Blizzard"
+L.MN_DBM_WARNINGS		= "Предупреждения DBM"
