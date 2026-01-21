@@ -716,3 +716,11 @@ L.KEYSTONE_NAMES[503] = 'ARA' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = 'AUBE' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'VANNES' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'DÔME' -- Eco-Dome Al'dani
+
+-- Midnight
+L.MN_TIMELINE_HEADER   = "Voulez-vous utiliser la chronologie de Blizzard ou les barres de DBM ?"
+L.MN_BLIZZARD_TIMELINE = "Chronologie de Blizzard"
+L.MN_DBM_TIMELINE      = "Barres de DBM"
+L.MN_WARNIGS_HEADER   = "Voulez-vous utiliser les alertes de rencontre de Blizzard ou celles de DBM ?"
+L.MN_BLIZZARD_WARNINGS= "Alertes de Blizzard"
+L.MN_DBM_WARNINGS     = "Alertes de DBM"
