@@ -592,6 +592,7 @@ local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
 local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
 local issecretvalue = issecretvalue or function(val) return false end
+local hasanysecretvalues = hasanysecretvalues or function(...) return false end
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
@@ -5541,6 +5542,9 @@ do
 	end
 
 	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds)
+		if hasanysecretvalues(initiatedByGuid, timeSeconds) then
+			return
+		end
 		--Ignore this event in combat
 		if #inCombat > 0 then return end
 --		if timeSeconds > 60 then--treat as a break timer
@@ -5552,6 +5556,9 @@ do
 	end
 
 	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid)
+		if issecretvalue(initiatedByGuid) then
+			return
+		end
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
 --		breakTimerStart(self, 0, initiatedBy, true)
 		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
