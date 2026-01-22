@@ -537,6 +537,8 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 	"DBM-Aberrus",--Combined into DBM-Raids-Dragonflight
 
 	"DBM-DMF",--Combined into DBM-WorldEvents
+
+	"DBM-Affixes",--Retired in midnight
 }
 
 -----------------

@@ -970,22 +970,6 @@ do
 				end
 			end
 		end
-		if not DBM:IsPostMidnight() then
-			--Affixes mod basically retired in midnight since we can't detect when they were last cast
-			if C_AddOns.DoesAddOnExist("DBM-Affixes") then
-				local affixAddon
-				for _, addon in ipairs(DBM.AddOns) do
-					if addon.modId == "DBM-Affixes" then
-						affixAddon = addon
-						break
-					end
-				end
-				if affixAddon then
-					currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
-					hasAnyMod = true
-				end
-			end
-		end
 		if not hasAnyMod then
 			seasonCategoryTab.hidden = true
 		end
@@ -1003,9 +987,6 @@ do
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
-				if addon.modId == "DBM-Affixes" then -- If affixes, hide second general entry (as it's under Current Season)
-					DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons].hidden = true
-				end
 
 				if not C_AddOns.IsAddOnLoaded(addon.modId) then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
