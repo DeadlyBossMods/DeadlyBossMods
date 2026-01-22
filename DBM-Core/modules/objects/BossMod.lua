@@ -169,6 +169,7 @@ end
 
 
 bossModPrototype.RegisterEvents = DBM.RegisterEvents
+bossModPrototype.RegisterSafeEvents = DBM.RegisterSafeEvents
 bossModPrototype.UnregisterInCombatEvents = DBM.UnregisterInCombatEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 bossModPrototype.RegisterShortTermEvents = DBM.RegisterShortTermEvents
@@ -346,6 +347,37 @@ function bossModPrototype:RegisterEventsInCombat(...)
 		if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
 			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
+		end
+	end
+end
+
+---@param ... DBMEvent|string
+function bossModPrototype:RegisterSafeEventsInCombat(...)
+	test:Trace(self, "RegisterEvents", "InCombat", ...)
+	if self.inCombatOnlySafeEvents and select("#", ...) > 1 then
+		geterrorhandler()("combat events already set")
+	end
+	if self.inCombatOnlySafeEvents then
+		-- Special case: allow registrating additional events if you do it one-by-one (check in the abort above)
+		-- FIXME: allow this in general if we end up keeping the new event handlers
+		local event = ...
+		local prefix, ids = string.split(" ", event, 2)
+		for i, v in ipairs(self.inCombatOnlySafeEvents) do
+			if string.split(" ", v, 2) == prefix then
+				-- Warning: Registering an event twice with different spell IDs will not work -- it will trigger the handler twice for both IDs
+				-- This is kinda annoying to fix in the handler, so we instead modify the existing event definition here.
+				self.inCombatOnlySafeEvents[i] = addIdsToExistingEvent(v, string.split(" ", ids))
+				return
+			end
+		end
+		self.inCombatOnlySafeEvents[#self.inCombatOnlySafeEvents + 1] = event
+	else
+		self.inCombatOnlySafeEvents = {...}
+	end
+	for k, v in ipairs(self.inCombatOnlySafeEvents) do
+		if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
+			-- legacy event, oh noes
+			self.inCombatOnlySafeEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
 		end
 	end
 end

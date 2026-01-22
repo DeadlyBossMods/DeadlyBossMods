@@ -22,7 +22,7 @@ L:SetOptionLocalization({
 	specWarnYourTurn	= "Spezialwarnung, wenn es dein Kampf ist",
 	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe<br/>(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)",
 	SpeakOutQueue		= "Verkünde akustisch deine aktuelle Position in der Warteschlange<br/>(bei jeder Änderung)",
-	NormalizeVolume		= "Setze im Kampfgildengebiet die Lautstärke des DIALOG-Audiokanals automatisch auf die Lautstärke des SFX-Audiokanals, damit der Jubel nicht so laut ist."
+	NormalizeVolume2	= "Setze im Kampfgildengebiet die Lautstärke des DIALOG-Audiokanals automatisch auf die Lautstärke des SFX-Audiokanals, damit der Jubel nicht so laut ist."
 })
 
 L:SetMiscLocalization({
