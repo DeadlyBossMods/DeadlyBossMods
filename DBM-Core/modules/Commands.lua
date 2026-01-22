@@ -314,7 +314,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			DBM.InfoFrame:Show(7, "playeraggro", 1)
 		end
 	elseif cmd:sub(1, 9) == "midwizard" then
-		private:ShowMidnightPopup()
+		DBM.MidnightPopup:ShowMidnightPopup()
 	else
 		DBM:LoadGUI()
 	end

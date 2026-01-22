@@ -27,6 +27,7 @@
 		"C_InstanceEncounter",
 		"C_InstanceEncounter.IsEncounterInProgress",
 		"issecretvalue",
+		"hasanysecretvalues",
 		"EncounterTimeline",
 		"EncounterTimeline.TimelineView",
 		"C_EncounterTimeline",
@@ -34,6 +35,7 @@
 		"GetRestrictedActionStatus",
 		"UnitHealthPercent",
 		"C_StringUtil",
+		"C_Secrets",
 
 
 		"ALL",

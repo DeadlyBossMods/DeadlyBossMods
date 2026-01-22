@@ -148,9 +148,9 @@ if isRetail then
 		{ text = "Yogg Saron: Laugh", value = 564859 },
 	})
 	if DBM:IsPostMidnight() then
-		tinsert(sounds, { text = "Blizzard: Low", value = 7670699 })
-		tinsert(sounds, { text = "Blizzard: Medium", value = 7670701 })
-		tinsert(sounds, { text = "Blizzard: Critical", value = 7670697 })
+		tinsert(sounds, { text = "Blizzard: Low", value = 7670699, sound = true })
+		tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
+		tinsert(sounds, { text = "Blizzard: Critical", value = 7670697, sound = true })
 	end
 elseif isWrath then--Basically all but Blizzard Raid Emote which was added in MoP
 	sounds = DBM_GUI:MixinSharedMedia3("sound", {

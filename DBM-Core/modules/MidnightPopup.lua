@@ -1,9 +1,16 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBM
+local DBM = private:GetPrototype("DBM")
+
+---@class DBMMidnightPopup
+local MidnightPopup = {}
+DBM.MidnightPopup = MidnightPopup
+
 local L = DBM_CORE_L
 
-function private:ShowMidnightPopup()
+function MidnightPopup:ShowMidnightPopup()
 	local frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	frame:SetFrameStrata("FULLSCREEN_DIALOG") -- In front of other frames including DBM-GUI
 	frame:SetSize(600, 300)
@@ -88,7 +95,7 @@ function private:ShowMidnightPopup()
 	end
 
 	---@class DBMMIDNIGHTDROPDOWN2: Button
-	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
+	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- DropdownButton isn't defined in ketho.wow-api
 	local dropdown2 = CreateFrame("DropdownButton", nil, frame, "WowStyle1DropdownTemplate")
 	dropdown2:SetWidth(250)
 	dropdown2:SetPoint("TOPLEFT", dropdownText2, "BOTTOMLEFT", 0, -10)

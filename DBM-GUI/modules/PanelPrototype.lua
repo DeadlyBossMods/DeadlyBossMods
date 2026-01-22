@@ -410,18 +410,18 @@ do
 		{ text = "PvP Flag", value = 569200 },
 	})
 	if isRetail then
---		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })--TEMP, can't register media we're specifically muting
+--		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098, sound = true })--TEMP, can't register media we're specifically muting
+		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703, sound = true })
+		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050, sound = true })
+		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566, sound = true })
+		tinsert(sounds, { text = "Milhouse: Light You Up", value = 555337, sound = true })
+		tinsert(sounds, { text = "Void Reaver: Marked", value = 563787, sound = true })
+		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 564859, sound = true })
 		if DBM:IsPostMidnight() then
-			tinsert(sounds, { text = "Blizzard: Low", value = 7670699 })
-			tinsert(sounds, { text = "Blizzard: Medium", value = 7670701 })
-			tinsert(sounds, { text = "Blizzard: Critical", value = 7670697 })
+			tinsert(sounds, { text = "Blizzard: Low", value = 7670699, sound = true })
+			tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
+			tinsert(sounds, { text = "Blizzard: Critical", value = 7670697, sound = true })
 		end
-		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703 })
-		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050 })
-		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566 })
-		tinsert(sounds, { text = "Milhouse: Light You Up", value = 555337 })
-		tinsert(sounds, { text = "Void Reaver: Marked", value = 563787 })
-		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 564859 })
 	end
 
 	local function RGBPercToHex(r, g, b)

@@ -1,7 +1,5 @@
 local _, private = ...
 
-local L = DBM_GUI_L
-
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
@@ -80,6 +78,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local SetSelected = function(v)
 		dropdown.value = v.value
 		dropdown.text = v.text
+		--Temp, it causes mod menu to play sounds twice, but without it special warning options menu doesn't play it at all on click
 		if v.sound then
 			DBM:PlaySoundFile(v.value)
 		end
@@ -95,7 +94,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end
 
 	---@diagnostic disable-next-line: undefined-field
-	dropdown:SetupMenu(function(owner, rootDescription)
+	dropdown:SetupMenu(function(_, rootDescription)
 		if not dropdown:IsVisible() then
 			return
 		end
@@ -122,6 +121,34 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 					t:SetPoint("BOTTOMRIGHT")
 					t:SetTexture(v.value)
 					return 200, 25
+				end)
+			end
+			if v.sound then
+				radio:AddInitializer(function(button)
+					if button.playBtn then
+						button.playBtn:Hide()
+					end
+					if not v.value or v.value == "" or v.value == "Random" then
+						return
+					end
+					if not button.playBtn then
+						button.playBtn = MenuTemplates.AttachBasicButton(button, 16, 16)
+						button.playBtn:SetPoint("RIGHT", -5, 0)
+						local tex = button.playBtn:AttachTexture()
+						tex:SetAllPoints()
+						tex:SetTexture(130979) -- interface/common/voicechat-speaker
+						tex:SetVertexColor(0.8, 0.8, 0.8)
+						button.playBtn:SetScript("OnEnter", function()
+							tex:SetVertexColor(1, 1, 1)
+						end)
+						button.playBtn:SetScript("OnLeave", function()
+							tex:SetVertexColor(0.8, 0.8, 0.8)
+						end)
+					end
+					MenuTemplates.SetUtilityButtonClickHandler(button.playBtn, function()
+						DBM:PlaySoundFile(v.value)
+					end)
+					button.playBtn:Show()
 				end)
 			end
 			if IsSelected(v) then
