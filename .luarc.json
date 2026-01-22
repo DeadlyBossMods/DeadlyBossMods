@@ -34,6 +34,7 @@
 		"GetRestrictedActionStatus",
 		"UnitHealthPercent",
 		"C_StringUtil",
+		"C_Secrets",
 
 
 		"ALL",
