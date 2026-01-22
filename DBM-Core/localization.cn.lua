@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20251017
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20260122
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -13,7 +13,7 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "HMM"
 end
 
-L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
+L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口。手动按需加载区域模块可对任意Boss进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
 L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于静音模式。"
 L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。详情点击 |Hgarrmission:DBM:news|h|cff3588ff[这里]|r|h"
 L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111News|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。你当前进入的团队缺少相应模组，无法提供战斗警报。本信息将持续显示，直到你安装了正确的模组。"
@@ -72,9 +72,11 @@ L.SCENARIO_COMPLETE_I		= "场景战役-%s战斗胜利！总计%d次胜利。"
 L.SCENARIO_COMPLETE_L		= "场景战役-%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
 L.SCENARIO_COMPLETE_NR		= "场景战役-%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
 L.COMBAT_ENDED_AT			= "%s （%s）作战结束，用时%s。"
+L.COMBAT_ENDED				= "%s 作战结束，用时%s。"--No health (post midnight)
 L.COMBAT_ENDED_AT_LONG		= "%s （%s）作战结束，用时%s。该难度下总计失败%d次。"
-L.GUILD_COMBAT_ENDED_AT		= "%s开组的公会版%s （%s）作战结束，用时%s。"
-L.GUILD_COMBAT_ENDED		= "%s开组的公会版%s 作战结束，用时%s。" --No health (post midnight)
+L.COMBAT_ENDED_LONG			= "%s 作战结束，用时%s。该难度下总计失败%d次。"--No health (post midnight)
+L.GUILD_COMBAT_ENDED_AT		= "%s工会团队%s （%s）作战结束，用时%s。"
+L.GUILD_COMBAT_ENDED		= "%s工会团队%s 作战结束，用时%s。" --No health (post midnight)
 L.SCENARIO_ENDED_AT			= "场景战役-%s作战结束，用时%s。"
 L.SCENARIO_ENDED_AT_LONG		= "场景战役-%s作战结束，用时%s。该难度下总计失败%d次。"
 L.COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
@@ -274,6 +276,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
 	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
 	"/dbm timer: 启动一个" .. L.DBM .. "计时器，输入'/dbm timer'查询更多信息。",
+	"/dbm midwizard: 再次显示至暗之夜配置向导 (仅正式服)。",
 	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
@@ -282,7 +285,6 @@ L.SLASHCMD_HELP				= {
 L.SLASHCMD_HELP2				= {
 	"可用命令:",
 	"-----------------",
-
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
 	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
@@ -721,3 +723,11 @@ L.KEYSTONE_NAMES[503] = '回响' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = '破晨' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = '水闸' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = '生态' -- Eco-Dome Al'dani
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "你想使用游戏自带的计时条还是DBM的计时条？"
+L.MN_BLIZZARD_TIMELINE	= "游戏自带计时条"
+L.MN_DBM_TIMELINE		= "DBM计时条"
+L.MN_WARNIGS_HEADER		= "你想使用游戏自带的战斗警告，还是DBM战斗警告？"
+L.MN_BLIZZARD_WARNINGS	= "游戏自带警告"
+L.MN_DBM_WARNINGS		= "DBM警告"
