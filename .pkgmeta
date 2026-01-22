@@ -39,7 +39,6 @@ ignore:
 enable-nolib-creation: no
 
 move-folders:
-  DBM-Core/DBM-Affixes: DBM-Affixes
   DBM-Core/DBM-Brawlers: DBM-Brawlers
   DBM-Core/DBM-DMF: DBM-DMF
   DBM-Core/DBM-KhazAlgar: DBM-KhazAlgar
