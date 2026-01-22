@@ -78,6 +78,10 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local SetSelected = function(v)
 		dropdown.value = v.value
 		dropdown.text = v.text
+		--Temp, it causes mod menu to play sounds twice, but without it special warning options menu doesn't play it at all on click
+		if v.sound then
+			DBM:PlaySoundFile(v.value)
+		end
 		if v.func then
 			v.func(v.value)
 		end
