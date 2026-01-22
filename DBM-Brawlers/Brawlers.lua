@@ -8,7 +8,8 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UPDATE_UI_WIDGET"
 )
 
 local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition2", 2, 132639, true)
@@ -83,6 +84,38 @@ function mod:SPELL_CAST_START(args)
 			specWarnStormPortal:Play("newportal")
 		else
 			warnStormPortal:Show()
+		end
+	end
+end
+
+do
+	local lastState = 1
+	function mod:UPDATE_UI_WIDGET(table)
+		local id = table.widgetID
+		if id ~= 7486 then return end
+		local widgetInfo = C_UIWidgetManager.GetTextWithSubtextWidgetVisualizationInfo(id)
+		if widgetInfo and widgetInfo.subText then
+			local subText = tonumber(widgetInfo.subText)
+			local shownState = tonumber(widgetInfo.shownState)
+			if subText then
+				if self.Options.SpeakOutQueue and self:AntiSpam(5, subText) then
+					DBM:PlayCountSound(subText)
+				end
+				if subText == 1 and self:AntiSpam(5, 1) then--Next up
+					specWarnYourNext:Show()
+				end
+			end
+			if shownState and shownState ~= lastState then
+				lastState = shownState
+				if shownState == 1 then--Leaving Combat
+					playerIsFighting = false
+					berserkTimer:Stop()
+				else
+					playerIsFighting = true
+					specWarnYourTurn:Show()
+					berserkTimer:Start()
+				end
+			end
 		end
 	end
 end
