@@ -90,6 +90,7 @@ L.Button_TestBars			= "Iniciar barras de teste"
 L.Button_MoveBars			= "Mover barras"
 L.Button_ResetInfoRange		= "Redefinir quadros de informações/distância"
 
+L.Button_ShowMidnightWizard = "Assistente de configuração de Midnight"
 L.ModelOptions				= "Opções do visualizador de modelos 3D"
 L.EnableModels				= "Ativar modelos 3D nas opções de chefe"
 L.ModelSoundOptions			= "Definir opção de som para o visualizador de modelos"
