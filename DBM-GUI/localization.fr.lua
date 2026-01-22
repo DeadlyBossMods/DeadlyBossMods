@@ -90,6 +90,7 @@ L.Button_TestBars			= "Barres de test"
 L.Button_MoveBars			= "Déplacer les barres"
 L.Button_ResetInfoRange		= "Réinit. les cadres de portée et d'info"
 
+L.Button_ShowMidnightWizard = "Assistant de configuration de Midnight"
 L.ModelOptions				= "Options du visualiseur de modèle 3D"
 L.EnableModels				= "Activer les modèles 3D dans les options des boss"
 L.ModelSoundOptions			= "Configurer le son pour le visualiseur 3D"
