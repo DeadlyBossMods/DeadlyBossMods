@@ -1775,7 +1775,7 @@ do
 					C_CVar.SetCVar("encounterWarningsEnabled", "0")
 				end
 				if not self.Options.HasShownMidnightPopup then
-					private:ShowMidnightPopup()
+					DBM.MidnightPopup:ShowMidnightPopup()
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
