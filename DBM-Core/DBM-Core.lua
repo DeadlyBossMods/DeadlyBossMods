@@ -909,6 +909,14 @@ function DBM:MidRestrictionsActive(includeAuras)
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 
+function DBM:issecretvalue(val)
+	return issecretvalue(val)
+end
+
+function DBM:hasanysecretvalues(...)
+	return hasanysecretvalues(...)
+end
+
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
 		return raid[name].bwversion

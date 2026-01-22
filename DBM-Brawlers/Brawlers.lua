@@ -122,7 +122,7 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if hasanysecretvalues(msg, npc, target) then
+	if DBM:hasanysecretvalues(msg, npc, target) then
 		return
 	end
 	if npc ~= L.Bizmo and npc ~= L.Bazzelflange then return end
