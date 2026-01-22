@@ -101,7 +101,7 @@ do
 				if self.Options.SpeakOutQueue and self:AntiSpam(5, subText) then
 					DBM:PlayCountSound(subText)
 				end
-				if subText == 1 and self:AntiSpam(5, 1) then--Next up
+				if subText == 1 and self:AntiSpam(5, 66) then--Next up
 					specWarnYourNext:Show()
 				end
 			end
