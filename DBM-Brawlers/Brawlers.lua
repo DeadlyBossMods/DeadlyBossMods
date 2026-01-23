@@ -6,7 +6,7 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(41448)
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:RegisterEvents(
+mod:RegisterSafeEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"CHAT_MSG_MONSTER_YELL",
 	"UPDATE_UI_WIDGET"
@@ -26,7 +26,7 @@ local berserkTimer			= mod:NewBerserkTimer(123)--all fights have a 2 min enrage 
 
 mod:AddBoolOption("SpectatorMode", true)
 mod:AddBoolOption("SpeakOutQueue", true)
-mod:AddBoolOption("NormalizeVolume", true, "misc")
+mod:AddBoolOption("NormalizeVolume2", false, "misc")
 
 local playerIsFighting = false
 local currentFighter = nil
@@ -37,7 +37,7 @@ local lastRank = 0
 
 ---@param self DBMMod
 local function setDialog(self, set)
-	if not self.Options.NormalizeVolume then return end
+	if not self.Options.NormalizeVolume2 then return end
 	if set then
 		local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
 		self.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
@@ -101,7 +101,7 @@ do
 				if self.Options.SpeakOutQueue and self:AntiSpam(5, subText) then
 					DBM:PlayCountSound(subText)
 				end
-				if subText == 1 and self:AntiSpam(5, 1) then--Next up
+				if subText == 1 and self:AntiSpam(5, 66) then--Next up
 					specWarnYourNext:Show()
 				end
 			end
@@ -109,11 +109,12 @@ do
 				lastState = shownState
 				if shownState == 1 then--Leaving Combat
 					playerIsFighting = false
-					berserkTimer:Stop()
+					self:SendThrottledSync(3, "MatchEnd")
 				else
 					playerIsFighting = true
 					specWarnYourTurn:Show()
-					berserkTimer:Start()
+--					berserkTimer:Start()
+					self:SendThrottledSync(3, "MatchBegin")
 				end
 			end
 		end
@@ -121,6 +122,9 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+	if DBM:hasanysecretvalues(msg, npc, target) then
+		return
+	end
 	if npc ~= L.Bizmo and npc ~= L.Bazzelflange then return end
 	local isMatchBegin = true
 	--Search is for Rank <n> to avoid lines like "x has risen through the ranks" or something else along those lines.
@@ -142,7 +146,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 	if isMatchBegin then
 		if target == UnitName("player") then
-			specWarnYourTurn:Show()
+--			specWarnYourTurn:Show()
 			playerIsFighting = true
 		end
 		if self:LatencyCheck() or not IsInGroup() then--If not in group always send sync regardless of latency, better to start match late then never start it at all.
@@ -240,6 +244,9 @@ end
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
 		if currentZoneID ~= 369 and currentZoneID ~= 1043 then return end
+		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
+		berserkTimer:Start()
+		if DBM:IsPostMidnight() then return end
 		if not eventsRegistered then
 			eventsRegistered = true
 			self:RegisterShortTermEvents(
@@ -249,8 +256,6 @@ function mod:OnSync(msg)
 				"UNIT_AURA player"
 			)
 		end
-		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
-		berserkTimer:Start()
 		for _, v in ipairs(startCallbacks) do
 			v()
 		end
@@ -258,6 +263,7 @@ function mod:OnSync(msg)
 		if currentZoneID ~= 369 and currentZoneID ~= 1043 then return end
 		currentFighter = nil
 		self:Stop()
+		if DBM:IsPostMidnight() then return end
 		--Boss from any rank can be fought by any rank now, so we just need to always cancel them all
 		for _, v in ipairs(endCallbacks) do
 			v()

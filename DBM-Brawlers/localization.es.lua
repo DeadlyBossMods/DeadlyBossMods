@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	specWarnRumble		= "Mostrar aviso especial cuando se inicie una reyerta",
 	SpectatorMode		= "Mostrar avisos y temporizadores al espectar combates (tus avisos especiales personales no se mostrarán a los espectadores)",
 	SpeakOutQueue		= "Anunciar tu número en la cola cuando esta se actualice",
-	NormalizeVolume		= "Normalizar automáticamente el volumen del canal de sonido de diálogos para que coincida con el del canal de efectos de sonido mientras estés en la arena, de forma que los ánimos y aplausos no suenen tan alto."
+	NormalizeVolume2	= "Normalizar automáticamente el volumen del canal de sonido de diálogos para que coincida con el del canal de efectos de sonido mientras estés en la arena, de forma que los ánimos y aplausos no suenen tan alto."
 })
 
 L:SetMiscLocalization({

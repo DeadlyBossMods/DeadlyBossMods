@@ -537,6 +537,8 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 	"DBM-Aberrus",--Combined into DBM-Raids-Dragonflight
 
 	"DBM-DMF",--Combined into DBM-WorldEvents
+
+	"DBM-Affixes",--Retired in midnight
 }
 
 -----------------
@@ -906,6 +908,14 @@ function DBM:MidRestrictionsActive(includeAuras)
 	end
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
+
+function DBM:issecretvalue(val)
+	return issecretvalue(val)
+end
+
+function DBM:hasanysecretvalues(...)
+	return hasanysecretvalues(...)
+end
 
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
@@ -1380,6 +1390,53 @@ do
 		end
 	end
 
+	---@param self DBMModOrDBM
+	---@param ... DBMEvent|string
+	--This is a custom handler used for midnight prepatch and later that does NOT restrict event but rather trusts module to only register safe events
+	function DBM:RegisterSafeEvents(...)
+		test:Trace(self, "RegisterEvents", "Regular", ...)
+		for i = 1, select('#', ...) do
+			local event = select(i, ...)
+			-- spell events with special care.
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
+				--CLEU is completely gone in Midnight+
+				--So do nothing
+			else
+				local eventWithArgs = event
+				-- unit events need special care
+				if event:sub(0, 5) == "UNIT_" then
+					-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
+					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
+					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
+					if not arg1 and event:sub(-11) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
+						if private.isClassic then
+							eventWithArgs = event .. " target mouseover targettarget mouseovertarget nameplate1 nameplate2 nameplate3 nameplate4"
+						else
+							eventWithArgs = event .. " target focus boss1 boss2 boss3 boss4 boss5"
+						end
+						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
+					end
+					if event:sub(-11) == "_UNFILTERED" then
+						-- we really want *all* unit ids
+						mainFrame:RegisterEvent(event:sub(0, -12))
+					else
+						registerUnitEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+					end
+				-- spell events with filter
+				else
+					-- normal events
+					mainFrame:RegisterEvent(event)
+				end
+				registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
+				tinsert(registeredEvents[eventWithArgs], self)
+				if event ~= eventWithArgs then
+					registeredEvents[event] = registeredEvents[event] or {}
+					tinsert(registeredEvents[event], self)
+				end
+			end
+		end
+	end
+
 	---@param mod DBMModOrDBM
 	local function unregisterUEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
@@ -1433,7 +1490,7 @@ do
 			else
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event) then
+					if mods[i] == self and (checkEntry(self.inCombatOnlyEvents, event) or checkEntry(self.inCombatOnlySafeEvents, event)) then
 						test:Trace(self, "UnregisterEvents", "InCombat", event)
 						tremove(mods, i)
 						match = true
@@ -6142,6 +6199,10 @@ do
 				mod.inCombatOnlyEventsRegistered = 1
 				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
 			end
+			if mod.inCombatOnlySafeEvents and not mod.inCombatOnlyEventsRegistered then
+				mod.inCombatOnlyEventsRegistered = 1
+				mod:RegisterSafeEvents(unpack(mod.inCombatOnlySafeEvents))
+			end
 			--Fix for "attempt to perform arithmetic on field 'stats' (a nil value)"
 			if not mod.stats and not mod.noStatistics then
 				self:AddMsg(L.BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
@@ -6464,7 +6525,7 @@ do
 		if removeEntry(inCombat, mod) then
 			test:Trace(mod, "EndCombat", event)
 			local scenario = mod.addon and mod.addon.type == "SCENARIO" and not mod.soloChallenge
-			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
+			if (mod.inCombatOnlyEvents or mod.inCombatOnlySafeEvents) and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then
 					mod:UnregisterInCombatEvents(false, true)
 				else

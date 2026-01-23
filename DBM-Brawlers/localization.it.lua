@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	specWarnRumble		= "Mostra avviso speciale quando iniziano una rissa",
 	SpectatorMode		= "Mostra avvisi/temporizzatori come spettatore<br/>(I messaggi personali degli 'Avvisi Speciali' non sono visibili agli spettatori)",
 	SpeakOutQueue		= "Conteggia il tuo numero in coda quando aggiornato",
-	NormalizeVolume		= "Normalizza automaticamente il volume del canale sonoro DIALOGHI per coincidere SFX quando nella zona Combattenti per abbassare le urla."
+	NormalizeVolume2	= "Normalizza automaticamente il volume del canale sonoro DIALOGHI per coincidere SFX quando nella zona Combattenti per abbassare le urla."
 })
 
 L:SetMiscLocalization({

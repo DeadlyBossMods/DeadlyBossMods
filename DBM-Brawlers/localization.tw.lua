@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	specWarnRumble		= "當某人開始一場格鬥顯示特別警告",
 	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器<br/>(旁觀者不會顯示個人的特別警告訊息)",
 	SpeakOutQueue		= "當順位更新數出你的順位",
-	NormalizeVolume		= "在鬥陣俱樂部時自動地標準化對話聲道音量去符合主要聲道音量讓歡呼聲不會太大聲。"
+	NormalizeVolume2	= "在鬥陣俱樂部時自動地標準化對話聲道音量去符合主要聲道音量讓歡呼聲不會太大聲。"
 })
 
 L:SetMiscLocalization({
