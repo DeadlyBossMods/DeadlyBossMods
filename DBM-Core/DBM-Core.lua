@@ -913,10 +913,12 @@ do
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
 	end
+	bossModPrototype.issecretvalue = DBM.issecretvalue
 
 	function DBM:hasanysecretvalues(...)
 		return hasanysecretvalues(...)
 	end
+	bossModPrototype.hasanysecretvalues = DBM.hasanysecretvalues
 end
 
 function bossModPrototype:CheckBigWigs(name)
