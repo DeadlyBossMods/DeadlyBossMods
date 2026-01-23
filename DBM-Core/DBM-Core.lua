@@ -910,13 +910,17 @@ bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 do
 	local issecretvalue = issecretvalue or function(val) return false end
 	local hasanysecretvalues = hasanysecretvalues or function(...) return false end
+	---@param self DBMModOrDBM
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
 	end
+	bossModPrototype.issecretvalue = DBM.issecretvalue
 
+	---@param self DBMModOrDBM
 	function DBM:hasanysecretvalues(...)
 		return hasanysecretvalues(...)
 	end
+	bossModPrototype.hasanysecretvalues = DBM.hasanysecretvalues
 end
 
 function bossModPrototype:CheckBigWigs(name)
@@ -3097,7 +3101,7 @@ do
 		if UnitTokenFromGUID and not bossOnly then
 			returnUnitID = UnitTokenFromGUID(enemyGUID)
 		end
-	--	if issecretvalue(returnUnitID) then
+	--	if self:issecretvalue(returnUnitID) then
 	--		return
 	--	end
 		if returnUnitID then
@@ -3106,7 +3110,7 @@ do
 			local usedTable = bossOnly and bossTargetuIds or fullEnemyUids
 			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
-	--			if issecretvalue(guid2) then
+	--			if self:issecretvalue(guid2) then
 	--				return
 	--			end
 				if enemyGUID == guid2 then
@@ -3305,7 +3309,7 @@ end
 ----<type>:<realmID>:<dbID>
 ---@param self DBMModOrDBM
 function DBM:GetCIDFromGUID(guid)
-	if DBM:issecretvalue(guid) then
+	if self:issecretvalue(guid) then
 		return 0
 	end
 	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
@@ -3326,7 +3330,7 @@ end
 ---@param self DBMModOrDBM
 function DBM:IsCreatureGUID(guid)
 	--Player guids aren't secrets, so if it's secret, it must be creature or npc
-	if DBM:issecretvalue(guid) then
+	if self:issecretvalue(guid) then
 		return true
 	end
 	local guidType = strsplit("-", guid or "")
