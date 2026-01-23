@@ -593,8 +593,6 @@ local C_TimerAfter = C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
 local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
-local issecretvalue = issecretvalue or function(val) return false end
-local hasanysecretvalues = hasanysecretvalues or function(...) return false end
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
@@ -909,12 +907,16 @@ function DBM:MidRestrictionsActive(includeAuras)
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 
-function DBM:issecretvalue(val)
-	return issecretvalue(val)
-end
+do
+	local issecretvalue = issecretvalue or function(val) return false end
+	local hasanysecretvalues = hasanysecretvalues or function(...) return false end
+	function DBM:issecretvalue(val)
+		return issecretvalue(val)
+	end
 
-function DBM:hasanysecretvalues(...)
-	return hasanysecretvalues(...)
+	function DBM:hasanysecretvalues(...)
+		return hasanysecretvalues(...)
+	end
 end
 
 function bossModPrototype:CheckBigWigs(name)
@@ -1827,7 +1829,14 @@ do
 			if self:IsPostMidnight() then
 				if self.Options.HideBlizzardTimeline then
 					C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					EncounterTimeline.View:Hide()
+					if EncounterTimeline.View then
+						--12.0.0
+						EncounterTimeline.View:Hide()
+					else
+						--12.0.1
+						EncounterTimeline.TrackView:Hide()
+						EncounterTimeline.TimerView:Hide()
+					end
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_CVar.SetCVar("encounterWarningsEnabled", "0")
@@ -3296,10 +3305,8 @@ end
 ----<type>:<realmID>:<dbID>
 ---@param self DBMModOrDBM
 function DBM:GetCIDFromGUID(guid)
-	if issecretvalue then
-		if issecretvalue(guid) then
-			return 0
-		end
+	if self:issecretvalue(guid) then
+		return 0
 	end
 	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
 	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "Pet") then
@@ -3319,7 +3326,7 @@ end
 ---@param self DBMModOrDBM
 function DBM:IsCreatureGUID(guid)
 	--Player guids aren't secrets, so if it's secret, it must be creature or npc
-	if issecretvalue(guid) then
+	if self:issecretvalue(guid) then
 		return true
 	end
 	local guidType = strsplit("-", guid or "")
@@ -5527,7 +5534,7 @@ do
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, senderOne, senderTwo)
 		if prefix == DBMPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
-			if issecretvalue(msg) then
+			if self:issecretvalue(msg) then
 				return
 			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
@@ -5537,7 +5544,7 @@ do
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
-			if issecretvalue(msg) then
+			if self:issecretvalue(msg) then
 				return
 			end
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
@@ -5571,7 +5578,7 @@ do
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
-			if issecretvalue(msg) then
+			if self:issecretvalue(msg) then
 				return
 			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
@@ -5599,7 +5606,7 @@ do
 	end
 
 	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds)
-		if hasanysecretvalues(initiatedByGuid, timeSeconds) then
+		if self:hasanysecretvalues(initiatedByGuid, timeSeconds) then
 			return
 		end
 		--Ignore this event in combat
@@ -5613,7 +5620,7 @@ do
 	end
 
 	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid)
-		if issecretvalue(initiatedByGuid) then
+		if self:issecretvalue(initiatedByGuid) then
 			return
 		end
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
@@ -5931,7 +5938,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
@@ -5967,14 +5974,14 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		return onMonsterMessage(self, "emote", msg)
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		onMonsterMessage(self, "emote", msg)
@@ -5990,7 +5997,7 @@ do
 	end
 
 	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		onMonsterMessage(self, "emote", msg)
@@ -5998,7 +6005,7 @@ do
 	end
 
 	function DBM:RAID_BOSS_WHISPER(msg)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		--Make it easier for devs to detect whispers they are unable to see
@@ -6023,7 +6030,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		if private.isClassic and not IsInInstance() then
@@ -7723,7 +7730,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_WHISPER(msg, name, _, _, _, status)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		if name and type(name) == "string" and status ~= "GM" then
@@ -7733,7 +7740,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
-		if issecretvalue(msg) then
+		if self:issecretvalue(msg) then
 			return
 		end
 		local presenceId = select(12, ...) -- srsly?

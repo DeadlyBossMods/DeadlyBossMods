@@ -47,10 +47,24 @@ function MidnightPopup:ShowMidnightPopup()
 			DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 			if DBM.Options.HideBlizzardTimeline then
 				C_CVar.SetCVar("encounterTimelineEnabled", "0")
-				EncounterTimeline.View:Hide()
+				if EncounterTimeline.View then
+					--12.0.0
+					EncounterTimeline.View:Hide()
+				else
+					--12.0.1
+					EncounterTimeline.TrackView:Hide()
+					EncounterTimeline.TimerView:Hide()
+				end
 			else
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
-				EncounterTimeline.View:Show()
+				if EncounterTimeline.View then
+					--12.0.0
+					EncounterTimeline.View:Show()
+				else
+					--12.0.1
+					EncounterTimeline.TrackView:Show()
+					EncounterTimeline.TimerView:Show()
+				end
 			end
 		elseif index == 2 then
 			DBM.Options.HideDBMBars = not DBM.Options.HideDBMBars
