@@ -913,12 +913,10 @@ do
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
 	end
-	bossModPrototype.issecretvalue = DBM.issecretvalue
 
 	function DBM:hasanysecretvalues(...)
 		return hasanysecretvalues(...)
 	end
-	bossModPrototype.hasanysecretvalues = DBM.hasanysecretvalues
 end
 
 function bossModPrototype:CheckBigWigs(name)
@@ -3307,7 +3305,7 @@ end
 ----<type>:<realmID>:<dbID>
 ---@param self DBMModOrDBM
 function DBM:GetCIDFromGUID(guid)
-	if self:issecretvalue(guid) then
+	if DBM:issecretvalue(guid) then
 		return 0
 	end
 	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
@@ -3328,7 +3326,7 @@ end
 ---@param self DBMModOrDBM
 function DBM:IsCreatureGUID(guid)
 	--Player guids aren't secrets, so if it's secret, it must be creature or npc
-	if self:issecretvalue(guid) then
+	if DBM:issecretvalue(guid) then
 		return true
 	end
 	local guidType = strsplit("-", guid or "")
