@@ -351,7 +351,7 @@ do
 	end
 	DBT.parseTimer = parseTimer
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused, secretIcons)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
 		if self.Options.VarianceEnabled then
@@ -387,7 +387,7 @@ do
 			newBar:ApplyStyle()
 			if isSecret then
 				newBar:SetText(secretText, inlineIcon, true)
-				newBar:SetIcon(icon, id, secretIcons)
+				newBar:SetIcon(icon, id)
 			else
 				newBar:SetText(id)
 				newBar:SetIcon(icon)
@@ -478,7 +478,7 @@ do
 			end
 			if isSecret then
 				newBar:SetText(secretText, inlineIcon, true)
-				newBar:SetIcon(icon, id, secretIcons)
+				newBar:SetIcon(icon, id)
 			else
 				newBar:SetText(id)
 				newBar:SetIcon(icon)
@@ -923,13 +923,13 @@ function barPrototype:SetText(text, inlineIcon, isSecret)
 	end
 end
 
-function barPrototype:SetIcon(icon, eventID, secretIcons)
+function barPrototype:SetIcon(icon, eventID)
 	local frame_name = self.frame:GetName()
 	_G[frame_name.."BarIcon1"]:SetTexture(icon)
 	_G[frame_name.."BarIcon2"]:SetTexture(icon)
 	if eventID then
 		--secretIcons just inherits blizzards enabled/disabled icons state. Maybe should pass our own?
-		C_EncounterTimeline.SetEventIconTextures(eventID, secretIcons, _G[frame_name].JournalIcons)
+		C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].JournalIcons)
 	end
 end
 
