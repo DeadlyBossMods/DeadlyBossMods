@@ -290,6 +290,11 @@ do
 		local icon2 = bar:CreateTexture("$parentIcon2", "OVERLAY")
 		icon2:SetPoint("LEFT", bar, "RIGHT")
 		icon2:SetSize(20, 20)
+		frame.JournalIcons = {}
+		local jIcons = bar:CreateTexture("$parentJIcons", "OVERLAY")
+		jIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
+		jIcons:SetSize(20, 20)
+		table.insert( frame.JournalIcons, jIcons)
 		local varianceTex = bar:CreateTexture("$parentVariance", "OVERLAY")
 		varianceTex:SetPoint("RIGHT", bar, "RIGHT")
 		varianceTex:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
@@ -342,7 +347,7 @@ do
 	end
 	DBT.parseTimer = parseTimer
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused, secretIcons)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
 		if self.Options.VarianceEnabled then
@@ -378,10 +383,11 @@ do
 			newBar:ApplyStyle()
 			if isSecret then
 				newBar:SetText(secretText, inlineIcon, true)
+				newBar:SetIcon(icon, id, secretIcons)
 			else
 				newBar:SetText(id)
+				newBar:SetIcon(icon)
 			end
-			newBar:SetIcon(icon)
 			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
 				newBar:ResetAnimations()
 			end
@@ -468,10 +474,11 @@ do
 			end
 			if isSecret then
 				newBar:SetText(secretText, inlineIcon, true)
+				newBar:SetIcon(icon, id, secretIcons)
 			else
 				newBar:SetText(id)
+				newBar:SetIcon(icon)
 			end
-			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			self:UpdateBars(true)
 			newBar:ApplyStyle()
@@ -912,10 +919,14 @@ function barPrototype:SetText(text, inlineIcon, isSecret)
 	end
 end
 
-function barPrototype:SetIcon(icon)
+function barPrototype:SetIcon(icon, eventID, secretIcons)
 	local frame_name = self.frame:GetName()
 	_G[frame_name.."BarIcon1"]:SetTexture(icon)
 	_G[frame_name.."BarIcon2"]:SetTexture(icon)
+	if eventID then
+		--secretIcons just inherits blizzards enabled/disabled icons state. Maybe should pass our own?
+		C_EncounterTimeline.SetEventIconTextures(eventID, secretIcons, _G[frame_name].JournalIcons)
+	end
 end
 
 function barPrototype:SetColor(color)
@@ -1218,6 +1229,7 @@ function barPrototype:ApplyStyle()
 	local spark = _G[frame_name.."BarSpark"]
 	local icon1 = _G[frame_name.."BarIcon1"]
 	local icon2 = _G[frame_name.."BarIcon2"]
+	local jIcons = _G[frame_name.."BarJIcons"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = DBT.Options
@@ -1243,7 +1255,25 @@ function barPrototype:ApplyStyle()
 	local barHeight, barHugeHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.HugeHeight, barOptions.Width, barOptions.HugeWidth
 	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
-	if barOptions.IconLeft then icon1:Show() else icon1:Hide() end
+	if barOptions.IconLeft then
+		icon1:Show()
+		if barOptions.InlineIcons then
+			--More efficient way than doing this every bar start?
+			jIcons:SetPoint("RIGHT", icon1, "LEFT", 0, 0)
+			jIcons:Show()
+		else
+			jIcons:Hide()
+		end
+	else
+		icon1:Hide()
+		if barOptions.InlineIcons then
+			--More efficient way than doing this every bar start?
+			jIcons:SetPoint("RIGHT", bar, "LEFT", 0, 0)
+			jIcons:Show()
+		else
+			jIcons:Hide()
+		end
+	end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
 		bar:SetSize(barHugeWidth, barHugeHeight)
@@ -1267,6 +1297,7 @@ function barPrototype:ApplyStyle()
 		frame:SetSize(enlarged and barHugeWidth or barWidth, sizeHeight)
 		icon1:SetSize(sizeHeight, sizeHeight)
 		icon2:SetSize(sizeHeight, sizeHeight)
+		jIcons:SetSize(sizeHeight, sizeHeight)
 	end
 	self:SetVariance()
 	self.frame:Show()
