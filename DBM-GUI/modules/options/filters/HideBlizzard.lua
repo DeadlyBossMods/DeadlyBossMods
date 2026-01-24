@@ -43,10 +43,33 @@ if DBM:IsPostMidnight() then
 		DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 		if DBM.Options.HideBlizzardTimeline then
 			C_CVar.SetCVar("encounterTimelineEnabled", "0")
-			EncounterTimeline.View:Hide()
+			if EncounterTimeline.View then
+				--12.0.0
+				EncounterTimeline.View:Hide()
+			else
+				local viewType = C_EncounterTimeline.GetViewType()
+				--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
+				if viewType == 1 then
+					EncounterTimeline.TrackView:Hide()
+				elseif viewType == 2 then
+					EncounterTimeline.TimerView:Hide()
+				end
+			end
 		else
 			C_CVar.SetCVar("encounterTimelineEnabled", "1")
-			EncounterTimeline.View:Show()
+			if EncounterTimeline.View then
+				--12.0.0
+				EncounterTimeline.View:Show()
+			else
+				--12.0.1
+				local viewType = C_EncounterTimeline.GetViewType()
+				--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
+				if viewType == 1 then
+					EncounterTimeline.TrackView:Show()
+				elseif viewType == 2 then
+					EncounterTimeline.TimerView:Show()
+				end
+			end
 		end
 	end)
 end

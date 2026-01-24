@@ -105,7 +105,7 @@ L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재
 L.GroupOptionsExcludeIcon	= "주문 단위로 형성된 그룹에서 '공격대 징표' 설정 제외 (제외된 설정들은 '공격대 징표' 카테고리에 배치)"
 L.GroupOptionsExcludePrivateAura	= "주문 단위로 형성된 그룹에서 '비공개 오라' 효과음 설정 제외 (제외된 설정들은 '비공개 오라' 카테고리에 배치)"
 
-L.AutoExpandSpellGroups		= "주문 단위로 그룹이 형성된 설정들을 자동으로 펼치기"
+L.AutoExpandSpellGroups2		= "주문 단위로 그룹이 형성된 설정들을 자동으로 펼치기"
 L.ShowWAKeys				= "보스 모드 활성 조건을 이용한 WeakAuras 제작을 지원하기 위해 주문 이름 옆에 WeakAuras 키를 표시합니다."
 --L.ShowSpellDescWhenExpanded	= "설정 그룹이 펼쳐진 상태에서도 주문 설명 계속 표시"--Might not be used
 L.NoDescription				= "이 능력에 대한 설명이 없습니다"

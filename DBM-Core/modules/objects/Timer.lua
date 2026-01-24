@@ -1577,6 +1577,7 @@ end
 --/run C_EncounterTimeline.GetEventList()
 --/run C_EncounterTimeline.PauseScriptEvent()
 --/run C_EncounterTimeline.ResumeScriptEvent()
+--0 = Active, 1 = Paused, 2 = Finished, 3 = Canceled
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	local newBar = DBT:GetBar(eventID)
 	if newBar then
@@ -1585,6 +1586,8 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 			newBar:Pause()
 		elseif eventState == 0 then
 			newBar:Resume()
+		else--Finished or cancled (sometimes blizzard sends state changed instead of event removed when canceling events)
+			newBar:Cancel()
 		end
 	end
 --	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId

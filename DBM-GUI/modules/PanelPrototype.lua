@@ -649,7 +649,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 	---@class DBMPanelAbility: Frame, BackdropTemplate
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "ability"
-	area.hidden = not DBM.Options.AutoExpandSpellGroups
+	area.hidden = not DBM.Options.AutoExpandSpellGroups2
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	area:SetHyperlinksEnabled(true)
