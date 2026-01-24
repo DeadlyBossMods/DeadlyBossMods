@@ -1281,6 +1281,8 @@ function barPrototype:ApplyStyle()
 	end
 	if barOptions.InlineIcons then
 		jIcons2:Show()
+	else
+		jIcons2:Hide()
 	end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
