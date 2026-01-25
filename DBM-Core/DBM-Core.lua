@@ -1473,7 +1473,7 @@ do
 				local i = 1
 				while mods[i] do
 					if mods[i] == self and event == "SPELL_AURA_REMOVED" then
-						local findEvent = findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
+						local findEvent = self.inCombatOnlyEvents and findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
 						if findEvent then
 							unregisterCLEUEvent(self, findEvent)
 							break
@@ -1485,7 +1485,7 @@ do
 				local i = 1
 				while mods[i] do
 					if mods[i] == self and (srmIncluded or event ~= "SPELL_AURA_REMOVED") then
-						local findEvent = findRealEvent(self.inCombatOnlyEvents, event)
+						local findEvent = self.inCombatOnlyEvents and findRealEvent(self.inCombatOnlyEvents, event)
 						if findEvent then
 							unregisterCLEUEvent(self, findEvent)
 							break
@@ -1496,7 +1496,7 @@ do
 			else
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self and (checkEntry(self.inCombatOnlyEvents, event) or checkEntry(self.inCombatOnlySafeEvents, event)) then
+					if mods[i] == self and (self.inCombatOnlyEvents and checkEntry(self.inCombatOnlyEvents, event) or self.inCombatOnlySafeEvents and checkEntry(self.inCombatOnlySafeEvents, event)) then
 						test:Trace(self, "UnregisterEvents", "InCombat", event)
 						tremove(mods, i)
 						match = true

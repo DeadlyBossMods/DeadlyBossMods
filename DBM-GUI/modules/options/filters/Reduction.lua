@@ -10,7 +10,9 @@ spamAnnounces:CreateCheckButton(L.SpamBlockNoTrivialSpecWarnSound, true, nil, "D
 local spamArea = reducPanel:CreateArea(L.Area_SpamFilter)
 spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
 spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
-spamArea:CreateCheckButton(L.FilterVoidFormSay2, true, nil, "FilterVoidFormSay2")
+if DBM:IsRetail() then
+	spamArea:CreateCheckButton(L.FilterVoidFormSay2, true, nil, "FilterVoidFormSay2")
+end
 
 local spamSpecArea = reducPanel:CreateArea(L.Area_SpecFilter)
 spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
