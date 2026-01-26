@@ -135,7 +135,7 @@ DBT.DefaultOptions = {
 	Spark = true,
 	ColorByType = true,
 	NoBarFade = false,
-	InlineIcons = true,
+	JournalIcons = 2,-- 0: off, 1: 1 large, 2: 2 large, 3: 3 large, 4: stacked small icons
 	IconLeft = true,
 	IconRight = false,
 	IconLocked = true,
@@ -303,6 +303,10 @@ do
 		jIcons3:SetPoint("RIGHT", jIcons2, "LEFT", 2, 0)
 		jIcons3:SetSize(20, 20)
 		table.insert( frame.JournalIcons, jIcons3)
+		local jIcons4 = bar:CreateTexture("$parentJIcons4", "OVERLAY")
+		jIcons4:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
+		jIcons4:SetSize(20, 20)
+		table.insert( frame.JournalIcons, jIcons4)
 		local varianceTex = bar:CreateTexture("$parentVariance", "OVERLAY")
 		varianceTex:SetPoint("RIGHT", bar, "RIGHT")
 		varianceTex:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
@@ -916,7 +920,7 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text, inlineIcon, isSecret)
-	if not DBT.Options.InlineIcons then
+	if DBT.Options.JournalIcons == 0 then
 		inlineIcon = nil
 	end
 	if isSecret then--We can't touch the text in ANY way
@@ -1240,6 +1244,7 @@ function barPrototype:ApplyStyle()
 	local jIcons = _G[frame_name.."BarJIcons"]
 	local jIcons2 = _G[frame_name.."BarJIcons2"]
 	local jIcons3 = _G[frame_name.."BarJIcons3"]
+	local jIcons4 = _G[frame_name.."BarJIcons4"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = DBT.Options
@@ -1267,29 +1272,62 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if barOptions.IconLeft then
 		icon1:Show()
-		if barOptions.InlineIcons then
+		if barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
-			jIcons:SetPoint("RIGHT", icon1, "LEFT", 0, 0)
+			if barOptions.JournalIcons == 4 then
+				jIcons:ClearAllPoints()
+				jIcons:SetPoint("BOTTOMRIGHT", icon1, "BOTTOMLEFT", 0, 0)
+			else
+				jIcons:ClearAllPoints()
+				jIcons:SetPoint("RIGHT", icon1, "LEFT", 0, 0)
+			end
 			jIcons:Show()
 		else
 			jIcons:Hide()
 		end
 	else
 		icon1:Hide()
-		if barOptions.InlineIcons then
+		if barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
-			jIcons:SetPoint("RIGHT", bar, "LEFT", 0, 0)
+			jIcons:ClearAllPoints()
+			if barOptions.JournalIcons == 4 then
+				jIcons:ClearAllPoints()
+				jIcons:SetPoint("BOTTOMRIGHT", bar, "BOTTOMLEFT", 0, 0)
+			else
+				jIcons:ClearAllPoints()
+				jIcons:SetPoint("RIGHT", bar, "LEFT", 0, 0)
+			end
 			jIcons:Show()
 		else
 			jIcons:Hide()
 		end
 	end
-	if barOptions.InlineIcons then
+	if barOptions.JournalIcons >= 2 then
+		if barOptions.JournalIcons == 4 then
+			jIcons2:ClearAllPoints()
+			jIcons2:SetPoint("BOTTOMRIGHT", jIcons, "TOPRIGHT", 0, 0)
+		else
+			jIcons2:ClearAllPoints()
+			jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
+		end
 		jIcons2:Show()
-		jIcons3:Show()
 	else
 		jIcons2:Hide()
+	end
+	if barOptions.JournalIcons >= 3 then
+		--if barOptions.JournalIcons == 4 then
+		--	jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 0, 0)
+		--else
+		--	jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
+		--end
+		jIcons3:Show()
+	else
 		jIcons3:Hide()
+	end
+	if barOptions.JournalIcons >= 4 then
+		jIcons4:Show()
+	else
+		jIcons4:Hide()
 	end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
@@ -1314,9 +1352,17 @@ function barPrototype:ApplyStyle()
 		frame:SetSize(enlarged and barHugeWidth or barWidth, sizeHeight)
 		icon1:SetSize(sizeHeight, sizeHeight)
 		icon2:SetSize(sizeHeight, sizeHeight)
-		jIcons:SetSize(sizeHeight, sizeHeight)
-		jIcons2:SetSize(sizeHeight, sizeHeight)
-		jIcons3:SetSize(sizeHeight, sizeHeight)
+		if barOptions.JournalIcons == 4 then
+			jIcons:SetSize(sizeHeight/2, sizeHeight/2)
+			jIcons2:SetSize(sizeHeight/2, sizeHeight/2)
+			jIcons3:SetSize(sizeHeight/2, sizeHeight/2)
+			jIcons4:SetSize(sizeHeight/2, sizeHeight/2)
+		else
+			jIcons:SetSize(sizeHeight, sizeHeight)
+			jIcons2:SetSize(sizeHeight, sizeHeight)
+			jIcons3:SetSize(sizeHeight, sizeHeight)
+			--4 icons not supported in large icon mode to prevent users being dumb
+		end
 	end
 	self:SetVariance()
 	self.frame:Show()
