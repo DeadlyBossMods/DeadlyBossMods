@@ -6,7 +6,7 @@ local DBM_GUI = DBM_GUI
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 
 ---@class DBMDropDownTmp: Button
----@field isSelectedCallback function|nil
+---@field isSelectedCallbackFn function|nil
 ---@field onSelectionChangedCallback function|nil
 ---@field valueGetter function|nil
 ---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
@@ -44,7 +44,7 @@ function dropdownPrototype:OnSelectionChanged(callback)
 	self.onSelectionChangedCallback = callback
 end
 function dropdownPrototype:IsSelectedCallback(callback)
-	self.isSelectedCallback = callback
+	self.isSelectedCallbackFn = callback
 end
 
 function dropdownPrototype:RefreshLazyValues()
@@ -66,7 +66,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@class DBMDropDown: Button
 	---@field myheight number
 	---@field onSelectionChangedCallback function|nil
-	---@field isSelectedCallback function|nil
+	---@field isSelectedCallbackFn function|nil
 	---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
 	---@field IsSelectedCallback fun(self: DBMDropDown, callback: table|boolean|string|number)
 	---@field SetSelectedValue fun(self: DBMDropDown, selected: any)
@@ -92,8 +92,8 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end
 
 	local IsSelected = function(v)
-		if dropdown.isSelectedCallback then
-			return dropdown:isSelectedCallback(v)
+		if dropdown.isSelectedCallbackFn then
+			return dropdown:isSelectedCallbackFn(v)
 		end
 		return v.value == dropdown.value or v.text == dropdown.text
 	end
