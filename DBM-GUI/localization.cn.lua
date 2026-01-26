@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20260121
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20260126
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -432,6 +432,8 @@ L.ClickThrough				= "禁用鼠标点击事件（允许你点击计时条后面�
 L.Bar_Decimal				= "%d 秒以内显示小数点"
 L.Bar_Alpha					= "透明度: %0.1f"
 L.Bar_EnlargeTime			= "在 %d 秒后计时条变大"
+L.Bar_AppearTime			= "隐藏 %d 秒之外的计时条"--Used for when hidden bars show on the small bar anchor
+L.Bar_HideLongBars			= "隐藏计时条，直到小于阈值"
 L.BarSpark					= "计时条闪光"
 L.BarFlash					= "快走完时闪动"
 L.BarSort					= "按剩余时间排序"
@@ -459,6 +461,10 @@ L.Area_BlizzFiltersSetup	= "暴雪信息过滤指南"
 
 -- Panel: Toggle DBM Features
 L.Panel_SpamFilter			= "关闭DBM功能"
+
+L.Area_Global_Toggles				= "全局功能开关"
+L.NoWarnings						= "完全关闭DBM警告"
+L.NoTimers							= "完全关闭DBM计时器"
 
 L.Area_SpamFilter_SpecFeatures		= "通告功能"
 L.SpamBlockNoShowAnnounce			= "不为那些不那么重要的通告显示文字和播放语音"
