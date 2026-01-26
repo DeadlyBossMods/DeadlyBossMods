@@ -9,6 +9,8 @@ local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 ---@field isSelectedCallback function|nil
 ---@field onSelectionChangedCallback function|nil
 ---@field valueGetter function|nil
+---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
+---@field IsSelectedCallback fun(self: DBMDropDown, callback: table|boolean|string|number)
 ---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 local dropdownPrototype = CreateFrame("DropdownButton")
 
@@ -17,6 +19,7 @@ function dropdownPrototype:SetSelectedValue(selected)
 	if type(selected) == "table" then -- Force value to whatever was given no matter if it exists
 		self.value = selected.value
 		self.text = selected.text
+		---@diagnostic disable-next-line: undefined-field
 		self:GenerateMenu()
 		if self.onSelectionChangedCallback then
 			self:onSelectionChangedCallback(selected)
