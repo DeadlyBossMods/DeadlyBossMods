@@ -181,30 +181,6 @@ local FontFlags = {
 	}
 }
 
-local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag", function(value)
-	DBT:SetOption("FontFlag", value)
-end)
-FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
-FontFlagDropDown.myheight = 0
-
-local iconleft = BarSetup:CreateCheckButton(L.BarIconLeft, nil, nil, nil, "IconLeft")
-iconleft:SetPoint("TOPLEFT", FontFlagDropDown, "BOTTOMLEFT", isNewDropdown and 0 or 10, isNewDropdown and -5 or 0)
-
-local iconright = BarSetup:CreateCheckButton(L.BarIconRight, nil, nil, nil, "IconRight")
-iconright:SetPoint("LEFT", iconleft, "LEFT", 130, 0)
-
-local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
-SparkBars:SetPoint("TOPLEFT", iconleft, "BOTTOMLEFT")
-
-local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "FlashBar")
-FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT")
-
-local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
-ColorBars:SetPoint("TOPLEFT", FlashBars, "BOTTOMLEFT")
-
-local InlineIcons = BarSetup:CreateCheckButton(L.BarInlineIcons, false, nil, nil, "InlineIcons")
-InlineIcons:SetPoint("LEFT", ColorBars, "LEFT", 130, 0)
-
 -- Functions for bar setup
 local function createDBTOnValueChangedHandler(option)
 	return function(self)
@@ -223,8 +199,33 @@ FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -140)
 FontSizeSlider:SetValue(DBT.Options.FontSize)
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
+local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag", function(value)
+	DBT:SetOption("FontFlag", value)
+end)
+FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
+FontFlagDropDown.myheight = 0
+
+local iconleft = BarSetup:CreateCheckButton(L.BarIconLeft, nil, nil, nil, "IconLeft")
+iconleft:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", isNewDropdown and 0 or 10, isNewDropdown and -20 or -15)
+
+local iconright = BarSetup:CreateCheckButton(L.BarIconRight, nil, nil, nil, "IconRight")
+iconright:SetPoint("LEFT", iconleft, "LEFT", 130, 0)
+
+local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
+SparkBars:SetPoint("TOPLEFT", iconleft, "BOTTOMLEFT")
+
+local InlineIcons = BarSetup:CreateCheckButton(L.BarInlineIcons, false, nil, nil, "InlineIcons")
+InlineIcons:SetPoint("LEFT", SparkBars, "LEFT", 130, 0)
+
+local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "FlashBar")
+FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT")
+
+local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
+ColorBars:SetPoint("TOPLEFT", FlashBars, "BOTTOMLEFT")
+
+
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
-DisableBarFade:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", 0, -125)
+DisableBarFade:SetPoint("TOPLEFT", ColorBars, "BOTTOMLEFT")
 DisableBarFade.myheight = 35
 
 local skins = {}

@@ -299,6 +299,10 @@ do
 		jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
 		jIcons2:SetSize(20, 20)
 		table.insert( frame.JournalIcons, jIcons2)
+		local jIcons3 = bar:CreateTexture("$parentJIcons3", "OVERLAY")
+		jIcons3:SetPoint("RIGHT", jIcons2, "LEFT", 2, 0)
+		jIcons3:SetSize(20, 20)
+		table.insert( frame.JournalIcons, jIcons3)
 		local varianceTex = bar:CreateTexture("$parentVariance", "OVERLAY")
 		varianceTex:SetPoint("RIGHT", bar, "RIGHT")
 		varianceTex:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
@@ -1235,6 +1239,7 @@ function barPrototype:ApplyStyle()
 	local icon2 = _G[frame_name.."BarIcon2"]
 	local jIcons = _G[frame_name.."BarJIcons"]
 	local jIcons2 = _G[frame_name.."BarJIcons2"]
+	local jIcons3 = _G[frame_name.."BarJIcons3"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = DBT.Options
@@ -1281,8 +1286,10 @@ function barPrototype:ApplyStyle()
 	end
 	if barOptions.InlineIcons then
 		jIcons2:Show()
+		jIcons3:Show()
 	else
 		jIcons2:Hide()
+		jIcons3:Hide()
 	end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
@@ -1309,6 +1316,7 @@ function barPrototype:ApplyStyle()
 		icon2:SetSize(sizeHeight, sizeHeight)
 		jIcons:SetSize(sizeHeight, sizeHeight)
 		jIcons2:SetSize(sizeHeight, sizeHeight)
+		jIcons3:SetSize(sizeHeight, sizeHeight)
 	end
 	self:SetVariance()
 	self.frame:Show()
