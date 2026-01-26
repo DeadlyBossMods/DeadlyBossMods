@@ -119,32 +119,32 @@ CL.POSITIVE							= "Positive"
 --Pull (193997), Pull in (395745), Push (359132), Swirl (143413), Web (389280), Webs (157317), Tentacle (285205), Tentacles (61618), Grip (56689), Slam (182557), Stomp (247733)
 
 --Journal Icons should not be copied to non english locals, do not include this section
-local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
+local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "hud" or "AddOns\\DBM-Core\\textures"
 --Role Icons
-CL.TANK_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-CL.DAMAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-CL.HEALER_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
+CL.TANK_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:265:297:103:135|t" -- NO TRANSLATE
+CL.DAMAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:133:165:199:231|t" -- NO TRANSLATE
+CL.HEALER_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:333:365:1:33|t" -- NO TRANSLATE
 
-CL.TANK_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-CL.DAMAGE_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-CL.HEALER_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
+CL.TANK_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:12:12:0:0:512:256:265:297:103:135|t" -- NO TRANSLATE
+CL.DAMAGE_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:12:12:0:0:512:256:133:165:199:231|t" -- NO TRANSLATE
+CL.HEALER_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:12:12:0:0:512:256:333:365:1:33|t" -- NO TRANSLATE
 --Importance Icons
-CL.HEROIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-CL.DEADLY_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-CL.IMPORTANT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
-CL.MYTHIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t" -- NO TRANSLATE
+CL.HEROIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:22:22:0:0:512:256:367:399:1:33|t" -- NO TRANSLATE
+CL.DEADLY_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:22:22:0:0:512:256:199:231:199:231|t" -- NO TRANSLATE
+CL.IMPORTANT_ICON					= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:401:433:1:33|t" -- NO TRANSLATE
+CL.MYTHIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:22:22:0:0:512:256:265:297:35:67|t" -- NO TRANSLATE
 
-CL.HEROIC_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-CL.DEADLY_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-CL.IMPORTANT_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
+CL.HEROIC_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:14:14:0:0:512:256:367:399:1:33|t" -- NO TRANSLATE
+CL.DEADLY_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:14:14:0:0:512:256:199:231:199:231|t" -- NO TRANSLATE
+CL.IMPORTANT_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:12:12:0:0:512:256:401:433:1:33|t" -- NO TRANSLATE
 --Type Icons
-CL.INTERRUPT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t" -- NO TRANSLATE
-CL.MAGIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t" -- NO TRANSLATE
-CL.CURSE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t" -- NO TRANSLATE
-CL.POISON_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t" -- NO TRANSLATE
-CL.DISEASE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
-CL.ENRAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
-CL.BLEED_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
+CL.INTERRUPT_ICON					= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:435:467:1:33|t" -- NO TRANSLATE
+CL.MAGIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:469:501:1:33|t" -- NO TRANSLATE
+CL.CURSE_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:67:99:199:231|t" -- NO TRANSLATE
+CL.POISON_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:265:297:69:101|t" -- NO TRANSLATE
+CL.DISEASE_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:265:297:1:33|t" -- NO TRANSLATE
+CL.ENRAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:299:331:1:33|t" -- NO TRANSLATE
+CL.BLEED_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:1:33:199:231|t" -- NO TRANSLATE
 
 CL.STAR_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:0:16:0:16|t" -- NO TRANSLATE
 CL.CIRCLE_ICON						= "|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:20:20:0:0:64:64:16:32:0:16|t" -- NO TRANSLATE

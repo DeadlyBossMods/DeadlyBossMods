@@ -846,11 +846,11 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		if difficulty then
 			--1 LFR, 2 Normal, 3 Heroic, 4 Mythic
 			--Likely 1 and 2 will never be used, but being prototyped just in case
-			local path = private.isRetail and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
+			local path = private.isRetail and "hud" or "AddOns\\DBM-Core\\textures"
 			if difficulty == 3 then
-				difficultyIcon = "|TInterface\\" .. path .. "\\UI-EJ-Icons.blp:18:18:0:0:255:66:102:118:7:27|t"
+				difficultyIcon = "|TInterface\\" .. path .. "\\uicombattimelinewarningicons.blp:18:18:0:0:512:256:367:399:1:33|t"
 			elseif difficulty == 4 then
-				difficultyIcon = "|TInterface\\" .. path .. "\\UI-EJ-Icons.blp:18:18:0:0:255:66:133:153:40:58|t"
+				difficultyIcon = "|TInterface\\" .. path .. "\\uicombattimelinewarningicons.blp:18:18:0:0:512:256:265:297:35:67|t"
 			end
 		end
 		obj.option = "SpecWarn" .. spellId .. announceType .. (optionVersion or "")
