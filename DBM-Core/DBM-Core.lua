@@ -7923,8 +7923,8 @@ do
 	local testWarning1, testWarning2, testWarning3
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
-	function DBM:DemoMode()
-		if self:IsPostMidnight() then
+	function DBM:DemoMode(forceOld)
+		if self:IsPostMidnight() and not forceOld then
 			--Run the encounter timeline demo mode instead of DBM test Bars
 			C_EncounterTimeline.AddEditModeEvents()
 		else
