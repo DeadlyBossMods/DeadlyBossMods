@@ -446,7 +446,7 @@ L.InlineIconsDropdown				= "Стиль иконок журнала"
 L.SingleLargeIcon					= "Одна большая иконка"
 L.DoubleLargeIcons					= "Двойные большие иконки"
 L.DoubleInlineIcons					= "Все крупные иконки"
-L.StackedMiniIcons					= "Сложенные маленькие иконки"
+L.StackedMiniIcons					= "Стакающиеся маленькие иконки"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "Атака & Перерыв"
