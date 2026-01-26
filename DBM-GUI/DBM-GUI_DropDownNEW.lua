@@ -68,7 +68,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@field onSelectionChangedCallback function|nil
 	---@field isSelectedCallbackFn function|nil
 	---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
-	---@field IsSelectedCallback fun(self: DBMDropDown, callback: table|boolean|string|number)
+	---@field IsSelectedCallback fun(self: DBMDropDown, callback: function)
 	---@field SetSelectedValue fun(self: DBMDropDown, selected: any)
 	---@field RefreshLazyValues fun(self: DBMDropDown)
 	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
