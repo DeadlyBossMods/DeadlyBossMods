@@ -228,6 +228,7 @@ iconDropdown:IsSelectedCallback(function(_, v)
 end)
 iconDropdown:SetPoint("TOPLEFT", FontFlagDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 iconDropdown.myheight = 0
+---@diagnostic disable-next-line: undefined-field
 iconDropdown:GenerateMenu()
 
 local inlineIconOptions = {
