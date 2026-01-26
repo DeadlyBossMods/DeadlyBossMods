@@ -119,7 +119,7 @@ CL.POSITIVE							= "Positive"
 --Pull (193997), Pull in (395745), Push (359132), Swirl (143413), Web (389280), Webs (157317), Tentacle (285205), Tentacles (61618), Grip (56689), Slam (182557), Stomp (247733)
 
 --Journal Icons should not be copied to non english locals, do not include this section
-local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "hud" or "AddOns\\DBM-Core\\textures"
+local EJIconPath = "AddOns\\DBM-Core\\textures"
 --Role Icons
 CL.TANK_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:265:297:103:135|t" -- NO TRANSLATE
 CL.DAMAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\uicombattimelinewarningicons.blp:20:20:0:0:512:256:133:165:199:231|t" -- NO TRANSLATE
