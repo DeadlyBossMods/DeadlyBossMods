@@ -34,6 +34,9 @@ end
 function dropdownPrototype:OnSelectionChanged(callback)
 	self.onSelectionChangedCallback = callback
 end
+function dropdownPrototype:IsSelectedCallback(callback)
+	self.isSelectedCallback = callback
+end
 
 function dropdownPrototype:RefreshLazyValues()
 	if not self.valueGetter then
@@ -44,7 +47,7 @@ end
 
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
 ---@diagnostic disable-next-line: duplicate-set-field
-function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText)
+function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText, dropdownType)
 	if type(values) == "table" then
 		for _, entry in next, values do
 			entry.text = entry.text or "Missing entry.text"
@@ -73,6 +76,9 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end
 
 	local IsSelected = function(v)
+		if dropdown.isSelectedCallback then
+			return dropdown:isSelectedCallback(v)
+		end
 		return v.value == dropdown.value or v.text == dropdown.text
 	end
 	local SetSelected = function(v)
@@ -105,7 +111,12 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		end
 
 		for _, v in ipairs(dropdown.values) do
-			local radio = rootDescription:CreateRadio(v.text, IsSelected, SetSelected, v)
+			local radio
+			if dropdownType == 'checkbox' then
+				radio = rootDescription:CreateCheckbox(v.text, IsSelected, SetSelected, v)
+			else
+				radio = rootDescription:CreateRadio(v.text, IsSelected, SetSelected, v)
+			end
 			if v.font or v.flag then
 				radio.font = CreateFont("DBM_FONT_" .. v.text)
 				radio.font:SetFont(v.font and v.value or defaultFont, v.fontsize or defaultFontSize, v.flag and v.value or "")

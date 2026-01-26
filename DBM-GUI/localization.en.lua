@@ -424,6 +424,7 @@ L.ZeroatWindowStartRestart			= "Text hits zero at start of CD window then restar
 L.ZeroatWindowStartNeg				= "Text hits zero at start of CD window then goes negative"--Default
 L.BarIconLeft 						= "Left icon"
 L.BarIconRight 						= "Right icon"
+L.BarIconPosition					= "Icon position"
 L.ExpandUpwards						= "Expand upward"
 L.FillUpBars						= "Fill up"
 L.ClickThrough						= "Disable mouse events (click through)"
