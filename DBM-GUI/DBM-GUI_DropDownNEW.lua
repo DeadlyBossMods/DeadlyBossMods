@@ -5,9 +5,11 @@ local DBM_GUI = DBM_GUI
 
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 
----@class DBMDropDownTmp: Frame
+---@class DBMDropDownTmp: Button
 ---@field isSelectedCallback function|nil
 ---@field onSelectionChangedCallback function|nil
+---@field valueGetter function|nil
+---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 local dropdownPrototype = CreateFrame("DropdownButton")
 
 -- For lazily loaded dropdowns: pass a single dropdown entry, for normal dropdowns pass a single value or name
@@ -24,6 +26,7 @@ function dropdownPrototype:SetSelectedValue(selected)
 			if v.value ~= nil and v.value == selected or v.text == selected then
 				self.value = v.value
 				self.text = v.text
+				---@diagnostic disable-next-line: undefined-field
 				self:GenerateMenu()
 				if self.onSelectionChangedCallback then
 					self:onSelectionChangedCallback(v)
@@ -59,6 +62,8 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end
 	---@class DBMDropDown: Button
 	---@field myheight number
+	---@field onSelectionChangedCallback function|nil
+	---@field isSelectedCallback function|nil
 	---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
 	---@field IsSelectedCallback fun(self: DBMDropDown, callback: table|boolean|string|number)
 	---@field SetSelectedValue fun(self: DBMDropDown, selected: any)
