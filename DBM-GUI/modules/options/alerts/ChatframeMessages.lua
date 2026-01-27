@@ -13,8 +13,9 @@ local function findChatFrameUnderCursor()
 	local f = EnumerateFrames()
 	while f do
 		if not f:IsProtected() and not f:IsForbidden() then
-			if f:GetName() and f:GetName():match("^ChatFrame") and f:IsMouseOver() and f:IsVisible() then
-				local id = f:GetName():match("ChatFrame(%d+)")
+			local name = f:GetName()
+			if name and type(name) == 'string' and name:match("^ChatFrame") and f:IsMouseOver() and f:IsVisible() then
+				local id = name:match("ChatFrame(%d+)")
 				id = tonumber(id)
 				if id and _G["ChatFrame" .. id] then
 					return "ChatFrame" .. id

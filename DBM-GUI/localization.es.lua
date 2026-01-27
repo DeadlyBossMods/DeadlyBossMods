@@ -451,8 +451,8 @@ L.Area_BlizzFiltersSetup	= "Guía de filtros de Blizzard"
 L.Panel_SpamFilter			= "Desactivar funciones de DBM"
 
 L.Area_Global_Toggles              = "Opciones globales de funciones"
-L.NoWarnings                       = "Desactivar completamente los avisos de DBM"
-L.NoTimers                         = "Desactivar completamente los temporizadores de DBM"
+L.NoWarnings                       = "Desactivar los avisos de DBM"
+L.NoTimers                         = "Desactivar los temporizadores de DBM"
 
 L.Area_SpamFilter_SpecFeatures		= "Opciones de anuncios"
 L.SpamBlockNoShowAnnounce 			= "No mostrar texto ni reproducir sonido para NINGÚN anuncio general"

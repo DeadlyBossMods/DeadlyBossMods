@@ -46,8 +46,7 @@ localization.br.lua
 
 DBM-GUI.lua
 DBM-GUI_TestUI.lua
-DBM-GUI_DropDown.xml
-DBM-GUI_DropDown.lua
+DBM-GUI_DropDownNEW.lua
 
 # Modules
 modules\MainFramePrototype.lua

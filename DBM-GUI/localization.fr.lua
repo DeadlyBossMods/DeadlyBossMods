@@ -446,8 +446,8 @@ L.Panel_ReducedInformation 	= "Réduire les informations"
 L.Panel_SpamFilter					= "Désactiver les fonctions de DBM"
 
 L.Area_Global_Toggles              = "Options globales des fonctionnalités"
-L.NoWarnings                       = "Désactiver entièrement les alertes de DBM"
-L.NoTimers                         = "Désactiver entièrement les chronomètres de DBM"
+L.NoWarnings                       = "Désactiver les alertes de DBM"
+L.NoTimers                         = "Désactiver les chronomètres de DBM"
 
 L.Area_SpamFilter_Anounces			= "Filtres d'annonces"
 L.SpamBlockNoShowAnnounce			= "Ne pas afficher de texte ni jouer de son pour AUCUNE annonce générale"

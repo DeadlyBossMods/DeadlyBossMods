@@ -424,6 +424,7 @@ L.ZeroatWindowStartRestart			= "Text hits zero at start of CD window then restar
 L.ZeroatWindowStartNeg				= "Text hits zero at start of CD window then goes negative"--Default
 L.BarIconLeft 						= "Left icon"
 L.BarIconRight 						= "Right icon"
+L.BarIconPosition					= "Icon position"
 L.ExpandUpwards						= "Expand upward"
 L.FillUpBars						= "Fill up"
 L.ClickThrough						= "Disable mouse events (click through)"
@@ -439,13 +440,18 @@ L.BarColorByType					= "Color by type"
 L.Highest							= "Highest at top"
 L.Lowest							= "Lowest at top"
 L.NoBarFade							= "Use Start/End colors as Small/Large colors instead of gradual color change"
-L.BarInlineIcons					= "Show inline icons"
+L.BarInlineIcons					= "Show journal icons"--Deprecated
 L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText					= "Use short timer text (when available)"
 L.KeepBar							= "Keep timer active until ability cast"
 L.KeepBar2							= "(when supported by mod)"
 L.FadeBar							= "Fade timers for out of range abilities"
 L.BarSkin							= "Bar skin"
+L.InlineIconsDropdown				= "Journal icon style"
+L.SingleLargeIcon					= "Single large icon"
+L.DoubleLargeIcons					= "Double large icons"
+L.DoubleInlineIcons					= "All the large icons"
+L.StackedMiniIcons					= "Stacked small icons"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "Pull & Break"
