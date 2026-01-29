@@ -385,6 +385,7 @@ do
 			newBar.hasVariance = varianceMinTimer and true or false
 			newBar:SetTimer(timer) -- This can kill the timer and the timer methods don't like dead timers
 			newBar.keep = keep -- keep this after SetTimer, not before, otherwise the bar will turn dead if Debug mode enabled and switching from var to non-var, since Update(0) will Cancel the timer
+			newBar.isSecret = isSecret
 			if newBar.dead then
 				return
 			end
@@ -394,10 +395,10 @@ do
 			end
 			newBar:ApplyStyle()
 			if isSecret then
-				newBar:SetText(secretText, inlineIcon, true)
+				newBar:SetText(secretText, nil, true)
 				newBar:SetIcon(icon, id)
 			else
-				newBar:SetText(id)
+				newBar:SetText(id, inlineIcon or newBar.inlineIcon)
 				newBar:SetIcon(icon)
 			end
 			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
@@ -432,6 +433,7 @@ do
 				newBar.minTimer = varianceMinTimer or nil
 				newBar.varianceDuration = varianceDuration or 0
 				newBar.hasVariance = varianceMinTimer and true or false
+				newBar.isSecret = isSecret
 			else -- Duplicate code ;(
 				local newFrame = createBarFrame(self)
 				---@class DBTBar
@@ -460,6 +462,7 @@ do
 					varianceDuration = varianceDuration or 0,
 					hasVariance = varianceMinTimer and true or false,
 					lastUpdate = GetTime(),
+					isSecret = isSecret
 				}, mt)
 				newFrame.obj = newBar
 			end
@@ -485,10 +488,10 @@ do
 				tinsert(smallBars, newBar)
 			end
 			if isSecret then
-				newBar:SetText(secretText, inlineIcon, true)
+				newBar:SetText(secretText, nil, true)
 				newBar:SetIcon(icon, id)
 			else
-				newBar:SetText(id)
+				newBar:SetText(id, inlineIcon or newBar.inlineIcon)
 				newBar:SetIcon(icon)
 			end
 			self.bars[newBar] = true
@@ -924,7 +927,7 @@ function barPrototype:SetText(text, inlineIcon, isSecret)
 		inlineIcon = nil
 	end
 	if isSecret then--We can't touch the text in ANY way
-		_G[self.frame:GetName().."BarName"]:SetText((inlineIcon or "")..text)
+		_G[self.frame:GetName().."BarName"]:SetText(text)
 	else
 		-- Force change color type 7 to custom inlineIcon
 		_G[self.frame:GetName().."BarName"]:SetText(((self.colorType and self.colorType >= 7 and DBT.Options.Bar7CustomInline) and DBM_COMMON_L.IMPORTANT_ICON or inlineIcon or "") .. text)
@@ -1250,6 +1253,7 @@ function barPrototype:ApplyStyle()
 	local barOptions = DBT.Options
 	local sparkEnabled = barOptions.Spark
 	local enlarged = self.enlarged
+	local isSecret = self.isSecret
 	if self.color then
 		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
 		bar:SetStatusBarColor(barRed, barGreen, barBlue)
@@ -1272,7 +1276,7 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if barOptions.IconLeft then
 		icon1:Show()
-		if barOptions.JournalIcons ~= 0 then
+		if isSecret and barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
 			if barOptions.JournalIcons == 4 then
 				jIcons:ClearAllPoints()
@@ -1287,7 +1291,7 @@ function barPrototype:ApplyStyle()
 		end
 	else
 		icon1:Hide()
-		if barOptions.JournalIcons ~= 0 then
+		if isSecret and barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
 			jIcons:ClearAllPoints()
 			if barOptions.JournalIcons == 4 then
@@ -1302,7 +1306,7 @@ function barPrototype:ApplyStyle()
 			jIcons:Hide()
 		end
 	end
-	if barOptions.JournalIcons >= 2 then
+	if isSecret and barOptions.JournalIcons >= 2 then
 		if barOptions.JournalIcons == 4 then
 			jIcons2:ClearAllPoints()
 			jIcons2:SetPoint("BOTTOMRIGHT", jIcons, "TOPRIGHT", 0, 0)
@@ -1314,7 +1318,7 @@ function barPrototype:ApplyStyle()
 	else
 		jIcons2:Hide()
 	end
-	if barOptions.JournalIcons >= 3 then
+	if isSecret and barOptions.JournalIcons >= 3 then
 		--if barOptions.JournalIcons == 4 then
 		--	jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 0, 0)
 		--else
@@ -1324,7 +1328,7 @@ function barPrototype:ApplyStyle()
 	else
 		jIcons3:Hide()
 	end
-	if barOptions.JournalIcons >= 4 then
+	if isSecret and barOptions.JournalIcons >= 4 then
 		jIcons4:Show()
 	else
 		jIcons4:Hide()
