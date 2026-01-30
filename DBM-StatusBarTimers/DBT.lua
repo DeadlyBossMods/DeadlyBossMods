@@ -290,23 +290,42 @@ do
 		local icon2 = bar:CreateTexture("$parentIcon2", "OVERLAY")
 		icon2:SetPoint("LEFT", bar, "RIGHT")
 		icon2:SetSize(20, 20)
-		frame.JournalIcons = {}
-		local jIcons = bar:CreateTexture("$parentJIcons", "OVERLAY")
-		jIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
-		jIcons:SetSize(20, 20)
-		table.insert( frame.JournalIcons, jIcons)
-		local jIcons2 = bar:CreateTexture("$parentJIcons2", "OVERLAY")
-		jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
-		jIcons2:SetSize(20, 20)
-		table.insert( frame.JournalIcons, jIcons2)
-		local jIcons3 = bar:CreateTexture("$parentJIcons3", "OVERLAY")
-		jIcons3:SetPoint("RIGHT", jIcons2, "LEFT", 2, 0)
-		jIcons3:SetSize(20, 20)
-		table.insert( frame.JournalIcons, jIcons3)
-		local jIcons4 = bar:CreateTexture("$parentJIcons4", "OVERLAY")
-		jIcons4:SetPoint("RIGHT", jIcons, "LEFT", 2, 0)
-		jIcons4:SetSize(20, 20)
-		table.insert( frame.JournalIcons, jIcons4)
+		--Secure Journal Icons used by blizzard secret api
+		frame.SecureJIcons = {}
+		local SJIcons = bar:CreateTexture("$parentSJIcons", "OVERLAY")
+		SJIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
+		SJIcons:SetSize(20, 20)
+		table.insert( frame.SecureJIcons, SJIcons)
+		local SJIcons2 = bar:CreateTexture("$parentSJIcons2", "OVERLAY")
+		SJIcons2:SetPoint("RIGHT", SJIcons, "LEFT", 2, 0)
+		SJIcons2:SetSize(20, 20)
+		table.insert( frame.SecureJIcons, SJIcons2)
+		local SJIcons3 = bar:CreateTexture("$parentSJIcons3", "OVERLAY")
+		SJIcons3:SetPoint("RIGHT", SJIcons2, "LEFT", 2, 0)
+		SJIcons3:SetSize(20, 20)
+		table.insert( frame.SecureJIcons, SJIcons3)
+		local SJIcons4 = bar:CreateTexture("$parentSJIcons4", "OVERLAY")
+		SJIcons4:SetPoint("RIGHT", SJIcons3, "LEFT", 2, 0)
+		SJIcons4:SetSize(20, 20)
+		table.insert( frame.SecureJIcons, SJIcons4)
+		--Insecure Journal icons used by custom DBM timers
+		frame.InsecureJicons = {}
+		local IJIcons = bar:CreateTexture("$parentIJIcons", "OVERLAY")
+		IJIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
+		IJIcons:SetSize(20, 20)
+		table.insert( frame.InsecureJicons, IJIcons)
+		local IJIcons2 = bar:CreateTexture("$parentIJIcons2", "OVERLAY")
+		IJIcons2:SetPoint("RIGHT", IJIcons, "LEFT", 2, 0)
+		IJIcons2:SetSize(20, 20)
+		table.insert( frame.InsecureJicons, IJIcons2)
+		local IJIcons3 = bar:CreateTexture("$parentIJIcons3", "OVERLAY")
+		IJIcons3:SetPoint("RIGHT", IJIcons2, "LEFT", 2, 0)
+		IJIcons3:SetSize(20, 20)
+		table.insert( frame.InsecureJicons, IJIcons3)
+		local IJIcons4 = bar:CreateTexture("$parentIJIcons4", "OVERLAY")
+		IJIcons4:SetPoint("RIGHT", IJIcons3, "LEFT", 2, 0)
+		IJIcons4:SetSize(20, 20)
+		table.insert( frame.InsecureJicons, IJIcons4)
 		local varianceTex = bar:CreateTexture("$parentVariance", "OVERLAY")
 		varianceTex:SetPoint("RIGHT", bar, "RIGHT")
 		varianceTex:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
@@ -398,8 +417,8 @@ do
 				newBar:SetText(secretText, nil, true)
 				newBar:SetIcon(icon, id)
 			else
-				newBar:SetText(id, inlineIcon or newBar.inlineIcon)
-				newBar:SetIcon(icon)
+				newBar:SetText(id)
+				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
 			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
 				newBar:ResetAnimations()
@@ -491,8 +510,8 @@ do
 				newBar:SetText(secretText, nil, true)
 				newBar:SetIcon(icon, id)
 			else
-				newBar:SetText(id, inlineIcon or newBar.inlineIcon)
-				newBar:SetIcon(icon)
+				newBar:SetText(id)
+				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
 			self.bars[newBar] = true
 			self:UpdateBars(true)
@@ -934,13 +953,53 @@ function barPrototype:SetText(text, inlineIcon, isSecret)
 	end
 end
 
-function barPrototype:SetIcon(icon, eventID)
-	local frame_name = self.frame:GetName()
-	_G[frame_name.."BarIcon1"]:SetTexture(icon)
-	_G[frame_name.."BarIcon2"]:SetTexture(icon)
-	if eventID then
-		--secretIcons just inherits blizzards enabled/disabled icons state. Maybe should pass our own?
-		C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].JournalIcons)
+do
+    local pattern =
+        "|T([^:]+):" ..                    -- path
+        "(%d+)" ..                        -- height
+        ":?(%d*)" ..                    -- width (optional)
+        "[^|]*:" ..
+        "(%d+):(%d+):" ..                -- Texture width, height
+        "(%d+):(%d+):(%d+):(%d+)" ..    -- left, right, top, bottom texels
+        "|t"
+	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
+		local frame_name = self.frame:GetName()
+		_G[frame_name.."BarIcon1"]:SetTexture(icon)
+		_G[frame_name.."BarIcon2"]:SetTexture(icon)
+		--Sanitize previous icons
+		_G[frame_name].SecureJIcons[1]:SetTexture(nil)
+		_G[frame_name].SecureJIcons[2]:SetTexture(nil)
+		_G[frame_name].SecureJIcons[3]:SetTexture(nil)
+		_G[frame_name].SecureJIcons[4]:SetTexture(nil)
+		_G[frame_name].InsecureJicons[1]:SetTexture(nil)
+		_G[frame_name].InsecureJicons[2]:SetTexture(nil)
+		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
+		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
+		if eventID then
+			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
+        elseif customJournalIcon then
+            local _tmpIcons = {}
+
+            for path, height, width, texW, texH, left, right, top, bottom in customJournalIcon:gmatch(pattern) do
+                texW = tonumber(texW)
+                texH = tonumber(texH)
+                left = tonumber(left) / texW
+                right = tonumber(right) / texW
+                top = tonumber(top) / texH
+                bottom = tonumber(bottom) / texH
+                _tmpIcons[#_tmpIcons+1] = {path, tonumber(height), tonumber(width) or 0, left, right, top, bottom}
+            end
+
+			--C_EncounterTimeline.SetEventIconTextures won't touch insecure/tainted frame, which is why custom icons use different frames
+            for count, iconFrame in ipairs(_G[frame_name].InsecureJicons) do
+                local _icon = _tmpIcons[count]
+                if _icon then
+                    iconFrame:SetTexture(_icon[1])
+                    iconFrame:SetSize(_icon[3], _icon[2])
+                    iconFrame:SetTexCoord(_icon[4], _icon[5], _icon[6], _icon[7])
+                end
+            end
+		end
 	end
 end
 
@@ -1240,20 +1299,20 @@ end
 function barPrototype:ApplyStyle()
 	local frame = self.frame
 	local frame_name = frame:GetName()
+	local isSecret = self.isSecret
 	local bar = _G[frame_name.."Bar"]
 	local spark = _G[frame_name.."BarSpark"]
 	local icon1 = _G[frame_name.."BarIcon1"]
 	local icon2 = _G[frame_name.."BarIcon2"]
-	local jIcons = _G[frame_name.."BarJIcons"]
-	local jIcons2 = _G[frame_name.."BarJIcons2"]
-	local jIcons3 = _G[frame_name.."BarJIcons3"]
-	local jIcons4 = _G[frame_name.."BarJIcons4"]
+	local jIcons = isSecret and _G[frame_name.."BarSJIcons"] or _G[frame_name.."BarIJIcons"]
+	local jIcons2 = isSecret and _G[frame_name.."BarSJIcons2"] or _G[frame_name.."BarIJIcons2"]
+	local jIcons3 = isSecret and _G[frame_name.."BarSJIcons3"] or _G[frame_name.."BarIJIcons3"]
+	local jIcons4 = isSecret and _G[frame_name.."BarSJIcons4"] or _G[frame_name.."BarIJIcons4"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = DBT.Options
 	local sparkEnabled = barOptions.Spark
 	local enlarged = self.enlarged
-	local isSecret = self.isSecret
 	if self.color then
 		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
 		bar:SetStatusBarColor(barRed, barGreen, barBlue)
@@ -1276,7 +1335,7 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if barOptions.IconLeft then
 		icon1:Show()
-		if isSecret and barOptions.JournalIcons ~= 0 then
+		if barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
 			if barOptions.JournalIcons == 4 then
 				jIcons:ClearAllPoints()
@@ -1291,7 +1350,7 @@ function barPrototype:ApplyStyle()
 		end
 	else
 		icon1:Hide()
-		if isSecret and barOptions.JournalIcons ~= 0 then
+		if barOptions.JournalIcons ~= 0 then
 			--More efficient way than doing this every bar start?
 			jIcons:ClearAllPoints()
 			if barOptions.JournalIcons == 4 then
@@ -1306,7 +1365,7 @@ function barPrototype:ApplyStyle()
 			jIcons:Hide()
 		end
 	end
-	if isSecret and barOptions.JournalIcons >= 2 then
+	if barOptions.JournalIcons >= 2 then
 		if barOptions.JournalIcons == 4 then
 			jIcons2:ClearAllPoints()
 			jIcons2:SetPoint("BOTTOMRIGHT", jIcons, "TOPRIGHT", 0, 0)
@@ -1318,7 +1377,7 @@ function barPrototype:ApplyStyle()
 	else
 		jIcons2:Hide()
 	end
-	if isSecret and barOptions.JournalIcons >= 3 then
+	if barOptions.JournalIcons >= 3 then
 		--if barOptions.JournalIcons == 4 then
 		--	jIcons2:SetPoint("RIGHT", jIcons, "LEFT", 0, 0)
 		--else
@@ -1328,7 +1387,7 @@ function barPrototype:ApplyStyle()
 	else
 		jIcons3:Hide()
 	end
-	if isSecret and barOptions.JournalIcons >= 4 then
+	if barOptions.JournalIcons >= 4 then
 		jIcons4:Show()
 	else
 		jIcons4:Hide()
