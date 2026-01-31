@@ -14,6 +14,7 @@ L.SILENT_REMINDER					= "알림: " .. L.DBM .. "이 아직 조용함 모드입�
 L.NEWS_UPDATE						= "|h|c11ff1111뉴스|r|h: DBM이 모듈 구조 변경이 적용된 업데이트를 했으며 클래식과 본섭은 이제부터 (동일한) 통합된 모듈을 사용합니다. 이는 오리지널 (디스커버리 포함), 불성, 리분, 대격변 공격대 모듈을 본섭과 동일하게 각각 다운로드 받아야 한다는 뜻입니다. 보다 자세한 정보를 보려면 |Hgarrmission:DBM:news|h|cff3588ff[이곳을 클릭]|r|h하세요"
 L.NEWS_UPDATE_REPEAT					= "|h|c11ff1111뉴스|r|h: DBM이 모듈 구조 변경이 적용된 업데이트를 했으며 클래식과 본섭은 이제부터 (동일한) 통합된 모듈을 사용합니다. 이는 오리지널 (디스커버리 포함), 불성, 리분, 대격변 공격대 모듈을 본섭과 동일하게 각각 다운로드 받아야 한다는 뜻입니다. 지금 모듈이 설치되지 않은 레이드 중입니다. 이 메시지는 누락된 공격대 모듈을 설치할 때까지 지속적으로 표시됩니다 (설치 전까진 이 지역에선 어떠한 경고도 받지 못할 것입니다)"
 
+
 L.COPY_URL_DIALOG_NEWS				= "최신 소식을 보려면 아래 링크를 방문하세요"
 
 L.LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 오류 발생: %s"
@@ -151,6 +152,7 @@ L.OPTION_TIMER_BERSERK		= "$spell:26662 타이머 바 보기"
 L.BAD						= "바닥"
 
 L.OPTION_CATEGORY_TIMERS		= "바"
+--Sub cats for "announce" object
 L.OPTION_CATEGORY_WARNINGS	= "일반 알림"
 L.OPTION_CATEGORY_WARNINGS_YOU	= "개인 알림"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "대상 관련 알림"
@@ -158,7 +160,7 @@ L.OPTION_CATEGORY_WARNINGS_ROLE	= "역할 관련 알림"
 L.OPTION_CATEGORY_SPECWARNINGS		= "특수 알림"
 
 L.OPTION_CATEGORY_SOUNDS		= "음성"
---Sub cats for "announce" object
+--Misc object broken down into sub cats
 L.OPTION_CATEGORY_DROPDOWNS		= "드롭다운 옵션"
 L.OPTION_CATEGORY_YELLS			= "말풍선"
 L.OPTION_CATEGORY_NAMEPLATES		= "이름표"
