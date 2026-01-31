@@ -259,6 +259,14 @@ L.AnnouncementMidnightNotice		= "Las opciones de este panel son para avisos que 
 L.SpecialWarnHeaderMedium			= "Anuncios para mecánicas que Blizzard clasifica como 'moderadas'"
 L.SpecialWarnHeaderCritical			= "Anuncios para mecánicas que Blizzard clasifica como 'críticas'"
 
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras				= "Auras privadas"
+L.Area_PrivateAuras					= "Opciones de aura privada"
+L.EnablePrivateAuraIcons			= "Mostrar iconos de aura privada en pantalla"
+L.EnablePrivateAuraText				= "Mostrar mensajes de texto de aura privada en pantalla"
+L.SetPAIconScale					= "Escala del icono: %0.1f"
+L.SetPATextScale					= "Escala del texto: %0.1f"
+
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 			= "Mensajes de chat"
 L.SelectChatFrameArea			= "Opciones de marco de chat"
@@ -415,6 +423,7 @@ L.ZeroatWindowStartRestart 		= "El texto llega a cero al inicio de la ventana de
 L.ZeroatWindowStartNeg 			= "El texto llega a cero al inicio de la ventana de reutilización y luego se vuelve negativo" --Default
 L.BarIconLeft 					= "Icono izquierdo"
 L.BarIconRight 					= "Icono derecho"
+L.BarIconPosition               = "Posición del icono"
 L.ExpandUpwards					= "Expandir arriba"
 L.FillUpBars					= "Rellenar"
 L.ClickThrough					= "Desactivar clic en barras"
@@ -430,13 +439,18 @@ L.BarColorByType				= "Color por tipo"
 L.Highest						= "Alto hacia arriba"
 L.Lowest						= "Bajo hacia arriba"
 L.NoBarFade						= "Utilizar color inicial para barras pequeñas y final para grandes, sin cambios graduales"
-L.BarInlineIcons				= "Iconos en barras"
+L.BarInlineIcons				= "Mostrar iconos del diaro"
 L.DisableRightClickBar			= "Desactivar clic derecho para cancelar temporizadores"
 L.ShortTimerText				= "Texto de temporizador breve"
 L.KeepBar						= "Mantener hasta que se lance la facultad"
 L.KeepBar2						= "(siempre que el módulo lo permita)"
 L.FadeBar						= "Desteñir barras de facultades lejanas"
 L.BarSkin						= "Estilo de barra"
+L.InlineIconsDropdown			= "Estilo de icono del diario"
+L.SingleLargeIcon				= "Un solo icono grande"
+L.DoubleLargeIcons				= "Dos iconos grandes"
+L.DoubleInlineIcons				= "Todos los iconos grandes"
+L.StackedMiniIcons				= "Iconos pequeños apilados"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat		= "Inicio y descanso"
