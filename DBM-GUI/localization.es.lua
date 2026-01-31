@@ -423,6 +423,7 @@ L.ZeroatWindowStartRestart 		= "El texto llega a cero al inicio de la ventana de
 L.ZeroatWindowStartNeg 			= "El texto llega a cero al inicio de la ventana de reutilización y luego se vuelve negativo" --Default
 L.BarIconLeft 					= "Icono izquierdo"
 L.BarIconRight 					= "Icono derecho"
+L.BarIconPosition               = "Posición del icono"
 L.ExpandUpwards					= "Expandir arriba"
 L.FillUpBars					= "Rellenar"
 L.ClickThrough					= "Desactivar clic en barras"

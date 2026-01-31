@@ -414,6 +414,7 @@ L.ZeroatWindowStartRestart 		= "Le texte atteint zéro au début de la fenêtre 
 L.ZeroatWindowStartNeg 			= "Le texte atteint zéro au début de la fenêtre de recharge puis devient négatif"
 L.BarIconLeft 					= "Icône à gauche"
 L.BarIconRight 					= "Icône à droite"
+L.BarIconPosition               = "Position de l’icône"
 L.ExpandUpwards					= "Étendre vers le haut"
 L.FillUpBars					= "Remplissage"
 L.ClickThrough					= "Désactiver les interactions souris"
