@@ -254,6 +254,15 @@ L.SpecWarn_FlashAlpha				= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton				= "Show example"
 L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
+
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras				= "Private Auras"
+L.Area_PrivateAuras					= "Private Aura Options"
+L.EnablePrivateAuraIcons			= "Show Private Aura icons on screen"
+L.EnablePrivateAuraText				= "Show Private Aura text messages on screen"
+L.SetPAIconScale					= "Icon scale: %0.1f"--Not Finalized
+L.SetPATextScale					= "Text scale: %0.1f"--Not Finalized
+--SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
 --PreMidnight
 L.SpecialWarnHeader1				= "Type 1: Set options for normal priority announcements affecting you or your actions"
 L.SpecialWarnHeader2				= "Type 2: Set options for normal priority announcements affecting everyone"

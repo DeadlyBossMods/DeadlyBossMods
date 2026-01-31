@@ -404,7 +404,7 @@ function timerPrototype:Start(timer, ...)
 			end
 		end
 		-- timerStringWithVariance checks for timer string sent from Start method, self.timerStringWithVariance is from newTimer constructor. Else, use timer value
-		bar = DBT:CreateBar(timerStringWithVariance or (hasVariance and self.timerStringWithVariance) or timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd" or self.simpType == "cdnp")
+		bar = DBT:CreateBar(timerStringWithVariance or (hasVariance and self.timerStringWithVariance) or timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, self.inlineIcon, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd" or self.simpType == "cdnp")
 		if not bar then
 			return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 		end
@@ -429,7 +429,7 @@ function timerPrototype:Start(timer, ...)
 	end
 	msg = msg:gsub(">.-<", stringUtils.stripServerName)
 	if bar then
-		bar:SetText(msg, self.inlineIcon)
+		bar:SetText(msg)
 		-- FIXME: i would prefer to trace this directly in DBT, but since I want to rewrite DBT... meh.
 		test:Trace(self.mod, "StartTimer", self, timer, msg)
 	end
@@ -988,7 +988,7 @@ function timerPrototype:UpdateInline(newInline, ...)
 	local bar = DBT:GetBar(id)
 	if bar then
 		local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
-		bar:SetText(ttext, newInline or self.inlineIcon)
+		bar:SetIcon(self.icon, nil, newInline or self.inlineIcon)
 		test:Trace(self.mod, "SetTimerProperty", self, id, "InlineIcon", newInline or self.inlineIcon)
 	end
 end
@@ -997,7 +997,7 @@ function timerPrototype:UpdateName(name, ...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
 	if bar then
-		bar:SetText(name, self.inlineIcon)
+		bar:SetText(name)
 		test:Trace(self.mod, "SetTimerProperty", self, id, "Name", name)
 	end
 end
@@ -1565,7 +1565,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
-	if maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
+	if DBT.Options.VarianceEnabled and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
 		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
 		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
