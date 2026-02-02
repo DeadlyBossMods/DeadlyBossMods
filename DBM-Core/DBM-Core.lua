@@ -7267,7 +7267,6 @@ do
 	local UnitAura = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex or UnitAura
 	local GetPlayerAuraBySpellID = C_UnitAuras and C_UnitAuras.GetPlayerAuraBySpellID
 	local GetAuraDataBySpellName = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName
-	local newUnitAuraAPIs = C_UnitAuras and C_UnitAuras.GetAuraDataBySpellName and true--Purposely separate from GetAuraDataBySpellName upvalue because I don't want to spam check if a function exists in such a frequent API call
 	---Custom UnitAura wrapper that can check spells by spellID or spell name for up to 5 spells at once
 	---@param uId string
 	---@param spellInput number|string|nil|unknown --required, accepts spellname or spellid
