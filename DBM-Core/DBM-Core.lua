@@ -1502,7 +1502,7 @@ do
 						match = true
 					end
 				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
 					unregisterUEvent(self, event)
 				end
 				if #mods == 0 then
@@ -1563,7 +1563,7 @@ do
 							match = true
 						end
 					end
-					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
+					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
 						unregisterUEvent(self, event)
 						DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
 					end
@@ -1574,6 +1574,30 @@ do
 				end
 			end
 			self.shortTermRegisterEvents = nil
+		end
+	end
+
+	---@param self DBM
+	---@param ... DBMEvent|string
+	---Don't Use this to unregister short term events or "InCombat" events most mods use.
+	---This is strictly for Core events boss mods do NOT use.
+	function DBM:UnregisterEvents(...)
+		test:Trace(self, "UnregisterEvents", "Regular", ...)
+		for i = 1, select('#', ...) do
+			local event = select(i, ...)
+			-- spell events with special care.
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
+				unregisterCLEUEvent(self, event)
+			else
+				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+					unregisterUEvent(self, event)
+					DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
+				else
+					registeredEvents[event] = nil
+					mainFrame:UnregisterEvent(event)
+					DBM:Debug("UnregisteredEvents for event " .. event .. " nilled", 3)
+				end
+			end
 		end
 	end
 
@@ -2151,6 +2175,7 @@ do
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
 		end
+		self:UnregisterEvents("ADDON_LOADED")
 	end
 
 	function DBM:PLAYER_ENTERING_WORLD(isLogin, isReload)
@@ -2196,6 +2221,7 @@ do
 			end
 			--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 		end
+		self:UnregisterEvents("PLAYER_ENTERING_WORLD")
 	end
 end
 
