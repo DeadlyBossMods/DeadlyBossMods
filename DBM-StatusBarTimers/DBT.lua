@@ -381,6 +381,7 @@ do
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
+
 		if self.Options.VarianceEnabled then
 			timer = varianceMaxTimer
 		else
@@ -976,6 +977,7 @@ do
 		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
 		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
 		if eventID then
+			---@diagnostic disable-next-line: param-type-mismatch
 			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
         elseif customJournalIcon then
             local _tmpIcons = {}
@@ -1314,10 +1316,9 @@ function barPrototype:ApplyStyle()
 	local sparkEnabled = barOptions.Spark
 	local enlarged = self.enlarged
 	if self.color then
-		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
-		bar:SetStatusBarColor(barRed, barGreen, barBlue)
+		bar:GetStatusBarTexture():SetVertexColor(self.color.r, self.color.g, self.color.b)
 		if sparkEnabled then
-			spark:SetVertexColor(barRed, barGreen, barBlue)
+			spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
 		end
 	else
 		local colorVar = colorVariables[self.colorType or 0]

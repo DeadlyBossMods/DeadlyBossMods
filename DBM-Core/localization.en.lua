@@ -650,6 +650,7 @@ L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Show info frame for $spell:%s (when threshol
 L.AUTO_READY_CHECK_OPTION_TEXT			= "Play ready check sound when boss is pulled (even if it's not targeted)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Show timer for fastest clear of %s"
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s private auras on this fight."
+L.AUTO_CUSTOMTIMER_OPTION_TEXT			= "Show timer for $spell:%s"--Used for Midnight timeline timers (ie we have no context of what type of timer it is, just a generic timer)
 
 L.AUTO_GOSSIP_BUFFS						= "Auto select gossip choice(s) for npc or profession buffs"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "Auto select gossip choice(s) to perform actions (such as using transports)"
