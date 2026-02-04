@@ -1240,6 +1240,7 @@ end
 --{ Name = "shouldShowChatMessage", Type = "bool", Nilable = false },
 --{ Name = "shouldShowWarning", Type = "bool", Nilable = false },
 function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
+	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	--Secrets
 	local text = encounterWarningInfo.text
