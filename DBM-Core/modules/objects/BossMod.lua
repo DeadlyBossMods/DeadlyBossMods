@@ -954,8 +954,9 @@ end
 function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId)
 	if optionId and self.Options["CustomTimerOption" .. optionId] then
 		--Set Color
-		local timerColor = self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-		C_EncounterEvents.SetEventColor(encounterEventId, {timerColor.r, timerColor.g, timerColor.b})
+		local colorType = self.Options["CustomTimerOption" .. optionId .. "Color"] or 0
+		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
+		C_EncounterEvents.SetEventColor(encounterEventId, {timerRed, timerGreen, timerBlue})
 		--Set Countdown
 		local timerCountdown = self.Options["CustomTimerOption" .. optionId .. "CVoice"] or 0
 		if type(timerCountdown) == "string" then
