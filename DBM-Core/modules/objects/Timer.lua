@@ -1543,6 +1543,7 @@ end
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --/run C_EncounterTimeline.AddEditModeEvents()
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
@@ -1618,6 +1619,7 @@ end
 function DBM:GigaTimerTest(size, maxQueue)
 	for i = 1, size == 2 and 60 or size == 1 and 30 or 15 do
 		local duration = (10 * i)
+		---@diagnostic disable-next-line: assign-type-mismatch
 		C_EncounterTimeline.AddScriptEvent({duration = duration,spellID = 12345,overrideName = "Test Spell "..i,iconFileID = 237550,maxQueueDuration = maxQueue or 0})
 	end
 end

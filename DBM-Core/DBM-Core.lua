@@ -413,6 +413,7 @@ DBM.DefaultOptions = {
 	EnableTooltipInCombat = true,
 	EnableTooltipHeader = true,
 	HasShownMidnightPopup = false,
+	IgnoreBlizzAPI = false,
 }
 
 ---@type DBMMod[]
@@ -906,6 +907,12 @@ function DBM:MidRestrictionsActive(includeAuras)
 	end
 end
 bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
+
+---@param self DBMModOrDBM
+function DBM:IgnoreBlizzardAPI()
+	DBM.Options.IgnoreBlizzAPI = true
+end
+bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
 
 do
 	local issecretvalue = issecretvalue or function(val) return false end
@@ -2174,6 +2181,7 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
+			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 		end
 		self:UnregisterEvents("ADDON_LOADED")
 	end
@@ -6587,6 +6595,7 @@ do
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
 			end
+			self.Options.IgnoreBlizzAPI = false
 			if event then
 				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
 			end
