@@ -141,7 +141,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	--This code is for special warnings that bypass normal "show" method of hard coded objects (such as midnight secrets)
 	if customIcon then
 		if number and not noSound and not self.Options.DontPlaySpecialWarningSound then
-			self:PlaySpecialWarningSound(number, force)
+			self:PlaySpecialWarningSound(number, force, true)
 		end
 		if number then
 			if self.Options["SpecialWarningFlash" .. number] and not self.Options.DontShowSpecialWarningFlash then
@@ -1198,7 +1198,9 @@ end
 
 ---@param soundId number|string
 ---@param force boolean?
-function DBM:PlaySpecialWarningSound(soundId, force)
+---@param fromBlizzAPI boolean?
+function DBM:PlaySpecialWarningSound(soundId, force, fromBlizzAPI)
+	if fromBlizzAPI and self.Options.DisableSWSound then return end
 	local sound
 	if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then
 		sound = self.Options.RaidWarningSound

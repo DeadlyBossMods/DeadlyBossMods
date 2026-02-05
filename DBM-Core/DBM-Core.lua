@@ -414,6 +414,7 @@ DBM.DefaultOptions = {
 	EnableTooltipHeader = true,
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
+	DisableSWSound = false,
 }
 
 ---@type DBMMod[]
@@ -913,6 +914,12 @@ function DBM:IgnoreBlizzardAPI()
 	DBM.Options.IgnoreBlizzAPI = true
 end
 bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
+
+---@param self DBMModOrDBM
+function DBM:DisableSpecialWarningSounds()
+	DBM.Options.DisableSWSound = true
+end
+bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 
 do
 	local issecretvalue = issecretvalue or function(val) return false end
@@ -2182,6 +2189,7 @@ do
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
+			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
 		end
 		self:UnregisterEvents("ADDON_LOADED")
 	end
@@ -6602,6 +6610,7 @@ do
 				mod:DisablePrivateAuraSounds()
 			end
 			self.Options.IgnoreBlizzAPI = false
+			self.Options.DisableSWSound = false
 			if event then
 				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
 			end
@@ -8819,6 +8828,11 @@ function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, 
 	self:AddBoolOption("CustomTimerOption" .. spellId, default, "timer", nil, defaultColor, defaultVoice, spellId)
 end
 
+---Object for cusotmizing blizzard alerts to be shown or what sound plays for them
+---@param auraspellId number SpellID used for option text and saved variables
+---@param default SpecFlags|boolean?
+---@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaultSound, groupSpellId)
 	self.DefaultOptions["CustomAlertOption" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1

@@ -2,7 +2,7 @@
 local private = select(2, ...)
 
 private.wowTOC = (select(4, GetBuildInfo()))
-private.testBuild = IsTestBuild()
+private.testBuild = IsTestBuild() or IsBetaBuild()
 private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 private.isClassic = (WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)) and private.wowTOC < 20000
 private.isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_GameRules.IsHardcoreActive()
