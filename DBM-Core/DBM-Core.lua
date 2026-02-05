@@ -2790,6 +2790,10 @@ do
 				if name then
 					local id = "raid" .. i
 					local shortname = UnitName(id)
+					local guid = UnitGUID(id)
+					if self:issecretvalue(guid) then
+						guid = nil
+					end
 					if (not raid[name]) and inRaid then
 						fireEvent("DBM_raidJoin", name)
 					end
@@ -2801,10 +2805,12 @@ do
 					raid[name].class = className
 					raid[name].id = id
 					raid[name].groupId = i
-					raid[name].guid = UnitGUID(id) or ""
+					raid[name].guid = guid or ""
 					raid[name].updated = true
 					raid[name].isOnline = isOnline
-					raidGuids[UnitGUID(id) or ""] = name
+					if guid then
+						raidGuids[guid] = name
+					end
 					if rank == 2 then
 						lastGroupLeader = name
 					end

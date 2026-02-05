@@ -968,8 +968,11 @@ function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId)
 		else
 			path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\fivecount.ogg"
 		end
+		local fileId = GetFileIDFromPath(path)
 		--Currently commented because api does not accept file paths yet, only file data IDs, which isn't possible with custom media
-		--C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = "Master", volume = 1})
+		if fileId then
+			C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = "Master", volume = 1})
+		end
 	end
 end
 

@@ -290,7 +290,7 @@ local Sorts = {
 
 local BarSetupVariance = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupVariance)
 
-local VarianceEnableCheckbox = BarSetupVariance:CreateCheckButton(L.EnableVarianceBar, true, nil, nil, "VarianceEnabled")
+local VarianceEnableCheckbox = BarSetupVariance:CreateCheckButton(L.EnableVarianceBar, true, nil, nil, "VarianceEnabled2")
 
 local varcolor1 = BarSetup:CreateColorSelect(L.VarianceColor, function(_, r, g, b)
 	DBT:SetOption("VarColorR", r)
