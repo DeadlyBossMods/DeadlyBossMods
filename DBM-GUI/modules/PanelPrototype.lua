@@ -496,7 +496,7 @@ do
 				local isNewDropdown = frame.mytype == "dropdown2"
 				frame:SetPoint("LEFT", button, "RIGHT", isNewDropdown and 2 or -20, 2)
 				frame2:SetPoint("LEFT", frame, "RIGHT", isNewDropdown and 4 or 18, 0)
-			else
+			else--Special warning option
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value, true)

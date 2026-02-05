@@ -213,14 +213,14 @@ function timerPrototype:Start(timer, ...)
 		hasVariance = true
 		timerStringWithVariance = timer -- cache timer string
 		maxTimer, minTimer = parseVarianceFromTimer(timer) -- use highest possible value as the actual End timer
-		timer = DBT.Options.VarianceEnabled and maxTimer or minTimer
+		timer = DBT.Options.VarianceEnabled2 and maxTimer or minTimer
 	end
 	if isDelayed then -- catch metavariant timers with delay, expressed like timer:Start(-delay)
 		if self.hasVariance then
 			hasVariance = self.hasVariance
 			maxTimer, minTimer = parseVarianceFromTimer(self.timerStringWithVariance) -- use highest possible value as the actual End timer
 			timerStringWithVariance = ("v%s-%s"):format(minTimer + timer, maxTimer + timer) -- rebuild timer string with delay applied
-			timer = (DBT.Options.VarianceEnabled and maxTimer or minTimer) + timer
+			timer = (DBT.Options.VarianceEnabled2 and maxTimer or minTimer) + timer
 		end
 	end
 	if DBM.Options.DebugMode and self.mod.id ~= "TestMod" then
@@ -742,7 +742,7 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 	local maxTimer, minTimer, correctedTimer
 	if type(totalTime) == "string" and totalTime:match("^v%d+%.?%d*-%d+%.?%d*$") then -- catch "timer variance" pattern, expressed like v10.5-20.5
 		maxTimer, minTimer = parseVarianceFromTimer(totalTime)
-		correctedTimer = DBT.Options.VarianceEnabled and maxTimer or minTimer
+		correctedTimer = DBT.Options.VarianceEnabled2 and maxTimer or minTimer
 	end
 	if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
 		local guid
@@ -1556,6 +1556,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
+	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
 --	local icons = eventInfo.icons
 --	local severity = eventInfo.severity ("Normal", "Deadly")
 --	local isApproximate = eventInfo.isApproximate
@@ -1566,10 +1567,10 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
-	if DBT.Options.VarianceEnabled and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
-		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+	if DBT.Options.VarianceEnabled2 and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
+		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
-		DBT:CreateBar(duration, eventID, iconId, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
+		DBT:CreateBar(duration, eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
 end
 

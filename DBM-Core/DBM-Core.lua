@@ -233,7 +233,7 @@ DBM.DefaultOptions = {
 	GUIWidth = 800,
 	GUIHeight = 600,
 	GroupOptionsExcludeIcon = false,
-	GroupOptionsExcludePA = false,
+--	GroupOptionsExcludePA = false,
 	AutoExpandSpellGroups2 = true,
 	ShowWAKeys = true,
 	--ShowSpellDescWhenExpanded = false,
@@ -2790,6 +2790,10 @@ do
 				if name then
 					local id = "raid" .. i
 					local shortname = UnitName(id)
+					local guid = UnitGUID(id)
+					if self:issecretvalue(guid) then
+						guid = nil
+					end
 					if (not raid[name]) and inRaid then
 						fireEvent("DBM_raidJoin", name)
 					end
@@ -2801,10 +2805,12 @@ do
 					raid[name].class = className
 					raid[name].id = id
 					raid[name].groupId = i
-					raid[name].guid = UnitGUID(id) or ""
+					raid[name].guid = guid or ""
 					raid[name].updated = true
 					raid[name].isOnline = isOnline
-					raidGuids[UnitGUID(id) or ""] = name
+					if guid then
+						raidGuids[guid] = name
+					end
 					if rank == 2 then
 						lastGroupLeader = name
 					end
@@ -8788,10 +8794,29 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
 	self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
-	if not DBM.Options.GroupOptionsExcludePA then
+--	if not DBM.Options.GroupOptionsExcludePA then
 		self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound" .. auraspellId)
-	end
+--	end
 	self:SetOptionCategory("PrivateAuraSound" .. auraspellId, "paura", nil, nil, true)
+end
+
+---Object for customizing blizzard timeline object with colors and sounds
+---@param spellId number SpellID used for option text and saved variables
+---@param default SpecFlags|boolean?
+---@param defaultColor number? ColorId 1-6 for color bar by type
+---@param defaultVoice number? VoiceId for countdown voice
+---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
+function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, defaultVoice, groupSpellId)
+	self.DefaultOptions["CustomTimerOption" .. spellId] = (default == nil) or default
+	--Note:, TColor and CVoice are generated in AddBoolOption
+	if type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["CustomTimerOption" .. spellId] = (default == nil) or default
+
+	self.localization.options["CustomTimerOption" .. spellId] = L.AUTO_CUSTOMTIMER_OPTION_TEXT:format(spellId)
+	self:GroupSpellsPA(groupSpellId or spellId, "CustomTimerOption" .. spellId)
+	self:AddBoolOption("CustomTimerOption" .. spellId, default, "timer", nil, defaultColor, defaultVoice, spellId)
 end
 
 ---@meta
@@ -9226,7 +9251,7 @@ function bossModPrototype:SetOptionCategory(name, cat, optionSubType, waCustomNa
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and self.groupSpells[name] and not (optionSubType == "gtfo" or optionSubType == "adds" or optionSubType == "addscount" or optionSubType == "addscustom" or optionSubType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon or cat == "paura" and DBM.Options.GroupOptionsExcludePA) then
+	if self.addon and self.groupSpells[name] and not (optionSubType == "gtfo" or optionSubType == "adds" or optionSubType == "addscount" or optionSubType == "addscustom" or optionSubType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then--or cat == "paura" and DBM.Options.GroupOptionsExcludePA
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}

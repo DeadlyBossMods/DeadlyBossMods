@@ -30,6 +30,7 @@
 		"hasanysecretvalues",
 		"EncounterTimeline",
 		"EncounterTimeline.TimelineView",
+		"C_EncounterEvents",
 		"C_EncounterTimeline",
 		"PlayerIsTimerunning",
 		"GetRestrictedActionStatus",

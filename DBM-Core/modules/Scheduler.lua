@@ -288,17 +288,18 @@ do
 			schedule(time, repeatScheduleLoop, time, func, mod, prototype, count)
 		end
 	end
-end
 
-function module:Schedule(t, f, mod, ...)
-	if type(f) ~= "function" then
-		error("usage: DBM:Schedule(time, func, [args...])", 2)
+	function module:Schedule(t, f, mod, ...)
+		if type(f) ~= "function" then
+			error("usage: DBM:Schedule(time, func, [args...])", 2)
+		end
+		return schedule(t, f, mod, ...)
 	end
-	return schedule(t, f, mod, ...)
-end
 
-function module:Unschedule(f, mod, ...)
-	return unschedule(f, mod, ...)
+	function module:Unschedule(f, mod, ...)
+		unschedule(repeatScheduleLoop, mod, f, mod)--Should work, but needs testing
+		return unschedule(f, mod, ...)
+	end
 end
 
 -- Expose locals for testing.

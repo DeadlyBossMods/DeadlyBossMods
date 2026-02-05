@@ -86,7 +86,7 @@ DBT.DefaultOptions = {
 	Bar7ForceLarge = true,
 	Bar7CustomInline = true,
 	-- Variance
-	VarianceEnabled = true,
+	VarianceEnabled2 = wowTOC < 120000 and true or false,
 	VarColorR = 1,
 	VarColorG = 1,
 	VarColorB = 1,
@@ -381,7 +381,8 @@ do
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
-		if self.Options.VarianceEnabled then
+
+		if self.Options.VarianceEnabled2 then
 			timer = varianceMaxTimer
 		else
 			timer = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
@@ -810,7 +811,7 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 			elseif type(totalTime) == "string" then -- found string (variance)
 				local varianceMaxTimer, varianceMinTimer, varianceDuration
 				varianceMaxTimer, varianceMinTimer, varianceDuration = DBT.parseTimer(totalTime) -- either normal number or with variance
-				if self.Options.VarianceEnabled then
+				if self.Options.VarianceEnabled2 then
 					totalTime = varianceMaxTimer
 				else
 					totalTime = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
@@ -976,6 +977,7 @@ do
 		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
 		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
 		if eventID then
+			---@diagnostic disable-next-line: param-type-mismatch
 			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
         elseif customJournalIcon then
             local _tmpIcons = {}
@@ -1022,7 +1024,7 @@ function barPrototype:SetVariance()
 	local frame_name = self.frame:GetName()
 	local varianceTex = _G[frame_name.."BarVariance"]
 	local varianceTexBorder = _G[frame_name.."BarVarianceBorder"]
-	if DBT.Options.VarianceEnabled and self.hasVariance then
+	if DBT.Options.VarianceEnabled2 and self.hasVariance then
 		local varianceWidth = self.frame:GetWidth() * (self.varianceDuration / self.totalTime)
 		varianceTex:SetWidth(varianceWidth)
 
@@ -1113,9 +1115,9 @@ function barPrototype:Update(elapsed)
 	local hiddenBarTime = barOptions.HiddenBarTime or 60
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
-	local varianceEnabled = barOptions.VarianceEnabled
---	local varianceBehaviorZeroMax = varianceEnabled self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMaxTimer"
-	local varianceBehaviorNeg = varianceEnabled and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
+	local VarianceEnabled2 = barOptions.VarianceEnabled2
+--	local varianceBehaviorZeroMax = VarianceEnabled2 self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMaxTimer"
+	local varianceBehaviorNeg = VarianceEnabled2 and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
 	if barOptions.DynamicColor and not self.color then
@@ -1254,20 +1256,20 @@ function barPrototype:Update(elapsed)
 			DBT:UpdateBars(true)
 		end
 	end
-	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
+	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = true
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
-	elseif isHidden and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
+	elseif isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = nil
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
 		DBT:UpdateBars(true)
-	elseif not paused and ((barOptions.VarianceEnabled and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
+	elseif not paused and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
@@ -1314,10 +1316,9 @@ function barPrototype:ApplyStyle()
 	local sparkEnabled = barOptions.Spark
 	local enlarged = self.enlarged
 	if self.color then
-		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
-		bar:SetStatusBarColor(barRed, barGreen, barBlue)
+		bar:GetStatusBarTexture():SetVertexColor(self.color.r, self.color.g, self.color.b)
 		if sparkEnabled then
-			spark:SetVertexColor(barRed, barGreen, barBlue)
+			spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
 		end
 	else
 		local colorVar = colorVariables[self.colorType or 0]

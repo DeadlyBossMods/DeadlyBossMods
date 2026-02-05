@@ -1,4 +1,3 @@
-if DBM:IsPostMidnight() then return end
 local L = DBM_GUI_L
 local DBT = DBT
 
@@ -267,6 +266,9 @@ do
 	end
 end
 
+if DBM:IsPostMidnight() then return end
+
+--Custom bar emphasis stuff for classic only, midnight secret api can't use this stuff
 local ImpBarColors = BarSetupPanel:CreateArea(L.AreaTitle_ImpBarColors)
 
 --Color Type 7 (Important (User))
