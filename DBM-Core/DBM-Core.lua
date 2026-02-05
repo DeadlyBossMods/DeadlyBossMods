@@ -8819,6 +8819,21 @@ function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, 
 	self:AddBoolOption("CustomTimerOption" .. spellId, default, "timer", nil, defaultColor, defaultVoice, spellId)
 end
 
+function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaultSound, groupSpellId)
+	self.DefaultOptions["CustomAlertOption" .. auraspellId] = (default == nil) or default
+	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
+	if type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["CustomAlertOption" .. auraspellId] = (default == nil) or default
+	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
+	---@diagnostic disable-next-line: assign-type-mismatch
+	self.Options["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
+	self.localization.options["CustomAlertOption" .. auraspellId] = L.AUTO_CUSTOMALERT_OPTION_TEXT:format(auraspellId)
+	self:GroupSpellsPA(groupSpellId or auraspellId, "CustomAlertOption" .. auraspellId)
+	self:SetOptionCategory("CustomAlertOption" .. auraspellId, "paura")
+end
+
 ---@meta
 ---@alias iconTypes
 ---|0: Player icon using no sorting. Most common in boss mods

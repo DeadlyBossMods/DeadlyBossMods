@@ -976,6 +976,41 @@ function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId)
 	end
 end
 
+---Event for registering timeline options to encounter events
+---@param optionId number spellId or JournalId that must match option ID
+---@param encounterEventId number EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+---@param voice VPSound|any voice pack media path
+---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
+function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion)
+	if optionId and self.Options["CustomAlertOption" .. optionId] then
+		local soundId = self.Options["CustomAlertOption" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
+		local mediaPath
+		--Check valid voice pack sound
+		local chosenVoice = DBM.Options.ChosenVoicePack2
+		if chosenVoice ~= "None" and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
+			local isVoicePackUsed
+			--Vet if user has voice pack enabled by sound ID
+			if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
+				isVoicePackUsed = DBM.Options.VPReplacesSADefault
+			end
+			if isVoicePackUsed then
+				mediaPath = "Interface\\AddOns\\DBM-VP" .. chosenVoice .. "\\" .. voice .. ".ogg"
+			else
+				mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
+			end
+		else
+			mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
+		end
+		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
+		if type(mediaPath) == "number" then
+			C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+		else--It's a string, so it's not an ID, we need to set soundFileName instead
+			--NYI on blizzards end to support custom sound file paths
+			--C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+		end
+	end
+end
+
 ---@param t number
 ---@param f function
 ---@param ... any?
