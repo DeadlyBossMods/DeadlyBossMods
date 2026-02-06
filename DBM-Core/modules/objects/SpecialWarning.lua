@@ -1207,7 +1207,10 @@ function DBM:PlaySpecialWarningSound(soundId, force, fromBlizzAPI)
 	else
 		sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 	end
-	self:PlaySoundFile(sound, nil, true)
+	--No throttle if not from blizzard API, but 1 second throttle for same sound file if from blizzAPI since blizzard can send duplicate spammy events
+	if not fromBlizzAPI or (fromBlizzAPI and self:AntiSpam(1, "PlaySpecialWarningSound", sound)) then
+		self:PlaySoundFile(sound, nil, true)
+	end
 end
 
 local function testWarningEnd()
