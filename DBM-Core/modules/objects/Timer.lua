@@ -613,7 +613,7 @@ function timerPrototype:Schedule(t, ...)
 end
 
 ---@param t number|table
----@param count number?
+---@param count number
 ---@param isTimer boolean Tells scheduler that it's a timer object and that it needs to send additional timer in args
 function timerPrototype:Loop(t, count, isTimer)
 	DBMScheduler:ScheduleLoop(t, self.Start, self.mod, self, count, isTimer)
