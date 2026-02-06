@@ -37,7 +37,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32292))
 local specWarnMassiveSmash							= mod:NewSpecialWarningCount(1230087, nil, 212336, nil, 2, 2)
 local specWarnDarkMatter							= mod:NewSpecialWarningMoveAwayCount(1230979, nil, nil, nil, 1, 2)
 local specWarnShatteredSpace						= mod:NewSpecialWarningDodgeCount(1243690, nil, nil, nil, 2, 2)
-local specWarnDevourP1								= mod:NewSpecialWarningMoveTo(1229038, nil, nil, nil, 3, 2)
+local specWarnDevourP1								= mod:NewSpecialWarningCount(1229038, nil, nil, nil, 3, 2)
 
 local timerMassiveSmashCD							= mod:NewCDCountTimer(97.3, 1230087, 212336, nil, nil, 2)--Shortname "Smash"
 --local timerInfinitePossibilities					= mod:NewCastNPTimer(8, 1248240, nil, nil, nil, 5)
@@ -165,6 +165,7 @@ local allTimers = {
 }
 
 function mod:OnLimitedCombatStart(delay)
+	self:SetStage(1)
 	self:EnablePrivateAuraSound(1228206, "targetyou", 2)
 	self:EnablePrivateAuraSound(1243577, "scatter", 2)
 	self:EnablePrivateAuraSound(1232394, "safenow", 2)
@@ -175,7 +176,6 @@ function mod:OnLimitedCombatStart(delay)
 	if DBM.Options.DebugMode then
 		self:IgnoreBlizzardAPI()
 		--eventCount = 0
-		self:SetStage(1)
 		self.vb.massiveSmashCount = 0
 		self.vb.massSpawns = 0
 		self.vb.devourCount = 0
@@ -200,16 +200,21 @@ function mod:OnLimitedCombatStart(delay)
 			savedDifficulty = "other"
 		end
 		--if DBM is in debug mode, we initialize experimental scheduled support
-		timerMassiveSmashCD:Start(allTimers[savedDifficulty][1][1230087][1]-delay, 1)
 		specWarnMassiveSmash:Loop(allTimers[savedDifficulty][1][1230087], 0)
-		timerDevourP1CD:Start(allTimers[savedDifficulty][1][1229038][1]-delay, 1)
+		specWarnMassiveSmash:LoopVoice(allTimers[savedDifficulty][1][1230087], 0, "carefly")
 		specWarnDevourP1:Loop(allTimers[savedDifficulty][1][1229038], 0)
-		timerDarkMatterCD:Start(allTimers[savedDifficulty][1][1230979][1]-delay, 1)
+		specWarnDevourP1:LoopVoice(allTimers[savedDifficulty][1][1229038], 0, "gather")
 		specWarnDarkMatter:Loop(allTimers[savedDifficulty][1][1230979], 0)
-		timerShatteredSpaceCD:Start(allTimers[savedDifficulty][1][1243690][1]-delay, 1)
+		specWarnDarkMatter:LoopVoice(allTimers[savedDifficulty][1][1230979], 0, "scatter")
 		specWarnShatteredSpace:Loop(allTimers[savedDifficulty][1][1243690], 0)
+		specWarnShatteredSpace:LoopVoice(allTimers[savedDifficulty][1][1243690], 0, "aesoon")
+		--Looped Timers
+		timerMassiveSmashCD:Loop(allTimers[savedDifficulty][1][1230087], 0, true)
+		timerDevourP1CD:Loop(allTimers[savedDifficulty][1][1229038], 0, true)
+		timerDarkMatterCD:Loop(allTimers[savedDifficulty][1][1230979], 0, true)
+		timerShatteredSpaceCD:Loop(allTimers[savedDifficulty][1][1243690], 0, true)
 		if not self:IsLFR() then
-			timerReverseGravityCD:Start(allTimers[savedDifficulty][1][1243577][1]-delay, 1)
+			timerReverseGravityCD:Loop(allTimers[savedDifficulty][1][1243577], 0, true)
 		end
 	end
 end
@@ -239,16 +244,21 @@ do
 				warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 				warnPhase:Play("ptwo")
 				--Stop stage 1 timers and warning loops
-				--timerMassiveSmashCD:Stop()
-				--specWarnMassiveSmash:Cancel()
-				--timerDevourP1CD:Stop()
-				--specWarnDevourP1:Cancel()
-				--timerDarkMatterCD:Stop()
-				--specWarnDarkMatter:Cancel()
-				--timerShatteredSpaceCD:Stop()
-				--specWarnShatteredSpace:Cancel()
-				--timerReverseGravityCD:Stop()
-
+				if DBM.Options.DebugMode then
+					timerMassiveSmashCD:Cancel()
+					specWarnMassiveSmash:Cancel()
+					specWarnMassiveSmash:CancelVoice()
+					timerDevourP1CD:Cancel()
+					specWarnDevourP1:Cancel()
+					specWarnDevourP1:CancelVoice()
+					timerDarkMatterCD:Cancel()
+					specWarnDarkMatter:Cancel()
+					specWarnDarkMatter:CancelVoice()
+					timerShatteredSpaceCD:Cancel()
+					specWarnShatteredSpace:Cancel()
+					specWarnShatteredSpace:CancelVoice()
+					timerReverseGravityCD:Cancel()
+				end
 				--Start platform 1 stuff
 				self.vb.extinctionCount = 0
 				self.vb.gammaBurstCount = 0
@@ -286,13 +296,16 @@ do
 				self.vb.massEjectionCount = 0
 				self.vb.conquerorsCrossCount = 0
 				self.vb.stardustCount = 0
-				--timerConquerorsCrossCD:Stop()
-				--timerGammaBurstCD:Stop()
-				--timerExtinctionCD:Stop()
-				--timerMassEjectionCD:Stop()
-				--timerMassDestructionCD:Stop()
-				--timerEclipseCD:Stop()
-				--timerGravitationalDistortionCD:Stop()
+				if DBM.Options.DebugMode then
+					timerConquerorsCrossCD:Stop()
+					timerGammaBurstCD:Stop()
+					timerExtinctionCD:Stop()
+					timerMassEjectionCD:Stop()
+					timerMassDestructionCD:Stop()
+					timerEclipseCD:Stop()
+					timerGravitationalDistortionCD:Stop()
+				end
+				--timerSoaringReshiiCD:Start(13.8)
 				--if self:IsMythic() then
 				--	--Adds basically come immediately on mythic
 				--	--Could start a fake one sooner then update it at last second like BW does but I don't see point

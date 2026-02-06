@@ -141,7 +141,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	--This code is for special warnings that bypass normal "show" method of hard coded objects (such as midnight secrets)
 	if customIcon then
 		if number and not noSound and not self.Options.DontPlaySpecialWarningSound then
-			self:PlaySpecialWarningSound(number, force)
+			self:PlaySpecialWarningSound(number, force, true)
 		end
 		if number then
 			if self.Options["SpecialWarningFlash" .. number] and not self.Options.DontShowSpecialWarningFlash then
@@ -633,9 +633,17 @@ function specialWarningPrototype:Countdown(time, numAnnounces, ...)
 end
 
 ---@param time number|table
----@param count number?
+---@param count number
 function specialWarningPrototype:Loop(time, count)
 	DBMScheduler:ScheduleLoop(time, self.Show, self.mod, self, count)
+end
+
+---@param t number|table
+---@param count number
+---@param name VPSound?
+function specialWarningPrototype:LoopVoice(t, count, name)
+	print("loopvoice", name)
+	DBMScheduler:ScheduleLoop(t, self.Play, self.mod, self, count, nil, name)
 end
 
 function specialWarningPrototype:Cancel(_, ...) -- t, ...
@@ -683,6 +691,7 @@ local specInstructionalRemapVoiceTable = {
 ---@param name VPSound?
 ---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
+	print("play", name)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 	if not canVoiceReplace(self, soundId) then return end
@@ -1198,14 +1207,19 @@ end
 
 ---@param soundId number|string
 ---@param force boolean?
-function DBM:PlaySpecialWarningSound(soundId, force)
+---@param fromBlizzAPI boolean?
+function DBM:PlaySpecialWarningSound(soundId, force, fromBlizzAPI)
+	if fromBlizzAPI and self.Options.DisableSWSound then return end
 	local sound
 	if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then
 		sound = self.Options.RaidWarningSound
 	else
 		sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 	end
-	self:PlaySoundFile(sound, nil, true)
+	--No throttle if not from blizzard API, but 1 second throttle for same sound file if from blizzAPI since blizzard can send duplicate spammy events
+	if not fromBlizzAPI or (fromBlizzAPI and self:AntiSpam(1, "PlaySpecialWarningSound", sound)) then
+		self:PlaySoundFile(sound, nil, true)
+	end
 end
 
 local function testWarningEnd()

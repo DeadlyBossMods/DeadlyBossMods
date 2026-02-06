@@ -545,7 +545,7 @@ function announcePrototype:Countdown(time, numAnnounces, ...)
 end
 
 ---@param time number|table
----@param count number?
+---@param count number
 function announcePrototype:Loop(time, count)
 	DBMScheduler:ScheduleLoop(time, self.Show, self.mod, self, count)
 end
