@@ -269,7 +269,14 @@ do
 		module:ScheduleLoop(time, func, mod, prototype, ...)
 	end
 
-	function module:ScheduleLoop(time, func, mod, prototype, count)
+	---@param time number|table
+	---@param func any
+	---@param mod any
+	---@param prototype any
+	---@param count number|string
+	---@param isTimer boolean?
+	---@param voiceString VPSound?
+	function module:ScheduleLoop(time, func, mod, prototype, count, isTimer, voiceString)
 --		unschedule(func, mod, prototype, ...)
 		--Auto increment count if provided (should start at 0 to function as expected)
 		if count then
@@ -278,14 +285,27 @@ do
 		if type(time) == "table" then
 			--Just schedule what's in table and nothing more or less
 			--Note, it's up to mods to cancel this if a sequence ends early (ie phase change)
-			for _, t in ipairs(time) do
-				schedule(t, func, mod, prototype, count)
+			if time[count] then
+				if isTimer then
+					if count == 1 then
+						schedule(0.0001, func, mod, prototype, time[count], count)
+					end
+					if time[count+1] then
+						schedule(time[count], func, mod, prototype, time[count+1], count+1)
+					end
+				else
+					if voiceString then--Voice pack sound
+						schedule(time[count], func, mod, prototype, voiceString)
+					else--Just a standard special warning schedule
+						schedule(time[count], func, mod, prototype, count)
+					end
+				end
 			end
 		else
 			--Just schedule infinite loop with single loop time
 			--Note, it's up to mods to cancel this!
-			schedule(time, func, mod, prototype, count)
-			schedule(time, repeatScheduleLoop, time, func, mod, prototype, count)
+			schedule(time, func, mod, prototype, count, isTimer, voiceString)
+			schedule(time, repeatScheduleLoop, time, func, mod, prototype, count, isTimer, voiceString)
 		end
 	end
 

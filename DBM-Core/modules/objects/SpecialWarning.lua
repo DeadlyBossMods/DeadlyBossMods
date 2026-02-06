@@ -633,9 +633,17 @@ function specialWarningPrototype:Countdown(time, numAnnounces, ...)
 end
 
 ---@param time number|table
----@param count number?
+---@param count number
 function specialWarningPrototype:Loop(time, count)
 	DBMScheduler:ScheduleLoop(time, self.Show, self.mod, self, count)
+end
+
+---@param t number|table
+---@param count number
+---@param name VPSound?
+function specialWarningPrototype:LoopVoice(t, count, name)
+	print("loopvoice", name)
+	DBMScheduler:ScheduleLoop(t, self.Play, self.mod, self, count, nil, name)
 end
 
 function specialWarningPrototype:Cancel(_, ...) -- t, ...
@@ -683,6 +691,7 @@ local specInstructionalRemapVoiceTable = {
 ---@param name VPSound?
 ---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
+	print("play", name)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 	if not canVoiceReplace(self, soundId) then return end
