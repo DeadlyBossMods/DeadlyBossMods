@@ -355,10 +355,11 @@ do
 	local mt = {__index = barPrototype}
 
 	---@param timer string|number
+	---@return number|nil
+	---@return number|nil
+	---@return number|nil
 	local function parseTimer(timer)
 		if type(timer) == "number" then
-			if timer <= 0 then return end
-
 			return timer -- Normal number timer, no variance
 		end
 
@@ -383,10 +384,13 @@ do
 
 	---Helper function to parse timer variance and return adjusted timer with variance properties
 	---@param timer string|number
+	---@return number
+	---@return number|nil
+	---@return number
+	---@return boolean
 	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
-
 		if DBT.Options.VarianceEnabled2 then
 			timer = varianceMaxTimer
 		else
@@ -400,25 +404,28 @@ do
 	---@param timer string|number
 	---@param id any
 	---@param icon string|number?
-	---@param huge boolean?
-	---@param small boolean?
+	---@param huge boolean|nil?
+	---@param small boolean|nil?
 	---@param color any
 	---@param colorType number?
 	---@param inlineIcon string?
-	---@param keep boolean?
-	---@param fade boolean?
+	---@param keep boolean|nil?
+	---@param fade boolean|nil?
 	---@param countdown number?
 	---@param countdownMax number?
-	---@param isCooldown boolean?
+	---@param isCooldown boolean|nil?
 	---@param secretText any
-	---@param isSecret boolean?
-	---@param isPaused boolean?
+	---@param isSecret boolean|nil?
+	---@param isPaused boolean|nil?
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		if not timer then
 			return
 		end
 		local varianceMinTimer, varianceDuration, hasVariance
 		timer, varianceMinTimer, varianceDuration, hasVariance = parseAndApplyVariance(timer)
+		if timer <= 0 then
+			return
+		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
 		if not self.Options.ColorByType or not colorType then
 			colorType = 0
