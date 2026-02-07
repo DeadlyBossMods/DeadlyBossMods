@@ -249,7 +249,7 @@ do
 			self.obj.curTime = GetTime()
 			self.obj.delta = self.obj.curTime - self.obj.lastUpdate
 			--Frequent updates when any bar is moving or large bars so they don't look janky. More efficient bars when non animating small bars
-			if (barIsAnimating or self.obj.enlarged) and self.obj.delta >= 0.01 or self.obj.delta >= 0.04 then
+			if ((barIsAnimating or self.obj.enlarged) and self.obj.delta >= 0.01) or self.obj.delta >= 0.04 then
 				self.obj.lastUpdate = self.obj.curTime
 				self.obj:Update(self.obj.delta)
 			end
@@ -535,7 +535,7 @@ do
 				newBar.enlarged = false
 				tinsert(hiddenBars, newBar)
 			-- Bars that start huge either by config (above) or because they happen to be short timers
-			elseif (newBar.alwaysHuge or (varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11)) and self.Options.HugeBarsEnabled then
+			elseif (newBar.alwaysHuge or ((varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11))) and self.Options.HugeBarsEnabled then
 				newBar.enlarged = true
 				newBar.huge = true
 				tinsert(largeBars, newBar)
@@ -588,7 +588,7 @@ do
 		self.Options = profile[id]
 		self:Rearrange()
 		-- Fix font if it's nil or set to any of standard font values
-		if not self.Options.Font or (self.Options.Font == "Fonts\\2002.TTF" or self.Options.Font == "Fonts\\ARKai_T.ttf" or self.Options.Font == "Fonts\\blei00d.TTF" or self.Options.Font == "Fonts\\FRIZQT___CYR.TTF" or self.Options.Font == "Fonts\\FRIZQT__.TTF") then
+		if (not self.Options.Font) or (self.Options.Font == "Fonts\\2002.TTF" or self.Options.Font == "Fonts\\ARKai_T.ttf" or self.Options.Font == "Fonts\\blei00d.TTF" or self.Options.Font == "Fonts\\FRIZQT___CYR.TTF" or self.Options.Font == "Fonts\\FRIZQT__.TTF") then
 			self.Options.Font = self.DefaultOptions.Font
 		end
 		-- Migrate texture from default skin to internal
@@ -1041,7 +1041,7 @@ function barPrototype:SetVariance()
 		varianceTex:ClearAllPoints()
 		varianceTexBorder:ClearAllPoints()
 		local isEnlarged = self.enlarged and not self.paused
-		local fillUpBars = isEnlarged and DBT.Options.FillUpLargeBars or not isEnlarged and DBT.Options.FillUpBars
+		local fillUpBars = (isEnlarged and DBT.Options.FillUpLargeBars) or (not isEnlarged and DBT.Options.FillUpBars)
 
 		if fillUpBars then
 			varianceTex:SetPoint("RIGHT", bar, "RIGHT")
