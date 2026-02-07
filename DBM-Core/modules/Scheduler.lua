@@ -159,6 +159,10 @@ do
 end
 
 local nextModSyncSpamUpdate = 0
+local function hasUpdateHandlers()
+	return private.updateFunctions and next(private.updateFunctions) ~= nil
+end
+
 local function rebuildActiveUpdateFunctions()
 	twipe(activeUpdateMods)
 	twipe(activeUpdateFuncs)
@@ -218,7 +222,8 @@ local function onUpdate(self, elapsed)
 			end
 		end
 	end
-	if not nextTask and foundModFunctions == 0 and not (private.updateFunctions and next(private.updateFunctions) ~= nil) then--Nothing left, stop scheduler
+	local hasHandlers = hasUpdateHandlers()
+	if not nextTask and foundModFunctions == 0 and not hasHandlers then--Nothing left, stop scheduler
 		schedulerFrame:SetScript("OnUpdate", nil)
 		schedulerFrame:Hide()
 	end
@@ -237,7 +242,7 @@ function module:UpdateZone()
 	LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
 	private.updateFunctionsDirty = true
 	-- Ensure scheduler is running if there are update functions that may become active in the new zone
-	if private.updateFunctions and next(private.updateFunctions) ~= nil then
+	if hasUpdateHandlers() then
 		module:StartScheduler()
 	end
 end

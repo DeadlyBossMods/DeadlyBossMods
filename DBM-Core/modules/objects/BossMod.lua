@@ -215,7 +215,7 @@ function bossModPrototype:DisableMod()
 	self.Options.Enabled = false
 	private.updateFunctionsDirty = true
 	-- Ensure scheduler is running if other mods have update handlers
-	if private.updateFunctions and next(private.updateFunctions) ~= nil then
+	if next(private.updateFunctions) then
 		scheduler:StartScheduler()
 	end
 end
