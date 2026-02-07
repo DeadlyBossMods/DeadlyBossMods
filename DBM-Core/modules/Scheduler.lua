@@ -159,10 +159,6 @@ do
 end
 
 local nextModSyncSpamUpdate = 0
-local function hasUpdateHandlers()
-	return private.updateFunctions and next(private.updateFunctions) ~= nil
-end
-
 local function rebuildActiveUpdateFunctions()
 	twipe(activeUpdateMods)
 	twipe(activeUpdateFuncs)
