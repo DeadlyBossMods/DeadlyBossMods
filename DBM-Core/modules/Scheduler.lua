@@ -209,9 +209,7 @@ local function onUpdate(self, elapsed)
 	-- clean up sync spam timers and auto respond spam blockers
 	if time > nextModSyncSpamUpdate then
 		nextModSyncSpamUpdate = time + 20
-		-- We now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
-		-- Using pairs(...) to iterate over the hash table and remove stale entries
-		-- Note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
+		-- Every 20 seconds, iterate over private.modSyncSpam with pairs to remove entries older than 8 seconds, which only prevents a small potential memory leak because the sync functions themselves also check the timestamp.
 		for k, v in pairs(private.modSyncSpam) do
 			if time - v > 8 then
 				private.modSyncSpam[k] = nil
