@@ -44,6 +44,7 @@ do
 	-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
 	-- this is just to re-use all the tables of the small tasks that are scheduled all the time (like the wipe detection)
 	-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
+	---@param t table
 	function pushCachedTable(t)
 		if numChachedTables < 8 and #t <= 4 then
 			twipe(t)
@@ -288,6 +289,11 @@ local function unschedule(f, mod, ...)
 end
 
 --Boss mod prototype usage methods (for announces countdowns/loops and yell scheduling
+---@param time number?
+---@param numAnnounces number?
+---@param func any
+---@param mod DBMMod
+---@param prototype Announce|SpecialWarning|Timer|Yell|EnrageTimer
 function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 	time = time or 5
 	numAnnounces = numAnnounces or 3
@@ -308,8 +314,8 @@ do
 
 	---@param time number|table
 	---@param func any
-	---@param mod any
-	---@param prototype any
+	---@param mod DBMMod
+	---@param prototype Announce|SpecialWarning|Timer|Yell|EnrageTimer
 	---@param count number|string
 	---@param isTimer boolean?
 	---@param voiceString VPSound?
