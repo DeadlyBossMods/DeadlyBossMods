@@ -460,7 +460,6 @@ L.AUTO_SPEC_WARN_OPTIONS.switchcount		= "特別提示：針對$spell:%s需要轉
 L.AUTO_SPEC_WARN_OPTIONS.gtfo 				= "特別提示：當地板出現危險的東西需要躲開時"
 L.AUTO_SPEC_WARN_OPTIONS.adds				= "特別提示：當小怪出現需要更換目標時"
 L.AUTO_SPEC_WARN_OPTIONS.addscount			= "特別提示：當小怪出現需要更換目標時 (包含計數)"
-
 L.AUTO_SPEC_WARN_OPTIONS.addscustom			= "特別提示：即將到來的小怪"
 L.AUTO_SPEC_WARN_OPTIONS.targetchange		= "特別提示：當需要更換主要目標時"
 
@@ -733,3 +732,11 @@ L.KEYSTONE_NAMES[503] = '回音' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = '破曉' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = '水閘' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = '秘境' -- Eco-Dome Al'dani
+
+-- Midnight jazz
+L.MN_TIMELINE_HEADER	= "您想使用暴雪時間線還是DBM計時條呢？"
+L.MN_BLIZZARD_TIMELINE	= "暴雪時間線"
+L.MN_DBM_TIMELINE		= "DBM計時條"
+L.MN_WARNIGS_HEADER		= "您想使用暴雪首領戰警告還是DBM首領戰警告呢？"
+L.MN_BLIZZARD_WARNINGS	= "暴雪的警告"
+L.MN_DBM_WARNINGS		= "DBM的警告"
