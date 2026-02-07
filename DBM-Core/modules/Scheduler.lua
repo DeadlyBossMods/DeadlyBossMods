@@ -218,7 +218,7 @@ local function onUpdate(self, elapsed)
 			end
 		end
 	end
-	if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
+	if not nextTask and foundModFunctions == 0 and not (private.updateFunctions and next(private.updateFunctions) ~= nil) then--Nothing left, stop scheduler
 		schedulerFrame:SetScript("OnUpdate", nil)
 		schedulerFrame:Hide()
 	end
@@ -236,6 +236,10 @@ end
 function module:UpdateZone()
 	LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
 	private.updateFunctionsDirty = true
+	-- Ensure scheduler is running if there are update functions that may become active in the new zone
+	if private.updateFunctions and next(private.updateFunctions) ~= nil then
+		module:StartScheduler()
+	end
 end
 
 local function schedule(t, f, mod, ...)
