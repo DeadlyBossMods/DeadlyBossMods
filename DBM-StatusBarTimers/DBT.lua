@@ -160,7 +160,7 @@ DBT.DefaultOptions = {
 ---@field colorType number
 ---@field keep boolean?
 ---@field isCooldown boolean?
----@field huge boolean
+---@field huge boolean?
 ---@field small boolean?
 ---@field fade boolean?
 ---@field dummy boolean?
@@ -391,10 +391,12 @@ do
 	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
-		if DBT.Options.VarianceEnabled2 then
-			timer = varianceMaxTimer
-		else
-			timer = varianceMinTimer or varianceMaxTimer
+		if varianceMaxTimer then
+			if DBT.Options.VarianceEnabled2 then
+				timer = varianceMaxTimer
+			else
+				timer = varianceMinTimer or varianceMaxTimer
+			end
 		end
 
 		return timer, varianceMinTimer, varianceDuration or 0, varianceMinTimer and true or false
