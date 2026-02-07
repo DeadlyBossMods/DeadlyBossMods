@@ -385,8 +385,8 @@ do
 
 	---Helper function to parse timer variance and return adjusted timer with variance properties
 	---@param timer string|number
-	---@return number? timer Adjusted timer value
-	---@return number? minTimer Minimum timer value
+	---@return number timer Adjusted timer value
+	---@return number minTimer Minimum timer value
 	---@return number varianceDuration Duration of variance window
 	---@return boolean hasVariance Whether timer has variance
 	local function parseAndApplyVariance(timer)
@@ -434,8 +434,8 @@ do
 		if newBar then -- Update an existing bar
 			newBar.isHidden = nil
 			newBar.lastUpdate = GetTime()
-			newBar.huge = huge or nil
-			newBar.paused = isPaused or nil
+			newBar.huge = huge
+			newBar.paused = isPaused
 			newBar.minTimer = varianceMinTimer
 			newBar.varianceDuration = varianceDuration
 			newBar.hasVariance = hasVariance
