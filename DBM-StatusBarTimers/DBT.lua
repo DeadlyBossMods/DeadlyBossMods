@@ -355,9 +355,6 @@ do
 	local mt = {__index = barPrototype}
 
 	---@param timer string|number
-	---@return number|nil
-	---@return number?
-	---@return number?
 	local function parseTimer(timer)
 		if type(timer) == "number" then
 			if timer <= 0 then return end
@@ -386,10 +383,6 @@ do
 
 	---Helper function to parse timer variance and return adjusted timer with variance properties
 	---@param timer string|number
-	---@return number|nil
-	---@return number?
-	---@return number
-	---@return boolean
 	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
