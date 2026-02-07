@@ -204,6 +204,10 @@ end
 function bossModPrototype:EnableMod()
 	self.Options.Enabled = true
 	private.updateFunctionsDirty = true
+	-- Ensure scheduler is running if this mod has an update handler
+	if private.updateFunctions[self] then
+		scheduler:StartScheduler()
+	end
 end
 
 function bossModPrototype:DisableMod()
@@ -243,7 +247,7 @@ end
 function bossModPrototype:UnregisterOnUpdateHandler()
 	self.elapsed = nil
 	self.updateInterval = nil
-	table.wipe(private.updateFunctions)
+	private.updateFunctions[self] = nil
 	private.updateFunctionsDirty = true
 end
 
