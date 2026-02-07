@@ -397,8 +397,12 @@ do
 			else
 				timer = varianceMinTimer or varianceMaxTimer
 			end
+		else
+			-- If parseTimer didn't return a number, convert timer to number (it should already be one, but satisfy type checker)
+			timer = tonumber(timer) or timer
 		end
 
+		---@cast timer number
 		return timer, varianceMinTimer, varianceDuration or 0, varianceMinTimer and true or false
 	end
 	DBT.parseAndApplyVariance = parseAndApplyVariance
