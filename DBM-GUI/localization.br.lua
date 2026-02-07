@@ -201,6 +201,14 @@ L.AnnouncementMidnightNotice		= "As opções neste painel são para avisos que a
 L.SpecialWarnHeaderMedium			= "Anúncios para mecânicas que a Blizzard classifica como 'médias'"
 L.SpecialWarnHeaderCritical			= "Anúncios para mecânicas que a Blizzard classifica como 'críticas'"
 
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras				= "Auras privadas"
+L.Area_PrivateAuras					= "Opções de aura privada"
+L.EnablePrivateAuraIcons			= "Mostrar ícones de aura privada na tela"
+L.EnablePrivateAuraText				= "Mostrar mensagens de texto de aura privada na tela"
+L.SetPAIconScale					= "Escala do ícone: %0.1f"
+L.SetPATextScale					= "Escala do texto: %0.1f"
+
 -- Special Announce Dropdowns
 L.SAOne     				= "Som global 1 (pessoal)"
 L.SATwo     				= "Som global 2 (todos)"
@@ -265,6 +273,7 @@ L.ZeroatWindowStartRestart 	= "O texto atinge zero no início da janela de recar
 L.ZeroatWindowStartNeg 		= "O texto atinge zero no início da janela de recarga e depois fica negativo"
 L.BarIconLeft 				= "Ícone da esq."
 L.BarIconRight 				= "Ícone da dir."
+L.BarIconPosition           = "Posição do ícone"
 L.ExpandUpwards				= "Expandir para cima"
 L.FillUpBars				= "Barras enchem"
 L.ClickThrough				= "Desativar eventos de mouse (permite clicar através das barras)"
@@ -280,13 +289,18 @@ L.BarColorByType 			= "Colorir por tipo"
 L.Highest 					= "Maior no topo"
 L.Lowest 					= "Menor no topo"
 L.NoBarFade 				= "Usar cores inicial/final como cores pequena/grande em vez de mudança gradual de cor"
-L.BarInlineIcons 			= "Exibir ícones inline"
+L.BarInlineIcons 			= "Exibir ícones do diário"
 L.DisableRightClickBar		= "Desativar clique direito para cancelar cronômetros"
 L.ShortTimerText 			= "Usar texto curto de cronômetro (quando disponível)"
 L.KeepBar 					= "Manter cronômetro ativo até o lançamento da habilidade"
 L.KeepBar2 					= "(quando suportado pelo mod)"
 L.FadeBar 					= "Desaparecer cronômetros para habilidades fora do alcance"
 L.BarSkin 					= "Estilo da barra"
+L.InlineIconsDropdown		= "Estilo de ícone do diário"
+L.SingleLargeIcon			= "Um único ícone grande"
+L.DoubleLargeIcons			= "Dois ícones grandes"
+L.DoubleInlineIcons			= "Todos os ícones grandes"
+L.StackedMiniIcons			= "Ícones pequenos empilhados"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat 	= "Puxada e pausa"
