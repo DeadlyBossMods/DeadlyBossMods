@@ -251,12 +251,23 @@ L.SpecWarn_FlashAlpha		= "Прозрачность мигания: %0.1f"
 L.SpecWarn_DemoButton		= "Показать пример"
 L.SpecWarn_ResetMe			= "Восстановить умолчания"
 L.SpecialWarnSoundOption	= "Установить звук по умолчанию"
+
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras				= "Приватные ауры"
+L.Area_PrivateAuras					= "Настройки приватных аур"
+L.EnablePrivateAuraIcons			= "Отображать иконки приватных аур"
+L.EnablePrivateAuraText				= "Отображать текстовые сообщения притватных аур"
+L.SetPAIconScale					= "Масштаб значка: %0.1f"--Не завершено
+L.SetPATextScale					= "Масштаб текста: %0.1f"--Не завершено
+--SpamBlockNoPrivateAuraSound будет повторно использовано в параметрах графического интерфейса, но повторная локализация не требуется
+
 --PreMidnight
 L.SpecialWarnHeader1		= "Тип 1: установить параметры для обычных приоритетных объявлений, влияющих на Вас или Ваши действия"
 L.SpecialWarnHeader2		= "Тип 2: установить параметры для объявлений с обычным приоритетом, влияющих на всех"
 L.SpecialWarnHeader3		= "Тип 3: установить параметры для объявлений с ВЫСОКИМ приоритетом"
 L.SpecialWarnHeader4		= "Тип 4: установить параметры для специальных объявлений 'Run away' (он же 'убегай') с ВЫСОКИМ приоритетом"
 L.SpecialWarnHeader5		= "Тип 5: установить параметры для объявлений с примечаниями, содержащими имя Вашего игрока"
+
 --Post Midnight
 L.SpecialWarnHeaderMedium		= "Анонсы для механик, которые Blizzard классифицирует как 'умеренные'"
 L.SpecialWarnHeaderCritical		= "Анонсы для механик, которые Blizzard классифицирует как 'критические'"

@@ -160,7 +160,7 @@ DBT.DefaultOptions = {
 ---@field colorType number
 ---@field keep boolean?
 ---@field isCooldown boolean?
----@field huge boolean
+---@field huge boolean?
 ---@field small boolean?
 ---@field fade boolean?
 ---@field dummy boolean?
@@ -195,6 +195,41 @@ hiddenBarsAnchor:Show()
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
 
+---Helper function to ensure profile structure exists
+---@param profileName string?
+---@return table, string
+local function ensureProfileStructure(profileName)
+	if not DBT_AllPersistentOptions then
+		DBT_AllPersistentOptions = {}
+	end
+	local DBM_UsedProfile = profileName or DBM_UsedProfile or "Default"
+	if not DBT_AllPersistentOptions[DBM_UsedProfile] then
+		DBT_AllPersistentOptions[DBM_UsedProfile] = {}
+	end
+	return DBT_AllPersistentOptions[DBM_UsedProfile], DBM_UsedProfile
+end
+
+---Helper function to create multiple journal icons in a loop
+---@param bar Frame
+---@param iconTable table
+---@param namePrefix string
+---@param anchorIcon table
+local function createJournalIcons(bar, iconTable, namePrefix, anchorIcon)
+	local prevIcon = anchorIcon
+	for i = 1, 4 do
+		local iconName = i == 1 and namePrefix or namePrefix .. i
+		local icon = bar:CreateTexture("$parent" .. iconName, "OVERLAY")
+		if i == 1 then
+			icon:SetPoint("RIGHT", prevIcon, "LEFT", 2, 0)
+		else
+			icon:SetPoint("RIGHT", prevIcon, "LEFT", 2, 0)
+		end
+		icon:SetSize(20, 20)
+		table.insert(iconTable, icon)
+		prevIcon = icon
+	end
+end
+
 function DBT:AddDefaultOptions(t1, t2)
 	for i, v in pairs(t2) do
 		if t1[i] == nil then
@@ -214,7 +249,7 @@ do
 			self.obj.curTime = GetTime()
 			self.obj.delta = self.obj.curTime - self.obj.lastUpdate
 			--Frequent updates when any bar is moving or large bars so they don't look janky. More efficient bars when non animating small bars
-			if (barIsAnimating or self.obj.enlarged) and self.obj.delta >= 0.01 or self.obj.delta >= 0.04 then
+			if ((barIsAnimating or self.obj.enlarged) and self.obj.delta >= 0.01) or self.obj.delta >= 0.04 then
 				self.obj.lastUpdate = self.obj.curTime
 				self.obj:Update(self.obj.delta)
 			end
@@ -292,40 +327,10 @@ do
 		icon2:SetSize(20, 20)
 		--Secure Journal Icons used by blizzard secret api
 		frame.SecureJIcons = {}
-		local SJIcons = bar:CreateTexture("$parentSJIcons", "OVERLAY")
-		SJIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
-		SJIcons:SetSize(20, 20)
-		table.insert( frame.SecureJIcons, SJIcons)
-		local SJIcons2 = bar:CreateTexture("$parentSJIcons2", "OVERLAY")
-		SJIcons2:SetPoint("RIGHT", SJIcons, "LEFT", 2, 0)
-		SJIcons2:SetSize(20, 20)
-		table.insert( frame.SecureJIcons, SJIcons2)
-		local SJIcons3 = bar:CreateTexture("$parentSJIcons3", "OVERLAY")
-		SJIcons3:SetPoint("RIGHT", SJIcons2, "LEFT", 2, 0)
-		SJIcons3:SetSize(20, 20)
-		table.insert( frame.SecureJIcons, SJIcons3)
-		local SJIcons4 = bar:CreateTexture("$parentSJIcons4", "OVERLAY")
-		SJIcons4:SetPoint("RIGHT", SJIcons3, "LEFT", 2, 0)
-		SJIcons4:SetSize(20, 20)
-		table.insert( frame.SecureJIcons, SJIcons4)
+		createJournalIcons(bar, frame.SecureJIcons, "SJIcons", icon1)
 		--Insecure Journal icons used by custom DBM timers
 		frame.InsecureJicons = {}
-		local IJIcons = bar:CreateTexture("$parentIJIcons", "OVERLAY")
-		IJIcons:SetPoint("RIGHT", icon1, "LEFT", 2, 0)
-		IJIcons:SetSize(20, 20)
-		table.insert( frame.InsecureJicons, IJIcons)
-		local IJIcons2 = bar:CreateTexture("$parentIJIcons2", "OVERLAY")
-		IJIcons2:SetPoint("RIGHT", IJIcons, "LEFT", 2, 0)
-		IJIcons2:SetSize(20, 20)
-		table.insert( frame.InsecureJicons, IJIcons2)
-		local IJIcons3 = bar:CreateTexture("$parentIJIcons3", "OVERLAY")
-		IJIcons3:SetPoint("RIGHT", IJIcons2, "LEFT", 2, 0)
-		IJIcons3:SetSize(20, 20)
-		table.insert( frame.InsecureJicons, IJIcons3)
-		local IJIcons4 = bar:CreateTexture("$parentIJIcons4", "OVERLAY")
-		IJIcons4:SetPoint("RIGHT", IJIcons3, "LEFT", 2, 0)
-		IJIcons4:SetSize(20, 20)
-		table.insert( frame.InsecureJicons, IJIcons4)
+		createJournalIcons(bar, frame.InsecureJicons, "IJIcons", icon1)
 		local varianceTex = bar:CreateTexture("$parentVariance", "OVERLAY")
 		varianceTex:SetPoint("RIGHT", bar, "RIGHT")
 		varianceTex:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
@@ -350,22 +355,21 @@ do
 	local mt = {__index = barPrototype}
 
 	---@param timer string|number
+	---@return number|nil
+	---@return number|nil
+	---@return number|nil
 	local function parseTimer(timer)
-		if not timer then return end
-
 		if type(timer) == "number" then
-			if timer <= 0 then return end
-
 			return timer -- Normal number timer, no variance
 		end
 
 		-- Check for variance format like "v30.5-40" or "dv30.5-40"
 		if type(timer) == "string" then
-			-- ^v matches starting character d (optional) or v
+			-- ^(d?v) matches starting character d (optional) followed by v
 			-- (%d+%.?%d*) matches any number of digits with optional decimal
 			-- %- matches literal character "-"
 			-- (%d+%.?%d*)$ matches any number of digits with optional decimal, at the end of the string
-			if not timer:match("^v(%d+%.?%d*)%-(%d+%.?%d*)$") then return end
+			if not timer:match("^d?v(%d+%.?%d*)%-(%d+%.?%d*)$") then return end
 
 			local minTimer, maxTimer = timer:match("v(%d+%.?%d*)%-(%d+%.?%d*)")
 			minTimer, maxTimer = tonumber(minTimer), tonumber(maxTimer)
@@ -378,16 +382,55 @@ do
 	end
 	DBT.parseTimer = parseTimer
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
+	---Helper function to parse timer variance and return adjusted timer with variance properties
+	---@param timer string|number
+	---@return number
+	---@return number|nil
+	---@return number
+	---@return boolean
+	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
-		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer) -- either normal number or with variance
-
-		if self.Options.VarianceEnabled2 then
-			timer = varianceMaxTimer
+		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
+		if varianceMaxTimer then
+			if DBT.Options.VarianceEnabled2 then
+				timer = varianceMaxTimer
+			else
+				timer = varianceMinTimer or varianceMaxTimer
+			end
 		else
-			timer = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
+			-- If parseTimer didn't return a number, ensure timer is a number
+			-- This handles the case where timer is already a numeric value but wasn't processed by parseTimer
+			timer = tonumber(timer) or 0
 		end
+
+		---@cast timer number
+		return timer, varianceMinTimer, varianceDuration or 0, varianceMinTimer and true or false
+	end
+	DBT.parseAndApplyVariance = parseAndApplyVariance
+
+	---@param timer string|number
+	---@param id any
+	---@param icon string|number?
+	---@param huge boolean|nil?
+	---@param small boolean|nil?
+	---@param color any
+	---@param colorType number?
+	---@param inlineIcon string?
+	---@param keep boolean|nil?
+	---@param fade boolean|nil?
+	---@param countdown string|number|nil
+	---@param countdownMax number?
+	---@param isCooldown boolean|nil?
+	---@param secretText any
+	---@param isSecret boolean|nil?
+	---@param isPaused boolean|nil?
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
 		if not timer then
+			return
+		end
+		local varianceMinTimer, varianceDuration, hasVariance
+		timer, varianceMinTimer, varianceDuration, hasVariance = parseAndApplyVariance(timer)
+		if timer <= 0 then
 			return
 		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
@@ -398,11 +441,11 @@ do
 		if newBar then -- Update an existing bar
 			newBar.isHidden = nil
 			newBar.lastUpdate = GetTime()
-			newBar.huge = huge or nil
-			newBar.paused = isPaused or nil
-			newBar.minTimer = varianceMinTimer or nil
-			newBar.varianceDuration = varianceDuration or 0
-			newBar.hasVariance = varianceMinTimer and true or false
+			newBar.huge = huge
+			newBar.paused = isPaused
+			newBar.minTimer = varianceMinTimer
+			newBar.varianceDuration = varianceDuration
+			newBar.hasVariance = hasVariance
 			newBar:SetTimer(timer) -- This can kill the timer and the timer methods don't like dead timers
 			newBar.keep = keep -- keep this after SetTimer, not before, otherwise the bar will turn dead if Debug mode enabled and switching from var to non-var, since Update(0) will Cancel the timer
 			newBar.isSecret = isSecret
@@ -448,11 +491,11 @@ do
 				newBar.countdownMax = countdownMax
 				newBar.isCooldown = isCooldown
 				newBar.alwaysHuge = nil
-				newBar.huge = huge or nil
-				newBar.paused = isPaused or nil
-				newBar.minTimer = varianceMinTimer or nil
-				newBar.varianceDuration = varianceDuration or 0
-				newBar.hasVariance = varianceMinTimer and true or false
+				newBar.huge = huge
+				newBar.paused = isPaused
+				newBar.minTimer = varianceMinTimer
+				newBar.varianceDuration = varianceDuration
+				newBar.hasVariance = hasVariance
 				newBar.isSecret = isSecret
 			else -- Duplicate code ;(
 				local newFrame = createBarFrame(self)
@@ -478,9 +521,9 @@ do
 					countdown = countdown,
 					countdownMax = countdownMax,
 					isCooldown = isCooldown,
-					minTimer = varianceMinTimer or nil,
-					varianceDuration = varianceDuration or 0,
-					hasVariance = varianceMinTimer and true or false,
+					minTimer = varianceMinTimer,
+					varianceDuration = varianceDuration,
+					hasVariance = hasVariance,
 					lastUpdate = GetTime(),
 					isSecret = isSecret
 				}, mt)
@@ -499,7 +542,7 @@ do
 				newBar.enlarged = false
 				tinsert(hiddenBars, newBar)
 			-- Bars that start huge either by config (above) or because they happen to be short timers
-			elseif (newBar.alwaysHuge or (varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11)) and self.Options.HugeBarsEnabled then
+			elseif (newBar.alwaysHuge or ((varianceMinTimer or timer) <= (self.Options.EnlargeBarTime or 11))) and self.Options.HugeBarsEnabled then
 				newBar.enlarged = true
 				newBar.huge = true
 				tinsert(largeBars, newBar)
@@ -546,19 +589,13 @@ do
 				return old
 			end)
 		end
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
-			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
-		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		local profile = ensureProfileStructure()
+		profile[id] = profile[id] or {}
+		self:AddDefaultOptions(profile[id], self.DefaultOptions)
+		self.Options = profile[id]
 		self:Rearrange()
 		-- Fix font if it's nil or set to any of standard font values
-		if not self.Options.Font or (self.Options.Font == "Fonts\\2002.TTF" or self.Options.Font == "Fonts\\ARKai_T.ttf" or self.Options.Font == "Fonts\\blei00d.TTF" or self.Options.Font == "Fonts\\FRIZQT___CYR.TTF" or self.Options.Font == "Fonts\\FRIZQT__.TTF") then
+		if (not self.Options.Font) or (self.Options.Font == "Fonts\\2002.TTF" or self.Options.Font == "Fonts\\ARKai_T.ttf" or self.Options.Font == "Fonts\\blei00d.TTF" or self.Options.Font == "Fonts\\FRIZQT___CYR.TTF" or self.Options.Font == "Fonts\\FRIZQT__.TTF") then
 			self.Options.Font = self.DefaultOptions.Font
 		end
 		-- Migrate texture from default skin to internal
@@ -579,35 +616,26 @@ do
 			DBM:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR)
 			return
 		end
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
-			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
-		end
-		if DBT_AllPersistentOptions[DBM_UsedProfile][id] then
+		local profile = ensureProfileStructure()
+		if profile[id] then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR_D:format(id))
 			return
 		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		profile[id] = profile[id] or {}
+		self:AddDefaultOptions(profile[id], self.DefaultOptions)
+		self.Options = profile[id]
 		self:Rearrange()
 		DBM:AddMsg(DBM_CORE_L.PROFILE_CREATED:format(id))
 	end
 
 	function DBT:ApplyProfile(id, hasPrinted)
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		if not id or not DBT_AllPersistentOptions[DBM_UsedProfile] or not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
+		local profile = ensureProfileStructure()
+		if not id or not profile[id] then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(id or DBM_COMMON_L.UNKNOWN))
 			return
 		end
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		self:AddDefaultOptions(profile[id], self.DefaultOptions)
+		self.Options = profile[id]
 		self:Rearrange()
 		if not hasPrinted then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(id))
@@ -615,10 +643,7 @@ do
 	end
 
 	function DBT:CopyProfile(name, id, hasPrinted)
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
+		local profile, DBM_UsedProfile = ensureProfileStructure()
 		if not hasPrinted then
 			if not name or not DBT_AllPersistentOptions[name] then
 				DBM:AddMsg(DBM_CORE_L.PROFILE_COPY_ERROR:format(name or DBM_COMMON_L.UNKNOWN))
@@ -628,15 +653,10 @@ do
 				return
 			end
 		end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
-			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
-		end
-		if not DBT_AllPersistentOptions[name] then
-			DBT_AllPersistentOptions[name] = {}
-		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = CopyTable(DBT_AllPersistentOptions[name][id]) or {}
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		ensureProfileStructure(name)
+		profile[id] = CopyTable(DBT_AllPersistentOptions[name][id]) or {}
+		self:AddDefaultOptions(profile[id], self.DefaultOptions)
+		self.Options = profile[id]
 		self:Rearrange()
 		if not hasPrinted then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_COPIED:format(name))
@@ -644,15 +664,13 @@ do
 	end
 
 	function DBT:DeleteProfile(name, id)
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
+		ensureProfileStructure()
 		if name == "Default" or not DBT_AllPersistentOptions[name] then
 			return
 		end
 		DBT_AllPersistentOptions[name] = nil
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		local profile = ensureProfileStructure()
+		self.Options = profile[id]
 		self:Rearrange()
 	end
 
@@ -809,16 +827,11 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 			if type(totalTime) == "number" then
 				DBT:ResetBarVariance(bar)
 			elseif type(totalTime) == "string" then -- found string (variance)
-				local varianceMaxTimer, varianceMinTimer, varianceDuration
-				varianceMaxTimer, varianceMinTimer, varianceDuration = DBT.parseTimer(totalTime) -- either normal number or with variance
-				if self.Options.VarianceEnabled2 then
-					totalTime = varianceMaxTimer
-				else
-					totalTime = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
-				end
-				bar.minTimer = varianceMinTimer or nil
-				bar.varianceDuration = varianceDuration or 0
-				bar.hasVariance = varianceMinTimer and true or false
+				local varianceMinTimer, varianceDuration, hasVariance
+				totalTime, varianceMinTimer, varianceDuration, hasVariance = DBT.parseAndApplyVariance(totalTime)
+				bar.minTimer = varianceMinTimer
+				bar.varianceDuration = varianceDuration
+				bar.hasVariance = hasVariance
 				bar:ApplyStyle()
 			end
 			bar:SetTimer(totalTime or bar.totalTime)
@@ -1005,9 +1018,11 @@ do
 	end
 end
 
-function barPrototype:SetColor(color)
+---@param color table Color table. Will be a table defining r, g, b if using secrets, non secrets also support 1,2,3 as opposed to r,g,b
+---@param isSecret boolean? Used to define if the color being inputed is a secret. MUST be true to avoid failure
+function barPrototype:SetColor(color, isSecret)
 	-- Fix to allow colors not require the table keys
-	if color[1] and not color.r then
+	if not isSecret and color[1] and not color.r then
 		color = {
 			r = color[1],
 			g = color[2],
@@ -1016,7 +1031,7 @@ function barPrototype:SetColor(color)
 	end
 	self.color = color
 	local frame_name = self.frame:GetName()
-	_G[frame_name .. "Bar"]:SetStatusBarColor(color.r, color.g, color.b)
+	_G[frame_name .. "Bar"]:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 	_G[frame_name .. "BarSpark"]:SetVertexColor(color.r, color.g, color.b)
 end
 
@@ -1033,7 +1048,7 @@ function barPrototype:SetVariance()
 		varianceTex:ClearAllPoints()
 		varianceTexBorder:ClearAllPoints()
 		local isEnlarged = self.enlarged and not self.paused
-		local fillUpBars = isEnlarged and DBT.Options.FillUpLargeBars or not isEnlarged and DBT.Options.FillUpBars
+		local fillUpBars = (isEnlarged and DBT.Options.FillUpLargeBars) or (not isEnlarged and DBT.Options.FillUpBars)
 
 		if fillUpBars then
 			varianceTex:SetPoint("RIGHT", bar, "RIGHT")
@@ -1184,7 +1199,7 @@ function barPrototype:Update(elapsed)
 		elseif self.flashing and timerValue > 7.75 then
 			self.flashing = nil
 			self.ftimer = nil
-			bar:SetStatusBarColor(r, g, b, 1)
+			bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
 			if sparkEnabled then
 				spark:SetAlpha(1)
 			end
@@ -1199,17 +1214,17 @@ function barPrototype:Update(elapsed)
 		if self.flashing then
 			local ftime = self.ftimer % 1.25
 			if ftime >= 0.5 then
-				bar:SetStatusBarColor(r, g, b, 1)
+				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
 				if sparkEnabled then
 					spark:SetAlpha(1)
 				end
 			elseif ftime >= 0.25 then
-				bar:SetStatusBarColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
+				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
 				if sparkEnabled then
 					spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
 				end
 			else
-				bar:SetStatusBarColor(r, g, b, 1 - (ftime / 0.25))
+				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (ftime / 0.25))
 				if sparkEnabled then
 					spark:SetAlpha(1 - (ftime / 0.25))
 				end
@@ -1433,8 +1448,10 @@ function barPrototype:ApplyStyle()
 	if sparkEnabled then
 		spark:SetAlpha(1)
 	end
-	local r, g, b = bar:GetStatusBarColor()
-	bar:SetStatusBarColor(r, g, b, 1)
+	--Why, after setting all colors above, are we then grabbing them, and setting them another time?
+	--This is likley gonna taint when blizzard fixes bug that allows to Get secret colors. Commenting for now
+--	local r, g, b = bar:GetStatusBarColor()
+--	bar:SetStatusBarColor(r, g, b, 1)--GetStatusBarTexture():SetVertexColor
 	bar:SetStatusBarTexture(barOptions.Texture)
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
@@ -1580,17 +1597,11 @@ do
 		if not skins[id] and id ~= 'DBM' then
 			error("Skin '" .. id .. "' doesn't exist", 2)
 		end
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
-			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
-		end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
-			DBT_AllPersistentOptions[DBM_UsedProfile][id] = CopyTable(DBT_AllPersistentOptions[DBM_UsedProfile].DBM) or {}
+		local profile = ensureProfileStructure()
+		if not profile[id] then
+			profile[id] = CopyTable(profile.DBM) or {}
 			for option, value in pairs(skins[id].Defaults) do
-				DBT_AllPersistentOptions[DBM_UsedProfile][id][option] = value
+				profile[id][option] = value
 			end
 		end
 		self:ApplyProfile(id, true)
@@ -1603,15 +1614,9 @@ do
 	end
 
 	function DBT:ResetSkin()
-		local DBM_UsedProfile = DBM_UsedProfile or "Default"
-		if not DBT_AllPersistentOptions then
-			DBT_AllPersistentOptions = {}
-		end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
-			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
-		end
+		local profile = ensureProfileStructure()
 		local skin = self.Options.Skin
-		DBT_AllPersistentOptions[DBM_UsedProfile][skin] = self.DefaultOptions
+		profile[skin] = self.DefaultOptions
 		self.Options = self.DefaultOptions
 		self:SetOption("Skin", skin) -- Forces an UpdateBars and ApplyStyle
 	end

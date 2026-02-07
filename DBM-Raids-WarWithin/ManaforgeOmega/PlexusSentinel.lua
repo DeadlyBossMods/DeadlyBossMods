@@ -11,6 +11,8 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--mod:AddCustomAlertSoundOption(1280960, true, 1)
+--mod:AddCustomTimerOptions(1280960, true, 4, 0)
 --Midnight private aura replacements
 mod:AddPrivateAuraSoundOption(1219439, true, 1219439, 1)
 mod:AddPrivateAuraSoundOption(1219459, true, 1219459, 1)
@@ -18,6 +20,9 @@ mod:AddPrivateAuraSoundOption(1219607, true, 1219607, 1)
 mod:AddPrivateAuraSoundOption(1219354, true, 1219354, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
+--	self:DisableSpecialWarningSounds()--Prevents special warning sounds playing from the ENCOUNTER_WARNING api
+--	self:EnableTimelineOptions(1280946, 421)
+--	self:EnableAlertOptions(1280946, 421, "kickcast", 2)
 	self:EnablePrivateAuraSound(1219439, "runout", 2)
 	self:EnablePrivateAuraSound(1219459, "runout", 2)
 	self:EnablePrivateAuraSound(1219607, "gathershare", 2)
