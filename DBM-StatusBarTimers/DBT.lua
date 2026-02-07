@@ -160,7 +160,7 @@ DBT.DefaultOptions = {
 ---@field colorType number
 ---@field keep boolean?
 ---@field isCooldown boolean?
----@field huge boolean
+---@field huge boolean?
 ---@field small boolean?
 ---@field fade boolean?
 ---@field dummy boolean?
@@ -365,11 +365,11 @@ do
 
 		-- Check for variance format like "v30.5-40" or "dv30.5-40"
 		if type(timer) == "string" then
-			-- ^v matches starting character d (optional) or v
+			-- ^(d?v) matches starting character d (optional) followed by v
 			-- (%d+%.?%d*) matches any number of digits with optional decimal
 			-- %- matches literal character "-"
 			-- (%d+%.?%d*)$ matches any number of digits with optional decimal, at the end of the string
-			if not timer:match("^v(%d+%.?%d*)%-(%d+%.?%d*)$") then return end
+			if not timer:match("^d?v(%d+%.?%d*)%-(%d+%.?%d*)$") then return end
 
 			local minTimer, maxTimer = timer:match("v(%d+%.?%d*)%-(%d+%.?%d*)")
 			minTimer, maxTimer = tonumber(minTimer), tonumber(maxTimer)
@@ -391,12 +391,19 @@ do
 	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
-		if DBT.Options.VarianceEnabled2 then
-			timer = varianceMaxTimer
+		if varianceMaxTimer then
+			if DBT.Options.VarianceEnabled2 then
+				timer = varianceMaxTimer
+			else
+				timer = varianceMinTimer or varianceMaxTimer
+			end
 		else
-			timer = varianceMinTimer or varianceMaxTimer
+			-- If parseTimer didn't return a number, ensure timer is a number
+			-- This handles the case where timer is already a numeric value but wasn't processed by parseTimer
+			timer = tonumber(timer) or 0
 		end
 
+		---@cast timer number
 		return timer, varianceMinTimer, varianceDuration or 0, varianceMinTimer and true or false
 	end
 	DBT.parseAndApplyVariance = parseAndApplyVariance
@@ -411,7 +418,7 @@ do
 	---@param inlineIcon string?
 	---@param keep boolean|nil?
 	---@param fade boolean|nil?
-	---@param countdown number?
+	---@param countdown string|number|nil
 	---@param countdownMax number?
 	---@param isCooldown boolean|nil?
 	---@param secretText any
