@@ -14,6 +14,7 @@ L.SILENT_REMINDER					= "알림: " .. L.DBM .. "이 아직 조용함 모드입�
 L.NEWS_UPDATE						= "|h|c11ff1111뉴스|r|h: DBM이 모듈 구조 변경이 적용된 업데이트를 했으며 클래식과 본섭은 이제부터 (동일한) 통합된 모듈을 사용합니다. 이는 오리지널 (디스커버리 포함), 불성, 리분, 대격변 공격대 모듈을 본섭과 동일하게 각각 다운로드 받아야 한다는 뜻입니다. 보다 자세한 정보를 보려면 |Hgarrmission:DBM:news|h|cff3588ff[이곳을 클릭]|r|h하세요"
 L.NEWS_UPDATE_REPEAT					= "|h|c11ff1111뉴스|r|h: DBM이 모듈 구조 변경이 적용된 업데이트를 했으며 클래식과 본섭은 이제부터 (동일한) 통합된 모듈을 사용합니다. 이는 오리지널 (디스커버리 포함), 불성, 리분, 대격변 공격대 모듈을 본섭과 동일하게 각각 다운로드 받아야 한다는 뜻입니다. 지금 모듈이 설치되지 않은 레이드 중입니다. 이 메시지는 누락된 공격대 모듈을 설치할 때까지 지속적으로 표시됩니다 (설치 전까진 이 지역에선 어떠한 경고도 받지 못할 것입니다)"
 
+
 L.COPY_URL_DIALOG_NEWS				= "최신 소식을 보려면 아래 링크를 방문하세요"
 
 L.LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 오류 발생: %s"
@@ -151,6 +152,7 @@ L.OPTION_TIMER_BERSERK		= "$spell:26662 타이머 바 보기"
 L.BAD						= "바닥"
 
 L.OPTION_CATEGORY_TIMERS		= "바"
+--Sub cats for "announce" object
 L.OPTION_CATEGORY_WARNINGS	= "일반 알림"
 L.OPTION_CATEGORY_WARNINGS_YOU	= "개인 알림"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "대상 관련 알림"
@@ -158,7 +160,7 @@ L.OPTION_CATEGORY_WARNINGS_ROLE	= "역할 관련 알림"
 L.OPTION_CATEGORY_SPECWARNINGS		= "특수 알림"
 
 L.OPTION_CATEGORY_SOUNDS		= "음성"
---Sub cats for "announce" object
+--Misc object broken down into sub cats
 L.OPTION_CATEGORY_DROPDOWNS		= "드롭다운 옵션"
 L.OPTION_CATEGORY_YELLS			= "말풍선"
 L.OPTION_CATEGORY_NAMEPLATES		= "이름표"
@@ -590,7 +592,9 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2		= "전투 전반에 관한 사항을 정보 창�
 L.AUTO_INFO_FRAME_OPTION_TEXT3		= "$spell:%s|1을;를; 정보 창에 표시 (%%s의 제한 수치 이상인 경우)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "보스가 풀링되면 전투 준비 효과음 듣기 (보스를 대상으로 잡지 않아도 재생)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "%s의 완료 신기록 타이머 표시"
-L.AUTO_PRIVATEAURA_OPTION_TEXT		= "이 전투에서 비공개 오라 $spell:%s에 DBM 효과음 경고를 재생합니다."
+L.AUTO_PRIVATEAURA_OPTION_TEXT		= "이 전투에서 비공개 오라 $spell:%s에 DBM 경고 효과음을 재생합니다."
+L.AUTO_CUSTOMTIMER_OPTION_TEXT			= "$spell:%s 타이머 보기"--Used for Midnight timeline timers (ie we have no context of what type of timer it is, just a generic timer)
+L.AUTO_CUSTOMALERT_OPTION_TEXT			= "$spell:%s|1이;가; 시전되려 할 때 경고 효과음 설정"--Used for Midnight custom alerts (ie we have no context of what type of alert it is, just a generic alert)
 
 L.AUTO_GOSSIP_BUFFS						= "NPC나 전문기술 버프 오브젝트 대화 자동 선택"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "사물을 작동시키는 (순간이동 사용 같은) 선택지 자동 선택"

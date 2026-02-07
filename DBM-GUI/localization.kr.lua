@@ -104,7 +104,6 @@ L.Editbox_WindowHeight		= "설정 창 높이"
 L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재시작을 해야 변경됩니다)"
 L.GroupOptionsExcludeIcon	= "주문 단위로 형성된 그룹에서 '공격대 징표' 설정 제외 (제외된 설정들은 '공격대 징표' 카테고리에 배치)"
 L.GroupOptionsExcludePrivateAura	= "주문 단위로 형성된 그룹에서 '비공개 오라' 효과음 설정 제외 (제외된 설정들은 '비공개 오라' 카테고리에 배치)"
-
 L.AutoExpandSpellGroups2		= "주문 단위로 그룹이 형성된 설정들을 자동으로 펼치기"
 L.ShowWAKeys				= "보스 모드 활성 조건을 이용한 WeakAuras 제작을 지원하기 위해 주문 이름 옆에 WeakAuras 키를 표시합니다."
 --L.ShowSpellDescWhenExpanded	= "설정 그룹이 펼쳐진 상태에서도 주문 설명 계속 표시"--Might not be used
@@ -253,6 +252,15 @@ L.SpecWarn_FlashAlpha		= "점멸 투명도: %0.1f"
 L.SpecWarn_DemoButton		= "예제 보기"
 L.SpecWarn_ResetMe			= "기본값으로 초기화"
 L.SpecialWarnSoundOption	= "기본 효과음 설정"
+
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras				= "비공개 오라"
+L.Area_PrivateAuras					= "비공개 오라 설정"
+L.EnablePrivateAuraIcons			= "화면에 비공개 오라 아이콘 표시"
+L.EnablePrivateAuraText				= "화면에 비공개 오라 텍스트 메시지 표시"
+L.SetPAIconScale					= "아이콘 크기: %0.1f"--Not Finalized
+L.SetPATextScale					= "텍스트 크기: %0.1f"--Not Finalized
+--SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
 --PreMidnight
 L.SpecialWarnHeader1		= "유형 1: 당신이 뭔가 걸렸거나 취해야 할 행동에 대한 보통 수준 알림 설정 세트"
 L.SpecialWarnHeader2		= "유형 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
@@ -289,14 +297,14 @@ L.CheckGear					= "풀링 타이머가 나오면 착용 장비 알림 메시지 
 L.WorldBossAlert			= "같은 서버의 길드원이나 친구가 필드 보스 전투를 시작하면 알림 메시지 표시 (전송자가 연합 서버에 있다면 부정확합니다)"
 L.WorldBuffAlert			= "내 서버에서 월드 버프가 시작되면 알림 메시지 표시 (디스커버리 시즌 제외)"
 L.RaidDiffChangedAlert		= "공격대 난이도가 바뀌면 알림 메시지 표시"
-L.DungeonDiffChangedAlert	= "던전 난이도가 바뀌면 알림 메시지 표시"
 L.RaidDiffChangedRaidOnly			= "공격대 그룹일 때만 공격대 난이도 변경 알림 표시 (주의: 공격대로 전환되기 전 파티 상태에선 난이도 알림이 되지 않습니다)"
+L.DungeonDiffChangedAlert	= "던전 난이도가 바뀌면 알림 메시지 표시"
 
 L.Area_BugAlerts			= "버그 제보 알림 설정"
 L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머를 감지했을 때 대화창에 메시지 표시"
 
 -- Panel: Spoken Alerts Frame
-L.Panel_SpokenAlerts			= "초읽기와 음성팩"
+L.Panel_SpokenAlerts			= "초읽기 및 음성팩"
 L.Area_VoiceSelection		= "음성 선택"
 L.CountdownVoice			= "1순위 초읽기 음성 설정"
 L.CountdownVoice2			= "2순위 초읽기 음성 설정"
@@ -371,9 +379,8 @@ L.BarEndColorI2					= "종료 색상 8 (중요)"
 L.Bar7Header					= "중요 바 설정"
 L.Bar7ForceLarge				= "항상 커다란 바 사용"
 L.Bar7CustomInline				= "바 안쪽에 사용자 지정 '!' 아이콘 사용"
---Dropdown Options
-L.CBTGeneric					= "일반"
 --Timer Example Texts
+L.CBTGeneric					= "일반"
 L.CBTAdd							= "쫄 등장"
 L.CBTAOE							= "광역 주문"
 L.CBTTargeted						= "대상 지정 주문"
@@ -382,22 +389,25 @@ L.CBTRole							= "특정 역할 전용 주문"
 L.CBTPhase							= "페이즈 변경"
 L.CBTImportant						= "사용자 지정 중요 주문"
 --Dropdown Options
+--Special Announce Dropdowns
 L.SAOne						= "일반 음성 1 (개인 알림)"
 L.SATwo						= "일반 음성 2 (전체 알림)"
-L.SAThree					= "일반 음성 3 (동작 1순위)"
-L.SAFour					= "일반 음성 4 (도망치기 1순위)"
-L.ColorDropGeneric					= "일반 (기본 설정)"
-L.ColorDrop1						= "색상 1"
-L.ColorDrop2						= "색상 2"
-L.ColorDrop3						= "색상 3"
-L.ColorDrop4						= "색상 4"
-L.ColorDrop5						= "색상 5"
-L.ColorDrop6						= "색상 6"
-L.CDDImportant1						= "중요 1"
-L.CDDImportant2						= "중요 2"
-L.CVoiceOne						= "초읽기 음성 1"
-L.CVoiceTwo						= "초읽기 음성 2"
-L.CVoiceThree					= "초읽기 음성 3"
+L.SAThree					= "일반 음성 3 (1순위 행위)"
+L.SAFour					= "일반 음성 4 (1순위 도망치기)"
+--Timer Dropdowns
+L.ColorDropGeneric					= "일반 (기본값: 미분류)"
+L.ColorDrop1						= "색상 1 (기본값: 쫄)"
+L.ColorDrop2						= "색상 2 (기본값: 광역스킬)"
+L.ColorDrop3						= "색상 3 (기본값: 나에게)"
+L.ColorDrop4						= "색상 4 (기본값: 차단)"
+L.ColorDrop5						= "색상 5 (기본값: 역할 기반)"
+L.ColorDrop6						= "색상 6 (기본값: 공략 단계)"
+L.CDDImportant1						= "중요 1 (기본 설정 아님)"
+L.CDDImportant2						= "중요 2 (기본 설정 아님)"
+--Countdown Dropdowns
+L.CVoiceOne						= "전역 초읽기 1"
+L.CVoiceTwo						= "전역 초읽기 2"
+L.CVoiceThree					= "전역 초읽기 3"
 
 -- Panel: Bar Appearance
 L.Panel_Appearance	 		= "바 외형"
@@ -418,6 +428,7 @@ L.ZeroatWindowStartRestart			= "타이머 시작 지점을 0으로 하고 0에�
 L.ZeroatWindowStartNeg				= "타이머 시작 지점을 0으로 하고 0에서 음수로 진행"--Default
 L.BarIconLeft 				= "왼쪽 아이콘"
 L.BarIconRight 				= "오른쪽 아이콘"
+L.BarIconPosition					= "아이콘 위치"
 L.ExpandUpwards				= "위로 쌓기"
 L.FillUpBars				= "채워나가기"
 L.ClickThrough				= "마우스 클릭 방지 (클릭 통과)"
@@ -440,6 +451,11 @@ L.KeepBar					= "스킬 시전 전까지 타이머 작동 중단"
 L.KeepBar2					= "(모드에서 지원할 경우에만)"
 L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 L.BarSkin					= "바 스킨"
+L.InlineIconsDropdown				= "도감 속성 아이콘 스타일"
+L.SingleLargeIcon					= "큰 아이콘 1개"
+L.DoubleLargeIcons					= "큰 아이콘 2개"
+L.DoubleInlineIcons					= "모든 큰 아이콘"
+L.StackedMiniIcons					= "작은 아이콘 모음"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "풀링과 휴식"
@@ -597,8 +613,8 @@ L.ReceivingFooter3					= "'내 모드 설정을 대체'를 활성화하면 당�
 L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 공대장일때만 작동합니다"
 
 -- Panel: Privacy
-L.Tab_Privacy 				= "자동 응답과 사생활 보호"
-L.Tab_PrivacyMidnight				= "애드온 통신과 사생활 보호"
+L.Tab_Privacy 				= "자동 응답 및 사생활 보호"
+L.Tab_PrivacyMidnight				= "애드온 통신 및 사생활 보호"
 L.Area_WhisperMessages		= "귓속말 설정"
 L.AutoRespond 				= "전투 중 자동 귓속말 답변"
 L.WhisperStats 				= "귓속말 답변에 처치/전멸 통계 포함"
