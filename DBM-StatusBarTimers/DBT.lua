@@ -417,7 +417,7 @@ do
 	---@param inlineIcon string?
 	---@param keep boolean|nil?
 	---@param fade boolean|nil?
-	---@param countdown number?
+	---@param countdown string|number|nil
 	---@param countdownMax number?
 	---@param isCooldown boolean|nil?
 	---@param secretText any
