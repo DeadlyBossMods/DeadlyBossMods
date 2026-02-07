@@ -398,8 +398,9 @@ do
 				timer = varianceMinTimer or varianceMaxTimer
 			end
 		else
-			-- If parseTimer didn't return a number, convert timer to number (it should already be one, but satisfy type checker)
-			timer = tonumber(timer) or timer
+			-- If parseTimer didn't return a number, ensure timer is a number
+			-- This handles the case where timer is already a numeric value but wasn't processed by parseTimer
+			timer = tonumber(timer) or 0
 		end
 
 		---@cast timer number
