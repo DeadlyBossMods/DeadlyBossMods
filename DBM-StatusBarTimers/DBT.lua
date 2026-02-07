@@ -403,12 +403,29 @@ do
 	end
 	DBT.parseAndApplyVariance = parseAndApplyVariance
 
+	---comment
+	---@param timer string|number
+	---@param id any
+	---@param icon string|number?
+	---@param huge boolean?
+	---@param small boolean?
+	---@param color any
+	---@param colorType number?
+	---@param inlineIcon string?
+	---@param keep boolean?
+	---@param fade boolean?
+	---@param countdown number?
+	---@param countdownMax number?
+	---@param isCooldown boolean?
+	---@param secretText any
+	---@param isSecret boolean?
+	---@param isPaused boolean?
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown, secretText, isSecret, isPaused)
-		local varianceMinTimer, varianceDuration, hasVariance
-		timer, varianceMinTimer, varianceDuration, hasVariance = parseAndApplyVariance(timer)
 		if not timer then
 			return
 		end
+		local varianceMinTimer, varianceDuration, hasVariance
+		timer, varianceMinTimer, varianceDuration, hasVariance = parseAndApplyVariance(timer)
 		-- Most efficient place to block it, nil colorType instead of checking option every update
 		if not self.Options.ColorByType or not colorType then
 			colorType = 0
