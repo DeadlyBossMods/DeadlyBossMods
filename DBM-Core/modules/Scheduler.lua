@@ -1,11 +1,11 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-local twipe, tremove, unpack = table.wipe, table.remove, unpack
+local twipe, unpack = table.wipe, unpack
 local floor = math.floor
 local test = private:GetPrototype("DBMTest")
 local GetTime = GetTime
-local pairs, next = pairs, next
+local pairs = pairs
 local LastInstanceMapID = -1
 
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
@@ -209,9 +209,9 @@ local function onUpdate(self, elapsed)
 	-- clean up sync spam timers and auto respond spam blockers
 	if time > nextModSyncSpamUpdate then
 		nextModSyncSpamUpdate = time + 20
-		-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
-		-- we now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
-		-- note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
+		-- We now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
+		-- Using pairs(...) to iterate over the hash table and remove stale entries
+		-- Note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
 		for k, v in pairs(private.modSyncSpam) do
 			if time - v > 8 then
 				private.modSyncSpam[k] = nil
