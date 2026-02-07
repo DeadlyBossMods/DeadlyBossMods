@@ -355,9 +355,10 @@ do
 	local mt = {__index = barPrototype}
 
 	---@param timer string|number
+	---@return number|nil
+	---@return number?
+	---@return number?
 	local function parseTimer(timer)
-		if not timer then return end
-
 		if type(timer) == "number" then
 			if timer <= 0 then return end
 
@@ -385,10 +386,10 @@ do
 
 	---Helper function to parse timer variance and return adjusted timer with variance properties
 	---@param timer string|number
-	---@return number timer Adjusted timer value
-	---@return number minTimer Minimum timer value
-	---@return number varianceDuration Duration of variance window
-	---@return boolean hasVariance Whether timer has variance
+	---@return number|nil
+	---@return number?
+	---@return number
+	---@return boolean
 	local function parseAndApplyVariance(timer)
 		local varianceMaxTimer, varianceMinTimer, varianceDuration
 		varianceMaxTimer, varianceMinTimer, varianceDuration = parseTimer(timer)
@@ -403,7 +404,6 @@ do
 	end
 	DBT.parseAndApplyVariance = parseAndApplyVariance
 
-	---comment
 	---@param timer string|number
 	---@param id any
 	---@param icon string|number?
@@ -484,8 +484,8 @@ do
 				newBar.countdownMax = countdownMax
 				newBar.isCooldown = isCooldown
 				newBar.alwaysHuge = nil
-				newBar.huge = huge or nil
-				newBar.paused = isPaused or nil
+				newBar.huge = huge
+				newBar.paused = isPaused
 				newBar.minTimer = varianceMinTimer
 				newBar.varianceDuration = varianceDuration
 				newBar.hasVariance = hasVariance
