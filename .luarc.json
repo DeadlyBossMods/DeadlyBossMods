@@ -30,6 +30,8 @@
 		"hasanysecretvalues",
 		"EncounterTimeline",
 		"EncounterTimeline.TimelineView",
+		"EncounterTimeline.TrackView",
+		"EncounterTimeline.TimerView",
 		"C_EncounterEvents",
 		"C_EncounterTimeline",
 		"PlayerIsTimerunning",
