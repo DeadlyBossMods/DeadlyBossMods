@@ -222,8 +222,7 @@ local function onUpdate(self, elapsed)
 			end
 		end
 	end
-	local hasHandlers = hasUpdateHandlers()
-	if not nextTask and foundModFunctions == 0 and not hasHandlers then--Nothing left, stop scheduler
+	if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
 		schedulerFrame:SetScript("OnUpdate", nil)
 		schedulerFrame:Hide()
 	end
@@ -242,8 +241,14 @@ function module:UpdateZone()
 	LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
 	private.updateFunctionsDirty = true
 	-- Ensure scheduler is running if there are update functions that may become active in the new zone
-	if hasUpdateHandlers() then
-		module:StartScheduler()
+	-- Check if any handler would actually be active in the new zone before starting
+	if private.updateFunctions then
+		for mod, func in pairs(private.updateFunctions) do
+			if mod.Options.Enabled and (not mod.zones or mod.zones[LastInstanceMapID]) then
+				module:StartScheduler()
+				break
+			end
+		end
 	end
 end
 

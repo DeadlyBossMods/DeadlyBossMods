@@ -214,10 +214,6 @@ function bossModPrototype:DisableMod()
 	self:Stop()
 	self.Options.Enabled = false
 	private.updateFunctionsDirty = true
-	-- Ensure scheduler is running if other mods have update handlers
-	if next(private.updateFunctions) then
-		scheduler:StartScheduler()
-	end
 end
 
 ---@param killNameplates boolean? Should only be called by trash mods. Bosses should never call this
