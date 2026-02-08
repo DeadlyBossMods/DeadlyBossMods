@@ -718,9 +718,9 @@ L.KEYSTONE_NAMES[525] = 'VANNES' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'DÔME' -- Eco-Dome Al'dani
 
 -- Midnight
-L.MN_TIMELINE_HEADER   = "Voulez-vous utiliser la chronologie de Blizzard ou les barres de DBM ?"
-L.MN_BLIZZARD_TIMELINE = "Chronologie de Blizzard"
+L.MN_TIMELINE_HEADER   = "Voulez-vous utiliser la ligne temporelle de Blizzard ou les barres de DBM ?"
+L.MN_BLIZZARD_TIMELINE = "Ligne temporelle de Blizzard"
 L.MN_DBM_TIMELINE      = "Barres de DBM"
-L.MN_WARNIGS_HEADER   = "Voulez-vous utiliser les alertes de rencontre de Blizzard ou celles de DBM ?"
-L.MN_BLIZZARD_WARNINGS= "Alertes de Blizzard"
-L.MN_DBM_WARNINGS     = "Alertes de DBM"
+L.MN_WARNIGS_HEADER   = "Voulez-vous utiliser les avertissements de rencontre de Blizzard ou celles de DBM ?"
+L.MN_BLIZZARD_WARNINGS= "Avertissements de Blizzard"
+L.MN_DBM_WARNINGS     = "Avertissements de DBM"
