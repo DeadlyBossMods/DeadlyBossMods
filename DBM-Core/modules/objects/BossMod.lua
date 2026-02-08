@@ -203,11 +203,17 @@ end
 
 function bossModPrototype:EnableMod()
 	self.Options.Enabled = true
+	private.updateFunctionsDirty = true
+	-- Ensure scheduler is running if this mod has an update handler
+	if private.updateFunctions[self] then
+		scheduler:StartScheduler()
+	end
 end
 
 function bossModPrototype:DisableMod()
 	self:Stop()
 	self.Options.Enabled = false
+	private.updateFunctionsDirty = true
 end
 
 ---@param killNameplates boolean? Should only be called by trash mods. Bosses should never call this
@@ -235,12 +241,14 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	self.elapsed = 0
 	self.updateInterval = interval or 0
 	private.updateFunctions[self] = func
+	private.updateFunctionsDirty = true
 end
 
 function bossModPrototype:UnregisterOnUpdateHandler()
 	self.elapsed = nil
 	self.updateInterval = nil
-	table.wipe(private.updateFunctions)
+	private.updateFunctions[self] = nil
+	private.updateFunctionsDirty = true
 end
 
 ---Set the stage number.
