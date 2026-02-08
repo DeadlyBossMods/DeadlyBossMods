@@ -1,11 +1,11 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-local twipe, tremove, unpack = table.wipe, table.remove, unpack
+local twipe, unpack = table.wipe, unpack
 local floor = math.floor
 local test = private:GetPrototype("DBMTest")
 local GetTime = GetTime
-local pairs, next = pairs, next
+local pairs = pairs
 local LastInstanceMapID = -1
 
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
@@ -23,6 +23,9 @@ local module = private:NewModule("DBMScheduler")
 local popCachedTable, pushCachedTable
 local numChachedTables = 0
 local scheduleTraceId = 0
+local activeUpdateMods = {}
+local activeUpdateFuncs = {}
+local activeUpdateCount = 0
 do
 	local tableCache
 
@@ -41,6 +44,7 @@ do
 	-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
 	-- this is just to re-use all the tables of the small tasks that are scheduled all the time (like the wipe detection)
 	-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
+	---@param t table
 	function pushCachedTable(t)
 		if numChachedTables < 8 and #t <= 4 then
 			twipe(t)
@@ -116,31 +120,38 @@ do
 	-- removes multiple scheduled tasks from the heap
 	-- note that this function is comparatively slow by design as it has to check all tasks and allows partial matches
 	function removeAllMatching(f, mod, ...)
-		-- remove all elements that match the signature, this destroyes the heap and leaves a normal array
+		-- remove all elements that match the signature, this destroys the heap and leaves a compacted array
 		local v, match
 		local foundMatch = false
-		for i = #heap, 1, -1 do -- iterate backwards over the array to allow usage of table.remove
+		local writeIndex = 1
+		local argCount = select("#", ...)
+		for i = 1, firstFree - 1 do
 			v = heap[i]
-			if (not f or v.func == f) and (not mod or v.mod == mod) then
-				match = true
-				for j = 1, select("#", ...) do
+			match = (not f or v.func == f) and (not mod or v.mod == mod)
+			if match and argCount > 0 then
+				for j = 1, argCount do
 					if select(j, ...) ~= v[j] then
 						match = false
 						break
 					end
 				end
-				if match then
-					tremove(heap, i)
-					firstFree = firstFree - 1
-					foundMatch = true
-					if v.traceId then
-						test:Trace(v.mod, "UnscheduleTask", v.traceId, unpack(v, 1, v.n))
-					end
+			end
+			if match then
+				foundMatch = true
+				if v.traceId then
+					test:Trace(v.mod, "UnscheduleTask", v.traceId, unpack(v, 1, v.n))
 				end
+			else
+				heap[writeIndex] = v
+				writeIndex = writeIndex + 1
 			end
 		end
 		-- rebuild the heap from the array in O(n)
 		if foundMatch then
+			for i = writeIndex, firstFree - 1 do
+				heap[i] = nil
+			end
+			firstFree = writeIndex
 			for i = floor((firstFree - 1) / 2), 1, -1 do
 				siftDown(i)
 			end
@@ -149,6 +160,19 @@ do
 end
 
 local nextModSyncSpamUpdate = 0
+local function rebuildActiveUpdateFunctions()
+	twipe(activeUpdateMods)
+	twipe(activeUpdateFuncs)
+	activeUpdateCount = 0
+	for mod, func in pairs(private.updateFunctions) do
+		if mod.Options.Enabled and (not mod.zones or mod.zones[LastInstanceMapID]) then
+			activeUpdateCount = activeUpdateCount + 1
+			activeUpdateMods[activeUpdateCount] = mod
+			activeUpdateFuncs[activeUpdateCount] = func
+		end
+	end
+	private.updateFunctionsDirty = false
+end
 --mainFrame:SetScript("OnUpdate", function(self, elapsed)
 local function onUpdate(self, elapsed)
 	local time = GetTime()
@@ -169,30 +193,31 @@ local function onUpdate(self, elapsed)
 	end
 
 	-- execute OnUpdate handlers of all modules
-	local foundModFunctions = 0
-	for i, v in pairs(private.updateFunctions) do
-		foundModFunctions = foundModFunctions + 1
-		if i.Options.Enabled and (not i.zones or i.zones[LastInstanceMapID]) then
-			i.elapsed = (i.elapsed or 0) + elapsed
-			if i.elapsed >= (i.updateInterval or 0) then
-				v(i, i.elapsed)
-				i.elapsed = 0
-			end
+	if private.updateFunctionsDirty then
+		rebuildActiveUpdateFunctions()
+	end
+	local foundModFunctions = activeUpdateCount
+	for i = 1, activeUpdateCount do
+		local mod = activeUpdateMods[i]
+		local func = activeUpdateFuncs[i]
+		mod.elapsed = (mod.elapsed or 0) + elapsed
+		if mod.elapsed >= (mod.updateInterval or 0) then
+			func(mod, mod.elapsed)
+			mod.elapsed = 0
 		end
 	end
 
 	-- clean up sync spam timers and auto respond spam blockers
 	if time > nextModSyncSpamUpdate then
 		nextModSyncSpamUpdate = time + 20
-		-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
-		-- we now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
-		-- note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
-		local k, v = next(private.modSyncSpam, nil)
-		if k and v and (time - v > 8) then
-			private.modSyncSpam[k] = nil
+		-- Every 20 seconds, iterate over private.modSyncSpam with pairs to remove entries older than 8 seconds, which only prevents a small potential memory leak because the sync functions themselves also check the timestamp.
+		for k, v in pairs(private.modSyncSpam) do
+			if time - v > 8 then
+				private.modSyncSpam[k] = nil
+			end
 		end
 	end
-	if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
+	if not nextTask and foundModFunctions == 0 then -- Nothing left, stop scheduler
 		schedulerFrame:SetScript("OnUpdate", nil)
 		schedulerFrame:Hide()
 	end
@@ -209,6 +234,17 @@ end
 --without needing to monitor for changes in onupdate functions or registering zone change events
 function module:UpdateZone()
 	LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
+	private.updateFunctionsDirty = true
+	-- Ensure scheduler is running if there are update functions that may become active in the new zone
+	-- Check if any handler would actually be active in the new zone before starting
+	if private.updateFunctions then
+		for mod, _ in pairs(private.updateFunctions) do
+			if mod.Options.Enabled and (not mod.zones or mod.zones[LastInstanceMapID]) then
+				module:StartScheduler()
+				break
+			end
+		end
+	end
 end
 
 local function schedule(t, f, mod, ...)
@@ -216,22 +252,24 @@ local function schedule(t, f, mod, ...)
 		error("usage: schedule(time, func, [mod, args...])", 2)
 	end
 	module:StartScheduler()
+	local now = GetTime()
+	local argCount = select("#", ...)
 	local v
-	if numChachedTables > 0 and select("#", ...) <= 4 then -- a cached table is available and all arguments fit into an array with four slots
+	if numChachedTables > 0 and argCount <= 4 then -- a cached table is available and all arguments fit into an array with four slots
 		v = popCachedTable()
-		v.time = GetTime() + t
+		v.time = now + t
 		v.func = f
 		v.mod = mod
-		v.n = select("#", ...)
-		for i = 1, v.n do
+		v.n = argCount
+		for i = 1, argCount do
 			v[i] = select(i, ...)
 		end
 		-- clear slots if necessary
-		for i = v.n + 1, 4 do
+		for i = argCount + 1, 4 do
 			v[i] = nil
 		end
 	else -- create a new table
-		v = {time = GetTime() + t, func = f, mod = mod, n = select("#", ...), ...}
+		v = {time = now + t, func = f, mod = mod, n = argCount, ...}
 	end
 	if test.testRunning then
 		scheduleTraceId = scheduleTraceId + 1
@@ -251,6 +289,11 @@ local function unschedule(f, mod, ...)
 end
 
 --Boss mod prototype usage methods (for announces countdowns/loops and yell scheduling
+---@param time number?
+---@param numAnnounces number?
+---@param func any
+---@param mod DBMMod
+---@param prototype Announce|SpecialWarning|Timer|Yell|EnrageTimer
 function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 	time = time or 5
 	numAnnounces = numAnnounces or 3
@@ -271,8 +314,8 @@ do
 
 	---@param time number|table
 	---@param func any
-	---@param mod any
-	---@param prototype any
+	---@param mod DBMMod
+	---@param prototype Announce|SpecialWarning|Timer|Yell|EnrageTimer
 	---@param count number|string
 	---@param isTimer boolean?
 	---@param voiceString VPSound?

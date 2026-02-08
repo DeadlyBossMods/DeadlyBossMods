@@ -433,6 +433,7 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 private.modSyncSpam = {}
 private.updateFunctions = {}
+private.updateFunctionsDirty = true
 --Raid Leader Disable variables
 private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDisabled, private.chatBubblesDisabled = false, false, false, false
 
