@@ -915,9 +915,12 @@ function DBM:IgnoreBlizzardAPI()
 end
 bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
 
+---Disables special warning sounds from firing from blizz ENCOUNTER_WARNING api events. Use this when a module has aleady registered custom event sounds
 ---@param self DBMModOrDBM
 function DBM:DisableSpecialWarningSounds()
-	DBM.Options.DisableSWSound = true
+	if self:wowTOC() >= 120001 then
+		DBM.Options.DisableSWSound = true
+	end
 end
 bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 

@@ -25,10 +25,8 @@ mod:AddPrivateAuraSoundOption(1219607, true, 1219532, 1)--Eradicating Salvo
 mod:AddPrivateAuraSoundOption(1219354, true, 1219354, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
---	self:DisableSpecialWarningSounds()--Prevents special warning sounds playing from the ENCOUNTER_WARNING api
-	self:EnableAlertOptions(1220489, 231, "carefly", 2)--3 spellids for protocol purge
-	self:EnableAlertOptions(1220489, 232, "carefly", 2)--3 spellids for protocol purge
-	self:EnableAlertOptions(1220489, 233, "carefly", 2)--3 spellids for protocol purge
+	self:DisableSpecialWarningSounds()
+	self:EnableAlertOptions(1220489, {231, 232, 233}, "carefly", 2)--3 spellids for protocol purge
 	self:EnableTimelineOptions(1219263, 227)
 	self:EnableTimelineOptions(1219450, 228)
 	self:EnableTimelineOptions(1219531, 229)
