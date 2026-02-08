@@ -952,7 +952,7 @@ end
 ---@param optionId number spellId or JournalId that must match option ID
 ---@param ... number EncounterEventIDs from EncounterEvent.db2 that matches event we're targetting
 function bossModPrototype:EnableTimelineOptions(optionId, ...)
-	if self:wowTOC() < 120001 then return end--REMOVE in patch 12.0.1
+	if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 	if optionId and self.Options["CustomTimerOption" .. optionId] then
 		--Set Color
 		local colorType = self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
@@ -988,7 +988,7 @@ end
 ---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 ---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
 function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
-	if self:wowTOC() < 120001 then return end--REMOVE in patch 12.0.1
+	if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 	if optionId and self.Options["CustomAlertOption" .. optionId] then
 		local soundId = self.Options["CustomAlertOption" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
