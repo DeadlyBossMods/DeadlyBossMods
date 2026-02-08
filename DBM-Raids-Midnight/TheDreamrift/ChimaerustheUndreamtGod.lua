@@ -14,4 +14,4 @@ mod:RegisterCombat("combat")
 
 --)
 
---TODO. Not a damn thing
+--TODO. This boss has many encounter events with a 0 for encounter ID

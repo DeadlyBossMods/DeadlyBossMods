@@ -950,13 +950,16 @@ end
 
 ---Event for registering timeline options to encounter events
 ---@param optionId number spellId or JournalId that must match option ID
----@param encounterEventId number EncounterEventID from EncounterEvent.db2 that matches event we're targetting
-function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId)
+---@param ... number EncounterEventIDs from EncounterEvent.db2 that matches event we're targetting
+function bossModPrototype:EnableTimelineOptions(optionId, ...)
+	if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 	if optionId and self.Options["CustomTimerOption" .. optionId] then
 		--Set Color
 		local colorType = self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
 		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
-		C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+		for _, encounterEventId in ipairs({...}) do
+			C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+		end
 		--Set Countdown
 		local timerCountdown = self.Options["CustomTimerOption" .. optionId .. "CVoice"] or 0
 		if type(timerCountdown) == "string" then
@@ -965,23 +968,27 @@ function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId)
 			path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\fivecount.ogg"
 		elseif timerCountdown == 3 then
 			path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\fivecount.ogg"
-		else
+		elseif timerCountdown == 1 then
 			path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\fivecount.ogg"
 		end
 		local fileId = GetFileIDFromPath(path)
 		--Currently commented because api does not accept file paths yet, only file data IDs, which isn't possible with custom media
-		if fileId then
-			C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = "Master", volume = 1})
+		if fileId and timerCountdown ~= 0 then
+			for _, encounterEventId in ipairs({...}) do
+				C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = "Master", volume = 1})
+			end
 		end
 	end
 end
 
 ---Event for registering timeline options to encounter events
 ---@param optionId number spellId or JournalId that must match option ID
----@param encounterEventId number EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 ---@param voice VPSound|any voice pack media path
 ---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
-function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion)
+---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
+function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
+	if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 	if optionId and self.Options["CustomAlertOption" .. optionId] then
 		local soundId = self.Options["CustomAlertOption" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
@@ -1003,10 +1010,22 @@ function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, 
 		end
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 		if type(mediaPath) == "number" then
-			C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+			if type(encounterEventId) == "table" then
+				for _, id in ipairs(encounterEventId) do
+					C_EncounterEvents.SetEventSound(id, overrideType or 1, {file = mediaPath, channel = "Master", volume = 1})
+				end
+			else
+				C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, {file = mediaPath, channel = "Master", volume = 1})
+			end
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
 			--NYI on blizzards end to support custom sound file paths
-			--C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+			--if type(encounterEventId) == "table" then
+			--	for _, id in ipairs(encounterEventId) do
+			--		C_EncounterEvents.SetEventSound(id, overrideType or 1, {soundFileName = mediaPath, channel = "Master", volume = 1})
+			--	end
+			--else
+			--	C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+			--end
 		end
 	end
 end

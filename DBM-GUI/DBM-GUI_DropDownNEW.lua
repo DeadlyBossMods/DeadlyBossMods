@@ -54,6 +54,19 @@ function dropdownPrototype:RefreshLazyValues()
 	self.values = self:valueGetter()
 end
 
+-- Based off `MenuTemplates.AttachBasicButton`
+local function AttachBasicButton(parent, width, height)
+	local button = parent:AttachFrame("Button")
+	button:SetFrameStrata(parent:GetFrameStrata())
+
+	button:Show()
+	button:SetMouseClickEnabled(true)
+	button:SetMouseMotionEnabled(true)
+	button:SetSize(width or 16, height or 16)
+
+	return button;
+end
+
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
 ---@diagnostic disable-next-line: duplicate-set-field
 function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText, dropdownType)
@@ -159,7 +172,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 						return
 					end
 					if not button.playBtn then
-						button.playBtn = MenuTemplates.AttachBasicButton(button, 16, 16)
+						button.playBtn = AttachBasicButton(button, 16, 16)
 						button.playBtn:SetPoint("RIGHT", -5, 0)
 						local tex = button.playBtn:AttachTexture()
 						tex:SetAllPoints()
