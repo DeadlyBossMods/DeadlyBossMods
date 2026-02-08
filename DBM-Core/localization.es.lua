@@ -717,8 +717,8 @@ L.KEYSTONE_NAMES[525] = 'OPER' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'ECO' -- Eco-Dome Al'dani
 
 -- Midnight
-L.MN_TIMELINE_HEADER   = "¿Quieres usar la línea de tiempo de Blizzard o las barras de DBM?"
-L.MN_BLIZZARD_TIMELINE = "Línea de tiempo de Blizzard"
+L.MN_TIMELINE_HEADER   = "¿Quieres usar la línea temporal de Blizzard o las barras de DBM?"
+L.MN_BLIZZARD_TIMELINE = "Línea temporal de Blizzard"
 L.MN_DBM_TIMELINE      = "Barras de DBM"
 L.MN_WARNIGS_HEADER   = "¿Quieres usar los avisos de encuentro de Blizzard o los avisos de encuentro de DBM?"
 L.MN_BLIZZARD_WARNINGS= "Avisos de Blizzard"
