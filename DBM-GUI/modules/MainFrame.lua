@@ -211,12 +211,17 @@ function OptionsList_OnLoad(self, ...)
 end
 ---@class DBMFrameList: ScrollFrame, BackdropTemplate
 local frameList = CreateFrame("ScrollFrame", "$parentList", frameWrapper, "UIPanelScrollFrameTemplate")
+
+-- Cache scrollbar and buttons to avoid repeated global lookups
+local frameListScrollBar = _G[frameList:GetName() .. "ScrollBar"]
+local scrollUpButton = frameListScrollBar and _G[frameListScrollBar:GetName() .. "ScrollUpButton"]
+local scrollDownButton = frameListScrollBar and _G[frameListScrollBar:GetName() .. "ScrollDownButton"]
+
 frameList:SetScript("OnVerticalScroll", function(self, offset)
-	local scrollbar = _G[self:GetName() .. "ScrollBar"]
-	local _, max = scrollbar:GetMinMaxValues()
-	scrollbar:SetValue(offset)
-	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
-	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
+	local _, max = frameListScrollBar:GetMinMaxValues()
+	frameListScrollBar:SetValue(offset)
+	scrollUpButton:SetEnabled(offset ~= 0)
+	scrollDownButton:SetEnabled(frameListScrollBar:GetValue() - max ~= 0)
 	frameList.offset = math.floor((offset / 18) + 0.5)
 	frame:UpdateMenuFrame()
 end)
@@ -305,7 +310,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame:UpdateMenuFrame()
 	end)
 end
-local frameListScrollBar = _G[frameList:GetName() .. "ScrollBar"]
+-- Initialize scrollbar settings after button creation
 frameListScrollBar:ClearAllPoints()
 frameListScrollBar:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 6, -20)
 frameListScrollBar:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 6, 18)
@@ -315,12 +320,10 @@ frameListScrollBar:SetValue(0)
 frameList:SetScript("OnMouseWheel", function(_, delta)
 	frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (delta * 18))
 end)
-local scrollUpButton = _G[frameListScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:Disable()
 scrollUpButton:SetScript("OnClick", function(self)
 	self:GetParent():SetValue(self:GetParent():GetValue() - 18)
 end)
-local scrollDownButton = _G[frameListScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:Enable()
 scrollDownButton:SetScript("OnClick", function(self)
 	self:GetParent():SetValue(self:GetParent():GetValue() + 18)
@@ -348,10 +351,13 @@ frameContainerFOV:Hide()
 frameContainerFOV:SetPoint("TOPLEFT", frameContainer, "TOPLEFT", 0, -5)
 frameContainerFOV:SetPoint("BOTTOMRIGHT", frameContainer, "BOTTOMRIGHT", 0, 5)
 
-_G[frameContainerFOV:GetName() .. "ScrollBarScrollUpButton"]:Disable()
-_G[frameContainerFOV:GetName() .. "ScrollBarScrollDownButton"]:Enable()
-
+-- Cache FOV scrollbar components to avoid repeated global lookups
 local frameContainerScrollBar = _G[frameContainerFOV:GetName() .. "ScrollBar"]
+local frameContainerScrollUpButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollUpButton"]
+local frameContainerScrollDownButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollDownButton"]
+
+frameContainerScrollUpButton:Disable()
+frameContainerScrollDownButton:Enable()
 frameContainerScrollBar:ClearAllPoints()
 frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
 frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)

@@ -114,102 +114,86 @@ local challengeModeIds = {
 
 do
 	local soundsRegistered = false
+	local cachedLSM -- Cache LibSharedMedia instance
+	local typeFlags = { -- Pre-computed type flag map for O(1) lookup
+		statusbar = { texture = true },
+		font = { font = true },
+		sound = { sound = true }
+	}
 
 	function DBM_GUI:MixinSharedMedia3(mediatype, mediatable)
 		if not LibStub or not LibStub("LibSharedMedia-3.0", true) then
 			return mediatable
 		end
 		if not soundsRegistered then
-			local LSM = LibStub("LibSharedMedia-3.0")
+			cachedLSM = LibStub("LibSharedMedia-3.0")
 			soundsRegistered = true
-			-- Embedded Sound Clip media
-			LSM:Register("sound", "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]])
-			LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]])
-			LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]])
-			LSM:Register("sound", "Thrall: That's Incredible!", [[Interface\AddOns\DBM-Core\sounds\SoundClips\incredible.ogg]])
-			LSM:Register("sound", "Saurfang: Don't Die", [[Interface\AddOns\DBM-Core\sounds\SoundClips\dontdie.ogg]])
-			-- Blakbyrd
-			LSM:Register("sound", "Blakbyrd Alert 1", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert1.ogg]])
-			LSM:Register("sound", "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]])
-			LSM:Register("sound", "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]])
-			-- User Media
-			if DBM.Options.CustomSounds >= 1 then
-				LSM:Register("sound", "DBM: Custom 1", [[Interface\AddOns\DBM-CustomSounds\Custom1.ogg]])
+			-- Embedded Sound Clip media registration
+			local sounds = {
+				{ "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]] },
+				{ "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]] },
+				{ "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]] },
+				{ "Thrall: That's Incredible!", [[Interface\AddOns\DBM-Core\sounds\SoundClips\incredible.ogg]] },
+				{ "Saurfang: Don't Die", [[Interface\AddOns\DBM-Core\sounds\SoundClips\dontdie.ogg]] },
+				{ "Blakbyrd Alert 1", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert1.ogg]] },
+				{ "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]] },
+				{ "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]] },
+			}
+			-- Register embedded sounds
+			for _, sound in ipairs(sounds) do
+				cachedLSM:Register("sound", sound[1], sound[2])
 			end
-			if DBM.Options.CustomSounds >= 2 then
-				LSM:Register("sound", "DBM: Custom 2", [[Interface\AddOns\DBM-CustomSounds\Custom2.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 3 then
-				LSM:Register("sound", "DBM: Custom 3", [[Interface\AddOns\DBM-CustomSounds\Custom3.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 4 then
-				LSM:Register("sound", "DBM: Custom 4", [[Interface\AddOns\DBM-CustomSounds\Custom4.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 5 then
-				LSM:Register("sound", "DBM: Custom 5", [[Interface\AddOns\DBM-CustomSounds\Custom5.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 6 then
-				LSM:Register("sound", "DBM: Custom 6", [[Interface\AddOns\DBM-CustomSounds\Custom6.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 7 then
-				LSM:Register("sound", "DBM: Custom 7", [[Interface\AddOns\DBM-CustomSounds\Custom7.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 8 then
-				LSM:Register("sound", "DBM: Custom 8", [[Interface\AddOns\DBM-CustomSounds\Custom8.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 9 then
-				LSM:Register("sound", "DBM: Custom 9", [[Interface\AddOns\DBM-CustomSounds\Custom9.ogg]])
-				if DBM.Options.CustomSounds > 9 then
-					DBM.Options.CustomSounds = 9
+			-- Register custom sounds
+			for i = 1, (DBM.Options.CustomSounds or 0) do
+				if i <= 9 then
+					cachedLSM:Register("sound", "DBM: Custom " .. i, [[Interface\AddOns\DBM-CustomSounds\Custom]] .. i .. [[.ogg]])
 				end
+			end
+			if (DBM.Options.CustomSounds or 0) > 9 then
+				DBM.Options.CustomSounds = 9
 			end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
-		local hashtable = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)
+		local LSM = cachedLSM or LibStub("LibSharedMedia-3.0", true)
+		local hashtable = LSM:HashTable(mediatype)
 		local keytable = {}
 		for k in next, hashtable do
 			tinsert(keytable, k)
 		end
 		tsort(keytable, function(a, b)
 			return a:lower() < b:lower()
-		end);
+		end)
 		-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
 		local result = mediatable
-		for i = 1, #result do
-			if mediatype == "statusbar" then
-				result[i].texture = true
-			elseif mediatype == "font" then
-				result[i].font = true
-			elseif mediatype == "sound" then
-				result[i].sound = true
+		local typeFlag = typeFlags[mediatype] -- O(1) lookup instead of repeated if/elseif
+		if typeFlag then
+			for i = 1, #result do
+				if typeFlag.texture then result[i].texture = true end
+				if typeFlag.font then result[i].font = true end
+				if typeFlag.sound then result[i].sound = true end
 			end
+		end
+		-- Use set-based deduplication instead of nested loop
+		local valueSet = {}
+		for _, v2 in next, result do
+			valueSet[slower(v2.value)] = true
 		end
 		for i = 1, #keytable do
 			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
 				local v = hashtable[keytable[i]]
-				-- Filter duplicates
-				local insertme = true
-				for _, v2 in next, result do
-					if slower(v2.value) == slower(v) then
-						insertme = false
-						break
-					end
-				end
-				if insertme then
+				-- O(1) set lookup instead of O(n) linear search
+				if not valueSet[slower(v)] then
+					valueSet[slower(v)] = true
 					local ins = {
 						text	= keytable[i],
 						value	= v
 					}
-					if mediatype == "statusbar" then
-						ins.texture = true
-					elseif mediatype == "font" then
-						ins.font = true
-					elseif mediatype == "sound" then--and type(v) == "string" and v:lower():find("addons")
-						ins.sound = true
+					if typeFlag then
+						if typeFlag.texture then ins.texture = true end
+						if typeFlag.font then ins.font = true end
+						if typeFlag.sound then ins.sound = true end
 					end
-					if ins.texture or ins.font or ins.sound then
-						tinsert(result, ins)
-					end
+					tinsert(result, ins)
 				end
 			end
 		end
@@ -976,19 +960,42 @@ do
 	end
 
     local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN", "MIDNIGHT"}
+	-- Create O(1) expansion lookup instead of O(n) tIndexOf search
+	local expansionIndex = {}
+	for i, exp in ipairs(expansions) do
+		expansionIndex[exp] = i
+	end
 
 	function DBM_GUI:UpdateModList()
+		-- Create mod index by modId for O(1) lookup instead of O(n) search
+		local modsByAddonId = {}
+		for _, mod in ipairs(DBM.Mods) do
+			if not modsByAddonId[mod.modId] then
+				modsByAddonId[mod.modId] = {}
+			end
+			tinsert(modsByAddonId[mod.modId], mod)
+		end
+
+		-- Cache IsAddOnLoaded results to avoid redundant checks
+		local addonLoadedCache = {}
+
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
 				local customName
 				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
 				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" then
-					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+					-- Use O(1) expansion lookup instead of O(n) tIndexOf
+					local expIndex = expansionIndex[addon.category:upper()] or 99
+					customName = _G["EXPANSION_NAME" .. (expIndex - 1)]
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
 
-				if not C_AddOns.IsAddOnLoaded(addon.modId) then
+				-- Cache addon load state to avoid repeated API calls
+				local isAddonLoaded = C_AddOns.IsAddOnLoaded(addon.modId)
+				addonLoadedCache[addon.modId] = isAddonLoaded
+
+				if not isAddonLoaded then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
 					autoLoadFrame:SetScript("OnShow", function()
 						if not addon.attemptedAutoLoad then
@@ -1013,7 +1020,8 @@ do
 				end
 			end
 
-			if addon.panel and addon.subTabs and C_AddOns.IsAddOnLoaded(addon.modId) then
+			-- Use cached addon load state instead of second API call
+			if addon.panel and addon.subTabs and addonLoadedCache[addon.modId] then
 				if not addon.subPanels then
 					addon.subPanels = {}
 				end
@@ -1027,21 +1035,19 @@ do
 				end
 			end
 
-			for _, v in ipairs(DBM.Mods) do
-				---@class DBMMod
-				local mod = v
-				if mod.modId == addon.modId then
-					if not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0)) then
-						if addon.subTabs and addon.subPanels[mod.subTab] then
-							mod.panel = mod.panel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
-							if mod.showTestUI then
-								mod.testPanel = mod.testPanel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
-							end
-						else
-							mod.panel = mod.panel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
-							if mod.showTestUI then
-								mod.testPanel = mod.testPanel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
-							end
+			-- Use pre-computed mod index for O(1) lookup instead of O(n) search
+			local addonMods = modsByAddonId[addon.modId] or {}
+			for _, mod in ipairs(addonMods) do
+				if not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0)) then
+					if addon.subTabs and addon.subPanels[mod.subTab] then
+						mod.panel = mod.panel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+						if mod.showTestUI then
+							mod.testPanel = mod.testPanel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
+						end
+					else
+						mod.panel = mod.panel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+						if mod.showTestUI then
+							mod.testPanel = mod.testPanel or currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, L.TestModEntry:format(mod.localization.general.name), nil, nil, nil, true)
 						end
 					end
 				end
