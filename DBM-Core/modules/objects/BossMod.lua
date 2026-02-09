@@ -933,7 +933,6 @@ do
 	---@param optionId number
 	---@param voice VPSound|any voice pack media path
 	---@param voiceVersion number
-	---@return number|string
 	local function checkValidVPSound(self, optionId, voice, voiceVersion)
 		local soundId = self.Options["PrivateAuraSound" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
