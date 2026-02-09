@@ -217,7 +217,7 @@ local function resize(targetFrame, hasScroll)
 end
 
 local bossPreview
-local cachedPanelContainer, cachedDropDown
+local cachedPanelContainer
 
 -- Cache panel container reference
 local function GetPanelContainer()

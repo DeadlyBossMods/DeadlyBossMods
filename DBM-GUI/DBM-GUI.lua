@@ -980,6 +980,13 @@ do
 		local addonLoadedCache = {}
 
 		for _, addon in ipairs(DBM.AddOns) do
+			-- Cache addon load state to avoid repeated API calls (must be outside panel check)
+			local isAddonLoaded = addonLoadedCache[addon.modId]
+			if isAddonLoaded == nil then
+				isAddonLoaded = C_AddOns.IsAddOnLoaded(addon.modId)
+				addonLoadedCache[addon.modId] = isAddonLoaded
+			end
+
 			if not addon.panel then
 				local customName
 				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
@@ -990,10 +997,6 @@ do
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
-
-				-- Cache addon load state to avoid repeated API calls
-				local isAddonLoaded = C_AddOns.IsAddOnLoaded(addon.modId)
-				addonLoadedCache[addon.modId] = isAddonLoaded
 
 				if not isAddonLoaded then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
