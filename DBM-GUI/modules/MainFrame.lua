@@ -220,8 +220,12 @@ local scrollDownButton = frameListScrollBar and _G[frameListScrollBar:GetName() 
 frameList:SetScript("OnVerticalScroll", function(self, offset)
 	local _, max = frameListScrollBar:GetMinMaxValues()
 	frameListScrollBar:SetValue(offset)
-	scrollUpButton:SetEnabled(offset ~= 0)
-	scrollDownButton:SetEnabled(frameListScrollBar:GetValue() - max ~= 0)
+	if scrollUpButton then
+		scrollUpButton:SetEnabled(offset ~= 0)
+	end
+	if scrollDownButton then
+		scrollDownButton:SetEnabled(frameListScrollBar:GetValue() - max ~= 0)
+	end
 	frameList.offset = math.floor((offset / 18) + 0.5)
 	frame:UpdateMenuFrame()
 end)
@@ -320,14 +324,18 @@ frameListScrollBar:SetValue(0)
 frameList:SetScript("OnMouseWheel", function(_, delta)
 	frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (delta * 18))
 end)
-scrollUpButton:Disable()
-scrollUpButton:SetScript("OnClick", function(self)
-	self:GetParent():SetValue(self:GetParent():GetValue() - 18)
-end)
-scrollDownButton:Enable()
-scrollDownButton:SetScript("OnClick", function(self)
-	self:GetParent():SetValue(self:GetParent():GetValue() + 18)
-end)
+if scrollUpButton then
+	scrollUpButton:Disable()
+	scrollUpButton:SetScript("OnClick", function(self)
+		self:GetParent():SetValue(self:GetParent():GetValue() - 18)
+	end)
+end
+if scrollDownButton then
+	scrollDownButton:Enable()
+	scrollDownButton:SetScript("OnClick", function(self)
+		self:GetParent():SetValue(self:GetParent():GetValue() + 18)
+	end)
+end
 
 local frameBreak = frameWrapper:CreateTexture()
 frameBreak:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 12, -1)
@@ -356,11 +364,17 @@ local frameContainerScrollBar = _G[frameContainerFOV:GetName() .. "ScrollBar"]
 local frameContainerScrollUpButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollUpButton"]
 local frameContainerScrollDownButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollDownButton"]
 
-frameContainerScrollUpButton:Disable()
-frameContainerScrollDownButton:Enable()
-frameContainerScrollBar:ClearAllPoints()
-frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
-frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
+if frameContainerScrollUpButton then
+	frameContainerScrollUpButton:Disable()
+end
+if frameContainerScrollDownButton then
+	frameContainerScrollDownButton:Enable()
+end
+if frameContainerScrollBar then
+	frameContainerScrollBar:ClearAllPoints()
+	frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
+	frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
+end
 
 ---@class DBMPanelContainerScrollbarBackdrop: Frame, BackdropTemplate
 local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar, "BackdropTemplate")
