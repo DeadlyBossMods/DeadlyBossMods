@@ -11,7 +11,7 @@ if isWrath then
 	DDM = LibStub:GetLibrary("LibDropDownMenu")
 end
 
-local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
+local select, ipairs, mfloor, mmax, mmin = select, ipairs, math.floor, math.max, math.min
 local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
 local DBM = DBM
 

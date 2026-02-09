@@ -15,11 +15,20 @@ local function GetDepth(self, parentID) -- Called internally
 
 	local depth = 1
 	local currentID = parentID
+	local visited = {}
 
 	-- Walk up the parent chain to calculate depth
 	while currentID do
+		if visited[currentID] then
+			-- Circular reference detected, break to prevent infinite loop
+			break
+		end
+		visited[currentID] = true
+		
+		local found = false
 		for _, v in ipairs(self.buttons) do
 			if v.frame.ID == currentID then
+				found = true
 				if v.parentID then
 					currentID = v.parentID
 					depth = depth + 1
@@ -29,7 +38,10 @@ local function GetDepth(self, parentID) -- Called internally
 				break
 			end
 		end
-		if currentID == parentID then break end -- Prevent infinite loops
+		if not found then
+			-- Parent not found, stop
+			break
+		end
 	end
 
 	self.depthCache[parentID] = depth + 1
