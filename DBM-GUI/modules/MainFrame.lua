@@ -364,17 +364,11 @@ local frameContainerScrollBar = _G[frameContainerFOV:GetName() .. "ScrollBar"]
 local frameContainerScrollUpButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollUpButton"]
 local frameContainerScrollDownButton = _G[frameContainerFOV:GetName() .. "ScrollBarScrollDownButton"]
 
-if frameContainerScrollUpButton then
-	frameContainerScrollUpButton:Disable()
-end
-if frameContainerScrollDownButton then
-	frameContainerScrollDownButton:Enable()
-end
-if frameContainerScrollBar then
-	frameContainerScrollBar:ClearAllPoints()
-	frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
-	frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
-end
+frameContainerScrollUpButton:Disable()
+frameContainerScrollDownButton:Enable()
+frameContainerScrollBar:ClearAllPoints()
+frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
+frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
 
 ---@class DBMPanelContainerScrollbarBackdrop: Frame, BackdropTemplate
 local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar, "BackdropTemplate")
