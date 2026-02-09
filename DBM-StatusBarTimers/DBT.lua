@@ -219,11 +219,7 @@ local function createJournalIcons(bar, iconTable, namePrefix, anchorIcon)
 	for i = 1, 4 do
 		local iconName = i == 1 and namePrefix or namePrefix .. i
 		local icon = bar:CreateTexture("$parent" .. iconName, "OVERLAY")
-		if i == 1 then
-			icon:SetPoint("RIGHT", prevIcon, "LEFT", 2, 0)
-		else
-			icon:SetPoint("RIGHT", prevIcon, "LEFT", 2, 0)
-		end
+		icon:SetPoint("RIGHT", prevIcon, "LEFT", 2, 0)
 		icon:SetSize(20, 20)
 		table.insert(iconTable, icon)
 		prevIcon = icon
