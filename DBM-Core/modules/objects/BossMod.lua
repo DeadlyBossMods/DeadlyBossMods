@@ -933,6 +933,7 @@ do
 	---@param optionId number
 	---@param voice VPSound|any voice pack media path
 	---@param voiceVersion number
+	---@return number|string
 	local function checkValidVPSound(self, optionId, voice, voiceVersion)
 		local soundId = self.Options["PrivateAuraSound" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
@@ -951,6 +952,8 @@ do
 		else
 			mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
 		end
+		--LuaLS does some bullshit where it things it can an impossible bool, so we have to force set it here
+		---@cast mediaPath number|string
 		return mediaPath
 	end
 
