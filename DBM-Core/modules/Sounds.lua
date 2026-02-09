@@ -28,12 +28,12 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	---@deprecated Use new utility functions
-	DBM.Counts = private.IsRetail and midnightCounts or counts
+	---@deprecated Use new utility functions. Midnight sounds cannot be added injectinginto DBM.Counts at all!
+	DBM.Counts = counts
 
 	function DBM:GetCountSounds()
 		if not hasCached then
-			cachedTable = {unpack(private.IsRetail and midnightCounts or counts)}
+			cachedTable = {unpack(private.isRetail and midnightCounts or counts)}
 		end
 		return cachedTable
 	end
@@ -45,18 +45,19 @@ do
 	---@param max number? Max count value 1-10 for classic and 1-5 for midnight
 	---@param isMidnightCompatible boolean? Pass this ONLY if your count pack supports "fivecount.ogg"
 	function DBM:AddCountSound(text, value, path, max, isMidnightCompatible)
-		tinsert(counts, {
-			text	= text,
-			value	= value or text,
-			path	= path,
-			max		= max or 10
-		})
 		if isMidnightCompatible then
 			tinsert(midnightCounts, {
 				text	= text,
 				value	= value or text,
 				path	= path,
 				max		= max or 5
+			})
+		else
+			tinsert(counts, {
+				text	= text,
+				value	= value or text,
+				path	= path,
+				max		= max or 10
 			})
 		end
 		hasCached = false
