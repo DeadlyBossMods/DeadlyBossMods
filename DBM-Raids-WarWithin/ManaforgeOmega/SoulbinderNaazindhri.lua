@@ -12,6 +12,11 @@ mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
+--Sound alerts
+mod:AddCustomAlertSoundOption(1223859, true, 2)
+--Timers
+mod:AddCustomTimerOptions(1223859, true, 2, 0)--Arcane Expulsion
+mod:AddCustomTimerOptions(1227276, true, 3, 0)--Soulfray Annihilation
 --Midnight private aura replacements
 mod:AddPrivateAuraSoundOption(1237607, true, 1237607, 1)--Mythic Lash
 mod:AddPrivateAuraSoundOption(1227276, true, 1227276, 1)
@@ -19,6 +24,12 @@ mod:AddPrivateAuraSoundOption(1225626, true, 1225626, 1)
 mod:AddPrivateAuraSoundOption(1242086, true, 1242086, 1)--GTFO
 
 function mod:OnLimitedCombatStart()
+	self:DisableSpecialWarningSounds()
+	self:EnableAlertOptions(1223859, {345, 346}, "carefly", 2)
+
+	self:EnableTimelineOptions(1223859, 345, 346)
+	self:EnableTimelineOptions(1227276, 347)
+
 	self:EnablePrivateAuraSound(1237607, "defensive", 2)
 	self:EnablePrivateAuraSound(1248464, "defensive", 2, 1237607)
 	self:EnablePrivateAuraSound(1227276, "lineyou", 17)

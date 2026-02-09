@@ -952,7 +952,7 @@ do
 		else
 			mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
 		end
-		--LuaLS does some bullshit where it things it can an impossible bool, so we have to force set it here
+		--LuaLS does some bullshit where it thinks it can an impossible bool, so we have to force set it here
 		---@cast mediaPath number|string
 		return mediaPath
 	end

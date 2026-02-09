@@ -19,25 +19,46 @@ do
 		{	text	= "Anshlun (ptBR)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
 		{	text	= "Neryssa (ptBR)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
 	}
+	--Countdown audio that's been specifically edited to be a single 5 second count file
+	local midnightCounts = {
+		{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 5},
+		{	text	= "Koltrane",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\", max = 5},
+		{	text	= "Smooth",value 	= "Smooth", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\", max = 5},
+		{	text	= "Smooth (Reverb)",value 	= "SmoothR", path = "Interface\\AddOns\\DBM-Core\\Sounds\\SmoothReverb\\", max = 5},
+	}
 	local hasCached = false
 	local cachedTable
 	---@deprecated Use new utility functions
-	DBM.Counts = counts
+	DBM.Counts = private.IsRetail and midnightCounts or counts
 
 	function DBM:GetCountSounds()
 		if not hasCached then
-			cachedTable = {unpack(counts)}
+			cachedTable = {unpack(private.IsRetail and midnightCounts or counts)}
 		end
 		return cachedTable
 	end
 
-	function DBM:AddCountSound(text, value, path, max)
+	---comment
+	---@param text string
+	---@param value string
+	---@param path string
+	---@param max number? Max count value 1-10 for classic and 1-5 for midnight
+	---@param isMidnightCompatible boolean? Pass this ONLY if your count pack supports "fivecount.ogg"
+	function DBM:AddCountSound(text, value, path, max, isMidnightCompatible)
 		tinsert(counts, {
 			text	= text,
 			value	= value or text,
 			path	= path,
 			max		= max or 10
 		})
+		if isMidnightCompatible then
+			tinsert(midnightCounts, {
+				text	= text,
+				value	= value or text,
+				path	= path,
+				max		= max or 5
+			})
+		end
 		hasCached = false
 	end
 end
