@@ -907,13 +907,14 @@ do
 	---@param spellId number
 	---@param media number|string
 	local function registerPrivateAuraSound(self, spellId, media)
+		local soundSetting = DBM.Options.UseSoundChannel or "Master"
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 		if type(media) == "number" then
 			self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
 				spellID = spellId,
 				unitToken = "player",
 				soundFileID = media,
-				outputChannel = "master",
+				outputChannel = soundSetting,
 			})
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
 			self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
@@ -922,7 +923,7 @@ do
 				--Another cause of LuaLS being stupid for some reason
 				---@diagnostic disable-next-line: assign-type-mismatch
 				soundFileName = media,
-				outputChannel = "master",
+				outputChannel = soundSetting,
 			})
 		end
 	end
@@ -1015,8 +1016,9 @@ do
 			local fileId = GetFileIDFromPath(path)
 			--Currently commented because api does not accept file paths yet, only file data IDs, which isn't possible with custom media
 			if fileId and timerCountdown ~= 0 then
+				local soundSetting = DBM.Options.UseSoundChannel or "Master"
 				for _, encounterEventId in ipairs({...}) do
-					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = "Master", volume = 1})
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = soundSetting, volume = 1})
 				end
 			end
 		end
@@ -1032,23 +1034,24 @@ do
 		if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 		if optionId and self.Options["CustomAlertOption" .. optionId] then
 			local mediaPath = checkValidVPSound(self, optionId, voice, voiceVersion)
+			local soundSetting = DBM.Options.UseSoundChannel or "Master"
 			--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 			if type(mediaPath) == "number" then
 				if type(encounterEventId) == "table" then
 					for _, id in ipairs(encounterEventId) do
-						C_EncounterEvents.SetEventSound(id, overrideType or 1, {file = mediaPath, channel = "Master", volume = 1})
+						C_EncounterEvents.SetEventSound(id, overrideType or 1, {file = mediaPath, channel = soundSetting, volume = 1})
 					end
 				else
-					C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, {file = mediaPath, channel = "Master", volume = 1})
+					C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, {file = mediaPath, channel = soundSetting, volume = 1})
 				end
 			else--It's a string, so it's not an ID, we need to set soundFileName instead
 				--NYI on blizzards end to support custom sound file paths
 				--if type(encounterEventId) == "table" then
 				--	for _, id in ipairs(encounterEventId) do
-				--		C_EncounterEvents.SetEventSound(id, overrideType or 1, {soundFileName = mediaPath, channel = "Master", volume = 1})
+				--		C_EncounterEvents.SetEventSound(id, overrideType or 1, {soundFileName = mediaPath, channel = soundSetting, volume = 1})
 				--	end
 				--else
-				--	C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = "Master", volume = 1})
+				--	C_EncounterEvents.SetEventSound(encounterEventId, 1, {file = mediaPath, channel = soundSetting, volume = 1})
 				--end
 			end
 		end
