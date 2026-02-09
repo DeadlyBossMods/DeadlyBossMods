@@ -24,7 +24,7 @@ local function GetDepth(self, parentID) -- Called internally
 			break
 		end
 		visited[currentID] = true
-		
+
 		local found = false
 		for _, v in ipairs(self.buttons) do
 			if v.frame.ID == currentID then
