@@ -1034,17 +1034,18 @@ do
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
 	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
 		if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
-		if optionId and self.Options["CustomAlertOption" .. optionId] then
+		if optionId then
+			local enabled = self.Options["CustomAlertOption" .. optionId] or true
 			local mediaPath = checkValidVPSound(self, optionId, voice, voiceVersion)
 			local soundSetting = DBM.Options.UseSoundChannel or "Master"
 			--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 			if type(mediaPath) == "number" then
 				if type(encounterEventId) == "table" then
 					for _, id in ipairs(encounterEventId) do
-						C_EncounterEvents.SetEventSound(id, overrideType or 1, {file = mediaPath, channel = soundSetting, volume = 1})
+						C_EncounterEvents.SetEventSound(id, overrideType or 1, enabled and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
 					end
 				else
-					C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, {file = mediaPath, channel = soundSetting, volume = 1})
+					C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, enabled and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
 				end
 			else--It's a string, so it's not an ID, we need to set soundFileName instead
 				--NYI on blizzards end to support custom sound file paths
