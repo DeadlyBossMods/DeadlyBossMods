@@ -479,7 +479,6 @@ do
 				newBar.small = small
 				newBar.color = color
 				newBar.colorType = colorType
-				newBar.flashing = nil
 				newBar.inlineIcon = inlineIcon
 				newBar.keep = keep
 				newBar.fade = fade
@@ -1085,6 +1084,7 @@ local colorVariables = {
 
 function DBT:GetColorForType(colorType)
 	if not colorVariables[colorType] then
+		DBM:Debug("GetColorForType failed for unknown colorType: "..tostring(colorType))
 		return nil
 	end
 	local colorVar = colorVariables[colorType]
@@ -1195,7 +1195,7 @@ function barPrototype:Update(elapsed)
 		elseif self.flashing and timerValue > 7.75 then
 			self.flashing = nil
 			self.ftimer = nil
-			bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
+			bar:SetStatusBarColor(r, g, b, 1)
 			if sparkEnabled then
 				spark:SetAlpha(1)
 			end
@@ -1210,17 +1210,17 @@ function barPrototype:Update(elapsed)
 		if self.flashing then
 			local ftime = self.ftimer % 1.25
 			if ftime >= 0.5 then
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
+				bar:SetStatusBarColor(r, g, b, 1)
 				if sparkEnabled then
 					spark:SetAlpha(1)
 				end
 			elseif ftime >= 0.25 then
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
+				bar:SetStatusBarColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
 				if sparkEnabled then
 					spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
 				end
 			else
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (ftime / 0.25))
+				bar:SetStatusBarColor(r, g, b, 1 - (ftime / 0.25))
 				if sparkEnabled then
 					spark:SetAlpha(1 - (ftime / 0.25))
 				end

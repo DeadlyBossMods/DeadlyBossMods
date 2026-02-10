@@ -1873,13 +1873,13 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
+				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				if self.Options.HideBlizzardTimeline then
 					C_CVar.SetCVar("encounterTimelineEnabled", "0")
 					if EncounterTimeline.View then
 						--12.0.0
 						EncounterTimeline.View:Hide()
 					else
-						C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 						--12.0.1
 						local viewType = C_EncounterTimeline.GetViewType()
 						--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
