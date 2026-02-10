@@ -42,7 +42,7 @@ mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
 mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
 mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
 --Post midnight private auras
-mod:AddPrivateAuraSoundOption(1227549, true, 1227549, 1)--Banishment
+mod:AddPrivateAuraSoundOption(1227549, true, 1227529, 1)--Banishment
 mod:AddPrivateAuraSoundOption(1231097, true, 1231097, 1)--GTFO
 
 function mod:OnLimitedCombatStart(delay)
