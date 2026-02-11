@@ -1874,6 +1874,9 @@ do
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
+				--Another white bar hack to restore respawn timer back to users default bar color
+				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+				C_EncounterEvents.SetEventColor(160, {r = timerRed, g = timerGreen, b = timerBlue})
 				if self.Options.HideBlizzardTimeline then
 					C_CVar.SetCVar("encounterTimelineEnabled", "0")
 					if EncounterTimeline.View then
