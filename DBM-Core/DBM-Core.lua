@@ -82,11 +82,11 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.18 alpha"--Core version
+DBM.DisplayVersion = "12.0.18"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = private.isRetail and 21 or 20--When this is incremented, trigger force disable regardless of major patch
+DBM.ReleaseRevision = releaseDate(2026, 2, 10, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -1873,13 +1873,16 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
+				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
+				--Another white bar hack to restore respawn timer back to users default bar color
+				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+				C_EncounterEvents.SetEventColor(160, {r = timerRed, g = timerGreen, b = timerBlue})
 				if self.Options.HideBlizzardTimeline then
 					C_CVar.SetCVar("encounterTimelineEnabled", "0")
 					if EncounterTimeline.View then
 						--12.0.0
 						EncounterTimeline.View:Hide()
 					else
-						C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 						--12.0.1
 						local viewType = C_EncounterTimeline.GetViewType()
 						--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
