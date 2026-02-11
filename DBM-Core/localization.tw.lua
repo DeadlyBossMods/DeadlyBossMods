@@ -190,7 +190,7 @@ L.YOUR_VERSION_OUTDATED			= "你的 Deadly Boss Mod 已經過期。請到Curse�
 L.VOICE_PACK_OUTDATED			= "你的"..L.DBM.."語音包可能缺少在這個版本的"..L.DBM.."需要的語音。部分警告音效已經被停用。請下載新版本的語音包或是聯絡語音包作者更新並加入缺少的語音。"
 L.VOICE_MISSING					= ""..L.DBM.."找不到你所選取的語音包。請確定你的語音包已正確的安裝與啟用。"
 L.VOICE_DISABLED				= "你的語音包已安裝但是尚未啟用。如果你想使用語音包，請確定語言包已在語音警告中被選取，或是刪除不使用的語音包去隱藏此訊息。"
-L.VOICE_COUNT_MISSING			= "所選取的語音/倒數語音包%d找不到倒數語音。設定已被重置回預設值：%s。"
+L.VOICE_COUNT_MISSING			= "所選取的語音/倒數語音包%d找不到倒數語音或是當前並不支援。 設定已被重置回預設值：%s。"
 L.BIG_WIGS						= "BigWigs"
 L.WEAKAURA_KEY					= " (|cff308530WA鍵:|r %s)"
 
