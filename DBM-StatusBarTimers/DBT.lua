@@ -981,7 +981,7 @@ do
 	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
 		local frame = self.frame
 		local frame_name = frame:GetName()
-		---@class frame: Frame
+		---@class frame: DBTBarFrame
 		_G[frame_name.."BarIcon1"]:SetTexture(icon)
 		_G[frame_name.."BarIcon2"]:SetTexture(icon)
 		--Sanitize previous icons only if they have texture
