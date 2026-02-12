@@ -152,7 +152,7 @@ DBT.DefaultOptions = {
 }
 
 ---@class DBTBar
----@field frame Frame
+---@field frame DBTBarFrame
 ---@field timer number
 ---@field totalTime number
 ---@field moving "move"|"enlarge"|"nextEnlarge"|nil
