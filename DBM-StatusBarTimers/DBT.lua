@@ -194,6 +194,7 @@ hiddenBarsAnchor:Show()
 
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
+local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 
 ---Helper function to ensure profile structure exists
 ---@param profileName string?
@@ -553,6 +554,7 @@ do
 				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
 			self.bars[newBar] = true
+			barIDIndex[newBar.id] = newBar
 			self:UpdateBars(true)
 			newBar:ApplyStyle()
 			newBar:Update(0)
@@ -784,19 +786,14 @@ end
 
 ---@return DBTBar?
 function DBT:GetBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			return bar
-		end
-	end
+	return barIDIndex[id]
 end
 
 function DBT:CancelBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			bar:Cancel()
-			return true
-		end
+	local bar = barIDIndex[id]
+	if bar then
+		bar:Cancel()
+		return true
 	end
 	return false
 end
@@ -972,22 +969,26 @@ do
         "(%d+):(%d+):" ..                -- Texture width, height
         "(%d+):(%d+):(%d+):(%d+)" ..    -- left, right, top, bottom texels
         "|t"
+
+	local function clearTexturesIfNeeded(icons)
+		for i = 1, 4 do
+			if icons[i]:GetTexture() then
+				icons[i]:SetTexture(nil)
+			end
+		end
+	end
+
 	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
-		local frame_name = self.frame:GetName()
+		local frame = self.frame
+		local frame_name = frame:GetName()
 		_G[frame_name.."BarIcon1"]:SetTexture(icon)
 		_G[frame_name.."BarIcon2"]:SetTexture(icon)
-		--Sanitize previous icons
-		_G[frame_name].SecureJIcons[1]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[2]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[3]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[4]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[1]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[2]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
+		--Sanitize previous icons only if they have texture
+		clearTexturesIfNeeded(frame.SecureJIcons)
+		clearTexturesIfNeeded(frame.InsecureJicons)
 		if eventID then
 			---@diagnostic disable-next-line: param-type-mismatch
-			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
+			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, frame.SecureJIcons)
         elseif customJournalIcon then
             local _tmpIcons = {}
 
@@ -1002,7 +1003,7 @@ do
             end
 
 			--C_EncounterTimeline.SetEventIconTextures won't touch insecure/tainted frame, which is why custom icons use different frames
-            for count, iconFrame in ipairs(_G[frame_name].InsecureJicons) do
+            for count, iconFrame in ipairs(frame.InsecureJicons) do
                 local _icon = _tmpIcons[count]
                 if _icon then
                     iconFrame:SetTexture(_icon[1])
@@ -1310,6 +1311,7 @@ function barPrototype:Cancel()
 	self.frame:Hide()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
+	barIDIndex[self.id] = nil
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.paused = nil
