@@ -424,6 +424,8 @@ L.EventEngagePT="Sound für Pull-Timer"
 L.Area_ColorBytype="Leitfaden für das Färben von Balken nach Typ"
 L.Panel_ColorByType="Färben nach Typ"
 L.BarSaturation="Balkensättigung für kleine Timer (falls große Timer deaktiviert sind): %0.2f"
+L.MidnightNote="Hinweis: Aufgrund von API-Einschränkungen in Midnight. DBM kann nicht unterschiedliche Start- und Endfarben unterstützen. Es wird nur die Startfarbe verwendet."
+
 L.CBTGeneric="Generisch"
 L.CBTAdd="Weiter Gegner (Adds)"
 L.CBTAOE="Flächenschaden (AOE)"
