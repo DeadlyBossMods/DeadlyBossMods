@@ -286,6 +286,8 @@ do
 	---@param self DBT
 	local function createBarFrame(self)
 		---@class DBTBarFrame: Frame
+		---@field SecureJIcons table Array of texture objects for secure journal icons
+		---@field InsecureJicons table Array of texture objects for insecure journal icons
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
 		frame:SetScript("OnUpdate", onUpdate)
