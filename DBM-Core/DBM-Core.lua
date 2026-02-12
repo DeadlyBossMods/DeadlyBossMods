@@ -1876,7 +1876,7 @@ do
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
 				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
-				--https://wago.tools/db2/EncounterEvent
+				--https://wago.tools/db2/EncounterEvent?page=25
 				for i = 1, 658 do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
