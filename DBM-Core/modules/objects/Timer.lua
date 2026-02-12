@@ -1543,11 +1543,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
-	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
-	--Hacky workaround to de-white blizzard timers out of combat. Can't do anything about it in combat though.
-	if not self:hasanysecretvalues(color.r, color.g, color.b) and color.r == 1 and color.g == 1 and color.b == 1 then
-		color = nil
-	end
+	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }. Returns white or red for unset colors
 --	local icons = eventInfo.icons
 --	local severity = eventInfo.severity ("Normal", "Deadly")
 --	local isApproximate = eventInfo.isApproximate
