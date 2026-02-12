@@ -1545,7 +1545,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
-	if not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
+	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil
 	end
 --	local icons = eventInfo.icons
