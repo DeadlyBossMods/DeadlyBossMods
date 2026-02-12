@@ -979,17 +979,15 @@ do
 	end
 
 	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
-		local frame = self.frame
-		local frame_name = frame:GetName()
-		---@class frame: DBTBarFrame
+		local frame_name = self.frame:GetName()
 		_G[frame_name.."BarIcon1"]:SetTexture(icon)
 		_G[frame_name.."BarIcon2"]:SetTexture(icon)
-		--Sanitize previous icons only if they have texture
-		clearTexturesIfNeeded(frame.SecureJIcons)
-		clearTexturesIfNeeded(frame.InsecureJicons)
+		--Sanitize previous icons
+		clearTexturesIfNeeded(_G[frame_name].SecureJIcons)
+		clearTexturesIfNeeded(_G[frame_name].InsecureJicons)
 		if eventID then
 			---@diagnostic disable-next-line: param-type-mismatch
-			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, frame.SecureJIcons)
+			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
         elseif customJournalIcon then
             local _tmpIcons = {}
 
@@ -1004,7 +1002,7 @@ do
             end
 
 			--C_EncounterTimeline.SetEventIconTextures won't touch insecure/tainted frame, which is why custom icons use different frames
-            for count, iconFrame in ipairs(frame.InsecureJicons) do
+            for count, iconFrame in ipairs(_G[frame_name].InsecureJicons) do
                 local _icon = _tmpIcons[count]
                 if _icon then
                     iconFrame:SetTexture(_icon[1])
