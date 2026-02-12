@@ -1022,6 +1022,8 @@ do
 			if timerCountdown ~= 0 then
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
 				for _, encounterEventId in ipairs({...}) do
+					--Another ignore that has to be added due to wow API extension bugs
+					---@diagnostic disable-next-line: assign-type-mismatch
 					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = soundSetting, volume = 1})
 				end
 			end

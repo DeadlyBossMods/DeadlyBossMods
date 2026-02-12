@@ -1083,7 +1083,7 @@ local colorVariables = {
 	[8] = "I2",--Important 2
 }
 
----@param colorType number
+---@param colorType any LuaLS has problems if this is typecast correctly since LuaLs is unable to determine the value of stuff in Options table
 ---@param endColor boolean?
 function DBT:GetColorForType(colorType, endColor)
 	if not colorVariables[colorType] then
