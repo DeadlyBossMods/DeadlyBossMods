@@ -225,6 +225,7 @@ updateFrame:SetScript("OnUpdate", function()
 	-- Process all large bars with adaptive update frequency
 	-- Use 0.01s when animating or enlarged for smooth animation, 0.04s otherwise
 	for _, bar in ipairs(largeBars) do
+		-- Check bar validity before accessing bar.enlarged (processBarUpdate also checks for defense)
 		if bar and not bar.dead then
 			-- barIsAnimating is a module-level variable tracking animation state
 			local minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
