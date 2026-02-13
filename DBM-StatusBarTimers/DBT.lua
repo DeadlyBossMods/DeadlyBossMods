@@ -196,6 +196,38 @@ local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs,
 local UIParent = UIParent
 local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 
+-- Global OnUpdate handler frame that manages all visible bars
+local updateFrame = CreateFrame("Frame")
+local lastUpdateTime = GetTime()
+
+-- Single OnUpdate handler that updates all visible bars
+updateFrame:SetScript("OnUpdate", function()
+	local currentTime = GetTime()
+	-- Process all bars in smallBars and largeBars
+	for _, bar in ipairs(smallBars) do
+		if bar and not bar.dead then
+			bar.curTime = currentTime
+			bar.delta = bar.curTime - bar.lastUpdate
+			-- More efficient bars when non animating small bars
+			if bar.delta >= 0.04 then
+				bar.lastUpdate = bar.curTime
+				bar:Update(bar.delta)
+			end
+		end
+	end
+	for _, bar in ipairs(largeBars) do
+		if bar and not bar.dead then
+			bar.curTime = currentTime
+			bar.delta = bar.curTime - bar.lastUpdate
+			-- Frequent updates when any bar is moving or large bars so they don't look janky
+			if ((barIsAnimating or bar.enlarged) and bar.delta >= 0.01) or bar.delta >= 0.04 then
+				bar.lastUpdate = bar.curTime
+				bar:Update(bar.delta)
+			end
+		end
+	end
+end)
+
 ---Helper function to ensure profile structure exists
 ---@param profileName string?
 ---@return table, string
@@ -240,19 +272,6 @@ end
 do
 	local CreateFrame, IsShiftKeyDown = CreateFrame, IsShiftKeyDown
 
-
-	local function onUpdate(self)
-		if self.obj then
-			self.obj.curTime = GetTime()
-			self.obj.delta = self.obj.curTime - self.obj.lastUpdate
-			--Frequent updates when any bar is moving or large bars so they don't look janky. More efficient bars when non animating small bars
-			if ((barIsAnimating or self.obj.enlarged) and self.obj.delta >= 0.01) or self.obj.delta >= 0.04 then
-				self.obj.lastUpdate = self.obj.curTime
-				self.obj:Update(self.obj.delta)
-			end
-		end
-	end
-
 	local function onMouseDown(self, btn)
 		if self.obj and btn == "LeftButton" and DBT.movable then
 			if self.obj.enlarged then
@@ -288,7 +307,6 @@ do
 		---@class DBTBarFrame: Frame
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
-		frame:SetScript("OnUpdate", onUpdate)
 		DBM.Test:RegisterTimeWarpFrame(frame)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
@@ -768,7 +786,6 @@ do
 		unusedBarObjects[dummy] = nil
 		dummy.frame:SetParent(UIParent)
 		dummy.frame:ClearAllPoints()
-		dummy.frame:SetScript("OnUpdate", nil)
 		dummy.Cancel = dummyCancel
 		dummy:ApplyStyle()
 		dummy.dummy = true
