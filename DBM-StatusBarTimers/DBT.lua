@@ -199,34 +199,39 @@ local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 -- Global OnUpdate handler frame that manages all visible bars
 local updateFrame = CreateFrame("Frame")
 
--- Helper function to update a bar's timer
-local function updateBarTimer(bar, currentTime)
+-- Helper function to process and update a single bar
+---@param bar DBTBar
+---@param currentTime number
+---@param minDelta number Minimum delta threshold before updating
+local function processBarUpdate(bar, currentTime, minDelta)
+	if not bar or bar.dead then
+		return
+	end
 	bar.curTime = currentTime
 	bar.delta = bar.curTime - bar.lastUpdate
-	return bar.delta
+	if bar.delta >= minDelta then
+		bar.lastUpdate = bar.curTime
+		bar:Update(bar.delta)
+	end
 end
 
 -- Single OnUpdate handler that updates all visible bars
 updateFrame:SetScript("OnUpdate", function()
 	local currentTime = GetTime()
-	-- Process all bars in smallBars and largeBars
+	-- Process all small bars with less frequent updates (0.04s)
 	for _, bar in ipairs(smallBars) do
-		if bar and not bar.dead then
-			local delta = updateBarTimer(bar, currentTime)
-			-- More efficient bars when non animating small bars
-			if delta >= 0.04 then
-				bar.lastUpdate = bar.curTime
-				bar:Update(delta)
-			end
-		end
+		processBarUpdate(bar, currentTime, 0.04)
 	end
+	-- Process all large bars with more frequent updates (0.01s when animating, 0.04s otherwise)
 	for _, bar in ipairs(largeBars) do
 		if bar and not bar.dead then
-			local delta = updateBarTimer(bar, currentTime)
+			bar.curTime = currentTime
+			bar.delta = bar.curTime - bar.lastUpdate
 			-- Frequent updates when any bar is moving or large bars so they don't look janky
-			if ((barIsAnimating or bar.enlarged) and delta >= 0.01) or delta >= 0.04 then
+			local minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
+			if bar.delta >= minDelta then
 				bar.lastUpdate = bar.curTime
-				bar:Update(delta)
+				bar:Update(bar.delta)
 			end
 		end
 	end
