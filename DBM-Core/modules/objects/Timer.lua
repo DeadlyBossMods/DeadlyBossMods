@@ -1544,6 +1544,10 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
+	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
+	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
+		color = nil
+	end
 --	local icons = eventInfo.icons
 --	local severity = eventInfo.severity ("Normal", "Deadly")
 --	local isApproximate = eventInfo.isApproximate
@@ -1559,6 +1563,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	else
 		DBT:CreateBar(duration, eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
+	DBM:Debug("ENCOUNTER_TIMELINE_EVENT_ADDED fired for spellID: "..tostring(spellId).." with spellName: "..tostring(spellName).." and duration: "..tostring(duration).." and state: "..tostring(eventState), 3)
 end
 
 

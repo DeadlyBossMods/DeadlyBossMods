@@ -356,6 +356,7 @@ L.Slider_BarOffSetY 		= "Posición Y: %d"
 L.Slider_BarWidth 			= "Anchura de barras: %d"
 L.Slider_BarScale 			= "Escala de barras: %0.2f"
 L.BarSaturation				= "Saturación de barras para temporizadores pequeños: %0.2f"
+L.MidnightNote				= "Nota: Debido a las restricciones de API en Midnight. DBM no puede soportar diferentes colores de inicio y fin. Solo se utilizará el color de inicio."
 --Types
 L.BarStartColorAdd			= "Color inicial 1 (esbirros)"
 L.BarEndColorAdd			= "Color final 1 (esbirros)"

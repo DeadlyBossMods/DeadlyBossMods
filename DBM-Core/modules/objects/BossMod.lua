@@ -930,12 +930,13 @@ do
 
 	---Function to check valid voice pack sound
 	---@param self DBMMod
+	---@param optionType string "SpecialWarningSound" or "PrivateAuraSound"
 	---@param optionId number
 	---@param voice VPSound|any voice pack media path
 	---@param voiceVersion number
 	---@return number|string
-	local function checkValidVPSound(self, optionId, voice, voiceVersion)
-		local soundId = self.Options["PrivateAuraSound" .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
+	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion)
+		local soundId = self.Options[optionType .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		local chosenVoice = DBM.Options.ChosenVoicePack2
 		if chosenVoice ~= "None" and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
@@ -966,11 +967,13 @@ do
 		if DBM.Options.DontPlayPrivateAuraSound then return end
 		local optionId
 		if type(auraspellId) == "table" then
-			optionId = altOptionId or auraspellId[1]
+			optionId = auraspellId[1]
+		else
+			optionId = auraspellId
 		end
 		if optionId and self.Options["PrivateAuraSound" .. optionId] then
 			if not self.paSounds then self.paSounds = {} end
-			local mediaPath = checkValidVPSound(self, optionId, voice, voiceVersion)
+			local mediaPath = checkValidVPSound(self, "PrivateAuraSound", optionId, voice, voiceVersion)
 			--Multi spellId aura
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
@@ -996,7 +999,6 @@ do
 	---@param optionId number spellId or JournalId that must match option ID
 	---@param ... number EncounterEventIDs from EncounterEvent.db2 that matches event we're targetting
 	function bossModPrototype:EnableTimelineOptions(optionId, ...)
-		if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 		if optionId and self.Options["CustomTimerOption" .. optionId] then
 			--Set Color
 			local colorType = self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
@@ -1015,12 +1017,14 @@ do
 			elseif timerCountdown == 1 then
 				path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\fivecount.ogg"
 			end
-			local fileId = GetFileIDFromPath(path)
 			--Currently commented because api does not accept file paths yet, only file data IDs, which isn't possible with custom media
-			if fileId and timerCountdown ~= 0 then
+			if type(path) == "string" then return end--Remove when blizzard updates api
+			if timerCountdown ~= 0 then
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
 				for _, encounterEventId in ipairs({...}) do
-					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = fileId, channel = soundSetting, volume = 1})
+					--Another ignore that has to be added due to wow API extension bugs
+					---@diagnostic disable-next-line: assign-type-mismatch
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = soundSetting, volume = 1})
 				end
 			end
 		end
@@ -1033,10 +1037,9 @@ do
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
 	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
-		if private.wowTOC < 120001 then return end--REMOVE in patch 12.0.1
 		if optionId then
 			local enabled = self.Options["CustomAlertOption" .. optionId] or true
-			local mediaPath = checkValidVPSound(self, optionId, voice, voiceVersion)
+			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion)
 			local soundSetting = DBM.Options.UseSoundChannel or "Master"
 			--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 			if type(mediaPath) == "number" then

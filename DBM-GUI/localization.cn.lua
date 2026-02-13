@@ -355,6 +355,7 @@ L.Slider_BarOffSetY 		= "Y 偏移: %d"
 L.Slider_BarWidth 			= "宽度: %d"
 L.Slider_BarScale 			= "缩放: %0.2f"
 L.BarSaturation				= "小型计时条的饱和度 (当大型计时条被禁用时): %0.2f"
+L.MidnightNote				= "注意：由于午夜版本中的API限制。DBM无法支持不同的开始和结束颜色。仅将使用开始颜色。"
 
 --Types
 L.BarStartColorAdd			= "初始颜色 (小怪)"
