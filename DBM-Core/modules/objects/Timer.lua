@@ -1563,6 +1563,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	else
 		DBT:CreateBar(duration, eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
+	DBM:Debug("ENCOUNTER_TIMELINE_EVENT_ADDED fired for spellID: "..tostring(spellId).." with spellName: "..tostring(spellName).." and duration: "..tostring(duration).." and state: "..tostring(eventState), 3)
 end
 
 
