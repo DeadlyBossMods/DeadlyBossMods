@@ -154,3 +154,21 @@
 ---|"nameplate38"
 ---|"nameplate39"
 ---|"nameplate40"
+
+---@meta
+
+---@alias acceptedSASounds
+---|1: Normal Personal Alert
+---|2: Normal raid/aoe alert
+---|3: High priority Personal Alert
+---|4: Highest Priority run away alert
+
+---@meta
+
+---@alias timerColorType
+---|1: Adds
+---|2: AOE
+---|3: Targeted
+---|4: Interrupt
+---|5: Role
+---|6: Phase

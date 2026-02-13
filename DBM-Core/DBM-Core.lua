@@ -8831,7 +8831,7 @@ end
 ---Object for customizing blizzard timeline object with colors and sounds
 ---@param spellId number SpellID used for option text and saved variables
 ---@param default SpecFlags|boolean?
----@param defaultColor number? ColorId 1-6 for color bar by type
+---@param defaultColor timerColorType ColorId 1-6 for color bar by type
 ---@param defaultVoice number? VoiceId for countdown voice
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, defaultVoice, groupSpellId)
@@ -8850,11 +8850,11 @@ end
 ---Object for cusotmizing blizzard alerts to be shown or what sound plays for them
 ---@param auraspellId number SpellID used for option text and saved variables
 ---@param default SpecFlags|boolean?
----@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param defaultSound acceptedSASounds is used to set default Special announce sound (1-4) just like regular special announce objects
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaultSound, groupSpellId)
 	self.DefaultOptions["CustomAlertOption" .. auraspellId] = (default == nil) or default
-	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
+	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
@@ -8882,7 +8882,7 @@ end
 ---|10: Player icon using melee > ranged > healer
 ---|11: Player icon using tank > dps > healer
 ---@param default SpecFlags|boolean?
----@param iconType iconTypes|number?
+---@param iconType iconTypes?
 ---@param iconsUsed table? table defining used icons such as {1, 2, 3}
 ---@param conflictWarning boolean? set to true if this mod has 2 or more icon options that use the same icons
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
