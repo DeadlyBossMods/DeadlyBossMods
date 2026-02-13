@@ -460,15 +460,15 @@ L.AUTO_TIMER_TEXTS.active		= "%s endet"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades		= "%s schwindet"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai			= "%s KI"
 
-L.AUTO_TIMER_TEXTS.cd			= "%s CD"
-L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s) CD"
-L.AUTO_TIMER_TEXTS.cdsource		= "%s CD: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial	= "Spezial CD"
+L.AUTO_TIMER_TEXTS.cd			= "%s"
+L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.cdsource		= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.cdspecial	= "Spezial"
 
-L.AUTO_TIMER_TEXTS.next			= "Nächster %s"
-L.AUTO_TIMER_TEXTS.nextcount	= "Nächster %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource	= "Nächster %s: %%s"
-L.AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezial"
+L.AUTO_TIMER_TEXTS.next			= "%s"
+L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource	= "%s: %%s"
+L.AUTO_TIMER_TEXTS.nextspecial	= "Spezial"
 
 L.AUTO_TIMER_TEXTS.achievement	= "%s"
 L.AUTO_TIMER_TEXTS.stage		= "Nächste Phase"

@@ -470,14 +470,14 @@ L.AUTO_TIMER_TEXTS.active				= "%s 종료"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades				= "%s 사라짐"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai					= "%s AI 예상"
 
-L.AUTO_TIMER_TEXTS.cd					= "%s 쿨타임"
-L.AUTO_TIMER_TEXTS.cdcount				= "%s (%%s) 쿨타임"
-L.AUTO_TIMER_TEXTS.cdsource				= "%s 쿨타임: >%%s<"
+L.AUTO_TIMER_TEXTS.cd					= "%s"
+L.AUTO_TIMER_TEXTS.cdcount				= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.cdsource				= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial			= "특수 스킬"
 
-L.AUTO_TIMER_TEXTS.next					= "다음 %s"
-L.AUTO_TIMER_TEXTS.nextcount			= "다음 %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource			= "다음 %s: %%s"
+L.AUTO_TIMER_TEXTS.next					= "%s"
+L.AUTO_TIMER_TEXTS.nextcount			= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource			= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial			= "특수 스킬"
 
 L.AUTO_TIMER_TEXTS.varspecial			= "특수 스킬"--Now same as next, as the ~ was moved to timer number
