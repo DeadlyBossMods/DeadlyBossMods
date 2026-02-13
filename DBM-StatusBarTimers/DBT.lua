@@ -202,15 +202,10 @@ local updateFrame = CreateFrame("Frame")
 -- Helper function to process and update a single bar
 ---@param bar DBTBar
 ---@param currentTime number
----@param minDelta number|nil Minimum delta threshold before updating. If nil, uses 0.04 for small bars
----@param useAdaptiveThreshold boolean If true, uses 0.01 when barIsAnimating or bar.enlarged, else 0.04
-local function processBarUpdate(bar, currentTime, minDelta, useAdaptiveThreshold)
+---@param minDelta number Minimum delta threshold before updating
+local function processBarUpdate(bar, currentTime, minDelta)
 	if not bar or bar.dead then
 		return
-	end
-	-- Calculate adaptive threshold if needed
-	if useAdaptiveThreshold then
-		minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
 	end
 	bar.curTime = currentTime
 	bar.delta = bar.curTime - bar.lastUpdate
@@ -225,11 +220,15 @@ updateFrame:SetScript("OnUpdate", function()
 	local currentTime = GetTime()
 	-- Process all small bars with less frequent updates (0.04s)
 	for _, bar in ipairs(smallBars) do
-		processBarUpdate(bar, currentTime, 0.04, false)
+		processBarUpdate(bar, currentTime, 0.04)
 	end
 	-- Process all large bars with adaptive update frequency
+	-- Use 0.01s when animating or enlarged for smooth animation, 0.04s otherwise
 	for _, bar in ipairs(largeBars) do
-		processBarUpdate(bar, currentTime, nil, true)
+		if bar and not bar.dead then
+			local minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
+			processBarUpdate(bar, currentTime, minDelta)
+		end
 	end
 end)
 
