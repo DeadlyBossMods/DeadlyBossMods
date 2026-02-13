@@ -47,14 +47,14 @@ local timerShatteredSpaceCD							= mod:NewCDCountTimer(97.3, 1243690, nil, nil,
 local timerReverseGravityCD							= mod:NewCDCountTimer(97.3, 1243577, nil, nil, nil, 3)
 --Stage Two: The Dark Heart
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32477))
-local warnCrushingGravityFaded						= mod:NewFadesAnnounce(1234243, 1)
-local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
+--local warnCrushingGravityFaded					= mod:NewFadesAnnounce(1234243, 1)
+--local warnInverseGravityFaded						= mod:NewFadesAnnounce(1234244, 1)
 local warnGravitationalDistortion					= mod:NewCountAnnounce(1234242, 2)
 
 local specWarnExtinction							= mod:NewSpecialWarningDodgeCount(1238765, nil, nil, nil, 3, 2)
 local specWarnGammaBurst							= mod:NewSpecialWarningCount(1237319, nil, nil, DBM_COMMON_L.PUSHBACK, 2, 13)
-local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 1, 2, 4)
-local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 1, 2, 4)
+--local specWarnCrushingGravity						= mod:NewSpecialWarningYou(1234243, nil, nil, nil, 1, 2, 4)
+--local specWarnInverseGravity						= mod:NewSpecialWarningYou(1234244, nil, nil, nil, 1, 2, 4)
 
 local timerSoaringReshiiCD							= mod:NewNextTimer(35.2, 1235114, 140013, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Short Text "Flight"
 local timerExtinctionCD								= mod:NewCDCountTimer(35.2, 1238765, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
@@ -63,7 +63,7 @@ local timerGravitationalDistortionCD				= mod:NewCDCountTimer(97.3, 1234242, nil
 --The Devoured Lords
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32738))
 
-local specWarnMassEjection							= mod:NewSpecialWarningDodgeCount(1237694, nil, nil, nil, 2, 15)
+--local specWarnMassEjection						= mod:NewSpecialWarningDodgeCount(1237694, nil, nil, nil, 2, 15)
 local specWarnConquerorsCross						= mod:NewSpecialWarningSwitchCount(1239262, "-Healer", nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnStardustNova							= mod:NewSpecialWarningDodgeCount(1237695, nil, 142775, nil, 2, 2)
 local specWarnStarshardNova							= mod:NewSpecialWarningDodgeCount(1251619, nil, 142775, nil, 2, 2, 4)--Mythic version of above
@@ -105,6 +105,7 @@ mod.vb.distortionCount = 0
 mod.vb.massEjectionCount = 0--Also used for Mythic variant Mass destruction
 mod.vb.conquerorsCrossCount = 0
 mod.vb.stardustCount = 0
+mod.vb.blueberriesEngaged = 0
 --Stage 3
 mod.vb.extinguishTheStarsCount = 0
 mod.vb.darkenedSkyCount = 0
@@ -192,6 +193,7 @@ function mod:OnLimitedCombatStart(delay)
 		self.vb.cosmicCollapseCount = 0
 		self.vb.superNovaCount = 0
 		self.vb.voidgraspCount = 0
+		self.vb.blueberriesEngaged = 0
 		if self:IsMythic() then
 			savedDifficulty = "mythic"
 		elseif self:IsHeroic() then
@@ -229,10 +231,20 @@ function mod:OnTimerRecovery()
 	end
 end
 
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
+end
+
 do
 --	local function resetCount()
 --		eventCount = 0
 --	end
+	local function delayedIEEURegister()
+		--Registration must be delayed because a lot of false events fire in stage 1 and stage 1 to 2 transition
+		mod:RegisterShortTermEvents(
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+		)
+	end
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if eventState == 3 and self:AntiSpam(10, 1) and self:GetStage(4, 1) then--Blizzard is canceling bars. Phase change
@@ -240,7 +252,7 @@ do
 --		if eventCount == 5 then--Backup, if blizzard makes canceling bars secret we'll just count events instead
 			self:SetStage(0)
 			if self:GetStage(2) then--first platform
-				DBM:Debug("starting Platform 1")
+				DBM:Debug("Ending Stage 1")
 				warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 				warnPhase:Play("ptwo")
 				--Stop stage 1 timers and warning loops
@@ -258,6 +270,7 @@ do
 					specWarnShatteredSpace:Cancel()
 					specWarnShatteredSpace:CancelVoice()
 					timerReverseGravityCD:Cancel()
+					self:Schedule(10, delayedIEEURegister)
 				end
 				--Start platform 1 stuff
 				self.vb.extinctionCount = 0
@@ -267,25 +280,7 @@ do
 				self.vb.conquerorsCrossCount = 0
 				self.vb.stardustCount = 0
 				timerSoaringReshiiCD:Start(13.8)
-
-				--These still need adjustments
-				--if self:IsMythic() then
-				--	--Adds basically come immediately on mythic
-				--	--Could start a fake one sooner then update it at last second like BW does but I don't see point
-				--	--Since it's really just an estimated "engage" timer
-				--	timerConquerorsCrossCD:Start(2.1, 1)
-				--	timerExtinctionCD:Start(12.7, 1)
-				--	timerGammaBurstCD:Start(23.2, 1)
-				--	timerMassDestructionCD:Start(5.3, 1)
-				--	timerGravitationalDistortionCD:Start(14.9, 1)
-				--	timerEclipseCD:Start(60)
-				--else
-				--	timerConquerorsCrossCD:Start(6, 1)
-				--	timerMassEjectionCD:Start(13.1, 1)
-				--	timerExtinctionCD:Start(17.8, 1)
-				--	timerGammaBurstCD:Start(31.9, 1)
-				--	timerEclipseCD:Start(90)
-				--end
+				--Timers for platform one handled in IEEU handler
 			elseif self:GetStage(3) then--second platform
 				DBM:Debug("starting Platform 2")
 				warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
@@ -297,15 +292,23 @@ do
 				self.vb.conquerorsCrossCount = 0
 				self.vb.stardustCount = 0
 				if DBM.Options.DebugMode then
-					timerConquerorsCrossCD:Stop()
-					timerGammaBurstCD:Stop()
-					timerExtinctionCD:Stop()
-					timerMassEjectionCD:Stop()
-					timerMassDestructionCD:Stop()
-					timerEclipseCD:Stop()
-					timerGravitationalDistortionCD:Stop()
+					timerConquerorsCrossCD:Cancel()
+					timerGammaBurstCD:Cancel()
+					timerExtinctionCD:Cancel()
+					timerMassEjectionCD:Cancel()
+					timerMassDestructionCD:Cancel()
+					timerEclipseCD:Cancel()
+					timerGravitationalDistortionCD:Cancel()
+					--Cancel all first platform timers andloops
+					specWarnConquerorsCross:Cancel()
+					specWarnConquerorsCross:CancelVoice()
+					specWarnExtinction:Cancel()
+					specWarnExtinction:CancelVoice()
+					warnGravitationalDistortion:Cancel()
+					specWarnGammaBurst:Cancel()
+					specWarnGammaBurst:CancelVoice()
 				end
-				--timerSoaringReshiiCD:Start(13.8)
+				timerSoaringReshiiCD:Start(15)
 				--if self:IsMythic() then
 				--	--Adds basically come immediately on mythic
 				--	--Could start a fake one sooner then update it at last second like BW does but I don't see point
@@ -351,6 +354,45 @@ do
 		end
 --		self:Unschedule(resetCount)
 --		self:Schedule(3, resetCount)
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	if self:GetStage(2) then
+		if UnitExists("boss2") and self.vb.blueberriesEngaged == 0 then--Second boss is added, start timers
+			self.vb.blueberriesEngaged = 1
+			DBM:Debug("starting Platform 1 add timers from INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+			if self:IsMythic() then
+				specWarnConquerorsCross:Loop({3.1, 31.5}, 0)
+				specWarnConquerorsCross:LoopVoice({3.1, 31.5}, 0, "mobsoon")
+				timerConquerorsCrossCD:Loop({3.1, 31.5}, 0, true)
+				specWarnExtinction:Loop({13.6, 31.5}, 0)
+				specWarnExtinction:LoopVoice({13.6, 31.5}, 0, "frontal")
+				timerExtinctionCD:Loop({13.6, 31.5}, 0, true)
+				warnGravitationalDistortion:Loop({1, 31.5}, 0)
+				timerGravitationalDistortionCD:Loop({15.7, 31.5}, 0, true)
+				specWarnGammaBurst:Loop({24.2, 31.5}, 0)
+				specWarnGammaBurst:LoopVoice({24.2, 31.5}, 0, "pushbackincoming")
+				timerGammaBurstCD:Loop({24.2, 31.5}, 0, true)
+				timerEclipseCD:Start(65.2)
+			else
+				--Guestimated based on mythic midnight timers
+				timerConquerorsCrossCD:Start(7, 1)
+				timerMassEjectionCD:Start(14.1, 1)
+				timerExtinctionCD:Start(18.8, 1)
+				timerGammaBurstCD:Start(32.9, 1)
+
+				specWarnConquerorsCross:Loop({3.1, 35}, 0)
+				specWarnConquerorsCross:LoopVoice({3.1, 35}, 0, "mobsoon")
+				specWarnExtinction:Loop({13.6, 35}, 0)
+				specWarnExtinction:LoopVoice({13.6, 35}, 0, "frontal")
+				specWarnGammaBurst:Loop({24.2, 35}, 0)
+				specWarnGammaBurst:LoopVoice({24.2, 35}, 0, "pushbackincoming")
+
+				timerEclipseCD:Start(95.2)
+			end
+			self:UnregisterShortTermEvents()
+		end
 	end
 end
 

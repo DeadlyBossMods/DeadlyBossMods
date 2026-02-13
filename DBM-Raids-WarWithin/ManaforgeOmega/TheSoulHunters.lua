@@ -39,7 +39,7 @@ mod:AddPrivateAuraSoundOption(1248464, false, 1241833, 1)--Fracture Debuff
 function mod:OnLimitedCombatStart()
 	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1241306, 314, "farfromline", 2)
-	self:EnableAlertOptions(1227809, 315, "groupsoak", 2)
+	self:EnableAlertOptions(1227809, 315, "gathershare", 2)
 	self:EnableAlertOptions(1242259, 317, "aesoon", 2)
 	self:EnableAlertOptions(1240891, 318, "pullin", 2)
 	self:EnableAlertOptions(1227355, 319, "watchstep", 2)

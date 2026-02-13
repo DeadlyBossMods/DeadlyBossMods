@@ -475,15 +475,15 @@ L.AUTO_TIMER_TEXTS.active		= "%s se termine" --Buff/Debuff/event on boss,
 L.AUTO_TIMER_TEXTS.fades		= "%s se dissipe" --Buff/Debuff on players,
 L.AUTO_TIMER_TEXTS.ai			= "%s AI"
 
-L.AUTO_TIMER_TEXTS.cd			= "Rech. %s"
-L.AUTO_TIMER_TEXTS.cdcount		= "Rech. %s (%%s)"
-L.AUTO_TIMER_TEXTS.cdsource		= "Rech. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial	= "Rech. de capacité spéciale"
+L.AUTO_TIMER_TEXTS.cd			= "%s"
+L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.cdsource		= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.cdspecial	= "Capacité spéciale"
 
-L.AUTO_TIMER_TEXTS.next			= "Proch. %s"
-L.AUTO_TIMER_TEXTS.nextcount	= "Proch. %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource	= "Proch. %s: >%%s<"
-L.AUTO_TIMER_TEXTS.nextspecial	= "Proch. capacité spéciale"
+L.AUTO_TIMER_TEXTS.next			= "%s"
+L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource	= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.nextspecial	= "Capacité spéciale"
 
 L.AUTO_TIMER_TEXTS.var			= "%s"
 L.AUTO_TIMER_TEXTS.varcount		= "%s (%%s)"

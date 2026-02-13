@@ -460,21 +460,21 @@ L.AUTO_TIMER_TEXTS.cast			= "%s"
 --L.AUTO_TIMER_TEXTS.castcount		= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.castsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active		= "%s terminato" -- Buff/Debuff/Eventi su boss
-L.AUTO_TIMER_TEXTS.fades			= "%s svanito" -- Buff/Debuff su giocatori
+L.AUTO_TIMER_TEXTS.fades		= "%s svanito" -- Buff/Debuff su giocatori
 L.AUTO_TIMER_TEXTS.ai			= "%s IA"
 
 L.AUTO_TIMER_TEXTS.cd			= "%s CD"
 L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s) CD"
 L.AUTO_TIMER_TEXTS.cdsource		= "%s CD: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial		= "CD Speciale"
+L.AUTO_TIMER_TEXTS.cdspecial	= "CD Speciale"
 
-L.AUTO_TIMER_TEXTS.next			= "Prossimo %s"
-L.AUTO_TIMER_TEXTS.nextcount		= "Prossimo %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource	= "Prossimo %s: %%s"
+L.AUTO_TIMER_TEXTS.next			= "%s"
+L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Prossimo Speciale"
 
 L.AUTO_TIMER_TEXTS.achievement	= "%s"
-L.AUTO_TIMER_TEXTS.stage			= "Prossima Fase"
+L.AUTO_TIMER_TEXTS.stage		= "Prossima Fase"
 --L.AUTO_TIMER_TEXTS.stagecount							= "Stage %%s"--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
 --L.AUTO_TIMER_TEXTS.stagecountcycle						= "Stage %%s (%%s)"--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 --L.AUTO_TIMER_TEXTS.stagecontext						= "%s" -- OPTIONAL

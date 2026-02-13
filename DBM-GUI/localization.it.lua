@@ -137,6 +137,8 @@ L.Slider_BarOffSetX 		= "Sfasamento X: %d"
 L.Slider_BarOffSetY 		= "Sfasamento Y: %d"
 L.Slider_BarWidth 			= "Lunghezza Barra: %d"
 L.Slider_BarScale 			= "Scala Barra: %0.2f"
+L.BarSaturation				= "Saturazione barra per timer piccoli: %0.2f"
+L.MidnightNote				= "Nota: A causa delle restrizioni API in Midnight. DBM non può supportare colori di inizio e fine differenti. Verrà usato solo il colore di inizio."
 --Types
 L.BarStartColorAdd			= "Colore inizio (Add)"
 L.BarEndColorAdd			= "Colore fine (Add)"

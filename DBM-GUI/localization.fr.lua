@@ -360,6 +360,7 @@ L.Slider_BarOffSetY 		= "Décalage Y : %d"
 L.Slider_BarWidth 			= "Largeur : %d"
 L.Slider_BarScale 			= "Échelle : %0.2f"
 L.BarSaturation				= "Saturation pour les petits décomptes : %0.2f"
+L.MidnightNote				= "Remarque : En raison des restrictions de l'API dans Midnight. DBM n'est pas en mesure de supporter des couleurs de début et de fin différentes. Seule la couleur de début sera utilisée."
 
 --Types
 L.BarStartColorAdd			= "Initiale (Add)"

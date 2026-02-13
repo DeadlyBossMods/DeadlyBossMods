@@ -357,6 +357,7 @@ L.Slider_BarOffSetY 		= "바 간격: %d"
 L.Slider_BarWidth 			= "바 너비: %d"
 L.Slider_BarScale 			= "바 크기: %0.2f"
 L.BarSaturation				= "작은 바 채도 (커다란 바 사용시 비활성): %0.2f"
+L.MidnightNote				= "참고: 자정 버전의 API 제한으로 인해. DBM은 다른 시작 및 종료 색상을 지원할 수 없습니다. 시작 색상만 사용됩니다."
 
 --Types
 L.BarStartColorAdd				= "시작 색상 1 (쫄)"
