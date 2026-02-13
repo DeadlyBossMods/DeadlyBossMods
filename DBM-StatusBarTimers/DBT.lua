@@ -198,7 +198,13 @@ local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 
 -- Global OnUpdate handler frame that manages all visible bars
 local updateFrame = CreateFrame("Frame")
-local lastUpdateTime = GetTime()
+
+-- Helper function to update a bar's timer
+local function updateBarTimer(bar, currentTime)
+	bar.curTime = currentTime
+	bar.delta = bar.curTime - bar.lastUpdate
+	return bar.delta
+end
 
 -- Single OnUpdate handler that updates all visible bars
 updateFrame:SetScript("OnUpdate", function()
@@ -206,23 +212,21 @@ updateFrame:SetScript("OnUpdate", function()
 	-- Process all bars in smallBars and largeBars
 	for _, bar in ipairs(smallBars) do
 		if bar and not bar.dead then
-			bar.curTime = currentTime
-			bar.delta = bar.curTime - bar.lastUpdate
+			local delta = updateBarTimer(bar, currentTime)
 			-- More efficient bars when non animating small bars
-			if bar.delta >= 0.04 then
+			if delta >= 0.04 then
 				bar.lastUpdate = bar.curTime
-				bar:Update(bar.delta)
+				bar:Update(delta)
 			end
 		end
 	end
 	for _, bar in ipairs(largeBars) do
 		if bar and not bar.dead then
-			bar.curTime = currentTime
-			bar.delta = bar.curTime - bar.lastUpdate
+			local delta = updateBarTimer(bar, currentTime)
 			-- Frequent updates when any bar is moving or large bars so they don't look janky
-			if ((barIsAnimating or bar.enlarged) and bar.delta >= 0.01) or bar.delta >= 0.04 then
+			if ((barIsAnimating or bar.enlarged) and delta >= 0.01) or delta >= 0.04 then
 				bar.lastUpdate = bar.curTime
-				bar:Update(bar.delta)
+				bar:Update(delta)
 			end
 		end
 	end
