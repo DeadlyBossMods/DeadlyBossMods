@@ -166,6 +166,7 @@
 ---@meta
 
 ---@alias timerColorType
+---|0: Generic (DBM default)
 ---|1: Adds
 ---|2: AOE
 ---|3: Targeted

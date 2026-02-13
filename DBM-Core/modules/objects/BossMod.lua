@@ -1033,10 +1033,12 @@ do
 	---Event for registering timeline options to encounter events
 	---@param optionId number spellId or JournalId that must match option ID
 	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
-	---@param voice VPSound|any voice pack media path
+	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
 	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
+		--Filter tank specific voice alerts for non tanks if tank filter enabled
+		if (voice == "changemt" or voice == "tauntboss") and not self:IsTank() then return end
 		if optionId then
 			local enabled = self.Options["CustomAlertOption" .. optionId] or true
 			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion)
