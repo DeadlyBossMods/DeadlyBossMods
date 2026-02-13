@@ -215,6 +215,16 @@ local function processBarUpdate(bar, currentTime, minDelta)
 	end
 end
 
+-- Helper to calculate adaptive minDelta for large bars
+---@param bar DBTBar
+---@return number
+local function getAdaptiveMinDelta(bar)
+	if not bar or bar.dead then
+		return 0.04
+	end
+	return ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
+end
+
 -- Single OnUpdate handler that updates all visible bars
 updateFrame:SetScript("OnUpdate", function()
 	local currentTime = GetTime()
@@ -223,12 +233,8 @@ updateFrame:SetScript("OnUpdate", function()
 		processBarUpdate(bar, currentTime, 0.04)
 	end
 	-- Process all large bars with adaptive update frequency
-	-- Use 0.01s when animating or enlarged for smooth animation, 0.04s otherwise
 	for _, bar in ipairs(largeBars) do
-		if bar and not bar.dead then
-			local minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
-			processBarUpdate(bar, currentTime, minDelta)
-		end
+		processBarUpdate(bar, currentTime, getAdaptiveMinDelta(bar))
 	end
 end)
 
