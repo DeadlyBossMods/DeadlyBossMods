@@ -224,16 +224,9 @@ updateFrame:SetScript("OnUpdate", function()
 	end
 	-- Process all large bars with more frequent updates (0.01s when animating, 0.04s otherwise)
 	for _, bar in ipairs(largeBars) do
-		if bar and not bar.dead then
-			bar.curTime = currentTime
-			bar.delta = bar.curTime - bar.lastUpdate
-			-- Frequent updates when any bar is moving or large bars so they don't look janky
-			local minDelta = ((barIsAnimating or bar.enlarged) and 0.01) or 0.04
-			if bar.delta >= minDelta then
-				bar.lastUpdate = bar.curTime
-				bar:Update(bar.delta)
-			end
-		end
+		-- Dynamic minDelta: frequent updates when any bar is moving or for enlarged bars
+		local minDelta = ((barIsAnimating or (bar and bar.enlarged)) and 0.01) or 0.04
+		processBarUpdate(bar, currentTime, minDelta)
 	end
 end)
 
