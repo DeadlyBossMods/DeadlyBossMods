@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.20 alpha"--Core version
+DBM.DisplayVersion = "12.0.20"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 2, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -8799,7 +8799,7 @@ end
 ---@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
----@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
