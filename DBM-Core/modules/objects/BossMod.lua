@@ -1018,13 +1018,11 @@ do
 				path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\fivecount.ogg"
 			end
 			--Unlike private aura sounds, this api accepts both file data ID AND path
-			if timerCountdown ~= 0 then
-				local soundSetting = DBM.Options.UseSoundChannel or "Master"
-				for _, encounterEventId in ipairs({...}) do
-					--Another ignore that has to be added due to wow API extension bugs
-					---@diagnostic disable-next-line: assign-type-mismatch
-					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = soundSetting, volume = 1})
-				end
+			local soundSetting = DBM.Options.UseSoundChannel or "Master"
+			for _, encounterEventId in ipairs({...}) do
+				--Another ignore that has to be added due to wow API extension bugs
+				---@diagnostic disable-next-line: assign-type-mismatch
+				C_EncounterEvents.SetEventSound(encounterEventId, 2, timerCountdown ~= 0 and {file = path, channel = soundSetting, volume = 1} or nil)
 			end
 		end
 	end

@@ -47,12 +47,18 @@ function MidnightPopup:ShowMidnightPopup()
 			DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 			if DBM.Options.HideBlizzardTimeline then
 				--We don't actually change cvar, just hide it with blizzard api instead
-				C_EncounterTimeline.SetViewType(0)
+				--C_EncounterTimeline.SetViewType(0)
+				--Temp workaround to keep active for sound events
+				EncounterTimeline.TrackView:SetAlpha(0)
+				EncounterTimeline.TimerView:SetAlpha(0)
 			else
 				--We do set cvar because we want to actually enable for them if they choose for us to
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				--Restore cached viewtype from login
-				C_EncounterTimeline.SetViewType(private.timelineViewType)
+				--C_EncounterTimeline.SetViewType(private.timelineViewType)
+				--Temp workaround to keep active for sound events
+				EncounterTimeline.TrackView:SetAlpha(1)
+				EncounterTimeline.TimerView:SetAlpha(1)
 			end
 		elseif index == 2 then
 			DBM.Options.HideDBMBars = not DBM.Options.HideDBMBars

@@ -1885,7 +1885,9 @@ do
 				end
 				if self.Options.HideBlizzardTimeline then
 					--C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
+					--C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
+					EncounterTimeline.TrackView:SetAlpha(0)
+					EncounterTimeline.TimerView:SetAlpha(0)
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
