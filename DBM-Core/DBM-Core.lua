@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.20 alpha"--Core version
+DBM.DisplayVersion = "12.0.20"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 2, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1873,7 +1873,9 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
+				private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
+				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
 				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
 				--https://wago.tools/db2/EncounterEvent?page=25
@@ -1881,23 +1883,10 @@ do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
 				if self.Options.HideBlizzardTimeline then
-					C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					if EncounterTimeline.View then
-						--12.0.0
-						EncounterTimeline.View:Hide()
-					else
-						--12.0.1
-						local viewType = C_EncounterTimeline.GetViewType()
-						--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
-						if viewType == 1 then
-							EncounterTimeline.TrackView:Hide()
-						elseif viewType == 2 then
-							EncounterTimeline.TimerView:Hide()
-						end
-					end
+					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
 				end
 				if self.Options.HideBossEmoteFrame2 then
-					C_CVar.SetCVar("encounterWarningsEnabled", "0")
+					C_EncounterWarnings.SetWarningsShown(false)
 				end
 				if not self.Options.HasShownMidnightPopup then
 					DBM.MidnightPopup:ShowMidnightPopup()
@@ -8810,7 +8799,7 @@ end
 ---@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
----@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
