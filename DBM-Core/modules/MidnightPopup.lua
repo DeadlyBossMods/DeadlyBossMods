@@ -46,35 +46,13 @@ function MidnightPopup:ShowMidnightPopup()
 		if index == 1 then
 			DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 			if DBM.Options.HideBlizzardTimeline then
-				C_CVar.SetCVar("encounterTimelineEnabled", "0")
-				if EncounterTimeline.View then
-					--12.0.0
-					EncounterTimeline.View:Hide()
-				else
-					--12.0.1
-					local viewType = C_EncounterTimeline.GetViewType()
-					--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
-					if viewType == 1 then
-						EncounterTimeline.TrackView:Hide()
-					elseif viewType == 2 then
-						EncounterTimeline.TimerView:Hide()
-					end
-				end
+				--We don't actually change cvar, just hide it with blizzard api instead
+				C_EncounterTimeline.SetViewType(0)
 			else
+				--We do set cvar because we want to actually enable for them if they choose for us to
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
-				if EncounterTimeline.View then
-					--12.0.0
-					EncounterTimeline.View:Show()
-				else
-					--12.0.1
-					local viewType = C_EncounterTimeline.GetViewType()
-					--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
-					if viewType == 1 then
-						EncounterTimeline.TrackView:Show()
-					elseif viewType == 2 then
-						EncounterTimeline.TimerView:Show()
-					end
-				end
+				--Restore cached viewtype from login
+				C_EncounterTimeline.SetViewType(private.timelineViewType)
 			end
 		elseif index == 2 then
 			DBM.Options.HideDBMBars = not DBM.Options.HideDBMBars
@@ -109,9 +87,12 @@ function MidnightPopup:ShowMidnightPopup()
 		if index == 1 then
 			DBM.Options.HideBossEmoteFrame2 = not DBM.Options.HideBossEmoteFrame2
 			if DBM.Options.HideBossEmoteFrame2 then
-				C_CVar.SetCVar("encounterWarningsEnabled", "0")
+				--We don't actually change cvar, just hide it with blizzard api instead
+				C_EncounterWarnings.SetWarningsShown(false)
 			else
+				--We do set cvar because we want to actually enable for them if they choose for us to
 				C_CVar.SetCVar("encounterWarningsEnabled", "1")
+				C_EncounterWarnings.SetWarningsShown(true)
 			end
 		elseif index == 2 then
 			DBM.Options.HideDBMWarnings = not DBM.Options.HideDBMWarnings

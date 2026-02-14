@@ -1873,7 +1873,10 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
+				private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
+				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Even if user has timeline disabled, we must force show it or sounds won't play
+				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
 				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
 				--https://wago.tools/db2/EncounterEvent?page=25
@@ -1881,23 +1884,11 @@ do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
 				if self.Options.HideBlizzardTimeline then
-					C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					if EncounterTimeline.View then
-						--12.0.0
-						EncounterTimeline.View:Hide()
-					else
-						--12.0.1
-						local viewType = C_EncounterTimeline.GetViewType()
-						--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
-						if viewType == 1 then
-							EncounterTimeline.TrackView:Hide()
-						elseif viewType == 2 then
-							EncounterTimeline.TimerView:Hide()
-						end
-					end
+					--C_CVar.SetCVar("encounterTimelineEnabled", "0")
+					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
 				end
 				if self.Options.HideBossEmoteFrame2 then
-					C_CVar.SetCVar("encounterWarningsEnabled", "0")
+					C_EncounterWarnings.SetWarningsShown(false)
 				end
 				if not self.Options.HasShownMidnightPopup then
 					DBM.MidnightPopup:ShowMidnightPopup()
