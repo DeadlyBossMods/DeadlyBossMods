@@ -1875,7 +1875,6 @@ do
 			if self:IsPostMidnight() then
 				private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
-				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Even if user has timeline disabled, we must force show it or sounds won't play
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
 				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
@@ -1884,10 +1883,7 @@ do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
 				if self.Options.HideBlizzardTimeline then
-					--C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					--C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
-					EncounterTimeline.TrackView:SetAlpha(0)
-					EncounterTimeline.TimerView:SetAlpha(0)
+					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
