@@ -1138,7 +1138,7 @@ function barPrototype:Update(elapsed)
 	local varianceBehaviorNeg = VarianceEnabled2 and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
-	local sortingNeeded = false
+	local updateNeeded, sortingNeeded = false, false
 	if barOptions.DynamicColor and not self.color then
 		local colorVar = colorVariables[colorCount]
 		if barOptions.NoBarFade then
@@ -1248,13 +1248,16 @@ function barPrototype:Update(elapsed)
 			end
 			frame:ClearAllPoints()
 			frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
+			updateNeeded = true
 		elseif isMoving == "move" then
 			barIsAnimating = false
 			self.moving = nil
 			isMoving = nil
+			updateNeeded = true
 		elseif isMoving == "enlarge" and melapsed <= 1 then
 			barIsAnimating = true
 			self:AnimateEnlarge(elapsed)
+			updateNeeded = true
 		elseif isMoving == "enlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1264,6 +1267,7 @@ function barPrototype:Update(elapsed)
 			tinsert(largeBars, self)
 			self:ApplyStyle()
 			sortingNeeded = true
+			updateNeeded = true
 		elseif isMoving == "nextEnlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1273,6 +1277,7 @@ function barPrototype:Update(elapsed)
 			tinsert(largeBars, self)
 			self:ApplyStyle()
 			sortingNeeded = true
+			updateNeeded = true
 		end
 	end
 	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
@@ -1281,6 +1286,7 @@ function barPrototype:Update(elapsed)
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
+		updateNeeded = true
 	elseif isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = nil
@@ -1288,11 +1294,17 @@ function barPrototype:Update(elapsed)
 		self.enlarged = false
 		self:ResetAnimations()
 		sortingNeeded = true
+		updateNeeded = true
+	--This line looks iffy. isn't this checking if a small bar should enlarge? why is it checking not self.small instead of self.huge?
 	elseif not paused and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
 		self:RemoveFromList()
 		self:Enlarge()
+		sortingNeeded = true
+		updateNeeded = true
 	end
-	DBT:UpdateBars(sortingNeeded)
+	if updateNeeded then
+		DBT:UpdateBars(sortingNeeded)
+	end
 	if self.callback then
 		self:callback("OnUpdate", elapsed, timerValue, totaltimeValue)
 	end
@@ -1316,6 +1328,7 @@ function barPrototype:Cancel()
 	self.dead = true
 	self.paused = nil
 	DBT.numBars = DBT.numBars - 1
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:ApplyStyle()
