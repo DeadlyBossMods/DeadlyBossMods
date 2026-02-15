@@ -408,17 +408,17 @@ flashRepSlider4:HookScript("OnValueChanged", function(self)
 	DBM.Options.SpecialWarningFlashCount4 = math.floor(self:GetValue())
 	DBM:UpdateSpecialWarningOptions()
 end)
-flashRepSlider4.myheight = 0
-local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5)
-local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
-showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
-showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonFive:SetScript("OnClick", function()
-	DBM:ShowTestSpecialWarning(nil, 5, nil, true)
-end)
 
 if not DBM:IsPostMidnight() then
+	flashRepSlider4.myheight = 0
+	local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5)
+	local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
+	showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
+	showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
+	showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
+	showbuttonFive:SetScript("OnClick", function()
+		DBM:ShowTestSpecialWarning(nil, 5, nil, true)
+	end)
 	color5 = specWarnFive:CreateColorSelect(L.SpecWarn_FlashColor:format(5), function(_, r, g, b)
 		DBM.Options.SpecialWarningFlashCol5[1] = r
 		DBM.Options.SpecialWarningFlashCol5[2] = g
