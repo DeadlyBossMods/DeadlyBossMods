@@ -11,7 +11,7 @@ if isWrath then
 	DDM = LibStub:GetLibrary("LibDropDownMenu")
 end
 
-local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
+local select, ipairs, mfloor, mmax, mmin = select, ipairs, math.floor, math.max, math.min
 local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
 local DBM = DBM
 
@@ -21,15 +21,47 @@ local DBM = DBM
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
 
 local selectedPagePerTab = {}
+local cachedListFrame, cachedListScrollBar, cachedContainerFOV, cachedContainerScrollBar
+
+-- Cache frame references to avoid repeated global lookups
+local function GetListFrame()
+	if not cachedListFrame then
+		cachedListFrame = _G[frame:GetName() .. "List"]
+	end
+	return cachedListFrame
+end
+
+local function GetListScrollBar()
+	if not cachedListScrollBar then
+		local listFrame = GetListFrame()
+		cachedListScrollBar = listFrame and _G[listFrame:GetName() .. "ScrollBar"]
+	end
+	return cachedListScrollBar
+end
+
+local function GetContainerFOV()
+	if not cachedContainerFOV then
+		cachedContainerFOV = _G[frame:GetName() .. "PanelContainerFOV"]
+	end
+	return cachedContainerFOV
+end
+
+local function GetContainerScrollBar()
+	if not cachedContainerScrollBar then
+		local fov = GetContainerFOV()
+		cachedContainerScrollBar = fov and _G[fov:GetName() .. "ScrollBar"]
+	end
+	return cachedContainerScrollBar
+end
 
 function frame:UpdateMenuFrame()
-	local listFrame = _G[frame:GetName() .. "List"]
+	local listFrame = GetListFrame()
 	if not listFrame or not listFrame.buttons then
 		return
 	end
 	local displayedElements = self.tab and DBM_GUI.tabs[self.tab]:GetVisibleTabs() or {}
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
-	local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+	local scrollBar = GetListScrollBar()
 	if #displayedElements > bigList then
 		scrollBar:Show()
 		scrollBar:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
@@ -76,8 +108,11 @@ function frame:DisplayButton(button, element)
 end
 
 function frame:ClearSelection()
-	for _, button in ipairs(_G["DBM_GUI_OptionsFrameList"].buttons) do
-		button:UnlockHighlight()
+	local listFrame = GetListFrame()
+	if listFrame then
+		for _, button in ipairs(listFrame.buttons) do
+			button:UnlockHighlight()
+		end
 	end
 end
 
@@ -98,15 +133,18 @@ local function resize(targetFrame, hasScroll)
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
 							child2:SetShown(child2.hasDesc and true or child.hidden)
-							child2:SetHeight(_G[child2:GetName() .. "Text"]:GetStringHeight())
+							-- Cache text element to avoid repeated global lookups
+							local childText = _G[child2:GetName() .. "Text"]
+							child2:SetHeight(childText:GetStringHeight())
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
 						if child2.mytype == "textblock" then
 							if child2.autowidth then
-								local text = _G[child2:GetName() .. "Text"]
-								text:SetWidth(width - 30)
-								child2:SetSize(width, text:GetStringHeight())
+								-- Cache text element once
+								local childText = _G[child2:GetName() .. "Text"]
+								childText:SetWidth(width - 30)
+								child2:SetSize(width, childText:GetStringHeight())
 							end
 							lastObject = child2
 						elseif child2.mytype == "spelldesc" then
@@ -127,7 +165,11 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "line" then
 							child2:SetWidth(width - 20)
-							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+							-- Cache both text elements to minimize global lookups
+							local child2Name = child2:GetName()
+							local child2Text = _G[child2Name .. "Text"]
+							local child2BG = _G[child2Name .. "BG"]
+							child2BG:SetWidth(width - child2Text:GetWidth() - 25)
 							if lastObject and lastObject.myheight then
 								child2:ClearAllPoints()
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
@@ -136,7 +178,10 @@ local function resize(targetFrame, hasScroll)
 						elseif child2.mytype == "dropdown" then
 							if not child2.width then
 								local ddWidth = 120
-								local dropdownText, titleText = _G[child2:GetName() .. "Text"], _G[child2:GetName() .. "TitleText"]:GetText()
+								-- Cache text elements to avoid repeated lookups
+								local child2Name = child2:GetName()
+								local dropdownText = _G[child2Name .. "Text"]
+								local titleText = _G[child2Name .. "TitleText"]:GetText()
 								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
 									for _, v in ipairs(child2.values) do
 										dropdownText:SetText(v.text)
@@ -158,7 +203,11 @@ local function resize(targetFrame, hasScroll)
 		elseif child.mytype == "line" then
 			local width = targetFrame:GetWidth() - 30 + (child.extraWidth or 0)
 			child:SetWidth(width - 20)
-			_G[child:GetName() .. "BG"]:SetWidth(width - _G[child:GetName() .. "Text"]:GetWidth() - 25)
+			-- Cache elements to reduce global lookups
+			local childName = child:GetName()
+			local childText = _G[childName .. "Text"]
+			local childBG = _G[childName .. "BG"]
+			childBG:SetWidth(width - childText:GetWidth() - 25)
 			frameHeight = frameHeight + 32
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
@@ -168,29 +217,47 @@ local function resize(targetFrame, hasScroll)
 end
 
 local bossPreview
+local cachedPanelContainer
+
+-- Cache panel container reference
+local function GetPanelContainer()
+	if not cachedPanelContainer then
+		cachedPanelContainer = _G["DBM_GUI_OptionsFramePanelContainer"]
+	end
+	return cachedPanelContainer
+end
+
+-- Cache dropdown reference
+local function GetDropDown()
+	-- Don't cache dropdown as it may be recreated; use direct lookup
+	return _G["DBM_GUI_DropDown"]
+end
+
 function frame:DisplayFrame(targetFrame, secondResize)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
 	end
 	selectedPagePerTab[self.tab] = targetFrame
-	local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
+	local scrollBar = GetContainerScrollBar()
 	scrollBar:Show()
 	local changed = DBM_GUI.currentViewing ~= targetFrame
 	if DBM_GUI.currentViewing and changed then
 		DBM_GUI.currentViewing:Hide()
 	end
 	DBM_GUI.currentViewing = targetFrame
-	if _G["DBM_GUI_DropDown"] then
-		_G["DBM_GUI_DropDown"]:Hide()
+	local dropDown = GetDropDown()
+	if dropDown then
+		dropDown:Hide()
 	end
-	local FOV = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
+	local FOV = GetContainerFOV()
 	FOV:SetScrollChild(targetFrame)
 	FOV:Show()
 	if changed then
 		targetFrame:Show()
 	end
 	targetFrame:SetSize(FOV:GetSize())
-	local mymax = resize(targetFrame, true) - _G["DBM_GUI_OptionsFramePanelContainer"]:GetHeight()
+	local panelContainer = GetPanelContainer()
+	local mymax = resize(targetFrame, true) - panelContainer:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
 	end
@@ -210,7 +277,7 @@ function frame:DisplayFrame(targetFrame, secondResize)
 	end
 	if DBM.Options.EnableModels then
 		if not bossPreview then
-			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
+			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", panelContainer)
 			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
 			bossPreview:SetSize(300, 300)
 			bossPreview:SetPortraitZoom(0.4)

@@ -4,39 +4,72 @@ local DBM_GUI = DBM_GUI
 local setmetatable, type, ipairs, tinsert = setmetatable, type, ipairs, table.insert
 local DBM = DBM
 
-local function GetDepth(self, parentID, depth) -- Called internally
-	depth = depth or 1
-	for _, v in ipairs(self.buttons) do
-		if v.frame.ID == parentID then
-			if not v.parentID then
-				return depth + 1
-			else
-				depth = depth + GetDepth(self, v.parentID, depth)
-			end
+local function GetDepth(self, parentID) -- Called internally
+	-- Optimized to avoid recursion by using cached depth
+	if not self.depthCache then
+		self.depthCache = {}
+	end
+	if self.depthCache[parentID] then
+		return self.depthCache[parentID]
+	end
+
+	local depth = 1
+	local currentID = parentID
+	local visited = {}
+
+	-- Walk up the parent chain to calculate depth using idIndex for O(1) lookups
+	while currentID do
+		if visited[currentID] then
+			-- Circular reference detected, break to prevent infinite loop
+			break
+		end
+		visited[currentID] = true
+
+		-- Use idIndex for O(1) lookup instead of linear search
+		if not self.idIndex then
+			-- Fallback: idIndex not available, stop walking
+			break
+		end
+
+		local buttonInfo = self.idIndex[currentID]
+		if not buttonInfo then
+			-- Unknown ID; stop walking up the chain
+			break
+		end
+
+		if buttonInfo.parentID then
+			currentID = buttonInfo.parentID
+			depth = depth + 1
+		else
+			currentID = nil
 		end
 	end
-	return depth
+
+	self.depthCache[parentID] = depth + 1
+	return depth + 1
 end
 
-local function GetVisibleSubTabs(self, parentID, tabs)
-	for _, v in ipairs(self.buttons) do
+local function GetVisibleSubTabs(self, parentID, tabs, parentIndex)
+	-- Optimized with parent index to avoid searching from position 0 each time
+	for i = (parentIndex or 1), #self.buttons do
+		local v = self.buttons[i]
 		if v.parentID == parentID then
 			tinsert(tabs, v)
 			if v.frame.showSub then
-				GetVisibleSubTabs(self, v.frame.ID, tabs)
+				GetVisibleSubTabs(self, v.frame.ID, tabs, i)
 			end
 		end
 	end
 end
 
-local function SetParentHasChilds(self, parentID)
-	if not parentID then
+local function SetParentHasChildsAndCache(self, parentID)
+	-- Combined function and caching
+	if not parentID or not self.idIndex then
 		return
 	end
-	for _, v in ipairs(self.buttons) do
-		if v.frame.ID == parentID then
-			v.frame.haschilds = true
-		end
+	local parent = self.idIndex[parentID]
+	if parent then
+		parent.frame.haschilds = true
 	end
 end
 
@@ -47,15 +80,28 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parentID, forceChildren
 		DBM:AddMsg("Failed to create category - frame is not a table")
 		return false
 	end
+
+	-- Initialize indexes on first use
+	if not self.idIndex then
+		self.idIndex = {}
+	end
+
 	frame.depth = parentID and GetDepth(self, parentID) or 1
 	if forceChildren then
 		frame.haschilds = true
 	end
-	SetParentHasChilds(self, parentID)
-	tinsert(self.buttons, {
+
+	SetParentHasChildsAndCache(self, parentID)
+
+	local buttonInfo = {
 		frame		= frame,
 		parentID	= parentID
-	})
+	}
+
+	-- Maintain ID index for O(1) lookups
+	self.idIndex[frame.ID] = buttonInfo
+
+	tinsert(self.buttons, buttonInfo)
 	return #self.buttons
 end
 
@@ -74,7 +120,9 @@ end
 
 function DBM_GUI:CreateNewFauxScrollFrameList()
 	local mt = setmetatable({
-		buttons = {}
+		buttons = {},
+		idIndex = {},		-- ID-based lookup cache for O(1) access
+		depthCache = {}		-- Depth cache to avoid recalculation
 	}, {
 		__index = ListFrameButtonsPrototype
 	})
