@@ -1275,7 +1275,7 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local formatedText = string.format(text, casterName, formattedTargetName)
 	if severity == 0 then
 		--Use normal warning for low severity, but we call it here to avoid duplicate event registration
-		self:AddWarning(formatedText, nil, nil, true, nil, nil, iconFileID)
+		self:AddWarning(formatedText, nil, nil, self.Options.DisableSWSound and false or true, nil, nil, iconFileID)
 	else
 		self:AddSpecialWarning(formatedText, nil, nil, severity == 1 and 2 or 3, iconFileID)
 	end
