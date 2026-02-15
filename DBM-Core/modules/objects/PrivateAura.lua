@@ -16,7 +16,7 @@ function PrivateAuras:RegisterPrivateAuras(unit)
     if not self.PAAnchorFrames[unit] then self.PAAnchorFrames[unit] = {} end
     local settings = unit == "player" and DBM.Options.PrivateAuras["player"] or DBM.Options.PrivateAuras["CoTank"]
     if self.PAFrames[unit] and self.PAFrames[unit].Anchors then -- unregister all existing anchors for the unit
-        for i=1, 10 do 
+        for i=1, 10 do
             if self.PAFrames[unit].Anchors[i] then
                 C_UnitAuras.RemovePrivateAuraAnchor(self.PAFrames[unit].Anchors[i])
             end
@@ -62,11 +62,11 @@ function PrivateAuras:RegisterPrivateAuras(unit)
         self.PAStackFrames[unit][auraIndex]:SetScale(scale)
         self.PAFrames[unit][auraIndex]:ClearAllPoints()
         self.PAAnchorFrames[unit][auraIndex]:ClearAllPoints()
-        self.PAAnchorFrames[unit][auraIndex]:SetPoint(settings.Anchor, UIParent, settings.relativeTo, 
-        settings.xOffset+(auraIndex-1) * (settings.Width+settings.Spacing) * xDirection, 
+        self.PAAnchorFrames[unit][auraIndex]:SetPoint(settings.Anchor, UIParent, settings.relativeTo,
+        settings.xOffset+(auraIndex-1) * (settings.Width+settings.Spacing) * xDirection,
         settings.yOffset+(auraIndex-1) * (settings.Height+settings.Spacing) * yDirection)
-        self.PAFrames[unit][auraIndex]:SetPoint(settings.Anchor, UIParent, settings.relativeTo, 
-        settings.xOffset+(auraIndex-1) * (settings.Width+settings.Spacing) * xDirection, 
+        self.PAFrames[unit][auraIndex]:SetPoint(settings.Anchor, UIParent, settings.relativeTo,
+        settings.xOffset+(auraIndex-1) * (settings.Width+settings.Spacing) * xDirection,
         settings.yOffset+(auraIndex-1) * (settings.Height+settings.Spacing) * yDirection)
         local frame = self.PAFrames[unit][auraIndex]
         local privateAnchorArgs = {
@@ -87,7 +87,7 @@ function PrivateAuras:RegisterPrivateAuras(unit)
                 iconWidth = settings.Width,
                 iconHeight = settings.Height,
             },
-        }        
+        }
         self.PAFrames[unit].Anchors[auraIndex] = C_UnitAuras.AddPrivateAuraAnchor(privateAnchorArgs)
         if scale ~= 1 then
             local durationArgs = {
@@ -108,7 +108,7 @@ function PrivateAuras:RegisterPrivateAuras(unit)
                     iconWidth = 0.001,
                     iconHeight = 0.001,
                 },
-            }       
+            }
             if settings.UpscaleDuration then
                 durationArgs.durationAnchor = {
                     point = "CENTER",
@@ -127,9 +127,9 @@ end
 function PrivateAuras:UnregisterPrivateAuras(unit, all)
     if not self.PAFrames then return end
     if all then
-        for unit, info in pairs(self.PAFrames) do
-            self:UnregisterPrivateAuras(unit)
-        end    
+        for u, _ in pairs(self.PAFrames) do
+            self:UnregisterPrivateAuras(u)
+        end
     elseif unit then
         if self.PAFrames[unit] then
             if self.PAFrames[unit].Anchors then
@@ -190,13 +190,13 @@ function PrivateAuras:PreviewToggle()
                     Frame:StartMoving()
                 end)
                 self.PlayerPreview:SetScript("OnDragStop", function(Frame)
-                    Frame:StopMovingOrSizing()       
+                    Frame:StopMovingOrSizing()
                     local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
                     xOffset = Round(xOffset)
                     yOffset = Round(yOffset)
-                    DBM.Options.PrivateAuras["player"].xOffset = xOffset     
+                    DBM.Options.PrivateAuras["player"].xOffset = xOffset
                     DBM.Options.PrivateAuras["player"].yOffset = yOffset
-                    DBM.Options.PrivateAuras["player"].Anchor = Anchor    
+                    DBM.Options.PrivateAuras["player"].Anchor = Anchor
                     DBM.Options.PrivateAuras["player"].relativeTo = relativeTo
                 end)
             end
@@ -236,13 +236,13 @@ function PrivateAuras:PreviewToggle()
                     Frame:StartMoving()
                 end)
                 self.CoTankPreview:SetScript("OnDragStop", function(Frame)
-                    Frame:StopMovingOrSizing()       
+                    Frame:StopMovingOrSizing()
                     local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
                     xOffset = Round(xOffset)
                     yOffset = Round(yOffset)
-                    DBM.Options.PrivateAuras["CoTank"].xOffset = xOffset     
+                    DBM.Options.PrivateAuras["CoTank"].xOffset = xOffset
                     DBM.Options.PrivateAuras["CoTank"].yOffset = yOffset
-                    DBM.Options.PrivateAuras["CoTank"].Anchor = Anchor    
+                    DBM.Options.PrivateAuras["CoTank"].Anchor = Anchor
                     DBM.Options.PrivateAuras["CoTank"].relativeTo = relativeTo
                 end)
             end
