@@ -139,7 +139,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	end
 	--DUPLICATE CODE
 	--This code is for special warnings that bypass normal "show" method of hard coded objects (such as midnight secrets)
-	if customIcon then
+	if customIcon or force then
 		if number and not noSound and not self.Options.DontPlaySpecialWarningSound then
 			self:PlaySpecialWarningSound(number, force, true)
 		end
@@ -1275,8 +1275,8 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local formatedText = string.format(text, casterName, formattedTargetName)
 	if severity == 0 then
 		--Use normal warning for low severity, but we call it here to avoid duplicate event registration
-		self:AddWarning(formatedText, nil, nil, true, nil, nil, iconFileID)
+		self:AddWarning(formatedText, nil, nil, self.Options.DisableSWSound and false or true, nil, nil, iconFileID)
 	else
-		self:AddSpecialWarning(formatedText, nil, nil, severity == 1 and 2 or 3, iconFileID)
+		self:AddSpecialWarning(formatedText, nil, nil, severity == 1 and 1 or 2, iconFileID)
 	end
 end

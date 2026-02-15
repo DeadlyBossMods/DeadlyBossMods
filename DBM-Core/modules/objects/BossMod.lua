@@ -975,6 +975,7 @@ do
 			if not self.paSounds then self.paSounds = {} end
 			local mediaPath = checkValidVPSound(self, "PrivateAuraSound", optionId, voice, voiceVersion)
 			--Multi spellId aura
+			if mediaPath == "None" then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
 					registerPrivateAuraSound(self, spellId, mediaPath)
@@ -1043,10 +1044,10 @@ do
 			--Unlike private aura sounds, this api accepts both file data ID AND path
 			if type(encounterEventId) == "table" then
 				for _, id in ipairs(encounterEventId) do
-					C_EncounterEvents.SetEventSound(id, overrideType or 1, enabled and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
+					C_EncounterEvents.SetEventSound(id, overrideType or 1, enabled and mediaPath ~= "None" and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
 				end
 			else
-				C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, enabled and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
+				C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, enabled and mediaPath ~= "None" and {file = mediaPath, channel = soundSetting, volume = 1} or nil)
 			end
 		end
 	end
