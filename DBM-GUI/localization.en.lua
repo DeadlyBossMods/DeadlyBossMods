@@ -264,14 +264,14 @@ L.SetPAIconScale					= "Icon scale: %0.1f"--Not Finalized
 L.SetPATextScale					= "Text scale: %0.1f"--Not Finalized
 --SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
 --PreMidnight
-L.SpecialWarnHeader1				= "Type 1: Set options for normal priority announcements affecting you or your actions"
-L.SpecialWarnHeader2				= "Type 2: Set options for normal priority announcements affecting everyone"
-L.SpecialWarnHeader3				= "Type 3: Set options for HIGH priority announcements"
-L.SpecialWarnHeader4				= "Type 4: Set options for HIGH priority run away special announcements"
-L.SpecialWarnHeader5				= "Type 5: Set options for announcements with notes containing your player name"
+L.SpecialWarnHeader1				= "SA 1: Set options for normal priority announcements affecting you or your actions"
+L.SpecialWarnHeader2				= "SA 2: Set options for normal priority announcements affecting everyone"
+L.SpecialWarnHeader3				= "SA 3: Set options for HIGH priority announcements"
+L.SpecialWarnHeader4				= "SA 4: Set options for HIGH priority run away special announcements"
+L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes containing your player name"
 --Post Midnight
-L.SpecialWarnHeaderMedium			= "Announcements for mechanics that blizzard classifies as 'medium'"
-L.SpecialWarnHeaderCritical			= "Announcements for mechanics that blizzard classifies as 'critical'"
+L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
+L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 				= "Chat Frame Messages"
@@ -396,10 +396,10 @@ L.CBTPhase							= "Phase Change"
 L.CBTImportant						= "User Important Spell"
 --Dropdown Options
 --Special Announce Dropdowns
-L.SAOne								= "Global Sound 1 (Personal)"
-L.SATwo								= "Global Sound 2 (Everyone)"
-L.SAThree							= "Global Sound 3 (High Priority Action)"
-L.SAFour							= "Global Sound 4 (High Priority Run Away)"
+L.SAOne								= "Voice Pack / SA 1 fallback"
+L.SATwo								= "Voice Pack / SA 2 fallback"
+L.SAThree							= "Voice Pack / SA 3 fallback"
+L.SAFour							= "Voice Pack / SA 4 fallback"
 --Timer Dropdowns
 L.ColorDropGeneric					= "Generic (Default: Untyped)"
 L.ColorDrop1						= "Color 1 (Default: Add)"
