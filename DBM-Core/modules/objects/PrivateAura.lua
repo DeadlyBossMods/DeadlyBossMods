@@ -333,7 +333,7 @@ end
 function PrivateAuras:RegisterAllUnits() -- register private auras for player and the first co-tank found in raid
     self:RegisterPrivateAuras("player")
     if not UnitInRaid("player") then return end
-    if not (UnitGroupRolesAssigned("player") == "TANK") then return end
+    if UnitGroupRolesAssigned("player") ~= "TANK" then return end
     for i=1, 40 do
         local unit = "raid"..i
         if UnitExists(unit) and UnitGroupRolesAssigned(unit) == "TANK" and not UnitIsUnit(unit, "player") then
