@@ -4,6 +4,7 @@ local DBM = DBM
 ---@class DBMPrivateAuras
 local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
+local LSM = LibStub("LibSharedMedia-3.0")
 
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
 function PrivateAuras:RegisterPrivateAuras(unit)
@@ -29,6 +30,30 @@ function PrivateAuras:RegisterPrivateAuras(unit)
             end
         end
         self.PAFrames[unit].StackAnchors = {}
+    end
+    if unit == "player" then
+        local TextSettings = DBM.Options.PrivateAuras["TextAnchor"]
+        if TextSettings.enabled then
+            if not self.PATextFrame then self.PATextFrame = CreateFrame("Frame", nil, UIParent) end
+            self.PATextFrame:ClearAllPoints()
+            self.PATextFrame:SetPoint(TextSettings.Anchor, UIParent, TextSettings.relativeTo, TextSettings.xOffset, TextSettings.yOffset)
+            self.PATextFrame:SetSize(TextSettings.Scale*20, TextSettings.Scale*30)
+            if not self.PATextWarning then self.PATextWarning = CreateFrame("Frame", nil, UIParent) end
+
+            -- I have absolutely no clue why this math works out but it does
+            self.PATextWarning:SetPoint("TOPLEFT", self.PATextFrame, "TOPLEFT", 0, -24)
+            self.PATextWarning:SetPoint("BOTTOMRIGHT", self.PATextFrame, "BOTTOMRIGHT", 0, -24)
+            self.PATextWarning:SetScale(TextSettings.Scale)
+            local textanchor =
+            {
+                point = "CENTER",
+                relativeTo = self.PATextWarning,
+                relativePoint = "CENTER",
+                offsetX = 0,
+                offsetY = 0,
+            }
+            C_UnitAuras.SetPrivateWarningTextAnchor(self.PATextWarning, textanchor)
+        end
     end
     if not settings.enabled then return end -- end after unregistering if not enabled
     if not self.PAFrames[unit].Anchors then self.PAFrames[unit].Anchors = {} end
@@ -154,6 +179,7 @@ end
 -- /run DBM.PrivateAuras:PreviewToggle()
 function PrivateAuras:PreviewToggle()
     local PlayerSettings = DBM.Options.PrivateAuras["player"]
+    local TextAnchorSettings = DBM.Options.PrivateAuras["TextAnchor"]
     local CoTankSettings = DBM.Options.PrivateAuras["CoTank"]
     if self.IsInPreview then
         self.IsInPreview = false
@@ -166,6 +192,9 @@ function PrivateAuras:PreviewToggle()
             self.CoTankPreview:Hide()
             self.CoTankPreview:SetMovable(false)
             self.CoTankPreview:EnableMouse(false)
+        end
+        if self.TextWarningPreview then
+            self.TextWarningPreview:Hide()
         end
     else
         self.IsInPreview = true
@@ -214,6 +243,43 @@ function PrivateAuras:PreviewToggle()
             self.PlayerPreview:Show()
             self.PlayerPreview:SetMovable(true)
             self.PlayerPreview:EnableMouse(true)
+        end
+        if TextAnchorSettings.enabled then
+            if not self.TextWarningPreview then
+                self.TextWarningPreview = CreateFrame("Frame", nil, UIParent)
+                self.TextWarningPreview.Text = self.TextWarningPreview:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+                self.TextWarningPreview.Text:SetPoint("CENTER", self.TextWarningPreview, "CENTER", 0, 0)
+                self.TextWarningPreview.Text:SetText("<secret value> targets you with the spell <secret value>")
+                self.TextWarningPreview.Border = CreateFrame("Frame", nil, self.TextWarningPreview, "BackdropTemplate")
+                self.TextWarningPreview.Border:SetPoint("TOPLEFT", self.TextWarningPreview, "TOPLEFT", -6, 6)
+                self.TextWarningPreview.Border:SetPoint("BOTTOMRIGHT", self.TextWarningPreview, "BOTTOMRIGHT", 6, -6)
+                self.TextWarningPreview.Border:SetBackdrop({
+                        edgeFile = "Interface\\Buttons\\WHITE8x8",
+                        edgeSize = 2,
+                    })
+                self.TextWarningPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
+                self.TextWarningPreview:SetScript("OnDragStart", function(self)
+                    self:StartMoving()
+                end)
+                self.TextWarningPreview:SetScript("OnDragStop", function(Frame)
+                    Frame:StopMovingOrSizing()
+                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
+                    xOffset = Round(xOffset)
+                    yOffset = Round(yOffset)
+                    DBM.Options.PrivateAuras["TextAnchor"].xOffset = xOffset
+                    DBM.Options.PrivateAuras["TextAnchor"].yOffset = yOffset
+                    DBM.Options.PrivateAuras["TextAnchor"].Anchor = Anchor
+                    DBM.Options.PrivateAuras["TextAnchor"].relativeTo = relativeTo
+                end)
+                self.TextWarningPreview:SetMovable(true)
+                self.TextWarningPreview:EnableMouse(true)
+                self.TextWarningPreview:RegisterForDrag("LeftButton")
+                self.TextWarningPreview:SetClampedToScreen(true)
+            end
+            self.TextWarningPreview:Show()
+            self.TextWarningPreview.Text:SetFont(LSM:Fetch("font", "Friz Quadrata TT"), TextAnchorSettings.Scale*20, "OUTLINE")
+            self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
+            self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
         end
         if CoTankSettings.enabled then
             if not self.CoTankPreview then
