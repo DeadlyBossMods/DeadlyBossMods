@@ -232,7 +232,7 @@ flashRepSlider:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount1))
 flashRepSlider:HookScript("OnValueChanged", function(self)
 DBM.Options.SpecialWarningFlashCount1 = math.floor(self:GetValue())
 end)
-flashRepSlider.myheight = 0
+flashRepSlider.myheight = 10
 
 --Special Warning Area 2
 local specWarnTwo = specPanel:CreateArea(DBM:IsPostMidnight() and L.SpecialWarnHeaderCritical or L.SpecialWarnHeader2)
@@ -292,7 +292,7 @@ flashRepSlider2:HookScript("OnValueChanged", function(self)
 	DBM.Options.SpecialWarningFlashCount2 = math.floor(self:GetValue())
 	DBM:UpdateSpecialWarningOptions()
 end)
-flashRepSlider2.myheight = 0
+flashRepSlider2.myheight = 10
 
 --Special Warning Area 3
 local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3)
@@ -353,7 +353,7 @@ flashRepSlider3:HookScript("OnValueChanged", function(self)
 	DBM.Options.SpecialWarningFlashCount3 = math.floor(self:GetValue())
 	DBM:UpdateSpecialWarningOptions()
 end)
-flashRepSlider3.myheight = 0
+flashRepSlider3.myheight = 10
 
 local color4, SpecialWarnSoundDropDown4, flashCheck4, vibrateCheck4, flashdurSlider4, flashdalphaSlider4, flashRepSlider4
 local color5, SpecialWarnSoundDropDown5, flashCheck5, vibrateCheck5, flashdurSlider5, flashdalphaSlider5, flashRepSlider5
@@ -408,9 +408,9 @@ flashRepSlider4:HookScript("OnValueChanged", function(self)
 	DBM.Options.SpecialWarningFlashCount4 = math.floor(self:GetValue())
 	DBM:UpdateSpecialWarningOptions()
 end)
+flashRepSlider4.myheight = 10
 
 if not DBM:IsPostMidnight() then
-	flashRepSlider4.myheight = 0
 	local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5)
 	local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 	showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
@@ -466,7 +466,7 @@ if not DBM:IsPostMidnight() then
 		DBM.Options.SpecialWarningFlashCount5 = math.floor(self:GetValue())
 		DBM:UpdateSpecialWarningOptions()
 	end)
-	flashRepSlider5.myheight = 0
+	flashRepSlider5.myheight = 10
 end
 
 local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
