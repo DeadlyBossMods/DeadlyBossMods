@@ -7,7 +7,6 @@ DBM.PrivateAuras = PrivateAuras
 
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
 function PrivateAuras:RegisterPrivateAuras(unit)
-    if not UnitExists(unit) then return end
     if not self.PAFrames then self.PAFrames = {} end
     if not self.PAStackFrames then self.PAStackFrames = {} end
     if not self.PAAnchorFrames then self.PAAnchorFrames = {} end
@@ -261,6 +260,19 @@ function PrivateAuras:PreviewToggle()
             self.CoTankPreview:Show()
             self.CoTankPreview:SetMovable(true)
             self.CoTankPreview:EnableMouse(true)
+        end
+    end
+end
+
+function PrivateAuras:RegisterAllUnits() -- register private auras for player and the first co-tank found in raid
+    self:RegisterPrivateAuras("player")
+    if not UnitInRaid("player") then return end
+    if not (UnitGroupRolesAssigned("player") == "TANK") then return end
+    for i=1, 40 do
+        local unit = "raid"..i
+        if UnitExists(unit) and UnitGroupRolesAssigned(unit) == "TANK" and not UnitIsUnit(unit, "player") then
+            self:RegisterPrivateAuras(unit)
+            break
         end
     end
 end
