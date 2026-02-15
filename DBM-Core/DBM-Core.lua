@@ -415,6 +415,10 @@ DBM.DefaultOptions = {
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
 	DisableSWSound = false,
+	PrivateAuras = {
+		["player"] = {HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "RIGHT", enabled = true, Width = 100, Height = 100, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 0},
+		["CoTank"] = {HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "LEFT", enabled = true, Width = 100, Height = 100, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 0},
+	}
 }
 
 ---@type DBMMod[]
