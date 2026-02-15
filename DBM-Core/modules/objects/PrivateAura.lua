@@ -123,6 +123,7 @@ function PrivateAuras:RegisterPrivateAuras(unit)
     end
 end
 
+-- /run DBM.PrivateAuras:UnregisterPrivateAuras("player")
 function PrivateAuras:UnregisterPrivateAuras(unit, all)
     if not self.PAFrames then return end
     if all then
