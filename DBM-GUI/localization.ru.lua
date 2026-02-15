@@ -269,8 +269,8 @@ L.SpecialWarnHeader4		= "Спец. оповещение 4: установить 
 L.SpecialWarnHeader5		= "Спец. оповещение 5: установить параметры для оповещений с примечаниями, содержащими имя Вашего игрока"
 
 --Post Midnight
-L.SpecialWarnHeaderMedium		= "Спец. оповещение 1: Оповещения для механик, которые Blizzard классифицирует как 'умеренные'"
-L.SpecialWarnHeaderCritical		= "Спец. оповещение 2: Оповещения для механик, которые Blizzard классифицирует как 'критические'"
+L.SpecialWarnHeaderMedium		= "Спец. оповещение 1: Механики, которые Blizzard классифицирует как 'умеренные'"
+L.SpecialWarnHeaderCritical		= "Спец. оповещение 2: Механики, которые Blizzard классифицирует как 'критические'"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Сообщения чата"
