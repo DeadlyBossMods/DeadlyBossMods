@@ -7,14 +7,14 @@ DBM.PrivateAuras = PrivateAuras
 local LSM = LibStub("LibSharedMedia-3.0")
 
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
-function PrivateAuras:RegisterPrivateAuras(unit)
+function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     if not self.PAFrames then self.PAFrames = {} end
     if not self.PAStackFrames then self.PAStackFrames = {} end
     if not self.PAAnchorFrames then self.PAAnchorFrames = {} end
     if not self.PAFrames[unit] then self.PAFrames[unit] = {} end
     if not self.PAStackFrames[unit] then self.PAStackFrames[unit] = {} end
     if not self.PAAnchorFrames[unit] then self.PAAnchorFrames[unit] = {} end
-    local settings = unit == "player" and DBM.Options.PrivateAuras["player"] or DBM.Options.PrivateAuras["CoTank"]
+    local settings = settingsOverwrite or (unit == "player" and DBM.Options.PrivateAuras["player"] or DBM.Options.PrivateAuras["CoTank"])
     if self.PAFrames[unit] and self.PAFrames[unit].Anchors then -- unregister all existing anchors for the unit
         for i=1, 10 do
             if self.PAFrames[unit].Anchors[i] then
