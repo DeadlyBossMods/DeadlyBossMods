@@ -169,17 +169,17 @@ L.EnableTooltipInCombat				= "在戰鬥中顯示工具提示訊息"
 L.EnableTooltipHeader				= "在工具提示中包括DBM標題"
 
 -- Panel: Profiles
-L.Panel_Profile				= "配置檔"
-L.Area_CreateProfile		= "建立核心選項配置檔"
-L.EnterProfileName			= "輸入配置檔名稱"
-L.CreateProfile				= "建立預設設定值的新配置檔"
-L.Area_ApplyProfile			= "套用DBM核心選項配置檔"
-L.SelectProfileToApply		= "選擇配置檔套用"
-L.Area_CopyProfile			= "複製DBM核心選項配置檔"
-L.SelectProfileToCopy		= "選擇配置檔複製"
-L.Area_DeleteProfile		= "移除DBM核心選項配置檔"
-L.SelectProfileToDelete		= "選擇配置檔刪除"
-L.Area_DualProfile			= "首領模組配置檔選項"
+L.Panel_Profile				= "設定檔"
+L.Area_CreateProfile		= "建立核心選項設定檔"
+L.EnterProfileName			= "輸入設定檔名稱"
+L.CreateProfile				= "建立預設設定值的新設定檔"
+L.Area_ApplyProfile			= "套用DBM核心選項設定檔"
+L.SelectProfileToApply		= "選擇設定檔套用"
+L.Area_CopyProfile			= "複製DBM核心選項設定檔"
+L.SelectProfileToCopy		= "選擇設定檔複製"
+L.Area_DeleteProfile		= "移除DBM核心選項設定檔"
+L.SelectProfileToDelete		= "選擇設定檔刪除"
+L.Area_DualProfile			= "首領模組設定檔選項"
 L.DualProfile				= "啟用多首領模組專精設定檔。可依據你的專精去設定不同的首領選項設定。(首領配置檔管理在首領模組頁面下)"
 
 L.Area_ModProfile			= "從其他角色/專精複製或刪除模組設定"
@@ -211,6 +211,7 @@ L.RaidWarnColor_1 			    = "顏色1"
 L.RaidWarnColor_2 			    = "顏色2"--只使用在至暗之夜
 L.RaidWarnColor_3			    = "顏色3"
 L.RaidWarnColor_4 			    = "顏色4"
+L.RaidWarnColor 				= "顏色"--Only one used in midnight
 L.InfoRaidWarning			    = [[你可以對團隊警告的顏色及其位置進行設定。
 在這裡會顯示例如“玩家X中了Y效果”之類的資訊。]]
 L.ColorResetted 			    = "該顏色設置已重置"
@@ -247,12 +248,6 @@ L.SpecWarn_FlashAlpha		    = "閃爍透明度:%0.1f"
 L.SpecWarn_DemoButton		    = "顯示範例"
 L.SpecWarn_ResetMe			    = "重置為預設值"
 L.SpecialWarnSoundOption	    = "設置預設音效"
-
--- Panel: Private Auras Frame
-L.Panel_PrivateAuras				= "私人光環"
-
-L.SetPAIconScale					= "圖示縮放: %0.1f"
-L.SetPATextScale					= "文字縮放: %0.1f"
 --PreMidnight
 L.SpecialWarnHeader1		    = "類型1: 設置影響您或您的操作的普通優先級提示選擇"
 L.SpecialWarnHeader2		    = "類型2: 設置影響每個人的一般優先級提示選擇"
@@ -260,8 +255,29 @@ L.SpecialWarnHeader3		    = "類型3: 設置高優先級提示的選擇"
 L.SpecialWarnHeader4		    = "類型4: 設置高優先級運行特別提示的選擇"
 L.SpecialWarnHeader5		    = "類型5: 設置提示選項，並在註釋中包含您的玩家名稱"
 --Post Midnight
-L.SpecialWarnHeaderMedium		= "暴雪歸類為'中等'的機制警告"
-L.SpecialWarnHeaderCritical		= "暴雪歸類為'關鍵'的機制警告"
+L.SpecialWarnHeaderMedium			= "類型1: 暴雪歸類為'中等'的機制提示"
+L.SpecialWarnHeaderCritical			= "類型2: 暴雪歸類為'關鍵'的機制提示"
+
+-- Panel: Private Auras Frame
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
+L.Panel_PrivateAuras				= "私有光環"
+L.Area_PersonalPrivateAuras			= "個人私有光環選項"
+L.EnablePersonalPrivateAuraIcons	= "在螢幕上顯示個人私有光環圖示"--checkbox
+L.EnablePersonalPrivateAuraText		= "覆寫暴雪私有光環訊息文字縮放"--checkbox
+L.SetPAGrowDirection				= "增長方向"--Dropdown
+L.SetPAIconScale					= "圖示縮放: %d"--Slider, Reused for personal and tank
+L.SetPAMaxIcons						= "最大圖示: %d"--Slider, Reused for personal and tank
+L.SetPAIconSpacing					= "圖示間距: %d"--Slider, Reused for personal and tank
+L.SetPAStackScale					= "層數文字縮放: %d"--Slider, Reused for personal and tank
+L.SetPATextScale					= "文字訊息縮放: %0.1f"--Slider
+L.HidePATooltip						= "停用滑鼠停留法術提示"--checkbox
+L.HidePABorder						= "停用邊框"--checkbox
+L.Area_TankPrivateAuras				= "副坦克私有光環選項"
+L.EnableTankPrivateAuraIcons		= "在螢幕上顯示副坦克私有光環圖示 (需要坦克專精)"--checkbox
+L.RIGHT								= "右"
+L.LEFT								= "左"
+L.UP								= "上"
+L.DOWN								= "下"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 			= "聊天訊息"
@@ -426,8 +442,8 @@ L.ClickThrough					= "禁用鼠標事件(允許你點擊穿透計時條)"
 L.Bar_Decimal					= "%d秒以下顯示小數點"
 L.Bar_Alpha						= "透明度: %0.1f"
 L.Bar_EnlargeTime				= "計時條時間低於: %d時放大"
-L.Bar_AppearTime				= "Bar are hidden above time: %d"
-L.Bar_HideLongBars				= "Hide bars until they are below above threshold"
+L.Bar_AppearTime				= "計時條時間高於: %d時隱藏"
+L.Bar_HideLongBars				= "隱藏計時條直到低於門檻"
 L.BarSpark						= "計時條閃光"
 L.BarFlash						= "快結束時閃爍計時條"
 L.BarSort						= "依剩餘時間排序"
@@ -471,30 +487,32 @@ L.SpamBlockNoSpecWarnText			= "不顯示特別提示文字"
 L.SpamBlockNoSpecWarnFlash			= "特別提示時不閃爍螢幕"
 L.SpamBlockNoSpecWarnVibrate		= "特別提示時不震動控制器"
 L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (在倒數與語音包面板中啟用的語音仍會播放)"
+L.Area_Private_Aura_Features		= "私人光環功能"
 L.SpamBlockNoPrivateAuraSound		= "不登記私人光環音效"
+L.SpamBlockNoPrivateAuraFrame		= "不顯示私人光環框架"
 
-L.Area_SpamFilter_Timers			= "計時功能選項"
+L.Area_SpamFilter_Timers			= "特定計時器功能（僅適用於上述未完全停用的情況）"
 L.SpamBlockNoShowBossTimers			= "不顯示地城/團隊首領的計時器"
 L.SpamBlockNoShowTrashTimers		= "不顯示地城/團隊小怪的計時器(注意: 這也會停用名條的技能冷卻)"
 L.SpamBlockNoShowEventTimers		= "不顯示事件與提示計時器(佇列提示/首領重生..等)"
 L.SpamBlockNoShowUTimers			= "不顯示玩家送出的計時器(自訂/拉怪/休息)"
 L.SpamBlockNoCountdowns				= "不播放倒數音效"
 
-L.Area_SpamFilter_Nameplates		= "名條通用禁止 & 過濾選項"
-L.SpamBlockNoNameplate				= "不要顯示名條光環"
-L.SpamBlockNoNameplateCD			= "不要顯示技能冷卻計時的名條圖示"
-L.SpamBlockNoNameplateCasts			= "不要顯示技能施放計時的名條圖示"
+L.Area_SpamFilter_Nameplates		= "名條功能"
+L.SpamBlockNoNameplate				= "不要顯示只有特別首領機制圖示的名條（例如對敵人施加增益或減益）"
+L.SpamBlockNoNameplateCD			= "不要顯示只有技能冷卻計時圖示的名條"
+L.SpamBlockNoNameplateCasts			= "不要顯示只有技能施放計時圖示的名條"
 L.SpamBlockNoBossGUIDs				= "不要在plater名條上顯示主要首領(首領1)計時器作為名條光環\n(如果在Plater中啟用了功能，您仍然會看到小怪/首領計時器）"
 L.AlwaysKeepNPs						= "保持過期的名條冷卻時間計時器圖示可見直到技能重新施放"
 
-L.Area_SpamFilter_Misc				= "其他功能選項"
-L.SpamBlockNoSetIcon				= "不設置標記在目標上"
-L.SpamBlockNoRangeFrame				= "不顯示距離框架"
-L.SpamBlockNoInfoFrame				= "不顯示訊息框架"
+L.Area_SpamFilter_Misc				= "雜項功能"
+L.SpamBlockNoSetIcon				= "不自動設置標記在目標上"
+L.SpamBlockNoRangeFrame				= "不自動顯示距離框架"
+L.SpamBlockNoInfoFrame				= "不自動顯示訊息框架"
 L.SpamBlockNoHudMap					= "不要顯示HudMap"
 L.SpamBlockNoYells					= "不送出大喊至頻道"
 L.SpamBlockNoNoteSync				= "不接受註記分享"
-L.SpamBlockAutoGossip				= "不要自動處理對話內容"
+L.SpamBlockAutoGossip				= "不自動處理對話內容"
 
 L.Area_Restore						= "DBM還原選項(DBM是否還原至使用者過去狀態)"
 L.SpamBlockNoIconRestore			= "不在戰鬥結束後記住和還原團隊圖示狀態"
@@ -511,7 +529,7 @@ L.PT_Threshold						= "不要播放高於%d秒以上的休息/開戰/自訂倒�
 L.Panel_ReducedInformation			= "減少訊息"
 
 L.Area_SpamFilter_Anounces			= "警告禁用及過濾選項"
-L.SpamBlockNoShowTgtAnnounce		= "不顯示目標的提示文字或播放警告音效 (上列選項會覆蓋此選項)"
+L.SpamBlockNoShowTgtAnnounce		= "不要為不會影響您自己的目標一般提示顯示文字或播放聲音，但若有註明特定警告會忽略此過濾器（DBM 功能中的全域停用會覆蓋此過濾器）"
 L.SpamBlockNoTrivialSpecWarnSound	= "如果相對你等級是不重要的內容則不要播放特別提示音效 (播放使用者選擇的標準提示音效替代)"
 
 L.Area_SpamFilter					= "垃圾過濾選項"
