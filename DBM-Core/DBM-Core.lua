@@ -885,9 +885,10 @@ function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
 
+---Currently same as isRetail check, but if restrictions ever come to classic we'll still have one function for checking addongeddon api
 ---@param self DBMModOrDBM
 function DBM:IsPostMidnight()
-	return private.wowTOC >= 120000
+	return private.isRetail
 end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
@@ -895,7 +896,7 @@ bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 ---@param includeAuras boolean?
 function DBM:MidRestrictionsActive(includeAuras)
 	--Not Midnight (or later), rest of checks don't apply
-	if private.wowTOC < 120000 then
+	if not private.isRetail then
 		return false
 	end
 	if includeAuras and (C_Secrets.ShouldAurasBeSecret() or C_Secrets.ShouldCooldownsBeSecret()) then--Checks cooldown and auras restrictions
@@ -8491,7 +8492,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	end
 	--If we don't know enemy unit token, but know it's GUID
 	if not enemyUnitID and enemyGUID then
-		enemyUnitID = DBM:GetUnitIdFromGUID(enemyGUID)
+		enemyUnitID = self:GetUnitIdFromGUID(enemyGUID)
 	end
 
 	--Threat/Tanking Checks
@@ -8520,20 +8521,22 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 			if UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 				return true
 			end
-			for i = 1, 10 do
-				local unitID = "boss" .. i
-				local guid = UnitGUID(unitID)
-				--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
-				if not enemyGUID or (guid and guid == enemyGUID) then
-					--Check threat first
-					local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
-					if (not onlyS3 and tanking) or (status == 3) then
-						return true
-					end
-					--Non threat fallback
-					if includeTarget and UnitExists(unitID .. "target") then
-						if UnitIsUnit(playerUnitID, unitID .. "target") then
+			if not self:MidRestrictionsActive() then
+				for i = 1, 10 do
+					local unitID = "boss" .. i
+					local guid = UnitGUID(unitID)
+					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+					if not enemyGUID or (guid and guid == enemyGUID) then
+						--Check threat first
+						local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
+						if (not onlyS3 and tanking) or (status == 3) then
 							return true
+						end
+						--Non threat fallback
+						if includeTarget and UnitExists(unitID .. "target") then
+							if UnitIsUnit(playerUnitID, unitID .. "target") then
+								return true
+							end
 						end
 					end
 				end

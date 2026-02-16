@@ -343,7 +343,7 @@ function PrivateAuras:RegisterAllUnits()
     if not IsInGroup() then return end
     if UnitGroupRolesAssigned("player") ~= "TANK" then return end
     for unit in DBM:GetGroupMembers() do
-        if UnitExists(unit) and UnitGroupRolesAssigned(unit) == "TANK" and not UnitIsUnit(unit, "player") then
+        if not UnitIsUnit(unit, "player") and DBM:IsTanking(unit) then
             self:RegisterPrivateAuras(unit)
             break
         end
