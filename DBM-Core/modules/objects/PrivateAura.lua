@@ -269,6 +269,7 @@ do
 	                    DBM.Options.PrivateAurasPlayerRelativeTo = relativeTo
 	                end)
 	            end
+                self.PlayerPreview:ClearAllPoints()
 	            self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
 	            self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
 	            for i=1, 10 do
@@ -322,6 +323,7 @@ do
 	            self.TextWarningPreview:Show()
 	            self.TextWarningPreview.Text:SetFont(private.standardFont, TextAnchorSettings.Scale*20, "OUTLINE")
 	            self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
+                self.TextWarningPreview:ClearAllPoints()
 	            self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
 	        end
 	        if CoTankSettings.enabled then
@@ -352,6 +354,7 @@ do
 	                    DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
 	                end)
 	            end
+                self.CoTankPreview:ClearAllPoints()
 	            self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
 	            self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
 	            for i=1, 10 do
@@ -387,5 +390,20 @@ function PrivateAuras:RegisterAllUnits()
             self:RegisterPrivateAuras(unit)
             break
         end
+    end
+end
+
+function PrivateAuras:OnSettingsChange(player)
+    if not self.IsInPreview then return end
+    if player and self.PlayerPreview then
+	    local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+        self.PlayerPreview:ClearAllPoints()
+	    self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
+	    self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+    elseif self.CoTankPreview then
+	    local CoTankSettings = GetPrivateAuraSettings("PrivateAurasCoTank")
+        self.CoTankPreview:ClearAllPoints()
+	    self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
+	    self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
     end
 end
