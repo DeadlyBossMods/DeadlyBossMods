@@ -203,9 +203,6 @@ L.SpecialWarnHeaderCritical			= "Anúncios para mecânicas que a Blizzard classi
 
 -- Panel: Private Auras Frame
 L.Panel_PrivateAuras				= "Auras privadas"
-L.Area_PrivateAuras					= "Opções de aura privada"
-L.EnablePrivateAuraIcons			= "Mostrar ícones de aura privada na tela"
-L.EnablePrivateAuraText				= "Mostrar mensagens de texto de aura privada na tela"
 L.SetPAIconScale					= "Escala do ícone: %0.1f"
 L.SetPATextScale					= "Escala do texto: %0.1f"
 

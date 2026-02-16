@@ -255,9 +255,7 @@ L.SpecialWarnSoundOption	= "기본 효과음 설정"
 
 -- Panel: Private Auras Frame
 L.Panel_PrivateAuras				= "비공개 오라"
-L.Area_PrivateAuras					= "비공개 오라 설정"
-L.EnablePrivateAuraIcons			= "화면에 비공개 오라 아이콘 표시"
-L.EnablePrivateAuraText				= "화면에 비공개 오라 텍스트 메시지 표시"
+
 L.SetPAIconScale					= "아이콘 크기: %0.1f"--Not Finalized
 L.SetPATextScale					= "텍스트 크기: %0.1f"--Not Finalized
 --SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
