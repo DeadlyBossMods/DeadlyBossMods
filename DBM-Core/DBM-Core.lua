@@ -125,8 +125,8 @@ DBM.DefaultOptions = {
 	},
 	RaidWarningSound = 566558,--"Sound\\Doodad\\BellTollNightElf.ogg"
 	SpecialWarningSound = 569200,--"Sound\\Spells\\PVPFlagTaken.ogg"
-	SpecialWarningSound2 = private.isRetail and 569200 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg",--"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg"
-	SpecialWarningSound3 = "Interface\\AddOns\\DBM-Core\\sounds\\SoundClips\\dontdie.ogg",
+	SpecialWarningSound2 = private.isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg",--"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg"
+	SpecialWarningSound3 = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg",
 	SpecialWarningSound4 = not private.isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg",--"Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg"
 	SpecialWarningSound5 = 554236,--"Sound\\Creature\\Loathstare\\Loa_Naxx_Aggro02.ogg"
 	ModelSoundValue = "Short",
@@ -321,6 +321,7 @@ DBM.DefaultOptions = {
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayPrivateAuraSound = false,
+	DontShowPrivateAuraFrame = false,
 	DontPlayTrivialSpecialWarningSound = true,
 	SpamSpecInformationalOnly = false,
 	SpamSpecRoledispel = false,
@@ -415,11 +416,42 @@ DBM.DefaultOptions = {
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
 	DisableSWSound = false,
-	PrivateAuras = {
-		["player"] = {HideBorder = false, HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "RIGHT", enabled = true, Width = 100, Height = 100, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 0},
-		["CoTank"] = {HideBorder = false, HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "LEFT", enabled = true, Width = 100, Height = 100, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 0},
-		["TextAnchor"] = {Scale = 2.5, xOffset = 0, yOffset = -200, enabled = true, Anchor = "TOP", relativeTo = "TOP"}
-	}
+	--Private Aura Frame Options
+	--Player
+	PrivateAurasPlayerEnabled = true,
+	PrivateAurasPlayerHideBorder = false,
+	PrivateAurasPlayerHideTooltip = false,
+	PrivateAurasPlayerScale = 3,
+	PrivateAurasPlayerSpacing = -1,
+	PrivateAurasPlayerLimit = 5,
+	PrivateAurasPlayerGrowDirection = "RIGHT",
+	PrivateAurasPlayerWidth = 75,
+	PrivateAurasPlayerHeight = 75,
+	PrivateAurasPlayerAnchor = "CENTER",
+	PrivateAurasPlayerRelativeTo = "CENTER",
+	PrivateAurasPlayerXOffset = 0,
+	PrivateAurasPlayerYOffset = 150,
+	--Co-Tank
+	PrivateAurasCoTankEnabled = true,
+	PrivateAurasCoTankHideBorder = false,
+	PrivateAurasCoTankHideTooltip = false,
+	PrivateAurasCoTankScale = 3,
+	PrivateAurasCoTankSpacing = -1,
+	PrivateAurasCoTankLimit = 5,
+	PrivateAurasCoTankGrowDirection = "LEFT",
+	PrivateAurasCoTankWidth = 75,
+	PrivateAurasCoTankHeight = 75,
+	PrivateAurasCoTankAnchor = "CENTER",
+	PrivateAurasCoTankRelativeTo = "CENTER",
+	PrivateAurasCoTankXOffset = -150,
+	PrivateAurasCoTankYOffset = 150,
+	--Player Text Anchor
+	PrivateAurasTextAnchorScale = 1.8,
+	PrivateAurasTextAnchorXOffset = 0,
+	PrivateAurasTextAnchorYOffset = -200,
+	PrivateAurasTextAnchorEnabled = true,
+	PrivateAurasTextAnchorAnchor = "TOP",
+	PrivateAurasTextAnchorRelativeTo = "TOP",
 }
 
 ---@type DBMMod[]
@@ -885,9 +917,10 @@ function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
 
+---Currently same as isRetail check, but if restrictions ever come to classic we'll still have one function for checking addongeddon api
 ---@param self DBMModOrDBM
 function DBM:IsPostMidnight()
-	return private.wowTOC >= 120000
+	return private.isRetail
 end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
@@ -895,7 +928,7 @@ bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 ---@param includeAuras boolean?
 function DBM:MidRestrictionsActive(includeAuras)
 	--Not Midnight (or later), rest of checks don't apply
-	if private.wowTOC < 120000 then
+	if not private.isRetail then
 		return false
 	end
 	if includeAuras and (C_Secrets.ShouldAurasBeSecret() or C_Secrets.ShouldCooldownsBeSecret()) then--Checks cooldown and auras restrictions
@@ -6286,6 +6319,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
+				self.PrivateAuras:RegisterAllUnits()
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -6615,6 +6649,9 @@ do
 			mod:Stop()
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
+			end
+			if private.isRetail then
+				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false
@@ -8487,7 +8524,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	end
 	--If we don't know enemy unit token, but know it's GUID
 	if not enemyUnitID and enemyGUID then
-		enemyUnitID = DBM:GetUnitIdFromGUID(enemyGUID)
+		enemyUnitID = self:GetUnitIdFromGUID(enemyGUID)
 	end
 
 	--Threat/Tanking Checks
@@ -8516,20 +8553,22 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 			if UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 				return true
 			end
-			for i = 1, 10 do
-				local unitID = "boss" .. i
-				local guid = UnitGUID(unitID)
-				--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
-				if not enemyGUID or (guid and guid == enemyGUID) then
-					--Check threat first
-					local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
-					if (not onlyS3 and tanking) or (status == 3) then
-						return true
-					end
-					--Non threat fallback
-					if includeTarget and UnitExists(unitID .. "target") then
-						if UnitIsUnit(playerUnitID, unitID .. "target") then
+			if not self:MidRestrictionsActive() then
+				for i = 1, 10 do
+					local unitID = "boss" .. i
+					local guid = UnitGUID(unitID)
+					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+					if not enemyGUID or (guid and guid == enemyGUID) then
+						--Check threat first
+						local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
+						if (not onlyS3 and tanking) or (status == 3) then
 							return true
+						end
+						--Non threat fallback
+						if includeTarget and UnitExists(unitID .. "target") then
+							if UnitIsUnit(playerUnitID, unitID .. "target") then
+								return true
+							end
 						end
 					end
 				end

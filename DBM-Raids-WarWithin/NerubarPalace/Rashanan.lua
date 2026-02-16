@@ -472,12 +472,9 @@ function mod:OnCombatStart(delay)
 	timerSpinneretsStrandsCD:Start(allTimers[savedDifficulty][1][439784][1]-delay, 1)
 	timerErosiveSprayCD:Start(allTimers[savedDifficulty][1][439811][1]-delay, 1)
 	timerMovementCD:Start(self:IsMythic() and 56.3 or 90, 1)
-	self:EnablePrivateAuraSound(439790, "targetyou", 2)--Raid version, (434406 is in dungeon)
-	self:EnablePrivateAuraSound(434406, "targetyou", 2, 439790)--Likely dungeon version of Rolling Acid
-	self:EnablePrivateAuraSound(455284, "mobout", 2)--Maybe better sound later, but this one does say "mob out" as in "mob on you, get out and spread" which is the mechanic
-	self:EnablePrivateAuraSound(439815, "mobout", 2, 455284)--Secondary ID for Infested Spawn
-	self:EnablePrivateAuraSound(439783, "runout", 2)--Raid version of Spinneret's Strands
-	self:EnablePrivateAuraSound(434090, "runout", 12, 439783)--Likely the Dungeon version of Spinneret's Strands
+	self:EnablePrivateAuraSound({439790,434406}, "targetyou", 2)--Raid version, (434406 is in dungeon)
+	self:EnablePrivateAuraSound({455284,439815}, "mobout", 2)--Maybe better sound later, but this one does say "mob out" as in "mob on you, get out and spread" which is the mechanic
+	self:EnablePrivateAuraSound({439783,434090}, "runout", 2)--Raid version of Spinneret's Strands
 end
 
 function mod:OnTimerRecovery()
