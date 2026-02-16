@@ -1007,6 +1007,7 @@ do
 				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
 			end
 			--Set Countdown
+			if DBM.Options.DontPlayCountdowns then return end
 			local timerCountdown = self.Options["CustomTimerOption" .. optionId .. "CVoice"] or 0
 			if type(timerCountdown) == "string" then
 				path = timerCountdown.."fivecount.ogg"

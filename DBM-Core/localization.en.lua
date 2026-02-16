@@ -664,6 +664,7 @@ L.MOVE_SPECIAL_WARNING_BAR				= "Special warning movable"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Special Warning"
 
 L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> targets you with the spell <secret value>"
+L.MOVE_PRIVATE_AURA_DISABLED			= "Preview is disabled because Private Aura Frames are globally disabled in options."
 
 L.HUD_INVALID_TYPE						= "Invalid HUD type defined"
 L.HUD_INVALID_TARGET					= "No valid target given for HUD"

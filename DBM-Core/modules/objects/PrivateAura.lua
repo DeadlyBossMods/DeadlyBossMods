@@ -36,6 +36,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
         end
         self.PAFrames[unit].StackAnchors = {}
     end
+	if DBM.Options.DontShowPrivateAuraFrame then return end -- Hard global disable
     if unit == "player" then
         local TextSettings = DBM.Options.PrivateAuras["TextAnchor"]
         if TextSettings.enabled then
@@ -184,6 +185,10 @@ end
 
 -- /run DBM.PrivateAuras:PreviewToggle()
 function PrivateAuras:PreviewToggle()
+	if DBM.Options.DontShowPrivateAuraFrame then
+		DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
+		return
+	end
     local PlayerSettings = DBM.Options.PrivateAuras["player"]
     local TextAnchorSettings = DBM.Options.PrivateAuras["TextAnchor"]
     local CoTankSettings = DBM.Options.PrivateAuras["CoTank"]
@@ -339,6 +344,8 @@ end
 -- /run DBM.PrivateAuras:RegisterAllUnits()
 ---Register private auras for player and the first co-tank found in raid
 function PrivateAuras:RegisterAllUnits()
+	--Options toggles are checked in actual fuctions. Don't option check here.
+	--We still want to unregister events if a user toggles feature off after using it
     self:RegisterPrivateAuras("player")
     if not IsInGroup() then return end
     if UnitGroupRolesAssigned("player") ~= "TANK" then return end

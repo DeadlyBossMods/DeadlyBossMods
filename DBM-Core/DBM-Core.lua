@@ -321,6 +321,7 @@ DBM.DefaultOptions = {
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayPrivateAuraSound = false,
+	DontShowPrivateAuraFrame = false,
 	DontPlayTrivialSpecialWarningSound = true,
 	SpamSpecInformationalOnly = false,
 	SpamSpecRoledispel = false,
