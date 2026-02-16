@@ -6286,6 +6286,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
+				self.PrivateAuras:RegisterAllUnits()
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -6616,6 +6617,7 @@ do
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
 			end
+			self.PrivateAuras:UnregisterPrivateAuras(nil, true)
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false
 			if event then

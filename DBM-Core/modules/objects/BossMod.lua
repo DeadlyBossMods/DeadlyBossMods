@@ -962,8 +962,7 @@ do
 	---@param auraspellId number|table ID of Private aura we're actually monitoring (if it doesn't match option key, put option key in altOptionId)
 	---@param voice VPSound|any voice pack media path
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
-	---@param altOptionId number? Deprecated: Used if auraspellId doesn't match option key (usually happens when registering multiple ids for a single spell)
-	function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion, altOptionId)
+	function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
 		if DBM.Options.DontPlayPrivateAuraSound then return end
 		local optionId
 		if type(auraspellId) == "table" then
