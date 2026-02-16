@@ -6618,7 +6618,7 @@ do
 				mod:DisablePrivateAuraSounds()
 			end
 			if private.isRetail then
-				self.PrivateAuras:UnregisterPrivateAuras(nil, true)
+				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false

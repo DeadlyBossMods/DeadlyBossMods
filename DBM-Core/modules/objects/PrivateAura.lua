@@ -9,6 +9,9 @@ local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
 
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
+---Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
+---@param unit playerUUIDs
+---@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAuras[unit] (used for preview)
 function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     if not self.PAFrames then self.PAFrames = {} end
     if not self.PAStackFrames then self.PAStackFrames = {} end
@@ -150,9 +153,10 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
 end
 
 -- /run DBM.PrivateAuras:UnregisterPrivateAuras("player")
-function PrivateAuras:UnregisterPrivateAuras(unit, all)
+---@param unit playerUUIDs? if nil, will unregister all units. If string, will unregister that unit
+function PrivateAuras:UnregisterPrivateAuras(unit)
     if not self.PAFrames then return end
-    if all then
+    if not unit then
         for u, _ in pairs(self.PAFrames) do
             self:UnregisterPrivateAuras(u)
         end
@@ -333,7 +337,8 @@ function PrivateAuras:PreviewToggle()
 end
 
 -- /run DBM.PrivateAuras:RegisterAllUnits()
-function PrivateAuras:RegisterAllUnits() -- register private auras for player and the first co-tank found in raid
+---Register private auras for player and the first co-tank found in raid
+function PrivateAuras:RegisterAllUnits()
     self:RegisterPrivateAuras("player")
     if not IsInGroup() then return end
     if UnitGroupRolesAssigned("player") ~= "TANK" then return end
