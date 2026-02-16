@@ -254,22 +254,6 @@ L.SpecWarn_FlashAlpha				= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton				= "Show example"
 L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
-
--- Panel: Private Auras Frame
---Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
-L.Panel_PrivateAuras				= "Private Auras"
-L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
-L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
-L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
-L.SetPAGrowDirection				= "Grow direction"--Dropdown
-L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
-L.SetPAIconSpacing					= "Icon spacing: %d"--Slider, Reused for personal and tank
-L.SetPAStackScale					= "Stack scale: %d"--Slider, Reused for personal and tank
-L.SetPATextScale					= "Text scale: %0.1f"--Slider
-L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
-L.HidePABorder						= "Disable border"--checkbox
-L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
-L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
 --PreMidnight
 L.SpecialWarnHeader1				= "SA 1: Set options for normal priority announcements affecting you or your actions"
 L.SpecialWarnHeader2				= "SA 2: Set options for normal priority announcements affecting everyone"
@@ -279,6 +263,27 @@ L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes contai
 --Post Midnight
 L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
 L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
+
+-- Panel: Private Auras Frame
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
+L.Panel_PrivateAuras				= "Private Auras"
+L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
+L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
+L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
+L.SetPAGrowDirection				= "Grow direction"--Dropdown
+L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
+L.SetPAMaxIcons						= "Max icons: %d"--Slider, Reused for personal and tank
+L.SetPAIconSpacing					= "Icon spacing: %d"--Slider, Reused for personal and tank
+L.SetPAStackScale					= "Stack text scale: %d"--Slider, Reused for personal and tank
+L.SetPATextScale					= "Text message scale: %0.1f"--Slider
+L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
+L.HidePABorder						= "Disable border"--checkbox
+L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
+L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
+L.RIGHT								= "Right"
+L.LEFT								= "Left"
+L.UP								= "Up"
+L.DOWN								= "Down"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 				= "Chat Frame Messages"
