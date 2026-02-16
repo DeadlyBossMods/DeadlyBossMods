@@ -1,10 +1,12 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---@class DBMPrivateAuras
 local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
-local LSM = LibStub("LibSharedMedia-3.0")
 
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
 function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
@@ -277,8 +279,7 @@ function PrivateAuras:PreviewToggle()
                 self.TextWarningPreview:SetClampedToScreen(true)
             end
             self.TextWarningPreview:Show()
-            local font = LSM:Fetch("font", "Friz Quadrata TT") or "Friz Quadrata TT"--Satisfy LuaLS
-            self.TextWarningPreview.Text:SetFont(font, TextAnchorSettings.Scale*20, "OUTLINE")
+            self.TextWarningPreview.Text:SetFont(private.standardFont, TextAnchorSettings.Scale*20, "OUTLINE")
             self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
             self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
         end
