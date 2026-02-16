@@ -238,8 +238,8 @@ do
 	        stopMoving(self)
 			DBT:CancelBar("PAMove")
 	    else
-			DBM:Schedule(20, stopMoving, self)
-			DBT:CreateBar(20, "PAMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
+			DBM:Schedule(45, stopMoving, self)
+			DBT:CreateBar(45, "PAMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
 	        self.IsInPreview = true
 	        if PlayerSettings.enabled then
 	            if not self.PlayerPreview then
