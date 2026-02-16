@@ -6617,7 +6617,9 @@ do
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
 			end
-			self.PrivateAuras:UnregisterPrivateAuras(nil, true)
+			if private.isRetail then
+				self.PrivateAuras:UnregisterPrivateAuras(nil, true)
+			end
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false
 			if event then
