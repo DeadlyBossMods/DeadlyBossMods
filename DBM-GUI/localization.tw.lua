@@ -250,9 +250,7 @@ L.SpecialWarnSoundOption	    = "設置預設音效"
 
 -- Panel: Private Auras Frame
 L.Panel_PrivateAuras				= "私人光環"
-L.Area_PrivateAuras					= "私人光還選項"
-L.EnablePrivateAuraIcons			= "在螢幕上顯示私人光環圖示"
-L.EnablePrivateAuraText				= "在螢幕上顯示私人光還文字訊息"
+
 L.SetPAIconScale					= "圖示縮放: %0.1f"
 L.SetPATextScale					= "文字縮放: %0.1f"
 --PreMidnight

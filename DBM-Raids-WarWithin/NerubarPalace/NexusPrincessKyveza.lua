@@ -88,18 +88,10 @@ function mod:OnCombatStart(delay)
 	timerNexusDaggersCD:Start(45.2, 1)
 	timerStarlessNightCD:Start(96, 1)
 	self:EnablePrivateAuraSound(438141, "runout", 2)--Twilight Massacre
-	self:EnablePrivateAuraSound(436671, "lineyou", 17)--Regicide
-	self:EnablePrivateAuraSound(436664, "lineyou", 17, 436671)--Regicide
-	self:EnablePrivateAuraSound(436677, "lineyou", 17, 436671)--Regicide
-	self:EnablePrivateAuraSound(436665, "lineyou", 17, 436671)--Regicide
-	self:EnablePrivateAuraSound(436663, "lineyou", 17, 436671)--Regicide
-	self:EnablePrivateAuraSound(436666, "lineyou", 17, 436671)--Regicide
-	self:EnablePrivateAuraSound(435534, "lineyou", 17, 436671)--Regicide
+	self:EnablePrivateAuraSound({436671,436664,436677,436665,436663,436666,435534}, "lineyou", 17)--Regicide
 	self:EnablePrivateAuraSound(436870, "runout", 2)--Assassination
 	if self:IsHard() then--Only has spread on heroic and mythic
-		self:EnablePrivateAuraSound(437343, "runout", 2)--Queen's bane
-		self:EnablePrivateAuraSound(463273, "runout", 2, 437343)--Queen's bane
-		self:EnablePrivateAuraSound(463276, "runout", 2, 437343)--Queen's bane
+		self:EnablePrivateAuraSound({437343,463273,463276}, "runout", 2)--Queen's bane
 	end
 	if self:IsMythic() then
 		timerDeathMasksCD:Start(18.9, 1)

@@ -106,7 +106,7 @@ L.Editbox_WindowHeight				= "GUI window height"
 L.UIGroupingOptions					= "UI Grouping Options (changing these require UI reload for any mod that's already loaded)"
 L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon' options from getting grouped by spell (they will be grouped together in their own 'Icons' category instead)"
 L.GroupOptionsExcludePrivateAura	= "Exclude 'Private Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
-L.AutoExpandSpellGroups2				= "Auto expand options that are grouped by spell"
+L.AutoExpandSpellGroups2			= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
 --L.ShowSpellDescWhenExpanded		= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
@@ -254,15 +254,6 @@ L.SpecWarn_FlashAlpha				= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton				= "Show example"
 L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
-
--- Panel: Private Auras Frame
-L.Panel_PrivateAuras				= "Private Auras"
-L.Area_PrivateAuras					= "Private Aura Options"
-L.EnablePrivateAuraIcons			= "Show Private Aura icons on screen"
-L.EnablePrivateAuraText				= "Show Private Aura text messages on screen"
-L.SetPAIconScale					= "Icon scale: %0.1f"--Not Finalized
-L.SetPATextScale					= "Text scale: %0.1f"--Not Finalized
---SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
 --PreMidnight
 L.SpecialWarnHeader1				= "SA 1: Set options for normal priority announcements affecting you or your actions"
 L.SpecialWarnHeader2				= "SA 2: Set options for normal priority announcements affecting everyone"
@@ -272,6 +263,27 @@ L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes contai
 --Post Midnight
 L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
 L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
+
+-- Panel: Private Auras Frame
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
+L.Panel_PrivateAuras				= "Private Auras"
+L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
+L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
+L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
+L.SetPAGrowDirection				= "Grow direction"--Dropdown
+L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
+L.SetPAMaxIcons						= "Max icons: %d"--Slider, Reused for personal and tank
+L.SetPAIconSpacing					= "Icon spacing: %d"--Slider, Reused for personal and tank
+L.SetPAStackScale					= "Stack text scale: %d"--Slider, Reused for personal and tank
+L.SetPATextScale					= "Text message scale: %0.1f"--Slider
+L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
+L.HidePABorder						= "Disable border"--checkbox
+L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
+L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
+L.RIGHT								= "Right"
+L.LEFT								= "Left"
+L.UP								= "Up"
+L.DOWN								= "Down"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 				= "Chat Frame Messages"
@@ -357,8 +369,8 @@ L.BarSimple							= "Simple (small bar disappears and new large bar created)"
 L.BarStartColor						= "Start color"
 L.BarEndColor 						= "End color"
 L.Bar_Height						= "Bar height: %d"
-L.Slider_BarOffSetX 				= "Offset X: %d"
-L.Slider_BarOffSetY 				= "Offset Y: %d"
+L.Slider_BarOffSetX 				= "Offset X: %d"--Reused in other regions like Private Auras
+L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Private Auras
 L.Slider_BarWidth 					= "Bar width: %d"
 L.Slider_BarScale 					= "Bar scale: %0.2f"
 L.BarSaturation						= "Bar saturation for small timers (When huge bars are disabled): %0.2f"
@@ -486,7 +498,10 @@ L.SpamBlockNoSpecWarnText			= "Do not show special announce text"
 L.SpamBlockNoSpecWarnFlash			= "Do not show special announce screen flash"
 L.SpamBlockNoSpecWarnVibrate		= "Do not vibrate controller on special announce"
 L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (voice packs sounds enabled in Countdowns &amp; Voice Packs panel will still play)"
+
+L.Area_Private_Aura_Features		= "Private Aura Features"
 L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
+L.SpamBlockNoPrivateAuraFrame		= "Do not show private aura frames"
 
 L.Area_SpamFilter_Timers			= "Specific Timer Features (only applies if not disabled entirely above)"
 L.SpamBlockNoShowBossTimers			= "Do not show timers for dungeon/raid bosses"

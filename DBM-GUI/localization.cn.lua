@@ -259,9 +259,7 @@ L.SpecialWarnSoundOption	= "设置默认声音"
 
 -- Panel: Private Auras Frame
 L.Panel_PrivateAuras		= "私人光环"
-L.Area_PrivateAuras			= "私人光环选项"
-L.EnablePrivateAuraIcons	= "显示私人光环图标"
-L.EnablePrivateAuraText		= "显示私人光环文字"
+
 L.SetPAIconScale			= "图标缩放: %0.1f"--Not Finalized
 L.SetPATextScale			= "文字缩放: %0.1f"--Not Finalized
 

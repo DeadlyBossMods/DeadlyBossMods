@@ -63,6 +63,7 @@ modules\options\general\Profile.lua
 modules\options\alerts\Alerts.lua
 modules\options\alerts\Announcements.lua
 modules\options\alerts\SpecialAnnouncements.lua
+modules\options\alerts\PrivateAurasOptions.lua
 modules\options\alerts\ChatframeMessages.lua
 modules\options\alerts\SpokenAlerts.lua
 modules\options\alerts\EventSounds.lua
