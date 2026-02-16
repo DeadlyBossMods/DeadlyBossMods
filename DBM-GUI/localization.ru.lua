@@ -253,10 +253,20 @@ L.SpecWarn_ResetMe			= "Восстановить умолчания"
 L.SpecialWarnSoundOption	= "Установить звук по умолчанию"
 
 -- Panel: Private Auras Frame
+-- Обратите внимание, что здесь повторно используются параметры Slider_BarOffSetX, Slider_BarOffSetY и SpamBlockNoPrivateAuraSound
 L.Panel_PrivateAuras				= "Приватные ауры"
-
-L.SetPAIconScale					= "Масштаб значка: %0.1f"--Не завершено
-L.SetPATextScale					= "Масштаб текста: %0.1f"--Не завершено
+L.Area_PersonalPrivateAuras			= "Персональные параметры приватных аур"
+L.EnablePersonalPrivateAuraIcons	= "Отображать на экране иконки личной ауры"--Флажок
+L.EnablePersonalPrivateAuraText		= "Перезаписать масштаб текста сообщения частной ауры Blizzard"--Флажок
+L.SetPAGrowDirection				= "Направление роста"--Выпадающее меню
+L.SetPAIconScale					= "Масштаб значка: %d"--Ползунок. Повторно используется для личного пользования и танками
+L.SetPAIconSpacing					= "Расстояние между иконками: %d"--Ползунок. Повторно используется для личного пользования и танками
+L.SetPAStackScale					= "Масштаб стака: %d"--Ползунок. Повторно используется для личного пользования и танками
+L.SetPATextScale					= "Масштаб текста: %0.1f"--Ползунок
+L.HidePATooltip						= "Отключить всплывающую подсказку при наведении курсора мыши"--Флажок
+L.HidePABorder						= "Отключить границу"--Флажок
+L.Area_TankPrivateAuras				= "Настройки приватной ауры для совместного танка"
+L.EnableTankPrivateAuraIcons		= "Отображать на экране иконки совместного танка (требуется специализация танка)"--Флажок
 --SpamBlockNoPrivateAuraSound будет повторно использовано в параметрах графического интерфейса, но повторная локализация не требуется
 
 --PreMidnight
@@ -482,7 +492,10 @@ L.SpamBlockNoSpecWarnText	= "Не показывать текст спецпре
 L.SpamBlockNoSpecWarnFlash			= "Не показывать мигание экрана при спецпредупреждении"
 L.SpamBlockNoSpecWarnVibrate		= "Не вибрировать контроллер при спецпредупреждении"
 L.SpamBlockNoSpecWarnSound			= "Не воспроизводить специальные звуки объявлений<br/>(звуки голосовых пакетов, включенные в параметрах 'Обратные отсчеты и голосовые пакеты', всё равно будут воспроизводиться)"
-L.SpamBlockNoPrivateAuraSound		= "Не записывать звуки частных аур"
+
+L.Area_Private_Aura_Features		= "Функции приватных аур"
+L.SpamBlockNoPrivateAuraSound		= "Не записывать звуки приватных аур"
+L.SpamBlockNoPrivateAuraFrame		= "Не отображать фреймы приватных аур"
 
 L.Area_SpamFilter_Timers	= "Конкретные функции таймера (применяются только в том случае, если они не отключены полностью выше)"
 L.SpamBlockNoShowBossTimers			= "Не показывать таймеры для боссов в подземельях/рейдах"
