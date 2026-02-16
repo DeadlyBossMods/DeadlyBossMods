@@ -15,9 +15,11 @@ spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnFlash, true, nil, "D
 spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnVibrate, true, nil, "DontDoSpecialWarningVibrate")
 spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnSound, true, nil, "DontPlaySpecialWarningSound")
 
-local spamPrivateAuras = spamPanel:CreateArea(L.Area_Private_Aura_Features)
-spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraFrame, true, nil, "DontShowPrivateAuraFrame")
-spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraSound, true, nil, "DontPlayPrivateAuraSound")
+if DBM:IsPostMidnight() then
+	local spamPrivateAuras = spamPanel:CreateArea(L.Area_Private_Aura_Features)
+	spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraFrame, true, nil, "DontShowPrivateAuraFrame")
+	spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraSound, true, nil, "DontPlayPrivateAuraSound")
+end
 
 local spamTimers = spamPanel:CreateArea(L.Area_SpamFilter_Timers)
 spamTimers:CreateCheckButton(L.SpamBlockNoShowBossTimers, true, nil, "DontShowBossTimers")
