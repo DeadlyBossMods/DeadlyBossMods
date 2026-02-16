@@ -36,8 +36,8 @@ end)
 ----------------------------------
 --  Co-Tank Private Aura Frame  --
 ----------------------------------
-local coTankPAArea = privateAurasPanel:CreateArea(L.Area_CoTankPrivateAuras)
-local coTankPAIcon = coTankPAArea:CreateCheckButton(L.EnableCoTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")
+local coTankPAArea = privateAurasPanel:CreateArea(L.Area_TankPrivateAuras)
+local coTankPAIcon = coTankPAArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")
 
 local coTankMovemebutton = coTankPAArea:CreateButton(L.MoveMe, 100, 16)
 coTankMovemebutton:SetPoint("TOPRIGHT", coTankPAArea.frame, "TOPRIGHT", -2, -4)
