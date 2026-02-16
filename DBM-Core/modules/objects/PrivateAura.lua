@@ -8,10 +8,32 @@ local private = select(2, ...)
 local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
 
+---Helper function to build a settings table from flattened option keys
+---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
+---@return table Settings table with all configuration properties
+local function GetPrivateAuraSettings(prefix)
+    return {
+        HideBorder = DBM.Options[prefix .. "HideBorder"],
+        HideTooltip = DBM.Options[prefix .. "HideTooltip"],
+        Scale = DBM.Options[prefix .. "Scale"],
+        Spacing = DBM.Options[prefix .. "Spacing"],
+        Limit = DBM.Options[prefix .. "Limit"],
+        GrowDirection = DBM.Options[prefix .. "GrowDirection"],
+        enabled = DBM.Options[prefix .. "Enabled"],
+        Width = DBM.Options[prefix .. "Width"],
+        Height = DBM.Options[prefix .. "Height"],
+        Anchor = DBM.Options[prefix .. "Anchor"],
+        relativeTo = DBM.Options[prefix .. "RelativeTo"],
+        xOffset = DBM.Options[prefix .. "XOffset"],
+        yOffset = DBM.Options[prefix .. "YOffset"],
+        UpscaleDuration = DBM.Options[prefix .. "UpscaleDuration"],
+    }
+end
+
 -- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
 ---Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
 ---@param unit playerUUIDs
----@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAuras[unit] (used for preview)
+---@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAurasPlayer/PrivateAurasCoTank (used for preview)
 function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     if not self.PAFrames then self.PAFrames = {} end
     if not self.PAStackFrames then self.PAStackFrames = {} end
@@ -19,7 +41,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     if not self.PAFrames[unit] then self.PAFrames[unit] = {} end
     if not self.PAStackFrames[unit] then self.PAStackFrames[unit] = {} end
     if not self.PAAnchorFrames[unit] then self.PAAnchorFrames[unit] = {} end
-    local settings = settingsOverwrite or (unit == "player" and DBM.Options.PrivateAuras["player"] or DBM.Options.PrivateAuras["CoTank"])
+    local settings = settingsOverwrite or (unit == "player" and GetPrivateAuraSettings("PrivateAurasPlayer") or GetPrivateAuraSettings("PrivateAurasCoTank"))
     if self.PAFrames[unit] and self.PAFrames[unit].Anchors then -- unregister all existing anchors for the unit
         for i=1, 10 do
             if self.PAFrames[unit].Anchors[i] then
@@ -38,7 +60,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     end
 	if DBM.Options.DontShowPrivateAuraFrame then return end -- Hard global disable
     if unit == "player" then
-        local TextSettings = DBM.Options.PrivateAuras["TextAnchor"]
+        local TextSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
         if TextSettings.enabled then
             if not self.PATextFrame then self.PATextFrame = CreateFrame("Frame", nil, UIParent) end
             self.PATextFrame:ClearAllPoints()
@@ -183,162 +205,173 @@ function PrivateAuras:UnregisterPrivateAuras(unit)
     end
 end
 
--- /run DBM.PrivateAuras:PreviewToggle()
-function PrivateAuras:PreviewToggle()
-	if DBM.Options.DontShowPrivateAuraFrame then
-		DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
-		return
+do
+	-- /run DBM.PrivateAuras:PreviewToggle()
+	---@param self DBMPrivateAuras
+	local function stopMoving(self)
+		self.IsInPreview = false
+		if self.PlayerPreview then
+		    self.PlayerPreview:Hide()
+		    self.PlayerPreview:SetMovable(false)
+		    self.PlayerPreview:EnableMouse(false)
+		end
+		if self.CoTankPreview then
+		    self.CoTankPreview:Hide()
+		    self.CoTankPreview:SetMovable(false)
+		    self.CoTankPreview:EnableMouse(false)
+		end
+		if self.TextWarningPreview then
+		    self.TextWarningPreview:Hide()
+		end
 	end
-    local PlayerSettings = DBM.Options.PrivateAuras["player"]
-    local TextAnchorSettings = DBM.Options.PrivateAuras["TextAnchor"]
-    local CoTankSettings = DBM.Options.PrivateAuras["CoTank"]
-    if self.IsInPreview then
-        self.IsInPreview = false
-        if self.PlayerPreview then
-            self.PlayerPreview:Hide()
-            self.PlayerPreview:SetMovable(false)
-            self.PlayerPreview:EnableMouse(false)
-        end
-        if self.CoTankPreview then
-            self.CoTankPreview:Hide()
-            self.CoTankPreview:SetMovable(false)
-            self.CoTankPreview:EnableMouse(false)
-        end
-        if self.TextWarningPreview then
-            self.TextWarningPreview:Hide()
-        end
-    else
-        self.IsInPreview = true
-        if PlayerSettings.enabled then
-            if not self.PlayerPreview then
-                self.PlayerPreview = CreateFrame("Frame", nil, UIParent)
-                self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
-                self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-                self.PlayerPreview:RegisterForDrag("LeftButton")
-                self.PlayerPreview:SetClampedToScreen(true)
-                self.PlayerPreview.Textures = {}
-                self.PlayerPreview.Border = CreateFrame("Frame", nil, self.PlayerPreview, "BackdropTemplate")
-                self.PlayerPreview.Border:SetPoint("TOPLEFT", self.PlayerPreview, "TOPLEFT", -6, 6)
-                self.PlayerPreview.Border:SetPoint("BOTTOMRIGHT", self.PlayerPreview, "BOTTOMRIGHT", 6, -6)
-                self.PlayerPreview.Border:SetBackdrop({
-                    edgeFile = "Interface\\Buttons\\WHITE8x8",
-                    edgeSize = 2,
-                })
-                self.PlayerPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
-                self.PlayerPreview:SetScript("OnDragStart", function(Frame)
-                    Frame:StartMoving()
-                end)
-                self.PlayerPreview:SetScript("OnDragStop", function(Frame)
-                    Frame:StopMovingOrSizing()
-                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
-                    xOffset = Round(xOffset)
-                    yOffset = Round(yOffset)
-                    DBM.Options.PrivateAuras["player"].xOffset = xOffset
-                    DBM.Options.PrivateAuras["player"].yOffset = yOffset
-                    DBM.Options.PrivateAuras["player"].Anchor = Anchor
-                    DBM.Options.PrivateAuras["player"].relativeTo = relativeTo
-                end)
-            end
-            for i=1, 10 do
-                if i <= PlayerSettings.Limit then
-                    self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
-                    self.PlayerPreview.Textures[i]:SetTexture(237555)
-                    self.PlayerPreview.Textures[i]:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-                    local xOffset = (PlayerSettings.GrowDirection == "RIGHT" and (i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "LEFT" and -(i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or 0
-                    local yOffset = (PlayerSettings.GrowDirection == "UP" and (i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "DOWN" and -(i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or 0
-                    self.PlayerPreview.Textures[i]:SetPoint("CENTER", self.PlayerPreview, "CENTER", xOffset, yOffset)
-                elseif self.PlayerPreview.Textures[i] then
-                    self.PlayerPreview.Textures[i]:Hide()
-                end
-            end
-            self.PlayerPreview:Show()
-            self.PlayerPreview:SetMovable(true)
-            self.PlayerPreview:EnableMouse(true)
-        end
-        if TextAnchorSettings.enabled then
-            if not self.TextWarningPreview then
-                self.TextWarningPreview = CreateFrame("Frame", nil, UIParent)
-                self.TextWarningPreview.Text = self.TextWarningPreview:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-                self.TextWarningPreview.Text:SetPoint("CENTER", self.TextWarningPreview, "CENTER", 0, 0)
-                self.TextWarningPreview.Text:SetText(DBM_CORE_L.MOVE_PRIVATE_AURA_TEXT)
-                self.TextWarningPreview.Border = CreateFrame("Frame", nil, self.TextWarningPreview, "BackdropTemplate")
-                self.TextWarningPreview.Border:SetPoint("TOPLEFT", self.TextWarningPreview, "TOPLEFT", -6, 6)
-                self.TextWarningPreview.Border:SetPoint("BOTTOMRIGHT", self.TextWarningPreview, "BOTTOMRIGHT", 6, -6)
-                self.TextWarningPreview.Border:SetBackdrop({
-                        edgeFile = "Interface\\Buttons\\WHITE8x8",
-                        edgeSize = 2,
-                    })
-                self.TextWarningPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
-                self.TextWarningPreview:SetScript("OnDragStart", function(self)
-                    self:StartMoving()
-                end)
-                self.TextWarningPreview:SetScript("OnDragStop", function(Frame)
-                    Frame:StopMovingOrSizing()
-                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
-                    xOffset = Round(xOffset)
-                    yOffset = Round(yOffset)
-                    DBM.Options.PrivateAuras["TextAnchor"].xOffset = xOffset
-                    DBM.Options.PrivateAuras["TextAnchor"].yOffset = yOffset
-                    DBM.Options.PrivateAuras["TextAnchor"].Anchor = Anchor
-                    DBM.Options.PrivateAuras["TextAnchor"].relativeTo = relativeTo
-                end)
-                self.TextWarningPreview:SetMovable(true)
-                self.TextWarningPreview:EnableMouse(true)
-                self.TextWarningPreview:RegisterForDrag("LeftButton")
-                self.TextWarningPreview:SetClampedToScreen(true)
-            end
-            self.TextWarningPreview:Show()
-            self.TextWarningPreview.Text:SetFont(private.standardFont, TextAnchorSettings.Scale*20, "OUTLINE")
-            self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
-            self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
-        end
-        if CoTankSettings.enabled then
-            if not self.CoTankPreview then
-                self.CoTankPreview = CreateFrame("Frame", nil, UIParent)
-                self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
-                self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-                self.CoTankPreview:RegisterForDrag("LeftButton")
-                self.CoTankPreview:SetClampedToScreen(true)
-                self.CoTankPreview.Textures = {}
-                self.CoTankPreview.Border = CreateFrame("Frame", nil, self.CoTankPreview, "BackdropTemplate")
-                self.CoTankPreview.Border:SetPoint("TOPLEFT", self.CoTankPreview, "TOPLEFT", -6, 6)
-                self.CoTankPreview.Border:SetPoint("BOTTOMRIGHT", self.CoTankPreview, "BOTTOMRIGHT", 6, -6)
-                self.CoTankPreview.Border:SetBackdrop({
-                    edgeFile = "Interface\\Buttons\\WHITE8x8",
-                    edgeSize = 2,
-                })
-                self.CoTankPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
-                self.CoTankPreview:SetScript("OnDragStart", function(Frame)
-                    Frame:StartMoving()
-                end)
-                self.CoTankPreview:SetScript("OnDragStop", function(Frame)
-                    Frame:StopMovingOrSizing()
-                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
-                    xOffset = Round(xOffset)
-                    yOffset = Round(yOffset)
-                    DBM.Options.PrivateAuras["CoTank"].xOffset = xOffset
-                    DBM.Options.PrivateAuras["CoTank"].yOffset = yOffset
-                    DBM.Options.PrivateAuras["CoTank"].Anchor = Anchor
-                    DBM.Options.PrivateAuras["CoTank"].relativeTo = relativeTo
-                end)
-            end
-            for i=1, 10 do
-                if i <= CoTankSettings.Limit then
-                    self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
-                    self.CoTankPreview.Textures[i]:SetTexture(236318)
-                    self.CoTankPreview.Textures[i]:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-                    local xOffset = (CoTankSettings.GrowDirection == "RIGHT" and (i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "LEFT" and -(i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or 0
-                    local yOffset = (CoTankSettings.GrowDirection == "UP" and (i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "DOWN" and -(i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or 0
-                    self.CoTankPreview.Textures[i]:SetPoint("CENTER", self.CoTankPreview, "CENTER", xOffset, yOffset)
-                elseif self.CoTankPreview.Textures[i] then
-                    self.CoTankPreview.Textures[i]:Hide()
-                end
-            end
-            self.CoTankPreview:Show()
-            self.CoTankPreview:SetMovable(true)
-            self.CoTankPreview:EnableMouse(true)
-        end
-    end
+
+	function PrivateAuras:PreviewToggle()
+		if DBM.Options.DontShowPrivateAuraFrame then
+			DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
+			return
+		end
+	    local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+	    local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
+	    local CoTankSettings = GetPrivateAuraSettings("PrivateAurasCoTank")
+	    if self.IsInPreview then
+			DBM:Unschedule(stopMoving)
+	        stopMoving(self)
+			DBT:CancelBar("PAMove")
+	    else
+			DBM:Schedule(20, stopMoving, self)
+			DBT:CreateBar(20, "PAMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
+	        self.IsInPreview = true
+	        if PlayerSettings.enabled then
+	            if not self.PlayerPreview then
+	                self.PlayerPreview = CreateFrame("Frame", nil, UIParent)
+	                self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
+	                self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+	                self.PlayerPreview:RegisterForDrag("LeftButton")
+	                self.PlayerPreview:SetClampedToScreen(true)
+	                self.PlayerPreview.Textures = {}
+	                self.PlayerPreview.Border = CreateFrame("Frame", nil, self.PlayerPreview, "BackdropTemplate")
+	                self.PlayerPreview.Border:SetPoint("TOPLEFT", self.PlayerPreview, "TOPLEFT", -6, 6)
+	                self.PlayerPreview.Border:SetPoint("BOTTOMRIGHT", self.PlayerPreview, "BOTTOMRIGHT", 6, -6)
+	                self.PlayerPreview.Border:SetBackdrop({
+	                    edgeFile = "Interface\\Buttons\\WHITE8x8",
+	                    edgeSize = 2,
+	                })
+	                self.PlayerPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
+	                self.PlayerPreview:SetScript("OnDragStart", function(Frame)
+	                    Frame:StartMoving()
+	                end)
+	                self.PlayerPreview:SetScript("OnDragStop", function(Frame)
+	                    Frame:StopMovingOrSizing()
+	                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
+	                    xOffset = Round(xOffset)
+	                    yOffset = Round(yOffset)
+	                    DBM.Options.PrivateAurasPlayerXOffset = xOffset
+	                    DBM.Options.PrivateAurasPlayerYOffset = yOffset
+	                    DBM.Options.PrivateAurasPlayerAnchor = Anchor
+	                    DBM.Options.PrivateAurasPlayerRelativeTo = relativeTo
+	                end)
+	            end
+	            for i=1, 10 do
+	                if i <= PlayerSettings.Limit then
+	                    self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
+	                    self.PlayerPreview.Textures[i]:SetTexture(237555)
+	                    self.PlayerPreview.Textures[i]:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+	                    local xOffset = (PlayerSettings.GrowDirection == "RIGHT" and (i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "LEFT" and -(i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or 0
+	                    local yOffset = (PlayerSettings.GrowDirection == "UP" and (i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "DOWN" and -(i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or 0
+	                    self.PlayerPreview.Textures[i]:SetPoint("CENTER", self.PlayerPreview, "CENTER", xOffset, yOffset)
+	                elseif self.PlayerPreview.Textures[i] then
+	                    self.PlayerPreview.Textures[i]:Hide()
+	                end
+	            end
+	            self.PlayerPreview:Show()
+	            self.PlayerPreview:SetMovable(true)
+	            self.PlayerPreview:EnableMouse(true)
+	        end
+	        if TextAnchorSettings.enabled then
+	            if not self.TextWarningPreview then
+	                self.TextWarningPreview = CreateFrame("Frame", nil, UIParent)
+	                self.TextWarningPreview.Text = self.TextWarningPreview:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+	                self.TextWarningPreview.Text:SetPoint("CENTER", self.TextWarningPreview, "CENTER", 0, 0)
+	                self.TextWarningPreview.Text:SetText(DBM_CORE_L.MOVE_PRIVATE_AURA_TEXT)
+	                self.TextWarningPreview.Border = CreateFrame("Frame", nil, self.TextWarningPreview, "BackdropTemplate")
+	                self.TextWarningPreview.Border:SetPoint("TOPLEFT", self.TextWarningPreview, "TOPLEFT", -6, 6)
+	                self.TextWarningPreview.Border:SetPoint("BOTTOMRIGHT", self.TextWarningPreview, "BOTTOMRIGHT", 6, -6)
+	                self.TextWarningPreview.Border:SetBackdrop({
+	                        edgeFile = "Interface\\Buttons\\WHITE8x8",
+	                        edgeSize = 2,
+	                    })
+	                self.TextWarningPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
+	                self.TextWarningPreview:SetScript("OnDragStart", function(self)
+	                    self:StartMoving()
+	                end)
+	                self.TextWarningPreview:SetScript("OnDragStop", function(Frame)
+	                    Frame:StopMovingOrSizing()
+	                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
+	                    xOffset = Round(xOffset)
+	                    yOffset = Round(yOffset)
+	                    DBM.Options.PrivateAurasTextAnchorXOffset = xOffset
+	                    DBM.Options.PrivateAurasTextAnchorYOffset = yOffset
+	                    DBM.Options.PrivateAurasTextAnchorAnchor = Anchor
+	                    DBM.Options.PrivateAurasTextAnchorRelativeTo = relativeTo
+	                end)
+	                self.TextWarningPreview:SetMovable(true)
+	                self.TextWarningPreview:EnableMouse(true)
+	                self.TextWarningPreview:RegisterForDrag("LeftButton")
+	                self.TextWarningPreview:SetClampedToScreen(true)
+	            end
+	            self.TextWarningPreview:Show()
+	            self.TextWarningPreview.Text:SetFont(private.standardFont, TextAnchorSettings.Scale*20, "OUTLINE")
+	            self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
+	            self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
+	        end
+	        if CoTankSettings.enabled then
+	            if not self.CoTankPreview then
+	                self.CoTankPreview = CreateFrame("Frame", nil, UIParent)
+	                self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
+	                self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
+	                self.CoTankPreview:RegisterForDrag("LeftButton")
+	                self.CoTankPreview:SetClampedToScreen(true)
+	                self.CoTankPreview.Textures = {}
+	                self.CoTankPreview.Border = CreateFrame("Frame", nil, self.CoTankPreview, "BackdropTemplate")
+	                self.CoTankPreview.Border:SetPoint("TOPLEFT", self.CoTankPreview, "TOPLEFT", -6, 6)
+	                self.CoTankPreview.Border:SetPoint("BOTTOMRIGHT", self.CoTankPreview, "BOTTOMRIGHT", 6, -6)
+	                self.CoTankPreview.Border:SetBackdrop({
+	                    edgeFile = "Interface\\Buttons\\WHITE8x8",
+	                    edgeSize = 2,
+	                })
+	                self.CoTankPreview.Border:SetBackdropBorderColor(1, 1, 1, 1)
+	                self.CoTankPreview:SetScript("OnDragStart", function(Frame)
+	                    Frame:StartMoving()
+	                end)
+	                self.CoTankPreview:SetScript("OnDragStop", function(Frame)
+	                    Frame:StopMovingOrSizing()
+	                    local Anchor, _, relativeTo, xOffset, yOffset = Frame:GetPoint()
+	                    xOffset = Round(xOffset)
+	                    yOffset = Round(yOffset)
+	                    DBM.Options.PrivateAurasCoTankXOffset = xOffset
+	                    DBM.Options.PrivateAurasCoTankYOffset = yOffset
+	                    DBM.Options.PrivateAurasCoTankAnchor = Anchor
+	                    DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
+	                end)
+	            end
+	            for i=1, 10 do
+	                if i <= CoTankSettings.Limit then
+	                    self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
+	                    self.CoTankPreview.Textures[i]:SetTexture(236318)
+	                    self.CoTankPreview.Textures[i]:SetSize(CoTankSettings.Width, CoTankSettings.Height)
+	                    local xOffset = (CoTankSettings.GrowDirection == "RIGHT" and (i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "LEFT" and -(i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or 0
+	                    local yOffset = (CoTankSettings.GrowDirection == "UP" and (i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "DOWN" and -(i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or 0
+	                    self.CoTankPreview.Textures[i]:SetPoint("CENTER", self.CoTankPreview, "CENTER", xOffset, yOffset)
+	                elseif self.CoTankPreview.Textures[i] then
+	                    self.CoTankPreview.Textures[i]:Hide()
+	                end
+	            end
+	            self.CoTankPreview:Show()
+	            self.CoTankPreview:SetMovable(true)
+	            self.CoTankPreview:EnableMouse(true)
+	        end
+	    end
+	end
 end
 
 -- /run DBM.PrivateAuras:RegisterAllUnits()
