@@ -256,7 +256,7 @@ L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
 
 -- Panel: Private Auras Frame
---Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSoundreused here
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
 L.Panel_PrivateAuras				= "Private Auras"
 L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
 L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
