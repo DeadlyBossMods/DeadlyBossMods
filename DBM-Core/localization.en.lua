@@ -663,6 +663,8 @@ L.MOVE_WARNING_MESSAGE					= "Thanks for using " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR				= "Special warning movable"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Special Warning"
 
+L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> targets you with the spell <secret value>"
+
 L.HUD_INVALID_TYPE						= "Invalid HUD type defined"
 L.HUD_INVALID_TARGET					= "No valid target given for HUD"
 L.HUD_INVALID_SELF						= "Cannot use self as target for HUD"

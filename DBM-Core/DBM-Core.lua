@@ -417,7 +417,7 @@ DBM.DefaultOptions = {
 	DisableSWSound = false,
 	PrivateAuras = {
 		["player"] = {HideBorder = false, HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "RIGHT", enabled = true, Width = 75, Height = 75, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 150},
-		["CoTank"] = {HideBorder = false, HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "LEFT", enabled = true, Width = 75, Height = 75, Anchor = "CENTER", relativeTo = "CENTER", xOffset = 0, yOffset = 150},
+		["CoTank"] = {HideBorder = false, HideTooltip = false, Scale = 3, Spacing = -1, Limit = 5, GrowDirection = "LEFT", enabled = true, Width = 75, Height = 75, Anchor = "CENTER", relativeTo = "CENTER", xOffset = -150, yOffset = 150},
 		["TextAnchor"] = {Scale = 2, xOffset = 0, yOffset = -200, enabled = true, Anchor = "TOP", relativeTo = "TOP"}
 	}
 }
