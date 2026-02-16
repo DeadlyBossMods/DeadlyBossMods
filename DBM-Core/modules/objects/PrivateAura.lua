@@ -244,8 +244,6 @@ do
 	        if PlayerSettings.enabled then
 	            if not self.PlayerPreview then
 	                self.PlayerPreview = CreateFrame("Frame", nil, UIParent)
-	                self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
-	                self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
 	                self.PlayerPreview:RegisterForDrag("LeftButton")
 	                self.PlayerPreview:SetClampedToScreen(true)
 	                self.PlayerPreview.Textures = {}
@@ -271,6 +269,8 @@ do
 	                    DBM.Options.PrivateAurasPlayerRelativeTo = relativeTo
 	                end)
 	            end
+	            self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
+	            self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
 	            for i=1, 10 do
 	                if i <= PlayerSettings.Limit then
 	                    self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
@@ -327,8 +327,6 @@ do
 	        if CoTankSettings.enabled then
 	            if not self.CoTankPreview then
 	                self.CoTankPreview = CreateFrame("Frame", nil, UIParent)
-	                self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
-	                self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
 	                self.CoTankPreview:RegisterForDrag("LeftButton")
 	                self.CoTankPreview:SetClampedToScreen(true)
 	                self.CoTankPreview.Textures = {}
@@ -354,6 +352,8 @@ do
 	                    DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
 	                end)
 	            end
+	            self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
+	            self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
 	            for i=1, 10 do
 	                if i <= CoTankSettings.Limit then
 	                    self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
