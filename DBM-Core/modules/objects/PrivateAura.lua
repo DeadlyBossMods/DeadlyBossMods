@@ -30,7 +30,6 @@ local function GetPrivateAuraSettings(prefix)
     }
 end
 
--- /run DBM.PrivateAuras:RegisterPrivateAuras("player")
 ---Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
 ---@param unit playerUUIDs
 ---@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAurasPlayer/PrivateAurasCoTank (used for preview)
@@ -175,7 +174,6 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     end
 end
 
--- /run DBM.PrivateAuras:UnregisterPrivateAuras("player")
 ---@param unit playerUUIDs? if nil, will unregister all units. If string, will unregister that unit
 function PrivateAuras:UnregisterPrivateAuras(unit)
     if not self.PAFrames then return end
@@ -206,7 +204,6 @@ function PrivateAuras:UnregisterPrivateAuras(unit)
 end
 
 do
-	-- /run DBM.PrivateAuras:PreviewToggle()
 	---@param self DBMPrivateAuras
 	local function stopMoving(self)
 		self.IsInPreview = false
@@ -377,7 +374,6 @@ do
 	end
 end
 
--- /run DBM.PrivateAuras:RegisterAllUnits()
 ---Register private auras for player and the first co-tank found in raid
 function PrivateAuras:RegisterAllUnits()
 	--Options toggles are checked in actual fuctions. Don't option check here.
@@ -395,15 +391,48 @@ end
 
 function PrivateAuras:OnSettingsChange(player)
     if not self.IsInPreview then return end
-    if player and self.PlayerPreview then
-	    local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
-        self.PlayerPreview:ClearAllPoints()
-	    self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
-	    self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+    if player then
+        if self.PlayerPreview then
+	        local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+            self.PlayerPreview:ClearAllPoints()
+	        self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
+	        self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+	        for i=1, 10 do
+	            if i <= PlayerSettings.Limit then
+	                self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
+	                self.PlayerPreview.Textures[i]:SetTexture(237555)
+	                self.PlayerPreview.Textures[i]:SetSize(PlayerSettings.Width, PlayerSettings.Height)
+                    local xOffset = (PlayerSettings.GrowDirection == "RIGHT" and (i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "LEFT" and -(i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or 0
+	                local yOffset = (PlayerSettings.GrowDirection == "UP" and (i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "DOWN" and -(i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or 0
+	                self.PlayerPreview.Textures[i]:SetPoint("CENTER", self.PlayerPreview, "CENTER", xOffset, yOffset)
+	            elseif self.PlayerPreview.Textures[i] then
+	                self.PlayerPreview.Textures[i]:Hide()
+	            end
+	        end
+        end
+        if self.TextWarningPreview then
+            local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
+            self.TextWarningPreview.Text:SetFont(private.standardFont, TextAnchorSettings.Scale*20, "OUTLINE")
+            self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
+            self.TextWarningPreview:ClearAllPoints()
+            self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
+        end
     elseif self.CoTankPreview then
 	    local CoTankSettings = GetPrivateAuraSettings("PrivateAurasCoTank")
         self.CoTankPreview:ClearAllPoints()
 	    self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
 	    self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
+	    for i=1, 10 do
+	        if i <= CoTankSettings.Limit then
+	            self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
+	            self.CoTankPreview.Textures[i]:SetTexture(236318)
+	            self.CoTankPreview.Textures[i]:SetSize(CoTankSettings.Width, CoTankSettings.Height)
+	            local xOffset = (CoTankSettings.GrowDirection == "RIGHT" and (i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "LEFT" and -(i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or 0
+	            local yOffset = (CoTankSettings.GrowDirection == "UP" and (i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "DOWN" and -(i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or 0
+	            self.CoTankPreview.Textures[i]:SetPoint("CENTER", self.CoTankPreview, "CENTER", xOffset, yOffset)
+	        elseif self.CoTankPreview.Textures[i] then
+	            self.CoTankPreview.Textures[i]:Hide()
+	        end
+	    end
     end
 end
