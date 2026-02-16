@@ -277,7 +277,9 @@ function PrivateAuras:PreviewToggle()
                 self.TextWarningPreview:SetClampedToScreen(true)
             end
             self.TextWarningPreview:Show()
-            self.TextWarningPreview.Text:SetFont(LSM:Fetch("font", "Friz Quadrata TT"), TextAnchorSettings.Scale*20, "OUTLINE")
+            ---@type string
+            local font = LSM:Fetch("font", "Friz Quadrata TT")
+            self.TextWarningPreview.Text:SetFont(font, TextAnchorSettings.Scale*20, "OUTLINE")
             self.TextWarningPreview:SetSize(self.TextWarningPreview.Text:GetStringWidth(), self.TextWarningPreview.Text:GetStringHeight()*1.5)
             self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
         end
@@ -330,6 +332,7 @@ function PrivateAuras:PreviewToggle()
     end
 end
 
+-- /run DBM.PrivateAuras:RegisterAllUnits()
 function PrivateAuras:RegisterAllUnits() -- register private auras for player and the first co-tank found in raid
     self:RegisterPrivateAuras("player")
     if not UnitInRaid("player") then return end
