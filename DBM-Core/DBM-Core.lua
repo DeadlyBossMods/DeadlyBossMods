@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.21 alpha"--Core version
+DBM.DisplayVersion = "12.0.22 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -421,37 +421,39 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerEnabled = true,
 	PrivateAurasPlayerHideBorder = false,
 	PrivateAurasPlayerHideTooltip = false,
+	PrivateAurasPlayerUpscaleDuration = true,
 	PrivateAurasPlayerScale = 3,
 	PrivateAurasPlayerSpacing = -1,
 	PrivateAurasPlayerLimit = 5,
 	PrivateAurasPlayerGrowDirection = "RIGHT",
 	PrivateAurasPlayerWidth = 75,
 	PrivateAurasPlayerHeight = 75,
-	PrivateAurasPlayerAnchor = "CENTER",
-	PrivateAurasPlayerRelativeTo = "CENTER",
-	PrivateAurasPlayerXOffset = 0,
-	PrivateAurasPlayerYOffset = 150,
+	PrivateAurasPlayerAnchor = "CENTER",--NYI
+	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
+	PrivateAurasPlayerXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasPlayerYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
 	PrivateAurasCoTankEnabled = true,
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
+	PrivateAurasCoTankUpscaleDuration = true,
 	PrivateAurasCoTankScale = 3,
 	PrivateAurasCoTankSpacing = -1,
 	PrivateAurasCoTankLimit = 5,
 	PrivateAurasCoTankGrowDirection = "LEFT",
 	PrivateAurasCoTankWidth = 75,
 	PrivateAurasCoTankHeight = 75,
-	PrivateAurasCoTankAnchor = "CENTER",
-	PrivateAurasCoTankRelativeTo = "CENTER",
-	PrivateAurasCoTankXOffset = -150,
-	PrivateAurasCoTankYOffset = 150,
+	PrivateAurasCoTankAnchor = "CENTER",--NYI
+	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
+	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
 	--Player Text Anchor
 	PrivateAurasTextAnchorScale = 1.8,
-	PrivateAurasTextAnchorXOffset = 0,
-	PrivateAurasTextAnchorYOffset = -200,
+	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasTextAnchorYOffset = -200,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasTextAnchorEnabled = true,
-	PrivateAurasTextAnchorAnchor = "TOP",
-	PrivateAurasTextAnchorRelativeTo = "TOP",
+	PrivateAurasTextAnchorAnchor = "TOP",--NYI
+	PrivateAurasTextAnchorRelativeTo = "TOP",--NYI
 }
 
 ---@type DBMMod[]

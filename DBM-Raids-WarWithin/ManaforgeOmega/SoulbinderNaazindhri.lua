@@ -39,6 +39,6 @@ function mod:OnLimitedCombatStart()
 
 	self:EnablePrivateAuraSound({1237607,1248464}, "defensive", 2)
 	self:EnablePrivateAuraSound(1227276, "lineyou", 17)
-	self:EnablePrivateAuraSound(1225626, "orbyou", 17)
+	self:EnablePrivateAuraSound(1225626, "orbrun", 17)
 	self:EnablePrivateAuraSound(1242086, "watchfeet", 8)
 end

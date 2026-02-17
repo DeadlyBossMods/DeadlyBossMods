@@ -777,7 +777,16 @@ L.KEYSTONE_NAMES = {
 	[503] = 'ARAK', -- Ara-Kara, City of Echoes
 	[505] = 'DAWN', -- The Dawnbreaker
 	[525] = 'FLOOD', -- Operation Floodgate
-	[542] = 'DOME' -- Eco-Dome Al'dani
+	[542] = 'DOME', -- Eco-Dome Al'dani
+
+	[161] = 'SKY', -- Skyreach
+	[402] = 'AA', -- Algeth'ar Academy
+	[556] = 'POS', -- Pit of Saron
+	[557] = 'WRS', -- Windrunner Spire
+	[558] = 'MT', -- Magister's Terrace (new)
+	[559] = 'NPX', -- Nexus-Point Xenas
+	[560] = 'MC', -- Miasara Caverns
+	[583] = 'SEAT', -- Hell (IE Seat of the Triumvirate)
 }
 
 -- Midnight jazz

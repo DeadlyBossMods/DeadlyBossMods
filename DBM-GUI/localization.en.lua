@@ -270,6 +270,7 @@ L.Panel_PrivateAuras				= "Private Auras"
 L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
 L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
 L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
+L.UpscaleDurationText				= "Upscale duration text on icons to be larger"
 L.SetPAGrowDirection				= "Grow direction"--Dropdown
 L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "Max icons: %d"--Slider, Reused for personal and tank
