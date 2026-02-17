@@ -268,6 +268,7 @@ L.Panel_PrivateAuras				= "비공개 오라"
 L.Area_PersonalPrivateAuras			= "개인 비공개 오라 설정"
 L.EnablePersonalPrivateAuraIcons	= "화면에 개인 비공개 오라 아이콘 표시"--checkbox
 L.EnablePersonalPrivateAuraText		= "블리자드 비공개 오라 텍스트 메시지 크기 설정 무시"--checkbox
+L.UpscaleDurationText				= "아이콘에 뜨는 지속시간 텍스트 크기 키우기"
 L.SetPAGrowDirection				= "확장 방향"--Dropdown
 L.SetPAIconScale					= "아이콘 크기: %d"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "최대 아이콘 수: %d"--Slider, Reused for personal and tank
