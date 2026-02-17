@@ -786,7 +786,7 @@ L.KEYSTONE_NAMES = {
 	[558] = 'MT', -- Magister's Terrace (new)
 	[559] = 'NPX', -- Nexus-Point Xenas
 	[560] = 'MC', -- Miasara Caverns
-	[583] = 'SoT', -- Hell (IE Seat of the Triumvirate)
+	[583] = 'SEAT', -- Hell (IE Seat of the Triumvirate)
 }
 
 -- Midnight jazz
