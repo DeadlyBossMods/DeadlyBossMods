@@ -760,6 +760,15 @@ L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'ЗА' -- Eco-Dome Al'dani
 
+L.KEYSTONE_NAMES[161] = 'НП', -- Skyreach
+L.KEYSTONE_NAMES[402] = 'АА', -- Algeth'ar Academy
+L.KEYSTONE_NAMES[556] = 'ЯС', -- Pit of Saron
+L.KEYSTONE_NAMES[557] = 'ШВ', -- Windrunner Spire
+L.KEYSTONE_NAMES[558] = 'ТМ', -- Magister's Terrace (new)
+L.KEYSTONE_NAMES[559] = 'УНЗ', -- Nexus-Point Xenas
+L.KEYSTONE_NAMES[560] = 'ПМ', -- Miasara Caverns
+L.KEYSTONE_NAMES[583] = 'ПТ', -- Hell (IE Seat of the Triumvirate)
+
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "Вы хотите использовать временную шкалу Blizzard или полосы DBM?"
 L.MN_BLIZZARD_TIMELINE	= "Временная шкала Blizzard"
