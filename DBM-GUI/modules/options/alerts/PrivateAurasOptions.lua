@@ -70,7 +70,7 @@ personalSpacing:HookScript("OnValueChanged", function(self)
 end)
 personalSpacing.myheight = 0
 
-local personaPAIconScale = personalPAArea:CreateSlider(L.SetPAIconScale, 50, 150, 1, 150)
+local personaPAIconScale = personalPAArea:CreateSlider(L.SetPAIconScale, 25, 150, 1, 150)
 personaPAIconScale:SetPoint("TOPLEFT", personalPAGrowDir, "TOPLEFT", 0, -50)
 personaPAIconScale:SetValue(DBM.Options.PrivateAurasPlayerWidth)
 personaPAIconScale:HookScript("OnValueChanged", function(self)
