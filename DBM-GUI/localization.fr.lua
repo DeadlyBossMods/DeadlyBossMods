@@ -231,10 +231,10 @@ L.ThickOutline				= "Epais"
 L.MonochromeOutline			= "Monochrome simple"
 L.MonochromeThickOutline	= "Monochrome épais"
 L.RaidWarnSound				= "Jouer un son sur les alertes raid"
-L.SAOne						= "Son global 1 (personnel)"
-L.SATwo 					= "Son global 2 (tout le monde)"
-L.SAThree 					= "Son global 3 (action de haute priorité)"
-L.SAFour 					= "Son global 4 (fuite de haute priorité)"
+L.SAOne						= "Son 1"
+L.SATwo 					= "Son 2"
+L.SAThree 					= "Son 3"
+L.SAFour 					= "Son 4"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame				= "Annonces spéciales"
@@ -265,11 +265,19 @@ L.SpecialWarnHeaderCritical			= "Annonces pour les mécaniques que Blizzard clas
 
 -- Panel: Private Auras Frame
 L.Panel_PrivateAuras				= "Auras privées"
-L.Area_PrivateAuras					= "Options des auras privées"
-L.EnablePrivateAuraIcons			= "Afficher les icônes des auras privées à l'écran"
-L.EnablePrivateAuraText				= "Afficher les messages texte des auras privées à l'écran"
-L.SetPAIconScale					= "Échelle de l'icône : %0.1f"
-L.SetPATextScale					= "Échelle du texte : %0.1f"
+L.Area_PersonalPrivateAuras         = "Options des auras privées personnelles"
+L.EnablePersonalPrivateAuraIcons    = "Afficher les icônes des auras privées personnelles à l’écran"
+L.EnablePersonalPrivateAuraText     = "Afficher les messages texte des auras privées personnelles à l’écran"
+L.UpscaleDurationText               = "Augmenter l’échelle du texte de durée"
+L.SetPAGrowDirection                = "Direction d’expansion"
+L.SetPAIconScale                    = "Échelle de l’icône : %d"
+L.SetPAIconSpacing                  = "Espacement des icônes : %d"
+L.SetPAStackScale                   = "Échelle des charges : %d"
+L.SetPATextScale                    = "Échelle du texte : %0.1f"
+L.HidePATooltip                     = "Désactiver l’infobulle du sort au survol"
+L.HidePABorder                      = "Désactiver la bordure"
+L.Area_TankPrivateAuras             = "Options des auras privées du co-tank"
+L.EnableTankPrivateAuraIcons        = "Afficher les icônes des auras privées du co-tank à l’écran"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 			= "Messages de la fenêtre de discussion"
@@ -487,7 +495,10 @@ L.SpamBlockNoSpecWarnText			= "Ne pas afficher de texte pour les annonces spéci
 L.SpamBlockNoSpecWarnFlash			= "Ne pas faire clignoter l'écran pour les annonces spéciales"
 L.SpamBlockNoSpecWarnVibrate		= "Ne pas faire vibrer la manette pour les annonces spéciales"
 L.SpamBlockNoSpecWarnSound			= "Ne pas jouer de son d'annonce spéciale"
-L.SpamBlockNoPrivateAuraSound		= "Ne pas enregistrer les sons des auras privées"
+
+L.Area_Private_Aura_Features        = "Options des auras privées"
+L.SpamBlockNoPrivateAuraSound       = "Ne pas enregistrer les sons des auras privées"
+L.SpamBlockNoPrivateAuraFrame       = "Ne pas afficher les cadres d’auras privées"
 
 L.Area_SpamFilter_Timers			= "Options des chronomètres"
 L.SpamBlockNoShowBossTimers			= "Ne pas afficher les chronomètres pour les boss de donjon/raid"

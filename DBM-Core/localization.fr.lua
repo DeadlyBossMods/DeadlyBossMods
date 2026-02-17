@@ -217,6 +217,7 @@ L.OUT_OF_DATE_NAG 					= "Votre version de " .. L.DBM .. " est périmée. Il est
 L.PLATER_NP_AURAS_MSG 				= L.DBM .. " offre une fonctionnalité avancée permettant d'afficher les temps de recharge des ennemis avec des icônes sur les plaques de nom. Cette option est activée par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, elle est désactivée par défaut. Pour tirer pleinement parti de DBM et Plater, il est recommandé de l'activer dans la section 'Buff Special' des options de Plater. Si vous ne souhaitez plus voir ce message, vous pouvez désactiver complètement l'option 'Icônes de recharge sur les plaques de nom' dans les options des plaques de nom ou dans les options globales de DBM."
 
 L.MOVABLE_BAR					= "Bougez-moi !"
+L.MOVABLE_FRAMES 				= "Cadres déplaçables"
 
 L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Annuler ce délais]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorer les délais de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais " .. L.DBM .. " de %s durant cette session ?"
@@ -620,6 +621,9 @@ L.MOVE_WARNING_BAR			= "Annonce mobile"
 L.MOVE_WARNING_MESSAGE		= "Merci d'utiliser " .. L.DEADLY_BOSS_MODS .. ""
 L.MOVE_SPECIAL_WARNING_BAR	= "Alertes spéciales mobiles"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
+
+L.MOVE_PRIVATE_AURA_TEXT 	= "<valeur secrète> vous cible avec le sort <valeur secrète>"
+L.MOVE_PRIVATE_AURA_DISABLED = "L’aperçu est désactivé car les cadres d’auras privées sont désactivés globalement dans les options."
 
 L.HUD_INVALID_TYPE			= "Type de HUD défini invalide"
 L.HUD_INVALID_TARGET		= "Pas de cible valide disponible pour le HUD"
