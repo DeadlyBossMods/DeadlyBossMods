@@ -428,10 +428,10 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerGrowDirection = "RIGHT",
 	PrivateAurasPlayerWidth = 75,
 	PrivateAurasPlayerHeight = 75,
-	PrivateAurasPlayerAnchor = "CENTER",
-	PrivateAurasPlayerRelativeTo = "CENTER",
-	PrivateAurasPlayerXOffset = 0,
-	PrivateAurasPlayerYOffset = 150,
+	PrivateAurasPlayerAnchor = "CENTER",--NYI
+	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
+	PrivateAurasPlayerXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasPlayerYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
 	PrivateAurasCoTankEnabled = true,
 	PrivateAurasCoTankHideBorder = false,
@@ -443,17 +443,17 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankGrowDirection = "LEFT",
 	PrivateAurasCoTankWidth = 75,
 	PrivateAurasCoTankHeight = 75,
-	PrivateAurasCoTankAnchor = "CENTER",
-	PrivateAurasCoTankRelativeTo = "CENTER",
-	PrivateAurasCoTankXOffset = -150,
-	PrivateAurasCoTankYOffset = 150,
+	PrivateAurasCoTankAnchor = "CENTER",--NYI
+	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
+	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
 	--Player Text Anchor
 	PrivateAurasTextAnchorScale = 1.8,
-	PrivateAurasTextAnchorXOffset = 0,
-	PrivateAurasTextAnchorYOffset = -200,
+	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasTextAnchorYOffset = -200,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasTextAnchorEnabled = true,
-	PrivateAurasTextAnchorAnchor = "TOP",
-	PrivateAurasTextAnchorRelativeTo = "TOP",
+	PrivateAurasTextAnchorAnchor = "TOP",--NYI
+	PrivateAurasTextAnchorRelativeTo = "TOP",--NYI
 }
 
 ---@type DBMMod[]

@@ -389,6 +389,7 @@ function PrivateAuras:RegisterAllUnits()
     end
 end
 
+---@param player boolean?
 function PrivateAuras:OnSettingsChange(player)
     if not self.IsInPreview then return end
     if player then
