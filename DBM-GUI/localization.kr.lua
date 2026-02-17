@@ -252,24 +252,36 @@ L.SpecWarn_FlashAlpha		= "점멸 투명도: %0.1f"
 L.SpecWarn_DemoButton		= "예제 보기"
 L.SpecWarn_ResetMe			= "기본값으로 초기화"
 L.SpecialWarnSoundOption	= "기본 효과음 설정"
+--PreMidnight
+L.SpecialWarnHeader1		= "SA 1: 당신이 뭔가 걸렸거나 취해야 할 행동에 대한 보통 수준 알림 설정 세트"
+L.SpecialWarnHeader2		= "SA 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
+L.SpecialWarnHeader3		= "SA 3: 최우선 알림 설정 세트"
+L.SpecialWarnHeader4		= "SA 4: 최우선 도망 특수 알림 설정 세트"
+L.SpecialWarnHeader5		= "SA 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "SA 1: 블리자드에서 '중간' 등급으로 분류한 스킬 알림"
+L.SpecialWarnHeaderCritical			= "SA 2: 블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
 
 -- Panel: Private Auras Frame
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
 L.Panel_PrivateAuras				= "비공개 오라"
-L.Area_PrivateAuras					= "비공개 오라 설정"
-L.EnablePrivateAuraIcons			= "화면에 비공개 오라 아이콘 표시"
-L.EnablePrivateAuraText				= "화면에 비공개 오라 텍스트 메시지 표시"
-L.SetPAIconScale					= "아이콘 크기: %0.1f"--Not Finalized
-L.SetPATextScale					= "텍스트 크기: %0.1f"--Not Finalized
---SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
---PreMidnight
-L.SpecialWarnHeader1		= "유형 1: 당신이 뭔가 걸렸거나 취해야 할 행동에 대한 보통 수준 알림 설정 세트"
-L.SpecialWarnHeader2		= "유형 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
-L.SpecialWarnHeader3		= "유형 3: 최우선 알림 설정 세트"
-L.SpecialWarnHeader4		= "유형 4: 최우선 도망 특수 알림 설정 세트"
-L.SpecialWarnHeader5		= "유형 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
---Post Midnight
-L.SpecialWarnHeaderMedium			= "블리자드에서 '중간' 등급으로 분류한 스킬 알림"
-L.SpecialWarnHeaderCritical			= "블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
+L.Area_PersonalPrivateAuras			= "개인 비공개 오라 설정"
+L.EnablePersonalPrivateAuraIcons	= "화면에 개인 비공개 오라 아이콘 표시"--checkbox
+L.EnablePersonalPrivateAuraText		= "블리자드 비공개 오라 텍스트 메시지 크기 설정 무시"--checkbox
+L.SetPAGrowDirection				= "확장 방향"--Dropdown
+L.SetPAIconScale					= "아이콘 크기: %d"--Slider, Reused for personal and tank
+L.SetPAMaxIcons						= "최대 아이콘 수: %d"--Slider, Reused for personal and tank
+L.SetPAIconSpacing					= "아이콘 간격: %d"--Slider, Reused for personal and tank
+L.SetPAStackScale					= "중첩 텍스트 크기: %d"--Slider, Reused for personal and tank
+L.SetPATextScale					= "텍스트 메시지 크기: %0.1f"--Slider
+L.HidePATooltip						= "주문 툴팁 끄기"--checkbox
+L.HidePABorder						= "테두리 끄기"--checkbox
+L.Area_TankPrivateAuras				= "오프탱 비공개 오라 설정"
+L.EnableTankPrivateAuraIcons		= "화면에 오프탱 비공개 오라 아이콘 표시 (탱커 전문화 필요)"--checkbox
+L.RIGHT								= "오른쪽"
+L.LEFT								= "왼쪽"
+L.UP								= "위쪽"
+L.DOWN								= "아래쪽"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "대화창 메시지"
@@ -352,12 +364,12 @@ L.BarSimple					= "Simple (처음 바는 사라지고 큰 바가 새로 생성)"
 L.BarStartColor	 			= "시작 색상"
 L.BarEndColor 				= "종료 색상"
 L.Bar_Height				= "바 높이: %d"
-L.Slider_BarOffSetX 		= "바 정렬: %d"
-L.Slider_BarOffSetY 		= "바 간격: %d"
+L.Slider_BarOffSetX 				= "X 위치 조정: %d"--Reused in other regions like Private Auras
+L.Slider_BarOffSetY 				= "Y 위치 조정: %d"--Reused in other regions like Private Auras
 L.Slider_BarWidth 			= "바 너비: %d"
 L.Slider_BarScale 			= "바 크기: %0.2f"
 L.BarSaturation				= "작은 바 채도 (커다란 바 사용시 비활성): %0.2f"
-L.MidnightNote				= "참고: 자정 버전의 API 제한으로 인해. DBM은 다른 시작 및 종료 색상을 지원할 수 없습니다. 시작 색상만 사용됩니다."
+L.MidnightNote				= "참고: 한밤에서 API가 제한되기 때문에 DBM이 시작과 종료의 다른 색상을 지원할 수 없으며 시작 색상만 사용됩니다."
 
 --Types
 L.BarStartColorAdd				= "시작 색상 1 (쫄)"
@@ -391,10 +403,10 @@ L.CBTPhase							= "페이즈 변경"
 L.CBTImportant						= "사용자 지정 중요 주문"
 --Dropdown Options
 --Special Announce Dropdowns
-L.SAOne						= "일반 음성 1 (개인 알림)"
-L.SATwo						= "일반 음성 2 (전체 알림)"
-L.SAThree					= "일반 음성 3 (1순위 행위)"
-L.SAFour					= "일반 음성 4 (1순위 도망치기)"
+L.SAOne						= "음성팩 / 없으면 SA 1"
+L.SATwo						= "음성팩 / 없으면 SA 2"
+L.SAThree					= "음성팩 / 없으면 SA 3"
+L.SAFour					= "음성팩 / 없으면 SA 4"
 --Timer Dropdowns
 L.ColorDropGeneric					= "일반 (기본값: 미분류)"
 L.ColorDrop1						= "색상 1 (기본값: 쫄)"
@@ -481,7 +493,10 @@ L.SpamBlockNoSpecWarnText	= "특수 알림 텍스트 표시 안함"
 L.SpamBlockNoSpecWarnFlash	= "특수 알림에 화면 점멸 사용 안함"
 L.SpamBlockNoSpecWarnVibrate		= "특수 알림에 컨트롤러 진동 안함"
 L.SpamBlockNoSpecWarnSound	= "특수 알림 효과음 재생 안함 (초읽기와 음성팩 메뉴에서 활성화된 음성팩은 계속 작동)"
+
+L.Area_Private_Aura_Features		= "비공개 오라 기능"
 L.SpamBlockNoPrivateAuraSound		= "비공개 오라 효과음 등록 안함"
+L.SpamBlockNoPrivateAuraFrame		= "비공개 오라 프레임 표시 안함"
 
 L.Area_SpamFilter_Timers			= "세부 타이머 기능 (위에서 전체 비활성화를 하지 않을 때만 적용)"
 L.SpamBlockNoShowBossTimers		= "던전/레이드 보스 타이머 표시 안함"

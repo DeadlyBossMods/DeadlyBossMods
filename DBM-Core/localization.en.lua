@@ -222,6 +222,7 @@ L.OUT_OF_DATE_NAG						= "Your version of " .. L.DBM.. " is out-of-date and this
 L.PLATER_NP_AURAS_MSG					= L.DBM .. " includes an advanced feature to show enemy cooldown timers using icons on nameplates. This is on by default for most users, but for Plater users it is off by default in Plater options unless you enable it. To get the most out of DBM (and Plater) it's recommended you enable this feature in Plater under 'Buff Special' section. If you don't want to see this message again, you can also just entirely disable 'Cooldown icons on nameplates' option in DBM global disable or nameplate options panels"
 
 L.MOVABLE_BAR							= "Drag me!"
+L.MOVABLE_FRAMES						= "Frames Dragable"
 
 L.PIZZA_SYNC_INFO						= "|Hplayer:%1$s|h[%1$s]|h sent you a " .. L.DBM .. " timer: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
 --L.PIZZA_SYNC_INFO						= "|Hplayer:%1$s|h[%1$s]|h sent you a " .. L.DBM .. " timer"
@@ -663,6 +664,9 @@ L.MOVE_WARNING_MESSAGE					= "Thanks for using " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR				= "Special warning movable"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Special Warning"
 
+L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> targets you with the spell <secret value>"
+L.MOVE_PRIVATE_AURA_DISABLED			= "Preview is disabled because Private Aura Frames are globally disabled in options."
+
 L.HUD_INVALID_TYPE						= "Invalid HUD type defined"
 L.HUD_INVALID_TARGET					= "No valid target given for HUD"
 L.HUD_INVALID_SELF						= "Cannot use self as target for HUD"
@@ -773,7 +777,16 @@ L.KEYSTONE_NAMES = {
 	[503] = 'ARAK', -- Ara-Kara, City of Echoes
 	[505] = 'DAWN', -- The Dawnbreaker
 	[525] = 'FLOOD', -- Operation Floodgate
-	[542] = 'DOME' -- Eco-Dome Al'dani
+	[542] = 'DOME', -- Eco-Dome Al'dani
+
+	[161] = 'SKY', -- Skyreach
+	[402] = 'AA', -- Algeth'ar Academy
+	[556] = 'POS', -- Pit of Saron
+	[557] = 'WRS', -- Windrunner Spire
+	[558] = 'MT', -- Magister's Terrace (new)
+	[559] = 'NPX', -- Nexus-Point Xenas
+	[560] = 'MC', -- Miasara Caverns
+	[583] = 'SEAT', -- Hell (IE Seat of the Triumvirate)
 }
 
 -- Midnight jazz

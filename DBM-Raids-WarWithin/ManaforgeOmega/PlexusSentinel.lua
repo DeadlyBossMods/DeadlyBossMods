@@ -37,7 +37,6 @@ function mod:OnLimitedCombatStart()
 	self:EnableTimelineOptions(1272966, 351)
 	self:EnablePrivateAuraSound(1219439, "runout", 2)
 	self:EnablePrivateAuraSound(1219459, "runout", 2)
-	self:EnablePrivateAuraSound(1219607, "gathershare", 2)
-	self:EnablePrivateAuraSound(1219531, "gathershare", 2, 1219607)
+	self:EnablePrivateAuraSound({1219607,1219531}, "gathershare", 2)
 	self:EnablePrivateAuraSound(1219354, "watchfeet", 8)
 end

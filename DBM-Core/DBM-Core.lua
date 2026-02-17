@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.19 alpha"--Core version
+DBM.DisplayVersion = "12.0.22 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 10, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -125,8 +125,8 @@ DBM.DefaultOptions = {
 	},
 	RaidWarningSound = 566558,--"Sound\\Doodad\\BellTollNightElf.ogg"
 	SpecialWarningSound = 569200,--"Sound\\Spells\\PVPFlagTaken.ogg"
-	SpecialWarningSound2 = private.isRetail and 569200 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg",--"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg"
-	SpecialWarningSound3 = "Interface\\AddOns\\DBM-Core\\sounds\\SoundClips\\dontdie.ogg",
+	SpecialWarningSound2 = private.isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg",--"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg"
+	SpecialWarningSound3 = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg",
 	SpecialWarningSound4 = not private.isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg",--"Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg"
 	SpecialWarningSound5 = 554236,--"Sound\\Creature\\Loathstare\\Loa_Naxx_Aggro02.ogg"
 	ModelSoundValue = "Short",
@@ -321,6 +321,7 @@ DBM.DefaultOptions = {
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayPrivateAuraSound = false,
+	DontShowPrivateAuraFrame = false,
 	DontPlayTrivialSpecialWarningSound = true,
 	SpamSpecInformationalOnly = false,
 	SpamSpecRoledispel = false,
@@ -415,6 +416,44 @@ DBM.DefaultOptions = {
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
 	DisableSWSound = false,
+	--Private Aura Frame Options
+	--Player
+	PrivateAurasPlayerEnabled = true,
+	PrivateAurasPlayerHideBorder = false,
+	PrivateAurasPlayerHideTooltip = false,
+	PrivateAurasPlayerUpscaleDuration = true,
+	PrivateAurasPlayerScale = 3,
+	PrivateAurasPlayerSpacing = -1,
+	PrivateAurasPlayerLimit = 5,
+	PrivateAurasPlayerGrowDirection = "RIGHT",
+	PrivateAurasPlayerWidth = 75,
+	PrivateAurasPlayerHeight = 75,
+	PrivateAurasPlayerAnchor = "CENTER",--NYI
+	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
+	PrivateAurasPlayerXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasPlayerYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
+	--Co-Tank
+	PrivateAurasCoTankEnabled = true,
+	PrivateAurasCoTankHideBorder = false,
+	PrivateAurasCoTankHideTooltip = false,
+	PrivateAurasCoTankUpscaleDuration = true,
+	PrivateAurasCoTankScale = 3,
+	PrivateAurasCoTankSpacing = -1,
+	PrivateAurasCoTankLimit = 5,
+	PrivateAurasCoTankGrowDirection = "LEFT",
+	PrivateAurasCoTankWidth = 75,
+	PrivateAurasCoTankHeight = 75,
+	PrivateAurasCoTankAnchor = "CENTER",--NYI
+	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
+	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
+	--Player Text Anchor
+	PrivateAurasTextAnchorScale = 1.8,
+	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasTextAnchorYOffset = -200,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasTextAnchorEnabled = true,
+	PrivateAurasTextAnchorAnchor = "TOP",--NYI
+	PrivateAurasTextAnchorRelativeTo = "TOP",--NYI
 }
 
 ---@type DBMMod[]
@@ -880,9 +919,10 @@ function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
 
+---Currently same as isRetail check, but if restrictions ever come to classic we'll still have one function for checking addongeddon api
 ---@param self DBMModOrDBM
 function DBM:IsPostMidnight()
-	return private.wowTOC >= 120000
+	return private.isRetail
 end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
@@ -890,7 +930,7 @@ bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 ---@param includeAuras boolean?
 function DBM:MidRestrictionsActive(includeAuras)
 	--Not Midnight (or later), rest of checks don't apply
-	if private.wowTOC < 120000 then
+	if not private.isRetail then
 		return false
 	end
 	if includeAuras and (C_Secrets.ShouldAurasBeSecret() or C_Secrets.ShouldCooldownsBeSecret()) then--Checks cooldown and auras restrictions
@@ -919,9 +959,7 @@ bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
 ---Disables special warning sounds from firing from blizz ENCOUNTER_WARNING api events. Use this when a module has aleady registered custom event sounds
 ---@param self DBMModOrDBM
 function DBM:DisableSpecialWarningSounds()
-	if private.wowTOC >= 120005 then
-		DBM.Options.DisableSWSound = true
-	end
+	DBM.Options.DisableSWSound = true
 end
 bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 
@@ -1873,7 +1911,9 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
+				private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
+				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
 				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
 				--https://wago.tools/db2/EncounterEvent?page=25
@@ -1881,23 +1921,10 @@ do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
 				if self.Options.HideBlizzardTimeline then
-					C_CVar.SetCVar("encounterTimelineEnabled", "0")
-					if EncounterTimeline.View then
-						--12.0.0
-						EncounterTimeline.View:Hide()
-					else
-						--12.0.1
-						local viewType = C_EncounterTimeline.GetViewType()
-						--Viewtype can also be set to 0, which is "None" so if it's set to that we don't reshow it at all
-						if viewType == 1 then
-							EncounterTimeline.TrackView:Hide()
-						elseif viewType == 2 then
-							EncounterTimeline.TimerView:Hide()
-						end
-					end
+					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
 				end
 				if self.Options.HideBossEmoteFrame2 then
-					C_CVar.SetCVar("encounterWarningsEnabled", "0")
+					C_EncounterWarnings.SetWarningsShown(false)
 				end
 				if not self.Options.HasShownMidnightPopup then
 					DBM.MidnightPopup:ShowMidnightPopup()
@@ -6294,6 +6321,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
+				self.PrivateAuras:RegisterAllUnits()
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -6623,6 +6651,9 @@ do
 			mod:Stop()
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
+			end
+			if private.isRetail then
+				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false
@@ -8495,7 +8526,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	end
 	--If we don't know enemy unit token, but know it's GUID
 	if not enemyUnitID and enemyGUID then
-		enemyUnitID = DBM:GetUnitIdFromGUID(enemyGUID)
+		enemyUnitID = self:GetUnitIdFromGUID(enemyGUID)
 	end
 
 	--Threat/Tanking Checks
@@ -8524,20 +8555,22 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 			if UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 				return true
 			end
-			for i = 1, 10 do
-				local unitID = "boss" .. i
-				local guid = UnitGUID(unitID)
-				--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
-				if not enemyGUID or (guid and guid == enemyGUID) then
-					--Check threat first
-					local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
-					if (not onlyS3 and tanking) or (status == 3) then
-						return true
-					end
-					--Non threat fallback
-					if includeTarget and UnitExists(unitID .. "target") then
-						if UnitIsUnit(playerUnitID, unitID .. "target") then
+			if not self:MidRestrictionsActive() then
+				for i = 1, 10 do
+					local unitID = "boss" .. i
+					local guid = UnitGUID(unitID)
+					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+					if not enemyGUID or (guid and guid == enemyGUID) then
+						--Check threat first
+						local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
+						if (not onlyS3 and tanking) or (status == 3) then
 							return true
+						end
+						--Non threat fallback
+						if includeTarget and UnitExists(unitID .. "target") then
+							if UnitIsUnit(playerUnitID, unitID .. "target") then
+								return true
+							end
 						end
 					end
 				end
@@ -8810,7 +8843,7 @@ end
 ---@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
----@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
@@ -8831,7 +8864,7 @@ end
 ---Object for customizing blizzard timeline object with colors and sounds
 ---@param spellId number SpellID used for option text and saved variables
 ---@param default SpecFlags|boolean?
----@param defaultColor number? ColorId 1-6 for color bar by type
+---@param defaultColor timerColorType ColorId 1-6 for color bar by type
 ---@param defaultVoice number? VoiceId for countdown voice
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, defaultVoice, groupSpellId)
@@ -8850,11 +8883,11 @@ end
 ---Object for cusotmizing blizzard alerts to be shown or what sound plays for them
 ---@param auraspellId number SpellID used for option text and saved variables
 ---@param default SpecFlags|boolean?
----@param defaultSound number? is used to set default Special announce sound (1-4) just like regular special announce objects
+---@param defaultSound acceptedSASounds is used to set default Special announce sound (1-4) just like regular special announce objects
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaultSound, groupSpellId)
 	self.DefaultOptions["CustomAlertOption" .. auraspellId] = (default == nil) or default
-	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
+	self.DefaultOptions["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
@@ -8882,7 +8915,7 @@ end
 ---|10: Player icon using melee > ranged > healer
 ---|11: Player icon using tank > dps > healer
 ---@param default SpecFlags|boolean?
----@param iconType iconTypes|number?
+---@param iconType iconTypes?
 ---@param iconsUsed table? table defining used icons such as {1, 2, 3}
 ---@param conflictWarning boolean? set to true if this mod has 2 or more icon options that use the same icons
 function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
