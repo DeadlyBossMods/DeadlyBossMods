@@ -932,7 +932,7 @@ do
 	---@param self DBMMod
 	---@param optionType string "SpecialWarningSound" or "PrivateAuraSound"
 	---@param optionId number
-	---@param voice VPSound|any voice pack media path
+	---@param voice VPSound voice pack media path
 	---@param voiceVersion number
 	---@return number|string
 	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion)
@@ -960,7 +960,7 @@ do
 
 	--Function to actually register specific media to specific auras
 	---@param auraspellId number|table ID of Private aura we're actually monitoring (if it doesn't match option key, put option key in altOptionId)
-	---@param voice VPSound|any voice pack media path
+	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 	function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
 		if DBM.Options.DontPlayPrivateAuraSound then return end
