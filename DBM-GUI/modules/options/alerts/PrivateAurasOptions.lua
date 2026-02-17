@@ -122,7 +122,6 @@ personalPAReset:SetHighlightFontObject(GameFontNormalSmall)
 personalPAReset:SetScript("OnClick", function()
 	-- Set Default Options
 	DBM.Options.PrivateAurasPlayerEnabled = DBM.DefaultOptions.PrivateAurasPlayerEnabled
-	DBM.Options.PrivateAurasTextAnchorEnabled = DBM.DefaultOptions.PrivateAurasTextAnchorEnabled
 	DBM.Options.PrivateAurasPlayerHideBorder = DBM.DefaultOptions.PrivateAurasPlayerHideBorder
 	DBM.Options.PrivateAurasPlayerHideTooltip = DBM.DefaultOptions.PrivateAurasPlayerHideTooltip
 	DBM.Options.PrivateAurasPlayerGrowDirection = DBM.DefaultOptions.PrivateAurasPlayerGrowDirection
@@ -131,10 +130,17 @@ personalPAReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerHeight = DBM.DefaultOptions.PrivateAurasPlayerHeight
 	DBM.Options.PrivateAurasPlayerScale = DBM.DefaultOptions.PrivateAurasPlayerScale
 	DBM.Options.PrivateAurasPlayerLimit = DBM.DefaultOptions.PrivateAurasPlayerLimit
-	DBM.Options.PrivateAurasTextAnchorScale = DBM.DefaultOptions.PrivateAurasTextAnchorScale
 	DBM.Options.PrivateAurasPlayerXOffset = DBM.DefaultOptions.PrivateAurasPlayerXOffset
 	DBM.Options.PrivateAurasPlayerYOffset = DBM.DefaultOptions.PrivateAurasPlayerYOffset
+	DBM.Options.PrivateAurasPlayerAnchor = DBM.DefaultOptions.PrivateAurasPlayerAnchor
+	DBM.Options.PrivateAurasPlayerRelativeTo = DBM.DefaultOptions.PrivateAurasPlayerRelativeTo
 	DBM.Options.PrivateAurasPlayerUpscaleDuration = DBM.DefaultOptions.PrivateAurasPlayerUpscaleDuration
+	DBM.Options.PrivateAurasTextAnchorScale = DBM.DefaultOptions.PrivateAurasTextAnchorScale
+	DBM.Options.PrivateAurasTextAnchorEnabled = DBM.DefaultOptions.PrivateAurasTextAnchorEnabled
+	DBM.Options.PrivateAurasTextAnchorXOffset = DBM.DefaultOptions.PrivateAurasTextAnchorXOffset
+	DBM.Options.PrivateAurasTextAnchorYOffset = DBM.DefaultOptions.PrivateAurasTextAnchorYOffset
+	DBM.Options.PrivateAurasTextAnchorRelativeTo = DBM.DefaultOptions.PrivateAurasTextAnchorRelativeTo
+	DBM.Options.PrivateAurasTextAnchor = DBM.DefaultOptions.PrivateAurasTextAnchor
 --	DBM.Options.DontPlayPrivateAuraSound = DBM.DefaultOptions.DontPlayPrivateAuraSound
 	-- Set UI visuals
 	personalPAIcon:SetChecked(DBM.Options.PrivateAurasPlayerEnabled)
@@ -248,6 +254,8 @@ coTankPAReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankLimit = DBM.DefaultOptions.PrivateAurasCoTankLimit
 	DBM.Options.PrivateAurasCoTankXOffset = DBM.DefaultOptions.PrivateAurasCoTankXOffset
 	DBM.Options.PrivateAurasCoTankYOffset = DBM.DefaultOptions.PrivateAurasCoTankYOffset
+	DBM.Options.PrivateAurasCoTankAnchor = DBM.DefaultOptions.PrivateAurasCoTankAnchor
+	DBM.Options.PrivateAurasCoTankRelativeTo = DBM.DefaultOptions.PrivateAurasCoTankRelativeTo
 	DBM.Options.PrivateAurasCoTankUpscaleDuration = DBM.DefaultOptions.PrivateAurasCoTankUpscaleDuration
 	-- Set UI visuals
 	coTankPAIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled)
