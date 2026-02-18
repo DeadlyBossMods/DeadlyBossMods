@@ -1921,7 +1921,12 @@ do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
 				if self.Options.HideBlizzardTimeline then
-					C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
+					C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
+					--C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
+					EncounterTimeline.TrackView:SetAlpha(0)
+					EncounterTimeline.TimerView:SetAlpha(0)
+				else
+					C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
@@ -6483,6 +6488,11 @@ do
 							nonZeroDelay = 0.000001
 						end
 						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
+					end
+					if self.Options.HideBlizzardTimeline then
+						C_CVar.SetCVar("encounterTimelineEnabled", "1")
+						EncounterTimeline.TrackView:SetAlpha(0)
+						EncounterTimeline.TimerView:SetAlpha(0)
 					end
 				end
 				--send "C" sync
