@@ -718,6 +718,15 @@ L.KEYSTONE_NAMES[505] = '새인호' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = '수문' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = '알다니' -- Eco-Dome Al'dani
 
+L.KEYSTONE_NAMES[161] = '하늘탑' -- Skyreach
+L.KEYSTONE_NAMES[402] = '대학' -- Algeth'ar Academy
+L.KEYSTONE_NAMES[556] = '사론' -- Pit of Saron
+L.KEYSTONE_NAMES[557] = '첨탑' -- Windrunner Spire
+L.KEYSTONE_NAMES[558] = '마정' -- Magister's Terrace (new)
+L.KEYSTONE_NAMES[559] = '제나스' -- Nexus-Point Xenas
+L.KEYSTONE_NAMES[560] = '동굴' -- Miasara Caverns
+L.KEYSTONE_NAMES[583] = '삼두정' -- Hell (IE Seat of the Triumvirate)
+
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "Blizzard 타임라인과 DBM 타이머 바 중에 어느 것을 사용할까요?"
 L.MN_BLIZZARD_TIMELINE	= "Blizzard 타임라인"
