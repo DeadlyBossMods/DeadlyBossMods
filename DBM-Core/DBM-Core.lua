@@ -426,8 +426,8 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerSpacing = -1,
 	PrivateAurasPlayerLimit = 5,
 	PrivateAurasPlayerGrowDirection = "RIGHT",
-	PrivateAurasPlayerWidth = 75,
-	PrivateAurasPlayerHeight = 75,
+	PrivateAurasPlayerWidth = 60,
+	PrivateAurasPlayerHeight = 60,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
@@ -441,8 +441,8 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankSpacing = -1,
 	PrivateAurasCoTankLimit = 5,
 	PrivateAurasCoTankGrowDirection = "LEFT",
-	PrivateAurasCoTankWidth = 75,
-	PrivateAurasCoTankHeight = 75,
+	PrivateAurasCoTankWidth = 60,
+	PrivateAurasCoTankHeight = 60,
 	PrivateAurasCoTankAnchor = "CENTER",--NYI
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
@@ -6651,6 +6651,12 @@ do
 			mod:Stop()
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
+			end
+			if mod.tlTimerEvents then
+				mod:DisableTimelineOptions()
+			end
+			if mod.tlSoundEvents then
+				mod:DisableAlertOptions()
 			end
 			if private.isRetail then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
