@@ -6656,7 +6656,7 @@ do
 				mod:DisableTimelineOptions()
 			end
 			if mod.tlSoundEvents then
-				mod:DisableTimelineSoundOptions()
+				mod:DisableAlertOptions()
 			end
 			if private.isRetail then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
