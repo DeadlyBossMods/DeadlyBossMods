@@ -6652,6 +6652,12 @@ do
 			if mod.paSounds then
 				mod:DisablePrivateAuraSounds()
 			end
+			if mod.tlTimerEvents then
+				mod:DisableTimelineOptions()
+			end
+			if mod.tlSoundEvents then
+				mod:DisableTimelineSoundOptions()
+			end
 			if private.isRetail then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
