@@ -8011,6 +8011,10 @@ do
 		if self:IsPostMidnight() and not forceOld then
 			--Run the encounter timeline demo mode instead of DBM test Bars
 			C_EncounterTimeline.AddEditModeEvents()
+			if self.Options.HideBlizzardTimeline then
+				EncounterTimeline.TrackView:SetAlpha(0)
+				EncounterTimeline.TimerView:SetAlpha(0)
+			end
 		else
 			fireEvent("DBM_TestModStarted")
 			if not testMod then
