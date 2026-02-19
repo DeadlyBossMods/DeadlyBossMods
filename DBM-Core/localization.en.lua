@@ -650,7 +650,9 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2			= "Show info frame for encounter overview"
 L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Show info frame for $spell:%s (when threshold of %%s is met)"
 L.AUTO_READY_CHECK_OPTION_TEXT			= "Play ready check sound when boss is pulled (even if it's not targeted)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Show timer for fastest clear of %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s private auras on this fight."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM private auras sound alerts for $spell:%s on this fight."--Generic (most common)
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Play DBM private auras sound alerts for when you are targeted by $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Play DBM private auras sound alerts for when you need to move away from $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT			= "Show timer for $spell:%s"--Used for Midnight timeline timers (ie we have no context of what type of timer it is, just a generic timer)
 L.AUTO_CUSTOMALERT_OPTION_TEXT			= "Set alert sound for when $spell:%s is about to be cast"--Used for Midnight custom alerts (ie we have no context of what type of alert it is, just a generic alert)
 

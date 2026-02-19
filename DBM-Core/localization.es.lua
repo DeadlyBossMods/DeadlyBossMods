@@ -218,6 +218,7 @@ L.PLATER_NP_AURAS_MSG				 = L.DBM .. " incluye una función avanzada para mostra
 
 
 L.MOVABLE_BAR					= "¡Muéveme!"
+L.MOVABLE_FRAMES 				= "Marcos arrastrables"
 
 L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "¿Seguro que quieres ignorar los temporizadores de %s para esta sesión?"
@@ -620,6 +621,9 @@ L.MOVE_WARNING_BAR			= "Anuncio desplazable"
 L.MOVE_WARNING_MESSAGE		= "Gracias por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
+
+L.MOVE_PRIVATE_AURA_TEXT 		= "<valor secreto> te apunta con el hechizo <valor secreto>"
+L.MOVE_PRIVATE_AURA_DISABLED 	= "La vista previa está desactivada porque los marcos de auras privadas están desactivados globalmente en las opciones."
 
 L.HUD_INVALID_TYPE			= "No se ha proporcionado un tipo de indicador en pantalla válido."
 L.HUD_INVALID_TARGET		= "No se ha proporcionado un objetivo válido."

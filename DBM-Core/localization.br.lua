@@ -218,6 +218,7 @@ L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM .. " está desatualizada, e 
 L.PLATER_NP_AURAS_MSG 				= L.DBM .. " possui um recurso avançado que exibe cronômetros de recarga inimigos como ícones nas placas de nome. Isso está ativado por padrão para a maioria dos usuários, mas desativado nas opções do Plater. Para aproveitar ao máximo o DBM e o Plater, ative essa função no Plater em 'Buff Special'. Para não ver esta mensagem novamente, desative a opção 'Ícones de recarga nas placas de nome' nas configurações do DBM."
 
 L.MOVABLE_BAR						= "Arraste-me!"
+L.MOVABLE_FRAMES 					= "Quadros arrastáveis"
 
 L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h te enviou um cronômetro do " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar esse cronômetro]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar cronômetros de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE				= "Você tem certeza de que realmente deseja ignorar cronômetros de %s até o fim desta sessão?"
@@ -622,6 +623,9 @@ L.MOVE_WARNING_BAR 						= "Anúncio móvel"
 L.MOVE_WARNING_MESSAGE 					= "Obrigado por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR				= "Aviso especial móvel"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Aviso especial"
+
+L.MOVE_PRIVATE_AURA_TEXT 				= "<valor secreto> tem você como alvo com o feitiço <valor secreto>"
+L.MOVE_PRIVATE_AURA_DISABLED 			= "A pré-visualização está desativada porque os quadros de auras privadas estão desativados globalmente nas opções."
 
 L.HUD_INVALID_TYPE 						= "Tipo de HUD definido inválido"
 L.HUD_INVALID_TARGET 					= "Nenhum alvo válido fornecido para o HUD"

@@ -216,6 +216,7 @@ local VPSound = {
 	["moveright"] = 0,
 	["movesoon"] = 0,
 	["movetimebubble"] = 0,
+	["movetoarrow"] = 19,
 	["movetoboss"] = 14,
 	["movetoegg"] = 17,
 	["movetojelly"] = 0,

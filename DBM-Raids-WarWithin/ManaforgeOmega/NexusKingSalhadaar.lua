@@ -36,14 +36,14 @@ mod:AddCustomTimerOptions(1226648, true, 3, 0)--Galactic Smash
 mod:AddCustomTimerOptions(1226442, true, 3, 0)--Starkiller Swing
 mod:AddCustomTimerOptions(1225634, true, 6, 0)--World in Twilight
 --Pre midnight private auras
-mod:AddPrivateAuraSoundOption(1224855, true, 1224827, 1)--Behead
-mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1)--Twilight Massacre
-mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1)--Netherbreaker
-mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1)--Galactic Smash
-mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1)--Starkiller Swing
+mod:AddPrivateAuraSoundOption(1224855, true, 1224827, 1, 1)--Behead
+mod:AddPrivateAuraSoundOption(1237108, true, 1237106, 1, 1)--Twilight Massacre
+mod:AddPrivateAuraSoundOption(1228114, true, 1228115, 1, 1)--Netherbreaker
+mod:AddPrivateAuraSoundOption(1225316, true, 1226648, 1, 1)--Galactic Smash
+mod:AddPrivateAuraSoundOption(1226018, true, 1226442, 1, 1)--Starkiller Swing
 --Post midnight private auras
-mod:AddPrivateAuraSoundOption(1227549, true, 1227529, 1)--Banishment
-mod:AddPrivateAuraSoundOption(1231097, true, 1231097, 1)--GTFO
+mod:AddPrivateAuraSoundOption(1227549, true, 1227529, 1, 1)--Banishment
+mod:AddPrivateAuraSoundOption(1231097, true, 1231097, 1, 2)--GTFO
 
 function mod:OnLimitedCombatStart(delay)
 	self:DisableSpecialWarningSounds()
