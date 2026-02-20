@@ -6494,6 +6494,7 @@ do
 						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
 					if self.Options.HideBlizzardTimeline then
+						--Temporary. Will be removed in 12.0.5 when api for supporting sounds works without forcing this
 						C_CVar.SetCVar("encounterTimelineEnabled", "1")
 						EncounterTimeline.TrackView:SetAlpha(0)
 						EncounterTimeline.TimerView:SetAlpha(0)
