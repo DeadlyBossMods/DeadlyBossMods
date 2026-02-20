@@ -42,6 +42,7 @@ move-folders:
   DBM-Core/DBM-Brawlers: DBM-Brawlers
   DBM-Core/DBM-DMF: DBM-DMF
   DBM-Core/DBM-KhazAlgar: DBM-KhazAlgar
+  DBM-Core/DBM-Midnight: DBM-Midnight
   DBM-Core/DBM-Raids-WarWithin: DBM-Raids-WarWithin
   DBM-Core/DBM-Raids-Midnight: DBM-Raids-Midnight
   DBM-Core/DBM-Aberrus: DBM-Aberrus

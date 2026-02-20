@@ -1,0 +1,27 @@
+## Interface: 120001
+## Version: @project-version@
+## Category: DBM
+
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (Midnight)|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMMidnight_AllSavedVars
+## SavedVariablesPerCharacter: DBMMidnight_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: WORLDBOSS
+## X-DBM-Mod-Category: MIDNIGHT
+## X-DBM-StatTypes: normal
+## X-DBM-Mod-Name: World Bosses (Midnight)
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 99
+## X-DBM-Mod-MapID: 2930
+## X-DBM-Mod-LoadCID: 249776,244424,244762,248864
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 12
+
+Cragpine.lua
+Luashal.lua
+Predaxas.lua
+Thormbelan.lua

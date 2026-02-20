@@ -1,4 +1,4 @@
-## Interface: 110207, 120000, 120001
+## Interface: 120001
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
