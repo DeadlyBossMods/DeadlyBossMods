@@ -1815,6 +1815,22 @@ do
 		if not IsInInstance() then
 			sendGuildSync(DBMSyncProtocol, "GH")
 		end
+		if private.isRetail then
+			--Initializing timeline stuff immediately on ADDON_LOADED results in getviewtype not being loaded yet (thus returning 0)
+			--so first we might cache it untainted on a delay THEN mess with all the alpha hacks
+			private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
+			if self.Options.HideBlizzardTimeline then
+				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
+				--C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
+				EncounterTimeline.TrackView:SetAlpha(0)
+				EncounterTimeline.TimerView:SetAlpha(0)
+			else
+				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
+			end
+			if not self.Options.HasShownMidnightPopup then
+				DBM.MidnightPopup:ShowMidnightPopup()
+			end
+		end
 		difficulties:RefreshCache()
 	end
 
@@ -1911,7 +1927,6 @@ do
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
 			if self:IsPostMidnight() then
-				private.timelineViewType = C_EncounterTimeline.GetViewType()--Cache current timeline view type
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
@@ -1920,19 +1935,8 @@ do
 				for i = 1, 658 do
 					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
 				end
-				if self.Options.HideBlizzardTimeline then
-					C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
-					--C_EncounterTimeline.SetViewType(0)--We use blizzard api to make frame invisible
-					EncounterTimeline.TrackView:SetAlpha(0)
-					EncounterTimeline.TimerView:SetAlpha(0)
-				else
-					C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
-				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
-				end
-				if not self.Options.HasShownMidnightPopup then
-					DBM.MidnightPopup:ShowMidnightPopup()
 				end
 			else
 				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
