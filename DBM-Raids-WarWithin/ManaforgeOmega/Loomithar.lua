@@ -33,7 +33,6 @@ mod:AddPrivateAuraSoundOption(1226311, true, 1226315, 3, 1)--Infusion Tether
 mod:AddPrivateAuraSoundOption(1243771, true, 1243771, 1, 2)--GTFO
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1226395, 264, "justrun", 2)
 	self:EnableAlertOptions(1227226, 267, "helpsoak", 2)
 	self:EnableAlertOptions(1237212, 268, "defensive", 2)

@@ -37,7 +37,6 @@ mod:AddPrivateAuraSoundOption(1238874, true, 1238873, 1, 1)--Echoing Tempest
 local berserkTimer = mod:NewBerserkTimer(600)
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1231015, 323, "mobsoon", 2)
 	self:EnableAlertOptions(1228161, 325, "watchfeet", 2)
 	if not self:IsTank() then

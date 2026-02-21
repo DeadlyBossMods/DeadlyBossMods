@@ -25,7 +25,6 @@ mod:AddCustomTimerOptions(1258136, nil, 3, 0)
 mod:AddCustomTimerOptions(1258639, nil, 2, 0)
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1257320, 113, "scattersoon", 2)
 	self:EnableAlertOptions(1257825, 114, "catchballs", 12)
 	if self:IsTank() then

@@ -26,7 +26,6 @@ mod:AddCustomTimerOptions(465833, true, 6, 0)
 --mod:AddPrivateAuraSoundOption(1226311, true, 1226315, 3)
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(465833, 338, "phasechange", 2)
 	self:EnableTimelineOptions(463900, 331)
 	self:EnableTimelineOptions(466178, 332)
