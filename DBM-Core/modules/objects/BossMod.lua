@@ -1059,7 +1059,10 @@ do
 			local enabled = self.Options["CustomAlertOption" .. optionId] or true
 			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion)
 			if enabled and mediaPath ~= "None" then
-				if not self.tlSoundEvents then self.tlSoundEvents = {} end
+				if not self.tlSoundEvents then
+					self.tlSoundEvents = {}
+					self:DisableSpecialWarningSounds()
+				end
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
 				--Unlike private aura sounds, this api accepts both file data ID AND path
 				if type(encounterEventId) == "table" then

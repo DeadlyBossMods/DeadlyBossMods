@@ -28,7 +28,6 @@ mod:AddPrivateAuraSoundOption(1225626, true, 1225626, 1, 1)
 mod:AddPrivateAuraSoundOption(1242086, true, 1242086, 1, 2)--GTFO
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1223859, {345, 346}, "carefly", 2)
 
 	self:EnableTimelineOptions(1223859, 345, 346)

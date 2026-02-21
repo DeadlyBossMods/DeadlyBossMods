@@ -37,7 +37,6 @@ mod:AddPrivateAuraSoundOption(1235045, false, 1235045, 1, 2)--GTFO for void step
 mod:AddPrivateAuraSoundOption(1248464, false, 1241833, 1, 1)--Fracture Debuff
 
 function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()
 	self:EnableAlertOptions(1241306, 314, "farfromline", 2)
 	self:EnableAlertOptions(1227809, 315, "gathershare", 2)
 	self:EnableAlertOptions(1242259, 317, "aesoon", 2)
