@@ -785,10 +785,10 @@ L.KEYSTONE_NAMES = {
 	[402] = 'AA', -- Algeth'ar Academy
 	[556] = 'POS', -- Pit of Saron
 	[557] = 'WRS', -- Windrunner Spire
-	[558] = 'MT', -- Magister's Terrace (new)
+	[558] = 'MT', -- Magister's Terrace
 	[559] = 'NPX', -- Nexus-Point Xenas
-	[560] = 'MC', -- Miasara Caverns
-	[583] = 'SEAT', -- Hell (IE Seat of the Triumvirate)
+	[560] = 'MC', -- Maisara Caverns
+	[583] = 'SEAT', -- Seat of the Triumvirate
 }
 
 -- Midnight jazz
