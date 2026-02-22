@@ -574,17 +574,18 @@ L.AUTO_ARROW_OPTION_TEXT				= "Afficher la flèche " .. L.DBM .. " en direction 
 L.AUTO_ARROW_OPTION_TEXT2				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner de la cible affectée par $spell:%s"
 L.AUTO_ARROW_OPTION_TEXT3				= "Afficher la flèche " .. L.DBM .. " pour s'éloigner vers un emplacement spécifique pour $spell:%s"
 
-L.AUTO_YELL_OPTION_TEXT.shortyell		= "Crie lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.yell			= "Crie lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.count			= "Crie (avec compte) lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.fade			= "Crie (avec compte à rebours) lorsque $spell:%s se dissipe"
-L.AUTO_YELL_OPTION_TEXT.shortfade		= "Crie (avec compte à rebours) lorsque $spell:%s se dissipe"
-L.AUTO_YELL_OPTION_TEXT.iconfade		= "Crie (avec compte à rebours et icône) lorsque $spell:%s se dissipe"
-L.AUTO_YELL_OPTION_TEXT.position		= "Crie (avec position) lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.shortposition 	= "Crie (avec position) lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.combo 			= "Crie (avec texte personnalisé) lorsque vous êtes affecté par $spell:%s et d'autres sorts en même temps"
-L.AUTO_YELL_OPTION_TEXT.repeatplayer 	= "Crie de manière répétée (avec le nom du joueur) lorsque vous êtes affecté par $spell:%s"
-L.AUTO_YELL_OPTION_TEXT.repeaticon 		= "Crie de manière répétée (avec icône) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.shortyell		= "Crier lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.yell			= "Crier lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.count			= "Crier (avec compte) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.fade			= "Crier (avec compte à rebours) lorsque $spell:%s se dissipe"
+L.AUTO_YELL_OPTION_TEXT.shortfade		= "Crier (avec compte à rebours) lorsque $spell:%s se dissipe"
+L.AUTO_YELL_OPTION_TEXT.iconfade		= "Crier (avec compte à rebours et icône) lorsque $spell:%s se dissipe"
+L.AUTO_YELL_OPTION_TEXT.position		= "Crier (avec position) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.shortposition 	= "Crier (avec position) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.combo 			= "Crier (avec texte personnalisé) lorsque vous êtes affecté par $spell:%s et d'autres sorts en même temps"
+L.AUTO_YELL_OPTION_TEXT.repeatplayer 	= "Crier de manière répétée (avec le nom du joueur) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.repeaticon 		= "Crier de manière répétée (avec icône) lorsque vous êtes affecté par $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.icontarget		= "Icônes de cri lorsque vous êtes la cible de $spell:%s pour prévenir les autres"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s" -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "%s sur " .. UnitName("player") .. " !"
@@ -598,6 +599,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname -- OPT
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s et %%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"--Doesn't need translation. It's just icon spam -- OPTIONAL
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}",--Doesn't need translation. It's just an icon repeated 3 times-- OPTIONAL
 
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE				= "%s disparaît"

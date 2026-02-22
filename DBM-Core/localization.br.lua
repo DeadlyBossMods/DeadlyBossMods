@@ -587,6 +587,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition 	= "Gritar (com posição) quando você é
 L.AUTO_YELL_OPTION_TEXT.combo 			= "Gritar (com texto personalizado) quando você é afetado por $spell:%s e outros feitiços ao mesmo tempo"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer 	= "Gritar repetidamente (com nome do jogador) quando você é afetado por $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.repeaticon 		= "Gritar repetidamente (com ícone) quando você é afetado por $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.icontarget		= "Ícones de grito quando fores alvo de $spell:%s para avisar os outros"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s" -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "%s em " .. UnitName("player")
@@ -600,6 +601,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname -- OPT
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s e %%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"--Doesn't need translation. It's just icon spam -- OPTIONAL
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}",--Doesn't need translation. It's just an icon repeated 3 times-- OPTIONAL
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE 				= "%s desaparecido"
