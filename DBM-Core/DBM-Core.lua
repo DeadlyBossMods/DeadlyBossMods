@@ -964,6 +964,8 @@ bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 do
 	local issecretvalue = issecretvalue or function(val) return false end
 	local hasanysecretvalues = hasanysecretvalues or function(...) return false end
+	local issecretunit = C_Secrets.ShouldUnitIdentityBeSecret or function(val) return false end
+	local issecrethealth = C_Secrets.ShouldUnitHealthMaxBeSecret or function(val) return false end
 	---@param self DBMModOrDBM
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
@@ -975,6 +977,18 @@ do
 		return hasanysecretvalues(...)
 	end
 	bossModPrototype.hasanysecretvalues = DBM.hasanysecretvalues
+
+	---@param self DBMModOrDBM
+	function DBM:issecretunit(unit)
+		return issecretunit(unit)
+	end
+	bossModPrototype.issecretunit = DBM.issecretunit
+
+	---@param self DBMModOrDBM
+	function DBM:issecrethealth(unit)
+		return issecrethealth(unit)
+	end
+	bossModPrototype.issecrethealth = DBM.issecrethealth
 end
 
 function bossModPrototype:CheckBigWigs(name)
@@ -2135,6 +2149,7 @@ do
 				"CHAT_MSG_ADDON",
 				"CHAT_MSG_ADDON_LOGGED",
 				"BN_CHAT_MSG_ADDON",
+				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
@@ -2164,7 +2179,6 @@ do
 				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
 					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-					"PLAYER_REGEN_DISABLED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
 				)
@@ -2192,13 +2206,9 @@ do
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW",
-					"PLAYER_MAP_CHANGED"
+					"PLAYER_MAP_CHANGED",
+					"UNIT_HEALTH mouseover target focus player"--Base is Frequent on retail, and _FREQUENT deleted
 				)
-				if not DBM:IsPostMidnight() then
-					self:RegisterEvents(
-						"UNIT_HEALTH mouseover target focus player"--Base is Frequent on retail, and _FREQUENT deleted
-					)
-				end
 			elseif private.isMop then
 				self:RegisterEvents(
 					"CHALLENGE_MODE_RESET",
@@ -3195,7 +3205,9 @@ do
 	---@param enemyGUID string
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids. Bypasses UnitTokenFromGUID (which checks EVERYTHING)
 	function DBM:GetUnitIdFromGUID(enemyGUID, bossOnly)
-		if self:IsPostMidnight() and IsInInstance() then return end
+		if self:issecretvalue(enemyGUID) then
+			return
+		end
 		local returnUnitID
 		--First use blizzard internal client token check but only if it's not boss only
 		--(because blizzard checks every token imaginable, even more than fullEnemyUids does and they have boss as the END in their order selection)
@@ -3203,18 +3215,18 @@ do
 		if UnitTokenFromGUID and not bossOnly then
 			returnUnitID = UnitTokenFromGUID(enemyGUID)
 		end
-	--	if self:issecretvalue(returnUnitID) then
-	--		return
-	--	end
+		if self:issecretvalue(returnUnitID) then
+			return
+		end
 		if returnUnitID then
 			return returnUnitID
 		else
 			local usedTable = bossOnly and bossTargetuIds or fullEnemyUids
 			for _, unitId in ipairs(usedTable) do
+				if self:issecretunit(unitId) then
+					return
+				end
 				local guid2 = UnitGUID(unitId)
-	--			if self:issecretvalue(guid2) then
-	--				return
-	--			end
 				if enemyGUID == guid2 then
 					return unitId
 				end
@@ -3227,24 +3239,27 @@ do
 	---@param creatureID number
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
-		if self:IsPostMidnight() and IsInInstance() then return end
-		--Always prioritize a quick boss unit scan on retail first
+		--Always prioritize a quick boss unit scan when available
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do
 				local unitId = "boss" .. i
-				local bossGUID = UnitGUID(unitId)
-				local cid = self:GetCIDFromGUID(bossGUID)
-				if cid == creatureID then
-					return unitId, bossGUID
+				if not self:issecretunit(unitId) then
+					local bossGUID = UnitGUID(unitId)
+					local cid = self:GetCIDFromGUID(bossGUID)
+					if cid == creatureID then
+						return unitId, bossGUID
+					end
 				end
 			end
 		end
 		if not bossOnly then
 			for _, unitId in ipairs(fullEnemyUids) do
-				local guid2 = UnitGUID(unitId)
-				local cid = self:GetCIDFromGUID(guid2)
-				if cid == creatureID then
-					return unitId, guid2
+				if not self:issecretunit(unitId) then
+					local guid2 = UnitGUID(unitId)
+					local cid = self:GetCIDFromGUID(guid2)
+					if cid == creatureID then
+						return unitId, guid2
+					end
 				end
 			end
 		end
@@ -3397,7 +3412,9 @@ end
 
 ---@param self DBMModOrDBM
 function DBM:GetUnitCreatureId(uId)
-	if self:IsPostMidnight() and IsInInstance() then return end
+	if self:issecretunitid(uId) then
+		return
+	end
 	return self:GetCIDFromGUID(UnitGUID(uId))
 end
 
@@ -5750,18 +5767,23 @@ do
 		local uId = (IsInRaid() and "raid") or "party"
 		for i = 0, GetNumGroupMembers() do
 			local id = (i == 0 and "target") or uId .. i .. "target"
-			local guid = UnitGUID(id)
-			if guid and DBM:IsCreatureGUID(guid) then
-				targetList[DBM:GetCIDFromGUID(guid)] = id
+			if not DBM:issecretunit(id) then
+				local guid = UnitGUID(id)
+				if guid and DBM:IsCreatureGUID(guid) then
+					targetList[DBM:GetCIDFromGUID(guid)] = id
+				end
 			end
 		end
 		--Iterate over active nameplates
 		for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 			local foundUnit = frame.namePlateUnitToken
-			if foundUnit and UnitAffectingCombat(foundUnit) then
-				local guid = UnitGUID(foundUnit)
-				if guid and DBM:IsCreatureGUID(guid) then
-					targetList[DBM:GetCIDFromGUID(guid)] = foundUnit
+			--Not sure if found unit itself returns secret or not, so double check for now before passing to secret unit
+			if foundUnit and not DBM:issecretvalue(foundUnit) and not DBM:issecretunit(foundUnit) then
+				if UnitAffectingCombat(foundUnit) then
+					local guid = UnitGUID(foundUnit)
+					if guid and not DBM:IsCreatureGUID(guid) then
+						targetList[DBM:GetCIDFromGUID(guid)] = foundUnit
+					end
 				end
 			end
 		end
@@ -5774,7 +5796,7 @@ do
 	---@param mod DBMMod
 	---@param mob number Mob CreatureId
 	---@param delay number
-	local function scanForCombat(mod, mob, delay, combatType)
+	local function scanForCombat(mod, mob, delay)
 		if not checkEntry(inCombat, mob) then
 			buildTargetList()
 			if targetList[mob] then
@@ -5791,15 +5813,15 @@ do
 
 	---@param mob number Mob CreatureId
 	---@param combatInfo CombatInfo
-	local function checkForPull(mob, combatInfo, combatType)
+	local function checkForPull(mob, combatInfo)
 		healthCombatInitialized = false
 		--This just can't be avoided, trying to save cpu by using C_TimerAfter broke this
 		--This needs the redundancy and ability to pass args.
-		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5, combatType)
+		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
 		if not private.isRetail then
-			DBM:Schedule(1.25, scanForCombat, combatInfo.mod, mob, 1.25, combatType)
+			DBM:Schedule(1.25, scanForCombat, combatInfo.mod, mob, 1.25)
 		end
-		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2, combatType)
+		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2)
 		C_TimerAfter(2.1, function()
 			healthCombatInitialized = true
 		end)
@@ -5816,7 +5838,7 @@ do
 				if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
 					if v.multiMobPullDetection then
 						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v, v.type) then
+							if checkForPull(mob, v) then
 								break
 							end
 						end
@@ -6596,7 +6618,10 @@ do
 	end
 
 	function DBM:UNIT_HEALTH(uId)
-		local cId = self:GetCIDFromGUID(UnitGUID(uId))
+		if self:issecretunit(uId) or self:issecrethealth(uId) then
+			return
+		end
+		local cId = self:GetUnitCreatureId(uId)
 		local health
 		if UnitHealthMax(uId) ~= 0 then
 			health = UnitHealth(uId) / UnitHealthMax(uId) * 100
@@ -6615,8 +6640,8 @@ do
 				end
 			end
 			if UnitIsUnit(uId, "player") and health < 100 and not private.IsEncounterInProgress() then
-				--PRIO afk alert first
-				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
+				--PRIO afk alert first (still disabled on retail because UnitIsAFK is restricted in combat)
+				if not private.isRetail and self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
 					if not private.voiceSessionDisabled and voice ~= "None" then
