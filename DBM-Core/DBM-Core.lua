@@ -3412,7 +3412,7 @@ end
 
 ---@param self DBMModOrDBM
 function DBM:GetUnitCreatureId(uId)
-	if self:issecretunitid(uId) then
+	if self:issecretunit(uId) then
 		return
 	end
 	return self:GetCIDFromGUID(UnitGUID(uId))
