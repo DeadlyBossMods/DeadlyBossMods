@@ -8931,7 +8931,7 @@ function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaul
 	self.Options["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
 	self.localization.options["CustomAlertOption" .. auraspellId] = L.AUTO_CUSTOMALERT_OPTION_TEXT:format(auraspellId)
 	self:GroupSpellsPA(groupSpellId or auraspellId, "CustomAlertOption" .. auraspellId)
-	self:SetOptionCategory("CustomAlertOption" .. auraspellId, "paura")
+	self:SetOptionCategory("CustomAlertOption" .. auraspellId, "announce")
 end
 
 ---@meta
