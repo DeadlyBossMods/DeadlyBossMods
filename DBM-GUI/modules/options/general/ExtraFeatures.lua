@@ -10,13 +10,13 @@ soundAlertsArea:CreateCheckButton(L.WorldBossNearAlert, true, nil, "WorldBossNea
 soundAlertsArea:CreateCheckButton(L.RLReadyCheckSound, true, nil, "RLReadyCheckSound")
 soundAlertsArea:CreateCheckButton(L.AutoReplySound, true, nil, "AutoReplySound")
 
-if not DBM:IsPostMidnight() then
-	local combatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_CombatAlerts)
+local combatAlertsArea		= extraFeaturesPanel:CreateArea(DBM:IsRetail() and L.Area_CombatAlertsRetail or L.Area_CombatAlerts)
+if not DBM:IsRetail() then
 	combatAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning2")
-	combatAlertsArea:CreateCheckButton(L.HealthWarningLow, true, nil, "HealthWarningLow")
-	combatAlertsArea:CreateCheckButton(L.EnteringCombatAlert, true, nil, "EnteringCombatAlert")
-	combatAlertsArea:CreateCheckButton(L.LeavingCombatAlert, true, nil, "LeavingCombatAlert")
 end
+combatAlertsArea:CreateCheckButton(L.HealthWarningLow, true, nil, "HealthWarningLow")
+combatAlertsArea:CreateCheckButton(L.EnteringCombatAlert, true, nil, "EnteringCombatAlert")
+combatAlertsArea:CreateCheckButton(L.LeavingCombatAlert, true, nil, "LeavingCombatAlert")
 
 local generaltimeroptions	= extraFeaturesPanel:CreateArea(L.TimerGeneral)
 generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer2")
