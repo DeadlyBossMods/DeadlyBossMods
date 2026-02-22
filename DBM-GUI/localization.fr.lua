@@ -145,7 +145,8 @@ L.WorldBossNearAlert		= "Faire clignoter le bouton de l'application et jouer le 
 L.RLReadyCheckSound			= "Faire clignoter le bouton de l'application et jouer le son via les canaux audio principal ou dialogue quand un appel est lancé par le chef de raid"
 L.AutoReplySound			= "Faire clignoter le bouton de l'application et jouer un son d'alerte quand vous recevez une réponse DBM automatique par chuchotement"
 --
-L.Area_CombatAlerts			= "Options d'alertes de combat"
+L.Area_CombatAlerts			= "Options des alertes de combat"
+L.Area_CombatAlertsRetail   = "Options des alertes de combat (extérieur uniquement)"
 L.AFKHealthWarning			= "Faire clignoter le bouton de l'application et jouer un son d'alerte si vous perdez de la vie (à n'importe quel pourcentage) alors que vous êtes ABS"
 L.HealthWarningLow			= "Faire clignoter le bouton de l'application et jouer un son d'alerte si vous perdez de la vie (quand vous êtes en dessous de 35 %) alors que vous êtes ABS"
 L.EnteringCombatAlert		= "Faire clignoter le bouton de l'application et jouer un son d'alerte lorsque vous entrez en combat"
