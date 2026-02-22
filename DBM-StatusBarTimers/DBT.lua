@@ -194,6 +194,7 @@ hiddenBarsAnchor:Show()
 
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
+local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 
 ---Helper function to ensure profile structure exists
 ---@param profileName string?
@@ -553,6 +554,7 @@ do
 				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
 			self.bars[newBar] = true
+			barIDIndex[newBar.id] = newBar
 			self:UpdateBars(true)
 			newBar:ApplyStyle()
 			newBar:Update(0)
@@ -784,19 +786,14 @@ end
 
 ---@return DBTBar?
 function DBT:GetBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			return bar
-		end
-	end
+	return barIDIndex[id]
 end
 
 function DBT:CancelBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			bar:Cancel()
-			return true
-		end
+	local bar = barIDIndex[id]
+	if bar then
+		bar:Cancel()
+		return true
 	end
 	return false
 end
@@ -972,19 +969,22 @@ do
         "(%d+):(%d+):" ..                -- Texture width, height
         "(%d+):(%d+):(%d+):(%d+)" ..    -- left, right, top, bottom texels
         "|t"
+
+	local function clearTexturesIfNeeded(icons)
+		for i = 1, 4 do
+			if icons[i]:GetTexture() then
+				icons[i]:SetTexture(nil)
+			end
+		end
+	end
+
 	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
 		local frame_name = self.frame:GetName()
 		_G[frame_name.."BarIcon1"]:SetTexture(icon)
 		_G[frame_name.."BarIcon2"]:SetTexture(icon)
 		--Sanitize previous icons
-		_G[frame_name].SecureJIcons[1]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[2]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[3]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[4]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[1]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[2]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
+		clearTexturesIfNeeded(_G[frame_name].SecureJIcons)
+		clearTexturesIfNeeded(_G[frame_name].InsecureJicons)
 		if eventID then
 			---@diagnostic disable-next-line: param-type-mismatch
 			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
@@ -1138,6 +1138,7 @@ function barPrototype:Update(elapsed)
 	local varianceBehaviorNeg = VarianceEnabled2 and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
+	local updateNeeded, sortingNeeded = false, false
 	if barOptions.DynamicColor and not self.color then
 		local colorVar = colorVariables[colorCount]
 		if barOptions.NoBarFade then
@@ -1247,13 +1248,16 @@ function barPrototype:Update(elapsed)
 			end
 			frame:ClearAllPoints()
 			frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
+			updateNeeded = true
 		elseif isMoving == "move" then
 			barIsAnimating = false
 			self.moving = nil
 			isMoving = nil
+			updateNeeded = true
 		elseif isMoving == "enlarge" and melapsed <= 1 then
 			barIsAnimating = true
 			self:AnimateEnlarge(elapsed)
+			updateNeeded = true
 		elseif isMoving == "enlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1262,7 +1266,8 @@ function barPrototype:Update(elapsed)
 			isEnlarged = true
 			tinsert(largeBars, self)
 			self:ApplyStyle()
-			DBT:UpdateBars(true)
+			sortingNeeded = true
+			updateNeeded = true
 		elseif isMoving == "nextEnlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1271,7 +1276,8 @@ function barPrototype:Update(elapsed)
 			isEnlarged = true
 			tinsert(largeBars, self)
 			self:ApplyStyle()
-			DBT:UpdateBars(true)
+			sortingNeeded = true
+			updateNeeded = true
 		end
 	end
 	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
@@ -1280,18 +1286,25 @@ function barPrototype:Update(elapsed)
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
+		updateNeeded = true
 	elseif isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = nil
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
-		DBT:UpdateBars(true)
+		sortingNeeded = true
+		updateNeeded = true
+	--This line looks iffy. isn't this checking if a small bar should enlarge? why is it checking not self.small instead of self.huge?
 	elseif not paused and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
 		self:RemoveFromList()
 		self:Enlarge()
+		sortingNeeded = true
+		updateNeeded = true
 	end
-	DBT:UpdateBars()
+	if updateNeeded then
+		DBT:UpdateBars(sortingNeeded)
+	end
 	if self.callback then
 		self:callback("OnUpdate", elapsed, timerValue, totaltimeValue)
 	end
@@ -1310,10 +1323,12 @@ function barPrototype:Cancel()
 	self.frame:Hide()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
+	barIDIndex[self.id] = nil
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.paused = nil
 	DBT.numBars = DBT.numBars - 1
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:ApplyStyle()

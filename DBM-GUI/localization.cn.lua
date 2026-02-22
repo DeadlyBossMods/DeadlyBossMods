@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20260126
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20260214
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -256,6 +256,14 @@ L.SpecWarn_FlashAlpha		= "闪烁透明度: %0.1f"
 L.SpecWarn_DemoButton		= "测试警报"
 L.SpecWarn_ResetMe			= "重置"
 L.SpecialWarnSoundOption	= "设置默认声音"
+
+-- Panel: Private Auras Frame
+L.Panel_PrivateAuras		= "私人光环"
+
+L.SetPAIconScale			= "图标缩放: %0.1f"--Not Finalized
+L.SetPATextScale			= "文字缩放: %0.1f"--Not Finalized
+
+--PreMidnight
 L.SpecialWarnHeader1		= "类型 1: 设置影响您或您的操作的普通优先级警报选项"
 L.SpecialWarnHeader2		= "类型 2: 设置影响每个人的正常优先级警报选项"
 L.SpecialWarnHeader3		= "类型 3: 设置高优先级警报的选项"
@@ -355,7 +363,7 @@ L.Slider_BarOffSetY 		= "Y 偏移: %d"
 L.Slider_BarWidth 			= "宽度: %d"
 L.Slider_BarScale 			= "缩放: %0.2f"
 L.BarSaturation				= "小型计时条的饱和度 (当大型计时条被禁用时): %0.2f"
-L.MidnightNote				= "注意：由于午夜版本中的API限制。DBM无法支持不同的开始和结束颜色。仅将使用开始颜色。"
+L.MidnightNote				= "注意：由于至暗之夜版本中的API限制，DBM无法支持不同的开始和结束颜色。仅将使用开始颜色。"
 
 --Types
 L.BarStartColorAdd			= "初始颜色 (小怪)"
@@ -427,6 +435,7 @@ L.ZeroatWindowStartRestart	= "文本在CD结束时归零并重复"
 L.ZeroatWindowStartNeg		= "文本在CD结束时归零并变为负数"--Default
 L.BarIconLeft 				= "左侧图标"
 L.BarIconRight 				= "右侧图标"
+L.BarIconPosition			= "图标位置"
 L.ExpandUpwards				= "快消失的计时条在上"
 L.FillUpBars				= "填充计时条"
 L.ClickThrough				= "禁用鼠标点击事件（允许你点击计时条后面的目标）"
@@ -449,6 +458,11 @@ L.KeepBar					= "保持计时条显示直到技能被释放"
 L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
 L.BarSkin					= "计时条皮肤"
+L.InlineIconsDropdown		= "通报图标样式"
+L.SingleLargeIcon			= "一个大图标"
+L.DoubleLargeIcons			= "两个大图标"
+L.DoubleInlineIcons			= "全部大图标"
+L.StackedMiniIcons			= "堆叠小图标"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "开怪选项"

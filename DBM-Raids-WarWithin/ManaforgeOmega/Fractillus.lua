@@ -19,12 +19,11 @@ mod:AddCustomTimerOptions(1227373, true, 5, 0)
 mod:AddCustomTimerOptions(1231871, true, 5, 0)
 mod:AddCustomTimerOptions(1220394, true, 2, 0)
 
-mod:AddPrivateAuraSoundOption(1233411, true, 1233416, 3)--Crystalline Shockwave pre-debuff
-mod:AddPrivateAuraSoundOption(1247424, true, 1247424, 1)--Null Consumption
-mod:AddPrivateAuraSoundOption(1227373, true, 1227373, 1)--Shattershell
+mod:AddPrivateAuraSoundOption(1233411, true, 1233416, 3, 1)--Crystalline Shockwave pre-debuff
+mod:AddPrivateAuraSoundOption(1247424, true, 1247424, 1, 1)--Null Consumption
+mod:AddPrivateAuraSoundOption(1227373, true, 1227373, 1, 1)--Shattershell
 
-function mod:OnLimitedCombatStart()
-	self:DisableSpecialWarningSounds()--commented because designer didn't actually add any event IDs to 3 of the 4 abilities this boss has
+function mod:OnLimitedCombatStart()--commented because designer didn't actually add any event IDs to 3 of the 4 abilities this boss has
 	if self:IsTank() then
 		self:EnableAlertOptions(1231871, 387, "defensive", 2)
 	end

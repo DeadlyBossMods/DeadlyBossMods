@@ -1,4 +1,4 @@
-## Interface: 110207, 120000, 120001
+## Interface: 120001
 ## X-Min-Interface: 110200
 ## Category: DBM
 ## Group: DBM-Core
@@ -104,6 +104,7 @@ modules\ZoneCombatScanner.lua
 
 modules\objects\Difficulties.lua
 modules\objects\BossMod.lua
+modules\objects\BossModOptions.lua
 modules\objects\BossModEventDispatcher.lua
 modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
@@ -114,3 +115,5 @@ modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
 modules\objects\Tooltip.lua
+modules\objects\PrivateAura.lua
+modules\objects\EncounterEvents.lua

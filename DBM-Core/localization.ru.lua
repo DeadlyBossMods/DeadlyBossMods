@@ -125,8 +125,8 @@ L.NOTEFOOTER						= "Нажмите 'ОК', чтобы применить изм
 L.NOTESHAREDHEADER					= "%s поделился заметкой для %s. Если Вы примете её, она перезапишет Вашу текущую заметку"
 L.NOTESHARED						= "Ваша заметка была отправлена группе"
 L.NOTESHAREERRORSOLO				= "Одиноко? Вы не должны передавать заметки самому себе"
-L.NOTESHAREERRORBLANK				= "Нельзя поделиться пустой заметкой"
-L.NOTESHAREERRORGROUPFINDER			= "Нельзя поделиться заметкой на БГ, в поиске рейда или подземелья"
+L.NOTESHAREERRORBLANK				= "Нельзя делиться пустой заметкой"
+L.NOTESHAREERRORGROUPFINDER			= "Нельзя делиться заметкой на БГ, в поиске рейда или подземелья"
 L.NOTESHAREERRORALREADYOPEN			= "Нельзя открыть ссылку заметки, пока открыт редактор заметок, чтобы предотвратить потерю заметки, которую Вы в данный момент редактируете"
 
 L.ALLMOD_DEFAULT_LOADED				= "Настройки 'По умолчанию' для всех модулей в этом подземелье были загружены."
@@ -221,6 +221,7 @@ L.OUT_OF_DATE_NAG					= "Ваша версия " .. L.DBM .. " устарела,
 L.PLATER_NP_AURAS_MSG				= L.DBM .. " включает в себя расширенную функцию, позволяющую отображать таймеры восстановления противника с помощью иконок на индикаторах здоровья. Эта функция включена по умолчанию для большинства пользователей, но для пользователей Plater она по умолчанию отключена в настройках Plater, если Вы не включите её. Чтобы получить максимальную отдачу от DBM (и Plater), рекомендуется включить эту функцию в Plater в разделе 'Специальные баффы'. Если не хотите видеть это сообщение снова, Вы также можете просто полностью отключить опцию 'Иконки перезарядки на индикаторах здоровья' в настройках Глобальных отключений или настройках Индикаторов здоровья DBM."
 
 L.MOVABLE_BAR						= "Перетащите!"
+L.MOVABLE_FRAMES					= "Перемещаемые фреймы"
 
 L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h транслирует Вам таймер " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Отменить этот таймер]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Игнорировать таймеры от %1$s]|r|h"
 --L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h транслирует Вам таймер " .. L.DBM .. ""
@@ -276,7 +277,7 @@ L.SLASHCMD_HELP							= {--AI translated (it's fine)
 	"/dbm break <min>: Отправляет таймер перерыва на <min> минут в рейд (требуются права лидера. псевдоним: break).",
 	"/dbm midwizard: Снова отображает мастер настройки 'Полночи' (только для актуальной версии).",
 	"/dbm timer: Запускает пользовательский таймер " .. L.DBM .. ", подробности в разделе '/dbm timer'.",
-	"/dbm key: Выполняет проверки ключей M+ и рейтинга для группы/гильдии, а также предоставляет быстрые телепорты к подземельям. (псевдоним: key, keys, keystone)",
+	"/dbm key: Выполняет проверки М+ ключей и рейтинга для группы/гильдии, а также предоставляет быстрые телепорты к подземельям. (псевдоним: key, keys, keystone)",
 	"/dbm lag: Выполняет проверку задержки для всего рейда.",
 	"/dbm durability: Выполняет проверку прочности для всего рейда.",
 	"/dbm help2: Показывает дополнительные команды"
@@ -634,7 +635,9 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2		= "Показывать информационн
 L.AUTO_INFO_FRAME_OPTION_TEXT3		= "Показывать информационный фрейм для $spell:%s (при достижении порогового значения %%s)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "Воспроизводить звук проверки готовности, когда пуллят босса (даже если он не является целью)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Показывать таймер для быстрой зачистки %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Воспроизводить звуковые оповещения DBM для приватных аур $spell:%s в этом бою."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Воспроизводить звуковые оповещения приватных аур DBM для $spell:%s в этом бою."--Обычный (наиболее распространенный)
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Воспроизводить звуковые оповещения приватных аур DBM, когда Вы являетесь целью $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Воспроизводить звуковые оповещения приватных аур DBM, когда Вам нужно отойти от $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT		= "Показывать таймер для $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT		= "Установить звуковой сигнал, который будет воспроизводиться при применении заклинания $spell:%s"
 
@@ -647,6 +650,9 @@ L.MOVE_WARNING_BAR					= "Индикатор предупреждения"
 L.MOVE_WARNING_MESSAGE				= "Спасибо за использование " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR			= "Индикатор спецпредупреждения"
 L.MOVE_SPECIAL_WARNING_TEXT			= "Спецпредупреждение"
+
+L.MOVE_PRIVATE_AURA_TEXT			= "<секретное значение> нацеливается на Вас с помощью заклинания <секретное значение>"
+L.MOVE_PRIVATE_AURA_DISABLED		= "Предварительный просмотр отключен, поскольку функция 'Приватные ауры' отключена глобально в настройках."
 
 L.HUD_INVALID_TYPE					= "Задан неверный тип HUD"
 L.HUD_INVALID_TARGET				= "Не задана допустимая цель для HUD"
@@ -755,6 +761,15 @@ L.KEYSTONE_NAMES[503] = 'АКГО' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = 'СР' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'ШЛЮЗ' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'ЗА' -- Eco-Dome Al'dani
+
+L.KEYSTONE_NAMES[161] = 'НП' -- Skyreach
+L.KEYSTONE_NAMES[402] = 'АА' -- Algeth'ar Academy
+L.KEYSTONE_NAMES[556] = 'ЯС' -- Pit of Saron
+L.KEYSTONE_NAMES[557] = 'ШВ' -- Windrunner Spire
+L.KEYSTONE_NAMES[558] = 'ТМ' -- Magister's Terrace (new)
+L.KEYSTONE_NAMES[559] = 'УНЗ' -- Nexus-Point Xenas
+L.KEYSTONE_NAMES[560] = 'ПМ' -- Miasara Caverns
+L.KEYSTONE_NAMES[583] = 'ПТ' -- Hell (IE Seat of the Triumvirate)
 
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "Вы хотите использовать временную шкалу Blizzard или полосы DBM?"
