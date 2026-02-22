@@ -1056,7 +1056,7 @@ do
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
 		if (voice == "changemt" or voice == "tauntboss") and not self:IsTank() then return end
 		if optionId then
-			local enabled = self.Options["CustomAlertOption" .. optionId] or true
+			local enabled = self.Options["CustomAlertOption" .. optionId]
 			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion)
 			if enabled and mediaPath ~= "None" then
 				if not self.tlSoundEvents then
