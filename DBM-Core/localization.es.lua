@@ -125,9 +125,9 @@ L.NOTESHAREERRORBLANK		= "No se puede compartir notas en blanco."
 L.NOTESHAREERRORGROUPFINDER	= "No se puede compartir notas en campos de batalla, buscador de bandas y buscador de grupo."
 L.NOTESHAREERRORALREADYOPEN	= "No se puede abrir notas compartidas con el editor de notas ya abierto."
 
-L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones por defecto de todos los módulos de esta estancia."
+L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de todos los módulos de esta estancia."
 L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de este módulo."
-L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones por defecto de este encuentro."
+L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de este encuentro."
 
 L.WORLDBOSS_ENGAGED			= "Es posible que el encuentro de %s se haya iniciado en tu reino a %s de su salud máxima. (Enviado por %s.)"
 L.WORLDBOSS_DEFEATED		= "Es posible que %s haya sido derrotado en tu reino. (Enviado por %s.)"
