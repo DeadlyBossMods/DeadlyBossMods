@@ -147,6 +147,7 @@ L.RLReadyCheckSound			= "Reproducir sonido cuando se haga una comprobación de b
 L.AutoReplySound			= "Reproducir sonido al recibir respuestas automáticas de DBM por susurro"
 --
 L.Area_CombatAlerts			= "Opciones de alerta de combate"
+L.Area_CombatAlertsRetail   = "Opciones de alertas de combate (solo en exteriores)"
 L.AFKHealthWarning			= "Reproducir sonido si tu salud se reduce mientras estás ausente"
 L.HealthWarningLow			= "Reproducir sonido si tu salud se reduce debajo de 35% mientras estás ausente"
 L.EnteringCombatAlert		= "Reproducir sonido al entrar en combate"
