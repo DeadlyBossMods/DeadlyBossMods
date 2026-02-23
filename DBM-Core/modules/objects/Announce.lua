@@ -598,7 +598,7 @@ end
 
 ---old constructor (no auto-localize)
 ---@param text string
----@param color number? 1 = Positive Message, 2 = Normal Message, 3 - Higher Priority, 4 - Highest Priority
+---@param color warningColorType?
 ---@param icon number|string? Use number for spellId, -number for journalID, number as string for textureID
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|boolean? String for custom option name. Using false hides option completely
@@ -722,7 +722,7 @@ function bossModPrototype:NewYouAnnounce(spellId, color, ...)
 end
 
 ---@param spellId number|string
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -814,7 +814,7 @@ end
 
 ---@param spellId number|string
 ---@param castTime number?
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -840,7 +840,7 @@ end
 ---@param spellId number|string
 ---@param castTime number?
 ---@param preWarnTime number|string?
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -852,7 +852,7 @@ end
 
 ---@param spellId number|string
 ---@param time number
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?

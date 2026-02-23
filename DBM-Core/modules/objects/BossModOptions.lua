@@ -152,7 +152,7 @@ function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, 
 	self:AddBoolOption("CustomTimerOption" .. spellId, default, "timer", nil, defaultColor, defaultVoice, spellId)
 end
 
----Object for cusotmizing blizzard alerts to be shown or what sound plays for them
+---Object for customizing blizzard alerts to be shown or what sound plays for them
 ---@param auraspellId number SpellID used for option text and saved variables
 ---@param default SpecFlags|boolean?
 ---@param defaultSound acceptedSASounds is used to set default Special announce sound (1-4) just like regular special announce objects
