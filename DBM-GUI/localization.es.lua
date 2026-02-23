@@ -168,9 +168,6 @@ L.Area_Advanced				= "Opciones avanzadas"
 L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión"
 --
 L.Area_Tooltip              = "Integración con tooltips"
-L.EnableTooltip             = "Añadir estadísticas de DBM a los tooltips de los jefes compatibles"
-L.EnableTooltipInCombat     = "Mostrar información del tooltip durante el combate"
-L.EnableTooltipHeader       = "Incluir encabezado de DBM en el tooltip"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Perfiles"
@@ -585,7 +582,6 @@ L.Area_HideBlizzard 				= "Desactivar y ocultar otras molestias de Blizzard"
 L.HideBossEmoteFrame 				= "Ocultar marco de emociones durante encuentros de jefe"
 L.HideWatchFrame 					= "Ocultar marco de seguimiento en jefes si no se siguen logros ni en Mítico+"
 L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefe" --Currently hidden (NYI)
-L.HideTooltips 						= "Ocultar las descripciones emergentes durante encuentros de jefe"
 L.HideBlizzardTimeline				= "Ocultar la línea de tiempo de la banda de Blizzard durante los encuentros de jefe"
 
 -- Panel: Raid Leader Controls

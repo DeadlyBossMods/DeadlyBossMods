@@ -284,7 +284,6 @@ L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
 L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
 L.HideBlizzardTimeline				= "Blende die Blizzard-Schlachtzugszeitlinie während Bosskämpfen aus"
 
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
@@ -319,9 +318,6 @@ L.Area_Advanced				= "Erweiterte Einstellungen"
 L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (nützlich für Gilden, die die Nutzung von \"BigWigs\" erzwingen)"
 --
 L.Area_Tooltip				= "Tooltip-Integration"
-L.EnableTooltip				= "DBM Statistiken zu Tooltips von Bossen hinzufügen"
-L.EnableTooltipInCombat		= "Zeige Tooltip-Informationen während Kämpfen"
-L.EnableTooltipHeader		= "Zeige DBM Kopfzeile in Tooltip"
 
 
 L.Panel_Profile				= "Profile"
