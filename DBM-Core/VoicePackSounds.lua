@@ -126,6 +126,7 @@ local VPSound = {
 	["forcenovacoming"] = 12,
 	["frenzy"] = 0,
 	["frontal"] = 15,
+	["frontalyou"] = 19,
 	["frontcenter"] = 0,
 	["frontleft"] = 0,
 	["frontright"] = 0,
