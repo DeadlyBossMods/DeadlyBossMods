@@ -1049,8 +1049,9 @@ do
 	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
+	---@param color warningColorType? ColorId 1-4
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
-	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, overrideType)
+	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType)
 		--Use same global disable as special warning sounds (since UI is indistinguishable between custom alert sounds and special warning sounds, might as well just have one global disable for both)
 		if DBM.Options.DontPlaySpecialWarningSound then return end
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
@@ -1078,6 +1079,7 @@ do
 					C_EncounterEvents.SetEventSound(encounterEventId, overrideType or 1, {file = mediaPath, channel = soundSetting, volume = 1})
 					self.tlSoundEvents[encounterEventId] = true
 				end
+				--TODO, add color api when blizzard adds it. Right now it's unused but still setup in mods.
 			end
 		end
 	end
