@@ -638,6 +638,7 @@ L.EnableTooltipInCombat     = "Exibir informações da dica durante o combate"
 L.EnableTooltipHeader       = "Incluir cabeçalho do DBM na dica"
 --
 L.Area_CombatAlerts			= "Opções de alertas de combate"
+L.Area_CombatAlertsRetail   = "Opções de alertas de combate (somente em áreas externas)"
 L.AFKHealthWarning			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (em qualquer porcentagem) enquanto estiver LDT"
 L.HealthWarningLow			= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
 L.EnteringCombatAlert		= "Reproduzir som de alerta e fazer o ícone do aplicativo piscar ao entrar em combate"
