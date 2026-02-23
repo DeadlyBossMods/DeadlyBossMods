@@ -616,7 +616,9 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2		= "Mostrar marco de información con una vista g
 L.AUTO_INFO_FRAME_OPTION_TEXT3		= "Mostrar marco de información para $spell:%s (cuando se alcanza el umbral de %%s)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Mostrar temporizador para el récord actual de completar %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Reproduce anuncios de sonido de DBM para auras privadas de $spell:%s en este encuentro."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproducir alertas de sonido de auras privadas de DBM para $spell:%s en este encuentro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproducir alertas de sonido de auras privadas de DBM cuando seas objetivo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproducir alertas de sonido de auras privadas de DBM cuando necesites alejarte de $spell:%s"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Anuncio desplazable"

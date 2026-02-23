@@ -616,9 +616,11 @@ L.AUTO_RRANGE_OPTION_TEXT_SHORT 		= "Exibir quadro de distância reverso (%s)"
 L.AUTO_INFO_FRAME_OPTION_TEXT 			= "Exibir quadro de informações para $spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2 			= "Exibir quadro de informações para visão geral do encontro"
 L.AUTO_INFO_FRAME_OPTION_TEXT3 			= "Exibir quadro de informações para $spell:%s (quando o limiar de %%s é atingido)"
-L.AUTO_READY_CHECK_OPTION_TEXT 			= "Tocar som de verificação de prontidão quando o chefe for puxado (mesmo que não seja direcionado)"
+L.AUTO_READY_CHECK_OPTION_TEXT 			= "Reproduzir som de verificação de prontidão quando o chefe for puxado (mesmo que não seja direcionado)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT 			= "Exibir cronômetro para limpeza mais rápida de %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT 			= "Tocar alertas sonoros do DBM para auras privadas de $spell:%s nesta luta."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproduzir alertas sonoros de auras privadas do DBM para $spell:%s neste encontro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproduzir alertas sonoros de auras privadas do DBM quando você for alvo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros de auras privadas do DBM quando você precisar se afastar de $spell:%s"
 
 -- New special warnings
 L.MOVE_WARNING_BAR 						= "Anúncio móvel"

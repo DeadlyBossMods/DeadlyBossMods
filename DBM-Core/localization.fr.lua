@@ -611,12 +611,14 @@ L.AUTO_RANGE_OPTION_TEXT		 	= "Afficher la fenêtre de portée (%s) pour $spell:
 L.AUTO_RANGE_OPTION_TEXT_SHORT  	= "Afficher la fenêtre de portée (%s)"--For when a range frame is just used for more than one thing
 L.AUTO_RRANGE_OPTION_TEXT			= "Afficher la fenêtre de portée inversée (%s) pour $spell:%s"--Reverse range frame (green when players in range, red when not)
 L.AUTO_RRANGE_OPTION_TEXT_SHORT		= "Afficher la fenêtre de portée inversée (%s)"
-L.AUTO_INFO_FRAME_OPTION_TEXT		= "Afficher la fênetre d'information pour $spell:%s" --What frame is this?
-L.AUTO_INFO_FRAME_OPTION_TEXT2 		= "Afficher la fênetre d'information pour un aperçu de l'encounter"
-L.AUTO_INFO_FRAME_OPTION_TEXT3 		= "Afficher la fênetre d'information pour $spell:%s (lorsque le seuil de %%s est atteint)"
+L.AUTO_INFO_FRAME_OPTION_TEXT		= "Afficher la fenêtre d'information pour $spell:%s" --What frame is this?
+L.AUTO_INFO_FRAME_OPTION_TEXT2 		= "Afficher la fenêtre d'information pour un aperçu de la rencontre"
+L.AUTO_INFO_FRAME_OPTION_TEXT3 		= "Afficher la fenêtre d'information pour $spell:%s (lorsque le seuil de %%s est atteint)"
 L.AUTO_READY_CHECK_OPTION_TEXT   	= "Jouer le son de l'appel lorsque le boss est engagé (même si ce dernier n'est pas la cible)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Afficher un chronomètre pour le run plus rapide %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Jouer des alertes sonores DBM pour les auras privées de $spell:%s dans ce combat."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Jouer les alertes sonores des auras privées de DBM pour $spell:%s pendant cette rencontre"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Jouer les alertes sonores des auras privées de DBM lorsque vous êtes ciblé par $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Jouer les alertes sonores des auras privées de DBM lorsque vous devez vous éloigner de $spell:%s"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Annonce mobile"
