@@ -3,12 +3,15 @@ local private = select(2, ...)
 
 ---@class TrashCombatScanningModule: DBMModule
 local module = private:NewModule("TrashCombatScanningModule")
-module:RegisterEvents(
-	"LOADING_SCREEN_DISABLED",
-	"ZONE_CHANGED_NEW_AREA",
-	"ENCOUNTER_START",
-	"ENCOUNTER_END"
-)
+
+if not private.isRetail then
+	module:RegisterEvents(
+		"LOADING_SCREEN_DISABLED",
+		"ZONE_CHANGED_NEW_AREA",
+		"ENCOUNTER_START",
+		"ENCOUNTER_END"
+	)
+end
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
@@ -134,7 +137,7 @@ local function checkForCombat(delay)
 			activeTrashMod:EnteringZoneCombat()
 		end
 		--Only trash and boss mods should start scanning engaged units
-		if (activeTrashMod and activeTrashMod.StartEngageTimers) or (activeBossMod and activeBossMod.StartEngageTimers) then
+		if not private.isRetail and ((activeTrashMod and activeTrashMod.StartEngageTimers) or (activeBossMod and activeBossMod.StartEngageTimers)) then
 			ScanEngagedUnits(delay)--Apply only the pre combat delay on initial instant scan
 			DBM:Debug("Starting Engaged Unit Scans", 2)
 		end
