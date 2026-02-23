@@ -52,7 +52,7 @@ L.NOT_INSTALLED				= "No instalado"
 
 L.COMBAT_STARTED				= "Encuentro de %s iniciado. ¡Buena suerte!"
 L.COMBAT_STARTED_IN_PROGRESS	= "Te has unido al encuentro de %s mientras estaba en curso. ¡Buena suerte!"
-L.GUILD_COMBAT_STARTED			= "El encuentro de %s has sido iniciado por el grupo de hermandad de %s."
+L.GUILD_COMBAT_STARTED			= "El encuentro de %s ha sido iniciado por el grupo de hermandad de %s."
 L.SCENARIO_STARTED				= "%s iniciado. ¡Buena suerte!"
 L.SCENARIO_STARTED_IN_PROGRESS	= "Te has unido a %s mientras estaba en curso. ¡Buena suerte!"
 L.BOSS_DOWN						= "¡%s ha sido derrotado en %s!"
