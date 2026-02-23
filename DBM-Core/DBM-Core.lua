@@ -960,8 +960,8 @@ bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 do
 	local issecretvalue = issecretvalue or function(val) return false end
 	local hasanysecretvalues = hasanysecretvalues or function(...) return false end
-	local issecretunit = C_Secrets.ShouldUnitIdentityBeSecret or function(val) return false end
-	local issecrethealth = C_Secrets.ShouldUnitHealthMaxBeSecret or function(val) return false end
+	local issecretunit = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret or function(val) return false end
+	local issecrethealth = C_Secrets and C_Secrets.ShouldUnitHealthMaxBeSecret or function(val) return false end
 	---@param self DBMModOrDBM
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
