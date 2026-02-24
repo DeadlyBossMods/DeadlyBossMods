@@ -185,9 +185,11 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 							tex:SetVertexColor(0.8, 0.8, 0.8)
 						end)
 					end
-					MenuTemplates.SetUtilityButtonClickHandler(button.playBtn, function()
-						DBM:PlaySoundFile(v.value)
-					end)
+					if MenuTemplates.SetUtilityButtonClickHandler then
+						MenuTemplates.SetUtilityButtonClickHandler(button.playBtn, function()
+							DBM:PlaySoundFile(v.value)
+						end)
+					end
 					button.playBtn:Show()
 				end)
 			end
