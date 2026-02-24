@@ -79,10 +79,10 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
+local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.25 alpha"--Core version
+DBM.DisplayVersion = "12.0.25"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2026, 2, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
