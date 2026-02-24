@@ -305,7 +305,6 @@ L.Area_HideBlizzard					= "Disabilita e Nascondi altre Seccature Blizzard"
 L.HideBossEmoteFrame				= "Nascondi il riquadro delle emote del boss raid durante i combattimenti con i boss"
 L.HideWatchFrame					= "Nascondi il riquadro degli obiettivi durante i combattimenti con i boss se non vengono tracciati successi e se non sei in un Mythic+"
 L.HideQuestTooltips					= "Nascondi gli obiettivi delle missioni dai tooltip durante i combattimenti con i boss"--Attualmente nascosto (NYI)
-L.HideTooltips						= "Nascondi completamente i tooltip durante i combattimenti con i boss"
 L.HideBlizzardTimeline				= "Nascondi la Timeline Raid di Blizzard durante i combattimenti con i boss"
 
 L.Panel_ExtraFeatures		= "Funzionalità Aggiuntive"

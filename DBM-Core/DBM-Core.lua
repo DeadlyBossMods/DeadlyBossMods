@@ -79,14 +79,14 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 402, "6f82943"--402.3
+local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.23 alpha"--Core version
+DBM.DisplayVersion = "12.0.25"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 2, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = private.isRetail and 22 or 20--When this is incremented, trigger force disable regardless of major patch
+DBM.ReleaseRevision = releaseDate(2026, 2, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+PForceDisable = 22--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -225,7 +225,6 @@ DBM.DefaultOptions = {
 	HideObjectivesFrame = true,
 	HideGarrisonToasts = true,
 	HideGuildChallengeUpdates = true,
-	HideTooltips = false,
 	DisableSFX = false,
 	DisableAmbiance = false,
 	DisableMusic = false,
@@ -410,9 +409,6 @@ DBM.DefaultOptions = {
 	SilentMode = false,
 	NoCombatScanningFeatures = false,
 	ZoneCombatSyncing = false,--HIDDEN power user feature to improve zone scanning accuracy in niche cases
-	EnableTooltip = not private.isRetail,
-	EnableTooltipInCombat = true,
-	EnableTooltipHeader = true,
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
 	DisableSWSound = false,
@@ -964,8 +960,8 @@ bossModPrototype.DisableSpecialWarningSounds = DBM.DisableSpecialWarningSounds
 do
 	local issecretvalue = issecretvalue or function(val) return false end
 	local hasanysecretvalues = hasanysecretvalues or function(...) return false end
-	local issecretunit = C_Secrets.ShouldUnitIdentityBeSecret or function(val) return false end
-	local issecrethealth = C_Secrets.ShouldUnitHealthMaxBeSecret or function(val) return false end
+	local issecretunit = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret or function(val) return false end
+	local issecrethealth = C_Secrets and C_Secrets.ShouldUnitHealthMaxBeSecret or function(val) return false end
 	---@param self DBMModOrDBM
 	function DBM:issecretvalue(val)
 		return issecretvalue(val)
@@ -5849,7 +5845,7 @@ do
 			end
 		end
 		--Prio the afk warning if afk
-		if self.Options.AFKHealthWarning2 and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(3, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		if not private.isRetail and (self.Options.AFKHealthWarning2 and not private.IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(3, "AFK")) then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
 			local path = 566558--Nightelf Bell
@@ -6272,7 +6268,6 @@ do
 		self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
 	end
 
-	local tooltipsHidden = false
 	---Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
 		if not dbmIsEnabled then return end
@@ -6396,11 +6391,6 @@ do
 				end
 			end
 			if not mod.inScenario then
-				if self.Options.HideTooltips then
-					--Better or cleaner way?
-					tooltipsHidden = true
-					GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
-				end
 				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == "1" then
 					SetCVar("Sound_EnableSFX", 0)
 					self.Options.RestoreSettingSFX = true
@@ -6957,11 +6947,6 @@ do
 							questieWatchRestore = false
 						end
 					end
-				end
-				if tooltipsHidden then
-					--Better or cleaner way?
-					tooltipsHidden = false
-					GameTooltip:SetScript("OnShow", GameTooltip.Show)
 				end
 				if self.Options.RestoreSettingSFX then
 					SetCVar("Sound_EnableSFX", 1)

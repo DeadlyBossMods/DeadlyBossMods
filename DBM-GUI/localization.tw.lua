@@ -164,9 +164,6 @@ L.Area_Advanced				= "進階選項"
 L.FakeBW					= "假裝使用BigWigs版本檢查而不是用DBM版本(適合用在工會強制使用BigWigs時)"
 --
 L.Area_Tooltip						= "工具提示整合"
-L.EnableTooltip						= "將DBM統計數據加入到由DBM支援的首領工具提示中"
-L.EnableTooltipInCombat				= "在戰鬥中顯示工具提示訊息"
-L.EnableTooltipHeader				= "在工具提示中包括DBM標題"
 
 -- Panel: Profiles
 L.Panel_Profile				= "設定檔"
@@ -587,7 +584,7 @@ L.Area_HideBlizzard					= "停用 & 隱藏其他暴雪提示"
 L.HideBossEmoteFrame				= "首領戰鬥時隱藏團隊首領表情框架"
 L.HideWatchFrame					= "首領戰鬥時隱追蹤框架(任務目標)，如果沒有追踪成就，或不是在傳奇+中"
 L.HideQuestTooltips					= "首領戰鬥時隱藏任務目標提示"--Currently hidden (NYI)
-L.HideTooltips						= "首領戰鬥時隱藏完全隱藏提示"
+
 L.HideBlizzardTimeline				= "首領戰鬥時隱藏暴雪團隊時間線"
 
 -- Panel: Raid Leader Controls

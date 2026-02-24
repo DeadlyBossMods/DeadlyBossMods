@@ -112,4 +112,3 @@ modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
-modules\objects\Tooltip.lua

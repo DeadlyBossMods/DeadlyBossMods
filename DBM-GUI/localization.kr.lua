@@ -166,9 +166,6 @@ L.Area_Advanced				= "고급 설정"
 L.FakeBW					= "DBM 대신 BigWigs 사용자로 위장하기 (BigWigs 사용을 강제하는 공격대에서 유용)"
 --
 L.Area_Tooltip						= "툴팁 통합"
-L.EnableTooltip						= "DBM이 지원하는 보스의 툴팁에 DBM 통계 추가"
-L.EnableTooltipInCombat				= "전투 중에 툴탑 정보를 표시"
-L.EnableTooltipHeader				= "툴팁에 DBM 헤더 포함"
 
 
 -- Panel: Profiles
@@ -595,7 +592,7 @@ L.Area_HideBlizzard			= "그 외 블리자드 성가신 요소 비활성화 및 
 L.HideBossEmoteFrame		= "보스 전투 중 보스 경고 숨기기"
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
 L.HideQuestTooltips			= "보스 전투 중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
-L.HideTooltips				= "보스 전투 중 툴팁 완전히 숨기기"
+
 L.HideBlizzardTimeline				= "보스 전투 중 블리자드 기본 공격대 타임라인 숨기기"
 
 -- Panel: Raid Leader Controls
