@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.25"--Core version
+DBM.DisplayVersion = "12.0.26 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2026, 2, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -2139,7 +2139,7 @@ do
 				end
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
-			self:RegisterEvents(
+			self:RegisterSafeEvents(
 				"GROUP_ROSTER_UPDATE",
 				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
@@ -2195,7 +2195,7 @@ do
 				)
 			end
 			if private.isRetail then
-				self:RegisterEvents(
+				self:RegisterSafeEvents(
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_DIFFICULTY_CHANGED",
 					"GROUP_JOINED",
@@ -5574,6 +5574,7 @@ do
 	end
 
 	whisperSyncHandlers["CI"] = function(sender, _, mod, time)
+		---@diagnostic disable-next-line: param-type-mismatch
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -5582,6 +5583,7 @@ do
 	end
 
 	whisperSyncHandlers["TR"] = function(sender, _, mod, timeLeft, totalTime, id, paused, ...)
+		---@diagnostic disable-next-line: param-type-mismatch
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
@@ -5591,6 +5593,7 @@ do
 	end
 
 	whisperSyncHandlers["VI"] = function(sender, _, mod, name, value)
+		---@diagnostic disable-next-line: param-type-mismatch
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
 		if mod and name and value then
@@ -6369,10 +6372,10 @@ do
 				self:Schedule(3, checkWipe, self)
 			end
 			--get boss hp at pull
-			if syncedStartHp and syncedStartHp < 1 then
+			if not private.isRetail and syncedStartHp and syncedStartHp < 1 then
 				syncedStartHp = syncedStartHp * 100
 			end
-			local startHp = syncedStartHp or mod:GetBossHP(mod.mainBoss or mod.combatInfo.mob or -1) or 100
+			local startHp = private.isRetail and 90 or syncedStartHp or mod:GetBossHP(mod.mainBoss or mod.combatInfo.mob or -1) or 100
 			--check boss engaged first?
 			if (difficulties.savedDifficulty == "worldboss" and startHp < 98) or (event == "UNIT_HEALTH" and delay > 4) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
 				mod.ignoreBestkill = true
@@ -6404,7 +6407,7 @@ do
 					self.Options.RestoreSettingMusic = true
 				end
 				--boss health info scheduler
-				if not self:IsPostMidnight() then
+				if not private.isRetail then
 					if mod.CustomHealthUpdate then
 						self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
 					else
@@ -6608,15 +6611,19 @@ do
 	end
 
 	function DBM:UNIT_HEALTH(uId)
-		if self:issecretunit(uId) or self:issecrethealth(uId) then
+		if self:issecretunit(uId) then
 			return
 		end
 		local cId = self:GetUnitCreatureId(uId)
-		local health
-		if UnitHealthMax(uId) ~= 0 then
-			health = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		local health = 10--above 2 less than 97, so the usual classic checks will succeed on retail as always "in progress world boss"
+		if not private.isRetail then
+			--Health is always secret on enemies, even outdoors
+			local currentHealth, maxHealth = UnitHealth(uId), UnitHealthMax(uId)
+			if maxHealth ~= 0 then
+				health = currentHealth / maxHealth * 100
+			end
 		end
-		if not health or health < 2 then return end -- no worthy of combat start if health is below 2%
+		if health < 2 then return end -- no worthy of combat start if health is below 2%
 		if dbmIsEnabled then
 			if cId ~= 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and not (UnitPlayerOrPetInRaid(uId) or UnitPlayerOrPetInParty(uId)) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
 				if combatInfo[LastInstanceMapID] then
@@ -6629,6 +6636,7 @@ do
 					end
 				end
 			end
+			if private.isRetail then return end
 			if UnitIsUnit(uId, "player") and health < 100 and not private.IsEncounterInProgress() then
 				--PRIO afk alert first (still disabled on retail because UnitIsAFK is restricted in combat)
 				if not private.isRetail and self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
@@ -8637,7 +8645,7 @@ do
 	---@param cIdOrGUID number|string
 	---@param onlyHighest boolean?
 	function DBM:GetBossHP(cIdOrGUID, onlyHighest)
-		if not self:IsPostMidnight() then
+		if not private.isRetail then
 			local uId = bossHealthuIdCache[cIdOrGUID] or "target"
 			local guid = UnitGUID(uId)
 			--Target or Cached (if already called with this cid or GUID before)
@@ -8651,7 +8659,7 @@ do
 				bossIcons[cIdOrGUID] = GetRaidTargetIndex(uId)
 				return hp, uId, UnitName(uId)
 			--Focus, does not exist in classic
-			elseif private.isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
+			elseif not private.isClassic and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
 				if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
 				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
@@ -8662,7 +8670,7 @@ do
 				return hp, "focus", UnitName("focus")
 			else
 				--Boss UnitIds
-				if private.isRetail then
+				if not private.isBCC and not private.isClassic then
 					for i = 1, 10 do
 						local unitID = "boss" .. i
 						local bossguid = UnitGUID(unitID)
@@ -8696,7 +8704,7 @@ do
 						return hp, unitId, UnitName(unitId)
 					end
 				end
-				if not private.isRetail then
+				if private.isClassic or private.isBCC then
 					--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
 					for i = 1, 20 do
 						local unitId = "nameplate" .. i
@@ -8719,7 +8727,7 @@ do
 	end
 
 	function DBM:GetBossHPByUnitID(uId)
-		if not self:IsPostMidnight() then
+		if not private.isRetail then
 			if UnitHealthMax(uId) ~= 0 then
 				local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 				bossHealth[uId] = hp
@@ -8741,7 +8749,7 @@ do
 	end
 
 	function bossModPrototype:GetHighestBossHealth()
-		if self:IsPostMidnight() then
+		if private.isRetail then
 			return bossHealth[self.combatInfo.mob or -1]
 		end
 		local hp
@@ -8761,7 +8769,7 @@ do
 	end
 
 	function bossModPrototype:GetLowestBossHealth()
-		if self:IsPostMidnight() then
+		if private.isRetail then
 			return bossHealth[self.combatInfo.mob or -1]
 		end
 		local hp
