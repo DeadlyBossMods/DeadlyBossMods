@@ -6321,7 +6321,7 @@ do
 			if event then
 				self:Debug("StartCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
 				if event ~= "ENCOUNTER_START" then
-					self:Debug("This event is started by" .. event .. ". Review ENCOUNTER_START event to ensure if this is still needed", 2)
+					self:Debug("This event is started by " .. event .. ". Review ENCOUNTER_START event to ensure if this is still needed", 2)
 				end
 			else
 				self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is " .. LastInstanceMapID)
@@ -6639,7 +6639,7 @@ do
 			if private.isRetail then return end
 			if UnitIsUnit(uId, "player") and health < 100 and not private.IsEncounterInProgress() then
 				--PRIO afk alert first (still disabled on retail because UnitIsAFK is restricted in combat)
-				if not private.isRetail and self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
+				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
 					if not private.voiceSessionDisabled and voice ~= "None" then
