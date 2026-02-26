@@ -379,7 +379,7 @@ end
 ---@param color warningColorType? ColorId 1-4
 function announcePrototype:SetAlert(encounterEventId, voice, voiceVersion, color)
 	if self.option and self.mod.Options[self.option] then
-		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, self.option)
+		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, nil, self.option)
 	end
 end
 
