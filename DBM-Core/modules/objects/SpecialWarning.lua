@@ -393,6 +393,17 @@ local specTypeFilterTable = {
 ---@class SpecAnnounce2numstr: SpecialWarning
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
 
+---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
+---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+---@param voice VPSound voice pack media path
+---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
+---@param color warningColorType? ColorId 1-4
+function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion, color)
+	if self.option and self.mod.Options[self.option] then
+		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, self.option)
+	end
+end
+
 function specialWarningPrototype:Show(...)
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then

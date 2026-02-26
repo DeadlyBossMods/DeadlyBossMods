@@ -934,9 +934,10 @@ do
 	---@param optionId number
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number
+	---@param customOption string? Used when event supports hardcoded warnings and needs different option table lookup
 	---@return number|string
-	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion)
-		local soundId = self.Options[optionType .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
+	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion, customOption)
+		local soundId = customOption and self.Options[customOption .. "SWSound"] or self.Options[optionType .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		local chosenVoice = DBM.Options.ChosenVoicePack2
 		if chosenVoice ~= "None" and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
@@ -997,17 +998,22 @@ do
 
 	---Event for registering timeline options to encounter events
 	---@param optionId number spellId or JournalId that must match option ID
-	---@param ... number EncounterEventIDs from EncounterEvent.db2 that matches event we're targetting
-	function bossModPrototype:EnableTimelineOptions(optionId, ...)
-		if optionId and self.Options["CustomTimerOption" .. optionId] then
+	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
+	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
+		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Color
-			local colorType = self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
+			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
 			local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
-			for _, encounterEventId in ipairs({...}) do
+			if type(encounterEventId) == "table" then
+				for _, id in ipairs(encounterEventId) do
+					C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
+				end
+			else
 				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
 			end
 			--Set Countdown
-			local timerCountdown = not DBM.Options.DontPlayCountdowns and self.Options["CustomTimerOption" .. optionId .. "CVoice"] or 0
+			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
 			if timerCountdown ~= 0 then
 				if not self.tlTimerEvents then self.tlTimerEvents = {} end
 				if type(timerCountdown) == "string" then
@@ -1021,11 +1027,25 @@ do
 				end
 				--Unlike private aura sounds, this api accepts both file data ID AND path
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
-				for _, encounterEventId in ipairs({...}) do
-					--Another ignore that has to be added due to wow API extension bugs
-					---@diagnostic disable-next-line: assign-type-mismatch
-					C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = soundSetting, volume = 1})
-					self.tlTimerEvents[encounterEventId] = true
+				if type(encounterEventId) == "table" then
+					for _, id in ipairs(encounterEventId) do
+						if not self.tlTimerEvents[id] then
+							--Another ignore that has to be added due to wow API extension bugs
+							---@diagnostic disable-next-line: assign-type-mismatch
+							C_EncounterEvents.SetEventSound(id, 2, {file = path, channel = soundSetting, volume = 1})
+							self.tlTimerEvents[id] = true
+						else
+							DBM:Debug("|cffff0000Timeline option for " .. optionId .. " already set for encounter event id: " .. id .. "|r", 1)
+						end
+					end
+				else
+					if not self.tlTimerEvents[encounterEventId] then
+						---@diagnostic disable-next-line: assign-type-mismatch
+						C_EncounterEvents.SetEventSound(encounterEventId, 2, {file = path, channel = soundSetting, volume = 1})
+						self.tlTimerEvents[encounterEventId] = true
+					else
+						DBM:Debug("|cffff0000Timeline option for " .. optionId .. " already set for encounter event id: " .. encounterEventId .. "|r", 1)
+					end
 				end
 			end
 		end
@@ -1051,14 +1071,16 @@ do
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 	---@param color warningColorType? ColorId 1-4
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
-	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType)
+	---@param customOption string? Used when event supports hardcoded warnings and needs different option table lookup
+	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType, customOption)
 		--Use same global disable as special warning sounds (since UI is indistinguishable between custom alert sounds and special warning sounds, might as well just have one global disable for both)
 		if DBM.Options.DontPlaySpecialWarningSound then return end
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
 		if (voice == "changemt" or voice == "tauntboss") and not self:IsTank() then return end
 		if optionId then
-			local enabled = self.Options["CustomAlertOption" .. optionId]
-			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion)
+			--if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
+			local enabled = customOption and self.Options[customOption] or self.Options["CustomAlertOption" .. optionId]
+			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion, customOption)
 			if enabled and mediaPath ~= "None" then
 				if not self.tlSoundEvents then
 					self.tlSoundEvents = {}
