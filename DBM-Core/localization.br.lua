@@ -513,8 +513,8 @@ L.AUTO_TIMER_TEXTS.cdpnp 				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a penalidade de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a penalidade de $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a duração de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a duração de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Exibir cronômetro para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castpnp			= "Exibir cronômetro apenas na placa de nome para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount 			= "Exibir cronômetro (com contagem) para o lançamento de $spell:%s"

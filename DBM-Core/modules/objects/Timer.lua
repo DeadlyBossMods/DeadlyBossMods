@@ -237,6 +237,28 @@ local function detectEarlyTimerRefresh(self, bar, timer)
 	end
 end
 
+---Used to set fallback options to blizzard encounter API for hardcoded timers to fall back on
+---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+function timerPrototype:SetTimeline(encounterEventId)
+	if self.option and self.mod.Options[self.option] then
+		self.mod:EnableTimelineOptions(self.spellId, encounterEventId, self.option)
+	end
+end
+
+---@param eventID number eventID needed to cancel, pause, unpause a hardcoded timer started by timeline
+function timerPrototype:SetEventID(eventID, ...)
+	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
+	private.hardCodedTimers[eventID] = id
+end
+
+---Simple function to call Start and SetEventID with a single call for hardcoded timeline timers
+---@param timer any
+---@param eventID number
+function timerPrototype:TLStart(timer, eventID, ...)
+	self:SetEventID(eventID, ...)
+	return self:Start(timer, ...)
+end
+
 function timerPrototype:Start(timer, ...)
 	if not self.mod.isDummyMod then--Don't apply following rulesets to pull timers and such
 		if DBM.Options.HideDBMBars then return end

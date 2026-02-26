@@ -511,8 +511,8 @@ L.AUTO_TIMER_TEXTS.cdpnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Afficher un chronomètre pour d'affaiblissement de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Afficher un chronomètre (avec compte) pour d'affaiblissement de $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Afficher un chronomètre pour la durée de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Afficher un chronomètre (avec compte) pour la durée de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Afficher un chronomètre pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castpnp			= "Afficher un chronomètre sur la plaque de nom uniquement pour d'incantation de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount			= "Afficher un chronomètre (avec compte) pour d'incantation de $spell:%s"

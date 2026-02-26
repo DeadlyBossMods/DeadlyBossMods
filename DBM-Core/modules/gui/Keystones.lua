@@ -215,22 +215,22 @@ end)
 local function TeleportTooltipOnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_TOP")
 	if InCombatLockdown() then
-		GameTooltip:SetText(ERR_NOT_IN_COMBAT)
+		GameTooltip:SetText(ERR_NOT_IN_COMBAT, 1, 1, 1)
 	else
 		if not DBMExtraGlobal:IsSpellKnown(self:GetAttribute('spell')) then
-			GameTooltip:SetText(SPELL_FAILED_NOT_KNOWN)
+			GameTooltip:SetText(SPELL_FAILED_NOT_KNOWN, 1, 1, 1)
 		else
 			local start, duration = DBM:GetSpellCooldown(self:GetAttribute('spell'))
 			if start > 0 and duration > 0 then
 				local remainingSec = (start + duration) - GetTime()
 				local hours, minutes = mfloor(remainingSec / 3600), mfloor(remainingSec / 60)
 				if hours > 0 then
-					GameTooltip:SetText(ITEM_COOLDOWN_TIME_HOURS:format(hours))
+					GameTooltip:SetText(ITEM_COOLDOWN_TIME_HOURS:format(hours), 1, 1, 1)
 				else
-					GameTooltip:SetText(ITEM_COOLDOWN_TIME_MIN:format(minutes))
+					GameTooltip:SetText(ITEM_COOLDOWN_TIME_MIN:format(minutes), 1, 1, 1)
 				end
 			else
-				GameTooltip:SetText(LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))))
+				GameTooltip:SetText(LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))), 1, 1, 1)
 			end
 		end
 	end

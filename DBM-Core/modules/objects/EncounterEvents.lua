@@ -4,6 +4,10 @@ local private = select(2, ...)
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
+private.hardCodedTimers = {
+	--[eventID] = timerId
+}
+
 --{ Name = "text", Type = "cstring", Nilable = false, SecretValue = true },
 --{ Name = "casterGUID", Type = "WOWGUID", Nilable = false, SecretValue = true },
 --{ Name = "casterName", Type = "cstring", Nilable = false, SecretValue = true },
@@ -97,30 +101,41 @@ end
 --/run C_EncounterTimeline.ResumeScriptEvent()
 --0 = Active, 1 = Paused, 2 = Finished, 3 = Canceled
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
-	local newBar = DBT:GetBar(eventID)
-	if newBar then
+	local bar
+	--Check for and update hard coded bars
+	if private.hardCodedTimers[eventID] then
+		bar = DBT:GetBar(private.hardCodedTimers[eventID])
+	else
+		bar = DBT:GetBar(eventID)
+	end
+	if bar then
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if eventState == 1 then
-			newBar:Pause()
+			bar:Pause()
 		elseif eventState == 0 then
-			newBar:Resume()
+			bar:Resume()
 		else--Finished or cancled (sometimes blizzard sends state changed instead of event removed when canceling events)
-			newBar:Cancel()
+			bar:Cancel()
+			private.hardCodedTimers[eventID] = nil
 		end
 	end
---	self:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
---	self:Unschedule(removeEntry, self.startedTimers, eventID)
---	tremove(self.startedTimers, eventID)
 end
 
 function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
-	DBT:CancelBar(eventID)
---	self:Unschedule(removeEntry, self.startedTimers, eventID)
---	tremove(self.startedTimers, eventID)
+	if private.hardCodedTimers[eventID] then
+		local bar = DBT:GetBar(private.hardCodedTimers[eventID])
+		if bar then
+			bar:Cancel()
+		end
+		private.hardCodedTimers[eventID] = nil
+	else
+		DBT:CancelBar(eventID)
+	end
 end
 
 --/run DBM:RecoverBlizzardTimers()
 function DBM:RecoverBlizzardTimers()
+	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	if C_EncounterTimeline.HasActiveEvents() then
 		local eventList = C_EncounterTimeline.GetEventList()
 		for _, v in ipairs(eventList) do

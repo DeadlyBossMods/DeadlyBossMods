@@ -513,14 +513,14 @@ L.AUTO_TIMER_TEXTS.cdpnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración del perjuicio de $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Mostrar temporizador para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castpnp			= "Mostrar temporizador de placa de nombre para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount			= "Mostrar temporizador (con contador) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castsource			= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Mostrar temporizador para la duración de $spell:%s"
-L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
+L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante de $spell:%s en los jugadores"
 L.AUTO_TIMER_OPTIONS.ai					= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
 
 L.AUTO_TIMER_OPTIONS.cd					= "Mostrar temporizador para el tiempo de reutilización de $spell:%s"
