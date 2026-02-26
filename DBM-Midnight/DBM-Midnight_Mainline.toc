@@ -3,6 +3,8 @@
 ## Category: DBM
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10World Bosses (Midnight)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff10ff10필드 보스 (한밤)|r
+## Title-ruRU: |cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff10ff10Мировые боссы (Полночь)|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +16,8 @@
 ## X-DBM-Mod-Category: MIDNIGHT
 ## X-DBM-StatTypes: normal
 ## X-DBM-Mod-Name: World Bosses (Midnight)
+## X-DBM-Mod-Name-koKR: 필드 보스 (한밤)
+## X-DBM-Mod-Name-ruRU: Мировые боссы (Полночь)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 99
 ## X-DBM-Mod-MapID: 2930
@@ -25,3 +29,4 @@ Cragpine.lua
 Luashal.lua
 Predaxas.lua
 Thormbelan.lua
+

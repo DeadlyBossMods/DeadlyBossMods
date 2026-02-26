@@ -45,7 +45,7 @@ function mod:OnLimitedCombatStart()
 	self:EnableAlertOptions(1227631, 326, "carefly", 2)
 	self:EnableAlertOptions(1231720, {327, 328}, "bigmob", 2)
 	self:EnableAlertOptions(1232221, 330, "carefly", 2)
-	self:EnableAlertOptions(1232590, 340, "aesoon", 2, 0)--This event has no timer so we cannot use timer finished for sound
+	self:EnableAlertOptions(1232590, 340, "aesoon", 2, nil, 0)--This event has no timer so we cannot use timer finished for sound
 	self:EnableTimelineOptions(1228502, 322)
 	self:EnableTimelineOptions(1231015, 323)
 	self:EnableTimelineOptions(1228161, 325)

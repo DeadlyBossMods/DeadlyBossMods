@@ -171,9 +171,6 @@ L.Area_Advanced				= "高级选项"
 L.FakeBW					= "当Bigwig启用检测时，假装DBM就是Bigwig"
 
 L.Area_Tooltip				= "鼠标信息提示集成"
-L.EnableTooltip				= "当DBM支持该Boss时，在信息提示窗加入DBM状态"
-L.EnableTooltipInCombat		= "战斗中也显示信息提示窗信息"
-L.EnableTooltipHeader		= "在信息提示窗加入DBM标题"
 
 -- Panel: Profiles
 L.Panel_Profile				= "配置文件"
@@ -585,7 +582,6 @@ L.Area_HideBlizzard					= "隐藏游戏自带提示选项"
 L.HideBossEmoteFrame				= "Boss 战斗中隐藏Boss表情框体"
 L.HideWatchFrame					= "在没有成就追踪的情况下，Boss战斗中隐藏任务追踪框体"
 L.HideQuestTooltips					= "Boss 战斗中隐藏鼠标提示窗体中的任务进度"
-L.HideTooltips						= "Boss 战斗中完全隐藏鼠标提示窗体"
 L.HideBlizzardTimeline				= "Boss 战斗中隐藏暴雪团队时间线"
 
 -- Panel: Raid Leader Controls

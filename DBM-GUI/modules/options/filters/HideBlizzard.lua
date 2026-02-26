@@ -77,4 +77,3 @@ if not private.isRetail then--Hiding it on retail causes taint, there are ways t
 	hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 end
 --hideBlizzArea:CreateCheckButton(L.HideQuestTooltips, true, nil, "HideQuestTooltips")--Needs reimplimenting the way BW does it, not altering cvar but manually revising tooltips on fly
-hideBlizzArea:CreateCheckButton(L.HideTooltips, true, nil, "HideTooltips")
