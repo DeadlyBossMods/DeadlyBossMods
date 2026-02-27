@@ -538,9 +538,9 @@ do
 					local _, contentType, contentID = strsplit(":", data)
 					if contentType == "2" then
 						local spellName, spellDesc = DBM:EJ_GetSectionInfo(tonumber(contentID))
-						GameTooltip:AddLine(spellName or CL.UNKNOWN, 255, 255, 255, 0)
+						GameTooltip:AddLine(spellName or CL.UNKNOWN, 255, 255, 255, false)
 						GameTooltip:AddLine(" ")
-						GameTooltip:AddLine(spellDesc or CL.UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+						GameTooltip:AddLine(spellDesc or CL.UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
 					end
 				end
 				GameTooltip:Show()

@@ -14,12 +14,12 @@ mod:RegisterCombat("combat")
 
 --Midnight private aura replacements
 --TODO, add Null Binding? spam can't be controlled
-mod:AddPrivateAuraSoundOption(1228206, true, 1228206, 1, 1)
-mod:AddPrivateAuraSoundOption(1243577, true, 1243577, 1, 1)
+mod:AddPrivateAuraSoundOption(1228206, true, 1228206, 1, 1)--Excess Mass
+mod:AddPrivateAuraSoundOption(1243577, true, 1243577, 1, 1)--Reverse Gravity
 mod:AddPrivateAuraSoundOption(1232394, true, 1232394, 1, 1)--P3 gravity Well
-mod:AddPrivateAuraSoundOption(1234243, true, 1234243, 1, 1)
+mod:AddPrivateAuraSoundOption(1234243, true, 1234243, 1, 1)--Crushing Gravity
 mod:AddPrivateAuraSoundOption(1234244, true, 1234244, 1, 1)--P2 Inverse gravity
-mod:AddPrivateAuraSoundOption(1249425, true, 1249425, 1, 1)
+mod:AddPrivateAuraSoundOption(1249425, true, 1249425, 1, 1)--Mass Destruction
 mod:AddPrivateAuraSoundOption(1237696, true, 1237696, 1, 2)--GTFO
 
 mod:RegisterEventsInCombat(
@@ -66,27 +66,27 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(32738))
 --local specWarnMassEjection						= mod:NewSpecialWarningDodgeCount(1237694, nil, nil, nil, 2, 15)
 local specWarnConquerorsCross						= mod:NewSpecialWarningSwitchCount(1239262, "-Healer", nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnStardustNova							= mod:NewSpecialWarningDodgeCount(1237695, nil, 142775, nil, 2, 2)
-local specWarnStarshardNova							= mod:NewSpecialWarningDodgeCount(1251619, nil, 142775, nil, 2, 2, 4)--Mythic version of above
+local specWarnStarshardNova							= mod:NewSpecialWarningDodgeCount(1249454, nil, 142775, nil, 2, 2, 4)--Mythic version of above
 
 local timerMassEjectionCD							= mod:NewCDCountTimer(17.6, 1237694, nil, nil, nil, 3)
 local timerMassDestructionCD						= mod:NewCDCountTimer(97.3, 1249423, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Mythic version of above
 local timerConquerorsCrossCD						= mod:NewCDCountTimer(35, 1239262, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerStardustNovaCD							= mod:NewCDCountTimer(35.2, 1237695, 142775, nil, nil, 3)--Shortname "Nova"
-local timerStarshardNovaCD							= mod:NewCDCountTimer(31.6, 1251619, 142775, nil, nil, 3)--Mythic version of above
+local timerStarshardNovaCD							= mod:NewCDCountTimer(31.6, 1249454, 142775, nil, nil, 3)--Mythic version of above
 local timerEclipseCD								= mod:NewNextTimer(35.2, 1237690, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --Stage Three: Singularity
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(32479))
-local warnGravityWell								= mod:NewSpellAnnounce(1232394, 1)--Positive alert during devour
+--local warnGravityWell								= mod:NewSpellAnnounce(1232394, 1)--Positive alert during devour
 
-local specWarnExtinguishTheStars					= mod:NewSpecialWarningDodgeCount(1231716, nil, 62134, nil, 2, 2)--shortname "Stars"
-local specWarnDarkenedSky							= mod:NewSpecialWarningDodgeCount(1234044, nil, nil, DBM_COMMON_L.RINGS, 2, 2)
+--local specWarnExtinguishTheStars					= mod:NewSpecialWarningDodgeCount(1231716, nil, 62134, nil, 2, 2)--shortname "Stars"
+local specWarnDarkenedSky							= mod:NewSpecialWarningDodgeCount(1234052, nil, nil, DBM_COMMON_L.RINGS, 2, 2)
 local specWarnCosmicCollapse						= mod:NewSpecialWarningDefensive(1234263, nil, 298160, nil, 2, 2)
 local specWarnSuperNova								= mod:NewSpecialWarningRunCount(1232973, nil, nil, nil, 4, 2)
-local specWarnVoidgrasp								= mod:NewSpecialWarningYouCount(1250055, nil, nil, nil, 1, 2)
+--local specWarnVoidgrasp								= mod:NewSpecialWarningYouCount(1250055, nil, nil, nil, 1, 2)
 
-local timerExtinguishTheStarsCD						= mod:NewCDTimer(97.3, 1231716, 62134, nil, nil, 3)--shortname "Stars"
-local timerDevourP3CD								= mod:NewCDCountTimer(97.3, 1233539, nil, nil, nil, 2)
-local timerDarkenedSkyCD							= mod:NewCDCountTimer(97.3, 1234044, DBM_COMMON_L.RINGS.." (%s)", nil, nil, 3)
+--local timerExtinguishTheStarsCD						= mod:NewCDTimer(97.3, 1231716, 62134, nil, nil, 3)--shortname "Stars"
+--local timerDevourP3CD								= mod:NewCDCountTimer(97.3, 1233539, nil, nil, nil, 2)
+local timerDarkenedSkyCD							= mod:NewCDCountTimer(97.3, 1234052, DBM_COMMON_L.RINGS.." (%s)", nil, nil, 3)
 local timerCosmicCollapseCD							= mod:NewCDCountTimer(97.3, 1234263, 298160, nil, nil, 5)--Shortname "Collapse"
 local timerSuperNovaCD								= mod:NewCDCountTimer(97.3, 1232973, nil, nil, nil, 2)
 local timerVoidgraspCD								= mod:NewCDCountTimer(97.3, 1250055, nil, nil, nil, 3)
@@ -218,6 +218,43 @@ function mod:OnLimitedCombatStart(delay)
 		if not self:IsLFR() then
 			timerReverseGravityCD:Loop(allTimers[savedDifficulty][1][1243577], 0, true)
 		end
+	else
+		--Set bar timelines options for built in blizzard timers
+		specWarnDevourP1:SetAlert(398, "gather", 2, 4)
+		timerDevourP1CD:SetTimeline(398)
+		specWarnMassiveSmash:SetAlert(339, "carefly", 2, 3)
+		timerMassiveSmashCD:SetTimeline(399)
+		specWarnDarkMatter:SetAlert(400, "scatter", 1, 2)
+		timerDarkMatterCD:SetTimeline(400)
+		specWarnShatteredSpace:SetAlert(401, "aesoon", 2, 2)
+		timerShatteredSpaceCD:SetTimeline(401)
+		timerReverseGravityCD:SetTimeline(402)
+		--Also setup future stages
+		specWarnExtinction:SetAlert(403, "runaway", 2, 4)
+		timerExtinctionCD:SetTimeline(403)
+		specWarnGammaBurst:SetAlert(404, "pushbackincoming", 13, 2)
+		timerGammaBurstCD:SetTimeline(404)
+		timerEclipseCD:SetTimeline(405)
+		warnGravitationalDistortion:SetAlert(406, "watchstep", 2, 2)
+		timerGravitationalDistortionCD:SetTimeline(406)
+		specWarnConquerorsCross:SetAlert(407, "mobsoon", 2, 2)
+		timerConquerorsCrossCD:SetTimeline(407)
+		timerMassEjectionCD:SetTimeline(408)
+		timerMassDestructionCD:SetTimeline(409)
+		specWarnStardustNova:SetAlert(410, "watchstep", 2, 2)
+		timerStardustNovaCD:SetTimeline(410)
+		specWarnStarshardNova:SetAlert(411, "watchstep", 2, 2)
+		timerStarshardNovaCD:SetTimeline(411)
+		specWarnSuperNova:SetAlert(412, "runout", 2, 4)
+		timerSuperNovaCD:SetTimeline(412)
+		specWarnDarkenedSky:SetAlert(413, "watchstep", 2, 2)
+		timerDarkenedSkyCD:SetTimeline(413)
+		if self:IsTank() then
+			specWarnCosmicCollapse:SetAlert(414, "defensive", 2, 2)
+		end
+		timerCosmicCollapseCD:SetTimeline(414)
+--		specWarnVoidgrasp:SetAlert(415, "targetyou", 1, 2)
+		timerVoidgraspCD:SetTimeline(415)
 	end
 end
 
