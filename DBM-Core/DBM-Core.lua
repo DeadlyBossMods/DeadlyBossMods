@@ -5780,7 +5780,7 @@ do
 			if foundUnit and not DBM:issecretvalue(foundUnit) and not DBM:issecretunit(foundUnit) then
 				if UnitAffectingCombat(foundUnit) then
 					local guid = UnitGUID(foundUnit)
-					if guid and not DBM:IsCreatureGUID(guid) then
+					if guid and DBM:IsCreatureGUID(guid) then
 						targetList[DBM:GetCIDFromGUID(guid)] = foundUnit
 					end
 				end
