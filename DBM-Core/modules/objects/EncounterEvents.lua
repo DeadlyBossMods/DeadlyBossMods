@@ -28,7 +28,7 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local targetName = encounterWarningInfo.targetName
 	local targetGUID = encounterWarningInfo.targetGUID
 	self:Debug("ENCOUNTER_WARNING fired for text: "..tostring(text).." with casterName: "..tostring(casterName).." and targetName: "..tostring(targetName).." and targetGUID: "..tostring(targetGUID), 2)
-	if self.Options.IgnoreBlizzAPI and not self.Options.DebugLevel == 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	local formattedTargetName = targetName
 	if targetGUID then
@@ -66,7 +66,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--Secrets
 	local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
-	if self.Options.IgnoreBlizzAPI and not self.Options.DebugLevel == 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end

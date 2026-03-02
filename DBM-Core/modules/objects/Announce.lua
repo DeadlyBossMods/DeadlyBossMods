@@ -337,7 +337,7 @@ function announcePrototype:SetText(customName)
 	self.spellName = spellName
 end
 
----Update icon onn object and nothing else.
+---Update icon on object and nothing else.
 ---<br>Does not change spellId/spellkey associated with weakauras/callbacks
 ---@param altSpellId string|number
 function announcePrototype:UpdateIcon(altSpellId)
