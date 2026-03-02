@@ -253,22 +253,36 @@ L.SpecWarn_FlashAlpha		= "闪烁透明度: %0.1f"
 L.SpecWarn_DemoButton		= "测试警报"
 L.SpecWarn_ResetMe			= "重置"
 L.SpecialWarnSoundOption	= "设置默认声音"
+--PreMidnight
+L.SpecialWarnHeader1		= "特殊警告 1: 设置影响您或您的操作的普通优先级警报选项"
+L.SpecialWarnHeader2		= "特殊警告 2: 设置影响每个人的正常优先级警报选项"
+L.SpecialWarnHeader3		= "特殊警告 3: 设置高优先级警报的选项"
+L.SpecialWarnHeader4		= "特殊警告 4: 设置高优先级“快躲开”等特殊警报选项"
+L.SpecialWarnHeader5		= "特殊警告 5: 设置警报选项，并包含玩家姓名"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "特殊警告 1: 暴雪定义的“中等警告”机制"
+L.SpecialWarnHeaderCritical			= "特殊警告 2: 暴雪定义的“重要警告”机制"
 
 -- Panel: Private Auras Frame
-L.Panel_PrivateAuras		= "私人光环"
-
-L.SetPAIconScale			= "图标缩放: %0.1f"--Not Finalized
-L.SetPATextScale			= "文字缩放: %0.1f"--Not Finalized
-
---PreMidnight
-L.SpecialWarnHeader1		= "类型 1: 设置影响您或您的操作的普通优先级警报选项"
-L.SpecialWarnHeader2		= "类型 2: 设置影响每个人的正常优先级警报选项"
-L.SpecialWarnHeader3		= "类型 3: 设置高优先级警报的选项"
-L.SpecialWarnHeader4		= "类型 4: 设置高优先级“快躲开”等特殊警报选项"
-L.SpecialWarnHeader5		= "类型 5: 设置警报选项，并包含玩家姓名"
---Post Midnight
-L.SpecialWarnHeaderMedium			= "暴雪定义的“中等警告”机制"
-L.SpecialWarnHeaderCritical			= "暴雪定义的“重要警告”机制"
+L.Panel_PrivateAuras				= "私人光环"
+L.Area_PersonalPrivateAuras			= "个人私人光环选项"
+L.EnablePersonalPrivateAuraIcons	= "在屏幕上显示个人私人光环图标"--复选框
+L.EnablePersonalPrivateAuraText		= "覆盖暴雪私人光环文字信息缩放比例"--复选框
+L.UpscaleDurationText				= "放大图标上的持续时间文字"
+L.SetPAGrowDirection				= "扩展方向"
+L.SetPAIconScale					= "图标缩放比例：%d"
+L.SetPAMaxIcons						= "最大图标数量：%d"
+L.SetPAIconSpacing					= "图标间距：%d"
+L.SetPAStackScale					= "层数文字缩放比例：%d"
+L.SetPATextScale					= "文字信息缩放比例：%0.1f"
+L.HidePATooltip						= "禁用鼠标悬停时的法术提示框"
+L.HidePABorder						= "禁用边框"
+L.Area_TankPrivateAuras				= "副坦私人光环选项"
+L.EnableTankPrivateAuraIcons		= "在屏幕上显示副坦私人光环图标（需要坦克专精）"
+L.RIGHT								= "右"
+L.LEFT								= "左"
+L.UP								= "上"
+L.DOWN								= "下"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "聊天窗口消息"
@@ -296,8 +310,7 @@ L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示�
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同公会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 L.WorldBuffAlert			= "在您的位面启动世界增益释放时显示警报信息和计时器。(探索服不可用)"
 L.RaidDiffChangedAlert		= "当团队副本难度改变时显示警报信息"
-L.RaidDiffChangedRaidOnly		= "仅在团队模式下，当团队副本难度改变时显示警报信息 (注意: 不转换成团队不会显示)"
-
+L.RaidDiffChangedRaidOnly	= "仅在团队模式下，当团队副本难度改变时显示警报信息 (注意: 不转换成团队不会显示)"
 L.DungeonDiffChangedAlert	= "当地下城难度改变时显示警报信息"
 
 L.Area_BugAlerts			= "错误报告选项"
@@ -394,20 +407,20 @@ L.CBTPhase					= "阶段转换"
 L.CBTImportant				= "玩家重要技能"
 --Dropdown Options
 --Special Announce Dropdowns
-L.SAOne						= "全局声音1 (个人)"
-L.SATwo						= "全局声音2 (所有人)"
-L.SAThree					= "全局声音3 (优先行动)"
-L.SAFour					= "全局声音4 (优先躲开)"
+L.SAOne						= "语音包/特殊警告声音1"
+L.SATwo						= "语音包/特殊警告声音2"
+L.SAThree					= "语音包/特殊警告声音3"
+L.SAFour					= "语音包/特殊警告声音4"
 --Timer Dropdowns
 L.ColorDropGeneric			= "通用技能配色"
-L.ColorDrop1				= "小怪来临配色"
-L.ColorDrop2				= "AOE技能配色"
-L.ColorDrop3				= "点名技能配色"
-L.ColorDrop4				= "打断技能配色"
-L.ColorDrop5				= "剧情配色"
-L.ColorDrop6				= "阶段转换配色"
-L.CDDImportant1				= "重要 1 配色"
-L.CDDImportant2				= "重要 2 配色"
+L.ColorDrop1				= "小怪来临 配色1"
+L.ColorDrop2				= "AOE技能 配色2"
+L.ColorDrop3				= "点名技能 配色3"
+L.ColorDrop4				= "打断技能 配色4"
+L.ColorDrop5				= "剧情 配色5"
+L.ColorDrop6				= "阶段转换 配色6"
+L.CDDImportant1				= "重要 配色1"
+L.CDDImportant2				= "重要 配色2"
 --Countdown Dropdowns
 L.CVoiceOne					= "全局倒数 1"
 L.CVoiceTwo					= "全局倒数 2"
