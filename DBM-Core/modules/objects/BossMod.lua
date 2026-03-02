@@ -1016,14 +1016,15 @@ do
 			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
 			if timerCountdown ~= 0 then
 				if not self.tlTimerEvents then self.tlTimerEvents = {} end
+				local countSizePath = DBM.Options.CountSize == 3 and "threecount.ogg" or "fivecount.ogg"
 				if type(timerCountdown) == "string" then
-					path = timerCountdown.."fivecount.ogg"
+					path = timerCountdown..countSizePath
 				elseif timerCountdown == 2 then
-					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\fivecount.ogg"
+					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\" .. countSizePath
 				elseif timerCountdown == 3 then
-					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\fivecount.ogg"
+					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\" .. countSizePath
 				elseif timerCountdown == 1 then
-					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\fivecount.ogg"
+					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\" .. countSizePath
 				end
 				--Unlike private aura sounds, this api accepts both file data ID AND path
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
