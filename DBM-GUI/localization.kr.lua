@@ -321,6 +321,8 @@ L.CountdownVoice2			= "2순위 초읽기 음성 설정"
 L.CountdownVoice3			= "3순위 초읽기 음성 설정"
 L.PullVoice					= "풀링 타이머 음성 설정"
 L.VoicePackChoice			= "음성 경고에 쓸 음성팩 설정"
+L.CountdownStartTime			= "블리자드 기본 타이머 초읽기 시작 시간 설정"
+L.CountStart					= "%d초 전"
 L.MissingVoicePack				= "음성팩 찾을 수 없음 (%s)"
 L.Area_CountdownOptions		= "초읽기 설정"
 L.Area_VoicePackReplace		= "음성팩 대체 설정 (사용시 음성팩의 효과음이 출력되며 기본 효과음 대체)"
@@ -476,7 +478,7 @@ L.Area_SoundOptions					= "효과음 설정"
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "기능 끄기 및 필터"
 L.Area_DBMFiltersSetup		= "DBM 기능 필터 가이드"
-L.Area_BlizzFiltersSetup	= "블리자드 기능 필터 가이드"
+L.Area_BlizzFiltersSetup	= "블리자드 기본 기능 필터 가이드"
 
 -- Panel: Toggle DBM Features
 L.Panel_SpamFilter			= "DBM 기능 끄기"
@@ -569,7 +571,7 @@ L.SpamSpecRoleSwitch				= "'대상 변경' &amp; '쫄 등장' 경고 빼기 (텍
 L.SpamSpecRoleGTFO					= "'바닥 피하기' 경고 빼기 (텍스트와 효과음 전부)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "블리자드 기능 차단"
+L.Panel_HideBlizzard				= "블리자드 기본 기능 차단"
 --Toast
 L.Area_HideToast					= "블리자드 토스트 알림 비활성화 (팝업)"
 L.HideGarrisonUpdates				= "보스 전투 중 추종자 토스트 알림 숨기기"
@@ -588,7 +590,7 @@ L.DisableSFX					= "보스 전투 중 효과 음량 비활성화"
 L.DisableAmbiance					= "보스 전투 중 환경 음량 비활성화"
 L.DisableMusic						= "보스 전투 중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard			= "그 외 블리자드 성가신 요소 비활성화 및 숨김"
+L.Area_HideBlizzard			= "그 외 성가신 블리자드 기본 UI 요소 비활성화 및 숨김"
 L.HideBossEmoteFrame		= "보스 전투 중 보스 경고 숨기기"
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
 L.HideQuestTooltips			= "보스 전투 중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
