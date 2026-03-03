@@ -964,6 +964,10 @@ do
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
 	function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
+		if not C_UnitAuras.AuraIsPrivate(auraspellId) then
+			DBM:AddMsg("Attempted to register private aura sound for spell ID " .. tostring(auraspellId) .. " which is not a private aura. This will not work and is likely a mistake. Please report this to DBM authors.")
+			return
+		end
 		if DBM.Options.DontPlayPrivateAuraSound then return end
 		local optionId
 		if type(auraspellId) == "table" then
