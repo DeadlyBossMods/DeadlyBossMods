@@ -23,7 +23,7 @@
 ## X-DBM-Mod-MapID: 2930
 ## X-DBM-Mod-LoadCID: 249776,244424,244762,248864
 ## X-DBM-Mod-MinCoreRevision: 17286
-## X-DBM-Mod-MinExpansion: 12
+## X-DBM-Mod-MinExpansion: 11
 
 Cragpine.lua
 Luashal.lua

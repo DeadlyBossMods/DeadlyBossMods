@@ -22,13 +22,14 @@ private.hardCodedTimers = {
 --{ Name = "shouldShowChatMessage", Type = "bool", Nilable = false },
 --{ Name = "shouldShowWarning", Type = "bool", Nilable = false },
 function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
-	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
-	if self.Options.HideDBMWarnings then return end
 	--Secrets
 	local text = encounterWarningInfo.text
 	local casterName = encounterWarningInfo.casterName
 	local targetName = encounterWarningInfo.targetName
 	local targetGUID = encounterWarningInfo.targetGUID
+	self:Debug("ENCOUNTER_WARNING fired for text: "..tostring(text).." with casterName: "..tostring(casterName).." and targetName: "..tostring(targetName).." and targetGUID: "..tostring(targetGUID), 2)
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.HideDBMWarnings then return end
 	local formattedTargetName = targetName
 	if targetGUID then
 		local _, className = GetPlayerInfoByGUID(targetGUID)
@@ -58,11 +59,6 @@ end
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --/run C_EncounterTimeline.AddEditModeEvents()
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
-	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
-	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
-	if self.Options.HideDBMBars then return end
-	if self.Options.DontShowBossTimers and source == 0 then return end
-	if self.Options.DontShowUserTimers and source == 1 then return end
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = remaining or eventInfo.duration
@@ -70,6 +66,12 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--Secrets
 	local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
+	if self.Options.HideDBMBars then return end
+	if self.Options.DontShowBossTimers and source == 0 then return end
+	if self.Options.DontShowUserTimers and source == 1 then return end
+	self:Debug("ENCOUNTER_TIMELINE_EVENT_ADDED fired for spellID: "..tostring(spellId).." with spellName: "..tostring(spellName).." and duration: "..tostring(duration).." and state: "..tostring(eventState), 3)
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
@@ -91,7 +93,6 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	else
 		DBT:CreateBar(duration, eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	end
-	self:Debug("ENCOUNTER_TIMELINE_EVENT_ADDED fired for spellID: "..tostring(spellId).." with spellName: "..tostring(spellName).." and duration: "..tostring(duration).." and state: "..tostring(eventState), 3)
 end
 
 

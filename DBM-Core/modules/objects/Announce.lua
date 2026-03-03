@@ -337,6 +337,13 @@ function announcePrototype:SetText(customName)
 	self.spellName = spellName
 end
 
+---Update icon on object and nothing else.
+---<br>Does not change spellId/spellkey associated with weakauras/callbacks
+---@param altSpellId string|number
+function announcePrototype:UpdateIcon(altSpellId)
+	self.icon = DBM:ParseSpellIcon(altSpellId, self.announceType, self.icon)
+end
+
 ---Not to be confused with SetText, which only sets the text of object.
 ---<br>This changes actual ID so announce callback also swaps ID for WAs
 ---@param altSpellId string|number

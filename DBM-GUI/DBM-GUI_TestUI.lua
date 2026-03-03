@@ -14,7 +14,9 @@ local function runTest(test, perspective)
 		allOnYou = perspective == "EverythingOnYou",
 		perspective = perspective ~= DEFAULT and perspective
 	}
-	DBM.Test:RunTest(test, nil, settings)
+	if DBM.Test then
+		DBM.Test:RunTest(test, nil, settings)
+	end
 end
 
 local importTranscriptorFrame
@@ -413,7 +415,7 @@ function DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	local foundTest
 	local function getTestEntries()
 		local values = {}
-		local tests = DBM.Test:GetTestsForMod(mod) or {}
+		local tests = (DBM.Test and DBM.Test:GetTestsForMod(mod)) or {}
 		for _, v in ipairs(tests) do
 			values[#values + 1] = {text = v.name, value = v} -- TODO: add extra info
 		end
