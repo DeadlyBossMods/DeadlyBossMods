@@ -4,6 +4,17 @@ local spokenAlertsPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpokenAlerts
 
 local spokenGeneralArea = spokenAlertsPanel:CreateArea(L.Area_VoiceSelection)
 
+local countdownVoiceSize = {
+	{
+		text	= L.CountStart:format(5),
+		value	= 5
+	},
+	{
+		text	= L.CountStart:format(3),
+		value	= 3
+	},
+}
+
 local CountSoundDropDown = spokenGeneralArea:CreateDropdown(L.CountdownVoice, DBM:GetCountSounds(), "DBM", "CountdownVoice", function(value)
 	DBM.Options.CountdownVoice = value
 	DBM:PlayCountSound(1, DBM.Options.CountdownVoice)
@@ -46,6 +57,13 @@ local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices
 end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown3, "TOPLEFT", 0, -45)
 VoiceDropDown.myheight = isNewDropdown and 25 or 20 -- TODO: +10 padding per dropdown text
+
+if DBM:IsRetail() then
+	local CountStartDropDown = spokenGeneralArea:CreateDropdown(L.CountdownStartTime, countdownVoiceSize, "DBM", "CountSize", function(value)
+		DBM.Options.CountSize = value
+	end, 180)
+	CountStartDropDown:SetPoint("TOPLEFT", CountSoundDropDown4, "TOPLEFT", 0, -45)
+end
 
 local voiceReplaceArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackReplace)
 local VPReplaceAnnounce		= voiceReplaceArea:CreateCheckButton(L.ReplacesAnnounce, true, nil, "VPReplacesAnnounce")
