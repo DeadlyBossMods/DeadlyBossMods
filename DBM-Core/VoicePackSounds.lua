@@ -337,6 +337,7 @@ local VPSound = {
 	["trapsincoming"] = 19,
 	["turnaway"] = 0,
 	["useextraaction"] = 0,
+	["usegate"] = 19,
 	["useitem"] = 0,
 	["uu"] = 0,
 	["watchfeet"] = 8,
