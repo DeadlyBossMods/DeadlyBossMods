@@ -6711,8 +6711,10 @@ do
 			if private.isRetail then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
-			self.Options.IgnoreBlizzAPI = false
-			fireEvent("DBM_ResumeBlizzAPI")
+			if self.Options.IgnoreBlizzAPI then
+				self.Options.IgnoreBlizzAPI = false
+				fireEvent("DBM_ResumeBlizzAPI")
+			end
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
