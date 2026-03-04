@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.28 alpha"--Core version
+DBM.DisplayVersion = "12.0.28"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 22--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -412,6 +412,7 @@ DBM.DefaultOptions = {
 	ZoneCombatSyncing = false,--HIDDEN power user feature to improve zone scanning accuracy in niche cases
 	HasShownMidnightPopup = false,
 	IgnoreBlizzAPI = false,
+	fixBlizzApi = false,
 	DisableSWSound = false,
 	--Private Aura Frame Options
 	--Player
@@ -950,6 +951,12 @@ function DBM:IgnoreBlizzardAPI()
 	DBM.Options.IgnoreBlizzAPI = true
 end
 bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
+
+---@param self DBMModOrDBM
+function DBM:FixBlizzardAPI()
+	DBM.Options.fixBlizzApi = true
+end
+bossModPrototype.FixBlizzardAPI = DBM.FixBlizzardAPI
 
 ---Disables special warning sounds from firing from blizz ENCOUNTER_WARNING api events. Use this when a module has aleady registered custom event sounds
 ---@param self DBMModOrDBM
@@ -2245,6 +2252,7 @@ do
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
+			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
 		end
 		self:UnregisterEvents("ADDON_LOADED")
@@ -6704,6 +6712,7 @@ do
 			end
 			self.Options.IgnoreBlizzAPI = false
 			self.Options.DisableSWSound = false
+			self.Options.fixBlizzApi = false
 			if event then
 				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
 			end
