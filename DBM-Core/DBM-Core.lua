@@ -6712,7 +6712,7 @@ do
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			self.Options.IgnoreBlizzAPI = false
-			fireEvent("DBM_resumeBlizzAPI")
+			fireEvent("DBM_ResumeBlizzAPI")
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
