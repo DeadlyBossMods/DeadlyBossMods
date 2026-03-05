@@ -949,6 +949,7 @@ bossModPrototype.MidRestrictionsActive = DBM.MidRestrictionsActive
 ---@param self DBMModOrDBM
 function DBM:IgnoreBlizzardAPI()
 	DBM.Options.IgnoreBlizzAPI = true
+	fireEvent("DBM_IgnoreBlizzAPI")
 end
 bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
 
@@ -6710,7 +6711,10 @@ do
 			if private.isRetail then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
-			self.Options.IgnoreBlizzAPI = false
+			if self.Options.IgnoreBlizzAPI then
+				self.Options.IgnoreBlizzAPI = false
+				fireEvent("DBM_ResumeBlizzAPI")
+			end
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
