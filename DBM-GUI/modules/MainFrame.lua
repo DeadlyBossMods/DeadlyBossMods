@@ -2,6 +2,7 @@ local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isMop = WOW_PROJECT_ID == (WOW_PROJECT_MISTS_CLASSIC or 19)
 
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
@@ -180,6 +181,13 @@ frame:CreateTab(dungeonOptions)
 local worldBossOptions = CreateFrame("Frame", "$parentWorldBossOptions", frame)
 worldBossOptions.name = L.OTabWorld
 frame:CreateTab(worldBossOptions)
+
+if isRetail or isMop then
+	---@class DBM_GUI_OptionsFrameScenarioOptions: Frame
+	local scenarioTab = CreateFrame("Frame", "$parentScenarioOptions", frame)
+	scenarioTab.name = L.OTabScenarios
+	frame:CreateTab(scenarioTab)
+end
 
 ---@class DBM_GUI_OptionsFrameOtherOptions: Frame
 local otherTab = CreateFrame("Frame", "$parentOtherOptions", frame)

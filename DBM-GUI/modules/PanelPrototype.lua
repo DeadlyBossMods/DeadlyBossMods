@@ -738,10 +738,12 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 		frameType = 3
 	elseif frameType == "WORLDBOSS" then
 		frameType = 4
-	elseif frameType == "tools" then
-		frameType = 6
-	else
+	elseif frameType == "SCENARIO" then
 		frameType = 5
+	elseif frameType == "tools" then
+		frameType = 7
+	else
+		frameType = 6
 	end
 	---@diagnostic disable-next-line: undefined-field
 	self.tabs[frameType]:CreateCategory(panel, self and self.frame and self.frame.ID, forceChildren)
