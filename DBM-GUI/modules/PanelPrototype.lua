@@ -745,6 +745,7 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 	else
 		frameType = DBM_GUI.Enums.Tabs.OTHER
 	end
+	panel.tab = frameType
 	---@diagnostic disable-next-line: undefined-field
 	self.tabs[frameType]:CreateCategory(panel, self and self.frame and self.frame.ID, forceChildren)
 	PanelPrototype:SetLastObj(panel)
