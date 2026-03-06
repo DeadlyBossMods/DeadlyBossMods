@@ -20,6 +20,7 @@ L.OTabPlugins				= "Outro"--Scenarios, PVP, Delves (11.x), Solo/Challenge conten
 L.OTabOptions				= "Opções"
 L.OTabTools					= "Ferramentas"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout					= "Sobre"
+L.SearchMatches             = "%d correspondências"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck			= "Verificação de latência"

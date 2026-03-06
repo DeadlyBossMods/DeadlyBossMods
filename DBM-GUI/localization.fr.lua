@@ -9,15 +9,16 @@ L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leybola@EU-Sargera
 L.Website					= "Suivre MysticalOS pour les actualités et les mises à jour |cFF73C2FBhttps://allmylinks.com/mysticalos|r"
 L.WebsiteButton				= "Site web"
 
-L.OTabBosses						= "Options de Boss"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids							= "Raids"--Just pve raids
-L.OTabDungeons						= "Donjons"--Just dungeons
-L.OTabWorld							= "Boss mondiaux"--Since there are so many world mods, enough to get their own tab
-L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
-L.OTabPlugins						= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
-L.OTabOptions						= "Options"
-L.OTabTools							= "Outils"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
-L.OTabAbout							= "À propos"
+L.OTabBosses				= "Boss"--Deprecated and will be deleted once tabs no longer use this
+L.OTabRaids					= "Raids"--Just pve raids
+L.OTabDungeons				= "Donjons"--Just dungeons
+L.OTabWorld					= "Boss mondiaux"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios				= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins				= "Autre"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
+L.OTabOptions				= "Options"
+L.OTabTools					= "Outils"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabAbout					= "À propos"
+L.SearchMatches             = "%d correspondances"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck			= "Vérification de latence"

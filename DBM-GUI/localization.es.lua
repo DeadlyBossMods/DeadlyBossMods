@@ -10,15 +10,16 @@ L.TranslationBy 			= "Saispai, Woopy"
 L.Website					= "Sigue a MysticalOS para noticias y actualizaciones |cFF73C2FBhttps://allmylinks.com/mysticalos|r"
 L.WebsiteButton				= "Página web"
 
-L.OTabBosses	= "Jefes"
-L.OTabRaids		= "Bandas"
-L.OTabDungeons	= "Mazmorras"
-L.OTabWorld		= "Jefes del mundo"--Since there are so many world mods, enough to get their own tab
-L.OTabScenarios	= "Gestas"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
-L.OTabPlugins	= "Otros" --Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
-L.OTabOptions	= "Opciones"
-L.OTabTools		= "Herramientas"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
-L.OTabAbout		= "Acerca de"
+L.OTabBosses	            = "Jefes"
+L.OTabRaids		            = "Bandas"
+L.OTabDungeons	            = "Mazmorras"
+L.OTabWorld		            = "Jefes del mundo"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios	            = "Gestas"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins	            = "Otros" --Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
+L.OTabOptions	            = "Opciones"
+L.OTabTools		            = "Herramientas"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
+L.OTabAbout		            = "Acerca de"
+L.SearchMatches             = "%d coincidencias"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck			= "Verificación de latencia"
