@@ -10,7 +10,7 @@ local DBM_GUI = DBM_GUI
 local DBM = DBM
 local CreateFrame = CreateFrame
 local frame = _G["DBM_GUI_OptionsFrame"]
-local SEARCH = _G.SEARCH or "Search"
+local SEARCH = SEARCH or "Search"
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 frame:ClearAllPoints()
@@ -216,8 +216,17 @@ local frameSearchBox = CreateFrame("EditBox", "$parentSearchBox", frame, "InputB
 frameSearchBox:SetSize(140, 24)
 frameSearchBox:SetAutoFocus(false)
 frameSearchBox:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -36, -39)
+local searchUpdateTimer
 frameSearchBox:SetScript("OnTextChanged", function(self)
-	frame:SetSearchQuery(self:GetText())
+	if searchUpdateTimer then
+		searchUpdateTimer:Cancel()
+		searchUpdateTimer = nil
+	end
+	local text = self:GetText()
+	searchUpdateTimer = C_Timer.NewTimer(0.2, function()
+		frame:SetSearchQuery(text)
+		searchUpdateTimer = nil
+	end)
 end)
 frameSearchBox:SetScript("OnEnterPressed", function(self)
 	self:ClearFocus()
@@ -252,6 +261,14 @@ frameSearchCount:SetText("")
 frame.searchBox = frameSearchBox
 frame.searchClearButton = frameSearchClear
 frame.searchCountText = frameSearchCount
+
+-- Cancel any pending debounce timer when the frame hides
+frame:HookScript("OnHide", function()
+	if searchUpdateTimer then
+		searchUpdateTimer:Cancel()
+		searchUpdateTimer = nil
+	end
+end)
 
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
 local frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")
@@ -315,6 +332,7 @@ function frame:LoadAndShowFrame(subFrame)
 				if mod.id == subFrame.modId then
 					DBM_GUI:CreateBossModPanel(mod, subFrame.isTest)
 					subFrame.isLoaded = true
+					frame:InvalidateSearchCache(subFrame)
 					break
 				end
 			end
