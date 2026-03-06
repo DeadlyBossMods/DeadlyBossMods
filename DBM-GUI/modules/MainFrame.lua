@@ -177,17 +177,17 @@ local dungeonOptions = CreateFrame("Frame", "$parentDungeonOptions", frame)
 dungeonOptions.name = L.OTabDungeons
 frame:CreateTab(dungeonOptions)
 
----@class DBM_GUI_OptionsFrameWorldBossOptions: Frame
-local worldBossOptions = CreateFrame("Frame", "$parentWorldBossOptions", frame)
-worldBossOptions.name = L.OTabWorld
-frame:CreateTab(worldBossOptions)
-
 if isRetail or isMop then
 	---@class DBM_GUI_OptionsFrameScenarioOptions: Frame
 	local scenarioTab = CreateFrame("Frame", "$parentScenarioOptions", frame)
 	scenarioTab.name = L.OTabScenarios
 	frame:CreateTab(scenarioTab)
 end
+
+---@class DBM_GUI_OptionsFrameWorldBossOptions: Frame
+local worldBossOptions = CreateFrame("Frame", "$parentWorldBossOptions", frame)
+worldBossOptions.name = L.OTabWorld
+frame:CreateTab(worldBossOptions)
 
 ---@class DBM_GUI_OptionsFrameOtherOptions: Frame
 local otherTab = CreateFrame("Frame", "$parentOtherOptions", frame)
