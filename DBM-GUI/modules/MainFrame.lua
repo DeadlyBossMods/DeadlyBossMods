@@ -162,6 +162,17 @@ frameWebsiteButtonA:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://allmylinks.com/mysticalos")
 end)
 
+DBM_GUI.Enums = {}
+DBM_GUI.Enums.Tabs = {
+	CORE = 1,
+	RAIDS = 2,
+	DUNGEONS = 3,
+	SCENARIOS = 4,
+	WORLD_BOSSES = (isRetail or isMop) and 5 or 4,
+	OTHER = (isRetail or isMop) and 6 or 5,
+	TOOLS = (isRetail or isMop) and 7 or 6,
+}
+
 ---@class DBM_GUI_OptionsFrameDBMOptions: Frame
 local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
 DBMOptions.name = L.OTabOptions
@@ -197,7 +208,6 @@ frame:CreateTab(otherTab)
 ---@class DBM_GUI_OptionsFrameToolsOptions: Frame
 local toolsTab = CreateFrame("Frame", "$parentToolsOptions", frame)
 toolsTab.name = L.OTabTools
-DBM_GUI.TOOLS_TAB = toolsTab
 frame:CreateTab(toolsTab)
 
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
