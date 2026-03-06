@@ -197,6 +197,7 @@ frame:CreateTab(otherTab)
 ---@class DBM_GUI_OptionsFrameToolsOptions: Frame
 local toolsTab = CreateFrame("Frame", "$parentToolsOptions", frame)
 toolsTab.name = L.OTabTools
+DBM_GUI.TOOLS_TAB = toolsTab
 frame:CreateTab(toolsTab)
 
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
