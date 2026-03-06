@@ -11,13 +11,15 @@ if isWrath then
 	DDM = LibStub:GetLibrary("LibDropDownMenu")
 end
 
-local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
+local select, ipairs, mfloor, mmax, mmin = select, ipairs, math.floor, math.max, math.min
 local strlower, strgsub, tsort, tconcat = string.lower, string.gsub, table.sort, table.concat
 local CreateFrame, GameFontNormal, C_Timer = CreateFrame, GameFontNormal, C_Timer
 local DBM = DBM
 
 ---@class DBMOptionsFrame: Frame
 ---@field tabs table
+---@field searchClearButton Button
+---@field searchCountText FontString
 ---@field LoadAndShowFrame fun(self: DBMOptionsFrame, subFrame: Frame)
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
 
@@ -73,7 +75,7 @@ local function normalizeSearchText(text)
 	text = strgsub(text, "|H.-|h(.-)|h", "%1")
 	text = strgsub(text, "<.->", " ")
 	text = strgsub(text, "%s+", " ")
-	return strlower(text)
+	return strlower(text:match("^%s*(.-)%s*$") or "")
 end
 
 local function appendSearchText(parts, text)
@@ -153,6 +155,10 @@ local function getFrameSearchData(targetFrame)
 	return searchTextCache[targetFrame]
 end
 
+function frame:InvalidateSearchCache(targetFrame)
+	searchTextCache[targetFrame] = nil
+end
+
 local function updateAbilityToggleTexture(abilityFrame)
 	local toggleButton = _G[abilityFrame:GetName() .. "Button"]
 	if toggleButton and toggleButton.toggle then
@@ -184,6 +190,10 @@ function frame:SetSearchQuery(query)
 	local listFrame = _G[self:GetName() .. "List"]
 	if listFrame then
 		listFrame.offset = 0
+		local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+		if scrollBar and scrollBar.SetValue then
+			scrollBar:SetValue(0)
+		end
 	end
 	self:UpdateMenuFrame()
 end
@@ -205,11 +215,13 @@ function frame:IsFrameSearchable(targetFrame, tabId)
 	if tabId == DBM_GUI.Enums.Tabs.CORE or tabId == DBM_GUI.Enums.Tabs.TOOLS then
 		return true
 	end
-	if targetFrame.addonId and C_AddOns and C_AddOns.IsAddOnLoaded then
-		return C_AddOns.IsAddOnLoaded(targetFrame.addonId)
-	end
+	-- Only index frames once their UI has actually been built to avoid caching empty results
 	if targetFrame.isLoaded then
 		return true
+	end
+	if targetFrame.addonId and C_AddOns and C_AddOns.IsAddOnLoaded then
+		-- Addon is loaded but only index the frame once it has child controls
+		return C_AddOns.IsAddOnLoaded(targetFrame.addonId) and select("#", targetFrame:GetChildren()) > 0
 	end
 	return select("#", targetFrame:GetChildren()) > 0
 end
@@ -223,7 +235,7 @@ function frame:GetSearchResults()
 	for tabId, tabData in ipairs(DBM_GUI.tabs) do
 		for _, node in ipairs(tabData.buttons) do
 			local targetFrame = node.frame
-			if targetFrame and not seen[targetFrame] and self:IsFrameSearchable(targetFrame, tabId) then
+			if targetFrame and not seen[targetFrame] and not node.hidden and self:IsFrameSearchable(targetFrame, tabId) then
 				seen[targetFrame] = true
 				local data = getFrameSearchData(targetFrame)
 				if data.fullText:find(query, 1, true) then
