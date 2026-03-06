@@ -10,6 +10,7 @@ local DBM_GUI = DBM_GUI
 local DBM = DBM
 local CreateFrame = CreateFrame
 local frame = _G["DBM_GUI_OptionsFrame"]
+local SEARCH = SEARCH or "Search"
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 frame:ClearAllPoints()
@@ -210,6 +211,65 @@ local toolsTab = CreateFrame("Frame", "$parentToolsOptions", frame)
 toolsTab.name = L.OTabTools
 frame:CreateTab(toolsTab)
 
+---@class DBMOptionsFrameSearchBox: EditBox
+local frameSearchBox = CreateFrame("EditBox", "$parentSearchBox", frame, "InputBoxTemplate")
+frameSearchBox:SetSize(140, 24)
+frameSearchBox:SetAutoFocus(false)
+frameSearchBox:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -36, -39)
+local searchUpdateTimer
+frameSearchBox:SetScript("OnTextChanged", function(self)
+	if searchUpdateTimer then
+		searchUpdateTimer:Cancel()
+		searchUpdateTimer = nil
+	end
+	local text = self:GetText()
+	searchUpdateTimer = C_Timer.NewTimer(0.2, function()
+		frame:SetSearchQuery(text)
+		searchUpdateTimer = nil
+	end)
+end)
+frameSearchBox:SetScript("OnEnterPressed", function(self)
+	self:ClearFocus()
+end)
+frameSearchBox:SetScript("OnEscapePressed", function(self)
+	if self:GetText() ~= "" then
+		self:SetText("")
+	else
+		self:ClearFocus()
+	end
+end)
+
+local frameSearchLabel = frame:CreateFontString("$parentSearchLabel", "ARTWORK", "GameFontHighlightSmall")
+frameSearchLabel:SetPoint("RIGHT", frameSearchBox, "LEFT", -8, 0)
+frameSearchLabel:SetText(SEARCH)
+
+local frameSearchClear = CreateFrame("Button", "$parentSearchClear", frame, "UIPanelButtonTemplate")
+frameSearchClear:SetSize(24, 24)
+frameSearchClear:SetPoint("LEFT", frameSearchBox, "RIGHT", 4, 0)
+frameSearchClear:SetText("x")
+frameSearchClear:Hide()
+frameSearchClear:SetScript("OnClick", function()
+	frameSearchBox:SetText("")
+	frameSearchBox:SetFocus()
+end)
+
+local frameSearchCount = frame:CreateFontString("$parentSearchCount", "ARTWORK", "GameFontHighlightSmall")
+frameSearchCount:SetPoint("BOTTOMLEFT", frameSearchBox, "TOPLEFT", 2, 1)
+frameSearchCount:SetJustifyH("LEFT")
+frameSearchCount:SetText("")
+
+frame.searchBox = frameSearchBox
+frame.searchClearButton = frameSearchClear
+frame.searchCountText = frameSearchCount
+
+-- Cancel any pending debounce timer when the frame hides
+frame:HookScript("OnHide", function()
+	if searchUpdateTimer then
+		searchUpdateTimer:Cancel()
+		searchUpdateTimer = nil
+	end
+end)
+
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
 local frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 frameWrapper:SetPoint("TOPLEFT", 15, -59)
@@ -249,6 +309,9 @@ frameList.offset = 0
 frameList.buttons = {}
 
 function frame:LoadAndShowFrame(subFrame)
+	if subFrame.tab and self.tab ~= subFrame.tab then
+		self:ShowTab(subFrame.tab)
+	end
 	self:ClearSelection()
 	self.tabs[self.tab].selection = subFrame
 	if not subFrame.isLoaded then
@@ -269,6 +332,7 @@ function frame:LoadAndShowFrame(subFrame)
 				if mod.id == subFrame.modId then
 					DBM_GUI:CreateBossModPanel(mod, subFrame.isTest)
 					subFrame.isLoaded = true
+					frame:InvalidateSearchCache(subFrame)
 					break
 				end
 			end
@@ -288,6 +352,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
+		self.element.searchMatchedControl = self.searchMatchedControl
 		frame:LoadAndShowFrame(self.element)
 	end)
 	if i == 1 then
