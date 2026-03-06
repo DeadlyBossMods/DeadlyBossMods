@@ -204,7 +204,7 @@ function frame:SetSearchStatus(searching, count)
 	end
 	if self.searchCountText then
 		if searching then
-			self.searchCountText:SetText((count or 0) .. " matches")
+			self.searchCountText:SetText(L.SearchMatches:format(count or 0))
 		else
 			self.searchCountText:SetText("")
 		end
