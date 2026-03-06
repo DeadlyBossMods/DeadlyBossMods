@@ -971,7 +971,7 @@ do
 			optionId = auraspellId
 		end
 		if not C_UnitAuras.AuraIsPrivate(optionId) then
-			DBM:AddMsg("Attempted to register private aura sound for spell ID " .. tostring(optionId) .. " which is not a private aura. Please report this to DBM authors.")
+			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " which is not a private aura. This sound will not be registered.", 2)
 			return
 		end
 		if DBM.Options.DontPlayPrivateAuraSound then return end
@@ -1005,17 +1005,18 @@ do
 	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
-		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
-			--Set Color
-			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-			local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
-			if type(encounterEventId) == "table" then
-				for _, id in ipairs(encounterEventId) do
-					C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
-				end
-			else
-				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
+		--And we want to set colors on any bar even if it's "disabled" for now
+		local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
+		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
+		if type(encounterEventId) == "table" then
+			for _, id in ipairs(encounterEventId) do
+				C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
 			end
+		else
+			C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+		end
+		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Countdown
 			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
 			if timerCountdown ~= 0 then

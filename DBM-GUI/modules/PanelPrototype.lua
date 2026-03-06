@@ -731,18 +731,21 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 	panel.isSeason = isSeason
 	panel:Hide()
 	if frameType == "option" then
-		frameType = 1
+		frameType = DBM_GUI.Enums.Tabs.CORE
 	elseif frameType == "RAID" then
-		frameType = 2
+		frameType = DBM_GUI.Enums.Tabs.RAIDS
 	elseif frameType == "PARTY" then
-		frameType = 3
+		frameType = DBM_GUI.Enums.Tabs.DUNGEONS
+	elseif frameType == "SCENARIO" then
+		frameType = DBM_GUI.Enums.Tabs.SCENARIOS
 	elseif frameType == "WORLDBOSS" then
-		frameType = 4
+		frameType = DBM_GUI.Enums.Tabs.WORLD_BOSSES
 	elseif frameType == "tools" then
-		frameType = 6
+		frameType = DBM_GUI.Enums.Tabs.TOOLS
 	else
-		frameType = 5
+		frameType = DBM_GUI.Enums.Tabs.OTHER
 	end
+	panel.tab = frameType
 	---@diagnostic disable-next-line: undefined-field
 	self.tabs[frameType]:CreateCategory(panel, self and self.frame and self.frame.ID, forceChildren)
 	PanelPrototype:SetLastObj(panel)

@@ -461,7 +461,7 @@ do
 				newBar:SetText(id)
 				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
-			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+			if (DBM.Options.fixBlizzApi or self.Options.HideLongBars) and timer > (self.Options.HiddenBarTime or 60) then
 				newBar:ResetAnimations()
 			end
 		else -- Create a new bar
@@ -533,7 +533,7 @@ do
 				newBar.alwaysHuge = true
 			end
 			-- Hidden bars that shouldn't be animated or shown yet
-			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+			if (DBM.Options.fixBlizzApi or self.Options.HideLongBars) and timer > (self.Options.HiddenBarTime or 60) then
 				newBar.isHidden = true
 				newBar.enlarged = false
 				tinsert(hiddenBars, newBar)
@@ -1280,7 +1280,7 @@ function barPrototype:Update(elapsed)
 			updateNeeded = true
 		end
 	end
-	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
+	if (DBM.Options.fixBlizzApi or barOptions.HideLongBars) and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = true
 		self.moving = nil
