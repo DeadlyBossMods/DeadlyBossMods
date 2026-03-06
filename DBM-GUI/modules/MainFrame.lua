@@ -183,8 +183,8 @@ worldBossOptions.name = L.OTabWorld
 frame:CreateTab(worldBossOptions)
 
 if isRetail or isMop then
-	---@class DBM_GUI_OptionsFrameDelvesOptions: Frame
-	local scenarioTab = CreateFrame("Frame", "$parentDelvesOptions", frame)
+	---@class DBM_GUI_OptionsFrameScenarioOptions: Frame
+	local scenarioTab = CreateFrame("Frame", "$parentScenarioOptions", frame)
 	scenarioTab.name = L.OTabScenarios
 	frame:CreateTab(scenarioTab)
 end
