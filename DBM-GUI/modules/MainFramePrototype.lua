@@ -24,6 +24,44 @@ local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSliceP
 local selectedPagePerTab = {}
 local searchTextCache = {}
 
+local function truncateTextWithEllipsis(fontString, text, maxWidth)
+	text = text or ""
+	fontString:SetText(text)
+	if fontString:GetStringWidth() <= maxWidth then
+		return text
+	end
+
+	local chars = {}
+	for ch in text:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+		chars[#chars + 1] = ch
+	end
+	if #chars == 0 then
+		return text
+	end
+
+	local ellipsis = "..."
+	fontString:SetText(ellipsis)
+	if fontString:GetStringWidth() > maxWidth then
+		return ""
+	end
+
+	local best = ellipsis
+	local low, high = 1, #chars
+	while low <= high do
+		local mid = math.floor((low + high) / 2)
+		local candidate = table.concat(chars, "", 1, mid) .. ellipsis
+		fontString:SetText(candidate)
+		if fontString:GetStringWidth() <= maxWidth then
+			best = candidate
+			low = mid + 1
+		else
+			high = mid - 1
+		end
+	end
+
+	return best
+end
+
 local function normalizeSearchText(text)
 	if not text then
 		return ""
@@ -256,13 +294,23 @@ end
 function frame:DisplayButton(button, element, displayName, hideToggle, matchControl)
 	local depth = hideToggle and 1 or element.depth
 	local haschilds = not hideToggle and element.haschilds
+	local textLeft = (haschilds and 14 or 6) + 8 * depth
 	button:Show()
 	button:SetHeight(18)
 	button.element = element
 	button.searchMatchedControl = matchControl
 	element.selectButton = button
 	button.text:ClearAllPoints()
-	button.text:SetPoint("LEFT", (haschilds and 14 or 6) + 8 * depth, 2)
+	button.text:SetPoint("LEFT", textLeft, 2)
+	button.text:SetPoint("RIGHT", button, "RIGHT", -6, 2)
+	button.text:SetJustifyH("LEFT")
+	if button.text.SetWordWrap then
+		button.text:SetWordWrap(false)
+	end
+	if button.text.SetNonSpaceWrap then
+		button.text:SetNonSpaceWrap(false)
+	end
+	button.text:SetWidth(button:GetWidth() - textLeft - 6)
 	button.toggle:ClearAllPoints()
 	button.toggle:SetPoint("LEFT", 8 * depth - 2, 1)
 	button.text:SetFontObject(haschilds and GameFontNormal or GameFontWhite)
@@ -274,7 +322,8 @@ function frame:DisplayButton(button, element, displayName, hideToggle, matchCont
 	else
 		button.toggle:Hide()
 	end
-	button.text:SetText(displayName or element.displayName)
+	local fullDisplayName = displayName or element.displayName or ""
+	button.text:SetText(truncateTextWithEllipsis(button.text, fullDisplayName, button:GetWidth() - textLeft - 6))
 	button.text:Show()
 end
 
@@ -286,14 +335,16 @@ function frame:HighlightSearchControl(control)
 		---@class DBMOptionsFrameSearchHighlight: Frame, BackdropTemplate
 		local highlight = CreateFrame("Frame", nil, _G["DBM_GUI_OptionsFramePanelContainer"], "BackdropTemplate")
 		highlight.backdropInfo = {
+			bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", -- 137056
 			edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
-			edgeSize = 12,
+			edgeSize = 16,
 			tileEdge = true
 		}
 		highlight:ApplyBackdrop()
-		highlight:SetBackdropBorderColor(1, 0.82, 0, 0.95)
+		highlight:SetBackdropColor(1, 0.82, 0, 0.2)
+		highlight:SetBackdropBorderColor(1, 0.82, 0, 1)
 		highlight:SetFrameStrata("DIALOG")
-		highlight:SetFrameLevel(200)
+		highlight:SetFrameLevel(300)
 		highlight:Hide()
 		self.searchHighlightFrame = highlight
 		self.searchHighlightToken = 0
@@ -302,10 +353,10 @@ function frame:HighlightSearchControl(control)
 	local token = self.searchHighlightToken
 	self.searchHighlightFrame:ClearAllPoints()
 	self.searchHighlightFrame:SetParent(control:GetParent() or _G["DBM_GUI_OptionsFramePanelContainer"])
-	self.searchHighlightFrame:SetPoint("TOPLEFT", control, "TOPLEFT", -3, 3)
-	self.searchHighlightFrame:SetPoint("BOTTOMRIGHT", control, "BOTTOMRIGHT", 3, -3)
+	self.searchHighlightFrame:SetPoint("TOPLEFT", control, "TOPLEFT", -5, 5)
+	self.searchHighlightFrame:SetPoint("BOTTOMRIGHT", control, "BOTTOMRIGHT", 5, -5)
 	self.searchHighlightFrame:Show()
-	C_Timer.After(2.5, function()
+	C_Timer.After(6, function()
 		if self.searchHighlightToken == token and self.searchHighlightFrame then
 			self.searchHighlightFrame:Hide()
 		end

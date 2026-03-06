@@ -213,9 +213,9 @@ frame:CreateTab(toolsTab)
 
 ---@class DBMOptionsFrameSearchBox: EditBox
 local frameSearchBox = CreateFrame("EditBox", "$parentSearchBox", frame, "InputBoxTemplate")
-frameSearchBox:SetSize(220, 20)
+frameSearchBox:SetSize(140, 24)
 frameSearchBox:SetAutoFocus(false)
-frameSearchBox:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -36, -33)
+frameSearchBox:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -36, -39)
 frameSearchBox:SetScript("OnTextChanged", function(self)
 	frame:SetSearchQuery(self:GetText())
 end)
@@ -231,11 +231,11 @@ frameSearchBox:SetScript("OnEscapePressed", function(self)
 end)
 
 local frameSearchLabel = frame:CreateFontString("$parentSearchLabel", "ARTWORK", "GameFontHighlightSmall")
-frameSearchLabel:SetPoint("BOTTOMLEFT", frameSearchBox, "TOPLEFT", 0, 2)
+frameSearchLabel:SetPoint("RIGHT", frameSearchBox, "LEFT", -8, 0)
 frameSearchLabel:SetText(SEARCH)
 
 local frameSearchClear = CreateFrame("Button", "$parentSearchClear", frame, "UIPanelButtonTemplate")
-frameSearchClear:SetSize(20, 20)
+frameSearchClear:SetSize(24, 24)
 frameSearchClear:SetPoint("LEFT", frameSearchBox, "RIGHT", 4, 0)
 frameSearchClear:SetText("x")
 frameSearchClear:Hide()
@@ -245,7 +245,8 @@ frameSearchClear:SetScript("OnClick", function()
 end)
 
 local frameSearchCount = frame:CreateFontString("$parentSearchCount", "ARTWORK", "GameFontHighlightSmall")
-frameSearchCount:SetPoint("TOPLEFT", frameSearchBox, "BOTTOMLEFT", 2, -2)
+frameSearchCount:SetPoint("BOTTOMLEFT", frameSearchBox, "TOPLEFT", 2, 1)
+frameSearchCount:SetJustifyH("LEFT")
 frameSearchCount:SetText("")
 
 frame.searchBox = frameSearchBox
