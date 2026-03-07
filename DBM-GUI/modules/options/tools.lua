@@ -6,7 +6,7 @@ local DBM_GUI = DBM_GUI
 
 DBM_GUI.CAT_TOOLS = DBM_GUI:CreateNewPanel("TOOLS", "tools")
 
-DBM_GUI.tabs[6].buttons[1].hidden = true -- Hide the category
+DBM_GUI.tabs[DBM_GUI.Enums.Tabs.TOOLS].buttons[1].hidden = true -- Hide the category
 
 local area		= DBM_GUI.CAT_TOOLS:CreateArea(L.OTabTools)
 

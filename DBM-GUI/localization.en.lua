@@ -10,7 +10,6 @@ L.TranslationBy 					= nil -- your name here, localizers!
 L.Website							= "Please follow MysticalOS for news/updates |cFF73C2FBhttps://allmylinks.com/mysticalos|r. Thanks for years of support!"
 L.WebsiteButton						= "Website"
 
-L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
 L.OTabRaids							= "Raids"
 L.OTabDungeons						= "Dungeons"
 L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
@@ -19,6 +18,8 @@ L.OTabPlugins						= "Other"--Scenarios, PVP, Delves (11.x), Solo/Challenge cont
 L.OTabOptions						= "Core Options"
 L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout							= "About"
+L.SearchMatch						= "%d match"
+L.SearchMatches						= "%d matches"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck				= "Latency Check"

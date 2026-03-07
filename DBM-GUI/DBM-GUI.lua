@@ -939,7 +939,7 @@ do
 			return
 		end
 		local seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
-		local seasonCategoryTab = DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons]
+		local seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
 		local hasAnyMod = false
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
 			local challengeMode = challengeModeIds[challengeMap]

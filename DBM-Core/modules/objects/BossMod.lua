@@ -1008,7 +1008,7 @@ do
 		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
 		--And we want to set colors on any bar even if it's "disabled" for now
 		local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType)
+		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType, true)
 		if type(encounterEventId) == "table" then
 			for _, id in ipairs(encounterEventId) do
 				C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
