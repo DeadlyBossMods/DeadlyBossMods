@@ -416,19 +416,19 @@ local TextOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_TextOffSetX, -50, 
 TextOffsetXSlider:SetPoint("TOPLEFT", BorderColorSmall, "BOTTOMLEFT", 0, -50)
 TextOffsetXSlider:SetValue(DBT.Options.TextXOffset)
 TextOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TextXOffset"))
-TextOffsetXSlider.myheight = 0
+TextOffsetXSlider.myheight = 50
 
 local TextOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 120)
 TextOffsetYSlider:SetPoint("TOPLEFT", TextOffsetXSlider, "TOPRIGHT", 40, 0)
 TextOffsetYSlider:SetValue(DBT.Options.TextYOffset)
 TextOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TextYOffset"))
-TextOffsetYSlider.myheight = 50
+TextOffsetYSlider.myheight = 0
 
 local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
 	DBT:SetOption("Sort", value)
 end)
 SortDropDown:SetPoint("TOPLEFT", TextOffsetXSlider, "BOTTOMLEFT", 0, -40)
-SortDropDown.myheight = 75
+SortDropDown.myheight = 85
 
 local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 350, -90)
@@ -554,13 +554,13 @@ local HugeTextOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_TextOffSetX, -5
 HugeTextOffsetXSlider:SetPoint("TOPLEFT", HugeBorderColorLarge, "BOTTOMLEFT", 0, -50)
 HugeTextOffsetXSlider:SetValue(DBT.Options.HugeTextXOffset)
 HugeTextOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeTextXOffset"))
-HugeTextOffsetXSlider.myheight = 0
+HugeTextOffsetXSlider.myheight = 50
 
 local HugeTextOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 120)
 HugeTextOffsetYSlider:SetPoint("TOPLEFT", HugeTextOffsetXSlider, "TOPRIGHT", 40, 0)
 HugeTextOffsetYSlider:SetValue(DBT.Options.HugeTextYOffset)
 HugeTextOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeTextYOffset"))
-HugeTextOffsetYSlider.myheight = 50
+HugeTextOffsetYSlider.myheight = 0
 
 local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
 	DBT:SetOption("HugeSort", value)
