@@ -54,7 +54,7 @@ function mod:OnLimitedCombatStart()
 	timerParasiteExpulsionCD:SetTimeline(62)
 	specWarnPrimordialRoar:SetAlert(133, "carefly", 2, 3)
 	timerPrimordialRoarCD:SetTimeline(133)
-	specWarnFixateParasite:SetAlert(1254112, "fixateyou", 19, 3, 0)--Iffy, but maybe
+	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)--Iffy, but maybe
 
 	self:EnablePrivateAuraSound(1243270, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1241844, "debuffyou", 17)
