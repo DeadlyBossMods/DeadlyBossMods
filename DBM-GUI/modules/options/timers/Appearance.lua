@@ -377,23 +377,17 @@ end, function(self)
 end)
 BackgroundColorSmall:SetPoint("TOPLEFT", saturateSlider, "BOTTOMLEFT", isNewDropdown and 0 or 20, -25)
 BackgroundColorSmall:SetColorRGB(DBT.Options.BackgroundColorR, DBT.Options.BackgroundColorG, DBT.Options.BackgroundColorB)
-BackgroundColorSmall.myheight = 65
+BackgroundColorSmall.myheight = 60
 
-local BackgroundAlphaSlider = BarSetupSmall:CreateSlider(L.BarBackgroundOpacity, 0, 1, 0.05, 310)
-BackgroundAlphaSlider:SetPoint("TOPLEFT", BackgroundColorSmall, "BOTTOMLEFT", isNewDropdown and 0 or -20, -10)
+local BackgroundAlphaSlider = BarSetupSmall:CreateSlider(L.BarBackgroundOpacity, 0, 1, 0.05, 170)
+BackgroundAlphaSlider:SetPoint("TOPLEFT", BackgroundColorSmall, "TOPRIGHT", 40, -15)
 BackgroundAlphaSlider:SetValue(DBT.Options.BackgroundAlpha)
 BackgroundAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BackgroundAlpha"))
 BackgroundAlphaSlider.myheight = 0
 
 local BorderEnabledCheckbox = BarSetupSmall:CreateCheckButton(L.EnableBarBorder, false, nil, nil, "BorderEnabled")
-BorderEnabledCheckbox:SetPoint("TOPLEFT", BackgroundAlphaSlider, "BOTTOMLEFT", isNewDropdown and 0 or 10, -15)
-BorderEnabledCheckbox.myheight = 0
-
-local BorderSizeSlider = BarSetupSmall:CreateSlider(L.BarBorderSize, 0.1, 3, 0.1, 310)
-BorderSizeSlider:SetPoint("TOPLEFT", BorderEnabledCheckbox, "BOTTOMLEFT", isNewDropdown and 0 or -10, -10)
-BorderSizeSlider:SetValue(DBT.Options.BorderSize)
-BorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BorderSize"))
-BorderSizeSlider.myheight = 0
+BorderEnabledCheckbox:SetPoint("TOPLEFT", BackgroundColorSmall, "BOTTOMLEFT", 0, -30)
+BorderEnabledCheckbox.myheight = 30
 
 local BorderColorSmall = BarSetupSmall:CreateColorSelect(L.BarBorderColor, function(_, r, g, b)
 	DBT:SetOption("BorderColorR", r)
@@ -402,15 +396,22 @@ local BorderColorSmall = BarSetupSmall:CreateColorSelect(L.BarBorderColor, funct
 end, function(self)
 	self:SetColorRGB(DBT.DefaultOptions.BorderColorR, DBT.DefaultOptions.BorderColorG, DBT.DefaultOptions.BorderColorB, true)
 end)
-BorderColorSmall:SetPoint("TOPLEFT", BorderSizeSlider, "BOTTOMLEFT", isNewDropdown and 0 or 20, -10)
+BorderColorSmall:SetPoint("TOPLEFT", BorderEnabledCheckbox, "BOTTOMLEFT", 0, 0)
 BorderColorSmall:SetColorRGB(DBT.Options.BorderColorR, DBT.Options.BorderColorG, DBT.Options.BorderColorB)
-BorderColorSmall.myheight = 65
+BorderColorSmall.myheight = 60
+
+local BorderSizeSlider = BarSetupSmall:CreateSlider(L.BarBorderSize, 0.1, 3, 0.1, 170)
+BorderSizeSlider:SetPoint("TOPLEFT", BorderColorSmall, "TOPRIGHT", 40, -15)
+--color2Type1:SetPoint("TOPLEFT", color1Type1, "TOPRIGHT", 10, 0)
+BorderSizeSlider:SetValue(DBT.Options.BorderSize)
+BorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BorderSize"))
+BorderSizeSlider.myheight = 0
 
 local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
 	DBT:SetOption("Sort", value)
 end)
-SortDropDown:SetPoint("TOPLEFT", BorderColorSmall, "BOTTOMLEFT", isNewDropdown and 0 or -20, -25)
-SortDropDown.myheight = 70
+SortDropDown:SetPoint("TOPLEFT", BorderColorSmall, "BOTTOMLEFT", 0, -40)
+SortDropDown.myheight = 75
 
 local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 350, -90)
@@ -499,23 +500,17 @@ end, function(self)
 end)
 HugeBackgroundColorLarge:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", isNewDropdown and 0 or 20, -25)
 HugeBackgroundColorLarge:SetColorRGB(DBT.Options.HugeBackgroundColorR, DBT.Options.HugeBackgroundColorG, DBT.Options.HugeBackgroundColorB)
-HugeBackgroundColorLarge.myheight = 65
+HugeBackgroundColorLarge.myheight = 60
 
-local HugeBackgroundAlphaSlider = BarSetupHuge:CreateSlider(L.BarBackgroundOpacity, 0, 1, 0.05, 310)
-HugeBackgroundAlphaSlider:SetPoint("TOPLEFT", HugeBackgroundColorLarge, "BOTTOMLEFT", isNewDropdown and 0 or -20, -10)
+local HugeBackgroundAlphaSlider = BarSetupHuge:CreateSlider(L.BarBackgroundOpacity, 0, 1, 0.05, 170)
+HugeBackgroundAlphaSlider:SetPoint("TOPLEFT", HugeBackgroundColorLarge, "TOPRIGHT", 40, -15)
 HugeBackgroundAlphaSlider:SetValue(DBT.Options.HugeBackgroundAlpha)
 HugeBackgroundAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBackgroundAlpha"))
 HugeBackgroundAlphaSlider.myheight = 0
 
 local HugeBorderEnabledCheckbox = BarSetupHuge:CreateCheckButton(L.EnableBarBorder, false, nil, nil, "HugeBorderEnabled")
-HugeBorderEnabledCheckbox:SetPoint("TOPLEFT", HugeBackgroundAlphaSlider, "BOTTOMLEFT", isNewDropdown and 0 or 10, -15)
-HugeBorderEnabledCheckbox.myheight = 0
-
-local HugeBorderSizeSlider = BarSetupHuge:CreateSlider(L.BarBorderSize, 0.1, 3, 0.1, 310)
-HugeBorderSizeSlider:SetPoint("TOPLEFT", HugeBorderEnabledCheckbox, "BOTTOMLEFT", isNewDropdown and 0 or -10, -10)
-HugeBorderSizeSlider:SetValue(DBT.Options.HugeBorderSize)
-HugeBorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBorderSize"))
-HugeBorderSizeSlider.myheight = 0
+HugeBorderEnabledCheckbox:SetPoint("TOPLEFT", HugeBackgroundColorLarge, "BOTTOMLEFT", 0, -30)
+HugeBorderEnabledCheckbox.myheight = 30
 
 local HugeBorderColorLarge = BarSetupHuge:CreateColorSelect(L.BarBorderColor, function(_, r, g, b)
 	DBT:SetOption("HugeBorderColorR", r)
@@ -524,14 +519,21 @@ local HugeBorderColorLarge = BarSetupHuge:CreateColorSelect(L.BarBorderColor, fu
 end, function(self)
 	self:SetColorRGB(DBT.DefaultOptions.HugeBorderColorR, DBT.DefaultOptions.HugeBorderColorG, DBT.DefaultOptions.HugeBorderColorB, true)
 end)
-HugeBorderColorLarge:SetPoint("TOPLEFT", HugeBorderSizeSlider, "BOTTOMLEFT", isNewDropdown and 0 or 20, -10)
+HugeBorderColorLarge:SetPoint("TOPLEFT", HugeBorderEnabledCheckbox, "BOTTOMLEFT", 0, 0)
 HugeBorderColorLarge:SetColorRGB(DBT.Options.HugeBorderColorR, DBT.Options.HugeBorderColorG, DBT.Options.HugeBorderColorB)
-HugeBorderColorLarge.myheight = 65
+HugeBorderColorLarge.myheight = 60
+
+local HugeBorderSizeSlider = BarSetupHuge:CreateSlider(L.BarBorderSize, 0.1, 3, 0.1, 170)
+HugeBorderSizeSlider:SetPoint("TOPLEFT", HugeBorderColorLarge, "TOPRIGHT", 40, -15)
+HugeBorderSizeSlider:SetValue(DBT.Options.HugeBorderSize)
+HugeBorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBorderSize"))
+HugeBorderSizeSlider.myheight = 0
 
 local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
 	DBT:SetOption("HugeSort", value)
 end)
-SortDropDownLarge:SetPoint("TOPLEFT", HugeBorderColorLarge, "BOTTOMLEFT", isNewDropdown and 0 or -20, -25)
+SortDropDownLarge:SetPoint("TOPLEFT", HugeBorderColorLarge, "BOTTOMLEFT", 0, -40)
+SortDropDownLarge.myheight = 30
 
 local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 350, -105)

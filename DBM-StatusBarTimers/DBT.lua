@@ -1520,7 +1520,12 @@ function barPrototype:ApplyStyle()
 	local borderBottom = _G[frame_name.."BarBorderBottom"]
 	local borderLeft = _G[frame_name.."BarBorderLeft"]
 	local borderRight = _G[frame_name.."BarBorderRight"]
-	local borderEnabled = enlarged and barOptions.HugeBorderEnabled or barOptions.BorderEnabled
+	local borderEnabled
+	if enlarged then
+		borderEnabled = barOptions.HugeBorderEnabled
+	else
+		borderEnabled = barOptions.BorderEnabled
+	end
 	if borderEnabled and borderTop and borderBottom and borderLeft and borderRight then
 		local borderSize = enlarged and (barOptions.HugeBorderSize or 1) or (barOptions.BorderSize or 1)
 		local borderColorR = enlarged and barOptions.HugeBorderColorR or barOptions.BorderColorR
