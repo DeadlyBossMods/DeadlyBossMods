@@ -96,6 +96,8 @@ DBT.DefaultOptions = {
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,
+	TextXOffset = 0,
+	TextYOffset = 0,
 	Width = 183,
 	Height = 20,
 	Alpha = 0.8,
@@ -111,6 +113,8 @@ DBT.DefaultOptions = {
 	EnlargeBarTime = 9.9,
 	HugeBarXOffset = 0,
 	HugeBarYOffset = 0,
+	HugeTextXOffset = 0,
+	HugeTextYOffset = 0,
 	HugeWidth = 200,
 	HugeHeight = 20,
 	HugeAlpha = 1,
@@ -1567,8 +1571,14 @@ function barPrototype:ApplyStyle()
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
-	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
+	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)
+	local textYOffset = enlarged and (barOptions.HugeTextYOffset or 0) or (barOptions.TextYOffset or 0)
+	timer:ClearAllPoints()
+	timer:SetPoint("RIGHT", bar, "RIGHT", -1 + textXOffset, 0.5 + textYOffset)
+	name:ClearAllPoints()
+	name:SetPoint("LEFT", bar, "LEFT", 3 + textXOffset, textYOffset)
+	name:SetPoint("RIGHT", timer, "LEFT", -7, 0)
 	if barOptions.FontShadow then
 		name:SetShadowOffset(1, -1)
 		timer:SetShadowOffset(1, -1)
