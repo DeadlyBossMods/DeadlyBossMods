@@ -328,27 +328,6 @@ do
 		local background = bar:CreateTexture("$parentBackground", "BACKGROUND")
 		background:SetAllPoints()
 		background:SetColorTexture(self.Options.BackgroundColorR, self.Options.BackgroundColorG, self.Options.BackgroundColorB, self.Options.BackgroundAlpha)
-		-- Border textures
-		local borderTop = bar:CreateTexture("$parentBorderTop", "BORDER")
-		borderTop:SetTexture("Interface\\Buttons\\WHITE8X8")
-		borderTop:SetPoint("TOPLEFT", bar, "TOPLEFT")
-		borderTop:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
-		borderTop:SetHeight(1)
-		local borderBottom = bar:CreateTexture("$parentBorderBottom", "BORDER")
-		borderBottom:SetTexture("Interface\\Buttons\\WHITE8X8")
-		borderBottom:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
-		borderBottom:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
-		borderBottom:SetHeight(1)
-		local borderLeft = bar:CreateTexture("$parentBorderLeft", "BORDER")
-		borderLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
-		borderLeft:SetPoint("TOPLEFT", bar, "TOPLEFT")
-		borderLeft:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
-		borderLeft:SetWidth(1)
-		local borderRight = bar:CreateTexture("$parentBorderRight", "BORDER")
-		borderRight:SetTexture("Interface\\Buttons\\WHITE8X8")
-		borderRight:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
-		borderRight:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
-		borderRight:SetWidth(1)
 		local spark = bar:CreateTexture("$parentSpark", "OVERLAY")
 		spark:SetPoint("CENTER", bar, "CENTER")
 		spark:SetSize(32, 64)
@@ -1516,17 +1495,36 @@ function barPrototype:ApplyStyle()
 		end
 	end
 	-- Apply border settings
-	local borderTop = _G[frame_name.."BarBorderTop"]
-	local borderBottom = _G[frame_name.."BarBorderBottom"]
-	local borderLeft = _G[frame_name.."BarBorderLeft"]
-	local borderRight = _G[frame_name.."BarBorderRight"]
 	local borderEnabled
 	if enlarged then
 		borderEnabled = barOptions.HugeBorderEnabled
 	else
 		borderEnabled = barOptions.BorderEnabled
 	end
-	if borderEnabled and borderTop and borderBottom and borderLeft and borderRight then
+	local borderTop = _G[frame_name.."BarBorderTop"]
+	if borderEnabled then
+		if not borderTop then
+			-- Lazily create border textures the first time they are needed
+			borderTop = bar:CreateTexture("$parentBorderTop", "BORDER")
+			borderTop:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderTop:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderTop:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			local borderBottom = bar:CreateTexture("$parentBorderBottom", "BORDER")
+			borderBottom:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderBottom:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			borderBottom:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+			local borderLeft = bar:CreateTexture("$parentBorderLeft", "BORDER")
+			borderLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderLeft:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderLeft:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			local borderRight = bar:CreateTexture("$parentBorderRight", "BORDER")
+			borderRight:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderRight:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			borderRight:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+		end
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
 		local borderSize = enlarged and (barOptions.HugeBorderSize or 1) or (barOptions.BorderSize or 1)
 		local borderColorR = enlarged and barOptions.HugeBorderColorR or barOptions.BorderColorR
 		local borderColorG = enlarged and barOptions.HugeBorderColorG or barOptions.BorderColorG
@@ -1544,7 +1542,10 @@ function barPrototype:ApplyStyle()
 		borderBottom:Show()
 		borderLeft:Show()
 		borderRight:Show()
-	elseif borderTop and borderBottom and borderLeft and borderRight then
+	elseif borderTop then
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
 		borderTop:Hide()
 		borderBottom:Hide()
 		borderLeft:Hide()
