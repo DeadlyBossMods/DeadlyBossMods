@@ -377,6 +377,11 @@ L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Private A
 L.Slider_BarWidth 					= "Bar width: %d"
 L.Slider_BarScale 					= "Bar scale: %0.2f"
 L.BarSaturation						= "Bar saturation for small timers (When huge bars are disabled): %0.2f"
+L.BarBackgroundColor				= "Background color"
+L.BarBackgroundOpacity				= "Background opacity: %0.2f"
+L.EnableBarBorder					= "Enable bar border"
+L.BarBorderSize						= "Border size: %0.1f"
+L.BarBorderColor					= "Border color"
 L.MidnightNote						= "Note: Due to API restrictions in Midnight. DBM is unable to support having different start and end colors. Only start color will be used."
 
 --Types
