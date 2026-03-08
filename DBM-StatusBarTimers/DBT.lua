@@ -159,6 +159,7 @@ DBT.DefaultOptions = {
 	Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp",
 	Font = "standardFont",
 	FontFlag = "None",
+	FontShadow = false,
 	BarStyle = "NoAnim",
 	Skin = "",
 	-- Small bar background settings
@@ -1568,6 +1569,13 @@ function barPrototype:ApplyStyle()
 	name:SetFont(barFont, barFontSize, barFontFlag)
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
+	if barOptions.FontShadow then
+		name:SetShadowOffset(1, -1)
+		timer:SetShadowOffset(1, -1)
+	else
+		name:SetShadowOffset(0, 0)
+		timer:SetShadowOffset(0, 0)
+	end
 	self:Update(0)
 end
 
