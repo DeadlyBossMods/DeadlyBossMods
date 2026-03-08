@@ -382,6 +382,8 @@ L.BarBackgroundOpacity				= "Background opacity: %0.2f"
 L.EnableBarBorder					= "Enable bar border"
 L.BarBorderSize						= "Border size: %0.1f"
 L.BarBorderColor					= "Border color"
+L.Slider_TextOffSetX				= "Text offset X: %d"
+L.Slider_TextOffSetY				= "Text offset Y: %d"
 L.MidnightNote						= "Note: Due to API restrictions in Midnight. DBM is unable to support having different start and end colors. Only start color will be used."
 
 --Types

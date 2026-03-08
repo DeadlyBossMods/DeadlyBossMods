@@ -412,10 +412,22 @@ BorderSizeSlider:SetValue(DBT.Options.BorderSize)
 BorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BorderSize"))
 BorderSizeSlider.myheight = 0
 
+local TextOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_TextOffSetX, -50, 50, 1, 120)
+TextOffsetXSlider:SetPoint("TOPLEFT", BorderColorSmall, "BOTTOMLEFT", 0, -50)
+TextOffsetXSlider:SetValue(DBT.Options.TextXOffset)
+TextOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TextXOffset"))
+TextOffsetXSlider.myheight = 0
+
+local TextOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 120)
+TextOffsetYSlider:SetPoint("TOPLEFT", TextOffsetXSlider, "TOPRIGHT", 40, 0)
+TextOffsetYSlider:SetValue(DBT.Options.TextYOffset)
+TextOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TextYOffset"))
+TextOffsetYSlider.myheight = 50
+
 local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
 	DBT:SetOption("Sort", value)
 end)
-SortDropDown:SetPoint("TOPLEFT", BorderColorSmall, "BOTTOMLEFT", 0, -40)
+SortDropDown:SetPoint("TOPLEFT", TextOffsetXSlider, "BOTTOMLEFT", 0, -40)
 SortDropDown.myheight = 75
 
 local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
@@ -446,6 +458,8 @@ barResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(BarScaleSlider, "Scale", true)
 	resetDBTValueToDefault(BarOffsetXSlider, "BarXOffset", true)
 	resetDBTValueToDefault(BarOffsetYSlider, "BarYOffset", true)
+	resetDBTValueToDefault(TextOffsetXSlider, "TextXOffset", true)
+	resetDBTValueToDefault(TextOffsetYSlider, "TextYOffset", true)
 	resetDBTValueToDefault(AlphaSlider, "Alpha", true)
 	resetDBTValueToDefault(BackgroundAlphaSlider, "BackgroundAlpha", true)
 	resetDBTValueToDefault(BorderSizeSlider, "BorderSize", true)
@@ -536,10 +550,22 @@ HugeBorderSizeSlider:SetValue(DBT.Options.HugeBorderSize)
 HugeBorderSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBorderSize"))
 HugeBorderSizeSlider.myheight = 0
 
+local HugeTextOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_TextOffSetX, -50, 50, 1, 120)
+HugeTextOffsetXSlider:SetPoint("TOPLEFT", HugeBorderColorLarge, "BOTTOMLEFT", 0, -50)
+HugeTextOffsetXSlider:SetValue(DBT.Options.HugeTextXOffset)
+HugeTextOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeTextXOffset"))
+HugeTextOffsetXSlider.myheight = 0
+
+local HugeTextOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 120)
+HugeTextOffsetYSlider:SetPoint("TOPLEFT", HugeTextOffsetXSlider, "TOPRIGHT", 40, 0)
+HugeTextOffsetYSlider:SetValue(DBT.Options.HugeTextYOffset)
+HugeTextOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeTextYOffset"))
+HugeTextOffsetYSlider.myheight = 50
+
 local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
 	DBT:SetOption("HugeSort", value)
 end)
-SortDropDownLarge:SetPoint("TOPLEFT", HugeBorderColorLarge, "BOTTOMLEFT", 0, -40)
+SortDropDownLarge:SetPoint("TOPLEFT", HugeTextOffsetXSlider, "BOTTOMLEFT", 0, -40)
 SortDropDownLarge.myheight = 30
 
 local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
@@ -570,6 +596,8 @@ hugeBarResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(HugeBarScaleSlider, "HugeScale", true)
 	resetDBTValueToDefault(HugeBarOffsetXSlider, "HugeBarXOffset", true)
 	resetDBTValueToDefault(HugeBarOffsetYSlider, "HugeBarYOffset", true)
+	resetDBTValueToDefault(HugeTextOffsetXSlider, "HugeTextXOffset", true)
+	resetDBTValueToDefault(HugeTextOffsetYSlider, "HugeTextYOffset", true)
 	resetDBTValueToDefault(HugeAlphaSlider, "HugeAlpha", true)
 	resetDBTValueToDefault(HugeBackgroundAlphaSlider, "HugeBackgroundAlpha", true)
 	resetDBTValueToDefault(HugeBorderSizeSlider, "HugeBorderSize", true)
