@@ -208,6 +208,9 @@ end)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 FontFlagDropDown.myheight = 0
 
+local FontShadow = BarSetup:CreateCheckButton(L.FontShadow, false, nil, nil, "FontShadow")
+FontShadow:SetPoint("LEFT", FontFlagDropDown, "RIGHT", 35, 0)
+
 local function onIconDropdownSelected(value)
 	if value == 'LEFT' then
 		DBT.Options.IconLeft = not DBT.Options.IconLeft
