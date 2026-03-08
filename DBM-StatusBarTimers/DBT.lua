@@ -1495,7 +1495,12 @@ function barPrototype:ApplyStyle()
 		end
 	end
 	-- Apply border settings
-	local borderEnabled = enlarged and barOptions.HugeBorderEnabled or barOptions.BorderEnabled
+	local borderEnabled
+	if enlarged then
+		borderEnabled = barOptions.HugeBorderEnabled
+	else
+		borderEnabled = barOptions.BorderEnabled
+	end
 	local borderTop = _G[frame_name.."BarBorderTop"]
 	if borderEnabled then
 		if not borderTop then
