@@ -215,6 +215,7 @@ L.DBMLOOTREMINDER 					= "ATTENTION : Vous avez installé le module tiers DBM-Lo
 L.UPDATE_REQUIRES_RELAUNCH 			= "ATTENTION : Cette mise à jour de " .. L.DBM .. " ne fonctionnera pas correctement tant que vous n’aurez pas redémarré complètement le client du jeu. La mise à jour inclut des fichiers ou des modifications de fichiers .toc qui nécessitent un redémarrage pour être pris en compte."
 L.OUT_OF_DATE_NAG 					= "Votre version de " .. L.DBM .. " est périmée. Il est recommandé de la mettre à jour pour ne pas manquer des alertes, des chronomètres ou des notifications importantes pour votre raid."
 L.PLATER_NP_AURAS_MSG 				= L.DBM .. " offre une fonctionnalité avancée permettant d'afficher les temps de recharge des ennemis avec des icônes sur les plaques de nom. Cette option est activée par défaut pour la plupart des utilisateurs, mais pour les utilisateurs de Plater, elle est désactivée par défaut. Pour tirer pleinement parti de DBM et Plater, il est recommandé de l'activer dans la section 'Buff Special' des options de Plater. Si vous ne souhaitez plus voir ce message, vous pouvez désactiver complètement l'option 'Icônes de recharge sur les plaques de nom' dans les options des plaques de nom ou dans les options globales de DBM."
+L.HARDCODED_FALLBACK					= L.DBM .. " a détecté un résultat inattendu dans un module codé en dur. " .. L.DBM .. " utilisera les minuteurs et alertes Blizzard pour cette rencontre."
 
 L.MOVABLE_BAR					= "Bougez-moi !"
 L.MOVABLE_FRAMES 				= "Cadres déplaçables"
