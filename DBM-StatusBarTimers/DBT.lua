@@ -96,6 +96,8 @@ DBT.DefaultOptions = {
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,
+	TextXOffset = 0,
+	TextYOffset = 0,
 	Width = 183,
 	Height = 20,
 	Alpha = 0.8,
@@ -111,6 +113,8 @@ DBT.DefaultOptions = {
 	EnlargeBarTime = 9.9,
 	HugeBarXOffset = 0,
 	HugeBarYOffset = 0,
+	HugeTextXOffset = 0,
+	HugeTextYOffset = 0,
 	HugeWidth = 200,
 	HugeHeight = 20,
 	HugeAlpha = 1,
@@ -122,6 +126,18 @@ DBT.DefaultOptions = {
 	HugeBarsEnabled = true,
 	HugeTimerPoint = "CENTER",
 	HugeSort = "Sort",
+	-- Huge bar background settings
+	HugeBackgroundColorR = 0,
+	HugeBackgroundColorG = 0,
+	HugeBackgroundColorB = 0,
+	HugeBackgroundAlpha = 0.3,
+	-- Huge bar border settings
+	HugeBorderEnabled = false,
+	HugeBorderSize = 1,
+	HugeBorderColorR = 0,
+	HugeBorderColorG = 0,
+	HugeBorderColorB = 0,
+	HugeBorderAlpha = 1,
 	-- Hidden bar
 	HiddenBarTime = 60,
 	HideLongBars = false,
@@ -147,8 +163,21 @@ DBT.DefaultOptions = {
 	Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp",
 	Font = "standardFont",
 	FontFlag = "None",
+	FontShadow = false,
 	BarStyle = "NoAnim",
-	Skin = ""
+	Skin = "",
+	-- Small bar background settings
+	BackgroundColorR = 0,
+	BackgroundColorG = 0,
+	BackgroundColorB = 0,
+	BackgroundAlpha = 0.3,
+	-- Small bar border settings
+	BorderEnabled = false,
+	BorderSize = 1,
+	BorderColorR = 0,
+	BorderColorG = 0,
+	BorderColorB = 0,
+	BorderAlpha = 1
 }
 
 ---@class DBTBar
@@ -301,9 +330,9 @@ do
 		bar:SetMinMaxValues(0, 1)
 		bar:SetStatusBarTexture(self.Options.Texture)
 		bar:SetStatusBarColor(1, 0.7, 0)
-		local background = bar:CreateTexture(nil, "BACKGROUND")
+		local background = bar:CreateTexture("$parentBackground", "BACKGROUND")
 		background:SetAllPoints()
-		background:SetColorTexture(0, 0, 0, 0.3)
+		background:SetColorTexture(self.Options.BackgroundColorR, self.Options.BackgroundColorG, self.Options.BackgroundColorB, self.Options.BackgroundAlpha)
 		local spark = bar:CreateTexture("$parentSpark", "OVERLAY")
 		spark:SetPoint("CENTER", bar, "CENTER")
 		spark:SetSize(32, 64)
@@ -1461,6 +1490,74 @@ function barPrototype:ApplyStyle()
 			--4 icons not supported in large icon mode to prevent users being dumb
 		end
 	end
+	-- Apply background color and opacity
+	local background = _G[frame_name.."BarBackground"]
+	if background then
+		if enlarged then
+			background:SetColorTexture(barOptions.HugeBackgroundColorR, barOptions.HugeBackgroundColorG, barOptions.HugeBackgroundColorB, barOptions.HugeBackgroundAlpha)
+		else
+			background:SetColorTexture(barOptions.BackgroundColorR, barOptions.BackgroundColorG, barOptions.BackgroundColorB, barOptions.BackgroundAlpha)
+		end
+	end
+	-- Apply border settings
+	local borderEnabled
+	if enlarged then
+		borderEnabled = barOptions.HugeBorderEnabled
+	else
+		borderEnabled = barOptions.BorderEnabled
+	end
+	local borderTop = _G[frame_name.."BarBorderTop"]
+	if borderEnabled then
+		if not borderTop then
+			-- Lazily create border textures the first time they are needed
+			-- Use ARTWORK layer with sublevel 1 so borders render above the bar fill (which uses ARTWORK sublevel 0)
+			-- but not on OVERLAY so they don't leak through tooltips/overlay frames
+			borderTop = bar:CreateTexture("$parentBorderTop", "ARTWORK", nil, 1)
+			borderTop:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderTop:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderTop:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			local borderBottom = bar:CreateTexture("$parentBorderBottom", "ARTWORK", nil, 1)
+			borderBottom:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderBottom:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			borderBottom:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+			local borderLeft = bar:CreateTexture("$parentBorderLeft", "ARTWORK", nil, 1)
+			borderLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderLeft:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderLeft:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			local borderRight = bar:CreateTexture("$parentBorderRight", "ARTWORK", nil, 1)
+			borderRight:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderRight:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			borderRight:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+		end
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
+		local borderSize = enlarged and (barOptions.HugeBorderSize or 1) or (barOptions.BorderSize or 1)
+		local borderColorR = enlarged and barOptions.HugeBorderColorR or barOptions.BorderColorR
+		local borderColorG = enlarged and barOptions.HugeBorderColorG or barOptions.BorderColorG
+		local borderColorB = enlarged and barOptions.HugeBorderColorB or barOptions.BorderColorB
+		local borderAlpha = enlarged and barOptions.HugeBorderAlpha or barOptions.BorderAlpha
+		borderTop:SetHeight(borderSize)
+		borderBottom:SetHeight(borderSize)
+		borderLeft:SetWidth(borderSize)
+		borderRight:SetWidth(borderSize)
+		borderTop:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderBottom:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderLeft:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderRight:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderTop:Show()
+		borderBottom:Show()
+		borderLeft:Show()
+		borderRight:Show()
+	elseif borderTop then
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
+		borderTop:Hide()
+		borderBottom:Hide()
+		borderLeft:Hide()
+		borderRight:Hide()
+	end
 	self:SetVariance()
 	self.frame:Show()
 	if sparkEnabled then
@@ -1474,8 +1571,21 @@ function barPrototype:ApplyStyle()
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
-	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
+	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)
+	local textYOffset = enlarged and (barOptions.HugeTextYOffset or 0) or (barOptions.TextYOffset or 0)
+	timer:ClearAllPoints()
+	timer:SetPoint("RIGHT", bar, "RIGHT", -1 + textXOffset, 0.5 + textYOffset)
+	name:ClearAllPoints()
+	name:SetPoint("LEFT", bar, "LEFT", 3 + textXOffset, textYOffset)
+	name:SetPoint("RIGHT", timer, "LEFT", -7, 0)
+	if barOptions.FontShadow then
+		name:SetShadowOffset(1, -1)
+		timer:SetShadowOffset(1, -1)
+	else
+		name:SetShadowOffset(0, 0)
+		timer:SetShadowOffset(0, 0)
+	end
 	self:Update(0)
 end
 

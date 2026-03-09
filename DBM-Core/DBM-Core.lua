@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.29 alpha"--Core version
+DBM.DisplayVersion = "12.0.30 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 3, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = 22--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -5515,9 +5515,6 @@ do
 	end
 
 	guildSyncHandlers["WBA"] = function(sender, protocol, bossName, faction, spellId, time) -- Classic only
-		if DBM:IsSeasonal("SeasonOfDiscovery") then -- All World Buffs are spammy in SoD, disable
-			return
-		end
 		if not protocol or protocol ~= 4 or private.isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName .. faction] and (GetTime() - lastBossEngage[bossName .. faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName .. faction] = GetTime()
@@ -6087,9 +6084,6 @@ do
 			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2)
 		end
 		if private.isClassic and not IsInInstance() then
-			if self:IsSeasonal("SeasonOfDiscovery") then -- All World Buffs are spammy in SoD, disable
-				return
-			end
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
 				SendWorldSync(self, 4, "WBA", "Onyxia\tHorde\t22888\t15\t4")
 			elseif msg:find(L.WORLD_BUFFS.allianceOny) then

@@ -216,6 +216,7 @@ L.DBMLOOTREMINDER 					= "AVISO: O módulo de terceiros DBM-LootReminder está i
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de " .. L.DBM .. " exige que o jogo seja reiniciado por completo para funcionar corretamente. A atualização inclui novos arquivos ou alterações no .toc que não podem ser carregadas via ReloadUI. Continuar sem reiniciar pode causar erros ou funcionalidades quebradas."
 L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM .. " está desatualizada, e este módulo de luta possui recursos mais recentes ou correções de bugs. Atualize para melhorar sua experiência neste encontro."
 L.PLATER_NP_AURAS_MSG 				= L.DBM .. " possui um recurso avançado que exibe cronômetros de recarga inimigos como ícones nas placas de nome. Isso está ativado por padrão para a maioria dos usuários, mas desativado nas opções do Plater. Para aproveitar ao máximo o DBM e o Plater, ative essa função no Plater em 'Buff Special'. Para não ver esta mensagem novamente, desative a opção 'Ícones de recarga nas placas de nome' nas configurações do DBM."
+L.HARDCODED_FALLBACK					= L.DBM .. " detectou um resultado inesperado em um módulo codificado internamente. " .. L.DBM .. " usará os temporizadores e avisos da Blizzard para este encontro."
 
 L.MOVABLE_BAR						= "Arraste-me!"
 L.MOVABLE_FRAMES 					= "Quadros arrastáveis"
