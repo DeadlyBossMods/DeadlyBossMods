@@ -55,6 +55,8 @@ local function GetContainerScrollBar()
 		cachedContainerScrollBar = fov and _G[fov:GetName() .. "ScrollBar"]
 	end
 	return cachedContainerScrollBar
+end
+
 local searchTextCache = {}
 
 local function truncateTextWithEllipsis(fontString, text, maxWidth)
