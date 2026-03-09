@@ -168,7 +168,13 @@ do
 		local flagKey = typeFlags[mediatype] -- O(1) lookup: maps mediatype to flag name
 		if flagKey then
 			for i = 1, #result do
-				result[i][flagKey] = true
+				if flagKey == "texture" then
+					result[i].texture = true
+				elseif flagKey == "font" then
+					result[i].font = true
+				elseif flagKey == "sound" then
+					result[i].sound = true
+				end
 			end
 		end
 		-- Use set-based deduplication instead of nested loop
@@ -186,9 +192,15 @@ do
 						text	= keytable[i],
 						value	= v
 					}
-					if flagKey then
-						ins[flagKey] = true
-						tinsert(result, ins)
+					if flagKey == "texture" then
+					    ins.texture = true
+					    tinsert(result, ins)
+					elseif flagKey == "font" then
+					    ins.font = true
+					    tinsert(result, ins)
+					elseif flagKey == "sound" then
+					    ins.sound = true
+					    tinsert(result, ins)
 					end
 				end
 			end
