@@ -115,10 +115,10 @@ local challengeModeIds = {
 do
 	local soundsRegistered = false
 	local cachedLSM -- Cache LibSharedMedia instance
-	local typeFlags = { -- Pre-computed type flag map for O(1) lookup
-		statusbar = { texture = true },
-		font = { font = true },
-		sound = { sound = true }
+	local typeFlags = { -- Maps mediatype to the flag key name for O(1) lookup
+		statusbar = "texture",
+		font = "font",
+		sound = "sound"
 	}
 
 	function DBM_GUI:MixinSharedMedia3(mediatype, mediatable)
@@ -165,12 +165,10 @@ do
 		end)
 		-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
 		local result = mediatable
-		local typeFlag = typeFlags[mediatype] -- O(1) lookup instead of repeated if/elseif
-		if typeFlag then
+		local flagKey = typeFlags[mediatype] -- O(1) lookup: maps mediatype to flag name
+		if flagKey then
 			for i = 1, #result do
-				if typeFlag.texture then result[i].texture = true end
-				if typeFlag.font then result[i].font = true end
-				if typeFlag.sound then result[i].sound = true end
+				result[i][flagKey] = true
 			end
 		end
 		-- Use set-based deduplication instead of nested loop
@@ -188,12 +186,10 @@ do
 						text	= keytable[i],
 						value	= v
 					}
-					if typeFlag then
-						if typeFlag.texture then ins.texture = true end
-						if typeFlag.font then ins.font = true end
-						if typeFlag.sound then ins.sound = true end
+					if flagKey then
+						ins[flagKey] = true
+						tinsert(result, ins)
 					end
-					tinsert(result, ins)
 				end
 			end
 		end
