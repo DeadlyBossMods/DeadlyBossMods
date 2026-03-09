@@ -119,6 +119,13 @@ do
 		end
 	end
 	private.pullTimerStart = pullTimerStart
+	local function pullTimerStop()
+		if dummyMod then
+			dummyMod.timer:Stop()
+			dummyMod.text:Cancel()
+		end
+	end
+	private.pullTimerStop = pullTimerStop
 end
 
 do

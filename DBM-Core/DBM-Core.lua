@@ -6189,12 +6189,7 @@ do
 					end
 				end
 				--stop pull count
-				---@class DBMDummyMod: DBMMod
-				local dummyMod = self:GetModByName("PullTimerCountdownDummy")
-				if dummyMod then--stop pull timer
-					dummyMod.text:Cancel()
-					dummyMod.timer:Stop()
-				end
+				private.pullTimerStop()
 				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
