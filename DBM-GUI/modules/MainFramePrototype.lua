@@ -220,10 +220,10 @@ function frame:SetSearchQuery(query)
 		return
 	end
 	self.searchQuery = query
-	local listFrame = _G[self:GetName() .. "List"]
+	local listFrame = GetListFrame()
 	if listFrame then
 		listFrame.offset = 0
-		local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+		local scrollBar = GetListScrollBar()
 		if scrollBar and scrollBar.SetValue then
 			scrollBar:SetValue(0)
 		end
@@ -421,7 +421,7 @@ function frame:RevealSearchMatch(targetFrame, control)
 		self:DisplayFrame(targetFrame, true)
 	end
 	C_Timer.After(0, function()
-		local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
+		local scrollBar = GetContainerScrollBar()
 		if scrollBar and scrollBar:IsShown() then
 			local panelTop = targetFrame:GetTop()
 			local controlTop = control:GetTop()
