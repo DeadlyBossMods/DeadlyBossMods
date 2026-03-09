@@ -3,12 +3,15 @@ local private = select(2, ...)
 
 ---@class TrashCombatScanningModule: DBMModule
 local module = private:NewModule("TrashCombatScanningModule")
-module:RegisterEvents(
-	"LOADING_SCREEN_DISABLED",
-	"ZONE_CHANGED_NEW_AREA",
-	"ENCOUNTER_START",
-	"ENCOUNTER_END"
-)
+
+if not private.isRetail then
+	module:RegisterEvents(
+		"LOADING_SCREEN_DISABLED",
+		"ZONE_CHANGED_NEW_AREA",
+		"ENCOUNTER_START",
+		"ENCOUNTER_END"
+	)
+end
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
@@ -134,7 +137,7 @@ local function checkForCombat(delay)
 			activeTrashMod:EnteringZoneCombat()
 		end
 		--Only trash and boss mods should start scanning engaged units
-		if (activeTrashMod and activeTrashMod.StartEngageTimers) or (activeBossMod and activeBossMod.StartEngageTimers) then
+		if not private.isRetail and ((activeTrashMod and activeTrashMod.StartEngageTimers) or (activeBossMod and activeBossMod.StartEngageTimers)) then
 			ScanEngagedUnits(delay)--Apply only the pre combat delay on initial instant scan
 			DBM:Debug("Starting Engaged Unit Scans", 2)
 		end
@@ -277,8 +280,7 @@ end
 ---@param modId? string|number The mod id to register for combat scanning
 ---@param useSyncing boolean? If true, this mod will use syncing for combat scanning to solve range issues
 function bossModPrototype:RegisterZoneCombat(zone, modId, useSyncing)
-	if DBM.Options.NoCombatScanningFeatures then return end
-	if DBM:IsPostMidnight() then return end
+	if private.isRetail or DBM.Options.NoCombatScanningFeatures then return end
 	modId = modId or self.id
 	if not registeredZones[zone] then
 		registeredZones[zone] = true

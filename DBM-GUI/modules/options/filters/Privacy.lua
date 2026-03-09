@@ -12,4 +12,6 @@ end
 
 local privacySyncArea = privacyPanel:CreateArea(L.Area_SyncMessages)
 privacySyncArea:CreateCheckButton(L.EnableWBSharing, true, nil, "EnableWBSharing")
-privacySyncArea:CreateCheckButton(L.DisableGuildStatus, true, nil, "DisableGuildStatus")
+if not DBM:IsPostMidnight() then
+	privacySyncArea:CreateCheckButton(L.DisableGuildStatus, true, nil, "DisableGuildStatus")
+end

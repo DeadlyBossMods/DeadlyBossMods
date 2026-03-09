@@ -96,6 +96,8 @@ DBT.DefaultOptions = {
 	-- Small bar
 	BarXOffset = 0,
 	BarYOffset = 0,
+	TextXOffset = 0,
+	TextYOffset = 0,
 	Width = 183,
 	Height = 20,
 	Alpha = 0.8,
@@ -111,6 +113,8 @@ DBT.DefaultOptions = {
 	EnlargeBarTime = 9.9,
 	HugeBarXOffset = 0,
 	HugeBarYOffset = 0,
+	HugeTextXOffset = 0,
+	HugeTextYOffset = 0,
 	HugeWidth = 200,
 	HugeHeight = 20,
 	HugeAlpha = 1,
@@ -122,6 +126,18 @@ DBT.DefaultOptions = {
 	HugeBarsEnabled = true,
 	HugeTimerPoint = "CENTER",
 	HugeSort = "Sort",
+	-- Huge bar background settings
+	HugeBackgroundColorR = 0,
+	HugeBackgroundColorG = 0,
+	HugeBackgroundColorB = 0,
+	HugeBackgroundAlpha = 0.3,
+	-- Huge bar border settings
+	HugeBorderEnabled = false,
+	HugeBorderSize = 1,
+	HugeBorderColorR = 0,
+	HugeBorderColorG = 0,
+	HugeBorderColorB = 0,
+	HugeBorderAlpha = 1,
 	-- Hidden bar
 	HiddenBarTime = 60,
 	HideLongBars = false,
@@ -147,8 +163,21 @@ DBT.DefaultOptions = {
 	Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp",
 	Font = "standardFont",
 	FontFlag = "None",
+	FontShadow = false,
 	BarStyle = "NoAnim",
-	Skin = ""
+	Skin = "",
+	-- Small bar background settings
+	BackgroundColorR = 0,
+	BackgroundColorG = 0,
+	BackgroundColorB = 0,
+	BackgroundAlpha = 0.3,
+	-- Small bar border settings
+	BorderEnabled = false,
+	BorderSize = 1,
+	BorderColorR = 0,
+	BorderColorG = 0,
+	BorderColorB = 0,
+	BorderAlpha = 1
 }
 
 ---@class DBTBar
@@ -194,6 +223,7 @@ hiddenBarsAnchor:Show()
 
 local ipairs, pairs, next, type, setmetatable, tinsert, tsort, GetTime = ipairs, pairs, next, type, setmetatable, table.insert, table.sort, GetTime
 local UIParent = UIParent
+local barIDIndex = {} -- Hash table for O(1) bar ID lookups
 
 ---Helper function to ensure profile structure exists
 ---@param profileName string?
@@ -300,9 +330,9 @@ do
 		bar:SetMinMaxValues(0, 1)
 		bar:SetStatusBarTexture(self.Options.Texture)
 		bar:SetStatusBarColor(1, 0.7, 0)
-		local background = bar:CreateTexture(nil, "BACKGROUND")
+		local background = bar:CreateTexture("$parentBackground", "BACKGROUND")
 		background:SetAllPoints()
-		background:SetColorTexture(0, 0, 0, 0.3)
+		background:SetColorTexture(self.Options.BackgroundColorR, self.Options.BackgroundColorG, self.Options.BackgroundColorB, self.Options.BackgroundAlpha)
 		local spark = bar:CreateTexture("$parentSpark", "OVERLAY")
 		spark:SetPoint("CENTER", bar, "CENTER")
 		spark:SetSize(32, 64)
@@ -460,7 +490,7 @@ do
 				newBar:SetText(id)
 				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
-			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+			if (DBM.Options.fixBlizzApi or self.Options.HideLongBars) and timer > (self.Options.HiddenBarTime or 60) then
 				newBar:ResetAnimations()
 			end
 		else -- Create a new bar
@@ -479,7 +509,6 @@ do
 				newBar.small = small
 				newBar.color = color
 				newBar.colorType = colorType
-				newBar.flashing = nil
 				newBar.inlineIcon = inlineIcon
 				newBar.keep = keep
 				newBar.fade = fade
@@ -533,7 +562,7 @@ do
 				newBar.alwaysHuge = true
 			end
 			-- Hidden bars that shouldn't be animated or shown yet
-			if self.Options.HideLongBars and timer > (self.Options.HiddenBarTime or 60) then
+			if (DBM.Options.fixBlizzApi or self.Options.HideLongBars) and timer > (self.Options.HiddenBarTime or 60) then
 				newBar.isHidden = true
 				newBar.enlarged = false
 				tinsert(hiddenBars, newBar)
@@ -554,6 +583,7 @@ do
 				newBar:SetIcon(icon, nil, inlineIcon or newBar.inlineIcon)
 			end
 			self.bars[newBar] = true
+			barIDIndex[newBar.id] = newBar
 			self:UpdateBars(true)
 			newBar:ApplyStyle()
 			newBar:Update(0)
@@ -785,19 +815,14 @@ end
 
 ---@return DBTBar?
 function DBT:GetBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			return bar
-		end
-	end
+	return barIDIndex[id]
 end
 
 function DBT:CancelBar(id)
-	for bar in self:GetBarIterator() do
-		if id == bar.id then
-			bar:Cancel()
-			return true
-		end
+	local bar = barIDIndex[id]
+	if bar then
+		bar:Cancel()
+		return true
 	end
 	return false
 end
@@ -843,15 +868,16 @@ function DBT:SetAnnounceHook(f)
 end
 
 function DBT:UpdateBars(sortBars)
-	if sortBars and self.Options.Sort ~= "None" then
+	local barOptions = self.Options
+	if sortBars and barOptions.Sort ~= "None" then
 		tsort(largeBars, function(x, y)
-			if self.Options.HugeSort == "Invert" then
+			if barOptions.HugeSort == "Invert" then
 				return x.timer < y.timer
 			end
 			return x.timer > y.timer
 		end)
 		tsort(smallBars, function(x, y)
-			if self.Options.Sort == "Invert" then
+			if barOptions.Sort == "Invert" then
 				return x.timer < y.timer
 			end
 			return x.timer > y.timer
@@ -859,15 +885,15 @@ function DBT:UpdateBars(sortBars)
 	end
 	for i, bar in ipairs(largeBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", (i - 1) * self.Options.HugeBarXOffset, ((i - 1) * (self.Options.HugeHeight + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
+		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", (i - 1) * barOptions.HugeBarXOffset, ((i - 1) * (barOptions.HugeHeight + barOptions.HugeBarYOffset)) * (barOptions.ExpandUpwardsLarge and 1 or -1))
 	end
 	for i, bar in ipairs(smallBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
+		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", (i - 1) * barOptions.BarXOffset, ((i - 1) * (barOptions.Height + barOptions.BarYOffset)) * (barOptions.ExpandUpwards and 1 or -1))
 	end
 	for _, bar in ipairs(hiddenBars) do
 		bar.frame:ClearAllPoints()
-		--bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
+		--bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", (i - 1) * barOptions.BarXOffset, ((i - 1) * (barOptions.Height + barOptions.BarYOffset)) * (barOptions.ExpandUpwards and 1 or -1))
 		bar.frame:SetPoint("TOP", hiddenBarsAnchor, "TOP", 9999, 0)
 	end
 end
@@ -972,19 +998,22 @@ do
         "(%d+):(%d+):" ..                -- Texture width, height
         "(%d+):(%d+):(%d+):(%d+)" ..    -- left, right, top, bottom texels
         "|t"
+
+	local function clearTexturesIfNeeded(icons)
+		for i = 1, 4 do
+			if icons[i]:GetTexture() then
+				icons[i]:SetTexture(nil)
+			end
+		end
+	end
+
 	function barPrototype:SetIcon(icon, eventID, customJournalIcon)
 		local frame_name = self.frame:GetName()
 		_G[frame_name.."BarIcon1"]:SetTexture(icon)
 		_G[frame_name.."BarIcon2"]:SetTexture(icon)
 		--Sanitize previous icons
-		_G[frame_name].SecureJIcons[1]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[2]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[3]:SetTexture(nil)
-		_G[frame_name].SecureJIcons[4]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[1]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[2]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[3]:SetTexture(nil)
-		_G[frame_name].InsecureJicons[4]:SetTexture(nil)
+		clearTexturesIfNeeded(_G[frame_name].SecureJIcons)
+		clearTexturesIfNeeded(_G[frame_name].InsecureJicons)
 		if eventID then
 			---@diagnostic disable-next-line: param-type-mismatch
 			C_EncounterTimeline.SetEventIconTextures(eventID, 1023, _G[frame_name].SecureJIcons)
@@ -1083,12 +1112,19 @@ local colorVariables = {
 	[8] = "I2",--Important 2
 }
 
-function DBT:GetColorForType(colorType)
+---@param colorType any LuaLS has problems if this is typecast correctly since LuaLs is unable to determine the value of stuff in Options table
+---@param endColor boolean?
+function DBT:GetColorForType(colorType, endColor)
 	if not colorVariables[colorType] then
+		DBM:Debug("GetColorForType failed for unknown colorType: "..tostring(colorType))
 		return nil
 	end
 	local colorVar = colorVariables[colorType]
-	return DBT.Options["StartColor"..colorVar.."R"], DBT.Options["StartColor"..colorVar.."G"], DBT.Options["StartColor"..colorVar.."B"]
+	if endColor then
+		return DBT.Options["EndColor"..colorVar.."R"], DBT.Options["EndColor"..colorVar.."G"], DBT.Options["EndColor"..colorVar.."B"]
+	else
+		return DBT.Options["StartColor"..colorVar.."R"], DBT.Options["StartColor"..colorVar.."G"], DBT.Options["StartColor"..colorVar.."B"]
+	end
 end
 
 local function stringFromTimer(t)
@@ -1118,7 +1154,7 @@ function barPrototype:Update(elapsed)
 	local isMoving = self.moving
 	local isFadingIn = self.fadingIn
 	local colorCount = self.colorType or 0
-	local enlargeEnabled = DBT.Options.HugeBarsEnabled
+	local enlargeEnabled = barOptions.HugeBarsEnabled
 	local enlargeHack = self.dummyEnlarge or colorCount >= 7 and barOptions.Bar7ForceLarge and enlargeEnabled
 	local enlargeTime = barOptions.EnlargeBarTime or 11
 	local isEnlarged = self.enlarged and not paused
@@ -1131,6 +1167,7 @@ function barPrototype:Update(elapsed)
 	local varianceBehaviorNeg = VarianceEnabled2 and self.hasVariance and barOptions.VarianceBehavior == "ZeroAtMinTimerAndNeg"
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
+	local updateNeeded, sortingNeeded = false, false
 	if barOptions.DynamicColor and not self.color then
 		local colorVar = colorVariables[colorCount]
 		if barOptions.NoBarFade then
@@ -1195,7 +1232,7 @@ function barPrototype:Update(elapsed)
 		elseif self.flashing and timerValue > 7.75 then
 			self.flashing = nil
 			self.ftimer = nil
-			bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
+			bar:SetStatusBarColor(r, g, b, 1)
 			if sparkEnabled then
 				spark:SetAlpha(1)
 			end
@@ -1210,17 +1247,17 @@ function barPrototype:Update(elapsed)
 		if self.flashing then
 			local ftime = self.ftimer % 1.25
 			if ftime >= 0.5 then
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1)
+				bar:SetStatusBarColor(r, g, b, 1)
 				if sparkEnabled then
 					spark:SetAlpha(1)
 				end
 			elseif ftime >= 0.25 then
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
+				bar:SetStatusBarColor(r, g, b, 1 - (0.5 - ftime) / 0.25)
 				if sparkEnabled then
 					spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
 				end
 			else
-				bar:GetStatusBarTexture():SetVertexColor(r, g, b, 1 - (ftime / 0.25))
+				bar:SetStatusBarColor(r, g, b, 1 - (ftime / 0.25))
 				if sparkEnabled then
 					spark:SetAlpha(1 - (ftime / 0.25))
 				end
@@ -1240,13 +1277,16 @@ function barPrototype:Update(elapsed)
 			end
 			frame:ClearAllPoints()
 			frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
+			updateNeeded = true
 		elseif isMoving == "move" then
 			barIsAnimating = false
 			self.moving = nil
 			isMoving = nil
+			updateNeeded = true
 		elseif isMoving == "enlarge" and melapsed <= 1 then
 			barIsAnimating = true
 			self:AnimateEnlarge(elapsed)
+			updateNeeded = true
 		elseif isMoving == "enlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1255,7 +1295,8 @@ function barPrototype:Update(elapsed)
 			isEnlarged = true
 			tinsert(largeBars, self)
 			self:ApplyStyle()
-			DBT:UpdateBars(true)
+			sortingNeeded = true
+			updateNeeded = true
 		elseif isMoving == "nextEnlarge" then
 			barIsAnimating = false
 			self.moving = nil
@@ -1264,27 +1305,35 @@ function barPrototype:Update(elapsed)
 			isEnlarged = true
 			tinsert(largeBars, self)
 			self:ApplyStyle()
-			DBT:UpdateBars(true)
+			sortingNeeded = true
+			updateNeeded = true
 		end
 	end
-	if barOptions.HideLongBars and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
+	if (DBM.Options.fixBlizzApi or barOptions.HideLongBars) and not isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) > hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = true
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
+		updateNeeded = true
 	elseif isHidden and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= hiddenBarTime) then
 		self:RemoveFromList()
 		self.isHidden = nil
 		self.moving = nil
 		self.enlarged = false
 		self:ResetAnimations()
-		DBT:UpdateBars(true)
+		sortingNeeded = true
+		updateNeeded = true
+	--This line looks iffy. isn't this checking if a small bar should enlarge? why is it checking not self.small instead of self.huge?
 	elseif not paused and ((barOptions.VarianceEnabled2 and timerLowestValueFromVariance or timerValue) <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and enlargeEnabled and not isHidden then
 		self:RemoveFromList()
 		self:Enlarge()
+		sortingNeeded = true
+		updateNeeded = true
 	end
-	DBT:UpdateBars()
+	if updateNeeded then
+		DBT:UpdateBars(sortingNeeded)
+	end
 	if self.callback then
 		self:callback("OnUpdate", elapsed, timerValue, totaltimeValue)
 	end
@@ -1303,10 +1352,12 @@ function barPrototype:Cancel()
 	self.frame:Hide()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
+	barIDIndex[self.id] = nil
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.paused = nil
 	DBT.numBars = DBT.numBars - 1
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:ApplyStyle()
@@ -1439,6 +1490,74 @@ function barPrototype:ApplyStyle()
 			--4 icons not supported in large icon mode to prevent users being dumb
 		end
 	end
+	-- Apply background color and opacity
+	local background = _G[frame_name.."BarBackground"]
+	if background then
+		if enlarged then
+			background:SetColorTexture(barOptions.HugeBackgroundColorR, barOptions.HugeBackgroundColorG, barOptions.HugeBackgroundColorB, barOptions.HugeBackgroundAlpha)
+		else
+			background:SetColorTexture(barOptions.BackgroundColorR, barOptions.BackgroundColorG, barOptions.BackgroundColorB, barOptions.BackgroundAlpha)
+		end
+	end
+	-- Apply border settings
+	local borderEnabled
+	if enlarged then
+		borderEnabled = barOptions.HugeBorderEnabled
+	else
+		borderEnabled = barOptions.BorderEnabled
+	end
+	local borderTop = _G[frame_name.."BarBorderTop"]
+	if borderEnabled then
+		if not borderTop then
+			-- Lazily create border textures the first time they are needed
+			-- Use ARTWORK layer with sublevel 1 so borders render above the bar fill (which uses ARTWORK sublevel 0)
+			-- but not on OVERLAY so they don't leak through tooltips/overlay frames
+			borderTop = bar:CreateTexture("$parentBorderTop", "ARTWORK", nil, 1)
+			borderTop:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderTop:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderTop:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			local borderBottom = bar:CreateTexture("$parentBorderBottom", "ARTWORK", nil, 1)
+			borderBottom:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderBottom:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			borderBottom:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+			local borderLeft = bar:CreateTexture("$parentBorderLeft", "ARTWORK", nil, 1)
+			borderLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderLeft:SetPoint("TOPLEFT", bar, "TOPLEFT")
+			borderLeft:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT")
+			local borderRight = bar:CreateTexture("$parentBorderRight", "ARTWORK", nil, 1)
+			borderRight:SetTexture("Interface\\Buttons\\WHITE8X8")
+			borderRight:SetPoint("TOPRIGHT", bar, "TOPRIGHT")
+			borderRight:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+		end
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
+		local borderSize = enlarged and (barOptions.HugeBorderSize or 1) or (barOptions.BorderSize or 1)
+		local borderColorR = enlarged and barOptions.HugeBorderColorR or barOptions.BorderColorR
+		local borderColorG = enlarged and barOptions.HugeBorderColorG or barOptions.BorderColorG
+		local borderColorB = enlarged and barOptions.HugeBorderColorB or barOptions.BorderColorB
+		local borderAlpha = enlarged and barOptions.HugeBorderAlpha or barOptions.BorderAlpha
+		borderTop:SetHeight(borderSize)
+		borderBottom:SetHeight(borderSize)
+		borderLeft:SetWidth(borderSize)
+		borderRight:SetWidth(borderSize)
+		borderTop:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderBottom:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderLeft:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderRight:SetVertexColor(borderColorR, borderColorG, borderColorB, borderAlpha)
+		borderTop:Show()
+		borderBottom:Show()
+		borderLeft:Show()
+		borderRight:Show()
+	elseif borderTop then
+		local borderBottom = _G[frame_name.."BarBorderBottom"]
+		local borderLeft = _G[frame_name.."BarBorderLeft"]
+		local borderRight = _G[frame_name.."BarBorderRight"]
+		borderTop:Hide()
+		borderBottom:Hide()
+		borderLeft:Hide()
+		borderRight:Hide()
+	end
 	self:SetVariance()
 	self.frame:Show()
 	if sparkEnabled then
@@ -1452,8 +1571,21 @@ function barPrototype:ApplyStyle()
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
-	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
+	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)
+	local textYOffset = enlarged and (barOptions.HugeTextYOffset or 0) or (barOptions.TextYOffset or 0)
+	timer:ClearAllPoints()
+	timer:SetPoint("RIGHT", bar, "RIGHT", -1 + textXOffset, 0.5 + textYOffset)
+	name:ClearAllPoints()
+	name:SetPoint("LEFT", bar, "LEFT", 3 + textXOffset, textYOffset)
+	name:SetPoint("RIGHT", timer, "LEFT", -7, 0)
+	if barOptions.FontShadow then
+		name:SetShadowOffset(1, -1)
+		timer:SetShadowOffset(1, -1)
+	else
+		name:SetShadowOffset(0, 0)
+		timer:SetShadowOffset(0, 0)
+	end
 	self:Update(0)
 end
 
@@ -1487,10 +1619,11 @@ function barPrototype:MoveToNextPosition()
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	local Enlarged = self.enlarged
-	local ExpandUpwards = Enlarged and DBT.Options.ExpandUpwardsLarge or not Enlarged and DBT.Options.ExpandUpwards
+	local barOptions = DBT.Options
+	local ExpandUpwards = Enlarged and barOptions.ExpandUpwardsLarge or not Enlarged and barOptions.ExpandUpwards
 	self.frame:ClearAllPoints()
-	local xOffset = Enlarged and DBT.Options.HugeBarXOffset or DBT.Options.BarXOffset
-	local yOffset = Enlarged and DBT.Options.HugeBarYOffset or DBT.Options.BarYOffset
+	local xOffset = Enlarged and barOptions.HugeBarXOffset or barOptions.BarXOffset
+	local yOffset = Enlarged and barOptions.HugeBarYOffset or barOptions.BarYOffset
 	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
 		self.frame:SetPoint("BOTTOM", newAnchor, "BOTTOM", xOffset, yOffset)
@@ -1500,7 +1633,7 @@ function barPrototype:MoveToNextPosition()
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
-	if DBT.Options.BarStyle ~= "NoAnim" then
+	if barOptions.BarStyle ~= "NoAnim" then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, newAnchor, self.movePoint, -(newX - oldX), -(newY - oldY))
 		self.moving = "move"
@@ -1514,10 +1647,11 @@ end
 function barPrototype:Enlarge()
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
-	local ExpandUpwards = DBT.Options.ExpandUpwardsLarge
+	local barOptions = DBT.Options
+	local ExpandUpwards = barOptions.ExpandUpwardsLarge
 	self.frame:ClearAllPoints()
-	local xOffset = DBT.Options.HugeBarXOffset
-	local yOffset = DBT.Options.HugeBarYOffset
+	local xOffset = barOptions.HugeBarXOffset
+	local yOffset = barOptions.HugeBarYOffset
 	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
 		self.frame:SetPoint("BOTTOM", largeBarsAnchor, "BOTTOM", xOffset, yOffset)
@@ -1529,7 +1663,7 @@ function barPrototype:Enlarge()
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", largeBarsAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = DBT.Options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
+	self.moving = barOptions.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
 	self.moveAnchor = largeBarsAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
@@ -1539,13 +1673,14 @@ end
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local melapsed = self.moveElapsed
+	local barOptions = DBT.Options
 	if melapsed < 1 then
 		local calc = melapsed / 1
-		local newX = self.moveOffsetX + (DBT.Options.HugeBarXOffset - self.moveOffsetX) * calc
-		local newY = self.moveOffsetY + (DBT.Options.HugeBarYOffset - self.moveOffsetY) * calc
-		local newWidth = DBT.Options.HugeWidth + (DBT.Options.Width - DBT.Options.HugeWidth) * calc
-		local newHeight = DBT.Options.HugeHeight + (DBT.Options.Height - DBT.Options.HugeHeight) * calc
-		local newScale = DBT.Options.HugeScale + (DBT.Options.Scale - DBT.Options.HugeScale) * calc
+		local newX = self.moveOffsetX + (barOptions.HugeBarXOffset - self.moveOffsetX) * calc
+		local newY = self.moveOffsetY + (barOptions.HugeBarYOffset - self.moveOffsetY) * calc
+		local newWidth = barOptions.HugeWidth + (barOptions.Width - barOptions.HugeWidth) * calc
+		local newHeight = barOptions.HugeHeight + (barOptions.Height - barOptions.HugeHeight) * calc
+		local newScale = barOptions.HugeScale + (barOptions.Scale - barOptions.HugeScale) * calc
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
 		self.frame:SetScale(newScale)

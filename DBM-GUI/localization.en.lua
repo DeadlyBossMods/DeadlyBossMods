@@ -10,15 +10,16 @@ L.TranslationBy 					= nil -- your name here, localizers!
 L.Website							= "Please follow MysticalOS for news/updates |cFF73C2FBhttps://allmylinks.com/mysticalos|r. Thanks for years of support!"
 L.WebsiteButton						= "Website"
 
-L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids							= "Raids"--Just pve raids
-L.OTabDungeons						= "Dungeons"--Just dungeons
+L.OTabRaids							= "Raids"
+L.OTabDungeons						= "Dungeons"
 L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Other"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Core Options"
 L.OTabTools							= "Tools"--Such as break timer button, durability checks, latency checks, keystone checks (in future)
 L.OTabAbout							= "About"
+L.SearchMatch						= "%d match"
+L.SearchMatches						= "%d matches"
 
 --Main Tab, Tools checks
 L.Tools_LatencyCheck				= "Latency Check"
@@ -106,7 +107,7 @@ L.Editbox_WindowHeight				= "GUI window height"
 L.UIGroupingOptions					= "UI Grouping Options (changing these require UI reload for any mod that's already loaded)"
 L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon' options from getting grouped by spell (they will be grouped together in their own 'Icons' category instead)"
 L.GroupOptionsExcludePrivateAura	= "Exclude 'Private Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
-L.AutoExpandSpellGroups2				= "Auto expand options that are grouped by spell"
+L.AutoExpandSpellGroups2			= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
 --L.ShowSpellDescWhenExpanded		= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
@@ -148,6 +149,7 @@ L.RLReadyCheckSound					= "When a ready check is performed, play sound through M
 L.AutoReplySound					= "Play alert sound and flash application icon when receiving DBM auto reply whisper"
 
 L.Area_CombatAlerts					= "Combat Alert Options"
+L.Area_CombatAlertsRetail			= "Combat Alert Options (outdoor only)"
 L.AFKHealthWarning					= "Play alert sound and flash application icon if you are losing health (at any percent) while AFK flag present"
 L.HealthWarningLow					= "Play alert sound and flash application icon if you are losing health (while below 35 percent)"
 L.EnteringCombatAlert				= "Play alert sound and flash application icon when you enter combat"
@@ -168,9 +170,7 @@ L.Area_Advanced						= "Advanced Options"
 L.FakeBW							= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 --
 L.Area_Tooltip						= "Tooltip integration"
-L.EnableTooltip						= "Add DBM stats to tooltips for bosses supported by DBM"
-L.EnableTooltipInCombat				= "Show tooltip information while in combat"
-L.EnableTooltipHeader				= "Include DBM header in tooltip"
+
 
 
 -- Panel: Profiles
@@ -254,24 +254,37 @@ L.SpecWarn_FlashAlpha				= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton				= "Show example"
 L.SpecWarn_ResetMe					= "Reset to defaults"
 L.SpecialWarnSoundOption			= "Set default sound"
+--PreMidnight
+L.SpecialWarnHeader1				= "SA 1: Set options for normal priority announcements affecting you or your actions"
+L.SpecialWarnHeader2				= "SA 2: Set options for normal priority announcements affecting everyone"
+L.SpecialWarnHeader3				= "SA 3: Set options for HIGH priority announcements"
+L.SpecialWarnHeader4				= "SA 4: Set options for HIGH priority run away special announcements"
+L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes containing your player name"
+--Post Midnight
+L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
+L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
 
 -- Panel: Private Auras Frame
+--Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
 L.Panel_PrivateAuras				= "Private Auras"
-L.Area_PrivateAuras					= "Private Aura Options"
-L.EnablePrivateAuraIcons			= "Show Private Aura icons on screen"
-L.EnablePrivateAuraText				= "Show Private Aura text messages on screen"
-L.SetPAIconScale					= "Icon scale: %0.1f"--Not Finalized
-L.SetPATextScale					= "Text scale: %0.1f"--Not Finalized
---SpamBlockNoPrivateAuraSound will be reused in GUI options but doesn't need to be localized again
---PreMidnight
-L.SpecialWarnHeader1				= "Type 1: Set options for normal priority announcements affecting you or your actions"
-L.SpecialWarnHeader2				= "Type 2: Set options for normal priority announcements affecting everyone"
-L.SpecialWarnHeader3				= "Type 3: Set options for HIGH priority announcements"
-L.SpecialWarnHeader4				= "Type 4: Set options for HIGH priority run away special announcements"
-L.SpecialWarnHeader5				= "Type 5: Set options for announcements with notes containing your player name"
---Post Midnight
-L.SpecialWarnHeaderMedium			= "Announcements for mechanics that blizzard classifies as 'medium'"
-L.SpecialWarnHeaderCritical			= "Announcements for mechanics that blizzard classifies as 'critical'"
+L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
+L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
+L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
+L.UpscaleDurationText				= "Upscale duration text on icons to be larger"
+L.SetPAGrowDirection				= "Grow direction"--Dropdown
+L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
+L.SetPAMaxIcons						= "Max icons: %d"--Slider, Reused for personal and tank
+L.SetPAIconSpacing					= "Icon spacing: %d"--Slider, Reused for personal and tank
+L.SetPAStackScale					= "Stack text scale: %d"--Slider, Reused for personal and tank
+L.SetPATextScale					= "Text message scale: %0.1f"--Slider
+L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
+L.HidePABorder						= "Disable border"--checkbox
+L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
+L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
+L.RIGHT								= "Right"
+L.LEFT								= "Left"
+L.UP								= "Up"
+L.DOWN								= "Down"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 				= "Chat Frame Messages"
@@ -297,7 +310,7 @@ L.Area_ChatAlerts					= "Additional Alert Options"
 L.RoleSpecAlert						= "Show alert message on raid join when your loot spec does not match current spec"
 L.CheckGear							= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
 L.WorldBossAlert					= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
-L.WorldBuffAlert					= "Show alert message and timer when world buff RP has been started on your realm (Disabled in SOD)"
+L.WorldBuffAlert					= "Show alert message and timer when world buff RP has been started on your realm"
 L.RaidDiffChangedAlert				= "Show alert message when raid difficulty is changed"
 L.RaidDiffChangedRaidOnly			= "Only show raid difficulty change alert when in a raid group (Caveat: it won't report difficulty on join if not converted to raid yet)"
 L.DungeonDiffChangedAlert			= "Show alert message when dungeon difficulty is changed"
@@ -313,6 +326,8 @@ L.CountdownVoice2					= "Set secondary voice for count sounds"
 L.CountdownVoice3					= "Set tertiary voice for count sounds"
 L.PullVoice							= "Set voice for pull timers"
 L.VoicePackChoice					= "Set voice pack for spoken alerts"
+L.CountdownStartTime				= "Set countdown start time for Blizzard timers"
+L.CountStart						= "%d seconds remaining"
 L.MissingVoicePack					= "Missing Voice Pack (%s)"
 L.Area_CountdownOptions				= "Countdown Options"
 L.Area_VoicePackReplace				= "Voice Pack Replacement Options (which sounds voice packs, when enabled, mute and replace)"
@@ -357,11 +372,19 @@ L.BarSimple							= "Simple (small bar disappears and new large bar created)"
 L.BarStartColor						= "Start color"
 L.BarEndColor 						= "End color"
 L.Bar_Height						= "Bar height: %d"
-L.Slider_BarOffSetX 				= "Offset X: %d"
-L.Slider_BarOffSetY 				= "Offset Y: %d"
+L.Slider_BarOffSetX 				= "Offset X: %d"--Reused in other regions like Private Auras
+L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Private Auras
 L.Slider_BarWidth 					= "Bar width: %d"
 L.Slider_BarScale 					= "Bar scale: %0.2f"
 L.BarSaturation						= "Bar saturation for small timers (When huge bars are disabled): %0.2f"
+L.BarBackgroundColor				= "Background color"
+L.BarBackgroundOpacity				= "Background opacity: %0.2f"
+L.EnableBarBorder					= "Enable bar border"
+L.BarBorderSize						= "Border size: %0.1f"
+L.BarBorderColor					= "Border color"
+L.Slider_TextOffSetX				= "Text offset X: %d"
+L.Slider_TextOffSetY				= "Text offset Y: %d"
+L.MidnightNote						= "Note: Due to API restrictions in Midnight. DBM is unable to support having different start and end colors. Only start color will be used."
 
 --Types
 L.BarStartColorAdd					= "Start color 1 (Add)"
@@ -395,10 +418,10 @@ L.CBTPhase							= "Phase Change"
 L.CBTImportant						= "User Important Spell"
 --Dropdown Options
 --Special Announce Dropdowns
-L.SAOne								= "Global Sound 1 (Personal)"
-L.SATwo								= "Global Sound 2 (Everyone)"
-L.SAThree							= "Global Sound 3 (High Priority Action)"
-L.SAFour							= "Global Sound 4 (High Priority Run Away)"
+L.SAOne								= "Voice Pack / SA 1 fallback"
+L.SATwo								= "Voice Pack / SA 2 fallback"
+L.SAThree							= "Voice Pack / SA 3 fallback"
+L.SAFour							= "Voice Pack / SA 4 fallback"
 --Timer Dropdowns
 L.ColorDropGeneric					= "Generic (Default: Untyped)"
 L.ColorDrop1						= "Color 1 (Default: Add)"
@@ -485,7 +508,10 @@ L.SpamBlockNoSpecWarnText			= "Do not show special announce text"
 L.SpamBlockNoSpecWarnFlash			= "Do not show special announce screen flash"
 L.SpamBlockNoSpecWarnVibrate		= "Do not vibrate controller on special announce"
 L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (voice packs sounds enabled in Countdowns &amp; Voice Packs panel will still play)"
+
+L.Area_Private_Aura_Features		= "Private Aura Features"
 L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
+L.SpamBlockNoPrivateAuraFrame		= "Do not show private aura frames"
 
 L.Area_SpamFilter_Timers			= "Specific Timer Features (only applies if not disabled entirely above)"
 L.SpamBlockNoShowBossTimers			= "Do not show timers for dungeon/raid bosses"
@@ -583,7 +609,6 @@ L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
 L.HideBossEmoteFrame				= "Hide Blizzard Raid Warnings during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
 L.HideBlizzardTimeline				= "Hide the Blizzard Raid Timeline during boss fights"
 
 -- Panel: Raid Leader Controls

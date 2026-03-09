@@ -102,6 +102,7 @@ modules\ZoneCombatScanner.lua
 
 modules\objects\Difficulties.lua
 modules\objects\BossMod.lua
+modules\objects\BossModOptions.lua
 modules\objects\BossModEventDispatcher.lua
 modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
@@ -111,4 +112,3 @@ modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
-modules\objects\Tooltip.lua

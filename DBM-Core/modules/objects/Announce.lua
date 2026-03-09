@@ -337,6 +337,13 @@ function announcePrototype:SetText(customName)
 	self.spellName = spellName
 end
 
+---Update icon on object and nothing else.
+---<br>Does not change spellId/spellkey associated with weakauras/callbacks
+---@param altSpellId string|number
+function announcePrototype:UpdateIcon(altSpellId)
+	self.icon = DBM:ParseSpellIcon(altSpellId, self.announceType, self.icon)
+end
+
 ---Not to be confused with SetText, which only sets the text of object.
 ---<br>This changes actual ID so announce callback also swaps ID for WAs
 ---@param altSpellId string|number
@@ -372,6 +379,16 @@ end
 ---@class Announce2NumStr: Announce
 ---@field Show fun(self: Announce2NumStr, arg1: number, arg2: string|number)
 
+---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
+---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
+---@param voice VPSound voice pack media path
+---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
+---@param color warningColorType? ColorId 1-4
+function announcePrototype:SetAlert(encounterEventId, voice, voiceVersion, color)
+	if self.option and self.mod.Options[self.option] then
+		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, nil, self.option)
+	end
+end
 
 -- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
@@ -598,7 +615,7 @@ end
 
 ---old constructor (no auto-localize)
 ---@param text string
----@param color number? 1 = Positive Message, 2 = Normal Message, 3 - Higher Priority, 4 - Highest Priority
+---@param color warningColorType?
 ---@param icon number|string? Use number for spellId, -number for journalID, number as string for textureID
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|boolean? String for custom option name. Using false hides option completely
@@ -722,7 +739,7 @@ function bossModPrototype:NewYouAnnounce(spellId, color, ...)
 end
 
 ---@param spellId number|string
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -814,7 +831,7 @@ end
 
 ---@param spellId number|string
 ---@param castTime number?
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -840,7 +857,7 @@ end
 ---@param spellId number|string
 ---@param castTime number?
 ---@param preWarnTime number|string?
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
@@ -852,7 +869,7 @@ end
 
 ---@param spellId number|string
 ---@param time number
----@param color number?
+---@param color warningColorType?
 ---@param icon number|string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?

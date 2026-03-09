@@ -192,7 +192,7 @@ L.YOUR_VERSION_OUTDATED				= "Sua versão do " .. L.DEADLY_BOSS_MODS .. " está 
 L.VOICE_PACK_OUTDATED				= "O pacote de vozes do seu " .. L.DBM .. " pode estar sem alguns dos sons suportados por esta versão do " .. L.DBM .. ". O filtro de anúncio especial sonoro foi desativado. Por favor, baixe a versão mais recente do pacote de vozes ou entre em contato com o autor para obter um pacote que contenha os sons mencionados."
 L.VOICE_MISSING						= "Você tinha um pacote de vozes " .. L.DBM .. " selecionado que não pode ser encontrado. Sua seleção foi restaurada para 'Nenhum'. Caso seja um erro, certifique-se de que o pacote está instalado corretamente e ativado em addons."
 L.VOICE_DISABLED					= "Você atualmente tem pelo menos um pacote de voz do " .. L.DBM .. " instalado, mas nenhum está ativado. Se pretende usar um pacote de voz, certifique-se de que está selecionado em 'Alertas falados'. Caso contrário, desinstale os pacotes de voz não utilizados para ocultar esta mensagem."
-L.VOICE_COUNT_MISSING				= "Voz de contagem regressiva %d esta selecionada para um pacote de voz que não pode ser encontrado. Foi restaurada a configuração padrão."
+L.VOICE_COUNT_MISSING				= "A voz de contagem regressiva %d está selecionada para um pacote de voz que não pôde ser encontrado ou que não é compatível no momento. Foi restaurada para a configuração padrão: %s."
 L.BIG_WIGS							= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY						= " (|cff308530Chave WA:|r %s)"
 
@@ -216,8 +216,10 @@ L.DBMLOOTREMINDER 					= "AVISO: O módulo de terceiros DBM-LootReminder está i
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de " .. L.DBM .. " exige que o jogo seja reiniciado por completo para funcionar corretamente. A atualização inclui novos arquivos ou alterações no .toc que não podem ser carregadas via ReloadUI. Continuar sem reiniciar pode causar erros ou funcionalidades quebradas."
 L.OUT_OF_DATE_NAG 					= "Sua versão do " .. L.DBM .. " está desatualizada, e este módulo de luta possui recursos mais recentes ou correções de bugs. Atualize para melhorar sua experiência neste encontro."
 L.PLATER_NP_AURAS_MSG 				= L.DBM .. " possui um recurso avançado que exibe cronômetros de recarga inimigos como ícones nas placas de nome. Isso está ativado por padrão para a maioria dos usuários, mas desativado nas opções do Plater. Para aproveitar ao máximo o DBM e o Plater, ative essa função no Plater em 'Buff Special'. Para não ver esta mensagem novamente, desative a opção 'Ícones de recarga nas placas de nome' nas configurações do DBM."
+L.HARDCODED_FALLBACK					= L.DBM .. " detectou um resultado inesperado em um módulo codificado internamente. " .. L.DBM .. " usará os temporizadores e avisos da Blizzard para este encontro."
 
 L.MOVABLE_BAR						= "Arraste-me!"
+L.MOVABLE_FRAMES 					= "Quadros arrastáveis"
 
 L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h te enviou um cronômetro do " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar esse cronômetro]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar cronômetros de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE				= "Você tem certeza de que realmente deseja ignorar cronômetros de %s até o fim desta sessão?"
@@ -477,14 +479,14 @@ L.AUTO_TIMER_TEXTS.active				= "%s acaba" --Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades				= "%s desvanece" --Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai					= "%s IA"
 
-L.AUTO_TIMER_TEXTS.cd					= "%s recarrega"
-L.AUTO_TIMER_TEXTS.cdcount				= "%s recarrega (%%s)"
-L.AUTO_TIMER_TEXTS.cdsource				= "%s recarrega: >%%s<"
+L.AUTO_TIMER_TEXTS.cd					= "%s"
+L.AUTO_TIMER_TEXTS.cdcount				= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.cdsource				= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial			= "Habilidade especial"
 
-L.AUTO_TIMER_TEXTS.next					= "Próx. %s"
-L.AUTO_TIMER_TEXTS.nextcount			= "Próx. %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource			= "Próx. %s: >%%s<"
+L.AUTO_TIMER_TEXTS.next					= "%s"
+L.AUTO_TIMER_TEXTS.nextcount			= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource			= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.nextspecial			= "Habilidade especial"
 
 L.AUTO_TIMER_TEXTS.var					= "%s"
@@ -512,8 +514,8 @@ L.AUTO_TIMER_TEXTS.cdpnp 				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a penalidade de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a penalidade de $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Exibir cronômetro para a duração de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Exibir cronômetro (com contagem) para a duração de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Exibir cronômetro para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castpnp			= "Exibir cronômetro apenas na placa de nome para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount 			= "Exibir cronômetro (com contagem) para o lançamento de $spell:%s"
@@ -586,6 +588,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition 	= "Gritar (com posição) quando você é
 L.AUTO_YELL_OPTION_TEXT.combo 			= "Gritar (com texto personalizado) quando você é afetado por $spell:%s e outros feitiços ao mesmo tempo"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer 	= "Gritar repetidamente (com nome do jogador) quando você é afetado por $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.repeaticon 		= "Gritar repetidamente (com ícone) quando você é afetado por $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.icontarget		= "Ícones de grito quando fores alvo de $spell:%s para avisar os outros"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s" -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "%s em " .. UnitName("player")
@@ -599,6 +602,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname -- OPT
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s e %%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam -- OPTIONAL
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"--Doesn't need translation. It's just icon spam -- OPTIONAL
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't need translation. It's just an icon repeated 3 times-- OPTIONAL
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE 				= "%s desaparecido"
@@ -613,15 +617,20 @@ L.AUTO_RRANGE_OPTION_TEXT_SHORT 		= "Exibir quadro de distância reverso (%s)"
 L.AUTO_INFO_FRAME_OPTION_TEXT 			= "Exibir quadro de informações para $spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2 			= "Exibir quadro de informações para visão geral do encontro"
 L.AUTO_INFO_FRAME_OPTION_TEXT3 			= "Exibir quadro de informações para $spell:%s (quando o limiar de %%s é atingido)"
-L.AUTO_READY_CHECK_OPTION_TEXT 			= "Tocar som de verificação de prontidão quando o chefe for puxado (mesmo que não seja direcionado)"
+L.AUTO_READY_CHECK_OPTION_TEXT 			= "Reproduzir som de verificação de prontidão quando o chefe for puxado (mesmo que não seja direcionado)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT 			= "Exibir cronômetro para limpeza mais rápida de %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT 			= "Tocar alertas sonoros do DBM para auras privadas de $spell:%s nesta luta."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproduzir alertas sonoros de auras privadas do DBM para $spell:%s neste encontro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproduzir alertas sonoros de auras privadas do DBM quando você for alvo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros de auras privadas do DBM quando você precisar se afastar de $spell:%s"
 
 -- New special warnings
 L.MOVE_WARNING_BAR 						= "Anúncio móvel"
 L.MOVE_WARNING_MESSAGE 					= "Obrigado por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR				= "Aviso especial móvel"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Aviso especial"
+
+L.MOVE_PRIVATE_AURA_TEXT 				= "<valor secreto> tem você como alvo com o feitiço <valor secreto>"
+L.MOVE_PRIVATE_AURA_DISABLED 			= "A pré-visualização está desativada porque os quadros de auras privadas estão desativados globalmente nas opções."
 
 L.HUD_INVALID_TYPE 						= "Tipo de HUD definido inválido"
 L.HUD_INVALID_TARGET 					= "Nenhum alvo válido fornecido para o HUD"

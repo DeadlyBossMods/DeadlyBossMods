@@ -52,7 +52,7 @@ L.NOT_INSTALLED				= "No instalado"
 
 L.COMBAT_STARTED				= "Encuentro de %s iniciado. ¡Buena suerte!"
 L.COMBAT_STARTED_IN_PROGRESS	= "Te has unido al encuentro de %s mientras estaba en curso. ¡Buena suerte!"
-L.GUILD_COMBAT_STARTED			= "El encuentro de %s has sido iniciado por el grupo de hermandad de %s."
+L.GUILD_COMBAT_STARTED			= "El encuentro de %s ha sido iniciado por el grupo de hermandad de %s."
 L.SCENARIO_STARTED				= "%s iniciado. ¡Buena suerte!"
 L.SCENARIO_STARTED_IN_PROGRESS	= "Te has unido a %s mientras estaba en curso. ¡Buena suerte!"
 L.BOSS_DOWN						= "¡%s ha sido derrotado en %s!"
@@ -125,9 +125,9 @@ L.NOTESHAREERRORBLANK		= "No se puede compartir notas en blanco."
 L.NOTESHAREERRORGROUPFINDER	= "No se puede compartir notas en campos de batalla, buscador de bandas y buscador de grupo."
 L.NOTESHAREERRORALREADYOPEN	= "No se puede abrir notas compartidas con el editor de notas ya abierto."
 
-L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones por defecto de todos los módulos de esta estancia."
+L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de todos los módulos de esta estancia."
 L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de este módulo."
-L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones por defecto de este encuentro."
+L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de este encuentro."
 
 L.WORLDBOSS_ENGAGED			= "Es posible que el encuentro de %s se haya iniciado en tu reino a %s de su salud máxima. (Enviado por %s.)"
 L.WORLDBOSS_DEFEATED		= "Es posible que %s haya sido derrotado en tu reino. (Enviado por %s.)"
@@ -191,7 +191,7 @@ L.YOUR_VERSION_OUTDATED		= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está de
 L.VOICE_PACK_OUTDATED		= "A este paquete de voces le faltan sonidos compatibles con esta versión de " .. L.DBM .. ". No se sustituirán los sonidos de anuncios especiales que no tengan un sustituto. Por favor, descarga una versión más reciente del paquete de voces o contacta con el autor para informarle sobre los archivos de sonido que faltan."
 L.VOICE_MISSING				= "Tenías seleccionado un paquete de voces que no se ha podido encontrar. Se ha restablecido tu selección a 'Ninguno'. Si crees que se trata de un error, asegúrate de que el paquete de voces esté instalado correctamente y activado en la lista de addons."
 L.VOICE_DISABLED			= "Tienes al menos un paquete de voces de " .. L.DBM .. " instalado, pero ninguno está activado. Si quieres usar un paquete de voces, asegúrate de que lo has asignado en 'Alertas de voz'. Desinstala los paquetes de voces que no estés utilizando para ocultar este mensaje."
-L.VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar. Se ha restablecido a la configuración predeterminada."
+L.VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar o que no es compatible actualmente. Se ha restablecido a la configuración predeterminada: %s."
 L.BIG_WIGS					= "BigWigs"
 L.WEAKAURA_KEY				= " (|cff308530Clave WA:|r %s)"
 
@@ -215,9 +215,11 @@ L.DBMLOOTREMINDER 					= "AVISO: Tienes instalado el módulo de terceros DBM-Loo
 L.UPDATE_REQUIRES_RELAUNCH 			= "AVISO: Esta actualización de " .. L.DBM .. " no funcionará correctamente hasta que reinicies el juego. Esta versión incluye nuevos archivos o cambios en los archivos .toc que no pueden recargarse mediante /reload. Es probable que " .. L.DBM .. " no funcione correctamente hasta que reinicies el juego."
 L.OUT_OF_DATE_NAG 					= "Tu versión de " .. L.DBM .. " está desactualizada para este encuentro. Se recomienda actualizar " .. L.DBM .. " para no perderte anuncios, temporizadores o indicadores cruciales para tu grupo de banda."
 L.PLATER_NP_AURAS_MSG				 = L.DBM .. " incluye una función avanzada para mostrar los temporizadores de reutilización del enemigo mediante iconos en las placas de nombre. Esto está activado de forma predeterminada para la mayoría de los usuarios, pero en el caso de los usuarios de Plater, está desactivado de forma predeterminada en las opciones de Plater a menos que lo activen. Para aprovechar al máximo DBM (y Plater), se recomienda activar esta función en Plater en la sección 'Beneficio especial'. Si no deseas volver a ver este mensaje, también puedes desactivar completamente la opción 'Iconos de reutilización en las placas de nombre' en los paneles de opciones de placas de nombre o mediante la desactivación global de DBM."
+L.HARDCODED_FALLBACK					= L.DBM .. " ha detectado un resultado inesperado en un módulo codificado de forma fija. " .. L.DBM .. " usará los temporizadores y avisos de Blizzard para este encuentro."
 
 
 L.MOVABLE_BAR					= "¡Muéveme!"
+L.MOVABLE_FRAMES 				= "Marcos arrastrables"
 
 L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de " .. L.DBM .. ": '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "¿Seguro que quieres ignorar los temporizadores de %s para esta sesión?"
@@ -512,14 +514,14 @@ L.AUTO_TIMER_TEXTS.cdpnp				= L.AUTO_TIMER_TEXTS.cd -- OPTIONAL
 L.AUTO_TIMER_TEXTS.nextpnp				= L.AUTO_TIMER_TEXTS.next -- OPTIONAL
 L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 
-L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
-L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración del perjuicio de $spell:%s"
+L.AUTO_TIMER_OPTIONS.target				= "Mostrar temporizador para la duración de $spell:%s"
+L.AUTO_TIMER_OPTIONS.targetcount		= "Mostrar temporizador (con contador) para la duración de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast				= "Mostrar temporizador para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castpnp			= "Mostrar temporizador de placa de nombre para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castcount			= "Mostrar temporizador (con contador) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.castsource			= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Mostrar temporizador para la duración de $spell:%s"
-L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
+L.AUTO_TIMER_OPTIONS.fades				= "Mostrar temporizador para el tiempo restante de $spell:%s en los jugadores"
 L.AUTO_TIMER_OPTIONS.ai					= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
 
 L.AUTO_TIMER_OPTIONS.cd					= "Mostrar temporizador para el tiempo de reutilización de $spell:%s"
@@ -584,6 +586,7 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "Gritar (con posición) cuando te afecte
 L.AUTO_YELL_OPTION_TEXT.combo			= "Gritar (con texto personalizado) cuando te afecten $spell:%s y otro(s) hechizo(s) a la vez"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "Gritar repetidamente (con tu nombre) cuando te afecte $spell:%s"
 L.AUTO_YELL_OPTION_TEXT.repeaticon		= "Gritar repetidamente (con icono) cuando te afecte $spell:%s"
+L.AUTO_YELL_OPTION_TEXT.icontarget		= "Iconos de grita cuando seas el objetivo de $spell:%s para advertir a los demás"
 
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell				= "¡%s en " .. UnitName("player") .. "!"
@@ -597,6 +600,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s"--Icon, Spellname
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s y %%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't need translation. It's just an icon repeated 3 times-- OPTIONAL
 
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s ha expirado"
@@ -613,13 +617,18 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2		= "Mostrar marco de información con una vista g
 L.AUTO_INFO_FRAME_OPTION_TEXT3		= "Mostrar marco de información para $spell:%s (cuando se alcanza el umbral de %%s)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Mostrar temporizador para el récord actual de completar %s"
-L.AUTO_PRIVATEAURA_OPTION_TEXT		= "Reproduce anuncios de sonido de DBM para auras privadas de $spell:%s en este encuentro."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproducir alertas de sonido de auras privadas de DBM para $spell:%s en este encuentro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproducir alertas de sonido de auras privadas de DBM cuando seas objetivo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproducir alertas de sonido de auras privadas de DBM cuando necesites alejarte de $spell:%s"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Anuncio desplazable"
 L.MOVE_WARNING_MESSAGE		= "Gracias por usar " .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
+
+L.MOVE_PRIVATE_AURA_TEXT 		= "<valor secreto> te apunta con el hechizo <valor secreto>"
+L.MOVE_PRIVATE_AURA_DISABLED 	= "La vista previa está desactivada porque los marcos de auras privadas están desactivados globalmente en las opciones."
 
 L.HUD_INVALID_TYPE			= "No se ha proporcionado un tipo de indicador en pantalla válido."
 L.HUD_INVALID_TARGET		= "No se ha proporcionado un objetivo válido."

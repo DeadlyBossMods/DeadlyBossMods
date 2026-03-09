@@ -204,6 +204,7 @@ L.DBMLDB							= "AVVISO: DBM-LDB è ora incluso in DBM-Core. Anche se non danno
 --L.DBMLOOTREMINDER						= "WARNING: 3rd party mod DBM-LootReminder is installed. This addon is no longer compatible with Retail WoW client and will cause " .. L.DBM .. " to break and not be able to send pull timers. Uninstall of this addon recommended"
 L.UPDATE_REQUIRES_RELAUNCH		= "AVVISO: Questo aggiornamento "..L.DBM.." non funzionerà correttamente a meno di un riavvio del gioco. Questo aggiornamento contiene nuovi file o modifiche al file .toc che non possono essere caricate con ReloadUI. Potresti avere malfunzionamenti o errori se continui senza riavviare."
 L.OUT_OF_DATE_NAG				= "La versione di "..L.DEADLY_BOSS_MODS.." è obsoleta. E' consigliabile aggiornare per questo combattimento in modo da non perdere importanti avvisi, temporizzatori o urlare al resto del raid cose importanti."
+L.HARDCODED_FALLBACK				= L.DBM .. " ha rilevato un risultato inatteso in una mod codificata internamente. " .. L.DBM .. " userà timer e avvisi Blizzard per questo scontro."
 --L.PLATER_NP_AURAS_MSG					= L.DBM .. " includes an advanced feature to show enemy cooldown timers using icons on nameplates. This is on by default for most users, but for Plater users it is off by default in Plater options unless you enable it. To get the most out of DBM (and Plater) it's recommended you enable this feature in Plater under 'Buff Special' section. If you don't want to see this message again, you can also just entirely disable 'Cooldown icons on nameplates' option in DBM global disable or nameplate options panels"
 
 L.MOVABLE_BAR				= "Trascinami!"
@@ -460,21 +461,21 @@ L.AUTO_TIMER_TEXTS.cast			= "%s"
 --L.AUTO_TIMER_TEXTS.castcount		= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.castsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active		= "%s terminato" -- Buff/Debuff/Eventi su boss
-L.AUTO_TIMER_TEXTS.fades			= "%s svanito" -- Buff/Debuff su giocatori
+L.AUTO_TIMER_TEXTS.fades		= "%s svanito" -- Buff/Debuff su giocatori
 L.AUTO_TIMER_TEXTS.ai			= "%s IA"
 
 L.AUTO_TIMER_TEXTS.cd			= "%s CD"
 L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s) CD"
 L.AUTO_TIMER_TEXTS.cdsource		= "%s CD: >%%s<"
-L.AUTO_TIMER_TEXTS.cdspecial		= "CD Speciale"
+L.AUTO_TIMER_TEXTS.cdspecial	= "CD Speciale"
 
-L.AUTO_TIMER_TEXTS.next			= "Prossimo %s"
-L.AUTO_TIMER_TEXTS.nextcount		= "Prossimo %s (%%s)"
-L.AUTO_TIMER_TEXTS.nextsource	= "Prossimo %s: %%s"
+L.AUTO_TIMER_TEXTS.next			= "%s"
+L.AUTO_TIMER_TEXTS.nextcount	= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Prossimo Speciale"
 
 L.AUTO_TIMER_TEXTS.achievement	= "%s"
-L.AUTO_TIMER_TEXTS.stage			= "Prossima Fase"
+L.AUTO_TIMER_TEXTS.stage		= "Prossima Fase"
 --L.AUTO_TIMER_TEXTS.stagecount							= "Stage %%s"--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
 --L.AUTO_TIMER_TEXTS.stagecountcycle						= "Stage %%s (%%s)"--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 --L.AUTO_TIMER_TEXTS.stagecontext						= "%s" -- OPTIONAL
