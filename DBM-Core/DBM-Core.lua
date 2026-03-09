@@ -72,6 +72,9 @@ local function showRealDate(curseDate)
 		return year .. "/" .. month .. "/" .. day .. " " .. hour .. ":" .. minute .. ":" .. second
 	end
 end
+function DBM:ShowRealDate(curseDate)
+	return showRealDate(curseDate)
+end
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
@@ -79,7 +82,7 @@ _G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
+private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
 local PForceDisable
 -- The string that is shown as version
 DBM.DisplayVersion = "12.0.30 alpha"--Core version
@@ -403,7 +406,7 @@ DBM.DefaultOptions = {
 	BadTimerAlert = false,
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
-	FakeBWVersion = false,
+	fakeBWVersion = false,
 	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
@@ -483,7 +486,7 @@ private.playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local lastCombatStarted = GetTime()
-local chatPrefixShort = "<" .. L.DBM .. "> "
+private.chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
 -- Table variables
@@ -494,7 +497,7 @@ local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, lastGroupLeader
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, AddMsg, delayedFunction, handleSync, lastGroupLeader
 -- 0 variables
 local eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
@@ -605,7 +608,7 @@ end
 -- so caching them is worth the effort
 local ipairs, pairs, next = ipairs, pairs, next
 local tonumber, tostring = tonumber, tostring
-local tinsert, tremove, twipe, tsort, tconcat = table.insert, table.remove, table.wipe, table.sort, table.concat
+local tinsert, tremove, twipe, tsort = table.insert, table.remove, table.wipe, table.sort
 local type, select = type, select
 local GetTime = GetTime
 local bband = bit.band
@@ -761,6 +764,7 @@ local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, i
 		ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	end
 end
+private.sendWhisperSync = sendWhisperSync
 
 ---Customized syncing specifically for guild comms
 ---@param protocol number
@@ -1824,7 +1828,7 @@ do
 			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				breakTimerStart(self, remaining, playerName, true)
+				private.breakTimerStart(self, remaining, playerName, true)
 			else--It must have ended while we were offline, kill variable.
 				self.Options.RestoreSettingBreakTimer = nil
 			end
@@ -2516,221 +2520,6 @@ function DBM:RepositionFrames()
 	end
 end
 
-----------------------
---  Slash Commands  --
-----------------------
-
-do
-	local function Sort(v1, v2)
-		if v1.revision and not v2.revision then
-			return true
-		elseif v2.revision and not v1.revision then
-			return false
-		elseif v1.revision and v2.revision then
-			return v1.revision > v2.revision
-		else
-			return (v1.bwversion or 0) > (v2.bwversion or 0)
-		end
-	end
-
-	function DBM:ShowVersions(notify)
-		local sortMe, outdatedUsers = {}, {}
-		for _, v in pairs(raid) do
-			tinsert(sortMe, v)
-		end
-		tsort(sortMe, Sort)
-		self:AddMsg(L.VERSIONCHECK_HEADER)
-		for _, v in ipairs(sortMe) do
-			local name = v.name
-			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-			if playerColor then
-				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-			end
-			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
-				if self.Options.ShowAllVersions then
-					if v.classicSubVers then
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
-					else
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
-					end
-				end
-				if not DBM:MidRestrictionsActive() and notify and v.revision < self.ReleaseRevision then
-					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
-				end
-			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
-				self:AddMsg(L.VERSIONCHECK_ENTRY_TWO:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash)), false)
-			elseif self.Options.ShowAllVersions and not v.displayVersion and v.bwversion then--BigWigs, No DBM
-				self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash), ""), false)
-			else
-				if self.Options.ShowAllVersions then
-					self:AddMsg(L.VERSIONCHECK_ENTRY_NO_DBM:format(name), false)
-				end
-			end
-		end
-		local NoDBM = 0
-		local NoBigwigs = 0
-		local OldMod = 0
-		for i = #sortMe, 1, -1 do
-			if not sortMe[i].revision then
-				NoDBM = NoDBM + 1
-			end
-			if not (sortMe[i].bwversion) then
-				NoBigwigs = NoBigwigs + 1
-			end
-			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
-			--This check compares all dbm version to highest RELEASE version in raid.
-			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwversion and (sortMe[i].bwversion < fakeBWVersion) then
-				OldMod = OldMod + 1
-				local name = sortMe[i].name
-				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-				if playerColor then
-					name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-				end
-				tinsert(outdatedUsers, name)
-			end
-		end
-		local TotalUsers = #sortMe
-		self:AddMsg("---", false)
-		self:AddMsg(L.VERSIONCHECK_FOOTER:format(TotalUsers - NoDBM, TotalUsers - NoBigwigs), false)
-		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #outdatedUsers > 0 and tconcat(outdatedUsers, ", ") or NONE), false)
-	end
-end
-
-------------------------
---  Break/Pull Timer  --
-------------------------
-
----@param timer number --time in seconds
-function DBM:CreateBreakTimer(timer)
-	if private.IsEncounterInProgress() then
-		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if self:MidRestrictionsActive() then
-		return self:AddMsg(L.NO_COMMS)
-	end
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return self:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if timer > 60 then
-		return self:AddMsg(L.BREAK_USAGE)
-	end
-	timer = timer * 60
-	--Make sure 1 minute break timer is sent as a break timer and not a pull timer
-	--if timer == 60 then
-	--	timer = 61
-	--end
-	--if not private.isWrath then
-	--	--Send blizzard countdown timer that all users see (including modless)
-	--	C_PartyInfo.DoCountdown(timer)
-	--	DBM:Debug("Sending Blizzard Countdown Timer")
-	--else
-	private.sendSync(private.DBMSyncProtocol, "BT", timer, "ALERT")
-	self:Debug("Sending DBM Break Timer")
-	--end
-end
-
----@param timer number --time in seconds
-function DBM:CreatePullTimer(timer)
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return self:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if private.IsEncounterInProgress() then
-		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if timer > 0 and timer < 3 then
-		return self:AddMsg(L.PULL_TIME_TOO_SHORT)
-	end
-	--if timer > 60 then
-	--	return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
-	--end
-	--Send blizzard countdown timer that all users see (including modless)
-	C_PartyInfo.DoCountdown(timer)
-	self:Debug("Sending Blizzard Countdown Timer")
-end
-
--------------------
---  Pizza Timer  --
--------------------
-do
-
-	local function loopTimer(time, text, broadcast, sender)
-		DBM:CreatePizzaTimer(time, text, broadcast, sender, true)
-	end
-
-	local ignore = {}
-	---Standard Pizza Timer
-	---@param time number --time in seconds
-	---@param text string --timer text
-	---@param broadcast boolean? --if it should be broadcast to the raid
-	---@param sender any --who sent it (if it was started by sync)
-	---@param loop boolean? --if the timer should loop indefinitely
-	---@param terminate boolean? --if this is true, terminates the timer
-	---@param whisperTarget any
-	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
-		if terminate or time == 0 then
-			self:Unschedule(loopTimer)
-			DBT:CancelBar(text)
-			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
-			-- Fire cancelation of pizza timer
-			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
-				text = text:sub(1, 16)
-				--No UnitName in instances at all in midnight
-				if not (self:IsPostMidnight() and IsInInstance()) then
-					text = text:gsub("%%t", UnitName("target") or "<no target>")
-				end
-				if whisperTarget then
-					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
-				else
-					sendSync(DBMSyncProtocol, "U", ("0\t%s"):format(text), "ALERT", true)
-				end
-			end
-			return
-		end
-		if sender and ignore[sender] then return end
-		text = text:sub(1, 16)
-		--No UnitName in instances at all in midnight
-		if not (self:IsPostMidnight() and IsInInstance()) then
-			text = text:gsub("%%t", UnitName("target") or "<no target>")
-		end
-		if time < 3 then
-			self:AddMsg(L.PIZZA_ERROR_USAGE)
-			return
-		end
-		DBT:CreateBar(time, text, private.isRetail and 237538 or 134376)
-		fireEvent("DBM_TimerBegin", "DBMPizzaTimer", text, time, private.isRetail and "237538" or "134376", "pizzatimer", nil, 0, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
-		if broadcast then
-			if whisperTarget then
-				--no dbm function uses whisper for pizza timers
-				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-				sendWhisperSync(DBMSyncProtocol, "UW", ("%s\t%s"):format(time, text), whisperTarget, "ALERT", true)
-			else
-				sendSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text), "ALERT", true)
-			end
-		end
-		if sender then self:ShowPizzaInfo(text, sender) end
-		if loop then
-			self:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
-			self:Schedule(time, loopTimer, time, text, broadcast, sender)
-		end
-	end
-
-	function DBM:AddToPizzaIgnore(name)
-		ignore[name] = true
-	end
-end
-
-function DBM:ShowPizzaInfo(id, sender)
-	if self.Options.ShowPizzaMessage then
-		self:AddMsg(L.PIZZA_SYNC_INFO:format(sender, id))
-	end
-end
-
 -----------------
 --  GUI Stuff  --
 -----------------
@@ -2848,7 +2637,7 @@ do
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
+					sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -2939,7 +2728,7 @@ do
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
+					sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -4831,17 +4620,6 @@ end
 --NOTE. Don't ever try to move this out of core. My testing showed it required storing nearly every local variable in core in private, gravely poluting and inflating it beyond any kind of rational
 
 do
-	local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
-	local function checkForActualPull()
-		-- We don't need to check `RecordOnlyBosses` as it's already checked in where this function is called
-		-- If you have more than 1 mob, keep logging
-		-- If you're in mythic+, keep logging
-		-- Otherwise, stop logging post-pull timer ended
-		if #inCombat == 0 and difficulties.difficultyIndex ~= 8 then
-			DBM:StopLogging()
-		end
-	end
-
 	local DBMZoneCombatScanner = private:GetModule("TrashCombatScanningModule")
 
 	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
@@ -5013,158 +4791,6 @@ do
 		end
 	end
 
-	local dummyMod -- dummy mod for the pull timer
-
-	---@param self DBM
-	---@param sender string
-	---@param timer any string or number only, but luaLS bitches if I actually tell it that
-	---@param blizzardTimer boolean?
-	local function pullTimerStart(self, sender, timer, blizzardTimer)
-		if not timer then return end
-		if not blizzardTimer then return end--Ignore old DBM version comms
-		local unitId
-		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
-			if blizzardTimer then
-				unitId = self:GetRaidUnitIdByGuid(sender)
-				sender = self:GetUnitFullName(unitId) or sender
-			else
-				unitId = self:GetRaidUnitId(sender)
-			end
-			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
-				return
-			end
-		end
-		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
-		if unitId then
-			local senderMapID = IsInInstance() and select(-1, UnitPosition(unitId)) or C_Map.GetBestMapForUnit(unitId) or 0
-			local playerMapID = IsInInstance() and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
-			if self.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
-		end
-		timer = tonumber(timer or 0)
-		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
-		if (timer > 0 and timer < 3) then--timer > 60 or
-			return
-		end
-		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
-			if not dummyMod then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
-				---@class DBMDummyMod: DBMMod
-				dummyMod = self:NewMod("PullTimerCountdownDummy")
-				dummyMod.isDummyMod = true
-				self:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
-				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
-				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
-			end
-			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
-				dummyMod.timer:Stop()
-			end
-			dummyMod.text:Cancel()
-			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-			self:FlashClientIcon()
-			if not self.Options.DontShowPT2 then
-				dummyMod.timer:Start(timer, L.TIMER_PULL)
-			end
-			if not self.Options.DontShowPTText and timer then
-				if not self:IsPostMidnight() then
-					local target = unitId and DBM:GetUnitFullName(unitId.."target")
-					if target and not raid[target] then
-						dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
-					else
-						dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
-					end
-				else
-					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
-				end
-			end
-			if self.Options.EventSoundPullTimer and self.Options.EventSoundPullTimer ~= "" and self.Options.EventSoundPullTimer ~= "None" then
-				self:PlaySoundFile(self.Options.EventSoundPullTimer, nil, true)
-			end
-			if self.Options.RecordOnlyBosses then
-				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
-			end
-			if private.isRetail and self.Options.CheckGear and not private.testBuild then
-				local bagilvl, equippedilvl = GetAverageItemLevel()
-				local difference = bagilvl - equippedilvl
-				local weapon = GetInventoryItemLink("player", 16)
-				local fishingPole = false
-				if weapon then
-					local _, _, _, _, _, _, type = GetItemInfo(weapon)
-					if type and type == L.GEAR_FISHING_POLE then
-						fishingPole = true
-					end
-				end
-				if IsInRaid() and difference >= 18 then
-					dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
-				elseif IsInRaid() and (not weapon or fishingPole) then
-					dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
-				end
-			end
-		end
-	end
-
-	do
-		local dummyMod2 -- dummy mod for the break timer
-		---@param self DBM
-		---@param timer number
-		---@param sender string
-		---@param isRecovery boolean?
-		function breakTimerStart(self, timer, sender, isRecovery)
-			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if not isRecovery and ((self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress()) then
-				return
-			end
-			if not dummyMod2 then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
-				---@class DBMDummyMod2: DBMMod
-				dummyMod2 = self:NewMod("BreakTimerCountdownDummy")
-				dummyMod2.isDummyMod = true
-				self:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
-				dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, private.isRetail and "237538" or "136106")
-				--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-				dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, private.isRetail and "237538" or "136106", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 1, threshold, nil, nil, nil, nil, nil, nil, "break")
-			end
-			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
-				dummyMod2.timer:Stop()
-			end
-			dummyMod2.text:Cancel()
-			self.Options.RestoreSettingBreakTimer = nil
-			if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
-			self.Options.RestoreSettingBreakTimer = timer .. "/" .. time()
-			if not self.Options.DontShowPT2 then
-				dummyMod2.timer:Start(timer)
-			end
-			if not self.Options.DontShowPTText then
-				---@type number, string|number
-				local hour, minute = GetGameTime()
-				minute = minute + (timer / 60)
-				if minute >= 60 then
-					hour = hour + 1
-					minute = minute - 60
-				end
-				minute = floor(minute)
-				if minute < 10 then
-					minute = tostring(0 .. minute)
-				end
-				dummyMod2.text:Show(L.BREAK_START:format(stringUtils.strFromTime(timer) .. " (" .. hour .. ":" .. minute .. ")", sender))
-				if timer / 60 > 10 then dummyMod2.text:Schedule(timer - 10 * 60, L.BREAK_MIN:format(10)) end
-				if timer / 60 > 5 then dummyMod2.text:Schedule(timer - 5 * 60, L.BREAK_MIN:format(5)) end
-				if timer / 60 > 2 then dummyMod2.text:Schedule(timer - 2 * 60, L.BREAK_MIN:format(2)) end
-				if timer / 60 > 1 then dummyMod2.text:Schedule(timer - 1 * 60, L.BREAK_MIN:format(1)) end
-				dummyMod2.text:Schedule(timer, L.ANNOUNCE_BREAK_OVER:format(hour .. ":" .. minute))
-			end
-			C_TimerAfter(timer, function() self.Options.RestoreSettingBreakTimer = nil end)
-		end
-	end
-
 	syncHandlers["BT"] = function(sender, _, timer)
 		if DBM.Options.DontShowUserTimers then return end--or not private.isWrath
 		timer = tonumber(timer or 0)
@@ -5176,7 +4802,7 @@ do
 			--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 			--It expects an extra number check for no reason at all
 			---@diagnostic disable-next-line: param-type-mismatch
-			breakTimerStart(DBM, timer, sender)
+			private.breakTimerStart(DBM, timer, sender)
 		end
 	end
 
@@ -5190,7 +4816,7 @@ do
 		--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 		--It expects an extra number check for no reason at all
 		---@diagnostic disable-next-line: param-type-mismatch
-		breakTimerStart(DBM, timer, sender, true)--, nil, true
+		private.breakTimerStart(DBM, timer, sender, true)--, nil, true
 	end
 
 	local function SendVersion(guild)
@@ -5206,8 +4832,8 @@ do
 			end
 			return
 		end
-		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
-			sendBWSync("V", ("%d^%s"):format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
+		if DBM.Options.fakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
+			sendBWSync("V", ("%d^%s"):format(private.fakeBWVersion, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
 			return
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
@@ -5687,9 +5313,9 @@ do
 					local version = tonumber(verString) or 0
 					if version == 0 then return end--Just a query
 					handleSync(channel, correctSender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
-					if version > fakeBWVersion then--Newer revision found, upgrade!
-						fakeBWVersion = version
-						fakeBWHash = hash
+					if version > private.fakeBWVersion then--Newer revision found, upgrade!
+						private.fakeBWVersion = version
+						private.fakeBWHash = hash
 					end
 				elseif bwPrefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
@@ -5747,7 +5373,7 @@ do
 --			breakTimerStart(self, timeSeconds, initiatedBy, true)
 --		else--Treat as a pull timer
 			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-			pullTimerStart(self, initiatedByGuid, timeSeconds, true)
+			private.pullTimerStart(self, initiatedByGuid, timeSeconds, true)
 --		end
 	end
 
@@ -5756,9 +5382,9 @@ do
 			return
 		end
 		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
---		breakTimerStart(self, 0, initiatedBy, true)
+--		private.breakTimerStart(self, 0, initiatedBy, true)
 		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-		pullTimerStart(self, initiatedByGuid, 0, true)
+		private.pullTimerStart(self, initiatedByGuid, 0, true)
 	end
 end
 
@@ -6808,15 +6434,15 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText .. (name or ""), totalPulls - totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText .. (name or ""), totalPulls - totalKills)
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP, totalPulls - totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP, totalPulls - totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText .. (name or ""))
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP)
 						end
 					end
 					sendWhisper(k, msg)
@@ -6897,15 +6523,15 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
 						end
 					end
 					sendWhisper(k, msg)
@@ -7802,7 +7428,7 @@ do
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if private.statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
 		if not checkForSafeSender(sender, true, true, true, isRealIdMessage) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
-		if msg:find(chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
+		if msg:find(private.chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
 			DBM:PlaySoundFile(997890)--"sound\\creature\\aggron1\\VO_60_HIGHMAUL_AGGRON_1_AGGRO_1.ogg"
@@ -7824,7 +7450,7 @@ do
 				local bossesKilled = mod.numBoss - mod.vb.bossLeft
 				hpText = hpText .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 			end
-			sendWhisper(sender, chatPrefixShort .. L.STATUS_WHISPER:format(difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+			sendWhisper(sender, private.chatPrefixShort .. L.STATUS_WHISPER:format(difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and difficulties.difficultyIndex ~= 208 then--Auto respond in any instance except delves
 			difficulties:RefreshCache()
 			local mod
@@ -7844,9 +7470,9 @@ do
 			end
 			if not autoRespondSpam[sender] then
 				if private.isRetail and not mod.soloChallenge and IsInScenarioGroup() then
-					sendWhisper(sender, chatPrefixShort .. L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
+					sendWhisper(sender, private.chatPrefixShort .. L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
 				else
-					sendWhisper(sender, chatPrefixShort .. L.AUTO_RESPOND_WHISPER:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+					sendWhisper(sender, private.chatPrefixShort .. L.AUTO_RESPOND_WHISPER:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 				end
 				DBM:AddMsg(L.AUTO_RESPONDED)
 			end
