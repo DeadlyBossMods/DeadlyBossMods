@@ -2322,7 +2322,6 @@ do
 	--- |"DBM_AffixEvent"
 	--- |"DBM_EnemyEngaged"
 	--- |"DBM_TimerBegin"
-	--- |"DBM_TimerStart" Deprecated
 	--- |"DBM_TimerStop"
 	--- |"DBM_TimerFadeUpdate"
 	--- |"DBM_TimerUpdate"
