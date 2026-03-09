@@ -194,12 +194,14 @@ do
 					}
 					if flagKey == "texture" then
 						ins.texture = true
+						tinsert(result, ins)
 					elseif flagKey == "font" then
 						ins.font = true
+						tinsert(result, ins)
 					elseif flagKey == "sound" then
 						ins.sound = true
+						tinsert(result, ins)
 					end
-					tinsert(result, ins)
 				end
 			end
 		end
