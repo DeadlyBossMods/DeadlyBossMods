@@ -247,8 +247,23 @@ end
 -------------------
 do
 
+	local activeLoopTimerText = nil -- normalized text of the currently running looping pizza timer
+
 	local function loopTimer(time, text, broadcast, sender)
 		DBM:CreatePizzaTimer(time, text, broadcast, sender, true)
+	end
+
+	---Applies the same normalization used when creating pizza timer bars:
+	---truncates to 16 chars and replaces %t with the current target name.
+	---@param text string
+	---@return string
+	local function normalizeTimerText(text)
+		text = text:sub(1, 16)
+		--No UnitName in instances at all in midnight
+		if not (DBM:IsPostMidnight() and IsInInstance()) then
+			text = text:gsub("%%t", UnitName("target") or "<no target>")
+		end
+		return text
 	end
 
 	local ignore = {}
@@ -263,15 +278,24 @@ do
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
 		if terminate or time == 0 then
 			self:Unschedule(loopTimer)
-			DBT:CancelBar(text)
+			-- Cancel the tracked looping timer (handles endloop/auto-terminate with empty text)
+			local prevLoopText = activeLoopTimerText
+			if prevLoopText then
+				DBT:CancelBar(prevLoopText)
+				activeLoopTimerText = nil
+			end
+			-- Also cancel using the normalized version of the provided text (handles non-loop cancels)
+			if text ~= "" then
+				local cancelText = normalizeTimerText(text)
+				-- Avoid double-canceling if the provided text refers to the same bar as the tracked loop timer
+				if cancelText ~= prevLoopText then
+					DBT:CancelBar(cancelText)
+				end
+			end
 			self:FireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
 			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
-				text = text:sub(1, 16)
-				--No UnitName in instances at all in midnight
-				if not (self:IsPostMidnight() and IsInInstance()) then
-					text = text:gsub("%%t", UnitName("target") or "<no target>")
-				end
+				text = normalizeTimerText(text)
 				if whisperTarget then
 					private.sendWhisperSync(private.DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
 				else
@@ -281,11 +305,7 @@ do
 			return
 		end
 		if sender and ignore[sender] then return end
-		text = text:sub(1, 16)
-		--No UnitName in instances at all in midnight
-		if not (self:IsPostMidnight() and IsInInstance()) then
-			text = text:gsub("%%t", UnitName("target") or "<no target>")
-		end
+		text = normalizeTimerText(text)
 		if time < 3 then
 			self:AddMsg(L.PIZZA_ERROR_USAGE)
 			return
@@ -303,6 +323,7 @@ do
 		end
 		if sender then self:ShowPizzaInfo(text, sender) end
 		if loop then
+			activeLoopTimerText = text -- text was normalized by normalizeTimerText above
 			self:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
 			self:Schedule(time, loopTimer, time, text, broadcast, sender)
 		end
