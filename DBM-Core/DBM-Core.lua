@@ -27,6 +27,10 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBM
+local DBM = private:GetPrototype("DBM")
+_G.DBM = DBM
+
 --WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
 --More modulation or scoping is needed to reduce this
 local DBMPrefix = "D5"
@@ -73,20 +77,16 @@ local function showRealDate(curseDate)
 	end
 end
 
----@class DBM
-local DBM = private:GetPrototype("DBM")
-_G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-local fakeBWVersion, fakeBWHash = 407, "a0f5bf5"--407.0
-local PForceDisable
+private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
+
 -- The string that is shown as version
 DBM.DisplayVersion = "12.0.30 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2026, 3, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-PForceDisable = 22--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -480,23 +480,23 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local playerName = UnitName("player")
 private.playerLevel = UnitLevel("player")
+private.LastInstanceType = nil
 local playerRealm = GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local lastCombatStarted = GetTime()
-local chatPrefixShort = "<" .. L.DBM .. "> "
+private.chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
 -- Table variables
-local newerVersionPerson, newersubVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache = {}, {}, {}, {}, {}, {}, {}, {}
 local inCombat = {} ---@type DBMMod[]
 local combatInfo = {} ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, lastGroupLeader
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader
 -- 0 variables
-local eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
@@ -605,7 +605,7 @@ end
 -- so caching them is worth the effort
 local ipairs, pairs, next = ipairs, pairs, next
 local tonumber, tostring = tonumber, tostring
-local tinsert, tremove, twipe, tsort, tconcat = table.insert, table.remove, table.wipe, table.sort, table.concat
+local tinsert, tremove, twipe, tsort = table.insert, table.remove, table.wipe, table.sort
 local type, select = type, select
 local GetTime = GetTime
 local bband = bit.band
@@ -629,14 +629,10 @@ local PlaySoundFile = PlaySoundFile
 local Ambiguate = Ambiguate
 local C_TimerAfter = C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
-local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
 private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress or IsEncounterInProgress
-
-local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 -- this is not technically a lib and instead a standalone addon but the api is available via LibStub
 local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStub("CustomNames")
@@ -708,163 +704,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 	end
 	return false
 end
-
----Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
----@param protocol number
----@param prefix string
----@param msg any
----@param priority string ChatThottleLib sync priority
----@param isLogged boolean?
-local function sendSync(protocol, prefix, msg, priority, isLogged)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
-	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
-		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		local sendChannel = "SOLO"
-		if not IsTrialAccount() then
-			if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-				sendChannel = "INSTANCE_CHAT"
-			else
-				if IsInRaid() then
-					sendChannel = "RAID"
-				elseif IsInGroup(1) then
-					sendChannel = "PARTY"
-				end
-			end
-		end
-		if sendChannel == "SOLO" then
-			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
-		else
-			if isLogged then
-				ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
-			else
-				ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
-			end
-		end
-	end
-end
-private.sendSync = sendSync
-
----Wrapper to send non logged and logged syncs to a specific player via whisper
----@param protocol number
----@param prefix string
----@param msg any
----@param whisperTarget string
----@param priority string ChatThottleLib sync priority
----@param isLogged boolean?
-local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
-	if isLogged then
-		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
-	else
-		ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
-	end
-end
-
----Customized syncing specifically for guild comms
----@param protocol number
----@param prefix string
----@param msg any
-local function sendGuildSync(protocol, prefix, msg)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
-	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
-		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
-	end
-end
-private.sendGuildSync = sendGuildSync
-
----Sync Object specifically for out in the world sync messages that have different rules than standard syncs
----@param self DBM
----@param protocol number
----@param prefix string
----@param msg any
----@param noBNet boolean?
-local function SendWorldSync(self, protocol, prefix, msg, noBNet)
-	if not dbmIsEnabled then return end--Block all world syncs if force disabled
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
-	DBM:Debug("SendWorldSync running for " .. prefix)
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
-	local sendChannel = "SOLO"
-	if not IsTrialAccount() then
-		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			sendChannel = "INSTANCE_CHAT"
-		else
-			if IsInRaid() then
-				sendChannel = "RAID"
-			elseif IsInGroup(1) then
-				sendChannel = "PARTY"
-			end
-		end
-	end
-	if sendChannel == "SOLO" then
-		handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
-	else
-		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
-	end
-	if IsInGuild() then
-		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
-	end
-	if self.Options.EnableWBSharing and not noBNet then
-		local _, numBNetOnline = BNGetNumFriends()
-		local connectedServers = GetAutoCompleteRealms()
-		for i = 1, numBNetOnline do
-			local gameAccountID, isOnline, realmName
-			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
-			if accountInfo then
-				gameAccountID, isOnline, realmName = accountInfo.gameAccountInfo.gameAccountID, accountInfo.gameAccountInfo.isOnline, accountInfo.gameAccountInfo.realmName
-			end
-			if gameAccountID and isOnline and realmName then
-				local sameRealm = false
-				if connectedServers then
-					for j = 1, #connectedServers do
-						if realmName == connectedServers[j] then
-							sameRealm = true
-							break
-						end
-					end
-				else
-					if realmName == playerRealm or realmName == normalizedPlayerRealm then
-						sameRealm = true
-					end
-				end
-				if sameRealm then
-					ChatThrottleLib:BNSendGameData("NORMAL", DBMPrefix, DBMSyncProtocol .. "\t" .. prefix .. "\t" .. msg, "WHISPER", gameAccountID)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
-				end
-			end
-		end
-	end
-end
-
----Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
----@param prefix string
----@param msg any
----@param channel string
----@param priority string ChatThottleLib sync priority
-local function sendBWSync(prefix, msg, channel, priority)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
-	if dbmIsEnabled and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
-		msg = msg or ""
-		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
-	end
-end
-private.sendBWSync = sendBWSync
-
--- sends a whisper to a player by their character name or BNet presence id
--- returns true if the message was sent, nil otherwise
-local function sendWhisper(target, msg)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance chat messages in Midnight Alpha
-	if IsTrialAccount() then return end
-	if type(target) == "number" then
-		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
-			BNSendWhisper(target, msg)
-		end
-	elseif type(target) == "string" then
-		SendChatMessage(msg, "WHISPER", nil, target) -- Whispering to ourselves here is okay and somewhat useful for whisper-warnings
-	end
-end
+private.checkForSafeSender = checkForSafeSender
 
 -----------------------
 --  Utility Methods  --
@@ -1824,13 +1664,13 @@ do
 			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				breakTimerStart(self, remaining, playerName, true)
+				private.breakTimerStart(self, remaining, playerName, true)
 			else--It must have ended while we were offline, kill variable.
 				self.Options.RestoreSettingBreakTimer = nil
 			end
 		end
 		if not IsInInstance() then
-			sendGuildSync(DBMSyncProtocol, "GH")
+			private.sendGuildSync(DBMSyncProtocol, "GH")
 		end
 		if private.isRetail then
 			--Initializing timeline stuff immediately on ADDON_LOADED results in getviewtype not being loaded yet (thus returning 0)
@@ -2322,7 +2162,6 @@ do
 	--- |"DBM_AffixEvent"
 	--- |"DBM_EnemyEngaged"
 	--- |"DBM_TimerBegin"
-	--- |"DBM_TimerStart" Deprecated
 	--- |"DBM_TimerStop"
 	--- |"DBM_TimerFadeUpdate"
 	--- |"DBM_TimerUpdate"
@@ -2517,221 +2356,6 @@ function DBM:RepositionFrames()
 	end
 end
 
-----------------------
---  Slash Commands  --
-----------------------
-
-do
-	local function Sort(v1, v2)
-		if v1.revision and not v2.revision then
-			return true
-		elseif v2.revision and not v1.revision then
-			return false
-		elseif v1.revision and v2.revision then
-			return v1.revision > v2.revision
-		else
-			return (v1.bwversion or 0) > (v2.bwversion or 0)
-		end
-	end
-
-	function DBM:ShowVersions(notify)
-		local sortMe, outdatedUsers = {}, {}
-		for _, v in pairs(raid) do
-			tinsert(sortMe, v)
-		end
-		tsort(sortMe, Sort)
-		self:AddMsg(L.VERSIONCHECK_HEADER)
-		for _, v in ipairs(sortMe) do
-			local name = v.name
-			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-			if playerColor then
-				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-			end
-			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
-				if self.Options.ShowAllVersions then
-					if v.classicSubVers then
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
-					else
-						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
-					end
-				end
-				if not DBM:MidRestrictionsActive() and notify and v.revision < self.ReleaseRevision then
-					SendChatMessage(chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
-				end
-			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
-				self:AddMsg(L.VERSIONCHECK_ENTRY_TWO:format(name, L.DBM .. " " .. v.displayVersion, showRealDate(v.revision), L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash)), false)
-			elseif self.Options.ShowAllVersions and not v.displayVersion and v.bwversion then--BigWigs, No DBM
-				self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash), ""), false)
-			else
-				if self.Options.ShowAllVersions then
-					self:AddMsg(L.VERSIONCHECK_ENTRY_NO_DBM:format(name), false)
-				end
-			end
-		end
-		local NoDBM = 0
-		local NoBigwigs = 0
-		local OldMod = 0
-		for i = #sortMe, 1, -1 do
-			if not sortMe[i].revision then
-				NoDBM = NoDBM + 1
-			end
-			if not (sortMe[i].bwversion) then
-				NoBigwigs = NoBigwigs + 1
-			end
-			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
-			--This check compares all dbm version to highest RELEASE version in raid.
-			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwversion and (sortMe[i].bwversion < fakeBWVersion) then
-				OldMod = OldMod + 1
-				local name = sortMe[i].name
-				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
-				if playerColor then
-					name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-				end
-				tinsert(outdatedUsers, name)
-			end
-		end
-		local TotalUsers = #sortMe
-		self:AddMsg("---", false)
-		self:AddMsg(L.VERSIONCHECK_FOOTER:format(TotalUsers - NoDBM, TotalUsers - NoBigwigs), false)
-		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #outdatedUsers > 0 and tconcat(outdatedUsers, ", ") or NONE), false)
-	end
-end
-
-------------------------
---  Break/Pull Timer  --
-------------------------
-
----@param timer number --time in seconds
-function DBM:CreateBreakTimer(timer)
-	if private.IsEncounterInProgress() then
-		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if self:MidRestrictionsActive() then
-		return self:AddMsg(L.NO_COMMS)
-	end
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return self:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if timer > 60 then
-		return self:AddMsg(L.BREAK_USAGE)
-	end
-	timer = timer * 60
-	--Make sure 1 minute break timer is sent as a break timer and not a pull timer
-	--if timer == 60 then
-	--	timer = 61
-	--end
-	--if not private.isWrath then
-	--	--Send blizzard countdown timer that all users see (including modless)
-	--	C_PartyInfo.DoCountdown(timer)
-	--	DBM:Debug("Sending Blizzard Countdown Timer")
-	--else
-	private.sendSync(private.DBMSyncProtocol, "BT", timer, "ALERT")
-	self:Debug("Sending DBM Break Timer")
-	--end
-end
-
----@param timer number --time in seconds
-function DBM:CreatePullTimer(timer)
-	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
-	--Sadly, this means DBM has to also be as limiting because if boss mods are not on same page it creates conflicts within multi mod groups
-	local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
-	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
-		return self:AddMsg(L.ERROR_NO_PERMISSION)
-	end
-	if private.IsEncounterInProgress() then
-		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
-	end
-	if timer > 0 and timer < 3 then
-		return self:AddMsg(L.PULL_TIME_TOO_SHORT)
-	end
-	--if timer > 60 then
-	--	return DBM:AddMsg(L.PULL_TIME_TOO_LONG)
-	--end
-	--Send blizzard countdown timer that all users see (including modless)
-	C_PartyInfo.DoCountdown(timer)
-	self:Debug("Sending Blizzard Countdown Timer")
-end
-
--------------------
---  Pizza Timer  --
--------------------
-do
-
-	local function loopTimer(time, text, broadcast, sender)
-		DBM:CreatePizzaTimer(time, text, broadcast, sender, true)
-	end
-
-	local ignore = {}
-	---Standard Pizza Timer
-	---@param time number --time in seconds
-	---@param text string --timer text
-	---@param broadcast boolean? --if it should be broadcast to the raid
-	---@param sender any --who sent it (if it was started by sync)
-	---@param loop boolean? --if the timer should loop indefinitely
-	---@param terminate boolean? --if this is true, terminates the timer
-	---@param whisperTarget any
-	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
-		if terminate or time == 0 then
-			self:Unschedule(loopTimer)
-			DBT:CancelBar(text)
-			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
-			-- Fire cancelation of pizza timer
-			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
-				text = text:sub(1, 16)
-				--No UnitName in instances at all in midnight
-				if not (self:IsPostMidnight() and IsInInstance()) then
-					text = text:gsub("%%t", UnitName("target") or "<no target>")
-				end
-				if whisperTarget then
-					sendWhisperSync(DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)
-				else
-					sendSync(DBMSyncProtocol, "U", ("0\t%s"):format(text), "ALERT", true)
-				end
-			end
-			return
-		end
-		if sender and ignore[sender] then return end
-		text = text:sub(1, 16)
-		--No UnitName in instances at all in midnight
-		if not (self:IsPostMidnight() and IsInInstance()) then
-			text = text:gsub("%%t", UnitName("target") or "<no target>")
-		end
-		if time < 3 then
-			self:AddMsg(L.PIZZA_ERROR_USAGE)
-			return
-		end
-		DBT:CreateBar(time, text, private.isRetail and 237538 or 134376)
-		fireEvent("DBM_TimerBegin", "DBMPizzaTimer", text, time, private.isRetail and "237538" or "134376", "pizzatimer", nil, 0, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
-		if broadcast then
-			if whisperTarget then
-				--no dbm function uses whisper for pizza timers
-				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-				sendWhisperSync(DBMSyncProtocol, "UW", ("%s\t%s"):format(time, text), whisperTarget, "ALERT", true)
-			else
-				sendSync(DBMSyncProtocol, "U", ("%s\t%s"):format(time, text), "ALERT", true)
-			end
-		end
-		if sender then self:ShowPizzaInfo(text, sender) end
-		if loop then
-			self:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
-			self:Schedule(time, loopTimer, time, text, broadcast, sender)
-		end
-	end
-
-	function DBM:AddToPizzaIgnore(name)
-		ignore[name] = true
-	end
-end
-
-function DBM:ShowPizzaInfo(id, sender)
-	if self.Options.ShowPizzaMessage then
-		self:AddMsg(L.PIZZA_SYNC_INFO:format(sender, id))
-	end
-end
-
 -----------------
 --  GUI Stuff  --
 -----------------
@@ -2767,7 +2391,7 @@ do
 			self:ForceDisableSpam()
 			return
 		end
-		if self.NewerVersion and showConstantReminder >= 1 then
+		if self.NewerVersion and private.showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
 		local firstLoad = false
@@ -2843,13 +2467,11 @@ do
 	local function updateAllRoster(self)
 		if IsInRaid() then
 			if not inRaid then
-				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
-				twipe(newersubVersionPerson)
-				twipe(forceDisablePerson)
+				self:ResetVersionCheck()
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
+				private.sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
+					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -2895,9 +2517,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[i] = nil
-					removeEntry(newerVersionPerson, i)
-					removeEntry(newersubVersionPerson, i)
-					removeEntry(forceDisablePerson, i)
+					self:ResetVersionCheck(i)
 					fireEvent("DBM_raidLeave", i)
 				else
 					v.updated = nil
@@ -2916,7 +2536,7 @@ do
 				--Initiate backups that at least have latest version, in case the main elect doesn't have icons enabled
 				for i = 2, 3 do--Allow top 3 revisions in raid to set icons, instead of just top one
 					local electedBackup = iconSeter[i]
-					if updateNotificationDisplayed == 0 and electedBackup and playerName == electedBackup:sub(elected:find(" ") + 1) then
+					if private.updateNotificationDisplayed == 0 and electedBackup and playerName == electedBackup:sub(elected:find(" ") + 1) then
 						private.enableIcons = true
 						DBM:Debug("You have been elected as one of 2 backup icon setters in raid that have assist/lead", 2)
 					end
@@ -2934,13 +2554,11 @@ do
 		elseif IsInGroup() then
 			if not inRaid then
 				-- joined a new party
-				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
-				twipe(newersubVersionPerson)
-				twipe(forceDisablePerson)
+				self:ResetVersionCheck()
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
+				private.sendSync(DBMSyncProtocol, "H", nil, "NORMAL")
 				if dbmIsEnabled and not IsTrialAccount() then
-					sendBWSync("Q", ("%d^%s"):format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
+					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop then
 					self:Schedule(2, self.RoleCheck, false, self)
@@ -2983,9 +2601,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[k] = nil
-					removeEntry(newerVersionPerson, k)
-					removeEntry(newersubVersionPerson, k)
-					removeEntry(forceDisablePerson, k)
+					self:ResetVersionCheck(k)
 					fireEvent("DBM_partyLeave", k)
 				else
 					v.updated = nil
@@ -3016,9 +2632,7 @@ do
 			private.enableIcons = true
 			fireEvent("DBM_raidLeave", playerName)
 			twipe(raid)
-			twipe(newerVersionPerson)
-			twipe(newersubVersionPerson)
-			twipe(forceDisablePerson)
+			self:ResetVersionCheck()
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
 			raid[playerName].name = playerName
@@ -3129,6 +2743,26 @@ do
 			return raid[name] ~= nil
 		end
 		return raid
+	end
+
+	---Sets properties for a raid member (for AddonComms version sync)
+	---@param name string
+	---@param properties table<string, any>
+	function private.setRaidMemberProperties(name, properties)
+		if not raid[name] then
+			return
+		end
+		for key, value in pairs(properties) do
+			raid[name][key] = value
+		end
+	end
+
+	---Gets a specific property for a raid member
+	---@param name string
+	---@param property string
+	---@return any
+	function private.getRaidMemberProperty(name, property)
+		return raid[name] and raid[name][property]
 	end
 
 	function DBM:GetRaidClass(name)
@@ -4472,7 +4106,7 @@ do
 			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
 			return
 		end
-		if LastInstanceType ~= "raid" and LastInstanceType ~= "party" and not force then return end
+		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
 		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
 		fireEvent("DBM_MusicStart", "RaidOrDungeon")
 		if self.Options.EventSoundDungeonBGM and self.Options.EventSoundDungeonBGM ~= "None" and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
@@ -4523,13 +4157,13 @@ do
 		DBMScheduler:UpdateZone()--Also update zone in scheduler
 		fireEvent("DBM_UpdateZone", mapID)
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
-			LastInstanceType = "none"
+			private.LastInstanceType = "none"
 			if not targetEventsRegistered then
 				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET player")
 				targetEventsRegistered = true
 			end
 		else
-			LastInstanceType = instanceType
+			private.LastInstanceType = instanceType
 			if targetEventsRegistered then
 				self:UnregisterShortTermEvents()
 				targetEventsRegistered = false
@@ -4542,7 +4176,7 @@ do
 		end
 		-- Auto Logging for entire zone if record only bosses is off
 		if not self.Options.RecordOnlyBosses then
-			if LastInstanceType == "raid" or LastInstanceType == "party" then
+			if private.LastInstanceType == "raid" or private.LastInstanceType == "party" then
 				self:StartLogging(0)
 			else
 				self:StopLogging()
@@ -4744,7 +4378,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 	else
 		self:Debug("LoadAddOn should have succeeded for " .. mod.name, 2)
 		self:AddMsg(L.LOAD_MOD_SUCCESS:format(tostring(mod.name)))
-		if self.NewerVersion and showConstantReminder >= 1 then
+		if self.NewerVersion and private.showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
 		self:LoadModOptions(mod.modId, InCombatLockdown(), true) -- Show the test UI immediately to make it clear that the mod is loaded with test support
@@ -4755,7 +4389,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 				_G["DBM_GUI_OptionsFrame"]:DisplayFrame(mod.panel.frame)
 			end
 		end
-		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
+		if private.LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then
 				timerRequestInProgress = true
 				if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
@@ -4822,944 +4456,6 @@ do
 	function DBM:UNIT_TARGET(uId)
 		if self:IsPostMidnight() and IsInInstance() then return end
 		loadModByUnit(uId .. "target")
-	end
-end
-
------------------------------
---  Handle Incoming Syncs  --
------------------------------
-
---NOTE. Don't ever try to move this out of core. My testing showed it required storing nearly every local variable in core in private, gravely poluting and inflating it beyond any kind of rational
-
-do
-	local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
-	local function checkForActualPull()
-		-- We don't need to check `RecordOnlyBosses` as it's already checked in where this function is called
-		-- If you have more than 1 mob, keep logging
-		-- If you're in mythic+, keep logging
-		-- Otherwise, stop logging post-pull timer ended
-		if #inCombat == 0 and difficulties.difficultyIndex ~= 8 then
-			DBM:StopLogging()
-		end
-	end
-
-	local DBMZoneCombatScanner = private:GetModule("TrashCombatScanningModule")
-
-	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
-
-	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
-	-- M = Mod
-	-- C = Combat start
-	-- ZC = Zone Combat
-	-- GC = Guild Combat Start
-	-- IS = Icon set info
-	-- K = Kill
-	-- H = Hi!
-	-- V = Incoming version information
-	-- U = User Timer
-	-- PT = Pull Timer (for sound effects, the timer itself is still sent as a normal timer)
-	-- RT = Request Timers
-	-- CI = Combat Info
-	-- TR = Timer Recovery
-	-- IR = Instance Info Request
-	-- IRE = Instance Info Requested Ended/Canceled
-	-- II = Instance Info
-	-- WBE = World Boss engage info
-	-- WBD = World Boss defeat info
-	-- WBA = World Buff Activation
-	-- RLO = Raid Leader Override
-	-- NS = Note Share
-
-	syncHandlers["M"] = function(sender, _, mod, revision, event, ...)
-		---@diagnostic disable-next-line: param-type-mismatch
-		mod = DBM:GetModByName(mod or "")
-		if mod and event and revision then
-			revision = tonumber(revision) or 0
-			mod:ReceiveSync(event, sender, revision, ...)
-		end
-	end
-
-	syncHandlers["NS"] = function(sender, _, modid, modvar, text, abilityName)
-		if sender == playerName then return end
-		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then return end--or DBM:GetRaidRank(sender) == 0
-		if IsInGroup(2) and IsInInstance() then return end
-		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
-		local mod = DBM:GetModByName(modid or "")
-		local ability = abilityName or CL.UNKNOWN
-		if mod and modvar and text and text ~= "" then
-			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
-				DBM:AddMsg(L.NOTE_SHARE_SUCCESS:format(sender, ability))
-				DBM:AddMsg(("|Hgarrmission:DBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]|r|h"):format(modid, modvar, ability, text, sender, L.NOTE_SHARE_LINK))
---				DBM:ShowNoteEditor(mod, modvar, ability, text, sender)
-			else
-				DBM:Debug(sender .. " is attempting to send too many notes so notes are being throttled")
-			end
-		else
-			DBM:AddMsg(L.NOTE_SHARE_FAIL:format(sender, ability))
-		end
-	end
-
-	syncHandlers["C"] = function(sender, _, delay, mod, modRevision, startHp, dbmRevision, modHFRevision, event)
-		if not dbmIsEnabled or sender == playerName then return end
-		if LastInstanceType == "pvp" then return end
-		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
-			local senderuId = DBM:GetRaidUnitId(sender)
-			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
-			local playerZone = select(-1, UnitPosition("player"))
-			local senderZone = select(-1, UnitPosition(senderuId))
-			if playerZone ~= senderZone then return end--not same zone
-		end
-		if not cSyncSender[sender] then
-			cSyncSender[sender] = true
-			cSyncReceived = cSyncReceived + 1
-			if cSyncReceived > 2 then -- need at least 3 sync to combat start. (for security)
-				local lag = select(4, GetNetStats()) / 1000
-				delay = tonumber(delay or 0) or 0
-				---@diagnostic disable-next-line: param-type-mismatch
-				mod = DBM:GetModByName(mod or "")
-				modRevision = tonumber(modRevision or 0) or 0
-				dbmRevision = tonumber(dbmRevision or 0) or 0
-				modHFRevision = tonumber(modHFRevision or 0) or 0
-				startHp = tonumber(startHp or -1) or -1
-				if dbmRevision < 10481 then return end
-				if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not (#inCombat > 0 and mod.noMultiBoss) then
-					DBM:StartCombat(mod, delay + lag, "SYNC from - " .. sender, true, startHp, event)
-					if mod.revision < modHFRevision then--mod.revision because we want to compare to OUR revision not senders
-						--There is a newer RELEASE version of DBM out that has this mods fixes that we do not possess
-						if DBM.HighestRelease >= modHFRevision and DBM.ReleaseRevision < modHFRevision then
-							showConstantReminder = 2
-							if DBM:AntiSpam(3, "HOTFIX") then
-								AddMsg(DBM, L.UPDATEREMINDER_HOTFIX)
-							end
-						else--This mods fixes are in an alpha version
-							if DBM:AntiSpam(3, "HOTFIX") then
-								AddMsg(DBM, L.UPDATEREMINDER_HOTFIX_ALPHA)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	syncHandlers["ZC"] = function(sender, _, guid, cid)
-		DBMZoneCombatScanner:OnSync(sender, guid, tonumber(cid))
-	end
-
-	syncHandlers["RLO"] = function(sender, protocol, statusWhisper, guildStatus, raidIcons, chatBubbles)
-		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
-		if not protocol or protocol ~= 2 then return end--Ignore old versions
-		DBM:Debug("Raid leader override comm Received")
-		statusWhisper, guildStatus, raidIcons, chatBubbles = tonumber(statusWhisper) or 0, tonumber(guildStatus) or 0, tonumber(raidIcons) or 0, tonumber(chatBubbles) or 0
-		local activated = false
-		if statusWhisper == 1 then
-			activated = true
-			private.statusWhisperDisabled = true
-		end
-		if guildStatus == 1 then
-			activated = true
-			private.statusGuildDisabled = true
-		end
-		if raidIcons == 1 then
-			activated = true
-			private.raidIconsDisabled = true
-		end
-		if chatBubbles == 1 then
-			activated = true
-			private.chatBubblesDisabled = true
-		end
-		if activated then
-			AddMsg(DBM, L.OVERRIDE_ACTIVATED)
-		end
-	end
-
-	syncHandlers["IS"] = function(_, _, guid, ver, optionName)
-		ver = tonumber(ver) or 0
-		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
-			iconSetRevision[optionName] = ver
-			iconSetPerson[optionName] = guid
-		end
-		if iconSetPerson[optionName] == UnitGUID("player") then--Check if that highest version was from ourself
-			private.canSetIcons[optionName] = true
-		else--Not from self, it means someone with a higher version than us probably sent it
-			private.canSetIcons[optionName] = false
-		end
-		local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName]) or CL.UNKNOWN
-		DBM:Debug(name .. " was elected icon setter for " .. optionName, 2)
-	end
-
-	syncHandlers["K"] = function(_, _, cId, difficulty)
-		if not difficulty then return end
-		difficulty = tonumber(difficulty)
-		--Ignore kill events sent from wrong difficulty (such as a player doing same raid at same time in another difficulty)
-		if difficulty ~= difficulties.difficultyIndex then return end
-		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
-		cId = tonumber(cId or "")
-		if cId then DBM:OnMobKill(cId, true) end
-	end
-
-	syncHandlers["EE"] = function(sender, _, eId, success, mod, modRevision)
-		if select(2, IsInInstance()) == "pvp" then return end
-		eId = tonumber(eId or "")
-		success = tonumber(success)
-		---@diagnostic disable-next-line: param-type-mismatch
-		mod = DBM:GetModByName(mod or "")
-		modRevision = tonumber(modRevision or 0) or 0
-		if mod and eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
-			eeSyncSender[sender] = true
-			eeSyncReceived = eeSyncReceived + 1
-			if eeSyncReceived > (private.isRetail and 2 or 0) then -- need at least 3 person to combat end. (for security) (only 1 on classic because classic breaks too badly otherwise)
-				DBM:EndCombat(mod, success == 0, nil, "ENCOUNTER_END synced")
-			end
-		end
-	end
-
-	local dummyMod -- dummy mod for the pull timer
-
-	---@param self DBM
-	---@param sender string
-	---@param timer any string or number only, but luaLS bitches if I actually tell it that
-	---@param blizzardTimer boolean?
-	local function pullTimerStart(self, sender, timer, blizzardTimer)
-		if not timer then return end
-		if not blizzardTimer then return end--Ignore old DBM version comms
-		local unitId
-		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
-			if blizzardTimer then
-				unitId = self:GetRaidUnitIdByGuid(sender)
-				sender = self:GetUnitFullName(unitId) or sender
-			else
-				unitId = self:GetRaidUnitId(sender)
-			end
-			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
-				return
-			end
-		end
-		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
-		if unitId then
-			local senderMapID = IsInInstance() and select(-1, UnitPosition(unitId)) or C_Map.GetBestMapForUnit(unitId) or 0
-			local playerMapID = IsInInstance() and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
-			if self.Options.DontShowPTNoID and senderMapID and playerMapID and senderMapID ~= playerMapID then return end
-		end
-		timer = tonumber(timer or 0)
-		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3 or anything longer than minute
-		if (timer > 0 and timer < 3) then--timer > 60 or
-			return
-		end
-		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
-			if not dummyMod then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
-				---@class DBMDummyMod: DBMMod
-				dummyMod = self:NewMod("PullTimerCountdownDummy")
-				dummyMod.isDummyMod = true
-				self:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
-				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
-				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
-			end
-			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
-				dummyMod.timer:Stop()
-			end
-			dummyMod.text:Cancel()
-			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-			self:FlashClientIcon()
-			if not self.Options.DontShowPT2 then
-				dummyMod.timer:Start(timer, L.TIMER_PULL)
-			end
-			if not self.Options.DontShowPTText and timer then
-				if not self:IsPostMidnight() then
-					local target = unitId and DBM:GetUnitFullName(unitId.."target")
-					if target and not raid[target] then
-						dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
-					else
-						dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-						dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
-					end
-				else
-					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
-				end
-			end
-			if self.Options.EventSoundPullTimer and self.Options.EventSoundPullTimer ~= "" and self.Options.EventSoundPullTimer ~= "None" then
-				self:PlaySoundFile(self.Options.EventSoundPullTimer, nil, true)
-			end
-			if self.Options.RecordOnlyBosses then
-				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
-			end
-			if private.isRetail and self.Options.CheckGear and not private.testBuild then
-				local bagilvl, equippedilvl = GetAverageItemLevel()
-				local difference = bagilvl - equippedilvl
-				local weapon = GetInventoryItemLink("player", 16)
-				local fishingPole = false
-				if weapon then
-					local _, _, _, _, _, _, type = GetItemInfo(weapon)
-					if type and type == L.GEAR_FISHING_POLE then
-						fishingPole = true
-					end
-				end
-				if IsInRaid() and difference >= 18 then
-					dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
-				elseif IsInRaid() and (not weapon or fishingPole) then
-					dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
-				end
-			end
-		end
-	end
-
-	do
-		local dummyMod2 -- dummy mod for the break timer
-		---@param self DBM
-		---@param timer number
-		---@param sender string
-		---@param isRecovery boolean?
-		function breakTimerStart(self, timer, sender, isRecovery)
-			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
-			if not isRecovery and ((self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress()) then
-				return
-			end
-			if not dummyMod2 then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
-				---@class DBMDummyMod2: DBMMod
-				dummyMod2 = self:NewMod("BreakTimerCountdownDummy")
-				dummyMod2.isDummyMod = true
-				self:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
-				dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, private.isRetail and "237538" or "136106")
-				--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-				dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, private.isRetail and "237538" or "136106", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 1, threshold, nil, nil, nil, nil, nil, nil, "break")
-			end
-			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
-				dummyMod2.timer:Stop()
-			end
-			dummyMod2.text:Cancel()
-			self.Options.RestoreSettingBreakTimer = nil
-			if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
-			self.Options.RestoreSettingBreakTimer = timer .. "/" .. time()
-			if not self.Options.DontShowPT2 then
-				dummyMod2.timer:Start(timer)
-			end
-			if not self.Options.DontShowPTText then
-				---@type number, string|number
-				local hour, minute = GetGameTime()
-				minute = minute + (timer / 60)
-				if minute >= 60 then
-					hour = hour + 1
-					minute = minute - 60
-				end
-				minute = floor(minute)
-				if minute < 10 then
-					minute = tostring(0 .. minute)
-				end
-				dummyMod2.text:Show(L.BREAK_START:format(stringUtils.strFromTime(timer) .. " (" .. hour .. ":" .. minute .. ")", sender))
-				if timer / 60 > 10 then dummyMod2.text:Schedule(timer - 10 * 60, L.BREAK_MIN:format(10)) end
-				if timer / 60 > 5 then dummyMod2.text:Schedule(timer - 5 * 60, L.BREAK_MIN:format(5)) end
-				if timer / 60 > 2 then dummyMod2.text:Schedule(timer - 2 * 60, L.BREAK_MIN:format(2)) end
-				if timer / 60 > 1 then dummyMod2.text:Schedule(timer - 1 * 60, L.BREAK_MIN:format(1)) end
-				dummyMod2.text:Schedule(timer, L.ANNOUNCE_BREAK_OVER:format(hour .. ":" .. minute))
-			end
-			C_TimerAfter(timer, function() self.Options.RestoreSettingBreakTimer = nil end)
-		end
-	end
-
-	syncHandlers["BT"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers then return end--or not private.isWrath
-		timer = tonumber(timer or 0)
-		if timer > 3600 then return end
-		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
-			return
-		end
-		if timer == 0 or DBM:AntiSpam(1, "BT" .. sender) then
-			--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
-			--It expects an extra number check for no reason at all
-			---@diagnostic disable-next-line: param-type-mismatch
-			breakTimerStart(DBM, timer, sender)
-		end
-	end
-
-	whisperSyncHandlers["BTR3"] = function(sender, _, timer)
-		if DBM.Options.DontShowUserTimers then return end
-		timer = tonumber(timer or 0)
-		if timer > 3600 then return end
-		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
-		if #inCombat >= 1 then return end
-		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
-		--It expects an extra number check for no reason at all
-		---@diagnostic disable-next-line: param-type-mismatch
-		breakTimerStart(DBM, timer, sender, true)--, nil, true
-	end
-
-	local function SendVersion(guild)
-		--Due to increasing addon comm throttling in instances, guild version sharing is disabled in instances to reduce comms
-		if guild and not IsInInstance() then
-			local message
-			if not private.isRetail and DBM.classicSubVersion then
-				message = ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable), tostring(DBM.classicSubVersion))
-				sendGuildSync(3, "GV", message)
-			else
-				message = ("%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable))
-				sendGuildSync(2, "GV", message)
-			end
-			return
-		end
-		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
-			sendBWSync("V", ("%d^%s"):format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
-			return
-		end
-		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
-		sendSync(3, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), tostring(DBM.classicSubVersion or 0), tostring(DBM.dungeonSubVersion or 0)), "NORMAL")
-	end
-
-	local function HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
-		if version > DBM.Revision then -- Update reminder
-			--Core Version Handling
-			if #newerVersionPerson < 4 then
-				if not checkEntry(newerVersionPerson, sender) then
-					newerVersionPerson[#newerVersionPerson + 1] = sender
-					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-					if (forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
-						forceDisablePerson[#forceDisablePerson + 1] = sender
-						DBM:Debug("Newer force disable detected from " .. sender .. " : Rev - " .. forceDisable, 3)
-					end
-				end
-				if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
-					if DBM.HighestRelease < version then
-						DBM.HighestRelease = version--Increase HighestRelease
-						DBM.NewerVersion = displayVersion--Apply NewerVersion
-						--UGLY hack to get release version number instead of alpha one
-						if DBM.NewerVersion:find("alpha") then
-							local temp1, _ = string.split(" ", DBM.NewerVersion)--Strip down to just version, no alpha
-							if temp1 then
-								local temp3, temp4, temp5 = string.split(".", temp1)--Strip version down to 3 numbers
-								if temp3 and temp4 and temp5 and tonumber(temp5) then
-									temp5 = tonumber(temp5)
-									temp5 = temp5 - 1
-									temp5 = tostring(temp5)
-									DBM.NewerVersion = temp3 .. "." .. temp4 .. "." .. temp5
-								end
-							end
-						end
-					end
-					--Find min revision.
-					updateNotificationDisplayed = 2
-					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
-					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, showRealDate(version)))
-					showConstantReminder = 1
-				elseif #newerVersionPerson >= 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
-					--Disable if out of date and at least 3 players sent a higher forceDisable revision
-					if not private.testBuild and #forceDisablePerson == 3 then
-						-- Start days check
-						local curseDate = tostring(version)
-						local daysPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-						local year, month, day = tonumber(curseDate:sub(1, 4)), tonumber(curseDate:sub(5, 6)), tonumber(curseDate:sub(7, 8))
-						if day + 2 > daysPerMonth[month] then
-							day = day + 2 - daysPerMonth[month]
-							month = month + 1
-						else
-							day = day + 2
-						end
-						if month > 12 then
-							month = 1
-							year = year + 1
-						end
-						local currentDateTable = date("*t")
-						if currentDateTable.year < year or currentDateTable.month < month or currentDateTable.day < day then
-							return
-						end
-						-- End days check
-						updateNotificationDisplayed = 3
-						DBM:ForceDisableSpam()
-						DBM:Disable(true)
-					--Disallow out of date to run during beta/ptr what so ever regardless of forceDisable revision
-					elseif private.testBuild then
-						updateNotificationDisplayed = 3
-						DBM:ForceDisableSpam()
-						DBM:Disable(true)
-					end
-				end
-			end
-		end
-		if not private.isRetail and type(classicSubVers) == 'number' and classicSubVers > DBM.classicSubVersion then -- Update reminder
-			if #newersubVersionPerson < 4 then
-				if not checkEntry(newersubVersionPerson, sender) then
-					newersubVersionPerson[#newersubVersionPerson + 1] = sender
-					DBM:Debug("Newer classic subversion detected from " .. sender .. " : Rev - " .. classicSubVers .. ", Rev Diff - " .. (classicSubVers - DBM.classicSubVersion), 3)
-				end
-				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
-					updateSubNotificationDisplayed = 2
-					local checkedSubmodule = private.isMop and "DBM-Raids-MoP" or private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
-					AddMsg(DBM, L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
-					showConstantReminder = 1
-				end
-			end
-		end
-	end
-
-	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
-	syncHandlers["H"] = function()
-		DBM:Unschedule(SendVersion)--Throttle so we don't needlessly send tons of comms during initial raid invites
-		DBM:Schedule(3, SendVersion)--Send version if 3 seconds have past since last "Hi" sync
-	end
-
-	guildSyncHandlers["GH"] = function()
-		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
-			DBM:Unschedule(SendVersion, true)
-			--Throttle so we don't needlessly send tons of comms
-			--For every 50 players online, DBM has an increasingly lower chance of replying to a version check request. This is because only 3 people actually need to reply
-			--50 people or less, 100% chance anyone who saw request will reply
-			--100 people on, only 50% chance DBM users replies to request
-			--150 people on, only 33% chance a DBM user replies to request
-			--1000 people online, only 5% chance a DBM user replies to request
-			local _, online = GetNumGuildMembers()
-			local chances = (online or 1) / 50
-			if chances < 1 then chances = 1 end
-			if mrandom(1, chances) == 1 then
-				DBM:Schedule(5, SendVersion, true)--Send version if 5 seconds have past since last "Hi" sync
-			end
-		end
-	end
-
-	syncHandlers["BV"] = function(sender, _, version, hash)--Parsed from bigwigs V7+
-		if version and raid[sender] then
-			raid[sender].bwversion = version
-			raid[sender].bwhash = hash or ""
-		end
-	end
-
-	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, dungeonSubVers)
-		revision, version, classicSubVers, dungeonSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers), tonumber(dungeonSubVers) or 0
-		if protocol < 3 then return end
-		--Nil it out on retail, replace with string on classic versions
-		if classicSubVers and classicSubVers == 0 then
-			if private.isRetail then
-				classicSubVers = nil
-			else
-				classicSubVers = L.MOD_MISSING
-			end
-		end
-		if dungeonSubVers and dungeonSubVers == 0 then
-			dungeonSubVers = L.NOT_INSTALLED
-		end
-		forceDisable = tonumber(forceDisable) or 0
-		if revision and version and displayVersion and raid[sender] then
-			raid[sender].revision = revision
-			raid[sender].version = version
-			raid[sender].displayVersion = displayVersion
-			raid[sender].dungeonSubVers = dungeonSubVers
-			if not private.isRetail then
-				raid[sender].classicSubVers = classicSubVers
-			end
-			raid[sender].locale = locale
-			raid[sender].enabledIcons = iconEnabled or "false"
-			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
-		end
-		DBM:GROUP_ROSTER_UPDATE()
-	end
-
-	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable, classicSubVers)
-		revision, version, forceDisable, classicSubVers = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0, tonumber(classicSubVers)
-		--Nil it out on retail, replace with string on classic versions
-		if classicSubVers and classicSubVers == 0 then
-			if private.isRetail then
-				classicSubVers = nil
-			else
-				classicSubVers = L.MOD_MISSING
-			end
-		end
-		if revision and version and displayVersion then
-			DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
-			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
-		end
-	end
-
-	syncHandlers["U"] = function(sender, _, time, text)
-		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
-		if DBM.Options.DontShowUserTimers then return end
-		if DBM:GetRaidRank(sender) == 0 or difficulties.difficultyIndex == 7 or difficulties.difficultyIndex == 17 then return end
-		if sender == playerName then return end
-		time = tonumber(time or 0)
-		text = tostring(text)
-		if time and text then
-			DBM:CreatePizzaTimer(time, text, nil, sender)
-		end
-	end
-
-	whisperSyncHandlers["UW"] = function(sender, _, time, text)
-		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
-		if DBM.Options.DontShowUserTimers then return end
-		if DBM:GetRaidRank(sender) == 0 or difficulties.difficultyIndex == 7 or difficulties.difficultyIndex == 17 then return end--Block in LFR, or if not an assistant
-		if sender == playerName then return end
-		time = tonumber(time or 0)
-		text = tostring(text)
-		if time and text then
-			DBM:CreatePizzaTimer(time, text, nil, sender)
-		end
-	end
-
-	guildSyncHandlers["GCB"] = function(_, protocol, modId, difficulty, difficultyModifier, name, groupLeader)
-		if not DBM.Options.ShowGuildMessages or not difficulty or DBM:GetRaidRank(groupLeader or "") == 2 then return end
-		if not protocol or protocol ~= 4 then return end--Ignore old versions
-		if DBM:AntiSpam(private.isRetail and 10 or 20, "GCB") then
-			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-			difficulty = tonumber(difficulty)
-			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-			modId = tonumber(modId)
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if not private.isClassic and not private.isBCC then
-				local difficultyName
-				if difficulty == 8 then
-					if difficultyModifier and difficultyModifier ~= 0 then
-						difficultyName = PLAYER_DIFFICULTY6 .. "+ (" .. difficultyModifier .. ")"
-					else
-						difficultyName = PLAYER_DIFFICULTY6 .. "+"
-					end
-				elseif difficulty == 3 or difficulty == 175 then
-					difficultyName = RAID_DIFFICULTY1
-				elseif difficulty == 4 or difficulty == 176 then
-					difficultyName = RAID_DIFFICULTY2
-				elseif difficulty == 5 or difficulty == 193 then
-					difficultyName = RAID_DIFFICULTY3
-				elseif difficulty == 6 or difficulty == 194 then
-					difficultyName = RAID_DIFFICULTY4
-				elseif difficulty == 16 then
-					difficultyName = PLAYER_DIFFICULTY6
-				elseif difficulty == 15 then
-					difficultyName = PLAYER_DIFFICULTY2
-				else
-					difficultyName = PLAYER_DIFFICULTY1
-				end
-				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(difficultyName .. " - " .. bossName, groupLeader))-- "%s has been engaged by %s's guild group"
-			else--Vanilla and TBC single format raids
-				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(bossName, groupLeader))
-			end
-		end
-	end
-
-	guildSyncHandlers["GCE"] = function(_, protocol, modId, wipe, time, difficulty, difficultyModifier, name, groupLeader, wipeHP)
-		if not DBM.Options.ShowGuildMessages or not difficulty or DBM:GetRaidRank(groupLeader or "") == 2 then return end
-		if not protocol or protocol ~= 8 then return end--Ignore old versions
-		if DBM:AntiSpam(private.isRetail and 10 or 20, "GCE") then
-			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-			difficulty = tonumber(difficulty)
-			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-			modId = tonumber(modId)
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if not private.isClassic and not private.isBCC then
-				local difficultyName
-				if difficulty == 8 then
-					if difficultyModifier and difficultyModifier ~= 0 then
-						difficultyName = PLAYER_DIFFICULTY6 .. "+ (" .. difficultyModifier .. ")"
-					else
-						difficultyName = PLAYER_DIFFICULTY6 .. "+"
-					end
-				elseif difficulty == 3 or difficulty == 175 then
-					difficultyName = RAID_DIFFICULTY1
-				elseif difficulty == 4 or difficulty == 176 then
-					difficultyName = RAID_DIFFICULTY2
-				elseif difficulty == 5 or difficulty == 193 then
-					difficultyName = RAID_DIFFICULTY3
-				elseif difficulty == 6 or difficulty == 194 then
-					difficultyName = RAID_DIFFICULTY4
-				elseif difficulty == 16 then
-					difficultyName = PLAYER_DIFFICULTY6
-				elseif difficulty == 15 then
-					difficultyName = PLAYER_DIFFICULTY2
-				else
-					difficultyName = PLAYER_DIFFICULTY1
-				end
-				if wipe == "1" then
-					if DBM:IsPostMidnight() then
-						DBM:AddMsg(L.GUILD_COMBAT_ENDED:format(groupLeader or CL.UNKNOWN, difficultyName .. " - " .. bossName, time))
-					else
-						DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, difficultyName .. " - " .. bossName, wipeHP, time))--"%s's Guild group has wiped on %s (%s) after %s.
-					end
-				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName .. " - " .. bossName, groupLeader or CL.UNKNOWN, time))--"%s has been defeated by %s's guild group after %s!"
-				end
-			else--Vanilla and TBC single format raids
-				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, bossName, wipeHP, time))
-				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, groupLeader or CL.UNKNOWN, time))
-				end
-			end
-		end
-	end
-
-	guildSyncHandlers["WBE"] = function(sender, protocol, modId, realm, health, name)
-		if not protocol or protocol ~= 8 then return end--Ignore old versions
-		if lastBossEngage[modId .. realm] and (GetTime() - lastBossEngage[modId .. realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
-		lastBossEngage[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
-		end
-	end
-
-	guildSyncHandlers["WBD"] = function(sender, protocol, modId, realm, name)
-		if not protocol or protocol ~= 8 then return end--Ignore old versions
-		if lastBossDefeat[modId .. realm] and (GetTime() - lastBossDefeat[modId .. realm] < 30) then return end
-		lastBossDefeat[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
-		end
-	end
-
-	guildSyncHandlers["WBA"] = function(sender, protocol, bossName, faction, spellId, time) -- Classic only
-		if not protocol or protocol ~= 4 or private.isRetail then return end--Ignore old versions
-		if lastBossEngage[bossName .. faction] and (GetTime() - lastBossEngage[bossName .. faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
-		lastBossEngage[bossName .. faction] = GetTime()
-		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
-			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or CL.BOTH
-			local buffName, _, buffIcon = DBM:GetSpellInfo(tonumber(spellId) or 0)
-			DBM:AddMsg(L.WORLDBUFF_STARTED:format(buffName or CL.UNKNOWN, factionText, sender))
-			DBM:PlaySoundFile(DBM.Options.RaidWarningSound, true)
-			time = tonumber(time)
-			if time then
-				DBT:CreateBar(time, buffName or CL.UNKNOWN, buffIcon or 136106)
-			end
-		end
-	end
-
-	whisperSyncHandlers["WBE"] = function(sender, protocol, modId, realm, health, name)
-		if not protocol or protocol ~= 8 then return end--Ignore old versions
-		if lastBossEngage[modId .. realm] and (GetTime() - lastBossEngage[modId .. realm] < 30) then return end
-		lastBossEngage[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (private.isRetail and not private.IsEncounterInProgress() or #inCombat == 0) then
-			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
-			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
-		end
-	end
-
-	whisperSyncHandlers["WBD"] = function(sender, protocol, modId, realm, name)
-		if not protocol or protocol ~= 8 then return end--Ignore old versions
-		if lastBossDefeat[modId .. realm] and (GetTime() - lastBossDefeat[modId .. realm] < 30) then return end
-		lastBossDefeat[modId .. realm] = GetTime()
-		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not private.IsEncounterInProgress() then
-			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
-			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, toonName))
-		end
-	end
-
-	whisperSyncHandlers["WBA"] = function(sender, protocol, bossName, faction, spellId, time) -- Classic only
-		if not protocol or protocol ~= 4 or private.isRetail then return end--Ignore old versions
-		if lastBossEngage[bossName .. faction] and (GetTime() - lastBossEngage[bossName .. faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
-		lastBossEngage[bossName .. faction] = GetTime()
-		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
-			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or CL.BOTH
-			local buffName, _, buffIcon = DBM:GetSpellInfo(tonumber(spellId) or 0)
-			DBM:AddMsg(L.WORLDBUFF_STARTED:format(buffName or CL.UNKNOWN, factionText, sender))
-			DBM:PlaySoundFile(DBM.Options.RaidWarningSound, true)
-			time = tonumber(time)
-			if time then
-				DBT:CreateBar(time, buffName or CL.UNKNOWN, buffIcon or 136106)
-			end
-		end
-	end
-
-	whisperSyncHandlers["RT"] = function(sender)
-		if UnitInBattleground("player") then
-			DBM:SendPVPTimers(sender)
-		else
-			DBM:SendTimers(sender)
-		end
-	end
-
-	whisperSyncHandlers["CI"] = function(sender, _, mod, time)
-		---@diagnostic disable-next-line: param-type-mismatch
-		mod = DBM:GetModByName(mod or "")
-		time = tonumber(time or 0)
-		if mod and time then
-			DBM:ReceiveCombatInfo(sender, mod, time)
-		end
-	end
-
-	whisperSyncHandlers["TR"] = function(sender, _, mod, timeLeft, totalTime, id, paused, ...)
-		---@diagnostic disable-next-line: param-type-mismatch
-		mod = DBM:GetModByName(mod or "")
-		timeLeft = tonumber(timeLeft or 0)
-		totalTime = tonumber(totalTime or 0)
-		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
-			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, paused and paused == "1" and true or false, ...)
-		end
-	end
-
-	whisperSyncHandlers["VI"] = function(sender, _, mod, name, value)
-		---@diagnostic disable-next-line: param-type-mismatch
-		mod = DBM:GetModByName(mod or "")
-		value = tonumber(value) or value
-		if mod and name and value then
-			DBM:ReceiveVariableInfo(sender, mod, name, value)
-		end
-	end
-
-	--Function to correct a blizzard bug where off realm players have realm name stripped
-	--Had to be custom function due to bugs with two players with same name on different realms
-	--local function VerifyRaidName(apiName, SyncedName)
-	--	local _, serverName = string.split("-", SyncedName)
-	--	if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
-	--		return SyncedName--Use synced name with realm added back on
-	--	else
-	--		return apiName--Use api name without realm
-	--	end
-	--end
-
-	handleSync = function(channel, sender, _, protocol, prefix, ...)--dbmSender unused for now
-		protocol = tonumber(protocol)
-		if not protocol then
-			return
-		end
-		if protocol < DBMSyncProtocol then
-			return
-		end
-		if not prefix then
-			return
-		end
-		local handler
-		--Can only be from a friend
-		if channel == "BN_WHISPER" then
-			handler = whisperSyncHandlers[prefix]
-		--Whisper syncs sent from non friends are automatically rejected if not from a friend or someone in your group
-		elseif channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
-			if (checkForSafeSender(sender, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
-				handler = whisperSyncHandlers[prefix]
-			end
-		elseif channel == "GUILD" then
-			handler = guildSyncHandlers[prefix]
-		else-- Instance, Raid, Party
-			handler = syncHandlers[prefix]
-		end
-		if handler then
-			--if dbmSender then
-			--	--Strip spaces from realm name, since this is what Unit Tokens expect
-			--	--(newer versions of DBM do this on send, but we double check for older versions)
-			--	dbmSender = dbmSender:gsub("[%s-]+", "")--Needs to be fixed, if this is ever uncommented as right now it'd strip realm
-			--	sender = VerifyRaidName(sender, dbmSender)
-			--end
-			return handler(sender, protocol, ...)
-		end
-	end
-
-	local function GetCorrectSender(senderOne, senderTwo)
-		local correctSender = senderOne
-		if senderOne:find("-") then--first sender arg has realm name
-			correctSender = Ambiguate(senderOne, "none")
-		elseif senderTwo and senderTwo:find("-") then--Second sender arg has realm name
-			correctSender = Ambiguate(senderTwo, "none")
-		end
-		return correctSender
-	end
-
-	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, senderOne, senderTwo)
-		if prefix == DBMPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
-			if self:issecretvalue(msg) then
-				return
-			end
-			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			if channel == "WHISPER" then
-				handleSync(channel, correctSender, nil, strsplit("\t", msg))
-			else
-				handleSync(channel, correctSender, strsplit("\t", msg))
-			end
-		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
-			if self:issecretvalue(msg) then
-				return
-			end
-			local bwPrefix, bwMsg, extra = strsplit("^", msg)
-			if bwPrefix and bwMsg then
-				local correctSender = GetCorrectSender(senderOne, senderTwo)
-				if bwPrefix == "V" and extra then--Nil check "extra" to avoid error from older version
-					local verString, hash = bwMsg, extra
-					local version = tonumber(verString) or 0
-					if version == 0 then return end--Just a query
-					handleSync(channel, correctSender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
-					if version > fakeBWVersion then--Newer revision found, upgrade!
-						fakeBWVersion = version
-						fakeBWHash = hash
-					end
-				elseif bwPrefix == "Q" then--Version request prefix
-					self:Unschedule(SendVersion)
-					self:Schedule(3, SendVersion)
-				elseif bwPrefix == "B" then--Boss Mod Sync
-					for i = #inCombat, 1, -1 do
-						local mod = inCombat[i]
-						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, correctSender)
-						end
-					end
-					for i = 1, #oocBWComms do
-						local mod = oocBWComms[i]
-						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, correctSender)
-						end
-					end
-				end
-			end
-		elseif prefix == "Transcriptor" and msg then
-			if self:issecretvalue(msg) then
-				return
-			end
-			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			for i = #inCombat, 1, -1 do
-				local mod = inCombat[i]
-				if mod and mod.OnTranscriptorSync then
-					mod:OnTranscriptorSync(msg, correctSender)
-				end
-			end
-			local transcriptor = _G["Transcriptor"]
-			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging())) then
-				local spellId = string.match(msg, "spell:(%d+)") or CL.UNKNOWN
-				local spellName = string.match(msg, "h%[(.-)%]|h") or CL.UNKNOWN
-				local message = "RAID_BOSS_WHISPER on " .. correctSender .. " with spell of " .. spellName .. " (" .. spellId .. ")"
-				self:Debug(message)
-			end
-		end
-	end
-	DBM.CHAT_MSG_ADDON_LOGGED = DBM.CHAT_MSG_ADDON
-
-	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
-		if prefix == DBMPrefix and msg then
-			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
-		end
-	end
-
-	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds)
-		if self:hasanysecretvalues(initiatedByGuid, timeSeconds) then
-			return
-		end
-		--Ignore this event in combat
-		if #inCombat > 0 then return end
---		if timeSeconds > 60 then--treat as a break timer
---			breakTimerStart(self, timeSeconds, initiatedBy, true)
---		else--Treat as a pull timer
-			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-			pullTimerStart(self, initiatedByGuid, timeSeconds, true)
---		end
-	end
-
-	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid)
-		if self:issecretvalue(initiatedByGuid) then
-			return
-		end
-		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
---		breakTimerStart(self, 0, initiatedBy, true)
-		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-		pullTimerStart(self, initiatedByGuid, 0, true)
 	end
 end
 
@@ -5991,7 +4687,7 @@ do
 					if encounterID == eId then
 						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
+							private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
 						return
 					end
@@ -5999,7 +4695,7 @@ do
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END")
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
+					private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
 				return
 			end
@@ -6017,7 +4713,7 @@ do
 					if encounterID == eId then
 						self:EndCombat(v, nil, nil, "BOSS_KILL")
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-							sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
+							private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
 						return
 					end
@@ -6025,7 +4721,7 @@ do
 			elseif encounterID == v.combatInfo.eId then
 				self:EndCombat(v, nil, nil, "BOSS_KILL")
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
-					sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
+					private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t1\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
 				return
 			end
@@ -6085,24 +4781,24 @@ do
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
-				SendWorldSync(self, 4, "WBA", "Onyxia\tHorde\t22888\t15\t4")
+				private.SendWorldSync(self, 4, "WBA", "Onyxia\tHorde\t22888\t15\t4")
 			elseif msg:find(L.WORLD_BUFFS.allianceOny) then
-				SendWorldSync(self, 4, "WBA", "Onyxia\tAlliance\t22888\t15\t4")
+				private.SendWorldSync(self, 4, "WBA", "Onyxia\tAlliance\t22888\t15\t4")
 			elseif msg:find(L.WORLD_BUFFS.hordeNef) then
-				SendWorldSync(self, 4, "WBA", "Nefarian\tHorde\t22888\t16\t4")
+				private.SendWorldSync(self, 4, "WBA", "Nefarian\tHorde\t22888\t16\t4")
 			elseif msg:find(L.WORLD_BUFFS.allianceNef) then
-				SendWorldSync(self, 4, "WBA", "Nefarian\tAlliance\t22888\t16\t4")
+				private.SendWorldSync(self, 4, "WBA", "Nefarian\tAlliance\t22888\t16\t4")
 			elseif msg:find(L.WORLD_BUFFS.rendHead) then
-				SendWorldSync(self, 4, "WBA", "rendBlackhand\tHorde\t16609\t7\t4")
+				private.SendWorldSync(self, 4, "WBA", "rendBlackhand\tHorde\t16609\t7\t4")
 			elseif msg:find(L.WORLD_BUFFS.zgHeartYojamba) then
 				-- zg buff transcripts https://gist.github.com/venuatu/18174f0e98759f83b9834574371b8d20
 				-- 28.58, 28.67, 27.77, 29.39, 28.67, 29.03, 28.12, 28.19, 29.61
-				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t28\t4")
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t28\t4")
 			elseif msg:find(L.WORLD_BUFFS.zgHeartBooty) then
 				-- 48.7, 49.76, 50.64, 49.42, 49.8, 50.67, 50.94, 51.06
-				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
 			elseif msg:find(L.WORLD_BUFFS.blackfathomBoon) then
-				--SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
+				--private.SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
 			end
 		end
 		return onMonsterMessage(self, "yell", msg)
@@ -6171,7 +4867,7 @@ do
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.zgHeart) then
 				-- 51.01 51.82 51.85 51.53
-				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t51\t4")
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t51\t4")
 			end
 		end
 		return onMonsterMessage(self, "say", msg)
@@ -6206,7 +4902,7 @@ do
 				wipe = 0
 			elseif difficulties.savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
 				wipe = 0
-			elseif bossuIdFound and LastInstanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
+			elseif bossuIdFound and private.LastInstanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
 				wipe = 2
 				for i = 1, 10 do
 					if UnitExists("boss" .. i) then
@@ -6278,15 +4974,15 @@ do
 	---Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
 		if not dbmIsEnabled then return end
-		if not private.statusGuildDisabled and updateNotificationDisplayed == 0 then
+		if not private.statusGuildDisabled and private.updateNotificationDisplayed == 0 then
 			if thisTime then--Wipe event
 				if wipeHP then
-					sendGuildSync(8, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader .. "\t" .. wipeHP)
+					private.sendGuildSync(8, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader .. "\t" .. wipeHP)
 				else
-					sendGuildSync(8, "GCE", modId .. "\t0\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader)
+					private.sendGuildSync(8, "GCE", modId .. "\t0\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader)
 				end
 			else
-				sendGuildSync(4, "GCB", modId .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader)
+				private.sendGuildSync(4, "GCB", modId .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. lastGroupLeader)
 			end
 		end
 	end
@@ -6300,8 +4996,6 @@ do
 	function DBM:StartCombat(mod, delay, event, synced, syncedStartHp, syncedEvent)
 		---@class DBMMod
 		mod = mod
-		cSyncSender = {}
-		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
 			if DBM.TaintedByTests then
 				self:AddMsg(L.DBM_TAINTED_BY_TESTS) -- Shows this early in case tests messed with some filters below
@@ -6523,14 +5217,14 @@ do
 				end
 				--send "C" sync
 				if not synced and not mod.soloChallenge then
-					sendSync(DBMSyncProtocol, "C", (delay or 0) .. "\t" .. modId .. "\t" .. (mod.revision or 0) .. "\t" .. startHp .. "\t" .. tostring(self.Revision) .. "\t" .. (mod.hotfixNoticeRev or 0) .. "\t" .. event, "ALERT")
+					private.sendSync(DBMSyncProtocol, "C", (delay or 0) .. "\t" .. modId .. "\t" .. (mod.revision or 0) .. "\t" .. startHp .. "\t" .. tostring(self.Revision) .. "\t" .. (mod.hotfixNoticeRev or 0) .. "\t" .. event, "ALERT")
 				end
 				if UnitIsGroupLeader("player") then
 					--Global disables require normal, heroic, mythic raid on retail, or 10 man normal, 25 man normal, 40 man normal, 10 man heroic, or 25 man heroic on classic
 					if difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15 or difficulties.difficultyIndex == 16 or difficulties.difficultyIndex == 175 or difficulties.difficultyIndex == 176 or difficulties.difficultyIndex == 186 or difficulties.difficultyIndex == 193 or difficulties.difficultyIndex == 194 then
 						local statusWhisper, guildStatus, raidIcons, chatBubbles = self.Options.DisableStatusWhisper and 1 or 0, self.Options.DisableGuildStatus and 1 or 0, self.Options.DisableRaidIcons and 1 or 0, self.Options.DisableChatBubbles and 1 or 0
 						if statusWhisper ~= 0 or guildStatus ~= 0 or raidIcons ~= 0 or chatBubbles ~= 0 then
-							sendSync(2, "RLO", statusWhisper .. "\t" .. guildStatus .. "\t" .. raidIcons .. "\t" .. chatBubbles, "ALERT")
+							private.sendSync(2, "RLO", statusWhisper .. "\t" .. guildStatus .. "\t" .. raidIcons .. "\t" .. chatBubbles, "ALERT")
 						end
 					end
 				end
@@ -6564,12 +5258,7 @@ do
 					end
 				end
 				--stop pull count
-				---@class DBMDummyMod: DBMMod
-				local dummyMod = self:GetModByName("PullTimerCountdownDummy")
-				if dummyMod then--stop pull timer
-					dummyMod.text:Cancel()
-					dummyMod.timer:Stop()
-				end
+				private.pullTimerStop()
 				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
@@ -6607,9 +5296,9 @@ do
 				end
 			end
 			if difficulties.savedDifficulty == "worldboss" and mod.WBEsync then
-				if lastBossEngage[modId .. normalizedPlayerRealm] and (GetTime() - lastBossEngage[modId .. normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-				lastBossEngage[modId .. normalizedPlayerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
-				SendWorldSync(self, 8, "WBE", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. startHp .. "\t" .. name)
+				if private.lastBossEngage[modId .. normalizedPlayerRealm] and (GetTime() - private.lastBossEngage[modId .. normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				private.lastBossEngage[modId .. normalizedPlayerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
+				private.SendWorldSync(self, 8, "WBE", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. startHp .. "\t" .. name)
 			end
 		end
 	end
@@ -6799,8 +5488,8 @@ do
 						end
 					end
 				end
-				if showConstantReminder == 2 and IsInGroup() then
-					showConstantReminder = 1
+				if private.showConstantReminder == 2 and IsInGroup() then
+					private.showConstantReminder = 1
 					--Show message any time this is a mod that has a newer hotfix revision and it's a wipe
 					--These people need to know the wipe could very well be their fault.
 					self:AddMsg(L.OUT_OF_DATE_NAG)
@@ -6809,18 +5498,18 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText .. (name or ""), totalPulls - totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText .. (name or ""), totalPulls - totalKills)
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP, totalPulls - totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP, totalPulls - totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText .. (name or ""))
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP)
 						end
 					end
-					sendWhisper(k, msg)
+					private.sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Wipe", mod)
 			elseif not wipe and mod.stats and not mod.noStatistics then
@@ -6888,7 +5577,7 @@ do
 						end
 					end
 					local check = not private.statusGuildDisabled and (private.isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
-					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
+					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and private.updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
 						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, usedDifficultyModifier, name, thisTimeString)
 					end
@@ -6898,24 +5587,24 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, usedDifficultyText .. (name or ""), totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
 						else
-							msg = msg or chatPrefixShort .. L.WHISPER_COMBAT_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_KILL:format(playerName, usedDifficultyText .. (name or ""))
 						end
 					end
-					sendWhisper(k, msg)
+					private.sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Kill", mod)
 				if usedDifficulty == "worldboss" and mod.WBEsync then
-					if lastBossDefeat[modId .. normalizedPlayerRealm] and (GetTime() - lastBossDefeat[modId .. normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-					lastBossDefeat[modId .. normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
-					SendWorldSync(self, 8, "WBD", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. name)
+					if private.lastBossDefeat[modId .. normalizedPlayerRealm] and (GetTime() - private.lastBossDefeat[modId .. normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+					private.lastBossDefeat[modId .. normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
+					private.SendWorldSync(self, 8, "WBD", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. name)
 				end
 				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
 					if self.Options.EventSoundVictory2 == "Random" then
@@ -6982,11 +5671,8 @@ do
 				twipe(bossHealthuIdCache)
 				--sync table
 				twipe(private.canSetIcons)
-				twipe(iconSetRevision)
-				twipe(iconSetPerson)
+				self:ResetCombatVariables()
 				bossuIdFound = false
-				eeSyncSender = {}
-				eeSyncReceived = 0
 				self:CreatePizzaTimer(0, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
@@ -7006,7 +5692,7 @@ function DBM:OnMobKill(cId, synced)
 		if v.combatInfo.noBossDeathKill then return end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
+				private.sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end
 			v.combatInfo.killMobs[cId] = false
 			if v.numBoss and (v.vb.bossLeft or 0) > 0 then
@@ -7025,7 +5711,7 @@ function DBM:OnMobKill(cId, synced)
 			end
 		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
 			if not synced then
-				sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
+				private.sendSync(DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end
 			self:EndCombat(v, nil, nil, "Main CID Down")
 		end
@@ -7614,7 +6300,7 @@ do
 		self:Debug("Requesting timer recovery to " .. selectedClient.name)
 		requestedFrom[selectedClient.name] = true
 		requestTime = GetTime()
-		sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name, "ALERT")
+		private.sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name, "ALERT")
 	end
 
 	---@param mod DBMMod
@@ -7681,7 +6367,7 @@ do
 			--But only if we are not in combat with a boss
 			if DBT:GetBar(L.TIMER_BREAK) then
 				local remaining = DBT:GetBar(L.TIMER_BREAK).timer
-				sendWhisperSync(DBMSyncProtocol, "BTR3", remaining, target, "NORMAL")
+				private.sendWhisperSync(DBMSyncProtocol, "BTR3", remaining, target, "NORMAL")
 			end
 			return
 		end
@@ -7719,7 +6405,7 @@ end
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
 	if not dbmIsEnabled or IsTrialAccount() then return end
-	return sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
+	return private.sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
 end
 
 ---@param mod DBMMod
@@ -7737,7 +6423,7 @@ function DBM:SendTimerInfo(mod, target)
 				end
 				timeLeft = totalTime - elapsed
 				if timeLeft > 0 and totalTime > 0 then
-					sendWhisperSync(DBMSyncProtocol, "TR", ("%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), target, "NORMAL")
+					private.sendWhisperSync(DBMSyncProtocol, "TR", ("%s\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId, v.paused and "1" or "0"), target, "NORMAL")
 				end
 			end
 		end
@@ -7750,7 +6436,7 @@ function DBM:SendVariableInfo(mod, target)
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
-			sendWhisperSync(DBMSyncProtocol, "VI", ("%s\t%s\t%s"):format(mod.id, vname, v2), target, "NORMAL")
+			private.sendWhisperSync(DBMSyncProtocol, "VI", ("%s\t%s\t%s"):format(mod.id, vname, v2), target, "NORMAL")
 		end
 	end
 end
@@ -7803,7 +6489,7 @@ do
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if private.statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
 		if not checkForSafeSender(sender, true, true, true, isRealIdMessage) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
-		if msg:find(chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
+		if msg:find(private.chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
 			DBM:PlaySoundFile(997890)--"sound\\creature\\aggron1\\VO_60_HIGHMAUL_AGGRON_1_AGGRO_1.ogg"
@@ -7825,7 +6511,7 @@ do
 				local bossesKilled = mod.numBoss - mod.vb.bossLeft
 				hpText = hpText .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 			end
-			sendWhisper(sender, chatPrefixShort .. L.STATUS_WHISPER:format(difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+			private.sendWhisper(sender, private.chatPrefixShort .. L.STATUS_WHISPER:format(difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and difficulties.difficultyIndex ~= 208 then--Auto respond in any instance except delves
 			difficulties:RefreshCache()
 			local mod
@@ -7845,9 +6531,9 @@ do
 			end
 			if not autoRespondSpam[sender] then
 				if private.isRetail and not mod.soloChallenge and IsInScenarioGroup() then
-					sendWhisper(sender, chatPrefixShort .. L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
+					private.sendWhisper(sender, private.chatPrefixShort .. L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
 				else
-					sendWhisper(sender, chatPrefixShort .. L.AUTO_RESPOND_WHISPER:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+					private.sendWhisper(sender, private.chatPrefixShort .. L.AUTO_RESPOND_WHISPER:format(playerName, difficulties.difficultyText .. (mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 				end
 				DBM:AddMsg(L.AUTO_RESPONDED)
 			end
@@ -7936,8 +6622,8 @@ do
 		-- TODO: many of these timers follow the same anti-spam pattern, it would be useful to move those to a shared function to clean up this mess
 		local time = _G.GetTime() -- to not accidentally pull in time-warped time, but it should be called after timewarping is disabled
 		table.wipe(private.modSyncSpam)
-		table.wipe(lastBossEngage)
-		table.wipe(lastBossDefeat)
+		table.wipe(private.lastBossEngage)
+		table.wipe(private.lastBossDefeat)
 		lastCombatStarted = time
 		lastValidCombat = time
 		--lastLFGAlert = time -- local to the event handler, but doesn't really matter
@@ -8180,6 +6866,8 @@ end
 function DBM:InCombat()
 	return #inCombat > 0
 end
+
+private.getInCombat = function() return inCombat end
 
 function DBM:FlashClientIcon()
 	if self:AntiSpam(5, "FLASH") then
@@ -9129,6 +7817,8 @@ function bossModPrototype:SetOOCBWComms()
 	tinsert(oocBWComms, self)
 end
 
+private.getOOCBWComms = function() return oocBWComms end
+
 -----------------------
 --  Synchronization  --
 -----------------------
@@ -9141,10 +7831,10 @@ do
 		local spamId = self.id .. event .. arg -- *not* the same as the sync string, as it doesn't use the revision information
 		local time = GetTime()
 		--Mod syncs are more strict and enforce latency threshold always.
-		--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
+		--Do not put latency check in main private.sendSync (modules/objects/AddonComms.lua) though as we still want to get version information, etc from these users.
 		if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
 			self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
-			sendSync(DBMSyncProtocol, "M", str, "ALERT")
+			private.sendSync(DBMSyncProtocol, "M", str, "ALERT")
 		end
 	end
 
@@ -9166,7 +7856,7 @@ do
 	end
 end
 
----This is not to be confused with a sendBWSync. It's specifically for bigwigs boss syncs (using their "B" prefix)
+---This is not to be confused with a private.sendBWSync. It's specifically for bigwigs boss syncs (using their "B" prefix)
 function bossModPrototype:SendBigWigsSync(msg, extra)
 	if not dbmIsEnabled or IsTrialAccount() then return end
 	--msg = "B^" .. msg
@@ -9174,7 +7864,7 @@ function bossModPrototype:SendBigWigsSync(msg, extra)
 		msg = msg .. "^" .. extra
 	end
 	if IsInGroup() then
-		sendBWSync("B", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "ALERT")
+		private.sendBWSync("B", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "ALERT")
 	end
 end
 
@@ -9231,7 +7921,7 @@ do
 				for i = 1, #mod.findFastestComputer do
 					local option = mod.findFastestComputer[i]
 					if mod.Options[option] then
-						sendSync(DBMSyncProtocol, "IS", UnitGUID("player") .. "\t" .. tostring(self.Revision) .. "\t" .. option, "NORMAL")
+						private.sendSync(DBMSyncProtocol, "IS", UnitGUID("player") .. "\t" .. tostring(self.Revision) .. "\t" .. option, "NORMAL")
 					end
 				end
 			elseif not IsInGroup() then

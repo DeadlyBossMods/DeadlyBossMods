@@ -471,9 +471,6 @@ function timerPrototype:Start(timer, ...)
 		end
 	else--Send both callbacks
 		DBM:FireEvent("DBM_TimerBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
-		if isBarEnabled then--Deprecated. Remove in 11.2
-			DBM:FireEvent("DBM_TimerStart", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
-		end
 		if guid then--But nameplate is only sent if actual GUID
 			DBM:FireEvent("DBM_NameplateBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
 			if isBarEnabled then
