@@ -130,6 +130,12 @@ end
 
 do
 	local dummyMod2 -- dummy mod for the break timer
+
+	---@param self DBM
+	local function resetBreakTimer(self)
+		self.Options.RestoreSettingBreakTimer = nil
+	end
+
 	---@param self DBM
 	---@param timer number
 	---@param sender string
@@ -156,6 +162,7 @@ do
 		end
 		dummyMod2.text:Cancel()
 		self.Options.RestoreSettingBreakTimer = nil
+		self:Unschedule(resetBreakTimer)
 		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 		self.Options.RestoreSettingBreakTimer = timer .. "/" .. time()
 		if not self.Options.DontShowPT2 then
@@ -180,12 +187,12 @@ do
 			if timer / 60 > 1 then dummyMod2.text:Schedule(timer - 1 * 60, L.BREAK_MIN:format(1)) end
 			dummyMod2.text:Schedule(timer, L.ANNOUNCE_BREAK_OVER:format(hour .. ":" .. minute))
 		end
-		C_Timer.After(timer, function() self.Options.RestoreSettingBreakTimer = nil end)
+		self:Schedule(timer, resetBreakTimer, self)
 	end
 	private.breakTimerStart = breakTimerStart
 end
 
----@param timer number --time in seconds
+---@param timer number --time in minutes
 function DBM:CreateBreakTimer(timer)
 	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)

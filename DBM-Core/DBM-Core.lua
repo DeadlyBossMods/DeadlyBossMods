@@ -76,9 +76,6 @@ local function showRealDate(curseDate)
 		return year .. "/" .. month .. "/" .. day .. " " .. hour .. ":" .. minute .. ":" .. second
 	end
 end
-function DBM:ShowRealDate(curseDate)
-	return showRealDate(curseDate)
-end
 
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
@@ -407,7 +404,7 @@ DBM.DefaultOptions = {
 	BadTimerAlert = false,
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
-	fakeBWVersion = false,
+	FakeBWVersion = false,
 	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,

@@ -9,6 +9,8 @@ local L = DBM_CORE_L
 
 local test = private:GetPrototype("DBMTest")
 
+local tinsert = table.insert
+
 do
 	local function Sort(v1, v2)
 		if v1.revision and not v2.revision then
@@ -26,7 +28,7 @@ do
 		local sortMe, outdatedUsers = {}, {}
 		local raid = self:GetRaidRoster()
 		for _, v in pairs(raid) do
-			table.insert(sortMe, v)
+			tinsert(sortMe, v)
 		end
 		table.sort(sortMe, Sort)
 		self:AddMsg(L.VERSIONCHECK_HEADER)
