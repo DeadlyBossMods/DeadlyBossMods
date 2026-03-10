@@ -6869,9 +6869,7 @@ function DBM:InCombat()
 	return #inCombat > 0
 end
 
-function DBM:GetInCombat()
-	return inCombat
-end
+private.getInCombat = function() return inCombat end
 
 function DBM:FlashClientIcon()
 	if self:AntiSpam(5, "FLASH") then
@@ -7821,9 +7819,7 @@ function bossModPrototype:SetOOCBWComms()
 	tinsert(oocBWComms, self)
 end
 
-function DBM:GetOOCBWComms()
-	return oocBWComms
-end
+private.getOOCBWComms = function() return oocBWComms end
 
 -----------------------
 --  Synchronization  --
@@ -7837,7 +7833,7 @@ do
 		local spamId = self.id .. event .. arg -- *not* the same as the sync string, as it doesn't use the revision information
 		local time = GetTime()
 		--Mod syncs are more strict and enforce latency threshold always.
-		--Do not put latency check in main private.sendSync local function (line 313) though as we still want to get version information, etc from these users.
+		--Do not put latency check in main private.sendSync (modules/objects/AddonComms.lua) though as we still want to get version information, etc from these users.
 		if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
 			self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
 			private.sendSync(DBMSyncProtocol, "M", str, "ALERT")

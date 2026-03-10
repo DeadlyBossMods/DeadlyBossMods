@@ -480,7 +480,7 @@ do
 					DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 					DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, DBM:ShowRealDate(version)))
 					private.showConstantReminder = 1
-				elseif #newerVersionPerson >= 3 and private.updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
+				elseif #newerVersionPerson >= 3 and private.updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adequate
 					--Disable if out of date and at least 3 players sent a higher forceDisable revision
 					if not testBuild and #forceDisablePerson == 3 then
 						-- Start days check
@@ -934,14 +934,14 @@ do
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
 				elseif bwPrefix == "B" then--Boss Mod Sync
-					local inCombat = self:GetInCombat()
+					local inCombat = private.getInCombat()
 					for i = #inCombat, 1, -1 do
 						local mod = inCombat[i]
 						if mod and mod.OnBWSync then
 							mod:OnBWSync(bwMsg, extra, correctSender)
 						end
 					end
-					local oocBWComms = self:GetOOCBWComms()
+					local oocBWComms = private.getOOCBWComms()
 					for i = 1, #oocBWComms do
 						local mod = oocBWComms[i]
 						if mod and mod.OnBWSync then
@@ -955,7 +955,7 @@ do
 				return
 			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			local inCombat = self:GetInCombat()
+			local inCombat = private.getInCombat()
 			for i = #inCombat, 1, -1 do
 				local mod = inCombat[i]
 				if mod and mod.OnTranscriptorSync then
