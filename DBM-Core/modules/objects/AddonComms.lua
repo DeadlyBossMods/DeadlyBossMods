@@ -35,7 +35,6 @@ local fakeBWVersion = private.fakeBWVersion
 local fakeBWHash = private.fakeBWHash
 local IsEncounterInProgress = private.IsEncounterInProgress
 local checkForSafeSender = private.checkForSafeSender
-local breakTimerStart = private.breakTimerStart
 private.updateNotificationDisplayed = 0
 private.showConstantReminder = 0
 private.lastBossEngage = {}
@@ -410,7 +409,7 @@ do
 			--For some reason LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 			--It expects an extra number check for no reason at all
 			---@diagnostic disable-next-line: param-type-mismatch
-			breakTimerStart(DBM, timer, sender)
+			private.breakTimerStart(DBM, timer, sender)
 		end
 	end
 
@@ -424,7 +423,7 @@ do
 		--For some reason LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 		--It expects an extra number check for no reason at all
 		---@diagnostic disable-next-line: param-type-mismatch
-		breakTimerStart(DBM, timer, sender, true)--, nil, true
+		private.breakTimerStart(DBM, timer, sender, true)--, nil, true
 	end
 
 	local function SendVersion(guild)
@@ -984,7 +983,7 @@ do
 		--Ignore this event in combat
 		if self:InCombat() then return end
 --		if timeSeconds > 60 then--treat as a break timer
---			breakTimerStart(self, timeSeconds, initiatedBy, true)
+--			private.breakTimerStart(self, timeSeconds, initiatedBy, true)
 --		else--Treat as a pull timer
 			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
 			private.pullTimerStart(self, initiatedByGuid, timeSeconds, true)
