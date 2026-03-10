@@ -47,7 +47,7 @@ end
 ---@param protocol number
 ---@param prefix string
 ---@param msg any
----@param priority string ChatThottleLib sync priority
+---@param priority string ChatThrottleLib sync priority
 ---@param isLogged boolean?
 local function sendSync(protocol, prefix, msg, priority, isLogged)
 	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
@@ -84,7 +84,7 @@ private.sendSync = sendSync
 ---@param prefix string
 ---@param msg any
 ---@param whisperTarget string
----@param priority string ChatThottleLib sync priority
+---@param priority string ChatThrottleLib sync priority
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
 	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
@@ -178,7 +178,7 @@ private.SendWorldSync = SendWorldSync
 ---@param prefix string
 ---@param msg any
 ---@param channel string
----@param priority string ChatThottleLib sync priority
+---@param priority string ChatThrottleLib sync priority
 local function sendBWSync(prefix, msg, channel, priority)
 	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
@@ -388,7 +388,7 @@ do
 			return
 		end
 		if timer == 0 or DBM:AntiSpam(1, "BT" .. sender) then
-			--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
+			--For some reason LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 			--It expects an extra number check for no reason at all
 			---@diagnostic disable-next-line: param-type-mismatch
 			private.breakTimerStart(DBM, timer, sender)
@@ -402,7 +402,7 @@ do
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if DBM:InCombat() then return end
 		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		--For some reawson LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
+		--For some reason LuaLS is really stupid here. despite fact for it to be IMPOSSIBLE for timer to be anything but a valid number
 		--It expects an extra number check for no reason at all
 		---@diagnostic disable-next-line: param-type-mismatch
 		private.breakTimerStart(DBM, timer, sender, true)--, nil, true
@@ -885,7 +885,7 @@ do
 			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			if channel == "WHISPER" then
-				handleSync(channel, correctSender, nil, strsplit("\t", msg))
+				handleSync(channel, correctSender, strsplit("\t", msg))
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
