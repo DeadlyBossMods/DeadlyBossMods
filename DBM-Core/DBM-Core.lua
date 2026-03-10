@@ -27,6 +27,10 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBM
+local DBM = private:GetPrototype("DBM")
+_G.DBM = DBM
+
 --WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
 --More modulation or scoping is needed to reduce this
 local DBMPrefix = "D5"
@@ -76,9 +80,6 @@ function DBM:ShowRealDate(curseDate)
 	return showRealDate(curseDate)
 end
 
----@class DBM
-local DBM = private:GetPrototype("DBM")
-_G.DBM = DBM
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
