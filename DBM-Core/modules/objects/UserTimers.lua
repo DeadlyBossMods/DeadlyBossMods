@@ -34,12 +34,8 @@ do
 		if not blizzardTimer then return end--Ignore old DBM version comms
 		local unitId
 		if sender then--Blizzard cancel events triggered by system (such as encounter start) have no sender
-			if blizzardTimer then
-				unitId = self:GetRaidUnitIdByGuid(sender)
-				sender = self:GetUnitFullName(unitId) or sender
-			else
-				unitId = self:GetRaidUnitId(sender)
-			end
+			unitId = self:GetRaidUnitIdByGuid(sender)
+			sender = self:GetUnitFullName(unitId) or sender
 			local LFGTankException = IsPartyLFG and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
 			if (self:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or private.IsEncounterInProgress() then
 				return

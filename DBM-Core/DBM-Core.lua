@@ -4830,7 +4830,7 @@ do
 			end
 			return
 		end
-		if DBM.Options.fakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
+		if DBM.Options.FakeBWVersion and not dbmIsEnabled and not IsTrialAccount() then
 			sendBWSync("V", ("%d^%s"):format(private.fakeBWVersion, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY", "NORMAL")
 			return
 		end
