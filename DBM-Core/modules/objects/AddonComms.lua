@@ -42,6 +42,8 @@ private.lastBossEngage = {}
 private.lastBossDefeat = {}
 
 function DBM:ResetCombatVariables()
+	cSyncSender = {}
+	cSyncReceived = 0
 	eeSyncSender = {}
 	eeSyncReceived = 0
 	table.wipe(iconSetRevision)
@@ -906,11 +908,7 @@ do
 				return
 			end
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			if channel == "WHISPER" then
-				handleSync(channel, correctSender, strsplit("\t", msg))
-			else
-				handleSync(channel, correctSender, strsplit("\t", msg))
-			end
+			handleSync(channel, correctSender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			if self:issecretvalue(msg) then
 				return
