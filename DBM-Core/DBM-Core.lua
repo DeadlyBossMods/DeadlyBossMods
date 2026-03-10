@@ -2748,7 +2748,7 @@ do
 	---Sets properties for a raid member (for AddonComms version sync)
 	---@param name string
 	---@param properties table<string, any>
-	function DBM:SetRaidMemberProperties(name, properties)
+	function private.setRaidMemberProperties(name, properties)
 		if not raid[name] then
 			return
 		end
@@ -2761,7 +2761,7 @@ do
 	---@param name string
 	---@param property string
 	---@return any
-	function DBM:GetRaidMemberProperty(name, property)
+	function private.getRaidMemberProperty(name, property)
 		return raid[name] and raid[name][property]
 	end
 

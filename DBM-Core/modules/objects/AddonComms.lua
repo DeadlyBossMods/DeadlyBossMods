@@ -231,7 +231,7 @@ do
 
 	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
 
-	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
+	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anyway, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
 	-- C = Combat start
 	-- ZC = Zone Combat
@@ -539,7 +539,7 @@ do
 	end
 
 	guildSyncHandlers["GH"] = function()
-		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
+		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notification
 			DBM:Unschedule(SendVersion, true)
 			--Throttle so we don't needlessly send tons of comms
 			--For every 50 players online, DBM has an increasingly lower chance of replying to a version check request. This is because only 3 people actually need to reply
@@ -558,7 +558,7 @@ do
 
 	syncHandlers["BV"] = function(sender, _, version, hash)--Parsed from bigwigs V7+
 		if version and DBM:GetRaidRoster(sender) then
-			DBM:SetRaidMemberProperties(sender, {
+			private.setRaidMemberProperties(sender, {
 				bwversion = version,
 				bwhash = hash or ""
 			})
@@ -592,7 +592,7 @@ do
 			if not isRetail then
 				properties.classicSubVers = classicSubVers
 			end
-			DBM:SetRaidMemberProperties(sender, properties)
+			private.setRaidMemberProperties(sender, properties)
 			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
 			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end
