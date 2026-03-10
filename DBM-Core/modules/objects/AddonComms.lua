@@ -540,9 +540,11 @@ do
 	end
 
 	syncHandlers["BV"] = function(sender, _, version, hash)--Parsed from bigwigs V7+
-		if version and raid[sender] then
-			raid[sender].bwversion = version
-			raid[sender].bwhash = hash or ""
+		if version and DBM:GetRaidRoster(sender) then
+			DBM:SetRaidMemberProperties(sender, {
+				bwversion = version,
+				bwhash = hash or ""
+			})
 		end
 	end
 
@@ -561,16 +563,19 @@ do
 			dungeonSubVers = L.NOT_INSTALLED
 		end
 		forceDisable = tonumber(forceDisable) or 0
-		if revision and version and displayVersion and raid[sender] then
-			raid[sender].revision = revision
-			raid[sender].version = version
-			raid[sender].displayVersion = displayVersion
-			raid[sender].dungeonSubVers = dungeonSubVers
+		if revision and version and displayVersion and DBM:GetRaidRoster(sender) then
+			local properties = {
+				revision = revision,
+				version = version,
+				displayVersion = displayVersion,
+				dungeonSubVers = dungeonSubVers,
+				locale = locale,
+				enabledIcons = iconEnabled or "false"
+			}
 			if not private.isRetail then
-				raid[sender].classicSubVers = classicSubVers
+				properties.classicSubVers = classicSubVers
 			end
-			raid[sender].locale = locale
-			raid[sender].enabledIcons = iconEnabled or "false"
+			DBM:SetRaidMemberProperties(sender, properties)
 			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
 			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end

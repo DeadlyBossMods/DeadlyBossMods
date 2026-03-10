@@ -2745,6 +2745,26 @@ do
 		return raid
 	end
 
+	---Sets properties for a raid member (for AddonComms version sync)
+	---@param name string
+	---@param properties table<string, any>
+	function DBM:SetRaidMemberProperties(name, properties)
+		if not raid[name] then
+			return
+		end
+		for key, value in pairs(properties) do
+			raid[name][key] = value
+		end
+	end
+
+	---Gets a specific property for a raid member
+	---@param name string
+	---@param property string
+	---@return any
+	function DBM:GetRaidMemberProperty(name, property)
+		return raid[name] and raid[name][property]
+	end
+
 	function DBM:GetRaidClass(name)
 		if raid[name] then
 			local icon = 0
