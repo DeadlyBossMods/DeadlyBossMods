@@ -12,6 +12,8 @@ local tableUtils = private:GetPrototype("TableUtils")
 
 local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 local mrandom = math.random
+local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
+local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
 local playerName, playerRealm = UnitName("player"), GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local cSyncSender, eeSyncSender = {}, {}
