@@ -106,6 +106,7 @@ local VPSound = {
 	["engineercoming"] = 12,
 	["enrage"] = 0,
 	["enteringcombat"] = 17,
+	["entertainer"] = 19,
 	["failed"] = 0,
 	["farfromline"] = 0,
 	["fearsoon"] = 0,
