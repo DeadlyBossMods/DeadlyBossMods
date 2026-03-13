@@ -52,7 +52,7 @@ function DBM:BuildVoiceCountdownCache()
 end
 
 ---@param voice string|number
----@return integer
+---@return number
 function DBM:GetCountMaxCountForVoice(voice)
 	if type(voice) == "string" then
 		for _, count in pairs(self:GetCountSounds()) do
