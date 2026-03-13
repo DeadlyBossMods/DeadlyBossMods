@@ -11,7 +11,76 @@ mod:SetZone(2912)
 mod:RegisterCombat("combat")
 
 --mod:RegisterEventsInCombat(
-
+--	"ENCOUNTER_TIMELINE_EVENT_ADDED"
 --)
 
---TODO. Not a damn thing
+--local warnDespoticCommand					= mod:NewCountAnnounce(1248697, 2)--Hardcode only
+
+local specWarnVoidConvergence				= mod:NewSpecialWarningCount(1243453, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
+local specWarnFracturedProjection			= mod:NewSpecialWarningCount(1254081, "HasInterrupt", nil, nil, 2, 2)
+--local specWarnShatteringTwilight			= mod:NewSpecialWarningCount(1253024, nil, nil, nil, 2, 2)
+local specWarnTwilightObscurity				= mod:NewSpecialWarningCount(1250686, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
+local specWarnEntropicUnraveling			= mod:NewSpecialWarningCount(1246175, nil, nil, nil, 2, 2)
+
+local timerVoidConvergenceCD				= mod:NewCDCountTimer(20.5, 1243453, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5)
+local timerDespoticCommandCD				= mod:NewCDCountTimer(20.5, 1248697, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerFracturedProjectionCD			= mod:NewCDCountTimer(20.5, 1254081, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerShatteringTwilightCD				= mod:NewCDCountTimer(20.5, 1253024, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerTwilightObscurityCD				= mod:NewCDCountTimer(20.5, 1250686, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerEntropicUnravelingCD				= mod:NewCDCountTimer(20.5, 1246175, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
+--local timerBerserkCD						= mod:NewBerserkTimer(600)--Hardcode only, custom object not really compatible with timeline api
+
+mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 2)--Void Exposure (People who soak void convergence)
+mod:AddPrivateAuraSoundOption(1248697, true, 1248697, 1, 1)--Despotic Command
+mod:AddPrivateAuraSoundOption(1245592, true, 1245592, 1, 2)--Torturous Extract (dropped by 3 diff mechanics so not bundled)
+mod:AddPrivateAuraSoundOption(1253024, true, 1253024, 1, 1)--Shattering Twilight
+mod:AddPrivateAuraSoundOption(1251213, true, 1253024, 1, 2)--Twilight Spikes (pool from Shattering Twilight)
+mod:AddPrivateAuraSoundOption(1250991, false, 1243453, 1, 1)--Dark Radiation (dot from void convergence)
+
+mod.vb.convergenceCount = 0
+mod.vb.despoticCommandCount = 0
+mod.vb.fracturedProjectionCount = 0
+mod.vb.shatteringTwilightCount = 0
+mod.vb.twilightObscurityCount = 0
+mod.vb.entropicUnravelingCount = 0
+
+function mod:OnLimitedCombatStart()
+	self.vb.convergenceCount = 0
+	self.vb.despoticCommandCount = 0
+	self.vb.fracturedProjectionCount = 0
+	self.vb.shatteringTwilightCount = 0
+	self.vb.twilightObscurityCount = 0
+	self.vb.entropicUnravelingCount = 0
+
+	--TODO, hardcoded features
+
+	--Blizz API fallbacks
+	specWarnVoidConvergence:SetAlert(139, "catchballs", 12, 3)
+	timerVoidConvergenceCD:SetTimeline(139)
+	timerDespoticCommandCD:SetTimeline(140)
+	specWarnFracturedProjection:SetAlert(141, "interruptsoon", 2, 3)
+	timerFracturedProjectionCD:SetTimeline(141)
+--	specWarnShatteringTwilight:SetAlert(142, "defensive", 2, 3)--Private aura handling for now
+	timerShatteringTwilightCD:SetTimeline(142)
+	specWarnTwilightObscurity:SetAlert(143, "aesoon", 2, 2)
+	timerTwilightObscurityCD:SetTimeline(143)
+	specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2)
+	timerEntropicUnravelingCD:SetTimeline(148)
+--	timerBerserkCD:SetTimeline(633)
+
+	self:EnablePrivateAuraSound(1250828, "watchfeet", 8)
+	self:EnablePrivateAuraSound(1248697, "poolyou", 18)
+	self:EnablePrivateAuraSound({1253024, 1268992}, "runout", 2)
+	self:EnablePrivateAuraSound(1251213, "watchfeet", 8)
+	self:EnablePrivateAuraSound(1245592, "watchfeet", 8)
+	self:EnablePrivateAuraSound(1250991, "debuffyou", 17)
+end
+
+--[[
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+	if eventInfo.source ~= 0 then return end
+	local eventID = eventInfo.id
+--	local eventState = C_EncounterTimeline.GetEventState(eventID)
+	local duration = remaining or eventInfo.duration
+end
+--]]

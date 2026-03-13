@@ -74,6 +74,7 @@ end
 
 --[[
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = remaining or eventInfo.duration
