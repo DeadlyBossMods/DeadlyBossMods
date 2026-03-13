@@ -28,7 +28,7 @@ local timerFracturedProjectionCD			= mod:NewCDCountTimer(20.5, 1254081, nil, nil
 local timerShatteringTwilightCD				= mod:NewCDCountTimer(20.5, 1253024, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerTwilightObscurityCD				= mod:NewCDCountTimer(20.5, 1250686, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEntropicUnravelingCD				= mod:NewCDCountTimer(20.5, 1246175, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerBerserkCD						= mod:NewBerserkTimer(600)
+--local timerBerserkCD						= mod:NewBerserkTimer(600)--Hardcode only, custom object not really compatible with timeline api
 
 mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 2)--Void Exposure (People who soak void convergence)
 mod:AddPrivateAuraSoundOption(1248697, true, 1248697, 1, 1)--Despotic Command
@@ -66,7 +66,7 @@ function mod:OnLimitedCombatStart()
 	timerTwilightObscurityCD:SetTimeline(143)
 	specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2)
 	timerEntropicUnravelingCD:SetTimeline(148)
-	timerBerserkCD:SetTimeline(633)
+--	timerBerserkCD:SetTimeline(633)
 
 	self:EnablePrivateAuraSound(1250828, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1248697, "poolyou", 18)
