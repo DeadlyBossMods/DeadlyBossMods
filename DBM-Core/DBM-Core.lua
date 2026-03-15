@@ -7748,6 +7748,15 @@ function bossModPrototype:DisableBossDeathKill()
 	end
 end
 
+---Used when features within a mod are hardcoded but can't be used on retail WoW due to restrictions, so we want to hide those options from the GUI
+---This applies to announce, timer, icon, infoframe, nameplate options
+---This does NOT apply to RPTimers (NewRPTimer object with subtype "roleplay") and autogossip
+function bossModPrototype:DisableHardcodedOptions()
+	if private.isRetail then
+		self.noHardcodedOptions = true
+	end
+end
+
 ---Used when a boss is scripted in a hacky way that their creature Id changes mid fight, and we want to treat multiple IDs as a single boss
 function bossModPrototype:SetMultiIDSingleBoss()
 	self.multiIDSingleBoss = true
