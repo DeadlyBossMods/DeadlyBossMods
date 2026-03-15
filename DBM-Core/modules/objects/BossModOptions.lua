@@ -46,6 +46,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name .. "TColor"] = extraOption or 0
 		self.Options[name .. "CVoice"] = extraOptionTwo or 0
 	end
+	if self.noHardcodedOptions and (cat == "announce" or cat == "timer" or cat == "icon" or cat == "nameplate" or cat == "yell") and optionSubType ~= "roleplay" then return end
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
 			self:GroupWASpells(waCustomName, spellId, name)
@@ -79,7 +80,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	else
 		checkDuplicateObjects[name] = true
 	end
-	cat = cat or "misc"
+	cat = cat or "announce"
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name .. "SWSound"] = defaultSound or 1
 	self.DefaultOptions[name .. "SWNote"] = true
@@ -89,6 +90,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name] = (default == nil) or default
 	self.Options[name .. "SWSound"] = defaultSound or 1
 	self.Options[name .. "SWNote"] = true
+	if self.noHardcodedOptions then return end
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
 			self:GroupWASpells(waCustomName, spellId, name)
@@ -150,7 +152,6 @@ function bossModPrototype:AddCustomTimerOptions(spellId, default, defaultColor, 
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["CustomTimerOption" .. spellId] = (default == nil) or default
-
 	self.localization.options["CustomTimerOption" .. spellId] = L.AUTO_CUSTOMTIMER_OPTION_TEXT:format(spellId)
 	self:GroupSpellsPA(groupSpellId or spellId, "CustomTimerOption" .. spellId)
 	self:AddBoolOption("CustomTimerOption" .. spellId, default, "timer", nil, defaultColor, defaultVoice, spellId)
@@ -200,6 +201,7 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
+	if self.noHardcodedOptions then return end
 	if (groupSpellId or spellId) and not DBM.Options.GroupOptionsExcludeIcon then
 		self:GroupSpells(groupSpellId or spellId, name)
 	end
@@ -291,44 +293,6 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
----Legacy object at this point. Range checks aren't added to new modules due to no longer being usable inside raids. they should NOT be removed from old modules in event blizzard ever adds built in functionality we can automate
----@param range number|string Non optional, should be number if fixed ranged or string with custom string such as "various" or "10/6"
----@param spellId number? if used, auto localizes using spell or journal id. if left blank uses generic description
----@param default SpecFlags|boolean?
-function bossModPrototype:AddRangeFrameOption(range, spellId, default)
-	self.DefaultOptions["RangeFrame"] = (default == nil) or default
-	if type(default) == "string" then
-		default = self:GetRoleFlagValue(default)
-	end
-	self.Options["RangeFrame"] = (default == nil) or default
-	if spellId then
-		self:GroupSpells(spellId, "RangeFrame")
-		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
-	else
-		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
-	end
-	self:SetOptionCategory("RangeFrame", "misc")
-end
-
----Legacy object at this point. HUD checks aren't added to new modules due to no longer being usable inside raids.
----@param name string Option name
----@param spellId number? if used, auto localizes using spell or journal id. if left blank uses generic description
----@param default SpecFlags|boolean?
-function bossModPrototype:AddHudMapOption(name, spellId, default)
-	self.DefaultOptions[name] = (default == nil) or default
-	if type(default) == "string" then
-		default = self:GetRoleFlagValue(default)
-	end
-	self.Options[name] = (default == nil) or default
-	if spellId then
-		self:GroupSpells(spellId, name)
-		self.localization.options[name] = L.AUTO_HUD_OPTION_TEXT:format(spellId)
-	else
-		self.localization.options[name] = L.AUTO_HUD_OPTION_TEXT_MULTI
-	end
-	self:SetOptionCategory(name, "misc")
-end
-
 ---@param name string Option name
 ---@param spellId number if used, auto localizes using spell or journal id. if left blank uses generic description
 ---@param default SpecFlags|boolean?
@@ -342,6 +306,7 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
+	if self.noHardcodedOptions then return end
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "nameplate")
 	self.localization.options[name] = forceDBM and L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED:format(spellId) or L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
@@ -359,6 +324,7 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["InfoFrame" .. oVersion] = (default == nil) or default
+	if self.noHardcodedOptions then return end
 	if spellId then
 		self:GroupSpells(spellId, "InfoFrame" .. oVersion)
 		if optionalThreshold then
@@ -422,6 +388,7 @@ function bossModPrototype:AddSpeedClearOption(name, default)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["SpeedClearTimer"] = (default == nil) or default
+	if self.noHardcodedOptions then return end
 	self:SetOptionCategory("SpeedClearTimer", "timer")
 	self.localization.options["SpeedClearTimer"] = L.AUTO_SPEEDCLEAR_OPTION_TEXT:format(name)
 end
@@ -438,6 +405,7 @@ function bossModPrototype:AddDropdownOption(name, options, default, cat, func, s
 	cat = cat or "misc"
 	self.DefaultOptions[name] = {type = "dropdown", value = default}
 	self.Options[name] = default
+	if self.noHardcodedOptions then return end
 	if spellId then
 		self:GroupSpells(spellId, name)
 	end
@@ -451,6 +419,7 @@ function bossModPrototype:AddDropdownOption(name, options, default, cat, func, s
 end
 
 function bossModPrototype:AddOptionSpacer(cat)
+	if self.noHardcodedOptions then return end
 	cat = cat or "misc"
 	if self.optionCategories[cat] then
 		tinsert(self.optionCategories[cat], DBM_OPTION_SPACER)
@@ -461,6 +430,7 @@ do
 	local lineCount = 1
 
 	function bossModPrototype:AddOptionLine(text, cat, forceIgnore)
+		if self.noHardcodedOptions then return end
 		if self.addon and not forceIgnore then
 			self.groupOptions["line" .. lineCount] = text
 			lineCount = lineCount + 1

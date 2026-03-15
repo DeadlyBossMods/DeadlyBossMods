@@ -24,7 +24,7 @@ end
 
 local L = DBM_CORE_L
 local UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit = UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit
-local error, tostring, type, pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin, mrandom, schar, ssplit = error, tostring, type, pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min, math.random, string.char, string.split
+local error, tostring, type, pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin, mrandom, mhuge, mceil, schar, ssplit = error, tostring, type, pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min, math.random, math.huge, math.ceil, string.char, string.split
 local NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE = NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -350,14 +350,20 @@ local function updateBossHealth()
 		if type(name) ~= "string" then
 			name = localizedBossNames[cId] or ("Boss " .. cId)
 		end
-		lines[name] = bossHealth[cId] or math.huge
+		lines[name] = bossHealth[cId] or mhuge
 		bossHealthSortedLines[#bossHealthSortedLines + 1] = name
 	end
 	tsort(bossHealthSortedLines, function(e1, e2)
 		return lines[e1] > lines[e2]
 	end)
 	for name, hp in pairs(lines) do
-		lines[name] = hp < math.huge and (math.ceil(hp) .. "%") or DBM_COMMON_L.UNKNOWN
+		local _hp = DBM_COMMON_L.UNKNOWN
+		if hp == 0 then
+			_hp = DEAD
+		elseif hp < mhuge then
+			_hp = mceil(hp) .. "%"
+		end
+		lines[name] = _hp
 	end
 	updateLines(bossHealthSortedLines)
 	updateIcons()
