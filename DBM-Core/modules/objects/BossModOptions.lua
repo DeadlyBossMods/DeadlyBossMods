@@ -46,7 +46,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name .. "TColor"] = extraOption or 0
 		self.Options[name .. "CVoice"] = extraOptionTwo or 0
 	end
-	if self.noHardcodedOptions and (cat == "announce" or cat == "timer" or cat == "icon" or cat == "nameplate") and optionSubType ~= "roleplay" then return end
+	if self.noHardcodedOptions and (cat == "announce" or cat == "timer" or cat == "icon" or cat == "nameplate" or cat == "yell") and optionSubType ~= "roleplay" then return end
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
 			self:GroupWASpells(waCustomName, spellId, name)
