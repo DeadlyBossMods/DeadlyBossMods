@@ -1140,12 +1140,12 @@ do
 
 		function registerSpellId(event, spellId)
 			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
-				DBM:Debug("|cffff0000DBM RegisterEvents Warning: " .. spellId .. " is not a number!|r")
+				DBM:Debug("|cffff0000DBM RegisterEvents Warning: " .. spellId .. " is not a number!|r", 1, nil, nil, true)
 				return
 			end
 			local spellName = DBM:GetSpellName(spellId)
 			if spellId and not spellName then
-				DBM:Debug("|cffff0000DBM RegisterEvents Warning: " .. spellId .. " id does not exist!|r")
+				DBM:Debug("|cffff0000DBM RegisterEvents Warning: " .. spellId .. " id does not exist!|r", 1, nil, nil, true)
 				return
 			end
 			if not registeredSpellIds[event] then
@@ -1164,7 +1164,7 @@ do
 			if not registeredSpellIds[event] then return end
 			local spellName = DBM:GetSpellName(spellId)
 			if spellId and not spellName then
-				DBM:Debug("|cffff0000DBM unregisterSpellId Warning: " .. spellId .. " id does not exist!|r")
+				DBM:Debug("|cffff0000DBM unregisterSpellId Warning: " .. spellId .. " id does not exist!|r", 1, nil, nil, true)
 				return
 			end
 			--local regName = isClassic and spellName or spellId
@@ -4152,7 +4152,7 @@ do
 			self:Debug("|c00F2F200No action taken because mapID and difficultyID hasn't changed since last check |r", 2)
 			return
 		end
-		self:Debug("|c0069CCF0mapID or difficulty has changed, updating LastInstanceMapID to |r" .. mapID, 2)
+		self:Debug("|c0069CCF0mapID or difficulty has changed, updating LastInstanceMapID to |r" .. mapID, 2, nil, nil, true)
 		LastInstanceMapID = mapID
 		DBMScheduler:UpdateZone()--Also update zone in scheduler
 		fireEvent("DBM_UpdateZone", mapID)
@@ -4186,6 +4186,7 @@ do
 		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
 		self:UpdateMapRestrictions()
+		private:GetModule("DevToolsModule"):OnDebugToggle()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
@@ -4626,7 +4627,7 @@ do
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
-			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for zoneId" .. LastInstanceMapID, 3)
+			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
 			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
 					if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
@@ -4638,7 +4639,7 @@ do
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
-		self:Debug("ENCOUNTER_START event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size)
+		self:Debug("|cffffff00ENCOUNTER_START: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size, 1, nil, nil, true)
 		if dbmIsEnabled then
 			--Only nag in raids on engage
 			if IsInRaid() then
@@ -4665,7 +4666,7 @@ do
 	end
 
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
-		self:Debug("ENCOUNTER_END event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success)
+		self:Debug("|cffffff00ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
 		if success == 0 then
 			--Only nag on wipes (in any content)
 			self:CheckAvailableMods()
@@ -4703,7 +4704,7 @@ do
 	end
 
 	function DBM:BOSS_KILL(encounterID, name)
-		self:Debug("BOSS_KILL event fired: " .. encounterID .. " " .. name)
+		self:Debug("|cffffff00BOSS_KILL: |r event fired: " .. encounterID .. " " .. name, 1, nil, nil, true)
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
@@ -4777,7 +4778,7 @@ do
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
 			local targetName = target or "nil"
-			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2)
+			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
@@ -4821,7 +4822,7 @@ do
 			local spellId = tonumber(id)
 			if spellId then
 				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
-				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2)
+				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2, nil, nil, true)
 			end
 		end
 		return self:FilterRaidBossEmote(msg, sender, ...)
@@ -4852,10 +4853,10 @@ do
 		if gossipOptionID then--At least one must return for debug
 			if DBM:MidRestrictionsActive() then
 				--GUID is a secret in combat
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)))
+				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
 			else
 				local cid = self:GetUnitCreatureId("npc") or 0
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid)
+				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
 			end
 		end
 	end
@@ -5017,7 +5018,7 @@ do
 			if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (event == "ENCOUNTER_START" and 3 or mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if event then
-				self:Debug("StartCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
+				self:Debug("StartCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 1, nil, nil, true)
 				if event ~= "ENCOUNTER_START" then
 					self:Debug("This event is started by " .. event .. ". Review ENCOUNTER_START event to ensure if this is still needed", 2)
 				end
@@ -5401,7 +5402,7 @@ do
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
-				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID)
+				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 1, nil, nil, true)
 			end
 			if private.enableIcons and not self.Options.DontSetIcons and not self.Options.DontRestoreIcons then
 				-- restore saved previous icon
@@ -6000,7 +6001,7 @@ function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string 
 	--Built in wow api extension doesn't know EJ_GetSectionInfo can accept strings
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
-		self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r" .. sectionID)
+		self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r" .. sectionID, 1, nil, nil, true)
 		return
 	end
 	local flag1, flag2, flag3, flag4
@@ -6950,7 +6951,7 @@ do
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
-			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2)
+			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2, nil, nil, true)
 			if checkOptions(self, id) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				self:AddMsg(L.MOVIE_SKIPPED)
@@ -6959,7 +6960,7 @@ do
 	end
 
 	function DBM:CINEMATIC_START()
-		self:Debug("CINEMATIC_START fired", 2)
+		self:Debug("CINEMATIC_START fired", 2, nil, nil, true)
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
 		self.HudMap:SupressCanvas()

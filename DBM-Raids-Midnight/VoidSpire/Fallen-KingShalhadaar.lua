@@ -77,10 +77,11 @@ function mod:OnLimitedCombatStart()
 end
 
 --[[
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+--Note, bar stage changing and canceling is handled by core
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	local duration = remaining or eventInfo.duration
+	local timer = math.floor(eventInfo.duration + 0.5)
 end
 --]]
