@@ -20,7 +20,7 @@ local cSyncSender, eeSyncSender = {}, {}
 local eeSyncReceived, cSyncReceived, updateSubNotificationDisplayed = 0, 0, 0
 local newerVersionPerson, newersubVersionPerson, forceDisablePerson, iconSetRevision, iconSetPerson = {}, {}, {}, {}, {}
 local handleSync
-local PForceDisable = 22--When this is incremented, trigger force disable regardless of major patch
+local PForceDisable = 23--When this is incremented, trigger force disable regardless of major patch
 -- Localize frequently accessed private namespace items for performance (avoid table lookups on hot paths)
 local DBMPrefix = private.DBMPrefix
 local DBMSyncProtocol = private.DBMSyncProtocol
