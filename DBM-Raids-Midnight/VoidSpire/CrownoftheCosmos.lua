@@ -11,7 +11,7 @@ mod:SetZone(2912)
 mod:RegisterCombat("combat")
 
 --mod:RegisterEventsInCombat(
-
+--	"ENCOUNTER_TIMELINE_EVENT_ADDED"
 --)
 
---TODO. Not a damn thing
+

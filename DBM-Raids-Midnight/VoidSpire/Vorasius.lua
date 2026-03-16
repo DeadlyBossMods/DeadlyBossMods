@@ -29,7 +29,7 @@ local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
 
 mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2)--Dark Goo
-mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 1)--Smashed (debuff from shadowclaw slam)
+mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3)--Smashed (debuff from shadowclaw slam)
 mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1)--Creep Spit
 mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1)--Blisterburst
 

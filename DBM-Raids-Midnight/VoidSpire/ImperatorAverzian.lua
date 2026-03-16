@@ -33,7 +33,7 @@ local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3,
 
 mod:AddPrivateAuraSoundOption(1249265, true, 1249265, 1, 2)--Umbral Collapse
 mod:AddPrivateAuraSoundOption(1280023, true, 1280023, 1, 1)--Void Marked
-mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 1)--Weakened
+mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 3)--Weakened
 mod:AddPrivateAuraSoundOption(1275059, true, 1275059, 1, 1)--Black Miasma
 
 mod.vb.shadowCount = 0
