@@ -751,7 +751,7 @@ L.KEYSTONE_NAMES[558] = '博學' -- Magister's Terrace
 L.KEYSTONE_NAMES[559] = '奧核點' -- Nexus-Point Xenas
 L.KEYSTONE_NAMES[560] = '梅薩拉' -- Maisara Caverns
 L.KEYSTONE_NAMES[583] = '三傑' -- Seat of the Triumvirate
-	
+
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "您想使用暴雪時間線還是DBM計時條呢？"
 L.MN_BLIZZARD_TIMELINE	= "暴雪時間線"
