@@ -30,12 +30,12 @@ local timerTwilightObscurityCD				= mod:NewCDCountTimer(20.5, 1250686, DBM_COMMO
 local timerEntropicUnravelingCD				= mod:NewCDCountTimer(20.5, 1246175, nil, nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
 --local timerBerserkCD						= mod:NewBerserkTimer(600)--Hardcode only, custom object not really compatible with timeline api
 
-mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 2)--Void Exposure (People who soak void convergence)
+mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 3)--Void Exposure (People who soak void convergence)
 mod:AddPrivateAuraSoundOption(1248697, true, 1248697, 1, 1)--Despotic Command
 mod:AddPrivateAuraSoundOption(1245592, true, 1245592, 1, 2)--Torturous Extract (dropped by 3 diff mechanics so not bundled)
 mod:AddPrivateAuraSoundOption(1253024, true, 1253024, 1, 1)--Shattering Twilight
 mod:AddPrivateAuraSoundOption(1251213, true, 1253024, 1, 2)--Twilight Spikes (pool from Shattering Twilight)
-mod:AddPrivateAuraSoundOption(1250991, false, 1243453, 1, 1)--Dark Radiation (dot from void convergence)
+mod:AddPrivateAuraSoundOption(1250991, false, 1243453, 1, 3)--Dark Radiation (dot from void convergence)
 
 mod.vb.convergenceCount = 0
 mod.vb.despoticCommandCount = 0
@@ -77,10 +77,11 @@ function mod:OnLimitedCombatStart()
 end
 
 --[[
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+--Note, bar stage changing and canceling is handled by core
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	local duration = remaining or eventInfo.duration
+	local timer = math.floor(eventInfo.duration + 0.5)
 end
 --]]

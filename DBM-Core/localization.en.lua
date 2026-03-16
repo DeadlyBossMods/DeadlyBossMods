@@ -654,6 +654,7 @@ L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Show timer for fastest clear of %s"
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM private auras sound alerts for $spell:%s on this fight."--Generic (most common)
 L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Play DBM private auras sound alerts for when you are targeted by $spell:%s."
 L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Play DBM private auras sound alerts for when you need to move away from $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT		= "Play DBM private auras sound alerts for lingering effects of $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT			= "Show timer for $spell:%s"--Used for Midnight timeline timers (ie we have no context of what type of timer it is, just a generic timer)
 L.AUTO_CUSTOMALERT_OPTION_TEXT			= "Set alert sound for when $spell:%s is about to be cast"--Used for Midnight custom alerts (ie we have no context of what type of alert it is, just a generic alert)
 

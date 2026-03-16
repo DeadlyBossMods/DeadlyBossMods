@@ -106,11 +106,12 @@ end
 ---|0: Generic subtype for generalized use
 ---|1: Custom subtype for when targetted by the private aura spell
 ---|2: Custom subtype for when standing in the private aura spell (GTFO)
+---|3: Custom subtype for lingering debuffs (such as dots, or increased damage taken)
 ---@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
----@param subType paSubTypes? 0/nil: default, 1: targetted, 2:gtfo
+---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff
 function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType)
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
 	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
@@ -130,6 +131,8 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT:format(auraspellId)
 	elseif subType == 2 then
 		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT:format(auraspellId)
+	elseif subType == 3 then
+		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_POST_TEXT:format(auraspellId)
 	else
 		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
 	end

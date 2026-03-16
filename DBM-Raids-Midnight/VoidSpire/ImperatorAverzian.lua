@@ -33,7 +33,7 @@ local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3,
 
 mod:AddPrivateAuraSoundOption(1249265, true, 1249265, 1, 2)--Umbral Collapse
 mod:AddPrivateAuraSoundOption(1280023, true, 1280023, 1, 1)--Void Marked
-mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 1)--Weakened
+mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 3)--Weakened
 mod:AddPrivateAuraSoundOption(1275059, true, 1275059, 1, 1)--Black Miasma
 
 mod.vb.shadowCount = 0
@@ -73,10 +73,11 @@ function mod:OnLimitedCombatStart()
 end
 
 --[[
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+--Note, bar stage changing and canceling is handled by core
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	local duration = remaining or eventInfo.duration
+	local timer = math.floor(eventInfo.duration + 0.5)
 end
 --]]
