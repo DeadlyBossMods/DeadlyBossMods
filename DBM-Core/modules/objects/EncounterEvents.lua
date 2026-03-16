@@ -64,6 +64,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = remaining or eventInfo.duration
+	local durationRounded = math.floor(duration + 0.5)
 	local maxQueueDuration = eventInfo.maxQueueDuration
 	--Secrets
 	local spellId = eventInfo.spellID
@@ -75,7 +76,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	if self.Options.DontShowUserTimers and source == 1 then return end
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
-	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(duration, color).." and state: "..tostring(eventState), 3, nil, nil, true)
+	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(durationRounded), color).." and state: "..tostring(eventState), 3, nil, nil, true)
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
 	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil
