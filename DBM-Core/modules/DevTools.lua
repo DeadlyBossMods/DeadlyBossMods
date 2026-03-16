@@ -9,6 +9,8 @@ local module = private:NewModule("DevToolsModule")
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
+local appendToDebugLog, showDebugLog, hideDebugLog, clearDebugLog
+
 function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
@@ -133,7 +135,7 @@ do
 		local closeButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelCloseButton")
 		closeButton:SetPoint("TOPRIGHT", debugLogFrame, "TOPRIGHT", -5, -5)
 		closeButton:SetScript("OnClick", function()
-			DBM:HideDebugLog()
+			hideDebugLog()
 		end)
 
 		local clearButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
@@ -188,7 +190,7 @@ do
 		setDebugLogSoftClosed(true)
 	end
 
-	local function appendToDebugLog(text)
+	function appendToDebugLog(text)
 		local wasAtBottom = debugLogTopVisibleLine >= getMaxTopVisibleLine()
 		local line
 		if debugLogLineCount < maxDebugLogEntries then
@@ -209,7 +211,7 @@ do
 		end
 	end
 
-	function DBM:ShowDebugLog()
+	function showDebugLog()
 		if not DBM.Options or not DBM.Options.DebugMode then return end
 		if not debugLogFrame then
 			createDebugLogFrame()
@@ -219,7 +221,7 @@ do
 		refreshDebugLog(true)
 	end
 
-	function DBM:HideDebugLog()
+	function hideDebugLog()
 		if not debugLogFrame then return end
 		if DBM.Options and DBM.Options.DebugMode then
 			setDebugLogSoftClosed(true)
@@ -231,13 +233,13 @@ do
 	function DBM:ToggleDebugLog()
 		if DBM.Options and not DBM.Options.DebugMode then return end
 		if not debugLogFrame or debugLogSoftClosed then
-			self:ShowDebugLog()
+			showDebugLog()
 		else
-			self:HideDebugLog()
+			hideDebugLog()
 		end
 	end
 
-	function DBM:ClearDebugLog()
+	function clearDebugLog()
 		clearAllLines()
 		refreshDebugLog()
 	end
@@ -252,12 +254,11 @@ do
 			setDebugLogSoftClosed(true)
 		else
 			if debugLogFrame then
+				clearDebugLog()
 				debugLogFrame:Hide()
 			end
 		end
 	end
-
-	module.AppendToDebugLog = appendToDebugLog
 end
 
 do
@@ -301,7 +302,7 @@ do
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
 	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
 		if (isLogged or alwaysFireEvent) and DBM.Options and DBM.Options.DebugMode then
-			module.AppendToDebugLog(text)
+			appendToDebugLog(text)
 		end
 		--Still fire debug callbacks for transcriptor even if user level debug is not enabled
 		--Cap debug level to 2 for transcriptor unless user specifically specifies 3
