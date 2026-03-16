@@ -36,8 +36,10 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
 			end
 		end
+		self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
+	else
+		self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 2, nil, nil, true)
 	end
-	self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
 	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	local iconFileID = encounterWarningInfo.iconFileID
