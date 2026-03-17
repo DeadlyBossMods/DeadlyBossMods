@@ -1021,7 +1021,8 @@ do
 			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
 			if timerCountdown ~= 0 then
 				if not self.tlTimerEvents then self.tlTimerEvents = {} end
-				local countSizePath = DBM.Options.CountSize == 3 and "threecount.ogg" or "fivecount.ogg"
+				local maxCount = DBM:GetCountMaxCountForVoice(timerCountdown)
+				local countSizePath = (maxCount == 3 or DBM.Options.CountSize == 3) and "threecount.ogg" or "fivecount.ogg"
 				if type(timerCountdown) == "string" then
 					path = timerCountdown..countSizePath
 				elseif timerCountdown == 2 then

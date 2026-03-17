@@ -43,14 +43,14 @@ do
 	---@param value string
 	---@param path string
 	---@param max number? Max count value 1-10 for classic and 1-5 for midnight
-	---@param isMidnightCompatible boolean? Pass this ONLY if your count pack supports "fivecount.ogg"
+	---@param isMidnightCompatible boolean? Pass this ONLY if your count pack supports "fivecount.ogg" or "threecount.ogg"
 	function DBM:AddCountSound(text, value, path, max, isMidnightCompatible)
 		if isMidnightCompatible then
 			tinsert(midnightCounts, {
 				text	= text,
 				value	= value or text,
 				path	= path,
-				max		= max or 5
+				max		= max or 3
 			})
 		else
 			tinsert(counts, {

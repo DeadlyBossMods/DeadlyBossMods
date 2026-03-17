@@ -2,9 +2,91 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBM
+local DBM = DBM
+
 local L = DBM_CORE_L
 
 local test = private:GetPrototype("DBMTest")
+
+local tinsert = table.insert
+
+do
+	local function Sort(v1, v2)
+		if v1.revision and not v2.revision then
+			return true
+		elseif v2.revision and not v1.revision then
+			return false
+		elseif v1.revision and v2.revision then
+			return v1.revision > v2.revision
+		else
+			return (v1.bwversion or 0) > (v2.bwversion or 0)
+		end
+	end
+
+	function DBM:ShowVersions(notify)
+		local sortMe, outdatedUsers = {}, {}
+		local raid = self:GetRaidRoster()
+		for _, v in pairs(raid) do
+			tinsert(sortMe, v)
+		end
+		table.sort(sortMe, Sort)
+		self:AddMsg(L.VERSIONCHECK_HEADER)
+		for _, v in ipairs(sortMe) do
+			local name = v.name
+			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+			if playerColor then
+				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+			end
+			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
+				if self.Options.ShowAllVersions then
+					if v.classicSubVers then
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion .. " / " .. v.classicSubVers, DBM:ShowRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
+					else
+						self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.DBM .. " " .. v.displayVersion, DBM:ShowRealDate(v.revision), L.DUNGEONS .. v.dungeonSubVers), false)--Only display Dungeon version if not running two mods
+					end
+				end
+				if not DBM:MidRestrictionsActive() and notify and v.revision < self.ReleaseRevision then
+					SendChatMessage(private.chatPrefixShort .. L.YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
+				end
+			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
+				self:AddMsg(L.VERSIONCHECK_ENTRY_TWO:format(name, L.DBM .. " " .. v.displayVersion, DBM:ShowRealDate(v.revision), L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash)), false)
+			elseif self.Options.ShowAllVersions and not v.displayVersion and v.bwversion then--BigWigs, No DBM
+				self:AddMsg(L.VERSIONCHECK_ENTRY:format(name, L.BIG_WIGS, ("%s - %s"):format(v.bwversion, v.bwhash), ""), false)
+			else
+				if self.Options.ShowAllVersions then
+					self:AddMsg(L.VERSIONCHECK_ENTRY_NO_DBM:format(name), false)
+				end
+			end
+		end
+		local NoDBM = 0
+		local NoBigwigs = 0
+		local OldMod = 0
+		for i = #sortMe, 1, -1 do
+			if not sortMe[i].revision then
+				NoDBM = NoDBM + 1
+			end
+			if not (sortMe[i].bwversion) then
+				NoBigwigs = NoBigwigs + 1
+			end
+			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
+			--This check compares all dbm version to highest RELEASE version in raid.
+			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwversion and (sortMe[i].bwversion < private.fakeBWVersion) then
+				OldMod = OldMod + 1
+				local name = sortMe[i].name
+				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+				if playerColor then
+					name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+				end
+				tinsert(outdatedUsers, name)
+			end
+		end
+		local TotalUsers = #sortMe
+		self:AddMsg("---", false)
+		self:AddMsg(L.VERSIONCHECK_FOOTER:format(TotalUsers - NoDBM, TotalUsers - NoBigwigs), false)
+		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #outdatedUsers > 0 and table.concat(outdatedUsers, ", ") or NONE), false)
+	end
+end
 
 if not _G["BigWigs"] then
 	--Register pull and break slash commands for BW converts, if BW isn't loaded
@@ -267,6 +349,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 10) == "debugsound" then
 		DBM.Options.DebugSound = not DBM.Options.DebugSound
 		DBM:AddMsg("Debug Sound is " .. (DBM.Options.DebugSound and "ON" or "OFF"))
+	elseif cmd:sub(1, 8) == "debuglog" then
+		if not DBM.Options.DebugMode then
+			DBM:AddMsg("Debug Log requires Debug Mode. Use '/dbm debug' to enable it first.")
+			return
+		end
+		DBM:ToggleDebugLog()
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = not DBM.Options.DebugMode
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))

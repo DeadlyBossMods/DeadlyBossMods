@@ -156,7 +156,12 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		end
 		if self.Options.ShowSWarningsInChat then
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-			local combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
+			local combinedText
+			if C_StringUtil then
+				combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
+			else
+				combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. formatedText .. "|r"
+			end
 			self:AddMsg(combinedText)
 		end
 		--DUPLICATE CODE

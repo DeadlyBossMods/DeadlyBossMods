@@ -29,7 +29,7 @@ local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
 
 mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2)--Dark Goo
-mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 1)--Smashed (debuff from shadowclaw slam)
+mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3)--Smashed (debuff from shadowclaw slam)
 mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1)--Creep Spit
 mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1)--Blisterburst
 
@@ -63,9 +63,11 @@ function mod:OnLimitedCombatStart()
 end
 
 --[[
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+--Note, bar stage changing and canceling is handled by core
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	local duration = remaining or eventInfo.duration
+	local timer = math.floor(eventInfo.duration + 0.5)
 end
 --]]

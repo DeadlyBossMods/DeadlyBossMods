@@ -700,7 +700,7 @@ local barsTestMode = false --this is to handle the "non-guid" test bars. just tu
 do
 	--test start
 	local testStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
-		if event ~= "DBM_TimerStart" then return end
+		if event ~= "DBM_TimerBegin" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
 		--Disable cooldown icons for any timer designated as a nameplate only cooldown timer
@@ -786,10 +786,10 @@ do
 		barsTestMode = true
 		C_Timer.After (tonumber(timer) or 10, function()
 			barsTestMode = false
-			DBM:UnregisterCallback("DBM_TimerStart", testStartCallback)
+			DBM:UnregisterCallback("DBM_TimerBegin", testStartCallback)
 			DBM:UnregisterCallback("DBM_TimerStop", testEndCallback)
 		end)
-		DBM:RegisterCallback("DBM_TimerStart", testStartCallback)
+		DBM:RegisterCallback("DBM_TimerBegin", testStartCallback)
 		DBM:RegisterCallback("DBM_TimerStop", testEndCallback)
 	end
 	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
