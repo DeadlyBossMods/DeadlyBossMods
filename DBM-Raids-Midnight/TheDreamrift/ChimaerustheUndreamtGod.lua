@@ -75,7 +75,7 @@ function mod:OnLimitedCombatStart()
 	--TODO, hardcoded features
 
 	--Blizz API fallbacks
-	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3)
+	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
 	timerRavenousDiveCD:SetTimeline(48)
 	specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
 	timerRiftEmergenceCD:SetTimeline(49)
@@ -83,7 +83,7 @@ function mod:OnLimitedCombatStart()
 	timerCausticPhlegmCD:SetTimeline(50)
 	specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
 	timerRendingTearCD:SetTimeline(51)
-	specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2)
+	specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
 	timerCorruptedDevastationCD:SetTimeline({53,458})
 	specWarnFearsomecry:SetAlert(117, "kickcast", 1, 2, 0)--Needs vetting, it's an add ability but has event Id, so it might fire an ECOUNTER_WARNING based on blizz set conditionals
 	specWarnDiscordantRoar:SetAlert(118, "aesoon", 2, 2, 0)--^
