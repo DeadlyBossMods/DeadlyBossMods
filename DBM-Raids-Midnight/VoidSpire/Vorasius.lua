@@ -52,7 +52,7 @@ function mod:OnLimitedCombatStart()
 --	timerVoidBreathCD:SetTimeline(61)
 	specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
 	timerParasiteExpulsionCD:SetTimeline(62)
-	specWarnPrimordialRoar:SetAlert(133, "carefly", 2, 3)
+	specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
 	timerPrimordialRoarCD:SetTimeline(133)
 	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)--Iffy, but maybe
 

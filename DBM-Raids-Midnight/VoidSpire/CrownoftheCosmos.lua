@@ -97,7 +97,7 @@ function mod:OnLimitedCombatStart()
 
 	--Blizz API fallbacks
 	timerNullCoronaCD:SetTimeline(4)
-	specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2)
+	specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
 	timerVoidExpulsionCD:SetTimeline(5)
 	timerSilverstrikeArrowCD:SetTimeline(6)
 	specWarnSilverstrikeBarrage:SetAlert(7, "specialsoon", 2, 2)--Figure out more accurate sound after seeing it

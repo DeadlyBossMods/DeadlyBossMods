@@ -26,6 +26,7 @@ do
 	local debugLogLineCount = 0
 	local debugLogStartIndex = 1
 	local debugLogTopVisibleLine = 1
+	local debugLogNormalPoint, debugLogNormalRelativeTo, debugLogNormalX, debugLogNormalY
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
@@ -60,9 +61,15 @@ do
 	local function setDebugLogSoftClosed(softClosed)
 		if not debugLogFrame then return end
 		debugLogSoftClosed = softClosed
-		debugLogFrame:SetAlpha(softClosed and 0 or 1)
-		debugLogFrame:EnableMouse(not softClosed)
-		clearButton:EnableMouse(not softClosed)
+		if softClosed then
+			-- Move off-screen to the right
+			debugLogFrame:ClearAllPoints()
+			debugLogFrame:SetPoint("LEFT", UIParent, "RIGHT", 5000, 0)
+		else
+			-- Restore to previous position
+			debugLogFrame:ClearAllPoints()
+			debugLogFrame:SetPoint(debugLogNormalPoint or "CENTER", debugLogNormalRelativeTo or UIParent, debugLogNormalPoint or "CENTER", debugLogNormalX or 0, debugLogNormalY or 0)
+		end
 	end
 
 	local function ensureLineFrame(index)
@@ -120,7 +127,12 @@ do
 		debugLogFrame:SetPoint("CENTER")
 		debugLogFrame:SetSize(1200, 800)
 		debugLogFrame:SetBackdropColor(0, 0, 0, 1)
-		debugLogFrame:SetClampedToScreen(true)
+		debugLogFrame:SetClampedToScreen(false)
+		-- Store the normal position for later restoration
+		debugLogNormalPoint = "CENTER"
+		debugLogNormalRelativeTo = UIParent
+		debugLogNormalX = 0
+		debugLogNormalY = 0
 		debugLogFrame:SetMovable(true)
 		debugLogFrame:SetToplevel(true)
 		debugLogFrame:EnableMouse(true)
