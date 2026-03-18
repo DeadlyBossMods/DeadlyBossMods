@@ -4778,7 +4778,13 @@ do
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
 			local targetName = target or "nil"
-			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
+			if targetName ~= "nil" then
+				local playerClass = self:GetRaidClass(targetName)
+				if playerClass then
+					targetName = "|c" .. RAID_CLASS_COLORS[playerClass].colorStr .. targetName .. "|r"
+				end
+			end
+			self:Debug("|cffffff00CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
@@ -4853,10 +4859,10 @@ do
 		if gossipOptionID then--At least one must return for debug
 			if DBM:MidRestrictionsActive() then
 				--GUID is a secret in combat
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
+				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
 			else
 				local cid = self:GetUnitCreatureId("npc") or 0
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
+				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
 			end
 		end
 	end
