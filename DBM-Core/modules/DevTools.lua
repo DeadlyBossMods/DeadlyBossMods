@@ -200,8 +200,8 @@ do
 		if #inCombat > 0 then--At least one boss is engaged
 			for i = #inCombat, 1, -1 do
 				local mod = inCombat[i]
-				if mod then
-					return mfloor(GetTime() - mod.combatInfo.pull + 0.5)
+				if mod and mod.combatInfo then
+					return mfloor(GetTime() - (mod.combatInfo.pull or 0) + 0.5)
 				end
 			end
 		else
