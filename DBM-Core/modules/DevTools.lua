@@ -118,7 +118,7 @@ do
 		}
 		debugLogFrame:ApplyBackdrop()
 		debugLogFrame:SetPoint("CENTER")
-		debugLogFrame:SetSize(1000, 800)
+		debugLogFrame:SetSize(1200, 800)
 		debugLogFrame:SetBackdropColor(0, 0, 0, 1)
 		debugLogFrame:SetClampedToScreen(true)
 		debugLogFrame:SetMovable(true)

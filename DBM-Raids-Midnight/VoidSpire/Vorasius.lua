@@ -24,7 +24,7 @@ local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459
 local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
 local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil, nil, 2)--Shortname "Slam"
-local timerVoidBreathCD					= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
+--local timerVoidBreathCD					= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
 
@@ -48,8 +48,8 @@ function mod:OnLimitedCombatStart()
 	--Blizz API fallbacks
 	specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)
 	timerShadowclawSlamCD:SetTimeline({59, 60})
-	specWarnVoidBreath:SetAlert(61, "breathsoon", 2, 4)
-	timerVoidBreathCD:SetTimeline(61)
+	specWarnVoidBreath:SetAlert(61, "breathsoon", 2, 4, 0)
+--	timerVoidBreathCD:SetTimeline(61)
 	specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
 	timerParasiteExpulsionCD:SetTimeline(62)
 	specWarnPrimordialRoar:SetAlert(133, "carefly", 2, 3)
