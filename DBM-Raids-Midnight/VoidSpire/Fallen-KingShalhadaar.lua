@@ -55,10 +55,10 @@ function mod:OnLimitedCombatStart()
 	--TODO, hardcoded features
 
 	--Blizz API fallbacks
-	specWarnVoidConvergence:SetAlert(139, "catchballs", 12, 3)
+	specWarnVoidConvergence:SetAlert(139, "targetchange", 2, 3)
 	timerVoidConvergenceCD:SetTimeline(139)
 	timerDespoticCommandCD:SetTimeline(140)
-	specWarnFracturedProjection:SetAlert(141, "interruptsoon", 2, 3)
+	specWarnFracturedProjection:SetAlert(141, "crowdcontrol", 2, 3)
 	timerFracturedProjectionCD:SetTimeline(141)
 --	specWarnShatteringTwilight:SetAlert(142, "defensive", 2, 3)--Private aura handling for now
 	timerShatteringTwilightCD:SetTimeline(142)
