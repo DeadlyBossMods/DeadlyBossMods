@@ -25,10 +25,11 @@ local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, ni
 local specWarnGrabblingMaw			= mod:NewSpecialWarningDefensive(1280458, nil, nil, nil, 1, 2)
 local specWarnRakfang				= mod:NewSpecialWarningDefensive(1245645, nil, nil, nil, 1, 2)
 local specWarnVaelwing				= mod:NewSpecialWarningDefensive(1265131, nil, nil, nil, 1, 2)
-local specWarnCosmosisGloom			= mod:NewSpecialWarningCount(1277470, nil, nil, nil, 2, 2, 4)
-local specWarnCosmosisNullbeam		= mod:NewSpecialWarningCount(1277471, nil, nil, nil, 2, 2, 4)
-local specWarnCosmosisDreadBreath	= mod:NewSpecialWarningCount(1277472, nil, nil, nil, 2, 2, 4)
-local specWarnCosmosisVoidHowl		= mod:NewSpecialWarningCount(1277473, nil, nil, nil, 2, 2, 4)
+local specWarnCosmosisGloom			= mod:NewSpecialWarningCount(1277470, nil, nil, nil, 2, 2)
+local specWarnCosmosisNullbeam		= mod:NewSpecialWarningCount(1277471, nil, nil, nil, 2, 2)
+local specWarnCosmosisDreadBreath	= mod:NewSpecialWarningCount(1277472, nil, nil, nil, 2, 2)
+local specWarnCosmosisVoidHowl		= mod:NewSpecialWarningCount(1277473, nil, nil, nil, 2, 2)
+local specWarnRadiantBarrier		= mod:NewSpecialWarningCount(1248847, nil, nil, nil, 2, 2)
 
 local timerNullBeamCD				= mod:NewCDCountTimer(20.5, 1262623, nil, nil, nil, 3)
 local timerVoidHowlCD				= mod:NewCDCountTimer(20.5, 1244917, nil, nil, nil, 2)
@@ -93,9 +94,9 @@ function mod:OnLimitedCombatStart()
 	timerVoidHowlCD:SetTimeline(102)
 	specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
 	timerGloomCD:SetTimeline(103)
-	specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3)
+	specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3, 0)
 	timerDreadBreathCD:SetTimeline(104)
-	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2)
+	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
 	timerMidnightFlamesCD:SetTimeline(105)
 	if self:IsTank() then
 		specWarnGrabblingMaw:SetAlert(219, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
@@ -113,6 +114,7 @@ function mod:OnLimitedCombatStart()
 	timerCosmosisDreadBreathCD:SetTimeline(379)
 	specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
 	timerCosmosisVoidHowlCD:SetTimeline(380)
+	specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
 	timerRadiantBarrierCD:SetTimeline(381)
 
 	self:EnablePrivateAuraSound({1262999,1262676,1262656}, "beamyou", 19)--iffy sound choice, might change
@@ -123,7 +125,7 @@ function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1245421, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1255612, "targetyou", 2)--Maybe a more specific sound?
 	self:EnablePrivateAuraSound(1255979, "fearyou", 19)
-	self:EnablePrivateAuraSound({1248865,1249595}, "barrieryou", 19)
+	self:EnablePrivateAuraSound(1248865, "barrieryou", 19)--1249595 results in spam
 	self:EnablePrivateAuraSound(1270497, "shadowyou", 15)
 	self:EnablePrivateAuraSound(1265152, "stunyou", 19)
 end

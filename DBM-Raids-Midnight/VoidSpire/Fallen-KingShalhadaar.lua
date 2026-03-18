@@ -64,7 +64,7 @@ function mod:OnLimitedCombatStart()
 	timerShatteringTwilightCD:SetTimeline(142)
 	specWarnTwilightObscurity:SetAlert(143, "aesoon", 2, 2)
 	timerTwilightObscurityCD:SetTimeline(143)
-	specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2)
+	specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2, 0)
 	timerEntropicUnravelingCD:SetTimeline(148)
 --	timerBerserkCD:SetTimeline(633)
 

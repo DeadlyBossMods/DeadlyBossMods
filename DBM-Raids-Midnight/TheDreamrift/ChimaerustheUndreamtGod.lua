@@ -96,8 +96,8 @@ function mod:OnLimitedCombatStart()
 	timerConsumeCD:SetTimeline(307)
 	specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
 
-	self:EnablePrivateAuraSound(1275059, "bleedyou", 19)
-	self:EnablePrivateAuraSound(1283069, "movetopool", 15)
+	self:EnablePrivateAuraSound(1272726, "bleedyou", 19)
+	self:EnablePrivateAuraSound(1257087, "movetopool", 15)
 	self:EnablePrivateAuraSound(1245698, "riftyou", 19)
 	self:EnablePrivateAuraSound(1264756, "debuffyou", 17)--TODO, better custom voice?
 --	self:EnablePrivateAuraSound(1264780, "debuffyou", 17)
