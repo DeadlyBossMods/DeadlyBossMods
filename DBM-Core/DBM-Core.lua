@@ -4780,9 +4780,11 @@ do
 			local targetName = target or "nil"
 			if targetName ~= "nil" then
 				local playerClass = self:GetRaidClass(targetName)
-				local playerColor = RAID_CLASS_COLORS[playerClass]
 				if playerClass then
-					targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerClass then
+						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+					end
 				end
 			end
 			self:Debug("|cffffff00CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
