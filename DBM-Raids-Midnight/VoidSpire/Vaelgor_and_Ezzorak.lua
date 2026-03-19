@@ -161,6 +161,7 @@ do
 	---@param timer number
 	---@param eventID number
 	local function timersEasy(self, timer, eventID)
+		--Logic confirmed against normal only. LFR not available yet
 		local stage = self:GetStage()
 		if stage == 1 then--Stage 1
 			if timer == 1 then--Nullbeam (initial cast at pull)
