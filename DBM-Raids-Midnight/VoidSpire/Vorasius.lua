@@ -21,7 +21,7 @@ local specWarnShadowclawSlam			= mod:NewSpecialWarningCount(1241836, nil, 182557
 local specWarnVoidBreath				= mod:NewSpecialWarningDodgeCount(1243853, nil, 17088, nil, 2, 2)
 local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
 local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2)
-local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
+--local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
 local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil, nil, 2)--Shortname "Slam"
 --local timerVoidBreathCD					= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
@@ -32,6 +32,7 @@ mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2)--Dark Goo
 mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3)--Smashed (debuff from shadowclaw slam)
 mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1)--Creep Spit
 mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1)--Blisterburst
+mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2)--Fixate
 
 mod.vb.clawCount = 0
 mod.vb.breathCount = 0
@@ -54,12 +55,13 @@ function mod:OnLimitedCombatStart()
 	timerParasiteExpulsionCD:SetTimeline(62)
 	specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
 	timerPrimordialRoarCD:SetTimeline(133)
-	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)--Iffy, but maybe
+--	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
 
 	self:EnablePrivateAuraSound(1243270, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1241844, "debuffyou", 17)
 	self:EnablePrivateAuraSound(1272527, "debuffyou", 17)
 	self:EnablePrivateAuraSound(1259186, "debuffyou", 17)
+	self:EnablePrivateAuraSound(1254113, "fixateyou", 19)
 end
 
 --[[

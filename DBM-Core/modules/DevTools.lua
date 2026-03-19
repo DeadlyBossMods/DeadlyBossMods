@@ -336,7 +336,7 @@ do
 	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
 	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
-		if (isLogged or alwaysFireEvent) and DBM.Options and DBM.Options.DebugMode then
+		if isLogged and DBM.Options and DBM.Options.DebugMode then
 			appendToDebugLog(text)
 		end
 		--Still fire debug callbacks for transcriptor even if user level debug is not enabled
