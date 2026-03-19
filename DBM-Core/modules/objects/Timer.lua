@@ -275,7 +275,7 @@ end
 ---@param eventID number
 function timerPrototype:TLStart(timer, eventID, ...)
 	self:SetEventID(eventID, ...)
-	DBM:Debug("|cff00ff00Starting hardcoded timer: |r spellID |cff69ccf0" .. self.spellId .. "|r with spellName |cff69ccf0" .. self.name .. "|r and timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
+	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.name .. "|r timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
 	return self:Start(timer, ...)
 end
 

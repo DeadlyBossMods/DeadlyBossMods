@@ -4793,7 +4793,11 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if self:issecretvalue(msg) then
-			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: " .. msg .. " with sender of " .. npc, 2, nil, nil, true)
+			if target then
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 2, nil, nil, true)
+			else
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 2, nil, nil, true)
+			end
 			return
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
