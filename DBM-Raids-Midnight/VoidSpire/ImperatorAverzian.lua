@@ -52,7 +52,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
-	if self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",

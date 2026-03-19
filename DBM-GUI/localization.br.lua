@@ -397,6 +397,7 @@ L.NoBarFade							= "Usar cores inicial/final como cores pequena/grande em vez d
 L.BarInlineIcons					= "Exibir ícones do diário"
 L.DisableRightClickBar				= "Desativar clique direito para cancelar cronômetros"
 L.ShortTimerText					= "Usar texto curto de cronômetro (quando disponível)"
+L.HardcodedTimer					= "Usar cronômetros predefinidos (quando disponível) para restaurar funções perdidas como renomear magias e desativar cronômetros que não deseja ver"
 L.KeepBar							= "Manter cronômetro ativo até o lançamento da habilidade"
 L.KeepBar2							= "(quando suportado pelo mod)"
 L.FadeBar							= "Desaparecer cronômetros para habilidades fora do alcance"

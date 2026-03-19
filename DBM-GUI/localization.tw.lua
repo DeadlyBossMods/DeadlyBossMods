@@ -390,6 +390,7 @@ L.NoBarFade							= "使用開始/結束顏色作為小型/大型顏色，而不
 L.BarInlineIcons					= "顯示嵌入圖示"
 L.DisableRightClickBar				= "停用右鍵點擊來取消計時器"
 L.ShortTimerText					= "使用較短的計時器文字(如果可用時)"
+L.HardcodedTimer					= "使用硬編碼計時器(如果可用時)，以還原失去的功能，例如法术重新命名和關閉不想看到的計時器"
 L.KeepBar							= "保持計時器啟用直到技能施放"
 L.KeepBar2							= "(當有支援的模組時)"
 L.FadeBar							= "隱藏已超出距離技能的計時器"

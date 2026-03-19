@@ -396,6 +396,7 @@ L.NoBarFade							= "Utilizar color inicial para barras pequeñas y final para g
 L.BarInlineIcons					= "Mostrar iconos del diaro"
 L.DisableRightClickBar				= "Desactivar clic derecho para cancelar temporizadores"
 L.ShortTimerText					= "Texto de temporizador breve"
+L.HardcodedTimer					= "Usar temporizadores predefinidos (cuando estén disponibles) para restaurar funciones perdidas como renombrar hechizos y desactivar temporizadores que no deseas ver"
 L.KeepBar							= "Mantener hasta que se lance la facultad"
 L.KeepBar2							= "(siempre que el módulo lo permita)"
 L.FadeBar							= "Desteñir barras de facultades lejanas"

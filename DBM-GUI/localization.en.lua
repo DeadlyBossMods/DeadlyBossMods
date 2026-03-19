@@ -475,6 +475,7 @@ L.NoBarFade							= "Use Start/End colors as Small/Large colors instead of gradu
 L.BarInlineIcons					= "Show journal icons"--Deprecated
 L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText					= "Use short timer text (when available)"
+L.HardcodedTimer					= "Use hardcoded timers (when available) to restore lost features like spell renaming and toggling off timers you don't want to see"
 L.KeepBar							= "Keep timer active until ability cast"
 L.KeepBar2							= "(when supported by mod)"
 L.FadeBar							= "Fade timers for out of range abilities"

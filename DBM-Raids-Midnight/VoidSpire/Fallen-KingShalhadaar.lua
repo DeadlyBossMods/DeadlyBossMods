@@ -57,7 +57,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.entropicUnravelingCount = 1
 	next45Type = nil
 
-	if self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",

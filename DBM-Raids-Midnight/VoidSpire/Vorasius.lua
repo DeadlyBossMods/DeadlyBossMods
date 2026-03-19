@@ -43,7 +43,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
 	self.vb.roarCount = 1
-	if self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",

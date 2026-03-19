@@ -395,6 +395,7 @@ L.NoBarFade							= "Utiliser la couleur initiale pour les petites barres et la 
 L.BarInlineIcons					= "Afficher les icônes du journal"
 L.DisableRightClickBar				= "Désactiver le clic droit pour annuler les chronomètres"
 L.ShortTimerText					= "Utiliser un texte de chronomètre court"
+L.HardcodedTimer					= "Utiliser des chronomètres prédéfinis (si disponibles) pour restaurer des fonctionnalités perdues telles que le renommage des sorts et la désactivation des chronomètres que vous ne souhaitez pas voir"
 L.KeepBar							= "Maintenir les barres actives jusqu'à l'utilisation de la capacité"
 L.KeepBar2							= "(quand supporté par le module)"
 L.FadeBar							= "Faire disparaître les chronomètres pour les capacités hors de portée"

@@ -396,6 +396,7 @@ L.NoBarFade							= "使用开始/结束颜色作为长/短计时条颜色，而
 L.BarInlineIcons					= "显示条内图标"
 L.DisableRightClickBar				= "屏蔽右键点击取消计时条"
 L.ShortTimerText					= "使用更短的计时条文字 (当可行时)"
+L.HardcodedTimer					= "使用硬编码计时器 (当可行时)，以恢复丢失的功能，如法术重命名和关闭不想看到的计时器"
 L.KeepBar							= "保持计时条显示直到技能被释放"
 L.KeepBar2							= "(当被模组支持时)"
 L.FadeBar							= "隐藏超出技能范围的计时条"

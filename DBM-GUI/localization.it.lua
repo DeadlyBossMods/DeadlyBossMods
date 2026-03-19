@@ -390,6 +390,7 @@ L.NoBarFade							= "Use Start/End colors as Small/Large colors instead of gradu
 L.BarInlineIcons					= "Mostra icone allineate"
 L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText					= "Usa testo breve temporizzatore (se disponibile)"
+L.HardcodedTimer					= "Usa timer hardcoded (se disponibile) per ripristinare funzionalità perse come la ridenominazione degli incantesimi e la disattivazione dei timer che non vuoi vedere"
 L.KeepBar							= "Mantieni temporizzatore attivo fino al cast"
 L.KeepBar2							= "(se supportato dalla mod)"
 L.FadeBar							= "Fai sparire temporizzatori per abilità fuori portata"
