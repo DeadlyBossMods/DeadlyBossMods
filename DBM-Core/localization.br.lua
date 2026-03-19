@@ -622,6 +622,9 @@ L.AUTO_SPEEDCLEAR_OPTION_TEXT 			= "Exibir cronômetro para limpeza mais rápida
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproduzir alertas sonoros de auras privadas do DBM para $spell:%s neste encontro"
 L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproduzir alertas sonoros de auras privadas do DBM quando você for alvo de $spell:%s"
 L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros de auras privadas do DBM quando você precisar se afastar de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproduzir alertas sonoros de auras privadas do DBM para efeitos persistentes de $spell:%s."
+L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Exibir cronômetro para $spell:%s"
+L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Definir alerta sonoro quando $spell:%s estiver prestes a ser lançado"
 
 -- New special warnings
 L.MOVE_WARNING_BAR 						= "Anúncio móvel"
