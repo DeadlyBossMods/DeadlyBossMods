@@ -4628,16 +4628,32 @@ do
 	end
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
-		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
-			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
-			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
-					if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
-						self:StartCombat(v.mod, 0, "IEEU")
+		self:Debug("|cffffff00INSTANCE_ENCOUNTER_ENGAGE_UNIT: |r event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
+		if not timerRequestInProgress then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
+			if dbmIsEnabled and combatInfo[LastInstanceMapID] then
+				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
+					if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
+						if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
+							self:StartCombat(v.mod, 0, "IEEU")
+						end
 					end
 				end
 			end
+		end
+		if UnitExists("boss1") then
+			self:Debug("|cffffff00boss1: |r " .. UnitName("boss1"), 3, nil, nil, true)
+		end
+		if UnitExists("boss2") then
+			self:Debug("|cffffff00boss2: |r " .. UnitName("boss2"), 3, nil, nil, true)
+		end
+		if UnitExists("boss3") then
+			self:Debug("|cffffff00boss3: |r " .. UnitName("boss3"), 3, nil, nil, true)
+		end
+		if UnitExists("boss4") then
+			self:Debug("|cffffff00boss4: |r " .. UnitName("boss4"), 3, nil, nil, true)
+		end
+		if UnitExists("boss5") then
+			self:Debug("|cffffff00boss5: |r " .. UnitName("boss5"), 3, nil, nil, true)
 		end
 	end
 
@@ -4777,6 +4793,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if self:issecretvalue(msg) then
+			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: " .. msg .. " with sender of " .. npc, 2, nil, nil, true)
 			return
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
@@ -4790,7 +4807,7 @@ do
 					end
 				end
 			end
-			self:Debug("|cffffff00CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
+			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
@@ -4819,6 +4836,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		return onMonsterMessage(self, "emote", msg)
@@ -4826,6 +4844,8 @@ do
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
 		if self:issecretvalue(msg) then
+			--Still send the debug to debuglog
+			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 2, nil, nil, true)
 			return
 		end
 		onMonsterMessage(self, "emote", msg)
@@ -4834,7 +4854,7 @@ do
 			local spellId = tonumber(id)
 			if spellId then
 				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
-				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2, nil, nil, true)
+				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2, nil, nil, true)
 			end
 		end
 		return self:FilterRaidBossEmote(msg, sender, ...)
@@ -4850,6 +4870,7 @@ do
 
 	function DBM:RAID_BOSS_WHISPER(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		--Make it easier for devs to detect whispers they are unable to see
@@ -4875,6 +4896,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		if private.isClassic and not IsInInstance() then
