@@ -385,6 +385,7 @@ L.NoBarFade							= "Nutze Start und End Farbe für kleine/große Balken anstell
 L.BarInlineIcons					= "Zeichen einbetten"
 L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText					= "Nutze kurzen Timertext (falls verfügbar)"
+L.HardcodedTimer					= "Nutze hardkodierte Timer (falls verfügbar), um verlorene Funktionen wie das Umbenennen von Zaubersprüchen und das Deaktivieren von Timern, die du nicht sehen möchtest, wiederherzustellen"
 L.KeepBar							= "Halte Timer aktiv bis Fähigkeit ausgeführt wird"
 L.KeepBar2							= "(falls von mod unterstützt)"
 L.FadeBar							= "Verblasse Timer von Fähigkeiten auserhalb der Reichweite"

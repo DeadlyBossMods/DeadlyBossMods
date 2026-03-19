@@ -48,11 +48,11 @@ HiddenBarsToggle:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -65)
 
 BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
 BarBehaviors:CreateCheckButton(L.DisableRightClickBar, true, nil, nil, "DisableRightClick")
---Can't rename spells in midnight
---Won't keep timers in midnight (they follow timeline)
---Can't distance check in midnight, so can't fade by distance
+BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
+BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
 if not DBM:IsPostMidnight() then
-	BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
-	BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
+	--Only option we can't restore even with mod hardcodes
 	BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
+else
+	BarBehaviors:CreateCheckButton(L.HardcodedTimer, true, nil, "HardcodedTimer")
 end

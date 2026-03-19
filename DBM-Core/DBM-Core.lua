@@ -405,6 +405,7 @@ DBM.DefaultOptions = {
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
 	ShortTimerText = true,
+	HardcodedTimer = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
@@ -2188,6 +2189,8 @@ do
 	--- |"DBM_Wipe"
 	--- |"DBM_PlaySound"
 	--- |"DBM_TestModStarted"
+	--- |"DBM_IgnoreBlizzAPI"
+	--- |"DBM_ResumeBlizzAPI"
 	local callbacks = {}
 
 	function fireEvent(event, ...)
@@ -4781,7 +4784,10 @@ do
 			if targetName ~= "nil" then
 				local playerClass = self:GetRaidClass(targetName)
 				if playerClass then
-					targetName = "|c" .. RAID_CLASS_COLORS[playerClass].colorStr .. targetName .. "|r"
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerClass then
+						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+					end
 				end
 			end
 			self:Debug("|cffffff00CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
