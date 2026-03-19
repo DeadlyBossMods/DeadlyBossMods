@@ -74,6 +74,9 @@ function mod:OnCombatEnd()
 end
 
 do
+	---@param self DBMMod
+	---@param timer number
+	---@param eventID number
 	local function timersEasy(self, timer, eventID)
 		if timer == 6 or timer == 120 then--Primordial Roar
 			timerPrimordialRoarCD:TLStart(timer, eventID, self.vb.roarCount)

@@ -157,6 +157,9 @@ function mod:OnCombatEnd()
 end
 
 do
+	---@param self DBMMod
+	---@param timer number
+	---@param eventID number
 	local function timersEasy(self, timer, eventID)
 		local stage = self:GetStage()
 		if stage == 1 then--Stage 1

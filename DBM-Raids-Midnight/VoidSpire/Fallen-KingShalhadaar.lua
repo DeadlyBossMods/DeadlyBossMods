@@ -94,6 +94,9 @@ function mod:OnCombatEnd()
 end
 
 do
+	---@param self DBMMod
+	---@param timer number
+	---@param eventID number
 	local function timersEasy(self, timer, eventID)
 		if timer == 490 then--Berserk marker, no timer object
 			timerBerserkCD:Start(490)
