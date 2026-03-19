@@ -35,8 +35,10 @@ mod.vb.breathCount = 0
 mod.vb.expulsionCount = 0
 mod.vb.roarCount = 0
 local badStateDetected = false
+local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
+	table.wipe(cachedEventIDs)
 	self.vb.clawCount = 1
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
@@ -44,7 +46,8 @@ function mod:OnLimitedCombatStart()
 	if self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
-			"ENCOUNTER_TIMELINE_EVENT_ADDED"
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 	else
 		--Blizz API fallbacks
@@ -66,32 +69,21 @@ function mod:OnLimitedCombatStart()
 end
 
 function mod:OnCombatEnd()
+	table.wipe(cachedEventIDs)
 	self:UnregisterShortTermEvents()
 end
 
 do
-	local function timersEasy(self, timer, eventID, timeInCombat)
+	local function timersEasy(self, timer, eventID)
 		if timer == 6 or timer == 120 then--Primordial Roar
 			timerPrimordialRoarCD:TLStart(timer, eventID, self.vb.roarCount)
-			if timeInCombat >= 2 then
-				self.vb.roarCount = self.vb.roarCount + 1
-				specWarnPrimordialRoar:Show(self.vb.roarCount)
-				specWarnPrimordialRoar:Play("pullin")
-			end
+			cachedEventIDs[eventID] = "roar"
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
 			timerParasiteExpulsionCD:TLStart(timer, eventID, self.vb.expulsionCount)
-			if timeInCombat >= 2 then
-				self.vb.expulsionCount = self.vb.expulsionCount + 1
-				specWarnParasiteExpulsion:Show(self.vb.expulsionCount)
-				specWarnParasiteExpulsion:Play("watchstep")
-			end
+			cachedEventIDs[eventID] = "expulsion"
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
 			timerShadowclawSlamCD:TLStart(timer, eventID, self.vb.clawCount)
-			if timeInCombat >= 2 then
-				self.vb.clawCount = self.vb.clawCount + 1
-				specWarnShadowclawSlam:Show(self.vb.clawCount)
-				specWarnShadowclawSlam:Play("slamincoming")
-			end
+			cachedEventIDs[eventID] = "slam"
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			if DBM.Options.IgnoreBlizzAPI then
@@ -107,11 +99,34 @@ do
 		local eventID = eventInfo.id
 --		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		local timer = math.floor(eventInfo.duration + 0.5)
-		local timeInCombat = GetTime() - self.combatInfo.pull
 		if not badStateDetected then
 			if self:IsEasy() then
-				timersEasy(self, timer, eventID, timeInCombat)
+				timersEasy(self, timer, eventID)
 			end
+		end
+	end
+
+	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventID or not eventState then return end
+		if eventState == 2 then
+			local eventType = cachedEventIDs[eventID]
+			if eventType == "roar" then
+				self.vb.roarCount = self.vb.roarCount + 1
+				specWarnPrimordialRoar:Show(self.vb.roarCount)
+				specWarnPrimordialRoar:Play("pullin")
+			elseif eventType == "expulsion" then
+				self.vb.expulsionCount = self.vb.expulsionCount + 1
+				specWarnParasiteExpulsion:Show(self.vb.expulsionCount)
+				specWarnParasiteExpulsion:Play("watchstep")
+			elseif eventType == "slam" then
+				self.vb.clawCount = self.vb.clawCount + 1
+				specWarnShadowclawSlam:Show(self.vb.clawCount)
+				specWarnShadowclawSlam:Play("slamincoming")
+			end
+			cachedEventIDs[eventID] = nil
+		elseif eventState == 3 then
+			cachedEventIDs[eventID] = nil
 		end
 	end
 end
