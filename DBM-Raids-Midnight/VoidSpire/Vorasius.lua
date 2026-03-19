@@ -10,10 +10,6 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
---mod:RegisterEventsInCombat(
---	"ENCOUNTER_TIMELINE_EVENT_ADDED"
---)
-
 --TODO< https://www.wowhead.com/spell=1244346/colossal-throw has an event ID but doesn't exist on encounter?
 --TODO, probably drop either 59 or 60 for eventIDs, one is for parent activation and one is for the additional slams we probably want to ignore/filter
 --Hardcoded Objects that use Blizz api as fallback
@@ -66,7 +62,7 @@ end
 
 --[[
 --Note, bar stage changing and canceling is handled by core
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)

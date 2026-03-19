@@ -10,10 +10,6 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
---mod:RegisterEventsInCombat(
---	"ENCOUNTER_TIMELINE_EVENT_ADDED"
---)
-
 --local warnDespoticCommand					= mod:NewCountAnnounce(1248697, 2)--Hardcode only
 
 local specWarnVoidConvergence				= mod:NewSpecialWarningCount(1243453, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
@@ -78,7 +74,7 @@ end
 
 --[[
 --Note, bar stage changing and canceling is handled by core
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)

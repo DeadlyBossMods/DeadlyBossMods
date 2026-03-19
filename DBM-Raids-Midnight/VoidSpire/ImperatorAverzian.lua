@@ -10,10 +10,6 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
---mod:RegisterEventsInCombat(
---	"ENCOUNTER_TIMELINE_EVENT_ADDED"
---)
-
 --NOTE, https://www.wowhead.com/spell=1270949/desolation has event ID of 361 on this fight but doesn't exist?
 --TODO, add remaining private auras? most of em are just basic stacks and stuff anchor kinda handles better since we can't warn for stacks
 --TODO, do adds have timeline timers? i very much doubt it, possibly see if timers are fixed after spawn and start on spawn
@@ -74,7 +70,7 @@ end
 
 --[[
 --Note, bar stage changing and canceling is handled by core
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)

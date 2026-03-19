@@ -10,10 +10,6 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
---mod:RegisterEventsInCombat(
---	"ENCOUNTER_TIMELINE_EVENT_ADDED"
---)
-
 --TODO, actually break down abilities by stage for easier UI navigation. Right now they're just in encounter event order
 --TODO, i suspect voidstalker sting is more or less spammed and you just clear it with other mechanics before it's unmangable, adjust warnings if i'm wrong
 --TODO, remove stuff that doesn't have timers or warnings
@@ -146,7 +142,7 @@ end
 
 --[[
 --Note, bar stage changing and canceling is handled by core
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)

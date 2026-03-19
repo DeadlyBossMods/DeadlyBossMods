@@ -10,10 +10,6 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
---mod:RegisterEventsInCombat(
---	"ENCOUNTER_TIMELINE_EVENT_ADDED"
---)
-
 --NOTE, 1251886 is tied to a now removed spell from game, so eventID 72 useless
 --NOTE, https://www.wowhead.com/beta/spell=1249130/elekk-charge is a private aura on the boss
 local warnAuraofDevotion					= mod:NewCountAnnounce(1246162, 2)
@@ -141,7 +137,7 @@ end
 
 --[[
 --Note, bar stage changing and canceling is handled by core
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 	if eventInfo.source ~= 0 then return end
 	local eventID = eventInfo.id
 --	local eventState = C_EncounterTimeline.GetEventState(eventID)

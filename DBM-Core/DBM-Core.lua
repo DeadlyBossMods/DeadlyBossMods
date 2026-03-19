@@ -2188,6 +2188,8 @@ do
 	--- |"DBM_Wipe"
 	--- |"DBM_PlaySound"
 	--- |"DBM_TestModStarted"
+	--- |"DBM_IgnoreBlizzAPI"
+	--- |"DBM_ResumeBlizzAPI"
 	local callbacks = {}
 
 	function fireEvent(event, ...)
