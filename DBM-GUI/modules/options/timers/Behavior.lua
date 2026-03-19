@@ -54,5 +54,5 @@ if not DBM:IsPostMidnight() then
 	--Only option we can't restore even with mod hardcodes
 	BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
 else
-	BarBehaviors:CreateCheckButton(L.HardcodedTimer, true, nil, nil, "HardcodedTimer")
+	BarBehaviors:CreateCheckButton(L.HardcodedTimer, true, nil, "HardcodedTimer")
 end
