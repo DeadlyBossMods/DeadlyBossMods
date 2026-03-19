@@ -193,6 +193,9 @@ do
 					self.vb.despoticCommandCount = self.vb.despoticCommandCount + 1
 				elseif eventType == "shattering" then
 					self.vb.shatteringTwilightCount = self.vb.shatteringTwilightCount + 1
+					--Schedule 5 seconds after event, which is when spikes should come out
+					specWarnShatteringTwilight:Schedule(5, self.vb.shatteringTwilightCount)
+					specWarnShatteringTwilight:ScheduleVoice(5, "watchstep")
 				end
 				cachedEventIDs[eventID] = nil
 			end
