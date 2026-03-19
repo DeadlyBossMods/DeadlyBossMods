@@ -100,16 +100,15 @@ function mod:OnLimitedCombatStart()
 		specWarnConsume:SetAlert(307, "phasechange", 2, 3)
 		timerConsumeCD:SetTimeline(307)
 		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
-
-		self:EnablePrivateAuraSound(1272726, "bleedyou", 19)
-		self:EnablePrivateAuraSound(1257087, "movetopool", 15)
-		self:EnablePrivateAuraSound(1245698, "riftyou", 19)
-		self:EnablePrivateAuraSound(1264756, "debuffyou", 17)--TODO, better custom voice?
---		self:EnablePrivateAuraSound(1264780, "debuffyou", 17)
-		self:EnablePrivateAuraSound(1258192, "dotyou", 19)
-		self:EnablePrivateAuraSound(1265940, "fearyou", 19)
-		self:EnablePrivateAuraSound(1250953, "absorbyou", 19)
 	end
+	self:EnablePrivateAuraSound(1272726, "bleedyou", 19)
+	self:EnablePrivateAuraSound(1257087, "movetopool", 15)
+	self:EnablePrivateAuraSound(1245698, "riftyou", 19)
+	self:EnablePrivateAuraSound(1264756, "debuffyou", 17)--TODO, better custom voice?
+--	self:EnablePrivateAuraSound(1264780, "debuffyou", 17)
+	self:EnablePrivateAuraSound(1258192, "dotyou", 19)
+	self:EnablePrivateAuraSound(1265940, "fearyou", 19)
+	self:EnablePrivateAuraSound(1250953, "absorbyou", 19)
 end
 
 function mod:OnCombatEnd()
