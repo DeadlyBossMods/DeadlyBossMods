@@ -95,6 +95,12 @@ do
 			if self.Options.RecordOnlyBosses then
 				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 			end
+			if private.isRetail then
+				if not InCombatLockdown() and not self.PrivateAuras:IsRegistered() then
+					--Locked down in combat, so we try to do it early in pull timer
+					self.PrivateAuras:RegisterAllUnits()
+				end
+			end
 			if private.isRetail and self.Options.CheckGear and not private.testBuild then
 				local bagilvl, equippedilvl = GetAverageItemLevel()
 				local difference = bagilvl - equippedilvl

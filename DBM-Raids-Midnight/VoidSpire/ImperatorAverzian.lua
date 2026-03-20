@@ -87,7 +87,11 @@ function mod:OnCombatEnd()
 end
 
 do
+	---@param self DBMMod
+	---@param timer number
+	---@param eventID number
 	local function timersEasy(self, timer, eventID, timeInCombat)
+		--Logic confirmed against normal and LFR
 		if timer == 4 or timer == 36 then--Dark Upheaval
 			timerDarkUpheavalCD:TLStart(timer, eventID, self.vb.upheavalCount)
 			cachedEventIDs[eventID] = "upheaval"

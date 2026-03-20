@@ -33,9 +33,9 @@ local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, 17088, n
 --local timerFearsomecryCD				= mod:NewCDCountTimer(20.5, 1249017, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
 local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)
-local timerRiftCataclysmCD				= mod:NewCDCountTimer(20.5, 1260088, 47008, nil, nil, 6)--12min berserk
 local timerRiftMadnessCD				= mod:NewNextTimer(20.5, 1264780, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 6)--Stage 2 bar
+local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption(1272726, true, 1272726, 1, 1)--Rending Tear
 mod:AddPrivateAuraSoundOption(1257087, true, 1257087, 1, 1)--Consuming Miasma
@@ -98,7 +98,7 @@ function mod:OnLimitedCombatStart()
 		timerConsumingMiasmaCD:SetTimeline(119)
 		specWarnAlndustUpheaval:SetAlert({149,431}, "soakincoming", 19, 2)--Can't count casts with blizz API, but hardcode will be able to use group1 and group 2 soak sounds
 		timerAlndustUpheavalCD:SetTimeline({149,431})
-		timerRiftCataclysmCD:SetTimeline(170)
+		timerBerserkCD:SetTimeline(170)
 		timerRiftMadnessCD:SetTimeline(217)
 		specWarnConsume:SetAlert(307, "phasechange", 2, 3)
 		timerConsumeCD:SetTimeline(307)
@@ -120,9 +120,13 @@ function mod:OnCombatEnd()
 end
 
 do
+	---@param self DBMMod
+	---@param timer number
+	---@param eventID number
 	local function timersEasy(self, timer, eventID)
+		--Logic confirmed against normal and LFR
 		if timer == 720 then--Rift Cataclysm
-			timerRiftCataclysmCD:TLStart(timer, eventID)
+			timerBerserkCD:Start(timer)
 		elseif timer == 72 then--Consume (unambiguous)
 			sawPhlegm53 = false
 			timerConsumeCD:TLStart(timer, eventID, self.vb.consumeCount)

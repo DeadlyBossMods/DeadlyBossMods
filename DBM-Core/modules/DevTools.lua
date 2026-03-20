@@ -181,7 +181,7 @@ do
 		end)
 
 		debugLogContent = CreateFrame("Frame", nil, debugLogViewport)
-		debugLogContent:SetSize(740, 1)
+		debugLogContent:SetSize(1140, 1)
 
 		local scrollUpButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		scrollUpButton:SetPoint("TOPRIGHT", debugLogFrame, "TOPRIGHT", -12, -40)
