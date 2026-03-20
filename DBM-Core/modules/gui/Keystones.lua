@@ -48,6 +48,7 @@ local teleportMap = {
 	[210] = {1571, 393766, 1498156}, -- Court of Stars
 	[227] = {1651, 373262, 1537283}, -- Return to Karazhan: Lower
 	[234] = {1651, 373262, 1537283}, -- Return to Karazhan: Upper
+	[239] = {1753, 1254551, 1718213}, -- Seat of the Triumvirate
 	[378] = {2287, 354465, 3759908}, -- Halls of Atonement
 	[391] = {2441, 367416, 4182022}, -- Tazavesh: Streets of Wonder
 	[392] = {2441, 367416, 4182022}, -- Tazavesh: So'leah's Gambit
@@ -62,7 +63,6 @@ local teleportMap = {
 	[558] = {585, 1254572, 608208}, -- Magister's Terrace
 	[559] = {2915, 1254563, 7570501}, -- Nexus-Point Xenas
 	[560] = {2874, 1254559, 7478529}, -- Maisara Caverns
-	[583] = {1753, 1254551, 1718213}, -- Seat of the Triumvirate
 }
 local teleports
 local function updateTeleports()
