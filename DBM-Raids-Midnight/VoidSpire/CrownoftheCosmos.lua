@@ -30,7 +30,7 @@ local specWarnDevouringCosmos			= mod:NewSpecialWarningSpell(1238843, nil, nil, 
 local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
 local specWarnRavenousAbyss				= mod:NewSpecialWarningRun(1243753, nil, nil, nil, 4, 2)--P1 Add
 local specWarnInterruptingTremor		= mod:NewSpecialWarningCast(1243743, "SpellCaster", nil, nil, 1, 2)--P1 Add
-local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1243754, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
+local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1261339, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
 local specWarnRiftSlash					= mod:NewSpecialWarningDefensive(1246461, nil, nil, nil, 1, 2)--P2 Rift Simulacrum slash attack
 
 local timerNullCoronaCD					= mod:NewCDCountTimer(20.5, 1233865, nil, nil, nil, 3)--P1+
@@ -46,7 +46,7 @@ local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, nil, nil, ni
 local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, nil, nil, nil, 3)--P1
 local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--P3 (berserk?)
 local timerRiftSimulacrumCD				= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting
-local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1243754, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
+local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
 
 mod:AddPrivateAuraSoundOption(1233865, true, 1233865, 1, 1)--Null Corona

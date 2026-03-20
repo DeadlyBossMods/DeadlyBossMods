@@ -130,11 +130,13 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		else--Finished or cancled (sometimes blizzard sends state changed instead of event removed when canceling events)
 			bar:Cancel()
 			private.hardCodedTimers[eventID] = nil
+			self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID), 3, nil, nil, true)
 		end
 	end
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 3, nil, nil, true)
 end
 
+--[[
 function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 	if private.hardCodedTimers[eventID] then
 		local bar = DBT:GetBar(private.hardCodedTimers[eventID])
@@ -146,6 +148,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_REMOVED(eventID)
 		DBT:CancelBar(eventID)
 	end
 end
+--]]
 
 --/run DBM:RecoverBlizzardTimers()
 function DBM:RecoverBlizzardTimers()
