@@ -275,9 +275,7 @@ function timerPrototype:SetEventID(eventID, ...)
 		hardcodedIds = {hardcodedIds}
 		private.hardCodedTimers[eventID] = hardcodedIds
 	end
-	if hardcodedIds[#hardcodedIds] ~= id then
-		hardcodedIds[#hardcodedIds + 1] = id
-	end
+	hardcodedIds[#hardcodedIds + 1] = id
 end
 
 ---Simple function to call Start and SetEventID with a single call for hardcoded timeline timers
