@@ -170,10 +170,8 @@ do
 				cachedEventIDs[eventID] = "phlegm"
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
-			--We ignore the 1, because it's blizzard correcting the fact the 30 was blatently wrong
-			if timer == 30 then--Blizzared is dumb, it's actually 10
-				timerRavenousDiveCD:TLStart(10, eventID, self.vb.diveCount)
-			end
+			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
+			timerRavenousDiveCD:TLStart(timer, eventID, self.vb.diveCount)
 			cachedEventIDs[eventID] = "dive"
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers, but not represented as bars in DBM yet.
